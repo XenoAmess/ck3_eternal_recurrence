@@ -1,0 +1,167 @@
+{
+  "schema": "xar.java-ci-bootstrap-pathext-rebase-verification/v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-22T17:48:31.353744+00:00",
+  "review_due_at_utc": "2027-04-20T17:48:31.353744+00:00",
+  "head": "0cc7fb0cb",
+  "upstream": "ccaea6d0d7f56e22843843d283c91a12808a0107",
+  "previous_receipt": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\java-ci-bootstrap-pathext-repair-20261022.json",
+    "bytes": 6842,
+    "sha256": "1d8c6634fbe618f1cce826b670baa398bdb7c2dba5591813ffbf6afaee10aba6"
+  },
+  "previous_receipt_unchanged": true,
+  "previous_results_remain_historical": true,
+  "new_source_before": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-pathext-rebase-a01\\source-before.json",
+    "bytes": 5282,
+    "sha256": "6906454d390172cc5c0fb22887eb8524e6be74009a1775d2e03772f6fa7aa3ad"
+  },
+  "new_source_after": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-pathext-rebase-a01\\source-after.json",
+    "bytes": 4807,
+    "sha256": "d1e378881dec69c4abe66c983977a5ced52fe55886e45223eb19e511fe27dc65"
+  },
+  "all_sources_stable": true,
+  "source_count": 17,
+  "new_critical_sources": {
+    "CiBootstrap.java": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\build-tools\\src\\main\\java\\org\\xar\\ck3\\control\\build\\CiBootstrap.java",
+      "bytes": 76671,
+      "sha256": "93da80c4b26a89a8c3d0a43e6f177a6ac38945d961e32a7cd7f7f98f8f7a3782"
+    },
+    "WindowsJobProcess.java": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\build-tools\\src\\main\\java\\org\\xar\\ck3\\control\\build\\WindowsJobProcess.java",
+      "bytes": 25568,
+      "sha256": "1ef9078e9efe88ee1066054949542fb37b9951f8e92dfea9122c846b6e943828"
+    },
+    "CiBootstrapTest.java": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\build-tools\\src\\test\\java\\org\\xar\\ck3\\control\\build\\CiBootstrapTest.java",
+      "bytes": 33379,
+      "sha256": "d21a4bb84a4b49f76d7855ed8b6df53bd0c0125ea0d8c54016e22e8479016d1c"
+    },
+    "WindowsJobProcessTest.java": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\java\\ck3-control\\build-tools\\src\\test\\java\\org\\xar\\ck3\\control\\build\\WindowsJobProcessTest.java",
+      "bytes": 12768,
+      "sha256": "9da82edc09a4b84d62e8dbdfe8798b9ec46d035c8cbcc44b19126d1da4214dd5"
+    }
+  },
+  "command": "mvn -B -ntp -f java/ck3-control/build-tools/pom.xml -Dmaven.repo.local=<retained-original-M2> -Dck3.build.root=<new-rebase-output>/build verify",
+  "command_exit_code": 1,
+  "command_timed_out": false,
+  "Maven_reported_duration_seconds": "40.605",
+  "Maven_reported_finished_at_utc": "2026-10-22T17:47:18Z",
+  "log": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-pathext-rebase-a01\\verify.log",
+    "bytes": 6377,
+    "sha256": "115e3e6d57902999b11cb4b4b9ea64e0ebbd02f3daa2e4cad0b3e9a66d8dda31"
+  },
+  "tests": 56,
+  "failures": 1,
+  "errors": 0,
+  "skipped": 0,
+  "suites": [
+    {
+      "name": "org.xar.ck3.control.build.CiBootstrapTest",
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-pathext-rebase-a01\\build\\ck3-control-build-tools\\surefire-reports\\TEST-org.xar.ck3.control.build.CiBootstrapTest.xml",
+        "bytes": 13510,
+        "sha256": "57ae99c93f9ce7d5b76f3c47eee383691125e871b5ebbd2de6f92eda29c18943"
+      }
+    },
+    {
+      "name": "org.xar.ck3.control.build.ControlBuildTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-pathext-rebase-a01\\build\\ck3-control-build-tools\\surefire-reports\\TEST-org.xar.ck3.control.build.ControlBuildTest.xml",
+        "bytes": 12538,
+        "sha256": "a4e1ca98d348d9ab20087bee9c72b0afbaa5bf40bd5964107f84892643780909"
+      }
+    },
+    {
+      "name": "org.xar.ck3.control.build.MapAdmissionServiceOwnerTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-pathext-rebase-a01\\build\\ck3-control-build-tools\\surefire-reports\\TEST-org.xar.ck3.control.build.MapAdmissionServiceOwnerTest.xml",
+        "bytes": 11472,
+        "sha256": "4aab672d4e1885bee1b54ce580d7ef798e2c70068ef438bf2d540ac4b5f680da"
+      }
+    },
+    {
+      "name": "org.xar.ck3.control.build.NativeTcpListenerTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-pathext-rebase-a01\\build\\ck3-control-build-tools\\surefire-reports\\TEST-org.xar.ck3.control.build.NativeTcpListenerTest.xml",
+        "bytes": 11432,
+        "sha256": "824e1bbb58cf6e3d5623f1bf5bab34ece60165dbd55e5bd6e472823f026e3b66"
+      }
+    },
+    {
+      "name": "org.xar.ck3.control.build.PythonBoundaryStaticStageTest",
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-pathext-rebase-a01\\build\\ck3-control-build-tools\\surefire-reports\\TEST-org.xar.ck3.control.build.PythonBoundaryStaticStageTest.xml",
+        "bytes": 13054,
+        "sha256": "4c927621ae4c9ff8a34775646d9af0d1929cfb8aeb83c8d427ce9932a1f25e50"
+      }
+    },
+    {
+      "name": "org.xar.ck3.control.build.SourceLimitProfileTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-pathext-rebase-a01\\build\\ck3-control-build-tools\\surefire-reports\\TEST-org.xar.ck3.control.build.SourceLimitProfileTest.xml",
+        "bytes": 12249,
+        "sha256": "ac20f404402660e5bc57dd3e2cf125b245aeb878a3f088ac43f47885d0cee2b5"
+      }
+    },
+    {
+      "name": "org.xar.ck3.control.build.WindowsJobProcessTest",
+      "tests": 8,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "source": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\java-ci-pathext-rebase-a01\\build\\ck3-control-build-tools\\surefire-reports\\TEST-org.xar.ck3.control.build.WindowsJobProcessTest.xml",
+        "bytes": 12909,
+        "sha256": "021826cb13ecb7f16c7d2151cbc316a8e773ea7290a76517c8089102fd745480"
+      }
+    }
+  ],
+  "failure": "WindowsJobProcessTest.timeoutKillsTheActualGrandchildAndLeavesNoJobMember:46 expected timeout_or_release_expired but observed observed_job_peak_exceeded_limit",
+  "failure_scope": "Actual retained-handle identity step now completed. The test Job has a 256 MiB limit; the numeric observed peak was not printed. No diagnosis or fix beyond this observed terminal reason is claimed.",
+  "local_runtime": "GraalVM Community 25.0.4.1.1",
+  "compiler_release": 21,
+  "compiler_flags": [
+    "-Xlint:all",
+    "-Werror"
+  ],
+  "source_changes_in_this_recheck": [],
+  "new_PATHEXT_tests_compatible_with_current_module": true,
+  "whole_build_tools_verify": "RED",
+  "hosted_JDK21_bootstrap_reactor_HTTP_after_fix": "NOT_RUN",
+  "no_game_desktop_or_Steam_operations": true,
+  "storage_policy": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+    "bytes": 4022,
+    "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+  }
+}
