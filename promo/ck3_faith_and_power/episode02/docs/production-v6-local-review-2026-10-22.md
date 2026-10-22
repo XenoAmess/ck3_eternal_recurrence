@@ -2,7 +2,7 @@
 
 machine_id: 4-8e1c2f1861。制作终态实际时间：2026-10-22T06:18:36.152059+00:00；Root有限画面审阅完成时间：2026-10-22T06:22:24.314803+00:00；原生宗教实际观察时间：2026-10-22T03:57:31.598338Z。
 
-当前状态：第一份蓝色完整审阅稿已经生成，随后用户指出图表应沿用系列黄色，正在重生成图表并制作黄色修正版。原技术检查与有限画面审阅事实保留，不将其追认为系列视觉合格。原合成进程 PID14212 于05:51:31.248Z启动，06:18:36.152Z原等待返回0，总耗时1624.904秒；33段与拼接全部返回0。正式计划内容缺口为空。
+当前状态：黄色完整审阅版已于07:46:17.841701Z完成，Root于07:49:24.658285Z完成五张最终编码帧配色抽查，本机本地交付。此前蓝色稿及其技术检查保留历史身份，不将其追认为系列视觉合格。蓝色原进程PID14212于05:51:31.248Z启动，06:18:36.152Z原等待0；黄色原进程PID13544于07:18:33.757277Z启动，07:46:17.841701Z原等待0，耗时1664.084秒，两次均无自动重试。
 
 本期主题是「朝圣在奖励什么？」：分别计算支出、活动评价、虔诚奖励和人物成长，再用固定条件的算例解释它们的关联。实际视频44102帧、24:30.067；33段旁白、196组双语字幕。仅N02、N15为实拍后新配，31段原声保留。作者时钟与实际视频帧数相符；101秒额外静读时间已计入总长。
 
@@ -30,7 +30,7 @@ machine_id: 4-8e1c2f1861。制作终态实际时间：2026-10-22T06:18:36.152059
 - 工作根：C:/workspace/ck3-faith-and-power-20261017/episode02/v6-mechanism-production-20261022-a01。原生宗教来源位于filming/live/4-8e1c2f1861--faith-engine--R0032/case-output/ordinary-pilgrimage-0002-receipt.json；四镜头来源、实际PTS及画面审阅在full-grant/native-media-a01/SOURCE-INDEX.actual.json和DELIVERY.actual.json。
 - 自动验证、解码和有限抽帧不代替人工完整观看，未制造人工签核。原片、派生物和交付按通用存储策略分别限期保留。
 
-## 本地交付与验片
+## 蓝色历史稿的本地文件与验片
 
 本机器按本地交付例外提供实际文件，不配置或重试OneDrive。
 
@@ -56,4 +56,15 @@ Root直接审阅16张最终编码帧，覆盖五种朝圣态度、麦加初始�
 
 本机2026-10-22T07:05:04.208529Z已重生成55张实际使用图表，273处图引用待按新pins进入新片。直接重用原绘图函数，仅换系列色板，所有有效text_runs的文字、字号和bbox与原件一致。三张代表图直接审阅通过，新完整yellow_graphics.py的strict通过；没有改游戏原图或重配声音。色板已同步[品牌记录](../../series-brand.json)及[制作经验](../../docs/production-experience.md)。
 
-黄色输入正常plan于07:13:15Z返回0，gaps为空，仍为33段／44102帧／24:30.067；反向替回原图和原grant后与a10逐字段相等。新工作根是原工作根下yellow-revision-a01，明确新准入至08:00Z，不修改原蓝色attempt；最新Release查询遇到gh TLS超时、网页不可达和urllib连接关闭，保留实际失败，沿同次已核验0.3.0，不声称新查询成功。最终新文件与原进程结果待真实完成后补入。
+黄色输入正常plan于07:13:15Z返回0，gaps为空，仍为33段／44102帧／24:30.067；反向替回原图和原grant后与a10逐字段相等。新工作根是原工作根下yellow-revision-a01，明确新准入至08:00Z，不修改原蓝色attempt。最新Release查询的前三次网络失败保留；07:23:19.191162Z重查实际成功，仍为正式v0.3.0、wheel SHA与隔离安装一致。该正面结果晚于本次build启动，不能倒填启动前确认；没有安装或降级依赖。
+
+## 黄色修正版的当前交付
+
+- [当前MP4](C:/workspace/ck3-faith-and-power-20261017/episode02/v6-mechanism-production-20261022-a01/yellow-revision-a01/sample/build-a01/native-run/derived/direct/episode02-review.mp4)：70,102,554字节；SHA-256：a73ead885dc93390a644e6ff65fb2607d3f705a452e7a467c210ff10a276f5d4。
+- [双语SRT](C:/workspace/ck3-faith-and-power-20261017/episode02/v6-mechanism-production-20261022-a01/yellow-revision-a01/sample/build-a01/native-run/derived/direct/text/episode02.bilingual.srt)及[讲稿](C:/workspace/ck3-faith-and-power-20261017/episode02/v6-mechanism-production-20261022-a01/yellow-revision-a01/sample/build-a01/native-run/derived/direct/text/episode02-script.md)；同目录有中文、英文SRT。三个SRT和讲稿SHA均与蓝色版相同，旁白、切点、静读和四段实机未变。
+
+实际媒体H.264、2560×1440、30fps、44102帧，AAC、48kHz双声道。音视频流均1470.066667秒，容器1470.088021秒。原完整AV严格解码返回0，全帧PTS和五窗口音乐检查通过，音量平均−22.7dB、峰值−3.6dB；全片技术结果来自新build，未借用蓝色版通过。Root额外直接审阅五张最终编码帧：主题页、事件接受者补图、旅行密集表、有序费用和经验封顶，暖棕与金黄色已正确进入成片，主要文字和脚注未被字幕遮挡；密集表静读时字幕为空。该检查仅限五张画面，完整人工1倍速听看与签核仍为false。
+
+本次新输入661,697字节／SHA99894377e440c7c2dfedd2d12e6039c0c9ca7a1d0b520e0a8db1cbcf41f71182；实际启动源HEAD4df7c93214de3737f07f145aabde745e78fa98d8。品牌与经验后继提交defdce517不改写实际启动源。以黄色工作根为相对基准，原build与审计索引为sample/RENDER-DELIVERY.actual.json，原wait为sample/BUILD-ORIGINAL-WAIT.actual.json，有限画面为sample/final-palette-review-a01/VISUAL-REVIEW.actual.json，55图替换为graphics/REPLACEMENTS.actual.json。
+
+07:50:57.216075Z按通用存储策略完成新工作根闭场清点：972个既有文件，含本次回执余量的4KiB占用上界159,010,816字节，future0，未使用预留释放；目录元数据上界不冒充精确NTFS实占。成片／字幕30天、派生物48小时、记录180天后按用途复核，无自动删除；原片另沿既有30天规则。小清单为FINAL-STORAGE-CLOSURE.actual.json。仅本地交付，无OneDrive上传，也不据此新增游戏业务或用户教学价值签收。
