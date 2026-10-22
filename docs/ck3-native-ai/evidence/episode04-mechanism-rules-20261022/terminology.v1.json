@@ -1,0 +1,859 @@
+{
+  "schema": "xar.e04.official-zh-terminology.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T03:38:13Z",
+  "owner_task": "/root/terminology_audit",
+  "status": "source_audited",
+  "capacity_card": {
+    "path": "C:/ck3-e04-resume-20261020-a01/r22-mechanics-rewrite-a01/capacity-a01/RESEARCH-SOURCE2.actual-a01.json",
+    "bytes": 2239,
+    "sha256": "1da984893d172de5fc9617c622e5811f6461ab24b93bc53b01d8927351b262e6"
+  },
+  "version_binding": {
+    "steam_app_id": 1158310,
+    "appmanifest_path": "C:/SteamLibrary/steamapps/appmanifest_1158310.acf",
+    "appmanifest_build_id": "25734779",
+    "appmanifest_build_id_line": 13,
+    "game_version": "1.20.0.4",
+    "game_version_evidence": "Root current-scene EXE/runtime qualification; not independently rehashed by this terminology audit"
+  },
+  "scope": {
+    "source_only": true,
+    "game_sdk_calls": 0,
+    "TTS_calls": 0,
+    "render_calls": 0,
+    "movie_or_audio_body_reads": 0,
+    "copy_full_localization": false
+  },
+  "sources": [
+    {
+      "source_id": "concepts",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "bytes": 350826,
+      "sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86"
+    },
+    {
+      "source_id": "army_view",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/simp_chinese/gui/armyview_l_simp_chinese.yml",
+      "bytes": 19125,
+      "sha256": "6109fe5408ea50c2a3bd29e91c81000e3a8a6523264f01c6f9d108448ed013f3"
+    },
+    {
+      "source_id": "military_view",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/simp_chinese/gui/militaryview_l_simp_chinese.yml",
+      "bytes": 14166,
+      "sha256": "a98564e8880500045a8fc35674fb828b082252ea4b4c5993946b832a705f3009"
+    },
+    {
+      "source_id": "map",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/simp_chinese/gui/map_l_simp_chinese.yml",
+      "bytes": 27840,
+      "sha256": "ce39619b5bd56d2bb3ab34ad99df6c4bb35bc823910e8e53d5afa676a21f5d56"
+    },
+    {
+      "source_id": "modifiers",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/simp_chinese/modifiers/modifiers_l_simp_chinese.yml",
+      "bytes": 160863,
+      "sha256": "c4b669dff52effa52412c52746845d4879f012e22b122e81e10ab19833650ada"
+    },
+    {
+      "source_id": "fleet",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/simp_chinese/fleet_l_simp_chinese.yml",
+      "bytes": 286,
+      "sha256": "f11944474f7921ec5a685b1a770267bec9a438ba6d8ee2f8c0a3aa956dee709b"
+    },
+    {
+      "source_id": "admin_concepts",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/simp_chinese/dlc/ep3/dlc_ep3_game_concepts_l_simp_chinese.yml",
+      "bytes": 38011,
+      "sha256": "486e148197b8cb0ac79a3b4103e29705865bcb150817776270a2f0dc76102b57"
+    }
+  ],
+  "terms": [
+    {
+      "term_id": "county",
+      "official_zh": "伯爵领",
+      "preferred_script_zh": "伯爵领",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_county",
+          "line": 266
+        }
+      ],
+      "context_note": "替代本稿的县、县域；先确认输入确为 county，不把原生 Province 字段都译为伯爵领。"
+    },
+    {
+      "term_id": "barony",
+      "official_zh": "男爵领",
+      "preferred_script_zh": "男爵领",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_barony",
+          "line": 260
+        },
+        {
+          "source_id": "concepts",
+          "key": "game_concept_barony_desc",
+          "line": 264
+        }
+      ],
+      "context_note": "地图最小陆地区域。当地补给上限概念按男爵领描述。"
+    },
+    {
+      "term_id": "holding",
+      "official_zh": "地产",
+      "preferred_script_zh": "地产",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_holding",
+          "line": 381
+        },
+        {
+          "source_id": "concepts",
+          "key": "game_concept_holding_desc",
+          "line": 383
+        }
+      ],
+      "context_note": "男爵领或伯爵领首府的中心聚落；不是伯爵领的无条件同义词。"
+    },
+    {
+      "term_id": "duchy",
+      "official_zh": "公国",
+      "preferred_script_zh": "公国",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_duchy",
+          "line": 272
+        }
+      ],
+      "context_note": "头衔层级。"
+    },
+    {
+      "term_id": "kingdom",
+      "official_zh": "王国",
+      "preferred_script_zh": "王国",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_kingdom",
+          "line": 278
+        }
+      ],
+      "context_note": "头衔层级。"
+    },
+    {
+      "term_id": "empire",
+      "official_zh": "帝国",
+      "preferred_script_zh": "帝国",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_empire",
+          "line": 284
+        }
+      ],
+      "context_note": "头衔层级。"
+    },
+    {
+      "term_id": "domain",
+      "official_zh": "直辖领地",
+      "preferred_script_zh": "直辖领地",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_domain",
+          "line": 354
+        }
+      ],
+      "context_note": "角色亲自持有的地产集合。"
+    },
+    {
+      "term_id": "realm",
+      "official_zh": "领地",
+      "preferred_script_zh": "领地",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_realm",
+          "line": 361
+        }
+      ],
+      "context_note": "包含直接控制及通过封臣控制的土地，与直辖领地不同。"
+    },
+    {
+      "term_id": "administrative_province",
+      "official_zh": "省份",
+      "preferred_script_zh": "省份",
+      "source_refs": [
+        {
+          "source_id": "admin_concepts",
+          "key": "game_concept_province",
+          "line": 221
+        },
+        {
+          "source_id": "admin_concepts",
+          "key": "game_concept_province_desc",
+          "line": 222
+        }
+      ],
+      "context_note": "仅此行政制概念。不能据其把军队原生地图 Province 字段称为省份。"
+    },
+    {
+      "term_id": "map_province_location",
+      "official_zh": "男爵领／地点",
+      "preferred_script_zh": "同一男爵领／同一地点",
+      "source_refs": [
+        {
+          "source_id": "map",
+          "key": "PROVINCE_TOOLTIP_HOLDING_TITLE",
+          "line": 55
+        },
+        {
+          "source_id": "map",
+          "key": "PROVINCE_TOOLTIP_COUNTY_TITLE",
+          "line": 56
+        },
+        {
+          "source_id": "map",
+          "key": "PROVINCE_TOOLTIP_IMPASSABLE",
+          "line": 62
+        },
+        {
+          "source_id": "concepts",
+          "key": "game_concept_supply_limit_desc",
+          "line": 1153
+        }
+      ],
+      "context_note": "这是对当前陆地地图对象及供给比较语境的解释，不声称地图 Province 有统一官方中文概念名称。海区必须称海区或实际地名，不能称男爵领。"
+    },
+    {
+      "term_id": "army",
+      "official_zh": "军队",
+      "preferred_script_zh": "军队",
+      "source_refs": [
+        {
+          "source_id": "army_view",
+          "key": "ARMY_HEADER",
+          "line": 2
+        }
+      ],
+      "context_note": "整支 army，不与 regiment 军团混用。"
+    },
+    {
+      "term_id": "regiment",
+      "official_zh": "军团",
+      "preferred_script_zh": "军团",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_regiment",
+          "line": 358
+        },
+        {
+          "source_id": "concepts",
+          "key": "game_concept_regiments",
+          "line": 359
+        },
+        {
+          "source_id": "concepts",
+          "key": "game_concept_regiment_desc",
+          "line": 360
+        }
+      ],
+      "context_note": "替代本稿兵团。征召兵也可组织成军团；不是兵士专属名称。"
+    },
+    {
+      "term_id": "soldiers",
+      "official_zh": "士兵",
+      "preferred_script_zh": "士兵／士兵人数",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_soldiers",
+          "line": 492
+        },
+        {
+          "source_id": "army_view",
+          "key": "ARMY_TOTAL_SOLDIERS",
+          "line": 109
+        }
+      ],
+      "context_note": "实体兵员、物理兵员、兵槽属于研究内部口径；主稿优先讲士兵人数，必要时说明军团列表内的角色条目。"
+    },
+    {
+      "term_id": "levies",
+      "official_zh": "征召兵",
+      "preferred_script_zh": "征召兵",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_levies",
+          "line": 53
+        },
+        {
+          "source_id": "army_view",
+          "key": "LEVIES_ARMY_REGIMENT_NAME",
+          "line": 114
+        }
+      ],
+      "context_note": "不得把 levies 与兵士混用。"
+    },
+    {
+      "term_id": "men_at_arms",
+      "official_zh": "兵士",
+      "preferred_script_zh": "兵士",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_men_at_arms",
+          "line": 1097
+        }
+      ],
+      "context_note": "不得用兵士泛指全军所有士兵。"
+    },
+    {
+      "term_id": "commander",
+      "official_zh": "将领",
+      "preferred_script_zh": "将领",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_commander",
+          "line": 696
+        },
+        {
+          "source_id": "army_view",
+          "key": "SELECT_COMMANDER_HEADER",
+          "line": 63
+        }
+      ],
+      "context_note": "替代本稿统帅；不将新增角色条目自动判为现任将领。"
+    },
+    {
+      "term_id": "knight",
+      "official_zh": "骑士",
+      "preferred_script_zh": "骑士",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_knight",
+          "line": 1474
+        }
+      ],
+      "context_note": "文化显示名称可能不同；实际UI的文化专名需要遵照当前角色所用标签。"
+    },
+    {
+      "term_id": "supplies",
+      "official_zh": "补给",
+      "preferred_script_zh": "当前补给／剩余补给",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_supply",
+          "line": 1146
+        },
+        {
+          "source_id": "concepts",
+          "key": "game_concept_supplies",
+          "line": 1150
+        },
+        {
+          "source_id": "army_view",
+          "key": "SUPPLY_STATE_TOOLTIP",
+          "line": 64
+        }
+      ],
+      "context_note": "替代库存、补给库存。数值是绝对补给量，不是人数或百分比。"
+    },
+    {
+      "term_id": "carried_supply_capacity",
+      "official_zh": "补给上限；补给容量",
+      "preferred_script_zh": "军队补给上限",
+      "source_refs": [
+        {
+          "source_id": "army_view",
+          "key": "ARMY_SUPPLY_CAPACITY_INCREASED_BY_COMMANDER",
+          "line": 93
+        },
+        {
+          "source_id": "army_view",
+          "key": "ARMY_SUPPLY_CAPACITY_LOWERED_BY_COMMANDER",
+          "line": 94
+        },
+        {
+          "source_id": "modifiers",
+          "key": "MOD_SUPPLY_CAPACITY_ADD",
+          "line": 834
+        },
+        {
+          "source_id": "modifiers",
+          "key": "MOD_SUPPLY_CAPACITY_MULT",
+          "line": 835
+        }
+      ],
+      "context_note": "原GUI对capacity写补给上限，将领修正则写补给容量。主稿首次解释为军队能携带的补给容量；展示修正名称时照原补给容量。不能把补给容量判成非官方词。"
+    },
+    {
+      "term_id": "local_supply_limit",
+      "official_zh": "补给上限",
+      "preferred_script_zh": "当地补给上限",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_supply_limit",
+          "line": 1152
+        },
+        {
+          "source_id": "concepts",
+          "key": "game_concept_supply_limit_desc",
+          "line": 1153
+        }
+      ],
+      "context_note": "与当地士兵用量比较；与军队携带补给上限分列，不互换单位。"
+    },
+    {
+      "term_id": "supply_state_supplied",
+      "official_zh": "补给充分",
+      "preferred_script_zh": "补给充分",
+      "source_refs": [
+        {
+          "source_id": "army_view",
+          "key": "SUPPLY_STATE_0",
+          "line": 74
+        }
+      ],
+      "context_note": "对应实际界面状态名。"
+    },
+    {
+      "term_id": "supply_state_low",
+      "official_zh": "补给不足",
+      "preferred_script_zh": "补给不足",
+      "source_refs": [
+        {
+          "source_id": "army_view",
+          "key": "SUPPLY_STATE_1",
+          "line": 75
+        }
+      ],
+      "context_note": "对应实际界面状态名。"
+    },
+    {
+      "term_id": "supply_state_starving",
+      "official_zh": "挨饿",
+      "preferred_script_zh": "挨饿",
+      "source_refs": [
+        {
+          "source_id": "army_view",
+          "key": "SUPPLY_STATE_2",
+          "line": 76
+        }
+      ],
+      "context_note": "对应实际界面状态名；饥饿可作普通解释，但不要当作此UI标签。"
+    },
+    {
+      "term_id": "supply_monthly_change",
+      "official_zh": "补给/月",
+      "preferred_script_zh": "每月补给变化",
+      "source_refs": [
+        {
+          "source_id": "army_view",
+          "key": "SUPPLY_STATE_POSITIVE",
+          "line": 65
+        },
+        {
+          "source_id": "army_view",
+          "key": "SUPPLY_STATE_NEGATIVE",
+          "line": 66
+        }
+      ],
+      "context_note": "这仅确定界面名称；更新时机、频率、取整须依机制研究，不能由月字直接推导日结算。"
+    },
+    {
+      "term_id": "attrition",
+      "official_zh": "损耗",
+      "preferred_script_zh": "损耗",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_attrition",
+          "line": 1154
+        },
+        {
+          "source_id": "concepts",
+          "key": "game_concept_attrition_desc",
+          "line": 1155
+        },
+        {
+          "source_id": "army_view",
+          "key": "ARMY_ATTRITION_TT",
+          "line": 191
+        }
+      ],
+      "context_note": "损耗不等于所有人数净减少；也不应一律称死亡。"
+    },
+    {
+      "term_id": "supply_attrition",
+      "official_zh": "缺乏补给",
+      "preferred_script_zh": "缺乏补给造成的损耗",
+      "source_refs": [
+        {
+          "source_id": "army_view",
+          "key": "ATTRITION_SUPPLY",
+          "line": 195
+        }
+      ],
+      "context_note": "替代本稿供给损失；计算预算可以称本次补给损耗的计算值。"
+    },
+    {
+      "term_id": "siege",
+      "official_zh": "围攻",
+      "preferred_script_zh": "围攻",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_siege",
+          "line": 652
+        },
+        {
+          "source_id": "army_view",
+          "key": "ATTRITION_SIEGE",
+          "line": 192
+        },
+        {
+          "source_id": "army_view",
+          "key": "BESIEGING",
+          "line": 102
+        }
+      ],
+      "context_note": "替代围城；别将共享分配函数的所有扣兵都直接归为围攻。"
+    },
+    {
+      "term_id": "raid",
+      "official_zh": "劫掠",
+      "preferred_script_zh": "劫掠",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_raid",
+          "line": 597
+        },
+        {
+          "source_id": "army_view",
+          "key": "ATTRITION_RAID",
+          "line": 193
+        }
+      ],
+      "context_note": "劫掠与围攻分量分别说明。"
+    },
+    {
+      "term_id": "hostile_county_movement_attrition",
+      "official_zh": "移动将导致伤亡",
+      "preferred_script_zh": "敌对伯爵领间移动的损耗",
+      "source_refs": [
+        {
+          "source_id": "map",
+          "key": "UNIT_WILL_TAKE_HOSTILE_COUNTY_ATTRITION",
+          "line": 10
+        },
+        {
+          "source_id": "concepts",
+          "key": "game_concept_attrition_desc",
+          "line": 1155
+        }
+      ],
+      "context_note": "官方概述包含敌对伯爵领及目标地点与控制中伯爵领不接壤的条件。新稿须按原生研究讲清完整条件；本词表不把官方概述当穷举算法。"
+    },
+    {
+      "term_id": "reinforcement",
+      "official_zh": "补员",
+      "preferred_script_zh": "补员",
+      "source_refs": [
+        {
+          "source_id": "military_view",
+          "key": "MONTHLY_REINFORCEMENT_COST_LABEL",
+          "line": 50
+        },
+        {
+          "source_id": "military_view",
+          "key": "TT_REINFORCING_MAA_CLICK_START",
+          "line": 72
+        },
+        {
+          "source_id": "army_view",
+          "key": "ARMY_COMPOSITION_ENTRY_REINFORCE",
+          "line": 104
+        }
+      ],
+      "context_note": "补给恢复与士兵补员分别讲；开关、补员条件、实际新增人数由机制研究给出。"
+    },
+    {
+      "term_id": "split_half",
+      "official_zh": "平分",
+      "preferred_script_zh": "平分",
+      "source_refs": [
+        {
+          "source_id": "army_view",
+          "key": "SPLIT_ARMY_IN_HALF",
+          "line": 3
+        }
+      ],
+      "context_note": "按钮名称为平分，说明写规模大致相等；不承诺严格人数各半。"
+    },
+    {
+      "term_id": "split_custom",
+      "official_zh": "分出新军队",
+      "preferred_script_zh": "分出新军队",
+      "source_refs": [
+        {
+          "source_id": "army_view",
+          "key": "SPLIT_ARMY_CUSTOM",
+          "line": 5
+        }
+      ],
+      "context_note": "与平分按钮的动作区分。"
+    },
+    {
+      "term_id": "reorganize",
+      "official_zh": "整编",
+      "preferred_script_zh": "整编",
+      "source_refs": [
+        {
+          "source_id": "army_view",
+          "key": "SPLIT_ARMY_CUSTOM_TWO",
+          "line": 6
+        }
+      ],
+      "context_note": "两军之间调整编制。"
+    },
+    {
+      "term_id": "merge_armies",
+      "official_zh": "合并军队",
+      "preferred_script_zh": "合并军队",
+      "source_refs": [
+        {
+          "source_id": "army_view",
+          "key": "MERGE_ARMY",
+          "line": 10
+        }
+      ],
+      "context_note": "会合只说明同地点，合并才成为一支军队。"
+    },
+    {
+      "term_id": "stop_movement",
+      "official_zh": "停止移动",
+      "preferred_script_zh": "停止移动",
+      "source_refs": [
+        {
+          "source_id": "army_view",
+          "key": "ARMY_HALT",
+          "line": 41
+        }
+      ],
+      "context_note": "按当前路段锁定状态讲实际行为。"
+    },
+    {
+      "term_id": "movement_lock",
+      "official_zh": "移动锁定",
+      "preferred_script_zh": "移动锁定",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_movement_lock",
+          "line": 1823
+        },
+        {
+          "source_id": "concepts",
+          "key": "game_concept_movement_locked",
+          "line": 1824
+        }
+      ],
+      "context_note": "影片需说明当前路段，不能把进度当整趟行程比例。"
+    },
+    {
+      "term_id": "embarkation",
+      "official_zh": "登船",
+      "preferred_script_zh": "登船",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_embarking",
+          "line": 1392
+        },
+        {
+          "source_id": "concepts",
+          "key": "game_concept_embarked",
+          "line": 1393
+        },
+        {
+          "source_id": "concepts",
+          "key": "game_concept_embarkation",
+          "line": 1396
+        }
+      ],
+      "context_note": "区分正在登船与已登船；实际地图UI见map6–8。"
+    },
+    {
+      "term_id": "embarkation_cost",
+      "official_zh": "登船花费；登船费",
+      "preferred_script_zh": "登船费",
+      "source_refs": [
+        {
+          "source_id": "fleet",
+          "key": "EMBARK_COST",
+          "line": 5
+        },
+        {
+          "source_id": "fleet",
+          "key": "EMBARK_COST_EXPENSIVE",
+          "line": 6
+        },
+        {
+          "source_id": "map",
+          "key": "PROVINCE_TOOLTIP_EMBARKING_IMPLIED",
+          "line": 58
+        },
+        {
+          "source_id": "concepts",
+          "key": "game_concept_embarking_desc",
+          "line": 1397
+        }
+      ],
+      "context_note": "概念说明每100人读取NFleet.EMBARK_GOLD_COST_PER_HUNDRED。具体计入人数、修正和取整交由费用机制证据，不将3金币当通用费率。"
+    },
+    {
+      "term_id": "recently_disembarked",
+      "official_zh": "近期登陆",
+      "preferred_script_zh": "近期登陆",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_recently_disembarked",
+          "line": 1455
+        }
+      ],
+      "context_note": "与单纯下船动作区分。"
+    },
+    {
+      "term_id": "gold",
+      "official_zh": "金钱",
+      "preferred_script_zh": "金钱／金钱余额",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_gold",
+          "line": 365
+        },
+        {
+          "source_id": "concepts",
+          "key": "game_concept_gold_desc",
+          "line": 366
+        }
+      ],
+      "context_note": "数量单位3金币可以保留。钱包属于口语，主稿账目用金钱余额；不能将个人余额无条件改称国库。"
+    },
+    {
+      "term_id": "income",
+      "official_zh": "收入",
+      "preferred_script_zh": "收入",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_income",
+          "line": 368
+        }
+      ],
+      "context_note": "净收入应明确收入减支出，不重复扣已包含的维护费。"
+    },
+    {
+      "term_id": "monthly_maintenance",
+      "official_zh": "每月维护费",
+      "preferred_script_zh": "每月维护费",
+      "source_refs": [
+        {
+          "source_id": "military_view",
+          "key": "MONTHLY_MAINTENANCE_LABEL",
+          "line": 45
+        },
+        {
+          "source_id": "military_view",
+          "key": "TT_MAINTENANCE_TITLE",
+          "line": 63
+        }
+      ],
+      "context_note": "月费读数与旅途实际累计支付分开解释，机制线负责算清各自规则。"
+    },
+    {
+      "term_id": "maximum_military_maintenance",
+      "official_zh": "最大军事维护费",
+      "preferred_script_zh": "最大军事维护费",
+      "source_refs": [
+        {
+          "source_id": "military_view",
+          "key": "MONTHLY_MAX_MAINTENANCE_TT",
+          "line": 47
+        }
+      ],
+      "context_note": "官方解释同时假设征募所有军队且兵力达到最大，并提示登船后实际维护费更高；不能只叫现有兵数全部集结的替代率。"
+    },
+    {
+      "term_id": "taxes",
+      "official_zh": "赋税",
+      "preferred_script_zh": "赋税",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_taxes",
+          "line": 822
+        }
+      ],
+      "context_note": "特定UI原文也可用税收；并非任何普通税收二字都必须改掉。"
+    },
+    {
+      "term_id": "county_control",
+      "official_zh": "伯爵领控制力",
+      "preferred_script_zh": "伯爵领控制力",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_county_control",
+          "line": 1200
+        },
+        {
+          "source_id": "concepts",
+          "key": "game_concept_control",
+          "line": 1201
+        }
+      ],
+      "context_note": "county不译县。"
+    },
+    {
+      "term_id": "war_score",
+      "official_zh": "战争分数",
+      "preferred_script_zh": "战争分数",
+      "source_refs": [
+        {
+          "source_id": "concepts",
+          "key": "game_concept_war_score",
+          "line": 627
+        }
+      ],
+      "context_note": "不用战分作首次正式系统名。"
+    }
+  ],
+  "application_policy": {
+    "apply_to": [
+      "narration.zh-CN",
+      "subtitles.zh-CN",
+      "subtitles.en semantic equivalents",
+      "actual visible SVG text"
+    ],
+    "blind_global_replace": false,
+    "preserve_internal_field_names": true,
+    "ui_labels_follow_actual_context": true,
+    "primary_mechanics_sources_required_beyond_localization": true
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T05:28:11.625163+00:00",
+  "state": "ACTUAL_ASSETS_OWNER_CLOSED",
+  "assets": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\ASSETS.actual.json",
+    "bytes": 66127,
+    "sha256": "3261facde509f0e162fa469a172200d9c415e9c6a777de8de96e4ac7a6ba8fd5"
+  },
+  "production_closed": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\ASSETS-CLOSED.actual.json",
+    "bytes": 705,
+    "sha256": "0e449d08c2f546a649dca1df015595475739c4e884ac8ac4f4b596ce34f7840c"
+  },
+  "original_outer_wait": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r22-mechanics-voice-assets-a01\\CALL-ASSETS-A02-ORIGINAL-WAIT.actual-a01.json",
+    "bytes": 378,
+    "sha256": "1588ebfc259ba031af477483b5fa30221f6f43b54a08483d97cc3c7f42be31ae"
+  },
+  "actual_voice_count": 47,
+  "actual_formula_count": 18,
+  "actual_voice_seconds": "1327.080000",
+  "provider_calls_each": 1,
+  "MP3_original_and_CAS_bytes_each": 7962480,
+  "PNG_original_and_CAS_bytes_each": 1543336,
+  "actual_formula_static_review": {
+    "reviewer": "/root/media_chapter",
+    "actual_viewed_ids": "F01-F18 all18 original1920x1080",
+    "layout_blockers": false,
+    "F16_content_needs_later_override": "Per actual separated force portion, not persistent regiment total; Root directed render/source override. Old PNG/source remain historical unchanged."
+  },
+  "all_original_current_children_wait0": true,
+  "historical_attempt1_outer_wait": 1,
+  "historical_attempt1_provider_calls": 0,
+  "owned_Popen_remaining": 0,
+  "author_writers_remaining": 0,
+  "remaining_stage_execution": 0,
+  "FFmpeg_encoder_calls": 0,
+  "Game_SDK_screen_Start_calls": 0,
+  "human_audio_listen": false,
+  "human_full_movie_review": false,
+  "native_assets_retained_as_future_render_inputs": true,
+  "aggregate_bytes_before_this_leaf": 20582491
+}

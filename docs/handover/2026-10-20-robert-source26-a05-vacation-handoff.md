@@ -1,5 +1,12 @@
 # 罗贝尔原局：Source26／A05 休假交接（2026-10-20）
 
+## 2026-10-22 机制知识交接补注（源准备快照）
+
+机器desktop-3fevhd2-1c74096080。本次新[游玩规则入口](../ck3-native-ai/episode04-20261022-mechanism-rules-12004.md)集中给出补给/补员/损耗/分合军/行军/费用/角色财务日的输入、公式、算例与精确来源，供后继agent显式阅读。新47cue、6章、18公式SVG脚本源及N02-06修正在[项目入口](../../promo/ck3_native_war_ai/episode-04-march-logistics/mechanics-rewrite-20261022-a01/CURRENT-SOURCE.json)；项目源的适用边界独立于后续媒体制作结果；带时间的实际资产进展另见来源索引中的媒体阶段记录。
+
+本段只追加来源知识，不替换下列旧运行快照、失败attempt、安装/Steam/权限记录或旧资格；source closed不等于Game passed。原本地51b3测试修复和nonFF回执保留，后继正常合并/非强推须独立实际完成。仓库filter持久侧效及唯一单键修正见[维护记录](../maintenance/git-fetch-filter-side-effect-2026-10-22.md)；完整旧config不公开导出。
+
+
 最新交接：[Source32／N41恢复后休假交接](2026-10-22-robert-source32-a41-recovery-vacation-handoff.md)。`machine_id: xenoamess-full-tower-eb9d2c1186`；2026-10-22T07:03:51Z真实恢复完成，canonical第236条、当前已保存5628日，未保存的6日已明确回退；新basis和未提交修复、容量待办见新文档。以下各历史截点保留，不作为当前执行资格。
 
 2026-10-22接续入口：[Source32／N39当前检查点与质量整改](2026-10-22-robert-source32-n39-quality-handoff.md)。`machine_id: xenoamess-full-tower-eb9d2c1186`，实际观察截至03:37Z：已推进至1082-02-15／5628日，N39新检查点和通用恢复资格已完成，Game正常闭场仍未通过。以下旧截点保留，不作为当前Driver／SAVE、Steam或容量资格。

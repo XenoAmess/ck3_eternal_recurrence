@@ -1,5 +1,14 @@
 > 2026-10-21 20:47:56 UTC R0232 Root正式裁定；machine_id: desktop-3fevhd2-1c74096080。
 
+## 2026-10-22 机制知识快照：源码闭合与运行资格分别读取
+
+当前可显式读取[完整机制规则](episode04-20261022-mechanism-rules-12004.md)、[逐成员便携来源](evidence/episode04-mechanism-rules-20261022/source-index.json)和[视频源项目指针](../../promo/ck3_native_war_ai/episode-04-march-logistics/mechanics-rewrite-20261022-a01/CURRENT-SOURCE.json)。本段记录机器desktop-3fevhd2-1c74096080上的来源整理；版本1.20.0.4/build25734779的知识可参考，不把别机的安装/离线/部署结果迁入当前机器。
+
+旧文中“数组生产者/日历选择未知”等行仍保留历史原件；本次后继已证明角色ID模30的名单插入、目标日准备、全局日期+24后切换缓冲，以及财务净额普通安全域的实际算术。Army补给轮转、月初补员和角色财务桶是不同时间条件。每个原生观察窗口仍须当次所需身份、来源、准入与完整收束，不由源码闭合获得新的观察或付款信用。
+
+这批不修改原R08输入合同、旧Q、旧raw或原18个知识输入；仅更新本图/智能体入口的当前引用及对应绑定。47cue新脚本是来源成果，不是已制作/验收的新电影。本地测试修复提交和原推送nonFF失败继续保留，主D冻结checkout不随此候选变化。
+
+
 **formal9/11、B1/2。** R0232首站实际静止一日，native stock27894738→29894738（+2000000/scale100000）、唯一target callback seq2；原生兵数与RootUI均1195→1195，不授兵员增长。Root接受保存源f[0,1441)的限定R10原M阳性镜头，可剪f[420,1137)/717帧；不是完整R10、完整B或第二站。研究10/14、业务7/11、ABC0/3不变。
 
 [实际原件与使用边界](episode04-r0232-r10-firstsite-shot-12004.md) · [Root正式裁定](evidence/episode04-r0232-r10-firstsite-20261021/ROOT-R0232-R10-FIRSTSITE-SHOT-ACCEPTANCE.actual-a02.json)。唯一AV0、91contact/1441格与Root12fullres/5sheets分列；可读变化(20,25]秒不是exact callback PTS。24MiB softRED、原film2/public2保留，Hot0；原Game已正常GUI/OS/native/host/keeper/allocator关闭，screen CAS8030。第二站按原Quit守卫defer，没有重录或再推日。文件可供其它游玩agent显式参考，普通planner不自动加载。下方R230/R231及更早快照按时点保留。

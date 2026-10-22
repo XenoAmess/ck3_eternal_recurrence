@@ -1,5 +1,14 @@
 > 2026-10-22 00:52:41 UTC R0234 第二站 Root 有限采用；machine_id: desktop-3fevhd2-1c74096080。
 
+## 2026-10-22 机制来源后继：供游玩智能体显式参考
+
+新增[机制规则入口](episode04-20261022-mechanism-rules-12004.md)与[结构化规则/来源索引](evidence/episode04-mechanism-rules-20261022/source-index.json)。执行机器 desktop-3fevhd2-1c74096080，适用来源为 CK3 1.20.0.4/build25734779/EXE 98702f88…。当前地点合格用量、友好关系、集结宽限、军队轮转桶、补给状态、月初逐部分补员、敌境损耗、分兵/合军权重和登船费用各有输入条件、整数公式及算例，不把界面“月”字替代实际调度。
+
+角色财务名单的生产者、绝对日模30选择及日期双缓冲已由本次来源闭合；例如角色31254相位24，观察下一实际目标日，而非把“推进一天”当无条件机会。正净额按来源条件使用完整 N=a-b-c-d，不再除以30；包含c/d分量的净结算不能直接命名成独立整笔军事维护费付款；独立a04后继以同context写入链确认c为当前军事维护费金币分量、d为适用俸禄/宫廷舒适度/传奇费用，a/b仍是原始输入；a03当时unknown保留，不以旧a05或分摊SUB代替新producer证据。实际 paid/payer/cadence 等运行字段仍依据各自原始实测，不由这份源码说明重新填真。
+
+[视频源入口](../../promo/ck3_native_war_ai/episode-04-march-logistics/mechanics-rewrite-20261022-a01/CURRENT-SOURCE.json)为47段、6章、18张公式SVG的 source-only 重写、N02-06后继与N01-06中文terms-a03修正，没有把旧影片称为本次新渲染。普通规划器未新增自动加载这些专题或证据的路由；正式主题、B/ABC成绩、SDK/native/Game资格均不因源整理增加。旧未知和失败段保留为当时快照，当前已闭机制按新入口查阅。
+
+
 
 > 后继实际 2026-10-22T01:30:27Z（同 machine_id）：01:26:43 新全片 AV/PTS/DTS/CRC/SHA 已过，57547v/90017a、原AV0/Job0；Root第06–13张共8张、joint15张有限采用 working review。旧01:13:50原件的pending保留历史；OneDrive尚无本快照实际InSync。详见第二站专题末尾新回执pins，human1×/听审/final signoff仍false。
 

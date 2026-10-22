@@ -1344,3 +1344,10 @@ docs/ck3-native-ai/evidence/episode04-r230-r231-closure-20261021/** -text whites
 
 # Exact R0232 accepted source and closure; no raw media copied.
 docs/ck3-native-ai/evidence/episode04-r0232-r10-firstsite-20261021/** -text whitespace=cr-at-eol
+
+# Preserve five exact source/status originals; generated indices remain LF.
+promo/ck3_native_war_ai/episode-04-march-logistics/mechanics-rewrite-20261022-a01/SCRIPT.zh-en.source-a02.md -text
+promo/ck3_native_war_ai/episode-04-march-logistics/mechanics-rewrite-20261022-a01/promo-project.mechanics.source-a02.json -text
+promo/ck3_native_war_ai/episode-04-march-logistics/mechanics-rewrite-20261022-a01/promo-project.mechanics.terms-a03.json -text
+promo/ck3_native_war_ai/episode-04-march-logistics/mechanics-rewrite-20261022-a01/provenance/assets-20261022-0528/CALL-ASSETS-A02-ORIGINAL-WAIT.actual-a01.json -text
+promo/ck3_native_war_ai/episode-04-march-logistics/mechanics-rewrite-20261022-a01/provenance/assets-20261022-0528/OWNER-CLOSED.actual-a01.json -text

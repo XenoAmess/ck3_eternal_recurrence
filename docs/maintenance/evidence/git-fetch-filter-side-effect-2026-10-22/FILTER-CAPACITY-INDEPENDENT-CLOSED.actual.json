@@ -1,0 +1,58 @@
+{
+  "schema": "xar.capacity.R23.repo-filter.nonheavy-closed.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T04:53:34.325412+00:00",
+  "aggregate_root": "C:\\ck3-e04-resume-20261020-a01\\r23-storage-recovery-a01\\git-filter-control-a01",
+  "actual_original_receipt": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r23-storage-recovery-a01\\git-filter-control-a01\\FILTER-CORRECTION.actual.json",
+    "bytes": 2980,
+    "sha256": "46edf3030c89027b5ee3af2561afba84f71d709841af5764243d54b659d44002"
+  },
+  "all_seven_original_waits_verified_expected_extension_absence_exit1_preserved": true,
+  "single_mutating_original_Popen_wait0": {
+    "argv": [
+      "git",
+      "-C",
+      "D:/workspace/ck3_eternal_recurrence",
+      "config",
+      "--local",
+      "--replace-all",
+      "remote.origin.partialclonefilter",
+      "blob:none"
+    ],
+    "pid": 35804,
+    "created_100ns": "134371183226264645",
+    "original_wait": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "fresh_current_config": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\.git\\config",
+    "bytes": 12143,
+    "sha256": "d1f458d8867e7d02b2bbd1f0115ac82f7d67c3085cf5700d4b0432188f998931"
+  },
+  "compressed_exact_before_backup": {
+    "path": "C:\\ck3-e04-resume-20261020-a01\\r23-storage-recovery-a01\\git-filter-control-a01\\CONFIG-BEFORE.exact.gz",
+    "bytes": 1919,
+    "sha256": "215d6dc525e43f04934720f9ebd50882dce8dda2a9dcfc35d178670034705f0a"
+  },
+  "only_approved_single_key_nine_logical_bytes_difference_independently_verified": true,
+  "three_local_values_after": {
+    "remote.origin.promisor": "true",
+    "remote.origin.partialclonefilter": "blob:none",
+    "extensions.partialClone": "ABSENT"
+  },
+  "control_two_metadata_censuses_stable": true,
+  "actual_C_control_bytes": 13374,
+  "all_author_Popen_Dwriters0": true,
+  "D32KiB_unspent_future_released_Cchild_always_inside64": true,
+  "manual_physical_recovery_credit_bytes": 0,
+  "D_heavy_or_Game_admission_granted": false,
+  "old_packs_retained_no_GC_repack_prune_or_fetch": true,
+  "pre03_44_original_value": "UNKNOWN_NOT_CLAIMED_RESTORED",
+  "ledger_before_historical_only": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 899811,
+    "sha256": "56f93e3483479866753673f5f9f1d04f8bdecfc1a7a697b717283535ebf2fb34"
+  }
+}

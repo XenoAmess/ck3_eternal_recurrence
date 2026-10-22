@@ -1,0 +1,297 @@
+# 大军为什么越走越少？——补给、损耗与行军费用
+
+源稿：中文旁白及中文字幕、英文字幕。尚未合成或计量新音频。
+
+## 补给怎样恢复，又怎样耗尽
+
+### N01-01
+
+军队带着多少补给、当地能养多少兵，回答的是两个问题。军队面板的二百七十八比三百，前面是当前补给，后面是这支军队的补给上限。地图上的当地补给上限，则要和当地计算在内的兵力比较。一个是物资，一个是人数，不能拿三百点补给去和四千人的当地上限相比。
+
+An army's supplies and a location's supply limit answer different questions. In the army panel, 278/300 means current supply and that army's supply capacity. The local supply limit is instead compared with the troop strength counted at the location. Supply points and troop numbers are different units: 300 supply is not compared with a local limit of 4,000 troops.
+
+### N01-02
+
+补给变化不是每天把月变化除以三十。游戏把军队分组，每天处理轮到的那组；轮到这支军队、并且允许更新时，才把当前变化量整笔加上。战斗和集结会阻止这次更新。原版集结后的补给宽限是三十天，必须已经超过三十天，才通过这一项检查。因此停下几天而补给条没有变化，可能还没有轮到可以恢复的那次结算。
+
+Supply change is not divided by 30 and applied daily. Armies are processed in rotating groups. When an army's group is processed and its update conditions pass, the current change is applied in full. Combat and gathering block the update. The vanilla post-gathering supply grace requires more than 30 days to have elapsed. Several stationary days with no bar movement can therefore mean the eligible recovery update has not yet arrived.
+
+### N01-03
+
+陆地恢复补给，要同时通过地点关系和当地人数两道判断。自己控制、或同一场当前战争同侧参战者控制的土地，是直接允许的情况；属下和宗主关系也会进入后续判断。看的是实际控制者，不能只看法理归属或一纸盟约。地点允许、当地计算兵力又不超过补给上限时，基础恢复二十；恰好等于上限也可以恢复。占领者改变以后，同一块地的补给许可也可能改变。
+
+Land resupply requires both an eligible location relationship and a troop-count check. Land actually controlled by the army owner, or by a participant on the same side of a current war, is directly admitted. Subordinate and suzerain relationships also enter later checks. Actual control matters, rather than de jure ownership or an alliance alone. With permission and counted strength no greater than the local limit, base recovery is 20; equality can recover. A change of occupation can change resupply permission at the same location.
+
+### N01-11
+
+当地人数合计哪些军队？同一地点自己的军队，以及某场当前战争里同侧参战者的军队，会一起计算。普通征召兵和兵士看当前人数；明确不消耗补给的生成部队，则从用量里排除。行军和撤退不会自动把本应计入的军队删掉。两队还在同一地点时，只选中较小的那支，另一支仍然占用当地补给。
+
+Which armies count toward local usage? Your own armies at that location and armies on the same side of a current war are counted together. Ordinary levies and men-at-arms use current troop strength; spawned troops explicitly set not to consume supply are excluded. Moving and retreating do not automatically remove an otherwise included army. Selecting the smaller of two armies at the same location leaves the other in local usage.
+
+### N01-04
+
+看第一处实际驻点。结算前，面板显示二百七十八；结算后，显示二百九十八。精确值约从二百七十八点九五，升到二百九十八点九五，实际增加二十。军队仍是一千一百九十五人。恢复的是补给，士兵人数没有因此增加。
+
+At the first recorded station, the panel changes from 278 to 298. The precise values are approximately 278.95 and 298.95: an actual increase of 20. The army remains at 1,195 soldiers. Supply recovers; troop strength does not increase.
+
+### N01-05
+
+第二处驻点为什么只增加约一点零五？因为补给最多只能到三百。原来的约二百九十八点九五，加二十，已经超过上限；游戏把结果压回三百。实际只补上距离上限的约一点零五。这个小增量来自封顶，不是这里的恢复速度突然变慢。
+
+Why does the second station add only about 1.05 supply? The army's limit is 300. Adding 20 to approximately 298.95 exceeds that limit, so the result is capped at 300. It only fills the remaining gap of about 1.05. The smaller gain is caused by the cap, not by a slower local recovery rate.
+
+### N01-06
+
+兵力超过当地上限以后，基础恢复项不再加二十，转而计算超额消耗。在没有额外省份和将领修正的例子里，先用超出的兵力乘零点零零一，再把消耗限制在五到十之间。上限四千、兵力四千五百，超出五百，先算出零点五，再抬到最低五；兵力一万二千时，超额八千，对应消耗八；再多，也先受十的上限限制。这个最低五是在后续将领调整以前，不是最终消耗永远至少五。
+
+Above the local supply limit, the base recovery term no longer adds 20. With no additional local or commander modifiers, excess consumption is excess troop strength × 0.001, limited to 5–10. Against a limit of 4,000, 4,500 troops produce 0.5, raised to 5; 12,000 produce 8; still larger results are initially capped at 10. The minimum of five applies before subsequent commander adjustment, not as a universal minimum on the final consumption.
+
+### N01-10
+
+后勤专家改变的是补给持续时间。假设总有效加成只有百分之四十，原本每轮消耗五点，会除以一点四，变成约三点五七，而不是直接少扣百分之四十、变成三点。它改变负数补给变化的大小，不改变军队轮到更新的日程，也不把友方的基础恢复二十变成二十八。有进阶特质或其他加成时，要代入合计后的有效数值。
+
+Logistician changes supply duration. If the total effective bonus is exactly 40%, a loss of five is divided by 1.4, giving about 3.57, rather than reduced by 40% to three. This changes negative supply change, not the army's update schedule, and it does not turn the base friendly recovery of 20 into 28. Trait progression and other bonuses must be included in the total effective modifier.
+
+### N01-07
+
+补给状态看绝对数值，不看补给条填了百分之多少。六十及以上是补给充分；十到不足六十是补给不足；低于十才是挨饿。所以上限三百时，补给十仍在上面一档，九点九九已经进入挨饿。将领和当地修正还会改变最后的消耗，判断时要看军队实际显示的变化值。
+
+Supply states use absolute values, not the percentage of the bar filled. At least 60 is Well Supplied; 10 to below 60 is Undersupplied; below 10 is Starving. Even with a limit of 300, exactly 10 is on the upper side, while 9.99 is Starving. Commander and local modifiers affect final consumption, so use the army's actual displayed change.
+
+### N01-08
+
+一次更新里，先改变补给，再按改变后的补给计算损耗。原来十二，减去五，变成七，这一次就可以进入挨饿损耗，不必再等下一轮。补给条不动，可能是加值碰到上限，负变化被下限压回零，还没轮到允许更新，或者更新已经发生、但当地当前变化量恰好为零。
+
+Supply changes before attrition is calculated from the new value. Starting at 12 and losing five gives seven, which can trigger starvation attrition in that same update. An unchanged bar can mean a capped gain, a loss floored at zero, an eligible update that has not yet occurred, or an update that did occur with a current local change of exactly zero.
+
+### N01-09
+
+海上没有陆地的基础加二十。原版有三十天海运宽限；宽限到期以后，还要等这支军队轮到自己的更新，才按海上规则处理。没有额外修正时，基础每轮消耗八点补给，再经过将领对应的消耗调整。军队集结后的补给宽限，与海运宽限是两道条件，不能只数上船三十天，就认定当天一定扣八。
+
+The sea has no land-style base gain of 20. Vanilla provides a 30-day naval grace period. After that grace expires, the army must still reach its own update turn before the naval rules are applied. Without extra modifiers, the base loss is eight supply per processed update, followed by the relevant commander adjustment. The gathering-related grace and the naval grace are separate checks, so the thirtieth day at sea is not automatically a loss of eight.
+
+## 补给恢复以后，军团怎样补员
+
+### N02-01
+
+补员按日历月初处理，和补给按军队分组轮转，是两套不同的节奏。补给够用，不会直接把缺额变成士兵。要看军团当前人数、满员人数、补员率和当次条件。军队总人数把不同军团放在一起；展开军团，才能知道缺员的是哪一部分，以及它由谁提供。
+
+Reinforcement is processed at the start of the calendar month, unlike supply's rotating army groups. Having enough supply does not directly turn vacancies into soldiers. Reinforcement depends on current strength, maximum strength, rate and eligibility. The army total combines different regiments; expanding them shows where the vacancies are and who provides those troops.
+
+### N02-02
+
+兵士补员开关要看军团的提供者。来源是封臣时，相关分支读取的是提供者是否允许补员，不是只看玩家自己的开关。普通征召兵不读取这项兵士补员开关；它仍要通过各自的来源、位置和战斗状态检查。先认清这部分兵属于哪种来源，才能判断调整哪个开关会影响它。
+
+The men-at-arms reinforcement toggle is checked against the regiment's provider. For vassal-provided troops, the relevant path uses that provider's setting, not simply the player's. Ordinary levies bypass this men-at-arms toggle but still have their own origin, position and combat checks. Identify the troop source before deciding which toggle can affect it.
+
+### N02-06
+
+以眼前这组已集结的征召兵为例：兵源地产被围攻或占领，或者这支军队正在战斗、撤退，本轮就不会给这组补员。单纯行军则不会触发这项禁止。既要守住兵源地，也要给野外军队合适的位置和休整机会。
+
+For the raised levy portion shown here, reinforcement on an update is blocked if its origin holding is under siege or occupation, or if its army is in combat or retreat. Merely marching does not trigger this prohibition. Protect the troop origin and give the field army an eligible location and an opportunity to recover.
+
+### N02-04
+
+普通征召兵的补员速率，是基础速率乘上一加适用修正的合计。兵源地、持有者、信仰关系，以及符合位置条件时的将领友好领土补员修正，进入对应分支。这里比较兵源伯爵领和原地产持有者的信仰；同一信仰内，即使礼仪不同，也走相同信仰这一支。用假设算例：基础百分之三，适用修正合计提高百分之三十四，结果是百分之四点零二。修正先相加，再乘基础。
+
+For ordinary levies, the reinforcement rate is the selected base multiplied by one plus the sum of applicable modifiers. Origin, holder, faith and an eligible commander friendly-territory modifier contribute through their respective branches. The faith comparison uses the troop-source county and the original holding's holder; different rites within one faith still use the same-faith branch. In a hypothetical example, a 3% base with applicable modifiers totalling +34% gives 4.02%. Add those modifiers before multiplying the base.
+
+### N02-03
+
+这段实拍里，有一组征召兵满员六十九人，当前六十八人，只缺一人。当次有效补员率是百分之四点零二。六十九乘这个比例，得到二点七七三八；但缺额只有一，所以先取较小的一，再去掉小数，实际补进一人，达到六十九。补员率算出的量，还要受缺额限制。
+
+In this recorded example, a levy group has a maximum of 69 and a current strength of 68: one vacancy. Its prepared reinforcement rate is 4.02%. Multiplying 69 by that rate gives 2.7738, but the vacancy is only one. Taking the smaller value and truncating to whole soldiers gives one actual recruit, bringing the group to 69. The calculated reinforcement amount is limited by the vacancies.
+
+### N02-05
+
+补员还按军团中实际分开的兵力部分分别计算、分别取整。假设两部分满员都是二十人，都允许补员，而且缺额充足；补员率都是百分之三。每部分算出零点六人，各自舍去小数，结果都是零。不能先合成满员四十人，再把一点二取成一人。接近满员时还要先限制缺额，所以也不能把军队总人数乘一个百分比，就当成下一轮一定增加的人数。
+
+Reinforcement is calculated and rounded separately for the regiment's individual troop portions. Suppose two eligible portions each have a maximum of 20, ample vacancies and a 3% rate. Each produces 0.6, which separately truncates to zero. Combining their maxima into 40 and truncating 1.2 to one gives the wrong result. Vacancies also limit near-full portions, so the army total times one percentage is not a guaranteed next-update gain.
+
+## 补给充足，为什么仍会损耗
+
+### N03-01
+
+损耗不只来自挨饿。围攻设防地产、深入敌方伯爵领，也各有自己的条件。这里补给仍是三百比三百，选中军队却从一千一百八十四人降到一千一百七十三人；已确认的围攻扣兵合计十一人。把补给补满，能避免相应的挨饿损耗，却不会让其他损耗规则一起消失。
+
+Starvation is not the only source of attrition. Besieging a fortified holding and moving deeper into hostile counties have their own conditions. Here supply remains at 300/300, but the selected army falls from 1,184 to 1,173. The confirmed siege-related debits total eleven soldiers. Full supply does not disable those other attrition rules.
+
+### N03-02
+
+原版补给三档的基础补给损耗分别是零、零和百分之五。补给不足还没有进入挨饿这一档；低于十，才进入这项百分之五的基础分量。将领的相关损耗修正还会改变它。海运宽限、军队是否能进行本次补给更新，也会影响这项损耗是否计算；围攻分量则另外检查。
+
+The vanilla supply-state base attrition values are 0%, 0% and 5%. Undersupplied has not yet entered the starvation tier; supply below 10 enters the 5% base component. Relevant commander modifiers can change that component. Naval grace and whether the supply update is permitted also affect its calculation. Siege attrition is checked separately.
+
+### N03-03
+
+不同分量先各自取整，再合并。假设这次补给损耗和围攻损耗，各自的计算人数都恰好是一百九十九人。补给分量百分之五，算出九人；围攻分量百分之一，算出一人，合计十人。如果先把比例加成百分之六，再乘一百九十九，就会算成十一人。实际两项的计数范围还要分别判断，不能先混成一个共同人数。
+
+Components are truncated separately before being combined. Suppose the supply and siege components each happen to use a count of 199. The 5% supply component gives nine, while the 1% siege component gives one: ten in total. Adding the rates first and multiplying 199 by 6% would instead give eleven. In an actual army, the two components' counting scopes must be evaluated separately rather than assumed to share one denominator.
+
+### N03-04
+
+小军队还可能被整数取整留下来。在没有额外修正、有效补给损耗为百分之五的例子里，十九人乘百分之五只有零点九五，去掉小数就是零；二十人则正好算出一人。这条分量没有每次至少扣一人的保底。其他损耗仍然分别生效，所以这不是十九人军队免疫一切损失。
+
+Integer truncation can leave a small force with a zero result. With an effective supply-attrition rate of 5% and no additional modifiers, 19 × 5% = 0.95 truncates to zero, while 20 × 5% gives one. This component has no minimum of one casualty per calculation. Other attrition rules remain separate.
+
+### N03-05
+
+另一条要看路线：普通行军从敌对伯爵领跨进另一个敌对伯爵领，目的地又不与控制区接壤，就进入敌方伯爵领损耗结算。同一个伯爵领内换男爵领，不会因为这一条跨领规则重复扣兵。它在军队真正跨入时结算，不是下令就扣，也不等月末。补给充足、走得快，都不能直接省掉这笔。
+
+A separate rule depends on the route. Moving from one hostile county into another, when the destination does not border controlled territory, triggers hostile-county attrition. Moving between baronies within the same county does not repeat this county-crossing charge. It is processed on actual entry, rather than when the order is issued or at month-end. Full supply and fast movement do not by themselves remove it.
+
+### N03-06
+
+默认无修正时，每支军队先取当前人数的百分之五，去掉小数，再与一百人比较，取较大的数，但不超过整支军队的人数。一千人整队穿过，计算值是一百；拆成两队五百，各自都碰到一百人的最低项，合计反而是二百。五千人分成两队两千五百，则各算一百二十五，合计仍是二百五十。
+
+Without modifiers, each army takes the larger of its truncated 5% result and a minimum of 100, capped at that army's strength. A single army of 1,000 gives 100. Two armies of 500 each reach the 100 minimum, giving 200 together. Two armies of 2,500 each give 125, so splitting 5,000 that way still totals 250.
+
+### N03-07
+
+这就是分兵的两面：分开驻扎，可能降低每处补给压力；几支小军同时深入敌境，却可能各付一次最低损耗。先夺取沿途地产、让后续地点接上控制区，再向前推进，和直接钻进敌境腹地，代价不同。将领等修正还会改变有效比例和最低项，下令时也要看路线上的损耗警告。
+
+Splitting has two sides. Separate stations can reduce local supply pressure, but several small armies advancing deep into hostile territory may each pay the minimum attrition. Capturing holdings along the route and extending a connected control area has a different cost from pushing straight into the interior. Commander and other modifiers can change the effective rate and minimum; include the route's attrition warnings in the decision.
+
+## 分兵和合军，究竟改变哪些数
+
+### N04-01
+
+平分军队，并不是把每个军团的人数逐一砍成两半。普通路径以整队军团为单位分配，再按权重分组，所以两支军队不保证人数正好相等。这次实拍，原来二百五十人，拆出七十五人，另一支一百七十五人，合计仍是二百五十。拆分改变的是编组。
+
+Splitting an army in half does not halve every regiment internally. The normal path assigns whole regiments by weight, so the two army totals need not be identical. In this example, 250 becomes 75 and 175, still totaling 250. The split changes organization.
+
+### N04-02
+
+补给也不是一人一份、拆开就除半。新军队先复制原军队的当前补给数值；两队的补给上限，再按各自将领和条件计算。原来补给一百，拆出的军队起始也读取一百，而不是因为人数减半就变成五十。以后各队怎样恢复或消耗，要看它们各自的地点、用量和更新条件。
+
+Supply is not divided into one share per soldier and halved on a split. The new army initially copies the original army's current supply value. Each army's supply capacity depends on its own commander and conditions. An original value of 100 is copied as 100 rather than halved to 50 because troop strength was split. Subsequent recovery and consumption depend on each army's location, usage and update conditions.
+
+### N04-03
+
+两队还在同一个男爵领时，分兵按钮本身不会降低当地总用量。假设当地合计六千人，补给上限四千；把其中一百人拆成两队五十，参与统计的兵和资格都没变，合计仍是六千。要减轻这种压力，需要让军队真正分散到能支持它们的地点，而不只是把一个旗标变成两个。
+
+If both armies remain in the same barony, the split button itself does not reduce the local total. Suppose local usage is 6,000 against a supply limit of 4,000. Splitting one force of 100 into two groups of 50 leaves 6,000 if the counted troops and eligibility are unchanged. Reducing this pressure requires armies to spread to locations that can support them, rather than merely replacing one banner with two.
+
+### N04-04
+
+合军用的是两军原来的补给和各自的计算权重。先分别算占比，按十万分之一的精度向零截断；再把占比乘各军原补给，再按同样精度截断，最后相加。两个占比可能合计只有百分之九十九点九九九，余数不会自动补回。选定合后将领、更新军队以后，还要按合后实际补给上限把结果限制在零到上限之间。
+
+Merging uses each army's original supply and its calculation weight. Each share is first truncated toward zero at a precision of 1/100,000. Each share then scales that army's original supply, followed by another truncation at the same precision. The shares can total 99.999%; the remainder is not restored. After commander selection and the army refresh, the result is clamped between zero and the merged army's actual supply capacity.
+
+### N04-05
+
+保留哪支军队，偶尔也会影响权重。两边使用不同的计数：本例这种将领关联的非兵士一人记录，保留军不计，并入军计入。用假设算例：甲有一百名普通兵和这个角色记录，补给二十；乙有一百名普通兵，补给八十。保留甲，算出五十；保留乙，在不碰合后上限的条件下，按两步取整算出约四十九点八五。
+
+The retained army can affect the weights because the two sides use different counts. The commander-associated non-men-at-arms one-person record in this example is excluded on the retained side and included on the absorbed side. Suppose A has 100 ordinary soldiers plus that record and 20 supply; B has 100 ordinary soldiers and 80 supply. Keeping A gives 50. Keeping B gives about 49.85 after the two truncations, without hitting the final limit.
+
+### N04-06
+
+合军后由最后那位将领重新决定相应补给上限。这个上限先把基础值与加值相加，再应用比例修正。假设基础一百、加值五十、比例增加百分之二十，算出的上限就是一百八十。合军前两队各自的上限，不会直接相加，也不会取平均，变成合后上限。
+
+The final commander determines the relevant supply capacity after merging. Its calculation adds the flat modifier to the base value, then applies the percentage modifier. With a hypothetical base of 100, a flat addition of 50 and a 20% increase, the limit is 180. The two pre-merge limits are neither added nor averaged to produce the merged army's limit.
+
+## 移动锁定、改道与登船费用
+
+### N05-01
+
+行军时间要逐段算。每段路段权重，除以军队在这一段的有效速度，再把各段时间相加。已经走了一部分的首段，要先减去累计完成的进度，再算剩余时间。地图预览的终点日期、首段剩余时间和移动速度，描述的是不同的量。路段权重也不是地图上的公里数。
+
+Travel time is calculated leg by leg. Divide each leg's path weight by its effective army speed, then add the leg times. For a partly completed first leg, subtract accumulated progress before calculating the remaining time. A destination estimate, remaining first-leg time and movement speed are different quantities. Path weight is not a distance in kilometres on the map.
+
+### N05-02
+
+普通陆军基础速度是三。在友好地区的百分之二十，与组织者提供的百分之十，进入同一个加法因子。用路径权重三十来演算：普通速度要十天，友好地区约八点三三天，再加组织者约七点六九天。速度增加百分之二十，时间只缩短六分之一；有多项修正时，也不是把各自的节省天数直接相加。
+
+The ordinary land base speed is 3. The 20% friendly-territory bonus and the Organizer's 10% bonus enter the same additive factor. For a worked weighted distance of 30, the times are 10 days at base speed, about 8.33 days in friendly territory, and about 7.69 days with both bonuses. A 20% speed increase reduces time by one sixth; separate time savings are not added directly.
+
+### N05-03
+
+移动箭头严格超过一半，锁定的是眼前这一段，不是整条路线。还没有锁定时，停止可以取消路线，军队留在原地。锁定后，对手短期内要到的相邻男爵领就更明确了；这也是追击、拦截和撤退时，为什么要看当前箭头进度，而不只看最后目的地。
+
+The lock applies when the current movement arrow is strictly more than halfway complete. It locks that leg, not the entire route. Before the lock, Stop can cancel the route and leave the army in place. After the lock, the adjacent barony it must reach in the short term becomes more predictable, which matters for pursuit, interception and retreat.
+
+### N05-04
+
+锁定以后按停止，后续行程可以撤掉，已经承诺的首段仍要走完。这段例子里，原来四段路线只保留第一站；军队随后到了这一站，路线才变空。停止不是让它在半路刹住，而是把行程缩短到已经锁定的下一站。
+
+After the lock, Stop can remove the later itinerary while preserving the committed first leg. In this example, a four-leg route is reduced to its first destination. The army reaches that destination and the route then becomes empty. Stop shortens the itinerary to the locked next stop rather than halting the army halfway through the leg.
+
+### N05-05
+
+改道也是先保留锁定的首段，再重算后面的路线。画面里，军队当前位置和首段进度没有重置，原来的第一站仍在，后半程换成通往新终点的路线。只要后程还有合法选择，锁定就不等于整趟旅程只能照旧走；但新的目的地，也不能让它跳过眼前这一段。
+
+Rerouting also preserves the locked first leg before recalculating the later route. Here the army's position and first-leg progress are not reset: the original next stop remains, while the later itinerary changes toward a new destination. A locked leg does not freeze all later route choices, but the new destination does not let the army skip that leg.
+
+### N05-06
+
+登船还有一次性费用。先用这支军队参与计费的人数除以一百，乘原版每百人一金币，再乘登船费用倍率。倍率是一加角色的合计登船修正，但最低保留零点一。算出非负金额后，最后加零点五并截成整金币，也就是普通正数下的四舍五入。人数不先凑整百，倍率最低一成也不等于至少收一金币。
+
+Embarkation has a one-off fee. Divide the army's counted troop strength by 100, multiply by the vanilla rate of one gold per hundred, then by the embarkation-cost multiplier. That multiplier is one plus the character's combined embarkation modifier, with a minimum of 0.1. The nonnegative amount is finally increased by 0.5 and truncated to whole gold: ordinary round-half-up. Troop strength is not rounded to full hundreds first, and the 10% multiplier floor is not a minimum fee of one gold.
+
+### N05-07
+
+这次为什么恰好收三金币？军队是一千一百六十二人，罗贝尔的诺曼文化已经掌握长船革新，登船费用减少百分之七十五。用长船折扣代入：十一点六二乘零点二五，得到二点九零五，最终取成三金币，和这次实付一致。画面的金钱余额从二百六十降到二百五十七，精确账户扣去的也是三金币。同样人数如果没有折扣，十一点六二就会取成十二金币。
+
+Why is this example three gold? The army has 1,162 soldiers, and Robert's Norman culture has discovered Longboats, reducing embarkation cost by 75%. With that discount, 11.62 × 0.25 = 2.905, rounding to three gold and matching the actual payment. The visible gold balance falls from 260 to 257, and the precise account also records a three-gold debit. Without a discount, the same 11.62 would round to 12 gold.
+
+### N05-09
+
+这个取整也会让小军队的金币显示出现台阶。假设登船费用减少百分之七十五、支付原价四分之一，一百人算出零点二五金币，最终是零；二百人算出零点五，最终是一金币。即使登船修正把一加修正压到零以下，最低倍率仍然是一成，而不是负数或倒贴金币。规划海路时，应该代入当前军队和角色的有效修正，最后再做整金币取整。
+
+Whole-gold rounding creates steps for small armies. With only the 75% Longboats discount, 100 counted troops produce 0.25 gold and round to zero; 200 produce 0.5 and round to one. Even if one plus the embarkation modifier falls below zero, the multiplier floor remains 0.1 rather than becoming negative or paying the army. Use the current army and character's effective modifiers, then round the final fee.
+
+### N05-08
+
+登船费和海上维护费是两笔不同的代价。长船减少的是这次登船费用；罗贝尔自身降低军队维护费的修正，不是这笔三金币的折扣来源。海路还要计算登船、下船所花的时间，以及航行期间的补给消耗和维护变化。航行速度快，不自动等于整条路线更便宜。
+
+Embarkation cost and upkeep at sea are different costs. Longboats reduces the one-off embarkation fee; Robert's army-maintenance reduction is not the source of this three-gold embarkation price. A sea route also includes embarkation and disembarkation time, supply consumption and maintenance while sailing. Faster naval travel does not automatically make the entire route cheaper.
+
+## 军队每月花多少钱
+
+### N06-01
+
+军费先分征召兵和兵士。普通金币征召兵的基础维护费，是每人每月零点零零三金币；一千人就是每月三金币。上船后还有百分之二十五的海上额外维护，在没有其他修正的算例里，这一项变成每月三点七五金币。它按军队状态计算，和刚才的一次性登船费分开。
+
+Start by separating levies from men-at-arms. Ordinary gold-paid levies have a base upkeep of 0.003 gold per soldier per month: 1,000 soldiers cost three gold per month. Embarked upkeep has an additional 25% naval factor, giving 3.75 gold in an example without other modifiers. This state-dependent upkeep is separate from the one-off embarkation fee.
+
+### N06-02
+
+兵士使用高低两档维护。未集结，而且已经满员，或者暂停了补员，才进入低档；已经集结，或者解散后仍在补员，就会用到高档。原版常规兵士的高档基础价格，是低档的三倍。因此刚把受损兵士解散，费用可能暂时不降；补满以后，或者在未集结时暂停补员，才回到低档。
+
+Men-at-arms use high and low upkeep modes. The low mode applies when unraised and either fully reinforced or reinforcement is paused. Raised regiments, and unraised regiments still reinforcing, use the high mode. The regular vanilla high base rate is three times the low rate. Disbanding damaged men-at-arms can therefore leave their upkeep high until they fill up or reinforcement is paused while they remain unraised.
+
+### N06-03
+
+用满编三百人的弓箭手演算。弓箭手每一基础规模是一百人，低档基础维护零点二，高档零点六；三百人是三个规模，所以低档每月零点六金币，高档每月一点八金币。这不是所有兵种都按一百人一组：攻城器械等兵种有自己的规模和价格，还要再应用所属角色和兵种修正。
+
+Consider 300 fully staffed bowmen. Their base size is 100 soldiers, with base upkeep of 0.2 in low mode and 0.6 in high mode. Three base sizes cost 0.6 or 1.8 gold per month before modifiers. Other types do not all use groups of 100: siege weapons and other definitions have their own sizes and prices. Type-specific and provider-character modifiers are then applied.
+
+### N06-04
+
+最大军事维护费，是以全军集结并补到满员为前提，不是当前残余人数原封不动乘个系数。当前军事维护费和最大军事维护费，是两种情景，不能相加。远征时，还要按军队实际的海上状态核算额外维护。把集结、补员和海上状态分开，才知道哪一项会使接下来的费用上升。
+
+Maximum military upkeep assumes the army is raised and fully reinforced; it is not simply a multiplier on its current depleted strength. Current and maximum upkeep are different scenarios and are not added together. An expedition also requires naval upkeep to be evaluated for the army's actual embarked state. Separate raising, reinforcement and naval status to see what increases the next bill.
+
+### N06-08
+
+符合常规经济结算条件的领主，按角色编号分成三十组，每天轮到一组，同一领主每三十日结算一次，不是所有人都在每月一号结账。届时整笔结算本轮月度净收支，不再把月费除以三十逐日扣。金币计算保留小数；这和登船费用最后取成整金币，是两套不同的取整规则。
+
+Lords eligible for ordinary economic settlement are divided into 30 groups by character ID. One group is processed each day, so the same lord settles once every 30 days, rather than everyone settling on the first of each calendar month. The monthly net amount is settled in full, not divided by 30 into daily charges. Gold calculations retain fractional precision, unlike the final whole-gold rounding of embarkation fees.
+
+### N06-05
+
+把收入和开支放到同一轮里算。假设这一轮收入十金币，包含军费在内的完整支出三金币，正常净入账就是七金币；军费已经抵扣过，不再重复减一次。一次性登船费用则另外预留。金钱余额同时受税收、其他支出和一次性费用影响，判断远征能撑多久，要看集结后的净亏损，而不只盯着军费这一项。
+
+Compare income and expenses within the same settlement. If income is ten gold and total expenses, including military upkeep, are three, the ordinary net credit is seven. Upkeep has already been included. Reserve the one-off embarkation cost separately. Taxes, other expenses and one-off payments also affect the gold balance; an expedition's runway depends on net losses after raising the army, not on the military-expense line alone.
+
+### N06-07
+
+同样一千人，也不能都乘征召兵的单价。兵士按自己的兵种和基础规模计费；有些特殊士兵不需常规维护，也不能普通补员。雇佣兵则要另算合约的一次性费用。原版基础合约是三十六个月，合同期内即使解散，合约仍在，也能再次召集。低当前月费，不等于再签一支佣兵没有现金代价。
+
+Not every army of 1,000 is priced like 1,000 levies. Men-at-arms use their own types and base sizes, while some special soldiers have no ordinary upkeep and cannot reinforce normally. Mercenaries instead require a separate one-off contract payment. The vanilla base contract lasts 36 months. Disbanding during the contract does not end it, and the company can be raised again. Low current monthly upkeep does not remove the cash cost of hiring another company.
+
+### N06-06
+
+整军、分兵还是改道，就算四件事：哪里补给，哪里损耗，锁定后先到哪，以及这段海陆行程要花多少钱。
+
+For a direct march, split or detour, calculate four things: where supply recovers, where attrition applies, the next locked destination, and the cost of the land-and-sea journey.
