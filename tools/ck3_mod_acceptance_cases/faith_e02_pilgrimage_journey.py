@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_observations import JSONObject, MilestoneObservation
+    from ck3_mod_acceptance_native_day import DayClient
 
 CASE = "faith-engine-e02-d1-ordinary-pilgrimage-v1"
 MECHANISM_CASE = "faith-engine-e02-pilgrimage-mechanism-v2"
@@ -106,11 +107,15 @@ def _event_policy_reader(context):
 
 
 class _Journey:
-    def __init__(self, context, client, binding, initial_identity, limits):
+    def __init__(self, context, client, binding, initial_identity, limits, *, natural_capabilities: object = None):
         self.context, self.client = context, client
         self.binding = dict(binding)
         self.identity = dict(initial_identity) if initial_identity is not None else None
         self.limits = _limits(limits, case_id=context.get("case"))
+        from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_contract import pilgrimage_natural_advance_mode
+        self.advance_mode = pilgrimage_natural_advance_mode(context.get("case"),
+            context.get("case_contract", {}).get("policy", {}))
+        self.natural_capabilities = natural_capabilities
         _need(context.get("case") in {CASE, MECHANISM_CASE}
               and context.get("product") == "faith-engine", "Foreign pilgrimage case")
         _need(set(self.binding) == {"run_id", "machine_id", "actor_character_id", "bridge_pid",
@@ -131,8 +136,8 @@ class _Journey:
         self.seq = 0
         self.last_frame = None
         self.last_identity_date = None
-        self.consumed_events = set()
-        self.consumed_interactions = set()
+        self.consumed_events: set[int] = set()
+        self.consumed_interactions: set[int] = set()
         self.result = {"schema": "faith-e02-pilgrimage-bounded-journey-v1", "case": context["case"],
             "binding": self.binding, "machine_id": self.binding["machine_id"], "run_id": context["run_id"],
             "started_at_utc": datetime.now(timezone.utc).isoformat(), "limits": self.limits,
@@ -160,8 +165,10 @@ class _Journey:
     def budget_evidence(self):
         used, cap = self.public_budget()
         self.result.update(public_requests_used=used, public_requests_cap=cap,
-                           day_requests_are_advance_day_subcount_only=True,
-                           identity_observation_policy="initial/after_actual_interruption/each_7_actual_days/necessary_final")
+                           day_requests_are_advance_day_subcount_only=self.advance_mode == "one_day",
+                           identity_observation_policy=("initial/after_actual_interruption/each_7_actual_days/necessary_final"
+                               if self.advance_mode == "one_day" else
+                               "initial/after_actual_interruption/after_native_slice_or_7_days/necessary_final"))
 
     def record(self, name, value):
         packet = {"machine_id": self.binding["machine_id"], "run_id": self.binding["run_id"],
@@ -601,8 +608,54 @@ class _Journey:
             frame = self.event(frame) if frame.get("active_event") is not None else self.interaction(frame)
         return frame
 
+    def _advance_native_horizon(self, before: JSONObject) -> JSONObject:
+        from ck3_mod_acceptance_native_day import obj, integer
+        from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_contract import (
+            parse_pilgrimage_natural_interval, require_pilgrimage_natural_capabilities)
+        require_pilgrimage_natural_capabilities(self.natural_capabilities)
+        _need(before.get("active_event") is None and before.get("pending_character_interaction") is None,
+              "Natural horizon requires the original modal-free frame")
+        self.guard(self.limits["one_day_timeout"] + 5)
+        self.seq += 1
+        name = self.prefix + str(self.seq).zfill(4) + "-native-horizon"
+        self.result["day_requests"] += 1
+        rows = self.client.execute_plan([{"id": name, "tool": "ck3_execute_step",
+            "fresh_revision": False, "args": {"step": "life-advance",
+                "expected_revision": before["revision"]}}], name, timeout=self.limits["one_day_timeout"])
+        _need(isinstance(rows, list) and len(rows) == 1, "One original natural interval required")
+        row = obj(rows[0], "actual natural interval row")
+        _need(row.get("ok") is True and not row.get("error"),
+              "Original natural interval failed; never replay", "PARTIAL_DAY_UNKNOWN")
+        after = obj(self.frame(row.get("after_snapshot"), before), "actual natural after-frame")
+        remaining = self.limits["max_days"] * 24 - self.result["elapsed_hours"]
+        source = _pin(self.client.output / (name + ".actual-results.json"))
+        receipt = {"source": source, "interval": None}
+        self.result["natural_horizon_receipts"].append(receipt)
+        interval = parse_pilgrimage_natural_interval(row.get("result"),
+            before_date_raw=integer(before.get("date_raw"), "natural before date"),
+            after_date_raw=integer(after.get("date_raw"), "natural after date"),
+            has_event=after.get("active_event") is not None,
+            has_interaction=after.get("pending_character_interaction") is not None,
+            remaining_hours=remaining)
+        receipt["interval"] = interval.to_json()
+        self.result["elapsed_hours"] += interval.elapsed_hours
+        _need(after["date_raw"] - self.result["initial_date_raw"] == self.result["elapsed_hours"],
+              "Natural timeline is not contiguous")
+        self.result["observed_days"] = self.result["elapsed_hours"] / 24
+        day = {"step_id": row["id"], "requested_days": interval.requested_horizon_days,
+            "elapsed_hours": interval.elapsed_hours, "event_boundary": interval.boundary != "none",
+            "date_raw": after["date_raw"], "native_clock_step": "life-advance", "source": source}
+        self.result["day_receipts"].append(self.record(
+            "day-" + str(self.result["day_requests"]).zfill(4), day))
+        return after
+
     def run(self):
         _need(self.identity is not None, "Journey needs one actual initial activity identity")
+        if self.advance_mode == "native_horizon":
+            from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_contract import require_pilgrimage_natural_capabilities
+            require_pilgrimage_natural_capabilities(self.natural_capabilities)
+            self.result["natural_advance_mode"] = self.advance_mode
+            self.result["natural_horizon_receipts"] = []
         self.record("started-once", self.result)
         frame = self.snapshot()
         initial_date = frame["date_raw"]
@@ -633,6 +686,16 @@ class _Journey:
             _need(self.result["elapsed_hours"] + 48 <= self.limits["max_days"] * 24,
                   "Finite natural-duration cap", "PARTIAL_DAY_CAP")
             self.guard(self.limits["one_day_timeout"] + 5)
+            from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_contract import (
+                NATURAL_HORIZON_MAX_DAYS, NATURAL_HORIZON_RESERVE_HOURS)
+            remaining = self.limits["max_days"] * 24 - self.result["elapsed_hours"]
+            if (self.advance_mode == "native_horizon" and remaining >=
+                    NATURAL_HORIZON_MAX_DAYS * 24 + NATURAL_HORIZON_RESERVE_HOURS):
+                frame = self.snapshot(frame, same_date=True)
+                if frame.get("active_event") is not None or frame.get("pending_character_interaction") is not None:
+                    continue
+                frame = self._advance_native_horizon(frame)
+                continue
             self.result["day_requests"] += 1
             row = self.client.advance_day(days=1, timeout=self.limits["one_day_timeout"], allow_event_boundary=True)
             _need(row.get("ok") is True and not row.get("error"), "Original day request failed; never replay", "PARTIAL_DAY_UNKNOWN")
@@ -659,9 +722,12 @@ class _Journey:
         return self.result
 
 
-def run_journey(context, client, binding, initial_activity_identity, limits):
+def run_journey(context: JSONObject, client: DayClient, binding: JSONObject,
+                initial_activity_identity: JSONObject, limits: dict[str, object], *,
+                natural_capabilities: object = None) -> JSONObject:
     """Continue boundedly through source-bound conclusion/return events; no coordinate or payment inference."""
-    journey = _Journey(context, client, binding, initial_activity_identity, limits)
+    journey = _Journey(context, client, binding, initial_activity_identity, limits,
+        natural_capabilities=natural_capabilities)
     try:
         result = journey.run()
     except JourneyStop as stop:
@@ -680,7 +746,8 @@ def run_journey(context, client, binding, initial_activity_identity, limits):
         result["last_frame"] = journey.last_frame
     journey.budget_evidence()
     result["result_evidence"] = journey.record("result", result)
-    return result
+    from ck3_mod_acceptance_native_day import obj
+    return obj(result, "actual bounded journey result")
 
 
 def drain_interruptions(context, client, binding, limits):

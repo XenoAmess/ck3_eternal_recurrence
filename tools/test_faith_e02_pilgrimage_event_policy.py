@@ -1,8 +1,8 @@
 ﻿"""Real journey/registry consumers with finite synthetic public CaseClient I/O.
 
 Run from a checkout normally. XAR_CK3_TEST_REPO_ROOT selects a checkout when
-reviewing this new-file candidate externally. No game, driver, screen or day
-advance is used, and no historical external fixture package is required.
+reviewing a candidate externally. No live game or screen is used. Clock tests
+use the shared Driver with a synthetic native endpoint and real journey consumer.
 """
 from __future__ import annotations
 
@@ -442,6 +442,319 @@ class PilgrimageEventPolicyTests(unittest.TestCase):
             self.assertTrue(result["event_receipts"][0]["old_instance_gone_in_independent_snapshot"])
             self.assertFalse(result["business_pass"])
 
+
+
+
+class NaturalHorizonClient(ModalClient):
+    """Real shared Driver clock; fixture-only native publications and hosted IDs."""
+
+    def __init__(self, path: Path, *, event_day: int | None = None,
+                 war: bool = False, results_capability: bool = False,
+                 late_event_after_clock: bool = False) -> None:
+        super().__init__(path)
+        import threading
+        previous = list(sys.path)
+        try:
+            sys.path.insert(0, str(ROOT / "ck3_autonomous_player/tests/unit"))
+            from ck3_autonomous_player.tests.unit.test_native_bridge_driver import FakeEndpoint, _hello, _snapshot, _war
+        finally:
+            sys.path[:] = previous
+        from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
+        self.endpoint = FakeEndpoint()
+        self.driver = NativeHeadlessGameplayDriver(self.endpoint.pipe_name, endpoint=self.endpoint,
+            command_timeout_seconds=1.0, life_advance_timeout_seconds=1.0)
+        capabilities = ["game.state.snapshot", "game.state.active-event", "game.command.pause-map",
+            "game.command.resume-map", "game.command.set-speed-1", "game.command.set-speed-3",
+            "game.command.set-speed-5", "game.command.query-current-event-window-context-v1"]
+        if results_capability:
+            capabilities.append("game.command.query-war-results-window-v1")
+        hello = _hello(*capabilities)
+        hello.update(game_adapter_id="ck3-1.20.0.4-msvc-x64", expected_ck3_version="1.20.0.4",
+            expected_ck3_sha256=EXE_SHA256, ck3_build_match=True, connection_generation=1)
+        self.endpoint.publish(hello)
+        self.raw_revision, self.raw_date, self.raw_speed = 1, 53171400, 1
+        self.raw_paused = True
+        self.raw_event: dict[str, object] | None = None
+        self.event_day, self.event_injected = event_day, False
+        self.fixture_wars = [_war(91)] if war else []
+        self.expected_horizon = 8 if results_capability else 7 if war else 30
+        self.clock_step = "life-advance"
+        self.order: list[str] = []
+        self.timers: list[threading.Timer] = []
+        self.last_native_result: dict[str, object] = {}
+        self.fail_after_apply = False
+        self.late_event_after_clock = late_event_after_clock
+        self._publish_snapshot = _snapshot
+        self.event_key = "synthetic.native_horizon_event"
+        self.displayed = [option(0, 1, "actual first displayed"), option(1, 2, "later")]
+        self.snapshot_count = 3
+
+        def publish() -> None:
+            self.raw_revision += 1
+            self.endpoint.publish(_snapshot(self.raw_revision, date_raw=self.raw_date,
+                speed=self.raw_speed, paused=self.raw_paused, active_event=self.raw_event,
+                played_character={"character_id": 101, "alive": True}, active_wars=self.fixture_wars))
+
+        self.publish = publish
+
+        def answer(frame: dict[str, object]) -> None:
+            if frame.get("type") != "execute_step":
+                raise AssertionError("Unexpected fixture endpoint request")
+            step = str(frame["step"])
+            self.endpoint.publish({"type": "command_result", "protocol_version": 1,
+                "request_id": frame["request_id"], "ok": True,
+                "result": {"step": step, "accepted": True}})
+            if step.startswith("set-speed-"):
+                self.raw_speed = int(step.rsplit("-", 1)[1])
+                publish()
+            elif step == "resume-map":
+                self.order.append("resume")
+                self.raw_paused = False
+                publish()
+                days = 1 if self.clock_step == "life-advance-one-day" else self.expected_horizon
+                if self.event_day is not None and not self.event_injected:
+                    days = self.event_day
+                    self.event_injected = True
+
+                    def progress() -> None:
+                        self.raw_date += days * 24
+                        self.raw_event = {"instance_id": 9, "option_count": 3}
+                        publish()
+                else:
+                    def progress() -> None:
+                        self.raw_date += days * 24
+                        publish()
+                timer = threading.Timer(0.01, progress)
+                self.timers.append(timer)
+                timer.start()
+            elif step == "pause-map":
+                self.raw_paused = True
+                publish()
+            else:
+                raise AssertionError("Unexpected clock primitive: " + step)
+
+        self.endpoint.send_hook = answer
+        publish()
+        self.current = self.project()
+
+    def close(self) -> None:
+        for timer in self.timers:
+            timer.join(timeout=2.0)
+        self.driver.close()
+
+    def project(self) -> dict[str, object]:
+        from ck3_mod_acceptance_native_day import obj
+        source = obj(self.driver.take_snapshot(), "actual fixture shared-driver snapshot")
+        result = {key: source.get(key) for key in ("source", "backend_id", "map_ready", "paused",
+            "revision", "native_revision", "date_raw", "snapshot_id", "active_event",
+            "pending_character_interaction", "played_character", "diagnostics")}
+        result.update(episode_projection="native_campaign", episode_run_id=None)
+        return result
+
+    def fresh(self) -> dict[str, object]:
+        self.current = self.project()
+        return deepcopy(self.current)
+
+    def snapshot(self, **kwargs: bool) -> dict[str, object]:
+        from ck3_mod_acceptance_native_day import obj
+        self.debit()
+        return obj(self.validate_frame(self.fresh(), **kwargs), "actual fixture public frame")
+
+    def execute_plan(self, steps: list[dict[str, object]], name: str,
+                     timeout: float | None = None, reserve: int = 90) -> list[dict[str, object]]:
+        from ck3_mod_acceptance_native_day import obj, integer
+        self.debit()
+        if len(steps) != 1:
+            raise AssertionError("Exactly one original public control required")
+        step = steps[0]
+        args = obj(step.get("args"), "fixture public arguments")
+        tool = step["tool"]
+        self.calls.append((tool, deepcopy(args)))
+        current = self.project()
+        if tool != "ck3_get_capabilities" and args.get("expected_revision") != current["revision"]:
+            raise AssertionError("Stale public natural-interval request")
+        if tool == "ck3_get_capabilities":
+            value = self.driver.capabilities()
+        elif tool == "ck3_execute_step":
+            self.clock_step = str(args["step"])
+            value = self.driver.execute_step(self.clock_step,
+                expected_revision=integer(args.get("expected_revision"), "fixture revision"))
+            self.last_native_result = obj(value, "actual original shared-driver result")
+            if self.late_event_after_clock and not self.event_injected:
+                self.event_injected = True
+                self.raw_event = {"instance_id": 9, "option_count": 3}
+                self.publish()
+        elif tool == JOURNEY.IDENTITIES:
+            value = {"schema": "ck3_12004_player_pilgrimage_activities_v1",
+                "scope": "currently-hosted-by-current-player", "activity_type_key": "activity_pilgrimage",
+                "absence_is_completion": False, "read_only": True, "queried_revision": current["revision"],
+                "snapshot_revision": current["native_revision"], "date_raw": current["date_raw"],
+                "played_character_id": 101, "activity_count": 1, "activities": [
+                    {"activity_id": 512, "host_character_id": 101, "type_key": "activity_pilgrimage",
+                     "terminal_flags_observed": False}]}
+        elif tool == JOURNEY.EVENT_CONTEXT:
+            self.current = current
+            value = {"accepted": True, "current_event_window_context_ready": True,
+                "current_event_window_context": self.typed_context(current)}
+        elif tool == JOURNEY.EVENT_SELECT:
+            if args.get("event_instance_id") != 9 or args.get("option_number") != 2:
+                raise AssertionError("Only the actual first displayed native1 may be selected")
+            self.order.append("event-selected")
+            self.raw_event = None
+            self.publish()
+            value = {"accepted": True, "event_instance_id": 9, "option_number": 2, "option_index": 1}
+        else:
+            raise AssertionError("Unexpected public fixture tool: " + str(tool))
+        self.current = self.project()
+        row = {"id": name, "ok": True, "error": None, "result": value, "after_snapshot": self.current}
+        self.checkpoint(name + ".actual-results", {"rows": [row]})
+        if tool == "ck3_execute_step" and self.fail_after_apply:
+            raise TimeoutError("Fixture interval applied but original consumer return lost")
+        return [row]
+
+    def advance_day(self, days: int = 1, timeout: float = 300,
+                    allow_event_boundary: bool = False,
+                    allow_actor_change: bool = False) -> dict[str, object]:
+        from ck3_mod_acceptance_native_day import integer, project_native_day
+        if type(days) is not int or days != 1:
+            raise AssertionError("The unchanged original one-day contract is required")
+        before = self.snapshot(require_event_free=False)
+        self.debit()
+        self.clock_step = "life-advance-one-day"
+        self.order.append("one-day")
+        value = self.driver.execute_step(self.clock_step,
+            expected_revision=integer(before["revision"], "actual original one-day revision"))
+        after = self.project()
+        raw = {"id": "fixture-one-day-" + str(self.public_requests_used), "ok": True,
+            "error": None, "result": value, "after_snapshot": after}
+        self.checkpoint(str(raw["id"]) + ".actual-results", {"rows": [raw]})
+        self.current = after
+        return project_native_day(raw, before, allow_event_boundary=allow_event_boundary)
+
+
+class PilgrimageNaturalHorizonTests(unittest.TestCase):
+    def run_clock(self, client: NaturalHorizonClient, *, max_days: int = 34,
+                  max_requests: int = 1) -> dict[str, object]:
+        from ck3_mod_acceptance_native_day import obj
+        context = {"case": JOURNEY.MECHANISM_CASE, "product": "faith-engine",
+            "run_id": "synthetic-native-horizon", "shared_source_root": str(ROOT),
+            "case_contract": {"machine_id": "synthetic-machine",
+                "policy": {"natural_advance_mode": "native_horizon"}}}
+        binding = {"run_id": context["run_id"], "machine_id": "synthetic-machine",
+            "actor_character_id": 101, "bridge_pid": 4242, "connection_generation": 1,
+            "episode_run_id": None}
+        identity = {"activity_id": 512, "host_character_id": 101, "type_key": "activity_pilgrimage"}
+        cap = client.execute_plan([{"id": "fixture-capabilities", "tool": "ck3_get_capabilities",
+            "args": {}}], "fixture-capabilities")[0]["result"]
+        return obj(JOURNEY.run_journey(context, client, binding, identity,
+            {"max_days": max_days, "max_day_requests": max_requests}, natural_capabilities=cap),
+            "actual journey consumer result")
+
+    def test_real_driver_7_8_30_day_producers_reach_actual_journey_consumer(self) -> None:
+        for war, results, expected in ((False, False, 30), (True, False, 7), (False, True, 8)):
+            with self.subTest(horizon=expected), tempfile.TemporaryDirectory() as temp:
+                client = NaturalHorizonClient(Path(temp), war=war, results_capability=results)
+                self.addCleanup(client.close)
+                result = self.run_clock(client)
+                self.assertEqual(result["status"], "PARTIAL_DAY_REQUEST_CAP", result.get("reason"))
+                self.assertEqual(result["day_requests"], 1)
+                self.assertEqual(result["elapsed_hours"], expected * 24)
+                self.assertEqual(result["observed_days"], expected)
+                self.assertEqual(client.last_native_result["requested_horizon_days"], expected)
+                self.assertEqual(client.order, ["resume"])
+                self.assertFalse(result["business_pass"])
+                self.assertEqual(json.loads(json.dumps(result, allow_nan=False)), result)
+                self.assertFalse(any(args.get("operation") == "start" for _, args in client.calls))
+
+    def test_actual_native_event_interrupt_is_drained_before_the_next_horizon(self) -> None:
+        for event_day, late, cap, expected in ((3, False, 36, 33), (None, True, 66, 60)):
+            with self.subTest(late=late), tempfile.TemporaryDirectory() as temp:
+                client = NaturalHorizonClient(Path(temp), event_day=event_day, late_event_after_clock=late)
+                self.addCleanup(client.close)
+                result = self.run_clock(client, max_days=cap, max_requests=2)
+                self.assertEqual(result["status"], "PARTIAL_DAY_REQUEST_CAP", result.get("reason"))
+                self.assertEqual(result["observed_days"], expected)
+                self.assertEqual(result["day_requests"], 2)
+                self.assertEqual(client.order, ["resume", "event-selected", "resume"])
+                receipts = result["event_receipts"]
+                from ck3_mod_acceptance_native_day import obj
+                if not isinstance(receipts, list):
+                    raise AssertionError("Actual event receipt array required")
+                self.assertEqual(len(receipts), 1)
+                receipt = obj(receipts[0], "actual consumed event receipt")
+                self.assertEqual(receipt["selected_native_option_index"], 1)
+                self.assertTrue(receipt["ack_accepted"])
+                self.assertTrue(receipt["old_instance_gone_in_independent_snapshot"])
+                self.assertFalse(any(str(frame.get("step", "")).startswith("select-event-option")
+                    for frame in client.endpoint.frames))
+
+    def test_short_remaining_duration_uses_the_unchanged_one_day_route(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            client = NaturalHorizonClient(Path(temp))
+            self.addCleanup(client.close)
+            result = self.run_clock(client, max_days=31)
+            self.assertEqual(result["status"], "PARTIAL_DAY_REQUEST_CAP", result.get("reason"))
+            self.assertEqual(result["elapsed_hours"], 24)
+            self.assertEqual(client.order, ["one-day", "resume"])
+            self.assertEqual(result["natural_horizon_receipts"], [])
+
+    def test_unknown_interval_return_is_consumed_once_and_never_replayed(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            client = NaturalHorizonClient(Path(temp))
+            self.addCleanup(client.close)
+            client.fail_after_apply = True
+            result = self.run_clock(client)
+            self.assertEqual(result["status"], "PARTIAL_ORIGINAL_FAILURE_PRESERVED")
+            self.assertEqual(result["day_requests"], 1)
+            self.assertEqual(client.order, ["resume"])
+            from ck3_mod_acceptance_native_day import integer
+            self.assertEqual(integer(client.last_native_result["ending_date_raw"], "actual ending date") -
+                integer(client.last_native_result["starting_date_raw"], "actual starting date"), 30 * 24)
+            self.assertEqual(result["observed_days"], 0)
+
+    def test_natural_interval_contract_rejects_missing_fields_wrong_types_and_cap_overshoot(self) -> None:
+        from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_contract import (
+            parse_pilgrimage_natural_interval, pilgrimage_natural_advance_mode,
+            require_pilgrimage_natural_capabilities)
+        with tempfile.TemporaryDirectory() as temp:
+            client = NaturalHorizonClient(Path(temp))
+            self.addCleanup(client.close)
+            self.run_clock(client)
+            original = client.last_native_result
+            for field, invalid in (("requested_horizon_days", True), ("requested_horizon_days", 30.0),
+                    ("requested_horizon_days", 31), ("starting_date_raw", True),
+                    ("paused", 1), ("ordinary_events", [{"selected": 0}]),
+                    ("pending_character_interaction", True), ("active_event", []),
+                    ("event_resolution", "selected")):
+                bad = {**original, field: invalid}
+                with self.subTest(field=field, value=invalid), self.assertRaises(ValueError):
+                    parse_pilgrimage_natural_interval(bad,
+                        before_date_raw=53171400, after_date_raw=53172120,
+                        has_event=False, has_interaction=False, remaining_hours=34 * 24)
+            for field in ("requested_horizon_days", "active_event", "pending_character_interaction"):
+                missing = dict(original)
+                del missing[field]
+                with self.subTest(missing=field), self.assertRaises(ValueError):
+                    parse_pilgrimage_natural_interval(missing, before_date_raw=53171400,
+                        after_date_raw=53172120, has_event=False, has_interaction=False, remaining_hours=34 * 24)
+            parsed = parse_pilgrimage_natural_interval(json.loads(json.dumps(original)),
+                before_date_raw=53171400, after_date_raw=53172120,
+                has_event=False, has_interaction=False, remaining_hours=34 * 24)
+            self.assertEqual(json.loads(json.dumps(parsed.to_json())), parsed.to_json())
+            with self.assertRaises(ValueError):
+                parse_pilgrimage_natural_interval(original, before_date_raw=53171400,
+                    after_date_raw=53172120, has_event=False, has_interaction=False, remaining_hours=29 * 24)
+            for wrong in (True, 1.0, None, "automatic"):
+                with self.subTest(mode=wrong), self.assertRaises(ValueError):
+                    pilgrimage_natural_advance_mode(JOURNEY.MECHANISM_CASE, {"natural_advance_mode": wrong})
+            with self.assertRaises(ValueError):
+                pilgrimage_natural_advance_mode(JOURNEY.CASE, {"natural_advance_mode": "native_horizon"})
+            caps = client.driver.capabilities()
+            self.assertNotIn("query-current-event-window-context-v1", caps["action_steps"])
+            require_pilgrimage_natural_capabilities(caps)
+            caps["current_event_window_context_v1_query_supported"] = False
+            with self.assertRaises(ValueError):
+                require_pilgrimage_natural_capabilities(caps)
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

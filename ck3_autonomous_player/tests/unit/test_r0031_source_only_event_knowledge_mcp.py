@@ -266,5 +266,118 @@ class R0034SourceOnlyKnowledgeTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(driver.calls, [])
 
 
+
+
+R0035_MANIFEST = "promo/ck3_faith_and_power/episode02/docs/knowledge/r0035-events-source-only-analysis-12004.json"
+R0035_OCCURRENCES = "promo/ck3_faith_and_power/episode02/docs/knowledge/r0035-events-occurrence.json"
+
+
+class R0035SourceOnlyKnowledgeTests(unittest.IsolatedAsyncioTestCase):
+    async def test_manifest_to_registered_mcp_policy_and_json_roundtrip(self) -> None:
+        manifest_raw = (DOCUMENTS / R0035_MANIFEST).read_bytes()
+        manifest = obj(json.loads(manifest_raw))
+        events = obj(manifest["events"])
+        documents = obj(manifest["source_documents"])
+        summary = obj(json.loads((DOCUMENTS / R0035_OCCURRENCES).read_bytes()))
+        occurrences = obj(summary["events"])
+        self.assertEqual(summary["machine_id"], "4-8e1c2f1861")
+        self.assertEqual(summary["run_id"], "4-8e1c2f1861--faith-engine--R0035")
+        self.assertIs(summary["batch_terminal_pending"], True)
+        self.assertEqual(set(events), {"pilgrimage_intent.1040", "pilgrimage_intent.1043",
+            "travel_danger_events.9010", "rite_travel_events.1000"})
+        driver = NoGameDriver()
+        async with Client(create_server(driver)) as client:
+            self.assertIsInstance(client.session, ClientSession)
+            for key, raw_authored in events.items():
+                with self.subTest(event=key):
+                    authored = obj(raw_authored)
+                    occurrence = obj(occurrences[key])
+                    reply = await client.session.call_tool("ck3_query_vanilla_event_knowledge_v1",
+                        {"event_definition_key": key, "ck3_build": "1.20.0.4"})
+                    self.assertFalse(reply.is_error)
+                    output = obj(reply.structured_content)
+                    self.assertEqual(output["status"], "unavailable")
+                    self.assertEqual(output["unavailable_reason"], "source_analyzed_no_occurrence_contract")
+                    self.assertIsNone(output["contract"])
+                    self.assertEqual(json.loads(json.dumps(output, allow_nan=False)), output)
+                    analysis = obj(output["analysis"])
+                    self.assertIs(analysis["source_analysis_completed"], True)
+                    self.assertIsNone(analysis["current_native_legality"])
+                    for field in ("action_ready", "ordinary_auto_consumes", "full_occurrence_contract_registered",
+                        "selection_policy_changed", "historical_index_is_current_selection_permission",
+                        "historical_evidence_is_current_state"):
+                        self.assertIs(analysis[field], False)
+                    document = obj(documents[string(authored["source_document_key"])])
+                    self.assertEqual(analysis["source_document"], document["path"])
+                    document_raw = (DOCUMENTS / string(document["path"])).read_bytes()
+                    expected_sha = hashlib.sha256(document_raw).hexdigest()
+                    self.assertEqual(analysis["source_document_sha256"], expected_sha)
+                    if authored["source_document_key"] == "SELF":
+                        self.assertEqual(expected_sha, hashlib.sha256(manifest_raw).hexdigest())
+                    else:
+                        self.assertEqual(expected_sha, document["sha256"])
+                        retained = obj(json.loads(document_raw))
+                        self.assertIn("possible_followup_effects_not_live_observed", retained)
+                    self.assertEqual(analysis["occurrence_document"], R0035_OCCURRENCES)
+                    self.assertEqual(analysis["source_options"], authored["source_options"])
+                    self.assertEqual(analysis["source_pins"], authored["source_pins"])
+                    for raw_option in array(analysis["source_options"]):
+                        self.assertIs(obj(raw_option)["historical_R31_selected"], False)
+                    observation = obj(output["observations"])
+                    self.assertEqual(observation["run_id"], summary["run_id"])
+                    self.assertEqual(observation["machine_id"], summary["machine_id"])
+                    self.assertEqual(observation["actual"], occurrence["actual"])
+                    self.assertIs(observation["registry_consumption_succeeded_live"], False)
+                    actual = obj(observation["actual"])
+                    self.assertIs(actual["ack_accepted"], True)
+                    self.assertIs(actual["old_instance_gone_in_independent_snapshot"], True)
+                    displayed = array(occurrence["displayed_options"])
+                    first = obj(displayed[0])
+                    self.assertEqual(first["rendered_index"], 0)
+                    self.assertEqual(actual["selected_native_option_index"], first["native_option_index"])
+                    if key == "travel_danger_events.9010":
+                        self.assertEqual(first["native_option_index"], 1)
+                    if key == "pilgrimage_intent.1043":
+                        self.assertEqual([obj(row)["native_option_index"] for row in displayed], [0, 2])
+                    context = {**obj(occurrence["typed_scope_projection"]),
+                        "event_definition_key": key, "options": displayed}
+                    decision = recommend_registered_vanilla_event_option_v1(context,
+                        played_character_id=15893, snapshot_option_count=len(array(authored["source_options"])),
+                        ck3_build="1.20.0.4")
+                    self.assertEqual(decision["status"], "not_registered")
+                    self.assertIsNone(decision["selected_native_option_index"])
+                    self.assertIsNone(decision["selected_option_number"])
+                    effects = obj(array(analysis["source_options"])[0])["effects"]
+                    if not isinstance(effects, list):
+                        raise ValueError("Returned effect list required")
+                    effects.append("mutated-response-only-r35")
+                    fresh = obj(query_vanilla_event_knowledge_v1(key, "1.20.0.4"))
+                    first_fresh = obj(array(obj(fresh["analysis"])["source_options"])[0])
+                    self.assertNotIn("mutated-response-only-r35", array(first_fresh["effects"]))
+            historical = await client.session.call_tool("ck3_query_vanilla_event_knowledge_v1",
+                {"event_definition_key": "historical_char_creation_events.1", "ck3_build": "1.20.0.4"})
+            self.assertFalse(historical.is_error)
+            historical_output = obj(historical.structured_content)
+            self.assertEqual(historical_output["status"], "available")
+            self.assertIsInstance(historical_output["contract"], dict)
+        self.assertEqual(driver.calls, [])
+
+    async def test_r35_missing_wrong_fields_and_types_do_not_grant_actions(self) -> None:
+        driver = NoGameDriver()
+        events = obj(obj(json.loads((DOCUMENTS / R0035_MANIFEST).read_bytes()))["events"])
+        async with Client(create_server(driver)) as client:
+            self.assertIsInstance(client.session, ClientSession)
+            for key in events:
+                invalid: tuple[dict[str, object], ...] = (
+                    {"event_definition_id": key, "ck3_build": "1.20.0.4"},
+                    {"event_definition_key": key, "ck3_build": True},
+                    {"event_definition_key": key, "ck3_build": 1.20},
+                    {"event_definition_key": key, "ck3_build": "1.20.0.4", "selected_native_option_index": 0},
+                )
+                for payload in invalid:
+                    with self.subTest(event=key, payload=payload):
+                        reply = await client.session.call_tool("ck3_query_vanilla_event_knowledge_v1", payload)
+                        self.assertTrue(reply.is_error)
+        self.assertEqual(driver.calls, [])
 if __name__ == "__main__":
     unittest.main(verbosity=2)
