@@ -39,3 +39,13 @@
 团队历史Driver正文检索聚合仍UNKNOWN。另有子域一次cmd引号错误造成普通仓库bridge/tests宽文本检索，其可能读取正文次数/字节同样UNKNOWN；不能以其他只读子域0外推团队0。新检索限定显式源码/候选文件，原运行态Driver/SAVE不纳入普通FileRef或广域搜索。
 
 本文是进行中的结果增量，不表示全29、全部消费者、SDK恢复或实机通过。后续真实终态将追加到同一工作包。
+
+## 20:17Z已实际取得的后继结果
+
+- tools25第二批完整verify及新25自身reader已通过：13 suites、120 tests，0 failure/error/skip，Maven/outer0、Job0、双source MATCH；53.3322862 s、峰922165248 B/2GiB。第一批119 PASS+1 ERROR保留，错误为新测试循环复用CREATE_NEW stderr文件名，第二批修共享测试helper命名后重跑。交付 `J/scratch/resume56-20261023/native_job_drain25/TOOLS25-QUALIFIED-DELIVERY02.json`，5893 B / `7c96953e4b4ec5330193f433cf112b0bc4eece3e39f8a83d20a1d0501c66c108`；actual `build-java-tools25-resume02.json` 为22776 B / `3713992c7d4ae3bac001a3086293f44c41df64f446a8b8db0ff90d7ce0b764df`。
+- 生产变更是typed per-call root-exit drain policy；既有调用仍默认5秒，新显式policy在原command/lease内持续观察完整Job，只有实际Job0才成功，deadline/guard/interrupt仍拒绝。两项新增真实Windows测试核同一child句柄超过5秒后自然退出，以及四种终止守卫；不豁免或忽略助手进程。CI工具测试计数同步120。
+- 七份最终外置候选完整模块strict/equality现已7/7 PASS。单一入口 `J/scratch/resume56-20261023/ci_static07/SEVEN-FIXTURE-STATIC-QUALIFIED01.json`，21051 B / `d1afb956f1ab38b7c9d548ad4b4ad2ef5175168a2b0cb596ea6891e3975d34e8`；全部内外Job0、来源MATCH。2004项依赖清单覆盖实际项目src、mypy引擎及解释器配置，不授所有第三方目录或完整SDK大模块静态资格。完整36文件运行验收仍待执行。
+- 新Java29根已实际物化并读回：1521文件/18,758,300 B、29 children/30 reactor，allocation+guard26,266,760 B低于29MiB。剩153原步骤、33 extras及恢复4源已全部执行；24 src30/30、恢复4/4 MATCH，旧1451份内容/native identity/linkCount均未变。指针 `J/scratch/resume56-20261023/java29_repair/metadata/JAVA29-SOURCE-VERIFIED07.json`，1620 B / `e434fb829d45624b3e3f4eae77d6fbaa467b9de7ec917f8f2e449a8bcaa3fb97`。独立SourceManifest审计及Maven/capture未完成，仍SOURCE_ONLY。
+- 20Z后旧qualified24 receipt实际因原lease过期拒绝，两次pre-copy RED均保留且copy0；新25完整资格后更新plan/card完整runtime refs执行，不修改旧lease或旧通过JSON。
+
+面向第一轮实机，恢复20以原Java19精确基线追加scope前后时效/身份复验及BIND正向合成回归，准备重跑原七模块完整verify并产生新鲜部署；SDK三视图随后绑定实际新部署。新source-only候选不能代替这些真实结果。资源同4GiB池重分配与新卡由唯一coordinator记录，不自动续旧20Z许可。

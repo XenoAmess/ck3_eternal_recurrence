@@ -110,6 +110,7 @@ public final class WindowsJobProcess implements AutoCloseable {
         }
     }
 
+    public enum RootExitDrainPolicy { DEFAULT_FIVE_SECONDS, UNTIL_COMMAND_DEADLINE }
     public enum DiagnosticWriteState { NOT_REQUESTED, NOT_NEEDED, WRITTEN, UNAVAILABLE }
     public enum JobListState { COMPLETE, TRUNCATED, UNAVAILABLE }
     public enum MemberState { OBSERVED, UNAVAILABLE }
@@ -296,7 +297,18 @@ public final class WindowsJobProcess implements AutoCloseable {
 
     /** Optional CREATE_NEW sidecar is captured before the first owned-Job kill; diagnostic failure never masks its terminal. */
     public AwaitResult await(Duration timeout, Instant leaseDeadline, Runnable periodicGuard, Path diagnosticSidecar) throws InterruptedException {
+        return await(timeout, leaseDeadline, periodicGuard, diagnosticSidecar, RootExitDrainPolicy.DEFAULT_FIVE_SECONDS);
+    }
+
+    /**
+     * Explicit per-call drain choice. The deadline policy observes the entire owned
+     * Job after root exit within the original command/lease limits and guard.
+     * It does not ignore, rename or exempt any child and does not extend a deadline.
+     */
+    public AwaitResult await(Duration timeout, Instant leaseDeadline, Runnable periodicGuard, Path diagnosticSidecar,
+            RootExitDrainPolicy rootExitDrainPolicy) throws InterruptedException {
         ensureOpen(); Objects.requireNonNull(leaseDeadline); Objects.requireNonNull(periodicGuard);
+        Objects.requireNonNull(rootExitDrainPolicy);
         if (timeout.isZero() || timeout.isNegative()) throw new IllegalArgumentException("Finite positive timeout required");
         long deadline = Math.addExact(System.nanoTime(), timeout.toNanos());
         String reason = null; boolean interrupted = false;
@@ -318,6 +330,30 @@ public final class WindowsJobProcess implements AutoCloseable {
         if (reason != null) {
             diagnostic = captureBeforeCleanup(diagnosticSidecar, reason, diagnostic);
             terminate(124);
+        }
+        if (reason == null && rootExitDrainPolicy == RootExitDrainPolicy.UNTIL_COMMAND_DEADLINE) {
+            while (true) {
+                if (System.nanoTime() >= deadline || !Instant.now().isBefore(leaseDeadline)) {
+                    reason = "timeout_or_release_expired"; break;
+                }
+                try { periodicGuard.run(); }
+                catch (RuntimeException error) { reason = "periodic_guard: " + error.getMessage(); break; }
+                Accounting remaining = accounting();
+                // Guard/native query time consumes the same original finite budget.
+                if (System.nanoTime() >= deadline || !Instant.now().isBefore(leaseDeadline)) {
+                    reason = "timeout_or_release_expired"; break;
+                }
+                if (remaining.peakJobMemoryBytes() > remaining.memoryLimitBytes()) {
+                    reason = "observed_job_peak_exceeded_limit"; break;
+                }
+                if (remaining.activeProcesses() == 0) break;
+                try { Thread.sleep(100); }
+                catch (InterruptedException error) { interrupted = true; reason = "interrupted"; break; }
+            }
+            if (reason != null) {
+                diagnostic = captureBeforeCleanup(diagnosticSidecar, reason, diagnostic);
+                terminate(124);
+            }
         }
         for (int i = 0; i < 50 && accounting().activeProcesses() != 0; i++) {
             try { Thread.sleep(100); } catch (InterruptedException error) { interrupted = true; }

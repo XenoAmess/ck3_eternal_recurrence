@@ -11,11 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 final class WindowsJobProcessTest {
     @TempDir Path temporary;
+    private enum DrainFailure { COMMAND_TIMEOUT, LEASE_EXPIRED, GUARD, INTERRUPTED }
 
     @Test void actualChildExit42RetainsNativeBirthAndRejectsSuccess() throws Exception {
         Path output = temporary.resolve("exit42.stdout");
@@ -64,7 +67,7 @@ final class WindowsJobProcessTest {
                 assertEquals(WindowsJobProcess.MemberState.OBSERVED, row.state()); assertEquals(child, row.identity());
                 assertEquals(Boolean.TRUE, row.inOwnedJob()); assertEquals(258L, row.waitZero()); assertEquals(259L, row.exitCode());
                 assertNull(row.error()); assertNull(row.win32Error());
-                assertActuallyKilledChild(retained);
+                assertActuallyExitedChild(retained, 125);
             }
         }
         assertThrows(IllegalStateException.class, owner::accounting);
@@ -84,13 +87,81 @@ final class WindowsJobProcessTest {
                 assertEquals(WindowsJobProcess.DiagnosticWriteState.UNAVAILABLE, awaited.diagnostic().state());
                 assertNull(awaited.diagnostic().sidecarRef()); assertTrue(awaited.diagnostic().error().contains("FileAlreadyExistsException"));
                 assertEquals("protected original diagnostic", Files.readString(sidecar));
-                assertActuallyKilledChild(retained);
+                assertActuallyExitedChild(retained, 125);
             }
         }
     }
 
+    @Test void explicitDeadlineDrainObservesRealChildAliveBeyondFiveSecondsThenItsNaturalExit() throws Exception {
+        Path output = temporary.resolve("root0-natural.stdout");
+        Path gate = temporary.resolve("natural-child.start");
+        Path sidecar = temporary.resolve("natural-child.job-members.json");
+        try (WindowsJobProcess owner = WindowsJobProcess.start(spec("root0-natural-child", output, List.of(gate.toString())))) {
+            long childPid = awaitLiveChildPid(output);
+            try (WindowsJobProcess.ReadOnlyProcessHandle retained = WindowsJobProcess.retainReadOnlyProcess(childPid)) {
+                assertEquals(258, retained.waitZero());
+                awaitRootExit(owner);
+                long rootExitObserved = System.nanoTime();
+                Files.createFile(gate); // Only after the original root handle actually reports exit.
+                AtomicBoolean liveBeyondFiveSeconds = new AtomicBoolean();
+                WindowsJobProcess.AwaitResult awaited = owner.await(Duration.ofSeconds(20), Instant.now().plusSeconds(25),
+                        () -> {
+                            if (System.nanoTime() - rootExitObserved >= Duration.ofSeconds(5).toNanos()
+                                    && retained.waitZero() == 258) liveBeyondFiveSeconds.set(true);
+                        }, sidecar, WindowsJobProcess.RootExitDrainPolicy.UNTIL_COMMAND_DEADLINE);
+                assertTrue(liveBeyondFiveSeconds.get(), "the same child handle must actually remain live beyond the default drain window");
+                assertEquals(0, awaited.commandResult().exitCode()); assertNull(awaited.commandResult().stopReason());
+                assertEquals(0, awaited.commandResult().accounting().activeProcesses()); assertTrue(awaited.commandResult().passed());
+                assertEquals(WindowsJobProcess.DiagnosticWriteState.NOT_NEEDED, awaited.diagnostic().state());
+                assertNull(awaited.diagnostic().sidecarRef()); assertFalse(Files.exists(sidecar));
+                assertActuallyExitedChild(retained, 0); // Natural exit, never either owned-Job kill code.
+            }
+        }
+    }
+
+    @Test void explicitDeadlineDrainKeepsExpiredCommandLeaseGuardAndInterruptFailuresAfterActualRootExit() throws Exception {
+        for (DrainFailure mode : DrainFailure.values()) {
+            Path output = temporary.resolve("root0-policy-" + mode + ".stdout");
+            try (WindowsJobProcess owner = WindowsJobProcess.start(spec("root0-live-child", output))) {
+                long childPid = awaitLiveChildPid(output);
+                try (WindowsJobProcess.ReadOnlyProcessHandle retained = WindowsJobProcess.retainReadOnlyProcess(childPid)) {
+                    assertEquals(258, retained.waitZero()); awaitRootExit(owner);
+                    Duration timeout = mode == DrainFailure.COMMAND_TIMEOUT ? Duration.ofNanos(1) : Duration.ofSeconds(8);
+                    Instant lease = mode == DrainFailure.LEASE_EXPIRED ? Instant.now().minusNanos(1) : Instant.now().plusSeconds(12);
+                    AtomicInteger guardCalls = new AtomicInteger();
+                    try {
+                        if (mode == DrainFailure.INTERRUPTED) Thread.currentThread().interrupt();
+                        WindowsJobProcess.AwaitResult awaited = owner.await(timeout, lease, () -> {
+                            guardCalls.incrementAndGet();
+                            if (mode == DrainFailure.GUARD) throw new IllegalStateException("actual post-root drain guard rejected");
+                        }, null, WindowsJobProcess.RootExitDrainPolicy.UNTIL_COMMAND_DEADLINE);
+                        String reason = switch (mode) {
+                            case COMMAND_TIMEOUT, LEASE_EXPIRED -> "timeout_or_release_expired";
+                            case GUARD -> "periodic_guard: actual post-root drain guard rejected";
+                            case INTERRUPTED -> "interrupted";
+                        };
+                        assertEquals(0, awaited.commandResult().exitCode()); assertEquals(reason, awaited.commandResult().stopReason());
+                        assertFalse(awaited.commandResult().passed()); assertEquals(0, awaited.commandResult().accounting().activeProcesses());
+                        assertEquals(WindowsJobProcess.DiagnosticWriteState.NOT_REQUESTED, awaited.diagnostic().state());
+                        if (mode == DrainFailure.COMMAND_TIMEOUT || mode == DrainFailure.LEASE_EXPIRED) assertEquals(0, guardCalls.get());
+                        else assertTrue(guardCalls.get() > 0);
+                        if (mode == DrainFailure.INTERRUPTED) assertTrue(Thread.currentThread().isInterrupted());
+                        Thread.interrupted();
+                        assertActuallyExitedChild(retained, 124);
+                    } finally { Thread.interrupted(); }
+                }
+            }
+        }
+    }
+
+    private static void awaitRootExit(WindowsJobProcess owner) throws InterruptedException {
+        long deadline = System.nanoTime() + Duration.ofSeconds(8).toNanos();
+        while (owner.isRunning() && System.nanoTime() - deadline < 0) Thread.sleep(10);
+        assertFalse(owner.isRunning(), "original owned root handle must actually report exit before the child gate opens");
+    }
+
     /** Job accounting zero and each process object's signal are independent native observations. */
-    private static void assertActuallyKilledChild(WindowsJobProcess.ReadOnlyProcessHandle retained) throws InterruptedException {
+    private static void assertActuallyExitedChild(WindowsJobProcess.ReadOnlyProcessHandle retained, long expectedExit) throws InterruptedException {
         long deadline = System.nanoTime() + Duration.ofSeconds(5).toNanos();
         long signal = 258; boolean observedInTime = false;
         while (System.nanoTime() - deadline < 0) {
@@ -103,7 +174,7 @@ final class WindowsJobProcessTest {
         }
         assertTrue(observedInTime, "actual child kernel signal must be observed within five monotonic seconds");
         assertEquals(0, signal, "Job accounting zero alone cannot stand in for the retained process object's signal");
-        assertEquals(125, retained.exitCode());
+        assertEquals(expectedExit, retained.exitCode());
     }
 
     private long awaitLiveChildPid(Path output) throws Exception {
@@ -251,7 +322,7 @@ final class WindowsJobProcessTest {
                 Child.class.getName(), mode));
         arguments.addAll(childArguments);
         return new WindowsJobProcess.CommandSpec(java, arguments, temporary.toAbsolutePath(), environment, output.toAbsolutePath(),
-                temporary.resolve(mode + ".stderr").toAbsolutePath(), 256L * 1024 * 1024);
+                output.resolveSibling(output.getFileName() + ".stderr").toAbsolutePath(), 256L * 1024 * 1024);
     }
 
     public static final class Child {
@@ -274,11 +345,28 @@ final class WindowsJobProcessTest {
                 }
                 System.exit(exit);
             }
-            if (args[0].equals("tree") || args[0].equals("root0-live-child")) {
-                Process grandchild = new ProcessBuilder(Path.of(System.getProperty("java.home"), "bin/java.exe").toString(),
-                        "-Xms16m", "-Xmx64m", "-cp", System.getProperty("java.class.path"), Child.class.getName(), "wait").inheritIO().start();
+            if (args[0].equals("natural-child")) {
+                if (args.length != 2) throw new IllegalArgumentException("One actual natural-child start gate required");
+                Path gate = Path.of(args[1]); long gateDeadline = System.nanoTime() + Duration.ofSeconds(20).toNanos();
+                while (!Files.isRegularFile(gate)) {
+                    if (System.nanoTime() - gateDeadline >= 0) throw new IllegalStateException("Natural-child gate never opened");
+                    Thread.sleep(10);
+                }
+                long exitDeadline = System.nanoTime() + Duration.ofMillis(6_500).toNanos();
+                while (System.nanoTime() - exitDeadline < 0) Thread.sleep(25);
+                System.exit(0);
+            }
+            if (args[0].equals("tree") || args[0].equals("root0-live-child") || args[0].equals("root0-natural-child")) {
+                boolean natural = args[0].equals("root0-natural-child");
+                List<String> command = new ArrayList<>(List.of(Path.of(System.getProperty("java.home"), "bin/java.exe").toString(),
+                        "-Xms16m", "-Xmx64m", "-cp", System.getProperty("java.class.path"), Child.class.getName(), natural ? "natural-child" : "wait"));
+                if (natural) {
+                    if (args.length != 2) throw new IllegalArgumentException("One exact child start gate required");
+                    command.add(args[1]);
+                }
+                Process grandchild = new ProcessBuilder(command).inheritIO().start();
                 System.out.println("GRANDCHILD:" + grandchild.pid()); System.out.flush();
-                if (args[0].equals("root0-live-child")) System.exit(0);
+                if (!args[0].equals("tree")) System.exit(0);
             }
             while (true) Thread.sleep(1000);
         }
