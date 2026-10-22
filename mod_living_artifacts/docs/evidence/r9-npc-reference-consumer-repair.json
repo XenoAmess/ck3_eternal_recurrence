@@ -1,0 +1,146 @@
+{
+  "schema": "living-artifacts-r9-reference-consumer-repair-v1",
+  "schema_version": 1,
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "recorded_at_utc": "2026-10-22T14:07:42.465155+00:00",
+  "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0009",
+  "original_live_status": "BLOCKED",
+  "original_actual_natural_days": 0,
+  "original_live_result_pin": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0009\\case-output\\living-artifacts-npc-result.json",
+    "bytes": 821626,
+    "sha256": "551f2bc0e23af9afe221afcb4f12b291424593ae4b3c98a5ce5207421a5aa853"
+  },
+  "actual_fields": {
+    "player_id": "31254",
+    "owner_variable_kind": "char",
+    "owner_variable_flag": null,
+    "owners": {
+      "landed": "37243",
+      "baron": "46974",
+      "courtier": "38570",
+      "fragile": "43621"
+    },
+    "target_artifacts": {
+      "landed": "402",
+      "baron": "407",
+      "courtier": "412",
+      "fragile": "417"
+    },
+    "artifact_reference_kind": "artifact",
+    "initial_equipped_field_present": false,
+    "input_material_rarities": [
+      "common",
+      "masterwork",
+      "famed",
+      "illustrious"
+    ],
+    "unrelated_world_artifact": {
+      "artifact_id": "15",
+      "type": "pedestal",
+      "holy_site_owner": "191",
+      "character_owner_field_present": false
+    }
+  },
+  "correction": {
+    "character_reference_decoder": "One saved_character_reference decoder accepts the actual char tag, absent flag and complete canonical decimal identity; observer, candidate bindings and JSON consumer use it.",
+    "authored_character_alias_accepted": false,
+    "real_emitter_changed": false,
+    "emitter_reason": "The actual engine already serializes set_variable value=scope:xalw_npc_selected as char. Only the authored producer fixtures had invented character; those fixtures were migrated.",
+    "unrelated_artifact_scope": "Records without character owner are ignored only outside the selected target, baseline and NPC inventory IDs. Selected existing ownerless artifacts explicitly block as unsupported; they are not gone or feeding.",
+    "checkpoint_modules_changed": false,
+    "frozen_c12_changed": false,
+    "old_live_result_changed": false
+  },
+  "actual_excerpt_fixture_pin": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\fixtures\\r9_npc_saved_reference_excerpts.json",
+    "bytes": 67258,
+    "sha256": "a5f339689441daf08765c50489293e80adb3581c75c7e6ab5aca04aa35875ddb"
+  },
+  "actual_excerpt_scope": "Verbatim R9 owner/input variable records, NPC inventories, selected artifact records and unrelated holy-site artifact15; outer saved-text wrappers are explicitly authored. CI reads this small retained fixture and never requires local full-save paths.",
+  "offline_reprocess_receipt_pin": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r9-npc-char-reference-a01\\result.json",
+    "bytes": 45074,
+    "sha256": "923224e3fcd3811cfccf3a7d73a12f38539935507bafdd0dc0b92b88ba0ccda8"
+  },
+  "offline_reprocess_scope": "The actual retained R9 Root response passes the unchanged common checkpoint source verifier and the corrected consumer reads the original full melted save. Three healthy initial inputs are complete and four saved candidate references bind. This is historical file reprocessing after the original live consumer failed, not a replay of game actions or an AI PASS.",
+  "frozen_old_consumer_failure_reproduced": true,
+  "old_failure_reason": "Exact saved character reference required: NPC owner landed",
+  "validation": [
+    {
+      "name": "two-complete-npc-test-modules",
+      "status": "PASS",
+      "test_count": 28,
+      "elapsed_seconds_reported_by_unittest": 34.535,
+      "command": "D:/workspace/ck3-living-artifacts-20261022/runtime/venv/Scripts/python.exe -B -X utf8 -c __import__('os').environ['PYTHONPATH']='D:/workspace/ck3_eternal_recurrence/tools;D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src;D:/workspace/ck3_eternal_recurrence/mod_living_artifacts/tools';__import__('sys').path[:0]=__import__('os').environ['PYTHONPATH'].split(';');__import__('sys').argv=['unittest','test_npc_saved_observer','test_npc_acceptance_adapter'];__import__('runpy').run_module('unittest',run_name='__main__')",
+      "initial_tool_chunk": "05d73a",
+      "completion_tool_chunk": "218729",
+      "actual_exit_code": 0,
+      "test_started_at_utc": null,
+      "test_finished_at_utc": null
+    },
+    {
+      "name": "complete-product-discovery-after-final-excerpt",
+      "status": "PASS",
+      "test_count": 165,
+      "elapsed_seconds_reported_by_unittest": 72.889,
+      "command": "D:/workspace/ck3-living-artifacts-20261022/runtime/venv/Scripts/python.exe -B -X utf8 -c __import__('os').environ['PYTHONPATH']='D:/workspace/ck3_eternal_recurrence/tools;D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src;D:/workspace/ck3_eternal_recurrence/mod_living_artifacts/tools';__import__('sys').path[:0]=__import__('os').environ['PYTHONPATH'].split(';');__import__('sys').argv=['unittest','discover','-s','mod_living_artifacts/tools','-p','test_*.py'];__import__('runpy').run_module('unittest',run_name='__main__')",
+      "initial_tool_chunk": "510b23",
+      "completion_tool_chunk": "2b9be8",
+      "actual_exit_code": 0,
+      "test_started_at_utc": null,
+      "test_finished_at_utc": null
+    },
+    {
+      "name": "all-current-product-python-files-strict",
+      "status": "PASS",
+      "complete_source_file_count": 39,
+      "command": "D:/workspace/ck3-living-artifacts-20261022/runtime/venv/Scripts/python.exe -B -X utf8 _runtime/root_living_commands.py mypy",
+      "helper_expansion": "Selected venv Python -m mypy --strict --follow-imports=silent and every mod_living_artifacts/tools/*.py; MYPYPATH=repository tools and product tools",
+      "initial_tool_chunk": "6752cc",
+      "completion_tool_chunk": "02d49f",
+      "actual_exit_code": 0,
+      "test_started_at_utc": null,
+      "test_finished_at_utc": null,
+      "scope": "Complete current product files, including the parallel feeding-preview files present at execution. This is not all shared SDK static or live product qualification."
+    }
+  ],
+  "validation_output_retention": "Original outputs are tool transcript chunks; standalone unittest/mypy logs were not saved. Exact test UTC was not separately retained and remains null.",
+  "new_regressions": [
+    "Actual R9 leaf excerpts reach saved observer, JSON parse and complete baseline; raw char identity encoding is preserved",
+    "The same actual excerpts reach the real checkpoint producer, public CaseClient.root_checkpoint, unified file verifier and both observer/candidate consumers under explicit authored transport",
+    "Authored character alias, unresolved char, wrong tag/flag/decimal encoding and tampered serialized owner type are rejected",
+    "Unrelated actual holy-site artifact15 does not abort the global scan; a selected existing artifact without character owner explicitly blocks instead of becoming gone"
+  ],
+  "record_time_source_pins": {
+    "npc_saved_observer.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\npc_saved_observer.py",
+      "bytes": 38339,
+      "sha256": "ce15cd02612426925f328a257361b6f58f33a954d744aae67d54e785bc3afd59"
+    },
+    "npc_acceptance_adapter.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\npc_acceptance_adapter.py",
+      "bytes": 35718,
+      "sha256": "9def6148fb3a34cdbda343f67c4440012a62a7e659ba1a36ac954e179a187a59"
+    },
+    "test_npc_saved_observer.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_npc_saved_observer.py",
+      "bytes": 24397,
+      "sha256": "61009c996416f4342f73bf70a1738f0cfff55e767d839422e09451cbb29622c5"
+    },
+    "test_npc_acceptance_adapter.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_npc_acceptance_adapter.py",
+      "bytes": 32576,
+      "sha256": "05bc7dbe4bbe0a211f3149d43cc212d1ed87eb6ed23991b7a7a9fab8e328bb29"
+    }
+  },
+  "source_pin_note": "Exact bytes read when writing this record, not an immutable snapshot of every test-time dependency or a new frozen-runtime/native graph qualification.",
+  "fresh_npc_runtime_status": "NOT_RUN",
+  "current_native_equipment_credit": false,
+  "ai_business_pass": false,
+  "business_pass": false,
+  "product_release_pass": false,
+  "storage_policy": "docs/storage-retention-policy.json",
+  "storage_category": "record",
+  "review_at_utc": "2027-04-20T14:07:42.465155+00:00"
+}

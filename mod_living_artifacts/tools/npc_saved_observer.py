@@ -99,9 +99,18 @@ def _variable_rows(value: object) -> VariableRows:
     return tuple((key, _variable(item)) for key, item in row.items())
 
 
-def _reference(value: SavedVariable, kind: Literal["character", "artifact"], label: str) -> str | None:
+def _reference(value: SavedVariable, kind: Literal["char", "artifact"], label: str) -> str | None:
     require(type(value) is SavedVariable and value.kind == kind and value.flag is None, "Exact saved " + kind + " reference required: " + label)
     return None if value.raw_identity is None else decimal_id(value.raw_identity, label, allow_zero=kind == "artifact")
+
+
+def saved_character_reference(value: SavedVariable, label: str) -> str:
+    """Decode the actual Rakaly ``type=char`` tag; no authored type aliases."""
+    identity = _reference(value, "char", label)
+    require(identity is not None, "Actual saved character reference is unresolved: " + label)
+    if identity is None:
+        raise ValueError("Actual saved character reference is unresolved: " + label)
+    return identity
 
 
 def _artifact(value: object) -> SavedArtifact:
@@ -305,7 +314,7 @@ def _validate_role(role: NpcSavedRole) -> None:
         "Bound role needs its actual owner reference and no missing-candidate marker")
     if role.raw_owner_reference is None or role.owner_id is None:
         raise ValueError("Actual owner binding missing")
-    require(_reference(role.raw_owner_reference, "character", "NPC owner") == role.owner_id, "NPC owner reference differs")
+    require(saved_character_reference(role.raw_owner_reference, "NPC owner") == role.owner_id, "NPC owner reference differs")
     if role.status == "character_missing":
         require(role.inventory is None and not role.saved_variables and not role.items, "Missing living character record cannot claim inputs")
         return
@@ -447,7 +456,7 @@ def observe_npc_saved(melted: Path, *, player_id: str, machine_id: str, spec: Np
         marker = player_variables.get("xalw_npc_fixture_missing_" + role)
         require(marker is None or marker == SavedVariable("boolean", "1", None), "Actual missing candidate marker must be true")
         require(reference is None or marker is None, "Candidate missing marker contradicts actual owner reference")
-        owner = None if reference is None else _reference(reference, "character", "NPC owner " + role)
+        owner = None if reference is None else saved_character_reference(reference, "NPC owner " + role)
         require(reference is None or owner is not None, "Actual NPC character reference is unresolved")
         if phase == "post" and baseline is not None and owner is not None:
             expected_owner = next(item.owner_id for item in baseline.observation.roles if item.role == role)
@@ -478,7 +487,11 @@ def observe_npc_saved(melted: Path, *, player_id: str, machine_id: str, spec: Np
     seen: set[str] = set()
     for identity, body in records(melted, ("artifacts", "artifacts")):
         entries = parse_block(body[body.index("{"):])
-        owner = scalar(one(entries, "owner"), "native artifact owner")
+        owner_field = one(entries, "owner", required=False)
+        if owner_field is None:
+            require(identity not in wanted, "Selected actual artifact exists without owner; ownerless post-state is unsupported and is not gone")
+            continue
+        owner = scalar(owner_field, "native artifact owner")
         if identity not in wanted and owner not in owners:
             continue
         require(identity not in seen, "Duplicate selected actual artifact record")

@@ -27,7 +27,7 @@ import prepare_npc_fixture as emitter
 from startup_actor_binding import StartupActorBinding
 from test_checkpoint_artifacts import AUTHORED_ARTIFACTS, authored_checkpoint_text
 from test_native_interruption_contract import PublicCheckpointPort, RootCheckpointConsumer
-from test_npc_saved_observer import ITEMS, authored_save, variable
+from test_npc_saved_observer import ITEMS, authored_save, r9_excerpt_text, variable
 
 
 REPO = Path(__file__).resolve().parents[2]
@@ -104,14 +104,14 @@ class ProducingRoot(PublicCheckpointPort):
         return {"authored_offline_transport": True}
 
 
-def public_round_trip(root: Path, content: str, *, name: str = "checkpoint-readback-01") -> tuple[object, Frame, Pin]:
+def public_round_trip(root: Path, content: str, *, name: str = "checkpoint-readback-01", player_id: int = 91) -> tuple[object, Frame, Pin]:
     raw = root / "live.ck3"
     raw.write_text(content, encoding="utf-8")
-    frame = Frame(3, 2, 53144328, 91, 124, "9")
+    frame = Frame(3, 2, 53144328, player_id, 124, "9")
     manifest = write_once(root / "manifest.json", {"machine_id": "unit-machine", "game": {"version": "unit-version", "exe_sha256": "a" * 64}})
     snapshot = {"paused": True, "map_ready": True, "source": "injected-dll-named-pipe", "backend_id": "native-headless",
         "episode_projection": "native_campaign", "revision": 3, "native_revision": 2, "date_raw": frame.date_raw,
-        "played_character": {"character_id": 91, "alive": True, "source": "native"},
+        "played_character": {"character_id": frame.player_id, "alive": True, "source": "native"},
         "managed_campaign_run_binding": {"run_id": "unit-run", "bridge_pipe": "unit-pipe"},
         "diagnostics": {"bridge_pid": 124, "connection_generation": 9, "pipe_name": "unit-pipe", "hello": {
             "pid": 124, "connection_generation": 9, "ck3_build_match": True, "expected_ck3_version": "unit-version", "expected_ck3_sha256": "a" * 64}}}
@@ -228,6 +228,23 @@ class AuthoredCasePort:
 
 
 class NpcReadbackIntegrationTests(unittest.TestCase):
+    def test_r9_actual_reference_excerpt_through_producer_public_root_and_both_npc_consumers(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            actual, frame, original = public_round_trip(Path(temporary), r9_excerpt_text(), player_id=31254)
+            observed, verified = npc.consume_npc_readback(actual, run_id="unit-run", machine_id="unit-machine", reviewer="unit-root",
+                frame=frame, source_save=original, spec=emitter.NpcFixtureSpec(0))
+            self.assertTrue(observed.initial_inputs_complete)
+            self.assertEqual(tuple(role.owner_id for role in observed.roles), ("37243", "46974", "38570"))
+            self.assertEqual(NpcSavedObservation.parse(json.loads(json.dumps(observed.to_json()))), observed)
+            bound = npc.candidates(Path(verified.melted_save["path"]), "31254")
+            self.assertEqual(tuple((item.role, item.status, item.owner_id) for item in bound), (
+                ("landed", "bound", "37243"), ("baron", "bound", "46974"), ("courtier", "bound", "38570"), ("fragile", "bound", "43621")))
+            self.assertTrue(all(item.raw_reference is not None and item.raw_reference.kind == "char" for item in bound))
+            invalid = Path(temporary) / "authored-invalid-alias.ck3"
+            invalid.write_text(r9_excerpt_text().replace("type=char", "type=character", 1), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "Exact saved char"):
+                npc.candidates(invalid, "31254")
+
     def test_real_producer_public_file_and_both_actual_consumers(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
