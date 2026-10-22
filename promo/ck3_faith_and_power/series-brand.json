@@ -11,6 +11,17 @@
   "character_reference_policy": "用户人物图仅作形象参考；可自由改变动作、行为、姿态，重新构造符合信仰引擎主旨的场景。不得直接粘贴原图头像覆盖背景。",
   "visual_identity": "用户明确要求继承战争机器暗色修订版的气质：暗光、冷峻与神秘、青色数据幽灵、冷静且略带危险感的操盘者。黑衣、白发红瞳、红色旋纹徽记保留识别；表情、动作与宗教机制推演结合。标题克制，暖金只作局部点缀，避免明亮金色宫廷海报覆盖人物气场。 2026-10-20进一步指定宗教氛围的肃穆感与诡谲感，以幽暗圣堂、仪式秩序、典籍圣物及异常青光表现。",
   "visual_direction_source": "2026-10-19用户明确喜欢战争机器两张暗色版，并要求这种气质也写进CK3:信仰引擎系列docs。",
+  "content_diagram_palette_source": "2026-10-22用户指出图表应继承系列黄色，纠正二期V6误用的蓝色模板；色值沿既有integration/src/faith_power_promo/full_diagrams.py。",
+  "content_diagram_palette": {
+    "background": "#211813",
+    "panel": "#32251d",
+    "active_panel": "#49371f",
+    "accent": "#d5b26b",
+    "text": "#f0e5cf",
+    "muted_text": "#b9a98f",
+    "line": "#69533c"
+  },
+  "content_diagram_policy": "正文机制图使用暖棕底与系列金黄色强调。生成器直接沿系列色板，不另用青蓝图表模板；文字、公式、脚注、阶段与实机原图身份不因换色改变。",
   "latest_cover_delivery": "assets/covers/faith-engine-v4-d/provenance.json",
   "title_typography": "正式采用D秘仪符刻：冷银定制中文字形、细刻幽青光路、不完整仪轨圆环与克制的幽影，保持神圣、神秘和诡谲。16:9沿用用户选定图，4:3单独适配。",
   "previous_title_typography": "2026-10-20用户选择：端正经书宋体结构，银白字面、极细暗金边及少量幽青反光；CK3为碑铭风格衬线。去除红褐血色斑驳、锈蚀与尖锐破损；人物红瞳与红色旋纹徽记保留。",

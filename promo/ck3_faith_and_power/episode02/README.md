@@ -1,6 +1,6 @@
 # CK3:信仰引擎 第二期
 
-**当前交付：[V6完整审阅版《朝圣在奖励什么？》——24分30秒，1440p](C:/workspace/ck3-faith-and-power-20261017/episode02/v6-mechanism-production-20261022-a01/full-grant/sample/build-a01/native-run/derived/direct/episode02-review.mp4)。** 已按[连续导演稿](docs/director-v6-pilgrimage.md)完成33段讲解、196组双语字幕、28页主表与四段实机界面取材。主线是分别理解支出、活动评价、虔诚奖励和人物成长。[制作与验片记录](docs/production-v6-local-review-2026-10-22.md)保存实际媒体结果、来源和未闭研究；完整解码、全帧时间戳与16张关键画面抽查通过，完整人工观看和用户内容审阅仍待。
+**当前修订：按用户反馈把V6机制图统一改回系列金黄色，正在重新制作。** [首份24分30秒蓝色审阅稿](C:/workspace/ck3-faith-and-power-20261017/episode02/v6-mechanism-production-20261022-a01/full-grant/sample/build-a01/native-run/derived/direct/episode02-review.mp4)保留为历史；技术与有限画面检查通过不能代替系列视觉要求。内容沿[连续导演稿](docs/director-v6-pilgrimage.md)，33段讲解、196组双语字幕、28页主表及四段实机，主线仍是支出、活动评价、虔诚奖励和人物成长。[制作记录](docs/production-v6-local-review-2026-10-22.md)记录原片与本次更正；新黄色版完成后更新入口。
 
 配套：[双语字幕](C:/workspace/ck3-faith-and-power-20261017/episode02/v6-mechanism-production-20261022-a01/full-grant/sample/build-a01/native-run/derived/direct/text/episode02.bilingual.srt)、[配套讲稿](C:/workspace/ck3-faith-and-power-20261017/episode02/v6-mechanism-production-20261022-a01/full-grant/sample/build-a01/native-run/derived/direct/text/episode02-script.md)、[导演稿修订自审](docs/director-v6-self-audit.md)、[图表内容与分页](docs/director-v6-screen-tables.md)。实际成片时长继任原27–31分钟文字估算，旧估算及失败版本保留各自历史身份。
 
