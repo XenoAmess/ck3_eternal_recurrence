@@ -93,6 +93,68 @@ final class CiBootstrapTest {
     }
 
     @Test
+    void removedMavenUpdateMarkerDuringTraversalStillCountsSurvivingArtifacts(@TempDir Path temporary) throws Exception {
+        Path sibling = guardedFile(temporary, "m2");
+        Path marker = sibling.getParent().resolve("maven-resolver-named-locks-1.9.27.pom.lastUpdated");
+        Files.writeString(marker, "actual update marker");
+        AtomicInteger reads = new AtomicInteger();
+        CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10), () -> {}, path -> {
+            if (path.equals(sibling)) reads.incrementAndGet();
+            return attributes(path);
+        }, removeBeforeTraversal(marker));
+        assertTrue(Files.notExists(marker)); assertEquals(1, reads.get());
+        assertEquals("actual file", Files.readString(sibling));
+
+        Files.writeString(marker, "actual update marker");
+        IOException failure = assertThrows(IOException.class, () -> CiBootstrap.guard(temporary, Map.of(),
+                Instant.now().plusSeconds(10), () -> {}, path -> {
+                    BasicFileAttributes actual = attributes(path);
+                    return path.equals(sibling) ? new SizedAttributes(actual, (2L << 30) + 1) : actual;
+                }, removeBeforeTraversal(marker)));
+        assertEquals("task part budget exceeded: m2", failure.getMessage());
+    }
+
+    @Test
+    void mavenMarkerAttributeRemovalDoesNotRelaxMissingArtifactBodies(@TempDir Path temporary) throws Exception {
+        Path sibling = guardedFile(temporary, "m2");
+        Path marker = sibling.getParent().resolve("artifact.pom.lastUpdated");
+        Files.writeString(marker, "actual marker");
+        CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10), () -> {}, path -> {
+            if (path.equals(marker)) Files.delete(marker);
+            return attributes(path);
+        });
+        assertTrue(Files.notExists(marker));
+        for (String name : List.of("artifact.pom", "artifact.jar")) {
+            Path artifact = sibling.getParent().resolve(name); Files.writeString(artifact, "actual artifact");
+            assertThrows(NoSuchFileException.class, () -> CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10),
+                    () -> {}, CiBootstrapTest::attributes, removeBeforeTraversal(artifact)));
+        }
+    }
+
+    @Test
+    void mavenMarkerExceptionRequiresActualNoSuchFileInTheRealM2Part(@TempDir Path temporary) throws Exception {
+        Path sibling = guardedFile(temporary, "m2");
+        Path marker = sibling.getParent().resolve("artifact.pom.lastUpdated");
+        Files.writeString(marker, "actual marker");
+        for (IOException error : List.of(new AccessDeniedException(marker.toString()), new IOException("different I/O failure"))) {
+            AtomicInteger reads = new AtomicInteger();
+            IOException actual = assertThrows(IOException.class, () -> CiBootstrap.guard(temporary, Map.of(),
+                    Instant.now().plusSeconds(10), () -> {}, path -> {
+                        if (path.equals(marker)) { reads.incrementAndGet(); throw error; }
+                        return attributes(path);
+                    }));
+            assertEquals(error, actual); assertEquals(1, reads.get());
+        }
+        Path foreignMarker = temporary.resolve("build/artifact.pom.lastUpdated");
+        Files.writeString(foreignMarker, "other part");
+        assertThrows(NoSuchFileException.class, () -> CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10),
+                () -> {}, CiBootstrapTest::attributes, removeBeforeTraversal(foreignMarker)));
+        Files.delete(marker); Files.delete(sibling); Files.delete(sibling.getParent());
+        assertThrows(NoSuchFileException.class, () -> CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10),
+                () -> {}, CiBootstrapTest::attributes));
+    }
+
+    @Test
     void vanishedPartRootAndNonScratchDescendantsRemainFatal(@TempDir Path temporary) throws Exception {
         Path file = guardedFile(temporary, "build");
         Path vanished = Files.createDirectory(file.getParent().resolve("removed-output"));

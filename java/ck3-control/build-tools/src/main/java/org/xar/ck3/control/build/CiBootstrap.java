@@ -876,8 +876,8 @@ public final class CiBootstrap {
             Path part = root.resolve(name);
             boolean scratch = name.equals("scratch");
             long limit = PARTS.get(name.equals("logs") ? "metadata_logs" : name);
-            // JUnit can remove a directory during traversal, before an attribute reread.
-            // Continue at that vanished scratch entry, preserving every surviving sibling.
+            // JUnit removes scratch entries and Maven retires .lastUpdated markers.
+            // Handle only their actual disappearance, preserving every surviving sibling.
             walker.walk(part, new SimpleFileVisitor<>() {
                 private long size;
                 @Override public FileVisitResult preVisitDirectory(Path directory, BasicFileAttributes attributes) throws IOException {
@@ -895,7 +895,9 @@ public final class CiBootstrap {
                 }
                 private FileVisitResult failed(Path path, IOException error) throws IOException {
                     active.check();
-                    if (scratch && !path.equals(part) && error instanceof NoSuchFileException) return FileVisitResult.CONTINUE;
+                    boolean mavenUpdateMarker = name.equals("m2") && path.getFileName().toString().endsWith(".lastUpdated");
+                    if (!path.equals(part) && path.startsWith(part) && (scratch || mavenUpdateMarker)
+                            && error instanceof NoSuchFileException) return FileVisitResult.CONTINUE;
                     throw error;
                 }
                 private boolean inspect(Path path) throws IOException {
