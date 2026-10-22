@@ -1,8 +1,10 @@
 # CK3:信仰引擎 第二期
 
+[2026-10-22用户反馈与实际素材卡修订](docs/review-v6-feedback-2026-10-22.md)：用户已看过黄色样片，指出缺实机、卡片没有游戏素材，以及朝觐关系和朝圣者条件收益漏讲。当前V6待修订；已制作三张嵌原版素材的预览卡，补镜清单按原片时间码列出。确认漏了学识0／1／3，并新发现诺斯替主义个人信条的特质获得触发链。三张卡尚未替换完整视频，不代表新增实机验收。
+
 [2026-10-22休假交接](../../../docs/handover/2026-10-22-faith-engine-episode02-v6-vacation-handover.md)：当前黄色交付、研究及智能体入口、现场闭场、存储期限和接手顺序。
 
-**当前交付：[V6黄色完整审阅版《朝圣在奖励什么？》——24分30秒，1440p](C:/workspace/ck3-faith-and-power-20261017/episode02/v6-mechanism-production-20261022-a01/yellow-revision-a01/sample/build-a01/native-run/derived/direct/episode02-review.mp4)。** 55张图表已统一为系列暖棕、金黄色。33段讲解、196组双语字幕、28页主表及四段实机，主线是支出、活动评价、虔诚奖励和人物成长。整片AV、全帧时间戳、配乐检查及五张最终编码帧配色抽查通过；完整人工听看与用户内容审阅仍待。[制作记录](docs/production-v6-local-review-2026-10-22.md)保存实际来源、技术结果和研究边界。原蓝色稿保留历史身份。
+**现有视频：[V6黄色完整审阅版《朝圣在奖励什么？》——24分30秒，1440p](C:/workspace/ck3-faith-and-power-20261017/episode02/v6-mechanism-production-20261022-a01/yellow-revision-a01/sample/build-a01/native-run/derived/direct/episode02-review.mp4)。** 55张图表已统一为系列暖棕、金黄色。33段讲解、196组双语字幕、28页主表及四段实机，主线是支出、活动评价、虔诚奖励和人物成长。整片AV、全帧时间戳、配乐检查及五张最终编码帧配色抽查通过；用户已提出页首内容修订，尚未签收。[制作记录](docs/production-v6-local-review-2026-10-22.md)保存实际来源、技术结果和研究边界。原蓝色稿保留历史身份。
 
 配套：[双语字幕](C:/workspace/ck3-faith-and-power-20261017/episode02/v6-mechanism-production-20261022-a01/yellow-revision-a01/sample/build-a01/native-run/derived/direct/text/episode02.bilingual.srt)、[配套讲稿](C:/workspace/ck3-faith-and-power-20261017/episode02/v6-mechanism-production-20261022-a01/yellow-revision-a01/sample/build-a01/native-run/derived/direct/text/episode02-script.md)、[连续导演稿](docs/director-v6-pilgrimage.md)、[修订自审](docs/director-v6-self-audit.md)、[图表内容与分页](docs/director-v6-screen-tables.md)。实际成片时长继任原27–31分钟文字估算，旧估算及失败版本保留各自历史身份。
 

@@ -270,6 +270,8 @@ py mod_superman_qiang/tools/build_release.py --output <new-output> --git-tag sup
 
 ## 可复用宣传视频工具链
 
+- **机制卡片必须带相关游戏素材（2026-10-22用户指令）。** 卡片可继续用于比较、公式和机制讲解，但出现特质、信条、文化、技能、建筑或活动选项等正式游戏对象时，须在卡内嵌入相应原版图标、插画或界面局部，不能只列名称与数字。真实状态变化仍须由实际界面和原生后态支撑；卡片嵌原图不等于新增实拍。素材绑定实际版本、来源和动态条件，保持原色与比例，图集按原GUI选格，不能凭旧文件名猜当前分级图标。
+
 - 可复用实现已拆到独立仓库
   [`XenoAmess/xar_promo_toolchain`](https://github.com/XenoAmess/xar_promo_toolchain)；用户入口、真实命令与能力边界以该仓库的
   `README.md`、`docs/architecture-and-migration.md` 和当前 `<verified-python> -m xar_promo --help` 为准。主仓不再

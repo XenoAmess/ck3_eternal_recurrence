@@ -1,0 +1,514 @@
+{
+  "schema": "ck3-faith-engine-e02-v6-feedback-research-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-22T10:41:50.764768+00:00",
+  "scope": "User feedback analysis and three native-material static card previews; full video not updated",
+  "source_build": "1.20.0.4",
+  "executable_observation": {
+    "observed_at_utc": "2026-10-22T10:28:32.405508Z",
+    "observer": "hajj_relationship collaborating agent; direct exact EXE read",
+    "bytes": 101040248,
+    "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "steam_clean_script_tree_verified": false
+  },
+  "source_pins": [
+    {
+      "game_relative_path": "common/traits/00_traits.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\traits\\00_traits.txt",
+      "bytes": 341199,
+      "sha256": "93ad0316b733aa474d34841bd92fb3fc9336c111e9f06e7910178e74482185aa"
+    },
+    {
+      "game_relative_path": "common/on_action/traits_on_actions.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\traits_on_actions.txt",
+      "bytes": 1753,
+      "sha256": "ea49e5a202918e7e794507b80f7726282dd07450ea07ab52ba7465b0f7ec7cda"
+    },
+    {
+      "game_relative_path": "common/religion/tenet_types/00_tenet_types.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\tenet_types\\00_tenet_types.txt",
+      "bytes": 130228,
+      "sha256": "d9e18a077d81f18f030d795ef45cb4aa5b7db246007043d5b0fe401baaf88abd"
+    },
+    {
+      "game_relative_path": "common/script_values/00_trait_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_trait_values.txt",
+      "bytes": 604,
+      "sha256": "8a6a617aafd0247364da1a6ccf0298de8a496412cb9589b168872251f8bc69e0"
+    },
+    {
+      "game_relative_path": "common/religion/tenet_types/00_pam_tenets.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\tenet_types\\00_pam_tenets.txt",
+      "bytes": 52920,
+      "sha256": "5d57cf371aedf4d2266286b8fe30d7f0c90eb8d4079019712c907a4b954ce02a"
+    },
+    {
+      "game_relative_path": "common/culture/traditions/00_combat_traditions.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\culture\\traditions\\00_combat_traditions.txt",
+      "bytes": 56616,
+      "sha256": "a8bc43161e50c2763e9871952072f3dc558a99d05f5c0b01d052f00962baa7c5"
+    },
+    {
+      "game_relative_path": "common/culture/traditions/tgp_traditions.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\culture\\traditions\\tgp_traditions.txt",
+      "bytes": 50297,
+      "sha256": "dc46439617ab005c5a344e51e65ff2b0a32498d3f3de7264a609b5144ff9dce7"
+    },
+    {
+      "game_relative_path": "common/culture/traditions/00_ritual_traditions.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\culture\\traditions\\00_ritual_traditions.txt",
+      "bytes": 35540,
+      "sha256": "858743ddf23a9f0c9cf4088d870926dbf9fbe5f20cf2646fa9181346d736437d"
+    },
+    {
+      "game_relative_path": "common/religion/doctrine_types/20_doctrines.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\doctrine_types\\20_doctrines.txt",
+      "bytes": 54665,
+      "sha256": "ff663a8f6c5233628dbf6774b28412b918338fec823fe0f534c4cd03c8580504"
+    },
+    {
+      "game_relative_path": "common/scripted_effects/00_pilgrimage_effects.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_pilgrimage_effects.txt",
+      "bytes": 40713,
+      "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80"
+    },
+    {
+      "game_relative_path": "common/activities/activity_types/pilgrimage.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\activities\\activity_types\\pilgrimage.txt",
+      "bytes": 111931,
+      "sha256": "24153043485b035cb0477de7306649027cb68c039e4a9d903776eddd870d8b9f"
+    },
+    {
+      "game_relative_path": "common/on_action/game_start.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\game_start.txt",
+      "bytes": 218249,
+      "sha256": "f2f5ce78a03cfbdba0f5a68fc466f8bac89126cdd4843545b4ad6d468ed238b8"
+    },
+    {
+      "game_relative_path": "common/on_action/ruler_designer.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\ruler_designer.txt",
+      "bytes": 4318,
+      "sha256": "30e6f85d91715f188a66bc57d5a3c3acc1cea5f344f130b90eb7a6fb98a157f9"
+    },
+    {
+      "game_relative_path": "common/on_action/religion_on_actions.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\religion_on_actions.txt",
+      "bytes": 59475,
+      "sha256": "ef9367ddf5f89c912b895743f8b72441e88af3a5b03a5c1a9eddea0e5681ee2d"
+    },
+    {
+      "game_relative_path": "events/religion_events/faith_conversion_events.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\religion_events\\faith_conversion_events.txt",
+      "bytes": 13638,
+      "sha256": "690962331397af4f0a0a4b9d92bf4b6f6c320f400e7c65c34716e8cbad488ec0"
+    },
+    {
+      "game_relative_path": "events/activities/pilgrimage_activity/hajj_events.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\hajj_events.txt",
+      "bytes": 29519,
+      "sha256": "0e0617fd6a17192a87fcdb21fe07ae896a42c4c1c5e0e93e0f0a7ee3d0fc67c0"
+    },
+    {
+      "game_relative_path": "events/activities/pilgrimage_activity/pilgrimage_events.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\pilgrimage_events.txt",
+      "bytes": 358138,
+      "sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06"
+    },
+    {
+      "game_relative_path": "common/traits/_traits.info",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\traits\\_traits.info",
+      "bytes": 13221,
+      "sha256": "40bcad43995d91d35cda894151c0c098519835f2780cf2d4368ba84c06ff8c3b"
+    },
+    {
+      "game_relative_path": "gui/shared/icons.gui",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gui\\shared\\icons.gui",
+      "bytes": 8941,
+      "sha256": "483362ce813160a7720aa67fdbff459f5f2eb1d68346a29f3a3829589f2cfa84"
+    }
+  ],
+  "formal_input": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v6-mechanism-production-20261022-a01\\yellow-revision-a01\\authoring\\YELLOW.FORMAL-INPUT.actual.json",
+    "bytes": 661697,
+    "sha256": "99894377e440c7c2dfedd2d12e6039c0c9ca7a1d0b520e0a8db1cbcf41f71182"
+  },
+  "actual_timeline": {
+    "fps": 30,
+    "total_frames": 44102,
+    "raw_frames": 600,
+    "native_still_frames": 627,
+    "authored_graphic_frames": 42875,
+    "cue_intervals": [
+      {
+        "cue_id": "E02-V6-N01",
+        "start_frame": 0,
+        "end_frame_exclusive": 1232,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N02",
+        "start_frame": 1232,
+        "end_frame_exclusive": 2016,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N03",
+        "start_frame": 2016,
+        "end_frame_exclusive": 3264,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N04",
+        "start_frame": 3264,
+        "end_frame_exclusive": 4576,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N05",
+        "start_frame": 4576,
+        "end_frame_exclusive": 5840,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N06",
+        "start_frame": 5840,
+        "end_frame_exclusive": 7232,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N07",
+        "start_frame": 7232,
+        "end_frame_exclusive": 8392,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N08",
+        "start_frame": 8392,
+        "end_frame_exclusive": 9448,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N09",
+        "start_frame": 9448,
+        "end_frame_exclusive": 10752,
+        "raw_frames": 150
+      },
+      {
+        "cue_id": "E02-V6-N10",
+        "start_frame": 10752,
+        "end_frame_exclusive": 12168,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N11",
+        "start_frame": 12168,
+        "end_frame_exclusive": 13352,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N12",
+        "start_frame": 13352,
+        "end_frame_exclusive": 14926,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N13",
+        "start_frame": 14926,
+        "end_frame_exclusive": 16890,
+        "raw_frames": 150
+      },
+      {
+        "cue_id": "E02-V6-N14",
+        "start_frame": 16890,
+        "end_frame_exclusive": 17850,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N15",
+        "start_frame": 17850,
+        "end_frame_exclusive": 19202,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N16",
+        "start_frame": 19202,
+        "end_frame_exclusive": 21118,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N17",
+        "start_frame": 21118,
+        "end_frame_exclusive": 22222,
+        "raw_frames": 150
+      },
+      {
+        "cue_id": "E02-V6-N18",
+        "start_frame": 22222,
+        "end_frame_exclusive": 23358,
+        "raw_frames": 150
+      },
+      {
+        "cue_id": "E02-V6-N19",
+        "start_frame": 23358,
+        "end_frame_exclusive": 24430,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N20",
+        "start_frame": 24430,
+        "end_frame_exclusive": 25646,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N21",
+        "start_frame": 25646,
+        "end_frame_exclusive": 26910,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N22",
+        "start_frame": 26910,
+        "end_frame_exclusive": 28126,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N23",
+        "start_frame": 28126,
+        "end_frame_exclusive": 29326,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N24",
+        "start_frame": 29326,
+        "end_frame_exclusive": 30414,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N25",
+        "start_frame": 30414,
+        "end_frame_exclusive": 31686,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N26",
+        "start_frame": 31686,
+        "end_frame_exclusive": 33056,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N27",
+        "start_frame": 33056,
+        "end_frame_exclusive": 34208,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N28",
+        "start_frame": 34208,
+        "end_frame_exclusive": 35574,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N29",
+        "start_frame": 35574,
+        "end_frame_exclusive": 37350,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N30",
+        "start_frame": 37350,
+        "end_frame_exclusive": 39282,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N31",
+        "start_frame": 39282,
+        "end_frame_exclusive": 40690,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N32",
+        "start_frame": 40690,
+        "end_frame_exclusive": 42770,
+        "raw_frames": 0
+      },
+      {
+        "cue_id": "E02-V6-N33",
+        "start_frame": 42770,
+        "end_frame_exclusive": 44102,
+        "raw_frames": 0
+      }
+    ]
+  },
+  "current_static_findings": {
+    "traits_independent_and_coexist": true,
+    "hajj_can_grow_existing_pilgrim_xp": true,
+    "hajj_adds_missing_pilgrim_from_xp": false,
+    "pilgrim_basic_learning_cumulative": [
+      0,
+      1,
+      3
+    ],
+    "pilgrim_cultural_prowess_cumulative": [
+      2,
+      5,
+      8
+    ],
+    "hajjaj_cultural_prowess": 2,
+    "gnostic_personal_tenet_on_trait_gained": {
+      "trigger_trait": "pilgrim",
+      "cooldown_days": 3,
+      "extra_traits": [
+        "lifestyle_scholar",
+        "lifestyle_mystic"
+      ],
+      "existing_trait_base_xp_request": 10,
+      "new_trait_base_learning_each": 1,
+      "new_live_qualification": false
+    },
+    "non_host_repeat_arrival_else_if_semantics": "unresolved"
+  },
+  "icon_catalog": {
+    "path": "C:\\workspace\\faith-e02-feedback-20261022-assets\\ICON-MAP.candidate.json",
+    "bytes": 10661,
+    "sha256": "444db82a8afa3b4dec7cc957a1826f787ee99243b79435b6b0315941c3f2594f"
+  },
+  "static_material_attempts": [
+    {
+      "attempt": "a01",
+      "delivery": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-feedback-materials-20261022-a01\\DELIVERY.actual.json",
+        "bytes": 6543,
+        "sha256": "182c79a07b874d93c2749398ef927e171d9c0785b7d861290956dcee85863ff3"
+      },
+      "outputs": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-feedback-materials-20261022-a01\\01-hajj-pilgrim.png",
+          "bytes": 280004,
+          "sha256": "59ec425a627ebc4bb891726eb00861594c87874af34a86d05d8e6fa03b9554e1"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-feedback-materials-20261022-a01\\02-pilgrim-attributes.png",
+          "bytes": 244033,
+          "sha256": "ca92199d97099759a5958de0402d330c58ff77c6ab52d55a9ede45e549bce015"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-feedback-materials-20261022-a01\\03-gnostic-trigger.png",
+          "bytes": 329536,
+          "sha256": "4429ddbe6557e88ad1ee61387645fd98fe449545d794014261886750f2f1ab00"
+        }
+      ],
+      "png_bytes": 853573
+    },
+    {
+      "attempt": "a02",
+      "delivery": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-feedback-materials-20261022-a02\\DELIVERY.actual.json",
+        "bytes": 6543,
+        "sha256": "1b211176bc5cc049eabfe34cb2719d479cdd667e9b2ebbe0fc3e65c4229292d8"
+      },
+      "outputs": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-feedback-materials-20261022-a02\\01-hajj-pilgrim.png",
+          "bytes": 451755,
+          "sha256": "958a838c6271573208c6071267f6db727958e216c076b62b50574e83d2121db2"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-feedback-materials-20261022-a02\\02-pilgrim-attributes.png",
+          "bytes": 276125,
+          "sha256": "051afa9d7050184aef07eda649852f523e99a91f2bda6eec35950004db61f8b8"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-feedback-materials-20261022-a02\\03-gnostic-trigger.png",
+          "bytes": 449736,
+          "sha256": "c3aa856c2aead5b8a826f4b29d1d83caad79560e316378d2a888c7d39001c1c1"
+        }
+      ],
+      "png_bytes": 1177616
+    }
+  ],
+  "visual_review": {
+    "observer": "root",
+    "directly_viewed_all_a02_plates": true,
+    "game_icons_present": true,
+    "aspect_ratios_preserved": true,
+    "text_overlap_observed": false,
+    "full_video_updated": false
+  },
+  "checks": {
+    "mypy": {
+      "command": "tools/.venv/Scripts/python.exe -m mypy --strict --follow-imports=silent promo/ck3_faith_and_power/episode02/tools/game_material_cards.py",
+      "scope": "Complete new plate-author module only; imported legacy modules not claimed green",
+      "exit_code": 0,
+      "stdout": "Success: no issues found in 1 source file"
+    },
+    "initial_mypy": {
+      "exit_code": 1,
+      "reason": "TextIO reconfigure removed from author"
+    },
+    "render_a01_exit": 0,
+    "render_a02_exit": 0,
+    "python_only_ci_step": [
+      {
+        "command": "python tools/test_validate_python_only.py",
+        "started_at_utc": "2026-10-22T10:42:16.211347+00:00",
+        "finished_at_utc": "2026-10-22T10:42:16.431697+00:00",
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ".........\n----------------------------------------------------------------------\nRan 9 tests in 0.003s\n\nOK\n"
+      },
+      {
+        "command": "python tools/validate_python_only.py",
+        "started_at_utc": "2026-10-22T10:42:16.431758+00:00",
+        "finished_at_utc": "2026-10-22T10:43:49.661286+00:00",
+        "exit_code": 0,
+        "stdout": "PYTHON-ONLY GREEN\n",
+        "stderr": ""
+      }
+    ],
+    "links": {
+      "files": 3,
+      "local_link_count": 65,
+      "missing": 0
+    },
+    "git_diff_check_exit_code": 0
+  },
+  "environment": {
+    "python": "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "Pillow": "12.3.0",
+    "xar_promo": "0.3.0",
+    "latest_release_query": {
+      "command": "gh api repos/XenoAmess/xar_promo_toolchain/releases/latest --jq .tag_name",
+      "exit_code": 0,
+      "tag": "v0.3.0"
+    },
+    "mypy_added_to_local_venv": "2.4.0",
+    "mypy_install_exit_code": 0,
+    "installation_proves_other_machines": false
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "start_observed_at_utc": "2026-10-22T10:26:53.158025+00:00",
+    "start_free_bytes": 91877982208,
+    "observed_at_utc": "2026-10-22T10:41:50.764768+00:00",
+    "volume_total_bytes": 511776722944,
+    "free_bytes": 91779203072,
+    "static_png_cap_per_attempt_bytes": 8388608,
+    "new_video_or_live_writes": false,
+    "old_expired_heavy_grant_reused": false,
+    "other_unspent_reservations_bytes": null,
+    "current_project_usage_bytes": null,
+    "heavy_write_admitted": false,
+    "deleted_files": 0,
+    "record_review_at_utc": "2027-04-20T10:41:50.764768+00:00",
+    "preview_review_at_utc": "2026-10-24T10:41:50.764768+00:00",
+    "protected_inputs": "Existing V6 authoring, review MP4 and sources; original review rules retained",
+    "task_close_observed_at_utc": "2026-10-22T10:44:36.758757+00:00",
+    "task_close_free_bytes": 91778252800,
+    "future_media_write_reservation_bytes": 0
+  },
+  "new_game_or_native_calls": 0,
+  "ordinary_auto_consumes": false,
+  "action_ready": false,
+  "full_video_revised": false,
+  "new_footage_captured": false
+}
