@@ -38,7 +38,7 @@ jobs:
         with:
           python-version: '3.13'
       - name: Install static dependencies
-        run: python -m pip install -r tools/requirements-static.txt
+        run: python -m pip install -r tools/requirements-static.txt mcp==2.0.0
       - name: Test complete product consumers and strict cold source without CK3
         env:
           PYTHONPATH: ${{ github.workspace }};${{ github.workspace }}\tools;${{ github.workspace }}\mod_living_artifacts\tools;${{ github.workspace }}\ck3_autonomous_player\src

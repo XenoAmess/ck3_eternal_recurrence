@@ -26,6 +26,7 @@ def subject_python() -> str:
 
 
 def fixture_spec(root: Path, *, observation_number: object = 1) -> ProducerSpec:
+    root = root.resolve()
     identity = Identity("unit-run", "unit-machine", "unit-root", 124, "9", 91, 123456)
     manifest = write_once(root / "manifest.json", {"machine_id": identity.machine_id, "game": {"version": "unit-version", "exe_sha256": "a" * 64}})
     frame: Object = {"paused": True, "map_ready": True, "source": "injected-dll-named-pipe", "backend_id": "native-headless",
@@ -56,6 +57,7 @@ class AuthoredDisk:
 
 
 def storage_fixture(root: Path, *, wrong_budget: tuple[str, object] | None = None) -> ProducerSpec:
+    root = root.resolve()
     spec = fixture_spec(root)
     policy = pin(Path(__file__).resolve().parents[2] / "docs/storage-retention-policy.json")
     volume = root.anchor
