@@ -1,5 +1,12 @@
 # CK3 玩法模型 v1
 
+## 2026-10-22：B 两个不同驻点的有限阳性为 2/2
+
+machine_id: `desktop-3fevhd2-1c74096080`，Root 采用时间 2026-10-22T00:52:41Z。[第二站原件与使用边界](../../../docs/ck3-native-ai/episode04-r0234-second-b-site-20261022.md)确认 R0234 在省份 2623 单日实际 stock 29894738→30000000，scale100000，实际 +1.05262 至 cap300；兵数1195不变。与 R0232 第一站合计不同驻点 2/2，仍不是完整 B/ABC/fullR10。formal9/11、ABC0/3与 one-life 未确认保持；下方旧 0/2 或 1/2 是当时快照。
+
+未来选择补给点应按 fresh 当前库存、容量和驻定端点判断；接近 cap 时正率会被截断，不能把预期 +20 写成实际增长，不能把本日阳性授予下一日。原 24MiB soft RED/outer2保留，后继 AV/1441帧及 Root12图通过只授有限镜头来源。文件可显式参考，普通 planner 不自动加载，也不因此增加 query、Move、Arm 或日步额度。
+
+
 ## 2026-10-21：R228 军费已计入正净结算的有限证据
 
 [军费净结算条目](../../../docs/ck3-native-ai/episode04-r228-net-military-settlement-12004.md)供文件读取型智能体显式参考；普通 planner 不会自动加载 Markdown。R228 完成的钱包 ADD 为 111391，稳定 raw 项 a=384653、b=0、c=273262、d=0，a−b−c−d 与余额差相等；钱包自身 source/caller/unwind 支持这一条净额已计入非零军费缓存，现金上涨不能推军费为 0，也不需要再找一笔 gross-c 独立扣款。

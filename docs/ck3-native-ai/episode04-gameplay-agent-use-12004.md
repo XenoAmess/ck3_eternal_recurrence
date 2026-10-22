@@ -1,3 +1,12 @@
+> 2026-10-22 00:52:41 UTC R0234 第二站 Root 有限采用；machine_id: desktop-3fevhd2-1c74096080。
+
+
+> 后继实际 2026-10-22T01:30:27Z（同 machine_id）：01:26:43 新全片 AV/PTS/DTS/CRC/SHA 已过，57547v/90017a、原AV0/Job0；Root第06–13张共8张、joint15张有限采用 working review。旧01:13:50原件的pending保留历史；OneDrive尚无本快照实际InSync。详见第二站专题末尾新回执pins，human1×/听审/final signoff仍false。
+
+**两处不同驻点阳性 B2/2；formal9/11、ABC0/3 不增。** R0234 在2623实际静止一日，stock29894738→30000000，实际 +105262/scale100000，即 +1.05262 截至 cap300；兵数1195→1195，不授 soldier ADD。与R0232第一站合并仅支持两个不同普通战役驻点，完整B、fullR10、one-life和未来安全仍未授。原R0233失败、旧0/2与1/2段落均按其时点保留。
+
+[第二站专题与便携来源](episode04-r0234-second-b-site-20261022.md)保留 qualifier0048、一次原单日、callback seq2、原wire与独立端点；91contact/1441格和Root12图实际审阅通过，700帧连续剪辑来源有依据，但(20,25]秒不是精确native callback编码帧。24MiB softRED/原outer2与FFmpeg0/Job空并列，不追认原90秒计划或runner全成功。新700帧单cue及67cue全片编码/CAS已闭，01:13:50Z原件仍将新全片QA标pending；OneDrive未在此快照预记完成。文件供其它游玩agent显式参考，普通planner不自动加载。
+
 > 2026-10-21 20:47:56 UTC R0232 Root正式裁定；machine_id: desktop-3fevhd2-1c74096080。
 
 **formal9/11、B1/2。** R0232首站实际静止一日，native stock27894738→29894738（+2000000/scale100000）、唯一target callback seq2；原生兵数与RootUI均1195→1195，不授兵员增长。Root接受保存源f[0,1441)的限定R10原M阳性镜头，可剪f[420,1137)/717帧；不是完整R10、完整B或第二站。研究10/14、业务7/11、ABC0/3不变。

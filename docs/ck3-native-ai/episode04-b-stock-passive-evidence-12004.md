@@ -1,5 +1,12 @@
 # B-Stock：复用既有自然一日端点的被动证据合同（1.20.0.4）
 
+> 2026-10-22 00:52:41 UTC 后继实际采用；machine_id: desktop-3fevhd2-1c74096080。
+
+**不同普通战役驻点的库存阳性现为2/2，完整B与ABC仍未验收。** R0234第二站2623的独立单日与callback seq2支持 stock29894738→30000000，实际 +105262/scale100000，兵数1195不变；与R0232第一站合计两站。formal9/11、ABC0/3、fullR10false、one-lifefalse保持。[实际原件、有限连续镜头及复用规则](episode04-r0234-second-b-site-20261022.md)分列native资格与媒体QA，不能以softRED后的可用片段改写原outer2。
+
+接近cap300时本次只增加1.05262，正率、预计+20或已抵达另一省份都不能替代实际raw差、fresh headroom和同日callback闭包。以下旧0/2及“未来输入尚未提供”等原段按2026-10-20时点保留，不是当前站点计数；原被动消费合同和禁止新增动作/未知结果重试的门槛保持。
+
+
 本页供游玩智能体在**已经获准且正常执行的场次**中消费库存证据。它不启动游戏，不增加SDK/query、自然日、Move、库存初始化、换帅、observer开关或录像，也不改变原场次的目标与正常退出。当前B驻点增长实机资格仍 **0/2**，正式ABC仍 **0/3**。本页是有来源的消费合同，尚未实现R06→normal-day离线adapter，不能把方案当作已通过的单站结果。
 
 源码切点 `31ff77a0f07fb21f528c88e56314cbb093972703`，native tree `fee86631356f556271445157523c62abfd62951e`。核心消费器 `strategy_b_site_growth.py` SHA-256为 `0db9c7e3a675c5d0e6e92824450236c904ca545eb8364b307ceb6e3b81eac71a`；R06公共actor `r06_refill_one_day.py` 为 `cc892c73bdd895b2ca1a59ad54faf997992537d70c624af634eefb917be12dbf`。全部相对路径、字节数、SHA、机器观察时间与限度见[来源索引](evidence/episode04-b-stock-passive-evidence-20261020/index.json)。源码变更后重新核对应入口，不能用本页追认新部署或跨机器实机状态。

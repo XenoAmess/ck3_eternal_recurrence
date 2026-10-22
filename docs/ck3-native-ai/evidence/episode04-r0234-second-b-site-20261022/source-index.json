@@ -1,0 +1,646 @@
+{
+  "schema": "xar.e04.R0234.portable-small-source-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T01:27:05.902211+00:00",
+  "source_Git_baseline": "dfc3870e598aa08aecdc098a2b8ff5506c86365a",
+  "Root_business_adoption_at_utc": "2026-10-22T00:52:41Z",
+  "carrier": {
+    "path": "docs/ck3-native-ai/evidence/episode04-r0234-second-b-site-20261022/raw-small-evidence.tar.gz",
+    "bytes": 72622,
+    "sha256": "d0c3a52223b0e73e7fe4ee3cce31c196f99b770bdb6844c9f1f3043cf1da380e"
+  },
+  "member_count": 61,
+  "decoded_payload_bytes": 302220,
+  "all_members_exact_readback": true,
+  "sources": [
+    {
+      "member": "Root/ROOT-R0234-SECOND-SITE-LIMITED-ADOPTION.actual-a01.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b-secondclip-qa-a01\\ROOT-R0234-SECOND-SITE-LIMITED-ADOPTION.actual-a01.json",
+        "bytes": 6084,
+        "sha256": "4192e93a97f7ccb9530b67141b7dcfb7fca9fd5c83af5c4c4d449becc11340fa"
+      }
+    },
+    {
+      "member": "QA/QA.actual.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b-secondclip-qa-a01\\QA.actual.json",
+        "bytes": 37357,
+        "sha256": "f79da652aa1b099b2b184f4d68054f89a52404259ad7a1c30d3d244b2d6aef73"
+      }
+    },
+    {
+      "member": "QA/R0234-VISUAL-REVIEW.actual-a01.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b-secondclip-qa-a01\\R0234-VISUAL-REVIEW.actual-a01.json",
+        "bytes": 2499,
+        "sha256": "5c365b67e17163a033bcd49ab352ddbf3c3c9842dbd5844e05e5b81ce73616cb"
+      }
+    },
+    {
+      "member": "QA/R0234-SOURCE-BINDING.actual-a01.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b-secondclip-qa-a01\\R0234-SOURCE-BINDING.actual-a01.json",
+        "bytes": 3839,
+        "sha256": "3ac8bab13ebdb042d5968b52572526aeb12df4c8e1482346d36fa765a0d9f6b8"
+      }
+    },
+    {
+      "member": "QA/AV-ORIGINAL-WAIT.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b-secondclip-qa-a01\\AV-ORIGINAL-WAIT.json",
+        "bytes": 375,
+        "sha256": "1741cc294c8a0d0f421b24d56eed82dc6edd588d1535dd4760ba152f0ddf9abe"
+      }
+    },
+    {
+      "member": "QA/R0234-QA-CLI-ORIGINAL-WAIT.actual-a01.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b-secondclip-qa-a01\\R0234-QA-CLI-ORIGINAL-WAIT.actual-a01.json",
+        "bytes": 912,
+        "sha256": "fc1a3bc4c674c8ba0914548d2fa69c1eee890a947f7aba7f4bff16ecf3af78cf"
+      }
+    },
+    {
+      "member": "QA/R0234-DELIVERY-OWNER-CLOSED.actual-a01.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b-secondclip-qa-a01\\R0234-DELIVERY-OWNER-CLOSED.actual-a01.json",
+        "bytes": 1978,
+        "sha256": "3c7608cf3995ecdcb63f1e7e0271e0afdb2dc2731079f3971842112fd4b4ea5d"
+      }
+    },
+    {
+      "member": "QA/video-PTS.csv",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b-secondclip-qa-a01\\video-PTS.csv",
+        "bytes": 24611,
+        "sha256": "9541ebf8890c6b2c42e8e5f569a9763c4428194d1ad954a76d8d6ee1a4fdea12"
+      }
+    },
+    {
+      "member": "QA/audio-PTS.csv",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b-secondclip-qa-a01\\audio-PTS.csv",
+        "bytes": 36,
+        "sha256": "8dc41cc1252e50f8bdea2213e54138aa3b505468a781b45ba5418c2e358fafd3"
+      }
+    },
+    {
+      "member": "native/r17-b-site-a01-0048-original-B-site-qualified.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0234\\case-output\\r17-b-site-a01-0048-original-B-site-qualified.json",
+        "bytes": 4054,
+        "sha256": "412de23b4a941115051047cc95c1b2712b6b34b652b70a8cc87869b7d8933184"
+      }
+    },
+    {
+      "member": "native/r17-b-site-a01-0047-site-1-B-rest-site-input.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0234\\case-output\\r17-b-site-a01-0047-site-1-B-rest-site-input.json",
+        "bytes": 459,
+        "sha256": "d32fc1921d69ebf1b8187594ee52d141546e8be458a599bf6cf033eb841122fd"
+      }
+    },
+    {
+      "member": "native/r17-b-site-a01-0046-site-1-normal-day-complete.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0234\\case-output\\r17-b-site-a01-0046-site-1-normal-day-complete.json",
+        "bytes": 4010,
+        "sha256": "e93bc55b90a068fd83fc581b860af53cca2d63d4e2be8df33b579a8fafce6827"
+      }
+    },
+    {
+      "member": "native/r17-b-site-a01-0019-actual-source-proof-reference.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0234\\case-output\\r17-b-site-a01-0019-actual-source-proof-reference.json",
+        "bytes": 2734,
+        "sha256": "3f2d3290aa72fccc03942ce141fb06ad48991bd97e3939a448596dda610009d6"
+      }
+    },
+    {
+      "member": "native/r17-b-site-a01-0049-progress.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0234\\case-output\\r17-b-site-a01-0049-progress.json",
+        "bytes": 3480,
+        "sha256": "063af5bb9ddea63c56f1ae0242088ccf7f89bbc8856fe745b23b269c3d2b6a1a"
+      }
+    },
+    {
+      "member": "native/r17-b-site-a01-0025-site-1-original-window-claim.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0234\\case-output\\r17-b-site-a01-0025-site-1-original-window-claim.json",
+        "bytes": 2319,
+        "sha256": "342d1685dfbd79c5a56e80c697b7d5ffbb1a7a09ef89588ba5e224d915452b4c"
+      }
+    },
+    {
+      "member": "native/r17-b-site-a01-0036-site-1-actual-clock-status.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0234\\case-output\\r17-b-site-a01-0036-site-1-actual-clock-status.json",
+        "bytes": 2597,
+        "sha256": "f35cbde3947fc4c71c0e4caae924197fa76c30a9ff800624471689d49d0bdb72"
+      }
+    },
+    {
+      "member": "capture/callback_before-r17-b-site-a01-0017-site-1-exact-before-wire-proof.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0234\\case-output\\r17-b-site-a01-0017-site-1-exact-before-wire-proof.json",
+        "bytes": 1667,
+        "sha256": "39ce96e0a67fba03a5cdf4aff7d0362040ce8cce2703b9737fef1d39c80aa56d"
+      }
+    },
+    {
+      "member": "capture/callback_after-r17-b-site-a01-0040-site-1-exact-after-wire-proof.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0234\\case-output\\r17-b-site-a01-0040-site-1-exact-after-wire-proof.json",
+        "bytes": 1667,
+        "sha256": "454e0a1efd4adaa519b7a0dcf26845b55939275ad8646ee1be1f4e4443af6459"
+      }
+    },
+    {
+      "member": "capture/date_before_receipt-r17-b-site-a01-0024-canonical-endpoint-frame.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0234\\case-output\\r17-b-site-a01-0024-canonical-endpoint-frame.json",
+        "bytes": 28019,
+        "sha256": "f2c24e785d56d0582c143681ecbf1b65b19ef6040e2cf8ec3be6b824b02ac9c8"
+      }
+    },
+    {
+      "member": "capture/date_after_receipt-r17-b-site-a01-0045-canonical-endpoint-frame.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0234\\case-output\\r17-b-site-a01-0045-canonical-endpoint-frame.json",
+        "bytes": 25541,
+        "sha256": "13efc7af06ab126786af94aadea74e7d90b9ede735aa4882b29a4b49a50fd0de"
+      }
+    },
+    {
+      "member": "capture/outer_film_original_wait-ORIGINAL-WAIT.actual.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\ops-a01\\site02-film-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 656,
+        "sha256": "16cd0e277249c1a062f825f11cfa1d82424bfe2cf57d70153c0c3a6408dec686"
+      }
+    },
+    {
+      "member": "capture/recorder_closed-result.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\camera-raw-a01\\b-site02-a01\\result.json",
+        "bytes": 3810,
+        "sha256": "087217366cdab02355ccb440e79ebdbd83401fbfe7dafe0e1a5b30d4470567d2"
+      }
+    },
+    {
+      "member": "capture/job_terminal-job-terminal.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\camera-raw-a01\\b-site02-a01\\job-terminal.json",
+        "bytes": 204,
+        "sha256": "15233738e803f7373fa34c45f11fd187381c51f7ff2c498adb6e934fe29a52ff"
+      }
+    },
+    {
+      "member": "capture/frame_count_source-stderr.bin",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\camera-raw-a01\\b-site02-a01\\stderr.bin",
+        "bytes": 2605,
+        "sha256": "4ed091fa3ee9b929e1d9391d4623ab6ef49c6b0dd2c00fed13720915365534d2"
+      }
+    },
+    {
+      "member": "capture/game_OS_identity-GAME-IDENTITY.actual-a01.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\control-a01\\GAME-IDENTITY.actual-a01.json",
+        "bytes": 619,
+        "sha256": "8b83e7ee61c540dcbbbc1f73f736e18a5f75a7c212bb16ad64158da5e6353c98"
+      }
+    },
+    {
+      "member": "closure/R0234-INDEPENDENT-ALL-CLOSED.actual-a01.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\capacity-a01\\R0234-INDEPENDENT-ALL-CLOSED.actual-a01.json",
+        "bytes": 3549,
+        "sha256": "a8259d48243f3e7f9d899a75ddb4bd519681bbe8a5c86648d61b21fdfc4e569a"
+      }
+    },
+    {
+      "member": "closure/R0234-OWNER-CLOSED.actual-a01.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\control-a01\\R0234-OWNER-CLOSED.actual-a01.json",
+        "bytes": 8368,
+        "sha256": "7400e737dfb9940edadf56f1404eff455010383cb9bac02ab81595168bc2369a"
+      }
+    },
+    {
+      "member": "closure/owner-normal_close-normal-close-result.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0234\\case-output\\normal-close-result.json",
+        "bytes": 10316,
+        "sha256": "cdd95f34d0918c701f336a46e1d9f29f439bf3c7feabcb2c4986e2efea45c5c7"
+      }
+    },
+    {
+      "member": "closure/owner-actual_retained_OS_exit-actual-retained-handle-os-exit.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0234\\case-output\\actual-retained-handle-os-exit.json",
+        "bytes": 179,
+        "sha256": "30a8c2e0d22d9c47a22ed558435adb8602b551ef71130db1fbf4d55a34e790c1"
+      }
+    },
+    {
+      "member": "closure/owner-host_original_wait-host-original-process-exit.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0234\\host-original-process-exit.json",
+        "bytes": 244,
+        "sha256": "3b40b3490c2f9567711089cd678e327db706f6d05706a87bd676337c87733b5a"
+      }
+    },
+    {
+      "member": "closure/owner-public_original_wait-ORIGINAL-WAIT.actual.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\ops-a01\\public-run-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 656,
+        "sha256": "33032cba2a87d73a55e8f75b9227e9c1dc7bbe3d48f45d3b73fafee89891f762"
+      }
+    },
+    {
+      "member": "closure/owner-allocator_original_wait-ORIGINAL-WAIT.actual.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\ops-a01\\public-allocate-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 665,
+        "sha256": "96591389514506b0d2421c934b1b8c6f74db1660840afc547411cda82778bf65"
+      }
+    },
+    {
+      "member": "closure/owner-keeper_report-report.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\keeper-a01\\report.json",
+        "bytes": 440,
+        "sha256": "8b0859fe39cb24900a3e7eee7ccc170fffaf4e35cea4cea85313aab8eb12c09b"
+      }
+    },
+    {
+      "member": "closure/owner-keeper_original_wait_in_allocator_stdout-stdout.actual.txt",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\ops-a01\\public-allocate-a01\\stdout.actual.txt",
+        "bytes": 4419,
+        "sha256": "b88bfe815b8a773fea9afb005890dfae7f42dc1d7a0711e05384a2da67da8ba2"
+      }
+    },
+    {
+      "member": "closure/owner-screen_release-stdout.actual.txt",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\ops-a01\\final-screen-release-a01\\stdout.actual.txt",
+        "bytes": 1299,
+        "sha256": "1dfedd1af14bef74e2239c2cd93f8d23bbaf01a39cb9605ed4c15360c182f802"
+      }
+    },
+    {
+      "member": "closure/owner-screen_release_original_wait-ORIGINAL-WAIT.actual.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\ops-a01\\final-screen-release-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 675,
+        "sha256": "f83469d6c36a49d3320aa13f625cf81c559359cb0adee998720dbe117a84527c"
+      }
+    },
+    {
+      "member": "closure/owner-normal_Save-r17-b-site-a01-FINAL-ORDINARY-SAVE.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0234\\case-output\\r17-b-site-a01-FINAL-ORDINARY-SAVE.json",
+        "bytes": 6861,
+        "sha256": "848ac26dea5a6ffb2ac6e5fd5c5ba90e6a5ae5ef614031dda0534aebe95e4635"
+      }
+    },
+    {
+      "member": "closure/owner-finite_progress-r17-b-site-a01-0051-progress.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0234\\case-output\\r17-b-site-a01-0051-progress.json",
+        "bytes": 10893,
+        "sha256": "05844045b5e53a3e7448474323804ffeaff110d760751754db4971a0fec35563"
+      }
+    },
+    {
+      "member": "closure/owner-source_loaded_Dll-R0234-LOADED-BRIDGE-OS.actual-a01.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\root-a01\\R0234-LOADED-BRIDGE-OS.actual-a01.json",
+        "bytes": 1388,
+        "sha256": "7e2a6cd2ebbc1915b703ce8399a9cc404fa920b5becb3acdfc49ff2418f04295"
+      }
+    },
+    {
+      "member": "closure/owner-Root_closed-ROOT-R0234-CONTROL-CLOSED.actual-a01.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\root-a01\\ROOT-R0234-CONTROL-CLOSED.actual-a01.json",
+        "bytes": 3286,
+        "sha256": "5f7c00166f79c70f010a20010f0c0766279c77f81774b38fe5ace41ef2b59025"
+      }
+    },
+    {
+      "member": "storage/CACHE-DELETE-FINAL.actual-a01.json",
+      "role": "original",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-D-cache-retirement-a01\\CACHE-DELETE-FINAL.actual-a01.json",
+        "bytes": 4760,
+        "sha256": "05322a884f29c8b05d673f9a223080dc06afea3cd62da86298cd29eb506656cc"
+      }
+    },
+    {
+      "member": "storage/Root-storage-reservation-self-double-count-draft.md",
+      "role": "Root authored draft input",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\companion-docs-a01\\storage-reservation-self-double-count-2026-10-22.md",
+        "bytes": 2194,
+        "sha256": "5c62fb167fca7a5096fc2e3b01fdffa6681b87dc2f4645a744cc71fb6db47027"
+      }
+    },
+    {
+      "member": "media/r20-b-secondsite-one-cue-a01/ONE-CUE-CLOSED.actual.json",
+      "role": "Actual encoded cue/full closure; not new full QA or OneDrive qualification",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b-secondsite-one-cue-a01\\ONE-CUE-CLOSED.actual.json",
+        "bytes": 2130,
+        "sha256": "0543489578f69bdad8c483226dcb517db7490635cf6d5f3d34b3bf28dd0433ae"
+      }
+    },
+    {
+      "member": "media/r20-b-secondsite-one-cue-a01/ONE-VOICE-DURATION.actual.json",
+      "role": "Actual encoded cue/full closure; not new full QA or OneDrive qualification",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b-secondsite-one-cue-a01\\ONE-VOICE-DURATION.actual.json",
+        "bytes": 263,
+        "sha256": "1516353bc4e0698ae7d517665fca38b92dc2322333aa535ea36922d264cc5ee3"
+      }
+    },
+    {
+      "member": "media/r20-b-secondsite-one-cue-a01/OWNER-CLOSED.actual.json",
+      "role": "Actual encoded cue/full closure; not new full QA or OneDrive qualification",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b-secondsite-one-cue-a01\\OWNER-CLOSED.actual.json",
+        "bytes": 1393,
+        "sha256": "cb4855eba5a9346be417e1161e7487c2f4e9e15e7260cb22c5dfc1b7cbc20990"
+      }
+    },
+    {
+      "member": "media/r20-b-secondsite-full-review-a01/FULL-MOVIE-CLOSED.actual.json",
+      "role": "Actual encoded cue/full closure; not new full QA or OneDrive qualification",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b-secondsite-full-review-a01\\FULL-MOVIE-CLOSED.actual.json",
+        "bytes": 1333,
+        "sha256": "1c1291d6b76e04c4bf32dda3504c12535c1100aa738f72f9f211040920436f23"
+      }
+    },
+    {
+      "member": "media/r20-b-secondsite-full-review-a01/OWNER-CLOSED.actual.json",
+      "role": "Actual encoded cue/full closure; not new full QA or OneDrive qualification",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b-secondsite-full-review-a01\\OWNER-CLOSED.actual.json",
+        "bytes": 1676,
+        "sha256": "1e6b57d3e814552eb60f802d5fec7deeb8ca5da805040829bede95e4f53b6aaa"
+      }
+    },
+    {
+      "member": "CI/CACHE-SOURCE-FREEZE.actual-a01.json",
+      "role": "CI source/check provenance; no business credit",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b2-publish-and-cache-test-a01\\CACHE-SOURCE-FREEZE.actual-a01.json",
+        "bytes": 3236,
+        "sha256": "50b3232c33b3fa83c663d003cc4dd44ac01531f6afac8527d46a584f6d33a19d"
+      }
+    },
+    {
+      "member": "CI/CACHE-CI-FAILURE-RAM-PROJECTION.actual.json",
+      "role": "CI source/check provenance; no business credit",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b2-publish-and-cache-test-a01\\CACHE-CI-FAILURE-RAM-PROJECTION.actual.json",
+        "bytes": 965,
+        "sha256": "28d4030aeb4c48f3ae4c82ea4f20bec770a37e600d9796fcb2feb847d862178a"
+      }
+    },
+    {
+      "member": "CI/CACHE-STRICT-COMPARISON.actual.json",
+      "role": "CI source/check provenance; no business credit",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b2-publish-and-cache-test-a01\\CACHE-STRICT-COMPARISON.actual.json",
+        "bytes": 6294,
+        "sha256": "ae1ada1eb414ec67ea744d72890027325987cf4479a9b491b98bc8ef77a476c2"
+      }
+    },
+    {
+      "member": "CI/CACHE-TEST.candidate.patch",
+      "role": "CI source/check provenance; no business credit",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b2-publish-and-cache-test-a01\\CACHE-TEST.candidate.patch",
+        "bytes": 2121,
+        "sha256": "1006417d3b0e83c052b3b26f0a7831bff9b927ce639e14dfcc5dee74315e7719"
+      }
+    },
+    {
+      "member": "CI/INPUTS.actual.json",
+      "role": "CI source/check provenance; no business credit",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b2-publish-and-cache-test-a01\\INPUTS.actual.json",
+        "bytes": 30864,
+        "sha256": "3ef0b8d76ed09bbf20a80e30d4934466691110897b09703a093e6c3870be786e"
+      }
+    },
+    {
+      "member": "CI/focused13-a01/ORIGINAL-WAIT.actual.json",
+      "role": "Actual harmless Python check original bytes; no business credit",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b2-publish-and-cache-test-a01\\checks\\focused13-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1210,
+        "sha256": "efc5ca1e8497ebcb29935ebac7d83d8e9c6e7b8e26264fb9242fea3d46f8799f"
+      }
+    },
+    {
+      "member": "CI/focused13-a01/stdout.log",
+      "role": "Actual harmless Python check original bytes; no business credit",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b2-publish-and-cache-test-a01\\checks\\focused13-a01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "member": "CI/focused13-a01/stderr.log",
+      "role": "Actual harmless Python check original bytes; no business credit",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b2-publish-and-cache-test-a01\\checks\\focused13-a01\\stderr.log",
+        "bytes": 2212,
+        "sha256": "bbd85cb125d2bd283abd1f652caee9b6936cc1a336bba010fee54bf11adaed95"
+      }
+    },
+    {
+      "member": "CI/strict-baseline-a01/ORIGINAL-WAIT.actual.json",
+      "role": "Actual harmless Python check original bytes; no business credit",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b2-publish-and-cache-test-a01\\checks\\strict-baseline-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1419,
+        "sha256": "7613f179b4835bafe36a3ebb5051ae64c4c1993567426881179b727ecd2465f2"
+      }
+    },
+    {
+      "member": "CI/strict-baseline-a01/stdout.log",
+      "role": "Actual harmless Python check original bytes; no business credit",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b2-publish-and-cache-test-a01\\checks\\strict-baseline-a01\\stdout.log",
+        "bytes": 14498,
+        "sha256": "c519bf42b323f67512e665c9926b3f29f1659d9c0af7f580667d3d45f63525bd"
+      }
+    },
+    {
+      "member": "CI/strict-baseline-a01/stderr.log",
+      "role": "Actual harmless Python check original bytes; no business credit",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b2-publish-and-cache-test-a01\\checks\\strict-baseline-a01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "member": "CI/strict-candidate-a01/ORIGINAL-WAIT.actual.json",
+      "role": "Actual harmless Python check original bytes; no business credit",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b2-publish-and-cache-test-a01\\checks\\strict-candidate-a01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1346,
+        "sha256": "2474afd5e63343b1d82883115a27548396e505a847e59ed3eee5e5b6803b3e7c"
+      }
+    },
+    {
+      "member": "CI/strict-candidate-a01/stdout.log",
+      "role": "Actual harmless Python check original bytes; no business credit",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b2-publish-and-cache-test-a01\\checks\\strict-candidate-a01\\stdout.log",
+        "bytes": 8936,
+        "sha256": "348eba07d7ffd1c5e712d27a279318f2bcab75da94e713ec49b3550d7b63408d"
+      }
+    },
+    {
+      "member": "CI/strict-candidate-a01/stderr.log",
+      "role": "Actual harmless Python check original bytes; no business credit",
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-b2-publish-and-cache-test-a01\\checks\\strict-candidate-a01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "external_large_sources": [
+    {
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\camera-raw-a01\\b-site02-a01\\raw.mkv",
+        "bytes": 28244901,
+        "sha256": "abe581febbe81218c27a974004fc6b20db762e69769ff642ab8bd15906bfc89b"
+      },
+      "available_at_stat": true,
+      "actual_stat_bytes": 28244901,
+      "body_not_read_or_rehashed_by_this_packet": true,
+      "SHA_source": "Original Root/native-bound receipt, not a new body hash"
+    },
+    {
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0234\\case-output\\r17-b-site-a01-0016-site-1-exact-before-ordinary-rich.json",
+        "bytes": 24309438,
+        "sha256": "6b14808fc532ae7cddeb5fab1457ad8d0cc6a8610adc0f5495ce77936532b0a8"
+      },
+      "available_at_stat": true,
+      "actual_stat_bytes": 24309438,
+      "body_not_read_or_rehashed_by_this_packet": true,
+      "SHA_source": "Original Root/native-bound receipt, not a new body hash"
+    },
+    {
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0234\\case-output\\r17-b-site-a01-0039-site-1-exact-after-ordinary-rich.json",
+        "bytes": 24961127,
+        "sha256": "5cada9d7c582d8f1579cb22f6085acd9832afa0f78d16288576d029766f2cca8"
+      },
+      "available_at_stat": true,
+      "actual_stat_bytes": 24961127,
+      "body_not_read_or_rehashed_by_this_packet": true,
+      "SHA_source": "Original Root/native-bound receipt, not a new body hash"
+    },
+    {
+      "original_source": {
+        "path": "C:\\ck3-e04-resume-20261020-a01\\r20-live-scene-b-a01\\driver-runs\\desktop-3fevhd2-1c74096080--vanilla--R0234\\case-output\\r17-b-site-a01-0004-new-loaded-feature-inventory.json",
+        "bytes": 17262,
+        "sha256": "390a970e24b19f79fdcedb28e84df688d56a1f438e643a21161bf1754d2bab6d"
+      },
+      "available_at_stat": true,
+      "actual_stat_bytes": 17262,
+      "body_not_read_or_rehashed_by_this_packet": true,
+      "SHA_source": "Original Root/native-bound receipt, not a new body hash"
+    }
+  ],
+  "runtime_identity": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "pid": 31520,
+    "creation_time_100ns": "134371017241094256",
+    "generation": 1,
+    "actor": "31254",
+    "date_before_raw": "53150328",
+    "date_after_raw": "53150352"
+  },
+  "native_result": {
+    "province": 2623,
+    "stock_before_raw": 29894738,
+    "stock_after_raw": 30000000,
+    "actual_delta_raw": 105262,
+    "scale": 100000,
+    "callback_sequences": [
+      2
+    ],
+    "packed_dates_raw64": [
+      "300338297034179216"
+    ]
+  },
+  "credit": {
+    "B_stationary_native_and_readable_sites": "2/2 across R0232 and R0234 ordinary-campaign lineage",
+    "formal_dynamic_themes": "9/11 unchanged",
+    "ABC": "0/3 unchanged",
+    "full_R10_or_complete_B": false,
+    "research_business_counters_unchanged": true
+  },
+  "original_outer_film_wait": 2,
+  "original_soft_RED_preserved": true,
+  "ordinary_planner_autoload": false,
+  "Game_SDK_or_native_execution_by_this_package": false,
+  "legacy_numeric64_originals": "Kept exact inside carrier; read with an exact integer parser. New identity fields use decimal strings."
+}
