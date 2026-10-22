@@ -18,6 +18,7 @@ from tools.g2_saved_campaign.file_stat_identity_v1 import (
 JsonValue: TypeAlias = "None | bool | int | float | str | list[JsonValue] | dict[str, JsonValue]"
 JsonObject: TypeAlias = dict[str, JsonValue]
 MAX_SAFE = (1 << 53) - 1
+MAX_FILE = 1048576
 BASIS_SCHEMA = "xar.current-saved-basis/v1"
 
 
@@ -2998,10 +2999,10 @@ def _readonly_prefix_v1(
     need(len({u.sequence for u in unknowns})==len(unknowns),"unknown lineage unique and retained")
     return frame,count,projected,projected_gov,unknowns
 
-def _native_history_json_v1(value:object,depth:int=0)->object:
+def _native_history_json_v1(value:object,depth:int=0)->JsonValue:
     """Separate exact legacy Native JSON domain; never the cross-JS safe domain."""
     need(depth<=64,"bounded Native JSON depth")
-    if value is None or type(value) in (bool,str):return value
+    if value is None or type(value) is bool or type(value) is str:return value
     if type(value) is int:
         need(-(1<<63)<=value<1<<64,"exact Native integer range");return value
     if type(value) is float:

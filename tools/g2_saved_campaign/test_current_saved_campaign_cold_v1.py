@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import copy
 import ast
+import asyncio
+from collections.abc import Coroutine
 from dataclasses import replace
 from datetime import datetime, timezone
 import hashlib
@@ -11,12 +13,13 @@ import json
 import ntpath
 import os
 import tempfile
-from types import ModuleType
+from types import ModuleType, SimpleNamespace
+from textwrap import indent
 from pathlib import Path
 import subprocess
 import sys
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 from contextlib import ExitStack, contextmanager
 from typing import Callable, Protocol, runtime_checkable
 
@@ -123,9 +126,10 @@ class ColdProfileVerifierV1(Protocol):
 
 
 class _FeederSourceClosureReaderV1(feeder.LocalCurrentSavedFeederReaderV1):
-    def __init__(self, identities: dict[str, FileStatIdentityV1]) -> None:
+    def __init__(self, identities: dict[str, FileStatIdentityV1], runtime: owner.WarmRuntimeReaderV1 | None = None) -> None:
         self.identities = identities
         self.reads: list[tuple[ExactRefV1, int]] = []
+        self.runtime = runtime
 
     def read(self, reference: ExactRefV1, limit: int) -> bytes:
         self.reads.append((reference, limit))
@@ -133,6 +137,64 @@ class _FeederSourceClosureReaderV1(feeder.LocalCurrentSavedFeederReaderV1):
 
     def stat(self, path: str) -> FileStatIdentityV1:
         return self.identities[path]
+
+    def read_driver_header(self, path: str, limit: int) -> bytes:
+        if self.runtime is None: raise ValueError('live header fixture capability required')
+        return self.runtime.read_driver_header(path, limit)
+
+    def process_identity(self, pid: int) -> JsonObject:
+        if self.runtime is None: raise ValueError('live process fixture capability required')
+        return self.runtime.process_identity(pid)
+
+
+def _actual_map_queue_material_v1() -> bytes:
+    fixture = record(parse_json((Path(__file__).parent / 'test_data/current_saved_map_queue_v1.json').read_bytes()))
+    origin = record(fixture['origin'])
+    need(integer(origin['bytes']) == 280399 and origin['sha256'] ==
+        '2e4c45d944d7d9d4e4ca5f8f839720d9b81f6f7cdcee6e9b55e5908eb6a8c5ca', 'original Queue provenance')
+    raw = _actual_map_queue_whole_v1()
+    need(len(raw) == origin['bytes'] and hashlib.sha256(raw).hexdigest() == origin['sha256'], 'complete original Queue bytes')
+    original = ast.parse(raw)
+    methods = record(fixture['methods'])
+    sources: list[str] = []
+    for name in ('require_camera_pixel_admission', 'full_loop'):
+        row = record(methods[name]); source = text(row['source'])
+        node = ast.parse(source).body[0]
+        need(hashlib.sha256(ast.dump(node).encode()).hexdigest() == row['body_ast_sha256'],
+             'exact original Queue method AST')
+        matching = [n for n in ast.walk(original) if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))
+            and n.name == name and (name != 'full_loop' or any(isinstance(x, ast.Attribute)
+                and x.attr == 'require_camera_pixel_admission' for x in ast.walk(n)))]
+        for actual in matching:
+            actual.decorator_list = []
+        need(any(ast.dump(n) == ast.dump(node) for n in matching), 'method excerpt equals complete original source')
+        sources.append(source)
+    return ('class CleanRobertMainMenuQueue:\n' + indent(sources[0], '    ') +
+        '\nclass OriginalFullQueue(CleanRobertMainMenuQueue):\n' + indent(sources[1], '    ') + '\n').encode()
+
+
+def _actual_map_queue_whole_v1() -> bytes:
+    import base64, zlib
+    fixture = record(parse_json((Path(__file__).parent / 'test_data/current_saved_map_queue_v1.json').read_bytes()))
+    parts = rows(fixture['whole_source_zlib_base64']); need(len(parts) <= 8, 'bounded compressed fixture parts')
+    packed = base64.b64decode(''.join(text(part) for part in parts), validate=True)
+    need(len(packed) <= 131072, 'bounded compressed whole Queue')
+    decoder = zlib.decompressobj(); raw = decoder.decompress(packed, 280400)
+    need(decoder.eof and not decoder.unused_data and not decoder.unconsumed_tail, 'bounded complete whole Queue decompression')
+    need(len(raw) == 280399 and hashlib.sha256(raw).hexdigest() ==
+        '2e4c45d944d7d9d4e4ca5f8f839720d9b81f6f7cdcee6e9b55e5908eb6a8c5ca', 'actual full Queue source bytes')
+    return raw
+
+
+@runtime_checkable
+class _MapCameraV1(Protocol):
+    def __call__(self, queue: object) -> object: ...
+
+
+@runtime_checkable
+class _MapFullV1(Protocol):
+    def __call__(self, queue: object, session: object, request: JsonObject,
+                 path: Path) -> Coroutine[object, object, object]: ...
 
 
 class CurrentSavedFeederSourceClosureTests(unittest.TestCase):
@@ -144,14 +206,73 @@ class CurrentSavedFeederSourceClosureTests(unittest.TestCase):
     def test_emitted_qualify_readiness_projection_to_actual_reducer(self) -> None:
         self._emitted_qualify_case_v1(readiness_projection=True)
 
-    def _emitted_qualify_case_v1(self, *, readiness_projection: bool) -> None:
+    def test_emitted_qualify_full_pre_dispatch_failure_whole_queue_to_actual_reducer(self) -> None:
+        self._emitted_qualify_case_v1(readiness_projection=False, pre_dispatch_failure=True)
+
+    def test_feeder_generic_transport_cap_keeps_entry_caps_and_exact_scalar_types(self) -> None:
+        raw = _actual_map_queue_whole_v1()
+        reference = producer.ref_for_bytes_v1(str(Path('NO-QUEUE-FILE').resolve()), raw)
+        reader = feeder.LocalCurrentSavedFeederReaderV1()
+        def opened(path: Path, *args: object, **kwargs: object) -> io.BytesIO:
+            return io.BytesIO(raw)
+        with patch.object(Path, 'open', opened):
+            self.assertEqual(exact_read(reader, reference, producer.MAX_FILE), raw)
+            for limit in (131072, 262144, producer.MAX_FILE + 1):
+                with self.subTest(limit=limit), self.assertRaises(ValueError): reader.read(reference, limit)
+            for limit_scalar in (True, 1048576.0):
+                with self.subTest(limit=limit_scalar), self.assertRaises(ValueError):
+                    Mock(wraps=reader.read)(reference, limit_scalar)
+            with self.assertRaises(ValueError): reader.read(replace(reference, bytes=producer.MAX_FILE + 1), producer.MAX_FILE)
+
+    def _actual_camera_and_full_v1(self, value: object, launch: object,
+            opening: SavedFrameV1, *, accepted: bool, material: bytes) -> None:
+        # Execute the original complete methods, with only the machine/metadata
+        # inputs in RAM. Stop at the checkpoint-policy boundary before dispatch.
+        raw = producer.emit_current_saved_map_admission_guard_v1(material)
+        scope: dict[str, object] = {'N': Path('NO-MAP-FIXTURE-IO'),
+            'read': lambda path, limit: value}
+        exec(compile(raw, '<actual emitted campaign map Queue>', 'exec'), scope)
+        scope['_current_saved_map_machine_v1'] = lambda: MACHINE
+        classes = [node for node in ast.parse(raw).body if isinstance(node, ast.ClassDef)]
+        camera_node = next(node for node in classes[0].body if isinstance(node, ast.FunctionDef))
+        full_node = next(node for node in classes[1].body if isinstance(node, ast.AsyncFunctionDef))
+        exec(compile(ast.Module(body=[camera_node, full_node], type_ignores=[]), '<actual inherited methods>', 'exec'), scope)
+        camera, full = scope['require_camera_pixel_admission'], scope['full_loop']
+        if not isinstance(camera, _MapCameraV1) or not isinstance(full, _MapFullV1):
+            raise TypeError('actual Queue method capabilities')
+        queue = SimpleNamespace(zero_day_preparation=False, initial_frame=opening.to_wire(),
+            launch=record(launch), job={'session_id': 'session'}, halted=None,
+            initial_save={}, checkpoint_bootstrap_verified=True)
+        setattr(queue, 'require_camera_pixel_admission', lambda: camera(queue))
+        reached: list[object] = []
+        class BeforeDispatch(Exception):
+            pass
+        def policy(queue: object, request: object) -> None:
+            reached.append(request)
+            raise BeforeDispatch
+        checkpoint = ModuleType('map_checkpoint_policy_boundary')
+        setattr(checkpoint, 'require_first_full_checkpoint_policy_v1', policy)
+        scope['_first_checkpoint_v1'] = checkpoint
+        if accepted:
+            camera(queue)
+        else:
+            with self.assertRaises(ValueError): camera(queue)
+        with self.assertRaises(BeforeDispatch if accepted else ValueError):
+            asyncio.run(full(queue, object(), {'command': 'full_loop', 'sequence': 105,
+                'arguments': {'max_turns': 30}}, Path('NO-DISPATCH-0105.json')))
+        self.assertEqual(len(reached), 1 if accepted else 0)
+        self.assertFalse(hasattr(queue, 'held_control'))
+
+    def _emitted_qualify_case_v1(self, *, readiness_projection: bool, pre_dispatch_failure: bool = False) -> None:
         from tools.g2_saved_campaign.first_full_checkpoint_v1 import FirstFullCheckpointPolicyV1
         from tools.g2_saved_campaign import root_continuity_window as actual_ledger
-        from tools.g2_saved_campaign.test_current_saved_settled_closure_v1 import ReadinessRestoreProjectionFixture
+        from tools.g2_saved_campaign.test_current_saved_settled_closure_v1 import (
+            ReadinessRestoreProjectionFixture, FullPreDispatchFailureFixture, NormalWarmFixture)
         root = (Path(__file__).parent / "FEEDER-SOURCE-CLOSURE-NO-IO").resolve()
         self.assertFalse(root.exists())
         memory = continuity_fixture.MemoryReader()
         documents: dict[str, bytes] = {}
+        map_queue_material = _actual_map_queue_material_v1()
 
         def put_raw(path: Path, raw: bytes) -> ExactRefV1:
             reference = producer.ref_for_bytes_v1(str(path.resolve()), raw)
@@ -163,8 +284,7 @@ class CurrentSavedFeederSourceClosureTests(unittest.TestCase):
         def put(name: str, value: object) -> ExactRefV1:
             # Existing Python-only Game/first-frame receipts preserve integer
             # FILETIME exactly; public admission still uses its canonical codec.
-            raw = (json.dumps(value, sort_keys=True, allow_nan=False).encode()
-                if readiness_projection else producer.encode_v1(value))
+            raw = json.dumps(value, sort_keys=True, allow_nan=False).encode()
             return put_raw(root / name, raw)
 
         projected = None
@@ -179,9 +299,16 @@ class CurrentSavedFeederSourceClosureTests(unittest.TestCase):
             projected = ReadinessRestoreProjectionFixture(initial_basis=projected_basis,
                 metadata_root=root / 'projection', validator_bytes=validator_raw)
         projected_warm = None
+        failed = None
         if projected is not None:
             with projected.tail.io_scope(): projected_warm = projected.ready.next_warm(50)
             documents.update(projected.reader.raw)
+        if pre_dispatch_failure:
+            failed = FullPreDispatchFailureFixture(NormalWarmFixture(campaign_days=10958,
+                metadata_root=root / 'full-failure'))
+            failed.ready.basis, failed.ready.basis_ref, failed.ready.validation_ref = failed.basis, failed.basis_ref, failed.validation_ref
+            projected_warm = failed.ready.next_warm(50)
+            documents.update(failed.reader.raw)
         predecessor = continuity_fixture.state() if projected_warm is None else projected_warm.inputs.old_ledger
         anchor = (put("frozen-ledger.json", predecessor) if projected_warm is None
             else put_raw(Path(projected_warm.inputs.basis.refs.ledger.path),
@@ -198,7 +325,8 @@ class CurrentSavedFeederSourceClosureTests(unittest.TestCase):
                                        "path": str(root / "save.ck3")}) if projected_warm is None else initial.inputs.basis)
         basis_ref = put("basis.json", basis.to_wire()) if projected_warm is None else initial.inputs.basis_ref
         validation_ref = put("qualification.json", {}) if projected_warm is None else initial.inputs.validation_ref
-        game = initial.game
+        game = (initial.game if readiness_projection else
+            replace(initial.game, creation_filetime=str(2**53 + 2)))
         game_row: JsonObject = {"machine_id": MACHINE, "pid": game.pid,
             "creation_filetime": int(game.creation_filetime), "creation_date": game.creation_date,
             "old_save_loaded": True, "load_save_name": "xar_checkpoint"}
@@ -209,9 +337,14 @@ class CurrentSavedFeederSourceClosureTests(unittest.TestCase):
             "machine_id": MACHINE, "opening_frame": basis.frame.to_wire(),
             "completed_cycles": basis.completed_cycles, "T0_date_raw": basis.origin.start_date_raw,
             "checkpoint": basis.checkpoint, "new_ordinary_cycle_credit": 0, "AUTO_or_MET_replayed": False})
-        map_ref = put("map.json", {"status": "GREEN", "reviewer": "/root", "machine_id": MACHINE,
-            "game_pid": game.pid, "game_creation_filetime": int(game.creation_filetime),
-            "actual_initial_frame": basis.frame.to_wire()})
+        map_raw = owner.build_campaign_map_admission_v1(machine_id=MACHINE,
+            observed_at_utc='2026-10-21T06:01:00Z', native_launch=game_row,
+            recording_session_id='session', actual_initial_frame=basis.frame,
+            game_map_visible=True, decision_text_visible=True)
+        map_ref = put_raw(root / 'map.json', map_raw)
+        map_value = parse_json(map_raw)
+        self.assertEqual(owner.parse_campaign_map_admission_v1(map_value,
+            expected_machine_id=MACHINE).game_creation_filetime, int(game.creation_filetime))
         active = seed() if projected_warm is None else owner.project_current_saved_opening_v1(projected_warm.inputs,
             projected_warm.warm_proof.opening, semantic_response=projected_warm.warm_proof.sources.semantic_response_ref)
         active.update(before=basis.frame.to_wire(), actual_saved_checkpoint=basis.checkpoint,
@@ -283,9 +416,18 @@ class CurrentSavedFeederSourceClosureTests(unittest.TestCase):
                     actual = projected.ready.next_warm(50)
                 self.assertEqual(actual.inputs.basis, warm.inputs.basis)
                 self.assertEqual(actual.warm_proof.game, warm.warm_proof.game)
+            if failed is not None:
+                source_warm = failed.ready.next_warm(50)
+                actual_warm = owner.validate_current_saved_warm_inputs_v1(failed.basis,
+                    basis_ref=failed.basis_ref, validation_ref=failed.validation_ref,
+                    sources=source_warm.warm_proof.sources, reader=reader,
+                    runtime_root=Path(source_warm.warm_proof.sources.actual_game_ref.path).parent)
+                self.assertEqual(actual_warm.inputs.basis, warm.inputs.basis)
             return warm
-        reader = _FeederSourceClosureReaderV1({basis.refs.driver.path: proof.driver_identity,
-                                               basis.refs.save.path: basis.save_identity})
+        identities = {} if failed is None else dict(failed.reader.identities)
+        identities.update({basis.refs.driver.path: proof.driver_identity, basis.refs.save.path: basis.save_identity})
+        reader = _FeederSourceClosureReaderV1(identities,
+            runtime=None if failed is None else failed.reader)
         ordinary = ModuleType("source_closure_ordinary")
         ordinary.__file__ = str(loop_path)
         setattr(ordinary, "CONTINUITY_WINDOW", root / "ROOT-CONTINUITY-WINDOW.json")
@@ -324,7 +466,8 @@ class CurrentSavedFeederSourceClosureTests(unittest.TestCase):
             return io.BytesIO(documents[str(path.resolve())])
 
         admission_path = root / "CURRENT-SAVED-FEEDER-ADMISSION.json"
-        with patch.object(Path, "open", opened), patch.dict(sys.modules, {segment.__name__: segment}):
+        with patch.object(Path, "open", opened), patch.dict(sys.modules, {segment.__name__: segment}), \
+                patch.object(owner.LocalBasisReaderV1, 'stat', side_effect=reader.stat):
             documents[str(admission_path)] = feeder.encode_current_saved_feeder_admission_v1(admission)
             main(first_sequence, qualify=True)
             self.assertEqual(len(output), 1)
@@ -337,15 +480,49 @@ class CurrentSavedFeederSourceClosureTests(unittest.TestCase):
             self.assertIn((owner_ref, 262144), reader.reads)
             self.assertIn((stage_ref, 131072), reader.reads)
             self.assertIn((loop_ref, 131072), reader.reads)
+            if failed is not None:
+                self.assertEqual(failed.queue_ref.bytes, 280399)
+                self.assertIn((failed.queue_ref, producer.MAX_FILE), reader.reads)
+            self._actual_camera_and_full_v1(map_value, game_row, basis.frame, accepted=True, material=map_queue_material)
+            for field, wrong in (('game_creation_filetime', str(int(game.creation_filetime))),
+                    ('game_creation_filetime', float(int(game.creation_filetime))),
+                    ('game_creation_filetime', True), ('game_pid', True),
+                    ('game_pid', float(game.pid)), ('game_pid', str(game.pid)),
+                    ('Game_map_visible', 1), ('decision_text_visible', False),
+                    ('recording_session_id', None), ('recording_session_id', 'wrong-session'),
+                    ('actual_initial_frame', {**basis.frame.to_wire(), 'revision': basis.frame.revision + 1}),
+                    ('machine_id', 'wrong-machine')):
+                with self.subTest(map_field=field, wrong=wrong):
+                    changed_map = {**record(map_value), field: wrong}
+                    changed_ref = put_raw(root / 'map.json', json.dumps(changed_map).encode())
+                    documents[str(admission_path)] = feeder.encode_current_saved_feeder_admission_v1(
+                        replace(admission, map_admission_ref=changed_ref))
+                    with self.assertRaises(ValueError): main(first_sequence, qualify=True)
+                    self.assertEqual(output, [])
+                    self._actual_camera_and_full_v1(changed_map, game_row, basis.frame, accepted=False, material=map_queue_material)
+            for field in ('game_creation_filetime', 'recording_session_id', 'actual_initial_frame'):
+                missing = dict(record(map_value)); del missing[field]
+                with self.subTest(missing_map_field=field), self.assertRaises(ValueError):
+                    owner.parse_campaign_map_admission_v1(missing, expected_machine_id=MACHINE)
+            for wrong in (str(int(game.creation_filetime)), float(int(game.creation_filetime)), True):
+                changed_launch = {**game_row, 'creation_filetime': wrong}
+                with self.subTest(launch_birth=wrong), self.assertRaises(ValueError):
+                    owner.build_campaign_map_admission_v1(machine_id=MACHINE,
+                        observed_at_utc='2026-10-21T06:01:00Z', native_launch=changed_launch,
+                        recording_session_id='session', actual_initial_frame=basis.frame,
+                        game_map_visible=True, decision_text_visible=True)
+                self._actual_camera_and_full_v1(map_value, changed_launch, basis.frame, accepted=False, material=map_queue_material)
+            documents[map_ref.path] = map_raw
+            documents[str(admission_path)] = feeder.encode_current_saved_feeder_admission_v1(admission)
             for field, reference in (("owner_source_ref", owner_ref), ("feeder_source_ref", stage_ref),
                                      ("loop_source_ref", loop_ref)):
-                for wrong in (replace(reference, sha256="0" * 64),
+                for source_wrong in (replace(reference, sha256="0" * 64),
                               replace(reference, path=str(root / "wrong-source.py")),
                               replace(reference, bytes=262145 if field == "owner_source_ref" else 131073)):
-                    with self.subTest(field=field, wrong=wrong), self.assertRaises(ValueError):
-                        changed = (replace(admission, owner_source_ref=wrong) if field == "owner_source_ref"
-                                   else replace(admission, feeder_source_ref=wrong) if field == "feeder_source_ref"
-                                   else replace(admission, loop_source_ref=wrong))
+                    with self.subTest(field=field, wrong=source_wrong), self.assertRaises(ValueError):
+                        changed = (replace(admission, owner_source_ref=source_wrong) if field == "owner_source_ref"
+                                   else replace(admission, feeder_source_ref=source_wrong) if field == "feeder_source_ref"
+                                   else replace(admission, loop_source_ref=source_wrong))
                         documents[str(admission_path)] = feeder.encode_current_saved_feeder_admission_v1(changed)
                         main(first_sequence, qualify=True)
                     self.assertEqual(output, [])
@@ -2323,7 +2500,11 @@ class CompletedUnsavedTailComposeEntryTests(unittest.TestCase):
     def test_real_compose_projection_final_packet_and_current_package_imports(self) -> None:
         self._compose_recovery_case_v1(projection=True, complete_packet=True)
 
-    def _compose_recovery_case_v1(self, *, projection: bool, complete_packet: bool = False) -> None:
+    def test_real_compose_full_pre_dispatch_failure_whole_queue_and_final_packet(self) -> None:
+        self._compose_recovery_case_v1(projection=False, complete_packet=True, pre_dispatch_failure=True)
+
+    def _compose_recovery_case_v1(self, *, projection: bool, complete_packet: bool = False,
+            pre_dispatch_failure: bool = False) -> None:
         """Execute the real compose entry and its full recovered owner validation.
 
         Unrelated source emitters are identity seams. The test stops at the next
@@ -2332,7 +2513,9 @@ class CompletedUnsavedTailComposeEntryTests(unittest.TestCase):
         are the original production functions, including both response leaf kinds.
         """
         from tools.g2_saved_campaign.test_current_saved_settled_closure_v1 import (
-            CompletedUnsavedTailFixture, ReadinessRestoreProjectionFixture)
+            CompletedUnsavedTailFixture, ReadinessRestoreProjectionFixture, FullPreDispatchFailureFixture,
+            NormalWarmFixture)
+        from tools.g2_saved_campaign import test_current_saved_settled_closure_v1 as settled_fixture
         from tools.g2_saved_campaign import current_saved_background_display_v1 as background
         from tools.g2_saved_campaign import first_full_checkpoint_v1 as first_checkpoint
         from tools.g2_saved_campaign import current_saved_campaign_replay_v1 as replay
@@ -2365,7 +2548,7 @@ class CompletedUnsavedTailComposeEntryTests(unittest.TestCase):
         def old_generic_response(reader: BasisReaderV1, reference: ExactRefV1) -> dict[str, object]:
             return evidence(reader, reference, 2097152)
 
-        for large_leaves in ((False,) if projection else (False, True)):
+        for large_leaves in ((False,) if projection or pre_dispatch_failure else (False, True)):
             with self.subTest(large_response_and_plan=large_leaves):
                 initial = pure_basis()
                 state = r"D:\synthetic-current-saved\shared\state"
@@ -2395,7 +2578,15 @@ class CompletedUnsavedTailComposeEntryTests(unittest.TestCase):
                         entry[key] = updated.to_wire()
                         large_refs.append(updated)
                     f.reseal()
-                if projected is None:
+                failed = None
+                if pre_dispatch_failure:
+                    with patch.object(settled_fixture, 'pure_basis', return_value=initial):
+                        failed = FullPreDispatchFailureFixture(NormalWarmFixture(campaign_days=10958,
+                            metadata_root=Path(r'D:\synthetic-current-saved\full-pre-dispatch')))
+                    f.reader.raw.update(failed.reader.raw)
+                    f.reader.identities.update(failed.reader.identities)
+                    basis, basis_ref, validation_ref = failed.basis, failed.basis_ref, failed.validation_ref
+                elif projected is None:
                     basis, basis_ref, validation_ref = f.recovered()
                 else:
                     basis, basis_ref, validation_ref = projected.ready.basis, projected.ready.basis_ref, projected.ready.validation_ref
@@ -2423,6 +2614,7 @@ class CompletedUnsavedTailComposeEntryTests(unittest.TestCase):
                     closure_entry_paths=tuple(sorted(closure)))
                 material_files: dict[str, bytes] = {
                     producer.child_v1(OLD, name): stub for name in inherited}
+                material_files[producer.child_v1(OLD, "root_p37c23_sdk_queue.py")] = _actual_map_queue_material_v1()
                 for name in ("presentation-c23/obs_owned_desktop.py", "presentation-c23/ck3_obs_capture_png_retry_c23.py"):
                     material_files[producer.child_v1(OLD, name)] = stub
                 material_files[producer.child_v1(OLD, "root_c23_canonical_outer.py")] = (
@@ -2513,11 +2705,11 @@ class CompletedUnsavedTailComposeEntryTests(unittest.TestCase):
                         with self.assertRaises(ValidatedBeforeBackground):
                             producer.compose_v1(configured, plan_ref=plan_ref, metadata_overlay=metadata)
                     self.assertEqual(reached.call_count, 1)
-                    if projected is None:
+                    if projected is None and failed is None:
                         with patch.object(owner, "original_response_evidence_v1", side_effect=old_generic_response):
                             with self.assertRaisesRegex(ValueError, "small bounded RAM input"):
                                 producer.compose_v1(configured, plan_ref=plan_ref, metadata_overlay=metadata)
-                    else:
+                    elif projected is not None:
                         with patch.object(owner, "exact_sdk_source_bytes_v1", side_effect=lambda reader, reference: reader.read(reference, 2097152)):
                             with self.assertRaisesRegex(ValueError, "small bounded RAM input"):
                                 producer.compose_v1(configured, plan_ref=plan_ref, metadata_overlay=metadata)

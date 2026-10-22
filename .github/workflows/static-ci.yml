@@ -262,6 +262,16 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -m unittest -v tools.g2_saved_campaign.test_first_full_checkpoint_v1
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test complete wartime Sway Source31 integration without CK3
+        env:
+          PYTHONPATH: ${{ github.workspace }};${{ github.workspace }}\ck3_autonomous_player\src;${{ github.workspace }}\ck3_autonomous_player\tests\unit;${{ github.workspace }}\tools;${{ github.workspace }}\tools\g2_saved_campaign
+          MYPYPATH: ${{ github.workspace }}\tools;${{ github.workspace }}\tools\g2_saved_campaign;${{ github.workspace }}\ck3_autonomous_player\src;${{ github.workspace }}\ck3_autonomous_player\tests\unit;${{ github.workspace }}\tools\g2_saved_campaign\candidates\native32_runtime_journal_adapter_20261021;${{ github.workspace }}\tools\g2_saved_campaign\candidates\native32_production_builder_20261021
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -B -m mypy --strict --strict-equality --follow-imports=skip --no-incremental --cache-dir nul tools/g2_saved_campaign/test_wartime_sway_source31_ci_v1.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m unittest -v tools.g2_saved_campaign.test_wartime_sway_source31_ci_v1
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test succession refresh after an SDK publication revision reset without CK3
         run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_succession_warm_publication_refresh_v1.py
       - name: Test retained named Sway gain and independent consumption without CK3

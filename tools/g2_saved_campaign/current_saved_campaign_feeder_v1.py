@@ -17,7 +17,7 @@ from typing import Callable, Mapping, TypeAlias, Protocol, runtime_checkable
 
 from tools.g2_saved_campaign.current_saved_basis_v1 import (
     BasisReaderV1, CurrentSavedBasisV1, ExactRefV1, JsonObject, JsonValue, exact_read,
-    integer, json_object, need, parse_json, parse_ref, record, text, utc,
+    integer, json_object, need, parse_json, parse_ref, record, text, utc, MAX_FILE,
 )
 from tools.g2_saved_campaign.file_stat_identity_v1 import (
     FileStatIdentityV1, normalize_file_stat_identity_v1,
@@ -493,7 +493,10 @@ def transform_current_saved_feeder_v1(
 class LocalCurrentSavedFeederReaderV1:
     """Bounded metadata/source reader; no Driver or SAVE body is read here."""
     def read(self, reference: ExactRefV1, limit: int) -> bytes:
-        need(0 <= reference.bytes <= limit <= 262144, "feeder metadata read limit")
+        need(isinstance(reference, ExactRefV1), "feeder exact reference")
+        parse_ref(reference.to_wire())
+        integer(limit, 1, MAX_FILE)
+        need(reference.bytes <= limit, "feeder metadata read limit")
         with Path(reference.path).open("rb") as stream:
             raw = stream.read(limit + 1)
         need(len(raw) <= limit, "bounded feeder metadata")

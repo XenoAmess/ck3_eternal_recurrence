@@ -1,0 +1,21 @@
+{
+  "schema": "xar.source32.published-test-input/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T10:40:23.181862+00:00",
+  "archive_tag": "archive/robert-source32-6f58f72a8-20261022",
+  "commit": "6f58f72a8ff29d85f8751d3bfb1667b38f9497df",
+  "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+  "bytes": 1648649,
+  "sha256": "15a1eca3cee4f79be51a4144258650822e49146c93b7a87257319f848928d06b",
+  "reason": "Hosted CI lacked original Source32 object: local campaign branch was unpublished and not in master ancestry. Publish exact immutable input; tests require tag and exact source pin.",
+  "hosted_failed_run": "39761107948",
+  "hosted_runner_machine_id": "unknown",
+  "log_excerpt_ref": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-1100-01\\7D52-HOSTED-FAILED-STEP-EXCERPT01.json",
+    "bytes": 22830,
+    "sha256": "6f9e2c3be03e7fa2c1ab0a6ee813a83583369d3da7e6d0055d84cfbf5758ba03"
+  },
+  "repository_current_native_driver_replaced": false,
+  "frozen_SDK_replaced": false,
+  "remote_readback": "6f58f72a8ff29d85f8751d3bfb1667b38f9497df\trefs/tags/archive/robert-source32-6f58f72a8-20261022"
+}

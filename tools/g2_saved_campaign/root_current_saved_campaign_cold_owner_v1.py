@@ -11,9 +11,9 @@ import re
 from typing import Literal,Protocol,runtime_checkable
 from tools.g2_saved_campaign.current_saved_basis_v1 import (
  BasisReaderV1,CurrentSavedBasisV1,ExactRefV1,JsonObject,JsonValue,json_value,
- MAX_ORIGINAL_RESPONSE_BYTES_V1,
+ MAX_ORIGINAL_RESPONSE_BYTES_V1,MAX_FILE,
  OriginalResponseReaderV1 as BasisOriginalResponseReaderV1,
- SavedFrameV1,ValidatedCurrentSavedBasisV1,
+ SavedFrameV1,ValidatedCurrentSavedBasisV1,PinnedCheckpointValidatorV1,
  CONTINUITY_FORWARD_SCHEMA,CONTINUITY_FORWARD_QUALIFICATION_SCHEMA,
  CurrentSavedContinuityQualificationV1,parse_current_saved_continuity_qualification_v1,
  validate_current_saved_continuity_forward_basis_v1,
@@ -35,7 +35,7 @@ from tools.g2_saved_campaign.current_saved_basis_v1 import (
  decode_current_saved_basis_v1,digest,encode_current_saved_basis_v1,
  completed_body,evidence,exact_read,integer,json_object,need,original_response_evidence_v1,
  validate_current_saved_closed_task_absence_v1,
- _cap_restore_row_v2,_exact_native_json_v1,decode_readonly_prefix_history_v1,
+ _cap_restore_row_v2,_exact_native_json_v1,_native_history_json_v1,decode_readonly_prefix_history_v1,
  MAX_SDK_SOURCE_BYTES_V1,SdkSourceReaderV1,exact_sdk_source_bytes_v1,
  parse_frame,parse_json,parse_ref,record,rows,text,utc,
 )
@@ -473,6 +473,12 @@ def _qualified_history_suffix_v2(basis:CurrentSavedBasisV1,reader:BasisReaderV1,
   forward=validate_current_saved_continuity_forward_basis_v1(basis,reader=reader)
   prior=decode_current_saved_basis_v1(exact_read(reader,forward.original_basis_ref,65536),expected_machine_id=basis.machine_id)
   return _qualified_history_suffix_v2(prior,reader,trail)
+ if schema==FULL_PRE_DISPATCH_FAILURE_SCHEMA_V1:
+  failure=parse_full_pre_dispatch_failure_closure_v1(closure,expected_machine_id=basis.machine_id)
+  failed_prefix=failure.proof.prefix
+  prior=decode_current_saved_basis_v1(exact_read(reader,failed_prefix.prior_basis_ref,65536),expected_machine_id=basis.machine_id)
+  failed_tail=evidence(reader,failed_prefix.history_tail_ref,65536)
+  return [*_qualified_history_suffix_v2(prior,reader,trail),*(record(v) for v in rows(failed_tail.get("post_prior_history")))]
  if schema==NORMAL_CLOSURE_SCHEMA_V2:
   parsed=parse_normal_closure_v2(closure,expected_machine_id=basis.machine_id)
   if parsed.phase=="saved_settled_progress":return []
@@ -685,7 +691,12 @@ def _validate_readiness_inventory_v2(
  need(parse_ref(unused["ref"])==basis.refs.next and integer(unused["sequence"],1)==basis.next_sequence
   and unused["request_absent"] is True and unused["response_absent"] is True
   and integer(evidence(reader,basis.refs.next,16384).get("next_sequence"),1)==basis.next_sequence,"unused first FULL sequence")
- entries=rows(row["entries"]);need(len(entries)==2,"only the SEM and CAP requests were submitted")
+ _validate_completed_readiness_entries_v1(proof,prior,reader=reader,runtime_root=runtime_root,entries_value=row["entries"])
+
+def _validate_completed_readiness_entries_v1(
+ proof:ReadinessClosureProofV2,prior:CurrentSavedColdInputsV1,*,reader:BasisReaderV1,runtime_root:Path,entries_value:object,
+)->None:
+ entries=rows(entries_value);need(len(entries)==2,"exact completed SEM and CAP prefix")
  expected=((prior.basis.next_sequence,"ck3_take_semantic_snapshot_private_v1",proof.sources.semantic_response_ref),
   (prior.basis.next_sequence+1,"ck3_get_capabilities",proof.sources.capabilities_response_ref))
  for value,(sequence,tool,response_ref) in zip(entries,expected,strict=True):
@@ -810,7 +821,246 @@ def validate_settled_progress_closure_evidence_v1(
  _normal_screen_release_v1(basis,reader,closure.refs.screen_release,supervisor)
  pipe=_normal_driver_review_v1(basis,reader,old_game,generic=True)
  return ClosedEpochV1(basis.refs.closure,old_game,basis.next_sequence,processes,closure.observed_at_utc,pipe)
-def _sdk_processes(value:object)->tuple[ClosedSdkProcessV1,...]:
+FULL_PRE_DISPATCH_FAILURE_SCHEMA_V1="xar.current-saved-full-pre-dispatch-failure-closure/v1"
+FULL_PRE_DISPATCH_REVIEW_SCHEMA_V1="xar.current-saved-full-pre-dispatch-driver-review/v1"
+
+@dataclass(frozen=True,slots=True)
+class FullPreDispatchFailureProofV1:
+ prefix:ReadinessClosureProofV2
+ full_request_ref:ExactRefV1
+ full_response_ref:ExactRefV1
+ first_exception_ref:ExactRefV1
+ halt_ref:ExactRefV1
+ queue_source_ref:ExactRefV1
+ queue_policy_ref:ExactRefV1
+ def __post_init__(self)->None:
+  need(isinstance(self.prefix,ReadinessClosureProofV2),"typed completed read-only prefix")
+  for reference in (self.full_request_ref,self.full_response_ref,self.first_exception_ref,self.halt_ref,self.queue_source_ref,self.queue_policy_ref):
+   need(isinstance(reference,ExactRefV1),"exact failed FULL evidence reference")
+ def to_wire(self)->JsonObject:
+  return {"prefix":self.prefix.to_wire(),**{name:reference.to_wire() for name,reference in
+   (("full_request_ref",self.full_request_ref),("full_response_ref",self.full_response_ref),
+    ("first_exception_ref",self.first_exception_ref),("halt_ref",self.halt_ref),
+    ("queue_source_ref",self.queue_source_ref),("queue_policy_ref",self.queue_policy_ref))}}
+
+@dataclass(frozen=True,slots=True)
+class FullPreDispatchFailureClosureV1:
+ bindings:SettledProgressClosureV1
+ proof:FullPreDispatchFailureProofV1
+ sdk_queue_exit_code:int=1
+ def __post_init__(self)->None:
+  need(isinstance(self.bindings,SettledProgressClosureV1) and isinstance(self.proof,FullPreDispatchFailureProofV1),"typed failed FULL closure")
+  integer(self.sdk_queue_exit_code,1,UINT64_MAX)
+ def to_wire(self)->JsonObject:
+  row=self.bindings.to_wire()
+  row.update(schema=FULL_PRE_DISPATCH_FAILURE_SCHEMA_V1,status="CLOSED_FULL_PRE_DISPATCH_LOCAL_REJECTION",
+   proof=self.proof.to_wire(),sdk_queue_exit_code=self.sdk_queue_exit_code)
+  return row
+
+def parse_full_pre_dispatch_failure_closure_v1(value:object,*,expected_machine_id:str)->FullPreDispatchFailureClosureV1:
+ row=record(value,{"schema","status","machine_id","observed_at_utc","completed_cycles","date_raw","next_sequence",
+  "original_wall_origin_utc","unknown_requests_replayed","refs","tasks","game","proof","sdk_queue_exit_code"})
+ need(row["schema"]==FULL_PRE_DISPATCH_FAILURE_SCHEMA_V1 and row["status"]=="CLOSED_FULL_PRE_DISPATCH_LOCAL_REJECTION"
+  and row["machine_id"]==expected_machine_id and row["unknown_requests_replayed"] is False,"distinct failed FULL closure contract")
+ # Shared coordinate/Task parsing; no normal-epoch evidence or status is reused.
+ r=record(row["refs"],{"sdk_closed","supervisor_closed","game_exit","screen_release","driver_review"})
+ tasks:list[SettledTaskClosureRefsV1]=[]
+ for value_row in rows(row["tasks"]):
+  task=record(value_row,{"role","spec","closed","unregistered"});role=task["role"]
+  if role=="supervisor":role_name:TaskRoleV1="supervisor"
+  elif role=="display":role_name="display"
+  elif role=="feeder":role_name="feeder"
+  else:raise ValueError("failed FULL Task role")
+  tasks.append(SettledTaskClosureRefsV1(role_name,parse_ref(task["spec"]),parse_ref(task["closed"]),parse_ref(task["unregistered"])))
+ game=record(row["game"],{"exit_code","forced_owned_job_cleanup","normal_wm_close_qualified"})
+ forced=game["forced_owned_job_cleanup"];normal=game["normal_wm_close_qualified"]
+ if type(forced) is not bool or type(normal) is not bool:raise ValueError("failed FULL Game closure booleans")
+ p=record(row["proof"],{"prefix","full_request_ref","full_response_ref","first_exception_ref","halt_ref","queue_source_ref","queue_policy_ref"})
+ prefix=record(p["prefix"],{"prior_basis_ref","prior_validation_ref","sources","loop_state_ref","inventory_ref","history_tail_ref"})
+ sources=record(prefix["sources"],{"actual_game_ref","sdk_pair_ref","semantic_response_ref","capabilities_response_ref","cold_bound_ref","cold_admission_ref"})
+ ready=ReadinessClosureProofV2(parse_ref(prefix["prior_basis_ref"]),parse_ref(prefix["prior_validation_ref"]),
+  WarmSourceRefsV1(*(parse_ref(sources[k]) for k in ("actual_game_ref","sdk_pair_ref","semantic_response_ref","capabilities_response_ref","cold_bound_ref","cold_admission_ref"))),
+  parse_ref(prefix["loop_state_ref"]),parse_ref(prefix["inventory_ref"]),parse_ref(prefix["history_tail_ref"]))
+ bindings=SettledProgressClosureV1(text(row["machine_id"]),utc(row["observed_at_utc"]),integer(row["completed_cycles"]),integer(row["date_raw"]),
+  integer(row["next_sequence"],1),utc(row["original_wall_origin_utc"]),SettledProgressClosureRefsV1(*(parse_ref(r[k]) for k in
+   ("sdk_closed","supervisor_closed","game_exit","screen_release","driver_review"))),tuple(tasks),integer(game["exit_code"]),forced,normal)
+ return FullPreDispatchFailureClosureV1(bindings,FullPreDispatchFailureProofV1(ready,*(parse_ref(p[k]) for k in
+  ("full_request_ref","full_response_ref","first_exception_ref","halt_ref","queue_source_ref","queue_policy_ref"))),integer(row["sdk_queue_exit_code"],1,UINT64_MAX))
+
+def _full_pre_dispatch_source_v1(proof:FullPreDispatchFailureProofV1,*,reader:BasisReaderV1,root:Path,message:str,traceback:str)->None:
+ import ast
+ raw=exact_read(reader,proof.queue_source_ref,MAX_FILE)
+ need(_same_path(proof.queue_source_ref.path,str(root/"root_p37c23_sdk_queue.py")),"original generated Queue path")
+ policy=evidence(reader,proof.queue_policy_ref,65536)
+ cold=evidence(reader,proof.prefix.sources.cold_admission_ref,65536)
+ need(_same_path(proof.queue_policy_ref.path,str(root/"ROOT-C23-CANONICAL-PRELOAD-POLICY-A05.json"))
+  and parse_ref(cold.get("queue_source"))==proof.queue_source_ref,"actual cold admission Queue source authority")
+ freeze_ref=parse_ref(cold.get("sdk_freeze"))
+ need(_same_path(freeze_ref.path,str(root/"ROOT-FINAL-SDK-FREEZE-P37C23-A15.json")),"actual execution freeze path")
+ freeze=evidence(reader,freeze_ref,MAX_FILE)
+ need(parse_ref(freeze.get("canonical_preload_policy"))==proof.queue_policy_ref,"execution freeze binds canonical Queue policy")
+ pins=rows(policy.get("entry_source_pins"))
+ need(any(rows(pin)==[proof.queue_source_ref.path,proof.queue_source_ref.sha256] for pin in pins),"Queue whole-source canonical policy pin")
+ tree=ast.parse(raw)
+ classes=[node for node in tree.body if isinstance(node,ast.ClassDef) and node.name=="CleanRobertMainMenuQueue"]
+ need(len(classes)==1,"original map admission class")
+ camera=[node for node in classes[0].body if isinstance(node,ast.FunctionDef) and node.name=="require_camera_pixel_admission"]
+ full=[node for node in ast.walk(tree) if isinstance(node,ast.AsyncFunctionDef) and node.name=="full_loop"
+  and any(isinstance(n,ast.Expr) and isinstance(n.value,ast.Call) and isinstance(n.value.func,ast.Attribute)
+   and n.value.func.attr=="require_camera_pixel_admission" for n in node.body)]
+ need(len(camera)==len(full)==1,"original camera and FULL methods")
+ body=list(full[0].body)
+ if body and isinstance(body[0],ast.Expr) and isinstance(body[0].value,ast.Constant) and isinstance(body[0].value.value,str):body.pop(0)
+ expected=ast.parse('if getattr(self, "halted", None):\n raise RuntimeError("original failed response remains halted; observe/reconsume it first")\nself.current_attempt = None\nif self.initial_save is None or not self.checkpoint_bootstrap_verified:\n raise ValueError("full_loop requires actual verified cold canonical bootstrap")\nself.require_camera_pixel_admission()\n')
+ need(ast.dump(ast.Module(body=body[:4],type_ignores=[]))==ast.dump(expected),"camera admission precedes every consume/generated dispatch in actual FULL")
+ raises=[node for node in ast.walk(camera[0]) if isinstance(node,ast.Raise) and isinstance(node.exc,ast.Call)
+  and isinstance(node.exc.func,ast.Name) and node.exc.func.id=="ValueError" and len(node.exc.args)==1
+  and isinstance(node.exc.args[0],ast.Constant) and node.exc.args[0].value==message]
+ need(len(raises)==1 and not any(isinstance(node,(ast.Await,ast.AsyncFunctionDef)) or
+  isinstance(node,ast.Call) and isinstance(node.func,ast.Attribute) and node.func.attr in {"generated","call","consume_sequence"}
+  for node in ast.walk(camera[0])),"local camera rejection contains no dispatch")
+ locations=re.findall(r'File "([^"]+)", line ([1-9][0-9]*), in require_camera_pixel_admission',traceback)
+ need(bool(locations) and _same_path(locations[-1][0],proof.queue_source_ref.path)
+  and int(locations[-1][1])==raises[0].lineno,"exception binds actual Queue raise source location")
+
+def validate_full_pre_dispatch_failure_closure_v1(value:object,*,basis:CurrentSavedBasisV1,reader:BasisReaderV1,
+ _trail:tuple[str,...]=())->ClosedEpochV1:
+ closure=parse_full_pre_dispatch_failure_closure_v1(value,expected_machine_id=basis.machine_id);c=closure.bindings;p=closure.proof;prefix=p.prefix
+ need(_same_json(evidence(reader,basis.refs.closure,65536),closure.to_wire()),"exact failed FULL closure")
+ prior_basis=decode_current_saved_basis_v1(exact_read(reader,prefix.prior_basis_ref,65536),expected_machine_id=basis.machine_id)
+ prior=_validated_immutable_inputs_v1(prior_basis,basis_ref=prefix.prior_basis_ref,validation_ref=prefix.prior_validation_ref,
+  reader=reader,_trail=(*_trail,basis.refs.closure.path))
+ need(basis==replace(prior_basis,observed_at_utc=basis.observed_at_utc,driver_identity=basis.driver_identity,next_sequence=prior_basis.next_sequence+3,
+  refs=replace(prior_basis.refs,driver=basis.refs.driver,driver_close=c.refs.driver_review,closure=basis.refs.closure,next=basis.refs.next)),
+  "failed FULL changes only closed process epoch sources")
+ need((c.completed_cycles,c.date_raw,c.next_sequence,c.original_wall_origin_utc)==(basis.completed_cycles,basis.frame.date_raw,basis.next_sequence,basis.origin.original_wall_origin_utc),"failed FULL preserves business coordinates")
+ root=Path(prefix.sources.actual_game_ref.path).parent
+ ready=validate_current_saved_readiness_evidence_v1(prior,sources=prefix.sources,reader=reader,runtime_root=root)
+ sdk,supervisor,game_exit,game,processes=_normal_game_evidence_v1(basis,reader,c.refs.sdk_closed,c.refs.supervisor_closed,c.refs.game_exit,exit_codes=(closure.sdk_queue_exit_code,0))
+ need(game==ready.game and {(v.role,v.pid,v.creation_filetime,v.executable) for v in processes}==
+  {(v.role,v.pid,v.creation_filetime,v.executable) for v in ready.sdk_generations},"failed FULL actual SDK and Game generations")
+ need(integer(game_exit.get("exit_code"))==c.game_exit_code and game_exit.get("forced_owned_job_cleanup") is c.game_forced
+  and game_exit.get("normal_wm_close_qualified") is c.game_normal_close_qualified,"honest failed FULL Game closure")
+ need(len({_settled_task_v1(task,reader=reader,machine_id=basis.machine_id) for task in c.tasks})==3,"all failed FULL Tasks closed")
+ _normal_screen_release_v1(basis,reader,c.refs.screen_release,supervisor)
+ sequence=prior_basis.next_sequence+2
+ request=evidence(reader,p.full_request_ref,16384);response=evidence(reader,p.full_response_ref,65536)
+ need(_same_path(p.full_request_ref.path,str(root/"p37-requests"/f"{sequence:04d}-1-result.json")) and
+  _same_path(p.full_response_ref.path,str(root/"p37-responses"/f"{sequence:04d}-1-result.json")),"original FULL slot paths")
+ need(set(request)=={"sequence","command","arguments"} and integer(request["sequence"],1)==sequence and request["command"]=="full_loop"
+  and set(record(request["arguments"]))=={"max_turns"} and integer(record(request["arguments"])["max_turns"],1,30)>=1
+  and _same_json(response.get("request"),request) and response.get("replay_allowed") is False
+  and "result" not in response and "original_response" in response and response["original_response"] is None,"local FULL failure has no original RPC result or replay")
+ message=text(response.get("client_error"));utc(response.get("ended_at_utc"))
+ rpc=record(response.get("full_rpc_rows_v1"));tools=record(rpc.get("tools"),{"AUTO","MET","SEM","SAVE"})
+ need(rpc.get("schema")=="xar.ck3.full-existing-rpc-rows/v1" and integer(rpc.get("control_sequence"),1)==sequence
+  and integer(rpc.get("row_count"),0,0)==0,"actual FULL has zero RPC rows")
+ for key in ("duplicate_rows_ignored","invalid_elapsed_rows"):integer(rpc.get(key),0,0)
+ for key in ("elapsed_seconds_sum","interval_union_seconds","overlap_seconds"):
+  need(type(rpc.get(key)) in (int,float) and rpc[key]==0,"zero measured full RPC interval")
+ for tool in tools.values():
+  item=record(tool)
+  for key in ("count","error_count","client_error_count"):integer(item.get(key),0,0)
+  need(type(item.get("elapsed_seconds_sum")) in (int,float) and item["elapsed_seconds_sum"]==0,"zero RPC tool interval")
+ exception=evidence(reader,p.first_exception_ref,16384);tree=record(exception.get("exception_tree"))
+ need(exception.get("stage")=="request_dispatch" and exception.get("replay_allowed") is False
+  and exception.get("traceback_truncated") is False and exception.get("locals_captured") is False
+  and tree.get("type")=="ValueError" and tree.get("message")==message
+  and _same_json(exception.get("request_identity"),{"sequence":sequence,"tool":None,"command":"full_loop"}),"actual first exception identity")
+ _full_pre_dispatch_source_v1(p,reader=reader,root=root,message=message,traceback=text(exception.get("traceback")))
+ halt=evidence(reader,p.halt_ref,16384)
+ need(halt.get("error_type")=="ValueError" and halt.get("message")==message and halt.get("replay_allowed") is False
+  and _same_json(halt.get("original_request"),request) and "original_response" in halt and halt["original_response"] is None
+  and _same_path(text(halt.get("first_exception_receipt")),p.first_exception_ref.path)
+  and integer(halt.get("next_sequence"),1)==basis.next_sequence,"retained original failed FULL halt marker")
+ inventory=evidence(reader,prefix.inventory_ref,65536)
+ row=record(inventory,{"schema","machine_id","observed_at_utc","runtime_root","closed_directory_snapshot","prefix_entries","full_request_ref","full_response_ref","first_exception_ref","halt_ref","unexpected_request_refs","unexpected_response_refs","full_inflight_present","full_before_present","full_after_present","generated_request_refs","next_ref"})
+ need(row["schema"]=="xar.current-saved-full-pre-dispatch-inventory/v1" and row["machine_id"]==basis.machine_id
+  and row["closed_directory_snapshot"] is True and _same_path(text(row["runtime_root"]),str(root)),"complete closed failed FULL inventory")
+ utc(row["observed_at_utc"])
+ for name,reference in (("full_request_ref",p.full_request_ref),("full_response_ref",p.full_response_ref),("first_exception_ref",p.first_exception_ref),("halt_ref",p.halt_ref),("next_ref",basis.refs.next)):
+  need(parse_ref(row[name])==reference,"failed FULL inventory exact original reference")
+ for key in ("unexpected_request_refs","unexpected_response_refs","generated_request_refs"):need(rows(row[key])==[],"no unaccounted dispatch/request")
+ for key in ("full_inflight_present","full_before_present","full_after_present"):need(row[key] is False,"FULL never reached dispatch markers")
+ next_row=evidence(reader,basis.refs.next,16384)
+ need(integer(next_row.get("next_sequence"),1)==basis.next_sequence and next_row.get("failed_request_registered_without_readmission") is True,"failure registration consumes no re-admission")
+ _validate_completed_readiness_entries_v1(prefix,prior,reader=reader,runtime_root=root,entries_value=row["prefix_entries"])
+ state=_clean(evidence(reader,prefix.loop_state_ref,262144))
+ need(integer(state.get("completed_cycles"))==prior_basis.completed_cycles and parse_frame(state.get("before"))==ready.opening
+  and _same_json(state.get("counts"),prior.seed.get("counts")) and _same_json(state.get("actual_saved_checkpoint"),prior.checkpoint),"FULL local rejection changed no cycle/SAVE state")
+ history_count=_validate_readiness_history_v2(prefix,prior,basis,game,reader=reader)
+ cold=evidence(reader,prefix.sources.cold_admission_ref,65536)
+ sdk_base=evidence(reader,parse_ref(cold.get("sdk_base_ref")),MAX_FILE)
+ native_rows=[record(v) for v in rows(sdk_base.get("files")) if record(v).get("relative")=="xar_autoplayer/bridge/native_driver.py"]
+ need(len(native_rows)==1,"single original SDK restore predicate module")
+ native_row=native_rows[0]
+ native_ref=ExactRefV1(str(Path(text(sdk_base.get("source_root")))/"xar_autoplayer/bridge/native_driver.py"),
+  integer(native_row.get("bytes"),1,MAX_SDK_SOURCE_BYTES_V1),digest(native_row.get("sha256")))
+ predicate=_sdk_restore_predicate_v2(native_ref,prefix.sources,reader=reader)
+ need(all(predicate(v,prior.checkpoint) for v in _qualified_history_suffix_v2(basis,reader)),
+  "complete current physical suffix passes the original frozen SDK restore predicate")
+ review=evidence(reader,c.refs.driver_review,16384)
+ need(review.get("schema")==FULL_PRE_DISPATCH_REVIEW_SCHEMA_V1 and review.get("status")=="CLOSED_DRIVER_SAVED_CHECKPOINT_VALIDATED"
+  and review.get("machine_id")==basis.machine_id and parse_ref(review.get("frozen_observed_Queue"))==prefix.loop_state_ref
+  and parse_ref(review.get("frozen_continuity_ledger"))==basis.refs.ledger,"failed FULL Driver review provenance")
+ for name,ref,identity in (("Driver",basis.refs.driver,basis.driver_identity),("SAVE",basis.refs.save,basis.save_identity)):
+  item=record(review.get(name));need(parse_ref(item.get("ref"))==ref and _identity(item.get("identity"))==identity,"failed FULL exact Driver/SAVE identity")
+ driver=record(review.get("Driver"));need(integer(driver.get("command_history_count"),1)==history_count
+  and _same_json(driver.get("last_checkpoint"),prior.checkpoint),"failed FULL exact restore-only history checkpoint")
+ recorded=record(driver.get("recorded_identity"));need(integer(recorded.get("bridge_pid"),1)==game.pid
+  and integer(recorded.get("episode_character_id"),1)==basis.frame.actor_character_id and recorded.get("episode_run_id")==basis.frame.episode_run_id,"failed FULL current Native identity")
+ return ClosedEpochV1(basis.refs.closure,game,basis.next_sequence,processes,c.observed_at_utc,text(recorded.get("pipe_name")))
+
+def build_full_pre_dispatch_driver_tail_v1(*,prior:CurrentSavedColdInputsV1,driver_ref:ExactRefV1,
+ driver_identity:FileStatIdentityV1,driver_bytes:bytes,reader:BasisReaderV1,observed_at_utc:str)->JsonObject:
+ """Project the caller's sole closed RAM read; preserve the exact physical prefix."""
+ need(type(driver_bytes) is bytes and len(driver_bytes)==driver_ref.bytes==driver_identity.bytes
+  and hashlib.sha256(driver_bytes).hexdigest()==driver_ref.sha256 and reader.stat(driver_ref.path)==driver_identity,"measured closed Driver RAM input")
+ payload=record(parse_json(driver_bytes));history=rows(payload.get("command_history"))
+ checkpoint=integer(prior.checkpoint.get("history_index"),1)
+ previous=_qualified_history_suffix_v2(prior.basis,reader)
+ previous_count=checkpoint+len(previous)
+ need(_same_json(payload.get("last_checkpoint"),prior.checkpoint)
+  and len(history)>previous_count and _exact_native_json_v1(history[checkpoint:previous_count])==_exact_native_json_v1(previous),
+  "exact qualified physical restore prefix, no historical reconstruction")
+ return {"schema":"xar.current-saved-readiness-driver-tail/v1","machine_id":prior.basis.machine_id,
+  "observed_at_utc":utc(observed_at_utc),"prior_driver_ref":prior.basis.refs.driver.to_wire(),"driver_ref":driver_ref.to_wire(),
+  "prior_history_count":previous_count,"command_history_count":len(history),
+  "prior_post_checkpoint_sha256":hashlib.sha256(_exact_native_json_v1(previous)).hexdigest(),
+  "post_prior_history":[_native_history_json_v1(v) for v in history[previous_count:]]}
+
+def build_full_pre_dispatch_failure_basis_v1(closure:FullPreDispatchFailureClosureV1,*,closure_ref:ExactRefV1,
+ driver_ref:ExactRefV1,driver_identity:FileStatIdentityV1,next_ref:ExactRefV1,reader:BasisReaderV1)->CurrentSavedBasisV1:
+ c=closure.bindings;p=closure.proof.prefix
+ prior=decode_current_saved_basis_v1(exact_read(reader,p.prior_basis_ref,65536),expected_machine_id=c.machine_id)
+ basis=replace(prior,observed_at_utc=c.observed_at_utc,driver_identity=driver_identity,next_sequence=c.next_sequence,
+  refs=replace(prior.refs,driver=driver_ref,driver_close=c.refs.driver_review,closure=closure_ref,next=next_ref))
+ need(reader.stat(driver_ref.path)==driver_identity and reader.stat(basis.refs.save.path)==basis.save_identity,"current failed FULL closed file identities")
+ validate_full_pre_dispatch_failure_closure_v1(closure.to_wire(),basis=basis,reader=reader)
+ return basis
+
+def qualify_full_pre_dispatch_failure_basis_v1(basis:CurrentSavedBasisV1,*,driver_bytes:bytes,
+ checkpoint_validator:PinnedCheckpointValidatorV1,reader:BasisReaderV1)->ValidatedCurrentSavedBasisV1:
+ """Run the real original SDK validator on the caller's measured closed RAM payload."""
+ need(type(driver_bytes) is bytes and len(driver_bytes)==basis.refs.driver.bytes
+  and hashlib.sha256(driver_bytes).hexdigest()==basis.refs.driver.sha256,"exact canonical failed FULL RAM Driver")
+ need(reader.stat(basis.refs.driver.path)==basis.driver_identity and reader.stat(basis.refs.save.path)==basis.save_identity,"stable canonical closed inputs")
+ need(checkpoint_validator.source_ref==basis.refs.checkpoint_validator,"original pinned checkpoint validator")
+ exact_read(reader,checkpoint_validator.source_ref,65536)
+ validate_full_pre_dispatch_failure_closure_v1(evidence(reader,basis.refs.closure,65536),basis=basis,reader=reader)
+ payload=record(parse_json(driver_bytes))
+ for name in ("managed_restore_transaction","rollback_war_failure","succession_expectation"):
+  need(name not in payload or payload[name] is None,"no unresolved closed Driver transaction: "+name)
+ if "rollback_war_failures" in payload:need(rows(payload["rollback_war_failures"])==[],"no unresolved closed Driver war failures")
+ history=rows(payload.get("command_history"));checkpoint=integer(basis.checkpoint.get("history_index"),1)
+ need(_exact_native_json_v1(history[checkpoint:])==_exact_native_json_v1(_qualified_history_suffix_v2(basis,reader)),
+  "canonical RAM history agrees with the complete qualified physical suffix")
+ anchor=checkpoint_validator.validate(payload,profile_dir=Path(basis.refs.save.path).parent.parent,pipe_name=text(payload.get("pipe_name")))
+ need(_same_json(anchor,basis.checkpoint),"original SDK canonical SAVE anchor unchanged")
+ need(reader.stat(basis.refs.driver.path)==basis.driver_identity and reader.stat(basis.refs.save.path)==basis.save_identity,"stable identities after original SDK SAVE validation")
+ return ValidatedCurrentSavedBasisV1(basis,len(rows(payload.get("command_history"))),1,1)
+
+def _sdk_processes(value:object,*,exit_codes:tuple[int,int]=(0,0))->tuple[ClosedSdkProcessV1,...]:
  found:list[ClosedSdkProcessV1]=[]
  for item in rows(value):
   row=record(item)
@@ -822,7 +1072,7 @@ def _sdk_processes(value:object)->tuple[ClosedSdkProcessV1,...]:
   else:raise ValueError("exact SDK role")
   need(row.get("kernel_exit_observed") is True and type(row.get("wait_result")) is int
     and row["wait_result"]==0 and type(row.get("exit_code")) is int
-    and row["exit_code"]==0 and "observation_error" in row
+     and row["exit_code"]==exit_codes[0 if role_name=="sdk_queue" else 1] and "observation_error" in row
     and row["observation_error"] is None,'actual normal SDK kernel')
   found.append(ClosedSdkProcessV1(role_name,integer(row.get("pid"),1,PID_MAX),
    _birth(row.get("creation_filetime"),legacy_python=True),
@@ -867,12 +1117,12 @@ def _validate_task_closure(
     'actual Task absent after')
   matching+=1
  need(matching==1,'one exact Task unregiste')
-def _normal_game_evidence_v1(basis:CurrentSavedBasisV1,reader:BasisReaderV1,sdk_ref:ExactRefV1,supervisor_ref:ExactRefV1,game_ref:ExactRefV1)->tuple[dict[str,object],dict[str,object],dict[str,object],CurrentGameIdentityV1,tuple[ClosedSdkProcessV1,...]]:
+def _normal_game_evidence_v1(basis:CurrentSavedBasisV1,reader:BasisReaderV1,sdk_ref:ExactRefV1,supervisor_ref:ExactRefV1,game_ref:ExactRefV1,*,exit_codes:tuple[int,int]=(0,0))->tuple[dict[str,object],dict[str,object],dict[str,object],CurrentGameIdentityV1,tuple[ClosedSdkProcessV1,...]]:
  sdk=evidence(reader,sdk_ref,16384)
  need(sdk.get("machine_id")==basis.machine_id
-   and sdk.get("status")=="ACTUAL_BOTH_SDK_EXITS_OBSERVED" and sdk.get("normal") is True,
+    and sdk.get("status")=="ACTUAL_BOTH_SDK_EXITS_OBSERVED" and sdk.get("normal") is all(code==0 for code in exit_codes),
    "old SDK actual closure")
- processes=_sdk_processes(sdk.get("processes"))
+ processes=_sdk_processes(sdk.get("processes"),exit_codes=exit_codes)
  supervisor=evidence(reader,supervisor_ref,16384)
  actual_exit=evidence(reader,game_ref,16384)
  owned=record(supervisor.get("owned_cleanup"))
@@ -895,7 +1145,8 @@ def _normal_game_evidence_v1(basis:CurrentSavedBasisV1,reader:BasisReaderV1,sdk_
    'actual old Game kernel/o')
  sdk_again=record(supervisor.get("sdk_actual_exit"))
  need(sdk_again.get("status")==sdk["status"]
-   and _sdk_processes(sdk_again.get("processes"))==processes,
+    and sdk_again.get("normal") is sdk.get("normal")
+    and _sdk_processes(sdk_again.get("processes"),exit_codes=exit_codes)==processes,
    'supervisor and SDK closu')
  for flag in ("forced_owned_job_cleanup","normal_wm_close_qualified"):
   need(type(actual_exit.get(flag)) is bool,'Game closure classificat')
@@ -991,6 +1242,8 @@ def _normal_driver_review_v1(
 def _closed_epoch(basis:CurrentSavedBasisV1,reader:BasisReaderV1,*,_trail:tuple[str,...]=())->ClosedEpochV1:
  need(len(_trail)<16 and basis.refs.closure.path not in _trail,"bounded acyclic continuity closure lineage")
  closure=evidence(reader,basis.refs.closure,65536)
+ if closure.get("schema")==FULL_PRE_DISPATCH_FAILURE_SCHEMA_V1:
+  return validate_full_pre_dispatch_failure_closure_v1(closure,basis=basis,reader=reader,_trail=_trail)
  if closure.get("schema")==COMPLETED_UNSAVED_TAIL_SCHEMA_V1:
   return _completed_unsaved_tail_epoch_for_basis_v1(basis,_TailOriginalResponseReaderV1(reader),_trail=_trail)
  if closure.get("schema")==NORMAL_CLOSURE_SCHEMA_V2:
@@ -1212,6 +1465,14 @@ def _validated_immutable_inputs_v1(
    if history.get("schema")==READINESS_RESTORE_PROJECTION_SCHEMA_V2:
     projection=parse_readiness_restore_projection_tail_v2(history,expected_machine_id=basis.machine_id)
     recovery_ref=projection.recovery_proof_ref
+ if closure_row.get("schema")==FULL_PRE_DISPATCH_FAILURE_SCHEMA_V1:
+  failed=parse_full_pre_dispatch_failure_closure_v1(closure_row,expected_machine_id=basis.machine_id)
+  prior_basis=decode_current_saved_basis_v1(exact_read(reader,failed.proof.prefix.prior_basis_ref,65536),expected_machine_id=basis.machine_id)
+  prior_inputs=_validated_immutable_inputs_v1(prior_basis,basis_ref=failed.proof.prefix.prior_basis_ref,
+   validation_ref=failed.proof.prefix.prior_validation_ref,reader=reader,_trail=(*_trail,basis_ref.path))
+  prior_ledger=prior_inputs.old_ledger
+  if "unsaved_tail_recovery" in prior_ledger:
+   recovery_ref=parse_ref(record(prior_ledger["unsaved_tail_recovery"]).get("evidence_ref"))
  tail_recovered=recovery_ref is not None
  expected_ledger_cycles=basis.completed_cycles if tail_recovered else basis.progress.ledger_cycles
  expected_ledger_date=basis.frame.date_raw if tail_recovered else basis.progress.ledger_date_raw
@@ -1393,6 +1654,66 @@ def project_current_saved_opening_v1(
    and changed["start_date_raw"]==basis.origin.start_date_raw,'cold observation has zer')
  return changed
 @dataclass(frozen=True,slots=True)
+class CampaignMapAdmissionV1:
+ """Legacy Python-only map identity: FILETIME remains an opaque exact int.
+
+ Presentation provenance may accompany the receipt; this model is the shared
+ admission core, not a cross-language JSON identity codec.
+ """
+ machine_id:str
+ game_pid:int
+ game_creation_filetime:int
+ recording_session_id:str
+ actual_initial_frame:SavedFrameV1
+ observed_at_utc:str|None=None
+ def __post_init__(self)->None:
+  text(self.machine_id);integer(self.game_pid,1,PID_MAX)
+  integer(self.game_creation_filetime,1,UINT64_MAX);text(self.recording_session_id)
+  need(isinstance(self.actual_initial_frame,SavedFrameV1),"typed campaign map frame")
+  parse_frame(self.actual_initial_frame.to_wire())
+  if self.observed_at_utc is not None:utc(self.observed_at_utc)
+ def to_wire(self)->JsonObject:
+  result:JsonObject={"machine_id":self.machine_id,"status":"GREEN","reviewer":"/root",
+   "game_pid":self.game_pid,"game_creation_filetime":self.game_creation_filetime,
+   "Game_map_visible":True,"decision_text_visible":True,
+   "recording_session_id":self.recording_session_id,
+   "actual_initial_frame":self.actual_initial_frame.to_wire()}
+  if self.observed_at_utc is not None:
+   result.update(schema="xar.current-saved-root-map-review/v1",observed_at_utc=self.observed_at_utc)
+  return result
+ def require_native_launch_v1(self,launch:object)->None:
+  row=record(launch)
+  need(integer(row.get("pid"),1,PID_MAX)==self.game_pid
+   and integer(row.get("creation_filetime"),1,UINT64_MAX)==self.game_creation_filetime,
+   "campaign map exact Python Native launch identity")
+
+def parse_campaign_map_admission_v1(value:object,*,expected_machine_id:str)->CampaignMapAdmissionV1:
+ row=record(value)
+ need(text(row.get("machine_id"))==text(expected_machine_id)
+  and row.get("status")=="GREEN" and row.get("reviewer")=="/root"
+  and row.get("Game_map_visible") is True and row.get("decision_text_visible") is True,
+  "campaign map actual Root review")
+ observed=utc(row["observed_at_utc"]) if "observed_at_utc" in row else None
+ if "schema" in row:
+  need(row["schema"]=="xar.current-saved-root-map-review/v1","campaign map schema")
+ return CampaignMapAdmissionV1(text(row["machine_id"]),integer(row.get("game_pid"),1,PID_MAX),
+  integer(row.get("game_creation_filetime"),1,UINT64_MAX),text(row.get("recording_session_id")),
+  parse_frame(row.get("actual_initial_frame")),observed)
+
+def build_campaign_map_admission_v1(*,machine_id:str,observed_at_utc:str,native_launch:object,
+ recording_session_id:str,actual_initial_frame:SavedFrameV1,
+ game_map_visible:Literal[True],decision_text_visible:Literal[True])->bytes:
+ """Root's producer; bytes must remain opaque to JavaScript Number consumers."""
+ need(game_map_visible is True and decision_text_visible is True,"actual reviewed map and decision text")
+ need(isinstance(actual_initial_frame,SavedFrameV1),"typed actual campaign map frame")
+ launch=record(native_launch)
+ candidate=CampaignMapAdmissionV1(text(machine_id),integer(launch.get("pid"),1,PID_MAX),
+  integer(launch.get("creation_filetime"),1,UINT64_MAX),text(recording_session_id),
+  parse_frame(actual_initial_frame.to_wire()),utc(observed_at_utc))
+ checked=parse_campaign_map_admission_v1(candidate.to_wire(),expected_machine_id=machine_id)
+ return _exact_native_json_v1(checked.to_wire())
+
+@dataclass(frozen=True,slots=True)
 class CurrentSavedFeederV1:
  inputs:CurrentSavedColdInputsV1
  warm_proof:WarmBoundProofV1
@@ -1460,12 +1781,12 @@ def validate_current_saved_feeder_v1(
  cold=_ref_record(reader,row.get("cold_admission_ref"),65536)
  need(cold.get("machine_id")==basis.machine_id and parse_ref(cold.get("basis_ref"))==inputs.basis_ref and parse_ref(cold.get("validation_ref"))==inputs.validation_ref and parse_current_game_identity_v1(cold.get("new_Game"),legacy_python=True)==game,'cold admission provenanc')
  map_admission_ref=parse_ref(row.get("map_admission_ref"))
- current=evidence(reader,map_admission_ref,65536)
- need(current.get("status")=="GREEN" and current.get("reviewer")=="/root"
-   and current.get("machine_id")==basis.machine_id
-   and integer(current.get("game_pid"),1,PID_MAX)==game.pid
-   and _birth(current.get("game_creation_filetime"),legacy_python=True)==game.creation_filetime
-   and _same_json(current.get("actual_initial_frame"),opening.to_wire()),'actual Root map/Game adm')
+ current=parse_campaign_map_admission_v1(evidence(reader,map_admission_ref,65536),expected_machine_id=basis.machine_id)
+ current.require_native_launch_v1(game_raw)
+ first_frame=_ref_record(reader,row.get("first_frame_ref"),32768)
+ need(current.actual_initial_frame==opening
+  and current.recording_session_id==text(first_frame.get("recorder_session_id")),
+  'actual Root map/Game/recording admission')
  active=_clean(_ref_record(reader,row.get("active_state_ref"),65536))
  need(_same_json(active.get("before"),opening.to_wire()) and integer(active.get("completed_cycles"))==basis.completed_cycles
    and integer(active.get("start_date_raw"))==basis.origin.start_date_raw
@@ -1897,6 +2218,8 @@ def resolve_current_saved_closed_sdk_ref_v1(inputs:CurrentSavedColdInputsV1,*,re
   expected=parse_settled_progress_closure_v1(closure,expected_machine_id=inputs.basis.machine_id).refs.sdk_closed
  elif closure.get("schema")==NORMAL_CLOSURE_SCHEMA_V2:
   expected=parse_normal_closure_v2(closure,expected_machine_id=inputs.basis.machine_id).refs.sdk_closed
+ elif closure.get("schema")==FULL_PRE_DISPATCH_FAILURE_SCHEMA_V1:
+  expected=parse_full_pre_dispatch_failure_closure_v1(closure,expected_machine_id=inputs.basis.machine_id).bindings.refs.sdk_closed
  elif closure.get("schema")==READONLY_PREFIX_UNKNOWN_EPOCH_SCHEMA:
   prefix_epoch=parse_readonly_prefix_unknown_epoch_v1(closure,expected_machine_id=inputs.basis.machine_id)
   expected=prefix_epoch.refs.sdk_closed

@@ -1,0 +1,217 @@
+{
+  "schema": "xar.source32.ci09-shared-contract-repair/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T11:24:37.973387+00:00",
+  "machine_identity_source": "tools/ck3_live_run_id.py machine; independently checked current_machine_id()",
+  "Root_finite_scope_ref": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\ROOT-CLOSED-RAM-QUALIFICATION-RELEASE01.json",
+    "bytes": 5984,
+    "sha256": "e65f81b2aee46943b12c0c39541e2bad12bbab035a7c5042d95c0b32375e43e5"
+  },
+  "status": "LOCAL_COMPLETE_CI09_AND_M6_SOFTWARE_PASS_ACTUAL_RUNTIME_PENDING",
+  "repair": {
+    "Python_only_map": "One exact-int producer/parser is consumed by emitted feeder owner and original Queue camera/FULL pre-dispatch guard. Integer FILETIME is preserved as opaque Python JSON; strings, bool and float are rejected.",
+    "abnormal_FULL_closure": "Distinct source-bound pre-dispatch failure closure validates original SEM/CAP prefix, zero RPC rows, absent dispatch markers, retained request/response/exception, actual SDK/Task/Game/screen exits, and original Source32 restore predicate. No failed FULL replay or game-day credit.",
+    "reader_graph": "Generic feeder transport accepts the original 280399-byte Queue under shared 1 MiB metadata maximum. Entry source guards retain stage/loop 128 KiB and owner 256 KiB; original SDK source remains a dedicated 2 MiB exact capability."
+  },
+  "frozen_report_ref": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-1100-01\\MAP-FULL-PREDISPATCH-SOURCE-FROZEN01.json",
+    "bytes": 4070,
+    "sha256": "f7fcc2dd42f4c0260b4187749efe135475c3cb3a056c5f903da8427c54bb442c"
+  },
+  "frozen_source_refs": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\current_saved_basis_v1.py",
+      "bytes": 216548,
+      "sha256": "6fd69c6bbe958bde489ffe7f391aae690716c26c8ddbe48f82010a5a88261a1e"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\root_current_saved_campaign_cold_owner_v1.py",
+      "bytes": 185311,
+      "sha256": "533d4ca8a3fdf90a97783b664c05b06d27b32c51d3f98f70bc318d74ff04b678"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\prepare_current_saved_campaign_cold_v1.py",
+      "bytes": 114480,
+      "sha256": "5895990023d3be3c813f9ad28f1318327c092aa229cdc57610f59209783f0a76"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\current_saved_campaign_feeder_v1.py",
+      "bytes": 55721,
+      "sha256": "fb3e9e04f04253a1eb6db3799d26a2eca5df9791b012e51bc0342a5851b94913"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\test_current_saved_campaign_cold_v1.py",
+      "bytes": 194555,
+      "sha256": "983de8f556b8c000fca5695aa77ef91dbaa3c328e72dc2f37c852f9a713b9126"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\test_current_saved_settled_closure_v1.py",
+      "bytes": 111886,
+      "sha256": "6b4beb639f6cc605ff15aee0776654a51bd1c261b2ab72c2e59319251bae8fe7"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\test_data\\current_saved_map_queue_v1.json",
+      "bytes": 97611,
+      "sha256": "ae9f0f91b3f4ebe6b93e630011b14d1dfb5640056f019ac2d83d7d852d269c75"
+    }
+  ],
+  "targeted": {
+    "actual_tests": 30,
+    "seconds": 84.93,
+    "status": "PASS",
+    "log_ref": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-1100-01\\FULL-PREDISPATCH-TARGETED10.log",
+      "bytes": 7073,
+      "sha256": "d493f9c19429975e424ebda6105a44e000ef7d8ba07768ac5b2671a884e94833"
+    }
+  },
+  "whole_modified_module_static_check": {
+    "modules": 6,
+    "strict": true,
+    "strict_equality": true,
+    "status": "PASS",
+    "log_ref": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-1100-01\\MAP-WHOLE-STRICT03.log",
+      "bytes": 43,
+      "sha256": "ab35ee42183d4d6d3ba483825ab037d18a5a15622d03be01d82220b1564851ff"
+    }
+  },
+  "CI09": {
+    "receipt_ref": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-1100-01\\ci-complete09\\CURRENT-CI-ACTUAL01.json",
+      "bytes": 19539,
+      "sha256": "75b8c0fa2a2d710d8264b807f305037be4863be9c74e2dd4b695661f623f9b3d"
+    },
+    "plan_ref": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-1100-01\\ci-complete09\\CURRENT-CI-COMMAND-PLAN01.json",
+      "bytes": 50561,
+      "sha256": "9bf45f1be25c591194513426769d4a28077d24978fd9d85e74aa61099fddcafa"
+    },
+    "observed_at_utc": "2026-10-22T11:10:25.251124+00:00",
+    "scope": "Both complete workflow steps: public normal-exit uint64 wire/MCP roundtrip (2 commands) and strict cold/owner boundary contracts (30 commands). This is not the whole Official Runner CI workflow.",
+    "actual_commands": 32,
+    "all_exit_codes_zero": true,
+    "source_pins_stable_during_run": true,
+    "workflow_ref_at_execution": {
+      "path": "Z:\\ck3_mod_rewrite\\.github\\workflows\\static-ci.yml",
+      "bytes": 94696,
+      "sha256": "3d155b3d6d8ef39cd4680b3845782bc5e295b6446eda80f86a024fa25380abfe"
+    },
+    "critical_discovered_run_skipped": [
+      95,
+      95,
+      0
+    ],
+    "critical_log_ref": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-1100-01\\ci-complete09\\ci-02-07.log",
+      "bytes": 21453,
+      "sha256": "f2229eb991a3f26144772ae402dd57e09fd8c95fc8ed2a8ee47c6ffbcbe87182"
+    },
+    "independent_SDK_continuation_discovered_run_skipped": [
+      1,
+      1,
+      0
+    ],
+    "independent_SDK_continuation_log_ref": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-1100-01\\ci-complete09\\ci-02-08.log",
+      "bytes": 531,
+      "sha256": "db3d58f718b436e52b93062035cbe5f02f4bfc1367b9b1b1df5283ac9e3673a5"
+    },
+    "Native32_isolated_source_fixture_discovered_run_skipped": [
+      13,
+      13,
+      0
+    ],
+    "Native32_isolated_source_fixture_log_ref": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-1100-01\\ci-complete09\\ci-02-09.log",
+      "bytes": 2802,
+      "sha256": "0ee898bb55b1227e7dc35848ec211c399a3e6d7875dbac482b0bb066eafb1e6f"
+    },
+    "existing_optional_WAL_skip": {
+      "count": 1,
+      "counted_as_passed_test": false,
+      "log_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a42-runtime-prep01\\new-software-1100-01\\ci-complete09\\ci-02-23.log",
+        "bytes": 124,
+        "sha256": "74294c34f8f1e5841804a462e70e2aeea64977d43c44a09eac8b80ecdbe1aee2"
+      }
+    },
+    "full_wall_seconds": 372.8083170999307,
+    "fixture_remaining": [],
+    "scratch_empty": true
+  },
+  "M6_persistent_CI": {
+    "workflow_ref_after_independent_step_added": {
+      "path": "Z:\\ck3_mod_rewrite\\.github\\workflows\\static-ci.yml",
+      "bytes": 95856,
+      "sha256": "64e21b3b809f515676d15ec336ba3d856f15113ac7b6d0e96fad8092871eeac0"
+    },
+    "step_name": "Test complete wartime Sway Source31 integration without CK3",
+    "commands": [
+      "python -B -m mypy --strict --strict-equality --follow-imports=skip --no-incremental --cache-dir nul tools/g2_saved_campaign/test_wartime_sway_source31_ci_v1.py",
+      "python -B -X utf8 -m unittest -v tools.g2_saved_campaign.test_wartime_sway_source31_ci_v1"
+    ],
+    "old_32_commands_preserved": true,
+    "environment_matches_original_cold_step": true,
+    "actual_local_receipt_ref": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\parallel-m6\\ACTUAL-RESULT01.json",
+      "bytes": 2372,
+      "sha256": "166bd49ce68e8652c7531a8663d638c95f8c5d8a5f86a8d67299b60017f3cf4d"
+    },
+    "actual_local_observed_at_utc": "2026-10-22T11:17:23.231456+00:00",
+    "actual_local_command_exit_codes": [
+      0,
+      0
+    ],
+    "source_ref": {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\test_wartime_sway_source31_ci_v1.py",
+      "bytes": 9026,
+      "sha256": "a9cc6d4aa1a3e49344a99ac0c840988c05db90cb96805dcaf9e534361d84a47c"
+    },
+    "source31_commit": "12e81b52c736baec02a85f32098bae5bdaa66a31",
+    "actual_original_integration_cases": 8,
+    "skipped": 0,
+    "strict_scope": "whole new module, strict+strict-equality, follow-imports=skip; imported legacy modules excluded",
+    "actual_logs": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\parallel-m6\\01-strict.log",
+        "bytes": 59,
+        "sha256": "a0bc641cf69d0eab24038635268ddd57a9cd6e570091d8763b2ccadcbc48efcc"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261019-prepare01\\c23-source23-native30-cold100\\current-saved-a46-runtime-prep01\\parallel-m6\\02-integration.log",
+        "bytes": 2188,
+        "sha256": "ac58a65c57b4ac5a32a7843cdcf92fbc31f3e0a33bf65403fb197f3f12b063bc"
+      }
+    ],
+    "missing_Git_source_or_module_result": "RED: explicit MissingSource31Error; no working-tree fallback or skip accepted",
+    "fixture_empty": true,
+    "business_credit_awarded": false
+  },
+  "published_original_source": {
+    "archive_tag": "refs/tags/archive/robert-source32-6f58f72a8-20261022",
+    "commit": "6f58f72a8ff29d85f8751d3bfb1667b38f9497df",
+    "source31_parent": "12e81b52c736baec02a85f32098bae5bdaa66a31",
+    "remote_readback_observed_at_utc": "2026-10-22T11:24:40.024423+00:00",
+    "remote_readback": "6f58f72a8ff29d85f8751d3bfb1667b38f9497df\trefs/tags/archive/robert-source32-6f58f72a8-20261022",
+    "source_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+    "bytes": 1648649,
+    "sha256": "15a1eca3cee4f79be51a4144258650822e49146c93b7a87257319f848928d06b",
+    "publication_evidence_ref": {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\robert-source32-published-ci-input-20261022.json",
+      "bytes": 1336,
+      "sha256": "cdcac0b0d1c5ad74cb6558bcd5a7b0eabb73c75cc2fc8d1a3801f4dd09f86a6d"
+    }
+  },
+  "qualification_boundary": {
+    "complete_packet_CI_fixture": "65-entry Source31/null-Native-override fixture with 8 canonical entries and all 15 packaged shared imports; explicit presentation/state emitter fixture seams remain.",
+    "actual_Native32_67_entry_graph": "Requires separate fresh actual compose/Prepared/runtime validation; no qualification granted by this evidence.",
+    "M6": "Eight original producer/consumer software cases only. Runtime decision improvement and G2 milestone completion are not asserted.",
+    "hosted_runner": "No hosted-green claim; this evidence records local results and remote source availability only.",
+    "actual_game_days_added": 0,
+    "30_year_campaign_complete": false,
+    "one_second_per_day_achieved": false
+  },
+  "retention_review_at_utc": "2026-10-23T11:45:00Z"
+}

@@ -9,12 +9,13 @@ import unittest
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager, nullcontext
 from unittest.mock import Mock, patch
+from functools import lru_cache
 
 from tools.g2_saved_campaign import root_current_saved_campaign_cold_owner_v1 as owner
 from tools.g2_saved_campaign import current_saved_continuity_v1 as continuity
 from tools.g2_saved_campaign.current_saved_basis_v1 import (
     ExactRefV1, JsonObject, JsonValue, CurrentSavedBasisV1, MAX_ORIGINAL_RESPONSE_BYTES_V1,
-    BasisReaderV1, ValidatedCurrentSavedBasisV1, text,
+    BasisReaderV1, ValidatedCurrentSavedBasisV1, text, need,
     evidence, parse_ref, record, rows, json_object, integer, encode_current_saved_basis_v1,
     decode_readonly_prefix_history_v1, _exact_native_json_v1, MAX_SDK_SOURCE_BYTES_V1,
     exact_sdk_source_bytes_v1,
@@ -502,6 +503,7 @@ class ReadinessOnlyFixture:
                 "checkpoint": cp, "restored_date_raw": old.frame.date_raw, "map_ready": True,
                 "lifecycle": {"previous_pid": 10, "pid": 30}}}
         payload = record(json.loads(r.headers[old.refs.driver.path]))
+        payload['succession_lifecycle'] = cp['succession_lifecycle']
         payload["command_history"] = [{"index": 1, "command": "save-checkpoint", "ok": True,
             "result": {"checkpoint": cp}}, self.restore]
         raw = json.dumps(payload, sort_keys=False, separators=(",", ":")).encode()
@@ -644,6 +646,211 @@ class ReadinessOnlyFixture:
         r.identities[self.basis.refs.driver.path] = FileStatIdentityV1(len(raw), "1000000", "3")
         return owner.validate_current_saved_warm_inputs_v1(self.basis, basis_ref=self.basis_ref,
             validation_ref=self.validation_ref, sources=sources, reader=r, runtime_root=root)
+
+
+@lru_cache(maxsize=1)
+def _full_failure_original_sdk_bytes_v1() -> bytes:
+    import subprocess
+    commit = '6f58f72a8ff29d85f8751d3bfb1667b38f9497df'
+    tag = subprocess.run(['git', 'rev-parse', '--verify', 'refs/tags/archive/robert-source32-6f58f72a8-20261022'],
+        cwd=Path(__file__).resolve().parents[2], capture_output=True, check=False)
+    need(tag.returncode == 0 and tag.stdout.strip() == commit.encode(), 'published exact original Source32 archive tag')
+    with subprocess.Popen(['git', 'show', commit + ':ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py'],
+            cwd=Path(__file__).resolve().parents[2], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL) as process:
+        if process.stdout is None: raise ValueError('bounded original SDK source pipe')
+        raw = process.stdout.read(2097153)
+        if len(raw) > 2097152:
+            process.kill(); process.wait(); raise ValueError('original SDK source cap')
+        need(process.wait(timeout=30) == 0 and len(raw) == 1648649 and hashlib.sha256(raw).hexdigest() ==
+            '15a1eca3cee4f79be51a4144258650822e49146c93b7a87257319f848928d06b', 'complete original Source32 SDK source')
+    return raw
+
+
+class FullPreDispatchFailureFixture:
+    """A closed original Queue map refusal after a genuine SEM/CAP prefix."""
+    def __init__(self, prior: NormalWarmFixture | None = None) -> None:
+        from tools.g2_saved_campaign.test_current_saved_campaign_cold_v1 import _actual_map_queue_whole_v1
+        self.ready = f = ReadinessOnlyFixture(prior)
+        self.reader = r = f.reader
+        self.prior = owner._validated_immutable_inputs_v1(f.prior.basis,
+            basis_ref=f.proof.prior_basis_ref, validation_ref=f.proof.prior_validation_ref, reader=r)
+        root = Path(f.proof.sources.actual_game_ref.path).parent
+        sequence = f.basis.next_sequence
+        self.request: dict[str, object] = {'sequence': sequence, 'command': 'full_loop', 'arguments': {'max_turns': 30}}
+        self.request_ref = r.put(str(root / f'p37-requests/{sequence:04d}-1-result.json'), self.request)
+        self.message = 'Root must review the new actual map and overlay before initial SAVE'
+        self.response: dict[str, object] = {'ended_at_utc': UTC, 'request': self.request,
+            'client_error': self.message, 'replay_allowed': False, 'original_response': None,
+            'full_rpc_rows_v1': {'schema': 'xar.ck3.full-existing-rpc-rows/v1', 'control_sequence': sequence,
+                'row_count': 0, 'duplicate_rows_ignored': 0, 'invalid_elapsed_rows': 0,
+                'elapsed_seconds_sum': 0.0, 'interval_union_seconds': 0, 'overlap_seconds': 0.0,
+                'tools': {name: {'count': 0, 'elapsed_seconds_sum': 0.0,
+                    'error_count': 0, 'client_error_count': 0} for name in ('AUTO', 'MET', 'SEM', 'SAVE')}}}
+        self.response_ref = r.put(str(root / f'p37-responses/{sequence:04d}-1-result.json'), self.response)
+        raw = _actual_map_queue_whole_v1()
+        self.queue_ref = ExactRefV1(str(root / 'root_p37c23_sdk_queue.py'), len(raw), hashlib.sha256(raw).hexdigest())
+        r.raw[self.queue_ref.path] = raw
+        r.identities[self.queue_ref.path] = FileStatIdentityV1(len(raw), '2000000', '4')
+        import ast
+        raises = [node for node in ast.walk(ast.parse(raw)) if isinstance(node, ast.Raise)
+            and isinstance(node.exc, ast.Call) and node.exc.args and isinstance(node.exc.args[0], ast.Constant)
+            and node.exc.args[0].value == self.message]
+        assert len(raises) == 1
+        self.exception: dict[str, object] = {'at_utc': UTC, 'stage': 'request_dispatch', 'replay_allowed': False,
+            'exception_tree': {'type': 'ValueError', 'message': self.message}, 'traceback_truncated': False,
+            'locals_captured': False, 'request_identity': {'sequence': sequence, 'tool': None, 'command': 'full_loop'},
+            'traceback': f'File "{self.queue_ref.path}", line {raises[0].lineno}, in require_camera_pixel_admission'}
+        self.exception_ref = r.put('full-first-exception.json', self.exception)
+        self.halt: dict[str, object] = {'error_type': 'ValueError', 'message': self.message,
+            'replay_allowed': False, 'original_request': self.request, 'original_response': None,
+            'first_exception_receipt': self.exception_ref.path, 'next_sequence': sequence + 1}
+        self.halt_ref = r.put('full-halt.json', self.halt)
+        self.next_ref = r.put('failed-full-NEXT.json', {'next_sequence': sequence + 1,
+            'failed_request_registered_without_readmission': True})
+        policy_ref = r.put(str(root / 'ROOT-C23-CANONICAL-PRELOAD-POLICY-A05.json'), {'entry_source_pins': [[self.queue_ref.path, self.queue_ref.sha256]]})
+        freeze_ref = r.put(str(root / 'ROOT-FINAL-SDK-FREEZE-P37C23-A15.json'), {'canonical_preload_policy': policy_ref.to_wire()})
+        cold = evidence(r, f.proof.sources.cold_admission_ref)
+        cold.update(queue_source=self.queue_ref.to_wire(), sdk_freeze=freeze_ref.to_wire())
+        native = _full_failure_original_sdk_bytes_v1()
+        sdk_root = root / 'sdk'
+        native_path = str(sdk_root / 'xar_autoplayer/bridge/native_driver.py')
+        self.sdk_ref = ExactRefV1(native_path, len(native), hashlib.sha256(native).hexdigest())
+        r.raw[native_path] = native
+        r.identities[native_path] = FileStatIdentityV1(len(native), '2000100', '5')
+        anchor_ref = r.put('failure-sdk-anchor.json', {'schema': 'xar.source32.canonical-git-anchor/v1',
+            'machine_id': f.basis.machine_id, 'commit': '6f58f72a8ff29d85f8751d3bfb1667b38f9497df'})
+        base_ref = r.put('failure-sdk-base.json', {'source_root': str(sdk_root),
+            'business_source_commit': '6f58f72a8ff29d85f8751d3bfb1667b38f9497df',
+            'source32_canonical_anchor': anchor_ref.to_wire(), 'files': [{'relative': 'xar_autoplayer/bridge/native_driver.py',
+                'bytes': len(native), 'sha256': self.sdk_ref.sha256}]})
+        cold.update(sdk_base_ref=base_ref.to_wire(), sdk_anchor_ref=anchor_ref.to_wire(), business_source_generation=32)
+        cold_ref = r.put(f.proof.sources.cold_admission_ref.path, cold)
+        f.proof = replace(f.proof, sources=replace(f.proof.sources, cold_admission_ref=cold_ref))
+        self.inventory: dict[str, object] = {'schema': 'xar.current-saved-full-pre-dispatch-inventory/v1',
+            'machine_id': f.basis.machine_id, 'observed_at_utc': UTC, 'runtime_root': str(root),
+            'closed_directory_snapshot': True, 'prefix_entries': f.inventory['entries'],
+            'full_request_ref': self.request_ref.to_wire(), 'full_response_ref': self.response_ref.to_wire(),
+            'first_exception_ref': self.exception_ref.to_wire(), 'halt_ref': self.halt_ref.to_wire(),
+            'unexpected_request_refs': [], 'unexpected_response_refs': [], 'generated_request_refs': [],
+            'full_inflight_present': False, 'full_before_present': False, 'full_after_present': False,
+            'next_ref': self.next_ref.to_wire()}
+        sdk = evidence(r, f.closure.refs.sdk_closed); sdk['normal'] = False
+        processes = [record(v) for v in rows(sdk['processes'])]
+        for process in processes:
+            if process['role'] == 'sdk_queue': process['exit_code'] = 1
+        sdk['processes'] = processes
+        sdk_ref = r.put('failed-full-sdk.json', sdk)
+        supervisor = evidence(r, f.closure.refs.supervisor_closed); supervisor['sdk_actual_exit'] = sdk
+        supervisor_ref = r.put('failed-full-supervisor.json', supervisor)
+        self.review = dict(f.review)
+        self.review.update(schema=owner.FULL_PRE_DISPATCH_REVIEW_SCHEMA_V1,
+            frozen_observed_Queue=f.proof.loop_state_ref.to_wire())
+        self.review.pop('phase'); self.review.pop('frozen_settled_Queue')
+        self.review['actual_next'] = {'next_sequence': sequence + 1}
+        self.tail = owner.build_full_pre_dispatch_driver_tail_v1(prior=self.prior,
+            driver_ref=f.basis.refs.driver, driver_identity=f.basis.driver_identity,
+            driver_bytes=r.raw[f.basis.refs.driver.path], reader=r, observed_at_utc=UTC)
+        prefix = replace(f.proof, inventory_ref=r.put('failed-full-inventory.json', self.inventory),
+            history_tail_ref=r.put('failed-full-tail.json', self.tail))
+        self.proof = owner.FullPreDispatchFailureProofV1(prefix, self.request_ref, self.response_ref,
+            self.exception_ref, self.halt_ref, self.queue_ref, policy_ref)
+        bindings = owner.SettledProgressClosureV1(f.basis.machine_id, UTC, f.basis.completed_cycles,
+            f.basis.frame.date_raw, sequence + 1, f.basis.origin.original_wall_origin_utc,
+            replace(f.closure.refs, sdk_closed=sdk_ref, supervisor_closed=supervisor_ref,
+                driver_review=r.put('failed-full-review.json', self.review)),
+            (*f.closure.tasks, f.prior.tasks[2]), 1, True, False)
+        self.closure = owner.FullPreDispatchFailureClosureV1(bindings, self.proof)
+        self.reseal()
+
+    def reseal(self) -> None:
+        r = self.reader
+        self.response_ref = r.put(self.response_ref.path, self.response)
+        self.exception_ref = r.put(self.exception_ref.path, self.exception)
+        self.inventory.update(full_response_ref=self.response_ref.to_wire(), first_exception_ref=self.exception_ref.to_wire())
+        prefix = replace(self.proof.prefix, inventory_ref=r.put('failed-full-inventory.json', self.inventory),
+            history_tail_ref=r.put('failed-full-tail.json', self.tail))
+        self.proof = replace(self.proof, prefix=prefix, full_response_ref=self.response_ref, first_exception_ref=self.exception_ref)
+        self.closure = replace(self.closure, proof=self.proof)
+        self.closure_ref = r.put('failed-full-closure.json', self.closure.to_wire())
+        self.basis = owner.build_full_pre_dispatch_failure_basis_v1(self.closure, closure_ref=self.closure_ref,
+            driver_ref=self.ready.basis.refs.driver, driver_identity=self.ready.basis.driver_identity,
+            next_ref=self.next_ref, reader=r)
+        self.basis_ref = r.put('failed-full-basis.json', json.loads(encode_current_saved_basis_v1(self.basis)))
+        qualification = owner.BasisQualificationV1(self.basis.machine_id, UTC, self.basis_ref,
+            self.basis.refs.driver, self.basis.refs.save, self.basis.driver_identity, self.basis.driver_identity,
+            self.basis.save_identity, self.basis.save_identity, self.basis.refs.checkpoint_validator, 2, 1, 1, 1)
+        self.validation_ref = r.put('failed-full-qualification.json', qualification.to_wire())
+
+    def cold(self) -> owner.CurrentSavedColdInputsV1:
+        return owner.validate_current_saved_cold_inputs_v1(self.basis, basis_ref=self.basis_ref,
+            validation_ref=self.validation_ref, reader=self.reader)
+
+
+class FullPreDispatchFailureClosureTests(unittest.TestCase):
+    def test_opaque_native_integer_roundtrip_does_not_admit_unproven_restore_fields(self) -> None:
+        exact = 2**63 + 17
+        opaque = {'native_filetime': exact, 'rows': [exact, 2**53 + 2]}
+        self.assertEqual(json.loads(_exact_native_json_v1(opaque)), opaque)
+        with self.assertRaises(ValueError): json_object(opaque)
+        f = FullPreDispatchFailureFixture()
+        payload = record(json.loads(f.reader.raw[f.basis.refs.driver.path]))
+        history = rows(payload['command_history']); last = record(history[-1])
+        result = record(last['result']); result['unproven_native_identity'] = exact; last['result'] = result
+        history[-1] = last; payload['command_history'] = history
+        raw = _exact_native_json_v1(payload)
+        reference = replace(f.basis.refs.driver, bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest())
+        identity = replace(f.basis.driver_identity, bytes=len(raw))
+        f.reader.identities[reference.path] = identity
+        tail = owner.build_full_pre_dispatch_driver_tail_v1(prior=f.prior, driver_ref=reference,
+            driver_identity=identity, driver_bytes=raw, reader=f.reader, observed_at_utc=UTC)
+        self.assertEqual(record(record(rows(tail['post_prior_history'])[-1])['result'])['unproven_native_identity'], exact)
+        proof = replace(f.proof.prefix, history_tail_ref=f.reader.put('opaque-native-tail.json', tail))
+        with self.assertRaises(ValueError):
+            owner._validate_readiness_history_v2(proof, f.prior,
+                replace(f.basis, refs=replace(f.basis.refs, driver=reference), driver_identity=identity),
+                f.ready.prior.game_identity, reader=f.reader)
+
+    def test_shared_producer_cold_and_prepared_sdk_classification(self) -> None:
+        f = FullPreDispatchFailureFixture()
+        self.assertEqual(owner.parse_full_pre_dispatch_failure_closure_v1(json.loads(json.dumps(f.closure.to_wire())),
+            expected_machine_id=f.basis.machine_id), f.closure)
+        inputs = f.cold()
+        self.assertEqual({p.role: p.exit_code for p in inputs.closed_epoch.sdk_processes}, {'sdk_queue': 1, 'sdk_application': 0})
+        with patch.object(owner, 'LocalBasisReaderV1', return_value=f.reader):
+            self.assertIs(owner.validate_current_saved_prepared_sdk_closure_v1(
+                f.closure.bindings.refs.sdk_closed.to_wire(), inputs=inputs)['normal'], False)
+        self.assertNotIn(f.basis.refs.driver.path, f.reader.reads)
+        self.assertNotIn(f.basis.refs.save.path, f.reader.reads)
+
+    def test_rpc_result_dispatch_markers_source_and_identity_mutations_reject(self) -> None:
+        for mutation in ('rpc', 'original', 'replay', 'inflight', 'before', 'after', 'generated', 'request',
+                'missing_marker', 'source_position', 'identity', 'missing_prefix'):
+            with self.subTest(mutation=mutation):
+                f = FullPreDispatchFailureFixture()
+                if mutation == 'rpc':
+                    rpc = record(f.response['full_rpc_rows_v1']); rpc['row_count'] = 1; f.response['full_rpc_rows_v1'] = rpc
+                elif mutation == 'original': f.response['original_response'] = 'not-null'
+                elif mutation == 'replay': f.response['replay_allowed'] = True
+                elif mutation in ('inflight', 'before', 'after'): f.inventory['full_' + mutation + '_present'] = True
+                elif mutation == 'generated': f.inventory['generated_request_refs'] = [f.request_ref.to_wire()]
+                elif mutation == 'request': f.response['request'] = {**f.request, 'sequence': f.basis.next_sequence}
+                elif mutation == 'missing_marker': f.inventory['halt_ref'] = f.exception_ref.to_wire()
+                elif mutation == 'missing_prefix': f.inventory['prefix_entries'] = []
+                elif mutation == 'source_position':
+                    raw = f.reader.raw[f.queue_ref.path].replace(
+                        b'self.require_camera_pixel_admission()', b'self.consume_sequence(request)')
+                    changed_ref = replace(f.queue_ref, bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest())
+                    f.reader.raw[changed_ref.path] = raw
+                    policy_ref = f.reader.put(f.proof.queue_policy_ref.path, {'entry_source_pins': [[changed_ref.path, changed_ref.sha256]]})
+                    cold = evidence(f.reader, f.proof.prefix.sources.cold_admission_ref)
+                    freeze_ref = f.reader.put(Path(f.queue_ref.path).with_name('ROOT-FINAL-SDK-FREEZE-P37C23-A15.json').as_posix(), {'canonical_preload_policy': policy_ref.to_wire()})
+                    cold.update(queue_source=changed_ref.to_wire(), sdk_freeze=freeze_ref.to_wire())
+                    cold_ref = f.reader.put(f.proof.prefix.sources.cold_admission_ref.path, cold)
+                    f.proof = replace(f.proof, prefix=replace(f.proof.prefix, sources=replace(f.proof.prefix.sources, cold_admission_ref=cold_ref)))
+                    f.proof = replace(f.proof, queue_source_ref=changed_ref, queue_policy_ref=policy_ref)
+                else:
+                    f.reader.identities[f.basis.refs.driver.path] = replace(f.basis.driver_identity, file_id='77777777')
+                with self.assertRaises(ValueError): f.reseal()
 
 
 class ReadinessOnlyClosureTests(unittest.TestCase):
@@ -1058,7 +1265,13 @@ class ReadinessRestoreProjectionFixture:
         self.driver_identity = FileStatIdentityV1(len(raw), "900010", "10")
         r.raw[self.driver_ref.path] = raw; r.headers[self.driver_ref.path] = raw
         r.identities[self.driver_ref.path] = self.driver_identity
-        origin = "6f58f72a8ff29d85f8751d3bfb1667b38f9497df:ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py"
+        source_commit = "6f58f72a8ff29d85f8751d3bfb1667b38f9497df"
+        source_tag = "refs/tags/archive/robert-source32-6f58f72a8-20261022"
+        tag = subprocess.run(["git", "rev-parse", "--verify", source_tag],
+            cwd=Path(__file__).resolve().parents[2], capture_output=True, check=False)
+        if tag.returncode != 0 or tag.stdout.strip() != source_commit.encode("ascii"):
+            raise ValueError("published original Source32 archive tag required; checkout all tags, never skip")
+        origin = source_commit + ":ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py"
         with subprocess.Popen(["git", "show", origin], cwd=Path(__file__).resolve().parents[2],
                 stdout=subprocess.PIPE, stderr=subprocess.DEVNULL) as process:
             if process.stdout is None: raise ValueError("bounded original Git source pipe")
@@ -1201,6 +1414,20 @@ class ReadinessRestoreProjectionTests(unittest.TestCase):
                     reader=f.reader, observed_at_utc=datetime.now(timezone.utc).isoformat())
                 f.ready.validation_ref = f.reader.put("actual-new-qualification.json", qualification.to_wire())
                 self.assertEqual(f.ready.cold().basis, f.ready.basis)
+            with patch(__name__ + '.pure_basis', return_value=original.basis):
+                failed_prior = NormalWarmFixture(persisted=False,
+                    campaign_days=10958, metadata_root=root / 'full-pre-dispatch',
+                    saved_prior=SavedBusinessPriorV1(original, Producer.reader, 'test-pipe'))
+            failed = FullPreDispatchFailureFixture(failed_prior)
+            measured_failure = owner.qualify_full_pre_dispatch_failure_basis_v1(failed.basis,
+                driver_bytes=failed.reader.raw[failed.basis.refs.driver.path],
+                checkpoint_validator=Producer.validator, reader=failed.reader)
+            self.assertEqual((measured_failure.driver_body_reads,
+                measured_failure.canonical_checkpoint_validator_calls), (1, 1))
+            failed.validation_ref = failed.reader.put('actual-full-failure-qualification.json',
+                owner.build_basis_qualification_v1(measured_failure, basis_ref=failed.basis_ref,
+                    reader=failed.reader, observed_at_utc=UTC).to_wire())
+            self.assertEqual(failed.cold().basis, failed.basis)
 
     def test_original_nonempty_tail_to_json_closed_basis_cold_sdk_and_next_warm(self) -> None:
         f = ReadinessRestoreProjectionFixture()

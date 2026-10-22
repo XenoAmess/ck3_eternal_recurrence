@@ -15,7 +15,7 @@ from tools.g2_saved_campaign.current_saved_basis_v1 import (
  BasisReaderV1, CurrentSavedBasisV1, ExactRefV1, JsonObject, JsonValue, digest, integer,
  decode_current_saved_basis_v1, exact_read,
  json_object, json_value, need, parse_current_saved_basis_v1, parse_json,
- parse_ref, record, rows, text, utc,
+  parse_ref, record, rows, text, utc, MAX_FILE as MAX_FILE,
 )
 from tools.g2_saved_campaign.root_current_saved_campaign_cold_owner_v1 import (
  CampaignScoreJunctionV1, LocalBasisReaderV1, build_campaign_score_junction_v1,
@@ -30,7 +30,6 @@ from tools.g2_saved_campaign.current_saved_continuity_v1 import (
 PLAN_SCHEMA = "xar.current-saved-cold-plan/v4"
 QUOTE_SCHEMA = "xar.current-saved-cold-quote/v5"
 MAX_CURRENT_SAVED_CLOSURE_V1 = 67
-MAX_FILE = 1048576
 MAX_GRAPH = 8 * MAX_FILE
 CANONICAL_NAMES = frozenset((
  "launch_sdk_p37c23_owner.py", "native32_mcp_extension_v1.py",
@@ -734,6 +733,37 @@ def emit_current_saved_request_guards_v1(material:bytes,*,kind:Literal["cold","q
  compile(result,"<current saved shared request guards>","exec")
  return result.encode("utf-8")
 
+def emit_current_saved_map_admission_guard_v1(material:bytes)->bytes:
+ """Keep the inherited camera/FULL guard and bind its strict shared map parser."""
+ source=material.decode("utf-8");tree=ast.parse(source)
+ need("_current_saved_map_v1" not in source,"map parser installed once")
+ classes=[node for node in tree.body if isinstance(node,ast.ClassDef) and node.name=="CleanRobertMainMenuQueue"]
+ need(len(classes)==1,"actual inherited campaign map queue")
+ methods=[node for node in classes[0].body if isinstance(node,ast.FunctionDef) and node.name=="require_camera_pixel_admission"]
+ need(len(methods)==1,"actual inherited campaign map guard")
+ reads=[node for node in methods[0].body if isinstance(node,ast.Assign)
+  and len(node.targets)==1 and isinstance(node.targets[0],ast.Name) and node.targets[0].id=="receipt"
+  and isinstance(node.value,ast.Call) and isinstance(node.value.func,ast.Name) and node.value.func.id=="read"
+  and len(node.value.args)==2 and isinstance(node.value.args[0],ast.BinOp)
+  and isinstance(node.value.args[0].left,ast.Name) and node.value.args[0].left.id=="N"
+  and isinstance(node.value.args[0].op,ast.Div) and isinstance(node.value.args[0].right,ast.Constant)
+  and node.value.args[0].right.value=="ROOT-CAMPAIGN-MAP-ADMITTED-C23.json"
+  and isinstance(node.value.args[1],ast.Constant) and node.value.args[1].value==16384]
+ need(len(reads)==1 and reads[0].end_lineno is not None,"actual bounded campaign map receipt seam")
+ seam=reads[0]
+ if seam.end_lineno is None: raise ValueError("campaign map read extent")
+ indent=" "*seam.col_offset
+ hook=(indent+"_current_saved_map_review_v1=_current_saved_map_v1.parse_campaign_map_admission_v1(receipt,expected_machine_id=_current_saved_map_machine_v1())\n"
+  +indent+"_current_saved_map_review_v1.require_native_launch_v1(self.launch)\n")
+ imports=[node for node in tree.body if isinstance(node,ast.ImportFrom) and node.module=="__future__"]
+ offset=max((node.end_lineno or node.lineno for node in imports),default=0)
+ shared=("from tools.g2_saved_campaign import root_current_saved_campaign_cold_owner_v1 as _current_saved_map_v1\n"
+  "from tools.g2_saved_campaign.current_saved_campaign_preflight_v1 import current_execution_machine_id_v1 as _current_saved_map_machine_v1\n")
+ lines=source.splitlines(keepends=True)
+ for start,body in sorted(((seam.end_lineno,hook),(offset,shared)),reverse=True): lines[start:start]=[body]
+ result="".join(lines);compile(result,"<current saved shared map guard>","exec")
+ return result.encode("utf-8")
+
 def emit_source32_factory_v1(material:bytes,sdk_mcp:bytes,*,mcp_ref:ExactRefV1)->bytes:
  source=material.decode("utf-8")
  nodes=[node for node in ast.parse(sdk_mcp).body if isinstance(node,ast.FunctionDef) and node.name=="load_driver"]
@@ -938,7 +968,7 @@ def compose_v1(plan: ColdPlanV1, *, plan_ref: ExactRefV1,
  put("root_native30_supervisor_c23.py",assignment_v1(get("root_native30_supervisor_c23.py"),
   "PLACEMENT_SHA",sha256_v1(get("tools/g2_saved_campaign/managed_desktop1_placement.py"))))
  put("launch_sdk_p37c23_owner.py",emit_current_saved_sdk_launcher_v1(get("launch_sdk_p37c23_owner.py"),artifact_cap_bytes=p.artifact_cap_bytes))
- put("root_p37c23_sdk_queue.py",render_first_full_checkpoint_queue_v1(emit_current_saved_request_guards_v1(get("root_p37c23_sdk_queue.py"),kind="queue")))
+ put("root_p37c23_sdk_queue.py",render_first_full_checkpoint_queue_v1(emit_current_saved_map_admission_guard_v1(emit_current_saved_request_guards_v1(get("root_p37c23_sdk_queue.py"),kind="queue"))))
  cold = emit_cold_resume_v1(get("root_p37c23_cold_resume.py"),machine_id=p.machine_id).decode("utf-8")
  cold += (
         "\ndef load_current_saved_feeder_inputs_v1() -> WarmCurrentSavedFeederInputsV1:\n"
