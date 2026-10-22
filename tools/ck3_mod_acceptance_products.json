@@ -3376,6 +3376,48 @@
             "release_flags": ["--game", "{game_dir}/game", "--output", "{new-output}"],
             "workshop_item_id": null
           }
+        },
+        {
+          "id": "npc_continuous",
+          "status": "ready",
+          "implementation_credit": "Source-integrated NPC initial fixture, four strict saved checkpoints and natural-only observation adapter; live NOT_RUN; player weapon calibration does not qualify NPC AI actions",
+          "adapter": {
+            "path": "{repo_root}/mod_living_artifacts/tools/npc_acceptance_adapter.py",
+            "config": "{repo_root}/mod_living_artifacts/tools/npc_continuous.contract.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/prepared/frontend-fixture-start-policy.json"
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 7200,
+            "hold_seconds": 5400,
+            "poll_interval": 0.5
+          },
+          "budget_provenance": "Prospective independent NPC scene: 47 natural days, 320 bounded public calls, four actual saves/melts at initial/day1/Oct1/Nov1, fixed 5400-second hold and 180-second close reserve; no extension and no AI effect injection",
+          "required_mcp_tools": [
+            "ck3_take_snapshot", "ck3_execute_step", "ck3_save_checkpoint", "ck3_select_event_option",
+            "ck3_query_current_event_window_context_v1", "ck3_query_pending_character_interaction_context_v1", "ck3_reply_pending_character_interaction",
+            "ck3_query_normal_exit_context_v1", "ck3_request_normal_exit_v1", "ck3_observe_normal_exit_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "fixture-live-npc-saved-state-first-stage",
+          "whole_product_acceptance_credit": false,
+          "build_route": {
+            "directory": "mod_living_artifacts",
+            "builder": "mod_living_artifacts/tools/build_release.py",
+            "release_flags": ["--game", "{game_dir}/game", "--output", "{new-output}"],
+            "workshop_item_id": null
+          }
         }
       ]
     }

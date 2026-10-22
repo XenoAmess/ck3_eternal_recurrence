@@ -1778,6 +1778,10 @@ class PlanClient:
                 "terminal_actor_proven": False, "settlement_rendered_values_proven": False}
 
     async def invoke(self, name: str, arguments: object = None, *, fresh_revision: bool = True) -> object:
+        from xar_autoplayer.bridge.normal_exit_host_terminal_v1 import (
+            NORMAL_EXIT_REVISION_TOOLS, normal_exit_revision_from_snapshot_v2,
+        )
+        from xar_autoplayer.bridge.normal_exit_public_wire_v2 import validate_normal_exit_public_revision_v2
         properties = self.tools.get(name, {}).get("inputSchema", {}).get("properties", {})
         needs_snapshot = fresh_revision and "expected_revision" in properties
         if needs_snapshot or "$" in json.dumps(arguments):
@@ -1788,9 +1792,15 @@ class PlanClient:
         ][:64]
         context = {"revision": self.snapshot.get("revision"), "snapshot": self.snapshot,
                    "army_ids": army_ids, "results": self.results, "episode": self.episode_identity}
-        resolved = resolve(arguments or {}, context)
+        resolved_raw = resolve(arguments or {}, context)
+        if not isinstance(resolved_raw, dict) or any(type(key) is not str for key in resolved_raw):
+            raise ValueError("resolved MCP tool arguments require a string-keyed object")
+        resolved: dict[str, object] = {key: value for key, value in resolved_raw.items()}
         if needs_snapshot and "expected_revision" not in resolved:
-            resolved["expected_revision"] = self.snapshot["revision"]
+            resolved["expected_revision"] = (normal_exit_revision_from_snapshot_v2(self.snapshot["revision"])
+                if name in NORMAL_EXIT_REVISION_TOOLS else self.snapshot["revision"])
+        if name in NORMAL_EXIT_REVISION_TOOLS:
+            resolved["expected_revision"] = validate_normal_exit_public_revision_v2(resolved.get("expected_revision"))
         return await self.call(name, resolved)
 
     async def wait_snapshot(self, expected: dict[str, object], timeout: float) -> dict[str, object]:
@@ -2599,15 +2609,9 @@ class PlanClient:
                     if actual != expected:
                         raise ValueError(f"result {path} expected {expected!r}, received {actual!r}")
                 self.results[str(row["id"])] = result
-                terminal_exit_result = (kind == "tool" and isinstance(result, dict)
-                    and result.get("snapshot_after_required") is False
-                    and result.get("action") == "confirm_desktop"
-                    and ((step.get("tool") == "ck3_request_normal_exit_v1"
-                          and isinstance(step.get("args"), dict)
-                          and step["args"].get("action") == "confirm_desktop"
-                          and result.get("schema") == "ck3-normal-exit-request-result-v1")
-                         or (step.get("tool") == "ck3_observe_normal_exit_v1"
-                             and result.get("schema") == "ck3-normal-exit-process-observation-result-v1")))
+                from xar_autoplayer.bridge.normal_exit_host_terminal_v1 import terminal_normal_exit_result_v2
+                terminal_exit_result = (kind == "tool" and terminal_normal_exit_result_v2(
+                    step.get("tool"), step.get("args", {}), result))
                 if (kind not in {"frontend_read_only", "terminal_window_read_only"}
                         and not (menu_only and kind != "finish_hold") and not terminal_exit_result):
                     managed_done = getattr(self, "managed_done", None)
@@ -2670,6 +2674,19 @@ class PlanClient:
             self.report["final_observation"] = {"status": "not_applicable",
                 "reason": proof["reason"], "after_finish_hold_step_id": marker["step_id"],
                 "alive_or_business_credit": False}
+            return
+        # Process lifecycle is independent of historical action outcomes. A
+        # completed native-zero cleanup leaves no live DLL to snapshot, even
+        # when an earlier guard refusal or business error remains in the report.
+        process_proof = finished_native_process_exit_zero_proof(self.report,
+            managed_done is not None and managed_done.is_set(), self.episode_identity)
+        if process_proof is not None:
+            from xar_autoplayer.bridge.normal_exit_host_terminal_v1 import completed_process_final_observation_v1
+            observation = completed_process_final_observation_v1(process_proof,
+                host_error=self.report.get("error"), step_rows=rows)
+            self.report["snapshot_final"] = copy.deepcopy(process_proof)
+            self.report["diagnostics_final"] = copy.deepcopy(process_proof)
+            self.report["final_observation"] = observation
             return
         self.report["snapshot_final"] = await self.fresh()
         self.report["diagnostics_final"] = await self.call("ck3_migration_pipe_diagnostics")

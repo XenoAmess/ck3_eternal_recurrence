@@ -20,6 +20,7 @@ import build_normal_exit_source_inventory_v1 as builder
 from xar_autoplayer.bridge.driver import UnsupportedStepError
 from xar_autoplayer.bridge.normal_exit_contract_v1 import NORMAL_EXIT_MAP_CAPABILITY
 from xar_autoplayer.bridge.normal_exit_map_driver_v1 import _prepare
+from test_ck3_host_terminal_observation import REVISION, public_terminal_result
 
 
 def host_binding():
@@ -120,22 +121,17 @@ def production_execute(result=None, error=None):
 
 
 class NormalExitTerminalExecuteTests(unittest.TestCase):
-    def test_confirm_and_owned_observer_keep_typed_result_without_fresh(self):
-        for tool, schema, arguments, status, signaled in (
-            ('ck3_request_normal_exit_v1', 'ck3-normal-exit-request-result-v1',
-             {'action': 'confirm_desktop', 'expected_revision': 7,
-              'expected_exit_context_signature': '1' * 64}, 'process_exit_observed_zero', True),
-            ('ck3_observe_normal_exit_v1', 'ck3-normal-exit-process-observation-result-v1',
-             {}, 'dispatch_pending', False),
+    def test_confirm_and_owned_observer_keep_typed_result_without_fresh(self) -> None:
+        for tool, arguments, observed, signaled in (
+            ('ck3_request_normal_exit_v1',
+             {'action': 'confirm_desktop', 'expected_revision': str(REVISION),
+              'expected_exit_context_signature': '1' * 64}, False, True),
+            ('ck3_observe_normal_exit_v1', {}, True, False),
         ):
             with self.subTest(tool=tool):
-                # Flat fields are the actual service/provider return contract.
-                result = {'schema': schema, 'action': 'confirm_desktop',
-                    'snapshot_after_required': False, 'status': status,
-                    'process_exit_observed': signaled, 'exit_code': 0 if signaled else None,
-                    'typed_normal_exit_observed': signaled, 'observer_retained': not signaled,
-                    'process_preconfirm_pin': {'pid': 123, 'creation_filetime_100ns': 456,
-                                              'retained_handle_token': 'fixture-owned-handle'}}
+                # Real classifier -> public V2 encoder, not an obsolete partial
+                # V1 DTO that bypasses the published receipt contract.
+                result = public_terminal_result(observed=observed, signaled=signaled)
                 state = production_execute(result)
                 asyncio.run(state.execute([{'id': tool, 'kind': 'tool', 'tool': tool,
                                             'args': arguments, 'fresh_revision': False}]))
@@ -146,25 +142,34 @@ class NormalExitTerminalExecuteTests(unittest.TestCase):
                 self.assertEqual(row['result'], result)
                 self.assertNotIn('after_snapshot', row)
 
-    def test_ordinary_nonterminal_or_invalid_marker_still_gets_fresh(self):
+    def test_ordinary_nonterminal_gets_fresh_and_malformed_terminal_fails_closed(self) -> None:
         terminal = {'schema': 'ck3-normal-exit-request-result-v1', 'action': 'confirm_desktop',
                     'snapshot_after_required': False}
-        scenarios = [
+        ordinary = [
             ('ck3_take_snapshot', {}, terminal),
             ('ck3_request_normal_exit_v1', {'action': 'prepare_confirmation'},
              {**terminal, 'action': 'prepare_confirmation'}),
+        ]
+        malformed = [
             ('ck3_request_normal_exit_v1', {'action': 'confirm_desktop'},
              {**terminal, 'snapshot_after_required': True}),
             ('ck3_request_normal_exit_v1', {'action': 'confirm_desktop'},
              {**terminal, 'snapshot_after_required': 0}),
             ('ck3_observe_normal_exit_v1', {}, {'snapshot_after_required': False, 'error': 'failed'}),
         ]
-        for tool, arguments, result in scenarios:
+        for tool, arguments, result in ordinary:
             with self.subTest(tool=tool, result=result):
                 state = production_execute(result)
                 asyncio.run(state.execute([{'kind': 'tool', 'tool': tool, 'args': arguments}]))
                 self.assertEqual(state.fresh_count, 1)
                 self.assertEqual(state.report['steps'][0]['after_snapshot'], {'revision': 8})
+        for tool, arguments, result in malformed:
+            with self.subTest(tool=tool, result=result):
+                state = production_execute(result)
+                with self.assertRaises(ValueError):
+                    asyncio.run(state.execute([{'kind': 'tool', 'tool': tool, 'args': arguments}]))
+                self.assertEqual(state.fresh_count, 0)
+                self.assertFalse(state.report['steps'][0]['ok'])
 
     def test_mcp_error_preserves_original_failure_without_successful_row(self):
         error = RuntimeError('MCP tool ck3_request_normal_exit_v1 returned an error: fixture')

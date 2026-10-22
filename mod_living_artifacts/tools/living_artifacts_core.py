@@ -173,6 +173,7 @@ def render_core_script_values() -> str:
         """),
         _block("xalw_appease_cost_value", "value = xalw_base_hunger_value\nmultiply = 25"),
         _block("xalw_suppression_remaining_days_value", "value = 0\nif = { limit = { xalw_is_growth_suppressed_trigger = yes } add = var:xalw_growth_suppressed_until subtract = current_date }"),
+        _block("xalw_suppression_timer_sequence_value", "value = 0\nif = { limit = { has_variable = xalw_suppression_timer_sequence } add = var:xalw_suppression_timer_sequence }"),
         _block("xalw_renewal_window_ends_value", "value = current_date\nadd = 30"),
         _block("xalw_feed_base_xp_value", "value = 0\n" + "\n".join(
             f"{'if' if index == 0 else 'else_if'} = {{ limit = {{ rarity = {rarity} }} add = {experience} }}"
@@ -591,7 +592,7 @@ def _render_management_effects() -> list[str]:
         set_variable = { name = xalw_growth_suppressed_until value = { value = current_date add = 90 } }
         if = { limit = { NOT = { has_variable = xalw_suppression_timer_sequence } } set_variable = { name = xalw_suppression_timer_sequence value = 0 } }
         change_variable = { name = xalw_suppression_timer_sequence add = 1 }
-        save_scope_value_as = { name = xalw_suppression_timer_sequence value = var:xalw_suppression_timer_sequence }
+        save_scope_value_as = { name = xalw_suppression_timer_sequence value = xalw_suppression_timer_sequence_value }
         trigger_event = { id = xalw.4 days = 90 }
     """))
     effects.append(_block("xalw_appease_effect", """

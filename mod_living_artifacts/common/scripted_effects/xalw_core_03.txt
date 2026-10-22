@@ -50,7 +50,7 @@ xalw_begin_suppression_timer_effect = {
 	set_variable = { name = xalw_growth_suppressed_until value = { value = current_date add = 90 } }
 	if = { limit = { NOT = { has_variable = xalw_suppression_timer_sequence } } set_variable = { name = xalw_suppression_timer_sequence value = 0 } }
 	change_variable = { name = xalw_suppression_timer_sequence add = 1 }
-	save_scope_value_as = { name = xalw_suppression_timer_sequence value = var:xalw_suppression_timer_sequence }
+	save_scope_value_as = { name = xalw_suppression_timer_sequence value = xalw_suppression_timer_sequence_value }
 	trigger_event = { id = xalw.4 days = 90 }
 }
 

@@ -581,6 +581,10 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_failure_shutdown.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_ck3_host_terminal_observation.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -m mypy --strict --follow-imports=silent ck3_autonomous_player/src/xar_autoplayer/bridge/normal_exit_host_terminal_v1.py tools/test_ck3_host_terminal_observation.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_initial_plan_failure_hold.py --host-source ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_manual_fallback.py
