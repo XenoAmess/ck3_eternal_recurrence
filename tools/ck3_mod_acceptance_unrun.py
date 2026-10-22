@@ -7,9 +7,10 @@ from datetime import datetime, timezone
 import argparse, hashlib, json, os
 from ck3_mod_acceptance import check_pin, pin, read_json, same_directory_control_peer
 from ck3_mod_acceptance_launcher_pin_refusal import public_operation_argv, validate_launcher_pin_refusal
+from ck3_mod_acceptance_background_types import JsonObject, object_field
 
 SCHEMA = 'ck3-mod-acceptance-allocated-unrun-closure-v1'
-def need(value, message):
+def need(value: object, message: object) -> None:
     if not value: raise ValueError(message)
 def _read(path):
     path=Path(path);need(path.stat().st_size<=1024*1024,'Small original metadata required')
@@ -67,24 +68,42 @@ def _allocator_argv(bundle, machine, keeper_stamps):
          'Actual original allocator command differs')
     return argv
 
-def _release_stages(keeper,cas,done,cas_source,done_source,release,task,*,cooperative_pin_refusal=False):
+def _sequence(row: JsonObject, key: str) -> int:
+    value=row.get(key)
+    if type(value) is not int or not isinstance(value,int) or value<1:
+        raise ValueError('Exact positive release sequence required: '+key)
+    return value
+
+def _release_stages(keeper: JsonObject, cas: JsonObject, done: JsonObject,
+                    cas_source: JsonObject, done_source: JsonObject, release: JsonObject,
+                    task: str, *, cooperative_pin_refusal: bool=False) -> str:
     closed_lease = same_directory_control_peer('ck3_mod_acceptance_allocate').closed_lease
     for value in (cas,done):
-        need(value['event']['task_id']==task and value['event']['resources']==[],
+        event=object_field(value,'event')
+        need(event['task_id']==task and event['resources']==[],
              'Wrong allocated-unrun CAS task/resources')
-    separate=(cas['event']['kind']=='status' and done['event']['kind']=='completed'
-              and cas['event']['sequence']<done['event']['sequence'])
-    completed_then_admin=(cooperative_pin_refusal and cas['event']['kind']==done['event']['kind']=='completed'
-                         and cas['event']['sequence']<done['event']['sequence'])
+    cas_event=object_field(cas,'event');done_event=object_field(done,'event')
+    cas_task=object_field(cas,'task');done_task=object_field(done,'task')
+    first_sequence=_sequence(cas_event,'sequence')
+    last_sequence=_sequence(done_event,'sequence')
+    separate=(cas_event['kind']=='status' and done_event['kind']=='completed'
+               and first_sequence<last_sequence)
+    # release-screen-cas completes by default for idle and refused allocations.
+    # A later administrative completion preserves that original release.
+    completed_then_admin=(cas_event['kind']==done_event['kind']=='completed'
+                          and first_sequence<last_sequence
+                          and cas_task.get('task_id')==task and cas_task.get('state')=='done'
+                          and cas_task.get('resources')==[]
+                          and _sequence(cas_task,'last_sequence')==first_sequence)
     # A direct CAS completion is one original event. The two proof files must
     # preserve the same canonical bytes/offset/task, rather than mix releases.
-    direct=(cas['event']['kind']==done['event']['kind']=='completed'
-            and cas['event']['sequence']==done['event']['sequence']
-            and cas['event']==done['event'] and cas['task']==done['task']
+    direct=(cas_event['kind']==done_event['kind']=='completed'
+             and first_sequence==last_sequence
+             and cas_event==done_event and cas_task==done_task
             and cas_source.get('schema')=='xar-screen-release-canonical-reconstruction-v1'
             and cas_source==done_source)
-    need((separate or direct or completed_then_admin) and keeper['last_sequence']<cas['event']['sequence']
-         and done['task']['last_sequence']==done['event']['sequence'] and done['task']['state']=='done'
+    need((separate or direct or completed_then_admin) and _sequence(keeper,'last_sequence')<first_sequence
+         and _sequence(done_task,'last_sequence')==last_sequence and done_task['state']=='done'
          and release==done and closed_lease(keeper,done,task),
          'Actual allocated-unrun CAS then admin DONE differs')
     return 'direct-completed' if direct else ('completed-then-admin-completed' if completed_then_admin else 'status-then-completed')

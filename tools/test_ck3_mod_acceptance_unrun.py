@@ -54,11 +54,11 @@ def release_stage_checks():
     need(invoke()=='direct-completed','Single canonical completed branch rejected')
     need(invoke(cas=status)=='status-then-completed','Original strict two-stage branch rejected')
     completed_release=deepcopy(done);completed_release['event']['sequence']=11
+    completed_release['task']['last_sequence']=11
     need(subject._release_stages(keeper,completed_release,done,direct_source,direct_source,done,task,
          cooperative_pin_refusal=True)=='completed-then-admin-completed','Cooperative actual completed/admin stages rejected')
-    try:invoke(cas=completed_release)
-    except ValueError:pass
-    else:raise AssertionError('Legacy idle release accepted the cooperative-only extension')
+    need(invoke(cas=completed_release)=='completed-then-admin-completed',
+         'Actual idle CAS completion followed by administrative completion rejected')
     rejected=0
     def refuses(expected,**kwargs):
         nonlocal rejected

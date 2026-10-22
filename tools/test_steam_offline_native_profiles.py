@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import FrozenInstanceError, replace
 from datetime import datetime, timedelta, timezone
 import json
+from itertools import permutations
 from pathlib import Path
 import struct
 import unittest
@@ -56,23 +57,28 @@ def wire(profile: NativeOfflineProfile) -> tuple[dict[str,object],Reader]:
         diagnostics=[],observation_method='native_current_user_byte',native_evidence=evidence),reader
 
 class ProfilesTest(unittest.TestCase):
-    def test_both_profiles_produce_and_consume_same_v2_json(self) -> None:
+    def test_registered_profiles_produce_and_consume_same_v2_json(self) -> None:
         for p in PROFILES:
             value,reader=wire(p)
             result=validate_observation(json.loads(json.dumps(value)),machine_id='synthetic-profile-machine',reader=reader)
             self.assertEqual(result.status,'offline')
+            if result.source is None or result.native_evidence is None:
+                raise AssertionError('Qualified offline result lacks native source evidence')
             self.assertEqual(result.source.sha256,p.image_sha256)
             self.assertEqual(result.native_evidence.value_rva,str(p.value_rva))
     def test_version_image_cross_product_is_not_a_profile(self) -> None:
-        for a,b in [(PROFILE_1096,PROFILE_1112),(PROFILE_1112,PROFILE_1096)]:
+        for a,b in permutations(PROFILES,2):
             with self.assertRaises(ValueError):select_profile(a.steam_version,b.image_bytes,b.image_sha256)
             reader=Reader(a);backend=FakeBackend(b)
             result=_probe_bound('machine','nonce',reader.steam,reader,backend)
             self.assertIsInstance(result,NativeUnavailable);self.assertEqual(backend.reads,[]);self.assertTrue(backend.closed)
     def test_gate_rejects_cross_profile_receipt(self) -> None:
-        value,reader=wire(PROFILE_1112)
-        value['steam']={**value['steam'],'file_version':PROFILE_1096.steam_version}
-        with self.assertRaises(ValueError):validate_observation(value,machine_id='synthetic-profile-machine',reader=reader)
+        for a,b in permutations(PROFILES,2):
+            value,reader=wire(a)
+            steam=value['steam']
+            if not isinstance(steam,dict):raise AssertionError('Missing fixture identity')
+            value['steam']={**steam,'file_version':b.steam_version}
+            with self.assertRaises(ValueError):validate_observation(value,machine_id='synthetic-profile-machine',reader=reader)
     def test_source_digest_size_and_unknown_version_are_exact(self) -> None:
         p=PROFILE_1112
         for version,size,digest in [('future',p.image_bytes,p.image_sha256),(p.steam_version,p.image_bytes+1,p.image_sha256),(p.steam_version,p.image_bytes,'0'*64)]:
@@ -89,8 +95,8 @@ class ProfilesTest(unittest.TestCase):
             self.assertEqual(backend.reads,[])
     def test_anchors_tray_and_zero_are_not_weakened(self) -> None:
         for p in PROFILES:
-            for options in [dict(wrong_anchor=True),dict(tray=5),dict(raw=0)]:
-                reader=Reader(p);backend=FakeBackend(p,**options)
+            for wrong_anchor,tray,raw in [(True,4,1),(False,5,1),(False,4,0)]:
+                reader=Reader(p);backend=FakeBackend(p,wrong_anchor=wrong_anchor,tray=tray,raw=raw)
                 self.assertIsInstance(_probe_bound('m','n',reader.steam,reader,backend),NativeUnavailable)
                 self.assertTrue(backend.closed)
     def test_gate_freshness_and_machine_are_still_independent(self) -> None:
@@ -102,6 +108,8 @@ class ProfilesTest(unittest.TestCase):
     def test_registry_records_and_anchor_sequences_are_immutable(self) -> None:
         self.assertIsInstance(PROFILES,tuple)
         self.assertRaises(FrozenInstanceError,setattr,PROFILE_1112,'image_size',0)
-        self.assertEqual(len(PROFILE_1096.anchors),6);self.assertEqual(len(PROFILE_1112.anchors),6)
+        for p in PROFILES:
+            self.assertEqual(len(p.anchors),6)
+            self.assertEqual(p.anchors[0],(p.producer_rva,p.producer))
 
 if __name__=='__main__':unittest.main()

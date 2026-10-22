@@ -49,7 +49,19 @@ PROFILE_1112: Final[NativeOfflineProfile] = NativeOfflineProfile(
      (0x5A28DE, bytes.fromhex('8bfa4c8bf13b9154010000')),
      (0x5A290E, bytes.fromhex('4189be54010000'))),
 )
-PROFILES: Final[tuple[NativeOfflineProfile, ...]] = (PROFILE_1096, PROFILE_1112)
+PROFILE_1115: Final[NativeOfflineProfile] = NativeOfflineProfile(
+    'steamui-11.15.70.27-cd9226db', '11.15.70.27',
+    'cd9226db4e6c28942df70c22c0475d91fdd62cba5f100baae2d65af57cabb610',
+    19452568, 19730432, 0x1194EC7, 0x11932E0, 0x154, 6548332,
+    bytes.fromhex('440fb6055363b500488d155da67700488bcbe80d713d00'),
+    ((6548332, bytes.fromhex('440fb6055363b500488d155da67700488bcbe80d713d00')),
+     (6258192, bytes.fromhex('40534883ec20488bd9e8b280f2ff488bc8488b10ff92880000008883870100004883c4205bc3')),
+     (7024927, bytes.fromhex('488d0d1a1cae00e8e54cf4ff')),
+     (6542916, bytes.fromhex('803d7c78b500007419488b0d8c5cb5004533c0ba04000000e86f53f6ff')),
+     (5908974, bytes.fromhex('8bfa4c8bf13b9154010000')),
+     (5909022, bytes.fromhex('4189be54010000'))),
+)
+PROFILES: Final[tuple[NativeOfflineProfile, ...]] = (PROFILE_1096, PROFILE_1112, PROFILE_1115)
 
 
 def _source_key(image_bytes: int, image_sha256: str) -> tuple[int, str]:
