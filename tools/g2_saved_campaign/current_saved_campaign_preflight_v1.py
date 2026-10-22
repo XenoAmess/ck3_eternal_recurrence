@@ -600,6 +600,12 @@ def validate_current_saved_live_readiness_v1(
         queue, accepted, runtime_root=runtime_root, reader=LocalBasisReaderV1())
 
 
+def _require_current_saved_review_v1(configuration: object) -> None:
+    """Only the pinned actual configuration grants a bounded business review."""
+    review = _timepoint(utc(record(configuration).get("review_at_utc")))
+    need(datetime.now(timezone.utc) < review, "actual current request review has not expired")
+
+
 def guard_current_saved_request_v1(
     queue: object, request: object, *, runtime_root: Path,
     active: CurrentSavedRequestPermitV1 | None = None,
@@ -610,6 +616,7 @@ def guard_current_saved_request_v1(
     _clean_flags(queue, root)
     reader = LocalBasisReaderV1()
     config_ref, configuration = _read_actual(root / "ROOT-LAUNCH-CONFIG-C23-A15.json", reader)
+    _require_current_saved_review_v1(configuration)
     config = record(configuration.get("cold_attempt"))
     machine = text(config.get("machine_id"))
     need(machine == current_execution_machine_id_v1()
@@ -751,6 +758,10 @@ class GuardedCurrentSavedSessionV1:
             guard_current_saved_request_v1(
                 self._queue, self._request, runtime_root=self._root, active=self._permit)
             _clean_flags(self._queue, self._root)
+            reference, configuration = _read_actual(
+                self._root / "ROOT-LAUNCH-CONFIG-C23-A15.json", LocalBasisReaderV1())
+            need(reference == self._permit.config_ref, "same pinned config immediately before transport")
+            _require_current_saved_review_v1(configuration)
             state.calls += 1
             state.in_transport = True
             try:
@@ -832,6 +843,7 @@ def bind_current_saved_request_epoch_v1(
     need(_phase(queue) == "semantic", "bind request epoch before first semantic transport")
     reader = LocalBasisReaderV1()
     config_ref, configuration = _read_actual(root / "ROOT-LAUNCH-CONFIG-C23-A15.json", reader)
+    _require_current_saved_review_v1(configuration)
     config = record(configuration.get("cold_attempt"))
     need(config.get("machine_id") == expected_machine_id
          and _same_path(text(config.get("runtime_root")), root), "qualified config epoch")
@@ -936,6 +948,7 @@ def validate_current_saved_readiness_request_v1(
     basis = decode_current_saved_basis_v1(
         exact_read(reader, basis_ref, 65536), expected_machine_id=expected_machine_id)
     config_ref, configuration = _read_actual(root / "ROOT-LAUNCH-CONFIG-C23-A15.json", reader)
+    _require_current_saved_review_v1(configuration)
     config = record(configuration.get("cold_attempt"))
     need(config.get("machine_id") == expected_machine_id
          and _same_path(text(config.get("runtime_root")), root)

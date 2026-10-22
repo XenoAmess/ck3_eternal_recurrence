@@ -8,7 +8,7 @@ from contextlib import contextmanager
 import copy
 import ctypes
 from dataclasses import dataclass, field, replace
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import hashlib
 import inspect
 import json
@@ -378,6 +378,7 @@ class RequestPermitTests(unittest.TestCase):
                 "schema": "xar.current-saved-cold-inputs/v1", "machine_id": machine,
                 "basis_ref": basis_ref.to_wire(), "validation_ref": validation_ref.to_wire()}))
             workspace.write(root / "ROOT-LAUNCH-CONFIG-C23-A15.json", _wire({
+                "review_at_utc": "2030-01-01T00:00:00Z",
                 "cold_attempt": {"machine_id": machine, "runtime_root": str(root),
                     "attempt_nonce": "a" * 32, "task_nonce": "b" * 32,
                     "basis_ref": basis_ref.to_wire(), "validation_ref": validation_ref.to_wire()}}))
@@ -656,7 +657,7 @@ def _verify_mandatory_archive_boundary(
                         relative_path="tools/g2_saved_campaign/current_saved_campaign_replay_v1.py"),),
         names, names + (source_path, "tools/g2_saved_campaign/current_saved_campaign_replay_v1.py"), (".",), placeholder, placeholder,
         str(root / "screen.json"), str(root / "spec.json"), "a" * 32, "b" * 32,
-        "c" * 32, 32, placeholder, placeholder, None, 1090519040)
+        "c" * 32, 32, placeholder, placeholder, None, 1090519040, None)
     producer_path = Path(replay.__file__).with_name("prepare_current_saved_campaign_cold_v1.py")
     plan = replace(plan, producer_ref=reader.put(str(producer_path), producer_path.read_bytes()))
     plan_ref = reader.put(str(root / "plan.json"), _wire(plan.to_wire()))
@@ -680,7 +681,7 @@ def _verify_mandatory_archive_boundary(
         str(root / "campaign-score"), str(Path(anchor.path).parent), True, "1", "1", anchor)
     quote = ColdQuoteV1(full.execution_machine_id, full.observed_at_utc,
         plan_ref, basis_ref, placeholder, placeholder, str(root), tuple(output),
-        junction, names, names + (source_path,), (".",), 8, 1, 1, 1, None, plan.artifact_cap_bytes)
+        junction, names, names + (source_path,), (".",), 8, 1, 1, 1, None, plan.artifact_cap_bytes, None)
     direct = core._archive_historical_replay_v1(replay_ref, full, fixture, plan, quote, reader)
     restored, mandatory = core._full_historical_replay(
         replay_ref, plan, quote, full.core_source_ref, reader)
@@ -1325,6 +1326,178 @@ class RecordingParentPreparationTests(unittest.TestCase):
       finally:
         if path.is_symlink(): path.unlink()
         elif path.exists(): path.rmdir()
+
+
+class CurrentSavedReviewDeadlineTests(unittest.TestCase):
+    BEFORE = datetime(2029, 12, 31, 23, 59, 59, tzinfo=timezone.utc)
+    DEADLINE = datetime(2030, 1, 1, tzinfo=timezone.utc)
+
+    def test_required_utc_deadline_before_equal_after_and_wrong_types(self) -> None:
+        from unittest import mock
+        row: JsonObject = {"review_at_utc": "2030-01-01T00:00:00Z"}
+        with mock.patch.object(core, "datetime", wraps=datetime) as clock:
+            clock.now.return_value = self.BEFORE
+            core._require_current_saved_review_v1(row)
+            for now in (self.DEADLINE, self.DEADLINE + timedelta(microseconds=1)):
+                clock.now.return_value = now
+                with self.assertRaisesRegex(ValueError, "review has not expired"):
+                    core._require_current_saved_review_v1(row)
+            clock.now.return_value = self.BEFORE
+            with self.assertRaises(ValueError):
+                core._require_current_saved_review_v1({})
+            for bad in (None, True, False, 0, 1.0, "", "bad",
+                        "2030-01-01T00:00:00", "2030-01-01T00:00:00+01:00"):
+                with self.subTest(value=bad), self.assertRaises(ValueError):
+                    core._require_current_saved_review_v1({"review_at_utc": bad})
+
+    def test_qualified_original_queue_before_equal_after_preserves_sequence_on_refusal(self) -> None:
+        from unittest import mock
+        corpus = _load_corpus()
+        for now in (self.BEFORE, self.DEADLINE, self.DEADLINE + timedelta(microseconds=1)):
+            with self.subTest(now=now), _owned_workspace() as w, _isolated_modules():
+                with mock.patch.object(core, "datetime", wraps=datetime) as clock:
+                    clock.now.return_value = self.BEFORE
+                    h = _make_harness(w, corpus, name="review", with_anchor=True)
+                    request = h.request("SEM")
+                    core.guard_current_saved_request_v1(h.queue, request, runtime_root=h.root)
+                    sequence = getattr(h.queue, "next_sequence")
+                    clock.now.return_value = now
+                    if now < self.DEADLINE:
+                        asyncio.run(h.dispatch(request))
+                        self.assertEqual(h.transport.calls, 1)
+                        self.assertEqual(getattr(h.queue, "next_sequence"), sequence + 1)
+                    else:
+                        with self.assertRaisesRegex(ValueError, "review has not expired"):
+                            asyncio.run(replay._await_invoke(getattr(h.queue, "call"),
+                                 replay._UnexpectedTransport(h.transport), request,
+                                 h.root / "p37-requests" / "blocked.json"))
+                        self.assertEqual(h.transport.calls, 0)
+                        self.assertEqual(getattr(h.queue, "next_sequence"), sequence)
+                        self.assertFalse((h.root / "NEXT-SEQUENCE-P37.json").exists())
+                        self.assertFalse(list((h.root / "p37-queue").glob("*-result.json")))
+
+    def test_same_permit_rechecks_expiry_immediately_before_actual_transport(self) -> None:
+        from unittest import mock
+        corpus = _load_corpus()
+        with _owned_workspace() as w, _isolated_modules():
+            with mock.patch.object(core, "datetime", wraps=datetime) as clock:
+                clock.now.return_value = self.BEFORE
+                h = _make_harness(w, corpus, name="transport-deadline", with_anchor=True)
+                request = h.request("SEM")
+                permit = core.guard_current_saved_request_v1(h.queue, request, runtime_root=h.root)
+                session = core.GuardedCurrentSavedSessionV1(
+                    h.queue, request, runtime_root=h.root, call=h.transport, permit=permit)
+                # The first guard passes; the final, same-config transport check reaches equality.
+                clock.now.side_effect = [self.BEFORE, self.DEADLINE]
+                with self.assertRaisesRegex(ValueError, "review has not expired"):
+                    asyncio.run(session.call_tool(core.SEMANTIC_TOOL, {}, read_timeout_seconds=1.0))
+                self.assertEqual(h.transport.calls, 0)
+                self.assertEqual(getattr(h.queue, "next_sequence"), FIRST_SEQUENCE)
+                self.assertFalse((h.root / "NEXT-SEQUENCE-P37.json").exists())
+                clock.now.side_effect = None
+                clock.now.return_value = self.BEFORE
+                with self.assertRaises(ValueError):
+                    asyncio.run(session.call_tool(core.SEMANTIC_TOOL, {}, read_timeout_seconds=1.0))
+                self.assertEqual(h.transport.calls, 0)
+
+    def test_publisher_expiry_after_pending_sync_does_not_publish(self) -> None:
+        from unittest import mock
+        corpus = _load_corpus()
+        with _owned_workspace() as w:
+            root = w.root / "publisher"; root.mkdir()
+            for name in ("p37-queue", "p37-requests", "p37-responses"):
+                (root / name).mkdir()
+            machine = core.current_execution_machine_id_v1()
+            basis = replace(_score_fixture_basis(corpus, root), machine_id=machine)
+            p = root / "basis.json"; w.write(p, _wire(basis.to_wire()))
+            basis_ref = _pin(p)
+            p = root / "qualification.json"; w.write(p, b"{}")
+            validation_ref = _pin(p)
+            w.write(root / "ROOT-CURRENT-SAVED-INPUTS01.json", _wire({
+                "schema": "xar.current-saved-cold-inputs/v1", "machine_id": machine,
+                "basis_ref": basis_ref.to_wire(), "validation_ref": validation_ref.to_wire()}))
+            w.write(root / "ROOT-LAUNCH-CONFIG-C23-A15.json", _wire({
+                "review_at_utc": "2030-01-01T00:00:00Z",
+                "cold_attempt": {"machine_id": machine, "runtime_root": str(root),
+                    "attempt_nonce": "a"*32, "task_nonce": "b"*32,
+                    "basis_ref": basis_ref.to_wire(), "validation_ref": validation_ref.to_wire()}}))
+            request: JsonObject = {"sequence": CURRENT_SEQUENCE, "tool": core.SEMANTIC_TOOL, "arguments": {}}
+            real_fsync = os.fsync
+            with mock.patch.object(core, "datetime", wraps=datetime) as clock:
+                clock.now.return_value = self.BEFORE
+                core.validate_current_saved_readiness_request_v1(
+                    request, runtime_root=root, expected_machine_id=machine)
+                def expire_after_sync(fd: int | _HasFileno) -> None:
+                    real_fsync(fd)
+                    clock.now.return_value = self.DEADLINE
+                with mock.patch.object(os, "fsync", side_effect=expire_after_sync):
+                    with self.assertRaisesRegex(ValueError, "review has not expired"):
+                        core.submit_readiness_request_v1(
+                            request, runtime_root=root, expected_machine_id=machine)
+            self.assertEqual(list((root / "p37-requests").iterdir()), [])
+            self.assertFalse((root / "NEXT-SEQUENCE-P37.json").exists())
+
+
+    def test_explicit_fixture_approval_cannot_delete_existing_or_reparsed_paths(self) -> None:
+        from unittest import mock
+        with _owned_workspace() as w:
+            with mock.patch.dict(os.environ, {
+                "XAR_PREFLIGHT_FIXTURE_ROOT": str(w.root / "one"),
+                "XAR_PREFLIGHT_APPROVED_ROOT": str(w.root / "two")}):
+                with self.assertRaisesRegex(ValueError, "explicit approved"):
+                    replay._fixture_parent()
+            with self.assertRaisesRegex(ValueError, "must be absent"):
+                with _owned_workspace(approved_root=w.root):
+                    self.fail("existing fixture must not be entered or deleted")
+            self.assertTrue(w.root.is_dir())
+            for path in (Path("relative"), w.root / "child" / ".."):
+                with self.assertRaisesRegex(ValueError, "absolute lexical"):
+                    with _owned_workspace(approved_root=path):
+                        self.fail("unapproved lexical root")
+            link = w.root / "link"; target = w.root / "target"; target.mkdir()
+            try:
+                try: link.symlink_to(target, target_is_directory=True)
+                except OSError:
+                    if os.name != "nt": raise
+                    import subprocess
+                    done = subprocess.run(["cmd.exe", "/d", "/c", "mklink", "/J", str(link), str(target)],
+                        capture_output=True, check=False, creationflags=0x08000000)
+                    self.assertEqual(done.returncode, 0, done.stderr)
+                for path in (link, link / "child"):
+                    with self.assertRaisesRegex(ValueError, "reparse"):
+                        with _owned_workspace(approved_root=path):
+                            self.fail("reparse root or ancestor")
+                self.assertFalse((target / "child").exists())
+            finally:
+                if link.is_symlink(): link.unlink()
+                elif link.exists(): link.rmdir()
+
+    def test_actual_missing_or_malformed_config_refuses_before_original_queue(self) -> None:
+        from unittest import mock
+        corpus = _load_corpus()
+        with _owned_workspace() as w, _isolated_modules():
+            with mock.patch.object(core, "datetime", wraps=datetime) as clock:
+                clock.now.return_value = self.BEFORE
+                h = _make_harness(w, corpus, name="review-malformed", with_anchor=True)
+                request = h.request("SEM")
+                path = h.root / "ROOT-LAUNCH-CONFIG-C23-A15.json"
+                original = path.read_bytes()
+                config = record(parse_json(original))
+                wrong: tuple[object, ...] = (None, True, 1.0, "", "2030-01-01T00:00:00")
+                for value in wrong:
+                    changed = {**config, "review_at_utc": json_value(value)}
+                    w.write(path, _wire(changed), replace_existing=True)
+                    with self.assertRaises(ValueError):
+                        core.guard_current_saved_request_v1(h.queue, request, runtime_root=h.root)
+                changed = dict(config); del changed["review_at_utc"]
+                w.write(path, _wire(changed), replace_existing=True)
+                with self.assertRaises(ValueError):
+                    core.guard_current_saved_request_v1(h.queue, request, runtime_root=h.root)
+                w.write(path, original, replace_existing=True)
+                self.assertEqual(_pin(path), core.guard_current_saved_request_v1(
+                    h.queue, request, runtime_root=h.root).config_ref)
+                self.assertEqual(h.transport.calls, 0)
+                self.assertEqual(getattr(h.queue, "next_sequence"), FIRST_SEQUENCE)
 
 if __name__ == "__main__":
     unittest.main()

@@ -26,7 +26,7 @@ CANONICAL = frozenset((OUTER, QUEUE, "root_native30_supervisor_c23.py",
     "root_checkpoint_bootstrap_c23.py", "launch_sdk_p37c23_owner.py",
     "root_p37c23_mcp_entry.py"))
 QUALIFIED = MappingProxyType({
-    CONTRACT: (20719, "95624aef8a277ff4f3bc7587dc4dae8624f89bbee6464ef5ce148c16e3d0d3fa"),
+    CONTRACT: (21038, "fb5eaa7217da027770272784da0d725cc605953f2547c62636bc6188e1589feb"),
     "decision_text_view.py": (12416, "404c4737f77f11846afc6d6bda116e0d2051094d4b81dbd0685b0dd3397aa12e"),
     "decision_text_publisher.py": (29528, "dccf28aa9ccf2657695299cdecd5619f791988e6f801bc81e42f6f6782d787f2"),
 })

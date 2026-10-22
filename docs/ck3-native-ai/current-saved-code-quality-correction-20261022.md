@@ -120,3 +120,27 @@ Root随后漏建 `runtime-a38/recordings` 父目录，而公共 prepare 当时�
 原supervisor已正常收到Root停止请求并闭场：publisher实际退出0，Game的WM_CLOSE未获正常退出，原Job最终清理为exit1；两Task均child1／Job0并注销，screen8117释放。SDK与录制worker均未启动，未增加ordinary或游戏日信用；R0025记completed-red。小型闭场证据为 `current-saved-a38-recovery-prep01/ROOT-A38-ACTUAL-CLOSEOUT01.json`（3498B，SHA-256 `78ed104c37446342a59252556ab97300b1134e0a64f062f6d7e4849ca9811e1f`）。03:00前同一有限范围正把录制父目录的物化、引用绑定与真实文件系统反例补入公共prepare；冻结A38不修改，新图另行验收。现有recording-only恢复合同要求真实旧worker／OBS／SID，不能拿虚构旧证据用于这次worker创建前失败。
 
 `02:44:24Z` 同机器：公共prepare已按批准根物化录制父目录，核对quote中profile的精确引用与路径，拒绝文件、非空旧SID、重解析点及错误父路径；Prepared发布前再验目录身份。完整28项（原24＋新增4）实际通过、0跳过，夹具峰557056B且最终ABSENT；两修改全文联合strict/equality/explicit/silent通过。首次新增测试暴露缺parse_json导入，首次严格检查暴露test经core重导出，两项均实际修复，不掩去中间RED。独立窄审无剩余P0/P1。最终core130497B／`6c0243d0cde729c3429dbe5145975e8cfd7c62b3d602aa8755447a1f80b947dc`，test82152B／`1fd0cbb028d6fe968033d2b1543c54fb065bf4c7a74da4ffdfb20f8a12c7f8ff`；尚不能据此宣称录制或首FULL实机通过。
+
+## N39首批实际推进成功，闭场仍失败
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`；观察截至 `2026-10-22T03:10Z`。共享录制目录修复已随 `4900a522` 普通推送。新图N39实际启动Game259436、加载当前检查点并开始受管录制；首个不可变原始游戏帧和合成帧均为2560×1440，Root直接审看地图及1082-02-09日期，未见旧蓝窗或影片标题。Steam准入和闭场状态均由后台原生probe确认，无截图或焦点操作。
+
+首FULL11407实际成功：30周期，5152→5182，日期raw53279256→53279400，即1082-02-09→1082-02-15，新增6日，累计 **5628/10950日**。T0、window2、创始人31254和当前角色40526保持；10565、11386、11404的历史未知请求不重放。FULL响应2204B，SHA-256 `a21abc31859d57ed5f9acc54d580d7e7935a877cc65b2aac9ab7ce0901ccd736`。完整批墙钟41.4099253秒，**6.9016542秒/日**；60条RPC合计30.6211233秒，另10.7888020秒尚未归因。该样本不能证明比旧186日样本更快，1秒/日仍未达标，G2仍6/8、M6/M7未完成。
+
+SEM11468之后的SAVE11469实际于03:00:16.065768Z至03:00:20.995600Z完成，返回saved、overwrite_confirmed=true；新SAVE117661285B，SHA-256 `c52326604ce1d6aefc493c1bc5d088e26600b001a59978a93ca951b383440ca9`，history_index5944。Driver只获得 `WRITE_REPLACE_RETURNED_NOT_FSYNC`，不能称已fsync。当前raw累计状态仍保留旧维护检查点11372，必须由公共maintenance projector生成新seed；不能改写原raw，或把旧Q38资格当作当前文件身份。
+
+实际闭场：SDK queue/application均exit0，录制engine及publisher正常退出；媒体stat395613446B，probe为2560×1440／30fps、658.333秒。没有重读媒体正文、重散列或最终媒体质量验收。原supervisor03:00:56.641Z提交一次WM_CLOSE，未获得正常退出，03:01:31.609Z由原Job清理Game为exit1；不是整场GREEN。三Task实际Job0并注销，screen137以8124释放，R0026记 `completed-red`。闭场清单 `current-saved-a39-runtime-prep01/ROOT-A39-ACTUAL-CLOSEOUT01.json` 为8704B，SHA-256 `0cb09179555d075cf85e46f501db15808511fff858898d530ca44aae3f1e23a2`。
+
+Root还有一项调度错误：feeder已于03:00:00.181Z按期限停止，但手工SAVE于03:00:15提交、Root STOP于03:00:50写入，晚于03:00业务范围。保存成功事实和超期事实同时保留，不能用清理宽限追认新业务准入，亦不能声称旧continuous worker自动执行了媒体子帽或Root截止守卫。后继修复进入共享请求准入，并覆盖permit之后、真正MCP调用之前再次到期的反例。
+
+03:08:14.792367Z后台probe再次返回offline/true：Steam PID165096／出生FILETIME字符串`134362593935766296`、10.96.30.42及当前SteamUI来源保持。此观察不能作为后续启动的永久准入。新的03:45有限软件范围来自 `ROOT-SOFTWARE-SCOPE0345-01.json`（8762B／`141b6ecda3aec3ae485847d14d95cc329a38e414943f2d442e3baa78cf47f8b1`），没有续用旧03:00票据，不授权新Game、SDK或录制。当前并行施工是共享截止守卫、通用settled-progress闭场合同及首批分段计量；均未提前授予完成信用。
+
+## 本轮共享整改终验
+
+同机器，实际验证截至 `2026-10-22T03:43Z`：新维护seed及正常settled-progress闭场已通过实际Source32 checkpoint validator、cold inputs和prepared SDK消费者。basis10372B／`71d9f017624daab0dfc6a02f05739ffe45361c3e2a29f51d576ce09c2a7b50c3`，资格2147B／`fdf2683744e030a3db0d287cc987b8ad9a2297137069f7245109c97db8c8454aa`。Driver实际物理读一次，原SDK对SAVE散列一次，全部读锁和取证进程已释放。婚约sidecar已按当前原字节另存，未沿用不相同的历史副本。
+
+Root按持久CI同一选择器实际执行 **57项关键回归＋34项完整preflight，全部通过、0跳过**；完整20模块联合strict/equality/explicit/silent通过，最后源码pin稳定。面板及资格表另3完整模块按相同严格口径通过。关键回执1409B／`7536ff67dfb5f31644cd0e715c9219e4bd88625d35c4c78a34867b48ca764be1`，最终联合类型回执6182B／`d31204dea96a6abcfcb7316528869e3abb0b98aac34102a48c25f18452a24486`，均在Q39。首次57项中的新组合夹具使用0字节Python源，被真实正长度来源解析器拒绝；已仅修该用例为合法非空stub并同步SHA，再全量重跑通过，未放宽生产守卫。首次类型工具进程缺checker搜索路径也已明确纠正，没有把工具启动失败称作检查通过。
+
+新cold使用Planv4／Quotev5，必填 `renderer_override_ref` 明确区分null与ExactRef。非null会在继承图中核双旧body／旧Outer tuple一致，再同步两份新body及唯一external项，其余25项和最终封包保持。当前材料的真实RAM compose输出165叶／3649995B，双21038B渲染器、external26、canonical8、closure66以及165份最终len／SHA全部逐项通过；null完整compose也通过。便携永久覆盖包括真实intake→继承构造器、来源及缓存拒绝；145份历史材料的完整compose仍是本机集成，不冒成便携CI。旧到期Full未因此获得执行资格，新A40仍未物化或启动。
+
+首批分段计时builder、真实保存显示、推进中文行动及相应强制零跳过回归均接入持久CI；新图Gate还须实际调用计时builder。此前远端exact4900的Official只有部分步骤观察，不能用本机终验补写远端全绿。连续Game正常退出、1秒/日、G2剩余两项和30年长局仍未完成。完整当前恢复与继续步骤见[Source32／N39交接](../handover/2026-10-22-robert-source32-n39-quality-handoff.md)。

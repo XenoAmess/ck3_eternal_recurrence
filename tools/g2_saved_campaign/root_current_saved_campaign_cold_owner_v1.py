@@ -33,6 +33,7 @@ from tools.g2_saved_campaign.current_saved_basis_v1 import (
  parse_readonly_cold_failure_qualification_v1,
  decode_current_saved_basis_v1,digest,encode_current_saved_basis_v1,
  completed_body,evidence,exact_read,integer,json_object,need,
+ validate_current_saved_closed_task_absence_v1,
  parse_frame,parse_json,parse_ref,record,rows,text,utc,
 )
 from tools.g2_saved_campaign.file_stat_identity_v1 import SCHEMA as STAT_SCHEMA,FileStatIdentityV1,parse_file_stat_identity_v1,normalize_file_stat_identity_v1
@@ -238,6 +239,129 @@ class ClosedEpochV1:
  sdk_processes:tuple[ClosedSdkProcessV1,...]
  observed_at_utc:str
  pipe_name:str
+
+SETTLED_PROGRESS_CLOSURE_SCHEMA="xar.current-saved-settled-progress-closure/v1"
+SETTLED_PROGRESS_REVIEW_SCHEMA="xar.current-saved-driver-save-review/v1"
+TaskRoleV1=Literal["supervisor","display","feeder"]
+
+@dataclass(frozen=True,slots=True)
+class SettledTaskClosureRefsV1:
+ role:TaskRoleV1
+ spec:ExactRefV1
+ closed:ExactRefV1
+ unregistered:ExactRefV1
+ def __post_init__(self)->None:
+  need(self.role in ("supervisor","display","feeder"),"settled Task role")
+  for reference in (self.spec,self.closed,self.unregistered):
+   need(isinstance(reference,ExactRefV1),"settled Task exact reference")
+ def to_wire(self)->JsonObject:
+  return {"role":self.role,"spec":self.spec.to_wire(),"closed":self.closed.to_wire(),
+   "unregistered":self.unregistered.to_wire()}
+
+@dataclass(frozen=True,slots=True)
+class SettledProgressClosureRefsV1:
+ sdk_closed:ExactRefV1
+ supervisor_closed:ExactRefV1
+ game_exit:ExactRefV1
+ screen_release:ExactRefV1
+ driver_review:ExactRefV1
+ def __post_init__(self)->None:
+  for reference in (self.sdk_closed,self.supervisor_closed,self.game_exit,self.screen_release,self.driver_review):
+   need(isinstance(reference,ExactRefV1),"settled closure exact reference")
+ def to_wire(self)->JsonObject:
+  return {"sdk_closed":self.sdk_closed.to_wire(),"supervisor_closed":self.supervisor_closed.to_wire(),
+   "game_exit":self.game_exit.to_wire(),"screen_release":self.screen_release.to_wire(),
+   "driver_review":self.driver_review.to_wire()}
+
+@dataclass(frozen=True,slots=True)
+class SettledProgressClosureV1:
+ machine_id:str
+ observed_at_utc:str
+ completed_cycles:int
+ date_raw:int
+ next_sequence:int
+ original_wall_origin_utc:str
+ refs:SettledProgressClosureRefsV1
+ tasks:tuple[SettledTaskClosureRefsV1,...]
+ game_exit_code:int
+ game_forced:bool
+ game_normal_close_qualified:bool
+ def __post_init__(self)->None:
+  text(self.machine_id);utc(self.observed_at_utc);utc(self.original_wall_origin_utc)
+  integer(self.completed_cycles);integer(self.date_raw);integer(self.next_sequence,1)
+  integer(self.game_exit_code)
+  need(type(self.game_forced) is bool and type(self.game_normal_close_qualified) is bool,
+   "actual Game closure booleans")
+  need(not (self.game_forced and self.game_normal_close_qualified),"forced Game exit is not normal-close credit")
+  need(isinstance(self.refs,SettledProgressClosureRefsV1) and type(self.tasks) is tuple
+   and len(self.tasks)==3 and all(isinstance(t,SettledTaskClosureRefsV1) for t in self.tasks)
+   and {t.role for t in self.tasks}=={"supervisor","display","feeder"},"three distinct settled Task roles")
+  need(len({t.spec.path for t in self.tasks})==3 and len({t.closed.path for t in self.tasks})==3
+   and len({t.unregistered.path for t in self.tasks})==3,"three distinct Task evidence generations")
+ def to_wire(self)->JsonObject:
+  return {"schema":SETTLED_PROGRESS_CLOSURE_SCHEMA,"status":"CLOSED_SAVED_SETTLED_PROGRESS",
+   "machine_id":self.machine_id,"observed_at_utc":self.observed_at_utc,
+   "completed_cycles":self.completed_cycles,"date_raw":self.date_raw,"next_sequence":self.next_sequence,
+   "original_wall_origin_utc":self.original_wall_origin_utc,"unknown_requests_replayed":False,
+   "refs":self.refs.to_wire(),"tasks":[t.to_wire() for t in self.tasks],
+   "game":{"exit_code":self.game_exit_code,"forced_owned_job_cleanup":self.game_forced,
+    "normal_wm_close_qualified":self.game_normal_close_qualified}}
+
+def parse_settled_progress_closure_v1(value:object,*,expected_machine_id:str)->SettledProgressClosureV1:
+ row=record(value,{"schema","status","machine_id","observed_at_utc","completed_cycles","date_raw",
+  "next_sequence","original_wall_origin_utc","unknown_requests_replayed","refs","tasks","game"})
+ need(row["schema"]==SETTLED_PROGRESS_CLOSURE_SCHEMA and row["status"]=="CLOSED_SAVED_SETTLED_PROGRESS"
+  and row["machine_id"]==expected_machine_id and row["unknown_requests_replayed"] is False,
+  "generic settled-progress closure contract")
+ r=record(row["refs"],{"sdk_closed","supervisor_closed","game_exit","screen_release","driver_review"})
+ tasks:list[SettledTaskClosureRefsV1]=[]
+ for value_row in rows(row["tasks"]):
+  task=record(value_row,{"role","spec","closed","unregistered"});role=task["role"]
+  if role=="supervisor":role_name:TaskRoleV1="supervisor"
+  elif role=="display":role_name="display"
+  elif role=="feeder":role_name="feeder"
+  else:raise ValueError("settled Task role")
+  tasks.append(SettledTaskClosureRefsV1(role_name,parse_ref(task["spec"]),parse_ref(task["closed"]),parse_ref(task["unregistered"])))
+ game=record(row["game"],{"exit_code","forced_owned_job_cleanup","normal_wm_close_qualified"})
+ forced=game["forced_owned_job_cleanup"];normal=game["normal_wm_close_qualified"]
+ need(type(forced) is bool and type(normal) is bool,"actual Game closure boolean types")
+ if not isinstance(forced,bool) or not isinstance(normal,bool):raise ValueError("Game closure booleans")
+ return SettledProgressClosureV1(text(row["machine_id"]),utc(row["observed_at_utc"]),
+  integer(row["completed_cycles"]),integer(row["date_raw"]),integer(row["next_sequence"],1),utc(row["original_wall_origin_utc"]),
+  SettledProgressClosureRefsV1(*(parse_ref(r[k]) for k in ("sdk_closed","supervisor_closed","game_exit","screen_release","driver_review"))),
+  tuple(tasks),integer(game["exit_code"]),forced,normal)
+
+def _settled_task_v1(task:SettledTaskClosureRefsV1,*,reader:BasisReaderV1,machine_id:str)->str:
+ spec=evidence(reader,task.spec,16384);closed=evidence(reader,task.closed,16384)
+ nonce=text(spec.get("nonce"))
+ need(spec.get("machine_id")==machine_id==closed.get("machine_id")
+  and closed.get("nonce")==nonce and closed.get("spec_sha256")==task.spec.sha256
+  and spec.get("task_name")=="XARG2ManagedOwner-"+nonce,"actual Task generation closed")
+ integer(closed.get("job_active_after_stage"),0,0)
+ need(closed.get("forced_remaining_cleanup") is False,"actual Task Job cleanup")
+ need(integer(closed.get("bootstrap_exit_code"))==integer(closed.get("child_exit_code")),"actual Task child/bootstrap exit")
+ validate_current_saved_closed_task_absence_v1(evidence(reader,task.unregistered,16384),
+  machine_id=machine_id,nonce=nonce,spec_sha256=task.spec.sha256)
+ return nonce
+
+def validate_settled_progress_closure_v1(
+ value:object,*,basis:CurrentSavedBasisV1,reader:BasisReaderV1,
+)->ClosedEpochV1:
+ closure=parse_settled_progress_closure_v1(value,expected_machine_id=basis.machine_id)
+ need(_same_json(evidence(reader,basis.refs.closure,65536),closure.to_wire()),"exact immutable settled closure source")
+ need((closure.completed_cycles,closure.date_raw,closure.next_sequence,closure.original_wall_origin_utc)==
+  (basis.completed_cycles,basis.frame.date_raw,basis.next_sequence,basis.origin.original_wall_origin_utc),"current settled progress and original wall")
+ need(closure.refs.driver_review==basis.refs.driver_close,"exact current Driver review")
+ sdk,supervisor,actual_exit,old_game,processes=_normal_game_evidence_v1(basis,reader,
+  closure.refs.sdk_closed,closure.refs.supervisor_closed,closure.refs.game_exit)
+ need(integer(actual_exit.get("exit_code"))==closure.game_exit_code
+  and actual_exit.get("forced_owned_job_cleanup") is closure.game_forced
+  and actual_exit.get("normal_wm_close_qualified") is closure.game_normal_close_qualified,"closure preserves actual forced Game exit")
+ nonces=tuple(_settled_task_v1(task,reader=reader,machine_id=basis.machine_id) for task in closure.tasks)
+ need(len(set(nonces))==3,"three independent actual Task generations")
+ _normal_screen_release_v1(basis,reader,closure.refs.screen_release,supervisor)
+ pipe=_normal_driver_review_v1(basis,reader,old_game,generic=True)
+ return ClosedEpochV1(basis.refs.closure,old_game,basis.next_sequence,processes,closure.observed_at_utc,pipe)
 def _sdk_processes(value:object)->tuple[ClosedSdkProcessV1,...]:
  found:list[ClosedSdkProcessV1]=[]
  for item in rows(value):
@@ -295,9 +419,93 @@ def _validate_task_closure(
     'actual Task absent after')
   matching+=1
  need(matching==1,'one exact Task unregiste')
+def _normal_game_evidence_v1(basis:CurrentSavedBasisV1,reader:BasisReaderV1,sdk_ref:ExactRefV1,supervisor_ref:ExactRefV1,game_ref:ExactRefV1)->tuple[dict[str,object],dict[str,object],dict[str,object],CurrentGameIdentityV1,tuple[ClosedSdkProcessV1,...]]:
+ sdk=evidence(reader,sdk_ref,16384)
+ need(sdk.get("machine_id")==basis.machine_id
+   and sdk.get("status")=="ACTUAL_BOTH_SDK_EXITS_OBSERVED" and sdk.get("normal") is True,
+   "old SDK actual closure")
+ processes=_sdk_processes(sdk.get("processes"))
+ supervisor=evidence(reader,supervisor_ref,16384)
+ actual_exit=evidence(reader,game_ref,16384)
+ owned=record(supervisor.get("owned_cleanup"))
+ phase=record(supervisor.get("known_preload_phase"))
+ before=record(phase.get("before")); after=record(phase.get("after"))
+ old_game=CurrentGameIdentityV1(integer(actual_exit.get("pid"),1,PID_MAX),
+  _birth(actual_exit.get("creation_filetime"),legacy_python=True),
+  text(owned.get("ck3_creation_date")))
+ need(supervisor.get("machine_id")==basis.machine_id==actual_exit.get("machine_id")
+   and actual_exit.get("kernel_signaled") is True
+   and type(actual_exit.get("exit_code")) is int
+   and integer(owned.get("job_active_processes_final"))==0
+   and owned.get("tree_gone") is True and owned.get("cleanup_proven") is True
+   and owned.get("ok") is True and rows(owned.get("contract_errors"))==[]
+   and integer(owned.get("ck3_pid"),1)==old_game.pid
+   and integer(owned.get("ck3_exit_code"))==integer(actual_exit["exit_code"])
+   and integer(after.get("pid"),1)==integer(before.get("pid"),1)==old_game.pid
+  and _birth(after.get("creation_filetime"),legacy_python=True)==old_game.creation_filetime
+   and _birth(before.get("creation_filetime"),legacy_python=True)==old_game.creation_filetime,
+   'actual old Game kernel/o')
+ sdk_again=record(supervisor.get("sdk_actual_exit"))
+ need(sdk_again.get("status")==sdk["status"]
+   and _sdk_processes(sdk_again.get("processes"))==processes,
+   'supervisor and SDK closu')
+ for flag in ("forced_owned_job_cleanup","normal_wm_close_qualified"):
+  need(type(actual_exit.get(flag)) is bool,'Game closure classificat')
+ return sdk,supervisor,actual_exit,old_game,processes
+
+def _normal_screen_release_v1(basis:CurrentSavedBasisV1,reader:BasisReaderV1,release_ref:ExactRefV1,supervisor:dict[str,object])->None:
+ release=evidence(reader,release_ref,16384)
+ need(release.get("machine_id")==basis.machine_id and type(release.get("returncode")) is int
+   and release["returncode"]==0,'actual screen release re')
+ released=record(parse_json(text(release.get("stdout")).encode("utf-8")))
+ task=record(released.get("task"))
+ keeper=record(supervisor.get("keeper"))
+ need(released.get("ok") is True and task.get("state")=="done"
+   and rows(task.get("resources"))==[] and task.get("task_id")==keeper.get("task_id")
+   and keeper.get("thread_exited") is True and keeper.get("failure") is None
+   and integer(task.get("last_sequence"),1)==integer(keeper.get("last_sequence"),1)+1,
+   'actual stopped Keeper an')
+
+def _normal_driver_review_v1(basis:CurrentSavedBasisV1,reader:BasisReaderV1,old_game:CurrentGameIdentityV1,*,generic:bool)->str:
+ review=evidence(reader,basis.refs.driver_close,16384)
+ driver=record(review.get("Driver")); save=record(review.get("SAVE"))
+ need(review.get("machine_id")==basis.machine_id
+   and review.get("schema")== (SETTLED_PROGRESS_REVIEW_SCHEMA if generic else "xar.A20-final-Driver-SAVE-review/v2")
+   and review.get("status")=="CLOSED_DRIVER_FINAL_SAVE_MATCH"
+   and parse_ref(driver.get("ref"))==basis.refs.driver
+   and parse_ref(save.get("ref"))==basis.refs.save
+   and (_identity(driver.get("identity")) if generic else _review_identity(driver.get("identity")))==basis.driver_identity
+   and (_identity(save.get("identity")) if generic else _review_identity(save.get("identity")))==basis.save_identity
+   and integer(driver.get("format_version"))==2
+   and integer(driver.get("command_history_count"),1)==integer(basis.checkpoint["history_index"],1),
+   'actual corrected closed ')
+ need(parse_ref(review.get("frozen_settled_Queue"))==basis.refs.settled_state
+   and parse_ref(review.get("frozen_continuity_ledger"))==basis.refs.ledger
+   and integer(record(review.get("actual_next")).get("next_sequence"),1)==basis.next_sequence,
+   'Driver close actual stat')
+ recorded=record(driver.get("recorded_identity"))
+ need(integer(recorded.get("bridge_pid"),1)==old_game.pid
+   and integer(recorded.get("episode_character_id"),1)==basis.frame.actor_character_id
+   and recorded.get("episode_run_id")==basis.frame.episode_run_id
+   and (generic or "session_binding" not in recorded),'actual Driver direct ide')
+ if generic:
+  observation=record(recorded.get("session_binding_observation"),{"present","value"})
+  present=observation["present"];need(type(present) is bool,"actual session-binding presence")
+  if present is False:need(observation["value"] is None,"absent session binding has no value")
+  else:
+   binding=record(observation["value"],{"pipe_name","bridge_pid","episode_character_id","episode_run_id"})
+   need(binding["pipe_name"]==recorded.get("pipe_name") and integer(binding["bridge_pid"],1)==old_game.pid
+    and integer(binding["episode_character_id"],1)==basis.frame.actor_character_id
+    and binding["episode_run_id"]==basis.frame.episode_run_id,"actual current Driver session binding")
+  need(reader.stat(basis.refs.driver.path)==basis.driver_identity
+   and reader.stat(basis.refs.save.path)==basis.save_identity,"current closed Driver/SAVE exact identities")
+ return text(recorded.get("pipe_name"))
+
 def _closed_epoch(basis:CurrentSavedBasisV1,reader:BasisReaderV1,*,_trail:tuple[str,...]=())->ClosedEpochV1:
  need(len(_trail)<16 and basis.refs.closure.path not in _trail,"bounded acyclic continuity closure lineage")
  closure=evidence(reader,basis.refs.closure,65536)
+ if closure.get("schema")==SETTLED_PROGRESS_CLOSURE_SCHEMA:
+  return validate_settled_progress_closure_v1(closure,basis=basis,reader=reader)
  if closure.get("schema")==CONTINUITY_FORWARD_SCHEMA:
   forward=validate_current_saved_continuity_forward_basis_v1(basis,reader=reader)
   original=decode_current_saved_basis_v1(exact_read(reader,forward.original_basis_ref,65536),expected_machine_id=basis.machine_id)
@@ -376,39 +584,9 @@ def _closed_epoch(basis:CurrentSavedBasisV1,reader:BasisReaderV1,*,_trail:tuple[
    and closure.get("original_whole_wall_origin")==basis.origin.original_wall_origin_utc,
    'current closed progress ')
  source=record(closure.get("sources"))
- sdk=_ref_record(reader,source["ROOT-P37C23-OWNER-CLOSED.json"],16384)
- need(sdk.get("machine_id")==basis.machine_id
-   and sdk.get("status")=="ACTUAL_BOTH_SDK_EXITS_OBSERVED" and sdk.get("normal") is True,
-   "old SDK actual closure")
- processes=_sdk_processes(sdk.get("processes"))
+ sdk,supervisor,actual_exit,old_game,processes=_normal_game_evidence_v1(basis,reader,parse_ref(source["ROOT-P37C23-OWNER-CLOSED.json"]),parse_ref(source["ROOT-FRESH-SUPERVISOR-CLOSED-C23-A15.json"]),parse_ref(source["ROOT-ACTUAL-GAME-EXIT-C23.json"]))
  codes=rows(closure.get("SDK_exit_codes"))
  need(len(codes)==2 and all(type(v) is int and v==0 for v in codes) and closure.get("SDK_normal") is True,"SDK summary agrees")
- supervisor=_ref_record(reader,source["ROOT-FRESH-SUPERVISOR-CLOSED-C23-A15.json"],16384)
- actual_exit=_ref_record(reader,source["ROOT-ACTUAL-GAME-EXIT-C23.json"],16384)
- owned=record(supervisor.get("owned_cleanup"))
- phase=record(supervisor.get("known_preload_phase"))
- before=record(phase.get("before")); after=record(phase.get("after"))
- old_game=CurrentGameIdentityV1(integer(actual_exit.get("pid"),1,PID_MAX),
-  _birth(actual_exit.get("creation_filetime"),legacy_python=True),
-  text(owned.get("ck3_creation_date")))
- need(supervisor.get("machine_id")==basis.machine_id==actual_exit.get("machine_id")
-   and actual_exit.get("kernel_signaled") is True
-   and type(actual_exit.get("exit_code")) is int
-   and integer(owned.get("job_active_processes_final"))==0
-   and owned.get("tree_gone") is True and owned.get("cleanup_proven") is True
-   and owned.get("ok") is True and rows(owned.get("contract_errors"))==[]
-   and integer(owned.get("ck3_pid"),1)==old_game.pid
-   and integer(owned.get("ck3_exit_code"))==integer(actual_exit["exit_code"])
-   and integer(after.get("pid"),1)==integer(before.get("pid"),1)==old_game.pid
-  and _birth(after.get("creation_filetime"),legacy_python=True)==old_game.creation_filetime
-   and _birth(before.get("creation_filetime"),legacy_python=True)==old_game.creation_filetime,
-   'actual old Game kernel/o')
- sdk_again=record(supervisor.get("sdk_actual_exit"))
- need(sdk_again.get("status")==sdk["status"]
-   and _sdk_processes(sdk_again.get("processes"))==processes,
-   'supervisor and SDK closu')
- for flag in ("forced_owned_job_cleanup","normal_wm_close_qualified"):
-  need(type(actual_exit.get(flag)) is bool,'Game closure classificat')
  need(integer(closure.get("Game_exit_code"))==integer(actual_exit["exit_code"])
    and closure.get("Game_forced") is actual_exit["forced_owned_job_cleanup"]
    and closure.get("Game_normal_close_qualified") is actual_exit["normal_wm_close_qualified"]
@@ -422,40 +600,11 @@ def _closed_epoch(basis:CurrentSavedBasisV1,reader:BasisReaderV1,*,_trail:tuple[
  need(release_key is not None,'actual screen release ev')
  if release_key is None:
   raise ValueError("screen release")
- release=_ref_record(reader,source[release_key],16384)
- need(release.get("machine_id")==basis.machine_id and type(release.get("returncode")) is int
-   and release["returncode"]==0,'actual screen release re')
- released=record(parse_json(text(release.get("stdout")).encode("utf-8")))
- task=record(released.get("task"))
- keeper=record(supervisor.get("keeper"))
- need(released.get("ok") is True and task.get("state")=="done"
-   and rows(task.get("resources"))==[] and task.get("task_id")==keeper.get("task_id")
-   and keeper.get("thread_exited") is True and keeper.get("failure") is None
-   and integer(task.get("last_sequence"),1)==integer(keeper.get("last_sequence"),1)+1,
-   'actual stopped Keeper an')
- review=evidence(reader,basis.refs.driver_close,16384)
- driver=record(review.get("Driver")); save=record(review.get("SAVE"))
- need(review.get("machine_id")==basis.machine_id
-   and review.get("schema")=="xar.A20-final-Driver-SAVE-review/v2"
-   and review.get("status")=="CLOSED_DRIVER_FINAL_SAVE_MATCH"
-   and parse_ref(driver.get("ref"))==basis.refs.driver
-   and parse_ref(save.get("ref"))==basis.refs.save
-   and _review_identity(driver.get("identity"))==basis.driver_identity
-   and _review_identity(save.get("identity"))==basis.save_identity
-   and integer(driver.get("format_version"))==2
-   and integer(driver.get("command_history_count"),1)==integer(basis.checkpoint["history_index"],1),
-   'actual corrected closed ')
- need(parse_ref(review.get("frozen_settled_Queue"))==basis.refs.settled_state
-   and parse_ref(review.get("frozen_continuity_ledger"))==basis.refs.ledger
-   and integer(record(review.get("actual_next")).get("next_sequence"),1)==basis.next_sequence,
-   'Driver close actual stat')
- recorded=record(driver.get("recorded_identity"))
- need(integer(recorded.get("bridge_pid"),1)==old_game.pid
-   and integer(recorded.get("episode_character_id"),1)==basis.frame.actor_character_id
-   and recorded.get("episode_run_id")==basis.frame.episode_run_id
-   and "session_binding" not in recorded,'actual Driver direct ide')
+ _normal_screen_release_v1(basis,reader,parse_ref(source[release_key]),supervisor)
+ pipe=_normal_driver_review_v1(basis,reader,old_game,generic=False)
  return ClosedEpochV1(basis.refs.closure,old_game,basis.next_sequence,processes,
-  utc(closure.get("observed_at_utc")),text(recorded.get("pipe_name")))
+  utc(closure.get("observed_at_utc")),pipe)
+
 @dataclass(frozen=True,slots=True)
 class CurrentSavedGovernanceResumeV1:
  state:JsonObject|None
@@ -1198,7 +1347,9 @@ def validate_current_saved_prepared_sdk_closure_v1(value:object,*,inputs:Current
   forward=validate_current_saved_continuity_forward_basis_v1(business,reader=reader)
   business=decode_current_saved_basis_v1(exact_read(reader,forward.original_basis_ref,65536),expected_machine_id=inputs.basis.machine_id)
   closure=evidence(reader,business.refs.closure,65536)
- if closure.get("schema")==READONLY_PREFIX_UNKNOWN_EPOCH_SCHEMA:
+ if closure.get("schema")==SETTLED_PROGRESS_CLOSURE_SCHEMA:
+  expected=parse_settled_progress_closure_v1(closure,expected_machine_id=inputs.basis.machine_id).refs.sdk_closed
+ elif closure.get("schema")==READONLY_PREFIX_UNKNOWN_EPOCH_SCHEMA:
   prefix_epoch=parse_readonly_prefix_unknown_epoch_v1(closure,expected_machine_id=inputs.basis.machine_id)
   expected=prefix_epoch.refs.sdk_closed
  elif closure.get("schema")==CAP_POSTRESPONSE_FAILURE_EPOCH_SCHEMA:

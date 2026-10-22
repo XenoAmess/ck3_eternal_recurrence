@@ -293,7 +293,7 @@ def display_projection(row, body):
     return {"army_strengths": []}
 ''')
         transformed = ast.parse(transform_queue(source))
-        functions = [node for node in transformed.body if isinstance(node, ast.FunctionDef)
+        functions: list[ast.stmt] = [node for node in transformed.body if isinstance(node, ast.FunctionDef)
                      and node.name in ("compact_plan", "display_projection")]
         namespace: dict[str, object] = {}
         exec(compile(ast.Module(functions, type_ignores=[]), "<actual-queue-formatters>", "exec"), namespace)
@@ -361,7 +361,10 @@ def display_projection(row, body):
                 published = self._publisher(self._row(actual, compact), actual)
                 body = contract.record(contract.record(published["result"])["structured_content"])
                 plan = contract.record(body["plan"])
-                card = contract.parse_card(plan[contract.DETAIL], step=actual["selected_step"], phase=actual["phase"])
+                selected = actual["selected_step"]
+                if not isinstance(selected, str):
+                    raise AssertionError("actual selected step must remain a string")
+                card = contract.parse_card(plan[contract.DETAIL], step=selected, phase=actual["phase"])
                 self.assertEqual(card.selected_step, actual["selected_step"])
                 self.assertEqual(card.phase, actual["phase"])
         for invalid in ("s" * 1601, True):
@@ -392,9 +395,16 @@ def display_projection(row, body):
             received.append(saved)
             return saved
 
-        api = types.ModuleType("root_decision_text_api_c23")
-        api.load_api = lambda *args: types.SimpleNamespace(publish_callback_observation=publish)
-        api.started_reference = lambda *args: {}
+        class FixturePublisher:
+            def publish_callback_observation(self, row: contract.Record, reference: object, *,
+                                            actual_observation: object) -> contract.Record:
+                return publish(row, reference, actual_observation=actual_observation)
+        class FixtureDecisionAPI(types.ModuleType):
+            def load_api(self, *args: object) -> FixturePublisher:
+                return FixturePublisher()
+            def started_reference(self, *args: object) -> contract.Record:
+                return {}
+        api = FixtureDecisionAPI("root_decision_text_api_c23")
 
         def read_text(path: Path, **kwargs: object) -> str:
             if path.name == "CURRENT-REQUEST-P37.json":
@@ -437,6 +447,104 @@ def display_projection(row, body):
                 self.assertEqual(body["selected_step"], plan["selected_step"])
                 self.assertEqual(plan.get("phase"), actual.get("phase"))
                 self.assertNotEqual(contract.outcome(body).stage, "verified")
+
+
+
+# Captured on xenoamess-full-tower-eb9d2c1186, 2026-10-22; software inputs only.
+# N39/p37-responses/11462-0-plan.json SHA256 30da0aa90594dd21c1142875a7c2ea3a6b031b5996da20abdcec3c823c574969
+N39_HORIZON_ROW = r'''{"ended_at_utc":"2026-10-22T02:58:00.569977+00:00","source":"actual GameplayBridgeService.before_submit callback","game_pid":259436,"game_creation_date":"20261022024821.378786+000","request":{"tool":"root_before_auto_turn_submit","parent_sequence":11462,"callback_protocol":"xar.ck3.decision-subdecision/v1","callback_index":1,"actual_observation_sha256":"47a9c4821c4210b5119130e1cd9928bbdeef282cae1b883ffa1db19ffcd5cdd1"},"result":{"is_error":false,"structured_content":{"status":"planned","plan":{"policy":"one-life-turn-v1","phase":"native_war_stationary_contact_horizon_progress","selected_step":"advance-route-contact-horizon-v1-234881394-to-2627-h-2-117440697-285212941","reason":"the exact stationary timeline proves the occupied objective contact-free for the next day","war_decision_presentation_v1":{"phase":"native_war_stationary_contact_horizon_progress","selected_step":"advance-route-contact-horizon-v1-234881394-to-2627-h-2-117440697-285212941","reason":"战分33；保地目标2254；我军832，优先保地战敌2091；全部主导战争敌军2091（去重）。当帧候选未同时满足原生征募、完整报价、现金预留及当前用途，继续原行动。取消工程与合法借款仍待当帧条款及独立到账核验，未计入预期资金。头数不代表胜率。"},"decision_display_v1":{"schema":"xar.decision-display/v1","selected_step":"advance-route-contact-horizon-v1-234881394-to-2627-h-2-117440697-285212941","phase":"native_war_stationary_contact_horizon_progress","domain":"war","action":"处理当前游戏事务","target":null,"facts":[],"rationale":["战分33；保地目标2254；我军832，优先保地战敌2091；全部主导战争敌军2091（去重）。当帧候选未同时满足原生征募、完整报价、现金预留及当前用途，继续原行动。取消工程与合法借款仍待当帧条款及独立到账核验，未计入预期资金。头数不代表胜率。"],"alternatives":null,"costs":[],"risks":["当前兵数不代表胜率；未来增援、抵达及战果未由本条计划确认。"]}},"selected_step":"advance-route-contact-horizon-v1-234881394-to-2627-h-2-117440697-285212941","snapshot_id":"native:16","revision":17}},"source_namespace":"p37-responses"}'''
+# N39/responses/p37-responses-11469-1-result.json SHA256 97291ffc9dcece227b7e71a3b7ccd6d934dc3d68dbfd514db18717a975f0b8ec
+N39_SAVE_ROW = r'''{"request":{"sequence":11469,"tool":"ck3_save_checkpoint","arguments":{"expected_revision":20}},"ended_at_utc":"2026-10-22T03:00:20.995600+00:00","source":"compact projection of this actual SDK result; raw response retained","result":{"is_error":false,"structured_content":{"status":"submitted","step":"save-checkpoint","accepted":true,"result":{"status":"submitted","step":"save-checkpoint","accepted":true,"checkpoint":{"status":"saved","path":"D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime\\state\\profile\\save games\\xar_checkpoint.ck3","name":"xar_checkpoint.ck3","size":117661285,"sha256":"c52326604ce1d6aefc493c1bc5d088e26600b001a59978a93ca951b383440ca9","date_raw":53279400,"overwrite_confirmed":true,"strategy":"native-autosave-command-v1","succession_lifecycle":{"schema":"xar.ck3.succession-lifecycle-binding/v1","lifecycle":"ordinary_campaign_succession","xar_enabled":null,"pact_contract":"absent_by_verified_xar_mod_not_loaded","source":"absent_by_verified_xar_mod_not_loaded","environment_sha256":"d33bf569cbd5cd08659a4cf78cabf92c60642332c598c5ae0b3e1eb823514366"},"history_index":5944,"episode_character_id":40526,"episode_run_id":"native-40526-1bec95182886"}}}},"source_ref":"D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a39\\p37-responses\\11469-1-result.json","source_namespace":"p37-responses"}'''
+
+class N39ActualDisplayTests(unittest.TestCase):
+    def _save(self) -> tuple[contract.Record, contract.Record]:
+        row = contract.record(json.loads(N39_SAVE_ROW))
+        body = contract.record(contract.record(row["result"])["structured_content"])
+        return row, body
+
+    def _published(self, row: contract.Record, body: contract.Record) -> tuple[AudienceState, contract.Outcome]:
+        projected = contract.project_result(row, body)
+        wire = contract.record(json.loads(json.dumps(projected)))
+        rendered_body = contract.record(contract.record(wire["result"])["structured_content"])
+        state = AudienceState()
+        state.consume(wire)
+        return state, contract.outcome(rendered_body)
+
+    def test_real_horizon_planner_projection_reaches_formatter(self) -> None:
+        row = contract.record(json.loads(N39_HORIZON_ROW))
+        result = contract.record(row["result"])
+        body = contract.record(result["structured_content"])
+        actual = contract.record(body["plan"])
+        # Remove only the old derived card to replay the captured planner input.
+        del actual[contract.DETAIL]
+        compact = feed.compact_plan(actual)
+        body["plan"] = compact
+        result["structured_content"] = body
+        row["result"] = result
+        state = AudienceState()
+        state.consume(json.loads(json.dumps(row)))
+        expected = "按接敌窗口短步推进，复查军情"
+        self.assertEqual(state.decision, expected)
+        self.assertIn(expected, state.render())
+        self.assertIn("832", state.render())
+        self.assertIn("2091", state.render())
+        selected = actual["selected_step"]
+        if not isinstance(selected, str):
+            raise AssertionError("captured selected step must remain a string")
+        card = contract.parse_card(compact[contract.DETAIL], step=selected, phase=actual["phase"])
+        self.assertEqual(card.selected_step, actual["selected_step"])
+        self.assertEqual(card.phase, actual["phase"])
+
+    def test_real_submitted_saved_checkpoint_reports_receipt_not_independent_verification(self) -> None:
+        row, body = self._save()
+        state, report = self._published(row, body)
+        self.assertEqual(report.stage, "returned")
+        self.assertIn("存档回执报告已保存", state.render())
+        self.assertNotIn("独立后验已确认", state.render())
+        self.assertNotIn("D:\\", state.render())
+
+    def test_saved_marker_never_overrides_error_unknown_or_rejection(self) -> None:
+        cases: tuple[tuple[str, str, object], ...] = (
+            ("inner", "status", "observed_after_native_error"),
+            ("outer", "status", "observed_after_native_error"),
+            ("inner", "native_ack_status", "unknown_after_error"),
+            ("inner", "status", "failed"),
+            ("outer", "status", "failed"),
+            ("inner", "status", "rejected"),
+            ("inner", "accepted", False),
+            ("outer", "accepted", False),
+        )
+        for location, key, value in cases:
+            with self.subTest(location=location, key=key, value=value):
+                row, body = self._save()
+                if location == "inner":
+                    inner = contract.record(body["result"])
+                    inner[key] = value
+                    body["result"] = inner
+                else:
+                    body[key] = value
+                state, report = self._published(row, body)
+                self.assertEqual(report.stage, "unknown")
+                self.assertNotIn("存档回执报告已保存", state.render())
+                self.assertNotIn("独立后验已确认", state.render())
+
+    def test_missing_null_empty_and_wrong_typed_saved_markers_do_not_promote(self) -> None:
+        for value in (None, {}, {"status": True}, {"status": "saved "}):
+            with self.subTest(value=value):
+                row, body = self._save()
+                inner = contract.record(body["result"])
+                inner["checkpoint"] = value
+                body["result"] = inner
+                state, report = self._published(row, body)
+                self.assertEqual(report.stage, "submitted")
+                self.assertNotIn("存档回执报告已保存", state.render())
+                self.assertNotIn("独立后验已确认", state.render())
+        row, body = self._save()
+        inner = contract.record(body["result"])
+        del inner["checkpoint"]
+        body["result"] = inner
+        self.assertEqual(self._published(row, body)[1].stage, "submitted")
+
 
 if __name__ == "__main__":
     unittest.main()

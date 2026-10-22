@@ -162,6 +162,7 @@ def action_name(step: object) -> str:
     if not isinstance(step, str) or not step:
         return "观察当前局势"
     for prefixes, label in (
+        (("advance-route-contact-horizon-v1-",), "按接敌窗口短步推进，复查军情"),
         (("advance-route-contact-window-v1-",), "保持现有行军，按短窗口停下复查"),
         (("life-advance", "exact-one-day"), "推进时间，观察局势变化"),
         (("declare-war-",), "向选定目标宣战"),
@@ -347,12 +348,17 @@ def outcome(body: object) -> Outcome:
         return Outcome("unknown", "展示或核验材料暂不可用；保留原始回执，实际结果仍待核对。")
     inner = maybe_record(outer.get("result")) or outer
     status = inner.get("status", outer.get("status"))
-    if status == "observed_after_native_error" or inner.get("native_ack_status") == "unknown_after_error":
+    if (status == "observed_after_native_error" or outer.get("status") == "observed_after_native_error"
+            or inner.get("native_ack_status") == "unknown_after_error"):
         return Outcome("unknown", "观察到新状态；原提交结果仍未确认，不能重复提交。")
+    if (status in ("blocked", "rejected", "failed", "readonly_unavailable", "error")
+            or outer.get("status") in ("blocked", "rejected", "failed", "readonly_unavailable", "error")
+            or inner.get("accepted") is False or outer.get("accepted") is False):
+        if inner.get("failure_stage") == "pre_submit" and inner.get("business_submitted") is False:
+            return Outcome("not_submitted", "提交前条件未通过，已确认本次未提交。")
+        return Outcome("unknown", "请求未完成核验；原操作是否生效仍未知，保留回执。")
     if status == "planned":
         return Outcome("planned", "计划已形成，尚未提交。")
-    if status in ("submitted", "queued"):
-        return Outcome("submitted", "已提交，等待独立结果核验。")
     if status in ("available", "hidden", "not_visible"):
         return Outcome("observed", "只读局势信息已读回。")
     proof = maybe_record(inner.get("postcondition"))
@@ -361,12 +367,10 @@ def outcome(body: object) -> Outcome:
             and isinstance(inner.get("action_request_id"), str) and inner["action_request_id"]
             and proof.get("action_request_id") == inner["action_request_id"]):
         return Outcome("verified", "独立后验已确认本步骤结果。")
-    if status in ("blocked", "rejected", "failed", "readonly_unavailable", "error") or inner.get("accepted") is False:
-        if inner.get("failure_stage") == "pre_submit" and inner.get("business_submitted") is False:
-            return Outcome("not_submitted", "提交前条件未通过，已确认本次未提交。")
-        return Outcome("unknown", "请求未完成核验；原操作是否生效仍未知，保留回执。")
     if maybe_record(inner.get("checkpoint")).get("status") == "saved":
         return Outcome("returned", "存档回执报告已保存；保留实际文件核对证据。")
+    if status in ("submitted", "queued"):
+        return Outcome("submitted", "已提交，等待独立结果核验。")
     return Outcome("returned", "实际回执已返回，业务后验仍待核对。")
 
 

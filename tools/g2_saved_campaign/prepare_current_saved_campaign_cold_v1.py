@@ -27,8 +27,8 @@ from tools.g2_saved_campaign.current_saved_continuity_v1 import (
  ContinuityReaderV1, LocalContinuityReaderV1, read_continuity_view_v1,
  validate_closed_continuity_frontier_v1,
 )
-PLAN_SCHEMA = "xar.current-saved-cold-plan/v3"
-QUOTE_SCHEMA = "xar.current-saved-cold-quote/v4"
+PLAN_SCHEMA = "xar.current-saved-cold-plan/v4"
+QUOTE_SCHEMA = "xar.current-saved-cold-quote/v5"
 MAX_CURRENT_SAVED_CLOSURE_V1 = 66
 MAX_FILE = 1048576
 MAX_GRAPH = 8 * MAX_FILE
@@ -104,6 +104,31 @@ def parse_source_row_v1(value: object) -> SourceRowV1:
    "bounded Python shared dependency")
  return result
 @dataclass(frozen=True, slots=True)
+class FirstFullControlTimingAdmissionV1:
+ machine_id: str
+ control_sequence: int
+ def to_wire(self) -> JsonObject:
+  machine = text(self.machine_id)
+  need(machine == machine.strip(), "canonical control timing machine ID")
+  sequence = integer(self.control_sequence, 3, (1 << 53) - 1)
+  return {"schema": "xar.ck3.queue-control-timing-admission/v1",
+          "enabled": True, "machine_id": machine,
+          "control_sequence": sequence, "cycle_budget": 30}
+
+def build_current_saved_first_full_control_timing_v1(
+ *, machine_id: object, next_sequence: object,
+) -> FirstFullControlTimingAdmissionV1:
+ """Validate external inputs for one existing first-FULL probe, without I/O.
+
+ The caller binds the machine and the unchanged SEM/CAP opening sequence.
+ This is measurement authority only; it grants no Game call or batch credit.
+ """
+ machine = text(machine_id)
+ need(machine == machine.strip(), "canonical control timing machine ID")
+ sequence = integer(next_sequence, 1, (1 << 53) - 3)
+ return FirstFullControlTimingAdmissionV1(machine, sequence + 2)
+
+@dataclass(frozen=True, slots=True)
 class Native32CurrentSdkOverrideV1:
  reader_ref: ExactRefV1
  extension_ref: ExactRefV1
@@ -151,6 +176,7 @@ class ColdPlanV1:
  sdk_anchor_ref: ExactRefV1
  native32_current_sdk_override: Native32CurrentSdkOverrideV1|None
  artifact_cap_bytes: int
+ renderer_override_ref: ExactRefV1 | None
  def to_wire(self) -> JsonObject:
   return {"schema": PLAN_SCHEMA, "machine_id": self.machine_id,
    "observed_at_utc": self.observed_at_utc, "review_at_utc": self.review_at_utc,
@@ -166,12 +192,12 @@ class ColdPlanV1:
    "display_nonce": self.display_nonce, "attempt_nonce": self.attempt_nonce, "task_nonce": self.task_nonce,
    "business_source_generation":self.business_source_generation,"sdk_base_ref":self.sdk_base_ref.to_wire(),
    "sdk_anchor_ref":self.sdk_anchor_ref.to_wire(),
-   "native32_current_sdk_override":None if self.native32_current_sdk_override is None else self.native32_current_sdk_override.to_wire(), "artifact_cap_bytes": self.artifact_cap_bytes}
+   "native32_current_sdk_override":None if self.native32_current_sdk_override is None else self.native32_current_sdk_override.to_wire(), "artifact_cap_bytes": self.artifact_cap_bytes, "renderer_override_ref": None if self.renderer_override_ref is None else self.renderer_override_ref.to_wire()}
 PLAN_FIELDS = {"schema", "machine_id", "observed_at_utc", "review_at_utc", "runtime_root",
  "material_runtime_root", "material_quote_ref", "basis_ref", "validation_ref", "producer_ref",
  "source_rows", "canonical_entry_paths", "closure_entry_paths", "import_roots", "full_storage_ref",
  "steam_native_state_ref", "screen_admission_path", "supervisor_spec_path", "display_nonce",
- "attempt_nonce", "task_nonce", "business_source_generation", "sdk_base_ref", "sdk_anchor_ref", "native32_current_sdk_override", "artifact_cap_bytes"}
+ "attempt_nonce", "task_nonce", "business_source_generation", "sdk_base_ref", "sdk_anchor_ref", "native32_current_sdk_override", "artifact_cap_bytes", "renderer_override_ref"}
 def artifact_cap_bytes_v1(value: object) -> int:
  return integer(value, 128 * 1024**2, 16 * 1024**3)
 
@@ -192,7 +218,8 @@ def parse_plan_v1(value: object) -> ColdPlanV1:
   nonce_v1(row["attempt_nonce"]), nonce_v1(row["task_nonce"]),
   business_generation_v1(row["business_source_generation"]),parse_ref(row["sdk_base_ref"]),parse_ref(row["sdk_anchor_ref"]),
   parse_native32_current_sdk_override_v1(row["native32_current_sdk_override"]),
-  artifact_cap_bytes_v1(row["artifact_cap_bytes"]))
+  artifact_cap_bytes_v1(row["artifact_cap_bytes"]),
+  parse_current_saved_renderer_override_v1(row["renderer_override_ref"]))
  need(result.runtime_root.casefold() != result.material_runtime_root.casefold()
    and len({result.display_nonce, result.attempt_nonce, result.task_nonce}) == 3,
    "fresh independent software/recording/Task namespace")
@@ -268,6 +295,7 @@ class ColdQuoteV1:
  prepare_peak_upper: int
  native32_current_sdk_override: Native32CurrentSdkOverrideV1|None
  artifact_cap_bytes: int
+ renderer_override_ref: ExactRefV1 | None
  def to_wire(self) -> JsonObject:
   return {"schema": QUOTE_SCHEMA, "machine_id": self.machine_id, "observed_at_utc": self.observed_at_utc,
    "plan_ref": self.plan_ref.to_wire(), "basis_ref": self.basis_ref.to_wire(),
@@ -278,12 +306,12 @@ class ColdQuoteV1:
    "closure_entry_paths": list(self.closure_entry_paths), "import_roots": list(self.import_roots),
    "canonical_entry_limit": self.canonical_entry_limit, "logical_bytes": self.logical_bytes,
    "allocation_upper": self.allocation_upper, "prepare_peak_upper": self.prepare_peak_upper,
-   "native32_current_sdk_override":None if self.native32_current_sdk_override is None else self.native32_current_sdk_override.to_wire(), "artifact_cap_bytes": self.artifact_cap_bytes,
+   "native32_current_sdk_override":None if self.native32_current_sdk_override is None else self.native32_current_sdk_override.to_wire(), "artifact_cap_bytes": self.artifact_cap_bytes, "renderer_override_ref": None if self.renderer_override_ref is None else self.renderer_override_ref.to_wire(),
    "ordinary_cycle_credit": 0, "game_day_credit": 0, "original_actions_replayed": False}
 QUOTE_FIELDS = {"schema", "machine_id", "observed_at_utc", "plan_ref", "basis_ref", "validation_ref",
  "producer_ref", "runtime_root", "files", "canonical_entry_paths", "closure_entry_paths",
  "import_roots", "canonical_entry_limit", "logical_bytes", "allocation_upper", "prepare_peak_upper",
- "ordinary_cycle_credit", "game_day_credit", "original_actions_replayed", "campaign_score_junction", "native32_current_sdk_override", "artifact_cap_bytes"}
+ "ordinary_cycle_credit", "game_day_credit", "original_actions_replayed", "campaign_score_junction", "native32_current_sdk_override", "artifact_cap_bytes", "renderer_override_ref"}
 def validate_native32_current_sdk_output_rows_v1(quote:ColdQuoteV1) -> None:
  from tools.g2_saved_campaign.prepare_native32_current_sdk_binding_v1 import (
   READER_NAME, EXTENSION_NAME, BINDING_NAME,
@@ -316,7 +344,8 @@ def parse_quote_v1(value: object) -> ColdQuoteV1:
   integer(row["logical_bytes"], 1, MAX_GRAPH), integer(row["allocation_upper"], 1, MAX_GRAPH),
   integer(row["prepare_peak_upper"], 1, MAX_GRAPH),
   parse_native32_current_sdk_override_v1(row["native32_current_sdk_override"]),
-  artifact_cap_bytes_v1(row["artifact_cap_bytes"]))
+  artifact_cap_bytes_v1(row["artifact_cap_bytes"]),
+  parse_current_saved_renderer_override_v1(row["renderer_override_ref"]))
  need(result.campaign_score_junction.path==child_v1(root,"campaign-score"),"exact directory projection")
  score=ntpath.normcase(ntpath.normpath(result.campaign_score_junction.path))
  need(all(not (ntpath.normcase(ntpath.normpath(item.path))==score or
@@ -329,6 +358,7 @@ def parse_quote_v1(value: object) -> ColdQuoteV1:
    and set(result.canonical_entry_paths) <= set(result.closure_entry_paths) <= relative
    and len(result.closure_entry_paths) <= MAX_CURRENT_SAVED_CLOSURE_V1, "unique outputs cover actual complete closure/max8")
  validate_native32_current_sdk_output_rows_v1(result)
+ validate_current_saved_renderer_output_rows_v1(result)
  allocated = sum(allocation_v1(item.bytes) for item in result.files if item.mode == "create-only")
  need(result.logical_bytes == sum(item.bytes for item in result.files)
    and result.allocation_upper == allocated
@@ -1041,6 +1071,7 @@ def verify_current_saved_shared_sources_v1(root: Path) -> None:
   historical_binding_ref=originals[child_v1(p.runtime_root,native32.HISTORICAL_BINDING_NAME)]
   apply_native32_current_sdk_override_v1(p,output=output,documents=documents,
    historical_binding_ref=historical_binding_ref,load=load)
+ apply_current_saved_renderer_override_v1(p, output=output, load=load)
  freeze.update(planned_saved_opening_date_raw=basis.frame.date_raw,
   continuation_basis={"basis_ref":p.basis_ref.to_wire(),"completed_cycles":basis.completed_cycles,
        "date_raw":basis.frame.date_raw,"ordinary_cycle_credit":0,"game_day_credit":0},
@@ -1133,7 +1164,7 @@ def verify_current_saved_shared_sources_v1(root: Path) -> None:
  allocated = sum(allocation_v1(row.bytes) for row in result_rows if row.mode == "create-only")
  quote = ColdQuoteV1(p.machine_id,p.observed_at_utc,plan_ref,p.basis_ref,p.validation_ref,p.producer_ref,
   p.runtime_root,tuple(result_rows),score_binding,p.canonical_entry_paths,p.closure_entry_paths,p.import_roots,
-  8,sum(row.bytes for row in result_rows),allocated,allocated+max(len(raw) for raw in output.values())+131072,p.native32_current_sdk_override,p.artifact_cap_bytes)
+  8,sum(row.bytes for row in result_rows),allocated,allocated+max(len(raw) for raw in output.values())+131072,p.native32_current_sdk_override,p.artifact_cap_bytes,p.renderer_override_ref)
  return ColdComposeV1(output,parse_quote_v1(quote.to_wire()))
 
 @dataclass(frozen=True, slots=True)
@@ -1195,6 +1226,69 @@ def probe_current_saved_supervisor_import_chain_v1(
       "original placement and keeper imports retain frozen origins")
  return SupervisorImportChainV1(origin("root_owned_generation"),origin("root_retained_screen_keeper"),
                                 creators,origin("g2_saved_campaign.sdk_process_custody"))
+
+CURRENT_SAVED_RENDERER_PIN_V1 = (21038, "fb5eaa7217da027770272784da0d725cc605953f2547c62636bc6188e1589feb")
+CURRENT_SAVED_RENDERER_PATHS_V1 = (
+ "decision_display_contract_v1.py",
+ "presentation-c23/g2_saved_campaign/decision_display_contract_v1.py",
+)
+
+def parse_current_saved_renderer_override_v1(value: object) -> ExactRefV1 | None:
+ if value is None:return None
+ reference = parse_ref(value)
+ absolute_v1(reference.path)
+ need((reference.bytes, reference.sha256) == CURRENT_SAVED_RENDERER_PIN_V1,
+      "exact currently qualified shared renderer source")
+ return reference
+
+def apply_current_saved_renderer_override_v1(
+ plan: ColdPlanV1, *, output: dict[str, bytes],
+ load: Callable[[ExactRefV1, int], bytes],
+) -> None:
+ """Replace one qualified formatter in its two already active source slots."""
+ reference = plan.renderer_override_ref
+ if reference is None:return
+ need(parse_current_saved_renderer_override_v1(reference.to_wire()) == reference,
+      "explicit qualified renderer override")
+ current = load(reference, 65536)
+ need((len(current), sha256_v1(current)) == CURRENT_SAVED_RENDERER_PIN_V1,
+      "qualified renderer payload bytes")
+ paths = tuple(child_v1(plan.runtime_root, name) for name in CURRENT_SAVED_RENDERER_PATHS_V1)
+ old = output[paths[0]]
+ need(old == output[paths[1]], "both inherited rich formatter bodies must agree")
+ outer_path = child_v1(plan.runtime_root, "root_c23_canonical_outer.py")
+ outer = output[outer_path]
+ from tools.g2_saved_campaign.prepare_native32_current_sdk_binding_v1 import _outer_external_table_v1
+ node, before = _outer_external_table_v1(outer)
+ name = "decision_display_contract_v1"
+ need(before.get(name) == (len(old), sha256_v1(old)), "inherited renderer external pin matches its body")
+ table = node.value
+ if not isinstance(table, ast.Dict):raise ValueError("literal external source table")
+ matches = [value for key, value in zip(table.keys, table.values, strict=True)
+            if isinstance(key, ast.Constant) and key.value == name]
+ need(len(matches) == 1, "one renderer external tuple")
+ value = matches[0]
+ if not isinstance(value, ast.Tuple) or value.end_lineno is None or value.end_col_offset is None:
+  raise ValueError("bounded literal renderer external tuple")
+ lines = outer.splitlines(keepends=True)
+ start = sum(map(len, lines[:value.lineno-1])) + value.col_offset
+ end = sum(map(len, lines[:value.end_lineno-1])) + value.end_col_offset
+ changed = outer[:start] + repr(CURRENT_SAVED_RENDERER_PIN_V1).encode("ascii") + outer[end:]
+ compile(changed, "<current saved renderer external pin>", "exec")
+ _, after = _outer_external_table_v1(changed)
+ need(set(after) == set(before) and after[name] == CURRENT_SAVED_RENDERER_PIN_V1
+      and all(after[key] == pin for key, pin in before.items() if key != name),
+      "renderer changes only its one external pin")
+ output.update({paths[0]: current, paths[1]: current, outer_path: changed})
+
+
+def validate_current_saved_renderer_output_rows_v1(quote: ColdQuoteV1) -> None:
+ reference = quote.renderer_override_ref
+ if reference is None:return
+ for name in CURRENT_SAVED_RENDERER_PATHS_V1:
+  found = [row for row in quote.files if row.relative_path == name]
+  need(len(found) == 1 and (found[0].bytes, found[0].sha256) == (reference.bytes, reference.sha256),
+       "both qualified renderer outputs must match the explicit ref")
 
 def apply_native32_current_sdk_override_v1(
  plan:ColdPlanV1,*,output:dict[str,bytes],documents:dict[str,JsonObject],

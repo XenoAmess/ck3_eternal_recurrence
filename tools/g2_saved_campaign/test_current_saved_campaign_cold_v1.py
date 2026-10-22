@@ -75,7 +75,7 @@ def plan() -> producer.ColdPlanV1:
         ref("spec.json").path, "1" * 32, "2" * 32, "3" * 32,
         business_source_generation=31, sdk_base_ref=ref("sdk-base.json"),
         sdk_anchor_ref=ref("sdk-anchor.json"), native32_current_sdk_override=None,
-        artifact_cap_bytes=1090519040)
+        artifact_cap_bytes=1090519040, renderer_override_ref=None)
 
 
 def feeder_admission() -> feeder.CurrentSavedFeederAdmissionV1:
@@ -208,7 +208,7 @@ class TypedColdContractTests(unittest.TestCase):
         quote = producer.ColdQuoteV1(MACHINE, item.observed_at_utc, ref("plan.json"),
             item.basis_ref, item.validation_ref, item.producer_ref, ROOT, outputs, score_junction(),
             item.canonical_entry_paths, item.closure_entry_paths, item.import_roots,
-            8, len(outputs), allocated, allocated + 1 + 131072, None, item.artifact_cap_bytes)
+            8, len(outputs), allocated, allocated + 1 + 131072, None, item.artifact_cap_bytes, renderer_override_ref=None)
         self.assertEqual(producer.parse_quote_v1(wire(quote.to_wire())), quote)
         self.assertEqual(record(wire(quote.to_wire())["campaign_score_junction"])["target_file_id"],
             "9007199254740993")
@@ -1577,7 +1577,7 @@ class Native32CurrentSdkOverrideTests(unittest.TestCase):
             configured.basis_ref, configured.validation_ref, configured.producer_ref, ROOT,
             outputs, score_junction(), configured.canonical_entry_paths,
             configured.closure_entry_paths, configured.import_roots, 8, len(outputs),
-            allocated, allocated + 1 + 131072, configured.native32_current_sdk_override, configured.artifact_cap_bytes)
+            allocated, allocated + 1 + 131072, configured.native32_current_sdk_override, configured.artifact_cap_bytes, renderer_override_ref=None)
         self.assertEqual(producer.parse_quote_v1(wire(quoted.to_wire())), quoted)
         for value in ("xar.current-saved-cold-quote/v2", None):
             changed = quoted.to_wire(); changed["schema"] = value
@@ -1811,8 +1811,8 @@ class CurrentSavedCompleteClosureConsumerTests(unittest.TestCase):
         upper += count * 1024 + 16384
         cls.peak_logical = max(cls.peak_logical, logical)
         cls.peak_allocation_upper = max(cls.peak_allocation_upper, upper)
-        if upper > 131072:
-            raise ValueError("closure consumer fixture exceeds its 128KiB quote")
+        if upper > 1048576:
+            raise ValueError("closure consumer fixture exceeds its 1MiB quote")
 
     def policy_v1(self, count: int) -> JsonObject:
         digest = hashlib.sha256(b"").hexdigest()
@@ -1936,6 +1936,69 @@ class CurrentSavedCompleteClosureConsumerTests(unittest.TestCase):
             constructor(self.root)
 
 
+    def test_nonnull_renderer_reaches_inherited_constructor_and_final_source_checks(self) -> None:
+        policy = self.policy_v1(66)
+        reference, payload = CurrentSavedRendererOverrideTests().renderer()
+        configured = replace(plan(), runtime_root=str(self.root), renderer_override_ref=reference)
+        stub = b"# fixture\n"
+        stub_digest = hashlib.sha256(stub).hexdigest()
+        old_pins = {name: (len(stub), stub_digest) for name in N37_EXTERNAL_NAMES_V1}
+        outer = ("_C23_EXTERNAL_IMPORT_PINS = " + repr(old_pins) + "\n" +
+                 N37_CLOSURE_CONSUMER_SOURCE_V1).encode()
+        outer = producer.bind_current_saved_complete_closure_limit_v1(outer)
+        output = {producer.child_v1(str(self.root), name): stub
+                  for name in producer.CURRENT_SAVED_RENDERER_PATHS_V1}
+        outer_path = producer.child_v1(str(self.root), "root_c23_canonical_outer.py")
+        output[outer_path] = outer
+        original = dict(output)
+        producer.apply_current_saved_renderer_override_v1(configured, output=output,
+                                                         load=lambda ref, limit: payload)
+        from tools.g2_saved_campaign.prepare_native32_current_sdk_binding_v1 import _outer_external_table_v1
+        _, external = _outer_external_table_v1(output[outer_path])
+        self.assertEqual(len(external), 26)
+        self.assertEqual({k: v for k, v in external.items() if k != "decision_display_contract_v1"},
+                         {k: v for k, v in old_pins.items() if k != "decision_display_contract_v1"})
+        for name in producer.CURRENT_SAVED_RENDERER_PATHS_V1:
+            self.assertEqual(output[producer.child_v1(str(self.root), name)], payload)
+        contract_path = self.root / "decision_display_contract_v1.py"
+        try:
+            for name in N37_EXTERNAL_NAMES_V1:
+                (self.root / (name + ".py")).write_bytes(stub)
+            contract_path.write_bytes(payload)
+            pins = record(policy["external_import_source_pins"])
+            for name in N37_EXTERNAL_NAMES_V1:
+                path = self.root / (name + ".py")
+                pins[name] = producer.ref_for_bytes_v1(str(path), path.read_bytes()).to_wire()
+            pins["decision_display_contract_v1"] = producer.ref_for_bytes_v1(str(contract_path), payload).to_wire()
+            policy["external_import_source_pins"] = json_value(pins)
+            entries = rows(policy["entry_source_pins"])
+            policy["entry_source_pins"] = json_value([
+                [rows(item)[0], hashlib.sha256(payload).hexdigest()]
+                if Path(text(rows(item)[0])) == contract_path else
+                [rows(item)[0], stub_digest] if Path(text(rows(item)[0])).stem in N37_EXTERNAL_NAMES_V1
+                else item for item in entries])
+            self.persist_policy_v1(policy)
+            self.assertEqual(len(rows(policy["entry_source_pins"])), 66)
+            self.assertEqual(len(producer.CANONICAL_NAMES), 8)
+            constructor, check, fake_sys, _ = self.consumer_v1(output[outer_path])
+            self.assertEqual(constructor(self.root).root, self.root)
+            foreign = ModuleType("decision_display_contract_v1")
+            foreign.__file__ = str(self.image)
+            fake_sys.modules["decision_display_contract_v1"] = foreign
+            with self.assertRaisesRegex(ValueError, "foreign cached external algorithm"):
+                check(self.root, policy)
+            fake_sys.modules.clear()
+            contract_path.write_bytes(b"changed")
+            with self.assertRaises(ValueError):
+                constructor(self.root)
+            unchanged = dict(original)
+            producer.apply_current_saved_renderer_override_v1(replace(configured, renderer_override_ref=None),
+                output=unchanged, load=lambda ref, limit: self.fail("null must not load"))
+            self.assertEqual(unchanged, original)
+        finally:
+            for name in N37_EXTERNAL_NAMES_V1:
+                (self.root / (name + ".py")).write_bytes(b"")
+
     def test_real_compose_reader_explicit_response_capability_keeps_source_cap(self) -> None:
         source = Path(producer.__file__).read_text("utf-8")
         tree = ast.parse(source)
@@ -2024,7 +2087,7 @@ class CurrentSavedArtifactBudgetTests(unittest.TestCase):
             item.basis_ref, item.validation_ref, item.producer_ref, ROOT, outputs,
             score_junction(), item.canonical_entry_paths, item.closure_entry_paths,
             item.import_roots, 8, len(outputs), allocated, allocated + 1 + 131072,
-            item.native32_current_sdk_override, item.artifact_cap_bytes)
+            item.native32_current_sdk_override, item.artifact_cap_bytes, renderer_override_ref=None)
 
     def _material(self) -> bytes:
         from textwrap import indent
@@ -2116,6 +2179,125 @@ class CurrentSavedArtifactBudgetTests(unittest.TestCase):
                         expected_attempt_nonce=configured.attempt_nonce, expected_task_nonce=configured.task_nonce,
                         reader=reader)
                 self.assertEqual(boundary.call_count, int(accepted))
+
+
+
+class CurrentSavedRendererOverrideTests(unittest.TestCase):
+    def renderer(self) -> tuple[ExactRefV1, bytes]:
+        path = Path(__file__).with_name("decision_display_contract_v1.py")
+        raw = path.read_bytes()
+        reference = producer.ref_for_bytes_v1(producer.child_v1(OLD, "reviewed-renderer.py"), raw)
+        return reference, raw
+
+    def material(self) -> tuple[producer.ColdPlanV1, dict[str, bytes], bytes]:
+        reference, raw = self.renderer()
+        configured = replace(plan(), renderer_override_ref=reference)
+        old = b"# original qualified rich renderer\n"
+        pins = {"decision_display_contract_v1": (len(old), hashlib.sha256(old).hexdigest()),
+                **{"retained_"+str(i): (1, "a"*64) for i in range(25)}}
+        outer = ("_C23_EXTERNAL_IMPORT_PINS = " + repr(pins) + "\n").encode()
+        output = {producer.child_v1(ROOT, name): old for name in producer.CURRENT_SAVED_RENDERER_PATHS_V1}
+        output[producer.child_v1(ROOT, "root_c23_canonical_outer.py")] = outer
+        return configured, output, raw
+
+    def test_qualified_registry_and_required_nullable_plan(self) -> None:
+        registry = ast.parse(Path(__file__).with_name("prepare_rich_decision_graph_v1.py").read_bytes())
+        assignments = [node for node in registry.body if isinstance(node, ast.Assign)
+                       and any(isinstance(key, ast.Name) and key.id == "QUALIFIED" for key in node.targets)]
+        self.assertEqual(len(assignments), 1)
+        registry_value = assignments[0].value
+        if not isinstance(registry_value, ast.Call) or len(registry_value.args) != 1 or not isinstance(registry_value.args[0], ast.Dict):
+            raise ValueError("actual unique qualified registry")
+        table = registry_value.args[0]
+        pins = [item for key, item in zip(table.keys, table.values, strict=True)
+                if isinstance(key, ast.Name) and key.id == "CONTRACT"]
+        self.assertEqual(len(pins), 1)
+        actual_pin: object = ast.literal_eval(pins[0])
+        reference, _ = self.renderer()
+        self.assertEqual(producer.CURRENT_SAVED_RENDERER_PIN_V1, actual_pin)
+        plain = plan()
+        self.assertIsNone(plain.to_wire()["renderer_override_ref"])
+        self.assertEqual(producer.parse_plan_v1(wire(plain.to_wire())), plain)
+        enabled = replace(plain, renderer_override_ref=reference)
+        self.assertEqual(producer.parse_plan_v1(wire(enabled.to_wire())), enabled)
+        bad_values: tuple[object, ...] = (False, {}, [], reference.path,
+            {**reference.to_wire(), "bytes": True}, {**reference.to_wire(), "bytes": 21038.0},
+            {**reference.to_wire(), "sha256": "a"*64})
+        for bad in bad_values:
+            value = plain.to_wire(); value["renderer_override_ref"] = json_value(bad)
+            with self.subTest(value=bad), self.assertRaises(ValueError):
+                producer.parse_plan_v1(wire(value))
+        value = plain.to_wire(); del value["renderer_override_ref"]
+        with self.assertRaises(ValueError):
+            producer.parse_plan_v1(wire(value))
+        with self.assertRaises(ValueError):
+            producer.parse_plan_v1(wire({**plain.to_wire(), "schema": "xar.current-saved-cold-plan/v3"}))
+
+    def test_actual_intake_double_body_and_only_one_outer_tuple(self) -> None:
+        from tools.g2_saved_campaign.prepare_native32_current_sdk_binding_v1 import _outer_external_table_v1
+        configured, output, raw = self.material()
+        before = dict(output)
+        outer_path = producer.child_v1(ROOT, "root_c23_canonical_outer.py")
+        _, old_pins = _outer_external_table_v1(output[outer_path])
+        def load(reference: ExactRefV1, limit: int) -> bytes:
+            self.assertEqual(reference, configured.renderer_override_ref)
+            self.assertEqual(limit, 65536)
+            return raw
+        producer.apply_current_saved_renderer_override_v1(configured, output=output, load=load)
+        for name in producer.CURRENT_SAVED_RENDERER_PATHS_V1:
+            self.assertEqual(output[producer.child_v1(ROOT, name)], raw)
+        _, new_pins = _outer_external_table_v1(output[outer_path])
+        self.assertEqual(len(new_pins), 26)
+        self.assertEqual([name for name in old_pins if old_pins[name] != new_pins[name]],
+                         ["decision_display_contract_v1"])
+        self.assertEqual(set(output), set(before))
+
+    def test_null_preserves_all_old_bytes_without_loading(self) -> None:
+        _, output, _ = self.material(); before = dict(output)
+        def forbidden(reference: ExactRefV1, limit: int) -> bytes:
+            raise AssertionError("null renderer must not load current source")
+        producer.apply_current_saved_renderer_override_v1(plan(), output=output, load=forbidden)
+        self.assertEqual(output, before)
+
+    def test_bad_old_body_pin_or_new_body_fail_before_mutation(self) -> None:
+        for mode in ("different_old_body", "wrong_outer_pin", "wrong_new_body"):
+            configured, output, raw = self.material()
+            if mode == "different_old_body":
+                output[producer.child_v1(ROOT, producer.CURRENT_SAVED_RENDERER_PATHS_V1[1])] += b"changed"
+            if mode == "wrong_outer_pin":
+                path = producer.child_v1(ROOT, "root_c23_canonical_outer.py")
+                output[path] = output[path].replace(hashlib.sha256(
+                    output[producer.child_v1(ROOT, producer.CURRENT_SAVED_RENDERER_PATHS_V1[0])]).hexdigest().encode(), b"b"*64)
+            before = dict(output)
+            def load(reference: ExactRefV1, limit: int) -> bytes:
+                return raw + b"x" if mode == "wrong_new_body" else raw
+            with self.subTest(mode=mode), self.assertRaises(ValueError):
+                producer.apply_current_saved_renderer_override_v1(configured, output=output, load=load)
+            self.assertEqual(output, before)
+
+    def test_quote_v5_binds_both_outputs_and_required_renderer_ref(self) -> None:
+        reference, _ = self.renderer()
+        configured = replace(plan(), renderer_override_ref=reference)
+        quoted = CurrentSavedArtifactBudgetTests()._quote(configured, ref("renderer-plan.json"))
+        files = list(quoted.files)
+        for name in producer.CURRENT_SAVED_RENDERER_PATHS_V1:
+            files.append(producer.OutputRowV1(producer.child_v1(ROOT, name), name,
+                reference.bytes, reference.sha256, "create-only", None))
+        allocated = sum(producer.allocation_v1(item.bytes) for item in files)
+        quoted = replace(quoted, files=tuple(files), renderer_override_ref=reference,
+            logical_bytes=sum(item.bytes for item in files), allocation_upper=allocated,
+            prepare_peak_upper=allocated+max(item.bytes for item in files)+131072)
+        self.assertEqual(producer.parse_quote_v1(wire(quoted.to_wire())), quoted)
+        value = quoted.to_wire(); del value["renderer_override_ref"]
+        with self.assertRaises(ValueError):
+            producer.parse_quote_v1(wire(value))
+        wrong = [replace(item, sha256="a"*64) if item.relative_path ==
+                 producer.CURRENT_SAVED_RENDERER_PATHS_V1[1] else item for item in files]
+        with self.assertRaises(ValueError):
+            producer.parse_quote_v1(wire(replace(quoted, files=tuple(wrong)).to_wire()))
+        with self.assertRaises(ValueError):
+            producer.parse_quote_v1(wire({**quoted.to_wire(), "schema": "xar.current-saved-cold-quote/v4"}))
+
 
 if __name__ == "__main__":
     unittest.main()

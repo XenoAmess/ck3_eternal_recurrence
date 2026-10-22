@@ -246,18 +246,35 @@ class _Workspace:
         need(limit is None or len(raw) <= integer(limit, 1), "original bounded output")
         self.write(path, raw, replace_existing=replace and path.exists())
 
+def _approved_fixture_root_v1(root: Path) -> Path:
+    need(root.is_absolute() and ".." not in root.parts, "absolute lexical approved fixture root")
+    for path in (root, *root.parents):
+        if os.path.lexists(path):
+            value = path.lstat()
+            need(path.is_dir() and not path.is_symlink()
+                 and not getattr(value, "st_file_attributes", 0) & 0x400,
+                 "no file or reparse fixture root/ancestor")
+    need(root.resolve() == root, "exact lexical approved fixture path")
+    return root
+
+
 def _fixture_parent() -> Path:
     configured = os.environ.get("XAR_PREFLIGHT_FIXTURE_ROOT")
     if configured:
-        root = Path(configured).resolve()
-        need(root.is_absolute() and root.name ==
-             "2026-10-21-current-saved-cap-pretransport-fixture01",
-             "coordinator supplied exact owned fixture")
-        return root
+        root = Path(configured)
+        # A new explicit lease sets both roots identically; the old default remains supported.
+        approved = os.environ.get("XAR_PREFLIGHT_APPROVED_ROOT")
+        if approved is None:
+            need(root.name == "2026-10-21-current-saved-cap-pretransport-fixture01",
+                 "legacy coordinator supplied exact owned fixture")
+        else:
+            need(root == Path(approved), "fixture root equals explicit approved root")
+            _approved_fixture_root_v1(Path(approved))
+        return _approved_fixture_root_v1(root)
     need(os.environ.get("GITHUB_ACTIONS") == "true",
          "local fixture requires coordinator lease and XAR_PREFLIGHT_FIXTURE_ROOT")
-    root = REPO / ".ci-current-saved-preflight-fixture"
-    need(not root.exists(), "CI fixture is create-only")
+    root = _approved_fixture_root_v1(REPO / ".ci-current-saved-preflight-fixture")
+    need(not os.path.lexists(root), "CI fixture is create-only")
     return root
 
 def _allocation_unit(path: Path) -> int:
@@ -278,14 +295,11 @@ def _allocation_unit(path: Path) -> int:
 
 @contextmanager
 def _owned_workspace(*, approved_root: Path | None = None) -> Iterator[_Workspace]:
-    root = _fixture_parent() if approved_root is None else approved_root.resolve()
-    need(root.is_absolute() and (root.name ==
-         "2026-10-21-current-saved-cap-pretransport-fixture01"
-         or root == REPO / ".ci-current-saved-preflight-fixture"),
-         "exact coordinator-owned local or portable CI fixture")
-    need(not root.exists(), "sole fixture coordinator; root must be absent")
+    root = _approved_fixture_root_v1(_fixture_parent() if approved_root is None else approved_root)
+    need(not os.path.lexists(root), "sole fixture coordinator; root must be absent")
     need(root.parent.is_dir() and not root.parent.is_symlink(), "ordinary owned parent")
     root.mkdir()
+    created = root.lstat()
     previous = {key: os.environ.get(key) for key in ("TMP", "TEMP", "TMPDIR")}
     old_temp = tempfile.tempdir
     for key in previous:
@@ -300,9 +314,10 @@ def _owned_workspace(*, approved_root: Path | None = None) -> Iterator[_Workspac
             workspace.measure()
         finally:
             try:
-                need(root.resolve(strict=True) == root and root.is_dir()
-                     and not getattr(root.lstat(), "st_file_attributes", 0) & 0x400,
-                     "exact owned cleanup")
+                actual = root.lstat()
+                need(_approved_fixture_root_v1(root) == root and root.is_dir()
+                     and (actual.st_dev, actual.st_ino) == (created.st_dev, created.st_ino),
+                     "exact created workspace identity before cleanup")
                 shutil.rmtree(root)
                 need(not root.exists(), "fixture finally absent")
             finally:
@@ -707,6 +722,7 @@ def _make_harness(workspace: _Workspace, corpus: _Corpus, *,
     queue = _invoke(cold_class, workspace, json_object(corpus.object("seed")), launch, admission, governance)
     machine = core.current_execution_machine_id_v1()
     workspace.write(root / "ROOT-LAUNCH-CONFIG-C23-A15.json", _wire({
+        "review_at_utc": "2030-01-01T00:00:00Z",
         "historical_replay_context": {"historical_sequence": FIRST_SEQUENCE,
             "target_current_next_sequence": current_next_sequence, "ordinary_cycle_credit": 0},
         "cold_attempt": {"machine_id": machine, "attempt_nonce": "a" * 32,
