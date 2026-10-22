@@ -11,10 +11,15 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.type.LogicalType;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InterruptedIOException;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
+import java.nio.file.AccessDeniedException;
+import java.nio.file.DirectoryIteratorException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.NoSuchFileException;
@@ -571,11 +576,16 @@ public final class ControlBuild {
                 snapshot, environment, logs.resolve(label + ".stdout.log"), logs.resolve(label + ".stderr.log"), lease.memoryLimitBytes());
         try (WindowsJobProcess child = WindowsJobProcess.start(spec)) {
             AtomicLong lastGuard = new AtomicLong();
+            long commandDeadline = Math.addExact(System.nanoTime(), Duration.ofSeconds(config.timeoutSeconds()).toNanos());
             return child.await(Duration.ofSeconds(config.timeoutSeconds()), lease.deadline(), () -> {
                 long now = System.nanoTime();
                 if (now - lastGuard.get() < Duration.ofSeconds(5).toNanos()) return;
                 lastGuard.set(now);
-                try { guard(config, lease); } catch (IOException error) { throw new IllegalStateException(error); }
+                try {
+                    guard(config, lease, () -> {
+                        if (System.nanoTime() >= commandDeadline) throw new IOException("Original Maven command deadline expired");
+                    });
+                } catch (IOException error) { throw new IllegalStateException(error); }
             });
         }
     }
@@ -628,7 +638,7 @@ public final class ControlBuild {
             }
             if (createdPaths.isEmpty()) throw new IOException("Actual compiler-created test classes missing");
             List<FileRef> classes = new ArrayList<>(); AtomicLong classBytes = new AtomicLong();
-            walk(output, false, 10000, file -> {
+            walk(output, false, 10000, (file, active) -> {
                 if (!file.getFileName().toString().endsWith(".class")) return;
                 FileRef ref = FileRef.measure(file); classes.add(ref); classBytes.set(Math.addExact(classBytes.get(), ref.bytes()));
                 if (classes.size() > 4096 || classBytes.get() > (64L << 20)) throw new IOException("Finite compiled test-class extent exceeded");
@@ -849,50 +859,86 @@ public final class ControlBuild {
     }
 
     private static void guard(Config config, Lease lease) throws IOException {
-        if (!Instant.now().isBefore(lease.deadline())) throw new IOException("Capacity release expired");
+        guard(config, lease, () -> {});
+    }
+
+    private static void guard(Config config, Lease lease, CiBootstrap.IoGuard childDeadline) throws IOException {
+        CiBootstrap.IoGuard active = () -> {
+            if (Thread.currentThread().isInterrupted()) throw new InterruptedIOException("Build inventory interrupted");
+            if (!Instant.now().isBefore(lease.deadline())) throw new IOException("Capacity release expired");
+            childDeadline.check();
+        };
+        active.check();
         for (var volume : lease.minimumFreeByVolume().entrySet()) {
             if (Files.getFileStore(volume.getKey()).getUsableSpace() < volume.getValue()) throw new IOException("Current volume free space is insufficient: " + volume.getKey());
         }
-        sizes(config.workRoot(), lease.caps());
+        sizes(config.workRoot(), lease.caps(), active, NIO_INVENTORY);
     }
 
-    private static Map<String, Long> sizes(Path root, Map<String, Long> caps) throws IOException {
-        Map<String, Long> result = measureSizes(root, caps);
+    static Map<String, Long> sizes(Path root, Map<String, Long> caps, CiBootstrap.IoGuard active, InventoryIo io) throws IOException {
+        Map<String, Long> result = measureSizes(root, caps, active, io);
         for (var cap : caps.entrySet()) if (result.get(cap.getKey()) > cap.getValue()) throw new IOException("Workpackage cap exceeded: " + cap.getKey());
         return result;
     }
 
     private static Map<String, Long> measureSizes(Path root, Map<String, Long> caps) throws IOException {
+        return measureSizes(root, caps, () -> {}, NIO_INVENTORY);
+    }
+
+    private static Map<String, Long> measureSizes(Path root, Map<String, Long> caps,
+                                                   CiBootstrap.IoGuard active, InventoryIo io) throws IOException {
         Map<String, Long> result = new LinkedHashMap<>();
         for (var cap : caps.entrySet()) {
+            active.check();
             Path part = root.resolve(cap.getKey());
-            long size = Files.exists(part) ? totalBytes(part) : 0;
+            boolean scratch = cap.getKey().equals("scratch");
+            boolean present;
+            try { io.attributes(part); present = true; }
+            catch (NoSuchFileException missingPart) {
+                if (scratch) throw missingPart;
+                present = false;
+            }
+            long size = present
+                    ? mutableInventoryBytes(part, path -> {}, new InventoryAccess(scratch, active, io)) : 0;
             result.put(cap.getKey(), size);
         }
         return Map.copyOf(result);
     }
 
-    private static long totalBytes(Path root) throws IOException {
-        return mutableInventoryBytes(root, path -> {});
+    interface InventoryIo {
+        default BasicFileAttributes attributes(Path path) throws IOException {
+            return Files.readAttributes(path, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+        }
+        default Path realPath(Path path) throws IOException { return path.toRealPath(); }
+        default long size(Path path) throws IOException { return Files.size(path); }
+        default DirectoryStream<Path> children(Path path) throws IOException { return Files.newDirectoryStream(path); }
+        default void walk(Path root, FileVisitor<Path> visitor) throws IOException { Files.walkFileTree(root, visitor); }
     }
 
+    private static final InventoryIo NIO_INVENTORY = new InventoryIo() {};
+    private record InventoryAccess(boolean scratch, CiBootstrap.IoGuard active, InventoryIo io) {}
     @FunctionalInterface interface InventoryObserver { void beforeCheck(Path path) throws IOException; }
 
     /** Mutable output accounting tolerates only entries removed during this observation. */
     static long mutableInventoryBytes(Path root, InventoryObserver observer) throws IOException {
+        return mutableInventoryBytes(root, observer, new InventoryAccess(false, () -> {}, NIO_INVENTORY));
+    }
+
+    private static long mutableInventoryBytes(Path root, InventoryObserver observer, InventoryAccess access) throws IOException {
         AtomicLong total = new AtomicLong();
-        walk(root, false, 100000, true, observer, path -> {
-            try { total.set(Math.addExact(total.get(), Files.size(path))); }
+        walk(root, false, 100000, true, observer, (path, active) -> {
+            try { total.set(Math.addExact(total.get(), CiBootstrap.rereadScratchMetadata(
+                    access.scratch() && !path.equals(root), active, () -> access.io().size(path)))); }
             catch (NoSuchFileException removedEntry) { /* A concurrent producer removed this output/cache entry. */ }
-        });
+        }, access);
         return total.get();
     }
 
-    private interface FileAction { void accept(Path path) throws IOException; }
+    private interface FileAction { void accept(Path path, CiBootstrap.IoGuard active) throws IOException; }
 
     private static List<FileRef> manifest(Path root, boolean excludeBuildCaches, int maxFiles, long maxBytes) throws IOException {
         List<FileRef> references = new ArrayList<>(); AtomicLong total = new AtomicLong();
-        walk(root, excludeBuildCaches, maxFiles, path -> {
+        walk(root, excludeBuildCaches, maxFiles, (path, active) -> {
             FileRef reference = FileRef.measure(path); total.set(Math.addExact(total.get(), reference.bytes()));
             if (total.get() > maxBytes) throw new IOException("Manifest content limit exceeded");
             references.add(reference);
@@ -998,10 +1044,21 @@ public final class ControlBuild {
 
     private static void walk(Path root, boolean excludeBuildCaches, int maxFiles, boolean allowVanished,
                              InventoryObserver observer, FileAction action) throws IOException {
+        walk(root, excludeBuildCaches, maxFiles, allowVanished, observer, action,
+                new InventoryAccess(false, () -> {}, NIO_INVENTORY));
+    }
+
+    private static void walk(Path root, boolean excludeBuildCaches, int maxFiles, boolean allowVanished,
+                             InventoryObserver observer, FileAction action, InventoryAccess access) throws IOException {
         if (!Files.isDirectory(root, LinkOption.NOFOLLOW_LINKS) || Files.isSymbolicLink(root)) throw new IOException("Actual plain inventory root required: " + root);
         long deadline = System.nanoTime() + Duration.ofSeconds(120).toNanos(); AtomicLong count = new AtomicLong();
-        Path realRoot = root.toRealPath();
-        Files.walkFileTree(root, new SimpleFileVisitor<>() {
+        Path realRoot = access.io().realPath(root);
+        CiBootstrap.IoGuard active = () -> {
+            if (Thread.currentThread().isInterrupted()) throw new InterruptedIOException("Build inventory interrupted");
+            if (System.nanoTime() >= deadline) throw new IOException("Inventory time limit");
+            access.active().check();
+        };
+        access.io().walk(root, new SimpleFileVisitor<>() {
             @Override public FileVisitResult preVisitDirectory(Path directory, BasicFileAttributes attributes) throws IOException {
                 if (excludeBuildCaches && !directory.equals(root) && EXCLUDED.contains(directory.getFileName().toString())) return FileVisitResult.SKIP_SUBTREE;
                 return check(directory, attributes) ? FileVisitResult.CONTINUE : FileVisitResult.SKIP_SUBTREE;
@@ -1009,27 +1066,53 @@ public final class ControlBuild {
             @Override public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) throws IOException {
                 if (!check(file, attributes)) return FileVisitResult.CONTINUE;
                 if (!attributes.isRegularFile()) throw new IOException("Nonregular inventory file");
-                action.accept(file); return FileVisitResult.CONTINUE;
+                action.accept(file, active); return FileVisitResult.CONTINUE;
             }
             @Override public FileVisitResult visitFileFailed(Path file, IOException error) throws IOException {
+                active.check();
                 if (allowVanished && !file.equals(root) && error instanceof NoSuchFileException) return FileVisitResult.CONTINUE;
+                if (scratchDescendant(file) && error instanceof AccessDeniedException) {
+                    try {
+                        AtomicLong attempt = new AtomicLong();
+                        BasicFileAttributes attributes = CiBootstrap.rereadScratchMetadata(true, active, () -> {
+                            if (attempt.getAndIncrement() == 0) throw error;
+                            return access.io().attributes(file);
+                        });
+                        if (!attributes.isDirectory()) return visitFile(file, attributes);
+                        if (preVisitDirectory(file, attributes) == FileVisitResult.SKIP_SUBTREE) return FileVisitResult.CONTINUE;
+                        // This directory has not yielded any children yet. Open only it;
+                        // retrying a whole consumed subtree could charge siblings twice.
+                        try (var children = CiBootstrap.rereadScratchMetadata(true, active, () -> access.io().children(file))) {
+                            for (Path entry : children) { active.check(); access.io().walk(entry, this); }
+                        } catch (DirectoryIteratorException failedEnumeration) {
+                            return postVisitDirectory(file, failedEnumeration.getCause());
+                        }
+                        return postVisitDirectory(file, null);
+                    } catch (NoSuchFileException removedEntry) { return FileVisitResult.CONTINUE; }
+                }
                 throw error;
             }
             @Override public FileVisitResult postVisitDirectory(Path directory, IOException error) throws IOException {
+                active.check();
                 if (allowVanished && !directory.equals(root) && error instanceof NoSuchFileException) return FileVisitResult.CONTINUE;
                 return super.postVisitDirectory(directory, error);
             }
             private boolean check(Path path, BasicFileAttributes attributes) throws IOException {
+                active.check();
                 observer.beforeCheck(path);
                 if (attributes.isSymbolicLink() || attributes.isOther() || count.incrementAndGet() > maxFiles
                         || System.nanoTime() >= deadline) throw new IOException("Inventory link, extent or time limit");
                 try {
-                    if (!path.toRealPath().startsWith(realRoot)) throw new IOException("Inventory path escaped root");
+                    if (!CiBootstrap.rereadScratchMetadata(scratchDescendant(path), active,
+                            () -> access.io().realPath(path)).startsWith(realRoot)) throw new IOException("Inventory path escaped root");
                     return true;
                 } catch (NoSuchFileException error) {
                     if (allowVanished && !path.equals(root)) return false;
                     throw error;
                 }
+            }
+            private boolean scratchDescendant(Path path) {
+                return access.scratch() && !path.equals(root) && path.startsWith(root);
             }
         });
     }

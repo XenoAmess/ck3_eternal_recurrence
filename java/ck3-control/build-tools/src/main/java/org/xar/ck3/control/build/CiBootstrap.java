@@ -185,6 +185,7 @@ public final class CiBootstrap {
     @FunctionalInterface interface MavenLauncherProbe { Path resolve() throws IOException; }
     @FunctionalInterface interface MavenInstaller { void replace(MavenObservation before) throws IOException, InterruptedException; }
     @FunctionalInterface interface IoGuard { void check() throws IOException; }
+    @FunctionalInterface interface IoValue<T> { T read() throws IOException; }
     @FunctionalInterface interface AttributeReader { BasicFileAttributes read(Path path) throws IOException; }
     @FunctionalInterface interface TreeWalker { void walk(Path root, FileVisitor<Path> visitor) throws IOException; }
     private record MavenUpgradePlan(String machineId, String observedAtUtc, String status,
@@ -916,19 +917,23 @@ public final class CiBootstrap {
 
     private static BasicFileAttributes guardedAttributes(Path path, boolean scratch,
                                                         AttributeReader reader, IoGuard active) throws IOException {
+        return rereadScratchMetadata(scratch, active, () -> reader.read(path));
+    }
+
+    static <T> T rereadScratchMetadata(boolean scratch, IoGuard active, IoValue<T> operation) throws IOException {
         // Windows can briefly deny metadata while a JUnit scratch file is being deleted.
         // A successful no-follow read or an actual NoSuchFileException resolves that race;
         // persistent denial, links, and every other I/O failure remain fatal.
         for (int attempt = 0; ; attempt++) {
             active.check();
-            try { return reader.read(path); }
+            try { return operation.read(); }
             catch (AccessDeniedException denied) {
                 if (!scratch || attempt == 3) throw denied;
                 active.check();
                 try { Thread.sleep(25); }
                 catch (InterruptedException interrupted) {
                     Thread.currentThread().interrupt();
-                    throw new InterruptedIOException("bootstrap scratch metadata retry interrupted");
+                    throw new InterruptedIOException("scratch metadata retry interrupted");
                 }
             }
         }

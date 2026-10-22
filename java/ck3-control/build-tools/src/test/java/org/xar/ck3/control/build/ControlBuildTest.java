@@ -4,8 +4,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.io.InterruptedIOException;
+import java.nio.file.AccessDeniedException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -54,6 +61,206 @@ final class ControlBuildTest {
         }));
         Path missing = root.resolve("missing-root");
         assertThrows(IOException.class, () -> ControlBuild.mutableInventoryBytes(missing, path -> {}));
+    }
+
+    @Test void actualPartAccountingRetriesScratchRealPathAndRetainsSiblingQuota() throws Exception {
+        Path scratch = Files.createDirectory(temporary.resolve("scratch"));
+        Path directory = Files.createDirectory(scratch.resolve("junit-org"));
+        Files.writeString(directory.resolve("input"), "data");
+        Files.writeString(scratch.resolve("sibling"), "kept");
+        AtomicInteger reads = new AtomicInteger();
+        ControlBuild.InventoryIo io = new ControlBuild.InventoryIo() {
+            @Override public Path realPath(Path path) throws IOException {
+                if (path.equals(directory) && reads.incrementAndGet() == 1) throw new AccessDeniedException(path.toString());
+                return ControlBuild.InventoryIo.super.realPath(path);
+            }
+        };
+        assertEquals(Map.of("scratch", 8L), ControlBuild.sizes(temporary, Map.of("scratch", 8L), () -> {}, io));
+        assertEquals(2, reads.get());
+        reads.set(0);
+        IOException failure = assertThrows(IOException.class,
+                () -> ControlBuild.sizes(temporary, Map.of("scratch", 7L), () -> {}, io));
+        assertEquals("Workpackage cap exceeded: scratch", failure.getMessage());
+        assertEquals(2, reads.get());
+    }
+
+    @Test void actualScratchSizeRereadRequiresSuccessOrRealRemoval() throws Exception {
+        Path scratch = Files.createDirectory(temporary.resolve("scratch"));
+        Path file = scratch.resolve("transient"), sibling = scratch.resolve("sibling");
+        Files.writeString(file, "data"); Files.writeString(sibling, "kept");
+        AtomicInteger reads = new AtomicInteger();
+        ControlBuild.InventoryIo io = new ControlBuild.InventoryIo() {
+            @Override public long size(Path path) throws IOException {
+                if (path.equals(file) && reads.incrementAndGet() == 1) throw new AccessDeniedException(path.toString());
+                return ControlBuild.InventoryIo.super.size(path);
+            }
+        };
+        assertEquals(Map.of("scratch", 8L), ControlBuild.sizes(temporary, Map.of("scratch", 8L), () -> {}, io));
+        assertEquals(2, reads.get());
+        reads.set(0);
+        ControlBuild.InventoryIo removing = new ControlBuild.InventoryIo() {
+            @Override public long size(Path path) throws IOException {
+                if (path.equals(file) && reads.incrementAndGet() == 1) {
+                    Files.delete(file); throw new AccessDeniedException(path.toString());
+                }
+                return ControlBuild.InventoryIo.super.size(path);
+            }
+        };
+        assertEquals(Map.of("scratch", 4L), ControlBuild.sizes(temporary, Map.of("scratch", 8L), () -> {}, removing));
+        assertEquals(2, reads.get()); assertFalse(Files.exists(file));
+    }
+
+    @Test void actualScratchTraversalRecoveryNeverRescansConsumedSiblings() throws Exception {
+        Path scratch = Files.createDirectory(temporary.resolve("scratch"));
+        Path directory = Files.createDirectory(scratch.resolve("junit-org"));
+        Files.writeString(directory.resolve("input"), "abc");
+        Path sibling = scratch.resolve("sibling"); Files.writeString(sibling, "kept");
+        AtomicInteger opens = new AtomicInteger(), recoveredAttributes = new AtomicInteger();
+        ControlBuild.InventoryIo io = new ControlBuild.InventoryIo() {
+            @Override public void walk(Path root, FileVisitor<Path> visitor) throws IOException {
+                if (!root.equals(scratch)) { ControlBuild.InventoryIo.super.walk(root, visitor); return; }
+                visitor.preVisitDirectory(root, attributes(root));
+                ControlBuild.InventoryIo.super.walk(sibling, visitor);
+                visitor.visitFileFailed(directory, new AccessDeniedException(directory.toString()));
+                visitor.postVisitDirectory(root, null);
+            }
+            @Override public BasicFileAttributes attributes(Path path) throws IOException {
+                if (path.equals(directory)) recoveredAttributes.incrementAndGet();
+                return ControlBuild.InventoryIo.super.attributes(path);
+            }
+            @Override public DirectoryStream<Path> children(Path path) throws IOException {
+                if (path.equals(directory) && opens.incrementAndGet() == 1) throw new AccessDeniedException(path.toString());
+                return ControlBuild.InventoryIo.super.children(path);
+            }
+        };
+        assertEquals(Map.of("scratch", 7L), ControlBuild.sizes(temporary, Map.of("scratch", 7L), () -> {}, io));
+        assertEquals(1, recoveredAttributes.get()); assertEquals(2, opens.get());
+    }
+
+    @Test void scratchRetryRemainsBoundedAndCannotRelaxRootOrOtherPartPermissions() throws Exception {
+        Path scratch = Files.createDirectory(temporary.resolve("scratch"));
+        Path file = scratch.resolve("input"); Files.writeString(file, "data");
+        Path build = Files.createDirectory(temporary.resolve("build"));
+        Path other = build.resolve("input"); Files.writeString(other, "kept");
+        for (Path denied : List.of(file, scratch, other)) {
+            AtomicInteger reads = new AtomicInteger();
+            ControlBuild.InventoryIo io = new ControlBuild.InventoryIo() {
+                @Override public Path realPath(Path path) throws IOException {
+                    if (path.equals(denied)) { reads.incrementAndGet(); throw new AccessDeniedException(path.toString()); }
+                    return ControlBuild.InventoryIo.super.realPath(path);
+                }
+            };
+            String part = denied.equals(other) ? "build" : "scratch";
+            assertThrows(AccessDeniedException.class, () -> ControlBuild.sizes(temporary, Map.of(part, 8L), () -> {}, io));
+            assertEquals(denied.equals(file) ? 4 : 1, reads.get());
+        }
+        AtomicInteger reads = new AtomicInteger();
+        IOException failure = assertThrows(IOException.class, () -> ControlBuild.sizes(temporary, Map.of("scratch", 8L),
+                () -> {}, new ControlBuild.InventoryIo() {
+                    @Override public Path realPath(Path path) throws IOException {
+                        if (path.equals(file)) { reads.incrementAndGet(); throw new IOException("different I/O failure"); }
+                        return ControlBuild.InventoryIo.super.realPath(path);
+                    }
+                }));
+        assertEquals("different I/O failure", failure.getMessage()); assertEquals(1, reads.get());
+        AtomicInteger rootReads = new AtomicInteger();
+        assertThrows(AccessDeniedException.class, () -> ControlBuild.sizes(temporary, Map.of("build", 8L), () -> {},
+                new ControlBuild.InventoryIo() {
+                    @Override public BasicFileAttributes attributes(Path path) throws IOException {
+                        if (path.equals(build)) { rootReads.incrementAndGet(); throw new AccessDeniedException(path.toString()); }
+                        return ControlBuild.InventoryIo.super.attributes(path);
+                    }
+                }));
+        assertEquals(1, rootReads.get());
+        Files.delete(file); Files.delete(scratch);
+        assertThrows(IOException.class, () -> ControlBuild.sizes(temporary, Map.of("scratch", 8L), () -> {}, new ControlBuild.InventoryIo() {}));
+    }
+
+    @Test void scratchInventoryRetriesConsumeOriginalDeadlineAndCancellation() throws Exception {
+        Path scratch = Files.createDirectory(temporary.resolve("scratch"));
+        Path file = scratch.resolve("input"); Files.writeString(file, "data");
+        AtomicInteger reads = new AtomicInteger();
+        ControlBuild.InventoryIo denied = new ControlBuild.InventoryIo() {
+            @Override public Path realPath(Path path) throws IOException {
+                if (path.equals(file)) { reads.incrementAndGet(); throw new AccessDeniedException(path.toString()); }
+                return ControlBuild.InventoryIo.super.realPath(path);
+            }
+        };
+        IOException failure = assertThrows(IOException.class, () -> ControlBuild.sizes(temporary, Map.of("scratch", 8L),
+                () -> { if (reads.get() > 0) throw new IOException("original command deadline"); }, denied));
+        assertEquals("original command deadline", failure.getMessage()); assertEquals(1, reads.get());
+        Thread.currentThread().interrupt();
+        try {
+            assertThrows(InterruptedIOException.class, () -> ControlBuild.sizes(temporary, Map.of("scratch", 8L), () -> {}, denied));
+            assertTrue(Thread.currentThread().isInterrupted()); assertEquals(1, reads.get());
+        } finally { Thread.interrupted(); }
+    }
+
+    @Test void recoveredScratchMetadataStillRejectsLinksAndCanonicalEscapes() throws Exception {
+        Path scratch = Files.createDirectory(temporary.resolve("scratch"));
+        Path file = scratch.resolve("input"); Files.writeString(file, "data");
+        ControlBuild.InventoryIo linked = new ControlBuild.InventoryIo() {
+            @Override public void walk(Path root, FileVisitor<Path> visitor) throws IOException {
+                visitor.preVisitDirectory(root, attributes(root));
+                visitor.visitFileFailed(file, new AccessDeniedException(file.toString()));
+            }
+            @Override public BasicFileAttributes attributes(Path path) throws IOException {
+                BasicFileAttributes actual = ControlBuild.InventoryIo.super.attributes(path);
+                return path.equals(file) ? new LinkedAttributes(actual) : actual;
+            }
+        };
+        IOException linkFailure = assertThrows(IOException.class,
+                () -> ControlBuild.sizes(temporary, Map.of("scratch", 8L), () -> {}, linked));
+        assertEquals("Inventory link, extent or time limit", linkFailure.getMessage());
+        IOException escapeFailure = assertThrows(IOException.class,
+                () -> ControlBuild.sizes(temporary, Map.of("scratch", 8L), () -> {}, new ControlBuild.InventoryIo() {
+                    @Override public Path realPath(Path path) throws IOException {
+                        return path.equals(file) ? temporary.toRealPath() : ControlBuild.InventoryIo.super.realPath(path);
+                    }
+                }));
+        assertEquals("Inventory path escaped root", escapeFailure.getMessage());
+    }
+
+    @Test void nativeJobPeriodicAccountingSurvivesTransientScratchDenial() throws Exception {
+        Path scratch = Files.createDirectory(temporary.resolve("scratch"));
+        Path file = scratch.resolve("junit-org"); Files.writeString(file, "data");
+        Path batch = temporary.resolve("finite-child.cmd");
+        Files.writeString(batch, "@echo off\r\nping -n 2 127.0.0.1 >nul\r\nexit /b 0\r\n");
+        AtomicInteger reads = new AtomicInteger(), guards = new AtomicInteger();
+        ControlBuild.InventoryIo io = new ControlBuild.InventoryIo() {
+            @Override public Path realPath(Path path) throws IOException {
+                if (path.equals(file) && reads.incrementAndGet() == 1) throw new AccessDeniedException(path.toString());
+                return ControlBuild.InventoryIo.super.realPath(path);
+            }
+        };
+        Instant authority = Instant.now().plusSeconds(10);
+        try (WindowsJobProcess child = WindowsJobProcess.start(new WindowsJobProcess.CommandSpec(
+                Path.of(System.getenv("SystemRoot"), "System32/cmd.exe"), List.of("/d", "/c", batch.toString()),
+                temporary, Map.copyOf(System.getenv()), temporary.resolve("child.stdout"), temporary.resolve("child.stderr"), 256L << 20))) {
+            WindowsJobProcess.CommandResult actual = child.await(Duration.ofSeconds(5), authority, () -> {
+                guards.incrementAndGet();
+                try {
+                    ControlBuild.sizes(temporary, Map.of("scratch", 4L), () -> {
+                        if (!Instant.now().isBefore(authority)) throw new IOException("original authority expired");
+                    }, io);
+                } catch (IOException error) { throw new IllegalStateException(error); }
+            });
+            assertTrue(actual.passed()); assertNull(actual.stopReason());
+            assertEquals(0, actual.accounting().activeProcesses());
+        }
+        assertTrue(guards.get() > 0); assertTrue(reads.get() >= 2);
+    }
+
+    private record LinkedAttributes(BasicFileAttributes actual) implements BasicFileAttributes {
+        @Override public FileTime lastModifiedTime() { return actual.lastModifiedTime(); }
+        @Override public FileTime lastAccessTime() { return actual.lastAccessTime(); }
+        @Override public FileTime creationTime() { return actual.creationTime(); }
+        @Override public boolean isRegularFile() { return actual.isRegularFile(); }
+        @Override public boolean isDirectory() { return actual.isDirectory(); }
+        @Override public boolean isSymbolicLink() { return true; }
+        @Override public boolean isOther() { return actual.isOther(); }
+        @Override public long size() { return actual.size(); }
+        @Override public Object fileKey() { return actual.fileKey(); }
     }
 
     @Test void actualRefParserRejectsTokenCoercionDuplicatesUnknownAndTrailingBodies() throws Exception {
