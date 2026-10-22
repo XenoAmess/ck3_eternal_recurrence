@@ -45,9 +45,10 @@ def sibling(path, name):
 
 
 def validate_contract(context: JSONObject) -> JSONObject:
-    from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_contract import pilgrimage_identity
+    from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_contract import pilgrimage_identity, pilgrimage_policy_caps
     c = obj(context["case_contract"], "pilgrimage case contract")
     identity = pilgrimage_identity(c)
+    caps = pilgrimage_policy_caps(identity.case)
     require(c.get("case") == context.get("case") == identity.case
             and c.get("product") == context.get("product") == "faith-engine", "Ordinary case identity differs")
     spec = obj(context["case_spec"], "pilgrimage case specification")
@@ -71,9 +72,9 @@ def validate_contract(context: JSONObject) -> JSONObject:
     preferred = c.get("preferred_destination_id")
     require(preferred is None or type(preferred) is int and 0 < preferred < 2**32-1,
             "Optional preferred destination must be a positive full province ID")
-    for key, low, high in (("reserve_gold_raw", 0, 2**63-1), ("max_journey_days", 1, 366),
-                          ("max_day_requests", 1, 1024), ("max_events", 1, 256),
-                          ("max_public_requests", 1, 1024),
+    for key, low, high in (("reserve_gold_raw", 0, 2**63-1), ("max_journey_days", 1, caps.max_days),
+                          ("max_day_requests", 1, caps.max_day_requests), ("max_events", 1, 256),
+                          ("max_public_requests", 1, caps.max_public_requests),
                           ("one_day_timeout", 1, 300), ("quit_reserve_seconds", 90, 600)):
         require(type(policy.get(key)) is int and low <= policy[key] <= high, "Finite policy differs: " + key)
     return c

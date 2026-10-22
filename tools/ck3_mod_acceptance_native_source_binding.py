@@ -57,30 +57,51 @@ def checkout(repo, commit):
     return (repo / git(repo, "rev-parse", "--git-common-dir")).resolve()
 
 
-def qualified_native_source_checkout(binding_path, *, root, runtime_commit, native_commit,
-                                     machine, qualified_native_ref, qualification, snapshot_ref,
-                                     snapshot, native_shared_python_host_delta=None):
+def qualified_native_source_checkout(binding_path: Path | None, *, root: Path,
+                                     runtime_commit: str, native_commit: str, machine: str,
+                                     qualified_native_ref: object, qualification: dict[str, object],
+                                     snapshot_ref: object, snapshot: dict[str, object],
+                                     native_shared_python_host_delta: Path | None = None) -> dict[str, object]:
     """Return the actual original Native root and optional checked binding pin.
 
     Without an explicit binding the historical same-Root requirement is exact.
     Alternate source roots must be direct linked-worktree sources, never renamed
     copies or an inferred equivalence based on a path, commit or operator alone.
     """
+    if (not isinstance(snapshot.get("Root_native_source_base"), str)
+            or not isinstance(snapshot.get("snapshot_native_base"), str)
+            or not isinstance(qualified_native_ref, dict) or not isinstance(snapshot_ref, dict)):
+        raise ValueError("Native source paths and original reference objects required")
+    original_base = snapshot["Root_native_source_base"]
+    snapshot_base = snapshot["snapshot_native_base"]
+    if not isinstance(original_base, str) or not isinstance(snapshot_base, str):
+        raise ValueError("Native source paths must be strings")
     root = Path(root).resolve()
     runtime_native = (root / NATIVE_PREFIX).resolve()
-    original_native = Path(snapshot["Root_native_source_base"]).resolve()
+    original_native = Path(original_base).resolve()
     require(native_shared_python_host_delta is None or binding_path is not None,
             "A shared-host delta requires an explicit actual source checkout binding")
     if binding_path is None:
         require(original_native == runtime_native, "Snapshot is from another Root native tree")
         return {"native_source_base": runtime_native, "binding_ref": None}
 
-    require(original_native != runtime_native,
-            "An alternate checkout binding must identify an actual distinct source root")
     binding_path = Path(binding_path)
     require(not binding_path.is_symlink(), "Source checkout binding cannot be symbolic")
     binding_ref = pin(binding_path)
     value = json.loads(binding_path.read_text(encoding="utf-8-sig"))
+    if isinstance(value, dict) and value.get("schema") == "ck3-native-same-root-shared-python-host-binding-v1":
+        path = Path(__file__).with_name("ck3_mod_acceptance_same_root_host_delta.py")
+        spec = importlib.util.spec_from_file_location("ck3_same_root_host_source_binding", path)
+        if spec is None or spec.loader is None:
+            raise ValueError("Same-root source validator unavailable")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return module.qualify_same_root_host(binding_path, root=root, runtime_commit=runtime_commit,
+            native_commit=native_commit, machine=machine, qualified_native_ref=qualified_native_ref,
+            qualification=qualification, snapshot_ref=snapshot_ref, snapshot=snapshot,
+            native_shared_python_host_delta=native_shared_python_host_delta)
+    require(original_native != runtime_native,
+            "An alternate checkout binding must identify an actual distinct source root")
     exact_tree = (isinstance(value, dict)
                   and value.get("schema") == "ck3-native-worktree-exact-tree-source-binding-v1")
     research_delta = (isinstance(value, dict)
@@ -120,7 +141,7 @@ def qualified_native_source_checkout(binding_path, *, root, runtime_commit, nati
     require(Path(value["runtime_repo_root"]).resolve() == root
             and (native_repo / NATIVE_PREFIX).resolve() == original_native
             and Path(value["native_source_base"]).resolve() == original_native
-            and Path(snapshot["snapshot_native_base"]).resolve() == original_native,
+            and Path(snapshot_base).resolve() == original_native,
             "Explicit alternate source must retain its real direct Native worktree paths")
     root_common, native_common = checkout(root, runtime_commit), checkout(native_repo, native_commit)
     require(root_common == native_common == Path(value["common_git_directory"]).resolve(),
@@ -143,6 +164,8 @@ def qualified_native_source_checkout(binding_path, *, root, runtime_commit, nati
                 "Research opt-in must truthfully preserve unequal full Native trees and unchanged compiled inputs")
         path = Path(__file__).with_name("ck3_mod_acceptance_native_research_delta.py")
         spec = importlib.util.spec_from_file_location("ck3_native_research_delta", path)
+        if spec is None or spec.loader is None:
+            raise ValueError("Research source validator unavailable")
         research_module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(research_module)
         research_context = research_module.qualify_research_delta(
@@ -159,6 +182,8 @@ def qualified_native_source_checkout(binding_path, *, root, runtime_commit, nati
                 "Shared-host opt-in must preserve both actual trees and the exact explicit delta pin")
         path = Path(__file__).with_name("ck3_mod_acceptance_shared_python_host_delta.py")
         spec = importlib.util.spec_from_file_location("ck3_exact_shared_python_host_delta", path)
+        if spec is None or spec.loader is None:
+            raise ValueError("Shared-host source validator unavailable")
         delta_module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(delta_module)
         shared_host = delta_module.qualify_shared_host_delta(
@@ -169,6 +194,8 @@ def qualified_native_source_checkout(binding_path, *, root, runtime_commit, nati
     tracked = set(git(root, "ls-files", "-z", "--", NATIVE_PREFIX).split("\0")) - {""}
     native_tracked = set(git(native_repo, "ls-files", "-z", "--", NATIVE_PREFIX).split("\0")) - {""}
     rows = snapshot.get("files", [])
+    if not isinstance(rows, list) or not all(isinstance(row, dict) for row in rows):
+        raise ValueError("Native source rows must be objects")
     declared = {NATIVE_PREFIX + row["native_relative"] for row in rows if "source" not in row}
     added_research = (set(research_context["added_runtime_research_paths"])
                       if research_context is not None else set())
@@ -204,11 +231,15 @@ def qualified_native_source_checkout(binding_path, *, root, runtime_commit, nati
         # input; both routes retain the original actual compiled closure.
         path = Path(__file__).with_name("ck3_mod_acceptance_shared_python_host_delta.py")
         spec = importlib.util.spec_from_file_location("ck3_exact_tree_compiled_inputs", path)
+        if spec is None or spec.loader is None:
+            raise ValueError("Compiled cohort validator unavailable")
         compiled_module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(compiled_module)
         actual_compiled = compiled_module.compiled_inputs(qualification, snapshot)
         path = Path(__file__).with_name("ck3_mod_acceptance_exact_native_tree_binding.py")
         spec = importlib.util.spec_from_file_location("ck3_exact_native_tree_contract", path)
+        if spec is None or spec.loader is None:
+            raise ValueError("Exact-tree contract validator unavailable")
         contract_module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(contract_module)
         contract_module.validate_compiled_inputs(value["compiled_inputs"], actual_compiled)
@@ -216,6 +247,8 @@ def qualified_native_source_checkout(binding_path, *, root, runtime_commit, nati
         if exact_tree:
             result.update(nonancestor_exact_tree_binding=binding_ref)
         else:
+            if research_context is None:
+                raise ValueError("Verified research context missing")
             result.update(nonancestor_research_delta_binding=binding_ref,
                           full_native_tree_equal=False, compiled_inputs_equal=True,
                           runtime_research_pins=research_context["runtime_research_pins"],

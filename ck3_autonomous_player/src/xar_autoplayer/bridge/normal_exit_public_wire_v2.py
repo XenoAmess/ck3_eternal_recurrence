@@ -56,6 +56,34 @@ def validate_normal_exit_public_revision_v2(value: object) -> str:
     return str(parse_normal_exit_public_revision_v2(value))
 
 
+def normal_exit_public_revision_from_snapshot_v2(value: object) -> str:
+    """Encode the host's exact integer snapshot revision at the public boundary."""
+    return str(_integer(value, 'snapshot revision', minimum=1))
+
+
+def is_normal_exit_terminal_plan_result_v2(tool: object, arguments: object,
+                                         result: object) -> bool:
+    """Recognize a validated terminal receipt without requiring a live snapshot.
+
+    A pending retained-process observation also forbids a new game snapshot.
+    The receipt's actual exit flags remain authoritative; this grants no exit
+    success or permission to retry a consumed confirmation.
+    """
+    schemas = {
+        'ck3_request_normal_exit_v1': 'ck3-normal-exit-request-result-v2',
+        'ck3_observe_normal_exit_v1': 'ck3-normal-exit-process-observation-result-v2',
+    }
+    if (not isinstance(tool, str) or tool not in schemas
+            or not isinstance(result, dict) or result.get('schema') != schemas[tool]):
+        return False
+    parsed = parse_normal_exit_public_result_v2(result)
+    if parsed.action != 'confirm_desktop' or result.get('snapshot_after_required') is not False:
+        return False
+    if tool == 'ck3_request_normal_exit_v1':
+        return isinstance(arguments, dict) and arguments.get('action') == 'confirm_desktop'
+    return isinstance(arguments, dict) and not arguments
+
+
 def _integer(value: object, name: str, *, minimum: int = 0,
              maximum: int = UINT64_MAX) -> int:
     if not isinstance(value, int) or isinstance(value, bool) or not minimum <= value <= maximum:

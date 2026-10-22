@@ -107,12 +107,22 @@ def compiled_inputs(qualification, snapshot):
     }
 
 
-def qualify_shared_host_delta(path, *, root, native_repo, runtime_commit, native_commit,
-                              machine, qualified_native_ref, qualification, snapshot_ref, snapshot):
+def qualify_shared_host_delta(path: Path, *, root: Path, native_repo: Path, runtime_commit: str, native_commit: str,
+                              machine: str, qualified_native_ref: object, qualification: dict[str, object],
+                              snapshot_ref: object, snapshot: dict[str, object],
+                              same_root_before_blob: object = None) -> dict[str, object]:
     ref = pin(path)
     value = read(path)
+    schema = "ck3-exact-shared-python-host-delta-v1"
+    old_blob = None
+    if same_root_before_blob is not None:
+        require(native_repo.resolve() == root.resolve(), "Before-blob source is only for an explicit same-root delta")
+        old_blob = checked(same_root_before_blob)
+        require(not Path(old_blob["path"]).resolve().is_relative_to(root.resolve()),
+                "Original host blob must remain separately preserved")
+        schema = "ck3-exact-same-root-python-host-delta-v1"
     require(isinstance(value, dict) and set(value) == CONTRACT_FIELDS
-            and value.get("schema") == "ck3-exact-shared-python-host-delta-v1",
+            and value.get("schema") == schema,
             "Exact single shared Python-host delta contract required")
     require(value["machine_id"] == machine and value["runtime_source_commit"] == runtime_commit
             and value["native_source_commit"] == native_commit
@@ -121,7 +131,10 @@ def qualify_shared_host_delta(path, *, root, native_repo, runtime_commit, native
     require(value["canonical_repo_relative"] == HOST_RELATIVE and value["source_classification"] == "shared_host",
             "Only the canonical shared Python host is eligible for this source delta")
     observed = datetime.fromisoformat(value["observed_at_utc"].replace("Z", "+00:00"))
-    qualified_at = datetime.fromisoformat(qualification["observed_at_utc"].replace("Z", "+00:00"))
+    qualified_observation = qualification["observed_at_utc"]
+    if not isinstance(qualified_observation, str):
+        raise ValueError("Qualified source observation must be a string")
+    qualified_at = datetime.fromisoformat(qualified_observation.replace("Z", "+00:00"))
     require(observed.tzinfo is not None and qualified_at.tzinfo is not None
             and qualified_at <= observed <= datetime.now(timezone.utc), "Actual late shared-host observation required")
     for key in ("before", "after"):
@@ -139,9 +152,13 @@ def qualify_shared_host_delta(path, *, root, native_repo, runtime_commit, native
                 "Reviewed shared-host signature differs from its actual committed blob")
         entry = git(repo, "ls-tree", commit, "--", HOST_RELATIVE).decode("utf-8")
         require(entry.startswith("100644 blob "), "Canonical shared host must remain a regular tracked Python file")
-        require(signature((repo / HOST_RELATIVE).read_bytes()) == expected,
+        raw_path = Path(old_blob["path"]) if old_blob is not None and commit == native_commit else repo / HOST_RELATIVE
+        require(signature(raw_path.read_bytes()) == expected,
                 "Actual shared-host checkout raw differs from its reviewed commit")
-    host = [row for row in snapshot["files"] if row["native_relative"] == HOST_NATIVE_RELATIVE]
+    snapshot_rows = snapshot["files"]
+    if not isinstance(snapshot_rows, list) or not all(isinstance(row, dict) for row in snapshot_rows):
+        raise ValueError("Native snapshot source rows must be objects")
+    host = [row for row in snapshot_rows if row["native_relative"] == HOST_NATIVE_RELATIVE]
     require(len(host) == 1 and {key: host[0][key] for key in ("bytes", "sha256")} == value["before"],
             "Shared-host before pin is not the original frozen Native source")
     require(value["compiled_inputs"] == compiled_inputs(qualification, snapshot),

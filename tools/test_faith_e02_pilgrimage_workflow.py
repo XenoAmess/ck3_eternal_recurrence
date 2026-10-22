@@ -4,6 +4,7 @@ from __future__ import annotations
 from copy import deepcopy
 import base64
 import hashlib
+import json
 import tempfile
 import importlib.util
 from pathlib import Path
@@ -183,6 +184,48 @@ class Client:
 
 
 class WorkflowTests(unittest.TestCase):
+    def test_v2_extended_finite_policy_reaches_journey_consumer_and_preserves_legacy_caps(self) -> None:
+        journey = module("_finite_policy_journey", TOOLS / "ck3_mod_acceptance_cases/faith_e02_pilgrimage_journey.py")
+        ctx = context()
+        ctx["case"] = ADAPTER.MECHANISM_CASE
+        contract = ctx["case_contract"]
+        contract.update(case=ADAPTER.MECHANISM_CASE, schema="faith-engine-e02-pilgrimage-mechanism-case-v2",
+                        expected_faith_id=50, expected_rite_id=13, option_key="pilgrimage_type_hajj")
+        contract["policy"].update(max_journey_days=730, max_day_requests=1024, max_public_requests=4096)
+        validated = ADAPTER.validate_contract(ctx)
+        encoded = json.loads(json.dumps(ADAPTER.journey_limits(validated["policy"])))
+        self.assertEqual(journey._limits(encoded, case_id=ADAPTER.MECHANISM_CASE)["max_days"], 730)
+        self.assertEqual(journey._limits(encoded, case_id=ADAPTER.MECHANISM_CASE)["quit_reserve_seconds"], 120)
+        for key, wrong in (("max_journey_days", 731), ("max_journey_days", True),
+                           ("max_journey_days", 730.0), ("max_public_requests", 4097),
+                           ("max_day_requests", 1025), ("quit_reserve_seconds", 89)):
+            bad = deepcopy(ctx)
+            bad["case_contract"]["policy"][key] = wrong
+            with self.subTest(key=key, wrong=wrong), self.assertRaises(ValueError):
+                ADAPTER.validate_contract(bad)
+        for key, wrong in (("max_journey_days", 367), ("max_public_requests", 1025)):
+            legacy = context()
+            legacy["case_contract"]["policy"][key] = wrong
+            with self.subTest(legacy=key), self.assertRaises(ValueError):
+                ADAPTER.validate_contract(legacy)
+        with self.assertRaises(journey.JourneyStop):
+            journey._limits({"max_days": 367}, case_id=ADAPTER.CASE)
+        with self.assertRaises(journey.JourneyStop):
+            journey._limits({"max_days": 731}, case_id=ADAPTER.MECHANISM_CASE)
+        controller = object.__new__(journey._Journey)
+        controller.limits = {**journey._limits(encoded, case_id=ADAPTER.MECHANISM_CASE),
+                             "quit_reserve_seconds": 600}
+        controller.client = SimpleNamespace(public_requests_used=4096, public_requests_cap=4096,
+                                            remaining=lambda: 10000, guard=lambda: None)
+        with self.assertRaises(journey.JourneyStop) as exhausted:
+            controller.guard()
+        self.assertEqual(exhausted.exception.status, "PARTIAL_PUBLIC_REQUEST_CAP")
+        controller.client.public_requests_used = 0
+        controller.client.remaining = lambda: 635
+        with self.assertRaises(journey.JourneyStop) as reserve:
+            controller.guard(35)
+        self.assertEqual(reserve.exception.status, "PARTIAL_QUIT_RESERVE")
+
     @classmethod
     def setUpClass(cls):
         cls.images = tempfile.TemporaryDirectory(prefix="authored-root-review-")

@@ -22,6 +22,23 @@ class PilgrimageIdentity:
     option_key: OptionKey
 
 
+@dataclass(frozen=True)
+class PilgrimagePolicyCaps:
+    max_days: int
+    max_public_requests: int
+    max_day_requests: int = 1024
+
+
+def pilgrimage_policy_caps(case_id: object) -> PilgrimagePolicyCaps:
+    if type(case_id) is not str:
+        raise ValueError("pilgrimage finite policy requires an exact case string")
+    if case_id == LEGACY_CASE:
+        return PilgrimagePolicyCaps(max_days=366, max_public_requests=1024)
+    if case_id == MECHANISM_CASE:
+        return PilgrimagePolicyCaps(max_days=730, max_public_requests=4096)
+    raise ValueError("unknown pilgrimage case for finite policy")
+
+
 def _integer(value: object, label: str, low: int = 0) -> int:
     if type(value) is not int or not low <= value < 2**32 - 1:
         raise ValueError(label + " must be a frozen exact integer identity")

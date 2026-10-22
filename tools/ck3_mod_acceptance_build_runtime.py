@@ -718,7 +718,13 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest,
     for row in rows:
         relative = safe_relative(row["native_relative"])
         require(relative not in indexed, "Duplicate frozen native source")
-        current_snapshot = checked({"path": str(snapshot_root / relative), "bytes": row["bytes"], "sha256": row["sha256"]})
+        snapshot_input = {"path": str(snapshot_root / relative), "bytes": row["bytes"], "sha256": row["sha256"]}
+        if relative == HOST_RELATIVE.removeprefix(NATIVE_PREFIX) and source_checkout.get("original_shared_host_blob"):
+            snapshot_input = source_checkout["original_shared_host_blob"]
+            require({key: snapshot_input[key] for key in ("bytes", "sha256")}
+                    == {key: row[key] for key in ("bytes", "sha256")},
+                    "Preserved original shared-host blob differs from the original Native snapshot")
+        current_snapshot = checked(snapshot_input)
         original = row.get("original_source_pin")
         if original:
             require(relative == "CMakeLists.txt", "Only a separately identified test-registration CMake derivative is allowed")

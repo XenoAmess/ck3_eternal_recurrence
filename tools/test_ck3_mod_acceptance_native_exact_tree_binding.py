@@ -158,7 +158,8 @@ class AuthoredInputs:
     exact: JSONObject
 
 
-def make_authored_inputs(scratch: Path, public: PublicAPI, compiled: CompiledInputsAPI) -> AuthoredInputs:
+def make_authored_inputs(scratch: Path, public: PublicAPI, compiled: CompiledInputsAPI,
+                         *, same_root: bool = False) -> AuthoredInputs:
     """Extracted fixture setup; every path/pin is rebuilt in this scratch."""
     repo = scratch / 'r'
     repo.mkdir()
@@ -187,7 +188,7 @@ def make_authored_inputs(scratch: Path, public: PublicAPI, compiled: CompiledInp
     (repo / public.HOST_RELATIVE).write_bytes(b'HOST = 1\n')
     git(repo, 'add', public.HOST_RELATIVE)
     git(repo, 'commit', '-m', 'Authored sole shared-host successor')
-    wnative = worktree / public.NATIVE_PREFIX
+    wnative = native if same_root else worktree / public.NATIVE_PREFIX
     evidence = scratch / 'e'
     evidence.mkdir()
     machine = 'authored-fixture-machine'
@@ -260,6 +261,12 @@ def make_authored_inputs(scratch: Path, public: PublicAPI, compiled: CompiledInp
     qpath = evidence / 'Q.authored.json'
     qref = write(qpath, qualification)
     manifest: JSONObject = {'capabilities': {'authored': {'actual_production_freeze': freeze_ref}}}
+    if same_root:
+        # Authored metadata models the real old direct Root source path. The
+        # current committed Root has the sole host successor; no process ran.
+        runtime_commit = git(repo, 'rev-parse', 'HEAD')
+        return AuthoredInputs(repo, native, native_commit, worktree, wnative, evidence, machine, contents,
+            snapshot, snapshot_ref, qualification, qpath, qref, manifest, dll_ref, runtime_commit, {})
     git(repo, 'checkout', '--orphan', 'runtime-exact')
     (repo / public.HOST_RELATIVE).write_bytes(contents[host_relative])
     (repo / 'runtime-only.txt').write_bytes(b'Independent authored runtime history\n')

@@ -47,7 +47,9 @@ def _pin(path):
     return {"path": str(path), "bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
 
 
-def _limits(value):
+def _limits(value: dict[str, object], *, case_id: object = CASE) -> dict[str, int]:
+    from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_contract import pilgrimage_policy_caps
+    caps = pilgrimage_policy_caps(case_id)
     value = dict(value)
     if "max_journey_days" in value:
         _need("max_days" not in value or value["max_days"] == value["max_journey_days"],
@@ -55,13 +57,15 @@ def _limits(value):
         value["max_days"] = value.pop("max_journey_days")
     _need(set(value) <= set(DEFAULT_LIMITS), "Unknown journey limit")
     result = {**DEFAULT_LIMITS, **value}
-    for key, maximum in (("max_days", 366), ("max_day_requests", 1024), ("max_events", 128),
+    for key, maximum in (("max_days", caps.max_days), ("max_day_requests", caps.max_day_requests), ("max_events", 128),
                          ("one_day_timeout", 300)):
-        _need(type(result[key]) is int and 1 <= result[key] <= maximum,
+        item = result[key]
+        _need(type(item) is int and 1 <= item <= maximum,
               "Invalid finite journey limit: " + key)
-    _need(type(result["quit_reserve_seconds"]) is int and
-          90 <= result["quit_reserve_seconds"] <= 600, "Original Quit reserve must be at least 90 seconds")
-    return result
+    reserve = result["quit_reserve_seconds"]
+    _need(type(reserve) is int and
+          90 <= reserve <= 600, "Original Quit reserve must be at least 90 seconds")
+    return {key: item for key, item in result.items() if type(item) is int}
 
 
 def _opening_reader(context):
@@ -106,7 +110,7 @@ class _Journey:
         self.context, self.client = context, client
         self.binding = dict(binding)
         self.identity = dict(initial_identity) if initial_identity is not None else None
-        self.limits = _limits(limits)
+        self.limits = _limits(limits, case_id=context.get("case"))
         _need(context.get("case") in {CASE, MECHANISM_CASE}
               and context.get("product") == "faith-engine", "Foreign pilgrimage case")
         _need(set(self.binding) == {"run_id", "machine_id", "actor_character_id", "bridge_pid",
