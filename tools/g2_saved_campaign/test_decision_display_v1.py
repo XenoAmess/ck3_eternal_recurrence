@@ -546,5 +546,49 @@ class N39ActualDisplayTests(unittest.TestCase):
         self.assertEqual(self._published(row, body)[1].stage, "submitted")
 
 
+
+class NumericTokenLayoutTests(unittest.TestCase):
+    @staticmethod
+    def _render(reason: str) -> str:
+        source = {"selected_step": "advance-route-contact-horizon-v1-layout",
+                  "phase": "native_war_moving_contact_before_strength_progress",
+                  "reason": reason}
+        plan = feed.compact_plan(source)
+        row = {"request": {"tool": "ck3_plan_turn", "sequence": 1},
+               "result": {"structured_content": {
+                   "selected_step": source["selected_step"], "plan": plan}}}
+        state = AudienceState()
+        state.consume(json.loads(json.dumps(row, ensure_ascii=False)))
+        return state.render()
+
+    def _assert_reason(self, rendered: str, original: str) -> list[str]:
+        lines = rendered.split("\u7406\u7531\uff1a", 1)[1].split("\u5907\u9009\uff1a", 1)[0].splitlines()
+        self.assertEqual("".join(lines), original)
+        return lines
+
+    def test_actual_n41_troop_count_survives_producer_json_and_layout(self) -> None:
+        # machine_id: xenoamess-full-tower-eb9d2c1186; N41 actual text
+        # 891B/861ccfd79fd8e3ccc425e262c21b28ce5902b88eea2e1797ab75128f91766f99.
+        reason = "\u6218\u520633\uff1b\u4fdd\u5730\u76ee\u68072254\uff1b\u6211\u519b832\uff0c\u4f18\u5148\u4fdd\u5730\u6218\u654c2091\uff1b"
+        rendered = self._render(reason)
+        lines = self._assert_reason(rendered, reason)
+        self.assertTrue(any("2091" in line for line in lines))
+        self.assertNotIn("209\n1", rendered)
+
+    def test_signed_decimal_and_percent_tokens_are_whole(self) -> None:
+        for token in ("+2091", "-2091", "+12.34%", "-0.5\uff05", ".75%", "0002091"):
+            with self.subTest(token=token):
+                reason = "\u7532" * 22 + token + "\uff1b"
+                lines = self._assert_reason(self._render(reason), reason)
+                self.assertTrue(any(token in line for line in lines))
+
+    def test_overwide_numeric_token_has_lossless_own_line(self) -> None:
+        token = "9" * 80
+        reason = "\u89c2\u6d4b\u6570\u503c" + token + "\u3002"
+        lines = self._assert_reason(self._render(reason), reason)
+        self.assertIn(token, lines)
+        self.assertEqual(lines.count(token), 1)
+
+
 if __name__ == "__main__":
     unittest.main()

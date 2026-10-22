@@ -1769,7 +1769,7 @@ class CurrentSavedCompleteClosureConsumerTests(unittest.TestCase):
         cls.addClassCleanup(cls.cleanup_v1)
         names = sorted(set(producer.CANONICAL_NAMES) |
                        {name + ".py" for name in N37_EXTERNAL_NAMES_V1})
-        names.extend(f"closure-extra-{i:02d}.py" for i in range(67 - len(names)))
+        names.extend(f"closure-extra-{i:02d}.py" for i in range(68 - len(names)))
         cls.source_names = tuple(names)
         for name in cls.source_names:
             (cls.root / name).write_bytes(b"")
@@ -1880,13 +1880,13 @@ class CurrentSavedCompleteClosureConsumerTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "bounded complete source closure"):
                     constructor(self.root)
 
-    def test_common_renderer_constructor_accepts_65_and_66_rejects_67(self) -> None:
+    def test_common_renderer_constructor_accepts_65_through_67_rejects_68(self) -> None:
         raw = producer.bind_current_saved_complete_closure_limit_v1(N37_CLOSURE_CONSUMER_SOURCE_V1.encode())
-        for count in (65, 66, 67):
+        for count in (65, 66, 67, 68):
             with self.subTest(count=count):
                 policy = self.policy_v1(count)
                 constructor, check, fake_sys, fake_site = self.consumer_v1(raw)
-                if count == 67:
+                if count == 68:
                     with self.assertRaisesRegex(ValueError, "bounded complete source closure"):
                         check(self.root, policy)
                     with self.assertRaisesRegex(ValueError, "bounded complete source closure"):
@@ -1900,7 +1900,7 @@ class CurrentSavedCompleteClosureConsumerTests(unittest.TestCase):
                     self.assertEqual(fake_site.added, [str(self.root / "deps")])
                     self.assertEqual(fake_sys.path, [str(self.root / "creator"), str(self.root / "sdk")])
         self.assertEqual(len(producer.CANONICAL_NAMES), 8)
-        self.assertEqual(producer.MAX_CURRENT_SAVED_CLOSURE_V1, 66)
+        self.assertEqual(producer.MAX_CURRENT_SAVED_CLOSURE_V1, 67)
 
     def test_real_source_external_cached_origin_and_canonical_guards_remain(self) -> None:
         raw = producer.bind_current_saved_complete_closure_limit_v1(N37_CLOSURE_CONSUMER_SOURCE_V1.encode())
@@ -2051,7 +2051,7 @@ class CurrentSavedCompleteClosureConsumerTests(unittest.TestCase):
     def test_renderer_changes_only_exact_common_guard_and_refuses_drift(self) -> None:
         before = N37_CLOSURE_CONSUMER_SOURCE_V1.encode()
         after = producer.bind_current_saved_complete_closure_limit_v1(before)
-        self.assertEqual(after.replace(b"0<len(pins)<=66", b"0<len(pins)<=64"), before)
+        self.assertEqual(after.replace(b"0<len(pins)<=67", b"0<len(pins)<=64"), before)
         for value in (before.replace(b"0<len(pins)<=64", b"0<len(pins)<=65"),
                       before + before, b"def other(): pass\n"):
             with self.subTest(source_bytes=len(value)), self.assertRaises(ValueError):

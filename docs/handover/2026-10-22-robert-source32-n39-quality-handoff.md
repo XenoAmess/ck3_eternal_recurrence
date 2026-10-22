@@ -2,9 +2,19 @@
 
 `machine_id: xenoamess-full-tower-eb9d2c1186`；本文开始截点 `2026-10-22T03:37Z`。承接 [Source26旧交接](2026-10-20-robert-source26-a05-vacation-handoff.md)及[质量整改专题](../ck3-native-ai/current-saved-code-quality-correction-20261022.md)。其他机器的安装、Steam、容量或现场结果不能替代本机读回。
 
-**04:27 接续注意：N40 仅 readiness 批次已闭场，未提交 FULL11472，仍为 1082-02-15／5628 日。SDK 正常 persist 已改变当前 Driver；当前恢复输入改为下文 Q40 新 basis／qualification，已经真实原生校验。Q39 仅保留上一保存资格，不能直接冒充当前冷启动输入。新的运行配额、Steam、整图和首帧门禁仍须重新执行。**
+**05:00 接续注意：N41 已闭场但首批未保存。FULL11474 实际完成 30 周期／6 日，到 1082-02-21（5212／raw53279544），墙钟35.3458871秒，约5.890981秒/日。SAVE仍是11469、1082-02-15（5182／5628日），新增存档日数为0。Q40 的旧Driver身份已经失效，当前没有可执行的恢复basis；不得拿下文历史包直接重启。**
 
-## 当前实际状态
+本次 `machine_id: xenoamess-full-tower-eb9d2c1186`，实机R0028。Root在首批HOLD后先停止录制，原保护于04:52:57记录RecordingPaused；后续SEM11535在RPC前被拒，没有提交SAVE。这是执行顺序及保存闭环缺陷，不能伪称未知SAVE或修改原异常续行。SDK实际1/0、Game原Job清理exit1、三Task均Job0并注销、screen139按8134→8135释放；个人OBS114680未触动。Q41的 `ROOT-A41-ACTUAL-CLOSEOUT01.json` 为6293B／`e3121267197ae6ac6eee10a789e3f76064cfd08726e5e0ad185b17ccc32c9a7e`，原始FULL、时控、账本快照及闭场均有精确回链。
+
+Q41与下文Q39同父目录，叶名为 `current-saved-a41-runtime-prep01`；运行树为campaign下 `runtime-a41`。账本目前保存实际发生的未存档前沿，尚未回滚；Driver完整历史未删改。下一次须先补通用强类型“完成但未保存尾”证明、异常闭场及追加式保存点回滚，保留原T0/window/wall/历史unknown，再重新原生验当前Driver/SAVE；不能重写账本快照或套旧C15硬编码。
+
+04:27历史：N40只完成readiness，未提交FULL11472；当时Q40资格真实通过，但已被N41后续持久化改变。当前G2仍6/8、M6/M7未完成；30年和1秒/日均未完成。
+
+05:28软件整改：`first_full_checkpoint_v1.py` 已接入当前cold producer与feeder，首批在发布最终FULL响应前，经原Queue完成SEM→SAVE→原保存事件及小状态读回；HOLD严格校验保存回执，未知保存保留原请求且不重发。新图必须携带独立政策和来源绑定的 `first_full_checkpoint_reserve`（人工明确准入，不冒自动媒体监测）；SourceRows现15、完整闭包上限67。整当前CI步骤30条命令实际全过，458项含1项既有可选WAL跳过，关键62及独立SDK零跳过；Q41/new-software-0545-01/ROOT-A41-FULL-STEP40-ACTUAL03.json为30665B／`a20f75fdf143f96db66be48d0e8f61b3d684c72b89a91e7b8325c9aff0856b96`。两轮整合失败原件保留，未拿定向测试替代最终整步。
+
+灰色面板数字换行已修复并同步rich图资格表；当前cold旧材料尚未接新view override，不能称新view已上屏。远端f306的Living Artifacts步骤失败已在本机复现，生产者现在在kill/wait及自身流关闭后，以有界只读共享权限探测等待两份日志释放；不靠重试删除或把timeout改成功。其完整89测试、整26叶strict分别通过，回执为同目录LIVING-STEP96-ACTUAL02.json（7961B）和LIVING-STEP97-ACTUAL01.json（8133B）。这是软件证据，未授新实机资格；未保存尾的通用恢复仍在实现。
+
+## N39截点历史实际状态
 
 - 没有本轮受管Game、SDK、录制或Task留在运行。N39闭场三Task均Job0且注销，screen137释放序号8124，R0026为completed-red；SDK与录制正常退出，Game原Job清理exit1，不能称正常闭场。
 - 首FULL11407实际成功30周期：5152→5182，1082-02-09→1082-02-15，新增6日，累计5628/10950日，剩5322日。G2仍6/8，M6/M7未完成。完整批墙钟41.4099253秒／6日＝6.9016542秒/日；1秒/日未达标。Native32 journal没有实际RPC验收信用。
@@ -12,7 +22,7 @@
 - 当前窗口2、起点raw53144328、目标53407128、创始人31254／D0 174、当前角色40526及episode `native-40526-1bec95182886`保留。实际canonical head232，last_settled5182／53279400，cold_handoff_count14。
 - 下一unused序号11470。10565、11386、11404仍作为历史unknown保留，零信用、禁止重放。新维护保存不增加ordinary或游戏日信用。
 
-## 当前恢复输入
+## N39历史恢复输入
 
 下列文件均在：
 

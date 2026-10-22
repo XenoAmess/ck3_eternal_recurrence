@@ -4,6 +4,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime, timezone
 import json
+import re
 import unicodedata
 
 from decision_display_contract_v1 import (
@@ -221,7 +222,8 @@ class AudienceState:
         """Fit a finite card at the unchanged 24px font; protect risks/outcome.
 
         Wide characters consume two layout cells. At 52 cells the actual
-        Microsoft YaHei 24px replay stays inside 760px. The 36-line budget
+        Microsoft YaHei 24px replay stays inside 760px, except that a numeric
+        token wider than one line is preserved intact on its own line. The 36-line budget
         leaves vertical room inside 1300px; optional detail/history goes first.
         """
         def wrapped(value: str) -> list[str]:
@@ -229,12 +231,17 @@ class AudienceState:
             for paragraph in value.splitlines() or [""]:
                 line = ""
                 cells = 0
-                for character in paragraph:
-                    width = 2 if unicodedata.east_asian_width(character) in ("W", "F") else 1
+                # A decimal token is indivisible, including sign and percent.
+                # A token wider than52 cells occupies one complete overflow line.
+                # Its exact text is retained; it is never truncated or rewritten.
+                tokens = re.findall(r"[+-]?(?:[0-9]+(?:\.[0-9]+)?|\.[0-9]+)(?:[%\uff05])?|.", paragraph)
+                for token in tokens:
+                    width = sum(2 if unicodedata.east_asian_width(character) in ("W", "F") else 1
+                                for character in token)
                     if cells + width > 52 and line:
                         result.append(line)
                         line, cells = "", 0
-                    line += character
+                    line += token
                     cells += width
                 result.append(line)
             return result

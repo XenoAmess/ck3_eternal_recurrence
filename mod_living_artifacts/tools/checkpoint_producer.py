@@ -7,6 +7,7 @@ Input rejection before a credible identity is established writes no Root reply.
 from __future__ import annotations
 
 import argparse
+import ctypes
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from decimal import Decimal
@@ -313,6 +314,45 @@ class ProcessOutcome:
     finished_at: str
 
 
+
+def _probe_log_release(path: Path) -> None:
+    """Check Windows delete sharing without changing or deleting the log."""
+    if os.name != "nt":
+        return
+    kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel.CreateFileW.argtypes = [ctypes.c_wchar_p, ctypes.c_ulong, ctypes.c_ulong,
+                                  ctypes.c_void_p, ctypes.c_ulong, ctypes.c_ulong, ctypes.c_void_p]
+    kernel.CreateFileW.restype = ctypes.c_void_p
+    kernel.CloseHandle.argtypes = [ctypes.c_void_p]
+    kernel.CloseHandle.restype = ctypes.c_int
+    handle = kernel.CreateFileW(str(path), 0x10000, 7, None, 3, 0, None)
+    if handle == ctypes.c_void_p(-1).value:
+        raise ctypes.WinError(ctypes.get_last_error())
+    if not kernel.CloseHandle(handle):
+        raise ctypes.WinError(ctypes.get_last_error())
+
+
+def _wait_for_log_release(paths: tuple[Path, ...]) -> None:
+    # Process signalling and parent-stream closure alone did not establish
+    # immediate Windows delete sharing in the real timeout regression.
+    deadline = time.monotonic() + 10.0
+    attempts = 0
+    while True:
+        attempts += 1
+        try:
+            for path in paths:
+                _probe_log_release(path)
+        except OSError as failure:
+            remaining = deadline - time.monotonic()
+            if getattr(failure, "winerror", None) != 32:
+                raise
+            if remaining <= 0 or attempts >= 1001:
+                raise OSError("log-release-blocked: Windows sharing violation after process wait") from failure
+            time.sleep(min(0.01, remaining))
+        else:
+            return
+
+
 def execute_melter(argv: tuple[str, ...], *, output: Path, timeout: int, maximum_melted: int, maximum_log: int) -> ProcessOutcome:
     started = utc_now()
     with (output / "stdout.log").open("xb") as stdout, (output / "stderr.log").open("xb") as stderr:
@@ -338,6 +378,7 @@ def execute_melter(argv: tuple[str, ...], *, output: Path, timeout: int, maximum
             if child.poll() is None:
                 child.kill()
             code = child.wait(timeout=10)
+    _wait_for_log_release((output / "stdout.log", output / "stderr.log"))
     if status == "exited" and any(path.exists() and path.stat().st_size > bound for path, bound in (
             (output / "melted.ck3", maximum_melted), (output / "stdout.log", maximum_log), (output / "stderr.log", maximum_log))):
         status = "output_limit"

@@ -194,6 +194,37 @@ class ProducerTests(unittest.TestCase):
                                        maximum_melted=1024, maximum_log=maximum)
                 self.assertEqual(actual.status, expected)
                 self.assertIsNotNone(actual.exit_code)
+                # Exercise the exact post-return operation that failed in CI.
+                # No deletion retry or longer test sleep may hide a live owner.
+                for name in ("stdout.log", "stderr.log"):
+                    original = Path(directory) / name
+                    archived = original.with_suffix(".released")
+                    original.rename(archived)
+                    self.assertTrue(archived.is_file())
+
+    def test_log_release_wait_is_bounded_and_only_retries_sharing_violation(self) -> None:
+        from checkpoint_producer import _wait_for_log_release
+
+        class SharingViolation(OSError):
+            winerror = 32
+
+        path = Path("authored-log")
+        with patch("checkpoint_producer._probe_log_release", side_effect=[SharingViolation(), None]) as probe, \
+                patch("checkpoint_producer.time.monotonic", side_effect=[0.0, 0.1]), \
+                patch("checkpoint_producer.time.sleep") as sleep:
+            _wait_for_log_release((path,))
+            self.assertEqual(probe.call_count, 2)
+            sleep.assert_called_once_with(0.01)
+        with patch("checkpoint_producer._probe_log_release", side_effect=SharingViolation()), \
+                patch("checkpoint_producer.time.monotonic", side_effect=[0.0, 10.0]), \
+                patch("checkpoint_producer.time.sleep") as sleep, self.assertRaisesRegex(OSError, "log-release-blocked"):
+            _wait_for_log_release((path,))
+        sleep.assert_not_called()
+        with patch("checkpoint_producer._probe_log_release", side_effect=PermissionError("not sharing")), \
+                patch("checkpoint_producer.time.monotonic", side_effect=[0.0, 0.1]), \
+                patch("checkpoint_producer.time.sleep") as sleep, self.assertRaises(PermissionError):
+            _wait_for_log_release((path,))
+        sleep.assert_not_called()
 
     def test_common_storage_formula_counts_full_existing_holds_conservatively(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

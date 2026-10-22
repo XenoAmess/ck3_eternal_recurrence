@@ -248,6 +248,10 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/g2_saved_campaign/test_saved_campaign_visual_text_preflight_v1.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -m mypy --strict --strict-equality --explicit-package-bases --follow-imports=silent --no-incremental --cache-dir nul -m tools.g2_saved_campaign.first_full_checkpoint_v1 -m tools.g2_saved_campaign.test_first_full_checkpoint_v1
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m unittest -v tools.g2_saved_campaign.test_first_full_checkpoint_v1
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test succession refresh after an SDK publication revision reset without CK3
         run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_succession_warm_publication_refresh_v1.py
       - name: Test retained named Sway gain and independent consumption without CK3

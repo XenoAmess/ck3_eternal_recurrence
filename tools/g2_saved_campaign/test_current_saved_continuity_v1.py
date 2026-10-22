@@ -283,6 +283,18 @@ class ContinuityContractTests(unittest.TestCase):
                     basis=replace(checked.inputs.basis,
                         refs=replace(checked.inputs.basis.refs, ledger=ledger_anchor))))
                 admission = feeder_admission()
+                from tools.g2_saved_campaign.first_full_checkpoint_v1 import FirstFullCheckpointPolicyV1
+                budget = {"machine_id": checked.inputs.basis.machine_id,
+                    "review_at_utc": admission.review_deadline_utc,
+                    "first_full_checkpoint_reserve": {"admissible": True, "seconds": 30,
+                        "bytes": 1048576, "reservation_mode": "explicit_operator_admitted"}}
+                budget_ref = reader.put(ROOT / "finalize-budget.json", budget)
+                admission = replace(admission, budget_ref=budget_ref)
+                policy = FirstFullCheckpointPolicyV1(checked.inputs.basis.machine_id,
+                    admission.first_control_sequence, checked.inputs.basis.completed_cycles,
+                    admission.review_deadline_utc, budget_ref, 30, 1048576)
+                reader.put(ROOT / "ROOT-P37C23-COLD-RESUME-ADMISSION.json",
+                           {"first_full_checkpoint": policy.to_wire()})
                 ledger_ref = reader.put(ROOT / "ledger-source.py", {})
                 output: list[str] = []
                 def qualified(*args: object, **kwargs: object) -> owner.CurrentSavedFeederV1:
@@ -299,6 +311,7 @@ class ContinuityContractTests(unittest.TestCase):
                     "LocalCurrentSavedFeederReaderV1": feeder.LocalCurrentSavedFeederReaderV1,
                     "qualify_current_saved_feeder_v1": qualified,
                     "ordinary": SimpleNamespace(CONTINUITY_WINDOW=CANONICAL,
+                        read=lambda path: json.loads(reader.documents[str(path.resolve())].payload),
                         next_sequence=lambda: admission.first_control_sequence,
                         __file__=str(ROOT / "ordinary.py")),
                     "ledger": SimpleNamespace(transition=actual_ledger.transition,

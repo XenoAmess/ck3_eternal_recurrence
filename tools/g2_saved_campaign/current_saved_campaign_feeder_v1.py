@@ -423,6 +423,8 @@ def transform_current_saved_feeder_v1(
     lines = transformed.splitlines(keepends=True)
     lines.insert(target.lineno, "    _current_saved_callbacks_v1().require_can_publish()\n")
     transformed = "".join(lines)
+    from tools.g2_saved_campaign.first_full_checkpoint_v1 import render_first_full_checkpoint_hold_v1
+    transformed = render_first_full_checkpoint_hold_v1(transformed.encode()).decode()
     setup = (
         "\nfrom tools.g2_saved_campaign.current_saved_campaign_feeder_v1 import InstalledCurrentSavedCallbacksV1\n"
         "_CURRENT_SAVED_CALLBACKS_V1: InstalledCurrentSavedCallbacksV1 | None = None\n"
@@ -964,6 +966,8 @@ def emit_current_saved_feeder_launcher_v1(
         "        actual_owner=Path(owner.__file__), current_next_sequence=ordinary.next_sequence(),\n"
         "        now_utc=utc_now_v1(), exists=Path.exists,\n"
         "    )\n"
+        "    from tools.g2_saved_campaign.first_full_checkpoint_v1 import require_first_full_checkpoint_binding_v1\n"
+        "    require_first_full_checkpoint_binding_v1(ordinary.read(N / 'ROOT-P37C23-COLD-RESUME-ADMISSION.json')['first_full_checkpoint'], ordinary.read(Path(admission.budget_ref.path)), machine_id=inputs.basis.machine_id, first_control_sequence=first, baseline_completed_cycles=inputs.basis.completed_cycles, review_at_utc=admission.review_deadline_utc, budget_ref=admission.budget_ref)\n"
         "    original_transition = ledger.transition\n"
         "    def normal_transition(previous: object, kind: str, details: JsonObject) -> JsonObject:\n"
         "        return json_object(original_transition(previous, kind, details))\n"

@@ -29,7 +29,7 @@ from tools.g2_saved_campaign.current_saved_continuity_v1 import (
 )
 PLAN_SCHEMA = "xar.current-saved-cold-plan/v4"
 QUOTE_SCHEMA = "xar.current-saved-cold-quote/v5"
-MAX_CURRENT_SAVED_CLOSURE_V1 = 66
+MAX_CURRENT_SAVED_CLOSURE_V1 = 67
 MAX_FILE = 1048576
 MAX_GRAPH = 8 * MAX_FILE
 CANONICAL_NAMES = frozenset((
@@ -38,7 +38,7 @@ CANONICAL_NAMES = frozenset((
  "root_checkpoint_bootstrap_c23.py", "root_native30_supervisor_c23.py",
  "root_p37c23_mcp_entry.py", "root_p37c23_sdk_queue.py",
 ))
-GENERIC_SOURCE_PATHS = frozenset(('tools/ck3_live_run_id.py', 'tools/g2_saved_campaign/background_foreground_contract_v1.py', 'tools/g2_saved_campaign/current_saved_background_display_v1.py', 'tools/g2_saved_campaign/current_saved_basis_v1.py', 'tools/g2_saved_campaign/current_saved_campaign_feeder_v1.py', 'tools/g2_saved_campaign/current_saved_campaign_preflight_v1.py', 'tools/g2_saved_campaign/current_saved_continuity_v1.py', 'tools/g2_saved_campaign/current_saved_campaign_replay_v1.py', 'tools/g2_saved_campaign/prepare_native32_current_sdk_binding_v1.py', 'tools/g2_saved_campaign/file_stat_identity_v1.py', 'tools/g2_saved_campaign/managed_desktop1_placement.py', 'tools/g2_saved_campaign/prepare_current_saved_campaign_cold_v1.py', 'tools/g2_saved_campaign/root_current_saved_campaign_cold_owner_v1.py', 'tools/g2_saved_campaign/root_saved_campaign_preflight.py'))
+GENERIC_SOURCE_PATHS = frozenset(('tools/ck3_live_run_id.py', 'tools/g2_saved_campaign/background_foreground_contract_v1.py', 'tools/g2_saved_campaign/current_saved_background_display_v1.py', 'tools/g2_saved_campaign/current_saved_basis_v1.py', 'tools/g2_saved_campaign/current_saved_campaign_feeder_v1.py', 'tools/g2_saved_campaign/first_full_checkpoint_v1.py', 'tools/g2_saved_campaign/current_saved_campaign_preflight_v1.py', 'tools/g2_saved_campaign/current_saved_continuity_v1.py', 'tools/g2_saved_campaign/current_saved_campaign_replay_v1.py', 'tools/g2_saved_campaign/prepare_native32_current_sdk_binding_v1.py', 'tools/g2_saved_campaign/file_stat_identity_v1.py', 'tools/g2_saved_campaign/managed_desktop1_placement.py', 'tools/g2_saved_campaign/prepare_current_saved_campaign_cold_v1.py', 'tools/g2_saved_campaign/root_current_saved_campaign_cold_owner_v1.py', 'tools/g2_saved_campaign/root_saved_campaign_preflight.py'))
 def sha256_v1(raw: bytes) -> str:
  need(type(raw) is bytes, "exact source bytes")
  return hashlib.sha256(raw).hexdigest()
@@ -856,6 +856,7 @@ def compose_v1(plan: ColdPlanV1, *, plan_ref: ExactRefV1,
  from tools.g2_saved_campaign.current_saved_campaign_feeder_v1 import (
   emit_current_saved_feeder_launcher_v1, transform_current_saved_feeder_v1,
  )
+ from tools.g2_saved_campaign.first_full_checkpoint_v1 import render_first_full_checkpoint_queue_v1
  from tools.g2_saved_campaign.root_current_saved_campaign_cold_owner_v1 import (
   build_current_saved_prelaunch_v1,
  )
@@ -937,7 +938,7 @@ def compose_v1(plan: ColdPlanV1, *, plan_ref: ExactRefV1,
  put("root_native30_supervisor_c23.py",assignment_v1(get("root_native30_supervisor_c23.py"),
   "PLACEMENT_SHA",sha256_v1(get("tools/g2_saved_campaign/managed_desktop1_placement.py"))))
  put("launch_sdk_p37c23_owner.py",emit_current_saved_sdk_launcher_v1(get("launch_sdk_p37c23_owner.py"),artifact_cap_bytes=p.artifact_cap_bytes))
- put("root_p37c23_sdk_queue.py",emit_current_saved_request_guards_v1(get("root_p37c23_sdk_queue.py"),kind="queue"))
+ put("root_p37c23_sdk_queue.py",render_first_full_checkpoint_queue_v1(emit_current_saved_request_guards_v1(get("root_p37c23_sdk_queue.py"),kind="queue")))
  cold = emit_cold_resume_v1(get("root_p37c23_cold_resume.py"),machine_id=p.machine_id).decode("utf-8")
  cold += (
         "\ndef load_current_saved_feeder_inputs_v1() -> WarmCurrentSavedFeederInputsV1:\n"
