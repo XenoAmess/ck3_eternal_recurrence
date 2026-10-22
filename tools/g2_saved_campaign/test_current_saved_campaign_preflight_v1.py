@@ -656,7 +656,7 @@ def _verify_mandatory_archive_boundary(
                         relative_path="tools/g2_saved_campaign/current_saved_campaign_replay_v1.py"),),
         names, names + (source_path, "tools/g2_saved_campaign/current_saved_campaign_replay_v1.py"), (".",), placeholder, placeholder,
         str(root / "screen.json"), str(root / "spec.json"), "a" * 32, "b" * 32,
-        "c" * 32, 32, placeholder, placeholder, None)
+        "c" * 32, 32, placeholder, placeholder, None, 1090519040)
     producer_path = Path(replay.__file__).with_name("prepare_current_saved_campaign_cold_v1.py")
     plan = replace(plan, producer_ref=reader.put(str(producer_path), producer_path.read_bytes()))
     plan_ref = reader.put(str(root / "plan.json"), _wire(plan.to_wire()))
@@ -680,7 +680,7 @@ def _verify_mandatory_archive_boundary(
         str(root / "campaign-score"), str(Path(anchor.path).parent), True, "1", "1", anchor)
     quote = ColdQuoteV1(full.execution_machine_id, full.observed_at_utc,
         plan_ref, basis_ref, placeholder, placeholder, str(root), tuple(output),
-        junction, names, names + (source_path,), (".",), 8, 1, 1, 1, None)
+        junction, names, names + (source_path,), (".",), 8, 1, 1, 1, None, plan.artifact_cap_bytes)
     direct = core._archive_historical_replay_v1(replay_ref, full, fixture, plan, quote, reader)
     restored, mandatory = core._full_historical_replay(
         replay_ref, plan, quote, full.core_source_ref, reader)

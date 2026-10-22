@@ -9,7 +9,7 @@ import math
 from pathlib import Path
 import re
 from types import FunctionType
-from typing import Callable, Literal, Protocol, TypeAlias
+from typing import Callable, Literal, Protocol, TypeAlias, runtime_checkable
 
 from tools.g2_saved_campaign.file_stat_identity_v1 import (
     SCHEMA as STAT_SCHEMA, FileStatIdentityV1, parse_file_stat_identity_v1,
@@ -408,6 +408,28 @@ def decode_current_saved_basis_v1(raw: bytes, *, expected_machine_id: str) -> Cu
 class BasisReaderV1(Protocol):
     def read(self, reference: ExactRefV1, limit: int) -> bytes: ...
     def stat(self, path: str) -> FileStatIdentityV1: ...
+
+
+MAX_ORIGINAL_RESPONSE_BYTES_V1 = 2 * 1024 * 1024
+
+
+@runtime_checkable
+class OriginalResponseReaderV1(BasisReaderV1, Protocol):
+    def read_response(self, reference: ExactRefV1, limit: int) -> bytes: ...
+
+
+def original_response_evidence_v1(reader: BasisReaderV1, reference: ExactRefV1) -> dict[str, object]:
+    """A separate bounded RPC-evidence capability, not a larger source limit."""
+    need(reference.bytes <= MAX_ORIGINAL_RESPONSE_BYTES_V1, "bounded original RPC evidence")
+    if reference.bytes <= 1048576:
+        return evidence(reader, reference, 1048576)
+    need(isinstance(reader, OriginalResponseReaderV1), "explicit original-response reader required")
+    if not isinstance(reader, OriginalResponseReaderV1):
+        raise ValueError("explicit original-response reader required")
+    raw = reader.read_response(reference, MAX_ORIGINAL_RESPONSE_BYTES_V1)
+    need(len(raw) == reference.bytes and hashlib.sha256(raw).hexdigest() == reference.sha256,
+         "exact original RPC evidence")
+    return record(parse_json(raw))
 
 
 @dataclass(frozen=True, slots=True)
@@ -2633,6 +2655,185 @@ def _prefix_classifier_v1(reference:ExactRefV1,queue_ref:ExactRefV1,*,reader:Bas
         raise ValueError("actual original classifier function")
     return fn
 
+@dataclass(frozen=True, slots=True)
+class SettledObservationEffectV1:
+    selected_step: str
+    effect: Literal["native_observation", "formal_ledger_readback"]
+    counted_flags: tuple[str, ...]
+    protocol_sequence: str | None = None
+
+    def to_wire(self) -> JsonObject:
+        return {"selected_step": self.selected_step, "effect": self.effect,
+            "counted_flags": list(self.counted_flags), "protocol_sequence": self.protocol_sequence,
+            "new_gameplay_action_claimed": False, "new_credit_granted": 0}
+
+
+def project_current_saved_settled_observation_v1(
+    body: object, observation: object, *, frame: SavedFrameV1,
+) -> SettledObservationEffectV1:
+    """Recognize qualified read APIs, never a general query-name exemption."""
+    source = record(body); credit = record(observation)
+    step = text(source.get("selected_step"))
+    need(credit.get("submitted_pending") is False
+         and credit.get("business_success_inferred") is False
+         and credit.get("replay_allowed") is False, "original settled observation")
+    flags = tuple(key for key in ("typed_nonmaterial_observation", "existing_focus_verified", "primitive_accepted")
+                  if credit.get(key) is True)
+    need(bool(flags) and all(key not in credit or type(credit[key]) is bool for key in
+         ("typed_nonmaterial_observation", "existing_focus_verified", "primitive_accepted")),
+         "typed original ordinary-credit flags")
+    for key in ("lifestyle_material_verified", "council_material_verified", "construction_start_verified",
+                "construction_completion_verified", "crown_material_verified", "existing_typed_material_verified",
+                "date_advance_observed"):
+        if key in credit:
+            need(exact_bool(credit[key]) is False, "material or advancing prefix needs a saved frontier")
+    if credit.get("primitive_accepted") is not True:
+        need(credit.get("primitive_accepted") is False, "original non-submitting credit")
+        return SettledObservationEffectV1(step, "native_observation", flags)
+    need(source.get("status") == "executed" and credit.get("selected_step") == step,
+         "qualified accepted read source and classifier operation")
+    result = record(source.get("result"))
+    need(result.get("accepted") is True, "accepted read result required")
+    if step == "query-observed-first-heir-marriage-result-v1-private":
+        status = result.get("status")
+        need(result.get("schema") == "xar.ck3.observed-first-heir-marriage-private-action.v1"
+             and integer(result.get("schema_version"), 1, 1) == 1
+             and result.get("step") == step and result.get("private_build") is True
+             and result.get("advertised") is False and result.get("cold_recovery") is True
+             and status in ("marriage", "betrothal", "pending")
+             and result.get("material_result") is (status != "pending")
+             and integer(result.get("pre_native_revision"), 0, 0) == 0
+             and integer(result.get("post_native_revision"), 1) == frame.native_revision,
+             "existing bilateral relation cold readback, not marriage submission")
+        for key in ("heir_character_id", "candidate_character_id"):
+            integer(result.get(key), 1, 2**32-1)
+        return SettledObservationEffectV1(step, "formal_ledger_readback", flags)
+    if step == "query-army-strengths-v1":
+        need(result.get("status") == "available" and bool(rows(result.get("armies"))),
+             "typed ordinary Army observation")
+        for value in rows(result["armies"]):
+            integer(record(value).get("army_id"), 1, 2**32-1)
+        return SettledObservationEffectV1(step, "native_observation", flags)
+    need(result.get("step") == step and result.get("backend_id") == "native-headless",
+         "exact native read operation")
+    sequence = str(integer(result.get("query_sequence"), 1, 2**64-1))
+    if step == "query-player-mercenary-context-v1":
+        need(result.get("status") == "completed" and result.get("read_only") is True
+             and integer(result.get("snapshot_revision"), 1) == frame.native_revision
+             and integer(result.get("date_raw")) == frame.date_raw
+             and bool(record(result.get("player_mercenary_context"))),
+             "native mercenary observation, no hire operation")
+    elif re.fullmatch(r"query-war-termination-options-[1-9][0-9]*", step):
+        war_id = integer(int(step.rsplit("-", 1)[1]), 1, 2**32-1)
+        need(result.get("status") == "available"
+             and integer(record(result.get("war_termination_options")).get("war_id"), 1) == war_id,
+             "war termination options query, no submission")
+    elif re.fullmatch(r"query-route-contact-horizon-v1-(0|[1-9][0-9]*)-to-[1-9][0-9]*-h-[1-9][0-9]*(?:-[1-9][0-9]*)+", step):
+        from xar_autoplayer.bridge.war_contract import parse_query_route_contact_horizon_step
+        parsed: object = parse_query_route_contact_horizon_step(step)
+        need(parsed is not None and result.get("status") == "available"
+             and integer(result.get("snapshot_revision"), 1) == frame.native_revision
+             and bool(record(result.get("route_contact_horizon"))), "typed route preview, no movement or advance")
+    else:
+        raise ValueError("primitive acceptance is not a qualified read-only operation")
+    return SettledObservationEffectV1(step, "native_observation", flags, sequence)
+
+
+@dataclass(frozen=True, slots=True)
+class UnknownOriginalResponseV1:
+    sequence: int
+    kind: Literal["client_error_without_result", "returned_sdk_error"]
+    error_type: str
+
+    def to_wire(self) -> JsonObject:
+        return {"sequence": self.sequence, "kind": self.kind, "error_type": self.error_type,
+            "ordinary_cycle_credit": 0, "game_day_credit": 0, "replay_allowed": False,
+            "actual_gameplay_effects_inferred": False}
+
+
+def project_current_saved_unknown_response_v1(
+    request: object, response: object, *, expected_sequence: object,
+) -> UnknownOriginalResponseV1:
+    req = record(request); row = record(response); sequence = integer(expected_sequence, 1)
+    need(integer(req.get("sequence"), 1) == sequence and req.get("tool") == "ck3_auto_turn"
+         and record(req.get("arguments")) == {}
+         and canonical_json_v1(row.get("request")) == canonical_json_v1(req), "exact original unknown AUTO")
+    if "result" not in row:
+        need(type(row.get("client_error")) is str and row.get("replay_allowed") is False,
+             "original client error without a returned result")
+        return UnknownOriginalResponseV1(sequence, "client_error_without_result", "client_error")
+    result = record(row["result"]); content = record(result.get("structured_content"))
+    need(("client_error" not in row or row["client_error"] is None)
+         and result.get("is_error") is True and result.get("result_type") == "complete",
+         "returned tool error remains unknown, never a successful result")
+    return UnknownOriginalResponseV1(sequence, "returned_sdk_error", text(content.get("error_type")))
+
+
+def validate_current_saved_unknown_failure_v1(
+    failure: object, control_failure: object, *, outcome: UnknownOriginalResponseV1,
+    unknown_request: object, unknown_response: ExactRefV1,
+) -> None:
+    row = record(failure); control = record(control_failure); request = record(unknown_request)
+    full = record(control.get("request"))
+    need(full.get("command") == "full_loop" and integer(full.get("sequence"), 1) < outcome.sequence
+         and "result" not in control and type(control.get("client_error")) is str
+         and control.get("replay_allowed") is False, "failed control never claims a successful batch")
+    need(row.get("replay_allowed") is False and row.get("traceback_truncated") is False
+         and row.get("locals_captured") is False, "complete original unknown failure evidence")
+    identity = record(row.get("request_identity"), {"sequence", "tool", "command"})
+    child = {"sequence": integer(request.get("sequence"), 1), "tool": "ck3_auto_turn", "command": None}
+    need(integer(child["sequence"], 1) == outcome.sequence, "unknown failure sequence")
+    if row.get("stage") == "sdk_call" and canonical_json_v1(identity) == canonical_json_v1(child):
+        return
+    parent = {"sequence": integer(full["sequence"], 1), "tool": None, "command": "full_loop"}
+    need(outcome.kind == "returned_sdk_error" and row.get("stage") == "request_dispatch"
+         and canonical_json_v1(identity) == canonical_json_v1(parent)
+         and control.get("original_response") == unknown_response.path,
+         "original control failure binds the retained child error, not an invented child traceback")
+
+
+@dataclass(frozen=True, slots=True)
+class TaskClosureObservationV1:
+    machine_id: str
+    transport: Literal["original_cli", "subprocess"]
+    process_exit_code: int | None
+    task_name: str | None
+    observed_at_utc: str | None
+
+
+def validate_current_saved_closed_task_absence_v1(
+    value: object, *, machine_id: str, nonce: str, spec_sha256: str,
+) -> TaskClosureObservationV1:
+    """An original CLI receipt is distinct from a subprocess transport receipt."""
+    row = record(value)
+    if "stdout" in row:
+        process_exit_code: int | None = integer(row.get("returncode"), 0, 0)
+        transport: Literal["original_cli", "subprocess"] = "subprocess"
+        original = record(parse_json(text(row["stdout"]).encode()))
+    else:
+        process_exit_code = None
+        transport = "original_cli"
+        original = record(value, {"machine_id", "utc", "task_name", "operation", "actual"})
+        utc(original["utc"])
+        need(original["task_name"] == "XARG2ManagedOwner-"+text(nonce)
+             and original["operation"] == "unregister", "original canonical Task unregister operation")
+        actual = record(original["actual"])
+        integer(actual.get("instances"), 0, 0)
+        arguments = text(actual.get("arguments"))
+        need(arguments.split().count("--spec-sha") == 1
+             and re.search(r"(?:^|\s)--spec-sha "+digest(spec_sha256)+r"(?:\s|$)", arguments) is not None,
+             "actual Task action binds the exact original SPEC bytes")
+    need(original.get("machine_id") == machine_id and record(original.get("actual")).get("absent_after") is True,
+         "actual original Task absence on this machine")
+    if "operation" in original:
+        need(original["operation"] == "unregister", "original Task operation")
+    task_name = text(original["task_name"]) if "task_name" in original else None
+    if task_name is not None:
+        need(task_name == "XARG2ManagedOwner-"+text(nonce), "original Task nonce")
+    observed_at = utc(original["utc"]) if "utc" in original else None
+    return TaskClosureObservationV1(text(machine_id), transport, process_exit_code, task_name, observed_at)
+
+
 def _readonly_prefix_v1(
     epoch:ReadonlyPrefixUnknownEpochV1,old:CurrentSavedBasisV1,game:ReadonlyColdClosedGameV1,
     *,reader:BasisReaderV1,
@@ -2685,7 +2886,7 @@ def _readonly_prefix_v1(
         item=record(value,{"event","auto","metrics","auto_plan","auto_after","metrics_after","ordinary_credit","readonly_save_skip"})
         event_ref=parse_ref(item["event"]);event=evidence(reader,event_ref,32768)
         ar=parse_ref(item["auto"]);mr=parse_ref(item["metrics"])
-        auto=evidence(reader,ar,1048576);metrics=evidence(reader,mr,1048576)
+        auto=original_response_evidence_v1(reader,ar);metrics=original_response_evidence_v1(reader,mr)
         auto_request=record(auto.get("request"));metric_request=record(metrics.get("request"))
         seq=integer(auto_request.get("sequence"),1)
         need(seq>previous_sequence and auto_request.get("tool")=="ck3_auto_turn"
@@ -2706,11 +2907,9 @@ def _readonly_prefix_v1(
         if not isinstance(outcome,tuple) or len(outcome)!=3:raise ValueError("classifier result")
         observation=json_object(outcome[0]);state_gov=None if outcome[1] is None else json_object(outcome[1])
         focus=None if outcome[2] is None else json_object(outcome[2])
-        need(canonical_json_v1(event.get("observation"))==canonical_json_v1(observation)
-            and observation.get("submitted_pending") is False and observation.get("primitive_accepted") is False
-            and observation.get("business_success_inferred") is False and observation.get("replay_allowed") is False
-            and (observation.get("typed_nonmaterial_observation") is True or observation.get("existing_focus_verified") is True),
-            "original classifier independently confirms a non-submitting observation")
+        effect=project_current_saved_settled_observation_v1(body,observation,frame=frame)
+        need(canonical_json_v1(event.get("observation"))==canonical_json_v1(observation),
+            "original classifier independently confirms the exact settled observation")
         need(parse_frame(event.get("before"))==frame and parse_frame(event.get("after"))==after
             and integer(event.get("global_turn"),1)==old.completed_cycles+offset
             and integer(event.get("auto_sequence"),1)==seq and event.get("stage")=="auto_verified"
@@ -2731,8 +2930,9 @@ def _readonly_prefix_v1(
         need(credit.get("source_response")==ar.path and canonical_json_v1(credit.get("observation"))==canonical_json_v1(observation),
             "actual original ordinary credit, not a new credit")
         for flag,counter in (("typed_nonmaterial_observation","typed_nonmaterial_observation_turns"),
-                             ("existing_focus_verified","existing_focus_verified_turns")):
-            if observation.get(flag) is True:counts[counter]=counts.get(counter,0)+1
+                             ("existing_focus_verified","existing_focus_verified_turns"),
+                             ("primitive_accepted","primitive_accepted_turns")):
+            if flag in effect.counted_flags:counts[counter]=counts.get(counter,0)+1
         need(canonical_json_v1(event.get("cumulative_observation_counts"))==canonical_json_v1(counts),"original cumulative counters")
         if item["readonly_save_skip"] is not None:
             skip=evidence(reader,parse_ref(item["readonly_save_skip"]),16384)
@@ -2758,10 +2958,7 @@ def _readonly_prefix_v1(
         and unknown==previous_sequence+1,"the exact live state retains the next unknown outside the settled prefix")
     for key in ("pending_checkpoint","terminal","pending_natural_succession","pending_unsafe_route_halt"):
         need(state.get(key) is None,"no other pending branch")
-    need(integer(request.get("sequence"),1)==unknown and request.get("tool")=="ck3_auto_turn"
-        and record(request.get("arguments"))=={} and canonical_json_v1(response.get("request"))==canonical_json_v1(request)
-        and "result" not in response and type(response.get("client_error")) is str and response.get("replay_allowed") is False,
-        "unknown original AUTO has no usable returned result")
+    project_current_saved_unknown_response_v1(request,response,expected_sequence=unknown)
     need(Path(r.unknown_request.path).resolve()==(root/"p37-requests"/f"{unknown:04d}-1-result.json").resolve()
         and Path(r.unknown_response.path).resolve()==(root/"p37-responses"/f"{unknown:04d}-1-result.json").resolve(),
         "exact retained unknown request slot")
@@ -2795,6 +2992,10 @@ def _native_history_json_v1(value:object,depth:int=0)->object:
     row=record(value)
     return {key:_native_history_json_v1(item,depth+1) for key,item in row.items()}
 
+MAX_CLOSED_HISTORY_DOCUMENT_BYTES_V1 = 131072
+MAX_CLOSED_HISTORY_RAW_BYTES_V1 = 2 * 1024 * 1024
+
+
 def decode_readonly_prefix_history_v1(value:object)->list[dict[str,object]]:
     import base64,zlib
     row=record(value)
@@ -2804,19 +3005,129 @@ def decode_readonly_prefix_history_v1(value:object)->list[dict[str,object]]:
     need(len(payload)<=262144 and len(payload)%4==0,"bounded base64 boundary")
     packed=base64.b64decode(payload,validate=True)
     need(len(packed)<=196608 and base64.b64encode(packed).decode()==payload,"canonical bounded base64")
-    decoder=zlib.decompressobj();raw=decoder.decompress(packed,1048577)
-    need(len(raw)<=1048576 and decoder.eof and not decoder.unused_data and not decoder.unconsumed_tail,
+    decoder=zlib.decompressobj();raw=decoder.decompress(packed,MAX_CLOSED_HISTORY_RAW_BYTES_V1+1)
+    need(len(raw)<=MAX_CLOSED_HISTORY_RAW_BYTES_V1 and decoder.eof and not decoder.unused_data and not decoder.unconsumed_tail,
         "one bounded complete compressed history")
     need(row.get("schema")=="xar.raw-closed-driver-history-opaque/v1" and row.get("encoding")=="zlib+base64"
         and integer(row.get("decoded_bytes"))==len(raw) and row.get("decoded_sha256")==hashlib.sha256(raw).hexdigest(),
         "exact decoded history bytes")
     result=rows(parse_json(raw));need(len(result)==integer(row.get("row_count"),0,8192),"actual history count")
     _native_history_json_v1(result)
-    return [record(item,{"index","command","ok","result"}) for item in result]
+    parsed: list[dict[str, object]] = []
+    for item in result:
+        native = record(item)
+        fields = {"index", "command", "ok", "result"}
+        if native.get("ok") is False:
+            fields.add("error")
+            text(native.get("error"))
+        parsed.append(record(native, fields))
+    return parsed
 
 def _exact_native_json_v1(value:object)->bytes:
     return json.dumps(_native_history_json_v1(value),ensure_ascii=False,sort_keys=True,
         separators=(",",":"),allow_nan=False).encode()
+
+
+def _validate_settled_prefix_history_v1(
+    history: list[dict[str, object]], *, epoch: ReadonlyPrefixUnknownEpochV1,
+    frame: SavedFrameV1, reader: BasisReaderV1,
+) -> None:
+    """Bind native history to original observations; an error suffix earns nothing."""
+    prefix = evidence(reader, epoch.refs.prefix, 65536)
+    observed: dict[str, list[dict[str, object]]] = {}
+    for item in rows(prefix.get("entries")):
+        response = original_response_evidence_v1(reader, parse_ref(record(item).get("auto")))
+        body = completed_body(response, "ck3_auto_turn")
+        if type(body.get("result")) is dict:
+            observed.setdefault(text(body.get("selected_step")), []).append(record(body["result"]))
+    unknown = evidence(reader, epoch.refs.unknown_response, 16384)
+    content: dict[str, object] | None = None
+    if "result" in unknown:
+        content = record(record(unknown["result"]).get("structured_content"))
+    failed = False
+    for h in history:
+        result = record(h["result"]); command = text(h["command"])
+        need(not failed, "the retained unknown failure is the final history row")
+        if h["ok"] is False:
+            need(content is not None, "a native failure needs its original returned tool error")
+            if content is None:
+                raise ValueError("original error diagnostics required")
+            plan = evidence(reader, parse_ref(prefix.get("unknown_plan")), 65536)
+            planned = record(record(plan.get("result")).get("structured_content"))
+            request = evidence(reader, epoch.refs.unknown_request, 16384)
+            need(plan.get("source") == "actual GameplayBridgeService.before_submit callback"
+                 and integer(record(plan.get("request")).get("parent_sequence"), 1)
+                 == integer(request.get("sequence"), 1)
+                 and integer(plan.get("game_pid"), 1)
+                 == integer(evidence(reader, epoch.refs.launch, 16384).get("pid"), 1)
+                 and planned.get("selected_step") == command,
+                 "native failure belongs to the retained original unknown plan")
+            diagnostics = record(content.get("diagnostics"))
+            need(any(_exact_native_json_v1(value) == _exact_native_json_v1(result)
+                     for value in diagnostics.values()), "complete original native error is preserved exactly")
+            error_prefix = text(content.get("error_type"))+": "
+            need(text(h.get("error")).startswith(error_prefix), "original native error type")
+            if "original_error" in result:
+                need(h["error"] == error_prefix+text(result["original_error"]), "original native error message")
+            failed = True
+            continue
+        need(h["ok"] is True, "typed native history outcome")
+        if command in {"query-campaign-root-context-v1", "query-war-results-window-v1",
+                       "query-war-declared-overview-v1"}:
+            need(result.get("step") == command and result.get("accepted") is True
+                 and integer(result.get("date_raw")) == frame.date_raw,
+                 "original same-date query bookkeeping")
+            if command != "query-campaign-root-context-v1":
+                need(result.get("operation") == "query" and all(result.get(key) is False
+                    for key in ("dispatch_attempted", "dispatch_invoked", "native_handled")),
+                    "query bookkeeping is not a window mutation")
+            continue
+        candidates = observed.get(command, [])
+        if any(_exact_native_json_v1(result) == _exact_native_json_v1(value) for value in candidates):
+            continue
+        need(command == "query-army-strengths-v1", "history needs an exact original settled observation")
+        from xar_autoplayer.bridge.army_query_history_store import build_army_query_history_summary, _ARMY_FIELDS
+        from xar_autoplayer.bridge.army_strengths_mcp_result import _SUMMARY_ARMY_FIELDS
+        need(result.get("history_summary_schema") == "xar.ck3.army-query-history-summary.v1"
+             and result.get("accepted") is True and result.get("status") == "available"
+             and result.get("backend_id") == "native-headless"
+             and result.get("queried_snapshot_id") == frame.snapshot_id
+             and integer(result.get("queried_revision"), 1) == frame.revision
+             and integer(result.get("queried_native_revision"), 1) == frame.native_revision,
+             "original compact Army query summary belongs to the settled frame")
+        matched = False
+        for value in candidates:
+            if (integer(value.get("query_sequence"), 1, 2**64-1)
+                != integer(result.get("query_sequence"), 1, 2**64-1)):
+                continue
+            need(value.get("army_strengths_profile") == result.get("army_strengths_profile")
+                 and value.get("army_observed_phase_coverage") == result.get("army_observed_phase_coverage"),
+                 "original Army result profile")
+            source = record(value.get("source"))
+            need(integer(source.get("revision"), 1) == frame.revision
+                 and integer(source.get("native_revision"), 1) == frame.native_revision
+                 and value.get("result_location") == "compact_mcp_summary", "original MCP Army projection source")
+            preserved = exact_bool(result.get("full_result_preserved"))
+            reference = record(result.get("raw_result_reference")) if preserved else None
+            reason = text(result["unavailable_reason"]) if "unavailable_reason" in result else None
+            diagnostic = record(result["history_storage_diagnostic"]) if "history_storage_diagnostic" in result else None
+            projected = build_army_query_history_summary({**result, "army_strengths": rows(value.get("armies"))},
+                reference, unavailable_reason=reason, diagnostic=diagnostic)
+            # The Driver and MCP intentionally retain different lossy projections.
+            # Compare their complete shared field set, never invent omitted fields.
+            common = set(_ARMY_FIELDS).intersection(_SUMMARY_ARMY_FIELDS)
+            left = rows(result.get("armies")); right = rows(projected.get("armies"))
+            equivalent = len(left) == len(right)
+            for first, second in zip(left, right):
+                a = record(first); z = record(second)
+                equivalent = equivalent and common <= set(a) and common <= set(z)
+                if equivalent:
+                    equivalent = _exact_native_json_v1({k:a[k] for k in common}) == _exact_native_json_v1({k:z[k] for k in common})
+            if (equivalent and _exact_native_json_v1({k:v for k,v in projected.items() if k != "armies"})
+                    == _exact_native_json_v1({k:v for k,v in result.items() if k != "armies"})):
+                matched = True
+                break
+        need(matched, "actual SDK history projection agrees with the original complete Army result")
 
 def _validate_readonly_prefix_unknown_evidence_v1(
     epoch:ReadonlyPrefixUnknownEpochV1,*,reader:BasisReaderV1,trail:tuple[str,...],
@@ -2871,22 +3182,21 @@ def _validate_readonly_prefix_unknown_evidence_v1(
     state=evidence(reader,r.raw_state,262144);pending=record(state["pending_cycle"])
     unknown=integer(pending["auto_sequence"],1);request=evidence(reader,r.unknown_request,16384)
     row=evidence(reader,r.unknown_response,16384);flat=evidence(reader,r.unknown_inflight,16384)
+    outcome=project_current_saved_unknown_response_v1(request,row,expected_sequence=unknown)
     need(integer(flat.get("sequence"),1)==unknown and flat.get("tool")=="ck3_auto_turn"
         and record(flat.get("arguments"))=={} and flat.get("request_file")==r.unknown_request.path
         and flat.get("replay_allowed") is False,"original unknown INFLIGHT")
     failure=evidence(reader,r.first_exception,16384)
-    need(failure.get("stage")=="sdk_call" and failure.get("replay_allowed") is False
-        and canonical_json_v1(failure.get("request_identity"))==canonical_json_v1({
-            "sequence":unknown,"tool":"ck3_auto_turn","command":None})
-        and failure.get("traceback_truncated") is False and failure.get("locals_captured") is False,
-        "retained original local failure, no discarded raw result invented")
+    failed=evidence(reader,r.failed_full_response,16384)
+    validate_current_saved_unknown_failure_v1(failure,failed,outcome=outcome,
+        unknown_request=request,unknown_response=r.unknown_response)
     halt=evidence(reader,r.halt,16384);nextseq=integer(evidence(reader,r.next,16384).get("next_sequence"),1)
     need(canonical_json_v1(halt.get("original_request"))==canonical_json_v1(request)
         and halt.get("original_response")==r.unknown_response.path and halt.get("replay_allowed") is False
         and halt.get("sdk_kept_alive_for_original_collection") is True
         and halt.get("first_exception_receipt")==r.first_exception.path
         and integer(halt.get("next_sequence"),1)==nextseq==unknown+1,"unknown remains consumed and unreplayed")
-    failed=evidence(reader,r.failed_full_response,16384);full_request=record(failed.get("request"))
+    full_request=record(failed.get("request"))
     need(full_request.get("command")=="full_loop" and integer(full_request.get("sequence"),1)<unknown
         and "result" not in failed and failed.get("replay_allowed") is False,"failed FULL is not a successful checkpoint frontier")
     parent=evidence(reader,r.inflight,16384)
@@ -2951,11 +3261,12 @@ def _validate_readonly_prefix_unknown_evidence_v1(
         task=record(value,{"spec","closed","unregistered","child_exit_code"})
         spec=evidence(reader,parse_ref(task["spec"]),16384)
         closed=evidence(reader,parse_ref(task["closed"]),16384)
-        unreg=evidence(reader,parse_ref(task["unregistered"]),16384);out=record(parse_json(text(unreg.get("stdout")).encode()))
+        unreg=evidence(reader,parse_ref(task["unregistered"]),16384)
+        validate_current_saved_closed_task_absence_v1(unreg,machine_id=epoch.machine_id,
+            nonce=text(spec.get("nonce")),spec_sha256=parse_ref(task["spec"]).sha256)
         need(spec.get("machine_id")==epoch.machine_id and closed.get("machine_id")==epoch.machine_id
             and closed.get("nonce")==spec.get("nonce") and integer(closed.get("child_exit_code"))==integer(task["child_exit_code"])
-            and integer(unreg.get("returncode"),0,0)==0 and out.get("machine_id")==epoch.machine_id
-            and record(out.get("actual")).get("absent_after") is True,"actual closed and absent owned Task")
+            ,"actual closed and absent owned Task")
     for key in ("screen_release","recording_shutdown","independent_recording_closed","sdk_pair"):
         exact_read(reader,parse_ref(linked.get(key)),262144)
     review=evidence(reader,r.driver_review,16384);driver=record(review.get("Driver"));saved=record(review.get("SAVE"))
@@ -2963,7 +3274,8 @@ def _validate_readonly_prefix_unknown_evidence_v1(
     di=parse_file_stat_identity_v1(driver.get("identity"),schema=STAT_SCHEMA)
     si=parse_file_stat_identity_v1(saved.get("identity"),schema=STAT_SCHEMA)
     cp=record(completed_body(evidence(reader,old.refs.save_response),"ck3_save_checkpoint")["checkpoint"])
-    identity=record(driver.get("recorded_identity"));history=decode_readonly_prefix_history_v1(evidence(reader,r.history_tail,16384))
+    identity=record(driver.get("recorded_identity"));history=decode_readonly_prefix_history_v1(
+        evidence(reader,r.history_tail,MAX_CLOSED_HISTORY_DOCUMENT_BYTES_V1))
     need(review.get("schema")=="xar.readonly-prefix-unknown-driver-save-review/v1"
         and review.get("status")=="CLOSED_DRIVER_SAME_SAVED_CHECKPOINT_WITH_UNKNOWN_REQUEST"
         and review.get("machine_id")==epoch.machine_id and parse_ref(review.get("post_checkpoint_history_opaque"))==r.history_tail
@@ -2993,15 +3305,8 @@ def _validate_readonly_prefix_unknown_evidence_v1(
         previous_pid=prior.old_game.pid,current_pid=pid)
     for offset,h in enumerate(history,cpindex+1):
         need(integer(h["index"],1)==offset and type(h["ok"]) is bool,"contiguous exact history records")
-    for h in tail[1:]:
-        result=record(h["result"]);command=text(h["command"])
-        need(h["ok"] is True and command in {"query-campaign-root-context-v1","query-war-results-window-v1","query-war-declared-overview-v1"}
-            and result.get("step")==command and result.get("accepted") is True
-            and integer(result.get("date_raw"))==frame.date_raw,"only original query bookkeeping after restore")
-        if command!="query-campaign-root-context-v1":
-            need(result.get("operation")=="query" and all(result.get(k) is False for k in ("dispatch_attempted","dispatch_invoked","native_handled")),
-                "no query was a window mutation")
-    opaque=evidence(reader,r.history_tail,16384)
+    _validate_settled_prefix_history_v1(tail[1:], epoch=epoch, frame=frame, reader=reader)
+    opaque=evidence(reader,r.history_tail,MAX_CLOSED_HISTORY_DOCUMENT_BYTES_V1)
     need(opaque.get("machine_id")==epoch.machine_id and parse_ref(opaque.get("Driver_ref"))==dr
         and parse_file_stat_identity_v1(opaque.get("Driver_identity"),schema=STAT_SCHEMA)==di
         and integer(opaque.get("checkpoint_history_index"),1)==cpindex

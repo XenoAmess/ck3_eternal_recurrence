@@ -27,8 +27,8 @@ from tools.g2_saved_campaign.current_saved_continuity_v1 import (
  ContinuityReaderV1, LocalContinuityReaderV1, read_continuity_view_v1,
  validate_closed_continuity_frontier_v1,
 )
-PLAN_SCHEMA = "xar.current-saved-cold-plan/v2"
-QUOTE_SCHEMA = "xar.current-saved-cold-quote/v3"
+PLAN_SCHEMA = "xar.current-saved-cold-plan/v3"
+QUOTE_SCHEMA = "xar.current-saved-cold-quote/v4"
 MAX_CURRENT_SAVED_CLOSURE_V1 = 66
 MAX_FILE = 1048576
 MAX_GRAPH = 8 * MAX_FILE
@@ -150,6 +150,7 @@ class ColdPlanV1:
  sdk_base_ref: ExactRefV1
  sdk_anchor_ref: ExactRefV1
  native32_current_sdk_override: Native32CurrentSdkOverrideV1|None
+ artifact_cap_bytes: int
  def to_wire(self) -> JsonObject:
   return {"schema": PLAN_SCHEMA, "machine_id": self.machine_id,
    "observed_at_utc": self.observed_at_utc, "review_at_utc": self.review_at_utc,
@@ -165,12 +166,15 @@ class ColdPlanV1:
    "display_nonce": self.display_nonce, "attempt_nonce": self.attempt_nonce, "task_nonce": self.task_nonce,
    "business_source_generation":self.business_source_generation,"sdk_base_ref":self.sdk_base_ref.to_wire(),
    "sdk_anchor_ref":self.sdk_anchor_ref.to_wire(),
-   "native32_current_sdk_override":None if self.native32_current_sdk_override is None else self.native32_current_sdk_override.to_wire()}
+   "native32_current_sdk_override":None if self.native32_current_sdk_override is None else self.native32_current_sdk_override.to_wire(), "artifact_cap_bytes": self.artifact_cap_bytes}
 PLAN_FIELDS = {"schema", "machine_id", "observed_at_utc", "review_at_utc", "runtime_root",
  "material_runtime_root", "material_quote_ref", "basis_ref", "validation_ref", "producer_ref",
  "source_rows", "canonical_entry_paths", "closure_entry_paths", "import_roots", "full_storage_ref",
  "steam_native_state_ref", "screen_admission_path", "supervisor_spec_path", "display_nonce",
- "attempt_nonce", "task_nonce", "business_source_generation", "sdk_base_ref", "sdk_anchor_ref", "native32_current_sdk_override"}
+ "attempt_nonce", "task_nonce", "business_source_generation", "sdk_base_ref", "sdk_anchor_ref", "native32_current_sdk_override", "artifact_cap_bytes"}
+def artifact_cap_bytes_v1(value: object) -> int:
+ return integer(value, 128 * 1024**2, 16 * 1024**3)
+
 def business_generation_v1(value: object) -> Literal[31,32]:
  number=integer(value,31,32)
  return 31 if number==31 else 32
@@ -187,7 +191,8 @@ def parse_plan_v1(value: object) -> ColdPlanV1:
   absolute_v1(row["supervisor_spec_path"]), nonce_v1(row["display_nonce"]),
   nonce_v1(row["attempt_nonce"]), nonce_v1(row["task_nonce"]),
   business_generation_v1(row["business_source_generation"]),parse_ref(row["sdk_base_ref"]),parse_ref(row["sdk_anchor_ref"]),
-  parse_native32_current_sdk_override_v1(row["native32_current_sdk_override"]))
+  parse_native32_current_sdk_override_v1(row["native32_current_sdk_override"]),
+  artifact_cap_bytes_v1(row["artifact_cap_bytes"]))
  need(result.runtime_root.casefold() != result.material_runtime_root.casefold()
    and len({result.display_nonce, result.attempt_nonce, result.task_nonce}) == 3,
    "fresh independent software/recording/Task namespace")
@@ -262,6 +267,7 @@ class ColdQuoteV1:
  allocation_upper: int
  prepare_peak_upper: int
  native32_current_sdk_override: Native32CurrentSdkOverrideV1|None
+ artifact_cap_bytes: int
  def to_wire(self) -> JsonObject:
   return {"schema": QUOTE_SCHEMA, "machine_id": self.machine_id, "observed_at_utc": self.observed_at_utc,
    "plan_ref": self.plan_ref.to_wire(), "basis_ref": self.basis_ref.to_wire(),
@@ -272,12 +278,12 @@ class ColdQuoteV1:
    "closure_entry_paths": list(self.closure_entry_paths), "import_roots": list(self.import_roots),
    "canonical_entry_limit": self.canonical_entry_limit, "logical_bytes": self.logical_bytes,
    "allocation_upper": self.allocation_upper, "prepare_peak_upper": self.prepare_peak_upper,
-   "native32_current_sdk_override":None if self.native32_current_sdk_override is None else self.native32_current_sdk_override.to_wire(),
+   "native32_current_sdk_override":None if self.native32_current_sdk_override is None else self.native32_current_sdk_override.to_wire(), "artifact_cap_bytes": self.artifact_cap_bytes,
    "ordinary_cycle_credit": 0, "game_day_credit": 0, "original_actions_replayed": False}
 QUOTE_FIELDS = {"schema", "machine_id", "observed_at_utc", "plan_ref", "basis_ref", "validation_ref",
  "producer_ref", "runtime_root", "files", "canonical_entry_paths", "closure_entry_paths",
  "import_roots", "canonical_entry_limit", "logical_bytes", "allocation_upper", "prepare_peak_upper",
- "ordinary_cycle_credit", "game_day_credit", "original_actions_replayed", "campaign_score_junction", "native32_current_sdk_override"}
+ "ordinary_cycle_credit", "game_day_credit", "original_actions_replayed", "campaign_score_junction", "native32_current_sdk_override", "artifact_cap_bytes"}
 def validate_native32_current_sdk_output_rows_v1(quote:ColdQuoteV1) -> None:
  from tools.g2_saved_campaign.prepare_native32_current_sdk_binding_v1 import (
   READER_NAME, EXTENSION_NAME, BINDING_NAME,
@@ -309,7 +315,8 @@ def parse_quote_v1(value: object) -> ColdQuoteV1:
   executable_import_roots_v1(row["import_roots"]), 8,
   integer(row["logical_bytes"], 1, MAX_GRAPH), integer(row["allocation_upper"], 1, MAX_GRAPH),
   integer(row["prepare_peak_upper"], 1, MAX_GRAPH),
-  parse_native32_current_sdk_override_v1(row["native32_current_sdk_override"]))
+  parse_native32_current_sdk_override_v1(row["native32_current_sdk_override"]),
+  artifact_cap_bytes_v1(row["artifact_cap_bytes"]))
  need(result.campaign_score_junction.path==child_v1(root,"campaign-score"),"exact directory projection")
  score=ntpath.normcase(ntpath.normpath(result.campaign_score_junction.path))
  need(all(not (ntpath.normcase(ntpath.normpath(item.path))==score or
@@ -363,6 +370,29 @@ def rewrite_json_v1(value: object, plan: ColdPlanV1, old_nonce: str,
    rewritten_map.update(bytes=pin.bytes, sha256=pin.sha256)
   return rewritten_map
  return json_value(value)
+
+def bind_current_saved_complete_closure_limit_v1(raw: bytes) -> bytes:
+ """Bind only the inherited complete-source bound to the common plan limit."""
+ source = raw.decode("utf-8")
+ functions = [node for node in ast.parse(source).body
+              if isinstance(node, ast.FunctionDef) and node.name == "_check_c23_external_imports"]
+ need(len(functions) == 1, "one inherited complete source guard")
+ function = functions[0]
+ expected = ast.parse("0<len(pins)<=64", mode="eval").body
+ matches = [node for node in ast.walk(function) if isinstance(node, ast.Compare)
+            and ast.dump(node) == ast.dump(expected)]
+ need(len(matches) == 1, "one exact inherited complete source limit")
+ compare = matches[0]
+ need(compare.end_lineno == compare.lineno and compare.end_col_offset is not None,
+      "single-line inherited complete source comparison")
+ lines = source.splitlines(keepends=True)
+ line = lines[compare.lineno - 1]
+ lines[compare.lineno - 1] = (line[:compare.col_offset] +
+     f"0<len(pins)<={MAX_CURRENT_SAVED_CLOSURE_V1}" + line[compare.end_col_offset:])
+ result = "".join(lines).encode("utf-8")
+ compile(result, "<current saved complete closure>", "exec")
+ return result
+
 def selected_source_v1(raw: bytes, *, names: set[str], prefix_end: int = 0) -> str:
  source = raw.decode("utf-8")
  lines = source.splitlines(keepends=True)
@@ -704,8 +734,22 @@ _source32_load_driver_v1=mcp_server.load_driver
  source=source.replace(seam,seam+"'route_window_clock_v1':route_window_clock_json_v1(validate_route_window_clock_v1(driver.route_window_clock_v1)),")
  compile(source,"<current source32 factory>","exec")
  return source.encode("utf-8")
-def emit_current_saved_sdk_launcher_v1(material:bytes)->bytes:
- source=material.decode("utf-8")
+def emit_current_saved_sdk_launcher_v1(material:bytes,*,artifact_cap_bytes:int)->bytes:
+ cap=artifact_cap_bytes_v1(artifact_cap_bytes)
+ tree=ast.parse(material)
+ values=[node.elts[index+1] for node in ast.walk(tree) if isinstance(node,(ast.List,ast.Tuple))
+   for index,item in enumerate(node.elts[:-1])
+   if isinstance(item,ast.Constant) and item.value=="--artifact-cap-bytes"]
+ need(len(values)==1,"one actual launcher artifact budget argument")
+ value=values[0]
+ need(isinstance(value,ast.Constant) and value.value=="2147483648"
+   and value.end_lineno is not None and value.end_col_offset is not None,
+   "exact original launcher artifact budget source")
+ if value.end_lineno is None or value.end_col_offset is None:raise ValueError("budget extent")
+ lines=material.splitlines(keepends=True)
+ start=sum(map(len,lines[:value.lineno-1]))+value.col_offset
+ end=sum(map(len,lines[:value.end_lineno-1]))+value.end_col_offset
+ source=(material[:start]+repr(str(cap)).encode("ascii")+material[end:]).decode("utf-8")
  seam="from pathlib import Path"
  need(source.count(seam)==1,"one launcher import seam")
  source=source.replace(seam,seam+"\nfrom tools.g2_saved_campaign.current_saved_basis_v1 import JsonObject,JsonValue,integer,need,record,text",1)
@@ -862,7 +906,7 @@ def compose_v1(plan: ColdPlanV1, *, plan_ref: ExactRefV1,
  put("root_native30_supervisor_c23.py",emit_supervisor_v1(get("root_native30_supervisor_c23.py"),machine_id=p.machine_id))
  put("root_native30_supervisor_c23.py",assignment_v1(get("root_native30_supervisor_c23.py"),
   "PLACEMENT_SHA",sha256_v1(get("tools/g2_saved_campaign/managed_desktop1_placement.py"))))
- put("launch_sdk_p37c23_owner.py",emit_current_saved_sdk_launcher_v1(get("launch_sdk_p37c23_owner.py")))
+ put("launch_sdk_p37c23_owner.py",emit_current_saved_sdk_launcher_v1(get("launch_sdk_p37c23_owner.py"),artifact_cap_bytes=p.artifact_cap_bytes))
  put("root_p37c23_sdk_queue.py",emit_current_saved_request_guards_v1(get("root_p37c23_sdk_queue.py"),kind="queue"))
  cold = emit_cold_resume_v1(get("root_p37c23_cold_resume.py"),machine_id=p.machine_id).decode("utf-8")
  cold += (
@@ -918,7 +962,8 @@ def verify_current_saved_shared_sources_v1(root: Path) -> None:
             require(isinstance(filename,str) and Path(filename).resolve(strict=True) == path,
                 "foreign current shared module cache")
 """
- put("root_c23_canonical_outer.py",get("root_c23_canonical_outer.py") +
+ put("root_c23_canonical_outer.py",bind_current_saved_complete_closure_limit_v1(
+      get("root_c23_canonical_outer.py")) +
      ("\nCURRENT_SHARED_IMPORTS = " + repr(shared) + "\n" + guard).encode("utf-8"))
  for name in ("root_native30_supervisor_c23.py","root_checkpoint_bootstrap_c23.py",
               "root_p37c23_cold_resume.py","launch_current_saved_feeder_v1.py","launch_sdk_p37c23_owner.py"):
@@ -930,6 +975,8 @@ def verify_current_saved_shared_sources_v1(root: Path) -> None:
   put(name,raw)
  class ComposeReaderV1:
   def read(self,reference:ExactRefV1,limit:int)->bytes:return load(reference,limit)
+  def read_response(self,reference:ExactRefV1,limit:int)->bytes:
+   return LocalBasisReaderV1().read_response(reference,limit)
   def stat(self,path:str)->FileStatIdentityV1:return LocalBasisReaderV1().stat(path)
  current_inputs=validate_current_saved_cold_inputs_v1(basis,basis_ref=p.basis_ref,
   validation_ref=p.validation_ref,reader=ComposeReaderV1())
@@ -1086,7 +1133,7 @@ def verify_current_saved_shared_sources_v1(root: Path) -> None:
  allocated = sum(allocation_v1(row.bytes) for row in result_rows if row.mode == "create-only")
  quote = ColdQuoteV1(p.machine_id,p.observed_at_utc,plan_ref,p.basis_ref,p.validation_ref,p.producer_ref,
   p.runtime_root,tuple(result_rows),score_binding,p.canonical_entry_paths,p.closure_entry_paths,p.import_roots,
-  8,sum(row.bytes for row in result_rows),allocated,allocated+max(len(raw) for raw in output.values())+131072,p.native32_current_sdk_override)
+  8,sum(row.bytes for row in result_rows),allocated,allocated+max(len(raw) for raw in output.values())+131072,p.native32_current_sdk_override,p.artifact_cap_bytes)
  return ColdComposeV1(output,parse_quote_v1(quote.to_wire()))
 
 @dataclass(frozen=True, slots=True)

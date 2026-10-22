@@ -8,6 +8,8 @@ from datetime import datetime, timezone
 import hashlib
 import json
 import os
+import tempfile
+from types import ModuleType
 from pathlib import Path
 import subprocess
 import sys
@@ -18,7 +20,8 @@ from typing import Callable, Protocol, runtime_checkable
 from tools.g2_saved_campaign.current_saved_basis_v1 import (
     BasisReaderV1, CurrentSavedBasisV1, ExactRefV1, JsonObject, JsonValue, SavedFrameV1,
     encode_current_saved_basis_v1, exact_read,
-    parse_json, parse_ref, record, json_object, json_value, integer, text, qualify_current_saved_basis_v1,
+    original_response_evidence_v1, OriginalResponseReaderV1,
+    parse_json, parse_ref, record, rows, json_object, json_value, integer, text, qualify_current_saved_basis_v1,
 )
 from tools.g2_saved_campaign import test_current_saved_basis_v1 as basis_fixture
 from tools.g2_saved_campaign.test_current_saved_basis_v1 import (
@@ -71,7 +74,8 @@ def plan() -> producer.ColdPlanV1:
         (".", "presentation-c23", "creator-tools"), ref("full.json"), ref("steam.json"), ref("screen.json").path,
         ref("spec.json").path, "1" * 32, "2" * 32, "3" * 32,
         business_source_generation=31, sdk_base_ref=ref("sdk-base.json"),
-        sdk_anchor_ref=ref("sdk-anchor.json"), native32_current_sdk_override=None)
+        sdk_anchor_ref=ref("sdk-anchor.json"), native32_current_sdk_override=None,
+        artifact_cap_bytes=1090519040)
 
 
 def feeder_admission() -> feeder.CurrentSavedFeederAdmissionV1:
@@ -204,7 +208,7 @@ class TypedColdContractTests(unittest.TestCase):
         quote = producer.ColdQuoteV1(MACHINE, item.observed_at_utc, ref("plan.json"),
             item.basis_ref, item.validation_ref, item.producer_ref, ROOT, outputs, score_junction(),
             item.canonical_entry_paths, item.closure_entry_paths, item.import_roots,
-            8, len(outputs), allocated, allocated + 1 + 131072, None)
+            8, len(outputs), allocated, allocated + 1 + 131072, None, item.artifact_cap_bytes)
         self.assertEqual(producer.parse_quote_v1(wire(quote.to_wire())), quote)
         self.assertEqual(record(wire(quote.to_wire())["campaign_score_junction"])["target_file_id"],
             "9007199254740993")
@@ -1564,7 +1568,7 @@ class Native32CurrentSdkOverrideTests(unittest.TestCase):
         self.assertEqual(output, {"ordinary.py": b"ordinary"})
         self.assertEqual(documents, {"ordinary.json": {"status": "unavailable"}})
 
-    def test_quote_v3_pins_all_three_outputs_and_explicit_null(self) -> None:
+    def test_quote_v4_pins_all_three_outputs_and_explicit_null(self) -> None:
         configured = self.enabled_plan()
         outputs = tuple(producer.OutputRowV1(producer.child_v1(ROOT, name), name,
             1, "a" * 64, "create-only", None) for name in configured.closure_entry_paths)
@@ -1573,7 +1577,7 @@ class Native32CurrentSdkOverrideTests(unittest.TestCase):
             configured.basis_ref, configured.validation_ref, configured.producer_ref, ROOT,
             outputs, score_junction(), configured.canonical_entry_paths,
             configured.closure_entry_paths, configured.import_roots, 8, len(outputs),
-            allocated, allocated + 1 + 131072, configured.native32_current_sdk_override)
+            allocated, allocated + 1 + 131072, configured.native32_current_sdk_override, configured.artifact_cap_bytes)
         self.assertEqual(producer.parse_quote_v1(wire(quoted.to_wire())), quoted)
         for value in ("xar.current-saved-cold-quote/v2", None):
             changed = quoted.to_wire(); changed["schema"] = value
@@ -1702,6 +1706,416 @@ class Native32CurrentSdkOverrideTests(unittest.TestCase):
                 self.assertEqual(documents, before_documents)
 
 
+
+
+# Exact inherited N37 functions and constructor; software fixtures replace only
+# their external resources. This is not Game/SDK/provider runtime qualification.
+N37_CLOSURE_CONSUMER_SHA256_V1 = "cd13da5da23b3b9908b9cf2964ed17c6a999695e610636f40aefc48280f69b46"
+N37_CLOSURE_CONSUMER_SOURCE_V1 = "def require(ok, why):\n    if not ok:\n        raise ValueError('C17 canonical outer binding denied: ' + why)\n\ndef checked(ref, limit=1048576):\n    path = Path(ref['path']).resolve(strict=True)\n    with path.open('rb') as stream:\n        raw = stream.read(limit + 1)\n    require(len(raw) <= limit and len(raw) == ref['bytes']\n        and hashlib.sha256(raw).hexdigest() == ref['sha256'], 'frozen input changed: ' + str(path))\n    return json.loads(raw)\n\nclass OuterBindingV1:\n    def __init__(self, root):\n        self.root = Path(root).resolve(strict=True)\n        self.freeze = json.loads((self.root / 'ROOT-FINAL-SDK-FREEZE-P37C23-A15.json').read_bytes())\n        self.policy = checked(self.freeze['canonical_preload_policy'])\n        _check_c23_external_imports(self.root, self.policy)\n        require(self.freeze['machine_id'] == self.policy['machine_id'] == MACHINE\n            and self.policy['schema'] == 'xar.c23.canonical-preload-policy/v1'\n            and self.policy['generation'] == 'P37C23', 'source generation/machine differs')\n        self.sdk_root = Path(self.freeze['source_root']).resolve(strict=True)\n        require(self.sdk_root == Path(self.policy['sdk_source_root']).resolve(strict=True), 'immutable SDK root differs')\n        self.tools_root = Path(self.policy['creator_tools_root']).resolve(strict=True)\n        self.dependency_root = Path(self.policy['dependency_root']).resolve(strict=True)\n        self.direct_python = Path(self.policy['direct_python']['path']).resolve(strict=True)\n        checked_python = self.policy['direct_python']\n        with self.direct_python.open('rb') as stream:\n            raw = stream.read(16 * 1024**2 + 1)\n        require(len(raw) == checked_python['bytes'] and len(raw) <= 16 * 1024**2\n            and hashlib.sha256(raw).hexdigest() == checked_python['sha256'], 'direct Python source changed')\n        require(self.direct_python == Path(sys._base_executable).resolve(strict=True)\n            and Path(sys.executable).resolve(strict=True) == self.direct_python,\n            'the actual creator must already be the direct base Python image')\n        deps = checked(self.policy['dependency_sources'])\n        require(deps['machine_id'] == MACHINE and Path(deps['root']).resolve(strict=True) == self.dependency_root\n            and deps['mcp_version'] == '2.0.0', 'frozen dependency environment differs')\n        for ref in deps['files']:\n            path = Path(ref['path']).resolve(strict=True)\n            require(path.is_relative_to(self.dependency_root), 'dependency file escaped admitted root')\n            with path.open('rb') as stream:\n                raw = stream.read(1048577)\n            require(len(raw) <= 1048576 and len(raw) == ref['bytes']\n                and hashlib.sha256(raw).hexdigest() == ref['sha256'], 'dependency source changed')\n        site.addsitedir(str(self.dependency_root))\n        sys.path.insert(0, str(self.sdk_root))\n        sys.path.insert(0, str(self.tools_root))\n        self.result = self.io = self.control = self.factory = self.chain = self.plan = None\n        self.wal_enabled = self.policy.get('enable_driver_state_wal_v1', False)\n        require(type(self.wal_enabled) is bool, 'WAL policy requires an explicit boolean')\n        self.owner = self.server_thread = None\n        self.attempted = self.revoked = False\n        required = {'root_native30_supervisor_c23.py', 'root_checkpoint_bootstrap_c23.py',\n            'launch_sdk_p37c23_owner.py', 'root_p37c23_sdk_queue.py',\n            'root_p37c23_mcp_entry.py', 'root_c23_canonical_outer.py',\n            'observer_journal_runtime_v1.py','native32_mcp_extension_v1.py'}\n        require(required <= {Path(row[0]).name for row in self.policy['entry_source_pins']},\n            'all actual outer entry/helper sources must belong to the creator closure')\n\n\ndef _check_c23_external_imports(root, policy):\n    pins=policy.get('entry_source_pins')\n    require(isinstance(pins,(list,tuple)) and 0<len(pins)<=64, 'bounded complete source closure required')\n    paths=[]\n    for row in pins:\n        require(isinstance(row,(list,tuple)) and len(row)==2 and isinstance(row[0],str)\n            and Path(row[0]).is_absolute() and isinstance(row[1],str) and len(row[1])==64,\n            'exact complete source path/SHA required')\n        path=Path(row[0]).resolve(strict=True);paths.append(str(path))\n        with path.open('rb') as stream:raw=stream.read(1048577)\n        require(len(raw)<=1048576 and hashlib.sha256(raw).hexdigest()==row[1], 'complete source closure changed')\n    require(len(paths)==len(set(paths)), 'duplicate complete source path')\n    refs=policy.get('external_import_source_pins')\n    require(isinstance(refs,dict) and set(refs)==set(_C23_EXTERNAL_IMPORT_PINS), 'all frozen external algorithms must be explicitly pinned')\n    entries={str(Path(p).resolve(strict=True)):h for p,h in policy['entry_source_pins']}\n    for name,(size,digest) in _C23_EXTERNAL_IMPORT_PINS.items():\n        ref=refs[name];path=(root/(name+'.py')).resolve(strict=True)\n        require(Path(ref['path']).resolve(strict=True)==path and ref.get('bytes')==size\n            and ref.get('sha256')==digest and entries.get(str(path))==digest, 'external import pin differs: '+name)\n        with path.open('rb') as stream:raw=stream.read(1048577)\n        require(len(raw)==size and hashlib.sha256(raw).hexdigest()==digest, 'external algorithm changed: '+name)\n        module=sys.modules.get(name)\n        require(module is None or Path(module.__file__).resolve(strict=True)==path, 'foreign cached external algorithm: '+name)\n"
+N37_EXTERNAL_NAMES_V1 = ('root_battle_epoch_credit', 'root_checkpoint_bootstrap_v2', 'root_committed_contact_credit', 'root_native22_supervisor', 'root_p37_checkpoint_bootstrap', 'root_p37_checkpoint_cadence', 'root_p37_clean_classifier_install', 'root_p37_halt_pending_watch', 'root_p37_known_owner_recovery', 'root_p37_known_pause_recovery_control', 'root_p37_loading_readiness', 'root_p37_pending_requests', 'root_p37_readonly_scope', 'root_p37_reinforcement_recovery', 'root_p37_robert_identity', 'root_prewar_v2_diagnostics', 'root_saved_campaign_preflight', 'root_zero_day_frontend', 'root_decision_text_api_c23', 'root_p37c23_overlay_relay', 'root_continuous_segment_auto_c23', 'root_p37c23_compact_decision_feed', 'p51_decision_text_shutdown_c23', 'decision_display_contract_v1', 'observer_journal_runtime_v1', 'native32_mcp_extension_v1')
+
+
+class _ClosureSysV1:
+    def __init__(self, image: Path) -> None:
+        self.executable = self._base_executable = str(image)
+        self.path: list[str] = []
+        self.modules: dict[str, ModuleType] = {}
+
+
+class _ClosureSiteV1:
+    def __init__(self) -> None:
+        self.added: list[str] = []
+
+    def addsitedir(self, path: str) -> None:
+        self.added.append(path)
+
+
+@runtime_checkable
+class _ClosureCheckV1(Protocol):
+    def __call__(self, root: Path, policy: JsonObject) -> None: ...
+
+
+@runtime_checkable
+class _ClosureOuterV1(Protocol):
+    root: Path
+    attempted: bool
+    revoked: bool
+
+
+@runtime_checkable
+class _ClosureConstructorV1(Protocol):
+    def __call__(self, root: Path) -> _ClosureOuterV1: ...
+
+
+class CurrentSavedCompleteClosureConsumerTests(unittest.TestCase):
+    root: Path
+    source_names: tuple[str, ...]
+    image: Path
+    peak_logical: int = 0
+    peak_allocation_upper: int = 0
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        configured = os.environ.get("XAR_CURRENT_SAVED_CLOSURE_TEST_ROOT")
+        if configured is None:
+            raise ValueError("XAR_CURRENT_SAVED_CLOSURE_TEST_ROOT must explicitly name the owned fixture")
+        cls.root = Path(configured)
+        if not cls.root.is_absolute() or cls.root.exists() or cls.root.is_symlink():
+            raise ValueError("closure fixture requires its explicit absent owned root")
+        cls.root.mkdir()
+        cls.root = cls.root.resolve(strict=True)
+        cls.addClassCleanup(cls.cleanup_v1)
+        names = sorted(set(producer.CANONICAL_NAMES) |
+                       {name + ".py" for name in N37_EXTERNAL_NAMES_V1})
+        names.extend(f"closure-extra-{i:02d}.py" for i in range(67 - len(names)))
+        cls.source_names = tuple(names)
+        for name in cls.source_names:
+            (cls.root / name).write_bytes(b"")
+        cls.image = cls.root / "python-fixture.exe"
+        cls.image.write_bytes(b"software-fixture-not-executable")
+        for name in ("sdk", "creator", "deps"):
+            (cls.root / name).mkdir()
+        cls.measure_v1()
+
+    @classmethod
+    def cleanup_v1(cls) -> None:
+        if not cls.root.exists():
+            return
+        if cls.root.resolve(strict=True) != cls.root or cls.root.is_symlink():
+            raise ValueError("fixture cleanup root identity changed")
+        children = list(cls.root.iterdir())
+        for child in children:
+            if child.is_symlink() or getattr(child.lstat(), "st_file_attributes", 0) & 0x400:
+                raise ValueError("fixture cleanup refuses reparse points")
+            if child.is_dir():
+                child.rmdir()
+            else:
+                child.unlink()
+        cls.root.rmdir()
+        if cls.root.exists():
+            raise ValueError("fixture cleanup must finish ABSENT")
+
+    @classmethod
+    def measure_v1(cls) -> None:
+        logical = 0
+        upper = 0
+        count = 1
+        for path in cls.root.rglob("*"):
+            count += 1
+            if path.is_file():
+                size = path.stat().st_size
+                logical += size
+                upper += ((size + 4095) // 4096) * 4096
+        # Include per-entry metadata and directory headroom independently from
+        # the native data allocation of zero-byte source fixtures.
+        upper += count * 1024 + 16384
+        cls.peak_logical = max(cls.peak_logical, logical)
+        cls.peak_allocation_upper = max(cls.peak_allocation_upper, upper)
+        if upper > 131072:
+            raise ValueError("closure consumer fixture exceeds its 128KiB quote")
+
+    def policy_v1(self, count: int) -> JsonObject:
+        digest = hashlib.sha256(b"").hexdigest()
+        selected = list(self.source_names[:count])
+        # Canonical and all 26 exact external refs must be included before extras.
+        required = sorted(set(producer.CANONICAL_NAMES) |
+                          {name + ".py" for name in N37_EXTERNAL_NAMES_V1})
+        selected = required + [name for name in self.source_names if name not in required][:count-len(required)]
+        entries: list[JsonValue] = [[str(self.root / name), digest] for name in selected]
+        deps = {"machine_id": MACHINE, "root": str(self.root / "deps"),
+                "mcp_version": "2.0.0", "files": []}
+        deps_raw = producer.encode_v1(deps)
+        deps_path = self.root / "dependencies.json"
+        deps_path.write_bytes(deps_raw)
+        image_raw = self.image.read_bytes()
+        policy: JsonObject = {
+            "schema": "xar.c23.canonical-preload-policy/v1",
+            "generation": "P37C23", "machine_id": MACHINE,
+            "entry_source_pins": entries,
+            "external_import_source_pins": {
+                name: {"path": str(self.root / (name + ".py")), "bytes": 0, "sha256": digest}
+                for name in N37_EXTERNAL_NAMES_V1},
+            "sdk_source_root": str(self.root / "sdk"),
+            "creator_tools_root": str(self.root / "creator"),
+            "dependency_root": str(self.root / "deps"),
+            "direct_python": producer.ref_for_bytes_v1(str(self.image), image_raw).to_wire(),
+            "dependency_sources": producer.ref_for_bytes_v1(str(deps_path), deps_raw).to_wire(),
+            "enable_driver_state_wal_v1": False}
+        self.persist_policy_v1(policy)
+        return policy
+
+    def persist_policy_v1(self, policy: JsonObject) -> None:
+        raw = producer.encode_v1(policy)
+        path = self.root / "policy.json"
+        path.write_bytes(raw)
+        freeze = {"machine_id": MACHINE, "source_root": str(self.root / "sdk"),
+                  "canonical_preload_policy": producer.ref_for_bytes_v1(str(path), raw).to_wire()}
+        (self.root / "ROOT-FINAL-SDK-FREEZE-P37C23-A15.json").write_bytes(producer.encode_v1(freeze))
+        self.measure_v1()
+
+    def consumer_v1(self, raw: bytes) -> tuple[_ClosureConstructorV1, _ClosureCheckV1, _ClosureSysV1, _ClosureSiteV1]:
+        fake_sys = _ClosureSysV1(self.image)
+        fake_site = _ClosureSiteV1()
+        digest = hashlib.sha256(b"").hexdigest()
+        namespace: dict[str, object] = {
+            "Path": Path, "json": json, "hashlib": hashlib, "MACHINE": MACHINE,
+            "sys": fake_sys, "site": fake_site,
+            "_C23_EXTERNAL_IMPORT_PINS": {name: (0, digest) for name in N37_EXTERNAL_NAMES_V1}}
+        exec(compile(raw, "<exact N37 outer software consumer>", "exec"), namespace)
+        constructor = namespace["OuterBindingV1"]
+        check = namespace["_check_c23_external_imports"]
+        if not isinstance(constructor, _ClosureConstructorV1) or not isinstance(check, _ClosureCheckV1):
+            raise ValueError("exact inherited consumer definitions")
+        return constructor, check, fake_sys, fake_site
+
+    def test_original_constructor_rejects_new_null_and_enabled_closures(self) -> None:
+        for count in (65, 66):
+            with self.subTest(count=count):
+                policy = self.policy_v1(count)
+                constructor, check, _, _ = self.consumer_v1(N37_CLOSURE_CONSUMER_SOURCE_V1.encode())
+                with self.assertRaisesRegex(ValueError, "bounded complete source closure"):
+                    check(self.root, policy)
+                with self.assertRaisesRegex(ValueError, "bounded complete source closure"):
+                    constructor(self.root)
+
+    def test_common_renderer_constructor_accepts_65_and_66_rejects_67(self) -> None:
+        raw = producer.bind_current_saved_complete_closure_limit_v1(N37_CLOSURE_CONSUMER_SOURCE_V1.encode())
+        for count in (65, 66, 67):
+            with self.subTest(count=count):
+                policy = self.policy_v1(count)
+                constructor, check, fake_sys, fake_site = self.consumer_v1(raw)
+                if count == 67:
+                    with self.assertRaisesRegex(ValueError, "bounded complete source closure"):
+                        check(self.root, policy)
+                    with self.assertRaisesRegex(ValueError, "bounded complete source closure"):
+                        constructor(self.root)
+                else:
+                    check(self.root, policy)
+                    instance = constructor(self.root)
+                    self.assertEqual(instance.root, self.root)
+                    self.assertFalse(instance.attempted)
+                    self.assertFalse(instance.revoked)
+                    self.assertEqual(fake_site.added, [str(self.root / "deps")])
+                    self.assertEqual(fake_sys.path, [str(self.root / "creator"), str(self.root / "sdk")])
+        self.assertEqual(len(producer.CANONICAL_NAMES), 8)
+        self.assertEqual(producer.MAX_CURRENT_SAVED_CLOSURE_V1, 66)
+
+    def test_real_source_external_cached_origin_and_canonical_guards_remain(self) -> None:
+        raw = producer.bind_current_saved_complete_closure_limit_v1(N37_CLOSURE_CONSUMER_SOURCE_V1.encode())
+        policy = self.policy_v1(65)
+        constructor, check, fake_sys, _ = self.consumer_v1(raw)
+        changed = copy.deepcopy(policy)
+        entries = rows(changed["entry_source_pins"])
+        entries[0] = [rows(entries[0])[0], "0" * 64]
+        changed["entry_source_pins"] = json_value(entries)
+        self.persist_policy_v1(changed)
+        with self.assertRaisesRegex(ValueError, "complete source closure changed"):
+            constructor(self.root)
+        changed = copy.deepcopy(policy)
+        external = record(changed["external_import_source_pins"])
+        item = record(external[N37_EXTERNAL_NAMES_V1[0]])
+        item["bytes"] = 1
+        external[N37_EXTERNAL_NAMES_V1[0]] = item
+        changed["external_import_source_pins"] = json_value(external)
+        self.persist_policy_v1(changed)
+        with self.assertRaisesRegex(ValueError, "external import pin differs"):
+            constructor(self.root)
+        self.persist_policy_v1(policy)
+        foreign = ModuleType(N37_EXTERNAL_NAMES_V1[0])
+        foreign.__file__ = str(self.image)
+        fake_sys.modules[N37_EXTERNAL_NAMES_V1[0]] = foreign
+        with self.assertRaisesRegex(ValueError, "foreign cached external algorithm"):
+            check(self.root, policy)
+        fake_sys.modules.clear()
+        changed = copy.deepcopy(policy)
+        entries = rows(changed["entry_source_pins"])
+        entries = [item for item in entries if Path(text(rows(item)[0])).name != "launch_sdk_p37c23_owner.py"]
+        changed["entry_source_pins"] = json_value(entries)
+        self.persist_policy_v1(changed)
+        with self.assertRaisesRegex(ValueError, "all actual outer entry/helper sources"):
+            constructor(self.root)
+
+
+    def test_real_compose_reader_explicit_response_capability_keeps_source_cap(self) -> None:
+        source = Path(producer.__file__).read_text("utf-8")
+        tree = ast.parse(source)
+        compose = next(node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == "compose_v1")
+        readers = [node for node in ast.walk(compose) if isinstance(node, ast.ClassDef) and node.name == "ComposeReaderV1"]
+        self.assertEqual(len(readers), 1)
+        payload = producer.encode_v1({"padding": "x" * 1154000, "ok": False})
+        reference = producer.ref_for_bytes_v1(str(self.root / "original-response.json"), payload)
+        calls: list[tuple[ExactRefV1, int]] = []
+        load_calls: list[ExactRefV1] = []
+
+        class ResponseLocalReader(owner.LocalBasisReaderV1):
+            def read(self, ref: ExactRefV1, limit: int) -> bytes:
+                calls.append((ref, limit))
+                if (ref.path, ref.bytes) != (reference.path, reference.bytes):
+                    raise ValueError("unexpected response reference")
+                return payload
+
+        def load(ref: ExactRefV1, limit: int) -> bytes:
+            load_calls.append(ref)
+            if ref.bytes > limit or limit > producer.MAX_FILE:
+                raise ValueError("small bounded RAM input")
+            return payload
+
+        namespace: dict[str, object] = {
+            "ExactRefV1": ExactRefV1, "FileStatIdentityV1": FileStatIdentityV1,
+            "LocalBasisReaderV1": ResponseLocalReader, "load": load}
+        exec(compile(ast.Module(body=[readers[0]], type_ignores=[]), "<actual nested ComposeReaderV1>", "exec"), namespace)
+        constructor = namespace["ComposeReaderV1"]
+        if not callable(constructor):
+            raise ValueError("actual ComposeReaderV1 constructor")
+        reader = constructor()
+        if not isinstance(reader, OriginalResponseReaderV1):
+            raise ValueError("actual reader exposes its explicit response capability")
+        value = original_response_evidence_v1(reader, reference)
+        self.assertEqual(value, {"padding": "x" * 1154000, "ok": False})
+        self.assertEqual(calls, [(reference, 2097152)])
+        self.assertEqual(load_calls, [])
+        with self.assertRaisesRegex(ValueError, "small bounded RAM input"):
+            reader.read(reference, producer.MAX_FILE)
+        for wrong in (replace(reference, bytes=2097153), replace(reference, sha256="0" * 64)):
+            with self.subTest(wrong=wrong), self.assertRaises(ValueError):
+                original_response_evidence_v1(reader, wrong)
+        with self.assertRaises(ValueError):
+            reader.read_response(reference, True)
+        self.assertEqual(producer.MAX_FILE, 1048576)
+
+    def test_renderer_changes_only_exact_common_guard_and_refuses_drift(self) -> None:
+        before = N37_CLOSURE_CONSUMER_SOURCE_V1.encode()
+        after = producer.bind_current_saved_complete_closure_limit_v1(before)
+        self.assertEqual(after.replace(b"0<len(pins)<=66", b"0<len(pins)<=64"), before)
+        for value in (before.replace(b"0<len(pins)<=64", b"0<len(pins)<=65"),
+                      before + before, b"def other(): pass\n"):
+            with self.subTest(source_bytes=len(value)), self.assertRaises(ValueError):
+                producer.bind_current_saved_complete_closure_limit_v1(value)
+        tree = ast.parse(Path(producer.__file__).read_text("utf-8"))
+        compose = next(node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == "compose_v1")
+        calls = [node for node in compose.body if isinstance(node, ast.Expr)
+                 and isinstance(node.value, ast.Call)
+                 and isinstance(node.value.func, ast.Name) and node.value.func.id == "put"
+                 and node.value.args and isinstance(node.value.args[0], ast.Constant)
+                 and node.value.args[0].value == "root_c23_canonical_outer.py"]
+        self.assertTrue(any(any(isinstance(part, ast.Call) and isinstance(part.func, ast.Name)
+                         and part.func.id == "bind_current_saved_complete_closure_limit_v1"
+                         for part in ast.walk(node)) for node in calls),
+                        "the actual common compose path binds both nullable override branches")
+
+
+
+# Original A20 launcher 6010/56beed721106281e0b37a81cf9d150c27aa7ce9cb531e799d7da00184a5aa537.
+# Only its actual argv assignment is projected; no owner or process is launched.
+ARTIFACT_CAP_ORIGINAL_ARGV_V1 = "argv=[str(TOOLS_PYTHON),'-B','-X','utf8',str(N/'root_p37c23_sdk_queue.py'),\n      '--environment-manifest',str(N/'state/profile/xar-autoplayer-environment.json'),\n      '--recording-job-root',requested['receipt_root'],\n      '--first-frame-admission',str(recording['first_path']),\n      '--artifact-cap-bytes','2147483648','--continuous']"
+
+
+@runtime_checkable
+class _ArtifactArgvMainV1(Protocol):
+    def __call__(self) -> object: ...
+
+
+class CurrentSavedArtifactBudgetTests(unittest.TestCase):
+    def _quote(self, item: producer.ColdPlanV1, reference: ExactRefV1) -> producer.ColdQuoteV1:
+        outputs = tuple(producer.OutputRowV1(producer.child_v1(ROOT, name), name,
+            1, "a" * 64, "create-only", None) for name in item.closure_entry_paths)
+        allocated = len(outputs) * 4096
+        return producer.ColdQuoteV1(item.machine_id, item.observed_at_utc, reference,
+            item.basis_ref, item.validation_ref, item.producer_ref, ROOT, outputs,
+            score_junction(), item.canonical_entry_paths, item.closure_entry_paths,
+            item.import_roots, 8, len(outputs), allocated, allocated + 1 + 131072,
+            item.native32_current_sdk_override, item.artifact_cap_bytes)
+
+    def _material(self) -> bytes:
+        from textwrap import indent
+        return ("from pathlib import Path\ndef verify_prepared_inputs(): return {}\n"
+            "def main():\n" + indent(ARTIFACT_CAP_ORIGINAL_ARGV_V1, "    ") +
+            "\n    return argv\n").encode()
+
+    def _argv(self, source: bytes) -> tuple[str, ...]:
+        main = next(node for node in ast.parse(source).body
+            if isinstance(node, ast.FunctionDef) and node.name == "main")
+        scope: dict[str, object] = {"TOOLS_PYTHON": Path("D:/model/python.exe"),
+            "N": Path("D:/model/runtime"), "requested": {"receipt_root": "D:/model/recording"},
+            "recording": {"first_path": "D:/model/first.json"}}
+        exec(compile(ast.Module(body=[main], type_ignores=[]), "<actual launcher argv>", "exec"), scope)
+        function = scope.get("main")
+        if not isinstance(function, _ArtifactArgvMainV1):
+            raise TypeError("actual generated main must be callable")
+        return tuple(text(value) for value in rows(function()))
+
+    def test_required_budget_json_types_boundaries_and_old_wire_rejected(self) -> None:
+        for cap in (128 * 1024**2, 1090519040, 16 * 1024**3):
+            configured = replace(plan(), artifact_cap_bytes=cap)
+            quoted = self._quote(configured, ref("plan.json"))
+            self.assertEqual(producer.parse_plan_v1(wire(configured.to_wire())), configured)
+            self.assertEqual(producer.parse_quote_v1(wire(quoted.to_wire())), quoted)
+            self.assertEqual(configured.to_wire()["artifact_cap_bytes"], cap)
+            self.assertEqual(quoted.to_wire()["artifact_cap_bytes"], cap)
+        original = plan()
+        parsers: tuple[tuple[JsonObject, Callable[[object], object]], ...] = (
+            (original.to_wire(), producer.parse_plan_v1),
+            (self._quote(original, ref("plan.json")).to_wire(), producer.parse_quote_v1))
+        wrong: tuple[object, ...] = (None, True, False, 1090519040.0, "1090519040",
+                                    128 * 1024**2 - 1, 16 * 1024**3 + 1)
+        for row, parse in parsers:
+            missing = dict(row); del missing["artifact_cap_bytes"]
+            with self.assertRaises(ValueError):
+                parse(wire(missing))
+            for value in wrong:
+                changed = {**row, "artifact_cap_bytes": json_value(value)}
+                with self.subTest(value=value), self.assertRaises(ValueError):
+                    parse(wire(changed))
+                with self.assertRaises(ValueError):
+                    producer.artifact_cap_bytes_v1(value)
+        for schema in ("xar.current-saved-cold-plan/v1", "xar.current-saved-cold-plan/v2"):
+            with self.assertRaises(ValueError):
+                producer.parse_plan_v1(wire({**original.to_wire(), "schema": schema}))
+        for schema in ("xar.current-saved-cold-quote/v1", "xar.current-saved-cold-quote/v2",
+                       "xar.current-saved-cold-quote/v3"):
+            with self.assertRaises(ValueError):
+                producer.parse_quote_v1(wire({**parsers[1][0], "schema": schema}))
+
+    def test_actual_launcher_argv_uses_plan_quote_budget_without_other_changes(self) -> None:
+        configured = producer.parse_plan_v1(wire(plan().to_wire()))
+        quoted = producer.parse_quote_v1(wire(self._quote(configured, ref("plan.json")).to_wire()))
+        original = self._argv(self._material())
+        current = self._argv(producer.emit_current_saved_sdk_launcher_v1(
+            self._material(), artifact_cap_bytes=quoted.artifact_cap_bytes))
+        index = original.index("--artifact-cap-bytes") + 1
+        self.assertEqual(original[index], "2147483648")
+        self.assertEqual(current[index], str(configured.artifact_cap_bytes))
+        self.assertEqual(current[:index] + current[index+1:], original[:index] + original[index+1:])
+        for material in (self._material().replace(b"'--artifact-cap-bytes'", b"'--unknown-budget'"),
+                         self._material().replace(b"'2147483648'", b"'2147483647'"),
+                         self._material().replace(b"'--continuous'",
+                             b"'--artifact-cap-bytes','2147483648','--continuous'")):
+            with self.assertRaises(ValueError):
+                producer.emit_current_saved_sdk_launcher_v1(material,
+                    artifact_cap_bytes=configured.artifact_cap_bytes)
+
+    def test_real_preflight_refuses_plan_quote_budget_mismatch_before_owner(self) -> None:
+        from tools.g2_saved_campaign import current_saved_campaign_preflight_v1 as core
+        configured = replace(plan(), machine_id=core.current_execution_machine_id_v1())
+        reader = continuity_fixture.MemoryReader()
+        plan_ref = reader.put(Path(ref("artifact-plan.json").path), configured.to_wire())
+        quoted = self._quote(configured, plan_ref)
+        class StopAfterBudgetBinding(Exception):
+            pass
+        for cap, accepted in ((configured.artifact_cap_bytes, True),
+                              (configured.artifact_cap_bytes + 1, False)):
+            quote_ref = reader.put(Path(ref("artifact-quote.json").path),
+                                  replace(quoted, artifact_cap_bytes=cap).to_wire())
+            with patch.object(core, "validate_current_saved_cold_owner_v1",
+                              side_effect=StopAfterBudgetBinding) as boundary:
+                exception = StopAfterBudgetBinding if accepted else ValueError
+                with self.assertRaises(exception):
+                    core.preflight_current_saved_campaign_v1(plan_ref, quote_ref,
+                        replay_ref=ref("unread-replay.json"), consumer_probe_ref=ref("unread-probe.json"),
+                        expected_machine_id=configured.machine_id, expected_runtime_root=Path(ROOT),
+                        expected_attempt_nonce=configured.attempt_nonce, expected_task_nonce=configured.task_nonce,
+                        reader=reader)
+                self.assertEqual(boundary.call_count, int(accepted))
 
 if __name__ == "__main__":
     unittest.main()

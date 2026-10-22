@@ -94,3 +94,19 @@
 Root另把上述真实转换预验、全消费者封图、失败退出码传播、CI零跳过和证据分层要求写入AGENTS.md。这是持续的编码规范；不能用新增规范条数代替实际测试。`20:48:13Z`唯一watcher确认 `9421d65f` 的 [Official CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39670436802/job/119466574874)仍在执行，尚未到strict步骤40；Linear历史检查已成功。此处不宣称远端整套CI通过。
 
 `20:49:02Z`同机器实际RAM封图模型通过：使用原材料、Source32引用和当前14份生产源码，仅Driver.stat两次返回历史basis记录的身份，其余read/stat真实；审计记录Driver/SAVE正文尝试0、所有写尝试0。原compose实际输出165文件/3,618,719B，8个canonical和66个closure条目的最终SHA全部逐一匹配实际输出，Quote v3往返通过，未来物理根仍ABSENT。模型依赖当前机器保留的旧材料分类器，因此仅记一次软件集成，不冒充便携CI、当前业务资格或物理部署。可重复的便携覆盖是上列6项生产者用例；真实过期Driver的拒绝仍保留。
+
+## 2026-10-22恢复施工：补真实消费者及当前业务证据
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`，实际观察截至 `2026-10-22T02:05Z`。用户恢复任务后，Root重新核机器、统一策略、ALL431/SHORT626及实际容量；旧21:00软件准入没有自动续用。新有限软件范围到03:00，来源 `current-saved-a38-recovery-prep01/ROOT-SOFTWARE-SCOPE0300-01.json`（3215B，SHA-256 `c3e76784aeab271ea65b3626330889307f1a6370ee575f39932c2dd3a92ed7c7`）。当前仍未启动新Game。
+
+`05b28a55` 的 [Official CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39673812993/job/119478320935) 已真实失败：步骤95的Workshop缓存测试固定要求14项，而正式清单已有15项；步骤40严格类型及20/21/23/47/48/56/69均成功，Linear成功。已将测试改为核canonical与独立验收目录的完整集合、唯一性及各产品身份，保留未发布产品null ID拒绝和原预算断言。原失败真实复现，恢复本checkout缺少的跟踪依赖后，完整13项实际通过、0跳过；修改方法strict范围无诊断，整叶历史56项诊断未称全绿。
+
+新的前置独审发现上一轮漏验：真实材料entry62、external26、canonical8；新增三份Python与binding使完整图66，但继承Outer构造器仍硬限64。上轮只核封包与SHA，不能证明该构造器可运行，撤回其“完整消费者无阻断”范围。修复进入公共renderer，canonical8保持；真实继承构造器旧65/66拒绝、新65/66通过、67拒绝，原哈希、外部26项、缓存来源和入口缺失负例继续拒绝。最终20项回归通过、0跳过；Root将新5项接入持久CI，并再次实际执行5/5，夹具峰值125952B、清理为ABSENT。普通源码仍限1MiB，原响应另有显式2MiB能力，不以提高全局上限遮盖接口差异。
+
+Q38实际Source32 thin reader已经执行其真实源码资格函数通过（02:00前、0.183秒），保留历史Source31/DLL资格的独立含义；不是运行态Native通过。旧5152业务缺口正用共享settled-prefix合同补齐：7个周期的明确查询/婚姻冷读回与末尾真实失败advance分别记录，不能按primitive计数或query前缀认定无效果。唯一Driver取证已完成42841812B/`34ef7a19baad919b4ca7d05a8c29b5a8d58f612b671b75cbc2b24caad8206eae`，同held HANDLE下拒新WRITE/DELETE、前后FileID及mtime稳定，body/hash/parse各1；SAVE正文/哈希0。14条原始post-checkpoint history保留在有界压缩opaque中，末尾unknown不归入只读或成功。恢复包及真实完整消费验证尚在施工，不提前授予当前业务资格。
+
+另一个前置接线缺口是旧launcher硬传2GiB artifact cap，与本轮1920MiB联合封套中的artifact净帽不符。正在通过显式Typed Plan/Quote字段同步生产者、实际argv、绑定与测试，禁止手改生成图。媒体保持continuous既有合同与画质；本轮423MiB媒体及20分钟边界由Root实际监控、到界请求原owner闭场，不能宣称旧continuous worker已自动实施这些新子帽。新版Full为32018B并已通过原四消费者数据校验，仍不能替代Game执行准入。
+
+`2026-10-22T02:21Z` 同机器增量：Plan v3／Quote v4 的必填整数 `artifact_cap_bytes` 已接到实际 launcher argv，错类型、越界、两端不等及旧 wire 均拒绝，原 reply reserve 保持。完整 preflight 24项、关键联合34项实际通过，均0跳过；联合18个完整模块 strict/equality/explicit-package/silent-import 检查通过，18份来源前后SHA相等。关键34项来源回执为 `current-saved-a38-recovery-prep01/ROOT-MANDATORY34-QUALIFICATION01.json`（1954B，SHA-256 `9303c8c81ccf3a71ebab35231ee72f2e72327efb0d139ea9d6bdcf0d7a7da5ef`）。联合类型检查使用本机实际 Source32 依赖；不把它混写成远端CI结果。
+
+恢复合同现显式区分 native observation、formal ledger readback 和 returned SDK error；实际失败 history 的五字段形态及原 CLI／subprocess 两种 Task 闭场运输格式均进入共享解析，不能删字段或虚构退出码。7个原结算周期到5152、再接至保留head230的完整RAM包已通过原四入口，物理发布重读仍待完成。没有重读Driver/SAVE正文，没有重放11404，也没有新Game或新增游戏日。basis继续增大至约215KB，历史分派和重复验证的架构债仍在，未宣称清债完成。

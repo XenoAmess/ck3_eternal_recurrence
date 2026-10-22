@@ -11,6 +11,7 @@ import re
 from typing import Literal,Protocol
 from tools.g2_saved_campaign.current_saved_basis_v1 import (
  BasisReaderV1,CurrentSavedBasisV1,ExactRefV1,JsonObject,JsonValue,json_value,
+ MAX_ORIGINAL_RESPONSE_BYTES_V1,
  SavedFrameV1,ValidatedCurrentSavedBasisV1,
  CONTINUITY_FORWARD_SCHEMA,CONTINUITY_FORWARD_QUALIFICATION_SCHEMA,
  CurrentSavedContinuityQualificationV1,parse_current_saved_continuity_qualification_v1,
@@ -86,6 +87,11 @@ class LocalBasisReaderV1:
    raw=stream.read(limit+1)
   need(len(raw) <=limit and self.stat(reference.path)==before,'source changed during re')
   return raw
+
+ def read_response(self,reference:ExactRefV1,limit:int)->bytes:
+  integer(limit,1,MAX_ORIGINAL_RESPONSE_BYTES_V1)
+  need(reference.bytes<=limit,"bounded original RPC response")
+  return self.read(reference,limit)
 
  def read_driver_header(self,path:str,limit:int)->bytes:
   need(type(limit) is int and 0<limit<=16384,"bounded current header")

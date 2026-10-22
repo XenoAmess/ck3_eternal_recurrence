@@ -588,6 +588,255 @@ class ContinuityMetadataForwardTests(unittest.TestCase):
                 continuity_binding_ref=advanced_binding, ledger_ref=advanced_ref), old.basis, reader=reader)
 
 
+class SettledPrefixOutcomeTests(unittest.TestCase):
+    def test_original_task_absence_does_not_invent_a_subprocess_returncode(self) -> None:
+        from tools.g2_saved_campaign import current_saved_basis_v1 as b
+        raw = {"machine_id": MACHINE, "utc": AT, "task_name": "XARG2ManagedOwner-nonce",
+            "operation": "unregister", "actual": {"instances": 0, "absent_after": True,
+                "arguments": "-B original-owner.py bootstrap --spec original-SPEC.json --spec-sha "+"a"*64}}
+        observed=b.validate_current_saved_closed_task_absence_v1(raw,machine_id=MACHINE,nonce="nonce",spec_sha256="a"*64)
+        self.assertIsNone(observed.process_exit_code)
+        self.assertEqual(observed.transport,"original_cli")
+        self.assertNotIn("returncode",raw)
+        for missing in ("utc", "actual", "task_name"):
+            with self.assertRaises(ValueError):
+                b.validate_current_saved_closed_task_absence_v1({k:v for k,v in raw.items() if k!=missing},
+                    machine_id=MACHINE,nonce="nonce",spec_sha256="a"*64)
+        for key, value in (("machine_id", "other-machine"), ("operation", "register"),
+                           ("task_name", "XARG2ManagedOwner-other")):
+            with self.assertRaises(ValueError):
+                b.validate_current_saved_closed_task_absence_v1({**raw,key:value},
+                    machine_id=MACHINE,nonce="nonce",spec_sha256="a"*64)
+        for bad in (True, 0.0):
+            with self.assertRaises(ValueError):
+                b.validate_current_saved_closed_task_absence_v1({**raw,"actual":{**b.record(raw['actual']),"instances":bad}},
+                    machine_id=MACHINE,nonce="nonce",spec_sha256="a"*64)
+
+    def test_complete_native_history_uses_its_own_bounded_domain(self) -> None:
+        import base64
+        import json
+        import zlib
+        from tools.g2_saved_campaign import current_saved_basis_v1 as b
+        history = [{"index": 3, "command": "query-player-mercenary-context-v1", "ok": True,
+                    "result": {"native_identity": 134370851483706939, "padding": "x"*1100000}}]
+        raw = json.dumps(history, separators=(",", ":")).encode()
+        packed = zlib.compress(raw)
+        def document(payload: bytes, decoded: bytes) -> dict[str, object]:
+            return {"schema": "xar.raw-closed-driver-history-opaque/v1", "encoding": "zlib+base64",
+                "payload": base64.b64encode(payload).decode(), "decoded_bytes": len(decoded),
+                "decoded_sha256": hashlib.sha256(decoded).hexdigest(), "row_count": 1}
+        self.assertGreater(len(raw), 1048576)
+        self.assertEqual(b.decode_readonly_prefix_history_v1(document(packed, raw)), history)
+        for payload, decoded in ((packed+b"trailing", raw), (packed+packed, raw),
+                (zlib.compress(b"x"*(b.MAX_CLOSED_HISTORY_RAW_BYTES_V1+1)),
+                 b"x"*(b.MAX_CLOSED_HISTORY_RAW_BYTES_V1+1))):
+            with self.assertRaises(ValueError):
+                b.decode_readonly_prefix_history_v1(document(payload, decoded))
+
+    def test_returned_error_and_parent_failure_are_unknown_without_replay(self) -> None:
+        from tools.g2_saved_campaign import current_saved_basis_v1 as b
+        request = {"sequence": 44, "tool": "ck3_auto_turn", "arguments": {}}
+        response = {"request": request, "result": {"is_error": True, "result_type": "complete",
+            "structured_content": {"error_type": "StepPostconditionError"}}}
+        outcome = b.project_current_saved_unknown_response_v1(request, response, expected_sequence=44)
+        self.assertEqual(outcome.kind, "returned_sdk_error")
+        reference = ExactRefV1("/original/44.json", 1, "a"*64)
+        full = {"request": {"sequence": 29, "command": "full_loop", "arguments": {"max_turns": 30}},
+            "client_error": "SDK error", "replay_allowed": False, "original_response": reference.path}
+        failure = {"stage": "request_dispatch", "replay_allowed": False,
+            "request_identity": {"sequence": 29, "tool": None, "command": "full_loop"},
+            "traceback_truncated": False, "locals_captured": False}
+        b.validate_current_saved_unknown_failure_v1(failure, full, outcome=outcome,
+            unknown_request=request, unknown_response=reference)
+        self.assertEqual(parse_json(canonical_json_v1(outcome.to_wire())), outcome.to_wire())
+        for bad in (True, 44.0):
+            with self.assertRaises(ValueError):
+                b.project_current_saved_unknown_response_v1(request, response, expected_sequence=bad)
+        with self.assertRaises(ValueError):
+            b.project_current_saved_unknown_response_v1(request,
+                {"request": request, "result": {"is_error": False, "result_type": "complete",
+                    "structured_content": {"error_type": "pretend"}}}, expected_sequence=44)
+        with self.assertRaises(ValueError):
+            b.validate_current_saved_unknown_failure_v1({**failure,
+                "request_identity": {"sequence": 28, "tool": None, "command": "full_loop"}}, full,
+                outcome=outcome, unknown_request=request, unknown_response=reference)
+
+    def test_primitive_is_not_an_effect_classification(self) -> None:
+        from tools.g2_saved_campaign import current_saved_basis_v1 as b
+        frame = pure_basis().frame
+        step = "query-player-mercenary-context-v1"
+        observation = {"selected_step": step, "primitive_accepted": True,
+            "submitted_pending": False, "business_success_inferred": False, "replay_allowed": False}
+        body = {"status": "executed", "selected_step": step, "result": {
+            "step": step, "accepted": True, "backend_id": "native-headless", "query_sequence": 1,
+            "read_only": True, "status": "completed", "snapshot_revision": frame.native_revision,
+            "date_raw": frame.date_raw, "player_mercenary_context": {"actual_typed_context": True}}}
+        effect = b.project_current_saved_settled_observation_v1(body, observation, frame=frame)
+        self.assertEqual(effect.counted_flags, ("primitive_accepted",))
+        self.assertEqual(effect.effect, "native_observation")
+        for key, value in (("read_only", False), ("query_sequence", True), ("snapshot_revision", 1.0)):
+            with self.assertRaises(ValueError):
+                b.project_current_saved_settled_observation_v1({**body,
+                    "result": {**b.record(body["result"]), key: value}}, observation, frame=frame)
+        for rejected in ("hire-mercenary-v1", "query-unknown-potentially-mutating-command", "surrender-war-1"):
+            with self.assertRaises(ValueError):
+                b.project_current_saved_settled_observation_v1({**body, "selected_step": rejected,
+                    "result": {**b.record(body["result"]), "step": rejected}},
+                    {**observation, "selected_step": rejected}, frame=frame)
+        observed: tuple[tuple[str, dict[str, object], str], ...] = (
+            ("query-observed-first-heir-marriage-result-v1-private", {
+                "schema": "xar.ck3.observed-first-heir-marriage-private-action.v1", "schema_version": 1,
+                "step": "query-observed-first-heir-marriage-result-v1-private", "accepted": True,
+                "private_build": True, "advertised": False, "cold_recovery": True, "status": "marriage",
+                "material_result": True, "pre_native_revision": 0, "post_native_revision": frame.native_revision,
+                "heir_character_id": 123, "candidate_character_id": 456}, "formal_ledger_readback"),
+            ("query-army-strengths-v1", {"accepted": True, "status": "available",
+                "armies": [{"army_id": 123}]}, "native_observation"),
+            ("query-war-termination-options-123", {"accepted": True, "status": "available",
+                "step": "query-war-termination-options-123", "backend_id": "native-headless",
+                "query_sequence": 1, "war_termination_options": {"war_id": 123}}, "native_observation"),
+            ("query-route-contact-horizon-v1-123-to-456-h-1-789", {"accepted": True, "status": "available",
+                "step": "query-route-contact-horizon-v1-123-to-456-h-1-789", "backend_id": "native-headless",
+                "query_sequence": 1, "snapshot_revision": frame.native_revision,
+                "route_contact_horizon": {"typed_preview": True}}, "native_observation"),
+        )
+        for selected, result, expected in observed:
+            source = {"status": "executed", "selected_step": selected, "result": result}
+            credit = {**observation, "selected_step": selected}
+            projected = b.project_current_saved_settled_observation_v1(source, credit, frame=frame)
+            self.assertEqual(projected.effect, expected)
+            self.assertIs(projected.to_wire()["new_gameplay_action_claimed"], False)
+            self.assertEqual(projected.to_wire()["new_credit_granted"], 0)
+            for bad in (True, 0.0):
+                with self.assertRaises(ValueError):
+                    b.project_current_saved_settled_observation_v1(source,
+                        {**credit, "construction_start_verified": bad}, frame=frame)
+
+    def test_explicit_large_response_to_real_builder_and_four_owner_consumers(self) -> None:
+        import base64
+        import zlib
+        from unittest.mock import patch
+        from tools.g2_saved_campaign import current_saved_basis_v1 as b
+        from tools.g2_saved_campaign.test_current_saved_basis_v1 import (
+            ComposeBoundedEpochMemoryReader, EpochMemoryReader, ReadonlyPrefixUnknownFixture,
+        )
+        class Reader(ComposeBoundedEpochMemoryReader):
+            response_reads = 0
+            def read_response(self, reference: ExactRefV1, limit: int) -> bytes:
+                b.integer(limit, 1, b.MAX_ORIGINAL_RESPONSE_BYTES_V1)
+                self.response_reads += 1
+                return EpochMemoryReader.read(self, reference, limit)
+        f = ReadonlyPrefixUnknownFixture(); r = Reader()
+        r.raw = f.reader.raw; r.identities = f.reader.identities; f.reader = r
+        def updated(reference: ExactRefV1, value: object) -> ExactRefV1:
+            return r.put(reference.path.removeprefix("/epoch/"), value)
+        prefix = b.evidence(r, f.epoch.refs.prefix)
+        entries = b.rows(prefix["entries"]); entry = b.record(entries[-1])
+        auto_ref = b.parse_ref(entry["auto"]); auto = b.evidence(r, auto_ref)
+        result = b.record(auto["result"]); body = b.record(result["structured_content"])
+        event_ref = b.parse_ref(entry["event"]); event = b.evidence(r, event_ref)
+        original_credit = b.record(event["observation"])
+        step = "query-player-mercenary-context-v1"; frame = b.parse_frame(event["before"])
+        observation = {**original_credit, "selected_step": step, "existing_focus_verified": False,
+            "typed_nonmaterial_observation": False, "primitive_accepted": True}
+        body.update(status="executed", selected_step=step, fixture_observation=observation,
+            result={"step": step, "accepted": True, "backend_id": "native-headless",
+                "query_sequence": 1, "read_only": True, "status": "completed",
+                "snapshot_revision": frame.native_revision, "date_raw": frame.date_raw,
+                "player_mercenary_context": {"qualified_fixture": True}},
+            opaque_native_identity=134370851483706939, evidence_padding="x"*1050000)
+        auto_ref = updated(auto_ref, {**auto, "result": {**result, "structured_content": body}})
+        self.assertGreater(auto_ref.bytes, 1048576)
+        with self.assertRaises(ValueError):
+            b.evidence(r, auto_ref, 1048576)
+        counts = b.json_object(event["cumulative_observation_counts"])
+        for flag, counter in (("existing_focus_verified", "existing_focus_verified_turns"),
+                              ("typed_nonmaterial_observation", "typed_nonmaterial_observation_turns")):
+            if original_credit.get(flag) is True:
+                counts[counter] = b.integer(counts[counter], 1)-1
+        counts["primitive_accepted_turns"] = b.integer(counts.get("primitive_accepted_turns", 0))+1
+        entry["auto"] = auto_ref.to_wire()
+        entry["event"] = updated(event_ref, {**event, "selected_step": step,
+            "observation": observation, "cumulative_observation_counts": counts}).to_wire()
+        plan_ref = b.parse_ref(entry["auto_plan"]); plan = b.evidence(r, plan_ref)
+        plan_result = b.record(plan["result"]); planned = b.record(plan_result["structured_content"])
+        entry["auto_plan"] = updated(plan_ref, {**plan, "result": {**plan_result,
+            "structured_content": {**planned, "selected_step": step}}}).to_wire()
+        credit_ref = b.parse_ref(entry["ordinary_credit"]); credit = b.evidence(r, credit_ref)
+        entry["ordinary_credit"] = updated(credit_ref, {**credit, "observation": observation}).to_wire()
+        entries[-1] = entry
+        refs = f.epoch.refs
+        raw_state = b.evidence(r, refs.raw_state)
+        state_ref = updated(refs.raw_state, {**raw_state, "counts": counts})
+        request = b.evidence(r, refs.unknown_request)
+        native_failure = {"is_error": True, "never_replay": True, "original_error": "failed unknown action"}
+        response_ref = updated(refs.unknown_response, {"request": request, "result": {
+            "is_error": True, "result_type": "complete",
+            "structured_content": {"error_type": "StepPostconditionError",
+                "diagnostics": {"original_failure": native_failure}}}})
+        control = b.evidence(r, refs.failed_full_response)
+        failure = b.evidence(r, refs.first_exception)
+        failure_ref = updated(refs.first_exception, {**failure, "stage": "request_dispatch",
+            "request_identity": {"sequence": b.record(control["request"])["sequence"],
+                "tool": None, "command": "full_loop"}})
+        control_ref = updated(refs.failed_full_response, {**control,
+            "original_response": response_ref.path})
+        unknown_step = "advance-original-unknown-action"
+        unknown_plan = r.put("prefix/unknown-plan.json", {
+            "source": "actual GameplayBridgeService.before_submit callback",
+            "game_pid": b.evidence(r, refs.launch)["pid"],
+            "request": {"parent_sequence": request["sequence"]},
+            "result": {"structured_content": {"selected_step": unknown_step}}})
+        prefix_ref = updated(refs.prefix, {**prefix, "entries": entries,
+            "unknown_plan": unknown_plan.to_wire()})
+        opaque = b.evidence(r, refs.history_tail)
+        history = b.decode_readonly_prefix_history_v1(opaque)
+        history.append({"index": b.integer(history[-1]["index"])+1,
+            "command": unknown_step, "ok": False, "result": native_failure,
+            "error": "StepPostconditionError: failed unknown action"})
+        history_raw = b._exact_native_json_v1(history)
+        count = b.integer(opaque["command_history_count"])+1
+        history_ref = updated(refs.history_tail, {**opaque, "payload": base64.b64encode(zlib.compress(history_raw)).decode(),
+            "decoded_bytes": len(history_raw), "decoded_sha256": hashlib.sha256(history_raw).hexdigest(),
+            "row_count": len(history), "command_history_count": count})
+        review = b.evidence(r, refs.driver_review)
+        raw_ref = b.parse_ref(review["raw_observation"]); raw_witness = b.evidence(r, raw_ref)
+        raw_ref = updated(raw_ref, {**raw_witness, "command_history_count": count,
+            "post_checkpoint_history_opaque": history_ref.to_wire()})
+        review_ref = updated(refs.driver_review, {**review,
+            "Driver": {**b.record(review["Driver"]), "command_history_count": count},
+            "raw_observation": raw_ref.to_wire(), "post_checkpoint_history_opaque": history_ref.to_wire()})
+        reuse = b.evidence(r, refs.canonical_qualification)
+        reuse_ref = updated(refs.canonical_qualification, {**reuse,
+            "driver_review": review_ref.to_wire(), "history_tail": history_ref.to_wire()})
+        changed = replace(refs, raw_state=state_ref, unknown_response=response_ref,
+            first_exception=failure_ref, failed_full_response=control_ref, prefix=prefix_ref,
+            history_tail=history_ref, driver_review=review_ref, canonical_qualification=reuse_ref)
+        index = b.evidence(r, refs.closure_index); linked = b.record(index["refs"])
+        for key, reference in changed.items():
+            if key in linked:
+                linked[key] = reference.to_wire()
+        changed = replace(changed, closure_index=updated(refs.closure_index, {**index, "refs": linked}))
+        f.epoch = replace(f.epoch, refs=changed)
+        basis, basis_ref, qualification = f.build()
+        qualification_ref = r.put("new-outcome-qualification.json", qualification.to_wire())
+        self.assertEqual(owner.parse_basis_qualification_v1(parse_json(canonical_json_v1(
+            qualification.to_wire())), expected_machine_id=MACHINE), qualification)
+        inputs = owner.validate_current_saved_cold_inputs_v1(basis, basis_ref=basis_ref,
+            validation_ref=qualification_ref, reader=r)
+        self.assertEqual(owner._closed_epoch(basis, r), inputs.closed_epoch)
+        with patch.object(owner, "LocalBasisReaderV1", return_value=r):
+            owner.validate_current_saved_prepared_sdk_closure_v1(changed.sdk_closed.to_wire(), inputs=inputs)
+        self.assertEqual(basis.completed_cycles, f.previous_basis.completed_cycles+2)
+        self.assertEqual(basis.frame.date_raw, f.previous_basis.frame.date_raw)
+        self.assertIsNotNone(b.evidence(r, state_ref)["pending_cycle"])
+        self.assertIsNone(inputs.seed["pending_cycle"])
+        self.assertEqual(basis.unknown_requests[-1].sequence, b.integer(request["sequence"]))
+        self.assertGreater(r.response_reads, 0)
+        self.assertNotIn(basis.refs.driver.path, r.read_paths)
+        self.assertNotIn(basis.refs.save.path, r.read_paths)
+
+
 if __name__ == "__main__":
     unittest.main()
 

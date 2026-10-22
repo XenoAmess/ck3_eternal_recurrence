@@ -339,7 +339,8 @@ def preflight_current_saved_campaign_v1(
          and plan.task_nonce == _nonce(expected_task_nonce)
          and quote.plan_ref == plan_ref and quote.basis_ref == plan.basis_ref
          and quote.validation_ref == plan.validation_ref
-         and quote.native32_current_sdk_override == plan.native32_current_sdk_override,
+         and quote.native32_current_sdk_override == plan.native32_current_sdk_override
+         and quote.artifact_cap_bytes == plan.artifact_cap_bytes,
          "actual preflight run binding")
     post = validate_current_saved_cold_owner_v1(
         plan_ref, quote_ref, reader=reader, expected_machine_id=expected_machine_id)

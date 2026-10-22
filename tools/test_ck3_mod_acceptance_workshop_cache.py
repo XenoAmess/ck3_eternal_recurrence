@@ -270,6 +270,7 @@ class WorkshopCacheTests(unittest.TestCase):
         fixture.setUp(); self.addCleanup(fixture.doCleanups)
         registry_path = ROOT / 'tools/ck3_mod_acceptance_products.json'
         canonical_keys = [row['key'] for row in self.registry['products']]
+        canonical = {row['key']: row for row in self.registry['products']}
         shared_products = adapter.read_json(registry_path)['products']
         self.assertTrue(canonical_keys)
         self.assertEqual(len(canonical_keys), len(set(canonical_keys)))
@@ -279,6 +280,9 @@ class WorkshopCacheTests(unittest.TestCase):
         self.assertEqual({selected.product_key for selected in selections}, set(canonical_keys))
         choices = set()
         for selected in selections:
+            product = canonical[selected.product_key]
+            self.assertEqual(selected.product['directory'], product['directory'])
+            self.assertEqual(selected.product['workshop_item_id'], product['workshop_item_id'])
             argv = selected.argv
             choices.add(tuple(argv[argv.index(flag) + 1] for flag in
                              ('--agent-source-root', '--bridge-dll', '--bridge-injector')) + (argv[4],))
