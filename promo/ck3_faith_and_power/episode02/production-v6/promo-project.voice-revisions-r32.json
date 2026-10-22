@@ -1,0 +1,66 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {
+    "id": "ck3-faith-and-power-episode02-v6-two-cue-revision",
+    "title": "Episode02 V6 N02+N15 voice revision"
+  },
+  "pipeline": {
+    "adapter": "ck3-faith-power-capture-v1",
+    "preset": "ck3-faith-power-longform-zh-v1"
+  },
+  "locales": {
+    "narration": "zh-CN",
+    "subtitles": [
+      "zh-CN",
+      "en"
+    ]
+  },
+  "constraints": {
+    "duration_limit_seconds": 180
+  },
+  "chapters": [
+    {
+      "id": "v6-c01",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "第一段：先看一个不符合直觉的结果"
+      },
+      "cues": [
+        {
+          "id": "E02-V6-N02",
+          "narration": {
+            "zh-CN": "这一期我们把朝圣拆开来看：宗教怎样规定朝圣的意义，出发选项分别改变什么，费用和虔诚怎样计算，最后又怎样留下朝圣者特质。我们会固定一套人物条件，沿同一套数字走到底。先把支出、活动评价、虔诚奖励和人物成长分开，再看它们如何互相影响。"
+          },
+          "subtitles": {
+            "zh-CN": "这一期我们把朝圣拆开来看：宗教怎样规定朝圣的意义，出发选项分别改变什么，费用和虔诚怎样计算，最后又怎样留下朝圣者特质。我们会固定一套人物条件，沿同一套数字走到底。先把支出、活动评价、虔诚奖励和人物成长分开，再看它们如何互相影响。",
+            "en": "This episode takes pilgrimage apart: how religion defines it, what each departure option changes, how costs and Piety are calculated, and how the Pilgrim trait remains afterward. We will keep one set of character conditions and follow the same numbers throughout. First separate expenditure, activity evaluation, Piety rewards, and character growth, then examine how they affect one another."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "v6-c03",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "第三段：把出发界面拆成不同输入"
+      },
+      "cues": [
+        {
+          "id": "E02-V6-N15",
+          "narration": {
+            "zh-CN": "共享意图“娱乐”也有真实的朝圣事件效果，例如提高某类酒馆事件的机会。但它不是选上就固定减压：合群、害羞、狂热等性格，会让同一社交行为产生不同压力反应。这里要分清两件事：事件能响应某个意图，不代表当前人物的活动菜单就会列出它。本次天主教人物的虔诚朝圣界面，只列出了深思熟虑、行善和热忱。所以，朝圣意图不能一概当作固定的四选一；先看眼前的选项，再判断对应效果。"
+          },
+          "subtitles": {
+            "zh-CN": "共享意图“娱乐”也有真实的朝圣事件效果，例如提高某类酒馆事件的机会。但它不是选上就固定减压：合群、害羞、狂热等性格，会让同一社交行为产生不同压力反应。这里要分清两件事：事件能响应某个意图，不代表当前人物的活动菜单就会列出它。本次天主教人物的虔诚朝圣界面，只列出了深思熟虑、行善和热忱。所以，朝圣意图不能一概当作固定的四选一；先看眼前的选项，再判断对应效果。",
+            "en": "The shared Recreation Intent also has actual pilgrimage-event effects, such as increasing the chance of a particular tavern event. It does not provide fixed Stress relief just by being selected: Gregarious, Shy, Zealous, and other personalities can react differently to the same social action. Keep two things separate here: an event responding to an Intent does not mean that this character's activity menu will list it. In this Catholic character's Pious Pilgrimage interface, only Reflection, Altruism, and Zealotry were shown. Pilgrimage Intents therefore are not universally a fixed choice of four; inspect the options in front of you, then work out their effects."
+          }
+        }
+      ],
+      "artifact_ids": []
+    }
+  ]
+}
