@@ -394,13 +394,12 @@ def evaluate(context: object, *, manifest: object, reviewer: str, journal: objec
         _number(values[5], "xalw_content_appetite_quote") == 50, "Same paused-date equipment/management charged twice")
     require(_payment(values[6]) == payment and _number(values[6], "xalw_content_appetite_quote") == 50,
         "Next-day same-month dispatch rewrote actual payment/quote")
-    output = Path(text(field(context, "output"), "output"))
-    require(same_json(row["native_records"], historical._native_files(output)), "Native original file closure differs")
+    audit = historical.audit_native_records(row["native_records"], context=context, manifest=manifest, reviewer=reviewer,
+        targets=(first.base.inputs.target_id, first.appetite.artifact_id))
     equip_intents: list[tuple[int, bool]] = []
     choices: list[tuple[str, int]] = []
     event_keys: dict[tuple[int, int], str] = {}
-    for raw in mapping(row["native_records"], "original native records").values():
-        frame, native_row, _ = historical._native(raw, context=context, manifest=manifest)
+    for frame, native_row in audit.successful:
         plan = field(native_row, "plan")
         tool = field(plan, "tool")
         if tool == core.EQUIP:
@@ -436,7 +435,8 @@ def evaluate(context: object, *, manifest: object, reviewer: str, journal: objec
         "next_day_stress_change": None if next_day.base.saved.stress is None else next_day.base.saved.stress - charged_stress,
         "next_day_world_change_policy": "No equality assumption; unchanged production month/payment/quote prove no repeated monthly dispatch",
         "candidate_judgement": _candidate_judgement(first.candidate), "candidate_first_unjudged_observation_credit": False,
-        "checkpoints": [item.to_json() for item in observations], "NPC_combat_stacking_cold_suppression_release_credit": False}
+        "checkpoints": [item.to_json() for item in observations], "inventory_gui_evidence": [object_value(ref) for ref in audit.gui_evidence],
+        "NPC_combat_stacking_cold_suppression_release_credit": False}
 
 
 def _checks(status: Literal["PASS", "FAIL", "BLOCKED"], error: str | None, observed: Object, refs: list[Pin]) -> list[CheckResult]:

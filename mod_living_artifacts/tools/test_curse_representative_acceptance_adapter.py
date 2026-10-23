@@ -138,7 +138,7 @@ class CursePort(TimerPort):
             result = {"available": True, "read_only": True, "loaded_source_pins_verified": True, "personally_owned": True, "inventory_artifact": True,
                 "requested_artifact_id": identity, "played_character_id": 91, "date_raw": 53144328 + self.day * 24, "native_equipped_observed": True,
                 "equipped": equipped, "equipped_slot_index": 0 if equipped else None, "effective_slot_index": 0, "replacing_artifact_id": None,
-                "can_equip_in_effective_slot": True, "can_unequip": True, "inventory_view_available": True, "inventory_view_visible": True,
+                "can_equip_in_effective_slot": True, "can_unequip": True, "inventory_view_available": True, "inventory_view_visible": self.inventory_visible,
                 "owned_ids": [12, 13, 14, 15, 16, 17, 18]}
         elif tool == core.EQUIP:
             self.equip_count += 1
@@ -196,6 +196,66 @@ def run_fixture(root: Path, *, fault: str | None = None) -> tuple[Object, Object
 
 
 class CurseRepresentativeTests(unittest.TestCase):
+    def test_r20_exact_refusal_actual_producers_and_final_audit_rejects_unknown_or_broken_gui(self) -> None:
+        import hashlib
+        import threshold_acceptance_adapter as historical
+        fixtures = Path(__file__).resolve().parent / "fixtures"
+        provenance = read(fixtures / "r20-inventory-refusal.provenance.json")
+        for name, raw in mapping(provenance["sources"], "retained R20 sources").items():
+            data = (fixtures / name).read_bytes()
+            self.assertEqual((len(data), hashlib.sha256(data).hexdigest()), (field(raw, "bytes"), field(raw, "sha256")))
+        with tempfile.TemporaryDirectory() as temporary:
+            context, result, port = run_fixture(Path(temporary), fault="inventory_refusal")
+            self.assertEqual(result["status"], "PASS", result.get("error"))
+            self.assertEqual((port.saves, port.day, port.equip_count, port.tools.count(core.OPEN)), (7, 17, 5, 1))
+            self.assertEqual(curse.verify_case(context), result)
+            journal = read(Path(str(field(result["journal"], "path"))))
+            self.assertEqual(curse.evaluate(context, manifest=port.manifest, reviewer="unit-root", journal=json.loads(json.dumps(journal))),
+                field(array(result["checks"], "checks")[0], "observed"))
+            callback = next(port.output.glob("inventory-gui-open-*-root-result.json"))
+            original = callback.read_bytes()
+            completed = read(callback)
+            for changed in ({**completed, "reviewer": "another-reviewer"}, {**completed, "date_raw": True},
+                    {**completed, "status": "outcome_unknown", "reason": "Unknown original click", "mapping_receipt": None,
+                     "source_screenshot": None, "after_screenshot": None}, {**completed, "mapping_receipt": None}):
+                callback.write_text(json.dumps(changed), encoding="utf-8")
+                with self.subTest(callback=changed), self.assertRaises(ValueError):
+                    curse.evaluate(context, manifest=port.manifest, reviewer="unit-root", journal=journal)
+            callback.write_bytes(original)
+            request = next(port.output.glob("inventory-gui-open-*-awaiting.json"))
+            original_request = request.read_bytes()
+            requested = read(request)
+            for changed in ({**requested, "original_open_intent_not_admitted": False}, {**requested, "target_artifact_id": "17"},
+                    {**requested, "reserve_seconds": True}, {**requested, "refusal_source": requested["original_native_refusal"]}):
+                request.write_text(json.dumps(changed), encoding="utf-8")
+                with self.subTest(request=changed), self.assertRaises(ValueError):
+                    curse.evaluate(context, manifest=port.manifest, reviewer="unit-root", journal=journal)
+            request.write_bytes(original_request)
+            native = next(q for q in port.output.glob("xalw-core-*.actual-results.json") if field(array(read(q)["rows"], "rows")[0], "ok") is False)
+            original_native = native.read_bytes()
+            refused = object_value(array(read(native)["rows"], "row")[0])
+            for changed in ({**refused, "error": "Another native failure"}, {**refused, "result": None}, {**refused, "after_snapshot": None}):
+                native.write_text(json.dumps({"rows": [changed]}), encoding="utf-8")
+                altered = {**journal, "native_records": historical._native_files(port.output)}
+                with self.subTest(native=changed), self.assertRaises(ValueError):
+                    curse.evaluate(context, manifest=port.manifest, reviewer="unit-root", journal=altered)
+            native.write_bytes(original_native)
+            sequence = int(native.name.split(".", 1)[0].rsplit("-", 1)[1])
+            post = port.output / f"xalw-core-{sequence + 1:04d}.actual-results.json"
+            original_post = post.read_bytes()
+            post_row = object_value(array(read(post)["rows"], "post ITEM")[0])
+            item, snapshot = object_value(post_row["result"]), object_value(post_row["after_snapshot"])
+            for changed in ({**post_row, "result": {**item, "inventory_view_visible": False}},
+                    {**post_row, "result": {**item, "equipped": True}},
+                    {**post_row, "result": {**item, "loaded_source_pins_verified": False}},
+                    {**post_row, "after_snapshot": {**snapshot, "date_raw": 53144352}}):
+                post.write_text(json.dumps({"rows": [changed]}), encoding="utf-8")
+                altered = {**journal, "native_records": historical._native_files(port.output)}
+                with self.subTest(post=changed), self.assertRaises(ValueError):
+                    curse.evaluate(context, manifest=port.manifest, reviewer="unit-root", journal=altered)
+            post.write_bytes(original_post)
+            self.assertEqual(curse.verify_case(context), result)
+
     def test_real_zero_wallet_consumers_reject_bad_fields_nonzero_and_wrong_executable(self) -> None:
         for fault in ("null_gold", "empty_gold", "duplicate_gold", "missing_zero_prestige", "missing_gold_nonzero_native", "wrong_zero_exe"):
             with self.subTest(fault=fault), tempfile.TemporaryDirectory() as temporary:

@@ -289,25 +289,18 @@ def evaluate(context: object, *, manifest: object, reviewer: str, journal: objec
     require(all(actual.sample.equipped for actual in observations[1:]), "Same weapon must remain equipped during the timer test")
     require(_value(first, "xalw_growth_suppressed_until") is None and _value(first, "xalw_suppression_chain") == 0 and
         _value(first, "xalw_suppression_timer_sequence") is None, "No preloaded suppression terminal state permitted")
-    originals = mapping(row["native_records"], "native file closure")
-    output = Path(text(field(context, "output"), "output"))
-    require(same_json(originals, historical._native_files(output)), "Original native action/snapshot closure differs")
+    audit = historical.audit_native_records(row["native_records"], context=context, manifest=manifest, reviewer=reviewer, targets=(first.inputs.target_id,))
+    refs.extend(audit.gui_evidence)
     selections: list[int] = []
     equip: list[bool] = []
     event_keys: dict[tuple[int, int], str] = {}
-    for raw in originals.values():
-        source = Path(checked_pin(raw, "original native record")["path"])
-        native_rows = array(field(raw_object(source), "rows"), "original native rows")
-        require(len(native_rows) == 1, "One native row required")
-        native_row = mapping(native_rows[0], "native row")
+    for frame, native_row in audit.successful:
         tool = field(field(native_row, "plan"), "tool")
         if tool == "ck3_query_current_event_window_context_v1" and native_row.get("ok") is True:
-            frame, _, _ = historical._native(raw, context=context, manifest=manifest)
             event = mapping(field(field(native_row, "result"), "current_event_window_context"), "actual event")
             if event.get("status") == "available":
                 event_keys[(frame.date_raw, integer(field(event, "current_event_instance_id"), "instance", 1))] = text(field(event, "event_definition_key"), "event definition")
         elif tool == "ck3_select_event_option":
-            frame, _, _ = historical._native(raw, context=context, manifest=manifest)
             args = field(field(native_row, "plan"), "args")
             key = event_keys.get((frame.date_raw, integer(field(args, "event_instance_id"), "selected instance", 1)))
             require(key is not None, "Selection lacks its actual native event query")
@@ -316,12 +309,10 @@ def evaluate(context: object, *, manifest: object, reviewer: str, journal: objec
             else:
                 require(frame.date_raw not in (first.frame.date_raw, window.frame.date_raw), "Unrelated event entered a paused payment comparison")
         elif tool == core.EQUIP:
-            historical._native(raw, context=context, manifest=manifest)
             desired = field(field(native_row, "plan"), "args")
             require(type(field(desired, "desired_equipped")) is bool, "Original equipment boolean required")
             equip.append(field(desired, "desired_equipped") is True)
         elif tool == "ck3_reply_pending_character_interaction":
-            frame, _, _ = historical._native(raw, context=context, manifest=manifest)
             require(frame.date_raw not in (first.frame.date_raw, window.frame.date_raw), "Unrelated notification entered a paused payment comparison")
     require(equip == [True] and selections == [source_option_index("xalw.12", "xalw.12.open") + 1,
         source_option_index("xalw.10", "xalw.10.suppress") + 1, source_option_index("xalw.12", "xalw.12.open") + 1,
@@ -357,7 +348,8 @@ def evaluate(context: object, *, manifest: object, reviewer: str, journal: objec
         "target_artifact_id": first.sample.artifact_id, "initial_date_anchor": anchor, "original_deadline": anchor + 90, "renewed_deadline": anchor + 180,
         "old_timer_did_not_clear_renewal": True, "timer_sequence_preserved": 1, "first_cost_gold": 25, "renewal_cost_gold": 45,
         "initial": first.to_json(), "paid": paid.to_json(), "window": window.to_json(), "renewed": renewed.to_json(), "old_event": old_event.to_json(),
-        "expired": expired.to_json(), "grown": grown.to_json(), "stress_formula_credit": False, "cold_transfer_NPC_release_credit": False}
+        "expired": expired.to_json(), "grown": grown.to_json(), "inventory_gui_evidence": [object_value(ref) for ref in audit.gui_evidence],
+        "stress_formula_credit": False, "cold_transfer_NPC_release_credit": False}
 
 
 def _state(actual: historical.ThresholdObservation, *, deadline: int | None, chain: int, phase: str) -> None:

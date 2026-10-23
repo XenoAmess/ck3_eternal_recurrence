@@ -52,7 +52,7 @@ def context_fixture(root: Path, *, qualified_zero_gold: bool = False) -> Object:
 
 class TimerPort(ThresholdPort):
     def __init__(self, context: Object, *, fault: str | None = None) -> None:
-        super().__init__(context)
+        super().__init__(context, inventory_refusal=fault == "inventory_refusal")
         self.level, self.xp, self.growth = 1, 92, 0
         self.chain, self.timer_sequence = 0, 0
         self.fault = fault
@@ -173,6 +173,15 @@ def authored_q64_snapshots(value: object) -> object:
 
 
 class SuppressionTimerTests(unittest.TestCase):
+    def test_r20_exact_refusal_actual_session_and_retained_timer_consumers(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            context, result, port = run_fixture(Path(temporary), fault="inventory_refusal")
+            self.assertEqual(result["status"], "PASS", result.get("error"))
+            self.assertEqual((port.saves, port.day, port.tools.count(core.OPEN)), (7, 198, 1))
+            self.assertEqual(timer.verify_case(context), result)
+            observed = field(array(result["checks"], "checks")[0], "observed")
+            self.assertGreater(len(array(field(observed, "inventory_gui_evidence"), "GUI evidence")), 0)
+
     def test_real_timer_producer_zero_omission_and_retained_evaluate(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             context, result, port = run_fixture(Path(temporary), fault="zero_wallet")

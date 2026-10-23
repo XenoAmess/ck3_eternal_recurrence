@@ -28,7 +28,13 @@ R17三域+28media最终2258970847 B、共享task-close0；仅R14 checkpoint01–
 
 公共allocate `20261023T072019561525Z-allocate` 分配真实R0020，原工具37372仍持有keeper `living-curse-a31`/PID12428。07:23:02.392782Z后台offline/true后，bound preflight原0，public run `20261023T072305306085Z-run` 原工具18593运行中；host13724，CK3 PID13272/birth1792740199.351401，当前自动加载，业务未终态。Root独占GUI/MCP/退出；storage_resume仅服务本场实际pending的01–07只读producer，每份一次，Root不可重复调用。当前a31 own3GiB/C2GiB卡已实际采用，source复制前96MiB、melt产出后128MiB软上界及5份profile Save边界保持；c21全部offline实际401588616B，小于同own内512MiB。不得沿用旧a29的192MiB计划界限。a32同c21、真正R17/04的cold prepare→bound plan→preflight均0，但仍NOT_RUN，不能启动第二个游戏。尚无Workshop ID，仍NOT_RELEASED。
 
+**08:08Z执行所有权更正：保存03–07现由Root唯一生产，不再委派storage_resume。** 保存观察代理遇执行容量异常，已于07:59:55.164286Z明确ACK：01/02原wait0，03尚未启动，所有producer进程归零、无待消费工具。Root随后单次完成03（原工具77422实际wait0，melt103766643B），没有重跑01/02；旧存储代理已停止所有保存生产。当前仍R0020/c21/a31，首保存与原生均20金，健康4.6616→装备后3.4616；卸下后第三份解析尚待最终投影，仍无五项终态。Root后续读回使用新鲜 `before-heavy-write-a03/20261023T080703043665Z-before-heavy-write.json`（5686B/SHA `e593c534cfc5e1d0517de881e39f58041df365201dfdb705558d2091a0c9e629`），同a31四卡未改。实际引擎显式Save还有last_save/autosave轮转副本，R20首/二/三profile Save数3/4/5；cold预算不能沿用“仅两份Save”推断，须按新实际链重算，a32仍NOT_RUN。
+
 ## 入口与必要约束
+
+**09:52Z当前状态：R20已FAIL并完成失败资源闭场；R21/c21/a32正在真实cold加载。** R20最终17日/160calls/7Save/五项FAIL，原552173B结果SHA `87be6d71ec24a983a8601998512383309864e6ad8279b26e94f27b3ea1994d8f`；唯一审计故障是库存预意图拒绝被最终消费者当作必须成功行。Root退出截图超龄而映射拒绝、无点击，原hold到期后native清理exit1；normal_close=false、retained OS0=false。原public工具18593 wait2、host1、allocate37372 wait0，失败reducer实际0只授行政接续；Root CAS848释放。current-main显式原c21 verify工具5071实际2，历史FAIL保留。共享4生产文件已修严格审计，完整232 tests/53模块strict/cold四命令通过；纯读R20一致性分析不替代新实机或正常闭场。
+
+新cold卡 `EXT/environment/storage-cold-a32-20261023-a01` 已正式采用，own D1.5GiB/C2GiB、other D128MiB，旧a31未来own归0，截止2026-10-24T05:30:11.582444Z。按真实引擎保存链预留5份profile Save；source96MiB/melt软128MiB/硬256MiB守卫保持。仅获准R13两份派生melt精确删除208244814逻辑字节，原Save/recipe保留。09:51:32Z公共allocate分配真实R0021，keeper628/lease852；09:51:59Z新鲜后台offline/true、bound preflight0后run095201138990启动，CK3 PID13924/birth1792749135.039667、host2856。Root独占唯一保存producer、GUI与退出，勿重复allocate或开局；当前cold尚无终态。详见[R20最新完整记录](../../mod_living_artifacts/docs/runtime-r20-curse-and-zero-wallet-reader.md)。此卡不涵盖新c22或诅咒场，仍无Workshop ID、NOT_RELEASED。
 
 - 仓库：`D:/workspace/ck3_eternal_recurrence`；产品：`mod_living_artifacts/`；外置工作包：`D:/workspace/ck3-living-artifacts-20261022`，下文简称 `EXT`。
 - 实际解释器：`EXT/runtime/venv/Scripts/python.exe`，Python 3.13.17。**不用默认 Python 3.15，不得调用禁止的 Windows Shell，遵循 [AGENTS](../../AGENTS.md)。** Windows 命令使用 `cmd.exe`，带空格的游戏路径通过现有 Python argv helper 传递。

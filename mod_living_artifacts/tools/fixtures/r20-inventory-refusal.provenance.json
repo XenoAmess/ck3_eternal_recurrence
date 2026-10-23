@@ -1,0 +1,23 @@
+{
+  "schema": "living-artifacts-r20-inventory-refusal-fixture-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-23T09:20:35.013754+00:00",
+  "scope": "Exact original small refusal and completed callback retained for offline transport regression; authored scene/pixels do not grant live business credit.",
+  "sources": {
+    "r20-inventory-refusal.actual-results.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0020\\case-output\\xalw-core-0006.actual-results.json",
+      "bytes": 675,
+      "sha256": "c0aad7677ba8ae299dd12573d4167d82423c56e2e386a13b1a169ed6de150472"
+    },
+    "r20-inventory-open-root-result.json": {
+      "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0020\\case-output\\inventory-gui-open-0006-root-result.json",
+      "bytes": 1449,
+      "sha256": "e5c940b8d9764f1bf1c11846e68017129f9d05db04128ea7f18a799c657e348f"
+    }
+  },
+  "original_request": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0020\\case-output\\inventory-gui-open-0006-awaiting.json",
+    "bytes": 1196,
+    "sha256": "8200cbd61082f8ef4c747f092891cafb3922384cea7182643d6929af11ac0dea"
+  }
+}

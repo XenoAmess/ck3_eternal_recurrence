@@ -22,7 +22,7 @@ from unittest.mock import patch
 import acceptance_adapter as core
 from acceptance_contract import Frame, Object, array, field, integer, mapping, object_value, pin, read, write_once
 from checkpoint_artifacts import inspect_inputs
-from checkpoint_callback import verify_readback
+from checkpoint_callback import checked_pin, verify_readback
 from management_event_contract import source_option_index
 import prepare_threshold_fixture as emitter
 from startup_actor_binding import StartupActorBinding
@@ -221,7 +221,7 @@ class ThresholdPort(PreviewPort):
     def __init__(self, context: Object, *, bad_growth: bool = False, charge: int = 75,
                  monthly_leak: bool = False, reset_on_equip: bool = False, missing_stress: bool = False,
                  unknown_train: bool = False, no_curse: bool = False, wrong_timer: bool = False,
-                 zero_wallet: bool = False) -> None:
+                  zero_wallet: bool = False, inventory_refusal: bool = False) -> None:
         super().__init__(context)
         self.level, self.xp, self.growth = 10, 992, 0
         self.gold, self.prestige, self.stress = 1000, 1000, 20
@@ -234,6 +234,33 @@ class ThresholdPort(PreviewPort):
         self.bad_growth, self.monthly_leak, self.reset_on_equip = bad_growth, monthly_leak, reset_on_equip
         self.missing_stress, self.unknown_train, self.no_curse, self.wrong_timer = missing_stress, unknown_train, no_curse, wrong_timer
         self.train_intents = 0
+        self.inventory_visible = not inventory_refusal
+        if inventory_refusal:
+            from inventory_gui_contract import GUARD_RELATIVE
+            shared = Path(str(context["shared_source_root"]))
+            guard = shared / GUARD_RELATIVE
+            guard.parent.mkdir(parents=True)
+            shutil.copyfile(Path(__file__).resolve().parents[2] / GUARD_RELATIVE, guard)
+            self.frozen = {"run_id": "unit-run", "source_root": str(shared)}
+
+    def root_checkpoint(self, name: str, request: Object, reserve: int = 90) -> object:
+        if request["schema"] != "living-artifacts-inventory-gui-open-request-v1":
+            return super().root_checkpoint(name, request, reserve)
+        from test_inventory_gui_contract import response_fixture
+        from inventory_gui_contract import InventoryOpenResponse
+        fixtures = Path(__file__).resolve().parent / "fixtures"
+        retained = read(fixtures / "r20-inventory-open-root-result.json")
+        if set(retained) != set(InventoryOpenResponse.__required_keys__) or retained["status"] != "completed":
+            raise AssertionError("Retained R20 completed callback shape changed")
+        write_once(self.output / (name + "-awaiting.json"), {**request, "original_hold_deadline": 1800000000,
+            "reserve_seconds": reserve, "operator_reviewer": self.operator_reviewer})
+        images = self.output / (name + "-authored-geometry")
+        images.mkdir()
+        response, _, _ = response_fixture(images, date_raw=53144328 + self.day * 24,
+            target=str(request["target_artifact_id"]), refusal=checked_pin(request["original_native_refusal"], "original refusal"))
+        write_once(self.output / (name + "-root-result.json"), response)
+        self.inventory_visible = True
+        return response
 
     def frame(self) -> Object:
         result = super().frame()
@@ -282,6 +309,13 @@ class ThresholdPort(PreviewPort):
         step = steps[0]
         tool = str(step["tool"])
         args = mapping(step["args"], "authored arguments")
+        if tool == core.OPEN:
+            retained = read(Path(__file__).resolve().parent / "fixtures/r20-inventory-refusal.actual-results.json")
+            original = object_value(array(retained["rows"], "retained R20 refusal")[0])
+            original["id"], original["plan"] = name, step
+            write_once(self.output / (name + ".actual-results.json"), {"rows": [original]})
+            self.tools.append(tool)
+            return [original]
         if tool == "ck3_save_checkpoint":
             self.tools.append(tool)
             self.saves += 1
@@ -296,7 +330,7 @@ class ThresholdPort(PreviewPort):
             result = object_value({"available": True, "read_only": True, "loaded_source_pins_verified": True, "personally_owned": True, "inventory_artifact": True,
                 "requested_artifact_id": args["artifact_id"], "played_character_id": 91, "date_raw": 53144328 + self.day * 24, "native_equipped_observed": True,
                 "equipped": self.equipped, "equipped_slot_index": 0 if self.equipped else None, "effective_slot_index": 0, "replacing_artifact_id": None,
-                "can_equip_in_effective_slot": True, "can_unequip": True, "inventory_view_available": True, "inventory_view_visible": True,
+                "can_equip_in_effective_slot": True, "can_unequip": True, "inventory_view_available": True, "inventory_view_visible": self.inventory_visible,
                 "owned_ids": [12, 13, 14, 15, 16]})
         elif tool == "ck3_select_event_option" and self.event == "xalw.10":
             self.tools.append(tool)
@@ -345,7 +379,7 @@ def run_fixture(root: Path, **faults: bool | int) -> tuple[Object, Object, Thres
         monthly_leak=bool(faults.get("monthly_leak", False)), reset_on_equip=bool(faults.get("reset_on_equip", False)),
         missing_stress=bool(faults.get("missing_stress", False)), unknown_train=bool(faults.get("unknown_train", False)),
         no_curse=bool(faults.get("no_curse", False)), wrong_timer=bool(faults.get("wrong_timer", False)),
-        zero_wallet=bool(faults.get("zero_wallet", False)))
+        zero_wallet=bool(faults.get("zero_wallet", False)), inventory_refusal=bool(faults.get("inventory_refusal", False)))
     binding = StartupActorBinding(91, 124, "9", 53144328, 12801, "a" * 64, "b" * 64)
     with patch.object(StartupActorBinding, "parse", return_value=binding):
         result = threshold.run_case(context, port)
@@ -353,6 +387,13 @@ def run_fixture(root: Path, **faults: bool | int) -> tuple[Object, Object, Thres
 
 
 class ThresholdAcceptanceTests(unittest.TestCase):
+    def test_r20_exact_refusal_actual_session_and_retained_threshold_consumers(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            context, result, port = run_fixture(Path(temporary), inventory_refusal=True)
+            self.assertEqual(result["status"], "PASS", result.get("error"))
+            self.assertEqual((port.saves, port.day, port.tools.count(core.OPEN)), (7, 47, 1))
+            self.assertEqual(threshold.verify_case(context), result)
+
     def test_r19_retained_zero_wallet_fragment_requires_exact_source_and_native_corroboration(self) -> None:
         fixture = emitter.TOOLS / "fixtures/r19-zero-gold-living-31254.ck3.txt"
         self.assertEqual((fixture.stat().st_size, pin(fixture)["sha256"]),

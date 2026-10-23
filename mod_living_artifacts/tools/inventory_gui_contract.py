@@ -140,3 +140,49 @@ def parse_opening(value: object, *, frame: Frame, run_id: str, machine_id: str, 
     require(map_point(preview_bounds=(_coordinate(rectangle[0]), _coordinate(rectangle[1]), integer(rectangle[2], "content width", 1), integer(rectangle[3], "content height", 1)),
             observed_point=(_coordinate(point[0]), _coordinate(point[1])), target_size=size) == actual, "Shared coordinate conversion does not reproduce actual point")
     return GuiOpening("completed", True, None, (refusal, mapped, source, after))
+
+
+def audit_opening(request: object, response: object, *, refusal: Pin, before_frame: Frame, before_row: object,
+                 after_frame: Frame, after_row: object, source_root: Path, run_id: str, machine_id: str,
+                 reviewer: str, target: str) -> GuiOpening:
+    """Reconsume the original GUI route; a refusal never becomes a native success."""
+    row = mapping(request, "retained inventory opening request")
+    require(set(row) == set(InventoryOpenRequest.__required_keys__) | {"original_hold_deadline", "reserve_seconds", "operator_reviewer"},
+            "Closed retained inventory opening request required")
+    require(row["schema"] == "living-artifacts-inventory-gui-open-request-v1" and row["original_open_intent_not_admitted"] is True and
+            row["action"] == "open-inventory-only" and row["required_route"] == "desktop_coordinate_map" and row["business_pass"] is False and
+            row["operator_reviewer"] == reviewer and integer(row["reserve_seconds"], "GUI reserve", 180, 180) == 180,
+            "Retained inventory opening route differs")
+    deadline = row["original_hold_deadline"]
+    require(type(deadline) in (int, float) and isinstance(deadline, (int, float)) and math.isfinite(deadline) and deadline > 0,
+            "Original finite hold deadline required")
+    require((before_frame.pid, before_frame.player_id, before_frame.generation_decimal, before_frame.date_raw) ==
+            (after_frame.pid, after_frame.player_id, after_frame.generation_decimal, after_frame.date_raw),
+            "GUI inventory independent readback crossed paused scene")
+    require(row["run_id"] == run_id and row["machine_id"] == machine_id and integer(row["pid"], "GUI PID", 1) == before_frame.pid and
+            integer(row["actor_character_id"], "GUI actor", 1) == before_frame.player_id and
+            decimal_id(row["connection_generation"], "GUI generation") == before_frame.generation_decimal and
+            integer(row["date_raw"], "GUI date", 1) == before_frame.date_raw and
+            decimal_id(row["target_artifact_id"], "GUI target", allow_zero=True) == target and
+            checked_pin(row["original_native_refusal"], "original GUI refusal") == refusal,
+            "Retained GUI request crossed original scene/target/refusal")
+    source = pre_intent_source({"source_root": str(source_root)})
+    require(checked_pin(row["refusal_source"], "original refusal source") == source, "GUI refusal source binding differs")
+    equipment: list[bool] = []
+    for original, frame, visible in ((before_row, before_frame, False), (after_row, after_frame, True)):
+        require(field(field(original, "plan"), "tool") == "ck3_query_player_artifact_personal_use_v1", "Original independent ITEM required")
+        item = field(original, "result")
+        require(field(item, "available") is True and field(item, "read_only") is True and field(item, "loaded_source_pins_verified") is True and
+                field(item, "personally_owned") is True and field(item, "inventory_artifact") is True and
+                integer(field(item, "requested_artifact_id"), "GUI ITEM target", 0) == int(target) and
+                integer(field(item, "played_character_id"), "GUI ITEM actor", 1) == frame.player_id and
+                integer(field(item, "date_raw"), "GUI ITEM date", 1) == frame.date_raw and
+                field(item, "inventory_view_visible") is visible and (not visible or field(item, "inventory_view_available") is True),
+                "Independent ITEM did not prove original closed/open inventory")
+        equipped = field(item, "equipped")
+        require(type(equipped) is bool, "Independent equipment bool required")
+        equipment.append(equipped is True)
+    require(equipment[0] == equipment[1], "GUI opening must not supply equipment intent credit")
+    opened = parse_opening(response, frame=before_frame, run_id=run_id, machine_id=machine_id, reviewer=reviewer, target=target, refusal=refusal)
+    require(opened.status == "completed", "Incomplete/unknown GUI opening cannot qualify final audit")
+    return GuiOpening(opened.status, opened.submitted, opened.reason, (*opened.evidence, source))
