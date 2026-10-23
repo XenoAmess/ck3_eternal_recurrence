@@ -83,6 +83,7 @@ class LocalLaunchTests(unittest.TestCase):
 
     def test_frozen_input_pin_changes_block_before_any_launch(self) -> None:
         source = self.root / "input.txt"; source.write_bytes(b"original")
+        manifest = self.write("runtime-manifest.json", {"schema": "ck3-mod-acceptance-shared-runtime-v1"})
         files = {str(source): keeper.pin(source)}
         for module_name in CONTROL_QUEUE_MODULE_ORDER_V1:
             name = module_name + ".py"
@@ -91,7 +92,7 @@ class LocalLaunchTests(unittest.TestCase):
             "run_id": "synthetic-only", "argv": ["unused", str(source), "--agent-source-root", "unused"], "files": files,
             "launch_requires_fresh_owned_cas_and_background_offline": True,
             "previous_session_closed": True, "previous_screen_released": True,
-            "runtime_manifest": keeper.pin(source)})
+            "runtime_manifest": keeper.pin(manifest)})
         self.write("ready-context.json", {"run_id": "synthetic-only", "run_dir": str(self.root),
                    "frozen_argv": keeper.pin(frozen_path)})
         launcher.frozen_run(self.root)
