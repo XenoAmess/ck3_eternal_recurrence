@@ -6,6 +6,8 @@
 
 ## 恢复执行补注（2026-10-23）
 
+**13:20Z最新：已首次上传，用户要求宣传整改，闭环尚未完成。** 真实Workshop ID `3825237804`，Create/内容Submit原工具84222实际0、EResult1；tag `living-artifacts-v0.1.0` 固定052cfb6d8d734014b0101f1e085c7542901eda69，正式57文件同R22。媒体两图/订阅/真实下载均实际0，但两图为R8测试夹具素材，用户明确否定其宣传用途，不能继续作为合格交付。Root已重写BBCode并做生产规则事实审阅，下一步普通正式游戏取材、替换旧图、正文嵌图与入库/公开回读，再完成独立菜单缓存验收。见[整改记录](../../mod_living_artifacts/docs/workshop-promotion-remediation-2026-10-23.md)。Steam12:59:38Z后台offline/true；publisher keeper7123原0/CAS911释放，当前无Game。c23仅c22+真实ID的两registry9处替换，HEADdd3e01dd6fab31127077bfc60a687019889c53ad；原cwd错误consumer1保留，显式正确cwd后真实消费者及public workshop_cache plan均0，尚未prepare/run。不得把旧menu-only卡当普通campaign权限，新取材卡待Root实际审阅采用。下文无ID/未上传为历史截点，不再代表当前状态。
+
 **12:28Z最新：R22/c22/a33五项PASS，正常闭场与公共复验实际0。** 本机 `pc-20260924rtuf-f11af23c08` 实际17自然日、160次计预算调用、7份保存，UNKNOWN=false。结果1288014B/SHA `317a0fb3283481dbe4a839c8c72af3d741d8fac4e159fb8c356f99891af4dea8`；健康装备/卸下4.6616→3.4616→4.6616，月结实际20→0金、压力15→45，同暂停日不重扣，次日实际3.99603金，候选仍ordinary。Root正常GUI退出桌面，游戏12:21:07.786150Z实际process_exit0，retained OS0/native cleanup0、normal_close_qualified=true；host原wait1/native报告RED保留（原背包OPEN拒绝），公共run原工具90738 wait0、keeper原allocate63425 wait0，Root CAS898实际释放。12:23:00.090615Z后台Steam仍offline/true。公共verify `20261023T122159379063Z-verify` 显式绑定实际run-context，原工具81272实际wait0，status=PASS/error=null；七份原Save/melt继续保护。详见[R22专题](../../mod_living_artifacts/docs/runtime-r22-curse-audit-revalidation.md)。当前无CK3，无Workshop ID，仍NOT_RELEASED；下一步采用新的发布/缓存存储卡，固定正式tag并封包上传。
 
 用户随后明确要求继续执行，撤销本交接开头的暂停状态。原度假闭场事实保留；后续恢复、c18 正常冻结和 R15 失败见 [恢复场次记录](../../mod_living_artifacts/docs/runtime-r15-resume-and-inventory-refusal.md)。新进度不把历史离线测试或失败场次追认为产品验收。

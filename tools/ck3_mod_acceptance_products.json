@@ -3264,7 +3264,7 @@
     },
     "living-artifacts": {
       "directory": "mod_living_artifacts",
-      "workshop_item_id": null,
+      "workshop_item_id": "3825237804",
       "forbidden_upstream_ids": [],
       "builder": "{repo_root}/mod_living_artifacts/tools/build_release.py",
       "runtime_mod_key": "living-artifacts",
@@ -3315,7 +3315,7 @@
               "--output",
               "{new-output}"
             ],
-            "workshop_item_id": null
+            "workshop_item_id": "3825237804"
           }
         },
         {
@@ -3381,7 +3381,7 @@
               "--output",
               "{new-output}"
             ],
-            "workshop_item_id": null
+            "workshop_item_id": "3825237804"
           }
         },
         {
@@ -3435,7 +3435,7 @@
               "--output",
               "{new-output}"
             ],
-            "workshop_item_id": null
+            "workshop_item_id": "3825237804"
           }
         },
         {
@@ -3504,7 +3504,7 @@
               "--output",
               "{new-output}"
             ],
-            "workshop_item_id": null
+            "workshop_item_id": "3825237804"
           }
         },
         {
@@ -3573,7 +3573,7 @@
               "--output",
               "{new-output}"
             ],
-            "workshop_item_id": null
+            "workshop_item_id": "3825237804"
           }
         },
         {
@@ -3642,7 +3642,7 @@
               "--output",
               "{new-output}"
             ],
-            "workshop_item_id": null
+            "workshop_item_id": "3825237804"
           }
         },
         {
@@ -3712,7 +3712,7 @@
               "--output",
               "{new-output}"
             ],
-            "workshop_item_id": null
+            "workshop_item_id": "3825237804"
           }
         },
         {
