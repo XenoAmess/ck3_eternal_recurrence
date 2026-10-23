@@ -30,6 +30,8 @@ describe('shader-grounded coat-of-arms renderer', () => {
     const named = { red: [0.45, 0.1332, 0.09] as [number, number, number] }
     closeRgb(resolveColor('red', named)!, [0.45, 0.1332, 0.09])
     closeRgb(resolveColor('rgb { 255 128 0 }', named)!, [1, 128 / 255, 0])
+    closeRgb(resolveColor('rgb { 1 0 0 }', named)!, [1 / 255, 0, 0])
+    expect(resolveColor('rgb { 0.802549 0.772549 0.772549 }', named)).toBeNull()
     closeRgb(resolveColor('hsv { 0 1 1 }', named)!, [1, 0, 0])
     closeRgb(resolveColor('hsv360 { 120 100 100 }', named)!, [0, 1, 0])
     expect(resolveColor('missing', named)).toBeNull()

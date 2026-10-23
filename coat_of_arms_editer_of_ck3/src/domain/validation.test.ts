@@ -21,6 +21,24 @@ describe('CK3 coat of arms structured-model validation', () => {
     }))
   })
 
+  it('rejects fractional or out-of-range RGB in root and emblem colors', () => {
+    for (const expression of [
+      'rgb { 0.802549 0.772549 0.772549 }',
+      'rgb { 0.8 197 197 }',
+      'rgb { 197.0 197 197 }',
+      'rgb { 1e2 197 197 }',
+      'rgb { -1 197 197 }',
+      'rgb { 256 197 197 }',
+    ]) {
+      expect(isDeterministicColorExpression(expression)).toBe(false)
+      const coatOfArms = createCoatOfArms()
+      coatOfArms.colors[0] = expression
+      coatOfArms.coloredEmblems[0].colors[2] = expression
+      expect(validateCoatOfArms(coatOfArms).filter(({ severity }) => severity === 'error')).toHaveLength(2)
+    }
+    expect(isDeterministicColorExpression('rgb { 0 1 255 }')).toBe(true)
+  })
+
   it('guards finite instance data and marks unproven textured resources', () => {
     const coatOfArms = createCoatOfArms()
     coatOfArms.coloredEmblems[0].instances[0].depth = Number.NaN

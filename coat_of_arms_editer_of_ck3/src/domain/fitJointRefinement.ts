@@ -4,6 +4,7 @@ import {
   resolveColor,
   type NamedColorMap,
   type RenderedCoatOfArms,
+  type Rgb,
 } from './renderer'
 import type { CoatOfArms, CoatOfArmsInstance, ColoredEmblem } from './types'
 
@@ -288,8 +289,10 @@ function isolateInstance(
   return selected
 }
 
-function rgbExpression(rgb: readonly number[]): string {
-  const component = (value: number) => Number(value.toFixed(6)).toString()
+function rgbExpression(rgb: Readonly<Rgb>): string {
+  // The renderer uses normalized channels, but CK3 rgb literals use bytes.
+  // Quantize before candidate rendering/scoring so exported colors are scored.
+  const component = (value: number): number => Math.round(clamp(value, [0, 1]) * 255)
   return `rgb { ${component(rgb[0])} ${component(rgb[1])} ${component(rgb[2])} }`
 }
 
@@ -370,7 +373,7 @@ function enumerateMoves(
         for (const step of stage.colorSteps ?? []) {
           for (const channel of [0, 1, 2] as const) {
             for (const direction of [-1, 1] as const) {
-              const next = [...resolved]
+              const next: Rgb = [...resolved]
               next[channel] = clamp(next[channel] + direction * step, [0, 1])
               localCandidates.push(rgbExpression(next))
             }

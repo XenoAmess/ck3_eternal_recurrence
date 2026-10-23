@@ -7,6 +7,8 @@ import {
   type JointRefinementRenderAssets,
 } from './fitJointRefinement'
 import { renderCoatOfArms, type NamedColorMap, type RenderedCoatOfArms } from './renderer'
+import { parseCoatOfArms } from './parser'
+import { serializeCoatOfArms } from './serializer'
 import type { CoatOfArms, CoatOfArmsInstance } from './types'
 
 const texture = (
@@ -78,6 +80,32 @@ const rendered = (value: CoatOfArms): RenderedCoatOfArms => {
 }
 
 describe('exact DDS joint refinement', () => {
+  it('scores and exports integer RGB after the reported 197/255 + 0.03 color move', () => {
+    const source = coat([instance({ scale: [1, 1] })])
+    source.coloredEmblems[0].colors = ['rgb { 197 197 197 }', 'rgb { 197 197 197 }', 'rgb { 197 197 197 }']
+    const target = structuredClone(source)
+    target.coloredEmblems[0].colors[0] = 'rgb { 205 197 197 }'
+    const original = structuredClone(source)
+    const result = refineCoatOfArmsJointly(source, {
+      assets,
+      namedColors: colors,
+      objective: pixelLoss(rendered(target)),
+      renderSize: 48,
+      maxEvaluations: 19,
+      stages: [{ id: 'reported-color-step', passes: 1, colorSteps: [0.03] }],
+    })
+
+    expect(result.receipt.lossAfter).toBeLessThan(result.receipt.lossBefore)
+    expect(result.coatOfArms.coloredEmblems[0].colors[0]).toBe('rgb { 205 197 197 }')
+    expect(result.receipt.acceptedMoves).toContainEqual(expect.objectContaining({
+      move: expect.objectContaining({ kind: 'color', after: 'rgb { 205 197 197 }' }),
+    }))
+    const imported = parseCoatOfArms(serializeCoatOfArms(result.coatOfArms))
+    expect(imported.diagnostics.filter(({ severity }) => severity === 'error')).toEqual([])
+    expect(rendered(imported.coatOfArms).pixels).toEqual(rendered(result.coatOfArms).pixels)
+    expect(source).toEqual(original)
+  })
+
   it('improves existing geometry under a fixed instance budget', () => {
     const source = coat([instance({ position: [0.4, 0.5], scale: [0.4, 0.5], rotation: 0 })])
     const target = coat([instance({ position: [0.5, 0.5], scale: [0.5, 0.5], rotation: 15 })])

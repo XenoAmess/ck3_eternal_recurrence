@@ -120,6 +120,14 @@ describe('CK3 coat of arms parser', () => {
     expect(result.diagnostics.some((item) => item.severity === 'error')).toBe(true)
   })
 
+  it('diagnoses the reported fractional emblem RGB without silently changing it', () => {
+    const result = parseCoatOfArms('coa={pattern="pattern_solid.dds" colored_emblem={texture="ce_block_02.dds" color1=rgb { 0.802549 0.772549 0.772549 } instance={depth=619}}}')
+    expect(result.coatOfArms.coloredEmblems[0].colors[0]).toBe('rgb { 0.802549 0.772549 0.772549 }')
+    expect(result.diagnostics).toContainEqual(expect.objectContaining({
+      severity: 'error', message: expect.stringContaining('rgb 分量必须为 0–255 整数'),
+    }))
+  })
+
   it('blocks template DSL and follows the native last-wins duplicate scalar rule', () => {
     const template = parseCoatOfArms('coa={pattern="pattern_solid.dds" color1=list "normal_colors"}')
     const duplicate = parseCoatOfArms('coa={color1=blue color1=red}')

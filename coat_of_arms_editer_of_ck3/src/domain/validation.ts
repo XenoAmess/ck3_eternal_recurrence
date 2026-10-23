@@ -2,8 +2,9 @@ import type { CoatOfArms, Diagnostic } from './types'
 
 const ATOM = /^[A-Za-z0-9_.:-]+$/
 const NUMBER = '[-+]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][-+]?\\d+)?'
-const COLOR_BLOCK = new RegExp(
-  `^(?:rgb|hsv)\\s*\\{\\s*${NUMBER}\\s+${NUMBER}\\s+${NUMBER}\\s*\\}$`,
+const RGB_BLOCK = /^rgb\s*\{\s*([-+]?\d+)\s+([-+]?\d+)\s+([-+]?\d+)\s*\}$/i
+const HSV_BLOCK = new RegExp(
+  `^hsv\\s*\\{\\s*(${NUMBER})\\s+(${NUMBER})\\s+(${NUMBER})\\s*\\}$`,
   'i',
 )
 
@@ -16,8 +17,14 @@ function isPrintableAscii(value: string): boolean {
 
 export function isDeterministicColorExpression(value: string): boolean {
   const normalized = value.trim()
-  return isPrintableAscii(normalized)
-    && (ATOM.test(normalized) || COLOR_BLOCK.test(normalized))
+  if (!isPrintableAscii(normalized)) return false
+  if (ATOM.test(normalized)) return true
+  const rgb = normalized.match(RGB_BLOCK)
+  if (rgb) return rgb.slice(1).map(Number).every((component) => (
+    Number.isInteger(component) && component >= 0 && component <= 255
+  ))
+  const hsv = normalized.match(HSV_BLOCK)
+  return Boolean(hsv && hsv.slice(1).map(Number).every(Number.isFinite))
 }
 
 function validateResourceName(
@@ -45,12 +52,12 @@ function validateColors(
   colors: [string, string, string],
   context: string,
   diagnostics: Diagnostic[],
-) {
+): void {
   colors.forEach((color, index) => {
     if (!isDeterministicColorExpression(color)) {
       diagnostics.push({
         severity: 'error',
-        message: `${context} color${index + 1} 只能是命名颜色或 rgb/hsv 三分量字面量`,
+        message: `${context} color${index + 1} 只能是命名颜色或 rgb/hsv 三分量字面量；rgb 分量必须为 0–255 整数`,
       })
     }
   })

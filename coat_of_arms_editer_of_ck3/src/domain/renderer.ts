@@ -93,8 +93,9 @@ export function resolveColor(expression: string, namedColors: NamedColorMap): Rg
   if (parsed.model === 'hsv') rgb = hsvToRgb(first, second, third)
   else if (parsed.model === 'hsv360') rgb = hsvToRgb(first / 360, second / 100, third / 100)
   else {
-    const divisor = parsed.values.some((value) => value > 1) ? 255 : 1
-    rgb = [first / divisor, second / divisor, third / divisor]
+    if (!parsed.values.every(Number.isInteger)) return null
+    // Even rgb { 1 0 0 } is a byte color, not normalized full-intensity red.
+    rgb = [first / 255, second / 255, third / 255]
   }
   return rgb.every((value) => value >= 0 && value <= 1) ? rgb : null
 }

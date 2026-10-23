@@ -383,6 +383,7 @@ const runtimeEnglish: Record<string, string> = {
 }
 
 const runtimeEnglishPatterns: readonly [RegExp, (match: RegExpMatchArray) => string][] = [
+  [/^(.+) color([123]) 只能是命名颜色或 rgb\/hsv 三分量字面量；rgb 分量必须为 0–255 整数$/, (m) => `${m[1] === '根级' ? 'Root' : m[1]} color${m[2]} must be a named color or an rgb/hsv triplet; rgb channels must be integers from 0 to 255`],
   [/^(\d+) 个撤销点 · ([\d.]+) MiB \/ 16 MiB$/, (m) => `${m[1]} undo points · ${m[2]} MiB / 16 MiB`],
   [/^已撤销 · (\d+) 个撤销点 \/ (\d+) 个重做点$/, (m) => `Undone · ${m[1]} undo points / ${m[2]} redo points`],
   [/^已重做 · (\d+) 个撤销点 \/ (\d+) 个重做点$/, (m) => `Redone · ${m[1]} undo points / ${m[2]} redo points`],
