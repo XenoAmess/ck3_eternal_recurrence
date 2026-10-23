@@ -22,6 +22,7 @@ from acceptance_contract import Object, array, field, integer, mapping, object_v
 from ck3_mod_acceptance_native_day import STEP, project_native_day
 from startup_actor_binding import StartupActorBinding
 from test_checkpoint_artifacts import AUTHORED_ARTIFACTS, AuthoredArtifact, authored_checkpoint_text
+from test_core_generation import Script
 from test_npc_saved_observer import variable
 from test_preview_acceptance_adapter import context_fixture as preview_context
 from test_suppression_timer_acceptance_adapter import TimerPort
@@ -52,7 +53,16 @@ class CursePort(TimerPort):
     def __init__(self, context: Object, *, fault: str | None = None) -> None:
         super().__init__(context, fault=fault)
         self.level, self.xp, self.growth = 1, 0, 0
-        self.gold, self.prestige, self.stress = 20, 1000, 20
+        # Read the real prepared producer output; this authored boundary does
+        # not prove CK3's gold effects or grant live initial-state qualification.
+        emitted = Script((self.state / "profile/mod-content/fixture/common/scripted_effects/xalw_curse_inputs.txt").read_text(encoding="utf-8-sig"))
+        initial = emitted.named("xalw_curse_initialize_effect")
+        debit, credit = emitted.scalar(initial, "remove_short_term_gold"), emitted.scalar(initial, "add_gold")
+        if debit.value != "gold" or credit.value != "20" or debit.start >= credit.start or emitted.descendants(initial, "add_gold"):
+            raise AssertionError("Prepared initial wallet must clear current gold with the native positive debit before adding 20")
+        self.gold, self.prestige, self.stress = int(credit.value), 1000, 20
+        if fault == "wrong_initial_wallet":
+            self.gold = 276  # R18's retained native and first Save input failure.
         self.equipped_id: int | None = None
         self.payment: int | None = None
         self.equip_count = 0
@@ -180,6 +190,23 @@ class CurseRepresentativeTests(unittest.TestCase):
             self.assertEqual(field(observed, "next_day_stress_change"), -1)
             self.assertFalse(result["business_pass"])
             self.assertFalse(result["product_release_pass"])
+            deployed = read(port.state / "profile/mod-content/fixture/_case_contract.json")
+            sources = mapping(deployed["caller_sources"], "real prepared caller sources")
+            for name in ("prepare_curse_fixture.py", "curse_representative_acceptance_adapter.py"):
+                self.assertEqual(sources[name], pin(curse.TOOLS / name))
+
+    def test_r18_initial_wallet_failure_is_retained_before_any_equipment_or_day(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            context, result, port = run_fixture(Path(temporary), fault="wrong_initial_wallet")
+            self.assertEqual(result["status"], "BLOCKED", result.get("error"))
+            self.assertEqual((port.saves, port.equip_count, port.day), (1, 0, 0))
+            self.assertNotIn(core.EQUIP, port.tools)
+            self.assertTrue((port.output / "curse-checkpoint-01.json").is_file())
+            self.assertIn("saved Q100000=27600000, native Q100000=27600000", str(result["error"]))
+            self.assertEqual([field(check, "status") for check in array(result["checks"], "checks")], ["BLOCKED"] * 5)
+            self.assertFalse(result["case_contract_qualified"])
+            self.assertFalse(result["gui_contract_qualified"])
+            self.assertEqual(curse.verify_case(context), result)
 
     def test_native_health_unavailable_keeps_other_four_checks_and_no_fake_health(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -232,6 +259,12 @@ class CurseRepresentativeTests(unittest.TestCase):
         source = emitter.render_initial_inputs()
         self.assertEqual(source.count("xalw_refresh_artifact_effect = yes"), 2)
         self.assertEqual(source.count("xalw_discover_owner_effect = yes"), 1)
+        initial = Script(source)
+        owner = initial.named("xalw_curse_initialize_effect")
+        debit, credit = initial.scalar(owner, "remove_short_term_gold"), initial.scalar(owner, "add_gold")
+        self.assertEqual((debit.value, credit.value), ("gold", "20"))
+        self.assertLess(debit.start, credit.start)
+        self.assertFalse(initial.descendants(owner, "add_gold"))
         for forbidden in ("xalw_content_monthly_effect", "xalw_owner_monthly_effect", "xalw_content_payment", "xalw_content_month_done", "remove_variable", "equip_artifact", "destroy_artifact", "PASS"):
             self.assertNotIn(forbidden, source)
 

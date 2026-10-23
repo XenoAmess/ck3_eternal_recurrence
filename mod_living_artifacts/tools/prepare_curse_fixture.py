@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 import sys
+from typing import Final
 
 TOOLS = Path(__file__).resolve().parent
 for directory in (TOOLS.parents[1] / "tools", TOOLS):
@@ -18,6 +19,8 @@ from living_artifacts_core import render_fixture_effects, render_fixture_localiz
 from prepare_fixture import FixtureEmission
 from prepare_npc_fixture import EXPECTED_EXE_SHA, SOURCES as GAME_SOURCES, verify_source
 from prepare_threshold_fixture import tree
+
+INITIAL_GOLD: Final[int] = 20
 
 
 def qualify_fixture_sources(game: Path) -> dict[str, Pin]:
@@ -63,13 +66,13 @@ def render_initial_inputs() -> str:
     materials = "\n".join(f"xalw_test_create_{rarity}_material_effect = yes\n"
         f"set_variable = {{ name = xalw_fixture_material_{rarity} value = scope:xalw_test_material_{rarity} }}"
         for rarity in ("common", "masterwork", "famed", "illustrious"))
-    return '''xalw_curse_initialize_effect = {
+    return f'''xalw_curse_initialize_effect = {{
  save_scope_as = xalw_fixture_owner
  # Initial spendable wallet, not a paid-result field.
- add_gold = { value = gold multiply = -1 }
- add_gold = 20
+ remove_short_term_gold = gold
+ add_gold = {INITIAL_GOLD}
  add_stress = 20
- set_variable = { name = xalw_fixture_initial_day value = current_date }
+ set_variable = {{ name = xalw_fixture_initial_day value = current_date }}
 ''' + _living("xalw_test_living_name", "xalw_fixture_target", 1) + _living("xalw_curse_appetite_name", "xalw_curse_fixture_appetite", 2) + '''
 create_artifact = {
  name = xalw_curse_raw_name description = xalw_test_living_description

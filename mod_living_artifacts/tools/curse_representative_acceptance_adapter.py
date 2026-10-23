@@ -26,7 +26,7 @@ from checkpoint_producer import raw_object, stamp
 from checkpoint_artifacts import SavedArtifact, SavedVariable, records
 from management_event_contract import source_option_index
 from prepare_fixture import FixtureEmission
-from prepare_curse_fixture import emit_fixture
+from prepare_curse_fixture import INITIAL_GOLD, emit_fixture
 from prepare_threshold_fixture import same_json, tree
 
 CASE: Literal["curse_representative"] = "curse_representative"
@@ -313,6 +313,13 @@ def _observe(session: core.Session, target: str | None, *, health: bool = False)
     return actual, reference
 
 
+def _require_initial_wallet(initial: CurseObservation) -> None:
+    expected = str(INITIAL_GOLD * 100000)
+    require(initial.base.saved.gold_raw == initial.base.native.gold_raw == expected,
+        f"Initial curse fixture wallet must be {INITIAL_GOLD} gold before the first equipment action; "
+        f"saved Q100000={initial.base.saved.gold_raw}, native Q100000={initial.base.native.gold_raw}")
+
+
 def _number(values: dict[str, SavedVariable], name: str) -> int | None:
     value = values.get(name)
     return None if value is None else value.integer_value(name)
@@ -347,6 +354,7 @@ def evaluate(context: object, *, manifest: object, reviewer: str, journal: objec
     saved = [read(Path(ref["path"])) for ref in refs]
     observations = [consume_observation(raw, context=context, manifest=manifest, reviewer=reviewer) for raw in saved]
     first, equipped, removed, before, charged, reentered, next_day = observations
+    _require_initial_wallet(first)
     start = first.base.frame
     require(first.base.sample.date_literal == "1066.9.15", "Ordinary Robert initial date required")
     for actual, day in zip(observations, (0, 0, 0, 15, 16, 16, 17), strict=True):
@@ -452,6 +460,7 @@ def run_case(context: object, client: object) -> Object:
         session.refs.extend(prepared_sources(context, client.state))
         first, reference = _observe(session, None, health=True)
         saves.append(reference)
+        _require_initial_wallet(first)
         a, b, start = first.base.sample.artifact_id, first.appetite.artifact_id, first.base.frame.date_raw
         session.equip(a, True)
         _, reference = _observe(session, a, health=True)
