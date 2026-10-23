@@ -2022,3 +2022,803 @@ _R0039_SOURCE_ONLY: dict[str, SourceOnlyRecord] = {'pilgrimage.2008': {'analysis
                                       'policy_actually_used': 'native_first_displayed_v1',
                                       'registry_consumption_succeeded_live': False}}}
 PILGRIMAGE_TRAVEL_SOURCE_ONLY_12004.update(_R0039_SOURCE_ONLY)
+
+_R0039_R0041_SOURCE_ONLY: dict[str, SourceOnlyRecord] = {'pilgrimage.2003': {'analysis': {'source_analysis_completed': True,
+                                  'migration_review_status': 'source_reviewed_no_occurrence_contract',
+                                  'exact_build': '1.20.0.4',
+                                  'source_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0039-pilgrimage-2003.source-analysis.json',
+                                  'source_document_sha256': 'd6bfaae744e81599d1e90455607af0a4bc3b28004abcb87c7669bb3368f80867',
+                                  'occurrence_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0039-final-event-closure.json',
+                                  'title': '朝圣：安全问题',
+                                  'source_pins': [{'game_relative_path': 'events/activities/pilgrimage_activity/pilgrimage_events.txt',
+                                                   'bytes': 358138,
+                                                   'sha256': '900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06',
+                                                   'relevant_lines': [[2581, 2821]]},
+                                                  {'game_relative_path': 'localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml',
+                                                   'bytes': 136481,
+                                                   'sha256': 'cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3',
+                                                   'relevant_lines': [[314, 318]]},
+                                                  {'game_relative_path': 'common/script_values/01_dynamic_values.txt',
+                                                   'bytes': 48201,
+                                                   'sha256': '023165e7d27d106a34f34d7726d938efa8d5dce25650ea3256e0b5ea3f73cc2a',
+                                                   'relevant_lines': [[53, 71]]},
+                                                  {'game_relative_path': 'common/scripted_effects/00_pilgrimage_effects.txt',
+                                                   'bytes': 40713,
+                                                   'sha256': '4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80',
+                                                   'relevant_lines': [[488, 513], [1225, 1238]]},
+                                                  {'game_relative_path': 'common/scripted_effects/00_activity_effects.txt',
+                                                   'bytes': 116295,
+                                                   'sha256': 'd5c594f8746b923d34b13a67db881821e12f08ce1ab4e6e3f83933419c9e2d38',
+                                                   'relevant_lines': [[4357, 4365], [4549, 4590]]},
+                                                  {'game_relative_path': 'common/modifiers/00_activity_pilgrimage_modifiers.txt',
+                                                   'bytes': 8263,
+                                                   'sha256': 'b4b087debf7975b02fdc30d3244a04aca634e3e26b2fafa4c42057e71a1c1580',
+                                                   'relevant_lines': [[43, 48], [196, 199]]},
+                                                  {'game_relative_path': 'common/on_action/activities/pilgrimage_on_actions.txt',
+                                                   'bytes': 11904,
+                                                   'sha256': 'fdf71f074882f94eb3df497a1ddb2cb9a95fb13e973aebf25d4c3569729ee354',
+                                                   'relevant_lines': [[44, 44]]}],
+                                  'source_options': [{'source_key': 'pilgrimage.2003.a',
+                                                      'historical_native_index': 0,
+                                                      'historical_label': '为了我的朝圣之旅，我应该雇佣他们中的一些人。',
+                                                      'effects': ['Visible only when the current travel plan '
+                                                                  'does not already have '
+                                                                  'hire_experienced_mercenaries_option.',
+                                                                  'Conditional pious_type_option_effect when '
+                                                                  'the current Rite has '
+                                                                  'tenet_armed_pilgrimages, otherwise '
+                                                                  'tenet_struggle_submission; this helper '
+                                                                  'matches Pious/Hajj and changes an '
+                                                                  'activity score, not elapsed travel days.',
+                                                                  'Add pilgrim_protection_modifier to the '
+                                                                  'current travel plan: travel_safety+10. '
+                                                                  'Remove short-term gold using dynamic '
+                                                                  'minor_gold_value; its income '
+                                                                  'formula/clamps/round-to5 are not a '
+                                                                  'universal75gold cost.',
+                                                                  'Humble and greedy each supply '
+                                                                  'medium_stress_impact_gain to '
+                                                                  'stress_and_fulfillment_impact. No direct '
+                                                                  'option-level travel delay or '
+                                                                  'Pilgrim/Hajjaj trait grant declared.'],
+                                                      'visibility': 'R0039 instance9 rendered0/native0, '
+                                                                    'shown/enabled and selected once. Fresh '
+                                                                    'window order/legality is still '
+                                                                    'required.',
+                                                      'historical_R31_selected': False},
+                                                     {'source_key': 'pilgrimage.2003.b',
+                                                      'historical_native_index': 1,
+                                                      'historical_label': '萨阿德丁似乎是一个很棒的家伙。',
+                                                      'effects': ['Conditional pious_type_option_effect only '
+                                                                  'for current Rite tenet_warmonger.',
+                                                                  'Remove short-term gold using dynamic '
+                                                                  'minor_gold_value; '
+                                                                  'recruit_to_entourage_court_and_activity_effect '
+                                                                  'targets saved2002_local_warrior. The '
+                                                                  'helper guards court/companion/activity '
+                                                                  'additions; this option was not selected '
+                                                                  'and actual recruitment is unobserved.',
+                                                                  'Humble and greedy each supply '
+                                                                  'medium_stress_impact_gain. This is the '
+                                                                  'candidate-warrior recruitment option, '
+                                                                  "distinct from A's travel-plan safety "
+                                                                  'modifier.'],
+                                                      'visibility': 'R0039 instance9 rendered1/native1, '
+                                                                    'shown/enabled, not selected. Name is '
+                                                                    'occurrence-specific.',
+                                                      'historical_R31_selected': False},
+                                                     {'source_key': 'pilgrimage.2003.c',
+                                                      'historical_native_index': 2,
+                                                      'historical_label': '不。我坚定地信仰着安拉。',
+                                                      'effects': ['Invoke pious_type_option_effect and '
+                                                                  'give_pilgrim_xp_effect. The latter '
+                                                                  'gives+5PilgrimXP only with owned pilgrim '
+                                                                  'below100XP; otherwise it branches to '
+                                                                  'medium Learning lifestyleXP, zealous '
+                                                                  'medium stress loss, or minor stress loss. '
+                                                                  'It does not add pilgrim or convert '
+                                                                  'hajjaj.',
+                                                                  'Add pilgrimage_divine_protection_modifier '
+                                                                  'for10years: '
+                                                                  'monthly_piety_gain_mult+0.05,diplomacy_per_piety_level+1,intrigue_per_piety_level-1.',
+                                                                  'If current Rite has '
+                                                                  'tenet_inner_journey_humble_pilgrimage_bonus, '
+                                                                  'add medium_piety_gain. Arrogant/craven '
+                                                                  'stress inputs use '
+                                                                  'minor/medium_stress_impact_gain. No '
+                                                                  'purchase or direct travel delay in this '
+                                                                  'option body.'],
+                                                      'visibility': 'R0039 instance9 rendered2/native2, '
+                                                                    'shown/enabled, not selected. Source '
+                                                                    'effects are not credited as native '
+                                                                    'results.',
+                                                      'historical_R31_selected': False}],
+                                  'agent_reference': 'R0039 instance9, actual day150.0, player15893, '
+                                                     'saved2002_local_warrior19735. Three current '
+                                                     'shown/enabled rows native0/1/2; first displayed '
+                                                     'native0 selected once. ACK and independent old-window '
+                                                     'disappearance confirmed at unchanged date51398520. '
+                                                     'Gold raw127430533→119930533(scale100000), a same-date '
+                                                     'decrease75; piety225971250 unchanged and stress0→0. '
+                                                     'Actual travel_safety modifier, candidate recruitment, '
+                                                     'score progression and unused C rewards were not '
+                                                     'independently queried. Source-local2year event '
+                                                     'cooldown is not the activity cooldown. Immediate '
+                                                     'chooses an eligible local pool warrior or creates one; '
+                                                     "this occurrence's creation branch is not established. "
+                                                     'All indices/labels are historical evidence only. '
+                                                     'Current shared registry before proposal has migration '
+                                                     'metadata but no source_analysis_completed flag '
+                                                     'for2003. No policy or action contract is added.',
+                                  'current_native_legality': None,
+                                  'action_ready': False,
+                                  'ordinary_auto_consumes': False,
+                                  'full_occurrence_contract_registered': False,
+                                  'selection_policy_changed': False,
+                                  'historical_index_is_current_selection_permission': False,
+                                  'historical_evidence_is_current_state': False},
+                     'observations': {'machine_id': '4-8e1c2f1861',
+                                      'observed_at_utc': '2026-10-23T05:02:05.641495+00:00',
+                                      'run_id': '4-8e1c2f1861--faith-engine--R0039',
+                                      'actual': {'event_instance_id': 9,
+                                                 'event_definition_key': 'pilgrimage.2003',
+                                                 'selected_native_option_index': 0,
+                                                 'selected_option_number': 1,
+                                                 'submission_attempted': True,
+                                                 'ack_accepted': True,
+                                                 'old_instance_gone_in_independent_snapshot': True,
+                                                 'date_raw': 51398520,
+                                                 'game_day': 150,
+                                                 'snapshot_revision': 466,
+                                                 'actor_character_id': 15893,
+                                                 'local_warrior_character_id': 19735,
+                                                 'displayed_options': [{'rendered_index': 0,
+                                                                        'native_option_index': 0,
+                                                                        'shown': True,
+                                                                        'enabled': True,
+                                                                        'fallback': False,
+                                                                        'cancel': False,
+                                                                        'resolved_name': '为了我的朝圣之旅，我应该雇佣他们中的一些人。',
+                                                                        'unavailable_reason': '',
+                                                                        'effect_indicators': {'status': 'available',
+                                                                                              'coverage': 'played-character-event-icon-indicators-1.20.0.4-v1',
+                                                                                              'complete_effect_set': False,
+                                                                                              'rows': []},
+                                                                        'effect_preview': {'status': 'unavailable',
+                                                                                           'reason': 'indicator_subset_has_no_completeness_signal'},
+                                                                        'resource_deltas': {'status': 'unavailable'},
+                                                                        'relationship_deltas': {'status': 'unavailable'}},
+                                                                       {'rendered_index': 1,
+                                                                        'native_option_index': 1,
+                                                                        'shown': True,
+                                                                        'enabled': True,
+                                                                        'fallback': False,
+                                                                        'cancel': False,
+                                                                        'resolved_name': '萨阿德丁似乎是一个很棒的家伙。',
+                                                                        'unavailable_reason': '',
+                                                                        'effect_indicators': {'status': 'available',
+                                                                                              'coverage': 'played-character-event-icon-indicators-1.20.0.4-v1',
+                                                                                              'complete_effect_set': False,
+                                                                                              'rows': []},
+                                                                        'effect_preview': {'status': 'unavailable',
+                                                                                           'reason': 'indicator_subset_has_no_completeness_signal'},
+                                                                        'resource_deltas': {'status': 'unavailable'},
+                                                                        'relationship_deltas': {'status': 'unavailable'}},
+                                                                       {'rendered_index': 2,
+                                                                        'native_option_index': 2,
+                                                                        'shown': True,
+                                                                        'enabled': True,
+                                                                        'fallback': False,
+                                                                        'cancel': False,
+                                                                        'resolved_name': '不。我坚定地信仰着安拉。',
+                                                                        'unavailable_reason': '',
+                                                                        'effect_indicators': {'status': 'available',
+                                                                                              'coverage': 'played-character-event-icon-indicators-1.20.0.4-v1',
+                                                                                              'complete_effect_set': False,
+                                                                                              'rows': [{'kind': 'stress',
+                                                                                                        'direction': 'decrease',
+                                                                                                        'magnitude': {'status': 'unavailable'},
+                                                                                                        'affected_by_trait': False,
+                                                                                                        'critical': False}]},
+                                                                        'effect_preview': {'status': 'unavailable',
+                                                                                           'reason': 'indicator_subset_has_no_completeness_signal'},
+                                                                        'resource_deltas': {'status': 'unavailable'},
+                                                                        'relationship_deltas': {'status': 'unavailable'}}],
+                                                 'typed_scope_projection': {'schema': 'current-event-window-context-v1',
+                                                                            'schema_version': 1,
+                                                                            'status': 'available',
+                                                                            'snapshot_revision': 466,
+                                                                            'date_raw': 51398520,
+                                                                            'current_event_instance_id': 9,
+                                                                            'window_match_count': 1,
+                                                                            'unavailable_reason': None,
+                                                                            'event_definition_key': 'pilgrimage.2003',
+                                                                            'calculated_event_id': 2742003,
+                                                                            'runtime_stats_ordinal': 3591,
+                                                                            'root_scope': {'status': 'available',
+                                                                                           'raw_type_index': 4,
+                                                                                           'type_key': 'character',
+                                                                                           'subtype': 0,
+                                                                                           'typed_identity': {'status': 'available',
+                                                                                                              'kind': 'character',
+                                                                                                              'character_id': 15893}},
+                                                                            'saved_scopes': [{'name': 'travel_plan',
+                                                                                              'name_identifier': 211,
+                                                                                              'scope': {'status': 'available',
+                                                                                                        'raw_type_index': 35,
+                                                                                                        'type_key': 'travel_plan',
+                                                                                                        'subtype': 0,
+                                                                                                        'typed_identity': {'status': 'unavailable',
+                                                                                                                           'reason': 'generic_scope_payload_identity_not_closed'}}},
+                                                                                             {'name': '2002_local_warrior',
+                                                                                              'name_identifier': 20219,
+                                                                                              'scope': {'status': 'available',
+                                                                                                        'raw_type_index': 4,
+                                                                                                        'type_key': 'character',
+                                                                                                        'subtype': 0,
+                                                                                                        'typed_identity': {'status': 'available',
+                                                                                                                           'kind': 'character',
+                                                                                                                           'character_id': 19735}}}],
+                                                                            'readiness': {'event_definition_identity_ready': True,
+                                                                                          'root_scope_ready': True,
+                                                                                          'saved_scopes_ready': True,
+                                                                                          'option_presentation_ready': True,
+                                                                                          'effect_indicators_ready': True,
+                                                                                          'effect_preview_ready': False,
+                                                                                          'semantic_decision_ready': False},
+                                                                            'provenance': {'root': 'module+0x5C6A520->+0x10',
+                                                                                           'idler_vtable_rva': '0x44BC418',
+                                                                                           'manager_offset': '+0x28',
+                                                                                           'backend_id': 'ck3-1.20.0.4-native-event-window-v1'}},
+                                                 'post_actor_character_id': 15893,
+                                                 'post_date_raw': 51398520,
+                                                 'post_active_event': None,
+                                                 'policy_actually_used': 'native_first_displayed_v1',
+                                                 'live_registry_status': 'not_registered',
+                                                 'wallet_scale': 100000,
+                                                 'evidence': [{'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0039\\case-output\\faith-e02-journey-001-event-9-offline-analysis-input.json',
+                                                               'bytes': 75401,
+                                                               'sha256': '11b4680c68078c017c3c404e3b2a8230919817f0f093fee998febbac0912ed45'},
+                                                              {'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0039\\case-output\\faith-e02-journey-001-event-9-selection-intent.json',
+                                                               'bytes': 80247,
+                                                               'sha256': '8aead2ac1cff92fc5bde0487c7160fc51048ced19d48f018b1a13fb70ae57b26'},
+                                                              {'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0039\\case-output\\faith-e02-journey-001-event-9-selection-observed.json',
+                                                               'bytes': 37998,
+                                                               'sha256': '81b764d04b8f673b39bc54704e8352f2a6051b6ac1762a0f088b3413ba28952d'},
+                                                              {'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0039\\case-output\\faith-e02-journey-001-0039-event-select-once.actual-results.json',
+                                                               'bytes': 42197,
+                                                               'sha256': 'c43d639da0197a1f45e4fdcc2277fe7863936f3b0adaf08e5f2ced4bf5e3cbf2'}],
+                                                 'gold_raw_before': 127430533,
+                                                 'gold_raw_after': 119930533,
+                                                 'piety_raw_before': 225971250,
+                                                 'piety_raw_after': 225971250,
+                                                 'stress_before': 0,
+                                                 'stress_after': 0},
+                                      'policy_actually_used': 'native_first_displayed_v1',
+                                      'registry_consumption_succeeded_live': False}},
+ 'travel_events_oltner_2.1030': {'analysis': {'source_analysis_completed': True,
+                                              'migration_review_status': 'source_reviewed_no_occurrence_contract',
+                                              'exact_build': '1.20.0.4',
+                                              'source_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0041-events-source-analysis-12004.json',
+                                              'source_document_sha256': 'b35d2835d1526b55d0dede20d111efdcad832f7993b0da3eea9c17ec50b8c68c',
+                                              'occurrence_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0041-events-occurrence.json',
+                                              'title': '满载的商队',
+                                              'source_pins': [{'game_relative_path': 'events/travel_events/travel_events_oltner_2.txt',
+                                                               'bytes': 144369,
+                                                               'sha256': '6de5bfc12d2765da90541e98337529c4e974d8eec749943b40a30908e640b37b',
+                                                               'relevant_lines': [[715, 982]]},
+                                                              {'game_relative_path': 'common/scripted_effects/00_ep1_artifact_creation_effects.txt',
+                                                               'bytes': 397942,
+                                                               'sha256': '1b60d78e54e1ebff7601bd13e59b2251cff47d96f595a4431c666fa3ee11a831',
+                                                               'relevant_lines': [[12325, 13497]]},
+                                                              {'game_relative_path': 'common/scripted_effects/00_travel_effects.txt',
+                                                               'bytes': 1867,
+                                                               'sha256': '47a4b46a479a2215ffeda4b6d7b8d9226928f6ec0dc70c289b4e0e2fe2b5ec0e',
+                                                               'relevant_lines': [[9, 31]]},
+                                                              {'game_relative_path': 'common/modifiers/00_travel_modifiers_oltner.txt',
+                                                               'bytes': 2657,
+                                                               'sha256': 'bd5875b3a24e7ee15062a41cd5f2307176edf74215013b71a0adf1896956144e',
+                                                               'relevant_lines': [[14, 17]]},
+                                                              {'game_relative_path': 'common/script_values/01_dynamic_values.txt',
+                                                               'bytes': 48201,
+                                                               'sha256': '023165e7d27d106a34f34d7726d938efa8d5dce25650ea3256e0b5ea3f73cc2a',
+                                                               'relevant_lines': [[53, 71]]},
+                                                              {'game_relative_path': 'localization/simp_chinese/travel/oltner_travel_l_simp_chinese.yml',
+                                                               'bytes': 42803,
+                                                               'sha256': '49e7fe26506f1b03ef345a26539c9f4615c6a6582e16a8b43377ee3f5180c77f',
+                                                               'relevant_lines': [[27, 32]]}],
+                                              'source_options': [{'source_key': 'travel_events_oltner_2.1030.a',
+                                                                  'historical_native_index': 0,
+                                                                  'historical_label': '“你挑起我的兴趣了，让我们来交易吧。”',
+                                                                  'effects': ['pay_short_term_gold to saved '
+                                                                              'local_character using dynamic '
+                                                                              'minor_gold_value; not a fixed '
+                                                                              'universal price.',
+                                                                              'Call generate_trinket_effect '
+                                                                              'with '
+                                                                              'receiver=root,giver=local_character,GRAB_ALL_TRINKETS=yes,HISTORY_TYPE=created; '
+                                                                              'it runs a weighted random '
+                                                                              'trinket generator, then event '
+                                                                              'requests owner=root through '
+                                                                              'new_trinket scope. No '
+                                                                              'artifact identity, type, '
+                                                                              'quality or ownership readback '
+                                                                              'was made in this occurrence.',
+                                                                              'Paranoid medium and impatient '
+                                                                              'minor stress/fulfillment gain '
+                                                                              'inputs. Actual same-date '
+                                                                              'wallet decreases55 and stress '
+                                                                              'stays0; source stress inputs '
+                                                                              'are not final native stress '
+                                                                              'deltas.'],
+                                                                  'visibility': 'Shown/enabled in R0041; '
+                                                                                'native index and label are '
+                                                                                'historical evidence only. '
+                                                                                'Fresh native shown order '
+                                                                                'and legality are mandatory.',
+                                                                  'historical_R31_selected': False},
+                                                                 {'source_key': 'travel_events_oltner_2.1030.b',
+                                                                  'historical_native_index': 1,
+                                                                  'historical_label': '“用不着，但也许我们暂时可以一起旅行？”',
+                                                                  'effects': ['Add '
+                                                                              'traveling_with_camel_merchants_modifier '
+                                                                              'to current travel plan '
+                                                                              'for1month: travel_safety+10.',
+                                                                              'Paranoid major and arrogant '
+                                                                              'minor stress/fulfillment gain '
+                                                                              'inputs. No direct purchase '
+                                                                              'payment in this option body; '
+                                                                              'this branch was not '
+                                                                              'selected.'],
+                                                                  'visibility': 'Shown/enabled in R0041; '
+                                                                                'native index and label are '
+                                                                                'historical evidence only. '
+                                                                                'Fresh native shown order '
+                                                                                'and legality are mandatory.',
+                                                                  'historical_R31_selected': False},
+                                                                 {'source_key': 'travel_events_oltner_2.1030.c',
+                                                                  'historical_native_index': 2,
+                                                                  'historical_label': '“给我看些独特的东西，而且得是库法的真正瑰宝。”',
+                                                                  'effects': ['Pay dynamic major_gold_value '
+                                                                              'to local_character; set '
+                                                                              'generator quality/wealth '
+                                                                              'scopes to70.',
+                                                                              'Random list has six equal '
+                                                                              'base weights10 for '
+                                                                              'weapon,armor,regalia,crown,brooch,book '
+                                                                              'creation helpers, then '
+                                                                              'requests new artifact '
+                                                                              'ownership=root. Generator '
+                                                                              'input70 and famed tooltip do '
+                                                                              'not establish an actual fixed '
+                                                                              'quality/rank.',
+                                                                              'Greedy/paranoid medium and '
+                                                                              'impatient minor '
+                                                                              'stress/fulfillment gain '
+                                                                              'inputs. Branch not selected; '
+                                                                              'no generated artifact '
+                                                                              'credited.'],
+                                                                  'visibility': 'Shown/enabled in R0041; '
+                                                                                'native index and label are '
+                                                                                'historical evidence only. '
+                                                                                'Fresh native shown order '
+                                                                                'and legality are mandatory.',
+                                                                  'historical_R31_selected': False},
+                                                                 {'source_key': 'travel_events_oltner_2.1030.d',
+                                                                  'historical_native_index': 3,
+                                                                  'historical_label': '“我们携带的行囊已经够多了……”',
+                                                                  'effects': ['Decline trading. '
+                                                                              'Generous/gregarious minor '
+                                                                              'stress/fulfillment gains, '
+                                                                              'paranoid medium loss; no '
+                                                                              'direct purchase/generator '
+                                                                              'body.'],
+                                                                  'visibility': 'Shown/enabled in R0041; '
+                                                                                'native index and label are '
+                                                                                'historical evidence only. '
+                                                                                'Fresh native shown order '
+                                                                                'and legality are mandatory.',
+                                                                  'historical_R31_selected': False}],
+                                              'agent_reference': 'R0041 instance5/day28, '
+                                                                 'actor15893/local_character41708. A/native0 '
+                                                                 'selected once; ACK and old-window '
+                                                                 'disappearance at unchanged date51395592. '
+                                                                 'Gold raw121786805→116286805(scale100000), '
+                                                                 'delta-55; prestige/piety/stress unchanged. '
+                                                                 'saved new_trinket is root character15893 '
+                                                                 'before selection, explicitly initialized '
+                                                                 'for error suppression; do not infer an '
+                                                                 'artifact ID or invalid scope from its '
+                                                                 'name. Immediate '
+                                                                 'mp_delay_travel_plan(DAYS=90) and after '
+                                                                 'mp_resume_travel_plan both require '
+                                                                 'has_multiple_players in the shared helper. '
+                                                                 "Do not count them as this run's "
+                                                                 'observed90day delays or travel advance. '
+                                                                 'Event-local10year cooldown is not the '
+                                                                 'pilgrimage cooldown; after only cleans up '
+                                                                 'an AI-created local character.',
+                                              'current_native_legality': None,
+                                              'action_ready': False,
+                                              'ordinary_auto_consumes': False,
+                                              'full_occurrence_contract_registered': False,
+                                              'selection_policy_changed': False,
+                                              'historical_index_is_current_selection_permission': False,
+                                              'historical_evidence_is_current_state': False},
+                                 'observations': {'machine_id': '4-8e1c2f1861',
+                                                  'observed_at_utc': '2026-10-23T07:21:26.555421+00:00',
+                                                  'run_id': '4-8e1c2f1861--faith-engine--R0041',
+                                                  'actual': {'event_instance_id': 5,
+                                                             'event_definition_key': 'travel_events_oltner_2.1030',
+                                                             'selected_native_option_index': 0,
+                                                             'selected_option_number': 1,
+                                                             'submission_attempted': True,
+                                                             'ack_accepted': True,
+                                                             'old_instance_gone_in_independent_snapshot': True,
+                                                             'actor_character_id': 15893,
+                                                             'date_raw': 51395592,
+                                                             'game_day': 28,
+                                                             'snapshot_revision': 82,
+                                                             'post_actor_character_id': 15893,
+                                                             'post_date_raw': 51395592,
+                                                             'post_active_event': None,
+                                                             'stress_before': 0,
+                                                             'stress_after': 0,
+                                                             'wallets_before': {'played_character_gold': {'raw': 121786805,
+                                                                                                          'scale': 100000},
+                                                                                'played_character_prestige': {'raw': 11561059,
+                                                                                                              'scale': 100000},
+                                                                                'played_character_piety': {'raw': 225194250,
+                                                                                                           'scale': 100000}},
+                                                             'wallets_after': {'played_character_gold': {'raw': 116286805,
+                                                                                                         'scale': 100000},
+                                                                               'played_character_prestige': {'raw': 11561059,
+                                                                                                             'scale': 100000},
+                                                                               'played_character_piety': {'raw': 225194250,
+                                                                                                          'scale': 100000}},
+                                                             'evidence': [{'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-5-offline-analysis-input.json',
+                                                                           'bytes': 73483,
+                                                                           'sha256': '050cfecbc86f056c0854b255c14476c27f5fe1176ad724614dd63da3240481f5'},
+                                                                          {'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-5-selection-intent.json',
+                                                                           'bytes': 79124,
+                                                                           'sha256': '7f8465a92da60c7db6d45da3f0289e85a70346d9088eba4d5cbd8177a8e323a5'},
+                                                                          {'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-5-selection-observed.json',
+                                                                           'bytes': 36083,
+                                                                           'sha256': 'fdcc66d447d814bd0f1b47d40f969874631ebdb7acee6f506204a25492801e11'},
+                                                                          {'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-0033-event-select-once.actual-results.json',
+                                                                           'bytes': 40004,
+                                                                           'sha256': '079e0fd97691a2b2a361002d693cebd3e78f3cadc2d0786ad664e61b5713bb3b'}],
+                                                             'displayed_options': [{'rendered_index': 0,
+                                                                                    'native_option_index': 0,
+                                                                                    'shown': True,
+                                                                                    'enabled': True,
+                                                                                    'fallback': False,
+                                                                                    'cancel': False,
+                                                                                    'resolved_name': '“你挑起我的兴趣了，让我们来交易吧。”',
+                                                                                    'unavailable_reason': '',
+                                                                                    'effect_indicators': {'status': 'available',
+                                                                                                          'coverage': 'played-character-event-icon-indicators-1.20.0.4-v1',
+                                                                                                          'complete_effect_set': False,
+                                                                                                          'rows': []},
+                                                                                    'effect_preview': {'status': 'unavailable',
+                                                                                                       'reason': 'indicator_subset_has_no_completeness_signal'},
+                                                                                    'resource_deltas': {'status': 'unavailable'},
+                                                                                    'relationship_deltas': {'status': 'unavailable'}},
+                                                                                   {'rendered_index': 1,
+                                                                                    'native_option_index': 1,
+                                                                                    'shown': True,
+                                                                                    'enabled': True,
+                                                                                    'fallback': False,
+                                                                                    'cancel': False,
+                                                                                    'resolved_name': '“用不着，但也许我们暂时可以一起旅行？”',
+                                                                                    'unavailable_reason': '',
+                                                                                    'effect_indicators': {'status': 'available',
+                                                                                                          'coverage': 'played-character-event-icon-indicators-1.20.0.4-v1',
+                                                                                                          'complete_effect_set': False,
+                                                                                                          'rows': []},
+                                                                                    'effect_preview': {'status': 'unavailable',
+                                                                                                       'reason': 'indicator_subset_has_no_completeness_signal'},
+                                                                                    'resource_deltas': {'status': 'unavailable'},
+                                                                                    'relationship_deltas': {'status': 'unavailable'}},
+                                                                                   {'rendered_index': 2,
+                                                                                    'native_option_index': 2,
+                                                                                    'shown': True,
+                                                                                    'enabled': True,
+                                                                                    'fallback': False,
+                                                                                    'cancel': False,
+                                                                                    'resolved_name': '“给我看些独特的东西，而且得是库法的真正瑰宝。”',
+                                                                                    'unavailable_reason': '',
+                                                                                    'effect_indicators': {'status': 'available',
+                                                                                                          'coverage': 'played-character-event-icon-indicators-1.20.0.4-v1',
+                                                                                                          'complete_effect_set': False,
+                                                                                                          'rows': []},
+                                                                                    'effect_preview': {'status': 'unavailable',
+                                                                                                       'reason': 'indicator_subset_has_no_completeness_signal'},
+                                                                                    'resource_deltas': {'status': 'unavailable'},
+                                                                                    'relationship_deltas': {'status': 'unavailable'}},
+                                                                                   {'rendered_index': 3,
+                                                                                    'native_option_index': 3,
+                                                                                    'shown': True,
+                                                                                    'enabled': True,
+                                                                                    'fallback': False,
+                                                                                    'cancel': False,
+                                                                                    'resolved_name': '“我们携带的行囊已经够多了……”',
+                                                                                    'unavailable_reason': '',
+                                                                                    'effect_indicators': {'status': 'available',
+                                                                                                          'coverage': 'played-character-event-icon-indicators-1.20.0.4-v1',
+                                                                                                          'complete_effect_set': False,
+                                                                                                          'rows': [{'kind': 'stress',
+                                                                                                                    'direction': 'increase',
+                                                                                                                    'magnitude': {'status': 'unavailable'},
+                                                                                                                    'affected_by_trait': True,
+                                                                                                                    'critical': False}]},
+                                                                                    'effect_preview': {'status': 'unavailable',
+                                                                                                       'reason': 'indicator_subset_has_no_completeness_signal'},
+                                                                                    'resource_deltas': {'status': 'unavailable'},
+                                                                                    'relationship_deltas': {'status': 'unavailable'}}]},
+                                                  'policy_actually_used': 'native_first_displayed_v1',
+                                                  'registry_consumption_succeeded_live': False}},
+ 'travel_danger_events.6030': {'analysis': {'source_analysis_completed': True,
+                                            'migration_review_status': 'source_reviewed_no_occurrence_contract',
+                                            'exact_build': '1.20.0.4',
+                                            'source_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0041-events-source-analysis-12004.json',
+                                            'source_document_sha256': 'b35d2835d1526b55d0dede20d111efdcad832f7993b0da3eea9c17ec50b8c68c',
+                                            'occurrence_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0041-events-occurrence.json',
+                                            'title': '食物变质',
+                                            'source_pins': [{'game_relative_path': 'events/travel_events/travel_danger_events_joe.txt',
+                                                             'bytes': 77064,
+                                                             'sha256': '43d8990d84fb154e3671780ed251abc4ffa14e0cb185a262ba3c15683f88f900',
+                                                             'relevant_lines': [[2364, 3034]]},
+                                                            {'game_relative_path': 'common/scripted_effects/00_travel_effects.txt',
+                                                             'bytes': 1867,
+                                                             'sha256': '47a4b46a479a2215ffeda4b6d7b8d9226928f6ec0dc70c289b4e0e2fe2b5ec0e',
+                                                             'relevant_lines': [[9, 31]]},
+                                                            {'game_relative_path': 'common/scripted_effects/04_dlc_ep2_tour_effects.txt',
+                                                             'bytes': 17935,
+                                                             'sha256': '180a9e666317ba7e58525d11848544bca1bf2b6e6062b0fe1110f555abdf328e',
+                                                             'relevant_lines': [[330, 367]]},
+                                                            {'game_relative_path': 'common/modifiers/04_ep2_modifiers.txt',
+                                                             'bytes': 7458,
+                                                             'sha256': 'e2020dc5dfaffac77b381104d63b30dc3127a75b80b9121319fc4ccc1fb96fe4',
+                                                             'relevant_lines': [[229, 232]]},
+                                                            {'game_relative_path': 'common/modifiers/00_travel_modifiers.txt',
+                                                             'bytes': 8782,
+                                                             'sha256': 'b7a1365a14341bf647339cb843753e5da4f8d9990c52c92d6e10422a8530a2f1',
+                                                             'relevant_lines': [[334, 337]]},
+                                                            {'game_relative_path': 'common/scripted_effects/20_health_effects.txt',
+                                                             'bytes': 107548,
+                                                             'sha256': 'abefa738c913c660a52fa747bcc92fca2f57d77a0f47d903bedc2882f3d5a9db',
+                                                             'relevant_lines': [[127, 216]]},
+                                                            {'game_relative_path': 'localization/simp_chinese/event_localization/travel_events/travel_danger_events_joe_l_simp_chinese.yml',
+                                                             'bytes': 18030,
+                                                             'sha256': 'f21f957544dbc254e703b15ee93a868e6285881485f2bd21f5d7e8f6601ad4b4',
+                                                             'relevant_lines': [[124, 135]]}],
+                                            'source_options': [{'source_key': 'travel_danger_events.6030.a',
+                                                                'historical_native_index': 0,
+                                                                'historical_label': '只是有点发霉而已！',
+                                                                'effects': ['If domicile exists, '
+                                                                            'change_provisions=minor_provisions_loss.',
+                                                                            'If not already ill: '
+                                                                            'base40percent random, reduced '
+                                                                            'by '
+                                                                            'strong(-10),physique_good_1/2/3(-5/-10/-15),entourage '
+                                                                            'herbalist(-10), requests '
+                                                                            'contract_disease_effect(ill,TREATMENT_EVENT=yes). '
+                                                                            'This is conditional and '
+                                                                            'trait-adjusted, not an '
+                                                                            'unconditional40percent outcome.',
+                                                                            'If already ill: base50percent '
+                                                                            'random, similarly reduced by '
+                                                                            'strong/physique,logistician(-10),herbalist(-10), '
+                                                                            'adds bad_soup_modifier '
+                                                                            'for5years(stress_gain_mult+0.1). '
+                                                                            'The source does not directly '
+                                                                            'add pneumonia.',
+                                                                            'No illness/modifier membership '
+                                                                            'or danger-trackXP was read '
+                                                                            'back. Wallets and stress '
+                                                                            'unchanged at same date; later '
+                                                                            'health1101 is not proof this A '
+                                                                            'roll caused the illness.'],
+                                                                'visibility': 'Shown/enabled in R0041; '
+                                                                              'native index and label are '
+                                                                              'historical evidence only. '
+                                                                              'Fresh native shown order and '
+                                                                              'legality are mandatory.',
+                                                                'historical_R31_selected': False},
+                                                               {'source_key': 'travel_danger_events.6030.b',
+                                                                'historical_native_index': 1,
+                                                                'historical_label': '大自然会为我们提供食物！',
+                                                                'effects': ['Forage using '
+                                                                            'highest_learning_entourage_member '
+                                                                            'if its Learning exceeds root, '
+                                                                            'otherwise root. Learning duel '
+                                                                            'against medium_skill_rating '
+                                                                            'with base '
+                                                                            'weights15(success),5(illness),1(death), '
+                                                                            'min1 and numerous '
+                                                                            'skill/terrain/trait/entourage '
+                                                                            'adjustments; these are not '
+                                                                            'fixed15:5:1 probabilities.',
+                                                                            'Success changes domicile '
+                                                                            'provisions by '
+                                                                            'minor_provisions_loss; '
+                                                                            'poisoning requests '
+                                                                            'ill/TREATMENT_EVENT=yes plus '
+                                                                            'medium_provisions_loss; fatal '
+                                                                            'branch kills root by '
+                                                                            'death_poisonous_forage plus '
+                                                                            'medium_provisions_loss. '
+                                                                            'Actor-scope branches differ; '
+                                                                            'source branch not selected.'],
+                                                                'visibility': 'Shown/enabled in R0041; '
+                                                                              'native index and label are '
+                                                                              'historical evidence only. '
+                                                                              'Fresh native shown order and '
+                                                                              'legality are mandatory.',
+                                                                'historical_R31_selected': False},
+                                                               {'source_key': 'travel_danger_events.6030.c',
+                                                                'historical_native_index': 2,
+                                                                'historical_label': '肯定能从这里的本地人那弄到点\x15EMP '
+                                                                                    '什么\x15!。',
+                                                                'effects': ['Land-only steal option; '
+                                                                            'add_prestige=minor_prestige_loss '
+                                                                            'and optional domicile '
+                                                                            'minor_provisions_loss.',
+                                                                            'Within same top-liege realm: '
+                                                                            'province owner other than root '
+                                                                            'gets opinion-10; county gets '
+                                                                            'travel_stealing_food_modifier '
+                                                                            'for5years(county_opinion_add-25).',
+                                                                            'Outside that branch, '
+                                                                            'base50percent(-15 if no '
+                                                                            'province owner) chooses an '
+                                                                            'adult entourage woundee with '
+                                                                            'prowess/role weights and '
+                                                                            'requests '
+                                                                            'increase_wounds_effect. '
+                                                                            'Just/generous minor '
+                                                                            'stress/fulfillment gain inputs; '
+                                                                            'branch not selected.'],
+                                                                'visibility': 'Shown/enabled in R0041; '
+                                                                              'native index and label are '
+                                                                              'historical evidence only. '
+                                                                              'Fresh native shown order and '
+                                                                              'legality are mandatory.',
+                                                                'historical_R31_selected': False}],
+                                            'agent_reference': 'R0041 instance7/day66 actor15893, '
+                                                               'travel_leader/highest_learning_entourage_member34769. '
+                                                               'A/native0 selected once; ACK and old-window '
+                                                               'disappearance at unchanged date51396504. '
+                                                               'Actual wallets/stress unchanged; no ill '
+                                                               'membership/provisions/XP query. Immediate '
+                                                               'mp_delay_travel_plan(DAYS=90) and after '
+                                                               'mp_resume_travel_plan both require '
+                                                               'has_multiple_players in the shared helper. '
+                                                               "Do not count them as this run's "
+                                                               'observed90day delays or travel advance. '
+                                                               'After invokes '
+                                                               'traveler_danger_xp_effect(MIN3,MAX6): only '
+                                                               'owned lifestyle_traveler gains dangerXP3–6, '
+                                                               'or5–8 with journey_perk; it does not grant '
+                                                               'the trait. Six-month cooldown is '
+                                                               'event-local. Localization6030.d exists but '
+                                                               'there is no fourth source option in this '
+                                                               'definition.',
+                                            'current_native_legality': None,
+                                            'action_ready': False,
+                                            'ordinary_auto_consumes': False,
+                                            'full_occurrence_contract_registered': False,
+                                            'selection_policy_changed': False,
+                                            'historical_index_is_current_selection_permission': False,
+                                            'historical_evidence_is_current_state': False},
+                               'observations': {'machine_id': '4-8e1c2f1861',
+                                                'observed_at_utc': '2026-10-23T07:24:44.854327+00:00',
+                                                'run_id': '4-8e1c2f1861--faith-engine--R0041',
+                                                'actual': {'event_instance_id': 7,
+                                                           'event_definition_key': 'travel_danger_events.6030',
+                                                           'selected_native_option_index': 0,
+                                                           'selected_option_number': 1,
+                                                           'submission_attempted': True,
+                                                           'ack_accepted': True,
+                                                           'old_instance_gone_in_independent_snapshot': True,
+                                                           'actor_character_id': 15893,
+                                                           'date_raw': 51396504,
+                                                           'game_day': 66,
+                                                           'snapshot_revision': 157,
+                                                           'post_actor_character_id': 15893,
+                                                           'post_date_raw': 51396504,
+                                                           'post_active_event': None,
+                                                           'stress_before': 0,
+                                                           'stress_after': 0,
+                                                           'wallets_before': {'played_character_gold': {'raw': 117594432,
+                                                                                                        'scale': 100000},
+                                                                              'played_character_prestige': {'raw': 12030564,
+                                                                                                            'scale': 100000},
+                                                                              'played_character_piety': {'raw': 225388500,
+                                                                                                         'scale': 100000}},
+                                                           'wallets_after': {'played_character_gold': {'raw': 117594432,
+                                                                                                       'scale': 100000},
+                                                                             'played_character_prestige': {'raw': 12030564,
+                                                                                                           'scale': 100000},
+                                                                             'played_character_piety': {'raw': 225388500,
+                                                                                                        'scale': 100000}},
+                                                           'evidence': [{'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-7-offline-analysis-input.json',
+                                                                         'bytes': 76616,
+                                                                         'sha256': '7da35cfe2951e3b11093d3294d9d6fadabdba579af56d1b3a27c4caca877f410'},
+                                                                        {'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-7-selection-intent.json',
+                                                                         'bytes': 82048,
+                                                                         'sha256': 'e2dcefd2beae1ad10bb2410614b21ec77bcc952ca19e2e0b954f3968df9b4e95'},
+                                                                        {'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-7-selection-observed.json',
+                                                                         'bytes': 37922,
+                                                                         'sha256': 'fe90e58ebc938f719db68056bdf66dcbc90e22538a4b0a20f540a35ae294dbb0'},
+                                                                        {'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-0059-event-select-once.actual-results.json',
+                                                                         'bytes': 42080,
+                                                                         'sha256': '7d2cca40555b0fa14f3ab3ca77ea6a4917f095bced0bdf6b9ca3e40bd7c28456'}],
+                                                           'displayed_options': [{'rendered_index': 0,
+                                                                                  'native_option_index': 0,
+                                                                                  'shown': True,
+                                                                                  'enabled': True,
+                                                                                  'fallback': False,
+                                                                                  'cancel': False,
+                                                                                  'resolved_name': '只是有点发霉而已！',
+                                                                                  'unavailable_reason': '',
+                                                                                  'effect_indicators': {'status': 'available',
+                                                                                                        'coverage': 'played-character-event-icon-indicators-1.20.0.4-v1',
+                                                                                                        'complete_effect_set': False,
+                                                                                                        'rows': [{'kind': 'trait',
+                                                                                                                  'operation': 'add',
+                                                                                                                  'trait': {'status': 'available',
+                                                                                                                            'native_id': 109,
+                                                                                                                            'key': 'ill'}}]},
+                                                                                  'effect_preview': {'status': 'unavailable',
+                                                                                                     'reason': 'indicator_subset_has_no_completeness_signal'},
+                                                                                  'resource_deltas': {'status': 'unavailable'},
+                                                                                  'relationship_deltas': {'status': 'unavailable'}},
+                                                                                 {'rendered_index': 1,
+                                                                                  'native_option_index': 1,
+                                                                                  'shown': True,
+                                                                                  'enabled': True,
+                                                                                  'fallback': False,
+                                                                                  'cancel': False,
+                                                                                  'resolved_name': '大自然会为我们提供食物！',
+                                                                                  'unavailable_reason': '',
+                                                                                  'effect_indicators': {'status': 'available',
+                                                                                                        'coverage': 'played-character-event-icon-indicators-1.20.0.4-v1',
+                                                                                                        'complete_effect_set': False,
+                                                                                                        'rows': [{'kind': 'trait',
+                                                                                                                  'operation': 'add',
+                                                                                                                  'trait': {'status': 'available',
+                                                                                                                            'native_id': 109,
+                                                                                                                            'key': 'ill'}},
+                                                                                                                 {'kind': 'death',
+                                                                                                                  'subject': 'played_character',
+                                                                                                                  'direction': 'not_applicable'}]},
+                                                                                  'effect_preview': {'status': 'unavailable',
+                                                                                                     'reason': 'indicator_subset_has_no_completeness_signal'},
+                                                                                  'resource_deltas': {'status': 'unavailable'},
+                                                                                  'relationship_deltas': {'status': 'unavailable'}},
+                                                                                 {'rendered_index': 2,
+                                                                                  'native_option_index': 2,
+                                                                                  'shown': True,
+                                                                                  'enabled': True,
+                                                                                  'fallback': False,
+                                                                                  'cancel': False,
+                                                                                  'resolved_name': '肯定能从这里的本地人那弄到点\x15EMP '
+                                                                                                   '什么\x15!。',
+                                                                                  'unavailable_reason': '',
+                                                                                  'effect_indicators': {'status': 'available',
+                                                                                                        'coverage': 'played-character-event-icon-indicators-1.20.0.4-v1',
+                                                                                                        'complete_effect_set': False,
+                                                                                                        'rows': [{'kind': 'stress',
+                                                                                                                  'direction': 'increase',
+                                                                                                                  'magnitude': {'status': 'unavailable'},
+                                                                                                                  'affected_by_trait': True,
+                                                                                                                  'critical': False}]},
+                                                                                  'effect_preview': {'status': 'unavailable',
+                                                                                                     'reason': 'indicator_subset_has_no_completeness_signal'},
+                                                                                  'resource_deltas': {'status': 'unavailable'},
+                                                                                  'relationship_deltas': {'status': 'unavailable'}}]},
+                                                'policy_actually_used': 'native_first_displayed_v1',
+                                                'registry_consumption_succeeded_live': False}}}
+PILGRIMAGE_TRAVEL_SOURCE_ONLY_12004.update(_R0039_R0041_SOURCE_ONLY)

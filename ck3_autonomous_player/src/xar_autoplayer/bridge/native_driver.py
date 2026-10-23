@@ -26379,6 +26379,11 @@ class NativeHeadlessGameplayDriver:
                                      or isinstance(candidate.get("pending_character_interaction"), dict))),
                             timeout_seconds=min(remaining, _LIFE_ADVANCE_TIMELINE_RETRY_SECONDS),
                         )
+                    # A rejected idempotent pause can race the native paused
+                    # frame without any popup. Independently verify that frame;
+                    # never submit another timeline action to recover its ACK.
+                    if _fresh_same_owner_paused_map(snapshot, refreshed):
+                        return refreshed
                     remaining = deadline - time.monotonic()
                     if remaining > 0 and type(refreshed.get("revision")) is int:
                         settled = self._wait_for_life_advance_change(
@@ -26386,6 +26391,8 @@ class NativeHeadlessGameplayDriver:
                             timeout_seconds=min(remaining, 0.15),
                             before_snapshot=refreshed,
                         )
+                        if _fresh_same_owner_paused_map(snapshot, settled):
+                            return settled
                         if _same_life_advance_popup_pause_owner(
                             snapshot, refreshed, settled
                         ):
@@ -31645,6 +31652,24 @@ def _retryable_life_advance_pause_owner(
     return _retryable_life_advance_timeline_owner(
         previous, refreshed, expected_paused=False
     )
+
+
+def _fresh_same_owner_paused_map(
+    previous: dict[str, object], refreshed: dict[str, object]
+) -> bool:
+    """Read-only postcondition for an already submitted idempotent pause."""
+    if (refreshed.get("paused") is not True
+            or refreshed.get("active_event") is not None
+            or refreshed.get("pending_character_interaction") is not None
+            or not _same_generic_pause_owner(previous, refreshed)):
+        return False
+    for key in ("revision", "native_revision"):
+        before, after = previous.get(key), refreshed.get(key)
+        if (type(before) is not int or not isinstance(before, int)
+                or type(after) is not int or not isinstance(after, int)
+                or after <= before):
+            return False
+    return True
 
 
 def _same_life_advance_popup_pause_owner(

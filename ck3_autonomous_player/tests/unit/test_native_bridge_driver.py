@@ -14220,7 +14220,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         endpoint.send_hook = answer
         capabilities = driver.capabilities()
         self.assertIn("life-advance", capabilities["action_steps"])
-        self.assertEqual(capabilities["composite_action_steps"], ["life-advance"])
+        self.assertEqual(capabilities["composite_action_steps"], ["life-advance", "life-advance-one-day"])
         starting_revision = int(driver.take_snapshot()["revision"])
         ready_timer = threading.Timer(
             0.1, lambda: endpoint.publish(_snapshot(2, map_ready=True))

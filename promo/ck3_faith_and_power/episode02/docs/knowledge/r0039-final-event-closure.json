@@ -1,0 +1,459 @@
+{
+  "schema": "xar.ck3.after-final-source-audit/v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-23T07:00:54.513399+00:00",
+  "run_id": "4-8e1c2f1861--faith-engine--R0039",
+  "final_result": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0039\\case-output\\ordinary-pilgrimage-result.json",
+    "bytes": 445986,
+    "sha256": "55c65fb0e9bca04ef2283fa5e464df55ab8545ccef6fb981c896598fca9af43b"
+  },
+  "gameplay_status": "PARTIAL_DAY_UNKNOWN",
+  "observed_days": 197,
+  "reason": "Actual one-day/event boundary differs",
+  "run_closed_reported_by_root": true,
+  "gameplay_completion_claimed": false,
+  "whole_list_counts": {
+    "handled_events": 7,
+    "offline_analysis_inputs": 7,
+    "handled_unique_event_definitions": 7,
+    "handled_character_interactions": 0,
+    "early_known_source_only_types": 5,
+    "additional_typed_event_types": 1,
+    "additional_typed_events_strictly_after_day150": 0,
+    "new_event_at_day150": 1,
+    "untyped_pending_notification_observed_at_final_day197": 1
+  },
+  "all_event_selections": [
+    {
+      "instance_id": 4,
+      "event_definition_key": "travel_start_event.1060",
+      "game_day": 1,
+      "selected_native_index": 0,
+      "ack_accepted": true,
+      "old_instance_gone": true,
+      "observation_pin": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0039\\case-output\\faith-e02-journey-001-event-4-selection-observed.json",
+        "bytes": 35803,
+        "sha256": "5479043fe1e58ab9f84dc1db816c82480c064bc3e6773d65f8d49f992800556b"
+      }
+    },
+    {
+      "instance_id": 3,
+      "event_definition_key": "historical_char_creation_events.1",
+      "game_day": 1,
+      "selected_native_index": 2,
+      "ack_accepted": true,
+      "old_instance_gone": true,
+      "observation_pin": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0039\\case-output\\faith-e02-journey-001-event-3-selection-observed.json",
+        "bytes": 37001,
+        "sha256": "5fcb7e6f575bbd8bbde3bbd2effcf3ca97fc42cf30427c04b538941dc2561ee7"
+      }
+    },
+    {
+      "instance_id": 5,
+      "event_definition_key": "travel_danger_events.4010",
+      "game_day": 46,
+      "selected_native_index": 0,
+      "ack_accepted": true,
+      "old_instance_gone": true,
+      "observation_pin": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0039\\case-output\\faith-e02-journey-001-event-5-selection-observed.json",
+        "bytes": 37921,
+        "sha256": "4d801deac58ac99001e0f277a646fad56a8bd1e8231577eaa7bddd2fa956437c"
+      }
+    },
+    {
+      "instance_id": 6,
+      "event_definition_key": "travel_danger_events.1007",
+      "game_day": 73,
+      "selected_native_index": 2,
+      "ack_accepted": true,
+      "old_instance_gone": true,
+      "observation_pin": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0039\\case-output\\faith-e02-journey-001-event-6-selection-observed.json",
+        "bytes": 37926,
+        "sha256": "b5aec3c45e9a5dc518a331beefea2e1cdc6e368cce1fd922d28cd7dd5ee140d8"
+      }
+    },
+    {
+      "instance_id": 7,
+      "event_definition_key": "rite_travel_events.1000",
+      "game_day": 107,
+      "selected_native_index": 0,
+      "ack_accepted": true,
+      "old_instance_gone": true,
+      "observation_pin": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0039\\case-output\\faith-e02-journey-001-event-7-selection-observed.json",
+        "bytes": 37925,
+        "sha256": "ac079eee5764c751c323d987a75ee72ceadc6cec1dce039f40509efe4435dc46"
+      }
+    },
+    {
+      "instance_id": 8,
+      "event_definition_key": "pilgrimage.2008",
+      "game_day": 108,
+      "selected_native_index": 2,
+      "ack_accepted": true,
+      "old_instance_gone": true,
+      "observation_pin": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0039\\case-output\\faith-e02-journey-001-event-8-selection-observed.json",
+        "bytes": 37905,
+        "sha256": "072a63863282dc3405a0451ad33cd9addf6f223fba9dd4c8ed14ee9ccc96260b"
+      }
+    },
+    {
+      "instance_id": 9,
+      "event_definition_key": "pilgrimage.2003",
+      "game_day": 150,
+      "selected_native_index": 0,
+      "ack_accepted": true,
+      "old_instance_gone": true,
+      "observation_pin": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0039\\case-output\\faith-e02-journey-001-event-9-selection-observed.json",
+        "bytes": 37998,
+        "sha256": "81b764d04b8f673b39bc54704e8352f2a6051b6ac1762a0f088b3413ba28952d"
+      }
+    }
+  ],
+  "new_event_actual": {
+    "event_instance_id": 9,
+    "event_definition_key": "pilgrimage.2003",
+    "selected_native_option_index": 0,
+    "selected_option_number": 1,
+    "submission_attempted": true,
+    "ack_accepted": true,
+    "old_instance_gone_in_independent_snapshot": true,
+    "date_raw": 51398520,
+    "game_day": 150,
+    "snapshot_revision": 466,
+    "actor_character_id": 15893,
+    "local_warrior_character_id": 19735,
+    "displayed_options": [
+      {
+        "rendered_index": 0,
+        "native_option_index": 0,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "为了我的朝圣之旅，我应该雇佣他们中的一些人。",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": []
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      },
+      {
+        "rendered_index": 1,
+        "native_option_index": 1,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "萨阿德丁似乎是一个很棒的家伙。",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": []
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      },
+      {
+        "rendered_index": 2,
+        "native_option_index": 2,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "不。我坚定地信仰着安拉。",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": [
+            {
+              "kind": "stress",
+              "direction": "decrease",
+              "magnitude": {
+                "status": "unavailable"
+              },
+              "affected_by_trait": false,
+              "critical": false
+            }
+          ]
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      }
+    ],
+    "typed_scope_projection": {
+      "schema": "current-event-window-context-v1",
+      "schema_version": 1,
+      "status": "available",
+      "snapshot_revision": 466,
+      "date_raw": 51398520,
+      "current_event_instance_id": 9,
+      "window_match_count": 1,
+      "unavailable_reason": null,
+      "event_definition_key": "pilgrimage.2003",
+      "calculated_event_id": 2742003,
+      "runtime_stats_ordinal": 3591,
+      "root_scope": {
+        "status": "available",
+        "raw_type_index": 4,
+        "type_key": "character",
+        "subtype": 0,
+        "typed_identity": {
+          "status": "available",
+          "kind": "character",
+          "character_id": 15893
+        }
+      },
+      "saved_scopes": [
+        {
+          "name": "travel_plan",
+          "name_identifier": 211,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 35,
+            "type_key": "travel_plan",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "unavailable",
+              "reason": "generic_scope_payload_identity_not_closed"
+            }
+          }
+        },
+        {
+          "name": "2002_local_warrior",
+          "name_identifier": 20219,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "character",
+              "character_id": 19735
+            }
+          }
+        }
+      ],
+      "readiness": {
+        "event_definition_identity_ready": true,
+        "root_scope_ready": true,
+        "saved_scopes_ready": true,
+        "option_presentation_ready": true,
+        "effect_indicators_ready": true,
+        "effect_preview_ready": false,
+        "semantic_decision_ready": false
+      },
+      "provenance": {
+        "root": "module+0x5C6A520->+0x10",
+        "idler_vtable_rva": "0x44BC418",
+        "manager_offset": "+0x28",
+        "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+      }
+    },
+    "post_actor_character_id": 15893,
+    "post_date_raw": 51398520,
+    "post_active_event": null,
+    "policy_actually_used": "native_first_displayed_v1",
+    "live_registry_status": "not_registered",
+    "wallet_scale": 100000,
+    "evidence": [
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0039\\case-output\\faith-e02-journey-001-event-9-offline-analysis-input.json",
+        "bytes": 75401,
+        "sha256": "11b4680c68078c017c3c404e3b2a8230919817f0f093fee998febbac0912ed45"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0039\\case-output\\faith-e02-journey-001-event-9-selection-intent.json",
+        "bytes": 80247,
+        "sha256": "8aead2ac1cff92fc5bde0487c7160fc51048ced19d48f018b1a13fb70ae57b26"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0039\\case-output\\faith-e02-journey-001-event-9-selection-observed.json",
+        "bytes": 37998,
+        "sha256": "81b764d04b8f673b39bc54704e8352f2a6051b6ac1762a0f088b3413ba28952d"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0039\\case-output\\faith-e02-journey-001-0039-event-select-once.actual-results.json",
+        "bytes": 42197,
+        "sha256": "c43d639da0197a1f45e4fdcc2277fe7863936f3b0adaf08e5f2ced4bf5e3cbf2"
+      }
+    ],
+    "gold_raw_before": 127430533,
+    "gold_raw_after": 119930533,
+    "piety_raw_before": 225971250,
+    "piety_raw_after": 225971250,
+    "stress_before": 0,
+    "stress_after": 0
+  },
+  "new_event_current_registry": {
+    "status": "unavailable",
+    "unavailable_reason": "event_definition_key_not_registered",
+    "source_analysis_completed": false,
+    "analysis_has_only_migration_and_exact_build_metadata": true,
+    "legacy_journey_registry_analysis_available_bool": true,
+    "legacy_bool_is_not_source_analysis_completion": true
+  },
+  "pending_notification": {
+    "observed_in_final_frame": true,
+    "frame_date_raw": 51399648,
+    "frame_native_revision": 609,
+    "observed_at_game_day": 197,
+    "actual_first_appearance_day": null,
+    "native_frame_projection": {
+      "instance_id": 285212777,
+      "sender_character_id": 14301,
+      "auto_accept_notification": false,
+      "source": "native"
+    },
+    "interaction_definition_key": null,
+    "current_shown_buttons": null,
+    "selected_native_index": null,
+    "submission_attempted": null,
+    "ack_accepted": null,
+    "old_notification_disappeared": null,
+    "journey_interaction_receipt_count": 0,
+    "source_analysis_completed": false,
+    "registry_status": "not_queryable_without_interaction_definition",
+    "boundary": "A pending native notification exists in the final frame. No typed definition/options/selection packet was found in the journey's interaction/offline inputs or the inspected explicit R0039 exit plans. This is not evidence that a left action was submitted. Do not infer interaction type from sender/instance or restart Game for this audit."
+  },
+  "history_boundary": {
+    "early_occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0039-events-occurrence.json",
+    "early_document_pending_tag_preserved": true,
+    "old_five_source_definitions_researched_again": false,
+    "early_five_source_only_registration_preexisted": true
+  },
+  "proposed_occurrence_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0039-final-event-closure.json",
+  "proposal": {
+    "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0039-pilgrimage-2003.source-analysis.json",
+    "source_record_target": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_pilgrimage_travel_source_only_12004.py::PILGRIMAGE_TRAVEL_SOURCE_ONLY_12004",
+    "record_count_to_add": 1,
+    "source_only": true,
+    "all_action_permissions": false,
+    "policy_routes_changed": false,
+    "existing_test_target": "ck3_autonomous_player/tests/unit/test_r0031_source_only_event_knowledge_mcp.py",
+    "future_checks": [
+      "When Root authorizes source changes: append only2003 SourceOnlyRecord; preserve early5 records/occurrences.",
+      "Use real existing MCP query/policy regression, JSON roundtrip and wrong-field/type tests; recommendation staysnot_registered and no action selected by registry.",
+      "Unidentified notification cannot be registered without an existing captured typed definition/options packet; preserve gap rather than invent a source match. No live query or restart is authorized here."
+    ]
+  },
+  "capacity_before_write": {
+    "at": "2026-10-23T07:02:42.437696+00:00",
+    "consumed_upper_bytes": 548282368,
+    "remaining_future_bytes": 1261678592,
+    "future_basis_consumed_bytes": 546930688,
+    "physical_free_bytes": 91150995456,
+    "physical_floor_bytes": 91094056550,
+    "physical_margin_bytes": 56938906,
+    "projected_project_upper_bytes": 68821596431,
+    "quota_margin_bytes": 1178403569,
+    "owned_scene_increase_upper_bytes": 548282368,
+    "gross_whole_volume_growth_upper_bytes": 2807180080,
+    "same_domain_growth_upper_bytes": 2807180080,
+    "largest_actual_report_rounded4k_bytes": 47869952,
+    "next_normal_quit_peak_upper_bytes": 612929536,
+    "next_write_peak_bytes": 131072,
+    "action_and_close_peak_upper_bytes": 613060608,
+    "normal_quit_trigger_bytes": 1674391552,
+    "storage_revision": 24,
+    "grant_pin": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\ADMISSION.scene-a08.actual.json",
+      "bytes": 15341,
+      "sha256": "7efb88f56f09d312acc8aa63412b31591dd54ae27ff70f606c16800ae6515d33"
+    },
+    "head_pin": {
+      "path": "C:\\workspace\\.codex-task-bus\\storage\\volume-C-current.json",
+      "bytes": 853,
+      "sha256": "d015189196368ab2fd2b7d7ab2f5818afa0606bad5225d7b8540310116a89113"
+    },
+    "system_growth_reserve_bytes": 17179869184,
+    "observed_system_paging_growth_bytes": 0,
+    "remaining_system_growth_reserve_bytes": 17179869184,
+    "project_attributable_gross_growth_upper_bytes": 2807180080,
+    "system_paging_growth_baseline": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\storage-preparation\\SYSTEM-PAGING-GROWTH-G24-BASELINE.a01.actual.json",
+      "bytes": 1121,
+      "sha256": "58f27addad41ac05aa2fd64c91ab57ed7d7071cc7a7615eddda7960ce12f0526"
+    },
+    "system_paging_observations": [
+      {
+        "observed_at_utc": "2026-10-23T07:02:40.177534+00:00",
+        "volume_root": "C:\\",
+        "existing_pagefiles": [
+          "C:\\pagefile.sys"
+        ],
+        "entries": [
+          {
+            "name": "pagefile.sys",
+            "volume_serial_decimal": "11562708564543669174",
+            "file_id_decimal": "281474976821529",
+            "created_filetime_decimal": "134327046245467381",
+            "logical_bytes": 7784628224,
+            "allocation_bytes": 7784628224,
+            "attributes": 38
+          }
+        ]
+      },
+      {
+        "observed_at_utc": "2026-10-23T07:02:42.435990+00:00",
+        "volume_root": "C:\\",
+        "existing_pagefiles": [
+          "C:\\pagefile.sys"
+        ],
+        "entries": [
+          {
+            "name": "pagefile.sys",
+            "volume_serial_decimal": "11562708564543669174",
+            "file_id_decimal": "281474976821529",
+            "created_filetime_decimal": "134327046245467381",
+            "logical_bytes": 7784628224,
+            "allocation_bytes": 7784628224,
+            "attributes": 38
+          }
+        ]
+      }
+    ]
+  },
+  "source_runtime_git_modified": false,
+  "ci_or_game_calls_executed": false
+}

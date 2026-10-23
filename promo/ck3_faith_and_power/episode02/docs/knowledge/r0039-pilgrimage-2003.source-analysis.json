@@ -1,0 +1,164 @@
+{
+  "schema": "xar.ck3.source-only-batch-analysis/v1",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--faith-engine--R0039",
+  "exact_build": "1.20.0.4",
+  "installed_game_root": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game",
+  "observed_at_utc": "2026-10-23T07:00:54.513399+00:00",
+  "source_analysis_completed": true,
+  "source_only_not_occurrence_contract": true,
+  "batch_terminal_pending": false,
+  "terminal_authority": {
+    "source": "Root task: R0039 really closed; final gameplay result independently read",
+    "gameplay_status": "PARTIAL_DAY_UNKNOWN",
+    "observed_days": 197,
+    "gameplay_business_pass": false,
+    "normal_os_close_independently_retested": false
+  },
+  "events": {
+    "pilgrimage.2003": {
+      "source_analysis_completed": true,
+      "title": "朝圣：安全问题",
+      "source_pins": [
+        {
+          "game_relative_path": "events/activities/pilgrimage_activity/pilgrimage_events.txt",
+          "bytes": 358138,
+          "sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06",
+          "relevant_lines": [
+            [
+              2581,
+              2821
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+          "bytes": 136481,
+          "sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+          "relevant_lines": [
+            [
+              314,
+              318
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/script_values/01_dynamic_values.txt",
+          "bytes": 48201,
+          "sha256": "023165e7d27d106a34f34d7726d938efa8d5dce25650ea3256e0b5ea3f73cc2a",
+          "relevant_lines": [
+            [
+              53,
+              71
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/scripted_effects/00_pilgrimage_effects.txt",
+          "bytes": 40713,
+          "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80",
+          "relevant_lines": [
+            [
+              488,
+              513
+            ],
+            [
+              1225,
+              1238
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/scripted_effects/00_activity_effects.txt",
+          "bytes": 116295,
+          "sha256": "d5c594f8746b923d34b13a67db881821e12f08ce1ab4e6e3f83933419c9e2d38",
+          "relevant_lines": [
+            [
+              4357,
+              4365
+            ],
+            [
+              4549,
+              4590
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/modifiers/00_activity_pilgrimage_modifiers.txt",
+          "bytes": 8263,
+          "sha256": "b4b087debf7975b02fdc30d3244a04aca634e3e26b2fafa4c42057e71a1c1580",
+          "relevant_lines": [
+            [
+              43,
+              48
+            ],
+            [
+              196,
+              199
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/on_action/activities/pilgrimage_on_actions.txt",
+          "bytes": 11904,
+          "sha256": "fdf71f074882f94eb3df497a1ddb2cb9a95fb13e973aebf25d4c3569729ee354",
+          "relevant_lines": [
+            [
+              44,
+              44
+            ]
+          ]
+        }
+      ],
+      "source_options": [
+        {
+          "source_key": "pilgrimage.2003.a",
+          "historical_native_index": 0,
+          "historical_label": "为了我的朝圣之旅，我应该雇佣他们中的一些人。",
+          "effects": [
+            "Visible only when the current travel plan does not already have hire_experienced_mercenaries_option.",
+            "Conditional pious_type_option_effect when the current Rite has tenet_armed_pilgrimages, otherwise tenet_struggle_submission; this helper matches Pious/Hajj and changes an activity score, not elapsed travel days.",
+            "Add pilgrim_protection_modifier to the current travel plan: travel_safety+10. Remove short-term gold using dynamic minor_gold_value; its income formula/clamps/round-to5 are not a universal75gold cost.",
+            "Humble and greedy each supply medium_stress_impact_gain to stress_and_fulfillment_impact. No direct option-level travel delay or Pilgrim/Hajjaj trait grant declared."
+          ],
+          "visibility": "R0039 instance9 rendered0/native0, shown/enabled and selected once. Fresh window order/legality is still required.",
+          "historical_R31_selected": false
+        },
+        {
+          "source_key": "pilgrimage.2003.b",
+          "historical_native_index": 1,
+          "historical_label": "萨阿德丁似乎是一个很棒的家伙。",
+          "effects": [
+            "Conditional pious_type_option_effect only for current Rite tenet_warmonger.",
+            "Remove short-term gold using dynamic minor_gold_value; recruit_to_entourage_court_and_activity_effect targets saved2002_local_warrior. The helper guards court/companion/activity additions; this option was not selected and actual recruitment is unobserved.",
+            "Humble and greedy each supply medium_stress_impact_gain. This is the candidate-warrior recruitment option, distinct from A's travel-plan safety modifier."
+          ],
+          "visibility": "R0039 instance9 rendered1/native1, shown/enabled, not selected. Name is occurrence-specific.",
+          "historical_R31_selected": false
+        },
+        {
+          "source_key": "pilgrimage.2003.c",
+          "historical_native_index": 2,
+          "historical_label": "不。我坚定地信仰着安拉。",
+          "effects": [
+            "Invoke pious_type_option_effect and give_pilgrim_xp_effect. The latter gives+5PilgrimXP only with owned pilgrim below100XP; otherwise it branches to medium Learning lifestyleXP, zealous medium stress loss, or minor stress loss. It does not add pilgrim or convert hajjaj.",
+            "Add pilgrimage_divine_protection_modifier for10years: monthly_piety_gain_mult+0.05,diplomacy_per_piety_level+1,intrigue_per_piety_level-1.",
+            "If current Rite has tenet_inner_journey_humble_pilgrimage_bonus, add medium_piety_gain. Arrogant/craven stress inputs use minor/medium_stress_impact_gain. No purchase or direct travel delay in this option body."
+          ],
+          "visibility": "R0039 instance9 rendered2/native2, shown/enabled, not selected. Source effects are not credited as native results.",
+          "historical_R31_selected": false
+        }
+      ],
+      "agent_reference": "R0039 instance9, actual day150.0, player15893, saved2002_local_warrior19735. Three current shown/enabled rows native0/1/2; first displayed native0 selected once. ACK and independent old-window disappearance confirmed at unchanged date51398520. Gold raw127430533→119930533(scale100000), a same-date decrease75; piety225971250 unchanged and stress0→0. Actual travel_safety modifier, candidate recruitment, score progression and unused C rewards were not independently queried. Source-local2year event cooldown is not the activity cooldown. Immediate chooses an eligible local pool warrior or creates one; this occurrence's creation branch is not established. All indices/labels are historical evidence only. Current shared registry before proposal has migration metadata but no source_analysis_completed flag for2003. No policy or action contract is added.",
+      "event_trigger": {
+        "event_local_cooldown_years": 2,
+        "not_activity_cooldown": true,
+        "requirements": [
+          "current_travel_plan.next_destination_progress>0.5",
+          "valid on-land travel event location"
+        ]
+      },
+      "immediate_and_after": "Save eligible local warrior, or create one from current location's culture/Faith/Rite. After-option cleanup only silently removes an unused created warrior for AI root; no human-player cleanup result inferred."
+    }
+  }
+}
