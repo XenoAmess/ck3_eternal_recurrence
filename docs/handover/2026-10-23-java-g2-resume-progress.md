@@ -170,3 +170,14 @@ Window07的Runtime12已由launcher实际echo通过并切queue13，窗口至08:30
 - Identity genuine06请求writer实际通过，但共享reader按module-own资源目录查找，误拒POM明确从g2-research复制到development的测试资源；三份资源实读字节/SHA相同。已停依赖的25向量/6 reader，修复归共享consumer，不trim模块或假造来源。规划4项及LAND已取得新genuine06精确入口，按各自fresh资源卡继续；恢复joint94准备完成，实际冷物化仍有具体Java接线缺口，不以软件合同PASS代替Prepared。
 
 原4GiB包内使用tools未花未来额度和guard重分，Native与Maven均已实际归零。CAP31只关闭Maven build及snapshot尚未使用的18757424 B未来预算，没有删除实物，全部genuine06输入/快照/产物仍可读；前瞻4146817224 B小于4GiB。后继22项overlay已独立封存：15份实际接受原件加7份未编译Java候选，文件64979 B / `0978fe1c912adf8f9005e24fd07c18cbc6e880ff92f746c1d0a88294fab1e4d5`，未热改source06。下一步继续同宿主原Python6、共享来源修复、各family真采与完整reader，以及Java SDK/物化生产路径，均按真实证据分别汇报。
+
+## 21:00 地图软件整链通过与剩余共享缺口
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`；本节观察截至2026-10-23T12:58Z，证据引用由Root逐长度/SHA独立读回。本轮没有再次启动游戏；首个真实T0暂停帧及受管关闭结果沿上节，新增保存游戏日仍为0。
+
+- Host06完整软件纵向验收实际通过：原2项JUnit、直接与注册投影两个真实HTTP、两个完整Python模块strict mypy、原6项消费者（含3条RAM queue/feeder/reducer链）均成功。总183.606208秒、exit0、Job0、stopnull、峰591622144 B，4025项来源PRE/POST及1077项checker文件前后匹配；UInt64最大值完整往返。终态`J/build/resume-current-20261023/host-map-vertical/java_http_host/map-software-http06/terminal.json`为439968 B / `ac59bd69306777a4310c902d9349f26e627ae0c6f58c325f6e1a148a08720e87`，交付`java_http_host/control/MAP-SOFTWARE-HTTP-DELIVERY06.json`为11162 B / `199f8047454fdc9ea69c392c5a72f9e79251d8b363afe6802958b27d815197b8`（同一宿主专根）。宿主PID270648、出生FILETIME字符串`134372327127634247`已按原合同关闭、Job0；最终专根26149768 B低于40MiB，四份运行资源正式释放。该结果授予MAP_ONLY软件范围，不授予FULL155、完整SDK或真实游戏帧的显示资格。后续必须新建活宿主并保持同一会话，不能借用已关闭Host06。
+- LAND的genuine06实际原生产者、production accept及适配器严格编译通过；完整15项reader实际为12通过/3失败、零跳过，失败来自编码内存LongNode与解析IntNode直接比较，实际JSON数值相同。最小后继只对三个完整断言的actual执行JSON序列化/解析往返；保留真实golden和bool/float/缺失/null/顺序/64位守卫。六步证据入口`J/build/resume-current-20261023/g2-m4/military_holy_order/control/land06-18/LAND06-CAPTURE18-DELIVERY01.json`为11928 B / `3466c40a17c44e8a2a7bdb136db71538076ef0666ff986557ad03d215ceb8ef9`；全部child已归零并归还资源，完整15仍为RED。
+- 已知跨模块测试资源来源问题集中修入共享采集读取器，显式消费捕获POM的testResources，不能裁掉模块资源来获得PASS。规划wave3单项及治理两模块资源已独立核实不触发此问题，可并行真采；其余依赖等待共享修复的新完整工具包。SDK新增显式reference-only装配入口及实际冷物化接线同步开发，不把reference原件或compile-only产物冒充生产SDK。
+- 独立核查现有文字显示/OBS路径，确认首审图仍需真实Game、placement与publisher身份；现有正常录制最小磁盘预留192MiB，单纯取消预览会保留非零退出，不计整项通过。尚未启动新的显示/录制作业，未写两个可见性`true`。下一次同场实机待新预算、活Retainer与实际文字审阅就绪；不再给缺少前置的具体开测时刻。
+
+截至本节，Quarkus同PID热重载已实测；Native启动/读帧/关闭与地图软件完整链分别通过。接下来的主线是共享工具正常Maven资格、缺项真实采集及全部消费者、SDK装配与恢复整step，最后取得同场地图/文字与业务后态证据。原始RED、冻结来源及UNKNOWN不重放边界继续保留；研发代理按独立事项并行，重型进程仍由真实容量调度。
