@@ -30,10 +30,14 @@ CRITICAL_TRANSPORTS = frozenset({
     "native_driver.py", "mcp_server.py", "nonwar_private_build.py", "version_identity.py",
     "activity_feast_stage5_start_private_transport.py", "driver.py", "exact_clock_failure_diagnostic_v1.py",
 })
-EXTRA_CAPABILITIES = {
+EXTRA_CAPABILITIES: dict[str, list[str]] = {
     "ck3_save_checkpoint": [],  # Existing native save primitive; no new feature flag or live credit.
     "ck3_execute_step": [],  # Existing generic SDK endpoint; Case policy still constrains actions.
     "ck3_open_character_window_v1": ["XAR_ENABLE_RELIGION_UI12004_PRESENTATION"],
+    "ck3_open_faith_window_v1": ["XAR_ENABLE_RELIGION_UI12004_PRESENTATION"],
+    "ck3_present_faith_power_ui_v1": ["XAR_ENABLE_RELIGION_UI12004_PRESENTATION"],
+    "ck3_query_faith_power_ui_v1": ["XAR_ENABLE_RELIGION_UI12004_PRESENTATION"],
+    "ck3_query_faith_power_tooltip_v1": ["XAR_ENABLE_RELIGION_UI12004_PRESENTATION"],
     "ck3_open_holy_site_decision_v1": [],
     "ck3_confirm_holy_site_decision_v1": [],
     "ck3_query_player_holy_site_decision_detail_v1": [],
