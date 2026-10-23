@@ -188,7 +188,7 @@ class CaseImportTests(unittest.TestCase):
                                    encoding="utf-8", timeout=60, check=False)
         self.assertEqual(completed.returncode, 0, completed.stdout + completed.stderr)
         value = json.loads(completed.stdout)
-        self.assertTrue(value["case_result"]["original_observations_imported"])
+        self.assertTrue(value["case_result"]["original_pending_contract_imported"])
         self.assertTrue(value["case_result"]["original_native_day_imported"])
         self.assertEqual(value["launcher_exit_code"], 0)
         self.assertFalse(value["case_result"]["game_started"])
@@ -212,7 +212,7 @@ def cli_fixture() -> int:
         bridge.mkdir(parents=True)
         (source / "xar_autoplayer/__init__.py").write_text("", encoding="utf-8")
         (bridge / "__init__.py").write_text("", encoding="utf-8")
-        for name in ("player_pilgrimage_traits.py", "campaign_interaction_boundary_v1.py"):
+        for name in ("campaign_interaction_boundary_v1.py",):
             (bridge / name).write_bytes((ROOT / "ck3_autonomous_player/src/xar_autoplayer/bridge" / name).read_bytes())
         fixture.manifest["entry_environment"] = {"PYTHONPATH_parts": [{"path_key": "source_root"}]}
         fixture.write(fixture.manifest_path, fixture.manifest)
@@ -226,13 +226,19 @@ def prepare_case(context: dict[str, object]) -> dict[str, object]:
 def verify_case(context: dict[str, object]) -> dict[str, object]:
     return {}
 def run_case(context: dict[str, object], client: object) -> dict[str, object]:
-    from tools.ck3_mod_acceptance_cases import faith_e02_pilgrimage_observations as observations
     from ck3_mod_acceptance_native_day import pending_instance
-    from xar_autoplayer.bridge import player_pilgrimage_traits as traits
-    assert observations.normalize_player_pilgrimage_traits_v1(None, current_context={}) is None
     assert pending_instance(None) is None
-    assert Path(traits.__file__).resolve().is_relative_to(Path(str(context['shared_source_root'])).resolve())
-    return {'original_observations_imported': True, 'original_native_day_imported': True, 'game_started': False}
+    pending = {'instance_id':33554443,'sender_character_id':31408,'auto_accept_notification':False,'source':'native'}
+    assert pending_instance(pending) == 33554443
+    try:
+        pending_instance({**pending, 'instance_id': True})
+    except ValueError:
+        pass
+    else:
+        raise AssertionError('Original lazy consumer accepted a Boolean pending identity')
+    from xar_autoplayer.bridge import campaign_interaction_boundary_v1 as boundary
+    assert Path(boundary.__file__).resolve().is_relative_to(Path(str(context['shared_source_root'])).resolve())
+    return {'original_pending_contract_imported': True, 'original_native_day_imported': True, 'game_started': False}
 ''', encoding="utf-8")
         contract = adapter.with_suffix(".json")
         fixture.write(contract, {})
