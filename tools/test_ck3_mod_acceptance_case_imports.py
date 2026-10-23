@@ -17,6 +17,120 @@ sys.path.insert(0, str(ROOT / "tools"))
 from ck3_mod_acceptance import _case_sdk_imports_v1
 
 
+def public_timer_verify_fixture(root: Path) -> subprocess.CompletedProcess[str]:
+    """Author seven Save inputs, then verify them through an SDK-free public CLI.
+
+    The existing TimerPort supplies authored I/O and startup binding. The child
+    runs the actual Selection, timer verifier and native projector without mocks.
+    No host/game starts and no real scene evidence is consumed or rewritten.
+    """
+    from unittest.mock import patch
+    from test_ck3_mod_acceptance import SharedEntryTests
+    import ck3_mod_acceptance as entry
+
+    prior = list(sys.path)
+    sys.path.insert(0, str(ROOT / "mod_living_artifacts/tools"))
+    import mod_living_artifacts.tools.test_suppression_timer_acceptance_adapter as authored
+
+    fixture = SharedEntryTests(methodName="test_run_delegates_existing_launcher_without_executing_host")
+    fixture.setUp()
+    try:
+        context = authored.context_fixture(root)
+        source = Path(str(context["shared_source_root"]))
+        bridge = source / "xar_autoplayer/bridge"
+        bridge.mkdir(parents=True)
+        (source / "xar_autoplayer/__init__.py").write_text("", encoding="utf-8")
+        (bridge / "__init__.py").write_text("", encoding="utf-8")
+        contract = "campaign_interaction_boundary_v1.py"
+        (bridge / contract).write_bytes((ROOT / "ck3_autonomous_player/src/xar_autoplayer/bridge" / contract).read_bytes())
+        fixture.runtime["repo_root"] = str(ROOT)
+        fixture.runtime["game_dir"] = str(context["game_dir"])
+        fixture.runtime["paths"]["source_root"] = str(source)
+        fixture.manifest["machine_id"] = "unit-machine"
+        fixture.manifest["game"] = context["shared_game"]
+        fixture.manifest["entry_environment"] = {"PYTHONPATH_parts": [{"path_key": "source_root"}]}
+        fixture.write(fixture.manifest_path, fixture.manifest)
+        fixture.runtime["manifest"] = entry.pin(fixture.manifest_path)
+        fixture.write(fixture.runtime_path, fixture.runtime)
+        case = json.loads((ROOT / "mod_living_artifacts/tools/suppression_timer.registry.json").read_text(encoding="utf-8"))
+        case["startup"]["state_dir"] = context["state_dir"]
+        case["initial_plan"] = str(fixture.files["initial"])
+        fixture.products["product_inventory"] = str(fixture.files["inventory"])
+        fixture.products["products"] = {"living-artifacts": {"cases": [case]}}
+        fixture.write(fixture.products_path, fixture.products)
+        run = root / "unit-run"
+        (run / "case-output").mkdir(parents=True)
+        frozen = run / "frozen-argv.json"
+        fixture.write(frozen, {})
+        context_path = fixture.root / "timer-context.json"
+        allocated = {"schema": entry.CONTEXT_SCHEMA, "run_id": run.name, "run_dir": str(run),
+                     "reviewer": "unit-root", "case_inputs": context["case_inputs"], "frozen_argv": entry.pin(frozen)}
+        fixture.write(context_path, allocated)
+        selected = entry.Selection(fixture.runtime_path, fixture.products_path, "living-artifacts", "suppression_timer", context_path)
+        fixture.write(frozen, {"run_id": run.name, "argv": selected.argv,
+                               "runtime_environment": selected.runtime_environment, "reviewer": "unit-root"})
+        allocated["frozen_argv"] = entry.pin(frozen)
+        fixture.write(context_path, allocated)
+        actual_context = selected.adapter_context()
+        port = authored.TimerPort(actual_context)
+        binding = authored.StartupActorBinding(91, 124, "9", 53144328, 12801, "a" * 64, "b" * 64)
+        with patch.object(authored.StartupActorBinding, "parse", return_value=binding):
+            result = authored.timer.run_case(actual_context, port)
+        if result["status"] != "PASS" or (port.saves, port.day) != (7, 198):
+            raise AssertionError("Original authored timer producer must complete its seven Save fixture: " + str(result.get("error")))
+        result_path = port.output / authored.timer.RESULT_NAME
+        original = result_path.read_bytes()
+        fixture.write(port.output / "normal-close-result.json", {"normal_close_qualified": True, "authored_no_game": True})
+        arguments = ["verify", "--runtime", str(fixture.runtime_path), "--products", str(fixture.products_path),
+                     "--product", "living-artifacts", "--case", "suppression_timer", "--run-context", str(context_path)]
+        script = """import copy,importlib.util,json,pathlib,sys
+if importlib.util.find_spec('xar_autoplayer') is not None:
+    raise RuntimeError('Independent verify received an ambient SDK')
+sys.path.insert(0, sys.argv[1])
+import ck3_mod_acceptance as entry
+status = entry.main(sys.argv[3:])
+if status:
+    raise SystemExit(status)
+from xar_autoplayer.bridge import campaign_interaction_boundary_v1 as boundary
+source = pathlib.Path(sys.argv[2])
+if pathlib.Path(boundary.__file__).resolve() != (source/'xar_autoplayer/bridge/campaign_interaction_boundary_v1.py').resolve():
+    raise RuntimeError('Verify imported a foreign pending-interaction contract')
+from ck3_mod_acceptance_native_day import project_native_day
+allocated = json.loads(pathlib.Path(sys.argv[-1]).read_text(encoding='utf-8'))
+output = pathlib.Path(allocated['run_dir'])/'case-output'
+projection = json.loads(next(output.glob('case-natural-day-*.native-day-projection.json')).read_text(encoding='utf-8'))
+raw = json.loads(pathlib.Path(projection['raw_public_row_path']).read_text(encoding='utf-8'))['rows'][0]
+pending = {'instance_id':33554443,'sender_character_id':31408,'auto_accept_notification':False,'source':'native'}
+raw['after_snapshot']['pending_character_interaction'] = pending
+raw['result']['pending_character_interaction'] = pending
+before = projection['row']['result']['before']
+projected = project_native_day(raw, before, allow_event_boundary=True)
+if projected['result']['event_boundary']['pending_character_interaction'] != pending:
+    raise RuntimeError('Real readonly pending boundary was lost')
+wrong = copy.deepcopy(raw)
+wrong['after_snapshot']['pending_character_interaction']['instance_id'] = True
+try:
+    project_native_day(wrong, before, allow_event_boundary=True)
+except ValueError:
+    pass
+else:
+    raise RuntimeError('Boolean pending identity must remain refused')
+"""
+        unrelated = root / "unrelated-cwd"
+        unrelated.mkdir()
+        environment = dict(os.environ)
+        environment.pop("PYTHONPATH", None)
+        completed = subprocess.run([sys.executable, "-I", "-B", "-X", "utf8", "-c", script,
+                                    str(ROOT / "tools"), str(source), *arguments], cwd=unrelated, env=environment,
+                                   capture_output=True, text=True, encoding="utf-8", timeout=120, check=False)
+        if result_path.read_bytes() != original:
+            raise AssertionError("Public read-only verify rewrote its original timer result")
+        return completed
+    finally:
+        fixture.doCleanups()
+        sys.path[:] = prior
+
+
 class CaseImportTests(unittest.TestCase):
     def setUp(self) -> None:
         self.prior_path = list(sys.path)

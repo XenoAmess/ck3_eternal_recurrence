@@ -99,6 +99,16 @@ class NativeDayTest(unittest.TestCase):
     def projected(self) -> dict[str, object]:
         return project_native_day(self.raw, self.before, allow_event_boundary=False)
 
+    def test_independent_public_verify_reconsumes_timer_days_and_pending_contract(self) -> None:
+        from test_ck3_mod_acceptance_case_imports import public_timer_verify_fixture
+
+        completed = public_timer_verify_fixture(Path(self.temp.name))
+        self.assertEqual(completed.returncode, 0, completed.stdout + completed.stderr)
+        result = json.loads(completed.stdout)
+        self.assertTrue(result["case_acceptance_pass"])
+        self.assertEqual((result["actual_natural_days"], result["actual_saved_observations"]), (198, 7))
+        self.assertFalse(result["product_release_pass"])
+
     def test_actual_producer_projector_then_original_day_consumer(self) -> None:
         original = os.environ.get("XAR_NATIVE_DAY_ORIGINAL_CLIENT")
         projected = self.port.advance_day()
