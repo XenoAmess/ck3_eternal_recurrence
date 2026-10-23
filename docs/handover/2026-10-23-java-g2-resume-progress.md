@@ -142,3 +142,18 @@ Window07的Runtime12已由launcher实际echo通过并切queue13，窗口至08:30
 - 首轮MAP路线收敛到一期真实边界：复用现有原生启动器、Native MCP和原C++唯一Driver，在新state/profile中以既有`load_save_name`加载选定不可变1066 T0；真实Native帧进入Java地图HTTP并交原parser验证。Java冷恢复接管与整场新账本不是这次地图纵向测试的前置，另线继续迁移；旧N46、head240及全部UNKNOWN不重放。当前地图宿主首个实际软件包在启动Quarkus前因`Instant`缺少解码器而RED、Job0，修复已落入共享typed codec候选，正执行新的strict/回归。尚无可宣称成功的真实Host或地图HTTP结果。
 
 资源仍为原D4GiB/Z32MiB、新增take0，12个运行槽与6GiB共享执行RAM；智能体源码研究可并行，Maven和唯一写者保持串行所有权。关闭未花预留保留全部实物，不计作磁盘删除。新source44MiB、snapshot44MiB和compile128MiB只能按最新容量卡有界执行；历史genuine05实际build为113061368 B，不能引用57MiB作为128MiB充足的证明。所有新Game启动前仍须当机新鲜后台Steam离线回执、实际EXE/桥/profile与进程出生身份绑定。
+
+## 19:31 首次真实启动、资源失败与并行闭环
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`；本节观察截至2026-10-23T11:30Z。**CK3已于11:13:22Z真实启动并加载指定T0，但首轮因资源超限终止，尚未取得有效原生游戏帧或Java地图业务通过。** Java新增保存游戏日仍为0。
+
+- Root使用qualified tools11公开OwnedStdio API，从Java受管Windows Job调用原SDK公共启动接口；未修改冻结SDK或复制旧Driver/账本。新profile只挂原版，启动指定不可变`robert-v20261019-T0-1066-09-15`。实际CK3 PID278072、出生FILETIME十进制字符串`134372275992665033`，原注入器实际退出0且其Job0；后台新鲜Steam回执为offline/true。原生查询尚处加载阶段，游戏日志已进入存档历史数据初始化，不能据此报地图或业务通过。
+- 父Job实际峰9685909504 B超过9GiB上限9663676416 B，226.891863秒终止，exit124、`observed_job_peak_exceeded_limit`，最终active_processes=0。`J/build/java-map-first-game-20261023-01/evidence/STDIO-FINAL02.json`保留真实终态。Python内层被父Job结束，未形成其正常stop/summary文件；不能补写伪造内层关闭成功。Root复核记录为同目录`NATIVE-ROUND01-ROOT-REVIEW.json`。16份原始游戏日志共497978 B已先保留到`evidence/launch01-game-logs/`，避免下一次原公共启动器清日志覆盖本轮失败证据。
+- 11:23:12Z独立native容量观测还发现profile为192418576 B，超过原96MiB；运行证据根仍在32MiB内。原96MiB预算本轮判RED。下一轮须以前瞻新预算覆盖实际缓存增长并保持总包容量，不能将新帽追认为本轮通过。没有普通动作、账本提交、UNKNOWN重放或游戏日信用。
+- Source06实际物化和独审均通过：2140文件、31子模块/32 reactor、39351464 B原生占用，小于44MiB，22项反例通过，两个始发执行均0/Job0/三MATCH。`J/build/resume-current-20261023/g2-m6/source_manifest_audit/control/source06/FULLGRAPH-DELIVERY16.json`为14266 B / `5d20fe09346f74aec530ca1c94a85bd0c0a563dacc0cd1ecb40d0258ff91b7d8`。Plan16仅替换Fresh main/test及Identity Base64 Capturer三个目标，其他2137项不变；新32项目Maven尚未开始，不能以源图通过代替编译或默认业务验收。
+- 地图宿主03曾真实启动Quarkus，PID213796、出生FILETIME`134372259165818151`、startup0.806秒；其后全投影资格被无事件源时合法为空的事件catalog拒绝，地图POST未执行。共享Owner新增显式MAP_ONLY分支，保留FULL投影原合同，不制造事件来源；严格8源及完整18项JUnit实际通过，零失败/跳过/中止、Job0/三MATCH。Host04尚未启动：旧窗口不足以完整执行2个HTTP及原Python6项，已释放未使用的四份槽，等待同源新窗口。18项软件通过不授予活Host、HTTP、显示或Native资格。
+- Direct5的5次真实原始采集、5次生产读回及7套74项消费者已全部通过，12个终态均0/Job0/三MATCH。交付`J/build/resume-current-20261023/g2-m1/finance_capture_profile/control/direct5-genuine05-tools11/DIRECT-FIVE-DELIVERY11.json`为24231 B / `effed1d3674287e6009c7f885c7fd3c223a90d31d872f1e818770cdda35efbd3`。
+- Sway完成Material、Retention、Phase三个原始捕获及全部对应21项reader，零失败/跳过，全部Job0。交付`J/build/resume-current-20261023/g2-m3/ai_scheme_sway/control/a1-tools11/INDEPENDENT3-DELIVERY01.json`为9423 B / `811b6ca22d71f6a61b74cda310b0737b5f45027b69faa3f6e73f3b3551432070`。Lifecycle缺`source_native_revision`、Stop超过64KiB的实际RED保留；三份Java后继源等待下一不可变编译图，不热改冻结05，不声称完整5/36通过。
+- 原生server-handle通知软件短链实际strict1、Notice6/6及原完整33/33全部通过，零跳过，全部Job0/三MATCH。完整33终态`J/build/resume-current-20261023/g2-m3/root_context_provider/native-notice-joint33-01/terminal.json`为422144 B / `56b2aa340a8264c27be6b34fe96b9ca1d3048d113ecbc8d36b11946448aafa64`；这不代表真实Game地图接管。Retainer新ENTRY03使用已验证MAP_ONLY类闭包，但尚未实际保留活Host。
+
+下一执行顺序是新窗口内完成Host原2个HTTP/原Python6项、按实测内存和缓存预算重试T0只读帧，以及Source06唯一Maven编译采集；资源允许时独立并行。新原件和必要reader修复进入下一不可变组合，保持source06已审图冻结。实际地图HTTP、原消费者、屏幕文字、普通动作、保存和完整cold/SDK各自记录，不能合并成虚假整体通过。
