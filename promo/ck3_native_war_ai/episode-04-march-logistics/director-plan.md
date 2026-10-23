@@ -1,5 +1,9 @@
 # 第4期导演与研究计划：行军、补给与损耗
 
+## 2026-10-23：正式标题已确认
+
+用户明确选定 **【CK3:战争机器#4】大军为什么越走越少？CK3 行军、补给与损耗解析**。后续发布标题与交付文案统一使用此名；[系列标题记录](../series-roadmap.md)保存历期正式标题及本次选择。下文2026-10-04初版的暂定标题保留为历史记录。
+
 ## 2026-10-20 12:55 UTC：Root签出R0217限定R04阳性源镜头，正式动态3/11
 
 `machine_id: desktop-3fevhd2-1c74096080`；[Root实际裁定](review02/r0217-r04-positive-review-a01/ROOT-R0217-R04-SHOT-ACCEPTANCE.actual.json)（6102B，SHA`af7fff15c256023886f15253eb822e27018261ec6a957f3dfc9b3e52a9b54d88`）接受原片 **[0,30)秒/900actual帧**，[11主题账本](review02/r0175-r12-positive-review-a01/formal-dynamic-theme-ledger.json)现 **3/11（27.27%，R04+R06+R12）**。17个direct-v2个别物理扣兵阳性小计236；画面地图6746→6510与unique physical6741→6505分开陈述，完整county total=null/fullR04false，5空DATA调用仍excluded，未补完整县域NET。复用已入Git的68199B/70b206…原生独立证据，无新consumer/游戏/日步。
