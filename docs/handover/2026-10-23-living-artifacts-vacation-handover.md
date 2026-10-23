@@ -6,6 +6,8 @@
 
 ## 恢复执行补注（2026-10-23）
 
+**12:28Z最新：R22/c22/a33五项PASS，正常闭场与公共复验实际0。** 本机 `pc-20260924rtuf-f11af23c08` 实际17自然日、160次计预算调用、7份保存，UNKNOWN=false。结果1288014B/SHA `317a0fb3283481dbe4a839c8c72af3d741d8fac4e159fb8c356f99891af4dea8`；健康装备/卸下4.6616→3.4616→4.6616，月结实际20→0金、压力15→45，同暂停日不重扣，次日实际3.99603金，候选仍ordinary。Root正常GUI退出桌面，游戏12:21:07.786150Z实际process_exit0，retained OS0/native cleanup0、normal_close_qualified=true；host原wait1/native报告RED保留（原背包OPEN拒绝），公共run原工具90738 wait0、keeper原allocate63425 wait0，Root CAS898实际释放。12:23:00.090615Z后台Steam仍offline/true。公共verify `20261023T122159379063Z-verify` 显式绑定实际run-context，原工具81272实际wait0，status=PASS/error=null；七份原Save/melt继续保护。详见[R22专题](../../mod_living_artifacts/docs/runtime-r22-curse-audit-revalidation.md)。当前无CK3，无Workshop ID，仍NOT_RELEASED；下一步采用新的发布/缓存存储卡，固定正式tag并封包上传。
+
 用户随后明确要求继续执行，撤销本交接开头的暂停状态。原度假闭场事实保留；后续恢复、c18 正常冻结和 R15 失败见 [恢复场次记录](../../mod_living_artifacts/docs/runtime-r15-resume-and-inventory-refusal.md)。新进度不把历史离线测试或失败场次追认为产品验收。
 
 恢复后的 R16 已完成47自然日、7次保存、8项阈值检查及75金实际扣款，并在同进程补验安抚25金、正常GUI退出。旧公共验证字段遗漏、修复后重新验证与后继门槛见 [R16实际结果](../../mod_living_artifacts/docs/runtime-r16-gold-debit-and-normal-close.md)。下文度假截点原样保留，不能当作恢复后的当前执行状态。
