@@ -195,3 +195,22 @@ Window07的Runtime12已由launcher实际echo通过并切queue13，窗口至08:30
 第一轮实机仍指北京时间19:52–19:57的T0受管启动、原生暂停帧读取和关闭。本节没有新Game、游戏动作或保存，完整Java游玩业务闭环0/1，新增保存游戏日0。目标节点为22:45前完成工具13自身读回及新binding，22:45–23:30推进reference实际视图、construction/Timeline与恢复失败复验，23:00–次日00:00尝试同次Game的原生帧→Java地图回执→实际灰色决策文字与1秒录制。以上为目标窗口，实际开测取决于新鲜Steam后台离线证明、同场Host、真实显示来源及联合容量；不将只读帧/显示试验记为完整自动游玩或保存通过。
 
 OBS旧树已带配置且含可变debug.log，尚无已验可直接使用的干净portable树；新树须逐文件来源/身份核验，私有配置、日志、缓存和ENTIRETMP独立计入预算，192MiB录制额度不覆盖全部新树增长。Root已准备旧fullcapture01/02/03三棵派生build的17个精确回收批次，共15822文件、198701392 B候选（含目录guard，非保证释放量）；本节删除量仍为0，source/snapshot、原始失败回执及genuine05/06保留，未把尚未执行回收算成可用容量。
+
+## 23:20 完整迁移目标、统计口径纠正及并发续派
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`；本节依据2026-10-23T15:18Z前已收到的实际终态。用户新阶段目标为：完整迁移现有Python自动游玩能力后，使用Java版本继续自动游玩；同时继续G2八M完整原生研究，将成果落实到迁移后的Java版本。不浪费的前提下最多56个子智能体并发。Root已将该目标登记为active，不把本节汇报当整体迁移完成。
+
+**整体迁移工程百分比目前未核准，不能从32个构建项目、437项工具测试或八个M类推出。** 新盘点直接读到Python `Service.plan_turn/_plan_turn_internal`、`strategy.choose_one_life_turn/_core`、`auto_turn/execute_step/save_checkpoint/restore_checkpoint`、`native_auto_run`和continuity锁内writer仍承担真实业务；Java八M类存在也不证明这些能力已接管。前文“八M基础实现8/8”的表述仅覆盖当时分域源码/软件范围，不能表示完整八M原生能力或Python全部能力100%已实现。已有19个责任审计单元，但消费者穷尽覆盖尚未闭合，不能再将其用作未经核准的总体百分比分母。当前确认有窄生产接管的Map回执链，完整Java自动游玩与新增保存仍为0；原Python G2历史6/8保持原定义，不外推Java。
+
+本轮新增实际结果：
+
+- tools13已完成整包437/437、55套零失败/错误/跳过及自身archive读回，actual `J/build/resume-current-20261023/g2-m4/bootstrap_integrated_tools/reader13-run01/actual.json`为6312 B / `8a8fa75d67e0487059dd6631bea25556ab8e28b4b2c8b7580fe6771b1d1d85f0`。Runtime21/current13已单次echo实际通过并进入Queue23；echo终态14388 B / `04900ad2411e056be62f3ee7762c214936ee6e87892b92dca975f2fc1166d0ac`，新qualification为5390 B / `5828da4150cc7742cd303c0245a12306eeda1559763c9dcc21d61c03935e5255`。这仍是工具资格。
+- 恢复修复实际严格编译及完整94/94通过，零失败/跳过/中止，939项输入前后MATCH，内外0、Job0。唯一索引`N/g2-m0/shared-recovery-prefix-repair02/QUALIFIED94-REPAIR03.json`为3497 B / `6daff958884965e56282b171d6203ad108b7f1ab08d6820bfc2d61db731bf0dc`，保留旧90/94失败。仅授软件夹具范围，真实Prepared/Junction与原账本恢复没有因此获准。
+- Identity原25向量与6消费者、planning两项原MAIN及完整39消费者均实际通过；治理完整两模块的四次来源producer/reader也通过，但治理八份业务原件及完整202尚未执行。通过来源检查与通过业务验证分开记录。
+- Source07普通增量已封，`N/contracts_source_graph/source07-intent01/SOURCE07-DELTA-MAP01.json`为57888 B / `273babb36a59165e8dbbda61992e97469ed9dc81b70c70fa5fbcb1d0ac167ccd`；继承NEXT22并加40项，合62项变更，预估2177文件/31子模块/32 reactor。仅为采用清单，未物化或编译；共享Prefix新修复及Native Vendor14的后继采用另外明确处理。
+
+并发检查最初仅10个子智能体处于运行态，后来核验曾升至24个；完成即退出，等待依赖不计有效工作。Root已续派Combat/Stock真实Java后继、Graph整合、热重载资源观测、SDK/Junction与完整HTTP准备；并明确建立六个核心Java接管owner：`java_full_planner`、`java_action_coordinator`、`java_auto_loop`、`java_native_transport`、`java_ledger_writer`、`java_save_restore`，另由`native_lifecycle_java`承担实际平台生命周期。Source128核心整批卡9605 B / `c1dea8fd47eb34dcef0157c46fa39cafd167011998794cdbaa33c574fb221f1f`已发；总源码预留122556112 B小于128MiB。原4GiB总包不增，CAP39前瞻4237028144 B小于4294967296，尚未回收的信用为0。
+
+G2八M原生研究分别由M0 ai_war_exit、M1 crown_governance、M2 g2_native_m2、M3 ai_prisoner_ransom、M4 planning_wartime_cash、M5 ai_route_reroute、M6 ai_scheme_sway、M7 recovery_qualification承担；与纯HTTP fixture工作分开，优先复用已有真实原生getter并补Java collector/typed adapter，而非重复摘录定义。新核查已发现M1核心entity directory与当前Java分析接口不同、M2诗人特质material分派尚未迁、M6有用scheme归因及一般活动生命周期未闭、M7 FILETIME精度及继承后authority接续缺口。当前原版来源应核`Z:/SteamLibrary/steamapps/common/Crusader Kings III/game`；R内同名游戏参考树含旧版，不能作为当前1.20.0.4资格。
+
+后续时间按目标窗口而非已完成承诺记录：23:30前收口当前并行专项；10月24日02:00前形成六核心首轮可审查Java候选和接口接线，10月24日白天执行首轮核心集成、补齐能力验收基线并重估总体工期。完整迁移并首轮Java自动游玩的粗目标窗口为10月25–28日，置信度低，须依据核心完整回归及真实保存恢复结果修订；G2自然事件、自然继承和多开局原生能力的完成另外依实际场景报告。未完成的实现不包装成只返回预选动作的planner，UNKNOWN、缺collector或未迁阶段必须明确暴露，不能用Python fallback冒充Java接管。
