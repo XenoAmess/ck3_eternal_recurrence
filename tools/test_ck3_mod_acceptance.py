@@ -3,6 +3,8 @@ from pathlib import Path
 import copy
 import importlib.util
 import json
+import os
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -131,6 +133,114 @@ class SharedEntryTests(unittest.TestCase):
         self.assertIn(entry.pin(source), result['checked_inputs'])
         source.write_text('{"changed":true}', encoding='utf-8')
         self.assertTrue(any('Pinned input changed' in error for error in selected.preflight()['blockers']))
+
+    def test_split_recording_source_producer_reaches_prelaunch_launcher_and_recorder(self) -> None:
+        from ck3_mod_acceptance_background_types import CONTROL_QUEUE_MODULE_ORDER_V1, json_object
+        import ck3_mod_acceptance_allocate as allocator
+        import ck3_mod_acceptance_runtime_inputs as running
+        shared = self.root / 'separate-execution-source'
+        shared_tools = shared / 'tools'
+        shared_tools.mkdir(parents=True)
+        names = {*CONTROL_QUEUE_MODULE_ORDER_V1, 'ck3_mod_acceptance_launcher',
+                 'ck3_mod_acceptance_keeper', 'ck3_mod_acceptance_steam_gate',
+                 'ck3_mod_acceptance_recorder', 'ck3_mod_acceptance_runtime_inputs'}
+        for name in names:
+            (shared_tools / (name + '.py')).write_bytes((Path(__file__).parent / (name + '.py')).read_bytes())
+        relative = Path('ck3_autonomous_player/src/xar_autoplayer/bridge/runtime_input_contract_v1.py')
+        original = Path(__file__).resolve().parents[1] / relative
+        current = shared / relative
+        checkout_contract = self.locations['repo'] / relative
+        for path in (current, checkout_contract):
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(original.read_bytes())
+        self.runtime['reviewed_launcher'] = entry.pin(shared_tools / 'ck3_mod_acceptance_launcher.py')
+        self.runtime['allocation'] = {'recording': {}}
+        self.runtime_path.write_text(json.dumps(self.runtime), encoding='utf-8')
+        self.products['products']['xqol']['cases'][0]['startup']['state_dir'] = str(self.root / 'actual-recording-state')
+        self.products_path.write_text(json.dumps(self.products), encoding='utf-8')
+        selected = entry.Selection(self.runtime_path, self.products_path, 'xqol', 'core')
+        preflight = selected.preflight()
+        self.assertEqual(preflight['blockers'], [])
+        self.assertIn(entry.pin(current), preflight['checked_inputs'])
+        produced = allocator.recording_input_files(selected)
+        self.assertIn(current.resolve(), produced)
+        self.assertNotIn(checkout_contract.resolve(), produced)
+        live = self.root / 'unit-recording-run'
+        live.mkdir()
+        profile = selected.state_dir / 'profile'
+        profile.mkdir(parents=True)
+        settings = profile / 'pdx_settings.txt'
+        settings.write_bytes(b'original input settings')
+        snapshot = live / 'input-snapshots/profile/pdx_settings.txt'
+        snapshot.parent.mkdir(parents=True)
+        snapshot.write_bytes(settings.read_bytes())
+        config = self.root / 'recording-config.json'
+        job = self.root / 'synthetic-job.py'
+        job.write_text('# no OS recorder is launched\n', encoding='utf-8')
+        config.write_text(json.dumps({'machine_id': 'unit-recording-machine', 'recorder_job': entry.pin(job)}), encoding='utf-8')
+        paths = [*produced, checkout_contract, settings, snapshot, config, job, self.host,
+                 *[shared_tools / (name + '.py') for name in names], self.manifest_path]
+        files = {str(path.resolve()): {key: value for key, value in entry.pin(path).items() if key != 'path'} for path in paths}
+        frozen = json_object({'run_id': live.name, 'argv': selected.argv, 'state_dir': str(selected.state_dir),
+            'source_root': str(self.locations['source']), 'screen_task': 'synthetic-recorder-task',
+            'identity_allocation': {'machine_id': 'unit-recording-machine'}, 'files': files,
+            'runtime_manifest': entry.pin(self.manifest_path), 'previous_session_closed': True,
+            'previous_screen_released': True, 'launch_requires_fresh_owned_cas_and_background_offline': True})
+        helper = shared_tools / 'ck3_mod_acceptance_runtime_inputs.py'
+        preview = running.validate_allocated_running_inputs(helper, live, frozen)
+        checked = preview.get('immutable_inputs_checked')
+        if type(checked) is not int:
+            raise ValueError('Actual running preview count missing')
+        self.assertGreater(checked, 0)
+        # Reproduce R24: the checkout contract is byte-identical, yet its Pin
+        # cannot stand in for the actual loader's execution path.
+        broken = copy.deepcopy(frozen)
+        broken_files = json_object(broken['files'])
+        broken_files.pop(str(current.resolve()))
+        broken['files'] = broken_files
+        with self.assertRaisesRegex(ValueError, 'implementation absent or changed'):
+            running.validate_allocated_running_inputs(helper, live, broken)
+        (live / 'frozen-argv.json').write_text(json.dumps(frozen), encoding='utf-8')
+        (live / 'ready-context.json').write_text(json.dumps({'run_id': live.name, 'run_dir': str(live),
+            'keeper_root': str(self.root / 'unit-keeper'), 'frozen_argv': entry.pin(live / 'frozen-argv.json')}), encoding='utf-8')
+        # Native launch is absent. Only the live CAS leaf is replaced; source,
+        # running-input, launcher and recorder admission remain real consumers.
+        script = '''
+import json,os,sys
+from pathlib import Path
+from types import SimpleNamespace
+import psutil
+import ck3_mod_acceptance_launcher as launcher
+import ck3_mod_acceptance_keeper as keeper
+import ck3_mod_acceptance_recorder as recorder
+live=Path(sys.argv[1]); config=Path(sys.argv[2])
+frozen,context=launcher.frozen_run(live,input_phase="running")
+(live/'native-report.json').write_text(json.dumps({'phase':'hold','state_dir':frozen['state_dir'],'agent_source_root':frozen['source_root']}))
+(live/'host-started.json').write_text(json.dumps({'pid':os.getpid(),'create_time':psutil.Process().create_time()}))
+checks=[]
+keeper.live_lease=lambda *args,**kwargs:checks.append('synthetic-cas-leaf')
+service=object.__new__(recorder.ScreenCaptureService)
+service.keeper_root=Path(context['keeper_root']);service.task_id=frozen['screen_task']
+service.config_path=config;service.config=json.loads(config.read_text());service.keeper=SimpleNamespace(require_live=lambda:checks.append('keeper-leaf'))
+actual,qualified=service._live(live)
+assert actual==live.resolve() and checks==['synthetic-cas-leaf','keeper-leaf']
+print(json.dumps({'running_inputs':qualified['_runtime_input_observation'],'recorder_live_guard':True}))
+'''
+        command = [sys.executable, '-B', '-X', 'utf8', '-c', script, str(live), str(config)]
+        environment = dict(os.environ, PYTHONPATH=str(shared_tools))
+        result = subprocess.run(command, cwd=shared, env=environment, capture_output=True, text=True, timeout=60)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertTrue(json.loads(result.stdout)['recorder_live_guard'])
+        settings.write_bytes(b'game-owned settings output')
+        result = subprocess.run(command, cwd=shared, env=environment, capture_output=True, text=True, timeout=60)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertTrue(json.loads(result.stdout)['running_inputs']['mutable_profile_observations'][0]['bytes_changed'])
+        current.write_bytes(current.read_bytes() + b'\n# changed after allocation\n')
+        result = subprocess.run(command, cwd=shared, env=environment, capture_output=True, text=True, timeout=60)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('implementation absent or changed', result.stderr)
+        current.unlink()
+        self.assertTrue(any('Running input source closure' in error for error in selected.preflight()['blockers']))
 
     def test_external_catalog_reuses_pinned_shared_cache_case(self):
         central = self.locations['repo'] / 'tools/ck3_mod_acceptance_products.json'

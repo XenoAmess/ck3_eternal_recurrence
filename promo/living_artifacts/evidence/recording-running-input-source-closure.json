@@ -1,0 +1,123 @@
+{
+  "schema": "living-artifacts-recording-running-input-source-closure-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-23T20:31:20.647638+00:00",
+  "status": "SOURCE_VALIDATED_NOT_LIVE_FILMED",
+  "failure_run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0024",
+  "root_cause": "Allocator pinned checkout C contract; loader executes S-relative contract. Equal bytes do not bind another execution path.",
+  "source_fix": [
+    "Closed typed source pair from actual selected helper",
+    "Recording preflight returns exact helper and S contract Pins",
+    "Allocator rechecks and adds exact paths to frozen.files",
+    "Complete actual loader+SDK running-input preview after original snapshots, before screen register/keeper/Game",
+    "New-only prelaunch receipt; no frozen/old evidence mutation"
+  ],
+  "validation": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r24-runtime-input-source-closure-fix-a01\\result.json",
+    "bytes": 9249,
+    "sha256": "5cb8e0d4a4e97bee0dc5a72f2358d20d821343804d31c192e5b6ec3d858c6f7a"
+  },
+  "complete_ci_steps": [
+    {
+      "step": "Test retired legacy decision panel before new recording",
+      "actual_exit": 0,
+      "receipt": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r24-runtime-input-source-closure-fix-a01\\final-01\\exit.json",
+        "bytes": 758,
+        "sha256": "9f867df3791544cdd350854fc155d687ebf681377e25aa8f5ab6ba0281432506"
+      }
+    },
+    {
+      "step": "Test retired legacy decision panel before new recording",
+      "actual_exit": 0,
+      "receipt": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r24-runtime-input-source-closure-fix-a01\\final-02\\exit.json",
+        "bytes": 764,
+        "sha256": "b0a8843a532ea0b64c5e7f94340b6842c2dfb81834a0299cef5421853baa6cf5"
+      }
+    },
+    {
+      "step": "Test public case frozen SDK imports and finite pilgrimage policy",
+      "actual_exit": 0,
+      "receipt": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r24-runtime-input-source-closure-fix-a01\\final-03\\exit.json",
+        "bytes": 1197,
+        "sha256": "893b8c2d46df08601ee9143909af7d41cabc0f46b92fa2786310248e684b695a"
+      }
+    },
+    {
+      "step": "Test public case frozen SDK imports and finite pilgrimage policy",
+      "actual_exit": 0,
+      "receipt": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r24-runtime-input-source-closure-fix-a01\\final-04\\exit.json",
+        "bytes": 1253,
+        "sha256": "a06416c26d320305f3d6a8828762036ce6180047ec43f9e1a1cc755f10fe8d40"
+      }
+    },
+    {
+      "step": "Test public case frozen SDK imports and finite pilgrimage policy",
+      "actual_exit": 0,
+      "receipt": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r24-runtime-input-source-closure-fix-a01\\final-05\\exit.json",
+        "bytes": 1400,
+        "sha256": "7df3104153e92cc6202400c1e24ad4ab6282d29bfc4424e967934b9dcb6debd8"
+      }
+    },
+    {
+      "step": "Test public case frozen SDK imports and finite pilgrimage policy",
+      "actual_exit": 0,
+      "receipt": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r24-runtime-input-source-closure-fix-a01\\final-06\\exit.json",
+        "bytes": 1200,
+        "sha256": "7391668bc2c3843e2682b99b0fe5152c909af6d4737c52bda4f134e9c7649463"
+      }
+    },
+    {
+      "step": "Test public case frozen SDK imports and finite pilgrimage policy",
+      "actual_exit": 0,
+      "receipt": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r24-runtime-input-source-closure-fix-a01\\final-07\\exit.json",
+        "bytes": 1020,
+        "sha256": "98b72d83481a7985afdf6a88f457f2186de663f4bd889e5727724defc90f6437"
+      }
+    },
+    {
+      "step": "Test public case frozen SDK imports and finite pilgrimage policy",
+      "actual_exit": 0,
+      "receipt": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r24-runtime-input-source-closure-fix-a01\\final-08\\exit.json",
+        "bytes": 899,
+        "sha256": "0c83b4fa7f2229c8d36e9501b285405bf6a03ebc6d3b0e78bcc904e9a798eebe"
+      }
+    },
+    {
+      "step": "Test public case frozen SDK imports and finite pilgrimage policy",
+      "actual_exit": 0,
+      "receipt": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r24-runtime-input-source-closure-fix-a01\\final-09\\exit.json",
+        "bytes": 1263,
+        "sha256": "bf465b6e6e21ddd20b789df9abe01394ced7e7a491a44e2e19967a874f114b8d"
+      }
+    },
+    {
+      "step": "Test public case frozen SDK imports and finite pilgrimage policy",
+      "actual_exit": 0,
+      "receipt": {
+        "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\r24-runtime-input-source-closure-fix-a01\\final-10\\exit.json",
+        "bytes": 1165,
+        "sha256": "f7e7eedca854a946f4ca926b8fe9094a83123b8e204a4a871e6aeec38c9d9cdf"
+      }
+    }
+  ],
+  "strict_boundary": "Per-function diagnostic multisets have no additions; old full-module exits1 retained, not all-module GREEN. New runtime loader full strict0.",
+  "legacy_full_module_diagnostics": {
+    "public": 50,
+    "allocator": 652,
+    "runtime_inputs": 0,
+    "public_tests": 147
+  },
+  "new_diagnostics": 0,
+  "old_frozen_runtime_mutated": false,
+  "raw_promo_footage_count": 0,
+  "new_allocation_and_actual_recorder_still_required": true
+}

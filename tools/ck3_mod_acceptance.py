@@ -17,7 +17,7 @@ import math
 import os
 from pathlib import Path
 from types import ModuleType
-from typing import Literal, TypedDict
+from typing import TYPE_CHECKING, Literal, TypedDict
 import re
 import subprocess
 import sys
@@ -26,6 +26,8 @@ from ck3_mod_acceptance_background_types import (
     FilePin, JsonObject, file_pin, json_object, keyed_file_pin, object_field, text_field,
     wire_evidence_codec, validate_host_running_date_projection,
 )
+if TYPE_CHECKING:
+    from ck3_mod_acceptance_runtime_inputs import RuntimeInputSources
 
 
 LEGACY_THRESHOLD_ADAPTER_V1 = (35832, "863dfea6abd897a8efe2159f75717108f6b4afd8677e01fa44a6cc48b8c3e2e3")
@@ -749,6 +751,14 @@ class Selection:
                 "outputs": self.case.get("outputs"), "blockers": list(self.blockers),
                 "runtime_status": "NOT_RUN", "business_acceptance": "NOT_ASSESSED"}
 
+    def recording_runtime_input_sources(self) -> RuntimeInputSources | None:
+        allocation = json_object(self.runtime.get('allocation', {}))
+        if allocation.get('recording') is None:
+            return None
+        from ck3_mod_acceptance_runtime_inputs import load_runtime_input_sources
+        launcher = path_at(self.runtime['reviewed_launcher']['path'], self.runtime_path.parent)
+        return load_runtime_input_sources(launcher.with_name('ck3_mod_acceptance_runtime_inputs.py'))
+
     def preflight(self) -> dict:
         checks = []
         errors = list(self.blockers)
@@ -757,6 +767,13 @@ class Selection:
                 checks.append(check_pin(path, expected))
             except (OSError, ValueError) as error:
                 errors.append(str(error))
+        try:
+            sources = self.recording_runtime_input_sources()
+            if sources is not None:
+                for reference in (sources['helper'], sources['contract']):
+                    checks.append(check_pin(Path(reference['path']), dict(reference)))
+        except (OSError, ValueError, AttributeError, ImportError) as error:
+            errors.append('Running input source closure: ' + str(error))
         for key in ("python", "repo_root", "game_dir", "userdir_root"):
             if not self.locations[key].exists():
                 errors.append(f"Configured location missing: {key}: {self.locations[key]}")

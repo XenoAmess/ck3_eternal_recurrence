@@ -1,7 +1,7 @@
 """One shared allocation followed immediately by the existing screen keeper."""
 from __future__ import annotations
 from ck3_mod_acceptance_launcher_protocol_v1 import BACKGROUND_CLOSURE_SCHEMAS_V1
-from ck3_mod_acceptance_background_types import JsonObject, json_object, CONTROL_QUEUE_MODULE_ORDER_V1
+from ck3_mod_acceptance_background_types import FilePin, JsonObject, json_object, CONTROL_QUEUE_MODULE_ORDER_V1
 from ck3_mod_acceptance_fresh_machine_bootstrap import (
     FRESH_ADMISSION_MODE, FRESH_BOOTSTRAP_SCHEMA, MachineBinding,
     require_empty_machine_history, validate_fresh_bootstrap, create_current_process_observation,
@@ -19,6 +19,14 @@ from types import ModuleType
 from typing import Literal, TypedDict
 from ck3_mod_acceptance import Selection,path_at,check_pin,pin,read_json
 from ck3_mod_acceptance_prepare import write_json
+from ck3_mod_acceptance_runtime_inputs import validate_allocated_running_inputs
+
+def recording_input_files(selection: Selection) -> dict[Path, FilePin]:
+    sources = selection.recording_runtime_input_sources()
+    if sources is None:
+        raise ValueError('Actual recording running-input source closure required')
+    return {Path(row['path']).resolve(): row for row in (sources['helper'], sources['contract'])}
+
 
 def require(value,message):
     if not value:raise ValueError(message)
@@ -2329,10 +2337,7 @@ def _allocate_and_keep_impl(selection,args):
     if recording:
         for row in recording.values():
             files[Path(row['path']).resolve()]=row
-        running_inputs=path_at(selection.runtime['reviewed_launcher']['path'],base).with_name('ck3_mod_acceptance_runtime_inputs.py').resolve()
-        files[running_inputs]=pin(running_inputs)
-        running_contract=root/'ck3_autonomous_player/src/xar_autoplayer/bridge/runtime_input_contract_v1.py'
-        files[running_contract]=pin(running_contract)
+        files.update(recording_input_files(selection))
     for row in selection.runtime.get('allocator_overlay',{}).values():
         if isinstance(row,dict) and {'path','bytes','sha256'}<=row.keys():
             check_pin(Path(row['path']),row);files[Path(row['path']).resolve()]=row
@@ -2409,6 +2414,12 @@ def _allocate_and_keep_impl(selection,args):
         frozen['initial_machine_no_predecessor']=True
         if ledger!=ledger_root:
             frozen['single_use_ledger']=str(ledger.resolve())
+    if recording:
+        running_helper=path_at(selection.runtime['reviewed_launcher']['path'],base).with_name('ck3_mod_acceptance_runtime_inputs.py')
+        running_preview=validate_allocated_running_inputs(running_helper,live,json_object(frozen))
+        with (live/'running-inputs-prelaunch.json').open('x',encoding='utf-8',newline='\n') as preview_stream:
+            json.dump(running_preview,preview_stream,ensure_ascii=False,indent=2,allow_nan=False)
+            preview_stream.write('\n')
     write_json(live/'frozen-argv.json',frozen)
     # All slow pin/profile work precedes register. No tool boundary occurs
     # between the actual allocated JSON and the original keeper subprocess.
