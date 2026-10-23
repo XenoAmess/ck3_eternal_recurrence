@@ -1,0 +1,29 @@
+{
+  "schema": "xar.coa.rgb-pages-release.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T12:43:01.978Z",
+  "url": "https://xenoamess.github.io/ck3_eternal_recurrence/coat_of_arms_editer_of_ck3/",
+  "status": 200,
+  "head_sha": "a9cdef91833294eb94aab70ce270ca61d7f488eb",
+  "version_text": "版本 2026-10-23T12:33:02.715Z · a9cdef91",
+  "actions_run_id": "39946754790",
+  "actions_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39946754790",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "build",
+      "conclusion": "success"
+    },
+    {
+      "name": "deploy",
+      "conclusion": "success"
+    }
+  ],
+  "public_fractional_copy_blocked": true,
+  "public_corrected_copy_enabled": true,
+  "copied_source": "coa = {\r\n    pattern = \"pattern_solid.dds\"\r\n    color1 = rgb { 32 64 160 }\r\n    color2 = white\r\n    color3 = red\r\n\r\n    colored_emblem = {\r\n        texture = \"ce_martlet.dds\"\r\n        color1 = rgb { 205 197 197 }\r\n        color2 = red\r\n        color3 = white\r\n        mask = { 1 }\r\n\r\n        instance = {\r\n            position = { 0.3 0.5 }\r\n            scale = { 0.35 0.35 }\r\n            rotation = -20\r\n            depth = 1.01\r\n        }\r\n\r\n        instance = {\r\n            position = { 0.7 0.5 }\r\n            scale = { -0.35 0.35 }\r\n            rotation = 20\r\n            depth = 2.01\r\n        }\r\n    }\r\n}\r\n",
+  "clipboard": "isolated_browser_callback_stub_not_OS_clipboard",
+  "page_errors": [],
+  "screenshot": "C:/coa-rgb-20261023/public-release.png",
+  "screenshot_sha256": "c4648a7211f1e83e6940bcb78da72274e5b41f344f66093846a7f14b643f5a56"
+}
