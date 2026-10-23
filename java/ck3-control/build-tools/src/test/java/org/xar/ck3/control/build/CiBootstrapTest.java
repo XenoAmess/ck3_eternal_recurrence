@@ -155,6 +155,90 @@ final class CiBootstrapTest {
     }
 
     @Test
+    void actualDoxiaChecksumTemporaryRemovalStillCountsSurvivingArtifacts(@TempDir Path temporary) throws Exception {
+        Path sibling = guardedFile(temporary, "m2");
+        Path version = Files.createDirectories(sibling.getParent().resolve("org/apache/maven/doxia/doxia-sink-api/2.0.0"));
+        Path pom = version.resolve("doxia-sink-api-2.0.0.pom"); Files.writeString(pom, "actual pom");
+        Path checksum = version.resolve("doxia-sink-api-2.0.0.pom.md5.2381834368995664026.tmp");
+        Files.writeString(checksum, "actual checksum temporary");
+        AtomicInteger reads = new AtomicInteger();
+        CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10), () -> {}, path -> {
+            if (path.equals(checksum)) Files.delete(checksum);
+            if (path.equals(sibling) || path.equals(pom)) reads.incrementAndGet();
+            return attributes(path);
+        });
+        assertTrue(Files.notExists(checksum)); assertEquals(2, reads.get());
+        assertEquals("actual pom", Files.readString(pom));
+    }
+
+    @Test
+    void removedChecksumTemporaryDuringTraversalPreservesSiblingQuota(@TempDir Path temporary) throws Exception {
+        Path sibling = guardedFile(temporary, "m2");
+        Path checksum = sibling.resolveSibling("doxia-sink-api-2.0.0.pom.md5.2381834368995664026.tmp");
+        Files.writeString(checksum, "actual checksum temporary");
+        AtomicInteger reads = new AtomicInteger();
+        CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10), () -> {}, path -> {
+            if (path.equals(sibling)) reads.incrementAndGet();
+            return attributes(path);
+        }, removeBeforeTraversal(checksum));
+        assertTrue(Files.notExists(checksum)); assertEquals(1, reads.get());
+        Files.writeString(checksum, "actual checksum temporary");
+        IOException failure = assertThrows(IOException.class, () -> CiBootstrap.guard(temporary, Map.of(),
+                Instant.now().plusSeconds(10), () -> {}, path -> {
+                    BasicFileAttributes actual = attributes(path);
+                    return path.equals(sibling) ? new SizedAttributes(actual, (2L << 30) + 1) : actual;
+                }, removeBeforeTraversal(checksum)));
+        assertEquals("task part budget exceeded: m2", failure.getMessage());
+    }
+
+    @Test
+    void checksumTemporaryRemovalRequiresResolverFilenameAndRealM2Descendant(@TempDir Path temporary) throws Exception {
+        Path sibling = guardedFile(temporary, "m2");
+        for (String name : List.of("artifact.pom.md5.2381834368995664026.tmp", "artifact.jar.sha1.18446744073709551615.tmp",
+                "maven-metadata.xml.sha256.0.tmp", "artifact.pom.sha512.42.tmp")) {
+            Path checksum = sibling.resolveSibling(name); Files.writeString(checksum, "actual checksum temporary");
+            CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10), () -> {},
+                    CiBootstrapTest::attributes, removeBeforeTraversal(checksum));
+            assertTrue(Files.notExists(checksum));
+        }
+        for (String name : List.of("artifact.pom", "artifact.jar", "artifact.pom.md5", "artifact.pom.sha1",
+                "artifact.pom.42.tmp", "artifact.pom.md5.random.tmp", "artifact.pom.md5.-1.tmp",
+                "artifact.pom.md5.+1.tmp", "artifact.pom.md5.00.tmp", "artifact.pom.md5.18446744073709551616.tmp",
+                "artifact.pom.md5.42.tmp.bak")) {
+            Path file = sibling.resolveSibling(name); Files.writeString(file, "actual file");
+            assertThrows(NoSuchFileException.class, () -> CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10),
+                    () -> {}, CiBootstrapTest::attributes, removeBeforeTraversal(file)), name);
+        }
+        Path foreign = temporary.resolve("build/artifact.pom.md5.42.tmp"); Files.writeString(foreign, "other part");
+        assertThrows(NoSuchFileException.class, () -> CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10),
+                () -> {}, CiBootstrapTest::attributes, removeBeforeTraversal(foreign)));
+        Files.delete(sibling); Files.delete(sibling.getParent());
+        assertThrows(NoSuchFileException.class, () -> CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10),
+                () -> {}, CiBootstrapTest::attributes));
+    }
+
+    @Test
+    void checksumTemporaryStillCountsAndCannotHidePermissionOrOtherIoFailure(@TempDir Path temporary) throws Exception {
+        Path sibling = guardedFile(temporary, "m2");
+        Path checksum = sibling.resolveSibling("artifact.pom.md5.42.tmp"); Files.writeString(checksum, "actual checksum temporary");
+        IOException quota = assertThrows(IOException.class, () -> CiBootstrap.guard(temporary, Map.of(),
+                Instant.now().plusSeconds(10), () -> {}, path -> {
+                    BasicFileAttributes actual = attributes(path);
+                    return path.equals(checksum) ? new SizedAttributes(actual, (2L << 30) + 1) : actual;
+                }));
+        assertEquals("task part budget exceeded: m2", quota.getMessage());
+        for (IOException error : List.of(new AccessDeniedException(checksum.toString()), new IOException("other I/O failure"))) {
+            AtomicInteger reads = new AtomicInteger();
+            IOException failure = assertThrows(IOException.class, () -> CiBootstrap.guard(temporary, Map.of(),
+                    Instant.now().plusSeconds(10), () -> {}, path -> {
+                        if (path.equals(checksum)) { reads.incrementAndGet(); throw error; }
+                        return attributes(path);
+                    }));
+            assertEquals(error, failure); assertEquals(1, reads.get());
+        }
+    }
+
+    @Test
     void vanishedPartRootAndNonScratchDescendantsRemainFatal(@TempDir Path temporary) throws Exception {
         Path file = guardedFile(temporary, "build");
         Path vanished = Files.createDirectory(file.getParent().resolve("removed-output"));

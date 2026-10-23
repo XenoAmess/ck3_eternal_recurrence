@@ -71,6 +71,8 @@ public final class CiBootstrap {
             "scratch", 512 * MIB, "metadata_logs", 32 * MIB, "artifacts", 128 * MIB,
             "guard", 480 * MIB);
     private static final Pattern SIMPLE_PATH = Pattern.compile("[^\\s\"%&|<>^!]+", Pattern.UNICODE_CHARACTER_CLASS);
+    private static final Pattern MAVEN_CHECKSUM_TEMPORARY = Pattern.compile(
+            ".+\\.(?:md5|sha1|sha256|sha512)\\.(0|[1-9][0-9]{0,19})\\.tmp");
 
     private CiBootstrap() {}
 
@@ -876,7 +878,7 @@ public final class CiBootstrap {
             Path part = root.resolve(name);
             boolean scratch = name.equals("scratch");
             long limit = PARTS.get(name.equals("logs") ? "metadata_logs" : name);
-            // JUnit removes scratch entries and Maven retires .lastUpdated markers.
+            // JUnit removes scratch entries; Maven retires update markers and checksum temporaries.
             // Handle only their actual disappearance, preserving every surviving sibling.
             walker.walk(part, new SimpleFileVisitor<>() {
                 private long size;
@@ -895,8 +897,8 @@ public final class CiBootstrap {
                 }
                 private FileVisitResult failed(Path path, IOException error) throws IOException {
                     active.check();
-                    boolean mavenUpdateMarker = name.equals("m2") && path.getFileName().toString().endsWith(".lastUpdated");
-                    if (!path.equals(part) && path.startsWith(part) && (scratch || mavenUpdateMarker)
+                    boolean mavenMetadata = name.equals("m2") && mavenTransientMetadata(path);
+                    if (!path.equals(part) && path.startsWith(part) && (scratch || mavenMetadata)
                             && error instanceof NoSuchFileException) return FileVisitResult.CONTINUE;
                     throw error;
                 }
@@ -915,6 +917,17 @@ public final class CiBootstrap {
                 }
             });
         }
+    }
+
+    private static boolean mavenTransientMetadata(Path path) {
+        String name = path.getFileName().toString();
+        if (name.endsWith(".lastUpdated")) return true;
+        // Resolver PathProcessorSupport appends an unsigned random long and .tmp
+        // while publishing a checksum. Present files still pass through normal accounting.
+        var checksum = MAVEN_CHECKSUM_TEMPORARY.matcher(name);
+        if (!checksum.matches()) return false;
+        try { Long.parseUnsignedLong(checksum.group(1)); return true; }
+        catch (NumberFormatException outOfRange) { return false; }
     }
 
     private static BasicFileAttributes guardedAttributes(Path path, boolean scratch,
