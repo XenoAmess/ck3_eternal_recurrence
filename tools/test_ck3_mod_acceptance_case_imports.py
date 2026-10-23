@@ -193,6 +193,106 @@ class CaseImportTests(unittest.TestCase):
         self.assertEqual(value["launcher_exit_code"], 0)
         self.assertFalse(value["case_result"]["game_started"])
 
+    def test_real_verify_and_cli_validate_json_result_and_preserve_encoded_sequences(self) -> None:
+        env = dict(os.environ)
+        env.pop("PYTHONPATH", None)
+        for kind in ("top-level", "key", "value", "valid"):
+            with self.subTest(kind=kind):
+                completed = subprocess.run(
+                    [sys.executable, "-I", "-B", "-X", "utf8", str(Path(__file__).resolve()),
+                     "--verify-json-fixture", kind], cwd=self.temporary.name, env=env,
+                    capture_output=True, text=True, encoding="utf-8", timeout=60, check=False)
+                self.assertEqual(completed.returncode, 0, completed.stdout + completed.stderr)
+                value = json.loads(completed.stdout)
+                self.assertEqual(value["cli_returncode"], 2)
+                self.assertFalse(value["game_started"])
+                if kind == "valid":
+                    self.assertEqual(value["result"]["authored_payload"],
+                                     {"sequence": [1, "two", None, {"enabled": True}],
+                                      "identity_decimal": "18446744073709551615", "empty": []})
+                    self.assertFalse(value["result"]["case_acceptance_pass"])
+                    self.assertTrue(value["direct_cli_json_equal"])
+                else:
+                    self.assertTrue(value["direct_rejected"])
+                    self.assertEqual(value["result"]["status"], "BLOCKED")
+
+
+def verify_json_fixture(kind: str) -> int:
+    """Exercise actual Selection.verify and CLI; author only the adapter boundary."""
+    if kind not in ("top-level", "key", "value", "valid"):
+        raise ValueError("Unknown authored JSON boundary case")
+    sys.path.insert(0, str(ROOT))
+    from contextlib import redirect_stdout
+    from io import StringIO
+    from test_ck3_mod_acceptance import SharedEntryTests
+    from ck3_mod_acceptance_background_types import json_object
+    import ck3_mod_acceptance as entry
+
+    fixture = SharedEntryTests(methodName="test_run_delegates_existing_launcher_without_executing_host")
+    fixture.setUp()
+    try:
+        source = fixture.locations["source"]
+        bridge = source / "xar_autoplayer/bridge"
+        bridge.mkdir(parents=True)
+        (source / "xar_autoplayer/__init__.py").write_text("", encoding="utf-8")
+        (bridge / "__init__.py").write_text("", encoding="utf-8")
+        contract_name = "campaign_interaction_boundary_v1.py"
+        (bridge / contract_name).write_bytes((ROOT / "ck3_autonomous_player/src/xar_autoplayer/bridge" / contract_name).read_bytes())
+        fixture.manifest["entry_environment"] = {"PYTHONPATH_parts": [{"path_key": "source_root"}]}
+        fixture.write(fixture.manifest_path, fixture.manifest)
+        fixture.runtime["manifest"] = entry.pin(fixture.manifest_path)
+        fixture.write(fixture.runtime_path, fixture.runtime)
+        adapter = fixture.root / "cases/json_adapter.py"
+        adapter.parent.mkdir()
+        adapter.write_text('''from pathlib import Path
+def verify_case(context: dict[str, object]) -> object:
+    from ck3_mod_acceptance_native_day import pending_instance
+    assert pending_instance(None) is None
+    kind = ''' + repr(kind) + '''
+    if kind == "top-level": return []
+    if kind == "key": return {7: "invalid JSON key"}
+    if kind == "value": return {"value": Path("not-a-JSON-value")}
+    from mod_living_artifacts.tools.acceptance_contract import object_value
+    return object_value({"status": "AUTHORED_JSON_BOUNDARY_ONLY", "case_contract_qualified": False,
+        "gui_contract_qualified": False, "business_pass": False, "product_release_pass": False,
+        "authored_payload": {"sequence": (1, "two", None, {"enabled": True}),
+            "identity_decimal": "18446744073709551615", "empty": []}})
+''', encoding="utf-8")
+        contract = adapter.with_suffix(".json")
+        fixture.write(contract, {})
+        fixture.products["product_inventory"] = str(fixture.files["inventory"])
+        fixture.products["products"]["xqol"]["cases"][0]["adapter"] = {"path": str(adapter), "config": str(contract)}
+        fixture.write(fixture.products_path, fixture.products)
+        context_path, _, _, context = fixture.context()
+        context["reviewer"] = "authored-json-boundary-reviewer"
+        fixture.write(context_path, context)
+        selected = entry.Selection(fixture.runtime_path, fixture.products_path, "xqol", "core", context_path)
+        direct: object = None
+        rejected = False
+        try:
+            direct = selected.verify()
+        except ValueError:
+            if kind == "valid":
+                raise
+            rejected = True
+        if kind != "valid" and not rejected:
+            raise AssertionError("Real Selection.verify accepted an invalid adapter JSON result")
+        captured = StringIO()
+        with redirect_stdout(captured):
+            status = entry.main(["verify", "--runtime", str(fixture.runtime_path), "--products", str(fixture.products_path),
+                                 "--product", "xqol", "--case", "core", "--run-context", str(context_path)])
+        result = json_object(json.loads(captured.getvalue()))
+        if status != 2:
+            raise AssertionError("Authored incomplete or invalid case must retain the real public CLI exit2")
+        same = kind == "valid" and json_object(json.loads(json.dumps(direct))) == result
+        if kind == "valid" and not same:
+            raise AssertionError("Real verifier and CLI changed the producer's encoded JSON content")
+        print(json.dumps({"cli_returncode": status, "result": result, "direct_rejected": rejected,
+                          "direct_cli_json_equal": same, "game_started": False}))
+        return 0
+    finally:
+        fixture.doCleanups()
+
 
 def cli_fixture() -> int:
     """Test-only owned launcher/client; execute real Selection/preflight/run/CLI."""
@@ -280,4 +380,6 @@ def run_case(context: dict[str, object], client: object) -> dict[str, object]:
 if __name__ == "__main__":
     if sys.argv[1:] == ["--cli-fixture"]:
         raise SystemExit(cli_fixture())
+    if len(sys.argv) == 3 and sys.argv[1] == "--verify-json-fixture":
+        raise SystemExit(verify_json_fixture(sys.argv[2]))
     unittest.main(verbosity=2)

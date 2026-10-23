@@ -17,6 +17,7 @@ import math
 import os
 from pathlib import Path
 from types import ModuleType
+from ck3_mod_acceptance_background_types import json_object
 import re
 import subprocess
 import sys
@@ -855,7 +856,7 @@ class Selection:
         context=self.adapter_context()
         context['operator_reviewer']=resolve_operator_reviewer(self)
         with self.case_imports():
-            result=self.load_adapter().verify_case(context)
+            result: dict[str, object] = dict(json_object(self.load_adapter().verify_case(context)))
         closed_path=Path(context['output'])/'normal-close-result.json'
         close=read_json(closed_path) if closed_path.is_file() else None
         result.update(normal_close=close)
