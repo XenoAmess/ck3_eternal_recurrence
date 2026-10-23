@@ -1372,3 +1372,5 @@ docs/ck3-native-ai/evidence/episode04-subtitle-sentence-pages-20261022/CHECK.act
 docs/ck3-native-ai/evidence/episode04-subtitle-sentence-pages-20261022/STRICT.actual-a02.json -text
 docs/ck3-native-ai/evidence/episode04-subtitle-sentence-pages-20261022/DELIVERY.actual-a01.json -text
 docs/ck3-native-ai/evidence/faith-engine-e02-v7-final-steam-20261023.json -text
+# Preserve exact original sway phase protocol packet SHA bytes.
+/ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_sway_completion_execution/hidden-good-command-result.json -text whitespace=cr-at-eol
