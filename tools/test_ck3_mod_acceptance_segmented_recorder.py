@@ -19,6 +19,7 @@ from unittest.mock import patch
 
 
 HERE = Path(__file__).resolve().parent
+REAL_SPEC_FROM_FILE_LOCATION = importlib.util.spec_from_file_location
 SPEC = importlib.util.spec_from_file_location(
     "segmented_recorder_public_under_test", HERE / "ck3_mod_acceptance_recorder.py")
 RECORDER = importlib.util.module_from_spec(SPEC)
@@ -455,6 +456,121 @@ class SegmentedRecorderPublicService(unittest.TestCase):
         self.storage.write_text(json.dumps(self.storage_document), encoding="utf-8")
         with self.assertRaisesRegex(ValueError, "scene and raw ceilings"):
             self.service()
+        self.assertEqual(self.spawned, [])
+        self.assertFalse(self.capture_root.exists())
+
+    def full_admission(self, **changes: object) -> None:
+        # The exact R45 G43 scene/raw numbers; paths and process leaves remain
+        # this portable authored fixture, not claimed live machine evidence.
+        self.storage_document.update(
+            machine_id=MACHINE, approved_root=str(self.work),
+            schema="faith-e02-v7-shared-full-scene-capture-admission-v1",
+            active=True, capacity_passed=True, this_write_peak_bytes=2815242240,
+            hard_allocated_upper_bytes=2815242240,
+            manual_consumption_cap_bytes=2815242240, raw_subcap_bytes=64 * MiB)
+        self.storage_document.update(changes)
+        self.storage.write_text(json.dumps(self.storage_document), encoding="utf-8")
+
+    def test_g43_admitted_scene_and_two_takes_construct_and_enforce_original_hard_cap(self) -> None:
+        self.full_admission()
+        config = self.config(max_seconds=25, peak_bytes=32 * MiB, max_takes=2,
+                             total_seconds=50, total_raw_bytes=64 * MiB)
+        service = self.service(json.loads(json.dumps(config)))
+        self.assertEqual(service.scene_peak, 2815242240)
+        self.assertEqual(service.raw_peak, 64 * MiB)
+        self.assertEqual(service.config["max_takes"], 2)
+        self.assertIsNone(service.thread)
+        self.assertIsNone(service.recorder)
+        def at_boundary(path: Path) -> int:
+            return 2815242240 - 32 * MiB if path.resolve() == self.work.resolve() else 0
+        with patch.object(RECORDER, "_tree_bytes", side_effect=at_boundary):
+            service._segment_limits(reserve=32 * MiB)
+        def beyond_boundary(path: Path) -> int:
+            return at_boundary(path) + (1 if path.resolve() == self.work.resolve() else 0)
+        with patch.object(RECORDER, "_tree_bytes", side_effect=beyond_boundary):
+            with self.assertRaisesRegex(ValueError, "aggregate scene ceiling"):
+                service._segment_limits(reserve=32 * MiB)
+        self.assertEqual(self.spawned, [])
+        self.assertFalse(self.capture_root.exists())
+
+    def test_historical_full_admission_without_manual_cap_remains_compatible(self) -> None:
+        self.full_admission(this_write_peak_bytes=1024 * MiB,
+                            hard_allocated_upper_bytes=1024 * MiB)
+        del self.storage_document["manual_consumption_cap_bytes"]
+        self.storage_document["raw_subcap_bytes"] = 512 * MiB
+        self.storage.write_text(json.dumps(self.storage_document), encoding="utf-8")
+        self.assertEqual(self.service().scene_peak, 1024 * MiB)
+
+    def test_full_admission_rejects_wrong_types_identity_and_unadmitted_bounds(self) -> None:
+        invalid: list[dict[str, object]] = [
+            {"hard_allocated_upper_bytes": value} for value in (True, 2815242240.0, None, 2815242239)]
+        invalid += [{"this_write_peak_bytes": value} for value in (True, 2815242240.0)]
+        invalid += [{"raw_subcap_bytes": value} for value in (True, float(64 * MiB), 513 * MiB, 63 * MiB)]
+        invalid += [{"manual_consumption_cap_bytes": value} for value in (True, 2815242240.0, 2815242239)]
+        invalid += [{"machine_id": "another-machine"}, {"active": False}, {"capacity_passed": None}]
+        config = self.config(max_seconds=25, peak_bytes=32 * MiB, max_takes=2,
+                             total_seconds=50, total_raw_bytes=64 * MiB)
+        for changes in invalid:
+            with self.subTest(changes=changes):
+                self.full_admission(**changes)
+                with self.assertRaises(ValueError):
+                    self.service({**config, "storage_reservation": RECORDER.file_identity(self.storage)})
+        self.full_admission()
+        del self.storage_document["hard_allocated_upper_bytes"]
+        self.storage.write_text(json.dumps(self.storage_document), encoding="utf-8")
+        with self.assertRaises(ValueError):
+            self.service({**config, "storage_reservation": RECORDER.file_identity(self.storage)})
+        self.full_admission()
+        for destination in (self.work, self.work.parent / "outside-admitted-scene"):
+            with self.subTest(destination=destination):
+                with self.assertRaises(ValueError):
+                    self.service({**config, "capture_root": str(destination),
+                                  "storage_reservation": RECORDER.file_identity(self.storage)})
+        self.assertEqual(self.spawned, [])
+
+    def test_actual_public_preflight_consumes_the_same_recorder_configuration(self) -> None:
+        # setUp substitutes only the encoder's dynamic loader. The real public
+        # entry must still be loaded by the original importlib implementation.
+        with patch.object(importlib.util, "spec_from_file_location", REAL_SPEC_FROM_FILE_LOCATION):
+            from test_ck3_mod_acceptance import SharedEntryTests
+        entry_fixture = SharedEntryTests("test_three_products_select_one_host_source_and_native")
+        entry_fixture.setUp()
+        self.addCleanup(entry_fixture.doCleanups)
+        self.full_admission()
+        config = self.config(max_seconds=25, peak_bytes=32 * MiB, max_takes=2,
+                             total_seconds=50, total_raw_bytes=64 * MiB)
+        config_path = self.work / "public-recorder.json"
+        config_path.write_text(json.dumps(config), encoding="utf-8")
+        selected_service = self.repo / "tools/ck3_mod_acceptance_recorder.py"
+        selected_service.parent.mkdir()
+        selected_service.write_bytes(Path(RECORDER.__file__).read_bytes())
+        entry_fixture.runtime["repo_root"] = str(self.repo)
+        entry_fixture.runtime["machine_id"] = MACHINE
+        entry_fixture.runtime["allocation"] = {"recording": {
+            "config": RECORDER.file_identity(config_path),
+            "service": RECORDER.file_identity(selected_service)}}
+        entry_fixture.write(entry_fixture.runtime_path, entry_fixture.runtime)
+        selected = entry_fixture.select()
+        self.assertEqual(selected.preflight()["blockers"], [])
+        for machine in ("different-selected-runtime", None, True):
+            with self.subTest(machine=machine):
+                entry_fixture.runtime["machine_id"] = machine
+                entry_fixture.write(entry_fixture.runtime_path, entry_fixture.runtime)
+                errors = entry_fixture.select().preflight()["blockers"]
+                self.assertTrue(any("Shared recording configuration" in error for error in errors), errors)
+        del entry_fixture.runtime["machine_id"]
+        entry_fixture.write(entry_fixture.runtime_path, entry_fixture.runtime)
+        self.assertTrue(any("Shared recording configuration" in error
+                            for error in entry_fixture.select().preflight()["blockers"]))
+        entry_fixture.runtime["machine_id"] = MACHINE
+        # A current exact config pin cannot hide an internally rejected raw cap.
+        config["total_raw_bytes"] = 65 * MiB
+        config_path.write_text(json.dumps(config), encoding="utf-8")
+        attachment = entry_fixture.runtime["allocation"]["recording"]
+        attachment["config"] = RECORDER.file_identity(config_path)
+        entry_fixture.write(entry_fixture.runtime_path, entry_fixture.runtime)
+        blockers = entry_fixture.select().preflight()["blockers"]
+        self.assertTrue(any("Shared recording configuration" in error for error in blockers), blockers)
         self.assertEqual(self.spawned, [])
         self.assertFalse(self.capture_root.exists())
 

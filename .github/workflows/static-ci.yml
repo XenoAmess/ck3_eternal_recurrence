@@ -891,6 +891,8 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -m mypy --follow-imports=skip --check-untyped-defs --no-incremental --cache-dir nul tools/test_ck3_mod_acceptance_queue_inprocess.py tools/test_ck3_mod_acceptance_workshop_cache.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_ck3_mod_acceptance_pre_ready.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test Reclaim the Motherland release tooling
         run: |
           python tools/test_reclaim_the_motherland_contract.py
