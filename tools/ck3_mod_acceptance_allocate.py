@@ -2,7 +2,7 @@
 from __future__ import annotations
 import ast
 from ck3_mod_acceptance_launcher_protocol_v1 import BACKGROUND_CLOSURE_SCHEMAS_V1
-from ck3_mod_acceptance_background_types import FilePin, JsonObject, json_object, file_pin, object_field, text_field, strings_field, CONTROL_QUEUE_MODULE_ORDER_V1
+from ck3_mod_acceptance_background_types import FilePin, JsonObject, ProcessGeneration, json_object, file_pin, object_field, text_field, strings_field, CONTROL_QUEUE_MODULE_ORDER_V1
 from ck3_mod_acceptance_fresh_machine_bootstrap import (
     FRESH_ADMISSION_MODE, FRESH_BOOTSTRAP_SCHEMA, MachineBinding,
     require_empty_machine_history, validate_fresh_bootstrap, create_current_process_observation,
@@ -29,7 +29,7 @@ def recording_input_files(selection: Selection) -> dict[Path, FilePin]:
     return {Path(row['path']).resolve(): row for row in (sources['helper'], sources['contract'])}
 
 
-def require(value,message):
+def require(value: object, message: str) -> None:
     if not value:raise ValueError(message)
 
 LEGACY_KEEPER_SHA='2afdf264b509a045c878fd1ee94426cf418cd747a5773ded43a83001a3813def'
@@ -1433,6 +1433,17 @@ class LateNativeCleanupFacts(TypedDict):
     native_cleanup_qualified: None
 
 
+class FailedGuiOS0CleanupFacts(TypedDict):
+    closure_kind: Literal['failed-host-gui-os0-cleanup-complete']
+    original_ck3_exit_code: Literal[0]
+    original_retained_wait_signaled: Literal[True]
+    actual_retained_os0: Literal[True]
+    native_reported_ck3_exit_code: Literal[0]
+    native_process_exit_code: Literal[0]
+    failure_lifecycle_completed: Literal[True]
+    native_cleanup_qualified: Literal[True]
+
+
 def _late_object(value: object, label: str) -> dict[str, object]:
     if not isinstance(value, dict) or any(not isinstance(k, str) for k in value):
         raise ValueError(label + ' must be an object')
@@ -1504,6 +1515,86 @@ def validate_late_native_cleanup(normal_value: object, retained_value: object,
         'actual_retained_os0': False, 'native_reported_ck3_exit_code': code,
         'native_process_exit_code': None, 'failure_lifecycle_completed': False,
         'native_cleanup_qualified': None}
+
+
+def validate_failed_gui_os0_cleanup(normal_value: object, retained_value: object,
+        game_value: object, native_value: object, report_value: object,
+        review_value: object, run_id: str) -> FailedGuiOS0CleanupFacts:
+    """Preserve a failed host while admitting its reviewed GUI OS0 resource cleanup."""
+    import math
+    normal = _late_object(normal_value, 'Failed GUI close')
+    retained = _late_object(retained_value, 'Original GUI retained wait')
+    game = _late_object(game_value, 'Original GUI CK3 identity')
+    native = _late_object(native_value, 'Original GUI native report')
+    report = _late_object(report_value, 'Original failed GUI host report')
+    review = _late_object(review_value, 'Original manual GUI review')
+    shutdown = _late_object(native.get('shutdown'), 'Original GUI shutdown')
+    pid = _late_integer(game.get('pid'), 'Original GUI CK3 PID')
+    created = game.get('create_time')
+    if not isinstance(created, (int, float)) or isinstance(created, bool) or not math.isfinite(created):
+        raise ValueError('Original GUI CK3 birth must be finite numeric identity')
+    _late_check(pid > 0 and game.get('retained_synchronize_query_handle_acquired') is True and
+        retained.get('retained_synchronize_query_handle_acquired') is True and
+        _late_integer(retained.get('pid'), 'GUI retained PID') == pid ==
+        _late_integer(native.get('pid'), 'GUI native PID') ==
+        _late_integer(shutdown.get('ck3_pid'), 'GUI shutdown PID') and
+        type(retained.get('create_time')) in (int, float) and retained.get('create_time') == created and
+        retained.get('signaled') is True and retained.get('actual_retained_os0') is True and
+        _late_integer(retained.get('exit_code'), 'GUI retained exit') == 0 and
+        retained == normal.get('retained_handle'), 'Failed GUI retained OS0 identity differs')
+    error = report.get('error')
+    _late_check(isinstance(error, str) and bool(error) and normal.get('host_error') == error and
+        normal.get('normal_close_qualified') is False and normal.get('business_pass') is False and
+        normal.get('failure_preserved') is True and normal.get('failure_lifecycle_completed') is True and
+        normal.get('managed_thread_finished') is True and normal.get('cleanup_ok') is True and
+        normal.get('host_finished_at') == report.get('finished_at'),
+        'Failed GUI close must preserve its original host failure and completed cleanup')
+    _late_check(review.get('schema') == 'ck3-mod-acceptance-manual-normal-quit-review-v1' and
+        review.get('run_id') == run_id and isinstance(review.get('reviewer'), str) and bool(review['reviewer']) and
+        _late_integer(review.get('pid'), 'Manual GUI PID') == pid and
+        type(review.get('create_time')) in (int, float) and review.get('create_time') == created and
+        review.get('normal_gui_quit') is True and review.get('direct_reviewed') is True and
+        review.get('autosave_unchecked_observed') is True and
+        all(review.get(key) is False for key in
+            ('actual_os0_proven', 'actual_native0_proven', 'process_exit_claimed', 'business_pass')) and
+        review == normal.get('root_normal_gui_review') == normal.get('operator_normal_gui_review'),
+        'Failed GUI original direct review differs or claims unobserved exit credit')
+    _late_check(native.get('exit_reason') == 'process_exit' and
+        _late_integer(native.get('process_exit_code'), 'Native GUI process exit') == 0 and
+        _late_integer(shutdown.get('ck3_exit_code'), 'Native GUI shutdown exit') == 0 and
+        _late_integer(shutdown.get('job_active_processes_before_termination'), 'GUI pre-cleanup Job count') == 0 and
+        shutdown.get('ok') is True and shutdown.get('tree_gone') is True and
+        shutdown.get('cleanup_proven') is True and
+        _late_integer(shutdown.get('job_active_processes_final'), 'GUI final Job count') == 0,
+        'Failed GUI exit must be original process OS0 with no Job termination')
+    finished, host_finished = native.get('finished_at'), report.get('finished_at')
+    if not isinstance(finished, str) or not isinstance(host_finished, str):
+        raise ValueError('Failed GUI native and host finish times are required')
+    first, last = datetime.fromisoformat(finished), datetime.fromisoformat(host_finished)
+    _late_check(first.tzinfo is not None and last.tzinfo is not None and first <= last,
+        'Failed GUI cleanup chronology differs')
+    return {'closure_kind': 'failed-host-gui-os0-cleanup-complete',
+        'original_ck3_exit_code': 0, 'original_retained_wait_signaled': True,
+        'actual_retained_os0': True, 'native_reported_ck3_exit_code': 0,
+        'native_process_exit_code': 0, 'failure_lifecycle_completed': True,
+        'native_cleanup_qualified': True}
+
+
+def _failed_gui_source(refs_value: object, key: str, expected: Path) -> dict[str, object]:
+    """Read the two new bounded GUI leaves without an untyped legacy I/O boundary."""
+    refs = _late_object(refs_value, 'Failed GUI evidence references')
+    ref = _late_object(refs.get(key), 'Failed GUI source pin')
+    path, digest = ref.get('path'), ref.get('sha256')
+    size = _late_integer(ref.get('bytes'), 'Failed GUI source bytes')
+    if (set(ref) != {'path', 'bytes', 'sha256'} or not isinstance(path, str) or
+            Path(path).resolve() != expected.resolve() or not 0 < size <= 1048576 or
+            not isinstance(digest, str) or re.fullmatch('[0-9a-f]{64}', digest) is None):
+        raise ValueError('Failed GUI original source pin differs: ' + key)
+    with expected.open('rb') as stream:
+        raw = stream.read(size + 1)
+    if len(raw) != size or hashlib.sha256(raw).hexdigest() != digest:
+        raise ValueError('Failed GUI original source bytes differ: ' + key)
+    return _late_object(json.loads(raw), 'Failed GUI original source object')
 
 
 def validate_late_public_wait(value_raw: object, started_raw: object, process_raw: object,
@@ -1597,6 +1688,42 @@ def _recorded_decimal(value: object, label: str) -> int:
 class RecordedPublicProducerFacts(TypedDict):
     custody_duration_ns: int
     root_quit_duration_ns: int
+
+
+class FailedSupervisorAbsenceFacts(TypedDict):
+    original_supervisor_generation: ProcessGeneration
+    current_supervisor_generation: ProcessGeneration | None
+    original_supervisor_generation_absent: Literal[True]
+
+
+def validate_failed_supervisor_generation(original_value: object,
+        current_value: object) -> FailedSupervisorAbsenceFacts:
+    """A reused PID cannot resurrect the recorded supervisor's exact FILETIME birth."""
+    supervisor = _late_object(original_value, 'Original failed supervisor')
+    original = _late_object(supervisor.get('original_popen_identity'), 'Original supervisor generation')
+    pid = _late_integer(supervisor.get('pid'), 'Original supervisor PID')
+    birth = original.get('birth_filetime')
+    _late_check(set(original) == {'pid', 'birth_filetime'} and pid > 0 and
+        _late_integer(original.get('pid'), 'Original supervisor generation PID') == pid,
+        'Original supervisor generation PID differs')
+    original_birth = _recorded_decimal(birth, 'Original supervisor FILETIME')
+    if not isinstance(birth, str):
+        raise ValueError('Original supervisor FILETIME must be decimal text')
+    original_typed: ProcessGeneration = {'pid': pid, 'birth_filetime': birth}
+    current_typed: ProcessGeneration | None = None
+    if current_value is not None:
+        current = _late_object(current_value, 'Current supervisor PID generation')
+        current_birth = current.get('birth_filetime')
+        _late_check(set(current) == {'pid', 'birth_filetime'} and
+            _late_integer(current.get('pid'), 'Current supervisor generation PID') == pid,
+            'Current supervisor generation PID differs')
+        observed_birth = _recorded_decimal(current_birth, 'Current supervisor FILETIME')
+        if not isinstance(current_birth, str):
+            raise ValueError('Current supervisor FILETIME must be decimal text')
+        _late_check(observed_birth > original_birth, 'Failed-live original supervisor still present or birth chronology differs')
+        current_typed = {'pid': pid, 'birth_filetime': current_birth}
+    return {'original_supervisor_generation': original_typed,
+        'current_supervisor_generation': current_typed, 'original_supervisor_generation_absent': True}
 
 
 def _recorded_duration(expression: ast.expr, label: str) -> int:
@@ -1861,12 +1988,14 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
         return previous_expired_keeper_resource_closure(previous, freeze, bundle, close_path,
                                                        keeper_root, release_path, bus_packet)
     late_cleanup = bundle.get('closure_kind') == 'retained-wait-expired-then-native-cleanup'
+    gui_os0 = bundle.get('closure_kind') == 'failed-host-gui-os0-cleanup-complete'
     split_public = bundle.get('public_wait_format') == 'command-intent-process-exit-completion'
     recorded_public = bundle.get('public_wait_format') == 'recorded-actual-command-started-exit-v1'
     require('public_wait_format' not in bundle or split_public or recorded_public,
             'Failed-live public wait format is unknown')
-    require(not (split_public or recorded_public) or late_cleanup,
+    require(not (split_public or recorded_public) or late_cleanup or gui_os0,
             'Recorded public wait requires original expired retained wait')
+    require(not gui_os0 or recorded_public, 'Failed GUI OS0 requires recorded original STARTED/EXIT')
     public_pids = []
     recorded_attempts: list[str] = []
     refs, evidence = bundle.get('original_evidence'), {}
@@ -1963,7 +2092,7 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
             if recorded_public:
                 require(stem == mode + '-' + argument('--attempt'),
                         'Recorded public receipt crossed allocator attempt')
-        if not late_cleanup:
+        if not (late_cleanup or gui_os0):
             intent = original(mode + '_intent', parent/'intent.json')
             require(intent.get('argv') == argv and intent.get('phase') == mode,
                     'Failed-live original command intent differs')
@@ -1980,7 +2109,11 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
             'Recorded public STARTED/EXIT pair crossed attempts')
     report = original('native_report', previous/'native-report.json', max_bytes=67108864)
     diagnostic = bundle.get('failed_query')
-    validate_failed_live_diagnostic(report, diagnostic)
+    if gui_os0:
+        require('failed_query' not in bundle and isinstance(report.get('error'), str) and bool(report['error']),
+                'Failed GUI OS0 requires its original top-level host error, not a fabricated failed query')
+    else:
+        validate_failed_live_diagnostic(report, diagnostic)
     original_error = report.get('error')
     require(report.get('status') == 'RED' and
             ((isinstance(original_error, str) and bool(original_error)) or
@@ -2005,9 +2138,32 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
     game = original('retained_identity', previous/'case-output/retained-current-process-identity.json')
     retained = original('retained_exit', previous/'case-output/actual-retained-handle-os-exit.json')
     late_facts = None
+    gui_facts = None
     if late_cleanup:
         late_facts = validate_late_native_cleanup(normal, retained, game, native, report,
             (previous/'case-output/normal-close-result.json').stat().st_mtime_ns, diagnostic)
+    elif gui_os0:
+        gui_refs = _late_object(refs, 'Failed GUI original references')
+        review = _failed_gui_source(gui_refs, 'manual_gui_review', previous/'case-output/normal-quit-root-result.json')
+        _failed_gui_source(gui_refs, 'normal_quit_awaiting', previous/'case-output/normal-quit-awaiting.json')
+        evidence.update({key: gui_refs[key] for key in ('manual_gui_review', 'normal_quit_awaiting')})
+        require(review.get('quit_request') == gui_refs['normal_quit_awaiting'],
+                'Failed GUI review crossed the original quit request')
+        visual = review.get('evidence')
+        if not isinstance(visual, list) or not 0 < len(visual) <= 16:
+            raise ValueError('Failed GUI original visual evidence is missing or unbounded')
+        for item in visual:
+            ref = _late_object(item, 'Failed GUI original visual evidence pin')
+            path = ref.get('path')
+            size = _late_integer(ref.get('bytes'), 'Failed GUI original visual bytes')
+            if not isinstance(path, str) or not 0 < size <= 16777216:
+                raise ValueError('Failed GUI original visual evidence pin is invalid')
+            check_pin(Path(path), ref)
+        original_run_id = freeze['run_id']
+        if not isinstance(original_run_id, str):
+            raise ValueError('Failed GUI original run ID must be text')
+        gui_facts = validate_failed_gui_os0_cleanup(normal, retained, game, native, report,
+                                                   review, original_run_id)
     else:
         require(game.get('retained_synchronize_query_handle_acquired') is True and
             retained.get('retained_synchronize_query_handle_acquired') is True and
@@ -2029,9 +2185,18 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
             'Failed-live actual keeper wait/thread differs')
     original('release', release_path)
     release = read_failed_runtime_release(release_path); task, event = release['task'], release.get('event', {})
-    require(closed_lease(keeper, release, freeze['screen_task']) and task.get('state') == 'done' and
+    require(closed_lease(keeper, release, freeze['screen_task']) and
+            task.get('state') in (('done', 'waiting') if gui_os0 else ('done',)) and
             event.get('task_id') == freeze['screen_task'] and event.get('sequence') == task['last_sequence'] and
-            event.get('state') == 'done' and event.get('resources') == [], 'Failed-live actual CAS release differs')
+            event.get('state') == task.get('state') and event.get('resources') == [],
+            'Failed-live actual CAS release differs')
+    if gui_os0 and task.get('state') == 'waiting':
+        retirement = event.get('retirement', {})
+        require(isinstance(retirement, dict) and retirement.get('kind') == 'expired-own-claim-released' and
+                retirement.get('business_status') == 'unresolved_red' and
+                type(retirement.get('prior_sequence')) is int and
+                0 < retirement['prior_sequence'] < task['last_sequence'],
+                'Failed GUI waiting release must preserve unresolved business failure')
     require(isinstance(bus_packet.get('tasks'), list) and
             not any('ck3-screen:acquired' in row.get('resources', []) for row in bus_packet['tasks']),
             'Failed-live still has an actual screen owner')
@@ -2042,8 +2207,17 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
         try: present = psutil.Process(identity['pid']).create_time() == identity['create_time']
         except psutil.NoSuchProcess: present = False
         require(not present, 'Failed-live original process still present: ' + label)
-    require(not psutil.pid_exists(supervisor['pid']) and not psutil.pid_exists(host['supervisor_pid']),
-            'Failed-live original supervisor still present')
+    supervisor_facts = None
+    if gui_os0:
+        from ck3_mod_acceptance_launcher import process_identity
+        supervisor_pid = _late_integer(supervisor.get('pid'), 'Original supervisor PID')
+        current_supervisor = process_identity(supervisor_pid) if psutil.pid_exists(supervisor_pid) else None
+        supervisor_facts = validate_failed_supervisor_generation(supervisor, current_supervisor)
+        require(host['supervisor_pid'] == supervisor_pid or not psutil.pid_exists(host['supervisor_pid']),
+                'Failed-live original supervisor still present without a recorded generation')
+    else:
+        require(not psutil.pid_exists(supervisor['pid']) and not psutil.pid_exists(host['supervisor_pid']),
+                'Failed-live original supervisor still present')
     require(all(type(pid) is int and pid > 0 and not psutil.pid_exists(pid) for pid in public_pids),
             'Late-cleanup original run/allocator process still present')
     inventory = runtime_process_inventory(psutil, os.getpid())
@@ -2068,6 +2242,10 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
         'administrative_resource_admission_only':True}, 'actual_process_inventory':inventory}
     if late_facts is not None:
         result['failure_cleanup'].update(late_facts)
+    if gui_facts is not None:
+        result['failure_cleanup'].update(gui_facts)
+    if supervisor_facts is not None:
+        result['failure_cleanup'].update(supervisor_facts)
     return result
 
 

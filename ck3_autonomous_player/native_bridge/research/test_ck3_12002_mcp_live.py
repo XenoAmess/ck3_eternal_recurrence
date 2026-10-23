@@ -1222,6 +1222,137 @@ class WireEvidenceProducerTests(unittest.TestCase):
         harness.configure_wire_evidence(Namespace(
             agent_source_root=cls.repository, wire_evidence_codec="gzip-members"))
 
+    @unittest.skipUnless(os.name == "nt", "Real Windows sharing semantics required")
+    def test_actual_windows_commit_read_survives_transient_native_sharing(self) -> None:
+        """A real child holds an incompatible handle; no Game action is retried."""
+        import run_ck3_12002_mcp_live as harness
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary) / "report.json"
+            writer = harness.JsonLines(harness.wire_output_path(output, "native-wire", "gzip-members"),
+                                       codec="gzip-members")
+            writer.write("fixture", {"completed_action": 1})
+            original = writer.commit_path.read_bytes()
+            holder_source = """import ctypes,sys
+k=ctypes.WinDLL('kernel32',use_last_error=True)
+k.CreateFileW.argtypes=[ctypes.c_wchar_p,ctypes.c_uint32,ctypes.c_uint32,ctypes.c_void_p,ctypes.c_uint32,ctypes.c_uint32,ctypes.c_void_p]
+k.CreateFileW.restype=ctypes.c_void_p
+k.CloseHandle.argtypes=[ctypes.c_void_p];k.CloseHandle.restype=ctypes.c_int
+h=k.CreateFileW(sys.argv[1],0x80000000,0,None,3,0x80,None)
+if h==ctypes.c_void_p(-1).value:raise ctypes.WinError(ctypes.get_last_error())
+try:
+ print('ready',flush=True);sys.stdin.buffer.read(1)
+finally:k.CloseHandle(h)
+"""
+            child = subprocess.Popen([sys.executable, "-B", "-X", "utf8", "-c", holder_source,
+                                      str(writer.commit_path)], stdin=subprocess.PIPE,
+                                     stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            if child.stdin is None or child.stdout is None or child.stderr is None:
+                raise RuntimeError("Actual sharing holder pipes unavailable")
+            self.assertEqual(child.stdout.readline(), b"ready\r\n" if os.name == "nt" else b"ready\n")
+            def release() -> None:
+                if child.stdin is None:
+                    raise RuntimeError("Actual sharing holder stdin unavailable")
+                child.stdin.write(b"x")
+                child.stdin.flush()
+            timer = threading.Timer(0.15, release)
+            timer.start()
+            try:
+                commits = harness.wire_evidence_commits(output)
+            finally:
+                timer.join()
+                child.stdin.close()
+                self.assertEqual(child.wait(timeout=10), 0, child.stderr.read().decode("utf-8"))
+                child.stdout.close()
+                child.stderr.close()
+            self.assertEqual(commits["native-wire"], json.loads(original))
+            self.assertEqual(writer.commit_path.read_bytes(), original)
+            self.assertEqual(writer._commit["record_count"], 1)
+
+    @unittest.skipUnless(os.name == "nt", "Real Windows sharing semantics required")
+    def test_actual_commit_reader_shares_delete_and_closes_before_replacement(self) -> None:
+        import ctypes
+        from typing import BinaryIO
+        import run_ck3_12002_mcp_live as harness
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary) / "report.json"
+            writer = harness.JsonLines(harness.wire_output_path(output, "native-wire", "gzip-members"),
+                                       codec="gzip-members")
+            writer.write("fixture", {"completed_action": 1})
+            old = writer.commit_path.read_bytes()
+            original = os.fdopen
+            observed: list[int] = []
+            kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+            kernel.CreateFileW.argtypes = [ctypes.c_wchar_p, ctypes.c_uint32, ctypes.c_uint32,
+                ctypes.c_void_p, ctypes.c_uint32, ctypes.c_uint32, ctypes.c_void_p]
+            kernel.CreateFileW.restype = ctypes.c_void_p
+            kernel.CloseHandle.argtypes = [ctypes.c_void_p]
+            kernel.CloseHandle.restype = ctypes.c_int
+            def check_delete_access_while_actual_reader_is_open(descriptor: int, mode: str) -> BinaryIO:
+                # Probe the exact held production handle, without making a
+                # stronger claim about MoveFileEx while its target remains open.
+                handle: object = kernel.CreateFileW(str(writer.commit_path), 0x10000, 7, None, 3, 0x80, None)
+                if not isinstance(handle, int) or isinstance(handle, bool) or \
+                        handle <= 0 or handle == ctypes.c_void_p(-1).value:
+                    raise ctypes.WinError(ctypes.get_last_error())
+                self.assertEqual(kernel.CloseHandle(handle), 1)
+                observed.append(descriptor)
+                return original(descriptor, "rb")
+            with mock.patch.object(harness.os, "fdopen", side_effect=check_delete_access_while_actual_reader_is_open):
+                commits = harness.wire_evidence_commits(output)
+            self.assertEqual(len(observed), 1)
+            self.assertEqual(commits["native-wire"], json.loads(old))
+            with mock.patch.object(harness.time, "sleep", side_effect=AssertionError(
+                    "Closed production reader should not need a replace retry")):
+                writer.write("fixture", {"completed_action": 2})
+            current = harness.wire_evidence_commits(output)
+            self.assertEqual(current["native-wire"]["record_count"], 2)
+            self.assertEqual(gzip.decompress(writer.path.read_bytes()).count(b"\n"), 2)
+
+    def test_commit_reader_retries_only_explicit_native_sharing_with_finite_deadline(self) -> None:
+        import run_ck3_12002_mcp_live as harness
+        path = Path("authored-sidecar.json")
+        for code in (32, 33):
+            failure = PermissionError(13, "authored native sharing violation")
+            setattr(failure, "winerror", code)
+            with self.subTest(code=code), mock.patch.object(harness.os, "name", "nt"), \
+                    mock.patch.object(harness, "_read_wire_commit_once", side_effect=[failure, b"{}"]), \
+                    mock.patch.object(harness.time, "sleep") as sleep:
+                self.assertEqual(harness._read_wire_commit(path), b"{}")
+                self.assertEqual(sleep.call_count, 1)
+        denied = PermissionError(13, "authored persistent native lock")
+        setattr(denied, "winerror", 32)
+        with mock.patch.object(harness.os, "name", "nt"), \
+                mock.patch.object(harness, "_read_wire_commit_once", side_effect=denied) as read, \
+                mock.patch.object(harness.time, "monotonic", return_value=0.0), \
+                mock.patch.object(harness.time, "sleep") as sleep:
+            with self.assertRaises(PermissionError) as caught:
+                harness._read_wire_commit(path)
+            self.assertIs(caught.exception, denied)
+            self.assertEqual(read.call_count, 21)
+            self.assertEqual(sleep.call_count, 20)
+        with mock.patch.object(harness.os, "name", "nt"), \
+                mock.patch.object(harness, "_read_wire_commit_once", side_effect=denied) as read, \
+                mock.patch.object(harness.time, "monotonic", side_effect=[0.0, 0.1, 0.51]), \
+                mock.patch.object(harness.time, "sleep"):
+            with self.assertRaises(PermissionError):
+                harness._read_wire_commit(path)
+            self.assertEqual(read.call_count, 2)
+
+    def test_commit_reader_preserves_true_permission_unknown_and_nonsharing_errors(self) -> None:
+        import run_ck3_12002_mcp_live as harness
+        for code in (None, 5, 87, True):
+            denied = PermissionError(13, "authored permission denial", "original-sidecar.json")
+            if code is not None:
+                setattr(denied, "winerror", code)
+            with self.subTest(code=code), mock.patch.object(harness.os, "name", "nt"), \
+                    mock.patch.object(harness, "_read_wire_commit_once", side_effect=denied) as read, \
+                    mock.patch.object(harness.time, "sleep") as sleep:
+                with self.assertRaises(PermissionError) as caught:
+                    harness._read_wire_commit(Path("original-sidecar.json"))
+                self.assertIs(caught.exception, denied)
+                self.assertEqual(read.call_count, 1)
+                sleep.assert_not_called()
+
     def test_plain_and_members_have_identical_platform_bytes_and_roundtrip_commits(self) -> None:
         from ck3_mod_acceptance_background_types import wire_evidence_commit, wire_file_identity
         harness = self.harness

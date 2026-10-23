@@ -4,6 +4,18 @@ from __future__ import annotations
 from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Literal
+from pathlib import Path
+import hashlib
+import json
+import re
+from ck3_mod_acceptance_background_types import FilePin, file_pin, json_object as _json_object
+
+
+def json_object(value: object, label: str) -> dict[str, object]:
+    try:
+        return {k: v for k, v in _json_object(value).items()}
+    except ValueError as error:
+        raise ValueError(label + ": " + str(error)) from error
 
 LegacyCase = Literal["faith-engine-e02-d1-ordinary-pilgrimage-v1"]
 MechanismCase = Literal["faith-engine-e02-pilgrimage-mechanism-v2"]
@@ -27,6 +39,195 @@ class PilgrimagePolicyCaps:
     max_days: int
     max_public_requests: int
     max_day_requests: int = 1024
+
+
+@dataclass(frozen=True)
+class ConsumedPilgrimageEvent:
+    event_id: str
+    query: FilePin
+    selection: FilePin
+
+
+@dataclass(frozen=True)
+class PilgrimageResume:
+    predecessor_run_id: str
+    original_start: FilePin
+    predecessor_runtime: FilePin
+    activity_id: int
+    host_character_id: int
+    consumed_events: tuple[ConsumedPilgrimageEvent, ...]
+
+    def activity_json(self) -> dict[str, object]:
+        return {"activity_id": self.activity_id, "host_character_id": self.host_character_id,
+            "type_key": "activity_pilgrimage"}
+
+
+@dataclass(frozen=True)
+class PilgrimageResumeOrigin:
+    bridge_pid: int
+    connection_generation: int
+    start_date_raw: int
+    source_commit: str
+    consumed_event_definitions: tuple[str, ...]
+
+
+def _closed_pin(value: object) -> FilePin:
+    pin = file_pin(value)
+    if not isinstance(value, Mapping) or set(value) != {"path", "bytes", "sha256"} or not Path(pin["path"]).is_absolute():
+        raise ValueError("resume evidence requires a closed absolute FilePin")
+    return pin
+
+
+def pilgrimage_resume(value: object) -> PilgrimageResume | None:
+    """Absent mode is the existing once-only Start; resume is an explicit v2 branch."""
+    if not isinstance(value, Mapping):
+        raise ValueError("pilgrimage entry requires an object")
+    mode = value.get("entry_mode", "new_start")
+    if mode == "new_start" and type(mode) is str:
+        if "resume_existing" in value:
+            raise ValueError("new_start cannot carry resume_existing")
+        return None
+    if type(mode) is not str or mode != "resume_existing" or value.get("case") != MECHANISM_CASE:
+        raise ValueError("only the mechanism case supports explicit resume_existing")
+    raw = value.get("resume_existing")
+    if not isinstance(raw, Mapping) or set(raw) != {"predecessor_run_id", "original_start", "predecessor_runtime", "activity", "consumed_events"}:
+        raise ValueError("resume_existing requires its exact provenance and activity fields")
+    run = raw["predecessor_run_id"]
+    if type(run) is not str or not run.strip():
+        raise ValueError("resume predecessor run must be a nonempty string")
+    activity = raw["activity"]
+    if not isinstance(activity, Mapping) or set(activity) != {"activity_id", "host_character_id", "type_key"} or activity["type_key"] != "activity_pilgrimage":
+        raise ValueError("resume requires the full pilgrimage identity, including valid activity ID zero")
+    rows = raw["consumed_events"]
+    if not isinstance(rows, list) or len(rows) > 256:
+        raise ValueError("resume consumed_events must be an explicit bounded array")
+    events: list[ConsumedPilgrimageEvent] = []
+    for row in rows:
+        if not isinstance(row, Mapping) or set(row) != {"event_id", "query", "selection"}:
+            raise ValueError("resume consumed event requires definition, query and successful selection pins")
+        key = row["event_id"]
+        if type(key) is not str or re.fullmatch(r"[a-zA-Z0-9_]+\.[0-9]+", key) is None or key in [e.event_id for e in events]:
+            raise ValueError("resume consumed event definition is malformed or duplicated")
+        events.append(ConsumedPilgrimageEvent(key, _closed_pin(row["query"]), _closed_pin(row["selection"])))
+    return PilgrimageResume(run, _closed_pin(raw["original_start"]), _closed_pin(raw["predecessor_runtime"]),
+        _integer(activity["activity_id"], "activity"), _integer(activity["host_character_id"], "activity host", 1), tuple(events))
+
+
+def _pinned_object(pin: FilePin) -> dict[str, object]:
+    if pin["bytes"] > 16 * 1024 * 1024:
+        raise ValueError("resume small provenance input exceeds 16MiB")
+    raw = Path(pin["path"]).read_bytes()
+    if len(raw) != pin["bytes"] or hashlib.sha256(raw).hexdigest() != pin["sha256"]:
+        raise ValueError("resume evidence bytes differ: " + pin["path"])
+    return json_object(json.loads(raw.decode("utf-8-sig")), "resume evidence")
+
+
+def _result_row(pin: FilePin) -> dict[str, object]:
+    rows = _pinned_object(pin).get("rows")
+    if not isinstance(rows, list) or len(rows) != 1:
+        raise ValueError("resume event evidence must contain one actual public result")
+    row = json_object(rows[0], "resume actual result row")
+    if row.get("ok") is not True or row.get("error"):
+        raise ValueError("resume cannot consume a failed public result")
+    return row
+
+
+def _previous_frame_owner(frame: dict[str, object], *, pid: int, generation: int, actor: int, date: int) -> None:
+    diagnostics = json_object(frame.get("diagnostics"), "previous native frame diagnostics")
+    hello = json_object(diagnostics.get("hello"), "previous native frame hello")
+    who = json_object(frame.get("played_character"), "previous native frame actor")
+    if (any(type(row.get(key)) is not int or row.get(key) != wanted
+            for row, key, wanted in ((diagnostics, "bridge_pid", pid), (diagnostics, "connection_generation", generation),
+                (hello, "pid", pid), (hello, "connection_generation", generation),
+                (who, "character_id", actor), (frame, "date_raw", date)))
+            or "active_event" not in frame):
+        raise ValueError("previous native frame lacks the exact owner/date/explicit active_event")
+    active = frame["active_event"]
+    if active is not None:
+        window = json_object(active, "previous active event")
+        _integer(window.get("instance_id"), "previous active event instance", 1)
+        options = window.get("options")
+        count = _integer(window.get("option_count"), "previous active event option count")
+        if not isinstance(options, list) or count != len(options) or count > 64:
+            raise ValueError("previous active event options are not an actual typed window")
+        for raw_option in options:
+            option = json_object(raw_option, "previous active event option")
+            _integer(option.get("option_number"), "previous event option number", 1)
+            if type(option.get("enabled")) is not bool:
+                raise ValueError("previous active event option readiness is unavailable")
+
+
+def verify_pilgrimage_resume_origin(resume: PilgrimageResume, *, identity: PilgrimageIdentity,
+        machine_id: str, run_id: str, preferred_destination_id: object) -> PilgrimageResumeOrigin:
+    """Read actual pinned Start/source/selection evidence; never upgrade an old journey flag."""
+    origin = _pinned_object(resume.original_start)
+    binding = json_object(origin.get("binding"), "predecessor native binding")
+    start = json_object(origin.get("start_response"), "predecessor original Start")
+    planner = json_object(start.get("planner"), "predecessor Start planner")
+    hosted = json_object(origin.get("hosted_identity"), "predecessor hosted identity")
+    if (resume.predecessor_run_id == run_id or origin.get("run_id") != resume.predecessor_run_id
+            or binding.get("run_id") != resume.predecessor_run_id or origin.get("machine_id") != machine_id
+            or binding.get("machine_id") != machine_id or binding.get("actor_character_id") != identity.actor_character_id
+            or type(binding.get("actor_character_id")) is not int
+            or origin.get("native_ledger_state_reconciled") is not True
+            or start.get("invoked") is not True or start.get("operation") != "start"
+            or type(start.get("played_character_id")) is not int or start["played_character_id"] != identity.actor_character_id
+            or planner.get("selected_option_key") != identity.option_key
+            or type(planner.get("destination_province_id")) is not int
+            or planner["destination_province_id"] != preferred_destination_id
+            or any(type(hosted.get(k)) is not type(v) or hosted.get(k) != v for k, v in resume.activity_json().items())
+            or resume.host_character_id != identity.actor_character_id):
+        raise ValueError("resume original Start owner, option, destination or hosted identity differs")
+    pid = _integer(binding.get("bridge_pid"), "predecessor PID", 1)
+    generation = _integer(binding.get("connection_generation"), "predecessor generation", 1)
+    date = _integer(start.get("date_raw"), "original Start date", 1)
+    if date > identity.date_raw:
+        raise ValueError("resume save predates its original Start")
+    runtime = _pinned_object(resume.predecessor_runtime)
+    manifest = _pinned_object(_closed_pin(runtime.get("manifest")))
+    paths = json_object(runtime.get("paths"), "predecessor runtime paths")
+    source = json_object(manifest.get("source_index"), "predecessor source index pin")
+    source_path = paths.get("source_index")
+    if set(source) != {"path_key", "bytes", "sha256"} or source.get("path_key") != "source_index":
+        raise ValueError("resume predecessor source index binding differs")
+    index = _pinned_object(_closed_pin({"path": source_path, "bytes": source.get("bytes"), "sha256": source.get("sha256")}))
+    commit = manifest.get("source_commit")
+    if (runtime.get("schema") != "ck3-mod-acceptance-runtime-v1" or runtime.get("machine_id") != machine_id
+            or manifest.get("machine_id") != machine_id or type(commit) is not str
+            or re.fullmatch(r"[0-9a-f]{40}", commit) is None or index.get("source_commit") != commit):
+        raise ValueError("resume predecessor runtime/source binding differs")
+    for event in resume.consumed_events:
+        query_row, selected_row = _result_row(event.query), _result_row(event.selection)
+        query = json_object(query_row.get("result"), "consumed typed query")
+        typed = json_object(query.get("current_event_window_context"), "consumed typed event")
+        query_after = json_object(query_row.get("after_snapshot"), "consumed query after-frame")
+        selection = json_object(selected_row.get("result"), "consumed event selection")
+        post = json_object(selection.get("event_selection"), "consumed native postcondition")
+        after = json_object(selected_row.get("after_snapshot"), "consumed selection after-frame")
+        actor = json_object(after.get("played_character"), "consumed selection actor")
+        plan = json_object(selected_row.get("plan"), "consumed selection plan")
+        args = json_object(plan.get("args"), "consumed selection arguments")
+        instance = _integer(typed.get("current_event_instance_id"), "consumed old event instance", 1)
+        event_date = _integer(typed.get("date_raw"), "consumed event date", 1)
+        _previous_frame_owner(query_after, pid=pid, generation=generation,
+            actor=identity.actor_character_id, date=event_date)
+        _previous_frame_owner(after, pid=pid, generation=generation,
+            actor=identity.actor_character_id, date=event_date)
+        active_after = after.get("active_event")
+        if (query.get("accepted") is not True or typed.get("status") != "available"
+                or typed.get("event_definition_key") != event.event_id or not date <= event_date <= identity.date_raw
+                or selection.get("accepted") is not True or post.get("postcondition_verified") is not True
+                or post.get("status") != "event_instance_advanced" or type(post.get("old_event_instance_id")) is not int
+                or post["old_event_instance_id"] != instance or post.get("bridge_pid") != pid
+                or type(post.get("bridge_pid")) is not int or post.get("connection_generation") != generation
+                or type(post.get("connection_generation")) is not int or plan.get("tool") != "ck3_select_event_option"
+                or args.get("event_instance_id") != instance or type(args.get("event_instance_id")) is not int
+                or type(args.get("option_number")) is not int or args["option_number"] != post.get("selected_option_number")
+                or actor.get("character_id") != identity.actor_character_id or type(actor.get("character_id")) is not int
+                or after.get("date_raw") != event_date or type(after.get("date_raw")) is not int
+                or (isinstance(active_after, Mapping) and active_after.get("instance_id") == instance)):
+            raise ValueError("resume consumed event lacks a bound successful native postcondition")
+    return PilgrimageResumeOrigin(pid, generation, date, commit, tuple(e.event_id for e in resume.consumed_events))
 
 
 def pilgrimage_policy_caps(case_id: object) -> PilgrimagePolicyCaps:

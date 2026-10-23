@@ -683,6 +683,7 @@ jobs:
       - name: Test unconsumed launcher source pin refusal without CK3 or Steam
         run: python -B -X utf8 tools/test_ck3_mod_acceptance_launcher_pin_refusal.py
       - name: Test public case frozen SDK imports and finite pilgrimage policy
+        # The full workflow module includes v2 cold resume -> actual journey -> return SAVE and no-replay failures.
         env:
           PYTHONPATH: ${{ github.workspace }};${{ github.workspace }}\tools;${{ github.workspace }}\ck3_autonomous_player\src
           MYPYPATH: ${{ github.workspace }};${{ github.workspace }}\tools;${{ github.workspace }}\ck3_autonomous_player\src
