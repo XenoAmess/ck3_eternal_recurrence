@@ -24,6 +24,10 @@ R17三域+28media最终2258970847 B、共享task-close0；仅R14 checkpoint01–
 
 主线exact `7c6da62ef75bb392a3093d44c85c77a171302057` 的Official run39895913075/job120226203972于05:24:40Z实际success，144步骤success、20条件skip、0fail；step111共享验收05:20:01Z及124policy05:24:14Z均success。Cold39895913002/job120226203481于03:41:32Z独立success。薄终态没有逐测试日志或Java artifact，不外推旧测试计数、SDK continuation或HOF原生wire资格。
 
+**07:24Z续记：R0020/c21/a31已实际启动，勿重复allocate或开局。** 当前机器仍为 `pc-20260924rtuf-f11af23c08`。c21 `d32238154123bd0c9476577fcd6bf8f5762e2b7d` 已正常冻结，正式57文件与c20逐字节相同，无新C++构建；共享reader仅在精确版本、原存档来源与两个同暂停原生Q0证明成立时接受省略的gold，其他缺失/重复/错误类型仍拒绝。维护的公共SDK导入scope和verify JSON边界已同步，未夹入主线后续E02/host/native实现。最终226产品测试、完整53模块strict、cold四命令及公共入口必要回归均原退出0；整个旧公共模块strict仍有36条存量诊断（原50、新增0），不得称全模块类型通过。详见 [R20来源与执行记录](../../mod_living_artifacts/docs/runtime-r20-curse-and-zero-wallet-reader.md)。主线 `574e79e206c5d1863e60b62be91eef570be779f8` 及c21 archive标签已正常推送。
+
+公共allocate `20261023T072019561525Z-allocate` 分配真实R0020，原工具37372仍持有keeper `living-curse-a31`/PID12428。07:23:02.392782Z后台offline/true后，bound preflight原0，public run `20261023T072305306085Z-run` 原工具18593运行中；host13724，CK3 PID13272/birth1792740199.351401，当前自动加载，业务未终态。Root独占GUI/MCP/退出；storage_resume仅服务本场实际pending的01–07只读producer，每份一次，Root不可重复调用。当前a31 own3GiB/C2GiB卡已实际采用，source复制前96MiB、melt产出后128MiB软上界及5份profile Save边界保持；c21全部offline实际401588616B，小于同own内512MiB。不得沿用旧a29的192MiB计划界限。a32同c21、真正R17/04的cold prepare→bound plan→preflight均0，但仍NOT_RUN，不能启动第二个游戏。尚无Workshop ID，仍NOT_RELEASED。
+
 ## 入口与必要约束
 
 - 仓库：`D:/workspace/ck3_eternal_recurrence`；产品：`mod_living_artifacts/`；外置工作包：`D:/workspace/ck3-living-artifacts-20261022`，下文简称 `EXT`。
