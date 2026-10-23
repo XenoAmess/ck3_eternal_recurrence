@@ -712,6 +712,12 @@ class Selection:
     def preflight(self) -> dict:
         checks = []
         errors = list(self.blockers)
+        from ck3_mod_acceptance_recorder import validate_runtime_recording
+        try:
+            checks.extend(validate_runtime_recording(
+                self.runtime, self.runtime_path.parent, self.locations["repo_root"]))
+        except (OSError, TypeError, ValueError) as error:
+            errors.append("Shared recording configuration: " + str(error))
         for path, expected in self.required_pins:
             try:
                 checks.append(check_pin(path, expected))

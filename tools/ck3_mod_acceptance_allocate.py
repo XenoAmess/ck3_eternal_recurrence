@@ -2,7 +2,7 @@
 from __future__ import annotations
 import ast
 from ck3_mod_acceptance_launcher_protocol_v1 import BACKGROUND_CLOSURE_SCHEMAS_V1
-from ck3_mod_acceptance_background_types import JsonObject, ProcessGeneration, json_object, CONTROL_QUEUE_MODULE_ORDER_V1
+from ck3_mod_acceptance_background_types import FilePin, JsonObject, ProcessGeneration, file_pin, json_object, CONTROL_QUEUE_MODULE_ORDER_V1
 from ck3_mod_acceptance_fresh_machine_bootstrap import (
     FRESH_ADMISSION_MODE, FRESH_BOOTSTRAP_SCHEMA, MachineBinding,
     require_empty_machine_history, validate_fresh_bootstrap, create_current_process_observation,
@@ -702,9 +702,339 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
             'business_pass':False,'release_pass':False,'absent_game_controls':absent,
             **({'supervisor_binding':supervisor_binding} if saved_profile_rejected else {})}}
 
+
+class RecorderPreReadyClosure(TypedDict):
+    schema: Literal['ck3-mod-acceptance-pre-ready-closure-v1']
+    failure_kind: Literal['recorder-service-initialization-rejected']
+    machine_id: str
+    run_id: str
+    allocated_context: FilePin
+    frozen_argv: FilePin
+    keeper_process: FilePin
+    keeper_stderr: FilePin
+    keeper_stdout: FilePin
+    keeper_report: FilePin
+    keeper_inputs: FilePin
+    keeper_parent_wait: FilePin
+    allocator_started: FilePin
+    allocator_result: FilePin
+    allocator_producer: FilePin
+    allocator_stdout: FilePin
+    allocator_stderr: FilePin
+
+
+class RecorderPreReadyFacts(TypedDict):
+    close: FilePin
+    original_evidence: dict[str, FilePin]
+    absent_launch_native_and_control_evidence: dict[str, bool]
+    original_allocator_exit_code: Literal[2]
+    original_keeper_exit_code: Literal[1]
+    original_keeper_wait_proven: Literal[True]
+    original_keeper_thread_exited: Literal[False]
+    original_keeper_error_kind: Literal['recorder-service-initialization-rejected']
+    source_commit: str
+    native_session_started: Literal[False]
+    host_started: Literal[False]
+    typed_normal_exit_proven: Literal[False]
+    original_ck3_exit_code: None
+    business_pass: Literal[False]
+
+
+class RecorderPreReadyResult(TypedDict):
+    mode: Literal['previous-shared-recorder-pre-ready-failure']
+    actual_process_inventory: JsonObject
+    failure_cleanup: RecorderPreReadyFacts
+
+
+def _pre_ready_pin(value: object) -> FilePin:
+    row = file_pin(value)
+    path = Path(row['path'])
+    if not path.is_absolute() or row['bytes'] > 1048576 or path.stat().st_size != row['bytes']:
+        raise ValueError('Bounded exact pre-READY original required')
+    if hashlib.sha256(path.read_bytes()).hexdigest() != row['sha256']:
+        raise ValueError('Pre-READY original content changed')
+    return row
+
+
+def _pre_ready_read(value: FilePin) -> dict[str, object]:
+    return _late_object(json.loads(Path(_pre_ready_pin(value)['path']).read_bytes()), 'Pre-READY original')
+
+
+def create_recorder_pre_ready_closure(previous: Path, keeper_root: Path, *,
+        allocator_started: FilePin, allocator_result: FilePin, allocator_producer: FilePin,
+        allocator_stdout: FilePin, allocator_stderr: FilePin) -> RecorderPreReadyClosure:
+    """Pin actual failure inputs; acceptance remains the live shared reducer's job."""
+    def original(path: Path) -> FilePin:
+        return _pre_ready_pin(pin(path))
+    freeze = _pre_ready_read(original(previous/'frozen-argv.json'))
+    identity = _late_object(freeze.get('identity_allocation'), 'Pre-READY machine identity')
+    machine, run = identity.get('machine_id'), freeze.get('run_id')
+    if not isinstance(machine, str) or not machine or not isinstance(run, str) or not run:
+        raise ValueError('Original pre-READY machine/run required')
+    return {
+        'schema':'ck3-mod-acceptance-pre-ready-closure-v1',
+        'failure_kind':'recorder-service-initialization-rejected', 'machine_id':machine, 'run_id':run,
+        'allocated_context':original(previous/'allocated-context.json'),
+        'frozen_argv':original(previous/'frozen-argv.json'),
+        'keeper_process':original(previous/'keeper-process.json'),
+        'keeper_stderr':original(previous/'keeper-stderr.log'),
+        'keeper_stdout':original(previous/'keeper-stdout.log'),
+        'keeper_report':original(keeper_root/'report.json'),
+        'keeper_inputs':original(keeper_root/'inputs.json'),
+        'keeper_parent_wait':original(previous/'keeper-pre-ready-parent-exit.json'),
+        'allocator_started':_pre_ready_pin(allocator_started),
+        'allocator_result':_pre_ready_pin(allocator_result),
+        'allocator_producer':_pre_ready_pin(allocator_producer),
+        'allocator_stdout':_pre_ready_pin(allocator_stdout),
+        'allocator_stderr':_pre_ready_pin(allocator_stderr)}
+
+
+def _pre_ready_git_source(repo: Path, commit: str, path: Path, frozen_pin: object) -> None:
+    declared = _late_object(frozen_pin, 'Pre-READY frozen source pin')
+    if set(declared) != {'bytes', 'sha256'}:
+        raise ValueError('Exact frozen pre-READY source fields required')
+    row = file_pin({'path':str(path.resolve()), **declared})
+    relative = path.resolve().relative_to(repo.resolve()).as_posix()
+    result = subprocess.run(['git', '-C', str(repo), 'cat-file', 'blob', commit+':'+relative],
+                            capture_output=True, check=True)
+    if len(result.stdout) != row['bytes'] or hashlib.sha256(result.stdout).hexdigest() != row['sha256']:
+        raise ValueError('Pre-READY original Git blob differs from frozen source')
+
+
+def validate_recorder_pre_ready_closure(previous: Path, freeze_raw: object, close_path: Path,
+        keeper_root: Path, release_raw: object, bus_raw: object) -> RecorderPreReadyResult:
+    """The original failed keeper stays failed; only absent resources may continue."""
+    previous, keeper_root = previous.resolve(), keeper_root.resolve()
+    bundle = _pre_ready_read(_pre_ready_pin(pin(close_path)))
+    reference_names = ('allocated_context','frozen_argv','keeper_process','keeper_stderr',
+        'keeper_stdout','keeper_report','keeper_inputs','keeper_parent_wait','allocator_started',
+        'allocator_result','allocator_producer','allocator_stdout','allocator_stderr')
+    if set(bundle) != {'schema','failure_kind','machine_id','run_id',*reference_names} or \
+            bundle.get('schema') != 'ck3-mod-acceptance-pre-ready-closure-v1' or \
+            bundle.get('failure_kind') != 'recorder-service-initialization-rejected':
+        raise ValueError('Exact recorder pre-READY closure fields required')
+    refs = {name:_pre_ready_pin(bundle[name]) for name in reference_names}
+    fixed = {'allocated_context':previous/'allocated-context.json', 'frozen_argv':previous/'frozen-argv.json',
+        'keeper_process':previous/'keeper-process.json', 'keeper_stderr':previous/'keeper-stderr.log',
+        'keeper_stdout':previous/'keeper-stdout.log', 'keeper_report':keeper_root/'report.json',
+        'keeper_inputs':keeper_root/'inputs.json', 'keeper_parent_wait':previous/'keeper-pre-ready-parent-exit.json'}
+    for name, path in fixed.items():
+        if Path(refs[name]['path']).resolve() != path.resolve():
+            raise ValueError('Recorder pre-READY reference crossed path: '+name)
+    freeze = _late_object(freeze_raw, 'Pre-READY frozen input')
+    if freeze != _pre_ready_read(refs['frozen_argv']):
+        raise ValueError('Original frozen pre-READY input differs')
+    identity = _late_object(freeze.get('identity_allocation'), 'Pre-READY original machine')
+    machine, run, task = identity.get('machine_id'), freeze.get('run_id'), freeze.get('screen_task')
+    state_text = freeze.get('state_dir')
+    if not isinstance(state_text,str) or not Path(state_text).is_absolute():
+        raise ValueError('Original pre-READY state path required')
+    if (not isinstance(machine,str) or not machine or not isinstance(run,str) or not run or
+            not isinstance(task,str) or not task or bundle['machine_id'] != machine or bundle['run_id'] != run):
+        raise ValueError('Recorder pre-READY original machine/run/task differs')
+    context = _pre_ready_read(refs['allocated_context'])
+    if (context.get('run_id') != run or Path(str(context.get('run_dir',''))).resolve() != previous.resolve() or
+            Path(str(context.get('keeper_root',''))).resolve() != keeper_root.resolve()):
+        raise ValueError('Recorder pre-READY allocated context crossed run/keeper')
+    producer = validate_recorded_public_producer(Path(refs['allocator_producer']['path']).read_bytes(),machine)
+    operation = validate_recorded_public_wait(_pre_ready_read(refs['allocator_result']),
+        _pre_ready_read(refs['allocator_started']),producer,machine,'allocate',2)
+    def argument(argv: list[str], name: str) -> str:
+        if argv.count(name) != 1 or argv.index(name)+1 >= len(argv):
+            raise ValueError('Recorder pre-READY argument missing: '+name)
+        return argv[argv.index(name)+1]
+    argv = operation['argv']
+    prepared = file_pin(context.get('prepared_case'))
+    _pre_ready_pin(prepared)
+    if (Path(argument(argv,'--keeper-output')).resolve() != keeper_root.resolve() or
+            Path(argument(argv,'--prepared-case')).resolve() != Path(prepared['path']).resolve()):
+        raise ValueError('Recorder pre-READY original allocation crossed prepared/keeper')
+    blocked = _pre_ready_read(refs['allocator_stdout'])
+    if (blocked.get('status') != 'BLOCKED' or
+            blocked.get('error') != 'Original keeper failed before READY; preserve actual stderr'):
+        raise ValueError('Exact original pre-READY allocator stdout required')
+    process = _pre_ready_read(refs['keeper_process'])
+    if set(process) != {'pid','create_time','argv'}:
+        raise ValueError('Exact original keeper process fields required')
+    pid = _late_integer(process.get('pid'),'Original pre-READY keeper PID')
+    created = process.get('create_time')
+    if (pid <= 0 or type(created) not in (int,float) or
+            not isinstance(created,(int,float)) or isinstance(created,bool) or not math.isfinite(created) or created <= 0):
+        raise ValueError('Original pre-READY keeper generation required')
+    keeper_argv_raw = process.get('argv')
+    if not isinstance(keeper_argv_raw,list) or any(not isinstance(v,str) or not v for v in keeper_argv_raw):
+        raise ValueError('Original pre-READY keeper argv required')
+    keeper_argv = [v for v in keeper_argv_raw if isinstance(v,str)]
+    parent = _pre_ready_read(refs['keeper_parent_wait'])
+    if set(parent) != {'schema','run_id','pid','actual_original_popen_wait','actual_poll_exit_code',
+            'keeper_actual_exit_code','ready_absent','at_utc','game_started','business_pass'}:
+        raise ValueError('Exact original keeper wait fields required')
+    if (parent.get('schema') != 'ck3-keeper-pre-ready-original-parent-exit-v1' or
+            parent.get('run_id') != run or _late_integer(parent.get('pid'),'Pre-READY wait PID') != pid or
+            parent.get('actual_original_popen_wait') is not True or
+            _late_integer(parent.get('actual_poll_exit_code'),'Pre-READY keeper poll') != 1 or
+            _late_integer(parent.get('keeper_actual_exit_code'),'Pre-READY keeper wait') != 1 or
+            parent.get('ready_absent') is not True or parent.get('game_started') is not False or
+            parent.get('business_pass') is not False):
+        raise ValueError('Actual recorder pre-READY original wait1 required')
+    report = _pre_ready_read(refs['keeper_report'])
+    inputs = _pre_ready_read(refs['keeper_inputs'])
+    if (set(report) != {'schema','task_id','last_sequence','failure','thread_exited','journal','at_utc',
+            'entry_error','checkout_head','screen_released','game_actions'} or
+            report.get('schema') != 'xar.promo.screen-lease-keeper/v1' or
+            inputs.get('schema') != 'ck3-mod-acceptance-keeper-inputs-v1'):
+        raise ValueError('Exact original keeper initialization report required')
+    error = "ValueError('Segmented recorder requires the existing scene and raw ceilings')"
+    sequence = _late_integer(inputs.get('initial_sequence'),'Pre-READY original sequence')
+    if (sequence <= 0 or report.get('task_id') != task or
+            _late_integer(report.get('last_sequence'),'Pre-READY report sequence') != sequence or
+            report.get('failure') is not None or report.get('thread_exited') is not False or
+            report.get('entry_error') != error or report.get('screen_released') is not False or
+            report.get('game_actions') is not False or 'recording' in report or
+            report.get('journal') != str(keeper_root/'journal.jsonl') or
+            inputs.get('task_id') != task or inputs.get('screen_acquired_by_this_tool') is not False or
+            Path(argument(keeper_argv,'--root')).resolve() != keeper_root.resolve() or
+            argument(keeper_argv,'--task') != task or argument(keeper_argv,'--sequence') != str(sequence)):
+        raise ValueError('Exact original recorder initialization rejection/report required')
+    if _pre_ready_read(refs['keeper_stdout']) != report or Path(refs['keeper_stderr']['path']).read_bytes() != b'':
+        raise ValueError('Original recorder keeper stdout/report/stderr differs')
+    repo_text = freeze.get('source_root')
+    if not isinstance(repo_text,str) or not Path(repo_text).is_absolute():
+        raise ValueError('Original pre-READY source root required')
+    repo = Path(repo_text)
+    manifest_ref = _pre_ready_pin(freeze.get('runtime_manifest'))
+    manifest = _pre_ready_read(manifest_ref)
+    commit = manifest.get('source_commit')
+    if (not isinstance(commit,str) or re.fullmatch('[0-9a-f]{40}',commit) is None or
+            manifest.get('machine_id') != machine or inputs.get('checkout_head') != commit or
+            report.get('checkout_head') != commit or Path(str(inputs.get('repo',''))).resolve() != repo.resolve()):
+        raise ValueError('Original pre-READY canonical source commit differs')
+    frozen_files = _late_object(freeze.get('files'),'Pre-READY frozen files')
+    keeper_path = repo/'tools/ck3_mod_acceptance_keeper.py'
+    service_path = repo/'tools/ck3_mod_acceptance_recorder.py'
+    if keeper_argv.count(str(keeper_path)) != 1 or Path(argument(keeper_argv,'--repo')).resolve() != repo.resolve():
+        raise ValueError('Original canonical keeper path differs')
+    _pre_ready_git_source(repo,commit,keeper_path,frozen_files.get(str(keeper_path.resolve())))
+    service_frozen = frozen_files.get(str(service_path.resolve()))
+    _pre_ready_git_source(repo,commit,service_path,service_frozen)
+    service_row = _late_object(service_frozen,'Original recorder source')
+    if argument(keeper_argv,'--recorder-service-sha256') != service_row['sha256']:
+        raise ValueError('Original recorder service argv/frozen pin differs')
+    config_path = Path(argument(keeper_argv,'--recorder-config')).resolve()
+    config_frozen = _late_object(frozen_files.get(str(config_path)),'Original recorder configuration')
+    config_ref = _pre_ready_pin({'path':str(config_path), **config_frozen})
+    if argument(keeper_argv,'--recorder-config-sha256') != config_ref['sha256']:
+        raise ValueError('Original recorder configuration argv/frozen pin differs')
+    config = _pre_ready_read(config_ref)
+    if config.get('schema') != 'ck3-mod-acceptance-recording-config-v2' or config.get('machine_id') != machine:
+        raise ValueError('Original segmented recorder machine/schema differs')
+    reservation_ref = _pre_ready_pin(config.get('storage_reservation'))
+    reservation = _pre_ready_read(reservation_ref)
+    scene = reservation.get('this_write_peak_bytes')
+    if (type(scene) is not int or not isinstance(scene,int) or scene <= 2147483648 or
+            reservation.get('machine_id') != machine):
+        raise ValueError('Original recorder parent ceiling rejection is unproven')
+    raw_peak, total_raw = reservation.get('raw_subcap_bytes'), config.get('total_raw_bytes')
+    approved = reservation.get('approved_root')
+    capture_value = config.get('capture_root')
+    if (type(raw_peak) is not int or not isinstance(raw_peak,int) or not 0 < raw_peak <= 536870912 or
+            type(total_raw) is not int or not isinstance(total_raw,int) or not 0 < total_raw <= raw_peak or
+            not isinstance(approved,str) or not Path(approved).is_absolute() or
+            not isinstance(capture_value,str) or not Path(capture_value).is_absolute() or
+            not Path(capture_value).resolve().is_relative_to(Path(approved).resolve()) or
+            Path(capture_value).resolve() == Path(approved).resolve()):
+        raise ValueError('Original recorder raw ceiling/capture scope differs')
+    registration_path = previous/'screen-registration.json'
+    registration_ref = _pre_ready_pin(pin(registration_path))
+    registration = _pre_ready_read(registration_ref)
+    registered = _late_object(registration.get('task'),'Original registration task')
+    if (registration.get('ok') is not True or registered.get('task_id') != task or
+            _late_integer(registered.get('last_sequence'),'Registration sequence') != sequence):
+        raise ValueError('Original pre-READY screen registration differs')
+    absent = {name:not (previous/name).exists() for name in ('ready-context.json','launch-intent.json',
+        'launch.json','host-started.json','host-supervisor.json','supervisor.json','host-original-process-exit.json',
+        'native-report.json','native-cleanup-projection.actual.json','keeper-actual-parent-exit.json')}
+    absent.update(keeper_ready=not (keeper_root/'ready.json').exists(),
+        keeper_journal=not (keeper_root/'journal.jsonl').exists(),
+        keeper_renewals=not (keeper_root/'renewal-audit').exists(),
+        state_control=not (Path(state_text)/'control').exists(),
+        empty_controls=(previous/'controls').is_dir() and not any((previous/'controls').iterdir()))
+    capture = config.get('capture_root')
+    if not isinstance(capture,str) or not Path(capture).is_absolute():
+        raise ValueError('Original capture root required')
+    absent['raw_capture_files'] = not Path(capture).exists() or not any(Path(capture).iterdir())
+    absent['native_wire_evidence'] = not any(previous.glob('native-report.*'))
+    if not all(absent.values()):
+        raise ValueError('Recorder pre-READY has READY/lease-thread/host/game/control/recording evidence')
+    release = _late_object(release_raw,'Actual pre-READY resource release')
+    released = _late_object(release.get('task'),'Released pre-READY task')
+    bus = _late_object(bus_raw,'Current pre-READY bus')
+    tasks_raw = bus.get('tasks')
+    if not isinstance(tasks_raw,list):
+        raise ValueError('Fresh pre-READY bus task list required')
+    tasks = [_late_object(v,'Fresh pre-READY task') for v in tasks_raw]
+    matching = [v for v in tasks if v.get('task_id') == task]
+    if (release.get('ok') is not True or released.get('task_id') != task or
+            released.get('state') not in ('done','waiting') or released.get('resources') != [] or
+            _late_integer(released.get('last_sequence'),'Released pre-READY sequence') <= sequence or
+            len(matching) != 1 or matching[0].get('state') not in ('done','waiting') or
+            matching[0].get('resources') != [] or
+            _late_integer(matching[0].get('last_sequence'),'Fresh pre-READY release sequence') <
+            _late_integer(released['last_sequence'],'Original release sequence')):
+        raise ValueError('Actual pre-READY CAS release/current no-owner unproven')
+    import psutil
+    try:
+        current = psutil.Process(pid)
+        if current.create_time() == created:
+            raise ValueError('Original pre-READY keeper generation still present')
+    except psutil.NoSuchProcess:
+        pass
+    inventory = json_object(runtime_process_inventory(psutil,os.getpid()))
+    if inventory.get('blockers') != []:
+        raise ValueError('Pre-READY CK3/keeper/controller still present')
+    refs.update(runtime_manifest=manifest_ref, recorder_config=config_ref, recording_admission=reservation_ref,
+                registration=registration_ref)
+    return {'mode':'previous-shared-recorder-pre-ready-failure','actual_process_inventory':inventory,
+        'failure_cleanup':{'close':_pre_ready_pin(pin(close_path)),'original_evidence':refs,
+            'absent_launch_native_and_control_evidence':absent,'original_allocator_exit_code':2,
+            'original_keeper_exit_code':1,'original_keeper_wait_proven':True,'original_keeper_thread_exited':False,
+            'original_keeper_error_kind':'recorder-service-initialization-rejected','source_commit':commit,
+            'native_session_started':False,'host_started':False,'typed_normal_exit_proven':False,
+            'original_ck3_exit_code':None,'business_pass':False}}
+
+def revalidate_recorder_pre_ready_admission(selection: Selection, args: argparse.Namespace,
+        closure: JsonObject) -> JsonObject:
+    """Refresh process and bus observations inside the original machine writer lock."""
+    runtime = _late_object(selection.runtime,'Selected runtime')
+    configured = _late_object(runtime.get('allocation'),'Selected allocation')
+    base = selection.runtime_path.parent
+    bus_ref = _late_object(configured.get('task_bus'),'Selected task bus')
+    lease_value, bus_value = configured.get('lease_repo'), bus_ref.get('path')
+    digest = bus_ref.get('sha256')
+    if not isinstance(lease_value,str) or not isinstance(bus_value,str) or not isinstance(digest,str):
+        raise ValueError('Original admission task-bus binding required')
+    lease_repo, bus = path_at(lease_value,base), path_at(bus_value,base)
+    previous, keeper, close, release_path = (getattr(args,name,None) for name in
+        ('previous_live','previous_keeper','previous_failure_close','previous_release'))
+    if not all(isinstance(v,Path) for v in (previous,keeper,close,release_path)):
+        raise ValueError('Actual pre-READY predecessor paths required')
+    if not isinstance(previous,Path) or not isinstance(keeper,Path) or not isinstance(close,Path) or not isinstance(release_path,Path):
+        raise ValueError('Actual pre-READY predecessor paths required')
+    packet = current_screen_absent(lease_repo,bus.parents[1],digest,
+        selection.state_dir.parent/'allocation-bus-writer-revalidation')
+    renewed = validate_recorder_pre_ready_closure(previous,read_json(previous/'frozen-argv.json'),
+        close,keeper,read_failed_runtime_release(release_path),packet)
+    if renewed['mode'] != closure.get('mode'):
+        raise ValueError('Recorder pre-READY closure changed under original writer lock')
+    result = dict(closure)
+    result.update(json_object(renewed))
+    return result
+
 def previous_pre_ready_closure(previous,freeze,close_path,keeper_root,release,bus_packet):
     """Keep historical unknown waits; retain the observed argparse original wait2."""
     bundle=read_json(close_path)
+    if 'failure_kind' in bundle:
+        return validate_recorder_pre_ready_closure(previous,freeze,close_path,keeper_root,release,bus_packet)
     require(bundle.get('schema')=='ck3-mod-acceptance-pre-ready-closure-v1' and
             bundle.get('run_id')==freeze['run_id'],'Exact pre-READY predecessor bundle required')
     evidence={}
@@ -2381,6 +2711,8 @@ def claim_machine_admission(binding: MachineBinding, selection: Selection,
     from ck3_mod_acceptance_keeper import write_new
     root=Path(binding['admission_root']);root.mkdir(parents=True,exist_ok=True)
     with ids._exclusive_file_lock(root/'chain.lock'):
+        if closure['mode']=='previous-shared-recorder-pre-ready-failure':
+            closure.update(revalidate_recorder_pre_ready_admission(selection,args,closure))
         if closure['mode']=='previous-shared-interrupted-owner-quarantined':
             renewed=previous_interrupted_owner_closure(args.previous_live,
                 read_json(args.previous_live/'frozen-argv.json'),args.previous_failure_close,
@@ -2521,6 +2853,8 @@ def _allocate_and_keep_impl(selection,args):
                 'Recorder service must be the pinned shared keeper sibling')
         require(hashlib.sha256(keeper.read_bytes()).hexdigest()!=LEGACY_KEEPER_SHA,
                 'Legacy keeper does not support explicit recording')
+    from ck3_mod_acceptance_recorder import validate_runtime_recording
+    validate_runtime_recording(selection.runtime,base,root)
     check_pin(path_at(selection.runtime['reviewed_launcher']['path'],base),selection.runtime['reviewed_launcher'])
     task=configured['task_prefix']+args.attempt
     require(not (bus.parents[1]/'tasks'/(task+'.json')).exists(),'Choose a globally unused screen task')

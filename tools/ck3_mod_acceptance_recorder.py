@@ -5,6 +5,7 @@ abort() into that keeper's on_abort path. This module never acquires a lease,
 starts CK3/Steam, takes screenshots, presses keys, or certifies a clean span.
 """
 from datetime import datetime, timezone
+from dataclasses import dataclass
 import hashlib
 import importlib.util
 import json
@@ -15,13 +16,90 @@ import subprocess
 import sys
 import threading
 import time
-from typing import TypedDict
+from typing import Callable, ContextManager, Literal, NotRequired, Protocol, TypedDict
 
 
 class RecorderFilePin(TypedDict):
     path: str
     bytes: int
     sha256: str
+
+
+class RecordingConfigBase(TypedDict):
+    machine_id: str
+    capture_root: str
+    ffmpeg: RecorderFilePin
+    ffprobe: RecorderFilePin
+    recorder_job: RecorderFilePin
+    storage_reservation: RecorderFilePin
+    reservation_task: str
+    max_seconds: int
+    peak_bytes: int
+    required_size: list[int]
+
+
+class SingleRecordingConfig(RecordingConfigBase):
+    schema: Literal["ck3-mod-acceptance-recording-config-v1"]
+
+
+class SegmentedRecordingConfig(RecordingConfigBase):
+    schema: Literal["ck3-mod-acceptance-recording-config-v2"]
+    max_takes: int
+    total_seconds: int
+    total_raw_bytes: int
+
+
+@dataclass(frozen=True)
+class ValidatedRecordingConfiguration:
+    config: SingleRecordingConfig | SegmentedRecordingConfig
+    ffmpeg: Path
+    ffprobe: Path
+    storage: Path
+    capture_root: Path
+    scene_root: Path | None
+    scene_peak: int | None
+    raw_peak: int | None
+
+
+class RecordingKeeper(Protocol):
+    abort: threading.Event
+
+    def require_live(self) -> object: ...
+
+    def process_create_gate(self) -> ContextManager[object]: ...
+
+
+class RecordingProcess(Protocol):
+    # Existing recorder results cross a JSON boundary; consumers below narrow
+    # the terminal object before reading it. The encoder remains unchanged.
+    terminal: object
+    output: Path
+
+    def start(self) -> object: ...
+
+    def status(self) -> object: ...
+
+    def finish(self) -> object: ...
+
+    def abort(self, reason: str = "screen keeper aborted") -> object: ...
+
+    def mark(self, name: str, native_receipt: str | Path | None = None) -> object: ...
+
+
+class SegmentedTake(TypedDict):
+    capture_name: str
+    output: str
+    state: Literal["START_INTENT", "START_FAILED", "TERMINAL_QUALIFIED", "TERMINAL_UNPROVEN"]
+    seconds_reserved: int
+    duration_charge_seconds: int | float
+    peak_reserved_bytes: int
+    terminal: NotRequired[object]
+    error: NotRequired[str]
+
+
+class CompletedTake(TypedDict):
+    output: str
+    terminal: object
 
 
 class RecorderMark(TypedDict):
@@ -45,6 +123,154 @@ def file_identity(path: str | Path) -> RecorderFilePin:
         for block in iter(lambda: handle.read(1024 * 1024), b""):
             value.update(block)
     return {"path": str(path), "bytes": path.stat().st_size, "sha256": value.hexdigest()}
+
+
+def _recording_object(value: object, label: str) -> dict[str, object]:
+    if not isinstance(value, dict) or any(type(key) is not str for key in value):
+        raise ValueError(label + " must be an object with string keys")
+    return {key: item for key, item in value.items() if isinstance(key, str)}
+
+
+def _recording_integer(value: object, label: str) -> int:
+    if type(value) is not int or value <= 0:
+        raise ValueError(label + " must be a positive exact integer")
+    return value
+
+
+def _recording_file_pin(value: object, base: Path) -> RecorderFilePin:
+    row = _recording_object(value, "Recorder pin")
+    path, size, digest = row.get("path"), row.get("bytes"), row.get("sha256")
+    if (set(row) != {"path", "bytes", "sha256"} or type(path) is not str
+            or type(size) is not int or size < 0 or type(digest) is not str
+            or re.fullmatch(r"[0-9a-fA-F]{64}", digest) is None):
+        raise ValueError("Invalid exact recorder file pin")
+    resolved = Path(path)
+    if not resolved.is_absolute():
+        resolved = base / resolved
+    observed = file_identity(resolved)
+    if observed["bytes"] != size or observed["sha256"] != digest.lower():
+        raise ValueError("Pinned recorder input changed: " + str(resolved))
+    return observed
+
+
+def validate_recording_configuration(
+    config_path: Path, config_sha256: str, repo: Path,
+) -> ValidatedRecordingConfiguration:
+    """Validate the same keeper inputs without acquiring or starting anything."""
+    config_path, repo = config_path.resolve(), repo.resolve()
+    if (re.fullmatch(r"[0-9a-fA-F]{64}", config_sha256) is None
+            or file_identity(config_path)["sha256"] != config_sha256.lower()):
+        raise ValueError("Recording config changed")
+    parsed: object = json.loads(config_path.read_text(encoding="utf-8-sig"))
+    row = _recording_object(parsed, "Recording configuration")
+    schema = row.get("schema")
+    required = {"schema", "machine_id", "capture_root", "ffmpeg", "ffprobe",
+                "recorder_job", "storage_reservation", "reservation_task", "max_seconds",
+                "peak_bytes", "required_size"}
+    segmented = schema == "ck3-mod-acceptance-recording-config-v2"
+    if segmented:
+        required |= {"max_takes", "total_seconds", "total_raw_bytes"}
+    if set(row) != required or schema not in {
+            "ck3-mod-acceptance-recording-config-v1", "ck3-mod-acceptance-recording-config-v2"}:
+        raise ValueError("Unknown shared recorder configuration")
+    machine, capture, task = row.get("machine_id"), row.get("capture_root"), row.get("reservation_task")
+    if (type(machine) is not str or not machine or type(capture) is not str or not capture
+            or type(task) is not str or not task):
+        raise ValueError("Recording machine, capture root and reservation task required")
+    seconds = _recording_integer(row["max_seconds"], "max_seconds")
+    peak = _recording_integer(row["peak_bytes"], "peak_bytes")
+    size = row["required_size"]
+    if (not isinstance(size, list) or len(size) != 2
+            or any(type(item) is not int or item <= 0 for item in size)):
+        raise ValueError("Recording requires two exact positive screen dimensions")
+    dimensions = [_recording_integer(item, "required_size") for item in size]
+    common: RecordingConfigBase = {
+        "machine_id": machine, "capture_root": capture,
+        "ffmpeg": _recording_file_pin(row["ffmpeg"], config_path.parent),
+        "ffprobe": _recording_file_pin(row["ffprobe"], config_path.parent),
+        "recorder_job": _recording_file_pin(row["recorder_job"], config_path.parent),
+        "storage_reservation": _recording_file_pin(row["storage_reservation"], config_path.parent),
+        "reservation_task": task, "max_seconds": seconds, "peak_bytes": peak,
+        "required_size": dimensions,
+    }
+    if Path(common["recorder_job"]["path"]) != repo / "promo/ck3_native_war_ai/integration/recorder_job.py":
+        raise ValueError("Only the existing shared RecorderJob is supported")
+    storage = Path(common["storage_reservation"]["path"])
+    parsed = json.loads(storage.read_text(encoding="utf-8-sig"))
+    reservation = _recording_object(parsed, "Recording reservation")
+    if reservation.get("machine_id") != machine:
+        raise ValueError("Recording reservation crossed machine")
+    capture_root = Path(capture).resolve()
+    if any(path.is_symlink() for path in (capture_root, *capture_root.parents)):
+        raise ValueError("Capture output must not cross symlinks")
+    config: SingleRecordingConfig | SegmentedRecordingConfig
+    scene_root: Path | None = None
+    scene_peak: int | None = None
+    raw_peak: int | None = None
+    if segmented:
+        takes = _recording_integer(row["max_takes"], "max_takes")
+        total_seconds = _recording_integer(row["total_seconds"], "total_seconds")
+        total_raw = _recording_integer(row["total_raw_bytes"], "total_raw_bytes")
+        if (not 1 <= takes <= 4 or not 10 <= total_seconds <= 300 or not 10 <= seconds <= 120
+                or not 8 * 1024**2 < peak <= total_raw <= 512 * 1024**2
+                or peak < seconds * 1_000_000 + 2_000_000 + 4 * 1024**2):
+            raise ValueError("Invalid explicit segmented recording allocation")
+        config = {**common, "schema": "ck3-mod-acceptance-recording-config-v2",
+                  "max_takes": takes, "total_seconds": total_seconds, "total_raw_bytes": total_raw}
+        approved = reservation.get("approved_root")
+        if type(approved) is not str or not approved:
+            raise ValueError("Segmented recorder requires an existing approved scene root")
+        scene_root = Path(approved).resolve()
+        scene_peak = _recording_integer(reservation.get("this_write_peak_bytes"), "this_write_peak_bytes")
+        raw_peak = _recording_integer(reservation.get("raw_subcap_bytes"), "raw_subcap_bytes")
+        if reservation.get("schema") == "faith-e02-v7-shared-full-scene-capture-admission-v1":
+            hard = _recording_integer(reservation.get("hard_allocated_upper_bytes"), "hard_allocated_upper_bytes")
+            if (reservation.get("active") is not True or reservation.get("capacity_passed") is not True
+                    or scene_peak != hard):
+                raise ValueError("Recording scene ceiling differs from its admitted hard allocation")
+            if "manual_consumption_cap_bytes" in reservation:
+                manual = _recording_integer(reservation["manual_consumption_cap_bytes"], "manual_consumption_cap_bytes")
+                if manual != hard:
+                    raise ValueError("Recording scene ceiling differs from its explicit manual cap")
+        elif scene_peak > 2048 * 1024**2:
+            # Preserve the existing small legacy reservation contract. Only the
+            # explicit full admission above can authorize a larger scene parent.
+            raise ValueError("Segmented recorder requires the existing scene and raw ceilings")
+        if (not capture_root.is_relative_to(scene_root) or capture_root == scene_root
+                or raw_peak > 512 * 1024**2 or total_raw > raw_peak):
+            raise ValueError("Segmented recorder requires the existing scene and raw ceilings")
+        if capture_root.exists() and any(capture_root.iterdir()):
+            raise ValueError("Segmented recorder cannot reset an existing capture ledger or attempt")
+    else:
+        if not 10 <= seconds <= 300 or peak < 512 * 1024**2:
+            raise ValueError("Invalid bounded recording allocation")
+        config = {**common, "schema": "ck3-mod-acceptance-recording-config-v1"}
+    return ValidatedRecordingConfiguration(
+        config, Path(common["ffmpeg"]["path"]), Path(common["ffprobe"]["path"]), storage,
+        capture_root, scene_root, scene_peak, raw_peak)
+
+
+def validate_runtime_recording(runtime: object, base: Path, repo: Path) -> list[RecorderFilePin]:
+    """Preflight the actual optional keeper attachment before allocation."""
+    document = _recording_object(runtime, "Runtime")
+    allocation = _recording_object(document.get("allocation", {}), "Runtime allocation")
+    if "recording" not in allocation:
+        return []
+    machine = document.get("machine_id")
+    if type(machine) is not str or not machine:
+        raise ValueError("Recording attachment requires the selected runtime machine")
+    recording = _recording_object(allocation["recording"], "Runtime recording attachment")
+    if set(recording) != {"config", "service"}:
+        raise ValueError("Shared recording requires exactly config/service pins")
+    config = _recording_file_pin(recording["config"], base)
+    service = _recording_file_pin(recording["service"], base)
+    if Path(service["path"]) != repo.resolve() / "tools/ck3_mod_acceptance_recorder.py":
+        raise ValueError("Recorder service must be the selected shared recorder source")
+    validated = validate_recording_configuration(Path(config["path"]), config["sha256"], repo)
+    if validated.config["machine_id"] != machine:
+        raise ValueError("Recording configuration crossed the selected runtime machine")
+    return [config, service, validated.config["storage_reservation"],
+            validated.config["ffmpeg"], validated.config["ffprobe"], validated.config["recorder_job"]]
 
 
 def write(path, document):
@@ -317,59 +543,38 @@ def _tree_bytes(root):
 class ScreenCaptureService:
     """One request thread inside the original keeper process and instance."""
     segmented = False
-    def __init__(self, *, keeper, keeper_root, repo, config_path, config_sha256, task_id, recorder_factory=BoundedScreenRecorder):
+    def __init__(
+        self, *, keeper: RecordingKeeper, keeper_root: str | Path, repo: str | Path,
+        config_path: str | Path, config_sha256: str, task_id: str,
+        recorder_factory: Callable[..., RecordingProcess] = BoundedScreenRecorder,
+    ) -> None:
         self.keeper, self.keeper_root, self.repo = keeper, Path(keeper_root).resolve(), Path(repo).resolve()
         self.config_path, self.config_sha256, self.task_id = Path(config_path).resolve(), config_sha256.lower(), task_id
-        if file_identity(self.config_path)["sha256"] != self.config_sha256:
-            raise ValueError("Recording config changed")
-        self.config = _object(self.config_path)
-        required = {"schema", "machine_id", "capture_root", "ffmpeg", "ffprobe", "recorder_job", "storage_reservation", "reservation_task", "max_seconds", "peak_bytes", "required_size"}
+        validated = validate_recording_configuration(self.config_path, self.config_sha256, self.repo)
+        self.config = validated.config
         self.segmented = self.config.get("schema") == "ck3-mod-acceptance-recording-config-v2"
-        if self.segmented:
-            required |= {"max_takes", "total_seconds", "total_raw_bytes"}
-        if (set(self.config) != required or self.config["schema"] not in {
-                "ck3-mod-acceptance-recording-config-v1", "ck3-mod-acceptance-recording-config-v2"}):
-            raise ValueError("Unknown shared recorder configuration")
-        if self.segmented:
-            if (any(type(self.config[key]) is not int for key in
-                    ("max_takes", "total_seconds", "total_raw_bytes", "max_seconds", "peak_bytes"))
-                    or not 1 <= self.config["max_takes"] <= 4
-                    or not 10 <= self.config["total_seconds"] <= 300
-                    or not 10 <= self.config["max_seconds"] <= 120
-                    or not 8 * 1024**2 < self.config["peak_bytes"] <= self.config["total_raw_bytes"] <= 512 * 1024**2
-                    or self.config["peak_bytes"] < self.config["max_seconds"] * 1_000_000 + 2_000_000 + 4 * 1024**2):
-                raise ValueError("Invalid explicit segmented recording allocation")
-        elif not 10 <= self.config["max_seconds"] <= 300 or self.config["peak_bytes"] < 512 * 1024**2:
-            raise ValueError("Invalid bounded recording allocation")
-        self.ffmpeg, self.ffprobe = _pin(self.config["ffmpeg"]), _pin(self.config["ffprobe"])
-        job = _pin(self.config["recorder_job"])
-        if job != self.repo / "promo/ck3_native_war_ai/integration/recorder_job.py":
-            raise ValueError("Only the existing shared RecorderJob is supported")
-        self.storage = _pin(self.config["storage_reservation"])
-        if _object(self.storage).get("machine_id") != self.config["machine_id"]:
-            raise ValueError("Recording reservation crossed machine")
-        self.capture_root = Path(self.config["capture_root"]).resolve()
-        if any(path.is_symlink() for path in (self.capture_root, *self.capture_root.parents)):
-            raise ValueError("Capture output must not cross symlinks")
-        self.take_ledger, self.segment_blocked = [], None
+        self.ffmpeg, self.ffprobe = validated.ffmpeg, validated.ffprobe
+        self.storage, self.capture_root = validated.storage, validated.capture_root
+        self.take_ledger: list[SegmentedTake] = []
+        self.segment_blocked: str | None = None
         self.segment_lock = threading.RLock()
         if self.segmented:
-            reservation = _object(self.storage)
-            self.scene_root = Path(reservation["approved_root"]).resolve()
-            self.scene_peak = reservation["this_write_peak_bytes"]
-            self.raw_peak = reservation["raw_subcap_bytes"]
-            if (not self.capture_root.is_relative_to(self.scene_root) or self.capture_root == self.scene_root
-                    or type(self.scene_peak) is not int or not 0 < self.scene_peak <= 2048 * 1024**2
-                    or type(self.raw_peak) is not int or not 0 < self.raw_peak <= 512 * 1024**2
-                    or self.config["total_raw_bytes"] > self.raw_peak):
-                raise ValueError("Segmented recorder requires the existing scene and raw ceilings")
-            if self.capture_root.exists() and any(self.capture_root.iterdir()):
-                raise ValueError("Segmented recorder cannot reset an existing capture ledger or attempt")
+            self.scene_root, self.scene_peak, self.raw_peak = validated.scene_root, validated.scene_peak, validated.raw_peak
         self.requests, self.responses = self.keeper_root / "recorder-requests", self.keeper_root / "recorder-responses"
-        self.done, self.thread, self.recorder, self.error = threading.Event(), None, None, None
-        self.seen, self.recorder_factory = set(), recorder_factory
-        self.capture_names, self.completed_takes = set(), []
+        self.done = threading.Event()
+        self.thread: threading.Thread | None = None
+        self.recorder: RecordingProcess | None = None
+        self.error: str | None = None
+        self.seen: set[str] = set()
+        self.recorder_factory = recorder_factory
+        self.capture_names: set[str] = set()
+        self.completed_takes: list[CompletedTake] = []
         self.started_at = utc()
+
+    def _segmented_configuration(self) -> SegmentedRecordingConfig:
+        if self.config["schema"] != "ck3-mod-acceptance-recording-config-v2":
+            raise ValueError("Segmented recording configuration required")
+        return self.config
 
     def _segment_event(self, event, entry):
         row = {"schema": "ck3-mod-acceptance-segmented-ledger-v1",
@@ -392,24 +597,27 @@ class ScreenCaptureService:
             return
         job = terminal.get("job", {})
         charge = terminal.get("duration_charge_seconds")
+        numeric_charge = charge if type(charge) is int or type(charge) is float else None
         known = (terminal.get("budget_qualified") is True
                  and type(job.get("job_active_processes")) is int and job["job_active_processes"] == 0
-                 and type(charge) in (int, float) and math.isfinite(charge) and charge > 0)
-        fallback_charge = (max(entry["seconds_reserved"], charge)
-                           if type(charge) in (int, float) and math.isfinite(charge)
+                 and numeric_charge is not None and math.isfinite(numeric_charge) and numeric_charge > 0)
+        fallback_charge = (max(entry["seconds_reserved"], numeric_charge)
+                           if numeric_charge is not None and math.isfinite(numeric_charge)
                            else entry["seconds_reserved"])
-        entry.update(state="TERMINAL_QUALIFIED" if known else "TERMINAL_UNPROVEN",
-                     duration_charge_seconds=charge if known else fallback_charge,
-                     terminal=terminal)
+        entry["state"] = "TERMINAL_QUALIFIED" if known else "TERMINAL_UNPROVEN"
+        entry["duration_charge_seconds"] = numeric_charge if known and numeric_charge is not None else fallback_charge
+        entry["terminal"] = terminal
         if not known:
             self.segment_blocked = "Previous take failed or its bytes/duration/Job are unproven"
         self._segment_event("terminal-invalidated" if invalidated else "terminal", entry)
 
     def _segment_limits(self, *, reserve=0):
         _pin(self.config["storage_reservation"])
+        config = self._segmented_configuration()
+        assert self.raw_peak is not None and self.scene_peak is not None
         capture_used = _tree_bytes(self.capture_root)
         scene_used = _tree_bytes(self.scene_root)
-        if (capture_used + reserve > min(self.config["total_raw_bytes"], self.raw_peak)
+        if (capture_used + reserve > min(config["total_raw_bytes"], self.raw_peak)
                 or scene_used + reserve > self.scene_peak):
             raise ValueError("Segmented raw or aggregate scene ceiling would be exceeded")
         return {"capture_tree_logical_bytes": capture_used, "scene_tree_logical_bytes": scene_used}
@@ -421,12 +629,13 @@ class ScreenCaptureService:
             self._segment_limits()
         except ValueError as error:
             self.segment_blocked = str(error)
-            if self.recorder is not None and self.recorder.terminal is None:
+            terminal_snapshot = self.recorder.terminal if self.recorder is not None else None
+            if self.recorder is not None and terminal_snapshot is None:
                 self.recorder.abort(str(error))
-            elif self.recorder is not None and self.recorder.terminal.get("budget_qualified") is True:
+            elif self.recorder is not None and isinstance(terminal_snapshot, dict) and terminal_snapshot.get("budget_qualified") is True:
                 # Retain the original final/Job receipt; a separate append-only
                 # budget verdict prevents a healthy encoder exit hiding overrun.
-                terminal = dict(self.recorder.terminal)
+                terminal = dict(terminal_snapshot)
                 terminal.update(result="RED_PRESERVED", budget_qualified=False,
                                 budget_failure=str(error),
                                 original_recorder_terminal=file_identity(self.recorder.output / "recorder-final.json"))
@@ -511,10 +720,10 @@ class ScreenCaptureService:
             if self.segmented:
                 if self.segment_blocked:
                     raise ValueError(self.segment_blocked)
-                if len(self.take_ledger) >= self.config["max_takes"]:
+                if len(self.take_ledger) >= self._segmented_configuration()["max_takes"]:
                     raise ValueError("Segmented take count exhausted")
                 charged = sum(row["duration_charge_seconds"] for row in self.take_ledger)
-                seconds = min(seconds, math.floor(self.config["total_seconds"] - charged))
+                seconds = min(seconds, math.floor(self._segmented_configuration()["total_seconds"] - charged))
                 if seconds < 10:
                     raise ValueError("Segmented duration budget exhausted")
                 self._segment_limits(reserve=self.config["peak_bytes"])
@@ -534,7 +743,7 @@ class ScreenCaptureService:
             self.capture_names.add(name)
             options = {}
             if self.segmented:
-                entry = {"capture_name": name, "output": str(output), "state": "START_INTENT",
+                entry: SegmentedTake = {"capture_name": name, "output": str(output), "state": "START_INTENT",
                          "seconds_reserved": seconds, "duration_charge_seconds": seconds,
                          "peak_reserved_bytes": self.config["peak_bytes"]}
                 self.take_ledger.append(entry)
@@ -550,7 +759,8 @@ class ScreenCaptureService:
             except BaseException as error:
                 if self.segmented:
                     self.segment_blocked = "Take start failed or outcome unknown; never replay"
-                    entry.update(state="START_FAILED", error=repr(error))
+                    entry["state"] = "START_FAILED"
+                    entry["error"] = repr(error)
                     self._segment_event("start-failed", entry)
                 raise
         if self.recorder is None:
@@ -624,7 +834,7 @@ class ScreenCaptureService:
             result.update(schema="ck3-mod-acceptance-recording-service-report-v2",
                           take_ledger=self.take_ledger, segment_blocked=self.segment_blocked,
                           total_duration_charge_seconds=sum(row["duration_charge_seconds"] for row in self.take_ledger),
-                          limits={key: self.config[key] for key in (
+                          limits={key: dict(self._segmented_configuration())[key] for key in (
                               "max_takes", "total_seconds", "total_raw_bytes", "max_seconds", "peak_bytes")},
                           usage={"capture_tree_logical_bytes": _tree_bytes(self.capture_root),
                                  "scene_tree_logical_bytes": _tree_bytes(self.scene_root)},
