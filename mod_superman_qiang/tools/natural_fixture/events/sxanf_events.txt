@@ -7,7 +7,6 @@ sxanf.1 = {
     immediate = {
         debug_log = "SXANF: START natural-simulation"
         set_variable = { name = sxanf_native_pulse_count value = 0 }
-        set_variable = { name = sxanf_baseline_month value = sxad_natural_month_value }
         create_character = { employer = root age = 30 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = sxanf_spouse_a }
         create_character = { employer = root age = 30 gender_female_chance = 100 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = sxanf_spouse_b }
         create_character = { employer = root age = 30 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = sxanf_concubinist }
@@ -33,17 +32,17 @@ sxanf.1 = {
         scope:sxanf_infertile_b = { add_character_modifier = sxanf_infertile_modifier }
         scope:sxanf_minor_a = { marry = scope:sxanf_minor_b }
         scope:sxanf_dead_a = { marry = scope:sxanf_dead_b }
-        scope:sxanf_spouse_a = { sxanf_reset_fixture_experience_effect = yes add_character_flag = sxanf_spouse_a }
-        scope:sxanf_spouse_b = { sxanf_reset_fixture_experience_effect = yes add_character_flag = sxanf_spouse_b }
-        scope:sxanf_concubinist = { sxanf_reset_fixture_experience_effect = yes add_character_flag = sxanf_concubinist }
-        scope:sxanf_concubine = { sxanf_reset_fixture_experience_effect = yes add_character_flag = sxanf_concubine }
-        scope:sxanf_pregnant_a = { sxanf_reset_fixture_experience_effect = yes add_character_flag = sxanf_pregnant_a }
-        scope:sxanf_pregnant_b = { sxanf_reset_fixture_experience_effect = yes add_character_flag = sxanf_pregnant_b }
-        scope:sxanf_infertile_a = { sxanf_reset_fixture_experience_effect = yes add_character_flag = sxanf_infertile_a }
-        scope:sxanf_infertile_b = { sxanf_reset_fixture_experience_effect = yes add_character_flag = sxanf_infertile_b }
-        scope:sxanf_minor_a = { sxanf_reset_fixture_experience_effect = yes add_character_flag = sxanf_minor_a }
-        scope:sxanf_minor_b = { sxanf_reset_fixture_experience_effect = yes add_character_flag = sxanf_minor_b }
-        scope:sxanf_dead_a = { sxanf_reset_fixture_experience_effect = yes add_character_flag = sxanf_dead_a }
+        scope:sxanf_spouse_a = { add_character_flag = sxanf_spouse_a }
+        scope:sxanf_spouse_b = { add_character_flag = sxanf_spouse_b }
+        scope:sxanf_concubinist = { add_character_flag = sxanf_concubinist }
+        scope:sxanf_concubine = { add_character_flag = sxanf_concubine }
+        scope:sxanf_pregnant_a = { add_character_flag = sxanf_pregnant_a }
+        scope:sxanf_pregnant_b = { add_character_flag = sxanf_pregnant_b }
+        scope:sxanf_infertile_a = { add_character_flag = sxanf_infertile_a }
+        scope:sxanf_infertile_b = { add_character_flag = sxanf_infertile_b }
+        scope:sxanf_minor_a = { add_character_flag = sxanf_minor_a }
+        scope:sxanf_minor_b = { add_character_flag = sxanf_minor_b }
+        scope:sxanf_dead_a = { add_character_flag = sxanf_dead_a }
         scope:sxanf_dead_b = { sxanf_reset_fixture_experience_effect = yes add_character_flag = sxanf_dead_b }
         set_variable = { name = sxanf_ref_spouse_a value = scope:sxanf_spouse_a }
         set_variable = { name = sxanf_ref_spouse_b value = scope:sxanf_spouse_b }
@@ -58,7 +57,10 @@ sxanf.1 = {
         set_variable = { name = sxanf_ref_dead_a value = scope:sxanf_dead_a }
         set_variable = { name = sxanf_ref_dead_b value = scope:sxanf_dead_b }
         scope:sxanf_dead_b = { death = { death_reason = death_natural_causes } }
-        trigger_event = { id = sxanf.2 }
+        # Give the attached infertility modifier one real day before reading
+        # the effective fertility cache. This remains an unverified timing
+        # hypothesis: the unchanged fertility < 0.1 predicates must still pass.
+        trigger_event = { id = sxanf.2 days = 1 }
     }
 }
 
@@ -70,6 +72,35 @@ sxanf.2 = {
         # Baseline is unqualified until all twelve native predicates pass.
         set_variable = { name = sxanf_baseline_valid value = 0 }
         sxanf_restore_refs_effect = yes
+        # Day two establishes the controlled fixture input after cache wait.
+        # A real monthly pulse may have touched these new characters on day
+        # one. Clear only these eleven living fixture actors before Begin;
+        # this preparation is not credited as a business encounter or test.
+        scope:sxanf_spouse_a = { sxanf_reset_fixture_experience_effect = yes }
+        scope:sxanf_spouse_b = { sxanf_reset_fixture_experience_effect = yes }
+        scope:sxanf_concubinist = { sxanf_reset_fixture_experience_effect = yes }
+        scope:sxanf_concubine = { sxanf_reset_fixture_experience_effect = yes }
+        scope:sxanf_pregnant_a = { sxanf_reset_fixture_experience_effect = yes }
+        scope:sxanf_pregnant_b = { sxanf_reset_fixture_experience_effect = yes }
+        scope:sxanf_infertile_a = { sxanf_reset_fixture_experience_effect = yes }
+        scope:sxanf_infertile_b = { sxanf_reset_fixture_experience_effect = yes }
+        scope:sxanf_minor_a = { sxanf_reset_fixture_experience_effect = yes }
+        scope:sxanf_minor_b = { sxanf_reset_fixture_experience_effect = yes }
+        scope:sxanf_dead_a = { sxanf_reset_fixture_experience_effect = yes }
+        set_variable = { name = sxanf_native_pulse_count value = 0 }
+        remove_variable = sxanf_native_pulse_month
+        set_variable = { name = sxanf_baseline_month value = sxad_natural_month_value }
+        debug_log = "SXANF: BASELINE_INPUTS_INITIALIZED natural-simulation"
+        if = {
+            limit = { scope:sxanf_infertile_a = { has_character_modifier = sxanf_infertile_modifier } }
+            debug_log = "SXANF: BASELINE_MODIFIER_PRESENT infertile_a"
+        }
+        else = { debug_log = "SXANF: FAIL baseline-modifier-missing infertile_a" }
+        if = {
+            limit = { scope:sxanf_infertile_b = { has_character_modifier = sxanf_infertile_modifier } }
+            debug_log = "SXANF: BASELINE_MODIFIER_PRESENT infertile_b"
+        }
+        else = { debug_log = "SXANF: FAIL baseline-modifier-missing infertile_b" }
         if = {
             limit = { scope:sxanf_spouse_a = { is_spouse_of = scope:sxanf_spouse_b faith != scope:sxanf_spouse_b.faith var:sxad_sex_experience = 0 } }
             debug_log = "SXANF: BASELINE_PREDICATE_OK spouse_a"
@@ -101,12 +132,12 @@ sxanf.2 = {
         }
         else = { debug_log = "SXANF: FAIL baseline-predicate pregnant_b" }
         if = {
-            limit = { scope:sxanf_infertile_a = { is_spouse_of = scope:sxanf_infertile_b fertility < 0.1 var:sxad_sex_experience = 0 } }
+            limit = { scope:sxanf_infertile_a = { is_spouse_of = scope:sxanf_infertile_b has_character_modifier = sxanf_infertile_modifier fertility < 0.1 var:sxad_sex_experience = 0 } }
             debug_log = "SXANF: BASELINE_PREDICATE_OK infertile_a"
         }
         else = { debug_log = "SXANF: FAIL baseline-predicate infertile_a" }
         if = {
-            limit = { scope:sxanf_infertile_b = { fertility < 0.1 var:sxad_sex_experience = 0 } }
+            limit = { scope:sxanf_infertile_b = { has_character_modifier = sxanf_infertile_modifier fertility < 0.1 var:sxad_sex_experience = 0 } }
             debug_log = "SXANF: BASELINE_PREDICATE_OK infertile_b"
         }
         else = { debug_log = "SXANF: FAIL baseline-predicate infertile_b" }
@@ -126,7 +157,7 @@ sxanf.2 = {
         }
         else = { debug_log = "SXANF: FAIL baseline-predicate dead_a" }
         if = {
-            limit = { scope:sxanf_dead_b = { is_alive = no NOT = { has_variable = sxad_sex_experience } } }
+            limit = { scope:sxanf_dead_b = { is_alive = no } }
             debug_log = "SXANF: BASELINE_PREDICATE_OK dead_b"
         }
         else = { debug_log = "SXANF: FAIL baseline-predicate dead_b" }
@@ -138,12 +169,12 @@ sxanf.2 = {
                 scope:sxanf_concubinist = { var:sxad_sex_experience = 0 }
                 scope:sxanf_pregnant_a = { is_spouse_of = scope:sxanf_pregnant_b var:sxad_sex_experience = 0 }
                 scope:sxanf_pregnant_b = { is_pregnant = yes var:sxad_sex_experience = 0 }
-                scope:sxanf_infertile_a = { is_spouse_of = scope:sxanf_infertile_b fertility < 0.1 var:sxad_sex_experience = 0 }
-                scope:sxanf_infertile_b = { fertility < 0.1 var:sxad_sex_experience = 0 }
+                scope:sxanf_infertile_a = { is_spouse_of = scope:sxanf_infertile_b has_character_modifier = sxanf_infertile_modifier fertility < 0.1 var:sxad_sex_experience = 0 }
+                scope:sxanf_infertile_b = { has_character_modifier = sxanf_infertile_modifier fertility < 0.1 var:sxad_sex_experience = 0 }
                 scope:sxanf_minor_a = { is_spouse_of = scope:sxanf_minor_b var:sxad_sex_experience = 0 }
                 scope:sxanf_minor_b = { is_alive = yes age < 18 var:sxad_sex_experience = 0 }
                 scope:sxanf_dead_a = { is_alive = yes var:sxad_sex_experience = 0 }
-                scope:sxanf_dead_b = { is_alive = no NOT = { has_variable = sxad_sex_experience } }
+                scope:sxanf_dead_b = { is_alive = no }
             }
             set_variable = { name = sxanf_baseline_valid value = 1 }
             debug_log = "SXANF: BASELINE_READY natural-simulation"
@@ -216,7 +247,7 @@ sxanf.5 = {
         }
         else = { debug_log = "SXANF: FAIL pregnant-pair" }
         if = {
-            limit = { scope:sxanf_infertile_a = { fertility < 0.1 var:sxad_sex_experience = 1 } scope:sxanf_infertile_b = { fertility < 0.1 var:sxad_sex_experience = 1 } }
+            limit = { scope:sxanf_infertile_a = { has_character_modifier = sxanf_infertile_modifier fertility < 0.1 var:sxad_sex_experience = 1 } scope:sxanf_infertile_b = { has_character_modifier = sxanf_infertile_modifier fertility < 0.1 var:sxad_sex_experience = 1 } }
             set_variable = { name = sxanf_case_infertile_pair value = 1 }
             debug_log = "SXANF: PASS infertile-pair"
         }
@@ -226,7 +257,7 @@ sxanf.5 = {
                 scope:sxanf_minor_a = { var:sxad_sex_experience = 0 }
                 scope:sxanf_minor_b = { is_alive = yes age < 18 var:sxad_sex_experience = 0 }
                 scope:sxanf_dead_a = { var:sxad_sex_experience = 0 }
-                scope:sxanf_dead_b = { is_alive = no NOT = { has_variable = sxad_sex_experience } }
+                scope:sxanf_dead_b = { is_alive = no }
             }
             set_variable = { name = sxanf_case_minor_dead_rejected value = 1 }
             debug_log = "SXANF: PASS minor-dead-rejected"
@@ -290,7 +321,7 @@ sxanf.9 = {
                 scope:sxanf_minor_a = { var:sxad_sex_experience = 0 }
                 scope:sxanf_minor_b = { age < 18 var:sxad_sex_experience = 0 }
                 scope:sxanf_dead_a = { var:sxad_sex_experience = 0 }
-                scope:sxanf_dead_b = { is_alive = no NOT = { has_variable = sxad_sex_experience } }
+                scope:sxanf_dead_b = { is_alive = no }
             }
             set_variable = { name = sxanf_case_calendar_rollover value = 1 }
             debug_log = "SXANF: PASS calendar-rollover-once"

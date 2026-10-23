@@ -14,7 +14,7 @@ from pathlib import Path
 import re
 import shutil
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Literal, Protocol, TypeAlias
+from typing import TYPE_CHECKING, Literal, Protocol, TypeAlias, runtime_checkable
 
 from ck3_mod_acceptance_background_types import (
     FilePin, JsonObject, file_pin, json_object, object_field, text_field,
@@ -345,6 +345,76 @@ def root_phase(client, context, name, requirements, snapshot, source_contract):
     return response
 
 
+@runtime_checkable
+class FixtureDayClient(Protocol):
+    def advance_day(self, days: int = 1, timeout: float = 300,
+                    allow_event_boundary: bool = False,
+                    allow_actor_change: bool = False) -> dict[str, object]: ...
+    def execute_plan(self, steps: list[dict[str, object]], name: str,
+                     timeout: float | None = None,
+                     reserve: int = 90) -> list[dict[str, object]]: ...
+
+
+def _advance_fixture_day(client: FixtureDayClient, config: object,
+                         sequence: object, timeout: object) -> JsonObject:
+    """Use the public bounded day route, preserving explicit succession waits."""
+    if not isinstance(client, FixtureDayClient):
+        raise ValueError('Fixture day requires the public natural-day client contract')
+    policy = json_object(config)
+    actor_change = policy.get('allow_actor_change', False)
+    transitions = policy.get('actor_transition_days', [])
+    if type(actor_change) is not bool or not isinstance(actor_change, bool):
+        raise ValueError('Fixture actor-change policy must be a literal boolean')
+    if not isinstance(transitions, list) or any(
+            type(day) is not int or not isinstance(day, int) or day <= 0
+            for day in transitions):
+        raise ValueError('Fixture transition days must be positive integer sequences')
+    if len(transitions) != len(set(transitions)):
+        raise ValueError('Fixture transition day sequences must be unique')
+    if type(sequence) is not int or not isinstance(sequence, int) or sequence <= 0:
+        raise ValueError('Fixture day sequence must be a positive integer')
+    if (type(timeout) not in (int, float) or not isinstance(timeout, (int, float))
+            or not math.isfinite(timeout) or timeout <= 0):
+        raise ValueError('Fixture day timeout must be finite and positive')
+    if sequence in transitions:
+        # The public day method has no wait-for-successor argument. Preserve
+        # this existing, explicitly selected legacy contract without replay.
+        name = 'product-natural-day-' + str(sequence).zfill(3)
+        step: dict[str, object] = {'id': name, 'kind': 'advance_day', 'days': 1,
+                                  'timeout': timeout, 'wait_for_played_character_change': True}
+        rows = client.execute_plan([step], name)
+        if len(rows) != 1:
+            raise ValueError('One actual fixture transition day row required')
+        return json_object(rows[0])
+    return json_object(client.advance_day(days=1, timeout=timeout,
+                       allow_event_boundary=True, allow_actor_change=actor_change))
+
+
+def _fixture_boundary(frame: object) -> Literal['event', 'notification'] | None:
+    snapshot = json_object(frame)
+    if snapshot.get('active_event') is not None:
+        return 'event'
+    if snapshot.get('pending_character_interaction') is not None:
+        return 'notification'
+    return None
+
+
+def _require_fixture_boundary_resolved(before: object, after: object,
+                                       boundary: Literal['event', 'notification']) -> None:
+    key = 'active_event' if boundary == 'event' else 'pending_character_interaction'
+    original = json_object(json_object(before).get(key))
+    original_id = original.get('instance_id')
+    if type(original_id) is not int or not isinstance(original_id, int) or original_id <= 0:
+        raise ValueError('Actual boundary requires a positive native instance ID')
+    current = json_object(after).get(key)
+    if current is None:
+        return
+    current_id = json_object(current).get('instance_id')
+    if (type(current_id) is not int or not isinstance(current_id, int)
+            or current_id <= 0 or current_id == original_id):
+        raise ValueError('Actual boundary remains unresolved; never advance or replay')
+
+
 def _run_fixture_case(context, client):
     compiled, binding = compiled_contract(context)
     config = compiled['config']
@@ -362,6 +432,7 @@ def _run_fixture_case(context, client):
     observed = {'qualified': static_load_only, 'counts': {}, 'missing': [], 'duplicates': {}, 'failure_lines': [], 'product_marker_minimum': {}}
     if not static_load_only:
         sequence = 0
+        boundary_sequence = 0
         while True:
             require(type(frame.get('date_raw')) is int and frame['date_raw'] >= initial_date,
                     'Actual native calendar moved backwards')
@@ -383,22 +454,28 @@ def _run_fixture_case(context, client):
                     day = (frame['date_raw'] - initial_date) / 24
                     require(day <= config['maximum_natural_days'], 'GUI phase exceeded shared case calendar bound')
                     observed = marker_observation(client.log_bytes(), compiled)
+            # An actual event is handled by Root from its current instance. Never
+            # invent an option index or claim that dispatch proves a GUI outcome.
+            boundary = _fixture_boundary(frame)
+            if boundary is not None:
+                boundary_sequence += 1
+                name = 'actual-' + boundary + '-boundary-' + str(boundary_sequence).zfill(3)
+                assertion = ('actual_current_event_resolved_with_typed_or_reviewed_original_evidence'
+                             if boundary == 'event' else
+                             'actual_pending_character_interaction_resolved_with_typed_or_reviewed_original_evidence')
+                phases[name] = root_phase(client, context, name, [assertion], frame, compiled)
+                successor = client.snapshot(allow_actor_change=config.get('allow_actor_change', False), require_event_free=False)
+                _require_fixture_boundary_resolved(frame, successor, boundary)
+                frame = successor
+                frames.append({'day': (frame['date_raw'] - initial_date) / 24,
+                               'after_boundary': name, 'snapshot': frame})
+                continue
             if observed['qualified'] and all(phase['id'] in phases for phase in config['gui_phases']):
                 break
             require(day < config['maximum_natural_days'], 'Shared case day upper bound reached; missing original product assertions retained')
-            # An actual event is handled by Root from its current instance. Never
-            # invent an option index or claim that dispatch proves a GUI outcome.
-            if frame.get('active_event') is not None:
-                name = 'actual-event-boundary-' + str(sequence).zfill(3)
-                phases[name] = root_phase(client, context, name, ['actual_current_event_resolved_with_typed_or_reviewed_original_evidence'], frame, compiled)
-                frame = client.snapshot(allow_actor_change=config.get('allow_actor_change', False), require_event_free=True)
             sequence += 1
-            step = {'id': 'product-natural-day-' + str(sequence).zfill(3), 'kind': 'advance_day',
-                     'days': 1, 'timeout': context['case_spec']['budgets']['command_timeout']}
-            if sequence in config.get('actor_transition_days', []):
-                step['wait_for_played_character_change'] = True
-            rows = client.execute_plan([step], step['id'])
-            value = rows[0]['result']
+            row = _advance_fixture_day(client, config, sequence, context['case_spec']['budgets']['command_timeout'])
+            value = row['result']
             require(value.get('requested_days') == 1 and
                     (value.get('requested_interval_complete') is True or value.get('event_boundary') is not None),
                     'Neither actual day completion nor an actual event boundary was observed')

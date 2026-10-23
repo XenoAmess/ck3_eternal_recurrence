@@ -1,0 +1,110 @@
+{
+  "schema": "sxanf-natural-fixture-r26-native-findings-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T18:40:26.645487+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--superman-qiang--R0026",
+  "run_root": "C:/ck3-superman-validation-20261023/runs/desktop-3fevhd2-1c74096080--superman-qiang--R0026",
+  "state_root": "C:/ck3-superman-validation-20261023/natural-scene-a06/state",
+  "run_source_commit": "1dc76e74eb9eba395b20bf9228bc3d708d616c25",
+  "game_version": "1.20.0.4",
+  "result": "FAIL",
+  "business_pass": false,
+  "game_identity": {
+    "pid": 7952,
+    "creation_time_unix_decimal": "1792779519.617876",
+    "birth_filetime": "134372531196178760"
+  },
+  "chronology_utc": {
+    "startup": "2026-10-23T18:18:36Z",
+    "fixture_armed": "2026-10-23T18:23:20Z",
+    "baseline_failed": "2026-10-23T18:24:30Z",
+    "independent_os_exit_0": "2026-10-23T18:30:40.963499Z",
+    "host_finish": "2026-10-23T18:31:42.318272Z",
+    "steam_offline_native_probe": "2026-10-23T18:34:22Z"
+  },
+  "actual_game_date": "1066.9.16",
+  "actual_natural_days": 1,
+  "baseline_diagnostic_summary": {
+    "logged_ok_roles": 10,
+    "failed_roles": [
+      "infertile_a",
+      "infertile_b"
+    ],
+    "dead_b_ok_marker_has_script_error": true,
+    "dead_scope_error": "has_variable trigger: This scope does not support variables",
+    "baseline_ready": false,
+    "monthly_business_reached": false
+  },
+  "source_analysis": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\R0026-fertility-setup-analysis-a01\\REPORT.json",
+    "bytes": 6692,
+    "sha256": "c85f0b1332589e455e92b813b08a2f6ae13781f5f09618c1d24086d5c8bc8fea"
+  },
+  "established": [
+    "R25 immutable saved infertile characters65850/65851 have the expected modifier and PRESENT type=value experience with omitted default-zero identity.",
+    "The same R25 records save fertility fields0.5855/0.50064; these saved fields are not source-bound here to effective fertility.",
+    "Existing exact .4 source attribution identifies fertility getter0x28C6340, gate0x28BB4C0 and cached signed effective raw at living extension+0x2E0, denominator100000.",
+    "R26 baseline still rejected both infertility role predicates. No cache refresh timing or successful infertility setup was proved.",
+    "NOT has_variable on a dead scope produced an unsupported-scope engine error before its OK marker; that marker is not clean validation."
+  ],
+  "save_result": {
+    "produced": false,
+    "boundary": "Queued SAVE was rejected before claim/publish because the host already held the campaign pause same-owner frame error. No R26 save or readback origin is manufactured."
+  },
+  "closure_reported_by_parent": {
+    "source": "Root actual public/host/native/keeper/CAS results supplied in collaboration after complete closure",
+    "quit_method": "Standard UIA titlebar Close, reviewed unchecked quit-confirmation screenshot and canonical mapped final click",
+    "quit_confirmation": "C:/ck3-superman-validation-20261023/ops/R0026-quit-confirmation-a01.png",
+    "native_process_exit": 0,
+    "independent_retained_os_exit": 0,
+    "job_before_cleanup_active_processes": 0,
+    "job_final_active_processes": 0,
+    "cleanup_completed": true,
+    "failure_lifecycle_completed": true,
+    "normal_close_qualified": false,
+    "host_error_preserved": "campaign pause readback lost the complete same-owner frame",
+    "public_run_exit": 2,
+    "keeper_exit": 0,
+    "screen_release_revision": 8471,
+    "resources_after_release": [],
+    "default_off_native_exit_called": false,
+    "steam_remained_offline": true
+  },
+  "candidate": {
+    "status": "SOURCE_CANDIDATE_NOT_ENGINE_ACCEPTED",
+    "setup": "ARMED only schedules sxanf.1 on day1. START means setup entered, not baseline ready.",
+    "baseline": "sxanf.1 schedules sxanf.2 one further real day later. Public baseline GUI phase is day2.",
+    "fertility": "Keep all six actual fertility<0.1 predicates and require sxanf_infertile_modifier in each; log modifier presence separately.",
+    "cache_hypothesis": "One actual day may allow the effective fertility cache to update. This is an unproved hypothesis; a false fertility predicate remains FAIL.",
+    "initial_input_establishment": "On day2 immediately before verification reset only the eleven living fixture references' experience and monthly dedup state. Day1 retains only their identifying flags.",
+    "prebaseline_native_pulses": "A real native pulse may affect the newly created fixture characters between day1 and day2. Day2 initialization discards that setup-period activity as controlled input construction and gives it no business credit.",
+    "dead_initialization": "Initialize dead_b only before its day1 death. Native predicates thereafter check is_alive=no only; missing experience stays a separate independent SAVE assertion backed by bounded real samples.",
+    "observer_initialization": "At day2 reset root native_pulse_count to0, remove native_pulse_month and set baseline_month from the actual current calendar. This limits subsequent C4 observer evidence to business after baseline.",
+    "business_reset_forbidden": "No fixture experience/dedup reset runs after Begin or in any later phase.",
+    "calendar_budget": "2 initial real days + at most31 days for months=1 +2 real days =35 maximum natural days.",
+    "failure_path": "Baseline_valid starts at0 and becomes1 only if all twelve setup predicates pass. Failure only permits terminal Close and cannot enter monthly events.",
+    "production_runtime_changed": false
+  },
+  "future_C4_evidence": "FinalXP2 alone does not prove native monthly counting. Require both spouse before_explicit_xp snapshots2 and native_pulse_month equal the final saved month; before1->final2 proves direct calls only.",
+  "new_game_actions_during_fix": 0,
+  "shared_tests_do_not_replace_business": "Parent reports90 shared groups792 tests passed at1dc76e74; these do not pass R26 product business.",
+  "candidate_source_validation": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-23T18:47:29.118075+00:00",
+    "full_product_ci": {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\product-ci-r26-fixture-fix-a03\\SUMMARY.actual.json",
+      "bytes": 25264,
+      "sha256": "fa0f426496e45d4eec817595dd45fcd80157bbe16601d5631c0c61aea1858cb3"
+    },
+    "unit_tests": 85,
+    "static_validation": "GREEN",
+    "formal_builder_check": "GREEN_35_FILES_UNRELEASED_CHECK_ONLY",
+    "mypy": {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\product-ci-r26-fixture-fix-a03\\MYPY.actual.json",
+      "bytes": 738,
+      "sha256": "27b188e223848c7f25ae67e13d5ed8719545e9271588e37da638671d6826faf4"
+    },
+    "engine_rerun": "NOT_RUN",
+    "business_pass": false
+  }
+}

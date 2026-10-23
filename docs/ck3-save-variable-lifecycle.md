@@ -15,3 +15,5 @@ R0025 的实际 SAVE 与独立解码表明，下列状态必须分开：
 精简原始角色样本与真实解析回归在 [testdata](../mod_superman_qiang/tools/testdata/natural_simulation_r0025/manifest.json)；原 SAVE、解码 SHA、角色身份和失败边界见[实际发现](../mod_superman_qiang/docs/2026-10-24-natural-fixture-native-findings.json)。读取角色块时也必须支持这次实际出现的顶层死亡记录，不能只搜索在世角色所在的嵌套层级。
 
 本记录保留格式与夹具结论；原始证据按通用策略在 2026-11-22 复核，记录在 2027-04-21 复核。保存成功、脚本 PASS 日志和冷重载是独立证据；本次失败存档不能取得月度计次或冷重载通过资格。
+
+2026-10-23T18:24:30Z 的后继 R0026 又证明，同一 build 的死亡角色 scope 对 `has_variable` 报 `This scope doesn't support variables`；外围 `NOT` 仍可能使后续日志打印 OK。不能把这种带脚本错误的 OK 当作变量缺失证明。死亡状态可在原生脚本检查，变量缺失继续由独立存档读回验证。R0026 仍未进入月度业务，另有不育前置条件及共享暂停读回失败。

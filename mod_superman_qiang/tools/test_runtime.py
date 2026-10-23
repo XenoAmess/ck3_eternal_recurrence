@@ -213,6 +213,13 @@ class SupermanNaturalFixtureTests(unittest.TestCase):
         with patch.object(prepare_live_fixture, "SOURCE", self.source):
             return prepare_live_fixture.prepare_natural_fixture(output)
 
+    @staticmethod
+    def fixture_statements(source: str) -> tuple[validate_static.EffectAssignment, ...]:
+        # This parser masks string literals. Remove logging statements before
+        # structural checks so a masked value cannot consume the next block.
+        without_logs = re.sub(r'debug_log\s*=\s*"[^"\n]*"', "", source)
+        return validate_static.effect_assignments(without_logs)
+
     def test_real_emitter_preserves_templates_hashes_and_unrun_receipt(self) -> None:
         output = self.root / "fixture"
         report = self.prepare(output)
@@ -291,7 +298,7 @@ class SupermanNaturalFixtureTests(unittest.TestCase):
         self.assertEqual(policy["required_log_markers"], ["SXANF: FIXTURE_ARMED natural-simulation"])
         self.assertIn("SXANF: BASELINE_READY natural-simulation", required)
 
-    def test_startup_armed_marker_precedes_day_one_baseline_without_claiming_it(self) -> None:
+    def test_startup_armed_precedes_day_one_setup_and_day_two_baseline(self) -> None:
         output = self.root / "fixture"
         report = self.prepare(output)
         candidate_root = Path(prepare_live_fixture.__file__).resolve().parents[2]
@@ -306,6 +313,21 @@ class SupermanNaturalFixtureTests(unittest.TestCase):
         event = (output / "events/sxanf_events.txt").read_text(encoding="utf-8-sig")
         for event_id in (2, 6, 10):
             self.assertRegex(event, rf"sxanf\.{event_id}\s*=\s*\{{\s*theme\s*=\s*marriage")
+        phases = case.get("gui_phases")
+        if not isinstance(phases, list) or not phases or not isinstance(phases[0], dict):
+            raise ValueError("Native baseline GUI phase required")
+        self.assertIs(type(phases[0].get("at_day")), int)
+        self.assertEqual(phases[0]["at_day"], 2)
+        definitions = self.fixture_statements(event)
+        setup = NaturalScriptHarness.block(NaturalScriptHarness.child(definitions, "sxanf.1"))
+        immediate = NaturalScriptHarness.block(NaturalScriptHarness.child(setup, "immediate"))
+        deferred = NaturalScriptHarness.block(NaturalScriptHarness.child(immediate, "trigger_event"))
+        self.assertEqual(NaturalScriptHarness.scalar(NaturalScriptHarness.child(deferred, "id")), "sxanf.2")
+        self.assertEqual(NaturalScriptHarness.scalar(NaturalScriptHarness.child(deferred, "days")), "1")
+        self.assertIn('debug_log = "SXANF: START natural-simulation"', event.split("sxanf.2 = {", 1)[0])
+        self.assertNotIn('debug_log = "SXANF: BASELINE_READY', event.split("sxanf.2 = {", 1)[0])
+        # At most 31 days for the one-month event delay, then two real days.
+        self.assertEqual(phases[0]["at_day"] + 31 + 2, report["maximum_natural_days"])
 
     def test_real_calendar_and_native_observer_have_distinct_source_paths(self) -> None:
         output = self.root / "fixture"
@@ -372,19 +394,21 @@ class SupermanNaturalFixtureTests(unittest.TestCase):
                 self.assertEqual(value["number"], 0.0)
                 self.assertNotIn("sxad_natural_month", variables)
 
-    def test_dead_missing_guard_and_failed_setup_option_use_real_emitter(self) -> None:
+    def test_dead_scope_and_failed_setup_option_keep_saved_absence_separate(self) -> None:
         output = self.root / "fixture"
         self.prepare(output)
         source = (output / "events/sxanf_events.txt").read_text(encoding="utf-8-sig")
-        assignments = validate_static.effect_assignments(source)
+        assignments = self.fixture_statements(source)
         baseline = NaturalScriptHarness.block(NaturalScriptHarness.child(assignments, "sxanf.2"))
         immediate = NaturalScriptHarness.block(NaturalScriptHarness.child(baseline, "immediate"))
         comparisons = [
             NaturalScriptHarness.block(NaturalScriptHarness.child(NaturalScriptHarness.block(node), "limit"))
             for node in immediate if node.key == "if"
         ]
-        self.assertEqual(len(comparisons), 13)
-        self.assertEqual(tuple(check[0] for check in comparisons[:12]), comparisons[12])
+        # Two independent modifier diagnostics precede the twelve role
+        # predicates and the unchanged conjunction of those twelve predicates.
+        self.assertEqual(len(comparisons), 15)
+        self.assertEqual(tuple(check[0] for check in comparisons[2:14]), comparisons[14])
         self.assertEqual(source.count("SXANF: BASELINE_PREDICATE_OK "), 12)
         self.assertEqual(source.count("SXANF: FAIL baseline-predicate "), 12)
         pending = list(assignments)
@@ -402,8 +426,11 @@ class SupermanNaturalFixtureTests(unittest.TestCase):
         world = NaturalScriptHarness({"dead": character})
         for check in dead_checks:
             self.assertTrue(world.condition(check, "dead", None))
+            # A native dead scope cannot inspect variables. Its absence is
+            # verified by the separately byte-pinned saved-character sample.
+            self.assertEqual(tuple(node.key for node in check), ("is_alive",))
             character.variables["sxad_sex_experience"] = 0
-            self.assertFalse(world.condition(check, "dead", None))
+            self.assertTrue(world.condition(check, "dead", None))
             character.variables.clear()
             character.alive = True
             self.assertFalse(world.condition(check, "dead", None))
@@ -432,6 +459,63 @@ class SupermanNaturalFixtureTests(unittest.TestCase):
             self.assertIn('"' + requirement + '"', case_text)
         self.assertNotIn('"actual_minor_and_dead_experience_zero"', case_text)
         self.assertNotIn('"final_saved_eight_eligible_characters_experience_two_and_four_rejected_characters_zero"', case_text)
+
+    def test_day_two_input_initialization_is_fixture_only_and_precedes_business(self) -> None:
+        output = self.root / "fixture"
+        self.prepare(output)
+        source = (output / "events/sxanf_events.txt").read_text(encoding="utf-8-sig")
+        definitions = self.fixture_statements(source)
+        setup = NaturalScriptHarness.block(NaturalScriptHarness.child(definitions, "sxanf.1"))
+        setup_effects = NaturalScriptHarness.block(NaturalScriptHarness.child(setup, "immediate"))
+        baseline = NaturalScriptHarness.block(NaturalScriptHarness.child(definitions, "sxanf.2"))
+        baseline_effects = NaturalScriptHarness.block(NaturalScriptHarness.child(baseline, "immediate"))
+        reset_name = "sxanf_reset_fixture_experience_effect"
+        day_one_resets = {
+            node.key for node in setup_effects if isinstance(node.value, tuple)
+            and any(child.key == reset_name for child in node.value)
+        }
+        day_two_resets = {
+            node.key for node in baseline_effects if isinstance(node.value, tuple)
+            and any(child.key == reset_name for child in node.value)
+        }
+        living_roles = ("spouse_a", "spouse_b", "concubinist", "concubine",
+                        "pregnant_a", "pregnant_b", "infertile_a", "infertile_b",
+                        "minor_a", "minor_b", "dead_a")
+        self.assertEqual(day_one_resets, {"scope:sxanf_dead_b"})
+        self.assertEqual(day_two_resets, {"scope:sxanf_" + role for role in living_roles})
+        self.assertNotIn(reset_name, source.split("sxanf.3 = {", 1)[1])
+        setup_text, baseline_text = source.split("sxanf.2 = {", 1)
+        self.assertNotIn("name = sxanf_baseline_month", setup_text)
+        self.assertIn("name = sxanf_baseline_month value = sxad_natural_month_value", baseline_text)
+        self.assertIn("remove_variable = sxanf_native_pulse_month", baseline_text)
+        pulse_initializers = [
+            node for node in baseline_effects if node.key == "set_variable"
+            and NaturalScriptHarness.scalar(NaturalScriptHarness.child(
+                NaturalScriptHarness.block(node), "name")) == "sxanf_native_pulse_count"
+        ]
+        self.assertEqual(len(pulse_initializers), 1)
+        self.assertEqual(NaturalScriptHarness.scalar(NaturalScriptHarness.child(
+            NaturalScriptHarness.block(pulse_initializers[0]), "value")), "0")
+        self.assertIn('debug_log = "SXANF: BASELINE_INPUTS_INITIALIZED natural-simulation"', baseline_text)
+        masked = validate_static.masked(source)
+        self.assertEqual(len(re.findall(r"\bfertility\s*<\s*0\.1", masked)), 6)
+        for role in ("infertile_a", "infertile_b"):
+            self.assertIn(f'debug_log = "SXANF: BASELINE_MODIFIER_PRESENT {role}"', source)
+            self.assertIn(f'debug_log = "SXANF: FAIL baseline-modifier-missing {role}"', source)
+        # Every actual fertility predicate still requires its setup modifier.
+        pending = list(definitions)
+        fertility_guards: list[tuple[validate_static.EffectAssignment, ...]] = []
+        while pending:
+            node = pending.pop()
+            if isinstance(node.value, tuple):
+                if node.key in {"scope:sxanf_infertile_a", "scope:sxanf_infertile_b"} and any(
+                        child.key == "fertility" for child in node.value):
+                    fertility_guards.append(node.value)
+                pending.extend(node.value)
+        self.assertEqual(len(fertility_guards), 6)
+        for guard in fertility_guards:
+            self.assertEqual(NaturalScriptHarness.scalar(
+                NaturalScriptHarness.child(guard, "has_character_modifier")), "sxanf_infertile_modifier")
 
     def test_integer_and_unrun_fields_are_validated_before_writing(self) -> None:
         contract = self.templates / "cases.json"

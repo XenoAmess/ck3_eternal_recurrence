@@ -619,6 +619,17 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test Auto Upgrade Buildings release tooling
         run: python tools/test_build_auto_upgrade_buildings_release.py
+      - name: Test generic product day event handoff without CK3
+        env:
+          PYTHONPATH: ${{ github.workspace }}\tools;${{ github.workspace }}\ck3_autonomous_player\src
+          MYPYPATH: ${{ github.workspace }}\tools;${{ github.workspace }}\ck3_autonomous_player\src
+        run: |
+          python -B -X utf8 tools/test_generic_product_day_boundary.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -O -X utf8 tools/test_generic_product_day_boundary.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -m mypy --strict --follow-imports=skip --no-incremental --cache-dir nul tools/test_generic_product_day_boundary.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test existing saved-readback adapter maintenance without CK3
         env:
           PYTHONPATH: ${{ github.workspace }}\tools

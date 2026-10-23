@@ -1,6 +1,6 @@
 ﻿l_english:
  sxanf_baseline_title:0 "External fixture: monthly simulation baseline"
- sxanf_baseline_desc:0 "Fixture only. Verify actual character identities, marriages, concubinage, pregnancy, infertility and zero experience. Save and independently read back the baseline before choosing Start once. Log markers do not replace saved evidence."
+ sxanf_baseline_desc:0 "Fixture only. Verify actual character identities, marriages, concubinage, pregnancy, infertility, zero experience for eleven living characters and an absent experience variable for the dead character. Setup runs on day one; baseline verification runs on day two. Save and independently read back the baseline before choosing Start once. Log markers do not replace saved evidence."
  sxanf_begin:0 "Baseline saved and checked; start same-month tests"
  sxanf_month_title:0 "External fixture: same-month checks finished"
  sxanf_month_desc:0 "Retain logs, experience, month epochs and reciprocal partner lists, then save a checkpoint. The next choice waits one real month plus two days. Resume normal calendar progression. Actual native faith callbacks and explicit event calls are recorded separately."

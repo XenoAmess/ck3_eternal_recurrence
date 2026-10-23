@@ -20,7 +20,7 @@
         "actual_eleven_living_experience_zero_and_dead_b_experience_absent_baseline_save_and_independent_readback",
         "current_sxanf_2_event_instance_and_original_begin_option_once"
       ],
-      "at_day": 1
+      "at_day": 2
     },
     {
       "id": "same-month-actual-state-and-calendar-choice",
@@ -66,5 +66,5 @@
   },
   "business_contract_applicable": true,
   "ordinary_post_start_input": "Actual Robert bookmark state supplied by common producer/readback.",
-  "calendar_bound_provenance": "New bounded source fixture: startup day plus one actual month and two days; maximum 35 natural days. Cold reload belongs to a separate subsequent public saved-campaign case."
+  "calendar_bound_provenance": "Bounded candidate: ARMED schedules day-one setup; baseline verifies one further real day later at day two, then one actual month and two days. The worst case is 2 + 31 + 2 = 35 natural days. The infertility-cache delay is unverified and actual fertility < 0.1 must still pass. Cold reload belongs to a separate subsequent public saved-campaign case."
 }
