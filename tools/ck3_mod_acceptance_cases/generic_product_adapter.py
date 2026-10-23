@@ -1088,9 +1088,12 @@ def _sr_prepare(context: JsonObject) -> JsonObject:
         'origin': origin_pin, 'passive_files': sources}))
     initial = _sr_write(output / 'initial-plan.json', {'steps': []})
     seed = origin.checkpoint
-    return json_object({'startup': {'mode': 'saved_campaign', 'state_dir': context['state_dir'], 'saved_campaign': {
+    saved_campaign: JsonObject = {
         'save': seed['path'], 'bytes': seed['bytes'], 'sha256': seed['sha256'],
-        'player_id': origin.player_id, 'date_raw': origin.date_raw, 'product_inventory': inventory['path']}},
+        'player_id': origin.player_id, 'date_raw': origin.date_raw, 'product_inventory': inventory['path']}
+    startup: JsonObject = {'mode': 'saved_campaign', 'state_dir': context['state_dir'],
+                           'saved_campaign': saved_campaign}
+    return json_object({'startup': startup,
         'initial_plan': initial, 'profile_preparation': finished, 'assertion_contract': compiled_pin,
         'files': finished['files'], 'runtime_status': 'NOT_RUN', 'business_contract_applicable': True,
         'business_pass': False, 'product_release_pass': False})
