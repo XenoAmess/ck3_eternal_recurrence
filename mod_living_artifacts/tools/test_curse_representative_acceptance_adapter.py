@@ -18,7 +18,7 @@ for directory in (REPO / "tools", REPO / "ck3_autonomous_player/src", Path(__fil
         sys.path.insert(0, str(directory))
 
 import acceptance_adapter as core
-from acceptance_contract import Object, array, field, integer, mapping, object_value, pin, read, write_once
+from acceptance_contract import Object, array, field, integer, mapping, object_value, pin, read, text, write_once
 from ck3_mod_acceptance_native_day import STEP, project_native_day
 from startup_actor_binding import StartupActorBinding
 from test_checkpoint_artifacts import AUTHORED_ARTIFACTS, AuthoredArtifact, authored_checkpoint_text
@@ -29,10 +29,13 @@ from test_suppression_timer_acceptance_adapter import TimerPort
 import curse_representative_acceptance_adapter as curse
 import prepare_curse_fixture as emitter
 from prepare_npc_fixture import SourceBinding
+from test_threshold_acceptance_adapter import qualify_zero_gold_context
 
 
-def context_fixture(root: Path) -> Object:
+def context_fixture(root: Path, *, qualified_zero_gold: bool = True, wrong_zero_exe: bool = False) -> Object:
     context = preview_context(root)
+    if qualified_zero_gold:
+        qualify_zero_gold_context(context, game=("1.20.0.4", "a" * 64) if wrong_zero_exe else None)
     context["case"] = curse.CASE
     context["case_contract"] = read(curse.TOOLS / curse.CONTRACT_NAME)
     context["case_spec"] = read(curse.TOOLS / "curse_representative.registry_stanza.json")
@@ -66,6 +69,12 @@ class CursePort(TimerPort):
         self.equipped_id: int | None = None
         self.payment: int | None = None
         self.equip_count = 0
+
+    def frame(self) -> Object:
+        result = super().frame()
+        if self.gold == 0 and self.fault == "missing_gold_nonzero_native":
+            result["played_character_gold"] = {"raw": 1, "scale": 100000}
+        return result
 
     def saved_text(self) -> str:
         items = (*AUTHORED_ARTIFACTS, AuthoredArtifact("17", "★Appetite Input", "masterwork"), AuthoredArtifact("18", "Raw Discovery Candidate", "common"))
@@ -101,7 +110,14 @@ class CursePort(TimerPort):
             refs += variable("xalw_content_appetite_quote", "value", "5000000") + variable("xalw_content_payment", "value", str(self.payment * 100000))
             refs += variable("xalw_content_month_done", "value", "1280200000")
         source = source.replace(variable("xalw_fixture_target", "artifact", "12"), refs + variable("xalw_fixture_target", "artifact", "12"), 1)
-        source = source.replace('\t\talive_data={\n', f'\t\talive_data={{\n\t\t\tgold={{ value={self.gold} }}\n\t\t\tprestige={{ currency={self.prestige} accumulated=1000 }}\n\t\t\tstress={self.stress}\n', 1)
+        gold = "" if self.gold == 0 else f'\t\t\tgold={{ value={self.gold} }}\n'
+        if self.gold == 0:
+            invalid_gold = {"null_gold": "gold=null", "empty_gold": "gold={}",
+                "duplicate_gold": "gold={ value=0 } gold={ value=0 }"}.get(self.fault or "")
+            if invalid_gold is not None:
+                gold = "\t\t\t" + invalid_gold + "\n"
+        prestige = "" if self.gold == 0 and self.fault == "missing_zero_prestige" else f'\t\t\tprestige={{ currency={self.prestige} accumulated=1000 }}\n'
+        source = source.replace('\t\talive_data={\n', f'\t\talive_data={{\n{gold}{prestige}\t\t\tstress={self.stress}\n', 1)
         return source
 
     def execute_plan(self, steps: list[Object], name: str, timeout: int | float | None = None, reserve: int = 90) -> object:
@@ -114,7 +130,8 @@ class CursePort(TimerPort):
                 "status": "available", "accepted": True, "campaign_root_context_ready": True, "campaign_root_context": {
                     "player_character_id": 91, "date_raw": 53144328 + self.day * 24, "snapshot_revision": 2,
                     "readiness": {"player_health_ready": True, "same_frame_ready": True, "ready": True}, "player_health": {"raw": raw, "scale": True if self.fault == "bad_health_scale" else 100000},
-                    "provenance": {"game_version": "unit-version", "executable_sha256": "a" * 64, "character_health_rva": "0x28C64E0"}}}
+                    "provenance": {"game_version": text(field(field(self.manifest, "game"), "version"), "authored game version"),
+                        "executable_sha256": text(field(field(self.manifest, "game"), "exe_sha256"), "authored game EXE SHA"), "character_health_rva": "0x28C64E0"}}}
         elif tool == core.ITEM:
             identity = integer(args["artifact_id"], "authored item", 0)
             equipped = self.equipped_id == identity
@@ -170,7 +187,7 @@ class CursePort(TimerPort):
 
 
 def run_fixture(root: Path, *, fault: str | None = None) -> tuple[Object, Object, CursePort]:
-    context = context_fixture(root)
+    context = context_fixture(root, qualified_zero_gold=fault != "unknown_zero_source", wrong_zero_exe=fault == "wrong_zero_exe")
     port = CursePort(context, fault=fault)
     binding = StartupActorBinding(91, 124, "9", 53144328, 12801, "a" * 64, "b" * 64)
     with patch.object(StartupActorBinding, "parse", return_value=binding):
@@ -179,6 +196,22 @@ def run_fixture(root: Path, *, fault: str | None = None) -> tuple[Object, Object
 
 
 class CurseRepresentativeTests(unittest.TestCase):
+    def test_real_zero_wallet_consumers_reject_bad_fields_nonzero_and_wrong_executable(self) -> None:
+        for fault in ("null_gold", "empty_gold", "duplicate_gold", "missing_zero_prestige", "missing_gold_nonzero_native", "wrong_zero_exe"):
+            with self.subTest(fault=fault), tempfile.TemporaryDirectory() as temporary:
+                context, result, port = run_fixture(Path(temporary), fault=fault)
+                self.assertEqual(result["status"], "BLOCKED", result.get("error"))
+                self.assertEqual((port.saves, port.day), (5, 16))
+                self.assertEqual(curse.verify_case(context), result)
+
+    def test_unknown_zero_wallet_source_blocks_actual_consumer_before_save_six(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            context, result, port = run_fixture(Path(temporary), fault="unknown_zero_source")
+            self.assertEqual(result["status"], "BLOCKED", result.get("error"))
+            self.assertEqual((port.saves, port.day), (5, 16))
+            self.assertIn("qualified exact CK3 source", str(result["error"]))
+            self.assertEqual(curse.verify_case(context), result)
+
     def test_real_prepare_session_seven_save_producers_all_consumers_and_retained_verify(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             context, result, port = run_fixture(Path(temporary))
@@ -190,6 +223,29 @@ class CurseRepresentativeTests(unittest.TestCase):
             self.assertEqual(field(observed, "next_day_stress_change"), -1)
             self.assertFalse(result["business_pass"])
             self.assertFalse(result["product_release_pass"])
+            charged = read(port.output / "curse-checkpoint-05.json")
+            charged_base = field(field(charged, "projection"), "base")
+            self.assertEqual(field(field(charged_base, "saved_vitals"), "gold_raw_decimal"), "0")
+            self.assertEqual(field(field(charged_base, "native_vitals"), "gold_raw_decimal"), "0")
+            melted = Path(str(field(field(field(field(charged, "base"), "response"), "melted_save"), "path")))
+            self.assertNotIn("gold={", melted.read_text(encoding="utf-8"))
+            base = object_value(field(charged, "base"))
+            response = object_value(field(base, "response"))
+            for changed in (
+                {**base, "response": {**response, "date_raw": 53144328}},
+                {**base, "response": {**response, "melted_save": pin(melted.with_name("original.ck3"))}},
+            ):
+                with self.subTest(base=changed), self.assertRaises(ValueError):
+                    curse.consume_observation({**charged, "base": changed}, context=context, manifest=port.manifest, reviewer="unit-root")
+            item = read(Path(str(field(field(base, "item_native"), "path"))))
+            row = object_value(array(item["rows"], "native rows")[0])
+            snapshot = object_value(row["after_snapshot"])
+            snapshot["played_character_gold"] = {"raw": 1, "scale": 100000}
+            inconsistent = write_once(port.output / "authored-inconsistent-item.json",
+                {"rows": [{**row, "after_snapshot": snapshot}]})
+            with self.assertRaisesRegex(ValueError, "Independent native paused vitals differ"):
+                curse.consume_observation({**charged, "base": {**base, "item_native": inconsistent}},
+                    context=context, manifest=port.manifest, reviewer="unit-root")
             deployed = read(port.state / "profile/mod-content/fixture/_case_contract.json")
             sources = mapping(deployed["caller_sources"], "real prepared caller sources")
             for name in ("prepare_curse_fixture.py", "curse_representative_acceptance_adapter.py"):

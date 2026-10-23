@@ -1,0 +1,71 @@
+{
+  "schema": "living-artifacts-r19-zero-gold-fixture-provenance-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-23T04:57:33.833780+00:00",
+  "source_run": "pc-20260924rtuf-f11af23c08--living-artifacts--R0019",
+  "source_checkpoint": 5,
+  "source_original_save": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\observations\\pc-20260924rtuf-f11af23c08--living-artifacts--R0019\\checkpoint-05\\original.ck3",
+    "bytes": 70515647,
+    "sha256": "4e228b0697850c41adeca6a723429900ad93f0e429e644b8039863470473ff44"
+  },
+  "source_melt": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\observations\\pc-20260924rtuf-f11af23c08--living-artifacts--R0019\\checkpoint-05\\melted.ck3",
+    "bytes": 103891691,
+    "sha256": "4bc993efa804a8c776bec08b5a29ba88d4ba611d47af5b6aa27e60d920828a7a"
+  },
+  "source_byte_range": [
+    29120432,
+    29129948
+  ],
+  "fragment": {
+    "file": "r19-zero-gold-living-31254.ck3.txt",
+    "bytes": 9516,
+    "sha256": "157449d69de163bf05c3acafe745bfaa8de83900488ab7a291911a2dd3dbc3c6"
+  },
+  "native_frame": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0019\\case-output\\case-snapshot-0054.actual-results.json",
+    "bytes": 39785,
+    "sha256": "901f35c5c06ad1e1a75e0347ebe2245dbcd6fb91d4cc639172d48b40f8acc81e"
+  },
+  "save_native_record": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0019\\case-output\\xalw-core-0034.actual-results.json",
+    "bytes": 23779,
+    "sha256": "ff880264a6edf21a9f85c3c14b4b25f0d1607079cf81c977c37af4969a4cf308"
+  },
+  "independent_target_item_record": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0019\\case-output\\xalw-core-0035.actual-results.json",
+    "bytes": 26095,
+    "sha256": "f2106e24239e45ccdaf7e4e3639d247dcd7087bb134675b93a5736d323e8417f"
+  },
+  "native_observations": [
+    {
+      "record_part": "result",
+      "date_raw": 53144712,
+      "paused": true,
+      "actor_id": 31254,
+      "gold": {
+        "raw": 0,
+        "scale": 100000
+      },
+      "stress": 45,
+      "native_revision": 41
+    },
+    {
+      "record_part": "after_snapshot",
+      "date_raw": 53144712,
+      "paused": true,
+      "actor_id": 31254,
+      "gold": {
+        "raw": 0,
+        "scale": 100000
+      },
+      "stress": 45,
+      "native_revision": 41
+    }
+  ],
+  "gold_entry_count": 0,
+  "game_version": "1.20.0.4",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "scope": "Exact retained actor bytes plus source references; offline wrappers/native boundaries are authored and grant no game or case PASS credit"
+}
