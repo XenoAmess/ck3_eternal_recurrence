@@ -1,0 +1,435 @@
+{
+  "schema": "ck3.workshop-feedback-triage.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "assembled_at_utc": "2026-10-23T14:38:01.488358+00:00",
+  "snapshot": "2026-10-23-comments.json",
+  "scope": "Comment-based triage only; no gameplay reproduction or new product fix.",
+  "priority_basis": "Proposed triage order, not reproduced severity.",
+  "repository_context_commit": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "issues": [
+    {
+      "id": "B01",
+      "product": "zhongguo-361",
+      "category": "bug_report",
+      "priority": "P1",
+      "title": "启用后无法进入游戏，停用后恢复",
+      "status": "open_unreproduced",
+      "report_comment_ids": [
+        "564793766239771651"
+      ],
+      "owner_reply_comment_ids": [],
+      "followup_comment_ids": [],
+      "assessment": "玩家明确给出启用/停用对照；没有日志、版本或冲突模组清单。10月5日作者承诺逐个适配1.20，未直接确认此故障已修复。",
+      "next_action": "优先收集 CK3 版本、模组清单、加载顺序、error.log 和最小启动对照。",
+      "repository_evidence": [
+        "docs/release-changelogs/zhongguo-361/0.3.1.md"
+      ],
+      "report_urls": [
+        "https://steamcommunity.com/sharedfiles/filedetails/?id=3792585972#comment_564793766239771651"
+      ],
+      "reported_dates_cst": [
+        "2026-09-15T21:01:16+08:00"
+      ]
+    },
+    {
+      "id": "B02",
+      "product": "superman-qiang",
+      "category": "bug_report",
+      "priority": "P1",
+      "title": "勾引后同一角色的后续通知重复，随勾引次数累加",
+      "status": "open_unreproduced",
+      "report_comment_ids": [
+        "581684714275963017"
+      ],
+      "owner_reply_comment_ids": [],
+      "followup_comment_ids": [],
+      "assessment": "玩家描述了稳定的累加关系；公开评论未见回复或修复确认。",
+      "next_action": "用同一目标连续勾引，观察后续同类通知数量；收集保存重载前后对照及模组清单。",
+      "repository_evidence": [],
+      "report_urls": [
+        "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990#comment_581684714275963017"
+      ],
+      "reported_dates_cst": [
+        "2026-10-10T21:35:33+08:00"
+      ]
+    },
+    {
+      "id": "B03",
+      "product": "auto-upgrade-buildings",
+      "category": "bug_report",
+      "priority": "P2",
+      "title": "自动建筑用不了，疑惑是否需要同时订阅旧版",
+      "status": "awaiting_reporter_details",
+      "report_comment_ids": [
+        "564793766239785589"
+      ],
+      "owner_reply_comment_ids": [
+        "564794055139001747"
+      ],
+      "followup_comment_ids": [],
+      "assessment": "作者已解释本品独立运行，需从决议开启，并建议关闭其他模组或提供存档；之后未见玩家反馈。现有描述不足以判定为产品故障。",
+      "next_action": "核对开关、钱包、适用建筑与加载顺序；若仍不工作再以玩家存档复现。",
+      "repository_evidence": [],
+      "report_urls": [
+        "https://steamcommunity.com/sharedfiles/filedetails/?id=3800124956#comment_564793766239785589"
+      ],
+      "reported_dates_cst": [
+        "2026-09-16T00:50:54+08:00"
+      ]
+    },
+    {
+      "id": "B04",
+      "product": "eternal-recurrence",
+      "category": "bug_report",
+      "priority": "P2",
+      "title": "疑似与其他模组冲突导致掉帧",
+      "status": "awaiting_reporter_details",
+      "report_comment_ids": [
+        "582805931178527185"
+      ],
+      "owner_reply_comment_ids": [
+        "582805931178528196"
+      ],
+      "followup_comment_ids": [],
+      "assessment": "作者已索要冲突模组链接和原因；公开区未补充。后来的通用性能优化不直接证明这项组合冲突已消失。",
+      "next_action": "先补冲突对象、版本和对照；与单模组性能问题分开追踪。",
+      "repository_evidence": [],
+      "report_urls": [
+        "https://steamcommunity.com/sharedfiles/filedetails/?id=3784706360#comment_582805931178527185"
+      ],
+      "reported_dates_cst": [
+        "2026-08-21T17:09:39+08:00"
+      ]
+    },
+    {
+      "id": "U01",
+      "product": "change-holding-types",
+      "category": "ux_request_possible_persistence_bug",
+      "priority": "P3",
+      "title": "读档后地产决议收纳状态丢失，希望增加上级折叠菜单",
+      "status": "needs_contract_confirmation",
+      "report_comment_ids": [
+        "581684714276046568"
+      ],
+      "owner_reply_comment_ids": [],
+      "followup_comment_ids": [],
+      "assessment": "既有功能请求，也包含每次读档需要重新隐藏的具体体验；是否属于状态持久化缺陷要先核产品预期。",
+      "next_action": "先确定是否应跨读档保留隐藏状态，再决定修复或增加父级菜单。",
+      "repository_evidence": [],
+      "report_urls": [
+        "https://steamcommunity.com/sharedfiles/filedetails/?id=3812510834#comment_581684714276046568"
+      ],
+      "reported_dates_cst": [
+        "2026-10-11T16:49:30+08:00"
+      ]
+    },
+    {
+      "id": "H01",
+      "product": "eternal-recurrence",
+      "category": "historical_bug_report",
+      "priority": "P3",
+      "title": "仅启用本模组也卡顿，年份推进缓慢",
+      "status": "owner_reported_fixed_no_player_retest",
+      "report_comment_ids": [
+        "564793434686138808"
+      ],
+      "owner_reply_comment_ids": [
+        "564793766239782311"
+      ],
+      "followup_comment_ids": [],
+      "assessment": "作者9月16日明确表示已整改并优化性能；没有后续玩家复测确认。",
+      "next_action": "保留为历史已回应问题；有新版复现材料再重新开启。",
+      "repository_evidence": [],
+      "report_urls": [
+        "https://steamcommunity.com/sharedfiles/filedetails/?id=3784706360#comment_564793434686138808"
+      ],
+      "reported_dates_cst": [
+        "2026-09-09T22:21:36+08:00"
+      ]
+    },
+    {
+      "id": "H02",
+      "product": "reclaim-motherland",
+      "category": "historical_bug_report",
+      "priority": "P3",
+      "title": "割据后霸权降级、国号异常且缺少宣称复辟选项",
+      "status": "reporter_resolved_mod_conflict",
+      "report_comment_ids": [
+        "564793766239630449",
+        "564793766239631575"
+      ],
+      "owner_reply_comment_ids": [
+        "564793766239638131",
+        "564793766239638145"
+      ],
+      "followup_comment_ids": [
+        "564793766239641073"
+      ],
+      "assessment": "同一玩家随后明确表示为自己的模组冲突，已经恢复；不作为当前产品未修故障。",
+      "next_action": "历史关闭，保留原文和玩家自报解决依据。",
+      "repository_evidence": [],
+      "report_urls": [
+        "https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599#comment_564793766239630449",
+        "https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599#comment_564793766239631575"
+      ],
+      "reported_dates_cst": [
+        "2026-09-13T23:14:23+08:00",
+        "2026-09-13T23:33:01+08:00"
+      ]
+    },
+    {
+      "id": "H03",
+      "product": "reclaim-motherland",
+      "category": "balance_report",
+      "priority": "P2",
+      "title": "刚割据就能全体外交附庸，快速重新统一",
+      "status": "mitigated_later_release_no_reporter_retest",
+      "report_comment_ids": [
+        "564793766239642157"
+      ],
+      "owner_reply_comment_ids": [
+        "564793766239649894",
+        "564793766239649948",
+        "564793766239694290"
+      ],
+      "followup_comment_ids": [],
+      "assessment": "作者9月14日承认平衡问题并称部分解决。后续公开0.4.1记录已有新近独立-50/1825天和阶位修正；该拒绝是软约束，不能视为任何局面下都禁止快速再附庸，也未见原报告者新版复测。提到邮件中的两个问题未公开细节，不补造。",
+      "next_action": "若继续追踪，用当前公开版本与原玩家存档评估接受附庸数值；保留为已缓解的历史平衡反馈。",
+      "repository_evidence": [
+        "docs/release-changelogs/reclaim-motherland/0.4.1.md"
+      ],
+      "report_urls": [
+        "https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599#comment_564793766239642157"
+      ],
+      "reported_dates_cst": [
+        "2026-09-14T01:54:04+08:00"
+      ]
+    },
+    {
+      "id": "H04",
+      "product": "reclaim-motherland",
+      "category": "feature_request",
+      "priority": "P3",
+      "title": "保留忠君封臣原国号，并优化割据留存判断",
+      "status": "owner_reported_done_later_release_documents_retention",
+      "report_comment_ids": [
+        "564793434686328405",
+        "564793434686365609"
+      ],
+      "owner_reply_comment_ids": [
+        "564793434686352554",
+        "564793434686354628",
+        "564793434686386744",
+        "564793766239590211"
+      ],
+      "followup_comment_ids": [],
+      "assessment": "作者确认割据改名来自原版设计，随后讨论忠君派名称保留并称搞定；当前发布记录说明忠君领地/名称保留。数值平衡与H03分开。",
+      "next_action": "按既有实现记录，不升级为新增未修 bug。",
+      "repository_evidence": [
+        "docs/release-changelogs/reclaim-motherland/0.4.1.md"
+      ],
+      "report_urls": [
+        "https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599#comment_564793434686328405",
+        "https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599#comment_564793434686365609"
+      ],
+      "reported_dates_cst": [
+        "2026-09-12T02:53:29+08:00",
+        "2026-09-12T14:27:55+08:00"
+      ]
+    },
+    {
+      "id": "D01",
+      "product": "change-holding-types",
+      "category": "documented_behavior",
+      "priority": "P3",
+      "title": "租出去的神殿不能转换",
+      "status": "expected_by_current_contract",
+      "report_comment_ids": [
+        "581684201210921735"
+      ],
+      "owner_reply_comment_ids": [],
+      "followup_comment_ids": [],
+      "assessment": "仓库说明及生产trigger均明确仅允许未出租男爵领，is_leased_out=no。属于已知边界/功能期待差异；未见公开解释回复。",
+      "next_action": "适合解释现有限制；如需支持租赁神殿，应单独评估需求。",
+      "repository_evidence": [
+        "mod_change_holding_types/README.md",
+        "mod_change_holding_types/common/scripted_triggers/00_convert_holdings_scripted_triggers.txt"
+      ],
+      "report_urls": [
+        "https://steamcommunity.com/sharedfiles/filedetails/?id=3812510834#comment_581684201210921735"
+      ],
+      "reported_dates_cst": [
+        "2026-10-06T00:21:52+08:00"
+      ]
+    },
+    {
+      "id": "D02",
+      "product": "superman-qiang",
+      "category": "feature_request_documented_behavior",
+      "priority": "P3",
+      "title": "生育三个亲生孩子后性经验仍为零，希望怀孕也计数",
+      "status": "expected_by_current_contract",
+      "report_comment_ids": [
+        "581684930426237298"
+      ],
+      "owner_reply_comment_ids": [],
+      "followup_comment_ids": [],
+      "assessment": "产品只记录启用后的明确事件，不反推日常夫妻生活或既往经历。生育本身不是既有计数入口；不能仅凭此判定计数失效。",
+      "next_action": "解释计数口径；把新增怀孕/生育计数作为功能需求。",
+      "repository_evidence": [
+        "mod_superman_qiang/README.md"
+      ],
+      "report_urls": [
+        "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990#comment_581684930426237298"
+      ],
+      "reported_dates_cst": [
+        "2026-10-13T01:04:43+08:00"
+      ]
+    },
+    {
+      "id": "Q01",
+      "product": "xqol",
+      "category": "compatibility_question",
+      "priority": "P3",
+      "title": "是否兼容东方王朝",
+      "status": "owner_replied_untested",
+      "report_comment_ids": [
+        "564793434686191328"
+      ],
+      "owner_reply_comment_ids": [
+        "564793434686217231"
+      ],
+      "followup_comment_ids": [],
+      "assessment": "只有兼容性询问，作者答复尚未测试，没有具体故障报告。",
+      "next_action": "只有确定存在冲突时再建立 bug。",
+      "repository_evidence": [],
+      "report_urls": [
+        "https://steamcommunity.com/sharedfiles/filedetails/?id=3798133925#comment_564793434686191328"
+      ],
+      "reported_dates_cst": [
+        "2026-09-10T13:30:52+08:00"
+      ]
+    },
+    {
+      "id": "R01",
+      "product": "li-yu-dao",
+      "category": "localization_request",
+      "priority": "P3",
+      "title": "希望增加英语翻译",
+      "status": "owner_replied_alpha_warning",
+      "report_comment_ids": [
+        "581684930426177043"
+      ],
+      "owner_reply_comment_ids": [
+        "581684930426196264"
+      ],
+      "followup_comment_ids": [],
+      "assessment": "作者提醒当时为内部测试Alpha；不是具体程序错误。",
+      "next_action": "纳入本地化需求。",
+      "repository_evidence": [],
+      "report_urls": [
+        "https://steamcommunity.com/sharedfiles/filedetails/?id=3817934804#comment_581684930426177043"
+      ],
+      "reported_dates_cst": [
+        "2026-10-12T08:30:37+08:00"
+      ]
+    },
+    {
+      "id": "R02",
+      "product": "superman-qiang",
+      "category": "feature_request",
+      "priority": "P3",
+      "title": "增加勾引之外的互动/付费互动并避免额外生育",
+      "status": "no_public_reply",
+      "report_comment_ids": [
+        "581684201210934617",
+        "581684714275907688"
+      ],
+      "owner_reply_comment_ids": [],
+      "followup_comment_ids": [],
+      "assessment": "涉及入口扩展、体验节奏和AI增殖顾虑，评论并未报告已发生的AI异常增殖。",
+      "next_action": "作为独立玩法需求评估。",
+      "repository_evidence": [],
+      "report_urls": [
+        "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990#comment_581684201210934617",
+        "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990#comment_581684714275907688"
+      ],
+      "reported_dates_cst": [
+        "2026-10-06T03:05:59+08:00",
+        "2026-10-10T06:46:23+08:00"
+      ]
+    },
+    {
+      "id": "R03",
+      "product": "zhongguo-361",
+      "category": "editorial_feedback",
+      "priority": "P3",
+      "title": "文案风格不喜欢",
+      "status": "owner_replied",
+      "report_comment_ids": [
+        "569298022367792496"
+      ],
+      "owner_reply_comment_ids": [
+        "569298022367923466"
+      ],
+      "followup_comment_ids": [],
+      "assessment": "对文案风格的主观意见，不是代码或游戏状态错误。",
+      "next_action": "保留为文案反馈。",
+      "repository_evidence": [],
+      "report_urls": [
+        "https://steamcommunity.com/sharedfiles/filedetails/?id=3792585972#comment_569298022367792496"
+      ],
+      "reported_dates_cst": [
+        "2026-09-20T13:24:22+08:00"
+      ]
+    },
+    {
+      "id": "R04",
+      "product": "zhongguo-361",
+      "category": "update_request",
+      "priority": "P3",
+      "title": "询问是否继续更新",
+      "status": "owner_promised_120_migration",
+      "report_comment_ids": [
+        "581684201210845449"
+      ],
+      "owner_reply_comment_ids": [
+        "581684201210868416"
+      ],
+      "followup_comment_ids": [],
+      "assessment": "作者答复将逐个适配1.20；回复本身不证明已发布或启动故障已修复。",
+      "next_action": "随产品发布记录更新玩家信息。",
+      "repository_evidence": [],
+      "report_urls": [
+        "https://steamcommunity.com/sharedfiles/filedetails/?id=3792585972#comment_581684201210845449"
+      ],
+      "reported_dates_cst": [
+        "2026-10-05T02:34:34+08:00"
+      ]
+    }
+  ],
+  "summary": {
+    "products": 15,
+    "public_comments_including_owner": 65,
+    "owner_comments": 21,
+    "player_comments": 44,
+    "open_bug_leads": [
+      "B01",
+      "B02",
+      "B03",
+      "B04"
+    ],
+    "ux_or_persistence_lead": [
+      "U01"
+    ],
+    "not_a_confirmed_bug": [
+      "D01",
+      "D02",
+      "Q01",
+      "R01",
+      "R02",
+      "R03",
+      "R04"
+    ]
+  }
+}

@@ -1,0 +1,1084 @@
+{
+  "schema": "ck3.workshop-comments-snapshot.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-23T14:30:18.132185+00:00",
+  "closed_at_utc": "2026-10-23T14:37:18.806520+00:00",
+  "source_registry": "workshop/products.json",
+  "scope": "All publicly visible item-page comments, including author replies; deleted/hidden comments and private notifications unavailable.",
+  "products": [
+    {
+      "key": "auto-upgrade-buildings",
+      "workshop_item_id": "3800124956",
+      "title": "自动升级建筑（XenoAmess维护版）",
+      "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3800124956&l=english",
+      "observed_at_utc": "2026-10-23T14:30:26.352967+00:00",
+      "owner_steam_id": "76561198273714027",
+      "total_comments": 4,
+      "collected_comments": 4,
+      "coverage": "complete",
+      "sources": [
+        {
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3800124956&l=english",
+          "file": "auto-upgrade-buildings-page.html",
+          "sha256": "32a02799a58252a3a7653b045c269e49a14e78be9f46fe486c8ac68a4d42872d",
+          "fetched_at_utc": "2026-10-23T14:30:26.352967+00:00"
+        }
+      ],
+      "comments": [
+        {
+          "comment_id": "564794055139001747",
+          "author": "XenoAmess",
+          "author_url": "https://steamcommunity.com/id/XenoAmess",
+          "author_steam_id": "76561198273714027",
+          "is_item_owner": true,
+          "posted_at_utc": "2026-09-15T18:52:10+00:00",
+          "posted_at_cst": "2026-09-16T02:52:10+08:00",
+          "text": "你是说发生了什么bug吗？这个是独立mod。\n理论上你从决议那里，打开了自动建造，就应该会自己建造啊。。\n你可以关闭下其他所有mod。。然后如果还是不行，可以把存档发我。。\nxenoamess@gmail.com",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3800124956#comment_564794055139001747"
+        },
+        {
+          "comment_id": "564793766239785589",
+          "author": "徐来",
+          "author_url": "https://steamcommunity.com/profiles/76561198142971175",
+          "author_steam_id": "76561198142971175",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-09-15T16:50:54+00:00",
+          "posted_at_cst": "2026-09-16T00:50:54+08:00",
+          "text": "用不了呀，是要搭配你之前那个一起订阅么。",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3800124956#comment_564793766239785589"
+        },
+        {
+          "comment_id": "564793434686386666",
+          "author": "XenoAmess",
+          "author_url": "https://steamcommunity.com/id/XenoAmess",
+          "author_steam_id": "76561198273714027",
+          "is_item_owner": true,
+          "posted_at_utc": "2026-09-12T11:52:25+00:00",
+          "posted_at_cst": "2026-09-12T19:52:25+08:00",
+          "text": "确认，开放实施中。",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3800124956#comment_564793434686386666"
+        },
+        {
+          "comment_id": "564793434686377234",
+          "author": "XenoAmess",
+          "author_url": "https://steamcommunity.com/id/XenoAmess",
+          "author_steam_id": "76561198273714027",
+          "is_item_owner": true,
+          "posted_at_utc": "2026-09-12T09:46:06+00:00",
+          "posted_at_cst": "2026-09-12T17:46:06+08:00",
+          "text": "当前暂时严格按照原 mod 约束，\n不会处理主建筑、公国建筑、特殊建筑、部落、游牧、曼荼罗及其他未列入维护白名单的建筑体系\n如果希望其他建筑也开放，欢迎评论区讨论",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3800124956#comment_564793434686377234"
+        }
+      ]
+    },
+    {
+      "key": "celestial-commerce-corruption",
+      "workshop_item_id": "3804807463",
+      "title": "天朝制允许经商&贪腐框架（XenoAmess维护版）",
+      "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3804807463&l=english",
+      "observed_at_utc": "2026-10-23T14:30:23.932552+00:00",
+      "owner_steam_id": "76561198273714027",
+      "total_comments": 2,
+      "collected_comments": 2,
+      "coverage": "complete",
+      "sources": [
+        {
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3804807463&l=english",
+          "file": "celestial-commerce-corruption-page.html",
+          "sha256": "119373252d718e4b14acc039545e0b91194615ee1676807ee7796b8b47f13c84",
+          "fetched_at_utc": "2026-10-23T14:30:23.932552+00:00"
+        }
+      ],
+      "comments": [
+        {
+          "comment_id": "569298022367922067",
+          "author": "长者夸我跑得快",
+          "author_url": "https://steamcommunity.com/profiles/76561198344723853",
+          "author_steam_id": "76561198344723853",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-09-21T15:54:37+00:00",
+          "posted_at_cst": "2026-09-21T23:54:37+08:00",
+          "text": ":steamthumbsup:",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3804807463#comment_569298022367922067"
+        },
+        {
+          "comment_id": "569298022367890948",
+          "author": "king0billy",
+          "author_url": "https://steamcommunity.com/profiles/76561198364884084",
+          "author_steam_id": "76561198364884084",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-09-21T06:12:04+00:00",
+          "posted_at_cst": "2026-09-21T14:12:04+08:00",
+          "text": "支持一下",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3804807463#comment_569298022367890948"
+        }
+      ]
+    },
+    {
+      "key": "change-holding-types",
+      "workshop_item_id": "3812510834",
+      "title": "地产类型转换（XenoAmess维护版）",
+      "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812510834&l=english",
+      "observed_at_utc": "2026-10-23T14:30:29.572766+00:00",
+      "owner_steam_id": "76561198273714027",
+      "total_comments": 2,
+      "collected_comments": 2,
+      "coverage": "complete",
+      "sources": [
+        {
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812510834&l=english",
+          "file": "change-holding-types-page.html",
+          "sha256": "50cc707af11e348831a0ebeff60ca1c98bee333cbefab75edbfcfe99851fee73",
+          "fetched_at_utc": "2026-10-23T14:30:29.572766+00:00"
+        }
+      ],
+      "comments": [
+        {
+          "comment_id": "581684714276046568",
+          "author": "Z",
+          "author_url": "https://steamcommunity.com/profiles/76561198866098945",
+          "author_steam_id": "76561198866098945",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-10-11T08:49:30+00:00",
+          "posted_at_cst": "2026-10-11T16:49:30+08:00",
+          "text": "能加个上级收纳菜单吗，平时不用的时候收纳，用的时候再点击展开，现在每次读档都要重新按地产决议收纳隐藏，please",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812510834#comment_581684714276046568"
+        },
+        {
+          "comment_id": "581684201210921735",
+          "author": "ChangX",
+          "author_url": "https://steamcommunity.com/profiles/76561198042238610",
+          "author_steam_id": "76561198042238610",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-10-05T16:21:52+00:00",
+          "posted_at_cst": "2026-10-06T00:21:52+08:00",
+          "text": "租出去的神殿地产貌似不能改了",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812510834#comment_581684201210921735"
+        }
+      ]
+    },
+    {
+      "key": "de-jure-conquest",
+      "workshop_item_id": "3812510217",
+      "title": "公国／王国／帝国法理征服（XenoAmess维护版）",
+      "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812510217&l=english",
+      "observed_at_utc": "2026-10-23T14:30:29.319683+00:00",
+      "owner_steam_id": null,
+      "total_comments": 0,
+      "collected_comments": 0,
+      "coverage": "complete",
+      "sources": [
+        {
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812510217&l=english",
+          "file": "de-jure-conquest-page.html",
+          "sha256": "700dc75fd3164dbadea1da5387ccf1cee67cc6aa4b379598462398964eb00b91",
+          "fetched_at_utc": "2026-10-23T14:30:29.319683+00:00"
+        }
+      ],
+      "comments": []
+    },
+    {
+      "key": "eternal-recurrence",
+      "workshop_item_id": "3784706360",
+      "title": "琉焰卿的永恒轮回",
+      "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3784706360&l=english",
+      "observed_at_utc": "2026-10-23T14:30:18.708573+00:00",
+      "owner_steam_id": "76561198273714027",
+      "total_comments": 7,
+      "collected_comments": 7,
+      "coverage": "complete",
+      "sources": [
+        {
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3784706360&l=english",
+          "file": "eternal-recurrence-page.html",
+          "sha256": "1865f8f42a3ab247869222c78723eff6a16352f1b21626a724bb535ebdc7458f",
+          "fetched_at_utc": "2026-10-23T14:30:18.708573+00:00"
+        }
+      ],
+      "comments": [
+        {
+          "comment_id": "564793766239782311",
+          "author": "XenoAmess",
+          "author_url": "https://steamcommunity.com/id/XenoAmess",
+          "author_steam_id": "76561198273714027",
+          "is_item_owner": true,
+          "posted_at_utc": "2026-09-15T16:01:23+00:00",
+          "posted_at_cst": "2026-09-16T00:01:23+08:00",
+          "text": "已整改/优化性能",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3784706360#comment_564793766239782311"
+        },
+        {
+          "comment_id": "564793434686138808",
+          "author": "1073918423",
+          "author_url": "https://steamcommunity.com/profiles/76561199021779724",
+          "author_steam_id": "76561199021779724",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-09-09T14:21:36+00:00",
+          "posted_at_cst": "2026-09-09T22:21:36+08:00",
+          "text": "只开了这一个模组，但是很卡，年份走的很慢",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3784706360#comment_564793434686138808"
+        },
+        {
+          "comment_id": "582805931178528196",
+          "author": "XenoAmess",
+          "author_url": "https://steamcommunity.com/id/XenoAmess",
+          "author_steam_id": "76561198273714027",
+          "is_item_owner": true,
+          "posted_at_utc": "2026-08-21T09:31:53+00:00",
+          "posted_at_cst": "2026-08-21T17:31:53+08:00",
+          "text": "如果有怀疑冲突的模组，请提供对应模组链接，有条件的话可以额外提供主要怀疑原因。有时间会查。",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3784706360#comment_582805931178528196"
+        },
+        {
+          "comment_id": "582805931178527185",
+          "author": "超级大布丁",
+          "author_url": "https://steamcommunity.com/profiles/76561199690633695",
+          "author_steam_id": "76561199690633695",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-08-21T09:09:39+00:00",
+          "posted_at_cst": "2026-08-21T17:09:39+08:00",
+          "text": "模组貌似会和其他模组冲突导致掉帧",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3784706360#comment_582805931178527185"
+        },
+        {
+          "comment_id": "582805931178460276",
+          "author": "MiFeng",
+          "author_url": "https://steamcommunity.com/profiles/76561198103816042",
+          "author_steam_id": "76561198103816042",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-08-20T13:19:27+00:00",
+          "posted_at_cst": "2026-08-20T21:19:27+08:00",
+          "text": "沒有美少女我可是不點進來的喔親 :steamfacepalm:",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3784706360#comment_582805931178460276"
+        },
+        {
+          "comment_id": "418424310691121140",
+          "author": "XenoAmess",
+          "author_url": "https://steamcommunity.com/id/XenoAmess",
+          "author_steam_id": "76561198273714027",
+          "is_item_owner": true,
+          "posted_at_utc": "2026-08-17T15:32:54+00:00",
+          "posted_at_cst": "2026-08-17T23:32:54+08:00",
+          "text": "下午联系美少女了，取得了许可。\n将在下周左右追加该美少女作为额外讲述者。",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3784706360#comment_418424310691121140"
+        },
+        {
+          "comment_id": "418424310691086927",
+          "author": "摇摇摇yz",
+          "author_url": "https://steamcommunity.com/profiles/76561199390861897",
+          "author_steam_id": "76561199390861897",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-08-17T07:43:26+00:00",
+          "posted_at_cst": "2026-08-17T15:43:26+08:00",
+          "text": "换二次元美少女订阅翻一百倍",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3784706360#comment_418424310691086927"
+        }
+      ]
+    },
+    {
+      "key": "li-yu-dao",
+      "workshop_item_id": "3817934804",
+      "title": "【Alpha 内部测试】礼与道：儒家礼仪与学统 / Rites and the Way",
+      "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3817934804&l=english",
+      "observed_at_utc": "2026-10-23T14:30:31.986233+00:00",
+      "owner_steam_id": "76561198273714027",
+      "total_comments": 3,
+      "collected_comments": 3,
+      "coverage": "complete",
+      "sources": [
+        {
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3817934804&l=english",
+          "file": "li-yu-dao-page.html",
+          "sha256": "2a5076426c5623ab3b70149c8e06b44ab8fc1f24782cf82b7514ccff5b6949cc",
+          "fetched_at_utc": "2026-10-23T14:30:31.986233+00:00"
+        }
+      ],
+      "comments": [
+        {
+          "comment_id": "564797030489192700",
+          "author": "天星为伴",
+          "author_url": "https://steamcommunity.com/profiles/76561198317740104",
+          "author_steam_id": "76561198317740104",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-10-19T03:58:59+00:00",
+          "posted_at_cst": "2026-10-19T11:58:59+08:00",
+          "text": "挺有意思的",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3817934804#comment_564797030489192700"
+        },
+        {
+          "comment_id": "581684930426196264",
+          "author": "XenoAmess",
+          "author_url": "https://steamcommunity.com/id/XenoAmess",
+          "author_steam_id": "76561198273714027",
+          "is_item_owner": true,
+          "posted_at_utc": "2026-10-12T06:19:32+00:00",
+          "posted_at_cst": "2026-10-12T14:19:32+08:00",
+          "text": "this is just internal test alpha 0.1.0 ...\nso please don't actually try use it.",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3817934804#comment_581684930426196264"
+        },
+        {
+          "comment_id": "581684930426177043",
+          "author": "Pigsy",
+          "author_url": "https://steamcommunity.com/id/enlightenedpigsy",
+          "author_steam_id": "76561198374279701",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-10-12T00:30:37+00:00",
+          "posted_at_cst": "2026-10-12T08:30:37+08:00",
+          "text": "could we get an english translation?",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3817934804#comment_581684930426177043"
+        }
+      ]
+    },
+    {
+      "key": "living-artifacts",
+      "workshop_item_id": "3825237804",
+      "title": "活武器：饥渴的传世之物 / Living Artifacts",
+      "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3825237804&l=english",
+      "observed_at_utc": "2026-10-23T14:37:18.806520+00:00",
+      "owner_steam_id": null,
+      "total_comments": 0,
+      "collected_comments": 0,
+      "coverage": "complete",
+      "sources": [
+        {
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3825237804&l=english",
+          "file": "living-artifacts-page.html",
+          "sha256": "a5c20d696f47f421d265b504c1ec09f1821d4ebb539adb166e8b52365cb3fd89",
+          "fetched_at_utc": "2026-10-23T14:37:18.806520+00:00"
+        }
+      ],
+      "comments": []
+    },
+    {
+      "key": "ox-here",
+      "workshop_item_id": "3790635143",
+      "title": "牛来",
+      "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3790635143&l=english",
+      "observed_at_utc": "2026-10-23T14:30:26.798434+00:00",
+      "owner_steam_id": "76561198273714027",
+      "total_comments": 3,
+      "collected_comments": 3,
+      "coverage": "complete",
+      "sources": [
+        {
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3790635143&l=english",
+          "file": "ox-here-page.html",
+          "sha256": "fd2c87d93ffb215645eab6c6ad8717f71e4c51bc49dd597e63a3e05773d7640e",
+          "fetched_at_utc": "2026-10-23T14:30:26.798434+00:00"
+        }
+      ],
+      "comments": [
+        {
+          "comment_id": "581681298840588833",
+          "author": "雲笛",
+          "author_url": "https://steamcommunity.com/profiles/76561198939755168",
+          "author_steam_id": "76561198939755168",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-09-03T04:30:30+00:00",
+          "posted_at_cst": "2026-09-03T12:30:30+08:00",
+          "text": "我喜欢你",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3790635143#comment_581681298840588833"
+        },
+        {
+          "comment_id": "581680955259020521",
+          "author": "千鳶",
+          "author_url": "https://steamcommunity.com/profiles/76561199181382199",
+          "author_steam_id": "76561199181382199",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-08-31T03:32:12+00:00",
+          "posted_at_cst": "2026-08-31T11:32:12+08:00",
+          "text": "神了:steamthumbsup:",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3790635143#comment_581680955259020521"
+        },
+        {
+          "comment_id": "581680664978540398",
+          "author": "MuChu",
+          "author_url": "https://steamcommunity.com/profiles/76561198847277172",
+          "author_steam_id": "76561198847277172",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-08-27T15:38:21+00:00",
+          "posted_at_cst": "2026-08-27T23:38:21+08:00",
+          "text": "气笑了👍",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3790635143#comment_581680664978540398"
+        }
+      ]
+    },
+    {
+      "key": "reclaim-motherland",
+      "workshop_item_id": "3798404599",
+      "title": "Reclaim the Motherland — 重整河山",
+      "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599&l=english",
+      "observed_at_utc": "2026-10-23T14:30:23.544703+00:00",
+      "owner_steam_id": "76561198273714027",
+      "total_comments": 18,
+      "collected_comments": 18,
+      "coverage": "complete",
+      "sources": [
+        {
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599&l=english",
+          "file": "reclaim-motherland-page.html",
+          "sha256": "792a0a4b6cb98f18e576efb06ef0a798992f0cd4aa0fd55840a6158bf74f617d",
+          "fetched_at_utc": "2026-10-23T14:30:21.483682+00:00"
+        },
+        {
+          "url": "https://steamcommunity.com/comment/PublishedFile_Public/render/76561198273714027/3798404599/?start=0&count=100",
+          "file": "reclaim-motherland-comments-0000.json",
+          "sha256": "cf33b10117cf9c9f8e78d23f82fad6c73a4dee29a3ce8b94295bed71044d7666",
+          "fetched_at_utc": "2026-10-23T14:30:23.544703+00:00"
+        }
+      ],
+      "comments": [
+        {
+          "comment_id": "564793766239694290",
+          "author": "XenoAmess",
+          "author_url": "https://steamcommunity.com/id/XenoAmess",
+          "author_steam_id": "76561198273714027",
+          "is_item_owner": true,
+          "posted_at_utc": "2026-09-14T11:25:05+00:00",
+          "posted_at_cst": "2026-09-14T19:25:05+08:00",
+          "text": "算是部分解决了",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599#comment_564793766239694290"
+        },
+        {
+          "comment_id": "564793766239649948",
+          "author": "XenoAmess",
+          "author_url": "https://steamcommunity.com/id/XenoAmess",
+          "author_steam_id": "76561198273714027",
+          "is_item_owner": true,
+          "posted_at_utc": "2026-09-13T19:42:22+00:00",
+          "posted_at_cst": "2026-09-14T03:42:22+08:00",
+          "text": "我先看下你邮件说的那两个问题是否能解决",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599#comment_564793766239649948"
+        },
+        {
+          "comment_id": "564793766239649894",
+          "author": "XenoAmess",
+          "author_url": "https://steamcommunity.com/id/XenoAmess",
+          "author_steam_id": "76561198273714027",
+          "is_item_owner": true,
+          "posted_at_utc": "2026-09-13T19:41:35+00:00",
+          "posted_at_cst": "2026-09-14T03:41:35+08:00",
+          "text": "平衡性问题确实是个问题……我们需要更多的数值平衡调整，来决定多少封臣不会走。这个可能需要多跑试试看。等下周5号执行者来了，我想想办法。",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599#comment_564793766239649894"
+        },
+        {
+          "comment_id": "564793766239642157",
+          "author": "帅气的小河",
+          "author_url": "https://steamcommunity.com/profiles/76561199184038493",
+          "author_steam_id": "76561199184038493",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-09-13T17:54:04+00:00",
+          "posted_at_cst": "2026-09-14T01:54:04+08:00",
+          "text": "有个别的问题，割据期间不知是前朝皇帝哪项数值太高了，刚刚割据就全都可以附庸了，直接秒一统",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599#comment_564793766239642157"
+        },
+        {
+          "comment_id": "564793766239641073",
+          "author": "帅气的小河",
+          "author_url": "https://steamcommunity.com/profiles/76561199184038493",
+          "author_steam_id": "76561199184038493",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-09-13T17:41:36+00:00",
+          "posted_at_cst": "2026-09-14T01:41:36+08:00",
+          "text": "谢谢大佬，是我自己mod冲突了，现在好了",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599#comment_564793766239641073"
+        },
+        {
+          "comment_id": "564793766239638145",
+          "author": "XenoAmess",
+          "author_url": "https://steamcommunity.com/id/XenoAmess",
+          "author_steam_id": "76561198273714027",
+          "is_item_owner": true,
+          "posted_at_utc": "2026-09-13T17:04:21+00:00",
+          "posted_at_cst": "2026-09-14T01:04:21+08:00",
+          "text": "xenoamess@gmail.com",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599#comment_564793766239638145"
+        },
+        {
+          "comment_id": "564793766239638131",
+          "author": "XenoAmess",
+          "author_url": "https://steamcommunity.com/id/XenoAmess",
+          "author_steam_id": "76561198273714027",
+          "is_item_owner": true,
+          "posted_at_utc": "2026-09-13T17:04:12+00:00",
+          "posted_at_cst": "2026-09-14T01:04:12+08:00",
+          "text": "存档能发我下吗",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599#comment_564793766239638131"
+        },
+        {
+          "comment_id": "564793766239631575",
+          "author": "帅气的小河",
+          "author_url": "https://steamcommunity.com/profiles/76561199184038493",
+          "author_steam_id": "76561199184038493",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-09-13T15:33:01+00:00",
+          "posted_at_cst": "2026-09-13T23:33:01+08:00",
+          "text": "可能是我创建了中华区四大帝国的原因？",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599#comment_564793766239631575"
+        },
+        {
+          "comment_id": "564793766239630449",
+          "author": "帅气的小河",
+          "author_url": "https://steamcommunity.com/profiles/76561199184038493",
+          "author_steam_id": "76561199184038493",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-09-13T15:14:23+00:00",
+          "posted_at_cst": "2026-09-13T23:14:23+08:00",
+          "text": "貌似不行啊大佬，一割据霸权级倒退成帝国级，然后才弹重新获得霸权级，还可以自由起国号了，还是宣称天命，没有宣称复辟的选项",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599#comment_564793766239630449"
+        },
+        {
+          "comment_id": "564793766239608952",
+          "author": "菜爱玩",
+          "author_url": "https://steamcommunity.com/profiles/76561198976323915",
+          "author_steam_id": "76561198976323915",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-09-13T08:54:09+00:00",
+          "posted_at_cst": "2026-09-13T16:54:09+08:00",
+          "text": "大佬:steamthumbsup:",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599#comment_564793766239608952"
+        },
+        {
+          "comment_id": "564793766239590211",
+          "author": "XenoAmess",
+          "author_url": "https://steamcommunity.com/id/XenoAmess",
+          "author_steam_id": "76561198273714027",
+          "is_item_owner": true,
+          "posted_at_utc": "2026-09-13T01:47:54+00:00",
+          "posted_at_cst": "2026-09-13T09:47:54+08:00",
+          "text": "搞定",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599#comment_564793766239590211"
+        },
+        {
+          "comment_id": "564793434686386744",
+          "author": "XenoAmess",
+          "author_url": "https://steamcommunity.com/id/XenoAmess",
+          "author_steam_id": "76561198273714027",
+          "is_item_owner": true,
+          "posted_at_utc": "2026-09-12T11:53:35+00:00",
+          "posted_at_cst": "2026-09-12T19:53:35+08:00",
+          "text": "（我试试看）",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599#comment_564793434686386744"
+        },
+        {
+          "comment_id": "564793434686365609",
+          "author": "帅气的小河",
+          "author_url": "https://steamcommunity.com/profiles/76561199184038493",
+          "author_steam_id": "76561199184038493",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-09-12T06:27:55+00:00",
+          "posted_at_cst": "2026-09-12T14:27:55+08:00",
+          "text": "对，我觉得尊王派继续听话，听话的省份不改名比较好。另外，为了限制旧天子割据后仍有较大地盘，判定省份是否听话可以加点限制，如加上省份长官性格和好感度来决定是否割据，这样就更香了",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599#comment_564793434686365609"
+        },
+        {
+          "comment_id": "564793434686354628",
+          "author": "XenoAmess",
+          "author_url": "https://steamcommunity.com/id/XenoAmess",
+          "author_steam_id": "76561198273714027",
+          "is_item_owner": true,
+          "posted_at_utc": "2026-09-12T01:55:40+00:00",
+          "posted_at_cst": "2026-09-12T09:55:40+08:00",
+          "text": "你是希望改成 尊王派继续听话的 -> 保留原本的名字（如青徐路） 然后 真正割据独立的，改成闽路，这种？因为看了下，割据改名是原作机制，应该是刻意设计的",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599#comment_564793434686354628"
+        },
+        {
+          "comment_id": "564793434686352554",
+          "author": "XenoAmess",
+          "author_url": "https://steamcommunity.com/id/XenoAmess",
+          "author_steam_id": "76561198273714027",
+          "is_item_owner": true,
+          "posted_at_utc": "2026-09-12T01:07:46+00:00",
+          "posted_at_cst": "2026-09-12T09:07:46+08:00",
+          "text": "我研究下能不能动",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599#comment_564793434686352554"
+        },
+        {
+          "comment_id": "564793434686328405",
+          "author": "帅气的小河",
+          "author_url": "https://steamcommunity.com/profiles/76561199184038493",
+          "author_steam_id": "76561199184038493",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-09-11T18:53:29+00:00",
+          "posted_at_cst": "2026-09-12T02:53:29+08:00",
+          "text": "群雄割据时旧天子的王国级封臣会改国号，比如割据后青徐路会变成闽路，很影响沉浸感，能不能限制下？",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599#comment_564793434686328405"
+        },
+        {
+          "comment_id": "564793434686305612",
+          "author": "XenoAmess",
+          "author_url": "https://steamcommunity.com/id/XenoAmess",
+          "author_steam_id": "76561198273714027",
+          "is_item_owner": true,
+          "posted_at_utc": "2026-09-11T13:57:32+00:00",
+          "posted_at_cst": "2026-09-11T21:57:32+08:00",
+          "text": "感谢支持。使用途中遇到任何问题请在此处反馈。会修复。",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599#comment_564793434686305612"
+        },
+        {
+          "comment_id": "564793434686277239",
+          "author": "帅气的小河",
+          "author_url": "https://steamcommunity.com/profiles/76561199184038493",
+          "author_steam_id": "76561199184038493",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-09-11T06:00:44+00:00",
+          "posted_at_cst": "2026-09-11T14:00:44+08:00",
+          "text": "有劲，支持",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3798404599#comment_564793434686277239"
+        }
+      ]
+    },
+    {
+      "key": "remove-mandala",
+      "workshop_item_id": "3797711947",
+      "title": "Mandala Purge — 肃清曼荼罗伪信",
+      "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3797711947&l=english",
+      "observed_at_utc": "2026-10-23T14:30:18.132185+00:00",
+      "owner_steam_id": null,
+      "total_comments": 0,
+      "collected_comments": 0,
+      "coverage": "complete",
+      "sources": [
+        {
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3797711947&l=english",
+          "file": "remove-mandala-page.html",
+          "sha256": "80379ede11c528e1c78f685f92b2eb8cab507e73adab27dc9dc73dc8f0c50d7b",
+          "fetched_at_utc": "2026-10-23T14:30:18.132185+00:00"
+        }
+      ],
+      "comments": []
+    },
+    {
+      "key": "superman-qiang",
+      "workshop_item_id": "3812991990",
+      "title": "超人强：越超人越强",
+      "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990&l=english",
+      "observed_at_utc": "2026-10-23T14:30:33.991389+00:00",
+      "owner_steam_id": "76561198273714027",
+      "total_comments": 11,
+      "collected_comments": 11,
+      "coverage": "complete",
+      "sources": [
+        {
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990&l=english",
+          "file": "superman-qiang-page.html",
+          "sha256": "7d478d428d3ac333fdb150748f2253a6d9621422111cdd880be7daed4d1e2a20",
+          "fetched_at_utc": "2026-10-23T14:30:32.187227+00:00"
+        },
+        {
+          "url": "https://steamcommunity.com/comment/PublishedFile_Public/render/76561198273714027/3812991990/?start=0&count=100",
+          "file": "superman-qiang-comments-0000.json",
+          "sha256": "f4b55f163929471933e695844d704edba8eeee301a04c9755d5fb2582115fddb",
+          "fetched_at_utc": "2026-10-23T14:30:33.991389+00:00"
+        }
+      ],
+      "comments": [
+        {
+          "comment_id": "581684930426237298",
+          "author": "Waaaghboss Malum caedo",
+          "author_url": "https://steamcommunity.com/profiles/76561198364161063",
+          "author_steam_id": "76561198364161063",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-10-12T17:04:43+00:00",
+          "posted_at_cst": "2026-10-13T01:04:43+08:00",
+          "text": "能不能把让别人怀孕加入性经验计数，我的老婆给我生了三个亲生小孩但是我性经验为0，这对吗",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990#comment_581684930426237298"
+        },
+        {
+          "comment_id": "581684714276024056",
+          "author": "1793353469",
+          "author_url": "https://steamcommunity.com/profiles/76561199257705610",
+          "author_steam_id": "76561199257705610",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-10-11T02:11:45+00:00",
+          "posted_at_cst": "2026-10-11T10:11:45+08:00",
+          "text": "和凿壁偷光mod一样吗",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990#comment_581684714276024056"
+        },
+        {
+          "comment_id": "581684714275963017",
+          "author": "1668788452",
+          "author_url": "https://steamcommunity.com/profiles/76561199435105470",
+          "author_steam_id": "76561199435105470",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-10-10T13:35:33+00:00",
+          "posted_at_cst": "2026-10-10T21:35:33+08:00",
+          "text": "似乎有点问题,勾引过后这个统计次数的功能可能会导致后续关于被勾引角色的消息重复出现.右边的xx怎么了弹窗每勾引一次就会多弹出一次",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990#comment_581684714275963017"
+        },
+        {
+          "comment_id": "581684714275907688",
+          "author": "1668788452",
+          "author_url": "https://steamcommunity.com/profiles/76561199435105470",
+          "author_steam_id": "76561199435105470",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-10-09T22:46:23+00:00",
+          "posted_at_cst": "2026-10-10T06:46:23+08:00",
+          "text": "用勾引叠的太慢了,能不能增加一个互动根据对方能力等级,花钱或者什么交互,顺便移除这个交互的生育能力防ai大量增殖.",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990#comment_581684714275907688"
+        },
+        {
+          "comment_id": "581684470096194420",
+          "author": "1668788452",
+          "author_url": "https://steamcommunity.com/profiles/76561199435105470",
+          "author_steam_id": "76561199435105470",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-10-08T10:31:38+00:00",
+          "posted_at_cst": "2026-10-08T18:31:38+08:00",
+          "text": "不会一大堆疱疹吧",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990#comment_581684470096194420"
+        },
+        {
+          "comment_id": "581684201210934617",
+          "author": "希夷",
+          "author_url": "https://steamcommunity.com/profiles/76561198950014410",
+          "author_steam_id": "76561198950014410",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-10-05T19:05:59+00:00",
+          "posted_at_cst": "2026-10-06T03:05:59+08:00",
+          "text": "只有勾引吗，有无其余性行为互动。",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990#comment_581684201210934617"
+        },
+        {
+          "comment_id": "581684201210885987",
+          "author": "溢公子",
+          "author_url": "https://steamcommunity.com/id/785453182",
+          "author_steam_id": "76561198114823552",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-10-05T06:35:31+00:00",
+          "posted_at_cst": "2026-10-05T14:35:31+08:00",
+          "text": "采补邪术",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990#comment_581684201210885987"
+        },
+        {
+          "comment_id": "581684201210875940",
+          "author": "star song",
+          "author_url": "https://steamcommunity.com/profiles/76561198420432114",
+          "author_steam_id": "76561198420432114",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-10-05T03:09:25+00:00",
+          "posted_at_cst": "2026-10-05T11:09:25+08:00",
+          "text": "熊大，你看到了吗",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990#comment_581684201210875940"
+        },
+        {
+          "comment_id": "581684201210812399",
+          "author": "帅气的小河",
+          "author_url": "https://steamcommunity.com/profiles/76561199184038493",
+          "author_steam_id": "76561199184038493",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-10-04T10:59:31+00:00",
+          "posted_at_cst": "2026-10-04T18:59:31+08:00",
+          "text": "吕小布在此，有何贵干",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990#comment_581684201210812399"
+        },
+        {
+          "comment_id": "581684201210792516",
+          "author": "XenoAmess",
+          "author_url": "https://steamcommunity.com/id/XenoAmess",
+          "author_steam_id": "76561198273714027",
+          "is_item_owner": true,
+          "posted_at_utc": "2026-10-04T05:11:18+00:00",
+          "posted_at_cst": "2026-10-04T13:11:18+08:00",
+          "text": "已经……不需要再压抑了！\n我终于想起来了……我……我是……超人强",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990#comment_581684201210792516"
+        },
+        {
+          "comment_id": "581684201210781729",
+          "author": "日本天皇麦克阿瑟",
+          "author_url": "https://steamcommunity.com/id/chen19991210",
+          "author_steam_id": "76561198175788410",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-10-04T01:14:35+00:00",
+          "posted_at_cst": "2026-10-04T09:14:35+08:00",
+          "text": "中世纪：大压抑时代，必须品鉴一下",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990#comment_581684201210781729"
+        }
+      ]
+    },
+    {
+      "key": "tributary-expansion-directives",
+      "workshop_item_id": "3801490405",
+      "title": "Tributary Expansion Directives — 驱策朝贡国",
+      "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3801490405&l=english",
+      "observed_at_utc": "2026-10-23T14:30:22.378728+00:00",
+      "owner_steam_id": null,
+      "total_comments": 0,
+      "collected_comments": 0,
+      "coverage": "complete",
+      "sources": [
+        {
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3801490405&l=english",
+          "file": "tributary-expansion-directives-page.html",
+          "sha256": "75f4a0219d1c9a19160eb416705f708ee1d327d9ca2cecbb68568614b66b8736",
+          "fetched_at_utc": "2026-10-23T14:30:22.378728+00:00"
+        }
+      ],
+      "comments": []
+    },
+    {
+      "key": "vivhite-courtier",
+      "workshop_item_id": "3787304042",
+      "title": "琉焰卿的永恒轮回：典造琉焰廷臣·白绮特供版",
+      "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3787304042&l=english",
+      "observed_at_utc": "2026-10-23T14:30:19.605751+00:00",
+      "owner_steam_id": null,
+      "total_comments": 0,
+      "collected_comments": 0,
+      "coverage": "complete",
+      "sources": [
+        {
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3787304042&l=english",
+          "file": "vivhite-courtier-page.html",
+          "sha256": "0505d811ca4c73e87ceeecf55d7b294d7fcb5fdacc6505c57ba10d907060ee12",
+          "fetched_at_utc": "2026-10-23T14:30:19.605751+00:00"
+        }
+      ],
+      "comments": []
+    },
+    {
+      "key": "xqol",
+      "workshop_item_id": "3798133925",
+      "title": "XenoAmess的体验优化",
+      "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3798133925&l=english",
+      "observed_at_utc": "2026-10-23T14:30:21.016695+00:00",
+      "owner_steam_id": "76561198273714027",
+      "total_comments": 2,
+      "collected_comments": 2,
+      "coverage": "complete",
+      "sources": [
+        {
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3798133925&l=english",
+          "file": "xqol-page.html",
+          "sha256": "f1933af7c61ef04df7688a38d57a6f414f25b20d148601a85875e09105fd91e5",
+          "fetched_at_utc": "2026-10-23T14:30:21.016695+00:00"
+        }
+      ],
+      "comments": [
+        {
+          "comment_id": "564793434686217231",
+          "author": "XenoAmess",
+          "author_url": "https://steamcommunity.com/id/XenoAmess",
+          "author_steam_id": "76561198273714027",
+          "is_item_owner": true,
+          "posted_at_utc": "2026-09-10T13:08:32+00:00",
+          "posted_at_cst": "2026-09-10T21:08:32+08:00",
+          "text": "暂未开展相关测试。\n确定不兼容并且有兼容需求的话，抽时间看。。。",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3798133925#comment_564793434686217231"
+        },
+        {
+          "comment_id": "564793434686191328",
+          "author": "VKJTI",
+          "author_url": "https://steamcommunity.com/profiles/76561199091248514",
+          "author_steam_id": "76561199091248514",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-09-10T05:30:52+00:00",
+          "posted_at_cst": "2026-09-10T13:30:52+08:00",
+          "text": "请问兼容东方王朝吗",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3798133925#comment_564793434686191328"
+        }
+      ]
+    },
+    {
+      "key": "zhongguo-361",
+      "workshop_item_id": "3792585972",
+      "title": "天朝特色361制官员绩效考核",
+      "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3792585972&l=english",
+      "observed_at_utc": "2026-10-23T14:30:29.878298+00:00",
+      "owner_steam_id": "76561198273714027",
+      "total_comments": 13,
+      "collected_comments": 13,
+      "coverage": "complete",
+      "sources": [
+        {
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3792585972&l=english",
+          "file": "zhongguo-361-page.html",
+          "sha256": "fe6596dcd9a86bd4379dd6c225f0f3c6fd5a3c0f2ecfbcc72a181939d6ef51f7",
+          "fetched_at_utc": "2026-10-23T14:30:27.558824+00:00"
+        },
+        {
+          "url": "https://steamcommunity.com/comment/PublishedFile_Public/render/76561198273714027/3792585972/?start=0&count=100",
+          "file": "zhongguo-361-comments-0000.json",
+          "sha256": "e318753da9a7be2aaee3f4eb654182b818ce8095a31909d087ed037d4889117c",
+          "fetched_at_utc": "2026-10-23T14:30:29.878298+00:00"
+        }
+      ],
+      "comments": [
+        {
+          "comment_id": "581684201210868416",
+          "author": "XenoAmess",
+          "author_url": "https://steamcommunity.com/id/XenoAmess",
+          "author_steam_id": "76561198273714027",
+          "is_item_owner": true,
+          "posted_at_utc": "2026-10-05T00:28:44+00:00",
+          "posted_at_cst": "2026-10-05T08:28:44+08:00",
+          "text": "手上十几个mod在排队适配1.20.\n一个一个来.\n会更的.",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3792585972#comment_581684201210868416"
+        },
+        {
+          "comment_id": "581684201210845449",
+          "author": "小常",
+          "author_url": "https://steamcommunity.com/profiles/76561198282867927",
+          "author_steam_id": "76561198282867927",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-10-04T18:34:34+00:00",
+          "posted_at_cst": "2026-10-05T02:34:34+08:00",
+          "text": "还更新吗",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3792585972#comment_581684201210845449"
+        },
+        {
+          "comment_id": "581683835681527642",
+          "author": "绿芭蕉",
+          "author_url": "https://steamcommunity.com/profiles/76561198263382943",
+          "author_steam_id": "76561198263382943",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-10-01T17:03:35+00:00",
+          "posted_at_cst": "2026-10-02T01:03:35+08:00",
+          "text": "非常棒的MOD:er_wave:",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3792585972#comment_581683835681527642"
+        },
+        {
+          "comment_id": "581683736959061455",
+          "author": "Javedery",
+          "author_url": "https://steamcommunity.com/profiles/76561199383883640",
+          "author_steam_id": "76561199383883640",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-09-29T14:46:06+00:00",
+          "posted_at_cst": "2026-09-29T22:46:06+08:00",
+          "text": "非常有潜力的mod:steamthumbsup:",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3792585972#comment_581683736959061455"
+        },
+        {
+          "comment_id": "569298022367923466",
+          "author": "XenoAmess",
+          "author_url": "https://steamcommunity.com/id/XenoAmess",
+          "author_steam_id": "76561198273714027",
+          "is_item_owner": true,
+          "posted_at_utc": "2026-09-21T16:14:48+00:00",
+          "posted_at_cst": "2026-09-22T00:14:48+08:00",
+          "text": "> 文案AI味太重了，看不了一点。\n现在你能体会到我每天上班时的感受了。",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3792585972#comment_569298022367923466"
+        },
+        {
+          "comment_id": "569298022367792496",
+          "author": "镇魂石",
+          "author_url": "https://steamcommunity.com/profiles/76561198099909777",
+          "author_steam_id": "76561198099909777",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-09-20T05:24:22+00:00",
+          "posted_at_cst": "2026-09-20T13:24:22+08:00",
+          "text": "文案AI味太重了，看不了一点。",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3792585972#comment_569298022367792496"
+        },
+        {
+          "comment_id": "564793766239771651",
+          "author": "徐来",
+          "author_url": "https://steamcommunity.com/profiles/76561198142971175",
+          "author_steam_id": "76561198142971175",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-09-15T13:01:16+00:00",
+          "posted_at_cst": "2026-09-15T21:01:16+08:00",
+          "text": "有问题，冲突总是会进不去游戏，下掉就能进了。。",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3792585972#comment_564793766239771651"
+        },
+        {
+          "comment_id": "564793766239607289",
+          "author": "菜爱玩",
+          "author_url": "https://steamcommunity.com/profiles/76561198976323915",
+          "author_steam_id": "76561198976323915",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-09-13T08:18:47+00:00",
+          "posted_at_cst": "2026-09-13T16:18:47+08:00",
+          "text": "太棒了:steamthumbsup:",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3792585972#comment_564793766239607289"
+        },
+        {
+          "comment_id": "581681298840617108",
+          "author": "阿尔萨斯",
+          "author_url": "https://steamcommunity.com/profiles/76561198807516332",
+          "author_steam_id": "76561198807516332",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-09-03T14:57:41+00:00",
+          "posted_at_cst": "2026-09-03T22:57:41+08:00",
+          "text": "吓哭了",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3792585972#comment_581681298840617108"
+        },
+        {
+          "comment_id": "581681246928665667",
+          "author": "最帅男公关",
+          "author_url": "https://steamcommunity.com/profiles/76561198359307767",
+          "author_steam_id": "76561198359307767",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-09-01T14:52:23+00:00",
+          "posted_at_cst": "2026-09-01T22:52:23+08:00",
+          "text": "吓哭了",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3792585972#comment_581681246928665667"
+        },
+        {
+          "comment_id": "581680955259109399",
+          "author": "帅气的小河",
+          "author_url": "https://steamcommunity.com/profiles/76561199184038493",
+          "author_steam_id": "76561199184038493",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-09-01T01:28:43+00:00",
+          "posted_at_cst": "2026-09-01T09:28:43+08:00",
+          "text": "666",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3792585972#comment_581680955259109399"
+        },
+        {
+          "comment_id": "581680955259026803",
+          "author": "玦",
+          "author_url": "https://steamcommunity.com/profiles/76561199396673391",
+          "author_steam_id": "76561199396673391",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-08-31T05:55:36+00:00",
+          "posted_at_cst": "2026-08-31T13:55:36+08:00",
+          "text": "绝了:steamhappy:",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3792585972#comment_581680955259026803"
+        },
+        {
+          "comment_id": "581680955258965849",
+          "author": "users",
+          "author_url": "https://steamcommunity.com/profiles/76561199511323821",
+          "author_steam_id": "76561199511323821",
+          "is_item_owner": false,
+          "posted_at_utc": "2026-08-30T13:45:23+00:00",
+          "posted_at_cst": "2026-08-30T21:45:23+08:00",
+          "text": "梁咏琪我们喜欢你\n\n\n:steamthumbsup:",
+          "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3792585972#comment_581680955258965849"
+        }
+      ]
+    }
+  ],
+  "storage": {
+    "policy_version": "1.0.0",
+    "category": "raw_evidence",
+    "expires_at_utc": "2026-11-22T14:37:18.806520+00:00",
+    "raw_root": "D:\\workspace\\ck3-workshop-feedback-20261023",
+    "planned_peak_bytes": 5242880,
+    "deletions": [],
+    "raw_bytes": 1306272,
+    "task_close_volume": {
+      "total": 500090007552,
+      "used": 477908283392,
+      "free": 22181724160
+    },
+    "task_start_capacity_observation": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "observed_at_utc": "2026-10-23T14:29:00.105236+00:00",
+      "source": "inspect_comments.py stdout",
+      "total_bytes": 500090007552,
+      "free_bytes": 22183268352
+    },
+    "heavy_write_performed": false,
+    "scope_note": "Small bounded public-comment acquisition only; no full project inventory, reclamation, quota admission or atomic reservation claimed. Existing external assets not modified.",
+    "record_review_at_utc": "2027-04-21T14:38:01.540369+00:00"
+  },
+  "assembled_at_utc": "2026-10-23T14:38:01.488358+00:00",
+  "registry_git_commit": "66b4e624232171a97176b71be65c0ff3a9a2f260",
+  "source_inspection_git_commit": "bc63851081462413d0cc6ebe62e37490707ee6a9",
+  "total_products": 15,
+  "total_comments": 65,
+  "item_owner_comment_count": 21,
+  "player_comment_count": 44
+}
