@@ -1,0 +1,232 @@
+{
+  "schema": "xar.e04.recut-source-reference-manifest.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T00:18:02.493773+00:00",
+  "source_only": true,
+  "source_freeze": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\source\\a03\\SOURCE-FREEZE.actual.json",
+    "bytes": 50350,
+    "sha256": "d9b0f4758e265c87d017e243f9b77f79a3ad52468754eb48151225395169cce3"
+  },
+  "Root_review": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\root\\ROOT-RECUT-SOURCE-REVIEW.actual-a02.json",
+    "bytes": 1974,
+    "sha256": "8b706f6e78d67f595ce9d64abfb3c9a3b55ee4b1b2f34f140b66f4664893e100"
+  },
+  "base": "tracked a04 reference plus a05 delta reconstructs working/ base",
+  "archive": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\publication\\recut-a03-source-delta.tar.xz",
+    "bytes": 29772,
+    "sha256": "b538aca1068fcb42059daff48b80c1ab115511f447b51459a8ac006d73849fb1"
+  },
+  "members": [
+    {
+      "member": "delta/a05-to-recut-a03.lf.patch",
+      "bytes": 50304,
+      "sha256": "ef5e46cc2ba023a1a06ccefd980b45b9e23992ccde3ed11b68b43ef81e6626d0"
+    },
+    {
+      "member": "delta/RESTORE-LINE-ENDINGS.json",
+      "bytes": 746,
+      "sha256": "8cc99c92559465b0dc506504f4858e490e9bf039f25e4c0d7b7b9caa89e9589c"
+    },
+    {
+      "member": "working/recut_shots.py",
+      "bytes": 12716,
+      "sha256": "587a89d27135b543d891496dd63abe56735cf73089d70ab14bdd00f573110445"
+    },
+    {
+      "member": "working/make_shot_plan.py",
+      "bytes": 12325,
+      "sha256": "9ac2769d70ec4cf23e4a8ff3f1918aadd02417b69eee8e4d80b134c45d4b72ce"
+    },
+    {
+      "member": "working/RECUT-SHOTS.source-a02.json",
+      "bytes": 70736,
+      "sha256": "f0e106ebdc840175b3a3549d495553f011c7b4663c1e9a9c3c60709f1b790f73"
+    },
+    {
+      "member": "checks/shot-producer/ORIGINAL-WAIT.actual.json",
+      "bytes": 882,
+      "sha256": "430918cce35c86d25248aa5ece03f7f0c12c689f43691d3b95a8f709c2b92d8a"
+    },
+    {
+      "member": "checks/focused/ORIGINAL-WAIT.actual.json",
+      "bytes": 887,
+      "sha256": "a2f40a4394f1b1efbe55538a3a00b48eb5f8f592dc481742eb938ff209a53d67"
+    },
+    {
+      "member": "checks/strict/ORIGINAL-WAIT.actual.json",
+      "bytes": 1424,
+      "sha256": "f2f458b18a093c177b572e6b08119a62c2b86907b74fc8268c460dc8c587c88f"
+    }
+  ],
+  "changes": [
+    {
+      "member": "working/working_fields.py",
+      "base_bytes": 1668,
+      "base_sha256": "fc7d833ca4f552e6c04181cd6751e7bf32976625f308adaffe7f2adc75cb837f",
+      "target_bytes": 1669,
+      "target_sha256": "de187131522bd7b3b0270be46ffa6c2a76f946020bb5bbb0d8a8dd24206a279d",
+      "target_path": "C:\\ck3-e04-recut-20261023-a01\\source\\a03\\working_fields.py",
+      "target_line_endings": "LF",
+      "LF_target_sha256": "de187131522bd7b3b0270be46ffa6c2a76f946020bb5bbb0d8a8dd24206a279d"
+    },
+    {
+      "member": "working/working_contract.py",
+      "base_bytes": 14335,
+      "base_sha256": "b5f37680da932526baf1f5c294594ee8d7fc63a06b4cd04f3d4c4151ab1557e7",
+      "target_bytes": 15550,
+      "target_sha256": "ff009d0198790f97de172c68ffd1d7249637bacbcab5055925c672f666800ae5",
+      "target_path": "C:\\ck3-e04-recut-20261023-a01\\source\\a03\\working_contract.py",
+      "target_line_endings": "LF",
+      "LF_target_sha256": "ff009d0198790f97de172c68ffd1d7249637bacbcab5055925c672f666800ae5"
+    },
+    {
+      "member": "working/working_recipe.py",
+      "base_bytes": 16691,
+      "base_sha256": "a9b9c00fbdbbca1fa9b800a8eb56c2a37233389588b1fa2ac5f4575b5aa85855",
+      "target_bytes": 17956,
+      "target_sha256": "ebc3559cc024cf14feabe95b052d460bf5f5327d746fe04f9ff3f12b88e97986",
+      "target_path": "C:\\ck3-e04-recut-20261023-a01\\source\\a03\\working_recipe.py",
+      "target_line_endings": "CRLF",
+      "LF_target_sha256": "250ca6782add558799180e093580a487ace92c9b011e53d33d7ba2d971b01b95"
+    },
+    {
+      "member": "working/produce_working_review.py",
+      "base_bytes": 29422,
+      "base_sha256": "e551cfc0d755249086bb6ae1158ab96ce7a95e637387a2681efb62ef9ae7329e",
+      "target_bytes": 32481,
+      "target_sha256": "26ea1006e3c40792aefb5f1ea7d4acb43d906a04f13ef2f67c9cdc219f240770",
+      "target_path": "C:\\ck3-e04-recut-20261023-a01\\source\\a03\\produce_working_review.py",
+      "target_line_endings": "CRLF",
+      "LF_target_sha256": "01bb536bd2f7024c95ca32aadc2f5f7436f14708249d24caddfe7f8db27adf33"
+    },
+    {
+      "member": "working/check_working_review.py",
+      "base_bytes": 8872,
+      "base_sha256": "9f6127683c99dfc56011d90e75b347bf62555f3b389f78bbb14fbc0263c567e7",
+      "target_bytes": 7231,
+      "target_sha256": "a4e9dcb459a49716b0821044577c51362f6d6f86ba77795ff1ff335595fcf430",
+      "target_path": "C:\\ck3-e04-recut-20261023-a01\\source\\a03\\check_working_review.py",
+      "target_line_endings": "LF",
+      "LF_target_sha256": "a4e9dcb459a49716b0821044577c51362f6d6f86ba77795ff1ff335595fcf430"
+    }
+  ],
+  "member_count": 8,
+  "source_bytes": 150020,
+  "expanded_recipe_not_duplicated": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\source\\a03\\FULL-WORKING-REVIEW-RECIPE.source.json",
+    "bytes": 236244,
+    "sha256": "4eb74d9883b6ebe2473ed9de4a55cc302674d158d32811c840e6eb0b007230e7"
+  },
+  "planned_native_frames": 38030,
+  "planned_total_frames": 50138,
+  "only_final_a03_in_package": true,
+  "copied_original_records": [
+    {
+      "original_path": "C:\\ck3-e04-recut-20261023-a01\\source\\a03\\SOURCE-FREEZE.actual.json",
+      "repository_file": "SOURCE-FREEZE.actual-a03.json",
+      "bytes": 50350,
+      "sha256": "d9b0f4758e265c87d017e243f9b77f79a3ad52468754eb48151225395169cce3"
+    },
+    {
+      "original_path": "C:\\ck3-e04-recut-20261023-a01\\root\\ROOT-RECUT-SOURCE-REVIEW.actual-a02.json",
+      "repository_file": "ROOT-SOURCE-REVIEW.actual-a02.json",
+      "bytes": 1974,
+      "sha256": "8b706f6e78d67f595ce9d64abfb3c9a3b55ee4b1b2f34f140b66f4664893e100"
+    },
+    {
+      "original_path": "C:\\ck3-e04-recut-20261023-a01\\publication\\recut-a03-source-delta.tar.xz",
+      "repository_file": "recut-source-delta.tar.xz",
+      "bytes": 29772,
+      "sha256": "b538aca1068fcb42059daff48b80c1ab115511f447b51459a8ac006d73849fb1"
+    },
+    {
+      "original_path": "C:\\ck3-e04-recut-20261023-a01\\publication\\SOURCE-DELTA-VALIDATION.actual-a03.json",
+      "repository_file": "SOURCE-DELTA-VALIDATION.actual-a03.json",
+      "bytes": 1308,
+      "sha256": "9b79b4989ab3cfb60980a53a2f2a85b4fe61a8bb47ae3eb7729cded74ecd9456"
+    },
+    {
+      "original_path": "C:\\ck3-e04-recut-20261023-a01\\audit\\BASELINE-VISUAL-AUDIT.actual-a01.json",
+      "repository_file": "BASELINE-VISUAL-AUDIT.actual.json",
+      "bytes": 34514,
+      "sha256": "b0ad1a7192da380de73f7e30166bd9b9bd75bf6b1cef7502adb07b6f3e47fd83"
+    },
+    {
+      "original_path": "C:\\ck3-e04-recut-20261023-a01\\capacity\\MEDIA64-ACTUAL-RECOVERY-FINAL.actual-a01.json",
+      "repository_file": "MEDIA64-ACTUAL-RECOVERY.actual.json",
+      "bytes": 6860,
+      "sha256": "1071c0900142f327f8724640d444a4c79bc3e1a21326e7932b0d81f70a90d2f8"
+    },
+    {
+      "original_path": "C:\\ck3-e04-recut-20261023-a01\\root\\ROOT-REPLACED-MEDIA64-EXECUTION-ACCEPTANCE.actual-a01.json",
+      "repository_file": "ROOT-MEDIA64-ACCEPTANCE.actual.json",
+      "bytes": 1812,
+      "sha256": "486b6fc566761cd0d77d67b84d86700c0abb0910ac1d6ff340906f8872c3089a"
+    },
+    {
+      "original_path": "D:\\workspace\\.codex-task-bus\\archives\\RECUT-READONLY48-ACTUAL-RECOVERY-FINAL.actual-a01.json",
+      "repository_file": "READONLY48-ACTUAL-RECOVERY.actual.json",
+      "bytes": 5639,
+      "sha256": "da72ee68453df02fd77c3dcca39369b4886e8e58ff611770340bbe618da4e87e"
+    },
+    {
+      "original_path": "C:\\ck3-e04-recut-20261023-a01\\root\\ROOT-READONLY48-ACTUAL-VERIFICATION.actual-a01.json",
+      "repository_file": "ROOT-READONLY48-VERIFICATION.actual.json",
+      "bytes": 2176,
+      "sha256": "f6f7d697ae6d7e16d830cc31ccf083873426eeb0dfd9aebe0d62d71acf1bb8df"
+    }
+  ],
+  "archive_repository_file": "recut-source-delta.tar.xz",
+  "base_repository_archives": [
+    {
+      "repository_file": "../episode04-full-working-review-20261023/a04-reference-sources.tar.xz",
+      "bytes": 59528,
+      "sha256": "e03791fa02cda7fd621074e9fef61ec383fd756c08ca64b03faa5212aac248dc"
+    },
+    {
+      "repository_file": "../episode04-full-working-review-20261023/a05-finalizer-delta.tar.xz",
+      "bytes": 8540,
+      "sha256": "9bdb522aeb96a1e53c1c7fb84c412e43e6c1814ab1fde902700abc73f20f2fdd"
+    }
+  ],
+  "restore_steps": [
+    "Extract prior a04 reference archive then apply prior a05 delta to working/.",
+    "Apply current delta/a05-to-recut-a03.lf.patch to that working/ base.",
+    "Apply exact delta/RESTORE-LINE-ENDINGS.json conversions only to the two named files.",
+    "Add the two new working/*.py sources and the typed v2 shot JSON from the current archive.",
+    "Verify all five target SHA values; this remains a source reference, not a standalone runtime."
+  ],
+  "storage_native_reference": {
+    "repository_file": "exact-recovery-native-reference.tar.xz",
+    "bytes": 4180,
+    "sha256": "bc9208c056147e6d38ee84c3003e1420d32c7a73867b9c737c9c7b7e9b34a816",
+    "members": [
+      {
+        "path": "C:/ck3-e04-recut-20261023-a01/capacity/recut_exact_retire_a03.py",
+        "bytes": 9427,
+        "sha256": "7c7f51eed1b82467cca81ace77f61f8df86fa1fb0cfc2b05d0797c2ea61b772c",
+        "member": "reference/recut_exact_retire_a03.py"
+      },
+      {
+        "path": "C:/ck3-e04-recut-20261023-a01/capacity/EXACT-BOUNDARY-STRICT.actual-a03.json",
+        "bytes": 1245,
+        "sha256": "8c439bc58b598549c9af4566e96aeeb692cdb000506f9ec756208bf10e39f1a3",
+        "member": "checks/EXACT-BOUNDARY-STRICT.actual-a03.json"
+      },
+      {
+        "path": "C:/ck3-e04-recut-20261023-a01/capacity/EXACT-BOUNDARY-SENTINEL-ACTUAL.actual-a03.json",
+        "bytes": 2155,
+        "sha256": "8820f149464db9080d7de5b2882b04a00f8329f034d6f5cce24f52ac74a303d8",
+        "member": "checks/EXACT-BOUNDARY-SENTINEL-ACTUAL.actual-a03.json"
+      }
+    ],
+    "source_bytes": 12827,
+    "scope": "Root-reviewed task-local complete MP4 link-group boundary, not a standalone collector or runtime module",
+    "dependencies": "Original inspect_bootstrap/admit_metadata/admit_media/closed_allocation/plan_two_wholes and safe Handles graph remain external. No automatic import, installation or execution. Any future use needs fresh exact plan, independent purpose/admission and current identities.",
+    "archive_roundtrip_SHA_AST1_JSON2": true,
+    "Native_or_strict_tests_reexecuted": false
+  }
+}

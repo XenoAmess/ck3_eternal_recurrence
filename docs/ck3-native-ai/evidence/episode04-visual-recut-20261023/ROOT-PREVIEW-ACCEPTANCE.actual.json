@@ -1,0 +1,59 @@
+{
+  "schema": "xar.root.e04.full-working-review.preview-acceptance.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T00:19:26.403685+00:00",
+  "reviewer": "/root",
+  "accepted": true,
+  "preview_ready": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\media\\PREVIEW-READY.actual.json",
+    "bytes": 2218,
+    "sha256": "c946fa9bfea3982d891e52acee381f2d94b71f27be9267ce6a7964c08d1de683"
+  },
+  "direct_reviewed_images": [
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-BRAND.jpg",
+      "bytes": 31440,
+      "sha256": "2a421799053235b21725df5d4fadd96a47c3bb981e02eb999596a3ebb4fb9b40"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-CHAPTER01.jpg",
+      "bytes": 28387,
+      "sha256": "fb4b0909442622750043fd4a336d6c68bcff27af21929795665caf2ab8309a37"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-END.jpg",
+      "bytes": 27477,
+      "sha256": "3b37f8f27d19cf26c9d712497848d8ae600b5e6cfc100c5b51eebde4fd6c7a26"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-C01-01.jpg",
+      "bytes": 225816,
+      "sha256": "2a8c01611a8e6b5761e84ceea4b3fec4ac4268bc3ef0bfb8c5e463f7257aff93"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-N01-04.jpg",
+      "bytes": 215605,
+      "sha256": "bb19c5e669a25e2cc32a7cc6d744aa2be28c0f00f811abf9c1d30a65f2e45e70"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-N01-01.jpg",
+      "bytes": 224092,
+      "sha256": "89258f575bae3fbc22f5bcc19b143798482a7e115f38318df3e1e8fa785e03c2"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-N01-01-card.jpg",
+      "bytes": 83045,
+      "sha256": "8a3f1cf568d6e76e035bc4d140e4cb2b6475f303074f0f559f08de7f33b3f6be"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-N01-04-middle.jpg",
+      "bytes": 227778,
+      "sha256": "97a322ce9b3e7cacf80d1fa82f96b933895daefda4d06d9a58f35c6b1ac3410c"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-N01-04-tail.jpg",
+      "bytes": 204517,
+      "sha256": "83cc5d593e7ca203f5d6b7f7135f9137f0ba1a7a3f5f23905f93987c3a608eb3"
+    }
+  ]
+}

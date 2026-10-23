@@ -1,0 +1,135 @@
+{
+  "schema": "xar.capacity.readonly-oldmedia-exact48-actual-recovery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T00:14:53.384353+00:00",
+  "execution_admission": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\capacity\\READONLY48-EXECUTION-ADMISSION.actual-a01.json",
+    "bytes": 1810,
+    "sha256": "6aa681e2f2d37830b7c7c8965e8f487970cf920d9fb60ad6e4fd82ae87c059be"
+  },
+  "Root_exact_review": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\root\\ROOT-READONLY48-EXECUTION-ACCEPTANCE.actual-a01.json",
+    "bytes": 1718,
+    "sha256": "92f5b9f28c9a8b15dfdfe12d0309ee25396c94fccf73b43b5c94f036785df091"
+  },
+  "intent": {
+    "path": "D:\\workspace\\.codex-task-bus\\archives\\RECUT-READONLY48-DELETE-INTENT.actual-a01.json",
+    "bytes": 728,
+    "sha256": "2c3586059a7b54cb364ced8c49f290a48042cacb8b4b9b725d3a1202c8fc29de"
+  },
+  "plan_index": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\capacity\\READONLY48-EXACT-PLAN-INDEX.actual-a01.json",
+    "bytes": 1131,
+    "sha256": "aafdbc1ac087b7362f6f32adac52eb0643d90b8ac97ef55cd045a510db7fa110"
+  },
+  "actual_pages": [
+    {
+      "path": "D:\\workspace\\.codex-task-bus\\archives\\RECUT-READONLY48-DELETE-ACTUAL.page1.actual-a01.json",
+      "bytes": 9776,
+      "sha256": "2684e6fe104113328b3431e3d2fc7a8ee764786b7b2991e438b812d131114196"
+    },
+    {
+      "path": "D:\\workspace\\.codex-task-bus\\archives\\RECUT-READONLY48-DELETE-ACTUAL.page2.actual-a01.json",
+      "bytes": 9785,
+      "sha256": "999a1139479321bdebe5fe71ce6cdaa4b33ed85e3f5fd8703a777159b315164f"
+    },
+    {
+      "path": "D:\\workspace\\.codex-task-bus\\archives\\RECUT-READONLY48-DELETE-ACTUAL.page3.actual-a01.json",
+      "bytes": 9795,
+      "sha256": "b55c48087142beed05993321cff28c35f8d88c84be63e88cb604c3fb7c264819"
+    }
+  ],
+  "actual_deleted_files": 48,
+  "actual_deleted_allocated_bytes": 145133568,
+  "unknown_stop": null,
+  "all48_original_names_absent": true,
+  "protected_deliveries_before": [
+    {
+      "aliases": [
+        {
+          "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Full-Working-Review-20261023-a01.mp4",
+          "attributes": 32,
+          "mtime_ns": "1792707909800588500"
+        }
+      ],
+      "native_final_path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Full-Working-Review-20261023-a01.mp4",
+      "volume_serial": "13886423844274364792",
+      "FileID128": "562949956005471",
+      "links": 1,
+      "logical_bytes": 95584711,
+      "allocated_bytes": 95588352,
+      "sha256": "65bc255463b3ba863c189973bc4b6ad0296df61d70a1472a06da16442f5798eb",
+      "same_handle_deny_write_delete_full_SHA": true
+    },
+    {
+      "aliases": [
+        {
+          "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Mechanics-Yellow-Review-20261022-a01.mp4",
+          "attributes": 32,
+          "mtime_ns": "1792656343178168500"
+        }
+      ],
+      "native_final_path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Mechanics-Yellow-Review-20261022-a01.mp4",
+      "volume_serial": "13886423844274364792",
+      "FileID128": "562949955990162",
+      "links": 1,
+      "logical_bytes": 72484128,
+      "allocated_bytes": 72486912,
+      "sha256": "822963261dad6abdf63c42c66efb13de24f77a04f74e45a987ca0ada18d8792f",
+      "same_handle_deny_write_delete_full_SHA": true
+    }
+  ],
+  "protected_deliveries_after": [
+    {
+      "aliases": [
+        {
+          "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Full-Working-Review-20261023-a01.mp4",
+          "attributes": 32,
+          "mtime_ns": "1792707909800588500"
+        }
+      ],
+      "native_final_path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Full-Working-Review-20261023-a01.mp4",
+      "volume_serial": "13886423844274364792",
+      "FileID128": "562949956005471",
+      "links": 1,
+      "logical_bytes": 95584711,
+      "allocated_bytes": 95588352,
+      "sha256": "65bc255463b3ba863c189973bc4b6ad0296df61d70a1472a06da16442f5798eb",
+      "same_handle_deny_write_delete_full_SHA": true
+    },
+    {
+      "aliases": [
+        {
+          "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Mechanics-Yellow-Review-20261022-a01.mp4",
+          "attributes": 32,
+          "mtime_ns": "1792656343178168500"
+        }
+      ],
+      "native_final_path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Mechanics-Yellow-Review-20261022-a01.mp4",
+      "volume_serial": "13886423844274364792",
+      "FileID128": "562949955990162",
+      "links": 1,
+      "logical_bytes": 72484128,
+      "allocated_bytes": 72486912,
+      "sha256": "822963261dad6abdf63c42c66efb13de24f77a04f74e45a987ca0ada18d8792f",
+      "same_handle_deny_write_delete_full_SHA": true
+    }
+  ],
+  "retained_source_qualification": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\r0243-derived-and-old-video-recovery-a01\\OLD47-AND-FULL-REBUILD-QUALIFICATION.actual-a01.json",
+    "bytes": 79631,
+    "sha256": "258a0e66fc601221f529f5e594e4a300584095b93831164d95b5ccb426ba6522"
+  },
+  "retained_source_fullSHA_checks_before_and_after": 203,
+  "current_permanent_asset_index": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\user-permanent-assets.json",
+    "bytes": 3051,
+    "sha256": "4c9b1c0c09c2555a4e6accd3ab3695b536f4e77c43dc2b4f542a123b8e8e7171"
+  },
+  "original_availability": "deleted",
+  "same_name_substitutes_created": false,
+  "readonly_attributes_cleared": false,
+  "directories_or_unlisted_assets_deleted": 0,
+  "review_at_utc": "2026-10-24T10:00:00Z",
+  "necessary_inputs_protected_until_utc": "2026-10-29T10:00:00Z"
+}

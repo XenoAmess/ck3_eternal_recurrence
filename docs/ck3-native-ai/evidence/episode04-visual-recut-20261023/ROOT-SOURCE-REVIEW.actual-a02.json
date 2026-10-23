@@ -1,0 +1,42 @@
+{
+  "schema": "xar.root.e04.recut.final-source-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T00:15:53.084118+00:00",
+  "reviewer": "/root",
+  "source_freeze": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\source\\a03\\SOURCE-FREEZE.actual.json",
+    "bytes": 50350,
+    "sha256": "d9b0f4758e265c87d017e243f9b77f79a3ad52468754eb48151225395169cce3"
+  },
+  "source_and_input_pins_independently_rehashed": 20,
+  "source_cold_checks_original_wait0": true,
+  "reviewed_final_scope": [
+    "explicit v2 player actor and subject army owner without alias fallback",
+    "retained raw Native identity before actual consumption",
+    "exact 62 cue narration clock and all47 newly encoded",
+    "brown series wrappers and native source pixels unchanged",
+    "native source ranges original speed without in-cue overlap",
+    "new or expanded native ranges first middle tail from actual whole output",
+    "source quota measures parent source with historical copies",
+    "proven audio packet timebase retained"
+  ],
+  "planned_native_frames": 38030,
+  "planned_total_frames": 50138,
+  "native_fraction_meaning": "original-speed raw main viewport frames, not continuous game action or new business qualification",
+  "media_executed_at_this_review": false,
+  "R05_actual_acceptance": null,
+  "human1x": false,
+  "signoff": false,
+  "intermediate_restoration_disclosure": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\audit\\INTERMEDIATE-SOURCE-RESTORATION.actual-a01.json",
+    "bytes": 6078,
+    "sha256": "2f9d843eb9dc5a402035b09b8211d3403155dff906890b86bf1264999c6d6af9"
+  },
+  "superseded_source_review": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\root\\ROOT-RECUT-SOURCE-REVIEW.actual-a01.json",
+    "bytes": 1613,
+    "sha256": "30d4e6254c3d2ce986f434fc828d496e96b7fbb6e8dcd799e81574e8e9a07c52"
+  },
+  "explicit_PNG_input_frame_rate30_checked": true,
+  "original_a02_shot_producer_actual_wait_reused_without_new_execution": true
+}

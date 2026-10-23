@@ -1,0 +1,935 @@
+{
+  "schema": "xar.e04.recut.baseline-visual-audit.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-22T23:31:12.790999+00:00",
+  "actual_timeline": {
+    "path": "C:/ck3-e04-resume-20261023-a01/fullreview-media-a04/FULL-WORKING-REVIEW-TIMELINE.actual.json",
+    "bytes": 240907,
+    "sha256": "1ac1b2a178a56fa73eb364210dad22626286c2ad6dc9fb4cfa203954d9755374"
+  },
+  "method": "Exact source inputs and trim/concat filters from actual original encode argv; static image inputs count zero native; no new media process",
+  "total_frames": 50138,
+  "native_video_frames": 9560,
+  "static_card_cover_frames": 40578,
+  "native_percent": 19.067374047628547,
+  "mechanics_frames": 43160,
+  "mechanics_native_frames": 8948,
+  "mechanics_native_percent": 20.7321594068582,
+  "native_capture_is_not_continuous_game_progress": true,
+  "entries": [
+    {
+      "cue_id": "BRAND",
+      "total_frames": 240,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 240,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\audit\\BRAND\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3407,
+        "sha256": "e106f1582d1f7022822db60f0a36625d2844dca83b093c6c9973a7e23bbfd67d"
+      }
+    },
+    {
+      "cue_id": "C01-01",
+      "total_frames": 612,
+      "native_video_frames": 612,
+      "static_card_or_cover_frames": 0,
+      "native_percent": 100.0,
+      "native_ranges": [
+        {
+          "source_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r204-battle-natural-payments-a01/raw-r204-battle-a01/raw.mkv",
+          "first_frame": 15,
+          "end_frame_exclusive": 627,
+          "source_frames": 612,
+          "playback_rate": "1/1",
+          "capture_may_include_game_pauses": true
+        }
+      ],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\audit\\C01-01\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3444,
+        "sha256": "7f006fb90e3b3701823f9627a06aa5a0360c045e2a700cc09669d42b3ed5534c"
+      }
+    },
+    {
+      "cue_id": "C01-08",
+      "total_frames": 884,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 884,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\audit\\C01-08\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3507,
+        "sha256": "1e91af37423f3d2c55c1b9ec5a4c6fabc97459ee1eb0c90997b009f14cd191d4"
+      }
+    },
+    {
+      "cue_id": "CHAPTER01",
+      "total_frames": 90,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 90,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\audit\\CHAPTER01\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3423,
+        "sha256": "a27fb05d412f18329a45310421376bf0ab51e63d8dbfcb00bb200d101288c315"
+      }
+    },
+    {
+      "cue_id": "C01-04",
+      "total_frames": 856,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 856,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\audit\\C01-04\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3508,
+        "sha256": "5dfbe0260a5778a569a9823ddf9b19a5d6ad2edb86791b23fa4774ceb0dadd20"
+      }
+    },
+    {
+      "cue_id": "N01-01",
+      "total_frames": 828,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 828,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N01-01\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3541,
+        "sha256": "a3f4153509047fc2ee700b39aff3b6e8cefb5a474cf8129c81c52d5b3c1c2788"
+      }
+    },
+    {
+      "cue_id": "N01-02",
+      "total_frames": 989,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 989,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N01-02\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3540,
+        "sha256": "66d8906f19b65c143fe32cbfd0b37bb18ef7e0740dca2b167580b6a4f521d72d"
+      }
+    },
+    {
+      "cue_id": "N01-03",
+      "total_frames": 1144,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 1144,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N01-03\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3542,
+        "sha256": "955f3479292844658e24371b482e214557207c62914b2333e220377ed84a45ad"
+      }
+    },
+    {
+      "cue_id": "N01-11",
+      "total_frames": 949,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 949,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N01-11\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3539,
+        "sha256": "b603f74b392f62459eee2f9035d717d9eff8384b94abfd72f4fc6add95b30a42"
+      }
+    },
+    {
+      "cue_id": "N01-04",
+      "total_frames": 717,
+      "native_video_frames": 717,
+      "static_card_or_cover_frames": 0,
+      "native_percent": 100.0,
+      "native_ranges": [
+        {
+          "source_path": "C:/ck3-e04-resume-20261020-a01/r18-live-scene-b-a01/camera-raw-a01/b-site01-a01/raw.mkv",
+          "first_frame": 420,
+          "end_frame_exclusive": 1137,
+          "source_frames": 717,
+          "playback_rate": "1/1",
+          "capture_may_include_game_pauses": true
+        }
+      ],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N01-04\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3387,
+        "sha256": "b9a87ab82631a12ce0183575f5eb887d7b1ff6f0ab83274d08d4367c2845b39b"
+      }
+    },
+    {
+      "cue_id": "N01-05",
+      "total_frames": 850,
+      "native_video_frames": 700,
+      "static_card_or_cover_frames": 150,
+      "native_percent": 82.3529,
+      "native_ranges": [
+        {
+          "source_path": "C:/ck3-e04-resume-20261020-a01/r20-live-scene-b-a01/camera-raw-a01/b-site02-a01/raw.mkv",
+          "first_frame": 420,
+          "end_frame_exclusive": 1120,
+          "source_frames": 700,
+          "playback_rate": "1/1",
+          "capture_may_include_game_pauses": true
+        }
+      ],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N01-05\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3830,
+        "sha256": "53047fa39ec63dbc4152efc988b42d1108e9277dc0b0da42b6d9a39d9249011b"
+      }
+    },
+    {
+      "cue_id": "N01-06",
+      "total_frames": 1172,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 1172,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N01-06\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3542,
+        "sha256": "cdf10ae04f693a0925a1aeb64dbe45141e51a2ee0ae965ca528cbfae4edef626"
+      }
+    },
+    {
+      "cue_id": "N01-10",
+      "total_frames": 992,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 992,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N01-10\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3541,
+        "sha256": "a47b2e6e442bd1e81832d020520cefb9f9d9ec4d04754e796dc0ebdffe069b9f"
+      }
+    },
+    {
+      "cue_id": "N01-07",
+      "total_frames": 861,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 861,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N01-07\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3541,
+        "sha256": "c742e9f2aff3a213b47e0f6600bca01f75b6c7e45275c3e7c480932ac6b5bb4c"
+      }
+    },
+    {
+      "cue_id": "N01-08",
+      "total_frames": 817,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 817,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N01-08\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3541,
+        "sha256": "f6c6328e92fd0ede1f32004221215786e90d5294c6d0c40875f794544d3d8f10"
+      }
+    },
+    {
+      "cue_id": "N01-09",
+      "total_frames": 913,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 913,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N01-09\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3540,
+        "sha256": "b06b363536d6037eadd55410911547d72a4e8dcbb0a32e716811821f18ce10bd"
+      }
+    },
+    {
+      "cue_id": "CHAPTER02",
+      "total_frames": 90,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 90,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\audit\\CHAPTER02\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3426,
+        "sha256": "2cdd84398e15cb4d365032bb09e07b223ee0dd08b51022ca957d5fb5fc22969e"
+      }
+    },
+    {
+      "cue_id": "N02-01",
+      "total_frames": 811,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 811,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N02-01\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3541,
+        "sha256": "2ddd829041a247aaedd7b40365fdd4bf7975d70ab9a9a739a56f26e15a6f4728"
+      }
+    },
+    {
+      "cue_id": "N02-02",
+      "total_frames": 867,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 867,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N02-02\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3541,
+        "sha256": "92376f2fb9853fed6a2218c457c37ce6600570d06398bbb71363fa52c7d1ead4"
+      }
+    },
+    {
+      "cue_id": "N02-06",
+      "total_frames": 652,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 652,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N02-06\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3540,
+        "sha256": "b0b17340d6763a7e72d51dda5487c28d67b116f5fcfb031832b099ddfa5d302b"
+      }
+    },
+    {
+      "cue_id": "N02-04",
+      "total_frames": 1152,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 1152,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N02-04\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3542,
+        "sha256": "0f09e21d301835c23439b92404ba2a06cdc39f061140b6d08e558467cb75f44c"
+      }
+    },
+    {
+      "cue_id": "N02-03",
+      "total_frames": 990,
+      "native_video_frames": 990,
+      "static_card_or_cover_frames": 0,
+      "native_percent": 100.0,
+      "native_ranges": [
+        {
+          "source_path": "C:/ck3-e04-resume-20261020-a01/r06-scene-a05/raw-a01/take01/raw.mkv",
+          "first_frame": 0,
+          "end_frame_exclusive": 990,
+          "source_frames": 990,
+          "playback_rate": "1/1",
+          "capture_may_include_game_pauses": true
+        }
+      ],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N02-03\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3364,
+        "sha256": "c9063679cda28ae259992b6993f6e070019072b3c3dfccf7cacdaf323fd1ef43"
+      }
+    },
+    {
+      "cue_id": "N02-05",
+      "total_frames": 1070,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 1070,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N02-05\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3541,
+        "sha256": "42cf1b63a45fa51f436638d8e5eed7724c35b27842d05c956cdb323bf38e07a7"
+      }
+    },
+    {
+      "cue_id": "CHAPTER03",
+      "total_frames": 90,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 90,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\audit\\CHAPTER03\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3424,
+        "sha256": "fc1d8433822e303f698d4f9ccc32af7afd950d4539a2d65228fb3d516fb3da35"
+      }
+    },
+    {
+      "cue_id": "C01-05",
+      "total_frames": 948,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 948,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\audit\\C01-05\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3509,
+        "sha256": "1844ed1fff524e918f4a9752784f879f37ead1e75ddd337a72c398ec69f412b7"
+      }
+    },
+    {
+      "cue_id": "N03-01",
+      "total_frames": 1200,
+      "native_video_frames": 1200,
+      "static_card_or_cover_frames": 0,
+      "native_percent": 100.0,
+      "native_ranges": [
+        {
+          "source_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r191-window-capture-a01/raw-window-a01/raw.mkv",
+          "first_frame": 0,
+          "end_frame_exclusive": 1200,
+          "source_frames": 1200,
+          "playback_rate": "1/1",
+          "capture_may_include_game_pauses": true
+        }
+      ],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N03-01\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3388,
+        "sha256": "daa4bb172cbcc46b5cf95be0a2314b24b8cc87e13c9afd98efff79902b3e2f3b"
+      }
+    },
+    {
+      "cue_id": "N03-02",
+      "total_frames": 827,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 827,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N03-02\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3541,
+        "sha256": "82e4cdb4a1b17c331fcc358eb13b279a01a209d34417cf55da838db42cc85b2d"
+      }
+    },
+    {
+      "cue_id": "N03-03",
+      "total_frames": 967,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 967,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N03-03\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3541,
+        "sha256": "ffcee9e73a89926fd4924285308f6fd5bd39554ae93cc1551c63554e6891a39e"
+      }
+    },
+    {
+      "cue_id": "N03-04",
+      "total_frames": 835,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 835,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N03-04\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3541,
+        "sha256": "36e4ba016ce0e99cdfc77db2acd48b02ef66452be71157a2f7e90ed7489b12e8"
+      }
+    },
+    {
+      "cue_id": "N03-05",
+      "total_frames": 900,
+      "native_video_frames": 900,
+      "static_card_or_cover_frames": 0,
+      "native_percent": 100.0,
+      "native_ranges": [
+        {
+          "source_path": "C:/ck3-e04-resume-20261020-a01/r221-scene-a01/raw-a01/take01/raw.mkv",
+          "first_frame": 0,
+          "end_frame_exclusive": 900,
+          "source_frames": 900,
+          "playback_rate": "1/1",
+          "capture_may_include_game_pauses": true
+        }
+      ],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N03-05\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3364,
+        "sha256": "a738c26f94af1c58ca1c97d21e6e37a5f593a581863ada4c62c41d7478db8c7b"
+      }
+    },
+    {
+      "cue_id": "N03-06",
+      "total_frames": 893,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 893,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N03-06\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3540,
+        "sha256": "7e39258aa46642a6399eba18159a12fca6ab7e3ba859d3f9d82e65693327b15e"
+      }
+    },
+    {
+      "cue_id": "N03-07",
+      "total_frames": 868,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 868,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N03-07\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3553,
+        "sha256": "394925ac1acffe99702f1bce43a6e25ec51ed49bff62ee8b9cb0e108d1e6ace5"
+      }
+    },
+    {
+      "cue_id": "CHAPTER04",
+      "total_frames": 90,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 90,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\audit\\CHAPTER04\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3424,
+        "sha256": "cb23a6264815ecff702dde8c9db6c44ecc7c4a9a5625f1d02ec1f599dff540e2"
+      }
+    },
+    {
+      "cue_id": "N04-01",
+      "total_frames": 794,
+      "native_video_frames": 450,
+      "static_card_or_cover_frames": 344,
+      "native_percent": 56.6751,
+      "native_ranges": [
+        {
+          "source_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r194-r09-forward-a01/raw-r09-forward-a01/raw.mkv",
+          "first_frame": 0,
+          "end_frame_exclusive": 450,
+          "source_frames": 450,
+          "playback_rate": "1/1",
+          "capture_may_include_game_pauses": true
+        }
+      ],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N04-01\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3836,
+        "sha256": "466b887ba362aff6fb2508a5b33c8b836fc5737de0e5e18ac60fa0ac69d54c98"
+      }
+    },
+    {
+      "cue_id": "N04-02",
+      "total_frames": 837,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 837,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N04-02\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3540,
+        "sha256": "7cd98216817f5c1e46d81db938542e0f479f952a7bb9e0461da588e9cd6d45ee"
+      }
+    },
+    {
+      "cue_id": "N04-03",
+      "total_frames": 843,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 843,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N04-03\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3541,
+        "sha256": "f81fee7130be91c9f1f0e99cd6f821997f352cce47d4c304d1ee30856c7814f9"
+      }
+    },
+    {
+      "cue_id": "N04-04",
+      "total_frames": 964,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 964,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N04-04\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3541,
+        "sha256": "4f4c143ac46adf98c85ffa002b4d3164c18fdd07dddf8734be7dda6bcb97fcfb"
+      }
+    },
+    {
+      "cue_id": "N04-05",
+      "total_frames": 982,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 982,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N04-05\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3539,
+        "sha256": "341cfcfc32db8353040e78fa6c3e96253ae9f2f2d707efcabfff6b8e73176df1"
+      }
+    },
+    {
+      "cue_id": "N04-06",
+      "total_frames": 810,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 810,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N04-06\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3540,
+        "sha256": "d6b94b12e7ccb4952042c874373157b954f4142c8451ba66d0e4d7b8a66f15c9"
+      }
+    },
+    {
+      "cue_id": "CHAPTER05",
+      "total_frames": 90,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 90,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\audit\\CHAPTER05\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3423,
+        "sha256": "b1417a96768450141a680b5bcb133eb612d6776fe8270d8418a21ef39d6281ab"
+      }
+    },
+    {
+      "cue_id": "C01-06",
+      "total_frames": 866,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 866,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\audit\\C01-06\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3508,
+        "sha256": "f02bca39b0f807920b5a7cae6d002c095b7620a24d8cc48210657e57c0f7cf93"
+      }
+    },
+    {
+      "cue_id": "N05-01",
+      "total_frames": 1597,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 1597,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N05-01\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3543,
+        "sha256": "33e9c147dbf9ac9f6fc930e0e3180d68822e17b47c9e45e94162cc998aafec8a"
+      }
+    },
+    {
+      "cue_id": "N05-02",
+      "total_frames": 919,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 919,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N05-02\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3540,
+        "sha256": "ebf217d48c5fdf215310bb65fda3eb35768d74b4a1260daae4b94a304bdb6b8e"
+      }
+    },
+    {
+      "cue_id": "N05-03",
+      "total_frames": 763,
+      "native_video_frames": 600,
+      "static_card_or_cover_frames": 163,
+      "native_percent": 78.637,
+      "native_ranges": [
+        {
+          "source_path": "C:/ck3-e04-resume-20261015-a01/live12004-t0-control-a01/raw-t0-halt-a01/raw.mkv",
+          "first_frame": 0,
+          "end_frame_exclusive": 600,
+          "source_frames": 600,
+          "playback_rate": "1/1",
+          "capture_may_include_game_pauses": true
+        }
+      ],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N05-03\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3821,
+        "sha256": "a694fb8e971bd1ed4d6658b5a116c4eac521d97e66eb00f44ac05769de3a179c"
+      }
+    },
+    {
+      "cue_id": "N05-04",
+      "total_frames": 1020,
+      "native_video_frames": 1020,
+      "static_card_or_cover_frames": 0,
+      "native_percent": 100.0,
+      "native_ranges": [
+        {
+          "source_path": "C:/ck3-e04-resume-20261015-a01/live12004-locked-route-a01/raw-locked-halt-a01/raw.mkv",
+          "first_frame": 0,
+          "end_frame_exclusive": 1020,
+          "source_frames": 1020,
+          "playback_rate": "1/1",
+          "capture_may_include_game_pauses": true
+        }
+      ],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N05-04\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3383,
+        "sha256": "ff8ec9108082bb66e3bccaaf8f05a4ea1efce9af5bbf9e57be08f7ca9846adac"
+      }
+    },
+    {
+      "cue_id": "N05-05",
+      "total_frames": 900,
+      "native_video_frames": 900,
+      "static_card_or_cover_frames": 0,
+      "native_percent": 100.0,
+      "native_ranges": [
+        {
+          "source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r13-normal-a01/raw-locked-reroute-a01/raw.mkv",
+          "first_frame": 0,
+          "end_frame_exclusive": 900,
+          "source_frames": 900,
+          "playback_rate": "1/1",
+          "capture_may_include_game_pauses": true
+        }
+      ],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N05-05\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3382,
+        "sha256": "f01f0794fee44697e0b86304496521267d2cbd1e2daa17c70f6591491a5ba21e"
+      }
+    },
+    {
+      "cue_id": "N05-06",
+      "total_frames": 946,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 946,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N05-06\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3541,
+        "sha256": "1fa37b68e7cc90790ed1a8170492c4156f9448a61fc472ab3ddf588250053620"
+      }
+    },
+    {
+      "cue_id": "N05-07",
+      "total_frames": 1103,
+      "native_video_frames": 600,
+      "static_card_or_cover_frames": 503,
+      "native_percent": 54.3971,
+      "native_ranges": [
+        {
+          "source_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r196-r07-treatment-a01/raw-r07-treatment-a01/raw.mkv",
+          "first_frame": 960,
+          "end_frame_exclusive": 1560,
+          "source_frames": 600,
+          "playback_rate": "1/1",
+          "capture_may_include_game_pauses": true
+        }
+      ],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N05-07\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3843,
+        "sha256": "222b2bec4b3406807e22472e9c9e8cc5f37393116d2f3d22537374bcf07511b3"
+      }
+    },
+    {
+      "cue_id": "N05-09",
+      "total_frames": 1064,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 1064,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N05-09\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3540,
+        "sha256": "775a559d0a454de235a710aa8fde2cc694dca6fcdb69001a47a5e6641e31febe"
+      }
+    },
+    {
+      "cue_id": "N05-08",
+      "total_frames": 812,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 812,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N05-08\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3541,
+        "sha256": "b72f4c24fae3f7b0914706104b85c2d3454ee394b18db3cd8f3525aef77035c9"
+      }
+    },
+    {
+      "cue_id": "CHAPTER06",
+      "total_frames": 90,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 90,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\audit\\CHAPTER06\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3424,
+        "sha256": "436c709d9476ea0e13d60b5a03eba4fbb44f0fd375361aaacb88598979cb8611"
+      }
+    },
+    {
+      "cue_id": "N06-01",
+      "total_frames": 822,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 822,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N06-01\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3540,
+        "sha256": "0452c05de0556ddc6d816e7461659d5df0a89d84bb604cb0a9314ca8199f8d76"
+      }
+    },
+    {
+      "cue_id": "N06-02",
+      "total_frames": 889,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 889,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N06-02\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3540,
+        "sha256": "233012b80bcfeb0965dda95353f5bad711543a862fef0d0b5d5603340ac2a63f"
+      }
+    },
+    {
+      "cue_id": "N06-03",
+      "total_frames": 853,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 853,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N06-03\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3540,
+        "sha256": "5d5c797e5845eed1e30bde22bcdca86483ae631983395859dc226288995e318b"
+      }
+    },
+    {
+      "cue_id": "N06-04",
+      "total_frames": 888,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 888,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N06-04\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3541,
+        "sha256": "6b2686465d048caa63016bba76a8e50971f16473fe309973e95204212d37aec8"
+      }
+    },
+    {
+      "cue_id": "N06-08",
+      "total_frames": 871,
+      "native_video_frames": 871,
+      "static_card_or_cover_frames": 0,
+      "native_percent": 100.0,
+      "native_ranges": [
+        {
+          "source_path": "C:/ck3-e04-resume-20261022-b01/r08-settlement-a01/camera-raw-a01/r08-postload-a01/raw.mkv",
+          "first_frame": 180,
+          "end_frame_exclusive": 1051,
+          "source_frames": 871,
+          "playback_rate": "1/1",
+          "capture_may_include_game_pauses": true
+        }
+      ],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\audit\\N06-08\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3345,
+        "sha256": "95f185cc3a18787fa948bbd6c054984027364c6eb4db7477b9c9a23512e2ee73"
+      }
+    },
+    {
+      "cue_id": "N06-05",
+      "total_frames": 946,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 946,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\audit\\N06-05\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3467,
+        "sha256": "ae32397df0d4e59ff730029264b78542cd5daf5f3ca03ec214ff442d64fe985c"
+      }
+    },
+    {
+      "cue_id": "N06-07",
+      "total_frames": 912,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 912,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N06-07\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3540,
+        "sha256": "f1387fceb3938c665b7c0215b13a264d748ea4eed10b9d019ba60846ffea0967"
+      }
+    },
+    {
+      "cue_id": "N06-06",
+      "total_frames": 361,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 361,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\work\\audit\\N06-06\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3541,
+        "sha256": "0ad0f0831c759f92cd350f0a361307a6043a5e2e88ab21bd481b9a735e751350"
+      }
+    },
+    {
+      "cue_id": "C06-03",
+      "total_frames": 918,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 918,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\audit\\C06-03\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3510,
+        "sha256": "be5654cfb97f514bd23844749e189085bbf676e0f0fc22865d64ea0fafb20bf4"
+      }
+    },
+    {
+      "cue_id": "C06-10",
+      "total_frames": 874,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 874,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\audit\\C06-10\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3510,
+        "sha256": "795f3359e4678aac773ea0d8fec5ffee39737a9a8ceafcad3c37c927550788fa"
+      }
+    },
+    {
+      "cue_id": "END",
+      "total_frames": 240,
+      "native_video_frames": 0,
+      "static_card_or_cover_frames": 240,
+      "native_percent": 0.0,
+      "native_ranges": [],
+      "actual_original_encode_wait": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\fullreview-media-a04\\audit\\END\\render\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3396,
+        "sha256": "d17a10b15c31e424cacdd861fc1513c861ec2008c9ea2212868f892fa2597beb"
+      }
+    }
+  ]
+}

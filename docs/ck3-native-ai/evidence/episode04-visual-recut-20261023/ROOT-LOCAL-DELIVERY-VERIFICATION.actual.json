@@ -1,0 +1,64 @@
+{
+  "schema": "xar.root.e04.recut.local-delivery-verification.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T01:10:37.829004+00:00",
+  "reviewer": "/root",
+  "actual_metadata": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\media\\FULL-WORKING-REVIEW-ACTUAL-METADATA.actual.json",
+    "bytes": 21285,
+    "sha256": "a0c4e2765945ae4cab159fbdbe42d8003cade6358db193d57a2236b84e90607e"
+  },
+  "movie_and_CAS": {
+    "aliases": [
+      {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\final\\episode04.full-working-review.mp4",
+        "attributes": 32,
+        "mtime_ns": "1792716299642751800"
+      },
+      {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\native\\derived\\sha256\\07\\071ea89c78ccd9ecb8894a3e118737295e4c467ed35515395a5b324792331de3.mp4",
+        "attributes": 32,
+        "mtime_ns": "1792716299642751800"
+      }
+    ],
+    "native_final_path": "C:\\ck3-e04-recut-20261023-a01\\media\\final\\episode04.full-working-review.mp4",
+    "volume_serial": "13886423844274364792",
+    "FileID128": "562949956013249",
+    "links": 2,
+    "logical_bytes": 171754888,
+    "allocated_bytes": 171757568,
+    "sha256": "071ea89c78ccd9ecb8894a3e118737295e4c467ed35515395a5b324792331de3",
+    "same_handle_deny_write_delete_full_SHA": true
+  },
+  "independent_OneDrive_local_copy": {
+    "aliases": [
+      {
+        "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Full-Working-Review-20261023-a02.mp4",
+        "attributes": 32,
+        "mtime_ns": "1792717432999243600"
+      }
+    ],
+    "native_final_path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Full-Working-Review-20261023-a02.mp4",
+    "volume_serial": "13886423844274364792",
+    "FileID128": "562949956014693",
+    "links": 1,
+    "logical_bytes": 171754888,
+    "allocated_bytes": 171757568,
+    "sha256": "071ea89c78ccd9ecb8894a3e118737295e4c467ed35515395a5b324792331de3",
+    "same_handle_deny_write_delete_full_SHA": true
+  },
+  "both_fresh_same_handle_fullSHA_equal": true,
+  "Root_original_wait": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\root\\ROOT-MEDIA-CLI-ORIGINAL-WAIT.actual-a01.json",
+    "bytes": 1693,
+    "sha256": "ad06258b6d0767153a37ea4cd3fc4c1b2c7722751305a499f0afa51670587435"
+  },
+  "executor_owner_closed": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\media\\EXECUTOR-OWNER-CLOSED.actual.json",
+    "bytes": 56656,
+    "sha256": "aab63b633897c5db4cf95cdf091d33eca79f6eea7aef3458b5d00c7d61e8aecc"
+  },
+  "cloud_client_sync": "PENDING_SEPARATE_READBACK",
+  "human1x": false,
+  "signoff": false
+}

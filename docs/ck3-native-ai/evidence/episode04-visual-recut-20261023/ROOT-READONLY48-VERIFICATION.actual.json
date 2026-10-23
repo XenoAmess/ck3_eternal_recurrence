@@ -1,0 +1,52 @@
+{
+  "schema": "xar.root.e04.readonly48-actual-recovery-verification.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T00:15:23.542316+00:00",
+  "reviewer": "/root",
+  "actual_recovery": {
+    "path": "D:\\workspace\\.codex-task-bus\\archives\\RECUT-READONLY48-ACTUAL-RECOVERY-FINAL.actual-a01.json",
+    "bytes": 5639,
+    "sha256": "da72ee68453df02fd77c3dcca39369b4886e8e58ff611770340bbe618da4e87e"
+  },
+  "independently_FileNotFound_original_names": 48,
+  "actual_unique_allocated_recovery_bytes": 145133568,
+  "protected_OneDrive_current_same_handle_fullSHA_Native_identity": [
+    {
+      "aliases": [
+        {
+          "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Full-Working-Review-20261023-a01.mp4",
+          "attributes": 32,
+          "mtime_ns": "1792707909800588500"
+        }
+      ],
+      "native_final_path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Full-Working-Review-20261023-a01.mp4",
+      "volume_serial": "13886423844274364792",
+      "FileID128": "562949956005471",
+      "links": 1,
+      "logical_bytes": 95584711,
+      "allocated_bytes": 95588352,
+      "sha256": "65bc255463b3ba863c189973bc4b6ad0296df61d70a1472a06da16442f5798eb",
+      "same_handle_deny_write_delete_full_SHA": true
+    },
+    {
+      "aliases": [
+        {
+          "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Mechanics-Yellow-Review-20261022-a01.mp4",
+          "attributes": 32,
+          "mtime_ns": "1792656343178168500"
+        }
+      ],
+      "native_final_path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Mechanics-Yellow-Review-20261022-a01.mp4",
+      "volume_serial": "13886423844274364792",
+      "FileID128": "562949955990162",
+      "links": 1,
+      "logical_bytes": 72484128,
+      "allocated_bytes": 72486912,
+      "sha256": "822963261dad6abdf63c42c66efb13de24f77a04f74e45a987ca0ada18d8792f",
+      "same_handle_deny_write_delete_full_SHA": true
+    }
+  ],
+  "permanent_index_and_retained_qualification_pins_current": true,
+  "old_local_MP4_availability": "deleted; no same-name substitute",
+  "no_claim_originals_still_readable": true
+}

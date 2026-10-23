@@ -1,0 +1,179 @@
+{
+  "schema": "xar.e04.recut.independent-contact-visual-observation.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "task_id": "e04-recut-intro-final-visual-20261023-a01",
+  "granularity": {
+    "whole_film_contact_sheets": 2,
+    "whole_film_cue_panels": 62,
+    "new_source_contact_sheets": 17,
+    "new_source_first_middle_tail_panels": 132,
+    "total_image_files_viewed": 19,
+    "individual_full_resolution_samples_viewed_this_task": 0,
+    "new_frames_generated": 0,
+    "movie_played": false,
+    "audio_listened": false,
+    "human1x": false,
+    "signoff": false
+  },
+  "findings": [
+    {
+      "topic": "palette_and_packaging",
+      "result": "No blocking issue visible in sampled panels.",
+      "observation": "Brand, six chapter cards, ending, side frame and subtitle field appear in the required dark brown and cream/gold family. No former full-screen cyan poster is visible. This is visual appearance review of JPEG contacts, not exact RGB measurement."
+    },
+    {
+      "topic": "native_UI",
+      "result": "No editorial occlusion visible in sampled panels.",
+      "observation": "Map and native army, combat, military and tooltip panels retain their game colours. Editorial narration stays in the bottom brown field; small review/example identifiers stay in the side margin. No large audit banner or retired blue decision panel is apparent in these samples."
+    },
+    {
+      "topic": "black_frames_and_layout",
+      "result": "No sampled movie panel is blank or black.",
+      "observation": "Unused dark grid cells outside the last contact panels are contact-sheet padding. They are not observations of black movie frames. No clipped editorial text or obvious caption-to-scene layout collision is apparent at contact scale."
+    },
+    {
+      "topic": "coverage_and_variation",
+      "result": "Presentation improved; variation remains limited.",
+      "observation": "Game maps replace the former long full-screen posters. Many successive samples still use similar wide views of southern Italy, and the France/Normandy group uses another repeated wide view. Several first/middle/tail panels look similar. Contacts cannot establish perceived motion density, continuous gameplay progression, complete subtitle readability, or full-duration pacing."
+    },
+    {
+      "topic": "claims",
+      "result": "Business qualification unchanged.",
+      "observation": "Native background is not proof of the numerical examples spoken over it. R05 remains unverified. R08 remains a limited same-credit component observation, not an independent debit or payment-cadence proof."
+    }
+  ],
+  "review_conclusion": "No blocking visual defect found within these finite contact samples. This is not full-movie playback, frame-by-frame inspection, listening, human 1x review or user signoff.",
+  "resources": [],
+  "source_writes": 0,
+  "media_writes": 0,
+  "observed_at_utc": "2026-10-23T01:07:16.166693+00:00",
+  "movie_Pin_from_actual_metadata": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\media\\final\\episode04.full-working-review.mp4",
+    "bytes": 171754888,
+    "sha256": "071ea89c78ccd9ecb8894a3e118737295e4c467ed35515395a5b324792331de3"
+  },
+  "metadata_Pin": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\media\\FULL-WORKING-REVIEW-ACTUAL-METADATA.actual.json",
+    "bytes": 21285,
+    "sha256": "a0c4e2765945ae4cab159fbdbe42d8003cade6358db193d57a2236b84e90607e"
+  },
+  "native_sample_index_Pin": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\NEW-NATIVE-WINDOW-FIRST-MIDDLE-TAIL.actual.json",
+    "bytes": 72731,
+    "sha256": "0b1182fe79384aecccd6a49317ef2c6b77592574175ac4aef41cf988ed745bfe"
+  },
+  "admission_Pin": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\capacity\\CAPACITY-METADATA-ADMISSION.actual-a04.json",
+    "bytes": 16504,
+    "sha256": "3270ec0d1c332f34e38ed41af0e2c4c73b50bc920be967a5ce5fd38ce0f59110"
+  },
+  "actual_inspected_images": [
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\contact-01.jpg",
+      "bytes": 840735,
+      "sha256": "2badb9e61dea7b9574ffd8932b1798da5a117bdf30301ea1fc37149b498e4b6e"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\contact-02.jpg",
+      "bytes": 769294,
+      "sha256": "d6ce22f69d61e99a53cc1ac478fe764ee8ba33481923d6047d9aded8c57fb516"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\native-B1-contact-01.jpg",
+      "bytes": 85283,
+      "sha256": "38b77be209f791cafe3cb7dfaba3be66aabc124d739934f6569dff02b6d18b19"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\native-R171-contact-01.jpg",
+      "bytes": 174834,
+      "sha256": "6c5ef96587e84d5555c24025ff26323a216ac0d5060bf8e1a99c3d9093709e11"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\native-R199-contact-01.jpg",
+      "bytes": 425050,
+      "sha256": "7a7e5900c66f016bace6c38d4ae0e664db20a593edef1a1bd8e2aea37cd10df5"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\native-R193-contact-01.jpg",
+      "bytes": 172815,
+      "sha256": "39da94972c6c44cf2d8c06435a9315fd9650ebe89bc5306dc73594b79f394217"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\native-B2-contact-01.jpg",
+      "bytes": 85228,
+      "sha256": "ae77dc4bab90f507d8041f791ee78f17ef5644fbc74482c462690153cecbc108"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\native-R215-contact-01.jpg",
+      "bytes": 656753,
+      "sha256": "65f05dd7b0b3fc279355d1c01ad60bfbd3575f701aec217b38e09da655f42d1c"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\native-R196-contact-01.jpg",
+      "bytes": 344026,
+      "sha256": "8fc384abeb34e74eb12a41c63db17a2b3cec6a9588d8fef75e95722cc076ab3d"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\native-R190-contact-01.jpg",
+      "bytes": 173722,
+      "sha256": "07d0bdbcf82d1ea0de58779100bd79e82980f9367f836c90bc587b8a765c942e"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\native-R204-contact-01.jpg",
+      "bytes": 89458,
+      "sha256": "c488144e6bd72f88dfdbea772523e87d34ab68e0e737eae59f63b1cb75b3349a"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\native-R217-contact-01.jpg",
+      "bytes": 94448,
+      "sha256": "25a4c4d0e003576bc5ec9bf20d7a10866575c6cec3afaba7b41e3c03d5c312ee"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\native-R216-contact-01.jpg",
+      "bytes": 96677,
+      "sha256": "0ed5430c6059867330ee2518b47039bf9172ac66b3868b2f1fe0c73f3364652b"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\native-R194-contact-01.jpg",
+      "bytes": 342650,
+      "sha256": "e5fed8186021e5e5607b5b2ebec42c3b33774d08e01d5d1f6e8e042443163e19"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\native-R13-contact-01.jpg",
+      "bytes": 265661,
+      "sha256": "e1a59c9de241acb6a8abe408038c4647e5abb11b5b35d3be4993b7d006f46991"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\native-R12-contact-01.jpg",
+      "bytes": 270190,
+      "sha256": "bef62c66ccdc8017f1d318c76dc10ddb9084b4147bd3d00faf8f24f073127d8b"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\native-R11-contact-01.jpg",
+      "bytes": 83743,
+      "sha256": "1d3324e413fea6ec3b5b8447fbb8287896bd0b67ee3183ae425b2a3fc5c41c15"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\native-R198-contact-01.jpg",
+      "bytes": 319897,
+      "sha256": "5e289622c20af425a46d7e3ceb07cdc370264b1128041aa71f37ee03424d2d78"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\native-R08-contact-01.jpg",
+      "bytes": 172650,
+      "sha256": "29633cd1d06c735b6341ab04c426362a59da6be3ce3082842c2e6a1d43519d34"
+    }
+  ],
+  "business_limits": {
+    "R05_business_qualified": false,
+    "R05_actual_acceptance": null,
+    "new_business_qualification": false
+  },
+  "ratio": {
+    "native_background_frames": 38030,
+    "card_frames": 12108,
+    "total_frames": 50138,
+    "native_background_percent": 75.850652,
+    "meaning": "Native-source background frame count; not a motion-density or continuous-run percentage."
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "xar.e04.recut-source-delta-validation.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T00:18:41.503861+00:00",
+  "prepared": {
+    "path": "SOURCE-DELTA-PREPARED.actual-a03.json",
+    "bytes": 5361,
+    "sha256": "e7498e2baa0e9a18d2b23d1f2c63cf96d80208a9250690bd0125e5e05ca41d2e"
+  },
+  "archive": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\publication\\recut-a03-source-delta.tar.xz",
+    "bytes": 29772,
+    "sha256": "b538aca1068fcb42059daff48b80c1ab115511f447b51459a8ac006d73849fb1"
+  },
+  "archive_full_decode_all8_member_hashes": true,
+  "actual_git_apply": [
+    {
+      "operation": "apply --check --whitespace=error-all",
+      "original_wait": 0
+    },
+    {
+      "operation": "apply --whitespace=error-all",
+      "original_wait": 0
+    }
+  ],
+  "all5_frozen_targets_reconstructed_exact": true,
+  "original2_CRLF_sources_restored_exact": true,
+  "Python_AST_count": 7,
+  "JSON_count": 5,
+  "planned_native_frames": 38030,
+  "planned_total_frames": 50138,
+  "planned_source_union_frames": 30132,
+  "planned_raw_source_count": 20,
+  "planned_cross_cue_revisit_frames": 7898,
+  "actual_native_frames": null,
+  "exact5_temporary_duplicate_files_removed": true,
+  "frozen_source_or_W_modified": false,
+  "source_or_business_checks_rerun": false
+}

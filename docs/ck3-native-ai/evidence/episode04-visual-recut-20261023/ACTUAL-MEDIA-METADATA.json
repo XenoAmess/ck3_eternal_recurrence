@@ -1,0 +1,652 @@
+{
+  "schema": "xar.e04.full-working-review.actual-movie.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T01:03:54.638183+00:00",
+  "total_frames": 50138,
+  "fps": 30,
+  "cue_count": 62,
+  "movie": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\media\\final\\episode04.full-working-review.mp4",
+    "bytes": 171754888,
+    "sha256": "071ea89c78ccd9ecb8894a3e118737295e4c467ed35515395a5b324792331de3"
+  },
+  "native_CAS": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\media\\native\\derived\\sha256\\07\\071ea89c78ccd9ecb8894a3e118737295e4c467ed35515395a5b324792331de3.mp4",
+    "bytes": 171754888,
+    "retained_sha256": "071ea89c78ccd9ecb8894a3e118737295e4c467ed35515395a5b324792331de3",
+    "identity": {
+      "mtime_ns": "1792716299642751800",
+      "st_dev": "13886423844274364792",
+      "st_ino": "562949956013249"
+    }
+  },
+  "onedrive_local_copy": {
+    "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Full-Working-Review-20261023-a02.mp4",
+    "bytes": 171754888,
+    "sha256": "071ea89c78ccd9ecb8894a3e118737295e4c467ed35515395a5b324792331de3"
+  },
+  "actual_concat_wait": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\media\\audit\\full-working-review\\concat\\ORIGINAL-WAIT.actual.json",
+    "bytes": 2741,
+    "sha256": "0f5a9dde41df30fd7f7844e3099ed0b269f73fcead084d90bac27b76d1102a9a"
+  },
+  "timeline": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\media\\FULL-WORKING-REVIEW-TIMELINE.actual.json",
+    "bytes": 311926,
+    "sha256": "ae75dad6e03684794e2bb7b56e5e34bf9e390fe72a2f75f62f7202e4299e52e1"
+  },
+  "full_decode": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\media\\probes\\full-working-review.actual.json",
+    "bytes": 4653,
+    "sha256": "5d1ab1309431b4c95e6ef5dc430c7dc235725eeaddc4a32d9e529e6be5a6cd6c"
+  },
+  "packet_clocks": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\full-working-review-ALL-PACKET-CLOCK.actual.json",
+    "bytes": 1050,
+    "sha256": "822b1df38ff0acb9f962ca8702b7aed233e9c04e782233920dd632f3e06966f1"
+  },
+  "sampled_movie_frames": [
+    {
+      "cue_id": "BRAND",
+      "frame": 30,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-BRAND.jpg",
+        "bytes": 31440,
+        "sha256": "2a421799053235b21725df5d4fadd96a47c3bb981e02eb999596a3ebb4fb9b40"
+      }
+    },
+    {
+      "cue_id": "C01-01",
+      "frame": 270,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-C01-01.jpg",
+        "bytes": 225671,
+        "sha256": "b429024a0bb68c0dc2c2f423f97274501f1f1f2982917b2928bdb1ba619935b9"
+      }
+    },
+    {
+      "cue_id": "C01-08",
+      "frame": 882,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-C01-08.jpg",
+        "bytes": 194602,
+        "sha256": "c97d72964b9238ab7da48b367124a21810e25418387e1c580b260c724248d511"
+      }
+    },
+    {
+      "cue_id": "CHAPTER01",
+      "frame": 1766,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-CHAPTER01.jpg",
+        "bytes": 28387,
+        "sha256": "fb4b0909442622750043fd4a336d6c68bcff27af21929795665caf2ab8309a37"
+      }
+    },
+    {
+      "cue_id": "C01-04",
+      "frame": 1856,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-C01-04.jpg",
+        "bytes": 208888,
+        "sha256": "a74a8adfb685907c40cfb4594e897a7e46e4969b1bb098f64f6bd87c0a963449"
+      }
+    },
+    {
+      "cue_id": "N01-01",
+      "frame": 2712,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N01-01.jpg",
+        "bytes": 222533,
+        "sha256": "330b3c0d5c8bedbc5c98b858255700917ae2b500b83cbe08551dcf37410e9bc1"
+      }
+    },
+    {
+      "cue_id": "N01-02",
+      "frame": 3540,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N01-02.jpg",
+        "bytes": 237224,
+        "sha256": "7ad879ae51517d5414a09ecadc6ce6ad444cf2d4d5f8cd1cf96cd454eacdb9e2"
+      }
+    },
+    {
+      "cue_id": "N01-03",
+      "frame": 4529,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N01-03.jpg",
+        "bytes": 224973,
+        "sha256": "f36a75922c9a16667dcc2a18eff3abc7658017260289cdc9ea808baded99b6dd"
+      }
+    },
+    {
+      "cue_id": "N01-11",
+      "frame": 5673,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N01-11.jpg",
+        "bytes": 218673,
+        "sha256": "26977009fe4a950ab165019c91ee0dd9e5b614b92878da0bb9d5aa6acf572813"
+      }
+    },
+    {
+      "cue_id": "N01-04",
+      "frame": 6622,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N01-04.jpg",
+        "bytes": 215394,
+        "sha256": "993c2d315cdd77022afb10bf0ed5479b9c1e540cd3073f9a46772ce30866c515"
+      }
+    },
+    {
+      "cue_id": "N01-05",
+      "frame": 7339,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N01-05.jpg",
+        "bytes": 216200,
+        "sha256": "550f9f6b1b55cae9ba75df7cbad190e4710726a416e0dc59f1568c82b9be3255"
+      }
+    },
+    {
+      "cue_id": "N01-06",
+      "frame": 8189,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N01-06.jpg",
+        "bytes": 224959,
+        "sha256": "aa5ddc7367321a653bb108d8fbc8561257cc45b90154ecf9cc9cced4220e766b"
+      }
+    },
+    {
+      "cue_id": "N01-10",
+      "frame": 9361,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N01-10.jpg",
+        "bytes": 242859,
+        "sha256": "c9f4966e9bb6fdcf5070d599629c195435fb0dc3e7f63e939548eccfbc3a1ce9"
+      }
+    },
+    {
+      "cue_id": "N01-07",
+      "frame": 10353,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N01-07.jpg",
+        "bytes": 251147,
+        "sha256": "c007d7de86a6509d75ae8a9c87a35aa609de1b4cdc9df13f8274ac066ee398f9"
+      }
+    },
+    {
+      "cue_id": "N01-08",
+      "frame": 11214,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N01-08.jpg",
+        "bytes": 258573,
+        "sha256": "4b425a330371278e4525d003c4e572c2e3b84b37e25271b609145662bc84d942"
+      }
+    },
+    {
+      "cue_id": "N01-09",
+      "frame": 12031,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N01-09.jpg",
+        "bytes": 210478,
+        "sha256": "fcac42594401776fcdf625d1c44d2911c2118cb78c2c6a4b9b795f32d70125d8"
+      }
+    },
+    {
+      "cue_id": "CHAPTER02",
+      "frame": 12944,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-CHAPTER02.jpg",
+        "bytes": 30650,
+        "sha256": "e4240fdd22eb23028f9b4ba32524a7c811445a7532b512c8a715e208210639dd"
+      }
+    },
+    {
+      "cue_id": "N02-01",
+      "frame": 13034,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N02-01.jpg",
+        "bytes": 260565,
+        "sha256": "ae7847b8a4189e9c53a98bd03eaf8c57ed5bddc7b82980fb5d70733e008247db"
+      }
+    },
+    {
+      "cue_id": "N02-02",
+      "frame": 13845,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N02-02.jpg",
+        "bytes": 255373,
+        "sha256": "24d69b432dde35810b1221eb3ef6693539fc7cd26dfef44abf1f11d027097856"
+      }
+    },
+    {
+      "cue_id": "N02-06",
+      "frame": 14712,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N02-06.jpg",
+        "bytes": 232315,
+        "sha256": "16ec7b4a4265f2573fe16d5d60cc1379250c232a9f836cdcfb5ad7b594dadebe"
+      }
+    },
+    {
+      "cue_id": "N02-04",
+      "frame": 15364,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N02-04.jpg",
+        "bytes": 262098,
+        "sha256": "70b9d502760bb81f27e5c03c90950b7e705187bb1424ce8a7e252d9f78a30d6c"
+      }
+    },
+    {
+      "cue_id": "N02-03",
+      "frame": 16516,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N02-03.jpg",
+        "bytes": 252700,
+        "sha256": "ebc1e57c2fff9e80b171f838ba3e8827e5a4347979cf118483df315475ee94bf"
+      }
+    },
+    {
+      "cue_id": "N02-05",
+      "frame": 17506,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N02-05.jpg",
+        "bytes": 259640,
+        "sha256": "835aba5f2942b414cc7f6dcaf6b6382ca06d4eb8f276dd6603881d4e70616e57"
+      }
+    },
+    {
+      "cue_id": "CHAPTER03",
+      "frame": 18576,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-CHAPTER03.jpg",
+        "bytes": 26050,
+        "sha256": "12b3c9e645dea7dd7d3871326869b831f79545c39b2971031cda0016562d341b"
+      }
+    },
+    {
+      "cue_id": "C01-05",
+      "frame": 18666,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-C01-05.jpg",
+        "bytes": 209379,
+        "sha256": "687380004f908148aed98ee994405475d367bc527cada1da2f49124094028218"
+      }
+    },
+    {
+      "cue_id": "N03-01",
+      "frame": 19614,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N03-01.jpg",
+        "bytes": 207327,
+        "sha256": "bc1cd62e2cf1126a0a8b40d16f599817a68c4449535464c8de9d7bc18734ca79"
+      }
+    },
+    {
+      "cue_id": "N03-02",
+      "frame": 20814,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N03-02.jpg",
+        "bytes": 90216,
+        "sha256": "37d0962c9198c85d0220e9ed636bef6a7976ed88810025b166b397688d5f1160"
+      }
+    },
+    {
+      "cue_id": "N03-03",
+      "frame": 21641,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N03-03.jpg",
+        "bytes": 210672,
+        "sha256": "c22cf3aa832aee2a311a0ace14ba1ea48e1ec46e084158eddedaf66ba408dcf9"
+      }
+    },
+    {
+      "cue_id": "N03-04",
+      "frame": 22608,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N03-04.jpg",
+        "bytes": 215373,
+        "sha256": "63a914dc2eea8a47192bf593201b1510425c52ce382615947eeaf0c56199f9d2"
+      }
+    },
+    {
+      "cue_id": "N03-05",
+      "frame": 23443,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N03-05.jpg",
+        "bytes": 254043,
+        "sha256": "15a1026e7f49e7db01aaed06e4994a534c92ff33fb2ee30e79e89f949b21baba"
+      }
+    },
+    {
+      "cue_id": "N03-06",
+      "frame": 24343,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N03-06.jpg",
+        "bytes": 253040,
+        "sha256": "94df4afbd97cd7a0b31677565dca07b55c9508891b4b826f60149340d8385830"
+      }
+    },
+    {
+      "cue_id": "N03-07",
+      "frame": 25236,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N03-07.jpg",
+        "bytes": 252165,
+        "sha256": "88f0f6b67dd4287c389f194663bb8f4168aeb0d2eb9760b758dfd6a6a6be2307"
+      }
+    },
+    {
+      "cue_id": "CHAPTER04",
+      "frame": 26104,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-CHAPTER04.jpg",
+        "bytes": 34101,
+        "sha256": "f3369a1555ee0a70cf49bad2543e8e992bb9db24282374329d6e17d2d51b3ea0"
+      }
+    },
+    {
+      "cue_id": "N04-01",
+      "frame": 26194,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N04-01.jpg",
+        "bytes": 221377,
+        "sha256": "2234745e816e75d3fb419a386dcc46424932ecfd316f984432f040ecead61cae"
+      }
+    },
+    {
+      "cue_id": "N04-02",
+      "frame": 26988,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N04-02.jpg",
+        "bytes": 219513,
+        "sha256": "405ddc5ca1c34990a8129b29585536dda546d92b6d11c6a1c3f70ad9278aa537"
+      }
+    },
+    {
+      "cue_id": "N04-03",
+      "frame": 27825,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N04-03.jpg",
+        "bytes": 225935,
+        "sha256": "ff556aac6ee6494ebbaa77bd09e14156b6004b12ba3d4ebc6c87ad9c34978ee7"
+      }
+    },
+    {
+      "cue_id": "N04-04",
+      "frame": 28668,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N04-04.jpg",
+        "bytes": 222443,
+        "sha256": "76fc25b6a9c333a820b3e92f84a8caf2a6530ec236046c97c2ca4172125170da"
+      }
+    },
+    {
+      "cue_id": "N04-05",
+      "frame": 29632,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N04-05.jpg",
+        "bytes": 224432,
+        "sha256": "36ec9e7c095d2ad7e15aba3cc7ba9a42352fb7fd7e39dee5a111fc9170fa8710"
+      }
+    },
+    {
+      "cue_id": "N04-06",
+      "frame": 30614,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N04-06.jpg",
+        "bytes": 225393,
+        "sha256": "a85f0e98747573ff678448bf49985de938383ba34d40cd2611ba4cadc49991f6"
+      }
+    },
+    {
+      "cue_id": "CHAPTER05",
+      "frame": 31424,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-CHAPTER05.jpg",
+        "bytes": 29131,
+        "sha256": "899229102dcfaca68fbaa32ecbea1bd483022848240e11f8efc3a75c36740cb6"
+      }
+    },
+    {
+      "cue_id": "C01-06",
+      "frame": 31514,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-C01-06.jpg",
+        "bytes": 180418,
+        "sha256": "4a30039498f3ee5cc4e0b0720d34c492af6f659481fe270e8d4c075ba5e99c41"
+      }
+    },
+    {
+      "cue_id": "N05-01",
+      "frame": 32380,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N05-01.jpg",
+        "bytes": 209689,
+        "sha256": "c706da027f75842f359de511435c15f3c34f1e9321f336db856a9d50da216ec6"
+      }
+    },
+    {
+      "cue_id": "N05-02",
+      "frame": 33977,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N05-02.jpg",
+        "bytes": 213275,
+        "sha256": "193b3305347fb2de37dc8d935a874dacbd10f4fb9994f58495563a30f22b633c"
+      }
+    },
+    {
+      "cue_id": "N05-03",
+      "frame": 34896,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N05-03.jpg",
+        "bytes": 191374,
+        "sha256": "f162a83cc24d27db6db18e70756bff0da030e69ef8b0f2282e4ad1a8557b95af"
+      }
+    },
+    {
+      "cue_id": "N05-04",
+      "frame": 35659,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N05-04.jpg",
+        "bytes": 202791,
+        "sha256": "3277cbcced947bff74e76961df977be50e2a9b8d3234e717b53ab16feba5b4bb"
+      }
+    },
+    {
+      "cue_id": "N05-05",
+      "frame": 36679,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N05-05.jpg",
+        "bytes": 196629,
+        "sha256": "9f57b4f5b67dd30b8e878dcd78461c7377df9e09090cebed0e1bde6622221d62"
+      }
+    },
+    {
+      "cue_id": "N05-06",
+      "frame": 37579,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N05-06.jpg",
+        "bytes": 213749,
+        "sha256": "f9909b84e8994c684bdc5c939f2cb3b5bb45c47c4205a8b8d3176a57ada05df8"
+      }
+    },
+    {
+      "cue_id": "N05-07",
+      "frame": 38525,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N05-07.jpg",
+        "bytes": 214855,
+        "sha256": "e3eb79b8b1f5f790bf6e5de94fbca0eede43551b6bf1725712f9320444952d3d"
+      }
+    },
+    {
+      "cue_id": "N05-09",
+      "frame": 39628,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N05-09.jpg",
+        "bytes": 219426,
+        "sha256": "d9dd0bf1983e4fa91b6cb27417e71ef24511dfb9d11744daa085b2a3f7f024b4"
+      }
+    },
+    {
+      "cue_id": "N05-08",
+      "frame": 40692,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N05-08.jpg",
+        "bytes": 189842,
+        "sha256": "ea9459fc16fdad70944bfa7c641bffaac5362931bd1a786964baa57d8de938c5"
+      }
+    },
+    {
+      "cue_id": "CHAPTER06",
+      "frame": 41504,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-CHAPTER06.jpg",
+        "bytes": 30138,
+        "sha256": "e9683f9919e59db3c60fb2c5fa279ae72e8c38f23f731fc288c6ab02c7b6ff70"
+      }
+    },
+    {
+      "cue_id": "N06-01",
+      "frame": 41594,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N06-01.jpg",
+        "bytes": 197295,
+        "sha256": "fdc47ca7e0663d16fa03c91a18ae93e2d94962d6c11cfc82936251e8750c4b35"
+      }
+    },
+    {
+      "cue_id": "N06-02",
+      "frame": 42416,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N06-02.jpg",
+        "bytes": 194308,
+        "sha256": "34d5dd81f8fc301f10b862437a5ea2e9f3607565e47e897d07811ff5925b1609"
+      }
+    },
+    {
+      "cue_id": "N06-03",
+      "frame": 43305,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N06-03.jpg",
+        "bytes": 209997,
+        "sha256": "5bd378fdde43e27b75118b99559a901708bb16107521e29a65ad6612986504ff"
+      }
+    },
+    {
+      "cue_id": "N06-04",
+      "frame": 44158,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N06-04.jpg",
+        "bytes": 222022,
+        "sha256": "eb158c2e8444aade23138ec9b256b3aeb8d4f0894c524a6bd60520bcbb7b6b91"
+      }
+    },
+    {
+      "cue_id": "N06-08",
+      "frame": 45046,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N06-08.jpg",
+        "bytes": 206122,
+        "sha256": "d35b9117e53670da7f086b702cfd6f58e05f7edcb4135b775d48800cf4179134"
+      }
+    },
+    {
+      "cue_id": "N06-05",
+      "frame": 45917,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N06-05.jpg",
+        "bytes": 210016,
+        "sha256": "9f7956d7f90709deddc09b362df4cbc78ff11fa026efc6acab0d1d17c312103f"
+      }
+    },
+    {
+      "cue_id": "N06-07",
+      "frame": 46863,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N06-07.jpg",
+        "bytes": 253894,
+        "sha256": "7b63f35b8356528292447741eb6ff7e3463fb9af26c222841d3466789a2d6220"
+      }
+    },
+    {
+      "cue_id": "N06-06",
+      "frame": 47775,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-N06-06.jpg",
+        "bytes": 207187,
+        "sha256": "8b106dc421fdbb399d6daa72837c5664d4d630b05d22cded8f0fefa04f5de370"
+      }
+    },
+    {
+      "cue_id": "C06-03",
+      "frame": 48136,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-C06-03.jpg",
+        "bytes": 201676,
+        "sha256": "326d3836d61eea48923b2ca17244f860e28e93d8482af610b2f09ba121991872"
+      }
+    },
+    {
+      "cue_id": "C06-10",
+      "frame": 49054,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-C06-10.jpg",
+        "bytes": 193889,
+        "sha256": "4e305c706aa0be4de3b681b7f84c60e38d91184f9ae2f45661a8421935766dfc"
+      }
+    },
+    {
+      "cue_id": "END",
+      "frame": 49928,
+      "source": {
+        "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\frame-movie-END.jpg",
+        "bytes": 27478,
+        "sha256": "5fd2f9784517543c8de32420d2a512151d2d1dc6fbcb7a42318a8ac7225a0a41"
+      }
+    }
+  ],
+  "full_audio_statistics": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\full-working-review-AUDIO-STATISTICS.actual.json",
+    "bytes": 999,
+    "sha256": "c809def5a68c94be429a98dbcd9d4094c3e5ef842f581df4cb97868af9e9520a"
+  },
+  "contact_sheets": [
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\contact-01.jpg",
+      "bytes": 840735,
+      "sha256": "2badb9e61dea7b9574ffd8932b1798da5a117bdf30301ea1fc37149b498e4b6e"
+    },
+    {
+      "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\contact-02.jpg",
+      "bytes": 769294,
+      "sha256": "d6ce22f69d61e99a53cc1ac478fe764ee8ba33481923d6047d9aded8c57fb516"
+    }
+  ],
+  "new_native_window_actual_samples": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\NEW-NATIVE-WINDOW-FIRST-MIDDLE-TAIL.actual.json",
+    "bytes": 72731,
+    "sha256": "0b1182fe79384aecccd6a49317ef2c6b77592574175ac4aef41cf988ed745bfe"
+  },
+  "native_frames": 38030,
+  "card_frames": 12108,
+  "raw_playback_is_not_a_claim_of_continuous_game_progress": true,
+  "all47_mechanics_new_encodes": true,
+  "complete_opening_chapters_ending": true,
+  "single_continuous_music_bed": true,
+  "R05_actual_acceptance": null,
+  "R05_business_qualified": false,
+  "review_only": true,
+  "human1x": false,
+  "signoff": false,
+  "onedrive_cloud_sync": "PENDING_CLIENT_READBACK",
+  "actual_native_allocation_before_metadata": {
+    "logical_bytes": 733317928,
+    "allocated_bytes": 570354144,
+    "entries": 2824,
+    "hardlink_aliases": 63,
+    "unique_files": 2247,
+    "payload_bytes_read_for_allocation": 0,
+    "onedrive_allocated_bytes": 171757568,
+    "onedrive_exact_path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Full-Working-Review-20261023-a02.mp4"
+  }
+}

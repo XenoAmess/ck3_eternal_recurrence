@@ -1,0 +1,40 @@
+{
+  "schema": "xar.root.e04.recut.actual-timeline-verification.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T00:50:49.220900+00:00",
+  "reviewer": "/root",
+  "timeline": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\media\\FULL-WORKING-REVIEW-TIMELINE.actual.json",
+    "bytes": 311926,
+    "sha256": "ae75dad6e03684794e2bb7b56e5e34bf9e390fe72a2f75f62f7202e4299e52e1"
+  },
+  "actual_cues": 62,
+  "all47_mechanics_actual_new_encodes": true,
+  "independently_verified_encode_wait0_and_full_decode_frame_match": 62,
+  "fps": 30,
+  "total_frames": 50138,
+  "native_main_viewport_frames": 38030,
+  "card_frames": 12108,
+  "native_fraction": "0.758506521999282",
+  "native_raw_sources": 20,
+  "unique_source_interval_frames": 30132,
+  "native_share_is_not_continuous_action_or_new_business_qualification": true,
+  "whole_probe": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\media\\probes\\full-working-review.actual.json",
+    "bytes": 4653,
+    "sha256": "5d1ab1309431b4c95e6ef5dc430c7dc235725eeaddc4a32d9e529e6be5a6cd6c"
+  },
+  "all_packet_clock": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\full-working-review-ALL-PACKET-CLOCK.actual.json",
+    "bytes": 1050,
+    "sha256": "822b1df38ff0acb9f962ca8702b7aed233e9c04e782233920dd632f3e06966f1"
+  },
+  "audio_statistics": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\media\\qa\\full-working-review-AUDIO-STATISTICS.actual.json",
+    "bytes": 999,
+    "sha256": "c809def5a68c94be429a98dbcd9d4094c3e5ef842f581df4cb97868af9e9520a"
+  },
+  "R05_actual_acceptance": null,
+  "human1x": false,
+  "signoff": false
+}

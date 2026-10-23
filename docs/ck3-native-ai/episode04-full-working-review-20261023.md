@@ -1,5 +1,7 @@
 # 第四集完整工作审阅片：实际交付与来源
 
+最新交付为[棕黄风格与实机主画面重剪a02](episode04-visual-recut-20261023.md)，OneDrive文件`CK3-Episode04-Full-Working-Review-20261023-a02.mp4`。下文a01保留历史生产与验收事实。
+
 machine_id: `desktop-3fevhd2-1c74096080`。Root于2026-10-22T22:30:49.939851Z确认完整`FullWorkingReview`已可供用户审阅；[实际交付回执](evidence/episode04-full-working-review-20261023/ROOT-DELIVERY.actual.json)绑定产物、校验、来源及闭场。这是包含片头和片尾的完整工作片，`human1x=false`、`user_signoff=false`；正式动态机制主题仍为10/11，R05实机因果证据仍缺。
 
 ## 实际产物与同步
@@ -42,3 +44,13 @@ R05在本片为规则说明：自然stock<10的入场值、同次callback到正�
 首包精确`06d3102baa5f8f56c9973da24f7f833a8d1011a0`的Linear39853399164成功，[Official39853398947](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39853398947)最终失败。job120085223604的step40在`CiBootstrap.java:346`收到`NoSuchFileException`，缺少`packaged-source-…/classes/org/xar/ck3/control/contracts`。既有`ProjectionDeploymentProofTest.java:197`生成该临时路径，源码blob在首包父提交与06d一致，首包18个修改均为docs；具体临时目录生命周期根因未确认。[最窄错误与归因](evidence/episode04-full-working-review-20261023/FIRST-SOURCE-CI-ATTRIBUTION.actual.json)、[日志来源/精确64KiB区间](evidence/episode04-full-working-review-20261023/FIRST-SOURCE-CI-LOG-RANGE.actual.json)及[Hosted身份说明](evidence/episode04-full-working-review-20261023/FIRST-SOURCE-CI-RUNNER-IDENTITY.actual.json)保留；未下载整套日志。Desktop机器ID属于观察者，Hosted runner的machine_id为unknown。后继上游已修改CiBootstrap/ControlBuild及测试，新交付HEAD的CI另据实际终态，不能从旧失败推断已修或仍失败。
 
 依[通用存储策略](../storage-retention-policy.md)，下一用途复核为2026-10-24T10:00Z，必要活跃输入保护至2026-10-29T10:00Z。复核时核当前用途、引用、替代证据及容量；不无限保留全旧树，不以本页授权删除用户交付文件。原始媒体和日志的外置路径不构成跨机器资格。
+
+## 2026-10-23可用性补注：被取代的本地派生媒体已回收
+
+machine_id仍为`desktop-3fevhd2-1c74096080`。用户实际审阅后要求调整部分新增包装的棕黄底色，并提高实机主画面占比；新重剪的实际交付结果另记。上文生产与验收回执保留当时事实，但其中部分外置媒体路径已不可读取，不能据历史Pin推断文件仍存在。
+
+2026-10-22T23:45:28.557556Z的[第一批实际回收](evidence/episode04-visual-recut-20261023/MEDIA64-ACTUAL-RECOVERY.actual.json)按独立精确计划删除64组、128个原名，Native回收281460736B；范围包括a04的62cue及两份本地whole，两whole只计一次。Root的[具体执行范围接受](evidence/episode04-visual-recut-20261023/ROOT-MEDIA64-ACCEPTANCE.actual.json)绑定61034B精确计划及原SHA；本包保留计划Pin，不重复逐名大清单。
+
+2026-10-23T00:14:53.384353Z，另一份[实际回收回执](evidence/episode04-visual-recut-20261023/READONLY48-ACTUAL-RECOVERY.actual.json)确认readonly48清单中的48文件已删除、48原名均缺席，Native回收145133568B，203份保留来源前后完整SHA匹配；[Root实际核验](evidence/episode04-visual-recut-20261023/ROOT-READONLY48-VERIFICATION.actual.json)另存。先前“readonly48未删除”只属于更早截点。两批scope不重叠，实际Native回收合计426594304B，`unknown_stop`均为null，未改写为0。
+
+这些旧本地原名现已不可读，没有制造同名替代证据，也没有删除未列资产或整目录。两份旧OneDrive交付（完整工作片及黄色机制审核片）、raw、voice、recipe、源码与必要小证据继续保留；两份用户交付的当前身份、大小与完整SHA在回收前后匹配。已入库来源档仍可读取；原媒体回执与清单只证明其历史产物身份，不能冒充仍可消费的旧本地cue/whole输入。后续素材用途、容量和限期保护继续按通用策略重新判断。

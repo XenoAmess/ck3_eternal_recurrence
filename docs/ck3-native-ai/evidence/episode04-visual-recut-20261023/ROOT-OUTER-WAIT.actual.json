@@ -1,0 +1,44 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T01:03:58.572231+00:00",
+  "actual_original_Popen": true,
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-recut-20261023-a01\\source\\a03\\produce_working_review.py",
+    "execute",
+    "C:\\ck3-e04-recut-20261023-a01\\capacity\\RECUT-MEDIA-ADMISSION.actual-a01.json",
+    "e959773c867e1a1b271857504e46185d674ade3729a06e8a6102bd229d728ed0"
+  ],
+  "admission": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\capacity\\RECUT-MEDIA-ADMISSION.actual-a01.json",
+    "bytes": 1604,
+    "sha256": "e959773c867e1a1b271857504e46185d674ade3729a06e8a6102bd229d728ed0"
+  },
+  "canonical_before_launch": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 6412,
+    "sha256": "94b89d64d43e3f05eb83292983fb0a470465b39af6e4969e4c8fa90c4c5192cf"
+  },
+  "matching_active_claim": true,
+  "source_freeze": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\source\\a03\\SOURCE-FREEZE.actual.json",
+    "bytes": 50350,
+    "sha256": "d9b0f4758e265c87d017e243f9b77f79a3ad52468754eb48151225395169cce3"
+  },
+  "pid": 34528,
+  "created_filetime": "134371882366051718",
+  "original_wait": 0,
+  "stdout": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\root\\ROOT-MEDIA-CLI.stdout.actual-a01.txt",
+    "bytes": 2774,
+    "sha256": "6beb61ceaceab52c94b690c6158d6db81e38917c317901708758453708547731"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\root\\ROOT-MEDIA-CLI.stderr.actual-a01.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

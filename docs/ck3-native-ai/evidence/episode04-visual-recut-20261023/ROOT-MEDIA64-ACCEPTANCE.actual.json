@@ -1,0 +1,34 @@
+{
+  "schema": "xar.root.e04.exact-recovery-execution-acceptance.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "reviewer": "/root",
+  "state": "accepted-after-specific-native-source-review",
+  "plan": {
+    "path": "C:/ck3-e04-recut-20261023-a01/capacity/REPLACED-LOCAL-MEDIA64-EXACT-PLAN.actual-a01.json",
+    "bytes": 61034,
+    "sha256": "9ea3259cdfa2026192cbf0f7c4a1b0d751566ce9f30cdb92e2e48b82b56b7e02"
+  },
+  "native_entry": {
+    "path": "C:/ck3-e04-recut-20261023-a01/capacity/recut_exact_retire_a03.py",
+    "bytes": 9427,
+    "sha256": "7c7f51eed1b82467cca81ace77f61f8df86fa1fb0cfc2b05d0797c2ea61b772c"
+  },
+  "strict": {
+    "path": "C:/ck3-e04-recut-20261023-a01/capacity/EXACT-BOUNDARY-STRICT.actual-a03.json",
+    "bytes": 1245,
+    "sha256": "8c439bc58b598549c9af4566e96aeeb692cdb000506f9ec756208bf10e39f1a3"
+  },
+  "sentinel": {
+    "path": "C:/ck3-e04-recut-20261023-a01/capacity/EXACT-BOUNDARY-SENTINEL-ACTUAL.actual-a03.json",
+    "bytes": 2155,
+    "sha256": "8820f149464db9080d7de5b2882b04a00f8329f034d6f5cce24f52ac74a303d8"
+  },
+  "scope_groups": 64,
+  "scope_names": 128,
+  "expected_unique_allocated_bytes": 281460736,
+  "Root_directly_reviewed": "Original safe.Handles and full_hash, full a01 and a03 diff, exact frozen-plan mtime, opened held identity and ancestor reparse guards retained; real strict and both Native sentinels pass; two-whole plan included once.",
+  "execution_conditions": "New bounded actual CAP execution admission, fresh identity/source/owner/OneDrive checks, exact group-only Native deletion; original names absent and preserved source/user deliveries verified before actual bank credit; no other deletions.",
+  "physical_credit_before_execution_bytes": 0,
+  "deadline_utc": "2026-10-23T02:30:00Z",
+  "observed_at_utc": "2026-10-22T23:43:36.823277+00:00"
+}

@@ -1,0 +1,51 @@
+{
+  "schema": "xar.root.e04.onedrive-client-normalized-readback.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T01:11:13.597998+00:00",
+  "query_helper": {
+    "path": "D:\\ck3-research-artifacts\\onedrive-cloud-status-probe-20260930-a01\\probe.py",
+    "bytes": 4964,
+    "sha256": "8488b9a4bc152825a6664c762cd842288348ad4b80271df153e4c6f81cf03e85"
+  },
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:\\ck3-research-artifacts\\onedrive-cloud-status-probe-20260930-a01\\probe.py",
+    "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Full-Working-Review-20261023-a02.mp4"
+  ],
+  "pid": 18908,
+  "created_filetime": "134371914734469648",
+  "original_wait": 0,
+  "status": "sync_verified",
+  "client_metadata": {
+    "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Full-Working-Review-20261023-a02.mp4",
+    "sample_utc": "2026-10-23T01:11:13.580761+00:00",
+    "size": 171754888,
+    "mtime_ns": "1792717432999243600",
+    "attributes_hex": "0x00000020",
+    "sync_root_hresult": "0x00000000",
+    "handle_attributes_hex": "0x00000020",
+    "reparse_tag_hex": "0x00000000",
+    "cf_placeholder_state_hex": "0x00000000",
+    "cf_placeholder_state_flags": [],
+    "placeholder_hresult": "0x00000000",
+    "placeholder_returned_bytes": 412,
+    "in_sync_state": 1,
+    "on_disk": 171754888,
+    "validated": 171754888,
+    "modified": 0,
+    "pin_state": 0,
+    "file_id": "562949956014693",
+    "sync_root_file_id": "5910974510929700",
+    "stable_size_mtime": true
+  },
+  "client_sync_verified": true,
+  "original_stdout_bytes": 689,
+  "original_stdout_sha256": "342407ca61db2a8f30f8f2752c5decd06ab2c2713e3d6e3401cc4a8e78bea631",
+  "original_stdout_legacy_JSON_as_text": "{\"path\": \"C:\\\\Users\\\\1\\\\OneDrive\\\\CK3-War-AI-20260923\\\\CK3-Episode04-Full-Working-Review-20261023-a02.mp4\", \"sample_utc\": \"2026-10-23T01:11:13.580761+00:00\", \"size\": 171754888, \"mtime_ns\": 1792717432999243600, \"attributes_hex\": \"0x00000020\", \"sync_root_hresult\": \"0x00000000\", \"handle_attributes_hex\": \"0x00000020\", \"reparse_tag_hex\": \"0x00000000\", \"cf_placeholder_state_hex\": \"0x00000000\", \"cf_placeholder_state_flags\": [], \"placeholder_hresult\": \"0x00000000\", \"placeholder_returned_bytes\": 412, \"in_sync_state\": 1, \"on_disk\": 171754888, \"validated\": 171754888, \"modified\": 0, \"pin_state\": 0, \"file_id\": 562949956014693, \"sync_root_file_id\": 5910974510929700, \"stable_size_mtime\": true}\r\n",
+  "identity_and_mtime_fields_normalized_before_JavaScript": true,
+  "independent_remote_download_SHA_observed": false,
+  "prior_incomplete_observation": "01:06:09Z helper returned0x80070178, no cloud file ID. Earlier wrapper assumed file_id and failedKeyError before writing; not accepted as sync proof."
+}

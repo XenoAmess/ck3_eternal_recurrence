@@ -1,0 +1,102 @@
+{
+  "schema": "xar.root.e04.visual-recut.full-working-review-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T01:13:31.183284+00:00",
+  "reviewer": "/root",
+  "review_ready": true,
+  "delivery": {
+    "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-Episode04-Full-Working-Review-20261023-a02.mp4",
+    "bytes": 171754888,
+    "sha256": "071ea89c78ccd9ecb8894a3e118737295e4c467ed35515395a5b324792331de3"
+  },
+  "total_frames": 50138,
+  "fps": 30,
+  "duration_seconds": "1671.266667",
+  "resolution": [
+    1920,
+    1080
+  ],
+  "actual_new_cues": 62,
+  "all47_mechanics_actual_new_encodes": true,
+  "complete_intro_six_chapters_and_ending": true,
+  "series_background": "#211813",
+  "series_gold": "#CBA56A",
+  "game_UI_pixels_tinted": false,
+  "native_main_viewport_frames": 38030,
+  "card_frames": 12108,
+  "native_main_viewport_percent": "75.85065220",
+  "old_native_main_viewport_percent": "19.06737405",
+  "unique_source_interval_frames": 30132,
+  "raw_sources": 20,
+  "native_share_includes_paused_UI_and_revisits": true,
+  "rule_card_max_frames_except_R05": 360,
+  "R05_card_exception_frames": 827,
+  "actual_metadata": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\media\\FULL-WORKING-REVIEW-ACTUAL-METADATA.actual.json",
+    "bytes": 21285,
+    "sha256": "a0c4e2765945ae4cab159fbdbe42d8003cade6358db193d57a2236b84e90607e"
+  },
+  "source_freeze": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\source\\a03\\SOURCE-FREEZE.actual.json",
+    "bytes": 50350,
+    "sha256": "d9b0f4758e265c87d017e243f9b77f79a3ad52468754eb48151225395169cce3"
+  },
+  "Root_source_review": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\root\\ROOT-RECUT-SOURCE-REVIEW.actual-a02.json",
+    "bytes": 1974,
+    "sha256": "8b706f6e78d67f595ce9d64abfb3c9a3b55ee4b1b2f34f140b66f4664893e100"
+  },
+  "Root_preview_acceptance": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\root\\ROOT-FULLREVIEW-PREVIEW-ACCEPTANCE.actual-a01.json",
+    "bytes": 2235,
+    "sha256": "2122819838983130dfe00f99fe53c6631262744738ee093c3bde8d18ea3aa59d"
+  },
+  "Root_timeline_verification": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\root\\ROOT-RECUT-ACTUAL-TIMELINE-VERIFICATION.actual-a01.json",
+    "bytes": 1608,
+    "sha256": "bbbdfa15a081f4ac270b7d52c320ab4eefcc508ebe65b8343c78f73fc11073e9"
+  },
+  "Root_local_delivery_verification": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\root\\ROOT-RECUT-LOCAL-DELIVERY-VERIFICATION.actual-a01.json",
+    "bytes": 2582,
+    "sha256": "aca5399be8545d4d732afc66f507a83f4e1d44e6232374e9f42d974c8ec1b84f"
+  },
+  "OneDrive_client_sync": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\root\\ROOT-ONEDRIVE-CLIENT-SYNC.actual-a01.json",
+    "bytes": 2888,
+    "sha256": "d61e97d23a9fe6ee7e8d9abb18dc115ba21efcc872bca778d891fc32ab6d5e3a"
+  },
+  "independent_remote_download_SHA_observed": false,
+  "Root_original_wait0": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\root\\ROOT-MEDIA-CLI-ORIGINAL-WAIT.actual-a01.json",
+    "bytes": 1693,
+    "sha256": "ad06258b6d0767153a37ea4cd3fc4c1b2c7722751305a499f0afa51670587435"
+  },
+  "executor_339_children_wait0_Job0": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\media\\EXECUTOR-OWNER-CLOSED.actual.json",
+    "bytes": 56656,
+    "sha256": "aab63b633897c5db4cf95cdf091d33eca79f6eea7aef3458b5d00c7d61e8aecc"
+  },
+  "independent_visual_observations": {
+    "path": "C:\\ck3-e04-recut-20261023-a01\\audit\\intro-final-visual-observations.actual-a01.json",
+    "bytes": 8185,
+    "sha256": "71aaffcf1919a1113dabb87ee33a39fb30aa0a61cc3d6162194af2d83b191995"
+  },
+  "Root_direct_visual_scope": "9 initial full-size previews; R05/R08; both whole contact sheets; R194/R215/R199 contacts; R194/R215 full-size middle frames",
+  "visual_granularity": "actual samples, not frame-by-frame or full1x",
+  "new_R05_RunID_Game_SDK_Film_started": false,
+  "last_RunID_sequence": 243,
+  "current_counter": {
+    "path": "C:\\Users\\1\\AppData\\Local\\XarCk3Acceptance\\live-run-ids-v1\\desktop-3fevhd2-1c74096080\\vanilla\\counter.json",
+    "bytes": 282,
+    "sha256": "34621ae29d38058d2a9ce50f45dfbf8fadecf1b455ffb9ede01173bf0493d0e7"
+  },
+  "R05_actual_acceptance": null,
+  "R05_business_qualified": false,
+  "R08_limit": "same observed net-credit military-cost offset only; no independent payment/payer/cadence",
+  "human1x": false,
+  "signoff": false,
+  "formal_final47_release_acceptance": false,
+  "review_at_utc": "2026-10-24T10:00:00Z",
+  "necessary_inputs_protected_until_utc": "2026-10-29T10:00:00Z"
+}
