@@ -61,6 +61,27 @@ def _launcher(argv):
     return paths[0]
 
 
+def _validate_resource_refusal_chronology(
+    *, observed_at: datetime, run_started: datetime, intent_at: datetime,
+    supervisor_at: datetime, refused_at: datetime, waited_at: datetime,
+    run_finished: datetime,
+) -> None:
+    """Validate resource closure order, without granting launch freshness.
+
+    The pinned parent validates the offline receipt before serializing intent.
+    Its later durable timestamp cannot reconstruct that admission's exact time.
+    The unchanged launcher/gate still checks 30 seconds before starting a host.
+    """
+    stamps = (observed_at, run_started, intent_at, supervisor_at, refused_at,
+              waited_at, run_finished)
+    need(all(type(value) is datetime and value.tzinfo is not None
+             and value.utcoffset() is not None for value in stamps),
+         'Original timezone-aware resource chronology required')
+    need(observed_at <= intent_at
+         and run_started <= intent_at <= supervisor_at <= refused_at <= waited_at <= run_finished,
+         'Actual supervisor-refusal resource chronology differs')
+
+
 def _validate_supervisor_refusal_impl(previous, freeze, close_path, keeper_root, release, bus_packet):
     from ck3_mod_acceptance_allocate import closed_lease, read_failed_runtime_release, runtime_process_inventory
     import ck3_live_run_id as ids
@@ -225,9 +246,10 @@ def _validate_supervisor_refusal_impl(previous, freeze, close_path, keeper_root,
     evidence['reviewed_context']=pin(reviewed_path)
     observed_at=_stamp(observed.observed_at_utc)
     intent_at,supervisor_at,refused_at,waited_at=(_stamp(row['at_utc']) for row in (intent,supervisor,refused,waited))
-    need(waits['run'][1]<=intent_at<=supervisor_at<=refused_at<=waited_at<=waits['run'][2]
-         and 0<=(intent_at-observed_at).total_seconds()<=30,
-         'Actual initial admission and supervisor refusal chronology differs')
+    _validate_resource_refusal_chronology(
+        observed_at=observed_at, run_started=waits['run'][1], intent_at=intent_at,
+        supervisor_at=supervisor_at, refused_at=refused_at, waited_at=waited_at,
+        run_finished=waits['run'][2])
 
     original('keeper_STOP', keeper_root / 'STOP', decode=False)
     need((keeper_root / 'STOP').stat().st_size > 0, 'Actual keeper STOP is empty')
