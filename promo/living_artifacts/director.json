@@ -23,6 +23,14 @@
   },
   "creative_promise": "培养一件拥有欲望的传世之物，获得力量，也承担它不断索取的代价。",
   "capture_policy": "正常游玩正式拍摄时共采视频和W01-W03静帧；不使用测试夹具，不为截图单独开局。",
+  "music_basis": {
+    "filename": "xp_field1.mid",
+    "bytes": 21627,
+    "sha256": "91f4f34740bcc1e99ba34d41ce0df90191a409c977634333d7801e047875d3e3",
+    "source": "user_upload",
+    "direction": "保留主旋律，适度慢化；降低明亮吉他与鼓的存在感，冷峻、克制的木管与弦乐配器，旁白下压低伴奏。",
+    "status": "arrangement_pending"
+  },
   "workshop_item_id": "3825237804",
   "scenes": [
     {
