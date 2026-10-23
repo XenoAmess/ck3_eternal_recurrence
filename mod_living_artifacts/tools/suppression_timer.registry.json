@@ -47,6 +47,6 @@
     "directory": "mod_living_artifacts",
     "builder": "mod_living_artifacts/tools/build_release.py",
     "release_flags": ["--game", "{game_dir}/game", "--output", "{new-output}"],
-    "workshop_item_id": null
+    "workshop_item_id": "3825237804"
   }
 }
