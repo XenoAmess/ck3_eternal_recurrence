@@ -19,4 +19,14 @@
 
 已发生的发布事实：首次 Create 与内容 Submit 在 12:42:22Z 成功，真实物品 ID `3825237804`，正式 tag `living-artifacts-v0.1.0` 固定 `052cfb6d8d734014b0101f1e085c7542901eda69`。原两图媒体 Update、订阅、下载均实际退出 0；SDK 缓存为 57 文件/2071121 B。证据在 `D:/workspace/ck3-living-artifacts-20261022/release/living-artifacts-0.1.0-create-final01/`，原两图不能因 SDK 成功而取得宣传质量认可。
 
-Steam 主窗模式切换后产生旧黑窗；Root 经官方托盘“库”重新取得实际主窗，执行官方离线菜单，12:59:38.830760Z 后台原生回执确认 offline/true。13:01:26Z 实际 `ck3.exe` 为 101040248 B、SHA `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`。publisher keeper 原工具 7123 实际 0，CAS911 释放。无游戏进程，缓存加载、新图、正文图片及公开 Notes 全文回读均未完成，发布闭环保持 pending。
+Steam 主窗模式切换后产生旧黑窗；Root 经官方托盘“库”重新取得实际主窗，执行官方离线菜单，12:59:38.830760Z 后台原生回执确认 offline/true。13:01:26Z 实际 `ck3.exe` 为 101040248 B、SHA `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`。publisher keeper 原工具 7123 实际 0，CAS911 释放。该时点无游戏进程，缓存加载、新图、正文图片及公开 Notes 全文回读均尚未完成；后继匿名回读结果见下。
+
+2026-10-23 的后继匿名公开核验，`machine_id: pc-20260924rtuf-f11af23c08`：原 Popen `13328` 从 `13:46:46.176464Z` 至 `13:46:56.361925Z`，实际 `wait=0`。实际命令与退出见 [command.json](D:/workspace/ck3-living-artifacts-20261022/environment/promo-description-public-readback-a01/command.json)、[exit.json](D:/workspace/ck3-living-artifacts-20261022/environment/promo-description-public-readback-a01/exit.json)。本次仅三次匿名 HTTP 查询，公开 API、更新记录页和物品页均返回 200；没有 SDK、Steam、Game、GUI 或再次提交操作。
+
+公开 API 的同一物品 `3825237804` 描述原始 UTF-8 全文与整改冻结稿逐字匹配：`6604 B`、SHA-256 `95172660fa826ac65bda0b4024ee07a585c465531b61b17221adc295e291843e`。公开页面唯一描述区在去除 BBCode 格式与空白后全文匹配。owner 为 `76561198273714027`，creator app 与 consumer app 均为 `1158310`，visibility 为公开值 `0`；tags 精确为 `Artifacts`、`Events`、`Gameplay`、`1.20 'Crozier'`。原 HTTP body 与排除 Cookie 的响应 headers 均完整保存、未截断，详情见 [summary.json](D:/workspace/ck3-living-artifacts-20261022/environment/promo-description-public-readback-a01/summary.json)。
+
+既有共享 verifier CLI 实际返回 `0`；匿名更新记录页唯一匹配 entry `1792759339`，原版 Notes 经 HTML 解码与换行归一后为 `877 字符 / 23 行`，全文 SHA-256 `852c7ad9817260c8316105024aad00298522cbe70d9f0930f3a1d3277d28dfe0`。本次显式消费正式 `create-final01/change-note.frozen.txt`，没有借旧 `create-a01` 的 674 字符版本通过，也没有重发 Notes。原命令及结果见 [shared-cli-argv.json](D:/workspace/ck3-living-artifacts-20261022/environment/promo-description-public-readback-a01/shared-cli-argv.json)、[verification.json](D:/workspace/ck3-living-artifacts-20261022/environment/promo-description-public-readback-a01/shared-cli/verification.json)。
+
+该独立回读包为 `19 文件 / 223683 B`，无临时文件、future-write `0`；[原件 Pins](D:/workspace/ck3-living-artifacts-20261022/environment/promo-description-public-readback-a01/terminal-pins.json)绑定各份原 HTTP、命令、退出和摘要。存储独立复核数量、字节和 Pins 后，[task-close](D:/workspace/ck3-living-artifacts-20261022/environment/storage-promo-description-public-readback-a01/task-close/20261023T135055548805Z-task-close.json)实际退出 `0`；只关闭该子包，不释放父 other128。
+
+旧两图移除后的空条带见 [SDK 原回读](D:/workspace/ck3-living-artifacts-20261022/release/living-artifacts-promotion-remediation-a01/previews-after-removal-01-call.json)。空条带只说明不合格旧素材已撤除：**普通游玩新图、正式图片上传及正文 `[img]` 嵌入仍未完成**，不能据本次描述与 Notes 回读通过宣称全部宣传整改完成。
