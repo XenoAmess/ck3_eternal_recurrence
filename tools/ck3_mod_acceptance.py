@@ -7,6 +7,8 @@ from __future__ import annotations
 
 import argparse
 import ast
+from collections.abc import Iterator
+from contextlib import AbstractContextManager, contextmanager
 import hashlib
 import importlib
 import importlib.util
@@ -18,6 +20,45 @@ from types import ModuleType
 import re
 import subprocess
 import sys
+
+
+def _case_loaded_sdk_sources_v1(package_root: Path) -> None:
+    for name, module in tuple(sys.modules.items()):
+        if name == "xar_autoplayer" or name.startswith("xar_autoplayer."):
+            filename = getattr(module, "__file__", None)
+            if not isinstance(filename, str) or not Path(filename).resolve().is_relative_to(package_root):
+                raise ValueError("Public case SDK import escaped selected runtime: " + name)
+
+@contextmanager
+def _case_sdk_imports_v1(source_root: Path, environment: object) -> Iterator[Path | None]:
+    """Keep lazy case imports in the same declared SDK as the host subprocess."""
+    if not isinstance(environment, dict) or any(type(key) is not str for key in environment):
+        raise ValueError("Selected runtime import environment must be an object")
+    if "PYTHONPATH" not in environment:
+        # Existing runtimes without a declared Python environment keep their
+        # SDK-free case boundary; no SDK binding is asserted for them.
+        yield None
+        return
+    value = environment["PYTHONPATH"]
+    if not isinstance(value, str) or not value or any(not part for part in value.split(os.pathsep)):
+        raise ValueError("Selected runtime PYTHONPATH must contain explicit paths")
+    declared = tuple(Path(part).resolve() for part in value.split(os.pathsep))
+    source = source_root.resolve()
+    if (source / "ck3_autonomous_player/src/xar_autoplayer").is_dir():
+        source = source / "ck3_autonomous_player/src"
+    package = source / "xar_autoplayer"
+    if not package.is_dir() or source not in declared:
+        raise ValueError("Selected runtime PYTHONPATH does not bind its frozen SDK")
+    _case_loaded_sdk_sources_v1(package)
+    prior = list(sys.path)
+    try:
+        sys.path.insert(0, str(source))
+        yield source
+    finally:
+        try:
+            _case_loaded_sdk_sources_v1(package)
+        finally:
+            sys.path[:] = prior
 
 
 RUNTIME_SCHEMA = "ck3-mod-acceptance-runtime-v1"
@@ -567,7 +608,8 @@ class Selection:
                     if not callable(getattr(module,name,None)):
                         errors.append('Actual case adapter lacks '+name)
                 if callable(getattr(module,'validate_contract',None)):
-                    module.validate_contract(self.adapter_context())
+                    with self.case_imports():
+                        module.validate_contract(self.adapter_context())
             except (ImportError,OSError,ValueError) as error:
                 errors.append('Case adapter: '+str(error))
         if '--frontend-fixture-startup-case-contract' in self.argv:
@@ -641,7 +683,10 @@ class Selection:
                       capability_limit="Source/build evidence only; actual live tool and product gates remain mandatory")
         return result
 
-    def load_adapter(self):
+    def case_imports(self) -> AbstractContextManager[Path | None]:
+        return _case_sdk_imports_v1(self.manifest_path_key(self.manifest['source_root']), self.runtime_environment)
+
+    def load_adapter(self) -> ModuleType:
         if not self.adapter_path:
             raise ValueError('Product case has no implemented business adapter')
         # All product modules share the public client/prepare package. Runtime
@@ -654,8 +699,11 @@ class Selection:
             if str(self.adapter_path.parent) not in package.__path__:
                 package.__path__.append(str(self.adapter_path.parent))
             spec=importlib.util.spec_from_file_location('ck3_mod_acceptance_cases.'+self.adapter_path.stem,self.adapter_path)
+            if spec is None or spec.loader is None:
+                raise ValueError('Selected product case module is unavailable')
             module=importlib.util.module_from_spec(spec);sys.modules[spec.name]=module
-            spec.loader.exec_module(module)
+            with self.case_imports():
+                spec.loader.exec_module(module)
             return module
         finally:
             sys.path.remove(str(self.adapter_path.parent.parent))
@@ -753,7 +801,7 @@ class Selection:
         if r06_scope is not None:result['r06_post_allocate_scope']=r06_scope
         return result
 
-    def prepare(self, inputs_path, output):
+    def prepare(self, inputs_path: Path, output: Path) -> dict[str, object]:
         if self.context:
             raise ValueError('Preparation precedes allocation; do not rewrite allocated input')
         if self.case.get('status')!='ready':
@@ -780,7 +828,8 @@ class Selection:
         context=self.adapter_context(output,inputs.get('case_inputs',{}))
         context.update(run_dir=str(output),state_dir=str(state),run_id=None)
         context['saved_campaign']=inputs.get('saved_campaign',{})
-        result=self.load_adapter().prepare_case(context)
+        with self.case_imports():
+            result=self.load_adapter().prepare_case(context)
         graphics=None
         if 'shader_cache_seed' in inputs:
             from types import SimpleNamespace
@@ -800,12 +849,13 @@ class Selection:
         return {'status':'CASE_PREPARED_NOT_ALLOCATED_NOT_RUN','prepared_case':pin(path),'preparation':result,
                 'effective_budgets':self.effective_budgets,'readiness_policy':self.readiness_policy}
 
-    def verify(self):
+    def verify(self) -> dict[str, object]:
         if not self.context:raise ValueError('Verify requires one actual allocated run context')
         from ck3_mod_acceptance_client import resolve_operator_reviewer
         context=self.adapter_context()
         context['operator_reviewer']=resolve_operator_reviewer(self)
-        result=self.load_adapter().verify_case(context)
+        with self.case_imports():
+            result=self.load_adapter().verify_case(context)
         closed_path=Path(context['output'])/'normal-close-result.json'
         close=read_json(closed_path) if closed_path.is_file() else None
         result.update(normal_close=close)
@@ -819,7 +869,7 @@ class Selection:
         result['product_release_pass']=False
         return result
 
-    def run(self) -> dict:
+    def run(self) -> dict[str, object]:
         result = self.preflight()
         if result["blockers"]:
             raise ValueError("Preflight blocked: " + "; ".join(result["blockers"]))
@@ -854,7 +904,8 @@ class Selection:
             failure=None
             try:
                 client.wait_hold()
-                result['case_result']=adapter.run_case(context,client)
+                with self.case_imports():
+                    result['case_result']=adapter.run_case(context,client)
             except BaseException as error:
                 failure=type(error).__name__+': '+str(error)
                 write_once(client.output/'case-error-preserved.json',{'error':failure,'run_id':self.context['run_id'],
