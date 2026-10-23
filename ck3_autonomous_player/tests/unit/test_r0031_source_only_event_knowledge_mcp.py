@@ -756,5 +756,160 @@ class R0039R0041SourceOnlyKnowledgeTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(driver.calls, [])
 
 
+R0042_SOURCE = "promo/ck3_faith_and_power/episode02/docs/knowledge/r0042-events-source-analysis-12004.json"
+R0042_OCCURRENCES = "promo/ck3_faith_and_power/episode02/docs/knowledge/r0042-final-events-occurrence.json"
+R0042_KEYS: tuple[str, ...] = (
+    "pilgrimage_intent.1044", "travel_danger_events.9020",
+    "hajj.3010", "hajj.3020", "hajj.3030", "hajj.3040", "hajj.3001",
+    "pilgrimage.7000",
+)
+
+
+class R0042SourceOnlyKnowledgeTests(unittest.IsolatedAsyncioTestCase):
+    async def test_eight_records_reach_real_mcp_and_preserve_failed_final_batch(self) -> None:
+        batch = obj(json.loads((DOCUMENTS / R0042_OCCURRENCES).read_bytes()))
+        self.assertEqual(batch["machine_id"], "4-8e1c2f1861")
+        self.assertEqual(batch["run_id"], "4-8e1c2f1861--faith-engine--R0042")
+        self.assertIs(batch["batch_terminal_pending"], False)
+        self.assertEqual(batch["offline_input_count"], 15)
+        self.assertEqual(batch["event_receipt_count"], 14)
+        self.assertEqual(batch["interaction_receipt_count"], 0)
+        terminal = obj(batch["terminal"])
+        self.assertEqual(terminal["status"], "PARTIAL_ORIGINAL_FAILURE_PRESERVED")
+        self.assertEqual(terminal["observed_days"], 331)
+        for field in ("arrival_observed", "return_observed", "business_pass",
+            "new_save_performed", "destination_phase_conclusion_observed"):
+            self.assertIs(terminal[field], False)
+        events = obj(batch["events"])
+        self.assertEqual(len(events), 15)
+        self.assertEqual(set(array(batch["new_source_only_keys"])), set(R0042_KEYS))
+        driver = NoGameDriver()
+        async with Client(create_server(driver)) as client:
+            self.assertIsInstance(client.session, ClientSession)
+            for key in R0042_KEYS:
+                with self.subTest(event=key):
+                    reply = await client.session.call_tool("ck3_query_vanilla_event_knowledge_v1",
+                        {"event_definition_key": key, "ck3_build": "1.20.0.4"})
+                    self.assertFalse(reply.is_error)
+                    output = obj(reply.structured_content)
+                    self.assertEqual(output, query_vanilla_event_knowledge_v1(key, "1.20.0.4"))
+                    self.assertEqual(output["status"], "unavailable")
+                    self.assertEqual(output["unavailable_reason"], "source_analyzed_no_occurrence_contract")
+                    self.assertIsNone(output["contract"])
+                    self.assertEqual(json.loads(json.dumps(output, allow_nan=False)), output)
+                    analysis = obj(output["analysis"])
+                    self.assertIs(analysis["source_analysis_completed"], True)
+                    self.assertIsNone(analysis["current_native_legality"])
+                    for field in ("action_ready", "ordinary_auto_consumes",
+                        "full_occurrence_contract_registered", "selection_policy_changed",
+                        "historical_index_is_current_selection_permission",
+                        "historical_evidence_is_current_state"):
+                        self.assertIs(analysis[field], False)
+                    raw = (DOCUMENTS / string(analysis["source_document"])).read_bytes()
+                    self.assertEqual(hashlib.sha256(raw).hexdigest(), analysis["source_document_sha256"])
+                    source = obj(json.loads(raw))
+                    pins = array(analysis["source_pins"])
+                    options = array(analysis["source_options"])
+                    if key in R0042_KEYS[:2]:
+                        authored_events = [obj(value) for value in array(source["events"])]
+                        authored = next(row for row in authored_events if row["event_definition_key"] == key)
+                        self.assertEqual(pins, authored["source_pins"])
+                        self.assertEqual(options, authored["source_options"])
+                        self.assertEqual(analysis["source_document"], R0042_SOURCE)
+                    else:
+                        if key == "pilgrimage.7000":
+                            authored_pins = [
+                                {"game_relative_path": string(obj(value)["path"]).replace("\\", "/").split("/game/", 1)[1],
+                                 "bytes": obj(value)["bytes"], "sha256": obj(value)["sha256"]}
+                                for value in array(source["source_pins"])]
+                            self.assertEqual(len(options), 2)
+                            first_authored = obj(array(source["source_options"])[0])
+                            self.assertIn(obj(options[0])["source_key"], array(first_authored["source_name_variants"]))
+                        else:
+                            authored_pins = [
+                                {"game_relative_path": obj(value)["game_relative_path"],
+                                 "bytes": obj(value)["bytes"], "sha256": obj(value)["sha256"]}
+                                for value in array(source["sources"])]
+                            chain = [obj(value) for value in array(obj(source["hajj"])["ordinary_ritual_chain"])]
+                            authored = next(row for row in chain if row["id"] == key)
+                            main_pin = next(obj(value) for value in pins if
+                                obj(value)["game_relative_path"] ==
+                                "events/activities/pilgrimage_activity/hajj_events.txt")
+                            self.assertEqual(main_pin["relevant_lines"], [authored["lines"]])
+                        for pin in pins:
+                            row = obj(pin)
+                            self.assertIn({name: row[name] for name in
+                                ("game_relative_path", "bytes", "sha256")}, authored_pins)
+                    for value in options:
+                        self.assertIs(obj(value)["historical_R31_selected"], False)
+                    observations = obj(output["observations"])
+                    self.assertIs(observations["registry_consumption_succeeded_live"], False)
+                    occurrence = obj(events[key])
+                    actual = obj(occurrence["actual"])
+                    self.assertEqual(observations["actual"], actual)
+                    self.assertEqual(analysis["occurrence_document"], R0042_OCCURRENCES)
+                    displayed = array(occurrence["displayed_options"])
+                    if key == "pilgrimage.7000":
+                        self.assertIs(actual["submission_attempted"], False)
+                        for field in ("selected_native_option_index", "ack_accepted",
+                            "old_instance_gone_in_independent_snapshot", "after"):
+                            self.assertIsNone(actual[field])
+                        milestone = obj(obj(actual["milestone_before_option"])["actual"])
+                        self.assertEqual(milestone["definition_key"], key)
+                        self.assertEqual(milestone["instance_id"], 17)
+                        self.assertEqual(milestone["actor_id"], 15893)
+                        self.assertIs(milestone["hajjaj"], True)
+                        self.assertIs(milestone["pilgrim"], False)
+                    else:
+                        self.assertIs(actual["submission_attempted"], True)
+                        self.assertIs(actual["ack_accepted"], True)
+                        self.assertIs(actual["old_instance_gone_in_independent_snapshot"], True)
+                        self.assertEqual(actual["selected_native_option_index"],
+                            obj(displayed[0])["native_option_index"])
+                    count = occurrence["snapshot_option_count"]
+                    if type(count) is not int:
+                        raise ValueError("Exact integer option count required")
+                    decision = recommend_registered_vanilla_event_option_v1(
+                        {**obj(occurrence["typed_scope_projection"]), "options": displayed},
+                        played_character_id=15893, snapshot_option_count=count, ck3_build="1.20.0.4")
+                    self.assertEqual(decision["status"], "not_registered")
+                    self.assertIsNone(decision["selected_native_option_index"])
+                    self.assertIsNone(decision["selected_option_number"])
+            walk = obj(events["hajj.3020"])
+            self.assertEqual(obj(walk["actual"])["selected_native_option_index"], 1)
+            self.assertEqual(obj(array(walk["displayed_options"])[0])["native_option_index"], 1)
+            hunger = obj(events["travel_danger_events.9020"])
+            self.assertEqual(obj(hunger["actual"])["selected_native_option_index"], 0)
+            self.assertEqual(obj(array(hunger["displayed_options"])[0])["native_option_index"], 0)
+        self.assertEqual(driver.calls, [])
+
+    async def test_new_keys_reject_missing_wrong_and_extra_fields_without_gameplay(self) -> None:
+        driver = NoGameDriver()
+        async with Client(create_server(driver)) as client:
+            self.assertIsInstance(client.session, ClientSession)
+            for key in R0042_KEYS:
+                invalid: tuple[dict[str, object], ...] = (
+                    {}, {"event_definition_id": key, "ck3_build": "1.20.0.4"},
+                    {"event_definition_key": True, "ck3_build": "1.20.0.4"},
+                    {"event_definition_key": 3020.0, "ck3_build": "1.20.0.4"},
+                    {"event_definition_key": key, "ck3_build": None},
+                    {"event_definition_key": key, "ck3_build": "1.20.0.4",
+                     "selected_native_option_index": 1},
+                )
+                for payload in invalid:
+                    with self.subTest(event=key, payload=payload):
+                        reply = await client.session.call_tool("ck3_query_vanilla_event_knowledge_v1", payload)
+                        self.assertTrue(reply.is_error)
+            reply = await client.session.call_tool("ck3_query_vanilla_event_knowledge_v1",
+                {"event_definition_key": "hajj.r0042_unresearched", "ck3_build": "1.20.0.4"})
+            self.assertFalse(reply.is_error)
+            unknown = obj(reply.structured_content)
+            self.assertEqual(unknown["unavailable_reason"], "event_definition_key_not_registered")
+            unknown_analysis = unknown["analysis"]
+            self.assertTrue(unknown_analysis is None or
+                obj(unknown_analysis).get("source_analysis_completed") is not True)
+        self.assertEqual(driver.calls, [])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

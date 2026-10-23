@@ -6,8 +6,12 @@ below are authored test inputs, never another observation of the game or AI.
 from __future__ import annotations
 
 import copy
+import ast
+import hashlib
 import json
+import os
 from pathlib import Path
+import subprocess
 import sys
 import tempfile
 from types import SimpleNamespace
@@ -41,6 +45,21 @@ def source_fixture() -> dict[str, object]:
     value = obj(json.loads(path.read_text(encoding='utf-8')))
     if value.get('schema') != 'ck3-r11-failed-resource-closure-source-excerpt-v1':
         raise ValueError('Source excerpt schema drifted')
+    return value
+
+
+def recorded_source_fixture() -> dict[str, object]:
+    path = Path(__file__).parent / 'fixtures/ck3_recorded_actual_public_wait_r0042.json'
+    value = obj(json.loads(path.read_text(encoding='utf-8')))
+    if value.get('schema') != 'ck3-recorded-actual-public-wait-source-excerpt-v1':
+        raise ValueError('Recorded source excerpt schema drifted')
+    leaves, pins = obj(value['leaves']), obj(value['source_pins'])
+    for name, raw in leaves.items():
+        ref = obj(pins[name])
+        if name.endswith('.py'):
+            data = string(raw).encode('utf-8')
+            if len(data) != ref['bytes'] or hashlib.sha256(data).hexdigest() != ref['sha256']:
+                raise ValueError('Actual recorded producer source pin differs')
     return value
 
 
@@ -153,6 +172,184 @@ class SplitPublicClosureTests(unittest.TestCase):
                 patch.object(Path, 'stat', stat):
             return obj(allocation.previous_failed_live_resource_closure(self.run_dir, self.freeze, self.close,
                 self.keeper, self.release_path, self.bus))
+
+    def install_recorded_producer(self) -> None:
+        """Run the actual wrapper's publication tail against harmless real children.
+
+        Selection, Steam and game launch are deliberately outside this excerpt.
+        The machine, paths and child results are authored; original R42 bytes and
+        source SHA remain separately pinned in the immutable JSON fixture.
+        """
+        fixture = recorded_source_fixture()
+        leaves = obj(fixture['leaves'])
+        tree = ast.parse(string(leaves['root_execute_r0042.operation.py']))
+        tails: list[ast.With] = []
+        for node in ast.walk(tree):
+            if isinstance(node, ast.With):
+                for index, statement in enumerate(node.body):
+                    if isinstance(statement, ast.Assign) and len(statement.targets) == 1 and \
+                            isinstance(statement.targets[0], ast.Name) and statement.targets[0].id == 'child':
+                        node.body = node.body[index:]
+                        tails.append(node)
+        if len(tails) != 1:
+            raise ValueError('Unique actual Popen publication tail required')
+        tail = tails[0]
+        declaration = tail.body[1]
+        if not isinstance(declaration, ast.Assign) or not isinstance(declaration.value, ast.Dict):
+            raise ValueError('Actual producer receipt declaration required')
+        declaration.value.values[1] = ast.Constant(value=self.machine)
+        prelude = """from pathlib import Path
+from datetime import datetime,timezone
+import sys,subprocess,os,json,time
+mode=sys.argv[1];argv=json.loads(sys.argv[2]);base=Path(sys.argv[3])
+REPO=Path.cwd();env=dict(os.environ);stem=mode+'-'+sys.argv[4]
+start=base/(stem+'.STARTED.actual.json');exitp=base/(stem+'.EXIT.actual.json')
+t=time.monotonic_ns()
+"""
+        source = prelude + ast.unparse(ast.fix_missing_locations(ast.Module(body=[tail], type_ignores=[])))
+        source += '\nraise SystemExit(code)\n'
+        producer = self.root / 'authored-public-producer.py'
+        producer.write_text(source, encoding='utf-8', newline='\n')
+        self.refs['public_command_producer'] = pin(producer)
+        base = self.root / 'recorded'
+        base.mkdir()
+        allocation_argv = obj(self.leaves['allocate_command'])['argv']
+        if not isinstance(allocation_argv, list):
+            raise ValueError('Allocation argv required')
+        attempt = string(allocation_argv[allocation_argv.index('--attempt') + 1])
+        for mode, code in (('run', 2), ('allocate', 0)):
+            raw_argv = obj(self.leaves[mode + '_command'])['argv']
+            if not isinstance(raw_argv, list) or any(not isinstance(arg, str) for arg in raw_argv):
+                raise ValueError('Authored public argv required')
+            argv = [string(arg) for arg in raw_argv]
+            argv[0] = sys.executable
+            entry = Path(argv[4])
+            entry.parent.mkdir(parents=True, exist_ok=True)
+            entry.write_text("import sys\nraise SystemExit(2 if sys.argv[1]=='run' else 0)\n",
+                             encoding='utf-8', newline='\n')
+            packet = subprocess.run([sys.executable, '-B', '-X', 'utf8', str(producer), mode,
+                json.dumps(argv), str(base), attempt], cwd=self.root, env=dict(os.environ),
+                capture_output=True, check=False, timeout=20)
+            self.assertEqual(packet.returncode, code, packet.stderr.decode('utf-8'))
+            for key, suffix in (('started', '.STARTED.actual.json'), ('wait', '.EXIT.actual.json'),
+                                ('stdout', '.stdout.json'), ('stderr', '.stderr.txt')):
+                self.refs[mode + '_' + key] = pin(base / (mode + '-' + attempt + suffix))
+            for key in ('command', 'intent', 'process', 'completion', 'argv'):
+                self.refs.pop(mode + '_' + key, None)
+        self.bundle['public_wait_format'] = 'recorded-actual-command-started-exit-v1'
+        self.write(self.close, self.bundle)
+
+    def test_actual_r42_recorded_sources_and_receipts_roundtrip(self) -> None:
+        fixture = recorded_source_fixture()
+        self.assertEqual(json.loads(json.dumps(fixture)), fixture)
+        leaves = obj(fixture['leaves'])
+        machine = string(fixture['machine_id'])
+        producer = allocation.validate_recorded_public_producer(
+            string(leaves['root_execute_r0042.operation.py']).encode('utf-8'), machine)
+        for mode, code in (('run', 2), ('allocate', 0)):
+            if mode not in ('run', 'allocate'):
+                raise ValueError('Explicit operation required')
+            result = allocation.validate_recorded_public_wait(
+                leaves[mode + '-a2026102308.EXIT.actual.json'],
+                leaves[mode + '-a2026102308.STARTED.actual.json'], producer, machine, mode, code)
+            self.assertGreater(result['pid'], 0)
+
+    def test_real_recorded_producer_reaches_whole_failed_live_consumer(self) -> None:
+        self.install_recorded_producer()
+        result = obj(self.check()['failure_cleanup'])
+        self.assertIs(result['normal_close_qualified'], False)
+        self.assertIs(result['business_pass'], False)
+        self.assertIs(result['actual_retained_os0'], False)
+        self.assertIsNone(result['original_ck3_exit_code'])
+        self.assertEqual(result['original_host_exit_code'], 1)
+        self.assertEqual(result['native_reported_ck3_exit_code'], 1)
+
+    def test_recorded_receipt_fields_types_and_chronology_reject_drift(self) -> None:
+        fixture = recorded_source_fixture()
+        leaves = obj(fixture['leaves'])
+        first = obj(leaves['run-a2026102308.STARTED.actual.json'])
+        final = obj(leaves['run-a2026102308.EXIT.actual.json'])
+        producer = allocation.validate_recorded_public_producer(
+            string(leaves['root_execute_r0042.operation.py']).encode('utf-8'), string(fixture['machine_id']))
+        changes: list[dict[str, object]] = [
+            {'pid': True}, {'pid': 17480.0}, {'pid': 9007199254740992},
+            {'exit_code': True}, {'exit_code': 0}, {'actual_original_popen_wait': 1},
+            {'original_wait_pending': None}, {'shell': 0}, {'extra': None},
+            {'started_monotonic_ns': 313325580079600}, {'started_monotonic_ns': '0313325580079600'},
+            {'finished_monotonic_ns': '18446744073709551616'}, {'finished_monotonic_ns': '1'},
+            {'finished_at_utc': '2026-10-23T09:00:00+00:00'},
+            {'finished_at_utc': '2026-10-23T12:21:37'}, {'argv': ['different.exe']},
+            {'machine_id': 'different-machine'}, {'schema': 'different-schema'},
+        ]
+        for change in changes:
+            with self.subTest(change=change), self.assertRaises(ValueError):
+                allocation.validate_recorded_public_wait({**final, **change}, first,
+                    producer, string(fixture['machine_id']), 'run', 2)
+        for key in final:
+            missing = dict(final)
+            missing.pop(key)
+            with self.subTest(missing=key), self.assertRaises(ValueError):
+                allocation.validate_recorded_public_wait(missing, first,
+                    producer, string(fixture['machine_id']), 'run', 2)
+        allocate = obj(leaves['allocate-a2026102308.STARTED.actual.json'])
+        allocate_end = obj(leaves['allocate-a2026102308.EXIT.actual.json'])
+        for bad in (None, True, '0001', '1', '18446744073709551616'):
+            with self.subTest(deadline=bad), self.assertRaises(ValueError):
+                allocation.validate_recorded_public_wait(
+                    {**allocate_end, 'root_quit_deadline_monotonic_ns': bad},
+                    {**allocate, 'root_quit_deadline_monotonic_ns': bad},
+                    producer, string(fixture['machine_id']), 'allocate', 0)
+
+    def test_recorded_producer_deadline_parameters_are_exact_and_receipt_bound(self) -> None:
+        fixture = recorded_source_fixture()
+        leaves = obj(fixture['leaves'])
+        original = string(leaves['root_execute_r0042.operation.py'])
+        machine = string(fixture['machine_id'])
+        source = original.replace('11400*1000000000', '16800*1000000000').replace(
+            '10800*1000000000', '16200*1000000000')
+        producer = allocation.validate_recorded_public_producer(source.encode('utf-8'), machine)
+        self.assertEqual(producer, {'custody_duration_ns': 16800000000000,
+                                    'root_quit_duration_ns': 16200000000000})
+        first = obj(leaves['allocate-a2026102308.STARTED.actual.json'])
+        final = obj(leaves['allocate-a2026102308.EXIT.actual.json'])
+        with self.assertRaisesRegex(ValueError, 'producer duration'):
+            allocation.validate_recorded_public_wait(final, first, producer, machine, 'allocate', 0)
+        for expression in ('str(t)', 'str(t+True*1000000000)', 'str(t+1.0*1000000000)',
+                           'str(t-11400*1000000000)', 'str(t+0*1000000000)',
+                           'str(t+11400*1000)', 'str(other+11400*1000000000)'):
+            changed = original.replace('str(t+11400*1000000000)', expression)
+            with self.subTest(expression=expression), self.assertRaises(ValueError):
+                allocation.validate_recorded_public_producer(changed.encode('utf-8'), machine)
+
+    def test_recorded_producer_source_and_original_live_public_pids_are_checked(self) -> None:
+        self.install_recorded_producer()
+        for mode in ('run', 'allocate'):
+            waited = obj(json.loads(Path(string(obj(self.refs[mode + '_wait'])['path'])).read_bytes()))
+            self.live = {integer(waited['pid'])}
+            with self.subTest(mode=mode), self.assertRaisesRegex(ValueError, 'still present'):
+                self.check()
+        self.live = set()
+        source = Path(string(obj(self.refs['public_command_producer'])['path']))
+        source.write_bytes(source.read_bytes().replace(b'code = child.wait()', b'code = 0'))
+        self.refs['public_command_producer'] = pin(source)
+        self.write(self.close, self.bundle)
+        with self.assertRaisesRegex(ValueError, 'original Popen/wait'):
+            self.check()
+
+    def test_recorded_whole_consumer_preserves_case_and_keeper_guards(self) -> None:
+        self.install_recorded_producer()
+        for mode, flag in (('run', '--case'), ('run', '--run-context'), ('allocate', '--keeper-output')):
+            first_path = Path(string(obj(self.refs[mode + '_started'])['path']))
+            final_path = Path(string(obj(self.refs[mode + '_wait'])['path']))
+            first, final = obj(json.loads(first_path.read_bytes())), obj(json.loads(final_path.read_bytes()))
+            argv = [string(arg) for arg in first['argv']] if isinstance(first['argv'], list) else []
+            argv[argv.index(flag) + 1] = str(self.root / 'wrong')
+            self.reseal(mode + '_started', {**first, 'argv': argv})
+            self.reseal(mode + '_wait', {**final, 'argv': argv})
+            with self.subTest(flag=flag), self.assertRaises((ValueError, FileNotFoundError)):
+                self.check()
+            self.reseal(mode + '_started', first)
+            self.reseal(mode + '_wait', final)
 
     def test_actual_r11_fields_roundtrip_through_whole_consumer(self) -> None:
         self.assertEqual(json.loads(json.dumps(self.source)), self.source)

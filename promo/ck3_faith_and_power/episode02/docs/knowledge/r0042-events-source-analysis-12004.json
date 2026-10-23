@@ -1,0 +1,223 @@
+{
+  "schema": "xar.ck3.r0042-events-source-analysis/v1",
+  "machine_id": "4-8e1c2f1861",
+  "exact_build": "1.20.0.4",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "status": "SOURCE_REVIEWED_CANDIDATE_NOT_REGISTERED_IN_FROZEN_SOURCE",
+  "batch_terminal_pending": true,
+  "scope": {
+    "through_event_instance_id": 10,
+    "offline_inputs_seen": 8,
+    "new_source_definitions": 2,
+    "source_or_runtime_modified": false,
+    "native_calls": false,
+    "tests_run": false
+  },
+  "events": [
+    {
+      "event_definition_key": "pilgrimage_intent.1044",
+      "title": "预兆：悲哀的景象",
+      "source_pins": [
+        {
+          "game_relative_path": "events/activities/pilgrimage_activity/pilgrimage_intent_events.txt",
+          "bytes": 57928,
+          "sha256": "3ddbde37f029845aa265aae749fe131bed571f02a5c4faac5d0074a615b39878",
+          "relevant_lines": [
+            [
+              1249,
+              1303
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/modifiers/00_activity_pilgrimage_modifiers.txt",
+          "bytes": 8263,
+          "sha256": "b4b087debf7975b02fdc30d3244a04aca634e3e26b2fafa4c42057e71a1c1580",
+          "relevant_lines": [
+            [
+              214,
+              223
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_intent_events_l_simp_chinese.yml",
+          "bytes": 18043,
+          "sha256": "7f2a61394920a1c0675185905e4bb8b3ce431e9b24122267c2e7e5d2663a5b1a",
+          "relevant_lines": [
+            [
+              82,
+              85
+            ]
+          ]
+        }
+      ],
+      "source_options": [
+        {
+          "source_key": "pilgrimage_intent.1044.a",
+          "historical_native_index": 0,
+          "historical_label": "有东西冲我来了！",
+          "effects": [
+            "Add pilgrimage_failure_omen_modifier for20years: stress_gain_mult+0.2; health_negative is its icon, not a health reduction.",
+            "Create bad_prey_omen_memory. Request stress_and_fulfillment_impact: base medium gain; cynical minor loss; brave/trusting minor gain. Actual amount depends on the character and modifiers.",
+            "R42 native0 was submitted once; same-date independent snapshot shows stress0->20, wallets unchanged. Modifier and memory membership were not read back."
+          ],
+          "visibility": "R42 instance7: only rendered0/native0 shown and enabled.",
+          "historical_R31_selected": false
+        },
+        {
+          "source_key": "pilgrimage_intent.1044.b",
+          "historical_native_index": 1,
+          "historical_label": "我将神不知鬼不觉地摧毁我的敌人！",
+          "effects": [
+            "Requires lifestyle_mystic. Add pilgrimage_hostile_omen_modifier for20years: intrigue+1 and hostile_scheme_phase_duration_add=medium_scheme_phase_duration_bonus_value.",
+            "Create bad_but_good_prey_omen_memory. Request base/brave minor stress loss, compassionate/forgiving minor stress gain."
+          ],
+          "visibility": "Source ordinal1/native1 was hidden in R42; this is no current permission.",
+          "historical_R31_selected": false
+        }
+      ],
+      "notes": [
+        "This is an omen follow-up event, not arrival, a ritual completion, or Pilgrim/Hajjaj reward.",
+        "No direct travel delay effect is present in this definition.",
+        "dangerous_local_game saved scope resolves as character root15893 in this actual window; its animal-like name is not proof of an animal character or invalid scope."
+      ]
+    },
+    {
+      "event_definition_key": "travel_danger_events.9020",
+      "title": "紧急情况的消瘦",
+      "source_pins": [
+        {
+          "game_relative_path": "events/travel_events/travel_danger_events_oltner.txt",
+          "bytes": 27455,
+          "sha256": "086725937d1b89b82be5f957aef461f95bf0810ff506abf09c2031c779f3ab3d",
+          "relevant_lines": [
+            [
+              442,
+              798
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/scripted_effects/00_secret_effects.txt",
+          "bytes": 69449,
+          "sha256": "4b86ba489602089969293c810a6aaee81ea5d213f7c0456f051ae8785addf7f9",
+          "relevant_lines": [
+            [
+              87,
+              108
+            ],
+            [
+              268,
+              294
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/scripted_effects/00_travel_effects.txt",
+          "bytes": 1867,
+          "sha256": "47a4b46a479a2215ffeda4b6d7b8d9226928f6ec0dc70c289b4e0e2fe2b5ec0e",
+          "relevant_lines": [
+            [
+              9,
+              31
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/scripted_effects/04_dlc_ep2_tour_effects.txt",
+          "bytes": 17935,
+          "sha256": "180a9e666317ba7e58525d11848544bca1bf2b6e6062b0fe1110f555abdf328e",
+          "relevant_lines": [
+            [
+              330,
+              367
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/modifiers/00_travel_modifiers.txt",
+          "bytes": 8782,
+          "sha256": "b7a1365a14341bf647339cb843753e5da4f8d9990c52c92d6e10422a8530a2f1",
+          "relevant_lines": [
+            [
+              316,
+              321
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "localization/simp_chinese/event_localization/travel_events/travel_danger_events_oltner_l_simp_chinese.yml",
+          "bytes": 7676,
+          "sha256": "fbd5fd212ff052c3b0396946e3d7b5144d1bd9327bb7f475ed0efb0efdad983b",
+          "relevant_lines": [
+            [
+              15,
+              27
+            ]
+          ]
+        }
+      ],
+      "source_options": [
+        {
+          "source_key": "travel_danger_events.9020.cannibal",
+          "historical_native_index": 0,
+          "historical_label": "啊，马哈茂德，你愿意为阿拉伯帝国献出生命吗？",
+          "effects": [
+            "Shown if sadistic/arbitrary/gluttonous/callous or already cannibal. Requests death_vanished for saved emaciated_character, not root. R42 saved target is19281; death was not independently read back.",
+            "Call give_cannibal_secret_or_trait_effect on root and every entourage member. For someone not already cannibal: an available advanced ruler may learn tenet_ritual_cannibalism; if cannibal is shunned/criminal under own or liege Rite, add secret_cannibal and conditional personal spiritual-fulfillment loss (medium if shunned, major if criminal); otherwise add cannibal trait.",
+            "Reveal each entourage member's previously unknown cannibal secret to root, and root's previously unknown cannibal secret to each entourage member. Does not unconditionally give every character a public cannibal trait.",
+            "R42 native0 was submitted once, ACK accepted and old instance gone; root alive/same actor, wallets and stress unchanged at same date. Target death, secret/trait, known-tenet and fulfillment values were not independently read back."
+          ],
+          "visibility": "R42 instance10 rendered0/native0 shown/enabled; actual first displayed option, not source .a.",
+          "historical_R31_selected": false
+        },
+        {
+          "source_key": "travel_danger_events.9020.hunter",
+          "historical_native_index": 1,
+          "historical_label": "某处一定有猎物！",
+          "effects": [
+            "Requires lifestyle_hunter. Weighted70 branch requests5 hunter-track XP; weighted30 branch gives root and every entourage member emaciated_modifier3years and current_weight-50.",
+            "emaciated_modifier: health-0.5, negate_health_penalty_add-1, prowess-5. These are source branch effects, not R42 outcomes."
+          ],
+          "visibility": "Source ordinal1/native1 hidden in R42.",
+          "historical_R31_selected": false
+        },
+        {
+          "source_key": "travel_danger_events.9020.a",
+          "historical_native_index": 2,
+          "historical_label": "真希望那些话能吃……",
+          "effects": [
+            "Root and every entourage member receive emaciated_modifier3years and hidden current_weight-50.",
+            "emaciated_modifier: health-0.5, negate_health_penalty_add-1, prowess-5. Arrogant medium stress/fulfillment gain input."
+          ],
+          "visibility": "R42 rendered1/native2 shown/enabled, not selected.",
+          "historical_R31_selected": false
+        },
+        {
+          "source_key": "travel_danger_events.9020.b",
+          "historical_native_index": 3,
+          "historical_label": "我们剩的那点全都归我！",
+          "effects": [
+            "Root loses major prestige and major piety (dynamic script values). Every entourage member receives emaciated_modifier3years, current_weight-50 and cruelty_opinion toward root with opinion-35.",
+            "Humility/compassionate medium and content/just minor stress/fulfillment gain inputs. No root emaciated modifier is directly assigned in this option."
+          ],
+          "visibility": "R42 rendered2/native3 shown/enabled, not selected.",
+          "historical_R31_selected": false
+        }
+      ],
+      "notes": [
+        "Trigger requires available adult traveller, eligible entourage and desert/sea/army/occupation/siege danger, with specified culture exclusions. Event-local cooldown1month is not pilgrimage cooldown.",
+        "Immediate selects emaciated_character with weight=current_weight and requests traveler danger XP10-15 only if lifestyle_traveler already owned; journey_perk adds2 to each bound (12-17). No new traveler trait grant. Actual XP was not read back.",
+        "Immediate mp_delay_travel_plan90 and after mp_resume_travel_plan are guarded by has_multiple_players in shared helper; do not claim a single-player90-day delay.",
+        "No direct ordinary Pilgrim/Hajjaj trait grant or conversion is present."
+      ]
+    }
+  ],
+  "boundaries": [
+    "Existing source-only knowledge for1050,1060,4010,1040,9010 is reused; historical_char_creation_events.1 keeps dedicated policy/native2.",
+    "Registry recommendation not_registered does not by itself mean source analysis absent. No new policy or recommendation permission is conferred.",
+    "Actual first-displayed native index is window-specific: R42 instance8 uses native1;9020 first is native0, which is cannibal; never replace first-displayed binding with an assumed0.",
+    "Future shared integration must use existing SourceOnlyRecord plus actual MCP whole-module and strict checks after Root releases frozen Source."
+  ]
+}
