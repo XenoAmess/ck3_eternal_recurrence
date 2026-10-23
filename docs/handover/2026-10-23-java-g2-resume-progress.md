@@ -74,3 +74,23 @@
 - 通用Java原始采集引擎严格编译及32/32回归通过，沿用共享owned-process执行路径；`J/build/resume-current-20261023/common-1/finance_capture_profile/control/GENERIC-DELIVERY01.json`为16164 B / `b833d177df1b65a885508241d28a17ae033478cbd0b4c40c36b6d9c036a7acdd`。真实原夹具采集尚待完整工具资格与genuine编译manifest。资源最终审计78项：20项可选真实原件、1项POM映射、45项缺实际捕获、10项来源漂移、2目标共用待压缩原件。旧原件恢复不能消除新producer与consumer的schema差异。
 
 当前SOURCE13/Runtime07使用已资格tools06b完整六件包，新Window04至2026-10-23T04:30Z；只更新实际执行窗口，不重建未改工具来续期。旧窗口与回执不改，D4GiB/Z32MiB原包内重分、新增take0。后继顺序为两POM新整图编译采集、真实9-class读回与原夹具采集、完整宿主/SDK及Native接线验收，达到可运行条件立即进行Java地图回执实机纵向验证。目前基础八M软件证据8/8，统一宿主八域HTTP0/8，新Java实机保存日0；历史5628/10950、T0和UNKNOWN不重放边界不变，未给出新的无证据开测承诺。
+
+## 13:08 工作区清点上限与真实恢复链补记
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`，观察范围2026-10-23T04:00Z至05:08Z。用户指出100,000项上限过小，本轮据实际文件与目录数分别修正共享实现；旧失败和源图均保持原有资格状态。
+
+- source05物化和独审实际通过：1932文件、1199目录、27261794 logical B、36048328 native B，22项反例通过；Plan13仅统一parent与local-service两份POM的JNA依赖。独审manifest为`J/artifacts/fullg2-source05-independent-audit-metadata/COMPLETE-SOURCE-TYPED-MANIFEST01.json`，283690 B / `af7322f32631d4922585d84ec5e57af4496faa80b48e6bea1067eb5f5f2e853b`。
+- 随后的capture04实际31/31 Maven项目SUCCESS、内层0、Job0，109.2847164s、峰793071616 B，但外层清点守卫仍判RED。原共享工作区walker将文件与目录合计套用100000项限制；实际只读清点为81931文件加24005目录，105936项，无链接或读错。原回执`J/logs/build-java-g2-fullcapture04.json`为1202374 B / `1a0bbafe51a62ee4f31160f56727d2831ef542fd896d7f5ee786a6e9b77a664e`。没有合格TestCompilationManifest、部署闭包或finance九类资格，tests仍NOT_RUN。
+- tools08冻结共享有限上限为250000个regular files、131072目录、381072总条目。源码/SDK数量限制、字节预算、120秒、链接和身份守卫分别保留；早期有限版本22项及最终版本两项边界回归实际通过，最终完整22项仍由整Maven执行。新图106 tools加39 Host，共145物理文件、290个选定/物化引用；Root已独立重算全部引用和六件driver依赖。source map为`D:/codex-ck3-demos/2026-10-23-sharedwire-tools106-source08/SOURCE-MAP01.json`，221956 B / `1bb2ec4d8464dc5cf6d86d0ece1fb1bdefe9006f23f0dc88437645566ab70a4b`。Root于05:03Z启动唯一整Maven，终态尚待实际读回，不能以局部通过代替。
+- 为让旧已资格06b工具完成08引导，先按通用存储策略核实唯一精确派生根`J/build/java-g2-fullcapture04`：6244文件、1391目录、107363832 B实际AllocationSize，加目录guard共113061368 B。全部逐文件SHA、128位身份和时间先封存、删除前复验后精确回收；source05、compiled snapshot04、原Maven日志/RED回执、lease和06b完整工具均保留，仍被治理/Realm实际classpath引用的build01/02继续保护。原04产物身份和二进制现已不可读取，不制造同名替代证据。归档清单`J/logs/DERIVED-CAPTURE04-OUTPUT-RETENTION-MANIFEST01.json.gz`为458098 B / `d5865cdb51f3f4efb8fece1ed47dd8ca7cb9dd7404f1031d7ac9db049314be2b`；实际执行记录1396 B / `de42f593f68b124bce12d7d65868e3e1bca080c885dc6972cf9090157d65d7de`，记录路径为`J/logs/DERIVED-CAPTURE04-OUTPUT-RETENTION-EXECUTION01.json`。05:03Z启动08前实数98844条目。删除guard charge与卷剩余净变化不混为可归因物理释放量，不重复扣款。
+- Native current46项软件资格仍保留；后继held-owner locator实际先遇Win32=50、修复后又setup timeout，两个RED均Job0，联合后继33项未执行。有限同child线程栈诊断已冻结，等待工具引导结束后实际定位，未用延时或跳过冒充Native通过。恢复链新发现真实environment manifest不在旧Prepared quote.files内；Java真实cold-profile verifier、原writer锁内成员检查及分阶段一次性资源桥正在接线。新增固定raw只读接口仅调用原raw_transport_snapshot，避免在旧episode核验前调用会执行reducer的CAP/SEM；该后继尚未取得真实游戏资格。
+
+新Window05至2026-10-23T05:30Z。同原4GiB包内正式重分build2080MiB、scratch1216MiB，M1输出104MiB/全槽输出224MiB为待新standing生效的前瞻上限，原RAM/12槽及新增take0不变，不提前使用未生效cap。当前重新扫描已自然排除被删除04产物；保留原件及全部TMP/growth的完整前瞻4113428936 B小于4GiB。`J/logs/RESUME-CURRENT-CAPACITY14-WINDOW05.json`为24599 B / `461ec2d2a5f70fd31817020ebd979cd6609813e6100057df2b7e627ba49ffb7e`。后继是08完整终态与新包自身读回、以同一source05实际重新执行capture05，再做genuine九类读回/原夹具采集；不能追认旧capture04。基础八M软件8/8、统一宿主八域HTTP0/8、Java新增保存日0的口径不变。
+
+### 13:14 tools08 完整终态与最小后继
+
+05:09:33Z完整回执实际RED：40套343测试，342通过、1失败、0错误/跳过；Root outer1、Maven1、Job0、stopnull，147.0669116s、峰1098072064 B，source106及snapshot106均MATCH、部署闭包为空。`J/logs/build-java-tools106-firstcut08.json`为65315 B / `247b0de3af4df66b79355bd0952962f3c8470039d2d1033eec7fb343d03f862a`。唯一失败为WindowsJobOwnedStdioTest的子Java继承父Maven的JAVA_TOOL_OPTIONS，stderr含精确JVM提示前缀；新清点回归无失败。09仅隔离该测试子进程环境，并显式保留受控内存及tmp/JNA tmp，原stderr精确断言和生产守卫不改，冻结08不热改；仍需新版本完整Maven，不能采用08运行包。
+
+Root已先完整保存08全部80份原始Surefire XML/txt，归档解读逐文件SHA再验后，精确回收无当前消费者的08派生build根；source08、snapshot08、lease、全部Maven stdout及RED原回执保留。该根673文件、32目录，6924064 B AllocationSize加131072 B目录guard；原二进制身份和路径现已不可读取。归档`J/logs/DERIVED-TOOLS08-ACTUAL-SUREFIRE-REPORTS01.tar.gz`为26587 B / `289d56d150ea7aca0ee3a43b3186f57092de2f3ad7ed7230e29e401ea50fae1a`，完整身份/SHA清单52526 B / `55b93ed18ef5c47a47540b0e89ee563feb3b1e7392677b38656605c872028bad`，位于`J/logs/DERIVED-TOOLS08-OUTPUT-RETENTION-MANIFEST01.json.gz`；实际删除记录`J/logs/DERIVED-TOOLS08-OUTPUT-RETENTION-EXECUTION01.json`为1206 B / `d9e78c8c69ba93109beea1e4b2e31a5eb208b649f3be8874ada273ff5da43d13`。删除前全673文件/32目录再次校验身份、内容及精确集合，并实核212份源码/快照引用与原完整六件工具仍可读取且MATCH。未以根名或失败状态作为清理依据，实际原报告没有丢弃。
+
+九类capture来源闭包已由三个owner独立核实：实际caller完整六件包、真正compiler driver完整六件包、source05被编译的领域九类各按合同独立验证，不要求source05的build-tools源码与外部driver同代。因此09完整资格及自身读回后可直接在同source05实际采集，无须先为此九类创建整图overlay。完整SDK/Host39仍须后续atomic新图和整step；目前默认CiBootstrap也未实际供应fixtureRequest，不能把standalone工具测试冒充Fresh/canonical已运行。
