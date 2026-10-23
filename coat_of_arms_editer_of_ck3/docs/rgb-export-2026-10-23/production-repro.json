@@ -1,0 +1,59 @@
+{
+  "schema": "xar.coa.rgb-production-repro.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T10:46:23.680Z",
+  "asset_pack": "ck3-1.19.0.6-base-complete-42p-1578e-8aux",
+  "fixed_sha256": "f4163f6fcdbfc03a9f5ec5c3a7c73c35271ecea1deb65ba7014353354b3430af",
+  "reported_sha256": "0b5a579d433359191913efcc29d499aec0f9024b8cce7a3d1d3589da40904e8e",
+  "refinement_receipt": {
+    "contract": "exact-dds-fixed-budget-coordinate-replacement-v1",
+    "deterministic": true,
+    "renderer": "complete-decoded-dds",
+    "evaluationBudget": 19,
+    "objectiveEvaluations": 19,
+    "evaluatedMoves": 18,
+    "acceptedMoves": [
+      {
+        "stageId": "reported-color-step",
+        "pass": 0,
+        "lossBefore": 8.027777777777779,
+        "lossAfter": 0,
+        "move": {
+          "kind": "color",
+          "blockIndex": 0,
+          "instanceIndex": 0,
+          "flatInstanceIndex": 0,
+          "colorIndex": 0,
+          "before": "rgb { 197 197 197 }",
+          "after": "rgb { 205 197 197 }"
+        }
+      }
+    ],
+    "acceptedArchiveCount": 1,
+    "lossBefore": 8.027777777777779,
+    "lossAfter": 0,
+    "drawnInstancesBefore": 1,
+    "drawnInstancesAfter": 1,
+    "keptIncumbent": false,
+    "stages": [
+      {
+        "id": "reported-color-step",
+        "lossBefore": 8.027777777777779,
+        "lossAfter": 0,
+        "passesPlanned": 1,
+        "passesAttempted": 1,
+        "evaluatedMoves": 18,
+        "acceptedMoves": 1,
+        "terminationReason": "passes-complete"
+      }
+    ],
+    "terminationReason": "evaluation-budget"
+  },
+  "fixed_diagnostics": [],
+  "reported_diagnostics": [
+    {
+      "severity": "error",
+      "message": "colored_emblem 1 color1 只能是命名颜色或 rgb/hsv 三分量字面量；rgb 分量必须为 0–255 整数"
+    }
+  ]
+}

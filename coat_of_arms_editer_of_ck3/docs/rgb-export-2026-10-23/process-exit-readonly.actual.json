@@ -1,0 +1,42 @@
+{
+  "schema": "xar.coa.exact-process-exit-readonly.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T11:07:46.368559+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0244",
+  "launch_record": {
+    "path": "C:\\coa-rgb-20261023\\native-a01\\state\\control\\ck3.json",
+    "bytes": 257,
+    "sha256": "36bf7b4741e3cb990311f32eb212a1d545bc80138edd0ad129ae1982dacf5011"
+  },
+  "expected_binding": {
+    "pid": 31884,
+    "creation_date": "20261023104009.088428+000",
+    "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "nonce": "c73f4659e78b470da756c36f6d229e02",
+    "parent_pid": 1952
+  },
+  "observation": {
+    "pid": 31884,
+    "access_mask": 1052672,
+    "open_process_succeeded": true,
+    "creation_filetime_100ns": "134372256090884288",
+    "creation_utc_dmtf_microseconds": "20261023104009.088428+000",
+    "creation_submicrosecond_100ns_remainder": 8,
+    "creation_binding_matched": true,
+    "image_path": null,
+    "image_binding_matched": null,
+    "wait_zero_result": 0,
+    "native_exit_code": 0,
+    "exit_status": "exited",
+    "exact_bound_zero_exit": false,
+    "failures": [
+      {
+        "api": "QueryFullProcessImageNameW",
+        "windows_error": 31
+      }
+    ],
+    "handle_closed": true
+  },
+  "process_mutations": 0,
+  "window_operations": 0
+}

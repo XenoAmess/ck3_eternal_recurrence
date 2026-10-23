@@ -1,0 +1,67 @@
+{
+  "schema": "xar.coa.rgb-stock-ui-business-acceptance.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T11:04:32.205Z",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0244",
+  "source_commit": "14a1c054fbd58d09f8a0b294b62e13b6890537db",
+  "game_version": "1.20.0.4",
+  "steam_build": "25734779",
+  "mechanism": "stock_CoatOfArmsDesigner_Paste_Copy_guarded_UI_no_legacy_RVA",
+  "fractional_paste": "disabled_with_no_design_clipboard_error",
+  "fractional_readback_unchanged": true,
+  "fixed_paste_visible": true,
+  "native_semantics_equal_generated_source": true,
+  "native_copy_paste_copy_byte_equal": true,
+  "accepted_color1": "rgb { 205 197 197 }",
+  "accepted_texture": "ce_block_02.dds",
+  "accepted_instance": {
+    "position": [
+      0.5,
+      0.5
+    ],
+    "scale": [
+      0.7,
+      0.7
+    ],
+    "rotation": 0,
+    "depth": 619
+  },
+  "screenshot_reviews": [
+    "ui/fractional-rejected.png",
+    "ui/fixed-accepted.png",
+    "ui/coa-finished.png"
+  ],
+  "inputs": {
+    "fixed": {
+      "path": "C:/coa-rgb-20261023/fixed-generated.txt",
+      "bytes": 457,
+      "sha256": "f4163f6fcdbfc03a9f5ec5c3a7c73c35271ecea1deb65ba7014353354b3430af"
+    },
+    "fractional": {
+      "path": "C:/coa-rgb-20261023/reported-fractional.txt",
+      "bytes": 472,
+      "sha256": "0b5a579d433359191913efcc29d499aec0f9024b8cce7a3d1d3589da40904e8e"
+    },
+    "baseline": {
+      "path": "C:/coa-rgb-20261023/ui/baseline-native-copy.txt",
+      "bytes": 193,
+      "sha256": "eb71b26cc29112c0eb231881b504d293e9992b5bd16c72269710bb1a5211a582"
+    },
+    "rejectedReadback": {
+      "path": "C:/coa-rgb-20261023/ui/fractional-post-native-copy.txt",
+      "bytes": 193,
+      "sha256": "eb71b26cc29112c0eb231881b504d293e9992b5bd16c72269710bb1a5211a582"
+    },
+    "acceptedReadback": {
+      "path": "C:/coa-rgb-20261023/ui/fixed-native-copy.txt",
+      "bytes": 336,
+      "sha256": "65621c65378de02cc71d1deaaf30a52434f376699f136acad777cfca5c0e857d"
+    },
+    "roundtripReadback": {
+      "path": "C:/coa-rgb-20261023/ui/roundtrip-native-copy.txt",
+      "bytes": 336,
+      "sha256": "65621c65378de02cc71d1deaaf30a52434f376699f136acad777cfca5c0e857d"
+    }
+  },
+  "infrastructure": "legacy_navigation_capabilities_unavailable_on_exact_1_20_DLL_not_claimed_as_PASS"
+}
