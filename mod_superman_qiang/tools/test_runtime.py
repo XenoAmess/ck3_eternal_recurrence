@@ -322,13 +322,116 @@ class SupermanNaturalFixtureTests(unittest.TestCase):
         self.assertIn("sxad_simulate_natural_character_effect = yes", event)
         self.assertIn("sxad_simulate_natural_pair_effect = { PARTNER = scope:sxanf_dead_b }", event)
         self.assertRegex(event, r"age\s*=\s*16[^\n]+save_scope_as\s*=\s*sxanf_minor_b")
-        self.assertEqual(len(re.findall(r"scope:sxanf_minor_b\s*=\s*\{[^{}]*age\s*<\s*18", event)), 3)
+        self.assertEqual(len(re.findall(r"scope:sxanf_minor_b\s*=\s*\{[^{}]*age\s*<\s*18", event)), 4)
         for marker_value in report["expected_pass_markers"]:
             self.assertIn(f'debug_log = "{marker_value}"', event)
         for reference in report["readback_character_references"]:
             self.assertIn("name = " + reference, event)
         for source in (event, on_action, effects):
             validate_static.effect_assignments(source)
+
+    def test_real_saved_death_and_zero_encoding_remain_distinct(self) -> None:
+        # Bounded, byte-pinned records copied from failed native R0025 setup.
+        # These prove the saved representation; they do not pass gameplay cells.
+        sys.path.insert(0, str(Path(prepare_live_fixture.__file__).resolve().parents[2] / "tools"))
+        from inspect_ck3_save_player_topology import _numeric_records
+        from inspect_ck3_save_character_scope import _anonymous_records, _variable_record
+        samples = Path(prepare_live_fixture.__file__).resolve().parents[1] / "tools/testdata/natural_simulation_r0025"
+        raw: object = json.loads((samples / "manifest.json").read_text(encoding="utf-8"))
+        if not isinstance(raw, dict) or raw.get("schema") != "sxanf-bounded-real-save-samples-v1":
+            raise ValueError("Bounded real save sample manifest required")
+        self.assertEqual(raw["machine_id"], "desktop-3fevhd2-1c74096080")
+        self.assertEqual(raw["source_save_sha256"], "4ada6f49c6a830390977c134e886b47516e0bd4a829cfeaca6bd26ca6b814614")
+        expected = (
+            (65844, False, 768, "939c092493fbf86b9eeb35edf7b427767a949d0c0ffba8db94064b4d3fd6f45a"),
+            (65855, True, 340, "2aa936530937879f747909d88d2b118c4efbb6849d7874403fc592706961a206"),
+        )
+        for identity, dead, size, digest in expected:
+            path = samples / f"character-{identity}.txt"
+            content = path.read_bytes()
+            self.assertEqual((len(content), hashlib.sha256(content).hexdigest()), (size, digest))
+            records = list(_numeric_records(path))
+            self.assertEqual(len(records), 1)
+            level, actual_id, block = records[0]
+            self.assertEqual((level, actual_id), (1, identity))
+            self.assertEqual("dead_data={" in block, dead)
+            self.assertEqual("alive_data={" in block, not dead)
+            variables = {}
+            for record in _anonymous_records(block):
+                parsed = _variable_record(record)
+                if parsed is not None:
+                    variables[parsed[0]] = parsed[1]
+            if dead:
+                self.assertNotIn("variables={", block)
+                self.assertNotIn("sxad_sex_experience", variables)
+            else:
+                value = variables["sxad_sex_experience"]
+                self.assertIs(value["present"], True)
+                self.assertEqual(value["type"], "value")
+                self.assertIsNone(value["identity"])
+                self.assertEqual(value["number"], 0.0)
+                self.assertNotIn("sxad_natural_month", variables)
+
+    def test_dead_missing_guard_and_failed_setup_option_use_real_emitter(self) -> None:
+        output = self.root / "fixture"
+        self.prepare(output)
+        source = (output / "events/sxanf_events.txt").read_text(encoding="utf-8-sig")
+        assignments = validate_static.effect_assignments(source)
+        baseline = NaturalScriptHarness.block(NaturalScriptHarness.child(assignments, "sxanf.2"))
+        immediate = NaturalScriptHarness.block(NaturalScriptHarness.child(baseline, "immediate"))
+        comparisons = [
+            NaturalScriptHarness.block(NaturalScriptHarness.child(NaturalScriptHarness.block(node), "limit"))
+            for node in immediate if node.key == "if"
+        ]
+        self.assertEqual(len(comparisons), 13)
+        self.assertEqual(tuple(check[0] for check in comparisons[:12]), comparisons[12])
+        self.assertEqual(source.count("SXANF: BASELINE_PREDICATE_OK "), 12)
+        self.assertEqual(source.count("SXANF: FAIL baseline-predicate "), 12)
+        pending = list(assignments)
+        dead_checks: list[tuple[validate_static.EffectAssignment, ...]] = []
+        while pending:
+            node = pending.pop()
+            if isinstance(node.value, tuple):
+                if node.key == "scope:sxanf_dead_b" and any(
+                        child.key == "is_alive" and child.value == "no" for child in node.value):
+                    dead_checks.append(node.value)
+                pending.extend(node.value)
+        # Three business stages and the independently logged setup predicate.
+        self.assertEqual(len(dead_checks), 4)
+        character = NaturalCharacter("fixture", alive=False)
+        world = NaturalScriptHarness({"dead": character})
+        for check in dead_checks:
+            self.assertTrue(world.condition(check, "dead", None))
+            character.variables["sxad_sex_experience"] = 0
+            self.assertFalse(world.condition(check, "dead", None))
+            character.variables.clear()
+            character.alive = True
+            self.assertFalse(world.condition(check, "dead", None))
+            character.alive = False
+        options = [NaturalScriptHarness.block(node) for node in baseline if node.key == "option"]
+        self.assertEqual(len(options), 2)
+        for valid in (0, 1):
+            root = NaturalCharacter("fixture", variables={"sxanf_baseline_valid": valid})
+            world = NaturalScriptHarness({"root": root})
+            admitted = [
+                option for option in options if world.condition(
+                    NaturalScriptHarness.block(NaturalScriptHarness.child(option, "trigger")), "root", None)
+            ]
+            self.assertEqual(len(admitted), 1)
+            selected = admitted[0]
+            self.assertEqual(NaturalScriptHarness.scalar(NaturalScriptHarness.child(selected, "name")),
+                             "sxanf_begin" if valid else "sxanf_close")
+            self.assertEqual(any(node.key == "trigger_event" for node in selected), bool(valid))
+        self.assertIn("name = sxanf_baseline_valid value = 0", source)
+        case_path = Path(prepare_live_fixture.__file__).resolve().parents[2] / "tools/ck3_mod_acceptance_cases/superman_qiang_natural_simulation.json"
+        case_text = case_path.read_text(encoding="utf-8")
+        for requirement in (
+                "actual_eleven_living_experience_zero_and_dead_b_experience_absent_baseline_save_and_independent_readback",
+                "actual_three_living_rejected_experience_zero_and_dead_b_experience_absent",
+                "final_saved_eight_eligible_experience_two_three_living_rejected_zero_and_dead_b_experience_absent"):
+            self.assertIn('"' + requirement + '"', case_text)
+        self.assertNotIn('"actual_minor_and_dead_experience_zero"', case_text)
+        self.assertNotIn('"final_saved_eight_eligible_characters_experience_two_and_four_rejected_characters_zero"', case_text)
 
     def test_integer_and_unrun_fields_are_validated_before_writing(self) -> None:
         contract = self.templates / "cases.json"

@@ -9,8 +9,14 @@ import ast
 import copy
 import hashlib
 import json
+import math
 from pathlib import Path
 import re
+import shutil
+from dataclasses import dataclass
+from typing import Literal, Protocol, TypeAlias
+
+from ck3_mod_acceptance_background_types import FilePin, JsonObject, json_object
 
 
 def require(value, message):
@@ -67,7 +73,7 @@ def resolve_post_start(context):
     return context
 
 
-def prepare_case(context):
+def _prepare_fixture_case(context):
     from ck3_mod_acceptance_prepare import invoke_fixture_prepare, materialize_fixture_profile
     context = resolve_post_start(context)
     config = context['case_contract']
@@ -173,7 +179,7 @@ def root_phase(client, context, name, requirements, snapshot, source_contract):
     return response
 
 
-def run_case(context, client):
+def _run_fixture_case(context, client):
     compiled, binding = compiled_contract(context)
     config = compiled['config']
     frame = client.snapshot(require_event_free=False)
@@ -263,7 +269,7 @@ def run_case(context, client):
     return facts
 
 
-def verify_case(context):
+def _verify_fixture_case(context):
     path = Path(context['output']) / 'generic-product-case-result.json'
     if not path.is_file():
         return {'case_contract_qualified': False, 'gui_contract_qualified': False,
@@ -284,3 +290,688 @@ def verify_case(context):
     result.update(business_pass=False, product_release_pass=False,
                   verification_scope=compiled['config']['acceptance_scope'])
     return result
+
+
+class SavedReadbackClient(Protocol):
+    def snapshot(self, allow_actor_change: bool = False,
+                 require_event_free: bool = True) -> JsonObject: ...
+    def retain_process(self) -> JsonObject: ...
+    def root_checkpoint(self, name: str, request: JsonObject,
+                        reserve: int = 90) -> JsonObject: ...
+    def checkpoint(self, name: str, value: JsonObject) -> object: ...
+
+
+SAVED_READBACK_MODE: Literal['monthly-natural-v1'] = 'monthly-natural-v1'
+SAVED_READBACK_REQUIREMENTS = (
+    'actual_new_pid_and_creation_identity_bound_to_this_loaded_run',
+    'same_source_checkpoint_player_date_and_twelve_full_character_ids',
+    'source_and_cold_saves_independently_decoded_and_exactly_compared',
+    'eight_experience_two_three_alive_zero_dead_absent_and_exact_month_partner_lists',
+    'zero_calendar_days_zero_fixture_initializations_zero_business_replay',
+)
+
+
+@dataclass(frozen=True)
+class MissingValue:
+    state: Literal['missing'] = 'missing'
+
+    def to_json(self) -> JsonObject:
+        return {'state': self.state}
+
+
+@dataclass(frozen=True)
+class NullValue:
+    state: Literal['null'] = 'null'
+
+    def to_json(self) -> JsonObject:
+        return {'state': self.state}
+
+
+@dataclass(frozen=True)
+class IntegerValue:
+    value: int
+    state: Literal['value'] = 'value'
+
+    def to_json(self) -> JsonObject:
+        return {'state': self.state, 'value': self.value}
+
+
+@dataclass(frozen=True)
+class PartnerValues:
+    value: tuple[int, ...]
+    state: Literal['value'] = 'value'
+
+    def to_json(self) -> JsonObject:
+        return json_object({'state': self.state, 'value': list(self.value)})
+
+
+ScalarState: TypeAlias = MissingValue | NullValue | IntegerValue
+PartnerState: TypeAlias = MissingValue | NullValue | PartnerValues
+
+
+def _sr_absent(row: JsonObject, label: str) -> MissingValue | NullValue | None:
+    if row.get('state') == 'missing':
+        _sr_keys(row, {'state'}, label)
+        return MissingValue()
+    if row.get('state') == 'null':
+        _sr_keys(row, {'state'}, label)
+        return NullValue()
+    if row.get('state') != 'value':
+        raise ValueError(label + ' must preserve missing, null or value explicitly')
+    _sr_keys(row, {'state', 'value'}, label)
+    return None
+
+
+def _sr_scalar_from_validated_json(value: object, label: str) -> ScalarState:
+    row = json_object(value)
+    absent = _sr_absent(row, label)
+    return absent if absent is not None else IntegerValue(_sr_integer(row['value'], label, positive=False))
+
+
+def _sr_partners_from_validated_json(value: object, label: str) -> PartnerState:
+    row = json_object(value)
+    absent = _sr_absent(row, label)
+    if absent is not None:
+        return absent
+    identities = tuple(sorted(_sr_character_id(item, label + ' full character ID')
+                              for item in _sr_list(row['value'], label)))
+    if len(identities) != len(set(identities)):
+        raise ValueError(label + ' contains duplicate partners')
+    return PartnerValues(identities)
+
+
+@dataclass(frozen=True)
+class SavedReadbackMode:
+    reference_names: tuple[str, ...]
+    expected_experience: dict[str, ScalarState]
+    pairs: tuple[tuple[str, str], ...]
+    passive_fixture_files: tuple[str, ...]
+    product_file_count: int
+    mode: Literal['monthly-natural-v1'] = SAVED_READBACK_MODE
+
+    @classmethod
+    def from_validated_json(cls, value: object) -> SavedReadbackMode:
+        row = json_object(value)
+        _sr_keys(row, {'mode', 'reference_names', 'expected_experience', 'pairs',
+                       'passive_fixture_files', 'product_file_count'}, 'Saved-readback mode')
+        count = _sr_integer(row['product_file_count'], 'Exact source runtime file count')
+        if row['mode'] != SAVED_READBACK_MODE or count != 35:
+            raise ValueError('Monthly saved readback requires its explicit mode and exact 35-file product projection')
+        names = tuple(_sr_text(item, 'Root reference') for item in _sr_list(row['reference_names'], 'Root references'))
+        if len(names) != 12 or len(set(names)) != 12 or any(not name.startswith('sxanf_ref_') for name in names):
+            raise ValueError('Exactly twelve unique explicit fixture references required')
+        expected = json_object(row['expected_experience'])
+        _sr_keys(expected, set(names), 'Experience expectations')
+        experiences = {name: _sr_scalar_from_validated_json(expected[name], 'Expected experience') for name in names}
+        values = tuple(experiences.values())
+        if (values.count(IntegerValue(2)) != 8 or values.count(IntegerValue(0)) != 3
+                or values.count(MissingValue()) != 1):
+            raise ValueError('Eight eligible XP2, three living XP0 and one dead missing-XP expectation required')
+        pairs: list[tuple[str, str]] = []
+        paired: list[str] = []
+        for raw in _sr_list(row['pairs'], 'Eligible pairs'):
+            pair = tuple(_sr_text(item, 'Pair reference') for item in _sr_list(raw, 'Pair'))
+            if (len(pair) != 2 or pair[0] == pair[1]
+                    or any(experiences.get(name) != IntegerValue(2) for name in pair)):
+                raise ValueError('Each eligible pair must bind two distinct expected XP2 references')
+            pairs.append((pair[0], pair[1]))
+            paired.extend(pair)
+        if len(paired) != 8 or len(set(paired)) != 8:
+            raise ValueError('Exactly four disjoint eligible pairs required')
+        files = tuple(_sr_text(item, 'Passive fixture member') for item in _sr_list(row['passive_fixture_files'], 'Passive fixture files'))
+        if len(files) != len(set(files)) or 'descriptor.mod' not in files:
+            raise ValueError('Explicit unique passive fixture inventory including descriptor required')
+        for name in files:
+            if Path(name).is_absolute() or '..' in Path(name).parts or name.startswith(('tools/', 'docs/', 'common/on_action/')):
+                raise ValueError('Passive dependencies cannot include a registrar or escape their source')
+        return cls(names, experiences, tuple(pairs), files, count)
+
+    def to_json(self) -> JsonObject:
+        return json_object({'mode': self.mode, 'reference_names': list(self.reference_names),
+            'expected_experience': {name: state.to_json() for name, state in self.expected_experience.items()},
+            'pairs': [list(pair) for pair in self.pairs], 'passive_fixture_files': list(self.passive_fixture_files),
+            'product_file_count': self.product_file_count})
+
+
+@dataclass(frozen=True)
+class CharacterReadback:
+    character_id: int
+    alive: bool
+    experience: ScalarState
+    month: ScalarState
+    partners: PartnerState
+
+    @classmethod
+    def from_validated_json(cls, value: object) -> CharacterReadback:
+        row = json_object(value)
+        _sr_keys(row, {'character_id', 'alive', 'experience', 'month', 'partners'}, 'Character readback')
+        alive = row['alive']
+        if not isinstance(alive, bool):
+            raise ValueError('Actual boolean alive state required')
+        return cls(_sr_character_id(row['character_id'], 'Full character ID'), alive,
+                   _sr_scalar_from_validated_json(row['experience'], 'Experience'),
+                   _sr_scalar_from_validated_json(row['month'], 'Month'),
+                   _sr_partners_from_validated_json(row['partners'], 'Partners'))
+
+    def to_json(self) -> JsonObject:
+        return json_object({'character_id': self.character_id, 'alive': self.alive,
+            'experience': self.experience.to_json(), 'month': self.month.to_json(), 'partners': self.partners.to_json()})
+
+
+@dataclass(frozen=True)
+class TwelveCharacters:
+    records: dict[str, CharacterReadback]
+
+    @classmethod
+    def from_validated_json(cls, value: object, mode: SavedReadbackMode) -> TwelveCharacters:
+        rows = json_object(value)
+        _sr_keys(rows, set(mode.reference_names), 'Saved readback twelve references')
+        records = {name: CharacterReadback.from_validated_json(rows[name]) for name in mode.reference_names}
+        if len({record.character_id for record in records.values()}) != 12:
+            raise ValueError('Unique full IDs required')
+        for name, record in records.items():
+            if (record.experience != mode.expected_experience[name]
+                    or (isinstance(record.experience, MissingValue) and record.alive)
+                    or (isinstance(record.experience, IntegerValue) and not record.alive)):
+                raise ValueError('Actual saved experience does not match the monthly final checkpoint')
+        for first_name, second_name in mode.pairs:
+            first, second = records[first_name], records[second_name]
+            if (first.month != second.month or not isinstance(first.month, IntegerValue) or first.month.value <= 0
+                    or first.partners != PartnerValues((second.character_id,))
+                    or second.partners != PartnerValues((first.character_id,))):
+                raise ValueError('Exact current-month bidirectional single-partner lists required')
+        months = {record.month.value for name, record in records.items()
+                  if mode.expected_experience[name] == IntegerValue(2) and isinstance(record.month, IntegerValue)}
+        if len(months) != 1:
+            raise ValueError('All eight eligible characters must retain the same final calendar month')
+        return cls(records)
+
+    def to_json(self) -> JsonObject:
+        return json_object({name: record.to_json() for name, record in self.records.items()})
+
+
+@dataclass(frozen=True)
+class SavedReadbackOrigin:
+    machine_id: str
+    run_id: str
+    process_id: int
+    checkpoint: FilePin
+    player_id: int
+    date_raw: int
+    readback: FilePin
+    characters: TwelveCharacters
+
+    @classmethod
+    def from_validated_json(cls, value: object, mode: SavedReadbackMode,
+                            current_run: object) -> SavedReadbackOrigin:
+        import ck3_live_run_id as ids
+        row = json_object(value)
+        _sr_keys(row, {'schema', 'machine_id', 'run_id', 'reviewer', 'process_id', 'checkpoint',
+                       'player_id', 'date_raw', 'readback', 'characters'}, 'Saved-readback origin')
+        machine = ids.current_machine_id()
+        run = _sr_text(row['run_id'], 'Origin run ID')
+        sequence = run.rsplit('--R', 1)[-1]
+        canonical_run = (re.fullmatch(r'[0-9]{4,}', sequence) is not None
+                         and ids.format_run_id(machine, 'superman-qiang', int(sequence), external_mod=True) == run)
+        if (row['schema'] != 'ck3-mod-acceptance-saved-readback-origin-v1' or row['machine_id'] != machine
+                or row['reviewer'] != '/root' or not canonical_run or run == current_run):
+            raise ValueError('Actual same-machine distinct source run and explicit Root origin required')
+        checkpoint = _sr_checked(row['checkpoint'])
+        if Path(checkpoint['path']).suffix.casefold() != '.ck3' or checkpoint['bytes'] <= 0:
+            raise ValueError('Actual immutable source .ck3 checkpoint required')
+        _, readback = _sr_read(row['readback'])
+        return cls(machine, run, _sr_integer(row['process_id'], 'Origin process ID'), checkpoint,
+                   _sr_character_id(row['player_id'], 'Origin player full ID'),
+                   _sr_integer(row['date_raw'], 'Origin saved date'), readback,
+                   TwelveCharacters.from_validated_json(row['characters'], mode))
+
+    def to_json(self) -> JsonObject:
+        return json_object({'schema': 'ck3-mod-acceptance-saved-readback-origin-v1', 'reviewer': '/root',
+            'machine_id': self.machine_id, 'run_id': self.run_id, 'process_id': self.process_id,
+            'checkpoint': self.checkpoint, 'player_id': self.player_id, 'date_raw': self.date_raw,
+            'readback': self.readback, 'characters': self.characters.to_json()})
+
+
+def _sr_creation_time(value: object) -> int | float:
+    if (type(value) not in (int, float) or not isinstance(value, (int, float))
+            or not math.isfinite(value) or value <= 0):
+        raise ValueError('Actual retained process creation time must be finite and positive')
+    return value
+
+
+@dataclass(frozen=True)
+class RetainedProcess:
+    pid: int
+    create_time: int | float
+
+    @classmethod
+    def from_validated_json(cls, value: object) -> RetainedProcess:
+        row = json_object(value)
+        if row.get('retained_synchronize_query_handle_acquired') is not True:
+            raise ValueError('Actual retained process identity must remain independently qualified')
+        return cls(_sr_integer(row.get('pid'), 'Retained actual cold PID'), _sr_creation_time(row.get('create_time')))
+
+    def to_json(self) -> JsonObject:
+        return {'pid': self.pid, 'create_time': self.create_time, 'retained_synchronize_query_handle_acquired': True}
+
+
+@dataclass(frozen=True)
+class ColdProcessEvidence:
+    run_id: str
+    machine_id: str
+    pid: int
+    create_time: int | float
+    birth_filetime: str
+
+    @classmethod
+    def from_validated_json(cls, value: object) -> ColdProcessEvidence:
+        row = json_object(value)
+        birth = _sr_text(row.get('birth_filetime'), 'Actual cold creation FILETIME')
+        if re.fullmatch(r'[1-9][0-9]*', birth) is None or not 0 < int(birth) < 2**64:
+            raise ValueError('Actual creation FILETIME must be a canonical decimal uint64 string')
+        return cls(_sr_text(row.get('run_id'), 'Process run'), _sr_text(row.get('machine_id'), 'Process machine'),
+                   _sr_integer(row.get('pid'), 'Independent actual cold PID'), _sr_creation_time(row.get('create_time')), birth)
+
+    def to_json(self) -> JsonObject:
+        return {'run_id': self.run_id, 'machine_id': self.machine_id, 'pid': self.pid,
+                'create_time': self.create_time, 'birth_filetime': self.birth_filetime}
+
+
+@dataclass(frozen=True)
+class SavedReadbackContract:
+    mode: SavedReadbackMode
+    origin: SavedReadbackOrigin
+    origin_pin: FilePin
+    product_projection: FilePin
+    passive_source_pins: dict[str, FilePin]
+
+    def to_json(self, context: JsonObject) -> JsonObject:
+        return json_object({'schema': 'ck3-mod-acceptance-saved-readback-contract-v1',
+            'product': context['product'], 'case': context['case'], 'config': context['case_contract'],
+            'origin': self.origin.to_json(), 'origin_pin': self.origin_pin,
+            'product_projection': self.product_projection, 'passive_source_pins': self.passive_source_pins,
+            'requirements': list(SAVED_READBACK_REQUIREMENTS), 'whole_product_release_pass': False})
+
+
+@dataclass(frozen=True)
+class SavedColdReadback:
+    source_checkpoint: FilePin
+    source_readback: FilePin
+    cold_checkpoint: FilePin
+    cold_readback: FilePin
+    cold_checkpoint_response: FilePin
+    process_evidence: FilePin
+    process_id: int
+    player_id: int
+    date_raw: int
+    characters: TwelveCharacters
+
+    @classmethod
+    def from_validated_json(cls, value: object, mode: SavedReadbackMode) -> SavedColdReadback:
+        row = json_object(value)
+        _sr_keys(row, {'source_checkpoint', 'source_readback', 'cold_checkpoint', 'cold_readback',
+                       'cold_checkpoint_response', 'process_evidence', 'process_id', 'player_id', 'date_raw', 'characters'}, 'Saved-readback response')
+        return cls(_sr_checked(row['source_checkpoint']), _sr_checked(row['source_readback']),
+                   _sr_checked(row['cold_checkpoint']), _sr_read(row['cold_readback'])[1],
+                   _sr_checked(row['cold_checkpoint_response']), _sr_checked(row['process_evidence']),
+                   _sr_integer(row['process_id'], 'Actual cold PID'), _sr_character_id(row['player_id'], 'Cold player full ID'),
+                   _sr_integer(row['date_raw'], 'Cold saved date'), TwelveCharacters.from_validated_json(row['characters'], mode))
+
+    def to_json(self) -> JsonObject:
+        return json_object({'source_checkpoint': self.source_checkpoint, 'source_readback': self.source_readback,
+            'cold_checkpoint': self.cold_checkpoint, 'cold_readback': self.cold_readback,
+            'cold_checkpoint_response': self.cold_checkpoint_response, 'process_evidence': self.process_evidence,
+            'process_id': self.process_id, 'player_id': self.player_id, 'date_raw': self.date_raw,
+            'characters': self.characters.to_json()})
+
+
+@dataclass(frozen=True)
+class SavedRootResponse:
+    run_id: str
+    evidence: tuple[FilePin, ...]
+    readback: SavedColdReadback
+
+    @classmethod
+    def from_validated_json(cls, value: object, mode: SavedReadbackMode) -> SavedRootResponse:
+        row = json_object(value)
+        if row.get('reviewer') != '/root':
+            raise ValueError('Saved-readback Root response crossed actual run/reviewer')
+        assertions = json_object(row.get('assertions'))
+        if set(assertions) != set(SAVED_READBACK_REQUIREMENTS) or any(item is not True for item in assertions.values()):
+            raise ValueError('All exact saved-readback Root assertions require boolean true')
+        evidence = tuple(_sr_checked(item) for item in _sr_list(row.get('evidence'), 'Root evidence'))
+        if not evidence:
+            raise ValueError('Actual independent saved-readback evidence required')
+        return cls(_sr_text(row.get('run_id'), 'Root response run'), evidence,
+                   SavedColdReadback.from_validated_json(row.get('saved_readback'), mode))
+
+    def to_json(self) -> JsonObject:
+        return json_object({'run_id': self.run_id, 'reviewer': '/root',
+            'assertions': {name: True for name in SAVED_READBACK_REQUIREMENTS},
+            'evidence': list(self.evidence), 'saved_readback': self.readback.to_json()})
+
+
+@dataclass(frozen=True)
+class NativeSavedCheckpoint:
+    date_raw: int
+    checkpoint: FilePin
+
+    @classmethod
+    def from_validated_json(cls, value: object) -> NativeSavedCheckpoint:
+        row = json_object(value)
+        if row.get('status') != 'saved' or row.get('episode_projection') != 'native_campaign':
+            raise ValueError('Actual native cold SAVE result required; ACK is insufficient')
+        return cls(_sr_integer(row.get('date_raw'), 'Actual cold SAVE date'),
+                   _sr_checked({'path': _sr_text(row.get('path'), 'Actual cold SAVE path'),
+                                'bytes': _sr_integer(row.get('size'), 'Actual cold SAVE bytes'),
+                                'sha256': _sr_text(row.get('sha256'), 'Actual cold SAVE SHA256')}))
+
+
+
+def _sr_text(value: object, label: str) -> str:
+    if not isinstance(value, str) or not value or value.strip() != value:
+        raise ValueError(label + ' must be a nonempty canonical string')
+    return value
+
+
+def _sr_integer(value: object, label: str, *, positive: bool = True) -> int:
+    if type(value) is not int or not isinstance(value, int) or (positive and value <= 0):
+        raise ValueError(label + ' must be an exact integer; bool and float are rejected')
+    return value
+
+
+def _sr_character_id(value: object, label: str) -> int:
+    identity = _sr_integer(value, label)
+    if identity > 0xffffffff:
+        raise ValueError(label + ' must be an actual complete uint32 CharacterID')
+    return identity
+
+
+def _sr_list(value: object, label: str) -> list[object]:
+    if not isinstance(value, list):
+        raise ValueError(label + ' must be an explicit JSON array')
+    return list(value)
+
+
+def _sr_keys(value: JsonObject, fields: set[str], label: str) -> None:
+    if set(value) != fields:
+        raise ValueError(label + ' has unknown or missing fields')
+
+
+def _sr_pin(path: Path) -> FilePin:
+    before = path.stat()
+    if not path.is_file() or path.is_symlink():
+        raise ValueError('Evidence must be an ordinary pinned file')
+    digest = hashlib.sha256()
+    with path.open('rb') as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b''):
+            digest.update(block)
+    after = path.stat()
+    if (before.st_size, before.st_mtime_ns, before.st_ino) != (after.st_size, after.st_mtime_ns, after.st_ino):
+        raise ValueError('Evidence changed while being pinned')
+    return {'path': str(path.resolve()), 'bytes': after.st_size, 'sha256': digest.hexdigest()}
+
+
+def _sr_checked(value: object) -> FilePin:
+    row = json_object(value)
+    _sr_keys(row, {'path', 'bytes', 'sha256'}, 'Evidence pin')
+    path = Path(_sr_text(row['path'], 'Evidence path'))
+    size = _sr_integer(row['bytes'], 'Evidence bytes', positive=False)
+    sha = _sr_text(row['sha256'], 'Evidence SHA256')
+    if not path.is_absolute() or size < 0 or re.fullmatch(r'[0-9a-f]{64}', sha) is None:
+        raise ValueError('Absolute file path, nonnegative size and lowercase SHA256 required')
+    actual = _sr_pin(path)
+    if actual['bytes'] != size or actual['sha256'] != sha:
+        raise ValueError('Original pinned evidence changed')
+    return actual
+
+
+def _sr_read(value: object) -> tuple[JsonObject, FilePin]:
+    reference = _sr_checked(value)
+    if not 0 < reference['bytes'] <= 16 * 1024 * 1024:
+        raise ValueError('Bounded nonempty JSON evidence required')
+    raw = Path(reference['path']).read_bytes()
+    return json_object(json.loads(raw)), reference
+
+
+def _sr_write(path: Path, value: JsonObject) -> FilePin:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open('x', encoding='utf-8', newline='\n') as stream:
+        json.dump(value, stream, ensure_ascii=False, allow_nan=False, indent=2)
+        stream.write('\n')
+    return _sr_pin(path)
+
+
+def _sr_enabled(context: JsonObject) -> bool:
+    contract = json_object(context.get('case_contract'))
+    if 'saved_readback' not in contract:
+        return False
+    mode = json_object(contract['saved_readback'])
+    if mode.get('mode') != SAVED_READBACK_MODE:
+        raise ValueError('Unknown saved-readback branch; no fixture fallback')
+    return True
+
+
+def _sr_contract(context: JsonObject) -> SavedReadbackMode:
+    contract = json_object(context.get('case_contract'))
+    if (contract.get('product') != context.get('product') or contract.get('case_id') != context.get('case')
+            or context.get('product') != 'superman-qiang'):
+        raise ValueError('Monthly saved-readback contract crossed its canonical product/case')
+    if type(contract.get('maximum_natural_days')) is not int or contract.get('maximum_natural_days') != 0:
+        raise ValueError('Saved readback requires the explicit zero-day branch')
+    return SavedReadbackMode.from_validated_json(contract.get('saved_readback'))
+
+
+def _sr_field(value: object, label: str, *, partners: bool = False) -> ScalarState | PartnerState:
+    return (_sr_partners_from_validated_json(value, label) if partners
+            else _sr_scalar_from_validated_json(value, label))
+
+
+def _sr_characters(value: object, mode: SavedReadbackMode) -> TwelveCharacters:
+    return TwelveCharacters.from_validated_json(value, mode)
+
+
+def _sr_origin(context: JsonObject, mode: SavedReadbackMode) -> tuple[SavedReadbackOrigin, FilePin]:
+    inputs = json_object(context.get('case_inputs'))
+    origin, reference = _sr_read(inputs.get('saved_readback_origin'))
+    return SavedReadbackOrigin.from_validated_json(origin, mode, context.get('run_id')), reference
+
+
+def _sr_prepare(context: JsonObject) -> JsonObject:
+    from ck3_mod_acceptance_prepare import materialize_product_profile, finish_product_profile, _outer_from_inner
+    mode = _sr_contract(context)
+    origin, origin_pin = _sr_origin(context, mode)
+    inputs = json_object(context['case_inputs'])
+    product = Path(_sr_text(inputs.get('product_dir'), 'Product projection')).resolve()
+    passive = Path(_sr_text(inputs.get('passive_fixture_dir'), 'Passive fixture source')).resolve()
+    if product == passive or not (product / 'descriptor.mod').is_file():
+        raise ValueError('Distinct original product and passive dependency projections required')
+    projection, projection_pin = _sr_read(inputs.get('product_projection'))
+    source_files = json_object(projection.get('files'))
+    declared_count = _sr_integer(projection.get('file_count'), 'Source runtime projection count')
+    actual_names = {path.relative_to(product).as_posix() for path in product.rglob('*') if path.is_file()}
+    if (declared_count != mode.product_file_count or len(source_files) != declared_count
+            or set(source_files) != actual_names):
+        raise ValueError('Source runtime projection must bind exactly the actual 35-file product')
+    for name, raw in source_files.items():
+        if Path(name).is_absolute() or '..' in Path(name).parts:
+            raise ValueError('Product runtime projection member escapes its root')
+        reference = _sr_checked(raw)
+        if Path(reference['path']).resolve() != (product / name).resolve():
+            raise ValueError('Product source projection crossed its actual file path')
+        if name.endswith('.txt') and 'on_game_start_after_lobby' in (product / name).read_text(encoding='utf-8-sig'):
+            raise ValueError('Saved product projection cannot contain a cold-start registrar')
+    members = mode.passive_fixture_files
+    sources: dict[str, FilePin] = {}
+    for name in members:
+        source = (passive / name).resolve()
+        if not source.is_relative_to(passive):
+            raise ValueError('Passive dependency escaped original source')
+        reference = _sr_pin(source)
+        if source.suffix.casefold() == '.txt' and 'on_game_start_after_lobby' in source.read_text(encoding='utf-8-sig'):
+            raise ValueError('Saved profile cannot contain a cold-start registrar')
+        sources[name] = reference
+    profile = json_object(materialize_product_profile(context, product, json_object(inputs.get('plain_configuration'))))
+    profile_path = Path(_sr_text(profile.get('profile'), 'Prepared profile'))
+    output = Path(_sr_text(context['output'], 'Preparation output'))
+    target = profile_path / 'mod-content/passive-saved-dependencies'
+    for name, reference in sources.items():
+        destination = target / name
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(reference['path'], destination)
+        copied = _sr_pin(destination)
+        if copied['bytes'] != reference['bytes'] or copied['sha256'] != reference['sha256']:
+            raise ValueError('Passive dependency changed during the profile copy')
+    outer = profile_path / 'mod/passive-saved-dependencies.mod'
+    with outer.open('x', encoding='utf-8', newline='\n') as stream:
+        stream.write(_outer_from_inner(target / 'descriptor.mod', target))
+    enabled = ['mod/product.mod', 'mod/passive-saved-dependencies.mod']
+    (profile_path / 'dlc_load.json').write_text(json.dumps({'enabled_mods': enabled, 'disabled_dlcs': []}) + '\n', encoding='utf-8')
+    product_inventory = _sr_read(profile['product_inventory'])[0]
+    products = _sr_list(product_inventory.get('product_files'), 'Product inventory')
+    products.extend([_sr_pin(outer), *[_sr_pin(target / name) for name in members]])
+    inventory_path = output / 'saved-readback-product-inventory.json'
+    inventory = _sr_write(inventory_path, json_object({'schema': 'ck3-saved-campaign-product-only-profile-v1',
+        'profile_path': str(profile_path.resolve()), 'enabled_mods': enabled, 'product_files': products}))
+    profile['product_inventory'] = json_object(inventory)
+    profile['files'] = json_object({path.relative_to(profile_path).as_posix(): _sr_pin(path)
+                                   for path in sorted(profile_path.rglob('*')) if path.is_file()})
+    compiled = SavedReadbackContract(mode, origin, origin_pin, projection_pin, sources)
+    compiled_path = profile_path / 'saved-readback-contract.json'
+    compiled_pin = _sr_write(compiled_path, compiled.to_json(context))
+    profile['files'] = json_object({path.relative_to(profile_path).as_posix(): _sr_pin(path)
+                                   for path in sorted(profile_path.rglob('*')) if path.is_file()})
+    finished = json_object(finish_product_profile(context, profile, provenance={'kind': 'saved-readback-passive-dependencies',
+        'origin': origin_pin, 'passive_files': sources}))
+    initial = _sr_write(output / 'initial-plan.json', {'steps': []})
+    seed = origin.checkpoint
+    return json_object({'startup': {'mode': 'saved_campaign', 'state_dir': context['state_dir'], 'saved_campaign': {
+        'save': seed['path'], 'bytes': seed['bytes'], 'sha256': seed['sha256'],
+        'player_id': origin.player_id, 'date_raw': origin.date_raw, 'product_inventory': inventory['path']}},
+        'initial_plan': initial, 'profile_preparation': finished, 'assertion_contract': compiled_pin,
+        'files': finished['files'], 'runtime_status': 'NOT_RUN', 'business_contract_applicable': True,
+        'business_pass': False, 'product_release_pass': False})
+
+
+def _sr_compiled(context: JsonObject) -> tuple[SavedReadbackContract, FilePin]:
+    path = Path(_sr_text(context['state_dir'], 'State directory')) / 'profile/saved-readback-contract.json'
+    row, reference = _sr_read(_sr_pin(path))
+    _sr_keys(row, {'schema', 'product', 'case', 'config', 'origin', 'origin_pin', 'product_projection',
+                   'passive_source_pins', 'requirements', 'whole_product_release_pass'}, 'Prepared saved-readback contract')
+    if (row['schema'] != 'ck3-mod-acceptance-saved-readback-contract-v1'
+            or row['product'] != context.get('product') or row['case'] != context.get('case')
+            or row['config'] != context.get('case_contract')
+            or row['requirements'] != list(SAVED_READBACK_REQUIREMENTS)
+            or row['whole_product_release_pass'] is not False):
+        raise ValueError('Cold prepared contract crossed actual selected case/config')
+    mode = _sr_contract(context)
+    origin, origin_pin = _sr_origin(context, mode)
+    prepared_origin = SavedReadbackOrigin.from_validated_json(row['origin'], mode, context.get('run_id'))
+    if prepared_origin != origin or _sr_checked(row['origin_pin']) != origin_pin:
+        raise ValueError('Original source checkpoint/readback contract changed')
+    sources = {name: _sr_checked(pin) for name, pin in json_object(row['passive_source_pins']).items()}
+    if set(sources) != set(mode.passive_fixture_files):
+        raise ValueError('Prepared passive dependency inventory changed')
+    return SavedReadbackContract(mode, origin, origin_pin, _sr_checked(row['product_projection']), sources), reference
+
+
+def _sr_snapshot(frame: JsonObject, origin: SavedReadbackOrigin) -> None:
+    played = json_object(frame.get('played_character'))
+    if (frame.get('episode_projection') != 'native_campaign' or frame.get('paused') is not True
+            or _sr_integer(frame.get('date_raw'), 'Actual cold date') != origin.date_raw
+            or _sr_character_id(played.get('character_id'), 'Actual player full ID') != origin.player_id
+            or 'active_event' not in frame or frame.get('active_event') is not None):
+        raise ValueError('Actual cold campaign must remain paused at the original actor/date with no active event')
+
+
+def _sr_response(value: object, context: JsonObject, compiled: SavedReadbackContract,
+                 process: RetainedProcess) -> SavedRootResponse:
+    response = SavedRootResponse.from_validated_json(value, compiled.mode)
+    if response.run_id != context.get('run_id'):
+        raise ValueError('Saved-readback Root response crossed actual run/reviewer')
+    origin, data = compiled.origin, response.readback
+    if (data.source_checkpoint != origin.checkpoint or data.source_readback != origin.readback
+            or data.process_id != process.pid or data.process_id == origin.process_id
+            or data.player_id != origin.player_id or data.date_raw != origin.date_raw):
+        raise ValueError('Cold Root readback crossed immutable source or actual new process/actor/date')
+    saved = NativeSavedCheckpoint.from_validated_json(_sr_read(data.cold_checkpoint_response)[0])
+    if saved.date_raw != origin.date_raw or saved.checkpoint != data.cold_checkpoint:
+        raise ValueError('Actual native cold SAVE result differs from the decoded checkpoint')
+    identity = ColdProcessEvidence.from_validated_json(_sr_read(data.process_evidence)[0])
+    if (data.cold_checkpoint['path'] == origin.checkpoint['path']
+            or Path(data.cold_checkpoint['path']).suffix.casefold() != '.ck3'
+            or identity.run_id != response.run_id or identity.machine_id != origin.machine_id
+            or identity.pid != process.pid or identity.create_time != process.create_time):
+        raise ValueError('Distinct cold save and matching actual retained process evidence required')
+    if data.characters != origin.characters:
+        raise ValueError('Cold identities, alive state, experience, month or partner lists changed')
+    declared = {(pin['path'], pin['bytes'], pin['sha256']) for pin in response.evidence}
+    for pin in (data.cold_checkpoint, data.cold_readback, data.cold_checkpoint_response,
+                data.process_evidence, origin.checkpoint, origin.readback):
+        if (pin['path'], pin['bytes'], pin['sha256']) not in declared:
+            raise ValueError('Every source/cold/process artifact must be in the exact Root evidence list')
+    return response
+
+
+def _sr_run(context: JsonObject, client: SavedReadbackClient) -> JsonObject:
+    compiled, binding = _sr_compiled(context)
+    origin = compiled.origin
+    before = json_object(client.snapshot(require_event_free=True))
+    _sr_snapshot(before, origin)
+    process = RetainedProcess.from_validated_json(client.retain_process())
+    if process.pid == origin.process_id:
+        raise ValueError('A genuinely new retained Game process is required')
+    request = json_object({'product': context['product'], 'case': context['case'],
+        'action': 'Save exactly one new paused cold checkpoint through the existing queue; independently decode and compare all twelve identities and XP/month/partner-list states.',
+        'required_assertions': list(SAVED_READBACK_REQUIREMENTS), 'origin': origin.to_json(),
+        'actual_snapshot': before, 'actual_process': process.to_json(),
+        'no_calendar_advance_or_initialization': True, 'normal_close_pending': True})
+    response = _sr_response(client.root_checkpoint('saved-readback-exact-cold-checkpoint', request, reserve=90),
+                            context, compiled, process)
+    after = json_object(client.snapshot(require_event_free=True))
+    _sr_snapshot(after, origin)
+    facts = json_object({'schema': 'ck3-mod-acceptance-saved-readback-facts-v1',
+        'run_id': context['run_id'], 'product': context['product'], 'case': context['case'],
+        'compiled_contract': binding, 'actual_process': process.to_json(), 'before': before, 'after': after,
+        'root_response': response.to_json(), 'natural_days_advanced': 0,
+        'case_contract_qualified': True, 'gui_contract_qualified': True,
+        'business_contract_applicable': True, 'business_pass': False, 'product_release_pass': False})
+    client.checkpoint('generic-product-case-result', facts)
+    return facts
+
+
+def _sr_verify(context: JsonObject) -> JsonObject:
+    path = Path(_sr_text(context['output'], 'Case output')) / 'generic-product-case-result.json'
+    if not path.is_file():
+        return {'status': 'NOT_RUN', 'business_pass': False, 'product_release_pass': False,
+                'case_contract_qualified': False, 'gui_contract_qualified': False}
+    facts, _ = _sr_read(_sr_pin(path))
+    compiled, binding = _sr_compiled(context)
+    if (facts.get('schema') != 'ck3-mod-acceptance-saved-readback-facts-v1'
+            or facts.get('run_id') != context.get('run_id') or facts.get('product') != context.get('product')
+            or facts.get('case') != context.get('case') or facts.get('compiled_contract') != json_object(binding)
+            or type(facts.get('natural_days_advanced')) is not int or facts.get('natural_days_advanced') != 0):
+        raise ValueError('Original cold result crossed actual prepared run or zero-day boundary')
+    _sr_snapshot(json_object(facts.get('before')), compiled.origin)
+    _sr_snapshot(json_object(facts.get('after')), compiled.origin)
+    _sr_response(facts.get('root_response'), context, compiled, RetainedProcess.from_validated_json(facts.get('actual_process')))
+    return json_object({**facts, 'verification_scope': 'monthly-natural-exact-cold-saved-readback',
+                        'business_pass': False, 'product_release_pass': False})
+
+
+def prepare_case(context: JsonObject) -> JsonObject:
+    if _sr_enabled(context):
+        return _sr_prepare(context)
+    return json_object(_prepare_fixture_case(context))
+
+
+def run_case(context: JsonObject, client: SavedReadbackClient) -> JsonObject:
+    if _sr_enabled(context):
+        return _sr_run(context, client)
+    return json_object(_run_fixture_case(context, client))
+
+
+def verify_case(context: JsonObject) -> JsonObject:
+    if _sr_enabled(context):
+        return _sr_verify(context)
+    return json_object(_verify_fixture_case(context))

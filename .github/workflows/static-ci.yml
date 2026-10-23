@@ -611,6 +611,19 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test Auto Upgrade Buildings release tooling
         run: python tools/test_build_auto_upgrade_buildings_release.py
+      - name: Test existing saved-readback adapter maintenance without CK3
+        env:
+          PYTHONPATH: ${{ github.workspace }}\tools
+          MYPYPATH: ${{ github.workspace }}\tools
+        run: |
+          python -B -X utf8 tools/test_generic_product_saved_readback.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -O -X utf8 tools/test_generic_product_saved_readback.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -m mypy --follow-imports=skip --no-incremental --cache-dir nul tools/ck3_mod_acceptance_cases/generic_product_adapter.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -m mypy --strict --follow-imports=skip --no-incremental --cache-dir nul tools/test_generic_product_saved_readback.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test and validate Superman Qiang without CK3
         run: |
           python tools/test_independent_mod_release.py
@@ -840,6 +853,8 @@ jobs:
           python -B -X utf8 tools/test_ingame_ui_managed_binding.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_log_contract.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -m mypy --follow-imports=skip --no-incremental --cache-dir nul tools/ck3_mod_acceptance_queue.py tools/test_ck3_mod_acceptance_previous_row_readonly.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -m mypy --follow-imports=skip --check-untyped-defs --no-incremental --cache-dir nul tools/test_ck3_mod_acceptance_queue_inprocess.py tools/test_ck3_mod_acceptance_workshop_cache.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%

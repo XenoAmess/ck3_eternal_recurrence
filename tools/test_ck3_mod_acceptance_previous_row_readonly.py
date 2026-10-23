@@ -33,6 +33,35 @@ def require(condition, message):
         raise ValueError(message)
 
 
+def _queue_validation_body(tree: ast.Module) -> list[ast.stmt]:
+    """Extract the actual validation function and its file-local dependency closure."""
+    definitions: dict[str, ast.stmt] = {}
+    for node in tree.body:
+        if isinstance(node, ast.FunctionDef):
+            definitions[node.name] = node
+        elif isinstance(node, ast.Assign):
+            for target in node.targets:
+                if isinstance(target, ast.Name):
+                    definitions[target.id] = node
+        elif isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
+            definitions[node.target.id] = node
+    if 'validate_steps' not in definitions:
+        raise ValueError('Actual queue validate_steps definition missing')
+    selected: set[ast.stmt] = set()
+    pending = [definitions['validate_steps']]
+    while pending:
+        node = pending.pop()
+        if node in selected:
+            continue
+        selected.add(node)
+        for reference in ast.walk(node):
+            if isinstance(reference, ast.Name) and isinstance(reference.ctx, ast.Load):
+                dependency = definitions.get(reference.id)
+                if dependency is not None and dependency not in selected:
+                    pending.append(dependency)
+    return [node for node in tree.body if node in selected]
+
+
 def actual_namespaces():
     if AUTHOR is None:
         # Installed repo entry exercises its actual source, without external B dependencies.
@@ -51,7 +80,7 @@ def actual_namespaces():
                 require(len(raw) == row[side]['bytes'] and hashlib.sha256(raw).hexdigest() == row[side]['sha256'],
                         'Exact reviewed candidate source pin changed')
     queue_tree = ast.parse(changes[QUEUE]['after_text'])
-    queue_body = [n for n in queue_tree.body if isinstance(n, ast.FunctionDef) and n.name == 'validate_steps']
+    queue_body = _queue_validation_body(queue_tree)
     q = {'require': require, 'json': json, 'copy': copy, 're': re}
     exec(compile(ast.Module(body=queue_body, type_ignores=[]), QUEUE, 'exec'), q)
     host_tree = ast.parse(changes[HOST]['after_text'])
@@ -67,6 +96,8 @@ def actual_namespaces():
 
 
 class PreviousRowReadonly(unittest.TestCase):
+    q: dict[str, object]
+
     @classmethod
     def setUpClass(cls):
         cls.q, cls.h, cls.a = actual_namespaces()
@@ -87,6 +118,18 @@ class PreviousRowReadonly(unittest.TestCase):
 
     def report(self):
         return {'steps': [], 'mcp_tools': {'tools': [{'name': k, **v} for k, v in self.schemas().items()]}}
+
+    def test_actual_queue_extraction_retains_native_capability_guard(self) -> None:
+        report = self.report()
+        report['mcp_tools']['tools'].append({
+            'name': 'ck3_query_normal_exit_context_v1',
+            'inputSchema': {'type': 'object', 'properties': {}, 'additionalProperties': False},
+        })
+        validate = self.q.get('validate_steps')
+        if not callable(validate):
+            raise AssertionError('Actual extracted queue validator is not callable')
+        with self.assertRaisesRegex(ValueError, 'Actual native capabilities object required'):
+            validate([{'id': 'native-unsupported', 'tool': 'ck3_query_normal_exit_context_v1'}], report)
 
     def host(self, revisions=(11, 37, 41)):
         c = self.h['PlanClient'].__new__(self.h['PlanClient'])

@@ -17,7 +17,7 @@
       "requirements": [
         "actual_twelve_fixture_character_full_identities_and_saved_root_references",
         "actual_marriage_concubinage_pregnancy_infertility_age_and_death_baseline",
-        "actual_zero_experience_baseline_save_and_independent_readback",
+        "actual_eleven_living_experience_zero_and_dead_b_experience_absent_baseline_save_and_independent_readback",
         "current_sxanf_2_event_instance_and_original_begin_option_once"
       ],
       "at_day": 1
@@ -26,7 +26,7 @@
       "id": "same-month-actual-state-and-calendar-choice",
       "requirements": [
         "actual_same_month_experience_one_and_bidirectional_partner_lists",
-        "actual_minor_and_dead_experience_zero",
+        "actual_three_living_rejected_experience_zero_and_dead_b_experience_absent",
         "same_month_checkpoint_save_before_calendar_wait",
         "current_sxanf_6_instance_and_original_calendar_option_once"
       ],
@@ -38,7 +38,7 @@
         "actual_code_monthly_observer_log_and_saved_counter_separate_from_explicit_faith_events",
         "actual_calendar_month_change_without_forged_epoch",
         "actual_seven_unique_expected_pass_markers_and_no_fail",
-        "final_saved_eight_eligible_characters_experience_two_and_four_rejected_characters_zero",
+        "final_saved_eight_eligible_experience_two_three_living_rejected_zero_and_dead_b_experience_absent",
         "actual_current_month_bidirectional_partner_lists_and_pregnancy_fertility_state"
       ],
       "when_markers": ["SXANF: END natural-simulation"]

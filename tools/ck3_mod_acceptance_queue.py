@@ -54,24 +54,106 @@ def native_zero_proof(frozen, report, *, failure_shutdown=False):
     return namespace[predicate](report, report.get("managed_session_done") is True, None)
 
 
-def validate_steps(steps, report):
-    require(isinstance(steps, list) and steps and all(isinstance(step, dict) for step in steps),
-            "Nonempty original step array required")
-    require(all(isinstance(row, dict) and row.get("finished_at") for row in report.get("steps", [])),
+NORMAL_EXIT_NATIVE_TOOLS = frozenset({"ck3_query_normal_exit_context_v1", "ck3_request_normal_exit_v1"})
+NORMAL_EXIT_NATIVE_CAPABILITY = "normal-exit-map-v1"
+
+
+def _queue_object(value: object, label: str) -> dict[str, object]:
+    """Validate the inspected JSON object without trusting an annotation or alias."""
+    if not isinstance(value, dict):
+        raise ValueError(label + " object required")
+    result: dict[str, object] = {}
+    for key, item in value.items():
+        if not isinstance(key, str):
+            raise ValueError(label + " requires string field names")
+        result[key] = item
+    return result
+
+
+def _native_capability_names(value: object, label: str) -> frozenset[str]:
+    if not isinstance(value, list):
+        raise ValueError(label + " capability string array required")
+    result: set[str] = set()
+    for item in value:
+        if not isinstance(item, str) or not item or item in result:
+            raise ValueError(label + " has an invalid or duplicate capability")
+        result.add(item)
+    return frozenset(result)
+
+
+def _native_positive_integer(value: object, label: str) -> int:
+    if type(value) is not int or value < 1:
+        raise ValueError(label + " requires a positive literal integer")
+    return value
+
+
+def validate_normal_exit_native_capability(tool_name: str, report: object) -> None:
+    """Gate only native exit query/request; OS retained-handle observation stays usable.
+
+    The SDK normal_exit_map_driver_v1._prepare tests the exact unprefixed
+    normal-exit-map-v1 capability. MCP registration and action_steps do not prove
+    the selected DLL advertises it. The caller has already bound this report's
+    state, source and pipe to the frozen run before any once-only claim.
+    """
+    if tool_name not in NORMAL_EXIT_NATIVE_TOOLS:
+        return
+    current = _queue_object(report, "Actual native report")
+    capabilities = _queue_object(current.get("capabilities"), "Actual native capabilities")
+    diagnostics = _queue_object(capabilities.get("diagnostics"), "Actual native capability diagnostics")
+    hello = _queue_object(diagnostics.get("hello"), "Actual native hello")
+    pipe = current.get("pipe")
+    if (not isinstance(pipe, str) or not pipe or diagnostics.get("pipe_name") != pipe
+            or diagnostics.get("connected") is not True or hello.get("type") != "hello"):
+        raise ValueError("Actual native hello is not bound to the current connected pipe")
+    for envelope in (diagnostics, hello):
+        if type(envelope.get("protocol_version")) is not int or envelope["protocol_version"] != 1:
+            raise ValueError("Actual native hello protocol_version must be literal integer 1")
+    pid = _native_positive_integer(diagnostics.get("bridge_pid"), "Actual native bridge PID")
+    hello_pid = _native_positive_integer(hello.get("pid"), "Actual native hello PID")
+    generation = _native_positive_integer(diagnostics.get("connection_generation"), "Actual native connection generation")
+    hello_generation = _native_positive_integer(hello.get("connection_generation"), "Actual native hello connection generation")
+    if pid > 0xFFFFFFFF or pid != hello_pid or generation != hello_generation:
+        raise ValueError("Actual native hello PID/connection generation differs from its diagnostics")
+    exported = _native_capability_names(capabilities.get("bridge_capabilities"), "Actual native bridge")
+    advertised = _native_capability_names(hello.get("capabilities"), "Actual native hello")
+    if exported != advertised:
+        raise ValueError("Actual native bridge capabilities differ from the bound native hello")
+    if NORMAL_EXIT_NATIVE_CAPABILITY not in advertised:
+        raise ValueError(tool_name + ": actual native normal-exit-map-v1 capability is unavailable (default OFF); rejected before claim/publish")
+
+
+def validate_steps(steps: object, report: object) -> list[str]:
+    current = _queue_object(report, "Actual host report")
+    if not isinstance(steps, list) or not steps:
+        raise ValueError("Nonempty original step array required")
+    original_steps = [_queue_object(step, "Original step") for step in steps]
+    previous = current.get("steps", [])
+    if not isinstance(previous, list):
+        raise ValueError("Original host step array required")
+    previous_rows = [_queue_object(row, "Original host step") for row in previous]
+    require(all(row.get("finished_at") for row in previous_rows),
             "Original host controls are still in flight")
-    ids = [step.get("id") for step in steps]
-    require(all(isinstance(value, str) and re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:-]{0,159}", value)
-                for value in ids) and len(ids) == len(set(ids)), "Unique explicit control IDs required")
-    require(not set(ids) & {row.get("id") for row in report.get("steps", [])},
+    ids: list[str] = []
+    for step in original_steps:
+        value = step.get("id")
+        if not isinstance(value, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:-]{0,159}", value):
+            raise ValueError("Unique explicit control IDs required")
+        ids.append(value)
+    require(len(ids) == len(set(ids)), "Unique explicit control IDs required")
+    require(not set(ids) & {row.get("id") for row in previous_rows},
             "Original step ID already consumed; never replay")
-    metadata = report.get("mcp_tools", {}).get("tools")
-    require(isinstance(metadata, list) and metadata and all(isinstance(row, dict) for row in metadata),
-            "Actual current shared MCP metadata is missing")
-    tools = {row.get("name"): row for row in metadata}
-    require(len(tools) == len(metadata) and all(isinstance(name, str) for name in tools),
-            "Actual current MCP metadata has duplicate or invalid names")
+    metadata = _queue_object(current.get("mcp_tools", {}), "Actual shared MCP metadata").get("tools")
+    if not isinstance(metadata, list) or not metadata:
+        raise ValueError("Actual current shared MCP metadata is missing")
+    tools: dict[str, dict[str, object]] = {}
+    for item in metadata:
+        row = _queue_object(item, "Actual shared MCP tool metadata")
+        name = row.get("name")
+        if not isinstance(name, str) or name in tools:
+            raise ValueError("Actual current MCP metadata has duplicate or invalid names")
+        tools[name] = row
     from jsonschema import Draft202012Validator
-    for index, step in enumerate(steps):
+    for index, step in enumerate(original_steps):
         kind = step.get("kind", "tool")
         bind_previous = step.get("bind_previous_revision", False)
         require(type(bind_previous) is bool, "bind_previous_revision must be a literal boolean")
@@ -80,29 +162,34 @@ def validate_steps(steps, report):
         require(kind in ("tool", "advance_day", "finish_hold"), "Unqualified shared queue step kind: " + str(kind))
         if kind == "tool":
             name, arguments = step.get("tool"), step.get("args", {})
-            require(name in tools and isinstance(arguments, dict), "Tool/argument object is absent from actual MCP metadata")
+            if not isinstance(name, str) or name not in tools or not isinstance(arguments, dict):
+                raise ValueError("Tool/argument object is absent from actual MCP metadata")
+            validate_normal_exit_native_capability(name, current)
             require("$" not in json.dumps(arguments), "Queue requires explicit arguments; symbolic host references need a reviewed extension")
-            schema = copy.deepcopy(tools[name].get("inputSchema"))
-            require(isinstance(schema, dict), "Actual input schema is missing: " + name)
+            schema = _queue_object(copy.deepcopy(tools[name].get("inputSchema")), "Actual input schema for " + name)
+            properties = _queue_object(schema.get("properties", {}), "Actual input schema properties for " + name)
             fresh = step.get("fresh_revision", True)
             require(type(fresh) is bool, "fresh_revision must be a literal boolean")
             if bind_previous:
                 require(name in {"ck3_query_ingame_decision_item_v1"} and fresh is False and
-                        "expected_revision" in schema.get("properties", {}) and
+                        "expected_revision" in properties and
                         "expected_revision" not in arguments,
                         "Previous-row revision requires a declared readonly query, false fresh flag and no explicit revision")
             # The existing host obtains the exact revision just before dispatch.
             # Leave its omitted revision field out of schema.required; validate
             # every supplied field without manufacturing a placeholder value.
-            if (fresh or bind_previous) and "expected_revision" in schema.get("properties", {}) and "expected_revision" not in arguments:
-                schema["required"] = [key for key in schema.get("required", []) if key != "expected_revision"]
+            if (fresh or bind_previous) and "expected_revision" in properties and "expected_revision" not in arguments:
+                required = schema.get("required", [])
+                if not isinstance(required, list) or not all(isinstance(key, str) for key in required):
+                    raise ValueError("Actual input schema required field array is invalid: " + name)
+                schema["required"] = [key for key in required if key != "expected_revision"]
             Draft202012Validator.check_schema(schema)
             Draft202012Validator(schema).validate(arguments)
         elif kind == "advance_day":
             require(type(step.get("days")) is int and step["days"] == 1,
                     "One original natural day per shared queued step required")
         else:
-            require(len(steps) == 1, "Native-zero finish_hold must be the only submitted step")
+            require(len(original_steps) == 1, "Native-zero finish_hold must be the only submitted step")
             require(type(step.get("failure_shutdown", False)) is bool,
                     "failure_shutdown must be a literal boolean")
     return ids

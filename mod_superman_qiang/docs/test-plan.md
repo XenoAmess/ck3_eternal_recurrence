@@ -20,6 +20,14 @@
 
 公共入口分别选择`superman-qiang/natural-simulation`与`superman-qiang/notification-investigation`。专项夹具只进入隔离userdir；来源模板及自动检查已纳入现有测试入口。未执行的候选保持`not_run`；发布前仍须完成代表性实际业务和保存验收，当前不上传工坊。
 
+### C5 冷重载适配器维护范围与步骤（2026-10-24）
+
+`tools/ck3_mod_acceptance_cases/generic_product_adapter.py` 的 `saved_readback` 属于 [Java 迁移一期](../../docs/python-java-incremental-migration-plan-2026-10-22.md)范围外的既有验收适配器维护。沿用公共 profile、CaseClient、saved-campaign 启动与既有离线 decoder；只修改原 Python 模块、JSON case/registry 和既有 static-ci 步骤，不新增生产 Python 模块、CI 编排器、host、native 或 SDK，不迁移 Game/SDK custody。
+
+先在原模块集中验证 JSON，再以 dataclass 保存 origin、进程、十二角色、scalar/list 三态，显式编码往返；运行真实 profile 生产者至适配器消费者的正常及优化模式回归、整个适配器普通 mypy 与新测试 strict mypy，四条检查接入原 static-ci。随后仅从真实成功的动态来源选择最终 SAVE、PID、完整十二 ID 与独立解码回执。八名合格者 XP2、三名在世被拒者 XP0，死亡角色 XP 缺失；保存月及双向名单的缺失/null/空集合语义保持。
+
+公共 case 为 `superman-qiang/natural-cold-reload`。以同一 35 文件产品和排除所有 on_action 的显式被动依赖 inventory 冷启；实际新 PID 保持暂停，通过原队列另存一次并离线精确比较，推进 0 日、初始化 0 次。独立完成普通退出与公共闭场。源码与回归通过不代表 C5 实机通过，失败来源不能进入准备。
+
 ## 1.1.0 增量验收
 
 用户追加原生通知气泡、全部页面审阅和第七项健康随机吸取。以下为执行前方案；首发六项能力结果仍保留，但不能证明新增功能通过。1.1.0 以同一 exact build 完成针对性实机验证，不因相同版本号的旧宣传改稿就跳过新核心验证。参数与边界见 [健康设计](health-design-1.1.0.md)，界面清单见 [界面审阅](ui-review-1.1.0.md)。

@@ -1,0 +1,22 @@
+	65855={
+		first_name="Avelina"
+		birth=1036.9.10
+		female=yes
+		nickname_text=""
+		ethnicity="caucasian_brown_hair"
+		culture=73
+		jens_179=0
+		skill={
+			2 10 3 1 9 3
+		}
+		family_data={
+			primary_spouse=65854
+			spouse=65854
+		}
+		dead_data={
+			date=1066.9.16
+			reason="death_natural_causes"
+			liege=31254
+			liege_title=2230
+		}
+	}

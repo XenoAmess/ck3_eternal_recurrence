@@ -1,0 +1,62 @@
+{
+  "schema": "sxanf-natural-fixture-native-findings-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T17:33:09.685087+00:00",
+  "game_version": "1.20.0.4",
+  "run_id": "desktop-3fevhd2-1c74096080--superman-qiang--R0025",
+  "result": "FAIL",
+  "saved_date": "1066.9.16",
+  "root_character_id": "31254",
+  "actual_source": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\R0025-natural-baseline-failure-readback-a01\\FAILED-SCENE.original.ck3",
+    "bytes": 68424124,
+    "sha256": "4ada6f49c6a830390977c134e886b47516e0bd4a829cfeaca6bd26ca6b814614"
+  },
+  "melted_source": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\R0025-natural-baseline-failure-readback-a01\\melted.ck3",
+    "bytes": 99898887,
+    "sha256": "6b7fc2bccd73248945cf5dc408ba15299390c4fd4b6f28825d2f1c27024b94f1"
+  },
+  "exact_readback": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\R0025-natural-baseline-failure-readback-a01\\readback-v3\\readback.json",
+    "bytes": 22208,
+    "sha256": "fa627b7ef3bab01d4e0834e0a9b712a94125f0e33107720a93fc0ac3a7ac06e3"
+  },
+  "actual_findings": [
+    "All 12 fixture references persist; all 12 referenced character records were recovered.",
+    "All 11 living characters have a PRESENT value record for sxad_sex_experience with identity omitted by the save format; its default numeric value is zero.",
+    "Dead character 65855 is a level-1 dead_data record and has no alive_data, variable table or sxad_sex_experience variable.",
+    "The old baseline/same-month/final guards required dead_b experience zero; this requirement is incompatible with the actual saved dead character.",
+    "The saved unborn table contains mother 65849 and father 65848. This pregnancy is created by fixture setup only.",
+    "The native baseline aggregate failed and baseline_valid was absent; no monthly business case was reached.",
+    "Another failing setup predicate is not ruled out: future candidate logs each of the twelve original predicates and retains their full conjunction."
+  ],
+  "candidate_changes": [
+    "At all three business stages require dead_b dead and its experience variable absent. Three rejected living characters retain experience zero.",
+    "Baseline_valid is initialized to zero in the verifier and set to one only if all twelve native predicates succeed.",
+    "Log each original setup predicate independently, with OK or FAIL; this does not replace the complete baseline condition.",
+    "Provide one valid terminal close option on failed setup, with no call to later test stages.",
+    "Rename all three GUI phase requirements to preserve living-zero versus dead-absent semantics. No compatibility aliases.",
+    "Add bounded exact saved-character samples and regressions for default-zero, missing variable and level-1 dead records."
+  ],
+  "expected_readback": {
+    "baseline": {
+      "living_experience_zero": 11,
+      "dead_b_experience": "absent"
+    },
+    "same_month": {
+      "eligible_experience_one": 8,
+      "living_rejected_experience_zero": 3,
+      "dead_b_experience": "absent"
+    },
+    "final": {
+      "eligible_experience_two": 8,
+      "living_rejected_experience_zero": 3,
+      "dead_b_experience": "absent"
+    }
+  },
+  "candidate_engine_acceptance": "NOT_RUN",
+  "persistence_cold_reload": "NOT_RUN_separate_public_saved_campaign_case_required",
+  "shutdown_boundary": "Parent reported shared host stop cleanup after normal-exit query default OFF; no normal GUI quit claim.",
+  "raw_evidence_review_at_utc": "2026-11-22T17:33:10.204234+00:00"
+}

@@ -1,0 +1,47 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "superman-qiang",
+  "case_id": "natural-cold-reload",
+  "acceptance_scope": "source_monthly_marital_exact_cold_saved_readback",
+  "maximum_natural_days": 0,
+  "business_contract_applicable": true,
+  "saved_readback": {
+    "mode": "monthly-natural-v1",
+    "product_file_count": 35,
+    "reference_names": [
+      "sxanf_ref_spouse_a", "sxanf_ref_spouse_b",
+      "sxanf_ref_concubinist", "sxanf_ref_concubine",
+      "sxanf_ref_pregnant_a", "sxanf_ref_pregnant_b",
+      "sxanf_ref_infertile_a", "sxanf_ref_infertile_b",
+      "sxanf_ref_minor_a", "sxanf_ref_minor_b",
+      "sxanf_ref_dead_a", "sxanf_ref_dead_b"
+    ],
+    "expected_experience": {
+      "sxanf_ref_spouse_a": {"state": "value", "value": 2}, "sxanf_ref_spouse_b": {"state": "value", "value": 2},
+      "sxanf_ref_concubinist": {"state": "value", "value": 2}, "sxanf_ref_concubine": {"state": "value", "value": 2},
+      "sxanf_ref_pregnant_a": {"state": "value", "value": 2}, "sxanf_ref_pregnant_b": {"state": "value", "value": 2},
+      "sxanf_ref_infertile_a": {"state": "value", "value": 2}, "sxanf_ref_infertile_b": {"state": "value", "value": 2},
+      "sxanf_ref_minor_a": {"state": "value", "value": 0}, "sxanf_ref_minor_b": {"state": "value", "value": 0},
+      "sxanf_ref_dead_a": {"state": "value", "value": 0}, "sxanf_ref_dead_b": {"state": "missing"}
+    },
+    "pairs": [
+      ["sxanf_ref_spouse_a", "sxanf_ref_spouse_b"],
+      ["sxanf_ref_concubinist", "sxanf_ref_concubine"],
+      ["sxanf_ref_pregnant_a", "sxanf_ref_pregnant_b"],
+      ["sxanf_ref_infertile_a", "sxanf_ref_infertile_b"]
+    ],
+    "passive_fixture_files": [
+      "descriptor.mod",
+      "common/modifiers/sxanf_modifiers.txt",
+      "common/scripted_effects/sxanf_effects.txt",
+      "events/sxanf_events.txt",
+      "localization/english/sxanf_l_english.yml",
+      "localization/simp_chinese/sxanf_l_simp_chinese.yml"
+    ]
+  },
+  "uncovered_product_business": [
+    "This case requires an actual successful final monthly checkpoint; failed fixture baselines cannot supply its origin.",
+    "No new fixture setup, faith event, conception attempt or calendar day is performed.",
+    "This validates one exact checkpoint across a distinct actual Game process and does not establish arbitrary third-party mod compatibility or full product acceptance."
+  ]
+}

@@ -31,6 +31,49 @@ class FixtureFrozen(TypedDict):
     previous_session_closed: NotRequired[bool]
     previous_screen_released: NotRequired[bool]
 
+
+class NativeExitFixture(TypedDict):
+    report: dict[str, object]
+    capabilities: dict[str, object]
+    diagnostics: dict[str, object]
+    hello: dict[str, object]
+
+
+def normal_exit_fixture(tool_name: str) -> NativeExitFixture:
+    """Actual report/SDK field layout; synthetic pipe/PID and no native calls."""
+    advertised = ['bridge.identity', 'normal-exit-map-v1']
+    hello: dict[str, object] = {
+        'type': 'hello', 'protocol_version': 1, 'pid': 123,
+        'connection_generation': 1, 'capabilities': list(advertised),
+    }
+    diagnostics: dict[str, object] = {
+        'protocol_version': 1, 'pipe_name': 'pure-pipe', 'connected': True,
+        'bridge_pid': 123, 'connection_generation': 1, 'hello': hello,
+    }
+    capabilities: dict[str, object] = {
+        'bridge_capabilities': list(advertised), 'diagnostics': diagnostics,
+    }
+    properties: dict[str, object] = {}
+    required: list[str] = []
+    if tool_name in ('ck3_query_normal_exit_context_v1', 'ck3_request_normal_exit_v1'):
+        properties['expected_revision'] = {'type': 'integer', 'minimum': 1}
+        required.append('expected_revision')
+    if tool_name == 'ck3_request_normal_exit_v1':
+        properties['action'] = {'type': 'string', 'enum': [
+            'prepare_confirmation', 'continue_preparation', 'disable_exit_autosave', 'confirm_desktop',
+        ]}
+        properties['expected_exit_context_signature'] = {'type': 'string', 'pattern': '^[0-9a-f]{64}$'}
+        required.extend(['action', 'expected_exit_context_signature'])
+    schema: dict[str, object] = {
+        'type': 'object', 'properties': properties, 'required': required, 'additionalProperties': False,
+    }
+    report: dict[str, object] = {
+        'pipe': 'pure-pipe', 'steps': [], 'capabilities': capabilities,
+        'mcp_tools': {'tools': [{'name': tool_name, 'inputSchema': schema}]},
+    }
+    return NativeExitFixture(report=report, capabilities=capabilities, diagnostics=diagnostics, hello=hello)
+
+
 def pin(path: Path) -> FilePin:
     raw=path.read_bytes()
     return FilePin(path=str(path.resolve()),bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())
@@ -227,6 +270,132 @@ class InprocessQueueTests(unittest.TestCase):
                 self.assertEqual(self.module.main(argv),0)
             self.assertEqual(enqueue.call_args.kwargs['deadline'],expected)
             self.assertEqual(json.loads(output.getvalue()),{'fixture_only':True})
+
+    def test_normal_exit_default_off_refuses_before_claim_publish_or_host(self) -> None:
+        actions = ('prepare_confirmation', 'continue_preparation', 'disable_exit_autosave', 'confirm_desktop')
+        scenarios = [('ck3_query_normal_exit_context_v1', '')]
+        scenarios.extend(('ck3_request_normal_exit_v1', action) for action in actions)
+        for index, (tool_name, action) in enumerate(scenarios):
+            with self.subTest(tool=tool_name, action=action):
+                fixture = normal_exit_fixture(tool_name)
+                fixture['capabilities']['bridge_capabilities'] = ['bridge.identity']
+                fixture['hello']['capabilities'] = ['bridge.identity']
+                self.report.update(fixture['report'])
+                (self.live/'native-report.json').write_text(json.dumps(self.report), encoding='utf-8')
+                arguments: dict[str, object] = {}
+                if action:
+                    arguments.update(action=action, expected_exit_context_signature='a'*64)
+                steps = [{'id': 'native-off-'+str(index), 'tool': tool_name, 'args': arguments}]
+                with patch.object(self.module, 'claim_plan', side_effect=AssertionError('must reject before once-only claim')), \
+                     patch.object(self.module.os, 'link', side_effect=AssertionError('must never publish')), \
+                     patch.object(self.client_module.subprocess, 'run', side_effect=AssertionError('no subprocess fallback')):
+                    with self.assertRaisesRegex(ValueError, 'queue failed'):
+                        self.client.execute_plan(steps, 'native-off-'+str(index))
+                ack = json.loads((self.client.output/('native-off-'+str(index)+'.stdout.log')).read_bytes())
+                self.assertEqual(ack['status'], 'BLOCKED_NEVER_REPLAY')
+                self.assertIn('normal-exit-map-v1 capability is unavailable', ack['error'])
+                self.assertIs(ack['business_pass'], False)
+        self.assertEqual(len(self.lease_calls), len(scenarios))
+        self.assertFalse(list(self.controls.iterdir()))
+        self.assertFalse((self.live/'control-once-ledger').exists())
+        self.assertFalse(self.await_calls)
+
+    def test_normal_exit_supported_query_and_each_request_preserve_exact_plan(self) -> None:
+        scenarios = [('ck3_query_normal_exit_context_v1', '')]
+        scenarios.extend(('ck3_request_normal_exit_v1', action) for action in
+                         ('prepare_confirmation', 'continue_preparation', 'disable_exit_autosave', 'confirm_desktop'))
+        for index, (tool_name, action) in enumerate(scenarios):
+            fixture = normal_exit_fixture(tool_name)
+            self.report.update(fixture['report'])
+            (self.live/'native-report.json').write_text(json.dumps(self.report), encoding='utf-8')
+            arguments: dict[str, object] = {}
+            if action:
+                arguments.update(action=action, expected_exit_context_signature='b'*64)
+            label = 'native-supported-'+str(index)
+            steps = [{'id': label, 'tool': tool_name, 'args': arguments}]
+            with patch.object(self.client_module.subprocess, 'run', side_effect=AssertionError('no native/host process')):
+                self.client.execute_plan(steps, label)
+            self.assertEqual((self.controls/(label+'.json')).read_bytes(),
+                             (self.client.output/('plans/'+label+'.json')).read_bytes())
+            ack = json.loads((self.client.output/(label+'.stdout.log')).read_bytes())
+            self.assertEqual(ack['status'], 'QUEUED_ONCE_ACK_NOT_BUSINESS_PASS')
+            self.assertIs(ack['business_pass'], False)
+        self.assertEqual(len(self.lease_calls), 2*len(scenarios))
+        self.assertEqual(len(self.await_calls), len(scenarios))
+
+    def test_os_normal_exit_observer_and_other_normal_exit_named_tool_are_not_native_gated(self) -> None:
+        for index, tool_name in enumerate(('ck3_observe_normal_exit_v1',
+                                          'ck3_query_zhongguo_workforce_normal_exit_snapshot_v1')):
+            fixture = normal_exit_fixture(tool_name)
+            # No native hello/capabilities whatsoever: OS retained-handle
+            # observation must remain available after transport has disappeared.
+            fixture['report'].pop('capabilities')
+            self.report.update(fixture['report'])
+            self.report.pop('capabilities', None)
+            (self.live/'native-report.json').write_text(json.dumps(self.report), encoding='utf-8')
+            label = 'observer-only-'+str(index)
+            self.client.execute_plan([{'id': label, 'tool': tool_name, 'args': {}}], label)
+            self.assertTrue((self.controls/(label+'.json')).is_file())
+        self.assertEqual(len(self.await_calls), 2)
+
+    def test_normal_exit_native_evidence_rejects_unknown_malformed_or_crossed_binding(self) -> None:
+        mutations: tuple[tuple[str, str, object], ...] = (
+            ('report', 'capabilities', None),
+            ('capabilities', 'diagnostics', []),
+            ('capabilities', 'bridge_capabilities', True),
+            ('capabilities', 'bridge_capabilities', ['bridge.identity']),
+            ('capabilities', 'bridge_capabilities', ['normal-exit-map-v1', 'normal-exit-map-v1']),
+            ('diagnostics', 'hello', None),
+            ('diagnostics', 'pipe_name', 'foreign-pipe'),
+            ('diagnostics', 'connected', 1),
+            ('diagnostics', 'protocol_version', True),
+            ('diagnostics', 'protocol_version', 1.0),
+            ('diagnostics', 'bridge_pid', True),
+            ('diagnostics', 'bridge_pid', 123.0),
+            ('diagnostics', 'bridge_pid', 0x100000000),
+            ('diagnostics', 'connection_generation', False),
+            ('hello', 'type', 'metadata'),
+            ('hello', 'protocol_version', 1.0),
+            ('hello', 'pid', 124),
+            ('hello', 'pid', 123.0),
+            ('hello', 'connection_generation', 2),
+            ('hello', 'connection_generation', True),
+            ('hello', 'capabilities', {'normal-exit-map-v1': True}),
+            ('hello', 'capabilities', ['bridge.identity', True]),
+            ('hello', 'capabilities', ['bridge.identity', 'game.command.normal-exit-map-v1']),
+        )
+        for target_name, field, invalid in mutations:
+            with self.subTest(target=target_name, field=field, invalid=invalid):
+                fixture = normal_exit_fixture('ck3_query_normal_exit_context_v1')
+                targets = {'report': fixture['report'], 'capabilities': fixture['capabilities'],
+                           'diagnostics': fixture['diagnostics'], 'hello': fixture['hello']}
+                targets[target_name][field] = invalid
+                with self.assertRaises(ValueError):
+                    self.module.validate_steps([{'id': 'bad-native', 'tool': 'ck3_query_normal_exit_context_v1'}],
+                                               fixture['report'])
+        for target_name, field in (('report', 'capabilities'), ('capabilities', 'bridge_capabilities'),
+                                   ('capabilities', 'diagnostics'), ('diagnostics', 'hello'),
+                                   ('hello', 'capabilities'), ('hello', 'pid'), ('hello', 'connection_generation')):
+            with self.subTest(missing=target_name+'.'+field):
+                fixture = normal_exit_fixture('ck3_query_normal_exit_context_v1')
+                targets = {'report': fixture['report'], 'capabilities': fixture['capabilities'],
+                           'diagnostics': fixture['diagnostics'], 'hello': fixture['hello']}
+                targets[target_name].pop(field)
+                with self.assertRaises(ValueError):
+                    self.module.validate_steps([{'id': 'missing-native', 'tool': 'ck3_query_normal_exit_context_v1'}],
+                                               fixture['report'])
+
+    def test_normal_exit_json_roundtrip_and_exact_unprefixed_capability(self) -> None:
+        fixture = normal_exit_fixture('ck3_query_normal_exit_context_v1')
+        report = json.loads(json.dumps(fixture['report']))
+        steps = [{'id': 'roundtrip-native', 'tool': 'ck3_query_normal_exit_context_v1', 'args': {}}]
+        self.assertEqual(self.module.validate_steps(json.loads(json.dumps(steps)), report), ['roundtrip-native'])
+        # Both mirrors can agree on an alias and still fail: the actual SDK
+        # accepts only normal-exit-map-v1, without a game.command prefix.
+        fixture['capabilities']['bridge_capabilities'] = ['game.command.normal-exit-map-v1']
+        fixture['hello']['capabilities'] = ['game.command.normal-exit-map-v1']
+        with self.assertRaisesRegex(ValueError, 'capability is unavailable'):
+            self.module.validate_steps(steps, fixture['report'])
 
     def tearDown(self) -> None:
         # Release only this test's selected modules; public/importing peers stay.

@@ -102,7 +102,7 @@ class NotificationBoundaryTests(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(subject.owner_identities_match_v1(before,before))
         self.assertTrue(subject.owner_identities_match_v1(before,after,allowed_interaction_instance=33554443))
         for invalid in (False,0.0,-1,2**31):
-            wrong=list(before);wrong[3]=invalid
+            wrong: list[object]=list(before);wrong[3]=invalid
             self.assertFalse(subject.owner_identities_match_v1(wrong,wrong))
             self.assertFalse(subject.owner_identities_match_v1(wrong,after,allowed_interaction_instance=33554443))
 
