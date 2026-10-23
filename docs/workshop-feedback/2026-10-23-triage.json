@@ -3,7 +3,7 @@
   "machine_id": "desktop-3fevhd2-1c74096080",
   "assembled_at_utc": "2026-10-23T14:38:01.488358+00:00",
   "snapshot": "2026-10-23-comments.json",
-  "scope": "Comment-based triage only; no gameplay reproduction or new product fix.",
+  "scope": "Comment-based triage with subsequent source-development followup; no gameplay reproduction or accepted product fix.",
   "priority_basis": "Proposed triage order, not reproduced severity.",
   "repository_context_commit": "bc63851081462413d0cc6ebe62e37490707ee6a9",
   "issues": [
@@ -43,9 +43,11 @@
       ],
       "owner_reply_comment_ids": [],
       "followup_comment_ids": [],
-      "assessment": "玩家描述了稳定的累加关系；公开评论未见回复或修复确认。",
-      "next_action": "用同一目标连续勾引，观察后续同类通知数量；收集保存重载前后对照及模组清单。",
-      "repository_evidence": [],
+      "assessment": "玩家描述了稳定的累加关系；公开评论未见回复或修复确认。2026-10-24跟进：已完成源码及原生路径离线调查并准备独立对照夹具，尚未取得实际重复通知实例，根因未证明；计数覆盖改造不作为通知修复结论。",
+      "next_action": "按同一基线对比原版与模组N=0/1/2/5；保留可见通知和保存前后证据。现有公共MCP没有HUD消息列表读口，不能补写原生消息实例ID。",
+      "repository_evidence": [
+        "mod_superman_qiang/docs/2026-10-23-notification-investigation.md"
+      ],
       "report_urls": [
         "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990#comment_581684714275963017"
       ],
@@ -268,17 +270,18 @@
       "category": "counting_coverage_gap",
       "priority": "P2",
       "title": "生育三个亲生孩子后性经验仍为零，希望怀孕也计数",
-      "status": "open_design_review",
+      "status": "open_pending_acceptance",
       "report_comment_ids": [
         "581684930426237298"
       ],
       "owner_reply_comment_ids": [],
       "followup_comment_ids": [],
-      "assessment": "当前产品合同明确不以出生/怀孕代替性行为计数，生产实现只接入had_sex_with_effect与had_sex_with_unknown_effect。这解释了为何自然生育可能不增加经验，但不能据此排除玩家反馈或认定设计合理。生育多个亲生孩子而经验仍为零应保留为计数覆盖缺口，需评估自然受孕/生育链的实际入口及合理计数方式。",
-      "next_action": "保留待评估；研究自然受孕/生育真实生产链，并区分启用前后、真实父母及已由明确事件计数的妊娠，避免重复计数。尚未承诺生育一次等于性行为一次或追溯所有旧经历。",
+      "assessment": "采集时公开1.1版本只接入两个明确性交效果，这只能解释原现象，不能据此排除反馈。用户随后要求纯工坊模拟夫妻生活并计入受孕尝试；源码1.2候选已加入每对成年在世配偶/侧室每月一次的模拟、脚本受孕概率判定前计数和已审计嵌套去重，62项离线测试通过，实机及发布尚未完成，不能关闭此缺口。",
+      "next_action": "完成公共natural-simulation的实际月度回调、跨月及独立冷重载验收。继续保留引擎内部失败受孕掷骰不可直接观测的边界；月度模拟不是引擎精确遥测。公开工坊仍为原版本。",
       "repository_evidence": [
         "mod_superman_qiang/README.md",
         "mod_superman_qiang/docs/product-contract.md",
+        "mod_superman_qiang/docs/2026-10-23-encounter-redesign.md",
         "mod_superman_qiang/common/scripted_effects/zz_sxad_had_sex_with_effect.txt",
         "mod_superman_qiang/common/scripted_effects/zz_sxad_had_sex_with_unknown_effect.txt"
       ],

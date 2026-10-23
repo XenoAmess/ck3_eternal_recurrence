@@ -2,14 +2,205 @@
 
 The CLI writes bounded metadata only. Public allocate remains the only allocator.
 """
-from pathlib import Path
+from __future__ import annotations
+from pathlib import Path, PureWindowsPath
 from datetime import datetime, timezone
-import argparse, hashlib, json, os
+from dataclasses import dataclass
+from collections.abc import Mapping
+from typing import Literal, TypedDict
+import argparse, hashlib, json, math, os, re
 from ck3_mod_acceptance import check_pin, pin, read_json, same_directory_control_peer
 from ck3_mod_acceptance_launcher_pin_refusal import public_operation_argv, validate_launcher_pin_refusal
-from ck3_mod_acceptance_background_types import JsonObject, object_field
+from ck3_mod_acceptance_background_types import FilePin, JsonObject, file_pin, json_object, object_field
 
 SCHEMA = 'ck3-mod-acceptance-allocated-unrun-closure-v1'
+
+
+class ExternalCompletionRequest(TypedDict):
+    session_id: int
+    chars: Literal['']
+    max_output_tokens: int
+    yield_time_ms: int
+
+
+class ExternalExecCompletionReceipt(TypedDict):
+    """Final tool output, never a full process stream or Popen/host receipt."""
+    schema: Literal['external-exec-completion-v1']
+    machine_id: str
+    original_request: FilePin
+    initial_response: FilePin
+    completion_request: ExternalCompletionRequest
+    completion_response: FilePin
+    completion_observed_at_utc: str
+    exit_code: int
+    allocator_stdout: FilePin
+
+
+@dataclass(frozen=True)
+class ExternalAllocatorCompletion:
+    command_text: str
+    shell: Literal['cmd.exe']
+    workdir: str
+    session_id: int
+    exit_code: int
+    completion_observed_at: datetime
+    argv: tuple[str, ...]
+
+
+class UnrunBundleReport(TypedDict):
+    bundle: FilePin
+    previous_release: FilePin
+    validation: JsonObject
+    SDK_or_launch: Literal[False]
+
+
+def _object(raw: object, label: str) -> dict[str, object]:
+    if not isinstance(raw, dict):
+        raise ValueError(label + ' must be an object')
+    result: dict[str, object] = {}
+    for key, value in raw.items():
+        if not isinstance(key, str):
+            raise ValueError(label + ' keys must be strings')
+        result[key] = value
+    return result
+
+
+def _text(raw: object, label: str) -> str:
+    if not isinstance(raw, str) or not raw:
+        raise ValueError(label + ' must be a nonempty string')
+    return raw
+
+
+def _integer(raw: object, label: str, minimum: int = 0) -> int:
+    # IDs and codes reject bool, equal floats and rounded JavaScript numbers.
+    if type(raw) is not int or not isinstance(raw, int) or not minimum <= raw <= 9007199254740991:
+        raise ValueError(label + ' must be an exact safe integer')
+    return raw
+
+
+def _timestamp(raw: object, label: str) -> datetime:
+    value = datetime.fromisoformat(_text(raw, label))
+    if value.tzinfo is None:
+        raise ValueError(label + ' must include a timezone')
+    return value
+
+
+def _evidence_pin(raw: object, label: str) -> FilePin:
+    value = _object(raw, label)
+    if set(value) != {'path', 'bytes', 'sha256'}:
+        raise ValueError(label + ' pin fields differ')
+    path = _text(value['path'], label + '.path')
+    size = _integer(value['bytes'], label + '.bytes')
+    digest = _text(value['sha256'], label + '.sha256')
+    if not re.fullmatch('[0-9a-fA-F]{64}', digest):
+        raise ValueError(label + ' SHA-256 differs')
+    return {'path': path, 'bytes': size, 'sha256': digest}
+
+
+def _pinned_object(raw: object, label: str) -> dict[str, object]:
+    reference = _evidence_pin(raw, label)
+    check_pin(Path(reference['path']), dict(reference))
+    return _object(_read(reference['path']), label)
+
+
+def _tool_duration(raw: object, label: str) -> None:
+    if type(raw) not in (int, float) or not isinstance(raw, (int, float)) or not math.isfinite(raw) or raw < 0:
+        raise ValueError(label + ' must be a finite nonnegative duration')
+
+
+def _cmd_allocator_argv(command: str) -> tuple[str, ...]:
+    """Read one literal cmd.exe command without executing or normalizing it.
+
+    Only bare/whole-quoted arguments are admitted. Expansion, escaping,
+    operators, concatenated quotes and redirection are rejected rather than
+    translated into a fictitious shell=False invocation.
+    """
+    if any(character in command for character in '&|<>^%!\r\n\0'):
+        raise ValueError('External allocator command must be one literal cmd.exe command')
+    result: list[str] = []
+    end = 0
+    for match in re.finditer(r'"([^"\r\n]*)"|([^\s"]+)', command):
+        gap = command[end:match.start()]
+        if gap.strip(' \t') or (result and not gap):
+            raise ValueError('External allocator command quoting differs')
+        argument = match.group(1) if match.group(1) is not None else match.group(2)
+        if not argument:
+            raise ValueError('External allocator empty argument unsupported')
+        result.append(argument)
+        end = match.end()
+    if not result or command[end:].strip(' \t'):
+        raise ValueError('External allocator command quoting differs')
+    return tuple(result)
+
+
+def parse_external_exec_completion(
+    raw: object, machine: str, keeper_stamps: list[datetime], allocator_stdout: object,
+) -> ExternalAllocatorCompletion:
+    """Validate original tool data for allocator-only exit0 admission.
+
+    This form cannot establish a process PID, original Popen wait, host exit or
+    CK3 business credit. All keeper, absence, source and CAS guards still apply.
+    """
+    value = _object(raw, 'External allocator completion')
+    fields = {'schema', 'machine_id', 'original_request', 'initial_response', 'completion_request',
+              'completion_response', 'completion_observed_at_utc', 'exit_code', 'allocator_stdout'}
+    if set(value) != fields or value.get('schema') != 'external-exec-completion-v1' or value.get('machine_id') != machine:
+        raise ValueError('External allocator completion fields/schema/machine differ')
+    exit_code = _integer(value['exit_code'], 'External allocator exit_code')
+    if exit_code != 0:
+        raise ValueError('External allocator actual completion must be exit0')
+    observed = _timestamp(value['completion_observed_at_utc'], 'External completion observation')
+    if not keeper_stamps or any(stamp.tzinfo is None for stamp in keeper_stamps) or not keeper_stamps[0] <= keeper_stamps[-1] <= observed:
+        raise ValueError('External allocator completion observation predates keeper completion')
+    request = _pinned_object(value['original_request'], 'External original request')
+    if set(request) != {'cmd', 'shell', 'workdir', 'max_output_tokens', 'yield_time_ms'} or request.get('shell') != 'cmd.exe':
+        raise ValueError('External allocator original cmd.exe request differs')
+    command = _text(request['cmd'], 'External original cmd')
+    workdir = _text(request['workdir'], 'External original workdir')
+    if not PureWindowsPath(workdir).is_absolute():
+        raise ValueError('External original workdir must be absolute')
+    _integer(request['max_output_tokens'], 'External original max_output_tokens', 1)
+    _integer(request['yield_time_ms'], 'External original yield_time_ms', 1)
+    initial = _pinned_object(value['initial_response'], 'External initial response')
+    if set(initial) != {'chunk_id', 'wall_time_seconds', 'session_id', 'original_token_count', 'output'}:
+        raise ValueError('External initial response must be the original running session')
+    session = _integer(initial['session_id'], 'External initial session_id', 1)
+    _text(initial['chunk_id'], 'External initial chunk_id')
+    _tool_duration(initial['wall_time_seconds'], 'External initial wall time')
+    _integer(initial['original_token_count'], 'External initial original_token_count')
+    if not isinstance(initial['output'], str):
+        raise ValueError('External initial response output must be text')
+    completion_request = _object(value['completion_request'], 'External completion request')
+    if set(completion_request) != {'session_id', 'chars', 'max_output_tokens', 'yield_time_ms'}:
+        raise ValueError('External completion request fields differ')
+    if _integer(completion_request['session_id'], 'External completion session_id', 1) != session or completion_request['chars'] != '':
+        raise ValueError('External actual completion request session differs')
+    _integer(completion_request['max_output_tokens'], 'External completion max_output_tokens', 1)
+    _integer(completion_request['yield_time_ms'], 'External completion yield_time_ms', 1)
+    final = _pinned_object(value['completion_response'], 'External completion response')
+    if set(final) != {'chunk_id', 'wall_time_seconds', 'exit_code', 'original_token_count', 'output'}:
+        raise ValueError('External completion response must be a finished tool result')
+    _text(final['chunk_id'], 'External completion chunk_id')
+    _tool_duration(final['wall_time_seconds'], 'External completion wall time')
+    _integer(final['original_token_count'], 'External completion original_token_count')
+    if _integer(final['exit_code'], 'External completion response exit_code') != exit_code:
+        raise ValueError('External actual completion exit code differs')
+    output = _text(final['output'], 'External completion output')
+    reference = _evidence_pin(value['allocator_stdout'], 'External raw allocator stdout')
+    expected = _evidence_pin(allocator_stdout, 'Closure allocator stdout')
+    if reference != expected:
+        raise ValueError('External allocator stdout pin differs from closure')
+    check_pin(Path(reference['path']), dict(reference))
+    if output.encode('utf-8') != Path(reference['path']).read_bytes():
+        raise ValueError('External allocator final tool output bytes differ; preserve CRLF exactly')
+    # Exact final write_stdin output block, not stdout accumulated since process
+    # creation. Earlier polls are neither reconstructed nor claimed. The final
+    # block itself must contain the complete READY JSON object.
+    allocated: object = json.loads(output)
+    if not isinstance(allocated, dict) or allocated.get('status') != 'ACTUAL_ALLOCATED_KEEPER_READY_NOT_RUN':
+        raise ValueError('External allocator complete READY stdout missing')
+    return ExternalAllocatorCompletion(command, 'cmd.exe', workdir, session, exit_code, observed, _cmd_allocator_argv(command))
+
 def need(value: object, message: object) -> None:
     if not value: raise ValueError(message)
 def _read(path):
@@ -19,27 +210,34 @@ def _exact(bundle, key, path):
     ref=bundle[key];need(Path(ref['path']).resolve()==Path(path).resolve(),'Unrun original path differs: '+key)
     check_pin(Path(path),ref);return _read(path)
 
-def _allocator_argv(bundle, machine, keeper_stamps):
-    """Read one original wait receipt, or the pinned original Popen triplet.
+def _allocator_argv(bundle: Mapping[str, object], machine: str, keeper_stamps: list[datetime]) -> list[str]:
+    """Read one original allocator completion evidence form.
 
-    The triplet has no shell field; only its actual Popen wait is credited.
-    Neither receipt form establishes a host or CK3 exit.
+    The triplet credits its actual Popen wait. The external form preserves the
+    actual cmd.exe tool session and exact final output block without inventing
+    a Popen wait or a complete process stdout stream. No form credits host/CK3.
     """
     keys=('allocator_intent','allocator_process','allocator_exit')
     combined='allocator_result' in bundle
-    need((combined and not any(k in bundle for k in keys))
-         or (not combined and all(k in bundle for k in keys)),
+    external='allocator_external_exec' in bundle
+    need((combined and not external and not any(k in bundle for k in keys))
+         or (external and not combined and not any(k in bundle for k in keys))
+         or (not combined and not external and all(k in bundle for k in keys)),
          'One complete original allocator evidence form required')
     def original(key):
         ref=bundle[key];check_pin(Path(ref['path']),ref);return _read(ref['path'])
-    if combined:
+    if external:
+        external_command=parse_external_exec_completion(original('allocator_external_exec'),machine,
+            keeper_stamps,bundle.get('allocator_stdout'))
+        argv=list(external_command.argv)
+    elif combined:
         command=original('allocator_result')
         if command.get('original_subprocess_wait_observed') is True:
             argv,finished=public_operation_argv(bundle['allocator_command'],bundle['allocator_result'],
                 machine_id=machine,mode='allocate',exit_code=0)
             need(keeper_stamps[-1]<=finished,'Actual allocator completion predates keeper exit')
         else:
-            need(command.get('machine_id')==machine and command.get('exit_code')==0
+            need(command.get('machine_id')==machine and type(command.get('exit_code')) is int and command.get('exit_code')==0
                  and command.get('shell') is False and bool(command.get('finished_at_utc')),
                  'Actual original allocator wait0 differs')
             argv=command.get('argv',[])
@@ -48,7 +246,7 @@ def _allocator_argv(bundle, machine, keeper_stamps):
         pid=process.get('pid');created=process.get('create_time')
         need(all(row.get('machine_id')==machine for row in (intent,process,exit_row))
              and intent.get('stage')=='allocate' and type(pid) is int and pid>0
-             and exit_row.get('pid')==pid and exit_row.get('actual_original_popen_wait') is True
+             and type(exit_row.get('pid')) is int and exit_row.get('pid')==pid and exit_row.get('actual_original_popen_wait') is True
              and type(exit_row.get('returncode')) is int and exit_row['returncode']==0
              and intent.get('argv')==process.get('argv'),
              'Actual original allocator intent/process/wait0 differs')
@@ -224,14 +422,15 @@ def _write(path,value):
     path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
     with path.open('x',encoding='utf-8',newline='\n') as f:json.dump(value,f,ensure_ascii=False,indent=2);f.write('\n')
     return pin(path)
-def build_bundle(args):
+def build_bundle(args: argparse.Namespace) -> UnrunBundleReport:
     import ck3_live_run_id as ids
     control_allocator = same_directory_control_peer('ck3_mod_acceptance_allocate')
     read_failed_runtime_release, current_screen_absent = control_allocator.read_failed_runtime_release, control_allocator.current_screen_absent
-    allocator={key:getattr(args,key,None) for key in ('allocator_result','allocator_intent','allocator_process','allocator_exit')}
-    need((allocator['allocator_result'] is not None and all(allocator[k] is None for k in allocator if k!='allocator_result'))
-         or (allocator['allocator_result'] is None and all(allocator[k] is not None for k in allocator if k!='allocator_result')),
-         'Provide --allocator-result or all three --allocator-intent/--allocator-process/--allocator-exit originals')
+    allocator={key:getattr(args,key,None) for key in ('allocator_result','allocator_external_exec','allocator_intent','allocator_process','allocator_exit')}
+    singles=('allocator_result','allocator_external_exec');triplet=('allocator_intent','allocator_process','allocator_exit')
+    need(any(allocator[key] is not None and all(allocator[other] is None for other in allocator if other!=key) for key in singles)
+         or (all(allocator[key] is None for key in singles) and all(allocator[key] is not None for key in triplet)),
+         'Provide --allocator-result, --allocator-external-exec, or all three original Popen evidence files')
     live=args.previous_live.resolve();keeper=args.keeper_root.resolve();freeze=_read(live/'frozen-argv.json')
     machine=ids.current_machine_id();taskpath=args.task_bus_root/'tasks'/(freeze['screen_task']+'.json');task=_read(taskpath)
     journal=args.task_bus_root/'events.jsonl';size=journal.stat().st_size;start=max(0,size-65536)
@@ -266,12 +465,14 @@ def build_bundle(args):
     packet=current_screen_absent(Path(freeze['lease_anchor']),args.task_bus_root,
         freeze['files'][str(bus.resolve())]['sha256'],None)
     verdict=validate_allocated_unrun(live,freeze,Path(bundle['path']),keeper,release,packet)
-    return {'bundle':bundle,'previous_release':proofs['admin_done'],'validation':verdict,'SDK_or_launch':False}
-def main():
+    return {'bundle':file_pin(bundle),'previous_release':file_pin(proofs['admin_done']),
+            'validation':json_object(verdict),'SDK_or_launch':False}
+def main() -> None:
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--previous-live',type=Path,required=True)
     p.add_argument('--keeper-root',type=Path,required=True)
     allocator=p.add_mutually_exclusive_group(required=True)
     allocator.add_argument('--allocator-result',type=Path)
+    allocator.add_argument('--allocator-external-exec',type=Path)
     p.add_argument('--allocator-command',type=Path)
     p.add_argument('--launcher-pin-refusal',type=Path)
     allocator.add_argument('--allocator-intent',type=Path)
