@@ -10,6 +10,8 @@
 
 恢复后的 R16 已完成47自然日、7次保存、8项阈值检查及75金实际扣款，并在同进程补验安抚25金、正常GUI退出。旧公共验证字段遗漏、修复后重新验证与后继门槛见 [R16实际结果](../../mod_living_artifacts/docs/runtime-r16-gold-debit-and-normal-close.md)。下文度假截点原样保留，不能当作恢复后的当前执行状态。
 
+最新R17已按c19/a28实际启动；首两保存确认初始印记和首次扣25金，续期/到期仍在执行，见 [R17进行中记录](../../mod_living_artifacts/docs/runtime-r17-paid-renewal-and-expiry.md)。不要把下文历史NOT_RUN清单追认为当前状态，也不要重复启动已在运行的场次。
+
 ## 入口与必要约束
 
 - 仓库：`D:/workspace/ck3_eternal_recurrence`；产品：`mod_living_artifacts/`；外置工作包：`D:/workspace/ck3-living-artifacts-20261022`，下文简称 `EXT`。
