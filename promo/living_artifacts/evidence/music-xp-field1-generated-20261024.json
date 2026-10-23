@@ -1,0 +1,247 @@
+{
+  "format_version": 1,
+  "kind": "living_artifacts_music_generation_evidence",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-23T21:35:21.275277+00:00",
+  "status": "ARRANGEMENT_AND_MIX_GENERATED_UNREVIEWED",
+  "source": {
+    "path": "C:\\Users\\Administrator\\.paseo\\uploads\\upload_eac80a4b-2768-43b2-9a60-64873b7046d3\\xp_field1.mid",
+    "bytes": 21627,
+    "sha256": "91f4f34740bcc1e99ba34d41ce0df90191a409c977634333d7801e047875d3e3"
+  },
+  "arrangement": {
+    "nominal_start_bpm": 92,
+    "tempo_map_scaling": "28/23",
+    "tempo_map_entries": 8,
+    "constant_tempo_claimed": false,
+    "duration_seconds": 105.070625,
+    "tail_seconds": 4,
+    "frames": 5043390,
+    "sample_rate": 48000,
+    "channels": 2,
+    "codec": "pcm_s16le",
+    "arranged_midi": {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\music\\attempt-midi-a01\\xp_field1-dark-v1.mid",
+      "bytes": 17187,
+      "sha256": "885d75afaf90600fb823b38fd3c9908076a5cf3a6f3af07ac08d6b15208e62d1"
+    },
+    "wav": {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\music\\attempt-midi-a01\\xp_field1-dark-v1.wav",
+      "bytes": 20173604,
+      "sha256": "198ee0ddd68c188d0770934686caef14ff665cae4edf2d49e1440502ee1d1487"
+    },
+    "original_events_verified_after_smf_roundtrip": true,
+    "pitch_ticks_controllers_and_unlisted_fields_unchanged": true,
+    "source_event_count": 5170,
+    "original_actual_wait_returns": [
+      0,
+      0,
+      0
+    ]
+  },
+  "mix": {
+    "duration_seconds": 210.0,
+    "voice_stems": 8,
+    "voice_start_seconds": [
+      1.0,
+      15.0,
+      38.0,
+      73.0,
+      101.0,
+      131.0,
+      166.0,
+      193.0
+    ],
+    "music_start_seconds": [
+      0,
+      100
+    ],
+    "music_base_gain_db": -7,
+    "additional_voice_duck_db": -8,
+    "sample_rate": 48000,
+    "channels": 2,
+    "wav": {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\edit-a01\\narration-music.wav",
+      "bytes": 40320078,
+      "sha256": "e0032e9c1495f02000e23add52542d35ad1f53e1bac3bf09c4f90b228cae8771"
+    },
+    "aac": {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\edit-a01\\narration-music.m4a",
+      "bytes": 5021084,
+      "sha256": "d712ec04974a892031e40c25e93c21d6531e099053bf9004eb7f0046bca35a6e"
+    },
+    "aac_profile": "LC",
+    "original_result_returncodes": {
+      "mix-command": 0,
+      "wav-probe": 0,
+      "sample-volume": 0,
+      "aac": 0,
+      "aac-probe-a02": 0
+    },
+    "sample_mean_db": -26.6,
+    "sample_peak_db": -4.3,
+    "is_lufs_or_true_peak": false,
+    "normalization_applied": false
+  },
+  "actual_verified_input_pins": [
+    {
+      "path": "C:\\Users\\Administrator\\.paseo\\uploads\\upload_eac80a4b-2768-43b2-9a60-64873b7046d3\\xp_field1.mid",
+      "bytes": 21627,
+      "sha256": "91f4f34740bcc1e99ba34d41ce0df90191a409c977634333d7801e047875d3e3"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\music\\attempt-midi-a01\\xp_field1-dark-v1.mid",
+      "bytes": 17187,
+      "sha256": "885d75afaf90600fb823b38fd3c9908076a5cf3a6f3af07ac08d6b15208e62d1"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\music\\attempt-midi-a01\\xp_field1-dark-v1.wav",
+      "bytes": 20173604,
+      "sha256": "198ee0ddd68c188d0770934686caef14ff665cae4edf2d49e1440502ee1d1487"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\edit-a01\\narration-music.wav",
+      "bytes": 40320078,
+      "sha256": "e0032e9c1495f02000e23add52542d35ad1f53e1bac3bf09c4f90b228cae8771"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\edit-a01\\narration-music.m4a",
+      "bytes": 5021084,
+      "sha256": "d712ec04974a892031e40c25e93c21d6531e099053bf9004eb7f0046bca35a6e"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\audio\\LA-01.mp3",
+      "bytes": 74304,
+      "sha256": "90e06a35d2218813b377211991087df6b051578dd67c460c0bfc3dcfe7e095a9"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\audio\\LA-02.mp3",
+      "bytes": 116352,
+      "sha256": "446f94286760dafebdd39775b1a5a1191d279a966236ba13bd6a0ea7b5a2abc8"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\audio\\LA-03.mp3",
+      "bytes": 155952,
+      "sha256": "6c8ccf499e147bc85eab5ee97c99b756aeafb789dc9365dd9f4211930e6fc8e3"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\audio\\LA-04.mp3",
+      "bytes": 121968,
+      "sha256": "f929db578a65f103014674d9573216d443db02e23866893e28d34ff357d93d2a"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\audio\\LA-05.mp3",
+      "bytes": 119808,
+      "sha256": "d0390073b41dc82d65fcbaa7f94ce7211dd98e20fefb9d8ce25f6f2efb3270c0"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\audio\\LA-06.mp3",
+      "bytes": 166608,
+      "sha256": "0d8a9a6a1fddf17c6d88b185a7df30733a6ddb88edb6671fceac0a33e6c3bcde"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\audio\\LA-07.mp3",
+      "bytes": 148320,
+      "sha256": "e50e78cbfab3ba0212b6ba00f64f2a61f63d5ed29a28c86f59fb3bef1e80b742"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\audio\\LA-08.mp3",
+      "bytes": 89424,
+      "sha256": "f46b1907408f67005419a4012cdf4b3b8314cc7716e91f047bedf2b518711082"
+    }
+  ],
+  "retained_receipt_pins": [
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\music\\attempt-midi-a01\\render-qualification.json",
+      "bytes": 7659,
+      "sha256": "8b199db34ea26aa96f0540f5e325706527bf2097a77bef9d4b20d9c11f2afaf9"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\music\\attempt-midi-a01\\summary.json",
+      "bytes": 3064,
+      "sha256": "daaeba4a486852d8224e393e59a62556dfa1087352bde206ab3798cc2b232f84"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\music\\attempt-midi-a01\\terminal-pins.json",
+      "bytes": 4635,
+      "sha256": "dcfad62ba50046337e78963f5f5e4e9c516187a5a00711307716de8608548af6"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\music\\attempt-midi-a01\\render.exit.json",
+      "bytes": 375,
+      "sha256": "1ceed1222f595036687b7c3c9b2605d9ac0a35d9b2d3e810651ce00fcbd387a2"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\music\\attempt-midi-a01\\ffprobe.exit.json",
+      "bytes": 216,
+      "sha256": "f9eafc06ab231474222251a5d680df6ee808742624631981a519059e0c167452"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\music\\attempt-midi-a01\\volume.exit.json",
+      "bytes": 215,
+      "sha256": "24a379f1e6e485c5e84cc3093bb0ec8f6eb78b711087ed10136aad80ba266330"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\edit-a01\\audio-plan.json",
+      "bytes": 19813,
+      "sha256": "bbf54604c29005c0ca2c158cbee3228d134942a261508b177f5433c0d2e661cf"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\edit-a01\\audio-validation-a02.json",
+      "bytes": 3261,
+      "sha256": "3ab1a700bc940f56915a93966590badd6f47c4a3bca8f55d5015063d1c1a5ab1"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\edit-a01\\mix-command\\result.json",
+      "bytes": 335,
+      "sha256": "4c284624f9f870988db072ff2babf6fe933636f884ca8e0a87ff1837740f2330"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\edit-a01\\wav-probe\\result.json",
+      "bytes": 149,
+      "sha256": "834ad3dfa890af6d92e961e95a63cf6e0a2f7fbc6c787d7c4339117cd185c13f"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\edit-a01\\sample-volume\\result.json",
+      "bytes": 149,
+      "sha256": "834ad3dfa890af6d92e961e95a63cf6e0a2f7fbc6c787d7c4339117cd185c13f"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\edit-a01\\aac\\result.json",
+      "bytes": 149,
+      "sha256": "834ad3dfa890af6d92e961e95a63cf6e0a2f7fbc6c787d7c4339117cd185c13f"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\edit-a01\\aac-probe-a02\\result.json",
+      "bytes": 149,
+      "sha256": "834ad3dfa890af6d92e961e95a63cf6e0a2f7fbc6c787d7c4339117cd185c13f"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\edit-a01\\wav-probe\\stdout.txt",
+      "bytes": 1845,
+      "sha256": "ad5d002f8a1c16ab7d40463d42aa56ce4337ffe2d2ac8b2cc69a8ee7de6ced36"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\edit-a01\\sample-volume\\stderr.txt",
+      "bytes": 1551,
+      "sha256": "acf38d247ea6932c0096c4b2999c7da5653bb105c4234e7983d4ca0136d54185"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\edit-a01\\aac-probe-a02\\stdout.txt",
+      "bytes": 2380,
+      "sha256": "c895bb3e60b7a4b8cff37100f80341d48d2c1f47f8f5c99d78b3aad2ba652bdc"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\edit-a01\\narration-music-aac.bound-probe.json",
+      "bytes": 2298,
+      "sha256": "a3e8b3352e7359eceb406ff707afab730471f7bcf71b26f5988431e2b47c1a25"
+    }
+  ],
+  "review": {
+    "played": false,
+    "human_1x_audio_review": false,
+    "quality_signoff": false,
+    "final_video_complete": false,
+    "review_scope": "Generation, file identity, original exit and technical probes only; no playback or regeneration in this documentation task."
+  }
+}

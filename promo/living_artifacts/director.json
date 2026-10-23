@@ -29,7 +29,55 @@
     "sha256": "91f4f34740bcc1e99ba34d41ce0df90191a409c977634333d7801e047875d3e3",
     "source": "user_upload",
     "direction": "保留主旋律，适度慢化；降低明亮吉他与鼓的存在感，冷峻、克制的木管与弦乐配器，旁白下压低伴奏。",
-    "status": "arrangement_pending"
+    "status": "arrangement_and_mix_generated_unreviewed",
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "observed_at_utc": "2026-10-23T21:35:21.275277+00:00",
+    "source_file": {
+      "path": "C:\\Users\\Administrator\\.paseo\\uploads\\upload_eac80a4b-2768-43b2-9a60-64873b7046d3\\xp_field1.mid",
+      "bytes": 21627,
+      "sha256": "91f4f34740bcc1e99ba34d41ce0df90191a409c977634333d7801e047875d3e3"
+    },
+    "nominal_start_bpm": 92,
+    "tempo_map_scaling": "28/23",
+    "constant_tempo_claimed": false,
+    "arrangement": {
+      "duration_seconds": 105.070625,
+      "arranged_midi": {
+        "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\music\\attempt-midi-a01\\xp_field1-dark-v1.mid",
+        "bytes": 17187,
+        "sha256": "885d75afaf90600fb823b38fd3c9908076a5cf3a6f3af07ac08d6b15208e62d1"
+      },
+      "wav": {
+        "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\music\\attempt-midi-a01\\xp_field1-dark-v1.wav",
+        "bytes": 20173604,
+        "sha256": "198ee0ddd68c188d0770934686caef14ff665cae4edf2d49e1440502ee1d1487"
+      }
+    },
+    "mixed_audio": {
+      "duration_seconds": 210.0,
+      "voice_stems": 8,
+      "wav": {
+        "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\edit-a01\\narration-music.wav",
+        "bytes": 40320078,
+        "sha256": "e0032e9c1495f02000e23add52542d35ad1f53e1bac3bf09c4f90b228cae8771"
+      },
+      "aac": {
+        "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\edit-a01\\narration-music.m4a",
+        "bytes": 5021084,
+        "sha256": "d712ec04974a892031e40c25e93c21d6531e099053bf9004eb7f0046bca35a6e"
+      },
+      "technical_commands_original_exit": 0,
+      "sample_peak_db": -4.3,
+      "sample_mean_db": -26.6,
+      "is_lufs_or_true_peak": false
+    },
+    "human_audio_review_complete": false,
+    "quality_signoff": false,
+    "evidence": {
+      "path": "evidence/music-xp-field1-generated-20261024.json",
+      "bytes": 10417,
+      "sha256": "eaa060e8afd8f630ae0354cc393228905a247a2390feb6120e1b0d0cd14e6f8e"
+    }
   },
   "workshop_item_id": "3825237804",
   "scenes": [
