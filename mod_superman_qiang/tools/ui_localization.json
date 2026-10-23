@@ -1,7 +1,7 @@
 {
   "french": {
     "trait_sxad_sex_experience": "Expérience sexuelle",
-    "trait_sxad_sex_experience_desc": "Nombre de rapports sexuels explicites enregistrés.",
+    "trait_sxad_sex_experience_desc": "Enregistre les rapports sexuels explicites, les tentatives de conception scriptées et une rencontre simulée par mois pour chaque couple adulte de conjoints ou de concubins.",
     "trait_sxad_sex_experience_character_desc": "Expérience sexuelle enregistrée : #V [SCOPE.ScriptValue('sxad_experience_value')|0]#! rapports.",
     "sxad_view_experience_interaction": "Consulter l'expérience sexuelle",
     "sxad_view_experience_interaction_desc": "Consulter l'expérience et les compétences sexuelles de [recipient.GetShortUIName] dans une notification.",
@@ -28,7 +28,7 @@
   },
   "german": {
     "trait_sxad_sex_experience": "Sexuelle Erfahrung",
-    "trait_sxad_sex_experience_desc": "Anzahl dokumentierter expliziter sexueller Begegnungen.",
+    "trait_sxad_sex_experience_desc": "Erfasst ausdrückliche sexuelle Begegnungen, skriptgesteuerte Empfängnisversuche und eine simulierte Begegnung pro Monat für jedes erwachsene Ehe- oder Konkubinatspaar.",
     "trait_sxad_sex_experience_character_desc": "Dokumentierte sexuelle Erfahrung: #V [SCOPE.ScriptValue('sxad_experience_value')|0]#! Begegnungen.",
     "sxad_view_experience_interaction": "Sexuelle Erfahrung anzeigen",
     "sxad_view_experience_interaction_desc": "Zeige [recipient.GetShortUIName]s sexuelle Erfahrung und Fähigkeiten in einer Benachrichtigung an.",
@@ -55,7 +55,7 @@
   },
   "japanese": {
     "trait_sxad_sex_experience": "性経験",
-    "trait_sxad_sex_experience_desc": "記録された明白な性行為の回数。",
+    "trait_sxad_sex_experience_desc": "明示的な性行為、スクリプトによる受胎判定、および成人の配偶者・側室の各組につき月1回の夫婦生活シミュレーションを記録する。",
     "trait_sxad_sex_experience_character_desc": "記録された性経験：#V [SCOPE.ScriptValue('sxad_experience_value')|0]#! 回。",
     "sxad_view_experience_interaction": "性経験を確認する",
     "sxad_view_experience_interaction_desc": "通知で[recipient.GetShortUIName]の性的な経験と能力を表示する。",
@@ -82,7 +82,7 @@
   },
   "korean": {
     "trait_sxad_sex_experience": "성 경험",
-    "trait_sxad_sex_experience_desc": "기록된 명시적 성행위 횟수.",
+    "trait_sxad_sex_experience_desc": "명시적 성행위, 스크립트의 임신 확률 판정, 성인 배우자 또는 첩 관계의 각 쌍에 대한 월 1회 부부 생활 시뮬레이션을 기록합니다.",
     "trait_sxad_sex_experience_character_desc": "기록된 성 경험: #V [SCOPE.ScriptValue('sxad_experience_value')|0]#! 회.",
     "sxad_view_experience_interaction": "성 경험 보기",
     "sxad_view_experience_interaction_desc": "알림으로 [recipient.GetShortUIName]의 성 경험과 능력을 확인합니다.",
@@ -109,7 +109,7 @@
   },
   "polish": {
     "trait_sxad_sex_experience": "Doświadczenie seksualne",
-    "trait_sxad_sex_experience_desc": "Liczba odnotowanych jednoznacznych kontaktów seksualnych.",
+    "trait_sxad_sex_experience_desc": "Rejestruje jednoznaczne kontakty seksualne, skryptowe próby poczęcia oraz jedno symulowane zbliżenie miesięcznie dla każdej dorosłej pary małżonków lub konkubentów.",
     "trait_sxad_sex_experience_character_desc": "Odnotowane doświadczenie seksualne: #V [SCOPE.ScriptValue('sxad_experience_value')|0]#! razy.",
     "sxad_view_experience_interaction": "Wyświetl doświadczenie seksualne",
     "sxad_view_experience_interaction_desc": "Wyświetl doświadczenie seksualne i umiejętności [recipient.GetShortUIName] w powiadomieniu.",
@@ -136,7 +136,7 @@
   },
   "russian": {
     "trait_sxad_sex_experience": "Сексуальный опыт",
-    "trait_sxad_sex_experience_desc": "Зафиксировано явных сексуальных контактов.",
+    "trait_sxad_sex_experience_desc": "Учитывает явные половые контакты, скриптовые попытки зачатия и одну симуляцию близости в месяц для каждой взрослой супружеской пары или пары с наложником либо наложницей.",
     "trait_sxad_sex_experience_character_desc": "Зафиксированный сексуальный опыт: #V [SCOPE.ScriptValue('sxad_experience_value')|0]#! раз.",
     "sxad_view_experience_interaction": "Посмотреть сексуальный опыт",
     "sxad_view_experience_interaction_desc": "Просмотреть сексуальный опыт и навыки [recipient.GetShortUIName] в уведомлении.",
@@ -163,7 +163,7 @@
   },
   "spanish": {
     "trait_sxad_sex_experience": "Experiencia sexual",
-    "trait_sxad_sex_experience_desc": "Número registrado de encuentros sexuales explícitos.",
+    "trait_sxad_sex_experience_desc": "Registra el sexo explícito, los intentos de concepción de los eventos y un encuentro simulado al mes por cada pareja adulta de cónyuges o concubinos.",
     "trait_sxad_sex_experience_character_desc": "Experiencia sexual registrada: #V [SCOPE.ScriptValue('sxad_experience_value')|0]#! encuentros.",
     "sxad_view_experience_interaction": "Ver experiencia sexual",
     "sxad_view_experience_interaction_desc": "Ver la experiencia y habilidades sexuales de [recipient.GetShortUIName] en una notificación.",

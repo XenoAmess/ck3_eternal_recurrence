@@ -1,0 +1,9 @@
+# GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py
+# Stock accepts current_year/current_month as values in
+# events/war_events/combat_events.txt:2287-2293, and script-value arithmetic in
+# common/script_values/00_dlc_fp3_script_values.txt:60-63.
+sxad_natural_month_value = {
+    value = current_year
+    multiply = 12
+    add = current_month
+}

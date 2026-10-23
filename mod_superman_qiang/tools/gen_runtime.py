@@ -2,12 +2,16 @@
 from __future__ import annotations
 
 import argparse
+from dataclasses import dataclass
 import hashlib
 import json
 import math
 from pathlib import Path
 import re
 import struct
+from typing import Literal
+
+from product import LANGUAGES
 
 from runtime_data import (EN, EXE_SHA256, GAME_VERSION, HEALTH_DONOR_MINIMUM,
                           HEALTH_TRANSFER_AMOUNT, HOOKS, MINIMUM_AGE,
@@ -21,7 +25,197 @@ UI_LOCALIZATION_SOURCE = Path(__file__).resolve().parent / "ui_localization.json
 HEADER = "# GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py\n"
 INSERT_BEGIN = "\t# SXAD_HOOK_BEGIN\n"
 INSERT_END = "\t# SXAD_HOOK_END\n"
+ENCOUNTER_SOURCES = PINNED_ROOT / "encounter_sources.json"
+RUNTIME_TEMPLATE_ROOT = Path(__file__).resolve().parent / "runtime_templates"
+NATURAL_TEMPLATES = (
+    ("sxad_natural_on_actions.txt", "common/on_action/sxad_natural_on_actions.txt"),
+    ("sxad_natural_events.txt", "events/sxad_natural_events.txt"),
+    ("sxad_natural_effects.txt", "common/scripted_effects/sxad_natural_effects.txt"),
+    ("sxad_natural_values.txt", "common/script_values/sxad_natural_values.txt"),
+)
 DEFAULT_GAME_ROOT = Path("C:/SteamLibrary/steamapps/common/Crusader Kings III")
+
+
+@dataclass(frozen=True)
+class EncounterInsertion:
+    anchor: str
+    position: Literal["before", "after"]
+    text: str
+    expected_count: int
+
+
+@dataclass(frozen=True)
+class EncounterProjection:
+    name: str
+    kind: Literal["scripted_effect", "event"]
+    source_path: str
+    source_sha256: str
+    pinned_file: str
+    pinned_sha256: str
+    namespace: str | None
+    output: str
+    insertions: tuple[EncounterInsertion, ...]
+
+
+def required_fields(value: object, keys: frozenset[str], context: str) -> dict[str, object]:
+    """Validate a JSON object before exposing its fields to the generator."""
+    if not isinstance(value, dict) or any(not isinstance(key, str) for key in value):
+        raise ValueError(f"{context}: expected object with string keys")
+    result: dict[str, object] = {key: item for key, item in value.items()}
+    if result.keys() != keys:
+        raise ValueError(f"{context}: incorrect fields: {sorted(result)}")
+    return result
+
+
+def required_string(value: object, context: str) -> str:
+    if not isinstance(value, str) or not value:
+        raise ValueError(f"{context}: expected nonempty string")
+    return value
+
+
+def required_sha256(value: object, context: str) -> str:
+    result = required_string(value, context)
+    if re.fullmatch(r"[0-9a-f]{64}", result) is None:
+        raise ValueError(f"{context}: invalid SHA-256")
+    return result
+
+
+def relative_path(value: object, context: str) -> str:
+    result = required_string(value, context)
+    if "\\" in result or result.startswith("/") or ":" in result or any(part in {"", ".", ".."} for part in result.split("/")):
+        raise ValueError(f"{context}: expected contained relative path")
+    return result
+
+
+def load_encounter_projections(path: Path = ENCOUNTER_SOURCES) -> tuple[EncounterProjection, ...]:
+    raw: object = json.loads(path.read_text(encoding="utf-8"))
+    document = required_fields(raw, frozenset({"schema", "game_version", "source_buildid", "machine_id", "observed_at_utc", "exe_sha256", "projections"}), "encounter sources")
+    if document["schema"] != "sxad-encounter-projections-v1" or document["game_version"] != GAME_VERSION or document["exe_sha256"] != EXE_SHA256:
+        raise ValueError("Encounter source contract differs from reviewed game identity")
+    for key in ("machine_id", "observed_at_utc", "source_buildid"):
+        required_string(document[key], key)
+    build_id = required_string(document["source_buildid"], "source_buildid")
+    if re.fullmatch(r"[1-9][0-9]*", build_id) is None:
+        raise ValueError("source_buildid must be a canonical decimal string")
+    rows = document["projections"]
+    if not isinstance(rows, list):
+        raise ValueError("projections must be a JSON array")
+    result: list[EncounterProjection] = []
+    seen_names: set[str] = set()
+    seen_outputs: set[str] = set()
+    seen_pins: set[str] = set()
+    source_hashes: dict[str, str] = {}
+    for row in rows:
+        entry = required_fields(row, frozenset({"name", "kind", "source_path", "source_sha256", "pinned_file", "pinned_sha256", "namespace", "output", "insertions"}), "encounter projection")
+        name = required_string(entry["name"], "name")
+        if re.fullmatch(r"[A-Za-z_][A-Za-z_0-9]*(?:\.[0-9]+)?", name) is None:
+            raise ValueError("Invalid encounter definition name")
+        kind = entry["kind"]
+        if not isinstance(kind, str) or kind not in {"scripted_effect", "event"}:
+            raise ValueError(f"Invalid encounter projection kind: {kind}")
+        namespace = entry["namespace"]
+        if namespace is not None and (not isinstance(namespace, str) or re.fullmatch(r"[A-Za-z_][A-Za-z_0-9]*", namespace) is None):
+            raise ValueError("namespace must be a valid name or null")
+        if (kind == "event") != (namespace is not None):
+            raise ValueError("Only event projections require a namespace")
+        if kind == "event" and name.split(".")[0] != namespace:
+            raise ValueError("Event namespace does not match its definition name")
+        output = relative_path(entry["output"], "output")
+        prefix = "events/" if kind == "event" else "common/scripted_effects/"
+        if not output.startswith(prefix) or not output.endswith(".txt"):
+            raise ValueError("Projection output does not match its definition kind")
+        pinned = relative_path(entry["pinned_file"], "pinned_file")
+        if "/" in pinned:
+            raise ValueError("Pinned definition must be a direct vanilla_hooks child")
+        insertions = entry["insertions"]
+        if not isinstance(insertions, list) or not insertions:
+            raise ValueError("insertions must be a nonempty JSON array")
+        parsed: list[EncounterInsertion] = []
+        for raw_insertion in insertions:
+            item = required_fields(raw_insertion, frozenset({"anchor", "position", "text", "expected_count"}), "encounter insertion")
+            position = item["position"]
+            if not isinstance(position, str) or position not in {"before", "after"}:
+                raise ValueError("Insertion position must be before or after")
+            count = item["expected_count"]
+            if type(count) is not int or count != 1:
+                raise ValueError("Insertion expected_count must be integer 1")
+            insertion_text = required_string(item["text"], "text")
+            if "SXAD_HOOK_BEGIN" in insertion_text or "SXAD_HOOK_END" in insertion_text:
+                raise ValueError("Insertion text may not supply its own boundary markers")
+            parsed.append(EncounterInsertion(required_string(item["anchor"], "anchor"), "before" if position == "before" else "after", insertion_text, count))
+        if name in seen_names or output in seen_outputs or pinned in seen_pins:
+            raise ValueError("Repeated encounter definition name, output or pinned file")
+        seen_names.add(name)
+        seen_outputs.add(output)
+        seen_pins.add(pinned)
+        source_path = relative_path(entry["source_path"], "source_path")
+        source_sha = required_sha256(entry["source_sha256"], "source_sha256")
+        if source_path in source_hashes and source_hashes[source_path] != source_sha:
+            raise ValueError("One source file has conflicting source identities")
+        source_hashes[source_path] = source_sha
+        result.append(EncounterProjection(name, "event" if kind == "event" else "scripted_effect", source_path, source_sha, pinned, required_sha256(entry["pinned_sha256"], "pinned_sha256"), namespace, output, tuple(parsed)))
+    return tuple(result)
+
+
+def encounter_hook_outputs() -> dict[str, bytes]:
+    """Apply reviewed insertions to original definitions, never to prior output."""
+    outputs: dict[str, bytes] = {}
+    for projection in load_encounter_projections():
+        raw = (PINNED_ROOT / projection.pinned_file).read_bytes()
+        if hashlib.sha256(raw).hexdigest() != projection.pinned_sha256:
+            raise ValueError(f"Pinned encounter definition changed: {projection.name}")
+        original = raw.decode("utf-8-sig").replace("\r\n", "\n")
+        if extract_effect(original, projection.name) != original:
+            raise ValueError(f"Pinned file must contain exactly one definition: {projection.name}")
+        pending: list[tuple[int, str]] = []
+        for insertion in projection.insertions:
+            if original.count(insertion.anchor) != insertion.expected_count:
+                raise ValueError(f"Ambiguous encounter insertion: {projection.name}")
+            offset = original.index(insertion.anchor)
+            if insertion.position == "after":
+                offset += len(insertion.anchor)
+            block = INSERT_BEGIN + insertion.text.rstrip("\n") + "\n" + INSERT_END
+            pending.append((offset, block))
+        if len({offset for offset, _ in pending}) != len(pending):
+            raise ValueError("Encounter insertion boundaries overlap")
+        projected = original
+        for offset, block in sorted(pending, reverse=True):
+            projected = projected[:offset] + block + projected[offset:]
+        restored = re.sub(r"(?ms)^\t# SXAD_HOOK_BEGIN\n.*?^\t# SXAD_HOOK_END\n", "", projected)
+        if restored != original:
+            raise ValueError(f"Encounter projection cannot restore its source: {projection.name}")
+        namespace = "" if projection.namespace is None else f"namespace = {projection.namespace}\n\n"
+        outputs[projection.output] = encode(HEADER + f"# Controlled CK3 {GAME_VERSION} encounter projection.\n" + namespace + projected)
+    return outputs
+
+
+def encounter_owned_code(relative: str, source: str) -> str:
+    """Check the unchanged stock body, then expose only inserted mod effects."""
+    projection = next((entry for entry in load_encounter_projections() if entry.output == relative), None)
+    if projection is None:
+        return source
+    raw = (PINNED_ROOT / projection.pinned_file).read_bytes()
+    if hashlib.sha256(raw).hexdigest() != projection.pinned_sha256:
+        raise ValueError(f"Pinned encounter definition changed: {projection.name}")
+    original = raw.decode("utf-8-sig").replace("\r\n", "\n")
+    pattern = r"(?ms)^\t# SXAD_HOOK_BEGIN\n(.*?)^\t# SXAD_HOOK_END\n"
+    additions = re.findall(pattern, source)
+    if len(additions) != len(projection.insertions):
+        raise ValueError(f"Encounter insertion boundaries changed: {projection.name}")
+    restored = re.sub(pattern, "", source)
+    namespace = "" if projection.namespace is None else f"namespace = {projection.namespace}\n\n"
+    expected = HEADER + f"# Controlled CK3 {GAME_VERSION} encounter projection.\n" + namespace + original
+    if restored != expected:
+        raise ValueError(f"Stock encounter body changed: {projection.name}")
+    return "\n".join(additions)
+
+
+def natural_simulation_outputs() -> dict[str, bytes]:
+    outputs: dict[str, bytes] = {}
+    for filename, relative in NATURAL_TEMPLATES:
+        body = (RUNTIME_TEMPLATE_ROOT / filename).read_text(encoding="utf-8-sig")
+        outputs[relative] = encode(body if body.startswith(HEADER) else HEADER + body)
+    return outputs
 
 
 def encode(text: str) -> bytes:
@@ -79,13 +273,15 @@ def refresh_vanilla(game_root: Path) -> None:
 
 
 def hook_outputs() -> dict[str, bytes]:
-    metadata = json.loads((PINNED_ROOT / "sources.json").read_text(encoding="utf-8"))
-    if metadata.get("romance_source_sha256") != ROMANCE_SOURCE_SHA256:
+    raw_metadata: object = json.loads((PINNED_ROOT / "sources.json").read_text(encoding="utf-8"))
+    metadata = required_fields(raw_metadata, frozenset({"game_version", "exe_sha256", "romance_source_sha256", "hooks"}), "paired/unknown hook sources")
+    if metadata["romance_source_sha256"] != ROMANCE_SOURCE_SHA256 or metadata["game_version"] != GAME_VERSION or metadata["exe_sha256"] != EXE_SHA256:
         raise ValueError("Pinned romance identity differs from runtime_data")
-    outputs = {}
+    hashes = required_fields(metadata["hooks"], frozenset(HOOKS), "hook SHA registry")
+    outputs: dict[str, bytes] = {}
     for name, helper in HOOKS.items():
         raw = (PINNED_ROOT / f"{name}.txt").read_bytes()
-        if hashlib.sha256(raw).hexdigest() != metadata["hooks"].get(name):
+        if hashlib.sha256(raw).hexdigest() != required_sha256(hashes[name], name):
             raise ValueError(f"Pinned vanilla hook bytes changed: {name}")
         original = raw.decode("utf-8-sig")
         if extract_effect(original, name) != original:
@@ -127,7 +323,10 @@ sxad_increment_experience_effect = {{
 # The vanilla paired hook runs this once, before changing either experience count.
 sxad_record_pair_effect = {{
     if = {{
-        limit = {{ is_alive = yes age >= {MINIMUM_AGE} }}
+        limit = {{
+            is_alive = yes age >= {MINIMUM_AGE}
+            NOT = {{ exists = scope:sxad_skip_pair_record }}
+        }}
         if = {{
             limit = {{ exists = $PARTNER$ }}
             if = {{
@@ -172,7 +371,10 @@ sxad_record_pair_effect = {{
 # Vanilla explicitly describes this partner as not an actual character.
 sxad_record_unknown_effect = {{
     if = {{
-        limit = {{ is_alive = yes age >= {MINIMUM_AGE} }}
+        limit = {{
+            is_alive = yes age >= {MINIMUM_AGE}
+            NOT = {{ exists = scope:sxad_skip_unknown_record }}
+        }}
         sxad_increment_experience_effect = yes
     }}
 }}
@@ -476,6 +678,10 @@ def trait_icon() -> bytes:
 def render_outputs(game_root: Path | None = None) -> dict[str, bytes]:
     # game_root is accepted for API stability; read-only rendering uses pinned inputs.
     outputs = hook_outputs()
+    for additions in (encounter_hook_outputs(), natural_simulation_outputs()):
+        if outputs.keys() & additions.keys():
+            raise ValueError("Repeated generated runtime output path")
+        outputs.update(additions)
     text_outputs = {
         "common/scripted_effects/sxad_experience_effects.txt": experience_effects(),
         "common/scripted_effects/sxad_probe_skill_effects.txt": probe_effects(),
@@ -489,12 +695,11 @@ def render_outputs(game_root: Path | None = None) -> dict[str, bytes]:
         "localization/english/sxad_l_english.yml": localization("english", EN),
     }
     outputs.update({name: encode(body) for name, body in text_outputs.items()})
-    translations = json.loads(UI_LOCALIZATION_SOURCE.read_text(encoding="utf-8"))
-    for language, entries in translations.items():
-        if language in {"english", "simp_chinese"} or not isinstance(entries, dict):
-            raise ValueError(f"Invalid external localization source: {language}")
-        if set(entries) != set(EN):
-            raise ValueError(f"Localization source keys differ from runtime_data: {language}")
+    raw_translations: object = json.loads(UI_LOCALIZATION_SOURCE.read_text(encoding="utf-8"))
+    translations = required_fields(raw_translations, frozenset(LANGUAGES) - {"english", "simp_chinese"}, "external localizations")
+    for language, raw_entries in translations.items():
+        fields = required_fields(raw_entries, frozenset(EN), f"{language} localization keys")
+        entries = {key: required_string(value, f"{language}/{key}") for key, value in fields.items()}
         outputs[f"localization/{language}/sxad_l_{language}.yml"] = encode(localization(language, entries))
     outputs["gfx/interface/icons/traits/sxad_sex_experience.dds"] = trait_icon()
     return outputs

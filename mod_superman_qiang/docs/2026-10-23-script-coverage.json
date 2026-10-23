@@ -1,0 +1,421 @@
+{
+  "schema": "sxad-script-coverage-review-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T15:04:01.814712+00:00",
+  "source_root": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game",
+  "source_buildid": "25734779",
+  "source_exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "scope": "Installed game common and events scripts; source audit only, no CK3 launch or gameplay qualification.",
+  "source_sha256": {
+    "common/scripted_effects/00_romance_effects.txt": "a4a88fa0f36e95e865dcdd077dcb64f5985db1b9a441fcca1795494abda66211",
+    "common/scripted_effects/00_stress_effects.txt": "b496b45ebd5557562c9e2f10aaa747833062c2e7b049efb9d86b7d0dc18e2ba9",
+    "common/scripted_effects/tgp_mandala_scripted_effects.txt": "bb438d3ff77f017a3676d8a3960c136571f41355075961173a5c384f993aeb0e",
+    "events/dlc/ep1/ep1_fund_inspiration_events.txt": "4b78491aafe19c72b5592863f3234faec039e98305f6cd75c472dd5bd2d2c4bb",
+    "events/dlc/ep3/ep3_wedding_events.txt": "8eca6b7f1721826f9431ad5837edc26bd020eb5a87b4fc2406ebb4982cdf9645",
+    "events/dlc/mpo/mpo_events_tova.txt": "0e8cadf632da8c3033a7040a9a1796663661796504e1517ec9d4add5177ee29a",
+    "events/dlc/mpo/mpo_story_cycle_temujin_flavor_events.txt": "ca8dd6b504e5878d1050ed5e1f0271f1dd58e4e51b57695e8df59b8c32d7ec01",
+    "events/lifestyles/governance_lifestyle/stewardship_duty_events.txt": "1684f3abcd0a2454d04306a33a5e657f403e9dca2239d3873383b11427f91dac",
+    "events/lifestyles/scholarship_lifestyle/learning_medicine_events.txt": "f2082d341e004a88d3e24dcd0cbfaac26b5409c3f7e388d562fb311f33bd5fb2",
+    "events/relations_events/lover_events.txt": "8f43ba36732d516cf3843481ef2984a7224007c7851cb4c9a193bddd5dbb451e",
+    "events/test_events/debug.txt": "5c70986ce12ee50c99c9e9dae411620f571ebf47585d878dbada40c6f05c82d2",
+    "events/activities/pilgrimage_activity/pilgrimage_events.txt": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06",
+    "common/on_action/religion_on_actions.txt": "ef9367ddf5f89c912b895743f8b72441e88af3a5b03a5c1a9eddea0e5681ee2d",
+    "common/on_action/_on_actions.info": "2bfbbf903d55a2417c988caf1479ef0ff91719c55128ce6357bca3d2c8e9b25f",
+    "common/on_action/child_birth_on_actions.txt": "0fd4e08b9b4edb209ad491afec498b24e0258d88d8d4d506d074377517ef7ccf",
+    "common/defines/00_defines.txt": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982",
+    "events/activities/feast_activity/feast_events_flavor.txt": "cd528facc33d0479752d861bc51ecf60e98ef45bc0f80b6c533a362477e7178d",
+    "common/scripted_character_templates/00_fund_inspiration_character_templates.txt": "3a782eed08f2c53147963955307465d7912688e4486b2f9b3aba110729e2853d",
+    "localization/english/dlc/ep1/dlc_ep1_fund_inspiration_events_l_english.yml": "2bcd178f48a3fd017d4eecaa685facb4646e966ae0f844092508e761c249d82e",
+    "localization/simp_chinese/dlc/ep1/dlc_ep1_fund_inspiration_events_l_simp_chinese.yml": "5bd77e1c438b7844f1c6c91188f1604e24185c3f84fa37339faaabaa5930dd4d",
+    "common/scripted_effects/00_relation_effects.txt": "b4668eed284175e67fb7f4df42d1b2007075dee25c0f348823c87664545b1891"
+  },
+  "projection_manifest": "tools/vanilla_hooks/encounter_sources.json",
+  "projection_manifest_sha256": "784018c9a994113f238de404afea6c73bad88153f9f5ff3720bae1f93b022134",
+  "pregnancy_effect_sites": [
+    {
+      "file": "common/scripted_effects/00_romance_effects.txt",
+      "line": 498,
+      "outer": "had_sex_with_effect",
+      "kind": "make_pregnant",
+      "tooltip_only": false,
+      "source_sha256": "a4a88fa0f36e95e865dcdd077dcb64f5985db1b9a441fcca1795494abda66211",
+      "classification": "existing_sex_entry",
+      "capture": "had_sex_with_effect before pregnancy random",
+      "count": 1,
+      "gap": null
+    },
+    {
+      "file": "common/scripted_effects/00_romance_effects.txt",
+      "line": 566,
+      "outer": "had_sex_with_effect",
+      "kind": "peasant_pregnancy_flag",
+      "tooltip_only": false,
+      "source_sha256": "a4a88fa0f36e95e865dcdd077dcb64f5985db1b9a441fcca1795494abda66211",
+      "classification": "existing_sex_entry",
+      "capture": "had_sex_with_effect before pregnancy random",
+      "count": 1,
+      "gap": null
+    },
+    {
+      "file": "common/scripted_effects/00_romance_effects.txt",
+      "line": 579,
+      "outer": "had_sex_with_effect",
+      "kind": "make_pregnant",
+      "tooltip_only": false,
+      "source_sha256": "a4a88fa0f36e95e865dcdd077dcb64f5985db1b9a441fcca1795494abda66211",
+      "classification": "existing_sex_entry",
+      "capture": "had_sex_with_effect before pregnancy random",
+      "count": 1,
+      "gap": null
+    },
+    {
+      "file": "common/scripted_effects/00_stress_effects.txt",
+      "line": 278,
+      "outer": "rakish_brothel_night_effect",
+      "kind": "peasant_pregnancy_flag",
+      "tooltip_only": false,
+      "source_sha256": "b496b45ebd5557562c9e2f10aaa747833062c2e7b049efb9d86b7d0dc18e2ba9",
+      "classification": "projected_outer_sex_entry",
+      "capture": "rakish_brothel_night_effect entry; inner pregnancy flag never recounts",
+      "count": 1,
+      "gap": "Partner remains unknown at outer entry; spawned retrospective identity is not a second encounter."
+    },
+    {
+      "file": "common/scripted_effects/tgp_mandala_scripted_effects.txt",
+      "line": 3475,
+      "outer": "mandala_story_creation_aspect_get_kids_effect",
+      "kind": "make_pregnant",
+      "tooltip_only": false,
+      "source_sha256": "bb438d3ff77f017a3676d8a3960c136571f41355075961173a5c384f993aeb0e",
+      "classification": "projected_direct_pregnancy_branch",
+      "capture": "Immediately before the selected direct make_pregnant effect",
+      "count": 1,
+      "gap": null
+    },
+    {
+      "file": "common/scripted_effects/tgp_mandala_scripted_effects.txt",
+      "line": 3497,
+      "outer": "mandala_story_creation_aspect_get_kids_effect",
+      "kind": "make_pregnant",
+      "tooltip_only": false,
+      "source_sha256": "bb438d3ff77f017a3676d8a3960c136571f41355075961173a5c384f993aeb0e",
+      "classification": "projected_direct_pregnancy_branch",
+      "capture": "Immediately before the selected direct make_pregnant effect",
+      "count": 1,
+      "gap": null
+    },
+    {
+      "file": "events/dlc/ep1/ep1_fund_inspiration_events.txt",
+      "line": 19911,
+      "outer": "fund_inspiration.6513",
+      "kind": "make_pregnant",
+      "tooltip_only": false,
+      "source_sha256": "4b78491aafe19c72b5592863f3234faec039e98305f6cd75c472dd5bd2d2c4bb",
+      "classification": "projected_common_narrative_encounter",
+      "capture": "Common scope:inspiration_owner branch before set_random_lover_reason at source line 19963; all lover combinations count once, direct pregnancy does not count separately.",
+      "count": 1,
+      "gap": null
+    },
+    {
+      "file": "events/dlc/ep3/ep3_wedding_events.txt",
+      "line": 1952,
+      "outer": "ep3_wedding.0003",
+      "kind": "make_pregnant",
+      "tooltip_only": false,
+      "source_sha256": "8eca6b7f1721826f9431ad5837edc26bd020eb5a87b4fc2406ebb4982cdf9645",
+      "classification": "existing_encounter_result",
+      "capture": "Immediate had_sex_with_effect at source line 1415",
+      "count": 1,
+      "gap": null
+    },
+    {
+      "file": "events/dlc/ep3/ep3_wedding_events.txt",
+      "line": 1967,
+      "outer": "ep3_wedding.0003",
+      "kind": "make_pregnant",
+      "tooltip_only": false,
+      "source_sha256": "8eca6b7f1721826f9431ad5837edc26bd020eb5a87b4fc2406ebb4982cdf9645",
+      "classification": "existing_encounter_result",
+      "capture": "Immediate had_sex_with_effect at source line 1415",
+      "count": 1,
+      "gap": null
+    },
+    {
+      "file": "events/dlc/mpo/mpo_events_tova.txt",
+      "line": 1558,
+      "outer": "mpo_events_tova.0035",
+      "kind": "make_pregnant",
+      "tooltip_only": false,
+      "source_sha256": "0e8cadf632da8c3033a7040a9a1796663661796504e1517ec9d4add5177ee29a",
+      "classification": "projected_direct_pregnancy_branch",
+      "capture": "Immediately before the selected direct make_pregnant effect",
+      "count": 1,
+      "gap": null
+    },
+    {
+      "file": "events/dlc/mpo/mpo_story_cycle_temujin_flavor_events.txt",
+      "line": 781,
+      "outer": "mpo_temujin_flavor.0030",
+      "kind": "make_pregnant",
+      "tooltip_only": false,
+      "source_sha256": "ca8dd6b504e5878d1050ed5e1f0271f1dd58e4e51b57695e8df59b8c32d7ec01",
+      "classification": "projected_direct_pregnancy_branch",
+      "capture": "Immediately before the selected direct make_pregnant effect",
+      "count": 1,
+      "gap": null
+    },
+    {
+      "file": "events/lifestyles/governance_lifestyle/stewardship_duty_events.txt",
+      "line": 1031,
+      "outer": "stewardship_duty.1055",
+      "kind": "make_pregnant",
+      "tooltip_only": false,
+      "source_sha256": "1684f3abcd0a2454d04306a33a5e657f403e9dca2239d3873383b11427f91dac",
+      "classification": "projected_direct_pregnancy_branch",
+      "capture": "Immediately before the selected direct make_pregnant effect",
+      "count": 1,
+      "gap": null
+    },
+    {
+      "file": "events/lifestyles/scholarship_lifestyle/learning_medicine_events.txt",
+      "line": 1305,
+      "outer": "learning_medicine.2022",
+      "kind": "make_pregnant",
+      "tooltip_only": false,
+      "source_sha256": "f2082d341e004a88d3e24dcd0cbfaac26b5409c3f7e388d562fb311f33bd5fb2",
+      "classification": "projected_direct_pregnancy_branch",
+      "capture": "Immediately before the selected direct make_pregnant effect",
+      "count": 1,
+      "gap": null
+    },
+    {
+      "file": "events/lifestyles/scholarship_lifestyle/learning_medicine_events.txt",
+      "line": 1549,
+      "outer": "learning_medicine.2023",
+      "kind": "make_pregnant",
+      "tooltip_only": false,
+      "source_sha256": "f2082d341e004a88d3e24dcd0cbfaac26b5409c3f7e388d562fb311f33bd5fb2",
+      "classification": "projected_direct_pregnancy_branch",
+      "capture": "Immediately before the selected direct make_pregnant effect",
+      "count": 1,
+      "gap": null
+    },
+    {
+      "file": "events/lifestyles/scholarship_lifestyle/learning_medicine_events.txt",
+      "line": 1556,
+      "outer": "learning_medicine.2023",
+      "kind": "make_pregnant",
+      "tooltip_only": false,
+      "source_sha256": "f2082d341e004a88d3e24dcd0cbfaac26b5409c3f7e388d562fb311f33bd5fb2",
+      "classification": "projected_direct_pregnancy_branch",
+      "capture": "Immediately before the selected direct make_pregnant effect",
+      "count": 1,
+      "gap": null
+    },
+    {
+      "file": "events/relations_events/lover_events.txt",
+      "line": 8112,
+      "outer": "lover.8102",
+      "kind": "make_pregnant",
+      "tooltip_only": false,
+      "source_sha256": "8f43ba36732d516cf3843481ef2984a7224007c7851cb4c9a193bddd5dbb451e",
+      "classification": "existing_encounter_delayed_result",
+      "capture": "Source pilgrimage.2101 encounter; do not count delayed pregnancy result again",
+      "count": 1,
+      "gap": "Follow-up spawns another brothel-worker identity. No durable encounter-to-retrospective-partner identity bridge; no second actor increment or attribute transfer is inferred."
+    },
+    {
+      "file": "events/relations_events/lover_events.txt",
+      "line": 8177,
+      "outer": "lover.8102",
+      "kind": "make_pregnant",
+      "tooltip_only": false,
+      "source_sha256": "8f43ba36732d516cf3843481ef2984a7224007c7851cb4c9a193bddd5dbb451e",
+      "classification": "existing_encounter_delayed_result",
+      "capture": "Source pilgrimage.2101 encounter; do not count delayed pregnancy result again",
+      "count": 1,
+      "gap": "Follow-up spawns another brothel-worker identity. No durable encounter-to-retrospective-partner identity bridge; no second actor increment or attribute transfer is inferred."
+    },
+    {
+      "file": "events/test_events/debug.txt",
+      "line": 126,
+      "outer": "debug.0002",
+      "kind": "make_pregnant",
+      "tooltip_only": false,
+      "source_sha256": "5c70986ce12ee50c99c9e9dae411620f571ebf47585d878dbada40c6f05c82d2",
+      "classification": "debug_forced_state_not_sex",
+      "capture": null,
+      "count": 0,
+      "gap": "Debug pregnancy commands do not assert a sexual encounter; not hooked."
+    },
+    {
+      "file": "events/test_events/debug.txt",
+      "line": 137,
+      "outer": "debug.0002",
+      "kind": "make_pregnant",
+      "tooltip_only": false,
+      "source_sha256": "5c70986ce12ee50c99c9e9dae411620f571ebf47585d878dbada40c6f05c82d2",
+      "classification": "debug_forced_state_not_sex",
+      "capture": null,
+      "count": 0,
+      "gap": "Debug pregnancy commands do not assert a sexual encounter; not hooked."
+    },
+    {
+      "file": "events/test_events/debug.txt",
+      "line": 149,
+      "outer": "debug.0002",
+      "kind": "make_pregnant",
+      "tooltip_only": false,
+      "source_sha256": "5c70986ce12ee50c99c9e9dae411620f571ebf47585d878dbada40c6f05c82d2",
+      "classification": "debug_forced_state_not_sex",
+      "capture": null,
+      "count": 0,
+      "gap": "Debug pregnancy commands do not assert a sexual encounter; not hooked."
+    },
+    {
+      "file": "events/test_events/debug.txt",
+      "line": 161,
+      "outer": "debug.0002",
+      "kind": "make_pregnant",
+      "tooltip_only": false,
+      "source_sha256": "5c70986ce12ee50c99c9e9dae411620f571ebf47585d878dbada40c6f05c82d2",
+      "classification": "debug_forced_state_not_sex",
+      "capture": null,
+      "count": 0,
+      "gap": "Debug pregnancy commands do not assert a sexual encounter; not hooked."
+    },
+    {
+      "file": "events/test_events/debug.txt",
+      "line": 173,
+      "outer": "debug.0002",
+      "kind": "make_pregnant",
+      "tooltip_only": false,
+      "source_sha256": "5c70986ce12ee50c99c9e9dae411620f571ebf47585d878dbada40c6f05c82d2",
+      "classification": "debug_forced_state_not_sex",
+      "capture": null,
+      "count": 0,
+      "gap": "Debug pregnancy commands do not assert a sexual encounter; not hooked."
+    }
+  ],
+  "additional_roll_and_dedup_sites": [
+    {
+      "file": "events/lifestyles/scholarship_lifestyle/learning_medicine_events.txt",
+      "line": 1564,
+      "outer": "learning_medicine.2023",
+      "kind": "regular_pregnancy_roll",
+      "capture": "Before the outer 50 percent random; inner sex entry temporarily skips the second mod record.",
+      "failed_roll_counts": true,
+      "same_day_independent_calls_suppressed": false
+    },
+    {
+      "file": "events/activities/pilgrimage_activity/pilgrimage_events.txt",
+      "line": 5853,
+      "outer": "pilgrimage.2101",
+      "kind": "known_pair_then_unknown_std_consequence",
+      "capture": "Known pair records once. Only the subsequent unknown-helper STD random is marked to skip mod count.",
+      "failed_roll_counts": true,
+      "same_day_independent_calls_suppressed": false
+    }
+  ],
+  "suppression_contract": {
+    "pair_marker": "sxad_skip_pair_record",
+    "unknown_marker": "sxad_skip_unknown_record",
+    "set_effect": "save_temporary_scope_as",
+    "clear_effect": "clear_saved_scope",
+    "vanilla_example": {
+      "file": "events/activities/feast_activity/feast_events_flavor.txt",
+      "save_line": 81,
+      "clear_line": 103
+    },
+    "lifetime": "Only the explicitly bracketed synchronous roll/consequence block; no date, pair cooldown, persisted flag, or delayed-event suppression.",
+    "preview": "show_as_tooltip never records; ordinary hidden_effect still executes normally."
+  },
+  "native_boundary": {
+    "frequency_source": "common/defines/00_defines.txt:374 documents monthly natural impregnation checks.",
+    "callbacks": "common/on_action/child_birth_on_actions.txt:1500-1540 documents pregnancy callbacks at reveal, not failed natural rolls.",
+    "gap": "Actual individual native natural checks and failed native dice are not script-observable in this source audit.",
+    "simulation": "on_faith_monthly plus every_faith_character can provide explicitly declared monthly relationship simulation without another pregnancy call.",
+    "monthly_hook_source": "common/on_action/religion_on_actions.txt:1276-1278; iterator examples at line 42."
+  },
+  "remaining_limits": [
+    "No blanket interception of third-party mod effects or arbitrary console/native state writes.",
+    "Delayed brothel-worker identity cannot be retroactively treated as the earlier named partner without evidence.",
+    "Static insertion checks are not gameplay evidence; runtime parser and native experience readback remain required."
+  ],
+  "source_version_evidence": {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\launcher\\launcher-settings.json",
+    "sha256": "5d2e824196d28103246c1fc26e5da9ea0edb8cea3898e73d3d2db0f910fe5b25",
+    "rawVersion": "1.20.0.4",
+    "pe_file_version": "1.0.0.0",
+    "note": "Launcher rawVersion observed directly; PE default file/product version does not report CK3 release version."
+  },
+  "fund_inspiration_6513_narrative_review": {
+    "observed_at_utc": "2026-10-23T15:29:41.148710+00:00",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "decision": "One common event-specific paired record for all generated lover combinations. The old direct-pregnancy-only capture is removed.",
+    "interpretation_boundary": "Event-context inference of one physical affair; neither every lover relation nor every narrated night becomes an extra encounter.",
+    "evidence": [
+      {
+        "file": "events/dlc/ep1/ep1_fund_inspiration_events.txt",
+        "sha256": "4b78491aafe19c72b5592863f3234faec039e98305f6cd75c472dd5bd2d2c4bb",
+        "lines": [
+          19874,
+          19885,
+          19919,
+          19963,
+          20021
+        ],
+        "key": "fund_inspiration.6513",
+        "observation": "Triggers exclude chaste/asexual and require cheating willingness; all adult lover combinations converge on one common lover-relation block before the displayed 6504 event."
+      },
+      {
+        "file": "common/scripted_character_templates/00_fund_inspiration_character_templates.txt",
+        "sha256": "3a782eed08f2c53147963955307465d7912688e4486b2f9b3aba110729e2853d",
+        "lines": [
+          1,
+          26,
+          34
+        ],
+        "key": "adventurer_pregnant_lover_character / adventurer_female_lover_character / adventurer_male_lover_character",
+        "observation": "All three generated partner templates are adult 18-40; pregnancy is only one outcome."
+      },
+      {
+        "file": "localization/english/dlc/ep1/dlc_ep1_fund_inspiration_events_l_english.yml",
+        "sha256": "2bcd178f48a3fd017d4eecaa685facb4646e966ae0f844092508e761c249d82e",
+        "lines": [
+          865,
+          866,
+          867,
+          868,
+          869
+        ],
+        "key": "fund_inspiration.6504.pregnant / female_lover / male_lover_homosexual / male_lover / lover_ultimatum",
+        "observation": "The homosexual-male branch describes nights together; other branches describe the same farm lover affair, attraction and continued physical intimacy. Reading the event as one sexual encounter is a contextual interpretation; no number of nights is converted into multiple counts."
+      },
+      {
+        "file": "localization/simp_chinese/dlc/ep1/dlc_ep1_fund_inspiration_events_l_simp_chinese.yml",
+        "sha256": "5bd77e1c438b7844f1c6c91188f1604e24185c3f84fa37339faaabaa5930dd4d",
+        "lines": [
+          753,
+          754,
+          755,
+          756,
+          757
+        ],
+        "key": "fund_inspiration.6504.pregnant / female_lover / male_lover_homosexual / male_lover / lover_ultimatum",
+        "observation": "Chinese narrative independently preserves pregnancy, nights in a man's arms, love and continued kissing in the farm-lover episode."
+      },
+      {
+        "file": "common/scripted_effects/00_relation_effects.txt",
+        "sha256": "b4668eed284175e67fb7f4df42d1b2007075dee25c0f348823c87664545b1891",
+        "lines": [
+          1143,
+          1144,
+          1147
+        ],
+        "key": "set_random_lover_reason",
+        "observation": "Generic relation helper sets lover relation only; this redesign does not hook the global helper or infer sex from arbitrary lover relation creation."
+      }
+    ]
+  }
+}

@@ -1,0 +1,53 @@
+﻿mandala_story_creation_aspect_get_kids_effect = {
+	if = {
+		limit = {
+			is_adult = yes
+			is_available = yes 
+		}
+		if = {
+			limit = { is_female = no }
+			if = {
+				limit = {
+					any_consort = {
+						is_adult = yes
+						is_available = yes	
+						fertility > 0
+						is_pregnant = no
+					}
+				}
+				random_consort = {
+					limit = {
+						is_adult = yes
+						is_available = yes	
+						fertility > 0
+						is_pregnant = no
+					}
+					make_pregnant = { father = scope:root_scope }
+				}
+			}
+		}
+		if = {
+			limit = { is_female = yes }
+			if = {
+				limit = {
+					is_pregnant = no
+					any_consort = { 
+						is_adult = yes
+						is_available = yes
+						fertility > 0
+					}
+				}
+				random_consort = {
+					limit = {
+						is_adult = yes
+						is_available = yes
+						fertility > 0
+					}
+					scope:root_scope = { 
+						make_pregnant = { father = prev }
+					}
+				}
+			}
+		}
+	}
+}

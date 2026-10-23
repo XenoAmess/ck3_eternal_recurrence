@@ -1,12 +1,225 @@
 """Create an external fixture with separate prepare/action/verify events."""
 from __future__ import annotations
 import argparse
+from datetime import datetime, timezone
 import hashlib
 import json
 from pathlib import Path
+import shutil
+import subprocess
+import sys
+from typing import Literal, TypedDict
 
 SOURCE=Path(__file__).resolve().parents[1]
 SKILLS=('diplomacy','martial','stewardship','intrigue','learning','prowess')
+
+
+class NotificationFixtureFile(TypedDict):
+    path: str
+    size: int
+    sha256: str
+
+
+class NotificationFixtureReport(TypedDict):
+    schema: Literal['sxad.external-notification-fixture.v1']
+    fixture_root: str
+    generator_sha256: str
+    required_start: str
+    expected_pass_markers: list[str]
+    case_count: int
+    candidate_results: Literal['not_run']
+    entry_character_history_id: int
+    entry_bookmark_key: str
+    ck3_started: Literal[False]
+    files: list[NotificationFixtureFile]
+
+
+class NaturalFixtureCell(TypedDict):
+    case_index: int
+    case_id: str
+    result: Literal['not_run']
+    expected_pass_markers: list[str]
+
+
+class NaturalFixtureReport(TypedDict):
+    schema: Literal['sxad.external-natural-simulation-fixture.v1']
+    fixture_root: str
+    generator_sha256: str
+    machine_id: str
+    observed_at_utc: str
+    machine_id_source: str
+    required_start: str
+    required_end: str
+    expected_pass_markers: list[str]
+    case_count: int
+    maximum_natural_days: int
+    candidate_results: Literal['not_run']
+    baseline_event_key: str
+    baseline_save_required_before_choice: Literal[True]
+    readback_character_references: list[str]
+    readback_fields: list[str]
+    cells: list[NaturalFixtureCell]
+    entry_character_history_id: int
+    entry_bookmark_key: str
+    does_not_cover: list[str]
+    ck3_started: Literal[False]
+    files: list[NotificationFixtureFile]
+
+
+def _fixture_string_list(raw: object, field: str) -> list[str]:
+    if not isinstance(raw, list) or not raw or any(not isinstance(item, str) or not item for item in raw):
+        raise ValueError(f'{field} must be a nonempty list of nonempty strings')
+    result: list[str] = []
+    for item in raw:
+        if not isinstance(item, str):
+            raise ValueError(f'{field} item must be a string')
+        result.append(item)
+    return result
+
+
+def prepare_natural_fixture(output: Path) -> NaturalFixtureReport:
+    """Copy a six-cell native fixture; generation never claims gameplay PASS."""
+    output = output.resolve()
+    receipt_path = output.parent / f'{output.name}.fixture.json'
+    if output.exists() or receipt_path.exists() or output == SOURCE or SOURCE in output.parents:
+        raise ValueError('fixture output must be a new directory outside product source')
+    templates = SOURCE / 'tools/natural_fixture'
+    raw: object = json.loads((templates / 'cases.json').read_text(encoding='utf-8'))
+    if not isinstance(raw, dict) or raw.get('schema') != 'sxad.natural-simulation-fixture.v1':
+        raise ValueError('natural simulation fixture schema changed')
+    count, maximum_days, cells_raw = raw.get('case_count'), raw.get('maximum_natural_days'), raw.get('cells')
+    if type(count) is not int or count != 6 or not isinstance(cells_raw, list) or len(cells_raw) != count:
+        raise ValueError('expected six unexecuted natural simulation cells')
+    if type(maximum_days) is not int or maximum_days != 35:
+        raise ValueError('natural simulation calendar bound must be 35 integer days')
+    if raw.get('automatic_start_marker') != 'SXANF: BASELINE_READY natural-simulation' or raw.get('required_end') != 'SXANF: END natural-simulation' or raw.get('baseline_event_key') != 'sxanf.2':
+        raise ValueError('natural simulation phase markers changed')
+    references = _fixture_string_list(raw.get('readback_character_references'), 'readback_character_references')
+    limitations = _fixture_string_list(raw.get('does_not_cover'), 'does_not_cover')
+    if len(references) != 12 or len(set(references)) != 12:
+        raise ValueError('expected twelve distinct saved character references')
+    cells: list[NaturalFixtureCell] = []
+    markers: list[str] = []
+    seen: set[int] = set()
+    case_ids: set[str] = set()
+    for cell in cells_raw:
+        if not isinstance(cell, dict) or cell.get('result') != 'not_run':
+            raise ValueError('natural simulation template may not claim an actual result')
+        index, case_id = cell.get('case_index'), cell.get('case_id')
+        if type(index) is not int or index not in range(1, 7) or index in seen:
+            raise ValueError('invalid natural simulation cell index')
+        if not isinstance(case_id, str) or not case_id or case_id in case_ids:
+            raise ValueError('invalid natural simulation case ID')
+        expected = _fixture_string_list(cell.get('expected_pass_markers'), 'expected_pass_markers')
+        if any(not marker_value.startswith('SXANF: PASS ') or marker_value in markers for marker_value in expected):
+            raise ValueError('invalid or duplicate natural simulation expected marker')
+        cells.append({'case_index': index, 'case_id': case_id, 'result': 'not_run', 'expected_pass_markers': expected})
+        markers.extend(expected)
+        seen.add(index)
+        case_ids.add(case_id)
+    inventory = (
+        'descriptor.mod', 'common/on_action/sxanf_on_actions.txt',
+        'common/modifiers/sxanf_modifiers.txt', 'common/scripted_effects/sxanf_effects.txt',
+        'events/sxanf_events.txt', 'localization/simp_chinese/sxanf_l_simp_chinese.yml',
+        'localization/english/sxanf_l_english.yml',
+    )
+    # Pre-read all sources before creating an attempt, so a missing template
+    # cannot leave a misleading partially prepared fixture tree.
+    payloads = {relative: (templates / relative).read_bytes() for relative in inventory}
+    payloads['_natural_simulation_cells.json'] = (templates / 'cases.json').read_bytes()
+    identity_source = Path(__file__).resolve().parents[2] / 'tools/ck3_live_run_id.py'
+    machine = subprocess.run([sys.executable, str(identity_source), 'machine'], check=True, capture_output=True, text=True).stdout.strip()
+    if not machine:
+        raise ValueError('machine identity helper returned no identity')
+    files: list[NotificationFixtureFile] = []
+    output.mkdir(parents=True)
+    for relative, data in payloads.items():
+        target = output / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(data)
+        files.append({'path': relative, 'size': len(data), 'sha256': hashlib.sha256(data).hexdigest()})
+    report: NaturalFixtureReport = {
+        'schema': 'sxad.external-natural-simulation-fixture.v1', 'fixture_root': str(output),
+        'generator_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        'machine_id': machine, 'observed_at_utc': datetime.now(timezone.utc).isoformat(),
+        'machine_id_source': str(identity_source) + ' machine',
+        'required_start': 'SXANF: BASELINE_READY natural-simulation',
+        'required_end': 'SXANF: END natural-simulation',
+        'expected_pass_markers': markers, 'case_count': count,
+        'maximum_natural_days': maximum_days, 'candidate_results': 'not_run',
+        'baseline_event_key': 'sxanf.2', 'baseline_save_required_before_choice': True,
+        'readback_character_references': references,
+        'readback_fields': ['sxad_sex_experience', 'sxad_natural_month', 'sxad_natural_partners', 'traits', 'alive', 'spouse/concubine/concubinist', 'faith', 'pregnancy', 'effective fertility'],
+        'cells': cells, 'does_not_cover': limitations,
+        'entry_character_history_id': 1128, 'entry_bookmark_key': 'bookmark_rags_to_riches_duke_robert',
+        'ck3_started': False, 'files': files,
+    }
+    with receipt_path.open('x', encoding='utf-8', newline='\n') as stream:
+        stream.write(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
+    return report
+
+
+def prepare_notification_fixture(output: Path) -> NotificationFixtureReport:
+    """Materialize the bounded native templates through the existing emitter."""
+    output = output.resolve()
+    receipt_path = output.parent / f'{output.name}.fixture.json'
+    if output.exists() or receipt_path.exists() or output == SOURCE or SOURCE in output.parents:
+        raise ValueError('fixture output must be a new directory outside product source')
+    templates = SOURCE / 'tools/notification_fixture'
+    raw: object = json.loads((templates / 'cases.json').read_text(encoding='utf-8'))
+    if not isinstance(raw, dict) or raw.get('schema') != 'sxad.notification-investigation-fixture.v1':
+        raise ValueError('notification fixture schema changed')
+    case_count = raw.get('case_count')
+    cells = raw.get('cells')
+    marker_value = raw.get('automatic_start_marker')
+    if type(case_count) is not int or case_count != 32 or not isinstance(cells, list) or len(cells) != case_count:
+        raise ValueError('expected 32 unexecuted notification cells')
+    if marker_value != 'SXANT: BASELINE_READY notification-investigation':
+        raise ValueError('fixture baseline marker missing')
+    seen_indices: set[int] = set()
+    for cell in cells:
+        if not isinstance(cell, dict) or cell.get('notification_result') != 'not_run':
+            raise ValueError('fixture template may not claim an actual result')
+        index = cell.get('case_index')
+        repetitions = cell.get('repetitions')
+        if type(index) is not int or index not in range(1, 33) or index in seen_indices:
+            raise ValueError('invalid notification cell index')
+        if type(repetitions) is not int or repetitions not in (0, 1, 2, 5):
+            raise ValueError('invalid notification repetition count')
+        for key in ('actor_initial_experience', 'subject_initial_experience', 'expected_actor_experience', 'expected_subject_experience'):
+            number = cell.get(key)
+            if type(number) is not int or number < 0:
+                raise ValueError(f'notification cell {key} must be a nonnegative integer')
+        seen_indices.add(index)
+    inventory = (
+        'descriptor.mod', 'common/on_action/sxant_on_actions.txt',
+        'common/scripted_effects/sxant_vanilla_pair_control.txt',
+        'events/sxant_events.txt', 'localization/simp_chinese/sxant_l_simp_chinese.yml',
+        'localization/english/sxant_l_english.yml',
+    )
+    files: list[NotificationFixtureFile] = []
+    output.mkdir(parents=True)
+    for relative in inventory:
+        source = templates / relative
+        data = source.read_bytes()
+        target = output / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(data)
+        files.append({'path': relative, 'size': len(data), 'sha256': hashlib.sha256(data).hexdigest()})
+    shutil.copyfile(templates / 'cases.json', output / '_notification_cells.json')
+    metadata_bytes = (output / '_notification_cells.json').read_bytes()
+    files.append({'path': '_notification_cells.json', 'size': len(metadata_bytes), 'sha256': hashlib.sha256(metadata_bytes).hexdigest()})
+    report: NotificationFixtureReport = {
+        'schema': 'sxad.external-notification-fixture.v1', 'fixture_root': str(output),
+        'generator_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        'required_start': marker_value, 'expected_pass_markers': [],
+        'case_count': case_count, 'candidate_results': 'not_run',
+        'entry_character_history_id': 1128, 'entry_bookmark_key': 'bookmark_rags_to_riches_duke_robert',
+        'ck3_started': False, 'files': files,
+    }
+    with receipt_path.open('x', encoding='utf-8', newline='\n') as stream:
+        stream.write(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
+    return report
 
 def marker(name: str, condition: str) -> str:
     result='sxat_case_'+name.replace('-','_')
@@ -198,9 +411,15 @@ sxat_on_start = { effect = { debug_log = "SXAT: ON_START" every_player = { limit
     return report
 
 def main() -> int:
-    parser=argparse.ArgumentParser(description=__doc__); parser.add_argument('--output',required=True,type=Path); args=parser.parse_args()
-    try: print(json.dumps(prepare(args.output),ensure_ascii=False,indent=2))
-    except (OSError,ValueError) as error: parser.exit(1,f'SXAD FIXTURE FAILED: {error}\n')
+    parser=argparse.ArgumentParser(description=__doc__); parser.add_argument('--output',required=True,type=Path)
+    modes=parser.add_mutually_exclusive_group()
+    modes.add_argument('--notification-investigation', action='store_true')
+    modes.add_argument('--natural-simulation', action='store_true')
+    args=parser.parse_args()
+    try:
+        report = prepare_natural_fixture(args.output) if args.natural_simulation else prepare_notification_fixture(args.output) if args.notification_investigation else prepare(args.output)
+        print(json.dumps(report,ensure_ascii=False,indent=2))
+    except (OSError,ValueError,subprocess.CalledProcessError) as error: parser.exit(1,f'SXAD FIXTURE FAILED: {error}\n')
     return 0
 
 if __name__=='__main__': raise SystemExit(main())

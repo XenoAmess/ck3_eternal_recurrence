@@ -19,7 +19,10 @@ sxad_increment_experience_effect = {
 # The vanilla paired hook runs this once, before changing either experience count.
 sxad_record_pair_effect = {
     if = {
-        limit = { is_alive = yes age >= 18 }
+        limit = {
+            is_alive = yes age >= 18
+            NOT = { exists = scope:sxad_skip_pair_record }
+        }
         if = {
             limit = { exists = $PARTNER$ }
             if = {
@@ -64,7 +67,10 @@ sxad_record_pair_effect = {
 # Vanilla explicitly describes this partner as not an actual character.
 sxad_record_unknown_effect = {
     if = {
-        limit = { is_alive = yes age >= 18 }
+        limit = {
+            is_alive = yes age >= 18
+            NOT = { exists = scope:sxad_skip_unknown_record }
+        }
         sxad_increment_experience_effect = yes
     }
 }

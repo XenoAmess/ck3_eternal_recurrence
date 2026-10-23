@@ -1,7 +1,7 @@
 ﻿l_simp_chinese:
  # GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py
  trait_sxad_sex_experience:0 "性经验"
- trait_sxad_sex_experience_desc:0 "已记录的明确性行为次数。"
+ trait_sxad_sex_experience_desc:0 "记录明确性交、脚本受孕尝试，以及每对成年配偶或侧室每月一次的夫妻生活模拟。"
  trait_sxad_sex_experience_character_desc:0 "已记录性经验：#V [SCOPE.ScriptValue('sxad_experience_value')|0]#! 次。"
  sxad_view_experience_interaction:0 "查看性经验"
  sxad_view_experience_interaction_desc:0 "以通知查看[recipient.GetShortUIName]的性经验与属性。"

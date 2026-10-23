@@ -1,7 +1,7 @@
 ﻿l_russian:
  # GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py
  trait_sxad_sex_experience:0 "Сексуальный опыт"
- trait_sxad_sex_experience_desc:0 "Зафиксировано явных сексуальных контактов."
+ trait_sxad_sex_experience_desc:0 "Учитывает явные половые контакты, скриптовые попытки зачатия и одну симуляцию близости в месяц для каждой взрослой супружеской пары или пары с наложником либо наложницей."
  trait_sxad_sex_experience_character_desc:0 "Зафиксированный сексуальный опыт: #V [SCOPE.ScriptValue('sxad_experience_value')|0]#! раз."
  sxad_view_experience_interaction:0 "Посмотреть сексуальный опыт"
  sxad_view_experience_interaction_desc:0 "Просмотреть сексуальный опыт и навыки [recipient.GetShortUIName] в уведомлении."

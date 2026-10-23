@@ -1,7 +1,7 @@
 ﻿l_korean:
  # GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py
  trait_sxad_sex_experience:0 "성 경험"
- trait_sxad_sex_experience_desc:0 "기록된 명시적 성행위 횟수."
+ trait_sxad_sex_experience_desc:0 "명시적 성행위, 스크립트의 임신 확률 판정, 성인 배우자 또는 첩 관계의 각 쌍에 대한 월 1회 부부 생활 시뮬레이션을 기록합니다."
  trait_sxad_sex_experience_character_desc:0 "기록된 성 경험: #V [SCOPE.ScriptValue('sxad_experience_value')|0]#! 회."
  sxad_view_experience_interaction:0 "성 경험 보기"
  sxad_view_experience_interaction_desc:0 "알림으로 [recipient.GetShortUIName]의 성 경험과 능력을 확인합니다."

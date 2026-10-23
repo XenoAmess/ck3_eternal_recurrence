@@ -1,0 +1,66 @@
+{
+  "schema": "sxad.natural-simulation-fixture.v1",
+  "case_count": 6,
+  "maximum_natural_days": 35,
+  "automatic_start_marker": "SXANF: BASELINE_READY natural-simulation",
+  "required_end": "SXANF: END natural-simulation",
+  "baseline_event_key": "sxanf.2",
+  "readback_character_references": [
+    "sxanf_ref_spouse_a", "sxanf_ref_spouse_b",
+    "sxanf_ref_concubinist", "sxanf_ref_concubine",
+    "sxanf_ref_pregnant_a", "sxanf_ref_pregnant_b",
+    "sxanf_ref_infertile_a", "sxanf_ref_infertile_b",
+    "sxanf_ref_minor_a", "sxanf_ref_minor_b",
+    "sxanf_ref_dead_a", "sxanf_ref_dead_b"
+  ],
+  "cells": [
+    {
+      "case_index": 1,
+      "case_id": "direct-repeat-crossfaith",
+      "result": "not_run",
+      "expected_pass_markers": ["SXANF: PASS direct-repeat-crossfaith"]
+    },
+    {
+      "case_index": 2,
+      "case_id": "concubinist-reverse",
+      "result": "not_run",
+      "expected_pass_markers": ["SXANF: PASS concubinist-reverse"]
+    },
+    {
+      "case_index": 3,
+      "case_id": "pregnant-pair",
+      "result": "not_run",
+      "expected_pass_markers": ["SXANF: PASS pregnant-pair"]
+    },
+    {
+      "case_index": 4,
+      "case_id": "infertile-pair",
+      "result": "not_run",
+      "expected_pass_markers": ["SXANF: PASS infertile-pair"]
+    },
+    {
+      "case_index": 5,
+      "case_id": "minor-dead-rejected",
+      "result": "not_run",
+      "expected_pass_markers": ["SXANF: PASS minor-dead-rejected"]
+    },
+    {
+      "case_index": 6,
+      "case_id": "real-calendar-native-pulse-and-rollover",
+      "result": "not_run",
+      "expected_pass_markers": [
+        "SXANF: PASS actual-native-pulse-observed",
+        "SXANF: PASS calendar-rollover-once"
+      ]
+    }
+  ],
+  "does_not_cover": [
+    "Unrun templates and AST checks do not prove CK3 parsing, scope validity or live behavior.",
+    "The native pulse observer proves code callback entry only; it does not infer execution order of concurrent on_action effects/events.",
+    "Explicit production faith-event calls are recorded separately from actual native monthly callbacks.",
+    "A real independently decoded cold-save/reload comparison remains a separate subsequent public saved-campaign case; this single-process matrix does not establish persistence.",
+    "This small matrix does not cover same-sex marriage engine setup, arbitrary third-party mods, engine fertility rolls or actual natural-pregnancy attempt counts.",
+    "Fixture marriage, concubinage, pregnancy and infertility setup must pass native baseline readback before action.",
+    "The minor fixture starts at age 16 and is checked as under 18, avoiding a birthday during the real calendar wait changing eligibility."
+  ]
+}

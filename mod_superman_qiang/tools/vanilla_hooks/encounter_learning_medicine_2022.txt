@@ -1,0 +1,270 @@
+﻿learning_medicine.2022 = { #by Mathilda Bjarnehed
+	type = character_event
+	title = learning_medicine.2022.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:new_physician = no }
+				desc = learning_medicine.2022.old_physician.desc
+			}
+			triggered_desc = {
+				trigger = { scope:new_physician = yes }
+				desc = learning_medicine.2022.new_physician.desc
+			}
+		}
+	}
+
+	theme = learning_medicine_focus
+	left_portrait = {
+		character = root
+		animation = stunned
+	}
+	right_portrait = {
+		character = scope:physician
+		animation = physician
+	}
+	lower_right_portrait = scope:spouse
+
+	trigger = {
+		learning_medicine_2022_valid_physician_trigger = yes
+		any_spouse = { learning_medicine_2020_can_have_child_trigger = yes }
+	}
+
+	immediate = {
+		#pick a spouse
+		random_spouse = {
+			limit = {
+				learning_medicine_2020_can_have_child_trigger = yes
+				this = root.primary_spouse
+			}
+			alternative_limit = {
+				learning_medicine_2020_can_have_child_trigger = yes
+			}
+			save_scope_as = spouse
+			if = {
+				limit = { is_female = yes }
+				save_scope_as = woman
+			}
+			else = {
+				save_scope_as = man
+			}
+		}
+		if = {
+			limit = { is_female = yes }
+			save_scope_as = woman
+		}
+		else = {
+			save_scope_as = man
+		}
+	}
+
+	#Something safe
+	option = {
+		name = learning_medicine.2022.b
+
+		random_list = {
+			85 = {
+				modifier = {
+					add = {
+						value = scope:physician.learning
+						subtract = average_skill_rating
+						multiply = 5
+					}
+				}
+				desc = learning_medicine.2022.b.success
+				send_interface_toast = {
+					title = learning_medicine.2022.b.success
+					left_icon = scope:physician
+					right_icon = scope:spouse
+					add_character_modifier = {
+						modifier = successful_fertility_treatment
+						years = 10
+					}
+					scope:spouse = {
+						add_character_modifier = {
+							modifier = successful_fertility_treatment
+							years = 10
+						}
+					}
+				}
+			}
+			15 = {
+				modifier = {
+					add = {
+						value = scope:physician.learning
+						subtract = average_skill_rating
+						multiply = -1
+						min = -10
+					}
+				}
+				desc = learning_medicine.2022.b.failure
+				send_interface_toast = {
+					title = learning_medicine.2022.b.failure
+					left_icon = scope:physician
+					right_icon = scope:spouse
+					add_character_modifier = {
+						modifier = botched_fertility_treatment
+						years = 5
+					}
+					scope:spouse = {
+						add_character_modifier = {
+							modifier = botched_fertility_treatment
+							years = 5
+						}
+					}
+				}
+			}
+		}
+	}
+
+	#Something new
+	option = {
+		name = learning_medicine.2022.a
+
+		random_list = {
+			desc = outcome_in_a_few_days
+			55 = { #Good outcome
+				modifier = {
+					add = {
+						value = scope:physician.learning
+						subtract = average_skill_rating
+						multiply = 5
+					}
+				}
+				desc = learning_medicine.2022.a.success
+				show_as_tooltip = {
+					add_character_modifier = {
+						modifier = very_successful_fertility_treatment
+						years = 10
+					}
+					scope:spouse = {
+						add_character_modifier = {
+							modifier = very_successful_fertility_treatment
+							years = 10
+						}
+					}
+				}
+				trigger_event = {
+					id = learning_medicine.2023
+					days = { 3 7 }
+				}
+			}
+			30 = { #Strange outcome
+				modifier = {
+					scope:physician = {
+						OR = {
+							has_trait = lifestyle_mystic
+							ai_honor <= medium_negative_ai_value
+						}
+					}
+					add = 20
+				}
+				trigger = {
+					is_ai = no
+					scope:spouse = { might_cheat_on_every_partner_trigger = yes }
+					scope:physician = { might_cheat_on_every_partner_trigger = yes }
+				}
+				desc = learning_medicine.2022.a.unexpected
+				custom_tooltip = learning_medicine.2022.a.unexpected.tt
+				hidden_effect = {
+					random_list = {
+						30 = { #Did the court physician have sex with my spouse...?
+							trigger = {
+								scope:spouse = { is_female = yes }
+								scope:physician = {
+									is_male = yes
+									learning_medicine_2020_can_have_child_trigger = yes
+								}
+							}
+							modifier = {
+								add = {
+									value = scope:physician.ai_honor
+									divide = high_negative_ai_value
+									multiply = 30
+								}
+							}
+							hidden_effect = {
+								scope:spouse = {
+									random_list = {
+										80 = {
+											had_sex_with_effect = { #Use effect because we want possibility of suspicion
+												CHARACTER = scope:physician
+												PREGNANCY_CHANCE = 100
+											}
+										}
+										20 = {
+											make_pregnant = {
+												father = root
+											}
+										}
+									}
+								}
+							}
+							trigger_event = {
+								id = learning_medicine.2025
+								days = { 30 40 }
+							}
+						}
+						70 = { #Regular side effects (good outcome + additional effects)
+							save_scope_value_as = {
+								name = side_effects
+								value = yes
+							}
+							trigger_event = {
+								id = learning_medicine.2023 #The good outcome
+								days = { 3 7 }
+							}
+						}
+					}
+				}
+			}
+			15 = { # Bad outcome
+				modifier = {
+					add = {
+						value = scope:physician.learning
+						subtract = average_skill_rating
+						multiply = -1
+						min = -10
+					}
+				}
+				desc = learning_medicine.2022.a.failure
+				trigger_event = {
+					id = learning_medicine.2024
+					days = { 3 7 }
+				}
+				show_as_tooltip = {
+					add_character_modifier = {
+						modifier = botched_fertility_treatment
+						years = 5
+					}
+					scope:spouse = {
+						add_character_modifier = {
+							modifier = botched_fertility_treatment
+							years = 5
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+
+	#Actually, I just want some... tricks
+	option = {
+		name = learning_medicine.2022.c
+
+		reverse_add_opinion = {
+			target = scope:spouse
+			modifier = romance_opinion
+			opinion = 25
+		}
+	}
+
+	#Nah thanks
+	option = {
+		trigger = { scope:new_physician = no }
+		name = learning_medicine.2021.c
+		add_prestige = miniscule_prestige_gain
+	}
+}

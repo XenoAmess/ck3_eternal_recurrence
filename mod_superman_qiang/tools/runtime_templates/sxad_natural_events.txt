@@ -1,0 +1,20 @@
+# GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py
+namespace = sxad_natural
+
+# One modeled marital encounter per eligible pair per calendar month. This
+# matches the native pregnancy-check cadence; it does not observe its rolls.
+# Stock scope=faith hidden event: events/religion_events/rite_growth_events.txt:14-19.
+sxad_natural.1 = {
+    scope = faith
+    hidden = yes
+    immediate = {
+        save_scope_as = sxad_natural_faith
+        # Explicit scope follows the stock non-character event convention.
+        scope:sxad_natural_faith = {
+            every_faith_character = {
+                limit = { is_alive = yes age >= 18 }
+                sxad_simulate_natural_character_effect = yes
+            }
+        }
+    }
+}

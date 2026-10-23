@@ -1,0 +1,118 @@
+﻿rakish_brothel_night_effect = {
+	# Warn the character about possible negative consequences.
+	custom_tooltip = stress_threshold.1011.rakish.tt
+
+	# Negative consequences of the night.
+	random_list = {
+		50 = {
+			trigger = {
+				is_attracted_to_men = yes
+			}
+			set_variable = {
+				name = had_recent_sex
+				value = flag:male
+			}
+			give_homosexual_secret_or_nothing_with_target_effect = { CHARACTER = dummy_male }
+		}
+		50 = {
+			trigger = {
+				is_attracted_to_women = yes
+			}
+			set_variable = {
+				name = had_recent_sex
+				value = flag:female
+			}
+		}
+	}
+	hidden_effect = {
+		#Adultery suspicion
+		random = {
+			chance = 5
+			random_spouse = {
+				limit = { is_ai = no }
+				alternative_limit = { always = yes }
+				trigger_event = adultery.0001
+			}
+		}
+
+		# Possible STD transmission
+		random_list = {
+			75 = {
+				#Nothing
+			}
+			20 = {
+				contract_disease_notify_effect = { DISEASE = lovers_pox }
+			}
+			5 = {
+				contract_disease_notify_effect = { DISEASE = great_pox }
+			}
+		}
+
+		#Possibility to start peasant story cycle
+		random = {
+			chance = 5
+			if = {
+				limit = {
+					NOT = { has_character_flag = had_story_cycle_peasant_affair }
+					is_ruler = yes
+					is_ai = no
+				}
+				create_character = {
+					location = root.capital_province
+					template = beautiful_peasant_character
+					gender_female_chance = root_attraction_based_female_chance
+					faith = root.faith
+					rite = root.rite
+					culture = root.culture
+					save_scope_as = beautiful_peasant
+				}
+				scope:beautiful_peasant = {
+					set_sexuality = bisexual
+				}
+				if = {
+					limit = {
+						is_male = yes
+						exists = scope:beautiful_peasant
+						scope:beautiful_peasant = {
+							is_female = yes
+							age < define:NChildbirth|MAX_FEMALE_REPRODUCTION_AGE
+						}
+					}
+					random = {
+						chance = pregnancy_chance
+						scope:beautiful_peasant = {
+							add_character_flag = {
+								flag = peasant_is_pregnant
+								days = 560
+							}
+						}
+					}
+				}
+				set_variable = {
+					name = story_peasant_affair_target
+					value = scope:beautiful_peasant
+				}
+				set_variable = { #To save how you met
+					name = rakish_night
+					value = 0
+				}
+				create_story = story_peasant_affair
+			}
+		}
+	}
+
+	# Attribute the stress relief to the indulged trait for fulfillment; callers without either trait keep the plain relief
+	if = {
+		limit = { has_trait = lustful }
+		stress_and_fulfillment_impact = {
+			lustful = major_stress_impact_loss
+		}
+	}
+	else_if = {
+		limit = { has_trait = rakish }
+		stress_and_fulfillment_impact = {
+			rakish = major_stress_impact_loss
+		}
+	}
+	else = { add_stress = major_stress_impact_loss }
+}

@@ -1,0 +1,81 @@
+# GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py
+# Simulation-only deduplication. Explicit sex/pregnancy-attempt hooks never
+# consult this state and can count additional real encounters the same day.
+# Variable lists are character-owned and survive save/reload. Reset each side
+# only on a changed month, including when first reached through another faith.
+sxad_prepare_natural_month_effect = {
+    if = {
+        limit = { has_variable = sxad_natural_month }
+        if = {
+            limit = { NOT = { var:sxad_natural_month = sxad_natural_month_value } }
+            clear_variable_list = sxad_natural_partners
+            set_variable = { name = sxad_natural_month value = sxad_natural_month_value }
+        }
+    }
+    else = {
+        clear_variable_list = sxad_natural_partners
+        set_variable = { name = sxad_natural_month value = sxad_natural_month_value }
+    }
+}
+
+# Current scope is one formal partner; PARTNER is the other character.
+# Sex is independent of pregnancy, fertility, gender and pregnancy success.
+# Mark BOTH directions before recording. A later callback from the spouse's
+# faith, or a repeated consort link, therefore cannot count this pair again.
+sxad_simulate_natural_pair_effect = {
+    if = {
+        limit = {
+            is_alive = yes
+            age >= 18
+            exists = $PARTNER$
+            $PARTNER$ = { is_alive = yes age >= 18 }
+            NOT = { this = $PARTNER$ }
+        }
+        sxad_prepare_natural_month_effect = yes
+        $PARTNER$ = { sxad_prepare_natural_month_effect = yes }
+        if = {
+            limit = {
+                NOT = {
+                    is_target_in_variable_list = {
+                        name = sxad_natural_partners
+                        target = $PARTNER$
+                    }
+                }
+            }
+            save_temporary_scope_as = sxad_natural_first
+            add_to_variable_list = { name = sxad_natural_partners target = $PARTNER$ }
+            $PARTNER$ = {
+                add_to_variable_list = { name = sxad_natural_partners target = scope:sxad_natural_first }
+            }
+            sxad_record_pair_effect = { PARTNER = $PARTNER$ }
+        }
+    }
+}
+
+# every_consort is used by stock romance/lover/culture effects. The explicit
+# concubinist branch also covers the reverse concubine link; monthly pair
+# deduplication makes it harmless if every_consort already returned that link.
+# No sex/gender ordering is used, including for same-sex marriages or female
+# rulers with male concubines. Infertile/pregnant adults are still eligible.
+sxad_simulate_natural_character_effect = {
+    if = {
+        limit = { is_alive = yes age >= 18 }
+        save_temporary_scope_as = sxad_natural_owner
+        every_consort = {
+            limit = { is_alive = yes age >= 18 }
+            save_temporary_scope_as = sxad_natural_partner
+            scope:sxad_natural_owner = {
+                sxad_simulate_natural_pair_effect = { PARTNER = scope:sxad_natural_partner }
+            }
+        }
+        if = {
+            limit = { is_concubine = yes }
+            this.concubinist = {
+                save_temporary_scope_as = sxad_natural_partner
+                scope:sxad_natural_owner = {
+                    sxad_simulate_natural_pair_effect = { PARTNER = scope:sxad_natural_partner }
+                }
+            }
+        }
+    }
+}

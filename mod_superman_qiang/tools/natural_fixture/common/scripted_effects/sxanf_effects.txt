@@ -1,0 +1,27 @@
+# External acceptance fixture only. References survive the real saved game.
+sxanf_restore_refs_effect = {
+    var:sxanf_ref_spouse_a = { save_scope_as = sxanf_spouse_a }
+    var:sxanf_ref_spouse_b = { save_scope_as = sxanf_spouse_b }
+    var:sxanf_ref_concubinist = { save_scope_as = sxanf_concubinist }
+    var:sxanf_ref_concubine = { save_scope_as = sxanf_concubine }
+    var:sxanf_ref_pregnant_a = { save_scope_as = sxanf_pregnant_a }
+    var:sxanf_ref_pregnant_b = { save_scope_as = sxanf_pregnant_b }
+    var:sxanf_ref_infertile_a = { save_scope_as = sxanf_infertile_a }
+    var:sxanf_ref_infertile_b = { save_scope_as = sxanf_infertile_b }
+    var:sxanf_ref_minor_a = { save_scope_as = sxanf_minor_a }
+    var:sxanf_ref_minor_b = { save_scope_as = sxanf_minor_b }
+    var:sxanf_ref_dead_a = { save_scope_as = sxanf_dead_a }
+    var:sxanf_ref_dead_b = { save_scope_as = sxanf_dead_b }
+}
+
+sxanf_reset_fixture_experience_effect = {
+    set_variable = { name = sxad_sex_experience value = 0 }
+    remove_trait = sxad_sex_experience
+    remove_variable = sxad_natural_month
+    clear_variable_list = sxad_natural_partners
+}
+
+sxanf_trigger_both_faith_events_effect = {
+    scope:sxanf_spouse_a = { faith = { trigger_event = { id = sxad_natural.1 } } }
+    scope:sxanf_spouse_b = { faith = { trigger_event = { id = sxad_natural.1 } } }
+}

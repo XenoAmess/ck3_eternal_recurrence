@@ -1,0 +1,202 @@
+{
+  "schema": "sxad-encounter-projections-v1",
+  "game_version": "1.20.0.4",
+  "source_buildid": "25734779",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T15:02:24.391799+00:00",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "projections": [
+    {
+      "name": "rakish_brothel_night_effect",
+      "kind": "scripted_effect",
+      "source_path": "common/scripted_effects/00_stress_effects.txt",
+      "source_sha256": "b496b45ebd5557562c9e2f10aaa747833062c2e7b049efb9d86b7d0dc18e2ba9",
+      "pinned_file": "encounter_rakish_brothel_night_effect.txt",
+      "pinned_sha256": "a731b13111209ed4f46354f4629ec510228cb369eeadf9bd4a913d1b8b72efad",
+      "namespace": null,
+      "output": "common/scripted_effects/zz_sxad_rakish_brothel_night_effect.txt",
+      "insertions": [
+        {
+          "anchor": "rakish_brothel_night_effect = {\n",
+          "position": "after",
+          "text": "\thidden_effect = { sxad_record_unknown_effect = yes }\n",
+          "expected_count": 1
+        }
+      ]
+    },
+    {
+      "name": "mandala_story_creation_aspect_get_kids_effect",
+      "kind": "scripted_effect",
+      "source_path": "common/scripted_effects/tgp_mandala_scripted_effects.txt",
+      "source_sha256": "bb438d3ff77f017a3676d8a3960c136571f41355075961173a5c384f993aeb0e",
+      "pinned_file": "encounter_mandala_story_creation_aspect_get_kids_effect.txt",
+      "pinned_sha256": "a59df9533599487e58f33b1e8f6e1e9cdfc55dd69eeb361000e733553a7016f8",
+      "namespace": null,
+      "output": "common/scripted_effects/zz_sxad_mandala_story_creation_aspect_get_kids_effect.txt",
+      "insertions": [
+        {
+          "anchor": "\t\t\t\t\tmake_pregnant = { father = scope:root_scope }\n",
+          "position": "before",
+          "text": "\t\t\t\t\thidden_effect = { sxad_record_pair_effect = { PARTNER = scope:root_scope } }\n",
+          "expected_count": 1
+        },
+        {
+          "anchor": "\t\t\t\t\t\tmake_pregnant = { father = prev }\n",
+          "position": "before",
+          "text": "\t\t\t\t\t\tprev = { save_temporary_scope_as = sxad_mandala_father }\n\t\t\t\t\t\thidden_effect = { sxad_record_pair_effect = { PARTNER = scope:sxad_mandala_father } }\n\t\t\t\t\t\tclear_saved_scope = sxad_mandala_father\n",
+          "expected_count": 1
+        }
+      ]
+    },
+    {
+      "name": "learning_medicine.2022",
+      "kind": "event",
+      "source_path": "events/lifestyles/scholarship_lifestyle/learning_medicine_events.txt",
+      "source_sha256": "f2082d341e004a88d3e24dcd0cbfaac26b5409c3f7e388d562fb311f33bd5fb2",
+      "pinned_file": "encounter_learning_medicine_2022.txt",
+      "pinned_sha256": "6009acbf1a614e7caf887592e4d781392851e9a20d52c0e350fbfd7199006c30",
+      "namespace": "learning_medicine",
+      "output": "events/zz_sxad_learning_medicine_2022.txt",
+      "insertions": [
+        {
+          "anchor": "\t\t\t\t\t\t\t\t\t\t\tmake_pregnant = {\n\t\t\t\t\t\t\t\t\t\t\t\tfather = root\n\t\t\t\t\t\t\t\t\t\t\t}\n",
+          "position": "before",
+          "text": "\t\t\t\t\t\t\t\t\t\t\thidden_effect = { sxad_record_pair_effect = { PARTNER = root } }\n",
+          "expected_count": 1
+        }
+      ]
+    },
+    {
+      "name": "learning_medicine.2023",
+      "kind": "event",
+      "source_path": "events/lifestyles/scholarship_lifestyle/learning_medicine_events.txt",
+      "source_sha256": "f2082d341e004a88d3e24dcd0cbfaac26b5409c3f7e388d562fb311f33bd5fb2",
+      "pinned_file": "encounter_learning_medicine_2023.txt",
+      "pinned_sha256": "4719c10b67bc84e41cf5b3ba15269afb4c9a9fc03e06131a957a425182712cb5",
+      "namespace": "learning_medicine",
+      "output": "events/zz_sxad_learning_medicine_2023.txt",
+      "insertions": [
+        {
+          "anchor": "\t\t\t\t\t\t\t\tmake_pregnant = {\n\t\t\t\t\t\t\t\t\tfather = scope:man\n\t\t\t\t\t\t\t\t}\n",
+          "position": "before",
+          "text": "\t\t\t\t\t\t\t\thidden_effect = { sxad_record_pair_effect = { PARTNER = scope:man } }\n",
+          "expected_count": 1
+        },
+        {
+          "anchor": "\t\t\t\t\t\t\t\tmake_pregnant = {\n\t\t\t\t\t\t\t\t\tfather = scope:man\n\t\t\t\t\t\t\t\t\tnumber_of_children = 2\n\t\t\t\t\t\t\t\t}\n",
+          "position": "before",
+          "text": "\t\t\t\t\t\t\t\thidden_effect = { sxad_record_pair_effect = { PARTNER = scope:man } }\n",
+          "expected_count": 1
+        },
+        {
+          "anchor": "\t\t\t\t\trandom = {\n\t\t\t\t\t\tchance = 50\n\t\t\t\t\t\tscope:woman = {\n\t\t\t\t\t\t\thad_sex_with_effect = {\n\t\t\t\t\t\t\t\tCHARACTER = scope:man\n\t\t\t\t\t\t\t\tPREGNANCY_CHANCE = pregnancy_chance\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n",
+          "position": "before",
+          "text": "\t\t\t\t\thidden_effect = { scope:woman = { sxad_record_pair_effect = { PARTNER = scope:man } } }\n\t\t\t\t\tsave_temporary_scope_as = sxad_skip_pair_record\n",
+          "expected_count": 1
+        },
+        {
+          "anchor": "\t\t\t\t\trandom = {\n\t\t\t\t\t\tchance = 50\n\t\t\t\t\t\tscope:woman = {\n\t\t\t\t\t\t\thad_sex_with_effect = {\n\t\t\t\t\t\t\t\tCHARACTER = scope:man\n\t\t\t\t\t\t\t\tPREGNANCY_CHANCE = pregnancy_chance\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n",
+          "position": "after",
+          "text": "\t\t\t\t\tclear_saved_scope = sxad_skip_pair_record\n",
+          "expected_count": 1
+        }
+      ]
+    },
+    {
+      "name": "pilgrimage.2101",
+      "kind": "event",
+      "source_path": "events/activities/pilgrimage_activity/pilgrimage_events.txt",
+      "source_sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06",
+      "pinned_file": "encounter_pilgrimage_2101.txt",
+      "pinned_sha256": "598f09c7468eb4a569740019c099cf28c02ac6c3a4e9d492f000b03beb352bcd",
+      "namespace": "pilgrimage",
+      "output": "events/zz_sxad_pilgrimage_2101.txt",
+      "insertions": [
+        {
+          "anchor": "\t\t\trandom_list = {\n\t\t\t\t50 = {\n\t\t\t\t\ttrigger = { is_attracted_to_men = yes }\n\t\t\t\t\thad_sex_with_unknown_effect = { GENDER = male }\n\t\t\t\t}\n\t\t\t\t50 = {\n\t\t\t\t\ttrigger = { is_attracted_to_women = yes }\n\t\t\t\t\thad_sex_with_unknown_effect = { GENDER = female }\n\t\t\t\t}\n\t\t\t}\n",
+          "position": "before",
+          "text": "\t\t\tsave_temporary_scope_as = sxad_skip_unknown_record\n",
+          "expected_count": 1
+        },
+        {
+          "anchor": "\t\t\trandom_list = {\n\t\t\t\t50 = {\n\t\t\t\t\ttrigger = { is_attracted_to_men = yes }\n\t\t\t\t\thad_sex_with_unknown_effect = { GENDER = male }\n\t\t\t\t}\n\t\t\t\t50 = {\n\t\t\t\t\ttrigger = { is_attracted_to_women = yes }\n\t\t\t\t\thad_sex_with_unknown_effect = { GENDER = female }\n\t\t\t\t}\n\t\t\t}\n",
+          "position": "after",
+          "text": "\t\t\tclear_saved_scope = sxad_skip_unknown_record\n",
+          "expected_count": 1
+        }
+      ]
+    },
+    {
+      "name": "stewardship_duty.1055",
+      "kind": "event",
+      "source_path": "events/lifestyles/governance_lifestyle/stewardship_duty_events.txt",
+      "source_sha256": "1684f3abcd0a2454d04306a33a5e657f403e9dca2239d3873383b11427f91dac",
+      "pinned_file": "encounter_stewardship_duty_1055.txt",
+      "pinned_sha256": "1f3a8819995b703b389d3b5740318a6b227a313fc090feeb6c83a8a379966d7e",
+      "namespace": "stewardship_duty",
+      "output": "events/zz_sxad_stewardship_duty_1055.txt",
+      "insertions": [
+        {
+          "anchor": "\t\t\t\tmake_pregnant = {\n\t\t\t\t\tfather = scope:new_father\n\t\t\t\t}\n",
+          "position": "before",
+          "text": "\t\t\t\thidden_effect = { sxad_record_pair_effect = { PARTNER = scope:new_father } }\n",
+          "expected_count": 1
+        }
+      ]
+    },
+    {
+      "name": "mpo_temujin_flavor.0030",
+      "kind": "event",
+      "source_path": "events/dlc/mpo/mpo_story_cycle_temujin_flavor_events.txt",
+      "source_sha256": "ca8dd6b504e5878d1050ed5e1f0271f1dd58e4e51b57695e8df59b8c32d7ec01",
+      "pinned_file": "encounter_mpo_temujin_flavor_0030.txt",
+      "pinned_sha256": "598a02a733d57f3225bcadfa6b0aa554045333ad8aab4343b57aad7944a1c3dd",
+      "namespace": "mpo_temujin_flavor",
+      "output": "events/zz_sxad_mpo_temujin_flavor_0030.txt",
+      "insertions": [
+        {
+          "anchor": "\t\t\t\tmake_pregnant = {\n\t\t\t\t\tfather = scope:mergid\n\t\t\t\t\tknown_bastard = yes\n\t\t\t\t}\n",
+          "position": "before",
+          "text": "\t\t\t\thidden_effect = { sxad_record_pair_effect = { PARTNER = scope:mergid } }\n",
+          "expected_count": 1
+        }
+      ]
+    },
+    {
+      "name": "mpo_events_tova.0035",
+      "kind": "event",
+      "source_path": "events/dlc/mpo/mpo_events_tova.txt",
+      "source_sha256": "0e8cadf632da8c3033a7040a9a1796663661796504e1517ec9d4add5177ee29a",
+      "pinned_file": "encounter_mpo_events_tova_0035.txt",
+      "pinned_sha256": "5569629dd82a1aca7ed7d7f611b1d4ed68520ed049e365d3cc1391a47ea1fd3d",
+      "namespace": "mpo_events_tova",
+      "output": "events/zz_sxad_mpo_events_tova_0035.txt",
+      "insertions": [
+        {
+          "anchor": "\t\t\t\t\tmake_pregnant = { father = scope:distressed_anda }\n",
+          "position": "before",
+          "text": "\t\t\t\t\thidden_effect = { sxad_record_pair_effect = { PARTNER = scope:distressed_anda } }\n",
+          "expected_count": 1
+        }
+      ]
+    },
+    {
+      "name": "fund_inspiration.6513",
+      "kind": "event",
+      "source_path": "events/dlc/ep1/ep1_fund_inspiration_events.txt",
+      "source_sha256": "4b78491aafe19c72b5592863f3234faec039e98305f6cd75c472dd5bd2d2c4bb",
+      "pinned_file": "encounter_fund_inspiration_6513.txt",
+      "pinned_sha256": "0791215618e8bfc4092a880c33b1740740319ba4cd1f4967ce6f2cf91ec9b541",
+      "namespace": "fund_inspiration",
+      "output": "events/zz_sxad_fund_inspiration_6513.txt",
+      "insertions": [
+        {
+          "anchor": "\t\t\tset_random_lover_reason = { TARGET = scope:adventurer_lover }\n",
+          "position": "before",
+          "text": "\t\t\thidden_effect = { sxad_record_pair_effect = { PARTNER = scope:adventurer_lover } }\n",
+          "expected_count": 1
+        }
+      ]
+    }
+  ]
+}

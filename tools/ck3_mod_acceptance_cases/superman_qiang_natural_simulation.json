@@ -1,0 +1,70 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "superman-qiang",
+  "case_id": "natural-simulation",
+  "acceptance_scope": "source_monthly_marital_simulation_six_cell_matrix_and_real_readback",
+  "fixture_emitter": {
+    "path": "mod_superman_qiang/tools/prepare_live_fixture.py",
+    "arguments": ["--natural-simulation", "--output", "{output}"],
+    "fixture_subdir": "",
+    "receipt_suffix": ".fixture.json"
+  },
+  "maximum_natural_days": 35,
+  "failure_prefixes": ["SXANF:"],
+  "gui_phases": [
+    {
+      "id": "native-monthly-baseline-before-choice",
+      "requirements": [
+        "actual_twelve_fixture_character_full_identities_and_saved_root_references",
+        "actual_marriage_concubinage_pregnancy_infertility_age_and_death_baseline",
+        "actual_zero_experience_baseline_save_and_independent_readback",
+        "current_sxanf_2_event_instance_and_original_begin_option_once"
+      ],
+      "at_day": 1
+    },
+    {
+      "id": "same-month-actual-state-and-calendar-choice",
+      "requirements": [
+        "actual_same_month_experience_one_and_bidirectional_partner_lists",
+        "actual_minor_and_dead_experience_zero",
+        "same_month_checkpoint_save_before_calendar_wait",
+        "current_sxanf_6_instance_and_original_calendar_option_once"
+      ],
+      "when_markers": ["SXANF: SAME_MONTH_READY natural-simulation"]
+    },
+    {
+      "id": "native-pulse-and-real-calendar-readback",
+      "requirements": [
+        "actual_code_monthly_observer_log_and_saved_counter_separate_from_explicit_faith_events",
+        "actual_calendar_month_change_without_forged_epoch",
+        "actual_seven_unique_expected_pass_markers_and_no_fail",
+        "final_saved_eight_eligible_characters_experience_two_and_four_rejected_characters_zero",
+        "actual_current_month_bidirectional_partner_lists_and_pregnancy_fertility_state"
+      ],
+      "when_markers": ["SXANF: END natural-simulation"]
+    }
+  ],
+  "source_contracts": [
+    "mod_superman_qiang/tools/natural_fixture/cases.json",
+    "mod_superman_qiang/tools/runtime_templates/sxad_natural_events.txt",
+    "mod_superman_qiang/tools/runtime_templates/sxad_natural_effects.txt"
+  ],
+  "uncovered_product_business": [
+    "Fixture preparation, AST checks and logs alone do not prove CK3 syntax, scope validity, persistence or product acceptance.",
+    "A native callback observation records code entry and does not infer the order of concurrent product events.",
+    "Actual saved-character readback is required for this matrix. A distinct subsequent public saved-campaign case must perform real cold reload and compare exact experience, month epochs, partner lists and identities; this process-bound case cannot establish persistence.",
+    "This bounded matrix does not cover same-sex marriage engine setup, all third-party mods, engine fertility rolls or exact natural-pregnancy attempt observation."
+  ],
+  "post_start": {"government_key": null, "primary_title_tier_key": null, "independent": null},
+  "required_startup": ["SXANF: BASELINE_READY natural-simulation"],
+  "forbidden_startup": ["SXANF: FAIL"],
+  "source_catalogue": {
+    "directory": "mod_superman_qiang",
+    "builder": "mod_superman_qiang/tools/build_release.py",
+    "release_flags": ["--output", "{new-output}", "--git-tag", "{matching-product-tag}", "--workshop-item-id", "3812991990"],
+    "workshop_item_id": "3812991990"
+  },
+  "business_contract_applicable": true,
+  "ordinary_post_start_input": "Actual Robert bookmark state supplied by common producer/readback.",
+  "calendar_bound_provenance": "New bounded source fixture: startup day plus one actual month and two days; maximum 35 natural days. Cold reload belongs to a separate subsequent public saved-campaign case."
+}

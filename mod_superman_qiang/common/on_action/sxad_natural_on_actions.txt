@@ -1,0 +1,12 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py
+# Additive wiring, as documented by game/common/on_action/_on_actions.info.
+# Stock religion_on_actions.txt:1276-1278 calls this once a month per faith.
+# This native pulse also exists in ongoing saves: no startup flag or recurring
+# scheduled event is created, so reloads cannot create a second scheduler.
+on_faith_monthly = {
+    on_actions = { sxad_natural_monthly_on_action }
+}
+
+sxad_natural_monthly_on_action = {
+    events = { sxad_natural.1 }
+}

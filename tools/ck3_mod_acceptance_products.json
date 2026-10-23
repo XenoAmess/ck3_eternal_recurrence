@@ -2443,6 +2443,94 @@
       "integration_status": "implemented_offline_admitted_requires_shared_source_adoption_and_actual_acceptance",
       "cases": [
         {
+          "id": "notification-investigation",
+          "status": "ready",
+          "implementation_credit": "Diagnostic fixture prepared; original notification probe and all repetition cells NOT_RUN",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/superman_qiang_notification_investigation.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/prepared/frontend-fixture-start-policy.json"
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 3900,
+            "hold_seconds": 900,
+            "poll_interval": 0.5
+          },
+          "budget_provenance": "New bounded diagnostic using current shared readiness floor and original normal-close reserve",
+          "required_mcp_tools": [
+            "ck3_get_capabilities",
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_query_current_event_window_context_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 90,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "notification_baseline_probe_qualification_only",
+          "whole_product_acceptance_credit": false,
+          "build_route": {
+            "directory": "mod_superman_qiang",
+            "builder": "mod_superman_qiang/tools/build_release.py",
+            "release_flags": ["--output", "{new-output}", "--git-tag", "{matching-product-tag}", "--workshop-item-id", "3812991990"],
+            "workshop_item_id": "3812991990"
+          },
+          "calendar_bound_provenance": "New diagnostic baseline at day one, maximum two natural days; no credit for unrun repetition cells"
+        },
+        {
+          "id": "natural-simulation",
+          "status": "ready",
+          "implementation_credit": "Monthly fixture prepared; actual six-cell engine matrix and callback readback NOT_RUN",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/superman_qiang_natural_simulation.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/prepared/frontend-fixture-start-policy.json"
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 3900,
+            "hold_seconds": 900,
+            "poll_interval": 0.5
+          },
+          "budget_provenance": "New bounded monthly simulation using shared readiness floor and normal-close reserve",
+          "required_mcp_tools": [
+            "ck3_get_capabilities",
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_query_current_event_window_context_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 90,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "source_monthly_marital_simulation_six_cell_matrix_and_real_readback",
+          "whole_product_acceptance_credit": false,
+          "build_route": {
+            "directory": "mod_superman_qiang",
+            "builder": "mod_superman_qiang/tools/build_release.py",
+            "release_flags": ["--output", "{new-output}", "--git-tag", "{matching-product-tag}", "--workshop-item-id", "3812991990"],
+            "workshop_item_id": "3812991990"
+          },
+          "calendar_bound_provenance": "One real month plus two days, maximum 35 natural days; cold reload requires a separate actual process"
+        },
+        {
           "id": "source-health-1-1",
           "status": "ready",
           "implementation_credit": "public three-interface product adapter implemented; actual live/product acceptance NOT_RUN",

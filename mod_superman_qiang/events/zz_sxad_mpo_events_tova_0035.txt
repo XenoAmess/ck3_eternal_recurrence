@@ -1,0 +1,207 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py
+# Controlled CK3 1.20.0.4 encounter projection.
+namespace = mpo_events_tova
+
+mpo_events_tova.0035 = { # Anda comes to you with marital concerns
+	type = character_event
+	title = mpo_events_tova.0035.t
+	desc = mpo_events_tova.0035.desc
+
+	theme = nomads
+	override_background = { reference = mpo_tent_interior_mongol }
+
+	cooldown = { years = 10 }
+
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	
+	right_portrait = {
+		character = scope:distressed_anda
+		animation = worry
+	}
+
+	lower_right_portrait = {
+		character = scope:pregnant_woman
+	}
+
+	trigger = {
+		has_mpo_dlc_trigger = yes
+		government_has_flag = government_is_nomadic
+		is_available_adult = yes
+		any_courtier = {
+			has_relation_blood_brother = root
+			is_available_ai_adult = yes
+			is_close_family_or_spouse_of_root_trigger = no
+			is_married = yes
+			is_male = yes
+			is_attracted_to_women = yes
+			primary_spouse = {
+				can_have_children = yes
+				is_available_ai = yes
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 3
+			any_courtier = {
+				has_relation_blood_brother = root
+				is_available_ai_adult = yes
+				is_close_family_or_spouse_of_root_trigger = no
+				is_married = yes
+				is_male = yes
+				is_attracted_to_women = yes
+				primary_spouse = {
+					is_pregnant = yes
+				}
+			}			
+		}
+		modifier = {
+			add = -0.5
+			any_courtier = {
+				has_relation_blood_brother = root
+				is_available_ai_adult = yes
+				is_close_family_or_spouse_of_root_trigger = no
+				is_married = yes
+				is_male = yes
+				is_attracted_to_women = yes
+				primary_spouse = {
+					is_pregnant = no
+				}
+			}
+		}
+	}
+	
+	immediate = {
+		random_courtier = {
+			limit = {
+				has_relation_blood_brother = root
+				is_available_ai_adult = yes
+				is_close_family_or_spouse_of_root_trigger = no
+				is_married = yes
+				is_male = yes
+				is_attracted_to_women = yes
+				primary_spouse = {
+					can_have_children = yes
+					is_available_ai = yes
+				}
+			}
+			save_scope_as = distressed_anda
+		}
+		scope:distressed_anda = {
+			primary_spouse = {
+				save_scope_as = pregnant_woman
+			}
+		}
+		hidden_effect = {
+			scope:pregnant_woman = {
+				if = {
+					limit = {
+						NOT = {
+							has_trait = pregnant
+						}
+					}
+	# SXAD_HOOK_BEGIN
+					hidden_effect = { sxad_record_pair_effect = { PARTNER = scope:distressed_anda } }
+	# SXAD_HOOK_END
+					make_pregnant = { father = scope:distressed_anda }
+				}
+			}
+		}
+	}
+
+	option = { # Rejoice! The heavens sent you a child.
+		name = mpo_events_tova.0035.a
+		custom_tooltip = mpo_events_tova.0035.a.tt
+		add_piety = medium_piety_gain
+ 		reverse_add_opinion = {
+			target = scope:pregnant_woman
+ 			modifier = grateful_opinion
+ 			opinion = 30
+ 		}
+ 		hidden_effect = {
+	 		random = {
+	 			chance = 33
+	  			scope:pregnant_woman = {
+	 				add_character_flag = blessed_baby
+	 			}
+	 		}
+ 		}
+ 		stress_and_fulfillment_impact = {
+ 			cynical = medium_stress_impact_gain
+ 		}
+		ai_chance = {
+			base = 100
+			modifier = {
+				has_trait = cynical
+				factor = 0
+			}
+			ai_value_modifier = {
+				ai_zeal = 1
+			}
+		}
+	}
+
+	option = { # Blatant lies!
+		name = mpo_events_tova.0035.b
+		scope:distressed_anda = {
+			divorce_effect = {
+				DIVORCER = scope:distressed_anda
+				DIVORCEE = scope:pregnant_woman
+			}
+			random = {
+				chance = 33
+				if = {
+					limit = {
+						NOT = {
+							has_trait = shrewd
+						}
+					}
+					add_trait = shrewd
+				}
+				else = { add_intrigue_skill = 2 }
+			}
+		}
+ 		reverse_add_opinion = {
+			target = scope:distressed_anda
+ 			modifier = grateful_opinion
+ 			opinion = 30
+ 		}
+
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = -1
+			}
+			modifier = {
+				has_trait = compassionate
+				factor = 0
+			}
+		}
+	}
+
+	option = { # That is the funniest thing I ever heard!
+		name = mpo_events_tova.0035.c
+		stress_and_fulfillment_impact = {
+			base = medium_stress_impact_loss
+			compassionate = medium_stress_impact_gain
+			trusting = medium_stress_impact_gain
+		}
+ 		reverse_add_opinion = {
+			target = scope:distressed_anda
+ 			modifier = insulted_opinion
+ 			opinion = -30
+ 		}
+
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_sociability = -1
+			}
+		}
+	}
+}

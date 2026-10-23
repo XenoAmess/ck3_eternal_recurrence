@@ -1,0 +1,410 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py
+# Controlled CK3 1.20.0.4 encounter projection.
+namespace = pilgrimage
+
+pilgrimage.2101 = {
+	type = character_event
+	title = pilgrimage.2101.t
+	desc = { 
+		desc = pilgrimage.2101.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					rite = { trait_is_virtue_rite = lustful }
+				}
+				desc = pilgrimage.2101.desc.lust_virtue
+			}
+			triggered_desc = {
+				trigger = {
+					rite = { trait_is_sin_rite = lustful }
+				}
+				desc = pilgrimage.2101.desc.lust_vice
+			}
+			triggered_desc = {
+				trigger = {
+					OR = {
+						has_sexuality = asexual
+						rite = {
+							NOR = {
+								trait_is_sin_rite = lustful
+								trait_is_virtue_rite = lustful
+							}
+						}
+					}
+				}
+				desc = pilgrimage.2101.desc.lust_neutral
+			}
+		}
+	}
+	cooldown = { years = 5 }
+	theme = travel_pilgrimage
+	override_background = { reference = tavern }
+	left_portrait = {
+		character = root
+		animation = interested
+	}
+	right_portrait = {
+		character = scope:naked_tempter
+		animation = fanning_coyly
+	}
+	trigger = {
+		stress > 0
+		OR = {
+			has_trait = lustful
+			has_trait = rakish
+		}
+		is_location_valid_for_travel_event_on_land = yes
+		might_cheat_on_every_partner_trigger = yes
+	}
+	immediate = {
+		add_character_flag = {
+			flag = no_sex_stress_loss
+			days = 30
+		}
+		random_list = {
+			50 = {
+				# Spawn a temptress for event if....
+				trigger = {
+					OR = {
+						#lesbian
+						AND = {
+							is_female = yes
+							has_sexuality = homosexual
+						}
+						#straight or asexual guy 
+						AND = {
+							is_male = yes
+							OR = {
+								has_sexuality = heterosexual
+								has_sexuality = asexual
+							}
+						}
+						#asexual woman and homo is ok 
+						AND = {
+							has_sexuality = asexual
+							is_female = yes 
+							rite = { rite_has_doctrine = doctrine_homosexuality_accepted }
+						}
+						#bisexual
+						has_sexuality = bisexual
+					}
+				}
+				create_character = {
+					age = 30
+					gender = female
+					location = root.location
+					faith = root.location.faith
+					rite = root.location.rite
+					culture = root.location.culture
+					dynasty = none
+					random_traits = no
+					random_traits_list = {
+						count = 2
+						deceitful = {}
+						brave = {}
+						gregarious = {}
+						ambitious = {}
+						vengeful = {}
+						gluttonous = {}
+						temperate  = {}
+						greedy = {}
+						generous = {}
+						lazy = {}
+						diligent = {}
+						wrathful = {}
+						calm = {}
+						patient = {}
+						impatient = {}
+						arrogant = {}
+						honest = {}
+						arbitrary = {}
+						just = {}
+						paranoid = {}
+						trusting = {}
+						compassionate = {}
+						callous = {}
+						sadistic = {}
+						stubborn = {}
+						fickle = {}
+						forgiving = {}
+					}
+					trait = lustful
+					trait = rakish
+					trait = deviant
+					trait = fecund
+					trait = beauty_good_3
+					save_scope_as = naked_tempter
+				}
+			}
+			50 = {
+				# Spawn a tempter for event if....
+				trigger = {
+					OR = {
+						#gay
+						AND = {
+							is_male = yes
+							has_sexuality = homosexual
+						}
+						#straight or asexual woman 
+						AND = {
+							is_female = yes
+							OR = {
+								has_sexuality = asexual
+								has_sexuality = heterosexual
+							}
+						}
+						#asexual man and homo is ok 
+						AND = {
+							has_sexuality = asexual
+							is_male = yes 
+							rite = { rite_has_doctrine = doctrine_homosexuality_accepted }
+						}
+						#bisexual
+						has_sexuality = bisexual
+					}
+				}
+				create_character = {
+					age = 30
+					gender = male
+					location = root.location
+					faith = root.location.faith
+					rite = root.location.rite
+					culture = root.location.culture
+					dynasty = none
+					random_traits = no
+					random_traits_list = {
+						count = 2
+						deceitful = {}
+						brave = {}
+						gregarious = {}
+						ambitious = {}
+						vengeful = {}
+						gluttonous = {}
+						temperate  = {}
+						greedy = {}
+						generous = {}
+						lazy = {}
+						diligent = {}
+						wrathful = {}
+						calm = {}
+						patient = {}
+						impatient = {}
+						arrogant = {}
+						honest = {}
+						arbitrary = {}
+						just = {}
+						paranoid = {}
+						trusting = {}
+						compassionate = {}
+						callous = {}
+						sadistic = {}
+						stubborn = {}
+						fickle = {}
+						forgiving = {}
+					}
+					trait = lustful
+					trait = rakish
+					trait = deviant
+					trait = fecund
+					trait = beauty_good_3
+					save_scope_as = naked_tempter
+				}
+			}
+		}
+		scope:naked_tempter = {
+			add_character_flag = is_naked
+		}
+	}
+	#Option A: Visit one brothel
+	option = {
+		name = pilgrimage.2101.a
+		if = {
+			limit = {
+				rite = { trait_is_virtue_rite = lustful }
+			}
+			pious_type_option_effect = yes
+			add_piety = minor_piety_gain
+		}
+		else_if = {
+			limit = {
+				rite = { trait_is_sin_rite = lustful }
+			}
+			worldly_type_option_effect = yes
+			add_piety = medium_piety_loss
+		}
+		add_stress = medium_stress_loss
+		had_sex_with_effect = {
+			CHARACTER = scope:naked_tempter
+			PREGNANCY_CHANCE = pregnancy_chance
+		}
+		add_to_entourage_court_and_activity_effect = { 
+			CHAR_TO_ADD = scope:naked_tempter 
+			NEW_COURT_OWNER = root 
+		}
+		hidden_effect = {
+			#STD transmission
+	# SXAD_HOOK_BEGIN
+			save_temporary_scope_as = sxad_skip_unknown_record
+	# SXAD_HOOK_END
+			random_list = {
+				50 = {
+					trigger = { is_attracted_to_men = yes }
+					had_sex_with_unknown_effect = { GENDER = male }
+				}
+				50 = {
+					trigger = { is_attracted_to_women = yes }
+					had_sex_with_unknown_effect = { GENDER = female }
+				}
+			}
+	# SXAD_HOOK_BEGIN
+			clear_saved_scope = sxad_skip_unknown_record
+	# SXAD_HOOK_END
+			if = {
+				limit = {
+					NOT = {
+						government_has_flag = government_is_mandala
+						house ?= { has_house_aspiration_parameter = aspect_of_creation }
+					}
+				}
+				random = {
+					chance = 33
+					pilgrimage_2101_save_scopes_effect = yes
+				}
+			}
+		}
+		ai_chance = {
+			base = 10	
+			ai_value_modifier = {
+				ai_energy = 0.5
+				ai_greed = -1
+			}
+			modifier = {
+				NOR = {
+					is_married = no
+					any_spouse = {
+						count = all
+						save_temporary_scope_as = partner
+						root = { might_cheat_on_partner_trigger = { PARTNER = scope:partner } }
+					}
+				}
+				factor = 0
+			}
+		}
+	}
+	#Option B: Visit ALL brothels!
+	option = {
+		name = pilgrimage.2101.b
+		if = {
+			limit = {
+				rite = { trait_is_virtue_rite = lustful }
+			}
+			pious_type_option_effect = yes
+			add_piety = medium_piety_gain
+		}
+		else_if = {
+			limit = {
+				rite = { trait_is_sin_rite = lustful }
+			}
+			worldly_type_option_effect = yes
+			add_piety = major_piety_loss
+		}
+		remove_short_term_gold = tiny_gold_value
+		rakish_brothel_night_effect = yes
+		had_sex_with_effect = {
+			CHARACTER = scope:naked_tempter
+			PREGNANCY_CHANCE = pregnancy_chance
+		}
+		add_to_entourage_court_and_activity_effect = { 
+			CHAR_TO_ADD = scope:naked_tempter 
+			NEW_COURT_OWNER = root 
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					NOT = {
+						government_has_flag = government_is_mandala
+						house ?= { has_house_aspiration_parameter = aspect_of_creation }
+					}
+				}
+				random = {
+					chance = 75
+					pilgrimage_2101_save_scopes_effect = yes
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+			ai_value_modifier = {
+				ai_boldness = 2
+				ai_energy = 2
+				ai_greed = -2
+			}
+			modifier = {
+				factor = 0
+				short_term_gold < minor_gold_value #AI should not spend money they don't have
+			}
+			modifier = {
+				NOR = {
+					is_married = no
+					any_spouse = {
+						count = all
+						save_temporary_scope_as = partner
+						root = { might_cheat_on_partner_trigger = { PARTNER = scope:partner } }
+					}
+				}
+				factor = 0
+			}
+		}
+	}
+	#Option C: Stay away from the houses of pleasure
+	option = {
+		name = pilgrimage.2101.c
+		if = {
+			limit = {
+				rite = { trait_is_sin_rite = lustful }
+			}
+			add_piety = miniscule_piety_gain
+			pious_type_option_effect = yes
+		}
+		else_if = {
+			limit = {
+				rite = { trait_is_virtue_rite = lustful }
+			}
+			add_piety = minor_piety_loss
+		}
+		else = {
+			add_piety = miniscule_piety_gain
+		}
+		stress_and_fulfillment_impact = {
+			base = minor_stress_impact_gain
+			lustful = minor_stress_impact_gain #gets added on top of the base
+			rakish = medium_stress_impact_gain #gets added on top of the base
+		}
+		ai_chance = {
+			base = 10
+			ai_value_modifier = {
+				ai_greed = 2
+				ai_energy = -1
+			}
+		}
+	}
+	after = {
+		remove_character_flag = no_sex_stress_loss
+		scope:naked_tempter = {
+			remove_character_flag = is_naked
+		}
+		if = {
+			limit = {
+				is_ai = yes
+			}
+			scope:naked_tempter = {
+				if = {
+					limit = {
+						root = { is_ai = yes }
+					}
+					silent_disappearance_effect = yes
+				}
+			}
+		}
+	}	
+}

@@ -1,0 +1,10 @@
+﻿l_english:
+ sxanf_baseline_title:0 "External fixture: monthly simulation baseline"
+ sxanf_baseline_desc:0 "Fixture only. Verify actual character identities, marriages, concubinage, pregnancy, infertility and zero experience. Save and independently read back the baseline before choosing Start once. Log markers do not replace saved evidence."
+ sxanf_begin:0 "Baseline saved and checked; start same-month tests"
+ sxanf_month_title:0 "External fixture: same-month checks finished"
+ sxanf_month_desc:0 "Retain logs, experience, month epochs and reciprocal partner lists, then save a checkpoint. The next choice waits one real month plus two days. Resume normal calendar progression. Actual native faith callbacks and explicit event calls are recorded separately."
+ sxanf_advance_month:0 "Begin the real calendar wait"
+ sxanf_done_title:0 "External fixture: save and perform a cold reload"
+ sxanf_done_desc:0 "Save the final checkpoint and independently verify all fixture character experience, epochs and partner lists. Close CK3 normally, reload this save with the same product and fixture definitions, remain paused, save again and compare all fields. An unexecuted cold reload remains pending."
+ sxanf_close:0 "Retain the window and save evidence"

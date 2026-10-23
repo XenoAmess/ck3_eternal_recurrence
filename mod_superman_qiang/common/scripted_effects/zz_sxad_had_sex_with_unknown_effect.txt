@@ -1,5 +1,5 @@
 ﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py
-# Controlled CK3 1.20.0.3 projection; strip SXAD_HOOK block to recover pinned input.
+# Controlled CK3 1.20.0.4 projection; strip SXAD_HOOK block to recover pinned input.
 had_sex_with_unknown_effect = {
 	# SXAD_HOOK_BEGIN
 	hidden_effect = { sxad_record_unknown_effect = yes }

@@ -9,9 +9,9 @@ TRANSFER_ATTRIBUTES = (*SKILLS, "health")
 HEALTH_TRANSFER_AMOUNT = Decimal("0.00075")
 HEALTH_DONOR_MINIMUM = Decimal("3.00075")
 SKILL_BALANCE_MAXIMUM = 1_000_000
-GAME_VERSION = "1.20.0.3"
+GAME_VERSION = "1.20.0.4"
 ROMANCE_SOURCE_SHA256 = "a4a88fa0f36e95e865dcdd077dcb64f5985db1b9a441fcca1795494abda66211"
-EXE_SHA256 = "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6"
+EXE_SHA256 = "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
 HOOKS = {
     "had_sex_with_effect": "sxad_record_pair_effect = { PARTNER = scope:had_sex_with_effect_partner }",
     "had_sex_with_unknown_effect": "sxad_record_unknown_effect = yes",
@@ -38,7 +38,7 @@ def toast_health_row() -> str:
 
 ZH = {
     "trait_sxad_sex_experience": "性经验",
-    "trait_sxad_sex_experience_desc": "已记录的明确性行为次数。",
+    "trait_sxad_sex_experience_desc": "记录明确性交、脚本受孕尝试，以及每对成年配偶或侧室每月一次的夫妻生活模拟。",
     "trait_sxad_sex_experience_character_desc": "已记录性经验：#V [SCOPE.ScriptValue('sxad_experience_value')|0]#! 次。",
     "sxad_view_experience_interaction": "查看性经验",
     "sxad_view_experience_interaction_desc": "以通知查看[recipient.GetShortUIName]的性经验与属性。",
@@ -51,7 +51,7 @@ ZH = {
 }
 EN = {
     "trait_sxad_sex_experience": "Sexual Experience",
-    "trait_sxad_sex_experience_desc": "Recorded explicit sexual encounters.",
+    "trait_sxad_sex_experience_desc": "Records explicit sex, scripted conception attempts, and one monthly simulated encounter per adult spouse or concubine pair.",
     "trait_sxad_sex_experience_character_desc": "Recorded sexual experience: #V [SCOPE.ScriptValue('sxad_experience_value')|0]#! encounters.",
     "sxad_view_experience_interaction": "View Sexual Experience",
     "sxad_view_experience_interaction_desc": "Show [recipient.GetShortUIName]'s sexual experience and skills in a notification.",

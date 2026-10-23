@@ -1,0 +1,435 @@
+﻿# GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py
+# Controlled CK3 1.20.0.4 encounter projection.
+namespace = stewardship_duty
+
+stewardship_duty.1055 = {
+	type = character_event
+	title = stewardship_duty.1055.t
+	desc = stewardship_duty.1055.desc
+	
+	theme = stewardship_duty_focus
+	override_background = {
+		reference = throne_room
+	}
+	left_portrait = {
+		character = root
+		animation = eyeroll
+	}
+	right_portrait = {
+		character = scope:new_mothers_parent
+		animation = anger
+	}
+	lower_center_portrait = scope:new_mother
+	lower_right_portrait = scope:new_fathers_parent
+	lower_left_portrait = scope:new_father
+	
+	trigger = {
+		NOT = { has_character_flag = had_event_stewardship_duty_1055 }
+		#We must have a vassal with a different dynasty who has an unwed daughter.
+		OR = {
+			any_vassal_or_below = {
+				is_vassal_of = root
+				stewardship_duty_1055_valid_mother_parent_or_spouse = yes
+				save_temporary_scope_as = vassal_1
+				#We also must have a vassal from a diffent family who has an unwed son.
+				root = {
+					any_vassal_or_below = {
+						stewardship_duty_1055_valid_father_parent = yes
+					}
+				}
+			}
+			AND = {
+				has_government = landless_adventurer_government
+				any_courtier = {
+					stewardship_duty_1055_valid_mother_parent_or_spouse = yes
+					save_temporary_scope_as = vassal_1
+					#We also must have a vassal from a diffent family who has an unwed son.
+					root = {
+						any_courtier = {
+							stewardship_duty_1055_valid_father_parent = yes
+						}
+					}
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		upweight_for_focus_modifier = { FOCUS = stewardship_duty_focus }
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = 	had_event_stewardship_duty_1055
+			years = 5
+		}
+		add_character_flag = {
+			flag = had_recent_lifestyle_ongoing_event
+			years = ongoing_lifestyle_event_delay
+		}
+		#Find a vassal to serve as the advocate for our female event target.
+		random_vassal_or_below = {
+			#Ideally we want a vassal who has an unwed daughter.
+			limit = {
+				is_vassal_of = root
+				stewardship_duty_1055_valid_mother_parent_or_spouse = yes
+				any_child = {
+					is_female = yes
+					stewardship_duty_1055_is_unwed_child = yes
+				}
+				save_temporary_scope_as = vassal_1
+
+				#Ensure that if we pick this vassal, there will still be at least one choice for the male event target.
+				root = {
+					any_vassal_or_below = {
+						stewardship_duty_1055_valid_father_parent = yes
+					}
+				}
+			}
+			#If none are available, settle for a vassal who has a non-pregnant wife or concubine.
+			alternative_limit = {
+				is_vassal_of = root
+				stewardship_duty_1055_valid_mother_parent_or_spouse = yes
+				save_temporary_scope_as = vassal_1
+
+				#Ensure that if we pick this vassal, there will still be at least one choice for the male event target.
+				root = {
+					any_vassal_or_below = {
+						stewardship_duty_1055_valid_father_parent = yes
+					}
+				}
+			}
+
+			#Heavily weight the chosen vassal to be our direct vassal, ideally one who is powerful and/or has a high tier.
+			weight = {
+				base = 100
+				modifier = {
+					factor = 10
+					is_vassal_of = root
+				}
+				modifier = {
+					factor = 100
+					is_powerful_vassal_of = root
+
+				}
+				compare_modifier = {
+					factor = highest_held_title_tier
+					multiplier = 10
+				}
+			}
+
+			save_scope_as = vassal_1 # Keep it for limit.
+			# Save the scope of this vassal as the new_mothers_parent.
+			save_scope_as = new_mothers_parent
+
+			#Select a character to be the new_mother.
+			if = {
+				#Ideally we will pick their unwed daughter, if they have one.
+				limit = {
+					any_child = {
+						is_female = yes
+						stewardship_duty_1055_is_unwed_child = yes
+					}
+				}
+				random_child = {
+					limit = {
+						is_female = yes
+						stewardship_duty_1055_is_unwed_child = yes
+					}
+
+					#Prefer younger, lustful characters.
+					weight = {
+						base = 100
+
+						compare_modifier = {
+							value = age
+							multiplier = -2.5
+						}
+						modifier = {
+							has_trait = lustful
+							add = 100
+						}
+
+						#Also up the odds if this character stands to inherit a title (especially the primary one).
+						modifier = {
+							factor = 10
+							is_primary_heir_of = scope:new_mothers_parent
+						}
+						modifier = {
+							factor = 3
+							is_heir_of = scope:new_mothers_parent
+						}
+					}
+
+					save_scope_as = new_mother
+				}
+			}
+			else = {
+				#Otherwise, select one of their wives or concubines who isn't currently pregnant.
+				random_consort = {
+					limit = {
+						is_female = yes
+						stewardship_duty_1055_minimum_et_requirements = yes
+					}
+
+					#Prefer younger, lustful characters.
+					weight = {
+						base = 100
+
+						compare_modifier = {
+							value = age
+							multiplier = -2.5
+						}
+						modifier = {
+							has_trait = lustful
+							add = 100
+						}
+
+						#Also up the odds if this character stands to inherit a title (especially the primary one).
+						modifier = {
+							factor = 10
+							is_primary_heir_of = scope:new_mothers_parent
+						}
+						modifier = {
+							factor = 3
+							is_heir_of = scope:new_mothers_parent
+						}
+					}
+
+					save_scope_as = new_mother
+				}
+			}
+		}
+
+		#Find a 2nd vassal of a different dynasty who has an unwed son
+		random_vassal_or_below = {
+			limit = {
+				is_vassal_of = root
+				stewardship_duty_1055_valid_father_parent = yes
+			}
+			alternative_limit = {
+				stewardship_duty_1055_valid_father_parent = yes
+			}
+
+			#Heavily weight the chosen vassal to be our direct vassal, ideally one who is powerful and/or has a high tier.
+			weight = {
+				base = 100
+				modifier = {
+					factor = 100
+					is_powerful_vassal_of = root
+
+				}
+				compare_modifier = {
+					factor = highest_held_title_tier
+					multiplier = 10
+				}
+			}
+			save_scope_as = new_fathers_parent
+
+			#Select one of their sons to be the new father.
+			random_child = {
+				limit = {
+					is_male = yes
+					stewardship_duty_1055_is_unwed_child = yes
+				}
+
+				#Favor younger, lustful characters.
+				weight = {
+					base = 100
+					
+					compare_modifier = {
+						value = age
+						multiplier = -2.5
+					}
+					modifier = {
+						has_trait = lustful
+						add = 100
+					}
+
+					#Also up the odds if this character stands to inherit a title (especially the primary one).				
+					modifier = {
+						factor = 10
+						is_primary_heir_of = scope:new_fathers_parent
+					}
+					modifier = {
+						factor = 3
+						is_heir_of = scope:new_fathers_parent
+					}
+				}
+				save_scope_as = new_father
+			}
+		}
+
+
+		#Pregnancy Set-Up
+		hidden_effect = {
+			scope:new_mother = {
+	# SXAD_HOOK_BEGIN
+				hidden_effect = { sxad_record_pair_effect = { PARTNER = scope:new_father } }
+	# SXAD_HOOK_END
+				make_pregnant = {
+					father = scope:new_father
+				}
+			}
+		}
+		#Reveal the illigitimate pregnancy to all event characters
+		scope:new_mother = {
+			set_known_bastard_on_pregnancy = yes
+			add_character_flag = {
+				flag = pregnancy_real_father_of_bastard_is_known_flag
+				months = 10
+			}
+		}
+	}
+
+	#Option 1: Side with the mother's family, and force the father's family to pay renumeration.
+	option = {
+		name = stewardship_duty.1055.a
+
+		scope:new_mothers_parent = {
+			#Mother's parent is pleased you sided with them.
+			add_opinion = {
+				modifier = pleased_opinion
+				target = root
+				opinion = 20
+			}
+		}
+
+		scope:new_fathers_parent = {
+			#Since this event already has so many conditions, we will magic the gold into existance instead of needing a vassal who actually has it.
+			show_as_tooltip = {
+				pay_short_term_gold = {
+					target = scope:new_mothers_parent
+					gold = medium_gold_value
+				}
+			}
+			hidden_effect = {
+				scope:new_mothers_parent = {
+					add_gold = medium_gold_value
+				}
+			}
+			#Father's parent is still angry at being 'forced' to pay the gold, though.
+			add_opinion = {
+				modifier = angry_opinion
+				target = root
+				opinion = -20
+			}
+		}
+
+		#Gain focus progress for making a legal decision.
+		add_stewardship_lifestyle_xp = medium_lifestyle_experience
+
+		#AI will only side with the mother's family if they are of a higher rank than the father's.
+		ai_chance = {
+			base = 1
+
+			modifier = {
+				scope:new_mothers_parent.highest_held_title_tier > scope:new_fathers_parent.highest_held_title_tier
+				add = 500
+			}
+
+			modifier = {
+				scope:new_mothers_parent = {
+					is_vassal_of = root
+				}
+				add = 100
+			}
+
+			modifier = {
+				has_trait = chaste
+				add = 100
+			}
+		}
+	}
+
+	#Option 2: Side with the father's family, and declare no renumeration needs to be paid at all.
+	option = {
+		name = stewardship_duty.1055.b
+		scope:new_fathers_parent = {
+			#Father's parent is pleased you sided with them.
+			add_opinion = {
+				modifier = pleased_opinion
+				target = root
+				opinion = 20
+			}
+		}
+		scope:new_mothers_parent = {
+			#Mother's parent is angry at being spurned by you.
+			add_opinion = {
+				modifier = angry_opinion
+				target = root
+				opinion = -20
+			}
+		}
+
+		#Gain focus progress for making a legal decision.
+		add_stewardship_lifestyle_xp = medium_lifestyle_experience
+
+		#AI will only side with the father's family if they are of a higher rank than the mother's.
+		ai_chance = {
+			base = 1
+
+			modifier = {
+				scope:new_fathers_parent.highest_held_title_tier > scope:new_mothers_parent.highest_held_title_tier
+				add = 500
+			}
+
+			modifier = {
+				AND = {
+					has_trait = just
+					scope:new_mother.rite = {
+						NOT = { rite_has_parameter = bastards_none }
+					}
+				}
+				add = 250
+			}
+
+			modifier = {
+				scope:new_fathers_parent = {
+					is_vassal_of = root
+				}
+				add = 100
+			}
+
+			modifier = {
+				has_trait = lustful
+				add = 100
+			}
+		}
+	}	
+
+	#Option 3: Delcare that this is a waste of your time and that your vassals shouldn't bother you.
+	option = {
+		name = stewardship_duty.1055.e
+
+		#Gain prestige for exerting your authority.
+		add_prestige = medium_prestige_gain
+
+		#But both parents dislike you somewhat.
+		scope:new_fathers_parent = {
+			add_opinion = {
+				modifier = angry_opinion
+				target = root
+				opinion = -10
+			}
+		}
+		scope:new_mothers_parent = {
+			add_opinion = {
+				modifier = angry_opinion
+				target = root
+				opinion = -10
+			}
+		}
+
+		ai_chance = {
+			base = 100
+
+			ai_value_modifier = {
+				ai_compassion = -200
+				ai_honor = -200
+				ai_energy = -200
+			}
+		}
+	}
+}

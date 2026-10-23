@@ -1,0 +1,314 @@
+{
+  "observed_at_utc": "2026-10-23T15:02:40.991033+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "machine_id_evidence": "tools/ck3_live_run_id.py machine (actual output in this task)",
+  "exe": {
+    "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+    "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "native_instruction_spans": [
+    {
+      "label": "force_character_skill_recalculation_execute",
+      "rva": "0x2cecc00",
+      "span_kind": "reviewed instruction span, not an unwind-table function claim",
+      "byte_count": 78,
+      "sha256": "a2db4bdc829e3fe42b98029bc1d722daeff19d8e5a46646a3afc002ffd132589"
+    },
+    {
+      "label": "forced_character_recalculation",
+      "rva": "0x28c3ba0",
+      "span_kind": "reviewed instruction span, not an unwind-table function claim",
+      "byte_count": 289,
+      "sha256": "685a3912920ebf7ff3e8eac2eeb9165fd7cb4615847556c6d1e9cee3fecc0891"
+    },
+    {
+      "label": "character_recalculation_core",
+      "rva": "0x28c3f40",
+      "span_kind": "reviewed instruction span, not an unwind-table function claim",
+      "byte_count": 1120,
+      "sha256": "48ff6016371dced442a1bf2fad241eb1323ffa9b7ddfb63b18c3048252e5e510"
+    },
+    {
+      "label": "add_character_modifier_execute",
+      "rva": "0x1afdb40",
+      "span_kind": "reviewed instruction span, not an unwind-table function claim",
+      "byte_count": 555,
+      "sha256": "ccd5069be9bd7a60a46f6372c40d447cab93c2187aadd9dc964f1dc39abc829e"
+    },
+    {
+      "label": "remove_character_modifier_execute",
+      "rva": "0x1afb0f0",
+      "span_kind": "reviewed instruction span, not an unwind-table function claim",
+      "byte_count": 133,
+      "sha256": "c813aa272173e8d0ec8e9bc11cedef8f9d5a07db4fc88465d2f3b7e2dcd62c0e"
+    },
+    {
+      "label": "timed_character_modifier_add",
+      "rva": "0x2491790",
+      "span_kind": "reviewed instruction span, not an unwind-table function claim",
+      "byte_count": 720,
+      "sha256": "df09019f6aa3241d5f1759c21dc834877960accca31c40f659bd840446616f30"
+    },
+    {
+      "label": "timed_character_modifier_remove",
+      "rva": "0x2491a60",
+      "span_kind": "reviewed instruction span, not an unwind-table function claim",
+      "byte_count": 256,
+      "sha256": "028b0c29ee6a5799e89f607bd94a97687a4ad3f309a51ba8a8cb7e3225d5a26e"
+    }
+  ],
+  "script_sources": [
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/scripted_effects/00_romance_effects.txt",
+      "sha256": "a4a88fa0f36e95e865dcdd077dcb64f5985db1b9a441fcca1795494abda66211"
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/messages/01_death_messages.txt",
+      "sha256": "5a3098134ac57109a35bafcb756f55bee08c98870c038fe7426cb850a97268ff"
+    }
+  ],
+  "schema": "sxad.notification-investigation-offline-evidence.v1",
+  "original_report": {
+    "author": "1668788452",
+    "reported_at_beijing": "2026-10-10 21:35",
+    "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990#comment_581684714275963017",
+    "text": "似乎有点问题,勾引过后这个统计次数的功能可能会导致后续关于被勾引角色的消息重复出现.右边的xx怎么了弹窗每勾引一次就会多弹出一次",
+    "player_save_or_screenshot_available": false
+  },
+  "pinned_projection": {
+    "game_version_claim_in_source": "1.20.0.3",
+    "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+    "romance_source_sha256": "a4a88fa0f36e95e865dcdd077dcb64f5985db1b9a441fcca1795494abda66211",
+    "paired_hook_file_sha256": "f14717fceefedda7dade433c4b7bb66ce10dc22e649af884822c650c5c9c5666",
+    "actual_exe_matches_pinned": false,
+    "actual_romance_source_matches_pinned": true
+  },
+  "instruction_anchors": [
+    {
+      "rva": "0x2cecc49",
+      "instruction": "jmp 0x1428c3ba0",
+      "meaning": "force recalculation execute forwards the current resolved character"
+    },
+    {
+      "rva": "0x28c3bfd",
+      "instruction": "call 0x14291c0b0",
+      "meaning": "forced recalculation processes an existing modifier object before queue removal"
+    },
+    {
+      "rva": "0x28c3c40",
+      "instruction": "load queue row; compare with existing modifier pointer; compact unequal rows",
+      "meaning": "pending recalculation queue removal loop is present"
+    },
+    {
+      "rva": "0x28c3cbc",
+      "instruction": "jmp 0x1428c3f40",
+      "meaning": "then enters character recalculation core"
+    },
+    {
+      "rva": "0x1afb159",
+      "instruction": "call 0x142491a60",
+      "meaning": "remove modifier execute calls the container removal method"
+    },
+    {
+      "rva": "0x2491b40",
+      "instruction": "call 0x142ac6100",
+      "meaning": "matched modifier row is removed from the timed-modifier scheduler before row erasure"
+    },
+    {
+      "rva": "0x2491b4e",
+      "instruction": "call 0x142492110",
+      "meaning": "matched modifier row is erased"
+    },
+    {
+      "rva": "0x24917b1",
+      "instruction": "jne 0x14249184b",
+      "meaning": "non-stacking branch first scans existing entries by modifier definition pointer"
+    },
+    {
+      "rva": "0x24917d0",
+      "instruction": "cmp qword ptr [rbx], r14",
+      "meaning": "existing modifier identity comparison; addition is not always an unconditional append"
+    }
+  ],
+  "conclusion": {
+    "root_cause": "unproven",
+    "direct_sxad_toast_during_sex": false,
+    "mod_helpers_use_temporary_scopes": true,
+    "vanilla_saved_scopes_are_preserved_original_content": true,
+    "modifier_rebuild_leak": "not established; add/remove and pending-queue cleanup exist in actual executable",
+    "pin_or_interest_subscription_growth": "not measured; do not infer from saved-scope names",
+    "fix_applied": false
+  },
+  "fixture_static_validation": {
+    "schema": "sxad.notification-fixture-static-check.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-23T15:08:48.266441+00:00",
+    "status": "GREEN_STATIC_ONLY",
+    "case_count_prepared": 32,
+    "event_count": 43,
+    "case_count_executed": 0,
+    "checks": [
+      "32 unique unrun cells; eight modes times four repetitions",
+      "exact per-cell action count and marker",
+      "identity and stage guards present",
+      "one death probe gated; stage committed before death",
+      "all fixture links resolve; balanced native blocks",
+      "no direct message injection or PASS/GREEN claim",
+      "private vanilla alias restores exact pinned body",
+      "two BOM localization files parse; keys equal and event references complete"
+    ],
+    "parser_limit": "shared brace/string scanner is not CK3 grammar/scope validation",
+    "files": [
+      {
+        "path": "cases.json",
+        "size": 19786,
+        "sha256": "0448818dea37cb96593e5fc81e1b76f4ce2bd825838c33091a9a942b6f314007"
+      },
+      {
+        "path": "common/on_action/sxant_on_actions.txt",
+        "size": 335,
+        "sha256": "749ffce91f93a1c784905565359190b709d7317eb592a291eb551a3efed7b9d8"
+      },
+      {
+        "path": "common/scripted_effects/sxant_vanilla_pair_control.txt",
+        "size": 9825,
+        "sha256": "e5ebd66e9f3b353f9b2db42432a911ad08e6f7682ec4cf3d4d6401e4c93be07a"
+      },
+      {
+        "path": "descriptor.mod",
+        "size": 96,
+        "sha256": "a5816f57af16e88b7ff4478e9a20c237da3e2d4b4aeeacd69610f8bcf9aa68d3"
+      },
+      {
+        "path": "events/sxant_events.txt",
+        "size": 61699,
+        "sha256": "2c76f50c46ce21cd5bf1208756241eb0e914af71a30c05fda16c6841675afb57"
+      },
+      {
+        "path": "localization/english/sxant_l_english.yml",
+        "size": 1691,
+        "sha256": "bb038669891dfaacf728c032635ca27658e61d093160cd43c33e0c0b7edb236c"
+      },
+      {
+        "path": "localization/simp_chinese/sxant_l_simp_chinese.yml",
+        "size": 1761,
+        "sha256": "419e3895ce0bce34787e33b6c2ab5c55cfd3890731716e3ab3a34190d6082c09"
+      }
+    ],
+    "ck3_started": false,
+    "steam_operated": false
+  },
+  "runtime_verification": {
+    "ck3_started": false,
+    "steam_operated": false,
+    "death_notification_probe_qualified": false,
+    "notification_count_measured": false,
+    "actual_exe_product_version": "not_read_in_this_subtask"
+  },
+  "fixture_static_validation_after_death_reason_correction": {
+    "schema": "sxad.notification-fixture-static-check.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-23T15:24:21.440393+00:00",
+    "status": "GREEN_STATIC_ONLY",
+    "case_count_prepared": 32,
+    "case_count_executed": 0,
+    "checks": [
+      "corrected death effect exactly matches real vanilla death_natural_causes definition",
+      "43 fixture events retain balanced structure",
+      "all 32 candidate notification results remain not_run"
+    ],
+    "files": [
+      {
+        "path": "cases.json",
+        "size": 19793,
+        "sha256": "75a52896528f2f99c8fc5f5d5021acdfbe72861b07bfc3ea082d5f2ab90365eb"
+      },
+      {
+        "path": "common/on_action/sxant_on_actions.txt",
+        "size": 335,
+        "sha256": "749ffce91f93a1c784905565359190b709d7317eb592a291eb551a3efed7b9d8"
+      },
+      {
+        "path": "common/scripted_effects/sxant_vanilla_pair_control.txt",
+        "size": 9825,
+        "sha256": "e5ebd66e9f3b353f9b2db42432a911ad08e6f7682ec4cf3d4d6401e4c93be07a"
+      },
+      {
+        "path": "descriptor.mod",
+        "size": 96,
+        "sha256": "a5816f57af16e88b7ff4478e9a20c237da3e2d4b4aeeacd69610f8bcf9aa68d3"
+      },
+      {
+        "path": "events/sxant_events.txt",
+        "size": 61706,
+        "sha256": "de0b9a9345d6a474a7fcc78f7dec8dbfb9d7f6fa6fcf31db60ac8ec57ece5986"
+      },
+      {
+        "path": "localization/english/sxant_l_english.yml",
+        "size": 1691,
+        "sha256": "bb038669891dfaacf728c032635ca27658e61d093160cd43c33e0c0b7edb236c"
+      },
+      {
+        "path": "localization/simp_chinese/sxant_l_simp_chinese.yml",
+        "size": 1761,
+        "sha256": "419e3895ce0bce34787e33b6c2ab5c55cfd3890731716e3ab3a34190d6082c09"
+      }
+    ],
+    "vanilla_source": {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/deathreasons/00_natural_deaths.txt",
+      "sha256": "a17a2d6371ea2de7900e6afd7ad85ea603eb34157379241d92f0d26a7d7488cc",
+      "definition_line": 6,
+      "key": "death_natural_causes"
+    },
+    "ck3_started": false,
+    "steam_operated": false,
+    "parser_limit": "shared scanner and exact definition lookup; engine behavior and visible notification remain unqualified"
+  },
+  "fixture_source_correction": {
+    "observed_at_utc": "2026-10-23T15:24:21.440393+00:00",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "previous_key": "death_natural",
+    "correct_key": "death_natural_causes",
+    "reason": "The first brace-only check did not validate death reason identifiers; death_natural is an icon name.",
+    "previous_materialized_fixture": "Keep notification-fixture-a01 and its receipt unchanged; rematerialize a new fixture from corrected templates.",
+    "original_static_receipt_preserved": true,
+    "gameplay_result_changed": false
+  },
+  "fixture_emitter_regression_validation": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-23T15:25:57.702575+00:00",
+    "unittest": {
+      "command": "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe -X utf8 -m unittest test_build_release -v",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "elapsed_seconds": 5.513,
+      "working_directory": "D:/sxad1023/mod_superman_qiang/tools"
+    },
+    "mypy": {
+      "source": "mod_superman_qiang/tools/test_build_release.py",
+      "flags": [
+        "--follow-imports=silent",
+        "--check-untyped-defs"
+      ],
+      "source_files_checked": 1,
+      "issues": 0,
+      "interpreter": "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+      "PYTHONPATH": "D:/workspace/ck3-superman-redesign-20261023/typecheck-deps",
+      "MYPYPATH": "D:/sxad1023/tools;D:/sxad1023/ck3_workshop_mcp/src",
+      "cache_dir": "D:/workspace/ck3-superman-redesign-20261023/mypy-cache-notification-tests"
+    },
+    "files": [
+      {
+        "path": "prepare_live_fixture.py",
+        "sha256": "5b2249786ab705a9b1b389889094b364c505fa81b186b18fbfb3691eac49bf73"
+      },
+      {
+        "path": "test_build_release.py",
+        "sha256": "69ae5f1552db59f45174a8d52b3aadc759f3289d98e517ec27ca328f76a5a71f"
+      }
+    ],
+    "ck3_started": false,
+    "steam_operated": false
+  }
+}

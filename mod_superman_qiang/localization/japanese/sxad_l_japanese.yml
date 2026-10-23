@@ -1,7 +1,7 @@
 ﻿l_japanese:
  # GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py
  trait_sxad_sex_experience:0 "性経験"
- trait_sxad_sex_experience_desc:0 "記録された明白な性行為の回数。"
+ trait_sxad_sex_experience_desc:0 "明示的な性行為、スクリプトによる受胎判定、および成人の配偶者・側室の各組につき月1回の夫婦生活シミュレーションを記録する。"
  trait_sxad_sex_experience_character_desc:0 "記録された性経験：#V [SCOPE.ScriptValue('sxad_experience_value')|0]#! 回。"
  sxad_view_experience_interaction:0 "性経験を確認する"
  sxad_view_experience_interaction_desc:0 "通知で[recipient.GetShortUIName]の性的な経験と能力を表示する。"

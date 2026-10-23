@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
 import hashlib
 import json
@@ -15,12 +16,14 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+from typing import Literal, TypedDict
 
 from product import GAME_VERSION, LANGUAGES, REPO, RUNTIME_FILES, SOURCE, VERSION, spec
 
 sys.path.insert(0, str(REPO / "tools"))
 from ck3_text_projection import blocks, masked
 from independent_mod_release import sha256_file, source_errors
+from ck3_live_run_id import current_machine_id
 from translate_localization_minimax import TranslationError, assert_protected_tokens, parse_ck3_localization
 
 # Keep product generators ahead of similarly named shared modules.
@@ -193,14 +196,51 @@ def evaluate_ledger_value(name, definitions, balances, depth=0):
     return calculate(definitions[name])
 
 
-def ledger_contract(texts: dict[str, str]) -> dict:
+class LedgerContractReport(TypedDict):
+    errors: list[str]
+    skill_count: int
+    attribute_count: int
+
+
+class SourceFileReport(TypedDict):
+    path: str
+    size: int
+    sha256: str
+
+
+class StaticValidationReport(TypedDict):
+    schema: Literal["sxad.static-validation.v1"]
+    status: Literal["RED", "GREEN"]
+    errors: list[str]
+    machine_id: str
+    observed_at_utc: str
+    git_sha: str
+    runtime_file_count: int
+    source_files: list[SourceFileReport]
+    scripted_effect_counts: dict[str, int]
+    localization_key_counts: dict[str, int]
+    generated_file_count: int
+    ledger_skills_checked: int
+    transfer_attributes_checked: int
+    vanilla_files: list[SourceFileReport]
+    ck3_exe_sha256: str | None
+    game_root: str | None
+    game_version_contract: str
+    evidence_layer: Literal["static-structure-and-byte-contract"]
+    ck3_started: Literal[False]
+
+
+def ledger_contract(texts: dict[str, str]) -> LedgerContractReport:
     """Check conserved ledgers, bounded eligibility, scale signs and read-only UI."""
     errors = []
     for relative, source in texts.items():
         if relative.startswith("localization/"):
             continue
         try:
-            if re.search(r"\b(?:add_(?:diplomacy|martial|stewardship|intrigue|learning|prowess)_skill|add_health|set_health|change_health)\s*=", masked(source)):
+            from gen_runtime import encounter_owned_code
+
+            owned_source = encounter_owned_code(relative, source)
+            if re.search(r"\b(?:add_(?:diplomacy|martial|stewardship|intrigue|learning|prowess)_skill|add_health|set_health|change_health)\s*=", masked(owned_source)):
                 errors.append(f"base attribute mutation forbidden by ledger contract: {relative}")
             if relative in {"common/character_interactions/sxad_interactions.txt", "events/sxad_events.txt", VALUES_FILE}:
                 if re.search(r"\b(?:set_variable|change_variable|remove_variable|add_character_modifier|remove_character_modifier|add_trait|remove_trait)\s*=", masked(source)):
@@ -216,8 +256,8 @@ def ledger_contract(texts: dict[str, str]) -> dict:
             amount = HEALTH_TRANSFER_AMOUNT if skill == "health" else Decimal(1)
             balance = f"sxad_{skill}_balance"
             helper = definitions[TRANSFER_FILE][f"sxad_transfer_{skill}_effect"]
-            mutations = []
-            initializations = []
+            mutations: list[tuple[str | None, Decimal, str]] = []
+            initializations: list[tuple[str | None, Decimal, str]] = []
             walked = list(walk_assignments(helper))
             for scopes, node in walk_assignments(helper):
                 if node.key not in {"change_variable", "set_variable"}:
@@ -251,7 +291,7 @@ def ledger_contract(texts: dict[str, str]) -> dict:
                 definition = fields(definitions[MODIFIER_FILE][modifier])
                 if definition.get(skill) != point or fields(definition.get("scale", ())).get("value") != f"sxad_{skill}_{kind}_scale":
                     errors.append(f"ledger modifier skill/sign/scale mismatch: {modifier}")
-                samples = (None, -1000000, -1, 0, 1, 1000000)
+                samples: tuple[int | Decimal | None, ...] = (None, -1000000, -1, 0, 1, 1000000)
                 if skill == "health":
                     samples += (-HEALTH_TRANSFER_AMOUNT, HEALTH_TRANSFER_AMOUNT, Decimal("1.00075"), Decimal("-1.00075"))
                 for sample in samples:
@@ -261,7 +301,7 @@ def ledger_contract(texts: dict[str, str]) -> dict:
                         errors.append(f"ledger scale arithmetic mismatch: {skill}: {kind}: {sample}")
             probe = definitions[PROBE_FILE][f"sxad_probe_{skill}_effect"]
             guard = next(fields(node.value)["limit"] for node in probe if node.key == "if")
-            eligibility_samples = (
+            eligibility_samples: tuple[tuple[int | Decimal, int | Decimal, int | Decimal | None, int | Decimal | None, bool], ...] = (
                 (10, 0, None, None, True), (0, 10, None, None, False),
                 (10, 0, -1000000, 0, False), (10, 0, 0, 1000000, False),
                 (10, 0, -999999, 999999, True), (10, 0, 1000000, -1000000, True),
@@ -329,9 +369,9 @@ def ledger_contract(texts: dict[str, str]) -> dict:
     return {"errors": errors, "skill_count": len(LEDGER_SKILLS), "attribute_count": len(TRANSFER_ATTRIBUTES)}
 
 
-def validate(game_root: Path | None = None) -> dict:
+def validate(game_root: Path | None = None) -> StaticValidationReport:
     errors = source_errors(spec())
-    hashes = []
+    hashes: list[SourceFileReport] = []
     texts = {}
     effect_counts = {}
     for relative in sorted(RUNTIME_FILES):
@@ -368,7 +408,7 @@ def validate(game_root: Path | None = None) -> dict:
     locs = {}
     for language in LANGUAGES:
         paths = [path for path in sorted(RUNTIME_FILES) if path.startswith(f"localization/{language}/") and path.endswith(".yml")]
-        values = {}
+        values: dict[str, str] = {}
         if not paths:
             errors.append(f"missing {language} localization inventory")
         for relative in paths:
@@ -446,23 +486,28 @@ def validate(game_root: Path | None = None) -> dict:
             errors.append("generated byte parity mismatch: thumbnail.png")
     except (ImportError, OSError, RuntimeError, ValueError) as error:
         errors.append(f"cover projection validation failed: {error}")
-    vanilla = []
+    vanilla: list[SourceFileReport] = []
     executable_sha = None
     if game_root is not None:
         try:
             from runtime_data import EXE_SHA256, ROMANCE_SOURCE_SHA256
+            from gen_runtime import load_encounter_projections
 
             relative = "common/scripted_effects/00_romance_effects.txt"
             native_root = game_root / "game" if (game_root / "game" / relative).is_file() else game_root
-            source_path = native_root / relative
-            source_sha = sha256_file(source_path)
-            vanilla.append({"path": str(source_path), "size": source_path.stat().st_size, "sha256": source_sha})
-            if source_sha != ROMANCE_SOURCE_SHA256:
-                errors.append("installed romance source SHA differs from reviewed 1.20.0.3 input")
+            reviewed_sources = {relative: ROMANCE_SOURCE_SHA256}
+            for projection in load_encounter_projections():
+                reviewed_sources[projection.source_path] = projection.source_sha256
+            for source_relative, expected_sha in sorted(reviewed_sources.items()):
+                source_path = native_root / source_relative
+                source_sha = sha256_file(source_path)
+                vanilla.append({"path": str(source_path), "size": source_path.stat().st_size, "sha256": source_sha})
+                if source_sha != expected_sha:
+                    errors.append(f"installed source SHA differs from reviewed {GAME_VERSION} input: {source_relative}")
             executable = native_root.parent / "binaries" / "ck3.exe"
             executable_sha = sha256_file(executable)
             if executable_sha != EXE_SHA256:
-                errors.append("installed CK3 executable SHA differs from reviewed 1.20.0.3 executable")
+                errors.append(f"installed CK3 executable SHA differs from reviewed {GAME_VERSION} executable")
         except (ImportError, OSError, ValueError) as error:
             errors.append(f"installed native source validation failed: {error}")
     revision = subprocess.run(
@@ -470,6 +515,7 @@ def validate(game_root: Path | None = None) -> dict:
     ).stdout.strip()
     return {
         "schema": "sxad.static-validation.v1", "status": "RED" if errors else "GREEN", "errors": errors,
+        "machine_id": current_machine_id(), "observed_at_utc": datetime.now(timezone.utc).isoformat(),
         "git_sha": revision, "runtime_file_count": len(RUNTIME_FILES), "source_files": hashes,
         "scripted_effect_counts": effect_counts,
         "localization_key_counts": {language: len(values) for language, values in locs.items()},

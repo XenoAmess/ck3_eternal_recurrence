@@ -1,0 +1,31 @@
+# External acceptance fixture only. Never distribute with the product.
+on_game_start_after_lobby = { on_actions = { sxanf_start } }
+sxanf_start = {
+    effect = {
+        every_player = {
+            limit = { NOT = { has_character_flag = sxanf_fixture_initialized } }
+            add_character_flag = sxanf_fixture_initialized
+            trigger_event = { id = sxanf.1 days = 1 }
+        }
+    }
+}
+
+# This observer is reached only through the real code monthly pulse. Tests
+# explicitly call sxad_natural.1, never this stock on_action. Its effect runs
+# concurrently to product events; it makes no claim about their completion.
+on_faith_monthly = { on_actions = { sxanf_observe_native_monthly } }
+sxanf_observe_native_monthly = {
+    effect = {
+        save_temporary_scope_as = sxanf_observed_faith
+        every_player = {
+            limit = {
+                has_character_flag = sxanf_fixture_initialized
+                has_variable = sxanf_ref_spouse_a
+                var:sxanf_ref_spouse_a = { faith = scope:sxanf_observed_faith }
+            }
+            change_variable = { name = sxanf_native_pulse_count add = 1 }
+            set_variable = { name = sxanf_native_pulse_month value = sxad_natural_month_value }
+            debug_log = "SXANF: NATIVE_FAITH_MONTHLY_OBSERVED"
+        }
+    }
+}

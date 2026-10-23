@@ -1,0 +1,48 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "superman-qiang",
+  "case_id": "notification-investigation",
+  "acceptance_scope": "notification_baseline_probe_qualification_only",
+  "fixture_emitter": {
+    "path": "mod_superman_qiang/tools/prepare_live_fixture.py",
+    "arguments": ["--notification-investigation", "--output", "{output}"],
+    "fixture_subdir": "",
+    "receipt_suffix": ".fixture.json"
+  },
+  "maximum_natural_days": 2,
+  "failure_prefixes": ["SXANT:"],
+  "gui_phases": [
+    {
+      "id": "notification-baseline-and-original-probe",
+      "requirements": [
+        "actual_actor_and_subject_full_identity",
+        "baseline_save_before_case_actions",
+        "actual_relationship_and_notification_settings",
+        "actual_n0_probe_message_instances_retained",
+        "diagnosis_scope_and_unrun_cells_recorded"
+      ],
+      "at_day": 1
+    }
+  ],
+  "source_contracts": [
+    "mod_superman_qiang/docs/2026-10-23-notification-investigation.md",
+    "mod_superman_qiang/tools/notification_fixture/cases.json"
+  ],
+  "uncovered_product_business": [
+    "This diagnostic baseline does not establish the cause or a fix for repeated messages.",
+    "The 32 candidate cells remain not_run until their actual independent observations are retained.",
+    "Monthly simulation, script pregnancy attempt coverage and save reload require separate source acceptance."
+  ],
+  "post_start": {"government_key": null, "primary_title_tier_key": null, "independent": null},
+  "required_startup": ["SXANT: BASELINE_READY notification-investigation"],
+  "forbidden_startup": ["SXANT: TEST FAIL"],
+  "source_catalogue": {
+    "directory": "mod_superman_qiang",
+    "builder": "mod_superman_qiang/tools/build_release.py",
+    "release_flags": ["--output", "{new-output}", "--git-tag", "{matching-product-tag}", "--workshop-item-id", "3812991990"],
+    "workshop_item_id": "3812991990"
+  },
+  "business_contract_applicable": true,
+  "ordinary_post_start_input": "Actual Robert bookmark state supplied by common producer/readback.",
+  "calendar_bound_provenance": "New diagnostic: one day to establish baseline, no more than two natural days."
+}

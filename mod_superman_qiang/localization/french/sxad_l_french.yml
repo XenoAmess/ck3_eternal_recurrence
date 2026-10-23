@@ -1,7 +1,7 @@
 ﻿l_french:
  # GENERATED FILE - do not edit. Regenerate with tools/gen_runtime.py
  trait_sxad_sex_experience:0 "Expérience sexuelle"
- trait_sxad_sex_experience_desc:0 "Nombre de rapports sexuels explicites enregistrés."
+ trait_sxad_sex_experience_desc:0 "Enregistre les rapports sexuels explicites, les tentatives de conception scriptées et une rencontre simulée par mois pour chaque couple adulte de conjoints ou de concubins."
  trait_sxad_sex_experience_character_desc:0 "Expérience sexuelle enregistrée : #V [SCOPE.ScriptValue('sxad_experience_value')|0]#! rapports."
  sxad_view_experience_interaction:0 "Consulter l'expérience sexuelle"
  sxad_view_experience_interaction_desc:0 "Consulter l'expérience et les compétences sexuelles de [recipient.GetShortUIName] dans une notification."
