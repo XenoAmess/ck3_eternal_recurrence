@@ -10,7 +10,13 @@
 
 恢复后的 R16 已完成47自然日、7次保存、8项阈值检查及75金实际扣款，并在同进程补验安抚25金、正常GUI退出。旧公共验证字段遗漏、修复后重新验证与后继门槛见 [R16实际结果](../../mod_living_artifacts/docs/runtime-r16-gold-debit-and-normal-close.md)。下文度假截点原样保留，不能当作恢复后的当前执行状态。
 
-最新R17已按c19/a28实际启动；五份保存确认首次扣25金、同日续期扣45金，以及旧90日事件保留新期限。自然到期和恢复成长仍在执行；a27已从真正renewed04完成离线prepare、绑定plan和preflight，cold实际仍NOT_RUN。见 [R17进行中记录](../../mod_living_artifacts/docs/runtime-r17-paid-renewal-and-expiry.md)。不要把下文历史NOT_RUN清单追认为当前状态，也不要重复启动已在运行的场次。
+截至2026-10-23T02:49Z，R17按c19/a28实际完成198自然日、852次计预算调用、7份保存，五项计时检查全PASS：首次扣25金、同日续期扣45金、旧90日事件保留新期限、第180日自然到期、第198日恢复成长为L2/XP0/成长序号1。两个原生中断均单次处理、独立核消失并完成既有来源离线复核。原结果1246547 B、SHA `66eef39ddb82121adcf86bc53bcf075078b1ad6cdbc6d19dca34d49f0c8cf5d0`；正常GUI退出、retained OS0/native0和cleanup均有独立实际证据，public run0、keeper0/CAS750释放。host1及库存预意图拒绝保留，不写全host GREEN。闭场Steam于02:24:15Z后台确认offline/true。见 [R17实际结果](../../mod_living_artifacts/docs/runtime-r17-paid-renewal-and-expiry.md)。
+
+R17原公共verify `20261023T022452008067Z-verify` 于02:28:47.303428Z实际退出1：冻结c19在重算自然日证据时缺少 `xar_autoplayer` 导入。原失败保留；current-main既有 `case_imports` 已含完整隔离导入维护，c19缺少该更新，本次没有新增生产修复或临时PYTHONPATH。Root只切当前公共入口，显式保持原runtime/products/Prepared/context，新verify `20261023T023440382570Z-verify` 于02:38:59.402638Z原Popen及原工具80834均实际退出0，重算五项后case/GUI/normal close/qualified boundary均true；原结果Pin精确未变，不改冻结图或原件、不重启游戏，整体business/release仍false。a27已从真正renewed04完成离线prepare、绑定plan和preflight，cold实际仍NOT_RUN；余下按curse_representative→cold→发布推进，不扩63格或重跑已绿NPC/喂养。最终发布前description、单数Notes及永久changelog将明确代表实测和其余独有高风险生命周期未逐项验；Notes变化须保留旧674字草稿并重新冻结，不复用旧intent。下文度假历史NOT_RUN及旧预算保持原事实，不能当作恢复后的当前状态。
+
+R17三域+28media最终2258970847 B、共享task-close0；仅R14 checkpoint01–03三份派生melt已按精确清单实际删除311663158逻辑字节，raw原件/官方melter/recipe保留，R17/R16未删，不臆定物理释放量。新正式卡 `EXT/environment/storage-curse-a25-20261023-a01` 的fresh检查及consumer compatibility均0，own D5GiB/C2GiB、other D512MiB/C0，截止2026-10-24T02:38:39.601285Z；旧a28 future own归0、旧卡保留。最终交接SHA `fdbdcb1c4742e393ad9befa9374afc96dc5cc304ee2e2217c2512bb5b7f4f30a`，精确来源见R17专题，不沿用下文旧预算作新准入。
+
+**R0018已在夹具初始输入处BLOCKED并正常闭场。** 首份真实Save与同帧原生钱包均276金而非20金，引擎拒绝旧夹具的负数 `add_gold`；不是正式胃口付款结果。Root经既有严格回调写blocked/submitted=false，未提交库存GUI或装备动作。原结果五项BLOCKED、0日/8calls/1Save/UNKNOWNfalse，原public run0、host1、保存服务3（仅1/7），各自退出分别保留。正常GUI退出、retained OS0/native0/cleanup及keeper0成立，Root独立CAS766释放资源；03:15:40Z后台Steam仍offline/true。current-main公共verify op031702446912实际2/BLOCKED，未重写旧结果。见 [R18真实故障与闭场](../../mod_living_artifacts/docs/runtime-r18-invalid-curse-fixture-wallet.md)。下一步修共享夹具及首Save钱包前置守卫，完整回归后正常冻结新候选与新Prepared重测；不热改c19/a25，不把已闭场R18当作活跃场次。cold仍NOT_RUN，仍无物品ID或发布。
 
 ## 入口与必要约束
 
