@@ -1,0 +1,1316 @@
+{
+  "schema": "xar.java-g2.resume56-vacation-source-index/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-23T17:19:55.088Z",
+  "status": "USER_REQUESTED_PAUSE_SOURCE_ONLY_NOT_COMPLETED",
+  "J": "D:/codex-ck3-demos/2026-10-22-java-phase1",
+  "N": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023",
+  "scope": "Metadata files in exact new claim roots (including prior snapshots), plus direct Army/Family Java bodies. This does not adopt or qualify any transitive source. Use handoff final map selections.",
+  "source_bodies_copied": false,
+  "goal_status": "paused",
+  "source_owner_count": 56,
+  "source_owners": [
+    "/root/budget_fast_lane",
+    "/root/launcher_refresh",
+    "/root/tools_c15",
+    "/root/source_graph",
+    "/root/planner_owner",
+    "/root/root_assembly",
+    "/root/action_coordinator",
+    "/root/ledger_writer",
+    "/root/save_restore",
+    "/root/auto_loop",
+    "/root/command_origins",
+    "/root/driver_snapshot",
+    "/root/driver_history",
+    "/root/readiness",
+    "/root/outcome_archive",
+    "/root/effect_observers",
+    "/root/lifecycle",
+    "/root/life_advance",
+    "/root/battle_advance",
+    "/root/route_contact",
+    "/root/public_mcp",
+    "/root/runtime_package",
+    "/root/reference_main",
+    "/root/parity_ci",
+    "/root/native_transport_core",
+    "/root/native_army",
+    "/root/native_governance",
+    "/root/native_family",
+    "/root/native_schemes_events",
+    "/root/dynamic_capabilities",
+    "/root/warcore_leaves",
+    "/root/forecast_kernel",
+    "/root/known_interactions",
+    "/root/event_registry",
+    "/root/finance_ordinary",
+    "/root/governance_ordinary",
+    "/root/prisoners_ordinary",
+    "/root/family_ordinary",
+    "/root/military_ordinary",
+    "/root/sway_ordinary",
+    "/root/campaign_goals",
+    "/root/recovery_junction",
+    "/root/sdk_closure",
+    "/root/forecast_envelope",
+    "/root/construction",
+    "/root/native_protocol_identity",
+    "/root/m0_research",
+    "/root/m1_research",
+    "/root/m2_research",
+    "/root/m3_research",
+    "/root/m4_research",
+    "/root/m5_research",
+    "/root/m6_research",
+    "/root/m7_research",
+    "/root/combat_contract",
+    "/root/combat_phase"
+  ],
+  "financial_records": [
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/RESUME-CURRENT-CAPACITY43-SOURCE192-WINDOW13.json",
+      "bytes": 4333,
+      "sha256": "9d62c5109163a49e6cac1d309b4a32e20c897419c119cf7fbf9d6843f41f8faa"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/RESUME-CURRENT-SOURCE32-56-WAVE-A-WINDOW13.json",
+      "bytes": 32912,
+      "sha256": "374b4c8e3011a147c81e627c22e16524d5805237def95397bd993250a151961b"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/RESUME-CURRENT-SOURCE32-56-WAVE-B-WINDOW13.json",
+      "bytes": 15137,
+      "sha256": "5b51dd2383edeb45ff65e2e5b5d96b1061545657e663bf626b71978c29e02550"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/RESUME-CURRENT-QUEUE02-METADATA-EXECUTION01-WINDOW13.json",
+      "bytes": 3338,
+      "sha256": "95a9a8f45592e026b83e066dc4fc4516efb61413e9b65ae52f71171a6fa53d78"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/RESUME-CURRENT-VACATION-STOP-BUDGET02.json",
+      "bytes": 5546,
+      "sha256": "a48242aacaddc51c5089a30960afa369b948f654684032f7d08fe0972f37af59"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/RESUME-CURRENT-SOURCE32-CLOSE-NATIVE44.json",
+      "bytes": 3848,
+      "sha256": "711dabc78e8164e3efbfd66584b403bf4e89c9c1516a6403e9553820901f57db"
+    }
+  ],
+  "roots": [
+    {
+      "owner": "/root/budget_fast_lane",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/budget/resume20261024",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/launcher_refresh",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/launcher-refresh-resume01",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/tools_c15",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/g2_m6_tools_fullpost15",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/tools_c15",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/bootstrap_integrated_tools/source15",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/source_graph",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/source08_selection_resume01",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/planner_owner",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_full_planner/successor02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/root_assembly",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_root_application_assembly/successor02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/action_coordinator",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_action_coordinator/successor03",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/ledger_writer",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_ledger_writer/successor03",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/save_restore",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_save_restore/successor03",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/auto_loop",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_auto_loop/successor02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/command_origins",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_command_origins/successor02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/driver_snapshot",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_driver_snapshot_assembler/successor02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/driver_history",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_driver_history/successor02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/readiness",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_root_readiness/successor02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/outcome_archive",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_outcome_archive/successor02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/effect_observers",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_effect_observers/successor02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/lifecycle",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_game_lifecycle320/successor02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/life_advance",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_life_advance_composite/successor02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/battle_advance",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_battle_advance_composite/successor02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/route_contact",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_route_contact_composite/application/successor02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/public_mcp",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_public_mcp_host/successor02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/runtime_package",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_runtime_package/successor02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/reference_main",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_bridge_build24",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/parity_ci",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_full_parity_ci/successor02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/native_transport_core",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_transport/successor02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/native_army",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_army_resume01",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/native_governance",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_governance320",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/native_family",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_transport_family_resume01",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/native_schemes_events",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_schemes_events_resume01",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/dynamic_capabilities",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_dynamic_capabilities01",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/warcore_leaves",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_warcore_late02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/forecast_kernel",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_battle_forecast_kernel02/kernel",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/known_interactions",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_known_interactions01",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/event_registry",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_registered_event_policies/successor02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/finance_ordinary",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_finance_ordinary01/successor02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/governance_ordinary",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_governance_adapters02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/prisoners_ordinary",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/ordinary_prisoners03",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/family_ordinary",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/g2_m5_java_family01/successor02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/military_ordinary",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_ordinary_military_successor01",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/sway_ordinary",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/ai_sway_planning_adapter02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/campaign_goals",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/planning_goals_calendar_a2",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/recovery_junction",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_recovery_junction_resume01",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/sdk_closure",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/sdk_closure24",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/forecast_envelope",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_battle_forecast_kernel02/envelope",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/construction",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_construction_resume01",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/native_protocol_identity",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_protocol_identity/successor02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/m0_research",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/ai_war_exit/native_m0_research02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/m1_research",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/g2_m1_native_power02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/m2_research",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/g2-m2-native-research02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/m3_research",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/m3_native_succession02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/m4_research",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/m4_native_finance02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/m5_research",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/ai_m5_actual_battle02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/m6_research",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/ai_scheme_m6_terminal02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/m7_research",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/g2_m7_native_identity02",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/combat_contract",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_combat_contract_resume01",
+      "availability": "DIRECTORY_READ"
+    },
+    {
+      "owner": "/root/combat_phase",
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_combat_phase_resume01",
+      "availability": "DIRECTORY_READ"
+    }
+  ],
+  "artifacts": [
+    {
+      "owner": "/root/launcher_refresh",
+      "relative_to_N": "launcher-refresh-resume01/SOURCE-ONLY01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/launcher-refresh-resume01/SOURCE-ONLY01.json",
+        "bytes": 2562,
+        "sha256": "2bdfa465630c73e6a53cb9a55c8788d47cf25c477f1efbe3ce2b24a1e250d98d"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/launcher_refresh",
+      "relative_to_N": "launcher-refresh-resume01/VACATION-STOP01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/launcher-refresh-resume01/VACATION-STOP01.json",
+        "bytes": 4091,
+        "sha256": "18e0ea3ed4c8614edacd73f53eeedc9b68e4e8b260491d4fdb53bd93248df596"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/tools_c15",
+      "relative_to_N": "g2_m6_tools_fullpost15/FULLPOST-MAP15.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/g2_m6_tools_fullpost15/FULLPOST-MAP15.json",
+        "bytes": 7441,
+        "sha256": "625e89e635c1dda4ed93737a065d65cde7b5b994083b54333eeff41cfab8c4b4"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/tools_c15",
+      "relative_to_N": "bootstrap_integrated_tools/source15/CLOSEOUT01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/bootstrap_integrated_tools/source15/CLOSEOUT01.json",
+        "bytes": 4473,
+        "sha256": "57fcd61309fc74fb4c99b36e3a9b4dd5f24b47ab3229e191b0cfa34ca68d3027"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/tools_c15",
+      "relative_to_N": "bootstrap_integrated_tools/source15/WJP-SOURCE-MAP15.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/bootstrap_integrated_tools/source15/WJP-SOURCE-MAP15.json",
+        "bytes": 3282,
+        "sha256": "05cb5ec97022622dbabed672283525bd18f33cd6724f635d5c951b98005128ed"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/source_graph",
+      "relative_to_N": "source08_selection_resume01/AUDIT01.md",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/source08_selection_resume01/AUDIT01.md",
+        "bytes": 4005,
+        "sha256": "a9c2f0071be06796acb7a7238de7d6a24c147ccd223e7065bd4d5cf86bc0a756"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/source_graph",
+      "relative_to_N": "source08_selection_resume01/SOURCE08-SELECTION-PLAN01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/source08_selection_resume01/SOURCE08-SELECTION-PLAN01.json",
+        "bytes": 43243,
+        "sha256": "68d2d86d19544ff0d65ed9210302b9dadceaf4f9c15679a095fdbbe83aaf9a12"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/planner_owner",
+      "relative_to_N": "java_full_planner/successor02/HANDOFF02.md",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_full_planner/successor02/HANDOFF02.md",
+        "bytes": 2775,
+        "sha256": "e26a66afe8a7f1ea01b89e46cc290ab6590d374a0c3ed28f6c4365f4de015af2"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/planner_owner",
+      "relative_to_N": "java_full_planner/successor02/SOURCE-MAP02.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_full_planner/successor02/SOURCE-MAP02.json",
+        "bytes": 12946,
+        "sha256": "b936ba3f6f52663e97c9fd8ee280bb962d2b3bff569d6d9876f1b7223ba0215c"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/root_assembly",
+      "relative_to_N": "java_root_application_assembly/successor02/SOURCE-STOP02.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_root_application_assembly/successor02/SOURCE-STOP02.json",
+        "bytes": 8770,
+        "sha256": "2f6b0362d94feeb9cc09f285cdcaa8e2fddb292fa62c067f08fe07a8b7751873"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/action_coordinator",
+      "relative_to_N": "java_action_coordinator/successor03/SOURCE-MAP03.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_action_coordinator/successor03/SOURCE-MAP03.json",
+        "bytes": 11371,
+        "sha256": "7ac34ddd607dda7af11b7e023665404b727dc8bff8809d1bb350fa41395da428"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/ledger_writer",
+      "relative_to_N": "java_ledger_writer/successor03/CLOSEOUT01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_ledger_writer/successor03/CLOSEOUT01.json",
+        "bytes": 3396,
+        "sha256": "9cde9265d61aecf53679a5bf2fdd78e195dbc6da000c095f01b72fadecba8d66"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/ledger_writer",
+      "relative_to_N": "java_ledger_writer/successor03/revision05/SOURCE-MAP05.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_ledger_writer/successor03/revision05/SOURCE-MAP05.json",
+        "bytes": 16628,
+        "sha256": "f0a090672f9e79519deec09248644bfd508e667622caa37704f1e36a09e9ce9c"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/ledger_writer",
+      "relative_to_N": "java_ledger_writer/successor03/SOURCE-MAP03.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_ledger_writer/successor03/SOURCE-MAP03.json",
+        "bytes": 15054,
+        "sha256": "36c74523b374c5545d1ee45f3e465c27fbf991f9c71943daa34e3bddb67057ac"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/ledger_writer",
+      "relative_to_N": "java_ledger_writer/successor03/SOURCE-MAP04.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_ledger_writer/successor03/SOURCE-MAP04.json",
+        "bytes": 15734,
+        "sha256": "f822067b8dd537893c2159952fb03aadd86e29f75940ccbb284b914befbd8c84"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/save_restore",
+      "relative_to_N": "java_save_restore/successor03/SOURCE-MAP03.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_save_restore/successor03/SOURCE-MAP03.json",
+        "bytes": 8567,
+        "sha256": "463022de6838e7e6ddf2c43c9baa87fb1c7ac200cd121338b70081be5317e50e"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/auto_loop",
+      "relative_to_N": "java_auto_loop/successor02/CLOSEOUT01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_auto_loop/successor02/CLOSEOUT01.json",
+        "bytes": 7632,
+        "sha256": "e473dde9c537a96ee87b6001d6c44a44f6e66d07d9235a1d5a2ecc9782d1dfd2"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/command_origins",
+      "relative_to_N": "java_command_origins/successor02/SOURCE-MAP02.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_command_origins/successor02/SOURCE-MAP02.json",
+        "bytes": 17319,
+        "sha256": "f746b58dcad76228c0ff4929ddd05ba8b07935bdaeb0b5bc6e57f0b8ffd7433b"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/driver_snapshot",
+      "relative_to_N": "java_driver_snapshot_assembler/successor02/SOURCE-MAP02.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_driver_snapshot_assembler/successor02/SOURCE-MAP02.json",
+        "bytes": 18429,
+        "sha256": "23a66bad12e346e7137fefdd0090c21f207a59db3d93ff2ec8dd8a9f2849d5fd"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/driver_history",
+      "relative_to_N": "java_driver_history/successor02/SOURCE-MAP02.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_driver_history/successor02/SOURCE-MAP02.json",
+        "bytes": 14050,
+        "sha256": "a849a1dd495ee81a02745ac5597a9e9e248ffa35644b79c22e62c53d6bd04953"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/readiness",
+      "relative_to_N": "java_root_readiness/successor02/CLOSEOUT02.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_root_readiness/successor02/CLOSEOUT02.json",
+        "bytes": 2482,
+        "sha256": "bb85da565feab184dd9c0d8148cf764a00641403993418144267cd2d420ff075"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/readiness",
+      "relative_to_N": "java_root_readiness/successor02/SOURCE-MAP02.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_root_readiness/successor02/SOURCE-MAP02.json",
+        "bytes": 13048,
+        "sha256": "c2e8f34f6e92a7cf67304c051bd88f00db8fed974c4f6ac9b0317669f47bacc3"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/outcome_archive",
+      "relative_to_N": "java_native_outcome_archive/successor02/SOURCE-MAP02.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_outcome_archive/successor02/SOURCE-MAP02.json",
+        "bytes": 10182,
+        "sha256": "69106d182446defa2c2c61f3fa0e0cc62c72c10124ffe3d6884b56edb5a2ae36"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/effect_observers",
+      "relative_to_N": "java_native_effect_observers/successor02/SOURCE-MAP02.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_effect_observers/successor02/SOURCE-MAP02.json",
+        "bytes": 10408,
+        "sha256": "32bc33708497562b73cf0143417b576cc94ec86e01510629f955e55aa7380b3d"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/lifecycle",
+      "relative_to_N": "java_native_game_lifecycle320/successor02/SOURCE-SELECTION02.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_game_lifecycle320/successor02/SOURCE-SELECTION02.json",
+        "bytes": 7740,
+        "sha256": "7fc392b5749d5d4d1a4f14dc9cc60b4f13a15017832b2b2f21ac10aee024ca4f"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/life_advance",
+      "relative_to_N": "java_life_advance_composite/successor02/SOURCE-MAP02.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_life_advance_composite/successor02/SOURCE-MAP02.json",
+        "bytes": 10393,
+        "sha256": "7b5a268ca21653a5212869e463fc1f8aa7703cc3eeb52402cb26db1e197720e8"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/battle_advance",
+      "relative_to_N": "java_battle_advance_composite/successor02/SOURCE-MAP02.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_battle_advance_composite/successor02/SOURCE-MAP02.json",
+        "bytes": 12445,
+        "sha256": "8c904bc23f1dec7ed98b98db3609c8ff68926193559696811ee78830cbac8293"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/route_contact",
+      "relative_to_N": "java_route_contact_composite/application/successor02/SOURCE-MAP02.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_route_contact_composite/application/successor02/SOURCE-MAP02.json",
+        "bytes": 6308,
+        "sha256": "b0192410b042726c33191b44e5f781c3e30714debd2da6fa71ab90229f606fc7"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/public_mcp",
+      "relative_to_N": "java_public_mcp_host/successor02/CLOSEOUT-ALLOCATION02.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_public_mcp_host/successor02/CLOSEOUT-ALLOCATION02.json",
+        "bytes": 893,
+        "sha256": "887641eac644c55966993a772056cd68b87b5175cdc7295d0851412c5a5d3cd5"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/public_mcp",
+      "relative_to_N": "java_public_mcp_host/successor02/SOURCE-MAP02.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_public_mcp_host/successor02/SOURCE-MAP02.json",
+        "bytes": 17187,
+        "sha256": "a3e9a310e2408c94199d6d1a1b6ee6f2d552a3e748a07eb9118c0c722475ec26"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/runtime_package",
+      "relative_to_N": "java_runtime_package/successor02/SOURCE-MAP02.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_runtime_package/successor02/SOURCE-MAP02.json",
+        "bytes": 7392,
+        "sha256": "fd6bbacd4ae5b0436052e84429098eedea88731d19f99a38a1a370531d85bb94"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/reference_main",
+      "relative_to_N": "java_native_bridge_build24/SOURCE-MAP01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_bridge_build24/SOURCE-MAP01.json",
+        "bytes": 8110,
+        "sha256": "9c509d0dd72f24d3abc31c14c100ad9f1de422525bf38efe808a85dfacd4c94d"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/parity_ci",
+      "relative_to_N": "java_full_parity_ci/successor02/SOURCE-MAP02.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_full_parity_ci/successor02/SOURCE-MAP02.json",
+        "bytes": 7885,
+        "sha256": "8a8b6ce63818b03eae1d8cf714db6285a913ceda650225963534a5ad53976264"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/native_transport_core",
+      "relative_to_N": "java_native_transport/successor02/COMPOSITE-READ-STOP01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_transport/successor02/COMPOSITE-READ-STOP01.json",
+        "bytes": 3649,
+        "sha256": "39467dfa51842de1601c2017aaee3b161c9287e840a0182cd8d1f49e6f5dde8a"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/native_transport_core",
+      "relative_to_N": "java_native_transport/successor02/SOURCE-MAP02.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_transport/successor02/SOURCE-MAP02.json",
+        "bytes": 6698,
+        "sha256": "70859d4e1a89327afdd427d974deace11ea44df9445cc5747d63af834ff1ebd9"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/native_army",
+      "relative_to_N": "java_native_army_resume01/ArmyCallCodec.java",
+      "kind": "DIRECT_SOURCE_WITHOUT_STANDALONE_MAP",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_army_resume01/ArmyCallCodec.java",
+        "bytes": 16311,
+        "sha256": "428adae4a3d2c58b32c90ee563c42f0a70f04ed10308c489cf02ca512eee7607"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/native_army",
+      "relative_to_N": "java_native_army_resume01/ArmyCalls.java",
+      "kind": "DIRECT_SOURCE_WITHOUT_STANDALONE_MAP",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_army_resume01/ArmyCalls.java",
+        "bytes": 14749,
+        "sha256": "36a5a8b7c51dbc6e66bd1ed60549c91352e4ec6f0a5955909493f897ca6fddc7"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/native_army",
+      "relative_to_N": "java_native_army_resume01/ArmyNativeRecipes.java",
+      "kind": "DIRECT_SOURCE_WITHOUT_STANDALONE_MAP",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_army_resume01/ArmyNativeRecipes.java",
+        "bytes": 17418,
+        "sha256": "82c959a8e2604997019b522fb6f15d1c0a1a2f1c438256d9b1dcfd23c1bc44b7"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/native_army",
+      "relative_to_N": "java_native_army_resume01/ArmyPublicBoundaryTest.java",
+      "kind": "DIRECT_SOURCE_WITHOUT_STANDALONE_MAP",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_army_resume01/ArmyPublicBoundaryTest.java",
+        "bytes": 5534,
+        "sha256": "60c361aa2c81165dac44b26fc4b736c659a224e743c9e69731a234bb595a75ce"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/native_governance",
+      "relative_to_N": "java_native_governance320/FINAL-STOP01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_governance320/FINAL-STOP01.json",
+        "bytes": 9334,
+        "sha256": "84bfa53ac47ea1c0e92e564fb9b1179193215a4be9353147ffaa5c852b728a16"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/native_governance",
+      "relative_to_N": "java_native_governance320/SOURCE-MAP01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_governance320/SOURCE-MAP01.json",
+        "bytes": 3641,
+        "sha256": "32e4cba37ca6565072a8576ede34d5ea6d93e17b900035ff0b0a4a13d8dbec7a"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/native_family",
+      "relative_to_N": "java_native_transport_family_resume01/CachedSuccession12004.java",
+      "kind": "DIRECT_SOURCE_WITHOUT_STANDALONE_MAP",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_transport_family_resume01/CachedSuccession12004.java",
+        "bytes": 10861,
+        "sha256": "149efbe8c1ee63a8b985aaf003b2d2f0e89b81057c9ec7945225d3affa69a742"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/native_family",
+      "relative_to_N": "java_native_transport_family_resume01/CachedSuccessionService.java",
+      "kind": "DIRECT_SOURCE_WITHOUT_STANDALONE_MAP",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_transport_family_resume01/CachedSuccessionService.java",
+        "bytes": 7528,
+        "sha256": "71354d823625ce43d35eabfc8047f38f9945abb09f0af6dfeff647e605147fb8"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/native_family",
+      "relative_to_N": "java_native_transport_family_resume01/PrisonerMaterial12004.java",
+      "kind": "DIRECT_SOURCE_WITHOUT_STANDALONE_MAP",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_transport_family_resume01/PrisonerMaterial12004.java",
+        "bytes": 14548,
+        "sha256": "a7fc1693955d4dd451d637297af81dd42941f378aa6f1cab96e2a09995d04152"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/native_family",
+      "relative_to_N": "java_native_transport_family_resume01/PrisonerNativeQueries.java",
+      "kind": "DIRECT_SOURCE_WITHOUT_STANDALONE_MAP",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_transport_family_resume01/PrisonerNativeQueries.java",
+        "bytes": 20174,
+        "sha256": "cf24d3a3095d9647b28a9ca15ef91903d83f7ef13880f57c4258dbc1ec5fb8a9"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/native_family",
+      "relative_to_N": "java_native_transport_family_resume01/PrisonerOptionIntent.java",
+      "kind": "DIRECT_SOURCE_WITHOUT_STANDALONE_MAP",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_transport_family_resume01/PrisonerOptionIntent.java",
+        "bytes": 3570,
+        "sha256": "bcdf0f8a7cea6be0bf2710aaf556207aca06f356d08b22e3fceb94bddc594dec"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/native_schemes_events",
+      "relative_to_N": "java_native_schemes_events_resume01/SOURCE-MAP01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_schemes_events_resume01/SOURCE-MAP01.json",
+        "bytes": 3412,
+        "sha256": "7265170601effa0f0d9568daabf62e258f57981b0eec4f47e1887ef29ff3fe29"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/dynamic_capabilities",
+      "relative_to_N": "java_dynamic_capabilities01/SOURCE-PAUSED01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_dynamic_capabilities01/SOURCE-PAUSED01.json",
+        "bytes": 11119,
+        "sha256": "fc366164f65e278cc9726149b47849cfa932003b879bed1852b9cce97095fe0d"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/warcore_leaves",
+      "relative_to_N": "java_warcore_late02/FINAL-SOURCE-MAP01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_warcore_late02/FINAL-SOURCE-MAP01.json",
+        "bytes": 10796,
+        "sha256": "f7b1b1a69452e6ee5bdb29fe4ea77c5269ddba7c43eb2967fbfdd58d51991906"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/forecast_kernel",
+      "relative_to_N": "java_battle_forecast_kernel02/kernel/SOURCE-MAP02.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_battle_forecast_kernel02/kernel/SOURCE-MAP02.json",
+        "bytes": 10664,
+        "sha256": "e727829f0563ce270838a8abdc12e02d469a30d0d8299363260a5e292817211b"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/known_interactions",
+      "relative_to_N": "java_known_interactions01/SOURCE-MAP01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_known_interactions01/SOURCE-MAP01.json",
+        "bytes": 11706,
+        "sha256": "55d21cb75c0ae787c9f9650a8e1ec1efb554311657a1e35b9a18737e656e9de6"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/event_registry",
+      "relative_to_N": "java_registered_event_policies/successor02/SOURCE-MAP02.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_registered_event_policies/successor02/SOURCE-MAP02.json",
+        "bytes": 8470,
+        "sha256": "a04313ffacc2dbd4cf9142adb81f9d1597720d850095afe699e43751cfd070a0"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/finance_ordinary",
+      "relative_to_N": "java_finance_ordinary01/successor02/SOURCE-MAP02.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_finance_ordinary01/successor02/SOURCE-MAP02.json",
+        "bytes": 13463,
+        "sha256": "35c8e051b0bdfd16b88dc07f1b82fb79285aa83644da238d66a0f69ffcfeb469"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/governance_ordinary",
+      "relative_to_N": "java_governance_adapters02/SOURCE-MAP02.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_governance_adapters02/SOURCE-MAP02.json",
+        "bytes": 8155,
+        "sha256": "71300cae82c19a0c2255dcf6edfed44c6c07e64ccff2c537227d41ccf7380161"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/prisoners_ordinary",
+      "relative_to_N": "ordinary_prisoners03/PARTIAL-CLOSE01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/ordinary_prisoners03/PARTIAL-CLOSE01.json",
+        "bytes": 8102,
+        "sha256": "9347ed809ca5f80faafa810c883d1e0faebe57cb949998c64b37325ba40a515e"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/family_ordinary",
+      "relative_to_N": "g2_m5_java_family01/successor02/SOURCE-MAP02-PARTIAL.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/g2_m5_java_family01/successor02/SOURCE-MAP02-PARTIAL.json",
+        "bytes": 10126,
+        "sha256": "2484ffe9d8cb649d283d310c185d27f5f9914949204f9d2bf5e80c04033afeb4"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/military_ordinary",
+      "relative_to_N": "java_ordinary_military_successor01/FINAL-SOURCE-MAP01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_ordinary_military_successor01/FINAL-SOURCE-MAP01.json",
+        "bytes": 7880,
+        "sha256": "2ac5a6c31ea53d249a72631c19da973d866574a17de4d2e528040179a6727ea4"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/military_ordinary",
+      "relative_to_N": "java_ordinary_military_successor01/SOURCE-DELTA01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_ordinary_military_successor01/SOURCE-DELTA01.json",
+        "bytes": 2786,
+        "sha256": "87af09b23678bc4bc4de4b492bc2e7121374238c34302751b26f1073d5e32ed7"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/sway_ordinary",
+      "relative_to_N": "ai_sway_planning_adapter02/SOURCE-MAP02.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/ai_sway_planning_adapter02/SOURCE-MAP02.json",
+        "bytes": 3027,
+        "sha256": "1de4bc200efa9c6338b6b6778bd394332d732dd3cf94e208be8bf99edd59163e"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/campaign_goals",
+      "relative_to_N": "planning_goals_calendar_a2/SOURCE-MAP01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/planning_goals_calendar_a2/SOURCE-MAP01.json",
+        "bytes": 5428,
+        "sha256": "6ce312ca1121d89388cad27a0088273a0256232697645db1bea213f80fc8887b"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/recovery_junction",
+      "relative_to_N": "java_recovery_junction_resume01/SOURCE-ONLY-CLOSE01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_recovery_junction_resume01/SOURCE-ONLY-CLOSE01.json",
+        "bytes": 8192,
+        "sha256": "b91a4752c6a62a7517bfad78af5a22db4490d40b5fc3d662aaedd95131217cfc"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/sdk_closure",
+      "relative_to_N": "sdk_closure24/RUNBOOK01.md",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/sdk_closure24/RUNBOOK01.md",
+        "bytes": 3942,
+        "sha256": "046370f99b24e91fb9ea6141224421607ab10c7241dd14b1d799ce94848994a6"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/sdk_closure",
+      "relative_to_N": "sdk_closure24/SOURCE-MAP01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/sdk_closure24/SOURCE-MAP01.json",
+        "bytes": 3185,
+        "sha256": "02cffbdf90ab00ed298c70884a0052945001c2f641980106f199a3218e8fdf89"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/forecast_envelope",
+      "relative_to_N": "java_battle_forecast_kernel02/envelope/SOURCE-MAP01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_battle_forecast_kernel02/envelope/SOURCE-MAP01.json",
+        "bytes": 8855,
+        "sha256": "e1d583d22035180a08d6f1e63698bf0c11a2c894175cd265ee9c118c8cb373bc"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/construction",
+      "relative_to_N": "java_construction_resume01/SOURCE-MAP01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_construction_resume01/SOURCE-MAP01.json",
+        "bytes": 3703,
+        "sha256": "5a00e82facc9111dd470173b9dbff66891bcfb2fd441259fbbe2086a90bfade6"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/native_protocol_identity",
+      "relative_to_N": "java_native_protocol_identity/successor02/PARTIAL-STOP-SOURCE-MAP01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_native_protocol_identity/successor02/PARTIAL-STOP-SOURCE-MAP01.json",
+        "bytes": 9361,
+        "sha256": "6232662aede3770df6f04e57392c3aee400ad06a2be08dd79f7b599ec59abad5"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/m0_research",
+      "relative_to_N": "ai_war_exit/native_m0_research02/SOURCE-MAP02.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/ai_war_exit/native_m0_research02/SOURCE-MAP02.json",
+        "bytes": 3512,
+        "sha256": "0f5ae11c35d0cbbe435446f5e05605cf823b9c4a64c51bebe1077036bd80143e"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/m1_research",
+      "relative_to_N": "g2_m1_native_power02/M1-RESEARCH-PLAN01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/g2_m1_native_power02/M1-RESEARCH-PLAN01.json",
+        "bytes": 9481,
+        "sha256": "3e7abb032759e496a37d7a609ab3a72e4bfe036c77aeda88123ad181b3a28712"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/m1_research",
+      "relative_to_N": "g2_m1_native_power02/NATIVE-SOURCE01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/g2_m1_native_power02/NATIVE-SOURCE01.json",
+        "bytes": 9982,
+        "sha256": "ffb8cdbbbd8bc6625aad610ff06d10fa345b0c4a398756c15d8e30a1afdb62ce"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/m1_research",
+      "relative_to_N": "g2_m1_native_power02/SOURCE-MAP01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/g2_m1_native_power02/SOURCE-MAP01.json",
+        "bytes": 4568,
+        "sha256": "f90ecf28d639c331b210565fd25cd8ba3cdddc02dcd1d9a742ed3f20ca055ad2"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/m2_research",
+      "relative_to_N": "g2-m2-native-research02/research-plan.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/g2-m2-native-research02/research-plan.json",
+        "bytes": 8050,
+        "sha256": "4d3d664f6c1ea15eefd6e1316f769c730c5f5bf321c193d7962923908a1a70d1"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/m2_research",
+      "relative_to_N": "g2-m2-native-research02/SOURCE-MAP01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/g2-m2-native-research02/SOURCE-MAP01.json",
+        "bytes": 3739,
+        "sha256": "c032c46ee5f5e83d0509c928d819ca5f88b8cc7092d7c411788f1765f19d200e"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/m3_research",
+      "relative_to_N": "m3_native_succession02/SOURCE-MAP01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/m3_native_succession02/SOURCE-MAP01.json",
+        "bytes": 3543,
+        "sha256": "edfec6297698670f86f981f11bc93263c03f268cbfae0145a4d4e2850e392bae"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/m4_research",
+      "relative_to_N": "m4_native_finance02/RESEARCH-PLAN01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/m4_native_finance02/RESEARCH-PLAN01.json",
+        "bytes": 8785,
+        "sha256": "dcf459a11fe75a9dedcc2f3f668047e19356b5d4f9073ff1f54ca477b85db925"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/m4_research",
+      "relative_to_N": "m4_native_finance02/SOURCE-MAP01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/m4_native_finance02/SOURCE-MAP01.json",
+        "bytes": 3801,
+        "sha256": "6baef38e398d761f0fbce857da4cc28b1658c20893a9fb7b3142e5e3094473ea"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/m5_research",
+      "relative_to_N": "ai_m5_actual_battle02/research-plan.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/ai_m5_actual_battle02/research-plan.json",
+        "bytes": 8904,
+        "sha256": "dc050ed1731152ba96331e4c99ad1283b63de4005e61ef2837c26ffd51ca2bbd"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/m5_research",
+      "relative_to_N": "ai_m5_actual_battle02/SOURCE-MAP01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/ai_m5_actual_battle02/SOURCE-MAP01.json",
+        "bytes": 6384,
+        "sha256": "d86a68ef1cf8600a94daed81d087e21e8c77f5261fb05ced490b1748b25b3aaa"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/m6_research",
+      "relative_to_N": "ai_scheme_m6_terminal02/RESEARCH-PLAN.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/ai_scheme_m6_terminal02/RESEARCH-PLAN.json",
+        "bytes": 4035,
+        "sha256": "8be99117ffa1e4c1d9c09256cc78b84a3680d506405b6ac78103966264287389"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/m6_research",
+      "relative_to_N": "ai_scheme_m6_terminal02/SOURCE-MAP01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/ai_scheme_m6_terminal02/SOURCE-MAP01.json",
+        "bytes": 3856,
+        "sha256": "9ec59b9d4fb1e3b74145a27be580aa9c485d1b6478cd762feb0838e2268e61c7"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/m7_research",
+      "relative_to_N": "g2_m7_native_identity02/SOURCE-MAP02.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/g2_m7_native_identity02/SOURCE-MAP02.json",
+        "bytes": 7041,
+        "sha256": "d01087f51b9f78ceabf45a8f2f466b82867efeb77fa91c4b3374ca331dbb8d58"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/combat_contract",
+      "relative_to_N": "java_combat_contract_resume01/SOURCE-MAP01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_combat_contract_resume01/SOURCE-MAP01.json",
+        "bytes": 11470,
+        "sha256": "a4d640cbffae85e7905e7c4160d3764daf1a0b01ef87092648020bac37a91de8"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    },
+    {
+      "owner": "/root/combat_phase",
+      "relative_to_N": "java_combat_phase_resume01/SOURCE-MAP01.json",
+      "kind": "METADATA_ONLY",
+      "ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261023/java_combat_phase_resume01/SOURCE-MAP01.json",
+        "bytes": 12288,
+        "sha256": "ce3693d117ffa0bd82f262d5aa6ae71c52cc90e9ca1be01d986fa463960528a3"
+      },
+      "qualification": "SOURCE_ONLY_OR_PARTIAL_NOT_COMPILED_NOT_RUNTIME_ADOPTED"
+    }
+  ],
+  "unimplemented_followups": [
+    "RootAssembly/session/RootRestoreAdapters/package03 native proof",
+    "CompositeRead/pipeName/FrontendRules19 actual executors",
+    "All13 combat optional leaves and phase AST/manifest loader",
+    "Bookmark1070Material/RiteGrowthMaterial",
+    "Sway formal start/recovery/stop and strict codecs",
+    "Activity10 operations",
+    "War summary/assault lifecycle and battle prelude",
+    "Ordinary retreat/forecast ingress/complete battle model adapters",
+    "M0 raw factories complete dispatcher/compat"
+  ],
+  "native_allocation_caveat": "Owner actual FileStandardInfo/fsutil receipts and logical/planning sizes remain distinct. This index supplies no physical release credit.",
+  "protection": {
+    "owner": "/root",
+    "purpose": "Resume the same C14 repair and preserve unique uncompiled migration/native research inputs",
+    "review_at_utc": "2026-10-30T16:30:00Z",
+    "no_automatic_renewal": true
+  },
+  "counts": {
+    "metadata_and_direct_refs": 82,
+    "exact_roots": 57,
+    "roots_read": 57
+  }
+}
