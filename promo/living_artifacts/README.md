@@ -35,3 +35,7 @@
 `machine_id: pc-20260924rtuf-f11af23c08`，2026-10-23 UTC 的两次早期普通取材尝试均未进入地图、没有合格宣传素材：`PROMO0001` 在地图就绪前超时，原 host 退出 1；`PROMO0002` 的前端规则／任意选角调用因当前冻结 DLL 缺少 capability 被拒绝，原 host 保留退出 1。后者经真实主菜单 Exit to Desktop，CK3 原生进程退出 0、tree gone；两场均无游戏存档。证据为外置 [PROMO0001](D:/workspace/ck3-living-artifacts-20261022/live/pc-20260924rtuf-f11af23c08--living-artifacts--PROMO0001/host-report.json) 与 [PROMO0002](D:/workspace/ck3-living-artifacts-20261022/live/pc-20260924rtuf-f11af23c08--living-artifacts--PROMO0002/host-report.json)。keeper 原退出 0，CAS969 已释放屏幕；不把这些准备尝试计作正式视频拍摄。
 
 同机早期配置中的 `NEVER`／`NO_AUTOSAVE` 未取得关闭自动保存的游戏读回，实际曾恢复默认；当前只保留诊断，不能据配置文件值准许下一次拍摄推进。此问题与原生 capability 缺口须在正式录像前解决或采用实际可用的合法入口，不能热改已冻结 runtime，也不能重放结果未知的动作。
+
+2026-10-23 UTC 后续准备：普通拍摄使用公共入口的 `living-artifacts / ordinary-promotion`，startup 为 `ordinary_gui_campaign`。只复制逐文件绑定的正式 product 与四份普通配置；不创建 load carrier、fixture policy 或初始业务步骤。玩家通过正常 GUI 选角和开局，当前原生玩家、暂停地图及同一 allocation 身份闭合后进入固定 hold，结束仍走公共正常退出流程。该 case 的范围是正式游玩取材，不授产品业务验收或成片通过。
+
+首场使用既有 v2 recorder，1920×1080、30fps、无原声，最多四段，每段最多60秒，合计240秒、全部原片及录制元数据合计512MiB。Root 审看实际游戏帧并核录制终态后才能登记取材结果；编码成功仍不授最终视频验收。`machine_id: pc-20260924rtuf-f11af23c08` 的 [正式拍摄 run](C:/codex-ck3-demos/living-artifacts-promo-20261024/promo-runs/formal-capture-a01/run-manifest.json)已创建，当前尚未登记媒体；原片与工具放在同一机器的独立 C 盘范围内。

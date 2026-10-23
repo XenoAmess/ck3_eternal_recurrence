@@ -3,11 +3,14 @@ from __future__ import annotations
 import copy
 import hashlib
 import importlib.util
+import json
 from pathlib import Path
 import sys
 import time
+import tempfile
 import unittest
-from types import SimpleNamespace
+from unittest.mock import patch
+from types import ModuleType, SimpleNamespace
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 
@@ -16,9 +19,11 @@ from xar_autoplayer.bridge.frontend_fixture_start_contract import (
 )
 
 
-def load_harness():
+def load_harness() -> ModuleType:
     path = Path(__file__).resolve().parents[2] / "native_bridge/research/run_ck3_12002_mcp_live.py"
     spec = importlib.util.spec_from_file_location("scenario_fixture_host_tests", path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError('Actual scenario host loader unavailable')
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
@@ -101,6 +106,198 @@ def event_packet(snapshot):
                 "fallback":False, "cancel":False} for index,native in enumerate((2,5))]}}
 
 
+class OrdinaryGuiCampaignHostTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name).resolve()
+        self.harness = load_harness()
+        tools = Path(__file__).resolve().parents[3] / 'tools'
+        sys.path.insert(0, str(tools))
+        self.addCleanup(sys.path.remove, str(tools))
+        prepare = importlib.import_module('ck3_mod_acceptance_prepare')
+        product = self.root / 'formal-product'
+        product.mkdir()
+        (product / 'descriptor.mod').write_text('name="Formal test product"\n', encoding='utf-8')
+        (product / 'formal.txt').write_text('formal content', encoding='utf-8')
+        self.state = self.root / 'new-state'
+        output = self.root / 'prepared'
+        output.mkdir()
+        configuration = {}
+        for name in prepare.CONFIG_NAMES:
+            path = self.root / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(b'')
+            configuration[name] = prepare.pin(path)
+        context = {'state_dir': str(self.state), 'output': str(output),
+                   '_selected_engine': (object(), {'game_version': '1.20.0.4', 'exe_sha256': EXE_SHA256_12004})}
+        profile = prepare.materialize_product_profile(context, product, configuration)
+        self.prepared = prepare.finish_product_profile(context, profile)
+        self.run_root = self.root / 'allocated-ordinary-run'
+        self.run_root.mkdir()
+        host_path = self.harness.__file__
+        if not isinstance(host_path, str):
+            raise RuntimeError('Actual host source path missing')
+        self.args = self.harness.parser().parse_args([
+            '--ordinary-gui-campaign', '--fixture-profile', '--state-dir', str(self.state),
+            '--agent-source-root', str(self.root / 'agent'), '--bridge-pipe', 'ordinary-test-pipe',
+            '--output', str(self.run_root / 'host.json'), '--plan', str(output / 'initial.json')])
+        self.args.plan.write_text('{"steps":[]}', encoding='utf-8')
+        manifest = self.root / 'runtime-manifest.json'
+        manifest.write_text(json.dumps({'game': {'version': '1.20.0.4', 'exe_sha256': EXE_SHA256_12004}}), encoding='utf-8')
+        references = [*self.prepared['files'].values(), self.prepared['preparation'],
+                      prepare.pin(manifest), prepare.pin(self.args.plan)]
+        self.frozen = {'run_id': self.run_root.name, 'state_dir': str(self.state),
+            'argv': [sys.executable, '-B', '-X', 'utf8', str(Path(host_path).resolve()),
+                '--ordinary-gui-campaign', '--fixture-profile', '--state-dir', str(self.state),
+                '--agent-source-root', str(self.args.agent_source_root), '--bridge-pipe', self.args.bridge_pipe,
+                '--output', str(self.args.output), '--plan', str(self.args.plan)],
+            'runtime_manifest': prepare.pin(manifest),
+            'files': {row['path']: {'bytes': row['bytes'], 'sha256': row['sha256']} for row in references}}
+        self.write_frozen()
+
+    def write_frozen(self) -> None:
+        (self.run_root / 'frozen-argv.json').write_text(json.dumps(self.frozen), encoding='utf-8')
+
+    def ordinary_frame(self, binding: object) -> dict[str, object]:
+        return {'source': 'injected-dll-named-pipe', 'backend_id': 'native-headless',
+            'map_ready': True, 'paused': True, 'episode_projection': 'native_campaign',
+            'date_raw': 53145576, 'revision': 10, 'native_revision': 4,
+            'snapshot_id': 'ordinary-frame-10', 'local_player_id': 1,
+            'played_character': {'character_id': 123456789, 'alive': True, 'source': 'native'},
+            'managed_campaign_run_binding': binding,
+            'diagnostics': {'bridge_pid': 71, 'connection_generation': 2, 'connected': True,
+                'hello': {'pid': 71, 'connection_generation': 2, 'game_adapter_id': 'ck3-1.20.0.4-msvc-x64',
+                    'expected_ck3_version': '1.20.0.4', 'expected_ck3_sha256': EXE_SHA256_12004,
+                    'ck3_build_match': True}}}
+
+    def test_product_preparation_to_allocated_native_campaign_readiness_roundtrip(self) -> None:
+        self.harness.validate_ordinary_gui_campaign_options(self.args)
+        binding = self.harness.allocated_managed_campaign_run_binding(self.args)
+        frame = self.ordinary_frame(binding)
+        report = {'ordinary_gui_campaign_startup': {'schema': 'ck3-ordinary-gui-campaign-startup-v1',
+                    'run_binding': binding}, 'identity': {'game_sha256': EXE_SHA256_12004}}
+        self.assertTrue(self.harness.paused_map_readiness_admitted(frame, report))
+        self.assertTrue(self.harness.paused_map_readiness_admitted(
+            json.loads(json.dumps(frame)), json.loads(json.dumps(report))))
+        # The parent validates exact input before launch. The child retains its
+        # frozen input provenance after the engine legitimately writes settings.
+        (self.state / 'profile/pdx_settings.txt').write_bytes(b'engine settings update')
+        with self.assertRaisesRegex(ValueError, 'profile file differs'):
+            self.harness.allocated_managed_campaign_run_binding(self.args)
+        self.args.server = True
+        self.assertEqual(self.harness.allocated_managed_campaign_run_binding(self.args), binding)
+
+    def test_mixed_modes_and_unallocated_start_are_rejected(self) -> None:
+        for name in self.harness.ORDINARY_GUI_CAMPAIGN_EXCLUDED_OPTIONS:
+            args = copy.copy(self.args)
+            setattr(args, name, True)
+            with self.subTest(option=name), self.assertRaises(SystemExit):
+                self.harness.validate_ordinary_gui_campaign_options(args)
+        for key, bad in (('ordinary_gui_campaign', 1), ('fixture_profile', False), ('turns', True), ('turns', 1)):
+            args = copy.copy(self.args)
+            setattr(args, key, bad)
+            with self.subTest(option=key, value=bad), self.assertRaises(SystemExit):
+                self.harness.validate_ordinary_gui_campaign_options(args)
+        self.frozen['argv'].remove('--ordinary-gui-campaign')
+        self.write_frozen()
+        with self.assertRaisesRegex(ValueError, 'allocated startup mode'):
+            self.harness.allocated_managed_campaign_run_binding(self.args)
+
+    def test_input_pins_fixture_mount_prior_save_and_nonempty_plan_are_rejected(self) -> None:
+        original = copy.deepcopy(self.frozen)
+        for field in ('preparation',):
+            reference = self.prepared[field]
+            self.frozen['files'].pop(reference['path'])
+            self.write_frozen()
+            with self.assertRaises(ValueError):
+                self.harness.allocated_managed_campaign_run_binding(self.args)
+            self.frozen = copy.deepcopy(original)
+        self.write_frozen()
+        for relative in ('mod/fixture.mod', 'last_save.ck3', 'save games/prior.ck3'):
+            path = self.state / 'profile' / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(b'forbidden input')
+            with self.subTest(path=relative), self.assertRaisesRegex(ValueError, 'fixture or restore'):
+                self.harness.allocated_managed_campaign_run_binding(self.args)
+            path.unlink()
+        self.args.plan.write_text('{"steps":[{"tool":"ck3_auto_turn"}]}', encoding='utf-8')
+        with self.assertRaisesRegex(ValueError, 'source bytes changed'):
+            self.harness.allocated_managed_campaign_run_binding(self.args)
+
+    def test_readiness_rejects_wrong_source_scene_engine_and_boolean_identities(self) -> None:
+        binding = self.harness.allocated_managed_campaign_run_binding(self.args)
+        original = self.ordinary_frame(binding)
+        report = {'ordinary_gui_campaign_startup': {'schema': 'ck3-ordinary-gui-campaign-startup-v1',
+                    'run_binding': binding}, 'identity': {'game_sha256': EXE_SHA256_12004}}
+        for key, bad in (('source', 'fixture'), ('episode_projection', 'one_life'), ('paused', False),
+                         ('snapshot_id', ''), ('revision', True), ('native_revision', True),
+                         ('date_raw', True), ('local_player_id', True), ('managed_campaign_run_binding', {})):
+            frame = copy.deepcopy(original)
+            frame[key] = bad
+            with self.subTest(field=key):
+                self.assertFalse(self.harness.paused_map_readiness_admitted(frame, report))
+        for key, bad in (('pid', True), ('connection_generation', True), ('expected_ck3_version', 'unknown'),
+                         ('expected_ck3_sha256', '0' * 64), ('ck3_build_match', False)):
+            frame = copy.deepcopy(original)
+            diagnostics = self.harness._ordinary_object(frame['diagnostics'])
+            hello = self.harness._ordinary_object(diagnostics['hello'])
+            hello[key] = bad
+            diagnostics['hello'] = hello
+            frame['diagnostics'] = diagnostics
+            with self.subTest(hello=key):
+                self.assertFalse(self.harness.paused_map_readiness_admitted(frame, report))
+        frame = copy.deepcopy(original)
+        changed_binding = self.harness._ordinary_object(frame['managed_campaign_run_binding'])
+        changed_binding['run_id'] = 'other-run'
+        frame['managed_campaign_run_binding'] = changed_binding
+        self.assertFalse(self.harness.paused_map_readiness_admitted(frame, report))
+
+    def test_existing_session_launches_once_without_continue_or_saved_restore(self) -> None:
+        # Replace only the OS launch boundary; execute the real shared session
+        # wrapper and its local queue-function rebinding without starting CK3.
+        session = ModuleType('xar_autoplayer.native_session')
+        exec('''
+from types import SimpleNamespace
+calls = []
+restore = None
+repeat = False
+def launch(*args, **kwargs):
+    calls.append(kwargs)
+    return SimpleNamespace(process=SimpleNamespace(pid=71), ck3_creation_date="test-birth",
+        command=["ck3.exe", "-userdir=isolated"])
+def _native_session_locked(*args, **kwargs):
+    launch(continue_last_save=True, load_save_name=restore)
+    if repeat:
+        launch(continue_last_save=True)
+    return {"test_boundary": "os-launch-only"}
+def native_session(*args, **kwargs):
+    return _native_session_locked(*args, **kwargs)
+''', session.__dict__)
+        record = {'status': 'WAITING_FOR_ACTUAL_SINGLE_ORDINARY_GUI_LAUNCH'}
+        import threading
+        with patch.dict(sys.modules, {'xar_autoplayer.native_session': session}):
+            self.harness.fixture_session(SimpleNamespace(profile_dir=self.state / 'profile'),
+                object(), self.args, threading.Event(), launch_record=record)
+            self.assertEqual(len(session.calls), 1)
+            self.assertIs(session.calls[0]['continue_last_save'], False)
+            self.assertIs(session.calls[0]['verify_prepared_profile'], False)
+            self.assertIsNone(session.calls[0]['load_save_name'])
+            self.assertEqual(record['status'], 'ACTUAL_SINGLE_ORDINARY_GUI_LAUNCH_RECORDED')
+            session.calls.clear()
+            session.__dict__['restore'] = 'prior-save'
+            with self.assertRaisesRegex(ValueError, 'cannot load a saved campaign'):
+                self.harness.fixture_session(SimpleNamespace(profile_dir=self.state / 'profile'),
+                    object(), self.args, threading.Event())
+            self.assertEqual(session.calls, [])
+            session.__dict__['restore'] = None
+            session.__dict__['repeat'] = True
+            with self.assertRaisesRegex(RuntimeError, 'forbids relaunch'):
+                self.harness.fixture_session(SimpleNamespace(profile_dir=self.state / 'profile'),
+                    object(), self.args, threading.Event())
+            self.assertEqual(len(session.calls), 1)
+
+
 class ScenarioHostBindingTests(unittest.TestCase):
     def test_observe_only_initial_plan_defaults_empty_and_rejects_actions_or_turns(self):
         harness = load_harness()
@@ -112,11 +309,11 @@ class ScenarioHostBindingTests(unittest.TestCase):
         args.turns, args.plan = 0, Path("explicit-plan.json")
         for row in ({"tool":"ck3_select_event_option"}, {"tool":"ck3_save_checkpoint"},
                 {"tool":"ck3_request_normal_exit_v1"}, {"kind":"advance_day", "days":1}):
-            harness.load_plan = lambda path, row=row: [row]
+            harness.__dict__['load_plan'] = lambda path, row=row: [row]
             with self.subTest(row=row), self.assertRaisesRegex(ValueError, "read-only"):
                 harness.observe_only_fixture_initial_plan(args)
         read = [{"tool":"ck3_take_snapshot"}, {"tool":"ck3_query_player_religion_context_v1"}]
-        harness.load_plan = lambda path: read
+        harness.__dict__['load_plan'] = lambda path: read
         self.assertEqual(harness.observe_only_fixture_initial_plan(args), read)
 
     def test_v2_binding_preserves_hashes_and_exact_declared_target(self):

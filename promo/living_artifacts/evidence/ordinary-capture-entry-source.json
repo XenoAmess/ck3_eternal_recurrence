@@ -1,0 +1,96 @@
+{
+  "schema": "living-artifacts-ordinary-capture-entry-source-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-23T18:30:05.857399+00:00",
+  "source_base_commit": "c673a084abd6e70afb26b8349f2fac2af3ac8cda",
+  "status": "SOURCE_READY_PENDING_NEW_RUNTIME_AND_COLD_LIVE_CAPTURE",
+  "purpose": "Formal-product-only ordinary GUI campaign and same-keeper segmented video capture",
+  "source_pins": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+      "bytes": 79795,
+      "sha256": "d20fbf2093c948cc71b4d0e4d1bdb844347408690744816142bdaca89b79b406"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 341748,
+      "sha256": "9a13cc0eae8dcb960dafc1b9115dc170a4c4baaf7c4c6b911c3e9a5d4adbbad9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance.py",
+      "bytes": 36317,
+      "sha256": "a0be2c67532f1a298a0f248a61c68ca198625e3831605ecc26c598970c8f7b79"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\tests\\unit\\test_frontend_fixture_scenario_host.py",
+      "bytes": 28917,
+      "sha256": "5704943052854344c3c584cf591c7f3a9ad070ad3204f31cccd4d579ab652531"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+      "bytes": 65013,
+      "sha256": "9d48b47674091a856ca67afb06d8b82b51bc26174021bfbb5725fbe1cd34c9a2"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\living_artifacts_ordinary_promotion.json",
+      "bytes": 281,
+      "sha256": "db7837b72a93675f16e5bfc27b05632882cb1600701134f681cdd307ddeb1c3c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_products.json",
+      "bytes": 184706,
+      "sha256": "d8836c49a1cbd621becd4f08d38f99d8375c95dfcf032075bc5c78edca1f958c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\.github\\workflows\\static-ci.yml",
+      "bytes": 116841,
+      "sha256": "5347db08b5d3b46f233fe5470f3a0cdbbfb5b4a442ee58790be00531ae695701"
+    }
+  ],
+  "actual_complete_affected_ci_step": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\ordinary-promotion-validation-a02\\result.json",
+    "bytes": 1644,
+    "sha256": "49eeaf968b91a06e5236ef722abbeecb8a8ce7755fadb7789b73342a66a4a7ad"
+  },
+  "actual_host_public_regressions_and_legacy_strict_comparison": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\ordinary-gui-host-maintenance-a01\\result.json",
+    "bytes": 6852,
+    "sha256": "4425e9849b6f541884d5342d9749c844dce862cf2ab7f542d1cff512a9d611a8"
+  },
+  "generic_actual_strict_scope": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\ordinary-promotion-type-scope-a02\\result.json",
+    "bytes": 975,
+    "sha256": "9b101f748f59cbb77a4fd8424678390b4ce934dbea1d9af6c8f99605d4fb2783"
+  },
+  "static_limits": {
+    "generic_complete_module_basic_mypy_exit": 0,
+    "generic_new_ordinary_functions_and_helpers_strict_exit": 0,
+    "public_and_host_complete_legacy_strict": "retain historical diagnostics; no newly added diagnostics; not whole-module GREEN"
+  },
+  "native_rebuilt": false,
+  "frozen_c23_or_sdk_modified": false,
+  "business_acceptance": "NOT_ASSESSED",
+  "raw_capture_files": 0,
+  "video_complete": false,
+  "rebased_onto_commit": "1dc76e74eb9eba395b20bf9228bc3d708d616c25",
+  "post_rebase_verification": {
+    "ordinary_profile_producer_and_capture_boundary": {
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_product_preparation.py",
+      "actual_exit": 0,
+      "tests": 22,
+      "tool_chunk": "ac9f4c"
+    },
+    "preserved_upstream_saved_readback": {
+      "command": "python -B -X utf8 tools/test_generic_product_saved_readback.py",
+      "actual_exit": 0,
+      "tests": 21,
+      "tool_chunk": "71e125"
+    },
+    "generic_complete_module_basic_follow_imports_skip": {
+      "actual_exit": 0,
+      "tool_chunk": "ca7b12"
+    },
+    "resolution": "Single public dispatch preserves both ordinary promotion and upstream exact cold saved readback; shared imports combined.",
+    "previous_strict_ordinary_ast_scope_unchanged": true
+  }
+}

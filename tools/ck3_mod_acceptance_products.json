@@ -3910,6 +3910,74 @@
           "business_contract_applicable": true,
           "case_scope": "actual-saved-artifact-zero-day-cold-persistence-only",
           "whole_product_acceptance_credit": false
+        },
+        {
+          "id": "ordinary-promotion",
+          "status": "ready",
+          "implementation_credit": "Formal-product-only ordinary GUI campaign and bounded same-keeper recording; no fixture, forced awakening or business acceptance credit",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/living_artifacts_ordinary_promotion.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "ordinary_gui_campaign",
+            "state_dir": "{run_dir}/state"
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 1800,
+            "hold_seconds": 1200,
+            "poll_interval": 0.5
+          },
+          "budget_provenance": "First normal campaign: retain shared1800s readiness floor. Root supervises one total1800s host wallclock including manual GUI Start, fixed1200s map hold and180s normal Quit reserve; the sum of independent host timers is not a total wallclock cap. Max4takes/240s recorded, no deadline extension. Complete planner must be queried from actual MCP before advancing.",
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_query_player_artifact_personal_use_v1",
+            "ck3_submit_player_artifact_personal_use_v1",
+            "ck3_query_player_artifact_personal_use_action_post_v1",
+            "ck3_open_player_inventory_window_v1",
+            "ck3_query_player_inventory_window_open_post_v1",
+            "ck3_query_ingame_ui_window_v1",
+            "ck3_open_ingame_decisions_v1",
+            "ck3_select_ingame_decision_item_v1",
+            "ck3_confirm_ingame_decision_outcome_v1",
+            "ck3_query_character_interaction_ordinary_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_pending_character_interaction_context_v1",
+            "ck3_reply_pending_character_interaction",
+            "ck3_save_checkpoint",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1"
+          ],
+          "opt_in_read_only_mcp_tools": [
+            "ck3_query_player_artifact_personal_use_v1"
+          ],
+          "opt_in_player_inventory_window_open": true,
+          "opt_in_player_artifact_personal_use_actions": true,
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": false,
+          "case_scope": "ordinary-formal-product-promotion",
+          "whole_product_acceptance_credit": false,
+          "build_route": {
+            "directory": "mod_living_artifacts",
+            "builder": "mod_living_artifacts/tools/build_release.py",
+            "release_flags": [
+              "--game",
+              "{game_dir}/game",
+              "--output",
+              "{new-output}"
+            ],
+            "workshop_item_id": "3825237804"
+          }
         }
       ]
     }

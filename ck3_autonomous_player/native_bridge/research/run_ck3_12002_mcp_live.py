@@ -23,7 +23,7 @@ import threading
 import time
 import traceback
 import uuid
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal, TypedDict
 
 if TYPE_CHECKING:
     from ck3_mod_acceptance_background_types import (
@@ -325,6 +325,193 @@ def frontend_native_build_pair(game_version: object, executable_sha256: object):
     return build
 
 
+class ManagedCampaignBindingV1(TypedDict):
+    run_id: str
+    state_dir: str
+    bridge_pipe: str
+    host_path: str
+    frozen_argv_sha256: str
+
+
+class OrdinaryGuiCampaignStartupV1(TypedDict):
+    schema: Literal["ck3-ordinary-gui-campaign-startup-v1"]
+    run_binding: ManagedCampaignBindingV1
+
+
+ORDINARY_GUI_CAMPAIGN_EXCLUDED_OPTIONS = (
+    "frontend_robert_bootstrap", "frontend_fixture_start_policy", "frontend_fixture_startup_case_contract",
+    "frontend_rules_plan", "frontend_rules_diagnostic", "frontend_rules_diagnostic_new_game",
+    "frontend_diagnostic_only", "allow_verified_direct_bookmarks", "frontend_mod_load_observation",
+    "saved_campaign_save", "saved_campaign_server", "saved_campaign_startup_case_contract",
+    "saved_campaign_save_bytes", "saved_campaign_save_sha256", "saved_campaign_player_id",
+    "saved_campaign_date_raw", "saved_campaign_product_inventory",
+    "saved_campaign_inject_after_load", "saved_campaign_debug_mode", "cold_start_checkpoint",
+    "sdk_smoke_test", "sdk_error_smoke_test", "fixture_server", "native_fixture_inbox",
+)
+
+
+def validate_ordinary_gui_campaign_options(args: argparse.Namespace) -> None:
+    enabled: object = getattr(args, "ordinary_gui_campaign", False)
+    if type(enabled) is not bool:
+        raise SystemExit("ordinary GUI campaign requires an explicit boolean admission")
+    if not enabled:
+        return
+    if (getattr(args, "fixture_profile", False) is not True
+            or any(getattr(args, name, None) for name in ORDINARY_GUI_CAMPAIGN_EXCLUDED_OPTIONS)):
+        raise SystemExit("ordinary GUI campaign requires an isolated product profile without fixture, saved, SDK or frontend modes")
+    if type(args.turns) is not int or args.turns != 0:
+        raise SystemExit("ordinary GUI campaign starts without automatic turns")
+
+
+def _ordinary_object(value: object) -> dict[str, object]:
+    if not isinstance(value, dict):
+        raise ValueError("Ordinary GUI campaign source must be an object")
+    result: dict[str, object] = {}
+    for key, item in value.items():
+        if not isinstance(key, str):
+            raise ValueError("Ordinary GUI campaign source requires string keys")
+        result[key] = item
+    return result
+
+
+def _ordinary_text(value: object) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError("Ordinary GUI campaign source requires nonempty text")
+    return value
+
+
+def _ordinary_binding(value: object) -> ManagedCampaignBindingV1:
+    row = _ordinary_object(value)
+    if set(row) != {"run_id", "state_dir", "bridge_pipe", "host_path", "frozen_argv_sha256"}:
+        raise ValueError("Closed allocated campaign binding required")
+    digest = _ordinary_text(row["frozen_argv_sha256"])
+    if re.fullmatch(r"[0-9a-f]{64}", digest) is None:
+        raise ValueError("Exact allocated campaign digest required")
+    return {"run_id": _ordinary_text(row["run_id"]), "state_dir": _ordinary_text(row["state_dir"]),
+            "bridge_pipe": _ordinary_text(row["bridge_pipe"]), "host_path": _ordinary_text(row["host_path"]),
+            "frozen_argv_sha256": digest}
+
+
+def _ordinary_pinned_json(value: object, frozen_files: dict[str, object]) -> dict[str, object]:
+    reference = _ordinary_object(value)
+    if set(reference) != {"path", "bytes", "sha256"}:
+        raise ValueError("Closed ordinary preparation Pin required")
+    path = Path(_ordinary_text(reference["path"]))
+    size, digest = reference["bytes"], reference["sha256"]
+    if (not path.is_absolute() or type(size) is not int or size < 0 or not isinstance(digest, str)
+            or re.fullmatch(r"[0-9a-f]{64}", digest) is None):
+        raise ValueError("Typed absolute ordinary preparation Pin required")
+    actual = path.read_bytes()
+    if len(actual) != size or hashlib.sha256(actual).hexdigest() != digest:
+        raise ValueError("Ordinary prepared source bytes changed")
+    frozen = _ordinary_object(frozen_files.get(str(path.resolve())))
+    if frozen != {"bytes": size, "sha256": digest}:
+        raise ValueError("Ordinary prepared source is absent from the actual allocation")
+    decoded: object = json.loads(actual)
+    return _ordinary_object(decoded)
+
+
+def validate_ordinary_gui_campaign_profile(args: argparse.Namespace, frozen: object) -> None:
+    """Consume the actual product-only preparation, never a substitute fixture policy."""
+    record = _ordinary_object(frozen)
+    files = _ordinary_object(record.get("files"))
+    state = args.state_dir.resolve()
+    profile = state / "profile"
+    startup_value: object = json.loads((state / "preparation.json").read_bytes())
+    startup = _ordinary_object(startup_value)
+    if (startup.get("schema") != "ck3-mod-acceptance-profile-startup-evidence-v1"
+            or Path(_ordinary_text(startup.get("profile_dir"))).resolve() != profile):
+        raise ValueError("Ordinary GUI startup requires the actual product profile")
+    preparation = _ordinary_pinned_json(startup.get("preparation"), files)
+    if (preparation.get("schema") != "ck3-mod-acceptance-prepared-product-v1"
+            or preparation.get("fixture_mounted") is not False
+            or Path(_ordinary_text(preparation.get("state_dir"))).resolve() != state
+            or Path(_ordinary_text(preparation.get("profile_dir"))).resolve() != profile):
+        raise ValueError("Ordinary GUI campaign requires a bound product-only preparation")
+    manifest = _ordinary_pinned_json(record.get("runtime_manifest"), files)
+    argv = record.get("argv")
+    if not isinstance(argv, list) or argv.count("--plan") != 1:
+        raise ValueError("Ordinary campaign requires its allocated empty initial plan")
+    plan_index = argv.index("--plan") + 1
+    if plan_index >= len(argv):
+        raise ValueError("Ordinary campaign initial plan path missing")
+    plan_path = Path(_ordinary_text(argv[plan_index])).resolve()
+    if not args.server and (args.plan is None or args.plan.resolve() != plan_path):
+        raise ValueError("Ordinary campaign plan differs from the allocated initial plan")
+    plan_pin = _ordinary_object(files.get(str(plan_path)))
+    if _ordinary_pinned_json({"path": str(plan_path), **plan_pin}, files) != {"steps": []}:
+        raise ValueError("Ordinary campaign initial plan must contain zero steps")
+    game = _ordinary_object(manifest.get("game"))
+    if (preparation.get("game_version") != game.get("version")
+            or _ordinary_text(preparation.get("exe_sha256")).lower() != _ordinary_text(game.get("exe_sha256")).lower()):
+        raise ValueError("Ordinary prepared game differs from the frozen runtime")
+    rows = _ordinary_object(preparation.get("files"))
+    expected_hashes: dict[str, object] = {}
+    for relative, value in rows.items():
+        reference = _ordinary_object(value)
+        path = (profile / relative).resolve()
+        if not path.is_relative_to(profile) or Path(_ordinary_text(reference.get("path"))).resolve() != path:
+            raise ValueError("Ordinary prepared file escaped its actual profile")
+        size, digest = reference.get("bytes"), reference.get("sha256")
+        if (set(reference) != {"path", "bytes", "sha256"} or type(size) is not int or size < 0
+                or not isinstance(digest, str) or re.fullmatch(r"[0-9a-f]{64}", digest) is None):
+            raise ValueError("Typed ordinary profile file Pin required")
+        if (_ordinary_object(files.get(str(path))) != {"bytes": size, "sha256": digest}
+                or (not args.server and (path.stat().st_size != size or file_sha(path) != digest))):
+            raise ValueError("Ordinary profile file differs from its actual allocation")
+        expected_hashes[relative] = digest
+    if (not rows or startup.get("profile_files") != list(rows)
+            or startup.get("profile_input_sha256") != expected_hashes):
+        raise ValueError("Ordinary startup and actual profile inventory differ")
+    load_value: object = json.loads((profile / "dlc_load.json").read_bytes())
+    load = _ordinary_object(load_value)
+    if (load.get("enabled_mods") != ["mod/product.mod"] or "mod/product.mod" not in rows
+            or "dlc_load.json" not in rows or (profile / "mod/fixture.mod").exists()
+            or (profile / "mod-content/fixture").exists() or (profile / "last_save.ck3").exists()
+            or ((profile / "save games").exists() and any((profile / "save games").iterdir()))):
+        raise ValueError("Ordinary GUI campaign cannot mount a fixture or restore a prior save")
+
+
+def ordinary_gui_campaign_readiness(snapshot: dict[str, object], report: dict[str, object]) -> bool:
+    """Admit the actual paused player only under this run's frozen allocation and exact engine."""
+    try:
+        startup = _ordinary_object(report.get("ordinary_gui_campaign_startup"))
+        if set(startup) != {"schema", "run_binding"} or startup["schema"] != "ck3-ordinary-gui-campaign-startup-v1":
+            return False
+        expected = _ordinary_binding(startup["run_binding"])
+        if _ordinary_binding(snapshot.get("managed_campaign_run_binding")) != expected:
+            return False
+        if (snapshot.get("source") != "injected-dll-named-pipe" or snapshot.get("backend_id") != "native-headless"
+                or snapshot.get("episode_projection") != "native_campaign" or snapshot.get("map_ready") is not True
+                or snapshot.get("paused") is not True or not isinstance(snapshot.get("snapshot_id"), str)
+                or not snapshot.get("snapshot_id")):
+            return False
+        for key in ("revision", "native_revision", "date_raw", "local_player_id"):
+            value = snapshot.get(key)
+            if type(value) is not int or value < 0:
+                return False
+        actor = _ordinary_object(snapshot.get("played_character"))
+        character = actor.get("character_id")
+        if type(character) is not int or character <= 0 or actor.get("alive") is not True or actor.get("source") != "native":
+            return False
+        diagnostics = _ordinary_object(snapshot.get("diagnostics"))
+        pid, generation = diagnostics.get("bridge_pid"), diagnostics.get("connection_generation")
+        if (diagnostics.get("connected") is not True or type(pid) is not int or pid <= 0
+                or type(generation) is not int or generation <= 0):
+            return False
+        hello = _ordinary_object(diagnostics.get("hello"))
+        build = frontend_native_build_pair(hello.get("expected_ck3_version"), hello.get("expected_ck3_sha256"))
+        identity = _ordinary_object(report.get("identity"))
+        if (type(hello.get("pid")) is not int or type(hello.get("connection_generation")) is not int
+                or hello.get("pid") != pid or hello.get("connection_generation") != generation
+                or hello.get("ck3_build_match") is not True or hello.get("game_adapter_id") != f"ck3-{build.game_version}-msvc-x64"
+                or _ordinary_text(identity.get("game_sha256")).lower() != build.executable_sha256.lower()):
+            return False
+        return True
+    except (KeyError, TypeError, ValueError):
+        return False
+
+
 def allocated_managed_campaign_run_binding(args: argparse.Namespace) -> dict[str, object]:
     """Read the existing allocator identity for this host/state/pipe, without an episode seed."""
     state = args.state_dir.expanduser().resolve()
@@ -353,7 +540,13 @@ def allocated_managed_campaign_run_binding(args: argparse.Namespace) -> dict[str
             or Path(option("--agent-source-root")).resolve() != args.agent_source_root.expanduser().resolve()
             or Path(option("--output")).resolve() != output):
         raise ValueError("saved camera allocated state/pipe/source/output identity differs")
-    if args.saved_campaign_server:
+    if getattr(args, "ordinary_gui_campaign", False):
+        validate_ordinary_gui_campaign_options(args)
+        if (argv.count("--ordinary-gui-campaign") != 1 or argv.count("--fixture-profile") != 1
+                or any("--" + name.replace("_", "-") in argv for name in ORDINARY_GUI_CAMPAIGN_EXCLUDED_OPTIONS)):
+            raise ValueError("Ordinary campaign differs from its allocated startup mode")
+        validate_ordinary_gui_campaign_profile(args, record)
+    elif args.saved_campaign_server:
         if argv.count("--saved-campaign-save") != 1:
             raise ValueError("managed camera saved mode differs from its allocated argv")
     elif args.frontend_fixture_start_policy is not None:
@@ -459,6 +652,8 @@ def paused_map_readiness_admitted(snapshot: dict[str, object], report: dict[str,
     """Admit qualified native campaign frames without inventing a one-life identity."""
     if snapshot.get("map_ready") is not True or snapshot.get("paused") is not True:
         return False
+    if "ordinary_gui_campaign_startup" in report:
+        return ordinary_gui_campaign_readiness(snapshot, report)
     policy_input = report.get("frontend_fixture_start_policy_input")
     if not isinstance(policy_input, dict) or policy_input.get("episode_projection") != "native_campaign":
         # Preserve the original default one-life guard exactly.
@@ -1144,7 +1339,7 @@ def native_server(args: argparse.Namespace) -> None:
         fixture_policy, fixture_policy_bytes = load_bound_fixture_start_policy(
             args.frontend_fixture_start_policy, args.state_dir / "profile")
     managed_campaign_run_binding = (allocated_managed_campaign_run_binding(args)
-        if fixture_policy is not None or args.saved_campaign_server else None)
+        if fixture_policy is not None or args.saved_campaign_server or getattr(args, "ordinary_gui_campaign", False) else None)
     driver_options = {"episode_projection": "native_campaign"} if managed_campaign_run_binding is not None else {}
     if getattr(args, "private_succession_title_readonly", False):
         driver_options.update(allow_private_actor_cached_succession_queries=True,
@@ -1400,11 +1595,15 @@ def fixture_session(spec: object, config: object, args: argparse.Namespace,
 
     def fixture_launch(*launch_args: object, **launch_kwargs: object) -> object:
         nonlocal first_launch
+        ordinary = getattr(args, "ordinary_gui_campaign", False)
+        if ordinary and not first_launch:
+            raise RuntimeError("ordinary GUI campaign forbids relaunch or lifecycle restore")
         if first_launch:
             launch_kwargs["verify_prepared_profile"] = False
-            if getattr(args, "frontend_mod_load_observation", False):
+            if ordinary or getattr(args, "frontend_mod_load_observation", False):
                 if launch_kwargs.get("load_save_name") is not None:
-                    raise ValueError("menu-only launch cannot load a saved campaign")
+                    raise ValueError("ordinary GUI launch cannot load a saved campaign" if ordinary
+                        else "menu-only launch cannot load a saved campaign")
                 launch_kwargs["continue_last_save"] = False
             first_launch = False
         if getattr(args, "frontend_mod_load_observation", False) and (
@@ -1412,8 +1611,9 @@ def fixture_session(spec: object, config: object, args: argparse.Namespace,
                 or launch_record.get("status") != "WAITING_FOR_ACTUAL_SINGLE_MENU_LAUNCH"):
             raise RuntimeError("menu-only observation cannot relaunch the game")
         handle = original_launch(*launch_args, **launch_kwargs)
-        if getattr(args, "frontend_mod_load_observation", False) and launch_record is not None:
-            launch_record.update(status="ACTUAL_SINGLE_MENU_LAUNCH_RECORDED", pid=handle.process.pid,
+        if (ordinary or getattr(args, "frontend_mod_load_observation", False)) and launch_record is not None:
+            launch_record.update(status=("ACTUAL_SINGLE_ORDINARY_GUI_LAUNCH_RECORDED" if ordinary
+                    else "ACTUAL_SINGLE_MENU_LAUNCH_RECORDED"), pid=handle.process.pid,
                 ck3_creation_date=handle.ck3_creation_date, profile_dir=str(spec.profile_dir.resolve()),
                 actual_command=list(handle.command), continue_last_save=False, load_save_name=None)
         return handle
@@ -4229,6 +4429,13 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
         "mcp_wire": str(rpc_wire.path), "mcp_calls": str(calls_path),
         "wire_evidence_codec": codec,
         "server_stderr": str(stderr_path), "session": session_state, "error": None}
+    if getattr(args, "ordinary_gui_campaign", False):
+        ordinary_startup: OrdinaryGuiCampaignStartupV1 = {
+            "schema": "ck3-ordinary-gui-campaign-startup-v1",
+            "run_binding": _ordinary_binding(allocated_managed_campaign_run_binding(args)),
+        }
+        report["ordinary_gui_campaign_startup"] = ordinary_startup
+        report["ordinary_gui_campaign_launch"] = {"status": "WAITING_FOR_ACTUAL_SINGLE_ORDINARY_GUI_LAUNCH"}
 
     supervisor: threading.Thread | None = None
 
@@ -4307,7 +4514,8 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
         from xar_autoplayer.runtime import NativeBridgeLaunchConfig
         spec = make_spec(args.state_dir, args.game_dir)
         if args.fixture_profile:
-            report["profile"] = {"mode": "explicit-external-fixture",
+            report["profile"] = {"mode": ("explicit-external-ordinary-product"
+                    if getattr(args, "ordinary_gui_campaign", False) else "explicit-external-fixture"),
                 "prepared_manifest": str(spec.manifest_path),
                 "enabled_mod_profile": json.loads((spec.profile_dir / "dlc_load.json").read_text(encoding="utf-8-sig")),
                 "production_profile_verified": False}
@@ -4347,7 +4555,8 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                         stream.write(json.dumps(session_state["report"], ensure_ascii=False) + "\n")
                     elif args.fixture_profile:
                         session_state["report"] = fixture_session(spec, config, args, stop, output_stream=stream,
-                            launch_record=report.get("frontend_mod_load_launch"))
+                            launch_record=report.get("ordinary_gui_campaign_launch")
+                                if getattr(args, "ordinary_gui_campaign", False) else report.get("frontend_mod_load_launch"))
                         stream.write(json.dumps(session_state["report"], ensure_ascii=False) + "\n")
                     else:
                         session_state["report"] = native_session(
@@ -4396,6 +4605,8 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
     if frontend_fixture_policy is not None:
         child_args += ["--frontend-fixture-start-policy", str(policy_snapshot),
                        "--frontend-robert-bootstrap", "--fixture-profile"]
+    if getattr(args, "ordinary_gui_campaign", False):
+        child_args += ["--ordinary-gui-campaign", "--fixture-profile"]
     if args.saved_campaign_save is not None:
         child_args.append("--saved-campaign-server")
     if getattr(args, "private_succession_title_readonly", False):
@@ -4573,7 +4784,8 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                         plan = (frontend_initial_plan if frontend_initial_plan is not None else
                                 [{"id": "expected-sdk-tool-error", "tool": "ck3_migration_fixture_error"}]
                                 if args.sdk_error_smoke_test else load_plan(args.plan) if args.plan else
-                                [] if getattr(args, "frontend_mod_load_observation", False) else default_plan())
+                                [] if (getattr(args, "frontend_mod_load_observation", False)
+                                    or getattr(args, "ordinary_gui_campaign", False)) else default_plan())
                         await client.execute(plan)
                         if args.turns:
                             await client.execute([{"id": "r2-turns", "kind": "auto_turns", "count": args.turns}])
@@ -4806,6 +5018,8 @@ def parser() -> argparse.ArgumentParser:
                         help="Allow direct Bookmarks only after complete typed ordinary picker tree admission")
     result.add_argument("--fixture-profile", action="store_true",
                         help="explicit external fixture profile; use owned launch without singleton verification")
+    result.add_argument("--ordinary-gui-campaign", action="store_true",
+                        help="Allocated product-only campaign; Root uses ordinary GUI Start before actual native map readiness")
     result.add_argument("--native-fixture-inbox", action="store_true",
                         help="write-inbox explicitly invokes the fixed native fixture-run-inbox-v1 step")
     result.add_argument("--print-default-plan", action="store_true")
@@ -4820,6 +5034,7 @@ def parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = parser().parse_args()
+    validate_ordinary_gui_campaign_options(args)
     if (args.private_player_holy_site_creation_create_once
             and args.private_player_holy_site_creation_ui is not True):
         raise SystemExit("creation once requires its independent creation UI opt-in")

@@ -27,7 +27,7 @@ class SharedEntryTests(unittest.TestCase):
                  '--output','--state-dir','--plan','--control-plan-dir', *entry.BUDGET_FLAGS.values(),
                   *entry.SAVED_FLAGS.values(), '--fixture-profile', '--saved-campaign-inject-after-load',
                     '--saved-campaign-debug-mode', '--private-confucian-challenger-readonly',
-                    '--wire-evidence-codec']
+                    '--wire-evidence-codec', '--ordinary-gui-campaign']
         self.host.write_text("import argparse\np=argparse.ArgumentParser()\n" +
                              ''.join('p.add_argument(' + repr(flag) + ')\n' for flag in flags) +
                              "raise RuntimeError('The host must never execute in these tests')\n")
@@ -91,6 +91,46 @@ class SharedEntryTests(unittest.TestCase):
             self.assertEqual(result['blockers'],[])
             self.assertEqual(result['business_acceptance'],'NOT_ASSESSED')
             self.assertFalse(result['tool_status']['ck3_take_snapshot']['actual_live_qualified'])
+
+    def test_ordinary_gui_campaign_uses_the_shared_host_and_closed_startup(self) -> None:
+        startup = {'mode': 'ordinary_gui_campaign', 'state_dir': '{run_dir}/state'}
+        self.products['products']['xqol']['cases'][0]['startup'] = startup
+        self.products_path.write_text(json.dumps(self.products), encoding='utf-8')
+        selected = entry.Selection(self.runtime_path, self.products_path, 'xqol', 'core')
+        self.assertEqual(selected.preflight()['blockers'], [])
+        self.assertEqual(selected.argv[4], str(self.host.resolve()))
+        self.assertEqual(selected.argv.count('--ordinary-gui-campaign'), 1)
+        self.assertEqual(selected.argv.count('--fixture-profile'), 1)
+        for forbidden in ('--frontend-robert-bootstrap', '--frontend-fixture-start-policy',
+                          '--saved-campaign-save', '--frontend-mod-load-observation'):
+            self.assertNotIn(forbidden, selected.argv)
+        self.assertEqual(entry.ordinary_gui_campaign_startup(json.loads(json.dumps(startup))), startup)
+        bad_startups: tuple[object, ...] = (None, [], {**startup, 'saved_campaign': {}}, {**startup, 'state_dir': True},
+                    {**startup, 'state_dir': ''}, {**startup, 'mode': 'fixture'})
+        for bad in bad_startups:
+            with self.subTest(bad=bad), self.assertRaises(ValueError):
+                entry.ordinary_gui_campaign_startup(bad)
+        self.products['products']['xqol']['cases'][0]['startup'] = {**startup, 'fixture_start_policy': 'bad'}
+        self.products_path.write_text(json.dumps(self.products), encoding='utf-8')
+        with self.assertRaisesRegex(ValueError, 'only mode and state_dir'):
+            entry.Selection(self.runtime_path, self.products_path, 'xqol', 'core')
+
+    def test_ordinary_preparation_pin_reaches_real_preflight_and_allocator_inputs(self) -> None:
+        startup = {'mode': 'ordinary_gui_campaign', 'state_dir': '{run_dir}/state'}
+        self.products['products']['xqol']['cases'][0]['startup'] = startup
+        self.products_path.write_text(json.dumps(self.products), encoding='utf-8')
+        source = self.root / 'actual-product-preparation.json'
+        source.write_text('{}', encoding='utf-8')
+        prepared = self.root / 'ordinary-prepared-case.json'
+        prepared.write_text(json.dumps({'schema': 'ck3-mod-acceptance-prepared-case-v1',
+            'product': 'xqol', 'case': 'core', 'runtime_manifest': entry.pin(self.manifest_path),
+            'startup': startup, 'preparation': {'profile': {'preparation': entry.pin(source)}}}), encoding='utf-8')
+        selected = entry.Selection(self.runtime_path, self.products_path, 'xqol', 'core', prepared_path=prepared)
+        result = selected.preflight()
+        self.assertEqual(result['blockers'], [])
+        self.assertIn(entry.pin(source), result['checked_inputs'])
+        source.write_text('{"changed":true}', encoding='utf-8')
+        self.assertTrue(any('Pinned input changed' in error for error in selected.preflight()['blockers']))
 
     def test_external_catalog_reuses_pinned_shared_cache_case(self):
         central = self.locations['repo'] / 'tools/ck3_mod_acceptance_products.json'

@@ -85,6 +85,14 @@ jobs:
         run: python ck3_autonomous_player/native_bridge/research/test_native_verifier_evidence_scope.py
       - name: Test managed normal-exit profile and terminal host execution without CK3
         run: python -B -X utf8 tools/test_ck3_mod_acceptance_normal_exit_profile.py
+      - name: Test formal product ordinary campaign and capture admission without CK3
+        run: |
+          python -B -X utf8 tools/test_ck3_mod_acceptance_product_preparation.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 ck3_autonomous_player/tests/unit/test_frontend_fixture_scenario_host.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -m mypy --follow-imports=silent --ignore-missing-imports --no-incremental tools/ck3_mod_acceptance_cases/generic_product_adapter.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test failed-attempt resource closure without normal-exit credit
         run: |
           python -B -X utf8 tools/test_ck3_mod_acceptance_failed_resource_closure.py

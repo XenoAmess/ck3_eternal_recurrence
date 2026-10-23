@@ -241,6 +241,23 @@ BUDGET_FLAGS = {
     "command_timeout": "--command-timeout", "readiness_timeout": "--readiness-timeout",
     "timeout": "--timeout", "poll_interval": "--poll-interval", "hold_seconds": "--hold-seconds",
 }
+
+
+class OrdinaryGuiCampaignStartup(TypedDict):
+    mode: Literal["ordinary_gui_campaign"]
+    state_dir: str
+
+
+def ordinary_gui_campaign_startup(value: object) -> OrdinaryGuiCampaignStartup:
+    """An isolated formal product campaign has no fixture or saved-start inputs."""
+    if not isinstance(value, dict) or set(value) != {"mode", "state_dir"}:
+        raise ValueError("Ordinary GUI campaign startup accepts only mode and state_dir")
+    state = value["state_dir"]
+    if value["mode"] != "ordinary_gui_campaign" or not isinstance(state, str) or not state.strip():
+        raise ValueError("Explicit ordinary GUI campaign mode and state_dir required")
+    return {"mode": "ordinary_gui_campaign", "state_dir": state}
+
+
 SAVED_FLAGS = {
     "save": "--saved-campaign-save", "bytes": "--saved-campaign-save-bytes",
     "sha256": "--saved-campaign-save-sha256", "player_id": "--saved-campaign-player-id",
@@ -632,6 +649,14 @@ class Selection:
                 argv += ["--frontend-rules-plan", str(self.case_path(startup["frontend_rules_plan"]))]
             if startup.get('startup_case_contract'):
                 argv += ['--frontend-fixture-startup-case-contract',str(self.case_path(startup['startup_case_contract']))]
+        elif startup["mode"] == "ordinary_gui_campaign":
+            ordinary_gui_campaign_startup(startup)
+            if self.prepared is not None:
+                prepared = json_object(self.prepared)
+                profile = object_field(object_field(prepared, 'preparation'), 'profile')
+                reference = file_pin(profile.get('preparation'))
+                self.required_pins.append((Path(reference['path']).resolve(), dict(reference)))
+            argv += ["--fixture-profile", "--ordinary-gui-campaign"]
         elif startup["mode"] == "workshop_cache":
             argv += ["--fixture-profile", "--frontend-mod-load-observation"]
         elif startup["mode"] == "saved_campaign":
@@ -659,7 +684,7 @@ class Selection:
                 argv += [flag, str(value)]
             self.saved = saved
         else:
-            raise ValueError("Only existing fixture, saved_campaign and workshop_cache startup modes are supported")
+            raise ValueError("Unsupported fixture, saved_campaign, workshop_cache or ordinary_gui_campaign startup mode")
         if self.opt_in_player_inventory_window_open:
             argv.append("--allow-private-player-inventory-window-open")
         if self.opt_in_player_inventory_window_close:

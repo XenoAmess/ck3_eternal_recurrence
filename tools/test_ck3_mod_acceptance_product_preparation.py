@@ -12,6 +12,7 @@ sys.path[:0]=[str(ROOT/'tools'),str(ROOT/'ck3_autonomous_player/src')]
 import ck3_mod_acceptance_prepare as prepare
 import ck3_mod_acceptance_normal_exit_profile as normal
 import build_normal_exit_source_inventory_v1 as builder
+from ck3_mod_acceptance_cases import generic_product_adapter as generic
 
 
 class ProductPreparationTests(unittest.TestCase):
@@ -103,6 +104,93 @@ class ProductPreparationTests(unittest.TestCase):
         startup=self.state/'preparation.json';value=json.loads(startup.read_bytes())
         value['preparation']=prepare.pin(path);startup.write_text(json.dumps(value),encoding='utf-8')
         with self.assertRaisesRegex(ValueError,'identities differ'):self.project()
+
+
+class OrdinaryPromotionTests(ProductPreparationTests):
+    def ordinary_context(self):
+        context=copy.deepcopy(self.context)
+        context.update(state_dir=str(self.root/'ordinary/state'), run_dir=str(self.root/'run'),
+            output=str(self.root/'ordinary/prepared'),
+            product='living-artifacts', case='ordinary-promotion', run_id='ordinary-R1',
+            case_contract=json.loads((ROOT/'tools/ck3_mod_acceptance_cases/living_artifacts_ordinary_promotion.json').read_bytes()))
+        Path(context['output']).mkdir(parents=True, exist_ok=True)
+        context['case_inputs']={'product_dir':str(self.product),
+            'formal_product_files':{p.relative_to(self.product).as_posix():prepare.pin(p)
+                for p in self.product.rglob('*') if p.is_file()},
+            'plain_configuration':{name:prepare.pin(self.root/'plain'/name) for name in prepare.CONFIG_NAMES}}
+        return context
+
+    def test_ordinary_actual_prepare_to_normal_exit_inventory_without_carrier(self):
+        context=self.ordinary_context()
+        result=generic.prepare_case(context)
+        self.assertEqual(result['startup'],{'mode':'ordinary_gui_campaign','state_dir':context['state_dir']})
+        self.assertEqual(json.loads(Path(result['initial_plan']['path']).read_bytes()),{'steps':[]})
+        self.assertFalse(result['business_pass'])
+        self.assertFalse(result['profile']['fixture_mounted'])
+        self.assertFalse((Path(context['state_dir'])/'profile/mod-content/fixture').exists())
+        self.assertFalse((self.output/'empty-load-carrier').exists())
+        self.args.state_dir=Path(context['state_dir'])
+        profile=normal.create_profile(self.args,self.runtime,self.manifest,{'sha256':'3'*64},
+            self.args.state_dir/'normal-exit-binding',builder)
+        self.assertTrue(Path(profile['path']).is_file())
+
+    def test_ordinary_unknown_or_effect_inputs_rejected_before_profile(self):
+        for key in ('fixture_dir','saved_campaign','frontend_rules'):
+            context=self.ordinary_context();context['case_inputs'][key]={}
+            with self.assertRaisesRegex(ValueError,'only formal'):generic.prepare_case(context)
+            self.assertFalse(Path(context['state_dir']).exists())
+
+    def test_ordinary_manifest_rejects_wrong_missing_bool_and_changed_bytes(self):
+        for mutation in ('missing','bool','digest','extra'):
+            context=self.ordinary_context();files=context['case_inputs']['formal_product_files']
+            if mutation=='missing':files.pop('descriptor.mod')
+            elif mutation=='bool':files['descriptor.mod']['bytes']=True
+            elif mutation=='digest':files['descriptor.mod']['sha256']='0'*64
+            else:files['unshipped.txt']=copy.deepcopy(files['descriptor.mod'])
+            with self.assertRaises(ValueError):generic.prepare_case(context)
+            self.assertFalse(Path(context['state_dir']).exists())
+
+    def capture_evidence(self):
+        context=self.ordinary_context();root=self.root/'captures';take=root/'take01'
+        raw=self.put(take/'raw-gameplay.mkv',b'actual synthetic media boundary')
+        final=self.put(take/'recorder-final.json',(json.dumps({
+            'schema':'ck3-mod-acceptance-recorder-final-v2','machine_id':'offline-machine',
+            'result':'ENCODED_UNREVIEWED','budget_qualified':True,'probe_exit_code':0,
+            'job':{'state':'NORMAL_TREE_EMPTY','job_active_processes':0},'raw':raw})+'\n').encode())
+        config=self.put(self.root/'recording-config.json',(json.dumps({
+            'schema':'ck3-mod-acceptance-recording-config-v2','machine_id':'offline-machine',
+            'capture_root':str(root)})+'\n').encode())
+        self.put(Path(context['run_dir'])/'frozen-argv.json',(json.dumps({
+            'run_id':context['run_id'],'files':{config['path']:{k:config[k] for k in ('bytes','sha256')}}})+'\n').encode())
+        response={'status':'complete','run_id':context['run_id'],'reviewer':'/root',
+            'recorder_config':config,'captures':[final],'evidence':[raw],
+            'assertions':{key:True for key in generic.ORDINARY_REVIEW_ASSERTIONS}}
+        return context,response
+
+    def test_ordinary_verifies_actual_allocated_recorder_pin_and_raw_roundtrip(self):
+        context,response=self.capture_evidence()
+        result=generic.validate_ordinary_capture_evidence(context,json.loads(json.dumps(response)))
+        self.assertEqual(result['captures'],response['captures'])
+        self.assertFalse(result['human_review_performed'])
+        Path(response['evidence'][0]['path']).write_bytes(b'tampered media')
+        with self.assertRaisesRegex(ValueError,'bytes changed'):
+            generic.validate_ordinary_capture_evidence(context,response)
+
+    def test_ordinary_ack_missing_capture_and_unallocated_config_rejected(self):
+        context,response=self.capture_evidence()
+        for key in ('captures','recorder_config','evidence','assertions'):
+            bad=copy.deepcopy(response);bad.pop(key)
+            with self.assertRaises(ValueError):generic.validate_ordinary_capture_evidence(context,bad)
+        frozen=Path(context['run_dir'])/'frozen-argv.json'
+        frozen.write_bytes(json.dumps({'run_id':context['run_id'],'files':{}}).encode())
+        with self.assertRaises(ValueError):generic.validate_ordinary_capture_evidence(context,response)
+
+    def test_ordinary_recorder_bool_exit_does_not_pass_as_zero(self):
+        context,response=self.capture_evidence();path=Path(response['captures'][0]['path'])
+        value=json.loads(path.read_bytes());value['job']['job_active_processes']=False
+        path.write_bytes(json.dumps(value).encode());response['captures']=[prepare.pin(path)]
+        with self.assertRaisesRegex(ValueError,'terminal'):
+            generic.validate_ordinary_capture_evidence(context,response)
 
 
 if __name__=='__main__':unittest.main()

@@ -14,27 +14,193 @@ from pathlib import Path
 import re
 import shutil
 from dataclasses import dataclass
-from typing import Literal, Protocol, TypeAlias
+from typing import TYPE_CHECKING, Literal, Protocol, TypeAlias
 
-from ck3_mod_acceptance_background_types import FilePin, JsonObject, json_object
+from ck3_mod_acceptance_background_types import (
+    FilePin, JsonObject, file_pin, json_object, object_field, text_field,
+)
+
+if TYPE_CHECKING:
+    from ck3_mod_acceptance_client import CaseClient
 
 
-def require(value, message):
+class OrdinaryCaptureClient(Protocol):
+    def snapshot(self, *, require_event_free: bool = True) -> object: ...
+    def root_checkpoint(self, name: str, request: JsonObject, reserve: int = 90) -> object: ...
+    def checkpoint(self, name: str, value: JsonObject) -> object: ...
+
+
+ORDINARY_REVIEW_ASSERTIONS = (
+    'formal_product_only_ordinary_play',
+    'selected_gameplay_frames_reviewed',
+    'no_fixture_or_debug_visible',
+)
+
+
+def ordinary_contract(context: JsonObject) -> JsonObject:
+    config = object_field(context, 'case_contract')
+    if (set(config) != {'schema', 'product', 'case_id', 'acceptance_scope', 'source_contracts'}
+            or config.get('schema') != 'ck3-ordinary-promotion-contract-v1'
+            or config.get('acceptance_scope') != 'ordinary_promotion'
+            or config.get('product') != context.get('product')
+            or config.get('case_id') != context.get('case')):
+        raise ValueError('Exact ordinary promotion contract required')
+    sources = config.get('source_contracts')
+    if not isinstance(sources, list) or not sources or not all(isinstance(s, str) and s for s in sources):
+        raise ValueError('Ordinary promotion source contracts required')
+    return config
+
+
+def checked_capture_pin(value: object) -> FilePin:
+    from ck3_mod_acceptance_recorder import file_identity
+    expected = file_pin(value)
+    actual = file_identity(expected['path'])
+    if actual != expected:
+        raise ValueError('Ordinary capture evidence bytes changed')
+    return actual
+
+
+def prepare_ordinary_capture(context: JsonObject) -> JsonObject:
+    from ck3_mod_acceptance_prepare import materialize_product_profile, finish_product_profile
+    ordinary_contract(context)
+    inputs = object_field(context, 'case_inputs')
+    if set(inputs) != {'product_dir', 'formal_product_files', 'plain_configuration'}:
+        raise ValueError('Ordinary promotion accepts only formal product and four plain configurations')
+    product = Path(text_field(inputs, 'product_dir')).resolve()
+    expected = object_field(inputs, 'formal_product_files')
+    from ck3_mod_acceptance_recorder import file_identity
+    actual = {p.relative_to(product).as_posix(): file_identity(p)
+              for p in product.rglob('*') if p.is_file()}
+    if not expected or set(actual) != set(expected) or 'descriptor.mod' not in actual:
+        raise ValueError('Exact formal product file closure required')
+    for name, value in expected.items():
+        row = checked_capture_pin(value)
+        if row != actual[name]:
+            raise ValueError('Formal product source identity differs: ' + name)
+    plain = object_field(inputs, 'plain_configuration')
+    profile = materialize_product_profile(context, product, plain)
+    mounted = {key.removeprefix('mod-content/product/'): file_pin(row)
+               for key, row in profile['files'].items() if key.startswith('mod-content/product/')}
+    if set(mounted) != set(actual) or any(
+            mounted[key]['bytes'] != row['bytes'] or mounted[key]['sha256'] != row['sha256']
+            for key, row in actual.items()):
+        raise ValueError('Mounted formal product bytes differ')
+    profile = finish_product_profile(context, profile, provenance={
+        'kind': 'ordinary-gui-promotion', 'fixture_mounted': False,
+        'formal_product_files': actual, 'business_acceptance': 'NOT_ASSESSED'})
+    initial = Path(text_field(context, 'output')) / 'initial-plan.json'
+    write_once(initial, {'steps': []})
+    return json_object({'startup': {'mode': 'ordinary_gui_campaign', 'state_dir': profile['state_dir']},
+        'initial_plan': pin(initial), 'profile': profile, 'formal_file_count': len(actual),
+        'business_contract_applicable': False, 'runtime_status': 'NOT_RUN',
+        'business_pass': False, 'product_release_pass': False})
+
+
+def validate_ordinary_capture_evidence(context: JsonObject, response: JsonObject) -> JsonObject:
+    ordinary_contract(context)
+    if (response.get('run_id') != context.get('run_id') or response.get('reviewer') != '/root'
+            or response.get('status') != 'complete'):
+        raise ValueError('Ordinary promotion review crossed run/operator')
+    assertions = object_field(response, 'assertions')
+    if set(assertions) != set(ORDINARY_REVIEW_ASSERTIONS) or any(
+            assertions[name] is not True for name in ORDINARY_REVIEW_ASSERTIONS):
+        raise ValueError('Actual Root gameplay frame review required; recorder ACK is insufficient')
+    frozen = json_object(read_json(Path(text_field(context, 'run_dir')) / 'frozen-argv.json'))
+    if frozen.get('run_id') != context.get('run_id'):
+        raise ValueError('Ordinary promotion frozen run differs')
+    config_pin = checked_capture_pin(response.get('recorder_config'))
+    frozen_config = object_field(object_field(frozen, 'files'), config_pin['path'])
+    if frozen_config != {'bytes': config_pin['bytes'], 'sha256': config_pin['sha256']}:
+        raise ValueError('Recorder configuration is not allocated to this run')
+    config = json_object(read_json(config_pin['path']))
+    if config.get('schema') != 'ck3-mod-acceptance-recording-config-v2':
+        raise ValueError('Ordinary promotion requires bounded segmented capture')
+    capture_root = Path(text_field(config, 'capture_root')).resolve()
+    captures = response.get('captures')
+    if not isinstance(captures, list) or not 1 <= len(captures) <= 4:
+        raise ValueError('Actual bounded capture finals required')
+    finals: list[JsonObject] = []
+    paths: set[Path] = set()
+    for value in captures:
+        final_pin = checked_capture_pin(value)
+        path = Path(final_pin['path']).resolve()
+        if path in paths or not path.is_relative_to(capture_root) or path.name != 'recorder-final.json':
+            raise ValueError('Capture final crossed allocated capture root or repeated')
+        paths.add(path)
+        final = json_object(read_json(path))
+        job = object_field(final, 'job')
+        raw = checked_capture_pin(final.get('raw'))
+        if (final.get('schema') != 'ck3-mod-acceptance-recorder-final-v2'
+                or final.get('machine_id') != config.get('machine_id')
+                or final.get('result') != 'ENCODED_UNREVIEWED'
+                or final.get('budget_qualified') is not True
+                or type(final.get('probe_exit_code')) is not int or final['probe_exit_code'] != 0
+                or job.get('state') != 'NORMAL_TREE_EMPTY'
+                or type(job.get('job_active_processes')) is not int or job['job_active_processes'] != 0
+                or Path(raw['path']).resolve() != path.parent / 'raw-gameplay.mkv'):
+            raise ValueError('Actual recorder terminal/probe/tree/budget qualification required')
+        finals.append(json_object(final_pin))
+    evidence = response.get('evidence')
+    if not isinstance(evidence, list) or not evidence:
+        raise ValueError('Ordinary promotion native and visual evidence required')
+    for row in evidence:
+        checked_capture_pin(row)
+    return json_object({'recorder_config': config_pin, 'captures': finals, 'evidence': evidence,
+                        'clean_spans_certified': False, 'human_review_performed': False})
+
+
+def run_ordinary_capture(context: JsonObject, client: OrdinaryCaptureClient) -> JsonObject:
+    config = ordinary_contract(context)
+    profile = Path(text_field(context, 'state_dir')) / 'profile'
+    if (read_json(profile / 'dlc_load.json').get('enabled_mods') != ['mod/product.mod']
+            or (profile / 'mod/fixture.mod').exists() or (profile / 'mod-content/fixture').exists()):
+        raise ValueError('Ordinary promotion requires the formal product alone')
+    before = json_object(client.snapshot(require_event_free=False))
+    response = json_object(client.root_checkpoint('ordinary-promotion-capture', json_object({
+        'scope': config['acceptance_scope'], 'actual_initial_native_frame': before,
+        'required_result_fields': ['status', 'run_id', 'reviewer', 'recorder_config', 'captures', 'evidence', 'assertions'],
+        'required_assertions': list(ORDINARY_REVIEW_ASSERTIONS),
+        'action': 'Normal GUI gameplay and same-keeper bounded recording; no fixture or forced outcomes',
+        'business_pass': False}), reserve=180))
+    media = validate_ordinary_capture_evidence(context, response)
+    after = json_object(client.snapshot(require_event_free=False))
+    facts = json_object({'schema': 'ck3-ordinary-promotion-result-v1', 'run_id': context['run_id'],
+        'product': context['product'], 'case': context['case'], 'review': response, 'media': media,
+        'initial_native_frame': before, 'final_native_frame': after, 'fixture_mounted': False,
+        'raw_frame_review_performed_by_root': True,
+        'case_contract_qualified': True, 'gui_contract_qualified': True,
+        'business_contract_applicable': False, 'business_pass': False, 'product_release_pass': False,
+        'result_boundary': 'CAPTURED_UNREVIEWED_NOT_FINAL_VIDEO'})
+    client.checkpoint('ordinary-promotion-result', facts)
+    return facts
+
+
+def verify_ordinary_capture(context: JsonObject) -> JsonObject:
+    ordinary_contract(context)
+    path = Path(text_field(context, 'output')) / 'ordinary-promotion-result.json'
+    facts = json_object(read_json(path))
+    if any(facts.get(key) != context.get(key) for key in ('run_id', 'product', 'case')):
+        raise ValueError('Ordinary promotion result crossed scene')
+    validate_ordinary_capture_evidence(context, object_field(facts, 'review'))
+    return facts
+
+
+def require(value: object, message: str) -> None:
     if not value:
         raise ValueError(message)
 
 
-def pin(path):
+def pin(path: str | Path) -> FilePin:
     path = Path(path).resolve()
     raw = path.read_bytes()
     return {'path': str(path), 'bytes': len(raw), 'sha256': hashlib.sha256(raw).hexdigest()}
 
 
-def read_json(path):
-    return json.loads(Path(path).read_text(encoding='utf-8-sig'))
+def read_json(path: str | Path) -> JsonObject:
+    return json_object(json.loads(Path(path).read_text(encoding='utf-8-sig')))
 
 
-def write_once(path, value):
+def write_once(path: str | Path, value: JsonObject) -> None:
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open('x', encoding='utf-8', newline='\n') as stream:
@@ -960,18 +1126,27 @@ def _sr_verify(context: JsonObject) -> JsonObject:
 
 
 def prepare_case(context: JsonObject) -> JsonObject:
+    context = json_object(context)
+    if object_field(context, 'case_contract').get('acceptance_scope') == 'ordinary_promotion':
+        return prepare_ordinary_capture(context)
     if _sr_enabled(context):
         return _sr_prepare(context)
     return json_object(_prepare_fixture_case(context))
 
 
-def run_case(context: JsonObject, client: SavedReadbackClient) -> JsonObject:
+def run_case(context: JsonObject, client: CaseClient) -> JsonObject:
+    context = json_object(context)
+    if object_field(context, 'case_contract').get('acceptance_scope') == 'ordinary_promotion':
+        return run_ordinary_capture(context, client)
     if _sr_enabled(context):
         return _sr_run(context, client)
     return json_object(_run_fixture_case(context, client))
 
 
 def verify_case(context: JsonObject) -> JsonObject:
+    context = json_object(context)
+    if object_field(context, 'case_contract').get('acceptance_scope') == 'ordinary_promotion':
+        return verify_ordinary_capture(context)
     if _sr_enabled(context):
         return _sr_verify(context)
     return json_object(_verify_fixture_case(context))

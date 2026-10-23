@@ -1,0 +1,10 @@
+{
+  "schema": "ck3-ordinary-promotion-contract-v1",
+  "product": "living-artifacts",
+  "case_id": "ordinary-promotion",
+  "acceptance_scope": "ordinary_promotion",
+  "source_contracts": [
+    "promo/living_artifacts/director.md",
+    "mod_living_artifacts/docs/test-plan.md"
+  ]
+}
