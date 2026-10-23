@@ -42,3 +42,21 @@
 首轮Java实机目标已调整为北京时间10:00–11:00争取窗口，尚非确定开测时刻；先争取Java地图回执的实机纵向验证。完整SDK、真实Native接续、原writer锁内reducer和业务后态未通过前，不报告已恢复自动游玩。2026-10-23T00:46:10.419426Z后台Steam probe实际为offline/true，回执`J/logs/STEAM-OFFLINE-JAVA-PREFLIGHT01.json`；正式启动前仍须重新取证，不复用此旧观察。
 
 当前SOURCE/Runtime新窗口至2026-10-23T02:30Z，原4GiB包内重分且新增take0。tools88依赖完整G2的CI入口，不能只覆盖现有主线9子模块后声称可以发布；完整新图验收后再整体采用。原失败、旧计划和时间记录保留，当前必要输入按通用存储策略限期复核。
+
+## 10:55 软件闭环与资源审计补记
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`，2026-10-23T02:18:36Z重新实读身份一致。以下保留旧失败及计划，不把编译、配置或原件恢复计作新实机业务完成。
+
+- source02完整复制及独审通过：1931文件、30子模块/31项目，native含目录guard34823624 B，22项反例通过。首次整图编译采集随后真实RED：治理模块四处测试旧接口，Maven1/Job0、双1931来源MATCH、tests NOT_RUN，未形成合格编译manifest。`J/logs/build-java-g2-fullcapture01.json`为1201708 B / `c2423f9f849244232fe4a592113c01a3fbb45af77436952c5a7157da5fa93c42`。
+- 真实G2双源码pins单独已超过原1MiB回执限制。tools06将生产者、中央读取器、caller、融资profile/资格读取、宿主读取统一为共享有限2MiB合同；原失败原样成为回归资源。W3测试夹具的同一限制纳Plan11，普通配置/JSON限制保持原合同。
+- 工具首次验证被旧27驱动的mutable scratch遍历守卫中止：inner124/Job0、来源MATCH，错误为临时文件并发删除时的AccessDenied。保留`build-java-tools89-firstcut06.json`。随后实际生产驱动切至已完整资格的05，消费其已有的有限重读、真实消失确认和严格失败边界；未修改冻结06或通过同一旧驱动碰运气重试。
+- tools06b完整Maven实际299/299、34套件，0失败/错误/跳过；Root outer0、Maven0、Job0、stopnull，双source MATCH，108.1446946s、峰1081876480 B。`J/logs/build-java-tools89-firstcut06b.json`为57026 B / `22c5cde7b2e282ec7c7ff41e98094b0cf21a0c6423a9f4221bfc70ccb6ed8267`。新完整六件包自身读回通过：`J/build/resume-current-20261023/common-1/bootstrap_integrated_tools/tools06b-reader-run01/actual.json`为3435 B / `4f31bf25739d038036c12d94fa62c6bc39080c2af4455f909745bb7ab681d191`。完整工具交付`N/bootstrap_integrated_tools/tools06/DELIVERY06B.json`为24056 B / `c54f51f9537e63e63bcd0245364e0162e142e8562b486ff67fc5cbcede27d65b`。
+- 治理原14测试曾实际1PASS/13FAIL，暴露缺原件、压缩读取预算及默认materialization阶段语义问题。后继复用唯一EducationOptions字段合同，保留合法pair-only/keys-only/空值，未放宽整数校验；精确恢复原EducationOptions资源后，原三类加必要边界23/23实际通过，outer0/child0/Job0、所有来源MATCH。`N/java29_capture/governance-next/ACTUAL03-PASS.json`为7873 B / `f8dd3ffc568818475c2e5e97a99f7810f46a78d6f40c071939683375f9f0fab6`。这六项后继源码未混入当前最小编译采集图。
+- 全图资源审计展开1532个Java源的getter及动态路径，确认78处缺口，其中含一处M2 POM资源映射。11个领域任务并行核对原actual/spec/output、当前consumer版本及source pins；可恢复原件不等于已经全物化，其他项目保留来源漂移或缺少真实捕获。审计入口`N/military_fixtures/RESOURCE-DYNAMIC-CLOSE03.json`为18351 B / `a499dbc3c77da89df22823f73b6647610a7fbcd0f2ca6297004b0ef5e377bea5`。融资四项仍须新真实编译manifest后重采，不借旧source-mode PASS追认。
+- SDK typed配置生产/读取后继严格编译及35/35局部回归通过；Native进程/持续持有DLL资源的软件12/12通过。真实pipe endpoint正例、完整SDK/cold-warm/continuation、整图Maven和游戏资格仍分别待验，不由这些软件测试外推。
+
+最小Plan11已实际选定1932文件、27261151 logical B、31项目，11替换/1新增/0删除；全部来源fresh MATCH，物化上界36331520 B小于36MiB。`N/contracts_source_graph/FIRSTCUT-TYPED-PLAN11.json`为671004 B / `9f6b6390ca9ef2951cadc24c7b3952f27c05d2c50c38077bbf460c8b26d93a22`。新source03物化实际PASS：outer0/child0/Job0，99.8592301s、native含目录guard36040136 B。`J/artifacts/fullg2-source03-producer-metadata/SOURCE-GRAPH-ACTUAL01.json`为2349 B / `6d45081bc1d9b08d44f4e1a47b2ec9e46288fe0e49aa21867905125f4d2c9687`。独审与完整编译采集继续按真实新卡接续，不把选择清单或启动ACK当作完成。
+
+旧10:00–11:00完整Java实机窗口现已不能承诺。仍优先推进首个Java地图回执实机纵向验证，同时补齐真实pre-load custody、单一Native owner、后台fresh Steam离线和必要共享生产路径；满足可运行条件就开展。当前八M基础Java软件证据8/8，完整统一宿主八域HTTP仍0/8，Java新增保存日0，历史保存前沿5628/10950、原T0及UNKNOWN不重放边界不变。
+
+新SOURCE12/Runtime05为独立Window03至2026-10-23T03:30Z，旧窗口记录不改。新卡按关闭作业实际留存重基，在原D4GiB包内重分、新增take0；解除未使用预留不等于删除磁盘文件。当前必要原件和失败继续按通用策略限期复核。
