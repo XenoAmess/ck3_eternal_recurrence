@@ -1850,3 +1850,175 @@ _R0037_SOURCE_ONLY: dict[str, SourceOnlyRecord] = {'travel_danger_events.4010': 
                                       'policy_actually_used': 'native_first_displayed_v1',
                                       'registry_consumption_succeeded_live': False}}}
 PILGRIMAGE_TRAVEL_SOURCE_ONLY_12004.update(_R0037_SOURCE_ONLY)
+
+_R0039_SOURCE_ONLY: dict[str, SourceOnlyRecord] = {'pilgrimage.2008': {'analysis': {'source_analysis_completed': True,
+                                  'migration_review_status': 'source_reviewed_no_occurrence_contract',
+                                  'exact_build': '1.20.0.4',
+                                  'source_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0039-pilgrimage-2008.source-analysis.json',
+                                  'source_document_sha256': '7f2c6e043fe0e6d1ee4765c77bb008d3ae7dedf11ba94d10ea12e1e0c3ed3441',
+                                  'occurrence_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0039-events-occurrence.json',
+                                  'title': '朝圣：染病',
+                                  'source_pins': [{'game_relative_path': 'events/activities/pilgrimage_activity/pilgrimage_events.txt',
+                                                   'bytes': 358138,
+                                                   'sha256': '900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06',
+                                                   'relevant_lines': [[3437, 3516]]},
+                                                  {'game_relative_path': 'common/scripted_effects/20_health_effects.txt',
+                                                   'bytes': 107548,
+                                                   'sha256': 'abefa738c913c660a52fa747bcc92fca2f57d77a0f47d903bedc2882f3d5a9db',
+                                                   'relevant_lines': [[127, 216], [302, 309], [719, 911]]},
+                                                  {'game_relative_path': 'events/health_events.txt',
+                                                   'bytes': 278987,
+                                                   'sha256': '74073e049a416c744b36a2a996fa467610705e38d53c836b050f1ac6f66e1212',
+                                                   'relevant_lines': [[972, 1270]]},
+                                                  {'game_relative_path': 'common/on_action/travel_on_actions.txt',
+                                                   'bytes': 71526,
+                                                   'sha256': 'cd40f30a9280ea9ba656b59005201550f3991afd646fd686d7474657b1b1ff70',
+                                                   'relevant_lines': [[732, 732]]},
+                                                  {'game_relative_path': 'localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml',
+                                                   'bytes': 136481,
+                                                   'sha256': 'cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3',
+                                                   'relevant_lines': [[346, 351]]}],
+                                  'source_options': [{'source_key': 'pilgrimage.2008.whole_of_body',
+                                                      'historical_native_index': None,
+                                                      'historical_label': '哦，这种轻微的咳嗽很快就会过去的。',
+                                                      'effects': ['Visible only with whole_of_body. Hidden '
+                                                                  'recover_from_disease_effect(DISEASE=ill); '
+                                                                  'displayed remove_trait=ill is tooltip '
+                                                                  'only.',
+                                                                  'No direct option-level travel delay, '
+                                                                  'wallet, pilgrimage score or reward-trait '
+                                                                  'effect declared.'],
+                                                      'visibility': 'Not shown in R0039 instance8; no '
+                                                                    'current or historical native index '
+                                                                    'inferred from source order.',
+                                                      'historical_R31_selected': False},
+                                                     {'source_key': 'pilgrimage.2008.court_physician',
+                                                      'historical_native_index': None,
+                                                      'historical_label': '[traveling_court_physician.GetTitledFirstNameNoTooltip|U]，给我调制点汤药。',
+                                                      'effects': ['Visible only with saved '
+                                                                  'traveling_court_physician. Hidden '
+                                                                  'recover_from_disease_effect(DISEASE=ill); '
+                                                                  'displayed remove_trait=ill is tooltip '
+                                                                  'only.',
+                                                                  'No direct option-level travel delay, '
+                                                                  'wallet, pilgrimage score or reward-trait '
+                                                                  'effect declared.'],
+                                                      'visibility': 'Not shown and no '
+                                                                    'traveling_court_physician scope saved '
+                                                                    'in R0039 instance8.',
+                                                      'historical_R31_selected': False},
+                                                     {'source_key': 'pilgrimage.2008.a',
+                                                      'historical_native_index': 2,
+                                                      'historical_label': '如果这是真主的旨意。',
+                                                      'effects': ['Unconditional source option. '
+                                                                  'custom_tooltip warns of continuing while '
+                                                                  'ill; trigger_event=health.1001 requests a '
+                                                                  'separate event, not direct travel '
+                                                                  'cancellation or healing.',
+                                                                  'health.1001 has its own '
+                                                                  'can_contract_disease_trigger(DISEASE=ill); '
+                                                                  'its appearance is not guaranteed by this '
+                                                                  'request or by ACK.',
+                                                                  "Illness is processed in this event's "
+                                                                  'immediate before selection, not awarded '
+                                                                  'by option A. The immediate helper '
+                                                                  'requests health.3100 after5days, subject '
+                                                                  'to actual game dispatch; no follow-up '
+                                                                  'appearance credited here.'],
+                                                      'visibility': 'Only shown legal row in R0039 '
+                                                                    'instance8: rendered0/native2, selected '
+                                                                    'once; do not hardcode2 for a fresh '
+                                                                    'window.',
+                                                      'historical_R31_selected': False}],
+                                  'agent_reference': 'R0039 instance8: player15893, sick_character15893. '
+                                                     'Travel-plan and disease-flag scopes are available '
+                                                     'generic scopes with unavailable payload identity, not '
+                                                     'invalid scopes. Definition3437-3516: event-local10year '
+                                                     'cooldown; on-land pilgrimage, '
+                                                     'next_destination_progress>0.2, can_contract ill. '
+                                                     'Immediate calls '
+                                                     'contract_disease_effect(ill,TREATMENT_EVENT=yes), '
+                                                     'saves traveling physician only if present. Source '
+                                                     'helper saves sick_character/disease_type, adds ill, '
+                                                     'schedules treatment/recovery. Runtime illness '
+                                                     'membership and follow-up events were not independently '
+                                                     'read. ACK and independent instance disappearance are '
+                                                     'confirmed; no claim of healing, actual delay, Hajj '
+                                                     'completion, Hajjaj reward or return. Source-only '
+                                                     'knowledge; fresh scopes, shown/enabled order and '
+                                                     'current legality remain mandatory. Existing policy is '
+                                                     'unchanged.',
+                                  'current_native_legality': None,
+                                  'action_ready': False,
+                                  'ordinary_auto_consumes': False,
+                                  'full_occurrence_contract_registered': False,
+                                  'selection_policy_changed': False,
+                                  'historical_index_is_current_selection_permission': False,
+                                  'historical_evidence_is_current_state': False},
+                     'observations': {'machine_id': '4-8e1c2f1861',
+                                      'observed_at_utc': '2026-10-23T04:52:53.096137+00:00',
+                                      'run_id': '4-8e1c2f1861--faith-engine--R0039',
+                                      'actual': {'event_instance_id': 8,
+                                                 'event_definition_key': 'pilgrimage.2008',
+                                                 'input_observed_at_utc': '2026-10-23T04:52:44.384284+00:00',
+                                                 'selection_observed_at_utc': '2026-10-23T04:52:53.096137+00:00',
+                                                 'snapshot_revision': 337,
+                                                 'date_raw': 51397512,
+                                                 'actor_character_id': 15893,
+                                                 'displayed_options': [{'rendered_index': 0,
+                                                                        'native_option_index': 2,
+                                                                        'shown': True,
+                                                                        'enabled': True,
+                                                                        'fallback': False,
+                                                                        'cancel': False,
+                                                                        'resolved_name': '如果这是真主的旨意。'}],
+                                                 'selected_native_option_index': 2,
+                                                 'selected_option_number': 3,
+                                                 'intent_submission_attempted': False,
+                                                 'submission_attempted': True,
+                                                 'ack_accepted': True,
+                                                 'old_instance_gone_in_independent_snapshot': True,
+                                                 'post_actor_character_id': 15893,
+                                                 'post_date_raw': 51397512,
+                                                 'post_snapshot_revision': 338,
+                                                 'post_active_event': None,
+                                                 'played_character_stress_points_before': 0,
+                                                 'played_character_stress_points_after': 0,
+                                                 'wallets_before': {'played_character_gold': {'raw': 125995729,
+                                                                                              'scale': 100000},
+                                                                    'played_character_prestige': {'raw': 13008025,
+                                                                                                  'scale': 100000},
+                                                                    'played_character_piety': {'raw': 225777000,
+                                                                                               'scale': 100000}},
+                                                 'wallets_after': {'played_character_gold': {'raw': 125995729,
+                                                                                             'scale': 100000},
+                                                                   'played_character_prestige': {'raw': 13008025,
+                                                                                                 'scale': 100000},
+                                                                   'played_character_piety': {'raw': 225777000,
+                                                                                              'scale': 100000}},
+                                                 'live_registry_status': 'not_registered',
+                                                 'live_registry_reason': 'event_definition_key_not_registered',
+                                                 'legacy_registry_analysis_available_bool': True,
+                                                 'legacy_analysis_bool_is_not_source_completion_evidence': True,
+                                                 'policy_actually_used': 'native_first_displayed_v1',
+                                                 'evidence': [{'path': 'C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/live/4-8e1c2f1861--faith-engine--R0039/case-output/faith-e02-journey-001-event-8-offline-analysis-input.json',
+                                                               'bytes': 73706,
+                                                               'sha256': '87fa42ec7df65511d4b3931fe782a1d5a5eebcd4400a0c997644d4a67e966220'},
+                                                              {'path': 'C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/live/4-8e1c2f1861--faith-engine--R0039/case-output/faith-e02-journey-001-event-8-selection-intent.json',
+                                                               'bytes': 76797,
+                                                               'sha256': 'c33e00b0878ef46d922c504fdb5229eb8ce5dc578707a806309d10ee4c4558c0'},
+                                                              {'path': 'C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/live/4-8e1c2f1861--faith-engine--R0039/case-output/faith-e02-journey-001-event-8-selection-observed.json',
+                                                               'bytes': 37905,
+                                                               'sha256': '072a63863282dc3405a0451ad33cd9addf6f223fba9dd4c8ed14ee9ccc96260b'},
+                                                              {'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0039\\case-output\\faith-e02-journey-001-0030-event-select-once.actual-results.json',
+                                                               'bytes': 42082,
+                                                               'sha256': '48b7181ba24ec8991f4c3b678f7a554ed6bbfd0ddfed9f0faf4f7ab556387ee0'}],
+                                                 'actual_effect_boundary': 'ACK and independent old-window '
+                                                                           'disappearance only. No '
+                                                                           'unmeasured disease, NPC health, '
+                                                                           'opinion, known-Rite, net '
+                                                                           'travel-delay or reward result '
+                                                                           'credited.'},
+                                      'policy_actually_used': 'native_first_displayed_v1',
+                                      'registry_consumption_succeeded_live': False}}}
+PILGRIMAGE_TRAVEL_SOURCE_ONLY_12004.update(_R0039_SOURCE_ONLY)
