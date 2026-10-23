@@ -129,3 +129,16 @@ Window07的Runtime12已由launcher实际echo通过并切queue13，窗口至08:30
 下一整图known-input草图已有2076文件、1220目录、28829881 logical B，保守native上界38309888 B，已经超出旧36MiB。新Stabilization合同单独采用44MiB物理上限，仍限2304文件/32MiB逻辑字节，旧Research物理36MiB语义保留；实际物化另须final Plan精确峰、Source/snapshot/build两代保留容量及正式卡，不因合同上限扩大而自动获准写入。当前八M精确差量已分别交sole composer，均未当作source06组合通过。
 
 资源按真实依赖排程：现成genuine05中未变化的Capture在验证全部输入后可先实际采集；cash-v2等新增或变化Capture需要新32项目compile-only清单，再采原件，最后完整normal verify与Host/SDK整step。这一顺序不把编译采集冒充业务测试，也避免默认验收等待尚未生成的原件。Native held-owner locator的真实阻塞已定位GetNamedPipeInfo→Custody.retainOwnerServer，正在共享生产路径修复；实际Game、HELLO、Driver/SAVE正文读取、Java新增保存日仍为0，UNKNOWN不重放及历史保存前沿不变。
+
+## 18:08 热重载、工具整步与首轮地图实机路线
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`；本节记录截至2026-10-23T10:08Z。**首轮Java地图实机尚未启动，新增保存游戏日仍为0；此前16:30–18:00开测预期已延期。** 本节的软件通过不能作为实机完成凭据。
+
+- Quarkus热重载已实际使用，配置和开发说明已发布到master提交`c796671f353391d4400079fef6cbd7f5fb81ecea`。有限开发工作区真实完成A→B→恢复，两次instrumentation reload始终为同一服务PID247468及出生时间134372203427616096，启动1次、完整应用reload0次、Maven重启0次。第二轮实际回执`J/build/quarkus-devloop-20261023-02/evidence/actual.json`为4076 B / `1f8cd69869afdbc4447ac9937d922066a76b56ef676f418b0df23275f8d88650`。资源整体验收仍RED：Job峰2222022656 B超过2GiB，已结束且Job0；不能将功能成功写成整体验收通过。该证据覆盖无状态方法体开发热改，不证明CDI重建或账本、Native句柄可跨完整reload保持。
+- tools11完整Maven实际49套、404/404通过，零失败/错误/跳过，Maven0、Job0、stopnull，155.1226594秒，峰1106911232 B。122份源码及122份快照MATCH；6件部署闭包保持完整。回执`J/logs/build-java-tools122-firstcut11.json`为76021 B / `e443fec1ea276222afa46fb91b457183fa3c11a45a5144e34cd70469794850ed`。同归档自身reader实际outer0/child0/Job0、三MATCH；交付`N/bootstrap_integrated_tools/stabilization11/QUALIFIED-DELIVERY11.json`为26890 B / `200cd7f8ca2447c42d7f1430e1185fd8c9ce4d9d37d6daec0c69c9229802fc6b`。Runtime15已据此发行，旧tools10的testCompile失败保留，未用tools10冒充合格包。
+- Betrothal原14项测试在真实原生关系帧修正后14/14通过，1230项前后来源见证MATCH；仅对应测试修正已发布提交`bd7c3c510e9c3baa6b08b7fcabc1167fe6d2ab78`。Sway原协议夹具精确字节及属性修正已发布`49613fcd8f319347badb7f1692d7302dd6163f3c`；这不代表五项Sway采集已执行。
+- 战争融资共享实现实际strict12通过、新24项JUnit及原319项检查通过；战争建设资金守卫strict77通过、原40项回归修后40/40通过，旧6项RED保留。二者仍是后继采用候选，完整Maven、同宿主HTTP及游戏结果待验。B2实际完成Cash、Guardian、ProcessCustody原捕获及全部49个相关消费者，零跳过；Identity在进入原oracle前遇内部JSON参数传输失败，6个依赖消费者未跑。最小Base64传输后继已封SOURCE_ONLY，尚未编译；不能写成55项全通过。闭场入口`J/build/resume-current-20261023/g2-m1/opt_decision_metrics/control/B2-R14-CLOSEOUT01.json`为14303 B / `f796b73d1a82987a142ad7e390bdcb396d84adfb46b088893926a6da6b01cbef`。
+- 完整G2 Plan15已由真实Java producer形成2140文件、31子模块/32 reactor的SOURCE_ONLY计划，尚未创建新物理源树。实际发现Fresh固定15个来源与新增真实client后的16个来源冲突，以及Identity参数传输问题；下一小后继仅覆盖这三个目标，保留原15项来源义务，不降低client角色，不热改冻结tools11。先compile-only，再真实采集缺项，最后完整默认reactor/SDK，资格分开记录。
+- 首轮MAP路线收敛到一期真实边界：复用现有原生启动器、Native MCP和原C++唯一Driver，在新state/profile中以既有`load_save_name`加载选定不可变1066 T0；真实Native帧进入Java地图HTTP并交原parser验证。Java冷恢复接管与整场新账本不是这次地图纵向测试的前置，另线继续迁移；旧N46、head240及全部UNKNOWN不重放。当前地图宿主首个实际软件包在启动Quarkus前因`Instant`缺少解码器而RED、Job0，修复已落入共享typed codec候选，正执行新的strict/回归。尚无可宣称成功的真实Host或地图HTTP结果。
+
+资源仍为原D4GiB/Z32MiB、新增take0，12个运行槽与6GiB共享执行RAM；智能体源码研究可并行，Maven和唯一写者保持串行所有权。关闭未花预留保留全部实物，不计作磁盘删除。新source44MiB、snapshot44MiB和compile128MiB只能按最新容量卡有界执行；历史genuine05实际build为113061368 B，不能引用57MiB作为128MiB充足的证明。所有新Game启动前仍须当机新鲜后台Steam离线回执、实际EXE/桥/profile与进程出生身份绑定。
