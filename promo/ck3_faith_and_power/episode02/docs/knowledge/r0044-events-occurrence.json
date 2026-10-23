@@ -1,0 +1,2606 @@
+{
+  "schema": "xar.ck3.r0044-final-events-occurrence/v1",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--faith-engine--R0044",
+  "observed_at_utc": "2026-10-23T20:49:19.655553+00:00",
+  "batch_terminal_pending": false,
+  "source_result": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\ordinary-pilgrimage-result.json",
+    "bytes": 1277776,
+    "sha256": "825c0c2f7148aa32edb3d8513103cd55074cf818bd7058eb43ffd4e6e3205dc3"
+  },
+  "offline_input_count": 8,
+  "event_receipt_count": 8,
+  "interaction_receipt_count": 0,
+  "new_source_only_keys": [
+    "pilgrimage.9001"
+  ],
+  "terminal": {
+    "status": "JOURNEY_CONCLUSION_AND_RETURN_EVENT_OBSERVED",
+    "observed_days": 282.0,
+    "arrival_observed": false,
+    "return_observed": true,
+    "business_pass": false,
+    "new_save_performed": false,
+    "destination_phase_conclusion_observed": true,
+    "return_event_chain_complete": true,
+    "coordinate_home_observed": false,
+    "activity_identity_absence_observed": true,
+    "finished_at_utc": "2026-10-23T20:26:55.946671+00:00"
+  },
+  "source_files_revalidated": {
+    "common/scripted_effects/00_pilgrimage_effects.txt": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_pilgrimage_effects.txt",
+      "bytes": 40713,
+      "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80"
+    },
+    "events/activities/pilgrimage_activity/hajj_events.txt": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\hajj_events.txt",
+      "bytes": 29519,
+      "sha256": "0e0617fd6a17192a87fcdb21fe07ae896a42c4c1c5e0e93e0f0a7ee3d0fc67c0"
+    },
+    "common/modifiers/00_activity_pilgrimage_modifiers.txt": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\modifiers\\00_activity_pilgrimage_modifiers.txt",
+      "bytes": 8263,
+      "sha256": "b4b087debf7975b02fdc30d3244a04aca634e3e26b2fafa4c42057e71a1c1580"
+    },
+    "common/script_values/00_basic_values.txt": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_basic_values.txt",
+      "bytes": 50566,
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef"
+    },
+    "localization/simp_chinese/event_localization/activities/hajj_events_l_simp_chinese.yml": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\activities\\hajj_events_l_simp_chinese.yml",
+      "bytes": 12384,
+      "sha256": "96331cb1368c6e889e467b870ec0bb5b46a7736af760434923c02cdadb1a305d"
+    },
+    "common/script_values/01_dynamic_values.txt": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\01_dynamic_values.txt",
+      "bytes": 48201,
+      "sha256": "023165e7d27d106a34f34d7726d938efa8d5dce25650ea3256e0b5ea3f73cc2a"
+    },
+    "events/activities/pilgrimage_activity/pilgrimage_events.txt": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\pilgrimage_activity\\pilgrimage_events.txt",
+      "bytes": 358138,
+      "sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06"
+    },
+    "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\activities\\pilgrimage_events_l_simp_chinese.yml",
+      "bytes": 136481,
+      "sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3"
+    },
+    "common/activities/activity_types/pilgrimage.txt": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\activities\\activity_types\\pilgrimage.txt",
+      "bytes": 111931,
+      "sha256": "24153043485b035cb0477de7306649027cb68c039e4a9d903776eddd870d8b9f"
+    },
+    "common/on_action/activities/pilgrimage_on_actions.txt": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\activities\\pilgrimage_on_actions.txt",
+      "bytes": 11904,
+      "sha256": "fdf71f074882f94eb3df497a1ddb2cb9a95fb13e973aebf25d4c3569729ee354"
+    },
+    "events/travel_events/travel_danger_events_oltner.txt": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\travel_events\\travel_danger_events_oltner.txt",
+      "bytes": 27455,
+      "sha256": "086725937d1b89b82be5f957aef461f95bf0810ff506abf09c2031c779f3ab3d"
+    },
+    "common/scripted_effects/00_secret_effects.txt": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_secret_effects.txt",
+      "bytes": 69449,
+      "sha256": "4b86ba489602089969293c810a6aaee81ea5d213f7c0456f051ae8785addf7f9"
+    },
+    "common/scripted_effects/00_travel_effects.txt": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_travel_effects.txt",
+      "bytes": 1867,
+      "sha256": "47a4b46a479a2215ffeda4b6d7b8d9226928f6ec0dc70c289b4e0e2fe2b5ec0e"
+    },
+    "common/scripted_effects/04_dlc_ep2_tour_effects.txt": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\04_dlc_ep2_tour_effects.txt",
+      "bytes": 17935,
+      "sha256": "180a9e666317ba7e58525d11848544bca1bf2b6e6062b0fe1110f555abdf328e"
+    },
+    "common/modifiers/00_travel_modifiers.txt": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\modifiers\\00_travel_modifiers.txt",
+      "bytes": 8782,
+      "sha256": "b7a1365a14341bf647339cb843753e5da4f8d9990c52c92d6e10422a8530a2f1"
+    },
+    "localization/simp_chinese/event_localization/travel_events/travel_danger_events_oltner_l_simp_chinese.yml": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\travel_events\\travel_danger_events_oltner_l_simp_chinese.yml",
+      "bytes": 7676,
+      "sha256": "fbd5fd212ff052c3b0396946e3d7b5144d1bd9327bb7f475ed0efb0efdad983b"
+    },
+    "events/travel_events/travel_danger_events_filippa.txt": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\travel_events\\travel_danger_events_filippa.txt",
+      "bytes": 27472,
+      "sha256": "64d2af2349ab6d7a5a8254e83ec41d068b47ea8a27637bda4321a5237411f95c"
+    },
+    "localization/simp_chinese/event_localization/travel_events/travel_danger_events_filippa_l_simp_chinese.yml": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\travel_events\\travel_danger_events_filippa_l_simp_chinese.yml",
+      "bytes": 6133,
+      "sha256": "2737c88b1d6ae24b648f302cd55fcfdf3596da7fb9bf3c14ac5284730e69b36b"
+    },
+    "common/on_action/travel_on_actions.txt": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\travel_on_actions.txt",
+      "bytes": 71526,
+      "sha256": "cd40f30a9280ea9ba656b59005201550f3991afd646fd686d7474657b1b1ff70"
+    },
+    "common/scripted_effects/20_health_effects.txt": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\20_health_effects.txt",
+      "bytes": 107548,
+      "sha256": "abefa738c913c660a52fa747bcc92fca2f57d77a0f47d903bedc2882f3d5a9db"
+    },
+    "common/script_values/00_stress_values.txt": {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_stress_values.txt",
+      "bytes": 3852,
+      "sha256": "821a0b77244fc5ee2d87d339cb24dbef00787b83d44ec2df9215fc1a93aec2d4"
+    }
+  },
+  "events": {
+    "hajj.3020": {
+      "actual": {
+        "event_instance_id": 15,
+        "event_definition_key": "hajj.3020",
+        "observed_at_utc": "2026-10-23T19:52:14.330001+00:00",
+        "selected_option_number": 2,
+        "selected_native_option_index": 1,
+        "submission_attempted": true,
+        "ack_accepted": true,
+        "old_instance_gone_in_independent_snapshot": true,
+        "date_raw": 51401112,
+        "input": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-event-15-offline-analysis-input.json",
+          "bytes": 68569,
+          "sha256": "dade1343dae78eb24932a8abed55ef7b98ae86e2c0c12e0d4a9d243ab131041f"
+        },
+        "intent": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-event-15-selection-intent.json",
+          "bytes": 71660,
+          "sha256": "8b70075dcda6d3ac04bec9cc63b7d62bd0058facbc5a9fca81078ec62a199a0b"
+        },
+        "selection_observed": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-event-15-selection-observed.json",
+          "bytes": 73979,
+          "sha256": "9b24c2c923fb53a29ba0bc7e57eae5d294e90019c30698c59c55cabd2fae3411"
+        },
+        "selection_source": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-0021-event-select-once.actual-results.json",
+          "bytes": 39227,
+          "sha256": "b17492461b85903d73e01878bc88f800c4e44b7f692fe74ec980a68134f3a127"
+        },
+        "saved_scopes": [
+          {
+            "name": "activity",
+            "name_identifier": 2,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 6,
+              "type_key": "activity",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "host",
+            "name_identifier": 62,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 15893
+              }
+            }
+          },
+          {
+            "name": "province",
+            "name_identifier": 37,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 8,
+              "type_key": "province",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          }
+        ],
+        "before": {
+          "date_raw": 51401112,
+          "revision": 48,
+          "native_revision": 47,
+          "played_character_gold": {
+            "raw": 124582176,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 15432725,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 249396250,
+            "scale": 100000
+          },
+          "active_event": {
+            "source": "native",
+            "instance_id": 15,
+            "option_count": 3,
+            "title": null,
+            "options": [
+              {
+                "index": 0,
+                "option_number": 1,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 1,
+                "option_number": 2,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 2,
+                "option_number": 3,
+                "label": null,
+                "enabled": true
+              }
+            ]
+          },
+          "actor": 15893,
+          "stress": 35
+        },
+        "after": {
+          "date_raw": 51401112,
+          "revision": 49,
+          "native_revision": 48,
+          "played_character_gold": {
+            "raw": 124582176,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 15432725,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 254396250,
+            "scale": 100000
+          },
+          "active_event": null,
+          "actor": 15893,
+          "stress": 35
+        }
+      },
+      "displayed_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "认真走完七圈就可以了。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "snapshot_option_count": 3,
+      "typed_scope_projection": {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 47,
+        "date_raw": 51401112,
+        "current_event_instance_id": 15,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "hajj.3020",
+        "calculated_event_id": 3673020,
+        "runtime_stats_ordinal": 5752,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 15893
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "activity",
+            "name_identifier": 2,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 6,
+              "type_key": "activity",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "host",
+            "name_identifier": 62,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 15893
+              }
+            }
+          },
+          {
+            "name": "province",
+            "name_identifier": 37,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 8,
+              "type_key": "province",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          }
+        ],
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        },
+        "provenance": {
+          "root": "module+0x5C6A520->+0x10",
+          "idler_vtable_rva": "0x44BC418",
+          "manager_offset": "+0x28",
+          "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+        }
+      },
+      "source_analysis_completed_before_patch": true,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v5-doctrines-hajj-12004.json"
+    },
+    "hajj.3030": {
+      "actual": {
+        "event_instance_id": 16,
+        "event_definition_key": "hajj.3030",
+        "observed_at_utc": "2026-10-23T19:57:01.783368+00:00",
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "submission_attempted": true,
+        "ack_accepted": true,
+        "old_instance_gone_in_independent_snapshot": true,
+        "date_raw": 51401472,
+        "input": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-event-16-offline-analysis-input.json",
+          "bytes": 69229,
+          "sha256": "9d28de691f5a3d7669bb075de351de7ad056e5740b03cc06866fbf1c40a9cea8"
+        },
+        "intent": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-event-16-selection-intent.json",
+          "bytes": 73038,
+          "sha256": "76f0318ccaccef7ba43a29f99957aaeb5f4a056169ab0281fed864d53c2a0c72"
+        },
+        "selection_observed": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-event-16-selection-observed.json",
+          "bytes": 74674,
+          "sha256": "0be62347597c9242cc154bfcdcb4cbf36ec80ca3b1a98468f289e68a9927ecec"
+        },
+        "selection_source": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-0042-event-select-once.actual-results.json",
+          "bytes": 39157,
+          "sha256": "09ecb81eab64aee34abcefcf0d4c270514d25f2c9a29924e85fe5cf3404c6a11"
+        },
+        "saved_scopes": [
+          {
+            "name": "activity",
+            "name_identifier": 2,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 6,
+              "type_key": "activity",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "host",
+            "name_identifier": 62,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 15893
+              }
+            }
+          },
+          {
+            "name": "province",
+            "name_identifier": 37,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 8,
+              "type_key": "province",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          }
+        ],
+        "before": {
+          "date_raw": 51401472,
+          "revision": 94,
+          "native_revision": 93,
+          "played_character_gold": {
+            "raw": 124582176,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 15432725,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 255396250,
+            "scale": 100000
+          },
+          "active_event": {
+            "source": "native",
+            "instance_id": 16,
+            "option_count": 3,
+            "title": null,
+            "options": [
+              {
+                "index": 0,
+                "option_number": 1,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 1,
+                "option_number": 2,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 2,
+                "option_number": 3,
+                "label": null,
+                "enabled": true
+              }
+            ]
+          },
+          "actor": 15893,
+          "stress": 35
+        },
+        "after": {
+          "date_raw": 51401472,
+          "revision": 95,
+          "native_revision": 94,
+          "played_character_gold": {
+            "raw": 124582176,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 11932725,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 265396250,
+            "scale": 100000
+          },
+          "active_event": null,
+          "actor": 15893,
+          "stress": 35
+        }
+      },
+      "displayed_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "我应该让其他人先饮。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "消解我灵魂的干渴！",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "snapshot_option_count": 3,
+      "typed_scope_projection": {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 93,
+        "date_raw": 51401472,
+        "current_event_instance_id": 16,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "hajj.3030",
+        "calculated_event_id": 3673030,
+        "runtime_stats_ordinal": 5754,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 15893
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "activity",
+            "name_identifier": 2,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 6,
+              "type_key": "activity",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "host",
+            "name_identifier": 62,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 15893
+              }
+            }
+          },
+          {
+            "name": "province",
+            "name_identifier": 37,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 8,
+              "type_key": "province",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          }
+        ],
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        },
+        "provenance": {
+          "root": "module+0x5C6A520->+0x10",
+          "idler_vtable_rva": "0x44BC418",
+          "manager_offset": "+0x28",
+          "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+        }
+      },
+      "source_analysis_completed_before_patch": true,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v5-doctrines-hajj-12004.json"
+    },
+    "hajj.3040": {
+      "actual": {
+        "event_instance_id": 17,
+        "event_definition_key": "hajj.3040",
+        "observed_at_utc": "2026-10-23T19:59:37.655070+00:00",
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "submission_attempted": true,
+        "ack_accepted": true,
+        "old_instance_gone_in_independent_snapshot": true,
+        "date_raw": 51401832,
+        "input": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-event-17-offline-analysis-input.json",
+          "bytes": 69027,
+          "sha256": "317862d760189b82085b90f8449f7aaea8d6b15259cdf755a2242f8018a214b5"
+        },
+        "intent": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-event-17-selection-intent.json",
+          "bytes": 74527,
+          "sha256": "4cd5b97d50e1297b6f3c73debcfb665186123732c160bfcb9ee92b1b69084577"
+        },
+        "selection_observed": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-event-17-selection-observed.json",
+          "bytes": 73838,
+          "sha256": "12645338808407c4e8e919ca3f8c91c8053a0364212fe1712e1e0bf56fd62d79"
+        },
+        "selection_source": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-0052-event-select-once.actual-results.json",
+          "bytes": 37617,
+          "sha256": "4c76bdcb0a938cc18c2fcc94a6b7e33710be8dd6cca0426afbceb22b54a4e3fe"
+        },
+        "saved_scopes": [
+          {
+            "name": "activity",
+            "name_identifier": 2,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 6,
+              "type_key": "activity",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "host",
+            "name_identifier": 62,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 15893
+              }
+            }
+          },
+          {
+            "name": "province",
+            "name_identifier": 37,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 8,
+              "type_key": "province",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "root_scope",
+            "name_identifier": 9510,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 15893
+              }
+            }
+          }
+        ],
+        "before": {
+          "date_raw": 51401832,
+          "revision": 122,
+          "native_revision": 121,
+          "played_character_gold": {
+            "raw": 126055223,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 12419377,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 267609000,
+            "scale": 100000
+          },
+          "active_event": {
+            "source": "native",
+            "instance_id": 17,
+            "option_count": 4,
+            "title": null,
+            "options": [
+              {
+                "index": 0,
+                "option_number": 1,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 1,
+                "option_number": 2,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 2,
+                "option_number": 3,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 3,
+                "option_number": 4,
+                "label": null,
+                "enabled": true
+              }
+            ]
+          },
+          "actor": 15893,
+          "stress": 0
+        },
+        "after": {
+          "date_raw": 51401832,
+          "revision": 123,
+          "native_revision": 122,
+          "played_character_gold": {
+            "raw": 82555223,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 47419377,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 292609000,
+            "scale": 100000
+          },
+          "active_event": null,
+          "actor": 15893,
+          "stress": 0
+        }
+      },
+      "displayed_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "六十三峰骆驼！",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "一匹骆驼应该就够多了。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 2,
+          "native_option_index": 2,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "我们用羊吧。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 3,
+          "native_option_index": 3,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "我会参加那边的宰牛祭。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": [
+              {
+                "kind": "fulfillment",
+                "direction": "decrease",
+                "magnitude": {
+                  "status": "unavailable"
+                },
+                "affected_by_trait": false,
+                "critical": false
+              }
+            ]
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "snapshot_option_count": 4,
+      "typed_scope_projection": {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 121,
+        "date_raw": 51401832,
+        "current_event_instance_id": 17,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "hajj.3040",
+        "calculated_event_id": 3673040,
+        "runtime_stats_ordinal": 5755,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 15893
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "activity",
+            "name_identifier": 2,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 6,
+              "type_key": "activity",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "host",
+            "name_identifier": 62,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 15893
+              }
+            }
+          },
+          {
+            "name": "province",
+            "name_identifier": 37,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 8,
+              "type_key": "province",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "root_scope",
+            "name_identifier": 9510,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 15893
+              }
+            }
+          }
+        ],
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        },
+        "provenance": {
+          "root": "module+0x5C6A520->+0x10",
+          "idler_vtable_rva": "0x44BC418",
+          "manager_offset": "+0x28",
+          "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+        }
+      },
+      "source_analysis_completed_before_patch": true,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v5-doctrines-hajj-12004.json"
+    },
+    "hajj.3001": {
+      "actual": {
+        "event_instance_id": 18,
+        "event_definition_key": "hajj.3001",
+        "observed_at_utc": "2026-10-23T20:02:33.352742+00:00",
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "submission_attempted": true,
+        "ack_accepted": true,
+        "old_instance_gone_in_independent_snapshot": true,
+        "date_raw": 51402072,
+        "input": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-event-18-offline-analysis-input.json",
+          "bytes": 67122,
+          "sha256": "dc065ce94a19aaf77bc075a5511019a70791b9dcc2a6cbfa42320a2a447ab366"
+        },
+        "intent": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-event-18-selection-intent.json",
+          "bytes": 71159,
+          "sha256": "b8708c1e6f2cb923879cefca6ec5c6590b3837e44038cbfc9e00550f2c3365a1"
+        },
+        "selection_observed": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-event-18-selection-observed.json",
+          "bytes": 71873,
+          "sha256": "a16fd62118e0195f10a1fd5f03f3d2261b2cbae6c70263802c89d4c41193a81a"
+        },
+        "selection_source": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-0059-event-select-once.actual-results.json",
+          "bytes": 37619,
+          "sha256": "9d1505f6be1843530ba82296981560e620e3203423136ea596885c7dbca4d484"
+        },
+        "saved_scopes": [
+          {
+            "name": "activity",
+            "name_identifier": 2,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 6,
+              "type_key": "activity",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "host",
+            "name_identifier": 62,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 15893
+              }
+            }
+          },
+          {
+            "name": "province",
+            "name_identifier": 37,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 8,
+              "type_key": "province",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "root_scope",
+            "name_identifier": 9510,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 15893
+              }
+            }
+          },
+          {
+            "name": "new_memory",
+            "name_identifier": 210,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 34,
+              "type_key": "character_memory",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          }
+        ],
+        "before": {
+          "date_raw": 51402072,
+          "revision": 138,
+          "native_revision": 137,
+          "played_character_gold": {
+            "raw": 82555223,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 47419377,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 292609000,
+            "scale": 100000
+          },
+          "active_event": {
+            "source": "native",
+            "instance_id": 18,
+            "option_count": 2,
+            "title": null,
+            "options": [
+              {
+                "index": 0,
+                "option_number": 1,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 1,
+                "option_number": 2,
+                "label": null,
+                "enabled": true
+              }
+            ]
+          },
+          "actor": 15893,
+          "stress": 0
+        },
+        "after": {
+          "date_raw": 51402072,
+          "revision": 139,
+          "native_revision": 138,
+          "played_character_gold": {
+            "raw": 82555223,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 47419377,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 292609000,
+            "scale": 100000
+          },
+          "active_event": null,
+          "actor": 15893,
+          "stress": 0
+        }
+      },
+      "displayed_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "全部剪掉！",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": [
+              {
+                "kind": "fulfillment",
+                "direction": "increase",
+                "magnitude": {
+                  "status": "unavailable"
+                },
+                "affected_by_trait": false,
+                "critical": false
+              }
+            ]
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "只剪一缕。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "snapshot_option_count": 2,
+      "typed_scope_projection": {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 137,
+        "date_raw": 51402072,
+        "current_event_instance_id": 18,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "hajj.3001",
+        "calculated_event_id": 3673001,
+        "runtime_stats_ordinal": 5750,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 15893
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "activity",
+            "name_identifier": 2,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 6,
+              "type_key": "activity",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "host",
+            "name_identifier": 62,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 15893
+              }
+            }
+          },
+          {
+            "name": "province",
+            "name_identifier": 37,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 8,
+              "type_key": "province",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "root_scope",
+            "name_identifier": 9510,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 15893
+              }
+            }
+          },
+          {
+            "name": "new_memory",
+            "name_identifier": 210,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 34,
+              "type_key": "character_memory",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          }
+        ],
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        },
+        "provenance": {
+          "root": "module+0x5C6A520->+0x10",
+          "idler_vtable_rva": "0x44BC418",
+          "manager_offset": "+0x28",
+          "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+        }
+      },
+      "source_analysis_completed_before_patch": true,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v5-doctrines-hajj-12004.json"
+    },
+    "pilgrimage.7000": {
+      "actual": {
+        "event_instance_id": 19,
+        "event_definition_key": "pilgrimage.7000",
+        "observed_at_utc": "2026-10-23T20:06:19.350845+00:00",
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "submission_attempted": true,
+        "ack_accepted": true,
+        "old_instance_gone_in_independent_snapshot": true,
+        "date_raw": 51402240,
+        "input": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-event-19-offline-analysis-input.json",
+          "bytes": 65632,
+          "sha256": "9ff05b44808295a2233b27e4234851440498fb7e1793b454aa0c0cf9d262f278"
+        },
+        "intent": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-event-19-selection-intent.json",
+          "bytes": 68987,
+          "sha256": "90f89a0d29cb5d95f79c59bef7089a379c860d35e4cca24d7a3e0d729d839d49"
+        },
+        "selection_observed": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-event-19-selection-observed.json",
+          "bytes": 71112,
+          "sha256": "8a9446b48ac906137c0365836edd5a427fa3070669012b9ea9745bd4afe0834e"
+        },
+        "selection_source": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-0064-event-select-once.actual-results.json",
+          "bytes": 37619,
+          "sha256": "e9af409cdb751adaa0b67cc77ded563b2b8465d449bb801086511ffbe28feca8"
+        },
+        "saved_scopes": [
+          {
+            "name": "activity",
+            "name_identifier": 2,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 6,
+              "type_key": "activity",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "host",
+            "name_identifier": 62,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 15893
+              }
+            }
+          },
+          {
+            "name": "province",
+            "name_identifier": 37,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 8,
+              "type_key": "province",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          }
+        ],
+        "before": {
+          "date_raw": 51402240,
+          "revision": 148,
+          "native_revision": 147,
+          "played_character_gold": {
+            "raw": 82555223,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 47419377,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 330109000,
+            "scale": 100000
+          },
+          "active_event": {
+            "source": "native",
+            "instance_id": 19,
+            "option_count": 2,
+            "title": null,
+            "options": [
+              {
+                "index": 0,
+                "option_number": 1,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 1,
+                "option_number": 2,
+                "label": null,
+                "enabled": true
+              }
+            ]
+          },
+          "actor": 15893,
+          "stress": 0
+        },
+        "after": {
+          "date_raw": 51402240,
+          "revision": 149,
+          "native_revision": 148,
+          "played_character_gold": {
+            "raw": 82555223,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 47419377,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 330109000,
+            "scale": 100000
+          },
+          "active_event": null,
+          "actor": 15893,
+          "stress": 0
+        }
+      },
+      "displayed_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "愿我能再次看到你的城墙！",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": [
+              {
+                "kind": "fulfillment",
+                "direction": "increase",
+                "magnitude": {
+                  "status": "unavailable"
+                },
+                "affected_by_trait": false,
+                "critical": false
+              }
+            ]
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "snapshot_option_count": 2,
+      "typed_scope_projection": {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 147,
+        "date_raw": 51402240,
+        "current_event_instance_id": 19,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "pilgrimage.7000",
+        "calculated_event_id": 3667000,
+        "runtime_stats_ordinal": 5743,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 15893
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "activity",
+            "name_identifier": 2,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 6,
+              "type_key": "activity",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "host",
+            "name_identifier": 62,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 15893
+              }
+            }
+          },
+          {
+            "name": "province",
+            "name_identifier": 37,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 8,
+              "type_key": "province",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          }
+        ],
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        },
+        "provenance": {
+          "root": "module+0x5C6A520->+0x10",
+          "idler_vtable_rva": "0x44BC418",
+          "manager_offset": "+0x28",
+          "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+        }
+      },
+      "source_analysis_completed_before_patch": true,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-7000-source-analysis.json"
+    },
+    "travel_danger_events.9020": {
+      "actual": {
+        "event_instance_id": 20,
+        "event_definition_key": "travel_danger_events.9020",
+        "observed_at_utc": "2026-10-23T20:18:55.733931+00:00",
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "submission_attempted": true,
+        "ack_accepted": true,
+        "old_instance_gone_in_independent_snapshot": true,
+        "date_raw": 51405936,
+        "input": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-event-20-offline-analysis-input.json",
+          "bytes": 74524,
+          "sha256": "5d4f3a6fda7faf414bfb5a98150cf45fd03515d4dad6f866f8e4f64577741308"
+        },
+        "intent": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-event-20-selection-intent.json",
+          "bytes": 79384,
+          "sha256": "6dc5f200129d95c71995a6dec20f45377da1b22deec910d3c319adf3e0e8227c"
+        },
+        "selection_observed": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-event-20-selection-observed.json",
+          "bytes": 37024,
+          "sha256": "37af6f459bff64f964fd54d1e79115bd6dbc6f2b84e4ea4e6609f8afa9ead444"
+        },
+        "selection_source": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-0152-event-select-once.actual-results.json",
+          "bytes": 41088,
+          "sha256": "51652c4fd8f6a43290f1c2f5e696b2116abd7bda4b66c43474e18b394238b8ad"
+        },
+        "saved_scopes": [
+          {
+            "name": "travel_plan",
+            "name_identifier": 211,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 35,
+              "type_key": "travel_plan",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "root_scope",
+            "name_identifier": 9510,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 15893
+              }
+            }
+          },
+          {
+            "name": "location",
+            "name_identifier": 9452,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 8,
+              "type_key": "province",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "emaciated_character",
+            "name_identifier": 19426,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 19351
+              }
+            }
+          }
+        ],
+        "before": {
+          "date_raw": 51405936,
+          "revision": 434,
+          "native_revision": 433,
+          "played_character_gold": {
+            "raw": 91970777,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 50307073,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 336390900,
+            "scale": 100000
+          },
+          "active_event": {
+            "source": "native",
+            "instance_id": 20,
+            "option_count": 4,
+            "title": null,
+            "options": [
+              {
+                "index": 0,
+                "option_number": 1,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 1,
+                "option_number": 2,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 2,
+                "option_number": 3,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 3,
+                "option_number": 4,
+                "label": null,
+                "enabled": true
+              }
+            ]
+          },
+          "actor": 15893,
+          "stress": 0
+        },
+        "after": {
+          "date_raw": 51405936,
+          "revision": 435,
+          "native_revision": 434,
+          "played_character_gold": {
+            "raw": 91970777,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 50307073,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 336390900,
+            "scale": 100000
+          },
+          "active_event": null,
+          "actor": 15893,
+          "stress": 0
+        }
+      },
+      "displayed_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "啊，玛赫莎，你愿意为阿拉伯帝国献出生命吗？",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": [
+              {
+                "kind": "fulfillment",
+                "direction": "decrease",
+                "magnitude": {
+                  "status": "unavailable"
+                },
+                "affected_by_trait": false,
+                "critical": false
+              }
+            ]
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 2,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "真希望那些话能吃……",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 2,
+          "native_option_index": 3,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "我们剩的那点全都归\u0015EMP 我\u0015!！",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "snapshot_option_count": 4,
+      "typed_scope_projection": {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 433,
+        "date_raw": 51405936,
+        "current_event_instance_id": 20,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "travel_danger_events.9020",
+        "calculated_event_id": 1269020,
+        "runtime_stats_ordinal": 488,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 15893
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "travel_plan",
+            "name_identifier": 211,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 35,
+              "type_key": "travel_plan",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "root_scope",
+            "name_identifier": 9510,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 15893
+              }
+            }
+          },
+          {
+            "name": "location",
+            "name_identifier": 9452,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 8,
+              "type_key": "province",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "emaciated_character",
+            "name_identifier": 19426,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 19351
+              }
+            }
+          }
+        ],
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        },
+        "provenance": {
+          "root": "module+0x5C6A520->+0x10",
+          "idler_vtable_rva": "0x44BC418",
+          "manager_offset": "+0x28",
+          "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+        }
+      },
+      "source_analysis_completed_before_patch": true,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0042-events-source-analysis-12004.json"
+    },
+    "travel_danger_events.4010": {
+      "actual": {
+        "event_instance_id": 21,
+        "event_definition_key": "travel_danger_events.4010",
+        "observed_at_utc": "2026-10-23T20:22:57.422934+00:00",
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "submission_attempted": true,
+        "ack_accepted": true,
+        "old_instance_gone_in_independent_snapshot": true,
+        "date_raw": 51406896,
+        "input": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-event-21-offline-analysis-input.json",
+          "bytes": 74846,
+          "sha256": "1c1f4902109b76821bc94890c5c1a3cfb91d2362c199a3af5a4e5ab2e9f087e7"
+        },
+        "intent": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-event-21-selection-intent.json",
+          "bytes": 78686,
+          "sha256": "0fd94c6afcd923e7184013a37eec46c0c065012ea439995a286713004520089b"
+        },
+        "selection_observed": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-event-21-selection-observed.json",
+          "bytes": 37363,
+          "sha256": "43d8fb760d8d2fb7c32934d75f0fdcfd934b83d979f7523ce9da6b57cdbd9a56"
+        },
+        "selection_source": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-0178-event-select-once.actual-results.json",
+          "bytes": 41463,
+          "sha256": "26892d55386f9e1b525a354f89e52d640fcf03572c677974f70d516e2e933eed"
+        },
+        "saved_scopes": [
+          {
+            "name": "travel_plan",
+            "name_identifier": 211,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 35,
+              "type_key": "travel_plan",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "sick_character",
+            "name_identifier": 12134,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 34769
+              }
+            }
+          },
+          {
+            "name": "disease_type",
+            "name_identifier": 12136,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 3,
+              "type_key": "flag",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "ill_character",
+            "name_identifier": 14740,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 34769
+              }
+            }
+          },
+          {
+            "name": "destination",
+            "name_identifier": 208,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 8,
+              "type_key": "province",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          }
+        ],
+        "before": {
+          "date_raw": 51406896,
+          "revision": 513,
+          "native_revision": 512,
+          "played_character_gold": {
+            "raw": 93445947,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 50786397,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 341643350,
+            "scale": 100000
+          },
+          "active_event": {
+            "source": "native",
+            "instance_id": 21,
+            "option_count": 5,
+            "title": null,
+            "options": [
+              {
+                "index": 0,
+                "option_number": 1,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 1,
+                "option_number": 2,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 2,
+                "option_number": 3,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 3,
+                "option_number": 4,
+                "label": null,
+                "enabled": true
+              },
+              {
+                "index": 4,
+                "option_number": 5,
+                "label": null,
+                "enabled": true
+              }
+            ]
+          },
+          "actor": 15893,
+          "stress": 0
+        },
+        "after": {
+          "date_raw": 51406896,
+          "revision": 514,
+          "native_revision": 513,
+          "played_character_gold": {
+            "raw": 93445947,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 50786397,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 341643350,
+            "scale": 100000
+          },
+          "active_event": null,
+          "actor": 15893,
+          "stress": 0
+        }
+      },
+      "displayed_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "我们应该让他休息直到完全康复。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 4,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "这只是轻微的咳嗽。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "snapshot_option_count": 5,
+      "typed_scope_projection": {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 512,
+        "date_raw": 51406896,
+        "current_event_instance_id": 21,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "travel_danger_events.4010",
+        "calculated_event_id": 1264010,
+        "runtime_stats_ordinal": 474,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 15893
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "travel_plan",
+            "name_identifier": 211,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 35,
+              "type_key": "travel_plan",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "sick_character",
+            "name_identifier": 12134,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 34769
+              }
+            }
+          },
+          {
+            "name": "disease_type",
+            "name_identifier": 12136,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 3,
+              "type_key": "flag",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "ill_character",
+            "name_identifier": 14740,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 34769
+              }
+            }
+          },
+          {
+            "name": "destination",
+            "name_identifier": 208,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 8,
+              "type_key": "province",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          }
+        ],
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        },
+        "provenance": {
+          "root": "module+0x5C6A520->+0x10",
+          "idler_vtable_rva": "0x44BC418",
+          "manager_offset": "+0x28",
+          "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+        }
+      },
+      "source_analysis_completed_before_patch": true,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0037-travel-danger-4010.source-analysis.json"
+    },
+    "pilgrimage.9001": {
+      "actual": {
+        "event_instance_id": 22,
+        "event_definition_key": "pilgrimage.9001",
+        "observed_at_utc": "2026-10-23T20:26:47.695151+00:00",
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "submission_attempted": true,
+        "ack_accepted": true,
+        "old_instance_gone_in_independent_snapshot": true,
+        "date_raw": 51407520,
+        "input": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-event-22-offline-analysis-input.json",
+          "bytes": 71467,
+          "sha256": "0b3b3683246d95baf5cd6138e518edf252ed3e76f23ae9d2a9f35cc007cc324e"
+        },
+        "intent": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-event-22-selection-intent.json",
+          "bytes": 74543,
+          "sha256": "aa0db425d539411dbedebdc27137818d0a2912e9a3ea4d37880e04c321a65e58"
+        },
+        "selection_observed": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-event-22-selection-observed.json",
+          "bytes": 77916,
+          "sha256": "c49fcc3d233096f513937b7f776f48a1ea92a6a37cd251ed1729b27cb46da2de"
+        },
+        "selection_source": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0044\\case-output\\faith-e02-journey-001-0188-event-select-once.actual-results.json",
+          "bytes": 41466,
+          "sha256": "181d4242f056c5c46b6732eb310163dd41e2a5b4757407e203aaa021d0cf26cd"
+        },
+        "saved_scopes": [
+          {
+            "name": "travel_plan",
+            "name_identifier": 211,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 35,
+              "type_key": "travel_plan",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "travel_owner",
+            "name_identifier": 44217,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 15893
+              }
+            }
+          }
+        ],
+        "before": {
+          "date_raw": 51407520,
+          "revision": 558,
+          "native_revision": 557,
+          "played_character_gold": {
+            "raw": 94915142,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 51271234,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 341895800,
+            "scale": 100000
+          },
+          "active_event": {
+            "source": "native",
+            "instance_id": 22,
+            "option_count": 1,
+            "title": null,
+            "options": [
+              {
+                "index": 0,
+                "option_number": 1,
+                "label": null,
+                "enabled": true
+              }
+            ]
+          },
+          "actor": 15893,
+          "stress": 0
+        },
+        "after": {
+          "date_raw": 51407520,
+          "revision": 559,
+          "native_revision": 558,
+          "played_character_gold": {
+            "raw": 94915142,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 51271234,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 341895800,
+            "scale": 100000
+          },
+          "active_event": null,
+          "actor": 15893,
+          "stress": 0
+        }
+      },
+      "displayed_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "回家真好。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "snapshot_option_count": 1,
+      "typed_scope_projection": {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 557,
+        "date_raw": 51407520,
+        "current_event_instance_id": 22,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "pilgrimage.9001",
+        "calculated_event_id": 3669001,
+        "runtime_stats_ordinal": 5744,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 15893
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "travel_plan",
+            "name_identifier": 211,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 35,
+              "type_key": "travel_plan",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "travel_owner",
+            "name_identifier": 44217,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 15893
+              }
+            }
+          }
+        ],
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        },
+        "provenance": {
+          "root": "module+0x5C6A520->+0x10",
+          "idler_vtable_rva": "0x44BC418",
+          "manager_offset": "+0x28",
+          "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+        }
+      },
+      "source_analysis_completed_before_patch": false,
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-9001-source-analysis.json"
+    }
+  },
+  "boundaries": [
+    "R44 resumes R43; observed_days is this batch, not total pilgrimage.",
+    "9001 and activity absence do not independently prove coordinate home or cleared traveling.",
+    "7000 tooltip does not execute the main Hajjaj award again.",
+    "9020 requested death/secret/trait effects are source analysis, not unqueried actual outcomes."
+  ]
+}

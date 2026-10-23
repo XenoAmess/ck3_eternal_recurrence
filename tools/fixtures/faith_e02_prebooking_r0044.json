@@ -1,0 +1,53 @@
+{
+  "schema": "faith-e02-prebooking-r0044-source-fixture-v1",
+  "machine_id": "4-8e1c2f1861",
+  "source_pins": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\commands\\root-r0044-return-religion-a01.native.actual.json",
+      "bytes": 41464,
+      "sha256": "686fb1710faf1cf76dc09d8d0dcc22f9808a4f249c5cc90e9a05705624e63844"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\commands\\root-r0044-return-activities-a01.native.actual.json",
+      "bytes": 24569,
+      "sha256": "979ca671ae924d84e2371c423b04a2be4e709120e9eeb87a520b6ac8a9c8ed7b"
+    }
+  ],
+  "scope": "Exact retained R44 readonly failure subset; authored future transitions are not native observations.",
+  "religion": {
+    "read_only": true,
+    "queried_revision": 560,
+    "snapshot_revision": 559,
+    "date_raw": 51407520,
+    "played_character_id": 15893,
+    "available": true,
+    "faith_id": 50,
+    "rite_id": 13,
+    "player_pilgrimage_activity_type_terms": {
+      "schema": "ck3_12004_pilgrimage_activity_type_terms_v1",
+      "read_only": true,
+      "available": true,
+      "unavailable_reason": null,
+      "capture_epoch": 302219,
+      "date_raw": 51407520,
+      "played_character_id": 15893,
+      "activity_id": "activity_pilgrimage",
+      "can_plan": false,
+      "reasons_available": true,
+      "can_plan_reasons": "\u0015indent_newline:0 \u0015!\u0015indent_newline:6 \u0016warning_icon! \u0015X \u0015V 你\u0015!不能在旅行\u0015!\u0015!"
+    }
+  },
+  "identities": {
+    "schema": "ck3_12004_player_pilgrimage_activities_v1",
+    "read_only": true,
+    "queried_revision": 560,
+    "snapshot_revision": 559,
+    "date_raw": 51407520,
+    "played_character_id": 15893,
+    "scope": "currently-hosted-by-current-player",
+    "activity_type_key": "activity_pilgrimage",
+    "absence_is_completion": false,
+    "activity_count": 0,
+    "activities": []
+  }
+}

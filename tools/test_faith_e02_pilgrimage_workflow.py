@@ -366,9 +366,300 @@ class SharedResumeClient(ResumeClient):
         return rows
 
 
+
+@runtime_checkable
+class PrebookingPlannerPort(Protocol):
+    calls: list[JSONObject]
+    faith_id: int
+    rite_id: int | None
+    option_key: str
+    started: bool
+    operator_reviewer: str
+    def execute_plan(self, steps: list[JSONObject], name: str) -> object: ...
+    def root_checkpoint(self, name: str, request: JSONObject, reserve: int) -> object: ...
+
+
+@runtime_checkable
+class PrebookingDayPort(Protocol):
+    error: Exception | None
+    def advance_day(self, days: int = 1, timeout: float = 300,
+                    allow_event_boundary: bool = False,
+                    allow_actor_change: bool = False) -> JSONObject: ...
+
+
+class PrebookingWorkflowClient(SharedResumeClient):
+    """Real CaseClient exact-day/projector and shared modal consumer; only native publications are authored."""
+    def __init__(self, output: Path) -> None:
+        super().__init__(output, {"activity_id": 77, "host_character_id": 15893, "type_key": "activity_pilgrimage"})
+        fixture = resume_object(json.loads((TOOLS / "fixtures/faith_e02_prebooking_r0044.json").read_bytes()))
+        self.failure = resume_object(fixture["religion"])
+        self.empty_identities = resume_object(fixture["identities"])
+        self.current["date_raw"] = self.failure["date_raw"]
+        resume_object(self.current["played_character"])["character_id"] = 15893
+        self.modal.current = self.current
+        original = self.modal.typed_context
+        def typed_context(current: JSONObject) -> JSONObject:
+            value = original(current)
+            value["root_scope"] = {"status": "available", "raw_type_index": 4, "type_key": "character", "subtype": 0,
+                "typed_identity": {"status": "available", "kind": "character", "character_id": 15893}}
+            return value
+        self.modal.typed_context = typed_context
+        planner_factory: Callable[[], object] = Client
+        planner = planner_factory()
+        if not isinstance(planner, PrebookingPlannerPort):
+            raise ValueError("Existing planner fixture lacks the actual interface")
+        self.planner = planner
+        self.planner.faith_id, self.planner.rite_id = 50, 13
+        self.operator_reviewer = self.planner.operator_reviewer
+        self.modal.operator_reviewer = self.operator_reviewer
+        self.ready_after: int | None = 1
+        self.day_attempts = 0
+        self.day_unknown = False
+        self.event_boundary = False
+        self.event_hours = 12
+        self.after_day_override: JSONObject = {}
+        self.wrong_faith = False
+        self.wrong_rite = False
+        self.identity_appears = False
+        self.modal.event_key = "authored.prebooking.uncovered"
+        self.active_key = self.modal.event_key
+
+    def snapshot(self, **kwargs: bool) -> JSONObject:
+        return deepcopy(self.current)
+
+    def guard(self, reserve: int = 90) -> JSONObject:
+        super().guard(reserve)
+        from tools.test_ck3_mod_acceptance_native_day import capability_report
+        factory: Callable[[JSONObject], object] = capability_report
+        return resume_object(factory(self.current))
+
+    def root_checkpoint(self, name: str, request: JSONObject, reserve: int = 90) -> JSONObject:
+        if "key-window" in name:
+            return resume_object(self.modal.root_checkpoint(name, request, reserve))
+        return resume_object(self.planner.root_checkpoint(name, request, reserve))
+
+    def advance_day(self, days: int = 1, timeout: float = 300,
+                    allow_event_boundary: bool = False,
+                    allow_actor_change: bool = False) -> JSONObject:
+        from tools.test_ck3_mod_acceptance_native_day import Port
+        before = self.snapshot()
+        after = deepcopy(before)
+        date = before["date_raw"]
+        revision, native = before["revision"], before["native_revision"]
+        if type(date) is not int or type(revision) is not int or type(native) is not int:
+            raise ValueError("Authored day requires actual integer scope")
+        self.day_attempts += 1
+        hours = self.event_hours if self.event_boundary else 24
+        after.update(date_raw=date + hours, revision=revision + 1, native_revision=native + 1)
+        if self.event_boundary:
+            after["active_event"] = {"instance_id": 70 + self.day_attempts, "option_count": 1,
+                "options": [{"index": 0, "option_number": 1, "enabled": True}]}
+        raw: JSONObject = {"id": "authored-prebooking-day", "ok": True, "error": None, "after_snapshot": after,
+            "result": {"step": "life-advance-one-day", "source": "native-composite",
+                "backend_id": "native-headless", "starting_date_raw": date, "ending_date_raw": date + hours,
+                "paused": True, "requested_horizon_days": 1, "active_event": after["active_event"],
+                "pending_character_interaction": None, "ordinary_events": [], "actions": [],
+                "progress_status": "event_boundary" if self.event_boundary else "postcondition",
+                "event_resolution": "typed_query_required" if self.event_boundary else "none"}}
+        day_dir = self.output / ("day-" + str(self.day_attempts))
+        day_dir.mkdir()
+        factory: Callable[[Path, JSONObject, JSONObject], object] = Port
+        port = factory(day_dir, raw, before)
+        if not isinstance(port, PrebookingDayPort):
+            raise ValueError("Existing public exact-day fixture lacks its actual interface")
+        if self.day_unknown:
+            port.error = TimeoutError("original authored day outcome unknown")
+        result = port.advance_day(days, timeout, allow_event_boundary, allow_actor_change)
+        self.current.clear()
+        self.current.update(after)
+        self.current.update(self.after_day_override)
+        self.modal.current = self.current
+        return result
+
+    def execute_plan(self, steps: list[JSONObject], name: str) -> list[JSONObject]:
+        step = steps[0]
+        tool = step["tool"]
+        self.calls.extend(deepcopy(steps))
+        if tool in {ADAPTER.RELIGION, ADAPTER.IDENTITIES}:
+            args = resume_object(step["args"])
+            if "expected_revision" in args and args["expected_revision"] != self.current["revision"]:
+                raise AssertionError("Prebooking uses the actual current public revision")
+            if tool == ADAPTER.IDENTITIES:
+                value = deepcopy(self.empty_identities)
+                rows = ([{"activity_id": 77, "host_character_id": 15893, "type_key": "activity_pilgrimage"}]
+                    if self.planner.started or self.identity_appears else [])
+                value.update(activity_count=len(rows), activities=rows)
+            else:
+                value = deepcopy(self.failure)
+                source_offers: Callable[[], object] = offers
+                authored = resume_object(source_offers())
+                headless = resume_object(authored["player_pilgrimage_headless_activity_terms"])
+                headless.update(faith_id=50, rite_id=13, played_character_id=15893,
+                    date_raw=self.current["date_raw"], capture_epoch=302219,
+                    candidates=[{"province_id": 4828, "can_select": True, "location_predicate": {"value": True},
+                        "same_province_cap_allows": True, "total_cap_allows": True,
+                        "default_activity_quote": {"affordable": True, "journey_cost_included": False,
+                            "activity_gold_cost_raw": 7000000}}])
+                value["player_pilgrimage_headless_activity_terms"] = headless
+                date = self.current["date_raw"]
+                if type(date) is not int:
+                    raise ValueError("Authored route date must be integer")
+                value["player_pilgrimage_candidate_routes"] = [{"played_character_id": 15893,
+                    "date_raw": date, "capture_epoch": 302219, "candidate_province_id": 4828,
+                    "available": True, "route_valid": True, "outbound_arrival_date_raw": date + 192}]
+                terms = resume_object(value["player_pilgrimage_activity_type_terms"])
+                terms.update(date_raw=date, played_character_id=15893,
+                    can_plan=self.ready_after is not None and self.day_attempts >= self.ready_after)
+                value["player_pilgrimage_activity_type_terms"] = terms
+                value.update(faith_id=51 if self.wrong_faith else 50, rite_id=14 if self.wrong_rite else 13)
+            value.update(read_only=True, queried_revision=self.current["revision"],
+                snapshot_revision=self.current["native_revision"], date_raw=self.current["date_raw"],
+                played_character_id=15893)
+            rows_out: list[JSONObject] = [{"id": name, "ok": True, "result": value, "after_snapshot": self.snapshot()}]
+        elif tool in {ADAPTER.QUERY, ADAPTER.SUBMIT}:
+            raw_rows = self.planner.execute_plan(steps, name)
+            if not isinstance(raw_rows, list):
+                raise ValueError("Existing planner fixture returned no rows")
+            rows_out = [resume_object(row) for row in raw_rows]
+            for row in rows_out:
+                value = resume_object(row["result"])
+                if "planner" in value:
+                    current = resume_object(value["planner"])
+                    if current.get("stage") == 5:
+                        current["destination_province_id"] = 4828
+                    value["planner"] = current
+                if "new_identity" in value and value["new_identity"] is not None:
+                    value["new_identity"] = {"activity_id": 77, "host_character_id": 15893, "type_key": "activity_pilgrimage"}
+                row["result"], row["after_snapshot"] = value, self.snapshot()
+        else:
+            raw_rows = self.modal.execute_plan(steps, name)
+            if not isinstance(raw_rows, list):
+                raise ValueError("Existing modal fixture returned no rows")
+            rows_out = [resume_object(row) for row in raw_rows]
+        self.checkpoint(name + ".actual-results", {"rows": rows_out})
+        return rows_out
+
+
+def prebooking_context(maximum: int = 7) -> JSONObject:
+    factory: Callable[[], object] = context
+    ctx = resume_object(factory())
+    contract = resume_contract(ctx)
+    contract.update(case=ADAPTER.MECHANISM_CASE, schema="faith-engine-e02-pilgrimage-mechanism-case-v2",
+        expected_actor_character_id=15893, prior_scene_date_raw=51407520,
+        saved_input={"player_id": 15893, "date_raw": 51407520}, expected_faith_id=50,
+        expected_rite_id=13, option_key="pilgrimage_type_pious", preferred_destination_id=4828,
+        scope={"new_save_allowed": False}, entry_mode="new_start")
+    resume_object(contract["policy"]).update(max_journey_days=200, max_day_requests=480,
+        max_public_requests=1024, prebooking_wait_max_days=maximum)
+    ctx.update(case=ADAPTER.MECHANISM_CASE, shared_source_root=str(TOOLS.parent))
+    return ctx
+
+
 class WorkflowTests(unittest.TestCase):
     images: tempfile.TemporaryDirectory[str]
     original_sibling: Callable[[Path, str], ModuleType]
+
+
+    def test_prebooking_r0044_failure_to_actual_day_to_existing_pious_planner(self) -> None:
+        with tempfile.TemporaryDirectory() as folder:
+            client = PrebookingWorkflowClient(Path(folder))
+            limits_seen: list[JSONObject] = []
+            def continue_journey(*args: object, **kwargs: object) -> JSONObject:
+                limits_seen.append(resume_object(args[4]))
+                return {"status": "AUTHORED_JOURNEY_RESULT", "terminal_observed": False}
+            setattr(ADAPTER, "sibling", lambda path, name: (QUEUE if path.name.endswith("queue.py") else
+                SimpleNamespace(observe_milestone=lambda *args, **kwargs: None, run_journey=continue_journey)))
+            result = resume_object(ADAPTER.run_case(json.loads(json.dumps(prebooking_context())), client))
+            self.assertEqual(result["status"], "AUTHORED_JOURNEY_RESULT", str(result.get("failure")))
+            self.assertEqual(client.day_attempts, 1)
+            self.assertEqual(len([row for row in client.calls if row["tool"] == ADAPTER.SUBMIT
+                and resume_object(row["args"])["operation"] == "start"]), 1)
+            budget = resume_object(resume_object(result["prebooking_readiness"])["budget"])
+            self.assertEqual(budget, {"elapsed_hours": 24, "day_requests": 1, "events": 0})
+            self.assertEqual(limits_seen[0]["max_days"], 199)
+            self.assertEqual(limits_seen[0]["max_day_requests"], 479)
+            self.assertGreater(client.day_attempts, 0)
+
+    def test_prebooking_false_cap_and_unknown_day_never_reach_or_repeat_start(self) -> None:
+        for unknown in (False, True):
+            with self.subTest(unknown=unknown), tempfile.TemporaryDirectory() as folder:
+                client = PrebookingWorkflowClient(Path(folder))
+                client.ready_after = None
+                client.day_unknown = unknown
+                result = resume_object(ADAPTER.run_case(prebooking_context(1), client))
+                self.assertNotEqual(result["status"], "AUTHORED_JOURNEY_RESULT")
+                self.assertEqual(client.day_attempts, 1)
+                self.assertFalse(client.planner.calls)
+
+    def test_prebooking_current_native_identity_faith_rite_and_real_activity_are_required(self) -> None:
+        for field in ("wrong_faith", "wrong_rite", "identity_appears", "after_day_override"):
+            with self.subTest(field=field), tempfile.TemporaryDirectory() as folder:
+                client = PrebookingWorkflowClient(Path(folder))
+                if field == "after_day_override":
+                    client.after_day_override = {"native_revision": True}
+                else:
+                    setattr(client, field, True)
+                result = resume_object(ADAPTER.run_case(prebooking_context(), client))
+                self.assertNotEqual(result["status"], "AUTHORED_JOURNEY_RESULT")
+                self.assertFalse(client.planner.calls)
+
+    def test_prebooking_unknown_event_uses_existing_first_displayed_option_before_planning(self) -> None:
+        with tempfile.TemporaryDirectory() as folder:
+            client = PrebookingWorkflowClient(Path(folder))
+            client.event_boundary = True
+            original = self.original_sibling
+            setattr(ADAPTER, "sibling", lambda path, name: (original(path, name) if path.name.endswith("journey.py")
+                and "drain" in name else QUEUE if path.name.endswith("queue.py") else
+                SimpleNamespace(observe_milestone=lambda *args, **kwargs: None,
+                    run_journey=lambda *args, **kwargs: {"status": "AUTHORED_JOURNEY_RESULT", "terminal_observed": False})))
+            result = resume_object(ADAPTER.run_case(prebooking_context(), client))
+            self.assertEqual(result["status"], "AUTHORED_JOURNEY_RESULT")
+            selected = [row for row in client.calls if row["tool"] == "ck3_select_event_option"]
+            self.assertEqual(len(selected), 1)
+            self.assertEqual(resume_object(selected[0]["args"])["option_number"], 1)
+            self.assertEqual(resume_object(resume_object(result["prebooking_readiness"])["budget"])["events"], 1)
+
+    def test_prebooking_zero_hour_boundaries_are_request_bounded(self) -> None:
+        with tempfile.TemporaryDirectory() as folder:
+            client = PrebookingWorkflowClient(Path(folder))
+            client.event_boundary, client.event_hours, client.ready_after = True, 0, None
+            ctx = prebooking_context(1)
+            resume_object(resume_contract(ctx)["policy"])["max_day_requests"] = 2
+            original = self.original_sibling
+            setattr(ADAPTER, "sibling", lambda path, name: (original(path, name) if path.name.endswith("journey.py")
+                and "drain" in name else QUEUE if path.name.endswith("queue.py") else
+                SimpleNamespace(observe_milestone=lambda *args, **kwargs: None,
+                    run_journey=lambda *args, **kwargs: {"status": "AUTHORED_JOURNEY_RESULT", "terminal_observed": False})))
+            result = resume_object(ADAPTER.run_case(ctx, client))
+            self.assertNotEqual(result["status"], "AUTHORED_JOURNEY_RESULT")
+            self.assertEqual(client.day_attempts, 2)
+            self.assertFalse(client.planner.calls)
+            self.assertEqual(len([row for row in client.calls if row["tool"] == "ck3_select_event_option"]), 2)
+
+    def test_prebooking_optional_policy_roundtrip_exact_types_and_resume_scope(self) -> None:
+        from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_contract import pilgrimage_prebooking_wait_max_days
+        ctx = prebooking_context()
+        contract = resume_contract(ctx)
+        policy = resume_object(contract["policy"])
+        policy.pop("prebooking_wait_max_days")
+        self.assertEqual(pilgrimage_prebooking_wait_max_days(contract), 0)
+        for value in (None, True, False, 1.0, "1", -1, 8):
+            policy["prebooking_wait_max_days"] = value
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                ADAPTER.validate_contract(ctx)
+        for value in (0, 1, 7):
+            policy["prebooking_wait_max_days"] = value
+            self.assertEqual(pilgrimage_prebooking_wait_max_days(json.loads(json.dumps(contract))), value)
+        policy.update(prebooking_wait_max_days=7, max_journey_days=8)
+        with self.assertRaises(ValueError):
+            ADAPTER.validate_contract(ctx)
+        policy["max_journey_days"] = 9
+        ADAPTER.validate_contract(ctx)
+        resume_ctx, _ = self.resume_fixture()
+        resume_object(resume_contract(resume_ctx)["policy"])["prebooking_wait_max_days"] = 1
+        with self.assertRaises(ValueError):
+            ADAPTER.validate_contract(resume_ctx)
+
 
     def test_v2_extended_finite_policy_reaches_journey_consumer_and_preserves_legacy_caps(self) -> None:
         journey = module("_finite_policy_journey", TOOLS / "ck3_mod_acceptance_cases/faith_e02_pilgrimage_journey.py")
