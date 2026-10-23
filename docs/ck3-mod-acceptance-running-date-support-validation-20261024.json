@@ -1,0 +1,156 @@
+{
+  "schema": "ck3-running-date-support-regression-review-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T20:25:35.947749+00:00",
+  "tested_source_head": "b16c14c0299613c4f5403e49332f6c3121bca4f3",
+  "merged_source_head": "1af70225990a812b7d5b17f0064d0433c2341887",
+  "merge_scope": "Upstream ffa0e08172dd0debd95d99b8de934b7fa443adde moves dependency installation earlier and fixes four living-artifacts registry paths. Seven retained acceptance step bodies are byte-identical; the eighth is the new support step. All nineteen tested production/fixture source pins except the intentionally reordered workflow remain exact.",
+  "actual_evidence": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\r27-running-mailbox-a01\\FINAL.verified.json",
+    "bytes": 81257,
+    "sha256": "a255b17f4b72ebf96a02d5c5a83cd2a55a0ef395f59cd7c63637b3753732d550"
+  },
+  "complete_steps": [
+    {
+      "step": "Test shared running-date host support projection without CK3",
+      "status": "PASS",
+      "command_count": 4,
+      "unittest_executions": 16,
+      "mypy_commands": 2,
+      "evidence": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\r27-running-mailbox-a01\\full-ci-a01\\RESULT.actual.json",
+        "bytes": 58974,
+        "sha256": "980ed1d0984b729bc6fa040b290b1310f832710c3faa12c5f7aaebf7242bb7b9"
+      }
+    },
+    {
+      "step": "Test configured native successor admission and process exits",
+      "status": "PASS",
+      "command_count": 4,
+      "unittest_executions": 114,
+      "mypy_commands": 1,
+      "evidence": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\r27-running-mailbox-a01\\repair-ci-a02\\RESULT.actual.json",
+        "bytes": 10955,
+        "sha256": "ae2c90c8fb8d0f6273aeefed6075fc577910a0c8a4c52a5a67a0b05812dd64bb"
+      }
+    },
+    {
+      "step": "Test complete metadata runtime-source byte budget without CK3",
+      "status": "PASS",
+      "command_count": 1,
+      "unittest_executions": 4,
+      "mypy_commands": 0,
+      "evidence": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\r27-running-mailbox-a01\\repair-ci-a02\\RESULT.actual.json",
+        "bytes": 10955,
+        "sha256": "ae2c90c8fb8d0f6273aeefed6075fc577910a0c8a4c52a5a67a0b05812dd64bb"
+      }
+    },
+    {
+      "step": "Test formal product ordinary campaign and capture admission without CK3",
+      "status": "PASS",
+      "command_count": 3,
+      "unittest_executions": 36,
+      "mypy_commands": 1,
+      "evidence": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\r27-running-mailbox-a01\\full-ci-a01\\RESULT.actual.json",
+        "bytes": 58974,
+        "sha256": "980ed1d0984b729bc6fa040b290b1310f832710c3faa12c5f7aaebf7242bb7b9"
+      }
+    },
+    {
+      "step": "Test generic product day event handoff without CK3",
+      "status": "PASS",
+      "command_count": 3,
+      "unittest_executions": 26,
+      "mypy_commands": 1,
+      "evidence": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\r27-running-mailbox-a01\\full-ci-a01\\RESULT.actual.json",
+        "bytes": 58974,
+        "sha256": "980ed1d0984b729bc6fa040b290b1310f832710c3faa12c5f7aaebf7242bb7b9"
+      }
+    },
+    {
+      "step": "Test existing saved-readback adapter maintenance without CK3",
+      "status": "PASS",
+      "command_count": 4,
+      "unittest_executions": 42,
+      "mypy_commands": 2,
+      "evidence": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\r27-running-mailbox-a01\\full-ci-a01\\RESULT.actual.json",
+        "bytes": 58974,
+        "sha256": "980ed1d0984b729bc6fa040b290b1310f832710c3faa12c5f7aaebf7242bb7b9"
+      }
+    },
+    {
+      "step": "Test public case frozen SDK imports and finite pilgrimage policy",
+      "status": "PASS",
+      "command_count": 8,
+      "unittest_executions": 161,
+      "mypy_commands": 3,
+      "evidence": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\r27-running-mailbox-a01\\full-ci-a01\\RESULT.actual.json",
+        "bytes": 58974,
+        "sha256": "980ed1d0984b729bc6fa040b290b1310f832710c3faa12c5f7aaebf7242bb7b9"
+      }
+    },
+    {
+      "step": "Test shared CK3 acceptance without installed CK3",
+      "status": "PASS",
+      "command_count": 90,
+      "unittest_executions": 794,
+      "mypy_commands": 12,
+      "evidence": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\r27-running-mailbox-a01\\shared-ci-a02\\RESULT.actual.json",
+        "bytes": 56015,
+        "sha256": "d96b6d7358a85592d3ae2f231b603ea98a714f7102959ebb8c0c34137b0341c8"
+      }
+    }
+  ],
+  "command_count": 117,
+  "unittest_executions": 1193,
+  "execution_count_is_not_unique_tests": true,
+  "mypy_commands": 22,
+  "original_attempt_retained_status": "RED",
+  "correction_chain": [
+    {
+      "original_ordinals": [
+        4
+      ],
+      "cause": "SYSTEM broker producer root admission rejected the new Csuperman TMP; calls=[]",
+      "correction": "Only configured entire step TMP/TEMP moved to an existing admitted Cwar root, hook/policy/ACL unchanged",
+      "actual_system_verified_evidence": "C:\\ck3-superman-validation-20261023\\ops\\defender-environment-a01\\SUCCESSOR-REVIEW.actual.json"
+    },
+    {
+      "original_ordinals": [
+        5,
+        6,
+        8
+      ],
+      "cause": "Existing importlib test loaders did not register executed modules in sys.modules; new builder dataclass requires it",
+      "correction": "Two loaders register the actual module, check spec/loader, typed load helper; entire configured and budget steps rerun"
+    },
+    {
+      "original_ordinals": [
+        82
+      ],
+      "cause": "Legacy local-launch fixture assigned plain text as its runtime_manifest",
+      "correction": "Independent JSON manifest fixture; original input mutation assertion preserved; complete shared 90 rerun"
+    }
+  ],
+  "additional_static_scope": {
+    "production_and_new_tests": "Strict background types/new tests; ordinary builder/entry/launcher PASS",
+    "local_launch_fixture": "Actual ordinary full-file mypy PASS",
+    "legacy_loader_fixtures": "Actual original full-file mypy 63 errors, current 60; modified loader/bootstrap actual AST strict PASS; no full-file PASS claimed",
+    "legacy_static_evidence": "C:\\ck3-superman-validation-20261023\\ops\\r27-running-mailbox-a01\\loader-static-a01\\SCOPE.actual.json"
+  },
+  "runtime": {
+    "path": "C:\\ck3-common-runtime-20261024\\running-date-support-a01\\runtime.local.json",
+    "bytes": 461012,
+    "sha256": "2afce59cd300fa7ecdb30e076e28c361c307810a4e583d6198a4139a548223f6"
+  },
+  "business_acceptance": "NOT_ASSESSED_BY_OFFLINE_TESTS",
+  "native_recovery": "R27 remains failed; rejected actual frame is still rejected. Offline classification does not establish live convergence.",
+  "record_review_at_utc": "2027-04-21T20:22:39Z"
+}
