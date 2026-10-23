@@ -2459,11 +2459,11 @@
           "budgets": {
             "command_timeout": 300,
             "readiness_timeout": 1800,
-            "timeout": 3900,
-            "hold_seconds": 900,
+            "timeout": 4200,
+            "hold_seconds": 1800,
             "poll_interval": 0.5
           },
-          "budget_provenance": "New bounded diagnostic using current shared readiness floor and original normal-close reserve",
+          "budget_provenance": "Fresh notification attempts reserve 1800 hold seconds and 4200 total seconds for two independent SAVE readbacks, actual GUI relationship/pin evidence and delayed death-card sampling. R0030 measured the readback workload. Readiness remains 1800 seconds, normal-close reserve remains 90 seconds and the two-natural-day bound is unchanged. Existing unused a01/a02 preparations retain their original 900-second budgets; no launched attempt is extended.",
           "required_mcp_tools": [
             "ck3_get_capabilities",
             "ck3_take_snapshot",
