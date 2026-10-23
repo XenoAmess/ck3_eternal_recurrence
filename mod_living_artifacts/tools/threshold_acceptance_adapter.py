@@ -23,6 +23,7 @@ from checkpoint_artifacts import SavedInputs, SavedVariable, one, parse_block, r
 from checkpoint_callback import CheckpointSample, checked_pin, verify_readback
 from checkpoint_producer import declared_pin, raw_object, stamp
 from management_event_contract import management_choice, source_option_index
+from inventory_gui_contract import REFUSAL, audit_opening
 from prepare_threshold_fixture import CASE, CONTRACT_NAME, SOURCES, prepare_inputs, prepared_sources, same_json
 
 RESULT_NAME = "living-artifacts-threshold-result.json"
@@ -292,6 +293,55 @@ def _native_files(output: Path) -> dict[str, Pin]:
     return {path.name: pin(path) for path in sorted((*output.glob("xalw-core-*.actual-results.json"), *output.glob("case-snapshot-*.actual-results.json")))}
 
 
+@dataclass(frozen=True)
+class NativeAudit:
+    successful: tuple[tuple[Frame, dict[str, object]], ...]
+    gui_evidence: tuple[Pin, ...]
+
+
+def audit_native_records(originals: object, *, context: object, manifest: object, reviewer: str, targets: tuple[str, ...]) -> NativeAudit:
+    """Keep all originals; only the exact fully revalidated pre-intent refusal is non-success."""
+    output = Path(text(field(context, "output"), "output"))
+    records = mapping(originals, "complete native file closure")
+    require(same_json(records, _native_files(output)), "Original action/snapshot file closure differs")
+    successful: list[tuple[Frame, dict[str, object]]] = []
+    evidence: list[Pin] = []
+    for name, raw in records.items():
+        reference = checked_pin(raw, "original native audit file")
+        rows = array(field(raw_object(Path(reference["path"])), "rows"), "original native audit rows")
+        require(len(rows) == 1, "Exactly one original native audit row required")
+        row = mapping(rows[0], "native audit row")
+        if row.get("ok") is True and row.get("error") is None:
+            frame, native, _ = _native(reference, context=context, manifest=manifest)
+            successful.append((frame, native))
+            continue
+        plan = field(row, "plan")
+        control = text(field(plan, "id"), "original refusal control")
+        require(re.fullmatch(r"xalw-core-[0-9]{4}", control) is not None and name == control + ".actual-results.json" and
+                row.get("ok") is False and row.get("error") == REFUSAL and "result" not in row and "after_snapshot" not in row and
+                field(plan, "tool") == core.OPEN and mapping(field(plan, "args"), "inventory args") == {} and
+                field(plan, "fresh_revision") is True and field(plan, "continue_on_error") is True and
+                integer(field(plan, "timeout"), "original inventory timeout", 30, 30) == 30,
+                "Unqualified failed/unknown original native row")
+        sequence = int(control.rsplit("-", 1)[1])
+        require(sequence > 1, "Inventory refusal lacks its original before ITEM")
+        before = checked_pin(field(records, f"xalw-core-{sequence - 1:04d}.actual-results.json"), "original before ITEM")
+        after = checked_pin(field(records, f"xalw-core-{sequence + 1:04d}.actual-results.json"), "original after ITEM")
+        before_frame, before_row, _ = _native(before, context=context, manifest=manifest)
+        after_frame, after_row, _ = _native(after, context=context, manifest=manifest)
+        request = pin(output / f"inventory-gui-open-{sequence:04d}-awaiting.json")
+        response = pin(output / f"inventory-gui-open-{sequence:04d}-root-result.json")
+        requested = read(Path(request["path"]))
+        target = decimal_id(field(requested, "target_artifact_id"), "original GUI target", allow_zero=True)
+        require(target in targets, "GUI opening target differs from this case's equipment targets")
+        opened = audit_opening(requested, read(Path(response["path"])), refusal=reference,
+            before_frame=before_frame, before_row=before_row, after_frame=after_frame, after_row=after_row,
+            source_root=Path(text(field(context, "shared_source_root"), "bound shared source root")),
+            run_id=text(field(context, "run_id"), "run"), machine_id=text(field(manifest, "machine_id"), "machine"), reviewer=reviewer, target=target)
+        evidence.extend((request, response, before, after, *opened.evidence))
+    return NativeAudit(tuple(successful), tuple(evidence))
+
+
 def _action(session: core.Session, target: str, option: str) -> Pin:
     session.open_management(target)
     session.management_choice("xalw.10", option)
@@ -346,29 +396,21 @@ def evaluate(context: object, *, manifest: object, reviewer: str, journal: objec
         _value(first.values, "xalw_suppression_chain") == 0 and _optional_value(first.values, "xalw_growth_suppressed_until") is None and
         _value(first.values, "xalw_curse_1") == 1 and _value(first.values, "xalw_curse_rank_1") == 2 and
         not _boolean(first.inputs.player_variables, "xalw_training_cooldown"), "Initial inputs differ; no terminal credit")
-    originals = mapping(row["native_records"], "complete native file closure")
-    require(same_json(originals, _native_files(Path(text(field(context, "output"), "output")))), "Original action/snapshot file closure differs")
+    audit = audit_native_records(row["native_records"], context=context, manifest=manifest, reviewer=reviewer, targets=(first.inputs.target_id,))
+    refs.extend(audit.gui_evidence)
     selected: list[str] = []
     equip: list[bool] = []
     event_keys: dict[tuple[int, int], str] = {}
-    for raw in originals.values():
-        # Keep an original unavailable read / proven pre-intent inventory refusal
-        # in the closure. It is not a successful native action. Session owns its
-        # source-bound fallback and unknown-intent policy; do not reject that route.
-        original_rows = array(field(raw_object(Path(checked_pin(raw, "original native audit file")["path"])), "rows"), "native audit rows")
-        require(len(original_rows) == 1, "Exactly one original native audit row required")
-        native_row = mapping(original_rows[0], "native audit row")
+    for frame, native_row in audit.successful:
         plan = field(native_row, "plan")
         tool = field(plan, "tool")
         if tool == "ck3_query_current_event_window_context_v1" and native_row.get("ok") is True:
-            frame, _, _ = _native(raw, context=context, manifest=manifest)
             event = mapping(field(field(native_row, "result"), "current_event_window_context"), "queried event")
             if event.get("status") == "available":
                 require(integer(field(event, "date_raw"), "queried actual event date", 1) == frame.date_raw and
                     integer(field(event, "schema_version"), "queried event version", 1, 1) == 1, "Event audit crossed actual native date/schema")
                 event_keys[(frame.date_raw, integer(field(event, "current_event_instance_id"), "queried instance", 1))] = text(field(event, "event_definition_key"), "queried event definition")
         elif tool == "ck3_select_event_option":
-            frame, _, _ = _native(raw, context=context, manifest=manifest)
             args = field(plan, "args")
             number = integer(field(args, "option_number"), "original selected native index", 1)
             key = event_keys.get((frame.date_raw, integer(field(args, "event_instance_id"), "selected instance", 1)))
@@ -378,7 +420,6 @@ def evaluate(context: object, *, manifest: object, reviewer: str, journal: objec
             else:
                 require(frame.date_raw != first.frame.date_raw + 16 * 24, "Unrelated event entered the same paused cost window")
         elif tool == core.EQUIP:
-            _native(raw, context=context, manifest=manifest)
             desired = field(field(plan, "args"), "desired_equipped")
             require(type(desired) is bool, "Actual equip boolean required")
             equip.append(desired is True)

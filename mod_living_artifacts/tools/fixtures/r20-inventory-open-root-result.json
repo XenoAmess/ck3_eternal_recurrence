@@ -1,0 +1,36 @@
+{
+  "schema": "living-artifacts-inventory-gui-open-result-v1",
+  "schema_version": 1,
+  "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0020",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "reviewer": "/root",
+  "pid": 13272,
+  "connection_generation": "1",
+  "actor_character_id": 31254,
+  "date_raw": 53144328,
+  "target_artifact_id": "403",
+  "status": "completed",
+  "submitted": true,
+  "reason": null,
+  "native_refusal": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0020\\case-output\\xalw-core-0006.actual-results.json",
+    "bytes": 675,
+    "sha256": "c0aad7677ba8ae299dd12573d4167d82423c56e2e386a13b1a169ed6de150472"
+  },
+  "mapping_receipt": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\r20-inventory-open-a01.png.json",
+    "bytes": 1519,
+    "sha256": "80164439346f00c0f717645787a7db9e16135bb97e14fa5130bc7c4547fe2e66"
+  },
+  "source_screenshot": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\20261023T073955099437Z-r20-inventory-source-a01.png",
+    "bytes": 2758484,
+    "sha256": "1cbdb69ea8707049cab89dce43ac85dfc60075995eea4cfd5c65a3236d388453"
+  },
+  "after_screenshot": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\media\\r20-inventory-open-a01.png",
+    "bytes": 2761550,
+    "sha256": "c47f25fd8987b5981afd8472e0786ab9f61b5ea7582a425b462993cb98dd7721"
+  },
+  "business_pass": false
+}

@@ -1,0 +1,20 @@
+{
+  "rows": [
+    {
+      "id": "xalw-core-0006",
+      "plan": {
+        "id": "xalw-core-0006",
+        "tool": "ck3_open_player_inventory_window_v1",
+        "args": {},
+        "fresh_revision": true,
+        "continue_on_error": true,
+        "timeout": 30
+      },
+      "started_at": "2026-10-23T07:38:55.913788+00:00",
+      "ok": false,
+      "error": "RuntimeError: MCP tool ck3_open_player_inventory_window_v1 returned an error: Error executing tool ck3_open_player_inventory_window_v1: Inventory opening requires the existing actual managed-source inventory",
+      "finished_at": "2026-10-23T07:38:56.498348+00:00"
+    }
+  ],
+  "business_PASS_inferred": false
+}
