@@ -45,7 +45,9 @@
     "subject sxant_xp_before",
     "subject sxant_xp_after",
     "sxant_probe_subject_dead",
-    "actual notification instances grouped by message type and subject"
+    "actual visible original death cards for the selected subject, with visible text, order, sampling times and visible_card_count; repeated frames of one card count once",
+    "explicit selected-SDK gaps for native HUD message type, subject ID and instance ID; do not substitute event-window instances or local appearance ordinals",
+    "case 12 only: sxant_confirmed_invocations equals 5, with five distinct visible event instances, their actual options and fresh native revisions retained"
   ],
   "cells": [
     {
@@ -220,6 +222,15 @@
       "repetitions": 5,
       "mode_event": "sxant.300",
       "action_event": "sxant.1012",
+      "confirmation_event_keys": [
+        "sxant.1201",
+        "sxant.1202",
+        "sxant.1203",
+        "sxant.1204",
+        "sxant.1205"
+      ],
+      "invocation_counter": "sxant_confirmed_invocations",
+      "execution_boundary": "Five visible event instances, one native-confirmed option and one had_sex_with_effect call each; not five complete seduction schemes.",
       "actor_initial_experience": 5,
       "subject_initial_experience": 1,
       "expected_actor_experience": 10,

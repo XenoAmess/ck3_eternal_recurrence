@@ -56,8 +56,8 @@ SXANT: BASELINE_READY notification-investigation
 2. 在 `sxant.2` 的对象头像进入原生角色界面，手动执行关注/pin，并独立读回其选中状态；不得杜撰 `mark_as_interest` 脚本效果。清理准备阶段消息后，**在选择模式前保存共同基线**，绑定双方身份、关系、关注状态、模组顺序、机器和时间。若公共原生工具没有 pin 观测，保留原生 UI 读回证据和该能力缺口。
 3. 每个候选格子都从上述同一存档重新加载，选择一个模式及一个次数。不得在一个已执行过的状态上接着跑第二格；夹具的阶段守卫也拒绝再次提交动作。
 4. 动作结束停在 `sxant.4`，先采样经验、七项账本/修正、真实双方身份和动作阶段消息，再清理消息并冻结探针前清单。`sxant_stage=2` 仅表示动作阶段已提交，不表示行为覆盖正确或没有通知问题。
-5. 明确选择探针选项后，阶段先置为 3，再令**同一个对象**执行一次 `death = { death_reason = death_natural_causes }`。结果未知不重复提交。记录对象真实死亡状态，并保存其后实际原版消息的类型、标题、对象和实例。
-6. 分别对照同模式 N=0 与 N=1/2/5；不同合法消息类型分别计数。原版定义有 `lover_has_died` 和 `notable_has_died` 等，情人死亡也可能产生其他合法事件。**不能把全部消息相加后强行规定应只有一条。** 若基线在当前设置下没有可见角色死亡消息，先完成探针资格，不把“没有看到消息”当作不重复。
+5. 明确选择探针选项后，阶段先置为 3，再令**同一个对象**执行一次 `death = { death_reason = death_natural_causes }`。结果未知不重复提交。记录对象真实死亡状态，并连续保存其后实际原版右侧卡片的原始画面、可见文字、出现顺序和观察时间。当前 SDK 没有 HUD 消息列表读口，原生 type、subject ID 和 instance ID 必须明确记为不可取得；可见角色文字不能冒充原生 subject ID，事件窗口实例也不能代用。
+6. 分别对照同模式 N=0 与 N=1/2/5；实际可区分的合法消息类别分别计数，并说明类别来自可见文字还是源码推断。原版定义有 `lover_has_died` 和 `notable_has_died` 等，情人死亡也可能产生其他合法事件。**不能把全部消息相加后强行规定应只有一条。** 若基线在当前设置下没有可见角色死亡消息，先完成探针资格，不把“没有看到消息”当作不重复。只有实际看到并留存所选对象死亡卡片，才能确认本格探针取得资格；采样空缺或零张画面不能据此通过。
 7. 如需进一步隔离查询交互，可在同一动作完成检查点重载后，比较“查看经验 0 次”和“查看 1 次”两条扩展分支；将主动查看气泡与随后原版死亡消息分别记录。冷重启对照也必须单独列为新执行记录，不算本轮已经覆盖。
 
 选择死亡探针是为了触发引擎及原版角色消息的真实分发。直接 `send_interface_message` 人工发送一条消息会绕过可疑的角色消息接收者选择，因此本夹具没有这种直接注入。**死亡探针是否稳定产生目标右侧消息尚未实机取得资格**；它仅覆盖同类角色状态消息分发，不能未经取证代表玩家提到的每一种通知。
@@ -91,3 +91,28 @@ SXANT: BASELINE_READY notification-investigation
 通知实机必须另开绑定同一保存输入的独立场次；32 个候选格子仍全部未执行，可先选择 N=0 和 N=5 分诊，再为出现差异的模式补 N=1、2。每次重载同一 `sxant.2` 保存输入并核完整 actor/subject PID，不连续累跑多个格子。优先比较 hook-unequal 与 helper-unequal，再用 helper-equal、counter-only、modifier-rebuild 和 vanilla-pair 定位副作用。实际 GUI 截图只能记录观察时间窗内的 `visible_card_count`、可见文字与顺序；当前 SDK 没有 HUD 消息清单读口，原生 type/subject/instance ID 继续保留缺口，不用事件窗口 ID 替代。启动检查通过只证明夹具已安排，不能给通知矩阵或根因判断授予通过状态。
 
 按共同存储策略 1.0.0，外置原始指令证据按 `raw_evidence` 30 天评估，精简结论按 `record` 180 天复核归纳。精确路径、大小、SHA、实际使用时间与复核日期在精简回执中；期限不是到点无条件删除，也没有部署自动清理。仓库跟踪的结论通过正常内容维护复核，不进入本机逐文件删除器。
+
+## 2026-10-24 追加：所选 N=0 / N=5 的可见卡片合同
+
+`machine_id: desktop-3fevhd2-1c74096080`；2026-10-23T19:37:22Z 离线核对公共 case 与实际 `generic.root_phase` 消费路径。旧断言 `actual_n0_probe_message_instances_retained` 将 N=0 固定为必需结果，并要求当前 SDK 不能读取的原生消息实例。现改为所选 N=0 或 N=5 格子的实际可见卡片证据；`notification_baseline_probe_qualification_only` 范围不变，不授予重复通知根因、修复或完整矩阵通过状态。旧 prepared 和既有回执保留原文，必须用新合同重新 prepare，不能改写旧件补授资格。
+
+公共 Root checkpoint 仍须保留完整 actor/subject 身份、动作前真实基线 SAVE、实际关系与通知设置、BASELINE_READY 业务日志及未执行范围，并逐项验证以下要求：
+
+| case 断言 | 必需的实际证据 |
+|---|---|
+| `selected_cell_case_index_mode_and_n0_or_n5_repetitions_read_back` | 从真实存档或原生读回核对 case index、模式、N、双方完整身份及实际经验/阶段；不能只按所选按钮或预期日志推定结果。当前最小分诊为 hook-unequal 的 case 9 / N=0、case 12 / N=5，每场只提交所选一格 |
+| `same_subject_original_death_probe_submitted_once_and_death_verified` | 核对动作完成、探针前 stage=2 且对象活着，记录一次原生探针选项提交及 stage=3、同一完整身份的真实死亡后验。保留 `death_natural_causes` 原版死亡路径，不直接注入消息、不重试结果未知的死亡动作 |
+| `selected_cell_original_death_cards_actually_visible_and_sampling_evidence_retained` | 保留探针前已有卡片清单，以及探针后的连续原始画面和实际采样时间；至少一张属于所选死亡对象的原版右侧卡片实际可见。按可见类别记录文字、顺序和 `visible_card_count`，稳定留在多帧中的同一卡片只计一次。截图只证明观察时间窗，不能外推隐藏队列全量；没有可见卡片、派发尚未完成或无法区分卡片身份时，本格探针未取得资格 |
+| `native_hud_message_type_subject_and_instance_id_gaps_explicitly_recorded` | 明确列出原生 HUD type、subject ID、instance ID 三项不可取得，保留选中 SDK 来源；本地出现序号、角色文字、源码候选 key 和事件窗口实例均不得当作这些字段 |
+
+单独的 N=5 记录无需伪造一个 N=0 结果；N=0 记录也不代表 N=5 已执行。两场若各自创建角色，则分别绑定各自基线 SAVE 和实际完整身份，不能声称来自同一存档、相同 PID 的反事实对照。同一基线重载对照必须另有实际保存输入和身份核验。每个已死亡对象不能在同一加载状态再次作为探针，32 格候选的 `not_run` 只可随对应独立实测证据更新。尚未执行本次通知实机，以上修正只使公共合同与当前能力及计划所选格子一致。
+
+夹具生产者的 `cases.json.required_final_readback` 也同步要求实际可见死亡卡片、文字、顺序、采样时间和 `visible_card_count`，以及当前 SDK 的原生 HUD type、subject ID、instance ID 三项缺口，不再要求不能读取的消息实例。32 格的身份引用、case index、模式、N、经验预期和 marker 不作改动。
+
+修正前 `sxant.1012` 的 N=5 将五个 `had_sex_with_effect = { CHARACTER = scope:sxant_subject PREGNANCY_CHANCE = 0 }` 放在同一个隐藏 `character_event` 的 `immediate` 中连续调用；这只能诊断单父事件 context 的累积，未覆盖多次可见结算实例。该版本未执行，以下修正取代其 case 12 入口；旧物化件和回执保留原样，不得视作已包含新路径。
+
+2026-10-23T19:46:13Z，同机离线追加：case 12 的隐藏入口现在只保存 5 / 1 初始经验、将 `sxant_confirmed_invocations` 初始化为 0，并创建第一个可见事件 `sxant.1201`。`sxant.1201` 至 `sxant.1205` 各有一个需原生确认的实际选项，打开窗口时不调用性行为效果；每次选择仅调用一次 `had_sex_with_effect`，随后将实际计数加一。第 i 次选项要求此前实际计数为 i−1、case 12、N=5、stage=1 且同一对象仍活着，旧步骤被重复提交时不再调用。只有第五次才记录完成经验、置 stage=2、产生原 `ACTIONS_COMPLETE hook-unequal N=5` marker 并进入仍需另行确认的 `sxant.4` 死亡探针。其余 31 格的原有动作流程、经验预期与 marker 不变。
+
+Root 必须逐次保存这五个实际可见事件的原生定义/实例 ID、完整角色身份、实际选项和新的 revision，并仅对当前实例提交一次选项；不得用五个预计定义 ID 代替五个实际 instance ID，也不得把一次提交 ACK 当作五次完成。每次选择后核对下一窗口和计数 1、2、3、4、5；结果未知先读回，不能重复提交。动作完成后再核对 actor XP=10、subject XP=6、stage=2 和同一双方身份。`cases.json` 记录五个定义 key 及实际计数变量，最终读回保留五次实例和选项证据。
+
+这扩展到**不同可见事件实例的结算路径分诊**，仍未执行五次完整勾引 scheme，也没有证明被调用效果内部原生 context 的全部寿命。若没有观察到累加，只能记录本次路径、模式和采样窗口的结果，不能关闭玩家报告；实际重复勾引完成路径仍需独立证据。新事件仅通过结构和 emitter 回归检查，不构成 CK3 实机或引擎语法验收。

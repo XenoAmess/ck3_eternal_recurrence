@@ -14,6 +14,7 @@ from unittest.mock import patch
 import zipfile
 
 import prepare_live_fixture
+import validate_static
 from product import REPO, RUNTIME_FILES, SOURCE, VERSION, spec
 import sys
 
@@ -101,6 +102,75 @@ class SupermanNotificationFixtureTests(unittest.TestCase):
     def prepare(self, output: Path) -> prepare_live_fixture.NotificationFixtureReport:
         with patch.object(prepare_live_fixture, "SOURCE", self.source):
             return prepare_live_fixture.prepare_notification_fixture(output)
+
+    @staticmethod
+    def statement_block(nodes: tuple[validate_static.EffectAssignment, ...], key: str) -> tuple[validate_static.EffectAssignment, ...]:
+        matches = [node.value for node in nodes if node.key == key]
+        if len(matches) != 1 or not isinstance(matches[0], tuple):
+            raise ValueError(f"expected one fixture block: {key}")
+        return matches[0]
+
+    @staticmethod
+    def nested_keys(nodes: tuple[validate_static.EffectAssignment, ...]) -> tuple[str, ...]:
+        keys: list[str] = []
+        for node in nodes:
+            keys.append(node.key)
+            if isinstance(node.value, tuple):
+                keys.extend(SupermanNotificationFixtureTests.nested_keys(node.value))
+        return tuple(keys)
+
+    def test_n5_real_emitter_requires_five_visible_confirmations_before_probe(self) -> None:
+        output = self.root / "five-confirmations"
+        self.prepare(output)
+        source = (output / "events/sxant_events.txt").read_text(encoding="utf-8-sig")
+        # The shared scanner masks quoted logs; remove them before AST checks.
+        statements = validate_static.effect_assignments(re.sub(r'debug_log\s*=\s*"[^"\n]*"', "", source))
+        # The first if only restores the subject, so select the action if explicitly.
+        event = self.statement_block(statements, "sxant.1012")
+        immediate = self.statement_block(event, "immediate")
+        action_ifs = [node.value for node in immediate if node.key == "if" and isinstance(node.value, tuple)]
+        self.assertEqual(len(action_ifs), 2)
+        setup = action_ifs[1]
+        self.assertNotIn("had_sex_with_effect", self.nested_keys(event))
+        self.assertEqual(dict((node.key, node.value) for node in self.statement_block(setup, "trigger_event")), {"id": "sxant.1201"})
+        setup_variables = [dict((field.key, field.value) for field in node.value)
+                           for node in setup if node.key == "set_variable" and isinstance(node.value, tuple)]
+        self.assertIn({"name": "sxant_confirmed_invocations", "value": "0"}, setup_variables)
+        self.assertNotIn({"name": "sxant_stage", "value": "2"}, setup_variables)
+        for ordinal in range(1, 6):
+            with self.subTest(ordinal=ordinal):
+                event = self.statement_block(statements, f"sxant.{1200 + ordinal}")
+                self.assertNotIn("hidden", [node.key for node in event])
+                self.assertIn(validate_static.EffectAssignment("theme", "marriage"), event)
+                self.assertNotIn("had_sex_with_effect", self.nested_keys(self.statement_block(event, "immediate")))
+                option = self.statement_block(event, "option")
+                action = self.statement_block(option, "if")
+                limit = dict((node.key, node.value) for node in self.statement_block(action, "limit"))
+                self.assertEqual(limit["var:sxant_stage"], "1")
+                self.assertEqual(limit["var:sxant_case_index"], "12")
+                self.assertEqual(limit["var:sxant_repetitions"], "5")
+                self.assertEqual(limit["has_variable"], "sxant_confirmed_invocations")
+                self.assertEqual(limit["var:sxant_confirmed_invocations"], str(ordinal - 1))
+                self.assertEqual(self.nested_keys(event).count("had_sex_with_effect"), 1)
+                invocation = self.statement_block(action, "had_sex_with_effect")
+                self.assertEqual(dict((node.key, node.value) for node in invocation), {"CHARACTER": "scope:sxant_subject", "PREGNANCY_CHANCE": "0"})
+                increment = self.statement_block(action, "change_variable")
+                self.assertEqual(dict((node.key, node.value) for node in increment), {"name": "sxant_confirmed_invocations", "add": "1"})
+                keys = [node.key for node in action]
+                self.assertLess(keys.index("had_sex_with_effect"), keys.index("change_variable"))
+                target = "sxant.4" if ordinal == 5 else f"sxant.{1201 + ordinal}"
+                self.assertEqual(dict((node.key, node.value) for node in self.statement_block(action, "trigger_event")), {"id": target})
+                final_variables = [dict((field.key, field.value) for field in node.value)
+                                   for node in action if node.key == "set_variable" and isinstance(node.value, tuple)]
+                self.assertEqual({"name": "sxant_stage", "value": "2"} in final_variables, ordinal == 5)
+        self.assertEqual(source.count('debug_log = "SXANT: ACTIONS_COMPLETE hook-unequal N=5"'), 1)
+        metadata: object = json.loads((output / "_notification_cells.json").read_bytes())
+        if not isinstance(metadata, dict) or not isinstance(metadata.get("cells"), list):
+            self.fail("notification metadata must contain the actual cells")
+        selected = [cell for cell in metadata["cells"] if isinstance(cell, dict) and cell.get("case_index") == 12]
+        self.assertEqual(len(selected), 1)
+        self.assertEqual(selected[0].get("confirmation_event_keys"), [f"sxant.{1200 + ordinal}" for ordinal in range(1, 6)])
+        self.assertEqual(selected[0].get("invocation_counter"), "sxant_confirmed_invocations")
 
     def replace_case_field(self, field: str, value: bool | float | int | str | None) -> None:
         path = self.templates / "cases.json"

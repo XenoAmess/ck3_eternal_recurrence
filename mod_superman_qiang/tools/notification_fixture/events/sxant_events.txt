@@ -453,26 +453,122 @@ sxant.1012 = {
     immediate = {
         if = { limit = { has_variable = sxant_ref_subject } var:sxant_ref_subject = { save_scope_as = sxant_subject } }
         if = {
-            limit = { has_variable = sxant_stage var:sxant_stage = 1 exists = scope:sxant_subject scope:sxant_subject = { is_alive = yes age >= 18 } }
+            limit = { has_variable = sxant_stage var:sxant_stage = 1 NOT = { has_variable = sxant_confirmed_invocations } exists = scope:sxant_subject scope:sxant_subject = { is_alive = yes age >= 18 } }
             set_variable = { name = sxant_case_index value = 12 }
             set_variable = { name = sxant_repetitions value = 5 }
             set_variable = { name = sxad_sex_experience value = 5 }
             scope:sxant_subject = { set_variable = { name = sxad_sex_experience value = 1 } }
             set_variable = { name = sxant_actor_xp_before value = sxad_experience_value }
             scope:sxant_subject = { set_variable = { name = sxant_xp_before value = sxad_experience_value } }
+            set_variable = { name = sxant_confirmed_invocations value = 0 }
             debug_log = "SXANT: ACTIONS_BEGIN hook-unequal N=5"
+            trigger_event = { id = sxant.1201 }
+        }
+        else = { debug_log = "SXANT: REJECT action-stage-or-subject-invalid" }
+    }
+}
+
+sxant.1201 = {
+    type = character_event
+    theme = marriage
+    title = sxant_confirmation_title
+    desc = sxant_confirmation_desc_1
+    right_portrait = scope:sxant_subject
+    immediate = { if = { limit = { has_variable = sxant_ref_subject } var:sxant_ref_subject = { save_scope_as = sxant_subject } } }
+    option = {
+        name = sxant_confirm_one_invocation
+        if = {
+            limit = { var:sxant_stage = 1 var:sxant_case_index = 12 var:sxant_repetitions = 5 has_variable = sxant_confirmed_invocations var:sxant_confirmed_invocations = 0 exists = scope:sxant_subject scope:sxant_subject = { is_alive = yes age >= 18 } }
             had_sex_with_effect = { CHARACTER = scope:sxant_subject PREGNANCY_CHANCE = 0 }
+            change_variable = { name = sxant_confirmed_invocations add = 1 }
+            debug_log = "SXANT: INVOCATION_COMPLETE hook-unequal N=5 ordinal=1"
+            trigger_event = { id = sxant.1202 }
+        }
+        else = { debug_log = "SXANT: REJECT confirmation-stage-or-count-invalid ordinal=1" }
+    }
+}
+
+sxant.1202 = {
+    type = character_event
+    theme = marriage
+    title = sxant_confirmation_title
+    desc = sxant_confirmation_desc_2
+    right_portrait = scope:sxant_subject
+    immediate = { if = { limit = { has_variable = sxant_ref_subject } var:sxant_ref_subject = { save_scope_as = sxant_subject } } }
+    option = {
+        name = sxant_confirm_one_invocation
+        if = {
+            limit = { var:sxant_stage = 1 var:sxant_case_index = 12 var:sxant_repetitions = 5 has_variable = sxant_confirmed_invocations var:sxant_confirmed_invocations = 1 exists = scope:sxant_subject scope:sxant_subject = { is_alive = yes age >= 18 } }
             had_sex_with_effect = { CHARACTER = scope:sxant_subject PREGNANCY_CHANCE = 0 }
+            change_variable = { name = sxant_confirmed_invocations add = 1 }
+            debug_log = "SXANT: INVOCATION_COMPLETE hook-unequal N=5 ordinal=2"
+            trigger_event = { id = sxant.1203 }
+        }
+        else = { debug_log = "SXANT: REJECT confirmation-stage-or-count-invalid ordinal=2" }
+    }
+}
+
+sxant.1203 = {
+    type = character_event
+    theme = marriage
+    title = sxant_confirmation_title
+    desc = sxant_confirmation_desc_3
+    right_portrait = scope:sxant_subject
+    immediate = { if = { limit = { has_variable = sxant_ref_subject } var:sxant_ref_subject = { save_scope_as = sxant_subject } } }
+    option = {
+        name = sxant_confirm_one_invocation
+        if = {
+            limit = { var:sxant_stage = 1 var:sxant_case_index = 12 var:sxant_repetitions = 5 has_variable = sxant_confirmed_invocations var:sxant_confirmed_invocations = 2 exists = scope:sxant_subject scope:sxant_subject = { is_alive = yes age >= 18 } }
             had_sex_with_effect = { CHARACTER = scope:sxant_subject PREGNANCY_CHANCE = 0 }
+            change_variable = { name = sxant_confirmed_invocations add = 1 }
+            debug_log = "SXANT: INVOCATION_COMPLETE hook-unequal N=5 ordinal=3"
+            trigger_event = { id = sxant.1204 }
+        }
+        else = { debug_log = "SXANT: REJECT confirmation-stage-or-count-invalid ordinal=3" }
+    }
+}
+
+sxant.1204 = {
+    type = character_event
+    theme = marriage
+    title = sxant_confirmation_title
+    desc = sxant_confirmation_desc_4
+    right_portrait = scope:sxant_subject
+    immediate = { if = { limit = { has_variable = sxant_ref_subject } var:sxant_ref_subject = { save_scope_as = sxant_subject } } }
+    option = {
+        name = sxant_confirm_one_invocation
+        if = {
+            limit = { var:sxant_stage = 1 var:sxant_case_index = 12 var:sxant_repetitions = 5 has_variable = sxant_confirmed_invocations var:sxant_confirmed_invocations = 3 exists = scope:sxant_subject scope:sxant_subject = { is_alive = yes age >= 18 } }
             had_sex_with_effect = { CHARACTER = scope:sxant_subject PREGNANCY_CHANCE = 0 }
+            change_variable = { name = sxant_confirmed_invocations add = 1 }
+            debug_log = "SXANT: INVOCATION_COMPLETE hook-unequal N=5 ordinal=4"
+            trigger_event = { id = sxant.1205 }
+        }
+        else = { debug_log = "SXANT: REJECT confirmation-stage-or-count-invalid ordinal=4" }
+    }
+}
+
+sxant.1205 = {
+    type = character_event
+    theme = marriage
+    title = sxant_confirmation_title
+    desc = sxant_confirmation_desc_5
+    right_portrait = scope:sxant_subject
+    immediate = { if = { limit = { has_variable = sxant_ref_subject } var:sxant_ref_subject = { save_scope_as = sxant_subject } } }
+    option = {
+        name = sxant_confirm_one_invocation
+        if = {
+            limit = { var:sxant_stage = 1 var:sxant_case_index = 12 var:sxant_repetitions = 5 has_variable = sxant_confirmed_invocations var:sxant_confirmed_invocations = 4 exists = scope:sxant_subject scope:sxant_subject = { is_alive = yes age >= 18 } }
             had_sex_with_effect = { CHARACTER = scope:sxant_subject PREGNANCY_CHANCE = 0 }
+            change_variable = { name = sxant_confirmed_invocations add = 1 }
+            debug_log = "SXANT: INVOCATION_COMPLETE hook-unequal N=5 ordinal=5"
             set_variable = { name = sxant_actor_xp_after value = sxad_experience_value }
             scope:sxant_subject = { set_variable = { name = sxant_xp_after value = sxad_experience_value } }
             set_variable = { name = sxant_stage value = 2 }
             debug_log = "SXANT: ACTIONS_COMPLETE hook-unequal N=5"
             trigger_event = { id = sxant.4 }
         }
-        else = { debug_log = "SXANT: REJECT action-stage-or-subject-invalid" }
+        else = { debug_log = "SXANT: REJECT confirmation-stage-or-count-invalid ordinal=5" }
     }
 }
 

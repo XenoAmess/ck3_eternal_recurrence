@@ -24,7 +24,10 @@
         "actual_actor_and_subject_full_identity",
         "baseline_save_before_case_actions",
         "actual_relationship_and_notification_settings",
-        "actual_n0_probe_message_instances_retained",
+        "selected_cell_case_index_mode_and_n0_or_n5_repetitions_read_back",
+        "same_subject_original_death_probe_submitted_once_and_death_verified",
+        "selected_cell_original_death_cards_actually_visible_and_sampling_evidence_retained",
+        "native_hud_message_type_subject_and_instance_id_gaps_explicitly_recorded",
         "diagnosis_scope_and_unrun_cells_recorded",
         "business_marker_SXANT_BASELINE_READY_notification_investigation"
       ],
@@ -37,6 +40,7 @@
   ],
   "uncovered_product_business": [
     "This diagnostic baseline does not establish the cause or a fix for repeated messages.",
+    "Only the actually selected N=0 or N=5 cell and visible death-card observations may be credited; native HUD message type, subject and instance IDs remain unavailable in the selected SDK.",
     "The 32 candidate cells remain not_run until their actual independent observations are retained.",
     "Monthly simulation, script pregnancy attempt coverage and save reload require separate source acceptance."
   ],

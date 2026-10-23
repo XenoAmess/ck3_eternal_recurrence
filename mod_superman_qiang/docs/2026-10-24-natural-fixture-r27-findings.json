@@ -1,0 +1,115 @@
+{
+  "schema": "sxanf-natural-fixture-r27-native-findings-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T19:46:40Z",
+  "run_id": "desktop-3fevhd2-1c74096080--superman-qiang--R0027",
+  "run_root": "C:/ck3-superman-validation-20261023/runs/desktop-3fevhd2-1c74096080--superman-qiang--R0027",
+  "state_root": "C:/ck3-superman-validation-20261023/natural-scene-a08/state",
+  "run_source_commit": "f0d15bef528f8b585f9bb52d6176a78c82da42af",
+  "game_version": "1.20.0.4",
+  "result": "FAIL",
+  "business_pass": false,
+  "open_kaishek_prevalidation": "NOT_PERFORMED_FOR_R27",
+  "prevalidation_boundary": "R27 did not receive the new candidate's open_kaishek tool prevalidation before launch. The previous R26 five-command product CI does not substitute for it. Any future R28 prevalidation cannot retroactively qualify R27.",
+  "source_log_analysis": {
+    "path": "C:/ck3-superman-validation-20261023/ops/R0027-natural-fixture-analysis-a01/REPORT.actual.json",
+    "bytes": 11566,
+    "sha256": "2686cd2f40c45a5f0518b1de907b5a16648e46b84b2facda40c42d58f47e8991"
+  },
+  "stock_source_pins_and_excerpts": {
+    "path": "C:/ck3-superman-validation-20261023/ops/R0027-natural-fixture-analysis-a01/STOCK-SOURCES.actual.json",
+    "bytes": 4134,
+    "sha256": "8e64736fdb63c516428a2d754fb398a6306f5928b1c95e3d297ca3cdbe78465e"
+  },
+  "established": [
+    "Day-two baseline logged11 role predicates OK, including both actual fertility<0.1 predicates, and only spouse_a FAIL. BASELINE_READY and monthly business were not reached.",
+    "The retained error log has30 SXANF script errors, all explicitly while building tooltip/description:10 unset experience reads, each followed by unset-scope and invalid-comparison errors. It has no non-tooltip SXANF script error. This does not prove actual experience initialization failed.",
+    "The spouse_a compound predicate combined marriage, distinct faith and XP0 without separate diagnostics. R27 has no SAVE, so its failed component and actual faith/rite state remain unresolved.",
+    "Stock faith!=scope comparisons exist. Rewriting the equivalent condition as NOT{faith=...} improves structural parsing and does not establish a native syntax defect.",
+    "Stock character templates pair set_character_faith with set_character_rite. Orthodox's scripted main rite is byzantine_rite. The old fixture explicitly set only faith after creating both spouses with root's rite. The paired setter is a supported input-construction correction; the exact effect of the former single setter or any next-day reconciliation was not proved."
+  ],
+  "stock_sources": [
+    {
+      "path": "game/common/scripted_character_templates/00_pool_repopulation_character_templates.txt",
+      "lines": "1211-1212,1229-1230,1304-1309",
+      "supports": "Paired faith/rite character setters"
+    },
+    {
+      "path": "game/common/religion/faith_types/00_faith_types.txt",
+      "lines": "656-658",
+      "supports": "Orthodox main_rite=byzantine_rite"
+    },
+    {
+      "path": "game/events/birth_events.txt",
+      "lines": "781,1493",
+      "supports": "faith!=scope.faith is stock syntax"
+    },
+    {
+      "path": "game/events/health_events.txt",
+      "lines": "162-169,227-234",
+      "supports": "hidden_effect inside immediate"
+    },
+    {
+      "path": "game/common/scripted_effects/00_religion_effects.txt",
+      "lines": "506-509",
+      "supports": "State-dependent effects guarded from pre-execution tooltip errors"
+    }
+  ],
+  "save_result": {
+    "produced": false,
+    "boundary": "Shared advance rejected its running-frame mailbox/snapshot date mismatch53144328/53144352. SAVE was rejected before claim/publish while host held error31. No R27 save, saved-character inference or readback origin is fabricated."
+  },
+  "closure_reported_by_parent": {
+    "source": "Root actual public/host/native/keeper/CAS closure results",
+    "native_process_exit": 0,
+    "independent_os_exit": 0,
+    "cleanup_completed": true,
+    "keeper_exit": 0,
+    "public_run_exit": 2,
+    "screen_release_revision": 8479,
+    "screen_release_evidence": "C:/ck3-superman-validation-20261023/ops/R0027-screen-release-a02.actual.json",
+    "resources_after_release": []
+  },
+  "candidate": {
+    "status": "SOURCE_CANDIDATE_NOT_ENGINE_ACCEPTED",
+    "crossfaith_setup": "At day1 set spouse_b to both Orthodox faith and Byzantine rite; day2 still requires a genuine different faith from spouse_a. No conversion is reapplied at baseline.",
+    "preview": "Enclose all visible sxanf.2 immediate setup and diagnostics in stock hidden_effect. Add presence guards to all22 living-role XP baseline comparisons and to option admission.",
+    "diagnostics": "Independently log marriage, both faith scopes, genuine cross-faith, XP presence and guarded XP0, plus root-faith/Orthodox/Byzantine state. Missing XP logs UNREAD and cannot qualify baseline.",
+    "unchanged_gate": "Baseline_valid begins0 and is set1 only by the complete12-role conjunction. Diagnostic logs never set it. Failure remains terminal and cannot enter monthly tests.",
+    "timeline": "ARMED schedules day1 START; day2 initializes only11 living fixture actors and observer state before baseline. This is controlled input construction, not encounter credit. No reset runs after Begin. Maximum remains2+31+2=35 natural days.",
+    "dead_scope": "Native death checks only is_alive=no. Missing dead experience remains an independent SAVE assertion, separate from zero.",
+    "production_runtime_changed": false
+  },
+  "future_C4_evidence": "FinalXP2 alone is insufficient. Both spouse before_explicit_xp snapshots must be2 and native_pulse_month must equal the saved current month to establish native monthly counting before direct events.",
+  "candidate_source_validation": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-23T19:50:36.859096+00:00",
+    "focused_natural_fixture_tests": 10,
+    "full_product_ci": {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\product-ci-r27-fixture-fix-a01\\FINAL.actual.json",
+      "bytes": 25661,
+      "sha256": "727e7bdd3b5ccd23add3b5c334c151b4102f629acb83441b7d93ee53a36a6b66"
+    },
+    "unit_tests": 87,
+    "unit_test_groups": {
+      "independent_release": 13,
+      "product_builder": 12,
+      "product_runtime": 62
+    },
+    "static_validation": "GREEN",
+    "formal_builder_check": "GREEN_35_FILES_UNRELEASED_CHECK_ONLY",
+    "mypy_two_files": {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\product-ci-r27-fixture-fix-a01\\MYPY.actual.json",
+      "bytes": 678,
+      "sha256": "0b74643589dd065a0418a7a31f4b150d287fbadb28ba9eed2aa1dd14d622098f"
+    },
+    "stable_natural_source_pins": {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\product-ci-r27-fixture-fix-a01\\SOURCE-PINS.actual.json",
+      "bytes": 2914,
+      "sha256": "e6edce5826cd34499cdae32c6b13122178e01438ae019bf2a228e292773e17fc"
+    },
+    "engine_rerun": "NOT_RUN",
+    "business_pass": false
+  },
+  "new_game_actions_during_fix": 0
+}

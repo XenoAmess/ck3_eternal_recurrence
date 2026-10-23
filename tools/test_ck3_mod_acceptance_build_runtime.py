@@ -18,7 +18,10 @@ from unittest.mock import patch
 HERE = Path(__file__).resolve().parent
 PROGRAM = HERE / 'ck3_mod_acceptance_build_runtime.py'
 spec = importlib.util.spec_from_file_location('candidate_public_runtime_builder', PROGRAM)
+if spec is None or spec.loader is None:
+    raise ValueError('Actual runtime builder import route unavailable')
 builder = importlib.util.module_from_spec(spec)
+sys.modules[spec.name] = builder
 spec.loader.exec_module(builder)
 MACHINE = 'synthetic-owned-fixture-machine'
 
