@@ -265,19 +265,22 @@
     {
       "id": "D02",
       "product": "superman-qiang",
-      "category": "feature_request_documented_behavior",
-      "priority": "P3",
+      "category": "counting_coverage_gap",
+      "priority": "P2",
       "title": "生育三个亲生孩子后性经验仍为零，希望怀孕也计数",
-      "status": "expected_by_current_contract",
+      "status": "open_design_review",
       "report_comment_ids": [
         "581684930426237298"
       ],
       "owner_reply_comment_ids": [],
       "followup_comment_ids": [],
-      "assessment": "产品只记录启用后的明确事件，不反推日常夫妻生活或既往经历。生育本身不是既有计数入口；不能仅凭此判定计数失效。",
-      "next_action": "解释计数口径；把新增怀孕/生育计数作为功能需求。",
+      "assessment": "当前产品合同明确不以出生/怀孕代替性行为计数，生产实现只接入had_sex_with_effect与had_sex_with_unknown_effect。这解释了为何自然生育可能不增加经验，但不能据此排除玩家反馈或认定设计合理。生育多个亲生孩子而经验仍为零应保留为计数覆盖缺口，需评估自然受孕/生育链的实际入口及合理计数方式。",
+      "next_action": "保留待评估；研究自然受孕/生育真实生产链，并区分启用前后、真实父母及已由明确事件计数的妊娠，避免重复计数。尚未承诺生育一次等于性行为一次或追溯所有旧经历。",
       "repository_evidence": [
-        "mod_superman_qiang/README.md"
+        "mod_superman_qiang/README.md",
+        "mod_superman_qiang/docs/product-contract.md",
+        "mod_superman_qiang/common/scripted_effects/zz_sxad_had_sex_with_effect.txt",
+        "mod_superman_qiang/common/scripted_effects/zz_sxad_had_sex_with_unknown_effect.txt"
       ],
       "report_urls": [
         "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990#comment_581684930426237298"
@@ -424,12 +427,20 @@
     ],
     "not_a_confirmed_bug": [
       "D01",
-      "D02",
       "Q01",
       "R01",
       "R02",
       "R03",
       "R04"
+    ],
+    "counting_coverage_gap_leads": [
+      "D02"
     ]
+  },
+  "classification_correction": {
+    "observed_at_utc": "2026-10-23T14:44:01.371628+00:00",
+    "reason": "User questioned treating natural reproduction without experience as an acceptable restriction; retain this as an open counting coverage gap rather than excluding it by current contract.",
+    "issue_id": "D02",
+    "raw_comments_changed": false
   }
 }
