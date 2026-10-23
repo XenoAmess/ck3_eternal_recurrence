@@ -25,7 +25,7 @@
     "directory": "mod_living_artifacts",
     "builder": "mod_living_artifacts/tools/build_release.py",
     "release_flags": ["--game", "{game_dir}/game", "--output", "{new-output}"],
-    "workshop_item_id": null
+    "workshop_item_id": "3825237804"
   },
   "business_contract_applicable": false,
   "ordinary_post_start_input": "Only actual selected 1066 Robert government/tier/independence may fill these nulls; no actor change or fixture business setters",

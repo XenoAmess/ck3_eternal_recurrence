@@ -55,6 +55,10 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Install static dependencies
         run: python -m pip install -r tools/requirements-static.txt
+      - name: Install configured type checker
+        run: |
+          python -B -X utf8 -c "import pathlib, subprocess, sys, tomllib; requirements = tomllib.loads(pathlib.Path('ck3_autonomous_player/pyproject.toml').read_text(encoding='utf-8-sig'))['project']['optional-dependencies']['typecheck']; subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-cache-dir', *requirements], check=True)"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Install released promo toolchain
         run: |
           python -m pip install -r tools/requirements-promo-toolchain.txt
@@ -189,10 +193,6 @@ jobs:
           python -O -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_public_cunit_core_contract.py ck3_autonomous_player/tests/unit/test_public_cunit_mcp_contract.py ck3_autonomous_player/tests/unit/test_public_cunit_zero_battle_contracts.py ck3_autonomous_player/tests/unit/test_strategy_public_cunit_zero.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p "test_ingame_decision_history_growth.py"
-          if not "%errorlevel%"=="0" exit /b %errorlevel%
-      - name: Install configured type checker
-        run: |
-          python -B -X utf8 -c "import pathlib, subprocess, sys, tomllib; requirements = tomllib.loads(pathlib.Path('ck3_autonomous_player/pyproject.toml').read_text(encoding='utf-8-sig'))['project']['optional-dependencies']['typecheck']; subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-cache-dir', *requirements], check=True)"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Verify Java tools, full reactor and actual HTTP consumer chain
         timeout-minutes: 45
