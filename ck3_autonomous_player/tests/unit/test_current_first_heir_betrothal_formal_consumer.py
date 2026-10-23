@@ -228,6 +228,11 @@ class FulfillmentProductionTest(unittest.TestCase):
     def test_marriage_material_next_turn_and_new_pid_recovery_consume_without_submit(self):
         _, pending = self.select_and_submit()
         self.driver.frame = scene(8)
+        self.driver.current_relation = relation(8)
+        self.driver.current_relation.update(
+            betrothed_character_id=None, primary_spouse_character_id=38718,
+            spouse_character_ids=[38718])
+        self.driver.current_relation.pop("betrothal_actionability")
         self.driver.result_status = "marriage"
         query_current_first_heir_betrothal_fulfillment_result_private(
             self.driver, pending=pending, cold=False)
@@ -240,6 +245,11 @@ class FulfillmentProductionTest(unittest.TestCase):
         self.assertEqual(next_turn["plan"]["selected_step"], "life-advance")
         self.driver.pid = 9524
         self.driver.frame = scene(1)
+        self.driver.current_relation = relation(1)
+        self.driver.current_relation.update(
+            betrothed_character_id=None, primary_spouse_character_id=38718,
+            spouse_character_ids=[38718])
+        self.driver.current_relation.pop("betrothal_actionability")
         cold = plan_current_first_heir_betrothal_fulfillment_private(
             self.driver, self.planned, self.driver.take_snapshot())
         self.assertTrue(cold["plan"]["current_betrothal_material_recheck"])
@@ -276,6 +286,7 @@ class FulfillmentProductionTest(unittest.TestCase):
     def test_native_refusal_is_consumed_and_pair_is_not_retried(self):
         _, pending = self.select_and_submit()
         self.driver.frame = scene(8)
+        self.driver.current_relation = relation(8)
         self.driver.result_status = "refused"
         result = query_current_first_heir_betrothal_fulfillment_result_private(
             self.driver, pending=pending, cold=False)
