@@ -1,0 +1,221 @@
+{
+  "schema": "xar.ck3.source-only-batch-analysis/v1",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--faith-engine--R0037",
+  "exact_build": "1.20.0.4",
+  "installed_game_root": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game",
+  "source_analysis_completed": true,
+  "source_only_not_occurrence_contract": true,
+  "batch_terminal_pending": false,
+  "capacity_authority": {
+    "authority": "Root closed-scene source/text allowance",
+    "closed_run": "4-8e1c2f1861--faith-engine--R0037",
+    "max_new_text_bytes": 131072,
+    "shared_capacity_status": "RED",
+    "allowed_scope": "Source text and small knowledge JSON only; no tests, TEMP, SDK or large report until new preparation admission."
+  },
+  "events": {
+    "pilgrimage.3101": {
+      "title": "受戒",
+      "entry": "Ihram/miqat ritual-entry event, dispatched from the pilgrimage destination-arrival Hajj branch subject to surrounding guards. Its own trigger requires saved activity. This window by itself does not confirm reaching Mecca/Kaaba or receiving Hajjaj; the Chinese description places the pilgrim at the miqat before entering the sacred precinct.",
+      "immediate": "Play mx_cue_pilgrimage_arrival; add hajj_arrived_log activity entry, arrived tag, score50 and show_in_conclusion=yes. The log score is not a direct +50 piety effect.",
+      "after": "After either displayed choice, schedule hajj.3010 in20days. No direct delay_travel_plan/advance_travel_plan, phase-end, Hajjaj/Pilgrim grant or traitXP is declared in this definition. The delayed follow-up is source scheduling, not proof that it already fired.",
+      "source_option_order": [
+        "a",
+        "b"
+      ],
+      "source_options": [
+        {
+          "source_key": "pilgrimage.3101.a",
+          "historical_native_index": 0,
+          "historical_label": "我会全心全意、至诚至敬地完成受戒仪式。",
+          "effects": [
+            "Invoke pious_type_option_effect: Pious/Hajj activity +10 activity_special_type_progression only if that variable exists. This is an activity score variable, not elapsed travel days.",
+            "Direct piety input minor_piety_gain=50.",
+            "Stress/fulfillment inputs use non-impact constants: base+40; zealous-20; temperate/humble/chaste/calm each-10; lustful/arrogant/wrathful/sadistic/vengeful/arbitrary each+40; hashishiyah/drunkard/rakish/gluttonous/impatient/deceitful/cynical each+20. These conditional source inputs precede character/system processing."
+          ],
+          "visibility": "Shown rendered0/native0 and selected once in R0037 instance13.",
+          "historical_R31_selected": false
+        },
+        {
+          "source_key": "pilgrimage.3101.b",
+          "historical_native_index": 1,
+          "historical_label": "呃……貌似没人会清楚我有没有掉链子吧。",
+          "effects": [
+            "Invoke worldly_type_option_effect, which matches worldly only; Hajj does not match this helper.",
+            "Direct piety input medium_piety_loss=-100.",
+            "Stress/fulfillment inputs use non-impact constants: zealous+60; honest/just each+40; lustful/arrogant each-20; sadistic/vengeful/wrathful/gluttonous/impatient/deceitful/cynical each-10."
+          ],
+          "visibility": "Shown rendered1/native1; not selected.",
+          "historical_R31_selected": false
+        }
+      ],
+      "limits": [
+        "Only native0 was submitted; historical indices do not grant current selection permission.",
+        "Observed before/after stress0->35 and piety raw249266750->254266750 at scale100000 (+50); source inputs alone do not explain every character/system modifier.",
+        "Activity progression variable, log contents, delayed hajj.3010, location/province identity and trait state were not separately queried by this analysis.",
+        "No final Hajj reward, return, ordinary pilgrimage availability, dual-trait coexistence or 2002 saved-scope runtime credit from this event.",
+        "Saved generic activity/province payload identities are opaque, not invalid saved scopes."
+      ],
+      "source_pins": [
+        {
+          "game_relative_path": "events/activities/pilgrimage_activity/pilgrimage_events.txt",
+          "bytes": 358138,
+          "sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06",
+          "relevant_lines": [
+            [
+              8908,
+              9010
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+          "bytes": 136481,
+          "sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+          "relevant_lines": [
+            [
+              627,
+              630
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/script_values/00_basic_values.txt",
+          "bytes": 50566,
+          "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef",
+          "relevant_lines": [
+            [
+              1131,
+              1133
+            ],
+            [
+              1147,
+              1150
+            ],
+            [
+              1165,
+              1165
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/script_values/00_stress_values.txt",
+          "bytes": 3852,
+          "sha256": "821a0b77244fc5ee2d87d339cb24dbef00787b83d44ec2df9215fc1a93aec2d4",
+          "relevant_lines": [
+            [
+              5,
+              16
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/scripted_effects/00_pilgrimage_effects.txt",
+          "bytes": 40713,
+          "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80",
+          "relevant_lines": [
+            [
+              1224,
+              1250
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/scripted_effects/00_activity_effects.txt",
+          "bytes": 116295,
+          "sha256": "d5c594f8746b923d34b13a67db881821e12f08ce1ab4e6e3f83933419c9e2d38",
+          "relevant_lines": [
+            [
+              4357,
+              4365
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/activities/activity_types/pilgrimage.txt",
+          "bytes": 111931,
+          "sha256": "24153043485b035cb0477de7306649027cb68c039e4a9d903776eddd870d8b9f",
+          "relevant_lines": [
+            [
+              2474,
+              2485
+            ]
+          ]
+        }
+      ],
+      "observations": {
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-23T00:34:43.020974+00:00",
+        "run_id": "4-8e1c2f1861--faith-engine--R0037",
+        "actual": {
+          "event_instance_id": 13,
+          "event_definition_key": "pilgrimage.3101",
+          "input_observed_at_utc": "2026-10-23T00:32:32.533530+00:00",
+          "snapshot_revision": 637,
+          "date_raw": 51401016,
+          "actor_character_id": 15893,
+          "host_character_id": 15893,
+          "generic_saved_scopes_not_invalid": [
+            "activity",
+            "province"
+          ],
+          "displayed_options": [
+            {
+              "rendered_index": 0,
+              "native_option_index": 0,
+              "enabled": true,
+              "label": "我会全心全意、至诚至敬地完成受戒仪式。"
+            },
+            {
+              "rendered_index": 1,
+              "native_option_index": 1,
+              "enabled": true,
+              "label": "呃……貌似没人会清楚我有没有掉链子吧。"
+            }
+          ],
+          "selected_option_number": 1,
+          "selected_native_option_index": 0,
+          "submission_attempted": true,
+          "ack_accepted": true,
+          "old_instance_gone_in_independent_snapshot": true,
+          "post_actor_character_id": 15893,
+          "post_active_event": null,
+          "played_character_stress_points_before": 0,
+          "played_character_stress_points_after": 35,
+          "played_character_piety_raw_before": 249266750,
+          "played_character_piety_raw_after": 254266750,
+          "wallet_scale": 100000,
+          "gold_raw_before_and_after": 133441293,
+          "prestige_raw_before_and_after": 15434435,
+          "live_registry_status": "not_registered",
+          "live_registry_reason": "event_definition_key_not_registered",
+          "evidence": [
+            {
+              "path": "C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/live/4-8e1c2f1861--faith-engine--R0037/case-output/faith-e02-journey-001-event-13-offline-analysis-input.json",
+              "bytes": 71199,
+              "sha256": "e02316d052fd6982b17fa9de88ce6e8548757a75a2487a139cb8761515dfc877"
+            },
+            {
+              "path": "C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/live/4-8e1c2f1861--faith-engine--R0037/case-output/faith-e02-journey-001-event-13-selection-observed.json",
+              "bytes": 78073,
+              "sha256": "b777779bd028eb45f5e1de3ab7b822ca192a1e9448610559d9035a1f05b91f4a"
+            }
+          ]
+        },
+        "policy_actually_used": "native_first_displayed_v1",
+        "registry_consumption_succeeded_live": false
+      },
+      "agent_reference": "R0037 instance13; native0 submitted once after Root recording checkpoint; ACK and independent disappearance verified. Source-only knowledge; registry was not registered live.",
+      "semantic_boundary": "受戒/戒关窗口；不能用本窗口追认为已抵达麦加或已经完成朝觐者奖励。"
+    }
+  },
+  "terminal_authority": {
+    "source": "Root message",
+    "run_exit_code": 0,
+    "allocator_exit_code": 0,
+    "normal_cleanup_reported": true,
+    "cas_release": 13425,
+    "independently_reverified_by_this_analysis": false
+  }
+}

@@ -1516,3 +1516,337 @@ _R0036_SOURCE_ONLY: dict[str, SourceOnlyRecord] = {
     },
 }
 PILGRIMAGE_TRAVEL_SOURCE_ONLY_12004.update(_R0036_SOURCE_ONLY)
+
+
+_R0037_SOURCE_ONLY: dict[str, SourceOnlyRecord] = {'travel_danger_events.4010': {'analysis': {'source_analysis_completed': True,
+                                            'migration_review_status': 'source_reviewed_no_occurrence_contract',
+                                            'exact_build': '1.20.0.4',
+                                            'source_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0037-travel-danger-4010.source-analysis.json',
+                                            'source_document_sha256': 'c6395188eedce6d43661fe31c354986989e935d927b02f15235a268e67984872',
+                                            'occurrence_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0037-events-occurrence.json',
+                                            'title': '$travel_danger_prefix$旅途之苦',
+                                            'source_pins': [{'game_relative_path': 'events/travel_events/travel_danger_events_filippa.txt',
+                                                             'bytes': 27472,
+                                                             'sha256': '64d2af2349ab6d7a5a8254e83ec41d068b47ea8a27637bda4321a5237411f95c',
+                                                             'relevant_lines': [[407, 1113]]},
+                                                            {'game_relative_path': 'localization/simp_chinese/event_localization/travel_events/travel_danger_events_filippa_l_simp_chinese.yml',
+                                                             'bytes': 6133,
+                                                             'sha256': '2737c88b1d6ae24b648f302cd55fcfdf3596da7fb9bf3c14ac5284730e69b36b',
+                                                             'relevant_lines': [[23, 48]]},
+                                                            {'game_relative_path': 'common/script_values/00_basic_values.txt',
+                                                             'bytes': 50566,
+                                                             'sha256': 'c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef',
+                                                             'relevant_lines': [[476, 476]]},
+                                                            {'game_relative_path': 'common/on_action/travel_on_actions.txt',
+                                                             'bytes': 71526,
+                                                             'sha256': 'cd40f30a9280ea9ba656b59005201550f3991afd646fd686d7474657b1b1ff70',
+                                                             'relevant_lines': [[698, 698]]},
+                                                            {'game_relative_path': 'common/scripted_effects/20_health_effects.txt',
+                                                             'bytes': 107548,
+                                                             'sha256': 'abefa738c913c660a52fa747bcc92fca2f57d77a0f47d903bedc2882f3d5a9db',
+                                                             'relevant_lines': [[126, 171]]},
+                                                            {'game_relative_path': 'common/scripted_effects/00_travel_effects.txt',
+                                                             'bytes': 1867,
+                                                             'sha256': '47a4b46a479a2215ffeda4b6d7b8d9226928f6ec0dc70c289b4e0e2fe2b5ec0e',
+                                                             'relevant_lines': [[9, 31]]},
+                                                            {'game_relative_path': 'common/script_values/00_stress_values.txt',
+                                                             'bytes': 3852,
+                                                             'sha256': '821a0b77244fc5ee2d87d339cb24dbef00787b83d44ec2df9215fc1a93aec2d4',
+                                                             'relevant_lines': [[25, 35]]}],
+                                            'source_options': [{'source_key': 'travel_danger_events.4010.a',
+                                                                'historical_native_index': 0,
+                                                                'historical_label': '我们应该让他休息直到完全康复。',
+                                                                'effects': ['Request current travel-plan delay21days; '
+                                                                            'remove ill from saved ill_character.',
+                                                                            'Other entourage except root/ill_character '
+                                                                            'receive opinion input+5 toward root; '
+                                                                            'despite custom tooltip '
+                                                                            'every_patient_entourage_tt, the actual '
+                                                                            'limit has no patient-trait check.',
+                                                                            'Ill character opinion input+10 toward '
+                                                                            'root for rival/nemesis, else+20.',
+                                                                            'Player stress/fulfillment inputs: '
+                                                                            'impatient medium gain40; if '
+                                                                            'bad-relationship helper matches, also '
+                                                                            'vengeful medium gain40 and paranoid major '
+                                                                            'gain80. Character/system processing and '
+                                                                            'final actual stress are separate.'],
+                                                                'visibility': 'Shown rendered0/native0; chosen R0037. '
+                                                                              'Sea uses a_sea text with same effects.',
+                                                                'historical_R31_selected': False},
+                                                               {'source_key': 'travel_danger_events.4010.b',
+                                                                'historical_native_index': None,
+                                                                'historical_label': '我想我知道该怎么治。',
+                                                                'effects': ['Guard root whole_of_body OR '
+                                                                            'lifestyle_herbalist OR is_witch_trigger '
+                                                                            'OR lifestyle_physician OR '
+                                                                            'learning>high_skill_rating(15).',
+                                                                            'Learning duel against15: source base '
+                                                                            'weights75/25 and compare_modifier '
+                                                                            'multipliers+3.5/-3.5 on duel_value, '
+                                                                            'failure min5; these are adjusted weights, '
+                                                                            'not fixed75% chance.',
+                                                                            'Success removes NPC ill, gives root '
+                                                                            'physicianXP10 only if physician already '
+                                                                            'held and XP<100, and invokes '
+                                                                            'improve_relationship_effect(TARGET=root,REASON=friend_cared_for_health) '
+                                                                            'on NPC.',
+                                                                            'Success root stress/fulfillment base-15, '
+                                                                            'compassionate-15, arrogant-15; '
+                                                                            'bad-relationship branch additionally '
+                                                                            'vengeful+40/paranoid+80. Failure requests '
+                                                                            'NPC pneumonic through '
+                                                                            'contract_disease_effect(TREATMENT_EVENT=no), '
+                                                                            'NPC opinion -30 for rival/nemesis '
+                                                                            'else-15; root '
+                                                                            'base+20/compassionate+20/arrogant+20, '
+                                                                            'with vengeful-15 in bad-relationship '
+                                                                            'branch.'],
+                                                                'visibility': 'Not shown in R0037; source-localized '
+                                                                              'label only, no actual native index '
+                                                                              'claimed.',
+                                                                'historical_R31_selected': False},
+                                                               {'source_key': 'travel_danger_events.4010.c',
+                                                                'historical_native_index': None,
+                                                                'historical_label': '[medicine_person.GetTitledFirstNameNoTooltip]，你能治好[ill_character.GetHerHim]吗？',
+                                                                'effects': ['Guard saved medicine_person exists. '
+                                                                            'Court-physician branch removes NPC ill, '
+                                                                            'grants NPC opinion input+10 for '
+                                                                            'rival/nemesis else+20, and physician XP10 '
+                                                                            'to already-held court physician '
+                                                                            'below100XP.',
+                                                                            'Without court physician: saved '
+                                                                            'medical_character makes Learning duel '
+                                                                            'against15, source weights50/50 adjusted '
+                                                                            'by+3.5/-3.5 duel_value, failure min5. '
+                                                                            'Success removes NPC ill and gives '
+                                                                            'existing physicianXP10 below100; failure '
+                                                                            'requests NPC pneumonic/no treatment '
+                                                                            'event. No guaranteed cure from this '
+                                                                            'non-court-physician branch.',
+                                                                            'Root arrogant stress/fulfillment input+40 '
+                                                                            'if root satisfies any self-treatment '
+                                                                            'qualification listed in B.'],
+                                                                'visibility': 'Not shown; no medicine_person saved in '
+                                                                              'this occurrence. Source text is a '
+                                                                              'template.',
+                                                                'historical_R31_selected': False},
+                                                               {'source_key': 'travel_danger_events.4010.d',
+                                                                'historical_native_index': None,
+                                                                'historical_label': '正好，我有样东西……',
+                                                                'effects': ['Human-player-only and NPC has '
+                                                                            'potential-rival/rival/nemesis relation to '
+                                                                            'root. Duel uses learning+intrigue '
+                                                                            'targeting ill_character, source '
+                                                                            'weights50/50 adjusted+3.5/-3.5 '
+                                                                            'duel_value, failure min5.',
+                                                                            'Success kills NPC with death_poison, '
+                                                                            'killer=root. Root stress/fulfillment '
+                                                                            'inputs base-30, paranoid-65, craven+40, '
+                                                                            'compassionate+100, just+40, honest+40.',
+                                                                            'Failure adds and reveals '
+                                                                            'secret_murder_attempt targeting NPC; '
+                                                                            'guarded potential-rival->rival or '
+                                                                            'rival->nemesis escalation, with NPC '
+                                                                            'opinion input-30. Root '
+                                                                            'paranoid+80,craven+40,compassionate+80,just+40,honest+40.'],
+                                                                'visibility': 'Not shown in R0037; historical index '
+                                                                              'remains null.',
+                                                                'historical_R31_selected': False},
+                                                               {'source_key': 'travel_danger_events.4010.e',
+                                                                'historical_native_index': 4,
+                                                                'historical_label': '这只是轻微的咳嗽。',
+                                                                'effects': ['Unconditional source option. Random '
+                                                                            'weights75:25: request NPC pneumonic/no '
+                                                                            'treatment event OR no disease-change '
+                                                                            'effect; both branches NPC opinion '
+                                                                            'input-15 toward root. No ill removal in '
+                                                                            'the no-change branch.',
+                                                                            'Root stress/fulfillment inputs '
+                                                                            'compassionate+40, impatient-15, '
+                                                                            'sadistic-30. No option-level travel delay '
+                                                                            'declared.'],
+                                                                'visibility': 'Shown rendered1/native4; not selected.',
+                                                                'historical_R31_selected': False}],
+                                            'agent_reference': 'R0037 instance7; native0 submitted once; ACK and '
+                                                               'independent disappearance verified. Source-only '
+                                                               'knowledge; registry was not registered live. R0037 is '
+                                                               'now normally closed; no current action/trait-award '
+                                                               'permission follows.',
+                                            'current_native_legality': None,
+                                            'action_ready': False,
+                                            'ordinary_auto_consumes': False,
+                                            'full_occurrence_contract_registered': False,
+                                            'selection_policy_changed': False,
+                                            'historical_index_is_current_selection_permission': False,
+                                            'historical_evidence_is_current_state': False},
+                               'observations': {'machine_id': '4-8e1c2f1861',
+                                                'observed_at_utc': '2026-10-23T00:01:26.771852+00:00',
+                                                'run_id': '4-8e1c2f1861--faith-engine--R0037',
+                                                'actual': {'event_instance_id': 7,
+                                                           'event_definition_key': 'travel_danger_events.4010',
+                                                           'input_observed_at_utc': '2026-10-23T00:01:20.893627+00:00',
+                                                           'snapshot_revision': 105,
+                                                           'date_raw': 51395760,
+                                                           'actor_character_id': 15893,
+                                                           'sick_character_id': 19350,
+                                                           'ill_character_id': 19350,
+                                                           'generic_saved_scopes_not_invalid': ['travel_plan',
+                                                                                                'disease_type',
+                                                                                                'destination'],
+                                                           'medicine_person_saved': False,
+                                                           'displayed_options': [{'rendered_index': 0,
+                                                                                  'native_option_index': 0,
+                                                                                  'enabled': True,
+                                                                                  'label': '我们应该让他休息直到完全康复。'},
+                                                                                 {'rendered_index': 1,
+                                                                                  'native_option_index': 4,
+                                                                                  'enabled': True,
+                                                                                  'label': '这只是轻微的咳嗽。'}],
+                                                           'selected_option_number': 1,
+                                                           'selected_native_option_index': 0,
+                                                           'submission_attempted': True,
+                                                           'ack_accepted': True,
+                                                           'old_instance_gone_in_independent_snapshot': True,
+                                                           'post_actor_character_id': 15893,
+                                                           'post_active_event': None,
+                                                           'played_character_stress_points_before': 20,
+                                                           'played_character_stress_points_after': 20,
+                                                           'wallets_raw_before_and_after_equal': {'gold': 121786805,
+                                                                                                  'prestige': 11561059,
+                                                                                                  'piety': 227694250,
+                                                                                                  'scale': 100000},
+                                                           'live_registry_status': 'not_registered',
+                                                           'live_registry_reason': 'event_definition_key_not_registered',
+                                                           'legacy_registry_analysis_available_bool_not_evidence': True,
+                                                           'evidence': [{'path': 'C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/live/4-8e1c2f1861--faith-engine--R0037/case-output/faith-e02-journey-001-event-7-offline-analysis-input.json',
+                                                                         'bytes': 72308,
+                                                                         'sha256': '06ef92061a1b29b366ccc90c0664d23f48a269405d3a794cc8f4c46c3df9c300'},
+                                                                        {'path': 'C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/live/4-8e1c2f1861--faith-engine--R0037/case-output/faith-e02-journey-001-event-7-selection-observed.json',
+                                                                         'bytes': 36088,
+                                                                         'sha256': '00995bb8521df16cd21fae6a407115e1ab01369b9a7cd6e849e990d3ef0cf3dd'}]},
+                                                'policy_actually_used': 'native_first_displayed_v1',
+                                                'registry_consumption_succeeded_live': False}},
+ 'pilgrimage.3101': {'analysis': {'source_analysis_completed': True,
+                                  'migration_review_status': 'source_reviewed_no_occurrence_contract',
+                                  'exact_build': '1.20.0.4',
+                                  'source_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0037-pilgrimage-3101.source-analysis.json',
+                                  'source_document_sha256': '53e3539d8191ea3687748a1bf9dcd4bf37db2589c2a7f6b8a5a742599be76134',
+                                  'occurrence_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0037-events-occurrence.json',
+                                  'title': '受戒',
+                                  'source_pins': [{'game_relative_path': 'events/activities/pilgrimage_activity/pilgrimage_events.txt',
+                                                   'bytes': 358138,
+                                                   'sha256': '900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06',
+                                                   'relevant_lines': [[8908, 9010]]},
+                                                  {'game_relative_path': 'localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml',
+                                                   'bytes': 136481,
+                                                   'sha256': 'cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3',
+                                                   'relevant_lines': [[627, 630]]},
+                                                  {'game_relative_path': 'common/script_values/00_basic_values.txt',
+                                                   'bytes': 50566,
+                                                   'sha256': 'c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef',
+                                                   'relevant_lines': [[1131, 1133], [1147, 1150], [1165, 1165]]},
+                                                  {'game_relative_path': 'common/script_values/00_stress_values.txt',
+                                                   'bytes': 3852,
+                                                   'sha256': '821a0b77244fc5ee2d87d339cb24dbef00787b83d44ec2df9215fc1a93aec2d4',
+                                                   'relevant_lines': [[5, 16]]},
+                                                  {'game_relative_path': 'common/scripted_effects/00_pilgrimage_effects.txt',
+                                                   'bytes': 40713,
+                                                   'sha256': '4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80',
+                                                   'relevant_lines': [[1224, 1250]]},
+                                                  {'game_relative_path': 'common/scripted_effects/00_activity_effects.txt',
+                                                   'bytes': 116295,
+                                                   'sha256': 'd5c594f8746b923d34b13a67db881821e12f08ce1ab4e6e3f83933419c9e2d38',
+                                                   'relevant_lines': [[4357, 4365]]},
+                                                  {'game_relative_path': 'common/activities/activity_types/pilgrimage.txt',
+                                                   'bytes': 111931,
+                                                   'sha256': '24153043485b035cb0477de7306649027cb68c039e4a9d903776eddd870d8b9f',
+                                                   'relevant_lines': [[2474, 2485]]}],
+                                  'source_options': [{'source_key': 'pilgrimage.3101.a',
+                                                      'historical_native_index': 0,
+                                                      'historical_label': '我会全心全意、至诚至敬地完成受戒仪式。',
+                                                      'effects': ['Invoke pious_type_option_effect: Pious/Hajj '
+                                                                  'activity +10 activity_special_type_progression only '
+                                                                  'if that variable exists. This is an activity score '
+                                                                  'variable, not elapsed travel days.',
+                                                                  'Direct piety input minor_piety_gain=50.',
+                                                                  'Stress/fulfillment inputs use non-impact constants: '
+                                                                  'base+40; zealous-20; temperate/humble/chaste/calm '
+                                                                  'each-10; '
+                                                                  'lustful/arrogant/wrathful/sadistic/vengeful/arbitrary '
+                                                                  'each+40; '
+                                                                  'hashishiyah/drunkard/rakish/gluttonous/impatient/deceitful/cynical '
+                                                                  'each+20. These conditional source inputs precede '
+                                                                  'character/system processing.'],
+                                                      'visibility': 'Shown rendered0/native0 and selected once in '
+                                                                    'R0037 instance13.',
+                                                      'historical_R31_selected': False},
+                                                     {'source_key': 'pilgrimage.3101.b',
+                                                      'historical_native_index': 1,
+                                                      'historical_label': '呃……貌似没人会清楚我有没有掉链子吧。',
+                                                      'effects': ['Invoke worldly_type_option_effect, which matches '
+                                                                  'worldly only; Hajj does not match this helper.',
+                                                                  'Direct piety input medium_piety_loss=-100.',
+                                                                  'Stress/fulfillment inputs use non-impact constants: '
+                                                                  'zealous+60; honest/just each+40; lustful/arrogant '
+                                                                  'each-20; '
+                                                                  'sadistic/vengeful/wrathful/gluttonous/impatient/deceitful/cynical '
+                                                                  'each-10.'],
+                                                      'visibility': 'Shown rendered1/native1; not selected.',
+                                                      'historical_R31_selected': False}],
+                                  'agent_reference': 'R0037 instance13; native0 submitted once after Root recording '
+                                                     'checkpoint; ACK and independent disappearance verified. '
+                                                     'Source-only knowledge; registry was not registered live. R0037 '
+                                                     'is now normally closed; no current action/trait-award permission '
+                                                     'follows.',
+                                  'current_native_legality': None,
+                                  'action_ready': False,
+                                  'ordinary_auto_consumes': False,
+                                  'full_occurrence_contract_registered': False,
+                                  'selection_policy_changed': False,
+                                  'historical_index_is_current_selection_permission': False,
+                                  'historical_evidence_is_current_state': False},
+                     'observations': {'machine_id': '4-8e1c2f1861',
+                                      'observed_at_utc': '2026-10-23T00:34:43.020974+00:00',
+                                      'run_id': '4-8e1c2f1861--faith-engine--R0037',
+                                      'actual': {'event_instance_id': 13,
+                                                 'event_definition_key': 'pilgrimage.3101',
+                                                 'input_observed_at_utc': '2026-10-23T00:32:32.533530+00:00',
+                                                 'snapshot_revision': 637,
+                                                 'date_raw': 51401016,
+                                                 'actor_character_id': 15893,
+                                                 'host_character_id': 15893,
+                                                 'generic_saved_scopes_not_invalid': ['activity', 'province'],
+                                                 'displayed_options': [{'rendered_index': 0,
+                                                                        'native_option_index': 0,
+                                                                        'enabled': True,
+                                                                        'label': '我会全心全意、至诚至敬地完成受戒仪式。'},
+                                                                       {'rendered_index': 1,
+                                                                        'native_option_index': 1,
+                                                                        'enabled': True,
+                                                                        'label': '呃……貌似没人会清楚我有没有掉链子吧。'}],
+                                                 'selected_option_number': 1,
+                                                 'selected_native_option_index': 0,
+                                                 'submission_attempted': True,
+                                                 'ack_accepted': True,
+                                                 'old_instance_gone_in_independent_snapshot': True,
+                                                 'post_actor_character_id': 15893,
+                                                 'post_active_event': None,
+                                                 'played_character_stress_points_before': 0,
+                                                 'played_character_stress_points_after': 35,
+                                                 'played_character_piety_raw_before': 249266750,
+                                                 'played_character_piety_raw_after': 254266750,
+                                                 'wallet_scale': 100000,
+                                                 'gold_raw_before_and_after': 133441293,
+                                                 'prestige_raw_before_and_after': 15434435,
+                                                 'live_registry_status': 'not_registered',
+                                                 'live_registry_reason': 'event_definition_key_not_registered',
+                                                 'evidence': [{'path': 'C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/live/4-8e1c2f1861--faith-engine--R0037/case-output/faith-e02-journey-001-event-13-offline-analysis-input.json',
+                                                               'bytes': 71199,
+                                                               'sha256': 'e02316d052fd6982b17fa9de88ce6e8548757a75a2487a139cb8761515dfc877'},
+                                                              {'path': 'C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/live/4-8e1c2f1861--faith-engine--R0037/case-output/faith-e02-journey-001-event-13-selection-observed.json',
+                                                               'bytes': 78073,
+                                                               'sha256': 'b777779bd028eb45f5e1de3ab7b822ca192a1e9448610559d9035a1f05b91f4a'}]},
+                                      'policy_actually_used': 'native_first_displayed_v1',
+                                      'registry_consumption_succeeded_live': False}}}
+PILGRIMAGE_TRAVEL_SOURCE_ONLY_12004.update(_R0037_SOURCE_ONLY)

@@ -416,7 +416,11 @@ jobs:
           python -B -X utf8 ck3_autonomous_player/tests/unit/test_holy_site_piety_impact_semantics.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test retired legacy decision panel before new recording
-        run: python -B -X utf8 -m unittest discover -s tools -p "test_legacy_decision_overlay_retirement.py" -v
+        run: |
+          python -B -X utf8 -m unittest discover -s tools -p "test_legacy_decision_overlay_retirement.py" -v
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m unittest discover -s tools -p "test_ck3_mod_acceptance_segmented_recorder.py" -v
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test independent decision text publisher and recording gates without CK3 or OBS
         env:
           XAR_DECISION_TEXT_PORTABLE_ONLY: "1"

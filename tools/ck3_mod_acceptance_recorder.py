@@ -15,13 +15,30 @@ import subprocess
 import sys
 import threading
 import time
+from typing import TypedDict
 
 
-def utc():
+class RecorderFilePin(TypedDict):
+    path: str
+    bytes: int
+    sha256: str
+
+
+class RecorderMark(TypedDict):
+    name: str
+    machine_id: str
+    observed_at_utc: str
+    monotonic_ns: int
+    seconds_since_spawn_intent: float
+    evidence_source: str
+    native_receipt: RecorderFilePin | None
+
+
+def utc() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-def file_identity(path):
+def file_identity(path: str | Path) -> RecorderFilePin:
     path = Path(path).resolve()
     value = hashlib.sha256()
     with path.open("rb") as handle:
@@ -151,9 +168,17 @@ class BoundedScreenRecorder:
             self.mark("recorder-start")
             return {"state": "RECORDING_UNREVIEWED", "pid": self.recorder.pid, "output": str(self.output)}
 
-    def mark(self, name, native_receipt=None):
+    def mark(self, name: str, native_receipt: str | Path | None = None) -> RecorderMark:
         with self.lock:
-            row = {"name": name, "machine_id": self.machine_id, "observed_at_utc": utc(),
+            if self.terminal is not None:
+                raise ValueError("Cannot mark a terminal recording take")
+            if self.recorder is None:
+                raise ValueError("Recorder has not started")
+            if not isinstance(name, str) or not name:
+                raise ValueError("A nonempty recorder mark name is required")
+            if native_receipt is not None and not isinstance(native_receipt, (str, Path)):
+                raise ValueError("Native mark receipt must be a path or null")
+            row: RecorderMark = {"name": name, "machine_id": self.machine_id, "observed_at_utc": utc(),
                    "monotonic_ns": time.monotonic_ns(), "seconds_since_spawn_intent": (time.monotonic_ns() - self.start_ns) / 1e9,
                    "evidence_source": "operator mark; offset is not an exact first-frame PTS calibration",
                    "native_receipt": None if native_receipt is None else file_identity(native_receipt)}

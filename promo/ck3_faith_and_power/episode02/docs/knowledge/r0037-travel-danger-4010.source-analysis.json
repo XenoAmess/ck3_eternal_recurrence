@@ -1,0 +1,253 @@
+{
+  "schema": "xar.ck3.source-only-batch-analysis/v1",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--faith-engine--R0037",
+  "exact_build": "1.20.0.4",
+  "installed_game_root": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game",
+  "source_analysis_completed": true,
+  "source_only_not_occurrence_contract": true,
+  "batch_terminal_pending": true,
+  "capacity_authority": {
+    "root_observed_at_utc": "2026-10-23T00:05:05+00:00",
+    "FullG11_status": "PASS",
+    "consumed_bytes": 312639488,
+    "report_bytes": 19865600,
+    "physical_margin_bytes": 759030170,
+    "quota_margin_bytes": 383661649,
+    "write_scope": "Root authorized this small external candidate under actual current consumption readback; no game operation by analyst.",
+    "grant_sha256": "27c37c4b7ccbe4ba76d3bee686c79abeacc65679917f5b8f766ddfea41a2cc18",
+    "head_sha256": "9df56c5dc46a52852dcfa0be502e70ed876a9374b6634b4e8527e76abb6e509a"
+  },
+  "events": {
+    "travel_danger_events.4010": {
+      "title": "$travel_danger_prefix$旅途之苦",
+      "entry": "Own trigger requires at least2 eligible entourage characters age>=5, excluding root, travel_danger_recently_ill and existing illness. No location danger-type restriction; event cooldown3months. Travel OA weight100.",
+      "immediate": "MP-only90day delay helper. Select eligible entourage (adult weight base1+5), set that NPC travel_danger_recently_ill12months, invoke contract_disease_effect(ill,TREATMENT_EVENT=no), save ill_character. Helper also saves sick_character and disease_type. Prefer eligible entourage court physician excluding root/NPC; otherwise the outer fallback requires some eligible Learning>15 character, then preferentially selects lifestyle_physician else Learning>15, saving medical_character/medicine_person. Save next destination province.",
+      "after": "MP-only resume helper. Add root had_travel_danger_event_4010_recently for1year only if absent; does not refresh an already present flag. This flag is separate from the3month event cooldown.",
+      "source_option_order": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e"
+      ],
+      "source_options": [
+        {
+          "source_key": "travel_danger_events.4010.a",
+          "historical_native_index": 0,
+          "historical_label": "我们应该让他休息直到完全康复。",
+          "effects": [
+            "Request current travel-plan delay21days; remove ill from saved ill_character.",
+            "Other entourage except root/ill_character receive opinion input+5 toward root; despite custom tooltip every_patient_entourage_tt, the actual limit has no patient-trait check.",
+            "Ill character opinion input+10 toward root for rival/nemesis, else+20.",
+            "Player stress/fulfillment inputs: impatient medium gain40; if bad-relationship helper matches, also vengeful medium gain40 and paranoid major gain80. Character/system processing and final actual stress are separate."
+          ],
+          "visibility": "Shown rendered0/native0; chosen R0037. Sea uses a_sea text with same effects.",
+          "historical_R31_selected": false
+        },
+        {
+          "source_key": "travel_danger_events.4010.b",
+          "historical_native_index": null,
+          "historical_label": "我想我知道该怎么治。",
+          "effects": [
+            "Guard root whole_of_body OR lifestyle_herbalist OR is_witch_trigger OR lifestyle_physician OR learning>high_skill_rating(15).",
+            "Learning duel against15: source base weights75/25 and compare_modifier multipliers+3.5/-3.5 on duel_value, failure min5; these are adjusted weights, not fixed75% chance.",
+            "Success removes NPC ill, gives root physicianXP10 only if physician already held and XP<100, and invokes improve_relationship_effect(TARGET=root,REASON=friend_cared_for_health) on NPC.",
+            "Success root stress/fulfillment base-15, compassionate-15, arrogant-15; bad-relationship branch additionally vengeful+40/paranoid+80. Failure requests NPC pneumonic through contract_disease_effect(TREATMENT_EVENT=no), NPC opinion -30 for rival/nemesis else-15; root base+20/compassionate+20/arrogant+20, with vengeful-15 in bad-relationship branch."
+          ],
+          "visibility": "Not shown in R0037; source-localized label only, no actual native index claimed.",
+          "historical_R31_selected": false
+        },
+        {
+          "source_key": "travel_danger_events.4010.c",
+          "historical_native_index": null,
+          "historical_label": "[medicine_person.GetTitledFirstNameNoTooltip]，你能治好[ill_character.GetHerHim]吗？",
+          "effects": [
+            "Guard saved medicine_person exists. Court-physician branch removes NPC ill, grants NPC opinion input+10 for rival/nemesis else+20, and physician XP10 to already-held court physician below100XP.",
+            "Without court physician: saved medical_character makes Learning duel against15, source weights50/50 adjusted by+3.5/-3.5 duel_value, failure min5. Success removes NPC ill and gives existing physicianXP10 below100; failure requests NPC pneumonic/no treatment event. No guaranteed cure from this non-court-physician branch.",
+            "Root arrogant stress/fulfillment input+40 if root satisfies any self-treatment qualification listed in B."
+          ],
+          "visibility": "Not shown; no medicine_person saved in this occurrence. Source text is a template.",
+          "historical_R31_selected": false
+        },
+        {
+          "source_key": "travel_danger_events.4010.d",
+          "historical_native_index": null,
+          "historical_label": "正好，我有样东西……",
+          "effects": [
+            "Human-player-only and NPC has potential-rival/rival/nemesis relation to root. Duel uses learning+intrigue targeting ill_character, source weights50/50 adjusted+3.5/-3.5 duel_value, failure min5.",
+            "Success kills NPC with death_poison, killer=root. Root stress/fulfillment inputs base-30, paranoid-65, craven+40, compassionate+100, just+40, honest+40.",
+            "Failure adds and reveals secret_murder_attempt targeting NPC; guarded potential-rival->rival or rival->nemesis escalation, with NPC opinion input-30. Root paranoid+80,craven+40,compassionate+80,just+40,honest+40."
+          ],
+          "visibility": "Not shown in R0037; historical index remains null.",
+          "historical_R31_selected": false
+        },
+        {
+          "source_key": "travel_danger_events.4010.e",
+          "historical_native_index": 4,
+          "historical_label": "这只是轻微的咳嗽。",
+          "effects": [
+            "Unconditional source option. Random weights75:25: request NPC pneumonic/no treatment event OR no disease-change effect; both branches NPC opinion input-15 toward root. No ill removal in the no-change branch.",
+            "Root stress/fulfillment inputs compassionate+40, impatient-15, sadistic-30. No option-level travel delay declared."
+          ],
+          "visibility": "Shown rendered1/native4; not selected.",
+          "historical_R31_selected": false
+        }
+      ],
+      "limits": [
+        "Only native0 was submitted in this occurrence; unshown alternatives are source knowledge, not permission.",
+        "NPC recovery/opinions/health, travel-plan ETA/delay, and physicianXP were not independently queried. No arrival/trait grant/return/coexistence credit.",
+        "Disease_type/travel_plan/destination opaque generic typed identities are not invalid saved scopes.",
+        "Source stress inputs are conditional named-value parameters, not measured final stress. No direct Pilgrim/Hajjaj grant or XP declared in this event.",
+        "Health helper validity checks, saved-scope setup and notification preamble are cited; no exhaustive claim about all downstream health-event callbacks."
+      ],
+      "source_pins": [
+        {
+          "game_relative_path": "events/travel_events/travel_danger_events_filippa.txt",
+          "bytes": 27472,
+          "sha256": "64d2af2349ab6d7a5a8254e83ec41d068b47ea8a27637bda4321a5237411f95c",
+          "relevant_lines": [
+            [
+              407,
+              1113
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "localization/simp_chinese/event_localization/travel_events/travel_danger_events_filippa_l_simp_chinese.yml",
+          "bytes": 6133,
+          "sha256": "2737c88b1d6ae24b648f302cd55fcfdf3596da7fb9bf3c14ac5284730e69b36b",
+          "relevant_lines": [
+            [
+              23,
+              48
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/script_values/00_basic_values.txt",
+          "bytes": 50566,
+          "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef",
+          "relevant_lines": [
+            [
+              476,
+              476
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/on_action/travel_on_actions.txt",
+          "bytes": 71526,
+          "sha256": "cd40f30a9280ea9ba656b59005201550f3991afd646fd686d7474657b1b1ff70",
+          "relevant_lines": [
+            [
+              698,
+              698
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/scripted_effects/20_health_effects.txt",
+          "bytes": 107548,
+          "sha256": "abefa738c913c660a52fa747bcc92fca2f57d77a0f47d903bedc2882f3d5a9db",
+          "relevant_lines": [
+            [
+              126,
+              171
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/scripted_effects/00_travel_effects.txt",
+          "bytes": 1867,
+          "sha256": "47a4b46a479a2215ffeda4b6d7b8d9226928f6ec0dc70c289b4e0e2fe2b5ec0e",
+          "relevant_lines": [
+            [
+              9,
+              31
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/script_values/00_stress_values.txt",
+          "bytes": 3852,
+          "sha256": "821a0b77244fc5ee2d87d339cb24dbef00787b83d44ec2df9215fc1a93aec2d4",
+          "relevant_lines": [
+            [
+              25,
+              35
+            ]
+          ]
+        }
+      ],
+      "observations": {
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-23T00:01:26.771852+00:00",
+        "run_id": "4-8e1c2f1861--faith-engine--R0037",
+        "actual": {
+          "event_instance_id": 7,
+          "event_definition_key": "travel_danger_events.4010",
+          "input_observed_at_utc": "2026-10-23T00:01:20.893627+00:00",
+          "snapshot_revision": 105,
+          "date_raw": 51395760,
+          "actor_character_id": 15893,
+          "sick_character_id": 19350,
+          "ill_character_id": 19350,
+          "generic_saved_scopes_not_invalid": [
+            "travel_plan",
+            "disease_type",
+            "destination"
+          ],
+          "medicine_person_saved": false,
+          "displayed_options": [
+            {
+              "rendered_index": 0,
+              "native_option_index": 0,
+              "enabled": true,
+              "label": "我们应该让他休息直到完全康复。"
+            },
+            {
+              "rendered_index": 1,
+              "native_option_index": 4,
+              "enabled": true,
+              "label": "这只是轻微的咳嗽。"
+            }
+          ],
+          "selected_option_number": 1,
+          "selected_native_option_index": 0,
+          "submission_attempted": true,
+          "ack_accepted": true,
+          "old_instance_gone_in_independent_snapshot": true,
+          "post_actor_character_id": 15893,
+          "post_active_event": null,
+          "played_character_stress_points_before": 20,
+          "played_character_stress_points_after": 20,
+          "wallets_raw_before_and_after_equal": {
+            "gold": 121786805,
+            "prestige": 11561059,
+            "piety": 227694250,
+            "scale": 100000
+          },
+          "live_registry_status": "not_registered",
+          "live_registry_reason": "event_definition_key_not_registered",
+          "legacy_registry_analysis_available_bool_not_evidence": true,
+          "evidence": [
+            {
+              "path": "C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/live/4-8e1c2f1861--faith-engine--R0037/case-output/faith-e02-journey-001-event-7-offline-analysis-input.json",
+              "bytes": 72308,
+              "sha256": "06ef92061a1b29b366ccc90c0664d23f48a269405d3a794cc8f4c46c3df9c300"
+            },
+            {
+              "path": "C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/live/4-8e1c2f1861--faith-engine--R0037/case-output/faith-e02-journey-001-event-7-selection-observed.json",
+              "bytes": 36088,
+              "sha256": "00995bb8521df16cd21fae6a407115e1ab01369b9a7cd6e849e990d3ef0cf3dd"
+            }
+          ]
+        },
+        "policy_actually_used": "native_first_displayed_v1",
+        "registry_consumption_succeeded_live": false
+      },
+      "agent_reference": "R0037 instance7; native0 submitted once; ACK and independent disappearance verified. Source-only knowledge; registry was not registered live."
+    }
+  }
+}

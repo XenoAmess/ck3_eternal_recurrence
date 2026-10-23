@@ -13,6 +13,7 @@ import subprocess
 import sys
 from tempfile import TemporaryDirectory
 from types import SimpleNamespace
+from typing import Literal
 import unittest
 from unittest.mock import patch
 
@@ -70,8 +71,8 @@ class SyntheticLoader:
 
 class SegmentedRecorderPublicService(unittest.TestCase):
     def setUp(self):
-        # Source-candidate runs keep all scratch in their allocated lane.
-        temporary = TemporaryDirectory(prefix="segmented-unit-", dir=HERE.parent)
+        # The owner sets TEMP/TMP before this process imports tempfile.
+        temporary = TemporaryDirectory(prefix="segmented-unit-")
         self.addCleanup(temporary.cleanup)
         self.work = Path(temporary.name)
         self.repo, self.live = self.work / "repo", self.work / "live"
@@ -157,8 +158,8 @@ class SegmentedRecorderPublicService(unittest.TestCase):
         stdout = json.dumps({"format": {"duration": self.probe_duration}}).encode("utf-8")
         return SimpleNamespace(returncode=self.probe_returncode, stdout=stdout, stderr=b"")
 
-    def config(self, version=2, **changes):
-        value = {"schema": "ck3-mod-acceptance-recording-config-v" + str(version),
+    def config(self, version: object = 2, **changes: object) -> dict[str, object]:
+        value: dict[str, object] = {"schema": "ck3-mod-acceptance-recording-config-v" + str(version),
                  "machine_id": MACHINE, "capture_root": str(self.capture_root),
                  "ffmpeg": RECORDER.file_identity(self.ffmpeg),
                  "ffprobe": RECORDER.file_identity(self.ffprobe),
@@ -226,6 +227,85 @@ class SegmentedRecorderPublicService(unittest.TestCase):
         self.assertEqual(terminal["duration_charge_seconds"], 19.125)
         self.assertIs(terminal["budget_qualified"], True)
         self.assertEqual(terminal["job"], self.original_job_terminals[-1])
+
+    def _assert_terminal_mark_is_immutable(
+        self, *, version: int = 2, terminal_operation: Literal["finish", "abort"] = "finish",
+        probe_returncode: int = 0, check_input_contract: bool = False,
+    ) -> None:
+        # Exercise the real service, recorder lock and mailbox response writer.
+        # Only process/desktop/probe leaves remain the authored unit fixtures.
+        self.probe_returncode = probe_returncode
+        config_path = self.work / "terminal-mark-config.json"
+        config_path.write_text(json.dumps(self.config(version=version)), encoding="utf-8")
+        service = RECORDER.ScreenCaptureService(
+            keeper=self.keeper, keeper_root=self.keeper_root, repo=self.repo,
+            config_path=config_path, config_sha256=RECORDER.file_identity(config_path)["sha256"],
+            task_id="synthetic-screen-task")
+        self.services.append(service)
+        request = {"schema": "ck3-mod-acceptance-recorder-request-v1", "id": "active",
+                   "live_root": str(self.live)}
+        service.handle({**request, "operation": "start", "capture_name": "sealed-take"})
+        native = self.live / "native-mark.json"
+        native.write_text('{"synthetic_unit_fixture":true}\n', encoding="utf-8")
+        active = service.handle({**request, "operation": "mark", "label": "before-terminal",
+                                 "native_receipt": str(native)})
+        self.assertEqual(active["native_receipt"], RECORDER.file_identity(native))
+        self.assertEqual(json.loads(json.dumps(active)), active)
+        marks = service.recorder.output / "marks.jsonl"
+        rows = [json.loads(line) for line in marks.read_text(encoding="utf-8").splitlines()]
+        self.assertEqual([row["name"] for row in rows], ["recorder-start", "before-terminal"])
+        self.assertIsNone(rows[0]["native_receipt"])
+        if check_input_contract:
+            active_bytes = marks.read_bytes()
+            for invalid_name in (True, 1, 1.0, None, ""):
+                with self.subTest(invalid_name=invalid_name), self.assertRaises(ValueError):
+                    service.recorder.mark(invalid_name, native)
+            invalid_receipts: tuple[object, ...] = (True, 1, 1.0, {})
+            for invalid_receipt in invalid_receipts:
+                with self.subTest(invalid_receipt=invalid_receipt), self.assertRaises(ValueError):
+                    service.recorder.mark("invalid-receipt", invalid_receipt)
+            self.assertEqual(marks.read_bytes(), active_bytes)
+        service.handle({**request, "operation": terminal_operation})
+        terminal_name = "recorder-final.json" if terminal_operation == "finish" else "recorder-abort.json"
+        terminal = service.recorder.output / terminal_name
+        raw = service.recorder.output / "raw-gameplay.mkv"
+        immutable = {marks: marks.read_bytes(), terminal: terminal.read_bytes(), raw: raw.read_bytes()}
+        if terminal_operation == "finish":
+            self.assertEqual(json.loads(immutable[terminal])["marks"], RECORDER.file_identity(marks))
+        # Actual queue consumption must report rejection, never a successful ACK.
+        service.requests.mkdir()
+        service.responses.mkdir()
+        late_request = {**request, "id": "late", "operation": "mark", "label": "late-mailbox",
+                        "native_receipt": str(native)}
+        request_path = service.requests / "late.json"
+        RECORDER.write(request_path, late_request)
+        with patch.object(service.done, "wait", side_effect=(False, True)):
+            service._run()
+        response = json.loads((service.responses / request_path.name).read_text(encoding="utf-8"))
+        self.assertEqual(response["request"], RECORDER.file_identity(request_path))
+        self.assertEqual(response["status"], "RED_PRESERVED")
+        self.assertIn("terminal recording take", response["error"])
+        self.assertNotIn("result", response)
+        self.assertIsNone(service.error)
+        self.assertEqual({path: path.read_bytes() for path in immutable}, immutable)
+        with self.assertRaisesRegex(ValueError, "terminal recording take"):
+            service.recorder.mark("late-direct", native)
+        self.assertEqual({path: path.read_bytes() for path in immutable}, immutable)
+
+    def test_finished_take_rejects_mark_without_mutating_final_or_marks(self) -> None:
+        self._assert_terminal_mark_is_immutable()
+
+    def test_aborted_take_rejects_mark_without_mutating_abort_or_marks(self) -> None:
+        self._assert_terminal_mark_is_immutable(terminal_operation="abort")
+
+    def test_failed_probe_terminal_rejects_mark_without_mutating_final_or_marks(self) -> None:
+        self._assert_terminal_mark_is_immutable(probe_returncode=7)
+
+    def test_v1_terminal_rejects_mark_without_mutating_final_or_marks(self) -> None:
+        self._assert_terminal_mark_is_immutable(version=1)
+
+    def test_active_mark_contract_rejects_wrong_types_without_append(self) -> None:
+        self._assert_terminal_mark_is_immutable(check_input_contract=True)
 
     def test_four_sequential_takes_then_fifth_rejected_without_new_process(self):
         service = self.service()
