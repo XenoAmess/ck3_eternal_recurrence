@@ -181,3 +181,17 @@ Window07的Runtime12已由launcher实际echo通过并切queue13，窗口至08:30
 - 独立核查现有文字显示/OBS路径，确认首审图仍需真实Game、placement与publisher身份；现有正常录制最小磁盘预留192MiB，单纯取消预览会保留非零退出，不计整项通过。尚未启动新的显示/录制作业，未写两个可见性`true`。下一次同场实机待新预算、活Retainer与实际文字审阅就绪；不再给缺少前置的具体开测时刻。
 
 截至本节，Quarkus同PID热重载已实测；Native启动/读帧/关闭与地图软件完整链分别通过。接下来的主线是共享工具正常Maven资格、缺项真实采集及全部消费者、SDK装配与恢复整step，最后取得同场地图/文字与业务后态证据。原始RED、冻结来源及UNKNOWN不重放边界继续保留；研发代理按独立事项并行，重型进程仍由真实容量调度。
+
+## 22:35 工具整包437项通过与本轮进度口径
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`；本节以2026-10-23T14:28:05.9324503Z的新整包回执为准，后续状态不回填为本时刻已通过。
+
+- tools131-firstcut12正常Maven整包53套427项全通过，自身archive读回也通过，已签发Runtime20/current12。共享采集器的POM testResources来源修复已进入真实包；Identity随后在genuine06的development/finance完整跨模块资源闭包上完成真实writer→reader，25向量及6个消费者仍在执行，不能提前计通过。
+- **tools134-firstcut13正常Maven整包55套437项全通过，0失败、0错误、0跳过。** Root独立解析实际55份Surefire XML并核对完整6个运行JAR，134份来源和134份编译快照后验均MATCH。`J/logs/build-java-tools134-firstcut13.json`为82905 B / `e9f83a8037bfa2954fd1ec88027ec8cfd71e3172386655738d207f93416a2522`；Maven退出0、166.4350158秒、峰1150091264 B小于2GiB，最终Job0、stopnull，Root外层也退出0。实际默认Maven3.10.0/home `C:/apache-maven`是本次本机事实。新主JAR为1522417 B / `b0ce70bff5a1c1c3b290094d4620f709dcf8427f212dcd752c13b699b1635b06`；此时新13自身archive读回尚未执行，不能先追认为current13、SDK或reference实际导入资格。
+- LAND三处JSON线域断言修复后严格编译及完整15项reader全通过，旧12通过/3失败证据保留。最终映射`N/military_holy_order/LAND06-QUALIFIED-SOURCE-RESOURCE-MAP02.json`为6145 B / `3f056c94d7a1376848ae224b5434fee8d2bea34a73a64301c0ecb8b547fbb656`。WarCashFocus的genuine06原MAIN及全部10项reader实际通过，原件42857 B / `a79262b428c96ecf82f124e3160fd6d4e2d38fc5db1cd7f2662419522d2c1353`；wave2完整来源writer/reader也已通过，剩余两个原MAIN及完整39项仍未执行。Financing现有canonical原件不重采、不因旧来源错误抹去。
+- 恢复联合138源严格编译通过，完整94项真实结果为**90通过、4失败、0跳过**，通过率95.7%，恢复资格仍被阻止。两个失败为JSON整数节点内存表示比较，另两个定位到Windows Python3.13的Path.stat与os.fstat对ctime语义不同而误拒未变源码；共享生产者owner修复中，未减测试或放松实际字节、身份和来源守卫，尚未复验。原N46 UNKNOWN边界不重放。
+- 已识别52个缺失classpath资源目标中，Direct5、Sway3、Army7、LAND1、Stock的两个目标及WarCashFocus1共**19/52=36.5%**已有真实原件；这是原件准备进度，不是已全部采用或全部reader通过。下一不可变全图仍需显式采用资源和Java后继，完整默认业务测试尚未通过。八M基础Java实现和分域软件验证8/8、统一图编译打包32/32分别闭合，不把它们解释为完整迁移100%。
+
+第一轮实机仍指北京时间19:52–19:57的T0受管启动、原生暂停帧读取和关闭。本节没有新Game、游戏动作或保存，完整Java游玩业务闭环0/1，新增保存游戏日0。目标节点为22:45前完成工具13自身读回及新binding，22:45–23:30推进reference实际视图、construction/Timeline与恢复失败复验，23:00–次日00:00尝试同次Game的原生帧→Java地图回执→实际灰色决策文字与1秒录制。以上为目标窗口，实际开测取决于新鲜Steam后台离线证明、同场Host、真实显示来源及联合容量；不将只读帧/显示试验记为完整自动游玩或保存通过。
+
+OBS旧树已带配置且含可变debug.log，尚无已验可直接使用的干净portable树；新树须逐文件来源/身份核验，私有配置、日志、缓存和ENTIRETMP独立计入预算，192MiB录制额度不覆盖全部新树增长。Root已准备旧fullcapture01/02/03三棵派生build的17个精确回收批次，共15822文件、198701392 B候选（含目录guard，非保证释放量）；本节删除量仍为0，source/snapshot、原始失败回执及genuine05/06保留，未把尚未执行回收算成可用容量。
