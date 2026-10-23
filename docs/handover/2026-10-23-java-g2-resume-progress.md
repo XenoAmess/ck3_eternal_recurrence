@@ -94,3 +94,38 @@
 Root已先完整保存08全部80份原始Surefire XML/txt，归档解读逐文件SHA再验后，精确回收无当前消费者的08派生build根；source08、snapshot08、lease、全部Maven stdout及RED原回执保留。该根673文件、32目录，6924064 B AllocationSize加131072 B目录guard；原二进制身份和路径现已不可读取。归档`J/logs/DERIVED-TOOLS08-ACTUAL-SUREFIRE-REPORTS01.tar.gz`为26587 B / `289d56d150ea7aca0ee3a43b3186f57092de2f3ad7ed7230e29e401ea50fae1a`，完整身份/SHA清单52526 B / `55b93ed18ef5c47a47540b0e89ee563feb3b1e7392677b38656605c872028bad`，位于`J/logs/DERIVED-TOOLS08-OUTPUT-RETENTION-MANIFEST01.json.gz`；实际删除记录`J/logs/DERIVED-TOOLS08-OUTPUT-RETENTION-EXECUTION01.json`为1206 B / `d9e78c8c69ba93109beea1e4b2e31a5eb208b649f3be8874ada273ff5da43d13`。删除前全673文件/32目录再次校验身份、内容及精确集合，并实核212份源码/快照引用与原完整六件工具仍可读取且MATCH。未以根名或失败状态作为清理依据，实际原报告没有丢弃。
 
 九类capture来源闭包已由三个owner独立核实：实际caller完整六件包、真正compiler driver完整六件包、source05被编译的领域九类各按合同独立验证，不要求source05的build-tools源码与外部driver同代。因此09完整资格及自身读回后可直接在同source05实际采集，无须先为此九类创建整图overlay。完整SDK/Host39仍须后续atomic新图和整step；目前默认CiBootstrap也未实际供应fixtureRequest，不能把standalone工具测试冒充Fresh/canonical已运行。
+
+## 14:12 新工具、真实编译清单与九类读回
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`，本节实际结果截至2026-10-23T06:12Z。未启动CK3、未执行注入或实际Driver/SAVE正文读取，Java新增保存日仍为0。
+
+- tools09完整Maven实际343/343、40套，零失败/错误/跳过；Root outer0、Maven0、Job0、stopnull，139.5275203s、峰1085968384 B，source106与snapshot106均MATCH。Root独立重算212份源码/快照及完整六件runtime全部MATCH。实际回执`J/logs/build-java-tools106-firstcut09.json`为66834 B / `1e263f96d16a9dbe8298350f5d54496760911b7a28db22be5bde1ab313a0f0f9`，主JAR1180017 B / `06aefca3caef720bc7eb0d6019ac9bb7d748419f19dc3ba6ee2c770c31e1942f`。
+- 新归档自身独立读回实际通过：outer0/child0/Job0，503项输入前后及runtime MATCH，106源码/40套343项、27个关键类同新JAR、2MiB及新清点preset实际读取通过；旧source03历史构建证据仍通过，旧过期执行权仍拒绝。`J/build/resume-current-20261023/g2-m1/bootstrap_integrated_tools/reader09-run01/actual.json`为3695 B / `649fadaa3bb4db6b69952372280146118f18e5a849abde01736966ac122cea5a`。完整软件资格索引`J/logs/RESUME-CURRENT-TOOLS09-QUALIFIED01.json`为2866 B / `f18672ed7f1706cb82b44c8a5e3fc23c315b455b69aeadc4491ae7a715f9ca6c`。Host39、SDK和Game不由此授予。
+- 随后使用真实qualified09在同source05重新执行capture05，31/31项目编译成功且整次外层通过：outer0/Maven0/Job0、stopnull，136.3229516s、峰796639232 B，双1932来源MATCH。`J/logs/build-java-g2-fullcapture05.json`为1218676 B / `0447fb8a9cd2ce811921b307fc15d00be1f6df6f8beabdaf8bed5e85decb6528`，资格明确为TEST_COMPILED_CAPTURE_ONLY，领域测试NOT_RUN。真实编译manifest `J/logs/build-java-g2-fullcapture05-test-compilation.json`为513300 B / `de2c72c8e9bc42b3420d06ecd2ffa21283683680baf8311d2e88adf54d43bd64`，30模块、631个尚未运行的测试源。Root独立复验4027个源码/快照/部署/工具/manifest引用全部MATCH；完整部署153文件不等于正式服务资格。
+- 新helper严格编译、真实request writer、28项合同检查（26项拒绝）及独立九类读回实际通过，所有Job0。首次writer因漏传原捕获所用XAR_ORACLE_PYTHON真实RED，后续步骤未启动；新不可变参数spec显式绑定同一解释器和exactRef后通过，旧失败保留。`N/java29_capture/g2next09/G2-CAPTURE05-ACCEPTED09-READBACK01.json`为97637 B / `c1d314639897b4ec2f744d797d439ec690ca0ab377a9638a693afc52037815ea`；交付`N/java29_capture/g2next09/DELIVERY01.json`为7641 B / `dc5cbb487b9512437ccb513726aa6e71cdf4b04ab7b64b1508b6f1e89bf56580`。这才授予本轮finance九类compiler provenance，不能从旧失败构造替代。
+- 四行finance QUALIFY_ONLY实际通过，outer0/child0/Job0，140.499s、峰105598976 B，完整pre/post proof相等，原始采集子进程0。资格数据`J/build/resume-current-20261023/g2-m3/finance_capture_profile/genuine05/data/qualification-actual.json`为173096 B / `33b716329812b66e35eee19e0da339221bdb5504df67083d2660090b10c074de`。真实Ci九反例、实际caller污染反例及四项原采集继续顺序执行，未据qualify声称已采到golden。
+- Native ENV source11后继严格编译与8/8 JUnit实际通过，两个Job0及三MATCH；`J/build/resume-current-20261023/g2-m1/defender_registration_java/control/CLI11-QUALIFIED01.json`为9457 B / `78096fa36e936fb038fd8b1642f0658712bfaba693617642f5a505ed35453567`。未实际执行CMD/vcvars/CMake/UAC/Defender或新EXE，两项原生研究fixture仍NOT_READY。恢复43项的首两次编译因依赖闭包遗漏/使用旧Java22 contracts而真实RED，已停止后续测试并改用本轮capture05当前三个精确JAR形成READY03，尚未冒报通过。
+
+新清点preset只证明有限拒绝边界，不保证381072条目均能在120秒内完成。既有106378/98835条目的53.547/46.482秒是logical/path/race观测，含额外属性读取和完整child墙钟；不是FileStandardInfo物理容量清点，也不能从两个不同树推断提速。实际AllocationSize、目录guard及全部TMP继续由独立存储清点落实。
+
+清理流程有一项漏验已如实补记：Root回收08前未单独重读永久保留索引；事后核对没有受保护资产或其祖先落在该精确根内，不能追认为执行前已核。`J/logs/TOOLS08-PERMANENT-INDEX-POSTCHECK01.json`为1081 B / `77157728be31e7cf649fcd784982a6c1cdcfc9c8e71548a134906b4a2930b9f1`。后续删除必须前置读取当前索引、按不超过1000个精确文件分批。详细删除ledger与原始报告按30日复核、compact执行记录按180日复核的纠正见`J/logs/RESUME-CURRENT-RETENTION-SCOPE-CORRECTION01.json`，3362 B / `d06abbfc548315ffc203edbef48a561cf6f45fb311fdc66b65af7555bed0fd42`，原manifest及SHA不改。
+
+当前Source19/Runtime11为真实qualified09的Window06，原4GiB内Source96MiB、12槽/RAM约束保持；M1输出104MiB，M3/M7各16MiB，全部输出/TMP240MiB。已关闭的capture05和tools09按实际占用替换未用预留，仍保留原件，不计作删除信用。Financial16完整前瞻3935329264 B小于4GiB，parts为build2048MiB、scratch1248MiB。
+
+下一完整source06正在按八M当前已验证后继逐target对照source05，不只是覆盖最小编译图。已经确认M0新composer/trace与三Python出口必须成组，SDK consumer需要显式derived Source32 lineage及真实薄消费者接线；保留baseline/legacy原anchor。continuity-core是真实新增模块，下一图须为31子模块/32reactor，使用新有限G2_STABILIZATION_20261023合同，旧G2_RESEARCH的30/31及本次genuine05历史语义不变。完整Host/SDK采用、整Maven默认业务测试、实际Root cold/Native及Java地图回执仍分别待验，基础八M软件8/8、统一宿主八域HTTP0/8、Java保存0日不能混成一个迁移百分比。
+
+## 14:35 融资原件闭环与下一整图的真实前置
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`。融资原件闭环于2026-10-23T06:27:43Z封存，Root随后独立复核交付中的50个精确引用，全部长度与SHA匹配。
+
+- 四项真实compiled-original采集均inner0/outer0/Job0、stopnull、三项来源检查MATCH，完整pre/post proof相等；没有新Python业务实现或Maven进程。pending-readers、read-transport、route、pending-route分别验收1、17、25、11个原始样本，共54个。
+- 共享Evidence实际调用四份acceptedReceipt并检查全部内容及来源、pending-readers整数0/SHA约束，46.2034006s、outer0/child0/Job0，峰97406976 B。四profile资格、九反例、实际caller类路径污染拒绝、四次采集、Evidence共8个真实运行终态；其中污染反例按预期exit1，未启动采集子进程，其余7个exit0。所有进程归零。最初无效输出路径还曾在child启动前被拒绝，该拒绝单列，不记作Job0。
+- 单一交付索引`J/build/resume-current-20261023/g2-m3/finance_capture_profile/control/genuine05/END-TO-END-DELIVERY01.json`为23184 B / `8a2b5a6902854dfda3e3362b7cbd147aec464b3c180bbb7db657568a9de5e917`；资源采用清单`J/build/resume-current-20261023/g2-m3/finance_capture_profile/genuine05/data/finance-original-resource-adoption01.json`为11661 B / `96a564f0dade466c5bc3560fe1eba5845d5b06961e64aa80806c539eaf38ccb7`，状态ACTUAL_ORIGINAL_CONTENT_ACCEPTED。新原件交source06唯一composer；完整默认reactor和后继Python消费者仍待执行，不由本次内容验收授予。
+- Native退出码259的真实共享缺陷完成最小修复资格：原两个真实259/Job0用例误报cleanup，修复后两个用例通过；普通非零退出依然失败，终态为NATURAL_SETTLED。四个实际作业均Job0/三MATCH，09冻结包未改。`N/native_exit259_source128/QUALIFIED01.json`为8989 B / `ec2a84a9b73b79cb14ab8197c801a3e99a91e52da83e2c0134449fc596c6bff9`。此为软件进程终态修复，未取得真实CK3业务资格。
+- 恢复43项首跑真实39PASS/4FAIL、零跳过/中止、Job0。其中真实文件生产路径暴露ObjectNode.equals把同JSON整数的LongNode与parse后的IntNode误判为不同；新修复统一JSON整数域比较，保留bool/float、缺字段及篡改拒绝，重跑全部43项和完整静态范围，旧RED保留。另三项修正异常类型断言。当前不报43通过。
+
+Window07的Runtime12已由launcher实际echo通过并切queue13，窗口至08:30Z；Source20、原D4GiB/Z32MiB、12槽、RAM与输出/TMP约束继续共同生效。Financial17记录`J/logs/RESUME-CURRENT-CAPACITY17-WINDOW07.json`为24965 B / `18928bb2631efeb53019ae77267c1e8ebd76ed91c2f6eb74232ff8272f939c98`，完整前瞻3935845360 B仍小于4GiB。旧Window06作业按原参数自然收尾，不重标来源或续用过期权。
+
+下一整图known-input草图已有2076文件、1220目录、28829881 logical B，保守native上界38309888 B，已经超出旧36MiB。新Stabilization合同单独采用44MiB物理上限，仍限2304文件/32MiB逻辑字节，旧Research物理36MiB语义保留；实际物化另须final Plan精确峰、Source/snapshot/build两代保留容量及正式卡，不因合同上限扩大而自动获准写入。当前八M精确差量已分别交sole composer，均未当作source06组合通过。
+
+资源按真实依赖排程：现成genuine05中未变化的Capture在验证全部输入后可先实际采集；cash-v2等新增或变化Capture需要新32项目compile-only清单，再采原件，最后完整normal verify与Host/SDK整step。这一顺序不把编译采集冒充业务测试，也避免默认验收等待尚未生成的原件。Native held-owner locator的真实阻塞已定位GetNamedPipeInfo→Custody.retainOwnerServer，正在共享生产路径修复；实际Game、HELLO、Driver/SAVE正文读取、Java新增保存日仍为0，UNKNOWN不重放及历史保存前沿不变。
