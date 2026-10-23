@@ -183,10 +183,26 @@ def legacy_public_pipeline_worker(root: Path) -> None:
         "qualification": qualification}))
 
 
-def context_fixture(root: Path) -> Object:
+def qualify_zero_gold_context(context: Object, *, game: tuple[str, str] | None = None) -> None:
+    """Authored known-version boundaries, never a claim of an actual CK3 run."""
+    version, digest = threshold.ZERO_GOLD_GAME if game is None else game
+    reference = field(context, "runtime_manifest")
+    path = Path(str(field(reference, "path")))
+    manifest = object_value(read(path))
+    game_record: Object = {"version": version, "exe_sha256": digest}
+    manifest["game"] = game_record
+    path.write_text(json.dumps(manifest), encoding="utf-8")
+    context["runtime_manifest"], context["shared_game"] = object_value(pin(path)), game_record
+    engine = Path(str(context["shared_source_root"])) / "tools/fixture_engine_prepare.py"
+    engine.write_text(engine.read_text(encoding="utf-8").replace("unit-version", version).replace("a" * 64, digest), encoding="utf-8")
+
+
+def context_fixture(root: Path, *, qualified_zero_gold: bool = False) -> Object:
     # Reuse authored shared-provider configuration; threshold still runs its own
     # actual preparation and copied-profile/source-closure verification.
     context = preview_context(root)
+    if qualified_zero_gold:
+        qualify_zero_gold_context(context)
     context["case"] = emitter.CASE
     context["case_contract"] = read(emitter.TOOLS / emitter.CONTRACT_NAME)
     context["case_spec"] = read(emitter.TOOLS / "threshold_suppression.registry.json")
@@ -204,10 +220,14 @@ def context_fixture(root: Path) -> Object:
 class ThresholdPort(PreviewPort):
     def __init__(self, context: Object, *, bad_growth: bool = False, charge: int = 75,
                  monthly_leak: bool = False, reset_on_equip: bool = False, missing_stress: bool = False,
-                 unknown_train: bool = False, no_curse: bool = False, wrong_timer: bool = False) -> None:
+                 unknown_train: bool = False, no_curse: bool = False, wrong_timer: bool = False,
+                 zero_wallet: bool = False) -> None:
         super().__init__(context)
         self.level, self.xp, self.growth = 10, 992, 0
         self.gold, self.prestige, self.stress = 1000, 1000, 20
+        self.zero_wallet = zero_wallet
+        if zero_wallet:
+            self.gold = 75
         self.trained, self.suppressed = False, False
         self.deadline: int | None = None
         self.charge = charge
@@ -217,10 +237,16 @@ class ThresholdPort(PreviewPort):
 
     def frame(self) -> Object:
         result = super().frame()
+        hello = mapping(field(field(result, "diagnostics"), "hello"), "authored hello")
+        hello["expected_ck3_version"] = field(field(self.manifest, "game"), "version")
+        hello["expected_ck3_sha256"] = field(field(self.manifest, "game"), "exe_sha256")
         actor = mapping(result["played_character"], "authored actor")
         if not self.missing_stress:
             actor["stress_points"] = self.stress
         result["played_character"] = object_value(actor)
+        diagnostics = mapping(result["diagnostics"], "authored diagnostics")
+        diagnostics["hello"] = object_value(hello)
+        result["diagnostics"] = object_value(diagnostics)
         result["played_character_gold"] = {"raw": self.gold * 100000, "scale": 100000}
         result["played_character_prestige"] = {"raw": self.prestige * 100000, "scale": 100000}
         return result
@@ -240,7 +266,8 @@ class ThresholdPort(PreviewPort):
         if self.trained:
             player_values += " " + variable("xalw_training_cooldown", "boolean", "1")
         source = source.replace(variable("xalw_fixture_target", "artifact", "12"), player_values + " " + variable("xalw_fixture_target", "artifact", "12"), 1)
-        vitals = f"gold={{ value={self.gold} }}\n\t\t\tprestige={{ currency={self.prestige} accumulated=1000 }}\n"
+        vitals = "" if self.zero_wallet and self.gold == 0 else f"gold={{ value={self.gold} }}\n\t\t\t"
+        vitals += f"prestige={{ currency={self.prestige} accumulated=1000 }}\n"
         if not self.missing_stress:
             vitals += f"\t\t\tstress={self.stress}\n"
         source = source.replace("\t\talive_data={\n", "\t\talive_data={\n\t\t\t" + vitals, 1)
@@ -313,11 +340,12 @@ class ThresholdPort(PreviewPort):
 
 
 def run_fixture(root: Path, **faults: bool | int) -> tuple[Object, Object, ThresholdPort]:
-    context = context_fixture(root)
+    context = context_fixture(root, qualified_zero_gold=bool(faults.get("zero_wallet", False)))
     port = ThresholdPort(context, bad_growth=bool(faults.get("bad_growth", False)), charge=int(faults.get("charge", 75)),
         monthly_leak=bool(faults.get("monthly_leak", False)), reset_on_equip=bool(faults.get("reset_on_equip", False)),
         missing_stress=bool(faults.get("missing_stress", False)), unknown_train=bool(faults.get("unknown_train", False)),
-        no_curse=bool(faults.get("no_curse", False)), wrong_timer=bool(faults.get("wrong_timer", False)))
+        no_curse=bool(faults.get("no_curse", False)), wrong_timer=bool(faults.get("wrong_timer", False)),
+        zero_wallet=bool(faults.get("zero_wallet", False)))
     binding = StartupActorBinding(91, 124, "9", 53144328, 12801, "a" * 64, "b" * 64)
     with patch.object(StartupActorBinding, "parse", return_value=binding):
         result = threshold.run_case(context, port)
@@ -325,6 +353,58 @@ def run_fixture(root: Path, **faults: bool | int) -> tuple[Object, Object, Thres
 
 
 class ThresholdAcceptanceTests(unittest.TestCase):
+    def test_r19_retained_zero_wallet_fragment_requires_exact_source_and_native_corroboration(self) -> None:
+        fixture = emitter.TOOLS / "fixtures/r19-zero-gold-living-31254.ck3.txt"
+        self.assertEqual((fixture.stat().st_size, pin(fixture)["sha256"]),
+            (9516, "157449d69de163bf05c3acafe745bfaa8de83900488ab7a291911a2dd3dbc3c6"))
+        provenance = read(fixture.with_suffix(".provenance.json"))
+        self.assertEqual(field(provenance, "machine_id"), "pc-20260924rtuf-f11af23c08")
+        self.assertEqual(field(field(provenance, "fragment"), "sha256"), pin(fixture)["sha256"])
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            melted = root / "selected-actor.ck3"
+            original = "living={\n" + fixture.read_text(encoding="utf-8") + "}\n"
+            melted.write_text(original, encoding="utf-8")
+            version, digest = threshold.ZERO_GOLD_GAME
+            source = threshold.SavedVitalsSource(pin(melted), Frame(42, 41, 53144712, 31254, 6576, "1"),
+                31254, 53144712, threshold.Vitals("0", "220000000", 45), version, digest)
+            with self.assertRaisesRegex(ValueError, "corroboration"):
+                threshold.saved_vitals(melted, "31254")
+            observed = threshold.saved_vitals(melted, "31254", source=source)
+            self.assertEqual(observed, source.native)
+            self.assertEqual(threshold.Vitals.parse(json.loads(json.dumps(observed.to_json()))), observed)
+            other = root / "another-source.ck3"
+            other.write_text(original, encoding="utf-8")
+            wrong_sources = (
+                replace(source, game_version="unknown"), replace(source, exe_sha256="a" * 64),
+                replace(source, native=threshold.Vitals("1", "220000000", 45)),
+                replace(source, native=threshold.Vitals("0", "220000000", True)),
+                replace(source, readback_actor_id=91), replace(source, readback_date_raw=53144736),
+                replace(source, frame=replace(source.frame, player_id=91)),
+                replace(source, melted_save=pin(other)),
+                replace(source, melted_save={**pin(melted), "sha256": "a" * 64}),
+            )
+            for wrong in wrong_sources:
+                with self.subTest(source=wrong), self.assertRaises(ValueError):
+                    threshold.saved_vitals(melted, "31254", source=wrong)
+            for gold in ("gold=null", "gold={}", "gold={ value=0 value=0 }", "gold={ value=0 } gold={ value=0 }", "gold={ value=nan }"):
+                changed = original.replace("\t\talive_data={\n", "\t\talive_data={\n\t\t\t" + gold + "\n", 1)
+                melted.write_text(changed, encoding="utf-8")
+                with self.subTest(gold=gold), self.assertRaises(ValueError):
+                    threshold.saved_vitals(melted, "31254", source=replace(source, melted_save=pin(melted)))
+            no_prestige = original.replace("\t\t\tprestige={", "\t\t\tnot_prestige={", 1)
+            self.assertNotEqual(no_prestige, original)
+            melted.write_text(no_prestige, encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "prestige"):
+                threshold.saved_vitals(melted, "31254", source=replace(source, melted_save=pin(melted)))
+
+    def test_real_threshold_producer_zero_omission_roundtrip_and_retained_evaluate(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            context, result, port = run_fixture(Path(temporary), zero_wallet=True)
+            self.assertEqual(result["status"], "PASS", result.get("error"))
+            self.assertEqual((port.saves, port.day, port.gold), (7, 47, 0))
+            self.assertEqual(threshold.verify_case(context), result)
+
     def test_legacy_derivation_is_not_a_missing_gui_default_for_other_cases(self) -> None:
         unused = Path("unused-legacy-verification-source")
         for result in (

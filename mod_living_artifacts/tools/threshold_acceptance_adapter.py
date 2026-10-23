@@ -11,7 +11,7 @@ from decimal import Decimal, InvalidOperation
 from pathlib import Path
 import re
 import sys
-from typing import Literal, TypedDict
+from typing import Final, Literal, TypedDict
 
 TOOLS = Path(__file__).resolve().parent
 if str(TOOLS) not in sys.path:
@@ -30,6 +30,8 @@ CHECKS = ("THRESHOLD-AUTOMATIC-11", "THRESHOLD-CURSE-HUNGER-PROJECTION", "TRAIN-
           "SUPPRESS-ACTUAL-WALLET-90-DAY", "SUPPRESS-ACTUAL-STRESS", "SUPPRESS-EQUIPMENT-PERSISTENCE", "SUPPRESS-MONTHLY-PAUSE")
 DATES = ("1066.9.15", "1066.10.1", "1066.10.1", "1066.10.1", "1066.10.1", "1066.10.1", "1066.11.1")
 DAYS = (0, 16, 16, 16, 16, 16, 47)
+ZERO_GOLD_GAME: Final[tuple[str, str]] = (
+    "1.20.0.4", "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518")
 
 
 class ThresholdCheckpoint(TypedDict):
@@ -102,11 +104,45 @@ def _saved_q(value: object) -> str:
     return str(int(amount))
 
 
-def saved_vitals(melted: Path, player_id: str) -> Vitals:
+@dataclass(frozen=True)
+class SavedVitalsSource:
+    """Internal corroboration assembled only after both native and Save guards."""
+
+    melted_save: Pin
+    frame: Frame
+    readback_actor_id: int
+    readback_date_raw: int
+    native: Vitals
+    game_version: str
+    exe_sha256: str
+
+
+def saved_vitals(melted: Path, player_id: str, *, source: SavedVitalsSource | None = None) -> Vitals:
     bodies = [body for identity, body in records(melted, ("living",)) if identity == player_id]
     require(len(bodies) == 1, "One exact saved actor required")
     alive = structured(one(parse_block(bodies[0][bodies[0].index("{"):]), "alive_data"), "alive data")
-    gold = structured(one(alive, "gold"), "saved gold")
+    gold_value = one(alive, "gold", required=False)
+    if gold_value is None:
+        # R19's qualified 1.20.0.4 Save omits the entire gold block at zero.
+        # This is not a generic missing-field default: two independently bound
+        # native reads and the original Save/readback scene must corroborate it.
+        require(isinstance(source, SavedVitalsSource), "Missing saved gold requires qualified same-scene zero corroboration")
+        if source is None:
+            raise ValueError("Missing saved gold source")
+        require((source.game_version, source.exe_sha256) == ZERO_GOLD_GAME,
+            "Saved zero-gold omission requires the qualified exact CK3 source")
+        reference = checked_pin(source.melted_save, "saved zero-gold original melt")
+        require(Path(reference["path"]).resolve() == melted.resolve(), "Saved zero-gold melt source differs")
+        require(decimal_id(player_id, "saved actor") == str(integer(source.readback_actor_id, "readback actor", 1)) ==
+            str(integer(source.frame.player_id, "native actor", 1)) and
+            integer(source.readback_date_raw, "readback date") == integer(source.frame.date_raw, "native date"),
+            "Saved zero-gold actor/date differs from the verified native frame")
+        native = Vitals.parse(source.native.to_json())
+        require(native.gold_raw == "0", "Missing saved gold is not corroborated by native zero")
+        gold_raw = "0"
+    else:
+        gold = structured(gold_value, "saved gold")
+        gold_raw = _saved_q(scalar(one(gold, "value"), "saved gold value"))
     prestige = structured(one(alive, "prestige"), "saved prestige")
     stress_value = one(alive, "stress", required=False)
     # Absence is unavailable, not an invented zero. The fixture requests nonzero input.
@@ -115,8 +151,7 @@ def saved_vitals(melted: Path, player_id: str) -> Vitals:
         raw = scalar(stress_value, "saved stress")
         require(re.fullmatch(r"0|[1-9][0-9]*", raw) is not None, "Exact saved stress integer required")
         stress = integer(int(raw), "saved stress points", 0, 2**31 - 1)
-    return Vitals(_saved_q(scalar(one(gold, "value"), "saved gold value")),
-        _saved_q(scalar(one(prestige, "currency"), "saved prestige currency")), stress)
+    return Vitals(gold_raw, _saved_q(scalar(one(prestige, "currency"), "saved prestige currency")), stress)
 
 
 def _value(values: dict[str, SavedVariable], name: str) -> int:
@@ -186,16 +221,24 @@ def consume_observation(record: object, *, context: object, manifest: object, re
     owned = {str(native_id(item, "owned item", allow_zero=True)) for item in array(field(native, "owned_ids"), "native inventory")}
     require({item.artifact_id for item in inputs.artifacts} <= owned, "Actual native materials/target disappeared")
     target = next(item for item in inputs.artifacts if item.artifact_id == inputs.target_id)
-    melted = Path(checked_pin(field(row["response"], "melted_save"), "already verified melted save")["path"])
+    melted_reference = checked_pin(field(row["response"], "melted_save"), "already verified melted save")
+    melted = Path(melted_reference["path"])
     target_blocks = [body for identity, body in records(melted, ("artifacts", "artifacts")) if identity == inputs.target_id]
     require(len(target_blocks) == 1, "Exactly one saved target record required")
     modifiers = one(parse_block(target_blocks[0][target_blocks[0].index("{"):]), "modifiers", required=False)
     modifier_entries = () if modifiers is None else structured(modifiers, "artifact modifiers")
     require(all(entry.key is None for entry in modifier_entries), "Anonymous saved native artifact modifiers required")
     names = tuple(scalar(entry.value, "artifact modifier") for entry in modifier_entries)
+    native_values = native_vitals(snapshot)
+    require(native_values == native_vitals(item_snapshot), "Independent native paused vitals differ")
+    game = field(manifest, "game")
+    source = SavedVitalsSource(melted_reference, frame,
+        integer(field(row["response"], "actor_character_id"), "readback actor", 1),
+        integer(field(row["response"], "date_raw"), "readback date"), native_values,
+        text(field(game, "version"), "verified game version"), text(field(game, "exe_sha256"), "verified game EXE SHA").lower())
     actual = ThresholdObservation(frame, CheckpointSample.from_saved(target, inputs, native_equipped=field(native, "equipped") is True), inputs,
-        saved_vitals(melted, inputs.player_id), native_vitals(snapshot), names)
-    require(actual.native == native_vitals(item_snapshot) and actual.saved.gold_raw == actual.native.gold_raw and actual.saved.prestige_raw == actual.native.prestige_raw,
+        saved_vitals(melted, inputs.player_id, source=source), native_values, names)
+    require(actual.saved.gold_raw == actual.native.gold_raw and actual.saved.prestige_raw == actual.native.prestige_raw,
         "Saved/native paused wallet changed across the observation")
     require(actual.saved.stress is None or actual.native.stress is None or actual.saved.stress == actual.native.stress, "Saved/native stress disagree")
     require(row["projection"] is None or same_json(row["projection"], actual.to_json()), "Persisted threshold projection differs from actual sources")

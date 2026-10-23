@@ -24,7 +24,7 @@ from startup_actor_binding import StartupActorBinding
 from test_checkpoint_artifacts import AUTHORED_ARTIFACTS, authored_checkpoint_text
 from test_npc_saved_observer import variable
 from test_preview_acceptance_adapter import context_fixture as preview_context
-from test_threshold_acceptance_adapter import ThresholdPort
+from test_threshold_acceptance_adapter import ThresholdPort, qualify_zero_gold_context
 from cold_persistence_observer import compare_persistence, consume_checkpoint
 from checkpoint_callback import checked_pin
 from prepare_fixture import InitialFeedingImprint
@@ -32,8 +32,10 @@ import suppression_timer_acceptance_adapter as timer
 import threshold_acceptance_adapter as historical
 
 
-def context_fixture(root: Path) -> Object:
+def context_fixture(root: Path, *, qualified_zero_gold: bool = False) -> Object:
     context = preview_context(root)
+    if qualified_zero_gold:
+        qualify_zero_gold_context(context)
     context["case"] = timer.CASE
     context["case_contract"] = read(timer.TOOLS / timer.CONTRACT_NAME)
     context["case_spec"] = read(timer.TOOLS / "suppression_timer.registry.json")
@@ -54,6 +56,8 @@ class TimerPort(ThresholdPort):
         self.level, self.xp, self.growth = 1, 92, 0
         self.chain, self.timer_sequence = 0, 0
         self.fault = fault
+        if fault == "zero_wallet":
+            self.gold = 70
         self.suppression_intents = 0
         self.renewal_intents = 0
         # CursePort reuses this authored transport with its own initial fixture.
@@ -84,7 +88,8 @@ class TimerPort(ThresholdPort):
                 values += " " + variable("xalw_feeding_imprint", "flag", flag=self.initial_imprint.flag)
         source = source.replace(variable("xalw_level", "value", str(self.level * 100000)), values + " " + variable("xalw_level", "value", str(self.level * 100000)), 1)
         source = source.replace(variable("xalw_fixture_target", "artifact", "12"), variable("xalw_fixture_initial_day", "value", "10000000") + " " + variable("xalw_fixture_target", "artifact", "12"), 1)
-        source = source.replace("\t\talive_data={\n", f"\t\talive_data={{\n\t\t\tgold={{ value={self.gold} }}\n\t\t\tprestige={{ currency={self.prestige} accumulated=1000 }}\n\t\t\tstress={self.stress}\n", 1)
+        gold = "" if self.fault == "zero_wallet" and self.gold == 0 else f"\t\t\tgold={{ value={self.gold} }}\n"
+        source = source.replace("\t\talive_data={\n", f"\t\talive_data={{\n{gold}\t\t\tprestige={{ currency={self.prestige} accumulated=1000 }}\n\t\t\tstress={self.stress}\n", 1)
         return source
 
     def execute_plan(self, steps: list[Object], name: str, timeout: int | float | None = None, reserve: int = 90) -> object:
@@ -147,7 +152,7 @@ class TimerPort(ThresholdPort):
 
 
 def run_fixture(root: Path, *, fault: str | None = None) -> tuple[Object, Object, TimerPort]:
-    context = context_fixture(root)
+    context = context_fixture(root, qualified_zero_gold=fault == "zero_wallet")
     port = TimerPort(context, fault=fault)
     binding = StartupActorBinding(91, 124, "9", 53144328, 12801, "a" * 64, "b" * 64)
     with patch.object(StartupActorBinding, "parse", return_value=binding):
@@ -168,6 +173,13 @@ def authored_q64_snapshots(value: object) -> object:
 
 
 class SuppressionTimerTests(unittest.TestCase):
+    def test_real_timer_producer_zero_omission_and_retained_evaluate(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            context, result, port = run_fixture(Path(temporary), fault="zero_wallet")
+            self.assertEqual(result["status"], "PASS", result.get("error"))
+            self.assertEqual((port.saves, port.day, port.gold), (7, 198, 0))
+            self.assertEqual(timer.verify_case(context), result)
+
     def test_real_prepare_session_seven_producers_all_saved_consumers_and_retained_verify(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             context, result, port = run_fixture(Path(temporary))

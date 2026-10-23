@@ -1,6 +1,6 @@
 # 重诅咒代表场景：持续健康与不足余额扣款
 
-此包为未来独立 `curse_representative` 场景，实机状态 **NOT_RUN**。只验证发布关键路径中的两个高风险代表；不替代完整内容矩阵、NPC、战胜事件、双件叠加、镇压期限、转赠、冷载或发布验收。
+此包为独立 `curse_representative` 场景，尚未获得完整实机通过：R18因夹具初始钱包错误BLOCKED，R19因零钱包存档读取错误BLOCKED，见[R19原结果与正常闭场](runtime-r19-curse-representative-and-wallet-fix.md)。只验证发布关键路径中的两个高风险代表；不替代完整内容矩阵、NPC、战胜事件、双件叠加、镇压期限、转赠、冷载或发布验收。
 
 入口为 [adapter](../tools/curse_representative_acceptance_adapter.py)、[合同](../tools/curse_representative.contract.json)和供 Root 合并的[独立 registry stanza](../tools/curse_representative.registry_stanza.json)。公共 registry、host、allocator、Session 与四个 checkpoint 生产模块不由此包修改。
 
@@ -25,6 +25,10 @@
 健康使用已存在的 `ck3_query_campaign_root_context_v1`，不新增 native getter。新 adapter 通过既有 `client.execute_plan` 发只读查询，沿用 Session 的预算和 bind，保留原始 row；验证 exact EXE、getter RVA `0x28C64E0`、角色/日期/原生 revision、same-frame readiness 和 Q100000 整数。健康与钱包64位值在持久化投影中用十进制字符串。若冻结DLL拒绝或当前健康不可用，健康项 **BLOCKED/UNAVAILABLE**；已观察的物品 modifier 与原生装备结果仍保留，其他四项可继续独立通过，不填造健康总值。
 
 不足扣款使用生产脚本在真正月结中保存的 `xalw_content_appetite_quote`、`xalw_content_payment` 与 `xalw_content_month_done`，结合同暂停日原生/存档钱包和压力交叉读回。不能把初始20金币直接当作月结前实际余额，也不能把跨日钱包差额全归于诅咒。压力只核实际正增量与同日不重扣；本场不声称 CK3 调整后的数值必然等于脚本基础40。
+
+R19第五份实际Save的角色31254在钱包归零时省略了整个 `alive_data.gold`，同暂停帧两份原生钱包均为Q0。共享 `threshold_acceptance_adapter.saved_vitals` 只为这一确切来源模式增加例外：CK3版本与EXE SHA必须为源码声明的1.20.0.4合格pair；先通过原 `Frame.parse` 的暂停、run/pipe、PID/generation、native hello与manifest绑定，再完成原Save/melt/角色/日期的 `verify_readback` 及独立item同场、两份原生vitals相等，才构造内部 `SavedVitalsSource`。缺省分支再次核原melt Pin、actor/date与Frame，并要求原生Q0。该模型是既有消费链的内部佐证，单独构造模型不授资格。
+
+例外仅限gold直接条目数为0；显式null、空block、缺value、重复gold、非零原生钱包、未知版本/EXE与场景/来源漂移仍拒绝。prestige保持必填，缺stress保持UNAVAILABLE；通用 `one`、投影JSON合同、五项业务要求均不改变。threshold、timer、curse及retained evaluate共用同一入口。持久回归保留R19的9516 B原角色片段及来源Pin，使用真实生产者/全部消费者验证；离线通过不能追改R19的BLOCKED原件，也不授未来新场次PASS。
 
 原始装备 intent、事件实例与显示选项来源均重新消费；结果未知不再次提交。自然日证据重用现有共享投影消费者，不另建推进引擎。最多17自然日、420次预算内调用、7次 Save，未来固定 hold5400秒、timeout6600秒、正常关闭预留180秒；任何旧场次预算均不改变。正常退出继续由共享入口负责，adapter 的业务结果不替代实际闭场证明。
 
