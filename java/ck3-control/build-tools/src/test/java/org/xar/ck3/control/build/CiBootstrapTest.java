@@ -202,7 +202,7 @@ final class CiBootstrapTest {
             assertTrue(Files.notExists(checksum));
         }
         for (String name : List.of("artifact.pom", "artifact.jar", "artifact.pom.md5", "artifact.pom.sha1",
-                "artifact.pom.42.tmp", "artifact.pom.md5.random.tmp", "artifact.pom.md5.-1.tmp",
+                "artifact.pom.md5.random.tmp", "artifact.pom.md5.-1.tmp",
                 "artifact.pom.md5.+1.tmp", "artifact.pom.md5.00.tmp", "artifact.pom.md5.18446744073709551616.tmp",
                 "artifact.pom.md5.42.tmp.bak")) {
             Path file = sibling.resolveSibling(name); Files.writeString(file, "actual file");
@@ -232,6 +232,92 @@ final class CiBootstrapTest {
             IOException failure = assertThrows(IOException.class, () -> CiBootstrap.guard(temporary, Map.of(),
                     Instant.now().plusSeconds(10), () -> {}, path -> {
                         if (path.equals(checksum)) { reads.incrementAndGet(); throw error; }
+                        return attributes(path);
+                    }));
+            assertEquals(error, failure); assertEquals(1, reads.get());
+        }
+    }
+
+    @Test
+    void actualQuarkusDownloadTemporaryRemovalStillCountsSurvivingArtifacts(@TempDir Path temporary) throws Exception {
+        Path sibling = guardedFile(temporary, "m2");
+        Path version = Files.createDirectories(sibling.getParent().resolve("io/quarkus/quarkus-mutiny/3.40.1.1"));
+        Path jar = version.resolve("quarkus-mutiny-3.40.1.1.jar"); Files.writeString(jar, "actual jar");
+        Path pom = version.resolve("quarkus-mutiny-3.40.1.1.pom"); Files.writeString(pom, "actual pom");
+        Path download = version.resolve("quarkus-mutiny-3.40.1.1.jar.11782637843446623922.tmp.7356342921900080208.tmp");
+        Files.writeString(download, "actual download temporary");
+        AtomicInteger reads = new AtomicInteger();
+        CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10), () -> {}, path -> {
+            if (path.equals(download)) Files.delete(download);
+            if (path.equals(sibling) || path.equals(jar) || path.equals(pom)) reads.incrementAndGet();
+            return attributes(path);
+        });
+        assertTrue(Files.notExists(download)); assertEquals(3, reads.get());
+        assertEquals("actual jar", Files.readString(jar)); assertEquals("actual pom", Files.readString(pom));
+    }
+
+    @Test
+    void removedDownloadTemporaryDuringTraversalPreservesSiblingQuota(@TempDir Path temporary) throws Exception {
+        Path sibling = guardedFile(temporary, "m2");
+        Path download = sibling.resolveSibling("quarkus-mutiny-3.40.1.1.jar.11782637843446623922.tmp.7356342921900080208.tmp");
+        Files.writeString(download, "actual download temporary");
+        AtomicInteger reads = new AtomicInteger();
+        CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10), () -> {}, path -> {
+            if (path.equals(sibling)) reads.incrementAndGet();
+            return attributes(path);
+        }, removeBeforeTraversal(download));
+        assertTrue(Files.notExists(download)); assertEquals(1, reads.get());
+        Files.writeString(download, "actual download temporary");
+        IOException quota = assertThrows(IOException.class, () -> CiBootstrap.guard(temporary, Map.of(),
+                Instant.now().plusSeconds(10), () -> {}, path -> {
+                    BasicFileAttributes actual = attributes(path);
+                    return path.equals(sibling) ? new SizedAttributes(actual, (2L << 30) + 1) : actual;
+                }, removeBeforeTraversal(download)));
+        assertEquals("task part budget exceeded: m2", quota.getMessage());
+    }
+
+    @Test
+    void downloadTemporaryRemovalRequiresResolverNameAndRealM2Descendant(@TempDir Path temporary) throws Exception {
+        Path sibling = guardedFile(temporary, "m2");
+        for (String name : List.of("artifact.jar.0.tmp", "artifact.pom.18446744073709551615.tmp",
+                "artifact.jar.0.tmp.18446744073709551615.tmp", "artifact.pom.18446744073709551615.tmp.0.tmp")) {
+            Path download = sibling.resolveSibling(name); Files.writeString(download, "actual download temporary");
+            CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10), () -> {},
+                    CiBootstrapTest::attributes, removeBeforeTraversal(download));
+            assertTrue(Files.notExists(download));
+        }
+        for (String name : List.of("artifact.jar", "artifact.pom", "artifact.jar.tmp", "artifact.jar.00.tmp",
+                "artifact.jar.-1.tmp", "artifact.jar.+1.tmp", "artifact.jar.18446744073709551616.tmp",
+                "artifact.jar.1.tmp.00.tmp", "artifact.jar.1.tmp.18446744073709551616.tmp",
+                "artifact.jar.18446744073709551616.tmp.1.tmp", "artifact.jar.1.tmp.1.tmp.1.tmp",
+                "artifact.zip.1.tmp", "artifact.jar.1.tmp.bak", "artifact.pom.md5.1.tmp.1.tmp")) {
+            Path file = sibling.resolveSibling(name); Files.writeString(file, "actual file");
+            assertThrows(NoSuchFileException.class, () -> CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10),
+                    () -> {}, CiBootstrapTest::attributes, removeBeforeTraversal(file)), name);
+        }
+        Path foreign = temporary.resolve("build/artifact.jar.1.tmp.2.tmp"); Files.writeString(foreign, "other part");
+        assertThrows(NoSuchFileException.class, () -> CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10),
+                () -> {}, CiBootstrapTest::attributes, removeBeforeTraversal(foreign)));
+        Files.delete(sibling); Files.delete(sibling.getParent());
+        assertThrows(NoSuchFileException.class, () -> CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10),
+                () -> {}, CiBootstrapTest::attributes));
+    }
+
+    @Test
+    void downloadTemporaryStillCountsAndCannotHidePermissionOrOtherIoFailure(@TempDir Path temporary) throws Exception {
+        Path sibling = guardedFile(temporary, "m2");
+        Path download = sibling.resolveSibling("artifact.jar.1.tmp.2.tmp"); Files.writeString(download, "actual download temporary");
+        IOException quota = assertThrows(IOException.class, () -> CiBootstrap.guard(temporary, Map.of(),
+                Instant.now().plusSeconds(10), () -> {}, path -> {
+                    BasicFileAttributes actual = attributes(path);
+                    return path.equals(download) ? new SizedAttributes(actual, (2L << 30) + 1) : actual;
+                }));
+        assertEquals("task part budget exceeded: m2", quota.getMessage());
+        for (IOException error : List.of(new AccessDeniedException(download.toString()), new IOException("other I/O failure"))) {
+            AtomicInteger reads = new AtomicInteger();
+            IOException failure = assertThrows(IOException.class, () -> CiBootstrap.guard(temporary, Map.of(),
+                    Instant.now().plusSeconds(10), () -> {}, path -> {
+                        if (path.equals(download)) { reads.incrementAndGet(); throw error; }
                         return attributes(path);
                     }));
             assertEquals(error, failure); assertEquals(1, reads.get());

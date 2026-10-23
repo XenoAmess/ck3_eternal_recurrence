@@ -73,6 +73,8 @@ public final class CiBootstrap {
     private static final Pattern SIMPLE_PATH = Pattern.compile("[^\\s\"%&|<>^!]+", Pattern.UNICODE_CHARACTER_CLASS);
     private static final Pattern MAVEN_CHECKSUM_TEMPORARY = Pattern.compile(
             ".+\\.(?:md5|sha1|sha256|sha512)\\.(0|[1-9][0-9]{0,19})\\.tmp");
+    private static final Pattern MAVEN_ARTIFACT_TEMPORARY = Pattern.compile(
+            ".+\\.(?:jar|pom)\\.(0|[1-9][0-9]{0,19})\\.tmp(?:\\.(0|[1-9][0-9]{0,19})\\.tmp)?");
 
     private CiBootstrap() {}
 
@@ -878,7 +880,7 @@ public final class CiBootstrap {
             Path part = root.resolve(name);
             boolean scratch = name.equals("scratch");
             long limit = PARTS.get(name.equals("logs") ? "metadata_logs" : name);
-            // JUnit removes scratch entries; Maven retires update markers and checksum temporaries.
+            // JUnit removes scratch entries; Maven retires update markers and repository temporaries.
             // Handle only their actual disappearance, preserving every surviving sibling.
             walker.walk(part, new SimpleFileVisitor<>() {
                 private long size;
@@ -897,8 +899,8 @@ public final class CiBootstrap {
                 }
                 private FileVisitResult failed(Path path, IOException error) throws IOException {
                     active.check();
-                    boolean mavenMetadata = name.equals("m2") && mavenTransientMetadata(path);
-                    if (!path.equals(part) && path.startsWith(part) && (scratch || mavenMetadata)
+                    boolean mavenTemporary = name.equals("m2") && mavenTransientRepositoryFile(path);
+                    if (!path.equals(part) && path.startsWith(part) && (scratch || mavenTemporary)
                             && error instanceof NoSuchFileException) return FileVisitResult.CONTINUE;
                     throw error;
                 }
@@ -919,14 +921,21 @@ public final class CiBootstrap {
         }
     }
 
-    private static boolean mavenTransientMetadata(Path path) {
+    private static boolean mavenTransientRepositoryFile(Path path) {
         String name = path.getFileName().toString();
         if (name.endsWith(".lastUpdated")) return true;
-        // Resolver PathProcessorSupport appends an unsigned random long and .tmp
-        // while publishing a checksum. Present files still pass through normal accounting.
+        // Resolver PathProcessorSupport appends an unsigned random long and .tmp.
+        // Download/staging can nest that suffix once; final artifact bodies remain fatal.
+        // Present temporary files still pass through normal accounting.
         var checksum = MAVEN_CHECKSUM_TEMPORARY.matcher(name);
-        if (!checksum.matches()) return false;
-        try { Long.parseUnsignedLong(checksum.group(1)); return true; }
+        if (checksum.matches()) return unsignedTemporaryNumber(checksum.group(1));
+        var artifact = MAVEN_ARTIFACT_TEMPORARY.matcher(name);
+        return artifact.matches() && unsignedTemporaryNumber(artifact.group(1))
+                && (artifact.group(2) == null || unsignedTemporaryNumber(artifact.group(2)));
+    }
+
+    private static boolean unsignedTemporaryNumber(String number) {
+        try { Long.parseUnsignedLong(number); return true; }
         catch (NumberFormatException outOfRange) { return false; }
     }
 
