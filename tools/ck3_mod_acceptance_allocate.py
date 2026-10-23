@@ -1,5 +1,6 @@
 """One shared allocation followed immediately by the existing screen keeper."""
 from __future__ import annotations
+import ast
 from ck3_mod_acceptance_launcher_protocol_v1 import BACKGROUND_CLOSURE_SCHEMAS_V1
 from ck3_mod_acceptance_background_types import FilePin, JsonObject, json_object, file_pin, object_field, text_field, strings_field, CONTROL_QUEUE_MODULE_ORDER_V1
 from ck3_mod_acceptance_fresh_machine_bootstrap import (
@@ -1585,6 +1586,157 @@ class SplitPublicWaitFacts(TypedDict):
     pid: int
 
 
+def _recorded_decimal(value: object, label: str) -> int:
+    if not isinstance(value, str) or re.fullmatch(r'(0|[1-9][0-9]*)', value) is None:
+        raise ValueError(label + ' must be canonical decimal text')
+    number = int(value)
+    _late_check(0 < number <= 18446744073709551615, label + ' is outside uint64')
+    return number
+
+
+class RecordedPublicProducerFacts(TypedDict):
+    custody_duration_ns: int
+    root_quit_duration_ns: int
+
+
+def _recorded_duration(expression: ast.expr, label: str) -> int:
+    if not isinstance(expression, ast.Call) or not isinstance(expression.func, ast.Name) or \
+            expression.func.id != 'str' or len(expression.args) != 1 or expression.keywords:
+        raise ValueError(label + ' must encode a decimal deadline')
+    added = expression.args[0]
+    if not isinstance(added, ast.BinOp) or not isinstance(added.op, ast.Add) or \
+            not isinstance(added.left, ast.Name) or added.left.id != 't':
+        raise ValueError(label + ' must add a duration to the original monotonic start')
+    multiplied = added.right
+    if not isinstance(multiplied, ast.BinOp) or not isinstance(multiplied.op, ast.Mult) or \
+            not isinstance(multiplied.left, ast.Constant) or \
+            not isinstance(multiplied.right, ast.Constant):
+        raise ValueError(label + ' must multiply positive integer seconds by 1000000000')
+    seconds = _late_integer(multiplied.left.value, label + ' seconds')
+    scale = _late_integer(multiplied.right.value, label + ' scale')
+    _late_check(0 < seconds <= 18446744073709551615 // 1000000000 and scale == 1000000000,
+        label + ' seconds/scale differ')
+    return seconds * scale
+
+
+def validate_recorded_public_producer(source_raw: object, machine: str) -> RecordedPublicProducerFacts:
+    """Bind the pinned wrapper's direct Popen/wait publication, without executing it."""
+    if not isinstance(source_raw, bytes) or not source_raw or len(source_raw) > 1048576:
+        raise ValueError('Recorded public producer source bytes required')
+    tree = ast.parse(source_raw.decode('utf-8'))
+    # The source is an original evidence input, not a reconstructed intent. Verify
+    # its direct wait-to-EXIT tail; no source hash or historical PID is hardcoded.
+    expected = ast.parse("""
+child=subprocess.Popen(argv,env=env,cwd=REPO,stdout=out,stderr=err)
+v={'schema':'ck3-recorded-actual-command-v1','machine_id':MACHINE,'argv':argv,'shell':False,'pid':child.pid,'started_at_utc':datetime.now(timezone.utc).isoformat(),'started_monotonic_ns':str(t),'original_wait_pending':True}
+if mode=='allocate':v.update(custody_deadline_monotonic_ns=str(t+11400*1000000000),root_quit_deadline_monotonic_ns=str(t+10800*1000000000))
+with start.open('x',encoding='utf-8') as h:json.dump(v,h)
+print(json.dumps(v),flush=True)
+code=child.wait()
+v.update(original_wait_pending=False,actual_original_popen_wait=True,exit_code=code,finished_at_utc=datetime.now(timezone.utc).isoformat(),finished_monotonic_ns=str(time.monotonic_ns()))
+with exitp.open('x',encoding='utf-8') as h:json.dump(v,h)
+print(json.dumps({'operation':mode,'original_wait':code,'receipt':str(exitp)}),flush=True)
+""").body
+    value = expected[1]
+    if not isinstance(value, ast.Assign) or not isinstance(value.value, ast.Dict):
+        raise ValueError('Recorded producer schema template differs')
+    value.value.values[1] = ast.Constant(value=machine)
+    signature = [ast.dump(node, include_attributes=False) for node in expected]
+    durations: dict[str, int] = {}
+    candidates: list[list[ast.stmt]] = []
+    for node in ast.walk(tree):
+        if isinstance(node, ast.With):
+            for index, statement in enumerate(node.body):
+                if ast.dump(statement, include_attributes=False) == signature[0]:
+                    candidates.append(node.body[index:])
+    if len(candidates) == 1 and len(candidates[0]) == len(expected):
+        deadline = candidates[0][2]
+        if isinstance(deadline, ast.If) and not deadline.orelse and len(deadline.body) == 1:
+            statement = deadline.body[0]
+            if isinstance(statement, ast.Expr) and isinstance(statement.value, ast.Call):
+                call = statement.value
+                _late_check(ast.dump(deadline.test) == ast.dump(expected[2].test)
+                    if isinstance(expected[2], ast.If) else False,
+                    'Recorded public producer allocation branch differs')
+                _late_check(isinstance(call.func, ast.Attribute) and
+                    isinstance(call.func.value, ast.Name) and call.func.value.id == 'v' and
+                    call.func.attr == 'update' and not call.args and
+                    {item.arg for item in call.keywords} == {
+                        'custody_deadline_monotonic_ns', 'root_quit_deadline_monotonic_ns'} and
+                    len(call.keywords) == 2,
+                    'Recorded public producer allocation deadlines differ')
+                for item in call.keywords:
+                    if item.arg is None:
+                        raise ValueError('Recorded producer deadline keyword missing')
+                    durations[item.arg] = _recorded_duration(item.value, item.arg)
+                # Durations are parameters of the actual wrapper, not this field
+                # contract. Their receipt values still receive uint64/order checks.
+                signature[2] = ast.dump(deadline, include_attributes=False)
+    _late_check(len(candidates) == 1 and
+        [ast.dump(node, include_attributes=False) for node in candidates[0]] == signature,
+        'Recorded public producer direct original Popen/wait publication differs')
+    _late_check(0 < durations['root_quit_deadline_monotonic_ns'] <
+        durations['custody_deadline_monotonic_ns'], 'Recorded producer custody durations differ')
+    return {'custody_duration_ns': durations['custody_deadline_monotonic_ns'],
+            'root_quit_duration_ns': durations['root_quit_deadline_monotonic_ns']}
+
+
+def validate_recorded_public_wait(wait_raw: object, started_raw: object,
+        producer: RecordedPublicProducerFacts, machine: str,
+        mode: Literal['run', 'allocate'], code: int) -> SplitPublicWaitFacts:
+    """Consume genuine STARTED/EXIT receipts; retain the other public formats."""
+    waited = _late_object(wait_raw, 'Recorded public EXIT')
+    started = _late_object(started_raw, 'Recorded public STARTED')
+    common = {'schema', 'machine_id', 'argv', 'shell', 'pid', 'started_at_utc',
+              'started_monotonic_ns', 'original_wait_pending'}
+    if mode == 'allocate':
+        common |= {'custody_deadline_monotonic_ns', 'root_quit_deadline_monotonic_ns'}
+    _late_check(set(started) == common and set(waited) == common | {
+        'actual_original_popen_wait', 'exit_code', 'finished_at_utc', 'finished_monotonic_ns'},
+        'Recorded public STARTED/EXIT fields differ')
+    _late_check(all(row['schema'] == 'ck3-recorded-actual-command-v1' and
+        row['machine_id'] == machine and row['shell'] is False for row in (started, waited)) and
+        started['original_wait_pending'] is True and waited['original_wait_pending'] is False and
+        waited['actual_original_popen_wait'] is True,
+        'Recorded public schema/machine/original wait differs')
+    _late_check(all(started[key] == waited[key] and type(started[key]) is type(waited[key])
+        for key in common - {'original_wait_pending'}), 'Recorded public STARTED/EXIT identity differs')
+    argv_raw = started['argv']
+    if not isinstance(argv_raw, list) or not argv_raw or any(
+            not isinstance(arg, str) or not arg or '\x00' in arg for arg in argv_raw):
+        raise ValueError('Recorded public argv must be nonempty strings')
+    argv = [arg for arg in argv_raw if isinstance(arg, str)]
+    indexes = [index for index, arg in enumerate(argv) if Path(arg).name == 'ck3_mod_acceptance.py']
+    _late_check(len(indexes) == 1 and indexes[0] + 1 < len(argv) and argv[indexes[0] + 1] == mode,
+        'Recorded public command mode differs')
+    pid = _late_integer(started['pid'], 'Recorded public PID')
+    _late_check(0 < pid <= 4294967295 and
+        _late_integer(waited['pid'], 'Recorded public EXIT PID') == pid and
+        _late_integer(waited['exit_code'], 'Recorded public original exit') == code,
+        'Recorded public PID/original exit differs')
+    first = _recorded_decimal(started['started_monotonic_ns'], 'Recorded start monotonic')
+    last = _recorded_decimal(waited['finished_monotonic_ns'], 'Recorded finish monotonic')
+    _late_check(last >= first, 'Recorded public monotonic completion precedes start')
+    stamps: list[datetime] = []
+    for raw in (started['started_at_utc'], waited['finished_at_utc']):
+        if not isinstance(raw, str):
+            raise ValueError('Recorded public UTC timestamps must be text')
+        stamp = datetime.fromisoformat(raw)
+        offset = stamp.utcoffset()
+        _late_check(stamp.tzinfo is not None and offset is not None and
+            offset.total_seconds() == 0, 'Recorded public timestamp must be UTC')
+        stamps.append(stamp)
+    _late_check(stamps[1] >= stamps[0], 'Recorded public UTC completion precedes start')
+    if mode == 'allocate':
+        custody = _recorded_decimal(started['custody_deadline_monotonic_ns'], 'Recorded custody deadline')
+        root_quit = _recorded_decimal(started['root_quit_deadline_monotonic_ns'], 'Recorded Root quit deadline')
+        _late_check(first < root_quit < custody and
+            custody == first + _late_integer(producer['custody_duration_ns'], 'Producer custody duration') and
+            root_quit == first + _late_integer(producer['root_quit_duration_ns'], 'Producer Root quit duration'),
+            'Recorded public custody ordering/producer duration differs')
+    return {'argv': argv, 'pid': pid}
+
+
 def validate_split_public_wait(wait_raw: object, command_raw: object, intent_raw: object,
         process_raw: object, completion_raw: object, command_path: Path, machine: str,
         mode: Literal['run', 'allocate'], code: int) -> SplitPublicWaitFacts:
@@ -1710,10 +1862,13 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
                                                        keeper_root, release_path, bus_packet)
     late_cleanup = bundle.get('closure_kind') == 'retained-wait-expired-then-native-cleanup'
     split_public = bundle.get('public_wait_format') == 'command-intent-process-exit-completion'
-    require('public_wait_format' not in bundle or split_public,
+    recorded_public = bundle.get('public_wait_format') == 'recorded-actual-command-started-exit-v1'
+    require('public_wait_format' not in bundle or split_public or recorded_public,
             'Failed-live public wait format is unknown')
-    require(not split_public or late_cleanup, 'Split public wait requires original expired retained wait')
+    require(not (split_public or recorded_public) or late_cleanup,
+            'Recorded public wait requires original expired retained wait')
     public_pids = []
+    recorded_attempts: list[str] = []
     refs, evidence = bundle.get('original_evidence'), {}
     require(isinstance(refs, dict), 'Original failed-live evidence pins required')
     def original(key, expected=None, *, decode=True, max_bytes=1048576):
@@ -1755,7 +1910,19 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
     def public_wait(mode, code):
         value = original(mode + '_wait')
         parent = Path(refs[mode + '_wait']['path']).resolve().parent
-        if split_public:
+        if recorded_public:
+            exit_path = Path(refs[mode + '_wait']['path']).resolve()
+            require(exit_path.name.startswith(mode + '-') and exit_path.name.endswith('.EXIT.actual.json'),
+                    'Recorded public original EXIT path differs')
+            stem = exit_path.name[:-len('.EXIT.actual.json')]
+            recorded_attempts.append(stem[len(mode) + 1:])
+            producer_facts = validate_recorded_public_producer(
+                original('public_command_producer', decode=False), bundle['machine_id'])
+            facts = validate_recorded_public_wait(value,
+                original(mode + '_started', parent/(stem + '.STARTED.actual.json')),
+                producer_facts, bundle['machine_id'], mode, code)
+            argv = facts['argv']; public_pids.append(facts['pid'])
+        elif split_public:
             facts = validate_split_public_wait(value,
                 original(mode + '_command', parent/'command.json'),
                 original(mode + '_intent', parent/'intent.json'),
@@ -1793,16 +1960,24 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
         else:
             require(Path(argument('--keeper-output')).resolve() == keeper_root,
                     'Failed-live allocator keeper differs')
+            if recorded_public:
+                require(stem == mode + '-' + argument('--attempt'),
+                        'Recorded public receipt crossed allocator attempt')
         if not late_cleanup:
             intent = original(mode + '_intent', parent/'intent.json')
             require(intent.get('argv') == argv and intent.get('phase') == mode,
                     'Failed-live original command intent differs')
-        stdout_name = 'stdout.json' if split_public else ('stdout.txt' if late_cleanup else 'stdout.log')
+        stdout_name = (stem + '.stdout.json') if recorded_public else (
+            'stdout.json' if split_public else ('stdout.txt' if late_cleanup else 'stdout.log'))
         original(mode + '_stdout', parent/stdout_name, decode=False, max_bytes=16777216)
-        stderr_name = 'stderr.txt' if late_cleanup and not split_public else 'stderr.log'
+        stderr_name = (stem + '.stderr.txt') if recorded_public else (
+            'stderr.txt' if late_cleanup and not split_public else 'stderr.log')
         original(mode + '_stderr', parent/stderr_name, decode=False, max_bytes=16777216)
         return Path(argument('--runtime')).resolve()
     require(public_wait('run', 2) == public_wait('allocate', 0), 'Failed-live public runtime differs')
+    require(not recorded_public or len(recorded_attempts) == 2 and
+            bool(recorded_attempts[0]) and recorded_attempts[0] == recorded_attempts[1],
+            'Recorded public STARTED/EXIT pair crossed attempts')
     report = original('native_report', previous/'native-report.json', max_bytes=67108864)
     diagnostic = bundle.get('failed_query')
     validate_failed_live_diagnostic(report, diagnostic)
@@ -1844,7 +2019,7 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
                 'Failed-live original retained nonzero CK3 exit differs')
     original('server_stderr', report['server_stderr'], decode=False, max_bytes=16777216)
     keeper = original('keeper_report', keeper_root/'report.json')
-    if split_public:
+    if split_public or recorded_public:
         require(bool(original('keeper_stop', keeper_root/'STOP', decode=False)),
                 'Failed-live original cooperative keeper STOP is missing')
     waited = original('keeper_exit', previous/'keeper-actual-parent-exit.json')
