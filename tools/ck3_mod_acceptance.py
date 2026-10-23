@@ -1031,7 +1031,7 @@ class Selection:
         context['operator_reviewer']=resolve_operator_reviewer(self)
         with self.case_imports():
             adapter=self.load_adapter()
-            result=adapter.verify_case(context)
+            result: dict[str, object] = dict(json_object(adapter.verify_case(context)))
         closed_path=Path(context['output'])/'normal-close-result.json'
         close=read_json(closed_path) if closed_path.is_file() else None
         if result.get('schema') == 'living-artifacts-threshold-case-result-v1':
