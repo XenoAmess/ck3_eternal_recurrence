@@ -1,4 +1,4 @@
-# External fixture only. Schedule setup once; never auto-run the matrix.
+﻿# External fixture only. Schedule setup once; never auto-run the matrix.
 on_game_start_after_lobby = { on_actions = { sxant_start } }
-sxant_start = { effect = { every_player = { limit = { NOT = { has_character_flag = sxant_start_scheduled } } add_character_flag = sxant_start_scheduled trigger_event = { id = sxant.1 days = 1 } } } }
+sxant_start = { effect = { every_player = { limit = { NOT = { has_character_flag = sxant_start_scheduled } } add_character_flag = sxant_start_scheduled trigger_event = { id = sxant.1 days = 1 } debug_log = "SXANT: FIXTURE_ARMED notification-investigation" } } }
 

@@ -3705,3 +3705,12 @@ source commits include `[skip ci]`; no workflow configuration was changed.
 [Cancellation receipt](D:/codex-ck3-background-spill/native71-continuation-20261010/ROOT-AUTOMATIC-CI-CANCELLATION-20261011.json).
 Native84/fullSDK84 remain compiled594, and source additions remain research /
 SOURCE_ADOPTED_NOT_RUN. No new Game query, input, days or SAVE was performed.
+
+
+## 暂停开局的夹具启动标记与业务标记（2026-10-24）
+
+初始暂停的游戏不会执行 `trigger_event = { ... days = 1 }`。公共启动器若等待该次日事件产生的业务标记，便会与首次推进互相等待。on_game_start 立即写出的 ARMED 标记只能证明已安排初始化；公共 startup policy 消费它，实际 baseline 仍由次日事件、业务日志和保存读回单独验证。不能提前写出 baseline 来解除等待。
+
+阶段的 when_markers 必须确实进入公共 marker consumer 的计数域。只在日志中存在、却没有加入实际 required/additional marker inventory 的标记不会触发对应阶段；回归须走实际 emitter → prepare_case → materialized startup policy / compiled contract → marker_observation 链。
+
+实证来源：`machine_id: desktop-3fevhd2-1c74096080`，2026-10-23 R0024 的自然模拟夹具；普通 GUI 退出后 retained OS handle 返回 0，原生 session 的 process_exit=0、Job 清空、control/watchdog 清理完成，随后公共 failure_shutdown finish_hold 生效。此为失败生命周期闭合，保留 host RED 与 normal_close_qualified=false，未取得业务或保存通过。具体产品候选见[重新设计](../mod_superman_qiang/docs/2026-10-23-encounter-redesign.md)。

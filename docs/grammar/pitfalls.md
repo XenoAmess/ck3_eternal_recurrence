@@ -532,3 +532,13 @@ changed parser 只证明语法；[fresh R0006](../ck3-1.20.0.3-vivhite-compatibi
 | `Unknown trigger type 'hidden_trigger'`，挑战者决议加载时出现 | 把未经当前原版支持的包装器写入 `is_valid` | 可读 `custom_description` 条件留在 `is_valid`，最终后端资格使用决议原生字段 `is_valid_showing_failures_only`；原版 `_decisions.info` 定义两字段均限制执行。AST 检查二者与原后端谓词等价，不能用生成成功代替修复后的实机加载与提示观察。 |
 
 实际失败、最小修复及尚未验证项见 [LYD R0064](../li-yu-dao/acceptance/2026-10-12-r64-feedback-start-red.md)。
+
+
+## 文件局部脚本与事件覆盖优先级（2026-10-24，CK3 1.20.0.4）
+
+| 现象 | 原因 | 解法与证据边界 |
+| --- | --- | --- |
+| `Inline scripted trigger ... is only allowed in ...`，随后 `Unknown trigger/effect` | 原版事件文件中的 `scripted_trigger` / `scripted_effect` 局部定义不能由另一个窄覆盖文件调用 | 对已固定来源的依赖闭包逐项展开；trigger 在 OR/NOT 中保持单一 AND 操作数，effect 保持原作用域、顺序和可见性。不能仅复制事件正文。展开须能逆恢复原始调用，实际解析结果另验。 |
+| `Duplicated event ID ... with the same override priority 0` | 单独文件覆盖既有事件时，文件名排序不提供明确事件优先级 | 按原版 `_events.info` 设置更高的 `id_override_priority`，并纳入生成与静态合同；不因此声称事件业务已通过。 |
+
+实际发现来自 `machine_id: desktop-3fevhd2-1c74096080`、2026-10-23 的 R0024；CK3 EXE SHA-256 为 `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`。原解析错误、固定来源、修正候选和验证边界见[修复记录](../../mod_superman_qiang/docs/2026-10-24-inline-projection-repair.json)。R0024 未到月度夹具基线，不能从其成功进入地图推断计数通过。

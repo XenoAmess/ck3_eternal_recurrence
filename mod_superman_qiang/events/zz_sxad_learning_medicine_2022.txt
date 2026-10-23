@@ -3,6 +3,9 @@
 namespace = learning_medicine
 
 learning_medicine.2022 = { #by Mathilda Bjarnehed
+	# SXAD_HOOK_BEGIN
+	id_override_priority = 1
+	# SXAD_HOOK_END
 	type = character_event
 	title = learning_medicine.2022.t
 	desc = {
@@ -30,19 +33,88 @@ learning_medicine.2022 = { #by Mathilda Bjarnehed
 	lower_right_portrait = scope:spouse
 
 	trigger = {
-		learning_medicine_2022_valid_physician_trigger = yes
-		any_spouse = { learning_medicine_2020_can_have_child_trigger = yes }
+		
+# SXAD_INLINE_BEGIN learning_medicine_2022_valid_physician_trigger 3de2cb25a173ffc3878176c077dfaf1a5a930aad8d0e20b035b1162c018c335c
+AND = {
+	exists = scope:physician
+	root = {
+		any_court_position_holder = {
+	        type = court_physician_court_position
+	        this = scope:physician
+	    }
+	}
+}
+# SXAD_INLINE_END learning_medicine_2022_valid_physician_trigger 3de2cb25a173ffc3878176c077dfaf1a5a930aad8d0e20b035b1162c018c335c
+
+		any_spouse = { 
+# SXAD_INLINE_BEGIN learning_medicine_2020_can_have_child_trigger e1c273d005aabbcc3f571452ab7b3bda4237f03e8f1be893eac946dbe96a7073
+AND = {
+	trigger_if = {
+		limit = { is_male = yes }
+		is_visibly_fertile = yes
+		fertility >= 0.1
+	}
+	trigger_if = {
+		limit = { is_female = yes }
+		is_visibly_fertile = yes
+		fertility >= 0.1
+		is_pregnant = no
+	}
+	NOT = {
+		has_court_position = court_physician_court_position
+	}
+}
+# SXAD_INLINE_END learning_medicine_2020_can_have_child_trigger e1c273d005aabbcc3f571452ab7b3bda4237f03e8f1be893eac946dbe96a7073
+ }
 	}
 
 	immediate = {
 		#pick a spouse
 		random_spouse = {
 			limit = {
-				learning_medicine_2020_can_have_child_trigger = yes
+				
+# SXAD_INLINE_BEGIN learning_medicine_2020_can_have_child_trigger e1c273d005aabbcc3f571452ab7b3bda4237f03e8f1be893eac946dbe96a7073
+AND = {
+	trigger_if = {
+		limit = { is_male = yes }
+		is_visibly_fertile = yes
+		fertility >= 0.1
+	}
+	trigger_if = {
+		limit = { is_female = yes }
+		is_visibly_fertile = yes
+		fertility >= 0.1
+		is_pregnant = no
+	}
+	NOT = {
+		has_court_position = court_physician_court_position
+	}
+}
+# SXAD_INLINE_END learning_medicine_2020_can_have_child_trigger e1c273d005aabbcc3f571452ab7b3bda4237f03e8f1be893eac946dbe96a7073
+
 				this = root.primary_spouse
 			}
 			alternative_limit = {
-				learning_medicine_2020_can_have_child_trigger = yes
+				
+# SXAD_INLINE_BEGIN learning_medicine_2020_can_have_child_trigger e1c273d005aabbcc3f571452ab7b3bda4237f03e8f1be893eac946dbe96a7073
+AND = {
+	trigger_if = {
+		limit = { is_male = yes }
+		is_visibly_fertile = yes
+		fertility >= 0.1
+	}
+	trigger_if = {
+		limit = { is_female = yes }
+		is_visibly_fertile = yes
+		fertility >= 0.1
+		is_pregnant = no
+	}
+	NOT = {
+		has_court_position = court_physician_court_position
+	}
+}
+# SXAD_INLINE_END learning_medicine_2020_can_have_child_trigger e1c273d005aabbcc3f571452ab7b3bda4237f03e8f1be893eac946dbe96a7073
+
 			}
 			save_scope_as = spouse
 			if = {
@@ -177,7 +249,26 @@ learning_medicine.2022 = { #by Mathilda Bjarnehed
 								scope:spouse = { is_female = yes }
 								scope:physician = {
 									is_male = yes
-									learning_medicine_2020_can_have_child_trigger = yes
+									
+# SXAD_INLINE_BEGIN learning_medicine_2020_can_have_child_trigger e1c273d005aabbcc3f571452ab7b3bda4237f03e8f1be893eac946dbe96a7073
+AND = {
+	trigger_if = {
+		limit = { is_male = yes }
+		is_visibly_fertile = yes
+		fertility >= 0.1
+	}
+	trigger_if = {
+		limit = { is_female = yes }
+		is_visibly_fertile = yes
+		fertility >= 0.1
+		is_pregnant = no
+	}
+	NOT = {
+		has_court_position = court_physician_court_position
+	}
+}
+# SXAD_INLINE_END learning_medicine_2020_can_have_child_trigger e1c273d005aabbcc3f571452ab7b3bda4237f03e8f1be893eac946dbe96a7073
+
 								}
 							}
 							modifier = {

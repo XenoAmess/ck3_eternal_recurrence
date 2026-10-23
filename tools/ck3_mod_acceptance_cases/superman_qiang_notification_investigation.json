@@ -5,12 +5,18 @@
   "acceptance_scope": "notification_baseline_probe_qualification_only",
   "fixture_emitter": {
     "path": "mod_superman_qiang/tools/prepare_live_fixture.py",
-    "arguments": ["--notification-investigation", "--output", "{output}"],
+    "arguments": [
+      "--notification-investigation",
+      "--output",
+      "{output}"
+    ],
     "fixture_subdir": "",
     "receipt_suffix": ".fixture.json"
   },
   "maximum_natural_days": 2,
-  "failure_prefixes": ["SXANT:"],
+  "failure_prefixes": [
+    "SXANT:"
+  ],
   "gui_phases": [
     {
       "id": "notification-baseline-and-original-probe",
@@ -19,7 +25,8 @@
         "baseline_save_before_case_actions",
         "actual_relationship_and_notification_settings",
         "actual_n0_probe_message_instances_retained",
-        "diagnosis_scope_and_unrun_cells_recorded"
+        "diagnosis_scope_and_unrun_cells_recorded",
+        "business_marker_SXANT_BASELINE_READY_notification_investigation"
       ],
       "at_day": 1
     }
@@ -33,13 +40,28 @@
     "The 32 candidate cells remain not_run until their actual independent observations are retained.",
     "Monthly simulation, script pregnancy attempt coverage and save reload require separate source acceptance."
   ],
-  "post_start": {"government_key": null, "primary_title_tier_key": null, "independent": null},
-  "required_startup": ["SXANT: BASELINE_READY notification-investigation"],
-  "forbidden_startup": ["SXANT: TEST FAIL"],
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "required_startup": [
+    "SXANT: FIXTURE_ARMED notification-investigation"
+  ],
+  "forbidden_startup": [
+    "SXANT: TEST FAIL"
+  ],
   "source_catalogue": {
     "directory": "mod_superman_qiang",
     "builder": "mod_superman_qiang/tools/build_release.py",
-    "release_flags": ["--output", "{new-output}", "--git-tag", "{matching-product-tag}", "--workshop-item-id", "3812991990"],
+    "release_flags": [
+      "--output",
+      "{new-output}",
+      "--git-tag",
+      "{matching-product-tag}",
+      "--workshop-item-id",
+      "3812991990"
+    ],
     "workshop_item_id": "3812991990"
   },
   "business_contract_applicable": true,

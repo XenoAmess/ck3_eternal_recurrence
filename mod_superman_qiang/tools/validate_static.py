@@ -465,6 +465,9 @@ def validate(game_root: Path | None = None) -> StaticValidationReport:
     try:
         from gen_runtime import render_outputs
 
+        # An explicit game root now binds every selected definition, local
+        # helper snapshot and complete local-name index to actual source bytes;
+        # the full-file/EXE SHA observations below remain independent guards.
         expected = render_outputs(game_root)
         generated_count = len(expected)
         outside = expected.keys() - RUNTIME_FILES

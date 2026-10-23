@@ -1,0 +1,25 @@
+﻿scripted_trigger stewardship_duty_1055_valid_father_parent = {
+	is_available_ai_adult = yes
+	trigger_if = {
+		limit = {
+			is_vassal_or_below_of = root
+		}
+		highest_held_title_tier > 1
+	}
+	# Must be of a different dynasty than Root or Vassal 1.
+	NOR = {
+		dynasty = root.dynasty
+		dynasty = scope:vassal_1.dynasty
+	}
+
+	# Must not be the vassal of the mother's parent.
+	NOT = {
+		is_vassal_of = scope:vassal_1
+	}
+
+	# Must have an unmarried son.
+	any_child = {
+		is_male = yes
+		stewardship_duty_1055_is_unwed_child = yes
+	}
+}

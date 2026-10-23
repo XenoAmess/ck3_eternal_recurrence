@@ -1,0 +1,47 @@
+{
+  "schema": "sxad-inline-projection-repair-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T16:45:33.615486+00:00",
+  "baseline": {
+    "attempt": "natural-scene-a04 R24",
+    "status": "PARSE_RED",
+    "error_log": "C:\\ck3-superman-validation-20261023\\natural-scene-a04\\state\\profile\\logs\\error.log",
+    "error_log_sha256": "736d2bec0bc49631d1f2d61a8626f999ebebe81265af59ffeee25a3a9fcc73c8",
+    "finding": "Original-file-restricted inline helpers do not resolve in new event filenames; seven duplicate event IDs share priority zero. R24 never reached the day-one fixture baseline and supplies no monthly business result."
+  },
+  "repair": {
+    "manifest_schema": "sxad-encounter-projections-v2",
+    "manifest": "tools/vanilla_hooks/encounter_sources.json",
+    "manifest_sha256": "fb5cf712f097321f5c9a06dc61cf6997231ef2863ea4b14c53886e1f625aef43",
+    "source_indexes": 8,
+    "helper_pins": 10,
+    "event_priority": 1,
+    "closure_counts": {
+      "learning_medicine.2022": 2,
+      "learning_medicine.2023": 5,
+      "stewardship_duty.1055": 4,
+      "pilgrimage.2101": 1
+    },
+    "semantics": "Expand only reviewed file-local calls recursively. A trigger remains one AND operand; a negative call is NOT of that AND. Effects are spliced in their original scope/order/visibility. Cycles, macros and nonboolean argument forms fail closed.",
+    "identity": "Original event/effect pins unchanged. Canonical expanded stock is checked exactly, then expansion records are physically reversed and the original bytes compared. Stock mutations cannot be concealed by replacing a changed body with a golden source."
+  },
+  "priority_source": {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\_events.info",
+    "sha256": "ccd628f42374eb300199a2676bde45ba60af0be056290f191bfc72461910a5fd",
+    "line": 81
+  },
+  "verification": {
+    "runtime_unit_tests": "50 passed",
+    "targeted_encounter_tests": "32 passed",
+    "source_static": "GREEN with installed CK3 source/EXE SHA verification",
+    "mypy": "GREEN: strict gen_runtime/runtime_data/product (3 files), check-untyped-defs validate_static/test_runtime (2 files). Initial two missing fixture container annotations retained in first receipt; corrected in second.",
+    "native_parser": "NOT_RUN for repaired candidate",
+    "evidence_layer": "source-only repair candidate",
+    "release_tooling_tests": "GREEN: 13 shared tests and 11 product release/fixture tests",
+    "build_check": "GREEN: 35 formal runtime files; generator check 33 generated files",
+    "receipt": {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\inline-fix-a01\\verification-inline-fix-summary.json",
+      "sha256": "162fe36d8ce7e694a9e901da95ad9f07232e7280241d9ac6d00bb94dab8ca805"
+    }
+  }
+}

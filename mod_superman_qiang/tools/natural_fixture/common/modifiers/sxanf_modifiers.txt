@@ -1,2 +1,2 @@
-# A fixture-only fertility penalty; the product must still model marital sex.
+﻿# A fixture-only fertility penalty; the product must still model marital sex.
 sxanf_infertile_modifier = { fertility = -100 }

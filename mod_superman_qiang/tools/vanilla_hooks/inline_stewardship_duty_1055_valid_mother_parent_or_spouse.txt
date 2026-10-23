@@ -1,0 +1,26 @@
+﻿scripted_trigger stewardship_duty_1055_valid_mother_parent_or_spouse = {
+	is_available_ai_adult = yes
+	trigger_if = {
+		limit = {
+			is_vassal_or_below_of = root
+		}
+		highest_held_title_tier > 1
+	}
+
+	#Must be of a different dynasty than Root.
+	dynasty != root.dynasty
+
+	#Must have either...
+	OR = {
+		#A non-pregnant, unmarried daughter(preferred).
+		any_child = {
+			is_female = yes
+			stewardship_duty_1055_is_unwed_child = yes
+		}
+		#Or a non-pregnant wife or concubine(acceptable).
+		any_consort = {
+			is_female = yes
+			stewardship_duty_1055_minimum_et_requirements = yes
+		}
+	}
+}

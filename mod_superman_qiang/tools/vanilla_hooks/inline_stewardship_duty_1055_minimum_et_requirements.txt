@@ -1,0 +1,20 @@
+﻿scripted_trigger stewardship_duty_1055_minimum_et_requirements = {
+	is_available_ai_adult = yes
+
+	#Must not be landed, as their parent/spouse/employer is going to be advocating for them.
+	is_landed = no
+
+	#Must not currently be pregnant.
+	is_pregnant = no
+	fertility > 0
+
+	#Must be of an age where having children is likely.
+	age >= 16
+	age < 40
+
+	#Must not be chaste (since they allegedly had extramarital relations, and it could feel odd to the player if they are chaste).
+	NOT = { has_trait = chaste }
+
+	#And make sure they'd cheat on any partners they may have outside of marriage anyway.
+	might_cheat_on_every_partner_trigger = yes
+}

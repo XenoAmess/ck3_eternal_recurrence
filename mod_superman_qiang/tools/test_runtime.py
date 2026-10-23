@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 import re
 import shutil
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -206,7 +207,7 @@ class SupermanNaturalFixtureTests(unittest.TestCase):
         self.root = Path(self.temporary.name)
         self.source = self.root / "source"
         self.templates = self.source / "tools/natural_fixture"
-        shutil.copytree(SOURCE / "tools/natural_fixture", self.templates)
+        shutil.copytree(prepare_live_fixture.SOURCE / "tools/natural_fixture", self.templates)
 
     def prepare(self, output: Path) -> prepare_live_fixture.NaturalFixtureReport:
         with patch.object(prepare_live_fixture, "SOURCE", self.source):
@@ -217,6 +218,7 @@ class SupermanNaturalFixtureTests(unittest.TestCase):
         report = self.prepare(output)
         self.assertEqual(report["case_count"], 6)
         self.assertEqual(len(report["expected_pass_markers"]), 7)
+        self.assertEqual(report["required_additional_markers"], ["SXANF: SAME_MONTH_READY natural-simulation"])
         self.assertEqual(len(report["readback_character_references"]), 12)
         self.assertEqual(report["candidate_results"], "not_run")
         self.assertIs(report["ck3_started"], False)
@@ -231,8 +233,79 @@ class SupermanNaturalFixtureTests(unittest.TestCase):
             self.assertEqual(entry["sha256"], hashlib.sha256(raw).hexdigest())
             template = self.templates / ("cases.json" if entry["path"] == "_natural_simulation_cells.json" else entry["path"])
             self.assertEqual(raw, template.read_bytes())
-            if entry["path"].endswith(".yml"):
+            if entry["path"].endswith((".yml", ".txt")):
                 self.assertTrue(raw.startswith(b"\xef\xbb\xbf"))
+
+    def test_real_compiler_and_marker_consumer_admit_named_same_month_phase(self) -> None:
+        # Run the existing shared adapter's real receipt compilation and marker
+        # reader, including actual startup-policy/profile production. Replace
+        # only engine identity/process dispatch with a declared unit fixture;
+        # the real product emitter still writes its receipt and files.
+        import importlib
+        sys.path.insert(0, str(SOURCE.parent / "tools/ck3_mod_acceptance_cases"))
+        generic = importlib.import_module("generic_product_adapter")
+        prepare_shared = importlib.import_module("ck3_mod_acceptance_prepare")
+        candidate_root = Path(prepare_live_fixture.__file__).resolve().parents[2]
+        config: object = json.loads((candidate_root / "tools/ck3_mod_acceptance_cases/superman_qiang_natural_simulation.json").read_text(encoding="utf-8-sig"))
+        if not isinstance(config, dict):
+            raise ValueError("Candidate case must remain a JSON object")
+        product = self.root / "product"
+        product.mkdir()
+        (product / "descriptor.mod").write_text('name="test product"\n', encoding="utf-8-sig")
+        output = self.root / "compiled"
+        profile = output / "state/profile"
+        plain: dict[str, dict[str, str | int]] = {}
+        for name in prepare_shared.CONFIG_NAMES:
+            source = self.root / "plain" / name
+            source.parent.mkdir(parents=True, exist_ok=True)
+            source.write_text("# synthetic unit configuration; no game launched\n", encoding="utf-8")
+            plain[name] = {"path": str(source), "bytes": source.stat().st_size,
+                           "sha256": hashlib.sha256(source.read_bytes()).hexdigest()}
+
+        def emit(context: object, script: Path, argv: list[str]) -> dict[str, object]:
+            self.assertEqual(script.name, "prepare_live_fixture.py")
+            self.assertEqual(argv[:2], ["--natural-simulation", "--output"])
+            self.prepare(Path(argv[2]))
+            return {"fixture_emitted": True, "process_or_game_started": False}
+
+        context = {"case_contract": config, "case_inputs": {"product_dir": str(product),
+            "post_start": {"government_key": "feudal_government", "primary_title_tier_key": "duchy", "independent": True},
+            "plain_configuration": plain}, "repo_root": str(candidate_root), "output": str(output),
+            "product": "superman-qiang", "case": "natural-simulation", "state_dir": str(profile.parent),
+            "_selected_engine": (None, {"game_version": "unit-fixture-never-launched", "exe_sha256": "0" * 64})}
+        with patch.object(prepare_shared, "invoke_fixture_prepare", side_effect=emit):
+            generic.prepare_case(context)
+        compiled: object = json.loads((profile / "mod-content/fixture/_case_contract.json").read_text(encoding="utf-8"))
+        if not isinstance(compiled, dict) or not isinstance(compiled.get("required_markers"), list):
+            raise ValueError("Compiled marker contract must remain structured")
+        required = compiled["required_markers"]
+        self.assertIn("SXANF: SAME_MONTH_READY natural-simulation", required)
+        logs = "\n".join(required).encode("utf-8")
+        observed = generic.marker_observation(logs, compiled)
+        self.assertIs(observed["qualified"], True)
+        self.assertEqual(observed["counts"]["SXANF: SAME_MONTH_READY natural-simulation"], 1)
+        self.assertFalse(generic.marker_observation(logs + b"\nSXANF: SAME_MONTH_READY natural-simulation", compiled)["qualified"])
+        policy: object = json.loads((output / "frontend-fixture-start-policy.json").read_text(encoding="utf-8"))
+        if not isinstance(policy, dict):
+            raise ValueError("Produced startup policy must remain structured")
+        self.assertEqual(policy["required_log_markers"], ["SXANF: FIXTURE_ARMED natural-simulation"])
+        self.assertIn("SXANF: BASELINE_READY natural-simulation", required)
+
+    def test_startup_armed_marker_precedes_day_one_baseline_without_claiming_it(self) -> None:
+        output = self.root / "fixture"
+        report = self.prepare(output)
+        candidate_root = Path(prepare_live_fixture.__file__).resolve().parents[2]
+        case: object = json.loads((candidate_root / "tools/ck3_mod_acceptance_cases/superman_qiang_natural_simulation.json").read_text(encoding="utf-8-sig"))
+        if not isinstance(case, dict):
+            raise ValueError("Candidate case must remain a JSON object")
+        self.assertEqual(case["required_startup"], ["SXANF: FIXTURE_ARMED natural-simulation"])
+        self.assertEqual(report["required_start"], "SXANF: BASELINE_READY natural-simulation")
+        action = (output / "common/on_action/sxanf_on_actions.txt").read_text(encoding="utf-8-sig")
+        self.assertRegex(action, r'trigger_event\s*=\s*\{\s*id\s*=\s*sxanf\.1\s+days\s*=\s*1\s*\}[\s\S]*debug_log\s*=\s*"SXANF: FIXTURE_ARMED natural-simulation"')
+        self.assertNotIn('debug_log = "SXANF: BASELINE_READY', action)
+        event = (output / "events/sxanf_events.txt").read_text(encoding="utf-8-sig")
+        for event_id in (2, 6, 10):
+            self.assertRegex(event, rf"sxanf\.{event_id}\s*=\s*\{{\s*theme\s*=\s*marriage")
 
     def test_real_calendar_and_native_observer_have_distinct_source_paths(self) -> None:
         output = self.root / "fixture"
@@ -459,6 +532,9 @@ class EncounterScriptHarness:
                 self.state.scopes[NaturalScriptHarness.scalar(node)] = current
             elif key == "clear_saved_scope":
                 self.state.scopes.pop(NaturalScriptHarness.scalar(node), None)
+            elif key == "id_override_priority":
+                if NaturalScriptHarness.scalar(node) != "1":
+                    raise ValueError("Fixture event must explicitly override priority zero")
             elif key == "sxad_record_unknown_effect":
                 if self.allowed(key):
                     self.state.unknowns.append(current)
@@ -529,8 +605,7 @@ class SupermanEncounterProjectionTests(unittest.TestCase):
                 self.assertEqual(hashlib.sha256(pinned).hexdigest(), projection.pinned_sha256)
                 self.assertEqual(hashes[projection.source_path], projection.source_sha256)
                 rendered = self.outputs[projection.output].decode("utf-8-sig")
-                recovered = re.sub(r"(?ms)^\t# SXAD_HOOK_BEGIN\n.*?^\t# SXAD_HOOK_END\n", "", rendered)
-                original = gen_runtime.extract_effect(recovered, projection.name)
+                original, _ = gen_runtime.restore_encounter_source(projection, rendered)
                 self.assertEqual(original.encode("utf-8-sig"), pinned)
                 owned = gen_runtime.encounter_owned_code(projection.output, rendered)
                 self.assertEqual(owned.count("sxad_record_pair_effect") + owned.count("sxad_record_unknown_effect"),
@@ -638,6 +713,144 @@ class SupermanEncounterProjectionTests(unittest.TestCase):
         self.assertNotIn("ep3_wedding.0003", self.by_name)
         self.assertNotIn("lover.8102", self.by_name)
 
+    def test_actual_local_helper_closure_is_complete_and_no_local_calls_escape(self) -> None:
+        expected = {
+            "learning_medicine.2022": 2, "learning_medicine.2023": 5,
+            "stewardship_duty.1055": 4, "pilgrimage.2101": 1,
+        }
+        for projection in self.projections:
+            with self.subTest(name=projection.name):
+                self.assertEqual(len(projection.inline_dependencies), expected.get(projection.name, 0))
+                rendered = self.outputs[projection.output].decode("utf-8-sig")
+                tokens = gen_runtime.script_tokens(rendered)
+                unresolved = [token.text for index, token in enumerate(tokens[:-1])
+                              if token.text in projection.inline_inventory and tokens[index + 1].text == "="]
+                self.assertEqual(unresolved, [])
+                for helper in projection.inline_dependencies:
+                    raw = (gen_runtime.PINNED_ROOT / helper.pinned_file).read_bytes()
+                    self.assertEqual(hashlib.sha256(raw).hexdigest(), helper.pinned_sha256)
+                    self.assertEqual(helper.source_path, projection.source_path)
+                    self.assertEqual(helper.source_sha256, projection.source_sha256)
+
+    def test_every_event_has_explicit_higher_priority_and_effects_have_none(self) -> None:
+        for projection in self.projections:
+            with self.subTest(name=projection.name):
+                source = gen_runtime.extract_effect(self.outputs[projection.output].decode("utf-8-sig"), projection.name)
+                body = NaturalScriptHarness.block(validate_static.effect_assignments(source)[0])
+                priorities = [NaturalScriptHarness.scalar(node) for node in body if node.key == "id_override_priority"]
+                self.assertEqual(priorities, ["1"] if projection.kind == "event" else [])
+                if projection.kind == "event":
+                    changed = self.outputs[projection.output].decode("utf-8-sig").replace(
+                        "\tid_override_priority = 1\n", "\tid_override_priority = 0\n", 1)
+                    with self.assertRaises(ValueError):
+                        gen_runtime.encounter_owned_code(projection.output, changed)
+
+    def test_inline_body_tampering_cannot_be_hidden_by_source_restoration(self) -> None:
+        projection = self.by_name["learning_medicine.2022"]
+        source = self.outputs[projection.output].decode("utf-8-sig")
+        changed, count = re.subn(r"fertility\s*>=\s*0\.1", "fertility >= 0.0", source, count=1)
+        self.assertEqual(count, 1)
+        with self.assertRaises(ValueError):
+            gen_runtime.restore_encounter_source(projection, changed)
+
+    def test_missing_transitive_helper_is_rejected(self) -> None:
+        projection = self.by_name["learning_medicine.2023"]
+        missing = "learning_medicine_2020_can_have_child_trigger"
+        changed = replace(projection, inline_dependencies=tuple(helper for helper in projection.inline_dependencies
+                                                               if helper.name != missing))
+        with self.assertRaisesRegex(ValueError, "Missing inline dependency"):
+            gen_runtime.expand_inline_helpers(gen_runtime.pinned_encounter_source(projection), changed)
+
+    def test_local_identifier_text_inside_comments_and_strings_is_not_expanded(self) -> None:
+        projection = self.by_name["pilgrimage.2101"]
+        call = "pilgrimage_2101_save_scopes_effect = yes"
+        source = f'log = "{call}" # {call}\n{call}'
+        expanded, changes = gen_runtime.expand_inline_helpers(source, projection)
+        self.assertEqual(len(changes), 1)
+        self.assertTrue(expanded.startswith(f'log = "{call}" # {call}\n'))
+
+    def test_local_effect_arguments_and_changed_helper_pin_are_rejected(self) -> None:
+        projection = self.by_name["pilgrimage.2101"]
+        for call in ("pilgrimage_2101_save_scopes_effect = no", "pilgrimage_2101_save_scopes_effect = { ARG = value }"):
+            with self.subTest(call=call), self.assertRaises(ValueError):
+                gen_runtime.expand_inline_helpers(call, projection)
+        helper = projection.inline_dependencies[0]
+        with tempfile.TemporaryDirectory(prefix="sxad-inline-pin-") as temporary:
+            path = Path(temporary)
+            (path / helper.pinned_file).write_bytes((gen_runtime.PINNED_ROOT / helper.pinned_file).read_bytes() + b"\n")
+            with patch.object(gen_runtime, "PINNED_ROOT", path), self.assertRaisesRegex(ValueError, "Pinned inline helper changed"):
+                gen_runtime.expand_inline_helpers("pilgrimage_2101_save_scopes_effect = yes", projection)
+
+    def test_cyclic_local_helpers_are_rejected(self) -> None:
+        base = self.by_name["learning_medicine.2022"]
+        with tempfile.TemporaryDirectory(prefix="sxad-inline-cycle-") as temporary:
+            path = Path(temporary)
+            helpers: list[gen_runtime.InlineHelper] = []
+            for name, target in (("cycle_a", "cycle_b"), ("cycle_b", "cycle_a")):
+                raw = f"scripted_trigger {name} = {{ {target} = yes }}\n".encode("utf-8-sig")
+                filename = f"inline_{name}.txt"
+                (path / filename).write_bytes(raw)
+                helpers.append(gen_runtime.InlineHelper(name, "trigger", base.source_path, base.source_sha256,
+                                                        filename, hashlib.sha256(raw).hexdigest()))
+            projection = replace(base, inline_dependencies=tuple(helpers), inline_inventory=("cycle_a", "cycle_b"))
+            with patch.object(gen_runtime, "PINNED_ROOT", path), self.assertRaisesRegex(ValueError, "Cyclic inline dependency"):
+                gen_runtime.expand_inline_helpers("cycle_a = yes", projection)
+
+    def test_pilgrimage_local_effect_keeps_scope_order_and_visibility(self) -> None:
+        projection = self.by_name["pilgrimage.2101"]
+        expanded, changes = gen_runtime.expand_inline_helpers("pilgrimage_2101_save_scopes_effect = yes", projection)
+        nodes = validate_static.effect_assignments(expanded)
+        self.assertEqual([node.key for node in nodes], ["location", "trigger_event"])
+        self.assertEqual(NaturalScriptHarness.scalar(NaturalScriptHarness.child(
+            NaturalScriptHarness.block(nodes[0]), "save_scope_as")), "brothel_location")
+        event = NaturalScriptHarness.block(nodes[1])
+        self.assertEqual(NaturalScriptHarness.scalar(NaturalScriptHarness.child(event, "id")), "lover.8102")
+        self.assertEqual(NaturalScriptHarness.scalar(NaturalScriptHarness.child(event, "days")), "30")
+        self.assertEqual(len(changes), 1)
+
+    def test_inline_trigger_remains_one_boolean_operand_in_or_and_negative_calls(self) -> None:
+        name = "learning_medicine_2020_can_have_child_trigger"
+        base = self.by_name["learning_medicine.2022"]
+        helper = next(helper for helper in base.inline_dependencies if helper.name == name)
+        projection = replace(base, inline_dependencies=(helper,), inline_inventory=(name,))
+
+        def evaluate(nodes: tuple[validate_static.EffectAssignment, ...], *, pregnant: bool,
+                     fertile: bool) -> bool:
+            results: list[bool] = []
+            for node in nodes:
+                if node.key in {"AND", "OR", "NOT"}:
+                    values = [evaluate((child,), pregnant=pregnant, fertile=fertile)
+                              for child in NaturalScriptHarness.block(node)]
+                    results.append(all(values) if node.key == "AND" else any(values) if node.key == "OR" else not all(values))
+                elif node.key == "trigger_if":
+                    body = NaturalScriptHarness.block(node)
+                    limit = NaturalScriptHarness.block(NaturalScriptHarness.child(body, "limit"))
+                    results.append(not evaluate(limit, pregnant=pregnant, fertile=fertile)
+                                   or evaluate(tuple(child for child in body if child.key != "limit"),
+                                               pregnant=pregnant, fertile=fertile))
+                elif node.key in {"always", "is_male", "is_female", "is_visibly_fertile", "is_pregnant"}:
+                    actual = {"always": True, "is_male": False, "is_female": True,
+                              "is_visibly_fertile": fertile, "is_pregnant": pregnant}[node.key]
+                    results.append(actual == (NaturalScriptHarness.scalar(node) == "yes"))
+                elif node.key == "fertility":
+                    self.assertEqual(node.operator, ">=")
+                    results.append((0.5 if fertile else 0.0) >= float(NaturalScriptHarness.scalar(node)))
+                elif node.key == "has_court_position":
+                    self.assertEqual(NaturalScriptHarness.scalar(node), "court_physician_court_position")
+                    results.append(False)  # These fixture participants are not the court physician.
+                else:
+                    raise ValueError(f"Unexpected actual helper trigger: {node.key}")
+            return all(results)
+
+        for pregnant, fertile in ((False, True), (True, True), (False, False)):
+            for requested in ("yes", "no"):
+                with self.subTest(pregnant=pregnant, fertile=fertile, requested=requested):
+                    expanded, _ = gen_runtime.expand_inline_helpers(
+                        f"OR = {{ always = no {name} = {requested} }}", projection)
+                    actual = evaluate(validate_static.effect_assignments(expanded), pregnant=pregnant, fertile=fertile)
+                    expected = fertile and not pregnant
+                    self.assertEqual(actual, expected if requested == "yes" else not expected)
+
     def test_owned_code_rejects_stock_tampering_and_missing_boundary(self) -> None:
         projection = self.by_name["mpo_events_tova.0035"]
         rendered = self.outputs[projection.output].decode("utf-8-sig")
@@ -652,7 +865,7 @@ class SupermanEncounterProjectionTests(unittest.TestCase):
     def test_ledger_guard_still_sees_new_mod_base_attribute_writes(self) -> None:
         projection = self.by_name["mpo_events_tova.0035"]
         source = self.outputs[projection.output].decode("utf-8-sig")
-        changed = source.replace(gen_runtime.INSERT_BEGIN, gen_runtime.INSERT_BEGIN + "add_health = 1\n", 1)
+        changed = source.replace("sxad_record_pair_effect", "add_health = 1\nsxad_record_pair_effect", 1)
         owned = gen_runtime.encounter_owned_code(projection.output, changed)
         self.assertIn("add_health = 1", owned)
         texts = {relative: body.decode("utf-8-sig") for relative, body in gen_runtime.render_outputs().items()
@@ -721,6 +934,57 @@ class SupermanEncounterSchemaTests(unittest.TestCase):
             with self.subTest(value=value, kind=type(value).__name__):
                 document = self.document()
                 self.insertion(document)["expected_count"] = value
+                self.reject(document)
+
+    def test_override_priorities_reject_bool_float_missing_null_and_effect_priority(self) -> None:
+        for value in (True, False, 1.0, 0, 2, "1", None):
+            with self.subTest(value=value, kind=type(value).__name__):
+                document = self.document()
+                self.entry(document, 2)["event_override_priority"] = value
+                self.reject(document)
+        document = self.document()
+        self.entry(document)["event_override_priority"] = 1
+        self.reject(document)
+
+    def test_inline_source_and_helper_boundaries_reject_extra_missing_and_wrong_types(self) -> None:
+        for container_name in ("inline_sources", "inline_helpers"):
+            baseline = self.object_value(self.array_value(self.document()[container_name])[0])
+            for key in (*tuple(baseline), "unexpected"):
+                with self.subTest(container=container_name, key=key):
+                    document = self.document()
+                    rows = self.array_value(document[container_name])
+                    item = self.object_value(rows[0])
+                    if key == "unexpected":
+                        item[key] = "unexpected"
+                    else:
+                        item.pop(key)
+                    rows[0] = item
+                    document[container_name] = rows
+                    self.reject(document)
+            invalid_containers: tuple[object, ...] = (None, {}, "not-an-array")
+            for wrong in invalid_containers:
+                document = self.document()
+                document[container_name] = wrong
+                self.reject(document)
+        for field_name, value in (("kind", []), ("kind", "wrong"), ("pinned_sha256", "wrong"),
+                                  ("pinned_file", "../outside.txt"), ("source_sha256", "0" * 64)):
+            with self.subTest(helper_field=field_name, value=value):
+                document = self.document()
+                rows = self.array_value(document["inline_helpers"])
+                item = self.object_value(rows[0])
+                item[field_name] = value
+                rows[0] = item
+                document["inline_helpers"] = rows
+                self.reject(document)
+
+    def test_inline_dependency_list_must_be_exact_named_same_file_members(self) -> None:
+        invalid_dependencies: tuple[object, ...] = (
+            None, {}, "helper", ["missing_helper"], ["pilgrimage_2101_save_scopes_effect"],
+            ["learning_medicine_2020_can_have_child_trigger", "learning_medicine_2020_can_have_child_trigger"])
+        for wrong in invalid_dependencies:
+            with self.subTest(value=wrong):
+                document = self.document()
+                self.entry(document, 2)["inline_dependencies"] = wrong
                 self.reject(document)
 
     def test_wrong_types_and_empty_required_values_are_rejected(self) -> None:
@@ -807,6 +1071,110 @@ class SupermanEncounterSchemaTests(unittest.TestCase):
                 with patch.object(gen_runtime, "load_encounter_projections", return_value=(changed,)):
                     with self.assertRaises(ValueError):
                         gen_runtime.encounter_hook_outputs()
+
+
+class SupermanEncounterSourceBindingTests(unittest.TestCase):
+    """Actual source derivation with tiny CI fixtures, without an installation."""
+
+    def setUp(self) -> None:
+        temporary = tempfile.TemporaryDirectory(prefix="sxad-source-binding-")
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        self.installation = self.root / "installation"
+        self.game = self.installation / "game"
+        self.pins = self.root / "pins"
+        self.pins.mkdir()
+        relative = "events/provenance_fixture.txt"
+        self.source = self.game / relative
+        self.source.parent.mkdir(parents=True)
+        leaf = "scripted_trigger local_leaf = { always = yes }\n"
+        unused = "scripted_trigger unused_local = { always = no }\n"
+        parent = "scripted_trigger local_parent = { local_leaf = yes }\n"
+        event = ('provenance.1 = {\n\ttype = character_event\n'
+                 '\ttrigger = { local_parent = yes }\n'
+                 '\timmediate = { log = "scripted_trigger quoted_fake = {}" }\n}\n')
+        original = "namespace = provenance\n# scripted_trigger comment_fake = {}\n" + leaf + unused + parent + event
+        raw = gen_runtime.encode(original)
+        self.source.write_bytes(raw)
+        source_sha = hashlib.sha256(raw).hexdigest()
+        helpers: list[gen_runtime.InlineHelper] = []
+        for name, body in (("local_leaf", leaf), ("local_parent", parent)):
+            snapshot = gen_runtime.encode(body)
+            filename = f"inline_{name}.txt"
+            (self.pins / filename).write_bytes(snapshot)
+            helpers.append(gen_runtime.InlineHelper(name, "trigger", relative, source_sha,
+                                                    filename, hashlib.sha256(snapshot).hexdigest()))
+        snapshot = gen_runtime.encode(event)
+        (self.pins / "encounter_provenance_1.txt").write_bytes(snapshot)
+        self.projection = gen_runtime.EncounterProjection(
+            name="provenance.1", kind="event", source_path=relative, source_sha256=source_sha,
+            pinned_file="encounter_provenance_1.txt", pinned_sha256=hashlib.sha256(snapshot).hexdigest(),
+            namespace="provenance", output="events/zz_sxad_provenance_1.txt",
+            insertions=(gen_runtime.EncounterInsertion("\ttype = character_event\n", "after", "\t# fixture boundary\n", 1),),
+            event_override_priority=1, inline_dependencies=tuple(helpers),
+            inline_inventory=("local_leaf", "unused_local", "local_parent"),
+        )
+
+    def verify(self, projection: gen_runtime.EncounterProjection | None = None,
+               game_root: Path | None = None) -> None:
+        with patch.object(gen_runtime, "PINNED_ROOT", self.pins), \
+             patch.object(gen_runtime, "load_encounter_projections", return_value=(projection or self.projection,)):
+            gen_runtime.verify_encounter_source_bindings(game_root or self.installation)
+
+    def test_exact_source_definitions_and_complete_index_pass_for_both_root_forms(self) -> None:
+        self.verify()
+        self.verify(game_root=self.game)
+        source = self.source.read_text(encoding="utf-8-sig")
+        self.assertEqual(tuple(item.name for item in gen_runtime.inline_source_declarations(source)),
+                         ("local_leaf", "unused_local", "local_parent"))
+
+    def test_changed_helper_and_matching_new_pin_hash_cannot_claim_unchanged_source(self) -> None:
+        helper = self.projection.inline_dependencies[0]
+        changed = gen_runtime.encode("scripted_trigger local_leaf = { always = no }\n")
+        (self.pins / helper.pinned_file).write_bytes(changed)
+        helper = replace(helper, pinned_sha256=hashlib.sha256(changed).hexdigest())
+        projection = replace(self.projection, inline_dependencies=(helper, self.projection.inline_dependencies[1]))
+        with patch.object(gen_runtime, "PINNED_ROOT", self.pins):
+            # The existing hash/header/one-definition guards accept this newly
+            # hashed snapshot. Only derivation from actual source rejects it.
+            gen_runtime.inline_helper_bodies(projection)
+        with self.assertRaisesRegex(ValueError, "Inline snapshot differs from installed source definition"):
+            self.verify(projection)
+
+    def test_changed_event_and_matching_new_pin_hash_cannot_claim_unchanged_source(self) -> None:
+        path = self.pins / self.projection.pinned_file
+        changed = path.read_bytes().replace(b"type = character_event", b"type = activity_event")
+        path.write_bytes(changed)
+        projection = replace(self.projection, pinned_sha256=hashlib.sha256(changed).hexdigest())
+        with patch.object(gen_runtime, "PINNED_ROOT", self.pins):
+            gen_runtime.pinned_encounter_source(projection)
+        with self.assertRaisesRegex(ValueError, "Selected snapshot differs from installed source definition"):
+            self.verify(projection)
+
+    def test_omitting_an_unused_real_local_name_is_rejected_even_when_closure_passes(self) -> None:
+        projection = replace(self.projection, inline_inventory=("local_leaf", "local_parent"))
+        with patch.object(gen_runtime, "PINNED_ROOT", self.pins):
+            gen_runtime.expand_inline_helpers(gen_runtime.pinned_encounter_source(projection), projection)
+        with self.assertRaisesRegex(ValueError, "Complete inline inventory differs"):
+            self.verify(projection)
+
+    def test_full_source_sha_and_snapshot_sha_guards_are_retained(self) -> None:
+        original = self.source.read_bytes()
+        self.source.write_bytes(original + b"\n# unrelated source change\n")
+        with self.assertRaisesRegex(ValueError, "Installed source SHA differs"):
+            self.verify()
+        self.source.write_bytes(original)
+        helper = self.projection.inline_dependencies[0]
+        path = self.pins / helper.pinned_file
+        path.write_bytes(path.read_bytes() + b"\n")
+        with self.assertRaisesRegex(ValueError, "Pinned inline helper changed"):
+            self.verify()
+
+    def test_explicit_render_game_root_cannot_skip_source_binding(self) -> None:
+        with patch.object(gen_runtime, "verify_encounter_source_bindings", side_effect=ValueError("source binding sentinel")) as verify:
+            with self.assertRaisesRegex(ValueError, "source binding sentinel"):
+                gen_runtime.render_outputs(self.installation)
+            verify.assert_called_once_with(self.installation)
 
 
 class SupermanStaticContractTests(unittest.TestCase):

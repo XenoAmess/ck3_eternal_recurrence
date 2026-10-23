@@ -30,7 +30,7 @@
     "common/scripted_effects/00_relation_effects.txt": "b4668eed284175e67fb7f4df42d1b2007075dee25c0f348823c87664545b1891"
   },
   "projection_manifest": "tools/vanilla_hooks/encounter_sources.json",
-  "projection_manifest_sha256": "784018c9a994113f238de404afea6c73bad88153f9f5ff3720bae1f93b022134",
+  "projection_manifest_sha256": "fb5cf712f097321f5c9a06dc61cf6997231ef2863ea4b14c53886e1f625aef43",
   "pregnancy_effect_sites": [
     {
       "file": "common/scripted_effects/00_romance_effects.txt",
@@ -417,5 +417,6 @@
         "observation": "Generic relation helper sets lover relation only; this redesign does not hook the global helper or infer sex from arbitrary lover relation creation."
       }
     ]
-  }
+  },
+  "projection_runtime_parse_revision": "2026-10-24-inline-projection-repair.json"
 }

@@ -3,6 +3,9 @@
 namespace = fund_inspiration
 
 fund_inspiration.6513 = {
+	# SXAD_HOOK_BEGIN
+	id_override_priority = 1
+	# SXAD_HOOK_END
 	type = character_event
 	hidden = yes
 	cooldown = { years = 15 }

@@ -3,6 +3,9 @@
 namespace = stewardship_duty
 
 stewardship_duty.1055 = {
+	# SXAD_HOOK_BEGIN
+	id_override_priority = 1
+	# SXAD_HOOK_END
 	type = character_event
 	title = stewardship_duty.1055.t
 	desc = stewardship_duty.1055.desc
@@ -29,24 +32,364 @@ stewardship_duty.1055 = {
 		OR = {
 			any_vassal_or_below = {
 				is_vassal_of = root
-				stewardship_duty_1055_valid_mother_parent_or_spouse = yes
+				
+# SXAD_INLINE_BEGIN stewardship_duty_1055_valid_mother_parent_or_spouse dc9d30b0c8067921033c3f7c01a07059ec3a188fc854856d41a5e07af65b1d17
+AND = {
+	is_available_ai_adult = yes
+	trigger_if = {
+		limit = {
+			is_vassal_or_below_of = root
+		}
+		highest_held_title_tier > 1
+	}
+
+	#Must be of a different dynasty than Root.
+	dynasty != root.dynasty
+
+	#Must have either...
+	OR = {
+		#A non-pregnant, unmarried daughter(preferred).
+		any_child = {
+			is_female = yes
+			
+# SXAD_INLINE_BEGIN stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+AND = {
+
+	#Meets all of the minimum requirements.
+	
+# SXAD_INLINE_BEGIN stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+AND = {
+	is_available_ai_adult = yes
+
+	#Must not be landed, as their parent/spouse/employer is going to be advocating for them.
+	is_landed = no
+
+	#Must not currently be pregnant.
+	is_pregnant = no
+	fertility > 0
+
+	#Must be of an age where having children is likely.
+	age >= 16
+	age < 40
+
+	#Must not be chaste (since they allegedly had extramarital relations, and it could feel odd to the player if they are chaste).
+	NOT = { has_trait = chaste }
+
+	#And make sure they'd cheat on any partners they may have outside of marriage anyway.
+	might_cheat_on_every_partner_trigger = yes
+}
+# SXAD_INLINE_END stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+
+
+	#Is not married and has not had any other kids (if female).
+	is_married = no
+
+	OR = {
+		any_child = {
+			count < 1
+		}
+		is_female = no
+	}
+
+
+	#Must have the same dynasty as their parent (no bastards).
+	dynasty = prev.dynasty
+}
+# SXAD_INLINE_END stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+
+		}
+		#Or a non-pregnant wife or concubine(acceptable).
+		any_consort = {
+			is_female = yes
+			
+# SXAD_INLINE_BEGIN stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+AND = {
+	is_available_ai_adult = yes
+
+	#Must not be landed, as their parent/spouse/employer is going to be advocating for them.
+	is_landed = no
+
+	#Must not currently be pregnant.
+	is_pregnant = no
+	fertility > 0
+
+	#Must be of an age where having children is likely.
+	age >= 16
+	age < 40
+
+	#Must not be chaste (since they allegedly had extramarital relations, and it could feel odd to the player if they are chaste).
+	NOT = { has_trait = chaste }
+
+	#And make sure they'd cheat on any partners they may have outside of marriage anyway.
+	might_cheat_on_every_partner_trigger = yes
+}
+# SXAD_INLINE_END stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+
+		}
+	}
+}
+# SXAD_INLINE_END stewardship_duty_1055_valid_mother_parent_or_spouse dc9d30b0c8067921033c3f7c01a07059ec3a188fc854856d41a5e07af65b1d17
+
 				save_temporary_scope_as = vassal_1
 				#We also must have a vassal from a diffent family who has an unwed son.
 				root = {
 					any_vassal_or_below = {
-						stewardship_duty_1055_valid_father_parent = yes
+						
+# SXAD_INLINE_BEGIN stewardship_duty_1055_valid_father_parent 7d143cc5333b706da6db93bb0ef965180481a2e1d7171f3bd38a0c8bde4316aa
+AND = {
+	is_available_ai_adult = yes
+	trigger_if = {
+		limit = {
+			is_vassal_or_below_of = root
+		}
+		highest_held_title_tier > 1
+	}
+	# Must be of a different dynasty than Root or Vassal 1.
+	NOR = {
+		dynasty = root.dynasty
+		dynasty = scope:vassal_1.dynasty
+	}
+
+	# Must not be the vassal of the mother's parent.
+	NOT = {
+		is_vassal_of = scope:vassal_1
+	}
+
+	# Must have an unmarried son.
+	any_child = {
+		is_male = yes
+		
+# SXAD_INLINE_BEGIN stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+AND = {
+
+	#Meets all of the minimum requirements.
+	
+# SXAD_INLINE_BEGIN stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+AND = {
+	is_available_ai_adult = yes
+
+	#Must not be landed, as their parent/spouse/employer is going to be advocating for them.
+	is_landed = no
+
+	#Must not currently be pregnant.
+	is_pregnant = no
+	fertility > 0
+
+	#Must be of an age where having children is likely.
+	age >= 16
+	age < 40
+
+	#Must not be chaste (since they allegedly had extramarital relations, and it could feel odd to the player if they are chaste).
+	NOT = { has_trait = chaste }
+
+	#And make sure they'd cheat on any partners they may have outside of marriage anyway.
+	might_cheat_on_every_partner_trigger = yes
+}
+# SXAD_INLINE_END stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+
+
+	#Is not married and has not had any other kids (if female).
+	is_married = no
+
+	OR = {
+		any_child = {
+			count < 1
+		}
+		is_female = no
+	}
+
+
+	#Must have the same dynasty as their parent (no bastards).
+	dynasty = prev.dynasty
+}
+# SXAD_INLINE_END stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+
+	}
+}
+# SXAD_INLINE_END stewardship_duty_1055_valid_father_parent 7d143cc5333b706da6db93bb0ef965180481a2e1d7171f3bd38a0c8bde4316aa
+
 					}
 				}
 			}
 			AND = {
 				has_government = landless_adventurer_government
 				any_courtier = {
-					stewardship_duty_1055_valid_mother_parent_or_spouse = yes
+					
+# SXAD_INLINE_BEGIN stewardship_duty_1055_valid_mother_parent_or_spouse dc9d30b0c8067921033c3f7c01a07059ec3a188fc854856d41a5e07af65b1d17
+AND = {
+	is_available_ai_adult = yes
+	trigger_if = {
+		limit = {
+			is_vassal_or_below_of = root
+		}
+		highest_held_title_tier > 1
+	}
+
+	#Must be of a different dynasty than Root.
+	dynasty != root.dynasty
+
+	#Must have either...
+	OR = {
+		#A non-pregnant, unmarried daughter(preferred).
+		any_child = {
+			is_female = yes
+			
+# SXAD_INLINE_BEGIN stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+AND = {
+
+	#Meets all of the minimum requirements.
+	
+# SXAD_INLINE_BEGIN stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+AND = {
+	is_available_ai_adult = yes
+
+	#Must not be landed, as their parent/spouse/employer is going to be advocating for them.
+	is_landed = no
+
+	#Must not currently be pregnant.
+	is_pregnant = no
+	fertility > 0
+
+	#Must be of an age where having children is likely.
+	age >= 16
+	age < 40
+
+	#Must not be chaste (since they allegedly had extramarital relations, and it could feel odd to the player if they are chaste).
+	NOT = { has_trait = chaste }
+
+	#And make sure they'd cheat on any partners they may have outside of marriage anyway.
+	might_cheat_on_every_partner_trigger = yes
+}
+# SXAD_INLINE_END stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+
+
+	#Is not married and has not had any other kids (if female).
+	is_married = no
+
+	OR = {
+		any_child = {
+			count < 1
+		}
+		is_female = no
+	}
+
+
+	#Must have the same dynasty as their parent (no bastards).
+	dynasty = prev.dynasty
+}
+# SXAD_INLINE_END stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+
+		}
+		#Or a non-pregnant wife or concubine(acceptable).
+		any_consort = {
+			is_female = yes
+			
+# SXAD_INLINE_BEGIN stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+AND = {
+	is_available_ai_adult = yes
+
+	#Must not be landed, as their parent/spouse/employer is going to be advocating for them.
+	is_landed = no
+
+	#Must not currently be pregnant.
+	is_pregnant = no
+	fertility > 0
+
+	#Must be of an age where having children is likely.
+	age >= 16
+	age < 40
+
+	#Must not be chaste (since they allegedly had extramarital relations, and it could feel odd to the player if they are chaste).
+	NOT = { has_trait = chaste }
+
+	#And make sure they'd cheat on any partners they may have outside of marriage anyway.
+	might_cheat_on_every_partner_trigger = yes
+}
+# SXAD_INLINE_END stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+
+		}
+	}
+}
+# SXAD_INLINE_END stewardship_duty_1055_valid_mother_parent_or_spouse dc9d30b0c8067921033c3f7c01a07059ec3a188fc854856d41a5e07af65b1d17
+
 					save_temporary_scope_as = vassal_1
 					#We also must have a vassal from a diffent family who has an unwed son.
 					root = {
 						any_courtier = {
-							stewardship_duty_1055_valid_father_parent = yes
+							
+# SXAD_INLINE_BEGIN stewardship_duty_1055_valid_father_parent 7d143cc5333b706da6db93bb0ef965180481a2e1d7171f3bd38a0c8bde4316aa
+AND = {
+	is_available_ai_adult = yes
+	trigger_if = {
+		limit = {
+			is_vassal_or_below_of = root
+		}
+		highest_held_title_tier > 1
+	}
+	# Must be of a different dynasty than Root or Vassal 1.
+	NOR = {
+		dynasty = root.dynasty
+		dynasty = scope:vassal_1.dynasty
+	}
+
+	# Must not be the vassal of the mother's parent.
+	NOT = {
+		is_vassal_of = scope:vassal_1
+	}
+
+	# Must have an unmarried son.
+	any_child = {
+		is_male = yes
+		
+# SXAD_INLINE_BEGIN stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+AND = {
+
+	#Meets all of the minimum requirements.
+	
+# SXAD_INLINE_BEGIN stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+AND = {
+	is_available_ai_adult = yes
+
+	#Must not be landed, as their parent/spouse/employer is going to be advocating for them.
+	is_landed = no
+
+	#Must not currently be pregnant.
+	is_pregnant = no
+	fertility > 0
+
+	#Must be of an age where having children is likely.
+	age >= 16
+	age < 40
+
+	#Must not be chaste (since they allegedly had extramarital relations, and it could feel odd to the player if they are chaste).
+	NOT = { has_trait = chaste }
+
+	#And make sure they'd cheat on any partners they may have outside of marriage anyway.
+	might_cheat_on_every_partner_trigger = yes
+}
+# SXAD_INLINE_END stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+
+
+	#Is not married and has not had any other kids (if female).
+	is_married = no
+
+	OR = {
+		any_child = {
+			count < 1
+		}
+		is_female = no
+	}
+
+
+	#Must have the same dynasty as their parent (no bastards).
+	dynasty = prev.dynasty
+}
+# SXAD_INLINE_END stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+
+	}
+}
+# SXAD_INLINE_END stewardship_duty_1055_valid_father_parent 7d143cc5333b706da6db93bb0ef965180481a2e1d7171f3bd38a0c8bde4316aa
+
 						}
 					}
 				}
@@ -73,30 +416,415 @@ stewardship_duty.1055 = {
 			#Ideally we want a vassal who has an unwed daughter.
 			limit = {
 				is_vassal_of = root
-				stewardship_duty_1055_valid_mother_parent_or_spouse = yes
+				
+# SXAD_INLINE_BEGIN stewardship_duty_1055_valid_mother_parent_or_spouse dc9d30b0c8067921033c3f7c01a07059ec3a188fc854856d41a5e07af65b1d17
+AND = {
+	is_available_ai_adult = yes
+	trigger_if = {
+		limit = {
+			is_vassal_or_below_of = root
+		}
+		highest_held_title_tier > 1
+	}
+
+	#Must be of a different dynasty than Root.
+	dynasty != root.dynasty
+
+	#Must have either...
+	OR = {
+		#A non-pregnant, unmarried daughter(preferred).
+		any_child = {
+			is_female = yes
+			
+# SXAD_INLINE_BEGIN stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+AND = {
+
+	#Meets all of the minimum requirements.
+	
+# SXAD_INLINE_BEGIN stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+AND = {
+	is_available_ai_adult = yes
+
+	#Must not be landed, as their parent/spouse/employer is going to be advocating for them.
+	is_landed = no
+
+	#Must not currently be pregnant.
+	is_pregnant = no
+	fertility > 0
+
+	#Must be of an age where having children is likely.
+	age >= 16
+	age < 40
+
+	#Must not be chaste (since they allegedly had extramarital relations, and it could feel odd to the player if they are chaste).
+	NOT = { has_trait = chaste }
+
+	#And make sure they'd cheat on any partners they may have outside of marriage anyway.
+	might_cheat_on_every_partner_trigger = yes
+}
+# SXAD_INLINE_END stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+
+
+	#Is not married and has not had any other kids (if female).
+	is_married = no
+
+	OR = {
+		any_child = {
+			count < 1
+		}
+		is_female = no
+	}
+
+
+	#Must have the same dynasty as their parent (no bastards).
+	dynasty = prev.dynasty
+}
+# SXAD_INLINE_END stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+
+		}
+		#Or a non-pregnant wife or concubine(acceptable).
+		any_consort = {
+			is_female = yes
+			
+# SXAD_INLINE_BEGIN stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+AND = {
+	is_available_ai_adult = yes
+
+	#Must not be landed, as their parent/spouse/employer is going to be advocating for them.
+	is_landed = no
+
+	#Must not currently be pregnant.
+	is_pregnant = no
+	fertility > 0
+
+	#Must be of an age where having children is likely.
+	age >= 16
+	age < 40
+
+	#Must not be chaste (since they allegedly had extramarital relations, and it could feel odd to the player if they are chaste).
+	NOT = { has_trait = chaste }
+
+	#And make sure they'd cheat on any partners they may have outside of marriage anyway.
+	might_cheat_on_every_partner_trigger = yes
+}
+# SXAD_INLINE_END stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+
+		}
+	}
+}
+# SXAD_INLINE_END stewardship_duty_1055_valid_mother_parent_or_spouse dc9d30b0c8067921033c3f7c01a07059ec3a188fc854856d41a5e07af65b1d17
+
 				any_child = {
 					is_female = yes
-					stewardship_duty_1055_is_unwed_child = yes
+					
+# SXAD_INLINE_BEGIN stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+AND = {
+
+	#Meets all of the minimum requirements.
+	
+# SXAD_INLINE_BEGIN stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+AND = {
+	is_available_ai_adult = yes
+
+	#Must not be landed, as their parent/spouse/employer is going to be advocating for them.
+	is_landed = no
+
+	#Must not currently be pregnant.
+	is_pregnant = no
+	fertility > 0
+
+	#Must be of an age where having children is likely.
+	age >= 16
+	age < 40
+
+	#Must not be chaste (since they allegedly had extramarital relations, and it could feel odd to the player if they are chaste).
+	NOT = { has_trait = chaste }
+
+	#And make sure they'd cheat on any partners they may have outside of marriage anyway.
+	might_cheat_on_every_partner_trigger = yes
+}
+# SXAD_INLINE_END stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+
+
+	#Is not married and has not had any other kids (if female).
+	is_married = no
+
+	OR = {
+		any_child = {
+			count < 1
+		}
+		is_female = no
+	}
+
+
+	#Must have the same dynasty as their parent (no bastards).
+	dynasty = prev.dynasty
+}
+# SXAD_INLINE_END stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+
 				}
 				save_temporary_scope_as = vassal_1
 
 				#Ensure that if we pick this vassal, there will still be at least one choice for the male event target.
 				root = {
 					any_vassal_or_below = {
-						stewardship_duty_1055_valid_father_parent = yes
+						
+# SXAD_INLINE_BEGIN stewardship_duty_1055_valid_father_parent 7d143cc5333b706da6db93bb0ef965180481a2e1d7171f3bd38a0c8bde4316aa
+AND = {
+	is_available_ai_adult = yes
+	trigger_if = {
+		limit = {
+			is_vassal_or_below_of = root
+		}
+		highest_held_title_tier > 1
+	}
+	# Must be of a different dynasty than Root or Vassal 1.
+	NOR = {
+		dynasty = root.dynasty
+		dynasty = scope:vassal_1.dynasty
+	}
+
+	# Must not be the vassal of the mother's parent.
+	NOT = {
+		is_vassal_of = scope:vassal_1
+	}
+
+	# Must have an unmarried son.
+	any_child = {
+		is_male = yes
+		
+# SXAD_INLINE_BEGIN stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+AND = {
+
+	#Meets all of the minimum requirements.
+	
+# SXAD_INLINE_BEGIN stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+AND = {
+	is_available_ai_adult = yes
+
+	#Must not be landed, as their parent/spouse/employer is going to be advocating for them.
+	is_landed = no
+
+	#Must not currently be pregnant.
+	is_pregnant = no
+	fertility > 0
+
+	#Must be of an age where having children is likely.
+	age >= 16
+	age < 40
+
+	#Must not be chaste (since they allegedly had extramarital relations, and it could feel odd to the player if they are chaste).
+	NOT = { has_trait = chaste }
+
+	#And make sure they'd cheat on any partners they may have outside of marriage anyway.
+	might_cheat_on_every_partner_trigger = yes
+}
+# SXAD_INLINE_END stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+
+
+	#Is not married and has not had any other kids (if female).
+	is_married = no
+
+	OR = {
+		any_child = {
+			count < 1
+		}
+		is_female = no
+	}
+
+
+	#Must have the same dynasty as their parent (no bastards).
+	dynasty = prev.dynasty
+}
+# SXAD_INLINE_END stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+
+	}
+}
+# SXAD_INLINE_END stewardship_duty_1055_valid_father_parent 7d143cc5333b706da6db93bb0ef965180481a2e1d7171f3bd38a0c8bde4316aa
+
 					}
 				}
 			}
 			#If none are available, settle for a vassal who has a non-pregnant wife or concubine.
 			alternative_limit = {
 				is_vassal_of = root
-				stewardship_duty_1055_valid_mother_parent_or_spouse = yes
+				
+# SXAD_INLINE_BEGIN stewardship_duty_1055_valid_mother_parent_or_spouse dc9d30b0c8067921033c3f7c01a07059ec3a188fc854856d41a5e07af65b1d17
+AND = {
+	is_available_ai_adult = yes
+	trigger_if = {
+		limit = {
+			is_vassal_or_below_of = root
+		}
+		highest_held_title_tier > 1
+	}
+
+	#Must be of a different dynasty than Root.
+	dynasty != root.dynasty
+
+	#Must have either...
+	OR = {
+		#A non-pregnant, unmarried daughter(preferred).
+		any_child = {
+			is_female = yes
+			
+# SXAD_INLINE_BEGIN stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+AND = {
+
+	#Meets all of the minimum requirements.
+	
+# SXAD_INLINE_BEGIN stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+AND = {
+	is_available_ai_adult = yes
+
+	#Must not be landed, as their parent/spouse/employer is going to be advocating for them.
+	is_landed = no
+
+	#Must not currently be pregnant.
+	is_pregnant = no
+	fertility > 0
+
+	#Must be of an age where having children is likely.
+	age >= 16
+	age < 40
+
+	#Must not be chaste (since they allegedly had extramarital relations, and it could feel odd to the player if they are chaste).
+	NOT = { has_trait = chaste }
+
+	#And make sure they'd cheat on any partners they may have outside of marriage anyway.
+	might_cheat_on_every_partner_trigger = yes
+}
+# SXAD_INLINE_END stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+
+
+	#Is not married and has not had any other kids (if female).
+	is_married = no
+
+	OR = {
+		any_child = {
+			count < 1
+		}
+		is_female = no
+	}
+
+
+	#Must have the same dynasty as their parent (no bastards).
+	dynasty = prev.dynasty
+}
+# SXAD_INLINE_END stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+
+		}
+		#Or a non-pregnant wife or concubine(acceptable).
+		any_consort = {
+			is_female = yes
+			
+# SXAD_INLINE_BEGIN stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+AND = {
+	is_available_ai_adult = yes
+
+	#Must not be landed, as their parent/spouse/employer is going to be advocating for them.
+	is_landed = no
+
+	#Must not currently be pregnant.
+	is_pregnant = no
+	fertility > 0
+
+	#Must be of an age where having children is likely.
+	age >= 16
+	age < 40
+
+	#Must not be chaste (since they allegedly had extramarital relations, and it could feel odd to the player if they are chaste).
+	NOT = { has_trait = chaste }
+
+	#And make sure they'd cheat on any partners they may have outside of marriage anyway.
+	might_cheat_on_every_partner_trigger = yes
+}
+# SXAD_INLINE_END stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+
+		}
+	}
+}
+# SXAD_INLINE_END stewardship_duty_1055_valid_mother_parent_or_spouse dc9d30b0c8067921033c3f7c01a07059ec3a188fc854856d41a5e07af65b1d17
+
 				save_temporary_scope_as = vassal_1
 
 				#Ensure that if we pick this vassal, there will still be at least one choice for the male event target.
 				root = {
 					any_vassal_or_below = {
-						stewardship_duty_1055_valid_father_parent = yes
+						
+# SXAD_INLINE_BEGIN stewardship_duty_1055_valid_father_parent 7d143cc5333b706da6db93bb0ef965180481a2e1d7171f3bd38a0c8bde4316aa
+AND = {
+	is_available_ai_adult = yes
+	trigger_if = {
+		limit = {
+			is_vassal_or_below_of = root
+		}
+		highest_held_title_tier > 1
+	}
+	# Must be of a different dynasty than Root or Vassal 1.
+	NOR = {
+		dynasty = root.dynasty
+		dynasty = scope:vassal_1.dynasty
+	}
+
+	# Must not be the vassal of the mother's parent.
+	NOT = {
+		is_vassal_of = scope:vassal_1
+	}
+
+	# Must have an unmarried son.
+	any_child = {
+		is_male = yes
+		
+# SXAD_INLINE_BEGIN stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+AND = {
+
+	#Meets all of the minimum requirements.
+	
+# SXAD_INLINE_BEGIN stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+AND = {
+	is_available_ai_adult = yes
+
+	#Must not be landed, as their parent/spouse/employer is going to be advocating for them.
+	is_landed = no
+
+	#Must not currently be pregnant.
+	is_pregnant = no
+	fertility > 0
+
+	#Must be of an age where having children is likely.
+	age >= 16
+	age < 40
+
+	#Must not be chaste (since they allegedly had extramarital relations, and it could feel odd to the player if they are chaste).
+	NOT = { has_trait = chaste }
+
+	#And make sure they'd cheat on any partners they may have outside of marriage anyway.
+	might_cheat_on_every_partner_trigger = yes
+}
+# SXAD_INLINE_END stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+
+
+	#Is not married and has not had any other kids (if female).
+	is_married = no
+
+	OR = {
+		any_child = {
+			count < 1
+		}
+		is_female = no
+	}
+
+
+	#Must have the same dynasty as their parent (no bastards).
+	dynasty = prev.dynasty
+}
+# SXAD_INLINE_END stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+
+	}
+}
+# SXAD_INLINE_END stewardship_duty_1055_valid_father_parent 7d143cc5333b706da6db93bb0ef965180481a2e1d7171f3bd38a0c8bde4316aa
+
 					}
 				}
 			}
@@ -129,13 +857,103 @@ stewardship_duty.1055 = {
 				limit = {
 					any_child = {
 						is_female = yes
-						stewardship_duty_1055_is_unwed_child = yes
+						
+# SXAD_INLINE_BEGIN stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+AND = {
+
+	#Meets all of the minimum requirements.
+	
+# SXAD_INLINE_BEGIN stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+AND = {
+	is_available_ai_adult = yes
+
+	#Must not be landed, as their parent/spouse/employer is going to be advocating for them.
+	is_landed = no
+
+	#Must not currently be pregnant.
+	is_pregnant = no
+	fertility > 0
+
+	#Must be of an age where having children is likely.
+	age >= 16
+	age < 40
+
+	#Must not be chaste (since they allegedly had extramarital relations, and it could feel odd to the player if they are chaste).
+	NOT = { has_trait = chaste }
+
+	#And make sure they'd cheat on any partners they may have outside of marriage anyway.
+	might_cheat_on_every_partner_trigger = yes
+}
+# SXAD_INLINE_END stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+
+
+	#Is not married and has not had any other kids (if female).
+	is_married = no
+
+	OR = {
+		any_child = {
+			count < 1
+		}
+		is_female = no
+	}
+
+
+	#Must have the same dynasty as their parent (no bastards).
+	dynasty = prev.dynasty
+}
+# SXAD_INLINE_END stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+
 					}
 				}
 				random_child = {
 					limit = {
 						is_female = yes
-						stewardship_duty_1055_is_unwed_child = yes
+						
+# SXAD_INLINE_BEGIN stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+AND = {
+
+	#Meets all of the minimum requirements.
+	
+# SXAD_INLINE_BEGIN stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+AND = {
+	is_available_ai_adult = yes
+
+	#Must not be landed, as their parent/spouse/employer is going to be advocating for them.
+	is_landed = no
+
+	#Must not currently be pregnant.
+	is_pregnant = no
+	fertility > 0
+
+	#Must be of an age where having children is likely.
+	age >= 16
+	age < 40
+
+	#Must not be chaste (since they allegedly had extramarital relations, and it could feel odd to the player if they are chaste).
+	NOT = { has_trait = chaste }
+
+	#And make sure they'd cheat on any partners they may have outside of marriage anyway.
+	might_cheat_on_every_partner_trigger = yes
+}
+# SXAD_INLINE_END stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+
+
+	#Is not married and has not had any other kids (if female).
+	is_married = no
+
+	OR = {
+		any_child = {
+			count < 1
+		}
+		is_female = no
+	}
+
+
+	#Must have the same dynasty as their parent (no bastards).
+	dynasty = prev.dynasty
+}
+# SXAD_INLINE_END stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+
 					}
 
 					#Prefer younger, lustful characters.
@@ -170,7 +988,30 @@ stewardship_duty.1055 = {
 				random_consort = {
 					limit = {
 						is_female = yes
-						stewardship_duty_1055_minimum_et_requirements = yes
+						
+# SXAD_INLINE_BEGIN stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+AND = {
+	is_available_ai_adult = yes
+
+	#Must not be landed, as their parent/spouse/employer is going to be advocating for them.
+	is_landed = no
+
+	#Must not currently be pregnant.
+	is_pregnant = no
+	fertility > 0
+
+	#Must be of an age where having children is likely.
+	age >= 16
+	age < 40
+
+	#Must not be chaste (since they allegedly had extramarital relations, and it could feel odd to the player if they are chaste).
+	NOT = { has_trait = chaste }
+
+	#And make sure they'd cheat on any partners they may have outside of marriage anyway.
+	might_cheat_on_every_partner_trigger = yes
+}
+# SXAD_INLINE_END stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+
 					}
 
 					#Prefer younger, lustful characters.
@@ -206,10 +1047,156 @@ stewardship_duty.1055 = {
 		random_vassal_or_below = {
 			limit = {
 				is_vassal_of = root
-				stewardship_duty_1055_valid_father_parent = yes
+				
+# SXAD_INLINE_BEGIN stewardship_duty_1055_valid_father_parent 7d143cc5333b706da6db93bb0ef965180481a2e1d7171f3bd38a0c8bde4316aa
+AND = {
+	is_available_ai_adult = yes
+	trigger_if = {
+		limit = {
+			is_vassal_or_below_of = root
+		}
+		highest_held_title_tier > 1
+	}
+	# Must be of a different dynasty than Root or Vassal 1.
+	NOR = {
+		dynasty = root.dynasty
+		dynasty = scope:vassal_1.dynasty
+	}
+
+	# Must not be the vassal of the mother's parent.
+	NOT = {
+		is_vassal_of = scope:vassal_1
+	}
+
+	# Must have an unmarried son.
+	any_child = {
+		is_male = yes
+		
+# SXAD_INLINE_BEGIN stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+AND = {
+
+	#Meets all of the minimum requirements.
+	
+# SXAD_INLINE_BEGIN stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+AND = {
+	is_available_ai_adult = yes
+
+	#Must not be landed, as their parent/spouse/employer is going to be advocating for them.
+	is_landed = no
+
+	#Must not currently be pregnant.
+	is_pregnant = no
+	fertility > 0
+
+	#Must be of an age where having children is likely.
+	age >= 16
+	age < 40
+
+	#Must not be chaste (since they allegedly had extramarital relations, and it could feel odd to the player if they are chaste).
+	NOT = { has_trait = chaste }
+
+	#And make sure they'd cheat on any partners they may have outside of marriage anyway.
+	might_cheat_on_every_partner_trigger = yes
+}
+# SXAD_INLINE_END stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+
+
+	#Is not married and has not had any other kids (if female).
+	is_married = no
+
+	OR = {
+		any_child = {
+			count < 1
+		}
+		is_female = no
+	}
+
+
+	#Must have the same dynasty as their parent (no bastards).
+	dynasty = prev.dynasty
+}
+# SXAD_INLINE_END stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+
+	}
+}
+# SXAD_INLINE_END stewardship_duty_1055_valid_father_parent 7d143cc5333b706da6db93bb0ef965180481a2e1d7171f3bd38a0c8bde4316aa
+
 			}
 			alternative_limit = {
-				stewardship_duty_1055_valid_father_parent = yes
+				
+# SXAD_INLINE_BEGIN stewardship_duty_1055_valid_father_parent 7d143cc5333b706da6db93bb0ef965180481a2e1d7171f3bd38a0c8bde4316aa
+AND = {
+	is_available_ai_adult = yes
+	trigger_if = {
+		limit = {
+			is_vassal_or_below_of = root
+		}
+		highest_held_title_tier > 1
+	}
+	# Must be of a different dynasty than Root or Vassal 1.
+	NOR = {
+		dynasty = root.dynasty
+		dynasty = scope:vassal_1.dynasty
+	}
+
+	# Must not be the vassal of the mother's parent.
+	NOT = {
+		is_vassal_of = scope:vassal_1
+	}
+
+	# Must have an unmarried son.
+	any_child = {
+		is_male = yes
+		
+# SXAD_INLINE_BEGIN stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+AND = {
+
+	#Meets all of the minimum requirements.
+	
+# SXAD_INLINE_BEGIN stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+AND = {
+	is_available_ai_adult = yes
+
+	#Must not be landed, as their parent/spouse/employer is going to be advocating for them.
+	is_landed = no
+
+	#Must not currently be pregnant.
+	is_pregnant = no
+	fertility > 0
+
+	#Must be of an age where having children is likely.
+	age >= 16
+	age < 40
+
+	#Must not be chaste (since they allegedly had extramarital relations, and it could feel odd to the player if they are chaste).
+	NOT = { has_trait = chaste }
+
+	#And make sure they'd cheat on any partners they may have outside of marriage anyway.
+	might_cheat_on_every_partner_trigger = yes
+}
+# SXAD_INLINE_END stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+
+
+	#Is not married and has not had any other kids (if female).
+	is_married = no
+
+	OR = {
+		any_child = {
+			count < 1
+		}
+		is_female = no
+	}
+
+
+	#Must have the same dynasty as their parent (no bastards).
+	dynasty = prev.dynasty
+}
+# SXAD_INLINE_END stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+
+	}
+}
+# SXAD_INLINE_END stewardship_duty_1055_valid_father_parent 7d143cc5333b706da6db93bb0ef965180481a2e1d7171f3bd38a0c8bde4316aa
+
 			}
 
 			#Heavily weight the chosen vassal to be our direct vassal, ideally one who is powerful and/or has a high tier.
@@ -231,7 +1218,52 @@ stewardship_duty.1055 = {
 			random_child = {
 				limit = {
 					is_male = yes
-					stewardship_duty_1055_is_unwed_child = yes
+					
+# SXAD_INLINE_BEGIN stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+AND = {
+
+	#Meets all of the minimum requirements.
+	
+# SXAD_INLINE_BEGIN stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+AND = {
+	is_available_ai_adult = yes
+
+	#Must not be landed, as their parent/spouse/employer is going to be advocating for them.
+	is_landed = no
+
+	#Must not currently be pregnant.
+	is_pregnant = no
+	fertility > 0
+
+	#Must be of an age where having children is likely.
+	age >= 16
+	age < 40
+
+	#Must not be chaste (since they allegedly had extramarital relations, and it could feel odd to the player if they are chaste).
+	NOT = { has_trait = chaste }
+
+	#And make sure they'd cheat on any partners they may have outside of marriage anyway.
+	might_cheat_on_every_partner_trigger = yes
+}
+# SXAD_INLINE_END stewardship_duty_1055_minimum_et_requirements 32141c484ade56d9cb82d9cb4577e488e3fda7130e6e3b5c7927272037871fc3
+
+
+	#Is not married and has not had any other kids (if female).
+	is_married = no
+
+	OR = {
+		any_child = {
+			count < 1
+		}
+		is_female = no
+	}
+
+
+	#Must have the same dynasty as their parent (no bastards).
+	dynasty = prev.dynasty
+}
+# SXAD_INLINE_END stewardship_duty_1055_is_unwed_child e48a7b80e20bad27398493215a16306beb36c5df7deefbf3c95705303d17930e
+
 				}
 
 				#Favor younger, lustful characters.

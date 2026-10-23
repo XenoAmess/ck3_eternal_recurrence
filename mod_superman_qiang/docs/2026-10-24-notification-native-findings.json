@@ -1,0 +1,338 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T16:44:45.832190+00:00",
+  "exe_path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "image_base": "0x140000000",
+  "cause_status": "not_reproduced_not_proven",
+  "sources": [
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\death_events\\death_management_events.txt",
+      "sha256": "dfdab7ab6757c73980b82f5e3a6f23184160688b844558fce85d8ee5b9ef4c59"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_death_management_effects.txt",
+      "sha256": "cb24c49a5fc09ae9c3314379bd9549d52d830a6dfd45fd9e1e47044446553111"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_romance_effects.txt",
+      "sha256": "a4a88fa0f36e95e865dcdd077dcb64f5985db1b9a441fcca1795494abda66211"
+    },
+    {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\deathreasons\\00_natural_deaths.txt",
+      "sha256": "a17a2d6371ea2de7900e6afd7ad85ea603eb34157379241d92f0d26a7d7488cc"
+    }
+  ],
+  "schema": "sxad.offline-notification-findings.v1",
+  "claims": [
+    {
+      "finding": "Temporary named scopes replace a matching name entry rather than appending one per call.",
+      "level": "proven_for_this_native_setter",
+      "chain": [
+        "0x71fba0",
+        "0x3770320",
+        "vtable 0x49316c0",
+        "0x377acf0",
+        "0x373afc0"
+      ],
+      "anchors": [
+        "0x373b370 compares name key",
+        "0x373b438..0x373b44f overwrites existing scope and flag"
+      ],
+      "limit": "Does not prove all other event context lifetimes or downstream UI state correct."
+    },
+    {
+      "finding": "Native add_to_list checks existing typed value before inserting.",
+      "level": "proven_for_this_native_list_mutator",
+      "chain": [
+        "0x71fc50",
+        "0x3770370",
+        "vtable 0x49315f0",
+        "0x377ac60",
+        "0x373b800"
+      ],
+      "anchors": [
+        "0x373b836..0x373b84d compares type, subtype and payload",
+        "0x373b864 skips insert when found"
+      ],
+      "limit": "Does not measure live list contents."
+    },
+    {
+      "finding": "The normal pin=true command is idempotent for an already pinned subject.",
+      "level": "proven_for_this_native_command",
+      "anchors": [
+        "0x288eb45 membership lookup",
+        "0x288eb61..0x288eb71 append only when absent and requested true",
+        "0x288eb88 remove when present and requested false"
+      ],
+      "limit": "Does not prove a save was not previously corrupted by another path."
+    },
+    {
+      "finding": "The death probe recipient gathering rejects an actor already in the shared recipient list.",
+      "level": "proven_script_contract",
+      "file": "events/death_events/death_management_events.txt",
+      "lines": [
+        6,
+        12,
+        409,
+        433,
+        554,
+        557
+      ],
+      "limit": "A different message type may use a different recipient route."
+    },
+    {
+      "finding": "Lover and pinned death messages are branches of the same else-if chain, and death_management.0002 is delayed.",
+      "level": "proven_script_contract",
+      "file": "events/death_events/death_management_events.txt",
+      "lines": [
+        614,
+        616,
+        915,
+        928,
+        1112,
+        1117
+      ],
+      "limit": "Probe acceptance must observe actual dispatched messages; a death ACK is insufficient."
+    },
+    {
+      "finding": "The native send_interface_message effect checks the receiving scope against local player ID, constructs one message and publishes it once on the reviewed normal path.",
+      "level": "proven_reviewed_normal_path",
+      "chain": [
+        "0x5c53d0",
+        "0x2cc6b80",
+        "vtable 0x4837290",
+        "0x2cc9420"
+      ],
+      "anchors": [
+        "0x2cc9544..0x2cc9555 local identity guard",
+        "0x2cca2e4 message publish",
+        "0x2506b28 event code 0x2de4",
+        "0x2506b47 handler virtual call"
+      ],
+      "limit": "One publish is not proof of one rendered card; downstream handler/subscriber counts were not measured."
+    }
+  ],
+  "span_manifest": [
+    {
+      "name": "pin_command",
+      "rva": "0x288ea90",
+      "length": 272,
+      "sha256": "cf2154352241ab914747dd3c8f897acfed10540878e0c7dd032a54550410c05b"
+    },
+    {
+      "name": "pinning_iterator",
+      "rva": "0x1c4b390",
+      "length": 336,
+      "sha256": "171074849f706d5e1d659796714d44fdd0f424935913161246f083a040c31b2c"
+    },
+    {
+      "name": "temporary_scope_registration",
+      "rva": "0x71fba0",
+      "length": 164,
+      "sha256": "661cbd2d007bfe9600523a5b7b8b259d6817288e56eb9a70fbb00c486dca18b1"
+    },
+    {
+      "name": "temporary_scope_construct",
+      "rva": "0x3770320",
+      "length": 80,
+      "sha256": "148ba744bf938e2a065861f6063f4bf690fb5c9b9ab7410c3aee526268ad96ea"
+    },
+    {
+      "name": "temporary_scope_execute",
+      "rva": "0x377acf0",
+      "length": 44,
+      "sha256": "b9afc2572106bf6563b06759deb833bc2c6ac0ee2596fbd5b5f901e7e4b57cca"
+    },
+    {
+      "name": "named_scope_setter",
+      "rva": "0x373afc0",
+      "length": 1222,
+      "sha256": "009bc3209940194762d2accb9aabeb446750fce88d33a76ba9c0677ce8e0ba6e"
+    },
+    {
+      "name": "list_registration",
+      "rva": "0x71fc50",
+      "length": 164,
+      "sha256": "452ce6fe0e84035ccadc0a2a575c862d762324276d68a06505fb4715818d42f4"
+    },
+    {
+      "name": "list_construct",
+      "rva": "0x3770370",
+      "length": 160,
+      "sha256": "920271155174b1325942c14f68cb8dc8972478bb0f2fd8693b6b58152ead10f4"
+    },
+    {
+      "name": "list_execute",
+      "rva": "0x377ac60",
+      "length": 95,
+      "sha256": "ab25f556d6f698d6623bfa59b054639bb69a81fec691acab85d79b3fef1fa6cb"
+    },
+    {
+      "name": "list_unique_add",
+      "rva": "0x373b800",
+      "length": 259,
+      "sha256": "43df1d5e0d8795cf4c6be3d52eda37507d84df46ad3e62c206d3d768bfa052ab"
+    },
+    {
+      "name": "message_registration",
+      "rva": "0x5c53d0",
+      "length": 164,
+      "sha256": "9c7a4f310652a2244ef6deb09d73d94dd134b20cf6f1491ad11f5a04f92fdde8"
+    },
+    {
+      "name": "message_construct",
+      "rva": "0x2cc6b80",
+      "length": 416,
+      "sha256": "bd51cc4884263f1c50a895306449e694e28a5447109ae385dba52289bfaea42d"
+    },
+    {
+      "name": "message_execute",
+      "rva": "0x2cc9420",
+      "length": 3968,
+      "sha256": "832fb472028b64995625281a7691a5ca21c104fcfa9fc77f580b44adc3391b60"
+    },
+    {
+      "name": "message_publish",
+      "rva": "0x2506a70",
+      "length": 227,
+      "sha256": "3878a17fce9f549767f1c2c97d924f39749a167ece755f39d2960cb2f261497b"
+    },
+    {
+      "name": "forced_recalculation",
+      "rva": "0x28c3ba0",
+      "length": 285,
+      "sha256": "b61b668526519cc41a1ad6ae81e702bea96f83fedd2b4381a3869cbf7e76e8d6"
+    },
+    {
+      "name": "modifier_add",
+      "rva": "0x2491790",
+      "length": 720,
+      "sha256": "df09019f6aa3241d5f1759c21dc834877960accca31c40f659bd840446616f30"
+    },
+    {
+      "name": "modifier_remove",
+      "rva": "0x2491a60",
+      "length": 352,
+      "sha256": "26270fc1a9401eac32aebd9c8f1f859758081ea6fd8700030b762fe395665c40"
+    },
+    {
+      "name": "trait_message",
+      "rva": "0x28cbaf0",
+      "length": 400,
+      "sha256": "f0f743a4d877341dba11448059fcee95e8b05fc9a678d7aa558a22327a756527"
+    }
+  ],
+  "instruction_evidence_sha256": "2a484a627009e168b0abf120b570ab73acb8ba5b563c9aedcc86b3d4e2329803",
+  "live_matrix_status": "all notification cells not_run by this agent; no CK3 or Steam action",
+  "integrated_at_utc": "2026-10-23T16:53:26.530887+00:00",
+  "machine_identity_recheck": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-23T16:53:26.530887+00:00",
+    "command": "tools/ck3_live_run_id.py machine",
+    "source_root": "D:/workspace/ck3_eternal_recurrence"
+  },
+  "raw_instruction_evidence": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "path": "D:\\workspace\\ck3-superman-redesign-20261023\\notification-template-startup-candidate-a01\\offline-native-evidence.json",
+    "logical_bytes": 273947,
+    "sha256": "2a484a627009e168b0abf120b570ab73acb8ba5b563c9aedcc86b3d4e2329803",
+    "availability": "readable_verified",
+    "checked_at_utc": "2026-10-23T16:53:26.530887+00:00",
+    "category": "raw_evidence",
+    "ttl_hours": 720,
+    "review_at_utc": "2026-11-22T16:53:26.530887+00:00",
+    "closed_at_utc_or_null": null,
+    "last_used_at_utc": "2026-10-23T16:53:26.530887+00:00",
+    "retention_basis": "Later of owner task close and last meaningful actual use; review date is provisional while task remains active. No automatic deletion.",
+    "active_references": [
+      "mod_superman_qiang/docs/2026-10-24-notification-native-findings.json"
+    ],
+    "protected_until_utc_or_null": null,
+    "protection_reason_or_null": null
+  },
+  "retention": {
+    "category": "record",
+    "ttl_hours": 4320,
+    "review_at_utc": "2027-04-21T16:53:26.530887+00:00",
+    "action": "review_and_consolidate",
+    "git_tracked_record_not_file_gc": true,
+    "automatic_gc_implemented": false
+  },
+  "storage_policy": {
+    "repository_path": "docs/storage-retention-policy.json",
+    "policy_version": "1.0.0",
+    "source_sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+  },
+  "source_readback": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-23T16:54:03.511304+00:00",
+    "files": [
+      {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\death_events\\death_management_events.txt",
+        "sha256": "dfdab7ab6757c73980b82f5e3a6f23184160688b844558fce85d8ee5b9ef4c59",
+        "matches_extraction": true
+      },
+      {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_death_management_effects.txt",
+        "sha256": "cb24c49a5fc09ae9c3314379bd9549d52d830a6dfd45fd9e1e47044446553111",
+        "matches_extraction": true
+      },
+      {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_romance_effects.txt",
+        "sha256": "a4a88fa0f36e95e865dcdd077dcb64f5985db1b9a441fcca1795494abda66211",
+        "matches_extraction": true
+      },
+      {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\deathreasons\\00_natural_deaths.txt",
+        "sha256": "a17a2d6371ea2de7900e6afd7ad85ea603eb34157379241d92f0d26a7d7488cc",
+        "matches_extraction": true
+      },
+      {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\event_themes\\00_event_themes.txt",
+        "sha256": "f8dc06a5a33be577c4b24d778d4d1ef49ec26ca0db834a8f1b7cb75847110b01",
+        "key": "marriage",
+        "line": 342
+      }
+    ]
+  },
+  "fixture_startup_correction": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-23T16:54:03.511304+00:00",
+    "files": [
+      {
+        "path": "mod_superman_qiang/tools/notification_fixture/common/on_action/sxant_on_actions.txt",
+        "logical_bytes": 400,
+        "sha256": "f5b345813844013b6cc7c77e8035c46f952efc5b199d25536a846d07ca3e6231"
+      },
+      {
+        "path": "mod_superman_qiang/tools/notification_fixture/common/scripted_effects/sxant_vanilla_pair_control.txt",
+        "logical_bytes": 9828,
+        "sha256": "f3790209b6489605838cb6dc6d74d27960d2c99e519ad000703dc2c16388f36c"
+      },
+      {
+        "path": "mod_superman_qiang/tools/notification_fixture/events/sxant_events.txt",
+        "logical_bytes": 61919,
+        "sha256": "b091c8f8a0bd9fed3468cbb714f074869524886f2bcf003f89f4d5fc60801883"
+      },
+      {
+        "path": "tools/ck3_mod_acceptance_cases/superman_qiang_notification_investigation.json",
+        "logical_bytes": 2343,
+        "sha256": "25b8a050dea1b9e3cf4af6f94f084c02518c90582b80bbcbc62c072365453e85"
+      }
+    ],
+    "event_count": 43,
+    "visible_event_count": 10,
+    "marriage_theme_count": 10,
+    "all_three_txt_utf8_bom": true,
+    "brace_pairs": 998,
+    "required_startup": [
+      "SXANT: FIXTURE_ARMED notification-investigation"
+    ],
+    "required_business_marker": "SXANT: BASELINE_READY notification-investigation",
+    "cases_json_sha256": "75a52896528f2f99c8fc5f5d5021acdfbe72861b07bfc3ea082d5f2ab90365eb",
+    "cases_json_not_overwritten": true,
+    "notification_cells_run": 0,
+    "engine_grammar_or_scope_qualified": false
+  }
+}

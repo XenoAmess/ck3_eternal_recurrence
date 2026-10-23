@@ -1,0 +1,7 @@
+﻿scripted_effect pilgrimage_2101_save_scopes_effect = {
+	location = { save_scope_as = brothel_location }
+	trigger_event = {
+		id = lover.8102
+		days = 30
+	}
+}

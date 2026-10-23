@@ -51,6 +51,7 @@ class NaturalFixtureReport(TypedDict):
     required_start: str
     required_end: str
     expected_pass_markers: list[str]
+    required_additional_markers: list[str]
     case_count: int
     maximum_natural_days: int
     candidate_results: Literal['not_run']
@@ -146,6 +147,7 @@ def prepare_natural_fixture(output: Path) -> NaturalFixtureReport:
         'required_start': 'SXANF: BASELINE_READY natural-simulation',
         'required_end': 'SXANF: END natural-simulation',
         'expected_pass_markers': markers, 'case_count': count,
+        'required_additional_markers': ['SXANF: SAME_MONTH_READY natural-simulation'],
         'maximum_natural_days': maximum_days, 'candidate_results': 'not_run',
         'baseline_event_key': 'sxanf.2', 'baseline_save_required_before_choice': True,
         'readback_character_references': references,

@@ -1,0 +1,9 @@
+﻿scripted_trigger learning_medicine_2022_valid_physician_trigger = {
+	exists = scope:physician
+	root = {
+		any_court_position_holder = {
+	        type = court_physician_court_position
+	        this = scope:physician
+	    }
+	}
+}

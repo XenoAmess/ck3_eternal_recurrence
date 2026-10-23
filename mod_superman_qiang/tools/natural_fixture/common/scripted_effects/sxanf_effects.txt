@@ -1,4 +1,4 @@
-# External acceptance fixture only. References survive the real saved game.
+﻿# External acceptance fixture only. References survive the real saved game.
 sxanf_restore_refs_effect = {
     var:sxanf_ref_spouse_a = { save_scope_as = sxanf_spouse_a }
     var:sxanf_ref_spouse_b = { save_scope_as = sxanf_spouse_b }

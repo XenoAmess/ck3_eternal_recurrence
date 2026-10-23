@@ -1,5 +1,5 @@
 {
-  "schema": "sxad-encounter-projections-v1",
+  "schema": "sxad-encounter-projections-v2",
   "game_version": "1.20.0.4",
   "source_buildid": "25734779",
   "machine_id": "desktop-3fevhd2-1c74096080",
@@ -22,7 +22,9 @@
           "text": "\thidden_effect = { sxad_record_unknown_effect = yes }\n",
           "expected_count": 1
         }
-      ]
+      ],
+      "inline_dependencies": [],
+      "event_override_priority": null
     },
     {
       "name": "mandala_story_creation_aspect_get_kids_effect",
@@ -46,7 +48,9 @@
           "text": "\t\t\t\t\t\tprev = { save_temporary_scope_as = sxad_mandala_father }\n\t\t\t\t\t\thidden_effect = { sxad_record_pair_effect = { PARTNER = scope:sxad_mandala_father } }\n\t\t\t\t\t\tclear_saved_scope = sxad_mandala_father\n",
           "expected_count": 1
         }
-      ]
+      ],
+      "inline_dependencies": [],
+      "event_override_priority": null
     },
     {
       "name": "learning_medicine.2022",
@@ -64,7 +68,12 @@
           "text": "\t\t\t\t\t\t\t\t\t\t\thidden_effect = { sxad_record_pair_effect = { PARTNER = root } }\n",
           "expected_count": 1
         }
-      ]
+      ],
+      "inline_dependencies": [
+        "learning_medicine_2020_can_have_child_trigger",
+        "learning_medicine_2022_valid_physician_trigger"
+      ],
+      "event_override_priority": 1
     },
     {
       "name": "learning_medicine.2023",
@@ -100,7 +109,15 @@
           "text": "\t\t\t\t\tclear_saved_scope = sxad_skip_pair_record\n",
           "expected_count": 1
         }
-      ]
+      ],
+      "inline_dependencies": [
+        "learning_medicine_2020_can_have_child_trigger",
+        "learning_medicine_2022_valid_physician_trigger",
+        "learning_medicine_2023_continue_chain_trigger",
+        "learning_medicine_2023_random_family_member_trigger",
+        "learning_medicine_2023_random_foreign_ruler_trigger"
+      ],
+      "event_override_priority": 1
     },
     {
       "name": "pilgrimage.2101",
@@ -124,7 +141,11 @@
           "text": "\t\t\tclear_saved_scope = sxad_skip_unknown_record\n",
           "expected_count": 1
         }
-      ]
+      ],
+      "inline_dependencies": [
+        "pilgrimage_2101_save_scopes_effect"
+      ],
+      "event_override_priority": 1
     },
     {
       "name": "stewardship_duty.1055",
@@ -142,7 +163,14 @@
           "text": "\t\t\t\thidden_effect = { sxad_record_pair_effect = { PARTNER = scope:new_father } }\n",
           "expected_count": 1
         }
-      ]
+      ],
+      "inline_dependencies": [
+        "stewardship_duty_1055_is_unwed_child",
+        "stewardship_duty_1055_minimum_et_requirements",
+        "stewardship_duty_1055_valid_father_parent",
+        "stewardship_duty_1055_valid_mother_parent_or_spouse"
+      ],
+      "event_override_priority": 1
     },
     {
       "name": "mpo_temujin_flavor.0030",
@@ -160,7 +188,9 @@
           "text": "\t\t\t\thidden_effect = { sxad_record_pair_effect = { PARTNER = scope:mergid } }\n",
           "expected_count": 1
         }
-      ]
+      ],
+      "inline_dependencies": [],
+      "event_override_priority": 1
     },
     {
       "name": "mpo_events_tova.0035",
@@ -178,7 +208,9 @@
           "text": "\t\t\t\t\thidden_effect = { sxad_record_pair_effect = { PARTNER = scope:distressed_anda } }\n",
           "expected_count": 1
         }
-      ]
+      ],
+      "inline_dependencies": [],
+      "event_override_priority": 1
     },
     {
       "name": "fund_inspiration.6513",
@@ -196,7 +228,292 @@
           "text": "\t\t\thidden_effect = { sxad_record_pair_effect = { PARTNER = scope:adventurer_lover } }\n",
           "expected_count": 1
         }
+      ],
+      "inline_dependencies": [],
+      "event_override_priority": 1
+    }
+  ],
+  "inline_sources": [
+    {
+      "source_path": "common/scripted_effects/00_stress_effects.txt",
+      "source_sha256": "b496b45ebd5557562c9e2f10aaa747833062c2e7b049efb9d86b7d0dc18e2ba9",
+      "declared_names": []
+    },
+    {
+      "source_path": "common/scripted_effects/tgp_mandala_scripted_effects.txt",
+      "source_sha256": "bb438d3ff77f017a3676d8a3960c136571f41355075961173a5c384f993aeb0e",
+      "declared_names": []
+    },
+    {
+      "source_path": "events/activities/pilgrimage_activity/pilgrimage_events.txt",
+      "source_sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06",
+      "declared_names": [
+        "pilgrimage_0500_valid_holy_site_trigger",
+        "pilgrimage_st_elmo_success_effect",
+        "pilgrim_heathen_raider_trigger",
+        "pilgrim_admire_temple_person_trigger",
+        "pilgrimage_1130_pro_character_trigger",
+        "pilgrimage_1130_anti_character_trigger",
+        "pilgrim_group_leader_trigger",
+        "2002_local_prowess_character_trigger",
+        "pilgrimage_2004_potential_friend_trigger",
+        "pilgrimage_2010_mystic_ruler",
+        "pilgrimage_2010_mystic_home_ruler",
+        "pilgrimage_2013_outcome_effect",
+        "pilgrimage_2014_outcome_effect",
+        "pilgrimage_2015_outcome_effect",
+        "pilgrimage_2020_suitable_thief",
+        "pilgrimage_2060_valid_pilgrim_trigger",
+        "pilgrimage_2060_valid_memory_trigger",
+        "pilgrimage_2070_valid_pilgrim_trigger",
+        "pilgrimage_2101_save_scopes_effect",
+        "generosity_piety_stress_effect",
+        "parsimony_piety_stress_effect",
+        "pilgrimage_2511_valid_lordling",
+        "pilgrimage_6001_friend_trigger",
+        "check_for_pilgrimage_badge_event_effect",
+        "pilgrim_wares_vendor_trigger",
+        "pilgrim_find_vendor_effect",
+        "clean_up_pilgrim_vendor_effect",
+        "6531_positive_outcome",
+        "6532_negative_outcome",
+        "pilgrimage_6770_relic_effect",
+        "pilgrimage_6770_trigger",
+        "pilgrimage_6790_trigger",
+        "pilgrimage_6800_valid_member",
+        "pilgrimage_6800_friend_effect",
+        "pilgrimage_6800_rival_effect",
+        "pilgrimage_6800_monk_effect",
+        "pilgrimage_6810_friend_effect",
+        "pilgrimage_6820_trigger",
+        "is_important_artifact_trigger"
       ]
+    },
+    {
+      "source_path": "events/dlc/ep1/ep1_fund_inspiration_events.txt",
+      "source_sha256": "4b78491aafe19c72b5592863f3234faec039e98305f6cd75c472dd5bd2d2c4bb",
+      "declared_names": [
+        "inspiration_completion_removal_basic_effect",
+        "inspiration_completion_effect",
+        "fund_inspiration_0021_option_mail_trigger",
+        "fund_inspiration_0021_option_plate_trigger",
+        "fund_inspiration_0021_option_scale_trigger",
+        "fund_inspiration_0021_option_lamellar_trigger",
+        "fund_inspiration_0021_option_laminar_trigger",
+        "fund_inspiration_0021_option_brigandine_trigger",
+        "fund_inspiration_0021_pick_options_to_show_effect",
+        "fund_inspiration_0031_title_based_option_trigger",
+        "fund_inspiration_0031_dynasty_option_trigger",
+        "fund_inspiration_0031_education_option_trigger",
+        "fund_inspiration_0031_lifestyle_option_trigger",
+        "fund_inspiration_0031_focus_option_trigger",
+        "fund_inspiration_0031_relationship_option_trigger",
+        "fund_inspiration_0031_mystical_animal_option_trigger",
+        "fund_inspiration_0031_pet_option_trigger",
+        "fund_inspiration_0031_skill_option_trigger",
+        "fund_inspiration_0031_pick_options_to_show_effect",
+        "fund_inspiration_0051_pick_options_to_show_effect",
+        "fund_adventure_inspiration_start_effect",
+        "fund_adventure_inspiration_travel_progress_effect",
+        "fund_inspiration_0061_option_chest_trigger",
+        "fund_inspiration_0061_option_box_trigger",
+        "fund_inspiration_0061_option_sculpture_trigger",
+        "fund_inspiration_0061_option_cabinet_trigger",
+        "fund_inspiration_0061_option_throne_trigger",
+        "fund_inspiration_0061_option_scientific_apparatus_trigger",
+        "fund_inspiration_0061_option_urn_trigger",
+        "fund_inspiration_0061_option_icon_trigger",
+        "fund_inspiration_0061_pick_options_to_show_effect",
+        "fund_inspiration_0071_option_brooch_trigger",
+        "fund_inspiration_0071_option_regalia_trigger",
+        "fund_inspiration_0071_option_crown_trigger",
+        "fund_inspiration_0071_option_goblet_trigger",
+        "fund_inspiration_0071_option_aquamanile_trigger",
+        "fund_inspiration_0071_option_incense_burner_sculpture_trigger",
+        "fund_inspiration_0071_pick_options_to_show_effect",
+        "fund_inspiration_0081_option_elixirs_trigger",
+        "fund_inspiration_0081_option_metals_trigger",
+        "fund_inspiration_0081_option_panacea_trigger",
+        "fund_inspiration_0081_option_immortality_trigger",
+        "fund_inspiration_0081_pick_options_to_show_effect",
+        "has_no_inspiration_event_cooldown",
+        "add_inspiration_cooldown_flag",
+        "payment_to_improve_quality_fund_inspiration_2002_scripted_effect",
+        "improve_quality_fund_inspiration_2002_scripted_effect",
+        "fund_inspiration_court_relation_trigger",
+        "fund_inspiration_court_inspiration_owner_trigger",
+        "fund_inspiration_martial_trigger",
+        "fund_inspiration_stewardship_trigger",
+        "fund_inspiration_diplomacy_trigger",
+        "fund_inspiration_intrigue_trigger",
+        "fund_inspiration_skillcheck_duel_effect",
+        "has_artisan_incapacity_trait",
+        "fi_2080_antiquarian_trigger",
+        "fi_2110_generous_vassal_trigger",
+        "fi_2120_homosexuality_not_accepted_trigger",
+        "fi_2130_lifestyle_effect",
+        "fi_2131_artifact_type_trigger",
+        "fund_inspiration_3001_witch_topic_trigger",
+        "fund_inspiration_3001_cannibal_topic_trigger",
+        "fund_inspiration_3001_deviant_topic_trigger",
+        "fund_inspiration_3001_torturer_topic_trigger",
+        "fund_inspiration_3001_lustful_topic_trigger",
+        "fund_inspiration_4001_courtier_trigger",
+        "artistic_courtier_trigger",
+        "homosexual_poet_trigger",
+        "unloved_poet_trigger",
+        "sisyphus_nickname_trigger",
+        "deadbeat_adventurer_trigger",
+        "fund_inspiration_8017_court_tutor_scripted_trigger"
+      ]
+    },
+    {
+      "source_path": "events/dlc/mpo/mpo_events_tova.txt",
+      "source_sha256": "0e8cadf632da8c3033a7040a9a1796663661796504e1517ec9d4add5177ee29a",
+      "declared_names": [
+        "tova_events_2_province_requirements"
+      ]
+    },
+    {
+      "source_path": "events/dlc/mpo/mpo_story_cycle_temujin_flavor_events.txt",
+      "source_sha256": "ca8dd6b504e5878d1050ed5e1f0271f1dd58e4e51b57695e8df59b8c32d7ec01",
+      "declared_names": [
+        "mpo_temujin_flavor_0010_jamukha_leaving_effect"
+      ]
+    },
+    {
+      "source_path": "events/lifestyles/governance_lifestyle/stewardship_duty_events.txt",
+      "source_sha256": "1684f3abcd0a2454d04306a33a5e657f403e9dca2239d3873383b11427f91dac",
+      "declared_names": [
+        "stewardship_duty_0001_argumentative_trigger",
+        "stewardship_duty_0001_complaisant_trigger",
+        "stewardship_duty_0001_could_argue_with_arguer_1",
+        "stewardship_duty_1055_minimum_et_requirements",
+        "stewardship_duty_1055_is_unwed_child",
+        "stewardship_duty_1055_valid_mother_parent_or_spouse",
+        "stewardship_duty_1055_valid_father_parent",
+        "stewardship_duty_1068_vassal_trigger",
+        "stewardship_duty_1071_abusive_ruler",
+        "stewardship_duty_1071_valid_origin_county",
+        "stewardship_duty_1071_valid_target_county",
+        "stewardship_duty_4010_valid_targeting_faction_trigger",
+        "stewardship_duty_4010_valid_faction_member_trigger",
+        "stewardship_duty_4040_valid_target",
+        "stewardship_duty_4060_valid_targeting_faction_trigger",
+        "stewardship_duty_5021_cheating_vassal_trigger",
+        "stewardship_duty_5012_can_increase_vassal_contract_trigger",
+        "stewardship_duty_7001_valid_war_trigger",
+        "stewardship_duty_special_1201_chain_validation_trigger",
+        "stewardship_duty_special_1201_recover_land_owner_effect",
+        "stewardship_duty_special_2000_vassal_trigger",
+        "stewardship_duty_special_2000_second_vassal_trigger",
+        "stewardship_duty_special_2014_betrothal_candidate_trigger",
+        "stewardship_duty_special_2014_betrothal_candidate_existence_trigger",
+        "stewardship_duty_special_2014_vassal_betrothal_candidate_trigger",
+        "stewardship_duty_special_2014_vassal_trigger",
+        "stewardship_duty_special_2051_potential_friend_trigger",
+        "stewardship_duty_special_2052_potential_lover_trigger",
+        "stewardship_duty_special_2053_potential_rival_trigger"
+      ]
+    },
+    {
+      "source_path": "events/lifestyles/scholarship_lifestyle/learning_medicine_events.txt",
+      "source_sha256": "f2082d341e004a88d3e24dcd0cbfaac26b5409c3f7e388d562fb311f33bd5fb2",
+      "declared_names": [
+        "learning_medicine_2001_basic_herbalist_trigger",
+        "learning_medicine_2001_pool_herbalist_trigger",
+        "learning_medicine_2020_can_have_child_trigger",
+        "learning_medicine_2022_valid_physician_trigger",
+        "learning_medicine_2023_continue_chain_trigger",
+        "learning_medicine_2023_random_foreign_ruler_trigger",
+        "learning_medicine_2023_random_family_member_trigger",
+        "leaning_medicine_2030_potential_confider_friend_trigger",
+        "medicine_2030_confider_chance_effect",
+        "learning_medicine_2110_valid_hashish_vassal_or_liege",
+        "learning_medicine_special_2100_broad_dreamfish_range"
+      ]
+    }
+  ],
+  "inline_helpers": [
+    {
+      "name": "learning_medicine_2020_can_have_child_trigger",
+      "kind": "trigger",
+      "source_path": "events/lifestyles/scholarship_lifestyle/learning_medicine_events.txt",
+      "source_sha256": "f2082d341e004a88d3e24dcd0cbfaac26b5409c3f7e388d562fb311f33bd5fb2",
+      "pinned_file": "inline_learning_medicine_2020_can_have_child_trigger.txt",
+      "pinned_sha256": "93a83a001a59e33ded35780dd37c23bc81081d087b57757a156d54bfa28a9e89"
+    },
+    {
+      "name": "learning_medicine_2022_valid_physician_trigger",
+      "kind": "trigger",
+      "source_path": "events/lifestyles/scholarship_lifestyle/learning_medicine_events.txt",
+      "source_sha256": "f2082d341e004a88d3e24dcd0cbfaac26b5409c3f7e388d562fb311f33bd5fb2",
+      "pinned_file": "inline_learning_medicine_2022_valid_physician_trigger.txt",
+      "pinned_sha256": "a5c477d838b01db857ac1ead6816708b4893db403fd68fc459a702762e341228"
+    },
+    {
+      "name": "learning_medicine_2023_continue_chain_trigger",
+      "kind": "trigger",
+      "source_path": "events/lifestyles/scholarship_lifestyle/learning_medicine_events.txt",
+      "source_sha256": "f2082d341e004a88d3e24dcd0cbfaac26b5409c3f7e388d562fb311f33bd5fb2",
+      "pinned_file": "inline_learning_medicine_2023_continue_chain_trigger.txt",
+      "pinned_sha256": "e70afe7941fb45a16447987e10765d0e214f9ce8438b745f017a079b4a8750ad"
+    },
+    {
+      "name": "learning_medicine_2023_random_family_member_trigger",
+      "kind": "trigger",
+      "source_path": "events/lifestyles/scholarship_lifestyle/learning_medicine_events.txt",
+      "source_sha256": "f2082d341e004a88d3e24dcd0cbfaac26b5409c3f7e388d562fb311f33bd5fb2",
+      "pinned_file": "inline_learning_medicine_2023_random_family_member_trigger.txt",
+      "pinned_sha256": "2d72b608b4965112e175eb7ae7d8565aa80b1a898a4d32f90e8240dae3998781"
+    },
+    {
+      "name": "learning_medicine_2023_random_foreign_ruler_trigger",
+      "kind": "trigger",
+      "source_path": "events/lifestyles/scholarship_lifestyle/learning_medicine_events.txt",
+      "source_sha256": "f2082d341e004a88d3e24dcd0cbfaac26b5409c3f7e388d562fb311f33bd5fb2",
+      "pinned_file": "inline_learning_medicine_2023_random_foreign_ruler_trigger.txt",
+      "pinned_sha256": "d48ce9b79141d92b3f7912c24d87b9b0706c1fd5091e1cb1c9673d7aaf7aaa9f"
+    },
+    {
+      "name": "pilgrimage_2101_save_scopes_effect",
+      "kind": "effect",
+      "source_path": "events/activities/pilgrimage_activity/pilgrimage_events.txt",
+      "source_sha256": "900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06",
+      "pinned_file": "inline_pilgrimage_2101_save_scopes_effect.txt",
+      "pinned_sha256": "a43a07f158fba63ade12adbbde0201ccbd58063c1d990be2a36adc051178164e"
+    },
+    {
+      "name": "stewardship_duty_1055_is_unwed_child",
+      "kind": "trigger",
+      "source_path": "events/lifestyles/governance_lifestyle/stewardship_duty_events.txt",
+      "source_sha256": "1684f3abcd0a2454d04306a33a5e657f403e9dca2239d3873383b11427f91dac",
+      "pinned_file": "inline_stewardship_duty_1055_is_unwed_child.txt",
+      "pinned_sha256": "aa2a69cd77c5e0ef97a61ca568b634fbda060646e77282c7f88b3f70154aa0e0"
+    },
+    {
+      "name": "stewardship_duty_1055_minimum_et_requirements",
+      "kind": "trigger",
+      "source_path": "events/lifestyles/governance_lifestyle/stewardship_duty_events.txt",
+      "source_sha256": "1684f3abcd0a2454d04306a33a5e657f403e9dca2239d3873383b11427f91dac",
+      "pinned_file": "inline_stewardship_duty_1055_minimum_et_requirements.txt",
+      "pinned_sha256": "dc6bdcf8963f14f50ad303cdf8089588c589892c0d7503bf79b5a3b0640b146a"
+    },
+    {
+      "name": "stewardship_duty_1055_valid_father_parent",
+      "kind": "trigger",
+      "source_path": "events/lifestyles/governance_lifestyle/stewardship_duty_events.txt",
+      "source_sha256": "1684f3abcd0a2454d04306a33a5e657f403e9dca2239d3873383b11427f91dac",
+      "pinned_file": "inline_stewardship_duty_1055_valid_father_parent.txt",
+      "pinned_sha256": "a474073cef6c593e217f760381b08973bf0f9780868c0790d76b6ece16819908"
+    },
+    {
+      "name": "stewardship_duty_1055_valid_mother_parent_or_spouse",
+      "kind": "trigger",
+      "source_path": "events/lifestyles/governance_lifestyle/stewardship_duty_events.txt",
+      "source_sha256": "1684f3abcd0a2454d04306a33a5e657f403e9dca2239d3873383b11427f91dac",
+      "pinned_file": "inline_stewardship_duty_1055_valid_mother_parent_or_spouse.txt",
+      "pinned_sha256": "afc152385d4d19c4ae308d9b12e708b04d1496590332a9b4b37c7bcf79063c9b"
     }
   ]
 }

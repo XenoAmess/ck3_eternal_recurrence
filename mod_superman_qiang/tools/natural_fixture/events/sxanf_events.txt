@@ -1,4 +1,4 @@
-# External fixture only. Every case remains NOT_RUN until retained native
+﻿# External fixture only. Every case remains NOT_RUN until retained native
 # observations and independent saved-character readbacks establish its result.
 namespace = sxanf
 
@@ -63,6 +63,7 @@ sxanf.1 = {
 }
 
 sxanf.2 = {
+    theme = marriage
     title = sxanf_baseline_title
     desc = sxanf_baseline_desc
     immediate = {
@@ -170,6 +171,7 @@ sxanf.5 = {
 }
 
 sxanf.6 = {
+    theme = marriage
     title = sxanf_month_title
     desc = sxanf_month_desc
     option = { name = sxanf_advance_month trigger_event = { id = sxanf.7 months = 1 } }
@@ -232,4 +234,4 @@ sxanf.9 = {
     }
 }
 
-sxanf.10 = { title = sxanf_done_title desc = sxanf_done_desc option = { name = sxanf_close } }
+sxanf.10 = { theme = marriage title = sxanf_done_title desc = sxanf_done_desc option = { name = sxanf_close } }

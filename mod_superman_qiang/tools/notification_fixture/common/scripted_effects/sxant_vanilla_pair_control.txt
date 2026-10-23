@@ -1,4 +1,4 @@
-# External diagnosis fixture only. Original body preserved except this private definition name.
+﻿# External diagnosis fixture only. Original body preserved except this private definition name.
 # Pinned source: tools/vanilla_hooks/had_sex_with_effect.txt; SHA-256 f14717fceefedda7dade433c4b7bb66ce10dc22e649af884822c650c5c9c5666
 sxant_vanilla_had_sex_with_effect = {
 	save_scope_as = had_sex_root_character

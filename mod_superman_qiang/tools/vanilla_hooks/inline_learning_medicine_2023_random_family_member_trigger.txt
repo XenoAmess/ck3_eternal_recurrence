@@ -1,0 +1,18 @@
+﻿scripted_trigger learning_medicine_2023_random_family_member_trigger = {
+	is_male = yes
+	is_ai = yes
+	learning_medicine_2020_can_have_child_trigger = yes
+	might_cheat_on_every_partner_trigger = yes
+	save_temporary_scope_as = incest_relative
+	NOR = {
+		has_trait = chaste
+		guaranteed_under_20_incest_rejection_trigger = {
+			TARGET = scope:incest_relative
+			SEDUCER = scope:spouse
+		}
+		guaranteed_under_20_incest_rejection_trigger = {
+			TARGET = scope:spouse
+			SEDUCER = scope:incest_relative
+		}
+	}
+}

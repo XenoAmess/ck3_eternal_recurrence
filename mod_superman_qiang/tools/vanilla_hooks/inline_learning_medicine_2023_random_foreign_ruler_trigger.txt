@@ -1,0 +1,6 @@
+﻿scripted_trigger learning_medicine_2023_random_foreign_ruler_trigger = {
+	is_landed = yes
+	is_ai = yes
+	NOT = { in_diplomatic_range = root }
+	might_cheat_on_every_partner_trigger = yes
+}

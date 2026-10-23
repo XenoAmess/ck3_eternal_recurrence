@@ -3,6 +3,9 @@
 namespace = mpo_events_tova
 
 mpo_events_tova.0035 = { # Anda comes to you with marital concerns
+	# SXAD_HOOK_BEGIN
+	id_override_priority = 1
+	# SXAD_HOOK_END
 	type = character_event
 	title = mpo_events_tova.0035.t
 	desc = mpo_events_tova.0035.desc

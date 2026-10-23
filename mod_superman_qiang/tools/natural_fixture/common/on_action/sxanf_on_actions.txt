@@ -1,4 +1,4 @@
-# External acceptance fixture only. Never distribute with the product.
+﻿# External acceptance fixture only. Never distribute with the product.
 on_game_start_after_lobby = { on_actions = { sxanf_start } }
 sxanf_start = {
     effect = {
@@ -6,6 +6,9 @@ sxanf_start = {
             limit = { NOT = { has_character_flag = sxanf_fixture_initialized } }
             add_character_flag = sxanf_fixture_initialized
             trigger_event = { id = sxanf.1 days = 1 }
+            # Startup admission only: the paused game has scheduled tomorrow's
+            # setup. This is NOT a baseline, a business result or a PASS.
+            debug_log = "SXANF: FIXTURE_ARMED natural-simulation"
         }
     }
 }

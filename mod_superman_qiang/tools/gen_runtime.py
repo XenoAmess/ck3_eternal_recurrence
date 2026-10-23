@@ -13,7 +13,8 @@ from typing import Literal
 
 from product import LANGUAGES
 
-from runtime_data import (EN, EXE_SHA256, GAME_VERSION, HEALTH_DONOR_MINIMUM,
+from runtime_data import (EN, ENCOUNTER_EVENT_OVERRIDE_PRIORITY, ENCOUNTER_SOURCE_SCHEMA,
+                          EXE_SHA256, GAME_VERSION, HEALTH_DONOR_MINIMUM,
                           HEALTH_TRANSFER_AMOUNT, HOOKS, MINIMUM_AGE,
                           ROMANCE_SOURCE_SHA256, SEX_EXPERIENCE_MAXIMUM,
                           SEX_EXPERIENCE_VARIABLE, SKILL_BALANCE_MAXIMUM, SKILLS,
@@ -45,6 +46,16 @@ class EncounterInsertion:
 
 
 @dataclass(frozen=True)
+class InlineHelper:
+    name: str
+    kind: Literal["trigger", "effect"]
+    source_path: str
+    source_sha256: str
+    pinned_file: str
+    pinned_sha256: str
+
+
+@dataclass(frozen=True)
 class EncounterProjection:
     name: str
     kind: Literal["scripted_effect", "event"]
@@ -55,6 +66,30 @@ class EncounterProjection:
     namespace: str | None
     output: str
     insertions: tuple[EncounterInsertion, ...]
+    event_override_priority: int | None
+    inline_dependencies: tuple[InlineHelper, ...]
+    inline_inventory: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class ScriptToken:
+    text: str
+    start: int
+    end: int
+
+
+@dataclass(frozen=True)
+class InlineExpansion:
+    original: str
+    expanded: str
+
+
+@dataclass(frozen=True)
+class InlineSourceDeclaration:
+    name: str
+    kind: Literal["trigger", "effect"]
+    keyword_start: int
+    name_start: int
 
 
 def required_fields(value: object, keys: frozenset[str], context: str) -> dict[str, object]:
@@ -89,14 +124,46 @@ def relative_path(value: object, context: str) -> str:
 
 def load_encounter_projections(path: Path = ENCOUNTER_SOURCES) -> tuple[EncounterProjection, ...]:
     raw: object = json.loads(path.read_text(encoding="utf-8"))
-    document = required_fields(raw, frozenset({"schema", "game_version", "source_buildid", "machine_id", "observed_at_utc", "exe_sha256", "projections"}), "encounter sources")
-    if document["schema"] != "sxad-encounter-projections-v1" or document["game_version"] != GAME_VERSION or document["exe_sha256"] != EXE_SHA256:
+    document = required_fields(raw, frozenset({"schema", "game_version", "source_buildid", "machine_id", "observed_at_utc", "exe_sha256", "projections", "inline_sources", "inline_helpers"}), "encounter sources")
+    if document["schema"] != ENCOUNTER_SOURCE_SCHEMA or document["game_version"] != GAME_VERSION or document["exe_sha256"] != EXE_SHA256:
         raise ValueError("Encounter source contract differs from reviewed game identity")
     for key in ("machine_id", "observed_at_utc", "source_buildid"):
         required_string(document[key], key)
     build_id = required_string(document["source_buildid"], "source_buildid")
     if re.fullmatch(r"[1-9][0-9]*", build_id) is None:
         raise ValueError("source_buildid must be a canonical decimal string")
+    indexes_raw = document["inline_sources"]
+    if not isinstance(indexes_raw, list) or not indexes_raw:
+        raise ValueError("inline_sources must be a nonempty JSON array")
+    indexes: dict[str, tuple[str, tuple[str, ...]]] = {}
+    for index_raw in indexes_raw:
+        index = required_fields(index_raw, frozenset({"source_path", "source_sha256", "declared_names"}), "inline source index")
+        source_path = relative_path(index["source_path"], "inline source path")
+        if source_path in indexes:
+            raise ValueError("Repeated inline source index")
+        names = identifier_array(index["declared_names"], "inline declared names")
+        indexes[source_path] = (required_sha256(index["source_sha256"], "inline source SHA"), names)
+    helpers_raw = document["inline_helpers"]
+    if not isinstance(helpers_raw, list):
+        raise ValueError("inline_helpers must be a JSON array")
+    helpers: dict[str, InlineHelper] = {}
+    helper_pins: set[str] = set()
+    for helper_raw in helpers_raw:
+        helper = required_fields(helper_raw, frozenset({"name", "kind", "source_path", "source_sha256", "pinned_file", "pinned_sha256"}), "inline helper")
+        name = required_identifier(helper["name"], "inline helper name")
+        kind = helper["kind"]
+        if not isinstance(kind, str) or kind not in {"trigger", "effect"}:
+            raise ValueError("Inline helper kind must be trigger or effect")
+        source_path = relative_path(helper["source_path"], "inline helper source")
+        source_sha = required_sha256(helper["source_sha256"], "inline helper source SHA")
+        pinned = relative_path(helper["pinned_file"], "inline helper pin")
+        if pinned != f"inline_{name}.txt" or name in helpers or pinned in helper_pins:
+            raise ValueError("Invalid or repeated inline helper pin")
+        if source_path not in indexes or indexes[source_path][0] != source_sha or name not in indexes[source_path][1]:
+            raise ValueError("Inline helper differs from its source declaration index")
+        helpers[name] = InlineHelper(name, "trigger" if kind == "trigger" else "effect", source_path, source_sha, pinned,
+                                     required_sha256(helper["pinned_sha256"], "inline helper pin SHA"))
+        helper_pins.add(pinned)
     rows = document["projections"]
     if not isinstance(rows, list):
         raise ValueError("projections must be a JSON array")
@@ -106,7 +173,7 @@ def load_encounter_projections(path: Path = ENCOUNTER_SOURCES) -> tuple[Encounte
     seen_pins: set[str] = set()
     source_hashes: dict[str, str] = {}
     for row in rows:
-        entry = required_fields(row, frozenset({"name", "kind", "source_path", "source_sha256", "pinned_file", "pinned_sha256", "namespace", "output", "insertions"}), "encounter projection")
+        entry = required_fields(row, frozenset({"name", "kind", "source_path", "source_sha256", "pinned_file", "pinned_sha256", "namespace", "output", "insertions", "event_override_priority", "inline_dependencies"}), "encounter projection")
         name = required_string(entry["name"], "name")
         if re.fullmatch(r"[A-Za-z_][A-Za-z_0-9]*(?:\.[0-9]+)?", name) is None:
             raise ValueError("Invalid encounter definition name")
@@ -143,7 +210,7 @@ def load_encounter_projections(path: Path = ENCOUNTER_SOURCES) -> tuple[Encounte
             if "SXAD_HOOK_BEGIN" in insertion_text or "SXAD_HOOK_END" in insertion_text:
                 raise ValueError("Insertion text may not supply its own boundary markers")
             parsed.append(EncounterInsertion(required_string(item["anchor"], "anchor"), "before" if position == "before" else "after", insertion_text, count))
-        if name in seen_names or output in seen_outputs or pinned in seen_pins:
+        if name in seen_names or output in seen_outputs or pinned in seen_pins or pinned in helper_pins:
             raise ValueError("Repeated encounter definition name, output or pinned file")
         seen_names.add(name)
         seen_outputs.add(output)
@@ -153,20 +220,237 @@ def load_encounter_projections(path: Path = ENCOUNTER_SOURCES) -> tuple[Encounte
         if source_path in source_hashes and source_hashes[source_path] != source_sha:
             raise ValueError("One source file has conflicting source identities")
         source_hashes[source_path] = source_sha
-        result.append(EncounterProjection(name, "event" if kind == "event" else "scripted_effect", source_path, source_sha, pinned, required_sha256(entry["pinned_sha256"], "pinned_sha256"), namespace, output, tuple(parsed)))
+        priority = entry["event_override_priority"]
+        if (kind == "event" and (type(priority) is not int or priority != ENCOUNTER_EVENT_OVERRIDE_PRIORITY)) or (kind != "event" and priority is not None):
+            raise ValueError("Event projections require integer override priority 1; effects require null")
+        dependencies = identifier_array(entry["inline_dependencies"], "inline dependencies")
+        if source_path not in indexes or indexes[source_path][0] != source_sha:
+            raise ValueError("Projection source differs from its inline declaration index")
+        selected_helpers: list[InlineHelper] = []
+        for dependency in dependencies:
+            if dependency not in helpers or helpers[dependency].source_path != source_path:
+                raise ValueError("Missing or foreign-file inline helper dependency")
+            selected_helpers.append(helpers[dependency])
+        result.append(EncounterProjection(name, "event" if kind == "event" else "scripted_effect", source_path, source_sha, pinned, required_sha256(entry["pinned_sha256"], "pinned_sha256"), namespace, output, tuple(parsed),
+                                          ENCOUNTER_EVENT_OVERRIDE_PRIORITY if kind == "event" else None, tuple(selected_helpers), indexes[source_path][1]))
+    used_helpers = {helper.name for projection in result for helper in projection.inline_dependencies}
+    if used_helpers != helpers.keys():
+        raise ValueError("Unused inline helper metadata must not be retained")
+    if source_hashes.keys() != indexes.keys():
+        raise ValueError("Inline source inventory must exactly match projected source files")
     return tuple(result)
 
 
+def required_identifier(value: object, context: str) -> str:
+    result = required_string(value, context)
+    if re.fullmatch(r"[A-Za-z_0-9]+", result) is None:
+        raise ValueError(f"{context}: invalid script identifier")
+    return result
+
+
+def identifier_array(value: object, context: str) -> tuple[str, ...]:
+    if not isinstance(value, list):
+        raise ValueError(f"{context}: expected JSON array")
+    result = tuple(required_identifier(item, context) for item in value)
+    if len(set(result)) != len(result):
+        raise ValueError(f"{context}: repeated identifier")
+    return result
+
+
+def script_tokens(source: str) -> tuple[ScriptToken, ...]:
+    """Locate executable identifiers without matching comments or quoted text."""
+    pattern = r'"(?:\\.|[^"\\])*"|\#[^\n]*|[{}=]|[^\s{}=]+'
+    return tuple(ScriptToken(match.group(), match.start(), match.end())
+                 for match in re.finditer(pattern, source)
+                 if not match.group().startswith(('#', '"')))
+
+
+def inline_source_declarations(source: str) -> tuple[InlineSourceDeclaration, ...]:
+    """Read every real file-local declaration, ignoring quoted/comment text."""
+    tokens = script_tokens(source)
+    result: list[InlineSourceDeclaration] = []
+    depth = 0
+    for index, token in enumerate(tokens):
+        if depth == 0 and token.text in {"scripted_trigger", "scripted_effect"}:
+            if index + 3 >= len(tokens) or tokens[index + 2].text != "=" or tokens[index + 3].text != "{":
+                raise ValueError("Malformed file-local helper declaration in source")
+            name = required_identifier(tokens[index + 1].text, "source inline helper name")
+            result.append(InlineSourceDeclaration(name, "trigger" if token.text == "scripted_trigger" else "effect",
+                                                  token.start, tokens[index + 1].start))
+        if token.text == "{":
+            depth += 1
+        elif token.text == "}":
+            depth -= 1
+            if depth < 0:
+                raise ValueError("Unmatched closing brace in inline source")
+    if depth:
+        raise ValueError("Unclosed brace in inline source")
+    return tuple(result)
+
+
+def extract_inline_definition(source: str, helper: InlineHelper) -> str:
+    """Extract the exact reviewed definition, including its local declaration."""
+    declarations = [item for item in inline_source_declarations(source)
+                    if item.name == helper.name and item.kind == helper.kind]
+    if len(declarations) != 1:
+        raise ValueError(f"Expected exactly one source inline definition: {helper.name}")
+    declaration = declarations[0]
+    return (source[declaration.keyword_start:declaration.name_start]
+            + extract_effect(source[declaration.name_start:], helper.name))
+
+
+def verify_encounter_source_bindings(game_root: Path) -> None:
+    """Bind snapshot bytes and the complete local-name inventory to source files.
+
+    Updating a snapshot hash in metadata cannot relabel another definition as
+    coming from an otherwise unchanged reviewed source file. A game directory
+    or the installation containing that directory is accepted explicitly.
+    """
+    native_root = game_root / "game" if (game_root / "game").is_dir() else game_root
+    sources: dict[str, tuple[str, str, tuple[str, ...]]] = {}
+    verified_helpers: set[InlineHelper] = set()
+    for projection in load_encounter_projections():
+        if projection.source_path not in sources:
+            raw = (native_root / projection.source_path).read_bytes()
+            digest = hashlib.sha256(raw).hexdigest()
+            if digest != projection.source_sha256:
+                raise ValueError(f"Installed source SHA differs: {projection.source_path}")
+            source = raw.decode("utf-8-sig").replace("\r\n", "\n")
+            inventory = tuple(item.name for item in inline_source_declarations(source))
+            sources[projection.source_path] = (digest, source, inventory)
+        digest, source, inventory = sources[projection.source_path]
+        if digest != projection.source_sha256:
+            raise ValueError(f"Conflicting installed source identity: {projection.source_path}")
+        if inventory != projection.inline_inventory:
+            raise ValueError(f"Complete inline inventory differs from source: {projection.source_path}")
+        original = pinned_encounter_source(projection)
+        expected = encode(extract_effect(source, projection.name))
+        if (PINNED_ROOT / projection.pinned_file).read_bytes() != expected or encode(original) != expected:
+            raise ValueError(f"Selected snapshot differs from installed source definition: {projection.name}")
+        # Retain the existing SHA/header/one-definition guards as well as the
+        # new provenance check; neither one replaces the other.
+        inline_helper_bodies(projection)
+        for helper in projection.inline_dependencies:
+            if helper in verified_helpers:
+                continue
+            if helper.source_path != projection.source_path or helper.source_sha256 != digest:
+                raise ValueError(f"Inline helper source binding differs: {helper.name}")
+            expected_inline = encode(extract_inline_definition(source, helper))
+            if (PINNED_ROOT / helper.pinned_file).read_bytes() != expected_inline:
+                raise ValueError(f"Inline snapshot differs from installed source definition: {helper.name}")
+            verified_helpers.add(helper)
+
+
+def pinned_encounter_source(projection: EncounterProjection) -> str:
+    raw = (PINNED_ROOT / projection.pinned_file).read_bytes()
+    if hashlib.sha256(raw).hexdigest() != projection.pinned_sha256:
+        raise ValueError(f"Pinned encounter definition changed: {projection.name}")
+    original = raw.decode("utf-8-sig").replace("\r\n", "\n")
+    if extract_effect(original, projection.name) != original:
+        raise ValueError(f"Pinned file must contain exactly one definition: {projection.name}")
+    return original
+
+
+def inline_helper_bodies(projection: EncounterProjection) -> dict[str, tuple[InlineHelper, str]]:
+    result: dict[str, tuple[InlineHelper, str]] = {}
+    for helper in projection.inline_dependencies:
+        raw = (PINNED_ROOT / helper.pinned_file).read_bytes()
+        if hashlib.sha256(raw).hexdigest() != helper.pinned_sha256:
+            raise ValueError(f"Pinned inline helper changed: {helper.name}")
+        definition = raw.decode("utf-8-sig").replace("\r\n", "\n")
+        header = re.match(rf"scripted_{helper.kind}\s+({re.escape(helper.name)})\s*=\s*\{{", definition)
+        if header is None or extract_effect(definition[header.start(1):], helper.name) != definition[header.start(1):]:
+            raise ValueError(f"Inline helper pin is not exactly one reviewed definition: {helper.name}")
+        result[helper.name] = (helper, definition[definition.index("{") + 1:definition.rindex("}")])
+    return result
+
+
+def expand_inline_helpers(source: str, projection: EncounterProjection) -> tuple[str, tuple[InlineExpansion, ...]]:
+    """Inline file-local calls without introducing a new character scope.
+
+    Trigger bodies remain one AND operand even inside OR/NOT. Effects retain
+    their original visibility and order. Only reviewed scalar yes/no calls are
+    accepted; parameter macros, cycles and incomplete dependency closures fail.
+    """
+    bodies = inline_helper_bodies(projection)
+    inventory = frozenset(projection.inline_inventory)
+    used: set[str] = set()
+    expansions: list[InlineExpansion] = []
+
+    def expand(text: str, chain: tuple[str, ...]) -> str:
+        tokens = script_tokens(text)
+        replacements: list[tuple[int, int, str]] = []
+        for index, token in enumerate(tokens):
+            if token.text not in inventory or index + 1 >= len(tokens) or tokens[index + 1].text != "=":
+                continue
+            if token.text not in bodies:
+                raise ValueError(f"Missing inline dependency: {token.text}")
+            if token.text in chain:
+                raise ValueError(f"Cyclic inline dependency: {chain + (token.text,)}")
+            if index + 2 >= len(tokens):
+                raise ValueError(f"Missing inline call value: {token.text}")
+            value = tokens[index + 2]
+            helper, body = bodies[token.text]
+            if value.text not in {"yes", "no"} or (helper.kind == "effect" and value.text != "yes"):
+                raise ValueError(f"Unsupported inline call arguments: {token.text}")
+            if "$" in body:
+                raise ValueError(f"Inline helper macros require explicit reviewed substitution: {token.text}")
+            used.add(helper.name)
+            expanded_body = expand(body, chain + (helper.name,))
+            wrapped = ("AND = {" + expanded_body + "}") if helper.kind == "trigger" else expanded_body
+            if value.text == "no":
+                wrapped = "NOT = { " + wrapped + " }"
+            original = text[token.start:value.end]
+            identity = hashlib.sha256(original.encode("utf-8")).hexdigest()
+            rendered = (f"\n# SXAD_INLINE_BEGIN {helper.name} {identity}\n" + wrapped
+                        + f"\n# SXAD_INLINE_END {helper.name} {identity}\n")
+            expansions.append(InlineExpansion(original, rendered))
+            replacements.append((token.start, value.end, rendered))
+        for start, end, replacement in reversed(replacements):
+            text = text[:start] + replacement + text[end:]
+        return text
+
+    expanded = expand(source, ())
+    if used != bodies.keys():
+        raise ValueError(f"Inline dependency closure has unused members: {sorted(bodies.keys() - used)}")
+    return expanded, tuple(expansions)
+
+
+def encounter_header(projection: EncounterProjection) -> str:
+    namespace = "" if projection.namespace is None else f"namespace = {projection.namespace}\n\n"
+    return HEADER + f"# Controlled CK3 {GAME_VERSION} encounter projection.\n" + namespace
+
+
+def restore_encounter_source(projection: EncounterProjection, source: str) -> tuple[str, tuple[str, ...]]:
+    """Validate canonical stock expansion, then physically reverse every call."""
+    original = pinned_encounter_source(projection)
+    expected_stock, expansions = expand_inline_helpers(original, projection)
+    pattern = r"(?ms)^\t# SXAD_HOOK_BEGIN\n(.*?)^\t# SXAD_HOOK_END\n"
+    additions = tuple(re.findall(pattern, source))
+    expected_count = len(projection.insertions) + int(projection.kind == "event")
+    if len(additions) != expected_count:
+        raise ValueError(f"Encounter insertion boundaries changed: {projection.name}")
+    stripped = re.sub(pattern, "", source)
+    expected = encounter_header(projection) + expected_stock
+    if stripped != expected:
+        raise ValueError(f"Stock encounter body changed: {projection.name}")
+    if projection.kind == "event":
+        priority = f"\tid_override_priority = {projection.event_override_priority}\n"
+        if additions.count(priority) != 1:
+            raise ValueError(f"Event override priority changed: {projection.name}")
+    restored = stripped[len(encounter_header(projection)):]
+    for expansion in sorted(expansions, key=lambda item: len(item.expanded), reverse=True):
+        restored = restored.replace(expansion.expanded, expansion.original)
+    if restored != original:
+        raise ValueError(f"Inline encounter expansion cannot restore its exact source: {projection.name}")
+    return restored, additions
+
+
 def encounter_hook_outputs() -> dict[str, bytes]:
-    """Apply reviewed insertions to original definitions, never to prior output."""
+    """Apply reviewed insertions, local-helper expansion and event precedence."""
     outputs: dict[str, bytes] = {}
     for projection in load_encounter_projections():
-        raw = (PINNED_ROOT / projection.pinned_file).read_bytes()
-        if hashlib.sha256(raw).hexdigest() != projection.pinned_sha256:
-            raise ValueError(f"Pinned encounter definition changed: {projection.name}")
-        original = raw.decode("utf-8-sig").replace("\r\n", "\n")
-        if extract_effect(original, projection.name) != original:
-            raise ValueError(f"Pinned file must contain exactly one definition: {projection.name}")
+        original = pinned_encounter_source(projection)
         pending: list[tuple[int, str]] = []
         for insertion in projection.insertions:
             if original.count(insertion.anchor) != insertion.expected_count:
@@ -174,39 +458,29 @@ def encounter_hook_outputs() -> dict[str, bytes]:
             offset = original.index(insertion.anchor)
             if insertion.position == "after":
                 offset += len(insertion.anchor)
-            block = INSERT_BEGIN + insertion.text.rstrip("\n") + "\n" + INSERT_END
-            pending.append((offset, block))
+            pending.append((offset, INSERT_BEGIN + insertion.text.rstrip("\n") + "\n" + INSERT_END))
+        if projection.kind == "event":
+            if any(token.text == "id_override_priority" for token in script_tokens(original)):
+                raise ValueError("Reviewed stock event already defines an override priority")
+            pending.append((original.index("\n") + 1, INSERT_BEGIN + f"\tid_override_priority = {projection.event_override_priority}\n" + INSERT_END))
         if len({offset for offset, _ in pending}) != len(pending):
             raise ValueError("Encounter insertion boundaries overlap")
         projected = original
         for offset, block in sorted(pending, reverse=True):
             projected = projected[:offset] + block + projected[offset:]
-        restored = re.sub(r"(?ms)^\t# SXAD_HOOK_BEGIN\n.*?^\t# SXAD_HOOK_END\n", "", projected)
-        if restored != original:
-            raise ValueError(f"Encounter projection cannot restore its source: {projection.name}")
-        namespace = "" if projection.namespace is None else f"namespace = {projection.namespace}\n\n"
-        outputs[projection.output] = encode(HEADER + f"# Controlled CK3 {GAME_VERSION} encounter projection.\n" + namespace + projected)
+        projected, _ = expand_inline_helpers(projected, projection)
+        rendered = encounter_header(projection) + projected
+        restore_encounter_source(projection, rendered)
+        outputs[projection.output] = encode(rendered)
     return outputs
 
 
 def encounter_owned_code(relative: str, source: str) -> str:
-    """Check the unchanged stock body, then expose only inserted mod effects."""
+    """Keep canonical expanded stock immutable; inspect every added mod effect."""
     projection = next((entry for entry in load_encounter_projections() if entry.output == relative), None)
     if projection is None:
         return source
-    raw = (PINNED_ROOT / projection.pinned_file).read_bytes()
-    if hashlib.sha256(raw).hexdigest() != projection.pinned_sha256:
-        raise ValueError(f"Pinned encounter definition changed: {projection.name}")
-    original = raw.decode("utf-8-sig").replace("\r\n", "\n")
-    pattern = r"(?ms)^\t# SXAD_HOOK_BEGIN\n(.*?)^\t# SXAD_HOOK_END\n"
-    additions = re.findall(pattern, source)
-    if len(additions) != len(projection.insertions):
-        raise ValueError(f"Encounter insertion boundaries changed: {projection.name}")
-    restored = re.sub(pattern, "", source)
-    namespace = "" if projection.namespace is None else f"namespace = {projection.namespace}\n\n"
-    expected = HEADER + f"# Controlled CK3 {GAME_VERSION} encounter projection.\n" + namespace + original
-    if restored != expected:
-        raise ValueError(f"Stock encounter body changed: {projection.name}")
+    _, additions = restore_encounter_source(projection, source)
     return "\n".join(additions)
 
 
@@ -676,7 +950,8 @@ def trait_icon() -> bytes:
 
 
 def render_outputs(game_root: Path | None = None) -> dict[str, bytes]:
-    # game_root is accepted for API stability; read-only rendering uses pinned inputs.
+    if game_root is not None:
+        verify_encounter_source_bindings(game_root)
     outputs = hook_outputs()
     for additions in (encounter_hook_outputs(), natural_simulation_outputs()):
         if outputs.keys() & additions.keys():
@@ -709,13 +984,13 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="Read-only byte parity check")
     parser.add_argument("--refresh-vanilla", action="store_true", help="Extract the two pinned vanilla hooks after source SHA validation")
-    parser.add_argument("--game-root", type=Path, default=DEFAULT_GAME_ROOT)
+    parser.add_argument("--game-root", type=Path, help="also verify exact pinned definitions and local-name inventories against this installation or game directory")
     args = parser.parse_args()
     if args.check and args.refresh_vanilla:
         parser.error("--check cannot refresh inputs")
     if args.refresh_vanilla:
-        refresh_vanilla(args.game_root)
-    outputs = render_outputs()
+        refresh_vanilla(args.game_root or DEFAULT_GAME_ROOT)
+    outputs = render_outputs(args.game_root)
     errors = []
     for relative, expected in outputs.items():
         target = MOD_ROOT / relative

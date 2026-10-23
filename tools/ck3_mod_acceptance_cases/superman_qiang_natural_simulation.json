@@ -56,7 +56,7 @@
     "This bounded matrix does not cover same-sex marriage engine setup, all third-party mods, engine fertility rolls or exact natural-pregnancy attempt observation."
   ],
   "post_start": {"government_key": null, "primary_title_tier_key": null, "independent": null},
-  "required_startup": ["SXANF: BASELINE_READY natural-simulation"],
+  "required_startup": ["SXANF: FIXTURE_ARMED natural-simulation"],
   "forbidden_startup": ["SXANF: FAIL"],
   "source_catalogue": {
     "directory": "mod_superman_qiang",

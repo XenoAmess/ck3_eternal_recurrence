@@ -1,0 +1,19 @@
+﻿scripted_trigger stewardship_duty_1055_is_unwed_child = {
+
+	#Meets all of the minimum requirements.
+	stewardship_duty_1055_minimum_et_requirements = yes
+
+	#Is not married and has not had any other kids (if female).
+	is_married = no
+
+	OR = {
+		any_child = {
+			count < 1
+		}
+		is_female = no
+	}
+
+
+	#Must have the same dynasty as their parent (no bastards).
+	dynasty = prev.dynasty
+}

@@ -1,0 +1,8 @@
+﻿scripted_trigger learning_medicine_2023_continue_chain_trigger = {
+	learning_medicine_2022_valid_physician_trigger = yes
+	exists = scope:spouse
+	scope:spouse = {
+		is_alive = yes
+		is_consort_of = root
+	}
+}

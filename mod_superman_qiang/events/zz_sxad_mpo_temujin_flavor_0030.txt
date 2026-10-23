@@ -3,6 +3,9 @@
 namespace = mpo_temujin_flavor
 
 mpo_temujin_flavor.0030 = {
+	# SXAD_HOOK_BEGIN
+	id_override_priority = 1
+	# SXAD_HOOK_END
 	type = character_event
 	title = mpo_temujin_flavor.0030.t
 	desc = mpo_temujin_flavor.0030.desc

@@ -1,4 +1,4 @@
-# External diagnosis fixture only. No production runtime or automatic matrix completion.
+﻿# External diagnosis fixture only. No production runtime or automatic matrix completion.
 namespace = sxant
 
 sxant.1 = {
@@ -39,6 +39,7 @@ sxant.1 = {
 
 sxant.2 = {
     type = character_event
+    theme = marriage
     title = sxant_baseline_title
     desc = sxant_baseline_desc
     right_portrait = scope:sxant_subject
@@ -58,6 +59,7 @@ sxant.2 = {
 
 sxant.100 = {
     type = character_event
+    theme = marriage
     title = sxant_repetitions_title
     desc = sxant_repetitions_desc
     right_portrait = scope:sxant_subject
@@ -70,6 +72,7 @@ sxant.100 = {
 
 sxant.200 = {
     type = character_event
+    theme = marriage
     title = sxant_repetitions_title
     desc = sxant_repetitions_desc
     right_portrait = scope:sxant_subject
@@ -82,6 +85,7 @@ sxant.200 = {
 
 sxant.300 = {
     type = character_event
+    theme = marriage
     title = sxant_repetitions_title
     desc = sxant_repetitions_desc
     right_portrait = scope:sxant_subject
@@ -94,6 +98,7 @@ sxant.300 = {
 
 sxant.400 = {
     type = character_event
+    theme = marriage
     title = sxant_repetitions_title
     desc = sxant_repetitions_desc
     right_portrait = scope:sxant_subject
@@ -106,6 +111,7 @@ sxant.400 = {
 
 sxant.500 = {
     type = character_event
+    theme = marriage
     title = sxant_repetitions_title
     desc = sxant_repetitions_desc
     right_portrait = scope:sxant_subject
@@ -118,6 +124,7 @@ sxant.500 = {
 
 sxant.600 = {
     type = character_event
+    theme = marriage
     title = sxant_repetitions_title
     desc = sxant_repetitions_desc
     right_portrait = scope:sxant_subject
@@ -130,6 +137,7 @@ sxant.600 = {
 
 sxant.700 = {
     type = character_event
+    theme = marriage
     title = sxant_repetitions_title
     desc = sxant_repetitions_desc
     right_portrait = scope:sxant_subject
@@ -142,6 +150,7 @@ sxant.700 = {
 
 sxant.800 = {
     type = character_event
+    theme = marriage
     title = sxant_repetitions_title
     desc = sxant_repetitions_desc
     right_portrait = scope:sxant_subject
@@ -994,6 +1003,7 @@ sxant.1032 = {
 
 sxant.4 = {
     type = character_event
+    theme = marriage
     title = sxant_probe_ready_title
     desc = sxant_probe_ready_desc
     right_portrait = scope:sxant_subject

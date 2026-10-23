@@ -3,6 +3,9 @@
 namespace = pilgrimage
 
 pilgrimage.2101 = {
+	# SXAD_HOOK_BEGIN
+	id_override_priority = 1
+	# SXAD_HOOK_END
 	type = character_event
 	title = pilgrimage.2101.t
 	desc = { 
@@ -268,7 +271,17 @@ pilgrimage.2101 = {
 				}
 				random = {
 					chance = 33
-					pilgrimage_2101_save_scopes_effect = yes
+					
+# SXAD_INLINE_BEGIN pilgrimage_2101_save_scopes_effect 9b7a53da69f1b671cd742575cfbff41dac98ca0a2cdafe28b91bffa3dfcbdd9e
+
+	location = { save_scope_as = brothel_location }
+	trigger_event = {
+		id = lover.8102
+		days = 30
+	}
+
+# SXAD_INLINE_END pilgrimage_2101_save_scopes_effect 9b7a53da69f1b671cd742575cfbff41dac98ca0a2cdafe28b91bffa3dfcbdd9e
+
 				}
 			}
 		}
@@ -328,7 +341,17 @@ pilgrimage.2101 = {
 				}
 				random = {
 					chance = 75
-					pilgrimage_2101_save_scopes_effect = yes
+					
+# SXAD_INLINE_BEGIN pilgrimage_2101_save_scopes_effect 9b7a53da69f1b671cd742575cfbff41dac98ca0a2cdafe28b91bffa3dfcbdd9e
+
+	location = { save_scope_as = brothel_location }
+	trigger_event = {
+		id = lover.8102
+		days = 30
+	}
+
+# SXAD_INLINE_END pilgrimage_2101_save_scopes_effect 9b7a53da69f1b671cd742575cfbff41dac98ca0a2cdafe28b91bffa3dfcbdd9e
+
 				}
 			}
 		}

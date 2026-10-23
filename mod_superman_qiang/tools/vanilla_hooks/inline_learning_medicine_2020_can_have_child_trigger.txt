@@ -1,0 +1,16 @@
+﻿scripted_trigger learning_medicine_2020_can_have_child_trigger = {
+	trigger_if = {
+		limit = { is_male = yes }
+		is_visibly_fertile = yes
+		fertility >= 0.1
+	}
+	trigger_if = {
+		limit = { is_female = yes }
+		is_visibly_fertile = yes
+		fertility >= 0.1
+		is_pregnant = no
+	}
+	NOT = {
+		has_court_position = court_physician_court_position
+	}
+}
