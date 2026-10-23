@@ -1,0 +1,93 @@
+{
+  "schema": "living-artifacts-promo-delivery-status-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-23T23:25:01.383965+00:00",
+  "source_commit": "929679357f04a8b7ca1acf3cbe54a03d75a8f302",
+  "title": "传世之物，饥渴长存｜CK3模组推荐《活武器：饥渴的传世之物》",
+  "music": {
+    "user_basis": "xp_field1.mid",
+    "original_bytes": 21627,
+    "original_sha256": "91f4f34740bcc1e99ba34d41ce0df90191a409c977634333d7801e047875d3e3",
+    "arrangement_seconds": 105.070625,
+    "full_audio_seconds": 210,
+    "voice_segments": 8,
+    "sample_peak_dbfs": -4.3,
+    "not_truepeak_or_LUFS": true,
+    "status": "GENERATED_NOT_AUDITIONED"
+  },
+  "promo": {
+    "preserved_artifacts": 22,
+    "completed_film": false,
+    "usable_footage_count": 0,
+    "replacement_Workshop_images_uploaded": 0,
+    "replacement_images_embedded_in_BBCode": false
+  },
+  "R25": {
+    "failure": "recorder rejected game-owned player/game_rules/presets.txt; shared fix committed",
+    "public_exit": 2,
+    "allocate_wait": 0,
+    "normal_close_qualified": false,
+    "failure_lifecycle_completed": false,
+    "wrong_Steam_foreground_click_preserved": true,
+    "resource_release_sequence": 1030
+  },
+  "R26": {
+    "phase": "premap; no actor",
+    "native_game_exit": 0,
+    "public_exit": 2,
+    "allocate_wait": 0,
+    "resource_release_sequence": 1044,
+    "business_qualified": false,
+    "raw_footage": 0,
+    "Save": 0,
+    "D_live_cap_bytes": 503316480,
+    "D_live_final_bytes": 579860738,
+    "D_live_overrun_bytes": 76544258,
+    "Root_late_response_to90pct_warning": true,
+    "old_cap_not_rewritten": true
+  },
+  "CI_929": {
+    "Official": "FAIL_STEP49_LAUNCHER_FIXTURE_SOURCE_REGISTRATION",
+    "Java_step41": "SUCCESS",
+    "Cold": "NOT_TRIGGERED",
+    "Linear": "SUCCESS"
+  },
+  "next_work": [
+    "Repair actual launcher fixture/source registration CI failure",
+    "Review real storage overrun and capture route; do not reset counters or rewrite old caps",
+    "Film ordinary gameplay and derive W01-W03, upload real images, embed URLs in repository BBCode",
+    "Render film from actual footage and preserved audio"
+  ],
+  "pins": [
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\music\\attempt-midi-a01\\xp_field1-dark-v1.wav",
+      "bytes": 20173604,
+      "sha256": "198ee0ddd68c188d0770934686caef14ff665cae4edf2d49e1440502ee1d1487"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\edit-a01\\narration-music.m4a",
+      "bytes": 5021084,
+      "sha256": "d712ec04974a892031e40c25e93c21d6531e099053bf9004eb7f0046bca35a6e"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\promo-runs\\formal-capture-a01\\run-manifest.json",
+      "bytes": 11221,
+      "sha256": "c8cf3a89dd302dd511aed1921dbd3e531937915152d48369c8e1a9d0b3ce03f6"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\edit-a01\\final-edit-index.json",
+      "bytes": 5382,
+      "sha256": "af9858ebc237ce277d5b9c24ecac3751fda73f4e99fb57987272da35bec122d9"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\closures\\r26-a01\\shared-closure-consumer-preview.json",
+      "bytes": 3855,
+      "sha256": "b8c96b46ceccfd4e8670335a624f7cbdbf02684d94421aa20f3376a6891f7e77"
+    }
+  ],
+  "storage_close": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\storage-r26-cumulative-monitor-a01\\final-child-close.json",
+    "bytes": 4200,
+    "sha256": "fc9bda5b42a1e9ffbef92652c94b224143e5d10e8f4bf64a6835eab8ce7664a5"
+  }
+}
