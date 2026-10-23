@@ -1,4 +1,4 @@
-﻿"""Managed ordinary pilgrimage: native offers, finite planner, one Start, journey."""
+"""Managed ordinary pilgrimage: native offers, finite planner, one Start, journey."""
 from __future__ import annotations
 from ck3_mod_acceptance_saved_profile_v2 import materialize_saved_profile_v2
 
@@ -7,7 +7,7 @@ import importlib.util
 import hashlib
 import json
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Protocol
 from ck3_mod_acceptance_native_day import (
     DayClient as PublicDayClient, native_day_request_count, obj, need, integer,
 )
@@ -27,7 +27,7 @@ RELIGION = "ck3_query_player_religion_context_v1"
 EXE_SHA256 = "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
 
 
-def require(value, message):
+def require(value: object, message: str) -> None:
     if not value:
         raise ValueError(message)
 
@@ -47,9 +47,15 @@ def sibling(path, name):
 
 def validate_contract(context: JSONObject) -> JSONObject:
     from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_contract import (
-        pilgrimage_identity, pilgrimage_policy_caps, pilgrimage_natural_advance_mode)
+        pilgrimage_identity, pilgrimage_policy_caps, pilgrimage_natural_advance_mode, pilgrimage_resume,
+        verify_pilgrimage_resume_origin)
     c = obj(context["case_contract"], "pilgrimage case contract")
     identity = pilgrimage_identity(c)
+    resume = pilgrimage_resume(c)
+    if resume is not None:
+        verify_pilgrimage_resume_origin(resume, identity=identity,
+            machine_id=str(c.get("machine_id")), run_id=str(context.get("run_id")),
+            preferred_destination_id=c.get("preferred_destination_id"))
     caps = pilgrimage_policy_caps(identity.case)
     require(c.get("case") == context.get("case") == identity.case
             and c.get("product") == context.get("product") == "faith-engine", "Ordinary case identity differs")
@@ -335,11 +341,101 @@ def require_planner(value: JSONObject, stage: int, province: int | None = None,
     return planner
 
 
+class ResumeReadClient(Protocol):
+    output: Path
+
+    def execute_plan(self, steps: list[JSONObject], name: str) -> object: ...
+    def checkpoint(self, name: str, value: JSONObject) -> object: ...
+
+
+def resume_native_identity(context: JSONObject, client: ResumeReadClient, binding: JSONObject,
+        before: JSONObject) -> tuple[JSONObject, JSONObject, tuple[str, ...], int]:
+    """Read only, before any drain/advance: bind the cold owner to one saved activity."""
+    from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_contract import (
+        pilgrimage_identity, pilgrimage_resume, verify_pilgrimage_resume_origin)
+    c = obj(context["case_contract"], "resume case")
+    identity = pilgrimage_identity(c)
+    resume = pilgrimage_resume(c)
+    if resume is None:
+        raise ValueError("explicit resume_existing required")
+    origin = verify_pilgrimage_resume_origin(resume, identity=identity,
+        machine_id=str(c["machine_id"]), run_id=str(context["run_id"]),
+        preferred_destination_id=c.get("preferred_destination_id"))
+    require(binding["bridge_pid"] != origin.bridge_pid,
+            "Resume requires a new cold native process, never the predecessor PID")
+    hello = obj(obj(before.get("diagnostics"), "resume diagnostics").get("hello"), "resume hello")
+    require(hello.get("expected_ck3_version") == "1.20.0.4", "Resume requires the exact native game version")
+    require({"active_event", "pending_character_interaction"} <= before.keys()
+            and before["active_event"] is None and before["pending_character_interaction"] is None,
+            "Resume saved postcondition must restore a modal-free native frame before any drain")
+    sources: list[JSONObject] = []
+    observed: JSONObject = {}
+    for name, tool in (("pilgrimage-resume-religion", RELIGION), ("pilgrimage-resume-identity", IDENTITIES)):
+        revision = integer(before.get("revision"), "resume revision")
+        native_revision = integer(before.get("native_revision"), "resume native revision")
+        submitted = client.execute_plan([{"id": name, "tool": tool, "fresh_revision": False,
+            "args": {"expected_revision": revision}}], name)
+        if not isinstance(submitted, list) or len(submitted) != 1:
+            raise ValueError("Resume query requires one actual result")
+        row = obj(submitted[0], "resume actual query row")
+        require(row.get("ok") is True and not row.get("error"), "Resume readonly query failed")
+        value = obj(row.get("result"), "resume native readonly value")
+        after = obj(row.get("after_snapshot"), "resume native query after-frame")
+        integer(after.get("revision"), "resume query after revision")
+        integer(after.get("native_revision"), "resume query after native revision")
+        require(frame_binding(after, context, identity.actor_character_id) == binding
+                and after.get("date_raw") == identity.date_raw and type(after.get("date_raw")) is int
+                and {"active_event", "pending_character_interaction"} <= after.keys()
+                and after["active_event"] is None and after["pending_character_interaction"] is None,
+                "Resume query crossed its cold owner/date or published a modal; no action submitted")
+        require(value.get("read_only") is True and value.get("queried_revision") == revision
+                and type(value.get("queried_revision")) is int
+                and value.get("snapshot_revision") == native_revision
+                and type(value.get("snapshot_revision")) is int
+                and value.get("date_raw") == identity.date_raw and type(value.get("date_raw")) is int
+                and value.get("played_character_id") == identity.actor_character_id
+                and type(value.get("played_character_id")) is int,
+                "Resume readonly result lacks the exact current native scope")
+        if tool == RELIGION:
+            require(value.get("available") is True and type(value.get("faith_id")) is int
+                    and value["faith_id"] == identity.faith_id and "rite_id" in value
+                    and (value["rite_id"] is None if identity.rite_id is None else
+                         type(value["rite_id"]) is int and value["rite_id"] == identity.rite_id),
+                    "Resume actual Faith/Rite differs from saved expected identity")
+        else:
+            rows = value.get("activities")
+            require(value.get("schema") == "ck3_12004_player_pilgrimage_activities_v1"
+                    and value.get("scope") == "currently-hosted-by-current-player"
+                    and value.get("activity_type_key") == "activity_pilgrimage"
+                    and value.get("absence_is_completion") is False
+                    and type(value.get("activity_count")) is int and value["activity_count"] == 1
+                    and isinstance(rows, list) and len(rows) == 1,
+                    "Resume requires exactly one actual currently hosted pilgrimage")
+            observed = obj(rows[0], "actual resumed activity")
+            require(all(type(observed.get(k)) is type(v) and observed.get(k) == v
+                        for k, v in resume.activity_json().items()), "Resume full activity identity differs")
+        source_path = client.output / (name + ".actual-results.json")
+        raw = source_path.read_bytes()
+        sources.append({"path": str(source_path), "bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()})
+        before = after
+    elapsed = identity.date_raw - origin.start_date_raw
+    proof: JSONObject = {"entry_mode": "resume_existing", "predecessor_run_id": resume.predecessor_run_id,
+        "original_start": dict(resume.original_start), "predecessor_runtime": dict(resume.predecessor_runtime),
+        "predecessor_source_commit": origin.source_commit, "binding": binding,
+        "activity": resume.activity_json(), "source_pins": sources, "prior_elapsed_hours": elapsed,
+        "consumed_event_definitions": list(origin.consumed_event_definitions), "start_replayed": False,
+        "consumed_event_instance_ids_not_reused_across_processes": True}
+    client.checkpoint("pilgrimage-resume-native-identity", proof)
+    return resume.activity_json(), proof, origin.consumed_event_definitions, elapsed
+
+
 def run_case(context: JSONObject, client: CaseClient) -> JSONObject:
     from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_contract import (
-        pilgrimage_identity, pilgrimage_natural_advance_mode, require_pilgrimage_natural_capabilities)
+        pilgrimage_identity, pilgrimage_natural_advance_mode, require_pilgrimage_natural_capabilities,
+        pilgrimage_resume)
     c = validate_contract(context)
     mechanism = pilgrimage_identity(c)
+    resume = pilgrimage_resume(c)
     policy = obj(c["policy"], "finite policy")
     client = BudgetedClient(client, integer(policy["max_public_requests"], "request cap"))
     before = client.snapshot(require_event_free=False)
@@ -359,6 +455,8 @@ def run_case(context: JSONObject, client: CaseClient) -> JSONObject:
         "milestone_observations": milestone_observations}
     planner = Planner(context, client, binding, before["date_raw"])
     natural_capabilities: JSONObject | None = None
+    consumed_event_definitions: tuple[str, ...] = ()
+    prior_elapsed_hours = 0
     try:
         if pilgrimage_natural_advance_mode(context["case"], policy) == "native_horizon":
             name = "ordinary-pilgrimage-natural-clock-capabilities"
@@ -380,165 +478,178 @@ def run_case(context: JSONObject, client: CaseClient) -> JSONObject:
                 "typed_event_observer_observed": True,
                 "source": {"path": str(cap_path), "bytes": len(cap_raw),
                     "sha256": hashlib.sha256(cap_raw).hexdigest()}}
-        before = drain_if_needed(context, client, binding, before)
-        require(frame_binding(before, context, mechanism.actor_character_id) == binding,
-                "Initial interruption changed original actor or native owner")
-        planner.start_date = before["date_raw"]
-        identities = planner.call(IDENTITIES)
-        require(identities.get("activity_count") == 0 and identities.get("activities") == [],
-                "Existing hosted pilgrimage precludes a new once-only Start")
-        offers = planner.call(RELIGION)
-        preferred = c.get("preferred_destination_id")
-        if preferred is not None and type(preferred) is not int:
-            raise ValueError("Frozen preferred destination is not an integer")
-        destination = choose_destination(offers, mechanism.actor_character_id, before["date_raw"],
-            preferred, mechanism.faith_id, mechanism.rite_id)
-        province = integer(destination["province_id"], "selected destination")
-        client.checkpoint("ordinary-pilgrimage-destination-policy", destination)
-        capture_checkpoint(context, client, "ordinary-pilgrimage-record-before-planner", {
-            "binding": binding, "date_raw": before["date_raw"], "actor_character_id": binding["actor_character_id"],
-            "faith_id": mechanism.faith_id, "rite_id": mechanism.rite_id,
-            "option_key": mechanism.option_key, "native_offers": offers, "destination": destination,
-            "next_action": "Open original pious pilgrimage planner after recording is ready"})
-        initial = planner.query()
-        require(initial.get("ledger_state") == "idle" and initial.get("needs_recovery") is False,
-                "Existing native submission ledger cannot be reset")
-        opened = planner.submit("open")
-        # A separate native stage1 read binds the actual selected option.
-        # stage1 read below must independently observe the current selection.
-        require(opened.get("operation_status") == "observed" and opened.get("invoked") is True
-                and opened.get("needs_recovery") is False
-                and isinstance(opened.get("planner"), dict)
-                and opened["planner"].get("stage") == 1
-                and opened["planner"].get("can_progress") is True,
-                "Original Open was not observed at ready stage1")
-        stage1 = planner.query(read_stage=1)
-        require_planner(stage1, 1, option_key=mechanism.option_key)
-        reviewed_stage1 = capture_checkpoint(context, client, "ordinary-pilgrimage-review-stage1-before-confirm", {
-            "binding": binding, "native_observation": stage1,
-            "native_observation_sha256": visual_observation_sha256(stage1),
-            "prepare_original_image": True, "approval_key": "confirm_once_authorized",
-            "review_contract": "Root directly reviews original PNG and the frozen selected_option_key at stage1; only explicit current-observation approval permits Confirm",
-            "next_action": "Fresh native stage1 read, then one original pious Confirm"})
-        require_root_visual_review(reviewed_stage1, stage1, "confirm_once_authorized")
-        # The scene stayed paused for Root; reject changed selection after review.
-        require_planner(planner.query(read_stage=1), 1, option_key=mechanism.option_key)
-        confirmed = planner.submit("confirm")
-        require(confirmed.get("operation_status") == "observed" and not confirmed.get("needs_recovery"),
-                "Pious confirmation was not observed")
-        selectable = planner.query("can_select", province_id=province)
-        require(selectable.get("operation_status") == "observed"
-                and selectable.get("planner", {}).get("can_select") is True,
-                "Original current planner rejects the fresh destination")
-        selected = planner.submit("select", province_id=province)
-        require(selected.get("operation_status") == "observed" and not selected.get("needs_recovery"),
-                "Destination submission has unknown or rejected state")
-        require_planner(planner.query(), 5, province, mechanism.option_key)
-        quoted = planner.query("quote")
-        quote = quoted.get("quote")
-        require(quoted.get("operation_status") == "observed" and isinstance(quote, dict)
-                and quote.get("observed") is True and quote.get("planning_stage") == 5
-                and quote.get("final_can_start_observed") is True and quote.get("final_can_start") is True
-                and quote.get("unknown_positive_configured_cost") is False
-                and quote.get("selected_option", {}).get("key") == mechanism.option_key,
-                "Real configured full10 quote or final CanStart unavailable")
-        client.checkpoint("ordinary-pilgrimage-final-configured-full10-quote", {
-            "quote": quote, "journey_inclusion_proven": False,
-            "native_final_canstart_required": True, "reserve_gold_raw": policy["reserve_gold_raw"],
-            "policy": "retain explicit gold reserve; never present activity-only offer as all journey cost"})
-        reviewed_quote = capture_checkpoint(context, client, "ordinary-pilgrimage-record-quote-before-start", {
-            "binding": binding, "province_id": province, "quote": quote,
-            "native_observation": quoted, "native_observation_sha256": visual_observation_sha256(quoted),
-            "prepare_original_image": True, "approval_key": "start_once_authorized",
-            "review_contract": "Root directly reviews original PNG and actual final configured price/CanStart/reserve; this quote is not a proven total journey cost",
-            "reserve_gold_raw": policy["reserve_gold_raw"], "journey_cost_inclusion_proven": False,
-            "next_action": "One original Start only after explicit Root review of this final native price"})
-        require_root_visual_review(reviewed_quote, quoted, "start_once_authorized")
-        observations = sibling(Path(__file__).with_name("faith_e02_pilgrimage_observations.py"),
-                               "_faith_e02_pilgrimage_milestone_observations")
-        observations.observe_milestone(context, client, binding, milestone_observations,
-                                       "before-start")
-        # The scene remains paused during capture coordination. Re-read the
-        # actual destination and priced configuration before the one submission.
-        require_planner(planner.query(), 5, province, mechanism.option_key)
-        latest = planner.query("quote")
-        latest_quote = latest.get("quote")
-        require(latest.get("operation_status") == "observed" and isinstance(latest_quote, dict)
-                and latest_quote.get("final_can_start_observed") is True and latest_quote.get("final_can_start") is True
-                and latest_quote.get("unknown_positive_configured_cost") is False,
-                "Final native quote unavailable after capture checkpoint")
-        for key in ("configured_cost_raw", "known_name_resource_indices", "named_cost_verified", "selected_option"):
-            require(latest_quote.get(key) == quote.get(key), "Priced configuration changed after Root capture: " + key)
-        quote = latest_quote
-        wallet_before = planner.snapshot()
-        client.checkpoint("ordinary-pilgrimage-start-once-intent", {"run_id": context["run_id"],
-            "machine_id": c["machine_id"], "province_id": province, "quote": quote,
-            "reserve_gold_raw": policy["reserve_gold_raw"], "attempt": 1,
-            "unknown_result_policy": "never resubmit; query native persistent ledger and hosted identities only"})
-        result["start_intent_written"] = True
-        # This is the only Start call in this case. Any exception leaves the
-        # durable intent unresolved; neither this adapter nor Python retries it.
-        start = None
-        try:
-            start = planner.submit("start", province_id=province,
-                reserve_gold_raw=policy["reserve_gold_raw"])
-        except Exception as error:
-            result.update(status="start_outcome_unknown", needs_recovery=True,
-                start_acknowledgement_missing=True, start_response_error=type(error).__name__ + ": " + str(error))
-        result["start_invoked"] = start is not None and start.get("invoked") is True
-        result["start_response"] = start
-        if start is not None:
-            result["needs_recovery"] = start.get("needs_recovery") is True
-            require(result["start_invoked"], "Original Start was rejected before native invocation")
-        identity = None
-        post_failures = []
-        for _ in range(4):
+        if resume is not None:
+            identity, resume_proof, consumed_event_definitions, prior_elapsed_hours = resume_native_identity(
+                context, client, binding, before)
+            result.update(status="hosted_identity_observed", hosted_identity_observed=True,
+                hosted_identity=identity, resume=resume_proof, entry_mode="resume_existing")
+        else:
+            before = drain_if_needed(context, client, binding, before)
+            require(frame_binding(before, context, mechanism.actor_character_id) == binding,
+                    "Initial interruption changed original actor or native owner")
+            planner.start_date = before["date_raw"]
+            identities = planner.call(IDENTITIES)
+            require(identities.get("activity_count") == 0 and identities.get("activities") == [],
+                    "Existing hosted pilgrimage precludes a new once-only Start")
+            offers = planner.call(RELIGION)
+            preferred = c.get("preferred_destination_id")
+            if preferred is not None and type(preferred) is not int:
+                raise ValueError("Frozen preferred destination is not an integer")
+            destination = choose_destination(offers, mechanism.actor_character_id, before["date_raw"],
+                preferred, mechanism.faith_id, mechanism.rite_id)
+            province = integer(destination["province_id"], "selected destination")
+            client.checkpoint("ordinary-pilgrimage-destination-policy", destination)
+            capture_checkpoint(context, client, "ordinary-pilgrimage-record-before-planner", {
+                "binding": binding, "date_raw": before["date_raw"], "actor_character_id": binding["actor_character_id"],
+                "faith_id": mechanism.faith_id, "rite_id": mechanism.rite_id,
+                "option_key": mechanism.option_key, "native_offers": offers, "destination": destination,
+                "next_action": "Open original pious pilgrimage planner after recording is ready"})
+            initial = planner.query()
+            require(initial.get("ledger_state") == "idle" and initial.get("needs_recovery") is False,
+                    "Existing native submission ledger cannot be reset")
+            opened = planner.submit("open")
+            # A separate native stage1 read binds the actual selected option.
+            # stage1 read below must independently observe the current selection.
+            require(opened.get("operation_status") == "observed" and opened.get("invoked") is True
+                    and opened.get("needs_recovery") is False
+                    and isinstance(opened.get("planner"), dict)
+                    and opened["planner"].get("stage") == 1
+                    and opened["planner"].get("can_progress") is True,
+                    "Original Open was not observed at ready stage1")
+            stage1 = planner.query(read_stage=1)
+            require_planner(stage1, 1, option_key=mechanism.option_key)
+            reviewed_stage1 = capture_checkpoint(context, client, "ordinary-pilgrimage-review-stage1-before-confirm", {
+                "binding": binding, "native_observation": stage1,
+                "native_observation_sha256": visual_observation_sha256(stage1),
+                "prepare_original_image": True, "approval_key": "confirm_once_authorized",
+                "review_contract": "Root directly reviews original PNG and the frozen selected_option_key at stage1; only explicit current-observation approval permits Confirm",
+                "next_action": "Fresh native stage1 read, then one original pious Confirm"})
+            require_root_visual_review(reviewed_stage1, stage1, "confirm_once_authorized")
+            # The scene stayed paused for Root; reject changed selection after review.
+            require_planner(planner.query(read_stage=1), 1, option_key=mechanism.option_key)
+            confirmed = planner.submit("confirm")
+            require(confirmed.get("operation_status") == "observed" and not confirmed.get("needs_recovery"),
+                    "Pious confirmation was not observed")
+            selectable = planner.query("can_select", province_id=province)
+            require(selectable.get("operation_status") == "observed"
+                    and selectable.get("planner", {}).get("can_select") is True,
+                    "Original current planner rejects the fresh destination")
+            selected = planner.submit("select", province_id=province)
+            require(selected.get("operation_status") == "observed" and not selected.get("needs_recovery"),
+                    "Destination submission has unknown or rejected state")
+            require_planner(planner.query(), 5, province, mechanism.option_key)
+            quoted = planner.query("quote")
+            quote = quoted.get("quote")
+            require(quoted.get("operation_status") == "observed" and isinstance(quote, dict)
+                    and quote.get("observed") is True and quote.get("planning_stage") == 5
+                    and quote.get("final_can_start_observed") is True and quote.get("final_can_start") is True
+                    and quote.get("unknown_positive_configured_cost") is False
+                    and quote.get("selected_option", {}).get("key") == mechanism.option_key,
+                    "Real configured full10 quote or final CanStart unavailable")
+            client.checkpoint("ordinary-pilgrimage-final-configured-full10-quote", {
+                "quote": quote, "journey_inclusion_proven": False,
+                "native_final_canstart_required": True, "reserve_gold_raw": policy["reserve_gold_raw"],
+                "policy": "retain explicit gold reserve; never present activity-only offer as all journey cost"})
+            reviewed_quote = capture_checkpoint(context, client, "ordinary-pilgrimage-record-quote-before-start", {
+                "binding": binding, "province_id": province, "quote": quote,
+                "native_observation": quoted, "native_observation_sha256": visual_observation_sha256(quoted),
+                "prepare_original_image": True, "approval_key": "start_once_authorized",
+                "review_contract": "Root directly reviews original PNG and actual final configured price/CanStart/reserve; this quote is not a proven total journey cost",
+                "reserve_gold_raw": policy["reserve_gold_raw"], "journey_cost_inclusion_proven": False,
+                "next_action": "One original Start only after explicit Root review of this final native price"})
+            require_root_visual_review(reviewed_quote, quoted, "start_once_authorized")
+            observations = sibling(Path(__file__).with_name("faith_e02_pilgrimage_observations.py"),
+                                   "_faith_e02_pilgrimage_milestone_observations")
+            observations.observe_milestone(context, client, binding, milestone_observations,
+                                           "before-start")
+            # The scene remains paused during capture coordination. Re-read the
+            # actual destination and priced configuration before the one submission.
+            require_planner(planner.query(), 5, province, mechanism.option_key)
+            latest = planner.query("quote")
+            latest_quote = latest.get("quote")
+            require(latest.get("operation_status") == "observed" and isinstance(latest_quote, dict)
+                    and latest_quote.get("final_can_start_observed") is True and latest_quote.get("final_can_start") is True
+                    and latest_quote.get("unknown_positive_configured_cost") is False,
+                    "Final native quote unavailable after capture checkpoint")
+            for key in ("configured_cost_raw", "known_name_resource_indices", "named_cost_verified", "selected_option"):
+                require(latest_quote.get(key) == quote.get(key), "Priced configuration changed after Root capture: " + key)
+            quote = latest_quote
+            wallet_before = planner.snapshot()
+            client.checkpoint("ordinary-pilgrimage-start-once-intent", {"run_id": context["run_id"],
+                "machine_id": c["machine_id"], "province_id": province, "quote": quote,
+                "reserve_gold_raw": policy["reserve_gold_raw"], "attempt": 1,
+                "unknown_result_policy": "never resubmit; query native persistent ledger and hosted identities only"})
+            result["start_intent_written"] = True
+            # This is the only Start call in this case. Any exception leaves the
+            # durable intent unresolved; neither this adapter nor Python retries it.
+            start = None
             try:
-                post = planner.query("post")
+                start = planner.submit("start", province_id=province,
+                    reserve_gold_raw=policy["reserve_gold_raw"])
             except Exception as error:
-                post_failures.append(type(error).__name__ + ": " + str(error))
-                continue
-            client.checkpoint("ordinary-pilgrimage-post-" + str(planner.sequence), post)
-            if post.get("operation_status") == "identity_observed" and isinstance(post.get("new_identity"), dict):
-                identity = post["new_identity"]
-                break
-            if post.get("operation_status") not in {"post_pending", "unavailable"}:
-                post_failures.append("Native post observer: " + str(post.get("operation_status")))
-                break
-        result["post_observation_failures"] = post_failures
-        hosted = None
-        try:
-            hosted = planner.call(IDENTITIES)
-        except Exception as error:
-            result["independent_hosted_read_error"] = type(error).__name__ + ": " + str(error)
-        wallet_after = None
-        try:
-            wallet_after = planner.snapshot()
-        except Exception as error:
-            result["wallet_post_read_error"] = type(error).__name__ + ": " + str(error)
-        client.checkpoint("ordinary-pilgrimage-post-start-wallet-observation", {
-            "before": {k: wallet_before.get(k) for k in ("played_character_gold", "played_character_piety", "native_revision", "date_raw")},
-            "after": {k: wallet_after.get(k) for k in ("played_character_gold", "played_character_piety", "native_revision", "date_raw")} if wallet_after else None,
-            "payment_total_proven": False, "hosted_identity": identity})
-        rows = hosted.get("activities", []) if isinstance(hosted, dict) else []
-        ledger_reconciled = identity is not None
-        if identity is None and len(rows) == 1:
-            observed = rows[0]
-            if (observed.get("host_character_id") == binding["actor_character_id"]
-                    and observed.get("type_key") == "activity_pilgrimage"):
-                identity = observed
-        require(identity is not None and any(row == identity for row in rows),
-                "Native new identity remains pending or independent full identity is absent; Start is never retried")
-        result.update(status="hosted_identity_observed", hosted_identity_observed=True,
-            hosted_identity=identity, native_ledger_state_reconciled=ledger_reconciled,
-            needs_recovery=not ledger_reconciled)
-        capture_checkpoint(context, client, "ordinary-pilgrimage-start-observed-take", {
-            "binding": binding, "hosted_identity": identity, "start_response": start,
-            "start_acknowledgement_missing": result.get("start_acknowledgement_missing", False),
-            "native_ledger_state_reconciled": ledger_reconciled, "next_action": "Finish start take, then natural journey"})
+                result.update(status="start_outcome_unknown", needs_recovery=True,
+                    start_acknowledgement_missing=True, start_response_error=type(error).__name__ + ": " + str(error))
+            result["start_invoked"] = start is not None and start.get("invoked") is True
+            result["start_response"] = start
+            if start is not None:
+                result["needs_recovery"] = start.get("needs_recovery") is True
+                require(result["start_invoked"], "Original Start was rejected before native invocation")
+            identity = None
+            post_failures = []
+            for _ in range(4):
+                try:
+                    post = planner.query("post")
+                except Exception as error:
+                    post_failures.append(type(error).__name__ + ": " + str(error))
+                    continue
+                client.checkpoint("ordinary-pilgrimage-post-" + str(planner.sequence), post)
+                if post.get("operation_status") == "identity_observed" and isinstance(post.get("new_identity"), dict):
+                    identity = post["new_identity"]
+                    break
+                if post.get("operation_status") not in {"post_pending", "unavailable"}:
+                    post_failures.append("Native post observer: " + str(post.get("operation_status")))
+                    break
+            result["post_observation_failures"] = post_failures
+            hosted = None
+            try:
+                hosted = planner.call(IDENTITIES)
+            except Exception as error:
+                result["independent_hosted_read_error"] = type(error).__name__ + ": " + str(error)
+            wallet_after = None
+            try:
+                wallet_after = planner.snapshot()
+            except Exception as error:
+                result["wallet_post_read_error"] = type(error).__name__ + ": " + str(error)
+            client.checkpoint("ordinary-pilgrimage-post-start-wallet-observation", {
+                "before": {k: wallet_before.get(k) for k in ("played_character_gold", "played_character_piety", "native_revision", "date_raw")},
+                "after": {k: wallet_after.get(k) for k in ("played_character_gold", "played_character_piety", "native_revision", "date_raw")} if wallet_after else None,
+                "payment_total_proven": False, "hosted_identity": identity})
+            rows = hosted.get("activities", []) if isinstance(hosted, dict) else []
+            ledger_reconciled = identity is not None
+            if identity is None and len(rows) == 1:
+                observed = rows[0]
+                if (observed.get("host_character_id") == binding["actor_character_id"]
+                        and observed.get("type_key") == "activity_pilgrimage"):
+                    identity = observed
+            require(identity is not None and any(row == identity for row in rows),
+                    "Native new identity remains pending or independent full identity is absent; Start is never retried")
+            result.update(status="hosted_identity_observed", hosted_identity_observed=True,
+                hosted_identity=identity, native_ledger_state_reconciled=ledger_reconciled,
+                needs_recovery=not ledger_reconciled)
+            capture_checkpoint(context, client, "ordinary-pilgrimage-start-observed-take", {
+                "binding": binding, "hosted_identity": identity, "start_response": start,
+                "start_acknowledgement_missing": result.get("start_acknowledgement_missing", False),
+                "native_ledger_state_reconciled": ledger_reconciled, "next_action": "Finish start take, then natural journey"})
         journey = sibling(Path(__file__).with_name("faith_e02_pilgrimage_journey.py"), "_faith_e02_pilgrimage_journey")
         limits = journey_limits(policy)
-        if natural_capabilities is None:
+        if resume is not None:
+            remaining_days = (integer(policy["max_journey_days"], "original journey cap") * 24 - prior_elapsed_hours) // 24
+            require(remaining_days >= 2, "Original journey duration has no remaining finite advance reserve")
+            limits["max_days"] = remaining_days
+        if resume is not None:
+            journey_value = journey.run_journey(context, client, binding, identity, limits,
+                natural_capabilities=natural_capabilities, consumed_event_definitions=consumed_event_definitions)
+        elif natural_capabilities is None:
             journey_value = journey.run_journey(context, client, binding, identity, limits)
         else:
             journey_value = journey.run_journey(context, client, binding, identity, limits,

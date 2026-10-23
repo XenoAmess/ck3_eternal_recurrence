@@ -1,0 +1,656 @@
+{
+  "schema": "ck3-failed-gui-os0-source-excerpt-v1",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--faith-engine--R0043",
+  "meaning": "Actual R43 leaves and explicitly selected native report fields. Relocated test files have distinct authored pins.",
+  "source_pins": {
+    "normal_close": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0043\\case-output\\normal-close-result.json",
+      "bytes": 12539,
+      "sha256": "f827e7cb766b7b3f26f975afbc087aa7034523fd60859aeff7dbbd394cdc33ef"
+    },
+    "retained_exit": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0043\\case-output\\actual-retained-handle-os-exit.json",
+      "bytes": 179,
+      "sha256": "b7e91dc9b82efa64fa4a925afbeab9bd2b230bef426bf8141e3d8792e4cd32c4"
+    },
+    "retained_identity": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0043\\case-output\\retained-current-process-identity.json",
+      "bytes": 110,
+      "sha256": "874f8c613d450625d0f8f97ee2b8b57289bff4f74d774f0e45a7e1766eee792d"
+    },
+    "manual_gui_review": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0043\\case-output\\normal-quit-root-result.json",
+      "bytes": 2502,
+      "sha256": "135866809d402f81f0f6814f264d74d8cc289822f95788dd581f87705c86da76"
+    },
+    "normal_quit_awaiting": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0043\\case-output\\normal-quit-awaiting.json",
+      "bytes": 914,
+      "sha256": "b421711defb390cc578da094325b40f05f0f064548bfe198a91ffafc29245983"
+    },
+    "release": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\R0043-CAS-RELEASE.a02.actual.json",
+      "bytes": 1609,
+      "sha256": "947e865cd5414c2273148b50e14621e0636abecc40959eed63cdf4e5a62ca414"
+    },
+    "run_started": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\commands\\run-a2026102309.STARTED.actual.json",
+      "bytes": 1082,
+      "sha256": "25b226d4d61733d5aedb92958fb526b2fbee4a0fe2f00cc0beb3d96504424929"
+    },
+    "run_wait": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\commands\\run-a2026102309.EXIT.actual.json",
+      "bytes": 1234,
+      "sha256": "5633cb822d3b4112a7edb2d0889ba213b0bd5d234a55b8906c483606cd64d0b7"
+    },
+    "allocate_started": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\commands\\allocate-a2026102309.STARTED.actual.json",
+      "bytes": 1759,
+      "sha256": "c24f6e1b96092d821cb50f239cd3982dd534ca0cf1e8b9cf103f57db069aefb1"
+    },
+    "allocate_wait": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\commands\\allocate-a2026102309.EXIT.actual.json",
+      "bytes": 1911,
+      "sha256": "59534703985649fb54beec407147adc93ddea9efb9c08f3b3e09c50c7a2e73f6"
+    },
+    "public_command_producer": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\commands\\root_execute_r0043_g36.operation.py",
+      "bytes": 3852,
+      "sha256": "c7586a6eacc18cc1bccf0cc34619544a162e159a4ddcc5d273980914c658a12e"
+    },
+    "native_report_projection": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0043\\native-report.json",
+      "bytes": 39622974,
+      "sha256": "719bbfd318e4d1ec5482f240e2e5e701f078f93bbfd3f24d1eda3a1125ee8489"
+    }
+  },
+  "leaves": {
+    "normal_close": {
+      "root_normal_gui_review": {
+        "schema": "ck3-mod-acceptance-manual-normal-quit-review-v1",
+        "run_id": "4-8e1c2f1861--faith-engine--R0043",
+        "reviewer": "/root",
+        "pid": 22044,
+        "create_time": 1792770430.7751143,
+        "original_hold_deadline": 1792785114.2285995,
+        "quit_request": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0043\\case-output\\normal-quit-awaiting.json",
+          "bytes": 914,
+          "sha256": "b421711defb390cc578da094325b40f05f0f064548bfe198a91ffafc29245983"
+        },
+        "normal_gui_quit": true,
+        "direct_reviewed": true,
+        "review_method": "explicit operator direct image review; no automatic image-content judgment",
+        "autosave_unchecked_observed": true,
+        "autosave_unchecked_screenshot": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\screenshots-a2026102309\\15-quit-unchecked.png",
+          "bytes": 3218091,
+          "sha256": "7296330c9d4eadc204ec72974fabb445e1170d77e8144ea4af5683c7da990016"
+        },
+        "final_click": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\screenshots-a2026102309\\16-quit-desktop.png.json",
+          "bytes": 1476,
+          "sha256": "b2c383e2b422b15f440f8db1db13986bddad3db2116eb43719c19aff3763465a"
+        },
+        "after_click_screenshot": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\screenshots-a2026102309\\16-quit-desktop.png",
+          "bytes": 3221102,
+          "sha256": "dbdfc2ab101b7d81322749e7d559bc13ce2d53dcdc81f8f7e853d69bce136343"
+        },
+        "evidence": [
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\screenshots-a2026102309\\15-quit-unchecked.png",
+            "bytes": 3218091,
+            "sha256": "7296330c9d4eadc204ec72974fabb445e1170d77e8144ea4af5683c7da990016"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\screenshots-a2026102309\\16-quit-desktop.png.json",
+            "bytes": 1476,
+            "sha256": "b2c383e2b422b15f440f8db1db13986bddad3db2116eb43719c19aff3763465a"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\screenshots-a2026102309\\16-quit-desktop.png",
+            "bytes": 3221102,
+            "sha256": "dbdfc2ab101b7d81322749e7d559bc13ce2d53dcdc81f8f7e853d69bce136343"
+          }
+        ],
+        "actual_os0_proven": false,
+        "actual_native0_proven": false,
+        "process_exit_claimed": false,
+        "business_pass": false
+      },
+      "operator_normal_gui_review": {
+        "schema": "ck3-mod-acceptance-manual-normal-quit-review-v1",
+        "run_id": "4-8e1c2f1861--faith-engine--R0043",
+        "reviewer": "/root",
+        "pid": 22044,
+        "create_time": 1792770430.7751143,
+        "original_hold_deadline": 1792785114.2285995,
+        "quit_request": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0043\\case-output\\normal-quit-awaiting.json",
+          "bytes": 914,
+          "sha256": "b421711defb390cc578da094325b40f05f0f064548bfe198a91ffafc29245983"
+        },
+        "normal_gui_quit": true,
+        "direct_reviewed": true,
+        "review_method": "explicit operator direct image review; no automatic image-content judgment",
+        "autosave_unchecked_observed": true,
+        "autosave_unchecked_screenshot": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\screenshots-a2026102309\\15-quit-unchecked.png",
+          "bytes": 3218091,
+          "sha256": "7296330c9d4eadc204ec72974fabb445e1170d77e8144ea4af5683c7da990016"
+        },
+        "final_click": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\screenshots-a2026102309\\16-quit-desktop.png.json",
+          "bytes": 1476,
+          "sha256": "b2c383e2b422b15f440f8db1db13986bddad3db2116eb43719c19aff3763465a"
+        },
+        "after_click_screenshot": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\screenshots-a2026102309\\16-quit-desktop.png",
+          "bytes": 3221102,
+          "sha256": "dbdfc2ab101b7d81322749e7d559bc13ce2d53dcdc81f8f7e853d69bce136343"
+        },
+        "evidence": [
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\screenshots-a2026102309\\15-quit-unchecked.png",
+            "bytes": 3218091,
+            "sha256": "7296330c9d4eadc204ec72974fabb445e1170d77e8144ea4af5683c7da990016"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\screenshots-a2026102309\\16-quit-desktop.png.json",
+            "bytes": 1476,
+            "sha256": "b2c383e2b422b15f440f8db1db13986bddad3db2116eb43719c19aff3763465a"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\screenshots-a2026102309\\16-quit-desktop.png",
+            "bytes": 3221102,
+            "sha256": "dbdfc2ab101b7d81322749e7d559bc13ce2d53dcdc81f8f7e853d69bce136343"
+          }
+        ],
+        "actual_os0_proven": false,
+        "actual_native0_proven": false,
+        "process_exit_claimed": false,
+        "business_pass": false
+      },
+      "normal_quit_automation": null,
+      "normal_quit_automation_failure_preserved": null,
+      "retained_handle": {
+        "signaled": true,
+        "exit_code": 0,
+        "actual_retained_os0": true,
+        "pid": 22044,
+        "create_time": 1792770430.7751143,
+        "retained_synchronize_query_handle_acquired": true
+      },
+      "native_zero_proof": null,
+      "finish_hold_rows": [
+        {
+          "id": "acceptance-failure-exit-finish-hold",
+          "plan": {
+            "id": "acceptance-failure-exit-finish-hold",
+            "kind": "finish_hold",
+            "failure_shutdown": true,
+            "expect": {
+              "hold_finished": true,
+              "failure_preserved": true,
+              "business_pass": false,
+              "normal_close_qualified": false
+            }
+          },
+          "started_at": "2026-10-23T16:48:38.544632+00:00",
+          "ok": true,
+          "result": {
+            "hold_finished": true,
+            "failure_preserved": true,
+            "host_error": "PermissionError: [Errno 13] Permission denied: 'C:\\\\workspace\\\\ck3-faith-and-power-20261017\\\\episode02\\\\v7-filming-20261023-a02\\\\live\\\\4-8e1c2f1861--faith-engine--R0043\\\\native-report.native-wire.jsonl.gz.commit.json'",
+            "business_pass": false,
+            "normal_close_qualified": false
+          },
+          "resolved_expect": {
+            "hold_finished": true,
+            "failure_preserved": true,
+            "business_pass": false,
+            "normal_close_qualified": false
+          },
+          "after_snapshot": {
+            "status": "failure_shutdown_lifecycle_only",
+            "reason": "preserved_failure_native_process_exit_zero_cleanup_proven",
+            "failure_preserved": true,
+            "host_error": "PermissionError: [Errno 13] Permission denied: 'C:\\\\workspace\\\\ck3-faith-and-power-20261017\\\\episode02\\\\v7-filming-20261023-a02\\\\live\\\\4-8e1c2f1861--faith-engine--R0043\\\\native-report.native-wire.jsonl.gz.commit.json'",
+            "alive_or_business_credit": false,
+            "business_pass": false,
+            "normal_close_qualified": false,
+            "process_exit_zero_proof": {
+              "status": "not_applicable",
+              "reason": "finished_native_process_exit_zero_cleanup_proven",
+              "alive_or_business_credit": false,
+              "managed_session_done": true,
+              "pid": 22044,
+              "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_4-8e1c2f1861--faith-engine--R0043",
+              "started_at": "2026-10-23T15:47:08.685547+00:00",
+              "finished_at": "2026-10-23T16:48:02.569515+00:00",
+              "exit_reason": "process_exit",
+              "process_exit_code": 0,
+              "shutdown": {
+                "nonce": "7d41cdecc5f64ef5a8118b09636ed587",
+                "ck3_pid": 22044,
+                "ck3_creation_date": "20261023154710.775114+000",
+                "ck3_exit_code": 0,
+                "job_active_processes_before_termination": 0,
+                "job_active_processes_final": 0,
+                "tree_gone": true,
+                "cleanup_proven": true,
+                "final_ck3_inventory": {
+                  "tasklist_returncode": 0,
+                  "tasklist_pids": [],
+                  "wmi_pids": [],
+                  "native_pids": [],
+                  "inventory_backend": "tasklist+toolhelp32",
+                  "processes": []
+                },
+                "watchdog_pid": 19792,
+                "watchdog_creation_date": "20261023154709.240797+000",
+                "watchdog_state_before": "running",
+                "watchdog_state_after": "absent",
+                "control_files_absent": {
+                  "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\managed-hajj-a08\\state\\control\\ck3.json": true,
+                  "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\managed-hajj-a08\\state\\control\\watchdog-7d41cdecc5f64ef5a8118b09636ed587.ready.json": true,
+                  "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\managed-hajj-a08\\state\\control\\ck3.watchdog_error": true,
+                  "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\managed-hajj-a08\\state\\control\\unsafe-cleanup.json": true
+                },
+                "contract_errors": [],
+                "ok": true
+              }
+            }
+          },
+          "finished_at": "2026-10-23T16:48:39.256311+00:00"
+        }
+      ],
+      "host_finished_at": "2026-10-23T16:48:41.609939+00:00",
+      "managed_thread_finished": true,
+      "cleanup_ok": true,
+      "host_error": "PermissionError: [Errno 13] Permission denied: 'C:\\\\workspace\\\\ck3-faith-and-power-20261017\\\\episode02\\\\v7-filming-20261023-a02\\\\live\\\\4-8e1c2f1861--faith-engine--R0043\\\\native-report.native-wire.jsonl.gz.commit.json'",
+      "failure_shutdown_proof": {
+        "status": "failure_shutdown_lifecycle_only",
+        "reason": "preserved_failure_native_process_exit_zero_cleanup_proven",
+        "failure_preserved": true,
+        "host_error": "PermissionError: [Errno 13] Permission denied: 'C:\\\\workspace\\\\ck3-faith-and-power-20261017\\\\episode02\\\\v7-filming-20261023-a02\\\\live\\\\4-8e1c2f1861--faith-engine--R0043\\\\native-report.native-wire.jsonl.gz.commit.json'",
+        "alive_or_business_credit": false,
+        "business_pass": false,
+        "normal_close_qualified": false,
+        "process_exit_zero_proof": {
+          "status": "not_applicable",
+          "reason": "finished_native_process_exit_zero_cleanup_proven",
+          "alive_or_business_credit": false,
+          "managed_session_done": true,
+          "pid": 22044,
+          "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_4-8e1c2f1861--faith-engine--R0043",
+          "started_at": "2026-10-23T15:47:08.685547+00:00",
+          "finished_at": "2026-10-23T16:48:02.569515+00:00",
+          "exit_reason": "process_exit",
+          "process_exit_code": 0,
+          "shutdown": {
+            "nonce": "7d41cdecc5f64ef5a8118b09636ed587",
+            "ck3_pid": 22044,
+            "ck3_creation_date": "20261023154710.775114+000",
+            "ck3_exit_code": 0,
+            "job_active_processes_before_termination": 0,
+            "job_active_processes_final": 0,
+            "tree_gone": true,
+            "cleanup_proven": true,
+            "final_ck3_inventory": {
+              "tasklist_returncode": 0,
+              "tasklist_pids": [],
+              "wmi_pids": [],
+              "native_pids": [],
+              "inventory_backend": "tasklist+toolhelp32",
+              "processes": []
+            },
+            "watchdog_pid": 19792,
+            "watchdog_creation_date": "20261023154709.240797+000",
+            "watchdog_state_before": "running",
+            "watchdog_state_after": "absent",
+            "control_files_absent": {
+              "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\managed-hajj-a08\\state\\control\\ck3.json": true,
+              "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\managed-hajj-a08\\state\\control\\watchdog-7d41cdecc5f64ef5a8118b09636ed587.ready.json": true,
+              "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\managed-hajj-a08\\state\\control\\ck3.watchdog_error": true,
+              "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\managed-hajj-a08\\state\\control\\unsafe-cleanup.json": true
+            },
+            "contract_errors": [],
+            "ok": true
+          }
+        }
+      },
+      "failure_preserved": true,
+      "failure_lifecycle_completed": true,
+      "business_pass": false,
+      "normal_close_qualified": false
+    },
+    "retained_exit": {
+      "signaled": true,
+      "exit_code": 0,
+      "actual_retained_os0": true,
+      "pid": 22044,
+      "create_time": 1792770430.7751143,
+      "retained_synchronize_query_handle_acquired": true
+    },
+    "retained_identity": {
+      "pid": 22044,
+      "create_time": 1792770430.7751143,
+      "retained_synchronize_query_handle_acquired": true
+    },
+    "manual_gui_review": {
+      "schema": "ck3-mod-acceptance-manual-normal-quit-review-v1",
+      "run_id": "4-8e1c2f1861--faith-engine--R0043",
+      "reviewer": "/root",
+      "pid": 22044,
+      "create_time": 1792770430.7751143,
+      "original_hold_deadline": 1792785114.2285995,
+      "quit_request": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0043\\case-output\\normal-quit-awaiting.json",
+        "bytes": 914,
+        "sha256": "b421711defb390cc578da094325b40f05f0f064548bfe198a91ffafc29245983"
+      },
+      "normal_gui_quit": true,
+      "direct_reviewed": true,
+      "review_method": "explicit operator direct image review; no automatic image-content judgment",
+      "autosave_unchecked_observed": true,
+      "autosave_unchecked_screenshot": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\screenshots-a2026102309\\15-quit-unchecked.png",
+        "bytes": 3218091,
+        "sha256": "7296330c9d4eadc204ec72974fabb445e1170d77e8144ea4af5683c7da990016"
+      },
+      "final_click": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\screenshots-a2026102309\\16-quit-desktop.png.json",
+        "bytes": 1476,
+        "sha256": "b2c383e2b422b15f440f8db1db13986bddad3db2116eb43719c19aff3763465a"
+      },
+      "after_click_screenshot": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\screenshots-a2026102309\\16-quit-desktop.png",
+        "bytes": 3221102,
+        "sha256": "dbdfc2ab101b7d81322749e7d559bc13ce2d53dcdc81f8f7e853d69bce136343"
+      },
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\screenshots-a2026102309\\15-quit-unchecked.png",
+          "bytes": 3218091,
+          "sha256": "7296330c9d4eadc204ec72974fabb445e1170d77e8144ea4af5683c7da990016"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\screenshots-a2026102309\\16-quit-desktop.png.json",
+          "bytes": 1476,
+          "sha256": "b2c383e2b422b15f440f8db1db13986bddad3db2116eb43719c19aff3763465a"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\screenshots-a2026102309\\16-quit-desktop.png",
+          "bytes": 3221102,
+          "sha256": "dbdfc2ab101b7d81322749e7d559bc13ce2d53dcdc81f8f7e853d69bce136343"
+        }
+      ],
+      "actual_os0_proven": false,
+      "actual_native0_proven": false,
+      "process_exit_claimed": false,
+      "business_pass": false
+    },
+    "normal_quit_awaiting": {
+      "run_id": "4-8e1c2f1861--faith-engine--R0043",
+      "reviewer": "/root",
+      "pid": 22044,
+      "create_time": 1792770430.7751143,
+      "original_hold_deadline": 1792785114.2285995,
+      "disposition": "actual_case_evidence_recorded",
+      "live": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0043",
+      "keeper_root": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\keepers\\a07",
+      "screen_task": "ck3-acceptance-a2026102309",
+      "action": "Authorized operator normal GUI Quit to desktop; preserve original images, mapped clicks and unchecked autosave state",
+      "host_error_preserved": "PermissionError: [Errno 13] Permission denied: 'C:\\\\workspace\\\\ck3-faith-and-power-20261017\\\\episode02\\\\v7-filming-20261023-a02\\\\live\\\\4-8e1c2f1861--faith-engine--R0043\\\\native-report.native-wire.jsonl.gz.commit.json'"
+    },
+    "release": {
+      "schema": "codex.task_bus.v1",
+      "ok": true,
+      "task": {
+        "git": {
+          "branch": "master",
+          "dirty_entries": 0,
+          "head": "22883dc66f7d59713e2b4ecf455510573620a58a"
+        },
+        "last_sequence": 13583,
+        "next_step": "Fresh background offline receipt then one shared host launch",
+        "pid": 22852,
+        "repo": "C:\\workspace\\ck3_eternal_recurrence",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "state": "waiting",
+        "summary": "R43 host failure preserved; GUI Quit OS0 NativeJob0 treegone; run2 allocate0 keeper0; display restored; day243 saved.",
+        "task_id": "ck3-acceptance-a2026102309",
+        "updated_at_utc": "2026-10-23T17:07:59.992288+00:00"
+      },
+      "event": {
+        "schema": "codex.task_bus.v1",
+        "sequence": 13583,
+        "event_id": "bbd6a68f51244ee8b9cdd1654e7812d7",
+        "timestamp_utc": "2026-10-23T17:07:59.993281+00:00",
+        "kind": "status",
+        "task_id": "ck3-acceptance-a2026102309",
+        "to": [
+          "*"
+        ],
+        "state": "waiting",
+        "summary": "R43 host failure preserved; GUI Quit OS0 NativeJob0 treegone; run2 allocate0 keeper0; display restored; day243 saved.",
+        "next_step": "Fresh background offline receipt then one shared host launch",
+        "resources": [],
+        "repo": "C:\\workspace\\ck3_eternal_recurrence",
+        "git": {
+          "branch": "master",
+          "dirty_entries": 0,
+          "head": "22883dc66f7d59713e2b4ecf455510573620a58a"
+        },
+        "retirement": {
+          "kind": "expired-own-claim-released",
+          "business_status": "unresolved_red",
+          "prior_sequence": 13582
+        }
+      }
+    },
+    "run_started": {
+      "schema": "ck3-recorded-actual-command-v1",
+      "machine_id": "4-8e1c2f1861",
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+        "run",
+        "--runtime",
+        "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\runtime-hajj-a08\\runtime.local.json",
+        "--products",
+        "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\hajj-case-a05\\products.a08.json",
+        "--product",
+        "faith-engine",
+        "--case",
+        "faith-engine-e02-pilgrimage-mechanism-v2",
+        "--prepared-case",
+        "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\prepared-a08\\prepared-case.json",
+        "--run-context",
+        "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0043\\operator-context.launch-a2026102309.json"
+      ],
+      "shell": false,
+      "pid": 4200,
+      "started_at_utc": "2026-10-23T15:46:51.590736+00:00",
+      "started_monotonic_ns": "334950568251200",
+      "original_wait_pending": true
+    },
+    "run_wait": {
+      "schema": "ck3-recorded-actual-command-v1",
+      "machine_id": "4-8e1c2f1861",
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+        "run",
+        "--runtime",
+        "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\runtime-hajj-a08\\runtime.local.json",
+        "--products",
+        "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\hajj-case-a05\\products.a08.json",
+        "--product",
+        "faith-engine",
+        "--case",
+        "faith-engine-e02-pilgrimage-mechanism-v2",
+        "--prepared-case",
+        "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\prepared-a08\\prepared-case.json",
+        "--run-context",
+        "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0043\\operator-context.launch-a2026102309.json"
+      ],
+      "shell": false,
+      "pid": 4200,
+      "started_at_utc": "2026-10-23T15:46:51.590736+00:00",
+      "started_monotonic_ns": "334950568251200",
+      "original_wait_pending": false,
+      "actual_original_popen_wait": true,
+      "exit_code": 2,
+      "finished_at_utc": "2026-10-23T16:48:42.882619+00:00",
+      "finished_monotonic_ns": "338662599570300"
+    },
+    "allocate_started": {
+      "schema": "ck3-recorded-actual-command-v1",
+      "machine_id": "4-8e1c2f1861",
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+        "allocate",
+        "--runtime",
+        "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\runtime-hajj-a08\\runtime.local.json",
+        "--products",
+        "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\hajj-case-a05\\products.a08.json",
+        "--product",
+        "faith-engine",
+        "--case",
+        "faith-engine-e02-pilgrimage-mechanism-v2",
+        "--prepared-case",
+        "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\prepared-a08\\prepared-case.json",
+        "--attempt",
+        "a2026102309",
+        "--keeper-output",
+        "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\keepers\\a07",
+        "--previous-live",
+        "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0042",
+        "--previous-keeper",
+        "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\keepers\\a06",
+        "--previous-release",
+        "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\r0042-failed-resource-closure-a02\\CAS_release.canonical.json",
+        "--previous-failure-close",
+        "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\r0042-failed-resource-closure-a02\\RESOURCE-CLOSED.actual.json"
+      ],
+      "shell": false,
+      "pid": 10944,
+      "started_at_utc": "2026-10-23T15:46:15.967102+00:00",
+      "started_monotonic_ns": "334915676135400",
+      "original_wait_pending": true,
+      "custody_deadline_monotonic_ns": "351715676135400",
+      "root_quit_deadline_monotonic_ns": "351115676135400"
+    },
+    "allocate_wait": {
+      "schema": "ck3-recorded-actual-command-v1",
+      "machine_id": "4-8e1c2f1861",
+      "argv": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+        "allocate",
+        "--runtime",
+        "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\runtime-hajj-a08\\runtime.local.json",
+        "--products",
+        "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\hajj-case-a05\\products.a08.json",
+        "--product",
+        "faith-engine",
+        "--case",
+        "faith-engine-e02-pilgrimage-mechanism-v2",
+        "--prepared-case",
+        "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\prepared-a08\\prepared-case.json",
+        "--attempt",
+        "a2026102309",
+        "--keeper-output",
+        "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\keepers\\a07",
+        "--previous-live",
+        "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0042",
+        "--previous-keeper",
+        "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\keepers\\a06",
+        "--previous-release",
+        "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\r0042-failed-resource-closure-a02\\CAS_release.canonical.json",
+        "--previous-failure-close",
+        "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\r0042-failed-resource-closure-a02\\RESOURCE-CLOSED.actual.json"
+      ],
+      "shell": false,
+      "pid": 10944,
+      "started_at_utc": "2026-10-23T15:46:15.967102+00:00",
+      "started_monotonic_ns": "334915676135400",
+      "original_wait_pending": false,
+      "custody_deadline_monotonic_ns": "351715676135400",
+      "root_quit_deadline_monotonic_ns": "351115676135400",
+      "actual_original_popen_wait": true,
+      "exit_code": 0,
+      "finished_at_utc": "2026-10-23T16:55:06.510677+00:00",
+      "finished_monotonic_ns": "339046227600200"
+    },
+    "public_command_producer": "from pathlib import Path\nfrom datetime import datetime,timezone\nimport sys,subprocess,os,json,time,hashlib\nR=Path('C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02');REPO=Path('C:/workspace/ck3_eternal_recurrence')\nmode=sys.argv[1]\nif mode not in {'allocate','run'}:raise ValueError('Explicit operation')\nsys.path.insert(0,str(REPO/'tools'));from ck3_mod_acceptance import Selection\nlive=R/'live/4-8e1c2f1861--faith-engine--R0043';ctx=live/'operator-context.launch-a2026102309.json'\nruntime=R/'runtime-hajj-a08/runtime.local.json';products=R/'hajj-case-a05/products.a08.json';prepared=R/'prepared-a08/prepared-case.json'\nsel=Selection(runtime,products,'faith-engine','faith-engine-e02-pilgrimage-mechanism-v2',ctx if mode=='run' else None,prepared)\nenv=dict(os.environ);env.update(sel.runtime_environment)\nargv=[sys.executable,'-B','-X','utf8',str(REPO/'tools/ck3_mod_acceptance.py'),mode,'--runtime',str(runtime),'--products',str(products),'--product','faith-engine','--case','faith-engine-e02-pilgrimage-mechanism-v2','--prepared-case',str(prepared)]\nif mode=='allocate':\n argv+=['--attempt','a2026102309','--keeper-output',str(R/'keepers/a07'),'--previous-live',str(R/'live/4-8e1c2f1861--faith-engine--R0042'),'--previous-keeper',str(R/'keepers/a06'),'--previous-release',str(R/'r0042-failed-resource-closure-a02/CAS_release.canonical.json'),'--previous-failure-close',str(R/'r0042-failed-resource-closure-a02/RESOURCE-CLOSED.actual.json')]\n stem='allocate-a2026102309'\nelse:\n argv+=['--run-context',str(ctx)];stem='run-a2026102309'\nbase=R/'commands';start=base/(stem+'.STARTED.actual.json');exitp=base/(stem+'.EXIT.actual.json')\nif any(p.exists() for p in [start,exitp,base/(stem+'.stdout.json'),base/(stem+'.stderr.txt')]):raise FileExistsError('Never replay published operation')\nt=time.monotonic_ns()\nwith (base/(stem+'.stdout.json')).open('xb') as out,(base/(stem+'.stderr.txt')).open('xb') as err:\n if mode=='run':\n  previous=json.loads((base/'preflight-allocated-a2026102309.EXIT.actual.json').read_bytes())\n  if previous.get('actual_original_popen_wait')is not True or type(previous.get('exit_code'))is not int or previous['exit_code']!=0:raise ValueError('Original allocated preflight did not finish zero')\n  probe=[sys.executable,'-B','-X','utf8',str(REPO/'tools/steam_offline_state_probe.py'),'--receipt',str(R/'STEAM-OFFLINE.LAUNCH-R0043.actual.json')]\n  with (base/'steam-launch-r0043.stdout.json').open('xb') as probe_out,(base/'steam-launch-r0043.stderr.txt').open('xb') as probe_err:\n   probe_code=subprocess.run(probe,cwd=REPO,stdout=probe_out,stderr=probe_err).returncode\n  if probe_code:raise SystemExit(probe_code)\n  offline=json.loads((R/'STEAM-OFFLINE.LAUNCH-R0043.actual.json').read_bytes())\n  if offline.get('status')!='offline' or offline.get('offline_mode')is not True or offline.get('machine_id')!='4-8e1c2f1861':raise ValueError('Fresh actual background Steam offline required')\n child=subprocess.Popen(argv,env=env,cwd=REPO,stdout=out,stderr=err)\n v={'schema':'ck3-recorded-actual-command-v1','machine_id':'4-8e1c2f1861','argv':argv,'shell':False,'pid':child.pid,'started_at_utc':datetime.now(timezone.utc).isoformat(),'started_monotonic_ns':str(t),'original_wait_pending':True}\n if mode=='allocate':v.update(custody_deadline_monotonic_ns=str(t+16800*1000000000),root_quit_deadline_monotonic_ns=str(t+16200*1000000000))\n with start.open('x',encoding='utf-8') as h:json.dump(v,h)\n print(json.dumps(v),flush=True)\n code=child.wait()\n v.update(original_wait_pending=False,actual_original_popen_wait=True,exit_code=code,finished_at_utc=datetime.now(timezone.utc).isoformat(),finished_monotonic_ns=str(time.monotonic_ns()))\n with exitp.open('x',encoding='utf-8') as h:json.dump(v,h)\n print(json.dumps({'operation':mode,'original_wait':code,'receipt':str(exitp)}),flush=True)\nraise SystemExit(code)\n",
+    "native_report_projection": {
+      "status": "RED",
+      "error": "PermissionError: [Errno 13] Permission denied: 'C:\\\\workspace\\\\ck3-faith-and-power-20261017\\\\episode02\\\\v7-filming-20261023-a02\\\\live\\\\4-8e1c2f1861--faith-engine--R0043\\\\native-report.native-wire.jsonl.gz.commit.json'",
+      "finished_at": "2026-10-23T16:48:41.609939+00:00",
+      "managed_session_done": true,
+      "managed_session_thread_finished": true,
+      "cleanup_ok": true,
+      "state_dir": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\managed-hajj-a08\\state",
+      "agent_source_root": "C:\\workspace\\ck3_eternal_recurrence",
+      "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_4-8e1c2f1861--faith-engine--R0043",
+      "session": {
+        "error": null,
+        "report": {
+          "pid": 22044,
+          "finished_at": "2026-10-23T16:48:02.569515+00:00",
+          "process_exit_code": 0,
+          "exit_reason": "process_exit",
+          "shutdown": {
+            "nonce": "7d41cdecc5f64ef5a8118b09636ed587",
+            "ck3_pid": 22044,
+            "ck3_creation_date": "20261023154710.775114+000",
+            "ck3_exit_code": 0,
+            "job_active_processes_before_termination": 0,
+            "job_active_processes_final": 0,
+            "tree_gone": true,
+            "cleanup_proven": true,
+            "final_ck3_inventory": {
+              "tasklist_returncode": 0,
+              "tasklist_pids": [],
+              "wmi_pids": [],
+              "native_pids": [],
+              "inventory_backend": "tasklist+toolhelp32",
+              "processes": []
+            },
+            "watchdog_pid": 19792,
+            "watchdog_creation_date": "20261023154709.240797+000",
+            "watchdog_state_before": "running",
+            "watchdog_state_after": "absent",
+            "control_files_absent": {
+              "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\managed-hajj-a08\\state\\control\\ck3.json": true,
+              "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\managed-hajj-a08\\state\\control\\watchdog-7d41cdecc5f64ef5a8118b09636ed587.ready.json": true,
+              "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\managed-hajj-a08\\state\\control\\ck3.watchdog_error": true,
+              "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\managed-hajj-a08\\state\\control\\unsafe-cleanup.json": true
+            },
+            "contract_errors": [],
+            "ok": true
+          }
+        }
+      }
+    }
+  }
+}

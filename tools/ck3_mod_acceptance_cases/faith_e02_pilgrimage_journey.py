@@ -1,4 +1,4 @@
-﻿"""Bounded public CaseClient pilgrimage continuation; no launcher or direct driver."""
+"""Bounded public CaseClient pilgrimage continuation; no launcher or direct driver."""
 from __future__ import annotations
 
 from datetime import datetime, timezone
@@ -32,12 +32,12 @@ DEFAULT_LIMITS = {"max_days": 240, "max_day_requests": 480, "max_events": 128,
 
 
 class JourneyStop(Exception):
-    def __init__(self, status, reason):
+    def __init__(self, status: str, reason: str) -> None:
         super().__init__(reason)
         self.status = status
 
 
-def _need(value, reason, status="PARTIAL_NATIVE_CONTRACT_GAP"):
+def _need(value: object, reason: str, status: str = "PARTIAL_NATIVE_CONTRACT_GAP") -> None:
     if not value:
         raise JourneyStop(status, reason)
 
@@ -107,7 +107,8 @@ def _event_policy_reader(context):
 
 
 class _Journey:
-    def __init__(self, context, client, binding, initial_identity, limits, *, natural_capabilities: object = None):
+    def __init__(self, context, client, binding, initial_identity, limits, *, natural_capabilities: object = None,
+                 consumed_event_definitions: tuple[str, ...] = ()):
         self.context, self.client = context, client
         self.binding = dict(binding)
         self.identity = dict(initial_identity) if initial_identity is not None else None
@@ -116,6 +117,11 @@ class _Journey:
         self.advance_mode = pilgrimage_natural_advance_mode(context.get("case"),
             context.get("case_contract", {}).get("policy", {}))
         self.natural_capabilities = natural_capabilities
+        _need(type(consumed_event_definitions) is tuple
+              and all(type(key) is str and key for key in consumed_event_definitions)
+              and len(set(consumed_event_definitions)) == len(consumed_event_definitions),
+              "Resume consumed event definitions must be a unique immutable tuple")
+        self.consumed_event_definitions = consumed_event_definitions
         _need(context.get("case") in {CASE, MECHANISM_CASE}
               and context.get("product") == "faith-engine", "Foreign pilgrimage case")
         _need(set(self.binding) == {"run_id", "machine_id", "actor_character_id", "bridge_pid",
@@ -379,6 +385,9 @@ class _Journey:
               typed.get("readiness", {}).get("option_presentation_ready") is True and
               (before.get("active_event") or {}).get("instance_id") == instance,
               "Current event presentation/definition unavailable; no invented fallback")
+        _need(typed["event_definition_key"] not in self.consumed_event_definitions,
+              "Predecessor native selection already consumed this definition; never replay after cold restore",
+              "PARTIAL_EVENT_NO_REPLAY")
         options = typed.get("options")
         _need(isinstance(options, list) and options and len(options) <= 64 and
               [o.get("rendered_index") for o in options] == list(range(len(options))), "Native rendered order unavailable")
@@ -724,10 +733,11 @@ class _Journey:
 
 def run_journey(context: JSONObject, client: DayClient, binding: JSONObject,
                 initial_activity_identity: JSONObject, limits: dict[str, object], *,
-                natural_capabilities: object = None) -> JSONObject:
+                natural_capabilities: object = None,
+                consumed_event_definitions: tuple[str, ...] = ()) -> JSONObject:
     """Continue boundedly through source-bound conclusion/return events; no coordinate or payment inference."""
     journey = _Journey(context, client, binding, initial_activity_identity, limits,
-        natural_capabilities=natural_capabilities)
+        natural_capabilities=natural_capabilities, consumed_event_definitions=consumed_event_definitions)
     try:
         result = journey.run()
     except JourneyStop as stop:

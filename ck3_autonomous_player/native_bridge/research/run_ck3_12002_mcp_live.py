@@ -162,6 +162,61 @@ def wire_output_path(output: Path, kind: WireEvidenceKind, codec: WireEvidenceCo
     return wire_evidence_path(output, kind, codec)
 
 
+def _read_wire_commit_once(path: Path) -> bytes:
+    """Read one held complete sidecar while permitting its atomic replacement."""
+    if os.name != "nt":
+        with path.open("rb") as stream:
+            return stream.read(16385)
+    import ctypes
+    import msvcrt
+    kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel.CreateFileW.argtypes = [ctypes.c_wchar_p, ctypes.c_uint32, ctypes.c_uint32,
+        ctypes.c_void_p, ctypes.c_uint32, ctypes.c_uint32, ctypes.c_void_p]
+    kernel.CreateFileW.restype = ctypes.c_void_p
+    kernel.CloseHandle.argtypes = [ctypes.c_void_p]
+    kernel.CloseHandle.restype = ctypes.c_int
+    # Do not deny the writer delete access. Close promptly after this bounded
+    # read; the existing atomic writer still owns any required replace retry.
+    raw_handle: object = kernel.CreateFileW(str(path), 0x80000000, 7, None, 3, 0x80, None)
+    if raw_handle == ctypes.c_void_p(-1).value:
+        error = ctypes.WinError(ctypes.get_last_error())
+        error.filename = str(path)
+        raise error
+    if not isinstance(raw_handle, int) or isinstance(raw_handle, bool) or raw_handle <= 0:
+        raise OSError("Native wire commit reader returned an invalid handle")
+    try:
+        descriptor = msvcrt.open_osfhandle(raw_handle, os.O_RDONLY | os.O_BINARY)
+    except BaseException:
+        kernel.CloseHandle(raw_handle)
+        raise
+    try:
+        stream = os.fdopen(descriptor, "rb")
+    except BaseException:
+        os.close(descriptor)
+        raise
+    with stream:
+        raw: object = stream.read(16385)
+    if not isinstance(raw, bytes):
+        raise TypeError("Native wire commit reader did not return bytes")
+    return raw
+
+
+def _read_wire_commit(path: Path) -> bytes:
+    """Retry only proven native sharing/lock violations, never permission denial."""
+    deadline = time.monotonic() + 0.5
+    for attempt in range(21):
+        try:
+            return _read_wire_commit_once(path)
+        except OSError as error:
+            code: object = getattr(error, "winerror", None)
+            remaining = deadline - time.monotonic()
+            if (os.name != "nt" or type(code) is not int or code not in (32, 33)
+                    or attempt == 20 or remaining <= 0):
+                raise
+            time.sleep(min(0.025, remaining))
+    raise RuntimeError("Finite wire commit read exhausted without an outcome")
+
+
 def wire_evidence_commits(output: Path) -> dict[WireEvidenceKind, WireEvidenceCommit | None]:
     from ck3_mod_acceptance_background_types import wire_evidence_commit
     result: dict[WireEvidenceKind, WireEvidenceCommit | None] = {}
@@ -172,8 +227,7 @@ def wire_evidence_commits(output: Path) -> dict[WireEvidenceKind, WireEvidenceCo
         if not sidecar.exists():
             result[kind] = None
             continue
-        with sidecar.open("rb") as stream:
-            raw = stream.read(16385)
+        raw = _read_wire_commit(sidecar)
         if len(raw) > 16384:
             raise ValueError("Wire commit metadata exceeds16KiB")
         commit = wire_evidence_commit(json.loads(raw))
