@@ -6,6 +6,7 @@ import sys
 import tempfile
 import threading
 from types import SimpleNamespace
+from typing import NotRequired, TypedDict
 import unittest
 from unittest.mock import patch
 
@@ -68,6 +69,7 @@ def native_observation(request, *, modal=False):
 
 
 class FakeExitDriver:
+    _invalidate_player_heir_provider_v1 = NativeHeadlessGameplayDriver._invalidate_player_heir_provider_v1
     query_normal_exit_context_v1 = NativeHeadlessGameplayDriver.query_normal_exit_context_v1
     request_normal_exit_v1 = NativeHeadlessGameplayDriver.request_normal_exit_v1
     observe_normal_exit_v1 = NativeHeadlessGameplayDriver.observe_normal_exit_v1
@@ -357,8 +359,109 @@ class PacketTests(unittest.TestCase):
             with self.assertRaises(ValueError): ExitWireBinding(1,actor,1,1,1,'b'*64)
 
 
+class InventoryFixtureProfile(TypedDict):
+    schema_version: int
+    guard_profile: str
+    guard_profile_sha256: str
+    userdir: str
+    evidence_directory: str
+    game_version: str
+    state_directory: str
+    dll: dict[str, str]
+    injector: dict[str, str]
+    guard: dict[str, dict[str, str]]
+    normal_exit_source_inventory: NotRequired[dict[str, str]]
+
+
+class InventoryFixtureFile(TypedDict):
+    relative_path: str
+    bytes: int
+    sha256: str
+
+
+class InventoryFixtureMod(TypedDict):
+    files: list[InventoryFixtureFile]
+
+
+class InventoryFixtureData(TypedDict):
+    enabled_mods: list[InventoryFixtureMod]
+
+
 class InventoryTests(unittest.TestCase):
-    def fixture(self, root):
+    def test_running_rule_output_retains_originals_through_real_inventory_consumer(self) -> None:
+        from xar_autoplayer.bridge.runtime_input_contract_v1 import identity
+        with tempfile.TemporaryDirectory(dir=ROOT) as temporary:
+            root = Path(temporary)
+            profile, _, _, mod, game = self.fixture(root)
+            state = root / 'state'
+            state.mkdir()
+            userdir = state / 'profile'
+            Path(profile['userdir']).rename(userdir)
+            profile['userdir'] = str(userdir)
+            profile['state_directory'] = str(state)
+            live = Path(profile['evidence_directory'])
+            live.mkdir()
+            rules = userdir / 'player/game_rules/presets.txt'
+            rules.parent.mkdir(parents=True)
+            rules.write_bytes(b'')
+            sibling = userdir / 'presets.txt'
+            sibling.write_bytes(b'')
+            paths = [userdir / 'pdx_settings.txt', rules, sibling, userdir / 'dlc_load.json',
+                     mod / 'content.txt']
+            for path in paths[:2]:
+                snapshot = live / 'input-snapshots/profile' / path.relative_to(userdir)
+                snapshot.parent.mkdir(parents=True, exist_ok=True)
+                snapshot.write_bytes(path.read_bytes())
+                paths.append(snapshot)
+            files: dict[str, dict[str, object]] = {
+                str(path.resolve()): {'bytes': identity(path)['bytes'], 'sha256': identity(path)['sha256']}
+                for path in paths}
+            frozen = {'run_id': 'synthetic-running-rules', 'state_dir': str(state), 'files': files}
+            frozen_path = live / 'frozen-argv.json'
+            frozen_path.write_text(json.dumps(frozen), encoding='utf-8')
+            (live / 'ready-context.json').write_text(json.dumps({'run_id': frozen['run_id'],
+                'run_dir': str(live), 'frozen_argv': identity(frozen_path)}), encoding='utf-8')
+            inventory, _ = build_inventory(profile, game)
+            inventory_path = userdir / 'normal-exit-source-inventory-v1.json'
+            inventory_path.write_text(json.dumps(inventory), encoding='utf-8')
+            reference = {'path': str(inventory_path), 'sha256': identity(inventory_path)['sha256']}
+            verify_source_inventory_v1(reference, profile, input_phase='launch')
+            (userdir / 'pdx_settings.txt').write_bytes(b'current game-owned settings')
+            fixture = _REPOSITORY_TOOLS / 'test-fixtures/r25-rule-output/LastAppliedRules.txt'
+            self.assertEqual(identity(fixture)['sha256'],
+                             '0fdfdaab6a3b6f8ba9d9faa9a1bd1e030bae4bff5d4abeeb2a3bbbb8d80da6a9')
+            rules.write_bytes(fixture.read_bytes())
+            proof = verify_source_inventory_v1(reference, profile, input_phase='running')
+            observation = json.loads(json.dumps(proof))['runtime_settings_observation']
+            self.assertEqual(Path(observation['settings']['original_launch_pin']['path']),
+                             Path(inventory['settings_file']['path']))
+            self.assertEqual({key: observation['settings']['original_launch_pin'][key] for key in ('bytes', 'sha256')},
+                             {key: inventory['settings_file'][key] for key in ('bytes', 'sha256')})
+            self.assertEqual(len(observation['mutable_profile_observations']), 2)
+            rule_output = next(row for row in observation['mutable_profile_observations']
+                               if row['original_launch_pin']['path'] == str(rules.resolve()))
+            self.assertEqual(rule_output['immutable_original_snapshot']['bytes'], 0)
+            self.assertEqual(rule_output['current_game_owned_output'], identity(rules))
+            for path in [sibling, userdir / 'dlc_load.json', mod / 'content.txt',
+                         live / 'input-snapshots/profile/player/game_rules/presets.txt']:
+                with self.subTest(immutable=path):
+                    original = path.read_bytes()
+                    path.write_bytes(b'unapproved input mutation')
+                    with self.assertRaises(ValueError):
+                        verify_source_inventory_v1(reference, profile, input_phase='running')
+                    path.write_bytes(original)
+            for wrong in (True, 0.0, -1):
+                bad = copy.deepcopy(frozen)
+                bad_files = copy.deepcopy(files)
+                bad_files[str(rules.resolve())]['bytes'] = wrong
+                bad['files'] = bad_files
+                frozen_path.write_text(json.dumps(bad), encoding='utf-8')
+                (live / 'ready-context.json').write_text(json.dumps({'run_id': bad['run_id'],
+                    'run_dir': str(live), 'frozen_argv': identity(frozen_path)}), encoding='utf-8')
+                with self.subTest(byte_count=wrong), self.assertRaises(ValueError):
+                    verify_source_inventory_v1(reference, profile, input_phase='running')
+
+    def fixture(self, root: Path) -> tuple[InventoryFixtureProfile, dict[str, str], InventoryFixtureData, Path, Path]:
         userdir = root / 'userdir'; userdir.mkdir()
         game = root / 'game'; game.mkdir()
         executable = root / 'ck3.exe'; executable.write_bytes(b'fake exact binary')
@@ -369,7 +472,7 @@ class InventoryTests(unittest.TestCase):
         (userdir / 'mod').mkdir(); (userdir / 'mod/example.mod').write_text(f'path="{mod.as_posix()}"\n')
         for relative in STOCK_GUI_PATHS:
             path = game / relative; path.parent.mkdir(parents=True, exist_ok=True); path.write_bytes(relative.encode())
-        profile = {'schema_version':1,'guard_profile':str(root / 'guard.json'),'guard_profile_sha256':'d'*64,
+        profile: InventoryFixtureProfile = {'schema_version':1,'guard_profile':str(root / 'guard.json'),'guard_profile_sha256':'d'*64,
                    'userdir':str(userdir),'evidence_directory':str(root / 'evidence'),'game_version':'1.20.0.3',
                    'state_directory':str(root / 'state'),'dll':{'path':str(root / 'dll'),'sha256':'e'*64},
                    'injector':{'path':str(root / 'injector'),'sha256':'f'*64},

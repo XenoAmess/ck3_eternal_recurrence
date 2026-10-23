@@ -174,11 +174,22 @@ class SharedEntryTests(unittest.TestCase):
         snapshot = live / 'input-snapshots/profile/pdx_settings.txt'
         snapshot.parent.mkdir(parents=True)
         snapshot.write_bytes(settings.read_bytes())
+        rules = profile / 'player/game_rules/presets.txt'
+        rules.parent.mkdir(parents=True)
+        rules.write_bytes(b'')
+        rules_snapshot = live / 'input-snapshots/profile/player/game_rules/presets.txt'
+        rules_snapshot.parent.mkdir(parents=True)
+        rules_snapshot.write_bytes(b'')
+        sibling = profile / 'presets.txt'
+        sibling.write_bytes(b'')
+        dlc = profile / 'dlc_load.json'
+        dlc.write_bytes(b'{"enabled_mods": []}')
         config = self.root / 'recording-config.json'
         job = self.root / 'synthetic-job.py'
         job.write_text('# no OS recorder is launched\n', encoding='utf-8')
         config.write_text(json.dumps({'machine_id': 'unit-recording-machine', 'recorder_job': entry.pin(job)}), encoding='utf-8')
-        paths = [*produced, checkout_contract, settings, snapshot, config, job, self.host,
+        paths = [*produced, checkout_contract, settings, snapshot, rules, rules_snapshot, sibling, dlc,
+                 config, job, self.host,
                  *[shared_tools / (name + '.py') for name in names], self.manifest_path]
         files = {str(path.resolve()): {key: value for key, value in entry.pin(path).items() if key != 'path'} for path in paths}
         frozen = json_object({'run_id': live.name, 'argv': selected.argv, 'state_dir': str(selected.state_dir),
@@ -192,6 +203,13 @@ class SharedEntryTests(unittest.TestCase):
         if type(checked) is not int:
             raise ValueError('Actual running preview count missing')
         self.assertGreater(checked, 0)
+        self.assertEqual(len(json.loads(json.dumps(preview))['mutable_profile_observations']), 2)
+        no_rules_snapshot = copy.deepcopy(frozen)
+        no_rules_files = json_object(no_rules_snapshot['files'])
+        no_rules_files.pop(str(rules_snapshot.resolve()))
+        no_rules_snapshot['files'] = no_rules_files
+        with self.assertRaisesRegex(ValueError, 'no exact original immutable snapshot'):
+            running.validate_allocated_running_inputs(helper, live, no_rules_snapshot)
         # Reproduce R24: the checkout contract is byte-identical, yet its Pin
         # cannot stand in for the actual loader's execution path.
         broken = copy.deepcopy(frozen)
@@ -232,9 +250,27 @@ print(json.dumps({'running_inputs':qualified['_runtime_input_observation'],'reco
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertTrue(json.loads(result.stdout)['recorder_live_guard'])
         settings.write_bytes(b'game-owned settings output')
+        fixture = Path(__file__).parent / 'test-fixtures/r25-rule-output/LastAppliedRules.txt'
+        self.assertEqual(entry.pin(fixture)['sha256'],
+                         '0fdfdaab6a3b6f8ba9d9faa9a1bd1e030bae4bff5d4abeeb2a3bbbb8d80da6a9')
+        rules.write_bytes(fixture.read_bytes())
         result = subprocess.run(command, cwd=shared, env=environment, capture_output=True, text=True, timeout=60)
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertTrue(json.loads(result.stdout)['running_inputs']['mutable_profile_observations'][0]['bytes_changed'])
+        observations = json.loads(result.stdout)['running_inputs']['mutable_profile_observations']
+        self.assertEqual(len(observations), 2)
+        self.assertTrue(all(row['bytes_changed'] for row in observations))
+        actual_rules = next(row for row in observations if row['original_launch_pin']['path'] == str(rules.resolve()))
+        self.assertEqual(actual_rules['immutable_original_snapshot']['bytes'], 0)
+        self.assertEqual(actual_rules['current_game_owned_output'], entry.pin(fixture) | {'path': str(rules.resolve())})
+        for immutable in (sibling, dlc, rules_snapshot, snapshot):
+            with self.subTest(immutable=immutable):
+                original_bytes = immutable.read_bytes()
+                immutable.write_bytes(b'unapproved input mutation')
+                result = subprocess.run(command, cwd=shared, env=environment, capture_output=True, text=True, timeout=60)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn('Original mutable input snapshot changed' if immutable in (snapshot, rules_snapshot)
+                              else 'Immutable original input changed', result.stderr)
+                immutable.write_bytes(original_bytes)
         current.write_bytes(current.read_bytes() + b'\n# changed after allocation\n')
         result = subprocess.run(command, cwd=shared, env=environment, capture_output=True, text=True, timeout=60)
         self.assertNotEqual(result.returncode, 0)

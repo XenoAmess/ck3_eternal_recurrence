@@ -1,0 +1,31 @@
+{
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-23T21:49:41.956843+00:00",
+  "source": {
+    "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\profiles\\ordinary-a03\\state\\profile\\player\\game_rules\\presets.txt",
+    "bytes": 2850,
+    "sha256": "0fdfdaab6a3b6f8ba9d9faa9a1bd1e030bae4bff5d4abeeb2a3bbbb8d80da6a9"
+  },
+  "retained_fixture": {
+    "path": "tools/test-fixtures/r25-rule-output/LastAppliedRules.txt",
+    "bytes": 2850,
+    "sha256": "0fdfdaab6a3b6f8ba9d9faa9a1bd1e030bae4bff5d4abeeb2a3bbbb8d80da6a9"
+  },
+  "original_failure": {
+    "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\commands\\scene03\\r25-la01-start-a01.stderr.txt",
+    "bytes": 1682,
+    "sha256": "ff3351506243c14f7d0813d9a97a1fdc34039a80a78f6ae7d50d3bdc5f042e91"
+  },
+  "original_frozen_argv": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0025\\frozen-argv.json",
+    "bytes": 83997,
+    "sha256": "5d4ab628e0d93e527fbefae0061f2206296db8ba75ccddb81000153d12af1f04"
+  },
+  "immutable_original_snapshot": {
+    "path": "D:\\workspace\\ck3-living-artifacts-20261022\\live\\pc-20260924rtuf-f11af23c08--living-artifacts--R0025\\input-snapshots\\profile\\player\\game_rules\\presets.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "observed_action": "ordinary Game Rules Apply; no SavePreset; normal awakening probability unchanged",
+  "business_or_recording_credit": false
+}

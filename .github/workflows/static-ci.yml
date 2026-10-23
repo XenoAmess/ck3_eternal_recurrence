@@ -322,9 +322,9 @@ jobs:
           MYPYPATH: ${{ github.workspace }}\ck3_autonomous_player\src;${{ github.workspace }}\ck3_autonomous_player\tests\unit
           PYTHONDONTWRITEBYTECODE: "1"
         run: |
-          python -B -X utf8 -m mypy --strict --strict-equality --explicit-package-bases --follow-imports=silent --no-incremental --cache-dir nul -m xar_autoplayer.bridge.normal_exit_public_wire_v2 -m test_normal_exit_public_wire_v2
+          python -B -X utf8 -m mypy --strict --strict-equality --explicit-package-bases --follow-imports=silent --no-incremental --cache-dir nul -m xar_autoplayer.bridge.normal_exit_public_wire_v2 -m test_normal_exit_public_wire_v2 -m xar_autoplayer.bridge.runtime_input_contract_v1
           if not "%errorlevel%"=="0" exit /b %errorlevel%
-          python -B -X utf8 -m unittest -v test_normal_exit_public_wire_v2
+          python -B -X utf8 -m unittest -v test_normal_exit_public_wire_v2 test_normal_exit_integrated_v1
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Check strict cold and owner types and boundary contracts
         env:
