@@ -2510,11 +2510,11 @@
           "budgets": {
             "command_timeout": 300,
             "readiness_timeout": 1800,
-            "timeout": 3900,
-            "hold_seconds": 900,
+            "timeout": 5700,
+            "hold_seconds": 3600,
             "poll_interval": 0.5
           },
-          "budget_provenance": "New bounded monthly simulation using shared readiness floor and normal-close reserve",
+          "budget_provenance": "R0029 used the original 900-second hold on baseline and same-month independent SAVE readbacks. A new attempt uses a 3600-second hold and 5700-second total timeout for the same maximum 35 natural days, three independent readbacks and unchanged 90-second normal-close reserve. No prior attempt deadline is extended.",
           "required_mcp_tools": [
             "ck3_get_capabilities",
             "ck3_take_snapshot",

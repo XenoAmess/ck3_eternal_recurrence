@@ -1,0 +1,51 @@
+{
+  "schema": "sxad.natural-fixture-run-findings.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T21:22:33.855473+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--superman-qiang--R0029",
+  "source_commit": "d68b4f1bd7ee75040572c89d7d43bbf9f99a1ad6",
+  "game_version": "1.20.0.4",
+  "game_build": "25734779",
+  "game_executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "baseline": {
+    "status": "PASS_SCOPED",
+    "save_sha256": "a7beecc88f6de4b3323f2d24465398051cd91a3e48f6d6ad65a85bd9b73eb234",
+    "readback_sha256": "f74eeebaa39a3d92e51ac6784f648861d4962de357d83256a6585c23bf7d7e1f",
+    "facts": "Twelve actual native predicates passed. Spouses retain distinct Catholic/Roman and Orthodox/Byzantine identities. Eleven living XP values are present zero; dead character XP is absent."
+  },
+  "same_month": {
+    "status": "PASS_SCOPED_INDEPENDENT_SAVE",
+    "save_sha256": "dcf9602b91e6a1b693cf6d6660a154166e0a3c8c4308baec5e6ad8f35f1562eb",
+    "readback_sha256": "630c67e615460df7310b82072027052dda221e647b666e58a68fd8dd88ee0df9",
+    "assessment_sha256": "7d2d57f5abec3f35b71dbc68ee5019fe4f0ae6ce454e891586be63071adcd28d",
+    "facts": "Same twelve identities; eight eligible XP values are one at month 12801. Four partner pairs have unique bidirectional entries. Three living rejected characters remain zero; dead character XP remains absent. All five expected same-month runtime checks passed. Root response arrived after the adapter had entered its close reserve and was not accepted as a completed case phase."
+  },
+  "completion": {
+    "business_pass": false,
+    "natural_monthly_callback": "GAP",
+    "cross_month": "GAP",
+    "cold_reload": "NOT_RUN",
+    "notification_diagnostic": "NOT_RUN",
+    "reason": "Original 900-second hold exhausted by actual baseline and same-month SAVE/readback work; no extension or replay was made.",
+    "native_host_exit_code": 0,
+    "native_job_game_cleanup_exit_code": 1,
+    "native_job_active_before_termination": 1,
+    "native_job_active_final": 0,
+    "cleanup_ok": true,
+    "normal_gui_quit_qualified": false,
+    "keeper_actual_exit_code": 0,
+    "screen_release_sequence": 8498,
+    "steam_offline": true
+  },
+  "evidence_root": "C:/ck3-superman-validation-20261023",
+  "evidence_paths": [
+    "ops/R0029-baseline-readback-a01/BASELINE-ASSESSMENT.actual.json",
+    "ops/R0029-samemonth-readback-a01/SAMEMONTH-ASSESSMENT.actual.json",
+    "runs/desktop-3fevhd2-1c74096080--superman-qiang--R0029/native-report.json",
+    "runs/desktop-3fevhd2-1c74096080--superman-qiang--R0029/case-output/entry-run-result.json",
+    "ops/R0029-screen-release.actual.json",
+    "ops/steam-background-R0029-closed-a01.json"
+  ],
+  "raw_evidence_review_at_utc": "2026-11-22T21:22:33Z",
+  "record_review_at_utc": "2027-04-21T21:22:33Z"
+}
