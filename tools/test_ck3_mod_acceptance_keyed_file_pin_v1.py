@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import ast
 from copy import deepcopy
+from datetime import datetime
 from enum import IntEnum
 import hashlib
 import json
@@ -96,6 +97,43 @@ class KeyedFilePinTests(unittest.TestCase):
     temporary: tempfile.TemporaryDirectory[str]
     root: Path
     host: Path
+
+    @staticmethod
+    def refused_timeline() -> dict[str, datetime]:
+        # Exact original R0040 timestamps; authored metadata, no live input reads.
+        return {key: datetime.fromisoformat(value) for key, value in {
+            "observed_at": "2026-10-23T06:14:12.039878+00:00",
+            "run_started": "2026-10-23T06:14:39.254103+00:00",
+            "intent_at": "2026-10-23T06:14:42.160295+00:00",
+            "supervisor_at": "2026-10-23T06:14:42.170134+00:00",
+            "refused_at": "2026-10-23T06:14:43.800605+00:00",
+            "waited_at": "2026-10-23T06:14:43.873272+00:00",
+            "run_finished": "2026-10-23T06:14:43.925235+00:00",
+        }.items()}
+
+    def test_real_late_intent_shape_closes_resources_without_launch_credit(self) -> None:
+        timeline = self.refused_timeline()
+        original = dict(timeline)
+        self.assertAlmostEqual(
+            (timeline["intent_at"] - timeline["observed_at"]).total_seconds(), 30.120417)
+        refusal._validate_resource_refusal_chronology(**timeline)
+        self.assertEqual(timeline, original)
+
+    def test_resource_refusal_timeline_still_rejects_wrong_order(self) -> None:
+        for field, other in (("observed_at", "run_finished"), ("intent_at", "observed_at"),
+                             ("supervisor_at", "run_started"), ("refused_at", "run_started"),
+                             ("waited_at", "run_started"), ("run_finished", "observed_at")):
+            with self.subTest(field=field):
+                timeline = self.refused_timeline()
+                timeline[field] = timeline[other]
+                with self.assertRaisesRegex(ValueError, "resource chronology differs"):
+                    refusal._validate_resource_refusal_chronology(**timeline)
+
+    def test_resource_refusal_timeline_rejects_timezone_less_values(self) -> None:
+        timeline = self.refused_timeline()
+        timeline["intent_at"] = timeline["intent_at"].replace(tzinfo=None)
+        with self.assertRaisesRegex(ValueError, "timezone-aware resource chronology"):
+            refusal._validate_resource_refusal_chronology(**timeline)
 
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory(prefix="keyed-file-pin-")
