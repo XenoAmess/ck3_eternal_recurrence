@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from dataclasses import dataclass
-from typing import Literal
+from typing import Literal, TypedDict
 from pathlib import Path
 import hashlib
 import json
@@ -41,6 +41,14 @@ class PilgrimagePolicyCaps:
     max_day_requests: int = 1024
 
 
+class PilgrimageJourneyLimits(TypedDict):
+    max_days: int
+    max_day_requests: int
+    max_events: int
+    one_day_timeout: int
+    quit_reserve_seconds: int
+
+
 @dataclass(frozen=True)
 class ConsumedPilgrimageEvent:
     event_id: str
@@ -69,6 +77,21 @@ class PilgrimageResumeOrigin:
     start_date_raw: int
     source_commit: str
     consumed_event_definitions: tuple[str, ...]
+
+
+def pilgrimage_prebooking_wait_max_days(value: object) -> int:
+    """Optional bounded readiness wait; an absent field preserves the original path."""
+    contract = json_object(value, "pilgrimage contract")
+    policy = json_object(contract.get("policy"), "pilgrimage policy")
+    maximum = policy.get("prebooking_wait_max_days", 0)
+    if type(maximum) is not int or not 0 <= maximum <= 7:
+        raise ValueError("prebooking_wait_max_days must be an exact integer in 0..7")
+    total = policy.get("max_journey_days")
+    if maximum and (type(total) is not int or total < maximum + 2):
+        raise ValueError("prebooking wait must retain two days within the original journey cap")
+    if maximum and pilgrimage_resume(contract) is not None:
+        raise ValueError("resume_existing cannot perform a prebooking wait")
+    return maximum
 
 
 def _closed_pin(value: object) -> FilePin:

@@ -7,7 +7,10 @@ import importlib.util
 import hashlib
 import json
 from pathlib import Path
-from typing import TYPE_CHECKING, Protocol
+from types import ModuleType
+from typing import TYPE_CHECKING, Protocol, TypedDict
+from ck3_mod_acceptance_background_types import FilePin
+from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_contract import PilgrimageJourneyLimits
 from ck3_mod_acceptance_native_day import (
     DayClient as PublicDayClient, native_day_request_count, obj, need, integer,
 )
@@ -36,7 +39,7 @@ def read(path):
     return json.loads(Path(path).read_text(encoding="utf-8-sig"))
 
 
-def sibling(path, name):
+def sibling(path: Path, name: str) -> ModuleType:
     spec = importlib.util.spec_from_file_location(name, path)
     if spec is None or spec.loader is None:
         raise ValueError("Selected finite helper is absent")
@@ -48,10 +51,11 @@ def sibling(path, name):
 def validate_contract(context: JSONObject) -> JSONObject:
     from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_contract import (
         pilgrimage_identity, pilgrimage_policy_caps, pilgrimage_natural_advance_mode, pilgrimage_resume,
-        verify_pilgrimage_resume_origin)
+        verify_pilgrimage_resume_origin, pilgrimage_prebooking_wait_max_days)
     c = obj(context["case_contract"], "pilgrimage case contract")
     identity = pilgrimage_identity(c)
     resume = pilgrimage_resume(c)
+    pilgrimage_prebooking_wait_max_days(c)
     if resume is not None:
         verify_pilgrimage_resume_origin(resume, identity=identity,
             machine_id=str(c.get("machine_id")), run_id=str(context.get("run_id")),
@@ -235,10 +239,12 @@ def choose_destination(result: JSONObject, actor: int, date_raw: int,
     return selected
 
 
-def journey_limits(policy):
-    return {"max_days": policy["max_journey_days"], "max_day_requests": policy["max_day_requests"],
-            "max_events": policy["max_events"], "one_day_timeout": policy["one_day_timeout"],
-            "quit_reserve_seconds": policy["quit_reserve_seconds"]}
+def journey_limits(policy: JSONObject) -> PilgrimageJourneyLimits:
+    return {"max_days": integer(policy["max_journey_days"], "max_journey_days"),
+        "max_day_requests": integer(policy["max_day_requests"], "max_day_requests"),
+        "max_events": integer(policy["max_events"], "max_events"),
+        "one_day_timeout": integer(policy["one_day_timeout"], "one_day_timeout"),
+        "quit_reserve_seconds": integer(policy["quit_reserve_seconds"], "quit_reserve_seconds")}
 
 
 def capture_checkpoint(context: JSONObject, client: CaseClient, name: str, request: JSONObject) -> JSONObject:
@@ -346,6 +352,152 @@ class ResumeReadClient(Protocol):
 
     def execute_plan(self, steps: list[JSONObject], name: str) -> object: ...
     def checkpoint(self, name: str, value: JSONObject) -> object: ...
+
+
+class PrebookingClient(ResumeReadClient, Protocol):
+    def snapshot(self, **kwargs: bool) -> object: ...
+    def guard(self, reserve: int = 90) -> object: ...
+    def advance_day(self, days: int = 1, timeout: float = 300,
+                    allow_event_boundary: bool = False,
+                    allow_actor_change: bool = False) -> JSONObject: ...
+
+
+class PrebookingBudget(TypedDict):
+    elapsed_hours: int
+    day_requests: int
+    events: int
+
+
+class PrebookingReady(TypedDict):
+    frame: JSONObject
+    offers: JSONObject
+    budget: PrebookingBudget
+
+
+def prebooking_read(context: JSONObject, client: PrebookingClient, binding: JSONObject,
+        before: JSONObject, tool: str, name: str) -> tuple[JSONObject, JSONObject, FilePin]:
+    """One original readonly call, bound to its current paused owner/date/revisions."""
+    from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_contract import pilgrimage_identity
+    identity = pilgrimage_identity(context["case_contract"])
+    revision = integer(before.get("revision"), "prebooking public revision")
+    native = integer(before.get("native_revision"), "prebooking native revision")
+    date = integer(before.get("date_raw"), "prebooking date")
+    raw = client.execute_plan([{"id": name, "tool": tool, "fresh_revision": False,
+        "args": {"expected_revision": revision}}], name)
+    if not isinstance(raw, list) or len(raw) != 1:
+        raise ValueError("Prebooking query requires one original result")
+    row = obj(raw[0], "prebooking actual row")
+    require(row.get("ok") is True and not row.get("error"), "Prebooking query failed")
+    value = obj(row.get("result"), "prebooking readonly value")
+    after = obj(row.get("after_snapshot"), "prebooking readonly after-frame")
+    require(frame_binding(after, context, identity.actor_character_id) == binding
+            and integer(after.get("date_raw"), "prebooking after date") == date
+            and integer(after.get("revision"), "prebooking after revision") >= revision
+            and integer(after.get("native_revision"), "prebooking after native revision") >= native
+            and {"active_event", "pending_character_interaction"} <= after.keys()
+            and after["active_event"] is None and after["pending_character_interaction"] is None,
+            "Prebooking query crossed its paused native frame")
+    for key, expected in (("queried_revision", revision), ("snapshot_revision", native),
+                          ("date_raw", date), ("played_character_id", identity.actor_character_id)):
+        require(type(value.get(key)) is int and value[key] == expected,
+                "Prebooking readonly scope differs: " + key)
+    require(value.get("read_only") is True, "Prebooking query is not readonly")
+    path = client.output / (name + ".actual-results.json")
+    data = path.read_bytes()
+    source: FilePin = {"path": str(path), "bytes": len(data), "sha256": hashlib.sha256(data).hexdigest()}
+    return value, after, source
+
+
+def wait_for_prebooking_readiness(context: JSONObject, client: PrebookingClient,
+        binding: JSONObject, before: JSONObject) -> PrebookingReady:
+    """Advance only through the existing exact-day and interruption producers; never retry a day."""
+    from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_contract import (
+        pilgrimage_identity, pilgrimage_prebooking_wait_max_days)
+    contract = obj(context["case_contract"], "prebooking contract")
+    identity = pilgrimage_identity(contract)
+    maximum = pilgrimage_prebooking_wait_max_days(contract)
+    require(maximum > 0, "Prebooking wait must be explicitly enabled")
+    policy = obj(contract["policy"], "prebooking policy")
+    limits = journey_limits(policy)
+    start_date = integer(before.get("date_raw"), "prebooking original date")
+    budget: PrebookingBudget = {"elapsed_hours": 0, "day_requests": 0, "events": 0}
+    sources: list[FilePin] = []
+    sequence = 0
+    while True:
+        client.guard(limits["quit_reserve_seconds"] + limits["one_day_timeout"])
+        require(frame_binding(before, context, identity.actor_character_id) == binding,
+                "Prebooking native owner changed")
+        if before.get("active_event") is not None or before.get("pending_character_interaction") is not None:
+            remaining = limits["max_events"] - budget["events"]
+            require(remaining > 0, "Prebooking shared event cap reached")
+            helper = sibling(Path(__file__).with_name("faith_e02_pilgrimage_journey.py"), "_faith_e02_prebooking_drain")
+            # This is the existing shared event producer, not an alternate event policy.
+            raw_drain: object = helper.drain_interruptions(context, client, binding,
+                {**limits, "max_events": remaining})
+            drained = obj(raw_drain, "prebooking interruption result")
+            handled = integer(drained.get("handled_events"), "prebooking handled events")
+            require(0 <= handled <= remaining, "Prebooking drain exceeded its event budget")
+            budget["events"] += handled
+            require(drained.get("status") == "INTERRUPTIONS_DRAINED",
+                    "Prebooking original interruption remains unresolved; no replay")
+            after_drain = obj(drained.get("last_frame"), "prebooking drained frame")
+            require(integer(after_drain.get("date_raw"), "prebooking drained date") == before["date_raw"],
+                    "Prebooking interruption changed the paused date")
+            before = after_drain
+        sequence += 1
+        prefix = "pilgrimage-prebooking-" + str(sequence).zfill(4)
+        hosted, before, source = prebooking_read(context, client, binding, before, IDENTITIES, prefix + "-identities")
+        sources.append(source)
+        require(hosted.get("schema") == "ck3_12004_player_pilgrimage_activities_v1"
+                and hosted.get("scope") == "currently-hosted-by-current-player"
+                and hosted.get("activity_type_key") == "activity_pilgrimage"
+                and hosted.get("absence_is_completion") is False
+                and type(hosted.get("activity_count")) is int and hosted["activity_count"] == 0
+                and hosted.get("activities") == [], "Prebooking requires actual empty hosted activities")
+        offers, before, source = prebooking_read(context, client, binding, before, RELIGION, prefix + "-religion")
+        sources.append(source)
+        require(offers.get("available") is True and type(offers.get("faith_id")) is int
+                and offers["faith_id"] == identity.faith_id and "rite_id" in offers
+                and (offers["rite_id"] is None if identity.rite_id is None else
+                     type(offers["rite_id"]) is int and offers["rite_id"] == identity.rite_id),
+                "Prebooking actual Faith/Rite changed")
+        terms = obj(offers.get("player_pilgrimage_activity_type_terms"), "prebooking actual CanPlan")
+        require(terms.get("available") is True and type(terms.get("can_plan")) is bool
+                and type(terms.get("played_character_id")) is int
+                and terms["played_character_id"] == identity.actor_character_id
+                and type(terms.get("date_raw")) is int and terms["date_raw"] == before["date_raw"],
+                "Prebooking CanPlan lacks its actual current actor/date")
+        budget["elapsed_hours"] = integer(before.get("date_raw"), "prebooking observed date") - start_date
+        require(0 <= budget["elapsed_hours"] <= maximum * 24, "Prebooking elapsed interval exceeded frozen cap")
+        client.checkpoint(prefix + "-readiness", {"machine_id": contract["machine_id"],
+            "run_id": context["run_id"], "binding": binding, "budget": dict(budget),
+            "can_plan": terms["can_plan"], "source_pins": list(sources),
+            "reason_text_does_not_grant_qualification": True})
+        if terms["can_plan"] is True:
+            require(limits["max_days"] * 24 - budget["elapsed_hours"] >= 48
+                    and budget["day_requests"] < limits["max_day_requests"]
+                    and budget["events"] < limits["max_events"],
+                    "Prebooking must retain the original journey reserve before any planner mutation")
+            return {"frame": before, "offers": offers, "budget": budget}
+        require(budget["elapsed_hours"] < maximum * 24, "Prebooking actual CanPlan remains false at finite wait cap")
+        require(budget["day_requests"] < limits["max_day_requests"], "Prebooking shared day-request cap reached")
+        budget["day_requests"] += 1  # An unknown original dispatch remains consumed.
+        client.checkpoint(prefix + "-day-once-intent", {"binding": binding,
+            "date_raw": before["date_raw"], "budget": dict(budget), "retry_allowed": False})
+        row = client.advance_day(1, timeout=limits["one_day_timeout"], allow_event_boundary=True)
+        require(row.get("ok") is True and not row.get("error"), "Prebooking original day failed; never replay")
+        day = obj(row.get("result"), "prebooking actual native-day projection")
+        prior = obj(day.get("before"), "prebooking original day before")
+        after = obj(day.get("after"), "prebooking original day after")
+        elapsed = integer(day.get("elapsed_hours"), "prebooking original day elapsed")
+        require(frame_binding(prior, context, identity.actor_character_id) == binding
+                and frame_binding(after, context, identity.actor_character_id) == binding
+                and prior.get("date_raw") == before["date_raw"] and type(prior.get("date_raw")) is int
+                and integer(after.get("date_raw"), "prebooking day after date") - integer(prior["date_raw"], "prebooking day before date") == elapsed
+                and 0 <= elapsed <= 24 and type(day.get("requested_days")) is int and day["requested_days"] == 1
+                and (elapsed == 24 or day.get("event_boundary") is not None),
+                "Prebooking actual one-day interval crossed its identity/date contract")
+        before = after
 
 
 def resume_native_identity(context: JSONObject, client: ResumeReadClient, binding: JSONObject,
@@ -457,6 +609,7 @@ def run_case(context: JSONObject, client: CaseClient) -> JSONObject:
     natural_capabilities: JSONObject | None = None
     consumed_event_definitions: tuple[str, ...] = ()
     prior_elapsed_hours = 0
+    prebooking_budget: PrebookingBudget = {"elapsed_hours": 0, "day_requests": 0, "events": 0}
     try:
         if pilgrimage_natural_advance_mode(context["case"], policy) == "native_horizon":
             name = "ordinary-pilgrimage-natural-clock-capabilities"
@@ -484,14 +637,21 @@ def run_case(context: JSONObject, client: CaseClient) -> JSONObject:
             result.update(status="hosted_identity_observed", hosted_identity_observed=True,
                 hosted_identity=identity, resume=resume_proof, entry_mode="resume_existing")
         else:
-            before = drain_if_needed(context, client, binding, before)
-            require(frame_binding(before, context, mechanism.actor_character_id) == binding,
-                    "Initial interruption changed original actor or native owner")
+            from tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_contract import pilgrimage_prebooking_wait_max_days
+            if pilgrimage_prebooking_wait_max_days(c):
+                ready = wait_for_prebooking_readiness(context, client, binding, before)
+                before, offers, prebooking_budget = ready["frame"], ready["offers"], ready["budget"]
+                result["prebooking_readiness"] = {"actual_can_plan": True, "budget": dict(prebooking_budget),
+                    "reason_text_does_not_grant_qualification": True}
+            else:
+                before = drain_if_needed(context, client, binding, before)
+                require(frame_binding(before, context, mechanism.actor_character_id) == binding,
+                        "Initial interruption changed original actor or native owner")
+                identities = planner.call(IDENTITIES)
+                require(identities.get("activity_count") == 0 and identities.get("activities") == [],
+                        "Existing hosted pilgrimage precludes a new once-only Start")
+                offers = planner.call(RELIGION)
             planner.start_date = before["date_raw"]
-            identities = planner.call(IDENTITIES)
-            require(identities.get("activity_count") == 0 and identities.get("activities") == [],
-                    "Existing hosted pilgrimage precludes a new once-only Start")
-            offers = planner.call(RELIGION)
             preferred = c.get("preferred_destination_id")
             if preferred is not None and type(preferred) is not int:
                 raise ValueError("Frozen preferred destination is not an integer")
@@ -642,10 +802,15 @@ def run_case(context: JSONObject, client: CaseClient) -> JSONObject:
                 "native_ledger_state_reconciled": ledger_reconciled, "next_action": "Finish start take, then natural journey"})
         journey = sibling(Path(__file__).with_name("faith_e02_pilgrimage_journey.py"), "_faith_e02_pilgrimage_journey")
         limits = journey_limits(policy)
-        if resume is not None:
-            remaining_days = (integer(policy["max_journey_days"], "original journey cap") * 24 - prior_elapsed_hours) // 24
+        if resume is not None or prebooking_budget["elapsed_hours"]:
+            remaining_days = (integer(policy["max_journey_days"], "original journey cap") * 24
+                - prior_elapsed_hours - prebooking_budget["elapsed_hours"]) // 24
             require(remaining_days >= 2, "Original journey duration has no remaining finite advance reserve")
             limits["max_days"] = remaining_days
+        limits["max_day_requests"] -= prebooking_budget["day_requests"]
+        limits["max_events"] -= prebooking_budget["events"]
+        require(limits["max_day_requests"] > 0 and limits["max_events"] > 0,
+                "Prebooking exhausted the shared journey request/event reserve")
         if resume is not None:
             journey_value = journey.run_journey(context, client, binding, identity, limits,
                 natural_capabilities=natural_capabilities, consumed_event_definitions=consumed_event_definitions)
