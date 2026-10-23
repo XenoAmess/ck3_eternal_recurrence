@@ -1,5 +1,7 @@
 # Java / G2 继续执行记录（2026-10-23）
 
+> 2026-10-24 用户要求温和收尾，已停止新增派工；[最新度假交接](2026-10-24-java-g2-stabilization-vacation-handoff.md)及[35项候选索引](2026-10-24-java-g2-vacation-source-index.json)替代本文的当前状态与计划。Source07复制/独审已PASS；C14实际466测试有1error，仍用合格C13；完整Java自动游玩新增保存0日。以下各节保留当时事实，旧时点与旧窗不自动续用。
+
 承接 [休假交接](2026-10-23-java-g2-stabilization-vacation-handoff.md)。用户已明确恢复执行，并追加要求维持56条智能体迁移子任务，G2八个M全部基于Java继续研究、同时继续原版AI挖掘和智能体优化。2026-10-22T23:00Z后已实际登记56个独立子任务；研发并发与受资源约束的JVM/Maven/实机调度分别管理，不把等待数或源码量作为完成成绩。
 
 `machine_id: xenoamess-full-tower-eb9d2c1186`。本轮重新执行 `tools/ck3_live_run_id.py machine`；命令行默认 `mvn -version` 实读3.10.0、Maven home `C:/apache-maven`、JDK21.0.10。这些安装路径仅记录本机观察，不作为执行规范。`J=D:/codex-ck3-demos/2026-10-22-java-phase1`，`N=J/scratch/resume-current-20261023`。旧撤回卡不复活；新SOURCE02与Runtime01有效期至2026-10-23T00:30Z，原4GiB包内登记，其他任务预留继续保留。未启动新Game，未读取实际Driver/SAVE正文。

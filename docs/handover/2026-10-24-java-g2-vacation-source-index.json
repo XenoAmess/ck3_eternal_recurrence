@@ -1,0 +1,362 @@
+{
+  "schema": "xar.java-g2.vacation-source-index/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-23T16:31:23.925210+00:00",
+  "purpose": "Exact existing final candidate index for vacation handoff; no source body duplicated",
+  "N": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023",
+  "references": [
+    {
+      "relative_to_N": "java_full_planner/PARTIAL-STOP01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_full_planner\\PARTIAL-STOP01.json",
+        "bytes": 4082,
+        "sha256": "2c714c81c131667eb733a033949ffe6caad7b40b0bc4f920216b5939f38df519"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_full_planner/HANDOFF01.md",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_full_planner\\HANDOFF01.md",
+        "bytes": 4534,
+        "sha256": "d295320f263fe76404fa84798b8c1af6e09b4823d9f18cf60bea4d15ac38148d"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_action_coordinator/CLOSEOUT02.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_action_coordinator\\CLOSEOUT02.json",
+        "bytes": 2470,
+        "sha256": "80f483a86fd732742f84068c345d99d584ac5a1566da842f409a92edec185b93"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_command_origins/PARTIAL-SOURCE-MAP01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_command_origins\\PARTIAL-SOURCE-MAP01.json",
+        "bytes": 11192,
+        "sha256": "276c57d63d3909b94a27ba617107278b38fe2b302e00e35de97681c8a8b2cf40"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_auto_loop/PARTIAL-SUMMARY01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_auto_loop\\PARTIAL-SUMMARY01.json",
+        "bytes": 4808,
+        "sha256": "7ec8730d304ec9dcab54f78e45c95fe73ac9c5a148c7fa7ad6477be5cca16b26"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_ledger_writer/SOURCE-MAP02.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_ledger_writer\\SOURCE-MAP02.json",
+        "bytes": 8802,
+        "sha256": "4b2b5770aa4dfca2a685b91b893e84bd08c561ce3e1d14918b4e9cb3977fd1d3"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_native_transport/FINAL-STOP-SUMMARY01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_native_transport\\FINAL-STOP-SUMMARY01.json",
+        "bytes": 10173,
+        "sha256": "324b0bec32f3fd7b4ead77e0f330d287a1863d03d2e763e8c18658ac9ec8e666"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_native_transport/SOURCE-MAP01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_native_transport\\SOURCE-MAP01.json",
+        "bytes": 11112,
+        "sha256": "2dfeecf3c46393a1b567c0430968e91c8ddea34012b217f960f4da7484f3e8f3"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_native_game_lifecycle320/PARTIAL-STOP01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_native_game_lifecycle320\\PARTIAL-STOP01.json",
+        "bytes": 3978,
+        "sha256": "c9f8e10e7812e43484992d2a2af1b5c956fa0490b107fa76d5fecb5766a1b603"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_death_succession_composite/SOURCE-PARTIAL-STOP01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_death_succession_composite\\SOURCE-PARTIAL-STOP01.json",
+        "bytes": 17114,
+        "sha256": "f1233058109af5f0ebf8e774f93d6934307a26ed439f8810c82ef8d10ff8612a"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_save_restore/SOURCE-MAP02.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_save_restore\\SOURCE-MAP02.json",
+        "bytes": 6826,
+        "sha256": "a18a0469e42c9e7185ad59714dcb680fe762c946d656df42cbbfee86392b2cc3"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_driver_snapshot_assembler/PARTIAL-SOURCE-CLOSE01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_driver_snapshot_assembler\\PARTIAL-SOURCE-CLOSE01.json",
+        "bytes": 25508,
+        "sha256": "909dbe5c1798e772c24785cedf4455415668da7917dba9051a658b79430495c8"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_driver_history/SUMMARY01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_driver_history\\SUMMARY01.json",
+        "bytes": 5730,
+        "sha256": "11f856ab3b2fc34ddf0aa5b67f74fe4286d5d95d1a753b538ceafefdd55946c8"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_root_readiness/PARTIAL-SOURCE-CLOSE.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_root_readiness\\PARTIAL-SOURCE-CLOSE.json",
+        "bytes": 4359,
+        "sha256": "7e37f63d6ebd18e977a44a3273cc1d9aa4f4d17245ed414640158d56c2db2d0f"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_native_outcome_archive/PARTIAL01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_native_outcome_archive\\PARTIAL01.json",
+        "bytes": 6345,
+        "sha256": "957cedec1bf540c0d48380965b9b3c4898c91556d734d7cf5dc53faad3f74936"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_life_advance_composite/SOURCE-MAP01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_life_advance_composite\\SOURCE-MAP01.json",
+        "bytes": 6327,
+        "sha256": "2c3610ecb24ba1d61eaf58761a2b4c4c83bb93c5bab99cde1fe33b7538eb0485"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_battle_advance_composite/SOURCE-MAP01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_battle_advance_composite\\SOURCE-MAP01.json",
+        "bytes": 3086,
+        "sha256": "c701a24e87569ce2831220ef016ecabc84042ef284252c3610dbe037141c82fe"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_route_contact_composite/application/SOURCE-MAP01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_route_contact_composite\\application\\SOURCE-MAP01.json",
+        "bytes": 10636,
+        "sha256": "1b694694f6d73148b9687ecd15e0d4617a508cb69d7a1185f7b63219392d7899"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_public_mcp_host/SOURCE-MAP01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_public_mcp_host\\SOURCE-MAP01.json",
+        "bytes": 7765,
+        "sha256": "27e02a8f17b71c6bb9be40b638615e5fae34d225f786646fcd7da59510a43110"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_runtime_package/SOURCE-MAP01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_runtime_package\\SOURCE-MAP01.json",
+        "bytes": 4086,
+        "sha256": "3755d655ac4dbb93828fecd31f086e11b3ab4de1e6559ae08dc6d9b7b606958d"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_root_application_assembly/PARTIAL-STOP01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_root_application_assembly\\PARTIAL-STOP01.json",
+        "bytes": 4164,
+        "sha256": "74c08c414695b545444d07cee657f6c638ae9e95581a0b857274556267ec83b9"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_full_parity_ci/PARTIAL-STOP01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_full_parity_ci\\PARTIAL-STOP01.json",
+        "bytes": 3023,
+        "sha256": "a27307b78ef0d82df32274d569153eedc522672affb77a71e14e841c7ba9ad3b"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "sdk_reference_interpreter/SOURCE-MAP01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\sdk_reference_interpreter\\SOURCE-MAP01.json",
+        "bytes": 7814,
+        "sha256": "79750f7288b8ee8e98b7ad606b7aea0b2895790935bcde173b7020398ca2bf1b"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "g2-m0/raw-producer-factory01/SOURCE-PAUSED01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\g2-m0\\raw-producer-factory01\\SOURCE-PAUSED01.json",
+        "bytes": 3458,
+        "sha256": "30933f60664b9d9a7dbd4afaa8bc5de5f84124df9cbc301d148b1dc9e421ce11"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "ai_route_ordinary_military01/PARTIAL-SOURCE-MAP01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\ai_route_ordinary_military01\\PARTIAL-SOURCE-MAP01.json",
+        "bytes": 14505,
+        "sha256": "7ff6bd2169000e1526fcf054de73cad94ca0e8631c324a335740883202515db2"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_war_contact_policy/PARTIAL-CLOSE01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_war_contact_policy\\PARTIAL-CLOSE01.json",
+        "bytes": 8162,
+        "sha256": "c0e59d4dcd53871a943d0ed396772a6159bc85a837775a5f6e56c5dbf83501a1"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_battle_forecast_kernel/PARTIAL01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_battle_forecast_kernel\\PARTIAL01.json",
+        "bytes": 3992,
+        "sha256": "fc002d3a1d3620a2854bce44dce148affc79168b975a738539d95bef53b971cd"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_registered_event_policies/PARTIAL-SOURCE-MAP01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_registered_event_policies\\PARTIAL-SOURCE-MAP01.json",
+        "bytes": 7988,
+        "sha256": "dde79197b2751ae14d8c2c03f10cf07a1c007b1bffb9ad6017d431d029f98118"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_governance_adapters01/DRAFT-MAP01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_governance_adapters01\\DRAFT-MAP01.json",
+        "bytes": 10784,
+        "sha256": "2d10cc458882caea09abf86e420529a3ee236e4bd19e62df47c1ce8b9f57a199"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_finance_ordinary01/SOURCE-MAP01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_finance_ordinary01\\SOURCE-MAP01.json",
+        "bytes": 10413,
+        "sha256": "f8c3242c3a5e088df65b7663a7adcb2485be143397c0d92723f622400cf91933"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "ordinary_prisoners02/PARTIAL-CLOSE01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\ordinary_prisoners02\\PARTIAL-CLOSE01.json",
+        "bytes": 5986,
+        "sha256": "22656a73e6ed292a4c8366fd243bd075a2de5d1ea87d03e7b723936e9cf4f7a5"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "g2_m5_java_family01/SOURCE-MAP01-PARTIAL.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\g2_m5_java_family01\\SOURCE-MAP01-PARTIAL.json",
+        "bytes": 9264,
+        "sha256": "975a6aa95472f11a5416c510f2e9ff207070ae7e79c06a21052ad38f723b9fe6"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "ai_army_contact/ordinary_military01/SOURCE-MAP-COMMANDER01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\ai_army_contact\\ordinary_military01\\SOURCE-MAP-COMMANDER01.json",
+        "bytes": 8026,
+        "sha256": "9294cc164a56516c10b4058b806293c7361dd681a32b42cce5320144c7730234"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "military_holy_order_ordinary_adapter01/SOURCE-MAP01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\military_holy_order_ordinary_adapter01\\SOURCE-MAP01.json",
+        "bytes": 8086,
+        "sha256": "5ac177c68dfc5fe8e36074e0a12ac3c7c31b4b464f92eeca92401356d6d6fb0e"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    },
+    {
+      "relative_to_N": "java_war_split_merge/SOURCE-MAP01.json",
+      "availability": "READ_BACK",
+      "ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261023\\java_war_split_merge\\SOURCE-MAP01.json",
+        "bytes": 3844,
+        "sha256": "9dbdf3fc3d19f0c36d4d8973f9e1cc75114fe7d80152a451501a883e8d3dcf3f"
+      },
+      "qualification": "CANDIDATE_OR_PARTIAL_NOT_RUNTIME_ADOPTION"
+    }
+  ],
+  "scope": "Only explicit final references read; original source bodies and all transitive dependencies must be revalidated before adoption",
+  "status": "PAUSED_WORK_NOT_COMPLETED",
+  "source08_composer_metadata_root_exists": false
+}
