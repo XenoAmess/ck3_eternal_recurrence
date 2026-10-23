@@ -4,6 +4,7 @@ import argparse
 import ast
 from collections.abc import Mapping
 from datetime import datetime, timezone
+from dataclasses import dataclass
 import hashlib
 import importlib.util
 import json
@@ -16,7 +17,11 @@ import sys
 from typing import TypedDict
 
 import build_native_configured_successor as native_successor
-from ck3_mod_acceptance_background_types import WireEvidenceCodec, wire_evidence_codec
+from ck3_mod_acceptance_background_types import (
+    WireEvidenceCodec, wire_evidence_codec, FilePin, JsonObject, json_object, text_field,
+    checked_host_support_pin, HostRunningDateProjectionV1, project_running_date_host,
+    validate_host_running_date_projection, RUNNING_DATE_SUPPORT_RELATIVE, RUNNING_DATE_SUPPORT_FILENAME,
+)
 
 HERE = Path(__file__).resolve().parent
 BOM = b"\xef\xbb\xbf"
@@ -1126,7 +1131,157 @@ def wire_evidence_runtime_features(features: object, codec: object) -> dict[str,
     return result
 
 
+def _support_file_pin(path: Path) -> FilePin:
+    resolved = path.resolve()
+    raw = resolved.read_bytes()
+    return FilePin(path=str(resolved), bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest())
+
+
+def _support_output_pin(path: Path, raw: bytes) -> FilePin:
+    return FilePin(path=str(path.resolve()), bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest())
+
+
+def _support_json(value: JsonObject) -> bytes:
+    return (json.dumps(value, ensure_ascii=False, allow_nan=False, indent=2) + '\n').encode('utf-8')
+
+
+@dataclass(frozen=True)
+class HostSupportStorageV1:
+    root: Path
+    maximum: int
+    minimum_free: int
+    used_cap: int
+
+    @classmethod
+    def parse(cls, value: object, machine: str) -> HostSupportStorageV1:
+        row = json_object(value)
+        fields = {'schema', 'machine_id', 'approved_root', 'observed_at_utc', 'expires_at_utc',
+                  'max_write_bytes', 'required_free_bytes', 'volume_used_cap_bytes'}
+        if set(row) != fields or row['schema'] != 'ck3-shared-host-support-storage-v1' or row['machine_id'] != machine:
+            raise ValueError('Exact current-machine host-support storage admission required')
+        root = Path(text_field(row, 'approved_root'))
+        if not root.is_absolute() or root.is_symlink():
+            raise ValueError('Absolute ordinary admitted host-support root required')
+        observed = datetime.fromisoformat(text_field(row, 'observed_at_utc').replace('Z', '+00:00'))
+        expires = datetime.fromisoformat(text_field(row, 'expires_at_utc').replace('Z', '+00:00'))
+        current = datetime.now(timezone.utc)
+        if observed.tzinfo is None or expires.tzinfo is None or not observed <= current < expires:
+            raise ValueError('Fresh time-bounded host-support storage admission required')
+        limits: list[int] = []
+        for key in ('max_write_bytes', 'required_free_bytes', 'volume_used_cap_bytes'):
+            limit = row[key]
+            if type(limit) is not int or not isinstance(limit, int) or limit <= 0:
+                raise ValueError('Strict positive integer host-support storage limit required')
+            limits.append(limit)
+        return cls(root.resolve(), *limits)
+
+
+def build_host_running_date_support(base_runtime: Path, source_root: Path, source_commit: str,
+                                    destination: Path, storage_admission: Path) -> FilePin:
+    """Build one global immutable host/support pair, retaining the existing SDK."""
+    from ck3_live_run_id import current_machine_id
+    actual_machine: object = current_machine_id()
+    if type(actual_machine) is not str or not isinstance(actual_machine, str):
+        raise ValueError('Actual stable machine identity required')
+    runtime = json_object(json.loads(base_runtime.read_bytes()))
+    manifest_ref = checked_host_support_pin(runtime.get('manifest'))
+    manifest = json_object(json.loads(Path(manifest_ref['path']).read_bytes()))
+    if (runtime.get('schema') != 'ck3-mod-acceptance-runtime-v1'
+            or manifest.get('schema') != 'ck3-mod-acceptance-shared-runtime-v1'
+            or runtime.get('machine_id') != actual_machine or manifest.get('machine_id') != actual_machine):
+        raise ValueError('Exact actual-machine global base runtime required')
+    if 'host_support_projection' in manifest:
+        raise ValueError('Host support must project the reviewed original once, never stack projections')
+    paths = json_object(runtime.get('paths'))
+    host_row = json_object(manifest.get('host'))
+    if set(host_row) != {'path_key', 'bytes', 'sha256'}:
+        raise ValueError('Exact original shared host path/pin required')
+    host_path = Path(text_field(paths, text_field(host_row, 'path_key')))
+    base_host = checked_host_support_pin({'path': str(host_path.resolve()),
+                                         'bytes': host_row['bytes'], 'sha256': host_row['sha256']})
+    if re.fullmatch('[0-9a-f]{40}', source_commit) is None:
+        raise ValueError('Exact canonical helper source commit required')
+    source_root = source_root.resolve()
+    canonical_path = source_root / RUNNING_DATE_SUPPORT_RELATIVE
+    head = subprocess.run(['git', 'rev-parse', 'HEAD'], cwd=source_root, capture_output=True, check=True).stdout.decode().strip()
+    unchanged = subprocess.run(['git', 'diff', '--exit-code', source_commit, '--', RUNNING_DATE_SUPPORT_RELATIVE],
+                               cwd=source_root, capture_output=True)
+    if head != source_commit or unchanged.returncode != 0:
+        raise ValueError('Canonical typed helper differs from the explicit current source commit')
+    git_blob = subprocess.run(['git', 'rev-parse', source_commit + ':' + RUNNING_DATE_SUPPORT_RELATIVE],
+                              cwd=source_root, capture_output=True, check=True).stdout.decode().strip()
+    canonical_helper = checked_host_support_pin(_support_file_pin(canonical_path))
+    helper_raw = canonical_path.read_bytes()
+    for node in ast.walk(ast.parse(helper_raw.decode('utf-8-sig'))):
+        if isinstance(node, ast.Import) and any(item.name != 'math' for item in node.names):
+            raise ValueError('Host-support closure must remain canonical and standard-library-only')
+        if isinstance(node, ast.ImportFrom) and node.module not in {'__future__', 'dataclasses', 'typing'}:
+            raise ValueError('Host-support closure must not import the selected SDK or a product')
+    grant_ref = _support_file_pin(storage_admission)
+    storage = HostSupportStorageV1.parse(json.loads(storage_admission.read_bytes()), actual_machine)
+    destination = destination.resolve()
+    if (destination.exists() or not destination.is_relative_to(storage.root) or destination == storage.root
+            or destination.is_relative_to(source_root) or destination.is_symlink()):
+        raise ValueError('Fresh external child of the admitted global runtime root required')
+    helper = _support_output_pin(destination / RUNNING_DATE_SUPPORT_FILENAME, helper_raw)
+    host_raw = project_running_date_host(host_path.read_bytes(), helper)
+    projected_host = _support_output_pin(destination / 'shared-host.py', host_raw)
+    projector_path = Path(sys.modules[HostRunningDateProjectionV1.__module__].__file__ or '')
+    projection = HostRunningDateProjectionV1(actual_machine, source_commit, git_blob,
+        datetime.now(timezone.utc).isoformat(), base_host,
+        canonical_helper, helper, projected_host, _support_file_pin(Path(__file__)), _support_file_pin(projector_path))
+    receipt_raw = _support_json(projection.to_json())
+    receipt = _support_output_pin(destination / 'host-support-projection.json', receipt_raw)
+    new_manifest = json_object(manifest)
+    new_manifest['host'] = {'path_key': text_field(host_row, 'path_key'),
+                            'bytes': projected_host['bytes'], 'sha256': projected_host['sha256']}
+    new_manifest['host_support_projection'] = json_object(receipt)
+    new_manifest['observed_at_utc'] = datetime.now(timezone.utc).isoformat()
+    manifest_raw = _support_json(new_manifest)
+    new_runtime = json_object(runtime)
+    new_paths = json_object(paths)
+    new_paths[text_field(host_row, 'path_key')] = projected_host['path']
+    new_paths['host_running_date_support'] = helper['path']
+    new_paths['host_support_projection'] = receipt['path']
+    new_runtime['paths'] = new_paths
+    new_runtime['manifest'] = json_object(_support_output_pin(destination / 'manifest.json', manifest_raw))
+    runtime_raw = _support_json(new_runtime)
+    outputs: dict[str, bytes] = {'shared-host.py': host_raw, RUNNING_DATE_SUPPORT_FILENAME: helper_raw,
+        'host-support-projection.json': receipt_raw, 'manifest.json': manifest_raw, 'runtime.local.json': runtime_raw}
+    total = sum(len(raw) for raw in outputs.values())
+    probe = storage.root
+    while not probe.exists():
+        probe = probe.parent
+    capacity = shutil.disk_usage(probe)
+    if (total > min(storage.maximum, 2 * 1024 * 1024) or capacity.free < storage.minimum_free
+            or capacity.used + total > storage.used_cap):
+        raise ValueError('Host-support materialization exceeds the admitted volume/write bounds')
+    if _support_file_pin(storage_admission) != grant_ref:
+        raise ValueError('Host-support storage admission changed before materialization')
+    destination.mkdir(parents=True, exist_ok=False)
+    for name, raw in outputs.items():
+        with (destination / name).open('xb') as stream:
+            stream.write(raw)
+    validate_host_running_date_projection(receipt, destination / 'shared-host.py', actual_machine)
+    return _support_file_pin(destination / 'runtime.local.json')
+
+
+def _host_running_date_main(argv: list[str]) -> int:
+    parser = argparse.ArgumentParser(description='Materialize the shared running-date host support without changing SDK/native/game')
+    for name in ('base-runtime', 'source-root', 'output', 'storage-admission'):
+        parser.add_argument('--' + name, type=Path, required=True)
+    parser.add_argument('--source-commit', required=True)
+    args = parser.parse_args(argv)
+    result = build_host_running_date_support(args.base_runtime, args.source_root, args.source_commit,
+                                             args.output, args.storage_admission)
+    print(json.dumps({'runtime': result, 'game_started': False, 'allocated': False}))
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
+    selected = sys.argv[1:] if argv is None else argv
+    if selected and selected[0] == 'host-running-date-support':
+        return _host_running_date_main(selected[1:])
     sys.dont_write_bytecode = True
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ("base-runtime", "source-delta", "scene-root", "storage-admission", "products", "case-inputs", "output"):

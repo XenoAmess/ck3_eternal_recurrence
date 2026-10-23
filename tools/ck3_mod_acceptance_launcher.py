@@ -17,7 +17,7 @@ import time
 from collections.abc import Sequence
 from ck3_mod_acceptance_background_types import (JsonObject, ProcessGeneration, json_object,
     text_field, object_field, strings_field, environment, process_handle, keyed_file_pin,
-    CONTROL_QUEUE_MODULE_ORDER_V1)
+    CONTROL_QUEUE_MODULE_ORDER_V1, validate_host_running_date_projection)
 from ck3_mod_acceptance_steam_gate import OfflineAdmission
 
 from ck3_mod_acceptance_keeper import check_pin, live_lease, pin, read_json, require, utc, write_new
@@ -31,6 +31,18 @@ def recent(timestamp: str, *, now: datetime | None = None) -> datetime:
     require(instant.tzinfo is not None and 0 <= (now - instant).total_seconds() <= MAX_REVIEW_AGE,
             "Direct review/challenge/Steam frame is stale or from the future")
     return instant
+
+
+def validate_frozen_host_running_date_support(frozen: JsonObject, files: JsonObject, host: Path) -> None:
+    manifest = json_object(read_json(text_field(object_field(frozen, 'runtime_manifest'), 'path')))
+    if 'host_support_projection' not in manifest:
+        return
+    support = validate_host_running_date_projection(
+        manifest['host_support_projection'], host, object_field(frozen, 'identity_allocation').get('machine_id'))
+    for reference in support:
+        support_path = str(Path(reference['path']).resolve())
+        if support_path not in files or keyed_file_pin(support_path, files[support_path]) != reference:
+            raise ValueError('Shared host-support closure absent or changed in allocation pins: ' + support_path)
 
 
 def frozen_run(run_root: Path, *, all_pins: bool = True, input_phase: str = "launch") -> tuple[JsonObject, JsonObject]:
@@ -83,6 +95,7 @@ def frozen_run(run_root: Path, *, all_pins: bool = True, input_phase: str = "lau
     host = str(Path(argv[argv.index("--agent-source-root") - 1]).resolve())
     require(host in files, "Actual shared host is absent from allocation pins")
     check_pin(keyed_file_pin(host, files[host]))
+    validate_frozen_host_running_date_support(frozen, files, Path(host))
     frozen["_checked_frozen_argv"] = json_object(pin(frozen_path))
     return frozen, context
 

@@ -3,6 +3,8 @@ from pathlib import Path
 import importlib.util
 import os
 import subprocess
+import sys
+from types import ModuleType
 import unittest
 from unittest.mock import patch
 
@@ -10,16 +12,19 @@ HERE = Path(__file__).resolve().parent
 ROOT = Path(os.environ.get('CK3_LINK_SUPPORT_TEST_ROOT', str(HERE.parent)))
 
 
-def load(name, path):
+def load(name: str, path: Path) -> ModuleType:
     spec = importlib.util.spec_from_file_location(name, path)
+    if spec is None or spec.loader is None:
+        raise ValueError('Actual fixture link-support import route unavailable')
     module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
     spec.loader.exec_module(module)
     return module
 
 
 builder = load('link_support_candidate', HERE / 'ck3_mod_acceptance_build_runtime.py')
 baseline = load('link_support_owned_baseline', ROOT / 'tools/test_ck3_mod_acceptance_build_runtime.py')
-baseline.builder = builder
+setattr(baseline, 'builder', builder)
 
 
 class FixtureLinkSupportConsumer(unittest.TestCase):

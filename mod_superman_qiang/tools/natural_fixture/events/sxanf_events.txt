@@ -22,7 +22,10 @@ sxanf.1 = {
         create_character = { employer = root age = 30 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = sxanf_dead_a }
         create_character = { employer = root age = 30 gender_female_chance = 100 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = sxanf_dead_b }
         scope:sxanf_spouse_a = { marry = scope:sxanf_spouse_b }
-        scope:sxanf_spouse_b = { set_character_faith = faith:orthodox }
+        # This build stores both a character faith and a rite. Stock pool
+        # templates pair these setters; Orthodox's main rite is Byzantine.
+        # Construct both parts before the real day-two cross-faith check.
+        scope:sxanf_spouse_b = { set_character_faith = faith:orthodox set_character_rite = rite:byzantine_rite }
         scope:sxanf_concubinist = { make_concubine = scope:sxanf_concubine }
         scope:sxanf_pregnant_a = { marry = scope:sxanf_pregnant_b }
         # Fixture setup alone creates pregnancy; the product's monthly event
@@ -69,127 +72,180 @@ sxanf.2 = {
     title = sxanf_baseline_title
     desc = sxanf_baseline_desc
     immediate = {
-        # Baseline is unqualified until all twelve native predicates pass.
-        set_variable = { name = sxanf_baseline_valid value = 0 }
-        sxanf_restore_refs_effect = yes
-        # Day two establishes the controlled fixture input after cache wait.
-        # A real monthly pulse may have touched these new characters on day
-        # one. Clear only these eleven living fixture actors before Begin;
-        # this preparation is not credited as a business encounter or test.
-        scope:sxanf_spouse_a = { sxanf_reset_fixture_experience_effect = yes }
-        scope:sxanf_spouse_b = { sxanf_reset_fixture_experience_effect = yes }
-        scope:sxanf_concubinist = { sxanf_reset_fixture_experience_effect = yes }
-        scope:sxanf_concubine = { sxanf_reset_fixture_experience_effect = yes }
-        scope:sxanf_pregnant_a = { sxanf_reset_fixture_experience_effect = yes }
-        scope:sxanf_pregnant_b = { sxanf_reset_fixture_experience_effect = yes }
-        scope:sxanf_infertile_a = { sxanf_reset_fixture_experience_effect = yes }
-        scope:sxanf_infertile_b = { sxanf_reset_fixture_experience_effect = yes }
-        scope:sxanf_minor_a = { sxanf_reset_fixture_experience_effect = yes }
-        scope:sxanf_minor_b = { sxanf_reset_fixture_experience_effect = yes }
-        scope:sxanf_dead_a = { sxanf_reset_fixture_experience_effect = yes }
-        set_variable = { name = sxanf_native_pulse_count value = 0 }
-        remove_variable = sxanf_native_pulse_month
-        set_variable = { name = sxanf_baseline_month value = sxad_natural_month_value }
-        debug_log = "SXANF: BASELINE_INPUTS_INITIALIZED natural-simulation"
-        if = {
-            limit = { scope:sxanf_infertile_a = { has_character_modifier = sxanf_infertile_modifier } }
-            debug_log = "SXANF: BASELINE_MODIFIER_PRESENT infertile_a"
-        }
-        else = { debug_log = "SXANF: FAIL baseline-modifier-missing infertile_a" }
-        if = {
-            limit = { scope:sxanf_infertile_b = { has_character_modifier = sxanf_infertile_modifier } }
-            debug_log = "SXANF: BASELINE_MODIFIER_PRESENT infertile_b"
-        }
-        else = { debug_log = "SXANF: FAIL baseline-modifier-missing infertile_b" }
-        if = {
-            limit = { scope:sxanf_spouse_a = { is_spouse_of = scope:sxanf_spouse_b faith != scope:sxanf_spouse_b.faith var:sxad_sex_experience = 0 } }
-            debug_log = "SXANF: BASELINE_PREDICATE_OK spouse_a"
-        }
-        else = { debug_log = "SXANF: FAIL baseline-predicate spouse_a" }
-        if = {
-            limit = { scope:sxanf_spouse_b = { var:sxad_sex_experience = 0 } }
-            debug_log = "SXANF: BASELINE_PREDICATE_OK spouse_b"
-        }
-        else = { debug_log = "SXANF: FAIL baseline-predicate spouse_b" }
-        if = {
-            limit = { scope:sxanf_concubine = { is_concubine_of = scope:sxanf_concubinist var:sxad_sex_experience = 0 } }
-            debug_log = "SXANF: BASELINE_PREDICATE_OK concubine"
-        }
-        else = { debug_log = "SXANF: FAIL baseline-predicate concubine" }
-        if = {
-            limit = { scope:sxanf_concubinist = { var:sxad_sex_experience = 0 } }
-            debug_log = "SXANF: BASELINE_PREDICATE_OK concubinist"
-        }
-        else = { debug_log = "SXANF: FAIL baseline-predicate concubinist" }
-        if = {
-            limit = { scope:sxanf_pregnant_a = { is_spouse_of = scope:sxanf_pregnant_b var:sxad_sex_experience = 0 } }
-            debug_log = "SXANF: BASELINE_PREDICATE_OK pregnant_a"
-        }
-        else = { debug_log = "SXANF: FAIL baseline-predicate pregnant_a" }
-        if = {
-            limit = { scope:sxanf_pregnant_b = { is_pregnant = yes var:sxad_sex_experience = 0 } }
-            debug_log = "SXANF: BASELINE_PREDICATE_OK pregnant_b"
-        }
-        else = { debug_log = "SXANF: FAIL baseline-predicate pregnant_b" }
-        if = {
-            limit = { scope:sxanf_infertile_a = { is_spouse_of = scope:sxanf_infertile_b has_character_modifier = sxanf_infertile_modifier fertility < 0.1 var:sxad_sex_experience = 0 } }
-            debug_log = "SXANF: BASELINE_PREDICATE_OK infertile_a"
-        }
-        else = { debug_log = "SXANF: FAIL baseline-predicate infertile_a" }
-        if = {
-            limit = { scope:sxanf_infertile_b = { has_character_modifier = sxanf_infertile_modifier fertility < 0.1 var:sxad_sex_experience = 0 } }
-            debug_log = "SXANF: BASELINE_PREDICATE_OK infertile_b"
-        }
-        else = { debug_log = "SXANF: FAIL baseline-predicate infertile_b" }
-        if = {
-            limit = { scope:sxanf_minor_a = { is_spouse_of = scope:sxanf_minor_b var:sxad_sex_experience = 0 } }
-            debug_log = "SXANF: BASELINE_PREDICATE_OK minor_a"
-        }
-        else = { debug_log = "SXANF: FAIL baseline-predicate minor_a" }
-        if = {
-            limit = { scope:sxanf_minor_b = { is_alive = yes age < 18 var:sxad_sex_experience = 0 } }
-            debug_log = "SXANF: BASELINE_PREDICATE_OK minor_b"
-        }
-        else = { debug_log = "SXANF: FAIL baseline-predicate minor_b" }
-        if = {
-            limit = { scope:sxanf_dead_a = { is_alive = yes var:sxad_sex_experience = 0 } }
-            debug_log = "SXANF: BASELINE_PREDICATE_OK dead_a"
-        }
-        else = { debug_log = "SXANF: FAIL baseline-predicate dead_a" }
-        if = {
-            limit = { scope:sxanf_dead_b = { is_alive = no } }
-            debug_log = "SXANF: BASELINE_PREDICATE_OK dead_b"
-        }
-        else = { debug_log = "SXANF: FAIL baseline-predicate dead_b" }
-        if = {
-            limit = {
-                scope:sxanf_spouse_a = { is_spouse_of = scope:sxanf_spouse_b faith != scope:sxanf_spouse_b.faith var:sxad_sex_experience = 0 }
-                scope:sxanf_spouse_b = { var:sxad_sex_experience = 0 }
-                scope:sxanf_concubine = { is_concubine_of = scope:sxanf_concubinist var:sxad_sex_experience = 0 }
-                scope:sxanf_concubinist = { var:sxad_sex_experience = 0 }
-                scope:sxanf_pregnant_a = { is_spouse_of = scope:sxanf_pregnant_b var:sxad_sex_experience = 0 }
-                scope:sxanf_pregnant_b = { is_pregnant = yes var:sxad_sex_experience = 0 }
-                scope:sxanf_infertile_a = { is_spouse_of = scope:sxanf_infertile_b has_character_modifier = sxanf_infertile_modifier fertility < 0.1 var:sxad_sex_experience = 0 }
-                scope:sxanf_infertile_b = { has_character_modifier = sxanf_infertile_modifier fertility < 0.1 var:sxad_sex_experience = 0 }
-                scope:sxanf_minor_a = { is_spouse_of = scope:sxanf_minor_b var:sxad_sex_experience = 0 }
-                scope:sxanf_minor_b = { is_alive = yes age < 18 var:sxad_sex_experience = 0 }
-                scope:sxanf_dead_a = { is_alive = yes var:sxad_sex_experience = 0 }
-                scope:sxanf_dead_b = { is_alive = no }
+        # State-dependent setup and diagnostics must not run in tooltip preview.
+        # Stock immediate hidden_effect keeps the real execution path intact.
+        hidden_effect = {
+            # Baseline is unqualified until all twelve native predicates pass.
+            set_variable = { name = sxanf_baseline_valid value = 0 }
+            sxanf_restore_refs_effect = yes
+            # Day two establishes the controlled fixture input after cache wait.
+            # A real monthly pulse may have touched these new characters on day
+            # one. Clear only these eleven living fixture actors before Begin;
+            # this preparation is not credited as a business encounter or test.
+            scope:sxanf_spouse_a = { sxanf_reset_fixture_experience_effect = yes }
+            scope:sxanf_spouse_b = { sxanf_reset_fixture_experience_effect = yes }
+            scope:sxanf_concubinist = { sxanf_reset_fixture_experience_effect = yes }
+            scope:sxanf_concubine = { sxanf_reset_fixture_experience_effect = yes }
+            scope:sxanf_pregnant_a = { sxanf_reset_fixture_experience_effect = yes }
+            scope:sxanf_pregnant_b = { sxanf_reset_fixture_experience_effect = yes }
+            scope:sxanf_infertile_a = { sxanf_reset_fixture_experience_effect = yes }
+            scope:sxanf_infertile_b = { sxanf_reset_fixture_experience_effect = yes }
+            scope:sxanf_minor_a = { sxanf_reset_fixture_experience_effect = yes }
+            scope:sxanf_minor_b = { sxanf_reset_fixture_experience_effect = yes }
+            scope:sxanf_dead_a = { sxanf_reset_fixture_experience_effect = yes }
+            set_variable = { name = sxanf_native_pulse_count value = 0 }
+            remove_variable = sxanf_native_pulse_month
+            set_variable = { name = sxanf_baseline_month value = sxad_natural_month_value }
+            debug_log = "SXANF: BASELINE_INPUTS_INITIALIZED natural-simulation"
+            if = {
+                limit = { scope:sxanf_spouse_a = { is_spouse_of = scope:sxanf_spouse_b } }
+                debug_log = "SXANF: BASELINE_DETAIL_OK spouse_a.marriage"
             }
-            set_variable = { name = sxanf_baseline_valid value = 1 }
-            debug_log = "SXANF: BASELINE_READY natural-simulation"
+            else = { debug_log = "SXANF: FAIL baseline-detail spouse_a.marriage" }
+            if = {
+                limit = { scope:sxanf_spouse_a = { exists = faith } }
+                debug_log = "SXANF: BASELINE_DETAIL_OK spouse_a.faith_present"
+            }
+            else = { debug_log = "SXANF: FAIL baseline-detail spouse_a.faith_present" }
+            if = {
+                limit = { scope:sxanf_spouse_b = { exists = faith } }
+                debug_log = "SXANF: BASELINE_DETAIL_OK spouse_b.faith_present"
+            }
+            else = { debug_log = "SXANF: FAIL baseline-detail spouse_b.faith_present" }
+            if = {
+                limit = { scope:sxanf_spouse_a = { exists = faith exists = scope:sxanf_spouse_b.faith NOT = { faith = scope:sxanf_spouse_b.faith } } }
+                debug_log = "SXANF: BASELINE_DETAIL_OK spouse_a.crossfaith"
+            }
+            else = { debug_log = "SXANF: FAIL baseline-detail spouse_a.crossfaith" }
+            if = {
+                limit = { scope:sxanf_spouse_a = { has_variable = sxad_sex_experience } }
+                debug_log = "SXANF: BASELINE_DETAIL_OK spouse_a.xp_present"
+            }
+            else = { debug_log = "SXANF: FAIL baseline-detail spouse_a.xp_present" }
+            if = {
+                limit = { scope:sxanf_spouse_a = { has_variable = sxad_sex_experience } }
+                if = {
+                    limit = { scope:sxanf_spouse_a = { var:sxad_sex_experience = 0 } }
+                    debug_log = "SXANF: BASELINE_DETAIL_OK spouse_a.xp_zero"
+                }
+                else = { debug_log = "SXANF: FAIL baseline-detail spouse_a.xp_nonzero" }
+            }
+            else = { debug_log = "SXANF: BASELINE_DETAIL_UNREAD spouse_a.xp_missing" }
+            if = {
+                limit = { scope:sxanf_spouse_a = { exists = faith exists = root.faith faith = root.faith } }
+                debug_log = "SXANF: BASELINE_DETAIL_STATE spouse_a.faith_matches_root yes"
+            }
+            else = { debug_log = "SXANF: BASELINE_DETAIL_STATE spouse_a.faith_matches_root no" }
+            if = {
+                limit = { scope:sxanf_spouse_b = { exists = faith faith = faith:orthodox } }
+                debug_log = "SXANF: BASELINE_DETAIL_STATE spouse_b.faith_is_orthodox yes"
+            }
+            else = { debug_log = "SXANF: BASELINE_DETAIL_STATE spouse_b.faith_is_orthodox no" }
+            if = {
+                limit = { scope:sxanf_spouse_b = { exists = rite rite = rite:byzantine_rite } }
+                debug_log = "SXANF: BASELINE_DETAIL_STATE spouse_b.rite_is_byzantine yes"
+            }
+            else = { debug_log = "SXANF: BASELINE_DETAIL_STATE spouse_b.rite_is_byzantine no" }
+            if = {
+                limit = { scope:sxanf_infertile_a = { has_character_modifier = sxanf_infertile_modifier } }
+                debug_log = "SXANF: BASELINE_MODIFIER_PRESENT infertile_a"
+            }
+            else = { debug_log = "SXANF: FAIL baseline-modifier-missing infertile_a" }
+            if = {
+                limit = { scope:sxanf_infertile_b = { has_character_modifier = sxanf_infertile_modifier } }
+                debug_log = "SXANF: BASELINE_MODIFIER_PRESENT infertile_b"
+            }
+            else = { debug_log = "SXANF: FAIL baseline-modifier-missing infertile_b" }
+            if = {
+                limit = { scope:sxanf_spouse_a = { is_spouse_of = scope:sxanf_spouse_b exists = faith exists = scope:sxanf_spouse_b.faith NOT = { faith = scope:sxanf_spouse_b.faith } has_variable = sxad_sex_experience var:sxad_sex_experience = 0 } }
+                debug_log = "SXANF: BASELINE_PREDICATE_OK spouse_a"
+            }
+            else = { debug_log = "SXANF: FAIL baseline-predicate spouse_a" }
+            if = {
+                limit = { scope:sxanf_spouse_b = { has_variable = sxad_sex_experience var:sxad_sex_experience = 0 } }
+                debug_log = "SXANF: BASELINE_PREDICATE_OK spouse_b"
+            }
+            else = { debug_log = "SXANF: FAIL baseline-predicate spouse_b" }
+            if = {
+                limit = { scope:sxanf_concubine = { is_concubine_of = scope:sxanf_concubinist has_variable = sxad_sex_experience var:sxad_sex_experience = 0 } }
+                debug_log = "SXANF: BASELINE_PREDICATE_OK concubine"
+            }
+            else = { debug_log = "SXANF: FAIL baseline-predicate concubine" }
+            if = {
+                limit = { scope:sxanf_concubinist = { has_variable = sxad_sex_experience var:sxad_sex_experience = 0 } }
+                debug_log = "SXANF: BASELINE_PREDICATE_OK concubinist"
+            }
+            else = { debug_log = "SXANF: FAIL baseline-predicate concubinist" }
+            if = {
+                limit = { scope:sxanf_pregnant_a = { is_spouse_of = scope:sxanf_pregnant_b has_variable = sxad_sex_experience var:sxad_sex_experience = 0 } }
+                debug_log = "SXANF: BASELINE_PREDICATE_OK pregnant_a"
+            }
+            else = { debug_log = "SXANF: FAIL baseline-predicate pregnant_a" }
+            if = {
+                limit = { scope:sxanf_pregnant_b = { is_pregnant = yes has_variable = sxad_sex_experience var:sxad_sex_experience = 0 } }
+                debug_log = "SXANF: BASELINE_PREDICATE_OK pregnant_b"
+            }
+            else = { debug_log = "SXANF: FAIL baseline-predicate pregnant_b" }
+            if = {
+                limit = { scope:sxanf_infertile_a = { is_spouse_of = scope:sxanf_infertile_b has_character_modifier = sxanf_infertile_modifier fertility < 0.1 has_variable = sxad_sex_experience var:sxad_sex_experience = 0 } }
+                debug_log = "SXANF: BASELINE_PREDICATE_OK infertile_a"
+            }
+            else = { debug_log = "SXANF: FAIL baseline-predicate infertile_a" }
+            if = {
+                limit = { scope:sxanf_infertile_b = { has_character_modifier = sxanf_infertile_modifier fertility < 0.1 has_variable = sxad_sex_experience var:sxad_sex_experience = 0 } }
+                debug_log = "SXANF: BASELINE_PREDICATE_OK infertile_b"
+            }
+            else = { debug_log = "SXANF: FAIL baseline-predicate infertile_b" }
+            if = {
+                limit = { scope:sxanf_minor_a = { is_spouse_of = scope:sxanf_minor_b has_variable = sxad_sex_experience var:sxad_sex_experience = 0 } }
+                debug_log = "SXANF: BASELINE_PREDICATE_OK minor_a"
+            }
+            else = { debug_log = "SXANF: FAIL baseline-predicate minor_a" }
+            if = {
+                limit = { scope:sxanf_minor_b = { is_alive = yes age < 18 has_variable = sxad_sex_experience var:sxad_sex_experience = 0 } }
+                debug_log = "SXANF: BASELINE_PREDICATE_OK minor_b"
+            }
+            else = { debug_log = "SXANF: FAIL baseline-predicate minor_b" }
+            if = {
+                limit = { scope:sxanf_dead_a = { is_alive = yes has_variable = sxad_sex_experience var:sxad_sex_experience = 0 } }
+                debug_log = "SXANF: BASELINE_PREDICATE_OK dead_a"
+            }
+            else = { debug_log = "SXANF: FAIL baseline-predicate dead_a" }
+            if = {
+                limit = { scope:sxanf_dead_b = { is_alive = no } }
+                debug_log = "SXANF: BASELINE_PREDICATE_OK dead_b"
+            }
+            else = { debug_log = "SXANF: FAIL baseline-predicate dead_b" }
+            if = {
+                limit = {
+                    scope:sxanf_spouse_a = { is_spouse_of = scope:sxanf_spouse_b exists = faith exists = scope:sxanf_spouse_b.faith NOT = { faith = scope:sxanf_spouse_b.faith } has_variable = sxad_sex_experience var:sxad_sex_experience = 0 }
+                    scope:sxanf_spouse_b = { has_variable = sxad_sex_experience var:sxad_sex_experience = 0 }
+                    scope:sxanf_concubine = { is_concubine_of = scope:sxanf_concubinist has_variable = sxad_sex_experience var:sxad_sex_experience = 0 }
+                    scope:sxanf_concubinist = { has_variable = sxad_sex_experience var:sxad_sex_experience = 0 }
+                    scope:sxanf_pregnant_a = { is_spouse_of = scope:sxanf_pregnant_b has_variable = sxad_sex_experience var:sxad_sex_experience = 0 }
+                    scope:sxanf_pregnant_b = { is_pregnant = yes has_variable = sxad_sex_experience var:sxad_sex_experience = 0 }
+                    scope:sxanf_infertile_a = { is_spouse_of = scope:sxanf_infertile_b has_character_modifier = sxanf_infertile_modifier fertility < 0.1 has_variable = sxad_sex_experience var:sxad_sex_experience = 0 }
+                    scope:sxanf_infertile_b = { has_character_modifier = sxanf_infertile_modifier fertility < 0.1 has_variable = sxad_sex_experience var:sxad_sex_experience = 0 }
+                    scope:sxanf_minor_a = { is_spouse_of = scope:sxanf_minor_b has_variable = sxad_sex_experience var:sxad_sex_experience = 0 }
+                    scope:sxanf_minor_b = { is_alive = yes age < 18 has_variable = sxad_sex_experience var:sxad_sex_experience = 0 }
+                    scope:sxanf_dead_a = { is_alive = yes has_variable = sxad_sex_experience var:sxad_sex_experience = 0 }
+                    scope:sxanf_dead_b = { is_alive = no }
+                }
+                set_variable = { name = sxanf_baseline_valid value = 1 }
+                debug_log = "SXANF: BASELINE_READY natural-simulation"
+            }
+            else = { debug_log = "SXANF: FAIL baseline-native-setup" }
         }
-        else = { debug_log = "SXANF: FAIL baseline-native-setup" }
     }
     option = {
         name = sxanf_begin
-        trigger = { var:sxanf_baseline_valid = 1 }
+        trigger = { has_variable = sxanf_baseline_valid var:sxanf_baseline_valid = 1 }
         trigger_event = { id = sxanf.3 }
     }
     # A failed setup remains failed and has a valid terminal close action.
     option = {
         name = sxanf_close
-        trigger = { NOT = { var:sxanf_baseline_valid = 1 } }
+        trigger = { NOT = { has_variable = sxanf_baseline_valid var:sxanf_baseline_valid = 1 } }
         debug_log = "SXANF: BASELINE_FAILURE_CLOSED"
     }
 }

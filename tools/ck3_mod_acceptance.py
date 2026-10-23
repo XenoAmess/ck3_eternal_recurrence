@@ -24,7 +24,7 @@ import sys
 
 from ck3_mod_acceptance_background_types import (
     FilePin, JsonObject, file_pin, json_object, keyed_file_pin, object_field, text_field,
-    wire_evidence_codec,
+    wire_evidence_codec, validate_host_running_date_projection,
 )
 
 
@@ -491,7 +491,12 @@ class Selection:
         run_id = self.context.get("run_id", "<allocated-run-id>")
         if self.context and (not isinstance(run_id, str) or not run_id or Path(run_id).name != run_id):
             raise ValueError("Actual allocated run_id required")
-        self.run_dir = path_at(self.context["run_dir"], self.context_path.parent) if self.context else self.locations["artifacts_root"] / run_id
+        if self.context:
+            if self.context_path is None:
+                raise ValueError('Actual allocated context requires its source path')
+            self.run_dir = path_at(self.context['run_dir'], self.context_path.parent)
+        else:
+            self.run_dir = self.locations['artifacts_root'] / run_id
         self.values = {key: str(value) for key, value in self.locations.items()}
         self.values.update(run_id=run_id, run_dir=str(self.run_dir))
         self.runtime_environment = {}
@@ -527,11 +532,16 @@ class Selection:
             for key, row in automation.items():
                 if not isinstance(row, dict):
                     raise ValueError("Normal Quit automation requires exact file pins")
-                path = path_at(row.get("path"), base)
+                declared_path = row.get('path')
+                if not isinstance(declared_path, str):
+                    raise ValueError('Normal Quit automation requires an explicit file path')
+                path = path_at(declared_path, base)
                 self.required_pins.append((path, row))
                 self.normal_quit_automation[key] = {**row, "path": str(path)}
         if self.prepared_path:
             self.required_pins.append((self.prepared_path, pin(self.prepared_path)))
+        self.adapter_path: Path | None = None
+        self.adapter_config: Path | None = None
         adapter = self.case.get('adapter')
         if adapter:
             if 'path' in adapter:self.adapter_path = self.case_path(adapter['path'])
@@ -596,6 +606,11 @@ class Selection:
 
     def build_argv(self) -> list[str]:
         host = self.shared_file(self.manifest["host"], "host")
+        if 'host_support_projection' in self.manifest:
+            support_pins = validate_host_running_date_projection(
+                self.manifest['host_support_projection'], host, self.manifest['machine_id'])
+            for reference in support_pins:
+                self.required_pins.append((Path(reference['path']).resolve(), dict(reference)))
         source = self.manifest_path_key(self.manifest["source_root"])
         for name in ("source_index", "native_source_index"):
             self.shared_file(self.manifest[name], name)
@@ -776,7 +791,8 @@ class Selection:
             sys.path.insert(0, str(import_root))
             try:
                 contract = importlib.import_module("xar_autoplayer.bridge.frontend_fixture_start_contract")
-                if not Path(contract.__file__).resolve().is_relative_to(import_root.resolve()):
+                contract_file = contract.__file__
+                if contract_file is None or not Path(contract_file).resolve().is_relative_to(import_root.resolve()):
                     raise ValueError("Fixture validator import differs from the selected shared source")
                 policy = Path(self.argv[self.argv.index("--frontend-fixture-start-policy") + 1])
                 contract.validate_fixture_start_policy(read_json(policy))
@@ -801,6 +817,8 @@ class Selection:
             errors.append("Product case is explicitly blocked; preserve its pending adapter/contract")
         if self.adapter_path:
             try:
+                if self.adapter_config is None:
+                    raise ValueError('Selected adapter contract path is missing')
                 checks.extend((check_pin(self.adapter_path,self.prepared['adapter']),check_pin(self.adapter_config,self.prepared['contract']))
                               if self.prepared else (pin(self.adapter_path),pin(self.adapter_config)))
                 module = self.load_adapter()
@@ -856,6 +874,8 @@ class Selection:
             except (OSError,KeyError,TypeError,ValueError) as error:errors.append('Saved startup-case contract: '+str(error))
         if self.context:
             try:
+                if self.context_path is None:
+                    raise ValueError('Allocated context source path is missing')
                 frozen_ref = self.context["frozen_argv"]
                 frozen_path = path_at(frozen_ref["path"], self.context_path.parent)
                 checks.append(check_pin(frozen_path, frozen_ref))
@@ -916,7 +936,7 @@ class Selection:
         """
         scope_ref=self.context.get('r06_post_allocate_scope')
         r06=inputs.get('r06_refill_one_day')
-        if not self.context:
+        if not self.context or self.context_path is None:
             return inputs,None
         if r06 is None:
             if scope_ref is not None:raise ValueError('R06 post-allocate scope cannot override another case')
@@ -1004,6 +1024,8 @@ class Selection:
     def prepare(self, inputs_path: Path, output: Path) -> dict[str, object]:
         if self.context:
             raise ValueError('Preparation precedes allocation; do not rewrite allocated input')
+        if self.adapter_path is None or self.adapter_config is None:
+            raise ValueError('Preparation requires its selected adapter and contract paths')
         if self.case.get('status')!='ready':
             raise ValueError('Explicitly blocked product adapter cannot prepare')
         inputs=read_json(inputs_path)
@@ -1062,6 +1084,8 @@ class Selection:
         if result.get('schema') == 'living-artifacts-threshold-case-result-v1':
             if self.product_key != 'living-artifacts' or self.case['id'] != 'threshold_suppression':
                 raise ValueError('Legacy threshold verification requires its exact selected public case')
+            if self.adapter_path is None or self.adapter_config is None:
+                raise ValueError('Legacy threshold adapter/contract paths are missing')
             qualification = _legacy_threshold_gui_qualification_v1(
                 result, loaded_adapter_source=getattr(adapter, '__file__', None),
                 adapter_path=self.adapter_path, contract_path=self.adapter_config,
@@ -1091,7 +1115,7 @@ class Selection:
         result = self.preflight()
         if result["blockers"]:
             raise ValueError("Preflight blocked: " + "; ".join(result["blockers"]))
-        if not self.context:
+        if not self.context or self.context_path is None:
             raise ValueError("Run requires actual allocated frozen argv and current reviewed launcher context")
         launcher_ref = self.runtime["reviewed_launcher"]
         launcher = path_at(launcher_ref["path"], self.runtime_path.parent)

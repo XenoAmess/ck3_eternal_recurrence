@@ -1,6 +1,11 @@
 """Validated JSON boundary shared by the new background refusal protocol."""
 from __future__ import annotations
 import math,os,re,subprocess
+import ast
+import hashlib
+import json
+from dataclasses import dataclass
+from datetime import datetime, timezone
 from typing import Final, Literal, TypeAlias, TypedDict, Protocol, runtime_checkable
 from types import ModuleType
 from pathlib import Path
@@ -305,3 +310,163 @@ def wire_evidence_source(report: object, report_path: Path,
         if set(commits) != {"native-wire", "mcp-wire", "mcp-calls"} or any(v is not None for v in commits.values()):
             raise ValueError("Plain report cannot claim gzip commits")
     return WireEvidenceSource(path=path, wire_evidence_codec=codec, commit=native_commit)
+
+
+RUNNING_DATE_BASE_HOST_SHA256: Final = '776fc23d6a0d7913df96e1799ae25b5021db99b76fb943802171bac6f85c808f'
+RUNNING_DATE_SUPPORT_FILENAME: Final = 'campaign_running_date_publication_v1.py'
+RUNNING_DATE_SUPPORT_RELATIVE: Final = 'ck3_autonomous_player/src/xar_autoplayer/bridge/' + RUNNING_DATE_SUPPORT_FILENAME
+RUNNING_DATE_PROJECTION_SCHEMA: Final = 'ck3-shared-host-running-date-support-v1'
+
+
+def _host_support_pin(value: object) -> FilePin:
+    row = json_object(value)
+    if set(row) != {'path', 'bytes', 'sha256'}:
+        raise ValueError('Exact host-support file pin fields required')
+    result = file_pin(row)
+    path = Path(result['path'])
+    if not path.is_absolute() or path.is_symlink():
+        raise ValueError('Absolute ordinary host-support file required')
+    return result
+
+
+def checked_host_support_pin(value: object) -> FilePin:
+    result = _host_support_pin(value)
+    raw = Path(result['path']).read_bytes()
+    if len(raw) != result['bytes'] or hashlib.sha256(raw).hexdigest() != result['sha256']:
+        raise ValueError('Host-support exact file bytes changed: ' + result['path'])
+    return result
+
+
+def _running_date_function(raw: bytes) -> bytes:
+    tree = ast.parse(raw.decode('utf-8-sig'))
+    found = [node for node in tree.body if isinstance(node, ast.FunctionDef)
+             and node.name == '_campaign_pending_running_date']
+    if len(found) != 1 or found[0].end_lineno is None:
+        raise ValueError('Exactly one reviewed running-date host definition required')
+    node = found[0]
+    return b''.join(raw.splitlines(keepends=True)[node.lineno - 1:node.end_lineno])
+
+
+def project_running_date_host(base: bytes, helper: FilePin) -> bytes:
+    """Replace one approved definition; every other byte round-trips exactly."""
+    helper = _host_support_pin(helper)
+    if hashlib.sha256(base).hexdigest() != RUNNING_DATE_BASE_HOST_SHA256:
+        raise ValueError('Unsupported original shared host SHA256')
+    original = _running_date_function(base)
+    text = '''def _campaign_pending_running_date(source: dict[str, object], snapshot: dict[str, object],
+                                   error: RuntimeError) -> dict[str, object]:
+    """Observe the canonical typed support; never admit an unqualified frame."""
+    import hashlib
+    import importlib.util
+    import sys
+    from pathlib import Path
+    from typing import Protocol, runtime_checkable
+
+    @runtime_checkable
+    class Pending(Protocol):
+        def to_host_binding(self) -> dict[str, object]: ...
+
+    @runtime_checkable
+    class Support(Protocol):
+        def pending_running_date_v1(self, source: object, snapshot: object, error: object) -> Pending: ...
+
+    path = Path(__HELPER_PATH__)
+    raw = path.read_bytes()
+    if path.is_symlink() or len(raw) != __HELPER_BYTES__ or hashlib.sha256(raw).hexdigest() != __HELPER_SHA__:
+        raise RuntimeError('Shared running-date support bytes differ from the frozen projection')
+    spec = importlib.util.spec_from_file_location('_ck3_shared_running_date_support_v1', path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError('Exact shared running-date support loader unavailable')
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    if not isinstance(module, Support):
+        raise RuntimeError('Canonical running-date support API differs')
+    return module.pending_running_date_v1(source, snapshot, error).to_host_binding()
+'''
+    replacement = (text.replace('__HELPER_BYTES__', str(helper['bytes']))
+                   .replace('__HELPER_SHA__', repr(helper['sha256']))
+                   .replace('__HELPER_PATH__', repr(helper['path'])))
+    newline = '\r\n' if b'\r\n' in base else '\n'
+    projected = replacement.replace('\n', newline).encode('utf-8')
+    if base.count(original) != 1:
+        raise ValueError('Ambiguous original shared host definition')
+    output = base.replace(original, projected, 1)
+    ast.parse(output.decode('utf-8-sig'))
+    if output.count(projected) != 1 or output.replace(projected, original, 1) != base:
+        raise ValueError('Host-support projection cannot restore the exact original host')
+    return output
+
+
+@dataclass(frozen=True)
+class HostRunningDateProjectionV1:
+    machine_id: str
+    source_commit: str
+    source_git_blob: str
+    observed_at_utc: str
+    base_host: FilePin
+    canonical_helper: FilePin
+    helper: FilePin
+    projected_host: FilePin
+    producer: FilePin
+    projector: FilePin
+
+    @classmethod
+    def parse(cls, value: object) -> HostRunningDateProjectionV1:
+        row = json_object(value)
+        pins = ('base_host', 'canonical_helper', 'helper', 'projected_host', 'producer', 'projector')
+        if set(row) != {'schema', 'machine_id', 'source_commit', 'source_git_blob', 'observed_at_utc', *pins}:
+            raise ValueError('Exact shared host-support projection fields required')
+        if row['schema'] != RUNNING_DATE_PROJECTION_SCHEMA:
+            raise ValueError('Unsupported shared host-support projection schema')
+        machine, commit, blob = row['machine_id'], row['source_commit'], row['source_git_blob']
+        if type(machine) is not str or not isinstance(machine, str) or not machine or '\0' in machine:
+            raise ValueError('Explicit host-support machine identity required')
+        for digest in (commit, blob):
+            if type(digest) is not str or not isinstance(digest, str) or re.fullmatch('[0-9a-f]{40}', digest) is None:
+                raise ValueError('Exact committed host-support source identity required')
+        if not isinstance(commit, str) or not isinstance(blob, str):
+            raise ValueError('Host-support source identity must be strings')
+        observed = row['observed_at_utc']
+        if (not isinstance(observed, str) or re.fullmatch(
+                r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|\+00:00)', observed) is None):
+            raise ValueError('Strict actual UTC host-support observation time required')
+        instant = datetime.fromisoformat(observed.replace('Z', '+00:00'))
+        if instant > datetime.now(timezone.utc):
+            raise ValueError('Host-support observation cannot be in the future')
+        return cls(machine, commit, blob, observed, *[_host_support_pin(row[key]) for key in pins])
+
+    def to_json(self) -> JsonObject:
+        row: JsonObject = {'schema': RUNNING_DATE_PROJECTION_SCHEMA, 'machine_id': self.machine_id,
+                           'source_commit': self.source_commit, 'source_git_blob': self.source_git_blob,
+                           'observed_at_utc': self.observed_at_utc}
+        for key, value in (('base_host', self.base_host), ('canonical_helper', self.canonical_helper),
+                           ('helper', self.helper), ('projected_host', self.projected_host),
+                           ('producer', self.producer), ('projector', self.projector)):
+            row[key] = json_object(value)
+        return row
+
+
+def validate_host_running_date_projection(reference: object, host: Path, machine_id: object) -> list[FilePin]:
+    """Validate metadata before host selection and return its full freeze closure."""
+    receipt = checked_host_support_pin(reference)
+    row = HostRunningDateProjectionV1.parse(json.loads(Path(receipt['path']).read_bytes()))
+    if type(machine_id) is not str or row.machine_id != machine_id:
+        raise ValueError('Host-support projection crossed the actual machine')
+    refs = [row.base_host, row.canonical_helper, row.helper, row.projected_host, row.producer, row.projector]
+    for ref in refs:
+        checked_host_support_pin(ref)
+    if Path(row.projected_host['path']).resolve() != host.resolve():
+        raise ValueError('Selected host differs from shared support projection')
+    if Path(row.helper['path']).resolve() != host.resolve().with_name(RUNNING_DATE_SUPPORT_FILENAME):
+        raise ValueError('Shared support import route must be the exact host sibling')
+    if not Path(row.canonical_helper['path']).as_posix().endswith('/' + RUNNING_DATE_SUPPORT_RELATIVE):
+        raise ValueError('Canonical host helper source path differs')
+    if Path(row.helper['path']).read_bytes() != Path(row.canonical_helper['path']).read_bytes():
+        raise ValueError('Host support is not a byte-exact canonical source snapshot')
+    if hashlib.sha256(Path(__file__).read_bytes()).hexdigest() != row.projector['sha256']:
+        raise ValueError('Loaded host projector differs from declared canonical source')
+    expected = project_running_date_host(Path(row.base_host['path']).read_bytes(), row.helper)
+    if host.read_bytes() != expected:
+        raise ValueError('Shared host changes exceed the exact supported definition projection')
+    return [receipt, *refs]

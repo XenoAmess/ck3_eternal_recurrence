@@ -278,9 +278,12 @@ class SupermanNaturalFixtureTests(unittest.TestCase):
         context = {"case_contract": config, "case_inputs": {"product_dir": str(product),
             "post_start": {"government_key": "feudal_government", "primary_title_tier_key": "duchy", "independent": True},
             "plain_configuration": plain}, "repo_root": str(candidate_root), "output": str(output),
-            "product": "superman-qiang", "case": "natural-simulation", "state_dir": str(profile.parent),
-            "_selected_engine": (None, {"game_version": "unit-fixture-never-launched", "exe_sha256": "0" * 64})}
-        with patch.object(prepare_shared, "invoke_fixture_prepare", side_effect=emit):
+            "product": "superman-qiang", "case": "natural-simulation", "state_dir": str(profile.parent)}
+        # Public adapter input is JSON-only. Stub the declared engine boundary,
+        # rather than smuggling its internal module/identity tuple into context.
+        engine = (None, {"game_version": "unit-fixture-never-launched", "exe_sha256": "0" * 64})
+        with patch.object(prepare_shared, "invoke_fixture_prepare", side_effect=emit), \
+                patch.object(prepare_shared, "_engine", return_value=engine):
             generic.prepare_case(context)
         compiled: object = json.loads((profile / "mod-content/fixture/_case_contract.json").read_text(encoding="utf-8"))
         if not isinstance(compiled, dict) or not isinstance(compiled.get("required_markers"), list):
@@ -401,14 +404,17 @@ class SupermanNaturalFixtureTests(unittest.TestCase):
         assignments = self.fixture_statements(source)
         baseline = NaturalScriptHarness.block(NaturalScriptHarness.child(assignments, "sxanf.2"))
         immediate = NaturalScriptHarness.block(NaturalScriptHarness.child(baseline, "immediate"))
+        immediate = NaturalScriptHarness.block(NaturalScriptHarness.child(immediate, "hidden_effect"))
         comparisons = [
             NaturalScriptHarness.block(NaturalScriptHarness.child(NaturalScriptHarness.block(node), "limit"))
             for node in immediate if node.key == "if"
         ]
-        # Two independent modifier diagnostics precede the twelve role
-        # predicates and the unchanged conjunction of those twelve predicates.
-        self.assertEqual(len(comparisons), 15)
-        self.assertEqual(tuple(check[0] for check in comparisons[2:14]), comparisons[14])
+        # Diagnostics may expand, but every one of the complete twelve setup
+        # predicates must still be logged alone and required in the conjunction.
+        conjunctions = [check for check in comparisons if len(check) == 12]
+        self.assertEqual(len(conjunctions), 1)
+        for predicate in conjunctions[0]:
+            self.assertEqual(comparisons.count((predicate,)), 1)
         self.assertEqual(source.count("SXANF: BASELINE_PREDICATE_OK "), 12)
         self.assertEqual(source.count("SXANF: FAIL baseline-predicate "), 12)
         pending = list(assignments)
@@ -469,6 +475,7 @@ class SupermanNaturalFixtureTests(unittest.TestCase):
         setup_effects = NaturalScriptHarness.block(NaturalScriptHarness.child(setup, "immediate"))
         baseline = NaturalScriptHarness.block(NaturalScriptHarness.child(definitions, "sxanf.2"))
         baseline_effects = NaturalScriptHarness.block(NaturalScriptHarness.child(baseline, "immediate"))
+        baseline_effects = NaturalScriptHarness.block(NaturalScriptHarness.child(baseline_effects, "hidden_effect"))
         reset_name = "sxanf_reset_fixture_experience_effect"
         day_one_resets = {
             node.key for node in setup_effects if isinstance(node.value, tuple)
@@ -516,6 +523,63 @@ class SupermanNaturalFixtureTests(unittest.TestCase):
         for guard in fertility_guards:
             self.assertEqual(NaturalScriptHarness.scalar(
                 NaturalScriptHarness.child(guard, "has_character_modifier")), "sxanf_infertile_modifier")
+
+    def test_r27_crossfaith_input_and_preview_safe_baseline_diagnostics(self) -> None:
+        # R27 failed one compound predicate and emitted preview-only unset-var
+        # errors. Check the actual producer's corrected input and guard layout;
+        # this structural regression does not award a fresh engine result.
+        output = self.root / "fixture"
+        self.prepare(output)
+        source = (output / "events/sxanf_events.txt").read_text(encoding="utf-8-sig")
+        definitions = self.fixture_statements(source)
+        setup = NaturalScriptHarness.block(NaturalScriptHarness.child(definitions, "sxanf.1"))
+        setup_effects = NaturalScriptHarness.block(NaturalScriptHarness.child(setup, "immediate"))
+        conversions = [NaturalScriptHarness.block(node) for node in setup_effects
+                       if node.key == "scope:sxanf_spouse_b" and isinstance(node.value, tuple)
+                       and any(child.key == "set_character_faith" for child in node.value)]
+        self.assertEqual(len(conversions), 1)
+        self.assertEqual([(node.key, NaturalScriptHarness.scalar(node)) for node in conversions[0]],
+                         [("set_character_faith", "faith:orthodox"),
+                          ("set_character_rite", "rite:byzantine_rite")])
+        baseline = NaturalScriptHarness.block(NaturalScriptHarness.child(definitions, "sxanf.2"))
+        immediate = NaturalScriptHarness.block(NaturalScriptHarness.child(baseline, "immediate"))
+        self.assertEqual(tuple(node.key for node in immediate), ("hidden_effect",))
+        effects = NaturalScriptHarness.block(immediate[0])
+        self.assertNotIn("set_character_faith", source.split("sxanf.2 = {", 1)[1])
+        self.assertNotIn("set_character_rite", source.split("sxanf.2 = {", 1)[1])
+        for detail in ("spouse_a.marriage", "spouse_a.faith_present", "spouse_b.faith_present",
+                       "spouse_a.crossfaith", "spouse_a.xp_present", "spouse_a.xp_zero"):
+            self.assertIn('debug_log = "SXANF: BASELINE_DETAIL_OK ' + detail + '"', source)
+        self.assertIn('debug_log = "SXANF: BASELINE_DETAIL_UNREAD spouse_a.xp_missing"', source)
+        self.assertIn('debug_log = "SXANF: BASELINE_DETAIL_STATE spouse_b.rite_is_byzantine yes"', source)
+        pending = list(effects)
+        guarded_zero_checks = 0
+        unguarded_zero_checks = 0
+        nested_presence_checks = 0
+        while pending:
+            node = pending.pop()
+            if not isinstance(node.value, tuple):
+                continue
+            if node.key == "scope:sxanf_spouse_a" and any(child.key == "NOT" for child in node.value):
+                faith_guard = NaturalScriptHarness.block(NaturalScriptHarness.child(node.value, "NOT"))
+                self.assertEqual(NaturalScriptHarness.scalar(
+                    NaturalScriptHarness.child(faith_guard, "faith")), "scope:sxanf_spouse_b.faith")
+                self.assertEqual([NaturalScriptHarness.scalar(child) for child in node.value
+                                  if child.key == "exists"], ["faith", "scope:sxanf_spouse_b.faith"])
+            if node.key.startswith("scope:") and any(child.key == "var:sxad_sex_experience" for child in node.value):
+                if any(child.key == "has_variable" and child.value == "sxad_sex_experience" for child in node.value):
+                    guarded_zero_checks += 1
+                else:
+                    unguarded_zero_checks += 1
+            if node.key == "if" and any(child.key == "if" for child in node.value):
+                outer = NaturalScriptHarness.block(NaturalScriptHarness.child(node.value, "limit"))
+                scope = NaturalScriptHarness.block(NaturalScriptHarness.child(outer, "scope:sxanf_spouse_a"))
+                self.assertEqual([(child.key, child.value) for child in scope], [("has_variable", "sxad_sex_experience")])
+                nested_presence_checks += 1
+            pending.extend(node.value)
+        self.assertEqual(guarded_zero_checks, 22)
+        # The extra XP diagnostic is evaluated only inside its presence branch.
+        self.assertEqual((unguarded_zero_checks, nested_presence_checks), (1, 1))
 
     def test_integer_and_unrun_fields_are_validated_before_writing(self) -> None:
         contract = self.templates / "cases.json"

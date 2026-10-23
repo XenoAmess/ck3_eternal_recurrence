@@ -17,6 +17,7 @@
       "requirements": [
         "actual_twelve_fixture_character_full_identities_and_saved_root_references",
         "actual_marriage_concubinage_pregnancy_infertility_age_and_death_baseline",
+        "actual_spouse_marriage_distinct_faith_objects_consistent_orthodox_byzantine_rite_and_guarded_experience_diagnostics",
         "actual_eleven_living_experience_zero_and_dead_b_experience_absent_baseline_save_and_independent_readback",
         "current_sxanf_2_event_instance_and_original_begin_option_once"
       ],
@@ -51,6 +52,7 @@
   ],
   "uncovered_product_business": [
     "Fixture preparation, AST checks and logs alone do not prove CK3 syntax, scope validity, persistence or product acceptance.",
+    "R0027 failed spouse_a's compound baseline predicate and had tooltip-preview variable errors, with no SAVE produced. The revised fixture constructs Orthodox faith and Byzantine rite together, hides immediate setup from tooltip preview, and splits marriage, faith existence, cross-faith and experience diagnostics. These source changes require a fresh clean native baseline; they do not retroactively qualify R0027.",
     "A native callback observation records code entry and does not infer the order of concurrent product events.",
     "Actual saved-character readback is required for this matrix. A distinct subsequent public saved-campaign case must perform real cold reload and compare exact experience, month epochs, partner lists and identities; this process-bound case cannot establish persistence.",
     "This bounded matrix does not cover same-sex marriage engine setup, all third-party mods, engine fertility rolls or exact natural-pregnancy attempt observation."
