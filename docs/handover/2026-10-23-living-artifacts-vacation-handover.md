@@ -13,7 +13,7 @@
 ## 入口与必要约束
 
 - 仓库：`D:/workspace/ck3_eternal_recurrence`；产品：`mod_living_artifacts/`；外置工作包：`D:/workspace/ck3-living-artifacts-20261022`，下文简称 `EXT`。
-- 实际解释器：`EXT/runtime/venv/Scripts/python.exe`，Python 3.13.17。**不用默认 Python 3.15，不执行任何 PowerShell。** Windows 命令使用 `cmd.exe`，带空格的游戏路径通过现有 Python argv helper 传递。
+- 实际解释器：`EXT/runtime/venv/Scripts/python.exe`，Python 3.13.17。**不用默认 Python 3.15，不得调用禁止的 Windows Shell，遵循 [AGENTS](../../AGENTS.md)。** Windows 命令使用 `cmd.exe`，带空格的游戏路径通过现有 Python argv helper 传递。
 - 新开发遵守当前 AGENTS 的 Java/Maven/Quarkus 规则；本轮是一期迁移范围外的存量生成器维护及 CK3 脚本修复，不是新建 Python 生产模块的先例。
 - CK3：`1.20.0.4 / build25734779 / Steam beta 1.20.0`；EXE `C:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe`，101040248 B，SHA-256 `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`。这是本轮加载绑定，不代替下次启动前的实际重验。
 - Steam 模式只在后台确认。普通开发、实机保持离线；下次受管启动前重新运行 `tools/steam_offline_state_probe.py --receipt <新路径>`，只接受新鲜 `offline / offline_mode=true`，不能复用历史回执或抢焦点确认。

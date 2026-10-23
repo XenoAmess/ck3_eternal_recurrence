@@ -16,7 +16,7 @@
 - 只迁真实纯叶或明确独立adapter；若源很大，选择完整实际依赖闭包并列未迁范围，不翻译成巨类。发现仅历史attempt/无活跃调用，先向Root报告并选活跃可复用边界。domain不导入adapter，不每函数建HTTP或JVM。
 - 不启动Game/Steam/Task/RPC、不写canonical或pending，不直连第二native pipe。新Game与writer由Root唯一持有。N46旧Game已关闭，原11558 UNKNOWN不重放，保存仍5628/10950。
 - Maven唯一writer/root/g2_m7；golden/Java执行统一交/root/storage_resume调度，使用合格Java Win32 Job，每个capture默认整树512MiB。不私起56个JVM，不自行mvn/下载。Root依据本机新鲜RAM实测另行释放有限多worker时，严格按其联合上限运行；构建中仅向D写采样输出，冻结Z资源须等完整构建终态后导入。
-- 临时/依赖/构建仅D:/codex-ck3-demos/2026-10-22-java-phase1。实际有限release02 review20:00Z，D4GiB/Z32MiB同池不新增take；未获后续manualreview不可自动续。所有exec用cmd.exe/login:false，禁PowerShell，避免shell管道/重定向截断文件。Git/公共POM只Root写。
+- 临时/依赖/构建仅D:/codex-ck3-demos/2026-10-22-java-phase1。实际有限release02 review20:00Z，D4GiB/Z32MiB同池不新增take；未获后续manualreview不可自动续。所有exec用cmd.exe/login:false，不得调用禁止的 Windows Shell，遵循 [AGENTS](../AGENTS.md)，避免shell管道/重定向截断文件。Git/公共POM只Root写。
 - 完成当前组件后明确SOURCE_READY并通知Root/M7冻结范围；在同一自然调用链核对未占用的后续组件后，可自主继续并通知域负责人/Root，无需例行等待确认。收到完整构建RED优先修本人原包（先确认该attempt已结束）。确实缺少独立工作或需要依赖时如实报告，不为在线数量造空模块、拆小任务或把等待算实现。
 - 目标20–30分钟给第一版源码，继续真实差分和消费者adapter整合，不以源码量、测试数、并发数代替游戏/性能成果。Root持续分批合并验证已完成项。
 

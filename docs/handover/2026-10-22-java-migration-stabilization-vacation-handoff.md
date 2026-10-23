@@ -61,7 +61,7 @@ N46、SDK和H是旧冻结输入，不改。Java在`java/ck3-control`，当前父
 
 新生产/构建/CI模块用Java；一期范围内业务修入Java，已有Python仅窄机械适配或范围外维护。保持一个常驻Quarkus组装根、进程内领域模块、单Game动作权威和原writer，不为每叶开服务/JVM。设计见[架构](../java-next-generation-architecture-2026-10-22.md)、[一期计划](../python-java-incremental-migration-plan-2026-10-22.md)、[调度约束](../java-overnight-migration-dispatch-2026-10-22.md)。
 
-工具统一`cmd.exe`、`login:false`，**禁止PowerShell**。Maven用命令行默认`mvn`，最低稳定版本**3.10.0**，不锁路径、不换位置、不改PATH，已合规不追最新。当前机器原位更新实际home `C:/apache-maven`仅是历史事实。JDK当前`C:/jdk-21`/21.0.10，跨机重验；依赖、TEMP/JNA、build/scratch全在D。
+工具统一`cmd.exe`、`login:false`，**不得调用禁止的 Windows Shell，遵循 [AGENTS](../../AGENTS.md)**。Maven用命令行默认`mvn`，最低稳定版本**3.10.0**，不锁路径、不换位置、不改PATH，已合规不追最新。当前机器原位更新实际home `C:/apache-maven`仅是历史事实。JDK当前`C:/jdk-21`/21.0.10，跨机重验；依赖、TEMP/JNA、build/scratch全在D。
 
 ## 4. 已启动有限范围及领域交接
 

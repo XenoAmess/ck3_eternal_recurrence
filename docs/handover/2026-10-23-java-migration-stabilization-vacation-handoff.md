@@ -10,7 +10,7 @@
 - `R = Z:/ck3_mod_rewrite`；`J = D:/codex-ck3-demos/2026-10-22-java-phase1`。
 - `C = D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01`。
 - 当前 Z 工作树原 HEAD 为 `4a999f3ef5aa6770345832ed6a3ed47602c3c4f4`，包含跨线程未提交成果。**不要 reset、clean、add 全树，或把它当 clean runtime。** 正常发布使用 `J/scratch/java-publish01` 的隔离 detached worktree；最终提交以本文件所在提交为准。
-- 不执行 PowerShell。Maven 使用各机器命令行默认 `mvn`，最低 3.10.0；本机已有实际 3.10.0 回执，不把观察到的安装路径变成后续命令规范。
+- 不得调用禁止的 Windows Shell，遵循 [AGENTS](../../AGENTS.md)。Maven 使用各机器命令行默认 `mvn`，最低 3.10.0；本机已有实际 3.10.0 回执，不把观察到的安装路径变成后续命令规范。
 
 ## 已验结果
 

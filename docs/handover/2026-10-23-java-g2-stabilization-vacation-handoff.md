@@ -11,7 +11,7 @@
 - `J = D:/codex-ck3-demos/2026-10-22-java-phase1`。下文证据路径除另注明均相对 J；它们只证明此机器当时的结果。
 - `P = J/scratch/java-publish01`，隔离 detached 发布树。正常发布只选择实际验过的七份兼容测试夹具及文档；D 中工具/领域候选不因此自动进入 master。
 - `C = D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-v20261019-campaign01`，冻结运行态。实际 Driver/SAVE 不纳入普通 FileRef、宽检索或本轮文档校验。
-- 新开发继续 Java + Maven + Quarkus，禁止 PowerShell。Maven 用目标机器命令行默认 `mvn`、最低3.10.0；本机已实际核3.10.0/JDK21.0.10，不把安装路径写成后续规范。
+- 新开发继续 Java + Maven + Quarkus，不得调用禁止的 Windows Shell，遵循 [AGENTS](../../AGENTS.md)。Maven 用目标机器命令行默认 `mvn`、最低3.10.0；本机已实际核3.10.0/JDK21.0.10，不把安装路径写成后续规范。
 
 ## 已实际通过与发布边界
 
