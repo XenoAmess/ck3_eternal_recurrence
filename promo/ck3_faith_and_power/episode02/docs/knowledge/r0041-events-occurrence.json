@@ -1,0 +1,3411 @@
+{
+  "schema": "xar.ck3.source-only-occurrence-summary/v1",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--faith-engine--R0041",
+  "batch_terminal_pending": false,
+  "terminal_authority": {
+    "source": "Root ended-batch instruction plus pinned final adapter result",
+    "status": "PARTIAL_ORIGINAL_FAILURE_PRESERVED",
+    "observed_days": 202,
+    "reason": "ValueError: Actual case step failed: faith-e02-journey-001-0183-native-horizon",
+    "arrival": false,
+    "return": false,
+    "new_save": false,
+    "new_raw_take": false
+  },
+  "final_result": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\ordinary-pilgrimage-result.json",
+    "bytes": 629151,
+    "sha256": "9011c7bbdd826a791b124968b123bb373e3fee611d00a311a6a812628a64c35c"
+  },
+  "whole_list_counts": {
+    "handled_events": 10,
+    "offline_analysis_inputs": 10,
+    "interaction_receipts": 0,
+    "new_source_definitions": 2
+  },
+  "last_observed_pending_character_interaction": null,
+  "notification_boundary": "No handled interaction receipt/offline interaction packet and no pending notification in the last retained frame. The failed later horizon has no valid full terminal observation; do not invent unseen notifications or reuse R0039's old pending instance as R0041 state.",
+  "source_history_boundary": "Reuse covered sources. health1101 remains available source knowledge but its actual R0041 saved-scope projection is blocked; no action contract relaxation. Preserve R0039's distinct unidentified-notification audit gap.",
+  "events": {
+    "travel_start_event.1060": {
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/travel-start-1060-source-analysis.json",
+      "source_document_sha256": "50d844aa0fbf036b974fb0cd22fc7a340c374d8264f9ad6c1506ef9ef3066540",
+      "displayed_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "我一生都在等待这一刻。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "typed_scope_projection": {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 8,
+        "date_raw": 51394944,
+        "current_event_instance_id": 4,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "travel_start_event.1060",
+        "calculated_event_id": 1311060,
+        "runtime_stats_ordinal": 746,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 15893
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "travel_plan",
+            "name_identifier": 211,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 35,
+              "type_key": "travel_plan",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "pilgrim_net",
+            "name_identifier": 13100,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 5,
+              "type_key": "landed_title",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "landed_title",
+                "title_id": 6621
+              }
+            }
+          },
+          {
+            "name": "province_temp",
+            "name_identifier": 5486,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 8,
+              "type_key": "province",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "char_temp",
+            "name_identifier": 7870,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 19281
+              }
+            }
+          }
+        ],
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        },
+        "provenance": {
+          "root": "module+0x5C6A520->+0x10",
+          "idler_vtable_rva": "0x44BC418",
+          "manager_offset": "+0x28",
+          "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+        }
+      },
+      "snapshot_option_count": 1,
+      "actual": {
+        "event_instance_id": 4,
+        "event_definition_key": "travel_start_event.1060",
+        "selected_native_option_index": 0,
+        "selected_option_number": 1,
+        "submission_attempted": true,
+        "ack_accepted": true,
+        "old_instance_gone_in_independent_snapshot": true,
+        "actor_character_id": 15893,
+        "date_raw": 51394944,
+        "game_day": 1,
+        "snapshot_revision": 8,
+        "post_actor_character_id": 15893,
+        "post_date_raw": 51394944,
+        "post_active_event": {
+          "source": "native",
+          "instance_id": 3,
+          "option_count": 3,
+          "title": null,
+          "options": [
+            {
+              "index": 0,
+              "option_number": 1,
+              "label": null,
+              "enabled": true
+            },
+            {
+              "index": 1,
+              "option_number": 2,
+              "label": null,
+              "enabled": true
+            },
+            {
+              "index": 2,
+              "option_number": 3,
+              "label": null,
+              "enabled": true
+            }
+          ]
+        },
+        "stress_before": 0,
+        "stress_after": 0,
+        "wallets_before": {
+          "played_character_gold": {
+            "raw": 121600000,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 3600000,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 225000000,
+            "scale": 100000
+          }
+        },
+        "wallets_after": {
+          "played_character_gold": {
+            "raw": 121600000,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 3600000,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 225000000,
+            "scale": 100000
+          }
+        },
+        "evidence": [
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-4-offline-analysis-input.json",
+            "bytes": 68132,
+            "sha256": "da8891095a84f99e18b844c7700b259088fe9e226d6dd1004a96f6b335413220"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-4-selection-intent.json",
+            "bytes": 71237,
+            "sha256": "bb1595d9a8874f812e850eafbd9112e04282a3a035332a98f5f82c989c61f01e"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-4-selection-observed.json",
+            "bytes": 35802,
+            "sha256": "d7b5a1276baaadaa08f1ce4bc3dacc0e75fb19e80ec45a8ab90da6481f7be1f6"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-0004-event-select-once.actual-results.json",
+            "bytes": 40324,
+            "sha256": "393a214a206772ac9912bcde3351b327b8daad3dc8ff0584b2eb0376b74dcedf"
+          }
+        ],
+        "displayed_options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "我一生都在等待这一刻。",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": []
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          }
+        ]
+      },
+      "observed_at_utc": "2026-10-23T07:17:59.760836+00:00",
+      "knowledge_before": {
+        "status": "unavailable",
+        "reason": "source_analyzed_no_occurrence_contract",
+        "source_analysis_completed": true,
+        "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/travel-start-1060-source-analysis.json",
+        "source_document_sha256": "50d844aa0fbf036b974fb0cd22fc7a340c374d8264f9ad6c1506ef9ef3066540",
+        "source_sha256": null
+      },
+      "runtime_policy": {
+        "policy": "native_first_displayed_v1",
+        "registry_decision_status": "not_registered",
+        "registry_reason": "source_analyzed_no_occurrence_contract",
+        "failed_checks": [],
+        "legacy_registry_analysis_available": true
+      }
+    },
+    "historical_char_creation_events.1": {
+      "source_document": null,
+      "source_document_sha256": null,
+      "displayed_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "我很好奇他的命运将会如何……",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "这样的男人对我有大用！",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 2,
+          "native_option_index": 2,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "穆尼斯？谁在乎！",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "typed_scope_projection": {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 9,
+        "date_raw": 51394944,
+        "current_event_instance_id": 3,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "historical_char_creation_events.1",
+        "calculated_event_id": 3320001,
+        "runtime_stats_ordinal": 5472,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 15893
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "birth_location",
+            "name_identifier": 25872,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 5,
+              "type_key": "landed_title",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "landed_title",
+                "title_id": 6687
+              }
+            }
+          },
+          {
+            "name": "historical_character",
+            "name_identifier": 20085,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 41436
+              }
+            }
+          },
+          {
+            "name": "county_scope",
+            "name_identifier": 18298,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 5,
+              "type_key": "landed_title",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "landed_title",
+                "title_id": 6686
+              }
+            }
+          },
+          {
+            "name": "inspiration_owner",
+            "name_identifier": 184,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 41435
+              }
+            }
+          },
+          {
+            "name": "new_inspiration",
+            "name_identifier": 182,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 32,
+              "type_key": "inspiration",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "background_terrain_scope",
+            "name_identifier": 11404,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 5,
+              "type_key": "landed_title",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "landed_title",
+                "title_id": 6687
+              }
+            }
+          },
+          {
+            "name": "background_market_scope",
+            "name_identifier": 11471,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 8,
+              "type_key": "province",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "background_university_scope",
+            "name_identifier": 11970,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 8,
+              "type_key": "province",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "holy_site_scope",
+            "name_identifier": 11664,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 8,
+              "type_key": "province",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          }
+        ],
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        },
+        "provenance": {
+          "root": "module+0x5C6A520->+0x10",
+          "idler_vtable_rva": "0x44BC418",
+          "manager_offset": "+0x28",
+          "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+        }
+      },
+      "snapshot_option_count": 3,
+      "actual": {
+        "event_instance_id": 3,
+        "event_definition_key": "historical_char_creation_events.1",
+        "selected_native_option_index": 2,
+        "selected_option_number": 3,
+        "submission_attempted": true,
+        "ack_accepted": true,
+        "old_instance_gone_in_independent_snapshot": true,
+        "actor_character_id": 15893,
+        "date_raw": 51394944,
+        "game_day": 1,
+        "snapshot_revision": 9,
+        "post_actor_character_id": 15893,
+        "post_date_raw": 51394944,
+        "post_active_event": null,
+        "stress_before": 0,
+        "stress_after": 0,
+        "wallets_before": {
+          "played_character_gold": {
+            "raw": 121600000,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 3600000,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 225000000,
+            "scale": 100000
+          }
+        },
+        "wallets_after": {
+          "played_character_gold": {
+            "raw": 121600000,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 11100000,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 225000000,
+            "scale": 100000
+          }
+        },
+        "evidence": [
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-3-offline-analysis-input.json",
+            "bytes": 72383,
+            "sha256": "46e8c7ec44b66113720816d600d09a4a904764b966e9b1846799de91f6b7a7f0"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-3-selection-intent.json",
+            "bytes": 78634,
+            "sha256": "8331a1eade71c016fe0a623641ca285dc390ed8b1aba3e848aff32a1420491bb"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-3-selection-observed.json",
+            "bytes": 37000,
+            "sha256": "8b47bb3711f3a3a339041cff5e56054e1f62ef58feb4e6a4d6e39754e95f16a0"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-0006-event-select-once.actual-results.json",
+            "bytes": 39144,
+            "sha256": "f35db3fb73274e014e9a044e1b9cd0ece5c0887a6397aeeb08c222dc1445e12f"
+          }
+        ],
+        "displayed_options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "我很好奇他的命运将会如何……",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": []
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "这样的男人对我有大用！",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": []
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          },
+          {
+            "rendered_index": 2,
+            "native_option_index": 2,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "穆尼斯？谁在乎！",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": []
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          }
+        ]
+      },
+      "observed_at_utc": "2026-10-23T07:18:08.738570+00:00",
+      "knowledge_before": {
+        "status": "available",
+        "reason": null,
+        "source_analysis_completed": null,
+        "source_document": null,
+        "source_document_sha256": null,
+        "source_sha256": {
+          "events/historical_character_events.txt": "1E40FDB1EA99393B45743514180700D623BEFEB09F88B71F811BA09D56B43567",
+          "common/scripted_effects/00_historical_characters_scripted_effects.txt": "BB95C92120B74D80AC6C28F455ECE4E8FCD9D9D6E620EE408989B05B291840FD"
+        }
+      },
+      "runtime_policy": {
+        "policy": "existing_registered_vanilla_event_v1",
+        "registry_decision_status": "recommended",
+        "registry_reason": null,
+        "failed_checks": [],
+        "legacy_registry_analysis_available": true
+      }
+    },
+    "travel_events_oltner_2.1030": {
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0041-events-source-analysis-12004.json",
+      "source_document_sha256": "b35d2835d1526b55d0dede20d111efdcad832f7993b0da3eea9c17ec50b8c68c",
+      "displayed_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "“你挑起我的兴趣了，让我们来交易吧。”",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "“用不着，但也许我们暂时可以一起旅行？”",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 2,
+          "native_option_index": 2,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "“给我看些独特的东西，而且得是库法的真正瑰宝。”",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 3,
+          "native_option_index": 3,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "“我们携带的行囊已经够多了……”",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": [
+              {
+                "kind": "stress",
+                "direction": "increase",
+                "magnitude": {
+                  "status": "unavailable"
+                },
+                "affected_by_trait": true,
+                "critical": false
+              }
+            ]
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "typed_scope_projection": {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 82,
+        "date_raw": 51395592,
+        "current_event_instance_id": 5,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "travel_events_oltner_2.1030",
+        "calculated_event_id": 5401030,
+        "runtime_stats_ordinal": 9049,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 15893
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "travel_plan",
+            "name_identifier": 211,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 35,
+              "type_key": "travel_plan",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "location",
+            "name_identifier": 9644,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 8,
+              "type_key": "province",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "local_character",
+            "name_identifier": 17472,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 41708
+              }
+            }
+          },
+          {
+            "name": "new_trinket",
+            "name_identifier": 15319,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 15893
+              }
+            }
+          }
+        ],
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        },
+        "provenance": {
+          "root": "module+0x5C6A520->+0x10",
+          "idler_vtable_rva": "0x44BC418",
+          "manager_offset": "+0x28",
+          "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+        }
+      },
+      "snapshot_option_count": 4,
+      "actual": {
+        "event_instance_id": 5,
+        "event_definition_key": "travel_events_oltner_2.1030",
+        "selected_native_option_index": 0,
+        "selected_option_number": 1,
+        "submission_attempted": true,
+        "ack_accepted": true,
+        "old_instance_gone_in_independent_snapshot": true,
+        "actor_character_id": 15893,
+        "date_raw": 51395592,
+        "game_day": 28,
+        "snapshot_revision": 82,
+        "post_actor_character_id": 15893,
+        "post_date_raw": 51395592,
+        "post_active_event": null,
+        "stress_before": 0,
+        "stress_after": 0,
+        "wallets_before": {
+          "played_character_gold": {
+            "raw": 121786805,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 11561059,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 225194250,
+            "scale": 100000
+          }
+        },
+        "wallets_after": {
+          "played_character_gold": {
+            "raw": 116286805,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 11561059,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 225194250,
+            "scale": 100000
+          }
+        },
+        "evidence": [
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-5-offline-analysis-input.json",
+            "bytes": 73483,
+            "sha256": "050cfecbc86f056c0854b255c14476c27f5fe1176ad724614dd63da3240481f5"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-5-selection-intent.json",
+            "bytes": 79124,
+            "sha256": "7f8465a92da60c7db6d45da3f0289e85a70346d9088eba4d5cbd8177a8e323a5"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-5-selection-observed.json",
+            "bytes": 36083,
+            "sha256": "fdcc66d447d814bd0f1b47d40f969874631ebdb7acee6f506204a25492801e11"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-0033-event-select-once.actual-results.json",
+            "bytes": 40004,
+            "sha256": "079e0fd97691a2b2a361002d693cebd3e78f3cadc2d0786ad664e61b5713bb3b"
+          }
+        ],
+        "displayed_options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "“你挑起我的兴趣了，让我们来交易吧。”",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": []
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "“用不着，但也许我们暂时可以一起旅行？”",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": []
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          },
+          {
+            "rendered_index": 2,
+            "native_option_index": 2,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "“给我看些独特的东西，而且得是库法的真正瑰宝。”",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": []
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          },
+          {
+            "rendered_index": 3,
+            "native_option_index": 3,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "“我们携带的行囊已经够多了……”",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": [
+                {
+                  "kind": "stress",
+                  "direction": "increase",
+                  "magnitude": {
+                    "status": "unavailable"
+                  },
+                  "affected_by_trait": true,
+                  "critical": false
+                }
+              ]
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          }
+        ]
+      },
+      "observed_at_utc": "2026-10-23T07:21:26.555421+00:00",
+      "knowledge_before": {
+        "status": "unavailable",
+        "reason": "event_definition_key_not_registered",
+        "source_analysis_completed": null,
+        "source_document": null,
+        "source_document_sha256": null,
+        "source_sha256": null
+      },
+      "runtime_policy": {
+        "policy": "native_first_displayed_v1",
+        "registry_decision_status": "not_registered",
+        "registry_reason": "event_definition_key_not_registered",
+        "failed_checks": [],
+        "legacy_registry_analysis_available": true
+      }
+    },
+    "travel_danger_events.4010": {
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0037-travel-danger-4010.source-analysis.json",
+      "source_document_sha256": "c6395188eedce6d43661fe31c354986989e935d927b02f15235a268e67984872",
+      "displayed_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "我们应该让他休息直到完全康复。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 4,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "这只是轻微的咳嗽。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "typed_scope_projection": {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 86,
+        "date_raw": 51395616,
+        "current_event_instance_id": 6,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "travel_danger_events.4010",
+        "calculated_event_id": 1164010,
+        "runtime_stats_ordinal": 380,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 15893
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "travel_plan",
+            "name_identifier": 211,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 35,
+              "type_key": "travel_plan",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "sick_character",
+            "name_identifier": 11614,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 19280
+              }
+            }
+          },
+          {
+            "name": "disease_type",
+            "name_identifier": 11615,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 3,
+              "type_key": "flag",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "ill_character",
+            "name_identifier": 17257,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 19280
+              }
+            }
+          },
+          {
+            "name": "destination",
+            "name_identifier": 208,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 8,
+              "type_key": "province",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          }
+        ],
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        },
+        "provenance": {
+          "root": "module+0x5C6A520->+0x10",
+          "idler_vtable_rva": "0x44BC418",
+          "manager_offset": "+0x28",
+          "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+        }
+      },
+      "snapshot_option_count": 5,
+      "actual": {
+        "event_instance_id": 6,
+        "event_definition_key": "travel_danger_events.4010",
+        "selected_native_option_index": 0,
+        "selected_option_number": 1,
+        "submission_attempted": true,
+        "ack_accepted": true,
+        "old_instance_gone_in_independent_snapshot": true,
+        "actor_character_id": 15893,
+        "date_raw": 51395616,
+        "game_day": 29,
+        "snapshot_revision": 86,
+        "post_actor_character_id": 15893,
+        "post_date_raw": 51395616,
+        "post_active_event": null,
+        "stress_before": 0,
+        "stress_after": 0,
+        "wallets_before": {
+          "played_character_gold": {
+            "raw": 116286805,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 11561059,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 225194250,
+            "scale": 100000
+          }
+        },
+        "wallets_after": {
+          "played_character_gold": {
+            "raw": 116286805,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 11561059,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 225194250,
+            "scale": 100000
+          }
+        },
+        "evidence": [
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-6-offline-analysis-input.json",
+            "bytes": 72287,
+            "sha256": "94620acf04af11789d52716712c55e431ad4d71d13ba61dd8dd0d2db0a505def"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-6-selection-intent.json",
+            "bytes": 76127,
+            "sha256": "823c2741c7045fbf06f5e01dae7e2b7f685a4ef016aace7bf42793abae60505e"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-6-selection-observed.json",
+            "bytes": 36081,
+            "sha256": "33faf0a5255b30d30ce687373932f99c6c229098c57006e1ec68f094e0f500b2"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-0037-event-select-once.actual-results.json",
+            "bytes": 40003,
+            "sha256": "0489cc26ecbeb88fcc219e962b56f4839215f2ef04f121644346d8adcb047e4e"
+          }
+        ],
+        "displayed_options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "我们应该让他休息直到完全康复。",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": []
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 4,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "这只是轻微的咳嗽。",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": []
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          }
+        ]
+      },
+      "observed_at_utc": "2026-10-23T07:21:49.396272+00:00",
+      "knowledge_before": {
+        "status": "unavailable",
+        "reason": "source_analyzed_no_occurrence_contract",
+        "source_analysis_completed": true,
+        "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0037-travel-danger-4010.source-analysis.json",
+        "source_document_sha256": "c6395188eedce6d43661fe31c354986989e935d927b02f15235a268e67984872",
+        "source_sha256": null
+      },
+      "runtime_policy": {
+        "policy": "native_first_displayed_v1",
+        "registry_decision_status": "not_registered",
+        "registry_reason": "source_analyzed_no_occurrence_contract",
+        "failed_checks": [],
+        "legacy_registry_analysis_available": true
+      }
+    },
+    "travel_danger_events.6030": {
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0041-events-source-analysis-12004.json",
+      "source_document_sha256": "b35d2835d1526b55d0dede20d111efdcad832f7993b0da3eea9c17ec50b8c68c",
+      "displayed_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "只是有点发霉而已！",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": [
+              {
+                "kind": "trait",
+                "operation": "add",
+                "trait": {
+                  "status": "available",
+                  "native_id": 109,
+                  "key": "ill"
+                }
+              }
+            ]
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "大自然会为我们提供食物！",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": [
+              {
+                "kind": "trait",
+                "operation": "add",
+                "trait": {
+                  "status": "available",
+                  "native_id": 109,
+                  "key": "ill"
+                }
+              },
+              {
+                "kind": "death",
+                "subject": "played_character",
+                "direction": "not_applicable"
+              }
+            ]
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 2,
+          "native_option_index": 2,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "肯定能从这里的本地人那弄到点\u0015EMP 什么\u0015!。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": [
+              {
+                "kind": "stress",
+                "direction": "increase",
+                "magnitude": {
+                  "status": "unavailable"
+                },
+                "affected_by_trait": true,
+                "critical": false
+              }
+            ]
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "typed_scope_projection": {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 157,
+        "date_raw": 51396504,
+        "current_event_instance_id": 7,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "travel_danger_events.6030",
+        "calculated_event_id": 1166030,
+        "runtime_stats_ordinal": 389,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 15893
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "travel_plan",
+            "name_identifier": 211,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 35,
+              "type_key": "travel_plan",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "travel_leader",
+            "name_identifier": 12588,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 34769
+              }
+            }
+          },
+          {
+            "name": "highest_learning_entourage_member",
+            "name_identifier": 19409,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 34769
+              }
+            }
+          },
+          {
+            "name": "destination",
+            "name_identifier": 208,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 8,
+              "type_key": "province",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          }
+        ],
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        },
+        "provenance": {
+          "root": "module+0x5C6A520->+0x10",
+          "idler_vtable_rva": "0x44BC418",
+          "manager_offset": "+0x28",
+          "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+        }
+      },
+      "snapshot_option_count": 3,
+      "actual": {
+        "event_instance_id": 7,
+        "event_definition_key": "travel_danger_events.6030",
+        "selected_native_option_index": 0,
+        "selected_option_number": 1,
+        "submission_attempted": true,
+        "ack_accepted": true,
+        "old_instance_gone_in_independent_snapshot": true,
+        "actor_character_id": 15893,
+        "date_raw": 51396504,
+        "game_day": 66,
+        "snapshot_revision": 157,
+        "post_actor_character_id": 15893,
+        "post_date_raw": 51396504,
+        "post_active_event": null,
+        "stress_before": 0,
+        "stress_after": 0,
+        "wallets_before": {
+          "played_character_gold": {
+            "raw": 117594432,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 12030564,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 225388500,
+            "scale": 100000
+          }
+        },
+        "wallets_after": {
+          "played_character_gold": {
+            "raw": 117594432,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 12030564,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 225388500,
+            "scale": 100000
+          }
+        },
+        "evidence": [
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-7-offline-analysis-input.json",
+            "bytes": 76616,
+            "sha256": "7da35cfe2951e3b11093d3294d9d6fadabdba579af56d1b3a27c4caca877f410"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-7-selection-intent.json",
+            "bytes": 82048,
+            "sha256": "e2dcefd2beae1ad10bb2410614b21ec77bcc952ca19e2e0b954f3968df9b4e95"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-7-selection-observed.json",
+            "bytes": 37922,
+            "sha256": "fe90e58ebc938f719db68056bdf66dcbc90e22538a4b0a20f540a35ae294dbb0"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-0059-event-select-once.actual-results.json",
+            "bytes": 42080,
+            "sha256": "7d2cca40555b0fa14f3ab3ca77ea6a4917f095bced0bdf6b9ca3e40bd7c28456"
+          }
+        ],
+        "displayed_options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "只是有点发霉而已！",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": [
+                {
+                  "kind": "trait",
+                  "operation": "add",
+                  "trait": {
+                    "status": "available",
+                    "native_id": 109,
+                    "key": "ill"
+                  }
+                }
+              ]
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "大自然会为我们提供食物！",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": [
+                {
+                  "kind": "trait",
+                  "operation": "add",
+                  "trait": {
+                    "status": "available",
+                    "native_id": 109,
+                    "key": "ill"
+                  }
+                },
+                {
+                  "kind": "death",
+                  "subject": "played_character",
+                  "direction": "not_applicable"
+                }
+              ]
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          },
+          {
+            "rendered_index": 2,
+            "native_option_index": 2,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "肯定能从这里的本地人那弄到点\u0015EMP 什么\u0015!。",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": [
+                {
+                  "kind": "stress",
+                  "direction": "increase",
+                  "magnitude": {
+                    "status": "unavailable"
+                  },
+                  "affected_by_trait": true,
+                  "critical": false
+                }
+              ]
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          }
+        ]
+      },
+      "observed_at_utc": "2026-10-23T07:24:44.854327+00:00",
+      "knowledge_before": {
+        "status": "unavailable",
+        "reason": "event_definition_key_not_registered",
+        "source_analysis_completed": null,
+        "source_document": null,
+        "source_document_sha256": null,
+        "source_sha256": null
+      },
+      "runtime_policy": {
+        "policy": "native_first_displayed_v1",
+        "registry_decision_status": "not_registered",
+        "registry_reason": "event_definition_key_not_registered",
+        "failed_checks": [],
+        "legacy_registry_analysis_available": true
+      }
+    },
+    "pilgrimage_intent.1030": {
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-intent-1030-source-analysis.json",
+      "source_document_sha256": "9b9e28ee6e63cf1497f2a33911396903d3d50f3344be0fdee9d3faa3c71a8c84",
+      "displayed_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "这是安拉的意志。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": [
+              {
+                "kind": "stress",
+                "direction": "decrease",
+                "magnitude": {
+                  "status": "unavailable"
+                },
+                "affected_by_trait": false,
+                "critical": false
+              }
+            ]
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "我们不能拖延！",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "typed_scope_projection": {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 167,
+        "date_raw": 51396648,
+        "current_event_instance_id": 8,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "pilgrimage_intent.1030",
+        "calculated_event_id": 1781030,
+        "runtime_stats_ordinal": 1778,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 15893
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "travel_plan",
+            "name_identifier": 211,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 35,
+              "type_key": "travel_plan",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          }
+        ],
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        },
+        "provenance": {
+          "root": "module+0x5C6A520->+0x10",
+          "idler_vtable_rva": "0x44BC418",
+          "manager_offset": "+0x28",
+          "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+        }
+      },
+      "snapshot_option_count": 2,
+      "actual": {
+        "event_instance_id": 8,
+        "event_definition_key": "pilgrimage_intent.1030",
+        "selected_native_option_index": 0,
+        "selected_option_number": 1,
+        "submission_attempted": true,
+        "ack_accepted": true,
+        "old_instance_gone_in_independent_snapshot": true,
+        "actor_character_id": 15893,
+        "date_raw": 51396648,
+        "game_day": 72,
+        "snapshot_revision": 167,
+        "post_actor_character_id": 15893,
+        "post_date_raw": 51396648,
+        "post_active_event": null,
+        "stress_before": 0,
+        "stress_after": 0,
+        "wallets_before": {
+          "played_character_gold": {
+            "raw": 119067821,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 12518920,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 225582750,
+            "scale": 100000
+          }
+        },
+        "wallets_after": {
+          "played_character_gold": {
+            "raw": 119067821,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 12518920,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 230582750,
+            "scale": 100000
+          }
+        },
+        "evidence": [
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-8-offline-analysis-input.json",
+            "bytes": 73624,
+            "sha256": "09cb1fba81e312059127b0cf723f42da232dfbba02c7300e920148b160c65e3e"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-8-selection-intent.json",
+            "bytes": 77684,
+            "sha256": "562f784c61c6371dd5c5bb9b456449e213414b23de81c751e1885110bd0a6575"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-8-selection-observed.json",
+            "bytes": 37920,
+            "sha256": "3578e0bdf886a945bdf121e447beb77f3d911d87b475112c1897443dc5e0265e"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-0063-event-select-once.actual-results.json",
+            "bytes": 42080,
+            "sha256": "8a01b1efbfc63271e45a0d2611ec054b3fe8b9dc5c87b9efc484829635c130b8"
+          }
+        ],
+        "displayed_options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "这是安拉的意志。",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": [
+                {
+                  "kind": "stress",
+                  "direction": "decrease",
+                  "magnitude": {
+                    "status": "unavailable"
+                  },
+                  "affected_by_trait": false,
+                  "critical": false
+                }
+              ]
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "我们不能拖延！",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": []
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          }
+        ]
+      },
+      "observed_at_utc": "2026-10-23T07:25:08.140097+00:00",
+      "knowledge_before": {
+        "status": "unavailable",
+        "reason": "source_analyzed_no_occurrence_contract",
+        "source_analysis_completed": true,
+        "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-intent-1030-source-analysis.json",
+        "source_document_sha256": "9b9e28ee6e63cf1497f2a33911396903d3d50f3344be0fdee9d3faa3c71a8c84",
+        "source_sha256": null
+      },
+      "runtime_policy": {
+        "policy": "native_first_displayed_v1",
+        "registry_decision_status": "not_registered",
+        "registry_reason": "source_analyzed_no_occurrence_contract",
+        "failed_checks": [],
+        "legacy_registry_analysis_available": true
+      }
+    },
+    "travel_danger_events.9010": {
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0035-events-source-only-analysis-12004.json",
+      "source_document_sha256": "39c1eeb0887c3d61b310f62195dc2ca18cdc7a90370eebbeb8444ef482722ba1",
+      "displayed_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "妈的……我们要迟到了。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 2,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "整理下补给品，从现在开始我会骑得很粗暴……",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "typed_scope_projection": {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 172,
+        "date_raw": 51396672,
+        "current_event_instance_id": 9,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "travel_danger_events.9010",
+        "calculated_event_id": 1169010,
+        "runtime_stats_ordinal": 393,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 15893
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "travel_plan",
+            "name_identifier": 211,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 35,
+              "type_key": "travel_plan",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "root_scope",
+            "name_identifier": 9303,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 15893
+              }
+            }
+          },
+          {
+            "name": "location",
+            "name_identifier": 9644,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 8,
+              "type_key": "province",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "irritated_character",
+            "name_identifier": 21541,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 19281
+              }
+            }
+          }
+        ],
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        },
+        "provenance": {
+          "root": "module+0x5C6A520->+0x10",
+          "idler_vtable_rva": "0x44BC418",
+          "manager_offset": "+0x28",
+          "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+        }
+      },
+      "snapshot_option_count": 3,
+      "actual": {
+        "event_instance_id": 9,
+        "event_definition_key": "travel_danger_events.9010",
+        "selected_native_option_index": 1,
+        "selected_option_number": 2,
+        "submission_attempted": true,
+        "ack_accepted": true,
+        "old_instance_gone_in_independent_snapshot": true,
+        "actor_character_id": 15893,
+        "date_raw": 51396672,
+        "game_day": 73,
+        "snapshot_revision": 172,
+        "post_actor_character_id": 15893,
+        "post_date_raw": 51396672,
+        "post_active_event": null,
+        "stress_before": 0,
+        "stress_after": 0,
+        "wallets_before": {
+          "played_character_gold": {
+            "raw": 119067821,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 12518920,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 230582750,
+            "scale": 100000
+          }
+        },
+        "wallets_after": {
+          "played_character_gold": {
+            "raw": 119067821,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 12518920,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 230582750,
+            "scale": 100000
+          }
+        },
+        "evidence": [
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-9-offline-analysis-input.json",
+            "bytes": 74911,
+            "sha256": "efc130244d50bb9fb69f5f4ce8940d002fd97481ef646f50ecf4e97ca3f992aa"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-9-selection-intent.json",
+            "bytes": 78775,
+            "sha256": "13cff66f2fb51d592f88a43b3df7ae21adf6c85e63382d73d887018528dcfb07"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-9-selection-observed.json",
+            "bytes": 37929,
+            "sha256": "036158482db0b100e36c9b4f7d19a3250efb4cdda3982b22c646d06037ee3fac"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-0067-event-select-once.actual-results.json",
+            "bytes": 42084,
+            "sha256": "313125092122b5452077d76a0e5610a430c9f382f64f17d9f3276ba0b5eb4531"
+          }
+        ],
+        "displayed_options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "妈的……我们要迟到了。",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": []
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 2,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "整理下补给品，从现在开始我会骑得很粗暴……",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": []
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          }
+        ]
+      },
+      "observed_at_utc": "2026-10-23T07:25:31.233844+00:00",
+      "knowledge_before": {
+        "status": "unavailable",
+        "reason": "source_analyzed_no_occurrence_contract",
+        "source_analysis_completed": true,
+        "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0035-events-source-only-analysis-12004.json",
+        "source_document_sha256": "39c1eeb0887c3d61b310f62195dc2ca18cdc7a90370eebbeb8444ef482722ba1",
+        "source_sha256": null
+      },
+      "runtime_policy": {
+        "policy": "native_first_displayed_v1",
+        "registry_decision_status": "not_registered",
+        "registry_reason": "source_analyzed_no_occurrence_contract",
+        "failed_checks": [],
+        "legacy_registry_analysis_available": true
+      }
+    },
+    "health.1101": {
+      "source_document": null,
+      "source_document_sha256": null,
+      "displayed_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "我很欣慰我康复了。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": [
+              {
+                "kind": "trait",
+                "operation": "remove",
+                "trait": {
+                  "status": "available",
+                  "native_id": 109,
+                  "key": "ill"
+                }
+              }
+            ]
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "typed_scope_projection": {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 349,
+        "date_raw": 51398712,
+        "current_event_instance_id": 10,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "health.1101",
+        "calculated_event_id": 3331101,
+        "runtime_stats_ordinal": 5503,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 15893
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "travel_plan",
+            "name_identifier": 211,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 35,
+              "type_key": "travel_plan",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "travel_leader",
+            "name_identifier": 12588,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 34769
+              }
+            }
+          },
+          {
+            "name": "highest_learning_entourage_member",
+            "name_identifier": 19409,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 34769
+              }
+            }
+          },
+          {
+            "name": "destination",
+            "name_identifier": 208,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 8,
+              "type_key": "province",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "sick_character",
+            "name_identifier": 11614,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 15893
+              }
+            }
+          },
+          {
+            "name": "disease_type",
+            "name_identifier": 11615,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 3,
+              "type_key": "flag",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          }
+        ],
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        },
+        "provenance": {
+          "root": "module+0x5C6A520->+0x10",
+          "idler_vtable_rva": "0x44BC418",
+          "manager_offset": "+0x28",
+          "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+        }
+      },
+      "snapshot_option_count": 1,
+      "actual": {
+        "event_instance_id": 10,
+        "event_definition_key": "health.1101",
+        "selected_native_option_index": 0,
+        "selected_option_number": 1,
+        "submission_attempted": true,
+        "ack_accepted": true,
+        "old_instance_gone_in_independent_snapshot": true,
+        "actor_character_id": 15893,
+        "date_raw": 51398712,
+        "game_day": 158,
+        "snapshot_revision": 349,
+        "post_actor_character_id": 15893,
+        "post_date_raw": 51398712,
+        "post_active_event": null,
+        "stress_before": 0,
+        "stress_after": 0,
+        "wallets_before": {
+          "played_character_gold": {
+            "raw": 123438379,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 13980855,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 231165500,
+            "scale": 100000
+          }
+        },
+        "wallets_after": {
+          "played_character_gold": {
+            "raw": 123438379,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 13980855,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 231165500,
+            "scale": 100000
+          }
+        },
+        "evidence": [
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-10-offline-analysis-input.json",
+            "bytes": 74539,
+            "sha256": "fec94c502bbc8581bbd740609d31a9e7db13ae92e2134e432a29644bfc32470e"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-10-selection-intent.json",
+            "bytes": 79221,
+            "sha256": "86f8a94a9f1ff78fd00667682d9e6a5ca1e079a461576159ad70b11d6ca4d139"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-10-selection-observed.json",
+            "bytes": 39344,
+            "sha256": "09616370ecf59832288cf41801f6a50012a3b03e5e5036ef2644df64e3a5c654"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-0126-event-select-once.actual-results.json",
+            "bytes": 42178,
+            "sha256": "78cf52da9a7fa55a43c4ad21a7e7e17052faa088883ffba5843bdc5b610e1b0c"
+          }
+        ],
+        "displayed_options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "我很欣慰我康复了。",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": [
+                {
+                  "kind": "trait",
+                  "operation": "remove",
+                  "trait": {
+                    "status": "available",
+                    "native_id": 109,
+                    "key": "ill"
+                  }
+                }
+              ]
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          }
+        ]
+      },
+      "observed_at_utc": "2026-10-23T07:34:21.571045+00:00",
+      "knowledge_before": {
+        "status": "available",
+        "reason": null,
+        "source_analysis_completed": null,
+        "source_document": null,
+        "source_document_sha256": null,
+        "source_sha256": {
+          "common/scripted_effects/20_health_effects.txt": "ABEFA738C913C660A52FA747BCC92FCA2F57D77A0F47D903BEDC2882F3D5A9DB",
+          "events/health_events.txt": "74073E049A416C744B36A2A996FA467610705E38D53C836B050F1AC6F66E1212"
+        }
+      },
+      "runtime_policy": {
+        "policy": "native_first_displayed_v1",
+        "registry_decision_status": "blocked",
+        "registry_reason": "registered_contract_projection_drift",
+        "failed_checks": [
+          "saved_scope_count",
+          "saved_scope_names_exact",
+          "scope:physician:type",
+          "scope:physician:unique_character_excludes",
+          "scope_types_cover_projection"
+        ],
+        "legacy_registry_analysis_available": true
+      }
+    },
+    "pilgrimage_intent.1100": {
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-intent-1100-source-analysis.json",
+      "source_document_sha256": "4a4a32e38c359402143973c13b485f6a70e304420a1fe93b271aab3117d83d58",
+      "displayed_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "这当然是我的神圣义务！",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "我真正想要的是享受和体验其他文化。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": [
+              {
+                "kind": "stress",
+                "direction": "decrease",
+                "magnitude": {
+                  "status": "unavailable"
+                },
+                "affected_by_trait": false,
+                "critical": false
+              }
+            ]
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 2,
+          "native_option_index": 2,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "我所做的只是我所处的地位所要求的。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "typed_scope_projection": {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 368,
+        "date_raw": 51398856,
+        "current_event_instance_id": 11,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "pilgrimage_intent.1100",
+        "calculated_event_id": 1781100,
+        "runtime_stats_ordinal": 1786,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 15893
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "travel_plan",
+            "name_identifier": 211,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 35,
+              "type_key": "travel_plan",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          }
+        ],
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        },
+        "provenance": {
+          "root": "module+0x5C6A520->+0x10",
+          "idler_vtable_rva": "0x44BC418",
+          "manager_offset": "+0x28",
+          "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+        }
+      },
+      "snapshot_option_count": 3,
+      "actual": {
+        "event_instance_id": 11,
+        "event_definition_key": "pilgrimage_intent.1100",
+        "selected_native_option_index": 0,
+        "selected_option_number": 1,
+        "submission_attempted": true,
+        "ack_accepted": true,
+        "old_instance_gone_in_independent_snapshot": true,
+        "actor_character_id": 15893,
+        "date_raw": 51398856,
+        "game_day": 164,
+        "snapshot_revision": 368,
+        "post_actor_character_id": 15893,
+        "post_date_raw": 51398856,
+        "post_active_event": null,
+        "stress_before": 0,
+        "stress_after": 0,
+        "wallets_before": {
+          "played_character_gold": {
+            "raw": 123438379,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 13980855,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 231165500,
+            "scale": 100000
+          }
+        },
+        "wallets_after": {
+          "played_character_gold": {
+            "raw": 123438379,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 13980855,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 231165500,
+            "scale": 100000
+          }
+        },
+        "evidence": [
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-11-offline-analysis-input.json",
+            "bytes": 74981,
+            "sha256": "c2083a0ea446f631f3f45a2863949934afb92e707fbcab5e2b1c2095d32aa289"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-11-selection-intent.json",
+            "bytes": 79825,
+            "sha256": "93420d73f780323b98efbc67641833fff75cec14adfbcc60039a3dacc5c5465d"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-11-selection-observed.json",
+            "bytes": 38002,
+            "sha256": "e0e418948a352d648b0725a7d425a1dd01c6c233f0e0d883e8bd9bbdbf30a458"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-0135-event-select-once.actual-results.json",
+            "bytes": 42178,
+            "sha256": "5bfe261bad0ed139c7ea1ffc173aa0c551a6485de098d0a8f4a5481da088d1c9"
+          }
+        ],
+        "displayed_options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "这当然是我的神圣义务！",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": []
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "我真正想要的是享受和体验其他文化。",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": [
+                {
+                  "kind": "stress",
+                  "direction": "decrease",
+                  "magnitude": {
+                    "status": "unavailable"
+                  },
+                  "affected_by_trait": false,
+                  "critical": false
+                }
+              ]
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          },
+          {
+            "rendered_index": 2,
+            "native_option_index": 2,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "我所做的只是我所处的地位所要求的。",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": []
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          }
+        ]
+      },
+      "observed_at_utc": "2026-10-23T07:35:44.097967+00:00",
+      "knowledge_before": {
+        "status": "unavailable",
+        "reason": "source_analyzed_no_occurrence_contract",
+        "source_analysis_completed": true,
+        "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-intent-1100-source-analysis.json",
+        "source_document_sha256": "4a4a32e38c359402143973c13b485f6a70e304420a1fe93b271aab3117d83d58",
+        "source_sha256": null
+      },
+      "runtime_policy": {
+        "policy": "native_first_displayed_v1",
+        "registry_decision_status": "not_registered",
+        "registry_reason": "source_analyzed_no_occurrence_contract",
+        "failed_checks": [],
+        "legacy_registry_analysis_available": true
+      }
+    },
+    "pilgrimage.3102": {
+      "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0034-events-source-analysis-12004.json",
+      "source_document_sha256": "ad92aac15c6fc25d9c43c77b36ae6b8555fed7ed099516cf79ded1f320876b35",
+      "displayed_options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "我想见识下安拉辉煌创造的全貌。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": [
+              {
+                "kind": "stress",
+                "direction": "decrease",
+                "magnitude": {
+                  "status": "unavailable"
+                },
+                "affected_by_trait": false,
+                "critical": false
+              }
+            ]
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 1,
+          "native_option_index": 1,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "我的热情炽烈如火，我想做的也不仅仅是朝觐而已。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        },
+        {
+          "rendered_index": 2,
+          "native_option_index": 2,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "我萌生的怀疑驱使我在这片遥远的土地上寻找答案。",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+            "complete_effect_set": false,
+            "rows": [
+              {
+                "kind": "stress",
+                "direction": "increase",
+                "magnitude": {
+                  "status": "unavailable"
+                },
+                "affected_by_trait": false,
+                "critical": false
+              }
+            ]
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "typed_scope_projection": {
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "status": "available",
+        "snapshot_revision": 477,
+        "date_raw": 51399720,
+        "current_event_instance_id": 12,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "pilgrimage.3102",
+        "calculated_event_id": 1763102,
+        "runtime_stats_ordinal": 1693,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 15893
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "travel_plan",
+            "name_identifier": 211,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 35,
+              "type_key": "travel_plan",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          }
+        ],
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        },
+        "provenance": {
+          "root": "module+0x5C6A520->+0x10",
+          "idler_vtable_rva": "0x44BC418",
+          "manager_offset": "+0x28",
+          "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+        }
+      },
+      "snapshot_option_count": 3,
+      "actual": {
+        "event_instance_id": 12,
+        "event_definition_key": "pilgrimage.3102",
+        "selected_native_option_index": 0,
+        "selected_option_number": 1,
+        "submission_attempted": true,
+        "ack_accepted": true,
+        "old_instance_gone_in_independent_snapshot": true,
+        "actor_character_id": 15893,
+        "date_raw": 51399720,
+        "game_day": 200,
+        "snapshot_revision": 477,
+        "post_actor_character_id": 15893,
+        "post_date_raw": 51399720,
+        "post_active_event": null,
+        "stress_before": 0,
+        "stress_after": 0,
+        "wallets_before": {
+          "played_character_gold": {
+            "raw": 124928242,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 14467524,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 231378250,
+            "scale": 100000
+          }
+        },
+        "wallets_after": {
+          "played_character_gold": {
+            "raw": 124928242,
+            "scale": 100000
+          },
+          "played_character_prestige": {
+            "raw": 14467524,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 233878250,
+            "scale": 100000
+          }
+        },
+        "evidence": [
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-12-offline-analysis-input.json",
+            "bytes": 75208,
+            "sha256": "3dd69ee1aa3cbf52b82138c8ccd643b7189d2b70e5ff27ef54fe7951b13d2b91"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-12-selection-intent.json",
+            "bytes": 80343,
+            "sha256": "cbaf1342d7572515f39c4b310d854aa108fc3772e08ffa968b105bfaf63ab0e4"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-event-12-selection-observed.json",
+            "bytes": 37945,
+            "sha256": "233415c5a8b1a4d8599b384f2f025c50e8785dd9b4c8762dd44b0a083331020f"
+          },
+          {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0041\\case-output\\faith-e02-journey-001-0179-event-select-once.actual-results.json",
+            "bytes": 42128,
+            "sha256": "e9fcec5336897dd45f77196c1d275501c62d05f14dade1f999db0f8195114893"
+          }
+        ],
+        "displayed_options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "我想见识下安拉辉煌创造的全貌。",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": [
+                {
+                  "kind": "stress",
+                  "direction": "decrease",
+                  "magnitude": {
+                    "status": "unavailable"
+                  },
+                  "affected_by_trait": false,
+                  "critical": false
+                }
+              ]
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "我的热情炽烈如火，我想做的也不仅仅是朝觐而已。",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": []
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          },
+          {
+            "rendered_index": 2,
+            "native_option_index": 2,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "我萌生的怀疑驱使我在这片遥远的土地上寻找答案。",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+              "complete_effect_set": false,
+              "rows": [
+                {
+                  "kind": "stress",
+                  "direction": "increase",
+                  "magnitude": {
+                    "status": "unavailable"
+                  },
+                  "affected_by_trait": false,
+                  "critical": false
+                }
+              ]
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          }
+        ]
+      },
+      "observed_at_utc": "2026-10-23T07:43:08.340499+00:00",
+      "knowledge_before": {
+        "status": "unavailable",
+        "reason": "source_analyzed_no_occurrence_contract",
+        "source_analysis_completed": true,
+        "source_document": "promo/ck3_faith_and_power/episode02/docs/knowledge/r0034-events-source-analysis-12004.json",
+        "source_document_sha256": "ad92aac15c6fc25d9c43c77b36ae6b8555fed7ed099516cf79ded1f320876b35",
+        "source_sha256": null
+      },
+      "runtime_policy": {
+        "policy": "native_first_displayed_v1",
+        "registry_decision_status": "not_registered",
+        "registry_reason": "source_analyzed_no_occurrence_contract",
+        "failed_checks": [],
+        "legacy_registry_analysis_available": true
+      }
+    }
+  }
+}

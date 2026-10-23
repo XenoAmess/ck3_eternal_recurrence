@@ -1,0 +1,265 @@
+{
+  "schema": "xar.ck3.source-only-batch-analysis/v1",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--faith-engine--R0041",
+  "exact_build": "1.20.0.4",
+  "installed_game_root": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game",
+  "observed_at_utc": "2026-10-23T08:27:26.127681+00:00",
+  "source_analysis_completed": true,
+  "source_only_not_occurrence_contract": true,
+  "batch_terminal_pending": false,
+  "terminal_authority": {
+    "source": "Root reports R0041 ended; final gameplay result independently read",
+    "gameplay_status": "PARTIAL_ORIGINAL_FAILURE_PRESERVED",
+    "observed_days": 202,
+    "arrival": false,
+    "return": false,
+    "new_save": false,
+    "new_raw_take": false,
+    "normal_os_close_independently_retested": false
+  },
+  "events": {
+    "travel_events_oltner_2.1030": {
+      "source_analysis_completed": true,
+      "title": "满载的商队",
+      "source_pins": [
+        {
+          "game_relative_path": "events/travel_events/travel_events_oltner_2.txt",
+          "bytes": 144369,
+          "sha256": "6de5bfc12d2765da90541e98337529c4e974d8eec749943b40a30908e640b37b",
+          "relevant_lines": [
+            [
+              715,
+              982
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/scripted_effects/00_ep1_artifact_creation_effects.txt",
+          "bytes": 397942,
+          "sha256": "1b60d78e54e1ebff7601bd13e59b2251cff47d96f595a4431c666fa3ee11a831",
+          "relevant_lines": [
+            [
+              12325,
+              13497
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/scripted_effects/00_travel_effects.txt",
+          "bytes": 1867,
+          "sha256": "47a4b46a479a2215ffeda4b6d7b8d9226928f6ec0dc70c289b4e0e2fe2b5ec0e",
+          "relevant_lines": [
+            [
+              9,
+              31
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/modifiers/00_travel_modifiers_oltner.txt",
+          "bytes": 2657,
+          "sha256": "bd5875b3a24e7ee15062a41cd5f2307176edf74215013b71a0adf1896956144e",
+          "relevant_lines": [
+            [
+              14,
+              17
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/script_values/01_dynamic_values.txt",
+          "bytes": 48201,
+          "sha256": "023165e7d27d106a34f34d7726d938efa8d5dce25650ea3256e0b5ea3f73cc2a",
+          "relevant_lines": [
+            [
+              53,
+              71
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "localization/simp_chinese/travel/oltner_travel_l_simp_chinese.yml",
+          "bytes": 42803,
+          "sha256": "49e7fe26506f1b03ef345a26539c9f4615c6a6582e16a8b43377ee3f5180c77f",
+          "relevant_lines": [
+            [
+              27,
+              32
+            ]
+          ]
+        }
+      ],
+      "source_options": [
+        {
+          "source_key": "travel_events_oltner_2.1030.a",
+          "historical_native_index": 0,
+          "historical_label": "“你挑起我的兴趣了，让我们来交易吧。”",
+          "effects": [
+            "pay_short_term_gold to saved local_character using dynamic minor_gold_value; not a fixed universal price.",
+            "Call generate_trinket_effect with receiver=root,giver=local_character,GRAB_ALL_TRINKETS=yes,HISTORY_TYPE=created; it runs a weighted random trinket generator, then event requests owner=root through new_trinket scope. No artifact identity, type, quality or ownership readback was made in this occurrence.",
+            "Paranoid medium and impatient minor stress/fulfillment gain inputs. Actual same-date wallet decreases55 and stress stays0; source stress inputs are not final native stress deltas."
+          ],
+          "visibility": "Shown/enabled in R0041; native index and label are historical evidence only. Fresh native shown order and legality are mandatory.",
+          "historical_R31_selected": false
+        },
+        {
+          "source_key": "travel_events_oltner_2.1030.b",
+          "historical_native_index": 1,
+          "historical_label": "“用不着，但也许我们暂时可以一起旅行？”",
+          "effects": [
+            "Add traveling_with_camel_merchants_modifier to current travel plan for1month: travel_safety+10.",
+            "Paranoid major and arrogant minor stress/fulfillment gain inputs. No direct purchase payment in this option body; this branch was not selected."
+          ],
+          "visibility": "Shown/enabled in R0041; native index and label are historical evidence only. Fresh native shown order and legality are mandatory.",
+          "historical_R31_selected": false
+        },
+        {
+          "source_key": "travel_events_oltner_2.1030.c",
+          "historical_native_index": 2,
+          "historical_label": "“给我看些独特的东西，而且得是库法的真正瑰宝。”",
+          "effects": [
+            "Pay dynamic major_gold_value to local_character; set generator quality/wealth scopes to70.",
+            "Random list has six equal base weights10 for weapon,armor,regalia,crown,brooch,book creation helpers, then requests new artifact ownership=root. Generator input70 and famed tooltip do not establish an actual fixed quality/rank.",
+            "Greedy/paranoid medium and impatient minor stress/fulfillment gain inputs. Branch not selected; no generated artifact credited."
+          ],
+          "visibility": "Shown/enabled in R0041; native index and label are historical evidence only. Fresh native shown order and legality are mandatory.",
+          "historical_R31_selected": false
+        },
+        {
+          "source_key": "travel_events_oltner_2.1030.d",
+          "historical_native_index": 3,
+          "historical_label": "“我们携带的行囊已经够多了……”",
+          "effects": [
+            "Decline trading. Generous/gregarious minor stress/fulfillment gains, paranoid medium loss; no direct purchase/generator body."
+          ],
+          "visibility": "Shown/enabled in R0041; native index and label are historical evidence only. Fresh native shown order and legality are mandatory.",
+          "historical_R31_selected": false
+        }
+      ],
+      "agent_reference": "R0041 instance5/day28, actor15893/local_character41708. A/native0 selected once; ACK and old-window disappearance at unchanged date51395592. Gold raw121786805→116286805(scale100000), delta-55; prestige/piety/stress unchanged. saved new_trinket is root character15893 before selection, explicitly initialized for error suppression; do not infer an artifact ID or invalid scope from its name. Immediate mp_delay_travel_plan(DAYS=90) and after mp_resume_travel_plan both require has_multiple_players in the shared helper. Do not count them as this run's observed90day delays or travel advance. Event-local10year cooldown is not the pilgrimage cooldown; after only cleans up an AI-created local character."
+    },
+    "travel_danger_events.6030": {
+      "source_analysis_completed": true,
+      "title": "食物变质",
+      "source_pins": [
+        {
+          "game_relative_path": "events/travel_events/travel_danger_events_joe.txt",
+          "bytes": 77064,
+          "sha256": "43d8990d84fb154e3671780ed251abc4ffa14e0cb185a262ba3c15683f88f900",
+          "relevant_lines": [
+            [
+              2364,
+              3034
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/scripted_effects/00_travel_effects.txt",
+          "bytes": 1867,
+          "sha256": "47a4b46a479a2215ffeda4b6d7b8d9226928f6ec0dc70c289b4e0e2fe2b5ec0e",
+          "relevant_lines": [
+            [
+              9,
+              31
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/scripted_effects/04_dlc_ep2_tour_effects.txt",
+          "bytes": 17935,
+          "sha256": "180a9e666317ba7e58525d11848544bca1bf2b6e6062b0fe1110f555abdf328e",
+          "relevant_lines": [
+            [
+              330,
+              367
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/modifiers/04_ep2_modifiers.txt",
+          "bytes": 7458,
+          "sha256": "e2020dc5dfaffac77b381104d63b30dc3127a75b80b9121319fc4ccc1fb96fe4",
+          "relevant_lines": [
+            [
+              229,
+              232
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/modifiers/00_travel_modifiers.txt",
+          "bytes": 8782,
+          "sha256": "b7a1365a14341bf647339cb843753e5da4f8d9990c52c92d6e10422a8530a2f1",
+          "relevant_lines": [
+            [
+              334,
+              337
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "common/scripted_effects/20_health_effects.txt",
+          "bytes": 107548,
+          "sha256": "abefa738c913c660a52fa747bcc92fca2f57d77a0f47d903bedc2882f3d5a9db",
+          "relevant_lines": [
+            [
+              127,
+              216
+            ]
+          ]
+        },
+        {
+          "game_relative_path": "localization/simp_chinese/event_localization/travel_events/travel_danger_events_joe_l_simp_chinese.yml",
+          "bytes": 18030,
+          "sha256": "f21f957544dbc254e703b15ee93a868e6285881485f2bd21f5d7e8f6601ad4b4",
+          "relevant_lines": [
+            [
+              124,
+              135
+            ]
+          ]
+        }
+      ],
+      "source_options": [
+        {
+          "source_key": "travel_danger_events.6030.a",
+          "historical_native_index": 0,
+          "historical_label": "只是有点发霉而已！",
+          "effects": [
+            "If domicile exists, change_provisions=minor_provisions_loss.",
+            "If not already ill: base40percent random, reduced by strong(-10),physique_good_1/2/3(-5/-10/-15),entourage herbalist(-10), requests contract_disease_effect(ill,TREATMENT_EVENT=yes). This is conditional and trait-adjusted, not an unconditional40percent outcome.",
+            "If already ill: base50percent random, similarly reduced by strong/physique,logistician(-10),herbalist(-10), adds bad_soup_modifier for5years(stress_gain_mult+0.1). The source does not directly add pneumonia.",
+            "No illness/modifier membership or danger-trackXP was read back. Wallets and stress unchanged at same date; later health1101 is not proof this A roll caused the illness."
+          ],
+          "visibility": "Shown/enabled in R0041; native index and label are historical evidence only. Fresh native shown order and legality are mandatory.",
+          "historical_R31_selected": false
+        },
+        {
+          "source_key": "travel_danger_events.6030.b",
+          "historical_native_index": 1,
+          "historical_label": "大自然会为我们提供食物！",
+          "effects": [
+            "Forage using highest_learning_entourage_member if its Learning exceeds root, otherwise root. Learning duel against medium_skill_rating with base weights15(success),5(illness),1(death), min1 and numerous skill/terrain/trait/entourage adjustments; these are not fixed15:5:1 probabilities.",
+            "Success changes domicile provisions by minor_provisions_loss; poisoning requests ill/TREATMENT_EVENT=yes plus medium_provisions_loss; fatal branch kills root by death_poisonous_forage plus medium_provisions_loss. Actor-scope branches differ; source branch not selected."
+          ],
+          "visibility": "Shown/enabled in R0041; native index and label are historical evidence only. Fresh native shown order and legality are mandatory.",
+          "historical_R31_selected": false
+        },
+        {
+          "source_key": "travel_danger_events.6030.c",
+          "historical_native_index": 2,
+          "historical_label": "肯定能从这里的本地人那弄到点\u0015EMP 什么\u0015!。",
+          "effects": [
+            "Land-only steal option; add_prestige=minor_prestige_loss and optional domicile minor_provisions_loss.",
+            "Within same top-liege realm: province owner other than root gets opinion-10; county gets travel_stealing_food_modifier for5years(county_opinion_add-25).",
+            "Outside that branch, base50percent(-15 if no province owner) chooses an adult entourage woundee with prowess/role weights and requests increase_wounds_effect. Just/generous minor stress/fulfillment gain inputs; branch not selected."
+          ],
+          "visibility": "Shown/enabled in R0041; native index and label are historical evidence only. Fresh native shown order and legality are mandatory.",
+          "historical_R31_selected": false
+        }
+      ],
+      "agent_reference": "R0041 instance7/day66 actor15893, travel_leader/highest_learning_entourage_member34769. A/native0 selected once; ACK and old-window disappearance at unchanged date51396504. Actual wallets/stress unchanged; no ill membership/provisions/XP query. Immediate mp_delay_travel_plan(DAYS=90) and after mp_resume_travel_plan both require has_multiple_players in the shared helper. Do not count them as this run's observed90day delays or travel advance. After invokes traveler_danger_xp_effect(MIN3,MAX6): only owned lifestyle_traveler gains dangerXP3–6, or5–8 with journey_perk; it does not grant the trait. Six-month cooldown is event-local. Localization6030.d exists but there is no fourth source option in this definition."
+    }
+  }
+}

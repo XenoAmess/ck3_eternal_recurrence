@@ -653,5 +653,108 @@ class R0039SourceOnlyKnowledgeTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(driver.calls, [])
 
 
+
+R0041_SOURCE = "promo/ck3_faith_and_power/episode02/docs/knowledge/r0041-events-source-analysis-12004.json"
+R0041_OCCURRENCES = "promo/ck3_faith_and_power/episode02/docs/knowledge/r0041-events-occurrence.json"
+R0039_FINAL_OCCURRENCE = "promo/ck3_faith_and_power/episode02/docs/knowledge/r0039-final-event-closure.json"
+
+
+class R0039R0041SourceOnlyKnowledgeTests(unittest.IsolatedAsyncioTestCase):
+    async def test_three_new_records_reach_real_mcp_without_action_permission(self) -> None:
+        batch = obj(json.loads((DOCUMENTS / R0041_OCCURRENCES).read_bytes()))
+        old = obj(json.loads((DOCUMENTS / R0039_FINAL_OCCURRENCE).read_bytes()))
+        self.assertEqual(batch["machine_id"], "4-8e1c2f1861")
+        self.assertEqual(batch["run_id"], "4-8e1c2f1861--faith-engine--R0041")
+        self.assertIs(batch["batch_terminal_pending"], False)
+        events = obj(batch["events"])
+        self.assertEqual(len(events), 10)
+        contexts: dict[str, dict[str, object]] = {
+            "pilgrimage.2003": {"actual": old["new_event_actual"],
+                "displayed_options": obj(old["new_event_actual"])["displayed_options"],
+                "typed_scope_projection": obj(old["new_event_actual"])["typed_scope_projection"],
+                "snapshot_option_count": 3},
+            "travel_events_oltner_2.1030": obj(events["travel_events_oltner_2.1030"]),
+            "travel_danger_events.6030": obj(events["travel_danger_events.6030"]),
+        }
+        driver = NoGameDriver()
+        async with Client(create_server(driver)) as client:
+            self.assertIsInstance(client.session, ClientSession)
+            for key, occurrence in contexts.items():
+                with self.subTest(event=key):
+                    reply = await client.session.call_tool("ck3_query_vanilla_event_knowledge_v1",
+                        {"event_definition_key": key, "ck3_build": "1.20.0.4"})
+                    self.assertFalse(reply.is_error)
+                    output = obj(reply.structured_content)
+                    self.assertEqual(output["status"], "unavailable")
+                    self.assertEqual(output["unavailable_reason"], "source_analyzed_no_occurrence_contract")
+                    self.assertIsNone(output["contract"])
+                    self.assertEqual(json.loads(json.dumps(output, allow_nan=False)), output)
+                    analysis = obj(output["analysis"])
+                    self.assertIs(analysis["source_analysis_completed"], True)
+                    raw = (DOCUMENTS / string(analysis["source_document"])).read_bytes()
+                    self.assertEqual(hashlib.sha256(raw).hexdigest(), analysis["source_document_sha256"])
+                    authored = obj(obj(obj(json.loads(raw))["events"])[key])
+                    self.assertEqual(analysis["source_pins"], authored["source_pins"])
+                    self.assertEqual(analysis["source_options"], authored["source_options"])
+                    self.assertIsNone(analysis["current_native_legality"])
+                    for field in ("action_ready", "ordinary_auto_consumes", "full_occurrence_contract_registered",
+                        "selection_policy_changed", "historical_index_is_current_selection_permission",
+                        "historical_evidence_is_current_state"):
+                        self.assertIs(analysis[field], False)
+                    for row in array(analysis["source_options"]):
+                        self.assertIs(obj(row)["historical_R31_selected"], False)
+                    actual = obj(occurrence["actual"])
+                    self.assertEqual(obj(output["observations"])["actual"], actual)
+                    self.assertIs(actual["submission_attempted"], True)
+                    self.assertIs(actual["ack_accepted"], True)
+                    self.assertIs(actual["old_instance_gone_in_independent_snapshot"], True)
+                    self.assertEqual(actual["post_actor_character_id"], 15893)
+                    self.assertEqual(actual["post_date_raw"], actual["date_raw"])
+                    displayed = array(occurrence["displayed_options"])
+                    self.assertEqual(actual["selected_native_option_index"], obj(displayed[0])["native_option_index"])
+                    count = occurrence["snapshot_option_count"]
+                    if type(count) is not int:
+                        raise ValueError("Exact integer option count required")
+                    decision = recommend_registered_vanilla_event_option_v1(
+                        {**obj(occurrence["typed_scope_projection"]), "options": displayed},
+                        played_character_id=15893, snapshot_option_count=count, ck3_build="1.20.0.4")
+                    self.assertEqual(decision["status"], "not_registered")
+                    self.assertIsNone(decision["selected_native_option_index"])
+                    self.assertIsNone(decision["selected_option_number"])
+            health = obj(events["health.1101"])
+            reply = await client.session.call_tool("ck3_query_vanilla_event_knowledge_v1",
+                {"event_definition_key": "health.1101", "ck3_build": "1.20.0.4"})
+            self.assertFalse(reply.is_error)
+            self.assertEqual(obj(reply.structured_content)["status"], "available")
+            self.assertIsNotNone(obj(reply.structured_content)["contract"])
+            health_count = health["snapshot_option_count"]
+            if type(health_count) is not int:
+                raise ValueError("Exact integer option count required")
+            decision = recommend_registered_vanilla_event_option_v1(
+                {**obj(health["typed_scope_projection"]), "options": array(health["displayed_options"])},
+                played_character_id=15893, snapshot_option_count=health_count, ck3_build="1.20.0.4")
+            self.assertEqual(decision["status"], "blocked")
+            self.assertEqual(decision["unavailable_reason"], "registered_contract_projection_drift")
+            self.assertIsNone(decision["selected_native_option_index"])
+        self.assertEqual(driver.calls, [])
+
+    async def test_new_keys_reject_wrong_fields_and_types_without_gameplay(self) -> None:
+        driver = NoGameDriver()
+        invalid: tuple[dict[str, object], ...] = (
+            {}, {"event_definition_id": "pilgrimage.2003", "ck3_build": "1.20.0.4"},
+            {"event_definition_key": True, "ck3_build": "1.20.0.4"},
+            {"event_definition_key": 6030.0, "ck3_build": "1.20.0.4"},
+            {"event_definition_key": "travel_events_oltner_2.1030", "ck3_build": None},
+            {"event_definition_key": "travel_danger_events.6030", "ck3_build": "1.20.0.4", "selected_native_option_index": 0},
+        )
+        async with Client(create_server(driver)) as client:
+            self.assertIsInstance(client.session, ClientSession)
+            for payload in invalid:
+                with self.subTest(payload=payload):
+                    reply = await client.session.call_tool("ck3_query_vanilla_event_knowledge_v1", payload)
+                    self.assertTrue(reply.is_error)
+        self.assertEqual(driver.calls, [])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

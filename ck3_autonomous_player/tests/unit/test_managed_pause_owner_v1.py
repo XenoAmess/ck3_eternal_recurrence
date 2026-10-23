@@ -10,7 +10,7 @@ import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'src'))
 from xar_autoplayer.bridge.managed_pause_owner_v1 import managed_pause_owner_v1
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver, _NativeCommandRejectedError
-from xar_autoplayer.bridge.driver import StepPostconditionError
+from xar_autoplayer.bridge.driver import BridgeUnavailableError, StepPostconditionError
 from test_native_bridge_driver import FakeEndpoint
 
 
@@ -55,7 +55,61 @@ class PauseTransportDriver(NativeHeadlessGameplayDriver):
         return {'step': step, 'accepted': True, 'status': 'submitted', 'backend_id': 'native-headless'}
 
 
+class DoubleRejectedLifePauseDriver(PauseTransportDriver):
+    """The real life-pause method receives two native rejection responses."""
+    def _execute_primitive_step(self, step: str, **kwargs: object) -> dict[str, object]:
+        self.dispatches.append({'step': step, **kwargs})
+        if len(self.dispatches) == 1:
+            self.frame = authored_successor(self.frame, paused=False)
+        else:
+            self.frame = copy.deepcopy(self.refreshed)
+        raise _NativeCommandRejectedError('CK3 map state is unavailable',
+            native_request_id='authored-double-rejected-pause-' + str(len(self.dispatches)))
+
+
 class ManagedPauseOwnerTests(unittest.TestCase):
+    def test_life_pause_second_rejection_reconciles_fresh_plain_paused_map(self) -> None:
+        frame = captured_frame()
+        refreshed = authored_successor(authored_successor(frame, paused=False), paused=True)
+        driver = DoubleRejectedLifePauseDriver(frame, refreshed)
+        self.addCleanup(driver.close)
+        actions: list[dict[str, object]] = []
+        result = driver._pause_life_advance(frame, actions)
+        self.assertIs(result['paused'], True)
+        self.assertIsNone(result.get('active_event'))
+        self.assertEqual([item['step'] for item in driver.dispatches], ['pause-map', 'pause-map'])
+        self.assertEqual(len(actions), 2)
+        for action in actions:
+            rejected = action['result']
+            if not isinstance(rejected, dict):
+                raise AssertionError('Original native rejection missing')
+            self.assertIs(rejected['accepted'], False)
+        self.assertEqual(result['date_raw'], refreshed['date_raw'])
+
+    def test_life_pause_reconciliation_rejects_owner_stale_type_and_running_frames(self) -> None:
+        for change in ('pid', 'generation', 'actor', 'run', 'stale', 'bool', 'backwards', 'running'):
+            with self.subTest(change=change):
+                frame = captured_frame()
+                refreshed = authored_successor(authored_successor(frame, paused=False), paused=True)
+                diagnostic = refreshed['diagnostics']
+                actor = refreshed['played_character']
+                run = refreshed['managed_campaign_run_binding']
+                if not isinstance(diagnostic, dict) or not isinstance(actor, dict) or not isinstance(run, dict):
+                    raise AssertionError('Validated authored frame metadata missing')
+                if change == 'pid': diagnostic['bridge_pid'] = 77
+                elif change == 'generation': diagnostic['connection_generation'] = 77
+                elif change == 'actor': actor['character_id'] = 77
+                elif change == 'run': run['run_id'] = 'foreign'
+                elif change == 'stale': refreshed['native_revision'] = frame['native_revision']
+                elif change == 'bool': refreshed['native_revision'] = True
+                elif change == 'backwards': refreshed['date_raw'] = 1
+                else: refreshed['paused'] = False
+                driver = DoubleRejectedLifePauseDriver(frame, refreshed)
+                self.addCleanup(driver.close)
+                with self.assertRaisesRegex(BridgeUnavailableError, 'second pause-map request failed'):
+                    driver._pause_life_advance(frame, [])
+                self.assertEqual(len(driver.dispatches), 2)
+
     def test_actual_r7_campaign_without_episode_gets_its_own_validated_owner(self) -> None:
         frame = captured_frame()
         self.assertNotIn('episode_run_id', frame)
