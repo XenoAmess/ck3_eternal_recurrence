@@ -1,0 +1,2 @@
+# These clipboard/input receipts are byte evidence; preserve their original EOL.
+*.txt -text
