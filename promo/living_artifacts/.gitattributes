@@ -1,0 +1,2 @@
+# Promo snapshots and their receipts bind exact JSON bytes by SHA-256.
+*.json -text whitespace=cr-at-eol

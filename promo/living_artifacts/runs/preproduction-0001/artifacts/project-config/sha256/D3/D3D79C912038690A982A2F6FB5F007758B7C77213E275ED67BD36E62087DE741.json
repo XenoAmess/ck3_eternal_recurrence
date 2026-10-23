@@ -1,0 +1,22 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {
+    "id": "living-artifacts",
+    "title": "活武器：饥渴的传世之物 / Living Artifacts"
+  },
+  "pipeline": {
+    "adapter": "generic",
+    "preset": "default"
+  },
+  "locales": {
+    "narration": "zh-CN",
+    "subtitles": [
+      "zh-CN"
+    ]
+  },
+  "constraints": {
+    "duration_limit_seconds": null
+  },
+  "chapters": []
+}

@@ -1,0 +1,113 @@
+{
+  "format_version": 1,
+  "kind": "living_artifacts_promo_authoring_receipt",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-23T17:09:58.167338+00:00",
+  "toolchain_version": "0.3.0",
+  "official_wheel_sha256": "f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c",
+  "video_title": "传世之物，饥渴长存｜CK3模组推荐《活武器：饥渴的传世之物》",
+  "selected_run": "director-v1-selected-title-20261024-a02",
+  "scope": "Director authoring only; all media planned; no recording, TTS or render",
+  "markdown_director_project_all_eight_narrations_match": true,
+  "reference_duration_seconds": 210,
+  "input_sources": [
+    {
+      "path": "director.md",
+      "bytes": 15283,
+      "sha256": "74076e32781d4c622ef859f5b6cb549a3bf777fa900cb81cf33b9f0f046d2374"
+    },
+    {
+      "path": "director.json",
+      "bytes": 11424,
+      "sha256": "4fcc6f5d2603e3a73d337477937f895e82c7150a35624ed86af3446328b33108"
+    },
+    {
+      "path": "promo-project.json",
+      "bytes": 7772,
+      "sha256": "401cc8d2437c7473b65e7d77ad483a5cee1f4f00cfc1574aad6a8e16c005a525"
+    }
+  ],
+  "actual_process_calls": [
+    {
+      "machine_id": "pc-20260924rtuf-f11af23c08",
+      "started_at_utc": "2026-10-23T17:08:34.135638+00:00",
+      "completed_at_utc": "2026-10-23T17:08:34.564106+00:00",
+      "argv": [
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "xar_promo",
+        "start-run",
+        "promo\\living_artifacts\\promo-project.json",
+        "--run-id",
+        "director-v1-selected-title-20261024-a02"
+      ],
+      "cwd": "D:\\workspace\\ck3_eternal_recurrence",
+      "environment_delta_only": {
+        "PYTHONPATH": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\living-promo-cli-v030-a01\\package",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "original_pid": 7016,
+      "actual_original_wait": 0,
+      "stdout": "STARTED: run=D:\\workspace\\ck3_eternal_recurrence\\promo\\living_artifacts\\runs\\director-v1-selected-title-20261024-a02\\run-manifest.json\r\n",
+      "stderr": ""
+    },
+    {
+      "machine_id": "pc-20260924rtuf-f11af23c08",
+      "started_at_utc": "2026-10-23T17:08:34.564640+00:00",
+      "completed_at_utc": "2026-10-23T17:08:34.932724+00:00",
+      "argv": [
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "xar_promo",
+        "validate",
+        "promo\\living_artifacts\\promo-project.json",
+        "--profile",
+        "authoring",
+        "--json"
+      ],
+      "cwd": "D:\\workspace\\ck3_eternal_recurrence",
+      "environment_delta_only": {
+        "PYTHONPATH": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\living-promo-cli-v030-a01\\package",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "original_pid": 3068,
+      "actual_original_wait": 0,
+      "stdout": "{\"artifacts\": 0, \"chapters\": 8, \"document\": \"D:\\\\workspace\\\\ck3_eternal_recurrence\\\\promo\\\\living_artifacts\\\\promo-project.json\", \"files_checked\": true, \"profile\": \"authoring\", \"source_format\": \"project-config-v1\", \"status\": \"GREEN\"}\r\n",
+      "stderr": ""
+    },
+    {
+      "machine_id": "pc-20260924rtuf-f11af23c08",
+      "started_at_utc": "2026-10-23T17:08:34.933249+00:00",
+      "completed_at_utc": "2026-10-23T17:08:35.302684+00:00",
+      "argv": [
+        "D:\\workspace\\ck3-living-artifacts-20261022\\runtime\\venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "xar_promo",
+        "validate",
+        "promo\\living_artifacts\\runs\\director-v1-selected-title-20261024-a02\\run-manifest.json",
+        "--profile",
+        "authoring",
+        "--json"
+      ],
+      "cwd": "D:\\workspace\\ck3_eternal_recurrence",
+      "environment_delta_only": {
+        "PYTHONPATH": "D:\\workspace\\ck3-living-artifacts-20261022\\environment\\living-promo-cli-v030-a01\\package",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "original_pid": 1312,
+      "actual_original_wait": 0,
+      "stdout": "{\"artifacts\": 0, \"chapters\": 8, \"document\": \"D:\\\\workspace\\\\ck3_eternal_recurrence\\\\promo\\\\living_artifacts\\\\runs\\\\director-v1-selected-title-20261024-a02\\\\run-manifest.json\", \"files_checked\": true, \"profile\": \"authoring\", \"source_format\": \"run-manifest-v1\", \"status\": \"GREEN\"}\r\n",
+      "stderr": ""
+    }
+  ],
+  "git_json_bytes_preserved_by_local_attributes": true
+}

@@ -1,0 +1,23 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_run_manifest",
+  "run": {
+    "id": "director-v1-20261024-a01"
+  },
+  "project_config": {
+    "path": "artifacts/project-config/sha256/9E/9EBC872E456737AD23A0C1C8D3E4641C577DAC815523CB8532B0A1F1E5B2D8CF.json",
+    "bytes": 8026,
+    "sha256": "9EBC872E456737AD23A0C1C8D3E4641C577DAC815523CB8532B0A1F1E5B2D8CF"
+  },
+  "artifact_policy": {
+    "strategy": "append-only-content-addressed",
+    "raw_directory": "artifacts/raw",
+    "derived_directory": "artifacts/derived",
+    "manifest_history_directory": "artifacts/manifest-history",
+    "preserve_process_material": true
+  },
+  "phase_history": [],
+  "artifacts": [],
+  "audits": [],
+  "signoffs": []
+}
