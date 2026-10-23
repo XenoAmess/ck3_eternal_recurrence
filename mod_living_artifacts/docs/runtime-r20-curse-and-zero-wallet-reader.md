@@ -55,3 +55,7 @@ Root最后一次退出映射因源截图超60秒而拒绝，未发送点击。�
 公共a32于09:51:32Z实际分配R0021，keeper628/lease852；09:51:59.493411Z后台offline/true、bound preflight0后，run `20261023T095201138990Z-run` 启动CK3 PID13924/birth1792749135.039667、host2856。加载真正R17 renewed04，0日/1保存/6检查；Root唯一保存生产及GUI操作，当前尚无终态。该cold卡不授权新c22冻结、诅咒场或发布缓存。
 
 最终独立源码资格为 `EXT/environment/r20-native-audit-fix-a01/qualification-result.json`，13102B/SHA `faa3fed8f1d12f532ed241cca7669428eb7637cda41a4b2072c302a37f232ceb`；10份最终源Pin及各命令原wait与日志绑定其中。Root提交前逐项重读Pin一致。
+
+纯读整套R20复验已实际完成：原工具12771/Popen14124 actual0，09:47:05–09:52:53Z，七份原Save/原生行/钱包/日期/候选/GUI守卫全部重算；五项纯一致性检查PASS。`retained-consumer-analysis.json` 992304B/SHA `40964fd6af95b6385b3248a13e54706a176f3f423aae66ab2a5fc99da879851d`；末核 `final-consistency-qualification.json` 3662B/SHA `a01227c2e5a24179b6a2cfe98a1ae3879a4a688d0cd945789cf81e869d58aaac`。实际加载的230个SDK模块逐项匹配冻结index（1494源文件已全部核验），9 GUI Pin一致，原FAIL字节与SHA未变，case/business/release仍false。Git正常流程仅将新fixture provenance的23个CRLF转LF，旧资格保留，另以反向展开精确恢复旧SHA说明该表示变化。
+
+七melt全文读取已完全终止，Root经用途复核后于10:23:55Z允许精确回收这七份派生文本；全部原Save、recipe、原始结果、native、七小投影及上述分析保留。旧melt路径现在不可读取，不能直接重跑旧全文verify；按官方melter重建须新取证。实际30叶整体回收与新a33预算见[R21收口记录](runtime-r21-renewed-save-cold-persistence.md)。

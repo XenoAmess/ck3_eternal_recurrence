@@ -25,3 +25,13 @@ Root直接审阅原图自动保存空复选框后，10:05:31Z经canonical映射�
 第一次verify因未传实际run-context而原2/BLOCKED，op `20261023T100628142281Z-verify`保留。补上原context后既有公共verify `20261023T100705487069Z-verify` 原工具7991实际wait0，重新消费真实原件得PASS，未重写原结果、未重启Game。外层入口的LAUNCH_REQUESTED字段本身不替代上述case与正常闭场证据；整体business/release字段仍不授全产品通过。
 
 本场存储卡为 `EXT/environment/storage-cold-a32-20261023-a01`，own D1.5GiB/C2GiB、other D128MiB，截止2026-10-24T05:30:11.582444Z。它只覆盖本场；闭场实际清点和后继预算另行取证，不沿用此卡启动诅咒或发布缓存。
+
+## 10:31Z存储收口与新候选
+
+真实task-close `EXT/environment/storage-r21-actual-close-20261023-a01/task-close/20261023T101108447458Z-task-close.json` 实际0。最终live67107453B/observations176589092B/profile437198915B，另20份media16113777B；是实际点量，不是连续峰值。
+
+Root逐项审阅精确清单并终止旧用途后，仅30叶实际回收2359428214逻辑字节：R20七份可重建melt及23份旧闭场profile重复Save。原始Save、官方melter/recipe、native、原FAIL、纯读分析、R16/R17及本场a32和冻结树均保留。删除前fullSHA、FileID、mtime、单链接、无reparse、share0无writer及永久保护索引均通过；旧30路径已不可读取，不能把后续重建追认为旧原件。实际回执 `EXT/environment/storage-r21-reclamation-a33-20261023-a01/reclamation-thirty-actual.json` 为55349B/SHA `4bc984289f98e14e9cb694ffd5110d9227e42f84dc715a2acb2449024346ed58`；物理释放归因null。
+
+后继卡 `EXT/environment/storage-curse-a33-20261023-a01` 已实际采用，a32未来own串行归0、旧四卡原字节保持。单own D3GiB/C2GiB已含c22离线512MiB，另single other D128MiB及既有callback606076928B；当前baseline45992999659B，最坏投影49954519787B、quota余56001813B，复核期限仍2026-10-24T05:30:11.582444Z。admission6884B/SHA `22395fd2d16c985c6e6df4943b2b4d6565da11cd8b41642db3d26badc6c441a2`；10:29:07Z新鲜双检查及真实consumer兼容均0，Root递归重核14项Pin一致。它只授存储，不授Game启动。
+
+c22从c21正常后继，仅应用已审阅的a02审计补丁；保留c21原v1阈值结果合同，不夹主线既有v2表示或后续host/SDK/E02。当前正在对新组合完整测试、类型检查及cold命令组后正常冻结/build57/公共prepare。尚未allocate或启动诅咒新场次。
