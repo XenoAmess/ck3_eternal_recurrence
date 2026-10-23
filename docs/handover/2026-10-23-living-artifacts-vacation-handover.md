@@ -10,7 +10,7 @@
 
 恢复后的 R16 已完成47自然日、7次保存、8项阈值检查及75金实际扣款，并在同进程补验安抚25金、正常GUI退出。旧公共验证字段遗漏、修复后重新验证与后继门槛见 [R16实际结果](../../mod_living_artifacts/docs/runtime-r16-gold-debit-and-normal-close.md)。下文度假截点原样保留，不能当作恢复后的当前执行状态。
 
-最新R17已按c19/a28实际启动；首两保存确认初始印记和首次扣25金，续期/到期仍在执行，见 [R17进行中记录](../../mod_living_artifacts/docs/runtime-r17-paid-renewal-and-expiry.md)。不要把下文历史NOT_RUN清单追认为当前状态，也不要重复启动已在运行的场次。
+最新R17已按c19/a28实际启动；五份保存确认首次扣25金、同日续期扣45金，以及旧90日事件保留新期限。自然到期和恢复成长仍在执行；a27已从真正renewed04完成离线prepare、绑定plan和preflight，cold实际仍NOT_RUN。见 [R17进行中记录](../../mod_living_artifacts/docs/runtime-r17-paid-renewal-and-expiry.md)。不要把下文历史NOT_RUN清单追认为当前状态，也不要重复启动已在运行的场次。
 
 ## 入口与必要约束
 
