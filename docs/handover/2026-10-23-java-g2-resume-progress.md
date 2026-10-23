@@ -60,3 +60,17 @@
 旧10:00–11:00完整Java实机窗口现已不能承诺。仍优先推进首个Java地图回执实机纵向验证，同时补齐真实pre-load custody、单一Native owner、后台fresh Steam离线和必要共享生产路径；满足可运行条件就开展。当前八M基础Java软件证据8/8，完整统一宿主八域HTTP仍0/8，Java新增保存日0，历史保存前沿5628/10950、原T0及UNKNOWN不重放边界不变。
 
 新SOURCE12/Runtime05为独立Window03至2026-10-23T03:30Z，旧窗口记录不改。新卡按关闭作业实际留存重基，在原D4GiB包内重分、新增take0；解除未使用预留不等于删除磁盘文件。当前必要原件和失败继续按通用策略限期复核。
+
+## 11:57 整图编译与 Native 软件通道补记
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`，观察范围为2026-10-23T03:08Z至03:57Z。本节追加真实结果，不覆盖旧失败或错过的实机计划。
+
+- source03独审实际通过，随后整图capture02仍RED：仅wave3-planning的匿名ObjectNode测试替身触发unchecked警告及`-Werror`，Maven1/Job0、双1932来源MATCH，tests NOT_RUN。`J/logs/build-java-g2-fullcapture02.json`为1202287 B / `7e8975764a395f68b527f5b143f05b923232a7c55e24a49ec59f36e22a63771b`。修复改用强类型Map测试替身，保留严格编译与原哨兵断言。
+- Plan12只替换上述测试77 B，其他1931项不变。新source04实际复制和独审分别outer0/child0/Job0，1932文件、1199目录、27261228 logical B、36040136 native B，22项反例及往返通过。独审typed manifest为`J/artifacts/fullg2-source04-independent-audit-metadata/COMPLETE-SOURCE-TYPED-MANIFEST01.json`，283676 B / `3aa9da80a0b79432a360af484d7dd7cf505bb3cb0fbc1d903cf000eceb9c6f93`。Root再次独立重算1932个实际文件及完整六件工具包，全部MATCH。
+- source04的capture03推进至最后local-service：parent与前29个子项目SUCCESS，最后宿主main编译四处Memory类型错误，整次outer1/Maven1/Job0、stopnull、双1932来源MATCH；129.0251197s，峰808660992 B。`J/logs/build-java-g2-fullcapture03.json`为1202287 B / `fc7f39fafc32789f82aaed09a1ee6f44f83daae668538254b523ffddcfdb3dfd`。tests NOT_RUN，部署和TestCompilationManifest均未形成，不能从已编译finance类授予9-class资格。
+- 依赖核查确认Quarkus BOM管理JNA 5.8.0，而共享contracts/build-tools直接使用5.19.1；两版Memory的Closeable接口不同。独立候选只修改parent的统一依赖管理与local-service直接依赖，不删除内存释放。两POM来源映射`N/host_reader_identity/JNA-POM-SOURCE02.json`为5220 B / `a4165695012e2b8a2f5d37c70898783500ff1bfe15c5ee5ad4316a55f93f1dd4`，尚待新source05及完整Maven验证。
+- Realm原7项JUnit实际6PASS/1RED。进一步采集两条完整输出并按JSON类型比较，确认source_frame字段顺序导致exact-byte差异；新增含1.0的同边界回归也真实RED。共享序列化后继正在验证，旧期望、原始payload和numeric token语义保留，不混进本次POM最小修复。
+- Native软件通道实际strict29源/147类通过，联合46/46 JUnit通过，零失败/跳过/中止；端点6项和保留大帧2项也实际通过，所有8次始发执行均Job0，早先3次真实RED保留。`N/root_context_preload04/QUALIFIED01.json`为9499 B / `623c662f02e57bc1fd156392454d8d577690bae7133eada268cc5a91e41a61e8`。5份原始大帧证据共50332903 B已实际保留，闭场M1含目录guard73928704 B小于80MiB。此为Windows进程、DLL持续持有、pipe身份及MCP软件合同资格，真实CK3、注入、Steam gate及Native业务正例仍NOT_RUN。原MCP未导出其私有server HANDLE，Java持有原owner句柄枚举的真实接线后继继续开发，未冒充生产mount完整。
+- 通用Java原始采集引擎严格编译及32/32回归通过，沿用共享owned-process执行路径；`J/build/resume-current-20261023/common-1/finance_capture_profile/control/GENERIC-DELIVERY01.json`为16164 B / `b833d177df1b65a885508241d28a17ae033478cbd0b4c40c36b6d9c036a7acdd`。真实原夹具采集尚待完整工具资格与genuine编译manifest。资源最终审计78项：20项可选真实原件、1项POM映射、45项缺实际捕获、10项来源漂移、2目标共用待压缩原件。旧原件恢复不能消除新producer与consumer的schema差异。
+
+当前SOURCE13/Runtime07使用已资格tools06b完整六件包，新Window04至2026-10-23T04:30Z；只更新实际执行窗口，不重建未改工具来续期。旧窗口与回执不改，D4GiB/Z32MiB原包内重分、新增take0。后继顺序为两POM新整图编译采集、真实9-class读回与原夹具采集、完整宿主/SDK及Native接线验收，达到可运行条件立即进行Java地图回执实机纵向验证。目前基础八M软件证据8/8，统一宿主八域HTTP0/8，新Java实机保存日0；历史5628/10950、T0和UNKNOWN不重放边界不变，未给出新的无证据开测承诺。
