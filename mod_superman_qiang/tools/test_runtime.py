@@ -524,23 +524,41 @@ class SupermanNaturalFixtureTests(unittest.TestCase):
             self.assertEqual(NaturalScriptHarness.scalar(
                 NaturalScriptHarness.child(guard, "has_character_modifier")), "sxanf_infertile_modifier")
 
-    def test_r27_crossfaith_input_and_preview_safe_baseline_diagnostics(self) -> None:
-        # R27 failed one compound predicate and emitted preview-only unset-var
-        # errors. Check the actual producer's corrected input and guard layout;
-        # this structural regression does not award a fresh engine result.
+    def test_r28_created_crossfaith_pair_and_preview_safe_baseline_diagnostics(self) -> None:
+        # R28 saved both spouses as Orthodox after marrying then converting B.
+        # Stock conversion events can convert an unlanded spouse too. Establish
+        # B's faith/rite at creation, which does not fire on_rite_change; this
+        # structural regression still does not award a fresh engine result.
         output = self.root / "fixture"
         self.prepare(output)
         source = (output / "events/sxanf_events.txt").read_text(encoding="utf-8-sig")
         definitions = self.fixture_statements(source)
         setup = NaturalScriptHarness.block(NaturalScriptHarness.child(definitions, "sxanf.1"))
         setup_effects = NaturalScriptHarness.block(NaturalScriptHarness.child(setup, "immediate"))
-        conversions = [NaturalScriptHarness.block(node) for node in setup_effects
-                       if node.key == "scope:sxanf_spouse_b" and isinstance(node.value, tuple)
-                       and any(child.key == "set_character_faith" for child in node.value)]
-        self.assertEqual(len(conversions), 1)
-        self.assertEqual([(node.key, NaturalScriptHarness.scalar(node)) for node in conversions[0]],
-                         [("set_character_faith", "faith:orthodox"),
-                          ("set_character_rite", "rite:byzantine_rite")])
+        creations = [(index, NaturalScriptHarness.block(node))
+                     for index, node in enumerate(setup_effects) if node.key == "create_character"]
+        self.assertEqual(len(creations), 12)
+        spouse_b_index: int | None = None
+        for index, creation in creations:
+            role = NaturalScriptHarness.scalar(NaturalScriptHarness.child(creation, "save_scope_as"))
+            faith = NaturalScriptHarness.scalar(NaturalScriptHarness.child(creation, "faith"))
+            rite = NaturalScriptHarness.scalar(NaturalScriptHarness.child(creation, "rite"))
+            if role == "sxanf_spouse_b":
+                self.assertIsNone(spouse_b_index)
+                spouse_b_index = index
+                self.assertEqual((faith, rite), ("faith:orthodox", "rite:byzantine_rite"))
+            else:
+                self.assertEqual((faith, rite), ("root.faith", "root.rite"))
+        marriages = [index for index, node in enumerate(setup_effects)
+                     if node.key == "scope:sxanf_spouse_a" and isinstance(node.value, tuple)
+                     and any(child.key == "marry" and child.value == "scope:sxanf_spouse_b"
+                             for child in node.value)]
+        self.assertEqual(len(marriages), 1)
+        self.assertIsNotNone(spouse_b_index)
+        if spouse_b_index is None:
+            self.fail("Spouse B must be created before the marriage")
+        self.assertLess(spouse_b_index, marriages[0])
+        self.assertNotRegex(validate_static.masked(source), r"\bset_character_(?:faith|rite)\s*=")
         baseline = NaturalScriptHarness.block(NaturalScriptHarness.child(definitions, "sxanf.2"))
         immediate = NaturalScriptHarness.block(NaturalScriptHarness.child(baseline, "immediate"))
         self.assertEqual(tuple(node.key for node in immediate), ("hidden_effect",))

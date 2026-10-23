@@ -1,0 +1,142 @@
+{
+  "schema": "sxanf-natural-fixture-r28-native-findings-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T20:44:08Z",
+  "run_id": "desktop-3fevhd2-1c74096080--superman-qiang--R0028",
+  "run_root": "C:/ck3-superman-validation-20261023/runs/desktop-3fevhd2-1c74096080--superman-qiang--R0028",
+  "state_root": "C:/ck3-superman-validation-20261023/natural-scene-a09/state",
+  "run_source_commit": "de830a57976f992dcf333cf42caaa41feaaa953f",
+  "game_version": "1.20.0.4",
+  "game_exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "result": "FAIL_BASELINE",
+  "business_pass": false,
+  "cold_seed_qualified": false,
+  "actual_game_identity": {
+    "pid": 25632,
+    "creation_time_unix_decimal": "1792787357.1632192",
+    "birth_filetime": "134372609571632193",
+    "source": "C:/ck3-superman-validation-20261023/ops/R0028-operator-retained-exit.actual.json"
+  },
+  "actual_saved_state": {
+    "date": "1066.9.17",
+    "root_character_id": "31254",
+    "root_rite_index": "0",
+    "root_rite_tag": "roman_rite",
+    "root_derived_faith_index": "13",
+    "root_derived_faith_tag": "catholic",
+    "spouse_a_id": "65810",
+    "spouse_b_id": "65811",
+    "both_spouses_rite_index": "6",
+    "both_spouses_rite_tag": "byzantine_rite",
+    "both_spouses_derived_faith_index": "14",
+    "both_spouses_derived_faith_tag": "orthodox",
+    "other_ten_fixture_actors": "Saved rite0, whose saved database record points to Catholic faith13",
+    "characters_found": 12,
+    "readback_diagnostics": [],
+    "living_experience": "All eleven PRESENT type=value0; omitted fixed-point identity encodes0 within these present records",
+    "dead_character_id": "65821",
+    "dead_experience": "MISSING, not numeric0",
+    "baseline_valid": "PRESENT0",
+    "native_pulse_count": "PRESENT0",
+    "native_pulse_month": "MISSING",
+    "stage_and_seven_results": "MISSING; no monthly business was reached"
+  },
+  "native_log_findings": {
+    "baseline_role_predicates_ok": 11,
+    "failed_role": "spouse_a",
+    "failed_component": "crossfaith",
+    "marriage_xp_presence_xp_zero": "PASS diagnostics",
+    "spouse_a_faith_matches_root": false,
+    "spouse_b_orthodox_and_byzantine": true,
+    "fixture_or_product_script_errors": 0,
+    "boundary": "The guarded hidden baseline has no observed R27-style preview variable errors in this run. It still fails genuine cross-faith setup, so no overall baseline or product pass follows."
+  },
+  "immutable_original": {
+    "path": "C:/ck3-superman-validation-20261023/ops/R0028-baseline-failure-readback-a01/FAILED-BASELINE.original.ck3",
+    "bytes": 68341621,
+    "sha256": "7625b154ed4967369020c0432b5ff8796563f2321638014300789016cee96264"
+  },
+  "independent_readback": {
+    "path": "C:/ck3-superman-validation-20261023/ops/R0028-baseline-failure-readback-a01/readback-a01/readback.json",
+    "bytes": 22201,
+    "sha256": "4033645ebe2288e14141c72f01c3fe06861dda150926a8705989594b7089dd3b"
+  },
+  "bounded_state_and_database_report": {
+    "path": "C:/ck3-superman-validation-20261023/ops/R0028-baseline-failure-readback-a01/FAILED-BASELINE-SUMMARY.actual.json",
+    "bytes": 21669,
+    "sha256": "07cceab5f45ac2b1416ba4fea165a8f5542ffe72c29bfbc9cbd28592f574e7e6"
+  },
+  "stock_source_evidence": {
+    "path": "C:/ck3-superman-validation-20261023/ops/R0028-crossfaith-stock-chain-a01/EVIDENCE.actual.json",
+    "bytes": 5917,
+    "sha256": "0e14317f4e05b7ce895b0821ae9ca8407356b23ecf8511661ccb95e00e1b90a3"
+  },
+  "source_explanation": {
+    "shared_document": "../../docs/grammar/ck3-120-rite-change-family-propagation.md",
+    "on_action": "game/common/on_action/religion_on_actions.txt:998-1001 states that on_rite_change fires for faith/rite changes but not birth/creation;1263 schedules faith_conversion.0003.",
+    "family_event": "game/events/religion_events/faith_conversion_events.txt:199-213 checks old faith/rite, aliveAI and conversion protection;223-228 changes each eligible unlanded spouse to root.rite.",
+    "inference": "The fixture marriedA/B before convertingB. The source has an eligible-spouse propagation path, matching the saved fact that only this married pair shares Byzantine/Orthodox while ROOT and all other fixture actors remain Roman/Catholic.",
+    "unproven": "No separate faith_conversion.0003 execution trace or intermediate creation snapshot is retained. The final SAVE cannot determine which of the two setters initiated conversion, callback ordering, or why A lacks changed_rite_flag. This is not evidence that faith comparison syntax or create_character randomization is defective."
+  },
+  "candidate": {
+    "status": "SOURCE_CANDIDATE_NOT_ENGINE_ACCEPTED",
+    "change": "Create spouseB with faith:orthodox and rite:byzantine_rite directly, before marriage. Remove both post-marriage conversion setters. Creation is excluded from the cited on_rite_change path.",
+    "preserved": "The other eleven creation inputs, day2 complete twelve-role conjunction, real cross-faith assertion, all diagnostic/XP guards, fixture-only initialization, business events and35day maximum are unchanged.",
+    "production_runtime_changed": false,
+    "regression": "Existing cross-faith fixture test now inspects real producer creation arguments, creation-before-marriage ordering and absence of post-creation setters, retaining all preview and baseline guards.",
+    "future_native_gate": "A fresh native day2 must still prove actual marriage, distinct faiths and all remaining original baseline predicates. Neither R27 nor R28 is retroactively qualified."
+  },
+  "closure": {
+    "normal_close_result": "C:/ck3-superman-validation-20261023/runs/desktop-3fevhd2-1c74096080--superman-qiang--R0028/case-output/normal-close-result.json",
+    "retained_os_exit": 0,
+    "native_process_exit": 0,
+    "job_before_and_final": 0,
+    "cleanup_completed": true,
+    "host_error": null,
+    "normal_close_qualified": true,
+    "public_run_exit_reported_by_parent": 2,
+    "inner_host_exit_reported_by_parent": 0,
+    "keeper_exit_reported_by_parent": 0,
+    "screen_release_revision": 8487,
+    "screen_release_evidence": "C:/ck3-superman-validation-20261023/ops/R0028-screen-release.actual.json",
+    "steam_offline_observed_by_parent_utc": "2026-10-23T20:44:08Z",
+    "boundary": "The shared running-date error was not observed in this run. Successful lifecycle closure does not pass failed product business."
+  },
+  "candidate_source_validation": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-23T20:49:40.794323+00:00",
+    "full_product_ci": {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\product-ci-r28-fixture-fix-a01\\SUMMARY.actual.json",
+      "bytes": 25645,
+      "sha256": "1a613e216d133b9282d9fbec3762b9e78fc881547a201d4ce24f43d061aebd8a"
+    },
+    "unit_tests": 87,
+    "groups": {
+      "independent_release": 13,
+      "product_builder": 12,
+      "product_runtime": 62
+    },
+    "static_validation": "GREEN",
+    "formal_builder_check": "GREEN_35_FILES_UNRELEASED_CHECK_ONLY",
+    "mypy": {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\product-ci-r28-fixture-fix-a01\\MYPY.actual.json",
+      "bytes": 738,
+      "sha256": "4014abe98c5aa01ad1f1795e669410847dcef2e229c7cb63afc0aea5422ba1eb"
+    },
+    "new_fixture_open_kaishek": {
+      "status": "SYNTAX_PASS",
+      "path": "C:/ck3-superman-validation-20261023/ops/open-kaishek-precheck-a02/RESULT.actual.json",
+      "bytes": 6668,
+      "sha256": "5281f0c85f11eae2de381eadd0aa64c23d540234007d2ccc53958ac7d0489953",
+      "natural_files_parsed": 4,
+      "corpus_exit_code": 0,
+      "parse_exit_code": 0,
+      "diagnostics": 0,
+      "scope": "Actual new fixture syntax only; unchanged 29 prior inputs retain original parser credit. No new engine qualification and no retroactive R28 or R27 credit."
+    },
+    "engine_rerun": "NOT_RUN",
+    "business_pass": false
+  },
+  "new_game_actions_during_fix": 0,
+  "git_commit_performed": false
+}

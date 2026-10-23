@@ -8,7 +8,10 @@ sxanf.1 = {
         debug_log = "SXANF: START natural-simulation"
         set_variable = { name = sxanf_native_pulse_count value = 0 }
         create_character = { employer = root age = 30 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = sxanf_spouse_a }
-        create_character = { employer = root age = 30 gender_female_chance = 100 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = sxanf_spouse_b }
+        # Set the cross-faith input at creation. Stock on_rite_change excludes
+        # creation; converting an already-married spouse instead schedules
+        # faith_conversion.0003, which can convert their unlanded spouse too.
+        create_character = { employer = root age = 30 gender_female_chance = 100 culture = root.culture faith = faith:orthodox rite = rite:byzantine_rite dynasty = none random_traits = no save_scope_as = sxanf_spouse_b }
         create_character = { employer = root age = 30 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = sxanf_concubinist }
         create_character = { employer = root age = 30 gender_female_chance = 100 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = sxanf_concubine }
         create_character = { employer = root age = 30 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = sxanf_pregnant_a }
@@ -22,10 +25,6 @@ sxanf.1 = {
         create_character = { employer = root age = 30 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = sxanf_dead_a }
         create_character = { employer = root age = 30 gender_female_chance = 100 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = sxanf_dead_b }
         scope:sxanf_spouse_a = { marry = scope:sxanf_spouse_b }
-        # This build stores both a character faith and a rite. Stock pool
-        # templates pair these setters; Orthodox's main rite is Byzantine.
-        # Construct both parts before the real day-two cross-faith check.
-        scope:sxanf_spouse_b = { set_character_faith = faith:orthodox set_character_rite = rite:byzantine_rite }
         scope:sxanf_concubinist = { make_concubine = scope:sxanf_concubine }
         scope:sxanf_pregnant_a = { marry = scope:sxanf_pregnant_b }
         # Fixture setup alone creates pregnancy; the product's monthly event
