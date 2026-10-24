@@ -1,0 +1,386 @@
+{
+  "schema": "religious-ritual-fusion-research-sources-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-24T14:39:52.046625+00:00",
+  "repository_baseline": "c01a7805e84e2b199a31c8b315ec1b1c2ea639d9",
+  "installation_root": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III",
+  "raw_version": "1.20.0.4",
+  "launcher_version": "1.20.0.4 (Crozier)",
+  "steam_build_id": "25734779",
+  "source_basis": "User-confirmed original version including Empire Faith Gate; no third-party tampering claim. Static local research, no online integrity action.",
+  "sources": [
+    {
+      "path": "game/gui/window_culture.gui",
+      "bytes": 71583,
+      "sha256": "3eb6b1c17f0cdd391e8acbaef79f11f7b8b6eed9159da3ef45ae5bfc5084713c",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/gui/window_hybridize_culture.gui",
+      "bytes": 40856,
+      "sha256": "7c02f13aba11962c30b86ae05dd3c3db56e4cbe41b08a3bdf71fd8f0cc3d5bbd",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/gui/window_faith.gui",
+      "bytes": 150682,
+      "sha256": "67924e58ccba26d95853ac48af35d91a774f5ce6d2e7f32a0a033de3b9d51521",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/gui/window_rite_creation.gui",
+      "bytes": 45219,
+      "sha256": "9476299fdbf0975e41923eac9b192d3fe0b2cd74a4da0d928d0da7974b7ea9f8",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/scripted_rules/00_rules.txt",
+      "bytes": 42673,
+      "sha256": "c7ba2ae71e4461e88c6d5c86d8fc15fa7ccc73edae1e28fb3b65f0e362c4560f",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/scripted_triggers/00_cultural_triggers.txt",
+      "bytes": 19324,
+      "sha256": "acac6691ab34b89f492a149f7693cf34343a0301c9d99d67c032e9f01dede3de",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/scripted_triggers/00_religious_triggers.txt",
+      "bytes": 88549,
+      "sha256": "e9d0b56130464eabdcd670fa6cf814534d11c99da1e8b3fc1e69e9c3e36d2bb2",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/script_values/00_culture_values.txt",
+      "bytes": 24723,
+      "sha256": "e5fbbeb7631d4c15275ecc57f0971a728816e4ee24db1fb29d2d5e0c9eed88fd",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/scripted_costs/00_costs.txt",
+      "bytes": 14914,
+      "sha256": "8c5f429b0c89b90a0aba29cb7420567db9f3cf18a644b8e85866065600d600d0",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/scripted_effects/00_culture_effects.txt",
+      "bytes": 23474,
+      "sha256": "392e3f4cdcd53ce2382f7c666fa3f7785118e4abc0d5464fa76562d3d3839da4",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/on_action/culture_on_actions.txt",
+      "bytes": 16653,
+      "sha256": "7a7160bd331850ca5af77118d2b8e1002d828432061ed084e241790b06f65084",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/culture/cultures/_cultures.info",
+      "bytes": 5158,
+      "sha256": "689993de7c347f40ebf1e815532b02efb633ad841b10af3fca291167874024e1",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/culture/_cultural_traits.info",
+      "bytes": 5170,
+      "sha256": "3e5d9210185121996653a80f18c0528b95642ed76f4cd671927431753c2a978f",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/localization/english/gui/culture_hybridization_window_l_english.yml",
+      "bytes": 5401,
+      "sha256": "d2c01e78f7fe38dffd2e06a161d0bcf7a4b51ea8d782a94e59dfc6fd113c5323",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/events/culture_events/culture_emergence_events.txt",
+      "bytes": 36488,
+      "sha256": "9b03b2503491376d0009b2c488f188bc294e8d89c3ae1f89e207b632142972cc",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/script_values/99_steward_values.txt",
+      "bytes": 31528,
+      "sha256": "704b26d1315c231cdef9518bcadd7ba1e0e8d5d4909c5eea6d12500126ae9f3f",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/dlc/dlc004_ep1/dlc004.dlc",
+      "bytes": 231,
+      "sha256": "d39d0c95be092a99850dcafae90316e457b9059d7a77ee8a9c79c7aa484a4f4a",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/religion/religion_types/_religion_types.info",
+      "bytes": 5101,
+      "sha256": "c9b5b04166c1d8020230dd858f7e0e364d9488e89873fc9376a1fdf19b7b5d14",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/religion/faith_types/_faith_types.info",
+      "bytes": 4481,
+      "sha256": "55696aa5d3ac818fbd68d2b21be51213f02ef5ed4260627e2fbd8b5e321c9e42",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/religion/rite_types/_rite_types.info",
+      "bytes": 2995,
+      "sha256": "60fd476d72be0941d9c6dff4e83834016d6e32d16e855f3b258389061850828f",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/religion/doctrine_group_types/_doctrine_group_types.info",
+      "bytes": 2191,
+      "sha256": "c7d8e667403b55666cde5efa66983e39f8004a4ae0e1239eea96fc9d5d72b7c3",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/religion/doctrine_group_types/00_doctrine_group_types.txt",
+      "bytes": 5215,
+      "sha256": "276100fe6e99ef17805da9992b4e8f38d648315dd8a30238b5fb42d113bd7456",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/religion/doctrine_types/_doctrine_types.info",
+      "bytes": 11217,
+      "sha256": "7a8f6f8e78f88f7c83de3c43239a5da2709777e9d56fed4ae031e98b76af2ffc",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/religion/tenet_types/_tenet_types.info",
+      "bytes": 4799,
+      "sha256": "aae8f7a94b0b5ae7a12d29ea6080941fd2e94842ea195905b9a1d8a14f2a9c25",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/religion/tenet_types/00_tenet_types.txt",
+      "bytes": 130228,
+      "sha256": "d9e18a077d81f18f030d795ef45cb4aa5b7db246007043d5b0fe401baaf88abd",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/scripted_guis/pam_scripted_guis.txt",
+      "bytes": 1922,
+      "sha256": "675c90f1b3496543456542f32d465535e5966dbbe92cd2157892a5a93b11fff2",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/scripted_effects/00_religion_effects.txt",
+      "bytes": 41530,
+      "sha256": "5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/scripted_effects/pam_effects.txt",
+      "bytes": 369911,
+      "sha256": "fc4c77974a7844c31c1271dcc2ace24b17906620a832658919aa281e42a2b94f",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/on_action/religion_on_actions.txt",
+      "bytes": 59475,
+      "sha256": "ef9367ddf5f89c912b895743f8b72441e88af3a5b03a5c1a9eddea0e5681ee2d",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/defines/00_defines.txt",
+      "bytes": 125400,
+      "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/gui/decision_view_widgets/decision_view_widget_select_rite.gui",
+      "bytes": 1505,
+      "sha256": "699e47b15bd31dc7faf9e2e9a3824565b305d7bb6767de76997a7a1a7836ea64",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/gui/shared/portraits.gui",
+      "bytes": 89819,
+      "sha256": "100c69221b42e0953261bd43b88613fa08bcb7f04d1bbef18ba3c7aecdab9fd1",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/gui/scripted_widgets/_scripted_widgets.info",
+      "bytes": 631,
+      "sha256": "c5e1e671c0328e37a11aa56004033f4609ed8709b56128b8ac4de2394b8ff3ad",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/gui/event_window_widgets/event_window_widget_rite.gui",
+      "bytes": 1406,
+      "sha256": "c377f1cf85efe8e9130b12d7edb8773000a50fe494ea37a09e7950b73da1d11c",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/decisions/_decisions.info",
+      "bytes": 13932,
+      "sha256": "d36f202f6f91a6e17f0accff86ba7604caeb82e6ff73fc8c24041f4052f43742",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/decisions/10_religious_decisions.txt",
+      "bytes": 77332,
+      "sha256": "6ef6123e5f0ae31789f8f854043ba4d11278af0470871ba77d3df0cffc2da30c",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/scripted_effects/00_major_decisions_scripted_effects.txt",
+      "bytes": 125829,
+      "sha256": "f89b48e11152d03b4164637c2a6a67df264cdb522ba07a11057f0f68a54c1d0b",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/scripted_effects/pam_investiture_council_effects.txt",
+      "bytes": 27510,
+      "sha256": "b7ea1e6d7ec14e4d98d1185dd13aac01a04aa4c6209bfc1a0bba79c75bc85537",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/scripted_effects/passive_rite_learning_effects.txt",
+      "bytes": 52814,
+      "sha256": "cfb45ffc82239d87080319dcc9110e3fe95597b1d152618fd5f03322d22884e9",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/on_action/_on_actions.info",
+      "bytes": 5863,
+      "sha256": "2bfbbf903d55a2417c988caf1479ef0ff91719c55128ce6357bca3d2c8e9b25f",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/events/religion_events/faith_conversion_events.txt",
+      "bytes": 13638,
+      "sha256": "690962331397af4f0a0a4b9d92bf4b6f6c320f400e7c65c34716e8cbad488ec0",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/events/dlc/pam/pam_decision_events.txt",
+      "bytes": 83499,
+      "sha256": "8282ca575f87e165771eb51608a296911eaa27ab93228ee48649917665484b78",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/localization/english/gui/rite_creation_window_l_english.yml",
+      "bytes": 16967,
+      "sha256": "aad18249fdad770fccf458365e90e3cd65d720c32b6be4199a03e067a56e49d2",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\launcher\\launcher-settings.json",
+      "bytes": 1335,
+      "sha256": "5d2e824196d28103246c1fc26e5da9ea0edb8cea3898e73d3d2db0f910fe5b25",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\appmanifest_1158310.acf",
+      "bytes": 4282,
+      "sha256": "261e29a4f82cf31cf1a51e23dd8d0a9fa16f00c68d70c6fe90fce0fb15536be2",
+      "availability": "readable_at_observation"
+    }
+  ],
+  "binary_source": {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "size_bytes": 101040248,
+    "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "pe_image_base": "0x140000000",
+    "pe_time_date_stamp": 1791204405,
+    "address_domain": "RVA; each file offset mapped through PE sections",
+    "provenance": "Independent local hash and bytes. Empire Faith Gate is accepted as an original-game-version baseline following user clarification; no third-party modification is alleged."
+  },
+  "storage": {
+    "policy_path": "docs\\storage-retention-policy.json",
+    "policy_sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5",
+    "policy_version": "1.0.0",
+    "task_start_observed_at_utc": "2026-10-24T14:26:02.985871+00:00",
+    "task_start_volume": {
+      "total_bytes": 511776722944,
+      "available_bytes": 91452174336
+    },
+    "source_snapshot_volume": {
+      "total": 511776722944,
+      "used": 420351246336,
+      "free": 91425476608
+    },
+    "output_ceiling_bytes": 1048576,
+    "category": "record",
+    "review_at_utc": "2027-04-22T14:44:02.000389+00:00",
+    "coordination_head": {
+      "path": "C:\\workspace\\.codex-task-bus\\storage\\volume-C-current.json",
+      "sha256": "750750fa2367df0e6f4c52f5733bd7688af2b179e5171453e462d6dca81cd30b",
+      "machine_id": "4-8e1c2f1861",
+      "state": "closed",
+      "storage_revision": 72,
+      "observed_at_utc": "2026-10-24T13:26:58.506251+00:00",
+      "reserved_future_upper_bytes": 0,
+      "scope": "Other closed task; not used as admission"
+    },
+    "current_project_usage_bytes": null,
+    "system_growth_reserve_bytes": null,
+    "effective_project_quota_bytes": null,
+    "heavy_write_admission": "BLOCKED_UNKNOWN_BUDGET_INPUTS",
+    "expiry_audit": "No package assets existed at task start. Existing coordination head inspected; other asset expiry/ownership remains unassessed.",
+    "deletions": 0,
+    "large_files_copied": 0,
+    "full_exports": 0,
+    "automatic_gc_deployed": false,
+    "boundary": "Small docs and evidence summaries only; no heavy-write reservation or quota approval claimed.",
+    "task_closed_at_utc": "2026-10-24T14:44:02.000389+00:00",
+    "task_close_volume": {
+      "total": 511776722944,
+      "used": 420350967808,
+      "free": 91425755136
+    },
+    "output_root": "C:\\workspace\\ck3_eternal_recurrence\\mod_religious_ritual_fusion",
+    "output_file_count": 5,
+    "output_logical_bytes": 100641,
+    "output_allocated_bytes_or_null": null,
+    "task_close_review": "All new outputs are small record-category docs/summary evidence, below 1 MiB ceiling. No derived dump or large asset created; no deletion or lease to release."
+  },
+  "execution": {
+    "game_launched": false,
+    "steam_mode_changed": false,
+    "binary_modified": false,
+    "production_code_added": false,
+    "mod_registered": false,
+    "workshop_published": false
+  },
+  "additional_native_help": {
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-24T14:42:40.477933+00:00",
+    "source_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "entries": [
+      {
+        "name": "change_rite_doctrine",
+        "file_offset": "0x481d980",
+        "rva": "0x481eb80",
+        "help_file_offset": "0x481d9a0",
+        "help_rva": "0x481eba0",
+        "help": "Add doctrine to rite, overwriting without errors any doctrine of the same group if already set\n\n<rite_scope> = { change_rite_doctrine = <doctrine_name> }",
+        "evidence_level": "exact_name_and_adjacent_native_help_only; registration and execution not closed in root supplemental read"
+      },
+      {
+        "name": "set_rite_name",
+        "file_offset": "0x484c618",
+        "rva": "0x484d818",
+        "help_file_offset": "0x484c630",
+        "help_rva": "0x484d830",
+        "help": "Changes the name, description & adherent name of an existing rite.set_rite_name = {\n\tname = key/dynamic description\n\tdesc = key/dynamic description\n\tadjective = key/dynamic description\n\tadherent = key/dynamic description\n\tadherent_plural = key/dynamic description\n}",
+        "evidence_level": "exact_name_and_adjacent_native_help_only; registration and execution not closed in root supplemental read"
+      }
+    ]
+  },
+  "validation": {
+    "checked_at_utc": "2026-10-24T14:43:28.172450+00:00",
+    "result": "PASS",
+    "checks": {
+      "binary_slices": 37,
+      "native_strings": 6,
+      "sources": 45,
+      "local_links": 15
+    },
+    "scope": "Research source hashes, recorded binary bytes/strings, local documentation links and docs-only boundary. No game execution or functional acceptance.",
+    "typecheck": "not_applicable_no_production_source_changes"
+  }
+}

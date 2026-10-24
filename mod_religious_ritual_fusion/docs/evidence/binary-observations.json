@@ -1,0 +1,1456 @@
+{
+  "schema_version": 1,
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-24T14:32:39.308399+00:00",
+  "observation_mode": "local_offline_static_binary_read_only",
+  "machine_id_source": "tools/ck3_live_run_id.py machine",
+  "source": {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "size_bytes": 101040248,
+    "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "pe_image_base": "0x140000000",
+    "pe_time_date_stamp": 1791204405,
+    "address_domain": "RVA; each file offset mapped through PE sections",
+    "provenance": "Independent local hash and bytes. Empire Faith Gate is accepted as an original-game-version baseline following user clarification; no third-party modification is alleged."
+  },
+  "create_dynamic_rite": {
+    "name": {
+      "rva": "0x481fb98",
+      "file_offset": "0x481e998",
+      "value": "create_dynamic_rite"
+    },
+    "native_help_text": {
+      "rva": "0x481fbb0",
+      "file_offset": "0x481e9b0",
+      "value": "Creates a dynamic Rite within the Faith of the Character in scope.\nThe character will be the founder. Tenets and doctrines are inherited from the founder's current rite.\nFaith and founder are used to dynamically generate icon and names for the new Rite, based on the final tenet/doctrine state after overrides are applied.\n\nOptional overrides (applied before name/icon generation):\n  core_tenet_override_entry: replaces the tenets the founder likes least (by Spiritual Fulfillment). Max FAITH_CORE_TENETS_CAP entries; excess entries are ignored with an error.\n  doctrine_override_entry: if the rite already has a doctrine in the same group, that doctrine is replaced; otherwise the doctrine is added.\n\nIf a target divergence is specified and the overrides do not suffice to reach it, random tenets and doctrines will be added to the overrides until the threshold is reached.\n\n<scope:character> = {\n\tcreate_dynamic_rite = {\n\t\tsave_scope_as = new_rite\n\t\tconvert = no\t\t\t\t\t\t\t\t\t# whether the founder should convert (default is no)\n\t\tcore_tenet_override_entry = tenet:some_tenet\t# tenet scope, may be repeated up to FAITH_CORE_TENETS_CAP times\n\t\tcore_tenet_override_entry = scope:saved_tenet\n\t\tdoctrine_override_entry = doctrine:some_doctrine\t# doctrine scope, may be repeated\n\n\t\ttarget_divergence = 0\t\t\t\t\t\t\t# reference amount of divergence the new rite has to have with respect to the mainline rite.\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t#\t0 is default and will be ignored. The final divergence could be a bit less or a bit more.\n\t\tinclude_unknown = no\t\t\t\t\t\t\t# allows to pick any tenet and doctrine, not just the ones known to the founder (default is no)\n\t\toverride_tenets_first = yes\t\t\t\t\t\t# if yes the effect will try to change tenets before changing doctrines. \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t#\tif no it will change doctrines first. default is yes.\n\t}\n}"
+    },
+    "registration_rva": "0x5bd181",
+    "entry_rtti": {
+      "vtable_rva": "0x48219a0",
+      "file_offset": "0x48207a0",
+      "complete_object_locator_rva": "0x4eab448",
+      "type_descriptor_rva": "0x5a6a7e0",
+      "type_name": ".?AV?$CEffectEntry@VCCreateDynamicRiteEffect@@@@"
+    },
+    "factory_rva": "0x2c95380",
+    "effect_rtti": {
+      "vtable_rva": "0x48219d0",
+      "file_offset": "0x48207d0",
+      "complete_object_locator_rva": "0x4eab9e8",
+      "type_descriptor_rva": "0x5a6a190",
+      "type_name": ".?AVCCreateDynamicRiteEffect@@"
+    },
+    "parser_rva": "0x2c91b10",
+    "field_semantics_source": "Full native help text; not game execution. Parser vtable and two scope-expression branches verified; full token normalization not closed.",
+    "implications": [
+      "Explicit tenet and doctrine overrides are supported; this effect is not random-only.",
+      "core_tenet_override_entry accepts tenet:some_tenet and scope:saved_tenet; repeatable to FAITH_CORE_TENETS_CAP. Replaces founder least-liked core tenets by Spiritual Fulfillment, not proven positional replacement.",
+      "doctrine_override_entry accepts doctrine scope; same-group replacement, otherwise add.",
+      "target_divergence defaults to 0 and is ignored. Random supplementation occurs if a specified target is unmet after overrides.",
+      "Creates a Rite within the scoped Character current Faith; inherits current rite.",
+      "Exact full core-tenet-set replacement, knowledge restrictions, conflicts, save persistence and cross-religion moves need runtime qualification."
+    ],
+    "evidence": [
+      {
+        "rva": "0x5bd181",
+        "file_offset": "0x5bc581",
+        "size_bytes": 7,
+        "hex": "48 8d 05 10 2a 26 04",
+        "purpose": "Exact effect name reference.",
+        "instructions": [
+          {
+            "rva": "0x5bd181",
+            "text": "lea rax, [rip + 0x4262a10]"
+          }
+        ]
+      },
+      {
+        "rva": "0x5bd1f5",
+        "file_offset": "0x5bc5f5",
+        "size_bytes": 31,
+        "hex": "48 8d 0d a4 47 26 04 48 89 08 48 8b cb 89 78 10 48 8b 5c 24 48 48 83 c4 30 5f e9 fc 69 1a 03",
+        "purpose": "Install entry vtable and tail-call shared effect registration RVA0x3763c10.",
+        "instructions": [
+          {
+            "rva": "0x5bd1f5",
+            "text": "lea rcx, [rip + 0x42647a4]"
+          },
+          {
+            "rva": "0x5bd1fc",
+            "text": "mov qword ptr [rax], rcx"
+          },
+          {
+            "rva": "0x5bd1ff",
+            "text": "mov rcx, rbx"
+          },
+          {
+            "rva": "0x5bd202",
+            "text": "mov dword ptr [rax + 0x10], edi"
+          },
+          {
+            "rva": "0x5bd205",
+            "text": "mov rbx, qword ptr [rsp + 0x48]"
+          },
+          {
+            "rva": "0x5bd20a",
+            "text": "add rsp, 0x30"
+          },
+          {
+            "rva": "0x5bd20e",
+            "text": "pop rdi"
+          },
+          {
+            "rva": "0x5bd20f",
+            "text": "jmp 0x3763c10"
+          }
+        ]
+      },
+      {
+        "rva": "0x2c953a7",
+        "file_offset": "0x2c947a7",
+        "size_bytes": 10,
+        "hex": "48 8d 05 22 c6 b8 01 48 89 03",
+        "purpose": "Factory installs CCreateDynamicRiteEffect vtable.",
+        "instructions": [
+          {
+            "rva": "0x2c953a7",
+            "text": "lea rax, [rip + 0x1b8c622]"
+          },
+          {
+            "rva": "0x2c953ae",
+            "text": "mov qword ptr [rbx], rax"
+          }
+        ]
+      },
+      {
+        "rva": "0x2c91b48",
+        "file_offset": "0x2c90f48",
+        "size_bytes": 25,
+        "hex": "48 83 c1 60 e8 1f 4a 00 00 48 8b d3 48 8b c8 48 83 c4 20 5b e9 1f a8 ad 00",
+        "purpose": "Parser branch appends scope-expression entry then invokes shared scope parser.",
+        "instructions": [
+          {
+            "rva": "0x2c91b48",
+            "text": "add rcx, 0x60"
+          },
+          {
+            "rva": "0x2c91b4c",
+            "text": "call 0x2c96570"
+          },
+          {
+            "rva": "0x2c91b51",
+            "text": "mov rdx, rbx"
+          },
+          {
+            "rva": "0x2c91b54",
+            "text": "mov rcx, rax"
+          },
+          {
+            "rva": "0x2c91b57",
+            "text": "add rsp, 0x20"
+          },
+          {
+            "rva": "0x2c91b5b",
+            "text": "pop rbx"
+          },
+          {
+            "rva": "0x2c91b5c",
+            "text": "jmp 0x376c380"
+          }
+        ]
+      },
+      {
+        "rva": "0x2c91b97",
+        "file_offset": "0x2c90f97",
+        "size_bytes": 25,
+        "hex": "48 83 c1 78 e8 90 4b 00 00 48 8b d3 48 8b c8 48 83 c4 20 5b e9 d0 a7 ad 00",
+        "purpose": "Second scope-expression array parser branch.",
+        "instructions": [
+          {
+            "rva": "0x2c91b97",
+            "text": "add rcx, 0x78"
+          },
+          {
+            "rva": "0x2c91b9b",
+            "text": "call 0x2c96730"
+          },
+          {
+            "rva": "0x2c91ba0",
+            "text": "mov rdx, rbx"
+          },
+          {
+            "rva": "0x2c91ba3",
+            "text": "mov rcx, rax"
+          },
+          {
+            "rva": "0x2c91ba6",
+            "text": "add rsp, 0x20"
+          },
+          {
+            "rva": "0x2c91baa",
+            "text": "pop rbx"
+          },
+          {
+            "rva": "0x2c91bab",
+            "text": "jmp 0x376c380"
+          }
+        ]
+      }
+    ]
+  },
+  "additional_registered_effects": [
+    {
+      "name": {
+        "rva": "0x481f260",
+        "file_offset": "0x481e060",
+        "value": "detach_rite_to_new_faith"
+      },
+      "entry_rtti": {
+        "vtable_rva": "0x4821940",
+        "file_offset": "0x4820740",
+        "complete_object_locator_rva": "0x4eab420",
+        "type_descriptor_rva": "0x5a6a668",
+        "type_name": ".?AV?$CEffectEntry@VCDetachRiteToNewFaith@@@@"
+      },
+      "registration_rva": "0x5bd391",
+      "native_help_text": {
+        "rva": "0x481f280",
+        "file_offset": "0x481e080",
+        "value": "Detaches the target Rite from its current Faith, creating a new Faith with the scoped character as founder. Supports saving the resulting faith as scope.\n\nscope:character = {\n\tdetach_rite_to_new_faith = {\n\t\ttarget = scope:rite\n\t\tsave_scope_as = new_faith\n\t}\n}"
+      }
+    },
+    {
+      "name": {
+        "rva": "0x481f1d8",
+        "file_offset": "0x481dfd8",
+        "value": "set_parent_faith"
+      },
+      "entry_rtti": {
+        "vtable_rva": "0x48218b0",
+        "file_offset": "0x48206b0",
+        "complete_object_locator_rva": "0x4eab880",
+        "type_descriptor_rva": "0x5a6a628",
+        "type_name": ".?AV?$CEffectEntry@VCSetParentFaithEffect@@@@"
+      },
+      "registration_rva": "0x5bd5a1",
+      "limit": "Cross-religion checks and invalidation not closed."
+    },
+    {
+      "name": {
+        "rva": "0x46dc9d0",
+        "file_offset": "0x46db7d0",
+        "value": "set_tenet_status"
+      },
+      "entry_rtti": {
+        "vtable_rva": "0x484cd80",
+        "file_offset": "0x484bb80",
+        "complete_object_locator_rva": "0x4ec6b80",
+        "type_descriptor_rva": "0x5a776d0",
+        "type_name": ".?AV?$CEffectEntry@VCSetFaithTenetStatusEffect@@@@"
+      },
+      "registration_rva": "0x5cdba1",
+      "limit": "Typed registration only; semantics need script/runtime qualification."
+    }
+  ],
+  "closed_gui_callback_chains": [
+    {
+      "model": "HybridizationWindow",
+      "callback": "HybridizeCulture",
+      "callback_registration_rva": "0x233746",
+      "shared_registration_rva": "0x1535a70",
+      "thunk_rva": "0x15330c0",
+      "method_rva": "0x1530620",
+      "evidence": [
+        {
+          "rva": "0x1535140",
+          "file_offset": "0x1534540",
+          "size_bytes": 16,
+          "hex": "48 8d 15 69 2f 03 03 48 8d 4d 67 e8 70 6c 8e 02",
+          "purpose": "Native model name registration.",
+          "instructions": [
+            {
+              "rva": "0x1535140",
+              "text": "lea rdx, [rip + 0x3032f69]"
+            },
+            {
+              "rva": "0x1535147",
+              "text": "lea rcx, [rbp + 0x67]"
+            },
+            {
+              "rva": "0x153514b",
+              "text": "call 0x3e1bdc0"
+            }
+          ]
+        },
+        {
+          "rva": "0x2336d3",
+          "file_offset": "0x232ad3",
+          "size_bytes": 14,
+          "hex": "0f 10 05 4e 4a 33 04 0f 11 00 40 88 78 10",
+          "purpose": "Copy callback name from string RVA0x4568128/file0x4566f28.",
+          "instructions": [
+            {
+              "rva": "0x2336d3",
+              "text": "movups xmm0, xmmword ptr [rip + 0x4334a4e]"
+            },
+            {
+              "rva": "0x2336da",
+              "text": "movups xmmword ptr [rax], xmm0"
+            },
+            {
+              "rva": "0x2336dd",
+              "text": "mov byte ptr [rax + 0x10], dil"
+            }
+          ]
+        },
+        {
+          "rva": "0x233746",
+          "file_offset": "0x232b46",
+          "size_bytes": 18,
+          "hex": "4c 8d 05 73 f9 2f 01 33 d2 48 8d 4d ef e8 18 23 30 01",
+          "purpose": "Register callback thunk.",
+          "instructions": [
+            {
+              "rva": "0x233746",
+              "text": "lea r8, [rip + 0x12ff973]"
+            },
+            {
+              "rva": "0x23374d",
+              "text": "xor edx, edx"
+            },
+            {
+              "rva": "0x23374f",
+              "text": "lea rcx, [rbp - 0x11]"
+            },
+            {
+              "rva": "0x233753",
+              "text": "call 0x1535a70"
+            }
+          ]
+        },
+        {
+          "rva": "0x15330c0",
+          "file_offset": "0x15324c0",
+          "size_bytes": 28,
+          "hex": "48 83 ec 28 48 85 c9 74 0c e8 52 d5 ff ff b0 01 48 83 c4 28 c3 32 c0 48 83 c4 28 c3",
+          "purpose": "Non-null window invokes actual method; returns dispatch boolean.",
+          "instructions": [
+            {
+              "rva": "0x15330c0",
+              "text": "sub rsp, 0x28"
+            },
+            {
+              "rva": "0x15330c4",
+              "text": "test rcx, rcx"
+            },
+            {
+              "rva": "0x15330c7",
+              "text": "je 0x15330d5"
+            },
+            {
+              "rva": "0x15330c9",
+              "text": "call 0x1530620"
+            },
+            {
+              "rva": "0x15330ce",
+              "text": "mov al, 1"
+            },
+            {
+              "rva": "0x15330d0",
+              "text": "add rsp, 0x28"
+            },
+            {
+              "rva": "0x15330d4",
+              "text": "ret "
+            },
+            {
+              "rva": "0x15330d5",
+              "text": "xor al, al"
+            },
+            {
+              "rva": "0x15330d7",
+              "text": "add rsp, 0x28"
+            },
+            {
+              "rva": "0x15330db",
+              "text": "ret "
+            }
+          ]
+        },
+        {
+          "rva": "0x1530620",
+          "file_offset": "0x152fa20",
+          "size_bytes": 17,
+          "hex": "48 81 ec 28 02 00 00 48 8d 54 24 28 e8 cf 29 00 00",
+          "purpose": "Native method begins command/confirmation construction.",
+          "instructions": [
+            {
+              "rva": "0x1530620",
+              "text": "sub rsp, 0x228"
+            },
+            {
+              "rva": "0x1530627",
+              "text": "lea rdx, [rsp + 0x28]"
+            },
+            {
+              "rva": "0x153062c",
+              "text": "call 0x1533000"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "model": "RiteCreationWindow",
+      "callback": "CreateRite",
+      "callback_registration_rva": "0x22a166",
+      "shared_registration_rva": "0x1502c60",
+      "thunk_rva": "0x14fb060",
+      "method_rva": "0x14f5130",
+      "evidence": [
+        {
+          "rva": "0x14fe210",
+          "file_offset": "0x14fd610",
+          "size_bytes": 16,
+          "hex": "48 8d 15 11 7e 06 03 48 8d 4d 67 e8 a0 db 91 02",
+          "purpose": "Native model name registration.",
+          "instructions": [
+            {
+              "rva": "0x14fe210",
+              "text": "lea rdx, [rip + 0x3067e11]"
+            },
+            {
+              "rva": "0x14fe217",
+              "text": "lea rcx, [rbp + 0x67]"
+            },
+            {
+              "rva": "0x14fe21b",
+              "text": "call 0x3e1bdc0"
+            }
+          ]
+        },
+        {
+          "rva": "0x22a0e9",
+          "file_offset": "0x2294e9",
+          "size_bytes": 24,
+          "hex": "f2 0f 10 05 d7 bf 33 04 f2 0f 11 45 ef 0f b7 05 d3 bf 33 04 66 89 45 f7",
+          "purpose": "Copy callback name from RVA0x45660c8/file0x4564ec8.",
+          "instructions": [
+            {
+              "rva": "0x22a0e9",
+              "text": "movsd xmm0, qword ptr [rip + 0x433bfd7]"
+            },
+            {
+              "rva": "0x22a0f1",
+              "text": "movsd qword ptr [rbp - 0x11], xmm0"
+            },
+            {
+              "rva": "0x22a0f6",
+              "text": "movzx eax, word ptr [rip + 0x433bfd3]"
+            },
+            {
+              "rva": "0x22a0fd",
+              "text": "mov word ptr [rbp - 9], ax"
+            }
+          ]
+        },
+        {
+          "rva": "0x22a166",
+          "file_offset": "0x229566",
+          "size_bytes": 18,
+          "hex": "4c 8d 05 f3 0e 2d 01 33 d2 48 8d 4d ef e8 e8 8a 2d 01",
+          "purpose": "Register callback thunk.",
+          "instructions": [
+            {
+              "rva": "0x22a166",
+              "text": "lea r8, [rip + 0x12d0ef3]"
+            },
+            {
+              "rva": "0x22a16d",
+              "text": "xor edx, edx"
+            },
+            {
+              "rva": "0x22a16f",
+              "text": "lea rcx, [rbp - 0x11]"
+            },
+            {
+              "rva": "0x22a173",
+              "text": "call 0x1502c60"
+            }
+          ]
+        },
+        {
+          "rva": "0x14fb060",
+          "file_offset": "0x14fa460",
+          "size_bytes": 28,
+          "hex": "48 83 ec 28 48 85 c9 74 0c e8 c2 a0 ff ff b0 01 48 83 c4 28 c3 32 c0 48 83 c4 28 c3",
+          "purpose": "Non-null window invokes actual method; returns dispatch boolean.",
+          "instructions": [
+            {
+              "rva": "0x14fb060",
+              "text": "sub rsp, 0x28"
+            },
+            {
+              "rva": "0x14fb064",
+              "text": "test rcx, rcx"
+            },
+            {
+              "rva": "0x14fb067",
+              "text": "je 0x14fb075"
+            },
+            {
+              "rva": "0x14fb069",
+              "text": "call 0x14f5130"
+            },
+            {
+              "rva": "0x14fb06e",
+              "text": "mov al, 1"
+            },
+            {
+              "rva": "0x14fb070",
+              "text": "add rsp, 0x28"
+            },
+            {
+              "rva": "0x14fb074",
+              "text": "ret "
+            },
+            {
+              "rva": "0x14fb075",
+              "text": "xor al, al"
+            },
+            {
+              "rva": "0x14fb077",
+              "text": "add rsp, 0x28"
+            },
+            {
+              "rva": "0x14fb07b",
+              "text": "ret "
+            }
+          ]
+        },
+        {
+          "rva": "0x14f5162",
+          "file_offset": "0x14f4562",
+          "size_bytes": 54,
+          "hex": "48 8b 0b 48 89 4c 24 20 4c 8d 8d 18 09 00 00 4c 8b c5 48 8b d6 48 8b c8 e8 51 bd ff ff 90 48 c7 44 24 60 00 00 00 00 48 89 44 24 50 48 8d 4c 24 50 e8 d8 0c 75 ff",
+          "purpose": "Pass draft/window data to native constructor and submit resulting object.",
+          "instructions": [
+            {
+              "rva": "0x14f5162",
+              "text": "mov rcx, qword ptr [rbx]"
+            },
+            {
+              "rva": "0x14f5165",
+              "text": "mov qword ptr [rsp + 0x20], rcx"
+            },
+            {
+              "rva": "0x14f516a",
+              "text": "lea r9, [rbp + 0x918]"
+            },
+            {
+              "rva": "0x14f5171",
+              "text": "mov r8, rbp"
+            },
+            {
+              "rva": "0x14f5174",
+              "text": "mov rdx, rsi"
+            },
+            {
+              "rva": "0x14f5177",
+              "text": "mov rcx, rax"
+            },
+            {
+              "rva": "0x14f517a",
+              "text": "call 0x14f0ed0"
+            },
+            {
+              "rva": "0x14f517f",
+              "text": "nop "
+            },
+            {
+              "rva": "0x14f5180",
+              "text": "mov qword ptr [rsp + 0x60], 0"
+            },
+            {
+              "rva": "0x14f5189",
+              "text": "mov qword ptr [rsp + 0x50], rax"
+            },
+            {
+              "rva": "0x14f518e",
+              "text": "lea rcx, [rsp + 0x50]"
+            },
+            {
+              "rva": "0x14f5193",
+              "text": "call 0xc45e70"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "model": "RiteCreationWindow",
+      "callback": "SelectDoctrine",
+      "callback_registration_rva": "0x229ad3",
+      "shared_registration_rva": "0x1502c60",
+      "thunk_rva": "0x14fadf0",
+      "method_rva": "0x14f46f0",
+      "evidence": [
+        {
+          "rva": "0x229a49",
+          "file_offset": "0x228e49",
+          "size_bytes": 33,
+          "hex": "f2 0f 10 05 87 c5 33 04 f2 0f 11 45 ef 8b 05 84 c5 33 04 89 45 f7 0f b7 05 7e c5 33 04 66 89 45 fb",
+          "purpose": "Copy callback name from RVA0x4565fd8/file0x4564dd8.",
+          "instructions": [
+            {
+              "rva": "0x229a49",
+              "text": "movsd xmm0, qword ptr [rip + 0x433c587]"
+            },
+            {
+              "rva": "0x229a51",
+              "text": "movsd qword ptr [rbp - 0x11], xmm0"
+            },
+            {
+              "rva": "0x229a56",
+              "text": "mov eax, dword ptr [rip + 0x433c584]"
+            },
+            {
+              "rva": "0x229a5c",
+              "text": "mov dword ptr [rbp - 9], eax"
+            },
+            {
+              "rva": "0x229a5f",
+              "text": "movzx eax, word ptr [rip + 0x433c57e]"
+            },
+            {
+              "rva": "0x229a66",
+              "text": "mov word ptr [rbp - 5], ax"
+            }
+          ]
+        },
+        {
+          "rva": "0x229ad3",
+          "file_offset": "0x228ed3",
+          "size_bytes": 18,
+          "hex": "4c 8d 05 16 13 2d 01 33 d2 48 8d 4d ef e8 7b 91 2d 01",
+          "purpose": "Register callback thunk.",
+          "instructions": [
+            {
+              "rva": "0x229ad3",
+              "text": "lea r8, [rip + 0x12d1316]"
+            },
+            {
+              "rva": "0x229ada",
+              "text": "xor edx, edx"
+            },
+            {
+              "rva": "0x229adc",
+              "text": "lea rcx, [rbp - 0x11]"
+            },
+            {
+              "rva": "0x229ae0",
+              "text": "call 0x1502c60"
+            }
+          ]
+        },
+        {
+          "rva": "0x14fae56",
+          "file_offset": "0x14fa256",
+          "size_bytes": 11,
+          "hex": "48 8b 10 48 8b cf e8 8f 98 ff ff",
+          "purpose": "Type-resolved callback invokes actual selection method.",
+          "instructions": [
+            {
+              "rva": "0x14fae56",
+              "text": "mov rdx, qword ptr [rax]"
+            },
+            {
+              "rva": "0x14fae59",
+              "text": "mov rcx, rdi"
+            },
+            {
+              "rva": "0x14fae5c",
+              "text": "call 0x14f46f0"
+            }
+          ]
+        },
+        {
+          "rva": "0x14f46f6",
+          "file_offset": "0x14f3af6",
+          "size_bytes": 27,
+          "hex": "48 63 42 20 48 8b f1 85 c0 0f 88 75 01 00 00 3b 81 9c 07 00 00 0f 8d 69 01 00 00",
+          "purpose": "Check draft row index bounds.",
+          "instructions": [
+            {
+              "rva": "0x14f46f6",
+              "text": "movsxd rax, dword ptr [rdx + 0x20]"
+            },
+            {
+              "rva": "0x14f46fa",
+              "text": "mov rsi, rcx"
+            },
+            {
+              "rva": "0x14f46fd",
+              "text": "test eax, eax"
+            },
+            {
+              "rva": "0x14f46ff",
+              "text": "js 0x14f487a"
+            },
+            {
+              "rva": "0x14f4705",
+              "text": "cmp eax, dword ptr [rcx + 0x79c]"
+            },
+            {
+              "rva": "0x14f470b",
+              "text": "jge 0x14f487a"
+            }
+          ]
+        },
+        {
+          "rva": "0x14f472a",
+          "file_offset": "0x14f3b2a",
+          "size_bytes": 8,
+          "hex": "48 8b 42 28 48 89 41 28",
+          "purpose": "Write doctrine reference into draft row.",
+          "instructions": [
+            {
+              "rva": "0x14f472a",
+              "text": "mov rax, qword ptr [rdx + 0x28]"
+            },
+            {
+              "rva": "0x14f472e",
+              "text": "mov qword ptr [rcx + 0x28], rax"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "model": "RiteCreationWindow",
+      "callback": "EditRite",
+      "callback_registration_rva": "0x229d9c",
+      "shared_registration_rva": "0x1502c60",
+      "thunk_rva": "0x14faed0",
+      "method_rva": "0x14f49c0",
+      "evidence": [
+        {
+          "rva": "0x229d29",
+          "file_offset": "0x229129",
+          "size_bytes": 14,
+          "hex": "48 b8 45 64 69 74 52 69 74 65 48 89 45 ef",
+          "purpose": "Construct exact EditRite callback name as immediate string bytes.",
+          "instructions": [
+            {
+              "rva": "0x229d29",
+              "text": "movabs rax, 0x6574695274696445"
+            },
+            {
+              "rva": "0x229d33",
+              "text": "mov qword ptr [rbp - 0x11], rax"
+            }
+          ]
+        },
+        {
+          "rva": "0x229d9c",
+          "file_offset": "0x22919c",
+          "size_bytes": 18,
+          "hex": "4c 8d 05 2d 11 2d 01 33 d2 48 8d 4d ef e8 b2 8e 2d 01",
+          "purpose": "Register callback thunk.",
+          "instructions": [
+            {
+              "rva": "0x229d9c",
+              "text": "lea r8, [rip + 0x12d112d]"
+            },
+            {
+              "rva": "0x229da3",
+              "text": "xor edx, edx"
+            },
+            {
+              "rva": "0x229da5",
+              "text": "lea rcx, [rbp - 0x11]"
+            },
+            {
+              "rva": "0x229da9",
+              "text": "call 0x1502c60"
+            }
+          ]
+        },
+        {
+          "rva": "0x14faed0",
+          "file_offset": "0x14fa2d0",
+          "size_bytes": 28,
+          "hex": "48 83 ec 28 48 85 c9 74 0c e8 e2 9a ff ff b0 01 48 83 c4 28 c3 32 c0 48 83 c4 28 c3",
+          "purpose": "Invoke actual edit method.",
+          "instructions": [
+            {
+              "rva": "0x14faed0",
+              "text": "sub rsp, 0x28"
+            },
+            {
+              "rva": "0x14faed4",
+              "text": "test rcx, rcx"
+            },
+            {
+              "rva": "0x14faed7",
+              "text": "je 0x14faee5"
+            },
+            {
+              "rva": "0x14faed9",
+              "text": "call 0x14f49c0"
+            },
+            {
+              "rva": "0x14faede",
+              "text": "mov al, 1"
+            },
+            {
+              "rva": "0x14faee0",
+              "text": "add rsp, 0x28"
+            },
+            {
+              "rva": "0x14faee4",
+              "text": "ret "
+            },
+            {
+              "rva": "0x14faee5",
+              "text": "xor al, al"
+            },
+            {
+              "rva": "0x14faee7",
+              "text": "add rsp, 0x28"
+            },
+            {
+              "rva": "0x14faeeb",
+              "text": "ret "
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "negative_exact_nul_string_scan": {
+    "method": "Exact NUL-terminated ASCII name scan of this local EXE. Absence is not proof that alternative APIs/internal functions do not exist.",
+    "counts": {
+      "create_dynamic_religion": 0,
+      "create_dynamic_faith": 0,
+      "create_religion": 0,
+      "set_religion": 0,
+      "parent_rites": 0,
+      "parent_rite": 0,
+      "GetParentRites": 0,
+      "GetParentRite": 0
+    }
+  },
+  "findings_and_limits": [
+    "Culture hybridization has its own native C++ model and command path; GUI label replacement does not create a religion or rite fusion command.",
+    "Rite creation/editing and doctrine draft selection have verified native methods. Their callback return booleans indicate dispatch only, not creation/payment/save persistence.",
+    "Explicit doctrine and core-tenet override inputs exist in create_dynamic_rite; required exact resulting core-tenet set, compatibility rules and knowledge handling remain conditional on a later authorized prototype.",
+    "detach_rite_to_new_faith and set_parent_faith are real registered effects. This does not prove arbitrary cross-religion merging or dynamic creation of a new Religion object.",
+    "No public two-parent Rite/Faith contract demonstrated. Custom script provenance is a design possibility, not an implementation or runtime qualification.",
+    "Native help, typed registrations and shortest instruction chains are recorded separately from runtime semantics. No game process started/injected, no binary method invoked, no Steam state changed, no binary modified, no complete export/disassembly produced."
+  ],
+  "bounded_core_override_followup": {
+    "observed_at_utc": "2026-10-24T14:37:28.023485+00:00",
+    "machine_id": "4-8e1c2f1861",
+    "source_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "mode": "bounded static followup; no runtime execution",
+    "question": "Are explicit core overrides applied sequentially, or assembled together into a target set?",
+    "execution_vtable_slot": {
+      "vtable_rva": "0x48219d0",
+      "slot_offset": "0xb0",
+      "slot_rva": "0x4821a80",
+      "slot_file_offset": "0x4820880",
+      "raw_pointer_hex": "10 18 c9 42 01 00 00 00",
+      "target_rva": "0x2c91810"
+    },
+    "closed_path": [
+      "effect vtable+0xb0 -> 0x2c91810",
+      "0x2c91810 -> scope resolver 0x2c91c80",
+      "0x2c91810 -> create manager 0x29c8770",
+      "0x29c8770 -> composer 0x2be0200",
+      "manager copies composed tenet records to new Rite vector +0x788"
+    ],
+    "static_algorithm": [
+      "Resolve valid requested tenet scopes into one array before creation, enforcing native cap.",
+      "Composer first deduplicates requested core pointers into a common selected set; no sequential per-override replacement.",
+      "Only while selected count is below core cap are original cores added from a ranked list. Ranking internals not traced.",
+      "Original tenets in selected set receive status 4 and are consumed from pending targets. Original status 4 outside selected set is preserved with status 3; other unselected statuses remain unchanged.",
+      "Remaining new targets are appended with status 4.",
+      "Manager copies composed 16-byte tenet-state records into new Rite vector +0x788."
+    ],
+    "answer": "At composer and manager-write level: native cap 3 plus three valid distinct resolved target scopes yields exactly those three cores; later explicit overrides do not overwrite earlier selections. Conditional static result, not live acceptance.",
+    "preconditions_and_limits": [
+      "Native configured cap must be 3. This followup does not read a running process or assert initialized global value.",
+      "Supply three distinct valid scopes. Duplicates are deduplicated; invalid entries can leave fewer targets and permit old-core fill.",
+      "target_divergence=0 bypasses subsequent random supplementation; nonzero divergence can extend overrides.",
+      "Old nonselected cores are demoted numerically 4 -> 3, not deleted. Enum terminology follows original definitions.",
+      "Later hooks, knowledge rules, all combinations, save/load and live results remain unqualified."
+    ],
+    "evidence": [
+      {
+        "rva": "0x2c918bb",
+        "file_offset": "0x2c90cbb",
+        "hex": "48 8d 45 f7 48 89 44 24 20 4c 8d 4d 0f 4c 8b c7 49 8b d6 48 8b ce e8 aa 03 00 00 4c 8d 4d f7 4c 8d 45 0f 48 8b d7 48 8d 8b 78 d9 00 00 e8 83 6e d3 ff",
+        "purpose": "Execution resolves arrays, then passes them to create manager.",
+        "instructions": [
+          {
+            "rva": "0x2c918bb",
+            "text": "lea rax, [rbp - 9]"
+          },
+          {
+            "rva": "0x2c918bf",
+            "text": "mov qword ptr [rsp + 0x20], rax"
+          },
+          {
+            "rva": "0x2c918c4",
+            "text": "lea r9, [rbp + 0xf]"
+          },
+          {
+            "rva": "0x2c918c8",
+            "text": "mov r8, rdi"
+          },
+          {
+            "rva": "0x2c918cb",
+            "text": "mov rdx, r14"
+          },
+          {
+            "rva": "0x2c918ce",
+            "text": "mov rcx, rsi"
+          },
+          {
+            "rva": "0x2c918d1",
+            "text": "call 0x2c91c80"
+          },
+          {
+            "rva": "0x2c918d6",
+            "text": "lea r9, [rbp - 9]"
+          },
+          {
+            "rva": "0x2c918da",
+            "text": "lea r8, [rbp + 0xf]"
+          },
+          {
+            "rva": "0x2c918de",
+            "text": "mov rdx, rdi"
+          },
+          {
+            "rva": "0x2c918e1",
+            "text": "lea rcx, [rbx + 0xd978]"
+          },
+          {
+            "rva": "0x2c918e8",
+            "text": "call 0x29c8770"
+          }
+        ]
+      },
+      {
+        "rva": "0x2c91e37",
+        "file_offset": "0x2c91237",
+        "hex": "48 8d 54 24 58 48 89 44 24 58 49 8b cc e8 f7 e4 be fd 41 ff cf",
+        "purpose": "Resolved valid tenet scope is appended before native creation.",
+        "instructions": [
+          {
+            "rva": "0x2c91e37",
+            "text": "lea rdx, [rsp + 0x58]"
+          },
+          {
+            "rva": "0x2c91e3c",
+            "text": "mov qword ptr [rsp + 0x58], rax"
+          },
+          {
+            "rva": "0x2c91e41",
+            "text": "mov rcx, r12"
+          },
+          {
+            "rva": "0x2c91e44",
+            "text": "call 0x880340"
+          },
+          {
+            "rva": "0x2c91e49",
+            "text": "dec r15d"
+          }
+        ]
+      },
+      {
+        "rva": "0x29c8a33",
+        "file_offset": "0x29c7e33",
+        "hex": "49 8d 95 a0 07 00 00 49 8d 8d 88 07 00 00 48 8d 44 24 40 48 89 44 24 30 48 8d 44 24 60 48 89 44 24 28 4c 89 7c 24 20 4d 8b ce 4c 8b 85 d0 00 00 00 e8 97 77 21 00",
+        "purpose": "Pass original state, all target core/doctrine arrays and output arrays to composer.",
+        "instructions": [
+          {
+            "rva": "0x29c8a33",
+            "text": "lea rdx, [r13 + 0x7a0]"
+          },
+          {
+            "rva": "0x29c8a3a",
+            "text": "lea rcx, [r13 + 0x788]"
+          },
+          {
+            "rva": "0x29c8a41",
+            "text": "lea rax, [rsp + 0x40]"
+          },
+          {
+            "rva": "0x29c8a46",
+            "text": "mov qword ptr [rsp + 0x30], rax"
+          },
+          {
+            "rva": "0x29c8a4b",
+            "text": "lea rax, [rsp + 0x60]"
+          },
+          {
+            "rva": "0x29c8a50",
+            "text": "mov qword ptr [rsp + 0x28], rax"
+          },
+          {
+            "rva": "0x29c8a55",
+            "text": "mov qword ptr [rsp + 0x20], r15"
+          },
+          {
+            "rva": "0x29c8a5a",
+            "text": "mov r9, r14"
+          },
+          {
+            "rva": "0x29c8a5d",
+            "text": "mov r8, qword ptr [rbp + 0xd0]"
+          },
+          {
+            "rva": "0x29c8a64",
+            "text": "call 0x2be0200"
+          }
+        ]
+      },
+      {
+        "rva": "0x2be034e",
+        "file_offset": "0x2bdf74e",
+        "hex": "4d 8b 3e 49 63 46 0c 4d 8d 24 c7 f3 0f 10 35 8f 61 e1 01 4d 3b fc 0f 84 a8 01 00 00",
+        "purpose": "Iterate complete requested core-pointer array before original-core fill.",
+        "instructions": [
+          {
+            "rva": "0x2be034e",
+            "text": "mov r15, qword ptr [r14]"
+          },
+          {
+            "rva": "0x2be0351",
+            "text": "movsxd rax, dword ptr [r14 + 0xc]"
+          },
+          {
+            "rva": "0x2be0355",
+            "text": "lea r12, [r15 + rax*8]"
+          },
+          {
+            "rva": "0x2be0359",
+            "text": "movss xmm6, dword ptr [rip + 0x1e1618f]"
+          },
+          {
+            "rva": "0x2be0361",
+            "text": "cmp r15, r12"
+          },
+          {
+            "rva": "0x2be0364",
+            "text": "je 0x2be0512"
+          }
+        ]
+      },
+      {
+        "rva": "0x2be0430",
+        "file_offset": "0x2bdf830",
+        "hex": "4c 39 33 74 09 48 83 c3 08 48 3b de 75 f2",
+        "purpose": "Scalar branch tests requested pointer membership in selected target set.",
+        "instructions": [
+          {
+            "rva": "0x2be0430",
+            "text": "cmp qword ptr [rbx], r14"
+          },
+          {
+            "rva": "0x2be0433",
+            "text": "je 0x2be043e"
+          },
+          {
+            "rva": "0x2be0435",
+            "text": "add rbx, 8"
+          },
+          {
+            "rva": "0x2be0439",
+            "text": "cmp rbx, rsi"
+          },
+          {
+            "rva": "0x2be043c",
+            "text": "jne 0x2be0430"
+          }
+        ]
+      },
+      {
+        "rva": "0x2be043e",
+        "file_offset": "0x2bdf83e",
+        "hex": "48 63 cf 48 8b 44 24 40 48 8d 14 c8 48 3b da b8 00 00 00 00 48 0f 44 d8 48 85 db 0f 85 9f 00 00 00",
+        "purpose": "Existing selected target skips duplicate append.",
+        "instructions": [
+          {
+            "rva": "0x2be043e",
+            "text": "movsxd rcx, edi"
+          },
+          {
+            "rva": "0x2be0441",
+            "text": "mov rax, qword ptr [rsp + 0x40]"
+          },
+          {
+            "rva": "0x2be0446",
+            "text": "lea rdx, [rax + rcx*8]"
+          },
+          {
+            "rva": "0x2be044a",
+            "text": "cmp rbx, rdx"
+          },
+          {
+            "rva": "0x2be044d",
+            "text": "mov eax, 0"
+          },
+          {
+            "rva": "0x2be0452",
+            "text": "cmove rbx, rax"
+          },
+          {
+            "rva": "0x2be0456",
+            "text": "test rbx, rbx"
+          },
+          {
+            "rva": "0x2be0459",
+            "text": "jne 0x2be04fe"
+          }
+        ]
+      },
+      {
+        "rva": "0x2be04f1",
+        "file_offset": "0x2bdf8f1",
+        "hex": "4c 89 32 8b 7c 24 4c ff c7 89 7c 24 4c 49 83 c7 08 4d 3b fc 48 8b 8d 10 01 00 00 0f 85 6f fe ff ff",
+        "purpose": "New requested target appended once; iterate next request.",
+        "instructions": [
+          {
+            "rva": "0x2be04f1",
+            "text": "mov qword ptr [rdx], r14"
+          },
+          {
+            "rva": "0x2be04f4",
+            "text": "mov edi, dword ptr [rsp + 0x4c]"
+          },
+          {
+            "rva": "0x2be04f8",
+            "text": "inc edi"
+          },
+          {
+            "rva": "0x2be04fa",
+            "text": "mov dword ptr [rsp + 0x4c], edi"
+          },
+          {
+            "rva": "0x2be04fe",
+            "text": "add r15, 8"
+          },
+          {
+            "rva": "0x2be0502",
+            "text": "cmp r15, r12"
+          },
+          {
+            "rva": "0x2be0505",
+            "text": "mov rcx, qword ptr [rbp + 0x110]"
+          },
+          {
+            "rva": "0x2be050c",
+            "text": "jne 0x2be0381"
+          }
+        ]
+      },
+      {
+        "rva": "0x2be058e",
+        "file_offset": "0x2bdf98e",
+        "hex": "8b 7c 24 4c 3b 3d c8 86 08 03 0f 8d bf 01 00 00 4c 63 6d d4 4c 8b 65 c8 4d 3b fd 0f 8d ab 01 00 00",
+        "purpose": "Skip original-core fill when selected count reaches native cap.",
+        "instructions": [
+          {
+            "rva": "0x2be058e",
+            "text": "mov edi, dword ptr [rsp + 0x4c]"
+          },
+          {
+            "rva": "0x2be0592",
+            "text": "cmp edi, dword ptr [rip + 0x30886c8]"
+          },
+          {
+            "rva": "0x2be0598",
+            "text": "jge 0x2be075d"
+          },
+          {
+            "rva": "0x2be059e",
+            "text": "movsxd r13, dword ptr [rbp - 0x2c]"
+          },
+          {
+            "rva": "0x2be05a2",
+            "text": "mov r12, qword ptr [rbp - 0x38]"
+          },
+          {
+            "rva": "0x2be05a6",
+            "text": "cmp r15, r13"
+          },
+          {
+            "rva": "0x2be05a9",
+            "text": "jge 0x2be075a"
+          }
+        ]
+      },
+      {
+        "rva": "0x25907c0",
+        "file_offset": "0x258fbc0",
+        "hex": "80 79 08 04 0f 94 c0 c3",
+        "purpose": "Core predicate checks tenet-state byte 4.",
+        "instructions": [
+          {
+            "rva": "0x25907c0",
+            "text": "cmp byte ptr [rcx + 8], 4"
+          },
+          {
+            "rva": "0x25907c4",
+            "text": "sete al"
+          },
+          {
+            "rva": "0x25907c7",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "rva": "0x2be08ca",
+        "file_offset": "0x2bdfcca",
+        "hex": "48 8b 06 48 89 45 e0 c6 45 e8 04 48 8d 55 e0 49 8b cc e8 4f f9 c9 fd eb 27 49 8b cc 80 7e 08 04 75 16 48 8b 06 48 89 45 b8 c6 45 c0 03 48 8d 55 b8 e8 30 f9 c9 fd eb 08 48 8b d6 e8 26 f9 c9 fd",
+        "purpose": "Existing selected tenets become status 4; unselected old status 4 becomes status 3.",
+        "instructions": [
+          {
+            "rva": "0x2be08ca",
+            "text": "mov rax, qword ptr [rsi]"
+          },
+          {
+            "rva": "0x2be08cd",
+            "text": "mov qword ptr [rbp - 0x20], rax"
+          },
+          {
+            "rva": "0x2be08d1",
+            "text": "mov byte ptr [rbp - 0x18], 4"
+          },
+          {
+            "rva": "0x2be08d5",
+            "text": "lea rdx, [rbp - 0x20]"
+          },
+          {
+            "rva": "0x2be08d9",
+            "text": "mov rcx, r12"
+          },
+          {
+            "rva": "0x2be08dc",
+            "text": "call 0x880230"
+          },
+          {
+            "rva": "0x2be08e1",
+            "text": "jmp 0x2be090a"
+          },
+          {
+            "rva": "0x2be08e3",
+            "text": "mov rcx, r12"
+          },
+          {
+            "rva": "0x2be08e6",
+            "text": "cmp byte ptr [rsi + 8], 4"
+          },
+          {
+            "rva": "0x2be08ea",
+            "text": "jne 0x2be0902"
+          },
+          {
+            "rva": "0x2be08ec",
+            "text": "mov rax, qword ptr [rsi]"
+          },
+          {
+            "rva": "0x2be08ef",
+            "text": "mov qword ptr [rbp - 0x48], rax"
+          },
+          {
+            "rva": "0x2be08f3",
+            "text": "mov byte ptr [rbp - 0x40], 3"
+          },
+          {
+            "rva": "0x2be08f7",
+            "text": "lea rdx, [rbp - 0x48]"
+          },
+          {
+            "rva": "0x2be08fb",
+            "text": "call 0x880230"
+          },
+          {
+            "rva": "0x2be0900",
+            "text": "jmp 0x2be090a"
+          },
+          {
+            "rva": "0x2be0902",
+            "text": "mov rdx, rsi"
+          },
+          {
+            "rva": "0x2be0905",
+            "text": "call 0x880230"
+          }
+        ]
+      },
+      {
+        "rva": "0x2be0940",
+        "file_offset": "0x2bdfd40",
+        "hex": "48 8b 03 48 89 45 b8 c6 45 c0 04 48 8d 55 b8 49 8b cc e8 d9 f8 c9 fd 48 83 c3 08 48 3b df 75 e0",
+        "purpose": "Append remaining newly selected targets with status 4.",
+        "instructions": [
+          {
+            "rva": "0x2be0940",
+            "text": "mov rax, qword ptr [rbx]"
+          },
+          {
+            "rva": "0x2be0943",
+            "text": "mov qword ptr [rbp - 0x48], rax"
+          },
+          {
+            "rva": "0x2be0947",
+            "text": "mov byte ptr [rbp - 0x40], 4"
+          },
+          {
+            "rva": "0x2be094b",
+            "text": "lea rdx, [rbp - 0x48]"
+          },
+          {
+            "rva": "0x2be094f",
+            "text": "mov rcx, r12"
+          },
+          {
+            "rva": "0x2be0952",
+            "text": "call 0x880230"
+          },
+          {
+            "rva": "0x2be0957",
+            "text": "add rbx, 8"
+          },
+          {
+            "rva": "0x2be095b",
+            "text": "cmp rbx, rdi"
+          },
+          {
+            "rva": "0x2be095e",
+            "text": "jne 0x2be0940"
+          }
+        ]
+      },
+      {
+        "rva": "0x29c8a69",
+        "file_offset": "0x29c7e69",
+        "hex": "4c 8d b6 88 07 00 00 48 8d 44 24 60 4c 3b f0 0f 84 bd 00 00 00 8b 7c 24 6c 4c 8b 7c 24 60 41 c7 46 0c 00 00 00 00",
+        "purpose": "Prepare new Rite tenet-state vector at +0x788 from composed output.",
+        "instructions": [
+          {
+            "rva": "0x29c8a69",
+            "text": "lea r14, [rsi + 0x788]"
+          },
+          {
+            "rva": "0x29c8a70",
+            "text": "lea rax, [rsp + 0x60]"
+          },
+          {
+            "rva": "0x29c8a75",
+            "text": "cmp r14, rax"
+          },
+          {
+            "rva": "0x29c8a78",
+            "text": "je 0x29c8b3b"
+          },
+          {
+            "rva": "0x29c8a7e",
+            "text": "mov edi, dword ptr [rsp + 0x6c]"
+          },
+          {
+            "rva": "0x29c8a82",
+            "text": "mov r15, qword ptr [rsp + 0x60]"
+          },
+          {
+            "rva": "0x29c8a87",
+            "text": "mov dword ptr [r14 + 0xc], 0"
+          }
+        ]
+      },
+      {
+        "rva": "0x29c8b18",
+        "file_offset": "0x29c7f18",
+        "hex": "4c 2b f8 0f 1f 44 00 00 42 0f 10 04 38 0f 11 00 48 8d 40 10 ff cf 85 ff 7f ee",
+        "purpose": "Copy composed 16-byte state records into new Rite vector.",
+        "instructions": [
+          {
+            "rva": "0x29c8b18",
+            "text": "sub r15, rax"
+          },
+          {
+            "rva": "0x29c8b1b",
+            "text": "nop dword ptr [rax + rax]"
+          },
+          {
+            "rva": "0x29c8b20",
+            "text": "movups xmm0, xmmword ptr [rax + r15]"
+          },
+          {
+            "rva": "0x29c8b25",
+            "text": "movups xmmword ptr [rax], xmm0"
+          },
+          {
+            "rva": "0x29c8b28",
+            "text": "lea rax, [rax + 0x10]"
+          },
+          {
+            "rva": "0x29c8b2c",
+            "text": "dec edi"
+          },
+          {
+            "rva": "0x29c8b2e",
+            "text": "test edi, edi"
+          },
+          {
+            "rva": "0x29c8b30",
+            "text": "jg 0x29c8b20"
+          }
+        ]
+      },
+      {
+        "rva": "0x2c920df",
+        "file_offset": "0x2c914df",
+        "hex": "49 8d b6 90 00 00 00 48 8b 0e 48 85 c9 0f 8e 54 01 00 00 48 8b 44 24 50 48 3b c1 0f 8d 46 01 00 00",
+        "purpose": "target_divergence <= 0 skips random supplementation branch.",
+        "instructions": [
+          {
+            "rva": "0x2c920df",
+            "text": "lea rsi, [r14 + 0x90]"
+          },
+          {
+            "rva": "0x2c920e6",
+            "text": "mov rcx, qword ptr [rsi]"
+          },
+          {
+            "rva": "0x2c920e9",
+            "text": "test rcx, rcx"
+          },
+          {
+            "rva": "0x2c920ec",
+            "text": "jle 0x2c92246"
+          },
+          {
+            "rva": "0x2c920f2",
+            "text": "mov rax, qword ptr [rsp + 0x50]"
+          },
+          {
+            "rva": "0x2c920f7",
+            "text": "cmp rax, rcx"
+          },
+          {
+            "rva": "0x2c920fa",
+            "text": "jge 0x2c92246"
+          }
+        ]
+      }
+    ]
+  }
+}
