@@ -3080,7 +3080,7 @@ def _allocate_and_keep_impl(selection,args):
         elif allocated_unrun:
             from ck3_mod_acceptance_unrun import validate_allocated_unrun
             session_closure=validate_allocated_unrun(previous,freeze,failure_path,
-                            args.previous_keeper,release,bus_packet)
+                            args.previous_keeper,release,bus_packet,next_state=selection.state_dir)
         elif allocated_unused:
             session_closure=previous_allocated_unused_closure(previous,freeze,failure_path,
                             args.previous_keeper,release,bus_packet)

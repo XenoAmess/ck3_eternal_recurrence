@@ -6,7 +6,12 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
-from ck3_mod_acceptance_background_types import FilePin, JsonObject, JsonValue
+import argparse
+import importlib
+from contextlib import ExitStack
+from types import SimpleNamespace
+from unittest.mock import patch
+from ck3_mod_acceptance_background_types import FilePin, JsonObject, JsonValue, json_object
 from ck3_mod_acceptance_unrun import _release_stages
 import ck3_mod_acceptance_unrun as subject
 
@@ -207,6 +212,135 @@ class ExternalExecCompletionTests(unittest.TestCase):
         changed_reference = self.write_json('wrong-operation.json', changed)
         with self.assertRaisesRegex(ValueError, 'allocator command differs'):
             subject._allocator_argv({'allocator_external_exec': changed_reference, 'allocator_stdout': self.stdout}, self.machine, self.stamps)
+
+
+class AbortedAllocationTests(unittest.TestCase):
+    """Run the real bundle producer and consumer; only OS observers are fixtures."""
+
+    def setUp(self) -> None:
+        temporary = tempfile.TemporaryDirectory(prefix='unrun-aborted-')
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        self.machine = 'fixture-machine'
+        self.run_id = self.machine+'--living-artifacts--R0001'
+        self.live = self.root/self.run_id
+        self.keeper = self.root/'keeper'
+        self.state = self.root/'old-state'
+        self.source = self.root/'source'
+        self.ids = self.root/'ids'
+        self.live.mkdir();self.keeper.mkdir();(self.live/'controls').mkdir()
+        self.serial = 0
+        self.prepared = self.write('prepared.json',{'fixture':'prepared'})
+        self.products = self.write('products.json',{'products':{'living-artifacts':{'external_mod':False}}})
+        self.bus = self.root/'bus'
+        (self.bus/'bin').mkdir(parents=True)
+        cli = self.bus/'bin/codex_task_bus.py';cli.write_bytes(b'fixture cli')
+        cli_pin: JsonObject={'path':str(cli.resolve()),'bytes':11,'sha256':hashlib.sha256(cli.read_bytes()).hexdigest()}
+        self.freeze: JsonObject={'run_id':self.run_id,'screen_task':'fixture-task','state_dir':str(self.state),
+            'source_root':str(self.source),'mod_key':'living-artifacts','lease_anchor':str(self.root),
+            'identity_allocation':{'machine_id':self.machine,'state_root':str(self.ids)},
+            'files':{str(Path(self.products['path']).resolve()):json_object(self.products),str(cli.resolve()):cli_pin}}
+        frozen = self.write_live('frozen-argv.json',self.freeze)
+        ready: JsonObject={'run_id':self.run_id,'run_dir':str(self.live),'keeper_root':str(self.keeper),
+            'frozen_argv':json_object(frozen),'prepared_case':json_object(self.prepared),'product':'living-artifacts'}
+        self.write_live('ready-context.json',ready);self.write_live('allocated-context.json',ready)
+        self.write_path(self.keeper/'inputs.json',{'task_id':'fixture-task'})
+        self.write_path(self.keeper/'ready.json',{'at_utc':'2026-10-23T00:01:00Z',
+            'lease':{'task_id':'fixture-task','sequence':10}})
+        self.write_live('keeper-process.json',{'pid':2147483001})
+        argv=['python','tools/ck3_mod_acceptance.py','allocate','--prepared-case',self.prepared['path'],
+              '--keeper-output',str(self.keeper),'--products',self.products['path'],'--product','living-artifacts']
+        self.intent=self.write('intent.json',{'machine_id':self.machine,'at_utc':'2026-10-23T00:00:00Z',
+            'stage':'allocate','argv':argv})
+        self.process=self.write('process.json',{'machine_id':self.machine,'pid':2147483000,'argv':argv})
+        self.wrapper=self.write('wrapper.json',{'schema':'operational-wrapper-external-exec-failure-v1',
+            'machine_id':self.machine,'observed_at_utc':'2026-10-23T00:02:00Z',
+            'allocator_started_pid':2147483000,'keeper_started_pid':2147483001,
+            'allocator_original_popen_wait_observed':False,'allocator_exit_code':None,
+            'run_invoked':False,'game_started':False,'tool_result':{'chunk_id':'fixture','exit_code':1,'session_id':None}})
+        self.stdout=self.write('allocator.stdout.json',{'status':'ACTUAL_ALLOCATED_KEEPER_READY_NOT_RUN',
+            'task':'fixture-task','keeper_pid':2147483001,'live':str(self.live),
+            'context':str(self.live/'ready-context.json')})
+        self.write_path(self.ids/self.machine/'living-artifacts/counter.json',{'machine_id':self.machine,'mod_key':'living-artifacts','last_sequence':1})
+        task: JsonObject={'task_id':'fixture-task','state':'waiting','resources':[],'last_sequence':11,'repo':'fixture-repo','git':{}}
+        self.cas=self.write('cas.json',{'schema':'codex.task_bus.v1','ok':True,'task':task,
+            'event':{'task_id':'fixture-task','state':'waiting','resources':[],'sequence':11,
+                'retirement':{'kind':'expired-own-claim-released','business_status':'unresolved_red','prior_sequence':10}}})
+        done_task={**task,'state':'done','last_sequence':12}
+        self.done: JsonObject={'schema':'codex.task_bus.v1','ok':True,'task':done_task,
+            'event':{'task_id':'fixture-task','state':'done','resources':[],'sequence':12,'kind':'completed'}}
+        self.done_pin=self.write('done.json',self.done)
+        self.packet: JsonObject={'tasks':[{**done_task,'age_seconds':0,'stale':False}]}
+        self.game: JsonObject={'tasklist_returncode':0,'tasklist_pids':[],'wmi_pids':[],'processes':[]}
+        self.runtime: JsonObject={'blockers':[]}
+        import ck3_mod_acceptance_allocate as allocator
+        import ck3_live_run_id as ids
+        stack=ExitStack();self.addCleanup(stack.close)
+        stack.enter_context(patch.object(ids,'current_machine_id',return_value=self.machine))
+        stack.enter_context(patch.object(ids,'default_state_root',return_value=self.ids))
+        stack.enter_context(patch.object(allocator,'runtime_process_inventory',side_effect=lambda *_:self.runtime))
+        stack.enter_context(patch.object(allocator,'current_screen_absent',side_effect=lambda *_:self.packet))
+        provider=SimpleNamespace(__file__=str(self.source/'ck3_autonomous_player/src/xar_autoplayer/environment.py'),
+            ck3_process_inventory=lambda:self.game)
+        original_import=importlib.import_module
+        stack.enter_context(patch.object(importlib,'import_module',side_effect=lambda name, package=None:
+            provider if name=='xar_autoplayer.environment' else original_import(name,package)))
+
+    def write_path(self, path: Path, value: object) -> FilePin:
+        path.parent.mkdir(parents=True,exist_ok=True)
+        raw=json.dumps(value).encode('utf-8');path.write_bytes(raw)
+        return {'path':str(path.resolve()),'bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()}
+
+    def write(self, name: str, value: object) -> FilePin:
+        return self.write_path(self.root/name,value)
+
+    def write_live(self, name: str, value: object) -> FilePin:
+        return self.write_path(self.live/name,value)
+
+    def produce(self) -> subject.UnrunBundleReport:
+        self.serial+=1
+        return subject.build_aborted_bundle_v1(argparse.Namespace(previous_live=self.live,keeper_root=self.keeper,
+            allocator_intent=Path(self.intent['path']),allocator_process=Path(self.process['path']),
+            allocator_exit=None,allocator_result=None,allocator_external_exec=None,
+            aborted_wrapper=Path(self.wrapper['path']),aborted_release=Path(self.cas['path']),
+            admin_release=Path(self.done_pin['path']),allocator_stdout=Path(self.stdout['path']),
+            next_state=self.root/'new-state',output=self.root/f'output-{self.serial}',task_bus_root=self.bus))
+
+    def test_actual_producer_dispatch_consumer_and_json_round_trip_keep_waits_unknown(self) -> None:
+        report=self.produce();verdict=report['validation'];cleanup=member(verdict,'failure_cleanup')
+        self.assertFalse(cleanup['original_allocator_wait_proven']);self.assertIsNone(cleanup['original_allocator_exit_code'])
+        self.assertFalse(cleanup['original_keeper_wait_proven']);self.assertIsNone(cleanup['original_keeper_exit_code'])
+        self.assertFalse(cleanup['business_pass']);self.assertFalse(cleanup['normal_close_qualified'])
+        actual=subject.validate_aborted_allocation_v1(self.live,json.loads(json.dumps(self.freeze)),
+            Path(report['bundle']['path']),self.keeper,self.done,json.loads(json.dumps(self.packet)),next_state=self.root/'new-state')
+        self.assertEqual(actual['mode'],'previous-shared-allocated-aborted-wrapper-resource-only')
+
+    def test_any_actual_launch_or_terminal_evidence_refuses_missing_wait_branch(self) -> None:
+        for name in ('launch-intent.json','host-started.json','native-report.json','keeper-actual-parent-exit.json'):
+            path=self.live/name;path.write_text('{}',encoding='utf-8')
+            with self.subTest(name=name),self.assertRaisesRegex(ValueError,'launch/native/control'):self.produce()
+            path.unlink()
+
+    def test_crossed_wait_claim_bool_pid_active_tree_and_dual_provider_reject(self) -> None:
+        for key,value in (('allocator_original_popen_wait_observed',True),('allocator_exit_code',0),
+                          ('allocator_started_pid',True),('run_invoked',True)):
+            raw=json.loads(Path(self.wrapper['path']).read_text(encoding='utf-8'));raw[key]=value
+            original=self.wrapper;self.wrapper=self.write(f'changed-{key}.json',raw)
+            with self.subTest(key=key),self.assertRaises(ValueError):self.produce()
+            self.wrapper=original
+        self.game['wmi_pids']=[3]
+        with self.assertRaisesRegex(ValueError,'dual-provider'):self.produce()
+        self.game['wmi_pids']=[];self.runtime['blockers']=[{'pid':3}]
+        with self.assertRaisesRegex(ValueError,'dual-provider'):self.produce()
+
+    def test_pin_drift_crossed_resource_sequence_and_reused_state_are_rejected(self) -> None:
+        report=self.produce();path=Path(report['bundle']['path']);bundle=json.loads(path.read_text(encoding='utf-8'))
+        bundle['allocator_exit_code']=0;self.write_path(path,bundle)
+        with self.assertRaises(ValueError):subject.validate_aborted_allocation_v1(self.live,self.freeze,path,self.keeper,self.done,self.packet,next_state=self.root/'new-state')
+        report=self.produce();path=Path(report['bundle']['path'])
+        with self.assertRaisesRegex(ValueError,'quarantined'):subject.validate_aborted_allocation_v1(self.live,self.freeze,path,self.keeper,self.done,self.packet,next_state=self.state)
+        Path(self.stdout['path']).write_text('{}',encoding='utf-8')
+        with self.assertRaises(ValueError):subject.validate_aborted_allocation_v1(self.live,self.freeze,path,self.keeper,self.done,self.packet,next_state=self.root/'new-state')
 
 
 if __name__=='__main__':unittest.main()
