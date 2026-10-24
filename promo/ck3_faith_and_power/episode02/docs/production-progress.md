@@ -262,3 +262,9 @@ R23已合法降级并实际保存新共同母档。R24从该档两次读取建�
 R18、R21与R22研究已合入注册的`ck3_query_holy_site_planning_knowledge_v1`查询入口及[智能体参考](../../../../docs/ck3-native-ai/faith-and-power-episode02-agent-reference-12004.md)。三个新增MCP消费者实际通过，修改模块及三个消费者strict检查通过。原件采用精确字节保留；首次换行差异失败与修正后回执均保留。资料已可被智能体检索引用；历史分析不代表当前游戏许可，也不冒称普通自动规划器已自动消费这些策略。
 
 四个真实闭场的B35—B38 shader副本已按精确清单回收15,048文件，持久D与严格缺失后验均15,048、UNKNOWN为0；核验分配量627,540,576 B。母档、永久seed、原片、PNG、声音及后续活跃输入均保留。来源为外置`production-b21-a01/closed-new-four-shader-a01/actual-execution-a01/EXECUTION.actual.json`；后续容量以新扫描计一次，不重复抵扣历史回收。
+
+## 2026-10-24 V8反馈修订交接
+
+`machine_id: 4-8e1c2f1861`，07:12 UTC补录：用户要求双侧虔诚图标对称、删“允许”句、解释两个同名选项与意图显示条件，并逐数展开旅行／朝圣费用。四份来源研究已入库，12段中英候选与7张新PNG保全；C01对称经Root查看，费用数学与18枝顺序已审。A02三焦点及N13/N15、费用逐步页仍是分镜，V8没有配音或成片。
+
+用户随后要求温和收尾交由同事接手，各lane已停止新增制作并封存交接。本轮未启动CK3／Native／录制、未切Steam或桌面；无新TTS／编码／实际删除。请从[本轮完整交接](../../../../docs/handover/2026-10-24-faith-engine-episode02-v8-clarity-vacation-handover.md)和配对机器可读索引接手；旧V7仍是现有审阅片，旧G51准备额度不授接手运行资格。

@@ -1,5 +1,7 @@
 # CK3:信仰引擎 第二期
 
+**最新工作交接：[2026-10-24 V8六项反馈修订](../../../docs/handover/2026-10-24-faith-engine-episode02-v8-clarity-vacation-handover.md)。** `machine_id: 4-8e1c2f1861`：12段中英候选、4份研究、7张新图卡已保存；逐步费用卡等仍待制作，未启动V8配音或渲染。用户要求同事接手后已温和收尾；接手从该交接与配对JSON继续，旧G51不授新任务准入。
+
 **当前审阅版：[V7《朝圣在奖励什么？》——22分49.6秒，1440p](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/final-render-a01/sample/build-a03/native-run/derived/direct/episode02-review.mp4)。** 2026-10-24，`machine_id: 4-8e1c2f1861`：已嵌入原版图标、31处界面与规则组合画面，补拍普通虔诚报价及朝觐者／朝圣者共存，并加入学识、文化勇武及诺斯替主义条件收益。全片自动音画／时间戳／配乐检查与10张最终帧抽查通过，完整人工听看待审。[制作记录、补镜位置与能力边界](docs/production-v7-local-review-2026-10-24.md)；[双语字幕](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/final-render-a01/sample/build-a03/native-run/derived/direct/text/episode02.bilingual.srt)。下列V6及旧交接保留各自历史状态。
 
 [2026-10-23最终休假交接](../../../docs/handover/2026-10-23-faith-engine-episode02-v7-vacation-handover.md)：已完成45张嵌原版素材的替换卡＋3张机制卡、7条新声音及V7作者候选，仍有7条新cue缺实机视觉，尚无V7编码。`machine_id: 4-8e1c2f1861`，R0036自然推进224天到受戒窗口，未选择、未授特质／返乡／共存，0条新raw take；已正常闭场，短暂恢复的只读准备也按用户最终指令收尾，八线程completed、无新场。容量候选尚未执行，当前两公共Python模块改变后尚无新资格。现场／Steam／来源与已验软件边界均见交接。

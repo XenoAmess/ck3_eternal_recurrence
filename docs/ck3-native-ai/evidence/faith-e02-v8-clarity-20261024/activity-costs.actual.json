@@ -1,0 +1,917 @@
+{
+  "schema": "faith-e02-v8-activity-costs-authoring-research-v1",
+  "status": "SOURCE_ONLY_AUTHORING_CANDIDATE",
+  "owner_task": "/root/pilgrim_bonuses",
+  "machine_id": "4-8e1c2f1861",
+  "root_authorization": "Root NEW_TASK: V8/research/activity-costs.actual.json and short md, <=2MiB metadata under G51; same-process fresh observer",
+  "installed_version_context": "Existing exact CK3 1.20.0.4 binding; no new EXE qualification or Game calls",
+  "source_origin_boundary": "Pins establish exact current installed bytes; names/comments do not establish DLC or external-mod provenance.",
+  "native_payment_formula_qualified": false,
+  "game_calls": 0,
+  "new_Source_edits": 0,
+  "scope": "N20 four-screen ordered activity-base calculation, localized viewer labels, F0/F1 numeric audit; no rendering or native price claim",
+  "notation": {
+    "K": "max(primary_title.tier-1,1)",
+    "E": "cultural era: tribal .75 / early 1 / high 1.5 / late 3; absent culture E0",
+    "B": "(30*K*tribal_factor+50*is_above_duchy)*AI_difficulty_factor",
+    "I": "monthly_character_income, not topbar net monthly change",
+    "Q": ".25 iff has_treasury AND not top_liege AND landed; else1",
+    "G": "5*ceil(clamp(months*I*Q,min,static_max*C)/5)",
+    "C": "culture era multiplier; absent culture C1",
+    "m": "minor_gold_value",
+    "M": "medium_gold_value",
+    "disabled_subtractive_condition": 0,
+    "disabled_multiplicative_condition": 1
+  },
+  "dynamic_gold_classes": [
+    {
+      "name": "tiny",
+      "months": 1.2,
+      "minimum": 5,
+      "static_maximum": 50
+    },
+    {
+      "name": "minor",
+      "months": 3,
+      "minimum": 15,
+      "static_maximum": 150
+    },
+    {
+      "name": "medium",
+      "months": 6,
+      "minimum": 50,
+      "static_maximum": 300
+    },
+    {
+      "name": "major",
+      "months": 12,
+      "minimum": 75,
+      "static_maximum": 500
+    },
+    {
+      "name": "massive",
+      "months": 18,
+      "minimum": 100,
+      "static_maximum": 750
+    },
+    {
+      "name": "monumental",
+      "months": 36,
+      "minimum": 200,
+      "static_maximum": 1500
+    }
+  ],
+  "branch_count": 18,
+  "branches": [
+    {
+      "id": "A01",
+      "order": 1,
+      "viewer_label": "求符心切",
+      "condition": "has_character_modifier=hunt_urge_for_pilgrim_badges_modifier",
+      "operation": "subtract",
+      "operand": "M",
+      "screen": 1,
+      "source_relative": "common/script_values/50_pilgrimage_values.txt",
+      "source_lines": [
+        298,
+        304
+      ],
+      "spoken_zh": "命中「求符心切」，减一个中额动态金币M。",
+      "label_source_relative": "localization/simp_chinese/event_localization/activities/hunt_events_l_simp_chinese.yml",
+      "label_source_line": 811,
+      "label_kind": "localized_name_with_condition_paraphrase"
+    },
+    {
+      "id": "A02",
+      "order": 2,
+      "viewer_label": "被鬼魂影响",
+      "condition": "has_character_modifier=ghost_pilgrimage_promised_modifier",
+      "operation": "subtract",
+      "operand": "M",
+      "screen": 1,
+      "source_relative": "common/script_values/50_pilgrimage_values.txt",
+      "source_lines": [
+        305,
+        311
+      ],
+      "spoken_zh": "被鬼魂影响，同样减M。",
+      "label_source_relative": "localization/simp_chinese/modifiers/activity_pilgrimage_modifiers_l_simp_chinese.yml",
+      "label_source_line": 115,
+      "label_kind": "localized_name_with_condition_paraphrase"
+    },
+    {
+      "id": "A03",
+      "order": 3,
+      "viewer_label": "承诺朝觐",
+      "condition": "has_character_modifier=hajj_promised_modifier",
+      "operation": "subtract",
+      "operand": "M",
+      "screen": 1,
+      "source_relative": "common/script_values/50_pilgrimage_values.txt",
+      "source_lines": [
+        313,
+        319
+      ],
+      "spoken_zh": "承诺朝觐，减M。",
+      "label_source_relative": "localization/simp_chinese/modifiers/activity_pilgrimage_modifiers_l_simp_chinese.yml",
+      "label_source_line": 117,
+      "label_kind": "localized_name_with_condition_paraphrase"
+    },
+    {
+      "id": "A04",
+      "order": 4,
+      "viewer_label": "承诺朝圣",
+      "condition": "has_character_modifier=pilgrimage_promised_modifier",
+      "operation": "subtract",
+      "operand": "M",
+      "screen": 1,
+      "source_relative": "common/script_values/50_pilgrimage_values.txt",
+      "source_lines": [
+        321,
+        327
+      ],
+      "spoken_zh": "承诺朝圣，减M。这四种修正分别判断。",
+      "label_source_relative": "localization/simp_chinese/modifiers/activity_pilgrimage_modifiers_l_simp_chinese.yml",
+      "label_source_line": 119,
+      "label_kind": "localized_name_with_condition_paraphrase"
+    },
+    {
+      "id": "A05",
+      "order": 5,
+      "viewer_label": "王朝传承「踏过圣路」",
+      "condition": "dynasty.has_dynasty_perk=ep2_activities_legacy_1",
+      "operation": "subtract",
+      "operand": "0.5*B",
+      "screen": 1,
+      "source_relative": "common/script_values/50_pilgrimage_values.txt",
+      "source_lines": [
+        328,
+        337
+      ],
+      "spoken_zh": "踏过圣路减原始基础B的一半，不是把现价乘一半。",
+      "label_source_relative": "localization/simp_chinese/dlc/ep2/dynasty_legacies/dlc_ep2_dynasty_legacies_l_simp_chinese.yml",
+      "label_source_line": 5,
+      "label_kind": "localized_name_with_condition_paraphrase"
+    },
+    {
+      "id": "A06",
+      "order": 6,
+      "viewer_label": "纪念想象中的朋友，且目的地吻合",
+      "condition": "exists selected province AND imaginary_friend_pilgrimage_discount AND owned story_cycle_imaginary_friend destination matches selected province",
+      "operation": "multiply_current",
+      "operand": "0.5",
+      "screen": 2,
+      "source_relative": "common/script_values/50_pilgrimage_values.txt",
+      "source_lines": [
+        338,
+        352
+      ],
+      "spoken_zh": "指定目的地吻合的想象朋友优惠，现价乘百分之五十。",
+      "label_source_relative": "localization/simp_chinese/dlc/bp2/dlc_bp2_yearly_2_l_simp_chinese.yml",
+      "label_source_line": 146,
+      "label_kind": "localized_name_with_condition_paraphrase"
+    },
+    {
+      "id": "A07",
+      "order": 7,
+      "viewer_label": "宫廷事件给的朝圣优惠",
+      "condition": "has_character_flag=court_event_discount_pilgrimage",
+      "operation": "multiply_current",
+      "operand": "0.75",
+      "screen": 2,
+      "source_relative": "common/script_values/50_pilgrimage_values.txt",
+      "source_lines": [
+        353,
+        362
+      ],
+      "spoken_zh": "宫廷事件的优惠，现价乘百分之七十五。",
+      "label_source_relative": "localization/simp_chinese/event_localization/court_events/court_events_joe_l_simp_chinese.yml",
+      "label_source_line": 274,
+      "label_kind": "localized_name_with_condition_paraphrase"
+    },
+    {
+      "id": "A08",
+      "order": 8,
+      "viewer_label": "赞助朝圣",
+      "condition": "has_character_modifier=pam_sf_pilgrimage_funded_modifier",
+      "operation": "multiply_current",
+      "operand": "0.5",
+      "screen": 2,
+      "source_relative": "common/script_values/50_pilgrimage_values.txt",
+      "source_lines": [
+        363,
+        372
+      ],
+      "spoken_zh": "赞助朝圣，现价再乘百分之五十。",
+      "label_source_relative": "localization/simp_chinese/dlc/pam/pam_secular_faith_modifiers_l_simp_chinese.yml",
+      "label_source_line": 25,
+      "label_kind": "localized_name_with_condition_paraphrase"
+    },
+    {
+      "id": "A09",
+      "order": 9,
+      "viewer_label": "灵性满足的朝圣优惠",
+      "condition": "sp_cheaper_pilgrimage_major first; else sp_cheaper_pilgrimage",
+      "operation": "multiply_current",
+      "operand": "major:0.5; normal:0.75; else:1",
+      "screen": 2,
+      "source_relative": "common/script_values/50_pilgrimage_values.txt",
+      "source_lines": [
+        373,
+        384
+      ],
+      "spoken_zh": "灵性满足的强档乘百分之五十，否则普通档乘百分之七十五。强档优先，不叠乘两档。",
+      "label_source_relative": "localization/simp_chinese/dlc/pam/pam_game_concepts_l_simp_chinese.yml",
+      "label_source_line": 149,
+      "label_kind": "localized_name_with_condition_paraphrase"
+    },
+    {
+      "id": "A10",
+      "order": 10,
+      "viewer_label": "谦逊家族志向",
+      "condition": "house.has_house_aspiration_parameter=humility_pilgrimage_discount",
+      "operation": "multiply_current",
+      "operand": "0.75",
+      "screen": 2,
+      "source_relative": "common/script_values/50_pilgrimage_values.txt",
+      "source_lines": [
+        385,
+        394
+      ],
+      "spoken_zh": "谦逊家族志向，再乘百分之七十五。",
+      "label_source_relative": "localization/simp_chinese/dlc/tgp/tgp_house_aspirations_l_simp_chinese.yml",
+      "label_source_line": 64,
+      "label_kind": "localized_name_with_condition_paraphrase"
+    },
+    {
+      "id": "A11",
+      "order": 11,
+      "viewer_label": "曼荼罗制礼敬敕令的朝圣优惠",
+      "condition": "has_realm_law_flag=cheaper_pilgrimages",
+      "operation": "multiply_current",
+      "operand": "0.75",
+      "screen": 2,
+      "source_relative": "common/script_values/50_pilgrimage_values.txt",
+      "source_lines": [
+        395,
+        402
+      ],
+      "spoken_zh": "有降低朝圣费用的礼敬敕令，再乘百分之七十五。",
+      "label_source_relative": "localization/simp_chinese/laws_l_simp_chinese.yml",
+      "label_source_line": 188,
+      "label_kind": "localized_name_with_condition_paraphrase"
+    },
+    {
+      "id": "A12",
+      "order": 12,
+      "viewer_label": "庄园的朝圣费用优惠",
+      "condition": "domicile.has_domicile_parameter=estate_cheaper_pilgrimage_cost",
+      "operation": "subtract",
+      "operand": "0.2*B*E",
+      "screen": 3,
+      "source_relative": "common/script_values/50_pilgrimage_values.txt",
+      "source_lines": [
+        403,
+        420
+      ],
+      "spoken_zh": "到庄园这一步，减掉原始B乘E的百分之二十。不是把当前余额乘八成。",
+      "label_source_relative": "localization/simp_chinese/domiciles/domicile_buildings_l_simp_chinese.yml",
+      "label_source_line": 345,
+      "label_kind": "localized_name_with_condition_paraphrase"
+    },
+    {
+      "id": "A13",
+      "order": 13,
+      "viewer_label": "当地仪式",
+      "condition": "rite.rite_has_parameter=local_shrine_offering",
+      "operation": "multiply_current",
+      "operand": "1.75",
+      "screen": 3,
+      "source_relative": "common/script_values/50_pilgrimage_values.txt",
+      "source_lines": [
+        421,
+        430
+      ],
+      "spoken_zh": "当地仪式让本体费用乘一点七五，也就是增加百分之七十五。",
+      "label_source_relative": "localization/simp_chinese/religion/religion_l_simp_chinese.yml",
+      "label_source_line": 1106,
+      "label_kind": "localized_name_with_condition_paraphrase"
+    },
+    {
+      "id": "A14",
+      "order": 14,
+      "viewer_label": "冒险者或游牧者拥有「教权辩护」",
+      "condition": "(is_landless_adventurer OR government_is_nomadic) AND clerical_justifications_perk",
+      "operation": "multiply_current",
+      "operand": "0.5",
+      "screen": 3,
+      "source_relative": "common/script_values/50_pilgrimage_values.txt",
+      "source_lines": [
+        431,
+        444
+      ],
+      "spoken_zh": "无地冒险者或游牧政体，拥有教权辩护时，现价乘百分之五十。",
+      "label_source_relative": "localization/simp_chinese/lifestyles/perks_l_simp_chinese.yml",
+      "label_source_line": 38,
+      "label_kind": "localized_name_with_condition_paraphrase"
+    },
+    {
+      "id": "A15",
+      "order": 15,
+      "viewer_label": "邦联凝聚力给予活动优惠",
+      "condition": "confederation.has_cohesion_level_parameter=any_member_activity_cost_reduced",
+      "operation": "multiply_current",
+      "operand": "0.9",
+      "screen": 3,
+      "source_relative": "common/script_values/50_pilgrimage_values.txt",
+      "source_lines": [
+        445,
+        453
+      ],
+      "spoken_zh": "邦联凝聚力提供活动优惠时，再乘百分之九十。",
+      "label_source_relative": null,
+      "label_source_line": null,
+      "label_kind": "explicit_condition_paraphrase"
+    },
+    {
+      "id": "A16",
+      "order": 16,
+      "viewer_label": "「命运之路」修正",
+      "condition": "has_character_modifier=tgp_reflection_modifier",
+      "operation": "multiply_current",
+      "operand": "0.8",
+      "screen": 3,
+      "source_relative": "common/script_values/50_pilgrimage_values.txt",
+      "source_lines": [
+        454,
+        461
+      ],
+      "spoken_zh": "命运之路修正，再乘百分之八十。",
+      "label_source_relative": "localization/simp_chinese/dlc/tgp/tgp_japan_modifiers_l_simp_chinese.yml",
+      "label_source_line": 93,
+      "label_kind": "localized_name_with_condition_paraphrase"
+    },
+    {
+      "id": "A17",
+      "order": 17,
+      "viewer_label": "「以牙还牙的款待」优惠",
+      "condition": "tgp_ceremonial_liege_events_0020_discount == flag:pilgrimage",
+      "operation": "multiply_current",
+      "operand": "0.85",
+      "screen": 3,
+      "source_relative": "common/script_values/50_pilgrimage_values.txt",
+      "source_lines": [
+        462,
+        470
+      ],
+      "spoken_zh": "以牙还牙的款待，对应朝圣优惠时再乘百分之八十五。",
+      "label_source_relative": "localization/simp_chinese/dlc/tgp/dlc_tgp_ceremonial_liege_events_l_simp_chinese.yml",
+      "label_source_line": 30,
+      "label_kind": "localized_name_with_condition_paraphrase"
+    },
+    {
+      "id": "A18",
+      "order": 18,
+      "viewer_label": "有神王变量的AI角色",
+      "condition": "has_variable=mandala_godking AND is_ai=yes",
+      "operation": "multiply_current",
+      "operand": "0.25",
+      "screen": 3,
+      "source_relative": "common/script_values/50_pilgrimage_values.txt",
+      "source_lines": [
+        471,
+        478
+      ],
+      "spoken_zh": "最后这条只给有神王变量的AI：乘百分之二十五。玩家算例不启用它。",
+      "label_source_relative": null,
+      "label_source_line": null,
+      "label_kind": "explicit_condition_paraphrase"
+    }
+  ],
+  "groups": [
+    {
+      "screen": 1,
+      "title_zh": "先减固定金额",
+      "minimum_seconds": 25,
+      "opening_zh": "这四屏只算活动本体。排场、距离和旅行选项，仍然各算各的。先从原始B乘E开始。",
+      "branch_ids": [
+        "A01",
+        "A02",
+        "A03",
+        "A04",
+        "A05"
+      ],
+      "equation": "x0=B*E; x1=x0-M*(badge+ghost+hajjPromise+pilgrimPromise)-0.5*B*legacy",
+      "layout": "逐行揭示；当前行高亮；保留B、E、M与上一步余额。四个M各自判断。"
+    },
+    {
+      "screen": 2,
+      "title_zh": "接着乘当前余额",
+      "minimum_seconds": 30,
+      "opening_zh": "这一屏每命中一项，都在上一步的余额上继续相乘。",
+      "branch_ids": [
+        "A06",
+        "A07",
+        "A08",
+        "A09",
+        "A10",
+        "A11"
+      ],
+      "equation": "x2=x1*imaginary*court*funded*fulfillment*humility*decree",
+      "layout": "每次只新增一个乘数；fulfillment两档显示为互斥分支，major优先。"
+    },
+    {
+      "screen": 3,
+      "title_zh": "庄园先减原始金额，再接后半乘数",
+      "minimum_seconds": 40,
+      "opening_zh": "庄园在这里插入一笔减法：减原始B乘E的百分之二十。随后回到乘当前余额。",
+      "branch_ids": [
+        "A12",
+        "A13",
+        "A14",
+        "A15",
+        "A16",
+        "A17",
+        "A18"
+      ],
+      "equation": "x3=(x2-0.2*B*E*estate)*localRite*adventurerOrNomad*confederation*reflection*ceremonialLiege*AIgodking",
+      "layout": "庄园行先单独讲；后六行逐行出现，最多突出三行，前行弱化。AI专属行明确标出。"
+    },
+    {
+      "screen": 4,
+      "title_zh": "动态最低费在后，户部最后",
+      "minimum_seconds": 20,
+      "opening_zh": "这些全部算完，才和minor动态最低费m比较，取较大值。持有户部头衔，再在最后乘百分之八十五。两步不能交换。",
+      "branch_ids": [],
+      "equation": "x4=max(x3,m); A=x4*(has_title(e_minister_of_revenue)?0.85:1)",
+      "layout": "先出现max与比较结果，再揭示最后85%；角标注明仍是活动本体。",
+      "tail_source_lines": {
+        "minor_floor": [
+          479,
+          479
+        ],
+        "revenue_gold": [
+          875,
+          881
+        ],
+        "revenue_treasury": [
+          891,
+          897
+        ]
+      },
+      "revenue_label_source": {
+        "relative": "localization/simp_chinese/titles_l_simp_chinese.yml",
+        "line": 27171,
+        "value": "户部"
+      }
+    }
+  ],
+  "total_minimum_N20_seconds": 115,
+  "numeric_models": {
+    "definition": "DECLARED_SCRIPT_EXAMPLES_NOT_NATIVE_TOTALS",
+    "shared": {
+      "player": true,
+      "primary_title_tier": 3,
+      "K": 2,
+      "E": 1,
+      "I": 10,
+      "Q": 1,
+      "tribal": false,
+      "AI_difficulty_multiplier": 1,
+      "pomp_key": "pilgrimage_pomp_ceremonial",
+      "capital_squared_distance": 50000,
+      "distance_band": 0.2,
+      "travel_option_cost_tier": "low",
+      "well_prepared": false,
+      "journey_planner": false,
+      "funded": false,
+      "all_other_cost_conditions": false,
+      "raw_native_full10_quote": null,
+      "actual_debit": null,
+      "travel_leader_cost": null,
+      "aggregate_inclusion_rule": null
+    },
+    "dynamic": {
+      "minor": {
+        "expression": "5*ceil(clamp(3*10*1,15,150*1)/5)",
+        "income_product": 30,
+        "clamped": 30,
+        "divided_by_5": 6,
+        "ceil_result": 6,
+        "result": 30
+      },
+      "medium": {
+        "expression": "5*ceil(clamp(6*10*1,50,300*1)/5)",
+        "income_product": 60,
+        "clamped": 60,
+        "divided_by_5": 12,
+        "ceil_result": 12,
+        "result": 60
+      }
+    },
+    "F0": {
+      "legacy": false,
+      "B": 60,
+      "BE": 60,
+      "base_before_floor": 60,
+      "minor_floor": 30,
+      "A": 60,
+      "pomp_seed": 50,
+      "pomp_tier_addition": 50,
+      "pomp_era_addition": 0,
+      "pomp_legacy_subtraction": 0,
+      "P": 100,
+      "M": 60,
+      "distance_band": 0.2,
+      "D": 12,
+      "travel_low_seed": 2,
+      "K": 2,
+      "U": 4,
+      "expanded_script_subtotal": 176,
+      "equation": "60+100+12+4=176"
+    },
+    "F1": {
+      "only_changed_condition": "ep2_activities_legacy_1=true",
+      "B": 60,
+      "BE": 60,
+      "base_legacy_subtraction": 30,
+      "base_before_floor": 30,
+      "minor_floor": 30,
+      "A": 30,
+      "pomp_before_discount": 100,
+      "pomp_legacy_subtraction": 25,
+      "P": 75,
+      "D": 12,
+      "U": 4,
+      "expanded_script_subtotal": 121,
+      "saved_against_F0": 55,
+      "equation": "30+75+12+4=121"
+    },
+    "ordered_king_example": {
+      "independent_of_F0_F1": true,
+      "player": true,
+      "top_liege": true,
+      "tribal": false,
+      "primary_title_tier": 4,
+      "K": 3,
+      "B": 140,
+      "E": 1,
+      "I": 10,
+      "Q": 1,
+      "minor_floor": 30,
+      "enabled_only": [
+        "court_event_discount_pilgrimage",
+        "pam_sf_pilgrimage_funded_modifier",
+        "estate_cheaper_pilgrimage_cost"
+      ],
+      "steps": [
+        {
+          "expression": "30*3+50",
+          "result": 140
+        },
+        {
+          "expression": "140*.75",
+          "result": 105
+        },
+        {
+          "expression": "105*.5",
+          "result": 52.5
+        },
+        {
+          "expression": ".2*140*1",
+          "result": 28
+        },
+        {
+          "expression": "52.5-28",
+          "result": 24.5
+        },
+        {
+          "expression": "max(24.5,30)",
+          "result": 30
+        }
+      ],
+      "incorrect_reordered_expression": "(140-28)*.75*.5=42",
+      "correct_actual_sequence_result": 30,
+      "is_native_invoice": false
+    }
+  },
+  "audit_assertions": [
+    "F0 and F1 are declared script models, not Robert/R39/R46 actual invoices.",
+    "No total is labeled complete payment; L and original aggregate composition remain null.",
+    "R32 correct image fields: base60.0 + distance10.0 =70.0; caravan master slot empty. The 10 is not L.",
+    "Dynamic minor30 and medium60 are calculated before fee component multiplication.",
+    "Actual ceremonial P=50*(K+E-1), not50*K*E.",
+    "D squared is capital-to-selected-province map distance, not travel route or days.",
+    "Distance12 and low option4 unchanged in F1; legacy saved55, not half entire bill.",
+    "Estate subtracts original .2*BE after preceding multipliers; floor then revenue.",
+    "No universal final ceil1 is inferred from 181.5->182 or127.5->128.",
+    "No non-G51 write, old-file overwrite, media rendering, Game or Native call."
+  ],
+  "actual_quote_boundaries": {
+    "R32": {
+      "base_gold": 60,
+      "distance_gold": 10,
+      "final_quote_gold": 70,
+      "leader_slot": "empty",
+      "leader_cost": null
+    },
+    "R39": {
+      "final_full10_gold": 182,
+      "diagnostic_aggregate_gold": 181.5,
+      "itemized_price_inputs_closed": false
+    },
+    "R46": {
+      "final_full10_gold": 128,
+      "diagnostic_aggregate_gold": 127.5,
+      "itemized_price_inputs_closed": false
+    }
+  },
+  "review_gate": "Root final formal narration/cards must receive a subsequent exact per-number and per-field audit; this research is not that future audit.",
+  "lifecycle": {
+    "category": "record",
+    "review_after_days": 180,
+    "automatic_renewal": false,
+    "active_references": [
+      "Root V8 N17/N18/N19/N20 drafting and subsequent numeric audit"
+    ],
+    "review_at_utc": "2027-04-22T07:00:09.494895+00:00"
+  },
+  "source_pins": [
+    {
+      "relative": "common/activities/activity_types/pilgrimage.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\activities\\activity_types\\pilgrimage.txt",
+      "bytes": 111931,
+      "sha256": "24153043485b035cb0477de7306649027cb68c039e4a9d903776eddd870d8b9f",
+      "relevant_lines": [
+        [
+          865,
+          900
+        ],
+        [
+          902,
+          1140
+        ],
+        [
+          1713,
+          2123
+        ],
+        [
+          2133,
+          2370
+        ]
+      ]
+    },
+    {
+      "relative": "common/script_values/50_pilgrimage_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\50_pilgrimage_values.txt",
+      "bytes": 11353,
+      "sha256": "643414d0d4fe87118f42cea52ded3e3f1cca326894bdba944679e7595cbbf0c9",
+      "relevant_lines": [
+        [
+          285,
+          481
+        ]
+      ]
+    },
+    {
+      "relative": "common/script_values/00_activity_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_activity_values.txt",
+      "bytes": 78895,
+      "sha256": "0b5c2da145cf0d2311aba8525c7decfc865d0539b81acdf3974ed74a68b37c92",
+      "relevant_lines": [
+        [
+          772,
+          810
+        ],
+        [
+          1493,
+          1535
+        ]
+      ]
+    },
+    {
+      "relative": "common/script_values/01_dynamic_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\01_dynamic_values.txt",
+      "bytes": 48201,
+      "sha256": "023165e7d27d106a34f34d7726d938efa8d5dce25650ea3256e0b5ea3f73cc2a",
+      "relevant_lines": [
+        [
+          13,
+          231
+        ]
+      ]
+    },
+    {
+      "relative": "common/script_values/00_basic_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_basic_values.txt",
+      "bytes": 50566,
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef",
+      "relevant_lines": [
+        [
+          16,
+          213
+        ],
+        [
+          451,
+          456
+        ]
+      ]
+    },
+    {
+      "relative": "common/script_values/00_distance_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_distance_values.txt",
+      "bytes": 770,
+      "sha256": "fd23c44170db684e7ae5fdb330b3622c89f4cc779a853245eee350482f1c65e5",
+      "relevant_lines": [
+        [
+          4,
+          15
+        ]
+      ]
+    },
+    {
+      "relative": "common/script_values/00_dynasty_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_dynasty_values.txt",
+      "bytes": 2516,
+      "sha256": "0aad110fd46c8bb7fbedba372e049002caa25ca992cd4362b9387d07dc90ca8e",
+      "relevant_lines": [
+        [
+          93,
+          93
+        ]
+      ]
+    },
+    {
+      "relative": "common/script_values/00_lifestyle_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_lifestyle_values.txt",
+      "bytes": 22192,
+      "sha256": "4ddec87bf5c6aeefa2d5f48e42a421408e96b4c85f129727ed6db8fda8bbecc0",
+      "relevant_lines": [
+        [
+          960,
+          962
+        ]
+      ]
+    },
+    {
+      "relative": "common/script_values/pam_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\pam_values.txt",
+      "bytes": 272209,
+      "sha256": "458d1bd882e8854005e3158339fca343177cff13eac7f83cb5877a8a37171965",
+      "relevant_lines": [
+        [
+          2160,
+          2172
+        ]
+      ]
+    },
+    {
+      "relative": "common/script_values/07_ep3_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\07_ep3_values.txt",
+      "bytes": 147367,
+      "sha256": "b4b46e562baa20f8aa7fbac91b3d8b95f6a59d053eaf6b5f28ca9d091f85c776",
+      "relevant_lines": [
+        [
+          2304,
+          2304
+        ]
+      ]
+    },
+    {
+      "relative": "common/scripted_costs/00_costs.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_costs\\00_costs.txt",
+      "bytes": 14914,
+      "sha256": "8c5f429b0c89b90a0aba29cb7420567db9f3cf18a644b8e85866065600d600d0",
+      "relevant_lines": [
+        [
+          662,
+          689
+        ]
+      ]
+    },
+    {
+      "relative": "localization/simp_chinese/dlc/bp2/dlc_bp2_yearly_2_l_simp_chinese.yml",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\dlc\\bp2\\dlc_bp2_yearly_2_l_simp_chinese.yml",
+      "bytes": 30790,
+      "sha256": "3b31fa073c83aedaee03abd00df13bdad284258c23fe13524d9fa657c49c22e6"
+    },
+    {
+      "relative": "localization/simp_chinese/dlc/ep2/dynasty_legacies/dlc_ep2_dynasty_legacies_l_simp_chinese.yml",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\dlc\\ep2\\dynasty_legacies\\dlc_ep2_dynasty_legacies_l_simp_chinese.yml",
+      "bytes": 3715,
+      "sha256": "fbaf49c265cd61d010fb8dbc9c7f1379f711ce8b729ff0708f142aee2d783d4a"
+    },
+    {
+      "relative": "localization/simp_chinese/dlc/pam/pam_game_concepts_l_simp_chinese.yml",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\dlc\\pam\\pam_game_concepts_l_simp_chinese.yml",
+      "bytes": 43748,
+      "sha256": "930338fd47cf6495748b403bbded34eda444c7cfecce6ac02f0858c111f29c3b"
+    },
+    {
+      "relative": "localization/simp_chinese/dlc/pam/pam_secular_faith_modifiers_l_simp_chinese.yml",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\dlc\\pam\\pam_secular_faith_modifiers_l_simp_chinese.yml",
+      "bytes": 14358,
+      "sha256": "59912280af7e5b7b4adf4685ec9090d45c7c01315c06497688748bcdd79e262d"
+    },
+    {
+      "relative": "localization/simp_chinese/dlc/tgp/dlc_tgp_ceremonial_liege_events_l_simp_chinese.yml",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\dlc\\tgp\\dlc_tgp_ceremonial_liege_events_l_simp_chinese.yml",
+      "bytes": 7306,
+      "sha256": "88578b6a774f029a6508102840b3eb913396d13c59d54c8cd0d2b8f9ce277b6b"
+    },
+    {
+      "relative": "localization/simp_chinese/dlc/tgp/tgp_house_aspirations_l_simp_chinese.yml",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\dlc\\tgp\\tgp_house_aspirations_l_simp_chinese.yml",
+      "bytes": 17152,
+      "sha256": "aa0d217042817c42935c5d15a2c7f6862f49cecf4cacf710085d80082cae8297"
+    },
+    {
+      "relative": "localization/simp_chinese/dlc/tgp/tgp_japan_modifiers_l_simp_chinese.yml",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\dlc\\tgp\\tgp_japan_modifiers_l_simp_chinese.yml",
+      "bytes": 12897,
+      "sha256": "8c67e1402de074394f18317c45c4b4c5d419ed87474671cb5531ecba71f8d1a9"
+    },
+    {
+      "relative": "localization/simp_chinese/domiciles/domicile_buildings_l_simp_chinese.yml",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\domiciles\\domicile_buildings_l_simp_chinese.yml",
+      "bytes": 83085,
+      "sha256": "89e3f8e3b5865ef540f434de43f77c1124dcb69d8982acb54364c685523428ac"
+    },
+    {
+      "relative": "localization/simp_chinese/event_localization/activities/hunt_events_l_simp_chinese.yml",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\activities\\hunt_events_l_simp_chinese.yml",
+      "bytes": 193807,
+      "sha256": "96dc9f8131ccf1b1d4d6a6af07517ad0cf78626bec9429878756dbd5e5fffbd3"
+    },
+    {
+      "relative": "localization/simp_chinese/event_localization/court_events/court_events_joe_l_simp_chinese.yml",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\court_events\\court_events_joe_l_simp_chinese.yml",
+      "bytes": 41940,
+      "sha256": "b010eaea3c2f8ecc5ff6ae3646012b9bcb411314e2f42fba2ad2e40d74fdc674"
+    },
+    {
+      "relative": "localization/simp_chinese/laws_l_simp_chinese.yml",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\laws_l_simp_chinese.yml",
+      "bytes": 55612,
+      "sha256": "6ccf95be88021407ae534dd41ea8b259da4645659c929ed5caced58a632813d7"
+    },
+    {
+      "relative": "localization/simp_chinese/lifestyles/perks_l_simp_chinese.yml",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\lifestyles\\perks_l_simp_chinese.yml",
+      "bytes": 10458,
+      "sha256": "d099b5175d07f269f1b0d43a524093c66e96fa92a122f213c7e9647b2c0778b5"
+    },
+    {
+      "relative": "localization/simp_chinese/modifiers/activity_pilgrimage_modifiers_l_simp_chinese.yml",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\modifiers\\activity_pilgrimage_modifiers_l_simp_chinese.yml",
+      "bytes": 10988,
+      "sha256": "afb446a09cf5357e12c9c1423ceb55326b501e3effbe0359a8ce84d8be941c78"
+    },
+    {
+      "relative": "localization/simp_chinese/religion/religion_l_simp_chinese.yml",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\religion\\religion_l_simp_chinese.yml",
+      "bytes": 93589,
+      "sha256": "1ba3f480f5255d3def8e9c968544daa2f5f4ee4ff40a9e214e60d623cc461d5c"
+    },
+    {
+      "relative": "localization/simp_chinese/titles_l_simp_chinese.yml",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\titles_l_simp_chinese.yml",
+      "bytes": 862782,
+      "sha256": "02007f6ae10dc4c6417cfd0577b801696b95ab4d9bfdbfe7e0ba0e086ee5b6ab"
+    }
+  ],
+  "observed_at_utc": "2026-10-24T07:00:09.494895+00:00",
+  "storage": {
+    "grant_pin": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\PREPARATION-ADMISSION.a01.actual.json",
+      "bytes": 5802,
+      "sha256": "cb7295fba87ebae6b1c9bfb2ed6771574dd735744b291c3cda8637842a480366"
+    },
+    "head_pin": {
+      "path": "C:\\workspace\\.codex-task-bus\\storage\\volume-C-current.json",
+      "bytes": 1503,
+      "sha256": "78b193362cf154c025237e0145a2f97781474d3957a32b87243b00641f9540aa"
+    },
+    "role": "metadata",
+    "next_write_peak_bytes": 2097152,
+    "pre_observation": {
+      "at": "2026-10-24T07:00:09.447441+00:00",
+      "machine_id": "4-8e1c2f1861",
+      "actual_source_head": "9c41f962511d83440df959fe9c2e558f30c87d6c",
+      "consumed_R2_upper_bytes": 2383532032,
+      "future_basis_R2_bytes": 2383532032,
+      "paid_increment_upper_bytes": 1974272,
+      "remaining_future_bytes": 199352320,
+      "physical_free_bytes": 91201576960,
+      "physical_floor_bytes": 90031730278,
+      "physical_margin_bytes": 1169846682,
+      "gross_whole_volume_growth_upper_bytes": 8683645128,
+      "observed_system_paging_growth_bytes": 0,
+      "project_attributable_gross_growth_upper_bytes": 8683645128,
+      "projected_project_upper_bytes": 73635735207,
+      "quota_margin_bytes": 1364264793,
+      "retirement_records": 150,
+      "retirement_allocation_addback_bytes": 9638754504
+    }
+  }
+}

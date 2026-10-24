@@ -1,0 +1,683 @@
+{
+  "schema": "faith-e02-v8-changed-cues-authoring-draft-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-24T07:06:47.672Z",
+  "baseline_formal": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/v8-clarity-20261024-a01/../v7-authoring-final-a09/V7.FORMAL-INPUT.a11.candidate.json",
+    "bytes": 503347,
+    "sha256": "c7d849225c292c5ea63fb999dbe6a7a20cd884caa76c402d884d9a8633f4faf0"
+  },
+  "source_qualification_claimed": false,
+  "root_approved": false,
+  "tts_performed": false,
+  "render_performed": false,
+  "cues": [
+    {
+      "id": "E02-V6-N03",
+      "chapter_id": "C02",
+      "zh": "先看宗教的朝圣教义。它有禁止、鼓励、当地仪式、强制和朝觐五种选择。这五种教义做的事情并不相同。禁止会挡住普通朝圣活动，同时又对虔诚获取和同宗教作战提供自己的修正；朝圣者还可能被当作罪恶。鼓励则允许出发，并把朝圣者作为美德。你不能只看一个人有没有朝圣者特质，还要看他现在的宗教怎样评价它。",
+      "en": "Start with the religious Pilgrimage doctrine. Its five choices are Forbidden, Encouraged, Local Rites, Mandatory, and Hajj. These five doctrines do different things. Forbidden blocks ordinary pilgrimage activities, while providing its own modifiers to Piety gain and fighting within the same religion; Pilgrim may also be treated as a sin. Encouraged permits departure and treats Pilgrim as a virtue. So check both whether a character has Pilgrim and how their current religion evaluates it.",
+      "subtitle_units": [
+        {
+          "id": "E02-V6-N03-U01",
+          "zh": "先看宗教的朝圣教义。它有禁止、鼓励、当地仪式、强制和朝觐五种选择。",
+          "en": "Start with the religious Pilgrimage doctrine. Its five choices are Forbidden, Encouraged, Local Rites, Mandatory, and Hajj. "
+        },
+        {
+          "id": "E02-V6-N03-U02",
+          "zh": "这五种教义做的事情并不相同。禁止会挡住普通朝圣活动，同时又对虔诚获取和同宗教作战提供自己的修正；朝圣者还可能被当作罪恶。",
+          "en": "These five doctrines do different things. Forbidden blocks ordinary pilgrimage activities, while providing its own modifiers to Piety gain and fighting within the same religion; Pilgrim may also be treated as a sin. "
+        },
+        {
+          "id": "E02-V6-N03-U03",
+          "zh": "鼓励则允许出发，并把朝圣者作为美德。你不能只看一个人有没有朝圣者特质，还要看他现在的宗教怎样评价它。",
+          "en": "Encouraged permits departure and treats Pilgrim as a virtue. So check both whether a character has Pilgrim and how their current religion evaluates it."
+        }
+      ],
+      "live_result_asserted": false,
+      "status": "DRAFT_PENDING_ROOT_APPROVAL"
+    },
+    {
+      "id": "E02-V6-N08",
+      "chapter_id": "C03",
+      "zh": "现在固定我们的规则算例：人物是非部落制公爵，文化处于中世纪早期，公式读取的月收入设为十金币。人物已有老道的朝圣者，经验八十；目的地是本人信仰的一处非主要圣地，活动类型选虔诚朝圣。活动选项里的朝圣态度，游戏栏名叫忠诚，我们选标准的朝圣者档。排场选讲究，旅行选项固定雇佣登山者。相关宗族传承、准备充分技能和其他特殊折扣先全部关闭。这是一套固定参数的规则演算，画面中的实际人物不代替这些假设。后面每改一个条件，条件卡就只更新那一项，其他参数保持原样。",
+      "en": "Now fix our rules example: a non-Tribal Duke whose culture is in the Early Medieval era, with the monthly income read by the formula set to ten Gold. The character is already an Experienced Pilgrim with 80 experience. The destination is a non-Eminent Holy Site of their own Faith, and the activity type is Pious Pilgrimage. For the pilgrimage attitude in the activity options, labelled Fidelity in the game, we choose the standard Pilgrim setting. Pomp is Ceremonial, and the Travel Option is Hire Mountaineer. Relevant Dynasty Legacies, the Well Prepared perk, and other special discounts are initially off. This is a rules calculation with fixed inputs; a filmed character does not stand in for those assumptions. Whenever we change a condition, the condition card updates that one input and keeps the others unchanged.",
+      "subtitle_units": [
+        {
+          "id": "E02-V6-N08-U01",
+          "zh": "现在固定我们的规则算例：人物是非部落制公爵，文化处于中世纪早期，公式读取的月收入设为十金币。",
+          "en": "Now fix our rules example: a non-Tribal Duke whose culture is in the Early Medieval era, with the monthly income read by the formula set to ten Gold. "
+        },
+        {
+          "id": "E02-V6-N08-U02",
+          "zh": "人物已有老道的朝圣者，经验八十；目的地是本人信仰的一处非主要圣地，活动类型选虔诚朝圣。",
+          "en": "The character is already an Experienced Pilgrim with 80 experience. The destination is a non-Eminent Holy Site of their own Faith, and the activity type is Pious Pilgrimage. "
+        },
+        {
+          "id": "E02-V6-N08-U03",
+          "zh": "活动选项里的朝圣态度，游戏栏名叫忠诚，我们选标准的朝圣者档。排场选讲究，旅行选项固定雇佣登山者。",
+          "en": "For the pilgrimage attitude in the activity options, labelled Fidelity in the game, we choose the standard Pilgrim setting. Pomp is Ceremonial, and the Travel Option is Hire Mountaineer. "
+        },
+        {
+          "id": "E02-V6-N08-U04",
+          "zh": "相关宗族传承、准备充分技能和其他特殊折扣先全部关闭。这是一套固定参数的规则演算，画面中的实际人物不代替这些假设。",
+          "en": "Relevant Dynasty Legacies, the Well Prepared perk, and other special discounts are initially off. This is a rules calculation with fixed inputs; a filmed character does not stand in for those assumptions. "
+        },
+        {
+          "id": "E02-V6-N08-U05",
+          "zh": "后面每改一个条件，条件卡就只更新那一项，其他参数保持原样。",
+          "en": "Whenever we change a condition, the condition card updates that one input and keeps the others unchanged."
+        }
+      ],
+      "live_result_asserted": false,
+      "status": "DRAFT_PENDING_ROOT_APPROVAL"
+    },
+    {
+      "id": "E02-V6-N10",
+      "chapter_id": "C03",
+      "zh": "朝圣态度这一栏，有义不容辞、朝圣者和深思熟虑三档。它们在主虔诚公式前段分别使用零点五、一和一点二五。义不容辞增加百分之五十的旅行速度修正，深思熟虑减少百分之五十。这是加减修正值，不能保证最终速度恰好变成一倍半或一半。再看资格。义不容辞的显示需要高级活动功能。伊斯兰人物还要满足当前礼仪要求朝觐，或者本人急躁；非伊斯兰人物则检查礼仪要求强制朝圣，或者本人急躁。标准朝圣者档是默认项，条目没有另外写显示或可选门槛，但整场活动仍须合法。深思熟虑也要高级活动功能才显示；要选它，还须有耐心、朝圣者或朝觐者中的任意一个。这里的朝圣者不要求先升到某个经验档。这些是显示与可选条件，不能拿人工智能的性格偏好权重当作玩家门槛。义不容辞还可能走快速到达后的提前离开分支，所以它不是少花时间、照拿全部奖励的保证。",
+      "en": "Pilgrimage attitude has three settings: Obligatory, Pilgrim, and Contemplative. They use factors of 0.5, 1, and 1.25 in the early part of the main Piety calculation. Obligatory adds a 50 percent Travel Speed modifier; Contemplative subtracts 50 percent. These change a modifier, so final speed is not guaranteed to become exactly one and a half times or half as fast. Now check eligibility. Displaying Obligatory requires the Advanced Activities feature. An Islamic character also needs a Rite requiring Hajj or the Impatient trait. A non-Islamic character instead needs Mandatory Pilgrimage in their Rite or Impatient. The standard Pilgrim setting is the default. Its entry adds no separate display or selection requirement, while the activity itself must still be legal. Contemplative also requires Advanced Activities to be displayed. Selecting it additionally requires any one of Patient, Pilgrim, or Hajji or Hajjah. Pilgrim does not have to reach a particular experience tier. These are display and selection requirements; AI personality weights are not player unlocks. Obligatory can also take an early-departure branch after a rapid arrival, so it does not guarantee a shorter trip with every reward unchanged.",
+      "subtitle_units": [
+        {
+          "id": "E02-V6-N10-U01",
+          "zh": "朝圣态度这一栏，有义不容辞、朝圣者和深思熟虑三档。它们在主虔诚公式前段分别使用零点五、一和一点二五。",
+          "en": "Pilgrimage attitude has three settings: Obligatory, Pilgrim, and Contemplative. They use factors of 0.5, 1, and 1.25 in the early part of the main Piety calculation. "
+        },
+        {
+          "id": "E02-V6-N10-U02",
+          "zh": "义不容辞增加百分之五十的旅行速度修正，深思熟虑减少百分之五十。这是加减修正值，不能保证最终速度恰好变成一倍半或一半。",
+          "en": "Obligatory adds a 50 percent Travel Speed modifier; Contemplative subtracts 50 percent. These change a modifier, so final speed is not guaranteed to become exactly one and a half times or half as fast. "
+        },
+        {
+          "id": "E02-V6-N10-U03",
+          "zh": "再看资格。义不容辞的显示需要高级活动功能。伊斯兰人物还要满足当前礼仪要求朝觐，或者本人急躁；非伊斯兰人物则检查礼仪要求强制朝圣，或者本人急躁。",
+          "en": "Now check eligibility. Displaying Obligatory requires the Advanced Activities feature. An Islamic character also needs a Rite requiring Hajj or the Impatient trait. A non-Islamic character instead needs Mandatory Pilgrimage in their Rite or Impatient. "
+        },
+        {
+          "id": "E02-V6-N10-U04",
+          "zh": "标准朝圣者档是默认项，条目没有另外写显示或可选门槛，但整场活动仍须合法。",
+          "en": "The standard Pilgrim setting is the default. Its entry adds no separate display or selection requirement, while the activity itself must still be legal. "
+        },
+        {
+          "id": "E02-V6-N10-U05",
+          "zh": "深思熟虑也要高级活动功能才显示；要选它，还须有耐心、朝圣者或朝觐者中的任意一个。这里的朝圣者不要求先升到某个经验档。",
+          "en": "Contemplative also requires Advanced Activities to be displayed. Selecting it additionally requires any one of Patient, Pilgrim, or Hajji or Hajjah. Pilgrim does not have to reach a particular experience tier. "
+        },
+        {
+          "id": "E02-V6-N10-U06",
+          "zh": "这些是显示与可选条件，不能拿人工智能的性格偏好权重当作玩家门槛。义不容辞还可能走快速到达后的提前离开分支，所以它不是少花时间、照拿全部奖励的保证。",
+          "en": "These are display and selection requirements; AI personality weights are not player unlocks. Obligatory can also take an early-departure branch after a rapid arrival, so it does not guarantee a shorter trip with every reward unchanged."
+        }
+      ],
+      "live_result_asserted": false,
+      "status": "DRAFT_PENDING_ROOT_APPROVAL"
+    },
+    {
+      "id": "E02-V6-N13",
+      "chapter_id": "C03",
+      "zh": "菜单里有两个叫深思熟虑的选项。一个属于活动选项里的朝圣态度，游戏栏名叫忠诚；另一个属于朝圣意图。朝圣态度里的深思熟虑，改变旅行速度修正和主奖励计算。它显示时需要高级活动功能，可选时还要检查耐心、朝圣者或朝觐者。意图里的深思熟虑，则让沿途偏向反思事件和行为。这个意图没有前面那组特质门槛，不能把同名态度的条件搬过来。例如停下来沉思会延迟十天。没有朝圣者时给五十虔诚；已有朝圣者但经验未满，请求十点基础特质经验；经验已满，则给一百虔诚。行善意图则通向施舍、照料等行为。具体事件仍分别检查人物资格和活动类型；选择意图本身，不等于立即领到一笔固定完成奖。",
+      "en": "The menu contains two options called Contemplative in Chinese. One belongs to pilgrimage attitude, labelled Fidelity in the game; the other belongs to pilgrimage Intent and is called Reflection in English. Contemplative attitude changes the Travel Speed modifier and the main reward calculation. Its display requires Advanced Activities; selection also checks Patient, Pilgrim, or Hajji or Hajjah. Reflection Intent instead steers the journey toward reflective events and actions. The Intent has no such trait requirement; the conditions for the similarly named attitude do not transfer to it. For example, stopping to reflect delays travel by ten days. Without Pilgrim it gives 50 Piety. With Pilgrim below the experience cap it requests ten base trait experience; at the cap it gives 100 Piety. Altruism Intent leads to actions such as giving alms and caring for others. Each event still checks the character and activity type separately; choosing an Intent does not itself pay a fixed completion reward.",
+      "subtitle_units": [
+        {
+          "id": "E02-V6-N13-U01",
+          "zh": "菜单里有两个叫深思熟虑的选项。一个属于活动选项里的朝圣态度，游戏栏名叫忠诚；另一个属于朝圣意图。",
+          "en": "The menu contains two options called Contemplative in Chinese. One belongs to pilgrimage attitude, labelled Fidelity in the game; the other belongs to pilgrimage Intent and is called Reflection in English. "
+        },
+        {
+          "id": "E02-V6-N13-U02",
+          "zh": "朝圣态度里的深思熟虑，改变旅行速度修正和主奖励计算。它显示时需要高级活动功能，可选时还要检查耐心、朝圣者或朝觐者。",
+          "en": "Contemplative attitude changes the Travel Speed modifier and the main reward calculation. Its display requires Advanced Activities; selection also checks Patient, Pilgrim, or Hajji or Hajjah. "
+        },
+        {
+          "id": "E02-V6-N13-U03",
+          "zh": "意图里的深思熟虑，则让沿途偏向反思事件和行为。这个意图没有前面那组特质门槛，不能把同名态度的条件搬过来。",
+          "en": "Reflection Intent instead steers the journey toward reflective events and actions. The Intent has no such trait requirement; the conditions for the similarly named attitude do not transfer to it. "
+        },
+        {
+          "id": "E02-V6-N13-U04",
+          "zh": "例如停下来沉思会延迟十天。没有朝圣者时给五十虔诚；已有朝圣者但经验未满，请求十点基础特质经验；经验已满，则给一百虔诚。",
+          "en": "For example, stopping to reflect delays travel by ten days. Without Pilgrim it gives 50 Piety. With Pilgrim below the experience cap it requests ten base trait experience; at the cap it gives 100 Piety. "
+        },
+        {
+          "id": "E02-V6-N13-U05",
+          "zh": "行善意图则通向施舍、照料等行为。具体事件仍分别检查人物资格和活动类型；选择意图本身，不等于立即领到一笔固定完成奖。",
+          "en": "Altruism Intent leads to actions such as giving alms and caring for others. Each event still checks the character and activity type separately; choosing an Intent does not itself pay a fixed completion reward."
+        }
+      ],
+      "live_result_asserted": false,
+      "status": "DRAFT_PENDING_ROOT_APPROVAL"
+    },
+    {
+      "id": "E02-V6-N15",
+      "chapter_id": "C03",
+      "zh": "这次主持朝圣，界面显示了深思熟虑、行善和热忱。要解释这三项，先看原版定义的候选池，再看各自的显示条件。主持者的意图池列着这三项，深思熟虑是默认项。它没有另加显示门槛，也不要求先有耐心或朝圣者。行善需要高级活动功能，而且人物仍活着、没有被囚禁；热忱的显示条件则是高级活动功能。这里没有按天主教信仰、虔诚朝圣类型或人物奉献等级筛选。慷慨、狂热和财富等条件出现在人工智能偏好中，不能拿来当玩家的显示门槛。如果只是来宾，原版显式列出的候选只有深思熟虑。共享的娱乐意图虽然能让朝圣事件响应，也不等于它自动成为当前菜单的第四项。所以先看眼前真正显示了什么，再核能否选择；不能把一个人物的三项菜单，说成所有人物固定四选一。",
+      "en": "This filmed pilgrimage host saw Reflection, Altruism, and Zealotry. To explain the list, first inspect the candidates in the original definitions, then each candidate's display requirements. The host's Intent pool lists these three, with Reflection as the default. Reflection adds no separate display requirement and does not require Patient or Pilgrim. Altruism requires Advanced Activities, a living character, and freedom from imprisonment. Zealotry's display requirement is Advanced Activities. These tests do not filter by Catholic Faith, Pious Pilgrimage type, or the character's Devotion level. Generous, Zealous, and wealth appear in AI preferences; they are not player display requirements. For a guest, the original definition explicitly lists only Reflection. The shared Recreation Intent can affect pilgrimage events without automatically becoming a fourth option in the current menu. First check what is actually displayed, then whether it can be selected. One character's three-option menu does not establish a universal choice of four.",
+      "subtitle_units": [
+        {
+          "id": "E02-V6-N15-U01",
+          "zh": "这次主持朝圣，界面显示了深思熟虑、行善和热忱。要解释这三项，先看原版定义的候选池，再看各自的显示条件。",
+          "en": "This filmed pilgrimage host saw Reflection, Altruism, and Zealotry. To explain the list, first inspect the candidates in the original definitions, then each candidate's display requirements. "
+        },
+        {
+          "id": "E02-V6-N15-U02",
+          "zh": "主持者的意图池列着这三项，深思熟虑是默认项。它没有另加显示门槛，也不要求先有耐心或朝圣者。",
+          "en": "The host's Intent pool lists these three, with Reflection as the default. Reflection adds no separate display requirement and does not require Patient or Pilgrim. "
+        },
+        {
+          "id": "E02-V6-N15-U03",
+          "zh": "行善需要高级活动功能，而且人物仍活着、没有被囚禁；热忱的显示条件则是高级活动功能。",
+          "en": "Altruism requires Advanced Activities, a living character, and freedom from imprisonment. Zealotry's display requirement is Advanced Activities. "
+        },
+        {
+          "id": "E02-V6-N15-U04",
+          "zh": "这里没有按天主教信仰、虔诚朝圣类型或人物奉献等级筛选。慷慨、狂热和财富等条件出现在人工智能偏好中，不能拿来当玩家的显示门槛。",
+          "en": "These tests do not filter by Catholic Faith, Pious Pilgrimage type, or the character's Devotion level. Generous, Zealous, and wealth appear in AI preferences; they are not player display requirements. "
+        },
+        {
+          "id": "E02-V6-N15-U05",
+          "zh": "如果只是来宾，原版显式列出的候选只有深思熟虑。共享的娱乐意图虽然能让朝圣事件响应，也不等于它自动成为当前菜单的第四项。",
+          "en": "For a guest, the original definition explicitly lists only Reflection. The shared Recreation Intent can affect pilgrimage events without automatically becoming a fourth option in the current menu. "
+        },
+        {
+          "id": "E02-V6-N15-U06",
+          "zh": "所以先看眼前真正显示了什么，再核能否选择；不能把一个人物的三项菜单，说成所有人物固定四选一。",
+          "en": "First check what is actually displayed, then whether it can be selected. One character's three-option menu does not establish a universal choice of four."
+        }
+      ],
+      "live_result_asserted": false,
+      "status": "DRAFT_PENDING_ROOT_APPROVAL"
+    },
+    {
+      "id": "E02-V6-N16",
+      "chapter_id": "C03",
+      "zh": "最后还有旅行计划。路线和绕行改变经过哪里；旅队主管有独立的能力和出发报价；旅行选项再分别检查资格，改变安全性、速度或其他状态。全库二十九种旅行选项列在附表，最多同时选择两项。其中十二种有直接费用定义，十七种没有；没有这一项直接收费，不等于整趟免费。这里没有统一的低、中、高三个可切档位。每个旅行选项使用自己的收费类别：雇佣登山者用低费，雇佣经验丰富的船长用中费，雇佣佣兵卫队用高费。头衔系数取主头衔等级减一，最低为一；准备充分技能把这几类脚本费乘零点七五，没有技能就乘一。本例是非部落制公爵，以金币演算。低费是二乘头衔系数，中费是五乘，高费是十乘，最后再乘准备充分系数。公爵的系数为二，没有技能时依次是四、十、二十金币。有技能时，三类脚本费依次变成三、七点五和十五。本例只选雇佣登山者，而且没有技能，所以后面单独记四金币。这些只算所选旅行选项，不含主管报价、活动本体或途中事件。画面是源码算例，不把另一场人物的付款当作这套模型的实测。其他政体还可能读取国库或游牧自己的分支，不能把这组金币数字套给所有人物。",
+      "en": "Finally, there is the Travel Plan. Routes and detours determine where the party passes. The Caravan Master has separate abilities and a departure quote, while Travel Options check their own requirements and affect Safety, Speed, or other conditions. The reference table lists all 29 Travel Options, with at most two selected at once. Twelve define a direct cost and seventeen do not. No direct charge for one option does not mean a free journey. There is no universal Low, Medium, or High setting to switch between. Each Travel Option uses its own cost category: Hire Mountaineer uses Low, Hire Experienced Captains uses Medium, and Hire Mercenary Guards uses High. The title factor is primary title tier minus one, with a minimum of one. Well Prepared multiplies these scripted costs by 0.75; without the perk, the factor is one. Our example is a non-Tribal Duke, calculated in Gold. Low cost is two times the title factor, Medium is five times, and High is ten times; each is then multiplied by the Well Prepared factor. A Duke has a title factor of two, giving four, ten, and twenty Gold without the perk. With the perk, the three scripted costs become three, 7.5, and fifteen. Our example selects only Hire Mountaineer, without the perk, so we record four Gold for it. These figures cover only the selected Travel Options, excluding the Caravan Master's quote, the activity itself, and events along the way. This is a scripted rules example; another character's payment is not a measurement of this model.Other governments can use their own Treasury or Nomadic branches; these Gold amounts do not apply to every character.",
+      "subtitle_units": [
+        {
+          "id": "E02-V6-N16-U01",
+          "zh": "最后还有旅行计划。路线和绕行改变经过哪里；旅队主管有独立的能力和出发报价；旅行选项再分别检查资格，改变安全性、速度或其他状态。",
+          "en": "Finally, there is the Travel Plan. Routes and detours determine where the party passes. The Caravan Master has separate abilities and a departure quote, while Travel Options check their own requirements and affect Safety, Speed, or other conditions. "
+        },
+        {
+          "id": "E02-V6-N16-U02",
+          "zh": "全库二十九种旅行选项列在附表，最多同时选择两项。其中十二种有直接费用定义，十七种没有；没有这一项直接收费，不等于整趟免费。",
+          "en": "The reference table lists all 29 Travel Options, with at most two selected at once. Twelve define a direct cost and seventeen do not. No direct charge for one option does not mean a free journey. "
+        },
+        {
+          "id": "E02-V6-N16-U03",
+          "zh": "这里没有统一的低、中、高三个可切档位。每个旅行选项使用自己的收费类别：雇佣登山者用低费，雇佣经验丰富的船长用中费，雇佣佣兵卫队用高费。",
+          "en": "There is no universal Low, Medium, or High setting to switch between. Each Travel Option uses its own cost category: Hire Mountaineer uses Low, Hire Experienced Captains uses Medium, and Hire Mercenary Guards uses High. "
+        },
+        {
+          "id": "E02-V6-N16-U04",
+          "zh": "头衔系数取主头衔等级减一，最低为一；准备充分技能把这几类脚本费乘零点七五，没有技能就乘一。",
+          "en": "The title factor is primary title tier minus one, with a minimum of one. Well Prepared multiplies these scripted costs by 0.75; without the perk, the factor is one. "
+        },
+        {
+          "id": "E02-V6-N16-U05",
+          "zh": "本例是非部落制公爵，以金币演算。低费是二乘头衔系数，中费是五乘，高费是十乘，最后再乘准备充分系数。公爵的系数为二，没有技能时依次是四、十、二十金币。",
+          "en": "Our example is a non-Tribal Duke, calculated in Gold. Low cost is two times the title factor, Medium is five times, and High is ten times; each is then multiplied by the Well Prepared factor. A Duke has a title factor of two, giving four, ten, and twenty Gold without the perk. "
+        },
+        {
+          "id": "E02-V6-N16-U06",
+          "zh": "有技能时，三类脚本费依次变成三、七点五和十五。本例只选雇佣登山者，而且没有技能，所以后面单独记四金币。",
+          "en": "With the perk, the three scripted costs become three, 7.5, and fifteen. Our example selects only Hire Mountaineer, without the perk, so we record four Gold for it. "
+        },
+        {
+          "id": "E02-V6-N16-U07",
+          "zh": "这些只算所选旅行选项，不含主管报价、活动本体或途中事件。画面是源码算例，不把另一场人物的付款当作这套模型的实测。",
+          "en": "These figures cover only the selected Travel Options, excluding the Caravan Master's quote, the activity itself, and events along the way. This is a scripted rules example; another character's payment is not a measurement of this model."
+        },
+        {
+          "id": "E02-V6-N16-U08",
+          "zh": "其他政体还可能读取国库或游牧自己的分支，不能把这组金币数字套给所有人物。",
+          "en": "Other governments can use their own Treasury or Nomadic branches; these Gold amounts do not apply to every character."
+        }
+      ],
+      "live_result_asserted": false,
+      "status": "DRAFT_PENDING_ROOT_APPROVAL"
+    },
+    {
+      "id": "E02-V6-N17",
+      "chapter_id": "C04",
+      "zh": "下面用一组固定参数，把费用一笔一笔算出来。这是规则演算：玩家人物是非部落制公爵，文化处于中世纪早期，公式读取的月收入设为十金币，没有折扣。先记三个数：公爵的头衔等级是三，减一得到头衔系数二；时代系数是一；本例收入调整系数也是一。有国库、不是最高领主而且有地时，收入调整系数才改成四分之一。小额动态金币先取三个月收入：三乘十乘一，等于三十。把它限制在十五到一百五十乘时代系数之间，再向上取到五的整数倍，本例仍是三十。中额则取六个月收入：六乘十乘一，等于六十；下限五十，上限三百乘时代系数，最后同样向上取到五的整数倍，得到六十。后面用到的最低费用和距离费，分别会读取这两个数。现在算活动本体。基础是三十乘头衔系数；部落制先把这一项减半，国王或皇帝另加五十。本例不是部落制，也没有国王加项，所以三十乘二，得到六十。再乘时代系数一，仍是六十；没有折扣，它也高于三十的最低费用。因此第一笔，活动本体六十金币。",
+      "en": "Let us use one fixed set of inputs and calculate the costs one payment at a time. This is a rules example: a non-Tribal player Duke, a culture in the Early Medieval era, monthly income set to ten Gold as read by the formula, and no discounts. Keep three numbers in view: the Duke's title tier is three, minus one gives a title factor of two; the era factor is one; and this example's income adjustment factor is also one. The income adjustment becomes one quarter only for a landed character who has a Treasury and is not the top liege. Small Dynamic Gold starts with three months of income: three times ten times one equals thirty. Clamp it between fifteen and 150 times the era factor, then round upward to a multiple of five; this example remains thirty. Medium Dynamic Gold starts with six months: six times ten times one equals sixty; its lower bound is fifty and its upper bound is 300 times the era factor, followed by the same upward rounding to five, giving sixty. The minimum activity cost and the distance fee will read these two amounts respectively. Now calculate the activity itself. Its base is thirty times the title factor; Tribal government first halves this component, while a King or Emperor adds fifty. Our example is not Tribal and has no King addition, so thirty times two gives sixty. Multiply by the era factor of one: still sixty. There is no discount, and it exceeds the minimum cost of thirty. The first payment is therefore sixty Gold for the activity itself.",
+      "subtitle_units": [
+        {
+          "id": "E02-V6-N17-U01",
+          "zh": "下面用一组固定参数，把费用一笔一笔算出来。",
+          "en": "Let us use one fixed set of inputs and calculate the costs one payment at a time. "
+        },
+        {
+          "id": "E02-V6-N17-U02",
+          "zh": "这是规则演算：玩家人物是非部落制公爵，文化处于中世纪早期，公式读取的月收入设为十金币，没有折扣。",
+          "en": "This is a rules example: a non-Tribal player Duke, a culture in the Early Medieval era, monthly income set to ten Gold as read by the formula, and no discounts. "
+        },
+        {
+          "id": "E02-V6-N17-U03",
+          "zh": "先记三个数：公爵的头衔等级是三，减一得到头衔系数二；时代系数是一；本例收入调整系数也是一。",
+          "en": "Keep three numbers in view: the Duke's title tier is three, minus one gives a title factor of two; the era factor is one; and this example's income adjustment factor is also one. "
+        },
+        {
+          "id": "E02-V6-N17-U04",
+          "zh": "有国库、不是最高领主而且有地时，收入调整系数才改成四分之一。",
+          "en": "The income adjustment becomes one quarter only for a landed character who has a Treasury and is not the top liege. "
+        },
+        {
+          "id": "E02-V6-N17-U05",
+          "zh": "小额动态金币先取三个月收入：三乘十乘一，等于三十。",
+          "en": "Small Dynamic Gold starts with three months of income: three times ten times one equals thirty. "
+        },
+        {
+          "id": "E02-V6-N17-U06",
+          "zh": "把它限制在十五到一百五十乘时代系数之间，再向上取到五的整数倍，本例仍是三十。",
+          "en": "Clamp it between fifteen and 150 times the era factor, then round upward to a multiple of five; this example remains thirty. "
+        },
+        {
+          "id": "E02-V6-N17-U07",
+          "zh": "中额则取六个月收入：六乘十乘一，等于六十；下限五十，上限三百乘时代系数，最后同样向上取到五的整数倍，得到六十。",
+          "en": "Medium Dynamic Gold starts with six months: six times ten times one equals sixty; its lower bound is fifty and its upper bound is 300 times the era factor, followed by the same upward rounding to five, giving sixty. "
+        },
+        {
+          "id": "E02-V6-N17-U08",
+          "zh": "后面用到的最低费用和距离费，分别会读取这两个数。",
+          "en": "The minimum activity cost and the distance fee will read these two amounts respectively. "
+        },
+        {
+          "id": "E02-V6-N17-U09",
+          "zh": "现在算活动本体。",
+          "en": "Now calculate the activity itself. "
+        },
+        {
+          "id": "E02-V6-N17-U10",
+          "zh": "基础是三十乘头衔系数；部落制先把这一项减半，国王或皇帝另加五十。",
+          "en": "Its base is thirty times the title factor; Tribal government first halves this component, while a King or Emperor adds fifty. "
+        },
+        {
+          "id": "E02-V6-N17-U11",
+          "zh": "本例不是部落制，也没有国王加项，所以三十乘二，得到六十。",
+          "en": "Our example is not Tribal and has no King addition, so thirty times two gives sixty. "
+        },
+        {
+          "id": "E02-V6-N17-U12",
+          "zh": "再乘时代系数一，仍是六十；没有折扣，它也高于三十的最低费用。",
+          "en": "Multiply by the era factor of one: still sixty. There is no discount, and it exceeds the minimum cost of thirty. "
+        },
+        {
+          "id": "E02-V6-N17-U13",
+          "zh": "因此第一笔，活动本体六十金币。",
+          "en": "The first payment is therefore sixty Gold for the activity itself."
+        }
+      ],
+      "live_result_asserted": false,
+      "status": "DRAFT_PENDING_ROOT_APPROVAL"
+    },
+    {
+      "id": "E02-V6-N18",
+      "chapter_id": "C04",
+      "zh": "第二笔是排场。我们选择“讲究”：五十乘以头衔系数加时代系数再减一。本例先算括号里的二加一减一，等于二；再乘五十，得到一百金币。这里把两项系数相加，不能改成彼此相乘。其他排场也列在画面：“适度”不额外加钱，“朴素”减去同一组合的十倍，“盛况空前”则取一百倍。第三笔是距离。费用读取首都省份与目的地省份之间的距离平方；这不是旅程要走几天。本例把距离平方设为五万，它大于两万两千五百、不超过六万两千五百，所以距离系数是零点二。中额动态金币六十，乘零点二，再乘时代系数一，等于十二金币。其余距离档位和边界列在表里；距离费在这一步没有再向上取五。第四笔是旅行选项。我们设定雇佣登山者，它用低费公式：二乘头衔系数二，没有准备充分折扣，得到四金币。到这里再汇总：活动本体六十，排场一百，距离十二，登山者四，四项小计一百七十六金币。旅队主管有独立的出发报价，实际出发还要看当场界面；这个小计只覆盖刚刚算过的四项。",
+      "en": "The second payment is Pomp. We select Ceremonial Pomp: fifty multiplied by the title factor plus the era factor minus one. First evaluate the brackets: two plus one minus one equals two; then multiply by fifty to obtain one hundred Gold. The two factors are added here; they must not be multiplied together. The other Pomp formulas are also shown: Appropriate adds no extra cost, Humble Pilgrimage subtracts ten times the same combination, and In the Throng of Many uses one hundred times it. The third payment is distance. This fee reads squared distance between the capital province and the destination province; it does not read the number of travel days. We set squared distance to fifty thousand: greater than 22,500 and no greater than 62,500, so the distance factor is 0.2. Medium Dynamic Gold of sixty, times 0.2, times the era factor of one, gives twelve Gold. The table shows the other distance brackets and boundaries; this step does not round the distance fee upward to five. The fourth payment is the Travel Option. We select Hire Mountaineer, using the Low cost formula: two times a title factor of two, without Well Prepared, gives four Gold. Only now add the components: activity sixty, Pomp one hundred, distance twelve, and mountaineer four, for a subtotal of 176 Gold. The Caravan Master has a separate departure quote, and the actual departure still depends on the live interface. This subtotal covers only the four components just calculated.",
+      "subtitle_units": [
+        {
+          "id": "E02-V6-N18-U01",
+          "zh": "第二笔是排场。",
+          "en": "The second payment is Pomp. "
+        },
+        {
+          "id": "E02-V6-N18-U02",
+          "zh": "我们选择“讲究”：五十乘以头衔系数加时代系数再减一。",
+          "en": "We select Ceremonial Pomp: fifty multiplied by the title factor plus the era factor minus one. "
+        },
+        {
+          "id": "E02-V6-N18-U03",
+          "zh": "本例先算括号里的二加一减一，等于二；再乘五十，得到一百金币。",
+          "en": "First evaluate the brackets: two plus one minus one equals two; then multiply by fifty to obtain one hundred Gold. "
+        },
+        {
+          "id": "E02-V6-N18-U04",
+          "zh": "这里把两项系数相加，不能改成彼此相乘。",
+          "en": "The two factors are added here; they must not be multiplied together. "
+        },
+        {
+          "id": "E02-V6-N18-U05",
+          "zh": "其他排场也列在画面：“适度”不额外加钱，“朴素”减去同一组合的十倍，“盛况空前”则取一百倍。",
+          "en": "The other Pomp formulas are also shown: Appropriate adds no extra cost, Humble Pilgrimage subtracts ten times the same combination, and In the Throng of Many uses one hundred times it. "
+        },
+        {
+          "id": "E02-V6-N18-U06",
+          "zh": "第三笔是距离。",
+          "en": "The third payment is distance. "
+        },
+        {
+          "id": "E02-V6-N18-U07",
+          "zh": "费用读取首都省份与目的地省份之间的距离平方；这不是旅程要走几天。",
+          "en": "This fee reads squared distance between the capital province and the destination province; it does not read the number of travel days. "
+        },
+        {
+          "id": "E02-V6-N18-U08",
+          "zh": "本例把距离平方设为五万，它大于两万两千五百、不超过六万两千五百，所以距离系数是零点二。",
+          "en": "We set squared distance to fifty thousand: greater than 22,500 and no greater than 62,500, so the distance factor is 0.2. "
+        },
+        {
+          "id": "E02-V6-N18-U09",
+          "zh": "中额动态金币六十，乘零点二，再乘时代系数一，等于十二金币。",
+          "en": "Medium Dynamic Gold of sixty, times 0.2, times the era factor of one, gives twelve Gold. "
+        },
+        {
+          "id": "E02-V6-N18-U10",
+          "zh": "其余距离档位和边界列在表里；距离费在这一步没有再向上取五。",
+          "en": "The table shows the other distance brackets and boundaries; this step does not round the distance fee upward to five. "
+        },
+        {
+          "id": "E02-V6-N18-U11",
+          "zh": "第四笔是旅行选项。",
+          "en": "The fourth payment is the Travel Option. "
+        },
+        {
+          "id": "E02-V6-N18-U12",
+          "zh": "我们设定雇佣登山者，它用低费公式：二乘头衔系数二，没有准备充分折扣，得到四金币。",
+          "en": "We select Hire Mountaineer, using the Low cost formula: two times a title factor of two, without Well Prepared, gives four Gold. "
+        },
+        {
+          "id": "E02-V6-N18-U13",
+          "zh": "到这里再汇总：活动本体六十，排场一百，距离十二，登山者四，四项小计一百七十六金币。",
+          "en": "Only now add the components: activity sixty, Pomp one hundred, distance twelve, and mountaineer four, for a subtotal of 176 Gold. "
+        },
+        {
+          "id": "E02-V6-N18-U14",
+          "zh": "旅队主管有独立的出发报价，实际出发还要看当场界面；这个小计只覆盖刚刚算过的四项。",
+          "en": "The Caravan Master has a separate departure quote, and the actual departure still depends on the live interface. This subtotal covers only the four components just calculated."
+        }
+      ],
+      "live_result_asserted": false,
+      "status": "DRAFT_PENDING_ROOT_APPROVAL"
+    },
+    {
+      "id": "E02-V6-N19",
+      "chapter_id": "C04",
+      "zh": "现在只打开宗族传承踏过圣路，其他参数和选项全部不变，重新算它影响的两项。先看活动本体。它减去原始基础六十的一半，也就是三十。六十减三十，得到三十，恰好等于刚才算过的小额动态金币下限，所以活动本体最终是三十。再看讲究排场。它在一百的排场费里减去二十五，得到七十五。这个二十五来自排场公式中的五十减半，并不是把原有的一百打五折。若选“盛况空前”，相应减项是五十。距离费仍是十二，登山者仍是四。把四项重新相加：三十加七十五加十二加四，得到一百二十一。原小计一百七十六，减新小计一百二十一，节省五十五金币：活动本体省三十，排场省二十五。我们得到了这两笔具体优惠，而不是整张账单减半。",
+      "en": "Now enable only the Walking the Sacred Path Dynasty Legacy, keeping every other input and option unchanged, and recalculate the two components it affects. First, the activity itself. It subtracts half the original base of sixty, which is thirty. Sixty minus thirty gives thirty, exactly equal to the Small Dynamic Gold minimum, so the final activity cost is thirty. Next, Ceremonial Pomp. It subtracts twenty-five from the Pomp fee of one hundred, leaving seventy-five. That twenty-five comes from halving the fifty in the Pomp formula; it does not halve the original one hundred. For In the Throng of Many, the corresponding subtraction is fifty. Distance remains twelve, and the mountaineer remains four. Add the four components again: thirty plus seventy-five plus twelve plus four equals 121. The original subtotal of 176 minus the new subtotal of 121 saves fifty-five Gold: thirty from the activity and twenty-five from Pomp. These are two specific discounts, rather than half off the entire bill.",
+      "subtitle_units": [
+        {
+          "id": "E02-V6-N19-U01",
+          "zh": "现在只打开宗族传承踏过圣路，其他参数和选项全部不变，重新算它影响的两项。",
+          "en": "Now enable only the Walking the Sacred Path Dynasty Legacy, keeping every other input and option unchanged, and recalculate the two components it affects. "
+        },
+        {
+          "id": "E02-V6-N19-U02",
+          "zh": "先看活动本体。",
+          "en": "First, the activity itself. "
+        },
+        {
+          "id": "E02-V6-N19-U03",
+          "zh": "它减去原始基础六十的一半，也就是三十。",
+          "en": "It subtracts half the original base of sixty, which is thirty. "
+        },
+        {
+          "id": "E02-V6-N19-U04",
+          "zh": "六十减三十，得到三十，恰好等于刚才算过的小额动态金币下限，所以活动本体最终是三十。",
+          "en": "Sixty minus thirty gives thirty, exactly equal to the Small Dynamic Gold minimum, so the final activity cost is thirty. "
+        },
+        {
+          "id": "E02-V6-N19-U05",
+          "zh": "再看讲究排场。",
+          "en": "Next, Ceremonial Pomp. "
+        },
+        {
+          "id": "E02-V6-N19-U06",
+          "zh": "它在一百的排场费里减去二十五，得到七十五。",
+          "en": "It subtracts twenty-five from the Pomp fee of one hundred, leaving seventy-five. "
+        },
+        {
+          "id": "E02-V6-N19-U07",
+          "zh": "这个二十五来自排场公式中的五十减半，并不是把原有的一百打五折。",
+          "en": "That twenty-five comes from halving the fifty in the Pomp formula; it does not halve the original one hundred. "
+        },
+        {
+          "id": "E02-V6-N19-U08",
+          "zh": "若选“盛况空前”，相应减项是五十。",
+          "en": "For In the Throng of Many, the corresponding subtraction is fifty. "
+        },
+        {
+          "id": "E02-V6-N19-U09",
+          "zh": "距离费仍是十二，登山者仍是四。",
+          "en": "Distance remains twelve, and the mountaineer remains four. "
+        },
+        {
+          "id": "E02-V6-N19-U10",
+          "zh": "把四项重新相加：三十加七十五加十二加四，得到一百二十一。",
+          "en": "Add the four components again: thirty plus seventy-five plus twelve plus four equals 121. "
+        },
+        {
+          "id": "E02-V6-N19-U11",
+          "zh": "原小计一百七十六，减新小计一百二十一，节省五十五金币：活动本体省三十，排场省二十五。",
+          "en": "The original subtotal of 176 minus the new subtotal of 121 saves fifty-five Gold: thirty from the activity and twenty-five from Pomp. "
+        },
+        {
+          "id": "E02-V6-N19-U12",
+          "zh": "我们得到了这两笔具体优惠，而不是整张账单减半。",
+          "en": "These are two specific discounts, rather than half off the entire bill."
+        }
+      ],
+      "live_result_asserted": false,
+      "status": "DRAFT_PENDING_ROOT_APPROVAL"
+    },
+    {
+      "id": "E02-V6-N20",
+      "chapter_id": "C04",
+      "zh": "多个折扣一起生效时，要按原版规定的顺序算。这里专讲活动本体，排场、距离和旅行选项仍各算各的。先记住原始基础和当前金额是两回事：本例原始基础是六十，乘时代系数之后，才开始往下计算。第一组，先减固定数。求符心切、被鬼魂影响、承诺朝觐、承诺朝圣，四个条件各减一次中额动态金币；同时满足就分别扣。踏过圣路再减原始基础的一半。注意这个一半读取原始基础，不是当前余额。第二组，对当前金额连续乘系数。目的地符合纪念想象中朋友的条件，乘二分之一；宫廷事件的朝圣优惠乘四分之三；赞助朝圣乘二分之一。灵性满足若有高级优惠就乘二分之一；只有普通优惠时乘四分之三；没有这两种优惠就不变，两档不叠加。谦逊家族志向、降低朝圣费用的法律，各再乘四分之三。第三组，先算庄园优惠：减去原始基础乘时代系数的百分之二十。然后继续处理后面的倍率：当地仪式乘一点七五；无地冒险者或游牧政体配合教权辩护乘二分之一；联盟凝聚力提供的活动优惠，乘零点九；命运之路乘零点八；以牙还牙的款待乘零点八五；符合神王条件的人工智能人物乘四分之一。每项都只在自己的条件满足时作用于当前金额。第四组，检查下限。当前金额低于小额动态金币，就抬到小额动态金币。之后，若持有户部头衔，外层费用还会再乘零点八五。先抬下限再打折，和先打折再抬下限，结果也可能不同。用一组数字看顺序。现在换成非部落制国王：三十乘头衔系数三，再加五十，原始基础是一百四十；时代系数仍是一，最低费用仍是三十。只开启宫廷优惠、赞助和庄园优惠。按顺序，一百四十乘零点七五是一百零五，再乘零点五是五十二点五。庄园减去原始一百四十的百分之二十，也就是二十八，剩二十四点五；最后抬到三十。如果把庄园减项移到最前面，会算成四十二，这就不是原版的顺序了。所以看一项优惠，要先找它改的是哪一笔、读取原始基础还是现值、排在下限之前还是之后，再把各笔钱相加。",
+      "en": "When several discounts apply, calculate them in the original script's order. This section concerns only the activity itself; Pomp, distance, and Travel Options are still calculated separately. Distinguish the original base from the current amount: our original base is sixty, and the following calculation starts after multiplying by the era factor. Group one subtracts fixed amounts. Eager for a Sign, Influenced by a Ghost, Promised Hajj, and Promised Pilgrimage each subtract one Medium Dynamic Gold amount; if several conditions apply, each is subtracted separately. Walking the Sacred Path then subtracts half the original base. This half reads the original base, not the current balance. Group two applies successive factors to the current amount. A destination satisfying the imaginary-friend memorial condition multiplies it by one half; the court-event pilgrimage discount multiplies it by three quarters; a Sponsored Pilgrimage multiplies it by one half. The higher Spiritual Fulfillment discount uses one half. If only the ordinary discount is present, it uses three quarters. With neither discount the amount is unchanged, and the two do not stack. The Humility House Aspiration and the law reducing pilgrimage costs each multiply it by another three quarters. Group three first applies the Estate discount: subtract twenty percent of the original base times the era factor. Then apply the later factors: Local Rites uses 1.75; a Landless Adventurer or Nomadic Government combined with Ecclesiarchy uses one half; the activity discount provided by Confederation Cohesion uses 0.9; the modifier displayed as Fate's Path uses 0.8; the hospitality modifier for An Eye for an Eye uses 0.85; and an AI character meeting the God-King conditions uses one quarter. Each affects the current amount only when its own conditions are satisfied. Group four checks the minimum. If the current amount is below Small Dynamic Gold, raise it to Small Dynamic Gold. Afterward, holding the Ministry of Revenue title applies another factor of 0.85 to the outer cost. Applying the minimum before a discount can produce a different result from applying the discount before the minimum. Use a numerical example to see the order. Now switch to a non-Tribal King: thirty times a title factor of three, plus fifty, gives an original base of 140; the era factor remains one, and the minimum remains thirty. Enable only the court discount, sponsorship, and Estate discount. In order, 140 times 0.75 is 105, then times 0.5 is 52.5. The Estate subtracts twenty percent of the original 140, or twenty-eight, leaving 24.5; the minimum then raises it to thirty. Moving the Estate subtraction to the start would instead give forty-two, which is not the scripted order. For any discount, identify which component it changes, whether it reads the original base or the current amount, and whether it comes before or after the minimum. Then add the separate payments.",
+      "subtitle_units": [
+        {
+          "id": "E02-V6-N20-U01",
+          "zh": "多个折扣一起生效时，要按原版规定的顺序算。",
+          "en": "When several discounts apply, calculate them in the original script's order. "
+        },
+        {
+          "id": "E02-V6-N20-U02",
+          "zh": "这里专讲活动本体，排场、距离和旅行选项仍各算各的。",
+          "en": "This section concerns only the activity itself; Pomp, distance, and Travel Options are still calculated separately. "
+        },
+        {
+          "id": "E02-V6-N20-U03",
+          "zh": "先记住原始基础和当前金额是两回事：本例原始基础是六十，乘时代系数之后，才开始往下计算。",
+          "en": "Distinguish the original base from the current amount: our original base is sixty, and the following calculation starts after multiplying by the era factor. "
+        },
+        {
+          "id": "E02-V6-N20-U04",
+          "zh": "第一组，先减固定数。",
+          "en": "Group one subtracts fixed amounts. "
+        },
+        {
+          "id": "E02-V6-N20-U05",
+          "zh": "求符心切、被鬼魂影响、承诺朝觐、承诺朝圣，四个条件各减一次中额动态金币；同时满足就分别扣。",
+          "en": "Eager for a Sign, Influenced by a Ghost, Promised Hajj, and Promised Pilgrimage each subtract one Medium Dynamic Gold amount; if several conditions apply, each is subtracted separately. "
+        },
+        {
+          "id": "E02-V6-N20-U06",
+          "zh": "踏过圣路再减原始基础的一半。",
+          "en": "Walking the Sacred Path then subtracts half the original base. "
+        },
+        {
+          "id": "E02-V6-N20-U07",
+          "zh": "注意这个一半读取原始基础，不是当前余额。",
+          "en": "This half reads the original base, not the current balance. "
+        },
+        {
+          "id": "E02-V6-N20-U08",
+          "zh": "第二组，对当前金额连续乘系数。",
+          "en": "Group two applies successive factors to the current amount. "
+        },
+        {
+          "id": "E02-V6-N20-U09",
+          "zh": "目的地符合纪念想象中朋友的条件，乘二分之一；宫廷事件的朝圣优惠乘四分之三；赞助朝圣乘二分之一。",
+          "en": "A destination satisfying the imaginary-friend memorial condition multiplies it by one half; the court-event pilgrimage discount multiplies it by three quarters; a Sponsored Pilgrimage multiplies it by one half. "
+        },
+        {
+          "id": "E02-V6-N20-U10",
+          "zh": "灵性满足若有高级优惠就乘二分之一；只有普通优惠时乘四分之三；没有这两种优惠就不变，两档不叠加。",
+          "en": "The higher Spiritual Fulfillment discount uses one half. If only the ordinary discount is present, it uses three quarters. With neither discount the amount is unchanged, and the two do not stack. "
+        },
+        {
+          "id": "E02-V6-N20-U11",
+          "zh": "谦逊家族志向、降低朝圣费用的法律，各再乘四分之三。",
+          "en": "The Humility House Aspiration and the law reducing pilgrimage costs each multiply it by another three quarters. "
+        },
+        {
+          "id": "E02-V6-N20-U12",
+          "zh": "第三组，先算庄园优惠：减去原始基础乘时代系数的百分之二十。",
+          "en": "Group three first applies the Estate discount: subtract twenty percent of the original base times the era factor. "
+        },
+        {
+          "id": "E02-V6-N20-U13",
+          "zh": "然后继续处理后面的倍率：当地仪式乘一点七五；无地冒险者或游牧政体配合教权辩护乘二分之一；联盟凝聚力提供的活动优惠，乘零点九；命运之路乘零点八；以牙还牙的款待乘零点八五；符合神王条件的人工智能人物乘四分之一。",
+          "en": "Then apply the later factors: Local Rites uses 1.75; a Landless Adventurer or Nomadic Government combined with Ecclesiarchy uses one half; the activity discount provided by Confederation Cohesion uses 0.9; the modifier displayed as Fate's Path uses 0.8; the hospitality modifier for An Eye for an Eye uses 0.85; and an AI character meeting the God-King conditions uses one quarter. "
+        },
+        {
+          "id": "E02-V6-N20-U14",
+          "zh": "每项都只在自己的条件满足时作用于当前金额。",
+          "en": "Each affects the current amount only when its own conditions are satisfied. "
+        },
+        {
+          "id": "E02-V6-N20-U15",
+          "zh": "第四组，检查下限。",
+          "en": "Group four checks the minimum. "
+        },
+        {
+          "id": "E02-V6-N20-U16",
+          "zh": "当前金额低于小额动态金币，就抬到小额动态金币。",
+          "en": "If the current amount is below Small Dynamic Gold, raise it to Small Dynamic Gold. "
+        },
+        {
+          "id": "E02-V6-N20-U17",
+          "zh": "之后，若持有户部头衔，外层费用还会再乘零点八五。",
+          "en": "Afterward, holding the Ministry of Revenue title applies another factor of 0.85 to the outer cost. "
+        },
+        {
+          "id": "E02-V6-N20-U18",
+          "zh": "先抬下限再打折，和先打折再抬下限，结果也可能不同。",
+          "en": "Applying the minimum before a discount can produce a different result from applying the discount before the minimum. "
+        },
+        {
+          "id": "E02-V6-N20-U19",
+          "zh": "用一组数字看顺序。",
+          "en": "Use a numerical example to see the order. "
+        },
+        {
+          "id": "E02-V6-N20-U20",
+          "zh": "现在换成非部落制国王：三十乘头衔系数三，再加五十，原始基础是一百四十；时代系数仍是一，最低费用仍是三十。",
+          "en": "Now switch to a non-Tribal King: thirty times a title factor of three, plus fifty, gives an original base of 140; the era factor remains one, and the minimum remains thirty. "
+        },
+        {
+          "id": "E02-V6-N20-U21",
+          "zh": "只开启宫廷优惠、赞助和庄园优惠。",
+          "en": "Enable only the court discount, sponsorship, and Estate discount. "
+        },
+        {
+          "id": "E02-V6-N20-U22",
+          "zh": "按顺序，一百四十乘零点七五是一百零五，再乘零点五是五十二点五。",
+          "en": "In order, 140 times 0.75 is 105, then times 0.5 is 52.5. "
+        },
+        {
+          "id": "E02-V6-N20-U23",
+          "zh": "庄园减去原始一百四十的百分之二十，也就是二十八，剩二十四点五；最后抬到三十。",
+          "en": "The Estate subtracts twenty percent of the original 140, or twenty-eight, leaving 24.5; the minimum then raises it to thirty. "
+        },
+        {
+          "id": "E02-V6-N20-U24",
+          "zh": "如果把庄园减项移到最前面，会算成四十二，这就不是原版的顺序了。",
+          "en": "Moving the Estate subtraction to the start would instead give forty-two, which is not the scripted order. "
+        },
+        {
+          "id": "E02-V6-N20-U25",
+          "zh": "所以看一项优惠，要先找它改的是哪一笔、读取原始基础还是现值、排在下限之前还是之后，再把各笔钱相加。",
+          "en": "For any discount, identify which component it changes, whether it reads the original base or the current amount, and whether it comes before or after the minimum. Then add the separate payments."
+        }
+      ],
+      "live_result_asserted": false,
+      "status": "DRAFT_PENDING_ROOT_APPROVAL"
+    },
+    {
+      "id": "E02-V6-N22",
+      "chapter_id": "C05",
+      "zh": "距离还要另外读取。本例奖励距离平方同样设为五万，使用一百的基数。这个距离来自奖励自己的对象和阈值，不能拿费用那八档倒推。它也不是你沿途绕了多久，就一直按天增加。朝圣态度选标准的朝圣者档，系数用一，讲究排场再加五十，本信仰非主要圣地最后乘零点五。表现六十五时，一百乘一点七五，加五十，再除二，得到一百一十二点五。表现七十五时，一百乘二点五，加五十，再除二，得到一百五十。",
+      "en": "Distance is read separately again. This example also sets squared reward distance to fifty thousand, using a base of one hundred. That distance uses the reward's own objects and thresholds, so it cannot be inferred from the eight cost brackets. Nor does it increase indefinitely with every day of detours. The standard Pilgrim setting of pilgrimage attitude uses one, Ceremonial Pomp adds fifty, and a non-Eminent Holy Site of the same Faith multiplies the result by 0.5. At performance 65, one hundred times 1.75, plus fifty, divided by two, gives 112.5. At performance 75, one hundred times 2.5, plus fifty, divided by two, gives 150.",
+      "subtitle_units": [
+        {
+          "id": "E02-V6-N22-U01",
+          "zh": "距离还要另外读取。本例奖励距离平方同样设为五万，使用一百的基数。这个距离来自奖励自己的对象和阈值，不能拿费用那八档倒推。它也不是你沿途绕了多久，就一直按天增加。朝圣态度选标准的朝圣者档，系数用一，讲究排场再加五十，本信仰非主要圣地最后乘零点五。表现六十五时，一百乘一点七五，加五十，再除二，得到一百一十二点五。表现七十五时，一百乘二点五，加五十，再除二，得到一百五十。",
+          "en": "Distance is read separately again. This example also sets squared reward distance to fifty thousand, using a base of one hundred. That distance uses the reward's own objects and thresholds, so it cannot be inferred from the eight cost brackets. Nor does it increase indefinitely with every day of detours. The standard Pilgrim setting of pilgrimage attitude uses one, Ceremonial Pomp adds fifty, and a non-Eminent Holy Site of the same Faith multiplies the result by 0.5. At performance 65, one hundred times 1.75, plus fifty, divided by two, gives 112.5. At performance 75, one hundred times 2.5, plus fifty, divided by two, gives 150."
+        }
+      ],
+      "live_result_asserted": false,
+      "status": "DRAFT_PENDING_ROOT_APPROVAL"
+    },
+    {
+      "id": "E02-V6-N23",
+      "chapter_id": "C05",
+      "zh": "主虔诚公式可以分成三步：距离基数先乘宗族传承、朝圣态度和表现系数，再加符合条件的资历与排场定额，最后乘内在之旅、圣地关系和对应联盟条件。我们的数字只开启了条件卡上列明的几项。比如学识传承第四项“真正信徒”，读取的是主虔诚的前段；“踏过圣路”则是另一项宗族传承。不能因为都叫传承，就把它们混成同一个费用和收益开关。个人信条与礼仪参数也仍要按实际读取者区分。",
+      "en": "The main Piety formula has three stages: multiply the distance base by Dynasty Legacy, pilgrimage attitude, and performance factors; add eligible qualification and Pomp amounts; then apply Inner Journey, Holy Site relations, and the relevant Confederation condition. Our numbers enable only the conditions listed on the card. For example, True Believers, the fourth Erudition legacy, reads the early part of main Piety; Walking the Sacred Path is a different Dynasty Legacy. Calling both legacies does not make them a single switch for costs and rewards. Personal Tenets and Rite parameters must likewise be distinguished by the effects that actually read them.",
+      "subtitle_units": [
+        {
+          "id": "E02-V6-N23-U01",
+          "zh": "主虔诚公式可以分成三步：距离基数先乘宗族传承、朝圣态度和表现系数，再加符合条件的资历与排场定额，最后乘内在之旅、圣地关系和对应联盟条件。我们的数字只开启了条件卡上列明的几项。比如学识传承第四项“真正信徒”，读取的是主虔诚的前段；“踏过圣路”则是另一项宗族传承。不能因为都叫传承，就把它们混成同一个费用和收益开关。个人信条与礼仪参数也仍要按实际读取者区分。",
+          "en": "The main Piety formula has three stages: multiply the distance base by Dynasty Legacy, pilgrimage attitude, and performance factors; add eligible qualification and Pomp amounts; then apply Inner Journey, Holy Site relations, and the relevant Confederation condition. Our numbers enable only the conditions listed on the card. For example, True Believers, the fourth Erudition legacy, reads the early part of main Piety; Walking the Sacred Path is a different Dynasty Legacy. Calling both legacies does not make them a single switch for costs and rewards. Personal Tenets and Rite parameters must likewise be distinguished by the effects that actually read them."
+        }
+      ],
+      "live_result_asserted": false,
+      "status": "DRAFT_PENDING_ROOT_APPROVAL"
+    }
+  ],
+  "stable_sequence": [
+    "E02-V6-N01",
+    "E02-V6-N02",
+    "E02-V6-N03",
+    "E02-V6-N04",
+    "E02-V6-N05",
+    "E02-V6-N06",
+    "E02-V6-N07",
+    "E02-V6-N08",
+    "E02-V6-N09",
+    "E02-V6-N10",
+    "E02-V6-N11",
+    "E02-V6-N12",
+    "E02-V6-N13",
+    "E02-V6-N14",
+    "E02-V6-N15",
+    "E02-V6-N16",
+    "E02-V6-N17",
+    "E02-V6-N18",
+    "E02-V6-N19",
+    "E02-V6-N20",
+    "E02-V6-N21",
+    "E02-V6-N22",
+    "E02-V6-N23",
+    "E02-V6-N24",
+    "E02-V6-N25",
+    "E02-V6-N26",
+    "E02-V6-N27",
+    "E02-V6-N28",
+    "E02-V6-N29",
+    "E02-V6-N30",
+    "E02-V6-N31",
+    "E02-V6-N32",
+    "E02-V6-N33"
+  ],
+  "result_voice_batches": [],
+  "editing_notes": {
+    "complete_root_read_pending": [
+      "N03",
+      "N08",
+      "N10",
+      "N13",
+      "N15",
+      "N16",
+      "N22",
+      "N23"
+    ],
+    "cost_numbers_order_reviewed": true,
+    "english_review_pending": true,
+    "subtitle_units_final_split_pending": true,
+    "voice_catalog_is_not_yet_measured": true
+  }
+}

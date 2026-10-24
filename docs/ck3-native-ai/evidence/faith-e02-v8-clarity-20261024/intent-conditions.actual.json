@@ -1,0 +1,526 @@
+{
+  "schema": "faith-e02-v8-intent-conditions-source-bound-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-24T06:57:35.257902+00:00",
+  "scope": {
+    "game_version": "1.20.0.4",
+    "game_root": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game",
+    "claim_kind": "static_source_and_retained_native_scene_audit",
+    "new_game_observation": false,
+    "executable_or_runtime_requalified": false,
+    "new_can_pick_probe": false,
+    "source_modified": false,
+    "game_actions_submitted": false
+  },
+  "terminology": {
+    "first_use": "活动选项里的朝圣态度（游戏栏名“忠诚”）",
+    "subsequent_use": "朝圣态度",
+    "category": {
+      "key": "pilgrimage_option_fidelity",
+      "english": "Fidelity",
+      "chinese": "忠诚",
+      "source_refs": [
+        "activity:1561-1563",
+        "cn_pilgrimage:114",
+        "en_pilgrimage:126"
+      ],
+      "comment": "Source comment LEVEL OF DEVOTION OPTION is not an engine-field binding to the character devotion level."
+    },
+    "same_name_options": [
+      {
+        "location": "activity_option_fidelity",
+        "key": "pilgrimage_fidelity_contemplative",
+        "english": "Contemplative",
+        "chinese": "深思熟虑",
+        "controls": [
+          "travel_speed_modifier",
+          "main_piety_reward_calculation"
+        ],
+        "source_refs": [
+          "activity:1646-1658",
+          "travel_modifiers:276-279",
+          "piety_reward:515-543",
+          "cn_pilgrimage:119",
+          "en_pilgrimage:131"
+        ]
+      },
+      {
+        "location": "activity_intent",
+        "key": "reflection_intent",
+        "english": "Reflection",
+        "chinese": "深思熟虑",
+        "controls": [
+          "reflection_event_or_activity_behavior_eligibility"
+        ],
+        "source_refs": [
+          "pilgrimage_intents:4-45",
+          "pilgrimage_on_actions:73-78",
+          "cn_pilgrimage:133-134",
+          "en_pilgrimage:147-148"
+        ]
+      }
+    ],
+    "character_devotion": {
+      "observed_field": "player_piety_devotion_profile.effective_level",
+      "separate_from_fidelity": true,
+      "used_by_three_intent_show_predicates": false
+    },
+    "old_sentence": "意图里的“深思熟虑”，和忠诚栏恰好同名，但作用不同。",
+    "correction": "同名的是两个选项；朝圣态度分类本身仍叫忠诚。不得把人物奉献等级、忠诚性格或封臣忠诚与它混同。"
+  },
+  "intent_matrix": [
+    {
+      "key": "reflection_intent",
+      "chinese": "深思熟虑",
+      "english": "Reflection",
+      "host_explicit_candidate": true,
+      "host_default": true,
+      "guest_explicit_candidate": true,
+      "guest_default": true,
+      "is_shown_conditions": [],
+      "extra_is_valid_conditions": [],
+      "extra_target_conditions": [],
+      "auto_complete": true,
+      "required_player_traits": [],
+      "source_refs": [
+        "activity:2645-2653",
+        "pilgrimage_intents:4-45"
+      ]
+    },
+    {
+      "key": "altruism_intent",
+      "chinese": "行善",
+      "english": "Altruism",
+      "host_explicit_candidate": true,
+      "host_default": false,
+      "guest_explicit_candidate": false,
+      "guest_default": false,
+      "is_shown_conditions": [
+        "has_dlc_feature = advanced_activities",
+        "is_alive = yes",
+        "is_imprisoned = no"
+      ],
+      "extra_is_valid_conditions": [],
+      "extra_target_conditions": [],
+      "auto_complete": true,
+      "required_player_traits": [],
+      "source_refs": [
+        "activity:2645-2653",
+        "tour_intents:65-131",
+        "tour_intents:68-72",
+        "cn_altruism:18-19"
+      ]
+    },
+    {
+      "key": "zealot_intent",
+      "chinese": "热忱",
+      "english": "Zealotry",
+      "host_explicit_candidate": true,
+      "host_default": false,
+      "guest_explicit_candidate": false,
+      "guest_default": false,
+      "is_shown_conditions": [
+        "has_dlc_feature = advanced_activities"
+      ],
+      "extra_is_valid_conditions": [],
+      "extra_target_conditions": [],
+      "auto_complete": true,
+      "required_player_traits": [],
+      "source_refs": [
+        "activity:2645-2653",
+        "pilgrimage_intents:48-104",
+        "pilgrimage_intents:53-55"
+      ]
+    },
+    {
+      "key": "reduce_stress_intent",
+      "chinese": "娱乐",
+      "english": "Recreation",
+      "host_explicit_candidate": false,
+      "host_default": false,
+      "guest_explicit_candidate": false,
+      "guest_default": false,
+      "is_shown_conditions": [],
+      "extra_is_valid_conditions": [],
+      "extra_target_conditions": [],
+      "auto_complete": true,
+      "required_player_traits": [],
+      "source_refs": [
+        "activity:2645-2653",
+        "shared_intents:3-17"
+      ],
+      "membership_boundary": "Shared definition and events responding to this intent do not establish current pilgrimage-menu membership."
+    }
+  ],
+  "matrix_interpretation": {
+    "host_without_advanced_activities": "The explicit host pool plus these local show predicates leaves Reflection.",
+    "host_with_advanced_activities_alive_not_imprisoned": "All three explicit host candidates pass their own local show predicates; actual CanPick remains separate.",
+    "guest": "The activity explicitly declares only Reflection for guests.",
+    "global_activity_eligibility_separate": true,
+    "catholic_or_other_faith_checked_in_three_local_show_predicates": false,
+    "pious_worldly_hajj_subtype_checked_in_three_local_show_predicates": false,
+    "character_devotion_level_checked_in_three_local_show_predicates": false,
+    "traits_or_gold_in_ai_will_do_are_not_player_show_or_valid_gates": true,
+    "ai_refs": [
+      "pilgrimage_intents:17-39",
+      "pilgrimage_intents:60-99",
+      "tour_intents:78-125"
+    ],
+    "no_instant_fixed_completion_prize_inferred_from_auto_complete": true,
+    "is_shown_vs_is_valid_documentation": [
+      "intent_info:1-16",
+      "intent_info:36-43"
+    ],
+    "upstream_container_load_inheritance_merge_fully_closed": false,
+    "worldwide_fixed_count_asserted": false,
+    "user_prior_four_item_scene_disproved": false,
+    "retained_native_filter_findings": {
+      "source_id": "retained_native_filter_research",
+      "potential_getter": "0x16649c0-0x1664e9c",
+      "input_vector": "activity type +0xd30; length +0xd3c",
+      "steps": [
+        "union selected activity-option blocked vectors",
+        "skip blocked",
+        "run intent +0x40 predicate",
+        "append surviving intent in source-vector order"
+      ],
+      "universal_shared_intent_append_seen": false,
+      "separate_can_pick": "callback 0x1665b40; body 0x1664090-0x16645fb; +0x110 predicate and target requirements",
+      "field_name_mapping_is_inference": true
+    }
+  },
+  "fidelity_matrix": [
+    {
+      "key": "pilgrimage_fidelity_obligatory",
+      "chinese": "义不容辞",
+      "default": false,
+      "is_shown_conditions": [
+        "has_dlc_feature = advanced_activities"
+      ],
+      "valid_branches": [
+        {
+          "when": "Islam",
+          "any_of": [
+            "faith parameter mandatory_hajj",
+            "trait impatient"
+          ]
+        },
+        {
+          "when": "not Islam",
+          "any_of": [
+            "faith parameter mandatory_pilgrimage",
+            "trait impatient"
+          ]
+        }
+      ],
+      "source_refs": [
+        "activity:1564-1587"
+      ]
+    },
+    {
+      "key": "pilgrimage_fidelity_pilgrim",
+      "chinese": "朝圣者",
+      "default": true,
+      "is_shown_conditions": [],
+      "valid_branches": [],
+      "source_refs": [
+        "activity:1638-1645"
+      ]
+    },
+    {
+      "key": "pilgrimage_fidelity_contemplative",
+      "chinese": "深思熟虑",
+      "default": false,
+      "is_shown_conditions": [
+        "has_dlc_feature = advanced_activities"
+      ],
+      "valid_branches": [
+        {
+          "when": "all",
+          "any_of": [
+            "trait patient",
+            "trait pilgrim",
+            "trait hajjaj"
+          ]
+        }
+      ],
+      "source_refs": [
+        "activity:1646-1658"
+      ]
+    }
+  ],
+  "fidelity_effect_boundary": {
+    "obligatory_travel_speed_mult": 0.5,
+    "contemplative_travel_speed_mult": -0.5,
+    "added_modifier_is_not_final_route_speed_ratio": true,
+    "main_piety_reward_obligatory_multiplier": 0.5,
+    "main_piety_reward_contemplative_multiplier": 1.25,
+    "multipliers_do_not_prove_final_total_piety_ratio": true,
+    "source_refs": [
+      "activity:2844-2867",
+      "travel_modifiers:271-279",
+      "piety_reward:515-543"
+    ]
+  },
+  "display_vs_can_pick": {
+    "potential_list_source": "intent_gui:126 GetPotentialIntents",
+    "button_enabled_source": "intent_gui:137 CanPickIntent",
+    "displayed_does_not_prove_enabled_or_selectable": true,
+    "full_current_scene_can_pick_states_qualified": false,
+    "a11_disclosure_correction": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/v7-authoring-final-a09/V7.CUE-VISUALS.a11.candidate.json",
+      "pointer": "/templates/287/value/disclosure",
+      "before": "three selectable intentions",
+      "after": "three displayed intentions",
+      "file_modified": false
+    }
+  },
+  "observed_scene": {
+    "machine_id": "4-8e1c2f1861",
+    "run_id": "4-8e1c2f1861--faith-engine--R0032",
+    "native_receipt_observed_at_utc": "2026-10-22T03:57:31.598338Z",
+    "faith_binding_observed_at_utc": "2026-10-22T04:21:35.866267Z",
+    "actor_id": 31254,
+    "faith_id": 13,
+    "faith_key": "catholic",
+    "rite_id": 0,
+    "religion_id": 8,
+    "religion_key": "christianity_religion",
+    "date": 53144328,
+    "actor_alive": true,
+    "stress": 0,
+    "activity_can_plan": true,
+    "character_effective_devotion_level": 5,
+    "character_effective_devotion_cap": 5,
+    "displayed_labels_in_order": [
+      "深思熟虑",
+      "行善",
+      "热忱"
+    ],
+    "per_item_can_pick_states": null,
+    "CanPick_all_states_qualified": false,
+    "prison_status_independently_probed": false,
+    "advanced_activities_feature_independently_probed": false,
+    "screenshot_alone_shows_faith": false,
+    "current_character_and_menu_only": true,
+    "worldwide_fixed_candidate_count_asserted": false,
+    "source_refs": [
+      "capture_selection:/current_intent_menu_observation",
+      "native_receipt",
+      "native_faith_binding"
+    ]
+  },
+  "advanced_activities_mapping": {
+    "exact_predicate": "has_dlc_feature = advanced_activities",
+    "branded_dlc_mapping_closed": false,
+    "video_label": "高级活动功能",
+    "local_search_scopes": [
+      "game/dlc",
+      "game/dlc_metadata",
+      "common/scripted_triggers/00_has_dlc_scripted_triggers.txt"
+    ],
+    "advanced_activities_declaration_found_in_dlc_or_metadata": false,
+    "ep2_metadata": {
+      "dlc_key": "dlc_007",
+      "name": "Tours and Tournaments",
+      "steam_id": "2311920",
+      "source_refs": [
+        "dlc_metadata:49-55",
+        "ep2_descriptor:1-8"
+      ]
+    },
+    "ep2_scripted_trigger": {
+      "key": "has_ep2_dlc_trigger",
+      "predicate": "has_dlc_feature = tours_and_tournaments",
+      "source_refs": [
+        "dlc_triggers:110-112"
+      ]
+    },
+    "two_feature_keys_equated": false,
+    "metadata_features_are_info_window_localization_keys": "dlc_metadata_info:35-39",
+    "boundary": "Local product descriptors and metadata identify the EP2 product but do not establish advanced_activities ownership mapping. No branded-DLC requirement asserted."
+  },
+  "narration_candidates": {
+    "N13": "菜单里有两个叫“深思熟虑”的选项。一个属于活动选项里的朝圣态度，游戏栏名叫“忠诚”；另一个是朝圣意图。朝圣态度改变行进速度修正和主奖励计算，意图则让沿途偏向反思、行善或传播信仰。反思意图不要求先有耐心或朝圣者特质；那个门槛属于朝圣态度里的同名档位。",
+    "N15": "这次主持朝圣，界面显示了深思熟虑、行善和热忱。原版主持者的意图池列着这三项：深思熟虑是默认项，后两项还检查高级活动功能，行善另检查人物存活且未被囚禁。这些显示条件不按天主教信仰或人物奉献等级筛选。若只是来宾，原版显式列出的候选只有深思熟虑。共享的娱乐定义能让事件响应，并不表示它自动成为菜单第四项。",
+    "exact_localization_labels": [
+      "深思熟虑",
+      "行善",
+      "热忱"
+    ],
+    "forbidden_overclaims": [
+      "Catholic faith causes the three-item menu",
+      "All three displayed options were proven selectable",
+      "Character devotion level unlocks these intentions",
+      "Generous is required for Altruism",
+      "Zealous is required for Zealotry",
+      "Recreation automatically becomes a fourth pilgrimage intent",
+      "advanced_activities definitively means a named branded DLC"
+    ]
+  },
+  "source_pins": [
+    {
+      "id": "activity",
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/activities/activity_types/pilgrimage.txt",
+      "sha256": "24153043485b035cb0477de7306649027cb68c039e4a9d903776eddd870d8b9f",
+      "bytes": 111931
+    },
+    {
+      "id": "pilgrimage_intents",
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/activities/intents/pilgrimage_intents.txt",
+      "sha256": "67c914ef7f84b28dc2ae9072f5aeb48a535bbaa3207f518f3c879737e4e22002",
+      "bytes": 1505
+    },
+    {
+      "id": "tour_intents",
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/activities/intents/tour_intents.txt",
+      "sha256": "afd60068603ad3d724a972faf7b80cf41525a20dd8956a7fc535af4b765fb8c9",
+      "bytes": 2536
+    },
+    {
+      "id": "shared_intents",
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/activities/intents/shared_intents.txt",
+      "sha256": "f22e167cab10b6f5307f26a40bc33e897f66854a868a8c60ce1414bb560092ad",
+      "bytes": 8212
+    },
+    {
+      "id": "intent_info",
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/activities/intents/_intents.info",
+      "sha256": "558aa17277fc3f627f7d488482f034d0a14467757234d5c1db24ac061086653f",
+      "bytes": 3199
+    },
+    {
+      "id": "intent_gui",
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/gui/window_activity_intent_selection.gui",
+      "sha256": "07b09863a0064aad7abe1e061a93c979b5edcbc662cb8918a535c3a33a93a91a",
+      "bytes": 11633
+    },
+    {
+      "id": "cn_pilgrimage",
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml",
+      "sha256": "cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3",
+      "bytes": 136481
+    },
+    {
+      "id": "en_pilgrimage",
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/localization/english/event_localization/activities/pilgrimage_events_l_english.yml",
+      "sha256": "6c940c76dd6998ddd247df0a2e73ed72b4784b532c6c91f4988e1e127c777405",
+      "bytes": 142728
+    },
+    {
+      "id": "cn_altruism",
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/localization/simp_chinese/dlc/ep2/dlc_ep2_intents_l_simp_chinese.yml",
+      "sha256": "161ce7882f92a7686e246b3e5d62c68f6d5da3be8593cdd673e9fbe12459faf3",
+      "bytes": 3269
+    },
+    {
+      "id": "piety_reward",
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/scripted_effects/00_pilgrimage_effects.txt",
+      "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80",
+      "bytes": 40713
+    },
+    {
+      "id": "travel_modifiers",
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/modifiers/00_travel_modifiers.txt",
+      "sha256": "b7a1365a14341bf647339cb843753e5da4f8d9990c52c92d6e10422a8530a2f1",
+      "bytes": 8782
+    },
+    {
+      "id": "pilgrimage_on_actions",
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/on_action/activities/pilgrimage_on_actions.txt",
+      "sha256": "fdf71f074882f94eb3df497a1ddb2cb9a95fb13e973aebf25d4c3569729ee354",
+      "bytes": 11904
+    },
+    {
+      "id": "dlc_triggers",
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/scripted_triggers/00_has_dlc_scripted_triggers.txt",
+      "sha256": "8bad67efdc979e6e3358cc055c462a2051cbc27b9ff2594e92b01e3f021f2066",
+      "bytes": 2631
+    },
+    {
+      "id": "dlc_metadata",
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/dlc_metadata/00_dlc_metadata.txt",
+      "sha256": "a18addeab0dc91255f3b8498ce734485722b84cb4793fa089daaac902858558a",
+      "bytes": 3885
+    },
+    {
+      "id": "dlc_metadata_info",
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/dlc_metadata/_dlc_metadata.info",
+      "sha256": "32365cca59331905f0bdb1843cdfac1d5d08bade70d7181cb8618c2e732e1f92",
+      "bytes": 1072
+    },
+    {
+      "id": "ep2_descriptor",
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/dlc/dlc007_ep2/dlc007.dlc",
+      "sha256": "a7f6cf8d6af1aa0ca2d3ede352100b1df64215ecc2d23c94088ed5dedc0f20e5",
+      "bytes": 237
+    },
+    {
+      "id": "capture_selection",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode02/v6-mechanism-production-20261022-a01/full-authoring/CAPTURE-SELECTIONS.actual.a09.json",
+      "sha256": "0a6152463d8038ea0b317d8fbd22e30db603f4a72eec9ecdd0787368b043c860",
+      "bytes": 9483
+    },
+    {
+      "id": "native_receipt",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode02/v6-mechanism-production-20261022-a01/filming/live/4-8e1c2f1861--faith-engine--R0032/case-output/ordinary-pilgrimage-0002-receipt.json",
+      "sha256": "95eff93c29e2bbb11aa2830d1a02b9247d9272cde8d220d18e9dadae6ee053a6",
+      "bytes": 41757
+    },
+    {
+      "id": "native_faith_binding",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode02/v6-mechanism-production-20261022-a01/root/n15-revision-prep-a01/NATIVE-FAITH-BINDING.actual.json",
+      "sha256": "4ad0e67a545588494cff7bfe5133de4fde5aa7380f9fb0e14eaf4beee49e5d23",
+      "bytes": 1581
+    },
+    {
+      "id": "old_narration",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode02/v6-mechanism-production-20261022-a01/root/n02-n15-voices-a01/narration-authoring.full33.actual.json",
+      "sha256": "e368a3917d274beaad8cb3f7784d555ef817baff480d1de27dd2e73d97453bc3",
+      "bytes": 109818
+    },
+    {
+      "id": "retained_native_filter_research",
+      "path": "C:/workspace/ck3_eternal_recurrence/promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-v5-intent-candidates-12004.json",
+      "sha256": "e3b6aeed19d29a23b203297c64443296d65e361f00ebc38a148424df72e9baaf",
+      "bytes": 6496
+    }
+  ],
+  "storage_admission": {
+    "grant_path": "C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/v8-clarity-20261024-a01/PREPARATION-ADMISSION.a01.actual.json",
+    "grant_sha256": "cb7295fba87ebae6b1c9bfb2ed6771574dd735744b291c3cda8637842a480366",
+    "head_path": "C:/workspace/.codex-task-bus/storage/volume-C-current.json",
+    "head_sha256": "78b193362cf154c025237e0145a2f97781474d3957a32b87243b00641f9540aa",
+    "role": "metadata",
+    "owner_task": "/root/hajj_relationship",
+    "owner_new_bytes_cap": 1048576,
+    "pre_observation": {
+      "at": "2026-10-24T06:57:35.202767+00:00",
+      "machine_id": "4-8e1c2f1861",
+      "actual_source_head": "f96452a0cce7744d62bbf1782bd914a3e7040dd8",
+      "consumed_R2_upper_bytes": 2381836288,
+      "future_basis_R2_bytes": 2381836288,
+      "paid_increment_upper_bytes": 278528,
+      "remaining_future_bytes": 201048064,
+      "physical_free_bytes": 91202797568,
+      "physical_floor_bytes": 90033426022,
+      "physical_margin_bytes": 1169371546,
+      "gross_whole_volume_growth_upper_bytes": 8682424520,
+      "observed_system_paging_growth_bytes": 0,
+      "project_attributable_gross_growth_upper_bytes": 8682424520,
+      "projected_project_upper_bytes": 73636210343,
+      "quota_margin_bytes": 1363789657,
+      "retirement_records": 150,
+      "retirement_allocation_addback_bytes": 9638754504
+    },
+    "post_observation_console_only": true
+  },
+  "retention": {
+    "policy_version": "1.0.0",
+    "category": "record",
+    "review_at_utc": "2027-04-22T06:57:35.257902+00:00",
+    "review_action": "review_and_consolidate",
+    "active_use": "V8 N13/N15 clarity recut and source appendix",
+    "no_autoexpiry_claim": false
+  }
+}

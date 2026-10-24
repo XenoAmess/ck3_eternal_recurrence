@@ -1,0 +1,150 @@
+{
+  "schema": "xar.faith-e02.v8-editorial-handover.v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-24T07:16:30.541213+00:00",
+  "owner": "/root",
+  "task_id": "ck3-faith-e02-v8-clarity-20261024-4",
+  "reason": "User explicitly requested a gentle stop and handover to a colleague.",
+  "state": "editorial-paused-for-handover",
+  "source_head_at_observation": "9c41f962511d83440df959fe9c2e558f30c87d6c",
+  "source_qualification_claimed": false,
+  "runtime_root": "C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/v8-clarity-20261024-a01",
+  "actual_output_counts": {
+    "revised_bilingual_cue_drafts": 12,
+    "stable_full_episode_cues": 33,
+    "generated_pngs": 7,
+    "additional_storyboard_pages_not_generated": 24,
+    "new_tts_cues": 0,
+    "new_encoded_video_files": 0,
+    "new_game_sessions": 0,
+    "files_deleted": 0,
+    "reclamation_credit_bytes": 0
+  },
+  "review": {
+    "root_read_all_12_chinese_cues": true,
+    "root_viewed_c01_and_a02": true,
+    "c01_symmetry_review_passed": true,
+    "a02_density_revision_pending": true,
+    "tts_approved": false,
+    "final_bilingual_script_and_visual_timing_approved": false,
+    "human_full_video_review_performed": false
+  },
+  "external_files": [
+    {
+      "relative_path": "authoring/V8.CHANGED-12.SCRIPT.a01.draft.json",
+      "bytes": 66021,
+      "sha256": "db18607ce67a3be27f4a5e3b78b9692fabed6f9f918bc9c91c007dba0839d11a"
+    },
+    {
+      "relative_path": "authoring/V8.CHANGED-12.SCRIPT.a01.review.md",
+      "bytes": 26686,
+      "sha256": "034c14d476edccb73490d12e2005d7ac8db09787d5891649e5a2ce9a036b6c21"
+    },
+    {
+      "relative_path": "authoring/HANDOFF.actual.json",
+      "bytes": 8024,
+      "sha256": "b7cc6f834999ea5ce2488d543605af73c985d24c59a940f444dd2aacc3edaaaf"
+    },
+    {
+      "relative_path": "graphics/HANDOFF.actual.json",
+      "bytes": 6894,
+      "sha256": "4ba2fbae45cd58d6fec02a264bf6b864372334835957195570d7a2cf00b3059b"
+    },
+    {
+      "relative_path": "graphics/REPLACEMENTS.FIRST-BATCH.actual.json",
+      "bytes": 46604,
+      "sha256": "4f419251e6af8f867c4d583654bfa157513677f6a3908b9aa3b9a56e7536c6c6"
+    },
+    {
+      "relative_path": "graphics/DRAFT-FOCUS-AND-COST.candidate.json",
+      "bytes": 17546,
+      "sha256": "1f0f52799acababb1cccabf6783b8f566a5992da9a7b85388e2c4e38a2354486"
+    },
+    {
+      "relative_path": "voice-preparation-handoff.actual.json",
+      "bytes": 9331,
+      "sha256": "73fb26db256ad385532139c9099bca8a40a46b8c34c4206a14e61fdd02c13fa7"
+    },
+    {
+      "relative_path": "storage/closed-derived-reclamation-a01/PAUSED-CANDIDATE.actual.json",
+      "bytes": 30110,
+      "sha256": "2ab23ee76af470007b08a52fa0515f3cc72e42dd3b168780d1ce98d0e85f0d35"
+    }
+  ],
+  "repository_archives": [
+    {
+      "relative_path": "docs/ck3-native-ai/evidence/faith-e02-v8-clarity-20261024/intent-conditions.actual.json",
+      "bytes": 20837,
+      "sha256": "3d49202b4c950dfd6d9b25c234dafa9cf979d7d629cb56ec9ce9e07f4f53a668"
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/evidence/faith-e02-v8-clarity-20261024/travel-costs.actual.json",
+      "bytes": 16659,
+      "sha256": "fddac1ceed238ed5f63f31c4b8f2796d3223a9b97f659e62cb084e0c39af955a"
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/evidence/faith-e02-v8-clarity-20261024/activity-costs.actual.json",
+      "bytes": 33956,
+      "sha256": "bc64de904a95fce99e70353bfbb9469b35b52789d1f183e10114b5fea6ba3b14"
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/evidence/faith-e02-v8-clarity-20261024/native-invoices.actual.json",
+      "bytes": 15171,
+      "sha256": "80c8645ccaa3e7e8ab7aeac7a97c88b93f9189ffb25daa6e34b284774d07eeed"
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/evidence/faith-e02-v8-clarity-20261024/V8.CHANGED-12.SCRIPT.a01.draft.json",
+      "bytes": 66020,
+      "sha256": "800cc3f826d968df0755f49fb5a68ee658fc753374ac07e345ea78c31f38729e",
+      "serialization_note": "Only trailing blank lines normalized for repository whitespace checks; JSON value equals the preserved external draft exactly."
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/evidence/faith-e02-v8-clarity-20261024/DRAFT-FOCUS-AND-COST.candidate.json",
+      "bytes": 17546,
+      "sha256": "1f0f52799acababb1cccabf6783b8f566a5992da9a7b85388e2c4e38a2354486"
+    }
+  ],
+  "toolchain_observation": {
+    "version": "0.3.0",
+    "release_url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/tag/v0.3.0",
+    "wheel_sha256": "f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c",
+    "next_run_must_requery_latest_release": true
+  },
+  "storage": {
+    "predecessor_revision": 51,
+    "predecessor_state": "preparing",
+    "preparation_only": true,
+    "new_workload_admitted_by_handover": false,
+    "closure_performed_at_this_document_observation": false,
+    "root_closure_order": "All writers STOP, commit and ordinary fast-forward push, then Root alone publishes the reviewed a02 terminal release and reads back future 0.",
+    "terminal_receipt_path": "C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/v8-clarity-20261024-a01/CLOSED-PREPARATION.a02.actual.json",
+    "current_volume_head_path": "C:/workspace/.codex-task-bus/storage/volume-C-current.json",
+    "closure_helper": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/v8-clarity-20261024-a01/storage/close_preparation_a02.operation.py",
+      "bytes": 14023,
+      "sha256": "8b9d1a09013c9ece77baed17c7bde33231f2c068c21e1c0cee7c999e41430bb7"
+    },
+    "closure_candidate": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/v8-clarity-20261024-a01/storage/CLOSED-PREPARATION.a02.candidate.json",
+      "bytes": 4235,
+      "sha256": "c7abbab68faac66bfd6f6f0b744b099e5adadca6a764533773de44364be2f911"
+    },
+    "new_run_requires_new_admission": true
+  },
+  "retention": {
+    "policy_path": "docs/storage-retention-policy.json",
+    "owner": "/root; successor must claim ongoing editorial inputs",
+    "protected_input_review_at_utc": "2026-10-30T12:00:00Z",
+    "automatic_renewal": false,
+    "protection_scope": "Unique V7 delivery; current V8 script, graphics and storyboards; necessary original audio, images, recordings, canonical save and minimal unresolved evidence referenced by current authoring.",
+    "permanent_retention_claimed": false
+  },
+  "delivery": {
+    "mode": "local_only",
+    "machine_preference_path": "docs/maintenance/machine-preferences/4-8e1c2f1861.video-delivery.json",
+    "v8_video_created": false,
+    "v7_video_path": "C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/final-render-a01/sample/build-a03/native-run/derived/direct/episode02-review.mp4",
+    "v7_video_bytes": 82445250,
+    "v7_video_sha256": "0cbcff0ccc9a7e6809fc61425952ef06c9e38a457bdb0d0b97382a0e2fd3b68e"
+  }
+}

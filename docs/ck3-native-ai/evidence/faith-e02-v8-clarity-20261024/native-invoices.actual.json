@@ -1,0 +1,424 @@
+{
+  "schema": "faith-e02-v8-native-invoices-v1",
+  "machine_id": "4-8e1c2f1861",
+  "read_at_utc": "2026-10-24T06:59:32.126452+00:00",
+  "storage_admission": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\PREPARATION-ADMISSION.a01.actual.json",
+    "bytes": 5802,
+    "sha256": "cb7295fba87ebae6b1c9bfb2ed6771574dd735744b291c3cda8637842a480366"
+  },
+  "storage_head": {
+    "path": "C:\\workspace\\.codex-task-bus\\storage\\volume-C-current.json",
+    "bytes": 1503,
+    "sha256": "78b193362cf154c025237e0145a2f97781474d3957a32b87243b00641f9540aa"
+  },
+  "capacity_before": {
+    "at": "2026-10-24T06:59:31.988881+00:00",
+    "machine_id": "4-8e1c2f1861",
+    "actual_source_head": "9c41f962511d83440df959fe9c2e558f30c87d6c",
+    "consumed_R2_upper_bytes": 2383515648,
+    "future_basis_R2_bytes": 2383515648,
+    "paid_increment_upper_bytes": 1957888,
+    "remaining_future_bytes": 199368704,
+    "physical_free_bytes": 91199705088,
+    "physical_floor_bytes": 90031746662,
+    "physical_margin_bytes": 1167958426,
+    "gross_whole_volume_growth_upper_bytes": 8685517000,
+    "observed_system_paging_growth_bytes": 0,
+    "project_attributable_gross_growth_upper_bytes": 8685517000,
+    "projected_project_upper_bytes": 73637623463,
+    "quota_margin_bytes": 1362376537,
+    "retirement_records": 150,
+    "retirement_allocation_addback_bytes": 9638754504
+  },
+  "formal_source": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v7-authoring-final-a09\\V7.FORMAL-INPUT.a11.candidate.json",
+    "bytes": 503347,
+    "sha256": "c7d849225c292c5ea63fb999dbe6a7a20cd884caa76c402d884d9a8633f4faf0"
+  },
+  "invoices": [
+    {
+      "run_id": "4-8e1c2f1861--faith-engine--R0032",
+      "quote_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v6-mechanism-production-20261022-a01\\filming\\live\\4-8e1c2f1861--faith-engine--R0032\\case-output\\ordinary-pilgrimage-final-configured-full10-quote.json",
+        "bytes": 1772,
+        "sha256": "18a8fd28071b917d6d77aad3d99e2f3f8da38cc7390a9d90ffaf67aa51efec12"
+      },
+      "actor_character_id": 31254,
+      "date_raw": 53144328,
+      "faith_id": 13,
+      "rite_id": 0,
+      "special_option": {
+        "native_option_id": 5302,
+        "key": "pilgrimage_type_pious"
+      },
+      "destination_province_id": 2577,
+      "configured_cost_raw": [
+        7000000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "diagnostic_aggregate_raw": [
+        7000000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "scale": 100000,
+      "configuration_fingerprint": "17114438004549093130",
+      "religion_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v6-mechanism-production-20261022-a01\\filming\\live\\4-8e1c2f1861--faith-engine--R0032\\case-output\\ordinary-pilgrimage-0002-receipt.json",
+        "bytes": 41757,
+        "sha256": "95eff93c29e2bbb11aa2830d1a02b9247d9272cde8d220d18e9dadae6ee053a6"
+      },
+      "default_option_indices": [
+        {
+          "category_definition_index": 5301,
+          "option_definition_index": 5302,
+          "selected_special": true
+        },
+        {
+          "category_definition_index": 20389,
+          "option_definition_index": 37141,
+          "selected_special": false
+        },
+        {
+          "category_definition_index": 13203,
+          "option_definition_index": 13206,
+          "selected_special": false
+        }
+      ],
+      "spiritual_fulfillment_raw": 0,
+      "payment": null,
+      "ui_identity_note": "No culture-era or exact title-tier readback established by this invoice",
+      "ui_topbar_change_display": "6.3",
+      "ui_travel_duration_display": "4 months",
+      "formal_visual_pointer": "/cues/17/visual_parts/5",
+      "formal_visual": {
+        "kind": "diagram",
+        "image": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v6-mechanism-production-20261022-a01\\filming\\screenshots\\v6-final-cost-settled-a01.png",
+          "bytes": 5186729,
+          "sha256": "b40e05e2a591852611408935a87035c5cbc9a77242c10130c1806f0f2c9b94c0"
+        },
+        "focus_rect": [
+          2130,
+          1030,
+          420,
+          330
+        ],
+        "disclosure": "Historical UI quote: base60+distance10=70; F0 model176 is separate; no payment proof",
+        "live_result_depicted": false,
+        "stable_page_technical_partition": true,
+        "new_motion_or_extra_game_time_asserted": false,
+        "duration_seconds": 5.466666666666667,
+        "cue_frame_interval": [
+          822,
+          986
+        ]
+      }
+    },
+    {
+      "run_id": "4-8e1c2f1861--faith-engine--R0039",
+      "quote_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0039\\case-output\\ordinary-pilgrimage-final-configured-full10-quote.json",
+        "bytes": 1773,
+        "sha256": "436b0655fe7699c742933f9bf577208f0b165f117aa179270f02546d5c1efe8d"
+      },
+      "actor_character_id": 15893,
+      "date_raw": 51394920,
+      "faith_id": 50,
+      "rite_id": 13,
+      "special_option": {
+        "native_option_id": 5279,
+        "key": "pilgrimage_type_hajj"
+      },
+      "destination_province_id": 6223,
+      "configured_cost_raw": [
+        18200000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "diagnostic_aggregate_raw": [
+        18150000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "scale": 100000,
+      "configuration_fingerprint": "11879976213336280574",
+      "religion_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0039\\case-output\\ordinary-pilgrimage-0002-receipt.json",
+        "bytes": 52974,
+        "sha256": "7c6cac87e5b342b35576399edc35d69cdb09584620f0ce687b4c8a40e6aef58c"
+      },
+      "default_option_indices": [
+        {
+          "category_definition_index": 5277,
+          "option_definition_index": 5279,
+          "selected_special": true
+        },
+        {
+          "category_definition_index": 17182,
+          "option_definition_index": 37141,
+          "selected_special": false
+        },
+        {
+          "category_definition_index": 13222,
+          "option_definition_index": 13224,
+          "selected_special": false
+        }
+      ],
+      "spiritual_fulfillment_raw": 2000000,
+      "payment": {
+        "source": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0039\\case-output\\ordinary-pilgrimage-post-start-wallet-observation.json",
+          "bytes": 835,
+          "sha256": "c6fb39931f4b1ec52f33ee88ef1e29901248c07460d9a688f696425c9d314acb"
+        },
+        "before": {
+          "played_character_gold": {
+            "raw": 139800000,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 225000000,
+            "scale": 100000
+          },
+          "native_revision": 2,
+          "date_raw": 51394920
+        },
+        "after": {
+          "played_character_gold": {
+            "raw": 121600000,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 225000000,
+            "scale": 100000
+          },
+          "native_revision": 3,
+          "date_raw": 51394920
+        },
+        "payment_total_proven": false
+      },
+      "ui_identity_note": "Original character PNG shows Hanafi, Mashriqi and Clan Abbasid Empire; exact culture era not read",
+      "ui_topbar_change_display": "14.8",
+      "ui_travel_duration_display": "14 months",
+      "formal_visual_pointer": "/cues/16/visual_parts/0",
+      "formal_visual": {
+        "kind": "diagram",
+        "image": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\screenshots-a02\\06-hajj-quote.original.png",
+          "bytes": 5459610,
+          "sha256": "23779f15ca5839c6c8c77a57c6ebda52194e4d2f1cfefc4afa9c09aea20dd5bb"
+        },
+        "focus_rect": [
+          2130,
+          1170,
+          420,
+          180
+        ],
+        "disclosure": "本次朝觐报价182；与F0算例分开",
+        "live_result_depicted": false,
+        "source_screen_id": "R0039-A05-quote182",
+        "duration_seconds": 3.533333333333333,
+        "cue_frame_interval": [
+          0,
+          106
+        ]
+      }
+    },
+    {
+      "run_id": "4-8e1c2f1861--faith-engine--R0046",
+      "quote_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0046\\case-output\\ordinary-pilgrimage-final-configured-full10-quote.json",
+        "bytes": 1774,
+        "sha256": "7762d72a8543c4c5634e4c75b2f2f0cde3f3353f3dc11acae4552596b7c90726"
+      },
+      "actor_character_id": 15893,
+      "date_raw": 51407544,
+      "faith_id": 50,
+      "rite_id": 13,
+      "special_option": {
+        "native_option_id": 5231,
+        "key": "pilgrimage_type_pious"
+      },
+      "destination_province_id": 4828,
+      "configured_cost_raw": [
+        12800000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "diagnostic_aggregate_raw": [
+        12750000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "scale": 100000,
+      "configuration_fingerprint": "15334177369928550091",
+      "religion_source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0046\\case-output\\pilgrimage-prebooking-0002-religion.actual-results.json",
+        "bytes": 64579,
+        "sha256": "8c4cdbbf0d97a99dda82f145b561fc239b707158bb05886a766473f9250a3cbb"
+      },
+      "default_option_indices": [
+        {
+          "category_definition_index": 5230,
+          "option_definition_index": 5231,
+          "selected_special": true
+        },
+        {
+          "category_definition_index": 20189,
+          "option_definition_index": 37141,
+          "selected_special": false
+        },
+        {
+          "category_definition_index": 13172,
+          "option_definition_index": 13174,
+          "selected_special": false
+        }
+      ],
+      "spiritual_fulfillment_raw": 2760000,
+      "payment": {
+        "source": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0046\\case-output\\ordinary-pilgrimage-post-start-wallet-observation.json",
+          "bytes": 840,
+          "sha256": "c0a08837c5cbf5dbd8ede6350dbc0f06178c2acb1b58d636e5c135c720e643d2"
+        },
+        "before": {
+          "played_character_gold": {
+            "raw": 94915142,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 341895800,
+            "scale": 100000
+          },
+          "native_revision": 5,
+          "date_raw": 51407544
+        },
+        "after": {
+          "played_character_gold": {
+            "raw": 82115142,
+            "scale": 100000
+          },
+          "played_character_piety": {
+            "raw": 341895800,
+            "scale": 100000
+          },
+          "native_revision": 6,
+          "date_raw": 51407544
+        },
+        "payment_total_proven": false
+      },
+      "ui_identity_note": "No culture-era or exact title-tier readback established by this invoice",
+      "ui_topbar_change_display": "14.6",
+      "ui_travel_duration_display": "23 days",
+      "formal_visual_pointer": "/cues/6/visual_parts/1",
+      "formal_visual": {
+        "raw": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\recording-a09\\captures\\v7-pious-quote-r0046\\raw-gameplay.mkv",
+          "bytes": 20245873,
+          "sha256": "e13df58a98da82dd20ba80198f17f9deadf88140c842fb866c5cc058520091df"
+        },
+        "raw_audit": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\final-media-audit-a01\\v7-pious-quote-r0046\\raw-audit.actual.json",
+          "bytes": 847,
+          "sha256": "51920794a38acf48d93a331ece16c039655f1178a99b47ec01b84c4fbd5c033e"
+        },
+        "source_index": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v7-authoring-final-a09\\r0046-0.source-index.actual.json",
+          "bytes": 3337,
+          "sha256": "f2b8acb1ae6ff234f9f44f672cb1684c487a110775bdcd6190b666b1113a186c"
+        },
+        "source_frame_pts": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\final-media-audit-a01\\v7-pious-quote-r0046\\pts.stdout",
+          "bytes": 156144,
+          "sha256": "93d0e0b468dbb0928fca854de2186bc8abc679dac22d2468f011ecd847c5bf2a"
+        },
+        "kind": "raw",
+        "raw_start_seconds": 2.0,
+        "disclosure": "普通虔诚朝圣：出发前报价",
+        "live_result_depicted": false,
+        "duration_seconds": 4.866666666666666,
+        "cue_frame_interval": [
+          139,
+          285
+        ],
+        "selected_source_frame_indices_exclusive": [
+          43,
+          150
+        ],
+        "actual_selected_source_first_pts": 2.0,
+        "actual_selected_source_last_pts": 6.833,
+        "actual_selected_source_frame_count": 107,
+        "source_timing": "Actual VFR source; nearest-frame 30fps delivery conversion is not extra game time"
+      }
+    }
+  ],
+  "scope": "Historical saved evidence audit; no Game, source change, media generation, formula qualification or total-journey payment claim",
+  "r32_itemization": {
+    "base": 60,
+    "distance": 10,
+    "total": 70,
+    "caravan_fee": null,
+    "caravan_salary_per_month_unappointed": "0.10"
+  },
+  "shared_ui_observation": "All three quote screens: one accompanying person, caravan slot empty, two empty travel-option slots, no travel-option cost displayed",
+  "missing_inputs": [
+    "Formula monthly character income I; topbar change is not its native readback",
+    "Culture era, exact title calculation inputs and complete discount predicates",
+    "Capital-distance-squared used by the cost script; route time is not it",
+    "Final canonical pomp/devotion option keys; numeric defaults are run-local",
+    "Independent departure quotation L; 0.10 monthly salary cannot substitute it"
+  ],
+  "model_only": {
+    "F0": "60+100+12+4=176+L",
+    "F1": "30+75+12+4=121+L",
+    "conditions": "I10,title tier3/K2,E1,nontribal,both D2=50000,pious,devotion labelled Pilgrim,pomp labelled Jiangjiu,mountaineers; F1 changes only dynasty legacy",
+    "L": null,
+    "native_discount_before_after_proven": false
+  },
+  "rounding_inference_authorized": false
+}
