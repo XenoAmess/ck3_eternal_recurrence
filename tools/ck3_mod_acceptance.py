@@ -122,6 +122,72 @@ def _verification_checked_pin_v1(path: Path, declared: object) -> FilePin:
     return actual
 
 
+NORMAL_EXIT_REQUIRED_MCP_TOOLS_V1 = frozenset({
+    'ck3_query_normal_exit_context_v1', 'ck3_request_normal_exit_v1', 'ck3_observe_normal_exit_v1',
+})
+
+
+class NormalExitAllocationBindingV1(TypedDict):
+    profile: FilePin
+    files: list[FilePin]
+
+
+class NormalExitAllocatedContextV1(TypedDict):
+    normal_exit_managed_profile: FilePin
+
+
+def normal_exit_tools_opted_in_v1(value: object) -> bool:
+    if not isinstance(value, list) or any(type(tool) is not str for tool in value):
+        raise ValueError('Required MCP tools must be an explicit string list')
+    selected = set(value) & NORMAL_EXIT_REQUIRED_MCP_TOOLS_V1
+    if selected and selected != NORMAL_EXIT_REQUIRED_MCP_TOOLS_V1:
+        raise ValueError('Managed normal exit requires all three existing required MCP tools')
+    return bool(selected)
+
+
+def normal_exit_static_binding_v1(value: object, *, state_dir: Path, run_dir: Path,
+                                  runtime_manifest: FilePin) -> NormalExitAllocationBindingV1:
+    """Read the existing producer's exact allocated artifacts without writing."""
+    reference = _verification_file_pin_v1(value)
+    destination = run_dir.resolve() / 'normal-exit-binding'
+    path = destination / 'normal-exit-managed-profile.json'
+    profile_ref = _verification_checked_pin_v1(path, reference)
+    profile = _verification_read_object_v1(path)
+    state = state_dir.resolve()
+    if (Path(text_field(profile, 'state_directory')).resolve() != state
+            or Path(text_field(profile, 'userdir')).resolve() != state / 'profile'
+            or Path(text_field(profile, 'evidence_directory')).resolve() != run_dir.resolve()):
+        raise ValueError('Allocated normal-exit profile crossed its actual state/userdir/output')
+    guard_path = destination / 'normal-exit-target-binding.json'
+    if Path(text_field(profile, 'guard_profile')).resolve() != guard_path:
+        raise ValueError('Allocated normal-exit guard crossed its source directory')
+    guard_ref = _verification_actual_pin_v1(guard_path)
+    if profile.get('guard_profile_sha256') != guard_ref['sha256']:
+        raise ValueError('Allocated normal-exit guard bytes changed')
+    guard = _verification_read_object_v1(guard_path)
+    if guard.get('runtime_manifest') != json_object(runtime_manifest):
+        raise ValueError('Allocated normal-exit guard selected another runtime')
+    inventory = object_field(profile, 'normal_exit_source_inventory')
+    if set(inventory) != {'path', 'sha256'}:
+        raise ValueError('Existing normal-exit source inventory reference required')
+    inventory_path = Path(text_field(inventory, 'path')).resolve()
+    if inventory_path.parent != state / 'profile':
+        raise ValueError('Allocated normal-exit inventory crossed its actual userdir')
+    inventory_ref = _verification_actual_pin_v1(inventory_path)
+    if inventory.get('sha256') != inventory_ref['sha256']:
+        raise ValueError('Allocated normal-exit inventory bytes changed')
+    result_path = destination / 'RESULT.actual.json'
+    result = _verification_read_object_v1(result_path)
+    if (result.get('profile') != json_object(profile_ref)
+            or result.get('inventory') != json_object(inventory_ref)
+            or result.get('runtime_manifest') != json_object(runtime_manifest)
+            or result.get('game_started') is not False):
+        raise ValueError('Allocated normal-exit producer result differs from its original artifacts')
+    projection = state / 'profile' / 'normal-exit-profile-binding-projection-v1.json'
+    return {'profile': profile_ref, 'files': [profile_ref, guard_ref, inventory_ref,
+        _verification_actual_pin_v1(projection), _verification_actual_pin_v1(result_path)]}
+
+
 def parse_legacy_threshold_gui_qualification_v1(value: object) -> LegacyThresholdGuiQualificationV1:
     row = json_object(value)
     if (set(row) != set(LegacyThresholdGuiQualificationV1.__required_keys__)
@@ -665,6 +731,18 @@ class Selection:
                 "--bridge-pipe", pipe, "--output", str(self.run_dir / "native-report.json"),
                 "--state-dir", str(state), "--plan", str(self.case_path(self.case["initial_plan"])),
                 "--control-plan-dir", str(self.run_dir / "controls")]
+        normal_exit_enabled = normal_exit_tools_opted_in_v1(self.case.get('required_mcp_tools', []))
+        if 'normal_exit_managed_profile' in self.context and not normal_exit_enabled:
+            raise ValueError('Normal-exit profile requires the three explicitly declared MCP tools')
+        if normal_exit_enabled and self.context:
+            if 'normal_exit_managed_profile' not in self.context:
+                raise ValueError('Actual allocated normal-exit profile reference is missing')
+            binding = normal_exit_static_binding_v1(self.context['normal_exit_managed_profile'],
+                state_dir=state, run_dir=self.run_dir,
+                runtime_manifest=_verification_actual_pin_v1(self.manifest_path))
+            self.required_pins.extend((Path(row['path']), row) for row in binding['files'])
+            argv += ['--normal-exit-managed-profile', binding['profile']['path'],
+                     '--normal-exit-managed-profile-sha256', binding['profile']['sha256']]
         if self.adapter_config is not None:
             contract = json_object(read_json(self.adapter_config))
             if 'execution_purpose' in contract:

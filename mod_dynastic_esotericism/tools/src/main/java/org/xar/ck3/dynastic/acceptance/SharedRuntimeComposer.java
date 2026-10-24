@@ -393,7 +393,8 @@ public final class SharedRuntimeComposer {
                 return sourceFile(path) && (name.startsWith("ck3_mod_acceptance") || name.startsWith("steam_offline")
                         || Set.of("codex_task_bus.py", "ck3_live_run_id.py", "fixture_engine_prepare.py",
                                 "storage_short_commit.py", "desktop_coordinate_map.py", "independent_mod_release.py",
-                                "build_native_configured_successor.py", "record_native_capability_segment.py").contains(name));
+                                "build_native_configured_successor.py", "record_native_capability_segment.py",
+                                "build_normal_exit_source_inventory_v1.py").contains(name));
             }).sorted().toList());
         }
         for (String name : List.of("__init__.py", "generic_product_adapter.py", "dynastic_esotericism_core.json",

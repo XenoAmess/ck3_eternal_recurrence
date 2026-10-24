@@ -9,3 +9,5 @@
 流程按 [test-plan.md](test-plan.md) 的 REL-01 至 REL-07：先源码业务通过，后真实首发、公开全文与兼容标签、实际 Steam 下载及缓存加载、离线恢复、永久 initial-baseline changelog 与 master 推送。发布前冻结文本、预览图和构建来源的精确哈希。原生首次创建结果未知时保留回执并先核已创建目标，不重复 CreateItem。
 
 正式发布前确认各语言处理符合仓库本地化流程；当前核心制作使用简体中文、英文。未实际运行的其他版本与多人均不宣称已通过。
+
+2026-10-24T10:43:27.089053+00:00 准备观察：`machine_id: desktop-3fevhd2-1c74096080`。Root直接审阅正式预览图（SHA-256 `3a81e6c88de042dc91ca88a0388b7a811be7030cbb3308a3e4a4e1813a40c17f`），标题与产品一致。只读 PE `symbols` 实际退出0：本机 Steam API DLL SHA-256 `1db3fd414039d3e5815a5721925dd2e0a3a9f2549603c6cab7c49b84966a1af3`、1065 exports、所需符号无缺失；原回执 `C:/ck3-dynastic-esotericism-20261024/publishing-readiness-a01/symbols.actual.json`。该命令未加载 Steam API、未联网、未创建物品或上传，不证明账号、EULA、发布及下载资格。

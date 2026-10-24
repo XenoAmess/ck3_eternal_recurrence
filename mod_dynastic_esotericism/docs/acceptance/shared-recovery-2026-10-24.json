@@ -55,7 +55,11 @@
         "observed_at_utc": "2026-10-24T10:28:13.015420+00:00",
         "status": "PENDING_FINAL_BUILDER_GROUP"
       }
-    ]
+    ],
+    "normal_exit_managed_profile_wiring": {
+      "status": "UNBOUND_IN_R0001_ARGV",
+      "scope": "Existing SDK requires managed source inventory; public profile/argv wiring under read-only investigation, no real typed-exit qualification."
+    }
   },
   "changes": [
     "Only playable characters receive doctrine knowledge; all-character membership and apostasy rules remain covered.",

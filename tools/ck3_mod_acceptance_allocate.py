@@ -13,12 +13,15 @@ if TYPE_CHECKING:
     import argparse
     from ck3_mod_acceptance import Selection
 from datetime import datetime,timezone
-import hashlib,json,os,platform,re,subprocess,sys,time
+import hashlib,importlib.util,json,os,platform,re,subprocess,sys,time
 import math
 from pathlib import Path
-from types import ModuleType
-from typing import Literal, TypedDict
-from ck3_mod_acceptance import Selection,path_at,check_pin,pin,read_json
+from types import ModuleType, SimpleNamespace
+from typing import Literal, Protocol, TypedDict, runtime_checkable
+from ck3_mod_acceptance import (Selection,path_at,check_pin,pin,read_json,
+    NormalExitAllocatedContextV1, NormalExitAllocationBindingV1,
+    normal_exit_tools_opted_in_v1, normal_exit_static_binding_v1,
+    _verification_actual_pin_v1)
 from ck3_mod_acceptance_prepare import write_json
 from ck3_mod_acceptance_runtime_inputs import validate_allocated_running_inputs
 
@@ -27,6 +30,48 @@ def recording_input_files(selection: Selection) -> dict[Path, FilePin]:
     if sources is None:
         raise ValueError('Actual recording running-input source closure required')
     return {Path(row['path']).resolve(): row for row in (sources['helper'], sources['contract'])}
+
+
+@runtime_checkable
+class _NormalExitProfileProducerV1(Protocol):
+    def load_builder(self, path: Path) -> object: ...
+    def create_profile(self, args: object, runtime: object, manifest: object,
+                       runtime_manifest: object, destination: Path, builder: object) -> object: ...
+
+
+def allocate_normal_exit_profile_v1(selection: Selection, live: Path) -> NormalExitAllocationBindingV1 | None:
+    """Invoke the existing create-only producer once, after the actual run ID."""
+    case = json_object(selection.case)
+    if not normal_exit_tools_opted_in_v1(case.get('required_mcp_tools', [])):
+        return None
+    manifest = json_object(selection.manifest)
+    runtime = json_object(selection.runtime)
+    paths = object_field(runtime, 'paths')
+    source = Path(text_field(paths, text_field(object_field(manifest, 'source_root'), 'path_key'))).resolve()
+    producer_path = source / 'tools/ck3_mod_acceptance_normal_exit_profile.py'
+    builder_path = source / 'tools/build_normal_exit_source_inventory_v1.py'
+    spec = importlib.util.spec_from_file_location('_allocated_existing_normal_exit_profile', producer_path)
+    if spec is None or spec.loader is None:
+        raise ValueError('Existing managed normal-exit profile producer is unavailable')
+    producer = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(producer)
+    if not isinstance(producer, _NormalExitProfileProducerV1):
+        raise ValueError('Existing managed normal-exit producer interface differs')
+    native = object_field(manifest, 'native')
+    state = selection.state_dir.resolve()
+    args = SimpleNamespace(state_dir=state, game_dir=Path(text_field(runtime, 'game_dir')).resolve(),
+        bridge_dll=Path(text_field(paths, text_field(object_field(native, 'dll'), 'path_key'))).resolve(),
+        bridge_injector=Path(text_field(paths, text_field(object_field(native, 'injector'), 'path_key'))).resolve(),
+        output=live.resolve() / 'native-report.json',
+        frontend_mod_load_observation=text_field(object_field(case, 'startup'), 'mode') == 'workshop_cache',
+        saved_campaign_save=None)
+    manifest_ref = _verification_actual_pin_v1(selection.manifest_path)
+    profile = producer.create_profile(args, runtime, manifest, manifest_ref,
+        live.resolve() / 'normal-exit-binding', producer.load_builder(builder_path))
+    binding = normal_exit_static_binding_v1(profile, state_dir=state,
+        run_dir=live, runtime_manifest=manifest_ref)
+    binding['files'].extend([_verification_actual_pin_v1(producer_path), _verification_actual_pin_v1(builder_path)])
+    return binding
 
 
 def require(value: object, message: str) -> None:
@@ -3342,6 +3387,9 @@ def _allocate_and_keep_impl(selection,args):
         'predecessor_admission':closure,'actual_process_inventory':inventory})
     identity=ids.allocate_live_run_id(mod_key,state_root=state_root,machine_id=machine,external_mod=external_mod)
     live=selection.locations['artifacts_root']/identity.run_id;live.mkdir(parents=True,exist_ok=False);(live/'controls').mkdir()
+    normal_exit_binding = allocate_normal_exit_profile_v1(selection, live)
+    if normal_exit_binding is not None:
+        files.update({Path(row['path']).resolve(): row for row in normal_exit_binding['files']})
     write_json(machine_admission/'allocation.json',{'schema':'ck3-mod-acceptance-machine-allocation-v1',
         'run_id':identity.run_id,'execution_id':identity.execution_id,'live':str(live.resolve()),
         'machine':binding,'runtime_manifest':pin(selection.manifest_path),'keeper_root':str(args.keeper_output.resolve())})
@@ -3354,6 +3402,9 @@ def _allocate_and_keep_impl(selection,args):
     context={'schema':'ck3-mod-acceptance-run-context-v1','run_id':identity.run_id,'run_dir':str(live),
         'keeper_root':str(args.keeper_output.resolve()),'prepared_case':pin(selection.prepared_path),
         'case_inputs':selection.prepared['case_inputs'],'product':selection.product_key,'case':selection.case['id']}
+    if normal_exit_binding is not None:
+        normal_exit_context: NormalExitAllocatedContextV1 = {'normal_exit_managed_profile': normal_exit_binding['profile']}
+        context.update(normal_exit_context)
     context_path=live/'allocated-context.json';write_json(context_path,context)
     actual=Selection(selection.runtime_path,selection.products_path,selection.product_key,selection.case['id'],context_path,selection.prepared_path)
     frozen={'run_id':identity.run_id,'mod_key':identity.mod_key,'execution_id':identity.execution_id,

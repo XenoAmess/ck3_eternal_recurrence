@@ -51,9 +51,11 @@ final class SharedRuntimeComposerTest {
         Files.createDirectories(canonicalHost.getParent());
         Files.writeString(canonicalHost, "# authored canonical host bytes; not a runtime qualification\n");
         for (String name : List.of("ck3_mod_acceptance_launcher.py", "ck3_mod_acceptance_queue.py", "ck3_mod_acceptance_keeper.py",
-                "ck3_mod_acceptance_build_runtime.py", "codex_task_bus.py")) {
+                "ck3_mod_acceptance_build_runtime.py", "codex_task_bus.py", "build_normal_exit_source_inventory_v1.py")) {
             Files.writeString(tools.resolve(name), "# authored tool\n");
         }
+        Path normalExitBuilder = tools.resolve("build_normal_exit_source_inventory_v1.py");
+        Files.writeString(normalExitBuilder, "# authored normal-exit source inventory builder\n");
         Path leaseHelper = repo.resolve("promo/ck3_native_war_ai/integration/screen_bus_lease.py");
         Files.createDirectories(leaseHelper.getParent());
         Files.writeString(leaseHelper, "# authored clean checkout lease helper\n");
@@ -191,8 +193,20 @@ final class SharedRuntimeComposerTest {
         assertEquals("retain exactly", actualManifest.path("preserved_unknown_parent_field").textValue());
         assertEquals(7, actual.path("allocation").path("preserved_allocation_field").intValue());
         assertEquals(1, actualIndex.path("actual_changed_parent_files").size());
-        assertEquals(15, result.copiedFiles());
-        assertEquals(18, actualIndex.path("files").size());
+        assertEquals(16, result.copiedFiles());
+        assertEquals(19, actualIndex.path("files").size());
+        Path frozenNormalExitBuilder = output.resolve("source/tools/build_normal_exit_source_inventory_v1.py");
+        assertEquals(Files.readString(normalExitBuilder), Files.readString(frozenNormalExitBuilder));
+        assertFalse(normalExitBuilder.toRealPath().equals(frozenNormalExitBuilder.toRealPath()));
+        ObjectNode frozenNormalExitBuilderPin = pin(frozenNormalExitBuilder);
+        boolean normalExitBuilderIndexed = false;
+        for (JsonNode sourcePin : actualIndex.path("files")) {
+            if (frozenNormalExitBuilderPin.path("path").equals(sourcePin.path("path"))) {
+                assertEquals(frozenNormalExitBuilderPin, sourcePin);
+                normalExitBuilderIndexed = true;
+            }
+        }
+        assertTrue(normalExitBuilderIndexed);
         assertEquals(projectedRegistration.toRealPath().toString(), actual.path("allocator_overlay")
                 .path("current-global-registration-provider").path("path").textValue());
         assertEquals(leaseHelper.toRealPath().toString(), actual.path("allocator_overlay")

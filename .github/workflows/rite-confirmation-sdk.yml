@@ -9,6 +9,8 @@ on:
       - 'ck3_autonomous_player/tests/unit/test_rite_creation_action_private_v1.py'
       - 'ck3_autonomous_player/tests/unit/test_mcp_service_override_factory.py'
       - 'tools/ck3_mod_acceptance.py'
+      - 'tools/ck3_mod_acceptance_allocate.py'
+      - 'tools/test_ck3_mod_acceptance_allocated_normal_exit.py'
       - 'ck3_autonomous_player/src/xar_autoplayer/bridge/normal_exit_host_terminal_v1.py'
       - 'ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py'
       - 'tools/ck3_mod_acceptance_queue_control.py'
@@ -22,6 +24,8 @@ on:
       - 'ck3_autonomous_player/tests/unit/test_rite_creation_action_private_v1.py'
       - 'ck3_autonomous_player/tests/unit/test_mcp_service_override_factory.py'
       - 'tools/ck3_mod_acceptance.py'
+      - 'tools/ck3_mod_acceptance_allocate.py'
+      - 'tools/test_ck3_mod_acceptance_allocated_normal_exit.py'
       - 'ck3_autonomous_player/src/xar_autoplayer/bridge/normal_exit_host_terminal_v1.py'
       - 'ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py'
       - 'tools/ck3_mod_acceptance_queue_control.py'
@@ -63,7 +67,7 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Install transport and type-check dependencies
         # The actual MCP server imports its shared CoA framebuffer module.
-        run: python -m pip install mcp==2.0.0 pydantic==2.13.5 mypy==2.4.0 opencv-python==5.0.0.93 numpy==2.5.2 Pillow==12.3.0
+        run: python -m pip install mcp==2.0.0 pydantic==2.13.5 mypy==2.4.0 opencv-python==5.0.0.93 numpy==2.5.2 Pillow==12.3.0 psutil==7.2.2
       - name: Check both maintained production modules
         run: python -B -m mypy --strict --follow-imports=skip --no-incremental --cache-dir=${{ runner.temp }}/rite-confirmation-mypy src/xar_autoplayer/bridge/rite_creation_action_private_v1.py src/xar_autoplayer/bridge/rite_creation_action_mcp_v1.py
       - name: Exercise the actual MCP transport and persisted successor chain
@@ -74,7 +78,7 @@ jobs:
         run: |
           python -B -m mypy --strict --follow-imports=silent --no-incremental --cache-dir=${{ runner.temp }}/failed-host-exit-mypy src/xar_autoplayer/bridge/normal_exit_host_terminal_v1.py ../tools/ck3_mod_acceptance_queue_control.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
-          python -B -X utf8 ../tools/test_ck3_mod_acceptance_failed_host_normal_exit.py
+          python -B -X utf8 -m unittest discover -s ../tools -p "test_ck3_mod_acceptance_*normal_exit.py" -v
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 ../tools/test_ck3_mod_acceptance_queue_control.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
