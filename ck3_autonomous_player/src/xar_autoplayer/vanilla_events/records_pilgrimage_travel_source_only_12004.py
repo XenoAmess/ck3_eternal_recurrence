@@ -4412,3 +4412,606 @@ _R0044_SOURCE_ONLY: dict[str, SourceOnlyRecord] = {'pilgrimage.9001': {'analysis
                                       'registry_consumption_succeeded_live': False}}}
 
 PILGRIMAGE_TRAVEL_SOURCE_ONLY_12004.update(_R0044_SOURCE_ONLY)
+
+
+_R0046_SOURCE_ONLY: dict[str, SourceOnlyRecord] = {'travel_events.4020': {'analysis': {'source_analysis_completed': True,
+                                     'migration_review_status': 'source_reviewed_no_occurrence_contract',
+                                     'exact_build': '1.20.0.4',
+                                     'source_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0046-events-source-analysis-12004.json',
+                                     'source_document_sha256': '73bf38a6eb843e1d3a7c11a29d4c0dedc8cb6f9e321f06ad3e1108404e51f7e3',
+                                     'occurrence_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0046-events-occurrence.json',
+                                     'title': '外来者：当地宗教热忱者索取通行赎罪',
+                                     'source_pins': [{'game_relative_path': 'events/travel_events/travel_events_james.txt',
+                                                      'bytes': 175108,
+                                                      'sha256': '68c3306f533d6bb285b9e3e82665be57a588879820e387bfd2045563e643da1a',
+                                                      'relevant_lines': [[3637, 3793]]},
+                                                     {'game_relative_path': 'localization/simp_chinese/event_localization/travel_events/travel_events_l_simp_chinese.yml',
+                                                      'bytes': 56854,
+                                                      'sha256': 'fac480f9b6051fbeebe114244b60c6b03d6027423f38076cc9109b0c2ded4f58',
+                                                      'relevant_lines': [[166, 183]]},
+                                                     {'game_relative_path': 'common/script_values/00_basic_values.txt',
+                                                      'bytes': 50566,
+                                                      'sha256': 'c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef',
+                                                      'relevant_lines': [[1131, 1166]]},
+                                                     {'game_relative_path': 'common/script_values/01_dynamic_values.txt',
+                                                      'bytes': 48201,
+                                                      'sha256': '023165e7d27d106a34f34d7726d938efa8d5dce25650ea3256e0b5ea3f73cc2a',
+                                                      'relevant_lines': [[53, 71]]}],
+                                     'source_options': [{'source_key': 'travel_events.4020.a',
+                                                         'historical_native_index': 0,
+                                                         'historical_label': '愚蠢的男人，你才是异端！',
+                                                         'effects': ['Learning duel against saved '
+                                                                     'strong_believer_scope; two base '
+                                                                     'weights50 modified by duel_value '
+                                                                     'multipliers+3.5/-3.5, not a '
+                                                                     'fixed50-percent outcome.',
+                                                                     'Winning toast requests '
+                                                                     'medium_piety_gain (+100 base piety). '
+                                                                     'Losing toast requests '
+                                                                     'medium_piety_loss (-100 base piety) '
+                                                                     'and '
+                                                                     'remove_short_term_gold=minor_gold_value.',
+                                                                     'Cynical/humble medium '
+                                                                     'stress-and-fulfillment gain. Actual '
+                                                                     'net wallet/stress is separately '
+                                                                     'recorded.'],
+                                                         'visibility': 'Unconditional source option; R46 '
+                                                                       'rendered0/native0 shown/enabled and '
+                                                                       'selected.',
+                                                         'historical_R31_selected': False},
+                                                        {'source_key': 'travel_events.4020.b',
+                                                         'historical_native_index': 1,
+                                                         'historical_label': '最好还是交钱了事。',
+                                                         'effects': ['remove_short_term_gold=minor_gold_value, '
+                                                                     'a dynamic value.',
+                                                                     'Arrogant/greedy medium and zealous '
+                                                                     'major stress-and-fulfillment gain. AI '
+                                                                     'affordability weights are not a '
+                                                                     'current player-legality grant.'],
+                                                         'visibility': 'Unconditional source option; R46 '
+                                                                       'rendered1/native1 shown/enabled, '
+                                                                       'unselected.',
+                                                         'historical_R31_selected': False},
+                                                        {'source_key': 'travel_events.4020.c',
+                                                         'historical_native_index': 2,
+                                                         'historical_label': '源条件选项：烧死这群疯子。',
+                                                         'effects': ['Saved strong_believer_scope death '
+                                                                     'request, killer=root, '
+                                                                     'death_reason=death_burned_witch.',
+                                                                     'Sadistic/callous/zealous medium stress '
+                                                                     'loss; compassionate/just/calm major '
+                                                                     'stress gain.'],
+                                                         'visibility': 'Requires '
+                                                                       'sadistic/wrathful/impatient/zealous; '
+                                                                       'not shown in R46.',
+                                                         'historical_R31_selected': False}],
+                                     'agent_reference': 'Source3637-3793: ten-year event cooldown, requires '
+                                                        'available travelling playable actor on land in '
+                                                        'other-religion county with zealous_people '
+                                                        'tradition. Immediate requests small '
+                                                        'wayfarer-storyteller fame, creates scholar '
+                                                        'local-faith/rite character44666 in R46, and '
+                                                        'select_local_animal_effect(TYPE=prowling). After '
+                                                        'requests silent_disappearance_ai_if_created_effect '
+                                                        'on believer. R46 selecteda, ACK and independent '
+                                                        'gone, wallet-15gold/-100piety; consistent with loss '
+                                                        'branch but no independent duel-toast observation. '
+                                                        'No hidden character disappearance/fame outcome '
+                                                        'claimed.',
+                                     'current_native_legality': None,
+                                     'action_ready': False,
+                                     'ordinary_auto_consumes': False,
+                                     'full_occurrence_contract_registered': False,
+                                     'selection_policy_changed': False,
+                                     'historical_index_is_current_selection_permission': False,
+                                     'historical_evidence_is_current_state': False},
+                        'observations': {'machine_id': '4-8e1c2f1861',
+                                         'observed_at_utc': '2026-10-23T23:45:53.289463+00:00',
+                                         'run_id': '4-8e1c2f1861--faith-engine--R0046',
+                                         'actual': {'event_instance_id': 24,
+                                                    'event_definition_key': 'travel_events.4020',
+                                                    'observed_at_utc': '2026-10-23T23:45:53.289463+00:00',
+                                                    'date_raw': 51407592,
+                                                    'input': {'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0046\\case-output\\faith-e02-journey-001-event-24-offline-analysis-input.json',
+                                                              'bytes': 73763,
+                                                              'sha256': '54d7c817bd13dad92d60ecf7e600756af1d69050fb0abedc72b961ddf981ba75'},
+                                                    'actor_character_id': 15893,
+                                                    'saved_scope_characters': {'strong_believer_scope': 44666,
+                                                                               'prowling_local_game': 15893},
+                                                    'before': {'date_raw': 51407592,
+                                                               'paused': True,
+                                                               'revision': 17,
+                                                               'native_revision': 16,
+                                                               'active_event': {'source': 'native',
+                                                                                'instance_id': 24,
+                                                                                'option_count': 3,
+                                                                                'title': None,
+                                                                                'options': [{'index': 0,
+                                                                                             'option_number': 1,
+                                                                                             'label': None,
+                                                                                             'enabled': True},
+                                                                                            {'index': 1,
+                                                                                             'option_number': 2,
+                                                                                             'label': None,
+                                                                                             'enabled': True},
+                                                                                            {'index': 2,
+                                                                                             'option_number': 3,
+                                                                                             'label': None,
+                                                                                             'enabled': True}]},
+                                                               'played_character_gold': {'raw': 82115142,
+                                                                                         'scale': 100000},
+                                                               'played_character_prestige': {'raw': 51271234,
+                                                                                             'scale': 100000},
+                                                               'played_character_piety': {'raw': 341895800,
+                                                                                          'scale': 100000},
+                                                               'actor_character_id': 15893,
+                                                               'stress': 0},
+                                                    'selected_native_option_index': 0,
+                                                    'selected_option_number': 1,
+                                                    'submission_attempted': True,
+                                                    'ack_accepted': True,
+                                                    'old_instance_gone_in_independent_snapshot': True,
+                                                    'selection_observed': {'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0046\\case-output\\faith-e02-journey-001-event-24-selection-observed.json',
+                                                                           'bytes': 37341,
+                                                                           'sha256': '8f4bdbd788b5824993fbd081c6dec570f638ac76cc61eb7a1baadfbecf931b95'},
+                                                    'selection_source': {'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0046\\case-output\\faith-e02-journey-001-0008-event-select-once.actual-results.json',
+                                                                         'bytes': 41449,
+                                                                         'sha256': '114ea6b0dc5c1806e607812a957f04c181fc2062ecd9c2030a16bd436eebb706'},
+                                                    'intent': {'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0046\\case-output\\faith-e02-journey-001-event-24-selection-intent.json',
+                                                               'bytes': 77601,
+                                                               'sha256': '256518b123dbf3ea42a87715cbba51f873c87d31bc08e3d3df7bfc3c596b9c3f'},
+                                                    'after': {'date_raw': 51407592,
+                                                              'paused': True,
+                                                              'revision': 18,
+                                                              'native_revision': 17,
+                                                              'active_event': None,
+                                                              'played_character_gold': {'raw': 80615142,
+                                                                                        'scale': 100000},
+                                                              'played_character_prestige': {'raw': 51271234,
+                                                                                            'scale': 100000},
+                                                              'played_character_piety': {'raw': 331895800,
+                                                                                         'scale': 100000},
+                                                              'actor_character_id': 15893,
+                                                              'stress': 0}},
+                                         'policy_actually_used': 'native_first_displayed_v1',
+                                         'registry_consumption_succeeded_live': False}},
+ 'pilgrimage.4001': {'analysis': {'source_analysis_completed': True,
+                                  'migration_review_status': 'source_reviewed_no_occurrence_contract',
+                                  'exact_build': '1.20.0.4',
+                                  'source_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0046-events-source-analysis-12004.json',
+                                  'source_document_sha256': '73bf38a6eb843e1d3a7c11a29d4c0dedc8cb6f9e321f06ad3e1108404e51f7e3',
+                                  'occurrence_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0046-events-occurrence.json',
+                                  'title': '普通朝圣通用抵达：选择后授予朝圣者',
+                                  'source_pins': [{'game_relative_path': 'events/activities/pilgrimage_activity/pilgrimage_events.txt',
+                                                   'bytes': 358138,
+                                                   'sha256': '900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06',
+                                                   'relevant_lines': [[9059, 9105]]},
+                                                  {'game_relative_path': 'common/scripted_effects/00_pilgrimage_effects.txt',
+                                                   'bytes': 40713,
+                                                   'sha256': '4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80',
+                                                   'relevant_lines': [[216, 274], [1209, 1221]]},
+                                                  {'game_relative_path': 'localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml',
+                                                   'bytes': 136481,
+                                                   'sha256': 'cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3',
+                                                   'relevant_lines': [[633, 733]]}],
+                                  'source_options': [{'source_key': 'pilgrimage.4001.a',
+                                                      'historical_native_index': 0,
+                                                      'historical_label': '我走过了神圣的道路。',
+                                                      'effects': ['Option9099 calls '
+                                                                  'give_pilgrim_trait_or_xp_effect; it is '
+                                                                  'not in the immediate block. For non-Hajj '
+                                                                  'host, arrived activity-log root effects '
+                                                                  'add_trait=pilgrim if absent '
+                                                                  '(effects216-234); this branch does not '
+                                                                  'remove Hajjaj. Existing-Pilgrim branches '
+                                                                  'are XP/lifestyle/piety logic, not a trait '
+                                                                  'conversion.',
+                                                                  'Option9100 calls '
+                                                                  'pilgrimage_arrival_stress_loss_effect: '
+                                                                  'zealous medium, cynical no loss, '
+                                                                  'otherwise minor stress-and-fulfillment '
+                                                                  'loss.',
+                                                                  'Names a_dead/a_cynical/a share this '
+                                                                  'single source option. After9103 calls '
+                                                                  'check_for_pilgrimage_badge_event_effect; '
+                                                                  'subsequent4100 actual order is retained '
+                                                                  'without claiming a native callstack.'],
+                                                      'visibility': 'Unconditional source option; R46 '
+                                                                    'rendered0/native0 shown/enabled, with '
+                                                                    'add-pilgrim indicator, and selected.',
+                                                      'historical_R31_selected': False}],
+                                  'agent_reference': 'Source immediate9084-9087 only plays arrival music and '
+                                                     'calls conditional Christian saint-bone creation. '
+                                                     'Source grant consumer is option9099 -> effects216-234, '
+                                                     'not window display/7000/6500. R46 before-start native '
+                                                     'Pilgrimfalse/Hajjajtrue and later before6500 native '
+                                                     'bothtrue/XP0 bracket the transition; no immediate '
+                                                     'post4001 trait-membership query was captured. Source '
+                                                     'consumer and actual later membership remain separate. '
+                                                     'No instantaneous native timing or hidden artifact '
+                                                     'result is inferred.',
+                                  'current_native_legality': None,
+                                  'action_ready': False,
+                                  'ordinary_auto_consumes': False,
+                                  'full_occurrence_contract_registered': False,
+                                  'selection_policy_changed': False,
+                                  'historical_index_is_current_selection_permission': False,
+                                  'historical_evidence_is_current_state': False},
+                     'observations': {'machine_id': '4-8e1c2f1861',
+                                      'observed_at_utc': '2026-10-23T23:46:19.959173+00:00',
+                                      'run_id': '4-8e1c2f1861--faith-engine--R0046',
+                                      'actual': {'event_instance_id': 25,
+                                                 'event_definition_key': 'pilgrimage.4001',
+                                                 'observed_at_utc': '2026-10-23T23:46:19.959173+00:00',
+                                                 'date_raw': 51407760,
+                                                 'input': {'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0046\\case-output\\faith-e02-journey-001-event-25-offline-analysis-input.json',
+                                                           'bytes': 72336,
+                                                           'sha256': '280ac447bfbd23d7c0b72d73efdb15d98bf061740d2fca9fe9090bd22c883146'},
+                                                 'actor_character_id': 15893,
+                                                 'saved_scope_characters': {'host': 15893},
+                                                 'before': {'date_raw': 51407760,
+                                                            'paused': True,
+                                                            'revision': 27,
+                                                            'native_revision': 26,
+                                                            'active_event': {'source': 'native',
+                                                                             'instance_id': 25,
+                                                                             'option_count': 1,
+                                                                             'title': None,
+                                                                             'options': [{'index': 0,
+                                                                                          'option_number': 1,
+                                                                                          'label': None,
+                                                                                          'enabled': True}]},
+                                                            'played_character_gold': {'raw': 80615142,
+                                                                                      'scale': 100000},
+                                                            'played_character_prestige': {'raw': 51271234,
+                                                                                          'scale': 100000},
+                                                            'played_character_piety': {'raw': 331895800,
+                                                                                       'scale': 100000},
+                                                            'actor_character_id': 15893,
+                                                            'stress': 0},
+                                                 'selected_native_option_index': 0,
+                                                 'selected_option_number': 1,
+                                                 'submission_attempted': True,
+                                                 'ack_accepted': True,
+                                                 'old_instance_gone_in_independent_snapshot': True,
+                                                 'selection_observed': {'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0046\\case-output\\faith-e02-journey-001-event-25-selection-observed.json',
+                                                                        'bytes': 37337,
+                                                                        'sha256': 'fc8a278a0206be4f8849aace9eb09685316147c412c6c8e7fce5ba0e8088f3ae'},
+                                                 'selection_source': {'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0046\\case-output\\faith-e02-journey-001-0012-event-select-once.actual-results.json',
+                                                                      'bytes': 41452,
+                                                                      'sha256': '093ae409f22fc25d87418111bbc246ba23f059ba20045ba61d0a495cdcbb3955'},
+                                                 'intent': {'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0046\\case-output\\faith-e02-journey-001-event-25-selection-intent.json',
+                                                            'bytes': 75900,
+                                                            'sha256': '47420017d7deb3109b8fe807888f3ffdba0745518c013c913e1b0b59b8c94d78'},
+                                                 'after': {'date_raw': 51407760,
+                                                           'paused': True,
+                                                           'revision': 28,
+                                                           'native_revision': 27,
+                                                           'active_event': None,
+                                                           'played_character_gold': {'raw': 80615142,
+                                                                                     'scale': 100000},
+                                                           'played_character_prestige': {'raw': 51271234,
+                                                                                         'scale': 100000},
+                                                           'played_character_piety': {'raw': 331895800,
+                                                                                      'scale': 100000},
+                                                           'actor_character_id': 15893,
+                                                           'stress': 0}},
+                                      'policy_actually_used': 'native_first_displayed_v1',
+                                      'registry_consumption_succeeded_live': False}},
+ 'pilgrimage.4100': {'analysis': {'source_analysis_completed': True,
+                                  'migration_review_status': 'source_reviewed_no_occurrence_contract',
+                                  'exact_build': '1.20.0.4',
+                                  'source_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/pilgrimage-4100-source-analysis.json',
+                                  'source_document_sha256': '1b02cd0156716c39166f0c247973538c31e8c997d74c308e3bf6d645592842e3',
+                                  'occurrence_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0046-events-occurrence.json',
+                                  'title': '朝圣徽章：动态支付与有条件所有权转移',
+                                  'source_pins': [{'game_relative_path': 'events/activities/pilgrimage_activity/pilgrimage_events.txt',
+                                                   'bytes': 358138,
+                                                   'sha256': '900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06',
+                                                   'relevant_lines': [[9446, 9619], [9698, 9717]]},
+                                                  {'game_relative_path': 'localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml',
+                                                   'bytes': 136481,
+                                                   'sha256': 'cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3',
+                                                   'relevant_lines': [[665, 668]]},
+                                                  {'game_relative_path': 'common/scripted_effects/00_artifact_badge_scripted_effects.txt',
+                                                   'bytes': 12465,
+                                                   'sha256': '9da2e2f4e0fc70fb17d55afdb23b9dd2b2a92b7a4ffddaf3fe00c1f172b1c83e',
+                                                   'relevant_lines': [[283, 317]]},
+                                                  {'game_relative_path': 'common/script_values/01_dynamic_values.txt',
+                                                   'bytes': 48201,
+                                                   'sha256': '023165e7d27d106a34f34d7726d938efa8d5dce25650ea3256e0b5ea3f73cc2a',
+                                                   'relevant_lines': [[53, 71]]}],
+                                  'source_options': [{'source_key': 'pilgrimage.4100.a',
+                                                      'historical_native_index': 0,
+                                                      'historical_label': '“请给我一个徽章！”',
+                                                      'effects': ['pay_short_term_gold to pilgrim_vendor: '
+                                                                  'minor_gold_value; multiply1.25 only if '
+                                                                  'badge_to_buy exists and '
+                                                                  'rarity=illustrious',
+                                                                  'If involved_activity exists: add '
+                                                                  'activity_log entry pilgrimage_badge_log, '
+                                                                  'score50, show_in_conclusion=yes; its root '
+                                                                  'effects conditionally set badge_to_buy '
+                                                                  'owner=root with purchased history'],
+                                                      'visibility': 'R46 rendered0/native0 shown/enabled, '
+                                                                    'selected. Dynamic minor_gold; '
+                                                                    'multiply1.25 only for illustrious '
+                                                                    'badge. Empty indicators are not free '
+                                                                    'cost.',
+                                                      'historical_R31_selected': False},
+                                                     {'source_key': 'pilgrimage.4100.b',
+                                                      'historical_native_index': 1,
+                                                      'historical_label': '我的金钱有更好的用途。',
+                                                      'effects': ['stress_impact '
+                                                                  'greedy=minor_stress_impact_loss; no '
+                                                                  'purchase or owner transfer in this option '
+                                                                  'block'],
+                                                      'visibility': 'R46 rendered1/native1 shown/enabled, '
+                                                                    'unselected.',
+                                                      'historical_R31_selected': False}],
+                                  'agent_reference': 'Reuse immutable earlier4100 analysis and exact source '
+                                                     'pins. Immediate finds/creates bystander and vendor and '
+                                                     'creates badge owned by vendor. Option0 pays dynamic '
+                                                     'minor_gold and conditionally transfers saved badge '
+                                                     'owner through activity log. R46 wallet-25gold is '
+                                                     'observed; generic artifact saved scope does not '
+                                                     'establish artifact ID, rarity, actual owner, stats or '
+                                                     'equipment. Source after cleanup is conditional; no '
+                                                     'hidden disappearance outcome claimed.',
+                                  'current_native_legality': None,
+                                  'action_ready': False,
+                                  'ordinary_auto_consumes': False,
+                                  'full_occurrence_contract_registered': False,
+                                  'selection_policy_changed': False,
+                                  'historical_index_is_current_selection_permission': False,
+                                  'historical_evidence_is_current_state': False},
+                     'observations': {'machine_id': '4-8e1c2f1861',
+                                      'observed_at_utc': '2026-10-23T23:46:42.035758+00:00',
+                                      'run_id': '4-8e1c2f1861--faith-engine--R0046',
+                                      'actual': {'event_instance_id': 26,
+                                                 'event_definition_key': 'pilgrimage.4100',
+                                                 'observed_at_utc': '2026-10-23T23:46:42.035758+00:00',
+                                                 'date_raw': 51407784,
+                                                 'input': {'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0046\\case-output\\faith-e02-journey-001-event-26-offline-analysis-input.json',
+                                                           'bytes': 76592,
+                                                           'sha256': '46fe3a0fc42e4aaa3c15ef7cf85adbab4a8797f2711acc504ff2ba8d28c1c5ee'},
+                                                 'actor_character_id': 15893,
+                                                 'saved_scope_characters': {'host': 15893,
+                                                                            'pilgrim_bystander': 44659,
+                                                                            'pilgrim_vendor': 44688,
+                                                                            'receiving_char': 44688,
+                                                                            'badge_acquirer': 44688},
+                                                 'before': {'date_raw': 51407784,
+                                                            'paused': True,
+                                                            'revision': 32,
+                                                            'native_revision': 31,
+                                                            'active_event': {'source': 'native',
+                                                                             'instance_id': 26,
+                                                                             'option_count': 2,
+                                                                             'title': None,
+                                                                             'options': [{'index': 0,
+                                                                                          'option_number': 1,
+                                                                                          'label': None,
+                                                                                          'enabled': True},
+                                                                                         {'index': 1,
+                                                                                          'option_number': 2,
+                                                                                          'label': None,
+                                                                                          'enabled': True}]},
+                                                            'played_character_gold': {'raw': 80615142,
+                                                                                      'scale': 100000},
+                                                            'played_character_prestige': {'raw': 51271234,
+                                                                                          'scale': 100000},
+                                                            'played_character_piety': {'raw': 331895800,
+                                                                                       'scale': 100000},
+                                                            'actor_character_id': 15893,
+                                                            'stress': 0},
+                                                 'selected_native_option_index': 0,
+                                                 'selected_option_number': 1,
+                                                 'submission_attempted': True,
+                                                 'ack_accepted': True,
+                                                 'old_instance_gone_in_independent_snapshot': True,
+                                                 'selection_observed': {'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0046\\case-output\\faith-e02-journey-001-event-26-selection-observed.json',
+                                                                        'bytes': 37340,
+                                                                        'sha256': '1d273f3aab5128357d68e520fc1efdbfde15fadcb514e319a2fe6a45f87cb9a9'},
+                                                 'selection_source': {'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0046\\case-output\\faith-e02-journey-001-0016-event-select-once.actual-results.json',
+                                                                      'bytes': 41455,
+                                                                      'sha256': 'b32b3051386b2fa476c92580c91bfdf8bff4bc51c48ad25c8b54d95bb7025e81'},
+                                                 'intent': {'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0046\\case-output\\faith-e02-journey-001-event-26-selection-intent.json',
+                                                            'bytes': 80410,
+                                                            'sha256': 'cf7094b966fd5ae7108d68e5ce990c7470cebdbc6379a6d6b95cf7ce33060156'},
+                                                 'after': {'date_raw': 51407784,
+                                                           'paused': True,
+                                                           'revision': 33,
+                                                           'native_revision': 32,
+                                                           'active_event': None,
+                                                           'played_character_gold': {'raw': 78115142,
+                                                                                     'scale': 100000},
+                                                           'played_character_prestige': {'raw': 51271234,
+                                                                                         'scale': 100000},
+                                                           'played_character_piety': {'raw': 331895800,
+                                                                                      'scale': 100000},
+                                                           'actor_character_id': 15893,
+                                                           'stress': 0}},
+                                      'policy_actually_used': 'native_first_displayed_v1',
+                                      'registry_consumption_succeeded_live': False}},
+ 'pilgrimage.6500': {'analysis': {'source_analysis_completed': True,
+                                  'migration_review_status': 'source_reviewed_no_occurrence_contract',
+                                  'exact_build': '1.20.0.4',
+                                  'source_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0046-events-source-analysis-12004.json',
+                                  'source_document_sha256': '73bf38a6eb843e1d3a7c11a29d4c0dedc8cb6f9e321f06ad3e1108404e51f7e3',
+                                  'occurrence_document': 'promo/ck3_faith_and_power/episode02/docs/knowledge/r0046-events-occurrence.json',
+                                  'title': '谢恩：首显示文化选项可以禁用',
+                                  'source_pins': [{'game_relative_path': 'events/activities/pilgrimage_activity/pilgrimage_events.txt',
+                                                   'bytes': 358138,
+                                                   'sha256': '900959b36dfc121bb0e785733723ea7e70e3931e7377a16206ba98eba555be06',
+                                                   'relevant_lines': [[10499, 10630]]},
+                                                  {'game_relative_path': 'common/scripted_effects/00_pilgrimage_effects.txt',
+                                                   'bytes': 40713,
+                                                   'sha256': '4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80',
+                                                   'relevant_lines': [[1225, 1250]]},
+                                                  {'game_relative_path': 'localization/simp_chinese/event_localization/activities/pilgrimage_events_l_simp_chinese.yml',
+                                                   'bytes': 136481,
+                                                   'sha256': 'cecb7052ac6672f1fd99a0008a8e7d6ccca474069a17e8a9902c55571cd272b3',
+                                                   'relevant_lines': [[758, 763]]},
+                                                  {'game_relative_path': 'common/script_values/00_basic_values.txt',
+                                                   'bytes': 50566,
+                                                   'sha256': 'c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef',
+                                                   'relevant_lines': [[1131, 1166]]}],
+                                  'source_options': [{'source_key': 'pilgrimage.6500.a',
+                                                      'historical_native_index': 0,
+                                                      'historical_label': '我知道！让我们尽情享受吧！',
+                                                      'effects': ['worldly_type_option_effect; selected '
+                                                                  'pilgrimage_member opinion toward root+20.',
+                                                                  'Base medium stress-and-fulfillment loss, '
+                                                                  'with '
+                                                                  'sadistic/cynical/paranoid/craven/reclusive '
+                                                                  'minor gains.'],
+                                                      'visibility': 'Requires tradition_xenophilic; '
+                                                                    'show_as_unavailable10558-10563 '
+                                                                    'intentionally renders disabled when '
+                                                                    'absent. R46 rendered0/native0 shown but '
+                                                                    'disabled; never submitted.',
+                                                      'historical_R31_selected': False},
+                                                     {'source_key': 'pilgrimage.6500.b',
+                                                      'historical_native_index': 1,
+                                                      'historical_label': '属神的人才能达到的壮举！',
+                                                      'effects': ['pious_type_option_effect and '
+                                                                  'add_piety=miniscule_piety_gain (+25 '
+                                                                  'base).',
+                                                                  'Cynical minor stress-and-fulfillment '
+                                                                  'gain. No trait-award operation in this '
+                                                                  'option.'],
+                                                      'visibility': 'No option trigger. R46 '
+                                                                    'rendered1/native1 shown/enabled; '
+                                                                    'explicit Root second-choice once after '
+                                                                    'default case stopped, not first-display '
+                                                                    'fallback.',
+                                                      'historical_R31_selected': False},
+                                                     {'source_key': 'pilgrimage.6500.c',
+                                                      'historical_native_index': 2,
+                                                      'historical_label': '源条件选项：人建造了这个地方，不是神灵。',
+                                                      'effects': ['Cynical minor stress-and-fulfillment '
+                                                                  'loss; saved pilgrimage_member opinion '
+                                                                  'toward root-10.'],
+                                                      'visibility': 'Requires cynical; hidden in R46.',
+                                                      'historical_R31_selected': False}],
+                                  'agent_reference': 'One-year event cooldown, not the activity cooldown. '
+                                                     'Immediate selects eligible adult entourage member. R46 '
+                                                     'generic frame advertises3 slots enabled; dedicated '
+                                                     'reader shows only native0(disabled, no xenophilic) and '
+                                                     'native1(enabled). Default first-display case stopped '
+                                                     'PARTIAL without submission. Root decision and native1 '
+                                                     'ACK/postcondition/independent snapshot are separate '
+                                                     'historical resolution. Both traits already true '
+                                                     'before6500 selection;6500 must never be described as '
+                                                     'awarding Pilgrim.',
+                                  'current_native_legality': None,
+                                  'action_ready': False,
+                                  'ordinary_auto_consumes': False,
+                                  'full_occurrence_contract_registered': False,
+                                  'selection_policy_changed': False,
+                                  'historical_index_is_current_selection_permission': False,
+                                  'historical_evidence_is_current_state': False},
+                     'observations': {'machine_id': '4-8e1c2f1861',
+                                      'observed_at_utc': '2026-10-23T23:48:42.943735+00:00',
+                                      'run_id': '4-8e1c2f1861--faith-engine--R0046',
+                                      'actual': {'event_instance_id': 28,
+                                                 'event_definition_key': 'pilgrimage.6500',
+                                                 'observed_at_utc': '2026-10-23T23:48:42.943735+00:00',
+                                                 'date_raw': 51408624,
+                                                 'input': {'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\live\\4-8e1c2f1861--faith-engine--R0046\\case-output\\faith-e02-journey-001-event-28-offline-analysis-input.json',
+                                                           'bytes': 74413,
+                                                           'sha256': '8647389c64593e56373db6dceabe508a01d6fedab56765c564442b400202d2d2'},
+                                                 'actor_character_id': 15893,
+                                                 'saved_scope_characters': {'host': 15893,
+                                                                            'pilgrimage_member': 44658},
+                                                 'before': {'date_raw': 51408624,
+                                                            'paused': True,
+                                                            'revision': 83,
+                                                            'native_revision': 82,
+                                                            'active_event': {'source': 'native',
+                                                                             'instance_id': 28,
+                                                                             'option_count': 3,
+                                                                             'title': None,
+                                                                             'options': [{'index': 0,
+                                                                                          'option_number': 1,
+                                                                                          'label': None,
+                                                                                          'enabled': True},
+                                                                                         {'index': 1,
+                                                                                          'option_number': 2,
+                                                                                          'label': None,
+                                                                                          'enabled': True},
+                                                                                         {'index': 2,
+                                                                                          'option_number': 3,
+                                                                                          'label': None,
+                                                                                          'enabled': True}]},
+                                                            'played_character_gold': {'raw': 78953210,
+                                                                                      'scale': 100000},
+                                                            'played_character_prestige': {'raw': 51756085,
+                                                                                          'scale': 100000},
+                                                            'played_character_piety': {'raw': 337156500,
+                                                                                       'scale': 100000},
+                                                            'actor_character_id': 15893,
+                                                            'stress': 0},
+                                                 'selected_native_option_index': None,
+                                                 'selected_option_number': None,
+                                                 'submission_attempted': False,
+                                                 'ack_accepted': None,
+                                                 'old_instance_gone_in_independent_snapshot': None,
+                                                 'selection_observed': None,
+                                                 'after': None,
+                                                 'policy_scope': 'original_automated_case_stopped_without_submission',
+                                                 'root_explicit_resolution': {'decision': {'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\commands\\root-r0046-event28-native1-once-a01.decision.actual.json',
+                                                                                           'bytes': 3480,
+                                                                                           'sha256': 'f18d8200be8769f31ec3fffb2c4d25d4cc25a97d16c50a2bb422be3f18748a34'},
+                                                                              'native_execution': {'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\commands\\root-r0046-event28-native1-once-a01.native.actual.json',
+                                                                                                   'bytes': 115721,
+                                                                                                   'sha256': 'b9308483dafeb107ef8ebd0c5f7969802d993d10fa29f28e57c270b8d9f3d738'},
+                                                                              'queue_exit': {'path': 'C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\commands\\root-r0046-event28-native1-once-a01.queue-exit.actual.json',
+                                                                                             'bytes': 733,
+                                                                                             'sha256': '96c90583730f2b32f403396550c13a711040d840a817a87b646a0ae90e4aa55c'},
+                                                                              'reviewer': '/root',
+                                                                              'observed_at_utc': '2026-10-23T23:55:45.844916+00:00',
+                                                                              'reason': 'Actual Native first '
+                                                                                        'shown option lacks '
+                                                                                        'xenophilic culture; '
+                                                                                        'independently '
+                                                                                        'Source-reviewed '
+                                                                                        'second '
+                                                                                        'shown/enabled '
+                                                                                        'option gives pious '
+                                                                                        'progress '
+                                                                                        'and25piety. '
+                                                                                        'Explicit Root '
+                                                                                        'decision; not '
+                                                                                        'first-display '
+                                                                                        'fallback.',
+                                                                              'selected_rendered_index': 1,
+                                                                              'selected_native_option_index': 1,
+                                                                              'selected_option_number': 2,
+                                                                              'submission_attempted': True,
+                                                                              'ack_accepted': True,
+                                                                              'native_postcondition': {'status': 'event_instance_advanced',
+                                                                                                       'postcondition_verified': True,
+                                                                                                       'old_event_instance_id': 28,
+                                                                                                       'new_event_instance_id': None},
+                                                                              'old_instance_gone_in_independent_snapshot': True,
+                                                                              'independent_post': {'date_raw': 51408624,
+                                                                                                   'paused': True,
+                                                                                                   'revision': 84,
+                                                                                                   'native_revision': 83,
+                                                                                                   'active_event': None,
+                                                                                                   'played_character_gold': {'raw': 78953210,
+                                                                                                                             'scale': 100000},
+                                                                                                   'played_character_prestige': {'raw': 51756085,
+                                                                                                                                 'scale': 100000},
+                                                                                                   'played_character_piety': {'raw': 339656500,
+                                                                                                                              'scale': 100000},
+                                                                                                   'actor_character_id': 15893,
+                                                                                                   'stress': 0},
+                                                                              'is_original_first_displayed_choice': False,
+                                                                              'original_case_status_overwritten': False}},
+                                      'policy_actually_used': 'native_first_displayed_v1',
+                                      'registry_consumption_succeeded_live': False}}}
+
+PILGRIMAGE_TRAVEL_SOURCE_ONLY_12004.update(_R0046_SOURCE_ONLY)
