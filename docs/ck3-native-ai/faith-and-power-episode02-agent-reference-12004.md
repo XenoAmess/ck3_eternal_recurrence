@@ -179,3 +179,7 @@ R32旧图的70金币应解释为“基础60＋距离10”；10不是旅队主管
 ## V8 清晰度修订交付补注（2026-10-24）
 
 `machine_id: 4-8e1c2f1861`：[V8制作记录](../../promo/ck3_faith_and_power/episode02/docs/production-v8-local-review-2026-10-24.md)已整合上述条件、旅行收费类别、逐步账单与折扣顺序，当前审阅片29:30.933，完整人工听看待审。最终[作者稿](evidence/faith-e02-v8-clarity-20261024/approved-script.localization-reviewed.json)、[素材分页规格](evidence/faith-e02-v8-clarity-20261024/focused-pages.materials.spec.json)、[技能别名页规格](evidence/faith-e02-v8-clarity-20261024/focused-pages.perk-aliases.spec.json)和[原版英文名称核对](evidence/faith-e02-v8-clarity-20261024/english-localization-review.actual.json)已入库。`clerical_justifications_perk`的普通名为教权辩护／Clerical Justifications，无地及游牧UI动态显示高效朝圣者／Prolific Pilgrim，不是两个技能。文化因子C控制动态金币上限150C／300C，不能与收入调整Q混用。此轮仅制作与来源整理，无新实机、Native业务资格、当前动作许可或普通auto消费增量。
+
+## V8图标一致性修订补注（2026-10-24）
+
+`machine_id: 4-8e1c2f1861`：[图标修订交付](../../promo/ck3_faith_and_power/episode02/docs/production-v8-icon-consistency-2026-10-24.md)统一19张卡片、62处重复引用；135张图片配置审计与实际图片查看分别计账。原版图标来源、事件主题图和通用对象示意见[来源绑定](evidence/faith-e02-v8-clarity-20261024/icon-consistency.sources.actual.json)。机制、文字、33段音频与时钟不变，无新的Native业务或普通auto接线；整片自动检查及19张最终帧实际查看通过，完整人工1×听看待审。

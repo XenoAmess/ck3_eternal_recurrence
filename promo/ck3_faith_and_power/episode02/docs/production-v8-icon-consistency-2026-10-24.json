@@ -1,0 +1,376 @@
+{
+  "schema": "faith-e02-v8-icon-consistency-delivery-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-24T13:17:09.148336+00:00",
+  "status": "ENCODED_REVIEW_PENDING",
+  "final": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\sample\\build-a01\\native-run\\derived\\direct\\episode02-review.mp4",
+    "bytes": 93195477,
+    "sha256": "5d8f5fee0373db2425620a713940f2139336472388b03dd9634df87c20a8bc29"
+  },
+  "text": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\sample\\build-a01\\native-run\\derived\\direct\\text\\episode02.zh.srt",
+      "bytes": 31455,
+      "sha256": "1fc7e294860ba4a0f90d3820c1db36268fd78f99457e340bf96dd554b2db9735"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\sample\\build-a01\\native-run\\derived\\direct\\text\\episode02.en.srt",
+      "bytes": 35603,
+      "sha256": "00fa9ae0e1fc07e1205efddbf19cb2aecad4d12dde761ddec7959423f9b14ca8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\sample\\build-a01\\native-run\\derived\\direct\\text\\episode02.bilingual.srt",
+      "bytes": 58137,
+      "sha256": "c0cfed55a8776b817aba90ca8a8e9341a405e0e3a8f978c7b40af4d02c91bec1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\sample\\build-a01\\native-run\\derived\\direct\\text\\episode02-script.md",
+      "bytes": 49397,
+      "sha256": "9746cfabb02cc0dc2061827b48ec04d02bb106f45a88c7fa4eae3f4ea2fceed8"
+    }
+  ],
+  "render_source_commit": "8bcff51b0d7767b69643e5ec77920c1c932abed5",
+  "render_source_tag": "archive/faith-e02-v8-icon-render-source-20261024",
+  "formal_input": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\V8.FORMAL-INPUT.a11.all-icons.render.json",
+    "bytes": 770584,
+    "sha256": "70c527a9450e8dc51ae69e060af4cb018919b5deffb0f3d03f4f75d2dbdf1985"
+  },
+  "original_public_build_exit": {
+    "machine_id": "4-8e1c2f1861",
+    "started_at_utc": "2026-10-24T12:34:57.563685+00:00",
+    "finished_at_utc": "2026-10-24T13:11:56.839023+00:00",
+    "elapsed_seconds": 2219.2753442999674,
+    "pid": 19524,
+    "actual_exit_code": 0,
+    "original_popen_wait_completed": true,
+    "automatic_retry": false
+  },
+  "public_plan_exit": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\commands\\plan-a02.EXIT.actual.json",
+    "bytes": 1742,
+    "sha256": "ab33457c542f0f7f192f87228332b80ed562581f7898af93b0540a77e49e684a"
+  },
+  "workers": 1,
+  "document_budget_bytes": 1776223450,
+  "actual_new_bytes": 189287066,
+  "coverage": {
+    "new_focused_page_specs_checked": 74,
+    "other_old_mixed_UI_images_actually_viewed_by_audit_agent": 61,
+    "focused_original_images_actually_viewed_by_audit_agent": 3,
+    "root_actually_viewed_all_rebuilt_images": 19,
+    "all135_original_images_human_view_claimed": false
+  },
+  "distinct_image_configurations_audited": 135,
+  "repaired_unique_cards": 19,
+  "replaced_diagram_parts": 62,
+  "changed_cues": [
+    "E02-V6-N07",
+    "E02-V6-N08",
+    "E02-V6-N20",
+    "E02-V6-N21",
+    "E02-V6-N24",
+    "E02-V6-N26",
+    "E02-V6-N27",
+    "E02-V6-N28",
+    "E02-V6-N30",
+    "E02-V6-N31",
+    "E02-V6-N32",
+    "E02-V6-N33"
+  ],
+  "all_original_audio_subtitle_text_timing_and_visual_intervals_unchanged": true,
+  "actual_root_source_PNGs_viewed": 19,
+  "actual_root_final_encoded_frames_viewed": 19,
+  "strict_AV_full_decode_exit_code": 0,
+  "all_frame_PTS_CFR_accepted_by_public_builder": true,
+  "video_probe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "h264",
+        "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+        "profile": "High",
+        "codec_type": "video",
+        "codec_tag_string": "avc1",
+        "codec_tag": "0x31637661",
+        "mime_codec_string": "avc1.640032",
+        "width": 2560,
+        "height": 1440,
+        "coded_width": 2560,
+        "coded_height": 1440,
+        "has_b_frames": 2,
+        "sample_aspect_ratio": "1:1",
+        "display_aspect_ratio": "16:9",
+        "pix_fmt": "yuv420p",
+        "level": 50,
+        "chroma_location": "left",
+        "field_order": "progressive",
+        "is_avc": "true",
+        "nal_length_size": "4",
+        "id": "0x1",
+        "r_frame_rate": "30/1",
+        "avg_frame_rate": "30/1",
+        "time_base": "1/15360",
+        "start_pts": 328,
+        "start_time": "0.021354",
+        "duration_ts": 27201536,
+        "duration": "1770.933333",
+        "bit_rate": "217849",
+        "bits_per_raw_sample": "8",
+        "nb_frames": "53128",
+        "extradata_size": 46,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "language": "und",
+          "handler_name": "VideoHandler",
+          "encoder": "Lavc63.1.102 libx264"
+        }
+      },
+      {
+        "index": 1,
+        "codec_name": "aac",
+        "codec_long_name": "AAC (Advanced Audio Coding)",
+        "profile": "LC",
+        "codec_type": "audio",
+        "codec_tag_string": "mp4a",
+        "codec_tag": "0x6134706d",
+        "mime_codec_string": "mp4a.40.2",
+        "sample_fmt": "fltp",
+        "sample_rate": "48000",
+        "channels": 2,
+        "channel_layout": "stereo",
+        "bits_per_sample": 0,
+        "initial_padding": 1024,
+        "id": "0x2",
+        "r_frame_rate": "0/0",
+        "avg_frame_rate": "0/0",
+        "time_base": "1/48000",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 85004800,
+        "duration": "1770.933333",
+        "bit_rate": "194322",
+        "nb_frames": "83014",
+        "extradata_size": 5,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "language": "und",
+          "handler_name": "SoundHandler"
+        }
+      }
+    ],
+    "format": {
+      "filename": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\sample\\build-a01\\native-run\\derived\\direct\\episode02-review.mp4",
+      "nb_streams": 2,
+      "nb_programs": 0,
+      "nb_stream_groups": 0,
+      "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+      "format_long_name": "QuickTime / MOV",
+      "start_time": "0.000000",
+      "duration": "1770.954687",
+      "size": "93195477",
+      "bit_rate": "420995",
+      "probe_score": 100,
+      "tags": {
+        "major_brand": "isom",
+        "minor_version": "512",
+        "compatible_brands": "isomiso2avc1mp41",
+        "encoder": "Lavf63.1.102"
+      }
+    }
+  },
+  "audio_signal": {
+    "mean_volume_db": -22.6,
+    "max_volume_db": -3.7,
+    "human_listening_performed": false
+  },
+  "music_five_windows_passed": true,
+  "manifest_verification": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\sample\\build-a01\\FINAL-MANIFEST-VERIFY.actual.json",
+    "bytes": 4493,
+    "sha256": "27cef9315c50986823588cc7be1e401c6e2db4dd5dd3db4255c11515b1d5b9af"
+  },
+  "final_frame_review": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\final-frame-review-a01\\ROOT-VISUAL-REVIEW.actual.json",
+    "bytes": 14672,
+    "sha256": "54af1d71557d525c5e7b3d54b57bab7badef7a52dfd33edf16c79bb2c7c47b94"
+  },
+  "human_full_1x_review_performed": false,
+  "human_listening_performed": false,
+  "human_signoff_recorded": false,
+  "new_game_or_native_business_credit": false,
+  "new_TTS_calls": 0,
+  "new_production_code_modules": 0,
+  "source_git_and_storage_finalization": "Read exact external SOURCE-DELIVERY.actual.json and CLOSED-ICON-CONSISTENCY.actual.json after publication; this record does not preclaim future push or CAS.",
+  "expected_source_delivery_receipt": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\SOURCE-DELIVERY.actual.json",
+  "expected_closed_storage_receipt": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\CLOSED-ICON-CONSISTENCY.actual.json",
+  "retention": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\RETENTION.actual.json",
+    "bytes": 1673,
+    "sha256": "fe216fef48b80c16f110914df817ce90291e2d7a83adab022cc76b43407595bb"
+  },
+  "storage_this_task": {
+    "retired_files": 36,
+    "deleted_native_allocation_bytes": 269025280,
+    "losslessly_compressed_files": 372,
+    "actual_native_allocation_saving_bytes": 196591616,
+    "addback_rows": 206,
+    "addback_bytes": 11594943480,
+    "quota_credit_bytes": 0,
+    "original_accounting_origin_unchanged": true,
+    "quota_bytes": 77000000000,
+    "hard_review_at_utc": "2026-10-24T15:00:00+00:00",
+    "automatic_renewal": false
+  },
+  "archived_evidence": [
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\ICON-CONSISTENCY.SPEC.actual.json",
+        "bytes": 13370,
+        "sha256": "f4b963ce22082ca9bdab825f7fcce8d3d57aef44f38fee69087d822869bf2f86"
+      },
+      "repo_artifact": "docs/ck3-native-ai/evidence/faith-e02-v8-clarity-20261024/icon-consistency.legacy.spec.json",
+      "copied_byte_exact": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\ICON-CONSISTENCY.REPLACEMENTS.actual.json",
+        "bytes": 46273,
+        "sha256": "fb08f06f772348397811d8793bb7a108c4505ab3bb785111f45adb6dddf2f423"
+      },
+      "repo_artifact": "docs/ck3-native-ai/evidence/faith-e02-v8-clarity-20261024/icon-consistency.legacy.actual.json",
+      "copied_byte_exact": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\FOCUSED-ICON-CONSISTENCY.spec.json",
+        "bytes": 19116,
+        "sha256": "27b1f7763aecec3b239fbca188ad467629a0953aa53298beaf1a3206e20a5713"
+      },
+      "repo_artifact": "docs/ck3-native-ai/evidence/faith-e02-v8-clarity-20261024/icon-consistency.focused.spec.json",
+      "copied_byte_exact": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\FOCUSED-ICON-CONSISTENCY.actual.json",
+        "bytes": 31222,
+        "sha256": "3766a9ac9e3c2123852b56ff343794438767b4febd1e3c466c864ae22cc3fc40"
+      },
+      "repo_artifact": "docs/ck3-native-ai/evidence/faith-e02-v8-clarity-20261024/icon-consistency.focused.actual.json",
+      "copied_byte_exact": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\CONDITION-ICON-CONSISTENCY.spec.json",
+        "bytes": 8332,
+        "sha256": "8bd6705b03f291a77ba7022e16dfb23667d20420d9a76e01c3a62fd8e85e2ec8"
+      },
+      "repo_artifact": "docs/ck3-native-ai/evidence/faith-e02-v8-clarity-20261024/icon-consistency.conditions.spec.json",
+      "copied_byte_exact": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\CONDITION-ICON-CONSISTENCY.actual.json",
+        "bytes": 29149,
+        "sha256": "f75170f1fdaf34a4a585323a3e838f63f98b35407bfcec413bfc6cd2e672305b"
+      },
+      "repo_artifact": "docs/ck3-native-ai/evidence/faith-e02-v8-clarity-20261024/icon-consistency.conditions.actual.json",
+      "copied_byte_exact": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\ALL135-ICON-AUDIT-AND-REPAIR.actual.json",
+        "bytes": 59871,
+        "sha256": "ffb0e375dae5d3fd154ad7c6b42e2d910922c0a878ef9b38deb8ac3a707074a6"
+      },
+      "repo_artifact": "docs/ck3-native-ai/evidence/faith-e02-v8-clarity-20261024/icon-consistency.audit.actual.json",
+      "copied_byte_exact": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\ICON-SOURCE-BINDINGS.actual.json",
+        "bytes": 14642,
+        "sha256": "0caa4381871f896da440d3256c37b0489ad552688ad295656d29ff18c0f64030"
+      },
+      "repo_artifact": "docs/ck3-native-ai/evidence/faith-e02-v8-clarity-20261024/icon-consistency.sources.actual.json",
+      "copied_byte_exact": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\final-frame-review-a01\\ROOT-VISUAL-REVIEW.actual.json",
+        "bytes": 14672,
+        "sha256": "54af1d71557d525c5e7b3d54b57bab7badef7a52dfd33edf16c79bb2c7c47b94"
+      },
+      "repo_artifact": "docs/ck3-native-ai/evidence/faith-e02-v8-clarity-20261024/icon-consistency.final-frames.actual.json",
+      "copied_byte_exact": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\commands\\build-a01.EXIT.actual.json",
+        "bytes": 309,
+        "sha256": "8de5c6350d586ef4c70cc59ccd8f13991d6629f3a03f36b64ba2d567deb3d831"
+      },
+      "repo_artifact": "docs/ck3-native-ai/evidence/faith-e02-v8-clarity-20261024/icon-consistency.build-exit.actual.json",
+      "copied_byte_exact": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\sample\\build-a01\\completed-review.json",
+        "bytes": 5083,
+        "sha256": "1de8babf018bb2a35343f72eaa3b0ef57d9c9d4679f0f66cc2df05bff019421d"
+      },
+      "repo_artifact": "docs/ck3-native-ai/evidence/faith-e02-v8-clarity-20261024/icon-consistency.completed-review.actual.json",
+      "copied_byte_exact": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\sample\\build-a01\\FINAL-MANIFEST-VERIFY.actual.json",
+        "bytes": 4493,
+        "sha256": "27cef9315c50986823588cc7be1e401c6e2db4dd5dd3db4255c11515b1d5b9af"
+      },
+      "repo_artifact": "docs/ck3-native-ai/evidence/faith-e02-v8-clarity-20261024/icon-consistency.manifest-verify.actual.json",
+      "copied_byte_exact": true
+    }
+  ]
+}

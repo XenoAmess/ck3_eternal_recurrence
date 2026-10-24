@@ -1,0 +1,1010 @@
+{
+  "schema" : "xar.clarity-cards.actual/v2",
+  "machineId" : "4-8e1c2f1861",
+  "observedAtUtc" : "2026-10-24T12:16:02.983104100Z",
+  "specification" : {
+    "path" : "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\FOCUSED-ICON-CONSISTENCY.spec.json",
+    "bytes" : 19116,
+    "sha256" : "27b1f7763aecec3b239fbca188ad467629a0953aa53298beaf1a3206e20a5713"
+  },
+  "cards" : [ {
+    "id" : "N20-multipliers-3",
+    "cue" : "E02-V6-N20",
+    "anchorZh" : "赞助朝圣乘二分之一",
+    "image" : {
+      "path" : "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\focused-cards\\N20-multipliers-3.png",
+      "bytes" : 113973,
+      "sha256" : "0c4e93bb3cda82e03d52ce43588cb80aadd1ba7752e408ac102bd1bd26ef66c2"
+    },
+    "text" : [ {
+      "text" : "信仰引擎  /  朝圣在奖励什么？",
+      "x" : 120,
+      "y" : 36,
+      "width" : 380,
+      "height" : 38,
+      "fontPixels" : 28
+    }, {
+      "text" : "规则图解",
+      "x" : 2280,
+      "y" : 36,
+      "width" : 112,
+      "height" : 38,
+      "fontPixels" : 28
+    }, {
+      "text" : "第二组：对当前金额连续乘倍率",
+      "x" : 120,
+      "y" : 118,
+      "width" : 756,
+      "height" : 73,
+      "fontPixels" : 54
+    }, {
+      "text" : "固定参数规则演算",
+      "x" : 120,
+      "y" : 256,
+      "width" : 256,
+      "height" : 43,
+      "fontPixels" : 32
+    }, {
+      "text" : "纪念想象中朋友的目的地",
+      "x" : 252,
+      "y" : 397,
+      "width" : 440,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "×0.5",
+      "x" : 1450,
+      "y" : 397,
+      "width" : 86,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "宫廷事件优惠",
+      "x" : 252,
+      "y" : 509,
+      "width" : 240,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "×0.75",
+      "x" : 1450,
+      "y" : 509,
+      "width" : 109,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "赞助朝圣",
+      "x" : 252,
+      "y" : 621,
+      "width" : 160,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "×0.5",
+      "x" : 1450,
+      "y" : 621,
+      "width" : 86,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "每次乘上一步的当前金额；按这里的顺序处理。",
+      "x" : 120,
+      "y" : 994,
+      "width" : 630,
+      "height" : 40,
+      "fontPixels" : 30
+    } ],
+    "subtitleAreaClear" : true,
+    "decodedAfterSave" : true,
+    "icon" : {
+      "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+      "bytes" : 14528,
+      "sha256" : "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+    },
+    "illustrations" : [ {
+      "source" : {
+        "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\travel_positive.dds",
+        "bytes" : 19264,
+        "sha256" : "b764cace100ddcae64d08b62ebaed3bd5c7adf3c5df5597850a071c6a2f5934a"
+      },
+      "row" : 2,
+      "column" : "LABEL"
+    }, {
+      "source" : {
+        "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\event_types\\type_relation_friendly.dds",
+        "bytes" : 116828,
+        "sha256" : "d9c750fe77221d137981ef6a3d7261cfeef8509c765db76430ba9dd11c63fd80"
+      },
+      "row" : 0,
+      "column" : "LABEL"
+    }, {
+      "source" : {
+        "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\event_types\\type_domain.dds",
+        "bytes" : 116828,
+        "sha256" : "b50022a82f6d465d02f1d8e3ccc6b0ba84838238195e027799170ab561c7ac23"
+      },
+      "row" : 1,
+      "column" : "LABEL"
+    } ]
+  }, {
+    "id" : "N20-humility-law",
+    "cue" : "E02-V6-N20",
+    "anchorZh" : "谦逊家族志向、",
+    "image" : {
+      "path" : "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\focused-cards\\N20-humility-law.png",
+      "bytes" : 92618,
+      "sha256" : "db260cecba98ec5a99245c9d500c8b849c996c580b379b95631b5d04558b045b"
+    },
+    "text" : [ {
+      "text" : "信仰引擎  /  朝圣在奖励什么？",
+      "x" : 120,
+      "y" : 36,
+      "width" : 380,
+      "height" : 38,
+      "fontPixels" : 28
+    }, {
+      "text" : "规则图解",
+      "x" : 2280,
+      "y" : 36,
+      "width" : 112,
+      "height" : 38,
+      "fontPixels" : 28
+    }, {
+      "text" : "第二组继续：两项各乘四分之三",
+      "x" : 120,
+      "y" : 118,
+      "width" : 756,
+      "height" : 73,
+      "fontPixels" : 54
+    }, {
+      "text" : "固定参数规则演算",
+      "x" : 120,
+      "y" : 256,
+      "width" : 256,
+      "height" : 43,
+      "fontPixels" : 32
+    }, {
+      "text" : "谦逊家族志向",
+      "x" : 252,
+      "y" : 397,
+      "width" : 240,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "×0.75",
+      "x" : 1450,
+      "y" : 397,
+      "width" : 109,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "降低朝圣费用的法律",
+      "x" : 252,
+      "y" : 509,
+      "width" : 360,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "×0.75",
+      "x" : 1450,
+      "y" : 509,
+      "width" : 109,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "各自满足条件时，依次乘当前金额。",
+      "x" : 120,
+      "y" : 994,
+      "width" : 480,
+      "height" : 40,
+      "fontPixels" : 30
+    } ],
+    "subtitleAreaClear" : true,
+    "decodedAfterSave" : true,
+    "icon" : {
+      "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+      "bytes" : 14528,
+      "sha256" : "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+    },
+    "illustrations" : [ {
+      "source" : {
+        "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\powerful_family_bonus\\humility.dds",
+        "bytes" : 360128,
+        "sha256" : "cb3b0ea78a4c3233f843584b9e8538fd51b267d138a43e13f2ec742973390a27"
+      },
+      "row" : 0,
+      "column" : "LABEL"
+    }, {
+      "source" : {
+        "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\laws\\mandala_decree_reverence.dds",
+        "bytes" : 360128,
+        "sha256" : "38b595ac08a3b44c9a49ccd3134db8ba9d4b8c50965ab977421d7dc663eb78a1"
+      },
+      "row" : 1,
+      "column" : "LABEL"
+    } ]
+  }, {
+    "id" : "N20-later-1",
+    "cue" : "E02-V6-N20",
+    "anchorZh" : "然后继续处理后面的倍率：",
+    "image" : {
+      "path" : "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\focused-cards\\N20-later-1.png",
+      "bytes" : 71242,
+      "sha256" : "b06b83682d649fe39a1aa6c514e8c29bc48bd9e318c28e6b120edd89441e0b56"
+    },
+    "text" : [ {
+      "text" : "信仰引擎  /  朝圣在奖励什么？",
+      "x" : 120,
+      "y" : 36,
+      "width" : 380,
+      "height" : 38,
+      "fontPixels" : 28
+    }, {
+      "text" : "规则图解",
+      "x" : 2280,
+      "y" : 36,
+      "width" : 112,
+      "height" : 38,
+      "fontPixels" : 28
+    }, {
+      "text" : "第三组继续：后面的现值倍率",
+      "x" : 120,
+      "y" : 118,
+      "width" : 702,
+      "height" : 73,
+      "fontPixels" : 54
+    }, {
+      "text" : "固定参数规则演算",
+      "x" : 120,
+      "y" : 256,
+      "width" : 256,
+      "height" : 43,
+      "fontPixels" : 32
+    }, {
+      "text" : "当地仪式",
+      "x" : 252,
+      "y" : 397,
+      "width" : 160,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "×1.75",
+      "x" : 1450,
+      "y" : 397,
+      "width" : 109,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "按列示顺序；每项都只在自己的条件满足时生效。",
+      "x" : 120,
+      "y" : 994,
+      "width" : 660,
+      "height" : 40,
+      "fontPixels" : 30
+    } ],
+    "subtitleAreaClear" : true,
+    "decodedAfterSave" : true,
+    "icon" : {
+      "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+      "bytes" : 14528,
+      "sha256" : "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+    },
+    "illustrations" : [ {
+      "source" : {
+        "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\faith_doctrines\\doctrine_pilgrimage_local_rites.dds",
+        "bytes" : 76864,
+        "sha256" : "4af6f035aba1b38ef647d0fc687bb35460586bcd93f13e4e521bc2acaf505225"
+      },
+      "row" : 0,
+      "column" : "LABEL"
+    } ]
+  }, {
+    "id" : "N20-later-2",
+    "cue" : "E02-V6-N20",
+    "anchorZh" : "无地冒险者或游牧政体配合教权辩护",
+    "image" : {
+      "path" : "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\focused-cards\\N20-later-2.png",
+      "bytes" : 99450,
+      "sha256" : "3d7c90b7cc97f9217ee8d002b99a179d68204d9e79ea9e5695fd47d06dfd9396"
+    },
+    "text" : [ {
+      "text" : "信仰引擎  /  朝圣在奖励什么？",
+      "x" : 120,
+      "y" : 36,
+      "width" : 380,
+      "height" : 38,
+      "fontPixels" : 28
+    }, {
+      "text" : "规则图解",
+      "x" : 2280,
+      "y" : 36,
+      "width" : 112,
+      "height" : 38,
+      "fontPixels" : 28
+    }, {
+      "text" : "第三组继续：后面的现值倍率",
+      "x" : 120,
+      "y" : 118,
+      "width" : 702,
+      "height" : 73,
+      "fontPixels" : 54
+    }, {
+      "text" : "固定参数规则演算",
+      "x" : 120,
+      "y" : 256,
+      "width" : 256,
+      "height" : 43,
+      "fontPixels" : 32
+    }, {
+      "text" : "当地仪式",
+      "x" : 252,
+      "y" : 397,
+      "width" : 160,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "×1.75",
+      "x" : 1450,
+      "y" : 397,
+      "width" : 109,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "无地／游牧 + 教权辩护",
+      "x" : 252,
+      "y" : 509,
+      "width" : 414,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "×0.5",
+      "x" : 1450,
+      "y" : 509,
+      "width" : 86,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "按列示顺序；各项条件分别判断。同一技能常规名为教权辩护，无地／游牧时显示为高效朝圣者。",
+      "x" : 120,
+      "y" : 994,
+      "width" : 1290,
+      "height" : 40,
+      "fontPixels" : 30
+    } ],
+    "subtitleAreaClear" : true,
+    "decodedAfterSave" : true,
+    "icon" : {
+      "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+      "bytes" : 14528,
+      "sha256" : "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+    },
+    "illustrations" : [ {
+      "source" : {
+        "path" : "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\source-icon-frames-a01\\node_learning-frame2.png",
+        "bytes" : 7308,
+        "sha256" : "e74ee12f20810a4d9796514d93bbf462d32d7d141da6c2c74dc88ab52d9d99b9"
+      },
+      "row" : 1,
+      "column" : "LABEL"
+    }, {
+      "source" : {
+        "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\faith_doctrines\\doctrine_pilgrimage_local_rites.dds",
+        "bytes" : 76864,
+        "sha256" : "4af6f035aba1b38ef647d0fc687bb35460586bcd93f13e4e521bc2acaf505225"
+      },
+      "row" : 0,
+      "column" : "LABEL"
+    } ]
+  }, {
+    "id" : "N20-later-3",
+    "cue" : "E02-V6-N20",
+    "anchorZh" : "联盟凝聚力提供的活动优惠",
+    "image" : {
+      "path" : "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\focused-cards\\N20-later-3.png",
+      "bytes" : 117141,
+      "sha256" : "cc255b1a1008b8deaac73e083682bb4bf232ead37af51fc9264dbccbc0dd390b"
+    },
+    "text" : [ {
+      "text" : "信仰引擎  /  朝圣在奖励什么？",
+      "x" : 120,
+      "y" : 36,
+      "width" : 380,
+      "height" : 38,
+      "fontPixels" : 28
+    }, {
+      "text" : "规则图解",
+      "x" : 2280,
+      "y" : 36,
+      "width" : 112,
+      "height" : 38,
+      "fontPixels" : 28
+    }, {
+      "text" : "第三组继续：后面的现值倍率",
+      "x" : 120,
+      "y" : 118,
+      "width" : 702,
+      "height" : 73,
+      "fontPixels" : 54
+    }, {
+      "text" : "固定参数规则演算",
+      "x" : 120,
+      "y" : 256,
+      "width" : 256,
+      "height" : 43,
+      "fontPixels" : 32
+    }, {
+      "text" : "当地仪式",
+      "x" : 252,
+      "y" : 397,
+      "width" : 160,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "×1.75",
+      "x" : 1450,
+      "y" : 397,
+      "width" : 109,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "无地／游牧 + 教权辩护",
+      "x" : 252,
+      "y" : 509,
+      "width" : 414,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "×0.5",
+      "x" : 1450,
+      "y" : 509,
+      "width" : 86,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "联盟凝聚力的活动优惠",
+      "x" : 252,
+      "y" : 621,
+      "width" : 400,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "×0.9",
+      "x" : 1450,
+      "y" : 621,
+      "width" : 86,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "按列示顺序；各项条件分别判断。同一技能常规名为教权辩护，无地／游牧时显示为高效朝圣者。",
+      "x" : 120,
+      "y" : 994,
+      "width" : 1290,
+      "height" : 40,
+      "fontPixels" : 30
+    } ],
+    "subtitleAreaClear" : true,
+    "decodedAfterSave" : true,
+    "icon" : {
+      "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+      "bytes" : 14528,
+      "sha256" : "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+    },
+    "illustrations" : [ {
+      "source" : {
+        "path" : "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\source-icon-frames-a01\\node_learning-frame2.png",
+        "bytes" : 7308,
+        "sha256" : "e74ee12f20810a4d9796514d93bbf462d32d7d141da6c2c74dc88ab52d9d99b9"
+      },
+      "row" : 1,
+      "column" : "LABEL"
+    }, {
+      "source" : {
+        "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\faith_doctrines\\doctrine_pilgrimage_local_rites.dds",
+        "bytes" : 76864,
+        "sha256" : "4af6f035aba1b38ef647d0fc687bb35460586bcd93f13e4e521bc2acaf505225"
+      },
+      "row" : 0,
+      "column" : "LABEL"
+    }, {
+      "source" : {
+        "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\bloc_cohesion.dds",
+        "bytes" : 76864,
+        "sha256" : "9c16d9777f70682f55143fb53a322261ceaf5ce680658b0d684d86402b004000"
+      },
+      "row" : 2,
+      "column" : "LABEL"
+    } ]
+  }, {
+    "id" : "N20-later-4",
+    "cue" : "E02-V6-N20",
+    "anchorZh" : "命运之路乘零点八",
+    "image" : {
+      "path" : "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\focused-cards\\N20-later-4.png",
+      "bytes" : 130430,
+      "sha256" : "baf30d61dd6975b9187fd10cf34b2d8120f83314514c1f7d30fc12154123d480"
+    },
+    "text" : [ {
+      "text" : "信仰引擎  /  朝圣在奖励什么？",
+      "x" : 120,
+      "y" : 36,
+      "width" : 380,
+      "height" : 38,
+      "fontPixels" : 28
+    }, {
+      "text" : "规则图解",
+      "x" : 2280,
+      "y" : 36,
+      "width" : 112,
+      "height" : 38,
+      "fontPixels" : 28
+    }, {
+      "text" : "第三组继续：后面的现值倍率",
+      "x" : 120,
+      "y" : 118,
+      "width" : 702,
+      "height" : 73,
+      "fontPixels" : 54
+    }, {
+      "text" : "固定参数规则演算",
+      "x" : 120,
+      "y" : 256,
+      "width" : 256,
+      "height" : 43,
+      "fontPixels" : 32
+    }, {
+      "text" : "当地仪式",
+      "x" : 252,
+      "y" : 397,
+      "width" : 160,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "×1.75",
+      "x" : 1450,
+      "y" : 397,
+      "width" : 109,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "无地／游牧 + 教权辩护",
+      "x" : 252,
+      "y" : 509,
+      "width" : 414,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "×0.5",
+      "x" : 1450,
+      "y" : 509,
+      "width" : 86,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "联盟凝聚力的活动优惠",
+      "x" : 252,
+      "y" : 621,
+      "width" : 400,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "×0.9",
+      "x" : 1450,
+      "y" : 621,
+      "width" : 86,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "命运之路",
+      "x" : 252,
+      "y" : 733,
+      "width" : 160,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "×0.8",
+      "x" : 1450,
+      "y" : 733,
+      "width" : 86,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "按列示顺序；各项条件分别判断。同一技能常规名为教权辩护，无地／游牧时显示为高效朝圣者。",
+      "x" : 120,
+      "y" : 994,
+      "width" : 1290,
+      "height" : 40,
+      "fontPixels" : 30
+    } ],
+    "subtitleAreaClear" : true,
+    "decodedAfterSave" : true,
+    "icon" : {
+      "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+      "bytes" : 14528,
+      "sha256" : "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+    },
+    "illustrations" : [ {
+      "source" : {
+        "path" : "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\source-icon-frames-a01\\node_learning-frame2.png",
+        "bytes" : 7308,
+        "sha256" : "e74ee12f20810a4d9796514d93bbf462d32d7d141da6c2c74dc88ab52d9d99b9"
+      },
+      "row" : 1,
+      "column" : "LABEL"
+    }, {
+      "source" : {
+        "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\piety_positive.dds",
+        "bytes" : 19264,
+        "sha256" : "11456b79e1a3bcaf5dc4fc0ac919e2b0c2c99b53dbed137aa6046f6ea2ebe3e8"
+      },
+      "row" : 3,
+      "column" : "LABEL"
+    }, {
+      "source" : {
+        "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\faith_doctrines\\doctrine_pilgrimage_local_rites.dds",
+        "bytes" : 76864,
+        "sha256" : "4af6f035aba1b38ef647d0fc687bb35460586bcd93f13e4e521bc2acaf505225"
+      },
+      "row" : 0,
+      "column" : "LABEL"
+    }, {
+      "source" : {
+        "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\bloc_cohesion.dds",
+        "bytes" : 76864,
+        "sha256" : "9c16d9777f70682f55143fb53a322261ceaf5ce680658b0d684d86402b004000"
+      },
+      "row" : 2,
+      "column" : "LABEL"
+    } ]
+  }, {
+    "id" : "N20-later-5",
+    "cue" : "E02-V6-N20",
+    "anchorZh" : "以牙还牙的款待",
+    "image" : {
+      "path" : "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\focused-cards\\N20-later-5.png",
+      "bytes" : 146603,
+      "sha256" : "88977196ae72f709a1aadb11388a03f9754a1295cef01f03aa36410b507c983a"
+    },
+    "text" : [ {
+      "text" : "信仰引擎  /  朝圣在奖励什么？",
+      "x" : 120,
+      "y" : 36,
+      "width" : 380,
+      "height" : 38,
+      "fontPixels" : 28
+    }, {
+      "text" : "规则图解",
+      "x" : 2280,
+      "y" : 36,
+      "width" : 112,
+      "height" : 38,
+      "fontPixels" : 28
+    }, {
+      "text" : "第三组继续：后面的现值倍率",
+      "x" : 120,
+      "y" : 118,
+      "width" : 702,
+      "height" : 73,
+      "fontPixels" : 54
+    }, {
+      "text" : "固定参数规则演算",
+      "x" : 120,
+      "y" : 256,
+      "width" : 256,
+      "height" : 43,
+      "fontPixels" : 32
+    }, {
+      "text" : "当地仪式",
+      "x" : 252,
+      "y" : 397,
+      "width" : 160,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "×1.75",
+      "x" : 1450,
+      "y" : 397,
+      "width" : 109,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "无地／游牧 + 教权辩护",
+      "x" : 252,
+      "y" : 485,
+      "width" : 414,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "×0.5",
+      "x" : 1450,
+      "y" : 485,
+      "width" : 86,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "联盟凝聚力的活动优惠",
+      "x" : 252,
+      "y" : 573,
+      "width" : 400,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "×0.9",
+      "x" : 1450,
+      "y" : 573,
+      "width" : 86,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "命运之路",
+      "x" : 252,
+      "y" : 661,
+      "width" : 160,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "×0.8",
+      "x" : 1450,
+      "y" : 661,
+      "width" : 86,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "以牙还牙的款待",
+      "x" : 252,
+      "y" : 749,
+      "width" : 280,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "×0.85",
+      "x" : 1450,
+      "y" : 749,
+      "width" : 109,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "按列示顺序；各项条件分别判断。同一技能常规名为教权辩护，无地／游牧时显示为高效朝圣者。",
+      "x" : 120,
+      "y" : 994,
+      "width" : 1290,
+      "height" : 40,
+      "fontPixels" : 30
+    } ],
+    "subtitleAreaClear" : true,
+    "decodedAfterSave" : true,
+    "icon" : {
+      "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+      "bytes" : 14528,
+      "sha256" : "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+    },
+    "illustrations" : [ {
+      "source" : {
+        "path" : "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\source-icon-frames-a01\\node_learning-frame2.png",
+        "bytes" : 7308,
+        "sha256" : "e74ee12f20810a4d9796514d93bbf462d32d7d141da6c2c74dc88ab52d9d99b9"
+      },
+      "row" : 1,
+      "column" : "LABEL"
+    }, {
+      "source" : {
+        "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\piety_positive.dds",
+        "bytes" : 19264,
+        "sha256" : "11456b79e1a3bcaf5dc4fc0ac919e2b0c2c99b53dbed137aa6046f6ea2ebe3e8"
+      },
+      "row" : 3,
+      "column" : "LABEL"
+    }, {
+      "source" : {
+        "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\faith_doctrines\\doctrine_pilgrimage_local_rites.dds",
+        "bytes" : 76864,
+        "sha256" : "4af6f035aba1b38ef647d0fc687bb35460586bcd93f13e4e521bc2acaf505225"
+      },
+      "row" : 0,
+      "column" : "LABEL"
+    }, {
+      "source" : {
+        "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\bloc_cohesion.dds",
+        "bytes" : 76864,
+        "sha256" : "9c16d9777f70682f55143fb53a322261ceaf5ce680658b0d684d86402b004000"
+      },
+      "row" : 2,
+      "column" : "LABEL"
+    }, {
+      "source" : {
+        "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\event_types\\type_domain.dds",
+        "bytes" : 116828,
+        "sha256" : "b50022a82f6d465d02f1d8e3ccc6b0ba84838238195e027799170ab561c7ac23"
+      },
+      "row" : 4,
+      "column" : "LABEL"
+    } ]
+  }, {
+    "id" : "N20-later-6",
+    "cue" : "E02-V6-N20",
+    "anchorZh" : "符合神王条件的人工智能人物",
+    "image" : {
+      "path" : "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\focused-cards\\N20-later-6.png",
+      "bytes" : 161028,
+      "sha256" : "d6d363204e9c3f005add04422ac989b6f0e2ce8e5105773c5ccaca6333346532"
+    },
+    "text" : [ {
+      "text" : "信仰引擎  /  朝圣在奖励什么？",
+      "x" : 120,
+      "y" : 36,
+      "width" : 380,
+      "height" : 38,
+      "fontPixels" : 28
+    }, {
+      "text" : "规则图解",
+      "x" : 2280,
+      "y" : 36,
+      "width" : 112,
+      "height" : 38,
+      "fontPixels" : 28
+    }, {
+      "text" : "第三组继续：后面的现值倍率",
+      "x" : 120,
+      "y" : 118,
+      "width" : 702,
+      "height" : 73,
+      "fontPixels" : 54
+    }, {
+      "text" : "固定参数规则演算",
+      "x" : 120,
+      "y" : 256,
+      "width" : 256,
+      "height" : 43,
+      "fontPixels" : 32
+    }, {
+      "text" : "当地仪式",
+      "x" : 252,
+      "y" : 397,
+      "width" : 160,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "×1.75",
+      "x" : 1450,
+      "y" : 397,
+      "width" : 109,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "无地／游牧 + 教权辩护",
+      "x" : 252,
+      "y" : 485,
+      "width" : 414,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "×0.5",
+      "x" : 1450,
+      "y" : 485,
+      "width" : 86,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "联盟凝聚力的活动优惠",
+      "x" : 252,
+      "y" : 573,
+      "width" : 400,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "×0.9",
+      "x" : 1450,
+      "y" : 573,
+      "width" : 86,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "命运之路",
+      "x" : 252,
+      "y" : 661,
+      "width" : 160,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "×0.8",
+      "x" : 1450,
+      "y" : 661,
+      "width" : 86,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "以牙还牙的款待",
+      "x" : 252,
+      "y" : 749,
+      "width" : 280,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "×0.85",
+      "x" : 1450,
+      "y" : 749,
+      "width" : 109,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "满足神王条件的AI",
+      "x" : 252,
+      "y" : 837,
+      "width" : 320,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "×0.25",
+      "x" : 1450,
+      "y" : 837,
+      "width" : 109,
+      "height" : 54,
+      "fontPixels" : 40
+    }, {
+      "text" : "按列示顺序；各项条件分别判断。同一技能常规名为教权辩护，无地／游牧时显示为高效朝圣者。",
+      "x" : 120,
+      "y" : 994,
+      "width" : 1290,
+      "height" : 40,
+      "fontPixels" : 30
+    } ],
+    "subtitleAreaClear" : true,
+    "decodedAfterSave" : true,
+    "icon" : {
+      "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+      "bytes" : 14528,
+      "sha256" : "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+    },
+    "illustrations" : [ {
+      "source" : {
+        "path" : "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\source-icon-frames-a01\\node_learning-frame2.png",
+        "bytes" : 7308,
+        "sha256" : "e74ee12f20810a4d9796514d93bbf462d32d7d141da6c2c74dc88ab52d9d99b9"
+      },
+      "row" : 1,
+      "column" : "LABEL"
+    }, {
+      "source" : {
+        "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\piety_positive.dds",
+        "bytes" : 19264,
+        "sha256" : "11456b79e1a3bcaf5dc4fc0ac919e2b0c2c99b53dbed137aa6046f6ea2ebe3e8"
+      },
+      "row" : 3,
+      "column" : "LABEL"
+    }, {
+      "source" : {
+        "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\faith_doctrines\\doctrine_pilgrimage_local_rites.dds",
+        "bytes" : 76864,
+        "sha256" : "4af6f035aba1b38ef647d0fc687bb35460586bcd93f13e4e521bc2acaf505225"
+      },
+      "row" : 0,
+      "column" : "LABEL"
+    }, {
+      "source" : {
+        "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\bloc_cohesion.dds",
+        "bytes" : 76864,
+        "sha256" : "9c16d9777f70682f55143fb53a322261ceaf5ce680658b0d684d86402b004000"
+      },
+      "row" : 2,
+      "column" : "LABEL"
+    }, {
+      "source" : {
+        "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\event_types\\type_domain.dds",
+        "bytes" : 116828,
+        "sha256" : "b50022a82f6d465d02f1d8e3ccc6b0ba84838238195e027799170ab561c7ac23"
+      },
+      "row" : 4,
+      "column" : "LABEL"
+    }, {
+      "source" : {
+        "path" : "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\government_types\\mandala_government.dds",
+        "bytes" : 26124,
+        "sha256" : "f065d2bf126a763a004cd9badbd2ec25bf1b92e38febd8b18e23825ec48806b1"
+      },
+      "row" : 5,
+      "column" : "LABEL"
+    } ]
+  } ],
+  "voiceCreated" : false,
+  "gameAccessed" : false,
+  "humanVideoSignoff" : false
+}

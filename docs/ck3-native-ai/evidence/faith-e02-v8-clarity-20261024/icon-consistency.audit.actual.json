@@ -1,0 +1,1227 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-24T12:19:43.256828+00:00",
+  "original_formal": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\authoring\\V8.FORMAL-INPUT.a07.render.json",
+    "bytes": 768879,
+    "sha256": "d3c18b50798360f84448207222f1521c81ce16d0f946ea0cd2640e0669e59734"
+  },
+  "revised_formal": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\V8.FORMAL-INPUT.a10.all-icons.metadata.json",
+    "bytes": 770585,
+    "sha256": "d0491c306946d8c77a1901d21f6c55f1c8ee075eff54cf481178eaefd7186d49"
+  },
+  "actual_distinct_images_checked_for_icon_configuration": 135,
+  "coverage": {
+    "new_focused_page_specs_checked": 74,
+    "other_old_mixed_UI_images_actually_viewed_by_audit_agent": 61,
+    "focused_original_images_actually_viewed_by_audit_agent": 3,
+    "root_actually_viewed_all_rebuilt_images": 19,
+    "all135_original_images_human_view_claimed": false
+  },
+  "revised_PNGs": [
+    {
+      "id": "C02",
+      "image": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C02.icons-consistent-a01.png",
+        "bytes": 156179,
+        "sha256": "844d7f5e664a14f0e7a60ade37ebc43eafb8cacd0fd59ff8b1fea0b954863351"
+      },
+      "source_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\ICON-CONSISTENCY.REPLACEMENTS.actual.json",
+        "bytes": 46273,
+        "sha256": "fb08f06f772348397811d8793bb7a108c4505ab3bb785111f45adb6dddf2f423"
+      }
+    },
+    {
+      "id": "C03.stage1",
+      "image": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C03.stage1.icons-consistent-a01.png",
+        "bytes": 99071,
+        "sha256": "ecc53a47e836d1deff369cb47a08b7e53efcfbf2303546f08b108559631fdc15"
+      },
+      "source_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\ICON-CONSISTENCY.REPLACEMENTS.actual.json",
+        "bytes": 46273,
+        "sha256": "fb08f06f772348397811d8793bb7a108c4505ab3bb785111f45adb6dddf2f423"
+      }
+    },
+    {
+      "id": "C03.stage2",
+      "image": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C03.stage2.icons-consistent-a01.png",
+        "bytes": 116103,
+        "sha256": "f68c9503ed614fe68479fdde9d99fa460fed557fd9a7537b964ad57ec789a252"
+      },
+      "source_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\ICON-CONSISTENCY.REPLACEMENTS.actual.json",
+        "bytes": 46273,
+        "sha256": "fb08f06f772348397811d8793bb7a108c4505ab3bb785111f45adb6dddf2f423"
+      }
+    },
+    {
+      "id": "C03.stage3",
+      "image": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C03.stage3.icons-consistent-a01.png",
+        "bytes": 179101,
+        "sha256": "f104a19d229828c92dca13321b4d345c7bfbe4647408d09e63a1341a1c2f85b2"
+      },
+      "source_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\ICON-CONSISTENCY.REPLACEMENTS.actual.json",
+        "bytes": 46273,
+        "sha256": "fb08f06f772348397811d8793bb7a108c4505ab3bb785111f45adb6dddf2f423"
+      }
+    },
+    {
+      "id": "C05",
+      "image": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C05.icons-consistent-a01.png",
+        "bytes": 193687,
+        "sha256": "f9264e8f321f447b50c4e103e6382027c65b5b2d7e1cd002ffbe56942b7f58f7"
+      },
+      "source_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\ICON-CONSISTENCY.REPLACEMENTS.actual.json",
+        "bytes": 46273,
+        "sha256": "fb08f06f772348397811d8793bb7a108c4505ab3bb785111f45adb6dddf2f423"
+      }
+    },
+    {
+      "id": "M01",
+      "image": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\M01.icons-consistent-a01.png",
+        "bytes": 299173,
+        "sha256": "638dcef39fc9348050387192b71c38ac01f63c9b84c5ee360e03cb42996e0cc6"
+      },
+      "source_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\ICON-CONSISTENCY.REPLACEMENTS.actual.json",
+        "bytes": 46273,
+        "sha256": "fb08f06f772348397811d8793bb7a108c4505ab3bb785111f45adb6dddf2f423"
+      }
+    },
+    {
+      "id": "C06",
+      "image": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C06.icons-consistent-a01.png",
+        "bytes": 217268,
+        "sha256": "1073eca90fdf58c6eab748053cf7c95bd5c94cd59b38155f79dcca610fb89e95"
+      },
+      "source_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\ICON-CONSISTENCY.REPLACEMENTS.actual.json",
+        "bytes": 46273,
+        "sha256": "fb08f06f772348397811d8793bb7a108c4505ab3bb785111f45adb6dddf2f423"
+      }
+    },
+    {
+      "id": "C08",
+      "image": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\C08.icons-consistent-a01.png",
+        "bytes": 212689,
+        "sha256": "8491c2a92f806bc59d06b77bad73343f3d1cd7e4dedf54eb98d45f5b0c657003"
+      },
+      "source_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\CONDITION-ICON-CONSISTENCY.actual.json",
+        "bytes": 29149,
+        "sha256": "f75170f1fdaf34a4a585323a3e838f63f98b35407bfcec413bfc6cd2e672305b"
+      }
+    },
+    {
+      "id": "F01",
+      "image": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\F01.icons-consistent-a01.png",
+        "bytes": 278826,
+        "sha256": "c094b559d00193f36d36f565f37469ca245855f8fcccd4ae943e017c9e378bce"
+      },
+      "source_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\CONDITION-ICON-CONSISTENCY.actual.json",
+        "bytes": 29149,
+        "sha256": "f75170f1fdaf34a4a585323a3e838f63f98b35407bfcec413bfc6cd2e672305b"
+      }
+    },
+    {
+      "id": "D02",
+      "image": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\D02.icons-consistent-a01.png",
+        "bytes": 256649,
+        "sha256": "e217f5e3ddd51faec5cb79c450f51edd15d55f557a43b644100d506502f48e09"
+      },
+      "source_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\CONDITION-ICON-CONSISTENCY.actual.json",
+        "bytes": 29149,
+        "sha256": "f75170f1fdaf34a4a585323a3e838f63f98b35407bfcec413bfc6cd2e672305b"
+      }
+    },
+    {
+      "id": "SUP-MECCA-INITIALIZATION",
+      "image": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\SUP-MECCA-INITIALIZATION.icons-consistent-a01.png",
+        "bytes": 171183,
+        "sha256": "24d82fa87bf3706fc45436a6a8906d46aa51ae7cc07657447d817dd516996099"
+      },
+      "source_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\CONDITION-ICON-CONSISTENCY.actual.json",
+        "bytes": 29149,
+        "sha256": "f75170f1fdaf34a4a585323a3e838f63f98b35407bfcec413bfc6cd2e672305b"
+      }
+    },
+    {
+      "id": "N20-multipliers-3",
+      "image": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\focused-cards\\N20-multipliers-3.png",
+        "bytes": 113973,
+        "sha256": "0c4e93bb3cda82e03d52ce43588cb80aadd1ba7752e408ac102bd1bd26ef66c2"
+      },
+      "source_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\FOCUSED-ICON-CONSISTENCY.actual.json",
+        "bytes": 31222,
+        "sha256": "3766a9ac9e3c2123852b56ff343794438767b4febd1e3c466c864ae22cc3fc40"
+      }
+    },
+    {
+      "id": "N20-humility-law",
+      "image": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\focused-cards\\N20-humility-law.png",
+        "bytes": 92618,
+        "sha256": "db260cecba98ec5a99245c9d500c8b849c996c580b379b95631b5d04558b045b"
+      },
+      "source_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\FOCUSED-ICON-CONSISTENCY.actual.json",
+        "bytes": 31222,
+        "sha256": "3766a9ac9e3c2123852b56ff343794438767b4febd1e3c466c864ae22cc3fc40"
+      }
+    },
+    {
+      "id": "N20-later-1",
+      "image": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\focused-cards\\N20-later-1.png",
+        "bytes": 71242,
+        "sha256": "b06b83682d649fe39a1aa6c514e8c29bc48bd9e318c28e6b120edd89441e0b56"
+      },
+      "source_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\FOCUSED-ICON-CONSISTENCY.actual.json",
+        "bytes": 31222,
+        "sha256": "3766a9ac9e3c2123852b56ff343794438767b4febd1e3c466c864ae22cc3fc40"
+      }
+    },
+    {
+      "id": "N20-later-2",
+      "image": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\focused-cards\\N20-later-2.png",
+        "bytes": 99450,
+        "sha256": "3d7c90b7cc97f9217ee8d002b99a179d68204d9e79ea9e5695fd47d06dfd9396"
+      },
+      "source_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\FOCUSED-ICON-CONSISTENCY.actual.json",
+        "bytes": 31222,
+        "sha256": "3766a9ac9e3c2123852b56ff343794438767b4febd1e3c466c864ae22cc3fc40"
+      }
+    },
+    {
+      "id": "N20-later-3",
+      "image": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\focused-cards\\N20-later-3.png",
+        "bytes": 117141,
+        "sha256": "cc255b1a1008b8deaac73e083682bb4bf232ead37af51fc9264dbccbc0dd390b"
+      },
+      "source_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\FOCUSED-ICON-CONSISTENCY.actual.json",
+        "bytes": 31222,
+        "sha256": "3766a9ac9e3c2123852b56ff343794438767b4febd1e3c466c864ae22cc3fc40"
+      }
+    },
+    {
+      "id": "N20-later-4",
+      "image": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\focused-cards\\N20-later-4.png",
+        "bytes": 130430,
+        "sha256": "baf30d61dd6975b9187fd10cf34b2d8120f83314514c1f7d30fc12154123d480"
+      },
+      "source_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\FOCUSED-ICON-CONSISTENCY.actual.json",
+        "bytes": 31222,
+        "sha256": "3766a9ac9e3c2123852b56ff343794438767b4febd1e3c466c864ae22cc3fc40"
+      }
+    },
+    {
+      "id": "N20-later-5",
+      "image": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\focused-cards\\N20-later-5.png",
+        "bytes": 146603,
+        "sha256": "88977196ae72f709a1aadb11388a03f9754a1295cef01f03aa36410b507c983a"
+      },
+      "source_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\FOCUSED-ICON-CONSISTENCY.actual.json",
+        "bytes": 31222,
+        "sha256": "3766a9ac9e3c2123852b56ff343794438767b4febd1e3c466c864ae22cc3fc40"
+      }
+    },
+    {
+      "id": "N20-later-6",
+      "image": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\focused-cards\\N20-later-6.png",
+        "bytes": 161028,
+        "sha256": "d6d363204e9c3f005add04422ac989b6f0e2ce8e5105773c5ccaca6333346532"
+      },
+      "source_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\FOCUSED-ICON-CONSISTENCY.actual.json",
+        "bytes": 31222,
+        "sha256": "3766a9ac9e3c2123852b56ff343794438767b4febd1e3c466c864ae22cc3fc40"
+      }
+    }
+  ],
+  "exact_replaced_diagram_parts": [
+    {
+      "cue": "E02-V6-N24",
+      "part_index": 0,
+      "page": "C02",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\derived\\material_card_candidates\\dds-only-a01\\C02.v7-dds.png",
+        "bytes": 155860,
+        "sha256": "fa8edfed829812465c4d75a6865621a99c832710ae52dfdd05101a758bd50d76"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C02.icons-consistent-a01.png",
+        "bytes": 156179,
+        "sha256": "844d7f5e664a14f0e7a60ade37ebc43eafb8cacd0fd59ff8b1fea0b954863351"
+      }
+    },
+    {
+      "cue": "E02-V6-N24",
+      "part_index": 1,
+      "page": "C02",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\derived\\material_card_candidates\\dds-only-a01\\C02.v7-dds.png",
+        "bytes": 155860,
+        "sha256": "fa8edfed829812465c4d75a6865621a99c832710ae52dfdd05101a758bd50d76"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C02.icons-consistent-a01.png",
+        "bytes": 156179,
+        "sha256": "844d7f5e664a14f0e7a60ade37ebc43eafb8cacd0fd59ff8b1fea0b954863351"
+      }
+    },
+    {
+      "cue": "E02-V6-N24",
+      "part_index": 2,
+      "page": "C02",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\derived\\material_card_candidates\\dds-only-a01\\C02.v7-dds.png",
+        "bytes": 155860,
+        "sha256": "fa8edfed829812465c4d75a6865621a99c832710ae52dfdd05101a758bd50d76"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C02.icons-consistent-a01.png",
+        "bytes": 156179,
+        "sha256": "844d7f5e664a14f0e7a60ade37ebc43eafb8cacd0fd59ff8b1fea0b954863351"
+      }
+    },
+    {
+      "cue": "E02-V6-N24",
+      "part_index": 3,
+      "page": "C02",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\derived\\material_card_candidates\\dds-only-a01\\C02.v7-dds.png",
+        "bytes": 155860,
+        "sha256": "fa8edfed829812465c4d75a6865621a99c832710ae52dfdd05101a758bd50d76"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C02.icons-consistent-a01.png",
+        "bytes": 156179,
+        "sha256": "844d7f5e664a14f0e7a60ade37ebc43eafb8cacd0fd59ff8b1fea0b954863351"
+      }
+    },
+    {
+      "cue": "E02-V6-N26",
+      "part_index": 2,
+      "page": "C03.stage1",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\derived\\material_card_candidates\\dds-only-a01\\C03.stage1.v7-dds.png",
+        "bytes": 98785,
+        "sha256": "6b3aef2bad7bfa6b0391a1f0a14b1842034ff8d73b116f3824fd9d6f1087b827"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C03.stage1.icons-consistent-a01.png",
+        "bytes": 99071,
+        "sha256": "ecc53a47e836d1deff369cb47a08b7e53efcfbf2303546f08b108559631fdc15"
+      }
+    },
+    {
+      "cue": "E02-V6-N26",
+      "part_index": 3,
+      "page": "C03.stage2",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\derived\\material_card_candidates\\dds-only-a01\\C03.stage2.v7-dds.png",
+        "bytes": 115840,
+        "sha256": "bbc587c1db27fe6756f688ef5a6775e607b8cc1e10817b078d0c6ddd848c1b7a"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C03.stage2.icons-consistent-a01.png",
+        "bytes": 116103,
+        "sha256": "f68c9503ed614fe68479fdde9d99fa460fed557fd9a7537b964ad57ec789a252"
+      }
+    },
+    {
+      "cue": "E02-V6-N26",
+      "part_index": 4,
+      "page": "C03.stage2",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\derived\\material_card_candidates\\dds-only-a01\\C03.stage2.v7-dds.png",
+        "bytes": 115840,
+        "sha256": "bbc587c1db27fe6756f688ef5a6775e607b8cc1e10817b078d0c6ddd848c1b7a"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C03.stage2.icons-consistent-a01.png",
+        "bytes": 116103,
+        "sha256": "f68c9503ed614fe68479fdde9d99fa460fed557fd9a7537b964ad57ec789a252"
+      }
+    },
+    {
+      "cue": "E02-V6-N26",
+      "part_index": 6,
+      "page": "C03.stage2",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\derived\\material_card_candidates\\dds-only-a01\\C03.stage2.v7-dds.png",
+        "bytes": 115840,
+        "sha256": "bbc587c1db27fe6756f688ef5a6775e607b8cc1e10817b078d0c6ddd848c1b7a"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C03.stage2.icons-consistent-a01.png",
+        "bytes": 116103,
+        "sha256": "f68c9503ed614fe68479fdde9d99fa460fed557fd9a7537b964ad57ec789a252"
+      }
+    },
+    {
+      "cue": "E02-V6-N26",
+      "part_index": 7,
+      "page": "C03.stage3",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\derived\\material_card_candidates\\dds-only-a01\\C03.stage3.v7-dds.png",
+        "bytes": 178838,
+        "sha256": "4fb74cc4b4903e9ed76a1ab03738a0d0ae5dadbdf5bb0316900f3f27476cc8fa"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C03.stage3.icons-consistent-a01.png",
+        "bytes": 179101,
+        "sha256": "f104a19d229828c92dca13321b4d345c7bfbe4647408d09e63a1341a1c2f85b2"
+      }
+    },
+    {
+      "cue": "E02-V6-N26",
+      "part_index": 8,
+      "page": "C03.stage3",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\derived\\material_card_candidates\\dds-only-a01\\C03.stage3.v7-dds.png",
+        "bytes": 178838,
+        "sha256": "4fb74cc4b4903e9ed76a1ab03738a0d0ae5dadbdf5bb0316900f3f27476cc8fa"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C03.stage3.icons-consistent-a01.png",
+        "bytes": 179101,
+        "sha256": "f104a19d229828c92dca13321b4d345c7bfbe4647408d09e63a1341a1c2f85b2"
+      }
+    },
+    {
+      "cue": "E02-V6-N26",
+      "part_index": 9,
+      "page": "C03.stage3",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\derived\\material_card_candidates\\dds-only-a01\\C03.stage3.v7-dds.png",
+        "bytes": 178838,
+        "sha256": "4fb74cc4b4903e9ed76a1ab03738a0d0ae5dadbdf5bb0316900f3f27476cc8fa"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C03.stage3.icons-consistent-a01.png",
+        "bytes": 179101,
+        "sha256": "f104a19d229828c92dca13321b4d345c7bfbe4647408d09e63a1341a1c2f85b2"
+      }
+    },
+    {
+      "cue": "E02-V6-N27",
+      "part_index": 0,
+      "page": "C05",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\identity-card-successor-a01\\C05.identity-v7-a01.png",
+        "bytes": 190390,
+        "sha256": "0d5e452093299b2bfb82d3482b71379121edf365eb3c239f7aa8a4b0c4f824ba"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C05.icons-consistent-a01.png",
+        "bytes": 193687,
+        "sha256": "f9264e8f321f447b50c4e103e6382027c65b5b2d7e1cd002ffbe56942b7f58f7"
+      }
+    },
+    {
+      "cue": "E02-V6-N27",
+      "part_index": 1,
+      "page": "C05",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\identity-card-successor-a01\\C05.identity-v7-a01.png",
+        "bytes": 190390,
+        "sha256": "0d5e452093299b2bfb82d3482b71379121edf365eb3c239f7aa8a4b0c4f824ba"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C05.icons-consistent-a01.png",
+        "bytes": 193687,
+        "sha256": "f9264e8f321f447b50c4e103e6382027c65b5b2d7e1cd002ffbe56942b7f58f7"
+      }
+    },
+    {
+      "cue": "E02-V6-N27",
+      "part_index": 2,
+      "page": "C05",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\identity-card-successor-a01\\C05.identity-v7-a01.png",
+        "bytes": 190390,
+        "sha256": "0d5e452093299b2bfb82d3482b71379121edf365eb3c239f7aa8a4b0c4f824ba"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C05.icons-consistent-a01.png",
+        "bytes": 193687,
+        "sha256": "f9264e8f321f447b50c4e103e6382027c65b5b2d7e1cd002ffbe56942b7f58f7"
+      }
+    },
+    {
+      "cue": "E02-V6-N27",
+      "part_index": 3,
+      "page": "C05",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\identity-card-successor-a01\\C05.identity-v7-a01.png",
+        "bytes": 190390,
+        "sha256": "0d5e452093299b2bfb82d3482b71379121edf365eb3c239f7aa8a4b0c4f824ba"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C05.icons-consistent-a01.png",
+        "bytes": 193687,
+        "sha256": "f9264e8f321f447b50c4e103e6382027c65b5b2d7e1cd002ffbe56942b7f58f7"
+      }
+    },
+    {
+      "cue": "E02-V6-N27",
+      "part_index": 4,
+      "page": "C05",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\identity-card-successor-a01\\C05.identity-v7-a01.png",
+        "bytes": 190390,
+        "sha256": "0d5e452093299b2bfb82d3482b71379121edf365eb3c239f7aa8a4b0c4f824ba"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C05.icons-consistent-a01.png",
+        "bytes": 193687,
+        "sha256": "f9264e8f321f447b50c4e103e6382027c65b5b2d7e1cd002ffbe56942b7f58f7"
+      }
+    },
+    {
+      "cue": "E02-V6-N27",
+      "part_index": 5,
+      "page": "C05",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\identity-card-successor-a01\\C05.identity-v7-a01.png",
+        "bytes": 190390,
+        "sha256": "0d5e452093299b2bfb82d3482b71379121edf365eb3c239f7aa8a4b0c4f824ba"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C05.icons-consistent-a01.png",
+        "bytes": 193687,
+        "sha256": "f9264e8f321f447b50c4e103e6382027c65b5b2d7e1cd002ffbe56942b7f58f7"
+      }
+    },
+    {
+      "cue": "E02-V6-N28",
+      "part_index": 4,
+      "page": "C05",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\identity-card-successor-a01\\C05.identity-v7-a01.png",
+        "bytes": 190390,
+        "sha256": "0d5e452093299b2bfb82d3482b71379121edf365eb3c239f7aa8a4b0c4f824ba"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C05.icons-consistent-a01.png",
+        "bytes": 193687,
+        "sha256": "f9264e8f321f447b50c4e103e6382027c65b5b2d7e1cd002ffbe56942b7f58f7"
+      }
+    },
+    {
+      "cue": "E02-V6-N28",
+      "part_index": 5,
+      "page": "C05",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\identity-card-successor-a01\\C05.identity-v7-a01.png",
+        "bytes": 190390,
+        "sha256": "0d5e452093299b2bfb82d3482b71379121edf365eb3c239f7aa8a4b0c4f824ba"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C05.icons-consistent-a01.png",
+        "bytes": 193687,
+        "sha256": "f9264e8f321f447b50c4e103e6382027c65b5b2d7e1cd002ffbe56942b7f58f7"
+      }
+    },
+    {
+      "cue": "E02-V6-N28",
+      "part_index": 6,
+      "page": "C05",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\identity-card-successor-a01\\C05.identity-v7-a01.png",
+        "bytes": 190390,
+        "sha256": "0d5e452093299b2bfb82d3482b71379121edf365eb3c239f7aa8a4b0c4f824ba"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C05.icons-consistent-a01.png",
+        "bytes": 193687,
+        "sha256": "f9264e8f321f447b50c4e103e6382027c65b5b2d7e1cd002ffbe56942b7f58f7"
+      }
+    },
+    {
+      "cue": "E02-V6-N28",
+      "part_index": 7,
+      "page": "C05",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\identity-card-successor-a01\\C05.identity-v7-a01.png",
+        "bytes": 190390,
+        "sha256": "0d5e452093299b2bfb82d3482b71379121edf365eb3c239f7aa8a4b0c4f824ba"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C05.icons-consistent-a01.png",
+        "bytes": 193687,
+        "sha256": "f9264e8f321f447b50c4e103e6382027c65b5b2d7e1cd002ffbe56942b7f58f7"
+      }
+    },
+    {
+      "cue": "E02-V6-N28",
+      "part_index": 0,
+      "page": "M01",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\identity-card-successor-a01\\M01.identity-v7-a01.png",
+        "bytes": 282862,
+        "sha256": "7cabaeaec54eaeee7e69e1c0851f897d4dfe370f6d708ed4713e38c7a57683a2"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\M01.icons-consistent-a01.png",
+        "bytes": 299173,
+        "sha256": "638dcef39fc9348050387192b71c38ac01f63c9b84c5ee360e03cb42996e0cc6"
+      }
+    },
+    {
+      "cue": "E02-V6-N28",
+      "part_index": 1,
+      "page": "M01",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\identity-card-successor-a01\\M01.identity-v7-a01.png",
+        "bytes": 282862,
+        "sha256": "7cabaeaec54eaeee7e69e1c0851f897d4dfe370f6d708ed4713e38c7a57683a2"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\M01.icons-consistent-a01.png",
+        "bytes": 299173,
+        "sha256": "638dcef39fc9348050387192b71c38ac01f63c9b84c5ee360e03cb42996e0cc6"
+      }
+    },
+    {
+      "cue": "E02-V6-N28",
+      "part_index": 2,
+      "page": "M01",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\identity-card-successor-a01\\M01.identity-v7-a01.png",
+        "bytes": 282862,
+        "sha256": "7cabaeaec54eaeee7e69e1c0851f897d4dfe370f6d708ed4713e38c7a57683a2"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\M01.icons-consistent-a01.png",
+        "bytes": 299173,
+        "sha256": "638dcef39fc9348050387192b71c38ac01f63c9b84c5ee360e03cb42996e0cc6"
+      }
+    },
+    {
+      "cue": "E02-V6-N28",
+      "part_index": 3,
+      "page": "M01",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\identity-card-successor-a01\\M01.identity-v7-a01.png",
+        "bytes": 282862,
+        "sha256": "7cabaeaec54eaeee7e69e1c0851f897d4dfe370f6d708ed4713e38c7a57683a2"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\M01.icons-consistent-a01.png",
+        "bytes": 299173,
+        "sha256": "638dcef39fc9348050387192b71c38ac01f63c9b84c5ee360e03cb42996e0cc6"
+      }
+    },
+    {
+      "cue": "E02-V6-N30",
+      "part_index": 4,
+      "page": "M01",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\identity-card-successor-a01\\M01.identity-v7-a01.png",
+        "bytes": 282862,
+        "sha256": "7cabaeaec54eaeee7e69e1c0851f897d4dfe370f6d708ed4713e38c7a57683a2"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\M01.icons-consistent-a01.png",
+        "bytes": 299173,
+        "sha256": "638dcef39fc9348050387192b71c38ac01f63c9b84c5ee360e03cb42996e0cc6"
+      }
+    },
+    {
+      "cue": "E02-V6-N31",
+      "part_index": 7,
+      "page": "C06",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\identity-card-successor-a01\\C06.identity-v7-a01.png",
+        "bytes": 211361,
+        "sha256": "1a6e152efa7a382245aeded592e207f01cb3f5920309a6b64aefb34caa74b376"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C06.icons-consistent-a01.png",
+        "bytes": 217268,
+        "sha256": "1073eca90fdf58c6eab748053cf7c95bd5c94cd59b38155f79dcca610fb89e95"
+      }
+    },
+    {
+      "cue": "E02-V6-N32",
+      "part_index": 4,
+      "page": "C06",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\identity-card-successor-a01\\C06.identity-v7-a01.png",
+        "bytes": 211361,
+        "sha256": "1a6e152efa7a382245aeded592e207f01cb3f5920309a6b64aefb34caa74b376"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C06.icons-consistent-a01.png",
+        "bytes": 217268,
+        "sha256": "1073eca90fdf58c6eab748053cf7c95bd5c94cd59b38155f79dcca610fb89e95"
+      }
+    },
+    {
+      "cue": "E02-V6-N32",
+      "part_index": 5,
+      "page": "C06",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\identity-card-successor-a01\\C06.identity-v7-a01.png",
+        "bytes": 211361,
+        "sha256": "1a6e152efa7a382245aeded592e207f01cb3f5920309a6b64aefb34caa74b376"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\cards\\C06.icons-consistent-a01.png",
+        "bytes": 217268,
+        "sha256": "1073eca90fdf58c6eab748053cf7c95bd5c94cd59b38155f79dcca610fb89e95"
+      }
+    },
+    {
+      "cue": "E02-V6-N21",
+      "part_index": 0,
+      "page": "C08",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\C08.terms-v8-a01.png",
+        "bytes": 188760,
+        "sha256": "a407ada93259812905e3f9718f0a5d09dabd36d156dffd117a18f08a69d395fe"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\C08.icons-consistent-a01.png",
+        "bytes": 212689,
+        "sha256": "8491c2a92f806bc59d06b77bad73343f3d1cd7e4dedf54eb98d45f5b0c657003"
+      }
+    },
+    {
+      "cue": "E02-V6-N21",
+      "part_index": 1,
+      "page": "C08",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\C08.terms-v8-a01.png",
+        "bytes": 188760,
+        "sha256": "a407ada93259812905e3f9718f0a5d09dabd36d156dffd117a18f08a69d395fe"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\C08.icons-consistent-a01.png",
+        "bytes": 212689,
+        "sha256": "8491c2a92f806bc59d06b77bad73343f3d1cd7e4dedf54eb98d45f5b0c657003"
+      }
+    },
+    {
+      "cue": "E02-V6-N26",
+      "part_index": 5,
+      "page": "C08",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\C08.terms-v8-a01.png",
+        "bytes": 188760,
+        "sha256": "a407ada93259812905e3f9718f0a5d09dabd36d156dffd117a18f08a69d395fe"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\C08.icons-consistent-a01.png",
+        "bytes": 212689,
+        "sha256": "8491c2a92f806bc59d06b77bad73343f3d1cd7e4dedf54eb98d45f5b0c657003"
+      }
+    },
+    {
+      "cue": "E02-V6-N33",
+      "part_index": 9,
+      "page": "C08",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\C08.terms-v8-a01.png",
+        "bytes": 188760,
+        "sha256": "a407ada93259812905e3f9718f0a5d09dabd36d156dffd117a18f08a69d395fe"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\C08.icons-consistent-a01.png",
+        "bytes": 212689,
+        "sha256": "8491c2a92f806bc59d06b77bad73343f3d1cd7e4dedf54eb98d45f5b0c657003"
+      }
+    },
+    {
+      "cue": "E02-V6-N33",
+      "part_index": 10,
+      "page": "C08",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\C08.terms-v8-a01.png",
+        "bytes": 188760,
+        "sha256": "a407ada93259812905e3f9718f0a5d09dabd36d156dffd117a18f08a69d395fe"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\C08.icons-consistent-a01.png",
+        "bytes": 212689,
+        "sha256": "8491c2a92f806bc59d06b77bad73343f3d1cd7e4dedf54eb98d45f5b0c657003"
+      }
+    },
+    {
+      "cue": "E02-V6-N08",
+      "part_index": 0,
+      "page": "F01",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\F01.terms-v8-a01.png",
+        "bytes": 278744,
+        "sha256": "ae58a6021635bccdc5001a7dc799f77721cbd3e3f3eac558b7ea712a81b9d1bd"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\F01.icons-consistent-a01.png",
+        "bytes": 278826,
+        "sha256": "c094b559d00193f36d36f565f37469ca245855f8fcccd4ae943e017c9e378bce"
+      }
+    },
+    {
+      "cue": "E02-V6-N08",
+      "part_index": 1,
+      "page": "F01",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\F01.terms-v8-a01.png",
+        "bytes": 278744,
+        "sha256": "ae58a6021635bccdc5001a7dc799f77721cbd3e3f3eac558b7ea712a81b9d1bd"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\F01.icons-consistent-a01.png",
+        "bytes": 278826,
+        "sha256": "c094b559d00193f36d36f565f37469ca245855f8fcccd4ae943e017c9e378bce"
+      }
+    },
+    {
+      "cue": "E02-V6-N08",
+      "part_index": 2,
+      "page": "F01",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\F01.terms-v8-a01.png",
+        "bytes": 278744,
+        "sha256": "ae58a6021635bccdc5001a7dc799f77721cbd3e3f3eac558b7ea712a81b9d1bd"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\F01.icons-consistent-a01.png",
+        "bytes": 278826,
+        "sha256": "c094b559d00193f36d36f565f37469ca245855f8fcccd4ae943e017c9e378bce"
+      }
+    },
+    {
+      "cue": "E02-V6-N08",
+      "part_index": 3,
+      "page": "F01",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\F01.terms-v8-a01.png",
+        "bytes": 278744,
+        "sha256": "ae58a6021635bccdc5001a7dc799f77721cbd3e3f3eac558b7ea712a81b9d1bd"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\F01.icons-consistent-a01.png",
+        "bytes": 278826,
+        "sha256": "c094b559d00193f36d36f565f37469ca245855f8fcccd4ae943e017c9e378bce"
+      }
+    },
+    {
+      "cue": "E02-V6-N08",
+      "part_index": 4,
+      "page": "F01",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\F01.terms-v8-a01.png",
+        "bytes": 278744,
+        "sha256": "ae58a6021635bccdc5001a7dc799f77721cbd3e3f3eac558b7ea712a81b9d1bd"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\F01.icons-consistent-a01.png",
+        "bytes": 278826,
+        "sha256": "c094b559d00193f36d36f565f37469ca245855f8fcccd4ae943e017c9e378bce"
+      }
+    },
+    {
+      "cue": "E02-V6-N08",
+      "part_index": 5,
+      "page": "F01",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\F01.terms-v8-a01.png",
+        "bytes": 278744,
+        "sha256": "ae58a6021635bccdc5001a7dc799f77721cbd3e3f3eac558b7ea712a81b9d1bd"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\F01.icons-consistent-a01.png",
+        "bytes": 278826,
+        "sha256": "c094b559d00193f36d36f565f37469ca245855f8fcccd4ae943e017c9e378bce"
+      }
+    },
+    {
+      "cue": "E02-V6-N08",
+      "part_index": 6,
+      "page": "F01",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\F01.terms-v8-a01.png",
+        "bytes": 278744,
+        "sha256": "ae58a6021635bccdc5001a7dc799f77721cbd3e3f3eac558b7ea712a81b9d1bd"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\F01.icons-consistent-a01.png",
+        "bytes": 278826,
+        "sha256": "c094b559d00193f36d36f565f37469ca245855f8fcccd4ae943e017c9e378bce"
+      }
+    },
+    {
+      "cue": "E02-V6-N08",
+      "part_index": 7,
+      "page": "F01",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\F01.terms-v8-a01.png",
+        "bytes": 278744,
+        "sha256": "ae58a6021635bccdc5001a7dc799f77721cbd3e3f3eac558b7ea712a81b9d1bd"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\F01.icons-consistent-a01.png",
+        "bytes": 278826,
+        "sha256": "c094b559d00193f36d36f565f37469ca245855f8fcccd4ae943e017c9e378bce"
+      }
+    },
+    {
+      "cue": "E02-V6-N08",
+      "part_index": 8,
+      "page": "F01",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\F01.terms-v8-a01.png",
+        "bytes": 278744,
+        "sha256": "ae58a6021635bccdc5001a7dc799f77721cbd3e3f3eac558b7ea712a81b9d1bd"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\F01.icons-consistent-a01.png",
+        "bytes": 278826,
+        "sha256": "c094b559d00193f36d36f565f37469ca245855f8fcccd4ae943e017c9e378bce"
+      }
+    },
+    {
+      "cue": "E02-V6-N08",
+      "part_index": 9,
+      "page": "F01",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\F01.terms-v8-a01.png",
+        "bytes": 278744,
+        "sha256": "ae58a6021635bccdc5001a7dc799f77721cbd3e3f3eac558b7ea712a81b9d1bd"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\F01.icons-consistent-a01.png",
+        "bytes": 278826,
+        "sha256": "c094b559d00193f36d36f565f37469ca245855f8fcccd4ae943e017c9e378bce"
+      }
+    },
+    {
+      "cue": "E02-V6-N08",
+      "part_index": 10,
+      "page": "F01",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\F01.terms-v8-a01.png",
+        "bytes": 278744,
+        "sha256": "ae58a6021635bccdc5001a7dc799f77721cbd3e3f3eac558b7ea712a81b9d1bd"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\F01.icons-consistent-a01.png",
+        "bytes": 278826,
+        "sha256": "c094b559d00193f36d36f565f37469ca245855f8fcccd4ae943e017c9e378bce"
+      }
+    },
+    {
+      "cue": "E02-V6-N08",
+      "part_index": 11,
+      "page": "F01",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\F01.terms-v8-a01.png",
+        "bytes": 278744,
+        "sha256": "ae58a6021635bccdc5001a7dc799f77721cbd3e3f3eac558b7ea712a81b9d1bd"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\F01.icons-consistent-a01.png",
+        "bytes": 278826,
+        "sha256": "c094b559d00193f36d36f565f37469ca245855f8fcccd4ae943e017c9e378bce"
+      }
+    },
+    {
+      "cue": "E02-V6-N33",
+      "part_index": 0,
+      "page": "F01",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\F01.terms-v8-a01.png",
+        "bytes": 278744,
+        "sha256": "ae58a6021635bccdc5001a7dc799f77721cbd3e3f3eac558b7ea712a81b9d1bd"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\F01.icons-consistent-a01.png",
+        "bytes": 278826,
+        "sha256": "c094b559d00193f36d36f565f37469ca245855f8fcccd4ae943e017c9e378bce"
+      }
+    },
+    {
+      "cue": "E02-V6-N33",
+      "part_index": 1,
+      "page": "F01",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\F01.terms-v8-a01.png",
+        "bytes": 278744,
+        "sha256": "ae58a6021635bccdc5001a7dc799f77721cbd3e3f3eac558b7ea712a81b9d1bd"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\F01.icons-consistent-a01.png",
+        "bytes": 278826,
+        "sha256": "c094b559d00193f36d36f565f37469ca245855f8fcccd4ae943e017c9e378bce"
+      }
+    },
+    {
+      "cue": "E02-V6-N33",
+      "part_index": 2,
+      "page": "F01",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\F01.terms-v8-a01.png",
+        "bytes": 278744,
+        "sha256": "ae58a6021635bccdc5001a7dc799f77721cbd3e3f3eac558b7ea712a81b9d1bd"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\F01.icons-consistent-a01.png",
+        "bytes": 278826,
+        "sha256": "c094b559d00193f36d36f565f37469ca245855f8fcccd4ae943e017c9e378bce"
+      }
+    },
+    {
+      "cue": "E02-V6-N33",
+      "part_index": 3,
+      "page": "F01",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\F01.terms-v8-a01.png",
+        "bytes": 278744,
+        "sha256": "ae58a6021635bccdc5001a7dc799f77721cbd3e3f3eac558b7ea712a81b9d1bd"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\F01.icons-consistent-a01.png",
+        "bytes": 278826,
+        "sha256": "c094b559d00193f36d36f565f37469ca245855f8fcccd4ae943e017c9e378bce"
+      }
+    },
+    {
+      "cue": "E02-V6-N30",
+      "part_index": 7,
+      "page": "D02",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\identity-card-successor-a01\\D02.identity-v7-a01.png",
+        "bytes": 237870,
+        "sha256": "f8130e8dc54abe975645a14e33fce1f9a5c0467a248e0ea56c446b7f60f8c849"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\D02.icons-consistent-a01.png",
+        "bytes": 256649,
+        "sha256": "e217f5e3ddd51faec5cb79c450f51edd15d55f557a43b644100d506502f48e09"
+      }
+    },
+    {
+      "cue": "E02-V6-N07",
+      "part_index": 5,
+      "page": "SUP-MECCA-INITIALIZATION",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\derived\\material_card_candidates\\dds-only-a01\\SUP-MECCA-INITIALIZATION.v7-dds.png",
+        "bytes": 166114,
+        "sha256": "15b7f36b4eb1a4061d7bda9180a157a0a6e5769edb5bc33efe75e6fed446df2e"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\SUP-MECCA-INITIALIZATION.icons-consistent-a01.png",
+        "bytes": 171183,
+        "sha256": "24d82fa87bf3706fc45436a6a8906d46aa51ae7cc07657447d817dd516996099"
+      }
+    },
+    {
+      "cue": "E02-V6-N07",
+      "part_index": 6,
+      "page": "SUP-MECCA-INITIALIZATION",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261022-a01\\derived\\material_card_candidates\\dds-only-a01\\SUP-MECCA-INITIALIZATION.v7-dds.png",
+        "bytes": 166114,
+        "sha256": "15b7f36b4eb1a4061d7bda9180a157a0a6e5769edb5bc33efe75e6fed446df2e"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\condition-cards\\SUP-MECCA-INITIALIZATION.icons-consistent-a01.png",
+        "bytes": 171183,
+        "sha256": "24d82fa87bf3706fc45436a6a8906d46aa51ae7cc07657447d817dd516996099"
+      }
+    },
+    {
+      "cue": "E02-V6-N20",
+      "part_index": 14,
+      "page": "N20-multipliers-3",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\object-material-a03\\N20-multipliers-3.png",
+        "bytes": 96899,
+        "sha256": "63ad110b131ad00b04b459efb3ead6e48e5d76a907306375ec6fb83ba826587c"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\focused-cards\\N20-multipliers-3.png",
+        "bytes": 113973,
+        "sha256": "0c4e93bb3cda82e03d52ce43588cb80aadd1ba7752e408ac102bd1bd26ef66c2"
+      }
+    },
+    {
+      "cue": "E02-V6-N20",
+      "part_index": 17,
+      "page": "N20-humility-law",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\object-material-a03\\N20-humility-law.png",
+        "bytes": 89822,
+        "sha256": "0d1b3a447f0963d1ae6fc584dff5683afe975a0e3ff60cd8a32235e00b053690"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\focused-cards\\N20-humility-law.png",
+        "bytes": 92618,
+        "sha256": "db260cecba98ec5a99245c9d500c8b849c996c580b379b95631b5d04558b045b"
+      }
+    },
+    {
+      "cue": "E02-V6-N20",
+      "part_index": 20,
+      "page": "N20-later-1",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\object-material-a03\\N20-later-1.png",
+        "bytes": 69945,
+        "sha256": "660fb89014888fb9ae1e6ddfd1f0c380cbb3ef9164d941d8464f88b1d3b65472"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\focused-cards\\N20-later-1.png",
+        "bytes": 71242,
+        "sha256": "b06b83682d649fe39a1aa6c514e8c29bc48bd9e318c28e6b120edd89441e0b56"
+      }
+    },
+    {
+      "cue": "E02-V6-N20",
+      "part_index": 21,
+      "page": "N20-later-2",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\object-alias-a01\\N20-later-2.png",
+        "bytes": 98119,
+        "sha256": "36fa9277ef68b1b9fc60b25e84856201bb6b06d3a99684d40477f13cce2977a2"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\focused-cards\\N20-later-2.png",
+        "bytes": 99450,
+        "sha256": "3d7c90b7cc97f9217ee8d002b99a179d68204d9e79ea9e5695fd47d06dfd9396"
+      }
+    },
+    {
+      "cue": "E02-V6-N20",
+      "part_index": 22,
+      "page": "N20-later-3",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\object-alias-a01\\N20-later-3.png",
+        "bytes": 109425,
+        "sha256": "d168857c3c46c1f7ec6b6d8c2b1dc0f33df18daa592aa235ab3a3ea93a88b037"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\focused-cards\\N20-later-3.png",
+        "bytes": 117141,
+        "sha256": "cc255b1a1008b8deaac73e083682bb4bf232ead37af51fc9264dbccbc0dd390b"
+      }
+    },
+    {
+      "cue": "E02-V6-N20",
+      "part_index": 23,
+      "page": "N20-later-4",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\object-alias-a01\\N20-later-4.png",
+        "bytes": 122367,
+        "sha256": "70d9a956682ef187048b4c9e4b4ff3bf4fea71b808648e0933f13d36ffd7a3bd"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\focused-cards\\N20-later-4.png",
+        "bytes": 130430,
+        "sha256": "baf30d61dd6975b9187fd10cf34b2d8120f83314514c1f7d30fc12154123d480"
+      }
+    },
+    {
+      "cue": "E02-V6-N20",
+      "part_index": 24,
+      "page": "N20-later-5",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\object-alias-a01\\N20-later-5.png",
+        "bytes": 130188,
+        "sha256": "4bffa9967ff35f10b706e1517dfb9483143a73fee7c8610f1a9bf3d430ddc2bd"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\focused-cards\\N20-later-5.png",
+        "bytes": 146603,
+        "sha256": "88977196ae72f709a1aadb11388a03f9754a1295cef01f03aa36410b507c983a"
+      }
+    },
+    {
+      "cue": "E02-V6-N20",
+      "part_index": 25,
+      "page": "N20-later-6",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\object-alias-a01\\N20-later-6.png",
+        "bytes": 137824,
+        "sha256": "dfacce9d17bb61f7f1eedfc12f496cd4ec9b38ddb84a9ac54c14036066f4c12c"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\focused-cards\\N20-later-6.png",
+        "bytes": 161028,
+        "sha256": "d6d363204e9c3f005add04422ac989b6f0e2ce8e5105773c5ccaca6333346532"
+      }
+    },
+    {
+      "cue": "E02-V6-N20",
+      "part_index": 26,
+      "page": "N20-later-6",
+      "old": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\object-alias-a01\\N20-later-6.png",
+        "bytes": 137824,
+        "sha256": "dfacce9d17bb61f7f1eedfc12f496cd4ec9b38ddb84a9ac54c14036066f4c12c"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\focused-cards\\N20-later-6.png",
+        "bytes": 161028,
+        "sha256": "d6d363204e9c3f005add04422ac989b6f0e2ce8e5105773c5ccaca6333346532"
+      }
+    }
+  ],
+  "changed_cues": [
+    "E02-V6-N07",
+    "E02-V6-N08",
+    "E02-V6-N20",
+    "E02-V6-N21",
+    "E02-V6-N24",
+    "E02-V6-N26",
+    "E02-V6-N27",
+    "E02-V6-N28",
+    "E02-V6-N30",
+    "E02-V6-N31",
+    "E02-V6-N32",
+    "E02-V6-N33"
+  ],
+  "only_image_pins_changed_inside_cues": true,
+  "all33_original_audio_subtitle_text_timing_and_visual_intervals_unchanged": true,
+  "same_page_same_level_graphic_consistency_checked": true,
+  "limits": [
+    "Complete human1x video listening/watch not performed.",
+    "Generic travel/title/holy-site symbols are original category illustrations, not newly observed Native state.",
+    "Event discounts use their original event theme images; godking uses Mandala government symbol.",
+    "Named Pilgrim experience tiers use the verified common base trait icon plus explicit unchanged XP text; no guessed star icon."
+  ],
+  "fullrender_started": false
+}

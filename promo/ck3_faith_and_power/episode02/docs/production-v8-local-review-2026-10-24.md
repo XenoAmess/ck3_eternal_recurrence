@@ -1,5 +1,7 @@
 # 第二期 V8 清晰度修订：本地审阅交付
 
+**后继图标修订（2026-10-24，`machine_id: 4-8e1c2f1861`）：** 当前选用[19张卡片图标一致性修订版](production-v8-icon-consistency-2026-10-24.md)。下文与配对JSON保留原a04交付身份；其33个可重建cue中间文件已在后继精确回收，最终视频保留，原109工件通过仅证明当时状态。
+
 2026-10-24，`machine_id: 4-8e1c2f1861`。六项反馈已完成入片，当前交付为 **[V8《朝圣在奖励什么？》：29分30.933秒、1440p](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/v8-clarity-20261024-a01/final-render-a04/sample/build-a01/native-run/derived/direct/episode02-review.mp4)**。全片自动检查及37处最终帧抽查通过；状态为 `ENCODED_REVIEW_PENDING`，完整人工1×听看与用户签收仍待进行。[双语字幕](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/v8-clarity-20261024-a01/final-render-a04/sample/build-a01/native-run/derived/direct/text/episode02.bilingual.srt)、[中文](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/v8-clarity-20261024-a01/final-render-a04/sample/build-a01/native-run/derived/direct/text/episode02.zh.srt)、[英文](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/v8-clarity-20261024-a01/final-render-a04/sample/build-a01/native-run/derived/direct/text/episode02.en.srt)、[讲稿](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/v8-clarity-20261024-a01/final-render-a04/sample/build-a01/native-run/derived/direct/text/episode02-script.md)和[机器可读制作记录](production-v8-local-review-2026-10-24.json)配套交付。本机沿用[本地交付偏好](../../../../docs/maintenance/machine-preferences/4-8e1c2f1861.video-delivery.json)。
 
 | 六项反馈 | 实际成片修订 |

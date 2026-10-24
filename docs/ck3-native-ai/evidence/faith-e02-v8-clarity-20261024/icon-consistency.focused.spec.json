@@ -1,0 +1,509 @@
+{
+  "schema": "xar.clarity-cards.spec/v2",
+  "machine_id": "4-8e1c2f1861",
+  "ffmpeg": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\media-tools\\ffmpeg.exe",
+    "bytes": 105423872,
+    "sha256": "3256173f3f8bffd7df12227c68adf68025edb1832273a9530688a7bb1ed8edec"
+  },
+  "cards": [
+    {
+      "id": "N20-multipliers-3",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "赞助朝圣乘二分之一",
+      "title": "第二组：对当前金额连续乘倍率",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "纪念想象中朋友的目的地",
+          "value": "×0.5"
+        },
+        {
+          "label": "宫廷事件优惠",
+          "value": "×0.75"
+        },
+        {
+          "label": "赞助朝圣",
+          "value": "×0.5"
+        }
+      ],
+      "result": "",
+      "note": "每次乘上一步的当前金额；按这里的顺序处理。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 2,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\travel_positive.dds",
+            "bytes": 19264,
+            "sha256": "b764cace100ddcae64d08b62ebaed3bd5c7adf3c5df5597850a071c6a2f5934a"
+          },
+          "row": 2,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\event_types\\type_relation_friendly.dds",
+            "bytes": 116828,
+            "sha256": "d9c750fe77221d137981ef6a3d7261cfeef8509c765db76430ba9dd11c63fd80"
+          },
+          "row": 0,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\event_types\\type_domain.dds",
+            "bytes": 116828,
+            "sha256": "b50022a82f6d465d02f1d8e3ccc6b0ba84838238195e027799170ab561c7ac23"
+          },
+          "row": 1,
+          "column": "LABEL"
+        }
+      ]
+    },
+    {
+      "id": "N20-humility-law",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "谦逊家族志向、",
+      "title": "第二组继续：两项各乘四分之三",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "谦逊家族志向",
+          "value": "×0.75"
+        },
+        {
+          "label": "降低朝圣费用的法律",
+          "value": "×0.75"
+        }
+      ],
+      "result": "",
+      "note": "各自满足条件时，依次乘当前金额。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": -1,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\powerful_family_bonus\\humility.dds",
+            "bytes": 360128,
+            "sha256": "cb3b0ea78a4c3233f843584b9e8538fd51b267d138a43e13f2ec742973390a27"
+          },
+          "row": 0,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\laws\\mandala_decree_reverence.dds",
+            "bytes": 360128,
+            "sha256": "38b595ac08a3b44c9a49ccd3134db8ba9d4b8c50965ab977421d7dc663eb78a1"
+          },
+          "row": 1,
+          "column": "LABEL"
+        }
+      ]
+    },
+    {
+      "id": "N20-later-1",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "然后继续处理后面的倍率：",
+      "title": "第三组继续：后面的现值倍率",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "当地仪式",
+          "value": "×1.75"
+        }
+      ],
+      "result": "",
+      "note": "按列示顺序；每项都只在自己的条件满足时生效。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 0,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\faith_doctrines\\doctrine_pilgrimage_local_rites.dds",
+            "bytes": 76864,
+            "sha256": "4af6f035aba1b38ef647d0fc687bb35460586bcd93f13e4e521bc2acaf505225"
+          },
+          "row": 0,
+          "column": "LABEL"
+        }
+      ]
+    },
+    {
+      "id": "N20-later-2",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "无地冒险者或游牧政体配合教权辩护",
+      "title": "第三组继续：后面的现值倍率",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "当地仪式",
+          "value": "×1.75"
+        },
+        {
+          "label": "无地／游牧 + 教权辩护",
+          "value": "×0.5"
+        }
+      ],
+      "result": "",
+      "note": "按列示顺序；各项条件分别判断。同一技能常规名为教权辩护，无地／游牧时显示为高效朝圣者。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 1,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\source-icon-frames-a01\\node_learning-frame2.png",
+            "bytes": 7308,
+            "sha256": "e74ee12f20810a4d9796514d93bbf462d32d7d141da6c2c74dc88ab52d9d99b9"
+          },
+          "row": 1,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\faith_doctrines\\doctrine_pilgrimage_local_rites.dds",
+            "bytes": 76864,
+            "sha256": "4af6f035aba1b38ef647d0fc687bb35460586bcd93f13e4e521bc2acaf505225"
+          },
+          "row": 0,
+          "column": "LABEL"
+        }
+      ]
+    },
+    {
+      "id": "N20-later-3",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "联盟凝聚力提供的活动优惠",
+      "title": "第三组继续：后面的现值倍率",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "当地仪式",
+          "value": "×1.75"
+        },
+        {
+          "label": "无地／游牧 + 教权辩护",
+          "value": "×0.5"
+        },
+        {
+          "label": "联盟凝聚力的活动优惠",
+          "value": "×0.9"
+        }
+      ],
+      "result": "",
+      "note": "按列示顺序；各项条件分别判断。同一技能常规名为教权辩护，无地／游牧时显示为高效朝圣者。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 2,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\source-icon-frames-a01\\node_learning-frame2.png",
+            "bytes": 7308,
+            "sha256": "e74ee12f20810a4d9796514d93bbf462d32d7d141da6c2c74dc88ab52d9d99b9"
+          },
+          "row": 1,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\faith_doctrines\\doctrine_pilgrimage_local_rites.dds",
+            "bytes": 76864,
+            "sha256": "4af6f035aba1b38ef647d0fc687bb35460586bcd93f13e4e521bc2acaf505225"
+          },
+          "row": 0,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\bloc_cohesion.dds",
+            "bytes": 76864,
+            "sha256": "9c16d9777f70682f55143fb53a322261ceaf5ce680658b0d684d86402b004000"
+          },
+          "row": 2,
+          "column": "LABEL"
+        }
+      ]
+    },
+    {
+      "id": "N20-later-4",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "命运之路乘零点八",
+      "title": "第三组继续：后面的现值倍率",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "当地仪式",
+          "value": "×1.75"
+        },
+        {
+          "label": "无地／游牧 + 教权辩护",
+          "value": "×0.5"
+        },
+        {
+          "label": "联盟凝聚力的活动优惠",
+          "value": "×0.9"
+        },
+        {
+          "label": "命运之路",
+          "value": "×0.8"
+        }
+      ],
+      "result": "",
+      "note": "按列示顺序；各项条件分别判断。同一技能常规名为教权辩护，无地／游牧时显示为高效朝圣者。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 3,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\source-icon-frames-a01\\node_learning-frame2.png",
+            "bytes": 7308,
+            "sha256": "e74ee12f20810a4d9796514d93bbf462d32d7d141da6c2c74dc88ab52d9d99b9"
+          },
+          "row": 1,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\piety_positive.dds",
+            "bytes": 19264,
+            "sha256": "11456b79e1a3bcaf5dc4fc0ac919e2b0c2c99b53dbed137aa6046f6ea2ebe3e8"
+          },
+          "row": 3,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\faith_doctrines\\doctrine_pilgrimage_local_rites.dds",
+            "bytes": 76864,
+            "sha256": "4af6f035aba1b38ef647d0fc687bb35460586bcd93f13e4e521bc2acaf505225"
+          },
+          "row": 0,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\bloc_cohesion.dds",
+            "bytes": 76864,
+            "sha256": "9c16d9777f70682f55143fb53a322261ceaf5ce680658b0d684d86402b004000"
+          },
+          "row": 2,
+          "column": "LABEL"
+        }
+      ]
+    },
+    {
+      "id": "N20-later-5",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "以牙还牙的款待",
+      "title": "第三组继续：后面的现值倍率",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "当地仪式",
+          "value": "×1.75"
+        },
+        {
+          "label": "无地／游牧 + 教权辩护",
+          "value": "×0.5"
+        },
+        {
+          "label": "联盟凝聚力的活动优惠",
+          "value": "×0.9"
+        },
+        {
+          "label": "命运之路",
+          "value": "×0.8"
+        },
+        {
+          "label": "以牙还牙的款待",
+          "value": "×0.85"
+        }
+      ],
+      "result": "",
+      "note": "按列示顺序；各项条件分别判断。同一技能常规名为教权辩护，无地／游牧时显示为高效朝圣者。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 4,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\source-icon-frames-a01\\node_learning-frame2.png",
+            "bytes": 7308,
+            "sha256": "e74ee12f20810a4d9796514d93bbf462d32d7d141da6c2c74dc88ab52d9d99b9"
+          },
+          "row": 1,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\piety_positive.dds",
+            "bytes": 19264,
+            "sha256": "11456b79e1a3bcaf5dc4fc0ac919e2b0c2c99b53dbed137aa6046f6ea2ebe3e8"
+          },
+          "row": 3,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\faith_doctrines\\doctrine_pilgrimage_local_rites.dds",
+            "bytes": 76864,
+            "sha256": "4af6f035aba1b38ef647d0fc687bb35460586bcd93f13e4e521bc2acaf505225"
+          },
+          "row": 0,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\bloc_cohesion.dds",
+            "bytes": 76864,
+            "sha256": "9c16d9777f70682f55143fb53a322261ceaf5ce680658b0d684d86402b004000"
+          },
+          "row": 2,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\event_types\\type_domain.dds",
+            "bytes": 116828,
+            "sha256": "b50022a82f6d465d02f1d8e3ccc6b0ba84838238195e027799170ab561c7ac23"
+          },
+          "row": 4,
+          "column": "LABEL"
+        }
+      ]
+    },
+    {
+      "id": "N20-later-6",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "符合神王条件的人工智能人物",
+      "title": "第三组继续：后面的现值倍率",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "当地仪式",
+          "value": "×1.75"
+        },
+        {
+          "label": "无地／游牧 + 教权辩护",
+          "value": "×0.5"
+        },
+        {
+          "label": "联盟凝聚力的活动优惠",
+          "value": "×0.9"
+        },
+        {
+          "label": "命运之路",
+          "value": "×0.8"
+        },
+        {
+          "label": "以牙还牙的款待",
+          "value": "×0.85"
+        },
+        {
+          "label": "满足神王条件的AI",
+          "value": "×0.25"
+        }
+      ],
+      "result": "",
+      "note": "按列示顺序；各项条件分别判断。同一技能常规名为教权辩护，无地／游牧时显示为高效朝圣者。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 5,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\source-icon-frames-a01\\node_learning-frame2.png",
+            "bytes": 7308,
+            "sha256": "e74ee12f20810a4d9796514d93bbf462d32d7d141da6c2c74dc88ab52d9d99b9"
+          },
+          "row": 1,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\piety_positive.dds",
+            "bytes": 19264,
+            "sha256": "11456b79e1a3bcaf5dc4fc0ac919e2b0c2c99b53dbed137aa6046f6ea2ebe3e8"
+          },
+          "row": 3,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\faith_doctrines\\doctrine_pilgrimage_local_rites.dds",
+            "bytes": 76864,
+            "sha256": "4af6f035aba1b38ef647d0fc687bb35460586bcd93f13e4e521bc2acaf505225"
+          },
+          "row": 0,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\bloc_cohesion.dds",
+            "bytes": 76864,
+            "sha256": "9c16d9777f70682f55143fb53a322261ceaf5ce680658b0d684d86402b004000"
+          },
+          "row": 2,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\event_types\\type_domain.dds",
+            "bytes": 116828,
+            "sha256": "b50022a82f6d465d02f1d8e3ccc6b0ba84838238195e027799170ab561c7ac23"
+          },
+          "row": 4,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\government_types\\mandala_government.dds",
+            "bytes": 26124,
+            "sha256": "f065d2bf126a763a004cd9badbd2ec25bf1b92e38febd8b18e23825ec48806b1"
+          },
+          "row": 5,
+          "column": "LABEL"
+        }
+      ]
+    }
+  ]
+}

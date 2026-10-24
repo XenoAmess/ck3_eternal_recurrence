@@ -1,0 +1,10 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "started_at_utc": "2026-10-24T12:34:57.563685+00:00",
+  "finished_at_utc": "2026-10-24T13:11:56.839023+00:00",
+  "elapsed_seconds": 2219.2753442999674,
+  "pid": 19524,
+  "actual_exit_code": 0,
+  "original_popen_wait_completed": true,
+  "automatic_retry": false
+}

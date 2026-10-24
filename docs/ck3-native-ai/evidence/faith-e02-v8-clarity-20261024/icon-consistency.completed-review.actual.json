@@ -1,0 +1,121 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-24T13:11:55.263878+00:00",
+  "status": "ENCODED_REVIEW_PENDING",
+  "scope": "episode02-formal-review",
+  "final": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\sample\\build-a01\\native-run\\derived\\direct\\episode02-review.mp4",
+    "bytes": 93195477,
+    "sha256": "5d8f5fee0373db2425620a713940f2139336472388b03dd9634df87c20a8bc29"
+  },
+  "map": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\sample\\build-a01\\raw-to-final-map.json",
+    "bytes": 617633,
+    "sha256": "3e24b455dd8c2de0d39055160bf29db9b7f9e05b87e2ba4c02c2c1ec4685d972"
+  },
+  "native_run": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\sample\\build-a01\\native-run\\run-manifest.json",
+    "bytes": 43666,
+    "sha256": "8ae84b3e651ae8975639d5e8e12f206bb640c6d33caaad4a3ad53fbf0b35920f"
+  },
+  "actual_new_bytes": 189287066,
+  "budget": {
+    "max_seconds": 1770.9333333333334,
+    "segments": 33,
+    "render_profile": {
+      "schema": "ck3-faith-power-immutable-render-profile-v1",
+      "id": "episode02-34m-1440p30-v1",
+      "max_seconds": 2040,
+      "max_segments": 168,
+      "video_maxrate_bps": 3000000,
+      "video_bufsize_bits": 3000000,
+      "audio_bitrate_bps": 192000,
+      "geometry": [
+        2560,
+        1440,
+        30
+      ],
+      "crf": 21,
+      "preset": "veryfast"
+    },
+    "prepared_visual_bytes": 73473750,
+    "narrated_segment_bytes": 754926270,
+    "concat_deliverable_bytes": 754926270,
+    "graphics_metadata_audio_audit_scratch_bytes": 167772160,
+    "conservative_packet_overshoot_bytes": 25125000,
+    "peak_new_bytes": 1776223450,
+    "video_maxrate_bps": 3000000,
+    "video_bufsize_bits": 3000000,
+    "audio_bitrate_bps": 192000,
+    "geometry": [
+      2560,
+      1440,
+      30
+    ],
+    "crf": 21,
+    "preset": "veryfast",
+    "container_allowance_fraction": 0.05,
+    "media_CAS_copies": 0,
+    "whole_raw_or_existing_MP3_copies": 0,
+    "artifact_mode": "direct actual run-relative outputs; explicit external SHA-bound inputs",
+    "file_size_caps_required": true,
+    "once_attempt_no_automatic_retry": true,
+    "prepared_visual_policy": "verified-full-episode-exact-prepared-retirement-v1",
+    "required_workers": 1,
+    "retained_prepared_visuals": 0,
+    "existing_author_voice_bytes_charged_by_admission": true
+  },
+  "text": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\sample\\build-a01\\native-run\\derived\\direct\\text\\episode02.zh.srt",
+      "bytes": 31455,
+      "sha256": "1fc7e294860ba4a0f90d3820c1db36268fd78f99457e340bf96dd554b2db9735"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\sample\\build-a01\\native-run\\derived\\direct\\text\\episode02.en.srt",
+      "bytes": 35603,
+      "sha256": "00fa9ae0e1fc07e1205efddbf19cb2aecad4d12dde761ddec7959423f9b14ca8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\sample\\build-a01\\native-run\\derived\\direct\\text\\episode02.bilingual.srt",
+      "bytes": 58137,
+      "sha256": "c0cfed55a8776b817aba90ca8a8e9341a405e0e3a8f978c7b40af4d02c91bec1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\sample\\build-a01\\native-run\\derived\\direct\\text\\episode02-script.md",
+      "bytes": 49397,
+      "sha256": "9746cfabb02cc0dc2061827b48ec04d02bb106f45a88c7fa4eae3f4ea2fceed8"
+    }
+  ],
+  "audio_signal": {
+    "mean_volume_db": -22.6,
+    "max_volume_db": -3.7,
+    "human_listening_performed": false
+  },
+  "background_music": {
+    "file": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\assets\\music\\quiet-courtly-tension.wav",
+      "bytes": 30726160,
+      "sha256": "fda2464fb4b06cd9a2f0196e5c40ca311eb693ec263c996e4ccc24a6ada8803f"
+    },
+    "narration_gain_db": 0,
+    "music_gain_db": -17,
+    "loop_same_original": true,
+    "fade_in_seconds": 2,
+    "fade_out_seconds": 8,
+    "ducking": false,
+    "normalize": false,
+    "sample_rate": 48000,
+    "channels": 2,
+    "audio_bitrate_bps": 192000,
+    "extra_audio_file_bytes": 0
+  },
+  "actual_music_presence": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\icon-consistency-a01\\sample\\build-a01\\music-presence.json",
+    "bytes": 3572,
+    "sha256": "b5155fd4689c05e0c10b9f5cca4955dcb2d95dd19640aa40c36dedce6c7d6491"
+  },
+  "strict_AV_full_decode_exit_code": 0,
+  "media_CAS_copies": 0,
+  "human_signoff_recorded": false
+}
