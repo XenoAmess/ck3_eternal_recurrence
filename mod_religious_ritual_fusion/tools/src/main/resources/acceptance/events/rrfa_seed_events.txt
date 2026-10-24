@@ -1,0 +1,23 @@
+namespace = rrfa
+
+rrfa.1 = {
+    hidden = yes
+    immediate = {
+        if = {
+            limit = {
+                this = character:29829
+                is_adult = yes
+                is_landed = yes
+                is_playable_character = yes
+                is_at_war = no
+                is_imprisoned = no
+                NOT = { has_character_flag = rrfa_seed_done }
+                NOT = { has_variable = rrf_state }
+                NOT = { has_variable = rrf_last_result_rite }
+                NOT = { has_character_flag = rrf_fusion_cooldown }
+            }
+            rrfa_seed_inputs_effect = yes
+        }
+        else = { debug_log = "RRFAT: TEST FAIL input_actor_preconditions" }
+    }
+}

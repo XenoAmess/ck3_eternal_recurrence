@@ -1,0 +1,14 @@
+# Cold input has no seed events/effects and does not alter any campaign object.
+on_game_start_after_lobby = { on_actions = { rrfa_cold_start } }
+rrfa_cold_start = {
+    effect = {
+        every_player = {
+            if = {
+                limit = { this = character:29829 }
+                debug_log = "RRFAT: FIXTURE_ARMED cold_reload"
+                trigger_event = { id = rrfa.22 }
+            }
+            else = { debug_log = "RRFAT: TEST FAIL cold_wrong_actor" }
+        }
+    }
+}

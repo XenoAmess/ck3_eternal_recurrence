@@ -140,6 +140,15 @@
         "{matching-product-tag}"
       ],
       "publication": "Not published; first Workshop item ID remains null until actual CreateItem. Java/Quarkus release builder is compiled through this Maven POM."
+    },
+    {
+      "key": "religious-ritual-fusion",
+      "directory": "mod_religious_ritual_fusion",
+      "workshop_item_id": null,
+      "forbidden_upstream_ids": [],
+      "builder": "mod_religious_ritual_fusion/tools/pom.xml",
+      "release_flags": ["--output", "{new-output}", "--revision", "{source-commit}", "--machine-id", "{actual-machine-id}"],
+      "publication": "Not published; current Java/Quarkus builder produces development staging only. Workshop item ID remains null until actual first publication."
     }
   ]
 }

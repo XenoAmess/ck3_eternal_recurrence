@@ -1,0 +1,2 @@
+# Pure numeric readback. A paused same-date input is required for exact wallet deltas.
+rrfa_expected_post_piety_value = { value = var:rrfa_piety_before subtract = ${COST} }

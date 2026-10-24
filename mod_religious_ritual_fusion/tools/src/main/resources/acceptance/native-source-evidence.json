@@ -1,0 +1,17 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-24T16:05:35Z",
+  "tenet_knowledge": {
+    "path": "common/scripted_effects/00_religion_effects.txt",
+    "sha256": "5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931",
+    "effect": "add_known_tenet",
+    "example_line": 895
+  },
+  "doctrine_knowledge": {
+    "path": "common/scripted_effects/passive_rite_learning_effects.txt",
+    "sha256": "cfb45ffc82239d87080319dcc9110e3fe95597b1d152618fd5f03322d22884e9",
+    "effect": "add_known_doctrine",
+    "example_line": 597
+  },
+  "scope_boundary": "Knowledge writes only target the playable Robert input character; this source observation does not qualify another machine or business result."
+}

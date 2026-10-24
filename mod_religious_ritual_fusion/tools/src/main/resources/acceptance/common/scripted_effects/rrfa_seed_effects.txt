@@ -1,0 +1,71 @@
+# PREPARATION ONLY. Never calls an RRF action, writes product state, or retries a partial seed.
+rrfa_seed_inputs_effect = {
+    set_variable = { name = rrfa_original_rite value = rite }
+    set_variable = { name = rrfa_original_faith value = faith }
+    create_dynamic_rite = {
+        save_scope_as = rrfa_a
+        convert = no
+        target_divergence = 0
+        core_tenet_override_entry = tenet:tenet_esotericism
+        core_tenet_override_entry = tenet:tenet_legalism
+        core_tenet_override_entry = tenet:tenet_astrology
+    }
+    if = {
+        limit = { exists = scope:rrfa_a }
+        scope:rrfa_a = { change_rite_doctrine = doctrine:doctrine_divorce_disallowed }
+        set_character_rite = scope:rrfa_a
+        set_variable = { name = rrfa_source_a value = scope:rrfa_a }
+        set_variable = { name = rrfa_source_a_faith value = scope:rrfa_a.faith }
+        create_dynamic_rite = {
+            save_scope_as = rrfa_b
+            convert = no
+            target_divergence = 0
+            core_tenet_override_entry = tenet:tenet_esotericism
+            core_tenet_override_entry = tenet:tenet_legalism
+            core_tenet_override_entry = tenet:tenet_communal_identity
+        }
+        if = {
+            limit = { exists = scope:rrfa_b }
+            scope:rrfa_b = { change_rite_doctrine = doctrine:doctrine_divorce_allowed }
+            set_variable = { name = rrfa_source_b_rite value = scope:rrfa_b }
+            create_dynamic_rite = {
+                save_scope_as = rrfa_b_faith_rite
+                convert = no
+                target_divergence = 0
+                core_tenet_override_entry = tenet:tenet_esotericism
+                core_tenet_override_entry = tenet:tenet_legalism
+                core_tenet_override_entry = tenet:tenet_communal_identity
+            }
+            if = {
+                limit = { exists = scope:rrfa_b_faith_rite }
+                scope:rrfa_b_faith_rite = { change_rite_doctrine = doctrine:doctrine_divorce_allowed }
+                detach_rite_to_new_faith = { target = scope:rrfa_b_faith_rite save_scope_as = rrfa_b_faith }
+                if = {
+                    limit = { exists = scope:rrfa_b_faith }
+                    set_variable = { name = rrfa_source_b_faith_rite value = scope:rrfa_b_faith_rite }
+                    set_variable = { name = rrfa_source_b_faith value = scope:rrfa_b_faith }
+                    set_variable = { name = rrfa_expected_b value = var:${EXPECTED_B} }
+                    set_variable = { name = rrfa_mode value = flag:${MODE} }
+                    add_known_tenet = tenet_esotericism
+                    add_known_tenet = tenet_legalism
+                    add_known_tenet = tenet_astrology
+                    add_known_tenet = tenet_communal_identity
+                    add_known_doctrine = doctrine_divorce_disallowed
+                    add_known_doctrine = doctrine_divorce_allowed
+                    add_piety = { value = ${PIETY} subtract = piety }
+                    set_variable = { name = rrfa_piety_before value = piety }
+                    add_character_flag = rrfa_seed_done
+                    if = {
+                        limit = { rrfa_inputs_intact_trigger = yes rite = var:rrfa_source_a knows_tenet = tenet_communal_identity knows_doctrine = doctrine_divorce_allowed var:rrfa_expected_b = { can_convert_to_rite = yes } }
+                        debug_log = "RRFAT: TEST PASS fixture_ready"
+                    }
+                    else = { debug_log = "RRFAT: TEST FAIL fixture_ready" }
+                }
+                else = { debug_log = "RRFAT: TEST FAIL seed_detach_faith" }
+            }
+            else = { debug_log = "RRFAT: TEST FAIL seed_faith_rite" }
+        }
+        else = { debug_log = "RRFAT: TEST FAIL seed_same_faith_rite" }
+    }
+    else = { debug_log = "RRFAT: TEST FAIL seed_source_a" }
+}

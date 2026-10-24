@@ -38,6 +38,7 @@ CANONICAL_MOD_KEYS = frozenset(
         "more-tenets-slots",
         "ox-here",
         "reclaim-the-motherland",
+        "religious-ritual-fusion",
         "remove-mandala",
         "tributary-expansion-directives",
         "vanilla",

@@ -1,0 +1,29 @@
+# 实机验收接入：2026-10-25
+
+状态：**准备中；实机尚未执行，商店截图尚未采集。** 用户已授权执行[实机方案](../live-acceptance-plan-2026-10-24.md)，并要求多截可用作商店页面素材的真实画面。本记录随工作包更新，不以源码、准备或 ACK 代替业务通过。
+
+## 已完成的公共接入
+
+产品 `religious-ritual-fusion` 已进入公共产品清单和 canonical run key；`core`、`ui_rejection`、`cold_reload` 三个 case 使用既有 generic adapter。core 按输入区分 rite／faith；冷读走 saved_campaign、0 自然日，不 seed。自定义窗口操作和独立后态仍须现场资格，未授整产品或发布通过。
+
+Java 工具新增严格 fixture request、显式 prebuilt manifest 和独立准备载荷，保持正式 67 文件不混入夹具。新局准备当前玩家的 A／B／另一 Faith 三个来源、明确知识及费用；不调用 RRF 提交来制造结果。观察事件只读取实际状态，不写成功 flag。
+
+机器 `4-8e1c2f1861`：完整 `mvn -B -ntp -f mod_religious_ritual_fusion/tools/pom.xml verify` 于 `2026-10-24T16:11:28Z` 退出 0，23.686 秒，13 tests／0 failure／0 error／0 skipped。公共编号模块 14 项、全 canonical 产品同 runtime 1 项、全注册产品共用 cache 入口 1 项均通过；这些测试没有启动游戏或访问 Steam。
+
+实际 Java CLI 已生成 `C:/workspace/rrf-development-20261024/build/fixture-core-rite-a01` 的 7 文件夹具。公共 prebuilt manifest 为其旁置 `.fixture.json`，5842 bytes，SHA-256 `16ad4bb3b5698fe645a9f2e19e4003360081b037d08e8e119f2822d6cef284ba`。open_kaishek corpus parser 对其中 6 个脚本、11380 bytes 返回 0 errors；corpus SHA-256 `7286cda52970a85f8da060657bf7976555b835544db2ec79a4a91440f7956521`。它只授通用语法范围，不证明原生作用域或 GUI 业务。
+
+## 本机运行准备
+
+机器 ID 来自本轮 `tools/ck3_live_run_id.py machine`，当前只有 C 数据卷，没有 D 盘。根映射保存在 `C:/workspace/rrf-development-20261024/live-admission/MACHINE-ROOT-MAP.a01.actual.json`；不套用另一机器的 D 盘迁移事实。
+
+本机统一容量登记已实际推进为 rev73，准入文件 `ADMISSION.scene-a01.actual.json` SHA-256 `310dee7bc826ee407f47cd46ab17855f24b5eaf83b289df16d539caf1e77f08e`。本轮新增峰值上限 1 GiB，不录视频、不复制游戏；现有 native 编译树和缓存复用，截图子限 288 MiB。有限项目 quota 为 80,000,000,000 bytes，复核 `2026-10-26T16:00Z`；本次准入截止 `2026-10-25T04:00Z`，启动前仍需检查新鲜性与实际消耗。
+
+后台离线 probe 已观察 Steam offline；启动前会重新取得 30 秒以内的合格回执，旧回执不作入场许可。当前没有启动 CK3。最新本机前场 R0046 的原 native 资源终态、keeper 和 CAS 释放已由当前公共 allocator 只读检查通过，可普通接续；其旧 public run=2、normal_close=false 和业务缺口保持，不追认历史通过。
+
+## 当前施工与下一步
+
+现有 MCP 能打开／选择决策定义，但不支持决策内 Rite 目标选择，也不能执行独立 RRF 窗口控件。原生已有 FindTopLevel、控件树和 ShortcutManager 按钮派发底座，正在补通用控件 query／action 及现有 SDK 桥；生产按钮仍经真实 GUI，不以脚本直调替代。
+
+后续顺序为：完成并验证通用原生控件链 → 固定源码／DLL／公共 runtime → 公共 prepare／allocate／preflight → 两模式真实窗口、费用和结果 → 正常保存及独立冷重载 → 受控拒绝／兼容场景与素材收集。进入冻结现场后，修改保全到外置后继包，闭场后再合入。
+
+截图目标为约 24–36 张不同构图，覆盖选择来源、三栏内容、核心／教义选择、最终费用、融合结果、历史及原版宗教详情。原图保留实际尺寸、run／PID／游戏日期／界面状态和 SHA，商店候选避开诊断覆盖、控制台、遮挡和空白控件。真实失败画面作为诊断保存，不包装成成功玩法素材；本轮不合成或伪造实机图。

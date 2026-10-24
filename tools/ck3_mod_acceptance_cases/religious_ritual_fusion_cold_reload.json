@@ -1,0 +1,72 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "religious-ritual-fusion",
+  "case_id": "cold_reload",
+  "acceptance_scope": "actual_new_process_exact_saved_fusion_result_history_resources_and_guards",
+  "fixture_source": {
+    "kind": "prebuilt_manifest"
+  },
+  "maximum_natural_days": 0,
+  "failure_prefixes": [
+    "RRFAT:"
+  ],
+  "gui_phases": [
+    {
+      "id": "actual-cold-fusion-persistence",
+      "at_day": 0,
+      "requirements": [
+        "actual_new_pid_and_birth_identity_differ_from_source_session_and_exact_genuine_source_save_pin_player_date_recorded",
+        "actual_saved_campaign_load_uses_exact_formal_product_plus_passive_readback_fixture_without_seed_or_initialization",
+        "actual_loaded_result_identity_parent_faith_religion_exact_cores_doctrines_origin_history_and_founder_adoption_match_source_graph_before_input",
+        "actual_persisted_piety_charged_cost_ten_year_cooldown_and_draft_or_unresolved_guard_match_source_save_without_repair",
+        "actual_source_a_b_identities_content_and_no_additional_result_objects_or_second_charge_match_source_save",
+        "actual_production_history_or_pending_diagnostic_view_used_for_readback_without_creation_or_stock_rite_action",
+        "actual_uncropped_loaded_custom_history_or_diagnostic_and_result_screenshots_bound_to_new_process_and_source_save",
+        "actual_zero_natural_day_native_checkpoint_and_independent_saved_graph_match_original_saved_result"
+      ]
+    }
+  ],
+  "source_contracts": [
+    "mod_religious_ritual_fusion/docs/implementation-plan-2026-10-24.md",
+    "mod_religious_ritual_fusion/docs/test-acceptance-plan-2026-10-24.md",
+    "mod_religious_ritual_fusion/docs/live-acceptance-plan-2026-10-24.md",
+    "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/acceptance/FixtureEmitter.java",
+    "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/acceptance/FixtureContracts.java",
+    "mod_religious_ritual_fusion/catalog/generated-catalog.json",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_draft_effects.txt",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_selection_effects.txt",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_commit_effects.txt",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_completion_effects.txt",
+    "mod_religious_ritual_fusion/common/scripted_triggers/rrf_draft_triggers.txt",
+    "mod_religious_ritual_fusion/gui/rrf_fusion_window.gui",
+    "mod_religious_ritual_fusion/common/scripted_guis/rrf_scripted_guis.txt",
+    "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/Json.java",
+    "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/Contracts.java",
+    "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/Clausewitz.java",
+    "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/ReleaseBuilder.java",
+    "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/native-source-evidence.json",
+    "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/descriptor.mod",
+    "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/common/scripted_triggers/rrfa_observation_triggers.txt",
+    "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/common/script_values/rrfa_observation_values.txt",
+    "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/events/rrfa_observation_events.txt",
+    "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/common/on_action/rrfa_cold_startup.txt"
+  ],
+  "post_start": {
+    "government_key": "feudal_government",
+    "primary_title_tier_key": "duchy",
+    "independent": true
+  },
+  "required_startup": [],
+  "forbidden_startup": [
+    "RRFAT: TEST FAIL"
+  ],
+  "uncovered_product_business": [
+    "Registration and prepared markers provide no live custom-GUI or business qualification.",
+    "Root must retain actual custom RRF confirmation and independent native/save results; stock Rite creation action is not a substitute.",
+    "Unobserved failure injection, multiplayer, AI operation and exhaustive religion combinations remain outside this case."
+  ],
+  "business_contract_applicable": true,
+  "calendar_bound_provenance": "Zero natural-day readback from the preceding genuine core or rejection save in a fresh managed process; no on-start seed or product repair.",
+  "startup_mode": "saved_campaign"
+}

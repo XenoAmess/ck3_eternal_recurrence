@@ -27,6 +27,186 @@
     "menu_mount_evidence_sufficient": true
   },
   "products": {
+    "religious-ritual-fusion": {
+      "directory": "mod_religious_ritual_fusion",
+      "workshop_item_id": null,
+      "forbidden_upstream_ids": [],
+      "builder": "{repo_root}/mod_religious_ritual_fusion/tools/pom.xml",
+      "integration_status": "shared_generic_adapter_java_prebuilt_fixture_live_qualification_required",
+      "runtime_mod_key": "religious-ritual-fusion",
+      "external_mod": false,
+      "cases": [
+        {
+          "id": "core",
+          "status": "ready",
+          "implementation_credit": "Shared generic adapter data and Java prebuilt fixture route; custom RRF GUI, native result and saved-state business qualification require actual execution; no product or release credit",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/religious_ritual_fusion_core.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/prepared/frontend-fixture-start-policy.json"
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 5400,
+            "hold_seconds": 1800,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_open_ingame_decisions_v1",
+            "ck3_query_ingame_decision_item_v1",
+            "ck3_select_ingame_decision_item_v1",
+            "ck3_confirm_ingame_decision_outcome_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_save_checkpoint",
+            "ck3_query_player_religion_context_v1",
+            "ck3_query_player_religion_doctrines_v1",
+            "ck3_query_player_religion_tenets_v1",
+            "ck3_inspect_gui_window_tree_v1",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1"
+          ],
+          "opt_in_read_only_mcp_tools": [
+            "ck3_query_player_religion_context_v1",
+            "ck3_query_player_religion_doctrines_v1",
+            "ck3_query_player_religion_tenets_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "actual_custom_fusion_window_and_independent_rite_or_faith_result",
+          "whole_product_acceptance_credit": false,
+          "budget_provenance": "Prospective fixed budgets declared before allocation for mode=rite or mode=faith with seven-day natural calendar cap; actual custom fusion UI and independent state required. No live deadline extension."
+        },
+        {
+          "id": "ui_rejection",
+          "status": "ready",
+          "implementation_credit": "Shared generic adapter data and Java prebuilt fixture route; custom RRF GUI, native result and saved-state business qualification require actual execution; no product or release credit",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/religious_ritual_fusion_ui_rejection.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/prepared/frontend-fixture-start-policy.json"
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 3600,
+            "hold_seconds": 900,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_open_ingame_decisions_v1",
+            "ck3_query_ingame_decision_item_v1",
+            "ck3_select_ingame_decision_item_v1",
+            "ck3_confirm_ingame_decision_outcome_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_save_checkpoint",
+            "ck3_query_player_religion_context_v1",
+            "ck3_query_player_religion_doctrines_v1",
+            "ck3_query_player_religion_tenets_v1",
+            "ck3_inspect_gui_window_tree_v1",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1"
+          ],
+          "opt_in_read_only_mcp_tools": [
+            "ck3_query_player_religion_context_v1",
+            "ck3_query_player_religion_doctrines_v1",
+            "ck3_query_player_religion_tenets_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "actual_custom_fusion_cancel_rejection_and_no_change_guards",
+          "whole_product_acceptance_credit": false,
+          "budget_provenance": "Prospective fixed budgets declared before allocation for actual custom fusion rejection and cancellation controls; seven-day natural calendar cap, no deadline extension."
+        },
+        {
+          "id": "cold_reload",
+          "status": "ready",
+          "implementation_credit": "Shared generic adapter data and Java prebuilt fixture route; custom RRF GUI, native result and saved-state business qualification require actual execution; no product or release credit",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/religious_ritual_fusion_cold_reload.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 3600,
+            "hold_seconds": 900,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_open_ingame_decisions_v1",
+            "ck3_query_ingame_decision_item_v1",
+            "ck3_select_ingame_decision_item_v1",
+            "ck3_confirm_ingame_decision_outcome_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_save_checkpoint",
+            "ck3_query_player_religion_context_v1",
+            "ck3_query_player_religion_doctrines_v1",
+            "ck3_query_player_religion_tenets_v1",
+            "ck3_inspect_gui_window_tree_v1",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1"
+          ],
+          "opt_in_read_only_mcp_tools": [
+            "ck3_query_player_religion_context_v1",
+            "ck3_query_player_religion_doctrines_v1",
+            "ck3_query_player_religion_tenets_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "actual_new_process_exact_saved_fusion_result_history_resources_and_guards",
+          "whole_product_acceptance_credit": false,
+          "budget_provenance": "Prospective zero-day genuine prior-save readback in a fresh managed process; passive fixture only, no seed or repair."
+        }
+      ]
+    },
     "dynastic-esotericism": {
       "directory": "mod_dynastic_esotericism",
       "workshop_item_id": null,

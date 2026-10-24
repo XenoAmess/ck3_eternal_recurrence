@@ -14,27 +14,27 @@ import ck3_live_run_id as live_ids
 
 
 class LiveRunIdTests(unittest.TestCase):
-    def test_dynastic_esotericism_uses_canonical_validation_allocation_and_cli(self) -> None:
-        product = "dynastic-esotericism"
-        self.assertEqual(live_ids.validate_mod_key(product), product)
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            first = live_ids.allocate_live_run_id(product, state_root=root, machine_id="dynastic-test-host")
-            restored = live_ids.load_live_run_identity(first.run_id, product, state_root=root,
-                                                       machine_id="dynastic-test-host")
-            self.assertEqual(first, restored)
-            self.assertEqual(first.run_id, "dynastic-test-host--dynastic-esotericism--R0001")
-            args = ["--mod", product, "--state-root", str(root), "--machine-id", "dynastic-test-host"]
-            with contextlib.redirect_stdout(io.StringIO()):
-                self.assertEqual(live_ids.main(["allocate", *args]), 0)
-                self.assertEqual(live_ids.main(["status", *args, "--run-id", first.run_id,
-                                               "--status", "voided", "--reason", "offline registry regression"]), 0)
-            self.assertEqual(live_ids.load_live_run_identity(
-                "dynastic-test-host--dynastic-esotericism--R0002", product,
-                state_root=root, machine_id="dynastic-test-host").sequence, 2)
-            with self.assertRaises(live_ids.LiveRunIdError):
-                live_ids.allocate_live_run_id(product, external_mod=True, state_root=root,
-                                              machine_id="dynastic-test-host")
+    def test_java_products_use_canonical_validation_allocation_and_cli(self) -> None:
+        for product in ("dynastic-esotericism", "religious-ritual-fusion"):
+            with self.subTest(product=product), tempfile.TemporaryDirectory() as temporary:
+                self.assertEqual(live_ids.validate_mod_key(product), product)
+                root = Path(temporary)
+                first = live_ids.allocate_live_run_id(product, state_root=root, machine_id="java-test-host")
+                restored = live_ids.load_live_run_identity(first.run_id, product, state_root=root,
+                                                           machine_id="java-test-host")
+                self.assertEqual(first, restored)
+                self.assertEqual(first.run_id, f"java-test-host--{product}--R0001")
+                args = ["--mod", product, "--state-root", str(root), "--machine-id", "java-test-host"]
+                with contextlib.redirect_stdout(io.StringIO()):
+                    self.assertEqual(live_ids.main(["allocate", *args]), 0)
+                    self.assertEqual(live_ids.main(["status", *args, "--run-id", first.run_id,
+                                                   "--status", "voided", "--reason", "offline registry regression"]), 0)
+                self.assertEqual(live_ids.load_live_run_identity(
+                    f"java-test-host--{product}--R0002", product,
+                    state_root=root, machine_id="java-test-host").sequence, 2)
+                with self.assertRaises(live_ids.LiveRunIdError):
+                    live_ids.allocate_live_run_id(product, external_mod=True, state_root=root,
+                                                  machine_id="java-test-host")
 
     def test_living_artifacts_is_a_canonical_independent_product(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

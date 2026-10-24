@@ -1,0 +1,80 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "religious-ritual-fusion",
+  "case_id": "ui_rejection",
+  "acceptance_scope": "actual_custom_fusion_cancel_rejection_and_no_change_guards",
+  "fixture_source": {
+    "kind": "prebuilt_manifest"
+  },
+  "maximum_natural_days": 7,
+  "failure_prefixes": [
+    "RRFAT:"
+  ],
+  "gui_phases": [
+    {
+      "id": "actual-custom-fusion-rejection-controls",
+      "when_markers": [
+        "RRFAT: TEST PASS fixture_ready"
+      ],
+      "requirements": [
+        "actual_frozen_case_inputs_and_unchanged_baseline_source_identities_content_piety_cooldown_and_object_inventory_captured",
+        "actual_custom_rrf_window_and_production_target_selector_used_for_cancel_and_rejection_controls",
+        "actual_cancel_close_reopen_and_changed_target_do_not_create_result_or_charge_and_discard_old_draft",
+        "actual_zero_two_and_fourth_core_selection_boundaries_duplicate_core_and_same_group_doctrine_exclusion_observed",
+        "actual_source_contribution_missing_and_known_or_locked_or_incompatible_choice_guards_observed_from_current_sources",
+        "actual_ineligible_actor_wrong_same_or_different_faith_mode_insufficient_piety_and_stale_draft_guards_tested_without_commit_bypass",
+        "actual_repeated_cancel_confirm_and_stale_request_do_not_replay_create_or_charge_and_unknown_result_not_resubmitted",
+        "actual_original_sources_remain_unchanged_and_no_new_rite_or_faith_no_piety_delta_no_cooldown_after_refused_or_cancelled_steps",
+        "actual_uncropped_custom_window_disabled_reason_and_after_state_screenshots_with_exact_inputs_and_independent_evidence",
+        "actual_native_checkpoint_and_independent_saved_state_match_unchanged_rejection_outcome",
+        "fixture_readback_is_observation_only_and_never_invokes_rrf_commit_or_stock_rite_action_to_manufacture_result"
+      ]
+    }
+  ],
+  "source_contracts": [
+    "mod_religious_ritual_fusion/docs/implementation-plan-2026-10-24.md",
+    "mod_religious_ritual_fusion/docs/test-acceptance-plan-2026-10-24.md",
+    "mod_religious_ritual_fusion/docs/live-acceptance-plan-2026-10-24.md",
+    "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/acceptance/FixtureEmitter.java",
+    "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/acceptance/FixtureContracts.java",
+    "mod_religious_ritual_fusion/catalog/generated-catalog.json",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_draft_effects.txt",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_selection_effects.txt",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_commit_effects.txt",
+    "mod_religious_ritual_fusion/common/scripted_effects/rrf_completion_effects.txt",
+    "mod_religious_ritual_fusion/common/scripted_triggers/rrf_draft_triggers.txt",
+    "mod_religious_ritual_fusion/gui/rrf_fusion_window.gui",
+    "mod_religious_ritual_fusion/common/scripted_guis/rrf_scripted_guis.txt",
+    "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/Json.java",
+    "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/Contracts.java",
+    "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/Clausewitz.java",
+    "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/ReleaseBuilder.java",
+    "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/native-source-evidence.json",
+    "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/descriptor.mod",
+    "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/common/scripted_triggers/rrfa_observation_triggers.txt",
+    "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/common/script_values/rrfa_observation_values.txt",
+    "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/events/rrfa_observation_events.txt",
+    "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/common/on_action/rrfa_fresh_startup.txt",
+    "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/common/scripted_effects/rrfa_seed_effects.txt",
+    "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/events/rrfa_seed_events.txt"
+  ],
+  "post_start": {
+    "government_key": "feudal_government",
+    "primary_title_tier_key": "duchy",
+    "independent": true
+  },
+  "required_startup": [
+    "RRFAT: FIXTURE_ARMED ui_rejection"
+  ],
+  "forbidden_startup": [
+    "RRFAT: TEST FAIL"
+  ],
+  "uncovered_product_business": [
+    "Registration and prepared markers provide no live custom-GUI or business qualification.",
+    "Root must retain actual custom RRF confirmation and independent native/save results; stock Rite creation action is not a substitute.",
+    "Unobserved failure injection, multiplayer, AI operation and exhaustive religion combinations remain outside this case."
+  ],
+  "business_contract_applicable": true,
+  "calendar_bound_provenance": "Prospective seven-natural-day upper bound declared before allocation; setup waits for actual fixture_ready, confirmation and all state changes use observed production controls, no live deadline extension."
+}

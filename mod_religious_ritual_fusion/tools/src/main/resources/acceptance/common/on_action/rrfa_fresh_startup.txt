@@ -1,0 +1,15 @@
+# Fresh input only. One arming and one seed attempt; never a periodic writer.
+on_game_start_after_lobby = { on_actions = { rrfa_fresh_start } }
+rrfa_fresh_start = {
+    effect = {
+        every_player = {
+            if = {
+                limit = { this = character:29829 NOT = { has_character_flag = rrfa_seed_armed } }
+                add_character_flag = rrfa_seed_armed
+                debug_log = "RRFAT: FIXTURE_ARMED ${CASE}"
+                trigger_event = { id = rrfa.1 days = 1 }
+            }
+            else = { debug_log = "RRFAT: TEST FAIL wrong_actor_or_repeated_fresh_seed" }
+        }
+    }
+}

@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "kind": "cold_reload",
+  "mode": "faith",
+  "actorId": 29829,
+  "setup": { "type": "saved" }
+}

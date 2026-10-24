@@ -1,0 +1,98 @@
+# All functions in this file are read-only. No expected-success flags are written.
+rrfa_a_core_trigger = {
+    any_rite_tenet = { this = tenet:tenet_esotericism }
+    any_rite_tenet = { this = tenet:tenet_legalism }
+    any_rite_tenet = { this = tenet:tenet_astrology }
+    NOT = { any_rite_tenet = { NOR = { this = tenet:tenet_esotericism this = tenet:tenet_legalism this = tenet:tenet_astrology } } }
+}
+rrfa_b_core_trigger = {
+    any_rite_tenet = { this = tenet:tenet_esotericism }
+    any_rite_tenet = { this = tenet:tenet_legalism }
+    any_rite_tenet = { this = tenet:tenet_communal_identity }
+    NOT = { any_rite_tenet = { NOR = { this = tenet:tenet_esotericism this = tenet:tenet_legalism this = tenet:tenet_communal_identity } } }
+}
+rrfa_result_core_trigger = {
+    any_rite_tenet = { this = tenet:tenet_esotericism }
+    any_rite_tenet = { this = tenet:tenet_astrology }
+    any_rite_tenet = { this = tenet:tenet_communal_identity }
+    NOT = { any_rite_tenet = { NOR = { this = tenet:tenet_esotericism this = tenet:tenet_astrology this = tenet:tenet_communal_identity } } }
+}
+rrfa_inputs_intact_trigger = {
+    has_variable = rrfa_source_a
+    has_variable = rrfa_source_b_rite
+    has_variable = rrfa_source_b_faith_rite
+    has_variable = rrfa_source_b_faith
+    var:rrfa_source_a != var:rrfa_source_b_rite
+    var:rrfa_source_a != var:rrfa_source_b_faith_rite
+    var:rrfa_source_b_rite != var:rrfa_source_b_faith_rite
+    var:rrfa_source_a = { rrfa_a_core_trigger = yes faith = root.var:rrfa_source_a_faith rite_has_doctrine = doctrine_divorce_disallowed }
+    var:rrfa_source_b_rite = { rrfa_b_core_trigger = yes faith = root.var:rrfa_source_a_faith rite_has_doctrine = doctrine_divorce_allowed }
+    var:rrfa_source_b_faith_rite = { rrfa_b_core_trigger = yes faith = root.var:rrfa_source_b_faith rite_has_doctrine = doctrine_divorce_allowed }
+    var:rrfa_source_b_faith != var:rrfa_source_a_faith
+    var:rrfa_source_b_faith = { main_rite = root.var:rrfa_source_b_faith_rite religion = root.var:rrfa_source_a_faith.religion }
+}
+rrfa_common_success_trigger = {
+    this = character:29829
+    rrfa_inputs_intact_trigger = yes
+    var:rrfa_mode = flag:${MODE}
+    var:rrf_state = flag:succeeded
+    has_variable = rrf_last_result_rite
+    rite = var:rrf_last_result_rite
+    rite != var:rrfa_source_a
+    rite != var:rrfa_source_b_rite
+    rite != var:rrfa_source_b_faith_rite
+    var:rrf_charged_cost = ${COST}
+    piety = rrfa_expected_post_piety_value
+    has_character_flag = rrf_fusion_cooldown
+    NOT = { has_variable = rrf_source_a }
+    NOT = { has_variable = rrf_source_b }
+    NOT = { has_variable_list = rrf_selected_tenets }
+    NOT = { has_variable_list = rrf_selected_doctrines }
+    rite = {
+        rrfa_result_core_trigger = yes
+        rite_has_doctrine = doctrine_divorce_allowed
+        NOT = { rite_has_doctrine = doctrine_divorce_disallowed }
+        var:rrf_rules_version = 1
+        var:rrf_origin_a = root.var:rrfa_source_a
+        var:rrf_origin_b = root.var:rrfa_expected_b
+        var:rrf_origin_a_faith = root.var:rrfa_source_a_faith
+        var:rrf_origin_b_faith = root.var:rrfa_expected_b.faith
+        var:rrf_origin_mode = flag:${MODE}
+        var:rrf_origin_founder = root
+        is_target_in_variable_list = { name = rrf_origin_core_tenets target = tenet:tenet_esotericism }
+        is_target_in_variable_list = { name = rrf_origin_core_tenets target = tenet:tenet_astrology }
+        is_target_in_variable_list = { name = rrf_origin_core_tenets target = tenet:tenet_communal_identity }
+        NOT = { any_in_list = { variable = rrf_origin_core_tenets NOR = { this = tenet:tenet_esotericism this = tenet:tenet_astrology this = tenet:tenet_communal_identity } } }
+        is_target_in_variable_list = { name = rrf_origin_doctrines target = doctrine:doctrine_divorce_allowed }
+        NOT = { is_target_in_variable_list = { name = rrf_origin_doctrines target = doctrine:doctrine_divorce_disallowed } }
+    }
+}
+rrfa_rite_success_trigger = {
+    rrfa_common_success_trigger = yes
+    var:rrfa_mode = flag:rite
+    faith = var:rrfa_source_a_faith
+    rite.faith = var:rrfa_source_a_faith
+}
+rrfa_faith_success_trigger = {
+    rrfa_common_success_trigger = yes
+    var:rrfa_mode = flag:faith
+    has_variable = rrf_last_result_faith
+    faith = var:rrf_last_result_faith
+    faith != var:rrfa_source_a_faith
+    faith != var:rrfa_source_b_faith
+    rite.faith = faith
+    faith.main_rite = rite
+    faith.religion = var:rrfa_source_a_faith.religion
+}
+rrfa_no_product_change_trigger = {
+    this = character:29829
+    rrfa_inputs_intact_trigger = yes
+    rite = var:rrfa_source_a
+    faith = var:rrfa_source_a_faith
+    piety = var:rrfa_piety_before
+    NOT = { has_variable = rrf_last_result_rite }
+    NOT = { has_variable = rrf_last_result_faith }
+    NOT = { has_character_flag = rrf_fusion_cooldown }
+    NOT = { var:rrf_state ?= flag:committing }
+    NOT = { var:rrf_state ?= flag:unresolved }
+}
