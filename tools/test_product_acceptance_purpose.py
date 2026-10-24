@@ -198,6 +198,8 @@ class ProductPurposeTests(unittest.TestCase):
         launcher = self.root / 'authored-launcher-not-executed.py'
         launcher.write_text('# Never executed by this non-game regression.\n', encoding='utf-8')
         selection = object.__new__(Selection)
+        selection.case = {'id': 'core', 'execution_purpose': 'product_acceptance',
+                          'required_mcp_tools': ['ck3_take_snapshot']}
         selection.context, selection.context_path = self.context, self.context_path
         selection.argv = strings_field(self.frozen, 'argv')
         selection.runtime_environment = {}

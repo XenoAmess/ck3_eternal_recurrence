@@ -14,7 +14,9 @@
   "gui_phases": [
     {
       "id": "actual-default-cancel-and-create-ui",
-      "at_day": 1,
+      "when_markers": [
+        "DESAF: TEST PASS fixture_ready"
+      ],
       "requirements": [
         "actual_player_no_prophet_two_known_selectable_doctrines_default_none",
         "actual_create_and_reform_edit_gui_group_visible",
@@ -138,5 +140,5 @@
     "Multiplayer remains untested unless a separate real multiplayer result is recorded."
   ],
   "business_contract_applicable": true,
-  "calendar_bound_provenance": "Declared before first allocation:400 days covers stock280-day pregnancy, exact next-day birth observation and31-day maintenance checks. No prior failure is reclassified; fixed3600s hold remains unchanged."
+  "calendar_bound_provenance": "The400-day cap remains unchanged. Before R0004, wait for actual fixture_ready rather than assuming a delayed event has executed after day1. Prospective fixed9000s hold and10800s overall timeout cover R0003's measured8.566s native day plus snapshot/queue overhead and original UI work. R0001-R0003 source and deadlines remain preserved; no running scene is extended."
 }

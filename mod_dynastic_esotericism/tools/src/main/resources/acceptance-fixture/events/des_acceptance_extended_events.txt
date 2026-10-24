@@ -277,7 +277,7 @@ des_acceptance_extended.51 = {
 				has_character_flag = des_test_after_death_join_verified
 				scope:des_test_second_founder = { is_alive = no }
 				scope:des_test_second_rite = { des_has_active_binding_trigger = yes var:des_bound_dynasty = scope:des_test_second_dynasty var:des_join_house = scope:des_test_second_house }
-				scope:des_test_second_dynasty = { var:des_bound_rite = scope:des_test_second_rite exists = dynasty_head dynasty_head = { is_alive = yes NOT = { this = scope:des_test_second_founder } } }
+				scope:des_test_second_dynasty = { var:des_bound_rite = scope:des_test_second_rite exists = dynast dynast = { is_alive = yes NOT = { this = scope:des_test_second_founder } } }
 				global_var:des_test_timer_count > var:des_test_timer_before_death
 			}
 			add_character_flag = des_test_founder_death_verified

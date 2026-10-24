@@ -18,7 +18,7 @@ des_acceptance_extended_setup_effect = {
 		if = {
 			limit = { exists = house }
 			# An explicitly prepared pre-existing descendant, not the natural-birth case.
-			create_character = { age = 18 gender_female_chance = 0 father = root culture = root.culture faith = faith:orthodox rite = rite:byzantine_rite dynasty_house = root.house random_traits = no save_scope_as = des_test_old_descendant }
+			create_character = { location = root.location age = 18 gender_female_chance = 0 father = root culture = root.culture faith = faith:orthodox rite = rite:byzantine_rite dynasty_house = root.house random_traits = no save_scope_as = des_test_old_descendant }
 			set_variable = { name = des_test_ref_old_descendant value = scope:des_test_old_descendant }
 			set_variable = { name = des_test_old_descendant_house value = scope:des_test_old_descendant.house }
 			set_variable = { name = des_test_old_descendant_dynasty value = scope:des_test_old_descendant.dynasty }

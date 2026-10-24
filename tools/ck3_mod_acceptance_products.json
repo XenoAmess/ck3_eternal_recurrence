@@ -53,8 +53,8 @@
           "budgets": {
             "command_timeout": 300,
             "readiness_timeout": 1800,
-            "timeout": 5400,
-            "hold_seconds": 3600,
+            "timeout": 10800,
+            "hold_seconds": 9000,
             "poll_interval": 0.5
           },
           "required_mcp_tools": [
@@ -100,7 +100,7 @@
           "business_contract_applicable": true,
           "case_scope": "original_rite_ui_and_real_script_predicate_readbacks",
           "whole_product_acceptance_credit": false,
-          "budget_provenance": "Prospective first source case: shared1800s readiness, fixed3600s business hold,400 natural-day cap to cover actual280-day pregnancy plus next-day birth and31-day maintenance observations,180s normal closure reserve; no measured runtime or inherited product PASS."
+          "budget_provenance": "Prospective R0004 budget, declared before allocation after R0003 observed an8.566s exact natural day plus about3.748s queue/snapshot overhead: fixed9000s hold,10800s overall timeout,1800s readiness and180s normal closure reserve. The400-day cap is unchanged. Original R0001-R0003 budgets and RED results remain intact; no live deadline extension or business credit."
         },
         {
           "id": "cold_reload",

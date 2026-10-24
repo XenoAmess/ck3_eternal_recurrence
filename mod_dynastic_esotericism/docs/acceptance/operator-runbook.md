@@ -6,28 +6,30 @@
 
 ## 冻结与准备
 
-默认 `mvn` 已由本机工具链回执核验为 3.10.0；下列路径是本次产物事实，不能写成其他机器的安装约定。Maven 构建由唯一构建线程执行，输出在本次 C 盘准入根。
+默认 `mvn` 曾由本机工具链回执核验为 3.10.0；恢复时重新读回默认 `mvn -version` 与 Maven home。Maven 构建由唯一构建线程执行，输出在本次获准外置根。R0003 后的四份 fixture 资源已有修正，旧 JAR 不能继续生成下一场 fixture；新干净 checkout 须重新执行默认 Maven `clean verify`，再由新 runner 生成并核对实际源、打包资源及 fixture 字节。
+
+下列 `fixture-core-a02`、`host-successor-a06`、`common-runtime-a06`、`prepared-core-a07`、`attempt-a07` 与 `a19` 均是后继候选名，尚不证明目录不存在或参数未消费；Root 在实际写入／分配前核对并固定最终名字。`<new-runner>` 指本次新 Maven 构建的 `quarkus-app/quarkus-run.jar`，不能指向交接中的旧 JAR。
 
 ```bat
-java -jar C:/ck3-dynastic-esotericism-20261024/java-build/dynastic-esotericism-tools/quarkus-app/quarkus-run.jar fixture --repo-root <C-clean-checkout> --output C:/ck3-dynastic-esotericism-20261024/fixture-core-a01 --machine-id desktop-3fevhd2-1c74096080
-<python> <C-clean-checkout>/tools/ck3_mod_acceptance_build_runtime.py host-canonical-successor --base-runtime C:/ck3-common-runtime-20261024/runtime.selected-common-c09.json --source-root <C-clean-checkout> --runtime-binding C:/ck3-dynastic-esotericism-20261024/common-runtime-a01/runtime.json --output C:/ck3-dynastic-esotericism-20261024/host-successor-a01 --machine-id desktop-3fevhd2-1c74096080
-java -jar C:/ck3-dynastic-esotericism-20261024/java-build/dynastic-esotericism-tools/quarkus-app/quarkus-run.jar runtime --repo-root <C-clean-checkout> --base-runtime C:/ck3-common-runtime-20261024/runtime.selected-common-c09.json --native-index <final-native-source-index> --host-projection C:/ck3-dynastic-esotericism-20261024/host-successor-a01/canonical-host-projection.json --output C:/ck3-dynastic-esotericism-20261024/common-runtime-a01 --machine-id desktop-3fevhd2-1c74096080
+java -jar <new-runner> fixture --repo-root <C-clean-checkout> --output C:/ck3-dynastic-esotericism-20261024/fixture-core-a02 --machine-id desktop-3fevhd2-1c74096080
+<python> <C-clean-checkout>/tools/ck3_mod_acceptance_build_runtime.py host-canonical-successor --base-runtime C:/ck3-common-runtime-20261024/runtime.selected-common-c09.json --source-root <C-clean-checkout> --runtime-binding C:/ck3-dynastic-esotericism-20261024/common-runtime-a06/runtime.json --output C:/ck3-dynastic-esotericism-20261024/host-successor-a06 --machine-id desktop-3fevhd2-1c74096080
+java -jar <new-runner> runtime --repo-root <C-clean-checkout> --base-runtime C:/ck3-common-runtime-20261024/runtime.selected-common-c09.json --native-index <final-native-source-index> --host-projection C:/ck3-dynastic-esotericism-20261024/host-successor-a06/canonical-host-projection.json --output C:/ck3-dynastic-esotericism-20261024/common-runtime-a06 --machine-id desktop-3fevhd2-1c74096080
 ```
 
 `<C-clean-checkout>` 必须包含该提交的产品 17 个正式运行文件、Java 源码与资源、需求/测试文档、公共入口和产品 case 合同；fixture 的 producer pins 全部须处于此根目录中。Composer 会另冻结实际 SDK 与公共 helper。父 index 的旧绝对路径按明确的父 source root 转为相对路径，再与新 checkout 的同路径比较，不能因 C/D 根目录变化漏记差异。
 
 宿主投影保留父 R05 的六个控制工具，并将其原有同一 Service 的构造边界绑定到当前共享 SDK factory；外置 `registration_mcp.py` 的父文件、当前 factory 和新文件均由投影回执固定。不能热改旧 wrapper。`lease_repo` 指向实际干净 checkout；现有 `screen_bus_lease.py` 与该 checkout 的 task bus 也进入 source index 和 allocator overlay。keeper 的旧默认 SHA 不作为本次输入，公共 allocator 会显式传入 runtime 中实际 installed task bus 的 SHA。
 
-后续 `<entry>` 指 `common-runtime-a01/source/tools/ck3_mod_acceptance.py`，`<products>` 指相邻 `ck3_mod_acceptance_products.json`，`<runtime>` 指 `common-runtime-a01/runtime.json`。`<python>` 使用 runtime 声明的解释器，本机父 runtime 当前为 `D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe`。这不允许回退到旧 D 盘 helper 或 SDK。
+后续 `<entry>` 指新 `common-runtime-a06/source/tools/ck3_mod_acceptance.py`，`<products>` 指相邻 `ck3_mod_acceptance_products.json`，`<runtime>` 指新 `common-runtime-a06/runtime.json`；若候选名调整，全部输入同步使用最终冻结路径。`<python>` 使用 runtime 声明的解释器，本机父 runtime 当前为 `D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe`。这不允许回退到旧 D 盘 helper 或 SDK，也不能热改 a05 的冻结图。
 
 输入文件是一个 JSON 对象：
 
 ```json
 {
-  "state_dir": "C:/ck3-dynastic-esotericism-20261024/state-core-a01",
+  "state_dir": "C:/ck3-dynastic-esotericism-20261024/attempt-a07/state",
   "case_inputs": {
     "product_dir": "<exact-formal-staging>",
-    "prebuilt_fixture_manifest": {"path": "C:/ck3-dynastic-esotericism-20261024/fixture-core-a01.fixture.json", "bytes": 123, "sha256": "<actual-SHA256>"},
+    "prebuilt_fixture_manifest": {"path": "C:/ck3-dynastic-esotericism-20261024/fixture-core-a02.fixture.json", "bytes": 123, "sha256": "<actual-SHA256>"},
     "plain_configuration": {
       "pdx_settings.txt": {"path": "<actual-file>", "bytes": 0, "sha256": "<actual-SHA256>"},
       "tutorial.txt": {"path": "<actual-file>", "bytes": 0, "sha256": "<actual-SHA256>"},
@@ -42,30 +44,32 @@ java -jar C:/ck3-dynastic-esotericism-20261024/java-build/dynastic-esotericism-t
 
 ```bat
 <python> <entry> plan --runtime <runtime> --products <products> --product dynastic-esotericism --case core
-<python> <entry> prepare --runtime <runtime> --products <products> --product dynastic-esotericism --case core --case-inputs <inputs.json> --prepare-output C:/ck3-dynastic-esotericism-20261024/prepared-core-a01
+<python> <entry> prepare --runtime <runtime> --products <products> --product dynastic-esotericism --case core --case-inputs <inputs.json> --prepare-output C:/ck3-dynastic-esotericism-20261024/prepared-core-a07
 ```
 
 ## 分配、预检和运行
 
-本机已有公共 admission，不能使用 first-machine-bootstrap。2026-10-24 的 R0001 保留为 RED：原宿主退出 1、公共 run 退出 2、CK3 原进程退出 0、keeper 退出 0，SCREEN 释放序号 8596。其后 R0002 的公共 run 因后台离线观察过期退出 2，尚未创建 launch-intent、host 或 CK3；原目的文件仍保留且不可重放。R0002 keeper 合作退出 0，SCREEN 实际释放序号 8607。后继使用该真实 R0002；有限 TTL failure-close 只准入已结束资源，正常关闭、业务和发布资格均为 false。以下路径属于 `machine_id: desktop-3fevhd2-1c74096080`；分配前仍由 Root 重读当前 canonical admission。
+本机已有公共 admission，不能使用 first-machine-bootstrap。2026-10-24 的 R0001、R0002 均保留 RED，SCREEN 实际释放分别为 8596、8607。最新真实前序为 R0003：原生 observer 读到 CK3 原进程退出 0，宿主原 Popen 退出 1、公共 run 退出 2、keeper 原 Popen 退出 0，SCREEN 实际释放 **8619**。R0003 的业务和完整 normal-close 仍为 false，原 `autosave_verified=false` 必须保留。恢复先完成公共 verify 和 typed observer 的资源 closure producer／consumer 校验，不能拿旧 R0002 或伪造 GUI 退出回执接续。下例 `<R0003-verified-resource-closure>` 必须替换为实际生成并验证的原件；未完成前不得 allocate。以下路径属于 `machine_id: desktop-3fevhd2-1c74096080`；分配前仍由 Root 重读当前 canonical admission。
 
 ```bat
-<python> <entry> allocate --runtime <new-runtime> --products <new-products> --product dynastic-esotericism --case core --prepared-case <new-prepared-case> --attempt a18 --keeper-output C:/ck3-dynastic-esotericism-20261024/keeper-core-a18 --previous-live C:/ck3-dynastic-esotericism-20261024/common-runtime-a04/runs/desktop-3fevhd2-1c74096080--dynastic-esotericism--R0002 --previous-keeper C:/ck3-dynastic-esotericism-20261024/keeper-core-a17 --previous-release C:/ck3-dynastic-esotericism-20261024/R0002-screen-release.actual.json --previous-failure-close C:/ck3-dynastic-esotericism-20261024/R0002-offline-ttl-close-a03/ALLOCATED-UNRUN.actual.json
-<python> <entry> preflight --runtime <runtime> --products <products> --product dynastic-esotericism --case core --prepared-case C:/ck3-dynastic-esotericism-20261024/prepared-core-a01/prepared-case.json --run-context <allocated-context>
-<python> <entry> run --runtime <runtime> --products <products> --product dynastic-esotericism --case core --prepared-case C:/ck3-dynastic-esotericism-20261024/prepared-core-a01/prepared-case.json --run-context <allocated-context>
+<python> <entry> allocate --runtime <runtime> --products <products> --product dynastic-esotericism --case core --prepared-case <new-prepared-case> --attempt a19 --keeper-output C:/ck3-dynastic-esotericism-20261024/keeper-core-a19 --previous-live C:/ck3-dynastic-esotericism-20261024/common-runtime-a05/runs/desktop-3fevhd2-1c74096080--dynastic-esotericism--R0003 --previous-keeper C:/ck3-dynastic-esotericism-20261024/keeper-core-a18 --previous-release C:/ck3-dynastic-esotericism-20261024/R0003-screen-release.actual.json --previous-failure-close <R0003-verified-resource-closure>
+<python> <entry> preflight --runtime <runtime> --products <products> --product dynastic-esotericism --case core --prepared-case C:/ck3-dynastic-esotericism-20261024/prepared-core-a07/prepared-case.json --run-context <reviewed-context-1>
+<python> <entry> run --runtime <runtime> --products <products> --product dynastic-esotericism --case core --prepared-case C:/ck3-dynastic-esotericism-20261024/prepared-core-a07/prepared-case.json --run-context <reviewed-context-2>
 ```
 
-Root 在真实分配前完成存储原子准入、干净 checkout 和屏幕 owner 前置。受管启动前用公共后台 Steam probe 取得新鲜 `offline=true` 回执。未知状态不能启动。本次开局前声明固定 hold 3600 秒、整个命令 5400 秒、readiness 1800 秒、正常退出保留 180 秒；400 自然日上限覆盖真实 280 日妊娠、出生翌日和 31 日维护观察。运行中不延长冻结 deadline。
+Root 在真实分配前完成存储原子准入、干净 checkout 和屏幕 owner 前置。受管启动前用公共后台 Steam probe 取得新鲜 `offline=true` 回执。未知状态不能启动。R0001–R0003 的固定 hold 3600 秒、整个命令 5400 秒及原失败记录保留。R0004 分配前改为固定 hold 9000 秒、整个命令 10800 秒，readiness 1800 秒、正常退出保留 180 秒、400 自然日上限保持。依据是 R0003 实际单日动作 8.566 秒，加后续队列／snapshot 约 3.749 秒；仅 400 日的规划估计已约 82 分钟，另需原生 GUI 和退出时间。该估计不代表业务通过，也不延长任何已冻结场次的 deadline。
 
-上例 a18 只是在此次读回时尚未注册的参数，分配时须重验未消费。新 state 使用新的父目录，例如 `C:/ck3-dynastic-esotericism-20261024/attempt-a06/state`；先前消费过的 single-use-ledger 和目的文件均保留，不能只在同一父目录换 state 名。绑定旧 runtime 的 prepared 不改写复用，须对新 runtime 重新 prepare。前序释放后没有插入其他 SCREEN 任务时，省略可选的 `--latest-screen-release`。只有出现更晚的 SCREEN 释放时才传它的实际原件，且其序号必须严格大于 `--previous-release`；不能把同一释放传两次。2026-10-24 a17 首次分配已实际在 ID 前拒绝同序号参数，任务、keeper 与新 run 均未产生；后续按真实未消费状态以新日志重试。
+上例 a19 是候选参数，分配时须重验未消费；预计下一 run 为 R0004，以 canonical allocator 实际分配为准。新 state 使用新的父目录，例如 `C:/ck3-dynastic-esotericism-20261024/attempt-a07/state`；R0003 已消费的 `attempt-a06/state`、single-use-ledger 和目的文件均保留，不能只在同一父目录换 state 名。绑定旧 runtime 的 prepared 不改写复用，须对新 runtime 重新 prepare。前序释放后没有插入其他 SCREEN 任务时，省略可选的 `--latest-screen-release`。只有出现更晚的 SCREEN 释放时才传它的实际原件，且其序号必须严格大于 `--previous-release`；不能把同一释放传两次。2026-10-24 a17 首次分配已实际在 ID 前拒绝同序号参数，任务、keeper 与新 run 均未产生；后续按真实未消费状态以新日志重试。
 
 分配后由 Root 以新文件提交 reviewed context，字段是 `reviewer: "/root"`，并补 `steam_offline_receipt` 的新鲜后台回执路径；实际 `run` 消费此新 context。四个产品合同显式声明 `execution_purpose=product_acceptance`。公共入口在启动前生成一次目的文件，宿主核 Root context、prepared/contract、冻结 argv、当前 run/state/pipe 后，按真实首帧身份与原自然日上限推进。R05 的独立 scope、30 日与 once 守卫保留；本产品场次不申请 R05 scope。
 
-当前冻结后台 gate 的新鲜窗口为 **30 秒**。先完成独立 preflight，再在同一执行脚本中连续完成新 probe → 新 Root context → public run，中间不得等待模型回合；run 自身仍执行预检和 launcher 守卫。先前 60 秒的描述已更正，不修改历史失败回执，也不放宽 gate 或目的文件一次守卫。进入稳定地图及首个自然日后，业务操作前先通过同一 queue/driver 只读查询 `ck3_query_normal_exit_context_v1`，确认本次 normal-exit profile/source inventory 确实被消费；不提交退出请求，实际闭场时再按新 revision 查询。
+当前冻结后台 gate 的新鲜窗口为 **30 秒**。完整顺序是 probe1 → 新 Root context1 → public preflight → 全新 probe2 → 全新 Root context2 → 立即 public run；第二 probe 至 run 必须在同一执行脚本内连续完成，中间不得等待模型回合。run 自身仍执行预检和 launcher 守卫。先前 60 秒的描述已更正，不修改历史失败回执，也不放宽 gate 或目的文件一次守卫。进入稳定地图及首个自然日后，业务操作前先通过同一 queue/driver 只读查询 `ck3_query_normal_exit_context_v1`，确认本次 normal-exit profile/source inventory 确实被消费；不提交退出请求，实际闭场时再按新 revision 查询。
 
 ## 六个 GUI phase 的操作与签认
 
 控制器会打印 `CK3_ROOT_CHECKPOINT <run>/case-output/<phase>-awaiting.json`。Root 先读取该文件的实际 snapshot、要求、原始 hold deadline，再提交原生操作。控制器此时保持同一会话；每个公开队列计划必须用新的文件名与 step ID。
+
+R0004 起，首个 phase 等待实际 `DESAF: TEST PASS fixture_ready`，不按“已到第 1 日”推算延迟事件已执行。准备 fixture 不改角色 Faith；保留开局 Catholic／Roman Rite，实际知识、无先知、资源和原生 `Can` 均须重新读回，不能把儒家身份当作前提。
 
 ```bat
 <python> <frozen-source>/tools/ck3_mod_acceptance_queue_control.py --live <run> --plan <new-plan.json> --name root-rite-001.json
@@ -86,7 +90,7 @@ Root 在真实分配前完成存储原子准入、干净 checkout 和屏幕 owne
 3. `select_doctrine` 使用 `group_key=des_dynastic_membership`、`doctrine_key=des_doctrine_dynastic` 或 `des_doctrine_none`。创建需要的原版名称字段用 `set_name_field`；保持其他教义不变以得到同 Faith 的新 Rite。
 4. 保存实际完整 `Can`、价格和 draft identity；`prepare_confirmation` 打开原版确认界面。
 5. 仅在原始结果已知时 `confirm_once` 一次，传真实 `expected_preview_identity` 和预期 `create_rite/edit_rite`。
-6. 返回 pending 时仅用 `ck3_collect_player_rite_creation_action_result_v1(action_request_id)` 收集原请求；UNKNOWN 不重放。
+6. 仅对 `confirm_once` 的 pending 结果调用 `ck3_collect_player_rite_creation_action_result_v1(action_request_id)` 收集原最终确认。非 confirm 操作没有此 final-confirm claim；开窗 pending 时保留原 receipt，不重放，用原 action context 的 `observation=draft/current_rite` 独立观察，再按真实草案查询 groups。UNKNOWN 不重放。
 7. 新的 `ck3_verify_player_rite_creation_action_completed_v1(action_request_id,expected_revision)` 独立核对真实当前 Rite、名称、core、doctrines 和窗口/确认框关闭后态。该最终 SDK 工具实际冻结并进入 required tools 后才可执行；旧 collect/ACK 不代替本步。
 
 原版取消草案也必须保留真实取消前后 Rite/Dynasty/House/资源和窗口证据。新版同一 execute 工具提供 `cancel_draft`；取消后用原 query 的 `observation=current_rite` 独立观察持久图与窗口关闭。未知 claim 禁止发送取消，不能用 fixture 改状态模拟取消。
@@ -115,10 +119,10 @@ fixture 决议也通过公共原生决议工具依次打开、query、select、c
 保存用 `ck3_save_checkpoint`，保留实际 materialized save 和独立解码的 Rite/Dynasty/House/知识/意见来源/索引。公共 CaseClient 执行正常退出；不得强杀代替原进程退出后态。
 
 ```bat
-<python> <entry> verify --runtime <runtime> --products <products> --product dynastic-esotericism --case core --prepared-case C:/ck3-dynastic-esotericism-20261024/prepared-core-a01/prepared-case.json --run-context <allocated-context>
+<python> <entry> verify --runtime <runtime> --products <products> --product dynastic-esotericism --case core --prepared-case C:/ck3-dynastic-esotericism-20261024/prepared-core-a07/prepared-case.json --run-context <reviewed-context-2>
 ```
 
-同会话通过仍不能追认为冷重载、真实旧档 bootstrap 或多人通过。后续三个公开 case 均沿用同一共同 runtime 和真实前序关闭来源，不能继续使用上面的历史 R0037 作为每次前序。
+同会话通过仍不能追认为冷重载、真实旧档 bootstrap 或多人通过。后续三个公开 case 均沿用同一共同 runtime；每次都消费当时最新真实前序关闭来源，不能重复使用 core 之前的历史前序。
 
 1. `cold_reload`：从 core 的实际冷载锚点保存取精确 `.ck3`、player ID 和 date_raw；Java `fixture` 命令追加 `--case cold_reload`，生成不带启动 registrar 的 12 文件被动 fixture。公共 prepare 的输入顶层另加 `saved_campaign`，恰为 `{save,bytes,sha256,player_id,date_raw}`；其中保存原件必须处于新 profile 之外。case_inputs 仍填正式 staging、四份配置和该 fixture 的 FilePin。共享 prepare 生成正式产品/fixture 角色明确的 v2 inventory，再以新 PID 加载。Root 在零自然日 phase 先独立读取存档原图、再调用 `des_acceptance_cold_readback_decision`、实际 Save 并比较。不能先补初始化掩盖保存缺失。
 2. `pre_product_seed`：Java 追加 `--case pre_product_seed`；case_inputs 的 `product_dir` 为 `null`。共享 prepare 只挂 2 文件日志 fixture，不挂正式产品，不执行产品初始化。Root 在零日 phase 正常 Save，独立核无产品状态并保全真实 profile/进程/保存身份。这是明确为兼容验收准备的真实前产品新局，不声称历史年份旧档。

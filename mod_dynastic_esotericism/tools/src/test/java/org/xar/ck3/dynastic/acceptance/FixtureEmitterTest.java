@@ -12,9 +12,12 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HexFormat;
+import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -80,6 +83,47 @@ final class FixtureEmitterTest {
         String input = Files.readString(seed.fixture().resolve("common/on_action/des_acceptance_pre_product_seed.txt"));
         assertFalse(input.contains("set_variable"));
         assertFalse(input.contains("des_initialized"));
+    }
+
+    @Test
+    void rejectsChangedFixtureSourcesBeforeEmittingFromPackagedResources() throws IOException {
+        List<String> changedResources = List.of(
+                "common/scripted_effects/des_acceptance_effects.txt",
+                "common/scripted_effects/des_acceptance_extended_effects.txt",
+                "events/des_acceptance_events.txt",
+                "events/des_acceptance_extended_events.txt");
+        for (int index = 0; index < changedResources.size(); index++) {
+            String relative = changedResources.get(index);
+            Path copiedRepository = temporary.resolve("changed-source-" + index);
+            copyFixtureInputs(copiedRepository);
+            Path changed = copiedRepository.resolve("mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture")
+                    .resolve(relative);
+            Files.writeString(changed, "\n", StandardCharsets.UTF_8, StandardOpenOption.APPEND);
+            Path output = temporary.resolve("rejected-fixture-" + index);
+
+            IOException failure = assertThrows(IOException.class,
+                    () -> FixtureEmitter.emit(copiedRepository, output, "authored-machine"));
+
+            assertEquals("packaged fixture resource differs from current source: " + relative, failure.getMessage());
+            assertFalse(Files.exists(output));
+            assertFalse(Files.exists(Path.of(output + ".fixture.json")));
+        }
+    }
+
+    private static void copyFixtureInputs(Path destinationRepository) throws IOException {
+        Path sourceMain = repository().resolve("mod_dynastic_esotericism/tools/src/main");
+        Path destinationMain = destinationRepository.resolve("mod_dynastic_esotericism/tools/src/main");
+        Path emitter = Path.of("java/org/xar/ck3/dynastic/acceptance/FixtureEmitter.java");
+        Files.createDirectories(destinationMain.resolve(emitter).getParent());
+        Files.copy(sourceMain.resolve(emitter), destinationMain.resolve(emitter));
+        Path resources = sourceMain.resolve("resources/acceptance-fixture");
+        try (Stream<Path> sources = Files.walk(resources)) {
+            for (Path source : sources.filter(Files::isRegularFile).toList()) {
+                Path target = destinationMain.resolve("resources/acceptance-fixture").resolve(resources.relativize(source));
+                Files.createDirectories(target.getParent());
+                Files.copy(source, target);
+            }
+        }
     }
 
     @Test

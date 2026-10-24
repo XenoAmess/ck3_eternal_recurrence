@@ -43,6 +43,12 @@
 
 真正多人场景尚无预先资格，不以单人多角色控制宣称多人通过；首次发布如未进行多人验收，明确标注“多人未验收”。其余上述首版核心功能未通过时不公开发布完整功能版本。
 
+2026-10-24 R0003 后、R0004 分配前调整：首次 GUI phase 以实际 `DESAF: TEST PASS fixture_ready` 为门槛；原准备事件使用 `days = 1`，到第 1 日不能替代事件、知识及资金后态。开局保留原 Catholic／Roman Rite，最终资格按原生草案 `Can` 验证。R0003 实际单日动作耗时 8.566 秒，至后续 snapshot 完成共约 12.315 秒；400 日的纯日推进规划估计约 82 分钟。故下一场预先固定 hold 9000 秒、整体 timeout 10800 秒，readiness 1800 秒、正常退出预留 180 秒、400 自然日上限不变。R0001–R0003 原输入、3600／5400 秒预算及 RED 结果不修改；运行中仍不得延长 deadline。此安排与语法修正均不授予业务通过。
+
+R0003 引擎实际报告的 fixture 错误对应四份资源修正：族长读取由不存在的 `dynasty_head` 改为原版 `dynast`，仍要求存活且不是已死创建者；参数化日志接收调用方已有引号的 `$PASS$`／`$FAIL$`，不再重复套引号；独立 outsider 和既有未改信后代分别补 `location = root.location`，不添加 employer，也不改变后代的 Faith／Rite／House／father 负例。四文件 grammar parse 已实际退出 0、diagnostics 空且 roundTrip true；`ck3-1.20.0.4` semantic profile 未注册，validate 为 4／UNSUPPORTED，不能将它写成语义通过。原件与 SHA 见[交接第 4.1 节](../../docs/handover/2026-10-24-dynastic-esotericism-vacation-handover.md)。
+
+Java `FixtureEmitterTest` 验证实际资源生产、打包字节／源一致、manifest 和各 case 文件边界；它没有 CK3 语义解释能力。四项修正的正确性须由重新构建的 JAR／fixture 和下一场真实加载及业务后态确认，不新增源码字符串匹配来冒充语义回归。首个非 confirm 礼仪开窗若返回 pending，保留原 native receipt，用 action context 的 `observation=draft/current_rite` 独立查询；不得对它调用只接受 final-confirm claim 的 collect，也不得重放 open。仅 `confirm_once` pending 可 collect，最终仍须独立 verify-completed。
+
 ## 发布验证
 
 | 编号 | 必须完成 |

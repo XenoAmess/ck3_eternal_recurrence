@@ -24,9 +24,9 @@ des_acceptance_positive_pair_effect = {
             has_execute_reason = scope:des_test_target
             des_is_penalty_pair_trigger = { TARGET = scope:des_test_target }
         }
-        debug_log = "$PASS$"
+        debug_log = $PASS$
     }
-    else = { debug_log = "$FAIL$" }
+    else = { debug_log = $FAIL$ }
 }
 
 des_acceptance_negative_pair_effect = {
@@ -38,7 +38,7 @@ des_acceptance_negative_pair_effect = {
             NOT = { has_execute_reason = scope:des_test_target }
             NOT = { des_is_penalty_pair_trigger = { TARGET = scope:des_test_target } }
         }
-        debug_log = "$PASS$"
+        debug_log = $PASS$
     }
-    else = { debug_log = "$FAIL$" }
+    else = { debug_log = $FAIL$ }
 }

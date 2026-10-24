@@ -12,7 +12,7 @@ des_acceptance.1 = {
         create_character = { employer = root age = 30 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = des_test_target }
         create_character = { employer = root age = 30 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = des_test_peer }
         create_character = { employer = root age = 8 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = des_test_child }
-        create_character = { age = 30 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = des_test_outsider }
+        create_character = { location = root.location age = 30 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = des_test_outsider }
         scope:des_test_outsider = { create_dynasty = { spread_to_descendants = no } }
         set_variable = { name = des_test_ref_target value = scope:des_test_target }
         set_variable = { name = des_test_ref_peer value = scope:des_test_peer }
