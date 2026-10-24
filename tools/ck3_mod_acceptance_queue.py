@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import ast
 import copy
+from collections.abc import Mapping
 from datetime import datetime
 import hashlib
 import json
@@ -15,6 +16,7 @@ import time
 
 from ck3_mod_acceptance_keeper import check_pin, live_lease, pin, read_json, require, utc, write_new
 from ck3_mod_acceptance_launcher import frozen_run
+from ck3_mod_acceptance_background_types import strings_field, text_field
 
 
 def stable_report(path):
@@ -263,21 +265,47 @@ def validate_startup_failure_recovery(live, frozen, report, steps, expected_erro
             "original_hold_deadline":deadline, "manual_quit_checkpoint":pin(manual_path),
             "original_startup_qualified":False, "host_error_cleared":False, "business_pass":False}
 
-def enqueue(live, plan, name, *, deadline=None, startup_recovery_error=None, startup_recovery_reviewer=None):
+def terminal_cleanup_evidence(keeper: Path, frozen: Mapping[str, object],
+        report: dict[str, object], steps: list[dict[str, object]]) -> dict[str, object]:
+    """Finish an ended game's failed host after its keeper has already exited."""
+    import psutil
+    require(len(steps) == 1 and steps[0].get("kind") == "finish_hold"
+            and steps[0].get("failure_shutdown") is True,
+            "Terminal cleanup accepts only one failure finish_hold; no game commands")
+    proof = native_zero_proof(frozen, report, failure_shutdown=True)
+    require(proof is not None, "Original failed host has no actual native-zero cleanup proof")
+    keeper_report = _queue_object(read_json(keeper / "report.json"), "Ended keeper")
+    require(keeper_report.get("task_id") == frozen.get("screen_task")
+            and keeper_report.get("thread_exited") is True,
+            "Terminal cleanup requires the original keeper's actual ended thread")
+    require(not any((process.info.get("name") or "").lower() == "ck3.exe"
+                    for process in psutil.process_iter(["name"])),
+            "Terminal cleanup cannot run while a CK3 process exists")
+    return {"scope": "ended-game-failed-host-only", "native_failure_cleanup": proof,
+            "keeper_report": pin(keeper / "report.json"), "business_pass": False,
+            "normal_close_qualified": False}
+
+
+def enqueue(live: Path | str, plan: Path | str, name: str, *, deadline: float | None = None,
+        startup_recovery_error: str | None = None, startup_recovery_reviewer: str | None = None,
+        terminal_cleanup: bool = False) -> dict[str, object]:
     enqueue_deadline(deadline)
     lease_options = {"deadline": deadline} if deadline is not None else {}
     live, plan = Path(live).resolve(), Path(plan).resolve()
     require(Path(name).name == name and re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,159}\.json", name),
             "New .json control basename required")
     frozen, context = frozen_run(live, all_pins=False)
-    keeper = Path(context["keeper_root"]).resolve()
-    lease = live_lease(keeper, frozen, **lease_options)
+    keeper = Path(text_field(context, "keeper_root")).resolve()
+    argv = strings_field(frozen, "argv")
+    require(type(terminal_cleanup) is bool, "terminal_cleanup must be a literal boolean")
+    if not terminal_cleanup:
+        live_lease(keeper, frozen, **lease_options)
     enqueue_deadline(deadline)
     report = stable_report(live / "native-report.json")
-    require(Path(report["state_dir"]).resolve() == Path(frozen["state_dir"]).resolve() and
-            Path(report["agent_source_root"]).resolve() == Path(frozen["source_root"]).resolve(),
+    require(Path(report["state_dir"]).resolve() == Path(text_field(frozen, "state_dir")).resolve() and
+            Path(report["agent_source_root"]).resolve() == Path(text_field(frozen, "source_root")).resolve(),
             "Actual host report crossed allocated state/shared source")
-    require(report.get("pipe") == frozen["argv"][frozen["argv"].index("--bridge-pipe") + 1],
+    require(report.get("pipe") == argv[argv.index("--bridge-pipe") + 1],
             "Actual host report crossed allocated native pipe")
     require(report.get("phase") == "hold" and not report.get("finished_at") and
             not report.get("hold_finished_by_control_plan"), "Original shared host is no longer held")
@@ -288,6 +316,7 @@ def enqueue(live, plan, name, *, deadline=None, startup_recovery_error=None, sta
     steps = value["steps"]
     ids = validate_steps(steps, report)
     finishing = len(steps) == 1 and steps[0].get("kind") == "finish_hold"
+    terminal = terminal_cleanup_evidence(keeper, frozen, report, steps) if terminal_cleanup else None
     hold_deadline = report.get("hold_until_utc_estimated")
     require(type(hold_deadline) in (int, float) and hold_deadline - time.time() > (0 if finishing else 90),
             "Original host normal Quit reserve reached")
@@ -301,7 +330,6 @@ def enqueue(live, plan, name, *, deadline=None, startup_recovery_error=None, sta
                 "Original shared native-zero predicate rejects finish_hold")
     else:
         require((not report.get("error") or recovery is not None) and not report.get("cleanup_ok"), "Original host failed or completed cleanup")
-    argv = frozen["argv"]
     controls = Path(argv[argv.index("--control-plan-dir") + 1]).resolve()
     require(controls == live / "controls" and controls.is_dir(), "Control directory crossed actual allocation")
     target = controls / name
@@ -328,7 +356,11 @@ def enqueue(live, plan, name, *, deadline=None, startup_recovery_error=None, sta
         stream.write(raw); stream.flush(); os.fsync(stream.fileno())
     require(pin(temporary)["sha256"] == claims["sha256"], "Exact control bytes changed before publish")
     try:
-        latest = live_lease(keeper, frozen, **lease_options)
+        if terminal_cleanup:
+            terminal = terminal_cleanup_evidence(keeper, frozen, stable_report(live / "native-report.json"), steps)
+            latest = None
+        else:
+            latest = live_lease(keeper, frozen, **lease_options)
         enqueue_deadline(deadline)
         os.link(temporary, target)
     finally:
@@ -338,7 +370,9 @@ def enqueue(live, plan, name, *, deadline=None, startup_recovery_error=None, sta
             temporary.unlink()
     result = {"status": "QUEUED_ONCE_ACK_NOT_BUSINESS_PASS", "at_utc": utc(), "run_id": frozen["run_id"],
               "plan": pin(plan), "published": pin(target), "step_ids": ids,
-              "lease": latest["lease"], "claims": claims, "business_pass": False}
+              "lease": latest["lease"] if latest is not None else None, "claims": claims, "business_pass": False}
+    if terminal is not None:
+        result["terminal_cleanup"] = terminal
     if recovery is not None:
         result["startup_failure_recovery"] = recovery
     write_new(live / "control-once-ledger" / ("receipt-" + claims["sha256"] + ".json"), result)
@@ -353,6 +387,8 @@ def main(argv=None):
     parser.add_argument("--timeout-seconds", type=float, help="Bound this original submission; no retries")
     parser.add_argument("--startup-recovery-error", help="Explicit original failed-startup error; default preserves ordinary guard")
     parser.add_argument("--startup-recovery-reviewer", help="Actual retained-session operator")
+    parser.add_argument("--terminal-cleanup", action="store_true",
+                        help="Only failure finish_hold after actual native zero cleanup and an ended keeper")
     args = parser.parse_args(argv)
     try:
         if args.timeout_seconds is not None:
@@ -360,7 +396,8 @@ def main(argv=None):
         deadline = None if args.timeout_seconds is None else time.monotonic() + args.timeout_seconds
         print(json.dumps(enqueue(args.live, args.plan, args.name, deadline=deadline,
             startup_recovery_error=args.startup_recovery_error,
-            startup_recovery_reviewer=args.startup_recovery_reviewer)), flush=True)
+            startup_recovery_reviewer=args.startup_recovery_reviewer,
+            terminal_cleanup=args.terminal_cleanup)), flush=True)
         return 0
     except Exception as error:
         print(json.dumps({"status": "BLOCKED_NEVER_REPLAY", "error": repr(error), "business_pass": False}), flush=True)

@@ -207,6 +207,9 @@ activity_zg361_jingcha = {
 	# GRAPHICS
 	###################
 
+	# 1.20 activity planner requires the header separately from scene backgrounds.
+	header_background = "gfx/interface/illustrations/activity_header_backgrounds/activity_feast.dds"
+
 	background = {
 		texture = "gfx/interface/illustrations/event_scenes/tgp_rice_fields.dds"
 		environment = "environment_travel_bridge"
