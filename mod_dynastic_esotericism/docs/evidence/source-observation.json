@@ -1,0 +1,319 @@
+{
+  "schema": "dynastic-esotericism-research-source-observation-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T06:58:08.710729+00:00",
+  "installation_root": "C:/SteamLibrary/steamapps/common/Crusader Kings III",
+  "raw_version": "1.20.0.4",
+  "launcher_version": "1.20.0.4 (Crozier)",
+  "steam_build_id": "25734779",
+  "basis": "Installed game-tree bytes; no online Steam integrity verification or live game result claimed",
+  "repository_baseline": "9c41f962511d83440df959fe9c2e558f30c87d6c",
+  "sources": [
+    {
+      "path": "game/gui/window_rite_creation.gui",
+      "bytes": 45219,
+      "sha256": "9476299fdbf0975e41923eac9b192d3fe0b2cd74a4da0d928d0da7974b7ea9f8",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/gui/window_faith.gui",
+      "bytes": 150682,
+      "sha256": "67924e58ccba26d95853ac48af35d91a774f5ce6d2e7f32a0a033de3b9d51521",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/scripted_guis/pam_scripted_guis.txt",
+      "bytes": 1922,
+      "sha256": "675c90f1b3496543456542f32d465535e5966dbbe92cd2157892a5a93b11fff2",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/scripted_effects/passive_rite_learning_effects.txt",
+      "bytes": 52814,
+      "sha256": "cfb45ffc82239d87080319dcc9110e3fe95597b1d152618fd5f03322d22884e9",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/scripted_effects/10_dlc_tgp_japan_scripted_effects.txt",
+      "bytes": 158095,
+      "sha256": "cf6fa3ec4e072dc3ec0bb79985443860f868536e120d1b88d9ca64eb4850022f",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/scripted_triggers/10_tgp_japan_triggers.txt",
+      "bytes": 22800,
+      "sha256": "4faf4ab6754c497e89df67735792de393548eb4143a43dbf6c1050c3d63fcc06",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/events/dlc/pam/pam_decision_events.txt",
+      "bytes": 83499,
+      "sha256": "8282ca575f87e165771eb51608a296911eaa27ab93228ee48649917665484b78",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/on_action/religion_on_actions.txt",
+      "bytes": 59475,
+      "sha256": "ef9367ddf5f89c912b895743f8b72441e88af3a5b03a5c1a9eddea0e5681ee2d",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/on_action/child_birth_on_actions.txt",
+      "bytes": 36996,
+      "sha256": "0fd4e08b9b4edb209ad491afec498b24e0258d88d8d4d506d074377517ef7ccf",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/on_action/character_created_on_actions.txt",
+      "bytes": 1668,
+      "sha256": "a4a8786b65c02b962a2457770f423b506a89cd062613a22d54e1b57d4479eaf5",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/on_action/dynasty_on_actions.txt",
+      "bytes": 16170,
+      "sha256": "c43c24e64049fc0661a094c09ffcc07f10cf9d6d7c186564a9b64ad361b81b53",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/on_action/_on_actions.info",
+      "bytes": 5863,
+      "sha256": "2bfbbf903d55a2417c988caf1479ef0ff91719c55128ce6357bca3d2c8e9b25f",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/opinion_modifiers/_opinions.info",
+      "bytes": 2385,
+      "sha256": "fac241b8983c5593d9528e8e3e84ce98e9f8cf089760f24ad534d80d381efec0",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/opinion_modifiers/00_doctrinal_crime_opinions.txt",
+      "bytes": 2207,
+      "sha256": "50964134f323fddcbf5df247b12f5fb7e92cc56246cd4d7749aef6ac5e71bafc",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/opinion_modifiers/00_dynasty_opinions.txt",
+      "bytes": 1148,
+      "sha256": "ab534b9b35b197061beacef81ad0c620ab636dc0196ea8be907da7b4ac05568f",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/traits/_traits.info",
+      "bytes": 13221,
+      "sha256": "40bcad43995d91d35cda894151c0c098519835f2780cf2d4368ba84c06ff8c3b",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/traits/00_traits.txt",
+      "bytes": 341199,
+      "sha256": "93ad0316b733aa474d34841bd92fb3fc9336c111e9f06e7910178e74482185aa",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/religion/rite_types/_rite_types.info",
+      "bytes": 2995,
+      "sha256": "60fd476d72be0941d9c6dff4e83834016d6e32d16e855f3b258389061850828f",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/religion/doctrine_types/_doctrine_types.info",
+      "bytes": 11217,
+      "sha256": "7a8f6f8e78f88f7c83de3c43239a5da2709777e9d56fed4ae031e98b76af2ffc",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/religion/doctrine_group_types/_doctrine_group_types.info",
+      "bytes": 2191,
+      "sha256": "c7d8e667403b55666cde5efa66983e39f8004a4ae0e1239eea96fc9d5d72b7c3",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/religion/doctrine_group_types/00_doctrine_group_types.txt",
+      "bytes": 5215,
+      "sha256": "276100fe6e99ef17805da9992b4e8f38d648315dd8a30238b5fb42d113bd7456",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/religion/doctrine_category_types/00_doctrine_category_types.txt",
+      "bytes": 281,
+      "sha256": "64eef090e487cb06e058abdc1f877f457494a0ff513d2daac9168002d057ab2b",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/religion/doctrine_types/20_doctrines.txt",
+      "bytes": 54665,
+      "sha256": "ff663a8f6c5233628dbf6774b28412b918338fec823fe0f534c4cd03c8580504",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/religion/religion_types/_religion_types.info",
+      "bytes": 5101,
+      "sha256": "c9b5b04166c1d8020230dd858f7e0e364d9488e89873fc9376a1fdf19b7b5d14",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/modifier_definition_formats/00_definitions.txt",
+      "bytes": 70167,
+      "sha256": "a1db27f5dc5ae1c1e89764ccb265d4167ba8be5be40b88602b0d90b471287cc4",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/scripted_effects/05_dlc_bp2_effects.txt",
+      "bytes": 36510,
+      "sha256": "8550a099f16a2a6d688dfcca7495f00c76070a87ed8a685bf105f29d9b632c64",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/scripted_effects/00_decisions_effects.txt",
+      "bytes": 92722,
+      "sha256": "a30e06ea5c3c3c0cc24e8be823600f12a5f5cb0caf3fa52c3ca98648b0f8f2d5",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/scripted_effects/00_prison_effects.txt",
+      "bytes": 73376,
+      "sha256": "ea8bb72426246692bf1f310ae7eb83715ae1b7314d046e3660df66443d486030",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/scripted_effects/00_religious_interaction_effects.txt",
+      "bytes": 59428,
+      "sha256": "9ecc22104b057e3425673917acbefaa320833226dd02b9a6c3dca7475b5b0928",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/scripted_triggers/00_crime_triggers.txt",
+      "bytes": 3171,
+      "sha256": "26229add02b79a8c5f1b37f02679d99f733d553a5362c338a7297fec25868807",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/scripted_triggers/00_scripted_triggers.txt",
+      "bytes": 15071,
+      "sha256": "a0d06291c9b29dbeb29e855b8d9552f30b967238046ebbce45d997f730c41b5a",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/scripted_triggers/00_religious_triggers.txt",
+      "bytes": 88549,
+      "sha256": "e9d0b56130464eabdcd670fa6cf814534d11c99da1e8b3fc1e69e9c3e36d2bb2",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/scripted_triggers/00_interaction_triggers.txt",
+      "bytes": 10011,
+      "sha256": "c0ec5a6d1446fe9e654549dfddf7bdde60123baf01f8747b66ae006025256ea7",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/character_interactions/00_prison_interactions.txt",
+      "bytes": 222958,
+      "sha256": "1bb43b3c2061212af8d41b11314ff4e569af2a3506319f820d05877a7762abc5",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/character_interactions/00_vassal_interactions.txt",
+      "bytes": 95542,
+      "sha256": "b0f81cf740b6dbf42952d9a08703ba75e23d6918dd44f4d8e9999f11695b3a20",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/scripted_relations/_scripted_relations.info",
+      "bytes": 3314,
+      "sha256": "79f50845d6c25a639753cdc85c22f7890641909abe37afa8f9a5640bd1f55630",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "game/common/defines/00_defines.txt",
+      "bytes": 125400,
+      "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "launcher/launcher-settings.json",
+      "bytes": 1335,
+      "sha256": "5d2e824196d28103246c1fc26e5da9ea0edb8cea3898e73d3d2db0f910fe5b25",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "binaries/ck3.exe",
+      "bytes": 101040248,
+      "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "availability": "readable_at_observation"
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/appmanifest_1158310.acf",
+      "bytes": 4267,
+      "sha256": "2a5eb286a5aaf5f99fefaac64eb134f8bea9cd57681a263ad35eeedcc161eec8",
+      "availability": "readable_at_observation"
+    }
+  ],
+  "storage": {
+    "policy_version": "1.0.0",
+    "policy_paths": [
+      "docs/storage-retention-policy.md",
+      "docs/storage-retention-policy.json"
+    ],
+    "task_start_observed_at_utc": "2026-10-24T06:42:56.156269+00:00",
+    "task_start_volumes": [
+      {
+        "root": "C:/",
+        "total_bytes": 511133945856,
+        "available_bytes": 59845435392
+      },
+      {
+        "root": "D:/",
+        "total_bytes": 500090007552,
+        "available_bytes": 21689110528
+      }
+    ],
+    "bounded_research_outputs_max_bytes": 1048576,
+    "heavy_write_admission": false,
+    "other_unspent_reservations": null,
+    "system_growth_reserve": null,
+    "current_project_usage": null,
+    "effective_project_quota": null,
+    "unknowns_do_not_authorize_heavy_writes": true,
+    "deleted_assets": [],
+    "record_review_at_utc": "2027-04-22T06:58:08.710729+00:00",
+    "derived_review_after_hours": 48,
+    "scratch_root": "_runtime/dynastic-esotericism-research-20261024",
+    "scratch_purpose": "One-off source collection and byte-preserving backup of pre-existing local documents; original files restored at original paths",
+    "other_project_asset_ledger_review": "not performed; no reclamation claimed",
+    "task_close_observed_at_utc": "2026-10-24T06:58:55.633587+00:00",
+    "task_close_volumes": [
+      {
+        "root": "C:/",
+        "total_bytes": 511133945856,
+        "available_bytes": 59831476224
+      },
+      {
+        "root": "D:/",
+        "total_bytes": 500090007552,
+        "available_bytes": 21624754176
+      }
+    ],
+    "package_logical_bytes_before_git": 44095
+  },
+  "runtime_actions": {
+    "ck3_launched": false,
+    "game_memory_attached": false,
+    "steam_state_changed": false,
+    "workshop_written": false,
+    "mod_deployed": false
+  },
+  "verification": {
+    "observed_at_utc": "2026-10-24T06:58:55.633587+00:00",
+    "local_markdown_links_checked": 8,
+    "broken_links": [],
+    "json_files_parsed": 2,
+    "source_pins": 40,
+    "exact_binary_slices_matched": 8,
+    "exact_binary_names_matched": 11,
+    "opinion_flag_jump_table_matched": true,
+    "game_business_checks": "not_run",
+    "static_type_check": "not_applicable_documentation_only"
+  }
+}

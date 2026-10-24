@@ -1,0 +1,152 @@
+{
+  "schema": "dynastic-esotericism-binary-slices-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T06:58:08.710729+00:00",
+  "source": "C:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+  "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "bytes": 101040248,
+  "image_base": "0x140000000",
+  "pe_timestamp": 1791204405,
+  "method": "pefile RVA-to-file mapping and exact byte readback of finite research slices; no runtime call",
+  "slices": [
+    {
+      "label": "SelectDoctrine registration",
+      "rva": "0x229ad3",
+      "file_offset": "0x228ed3",
+      "hex": "4c8d0516132d0133d2488d4defe87b912d01",
+      "matched": true
+    },
+    {
+      "label": "SelectDoctrine thunk call",
+      "rva": "0x14fae56",
+      "file_offset": "0x14fa256",
+      "hex": "488b10488bcfe88f98ffff",
+      "matched": true
+    },
+    {
+      "label": "Selected doctrine draft write",
+      "rva": "0x14f472a",
+      "file_offset": "0x14f3b2a",
+      "hex": "488b422848894128",
+      "matched": true
+    },
+    {
+      "label": "CreateRite registration",
+      "rva": "0x22a166",
+      "file_offset": "0x229566",
+      "hex": "4c8d05f30e2d0133d2488d4defe8e88a2d01",
+      "matched": true
+    },
+    {
+      "label": "CreateRite thunk",
+      "rva": "0x14fb060",
+      "file_offset": "0x14fa460",
+      "hex": "4883ec284885c9740ce8c2a0ffffb0014883c428c332c04883c428c3",
+      "matched": true
+    },
+    {
+      "label": "CreateDynasty effect registration",
+      "rva": "0x5dd855",
+      "file_offset": "0x5dcc55",
+      "hex": "488d0dfcb42904488908488bcb897810488b5c24484883c4305fe99c631803",
+      "matched": true
+    },
+    {
+      "label": "OpinionFlagMask token dispatch",
+      "rva": "0x260dbfa",
+      "file_offset": "0x260cffa",
+      "hex": "4181c0c1d3ffff",
+      "matched": true
+    },
+    {
+      "label": "OpinionFlagMask execute bit write",
+      "rva": "0x260de23",
+      "file_offset": "0x260d223",
+      "hex": "0fb6c8baf7ff00000fb747086623c266c1e103660bc866894f08",
+      "matched": true
+    }
+  ],
+  "strings": [
+    {
+      "value": "RiteCreationWindow",
+      "rva": "0x4566028",
+      "file_offset": "0x4564e28",
+      "nul_terminated": true
+    },
+    {
+      "value": "GetCategoryHelper",
+      "rva": "0x4565f18",
+      "file_offset": "0x4564d18",
+      "nul_terminated": true
+    },
+    {
+      "value": "SelectDoctrine",
+      "rva": "0x4565fd8",
+      "file_offset": "0x4564dd8",
+      "nul_terminated": true
+    },
+    {
+      "value": "CreateRite",
+      "rva": "0x45660c8",
+      "file_offset": "0x4564ec8",
+      "nul_terminated": true
+    },
+    {
+      "value": "EditRite",
+      "rva": "0x45660a8",
+      "file_offset": "0x4564ea8",
+      "nul_terminated": true
+    },
+    {
+      "value": "create_dynasty",
+      "rva": "0x4876c98",
+      "file_offset": "0x4875a98",
+      "nul_terminated": true
+    },
+    {
+      "value": "set_house",
+      "rva": "0x46cb690",
+      "file_offset": "0x46ca490",
+      "nul_terminated": true
+    },
+    {
+      "value": "imprisonment_reason",
+      "rva": "0x470e020",
+      "file_offset": "0x470ce20",
+      "nul_terminated": true
+    },
+    {
+      "value": "execute_reason",
+      "rva": "0x470df58",
+      "file_offset": "0x470cd58",
+      "nul_terminated": true
+    },
+    {
+      "value": "has_imprisonment_reason",
+      "rva": "0x47f9388",
+      "file_offset": "0x47f8188",
+      "nul_terminated": true
+    },
+    {
+      "value": "has_execute_reason",
+      "rva": "0x47f92b0",
+      "file_offset": "0x47f80b0",
+      "nul_terminated": true
+    }
+  ],
+  "opinion_flag_mask_jump_table": {
+    "rva": "0x260df6c",
+    "targets": [
+      "0x260dc29",
+      "0x260dcae",
+      "0x260dd36",
+      "0x260ddbf",
+      "0x260de48",
+      "0x260df5a",
+      "0x260df5a",
+      "0x260ded1"
+    ]
+  },
+  "set_dynasty_exact_nul_name_found": false,
+  "business_verification": "not_run"
+}
