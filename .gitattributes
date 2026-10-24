@@ -1377,3 +1377,6 @@ docs/ck3-native-ai/evidence/faith-engine-e02-v7-final-steam-20261023.json -text
 
 # Preserve original SHA-bound episode two icon consistency evidence.
 /docs/ck3-native-ai/evidence/faith-e02-v8-clarity-20261024/icon-consistency.*.json -text whitespace=cr-at-eol
+
+# Preserve raw Steam responses byte-for-byte, including server whitespace.
+/promo/living_artifacts/workshop-media-wip-20261024-a01/publication/**/*.html -text -diff

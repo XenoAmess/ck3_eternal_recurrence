@@ -1,18 +1,18 @@
 {
   "schema": "living-artifacts-workshop-media-publication-v1",
   "machine_id": "pc-20260924rtuf-f11af23c08",
-  "observed_at_utc": "2026-10-24T16:13:09.364507+00:00",
+  "observed_at_utc": "2026-10-24T17:10:05.736782+00:00",
   "item_id": "3825237804",
   "workshop_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3825237804",
   "owner": "76561198273714027",
   "status": "PUBLISHED_PUBLIC_HTML_API_CDN_VERIFIED",
-  "description_utf8_bytes": 7413,
-  "description_sha256": "abdc4e16474689176338458e1db333f89d9962202a7376c826e2bf245d73ce4a",
+  "description_utf8_bytes": 7644,
+  "description_sha256": "02cf41d6faecc7996ef0c5f42b9e343707ff08a8c0f91f37fc32b149db9e9906",
   "description_exact_public_api": true,
-  "gallery_images": 4,
-  "embedded_images": 4,
+  "gallery_images": 5,
+  "embedded_images": 5,
   "all_cdn_files_exact": true,
-  "html_rendering_check": "PASS: unique description subtree, all text and ordered four img src exact",
+  "html_rendering_check": "PASS: unique full description, ordered five img src and five actual gallery URLs exact",
   "changelog_readback_this_update": "PASS: unique original877character23line Notes unchanged; entry1792759339",
   "update_scope": "content_and_metadata",
   "product_content_files": 57,
@@ -20,16 +20,20 @@
   "product_content_unchanged_sha_verified": true,
   "original_publish_wait_codes": [
     0,
+    0,
+    0,
     0
   ],
   "steam_restored_offline": true,
   "gameplay_scope": [
     "R31 natural awakening and original attributes",
-    "R33 normal management instructions"
+    "R33 normal management instructions",
+    "R35 actual natural living artifact level, experience, personality, appetite, ability and training/suppression entry"
   ],
   "gameplay_gaps": [
-    "feeding and upgrade results",
-    "suppression quote and actual paid state"
+    "feeding confirmation and upgrade results",
+    "actual training execution",
+    "suppression price and paid remaining time"
   ],
   "evidence": {
     "body.actual-receipt.json": {
@@ -76,8 +80,53 @@
       "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\living_artifacts\\workshop-media-wip-20261024-a01\\publication\\public-page-verification.json",
       "bytes": 1482,
       "sha256": "3dc27e691a6d2523ae13fee8550e5bf2b0ca95f95b771b487e197b26c63284d7"
+    },
+    "state-b02/body.actual-receipt.json": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\living_artifacts\\workshop-media-wip-20261024-a01\\publication\\state-b02\\body.actual-receipt.json",
+      "bytes": 2059,
+      "sha256": "4f4e2832fd28dd4f0efa40f2e42bdc0c50e1f32c1de1275630ed337bafd8e1fd"
+    },
+    "state-b02/gallery.actual-receipt.json": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\living_artifacts\\workshop-media-wip-20261024-a01\\publication\\state-b02\\gallery.actual-receipt.json",
+      "bytes": 2113,
+      "sha256": "10e18f867f172d6be3024b80bbb41aac91fc27c839a0e6a79c4ca9179ae5093e"
+    },
+    "state-b02/http-readback.json": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\living_artifacts\\workshop-media-wip-20261024-a01\\publication\\state-b02\\http-readback.json",
+      "bytes": 1102,
+      "sha256": "8cd284ab127e97e2197ae22f08a5bd56154176fbd72550ea255ef5c91c75c81c"
+    },
+    "state-b02/offline-final.json": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\living_artifacts\\workshop-media-wip-20261024-a01\\publication\\state-b02\\offline-final.json",
+      "bytes": 2332,
+      "sha256": "02303a6adf34110e6035af252a01da0729173b468f99ca566f62339a8c2668e6"
+    },
+    "state-b02/previews-after-gallery.actual.json": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\living_artifacts\\workshop-media-wip-20261024-a01\\publication\\state-b02\\previews-after-gallery.actual.json",
+      "bytes": 2557,
+      "sha256": "ff4b300aa91db2c193244e152101cb8bf3b7fcc142a4011d3af7cf7b79227ae6"
+    },
+    "state-b02/public-changelog.html": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\living_artifacts\\workshop-media-wip-20261024-a01\\publication\\state-b02\\public-changelog.html",
+      "bytes": 52852,
+      "sha256": "ba90cfc094f9ffe86dba84ba8f57d9d5f9e76d10999ac02d390f803dfe4fd290"
+    },
+    "state-b02/public-final-api.json": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\living_artifacts\\workshop-media-wip-20261024-a01\\publication\\state-b02\\public-final-api.json",
+      "bytes": 8526,
+      "sha256": "ea35f9e4f87eadacc2ebc4013e2a5d6b4ae390bce5a7f7869a14a855afdfb9b7"
+    },
+    "state-b02/public-page.html": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\living_artifacts\\workshop-media-wip-20261024-a01\\publication\\state-b02\\public-page.html",
+      "bytes": 73336,
+      "sha256": "7031e90273a2923714986d93f14393819df467797ddbe0cc76944f84a0d27a75"
+    },
+    "state-b02/public-verification.json": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\living_artifacts\\workshop-media-wip-20261024-a01\\publication\\state-b02\\public-verification.json",
+      "bytes": 2350,
+      "sha256": "7119ae938ed3299f877b916ad6e4df88d8a4d4c4930b2f90b8c0c2506b048ba9"
     }
   },
   "review_after_utc": "2027-01-22T00:00:00Z",
-  "public_page_verification": "publication/public-page-verification.json"
+  "public_page_verification": "publication/state-b02/public-verification.json"
 }

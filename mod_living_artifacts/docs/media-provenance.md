@@ -35,3 +35,9 @@ R6 图显示中文测试夹具的目标与四档材料，拍摄仍在实际装�
 R33 原屏为 1920×1080、2781251 B，SHA-256 `2c24add09d23879d784a20e18fed0934eff01ab583817ba6bddebaed52dbe29f`；原文件 mtime 为 `2026-10-24T13:48:02.358732Z`，此处只记录文件时标，不替代单独捕获回执。PID16224、出生时间 Unix `1792847623.400076`、玩家33702、CK3 1.20.0.4/build25734779；原生步骤 `r33-confirm-manage-01` 在 `13:43:23.164431Z` 实际观察到 `xalw.12`。该图仅为管理入口说明，不展示训练、喂养、镇压付款或成长结果。R31/R33 后续失败及未获正常退出资格保持原样，图片像素真实性不授予整场业务通过。
 
 本次两次 SDK 提交实际原退出均为 0、`steam_result=1`、`stage=complete`。匿名公开 API 的 7413 B 描述与冻结 BBCode 完全一致；四张 Steam CDN 图均 HTTP200，字节、SHA 和尺寸逐一匹配上传 JPG。实际证据及未完成范围见 [publication.json](../../promo/living_artifacts/workshop-media-wip-20261024-a01/publication.json)。旧夹具证据继续保留其开发用途，不进入本次宣传图库。
+
+同日后继 R35 新增 [实际活物管理状态原屏](../../promo/living_artifacts/workshop-media-wip-20261024-a01/screenshots/05-living-artifact-state-r35.jpg)：1920×1080 JPEG、639336 B，SHA-256 `dadcdfef31f3ed4a01ad7e5af764c0815a63ee35b81b91592503bf7ef1f7aedb`；原文件 mtime `2026-10-24T16:48:13.372504Z`。来源机器仍为 `pc-20260924rtuf-f11af23c08`，PID15032/出生Unix1792858804.978422，CK3 1.20.0.4/build25734779。冻结 c27 正式普通战役中通过正常切换角色转为玩家33702，装备自然「★君王之杖」，再进入正常管理决议；原生 `r35-context-manage-01` 的实际选项绑定物品295，`r35-listen-01` 后事件实例为2。
+
+图中显示1级、经验0/100、嗜战、武器食性、共鸣20/100、丧钟合唱I，以及50威望/10压力/+25经验的训练选择和镇压90日入口。该图是直接采集的 JPEG 原件，无裁切、重绘或转码；没有把未执行的喂养或付费写成结果。R35 固定 hold 到期，native报告GREEN但 CK3进程1、public2、managed cleanup已证；未获正常退出资格，Save0、录像0。
+
+随后追加第五张图库，并在正文“停手选择”段嵌图。第二批两次 SDK 原退出仍为0/0，最终五图正文7644 B。匿名公开 API 全文、网页唯一正文文字及五个图片地址、页面实际图库五个地址、原877字符/23行 Notes 全部匹配；第五图公开下载与源文件逐字节相同。原四图证据保留，第二批原始响应与验证结果位于 [state-b02](../../promo/living_artifacts/workshop-media-wip-20261024-a01/publication/state-b02/public-verification.json)。

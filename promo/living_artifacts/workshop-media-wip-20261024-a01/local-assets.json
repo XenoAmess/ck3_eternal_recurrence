@@ -59,6 +59,13 @@
       "height": 1080,
       "bytes": 2781251,
       "sha256": "2c24add09d23879d784a20e18fed0934eff01ab583817ba6bddebaed52dbe29f"
+    },
+    {
+      "file": "screenshots/05-living-artifact-state-r35.jpg",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 639336,
+      "sha256": "dadcdfef31f3ed4a01ad7e5af764c0815a63ee35b81b91592503bf7ef1f7aedb"
     }
   ],
   "real_play_source": {
@@ -97,5 +104,43 @@
     "fixture_only": false,
     "scope": "Ordinary campaign management instructions only; no feeding, payment, training or suppression result",
     "scene_normal_close_qualified": false
-  }
+  },
+  "living_state_source": {
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0035",
+    "game_pid": 15032,
+    "game_birth_unix": 1792858804.978422,
+    "game_version": "1.20.0.4",
+    "build": "25734779",
+    "player_character_id": 33702,
+    "artifact_id": 295,
+    "source_file": {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\workshop-media-remediation-a01\\captures\\scene13\\s28-living-management.jpg",
+      "bytes": 639336,
+      "sha256": "dadcdfef31f3ed4a01ad7e5af764c0815a63ee35b81b91592503bf7ef1f7aedb"
+    },
+    "source_file_mtime_utc": "2026-10-24T16:48:13.372504Z",
+    "artifact_binding_source": "r35-context-manage-01 native resolved option ARTIFACT,295; r35-listen-01 opens instance2",
+    "normal_gui_character_switch": "same world Byzantine ruler to Fatimid, no new game or reroll",
+    "visible_state": {
+      "name": "★君王之杖",
+      "level": 1,
+      "experience": 0,
+      "next_level_experience": 100,
+      "personality": "嗜战",
+      "appetite": "武器",
+      "resonance": 20,
+      "ability": "丧钟合唱 (1)",
+      "training_option": "50威望，10压力，+25经验",
+      "suppression_option": "付费镇压成长90日"
+    },
+    "fixture_only": false,
+    "scope": "Actual living artifact management state and visible options; not feeding, training or suppression execution",
+    "normal_exit_qualified": false,
+    "actual_public_exit_code": 2,
+    "actual_ck3_exit_code": 1,
+    "native_report_status": "GREEN",
+    "managed_cleanup_proven": true
+  },
+  "updated_at_utc": "2026-10-24T17:19:37.567199+00:00"
 }

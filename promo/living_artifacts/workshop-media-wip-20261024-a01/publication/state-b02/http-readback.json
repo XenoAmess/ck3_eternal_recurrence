@@ -1,0 +1,30 @@
+[
+  {
+    "file": "public-final-api.json",
+    "url": "https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/",
+    "http_status": 200,
+    "bytes": 8526,
+    "sha256": "ea35f9e4f87eadacc2ebc4013e2a5d6b4ae390bce5a7f7869a14a855afdfb9b7"
+  },
+  {
+    "file": "public-page.html",
+    "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3825237804",
+    "http_status": 200,
+    "bytes": 73336,
+    "sha256": "7031e90273a2923714986d93f14393819df467797ddbe0cc76944f84a0d27a75"
+  },
+  {
+    "file": "public-changelog.html",
+    "url": "https://steamcommunity.com/sharedfiles/filedetails/changelog/3825237804",
+    "http_status": 200,
+    "bytes": 52852,
+    "sha256": "ba90cfc094f9ffe86dba84ba8f57d9d5f9e76d10999ac02d390f803dfe4fd290"
+  },
+  {
+    "file": "public-05-living-artifact-state-r35.jpg",
+    "url": "https://images.steamusercontent.com/ugc/13131882587630667343/49F9D7350D0ADE173E3B154FF30BE1AC604572B7/",
+    "http_status": 200,
+    "bytes": 639336,
+    "sha256": "dadcdfef31f3ed4a01ad7e5af764c0815a63ee35b81b91592503bf7ef1f7aedb"
+  }
+]
