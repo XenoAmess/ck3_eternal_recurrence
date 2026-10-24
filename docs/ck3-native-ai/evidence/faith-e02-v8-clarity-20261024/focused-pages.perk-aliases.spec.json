@@ -1,0 +1,263 @@
+{
+  "schema": "xar.clarity-cards.spec/v2",
+  "machine_id": "4-8e1c2f1861",
+  "ffmpeg": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\media-tools\\ffmpeg.exe",
+    "bytes": 105423872,
+    "sha256": "3256173f3f8bffd7df12227c68adf68025edb1832273a9530688a7bb1ed8edec"
+  },
+  "cards": [
+    {
+      "id": "N20-later-2",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "无地冒险者或游牧政体配合教权辩护",
+      "title": "第三组继续：后面的现值倍率",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "当地仪式",
+          "value": "×1.75"
+        },
+        {
+          "label": "无地／游牧 + 教权辩护",
+          "value": "×0.5"
+        }
+      ],
+      "result": "",
+      "note": "按列示顺序；各项条件分别判断。同一技能常规名为教权辩护，无地／游牧时显示为高效朝圣者。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 1,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\source-icon-frames-a01\\node_learning-frame2.png",
+            "bytes": 7308,
+            "sha256": "e74ee12f20810a4d9796514d93bbf462d32d7d141da6c2c74dc88ab52d9d99b9"
+          },
+          "row": 1,
+          "column": "LABEL"
+        }
+      ]
+    },
+    {
+      "id": "N20-later-3",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "联盟凝聚力提供的活动优惠",
+      "title": "第三组继续：后面的现值倍率",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "当地仪式",
+          "value": "×1.75"
+        },
+        {
+          "label": "无地／游牧 + 教权辩护",
+          "value": "×0.5"
+        },
+        {
+          "label": "联盟凝聚力的活动优惠",
+          "value": "×0.9"
+        }
+      ],
+      "result": "",
+      "note": "按列示顺序；各项条件分别判断。同一技能常规名为教权辩护，无地／游牧时显示为高效朝圣者。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 2,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\source-icon-frames-a01\\node_learning-frame2.png",
+            "bytes": 7308,
+            "sha256": "e74ee12f20810a4d9796514d93bbf462d32d7d141da6c2c74dc88ab52d9d99b9"
+          },
+          "row": 1,
+          "column": "LABEL"
+        }
+      ]
+    },
+    {
+      "id": "N20-later-4",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "命运之路乘零点八",
+      "title": "第三组继续：后面的现值倍率",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "当地仪式",
+          "value": "×1.75"
+        },
+        {
+          "label": "无地／游牧 + 教权辩护",
+          "value": "×0.5"
+        },
+        {
+          "label": "联盟凝聚力的活动优惠",
+          "value": "×0.9"
+        },
+        {
+          "label": "命运之路",
+          "value": "×0.8"
+        }
+      ],
+      "result": "",
+      "note": "按列示顺序；各项条件分别判断。同一技能常规名为教权辩护，无地／游牧时显示为高效朝圣者。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 3,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\source-icon-frames-a01\\node_learning-frame2.png",
+            "bytes": 7308,
+            "sha256": "e74ee12f20810a4d9796514d93bbf462d32d7d141da6c2c74dc88ab52d9d99b9"
+          },
+          "row": 1,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\piety_positive.dds",
+            "bytes": 19264,
+            "sha256": "11456b79e1a3bcaf5dc4fc0ac919e2b0c2c99b53dbed137aa6046f6ea2ebe3e8"
+          },
+          "row": 3,
+          "column": "LABEL"
+        }
+      ]
+    },
+    {
+      "id": "N20-later-5",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "以牙还牙的款待",
+      "title": "第三组继续：后面的现值倍率",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "当地仪式",
+          "value": "×1.75"
+        },
+        {
+          "label": "无地／游牧 + 教权辩护",
+          "value": "×0.5"
+        },
+        {
+          "label": "联盟凝聚力的活动优惠",
+          "value": "×0.9"
+        },
+        {
+          "label": "命运之路",
+          "value": "×0.8"
+        },
+        {
+          "label": "以牙还牙的款待",
+          "value": "×0.85"
+        }
+      ],
+      "result": "",
+      "note": "按列示顺序；各项条件分别判断。同一技能常规名为教权辩护，无地／游牧时显示为高效朝圣者。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 4,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\source-icon-frames-a01\\node_learning-frame2.png",
+            "bytes": 7308,
+            "sha256": "e74ee12f20810a4d9796514d93bbf462d32d7d141da6c2c74dc88ab52d9d99b9"
+          },
+          "row": 1,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\piety_positive.dds",
+            "bytes": 19264,
+            "sha256": "11456b79e1a3bcaf5dc4fc0ac919e2b0c2c99b53dbed137aa6046f6ea2ebe3e8"
+          },
+          "row": 3,
+          "column": "LABEL"
+        }
+      ]
+    },
+    {
+      "id": "N20-later-6",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "符合神王条件的人工智能人物",
+      "title": "第三组继续：后面的现值倍率",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "当地仪式",
+          "value": "×1.75"
+        },
+        {
+          "label": "无地／游牧 + 教权辩护",
+          "value": "×0.5"
+        },
+        {
+          "label": "联盟凝聚力的活动优惠",
+          "value": "×0.9"
+        },
+        {
+          "label": "命运之路",
+          "value": "×0.8"
+        },
+        {
+          "label": "以牙还牙的款待",
+          "value": "×0.85"
+        },
+        {
+          "label": "满足神王条件的AI",
+          "value": "×0.25"
+        }
+      ],
+      "result": "",
+      "note": "按列示顺序；各项条件分别判断。同一技能常规名为教权辩护，无地／游牧时显示为高效朝圣者。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 5,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\source-icon-frames-a01\\node_learning-frame2.png",
+            "bytes": 7308,
+            "sha256": "e74ee12f20810a4d9796514d93bbf462d32d7d141da6c2c74dc88ab52d9d99b9"
+          },
+          "row": 1,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\piety_positive.dds",
+            "bytes": 19264,
+            "sha256": "11456b79e1a3bcaf5dc4fc0ac919e2b0c2c99b53dbed137aa6046f6ea2ebe3e8"
+          },
+          "row": 3,
+          "column": "LABEL"
+        }
+      ]
+    }
+  ]
+}

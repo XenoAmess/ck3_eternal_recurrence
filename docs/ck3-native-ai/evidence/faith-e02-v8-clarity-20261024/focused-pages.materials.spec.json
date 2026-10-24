@@ -1,0 +1,2352 @@
+{
+  "schema": "xar.clarity-cards.spec/v2",
+  "machine_id": "4-8e1c2f1861",
+  "ffmpeg": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\media-tools\\ffmpeg.exe",
+    "bytes": 105423872,
+    "sha256": "3256173f3f8bffd7df12227c68adf68025edb1832273a9530688a7bb1ed8edec"
+  },
+  "cards": [
+    {
+      "id": "A02-obligatory",
+      "cue": "E02-V6-N10",
+      "anchor_zh": "活动选项里的朝圣态度分三档。",
+      "title": "朝圣态度：义不容辞",
+      "kicker": "活动选项  /  游戏栏名：忠诚",
+      "lines": [],
+      "rows": [
+        {
+          "label": "主虔诚公式前段",
+          "value": "×0.5"
+        },
+        {
+          "label": "旅行速度修正",
+          "value": "+50%"
+        },
+        {
+          "label": "显示",
+          "value": "高级活动功能"
+        },
+        {
+          "label": "伊斯兰人物可选",
+          "value": "义务朝觐或急躁"
+        },
+        {
+          "label": "其他人物可选",
+          "value": "强制朝圣或急躁"
+        }
+      ],
+      "result": "",
+      "note": "快速到达后可提前离开；后续奖励按实际流程判断。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\activity_option_categories\\pilgrimage_option_fidelity.dds",
+        "bytes": 15584,
+        "sha256": "02838c21298bbeafb439d413032318aa11868667caa9e8cf6f467989c8b4820b"
+      },
+      "highlight": -1,
+      "illustrations": []
+    },
+    {
+      "id": "A02-standard",
+      "cue": "E02-V6-N10",
+      "anchor_zh": "第二档是标准的朝圣者：",
+      "title": "朝圣态度：朝圣者（标准档）",
+      "kicker": "活动选项  /  游戏栏名：忠诚",
+      "lines": [],
+      "rows": [
+        {
+          "label": "主虔诚公式前段",
+          "value": "×1"
+        },
+        {
+          "label": "本档特殊速度修正",
+          "value": "无"
+        },
+        {
+          "label": "显示与选择",
+          "value": "无另加门槛"
+        },
+        {
+          "label": "整个活动",
+          "value": "仍须满足通用条件"
+        }
+      ],
+      "result": "",
+      "note": "活动选项与同名人物特质分别判断。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\activity_option_categories\\pilgrimage_option_fidelity.dds",
+        "bytes": 15584,
+        "sha256": "02838c21298bbeafb439d413032318aa11868667caa9e8cf6f467989c8b4820b"
+      },
+      "highlight": -1,
+      "illustrations": []
+    },
+    {
+      "id": "A02-contemplative",
+      "cue": "E02-V6-N10",
+      "anchor_zh": "第三档是深思熟虑：",
+      "title": "朝圣态度：深思熟虑",
+      "kicker": "活动选项  /  游戏栏名：忠诚",
+      "lines": [],
+      "rows": [
+        {
+          "label": "主虔诚公式前段",
+          "value": "×1.25"
+        },
+        {
+          "label": "旅行速度修正",
+          "value": "−50%"
+        },
+        {
+          "label": "显示",
+          "value": "高级活动功能"
+        },
+        {
+          "label": "可选条件（三者任一）",
+          "value": "耐心／朝圣者／朝觐者"
+        }
+      ],
+      "result": "",
+      "note": "朝圣者不要求经验档；速度为加减修正，奖励倍率只进入指定前段。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\activity_option_categories\\pilgrimage_option_fidelity.dds",
+        "bytes": 15584,
+        "sha256": "02838c21298bbeafb439d413032318aa11868667caa9e8cf6f467989c8b4820b"
+      },
+      "highlight": -1,
+      "illustrations": []
+    },
+    {
+      "id": "N13-compare",
+      "cue": "E02-V6-N13",
+      "anchor_zh": "菜单里有两个叫深思熟虑的选项。",
+      "title": "两个“深思熟虑”，各有自己的条件",
+      "kicker": "左：活动选项  /  右：朝圣意图",
+      "lines": [],
+      "rows": [
+        {
+          "label": "朝圣态度：深思熟虑",
+          "value": "意图：深思熟虑"
+        },
+        {
+          "label": "Contemplative",
+          "value": "Reflection"
+        },
+        {
+          "label": "改变速度与主虔诚计算",
+          "value": "偏向反思事件和行为"
+        },
+        {
+          "label": "显示：高级活动功能",
+          "value": "无额外显示门槛"
+        },
+        {
+          "label": "可选：耐心／朝圣者／朝觐者",
+          "value": "无左侧这组特质门槛"
+        }
+      ],
+      "result": "",
+      "note": "朝圣态度在游戏中显示为“忠诚”；两项设置独立判断。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\activity_option_categories\\pilgrimage_option_fidelity.dds",
+        "bytes": 15584,
+        "sha256": "02838c21298bbeafb439d413032318aa11868667caa9e8cf6f467989c8b4820b"
+      },
+      "highlight": -1,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\activity_option_categories\\pilgrimage_option_fidelity.dds",
+            "bytes": 15584,
+            "sha256": "02838c21298bbeafb439d413032318aa11868667caa9e8cf6f467989c8b4820b"
+          },
+          "row": 0,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\activity_intents\\reduce_stress_intent.dds",
+            "bytes": 19264,
+            "sha256": "c565633c7c9ec9e3f4503b0525d278a599d0eed09ab899e5300363d36199e0a9"
+          },
+          "row": 0,
+          "column": "VALUE"
+        }
+      ]
+    },
+    {
+      "id": "N13-reflect-event",
+      "cue": "E02-V6-N13",
+      "anchor_zh": "例如停下来沉思会延迟十天。",
+      "title": "停下来沉思：依人物状态分支",
+      "kicker": "反思事件规则",
+      "lines": [],
+      "rows": [
+        {
+          "label": "旅行延迟",
+          "value": "10天"
+        },
+        {
+          "label": "没有朝圣者",
+          "value": "50虔诚"
+        },
+        {
+          "label": "朝圣者经验未满",
+          "value": "请求10点基础特质经验"
+        },
+        {
+          "label": "朝圣者经验已满",
+          "value": "100虔诚"
+        }
+      ],
+      "result": "",
+      "note": "这是对应事件的分支效果；选择意图本身不立即发放这笔奖励。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\activity_intents\\reduce_stress_intent.dds",
+        "bytes": 19264,
+        "sha256": "c565633c7c9ec9e3f4503b0525d278a599d0eed09ab899e5300363d36199e0a9"
+      },
+      "highlight": -1,
+      "illustrations": []
+    },
+    {
+      "id": "N15-host-1",
+      "cue": "E02-V6-N15",
+      "anchor_zh": "这次主持朝圣，",
+      "title": "主持者：依次核对三项显示条件",
+      "kicker": "本次实际菜单与原版显式候选",
+      "lines": [],
+      "rows": [
+        {
+          "label": "深思熟虑",
+          "value": "无额外显示门槛；默认项"
+        }
+      ],
+      "result": "",
+      "note": "R32实际显示三项；当前能否选择仍须独立核对。AI偏好不作为玩家显示门槛。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\activity_intents\\reduce_stress_intent.dds",
+        "bytes": 19264,
+        "sha256": "c565633c7c9ec9e3f4503b0525d278a599d0eed09ab899e5300363d36199e0a9"
+      },
+      "highlight": 0,
+      "illustrations": []
+    },
+    {
+      "id": "N15-host-2",
+      "cue": "E02-V6-N15",
+      "anchor_zh": "行善需要高级活动功能",
+      "title": "主持者：依次核对三项显示条件",
+      "kicker": "本次实际菜单与原版显式候选",
+      "lines": [],
+      "rows": [
+        {
+          "label": "深思熟虑",
+          "value": "无额外显示门槛；默认项"
+        },
+        {
+          "label": "行善",
+          "value": "高级活动；存活且未囚禁"
+        }
+      ],
+      "result": "",
+      "note": "R32实际显示三项；当前能否选择仍须独立核对。AI偏好不作为玩家显示门槛。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\activity_intents\\altruism_intent.dds",
+        "bytes": 19264,
+        "sha256": "d5a974b06739bc6e61c07a1a14b41d9f773cd41148c9e39e1f20209956cb47c0"
+      },
+      "highlight": 1,
+      "illustrations": []
+    },
+    {
+      "id": "N15-host-3",
+      "cue": "E02-V6-N15",
+      "anchor_zh": "热忱的显示条件",
+      "title": "主持者：依次核对三项显示条件",
+      "kicker": "本次实际菜单与原版显式候选",
+      "lines": [],
+      "rows": [
+        {
+          "label": "深思熟虑",
+          "value": "无额外显示门槛；默认项"
+        },
+        {
+          "label": "行善",
+          "value": "高级活动；存活且未囚禁"
+        },
+        {
+          "label": "热忱",
+          "value": "高级活动功能"
+        }
+      ],
+      "result": "",
+      "note": "R32实际显示三项；当前能否选择仍须独立核对。AI偏好不作为玩家显示门槛。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\activity_intents\\pious_intent.dds",
+        "bytes": 19264,
+        "sha256": "0a23984dbbfdf27e2933c8b3e07b04c871cb4a774775bff193c710420ed86f44"
+      },
+      "highlight": 2,
+      "illustrations": []
+    },
+    {
+      "id": "N15-guest",
+      "cue": "E02-V6-N15",
+      "anchor_zh": "如果只是来宾，",
+      "title": "参与身份改变显式候选池",
+      "kicker": "原版显式候选范围",
+      "lines": [],
+      "rows": [
+        {
+          "label": "主持者",
+          "value": "深思熟虑／行善／热忱"
+        },
+        {
+          "label": "来宾",
+          "value": "显式列出深思熟虑"
+        }
+      ],
+      "result": "",
+      "note": "事件响应某意图，不会自动把它追加进当前菜单。以实际显示和可选状态为准。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\activity_intents\\reduce_stress_intent.dds",
+        "bytes": 19264,
+        "sha256": "c565633c7c9ec9e3f4503b0525d278a599d0eed09ab899e5300363d36199e0a9"
+      },
+      "highlight": -1,
+      "illustrations": []
+    },
+    {
+      "id": "N16-plan",
+      "cue": "E02-V6-N16",
+      "anchor_zh": "最后还有旅行计划。",
+      "title": "旅行计划的三个部分",
+      "kicker": "费用分项",
+      "lines": [],
+      "rows": [
+        {
+          "label": "路线与绕行",
+          "value": "经过哪里"
+        },
+        {
+          "label": "旅队主管",
+          "value": "能力与独立出发报价"
+        },
+        {
+          "label": "旅行选项",
+          "value": "资格、效果和各自费用"
+        },
+        {
+          "label": "选项总表",
+          "value": "29种；最多同时选2项"
+        }
+      ],
+      "result": "",
+      "note": "12种有直接费用定义，17种没有；整个旅程仍有其他费用。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\travel_options\\hire_mountaineer_option.dds",
+        "bytes": 25728,
+        "sha256": "c79804ad70793c519aff6382456a45afb5c31ee86af3b751e30d659a153477c1"
+      },
+      "highlight": -1,
+      "illustrations": []
+    },
+    {
+      "id": "N16-categories",
+      "cue": "E02-V6-N16",
+      "anchor_zh": "低、中、高是不同旅行选项使用的收费类别：",
+      "title": "低、中、高：不同选项使用的收费类别",
+      "kicker": "非部落制金币分支",
+      "lines": [],
+      "rows": [
+        {
+          "label": "低费：雇佣登山者",
+          "value": "2 × K × W"
+        },
+        {
+          "label": "中费：雇佣经验丰富的船长",
+          "value": "5 × K × W"
+        },
+        {
+          "label": "高费：雇佣佣兵卫队",
+          "value": "10 × K × W"
+        }
+      ],
+      "result": "",
+      "note": "K=max(主头衔等级−1,1)；W有准备充分时为0.75，否则为1。",
+      "icon": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\source-icon-frames-a01\\node_wanderer-frame2.png",
+        "bytes": 6856,
+        "sha256": "f6cf6c2f3cf58a6a90d17b1b2340a3859d88bce83ae7d687c146262e1bfa3237"
+      },
+      "highlight": -1,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\travel_options\\hire_mountaineer_option.dds",
+            "bytes": 25728,
+            "sha256": "c79804ad70793c519aff6382456a45afb5c31ee86af3b751e30d659a153477c1"
+          },
+          "row": 0,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\travel_options\\experienced_captains_option.dds",
+            "bytes": 25728,
+            "sha256": "5a2f6f42aee1865714329007b5f4804249949eb8d6101a299624b7c1f56b73a0"
+          },
+          "row": 1,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\travel_options\\hire_experienced_mercenaries_option.dds",
+            "bytes": 25728,
+            "sha256": "e3894df63a37ac38fa00d72b8f64ac26845e350d475c63110cb1f19a174fe5e9"
+          },
+          "row": 2,
+          "column": "LABEL"
+        }
+      ]
+    },
+    {
+      "id": "N16-factors",
+      "cue": "E02-V6-N16",
+      "anchor_zh": "头衔系数取主头衔等级减一",
+      "title": "先确定头衔与准备充分系数",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "头衔系数 K",
+          "value": "max(主头衔等级−1,1)"
+        },
+        {
+          "label": "公爵：等级3",
+          "value": "K = 2"
+        },
+        {
+          "label": "没有准备充分",
+          "value": "W = 1"
+        },
+        {
+          "label": "有准备充分",
+          "value": "W = 0.75"
+        }
+      ],
+      "result": "",
+      "note": "技能只作用于读取它的旅行选项费。",
+      "icon": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\source-icon-frames-a01\\node_wanderer-frame2.png",
+        "bytes": 6856,
+        "sha256": "f6cf6c2f3cf58a6a90d17b1b2340a3859d88bce83ae7d687c146262e1bfa3237"
+      },
+      "highlight": -1,
+      "illustrations": []
+    },
+    {
+      "id": "N16-without-perk",
+      "cue": "E02-V6-N16",
+      "anchor_zh": "本例是非部落制公爵",
+      "title": "公爵：没有准备充分",
+      "kicker": "K=2，W=1",
+      "lines": [],
+      "rows": [
+        {
+          "label": "低费",
+          "value": "2 × 2 × 1 = 4"
+        },
+        {
+          "label": "中费",
+          "value": "5 × 2 × 1 = 10"
+        },
+        {
+          "label": "高费",
+          "value": "10 × 2 × 1 = 20"
+        }
+      ],
+      "result": "",
+      "note": "低／中／高是费用类别；按所选旅行选项分别收费。",
+      "icon": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\source-icon-frames-a01\\node_wanderer-frame1.png",
+        "bytes": 5144,
+        "sha256": "33e6b67c832331dd630b43d29b2f5fcf4b5efa78d93fe1ac2d4c802edfd80045"
+      },
+      "highlight": -1,
+      "illustrations": []
+    },
+    {
+      "id": "N16-with-perk",
+      "cue": "E02-V6-N16",
+      "anchor_zh": "有技能时，",
+      "title": "同一公爵：有准备充分",
+      "kicker": "K=2，W=0.75",
+      "lines": [],
+      "rows": [
+        {
+          "label": "低费",
+          "value": "2 × 2 × 0.75 = 3"
+        },
+        {
+          "label": "中费",
+          "value": "5 × 2 × 0.75 = 7.5"
+        },
+        {
+          "label": "高费",
+          "value": "10 × 2 × 0.75 = 15"
+        }
+      ],
+      "result": "",
+      "note": "本片模型没有该技能，且只选雇佣登山者，因此后续记4金币。",
+      "icon": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\source-icon-frames-a01\\node_wanderer-frame2.png",
+        "bytes": 6856,
+        "sha256": "f6cf6c2f3cf58a6a90d17b1b2340a3859d88bce83ae7d687c146262e1bfa3237"
+      },
+      "highlight": -1,
+      "illustrations": []
+    },
+    {
+      "id": "N16-scope",
+      "cue": "E02-V6-N16",
+      "anchor_zh": "这些只算所选旅行选项",
+      "title": "把旅行选项费单独记账",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "本例所选：雇佣登山者",
+          "value": "4金币"
+        },
+        {
+          "label": "旅队主管",
+          "value": "另读出发报价"
+        },
+        {
+          "label": "活动本体与途中事件",
+          "value": "各自计算"
+        }
+      ],
+      "result": "",
+      "note": "其他政体可使用国库或游牧分支；本页只演算非部落制公爵的金币费用。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\travel_options\\hire_mountaineer_option.dds",
+        "bytes": 25728,
+        "sha256": "c79804ad70793c519aff6382456a45afb5c31ee86af3b751e30d659a153477c1"
+      },
+      "highlight": -1,
+      "illustrations": []
+    },
+    {
+      "id": "N17-inputs",
+      "cue": "E02-V6-N17",
+      "anchor_zh": "下面用一组固定参数",
+      "title": "费用输入：先固定，再分项",
+      "kicker": "F0：无折扣",
+      "lines": [],
+      "rows": [
+        {
+          "label": "玩家／非部落制公爵",
+          "value": "K=2"
+        },
+        {
+          "label": "文化：中世纪早期",
+          "value": "E=1，C=1"
+        },
+        {
+          "label": "公式月收入",
+          "value": "I=10"
+        },
+        {
+          "label": "收入调整系数",
+          "value": "Q=1"
+        }
+      ],
+      "result": "",
+      "note": "E用于活动本体；C用于动态金币上限。有文化的本例两者同为1。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": -1,
+      "illustrations": []
+    },
+    {
+      "id": "N17-income-adjustment",
+      "cue": "E02-V6-N17",
+      "anchor_zh": "有国库、不是最高领主",
+      "title": "收入调整系数 Q 的条件",
+      "kicker": "动态金币输入",
+      "lines": [
+        "有国库 AND 不是最高领主 AND 有地",
+        "三项同时满足：Q = 0.25",
+        "其他情况：Q = 1"
+      ],
+      "rows": [],
+      "result": "",
+      "note": "本例Q=1；I读取公式月收入，现有存款另算。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 2,
+      "illustrations": []
+    },
+    {
+      "id": "N17-small-1",
+      "cue": "E02-V6-N17",
+      "anchor_zh": "小额动态金币先取三个月收入",
+      "title": "小额动态金币：先取收入",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "m = ceil5(clamp(3 × I × Q, 15, 150 × C))",
+        "3 × 10 × 1 = 30"
+      ],
+      "rows": [],
+      "result": "",
+      "note": "C是动态金币自己的文化时代系数；本例C=1。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 1,
+      "illustrations": []
+    },
+    {
+      "id": "N17-small-2",
+      "cue": "E02-V6-N17",
+      "anchor_zh": "把它限制在十五到",
+      "title": "小额动态金币：限幅与取整",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "m = ceil5(clamp(30, 15, 150 × 1))",
+        "m = ceil5(30)"
+      ],
+      "rows": [],
+      "result": "m = 30",
+      "note": "clamp限制上下限；ceil5向上取到5的倍数。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 1,
+      "illustrations": []
+    },
+    {
+      "id": "N17-medium-1",
+      "cue": "E02-V6-N17",
+      "anchor_zh": "中额则取六个月收入",
+      "title": "中额动态金币：独立计算",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "M = ceil5(clamp(6 × I × Q, 50, 300 × C))",
+        "M = ceil5(clamp(60, 50, 300))"
+      ],
+      "rows": [],
+      "result": "M = 60",
+      "note": "中额与小额各自计算；距离费将使用M。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 1,
+      "illustrations": []
+    },
+    {
+      "id": "N17-gold-uses",
+      "cue": "E02-V6-N17",
+      "anchor_zh": "后面用到的最低费用和距离费",
+      "title": "两个动态金币量，各有读取者",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "小额动态金币 m = 30  →  活动本体最低额",
+        "中额动态金币 M = 60  →  距离费基数"
+      ],
+      "rows": [],
+      "result": "",
+      "note": "两次计算分别使用各自的上下限。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 1,
+      "illustrations": []
+    },
+    {
+      "id": "N17-base-1",
+      "cue": "E02-V6-N17",
+      "anchor_zh": "现在算活动本体",
+      "title": "活动本体：先保留原始基数",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "B = 30 × K × 部落系数 + 王／帝加项"
+      ],
+      "rows": [],
+      "result": "",
+      "note": "玩家公爵：部落系数1，王／帝加项0；特殊AI难度分支本例不启用。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 0,
+      "illustrations": []
+    },
+    {
+      "id": "N17-base-2",
+      "cue": "E02-V6-N17",
+      "anchor_zh": "本例不是部落制",
+      "title": "公爵代入：原始基数",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "B = 30 × 2 × 1 + 0"
+      ],
+      "rows": [],
+      "result": "B = 60",
+      "note": "后续部分减项读取原始B，请保留这个数。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 0,
+      "illustrations": []
+    },
+    {
+      "id": "N17-era",
+      "cue": "E02-V6-N17",
+      "anchor_zh": "再乘时代系数一",
+      "title": "活动本体：时代与最低额",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "A0 = B × E = 60 × 1 = 60",
+        "A = max(A0, m) = max(60, 30)"
+      ],
+      "rows": [],
+      "result": "A = 60",
+      "note": "无折扣；第一笔活动本体为60金币。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 1,
+      "illustrations": []
+    },
+    {
+      "id": "N18-pomp-formula",
+      "cue": "E02-V6-N18",
+      "anchor_zh": "第二笔是排场。",
+      "title": "第二笔：讲究排场的公式",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "P = 50 × (K + E − 1)"
+      ],
+      "rows": [],
+      "result": "",
+      "note": "先算括号，把头衔项与时代项相加。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\activity_option_categories\\pilgrimage_option_pomp.dds",
+        "bytes": 15584,
+        "sha256": "510e5d63c2878abc3a0a80db8c68d253efb3c7ddaf58f1ce48b3df7eb5be2a9c"
+      },
+      "highlight": 0,
+      "illustrations": []
+    },
+    {
+      "id": "N18-pomp-substitute",
+      "cue": "E02-V6-N18",
+      "anchor_zh": "本例先算括号里的",
+      "title": "讲究排场：代入与计算",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "P = 50 × (2 + 1 − 1)",
+        "P = 50 × 2"
+      ],
+      "rows": [],
+      "result": "P = 100",
+      "note": "括号整体乘50。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\activity_option_categories\\pilgrimage_option_pomp.dds",
+        "bytes": 15584,
+        "sha256": "510e5d63c2878abc3a0a80db8c68d253efb3c7ddaf58f1ce48b3df7eb5be2a9c"
+      },
+      "highlight": 1,
+      "illustrations": []
+    },
+    {
+      "id": "N18-all-pomp",
+      "cue": "E02-V6-N18",
+      "anchor_zh": "其他排场也列在画面",
+      "title": "四种排场的费用式",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "朴素",
+          "value": "−10 × (K + E − 1)"
+        },
+        {
+          "label": "适度",
+          "value": "0"
+        },
+        {
+          "label": "讲究",
+          "value": "50 × (K + E − 1)"
+        },
+        {
+          "label": "盛况空前",
+          "value": "100 × (K + E − 1)"
+        }
+      ],
+      "result": "",
+      "note": "使用原版中文名称；后续折扣按各档各自规则处理。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\activity_option_categories\\pilgrimage_option_pomp.dds",
+        "bytes": 15584,
+        "sha256": "510e5d63c2878abc3a0a80db8c68d253efb3c7ddaf58f1ce48b3df7eb5be2a9c"
+      },
+      "highlight": 2,
+      "illustrations": []
+    },
+    {
+      "id": "N18-distance-bands",
+      "cue": "E02-V6-N18",
+      "anchor_zh": "第三笔是距离。",
+      "title": "第三笔：先找收费距离档位",
+      "kicker": "距离平方50000  →  系数0.2",
+      "lines": [],
+      "rows": [
+        {
+          "label": "≤22500",
+          "value": "0"
+        },
+        {
+          "label": "(22500,62500]  ← 本例50000",
+          "value": "0.2"
+        },
+        {
+          "label": "(62500,422500]",
+          "value": "0.4"
+        },
+        {
+          "label": "(422500,722500]",
+          "value": "0.6"
+        },
+        {
+          "label": "(722500,1440000]",
+          "value": "0.8"
+        },
+        {
+          "label": "(1440000,2402500]",
+          "value": "1"
+        },
+        {
+          "label": "(2402500,9000000]",
+          "value": "1.2"
+        },
+        {
+          "label": ">9000000",
+          "value": "1.5"
+        }
+      ],
+      "result": "",
+      "note": "收费距离平方来自首都省份与目的地省份；奖励距离另读。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 1,
+      "illustrations": []
+    },
+    {
+      "id": "N18-distance-formula",
+      "cue": "E02-V6-N18",
+      "anchor_zh": "中额动态金币六十",
+      "title": "距离费：公式与代入",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "D = M × 距离系数 × E",
+        "D = 60 × 0.2 × 1"
+      ],
+      "rows": [],
+      "result": "D = 12",
+      "note": "此步不再向上取5。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 1,
+      "illustrations": []
+    },
+    {
+      "id": "N18-distance-reference",
+      "cue": "E02-V6-N18",
+      "anchor_zh": "其余距离档位和边界列在表里",
+      "title": "距离平方与收费系数对照",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "≤22500",
+          "value": "0"
+        },
+        {
+          "label": "(22500,62500]  ← 本例50000",
+          "value": "0.2"
+        },
+        {
+          "label": "(62500,422500]",
+          "value": "0.4"
+        },
+        {
+          "label": "(422500,722500]",
+          "value": "0.6"
+        },
+        {
+          "label": "(722500,1440000]",
+          "value": "0.8"
+        },
+        {
+          "label": "(1440000,2402500]",
+          "value": "1"
+        },
+        {
+          "label": "(2402500,9000000]",
+          "value": "1.2"
+        },
+        {
+          "label": ">9000000",
+          "value": "1.5"
+        }
+      ],
+      "result": "",
+      "note": "本例落在(22500,62500]；实际旅行天数不是这里的输入。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 1,
+      "illustrations": []
+    },
+    {
+      "id": "N18-mountaineer",
+      "cue": "E02-V6-N18",
+      "anchor_zh": "第四笔是旅行选项。",
+      "title": "第四笔：雇佣登山者",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "U = 2 × K × W",
+        "U = 2 × 2 × 1"
+      ],
+      "rows": [],
+      "result": "U = 4",
+      "note": "低费类别；本例没有准备充分技能。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\travel_options\\hire_mountaineer_option.dds",
+        "bytes": 25728,
+        "sha256": "c79804ad70793c519aff6382456a45afb5c31ee86af3b751e30d659a153477c1"
+      },
+      "highlight": 1,
+      "illustrations": []
+    },
+    {
+      "id": "N18-total",
+      "cue": "E02-V6-N18",
+      "anchor_zh": "到这里再汇总：",
+      "title": "分项算完，再汇总四项",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "活动本体 A",
+          "value": "60"
+        },
+        {
+          "label": "讲究排场 P",
+          "value": "100"
+        },
+        {
+          "label": "距离费 D",
+          "value": "12"
+        },
+        {
+          "label": "登山者 U",
+          "value": "4"
+        }
+      ],
+      "result": "四项小计 = 176",
+      "note": "旅队主管独立出发报价尚未计入；未计入不表示为0。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": -1,
+      "illustrations": []
+    },
+    {
+      "id": "N19-setup",
+      "cue": "E02-V6-N19",
+      "anchor_zh": "现在只打开宗族传承踏过圣路",
+      "title": "只改变一个条件：踏过圣路",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "活动本体",
+          "value": "重新计算"
+        },
+        {
+          "label": "讲究排场",
+          "value": "重新计算"
+        },
+        {
+          "label": "距离与登山者",
+          "value": "保持12与4"
+        }
+      ],
+      "result": "",
+      "note": "玩家公爵、K2、E1、I10、Q1和其余选项均不变。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\dynasty\\ep2_activities_legacy_track.dds",
+        "bytes": 104524,
+        "sha256": "3d29b26b42c7d80d632fec5df42d0234283e4af30cc85abba3f5986d299466cc"
+      },
+      "highlight": -1,
+      "illustrations": []
+    },
+    {
+      "id": "N19-body-1",
+      "cue": "E02-V6-N19",
+      "anchor_zh": "先看活动本体。",
+      "title": "活动本体：减原始基数的一半",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "A1 = A0 − 0.5 × B",
+        "A1 = 60 − 0.5 × 60"
+      ],
+      "rows": [],
+      "result": "A1 = 30",
+      "note": "读取原始B=60；减项只针对活动本体。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\dynasty\\ep2_activities_legacy_track.dds",
+        "bytes": 104524,
+        "sha256": "3d29b26b42c7d80d632fec5df42d0234283e4af30cc85abba3f5986d299466cc"
+      },
+      "highlight": 1,
+      "illustrations": []
+    },
+    {
+      "id": "N19-body-2",
+      "cue": "E02-V6-N19",
+      "anchor_zh": "六十减三十，",
+      "title": "活动本体：检查最低额",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "A = max(A1, m)",
+        "A = max(30, 30)"
+      ],
+      "rows": [],
+      "result": "A = 30",
+      "note": "小额动态金币m仍为30。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\dynasty\\ep2_activities_legacy_track.dds",
+        "bytes": 104524,
+        "sha256": "3d29b26b42c7d80d632fec5df42d0234283e4af30cc85abba3f5986d299466cc"
+      },
+      "highlight": 1,
+      "illustrations": []
+    },
+    {
+      "id": "N19-pomp",
+      "cue": "E02-V6-N19",
+      "anchor_zh": "再看讲究排场。",
+      "title": "讲究排场：单独减25",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "P1 = P0 − 0.5 × 50",
+        "P1 = 100 − 25"
+      ],
+      "rows": [],
+      "result": "P1 = 75",
+      "note": "25来自原始50系数的一半；盛况空前的对应减项是50。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\dynasty\\ep2_activities_legacy_track.dds",
+        "bytes": 104524,
+        "sha256": "3d29b26b42c7d80d632fec5df42d0234283e4af30cc85abba3f5986d299466cc"
+      },
+      "highlight": 1,
+      "illustrations": []
+    },
+    {
+      "id": "N19-unchanged",
+      "cue": "E02-V6-N19",
+      "anchor_zh": "距离费仍是十二",
+      "title": "两笔未被这项传承改变的费用",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "距离费 D",
+          "value": "12"
+        },
+        {
+          "label": "登山者 U",
+          "value": "4"
+        }
+      ],
+      "result": "",
+      "note": "该传承没有覆盖这两项。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": -1,
+      "illustrations": []
+    },
+    {
+      "id": "N19-total",
+      "cue": "E02-V6-N19",
+      "anchor_zh": "把四项重新相加：",
+      "title": "改变后的四项小计",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "活动本体 A",
+          "value": "30"
+        },
+        {
+          "label": "讲究排场 P",
+          "value": "75"
+        },
+        {
+          "label": "距离费 D",
+          "value": "12"
+        },
+        {
+          "label": "登山者 U",
+          "value": "4"
+        }
+      ],
+      "result": "四项小计 = 121",
+      "note": "旅队主管等独立报价仍另列。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\dynasty\\ep2_activities_legacy_track.dds",
+        "bytes": 104524,
+        "sha256": "3d29b26b42c7d80d632fec5df42d0234283e4af30cc85abba3f5986d299466cc"
+      },
+      "highlight": -1,
+      "illustrations": []
+    },
+    {
+      "id": "N19-savings",
+      "cue": "E02-V6-N19",
+      "anchor_zh": "原小计一百七十六",
+      "title": "节省55，分别来自两笔",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "活动本体：60 − 30 = 30",
+        "讲究排场：100 − 75 = 25",
+        "176 − 121 = 30 + 25"
+      ],
+      "rows": [],
+      "result": "节省 = 55",
+      "note": "同一组四项之间比较；没有把主管费或其他开支假设为0。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 2,
+      "illustrations": []
+    },
+    {
+      "id": "N20-inputs",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "多个折扣一起生效时",
+      "title": "活动本体：顺序就是计算规则",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "原始基数 B  →  时代初值 B × E",
+        "依次处理固定减项与现值倍率",
+        "抬最低额后，再处理户部倍率"
+      ],
+      "rows": [],
+      "result": "",
+      "note": "本节只算活动本体；排场、距离、旅行选项各自另算。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": -1,
+      "illustrations": []
+    },
+    {
+      "id": "N20-spiritual",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "灵性满足若有高级优惠",
+      "title": "灵性满足：分支互斥",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "有高级优惠",
+          "value": "×0.5"
+        },
+        {
+          "label": "只有普通优惠",
+          "value": "×0.75"
+        },
+        {
+          "label": "两者均无",
+          "value": "保持不变"
+        }
+      ],
+      "result": "",
+      "note": "高级与普通两档不叠加。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": -1,
+      "illustrations": []
+    },
+    {
+      "id": "N20-humility-law",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "谦逊家族志向、",
+      "title": "第二组继续：两项各乘四分之三",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "谦逊家族志向",
+          "value": "×0.75"
+        },
+        {
+          "label": "降低朝圣费用的法律",
+          "value": "×0.75"
+        }
+      ],
+      "result": "",
+      "note": "各自满足条件时，依次乘当前金额。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": -1,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\powerful_family_bonus\\humility.dds",
+            "bytes": 360128,
+            "sha256": "cb3b0ea78a4c3233f843584b9e8538fd51b267d138a43e13f2ec742973390a27"
+          },
+          "row": 0,
+          "column": "LABEL"
+        }
+      ]
+    },
+    {
+      "id": "N20-estate",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "第三组，先算庄园优惠：",
+      "title": "第三组：庄园先减原始B×E的20%",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "当前金额 − 0.2 × B × E"
+      ],
+      "rows": [],
+      "result": "",
+      "note": "固定减项读取原始基数与时代系数；不是把当前金额乘0.8。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 0,
+      "illustrations": []
+    },
+    {
+      "id": "N20-minimum",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "第四组，检查下限。",
+      "title": "第四组：先抬最低额",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "A = max(当前金额, m)"
+      ],
+      "rows": [],
+      "result": "",
+      "note": "当前金额低于小额动态金币时，抬到m。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 0,
+      "illustrations": []
+    },
+    {
+      "id": "N20-ministry",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "之后，若持有户部头衔",
+      "title": "最低额之后：户部的外层倍率",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "先得到 A = max(当前金额, m)",
+        "持有户部头衔时：外层费用 = A × 0.85"
+      ],
+      "rows": [],
+      "result": "",
+      "note": "户部处理在最低额之后；顺序调换可能改变结果。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 1,
+      "illustrations": []
+    },
+    {
+      "id": "N20-king-inputs",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "用一组数字看顺序。",
+      "title": "换一组参数：玩家控制的国王",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "玩家／非部落制国王",
+          "value": "K=3，B=140"
+        },
+        {
+          "label": "时代系数",
+          "value": "E=1，C=1"
+        },
+        {
+          "label": "公式月收入／收入调整",
+          "value": "I=10，Q=1"
+        },
+        {
+          "label": "活动最低额",
+          "value": "m=30"
+        },
+        {
+          "label": "仅启用",
+          "value": "宫廷／赞助／庄园"
+        }
+      ],
+      "result": "",
+      "note": "此页明确换成国王；其余特殊折扣全关。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": -1,
+      "illustrations": []
+    },
+    {
+      "id": "N20-king-court",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "按顺序，一百四十乘",
+      "title": "国王算例：先算宫廷优惠",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "140 × 0.75"
+      ],
+      "rows": [],
+      "result": "105",
+      "note": "初值B×E=140；仅启用宫廷、赞助和庄园。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 0,
+      "illustrations": []
+    },
+    {
+      "id": "N20-king-sponsor",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "再乘零点五是五十二点五",
+      "title": "国王算例：再算赞助",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "140 → 105",
+        "105 × 0.5"
+      ],
+      "rows": [],
+      "result": "52.5",
+      "note": "赞助读取当前金额105。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 1,
+      "illustrations": []
+    },
+    {
+      "id": "N20-king-estate",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "庄园减去原始一百四十",
+      "title": "国王算例：庄园减原始基数的20%",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "庄园减项 = 0.2 × 140 × 1 = 28",
+        "52.5 − 28"
+      ],
+      "rows": [],
+      "result": "24.5",
+      "note": "庄园减项保留原始B×E，不从52.5计算20%。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 1,
+      "illustrations": []
+    },
+    {
+      "id": "N20-king-minimum",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "最后抬到三十",
+      "title": "国王算例：最后抬到最低额",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "max(24.5, 30)"
+      ],
+      "rows": [],
+      "result": "30",
+      "note": "完整顺序：140 → 105 → 52.5 → 24.5 → 30。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 0,
+      "illustrations": []
+    },
+    {
+      "id": "N20-wrong-order",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "如果把庄园减项移到最前面",
+      "title": "把减项前移，会改变结果",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "错误调序：(140 − 28) × 0.75 × 0.5 = 42",
+        "原版顺序：max(140 × 0.75 × 0.5 − 28, 30) = 30"
+      ],
+      "rows": [],
+      "result": "",
+      "note": "比较的是相同参数与相同三个优惠，只有顺序不同。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 1,
+      "illustrations": []
+    },
+    {
+      "id": "N20-reading",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "所以看一项优惠，",
+      "title": "读一项优惠，依次找三件事",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "它改变哪一笔钱",
+          "value": "活动／排场／距离／旅行选项"
+        },
+        {
+          "label": "它读取什么",
+          "value": "原始B、原始B×E或当前金额"
+        },
+        {
+          "label": "它位于哪里",
+          "value": "最低额之前或之后"
+        }
+      ],
+      "result": "",
+      "note": "分项按各自规则算完，再相加。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": -1,
+      "illustrations": []
+    },
+    {
+      "id": "N22-distance",
+      "cue": "E02-V6-N22",
+      "anchor_zh": "距离还要另外读取。",
+      "title": "主虔诚：奖励距离独立读取",
+      "kicker": "固定参数奖励演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "奖励距离平方",
+          "value": "50000"
+        },
+        {
+          "label": "奖励距离基数",
+          "value": "100"
+        },
+        {
+          "label": "标准朝圣者态度",
+          "value": "×1"
+        },
+        {
+          "label": "讲究排场定额",
+          "value": "+50"
+        },
+        {
+          "label": "本信仰非主要圣地",
+          "value": "最后×0.5"
+        }
+      ],
+      "result": "",
+      "note": "费用距离八档不用于倒推奖励距离；绕行天数也不是这里的输入。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\activity_option_categories\\pilgrimage_option_fidelity.dds",
+        "bytes": 15584,
+        "sha256": "02838c21298bbeafb439d413032318aa11868667caa9e8cf6f467989c8b4820b"
+      },
+      "highlight": -1,
+      "illustrations": []
+    },
+    {
+      "id": "N22-65-first",
+      "cue": "E02-V6-N22",
+      "anchor_zh": "表现六十五时",
+      "title": "表现65：第一步，先乘",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "100 × 1 × 1 × 1.75"
+      ],
+      "rows": [],
+      "result": "175",
+      "note": "本例宗族传承系数1，朝圣态度系数1；表现系数1.75。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\activity_option_categories\\pilgrimage_option_fidelity.dds",
+        "bytes": 15584,
+        "sha256": "02838c21298bbeafb439d413032318aa11868667caa9e8cf6f467989c8b4820b"
+      },
+      "highlight": 0,
+      "illustrations": []
+    },
+    {
+      "id": "N22-65-add",
+      "cue": "E02-V6-N22",
+      "anchor_zh": "加五十，再除二",
+      "title": "表现65：第二步加50，第三步乘0.5",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "175 + 50 = 225",
+        "225 × 0.5"
+      ],
+      "rows": [],
+      "result": "112.5虔诚",
+      "note": "先乘、再加、最后乘；每个系数只进入指定位置。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\activity_option_categories\\pilgrimage_option_pomp.dds",
+        "bytes": 15584,
+        "sha256": "510e5d63c2878abc3a0a80db8c68d253efb3c7ddaf58f1ce48b3df7eb5be2a9c"
+      },
+      "highlight": 1,
+      "illustrations": []
+    },
+    {
+      "id": "N22-75-first",
+      "cue": "E02-V6-N22",
+      "anchor_zh": "表现七十五时",
+      "title": "表现75：只改变表现系数",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "100 × 1 × 1 × 2.5 = 250",
+        "250 + 50 = 300",
+        "300 × 0.5"
+      ],
+      "rows": [],
+      "result": "150虔诚",
+      "note": "其余参数保持不变；与65分的112.5使用同一套规则。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\activity_option_categories\\pilgrimage_option_fidelity.dds",
+        "bytes": 15584,
+        "sha256": "02838c21298bbeafb439d413032318aa11868667caa9e8cf6f467989c8b4820b"
+      },
+      "highlight": 2,
+      "illustrations": []
+    },
+    {
+      "id": "N23-multiply",
+      "cue": "E02-V6-N23",
+      "anchor_zh": "主虔诚公式可以分成三步：",
+      "title": "主虔诚第一步：距离基数先乘",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "距离基数 × 宗族传承 × 朝圣态度 × 表现系数"
+      ],
+      "rows": [],
+      "result": "",
+      "note": "各项只在指定前段生效；当前算例仅启用条件卡列出的项。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\activity_option_categories\\pilgrimage_option_fidelity.dds",
+        "bytes": 15584,
+        "sha256": "02838c21298bbeafb439d413032318aa11868667caa9e8cf6f467989c8b4820b"
+      },
+      "highlight": 0,
+      "illustrations": []
+    },
+    {
+      "id": "N23-add",
+      "cue": "E02-V6-N23",
+      "anchor_zh": "再加符合条件的资历与排场定额",
+      "title": "主虔诚第二步：再加符合条件的定额",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "前段结果 + 资历定额 + 排场定额"
+      ],
+      "rows": [],
+      "result": "",
+      "note": "加入的定额与前段倍率位置不同。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\activity_option_categories\\pilgrimage_option_pomp.dds",
+        "bytes": 15584,
+        "sha256": "510e5d63c2878abc3a0a80db8c68d253efb3c7ddaf58f1ce48b3df7eb5be2a9c"
+      },
+      "highlight": 0,
+      "illustrations": []
+    },
+    {
+      "id": "N23-final",
+      "cue": "E02-V6-N23",
+      "anchor_zh": "最后乘内在之旅",
+      "title": "主虔诚第三步：最后乘对应条件",
+      "kicker": "固定参数规则演算",
+      "lines": [
+        "括号内合计 × 内在之旅 × 圣地关系 × 对应联盟条件"
+      ],
+      "rows": [],
+      "result": "",
+      "note": "只启用真实满足的条件，不把所有系数同时打开。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\activity_option_categories\\pilgrimage_option_fidelity.dds",
+        "bytes": 15584,
+        "sha256": "02838c21298bbeafb439d413032318aa11868667caa9e8cf6f467989c8b4820b"
+      },
+      "highlight": 0,
+      "illustrations": []
+    },
+    {
+      "id": "N23-legacies",
+      "cue": "E02-V6-N23",
+      "anchor_zh": "比如学识传承第四项",
+      "title": "两项宗族传承，各有自己的读取者",
+      "kicker": "逐项找公式位置",
+      "lines": [],
+      "rows": [
+        {
+          "label": "学识第四项：真正信徒",
+          "value": "读取主虔诚前段"
+        },
+        {
+          "label": "活动第一项：踏过圣路",
+          "value": "读取自己的费用与收益位置"
+        }
+      ],
+      "result": "",
+      "note": "个人信条与礼仪也按实际读取它的效果分别判断。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\dynasty\\ep2_activities_legacy_track.dds",
+        "bytes": 104524,
+        "sha256": "3d29b26b42c7d80d632fec5df42d0234283e4af30cc85abba3f5986d299466cc"
+      },
+      "highlight": -1,
+      "illustrations": []
+    },
+    {
+      "id": "N20-fixed-1",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "第一组，先减固定数。",
+      "title": "第一组：先减固定数",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "求符心切",
+          "value": "−M"
+        }
+      ],
+      "result": "",
+      "note": "每项只在条件满足时扣一次；最后一项始终读取原始B。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 0,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\compass_positive.dds",
+            "bytes": 19264,
+            "sha256": "5bed308299c13eea40e594978a5dd362f84c83e1616945204ea3cfc4f8a471be"
+          },
+          "row": 0,
+          "column": "LABEL"
+        }
+      ]
+    },
+    {
+      "id": "N20-fixed-2",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "被鬼魂影响",
+      "title": "第一组：先减固定数",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "求符心切",
+          "value": "−M"
+        },
+        {
+          "label": "被鬼魂影响",
+          "value": "−M"
+        }
+      ],
+      "result": "",
+      "note": "每项只在条件满足时扣一次；最后一项始终读取原始B。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 1,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\compass_positive.dds",
+            "bytes": 19264,
+            "sha256": "5bed308299c13eea40e594978a5dd362f84c83e1616945204ea3cfc4f8a471be"
+          },
+          "row": 0,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\compass_positive.dds",
+            "bytes": 19264,
+            "sha256": "5bed308299c13eea40e594978a5dd362f84c83e1616945204ea3cfc4f8a471be"
+          },
+          "row": 1,
+          "column": "LABEL"
+        }
+      ]
+    },
+    {
+      "id": "N20-fixed-3",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "承诺朝觐",
+      "title": "第一组：先减固定数",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "求符心切",
+          "value": "−M"
+        },
+        {
+          "label": "被鬼魂影响",
+          "value": "−M"
+        },
+        {
+          "label": "承诺朝觐",
+          "value": "−M"
+        }
+      ],
+      "result": "",
+      "note": "每项只在条件满足时扣一次；最后一项始终读取原始B。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 2,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\compass_positive.dds",
+            "bytes": 19264,
+            "sha256": "5bed308299c13eea40e594978a5dd362f84c83e1616945204ea3cfc4f8a471be"
+          },
+          "row": 0,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\compass_positive.dds",
+            "bytes": 19264,
+            "sha256": "5bed308299c13eea40e594978a5dd362f84c83e1616945204ea3cfc4f8a471be"
+          },
+          "row": 1,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\compass_positive.dds",
+            "bytes": 19264,
+            "sha256": "5bed308299c13eea40e594978a5dd362f84c83e1616945204ea3cfc4f8a471be"
+          },
+          "row": 2,
+          "column": "LABEL"
+        }
+      ]
+    },
+    {
+      "id": "N20-fixed-4",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "承诺朝圣",
+      "title": "第一组：先减固定数",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "求符心切",
+          "value": "−M"
+        },
+        {
+          "label": "被鬼魂影响",
+          "value": "−M"
+        },
+        {
+          "label": "承诺朝觐",
+          "value": "−M"
+        },
+        {
+          "label": "承诺朝圣",
+          "value": "−M"
+        }
+      ],
+      "result": "",
+      "note": "每项只在条件满足时扣一次；最后一项始终读取原始B。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 3,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\compass_positive.dds",
+            "bytes": 19264,
+            "sha256": "5bed308299c13eea40e594978a5dd362f84c83e1616945204ea3cfc4f8a471be"
+          },
+          "row": 0,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\compass_positive.dds",
+            "bytes": 19264,
+            "sha256": "5bed308299c13eea40e594978a5dd362f84c83e1616945204ea3cfc4f8a471be"
+          },
+          "row": 1,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\compass_positive.dds",
+            "bytes": 19264,
+            "sha256": "5bed308299c13eea40e594978a5dd362f84c83e1616945204ea3cfc4f8a471be"
+          },
+          "row": 2,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\compass_positive.dds",
+            "bytes": 19264,
+            "sha256": "5bed308299c13eea40e594978a5dd362f84c83e1616945204ea3cfc4f8a471be"
+          },
+          "row": 3,
+          "column": "LABEL"
+        }
+      ]
+    },
+    {
+      "id": "N20-fixed-5",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "踏过圣路再减原始基础",
+      "title": "第一组：先减固定数",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "求符心切",
+          "value": "−M"
+        },
+        {
+          "label": "被鬼魂影响",
+          "value": "−M"
+        },
+        {
+          "label": "承诺朝觐",
+          "value": "−M"
+        },
+        {
+          "label": "承诺朝圣",
+          "value": "−M"
+        },
+        {
+          "label": "踏过圣路",
+          "value": "−0.5 × B"
+        }
+      ],
+      "result": "",
+      "note": "每项只在条件满足时扣一次；最后一项始终读取原始B。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 4,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\compass_positive.dds",
+            "bytes": 19264,
+            "sha256": "5bed308299c13eea40e594978a5dd362f84c83e1616945204ea3cfc4f8a471be"
+          },
+          "row": 0,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\compass_positive.dds",
+            "bytes": 19264,
+            "sha256": "5bed308299c13eea40e594978a5dd362f84c83e1616945204ea3cfc4f8a471be"
+          },
+          "row": 1,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\compass_positive.dds",
+            "bytes": 19264,
+            "sha256": "5bed308299c13eea40e594978a5dd362f84c83e1616945204ea3cfc4f8a471be"
+          },
+          "row": 2,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\compass_positive.dds",
+            "bytes": 19264,
+            "sha256": "5bed308299c13eea40e594978a5dd362f84c83e1616945204ea3cfc4f8a471be"
+          },
+          "row": 3,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\dynasty\\ep2_activities_legacy_track.dds",
+            "bytes": 104524,
+            "sha256": "3d29b26b42c7d80d632fec5df42d0234283e4af30cc85abba3f5986d299466cc"
+          },
+          "row": 4,
+          "column": "LABEL"
+        }
+      ]
+    },
+    {
+      "id": "N20-multipliers-1",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "第二组，对当前金额连续乘系数。",
+      "title": "第二组：对当前金额连续乘倍率",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "纪念想象中朋友的目的地",
+          "value": "×0.5"
+        }
+      ],
+      "result": "",
+      "note": "每次乘上一步的当前金额；按这里的顺序处理。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 0,
+      "illustrations": []
+    },
+    {
+      "id": "N20-multipliers-2",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "宫廷事件的朝圣优惠",
+      "title": "第二组：对当前金额连续乘倍率",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "纪念想象中朋友的目的地",
+          "value": "×0.5"
+        },
+        {
+          "label": "宫廷事件优惠",
+          "value": "×0.75"
+        }
+      ],
+      "result": "",
+      "note": "每次乘上一步的当前金额；按这里的顺序处理。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 1,
+      "illustrations": []
+    },
+    {
+      "id": "N20-multipliers-3",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "赞助朝圣乘二分之一",
+      "title": "第二组：对当前金额连续乘倍率",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "纪念想象中朋友的目的地",
+          "value": "×0.5"
+        },
+        {
+          "label": "宫廷事件优惠",
+          "value": "×0.75"
+        },
+        {
+          "label": "赞助朝圣",
+          "value": "×0.5"
+        }
+      ],
+      "result": "",
+      "note": "每次乘上一步的当前金额；按这里的顺序处理。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 2,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\travel_positive.dds",
+            "bytes": 19264,
+            "sha256": "b764cace100ddcae64d08b62ebaed3bd5c7adf3c5df5597850a071c6a2f5934a"
+          },
+          "row": 2,
+          "column": "LABEL"
+        }
+      ]
+    },
+    {
+      "id": "N20-later-1",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "然后继续处理后面的倍率：",
+      "title": "第三组继续：后面的现值倍率",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "当地仪式",
+          "value": "×1.75"
+        }
+      ],
+      "result": "",
+      "note": "按列示顺序；每项都只在自己的条件满足时生效。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 0,
+      "illustrations": []
+    },
+    {
+      "id": "N20-later-2",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "无地冒险者或游牧政体配合教权辩护",
+      "title": "第三组继续：后面的现值倍率",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "当地仪式",
+          "value": "×1.75"
+        },
+        {
+          "label": "无地／游牧 + 教权辩护",
+          "value": "×0.5"
+        }
+      ],
+      "result": "",
+      "note": "按列示顺序；每项都只在自己的条件满足时生效。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 1,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\source-icon-frames-a01\\node_learning-frame2.png",
+            "bytes": 7308,
+            "sha256": "e74ee12f20810a4d9796514d93bbf462d32d7d141da6c2c74dc88ab52d9d99b9"
+          },
+          "row": 1,
+          "column": "LABEL"
+        }
+      ]
+    },
+    {
+      "id": "N20-later-3",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "联盟凝聚力提供的活动优惠",
+      "title": "第三组继续：后面的现值倍率",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "当地仪式",
+          "value": "×1.75"
+        },
+        {
+          "label": "无地／游牧 + 教权辩护",
+          "value": "×0.5"
+        },
+        {
+          "label": "联盟凝聚力的活动优惠",
+          "value": "×0.9"
+        }
+      ],
+      "result": "",
+      "note": "按列示顺序；每项都只在自己的条件满足时生效。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 2,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\source-icon-frames-a01\\node_learning-frame2.png",
+            "bytes": 7308,
+            "sha256": "e74ee12f20810a4d9796514d93bbf462d32d7d141da6c2c74dc88ab52d9d99b9"
+          },
+          "row": 1,
+          "column": "LABEL"
+        }
+      ]
+    },
+    {
+      "id": "N20-later-4",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "命运之路乘零点八",
+      "title": "第三组继续：后面的现值倍率",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "当地仪式",
+          "value": "×1.75"
+        },
+        {
+          "label": "无地／游牧 + 教权辩护",
+          "value": "×0.5"
+        },
+        {
+          "label": "联盟凝聚力的活动优惠",
+          "value": "×0.9"
+        },
+        {
+          "label": "命运之路",
+          "value": "×0.8"
+        }
+      ],
+      "result": "",
+      "note": "按列示顺序；每项都只在自己的条件满足时生效。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 3,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\source-icon-frames-a01\\node_learning-frame2.png",
+            "bytes": 7308,
+            "sha256": "e74ee12f20810a4d9796514d93bbf462d32d7d141da6c2c74dc88ab52d9d99b9"
+          },
+          "row": 1,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\piety_positive.dds",
+            "bytes": 19264,
+            "sha256": "11456b79e1a3bcaf5dc4fc0ac919e2b0c2c99b53dbed137aa6046f6ea2ebe3e8"
+          },
+          "row": 3,
+          "column": "LABEL"
+        }
+      ]
+    },
+    {
+      "id": "N20-later-5",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "以牙还牙的款待",
+      "title": "第三组继续：后面的现值倍率",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "当地仪式",
+          "value": "×1.75"
+        },
+        {
+          "label": "无地／游牧 + 教权辩护",
+          "value": "×0.5"
+        },
+        {
+          "label": "联盟凝聚力的活动优惠",
+          "value": "×0.9"
+        },
+        {
+          "label": "命运之路",
+          "value": "×0.8"
+        },
+        {
+          "label": "以牙还牙的款待",
+          "value": "×0.85"
+        }
+      ],
+      "result": "",
+      "note": "按列示顺序；每项都只在自己的条件满足时生效。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 4,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\source-icon-frames-a01\\node_learning-frame2.png",
+            "bytes": 7308,
+            "sha256": "e74ee12f20810a4d9796514d93bbf462d32d7d141da6c2c74dc88ab52d9d99b9"
+          },
+          "row": 1,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\piety_positive.dds",
+            "bytes": 19264,
+            "sha256": "11456b79e1a3bcaf5dc4fc0ac919e2b0c2c99b53dbed137aa6046f6ea2ebe3e8"
+          },
+          "row": 3,
+          "column": "LABEL"
+        }
+      ]
+    },
+    {
+      "id": "N20-later-6",
+      "cue": "E02-V6-N20",
+      "anchor_zh": "符合神王条件的人工智能人物",
+      "title": "第三组继续：后面的现值倍率",
+      "kicker": "固定参数规则演算",
+      "lines": [],
+      "rows": [
+        {
+          "label": "当地仪式",
+          "value": "×1.75"
+        },
+        {
+          "label": "无地／游牧 + 教权辩护",
+          "value": "×0.5"
+        },
+        {
+          "label": "联盟凝聚力的活动优惠",
+          "value": "×0.9"
+        },
+        {
+          "label": "命运之路",
+          "value": "×0.8"
+        },
+        {
+          "label": "以牙还牙的款待",
+          "value": "×0.85"
+        },
+        {
+          "label": "满足神王条件的AI",
+          "value": "×0.25"
+        }
+      ],
+      "result": "",
+      "note": "按列示顺序；每项都只在自己的条件满足时生效。",
+      "icon": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\icon_gold.dds",
+        "bytes": 14528,
+        "sha256": "28e90553cc44afcfcb683418732681e5c46cd7699eb47c3934a890fa5d82e27e"
+      },
+      "highlight": 5,
+      "illustrations": [
+        {
+          "source": {
+            "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\graphics\\source-icon-frames-a01\\node_learning-frame2.png",
+            "bytes": 7308,
+            "sha256": "e74ee12f20810a4d9796514d93bbf462d32d7d141da6c2c74dc88ab52d9d99b9"
+          },
+          "row": 1,
+          "column": "LABEL"
+        },
+        {
+          "source": {
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gfx\\interface\\icons\\modifiers\\piety_positive.dds",
+            "bytes": 19264,
+            "sha256": "11456b79e1a3bcaf5dc4fc0ac919e2b0c2c99b53dbed137aa6046f6ea2ebe3e8"
+          },
+          "row": 3,
+          "column": "LABEL"
+        }
+      ]
+    }
+  ]
+}

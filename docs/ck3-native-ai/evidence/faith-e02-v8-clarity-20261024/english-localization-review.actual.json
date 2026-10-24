@@ -1,0 +1,212 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-24T09:44:34.993024+00:00",
+  "corrections": [
+    {
+      "before": "Humble Pilgrimage",
+      "after": "Humble"
+    },
+    {
+      "before": "In the Throng of Many",
+      "after": "Throng"
+    },
+    {
+      "before": "Eager for a Sign",
+      "after": "Desire for Pilgrim Badges"
+    },
+    {
+      "before": "Influenced by a Ghost",
+      "after": "Influenced by Ghosts"
+    },
+    {
+      "before": "Ecclesiarchy",
+      "after": "Clerical Justifications (displayed as Prolific Pilgrim)"
+    },
+    {
+      "before": "Fate's Path",
+      "after": "Path of Fate"
+    },
+    {
+      "before": "the hospitality modifier for An Eye for an Eye",
+      "after": "the Hosting in Retaliation discount"
+    }
+  ],
+  "changed_cue_ids": [
+    "E02-V6-N18",
+    "E02-V6-N19",
+    "E02-V6-N20"
+  ],
+  "sources": [
+    {
+      "cue": "N18/N19",
+      "ref": {
+        "file": {
+          "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\activities\\pilgrimage_events_l_english.yml",
+          "bytes": 142728,
+          "sha256": "6c940c76dd6998ddd247df0a2e73ed72b4784b532c6c91f4988e1e127c777405"
+        },
+        "first_line": 135,
+        "last_line": 141
+      },
+      "actual_lines": [
+        " pilgrimage_pomp_humble:0 \"Humble\"",
+        " pilgrimage_pomp_humble_desc:1 \"$EFFECT_LIST_BULLET$ Bring no one from your [court|E], making [travel|E] dangerous\\n$EFFECT_LIST_BULLET$ You join a train of [EmptyScope.ScriptValue('pilgrimage_entourage_pomp_humble_max_value')] random pilgrims\\n$EFFECT_LIST_BULLET$ More [piety|E] earned on completion\\n\\n#weak Pilgrimage is a time for quiet reflection. A common pilgrim train with strangers is the best place for that.#!\"",
+        " pilgrimage_pomp_appropriate:0 \"Appropriate\"",
+        " pilgrimage_pomp_appropriate_desc:0 \"$EFFECT_LIST_BULLET$ You bring bodyguards or good knights, and perhaps a friend\\n$EFFECT_LIST_BULLET$ Up to [EmptyScope.ScriptValue('pilgrimage_entourage_pomp_appropriate_max_value')] random pilgrims join your train\\n$EFFECT_LIST_BULLET$ [piety|E] rewards on completion are unaffected\\n\\n#weak The roads are dangerous and the journey is long. Spiritual purity is one thing, acting foolhardy is another.#!\"",
+        " pilgrimage_pomp_ceremonial:0 \"Ceremonial\"",
+        " pilgrimage_pomp_ceremonial_desc:0 \"$EFFECT_LIST_BULLET$ You #EMP also#! bring attendants & pious hangers-on\\n$EFFECT_LIST_BULLET$ Up to [EmptyScope.ScriptValue('pilgrimage_entourage_pomp_ceremonial_max_value')] random pilgrims join your train\\n$EFFECT_LIST_BULLET$ More [piety|E] earned on completion\\n\\n#weak Faith demands formality, even far from home. And how can we be formal without followers?#!\"",
+        " pilgrimage_pomp_throng:0 \"Throng\""
+      ]
+    },
+    {
+      "cue": "N20",
+      "ref": {
+        "file": {
+          "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\activities\\hunt_events_l_english.yml",
+          "bytes": 197268,
+          "sha256": "61835a59d2685e44f1f85d4f3ca87c45770a81e632fee35377b29791d30d2ba8"
+        },
+        "first_line": 881,
+        "last_line": 881
+      },
+      "actual_lines": [
+        " hunt_urge_for_pilgrim_badges_modifier: \"Desire for Pilgrim Badges\""
+      ]
+    },
+    {
+      "cue": "N20",
+      "ref": {
+        "file": {
+          "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\modifiers\\activity_pilgrimage_modifiers_l_english.yml",
+          "bytes": 12394,
+          "sha256": "fba67dd0d525c753a233e107c21c8661daf7380d0f62aa5ea6b6393d2c0da0f2"
+        },
+        "first_line": 163,
+        "last_line": 169
+      },
+      "actual_lines": [
+        " ghost_pilgrimage_promised_modifier:0 \"Influenced by Ghosts\"",
+        " ghost_pilgrimage_promised_modifier_desc:0 \"$pilgrimage_promised_modifier_desc$\"",
+        "",
+        " hajj_promised_modifier:0 \"Promised Hajj\"",
+        " hajj_promised_modifier_desc:0 \"This character's next Hajj Pilgrimage will be cheaper.\"",
+        "",
+        " pilgrimage_promised_modifier:0 \"Promised Pilgrimage\""
+      ]
+    },
+    {
+      "cue": "N20",
+      "ref": {
+        "file": {
+          "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\lifestyles\\perks_l_english.yml",
+          "bytes": 11092,
+          "sha256": "c1d05ad50eb7c123a3d46056623e2213b596db66a738d2b730dc79f184460b9f"
+        },
+        "first_line": 38,
+        "last_line": 38
+      },
+      "actual_lines": [
+        " clerical_justifications_perk_name:0 \"Clerical Justifications\""
+      ]
+    },
+    {
+      "cue": "N20",
+      "ref": {
+        "file": {
+          "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\lifestyle_adventurers_l_english.yml",
+          "bytes": 15789,
+          "sha256": "3b4acc17834cff118aa0dfe3694162b15c3451d2db9e2d7c2e07975ede696c48"
+        },
+        "first_line": 118,
+        "last_line": 118
+      },
+      "actual_lines": [
+        " clerical_justifications_perk_adventurer_name: \"Prolific Pilgrim\""
+      ]
+    },
+    {
+      "cue": "N20",
+      "ref": {
+        "file": {
+          "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\tgp\\tgp_japan_modifiers_l_english.yml",
+          "bytes": 14482,
+          "sha256": "b4eefac3da6637aea2db255224e611e9e749537b86ba9eef55891fd993d684fa"
+        },
+        "first_line": 134,
+        "last_line": 134
+      },
+      "actual_lines": [
+        " tgp_reflection_modifier: \"Path of Fate\""
+      ]
+    },
+    {
+      "cue": "N20",
+      "ref": {
+        "file": {
+          "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\tgp\\dlc_tgp_ceremonial_liege_events_l_english.yml",
+          "bytes": 7642,
+          "sha256": "ad9fd2ef716e48209528496190f43f70013917f7b3c843ca00c77721698db73c"
+        },
+        "first_line": 32,
+        "last_line": 32
+      },
+      "actual_lines": [
+        " tgp_ceremonial_liege_events_0020_discount_desc: \"Hosting in Retaliation\""
+      ]
+    },
+    {
+      "cue": "N20",
+      "ref": {
+        "file": {
+          "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\lifestyle_perks\\00_learning_3_theology_tree_perks.txt",
+          "bytes": 9460,
+          "sha256": "e20b888e902aff9e2de7567ddb39661800cee10239409f032e9ab7dfbd659e74"
+        },
+        "first_line": 269,
+        "last_line": 280
+      },
+      "actual_lines": [
+        "\tname = {",
+        "\t\tfirst_valid = {",
+        "\t\t\ttriggered_desc = {",
+        "\t\t\t\ttrigger = {",
+        "\t\t\t\t\tOR = { ",
+        "\t\t\t\t\t\tis_landless_adventurer = yes",
+        "\t\t\t\t\t\tgovernment_has_flag = government_is_nomadic",
+        "\t\t\t\t\t}",
+        "\t\t\t\t}",
+        "\t\t\t\tdesc = clerical_justifications_perk_adventurer_name",
+        "\t\t\t}",
+        "\t\t\tdesc = clerical_justifications_perk_name"
+      ]
+    }
+  ],
+  "new_script": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\authoring\\V8.CHANGED-12.SCRIPT.a04.localization-reviewed.json",
+    "bytes": 71307,
+    "sha256": "13f3c0d1efec718ae11b874a1e7b3518e0516ff988502acaa141c464cbabd88c"
+  },
+  "new_catalog": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\authoring\\V8.VOICE-AUTHORING-PROJECTION.a02.localization-reviewed.json",
+    "bytes": 274734,
+    "sha256": "4134537328f44c986fbe7dd3442f7fb157307209a7a73a0e7ace3f415820c79f"
+  },
+  "new_config": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\authoring\\V8.PROJECT-CONFIG.a02.localization-reviewed.json",
+    "bytes": 80007,
+    "sha256": "3d0142590a71fdde3b159a8ff4ddc67939b009c6553a481bbc0da977078a44b2"
+  },
+  "new_evidence": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\authoring\\V8.CUE-EVIDENCE.a03.localization-reviewed.json",
+    "bytes": 251583,
+    "sha256": "bae9ce51f6987a575c0c804678c21690fea1e29b207eec556c7d5213f2c0b744"
+  },
+  "candidate_formal": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v8-clarity-20261024-a01\\authoring\\V8.FORMAL-INPUT.a06.localization-pending-admission.json",
+    "bytes": 768919,
+    "sha256": "11637ac3fb77120d975e8e1c12945dba5ef152ccf45c4d280ec139e8066214a4"
+  },
+  "unchanged_zh_audio_requests_boundaries_and_clock": true,
+  "new_provider_calls": 0,
+  "full_human_listening": false
+}

@@ -1,8 +1,8 @@
 # CK3:信仰引擎 第二期
 
-**最新工作交接：[2026-10-24 V8六项反馈修订](../../../docs/handover/2026-10-24-faith-engine-episode02-v8-clarity-vacation-handover.md)。** `machine_id: 4-8e1c2f1861`：12段中英候选、4份研究、7张新图卡已保存；逐步费用卡等仍待制作，未启动V8配音或渲染。用户要求同事接手后已温和收尾；接手从该交接与配对JSON继续，旧G51不授新任务准入。
+**当前审阅版：[V8《朝圣在奖励什么？》——29分30.93秒，1440p](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/v8-clarity-20261024-a01/final-render-a04/sample/build-a01/native-run/derived/direct/episode02-review.mp4)。** 2026-10-24，`machine_id: 4-8e1c2f1861`：六项清晰度反馈已入片，12段新配音、74张焦点页、原版图标与逐步费用演算均已整合。全片音画／PTS／字幕／配乐自动检查和37处最终帧抽查通过；完整人工1×听看待审。[制作记录](docs/production-v8-local-review-2026-10-24.md)；[双语字幕](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/v8-clarity-20261024-a01/final-render-a04/sample/build-a01/native-run/derived/direct/text/episode02.bilingual.srt)；[配套讲稿](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/v8-clarity-20261024-a01/final-render-a04/sample/build-a01/native-run/derived/direct/text/episode02-script.md)。[原V8交接](../../../docs/handover/2026-10-24-faith-engine-episode02-v8-clarity-vacation-handover.md)保留07:09Z历史截点。
 
-**当前审阅版：[V7《朝圣在奖励什么？》——22分49.6秒，1440p](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/final-render-a01/sample/build-a03/native-run/derived/direct/episode02-review.mp4)。** 2026-10-24，`machine_id: 4-8e1c2f1861`：已嵌入原版图标、31处界面与规则组合画面，补拍普通虔诚报价及朝觐者／朝圣者共存，并加入学识、文化勇武及诺斯替主义条件收益。全片自动音画／时间戳／配乐检查与10张最终帧抽查通过，完整人工听看待审。[制作记录、补镜位置与能力边界](docs/production-v7-local-review-2026-10-24.md)；[双语字幕](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/final-render-a01/sample/build-a03/native-run/derived/direct/text/episode02.bilingual.srt)。下列V6及旧交接保留各自历史状态。
+**历史审阅版：[V7《朝圣在奖励什么？》——22分49.6秒，1440p](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/final-render-a01/sample/build-a03/native-run/derived/direct/episode02-review.mp4)。** 2026-10-24，`machine_id: 4-8e1c2f1861`：已嵌入原版图标、31处界面与规则组合画面，补拍普通虔诚报价及朝觐者／朝圣者共存，并加入学识、文化勇武及诺斯替主义条件收益。全片自动音画／时间戳／配乐检查与10张最终帧抽查通过，完整人工听看待审。[制作记录、补镜位置与能力边界](docs/production-v7-local-review-2026-10-24.md)；[双语字幕](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/final-render-a01/sample/build-a03/native-run/derived/direct/text/episode02.bilingual.srt)。下列V6及旧交接保留各自历史状态。
 
 [2026-10-23最终休假交接](../../../docs/handover/2026-10-23-faith-engine-episode02-v7-vacation-handover.md)：已完成45张嵌原版素材的替换卡＋3张机制卡、7条新声音及V7作者候选，仍有7条新cue缺实机视觉，尚无V7编码。`machine_id: 4-8e1c2f1861`，R0036自然推进224天到受戒窗口，未选择、未授特质／返乡／共存，0条新raw take；已正常闭场，短暂恢复的只读准备也按用户最终指令收尾，八线程completed、无新场。容量候选尚未执行，当前两公共Python模块改变后尚无新资格。现场／Steam／来源与已验软件边界均见交接。
 
@@ -26,6 +26,8 @@ V3教学价值未通过（`REJECTED_TEACHING_VALUE`），用户指出其缺少�
 - 历史完整首版：[29分02.400秒、1440p MP4](C:/workspace/ck3-faith-and-power-20261017/episode02/final-render-b27-a01/sample/full-88-a01/native-run/derived/direct/episode02-review.mp4)。88段实际成片，原技术检查和6帧抽查事实保留；内容审计未通过，随后V2也被用户否定，二者均保留历史身份。
 - [本地交付记录与研究剩余缺口](docs/local-review-delivery-20261021.md)：文件校验、字幕、脚本、原件及验收边界；[智能体参考入口](../../../docs/ck3-native-ai/faith-and-power-episode02-agent-reference-12004.md)已接入最终历史研究，普通auto自动消费仍未接通。
 
+历史版本保留当时路径与身份；部分过期派生文件已按存储策略回收，旧链接不保证当前可读。当前V8及V7交付片仍可读，具体回收范围见V8制作记录。
+
 ## 制作过程资料（保留各自记录时点）
 
 - [麦加实际结果与88段制作输入](docs/production-b22-and-final-authoring-20261020.md)：即时骑士差分为零、真实1000虔诚支出；历史人物事件已离线补齐，A1三句实测并绑定，完整朝圣等核心结果仍待补。
@@ -34,7 +36,7 @@ V3教学价值未通过（`REJECTED_TEACHING_VALUE`），用户指出其缺少�
 - [新增三句后的73段配方](C:/workspace/ck3-faith-and-power-20261017/episode02/production-b3-a01/native/qualifications/b17-append-integration-a01/CONTINUE-AUTHORING.73cue-B17.source-a02.recipe.json)：实测时间轴24:59.733，尚未重新渲染；按配方先执行来源投影，不能直接套旧装配器。
 - [Q21与本轮朝圣实拍](docs/production-b21-and-p3-20261020.md)：已录普通出发和罗马抵达，完整归返待补；原失败退出和预算超额保持，新增四个历史事件知识可供智能体查询。
 
-初版曾融合旧二、三期，以“已有圣地，下一笔资源投在哪里”为主线，目标约27—30分钟；18:16.533重剪仍被用户否定。历史V3生成14:03.733的审看文件，但教学未通过；实际文件和否定见V3记录。当前交付为页首V6，下列旧七章案、V2和过程数字保留各自历史时点。
+初版曾融合旧二、三期，以“已有圣地，下一笔资源投在哪里”为主线，目标约27—30分钟；18:16.533重剪仍被用户否定。历史V3生成14:03.733的审看文件，但教学未通过；实际文件和否定见V3记录。当前交付为页首所列版本，下列旧七章案、V2和过程数字保留各自历史时点。
 
 - [导演案](docs/director-plan.md)：章节、讲解路线、镜头和研究依赖。
 - [研究缺口与执行计划](docs/research-and-production-plan.md)：工作量、并发分工、拍摄批次、相对节点和风险。

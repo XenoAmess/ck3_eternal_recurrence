@@ -175,3 +175,7 @@ F0与F1是声明脚本算例：玩家、公爵tier3／K2、时代E1、月角色�
 活动本体完整顺序、18分支及逐数过程查活动JSON的 `branches`、`groups`、`numeric_models`：先固定减项，再连续乘当前余额；庄园减的是原始 `0.2×B×E`，随后再接后半乘数，最后才与动态minor最低费取较大值；持有户部头衔的85%在最低费之后。独立国王示例为 `140×0.75×0.5−28=24.5`，再取最低费30；交换顺序得42是错误算法。排场、距离、旅行选项另算，不能把本体折扣统乘整张账单。
 
 R32旧图的70金币应解释为“基础60＋距离10”；10不是旅队主管费用。原主管槽为空，0.10是未任命显示的月薪，R32没有出发或付款证据。R39／R46的原生最终报价182／128与诊断聚合181.5／127.5分别保存；这些个例不证明引擎存在通用最终向上取整规则。公式月角色收入I也不能用顶栏净月变化替代。
+
+## V8 清晰度修订交付补注（2026-10-24）
+
+`machine_id: 4-8e1c2f1861`：[V8制作记录](../../promo/ck3_faith_and_power/episode02/docs/production-v8-local-review-2026-10-24.md)已整合上述条件、旅行收费类别、逐步账单与折扣顺序，当前审阅片29:30.933，完整人工听看待审。最终[作者稿](evidence/faith-e02-v8-clarity-20261024/approved-script.localization-reviewed.json)、[素材分页规格](evidence/faith-e02-v8-clarity-20261024/focused-pages.materials.spec.json)、[技能别名页规格](evidence/faith-e02-v8-clarity-20261024/focused-pages.perk-aliases.spec.json)和[原版英文名称核对](evidence/faith-e02-v8-clarity-20261024/english-localization-review.actual.json)已入库。`clerical_justifications_perk`的普通名为教权辩护／Clerical Justifications，无地及游牧UI动态显示高效朝圣者／Prolific Pilgrim，不是两个技能。文化因子C控制动态金币上限150C／300C，不能与收入调整Q混用。此轮仅制作与来源整理，无新实机、Native业务资格、当前动作许可或普通auto消费增量。
