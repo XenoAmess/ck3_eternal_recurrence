@@ -308,6 +308,13 @@ class AbortedAllocationTests(unittest.TestCase):
 
     def test_actual_producer_dispatch_consumer_and_json_round_trip_keep_waits_unknown(self) -> None:
         report=self.produce();verdict=report['validation'];cleanup=member(verdict,'failure_cleanup')
+        from ck3_mod_acceptance_allocate import predecessor_keeper_report_v1
+        self.assertFalse((self.keeper/'report.json').exists())
+        self.assertIsNone(predecessor_keeper_report_v1(self.keeper,allocated_unrun=True,
+            pre_ready=False,expired_keeper=False,interrupted_owner=False))
+        with self.assertRaises(FileNotFoundError):
+            predecessor_keeper_report_v1(self.keeper,allocated_unrun=False,
+                pre_ready=False,expired_keeper=False,interrupted_owner=False)
         self.assertFalse(cleanup['original_allocator_wait_proven']);self.assertIsNone(cleanup['original_allocator_exit_code'])
         self.assertFalse(cleanup['original_keeper_wait_proven']);self.assertIsNone(cleanup['original_keeper_exit_code'])
         self.assertFalse(cleanup['business_pass']);self.assertFalse(cleanup['normal_close_qualified'])

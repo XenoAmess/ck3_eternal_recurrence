@@ -154,9 +154,8 @@ class SharedEntryTests(unittest.TestCase):
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(original.read_bytes())
         self.runtime['reviewed_launcher'] = entry.pin(shared_tools / 'ck3_mod_acceptance_launcher.py')
-        service = self.locations['repo'] / 'tools/ck3_mod_acceptance_recorder.py'
-        service.parent.mkdir()
-        service.write_bytes((Path(__file__).parent / service.name).read_bytes())
+        self.runtime['paths']['source_root'] = str(shared)
+        service = shared_tools / 'ck3_mod_acceptance_recorder.py'
         job = self.locations['repo'] / 'promo/ck3_native_war_ai/integration/recorder_job.py'
         job.parent.mkdir(parents=True)
         job.write_bytes((Path(__file__).resolve().parents[1] / job.relative_to(self.locations['repo'])).read_bytes())

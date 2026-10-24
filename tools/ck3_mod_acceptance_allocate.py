@@ -321,6 +321,14 @@ def previous_allocated_unused_closure(previous,freeze,close_path,keeper_root,rel
                 'business_pass':False}}
 
 
+def predecessor_keeper_report_v1(keeper_root: Path, *, allocated_unrun: bool,
+        pre_ready: bool, expired_keeper: bool, interrupted_owner: bool) -> JsonObject | None:
+    """Let each exceptional reducer validate its own original terminal evidence."""
+    if allocated_unrun or pre_ready or expired_keeper or interrupted_owner:
+        return None
+    return json_object(read_json(keeper_root/'report.json'))
+
+
 def wait_for_allocated_keeper(child,live,keeper_root,*,idle_seconds=600):
     """Stop only an allocation that never started launching within ten minutes.
 
@@ -3066,7 +3074,8 @@ def _allocate_and_keep_impl(selection,args):
             report=read_json(previous/'native-report.json')
         else:
             report,report_reference,report_projection=previous_native_cleanup(previous,freeze)
-        prior_keeper=read_json(args.previous_keeper/'report.json') if not (pre_ready or expired_keeper or interrupted_owner) else None
+        prior_keeper=predecessor_keeper_report_v1(args.previous_keeper,allocated_unrun=allocated_unrun,
+            pre_ready=pre_ready,expired_keeper=expired_keeper,interrupted_owner=interrupted_owner)
         # The canonical bus event/task reconstruction is valid for a successful
         # predecessor too; its bytes are verified by read_failed_runtime_release.
         release=read_failed_runtime_release(args.previous_release)
