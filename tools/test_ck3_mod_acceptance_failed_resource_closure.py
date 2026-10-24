@@ -3,6 +3,7 @@ from __future__ import annotations
 import ast
 import copy
 import json
+import os
 from pathlib import Path
 import sys
 import tempfile
@@ -454,12 +455,16 @@ from ck3_mod_acceptance import _verification_actual_pin_v1
         original: Callable[[str], object]) -> PreservedFailureOS0Facts:
     pass
 ''').body[0]
-        self.assertIsInstance(dispatch, ast.FunctionDef)
+        if not isinstance(dispatch, ast.FunctionDef):
+            self.fail('Expected the extracted dispatcher to be a function')
         dispatch.body = copy.deepcopy(branches[0].body)+[ast.Return(value=ast.Name(id='preserved_facts', ctx=ast.Load()))]
         actual = prelude+ast.unparse(ast.fix_missing_locations(
             ast.Module(body=[*constants, *nodes, dispatch], type_ignores=[])))
-        stdout, stderr, code = api.run(['--strict', '--strict-equality', '--follow-imports=silent',
-            '--no-incremental', '--cache-dir', 'nul', '-c', actual])
+        source_roots = os.pathsep.join(str(path) for path in
+            (TOOLS, TOOLS.parent/'ck3_autonomous_player'/'src'))
+        with patch.dict(os.environ, {'MYPYPATH': source_roots}):
+            stdout, stderr, code = api.run(['--strict', '--strict-equality', '--follow-imports=silent',
+                '--no-incremental', '--cache-dir', 'nul', '-c', actual])
         self.assertEqual(code, 0, stdout+stderr)
 
 

@@ -35,5 +35,20 @@
     "bytes": 10561,
     "sha256": "d7b3425c362cf9b27f38290bf5137412104776db20df2c4d44ebee697acd205e"
   },
-  "ci_boundary": "867bcd4 Product success; Official failed resource-closure mypy imports. Separate repair pending; no repository-wide green claim."
+  "ci_boundary": "867bcd4 Product success; its Official scope import failure reproduced and locally repaired through the full three-command group; new cloud run pending.",
+  "official_step_local_repair": {
+    "observed_at_utc": "2026-10-24T14:26:21.585238+00:00",
+    "receipt": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\official-resource-ci-red-a01\\FINAL.actual.json",
+      "bytes": 2788,
+      "sha256": "db7cbfeb98e20dfd2b70609ddc2979039cc989932882612317fd092312901229"
+    },
+    "actual_full_command_group_tests": [
+      22,
+      13,
+      12
+    ],
+    "all_exit_zero": true,
+    "cloud_success_requalified": false
+  }
 }
