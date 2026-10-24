@@ -43,6 +43,19 @@ def write_json(path: Path, value: object) -> None:
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
 
 
+def publication_tags(raw: bytes) -> list[str]:
+    """Validate the complete reviewed tag array without changing its strings."""
+    payload: object = json.loads(raw.decode("utf-8-sig"))
+    if not isinstance(payload, list):
+        raise ValueError("--tags-json must contain an array of non-empty strings")
+    tags: list[str] = []
+    for tag in payload:
+        if not isinstance(tag, str) or not tag:
+            raise ValueError("--tags-json must contain an array of non-empty strings")
+        tags.append(tag)
+    return tags
+
+
 def preview_snapshot(path: Path, item_id: str) -> dict[str, object]:
     payload = json.loads(path.read_text(encoding="utf-8-sig"))
     if isinstance(payload, dict) and "result" in payload:
@@ -69,6 +82,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--dll", type=Path, required=True)
     parser.add_argument("--description", type=Path, default=REPO / "workshop/superman_qiang_description.bbcode")
     parser.add_argument("--change-notes", type=Path, default=REPO / "workshop/superman_qiang_change_notes.txt")
+    parser.add_argument("--tags-json", type=Path, help="complete reviewed JSON tag array; required for updates; preserves order and trailing spaces")
     parser.add_argument("--preview-snapshot", type=Path)
     parser.add_argument("--media", type=Path, action="append", default=[])
     parser.add_argument("--acceptance-report", type=Path, required=True, help="bind the previously reviewed live report; this helper does not judge live truth")
@@ -96,6 +110,8 @@ def main(argv: list[str] | None = None) -> int:
                 raise ValueError("update requires a positive --item-id")
             if manifest.get("workshop_item_id") not in (None, args.item_id):
                 raise ValueError("manifest Workshop ID differs from this update")
+            if args.tags_json is None:
+                raise ValueError("update requires --tags-json with the complete reviewed tags")
         if bool(args.media) != bool(args.preview_snapshot):
             raise ValueError("additional media requires a fresh preview snapshot, and vice versa")
         if not args.dll.is_file():
@@ -105,8 +121,10 @@ def main(argv: list[str] | None = None) -> int:
         notes = normalized(args.change_notes.read_text(encoding="utf-8-sig"))
         if not description or not notes or TITLE not in description or TITLE not in notes:
             raise ValueError("reviewed description and full notes must contain the exact product title")
-        if "initial baseline" not in notes:
-            raise ValueError("1.0.0 notes must explicitly identify the initial baseline")
+        if args.operation == "create" and "initial baseline" not in notes:
+            raise ValueError("create notes must explicitly identify the initial baseline")
+        tags_raw: bytes | None = args.tags_json.read_bytes() if args.tags_json is not None else None
+        tags = publication_tags(tags_raw) if tags_raw is not None else list(TAGS)
         preview = staging / "thumbnail.png"
         if not preview.is_file() or preview.stat().st_size >= 1024 * 1024:
             raise ValueError("staging thumbnail must exist and be under 1 MiB")
@@ -122,7 +140,7 @@ def main(argv: list[str] | None = None) -> int:
             "content_path": str(staging),
             "preview_path": str(preview),
             "visibility": "public",
-            "tags": TAGS,
+            "tags": tags,
             "change_note": notes,
             "workshop_legal_agreement_accepted": False,
         }
@@ -134,6 +152,15 @@ def main(argv: list[str] | None = None) -> int:
         (output / "change-notes.txt").write_text(notes, encoding="utf-8", newline="\n")
         # Pure local plan validation hashes content/media; no DLL is loaded.
         prepared = _prepare_plan(plan)
+        # Freeze exactly what native publication will submit, including the
+        # compatibility label derived from this staging descriptor.
+        plan["tags"] = list(prepared.tags)
+        tags_source: dict[str, object] | None = None
+        if tags_raw is not None:
+            (output / "tags-input.json").write_bytes(tags_raw)
+            tags_source = {
+                "path": str(args.tags_json.resolve()), "size": len(tags_raw), "sha256": digest(tags_raw),
+            }
         write_json(output / "native-plan.json", plan)
         write_json(output / "native-arguments.json", {
             "dll_path": str(args.dll.resolve()),
@@ -154,6 +181,9 @@ def main(argv: list[str] | None = None) -> int:
             "staging_manifest": file_identity(manifest_path),
             "acceptance_report": acceptance_identity,
             "native_payload_sha256": prepared.payload_sha256,
+            "tags_input": tags_source,
+            "frozen_tags_input": file_identity(output / "tags-input.json") if tags_raw is not None else None,
+            "submitted_tags": list(prepared.tags),
             "description": {**file_identity(output / "description.bbcode"), "characters": len(description), "lines": description.count("\n") + 1},
             "change_notes": {**file_identity(output / "change-notes.txt"), "characters": len(notes), "lines": notes.count("\n") + 1},
             "thumbnail": file_identity(preview),

@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 from dataclasses import replace
+from contextlib import redirect_stderr, redirect_stdout
 import hashlib
+import io
 import json
 from pathlib import Path
 import re
@@ -15,6 +17,7 @@ import zipfile
 
 import prepare_live_fixture
 import validate_static
+import prepare_publication
 from product import REPO, RUNTIME_FILES, SOURCE, VERSION, spec
 import sys
 
@@ -290,6 +293,111 @@ class SupermanNotificationFixtureTests(unittest.TestCase):
         self.replace_case_field("case_index", 2)
         with self.assertRaisesRegex(ValueError, "invalid notification cell index"):
             self.prepare(self.root / "duplicate-index")
+
+
+class SupermanPublicationTests(unittest.TestCase):
+    """Exercise local publication preparation through the native plan consumer."""
+
+    def setUp(self) -> None:
+        self.temporary = tempfile.TemporaryDirectory(prefix="sxad-publication-contract-")
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name)
+        self.dll = self.root / "steam_api64.dll"
+        self.dll.write_bytes(b"local preparation must never load this dummy DLL")
+        self.acceptance = self.root / "acceptance.json"
+        self.acceptance.write_text('{"scope":"test input only; no live qualification"}', encoding="utf-8")
+        self.description = self.root / "description.bbcode"
+        self.description.write_text(prepare_publication.TITLE, encoding="utf-8")
+        self.notes = self.root / "change-notes.txt"
+        self.notes.write_text(prepare_publication.TITLE + "\n1.2.0 update relative to 1.1.0", encoding="utf-8")
+        self.tags = self.root / "tags.json"
+        self.tags.write_text('["Gameplay", "Balance ", "Events", "Custom category", "1.19"]\n', encoding="utf-8")
+
+    def arguments(self, operation: str, name: str) -> list[str]:
+        item = "3812991990" if operation == "update" else None
+        staging, manifest, _, _ = release.build(
+            spec(), self.root / (name + "-build"), REVISION,
+            workshop_item_id=item, git_tag="superman-qiang-v" + VERSION,
+        )
+        argv = ["--staging", str(staging), "--manifest", str(manifest),
+                "--output", str(self.root / name), "--operation-id", "test-" + name,
+                "--operation", operation, "--dll", str(self.dll),
+                "--description", str(self.description), "--change-notes", str(self.notes),
+                "--acceptance-report", str(self.acceptance)]
+        if item is not None:
+            argv.extend(["--item-id", item, "--tags-json", str(self.tags)])
+        return argv
+
+    @staticmethod
+    def read_object(path: Path) -> dict[str, object]:
+        payload: object = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(payload, dict):
+            raise ValueError("expected frozen JSON object")
+        result: dict[str, object] = {}
+        for key, value in payload.items():
+            if not isinstance(key, str):
+                raise ValueError("expected JSON string keys")
+            result[key] = value
+        return result
+
+    def run_preparation(self, argv: list[str]) -> int:
+        with redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
+            return prepare_publication.main(argv)
+
+    def test_update_without_initial_baseline_freezes_complete_native_tags(self) -> None:
+        argv = self.arguments("update", "update")
+        original_tags = self.tags.read_bytes()
+        self.assertEqual(self.run_preparation(argv), 0)
+        output = self.root / "update"
+        plan = self.read_object(output / "native-plan.json")
+        frozen = self.read_object(output / "frozen-inputs.json")
+        expected = ["Gameplay", "Balance ", "Events", "Custom category", "1.20 'Crozier'"]
+        self.assertEqual(plan["tags"], expected)
+        self.assertEqual(frozen["submitted_tags"], expected)
+        self.assertEqual((output / "tags-input.json").read_bytes(), original_tags)
+        self.assertEqual(frozen["tags_input"], {
+            "path": str(self.tags.resolve()), "size": len(original_tags),
+            "sha256": hashlib.sha256(original_tags).hexdigest(),
+        })
+        self.assertEqual(frozen["frozen_tags_input"], prepare_publication.file_identity(output / "tags-input.json"))
+        self.assertEqual(plan["target_item_id"], "3812991990")
+        # Re-consume the frozen JSON, rather than trusting the producer's fields.
+        native = prepare_publication._prepare_plan(plan)
+        self.assertEqual(native.tags, tuple(expected))
+        self.assertEqual(native.payload_sha256, frozen["native_payload_sha256"])
+        self.assertIs(frozen["steam_dll_loaded"], False)
+        self.assertIs(frozen["published"], False)
+
+    def test_create_still_requires_initial_baseline_and_keeps_legacy_default_tags(self) -> None:
+        argv = self.arguments("create", "create")
+        with self.assertRaises(SystemExit) as raised:
+            self.run_preparation(argv)
+        self.assertEqual(raised.exception.code, 1)
+        self.assertFalse((self.root / "create").exists())
+        self.notes.write_text(prepare_publication.TITLE + "\ninitial baseline", encoding="utf-8")
+        self.assertEqual(self.run_preparation(argv), 0)
+        frozen = self.read_object(self.root / "create/frozen-inputs.json")
+        self.assertEqual(frozen["submitted_tags"], ["Gameplay", "Balance", "Events", "1.20 'Crozier'"])
+        self.assertIsNone(frozen["tags_input"])
+        self.assertIsNone(frozen["frozen_tags_input"])
+
+    def test_update_requires_explicit_tags_before_creating_output(self) -> None:
+        argv = self.arguments("update", "missing-tags")
+        del argv[-2:]
+        with self.assertRaises(SystemExit) as raised:
+            self.run_preparation(argv)
+        self.assertEqual(raised.exception.code, 1)
+        self.assertFalse((self.root / "missing-tags").exists())
+
+    def test_malformed_tag_json_cannot_freeze_an_update(self) -> None:
+        argv = self.arguments("update", "invalid-tags")
+        for raw in (b'{"tags": []}', b'null', b'[true]', b'[1]', b'[1.0]', b'[""]', b'["Events", null]', b'not JSON'):
+            with self.subTest(raw=raw):
+                self.tags.write_bytes(raw)
+                with self.assertRaises(SystemExit) as raised:
+                    self.run_preparation(argv)
+                self.assertEqual(raised.exception.code, 1)
+                self.assertFalse((self.root / "invalid-tags").exists())
 
 
 if __name__ == "__main__":
