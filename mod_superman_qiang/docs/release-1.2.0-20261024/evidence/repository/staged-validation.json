@@ -1,0 +1,11 @@
+{
+  "schema": "superman-qiang-staged-document-validation-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T03:42:20.184002+00:00",
+  "staged_paths": 99,
+  "archived_draft_documents_exact": 97,
+  "allowed_documentation_scope_exact": true,
+  "runtime_files_changed": false,
+  "scoped_diff_check_exit_code": 0,
+  "raw_html_whitespace": "Two original public HTML responses retain their original whitespace and exact SHA-256; raw HTML is excluded from the formatting-only diff check."
+}

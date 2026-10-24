@@ -1,0 +1,36 @@
+{
+  "schema": "superman-qiang-repository-closing-storage-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T03:45:02.122779+00:00",
+  "policy_version": "1.0.0",
+  "scope": "Closing repository-only documentation within the previously admitted finite output envelope. No new campaign, SAVE, deletion, download or build.",
+  "volumes": {
+    "C:/": {
+      "total": 511133945856,
+      "used": 451127861248,
+      "free": 60006084608,
+      "safety": 21474836480,
+      "system_growth_reserve": 6442450944,
+      "remaining_write_peak": 1073741824,
+      "max_project_bytes_conservative_whole_volume": 464000000000,
+      "pass_admission": true
+    },
+    "D:/": {
+      "total": 500090007552,
+      "used": 478396444672,
+      "free": 21693562880,
+      "safety": 21474836480,
+      "system_growth_reserve": 134217728,
+      "remaining_write_peak": 8388608,
+      "max_project_bytes_conservative_whole_volume": 478600000000,
+      "pass_admission": true
+    }
+  },
+  "deleted_bytes": 0,
+  "physical_reclaim_claimed": false,
+  "automatic_reservation_deployment_claimed": false,
+  "transient_original_review_at_utc": "2026-11-23T00:00:00Z",
+  "small_record_review_at_utc": "2027-04-22T00:00:00Z",
+  "active_formal_stage": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\formal-after-upload-a03",
+  "active_formal_stage_protection": "Required while canonical outer descriptor references it; review at next release or 2026-11-23. This does not authorize automatic deletion."
+}

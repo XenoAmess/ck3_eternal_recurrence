@@ -1,17 +1,17 @@
 {
   "schema": "superman-qiang-release-evidence-index-v1",
   "machine_id": "desktop-3fevhd2-1c74096080",
-  "observed_at_utc": "2026-10-24T03:34:41.235918+00:00",
-  "state": "CACHE_ACCEPTED_REPOSITORY_DELIVERY_PENDING",
-  "copied_files": 92,
-  "copied_bytes": 742096,
+  "observed_at_utc": "2026-10-24T03:45:02.122779+00:00",
+  "state": "COMPLETE",
+  "copied_files": 96,
+  "copied_bytes": 746051,
   "copies_byte_exact": true,
   "source_paths_are_historical": true,
   "historical_status_fields_preserved": true,
   "no_large_save_game_or_zip_copies": true,
   "retention_policy": "docs/storage-retention-policy.md",
   "transient_original_review_after_utc": "2026-11-23T00:00:00+00:00",
-  "transient_original_reason": "publication closure remains active; review original C evidence after repository archive and cache closure are committed",
+  "transient_original_reason": "Repository delivery completed. Review original C inputs after retention deadline; retain active formal stage while canonical outer descriptor references it and preserve currently necessary unresolved-notification evidence with finite review.",
   "entries": [
     {
       "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\formal-a01.manifest.json",
@@ -838,6 +838,42 @@
       "archive_relative_path": "evidence/storage/closing-admission.json",
       "bytes": 1903,
       "sha256": "51f7d21c55dee1a405ab552b7e3e674578deb9f9cfb969afbe9b5a4f0f7cc02d",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\final-docs-a02\\ROOT-COPY.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/repository/draft-copy.json",
+      "archive_relative_path": "evidence/repository/draft-copy.json",
+      "bytes": 424,
+      "sha256": "307de64af11e99a5e02a581cb09daaf61829c3fe762831ca69457ced08513f0c",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\final-docs-a02\\ROOT-STAGED-VALIDATION.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/repository/staged-validation.json",
+      "archive_relative_path": "evidence/repository/staged-validation.json",
+      "bytes": 527,
+      "sha256": "59af3e4d24c62a77326f37563f6fe9f21383e585af2874e3d5c82a17883e1b83",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\repository-closure-a01\\repository-delivery.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/repository/delivery.json",
+      "archive_relative_path": "evidence/repository/delivery.json",
+      "bytes": 1445,
+      "sha256": "01a768dbacca79e371b3b33c2bf2b960ebc607802257c79cafedbbf470c7433b",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\repository-closure-a01\\storage-closing.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/storage/repository-closing.json",
+      "archive_relative_path": "evidence/storage/repository-closing.json",
+      "bytes": 1559,
+      "sha256": "9baf8374b899cb57c0bab1d6cecf814e2d75ec48d7ab494614dbbe6a75a5472c",
       "source_available_at_copy": true,
       "copy_mode": "byte_exact_small_evidence"
     }

@@ -1,0 +1,32 @@
+{
+  "schema": "superman-qiang-repository-delivery-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T03:45:02.122779+00:00",
+  "status": "PERMANENT_CHANGELOG_AND_RELEASE_REPORT_PUSHED",
+  "repository": "D:\\sxad1023",
+  "branch": "master",
+  "commit": "6acd117ad9865807e3108e24a210dc1cf0fe1d88",
+  "push_exit_code_root_observed": 0,
+  "push_command": [
+    "git",
+    "push",
+    "origin",
+    "HEAD:master"
+  ],
+  "fresh_remote_readback_exit_code": 0,
+  "fresh_remote_readback": "6acd117ad9865807e3108e24a210dc1cf0fe1d88\trefs/heads/master",
+  "remote_ref_exact": true,
+  "permanent_changelog_bytes_exact_committed_blob": true,
+  "permanent_changelog_at_delivery": {
+    "path": "docs/release-changelogs/superman-qiang/1.2.0.md",
+    "bytes": 6745,
+    "sha256": "2499950ebcdd29109a6f27da8d1d67dcb1cdf7d4a3fa3400fd517bf93a761aa0"
+  },
+  "formal_tag": "superman-qiang-v1.2.0",
+  "formal_source_commit": "bcb9e9f11658519c5277e0d304a02e5028bbd760",
+  "steam_public_notes_exact": true,
+  "cache_case": "R0037",
+  "cache_acceptance": "PASS_QUALIFIED_COMBINED_MENU_BOUNDARY",
+  "steam_closed_offline_review": "evidence/cache/R0037/root-closed-review.json",
+  "scope": "This receipt records the actual first documentation push and its fresh remote ref. The following documentation-only closure commit records this receipt; it does not change the formal product tag or runtime files."
+}

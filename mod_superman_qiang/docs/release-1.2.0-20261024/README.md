@@ -1,6 +1,6 @@
 # 超人强 1.2.0 发布报告
 
-状态：**CACHE_ACCEPTED_REPOSITORY_DELIVERY_PENDING**。Steam 与 GitHub 已实际公开，真实 Steam 下载与正式 35 文件精确一致；R37 通过实际主菜单加载的公共缓存限定边界及正常退出。R36 preGame 失败原件保留。永久记录尚待提交并推送 master，release_delivery_complete=false。
+状态：**COMPLETE**。Steam 与 GitHub 已实际公开，真实 Steam 下载与正式 35 文件精确一致；R37 通过实际主菜单加载的公共缓存限定边界及正常退出。R36 preGame 失败原件保留。永久记录已随 commit `6acd117ad9865807e3108e24a210dc1cf0fe1d88` 推送 master 并实际回读远端引用，release_delivery_complete=true。该状态不扩大业务验证范围。
 
 machine_id：desktop-3fevhd2-1c74096080。整理时间：2026-10-24T03:15:34.192203+00:00。业务实机绑定 CK3 1.20.0.4 / build25734779，EXE SHA-256 98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518；这些安装与实机事实只适用于该机器。
 
@@ -49,7 +49,7 @@ Root 从实际主菜单“退出到桌面”按钮只退出一次；短暂 Not R
 
 闭场后 [Root 直接画面审阅](evidence/cache/R0037/root-closed-review.json)绑定新鲜 20 px 窗口移动与 11:29 时钟的 Steam 离线画面，[原生离线读回](evidence/cache/R0037/steam-offline-closed.json)也为 offline=true。[keeper](evidence/cache/R0037/keeper-parent-exit.json)实际退出 0；[CAS 释放](evidence/cache/R0037/screen-release.json)在 sequence 8575 成功，done、resources=[]。大图仅在 C 依通用存储策略复核，不重复入小型归档。
 
-缓存限定验收与正常闭场已经完成。**REPOSITORY_DELIVERY_PENDING**：永久 changelog 和本报告仍待 Root 提交并推送 master，release_delivery_complete=false；不得提前将整个发布交付标为完成。
+缓存限定验收、正常闭场及仓库交付已经完成。[实际仓库交付回执](evidence/repository/delivery.json)记录 master commit `6acd117ad9865807e3108e24a210dc1cf0fe1d88`、成功推送及新的远端引用核对；[归档逐字节检查](evidence/repository/staged-validation.json)保留原始证据与暂存区一致性。两份公开原始 HTML 保留原有空白与 SHA，格式检查仅排除这两份原始 HTML，其他新增文档与证据格式检查退出 0。
 
 ## 归档与复核
 
@@ -57,6 +57,7 @@ Root 从实际主菜单“退出到桌面”按钮只退出一次；短暂 Not R
 
 [evidence-index.json](evidence-index.json)为每份字节不改的小型证据保留完整 SHA-256、字节数、原始路径及预定仓库相对路径；[release.actual.json](release.actual.json)连接当前发布事实。C 原件路径是历史来源，后续回收不应让仓库内相对副本失效。此归档不包含 SAVE、melt、游戏大日志、重复 ZIP、SDK 或 native 依赖。
 
-本报告以用户批准的有限发布预算内 C 小文件输出制作，不另建额度，不清理资产，不改变 D 源码、Steam、游戏、屏幕或 HEAD。C 临时原件于 2026-11-23 按通用存储策略复核；正式发布记录和仍被引用的必要证据按用途保护，不能无限期延长全部过程素材。
+本报告的 C 草稿在既有有限发布预算内制作；随后已逐字节归档到当前仓库并提交推送 master。归档及最终交付没有改变正式 mod 运行文件、Steam、游戏或屏幕状态，也未清理资产或另建额度。[仓库闭场容量检查](evidence/storage/repository-closing.json)保存目标机器实际容量与必要 stage 的有限保护。C 临时原件于 2026-11-23 按通用存储策略复核；正式发布记录和仍被引用的必要证据按用途保护，不能无限期延长全部过程素材。
 
 最终缓存结果整理时间：2026-10-24T03:34:01.639135+00:00；machine_id：desktop-3fevhd2-1c74096080。
+仓库交付最终核对时间：2026-10-24T03:45:02.122779+00:00；machine_id：desktop-3fevhd2-1c74096080。

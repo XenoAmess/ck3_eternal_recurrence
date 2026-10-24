@@ -1,0 +1,11 @@
+{
+  "schema": "superman-qiang-document-copy-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T03:40:49.894650+00:00",
+  "source": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\final-docs-a02\\tracked",
+  "repository": "D:\\sxad1023",
+  "files_copied": 97,
+  "bytes_copied": 820238,
+  "sha256_exact_all_files": true,
+  "historical_files_overwritten": false
+}
