@@ -23,7 +23,7 @@ py ck3_autonomous_player\codex_mcp_setup.py setup
 py ck3_autonomous_player\codex_mcp_setup.py doctor
 ```
 
-`setup` 会在当前账户的 `%LOCALAPPDATA%` 下创建：
+未指定布局路径参数时，`setup` 会在当前账户的 `%LOCALAPPDATA%` 下创建：
 
 ```text
 XarAutoplayer\codex-mcp\<account-slug>\venv
@@ -48,6 +48,31 @@ repository-local bootstrap 加载，不复制源码，也不会为纯 native MCP
 
 Codex 在每个 Windows 账户自己的 `~/.codex/config.toml` 中维护注册。完成注册后新开一个 Codex
 会话，让该会话重新发现 MCP 工具。
+
+## 自定义根目录与同机换盘
+
+通过 `--base-dir <获准的账户独享根>` 配置布局；默认在该根下创建 `venv`、`state` 和 `state/profile`。
+需要保留已有目录层级时，可分别显式传 `--venv-dir`、`--state-dir` 和 `--userdir`；`userdir` 必须位于该 `state-dir` 内，
+两个账户继续使用各自的根、server 和 pipe。先运行同一组布局参数的 `plan` 核对完整路径，例如：
+
+```text
+py ck3_autonomous_player\codex_mcp_setup.py --base-dir <获准根>\XarAutoplayer\codex-mcp\<account-slug> plan
+```
+
+这些是项目布局参数，不要求修改系统 `LOCALAPPDATA`。通用 agent/MCP server 的 `XAR_AUTOPLAYER_STATE_DIR` 默认值
+也不会替换 setup 的布局参数。已有注册会携带显式 `--state-dir`、`--userdir` 和 venv 解释器路径；
+显式参数优先于 server 的环境变量默认值，必须在目标账户内核对和更新实际注册。
+
+迁移前按[通用存储策略](storage-retention-policy.md)登记机器、获准根、目标卷及复制峰值，并关闭使用这些目录的 writer。
+保全原注册、layout marker、profile manifest 与历史回执；复制后核对清单、大小和内容 SHA，另记跨卷后的实际文件身份。
+venv 在新位置重新创建；包含旧绝对路径的 venv、layout marker 或 profile 不因复制完成而取得新路径资格。
+使用目标布局参数执行现行 `setup`，需要更新已有同名注册时显式使用 `setup --replace` 或 `register --replace`，
+随后以完全相同的布局参数运行 `doctor`。profile、checkpoint 和续接状态还须走现有准备/rebind/资格流程，
+保留旧合同并产生新合同，不能对旧冻结 JSON 做批量路径替换。`doctor` 的注册/只读自检范围与游戏业务验收分别记录。
+
+机器 `xenoamess-full-tower-eb9d2c1186` 的目标 state 根为 `D:/ck3-state/<原 XarAutoplayer 目录名>`；
+本机路径映射、迁移结果和未完成边界见[2026-10-24 本机迁移记录](maintenance/2026-10-24-c-to-d-project-storage-xenoamess-full-tower-eb9d2c1186.md)。
+该记录按实际执行更新，本节流程不代表迁移、MCP 重注册或 CK3 恢复已经通过。
 
 ## 无 CK3 的 vanilla-event knowledge 与证据 smoke
 

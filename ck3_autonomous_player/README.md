@@ -470,7 +470,7 @@ public campaign-root 的 `xar_off` rule token。三字段部分缺失或互相�
 本项目按一代制 roguelike 运行：玩家死亡即结束本局，不规划或执行继承人玩法。有继承人时，原生【继续扮演】只作为让 mod
 延迟投递【轮回终结】结算事件的技术载体；智能体将速度降到 1、只等待结算、记录最终分数，继承人 gameplay action 固定为 0，
 随后立即返回主菜单。无继承人时则直接使用注入原生继承窗的【退出到菜单】。每个终局摘要写入
-`%LOCALAPPDATA%\XarAutoplayer\strategy\one-life-history.json`，`strategy-review` 可在不绑定 CK3、不跑 OCR 的情况下读取上一局
+`<state-dir>/strategy/one-life-history.json`，其中 `state-dir` 使用下述路径配置；`strategy-review` 可在不绑定 CK3、不跑 OCR 的情况下读取上一局
 战争、婚姻、分割风险、检查点和分数，并生成下一局优先级。死亡流程已有历史实机截图重放与完整模拟链测试；当前常驻存档尚未
 自然死亡，因此不得把它写成已完成的死亡实机验收。
 
@@ -488,13 +488,24 @@ public campaign-root 的 `xar_off` rule token。三字段部分缺失或互相�
 【锈迹斑斑的工具】两页事件；后续另一批次先按历史自动保存
 `阿普利亚公爵，罗贝尔_1069_05_08.ck3`，再把日期推进至 1069-06-25。持续模式因此不需要人工逐条重复发送 `auto-turn`。
 
-默认运行状态在 `%LOCALAPPDATA%\XarAutoplayer`，可用 `XAR_AUTOPLAYER_STATE_DIR` 或
-`--state-dir` 改写，但安全检查拒绝仓库、真实玩家目录、Steam userdata 与 Workshop 的父目录或子目录。
+运行状态优先使用显式 `--state-dir <获准的独立目录>`；省略时读取 `XAR_AUTOPLAYER_STATE_DIR`，两者均未配置时才使用
+`%LOCALAPPDATA%\XarAutoplayer`。后续场次应在本机根映射或启动配置中明确 state 路径，不修改系统 `LOCALAPPDATA`。
+安全检查拒绝仓库、真实玩家目录、Steam userdata 与 Workshop 的父目录或子目录。
+
+已有 MCP 注册可能带显式 `--state-dir` 和 `--userdir`，这些值优先于环境变量；更换环境变量不能迁移这类注册。
+按当前账户的[安装与注册流程](../docs/ck3-portable-codex-mcp-setup.md)重新生成计划并核对实际注册参数。
+机器 `xenoamess-full-tower-eb9d2c1186` 的目标根为 `D:/ck3-state/<原 XarAutoplayer 目录名>`，
+各目录的实际迁移与验证状态见[2026-10-24 本机迁移记录](../docs/maintenance/2026-10-24-c-to-d-project-storage-xenoamess-full-tower-eb9d2c1186.md)。
+
+换盘时先按[通用存储策略](../docs/storage-retention-policy.md)核验机器、目标卷容量和复制峰值，并确认该 state 的游戏、SDK、MCP 及其他 writer 已关闭。
+复制后核对文件清单、大小和内容 SHA，跨卷的卷身份与 FileID 分别记录；原回执、历史路径和保留期限保持原样。
+环境 manifest、profile、checkpoint、账本接续及冻结启动参数中的绝对路径合同，须经现有准备、rebind 和资格入口形成新的绑定，
+不能批量替换旧 JSON 的路径。只有新路径的实际读取、连续性校验和所需资格完成后，才可切换启动配置并按精确计划回收旧副本。
 
 `smoke` 会在仓库外创建：
 
 ```text
-XarAutoplayer/
+<state-dir>/
   profile/
     mod/xar_autoplayer.mod
     mod-content/xar-production/

@@ -570,6 +570,7 @@ public final class ControlBuild {
     }
 
     private static BuildOutcome buildExclusive(Config config, BuildPurpose purpose) throws IOException, InterruptedException {
+        ProjectStoragePolicy.requireBulkOutput(config.workRoot());
         CanonicalOracleEnvironment.require(System.getenv());
         requireNativeScratch(config.workRoot().resolve("scratch"));
         String machine = WindowsJobProcess.currentMachineId();

@@ -41,6 +41,26 @@ These are mandatory operating principles for every work package:
 5. 禁止 force-push。并发直接推送前重新 fetch 并比较 `ls-remote`；远端已移动时停止当前 push，把自己的提交 rebase 到新的
    `origin/master`，复测后再以普通 fast-forward push 提交。不得覆盖他人的提交。
 
+## 工作树、构建与冻结证据换盘
+
+项目工作目录不绑定 C 盘。新 worktree 优先使用获准卷上的短绝对路径；机器根映射、卷容量、系统增长预留与复制峰值
+按[通用存储策略](storage-retention-policy.md)记录。迁移前核对 owner 和实际 writer，记录 exact HEAD、dirty/untracked 状态及
+必要内容清单，关闭使用该目录的构建、SDK、MCP 和游戏进程后再复制。保留未提交内容与原冻结证据，不把搬目录当成分支清理。
+
+linked Git worktree 的 `.git` 文件和 common Git 目录含双向路径登记。跨卷复制完成后，使用所属主工作树执行
+`git worktree repair <迁移后的绝对 worktree 路径>`，再核对 `git worktree list --porcelain`、新目录的
+`git rev-parse --git-common-dir`、exact HEAD 和 `git status --porcelain=v2`。主工作树也迁移时，逐项修复其关联 worktree；
+独立 clone 则核对自身 `.git`、alternates 和本地路径配置。未经修复与读回的副本不能作为可继续开发的 worktree。
+
+CMake cache、构建清单、环境 manifest 和启动 argv 可能绑定旧绝对路径。后续构建须用新路径重新配置构建目录，
+只按实际生产合同允许的范围复用对象；下一场 runtime/state 经公共准备与资格入口产生新绑定。
+旧 manifest、来源 SHA、GREEN/RED/UNKNOWN、路径和文件身份作为历史事实保留，迁移另记旧到新的映射和当前可读性，
+不批量改写冻结 JSON 或追认新路径已有旧资格。新 EXE 完整路径的 Defender 登记与实际设置读回另按现行专题执行。
+
+机器 `xenoamess-full-tower-eb9d2c1186` 的背景工作目录目标为 `D:/codex-ck3-background`，state 目标为
+`D:/ck3-state/<原 XarAutoplayer 目录名>`；实际状态见[2026-10-24 本机迁移记录](maintenance/2026-10-24-c-to-d-project-storage-xenoamess-full-tower-eb9d2c1186.md)。
+新旧副本校验、消费者切换和精确回收各自记录完成情况，文档列出目标路径不表示这些步骤已经通过。
+
 ## 分支状态
 
 | 状态 | 含义 |

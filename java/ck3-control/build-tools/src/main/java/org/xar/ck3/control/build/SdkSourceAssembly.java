@@ -298,6 +298,7 @@ public final class SdkSourceAssembly {
     public static Actual assemble(FileRef reviewRef, CapacityGate liveCapacityGate) throws IOException {
         Objects.requireNonNull(liveCapacityGate);
         Review declared = JSON.readValue(read(reviewRef, MAX_METADATA), Review.class);
+        ProjectStoragePolicy.requireBulkOutput(Path.of(declared.request().outputRoot()));
         Review fresh = review(declared.request(), declared.requestRef(), WindowsJobProcess.currentMachineId());
         if (!fresh.sourceClosure().equals(declared.sourceClosure()) || !fresh.deploymentClosure().equals(declared.deploymentClosure())
                 || !fresh.completeSdkInputInventory().equals(declared.completeSdkInputInventory())
@@ -503,6 +504,7 @@ public final class SdkSourceAssembly {
     public static ViewsActual assembleViews(FileRef viewsRequestRef, SharedCapacityGate liveGate) throws IOException {
         Objects.requireNonNull(liveGate);
         ViewsRequest request = JSON.readValue(read(viewsRequestRef, MAX_METADATA), ViewsRequest.class);
+        ProjectStoragePolicy.requireBulkOutput(Path.of(request.groupRoot()));
         ThreeReviews reviews = threeReviews(request);
         FrozenReuseState frozen = inspectSource32Reuse(request, reviews.baseline());
         SharedSourceFiles.plainAncestors(Path.of(request.groupRoot()));
@@ -1255,6 +1257,7 @@ public final class SdkSourceAssembly {
   }
   public static ReferenceActual assembleReference(FileRef reviewRef, ReferenceCapacityGate gate) throws IOException {
     ReferenceReview declared = JSON.readValue(read(reviewRef, MAX_METADATA), ReferenceReview.class);
+    ProjectStoragePolicy.requireBulkOutput(Path.of(declared.request().outputRoot()));
     ReferenceReview fresh = reviewReference(declared.requestRef());
     if (!fresh.request().equals(declared.request()) || !fresh.parentSourceReview().sourceClosure().equals(declared.parentSourceReview().sourceClosure())
         || !fresh.parentSourceReview().completeSdkInputInventory().equals(declared.parentSourceReview().completeSdkInputInventory())
