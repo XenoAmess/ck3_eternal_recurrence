@@ -1068,5 +1068,129 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
             owned.doCleanups()
 
 
+class ProjectedNormalExitMain(unittest.TestCase):
+    """Execute the actual projected entry with public allocated argv; never runs CK3."""
+    def setUp(self) -> None:
+        from test_ck3_mod_acceptance_allocated_normal_exit import AllocatedNormalExitTests
+        self.owned = AllocatedNormalExitTests()
+        self.addCleanup(self.owned.doCleanups)
+        self.owned.setUp()
+        plan = self.owned.root / 'empty-actual-host-plan.json'
+        plan.write_bytes(builder.encoded({'steps': []}))
+        prepared = builder.read(self.owned.prepared_path)
+        prepared['initial_plan'] = builder.pin(plan)
+        self.owned.prepared_path.write_bytes(builder.encoded(prepared))
+        self.owned.allocate()
+        self.selected = self.owned.selected(self.owned.live / 'ready-context.json')
+        self.argv = list(self.selected.argv)
+        root = Path(__file__).resolve().parents[1]
+        parent = self.owned.root / 'legacy-parent.py'
+        # Authored fixture preserves the retained legacy producer's real entry
+        # and derive path, including its actual allocator and inventory calls.
+        parent.write_text(f'''# Explicit static normal-exit binding projection; ordinary shared host remains above.
+_faith_shared_main = main
+def _faith_prepare_actual_normal_exit_binding(args):
+    from ck3_mod_acceptance_normal_exit_profile import create_profile, load_builder, pin as _binding_pin
+    _runtime_path = Path({str(self.owned.runtime_path)!r})
+    _runtime = json.loads(_runtime_path.read_bytes())
+    _manifest_ref = _runtime['manifest']
+    if _binding_pin(_manifest_ref['path']) != _manifest_ref:
+        raise ValueError('Selected normal-exit runtime manifest changed')
+    _identity_args = copy.copy(args)
+    if args.saved_campaign_save is not None:
+        _identity_args.saved_campaign_server = True
+    allocated_managed_campaign_run_binding(_identity_args)
+    _builder = load_builder(Path(_runtime['repo_root'])/'tools/build_normal_exit_source_inventory_v1.py')
+    return create_profile(args, _runtime, json.loads(Path(_manifest_ref['path']).read_bytes()),
+                          _manifest_ref, args.state_dir/'normal-exit-binding', _builder)
+def main():
+    _args = parser().parse_args()
+    if not (_args.server or _args.sdk_smoke_test or _args.sdk_error_smoke_test or _args.print_default_plan):
+        if _args.normal_exit_managed_profile is not None or _args.normal_exit_managed_profile_sha256:
+            raise ValueError('This selected projection derives the actual profile once; supplied replacement is forbidden')
+        _ref = _faith_prepare_actual_normal_exit_binding(_args)
+        sys.argv += ['--normal-exit-managed-profile',_ref['path'],
+                     '--normal-exit-managed-profile-sha256',_ref['sha256']]
+    return _faith_shared_main()
+if __name__ == '__main__':
+    raise SystemExit(main())
+''', encoding='utf-8')
+        canonical = root / builder.HOST_RELATIVE
+        self.projected = self.owned.root / 'projected.py'
+        source_files = {builder.HOST_RELATIVE: builder.sig(canonical.read_bytes())}
+        self.projected.write_bytes(builder.project_host(root, parent, self.owned.runtime_path,
+                                                       self.owned.runtime_path, source_files))
+        self.host = builder.module(self.projected, 'owned_actual_projected_normal_exit_host')
+        # The in-memory candidate is evaluated against the owned original host
+        # identity. No immutable parent file or allocated argv is overwritten.
+        self.host.__file__ = str(self.owned.paths['host'])
+        self.reached: list[Namespace] = []
+
+        async def execution_boundary(args: Namespace) -> dict[str, object]:
+            driver = Namespace()
+            self.host.bind_normal_exit_managed_profile(driver, args)
+            self.reached.append(driver)
+            return {'status': 'GREEN', 'error': None}
+
+        self.boundary = patch.object(self.host, 'run', side_effect=execution_boundary)
+        self.boundary.start()
+        self.addCleanup(self.boundary.stop)
+
+    def invoke(self, argv: list[str]) -> int:
+        with patch.object(sys, 'argv', [argv[4], *argv[5:]]), redirect_stdout(io.StringIO()):
+            return self.host.main()
+
+    def test_real_projected_main_accepts_public_allocated_profile_without_rederiving(self) -> None:
+        with patch.object(self.host, '_faith_prepare_actual_normal_exit_binding',
+                          side_effect=AssertionError('Allocated profile must never be regenerated')):
+            self.assertEqual(self.invoke(self.argv), 0)
+        self.assertEqual(len(self.reached), 1)
+        self.assertEqual(self.reached[0].normal_exit_managed_profile['state_directory'], str(self.owned.state))
+        # Successors of the repaired projection remain rebindable.
+        root = Path(__file__).resolve().parents[1]
+        raw = builder.project_host(root, self.projected, self.owned.runtime_path, self.owned.runtime_path,
+                                  {builder.HOST_RELATIVE: builder.sig((root / builder.HOST_RELATIVE).read_bytes())})
+        self.assertEqual(raw, self.projected.read_bytes())
+
+    def test_real_projected_main_rejects_partial_digest_and_foreign_runtime_before_execution(self) -> None:
+        digest_index = self.argv.index('--normal-exit-managed-profile-sha256')
+        for defect in ('partial', 'digest', 'runtime'):
+            argv = list(self.argv)
+            original_manifest = self.owned.manifest_path.read_bytes()
+            if defect == 'partial':
+                del argv[digest_index:digest_index + 2]
+            elif defect == 'digest':
+                argv[digest_index + 1] = '0' * 64
+            else:
+                self.owned.manifest_path.write_bytes(original_manifest + b'\n')
+            try:
+                with self.subTest(defect=defect), self.assertRaises(ValueError):
+                    self.invoke(argv)
+            finally:
+                self.owned.manifest_path.write_bytes(original_manifest)
+        self.assertEqual(self.reached, [])
+
+    def test_real_projected_main_preserves_legacy_no_profile_actual_derive(self) -> None:
+        from build_normal_exit_source_inventory_v1 import INVENTORY_BASENAME
+        argv = list(self.argv)
+        for flag in ('--normal-exit-managed-profile', '--normal-exit-managed-profile-sha256'):
+            index = argv.index(flag)
+            del argv[index:index + 2]
+        # Model the old allocator protocol in owned temporary data: it froze
+        # the same startup argv before allocating any normal-exit inventory.
+        frozen = self.owned.live / 'frozen-argv.json'
+        record = builder.read(frozen)
+        record['argv'] = argv
+        frozen.write_bytes(builder.encoded(record))
+        (self.owned.state / 'profile' / INVENTORY_BASENAME).unlink()
+        (self.owned.state / 'profile/normal-exit-profile-binding-projection-v1.json').unlink()
+        with patch.object(self.host, '_faith_prepare_actual_normal_exit_binding',
+                          wraps=self.host._faith_prepare_actual_normal_exit_binding) as derive:
+            self.assertEqual(self.invoke(argv), 0)
+        self.assertEqual(derive.call_count, 1)
+        self.assertEqual(len(self.reached), 1)
+        self.assertTrue((self.owned.state / 'normal-exit-binding/RESULT.actual.json').is_file())
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

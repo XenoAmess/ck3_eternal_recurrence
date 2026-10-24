@@ -63,3 +63,17 @@ Java 工具新增严格 fixture request、显式 prebuilt manifest 和独立准�
 下一次实际构建通过了 native／capability 校验，写入候选 `runtime-a01` 后，因 builder 无条件调用 generic adapter 不提供的可选 `validate_contract` 而失败。该不完整目录和原始退出／错误保留，不作 runnable runtime 使用。修复与公共 Selection 的既有合同一致：仅当钩子可调用时，在 `case_imports` 中执行；有钩子的拒绝继续向上传播，不给 generic 添加空实现。
 
 机器 `4-8e1c2f1861` 于 `2026-10-24T17:55Z` 完成受影响完整 CI 命令组：26+66+28=120 次测试执行、0 skip，以及 CI 静态和额外完整 builder strict mypy，原进程均退出 0。新增回归用实际 RRF core 注册项及真实 generic adapter，覆盖 plain／gzip 的 writer→MCP 工厂→公共 prepare→preflight；输入明确为 synthetic 元数据，不声称运行 Java fixture 或游戏。已有 validator 的非法合同仍实际拒绝，写入的失败候选不产生 STATIC 验证。原始命令、等待结果和日志位于工作根 `public-chain-a01/generic-adapter-fix-a03/`。后续使用全新 `runtime-a02`；游戏内业务和截图状态仍为 NOT_RUN。
+
+## R0001 的实际启动前失败
+
+机器 `4-8e1c2f1861`，提交 `3e37e0cad4e71474a7c2ce93fb0aa1a1a7849445` 的 `runtime-a02` 构建及公共 plan／prepare／preflight 均实际退出 0。公共 allocate 已分配 `4-8e1c2f1861--religious-ritual-fusion--R0001`、keeper READY；后台 Steam 新鲜回执为 offline。桌面实际支持的 2560×1440 模式已测试、设置并由原生与自动化尺寸读回；原模式 1024×768 已记录，任务结束恢复。
+
+`2026-10-24T18:00:47Z`，投影 host 在 main 解析阶段以退出码 1 拒绝已分配的 normal-exit profile：`This selected projection derives the actual profile once; supplied replacement is forbidden`。公共 run 实际退出 2，原生报告尚未建立，CK3 未启动，没有业务操作、保存或截图。失败来自共享生成器保留的旧启动尾部，不能记作模组融合玩法失败或游戏正常退出。
+
+Root 于 `18:01:40Z` 停止 keeper，原 allocate 的 retained wait、keeper 和线程均真实退出 0；CAS 以最后序号 13691 释放为 13692、任务 done。原 host 非零退出、run=2、无 native0 和无业务通过保持。原件位于工作根 `live/4-8e1c2f1861--religious-ritual-fusion--R0001/`、`root-execution-a01/` 及 `R0001-CAS-RELEASE.a01.actual.json`。修复进入共享生产者和真实投影 main 的回归；失败 runtime 不热改，后继使用新目录与场次。
+
+修复后的投影 main 已以 R0001 完整真实 frozen argv、已分配 profile 和已准备的模组 inventory 只读重放，既有 public static binding、canonical binder 与 inventory 校验均实际通过，并在进入游戏执行边界前停止。实际挂载清单为 product 67 文件、fixture 11 文件（包括准备阶段生成的合同）；96 个受保护输入字节未变，旧场次仍无 native-report。回执 `public-chain-a01/projected-main-r0001-actual-a01/replay.actual.json` SHA-256 `0f1430fab884caf30053fec7b745ab6ae268ddf026aabf1aba9be33a125906b4`，原退出 0；不授游戏启动或玩法通过。
+
+已有 prelaunch 失败闭场消费者已读取 R0001 原件验证退出、后台离线来源、ticket、lease、prepared/profile、keeper 与 CAS 链，实际返回可接续的失败资源闭场，当前进程 blockers 为空。Windows venv 的 launcher Popen 23044 与实际 supervise 25944 分别保留，以原 ticket／lease／时间链核对，不虚构两者 PID 相同或已观测父子关系。closure 原件为 `root-execution-a01/prelaunch-closure-a01/R0001-PRELAUNCH-CLOSURE.a01.actual.json` SHA-256 `5aad9b3073cddade6c8dedc9b5e7155be17c31a00949e52a266144794331a954`；仅授行政资源接续，native cleanup 保持未适用、normal close 与业务通过均为 false。
+
+最终完整构建相关 CI 命令组实际 26+69+28=123 tests／0 skip，CI 静态和额外完整 builder strict mypy 均退出 0；`public-chain-a01/projected-main-fix-a04/validation.actual.json` SHA-256 `e987b86c8fcd0e6c4ecabb9825b2cf09698450316acfa1b5b960ac7050b7d7e4`。prelaunch 失败模块完整 23 tests／0 skip／原 wait 0，已追加同一持久 CI step；其三项新增 typed 边界的实际提取范围 strict mypy 通过。完整旧 allocator 模块试查仍有 21 项历史类型错误，原输出保留，不将局部检查写成全模块全绿。新证据只覆盖本轮改动，旧 1290 次执行保留原提交身份，不重复计作新提交实测。

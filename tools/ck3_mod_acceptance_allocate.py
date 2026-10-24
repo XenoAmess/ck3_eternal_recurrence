@@ -530,6 +530,69 @@ def _prelaunch_public_completion(value: object, mode: Literal['run', 'allocate']
     return argv
 
 
+def _allocated_profile_prelaunch(stderr: object, frozen: object) -> bool:
+    terminal = 'This selected projection derives the actual profile once; supplied replacement is forbidden'
+    if not isinstance(stderr, str) or stderr.splitlines()[-1:] != ['ValueError: ' + terminal]:
+        return False
+    fields = json_object(frozen)
+    argv = strings_field(fields, 'argv')
+    selected = [Path(item).resolve() for item in argv if item.endswith('shared-host.py')]
+    if len(selected) != 1:
+        raise ValueError('Allocated profile rejection requires its selected frozen host')
+    host = selected[0]
+    reference = object_field(object_field(fields, 'files'), str(host))
+    check_pin(host, reference)
+    frames = re.findall(r'  File "([^"]+)", line [0-9]+, in ([^\r\n]+)', stderr)
+    if (len(frames) != 2 or [frame[1] for frame in frames] != ['<module>', 'main']
+            or any(Path(frame[0]).resolve() != host for frame in frames)
+            or f"raise ValueError('{terminal}')" not in stderr):
+        raise ValueError('Allocated profile rejection requires the original pre-game main stack')
+    return True
+
+
+def _prelaunch_background_admission(value: object, machine: object) -> None:
+    """Read historical launch provenance only; this grants no current offline admission."""
+    from steam_offline_state_contract import parse_result
+    admission = json_object(value)
+    reference = object_field(admission, 'receipt')
+    path = Path(text_field(reference, 'path')).resolve()
+    size = reference.get('bytes')
+    if type(size) is not int or not 0 < size <= 65536:
+        raise ValueError('Prelaunch background receipt size differs')
+    check_pin(path, reference)
+    result = parse_result(read_json(path))
+    steam = result.steam
+    if (admission.get('schema') != 'ck3-mod-acceptance-background-offline-admission-v1'
+            or admission.get('machine_id') != machine or result.machine_id != machine
+            or result.status != 'offline' or result.observation_method != 'native_current_user_byte'
+            or admission.get('background_only') is not True or steam is None
+            or type(admission.get('steam_pid')) is not int or admission['steam_pid'] != steam.pid
+            or admission.get('steam_birth_filetime') != steam.birth_filetime
+            or admission.get('observed_at_utc') != result.observed_at_utc
+            or admission.get('observation_method') != result.observation_method):
+        raise ValueError('Prelaunch background admission provenance differs')
+
+
+def _profile_replacement_public_completion(value: object, mode: Literal['run', 'allocate'],
+                                           machine: object) -> list[str]:
+    fields = json_object(value)
+    expected = 2 if mode == 'run' else 0
+    elapsed = fields.get('elapsed_seconds')
+    if (not isinstance(machine, str) or not machine or fields.get('machine_id') != machine
+            or type(fields.get('original_wait_returncode')) is not int
+            or fields['original_wait_returncode'] != expected
+            or type(elapsed) not in (int, float) or not math.isfinite(elapsed) or elapsed <= 0):
+        raise ValueError('Allocated profile original public command retained wait differs')
+    started = datetime.fromisoformat(text_field(fields, 'started_at_utc'))
+    if started.tzinfo is None or started.utcoffset() is None:
+        raise ValueError('Allocated profile public command timestamp lacks timezone')
+    if mode == 'run':
+        finished = datetime.fromisoformat(text_field(fields, 'finished_at_utc'))
+        if finished.tzinfo is None or finished.utcoffset() is None or finished < started:
+            raise ValueError('Allocated profile public command completion precedes start')
+    return strings_field(fields, 'argv')
+
+
 def previous_menu_initialization_failure(previous: Path, freeze: dict[str, object], bundle: object,
         close_path: Path, keeper_root: Path, release: dict[str, object], bus_packet: dict[str, object]) -> dict[str, object]:
     """Admit only the observed pre-game campaign-factory failure, never native cleanup."""
@@ -694,10 +757,11 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
         'saved_campaign = prepare_saved_campaign(args, spec)' in stderr and
         'raise ValueError("saved campaign product-only profile contains a cold-start registrar: " + str(path))' in stderr)
     readonly_tail_rejected=_saved_readonly_tail_prelaunch(stderr,bundle)
+    allocated_profile_rejected=_allocated_profile_prelaunch(stderr,freeze)
     saved_profile_rejected=saved_registrar_rejected or readonly_tail_rejected
     supervisor_bound=supervisor.get('pid')==host.get('supervisor_pid')
     supervisor_binding=None
-    if saved_profile_rejected:
+    if saved_profile_rejected or allocated_profile_rejected:
         intent=original('launch_intent',previous/'launch-intent.json')
         sargv=supervisor.get('argv',[])
         def supervisor_argument(name):
@@ -712,19 +776,41 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
                 Path(supervisor_argument('--run-root')).resolve()==previous.resolve() and
                 Path(supervisor_argument('--keeper-root')).resolve()==keeper_root.resolve() and
                 bool(intent.get('admitted_lease')) and host.get('admitted_lease')==intent['admitted_lease'] and
-                intent['admitted_lease'].get('task_id')==freeze['screen_task'] and
-                all(host.get('direct_review',{}).get(key)==intent.get(key) for key in ('proof','challenge')),
+                intent['admitted_lease'].get('task_id')==freeze['screen_task'],
                 'Saved registrar original supervisor launch ticket/lease chain differs')
-        for key in ('proof','challenge'):
-            ref=intent[key];path=Path(supervisor_argument('--'+key)).resolve()
-            require(path==Path(ref['path']).resolve(),'Saved registrar original supervisor review path differs')
-            check_pin(path,ref)
+        if allocated_profile_rejected:
+            machine=freeze.get('identity_allocation',{}).get('machine_id')
+            identity=supervisor.get('original_popen_identity',{})
+            admission=object_field(json_object(intent),'background_admission')
+            require(intent.get('schema')=='ck3-mod-acceptance-background-launch-intent-v1' and
+                    supervisor.get('machine_id')==machine and type(host.get('pid')) is int and host['pid']>0 and
+                    type(exited.get('pid')) is int and type(identity.get('pid')) is int and
+                    identity['pid']==supervisor['pid'] and
+                    isinstance(identity.get('birth_filetime'),str) and
+                    re.fullmatch(r'[1-9][0-9]*',identity['birth_filetime']) is not None and
+                    host.get('background_offline_admission')==admission and
+                    intent.get('steam_offline_receipt')==admission.get('receipt') and
+                    Path(supervisor_argument('--steam-offline-receipt')).resolve()==Path(admission['receipt']['path']).resolve() and
+                    intent['admitted_lease'].get('schema')=='xar.promo.screen-lease-cas/v1' and
+                    intent['admitted_lease'].get('screen_resource')=='ck3-screen:acquired' and
+                    type(intent['admitted_lease'].get('sequence')) is int,
+                    'Allocated profile original background ticket/lease chain differs')
+            _prelaunch_background_admission(admission,machine)
+            evidence['steam_offline_receipt']=admission['receipt']
+        else:
+            require(all(host.get('direct_review',{}).get(key)==intent.get(key) for key in ('proof','challenge')),
+                    'Saved registrar original supervisor review chain differs')
+            for key in ('proof','challenge'):
+                ref=intent[key];path=Path(supervisor_argument('--'+key)).resolve()
+                require(path==Path(ref['path']).resolve(),'Saved registrar original supervisor review path differs')
+                check_pin(path,ref)
         stamps=[datetime.fromisoformat(row['at_utc']) for row in (intent,supervisor,host,exited)]
         require(all(stamp.tzinfo is not None and stamp.utcoffset() is not None for stamp in stamps) and
                 all(a<=b for a,b in zip(stamps,stamps[1:])),
                 'Saved registrar original launcher/host timestamps differ')
         supervisor_bound=True
-        supervisor_binding={'mode':'original_launch_ticket_lease_proof_chain',
+        supervisor_binding={'mode':('original_background_launch_ticket_lease_chain' if allocated_profile_rejected else
+                                    'original_launch_ticket_lease_proof_chain'),
             'launcher_popen_pid':supervisor['pid'],'actual_supervise_pid':host['supervisor_pid'],
             'parent_child_relationship_observed':False,'original_at_utc':[row['at_utc'] for row in (intent,supervisor,host,exited)]}
     require(host.get('run_id')==freeze['run_id'] and host.get('argv')==freeze['argv'] and
@@ -734,8 +820,8 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
             exited.get('actual_original_popen_wait') is True and
             type(exited.get('returncode')) is int and exited['returncode']!=0 and
             exited.get('normal_ck3_exit_inferred') is False and
-            (not (cache_identity_rejected or saved_profile_rejected) or exited['returncode']==1) and
-            (cache_identity_rejected or saved_profile_rejected or any(cause in stderr for cause in (
+            (not (cache_identity_rejected or saved_profile_rejected or allocated_profile_rejected) or exited['returncode']==1) and
+            (cache_identity_rejected or saved_profile_rejected or allocated_profile_rejected or any(cause in stderr for cause in (
                 'ValueError: normal exit requires the actual public prepared profile',
                 'ValueError: effective host differs from reviewed projection',
                 'ValueError: normal-exit private V1 does not support enabled mod GUI files'))),
@@ -773,6 +859,23 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
                 profile.get('fixture_mounted') is False and profile.get('campaign_started') is False and
                 profile.get('cache_content_copied') is False,
                 'Cache identity rejection requires its exact pre-identity menu preparation')
+    if allocated_profile_rejected:
+        prepared_path=Path(ready.get('prepared_case',{}).get('path','')).resolve()
+        prepared=original('prepared_case',prepared_path)
+        profile_path=previous/'normal-exit-binding/normal-exit-managed-profile.json'
+        profile=original('normal_exit_managed_profile',profile_path)
+        hargv=host['argv']
+        require(ready.get('prepared_case')==evidence['prepared_case'] and
+                prepared.get('startup',{}).get('mode')=='fixture' and
+                Path(prepared.get('startup',{}).get('state_dir','')).resolve()==Path(freeze['state_dir']).resolve() and
+                ready.get('normal_exit_managed_profile')==evidence['normal_exit_managed_profile'] and
+                hargv.count('--normal-exit-managed-profile')==1 and
+                Path(hargv[hargv.index('--normal-exit-managed-profile')+1]).resolve()==profile_path.resolve() and
+                hargv.count('--normal-exit-managed-profile-sha256')==1 and
+                hargv[hargv.index('--normal-exit-managed-profile-sha256')+1]==evidence['normal_exit_managed_profile']['sha256'] and
+                Path(profile.get('state_directory','')).resolve()==Path(freeze['state_dir']).resolve() and
+                Path(profile.get('evidence_directory','')).resolve()==previous.resolve(),
+                'Allocated profile rejection crossed original prepared fixture/profile')
     if saved_profile_rejected:
         prepared_path=Path(ready.get('prepared_case',{}).get('path','')).resolve()
         prepared=original('prepared_case',prepared_path)
@@ -807,6 +910,8 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
                         type(value.get('pid')) is int and value.get('returncode')==code and
                         started.get('at_utc')==value.get('at_utc') and value.get('completed_at_utc'),
                         'Cache original allocation parent completion differs')
+        elif allocated_profile_rejected:
+            argv=_profile_replacement_public_completion(value,mode,freeze.get('identity_allocation',{}).get('machine_id'))
         elif readonly_tail_rejected:
             argv=_prelaunch_public_completion(value,mode,freeze.get('identity_allocation',{}).get('machine_id'))
         elif saved_registrar_rejected:
@@ -830,14 +935,14 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
                 ((argv[-1:]==[mode] and argv.count(mode)==1) if saved_registrar_rejected else
                     argv[argv.index('--runtime')-1]==mode) and argv.count('--prepared-case')==1 and
                 Path(argv[argv.index('--prepared-case')+1]).resolve()==
-                    (prepared_path if saved_profile_rejected else
+                    (prepared_path if saved_profile_rejected or allocated_profile_rejected else
                      (Path(freeze['state_dir']).parent/'prepared/prepared-case.json').resolve()),
                 'Prelaunch original public '+mode+' completion differs')
         if mode=='run':
             require(argv.count('--run-context')==1 and
                     Path(argv[argv.index('--run-context')+1]).is_file(),
                     'Prelaunch reviewed run context missing')
-            if saved_profile_rejected:
+            if saved_profile_rejected or allocated_profile_rejected:
                 context_path=Path(argv[argv.index('--run-context')+1]).resolve()
                 context=read_json(context_path)
                 require(context.get('run_id')==freeze['run_id'] and
@@ -894,7 +999,9 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
             'native_session_started':False,'original_ck3_exit_code':None,
             'normal_close_qualified':False,'typed_normal_exit_proven':False,
             'business_pass':False,'release_pass':False,'absent_game_controls':absent,
-            **({'supervisor_binding':supervisor_binding} if saved_profile_rejected else {})}}
+            **({'supervisor_binding':supervisor_binding} if saved_profile_rejected or allocated_profile_rejected else {}),
+            **({'native_cleanup_qualified':None,'administrative_resource_admission_only':True}
+               if allocated_profile_rejected else {})}}
 
 
 class RecorderPreReadyClosure(TypedDict):

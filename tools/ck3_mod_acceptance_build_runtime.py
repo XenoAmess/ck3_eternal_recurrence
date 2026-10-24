@@ -1222,7 +1222,11 @@ def project_host(root: Path, old_host: Path, old_runtime: Path, new_runtime: Pat
         return BOM + canonical.encode('utf-8')
     require(previous.count(marker) == 1, "Existing shared normal-exit projection boundary differs")
     tail = previous[previous.index(marker):]
-    assignments = [node.value for node in ast.walk(ast.parse(tail)) if isinstance(node, ast.Assign)
+    tail_tree = ast.parse(tail)
+    preparations = [node for node in tail_tree.body if isinstance(node, ast.FunctionDef)
+                    and node.name == '_faith_prepare_actual_normal_exit_binding']
+    binding_scope = preparations[0] if len(preparations) == 1 else tail_tree
+    assignments = [node.value for node in ast.walk(binding_scope) if isinstance(node, ast.Assign)
                    and any(isinstance(target, ast.Name) and target.id == "_runtime_path" for target in node.targets)]
     if (len(assignments) != 1 or not isinstance(assignments[0], ast.Call)
             or not isinstance(assignments[0].func, ast.Name) or assignments[0].func.id != "Path"
@@ -1240,8 +1244,46 @@ def project_host(root: Path, old_host: Path, old_runtime: Path, new_runtime: Pat
                 ("host", "source_root", "source_index", "native_source_index", "native", "game")),
             "A recording clone must retain the existing actual global source/native host binding")
     old_binding = "Path(" + repr(str(bound_path)) + ")"
-    require(tail.count(old_binding) == 1, "Unique previous runtime projection path differs")
-    tail = tail.replace(old_binding, "Path(" + repr(str(new_runtime)) + ")", 1)
+    require(tail.count(old_binding) in (1, 2), "Previous runtime projection paths differ")
+    tail = tail.replace(old_binding, "Path(" + repr(str(new_runtime)) + ")")
+    tail_tree = ast.parse(tail)
+    legacy_error = 'This selected projection derives the actual profile once; supplied replacement is forbidden'
+    for node in tail_tree.body:
+        if not isinstance(node, ast.FunctionDef) or node.name != 'main':
+            continue
+        for statement in node.body:
+            if not isinstance(statement, ast.If) or not statement.body or not isinstance(statement.body[0], ast.If):
+                continue
+            refusal = statement.body[0]
+            if (len(refusal.body) != 1 or not isinstance(refusal.body[0], ast.Raise)
+                    or not isinstance(refusal.body[0].exc, ast.Call)
+                    or not refusal.body[0].exc.args or not isinstance(refusal.body[0].exc.args[0], ast.Constant)
+                    or refusal.body[0].exc.args[0].value != legacy_error):
+                continue
+            validation = ast.parse(f'''
+if _args.normal_exit_managed_profile is not None or _args.normal_exit_managed_profile_sha256 is not None:
+    from ck3_mod_acceptance import normal_exit_static_binding_v1
+    from ck3_mod_acceptance_background_types import file_pin
+    from ck3_mod_acceptance_normal_exit_profile import pin as _binding_pin
+    if _args.normal_exit_managed_profile is None or not _args.normal_exit_managed_profile_sha256:
+        raise ValueError('Allocated normal-exit profile requires its exact SHA-256')
+    _profile_ref = _binding_pin(_args.normal_exit_managed_profile)
+    if _profile_ref['sha256'] != _args.normal_exit_managed_profile_sha256.lower():
+        raise ValueError('Allocated normal-exit profile bytes changed')
+    _runtime_path = Path({str(new_runtime)!r})
+    _runtime = json.loads(_runtime_path.read_bytes())
+    _manifest_ref = file_pin(_runtime['manifest'])
+    if _binding_pin(_manifest_ref['path']) != _manifest_ref:
+        raise ValueError('Selected normal-exit runtime manifest changed')
+    normal_exit_static_binding_v1(_profile_ref, state_dir=_args.state_dir,
+        run_dir=_args.output.resolve().parent, runtime_manifest=_manifest_ref)
+    bind_normal_exit_managed_profile(argparse.Namespace(), _args)
+''').body[0]
+            if not isinstance(validation, ast.If):
+                raise ValueError('Allocated normal-exit validation branch unavailable')
+            validation.orelse = statement.body[1:]
+            statement.body = [validation]
+    tail = marker + '\n' + ast.unparse(ast.fix_missing_locations(tail_tree)) + '\n'
     sentinel = 'if __name__ == "__main__":\n    raise SystemExit(main())'
     require(canonical.count(sentinel) == 1, "Actual shared host entry boundary differs")
     result = canonical.replace(sentinel, "", 1).rstrip() + "\n\n" + tail

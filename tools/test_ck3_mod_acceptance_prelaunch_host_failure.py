@@ -357,6 +357,114 @@ class PrelaunchHostFailureTests(unittest.TestCase):
             'business_acceptance': 'RED_OR_INCOMPLETE'})
         self.save()
 
+    def allocated_profile_failure(self) -> None:
+        """Replay R0001's background launcher shim, ticket, and original wait fields."""
+        from test_steam_offline_state_probe import native_sample
+        steam = native_sample().to_wire()
+        machine = steam['machine_id']
+        self.freeze['identity_allocation'] = {'machine_id': machine}
+        selected = self.root / 'shared-host.py'
+        selected.write_text('# frozen selected host fixture\n')
+        profile_path = self.run / 'normal-exit-binding/normal-exit-managed-profile.json'
+        profile = self.write(profile_path, {'state_directory': self.freeze['state_dir'],
+            'evidence_directory': str(self.run)})
+        argv = ['python', '-B', '-X', 'utf8', str(selected), '--output',
+            str(self.run / 'native-report.json'), '--normal-exit-managed-profile', str(profile_path),
+            '--normal-exit-managed-profile-sha256', profile['sha256']]
+        self.freeze['argv'] = argv
+        self.freeze['files'] = {str(selected.resolve()): {
+            key: value for key, value in allocation.pin(selected).items() if key != 'path'}}
+        frozen = self.write(self.run / 'frozen-argv.json', self.freeze)
+        prepared = self.write(self.root / 'prepared/prepared-case.json', {
+            'startup': {'mode': 'fixture', 'state_dir': self.freeze['state_dir']}})
+        ready = {'run_id': self.run.name, 'run_dir': str(self.run), 'keeper_root': str(self.keeper),
+            'frozen_argv': frozen, 'prepared_case': prepared, 'normal_exit_managed_profile': profile}
+        self.bundle['ready_context'] = self.write(self.run / 'ready-context.json', ready)
+        self.bundle['prepared_case'] = prepared
+        self.bundle['normal_exit_managed_profile'] = profile
+        receipt = self.write(self.run / 'steam-offline.json', steam)
+        admission = {'schema': 'ck3-mod-acceptance-background-offline-admission-v1',
+            'machine_id': machine, 'observed_at_utc': steam['observed_at_utc'], 'receipt': receipt,
+            'steam_pid': steam['steam']['pid'], 'steam_birth_filetime': steam['steam']['birth_filetime'],
+            'observation_method': 'native_current_user_byte', 'background_only': True}
+        lease = {'schema': 'xar.promo.screen-lease-cas/v1', 'task_id': self.freeze['screen_task'],
+            'sequence': 11, 'screen_resource': 'ck3-screen:acquired'}
+        intent = {'schema': 'ck3-mod-acceptance-background-launch-intent-v1',
+            'run_id': self.run.name, 'frozen_argv': frozen, 'ticket': 'a' * 64,
+            'admitted_lease': lease, 'steam_offline_receipt': receipt,
+            'background_admission': admission, 'at_utc': '2026-10-24T18:00:45+00:00'}
+        self.bundle['launch_intent'] = self.write(self.run / 'launch-intent.json', intent)
+        self.bundle['host_supervisor'] = self.write(self.run / 'host-supervisor-started.json', {
+            'pid': 23044, 'machine_id': machine, 'at_utc': '2026-10-24T18:00:46+00:00',
+            'original_popen_identity': {'pid': 23044, 'birth_filetime': '134373384451646822'},
+            'argv': ['python', 'launcher.py', '--run-root', str(self.run), '--keeper-root', str(self.keeper),
+                     '--steam-offline-receipt', receipt['path'], '--supervise', '--launch-ticket', 'a' * 64]})
+        self.bundle['host_started'] = self.write(self.run / 'host-started.json', {
+            'run_id': self.run.name, 'pid': 5428, 'supervisor_pid': 25944, 'argv': argv,
+            'actual_popen_retained': True, 'at_utc': '2026-10-24T18:00:47+00:00',
+            'admitted_lease': lease, 'background_offline_admission': admission})
+        self.exited.update(pid=5428, at_utc='2026-10-24T18:00:48+00:00')
+        self.bundle['host_exit'] = self.write(self.run / 'host-original-process-exit.json', self.exited)
+        terminal = 'This selected projection derives the actual profile once; supplied replacement is forbidden'
+        stderr = self.run / 'host-stderr.log'
+        stderr.write_text(f'Traceback (most recent call last):\n  File "{selected}", line 5229, in <module>\n'
+            f'    raise SystemExit(main())\n  File "{selected}", line 5222, in main\n'
+            f"    raise ValueError('{terminal}')\nValueError: {terminal}\n")
+        self.bundle['host_stderr'] = allocation.pin(stderr)
+        context = self.write(self.root / 'reviewed-context.json', ready)
+        for key, mode, code in [('public_run', 'run', 2), ('public_allocate', 'allocate', 0)]:
+            original = json.loads(Path(self.bundle[key]['path']).read_bytes())
+            original['argv'][original['argv'].index('--prepared-case') + 1] = prepared['path']
+            value = {'machine_id': machine, 'argv': original['argv'], 'original_wait_returncode': code,
+                'started_at_utc': '2026-10-24T18:00:42+00:00', 'elapsed_seconds': 5.5}
+            if mode == 'run':
+                value.update(run_id=self.run.name, finished_at_utc='2026-10-24T18:00:49+00:00')
+            self.bundle[key] = self.write(Path(self.bundle[key]['path']), value)
+        self.early_exit_result()
+
+    def test_allocated_profile_background_shim_chain_has_resource_credit_only(self):
+        self.allocated_profile_failure()
+        result = self.check()['failure_cleanup']
+        binding = result['supervisor_binding']
+        self.assertEqual((binding['launcher_popen_pid'], binding['actual_supervise_pid']), (23044, 25944))
+        self.assertFalse(binding['parent_child_relationship_observed'])
+        self.assertIsNone(result['native_cleanup_qualified'])
+        self.assertIsNone(result['original_ck3_exit_code'])
+        self.assertFalse(result['business_pass'])
+        self.assertFalse(result['normal_close_qualified'])
+
+    def test_allocated_profile_background_chain_rejects_wrong_ticket_or_wait(self):
+        self.allocated_profile_failure()
+        for key, field, bad in [('launch_intent', 'ticket', 'b' * 64),
+                                ('public_run', 'original_wait_returncode', 0),
+                                ('host_supervisor', 'pid', True)]:
+            path = Path(self.bundle[key]['path'])
+            original = json.loads(path.read_bytes())
+            self.bundle[key] = self.write(path, {**original, field: bad})
+            self.save()
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                self.check()
+            self.bundle[key] = self.write(path, original)
+        self.save()
+
+    def test_allocated_profile_terminal_without_frozen_main_stack_is_rejected(self):
+        self.allocated_profile_failure()
+        path = self.run / 'host-stderr.log'
+        path.write_text(path.read_text().replace('in main', 'in run_game'))
+        self.bundle['host_stderr'] = allocation.pin(path)
+        self.early_exit_result()
+        with self.assertRaisesRegex(ValueError, 'pre-game main stack'):
+            self.check()
+
+    def test_allocated_profile_unknown_cause_is_rejected(self):
+        self.allocated_profile_failure()
+        path = self.run / 'host-stderr.log'
+        path.write_text('ValueError: unrelated late game failure\n')
+        self.bundle['host_stderr'] = allocation.pin(path)
+        self.early_exit_result()
+        with self.assertRaisesRegex(ValueError, 'host exit/cause'):
+            self.check()
+
     def test_bound_early_host_exit_does_not_require_readiness_timeout(self):
         self.early_exit_result()
         value = self.check()['failure_cleanup']
