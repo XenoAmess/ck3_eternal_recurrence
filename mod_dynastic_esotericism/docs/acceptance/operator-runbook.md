@@ -2,6 +2,8 @@
 
 适用机器：`desktop-3fevhd2-1c74096080`。记录日期：2026-10-24。以下是尚待实际执行的操作合同，命令示例不构成启动、业务或发布通过记录。执行者须保留每一外层命令真实退出码。
 
+R0004 已实际消费下文 a06 runtime、a19 keeper、`prepared-core-a07` 与 `attempt-a07/state`，并再次暴露整句日志参数展开失败；这些路径和分配例现为该失败场次的历史输入，不能复制重放。R0004 完整资源闭场与创建资格调查完成前，不填下一场前序或新 run ID。下一场须使用重新构建的静态日志候选及新的 runtime／prepared／state 父目录，经当时容量准入与 canonical allocator 重新分配；C 上 R0004 冻结源码保持原样。
+
 本次使用已有公共验收入口、c09 宿主和公共原生 provider 的有限后继。Java 工具只生成外置 fixture 与精确来源绑定的共享 runtime；它不启动 CK3，也不授予 live qualification。最终 native index、SDK 提交验证入口和扩展 fixture 全部冻结后，才生成正式 prepared case。
 
 ## 冻结与准备
@@ -70,6 +72,10 @@ Root 在真实分配前完成存储原子准入、干净 checkout 和屏幕 owne
 控制器会打印 `CK3_ROOT_CHECKPOINT <run>/case-output/<phase>-awaiting.json`。Root 先读取该文件的实际 snapshot、要求、原始 hold deadline，再提交原生操作。控制器此时保持同一会话；每个公开队列计划必须用新的文件名与 step ID。
 
 R0004 起，首个 phase 等待实际 `DESAF: TEST PASS fixture_ready`，不按“已到第 1 日”推算延迟事件已执行。准备 fixture 不改角色 Faith；保留开局 Catholic／Roman Rite，实际知识、无先知、资源和原生 `Can` 均须重新读回，不能把儒家身份当作前提。
+
+R0004 的日志故障候选修复只改日志位置：`.3/.4` 外层完整 observer／outsider 守卫保持，四条 PASS 采用静态带引号 `debug_log`，移除重复的 positive／negative 日志 helper；不能再传整句 `$PASS$`／`$FAIL$`，也不另换 CASE 宏猜引擎行为。旧 R0004 原输入及两份坏资源在 Java 回归中保留，实际旧输入须被非字面量日志检查拒绝。新 JAR／fixture 和后继实机尚未因此通过；完整证据与边界见[测试方案](../test-plan.md)。五项名称、教义与资源齐备仍不能代替实际原生 `Can`，R0004 观察到的创建资格缺口须独立闭合。
+
+后继 fixture 的原版关系输入已明确公开：优先当前真实宫廷司祭，缺失时只运行一次原版 landed realm priest 筛选；其后仅为合格司祭与空槽建立原版神学傀儡关系，不清除冲突、不选择六项互动支持、不声称互动已经提交、接受或支付。setup 的 `fixture_ready` 需要真实关系和已知脚本资格读回通过。开窗前调用独立 `[测试] 观察原版神学傀儡前置输入` 决议，检查 cp／puppet／反向 puppeteer／puppet_action_valid 的静态日志，并从新 epoch 另读 council full ID。该决议只读原版关系，只更新 fixture 观察旗标；它不重新任命或创建傀儡。草案五名称、教义和资源齐备后仍须原生完整 Can；关系前置日志不能替代该结果，原版确认仍只能执行一次。
 
 ```bat
 <python> <frozen-source>/tools/ck3_mod_acceptance_queue_control.py --live <run> --plan <new-plan.json> --name root-rite-001.json

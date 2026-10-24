@@ -1,0 +1,39 @@
+{
+  "schema": "xar.dynastic-esotericism.r0004-followup.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T14:22:10.450345+00:00",
+  "original_run": "R0004",
+  "original_business_pass": false,
+  "original_normal_close_qualified": false,
+  "new_game_validation": "NOT_RUN",
+  "new_maven_build": "NOT_RUN",
+  "actual_scope": "Software fixes and bounded fixture input proposal; new frozen game still required",
+  "shared_ci": {
+    "actual_commands": 91,
+    "all_exit_zero": true,
+    "single_sequential_execution": true,
+    "normal_close_group_tests": 42,
+    "strict_complete_top_level_definitions": 7,
+    "receipt": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\normal-close-r4-path-a01\\FINAL.actual.json",
+      "bytes": 47179,
+      "sha256": "eaa6187e5ee5a9c147ce10cfa63d96490db6a0cda1b5cccd602b50d27ee34e54"
+    }
+  },
+  "fixture_candidate": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\R0004-fixture-source-package-a02.actual.json",
+    "bytes": 4698,
+    "sha256": "f89e30b65ec2689935a73875ffb4bc8b2406e6ac4cbd419f2a045e900a615370"
+  },
+  "fixture_parser_regression": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\R0004-static-log-and-rite-input-probe-a03.actual.json",
+    "bytes": 1656,
+    "sha256": "f9fcd881ed2c4d2c5b9a3f1b55039e36bfda3df3fffe324875e45ca4ad8df3f3"
+  },
+  "capacity": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\capacity\\GAME-POOL2-BUILD512-SYSTEM16-ADMISSION-r1162.actual.json",
+    "bytes": 10561,
+    "sha256": "d7b3425c362cf9b27f38290bf5137412104776db20df2c4d44ebee697acd205e"
+  },
+  "ci_boundary": "867bcd4 Product success; Official failed resource-closure mypy imports. Separate repair pending; no repository-wide green claim."
+}

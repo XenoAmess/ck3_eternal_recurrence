@@ -1,0 +1,139 @@
+﻿# External acceptance input and native predicate readback. Never publish this fixture.
+namespace = des_acceptance
+
+des_acceptance.1 = {
+    hidden = yes
+    immediate = {
+        set_variable = { name = des_test_source_rite value = rite }
+        if = { limit = { exists = dynasty } set_variable = { name = des_test_source_dynasty value = dynasty } }
+        add_piety = 100000
+        change_spiritual_fulfillment = { value = 100 }
+        if = { limit = { has_perk = prophet_perk } remove_perk = prophet_perk }
+        create_character = { employer = root age = 30 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = des_test_target }
+        create_character = { employer = root age = 30 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = des_test_peer }
+        create_character = { employer = root age = 8 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = des_test_child }
+        create_character = { location = root.location age = 30 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = des_test_outsider }
+        scope:des_test_outsider = { create_dynasty = { spread_to_descendants = no } }
+        set_variable = { name = des_test_ref_target value = scope:des_test_target }
+        set_variable = { name = des_test_ref_peer value = scope:des_test_peer }
+        set_variable = { name = des_test_ref_child value = scope:des_test_child }
+        set_variable = { name = des_test_ref_outsider value = scope:des_test_outsider }
+        add_character_flag = des_test_ready
+        if = {
+            limit = {
+                NOT = { has_perk = prophet_perk }
+                rite = { rite_has_doctrine = des_doctrine_none NOT = { has_variable = des_bound_dynasty } }
+                knows_doctrine = des_doctrine_none
+                knows_doctrine = des_doctrine_dynastic
+            }
+            debug_log = "DESAF: TEST PASS fixture_ready"
+        }
+        else = { debug_log = "DESAF: TEST FAIL fixture_ready" }
+        des_acceptance_extended_setup_effect = yes
+    }
+}
+
+des_acceptance.2 = {
+    hidden = yes
+    immediate = {
+        des_acceptance_restore_refs_effect = yes
+        if = {
+            limit = {
+                rite = scope:des_test_primary
+                dynasty = scope:des_test_dynasty
+                scope:des_test_primary = {
+                    des_has_active_binding_trigger = yes
+                    faith = {
+                        NOT = { any_faith_character = { is_alive = yes rite = scope:des_test_primary NOT = { dynasty = scope:des_test_dynasty } } }
+                    }
+                }
+                scope:des_test_target = { is_alive = yes dynasty = scope:des_test_dynasty rite = scope:des_test_primary }
+                scope:des_test_peer = { is_ai = yes dynasty = scope:des_test_dynasty rite = scope:des_test_primary }
+                scope:des_test_child = { age < 16 dynasty = scope:des_test_dynasty rite = scope:des_test_primary }
+                scope:des_test_outsider = { rite = scope:des_test_source_rite NOT = { dynasty = scope:des_test_dynasty } }
+            }
+            add_character_flag = des_test_members_verified
+            debug_log = "DESAF: TEST PASS binding_and_members"
+        }
+        else = { debug_log = "DESAF: TEST FAIL binding_and_members" }
+    }
+}
+
+des_acceptance.3 = {
+    hidden = yes
+    immediate = {
+        des_acceptance_restore_refs_effect = yes
+        if = {
+            limit = {
+                scope:des_test_target = { dynasty = scope:des_test_dynasty faith = root.faith NOT = { rite = scope:des_test_primary } des_is_apostate_trigger = yes }
+                has_opinion_modifier = { target = scope:des_test_target modifier = des_apostasy_opinion }
+                has_imprisonment_reason = scope:des_test_target
+                has_banish_reason = scope:des_test_target
+                has_execute_reason = scope:des_test_target
+                des_is_penalty_pair_trigger = { TARGET = scope:des_test_target }
+                scope:des_test_outsider = {
+                    NOT = { has_opinion_modifier = { target = scope:des_test_target modifier = des_apostasy_opinion } }
+                    NOT = { has_imprisonment_reason = scope:des_test_target }
+                    NOT = { has_banish_reason = scope:des_test_target }
+                    NOT = { has_execute_reason = scope:des_test_target }
+                    NOT = { des_is_penalty_pair_trigger = { TARGET = scope:des_test_target } }
+                }
+            }
+            des_acceptance_positive_pair_effect = { PASS = "DESAF: TEST PASS same_faith_apostasy" FAIL = "DESAF: TEST FAIL same_faith_apostasy" }
+            scope:des_test_outsider = {
+                des_acceptance_negative_pair_effect = { PASS = "DESAF: NEGATIVE PASS same_faith_outsider" FAIL = "DESAF: TEST FAIL same_faith_outsider" }
+            }
+            add_character_flag = des_test_same_verified
+        }
+        else = { debug_log = "DESAF: TEST FAIL same_faith_apostasy_state" }
+    }
+}
+
+des_acceptance.4 = {
+    hidden = yes
+    immediate = {
+        des_acceptance_restore_refs_effect = yes
+        if = {
+            limit = {
+                scope:des_test_target = { dynasty = scope:des_test_dynasty NOT = { faith = root.faith } des_is_apostate_trigger = yes }
+                has_opinion_modifier = { target = scope:des_test_target modifier = des_apostasy_opinion }
+                has_imprisonment_reason = scope:des_test_target
+                has_banish_reason = scope:des_test_target
+                has_execute_reason = scope:des_test_target
+                des_is_penalty_pair_trigger = { TARGET = scope:des_test_target }
+                scope:des_test_outsider = {
+                    NOT = { has_opinion_modifier = { target = scope:des_test_target modifier = des_apostasy_opinion } }
+                    NOT = { has_imprisonment_reason = scope:des_test_target }
+                    NOT = { has_banish_reason = scope:des_test_target }
+                    NOT = { has_execute_reason = scope:des_test_target }
+                    NOT = { des_is_penalty_pair_trigger = { TARGET = scope:des_test_target } }
+                }
+            }
+            des_acceptance_positive_pair_effect = { PASS = "DESAF: TEST PASS cross_faith_apostasy" FAIL = "DESAF: TEST FAIL cross_faith_apostasy" }
+            scope:des_test_outsider = {
+                des_acceptance_negative_pair_effect = { PASS = "DESAF: NEGATIVE PASS cross_faith_outsider" FAIL = "DESAF: TEST FAIL cross_faith_outsider" }
+            }
+            add_character_flag = des_test_cross_verified
+        }
+        else = { debug_log = "DESAF: TEST FAIL cross_faith_apostasy_state" }
+    }
+}
+
+des_acceptance.5 = {
+    hidden = yes
+    immediate = {
+        des_acceptance_restore_refs_effect = yes
+        if = {
+            limit = {
+                scope:des_test_target = { dynasty = scope:des_test_dynasty rite = scope:des_test_primary NOT = { des_is_apostate_trigger = yes } NOT = { has_trait = des_apostate } }
+                NOT = { has_opinion_modifier = { target = scope:des_test_target modifier = des_apostasy_opinion } }
+                NOT = { has_imprisonment_reason = scope:des_test_target }
+                NOT = { has_banish_reason = scope:des_test_target }
+                NOT = { has_execute_reason = scope:des_test_target }
+            }
+            add_character_flag = des_test_repent_verified
+            debug_log = "DESAF: TEST PASS repentance"
+        }
+        else = { debug_log = "DESAF: TEST FAIL repentance" }
+    }
+}

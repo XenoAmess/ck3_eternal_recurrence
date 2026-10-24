@@ -1,0 +1,301 @@
+{
+  "schema": "dynastic-fixture-r0004-guard-baseline-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T13:50:59.552074+00:00",
+  "R0004_error": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\R0004-load-error-a01\\error.log",
+    "bytes": 7362,
+    "sha256": "b54a431decfc4efc705a4b99b9ac2e475ca1ac9b2d528e56a632df20ce4deff8"
+  },
+  "diagnosis": {
+    "bytes": 11217,
+    "sha256": "c076dbe1d153aa5290604b49f5494fafb687fc39840dc117def6e792e16647ef"
+  },
+  "original_fixture_sources": [
+    {
+      "path": "common/scripted_effects/des_acceptance_effects.txt",
+      "bytes": 1796,
+      "sha256": "0a33f1594e7f444c974f800e400ad43b6978dc1070d30cbb86af2b9bbf6fbb13"
+    },
+    {
+      "path": "events/des_acceptance_events.txt",
+      "bytes": 7796,
+      "sha256": "4d23f582e16a18720735a8498913703da6fe04442093a4e65836255ef7e4c0ee"
+    }
+  ],
+  "events": {
+    "des_acceptance.3": {
+      "limit": [
+        {
+          "key": "scope:des_test_target",
+          "value": [
+            {
+              "key": "dynasty",
+              "value": "scope:des_test_dynasty"
+            },
+            {
+              "key": "faith",
+              "value": "root.faith"
+            },
+            {
+              "key": "NOT",
+              "value": [
+                {
+                  "key": "rite",
+                  "value": "scope:des_test_primary"
+                }
+              ]
+            },
+            {
+              "key": "des_is_apostate_trigger",
+              "value": "yes"
+            }
+          ]
+        },
+        {
+          "key": "has_opinion_modifier",
+          "value": [
+            {
+              "key": "target",
+              "value": "scope:des_test_target"
+            },
+            {
+              "key": "modifier",
+              "value": "des_apostasy_opinion"
+            }
+          ]
+        },
+        {
+          "key": "has_imprisonment_reason",
+          "value": "scope:des_test_target"
+        },
+        {
+          "key": "has_banish_reason",
+          "value": "scope:des_test_target"
+        },
+        {
+          "key": "has_execute_reason",
+          "value": "scope:des_test_target"
+        },
+        {
+          "key": "des_is_penalty_pair_trigger",
+          "value": [
+            {
+              "key": "TARGET",
+              "value": "scope:des_test_target"
+            }
+          ]
+        },
+        {
+          "key": "scope:des_test_outsider",
+          "value": [
+            {
+              "key": "NOT",
+              "value": [
+                {
+                  "key": "has_opinion_modifier",
+                  "value": [
+                    {
+                      "key": "target",
+                      "value": "scope:des_test_target"
+                    },
+                    {
+                      "key": "modifier",
+                      "value": "des_apostasy_opinion"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "key": "NOT",
+              "value": [
+                {
+                  "key": "has_imprisonment_reason",
+                  "value": "scope:des_test_target"
+                }
+              ]
+            },
+            {
+              "key": "NOT",
+              "value": [
+                {
+                  "key": "has_banish_reason",
+                  "value": "scope:des_test_target"
+                }
+              ]
+            },
+            {
+              "key": "NOT",
+              "value": [
+                {
+                  "key": "has_execute_reason",
+                  "value": "scope:des_test_target"
+                }
+              ]
+            },
+            {
+              "key": "NOT",
+              "value": [
+                {
+                  "key": "des_is_penalty_pair_trigger",
+                  "value": [
+                    {
+                      "key": "TARGET",
+                      "value": "scope:des_test_target"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "success_logs": [
+        "DESAF: TEST PASS same_faith_apostasy",
+        "DESAF: NEGATIVE PASS same_faith_outsider"
+      ],
+      "else": [
+        {
+          "key": "debug_log",
+          "value": "\"DESAF: TEST FAIL same_faith_apostasy_state\""
+        }
+      ]
+    },
+    "des_acceptance.4": {
+      "limit": [
+        {
+          "key": "scope:des_test_target",
+          "value": [
+            {
+              "key": "dynasty",
+              "value": "scope:des_test_dynasty"
+            },
+            {
+              "key": "NOT",
+              "value": [
+                {
+                  "key": "faith",
+                  "value": "root.faith"
+                }
+              ]
+            },
+            {
+              "key": "des_is_apostate_trigger",
+              "value": "yes"
+            }
+          ]
+        },
+        {
+          "key": "has_opinion_modifier",
+          "value": [
+            {
+              "key": "target",
+              "value": "scope:des_test_target"
+            },
+            {
+              "key": "modifier",
+              "value": "des_apostasy_opinion"
+            }
+          ]
+        },
+        {
+          "key": "has_imprisonment_reason",
+          "value": "scope:des_test_target"
+        },
+        {
+          "key": "has_banish_reason",
+          "value": "scope:des_test_target"
+        },
+        {
+          "key": "has_execute_reason",
+          "value": "scope:des_test_target"
+        },
+        {
+          "key": "des_is_penalty_pair_trigger",
+          "value": [
+            {
+              "key": "TARGET",
+              "value": "scope:des_test_target"
+            }
+          ]
+        },
+        {
+          "key": "scope:des_test_outsider",
+          "value": [
+            {
+              "key": "NOT",
+              "value": [
+                {
+                  "key": "has_opinion_modifier",
+                  "value": [
+                    {
+                      "key": "target",
+                      "value": "scope:des_test_target"
+                    },
+                    {
+                      "key": "modifier",
+                      "value": "des_apostasy_opinion"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "key": "NOT",
+              "value": [
+                {
+                  "key": "has_imprisonment_reason",
+                  "value": "scope:des_test_target"
+                }
+              ]
+            },
+            {
+              "key": "NOT",
+              "value": [
+                {
+                  "key": "has_banish_reason",
+                  "value": "scope:des_test_target"
+                }
+              ]
+            },
+            {
+              "key": "NOT",
+              "value": [
+                {
+                  "key": "has_execute_reason",
+                  "value": "scope:des_test_target"
+                }
+              ]
+            },
+            {
+              "key": "NOT",
+              "value": [
+                {
+                  "key": "des_is_penalty_pair_trigger",
+                  "value": [
+                    {
+                      "key": "TARGET",
+                      "value": "scope:des_test_target"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "success_logs": [
+        "DESAF: TEST PASS cross_faith_apostasy",
+        "DESAF: NEGATIVE PASS cross_faith_outsider"
+      ],
+      "else": [
+        {
+          "key": "debug_log",
+          "value": "\"DESAF: TEST FAIL cross_faith_apostasy_state\""
+        }
+      ]
+    }
+  },
+  "purpose": "Retain the actual failed R0004 macro inputs and complete observer/outsider guards; the lexical AST regression gives no CK3 semantic or business acceptance."
+}

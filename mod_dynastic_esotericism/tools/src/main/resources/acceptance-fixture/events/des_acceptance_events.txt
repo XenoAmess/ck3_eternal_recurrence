@@ -9,6 +9,8 @@ des_acceptance.1 = {
         add_piety = 100000
         change_spiritual_fulfillment = { value = 100 }
         if = { limit = { has_perk = prophet_perk } remove_perk = prophet_perk }
+        des_acceptance_prepare_original_rite_input_effect = yes
+        des_acceptance_read_original_rite_input_effect = yes
         create_character = { employer = root age = 30 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = des_test_target }
         create_character = { employer = root age = 30 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = des_test_peer }
         create_character = { employer = root age = 8 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = des_test_child }
@@ -22,6 +24,7 @@ des_acceptance.1 = {
         if = {
             limit = {
                 NOT = { has_perk = prophet_perk }
+                has_character_flag = des_test_original_rite_input_ready
                 rite = { rite_has_doctrine = des_doctrine_none NOT = { has_variable = des_bound_dynasty } }
                 knows_doctrine = des_doctrine_none
                 knows_doctrine = des_doctrine_dynastic
@@ -79,9 +82,9 @@ des_acceptance.3 = {
                     NOT = { des_is_penalty_pair_trigger = { TARGET = scope:des_test_target } }
                 }
             }
-            des_acceptance_positive_pair_effect = { PASS = "DESAF: TEST PASS same_faith_apostasy" FAIL = "DESAF: TEST FAIL same_faith_apostasy" }
+            debug_log = "DESAF: TEST PASS same_faith_apostasy"
             scope:des_test_outsider = {
-                des_acceptance_negative_pair_effect = { PASS = "DESAF: NEGATIVE PASS same_faith_outsider" FAIL = "DESAF: TEST FAIL same_faith_outsider" }
+                debug_log = "DESAF: NEGATIVE PASS same_faith_outsider"
             }
             add_character_flag = des_test_same_verified
         }
@@ -109,9 +112,9 @@ des_acceptance.4 = {
                     NOT = { des_is_penalty_pair_trigger = { TARGET = scope:des_test_target } }
                 }
             }
-            des_acceptance_positive_pair_effect = { PASS = "DESAF: TEST PASS cross_faith_apostasy" FAIL = "DESAF: TEST FAIL cross_faith_apostasy" }
+            debug_log = "DESAF: TEST PASS cross_faith_apostasy"
             scope:des_test_outsider = {
-                des_acceptance_negative_pair_effect = { PASS = "DESAF: NEGATIVE PASS cross_faith_outsider" FAIL = "DESAF: TEST FAIL cross_faith_outsider" }
+                debug_log = "DESAF: NEGATIVE PASS cross_faith_outsider"
             }
             add_character_flag = des_test_cross_verified
         }

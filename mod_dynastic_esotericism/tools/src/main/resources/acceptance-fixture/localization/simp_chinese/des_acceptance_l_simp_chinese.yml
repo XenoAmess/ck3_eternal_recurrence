@@ -1,4 +1,8 @@
 l_simp_chinese:
+ des_acceptance_original_rite_input_readback_decision: "[测试] 观察原版神学傀儡前置输入"
+ des_acceptance_original_rite_input_readback_decision_desc: "重新读取现任宫廷司祭、神学傀儡、反向操控者及原版礼仪脚本资格。本次观察不提交角色互动，也不证明原生礼仪草案的完整创建资格。"
+ des_acceptance_original_rite_input_readback_decision_confirm: "观察真实原版关系"
+ des_acceptance_original_rite_input_readback_decision_tooltip: "只读关系；不任命司祭、不建立傀儡、不接受互动、不支付费用。"
  des_acceptance_capture_created_decision: "[验收] 观察原生界面实际创建的礼仪"
  des_acceptance_capture_created_decision_desc: "先通过原版窗口创建宗族化礼仪。本决议仅保存其实际身份，并将三个准备角色转入；不会创建或编辑礼仪。等待一个自然游戏日后读取结果。"
  des_acceptance_capture_created_decision_confirm: "保存身份并转换对照角色"

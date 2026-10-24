@@ -1,4 +1,12 @@
 ﻿# Each decision is a separate disclosed test input or readback; no product UI submission is replaced.
+des_acceptance_original_rite_input_readback_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+    is_shown = { is_ai = no has_character_flag = des_test_ready NOT = { has_variable = des_test_primary_rite } }
+    is_valid = { always = yes }
+    effect = { hidden_effect = { des_acceptance_read_original_rite_input_effect = yes } }
+    ai_check_interval = 0
+}
+
 des_acceptance_capture_created_decision = {
     picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
     is_shown = { is_ai = no has_character_flag = des_test_ready NOT = { has_variable = des_test_primary_rite } }

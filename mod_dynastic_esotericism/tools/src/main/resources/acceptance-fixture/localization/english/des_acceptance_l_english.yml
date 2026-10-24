@@ -1,4 +1,8 @@
 l_english:
+ des_acceptance_original_rite_input_readback_decision: "[TEST] Observe the original clerical puppet input"
+ des_acceptance_original_rite_input_readback_decision_desc: "Read the current Court Chaplain, theological puppet, reverse puppeteer and original scripted Rite eligibility. This observation does not submit an interaction or prove the full native draft Can."
+ des_acceptance_original_rite_input_readback_decision_confirm: "Observe the actual original relationship"
+ des_acceptance_original_rite_input_readback_decision_tooltip: "Readback only; no priest assignment, puppet creation, interaction acceptance or payment."
  des_acceptance_capture_created_decision: "[TEST] Observe the Rite actually created through its UI"
  des_acceptance_capture_created_decision_desc: "After creating the dynastic Rite through the original window, record its actual identity and convert three prepared controls. This test does not create or edit a Rite. Wait one natural day for the readback."
  des_acceptance_capture_created_decision_confirm: "Record and convert controls"

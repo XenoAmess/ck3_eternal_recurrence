@@ -33,3 +33,7 @@ SDK的19项礼仪回归及4项共享服务绑定回归通过；真实运行解�
 2026-10-24T13:19Z 共享正常关闭软件路径完成：新增独立typed路由，实际保留原handle精确FILETIME，校验原fact/close/once claim与冻结profile/source inventory；GUI review仍为null，autosave完整性资格仍false。正常关闭原组40项及7个完整新增顶层定义strict通过。原共享CI step全部91条命令均已真实执行并取得0，期间环境依赖和旧fixture/source兼容失败分次修复，原RED保留；不将它们写成一次无失败执行或实机通过。尚待全新runtime、R0004实际业务与正常退出验收。
 
 完整命令及修复出处见[typed正常闭场与91条共享CI](acceptance/typed-normal-close-and-full-shared-ci-2026-10-24.json)。Windows短TEMP修复后的5c6cc产品CI已实际success，远端runner机器ID未采集；不外推为本机游戏通过。
+
+2026-10-24 R0004 实际增量（machine_id: `desktop-3fevhd2-1c74096080`）：a06 实机发现夹具整句宏日志被引擎拆成未知 effect，完整业务保持 RED。原生 UI 已观察默认“无”、两项教义可选及五名称字段读回；原最终 Can 仍因缺少原版教士傀儡前置而拒绝，未提交创建，已取消草案。原 SDK 同保留句柄退出0、host 原 Popen0、public run2、keeper 原 Popen0，SCREEN8661已释放；完整 normal-close 因共享消费者误将同一 Windows 路径的斜杠表示判为不同来源而失败。见[R0004原件摘要](acceptance/R0004-2026-10-24.json)。
+
+后继已修路径比较合同，并用真实 inventory producer 到 SDK/消费者回归覆盖；正常关闭原四模块42项、原共享CI整组91条命令在一次顺序执行中全部退出0，7个完整修改定义 strict 通过。夹具改用静态日志、保留原完整正负谓词，准备真实原版教士关系前置并提供独立读回；这些软件结果不追认R0004。新干净Java构建、新runtime和后继实机仍待完成。旧867bcd4的Product CI成功，但Official CI另有scope测试导入路径RED，不能称全仓CI通过。实际出处见[后继软件与容量记录](acceptance/R0004-followup-2026-10-24.json)。

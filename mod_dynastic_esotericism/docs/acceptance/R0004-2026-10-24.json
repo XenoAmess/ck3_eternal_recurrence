@@ -1,0 +1,141 @@
+{
+  "schema": "xar.dynastic-esotericism.live-acceptance-summary.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T14:14:39.433069+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0004",
+  "runtime": "common-runtime-a06",
+  "keeper": "keeper-core-a19",
+  "source_commit": "867bcd4b9668aa77adddc3fdf615492d57ee76c4",
+  "status": "RED",
+  "business_pass": false,
+  "product_release_pass": false,
+  "normal_close_qualified": false,
+  "root_gui_phases_passed": 0,
+  "original_exit_codes": {
+    "ck3": 0,
+    "host": 0,
+    "public_run": 2,
+    "allocator": 0,
+    "keeper": 0
+  },
+  "native_report_status": "GREEN",
+  "native_report_scope": "Original managed host completed and cleaned resources; this is not product business or complete normal-close qualification.",
+  "screen_release_sequence": 8661,
+  "public_verify": {
+    "exit_code": 2,
+    "case_contract_qualified": false,
+    "gui_contract_qualified": false,
+    "business_pass": false,
+    "product_release_pass": false,
+    "status": "NOT_RUN",
+    "normal_close": null,
+    "case_acceptance_pass": false,
+    "qualified_boundary_pass": false
+  },
+  "actual_process_exit_evidence": {
+    "format": "typed-native-observer-v2",
+    "pid": 25756,
+    "process_creation_filetime_100ns": "134373228391424132",
+    "same_retained_handle_wait_result": 0,
+    "typed_normal_exit_observed": true,
+    "autosave_verified": false
+  },
+  "partial_ui_observations": {
+    "default_doctrine": "des_doctrine_none",
+    "both_product_doctrines_known_and_selectable": true,
+    "selected_doctrine": "des_doctrine_dynastic",
+    "five_name_fields_observed": {
+      "name": "DES Acceptance A",
+      "adjective": "Dynastic",
+      "adherent": "Dynast",
+      "adherent_plural": "Dynasts",
+      "description": "Dynastic Esotericism acceptance draft"
+    },
+    "final_native_can_create": false,
+    "has_enough_piety": true,
+    "cancel_same_current_poststate": false,
+    "rite_final_confirmation_submissions": 0,
+    "full_root_phase_pass": false
+  },
+  "failures": [
+    "Four fixture macro loading errors remain in the frozen R0004 inputs. Original error.log and diagnosis stay pinned.",
+    "Final native CanCreate remains false after names and selected doctrine are read back. The original reason identifies the puppet permission gate; no final Rite confirmation was submitted.",
+    "CaseClient normal-close failed with the preserved source-inventory/profile comparison error; normal-close-result.json is absent."
+  ],
+  "normal_close_error_original": {
+    "error": "ValueError: Typed normal Quit source inventory differs from allocated profile",
+    "business_pass": false
+  },
+  "path_comparison_observation": {
+    "inventory_userdir_raw": "C:/ck3-dynastic-esotericism-20261024/attempt-a07/state/profile",
+    "profile_userdir_raw": "C:\\ck3-dynastic-esotericism-20261024\\attempt-a07\\state\\profile",
+    "raw_strings_equal": false,
+    "resolved_paths_equal": true,
+    "source_inventory": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\attempt-a07\\state\\profile\\normal-exit-source-inventory-v1.json",
+      "bytes": 10116,
+      "sha256": "fa497634e47106bb9be114c2b1c9f0169c72024bf4480a720bd68daec16fa311"
+    },
+    "frozen_client": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a06\\source\\tools\\ck3_mod_acceptance_client.py",
+      "bytes": 89020,
+      "sha256": "0316d57729c6f729f23b6649a1beb609cfa9a696f0b4bf5e842895461b139a20"
+    },
+    "scope": "Read-only observation; no retrospective normal-close qualification."
+  },
+  "resource_closure": {
+    "scope": "Original frozen allocator resource predicates only",
+    "actual_consumer_exit_code": 0,
+    "mode": "previous-shared-managed-session",
+    "native_cleanup_closed": true,
+    "keeper_closed_lease": true,
+    "requires_new_failure_close": false,
+    "normal_close_qualified": false,
+    "business_pass": false,
+    "release_pass": false,
+    "actual_consumer": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0004-actual-close-index-a01\\frozen-resource-consumer.actual.json",
+      "bytes": 2745,
+      "sha256": "23b9839f854a113709ff7ee8c8b04e6394b2bbfbaf7299be54e7c4219beee719"
+    }
+  },
+  "evidence": {
+    "public_verify": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0004-actual-close-index-a01\\public-verify.actual.json",
+      "bytes": 2320,
+      "sha256": "eae92f697bee19319bf3861c5ea2efc9e3ac6b972703a35b773ceab6f415045d"
+    },
+    "public_verify_stdout": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0004-actual-close-index-a01\\public-verify.stdout.log",
+      "bytes": 259,
+      "sha256": "8f5ad157d063e5de7b14c142069059f86aba4aea941d90f05b3850e9ed4ffaaa"
+    },
+    "public_verify_stderr": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0004-actual-close-index-a01\\public-verify.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "exit_chain": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0004-actual-close-index-a01\\exit-chain-index.actual.json",
+      "bytes": 14226,
+      "sha256": "b759f696c3bed7ee988223dab30d0d7f4e0c798847917d432d37cf6e9110c4a3"
+    },
+    "partial_ui_source_failure": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0004-actual-close-index-a01\\partial-ui-and-source-failure.actual.json",
+      "bytes": 27520,
+      "sha256": "5709aa7e1030f99de0f698d77284a169e070a06d35ce1ccd5ff38c86c5f42bee"
+    },
+    "screen_release_success": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0004-screen-release-cas-success-a02.actual.json",
+      "bytes": 1411,
+      "sha256": "993ada5592c9a706259408fc00fc2758d1a7a2f7e41d17970b0a4f8203e49d1e"
+    },
+    "screen_release_rejected_original": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0004-screen-release.actual.json",
+      "bytes": 171,
+      "sha256": "f2af5c90ef00c7e811a3873bf48f3098eba716104bb732376e15db873588c8c3"
+    }
+  },
+  "retention_review_due": "2026-10-31",
+  "next_case_boundary": "Use the actual latest R0004 managed-session predecessor and successful SCREEN8661 release; rebuild corrected fixture/shared code into a new frozen runtime and new state. Preserve R0004 business and normal-close RED."
+}
