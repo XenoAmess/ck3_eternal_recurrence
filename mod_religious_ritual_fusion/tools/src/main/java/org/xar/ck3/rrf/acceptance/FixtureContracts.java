@@ -1,9 +1,11 @@
 package org.xar.ck3.rrf.acceptance;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.JsonNode;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.util.List;
@@ -33,11 +35,22 @@ public final class FixtureContracts {
         public FreshSetup { if (piety < 0 || piety > 10000) throw new IllegalArgumentException("fixture piety must be 0..10000"); }
     }
     public record SavedSetup() implements Setup { }
-    public record Request(int schemaVersion, CaseKind kind, Mode mode, int actorId, Setup setup) {
+    /** A CK3 character: script link uses a history definition key, not a native runtime handle. */
+    public record ActorHistoryId(String value) {
+        public ActorHistoryId {
+            if (!"1128".equals(value)) throw new IllegalArgumentException("fixture requires Robert's history definition key 1128");
+        }
+        @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+        public static ActorHistoryId fromJson(JsonNode input) {
+            if (input == null || !input.isTextual()) throw new IllegalArgumentException("actorHistoryId must be a canonical history-key string");
+            return new ActorHistoryId(input.textValue());
+        }
+        @JsonValue public String value() { return value; }
+    }
+    public record Request(int schemaVersion, CaseKind kind, Mode mode, ActorHistoryId actorHistoryId, Setup setup) {
         public Request {
-            Contracts.schema(schemaVersion);
-            if (kind == null || mode == null || setup == null) throw new IllegalArgumentException("fixture kind/mode/setup required");
-            if (actorId != 29829) throw new IllegalArgumentException("this fixture supports the authorized 1066 Robert 29829 only");
+            if (schemaVersion != 2) throw new IllegalArgumentException("fixture request schemaVersion 2 required");
+            if (kind == null || mode == null || actorHistoryId == null || setup == null) throw new IllegalArgumentException("fixture kind/mode/actorHistoryId/setup required");
             if ((kind == CaseKind.COLD_RELOAD) != (setup instanceof SavedSetup)) throw new IllegalArgumentException("cold_reload requires saved setup; fresh cases require fresh setup");
             if (kind == CaseKind.CORE && setup instanceof FreshSetup fresh && fresh.piety() < mode.cost()) throw new IllegalArgumentException("positive core fixture must be able to pay its mode cost");
         }

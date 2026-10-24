@@ -1,7 +1,7 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "kind": "ui_rejection",
   "mode": "rite",
-  "actorId": 29829,
+  "actorHistoryId": "1128",
   "setup": { "type": "fresh", "piety": 499 }
 }

@@ -1,7 +1,7 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "kind": "cold_reload",
   "mode": "rite",
-  "actorId": 29829,
+  "actorHistoryId": "1128",
   "setup": { "type": "saved" }
 }

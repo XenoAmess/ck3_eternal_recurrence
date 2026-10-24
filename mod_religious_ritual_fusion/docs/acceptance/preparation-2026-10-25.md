@@ -1,6 +1,6 @@
 # 实机验收接入：2026-10-25
 
-状态：**准备中；实机尚未执行，商店截图尚未采集。** 用户已授权执行[实机方案](../live-acceptance-plan-2026-10-24.md)，并要求多截可用作商店页面素材的真实画面。本记录随工作包更新，不以源码、准备或 ACK 代替业务通过。
+状态：**实机已启动，R0002 发现夹具身份错误并已闭场修复；融合业务尚未执行，商店候选截图尚未采集。** 用户已授权执行[实机方案](../live-acceptance-plan-2026-10-24.md)，并要求多截可用作商店页面素材的真实画面。本记录随工作包更新，不以源码、准备或 ACK 代替业务通过。
 
 ## 已完成的公共接入
 
@@ -77,3 +77,15 @@ Root 于 `18:01:40Z` 停止 keeper，原 allocate 的 retained wait、keeper 和
 已有 prelaunch 失败闭场消费者已读取 R0001 原件验证退出、后台离线来源、ticket、lease、prepared/profile、keeper 与 CAS 链，实际返回可接续的失败资源闭场，当前进程 blockers 为空。Windows venv 的 launcher Popen 23044 与实际 supervise 25944 分别保留，以原 ticket／lease／时间链核对，不虚构两者 PID 相同或已观测父子关系。closure 原件为 `root-execution-a01/prelaunch-closure-a01/R0001-PRELAUNCH-CLOSURE.a01.actual.json` SHA-256 `5aad9b3073cddade6c8dedc9b5e7155be17c31a00949e52a266144794331a954`；仅授行政资源接续，native cleanup 保持未适用、normal close 与业务通过均为 false。
 
 最终完整构建相关 CI 命令组实际 26+69+28=123 tests／0 skip，CI 静态和额外完整 builder strict mypy 均退出 0；`public-chain-a01/projected-main-fix-a04/validation.actual.json` SHA-256 `e987b86c8fcd0e6c4ecabb9825b2cf09698450316acfa1b5b960ac7050b7d7e4`。prelaunch 失败模块完整 23 tests／0 skip／原 wait 0，已追加同一持久 CI step；其三项新增 typed 边界的实际提取范围 strict mypy 通过。完整旧 allocator 模块试查仍有 21 项历史类型错误，原输出保留，不将局部检查写成全模块全绿。新证据只覆盖本轮改动，旧 1290 次执行保留原提交身份，不重复计作新提交实测。
+
+## R0002 的夹具身份错误与修复
+
+机器 `4-8e1c2f1861`，`25ffd5b79528417b4aec95f9facd522a937507d7`、runtime-a03，场次 `4-8e1c2f1861--religious-ritual-fusion--R0002` 已实际启动 CK3 1.20.0.4 并进入暂停的 1066 罗贝尔开局。夹具错误地把运行期 ID `29829` 用作 `character:` 历史定义链接。原生日志先报不存在的角色链接，随后 `2026-10-24T18:21:32Z` 的 after-lobby hook 实际发出 `wrong_actor_or_repeated_fresh_seed`，公共启动守卫正确拒绝继续。未执行融合、创建结果或扣费。
+
+原版 `history/characters/norman.txt` 的 Robert Guiscard、正式 bookmark、阿普利亚历史领主及原版 game_start 同语法共同确认历史定义 ID 是 `1128`。Java fixture request 升为 v2，使用强类型 `actorHistoryId: "1128"`，统一渲染所有历史链接；旧 actorId／旧 schema／数字、布尔和浮点均拒绝。各新场运行期玩家 ID 仍需从原生当前状态读取，不能由历史 ID 推导。prebuilt manifest 保持 v1，正式 67 文件未变。
+
+完整默认 Maven verify 于 `2026-10-24T18:42:53Z` 原退出 0，33.217 秒，13 tests／0 failure／0 error／0 skip；三组实际 Java CLI 生成亦均退出 0。新 fixture 位于 `fixtures/actor-history-v2-a01/`，完整参数及 pins 见工作根 `actor-history-fix-candidate-a01/verification.json`。旧错误请求和输出保留，不替换旧证据。
+
+该场通过原游戏菜单退出，实际观察并取消勾选 autosave_exit；桌面输入均保留原图、实际 2560×1440、焦点与规范坐标回执。后台 MCP 退出查询在启动失败状态不可用的真实拒绝亦保留。CaseClient retained OS0、原 native process exit0、tree_gone、cleanup 与线程完成均已读回，`failure_lifecycle_completed=true`，原 run=2／host RED／normal_close=false 保持。keeper 原 wait0，最后序号 13701，CAS 于 `18:38:24Z` 释放为 13702。现有普通 predecessor 消费者已实际接受资源接续，无需另造闭场格式。
+
+`screenshots/R0002/diagnostics/` 的加载、失败开局和退出画面仅作诊断，不计商店素材。当前实机发现的产品加载提示为四个决策未写 ai_check_interval（引擎置零）；未以这几条非致命提示授业务通过。继续使用新夹具重验真实融合界面及结果。

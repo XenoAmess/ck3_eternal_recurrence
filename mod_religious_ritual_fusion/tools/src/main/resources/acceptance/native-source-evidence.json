@@ -13,5 +13,30 @@
     "effect": "add_known_doctrine",
     "example_line": 597
   },
-  "scope_boundary": "Knowledge writes only target the playable Robert input character; this source observation does not qualify another machine or business result."
+  "scope_boundary": "Knowledge writes only target the playable Robert input character; this source observation does not qualify another machine or business result.",
+  "actor_identity": {
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-24T18:27:23Z",
+    "actor_history_id": "1128",
+    "history_definition": {
+      "path": "history/characters/norman.txt",
+      "sha256": "588a012e567f6acc9e032a162b9995bb7424b535ff50cfaea459cf10a1c0132b",
+      "line": 467,
+      "definition_key": "1128"
+    },
+    "bookmark": {
+      "path": "common/bookmarks/bookmarks/00_bookmarks.txt",
+      "sha256": "fee9519196b964bb3eae364ef459f7bc92edff0a435be14b81a2377ab1db1472",
+      "line": 1817,
+      "history_id": "1128"
+    },
+    "native_script_link": {
+      "path": "common/on_action/game_start.txt",
+      "sha256": "f2f5ce78a03cfbdba0f5a68fc466f8bac89126cdd4843545b4ad6d468ed238b8",
+      "line": 3988,
+      "clause": "this = character:1128",
+      "after_lobby_hook_comment_line": 2509
+    },
+    "identity_boundary": "CK3 character: links resolve history definition keys. Runtime actor IDs must be freshly observed from each native episode and must never be used to construct history links."
+  }
 }

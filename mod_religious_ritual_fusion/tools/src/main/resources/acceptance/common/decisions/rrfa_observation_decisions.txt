@@ -4,8 +4,8 @@ ${OBSERVATION_DECISION} = {
     desc = rrfa_observation_decision_desc
     selection_tooltip = rrfa_observation_decision_tooltip
     confirm_text = rrfa_observation_decision_confirm
-    is_shown = { is_ai = no this = character:29829 has_character_flag = rrfa_seed_done }
-    is_valid = { is_ai = no this = character:29829 has_character_flag = rrfa_seed_done }
+    is_shown = { is_ai = no this = character:${ACTOR_HISTORY_ID} has_character_flag = rrfa_seed_done }
+    is_valid = { is_ai = no this = character:${ACTOR_HISTORY_ID} has_character_flag = rrfa_seed_done }
     effect = { trigger_event = { id = ${OBSERVATION_EVENT} } }
     ai_check_interval = 0
 }

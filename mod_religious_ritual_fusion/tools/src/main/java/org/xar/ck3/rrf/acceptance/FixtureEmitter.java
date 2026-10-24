@@ -70,6 +70,7 @@ public final class FixtureEmitter {
             Path template = producer.resolve("resources/acceptance").resolve(relative);
             byte[] original = checkedResource(template, "/acceptance/" + relative); pins.add(pin(template));
             String rendered = new String(original, StandardCharsets.UTF_8).replace("${CASE}", request.kind().wire()).replace("${MODE}", request.mode().wire()).replace("${COST}", Integer.toString(request.mode().cost()))
+                    .replace("${ACTOR_HISTORY_ID}", request.actorHistoryId().value())
                     .replace("${PIETY}", request.setup() instanceof FreshSetup fresh ? Integer.toString(fresh.piety()) : "0")
                     .replace("${EXPECTED_B}", request.mode() == FixtureContracts.Mode.RITE ? "rrfa_source_b_rite" : "rrfa_source_b_faith_rite")
                     .replace("${OBSERVATION_DECISION}", "rrfa_observe_" + request.kind().wire() + "_decision")

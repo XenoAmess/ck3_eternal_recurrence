@@ -32,7 +32,7 @@ rrfa_inputs_intact_trigger = {
     var:rrfa_source_b_faith = { main_rite = root.var:rrfa_source_b_faith_rite religion = root.var:rrfa_source_a_faith.religion }
 }
 rrfa_common_success_trigger = {
-    this = character:29829
+    this = character:${ACTOR_HISTORY_ID}
     rrfa_inputs_intact_trigger = yes
     var:rrfa_mode = flag:${MODE}
     var:rrf_state = flag:succeeded
@@ -85,7 +85,7 @@ rrfa_faith_success_trigger = {
     faith.religion = var:rrfa_source_a_faith.religion
 }
 rrfa_no_product_change_trigger = {
-    this = character:29829
+    this = character:${ACTOR_HISTORY_ID}
     rrfa_inputs_intact_trigger = yes
     rite = var:rrfa_source_a
     faith = var:rrfa_source_a_faith

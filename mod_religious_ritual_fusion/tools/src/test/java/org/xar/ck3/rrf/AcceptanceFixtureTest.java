@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -15,6 +16,7 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.xar.ck3.rrf.acceptance.FixtureContracts;
+import org.xar.ck3.rrf.acceptance.FixtureContracts.ActorHistoryId;
 import org.xar.ck3.rrf.acceptance.FixtureContracts.CaseKind;
 import org.xar.ck3.rrf.acceptance.FixtureContracts.FreshSetup;
 import org.xar.ck3.rrf.acceptance.FixtureContracts.Mode;
@@ -23,10 +25,11 @@ import org.xar.ck3.rrf.acceptance.FixtureContracts.SavedSetup;
 import org.xar.ck3.rrf.acceptance.FixtureEmitter;
 
 final class AcceptanceFixtureTest {
+    private static final ActorHistoryId ROBERT = new ActorHistoryId("1128");
     @TempDir Path directory;
     @Test void realFixtureProducerCreatesExactSourcePinnedPublicImportAndReadOnlyObservations() throws IOException {
         Path repository = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize().getParent();
-        Request request = new Request(1, CaseKind.CORE, Mode.RITE, 29829, new FreshSetup(500));
+        Request request = bundledRequest(repository, "core-rite");
         FixtureEmitter.Emission emitted = FixtureEmitter.emit(repository, directory.resolve("fixture"), "synthetic-fixture-machine", request);
         FixtureContracts.Manifest decoded = Json.read(Files.readAllBytes(emitted.manifest()), FixtureContracts.Manifest.class);
         assertEquals(decoded, emitted.payload()); assertEquals(10, decoded.files().size());
@@ -50,6 +53,12 @@ final class AcceptanceFixtureTest {
         }
         assertEquals(3, allKeys.stream().filter("create_dynamic_rite"::equals).count());
         assertEquals(1, allKeys.stream().filter("detach_rite_to_new_faith"::equals).count());
+        assertHistoryLinks(emitted.fixture(), decoded.files().keySet(), 6);
+        JsonNode identityEvidence = Json.read(Files.readAllBytes(repository.resolve("mod_religious_ritual_fusion/tools/src/main/resources/acceptance/native-source-evidence.json")), JsonNode.class).path("actor_identity");
+        assertEquals(request.actorHistoryId().value(), identityEvidence.path("actor_history_id").textValue());
+        assertEquals(request.actorHistoryId().value(), identityEvidence.path("history_definition").path("definition_key").textValue());
+        assertEquals(request.actorHistoryId().value(), identityEvidence.path("bookmark").path("history_id").textValue());
+        assertEquals("character:" + request.actorHistoryId().value(), Clausewitz.parse(identityEvidence.path("native_script_link").path("clause").textValue()).atom("this", ""));
         assertObservationDecision(emitted.fixture(), request);
         assertTrue(allKeys.contains("add_known_tenet")); assertTrue(allKeys.contains("add_known_doctrine"));
         assertThrows(IllegalArgumentException.class, () -> FixtureEmitter.emit(repository, emitted.fixture(), "synthetic-fixture-machine", request));
@@ -57,10 +66,12 @@ final class AcceptanceFixtureTest {
     }
     @Test void faithRejectionAndColdClosuresUseActualModeAndColdCannotSeed() throws IOException {
         Path repository = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize().getParent();
-        for (Request request : List.of(new Request(1, CaseKind.CORE, Mode.FAITH, 29829, new FreshSetup(1000)), new Request(1, CaseKind.UI_REJECTION, Mode.RITE, 29829, new FreshSetup(499)), new Request(1, CaseKind.COLD_RELOAD, Mode.RITE, 29829, new SavedSetup()), new Request(1, CaseKind.COLD_RELOAD, Mode.FAITH, 29829, new SavedSetup()))) {
+        for (String recipe : List.of("core-faith", "ui-rejection", "cold-rite", "cold-faith")) {
+            Request request = bundledRequest(repository, recipe);
             Path target = directory.resolve(request.kind().wire() + "-" + request.mode().wire());
             FixtureEmitter.Emission emitted = FixtureEmitter.emit(repository, target, "synthetic-fixture-machine", request);
             assertEquals(request.kind().wire(), emitted.payload().caseId());
+            assertHistoryLinks(target, emitted.payload().files().keySet(), request.kind() == CaseKind.COLD_RELOAD ? 3 : 6);
             if (request.kind() == CaseKind.COLD_RELOAD) {
                 assertEquals(5, emitted.payload().files().size());
                 assertFalse(emitted.payload().receipt().containsBusinessEffects());
@@ -72,15 +83,22 @@ final class AcceptanceFixtureTest {
         }
     }
     @Test void strictInputTypesAndCampaignKindsRejectInvalidOrAmbiguousRecipes() throws IOException {
-        Request valid = new Request(1, CaseKind.CORE, Mode.RITE, 29829, new FreshSetup(500));
+        Request valid = new Request(2, CaseKind.CORE, Mode.RITE, ROBERT, new FreshSetup(500));
         String json = new String(Json.write(valid), StandardCharsets.UTF_8);
         assertEquals(valid, Json.read(json.getBytes(StandardCharsets.UTF_8), Request.class));
-        for (String invalid : List.of(json.replace("29829", "true"), json.replace("29829", "29829.0"), json.replace("\"piety\" : 500", "\"piety\" : 500.0"), json.replace("\"piety\" : 500", "\"piety\" : true"), json.replace("\"rite\"", "\"cross_religion\""), json.replace("\"schemaVersion\" : 1", "\"schemaVersion\" : 1, \"extra\" : true"))) assertThrows(IOException.class, () -> Json.read(invalid.getBytes(StandardCharsets.UTF_8), Request.class));
-        assertThrows(IllegalArgumentException.class, () -> new Request(1, CaseKind.CORE, Mode.RITE, 29829, new FreshSetup(499)));
-        assertThrows(IllegalArgumentException.class, () -> new Request(1, CaseKind.COLD_RELOAD, Mode.RITE, 29829, new FreshSetup(500)));
-        assertThrows(IllegalArgumentException.class, () -> new Request(1, CaseKind.CORE, Mode.RITE, 29829, new SavedSetup()));
-        assertThrows(IllegalArgumentException.class, () -> new Request(1, CaseKind.CORE, Mode.RITE, 1, new FreshSetup(500)));
-        assertThrows(IOException.class, () -> Json.read("{\"schemaVersion\":1,\"kind\":\"cold_reload\",\"mode\":\"rite\",\"actorId\":29829,\"setup\":{\"type\":\"saved\",\"piety\":500}}".getBytes(StandardCharsets.UTF_8), Request.class));
+        assertTrue(json.contains("\"actorHistoryId\" : \"1128\""));
+        for (String identity : List.of("true", "1128", "1128.0", "null", "[]", "{}", "\"\"", "\"01128\"", "\"1128.0\"", "\"29829\"")) {
+            String invalid = json.replace("\"1128\"", identity);
+            assertThrows(IOException.class, () -> Json.read(invalid.getBytes(StandardCharsets.UTF_8), Request.class), identity);
+        }
+        for (String invalid : List.of(json.replace("\"piety\" : 500", "\"piety\" : 500.0"), json.replace("\"piety\" : 500", "\"piety\" : true"), json.replace("\"rite\"", "\"cross_religion\""), json.replace("\"schemaVersion\" : 2", "\"schemaVersion\" : 1"), json.replace("\"schemaVersion\" : 2", "\"schemaVersion\" : 2, \"extra\" : true"), json.replace("\"actorHistoryId\" : \"1128\"", "\"actorId\" : 29829"), json.replace("\"actorHistoryId\" : \"1128\"", "\"actorHistoryId\" : \"1128\", \"actorId\" : 29829"), json.replace("  \"actorHistoryId\" : \"1128\",\n", ""))) assertThrows(IOException.class, () -> Json.read(invalid.getBytes(StandardCharsets.UTF_8), Request.class));
+        assertThrows(IllegalArgumentException.class, () -> new Request(2, CaseKind.CORE, Mode.RITE, ROBERT, new FreshSetup(499)));
+        assertThrows(IllegalArgumentException.class, () -> new Request(2, CaseKind.COLD_RELOAD, Mode.RITE, ROBERT, new FreshSetup(500)));
+        assertThrows(IllegalArgumentException.class, () -> new Request(2, CaseKind.CORE, Mode.RITE, ROBERT, new SavedSetup()));
+        assertThrows(IllegalArgumentException.class, () -> new Request(1, CaseKind.CORE, Mode.RITE, ROBERT, new FreshSetup(500)));
+        assertThrows(IllegalArgumentException.class, () -> new ActorHistoryId("29829"));
+        assertThrows(IOException.class, () -> Json.read("{\"schemaVersion\":1,\"kind\":\"cold_reload\",\"mode\":\"rite\",\"actorId\":29829,\"setup\":{\"type\":\"saved\"}}".getBytes(StandardCharsets.UTF_8), Request.class));
+        assertThrows(IOException.class, () -> Json.read("{\"schemaVersion\":2,\"kind\":\"cold_reload\",\"mode\":\"rite\",\"actorHistoryId\":\"1128\",\"setup\":{\"type\":\"saved\",\"piety\":500}}".getBytes(StandardCharsets.UTF_8), Request.class));
     }
     private static List<String> keys(Clausewitz.Block block) { List<String> keys = new ArrayList<>(); for (Clausewitz.Entry e : block.entries()) { keys.add(e.key()); if (e.value() instanceof Clausewitz.Block child) keys.addAll(keys(child)); } return keys; }
     private static void assertObservationDecision(Path fixture, Request request) throws IOException {
@@ -88,7 +106,7 @@ final class AcceptanceFixtureTest {
         Clausewitz.Block decision = Clausewitz.parse(Files.readString(fixture.resolve("common/decisions/rrfa_observation_decisions.txt"))).block(key);
         for (String gate : List.of("is_shown", "is_valid")) {
             assertEquals("no", decision.block(gate).atom("is_ai", ""));
-            assertEquals("character:29829", decision.block(gate).atom("this", ""));
+            assertEquals("character:" + request.actorHistoryId().value(), decision.block(gate).atom("this", ""));
             assertEquals("rrfa_seed_done", decision.block(gate).atom("has_character_flag", ""));
         }
         Clausewitz.Block effect = decision.block("effect"); assertEquals(1, effect.entries().size());
@@ -109,5 +127,22 @@ final class AcceptanceFixtureTest {
     private static void assertReadOnly(List<String> keys) {
         Set<String> writes = Set.of("set_variable", "add_character_flag", "remove_character_flag", "add_to_variable_list", "clear_variable_list", "add_piety", "set_character_rite", "change_rite_doctrine", "create_dynamic_rite", "detach_rite_to_new_faith", "add_known_tenet", "add_known_doctrine");
         assertTrue(keys.stream().noneMatch(writes::contains), keys.toString());
+    }
+    private static Request bundledRequest(Path repository, String recipe) throws IOException {
+        Request request = Json.read(Files.readAllBytes(repository.resolve("mod_religious_ritual_fusion/tools/src/main/resources/acceptance/requests/" + recipe + ".json")), Request.class);
+        assertEquals(2, request.schemaVersion()); assertEquals(ROBERT, request.actorHistoryId());
+        return request;
+    }
+    private static void assertHistoryLinks(Path fixture, Set<String> files, int expectedCount) throws IOException {
+        List<String> links = new ArrayList<>();
+        for (String relative : files) if (relative.endsWith(".txt")) collectHistoryLinks(Clausewitz.parse(Files.readString(fixture.resolve(relative))), links);
+        assertEquals(java.util.Collections.nCopies(expectedCount, "character:1128"), links);
+    }
+    private static void collectHistoryLinks(Clausewitz.Block block, List<String> links) {
+        for (Clausewitz.Entry entry : block.entries()) {
+            if (entry.key().startsWith("character:")) links.add(entry.key());
+            if (entry.value() instanceof Clausewitz.Block child) collectHistoryLinks(child, links);
+            else if (entry.value() instanceof Clausewitz.Atom atom && atom.token().startsWith("character:")) links.add(atom.token());
+        }
     }
 }

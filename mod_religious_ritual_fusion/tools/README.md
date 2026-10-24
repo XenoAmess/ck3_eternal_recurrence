@@ -35,7 +35,7 @@ fixture 使用同一 Quarkus CLI 生成，和正式 67 文件载荷分开：
 java -jar mod_religious_ritual_fusion/tools/target/quarkus-app/quarkus-run.jar fixture --repo-root . --output <new-fixture-path> --machine-id <current-machine-id> --inputs mod_religious_ritual_fusion/tools/src/main/resources/acceptance/requests/core-rite.json
 ```
 
-输入为严格 `Request`：`schemaVersion=1`、`kind=core|ui_rejection|cold_reload`、`mode=rite|faith`、`actorId=29829`。`setup` 为带 `type` 的封闭分支：新局 `{ "type": "fresh", "piety": 500 }`；冷读 `{ "type": "saved" }`，拒绝其混入 piety 或任何 seed 参数。`requests/` 提供两模式正向、499 虔诚拒绝和两模式冷读示例。
+输入为严格 `Request`：`schemaVersion=2`、`kind=core|ui_rejection|cold_reload`、`mode=rite|faith`、`actorHistoryId="1128"`。历史 ID 使用独立值对象和规范十进制字符串，仅支持原版 Robert the Fox 的历史定义 1128；所有脚本身份门由同一字段生成。旧 v1／`actorId` 字段、数字／布尔／浮点和其他历史 key 均拒绝。原生 MCP 的运行时角色 ID 仍须逐场观察，不能沿用此前场次的 29829，也不能将历史 ID 当成运行时句柄。`setup` 为带 `type` 的封闭分支：新局 `{ "type": "fresh", "piety": 500 }`；冷读 `{ "type": "saved" }`，拒绝其混入 piety 或任何 seed 参数。`requests/` 提供两模式正向、499 虔诚拒绝和两模式冷读示例。
 
 输出 `<path>.fixture.json` 严格采用公共 `ck3-mod-acceptance-prebuilt-fixture-v1`；`<path>.request.json` 单独保存输入，不混入游戏 fixture。manifest 固定完整文件表、源 Java／模板／目录 SHA、机器 ID 和观察时间。生产 Java 源与模板同时嵌入工具包，和当前仓库不一致时拒绝生成，防止旧 JAR 冒充新 producer。
 

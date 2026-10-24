@@ -4,7 +4,7 @@ rrfa_cold_start = {
     effect = {
         every_player = {
             if = {
-                limit = { this = character:29829 }
+                limit = { this = character:${ACTOR_HISTORY_ID} }
                 debug_log = "RRFAT: FIXTURE_ARMED cold_reload"
                 trigger_event = { id = rrfa.22 }
             }

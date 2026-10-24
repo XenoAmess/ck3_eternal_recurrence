@@ -4,7 +4,7 @@ rrfa_fresh_start = {
     effect = {
         every_player = {
             if = {
-                limit = { this = character:29829 NOT = { has_character_flag = rrfa_seed_armed } }
+                limit = { this = character:${ACTOR_HISTORY_ID} NOT = { has_character_flag = rrfa_seed_armed } }
                 add_character_flag = rrfa_seed_armed
                 debug_log = "RRFAT: FIXTURE_ARMED ${CASE}"
                 trigger_event = { id = rrfa.1 days = 1 }
