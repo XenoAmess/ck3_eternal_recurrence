@@ -1177,7 +1177,7 @@ class HostSupportStorageV1:
 
 
 def build_host_running_date_support(base_runtime: Path, source_root: Path, source_commit: str,
-                                    destination: Path, storage_admission: Path) -> FilePin:
+                                    destination: Path, storage_admission: Path, *, menu_factory: bool = False) -> FilePin:
     """Build one global immutable host/support pair, retaining the existing SDK."""
     from ck3_live_run_id import current_machine_id
     actual_machine: object = current_machine_id()
@@ -1211,6 +1211,17 @@ def build_host_running_date_support(base_runtime: Path, source_root: Path, sourc
     git_blob = subprocess.run(['git', 'rev-parse', source_commit + ':' + RUNNING_DATE_SUPPORT_RELATIVE],
                               cwd=source_root, capture_output=True, check=True).stdout.decode().strip()
     canonical_helper = checked_host_support_pin(_support_file_pin(canonical_path))
+    if type(menu_factory) is not bool:
+        raise ValueError('Menu factory selection requires a literal boolean')
+    canonical_menu_factory: FilePin | None = None
+    if menu_factory:
+        from ck3_mod_acceptance_background_types import MENU_FACTORY_SOURCE_RELATIVE
+        menu_path = source_root / MENU_FACTORY_SOURCE_RELATIVE
+        menu_diff = subprocess.run(['git', 'diff', '--exit-code', source_commit, '--', MENU_FACTORY_SOURCE_RELATIVE],
+                                   cwd=source_root, capture_output=True)
+        if menu_diff.returncode != 0:
+            raise ValueError('Canonical public menu factory differs from the committed source')
+        canonical_menu_factory = checked_host_support_pin(_support_file_pin(menu_path))
     helper_raw = canonical_path.read_bytes()
     for node in ast.walk(ast.parse(helper_raw.decode('utf-8-sig'))):
         if isinstance(node, ast.Import) and any(item.name != 'math' for item in node.names):
@@ -1224,12 +1235,13 @@ def build_host_running_date_support(base_runtime: Path, source_root: Path, sourc
             or destination.is_relative_to(source_root) or destination.is_symlink()):
         raise ValueError('Fresh external child of the admitted global runtime root required')
     helper = _support_output_pin(destination / RUNNING_DATE_SUPPORT_FILENAME, helper_raw)
-    host_raw = project_running_date_host(host_path.read_bytes(), helper)
+    host_raw = project_running_date_host(host_path.read_bytes(), helper, canonical_menu_factory)
     projected_host = _support_output_pin(destination / 'shared-host.py', host_raw)
     projector_path = Path(sys.modules[HostRunningDateProjectionV1.__module__].__file__ or '')
     projection = HostRunningDateProjectionV1(actual_machine, source_commit, git_blob,
         datetime.now(timezone.utc).isoformat(), base_host,
-        canonical_helper, helper, projected_host, _support_file_pin(Path(__file__)), _support_file_pin(projector_path))
+        canonical_helper, helper, projected_host, _support_file_pin(Path(__file__)), _support_file_pin(projector_path),
+        canonical_menu_factory=canonical_menu_factory)
     receipt_raw = _support_json(projection.to_json())
     receipt = _support_output_pin(destination / 'host-support-projection.json', receipt_raw)
     new_manifest = json_object(manifest)
@@ -1271,9 +1283,10 @@ def _host_running_date_main(argv: list[str]) -> int:
     for name in ('base-runtime', 'source-root', 'output', 'storage-admission'):
         parser.add_argument('--' + name, type=Path, required=True)
     parser.add_argument('--source-commit', required=True)
+    parser.add_argument('--menu-factory', action='store_true', help='Use the canonical stock SDK factory only for menu cache observation')
     args = parser.parse_args(argv)
     result = build_host_running_date_support(args.base_runtime, args.source_root, args.source_commit,
-                                             args.output, args.storage_admission)
+                                            args.output, args.storage_admission, menu_factory=args.menu_factory)
     print(json.dumps({'runtime': result, 'game_started': False, 'allocated': False}))
     return 0
 

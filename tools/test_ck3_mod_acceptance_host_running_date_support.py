@@ -24,6 +24,7 @@ from ck3_mod_acceptance_background_types import (
     FilePin, JsonObject, HostRunningDateProjectionV1, json_object,
     RUNNING_DATE_BASE_HOST_SHA256, RUNNING_DATE_SUPPORT_RELATIVE,
     project_running_date_host, validate_host_running_date_projection,
+    MENU_FACTORY_SOURCE_RELATIVE,
 )
 from ck3_mod_acceptance_build_runtime import build_host_running_date_support, HostSupportStorageV1
 from ck3_mod_acceptance import Selection
@@ -159,14 +160,64 @@ class HostRunningDateSupportTests(unittest.TestCase):
         return subprocess.run(['git', *arguments], cwd=self.source, capture_output=True,
                                check=True).stdout.decode('utf-8').strip()
 
-    def build(self) -> Path:
+    def build(self, *, menu_factory: bool = False) -> Path:
         with patch('ck3_live_run_id.current_machine_id', return_value=MACHINE):
             result = build_host_running_date_support(self.base_runtime_path, self.source, self.commit,
-                                                     self.output, self.grant_path)
+                                                     self.output, self.grant_path, menu_factory=menu_factory)
         return Path(result['path'])
 
     def projection(self) -> JsonObject:
         return json_object(json.loads((self.output / 'host-support-projection.json').read_bytes()))
+
+    def add_menu_source(self) -> Path:
+        source = self.source / MENU_FACTORY_SOURCE_RELATIVE
+        source.parent.mkdir(parents=True)
+        source.write_bytes((HERE.parent / MENU_FACTORY_SOURCE_RELATIVE).read_bytes())
+        self.git('-c', 'core.autocrlf=false', 'add', '.')
+        self.git('-c', 'user.name=authored-fixture', '-c', 'user.email=fixture@example.invalid',
+                 'commit', '-qm', 'canonical existing public factory')
+        self.commit = self.git('rev-parse', 'HEAD')
+        return source
+
+    def test_menu_factory_uses_canonical_stock_only_for_frontend_and_roundtrips(self) -> None:
+        source = self.add_menu_source()
+        self.build(menu_factory=True)
+        row = self.projection()
+        self.assertEqual(row['schema'], 'ck3-shared-host-running-date-support-v2')
+        self.assertEqual(row['canonical_menu_factory'], pin(source))
+        self.assertEqual(HostRunningDateProjectionV1.parse(json.loads(json.dumps(row))).to_json(), row)
+        validate_host_running_date_projection(pin(self.output / 'host-support-projection.json'),
+                                             self.output / 'shared-host.py', MACHINE)
+        tree = ast.parse((self.output / 'shared-host.py').read_bytes())
+        native = next(node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == 'native_server')
+        branch = next(node for node in native.body if isinstance(node, ast.If)
+                      and 'frontend_mod_load_observation' in ast.unparse(node.test))
+        code = ast.fix_missing_locations(ast.Module(body=[branch], type_ignores=[]))
+        stock = ModuleType('xar_autoplayer.bridge.mcp_server')
+        campaign = ModuleType('registration_mcp')
+        stock.__dict__['create_server'] = object()
+        campaign.__dict__['create_server'] = object()
+        from types import SimpleNamespace
+        for frontend in (False, True):
+            namespace: dict[str, object] = {'args': SimpleNamespace(frontend_mod_load_observation=frontend,
+                                                                   saved_campaign_server=True)}
+            with patch.dict(sys.modules, {'xar_autoplayer.bridge.mcp_server': stock, 'registration_mcp': campaign}):
+                exec(compile(code, 'actual-projected-factory', 'exec'), namespace)
+            self.assertIs(namespace['create_server'], (stock if frontend else campaign).__dict__['create_server'])
+        changed = (self.output / 'shared-host.py').read_bytes().replace(b"'frontend_mod_load_observation'", b"'saved_campaign_server'")
+        (self.output / 'shared-host.py').write_bytes(changed)
+        with self.assertRaises(ValueError):
+            validate_host_running_date_projection(pin(self.output / 'host-support-projection.json'),
+                                                 self.output / 'shared-host.py', MACHINE)
+
+    def test_menu_factory_rejects_source_change_and_boolean_pin_size(self) -> None:
+        source = self.add_menu_source()
+        source.write_text('def native_server(args):\n    from registration_mcp import create_server\n', encoding='utf-8')
+        with self.assertRaisesRegex(ValueError, 'committed source'):
+            self.build(menu_factory=True)
+        with self.assertRaises(ValueError):
+            project_running_date_host(self.base_raw, pin(self.canonical),
+                                      {**pin(source), 'bytes': True})
 
     def test_real_builder_to_validator_preserves_sdk_native_game_and_original_host(self) -> None:
         runtime_path = self.build()

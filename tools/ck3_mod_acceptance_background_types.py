@@ -316,6 +316,8 @@ RUNNING_DATE_BASE_HOST_SHA256: Final = '776fc23d6a0d7913df96e1799ae25b5021db99b7
 RUNNING_DATE_SUPPORT_FILENAME: Final = 'campaign_running_date_publication_v1.py'
 RUNNING_DATE_SUPPORT_RELATIVE: Final = 'ck3_autonomous_player/src/xar_autoplayer/bridge/' + RUNNING_DATE_SUPPORT_FILENAME
 RUNNING_DATE_PROJECTION_SCHEMA: Final = 'ck3-shared-host-running-date-support-v1'
+MENU_FACTORY_PROJECTION_SCHEMA: Final = 'ck3-shared-host-running-date-support-v2'
+MENU_FACTORY_SOURCE_RELATIVE: Final = 'ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py'
 
 
 def _host_support_pin(value: object) -> FilePin:
@@ -347,7 +349,7 @@ def _running_date_function(raw: bytes) -> bytes:
     return b''.join(raw.splitlines(keepends=True)[node.lineno - 1:node.end_lineno])
 
 
-def project_running_date_host(base: bytes, helper: FilePin) -> bytes:
+def project_running_date_host(base: bytes, helper: FilePin, menu_factory: FilePin | None = None) -> bytes:
     """Replace one approved definition; every other byte round-trips exactly."""
     helper = _host_support_pin(helper)
     if hashlib.sha256(base).hexdigest() != RUNNING_DATE_BASE_HOST_SHA256:
@@ -395,6 +397,31 @@ def project_running_date_host(base: bytes, helper: FilePin) -> bytes:
     ast.parse(output.decode('utf-8-sig'))
     if output.count(projected) != 1 or output.replace(projected, original, 1) != base:
         raise ValueError('Host-support projection cannot restore the exact original host')
+    if menu_factory is not None:
+        reference = checked_host_support_pin(menu_factory)
+        source = Path(reference['path'])
+        if not source.as_posix().endswith('/' + MENU_FACTORY_SOURCE_RELATIVE):
+            raise ValueError('Canonical public menu factory source path differs')
+        source_tree = ast.parse(source.read_bytes())
+        functions = [node for node in source_tree.body if isinstance(node, ast.FunctionDef) and node.name == 'native_server']
+        imports = [node for node in functions[0].body if isinstance(node, ast.ImportFrom)
+                   and node.module == 'xar_autoplayer.bridge.mcp_server'
+                   and [(alias.name, alias.asname) for alias in node.names] == [('create_server', None)]] if len(functions) == 1 else []
+        if len(imports) != 1:
+            raise ValueError('Canonical public native server lacks its exact stock factory import')
+        old_import = ('    from registration_mcp import create_server' + newline).encode()
+        stock_import = ast.get_source_segment(source.read_text(encoding='utf-8-sig'), imports[0])
+        if stock_import != 'from xar_autoplayer.bridge.mcp_server import create_server':
+            raise ValueError('Canonical public stock factory statement differs')
+        replacement_import = ("    if getattr(args, 'frontend_mod_load_observation', False):" + newline
+                              + '        ' + stock_import + newline + '    else:' + newline
+                              + '        from registration_mcp import create_server' + newline).encode()
+        if output.count(old_import) != 1:
+            raise ValueError('Exactly one original campaign factory import required')
+        output = output.replace(old_import, replacement_import, 1)
+        if output.replace(replacement_import, old_import, 1).replace(projected, original, 1) != base:
+            raise ValueError('Menu factory projection cannot restore exact original host')
+        ast.parse(output.decode('utf-8-sig'))
     return output
 
 
@@ -410,14 +437,17 @@ class HostRunningDateProjectionV1:
     projected_host: FilePin
     producer: FilePin
     projector: FilePin
+    canonical_menu_factory: FilePin | None = None
 
     @classmethod
     def parse(cls, value: object) -> HostRunningDateProjectionV1:
         row = json_object(value)
         pins = ('base_host', 'canonical_helper', 'helper', 'projected_host', 'producer', 'projector')
-        if set(row) != {'schema', 'machine_id', 'source_commit', 'source_git_blob', 'observed_at_utc', *pins}:
+        menu = row.get('schema') == MENU_FACTORY_PROJECTION_SCHEMA
+        extra = {'canonical_menu_factory'} if menu else set()
+        if set(row) != {'schema', 'machine_id', 'source_commit', 'source_git_blob', 'observed_at_utc', *pins, *extra}:
             raise ValueError('Exact shared host-support projection fields required')
-        if row['schema'] != RUNNING_DATE_PROJECTION_SCHEMA:
+        if row['schema'] not in (RUNNING_DATE_PROJECTION_SCHEMA, MENU_FACTORY_PROJECTION_SCHEMA):
             raise ValueError('Unsupported shared host-support projection schema')
         machine, commit, blob = row['machine_id'], row['source_commit'], row['source_git_blob']
         if type(machine) is not str or not isinstance(machine, str) or not machine or '\0' in machine:
@@ -434,16 +464,22 @@ class HostRunningDateProjectionV1:
         instant = datetime.fromisoformat(observed.replace('Z', '+00:00'))
         if instant > datetime.now(timezone.utc):
             raise ValueError('Host-support observation cannot be in the future')
-        return cls(machine, commit, blob, observed, *[_host_support_pin(row[key]) for key in pins])
+        return cls(machine, commit, blob, observed,
+                   base_host=_host_support_pin(row['base_host']), canonical_helper=_host_support_pin(row['canonical_helper']),
+                   helper=_host_support_pin(row['helper']), projected_host=_host_support_pin(row['projected_host']),
+                   producer=_host_support_pin(row['producer']), projector=_host_support_pin(row['projector']),
+                   canonical_menu_factory=_host_support_pin(row['canonical_menu_factory']) if menu else None)
 
     def to_json(self) -> JsonObject:
-        row: JsonObject = {'schema': RUNNING_DATE_PROJECTION_SCHEMA, 'machine_id': self.machine_id,
+        row: JsonObject = {'schema': MENU_FACTORY_PROJECTION_SCHEMA if self.canonical_menu_factory is not None else RUNNING_DATE_PROJECTION_SCHEMA, 'machine_id': self.machine_id,
                            'source_commit': self.source_commit, 'source_git_blob': self.source_git_blob,
                            'observed_at_utc': self.observed_at_utc}
         for key, value in (('base_host', self.base_host), ('canonical_helper', self.canonical_helper),
                            ('helper', self.helper), ('projected_host', self.projected_host),
                            ('producer', self.producer), ('projector', self.projector)):
             row[key] = json_object(value)
+        if self.canonical_menu_factory is not None:
+            row['canonical_menu_factory'] = json_object(self.canonical_menu_factory)
         return row
 
 
@@ -454,6 +490,8 @@ def validate_host_running_date_projection(reference: object, host: Path, machine
     if type(machine_id) is not str or row.machine_id != machine_id:
         raise ValueError('Host-support projection crossed the actual machine')
     refs = [row.base_host, row.canonical_helper, row.helper, row.projected_host, row.producer, row.projector]
+    if row.canonical_menu_factory is not None:
+        refs.append(row.canonical_menu_factory)
     for ref in refs:
         checked_host_support_pin(ref)
     if Path(row.projected_host['path']).resolve() != host.resolve():
@@ -466,7 +504,7 @@ def validate_host_running_date_projection(reference: object, host: Path, machine
         raise ValueError('Host support is not a byte-exact canonical source snapshot')
     if hashlib.sha256(Path(__file__).read_bytes()).hexdigest() != row.projector['sha256']:
         raise ValueError('Loaded host projector differs from declared canonical source')
-    expected = project_running_date_host(Path(row.base_host['path']).read_bytes(), row.helper)
+    expected = project_running_date_host(Path(row.base_host['path']).read_bytes(), row.helper, row.canonical_menu_factory)
     if host.read_bytes() != expected:
         raise ValueError('Shared host changes exceed the exact supported definition projection')
     return [receipt, *refs]

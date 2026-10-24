@@ -1,5 +1,6 @@
 """A failed host before CK3 startup can release resources without business credit."""
 import json
+import copy
 from pathlib import Path
 import sys
 import tempfile
@@ -93,6 +94,120 @@ class PrelaunchHostFailureTests(unittest.TestCase):
              patch.object(allocation, 'runtime_process_inventory', return_value={'blockers': []}):
             return allocation.previous_prelaunch_host_failure_closure(
                 self.run, self.freeze, self.close, self.keeper, self.release, self.bus)
+
+    def menu_initialization_failure(self) -> None:
+        """Authored minimal replay of actual R0036's pre-session report/stack shape."""
+        live = self.root / 'R0084'
+        state = Path(self.freeze['state_dir'])
+        self.freeze.update(identity_allocation={'machine_id': 'machine-test'}, source_root=str(self.root / 'sdk'))
+        selected = self.root / 'host.py'
+        selected.write_text('# exact selected host fixture\n')
+        argv = ['python', '-B', '-X', 'utf8', str(selected), '--frontend-mod-load-observation']
+        self.freeze['argv'] = argv
+        files = {str(selected.resolve()): {key: value for key, value in allocation.pin(selected).items() if key != 'path'}}
+        identity = {}
+        for path_key, sha_key in (('game_executable', 'game_sha256'), ('dll', 'dll_sha256'), ('injector', 'injector_sha256')):
+            path = self.root / path_key
+            path.write_bytes(b'never execute authored native identity')
+            reference = allocation.pin(path)
+            files[str(path.resolve())] = {key: value for key, value in reference.items() if key != 'path'}
+            identity.update({path_key: str(path), sha_key: reference['sha256']})
+        self.freeze['files'] = files
+        runtime_manifest = {'path': str(self.root / 'manifest.json'), 'bytes': 2, 'sha256': 'a' * 64}
+        self.freeze['runtime_manifest'] = runtime_manifest
+        frozen = self.write(live / 'frozen-argv.json', self.freeze)
+        prepared_path = state.parent / 'prepared/prepared-case.json'
+        prepared = self.write(prepared_path, {'startup': {'mode': 'workshop_cache'}, 'runtime_manifest': runtime_manifest})
+        self.menu_refs = {
+            'frozen_argv': frozen,
+            'ready_context': self.write(live / 'ready-context.json', {'run_id': live.name,
+                'run_dir': str(live), 'keeper_root': str(self.keeper), 'frozen_argv': frozen, 'prepared_case': prepared}),
+            'prepared_case': prepared,
+            'host_started': self.write(live / 'host-started.json', {'run_id': live.name, 'pid': 42,
+                'supervisor_pid': 43, 'argv': argv, 'actual_popen_retained': True}),
+            'host_exit': self.bundle['host_exit'], 'host_supervisor': self.bundle['host_supervisor'],
+            'keeper_report': self.bundle['keeper_report'], 'keeper_parent_exit': self.bundle['keeper_parent_exit'],
+            'keeper_process': self.write(live / 'keeper-process.json', {'pid': 44}),
+        }
+        self.menu_report = {'status': 'RED', 'phase': 'initializing-mcp', 'error': 'ExceptionGroup: original factory failed',
+            'finished_at': '2026-10-24T03:00:41.073202+00:00', 'steps': [], 'session': {'report': None, 'error': None},
+            'managed_session_done': False, 'managed_session_thread_finished': False, 'cleanup_ok': False,
+            'frontend_mod_load_launch': {'status': 'WAITING_FOR_ACTUAL_SINGLE_MENU_LAUNCH'},
+            'state_dir': str(state), 'agent_source_root': self.freeze['source_root'], 'identity': identity,
+            'native_wire': str(live / 'native-report.native-wire.jsonl')}
+        self.menu_refs['native_report'] = self.write(live / 'native-report.json', self.menu_report)
+        stderr = live / 'native-report.server-stderr.log'
+        stderr.write_text('in native_server\nregistration_mcp.py\ncontrols = Controls(service, driver)\n'
+                          'driver.episode_projection == "native_campaign"\nValueError: One original ordinary service/driver\n')
+        self.menu_refs['server_stderr'] = allocation.pin(stderr)
+        failure = 'ValueError: Actual shared host failed; preserve error and do not replay'
+        self.menu_refs['readiness_result'] = self.write(live / 'case-output/readiness-window-result.json',
+            {'status': 'READINESS_ERROR', 'binding': {'run_id': live.name}, 'error': failure})
+        self.menu_refs['entry_result'] = self.write(live / 'case-output/entry-run-result.json',
+            {'run_id': live.name, 'case_error': failure, 'business_acceptance': 'RED_OR_INCOMPLETE'})
+        self.bundle = {'schema': 'ck3-mod-acceptance-prelaunch-host-failure-closure-v1',
+            'closure_kind': 'menu-mcp-initialization-before-native-session', 'machine_id': 'machine-test',
+            'observed_at_utc': '2026-10-24T03:10:00+00:00', 'run_id': live.name, 'keeper_root': str(self.keeper),
+            'normal_close_qualified': False, 'typed_normal_exit_proven': False, 'business_pass': False,
+            'release_pass': False, 'native_cleanup_qualified': None, 'original_evidence': self.menu_refs}
+        self.release = {'task': {'last_sequence': 11, 'state': 'done', 'resources': []}}
+        self.save()
+
+    def check_menu(self):
+        with patch.object(allocation, 'closed_lease', return_value=True), \
+             patch.object(allocation, 'runtime_process_inventory', return_value={'blockers': []}), \
+             patch('psutil.pid_exists', return_value=False):
+            return allocation.previous_prelaunch_host_failure_closure(
+                self.run, self.freeze, self.close, self.keeper, self.release, self.bus)
+
+    def test_r36_shape_preserves_false_cleanup_and_no_game_exit_credit(self):
+        self.menu_initialization_failure()
+        result = self.check_menu()['failure_cleanup']
+        self.assertFalse(result['original_cleanup_ok'])
+        self.assertIsNone(result['original_ck3_exit_code'])
+        self.assertIsNone(result['native_cleanup_qualified'])
+        self.assertFalse(result['normal_close_qualified'])
+        self.assertFalse(result['business_pass'])
+
+    def test_menu_failure_rejects_native_session_or_faked_complete_report(self):
+        self.menu_initialization_failure()
+        original = copy.deepcopy(self.menu_report)
+        for change in ({'session': {'report': {'pid': 7}, 'error': None}}, {'cleanup_ok': True},
+                       {'managed_session_thread_finished': True}, {'phase': 'native-ready'},
+                       {'frontend_mod_load_launch': {'status': 'ACTUAL_SINGLE_MENU_LAUNCH_RECORDED'}}, {'readiness': None}):
+            with self.subTest(change=change):
+                self.menu_refs['native_report'] = self.write(self.run / 'native-report.json', {**original, **change})
+                self.save()
+                with self.assertRaises(ValueError):
+                    self.check_menu()
+
+    def test_menu_failure_rejects_native_wire_wrong_factory_and_boolean_wait(self):
+        self.menu_initialization_failure()
+        wire = self.run / 'native-report.native-wire.jsonl'
+        wire.write_text('{"type":"hello"}\n')
+        with self.assertRaisesRegex(ValueError, 'native communication'):
+            self.check_menu()
+        wire.unlink()
+        self.exited['returncode'] = True
+        self.menu_refs['host_exit'] = self.write(self.run / 'host-original-process-exit.json', self.exited)
+        self.save()
+        with self.assertRaisesRegex(ValueError, 'Popen wait1'):
+            self.check_menu()
+
+    def test_menu_failure_rejects_unknown_fields_and_actual_process_presence(self):
+        self.menu_initialization_failure()
+        self.bundle['unknown'] = True
+        self.save()
+        with self.assertRaisesRegex(ValueError, 'Exact menu'):
+            self.check_menu()
+        del self.bundle['unknown']
+        self.save()
+        with patch.object(allocation, 'closed_lease', return_value=True), \
+             patch.object(allocation, 'runtime_process_inventory', return_value={'blockers': ['actual CK3']}), \
+             patch('psutil.pid_exists', return_value=False):
+            with self.assertRaisesRegex(ValueError, 'absence not proven'):
+                allocation.previous_prelaunch_host_failure_closure(
+                    self.run, self.freeze, self.close, self.keeper, self.release, self.bus)
 
     def test_saved_registrar_failure_accepts_actual_split_popen_shape(self):
         # Synthetic paths/lease, actual R0014 intent/process/wait field layout.

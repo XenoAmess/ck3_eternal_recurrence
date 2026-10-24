@@ -1,7 +1,7 @@
 """One shared allocation followed immediately by the existing screen keeper."""
 from __future__ import annotations
 from ck3_mod_acceptance_launcher_protocol_v1 import BACKGROUND_CLOSURE_SCHEMAS_V1
-from ck3_mod_acceptance_background_types import FilePin, JsonObject, json_object, CONTROL_QUEUE_MODULE_ORDER_V1
+from ck3_mod_acceptance_background_types import FilePin, JsonObject, json_object, file_pin, object_field, text_field, strings_field, CONTROL_QUEUE_MODULE_ORDER_V1
 from ck3_mod_acceptance_fresh_machine_bootstrap import (
     FRESH_ADMISSION_MODE, FRESH_BOOTSTRAP_SCHEMA, MachineBinding,
     require_empty_machine_history, validate_fresh_bootstrap, create_current_process_observation,
@@ -467,11 +467,135 @@ def _prelaunch_public_completion(value: object, mode: Literal['run', 'allocate']
     return argv
 
 
+def previous_menu_initialization_failure(previous: Path, freeze: dict[str, object], bundle: object,
+        close_path: Path, keeper_root: Path, release: dict[str, object], bus_packet: dict[str, object]) -> dict[str, object]:
+    """Admit only the observed pre-game campaign-factory failure, never native cleanup."""
+    import psutil
+    value = json_object(bundle)
+    frozen = json_object(freeze)
+    evidence = object_field(value, 'original_evidence')
+    required = {'frozen_argv', 'ready_context', 'prepared_case', 'host_started', 'host_exit', 'host_supervisor',
+                'native_report', 'server_stderr', 'readiness_result', 'entry_result',
+                'keeper_report', 'keeper_parent_exit', 'keeper_process'}
+    if (set(value) != {'schema', 'closure_kind', 'machine_id', 'observed_at_utc', 'run_id', 'keeper_root',
+                       'normal_close_qualified', 'typed_normal_exit_proven', 'business_pass', 'release_pass',
+                       'native_cleanup_qualified', 'original_evidence'} or set(evidence) != required):
+        raise ValueError('Exact menu initialization closure fields required')
+    machine = text_field(object_field(frozen, 'identity_allocation'), 'machine_id')
+    run_id = text_field(frozen, 'run_id')
+    if (value.get('schema') != 'ck3-mod-acceptance-prelaunch-host-failure-closure-v1'
+            or value.get('closure_kind') != 'menu-mcp-initialization-before-native-session'
+            or value.get('machine_id') != machine or value.get('run_id') != run_id
+            or Path(text_field(value, 'keeper_root')).resolve() != keeper_root.resolve()
+            or any(value.get(key) is not False for key in ('normal_close_qualified', 'typed_normal_exit_proven', 'business_pass', 'release_pass'))
+            or 'native_cleanup_qualified' not in value or value['native_cleanup_qualified'] is not None):
+        raise ValueError('Menu initialization failure identity/negative qualification differs')
+    stamp = datetime.fromisoformat(text_field(value, 'observed_at_utc'))
+    if stamp.tzinfo is None or stamp.utcoffset() is None:
+        raise ValueError('Menu failure observation requires an actual timezone')
+
+    def original(key: str, expected: Path, *, decode: bool = True) -> JsonObject:
+        ref = file_pin(evidence.get(key))
+        if Path(ref['path']).resolve() != expected.resolve() or ref['bytes'] > 1048576:
+            raise ValueError('Menu failure original path/bound differs: ' + key)
+        check_pin(expected, dict(ref))
+        return json_object(json.loads(expected.read_bytes())) if decode else {}
+
+    original('frozen_argv', previous / 'frozen-argv.json')
+    ready = original('ready_context', previous / 'ready-context.json')
+    if (ready.get('run_id') != run_id or ready.get('frozen_argv') != evidence['frozen_argv']
+            or Path(text_field(ready, 'run_dir')).resolve() != previous.resolve()
+            or Path(text_field(ready, 'keeper_root')).resolve() != keeper_root.resolve()):
+        raise ValueError('Menu failure READY/frozen binding differs')
+    prepared = original('prepared_case', Path(text_field(object_field(ready, 'prepared_case'), 'path')))
+    if (object_field(prepared, 'startup').get('mode') != 'workshop_cache'
+            or prepared.get('runtime_manifest') != frozen.get('runtime_manifest')
+            or ready.get('prepared_case') != evidence['prepared_case']):
+        raise ValueError('Menu failure is not the actual prepared cache boundary')
+    host = original('host_started', previous / 'host-started.json')
+    exited = original('host_exit', previous / 'host-original-process-exit.json')
+    supervisor = original('host_supervisor', previous / 'host-supervisor-started.json')
+    if (host.get('run_id') != run_id or exited.get('run_id') != run_id
+            or host.get('argv') != frozen.get('argv') or host.get('actual_popen_retained') is not True
+            or exited.get('actual_original_popen_wait') is not True or type(exited.get('returncode')) is not int
+            or exited['returncode'] != 1 or exited.get('pid') != host.get('pid')
+            or exited.get('normal_ck3_exit_inferred') is not False):
+        raise ValueError('Menu failure lacks its original host Popen wait1')
+    report = original('native_report', previous / 'native-report.json')
+    original('server_stderr', previous / 'native-report.server-stderr.log', decode=False)
+    stderr = (previous / 'native-report.server-stderr.log').read_text(encoding='utf-8-sig')
+    if (stderr.splitlines()[-1:] != ['ValueError: One original ordinary service/driver']
+            or not all(fragment in stderr for fragment in ('registration_mcp.py', 'controls = Controls(service, driver)',
+                'driver.episode_projection == "native_campaign"', 'in native_server'))):
+        raise ValueError('Menu failure is not the exact observed campaign factory rejection')
+    if (report.get('status') != 'RED' or report.get('phase') != 'initializing-mcp' or not report.get('error')
+            or not report.get('finished_at') or report.get('steps') != []
+            or report.get('session') != {'report': None, 'error': None}
+            or any(report.get(key) is not False for key in ('managed_session_done', 'managed_session_thread_finished', 'cleanup_ok'))
+            or report.get('frontend_mod_load_launch') != {'status': 'WAITING_FOR_ACTUAL_SINGLE_MENU_LAUNCH'}
+            or 'readiness' in report or Path(text_field(report, 'state_dir')).resolve() != Path(text_field(frozen, 'state_dir')).resolve()
+            or Path(text_field(report, 'agent_source_root')).resolve() != Path(text_field(frozen, 'source_root')).resolve()):
+        raise ValueError('Menu failure report does not prove the native session was never started')
+    native_wire = Path(text_field(report, 'native_wire'))
+    if native_wire.resolve() != (previous / 'native-report.native-wire.jsonl').resolve() or (native_wire.exists() and native_wire.stat().st_size):
+        raise ValueError('Menu failure has native communication evidence')
+    argv = strings_field(frozen, 'argv')
+    if argv.count('--frontend-mod-load-observation') != 1 or '--frontend-fixture-start-policy' in argv or '--saved-campaign-server' in argv:
+        raise ValueError('Menu failure crossed a campaign startup')
+    files = object_field(frozen, 'files')
+    selected_host = Path(argv[4]).resolve()
+    check_pin(selected_host, object_field(files, str(selected_host)))
+    identity = object_field(report, 'identity')
+    for path_key, sha_key in (('game_executable', 'game_sha256'), ('dll', 'dll_sha256'), ('injector', 'injector_sha256')):
+        path = Path(text_field(identity, path_key)).resolve()
+        ref = object_field(files, str(path))
+        if ref.get('sha256') != identity.get(sha_key):
+            raise ValueError('Menu failure frozen native/game identity differs')
+        check_pin(path, ref)
+    readiness = original('readiness_result', previous / 'case-output/readiness-window-result.json')
+    entry = original('entry_result', previous / 'case-output/entry-run-result.json')
+    if (readiness.get('status') != 'READINESS_ERROR' or object_field(readiness, 'binding').get('run_id') != run_id
+            or readiness.get('error') != 'ValueError: Actual shared host failed; preserve error and do not replay'
+            or entry.get('run_id') != run_id or entry.get('case_error') != readiness['error']
+            or entry.get('business_acceptance') != 'RED_OR_INCOMPLETE'):
+        raise ValueError('Menu failure original public readiness error differs')
+    keeper = original('keeper_report', keeper_root / 'report.json')
+    waited = original('keeper_parent_exit', previous / 'keeper-actual-parent-exit.json')
+    keeper_process = original('keeper_process', previous / 'keeper-process.json')
+    if (waited.get('run_id') != run_id or type(waited.get('keeper_actual_exit_code')) is not int
+            or waited['keeper_actual_exit_code'] != 0 or waited.get('keeper_report') != keeper
+            or keeper.get('task_id') != frozen.get('screen_task') or keeper.get('thread_exited') is not True
+            or keeper.get('failure') is not None or keeper.get('entry_error') is not None
+            or not closed_lease(keeper, release, frozen['screen_task'])):
+        raise ValueError('Menu failure actual keeper wait/release differs')
+    tasks = bus_packet.get('tasks')
+    task = object_field(json_object(release), 'task')
+    if not isinstance(tasks, list) or any(not isinstance(row, dict) or 'ck3-screen:acquired' in row.get('resources', []) for row in tasks) or task.get('state') != 'done' or task.get('resources') != []:
+        raise ValueError('Menu failure actual screen remains owned')
+    for process in (host, supervisor, keeper_process):
+        pid = process.get('pid')
+        if type(pid) is not int or not isinstance(pid, int) or pid <= 0 or psutil.pid_exists(pid):
+            raise ValueError('Menu failure original host/supervisor/keeper process remains')
+    state = Path(text_field(frozen, 'state_dir'))
+    absent = {name: not (state / 'control' / name).exists() for name in ('ck3.json', 'unsafe-cleanup.json')}
+    absent['watchdog-*.ready.json'] = not list((state / 'control').glob('watchdog-*.ready.json'))
+    inventory = runtime_process_inventory(psutil, os.getpid())
+    if not all(absent.values()) or inventory['blockers']:
+        raise ValueError('Menu failure Game/runtime/control absence not proven')
+    return {'mode': 'previous-shared-menu-initialization-failure', 'actual_process_inventory': inventory,
+        'failure_cleanup': {'close': pin(close_path), 'original_evidence': evidence, 'original_host_exit_code': 1,
+            'original_host_wait_proven': True, 'original_ck3_exit_code': None, 'native_cleanup_qualified': None,
+            'normal_close_qualified': False, 'typed_normal_exit_proven': False, 'business_pass': False,
+            'release_pass': False, 'original_cleanup_ok': False, 'administrative_resource_admission_only': True}}
+
+
 def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, object], close_path: Path,
                                             keeper_root: Path, release: dict[str, object],
                                             bus_packet: dict[str, object]) -> dict[str, object]:
     """Release a host that exited before game launch; grant no native or normal-exit credit."""
     bundle=read_json(close_path)
+    if bundle.get('closure_kind') == 'menu-mcp-initialization-before-native-session':
+        return previous_menu_initialization_failure(previous, freeze, bundle, close_path, keeper_root, release, bus_packet)
     require(bundle.get('schema')=='ck3-mod-acceptance-prelaunch-host-failure-closure-v1' and
             bundle.get('run_id')==freeze['run_id'] and
             Path(bundle.get('keeper_root','')).resolve()==keeper_root.resolve() and
