@@ -289,6 +289,7 @@ class OperatorQuitTests(unittest.TestCase):
             root=Path(directory)
             launcher=root/'synthetic-launcher.py';launcher.write_text('SYNTHETIC ONLY')
             selected=self.entry.Selection.__new__(self.entry.Selection)
+            selected.case={'required_mcp_tools':[]}
             selected.preflight=lambda:{'blockers':[]}
             selected.context={'run_id':'SYNTHETIC_FAILED_ENTRY','keeper_root':str(root/'keeper'),
                 'steam_offline_receipt':str(write_unavailable_receipt_fixture(

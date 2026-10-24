@@ -125,6 +125,21 @@
       "builder": "mod_li_yu_dao/tools/build_release.py",
       "release_flags": ["--output", "{new-output}"],
       "publication": "0.1.0 Beta; initial public Workshop baseline"
+    },
+    {
+      "key": "dynastic-esotericism",
+      "directory": "mod_dynastic_esotericism",
+      "workshop_item_id": null,
+      "forbidden_upstream_ids": [],
+      "builder": "mod_dynastic_esotericism/tools/pom.xml",
+      "release_flags": [
+        "--release-localization",
+        "--output",
+        "{new-output}",
+        "--git-tag",
+        "{matching-product-tag}"
+      ],
+      "publication": "Not published; first Workshop item ID remains null until actual CreateItem. Java/Quarkus release builder is compiled through this Maven POM."
     }
   ]
 }

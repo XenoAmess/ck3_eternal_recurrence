@@ -1,0 +1,83 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T13:21:54.460248+00:00",
+  "scope": "Shared typed normal-close software route and complete existing offline CI command group; live qualification pending",
+  "normal_close_group_tests": 40,
+  "normal_close_group_skipped": 0,
+  "strict_scope": {
+    "actual_AST": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\normal-close-typed-a01\\typed_normal_quit_scope.py",
+      "bytes": 16586,
+      "sha256": "5bb5b374e201f2e71c39bf076f85ab624db453463885aa70fd64125182f4a099"
+    },
+    "stdout": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\normal-close-typed-a01\\scope-strict-03.stdout.log",
+      "bytes": 43,
+      "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff"
+    },
+    "exit_code": 0,
+    "whole_old_module_claimed_strict": false
+  },
+  "whole_old_module_claimed_strict": false,
+  "command_count": 91,
+  "all_commands_final_exit_code_zero": true,
+  "execution": "Preserved stopped attempts and bounded continuations; external exact commands 20 35 46 67; prior RED retained.",
+  "prior_red_count": 10,
+  "full_index": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\normal-close-typed-a01\\FINAL-SHARED-STEP-91.actual.json",
+    "bytes": 99973,
+    "sha256": "9f94f11ec2a55366431da5d344f452cbc84d1d8f92b461e81d932aee75208d64"
+  },
+  "normal_source_pins": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_client.py",
+      "bytes": 89020,
+      "sha256": "0316d57729c6f729f23b6649a1beb609cfa9a696f0b4bf5e842895461b139a20"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_normal_close.py",
+      "bytes": 27688,
+      "sha256": "f4f266b7c4ed1293d61036268492753e5f55121f97260347e032b142b71dbb91"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_operator_quit.py",
+      "bytes": 32640,
+      "sha256": "4feb2935b32df53bc533fe980c618f6d2dcc2366e490777af778bee275c2dd0a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_adapters.py",
+      "bytes": 53717,
+      "sha256": "ad47c56bf954fd1732ceccd00bd8668fd623f0ea7142b5247cdb09416127ebd4"
+    }
+  ],
+  "selector_fixture": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\shared-selection-config-fix-a01\\FINAL.actual.json",
+    "bytes": 1392,
+    "sha256": "97f321a253acda0163ea75e1605a4012ce2be2ed048ef661722f518d5db917e9"
+  },
+  "cache_fixture": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\cache-selection-config-fix-a01\\FINAL.actual.json",
+    "bytes": 1202,
+    "sha256": "76e3358001d99fd0e8bc9bffcf87fb49d597650214ddf35893f75f3b91a49bbf"
+  },
+  "manual_fixture": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\manual-exit-fixture-helper-fix-a01\\FINAL.actual.json",
+    "bytes": 1251,
+    "sha256": "a2748aafc7db3fc59fea50f796b156c933d399894bf05d64cdbd170afe2fb1ef"
+  },
+  "prepare_source_compatibility": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\prepare-compat-a01\\source-delivery.json",
+    "bytes": 3126,
+    "sha256": "d95ddcbe3ced23fcd6791f1a8d309ce8170358ce517f2ff048b1e8647a6e0e00"
+  },
+  "hosted_product_ci": {
+    "commit": "5c6cc6548a1d947bc9de77c406004e7fb7409267",
+    "run": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40095993005",
+    "conclusion": "success",
+    "runner_machine_id": "unknown"
+  },
+  "R0003_normal_close_qualified": false,
+  "autosave_verified": false,
+  "business_pass": false,
+  "release_pass": false
+}

@@ -129,3 +129,9 @@ fixture 决议也通过公共原生决议工具依次打开、query、select、c
 3. `old_save_bootstrap`：Java 追加 `--case old_save_bootstrap`，同样生成无启动 registrar 的被动 fixture；加载上一步真正保存的无产品母档，这次挂正式 staging。新进程中依次操作 `des_acceptance_legacy_before_decision`、原版公开正式 `des_initialize_decision`、`des_acceptance_legacy_after_decision`，分别留存初始化前后真实状态及 Save。上限 2 自然日。绝不通过删除 `des_initialized` 造旧档。
 
 这些 case 的 hold 预算在各自分配前固定：cold 与 seed 为 900 秒，旧档初始化为 1800 秒，均保留 180 秒正常退出；case 的整体 timeout 为 3600 秒。每次分配都使用当前最新真实机器 admission/释放回执并重新核存储与后台 Steam 离线。准备或回执形状通过不代表已经实际完成这些场次。发布前须按测试方案完成三条链；多人仍只如实记录实际测试边界。发布缓存阶段只核真实下载文件与正式 staging 一致以及 CK3 实际加载，遵守项目现行规则，不重跑业务。
+
+### 原生正常退出路由（后继候选）
+
+R0003证明同handle退出0，但原正常闭场因宿主错误及缺少路由证据仍为false。后继共享CaseClient增加独立typed路由；正常关闭组40项与原共享step全部91条命令已实际通过（分次修复后汇总，原RED保留），不追认R0003。`autosave_verified=false`按SDK表示没有保存完整性资格，即使关闭退出自动存档也保持false；真正Save与独立保存读回另验。
+
+业务场景完成后，等本次CaseClient写出`normal-quit-awaiting.json`，在其原deadline内走同一queue：新query→prepare_confirmation一次；pending后仅query，确认stage0已消费、stage1可用才continue_preparation一次；新query见真实确认框后disable_exit_autosave一次（should_save已false时保留原生已关闭观察）；再新query取新context signature→confirm_desktop一次；pending后仅observe_normal_exit_v1收集同原handle到实际exit0。未知或已消费stage不重放。不先退出游戏再调用normal_close。新的路由保留GUI review=null，并独立消费原fact/close/claim/profile/source inventory；原finish_hold仅一次，最后仍要求原handleOS0、无host error、完整native清理。

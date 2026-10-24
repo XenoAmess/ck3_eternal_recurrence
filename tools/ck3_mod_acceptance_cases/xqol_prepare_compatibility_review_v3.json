@@ -1,0 +1,67 @@
+{
+  "schema": "ck3-xqol-reviewed-prepare-compatibility-v3",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "reviewed_at_utc": "2026-10-24T13:08:10.525583+00:00",
+  "before": {
+    "commit": "044c7b28309c720199d7e40e01495bf4cc87bd1e",
+    "bytes": 14430,
+    "sha256": "37d74c8703c809575f9ecebe89475fb8ff05fe6cd4aecdd54e0ec65d57e6e55b"
+  },
+  "after": {
+    "bytes": 21863,
+    "sha256": "1894d45fc33394599c63810c4858ec2f51b26d6790a03db1128ffe74f4ceaac7"
+  },
+  "source_changes": [
+    "49ff4326475fababf5b9e61236f5195b36200434"
+  ],
+  "review": "Reviewed the complete prepare diff: the Java-produced prebuilt fixture importer is an explicit separate entrypoint with exact manifest, machine, source-pin and complete file-closure validation. Existing XQOL fixture materialization and v1 startup policy bodies are unchanged. FilePin annotations, restored-file runtime validation and JSON inventory validation preserve valid original inputs. All seven cases retain their emitter path, budgets, fixture bytes and support guards. Exact inverse restores the v2 reviewed source, then the existing v2 proof restores prior and original source. This is support-source compatibility only and grants no CK3 or business acceptance. Saved-campaign inventory-v2 remains in the generic adapter; this prepare diff does not change its original saved-product schemas.",
+  "inverse_fragments": [
+    {
+      "review": "Typed prebuilt-fixture imports only",
+      "old": "",
+      "reviewed_current": "from datetime import datetime\nfrom typing import Literal, TypedDict\n\nfrom ck3_mod_acceptance_background_types import FilePin, JsonObject, file_pin, json_object, object_field, text_field\n"
+    },
+    {
+      "review": "Explicit opt-in prebuilt manifest importer and require annotation",
+      "old": "def require(value, message):\n",
+      "reviewed_current": "class PrebuiltFixtureReceipt(TypedDict):\n    required_markers: list[str]\n    required_product_markers_minimum: dict[str, int]\n    fixture_contains_business_effects: bool\n\n\nclass PrebuiltFixtureMaterialization(TypedDict):\n    manifest: FilePin\n    producer_source_pins: list[FilePin]\n    machine_id: str\n    observed_at_utc: str\n    game_started: Literal[False]\n    business_acceptance: Literal['NOT_ASSESSED']\n\n\ndef _prebuilt_checked_pin(value: object) -> FilePin:\n    row = json_object(value)\n    if set(row) != {'path', 'bytes', 'sha256'}:\n        raise ValueError('Prebuilt fixture file pin fields differ')\n    expected = file_pin(row)\n    actual = pin(expected['path'])\n    if actual != expected:\n        raise ValueError('Prebuilt fixture frozen file changed: ' + expected['path'])\n    return expected\n\n\ndef _prebuilt_relative_path(value: str) -> Path:\n    if (not value or '\\\\' in value or ':' in value or value.startswith('/')\n            or any(part in ('', '.', '..') for part in value.split('/'))):\n        raise ValueError('Prebuilt fixture requires a canonical relative file path')\n    return Path(*value.split('/'))\n\n\ndef materialize_prebuilt_fixture(\n    context: JsonObject, manifest_value: object, destination: Path,\n) -> tuple[Path, PrebuiltFixtureReceipt, PrebuiltFixtureMaterialization]:\n    \"\"\"Import an exact pre-generated fixture without running another interpreter.\n\n    The producer may be Java or another existing non-Python build tool. Its\n    immutable manifest, complete file closure and source pins are validated\n    before copying; the ordinary shared profile builder remains authoritative.\n    \"\"\"\n    manifest_pin = _prebuilt_checked_pin(manifest_value)\n    row = json_object(json.loads(Path(manifest_pin['path']).read_text(encoding='utf-8-sig')))\n    fields = {'schema', 'product', 'case_id', 'machine_id', 'observed_at_utc',\n              'fixture_root', 'producer_source_pins', 'files', 'receipt'}\n    if (set(row) != fields or row.get('schema') != 'ck3-mod-acceptance-prebuilt-fixture-v1'\n            or row.get('product') != context.get('product') or row.get('case_id') != context.get('case')):\n        raise ValueError('Prebuilt fixture crossed product/case/schema')\n    shared_pin = _prebuilt_checked_pin(context.get('runtime_manifest'))\n    shared = json_object(json.loads(Path(shared_pin['path']).read_text(encoding='utf-8-sig')))\n    machine = text_field(row, 'machine_id')\n    if machine != shared.get('machine_id'):\n        raise ValueError('Prebuilt fixture belongs to another execution machine')\n    stamp = text_field(row, 'observed_at_utc')\n    if datetime.fromisoformat(stamp.replace('Z', '+00:00')).utcoffset() is None:\n        raise ValueError('Prebuilt fixture timestamp needs an explicit timezone')\n    source_values = row.get('producer_source_pins')\n    if not isinstance(source_values, list) or not 1 <= len(source_values) <= 64:\n        raise ValueError('Prebuilt fixture producer source pins required')\n    source_pins = [_prebuilt_checked_pin(value) for value in source_values]\n    if len({value['path'] for value in source_pins}) != len(source_pins):\n        raise ValueError('Prebuilt fixture producer source pins repeat')\n    repo = Path(text_field(context, 'repo_root')).resolve()\n    if any(not Path(value['path']).resolve().is_relative_to(repo) for value in source_pins):\n        raise ValueError('Prebuilt fixture producer is outside the selected repository')\n    root_value = text_field(row, 'fixture_root')\n    if not Path(root_value).is_absolute():\n        raise ValueError('Prebuilt fixture root must be absolute')\n    source_root = Path(root_value)\n    root = source_root.resolve()\n    if not root.is_dir() or source_root.is_symlink() or source_root.is_junction():\n        raise ValueError('Prebuilt fixture requires an ordinary directory')\n    files = object_field(row, 'files')\n    if not files or len(files) > 1024 or 'descriptor.mod' not in files:\n        raise ValueError('Prebuilt fixture needs its complete bounded file closure')\n    declared: dict[str, FilePin] = {}\n    for relative, value in files.items():\n        path = root / _prebuilt_relative_path(relative)\n        expected = json_object(value)\n        if set(expected) != {'bytes', 'sha256'}:\n            raise ValueError('Prebuilt fixture inventory fields differ')\n        declared[relative] = file_pin({'path': str(path), **expected})\n    actual_paths: set[str] = set()\n    for path in root.rglob('*'):\n        if path.is_symlink() or path.is_junction():\n            raise ValueError('Prebuilt fixture cannot follow filesystem links')\n        if path.is_file():\n            actual_paths.add(path.relative_to(root).as_posix())\n    if actual_paths != set(declared):\n        raise ValueError('Prebuilt fixture inventory differs from actual files')\n    for expected_pin in declared.values():\n        _prebuilt_checked_pin(expected_pin)\n    receipt_row = object_field(row, 'receipt')\n    if set(receipt_row) != {'required_markers', 'required_product_markers_minimum', 'fixture_contains_business_effects'}:\n        raise ValueError('Prebuilt fixture receipt fields differ')\n    marker_values = receipt_row.get('required_markers')\n    if (not isinstance(marker_values, list) or not marker_values\n            or any(not isinstance(value, str) or not value for value in marker_values)):\n        raise ValueError('Prebuilt fixture requires actual assertion marker names')\n    markers = [value for value in marker_values if isinstance(value, str)]\n    if len(set(markers)) != len(markers):\n        raise ValueError('Prebuilt fixture assertion markers repeat')\n    minima: dict[str, int] = {}\n    for key, value in object_field(receipt_row, 'required_product_markers_minimum').items():\n        if type(value) is not int or not isinstance(value, int) or value <= 0:\n            raise ValueError('Prebuilt fixture marker minima must be positive integers')\n        minima[key] = value\n    business_effects = receipt_row.get('fixture_contains_business_effects')\n    if type(business_effects) is not bool or not isinstance(business_effects, bool):\n        raise ValueError('Prebuilt fixture business-effect flag must be Boolean')\n    receipt = PrebuiltFixtureReceipt(required_markers=markers,\n        required_product_markers_minimum=minima, fixture_contains_business_effects=business_effects)\n    if destination.exists() or destination.is_symlink() or destination.is_junction():\n        raise ValueError('Unused prebuilt fixture destination required')\n    destination.mkdir(parents=True)\n    for relative, expected_pin in declared.items():\n        target = destination / _prebuilt_relative_path(relative)\n        copied = checked_copy(expected_pin, target)\n        if copied['bytes'] != expected_pin['bytes'] or copied['sha256'] != expected_pin['sha256']:\n            raise ValueError('Prebuilt fixture copy differs from its frozen inventory')\n    materialized = PrebuiltFixtureMaterialization(manifest=manifest_pin,\n        producer_source_pins=source_pins, machine_id=machine, observed_at_utc=stamp,\n        game_started=False, business_acceptance='NOT_ASSESSED')\n    return destination, receipt, materialized\n\n\ndef require(value: object, message: str) -> None:\n"
+    },
+    {
+      "review": "FilePin return annotation",
+      "old": "def pin(path):\n",
+      "reviewed_current": "def pin(path: str | Path) -> FilePin:\n"
+    },
+    {
+      "review": "FilePin checked-copy annotation",
+      "old": "def checked_copy(row,target):\n",
+      "reviewed_current": "def checked_copy(row: FilePin, target: str | Path) -> FilePin:\n"
+    },
+    {
+      "review": "Validate restored FilePin at JSON boundary",
+      "old": "        checked_copy({'path':str(source),**{key:row[key] for key in ('bytes','sha256')}},profile/relative)\n",
+      "reviewed_current": "        checked_copy(file_pin({'path':str(source),'bytes':row['bytes'],'sha256':row['sha256']}),profile/relative)\n"
+    },
+    {
+      "review": "Validate vanilla inventory JSON domain",
+      "old": "        inventory={'schema':'ck3-saved-campaign-vanilla-profile-v1','profile_path':str(profile.resolve()),\n                   'enabled_mods':[],'product_files':[]}\n",
+      "reviewed_current": "        inventory=json_object({'schema':'ck3-saved-campaign-vanilla-profile-v1','profile_path':str(profile.resolve()),\n                   'enabled_mods':[],'product_files':[]})\n"
+    },
+    {
+      "review": "Validate product inventory JSON domain opening",
+      "old": "    inventory={'schema':('ck3-workshop-cache-product-only-profile-v1' if workshop_cache_files is not None else\n",
+      "reviewed_current": "    inventory=json_object({'schema':('ck3-workshop-cache-product-only-profile-v1' if workshop_cache_files is not None else\n"
+    },
+    {
+      "review": "Validate product inventory JSON domain closing",
+      "old": "               'enabled_mods':['mod/product.mod'],'product_files':products}\n",
+      "reviewed_current": "               'enabled_mods':['mod/product.mod'],'product_files':products})\n"
+    }
+  ],
+  "failed_ci": {
+    "source_head": "c8a8318960c034180a55ac33f227270d2989454e",
+    "step": "Test shared CK3 acceptance without installed CK3",
+    "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_xqol_followups.py",
+    "observed_at_utc": "2026-10-24T13:03:12.104695+00:00",
+    "evidence": "C:/ck3-dynastic-esotericism-20261024/normal-close-typed-a01/shared-ci-step-05/035.stderr.log"
+  }
+}

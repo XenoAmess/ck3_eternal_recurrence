@@ -9,6 +9,7 @@ import io
 from pathlib import Path
 from types import SimpleNamespace
 import unittest
+from ck3_mod_acceptance_background_types import json_object
 
 SOURCE = Path(__file__).resolve().parent / 'ck3_mod_acceptance_client.py'
 
@@ -26,7 +27,7 @@ def normal_close_method(clock):
     def no_review(_):
         raise AssertionError('No GUI result may be manufactured')
 
-    namespace = dict(require=require, read_json=no_review, time=clock)
+    namespace = dict(require=require, read_json=no_review, time=clock, json_object=json_object)
     exec(compile(ast.Module(body=methods, type_ignores=[]), str(SOURCE), 'exec'), namespace)
     return namespace['normal_close']
 

@@ -29,3 +29,7 @@ SDK的19项礼仪回归及4项共享服务绑定回归通过；真实运行解�
 2026-10-24T12:38Z 恢复执行：机器身份重新核验为 `desktop-3fevhd2-1c74096080`，实际 EXE SHA 与 1.20.0.4/build25734779 基线一致，后台 Steam 新观察为 offline；无 CK3 进程。任务容量已从关闭状态重新原子准入到 r1158/storage46，期限2026-10-25T07:30Z。R0003 的公共 verify 实际退出2，case/gui/business/release均未通过；其真实原生同handle退出0与资源闭场消费者通过只授资源结束，原业务RED及normal-close=false保留。见[R0003摘要](acceptance/R0003-2026-10-24.json)。四个fixture修正与新等待规则已形成3592360干净候选，正在重新Maven构建；共享正常闭场typed路由和完整回归仍在施工。尚未分配下一场或发布Workshop。
 
 2026-10-24T12:43Z 离线增量完成：新干净候选Java构建15项JUnit通过，15打包资源、17文件正式开发包/ZIP和13文件core fixture逐字节一致；已线性rebase并推送master b4a58ed38。R0001旧GUI和R0003真实typed原件均通过共享资源消费者，资源22项、同CI step余13+12及历史20项通过，strict仅覆盖8个完整实际定义与实际分派。详见[恢复构建与typed闭场](acceptance/resumed-fixture-and-typed-closure-2026-10-24.json)。不授业务或正常闭场通过，原R3 RED不变；下一场所需无错误typed正常闭场仍在完整共享CI验证中。
+
+2026-10-24T13:19Z 共享正常关闭软件路径完成：新增独立typed路由，实际保留原handle精确FILETIME，校验原fact/close/once claim与冻结profile/source inventory；GUI review仍为null，autosave完整性资格仍false。正常关闭原组40项及7个完整新增顶层定义strict通过。原共享CI step全部91条命令均已真实执行并取得0，期间环境依赖和旧fixture/source兼容失败分次修复，原RED保留；不将它们写成一次无失败执行或实机通过。尚待全新runtime、R0004实际业务与正常退出验收。
+
+完整命令及修复出处见[typed正常闭场与91条共享CI](acceptance/typed-normal-close-and-full-shared-ci-2026-10-24.json)。Windows短TEMP修复后的5c6cc产品CI已实际success，远端runner机器ID未采集；不外推为本机游戏通过。

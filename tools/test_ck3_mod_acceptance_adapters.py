@@ -37,6 +37,7 @@ class Focused(unittest.TestCase):
             plan=root/'readonly.json'
             prep.write_json(plan,{'steps':[{'tool':'ck3_take_snapshot'}]})
             selected=object.__new__(entry.Selection)
+            selected.adapter_config=None
             selected.opt_in_read_only_mcp_tools=[]
             # This pure build_argv fixture bypasses __init__; retain every
             # explicitly initialized provider opt-in used by build_argv.

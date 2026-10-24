@@ -271,10 +271,14 @@ class WorkshopCacheTests(unittest.TestCase):
         registry_path = ROOT / 'tools/ck3_mod_acceptance_products.json'
         canonical_keys = [row['key'] for row in self.registry['products']]
         canonical = {row['key']: row for row in self.registry['products']}
-        shared_products = adapter.read_json(registry_path)['products']
+        shared_catalog = adapter.read_json(registry_path)
+        shared_products = shared_catalog['products']
         self.assertTrue(canonical_keys)
         self.assertEqual(len(canonical_keys), len(set(canonical_keys)))
         self.assertEqual(set(canonical_keys), set(shared_products))
+        base_tests.stage_registry_adapter_configs(ROOT, fixture.locations['repo'],
+            {key: {'cases': [case for case in shared_products[key]['cases'] if case['id'] == 'workshop_cache']
+                   or [shared_catalog['workshop_cache_case']]} for key in canonical_keys})
         selections = [entry.Selection(fixture.runtime_path, registry_path, key, 'workshop_cache')
                       for key in canonical_keys]
         self.assertEqual({selected.product_key for selected in selections}, set(canonical_keys))

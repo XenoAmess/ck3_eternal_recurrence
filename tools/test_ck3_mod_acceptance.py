@@ -9,10 +9,40 @@ import sys
 import tempfile
 import unittest
 from ck3_mod_acceptance_test_background_fixture import write_unavailable_receipt_fixture
+from ck3_mod_acceptance_background_types import json_object, text_field
 
 spec = importlib.util.spec_from_file_location('entry_under_test', Path(__file__).with_name('ck3_mod_acceptance.py'))
 entry = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(entry)
+
+
+def stage_registry_adapter_configs(repo: Path, target_repo: Path, products_value: object) -> set[Path]:
+    """Copy the exact declared static JSON inputs for actual Selection construction."""
+    references: set[str] = set()
+    for product_value in json_object(products_value).values():
+        cases = json_object(product_value).get('cases')
+        if not isinstance(cases, list):
+            raise ValueError('Canonical product cases must be a list')
+        for case_value in cases:
+            case = json_object(case_value)
+            if 'adapter' in case:
+                references.add(text_field(json_object(case['adapter']), 'config'))
+    staged: set[Path] = set()
+    for reference in sorted(references):
+        if reference.startswith('{repo_root}/'):
+            relative = Path(reference.removeprefix('{repo_root}/'))
+        elif reference.startswith('tools/'):
+            relative = Path(reference)
+        else:
+            raise ValueError('Canonical static adapter config must be repository-relative: ' + reference)
+        source, target = (repo / relative).resolve(), (target_repo / relative).resolve()
+        if (not source.is_relative_to(repo.resolve()) or not target.is_relative_to(target_repo.resolve())
+                or source.suffix != '.json'):
+            raise ValueError('Canonical static adapter config must stay below the fixture repository')
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(source.read_bytes())
+        staged.add(target)
+    return staged
 
 
 class SharedEntryTests(unittest.TestCase):
@@ -431,12 +461,16 @@ print(json.dumps({'running_inputs':qualified['_runtime_input_observation'],'reco
                 with self.assertRaisesRegex(ValueError, 'cannot select shared runtime'):
                     self.select()
 
-    def test_all_canonical_products_and_cases_select_the_same_runtime(self):
+    def test_all_canonical_products_and_cases_select_the_same_runtime(self) -> None:
         repo = Path(__file__).resolve().parents[1]
         canonical = {row['key']: row for row in entry.read_json(repo / 'workshop/products.json')['products']}
         registry_path = repo / 'tools/ck3_mod_acceptance_products.json'
         products = entry.read_json(registry_path)['products']
         self.assertEqual(set(products), set(canonical), 'Every player product must use the shared registry')
+        # Selection reads each declared static adapter contract while building
+        # its host argv. Stage only those exact registry inputs in this authored
+        # repo; the separate runtime, source and native identities stay synthetic.
+        stage_registry_adapter_configs(repo, self.locations['repo'], products)
         runtime_choices = set()
         for key, product in products.items():
             self.assertEqual(product['workshop_item_id'], canonical[key]['workshop_item_id'])

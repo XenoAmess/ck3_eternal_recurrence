@@ -6,12 +6,260 @@ import json
 import os
 from pathlib import Path
 from collections.abc import Mapping, Sequence
+from typing import Literal, Protocol, TypedDict, runtime_checkable
 from ck3_mod_acceptance_background_types import (
     CONTROL_QUEUE_MODULE_ORDER_V1, ControlQueueBindingV1, FilePin, keyed_file_pin, json_object,
-    WireEvidenceSource, wire_evidence_codec, wire_evidence_source)
+    JsonObject, file_pin, text_field, WireEvidenceSource, wire_evidence_codec, wire_evidence_source)
 from ck3_mod_acceptance_native_day import (STEP as NATIVE_DAY_STEP, need, obj, integer, native_day_advertised, latest_frame, frame_owner, project_native_day, native_day_request_count, fresh_native_day_before, project_pre_day_event_boundary)
 import subprocess
 import time
+
+
+class TypedNormalQuitEvidenceV1(TypedDict):
+    schema: Literal['ck3-mod-acceptance-typed-normal-quit-v1']
+    run_id: str
+    machine_id: str
+    observed_at_utc: str
+    terminal_step_id: str
+    process_creation_filetime_100ns: str
+    profile: FilePin
+    source_inventory: FilePin
+    source_index: FilePin
+    source_modules: list[FilePin]
+    terminal_fact: FilePin
+    observer_close: FilePin
+    claim: FilePin
+    autosave_disabled: FilePin
+    autosave_verified: Literal[False]
+
+
+@runtime_checkable
+class NormalQuitDecodedV2(Protocol):
+    def to_memory(self) -> dict[str, object]: ...
+
+
+@runtime_checkable
+class NormalQuitCodecV2(Protocol):
+    def parse_normal_exit_public_result_v2(self, value: object) -> NormalQuitDecodedV2: ...
+    def normal_exit_public_result_v2(self, value: object) -> dict[str, object]: ...
+
+
+def _typed_quit_pairs(pairs: list[tuple[str, object]]) -> dict[str, object]:
+    row: dict[str, object] = {}
+    for key, value in pairs:
+        if key in row:
+            raise ValueError('Typed normal Quit original contains duplicate JSON keys')
+        row[key] = value
+    return row
+
+
+def _typed_quit_original(path: Path, reference: object = None) -> tuple[FilePin, JsonObject]:
+    """Small immutable metadata only; never reopen a game or observe an old PID."""
+    if not path.is_absolute() or path.is_symlink() or not path.is_file() or path.stat().st_size > 2 * 1024 * 1024:
+        raise ValueError('Typed normal Quit requires a bounded original metadata file')
+    raw = path.read_bytes()
+    actual = FilePin(path=str(path.resolve()), bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest())
+    if reference is not None:
+        declared = file_pin(reference)
+        if set(json_object(reference)) != {'path', 'bytes', 'sha256'} or declared != actual:
+            raise ValueError('Typed normal Quit original pin changed: ' + str(path))
+    return actual, json_object(json.loads(raw, object_pairs_hook=_typed_quit_pairs))
+
+
+def _typed_quit_codec(source_root: Path, index_path: Path, reference: object) -> tuple[NormalQuitCodecV2, FilePin, list[FilePin]]:
+    """Load only the three original SDK codec leaves from its frozen source index."""
+    import sys
+    import types
+    import uuid
+    index_pin, index = _typed_quit_original(index_path, reference)
+    rows = index.get('files')
+    if not isinstance(rows, list):
+        raise ValueError('Typed normal Quit frozen SDK source index is missing')
+    sources = [file_pin(row) for row in rows]
+    directory = source_root / 'ck3_autonomous_player/src/xar_autoplayer/bridge'
+    names = ('normal_exit_process_observer_v1', 'normal_exit_contract_v1', 'normal_exit_public_wire_v2')
+    namespace = '_normal_quit_codec_' + uuid.uuid4().hex
+    package = types.ModuleType(namespace)
+    package.__path__ = []
+    sys.modules[namespace] = package
+    loaded: list[str] = [namespace]
+    pins: list[FilePin] = []
+    try:
+        for name in names:
+            path = (directory / (name + '.py')).resolve()
+            matches = [row for row in sources if Path(row['path']).resolve() == path]
+            if len(matches) != 1:
+                raise ValueError('Typed normal Quit SDK leaf is not uniquely frozen: ' + name)
+            row = matches[0]
+            raw = path.read_bytes()
+            if path.is_symlink() or len(raw) != row['bytes'] or hashlib.sha256(raw).hexdigest() != row['sha256']:
+                raise ValueError('Typed normal Quit SDK source changed: ' + name)
+            module = types.ModuleType(namespace + '.' + name)
+            module.__file__ = str(path)
+            module.__package__ = namespace
+            sys.modules[module.__name__] = module
+            loaded.append(module.__name__)
+            exec(compile(raw, str(path), 'exec'), module.__dict__)
+            pins.append(row)
+        if not isinstance(module, NormalQuitCodecV2):
+            raise ValueError('Selected normal Quit SDK codec API differs')
+        return module, index_pin, pins
+    finally:
+        for name in reversed(loaded):
+            sys.modules.pop(name, None)
+
+
+def typed_normal_quit_evidence_v1(report_value: object, *, live: Path, state: Path,
+        retained_value: object, context_value: object, frozen_value: object,
+        source_root: Path, source_index: Path, source_index_reference: object) -> TypedNormalQuitEvidenceV1 | None:
+    """Join a clean public terminal result to SDK originals and this allocated profile.
+
+    This is route evidence only. The caller still needs its independently retained
+    OS handle, the host's full native0 predicate, finish_hold and final cleanup.
+    """
+    report = json_object(report_value)
+    if report.get('error') or report.get('status') in ('ERROR', 'RED'):
+        return None
+    rows_value = report.get('steps', [])
+    if not isinstance(rows_value, list):
+        raise ValueError('Typed normal Quit report steps must be a list')
+    rows = [json_object(row) for row in rows_value]
+    candidates = [row for row in rows if isinstance(row.get('result'), dict)
+                  and json_object(row['result']).get('typed_normal_exit_observed') is True]
+    if not candidates:
+        return None
+    if len(candidates) != 1:
+        raise ValueError('Typed normal Quit terminal evidence is ambiguous')
+    row = candidates[0]
+    if row.get('ok') is not True or not row.get('finished_at'):
+        raise ValueError('Typed normal Quit needs the completed successful original host step')
+    retained, context, frozen = map(json_object, (retained_value, context_value, frozen_value))
+    birth, pid = retained.get('creation_filetime_100ns'), retained.get('pid')
+    if (not isinstance(birth, str) or not birth.isdecimal() or str(int(birth)) != birth or not 0 < int(birth) < 2**64
+            or type(pid) is not int or retained.get('retained_synchronize_query_handle_acquired') is not True
+            or context.get('run_id') != frozen.get('run_id') or context.get('run_id') != live.name):
+        raise ValueError('Typed normal Quit lacks the original retained process birth/run')
+    codec, index_pin, sdk_pins = _typed_quit_codec(source_root, source_index, source_index_reference)
+    wire = json_object(row['result'])
+    memory = json_object(codec.parse_normal_exit_public_result_v2(wire).to_memory())
+    plan = json_object(row.get('plan'))
+    expected_tool = ('ck3_observe_normal_exit_v1' if memory.get('schema') ==
+                     'ck3-normal-exit-process-observation-result-v1' else 'ck3_request_normal_exit_v1')
+    if plan.get('tool') != expected_tool:
+        raise ValueError('Typed normal Quit terminal evidence used another public tool')
+    native, preconfirm = json_object(memory.get('native_observation')), json_object(memory.get('process_preconfirm_pin'))
+    if (memory.get('status') != 'process_exit_observed_zero' or memory.get('typed_normal_exit_observed') is not True
+            or memory.get('process_creation_filetime_100ns') != int(birth) or preconfirm.get('pid') != pid
+            or native.get('game_pid') != pid or memory.get('autosave_verified') is not False
+            or memory.get('observer_retained') is not False):
+        raise ValueError('Typed normal Quit terminal result differs from retained process/observer cleanup')
+    directory = (state / 'native-session/normal-exit-map-requests').resolve()
+    request_id = text_field(memory, 'request_id')
+
+    def original(value: object) -> tuple[FilePin, JsonObject]:
+        if not isinstance(value, str) or Path(value).resolve().parent != directory:
+            raise ValueError('Typed normal Quit original escaped this allocated native session')
+        return _typed_quit_original(Path(value))
+
+    fact_path = memory.get('receipt_path', str(directory / (request_id + '.result.json')))
+    fact_pin, fact = original(fact_path)
+    expected = dict(memory)
+    expected.pop('observer_close_receipt_path', None)
+    expected['observer_retained'] = True  # SDK fsyncs the fact before closing its handle.
+    if fact != expected or codec.normal_exit_public_result_v2(fact).get('typed_normal_exit_observed') is not True:
+        raise ValueError('Typed normal Quit result differs from its original durable SDK fact')
+    close_pin, close = original(memory.get('observer_close_receipt_path'))
+    if (set(close) != {'schema', 'reason', 'fact_receipt_path', 'pid', 'creation_filetime_100ns',
+                      'retained_handle_token', 'close_error', 'retry_authorized'}
+            or close.get('schema') != 'ck3-normal-exit-observer-close-v1'
+            or close.get('reason') != 'independent_exit_fact_preserved'
+            or close.get('fact_receipt_path') != fact_pin['path'] or type(close.get('pid')) is not int or close.get('pid') != pid
+            or type(close.get('creation_filetime_100ns')) is not int or close.get('creation_filetime_100ns') != int(birth)
+            or close.get('retained_handle_token') != preconfirm.get('retained_handle_token')
+            or close.get('close_error') is not None or close.get('retry_authorized') is not False):
+        raise ValueError('Typed normal Quit original observer close identity differs')
+    identity = {'game_pid': pid, 'creation_filetime_100ns': int(birth), 'action': 'confirm_desktop'}
+    claim_key = hashlib.sha256(json.dumps(identity, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+    claim_pin, claim = original(memory.get('claim_path'))
+    if (set(claim) != {'schema', 'identity', 'request_id', 'status', 'exit_context_signature',
+                      'source_inventory_sha256', 'process_preconfirm_pin'}
+            or Path(claim_pin['path']).name != claim_key + '.claim.json'
+            or claim.get('schema') != 'ck3-normal-exit-once-claim-v1' or claim.get('identity') != identity
+            or claim.get('request_id') != request_id or claim.get('status') != 'claimed_result_unknown_no_retry'
+            or claim.get('exit_context_signature') != native.get('exit_context_signature')
+            or claim.get('source_inventory_sha256') != memory.get('source_inventory_sha256')
+            or claim.get('process_preconfirm_pin') != preconfirm):
+        raise ValueError('Typed normal Quit original one-shot claim differs')
+    if (json.dumps(claim['identity'], sort_keys=True) != json.dumps(identity, sort_keys=True)
+            or json.dumps(claim['process_preconfirm_pin'], sort_keys=True) != json.dumps(preconfirm, sort_keys=True)):
+        raise ValueError('Typed normal Quit claim contains different JSON identity types')
+    confirms = [r for r in rows if isinstance(r.get('plan'), dict)
+                and json_object(r['plan']).get('tool') == 'ck3_request_normal_exit_v1'
+                and json_object(json_object(r['plan']).get('args')).get('action') == 'confirm_desktop']
+    if len(confirms) != 1:
+        raise ValueError('Typed normal Quit requires exactly one original desktop confirmation')
+    confirm = confirms[0]
+    confirm_result = json_object(codec.parse_normal_exit_public_result_v2(confirm.get('result')).to_memory())
+    confirm_args = json_object(json_object(confirm['plan']).get('args'))
+    if (confirm.get('ok') is not True or not confirm.get('finished_at') or confirm_result.get('request_id') != request_id
+            or confirm_result.get('native_observation') != native or confirm_result.get('process_preconfirm_pin') != preconfirm
+            or confirm_args.get('expected_exit_context_signature') != native.get('exit_context_signature')
+            or confirm_args.get('expected_revision') != wire.get('public_revision')
+            or confirm_result.get('native_submission_count') != 1):
+        raise ValueError('Typed normal Quit original desktop confirmation binding differs')
+    profile_ref = file_pin(context.get('normal_exit_managed_profile'))
+    profile_pin, profile = _typed_quit_original(Path(profile_ref['path']), profile_ref)
+    argv = frozen.get('argv')
+    if not isinstance(argv, list) or any(not isinstance(arg, str) for arg in argv):
+        raise ValueError('Typed normal Quit original host argv is missing')
+    if (argv.count('--normal-exit-managed-profile') != 1 or argv.count('--normal-exit-managed-profile-sha256') != 1
+            or argv[argv.index('--normal-exit-managed-profile') + 1] != profile_pin['path']
+            or argv[argv.index('--normal-exit-managed-profile-sha256') + 1] != profile_pin['sha256']
+            or Path(text_field(profile, 'state_directory')).resolve() != state.resolve()
+            or Path(text_field(profile, 'userdir')).resolve() != state.resolve() / 'profile'):
+        raise ValueError('Typed normal Quit managed profile differs from frozen host/state')
+    inventory_ref = json_object(profile.get('normal_exit_source_inventory'))
+    inventory_pin, inventory = _typed_quit_original(Path(text_field(inventory_ref, 'path')))
+    if (set(inventory_ref) != {'path', 'sha256'} or inventory_pin['sha256'] != inventory_ref.get('sha256')
+            or memory.get('source_inventory_sha256') != inventory_pin['sha256']
+            or inventory.get('schema') != 'ck3-normal-exit-source-inventory-v1'
+            or Path(inventory_pin['path']) != state.resolve() / 'profile/normal-exit-source-inventory-v1.json'
+            or inventory.get('userdir') != profile.get('userdir')):
+        raise ValueError('Typed normal Quit source inventory differs from allocated profile')
+    from_profile = {key: profile[key] for key in ('schema_version', 'guard_profile', 'guard_profile_sha256',
+        'userdir', 'evidence_directory', 'game_version', 'state_directory', 'dll', 'injector')}
+    projection = json.dumps(from_profile, sort_keys=True, ensure_ascii=False, separators=(',', ':')).encode('utf-8')
+    if inventory.get('profile_binding_sha256') != hashlib.sha256(projection).hexdigest():
+        raise ValueError('Typed normal Quit source inventory profile projection differs')
+    disabled_rows = [r for r in rows if isinstance(r.get('result'), dict)
+                     and json_object(r['result']).get('action') == 'disable_exit_autosave']
+    if len(disabled_rows) != 1:
+        raise ValueError('Typed normal Quit requires the original exit-autosave false observation')
+    disabled_row = disabled_rows[0]
+    disabled = json_object(codec.parse_normal_exit_public_result_v2(disabled_row.get('result')).to_memory())
+    disabled_native = json_object(disabled.get('native_observation'))
+    disable_pin, disable_fact = original(str(directory / (text_field(disabled, 'request_id') + '.result.json')))
+    autosave = json_object(native.get('exit_autosave'))
+    if (disabled_row.get('ok') is not True or not disabled_row.get('finished_at') or disable_fact != disabled
+            or disabled.get('status') != 'autosave_disabled' or disabled.get('exit_autosave_disabled_observed') is not True
+            or disabled.get('process_creation_filetime_100ns') != int(birth)
+            or disabled.get('public_revision') != memory.get('public_revision')
+            or disabled_native.get('game_pid') != pid
+            or disabled_native.get('connection_generation') != native.get('connection_generation')
+            or disabled_native.get('played_character_id') != native.get('played_character_id')
+            or disabled.get('source_inventory_sha256') != inventory_pin['sha256']
+            or any(autosave.get(key) is not True for key in ('state_available', 'control_visible', 'control_enabled'))
+            or autosave.get('should_save') is not False):
+        raise ValueError('Typed normal Quit exit-autosave false postcondition differs')
+    if rows.index(disabled_row) >= rows.index(confirm) or rows.index(confirm) > rows.index(row):
+        raise ValueError('Typed normal Quit original action ordering differs')
+    return TypedNormalQuitEvidenceV1(schema='ck3-mod-acceptance-typed-normal-quit-v1', run_id=live.name,
+        machine_id=text_field(json_object(frozen.get('identity_allocation')), 'machine_id'),
+        observed_at_utc=datetime.now(timezone.utc).isoformat(),
+        terminal_step_id=text_field(row, 'id'), process_creation_filetime_100ns=birth,
+        profile=profile_pin, source_inventory=inventory_pin, source_index=index_pin, source_modules=sdk_pins,
+        terminal_fact=fact_pin, observer_close=close_pin, claim=claim_pin, autosave_disabled=disable_pin,
+        autosave_verified=False)
 
 
 def require(value, message):
@@ -916,6 +1164,32 @@ class CaseClient:
         """Use the exact UI delegate, otherwise the validated actual run reviewer."""
         return self.resolve_operator_reviewer()
 
+    def typed_normal_quit_evidence(self, report: object) -> TypedNormalQuitEvidenceV1 | None:
+        """Consume public/native evidence; never synthesize an operator GUI review."""
+        # Ordinary GUI-only runs and failed hosts need no new source/profile fields.
+        value = json_object(report)
+        rows = value.get('steps', [])
+        if value.get('error') or not isinstance(rows, list) or not any(
+                isinstance(row, dict) and isinstance(row.get('result'), dict)
+                and row['result'].get('typed_normal_exit_observed') is True for row in rows):
+            return None
+        if 'creation_filetime_100ns' not in self._process:
+            import ctypes
+            from ctypes.wintypes import FILETIME
+            require(self._handle is not None, 'Typed normal Quit requires the original retained OS handle')
+            self._kernel.GetProcessTimes.argtypes = [ctypes.c_void_p, *([ctypes.POINTER(FILETIME)] * 4)]
+            self._kernel.GetProcessTimes.restype = ctypes.c_int
+            times = [FILETIME() for _ in range(4)]
+            require(self._kernel.GetProcessTimes(self._handle, *(ctypes.byref(item) for item in times)),
+                    'Original retained process creation FILETIME unavailable')
+            self._process['creation_filetime_100ns'] = str((times[0].dwHighDateTime << 32) | times[0].dwLowDateTime)
+        return typed_normal_quit_evidence_v1(value, live=self.live, state=self.state,
+            retained_value=self._process, context_value=self.context, frozen_value=self.frozen,
+            source_root=self.selection.manifest_path_key(self.manifest['source_root']),
+            source_index=self.selection.manifest_path_key(self.manifest['source_index']),
+            source_index_reference={'path':str(self.selection.manifest_path_key(self.manifest['source_index'])),
+                'bytes':self.manifest['source_index']['bytes'], 'sha256':self.manifest['source_index']['sha256']})
+
     def validate_manual_normal_quit_review(self, review, *, require_mapped=False):
         from ck3_mod_acceptance import check_pin
         require(isinstance(review,dict) and review.get('run_id')==self.frozen['run_id'] and
@@ -948,8 +1222,8 @@ class CaseClient:
             with Image.open(receipt[0]['path']) as image:image.verify()
         return review
 
-    def normal_close(self, disposition):
-        """Request normal GUI Quit, then prove retained OS0 and shared native0."""
+    def normal_close(self, disposition: str) -> JsonObject:
+        """Observe an original GUI or typed Quit route, retained OS0 and shared native0."""
         import ctypes
         require(self._handle is not None, 'No retained game handle; never manufacture OS exit')
         require(self._kernel.WaitForSingleObject(self._handle, 0) == 258,
@@ -958,12 +1232,13 @@ class CaseClient:
             'pid':self._process['pid'],'create_time':self._process['create_time'],
             'original_hold_deadline':self._hold,'disposition':disposition,
             'live':str(self.live.resolve()),'keeper_root':str(self.keeper.resolve()),'screen_task':self.frozen['screen_task'],
-            'action':'Authorized operator normal GUI Quit to desktop; preserve original images, mapped clicks and unchecked autosave state',
+            'action':'Authorized operator normal GUI Quit or public typed normal-exit route; preserve original route and unchecked autosave evidence',
             'host_error_preserved':self.read_report(allow_error=True).get('error')})
         print('CK3_ROOT_CHECKPOINT '+str(request),flush=True)
         response=self.output/'normal-quit-root-result.json'
         config = getattr(self.selection, 'normal_quit_automation', None)
         automation = None
+        typed_route = None
         report=self.read_report(allow_error=True)
         automation_failure = None
         manual_required = config is None
@@ -996,11 +1271,16 @@ class CaseClient:
                 'reviewer':self.normal_quit_reviewer(), 'pid':self._process['pid'],
                 'create_time':self._process['create_time'], 'original_hold_deadline':self._hold,
                 'response_path':str(response), 'automation_failure_preserved':str(automation_failure) if automation_failure else None,
-                'required_evidence':'Actual operator original unchecked screenshot and canonical final mapped Quit receipt; normal GUI Quit only',
+                'required_evidence':'Original operator GUI Quit review, or complete SDK typed normal-exit fact/claim/observer close bound to this allocated profile',
                 'helper_replay_or_new_budget':False, 'business_pass':False})
             print('CK3_MANUAL_QUIT_CHECKPOINT '+str(manual),flush=True)
             while self.remaining()>0 and not response.is_file():
                 report=self.read_report(allow_error=True)
+                if not report.get('error') and any(isinstance(row.get('result'), dict) and
+                        row['result'].get('typed_normal_exit_observed') is True for row in report.get('steps', [])):
+                    typed_route = self.typed_normal_quit_evidence(report)
+                if typed_route is not None:
+                    break
                 if self._kernel.WaitForSingleObject(self._handle,0)==0:
                     exit_code=ctypes.c_uint32()
                     if not self._kernel.GetExitCodeProcess(self._handle,ctypes.byref(exit_code)) or exit_code.value!=0:
@@ -1014,6 +1294,12 @@ class CaseClient:
         review=read_json(response) if manual_required and response.is_file() else None
         if review is not None:
             review=self.validate_manual_normal_quit_review(review, require_mapped=automation_failure is not None)
+        # A typed result can become available between the route loop and OS wait.
+        if typed_route is None:
+            route_report = self.read_report(allow_error=True)
+            if not route_report.get('error') and any(isinstance(row.get('result'), dict) and
+                    row['result'].get('typed_normal_exit_observed') is True for row in route_report.get('steps', [])):
+                typed_route = self.typed_normal_quit_evidence(route_report)
         while self.remaining()>0 and self._kernel.WaitForSingleObject(self._handle,0)==258:
             time.sleep(.1)
         signaled=self._kernel.WaitForSingleObject(self._handle,0)==0
@@ -1045,6 +1331,7 @@ class CaseClient:
             if report.get('finished_at'):break
             time.sleep(.1)
         result={'root_normal_gui_review':review,'operator_normal_gui_review':review,
+            'typed_normal_exit_route':typed_route,
             'normal_quit_automation':automation,'normal_quit_automation_failure_preserved':str(automation_failure) if automation_failure else None,
             'retained_handle':retained,'native_zero_proof':proof,
             'finish_hold_rows':finished,'host_finished_at':report.get('finished_at'),
@@ -1058,10 +1345,10 @@ class CaseClient:
                 isinstance(finished,list) and len(finished) == 1 and finished[0].get('ok') is True and
                 report.get('post_failure_exit_finish_hold',{}).get('proof') == failure_proof),
             'business_pass':False,
-            'normal_close_qualified':bool((review or automation) and os0 and proof is not None and report.get('finished_at') and
+            'normal_close_qualified':bool((review or automation or typed_route) and os0 and proof is not None and report.get('finished_at') and
                 report.get('managed_session_thread_finished') is True and report.get('cleanup_ok') is True and not report.get('error'))}
         self.checkpoint('normal-close-result',result)
-        return result
+        return json_object(result)
 
     def close_handle(self):
         if self._handle is not None:
