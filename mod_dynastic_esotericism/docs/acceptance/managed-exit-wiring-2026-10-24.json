@@ -1,0 +1,126 @@
+{
+  "schema": "ck3-allocated-normal-exit-profile-summary-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T10:56:54.052570+00:00",
+  "verification": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\allocated-normal-exit-final-a05\\verification.json",
+    "bytes": 15295,
+    "sha256": "9a75463013fc6dbb2fe10cde3b62394823b6ef82eb2dfba2623cb2bc5925e949"
+  },
+  "complete_dedicated_ci_step": true,
+  "command_exit_codes": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "unittests_passed": 33,
+  "scoped_production_types": [
+    "two complete exit SDK/queue modules",
+    "actual new allocator/main functions and Selection consumer AST",
+    "actual failed-host guard AST"
+  ],
+  "source_unchanged_during_final_step": true,
+  "git_head_before": "43ffc6b50b620afde646b996824a05188f671c28",
+  "git_head_after": "43ffc6b50b620afde646b996824a05188f671c28",
+  "source_pins": {
+    "tools/ck3_mod_acceptance.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+      "bytes": 90449,
+      "sha256": "b67980675f19f7b5c1abf5de3a0a2f6a52dd60fe895160a78878732a6a46de1e"
+    },
+    "tools/ck3_mod_acceptance_allocate.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_allocate.py",
+      "bytes": 248491,
+      "sha256": "6dc5930871766621fa6bbe3f1883fc63fa071ea8e5ef784170a127b9ee575e1a"
+    },
+    "tools/ck3_mod_acceptance_normal_exit_profile.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_normal_exit_profile.py",
+      "bytes": 6978,
+      "sha256": "440479fbb254117e2bdb656de89b0a5af0afa2bd52671f119fc565d699f6e218"
+    },
+    "tools/build_normal_exit_source_inventory_v1.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\build_normal_exit_source_inventory_v1.py",
+      "bytes": 5059,
+      "sha256": "60d2567cd65fc677c654c88be0b0c1820172795955e3e9c9e292e9de4c36a993"
+    },
+    "tools/test_ck3_mod_acceptance_allocated_normal_exit.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_allocated_normal_exit.py",
+      "bytes": 13021,
+      "sha256": "3f11547b4931daa4d1b9d9e87f5491cb336d13d89bc46c886490f2e9adfc2d83"
+    },
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/normal_exit_host_terminal_v1.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_host_terminal_v1.py",
+      "bytes": 7998,
+      "sha256": "a0c07cb90e2be72f3f54802e17660d41a4c00d7baad40bd2a18e2c8d7d96922f"
+    },
+    "tools/ck3_mod_acceptance_queue_control.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_queue_control.py",
+      "bytes": 4260,
+      "sha256": "7f2866a215bbc167b1bec14f113c453abf9aa8ec000b8c8cd6e96e3fde3af789"
+    },
+    "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 346767,
+      "sha256": "7bb3e33f245e6649acd22f6bc224fffd0e6cfc7b757de53eae69aa6aed91f3b7"
+    },
+    "tools/test_ck3_mod_acceptance_failed_host_normal_exit.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_failed_host_normal_exit.py",
+      "bytes": 18375,
+      "sha256": "699b98c7d92f8598a571ced7b910e3b5b8de6e6d8a58527e9be1ca8409942d03"
+    },
+    ".github/workflows/rite-confirmation-sdk.yml": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\.github\\workflows\\rite-confirmation-sdk.yml",
+      "bytes": 5082,
+      "sha256": "acd4413824630174b6ba198ce461593e731e8d7c96a3b5904ae7bc6f00b7af8f"
+    }
+  },
+  "environment_probe": {
+    "python": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\venv\\Scripts\\python.exe",
+    "psutil_version": "7.2.2",
+    "psutil_file": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\venv\\Lib\\site-packages\\psutil\\__init__.py"
+  },
+  "direct_dependency_added": "psutil==7.2.2, required by actual public allocator; isolated wheel install, no site-packages fallback",
+  "real_public_allocate_with_only_machine_keeper_process_seams_substituted": true,
+  "existing_create_profile_used_once": true,
+  "canonical_bind_and_original_launch_running_verifier_passed": true,
+  "old_profiles_untouched": true,
+  "real_game_started": false,
+  "original_R0001_requalified": false,
+  "earlier_red": [
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\allocated-normal-exit-a01\\initial.stderr.log",
+      "bytes": 4385,
+      "sha256": "a71baf4f33c97707ddae360b394c055fcdfd8bd83e32f0305555680d1004a011"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\allocated-normal-exit-a01\\with-psutil.stderr.log",
+      "bytes": 1583,
+      "sha256": "4ec09d229b9e061300df3753651204fd2dea8d665390ec2d6f5262f773acbae8"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\allocated-normal-exit-final-a03\\verification.json",
+      "bytes": 9405,
+      "sha256": "a402d802b81bbbadb1ff25da1e157fdab9ef05089e21bfe20793aa9aa006a101"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\allocated-normal-exit-final-a04\\verification.json",
+      "bytes": 9850,
+      "sha256": "551fe8fb33a236a885d305d7b1c8761a55d5d404de4b20aef2bc2bd38d9080fd"
+    }
+  ],
+  "storage_close": {
+    "C_free_bytes": 56811847680,
+    "isolated_root_bytes": 357294110,
+    "approved_subbudget_bytes": 536870912,
+    "review_at_utc": "2026-10-31T10:56:54.052570+00:00"
+  },
+  "previous_a03_head_transition": {
+    "start_head_from_reflog_time_recheck": "532099908d15e6bde69b0c6dbe4102db6c0ceca9",
+    "end_head": "43ffc6b50b620afde646b996824a05188f671c28",
+    "note": "Root committed at 10:46:41Z after test start 10:46:22Z; no source bytes drift. That attempt remained fixture RED and is not promoted."
+  }
+}

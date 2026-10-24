@@ -87,7 +87,8 @@ class FailedHostNormalExitTests(unittest.TestCase):
         self.client = None
 
     def publish(self, step, *, name=None, accepted=True):
-        self.report_path.write_text(json.dumps(self.report), encoding="utf-8")
+        if self.client is None:
+            self.report_path.write_text(json.dumps(self.report), encoding="utf-8")
         before = self.report_path.read_bytes()
         frozen = self.frozen.read_bytes()
         plan = self.live / "reviewed-plan.json"
@@ -145,6 +146,7 @@ class FailedHostNormalExitTests(unittest.TestCase):
                 client.write = lambda: self.report_path.write_text(json.dumps(self.report), encoding="utf-8")
                 client.consumed_control_plans = set()
                 client.control_plan_execution_depth = 0
+                client.write()
                 holder = asyncio.create_task(client.hold(60))
                 try:
                     # Reproduce the actual rejected R0001 shape, including fresh_revision=true.

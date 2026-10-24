@@ -96,6 +96,9 @@ class AllocatedNormalExitTests(unittest.TestCase):
         verified = inventory.verify_source_inventory_v1(profile['normal_exit_source_inventory'],
             driver.normal_exit_managed_profile)
         self.assertTrue(verified['static_sources_verified'])
+        running = inventory.verify_source_inventory_v1(profile['normal_exit_source_inventory'],
+            driver.normal_exit_managed_profile, input_phase='running')
+        self.assertTrue(running['static_sources_verified'])
         required = [path for path, _ in selected.required_pins]
         generated = entry.normal_exit_static_binding_v1(reference, state_dir=self.state,
             run_dir=self.live, runtime_manifest=entry.file_pin(entry.pin(self.manifest_path)))['files']
