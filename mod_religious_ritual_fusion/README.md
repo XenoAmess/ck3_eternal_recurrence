@@ -7,6 +7,7 @@
 - [可行性分析报告](docs/feasibility-2026-10-24.md)
 - [编码方案](docs/implementation-plan-2026-10-24.md)
 - [测试验收方案](docs/test-acceptance-plan-2026-10-24.md)
+- [实机验收执行方案](docs/live-acceptance-plan-2026-10-24.md)
 - [首轮编码结果与未验范围](docs/implementation-status-2026-10-24.md)
 - [二进制观察与证据边界](docs/binary-observations-2026-10-24.md)
 - [本机来源、版本与存储记录](docs/evidence/source-observation.json)
