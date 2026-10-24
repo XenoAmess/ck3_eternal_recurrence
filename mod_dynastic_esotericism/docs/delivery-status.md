@@ -6,9 +6,15 @@
 | --- | --- | --- |
 | 需求 | 已制定版本 1 | [requirements.md](requirements.md) |
 | 测试方案 | 已制定版本 1，尚未授予测试通过 | [test-plan.md](test-plan.md) |
-| 编码 | House作用域与Java成员查询登记已修；新增继承日期守卫修复cff81b3已推送，新隔离候选0c54184完整Maven16项通过 | [House修复](2026-10-25-engine-house-dynasty-fix.md)、[Java登记修复](acceptance/runtime-members-capability-2026-10-25.json) |
-| 测试验收 | R0008已加载地图；Root只读工具名错误使宿主停止业务，正常退出并保留失败。完整核心仍0/6，修正后的新图待实测 | [R0008失败与资源终态](acceptance/R0008-2026-10-25.json)、[测试方案](test-plan.md) |
+| 编码 | 新候选b8c7fc3仅改fixture等待与中英前缀；完整Maven16项和源→JAR→fixture／清单消费者通过。生产同步未改，sole-head建族边界未解决 | [R0009](acceptance/R0009-2026-10-25.json)、[测试方案](test-plan.md) |
+| 测试验收 | R0009第一phase六项断言接受；第二phase全员归族FAIL，核心整体仍RED。seed/cold/old未完成 | [R0009失败与正常资源终态](acceptance/R0009-2026-10-25.json) |
 | 发布 | NOT_PUBLISHED，Workshop ID 未分配 | 待业务验收及正式发布闭环 |
+
+2026-10-24T20:49Z更新（北京时间10月25日04:49，machine_id: `desktop-3fevhd2-1c74096080`）：R0009已通过创建／取消／费用／真实绑定的第一phase，六项断言只计该phase。创建日47名成员全部已进入House12760/Dyn12156；次日新增13人仍在旧House，其中六人明确仍属Dyn174，原全量检查FAIL，原错误与保存保留。首批43人的原版转换标记在下一日期才出现，新增13人当时尚无标记；exact .4调用链与逐人对照支持排队时序调查，不足以追认产品正确。下一图仅把fixture检查由+1改+2日，保留全量守卫与REQ-05同次同步要求，分别在两日读取原生名单和保存。中英fixture的方括号标题前缀另改为普通文字，解决其被当作data function解释的真实日志错误。候选b8c7fc3的完整默认Maven16项、15项JAR资源、17文件开发包／ZIP／清单消费者、13文件core fixture／14项生产来源均通过；实机尚未复验。实际包回执 `C:/ck3-dynastic-esotericism-20261024/resume-builder-a11/SUMMARY.actual.json`，SHA-256 `b0acbc24f97e4da377a35aebe6686336e2fe7b84dae5b5176bfc53f358430114`。
+
+R0009原生正常退出Game0、host0、public2、keeper/allocator0，SCREEN8808释放；原normal-close=true只证明生命周期，autosave=false及业务RED保留。共享后继消费者实际返回`previous-shared-managed-session`，不使用failed-host bundle。总体仍约60%，完整核心未通过；单一信徒恰为原House族长时的合法建族方案另待明确，不能从本场多人成功外推。计划05:00汇报，下一轮预计05:10进入实机、06:30–07:00形成核心结果；冷载／旧档与发布随后进行，具体完成时间取决于原失败及sole-head边界的解决。
+
+当前容量r1181/storage69已原子采纳，C盘main11集成与S11冻结SDK来源使用原512MiB构建额度内490MiB峰值方案；D盘仅2MiB有限元数据，Git写未激活，用户原脏文件和原HEAD3c均保留。旧D28MiB是未激活后续阶段，不作已消费或物理回收。Game退出后同FileID pagefile实际回baseline，系统原16GiB未来预留已恢复、consumed归零；所有新启动仍须另核scope与新鲜容量。证据 `C:/ck3-dynastic-esotericism-20261024/capacity/R1181-ROOT-CAS-COMMITTED-a33.actual.json`。以下旧场次及容量按各自观察时间保留。
 
 2026-10-24T19:46Z更新（北京时间10月25日03:46，machine_id: `desktop-3fevhd2-1c74096080`）：R0008已正常结束，Game原保留句柄观察退出0、host1、public2、keeper0，SCREEN8784释放。原宿主因Root将只读工具名误写为缺少`_v1`的名称而停止业务，后续业务请求被门禁拒绝；没有执行创建或迁移，也不增加核心通过数。启动日志另发现继承夹具把变量当日期字面量解析，原错误保留于`C:/ck3-dynastic-esotericism-20261024/R8-heir-date-guard-fix-a01/CANDIDATE.actual.json`。修复改用原版同构的数值天数比较，保留缺变量拒绝和至少一日要求；主线cff81b3已推送并回读。新隔离候选0c54184的完整Maven原会话55072退出0，16项测试无失败、错误或跳过，15资源打包后的生产者到消费者核验和新实机仍在继续。当前总体约60%，核心0/6，seed/cold/old与发布均未完成。
 

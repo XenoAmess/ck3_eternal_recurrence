@@ -41,6 +41,8 @@
 
 人数、Rite／Dynasty／House 对象、角色当前归属、好感逐项来源、`has_imprisonment_reason`／`has_execute_reason`／`has_banish_reason` 与交互最终理由须来自实际原生读回、游戏保存内容或实际界面。解析错误、raw key、错误罪行方向、跨派污染和未移除的本来源均为业务失败；fixture／宿主故障单独分类并保留原回执。
 
+2026-10-25，`machine_id: desktop-3fevhd2-1c74096080`：R0009 的原 `binding_and_members` FAIL 保留。下一轮 capture 后的原 `des_acceptance.2` 改在真实 +2 日检查，仅用于区分原版转换与 `on_rite_change` 的完成时序；生产同步、全成员量词及 REQ-05“同次同步”不变。这不是两日产品时限或修复通过。Root 须在真实 +1、+2 日分别读取完整原生成员集合及同帧保存，逐 ID 对照 Rite／Faith、存活、实际 House→Dynasty 和 stock `changed_rite_flag` 原始 presence／value／tick，保留新增／消失及原 House。缺失、null、false 不合并，不以不同 House 直接推断不同 Dynasty。单个 flag 不能独立证明本次回调时点。+2 仍有任何活成员未归族或原必要守卫失败即保持 FAIL，不等周期校正、不补写状态、不筛除新增者；即使 +2 后态通过，也不能替代 LIVE-04 的普通转换时序验收。详见 [R0009 原件摘要](acceptance/R0009-2026-10-25.json)。
+
 真正多人场景尚无预先资格，不以单人多角色控制宣称多人通过；首次发布如未进行多人验收，明确标注“多人未验收”。其余上述首版核心功能未通过时不公开发布完整功能版本。
 
 2026-10-24 R0003 后、R0004 分配前调整：首次 GUI phase 以实际 `DESAF: TEST PASS fixture_ready` 为门槛；原准备事件使用 `days = 1`，到第 1 日不能替代事件、知识及资金后态。开局保留原 Catholic／Roman Rite，最终资格按原生草案 `Can` 验证。R0003 实际单日动作耗时 8.566 秒，至后续 snapshot 完成共约 12.315 秒；400 日的纯日推进规划估计约 82 分钟。故下一场预先固定 hold 9000 秒、整体 timeout 10800 秒，readiness 1800 秒、正常退出预留 180 秒、400 自然日上限不变。R0001–R0003 原输入、3600／5400 秒预算及 RED 结果不修改；运行中仍不得延长 deadline。此安排与语法修正均不授予业务通过。

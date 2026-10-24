@@ -71,6 +71,8 @@ Root 在真实分配前完成存储原子准入、干净 checkout 和屏幕 owne
 
 控制器会打印 `CK3_ROOT_CHECKPOINT <run>/case-output/<phase>-awaiting.json`。Root 先读取该文件的实际 snapshot、要求、原始 hold deadline，再提交原生操作。控制器此时保持同一会话；每个公开队列计划必须用新的文件名与 step ID。
 
+创建后的 capture 决议仅提交一次，保留独立后态。新 fixture 的实验等待为 +2 日：Root 在 capture 后真实 +1、+2 自然日分别固定完整原生成员名单及保存，按本场实际 ID 对照 House→Dynasty 和 stock 回调标记；不复用 R0009 的成员 ID，不以单一 flag 授资格。只消费原 `binding_and_members` 全量守卫；+2 未同步或其他原守卫失败仍为 FAIL，不延后等待周期修复、不补写产品状态、不重放 capture。两次读回计入原 deadline／400 日预算。R0009 不追认，REQ-05 普通转换同次同步另按原要求验收。
+
 ### 两位真实 head 的后继 core 顺序（候选，未授继承资格）
 
 保留 core 全部六个 phase、原 required assertions 与 marker 含义。原始 `dynastic_esotericism_core.json` 是 adapter 配置，`allow_actor_change=true`、`actor_transition_days=[]` 和 `continue_as_heir_requirements` 是其**顶层现有字段**，没有新的 `adapter_config` 对象。空数组表示不指定自动 advance 序号，不是游戏日期；许可仅使同一 run／pipe／PID／generation 下的新实际 actor 可被观察，不能证明继承或允许任意换人。共享 purpose／clock 必须从同一已 pin 原合同消费该布尔值，保留初始起日、日期单调与预算；缺字段的其他 case 默认 false。R0007 实际 tools/list 注册了 `ck3_set_played_character_v1`，但注册不授予原生可用性或真继承资格；本流程绝不调用它。当前没有已核可用于本次真继承验收的 Continue-as-Heir 路径，遇必须点击 Continue 且无合法原生路径时保留未合格，不创造命令或改玩家。

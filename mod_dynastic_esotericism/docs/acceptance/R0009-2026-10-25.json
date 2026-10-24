@@ -1,0 +1,215 @@
+{
+  "schema": "xar.dynastic-esotericism.actual-run-summary.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T20:47:24.700686+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0009",
+  "source_commit": "0c54184a9098845edff827529a4045bf84e51158",
+  "status": "RED",
+  "started_at_utc": "2026-10-24T19:51:43.571857+00:00",
+  "finished_at_utc": "2026-10-24T20:38:25.877778+00:00",
+  "business_pass": false,
+  "release_pass": false,
+  "phase1": {
+    "root_accepted": true,
+    "assertions_passed": 6,
+    "assertions_total": 6,
+    "assertions": {
+      "actual_player_no_prophet_two_known_selectable_doctrines_default_none": true,
+      "actual_create_and_reform_edit_gui_group_visible": true,
+      "cancelled_draft_preserves_rite_dynasty_house_resources_and_no_binding": true,
+      "actual_original_final_can_and_price_then_one_gui_creation_confirmation": true,
+      "created_rite_full_identity_current_player_and_unique_new_dynasty_bound": true,
+      "actual_capture_created_test_decision_once_after_ui_creation": true
+    },
+    "source": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a10\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0009\\case-output\\actual-default-cancel-and-create-ui-accepted.json",
+      "bytes": 6448,
+      "sha256": "af8294e58007764328ea016700797d242e0289a4853dd154b7b884f34c4a62c1"
+    },
+    "scope": "Phase1 only; six assertions do not mean six phases."
+  },
+  "phase2": {
+    "status": "FAILED",
+    "original_case_error": {
+      "error": "ValueError: Original product fixture failed; never replay",
+      "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0009",
+      "business_pass": false,
+      "submitted_steps_never_replayed": true
+    },
+    "diagnosis": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R9-binding-members-diagnosis-a01\\DIAGNOSIS.actual.json",
+      "bytes": 89553,
+      "sha256": "ddeddff47706c2b3e875f50aa9210326fc448798738441a0d9ffc637cc01147f"
+    },
+    "failure_marker": "DESAF: TEST FAIL binding_and_members",
+    "native_day1_members": 47,
+    "native_day2_members": 60,
+    "new_members": 13,
+    "new13_old_House_observed": true,
+    "minimum_proven_wrong_Dynasty_members": 6,
+    "wrong_Dynasty_observed": "House174/Dyn174 while active binding is Dyn12156",
+    "other7_boundary": "Not selected: a different House alone does not prove a different Dynasty; valid cadet Houses are allowed.",
+    "exact_engine_hook_cause": "UNPROVEN",
+    "fixture_guard_weakened": false
+  },
+  "early_root47_judgment_corrected": {
+    "original47_all_in_House12760_Dyn12156": true,
+    "valid_Rite150_Dyn12156_binding": true,
+    "early_head_creation_error": "First sync failed, later construction/migration succeeded. This does not prove the day2 failure cause.",
+    "actual47_source": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R9-house-head-dynasty-fix-a01\\ACTUAL-47-CHECK.actual.json",
+      "bytes": 3621,
+      "sha256": "312fb41fe8d2681bab96045c4d9704e63e3da280ade1d2c8c35f11531be8d21d"
+    },
+    "diagnosis_source": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R9-house-head-dynasty-fix-a01\\SOURCE-AND-ACTUAL.actual.json",
+      "bytes": 6020,
+      "sha256": "bec1fd43813f572407a3ada19ad48e1963217cf2587c177a048a551d3f4720e6"
+    },
+    "interpretation": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R9-house-head-dynasty-fix-a01\\FINAL.md",
+      "bytes": 2539,
+      "sha256": "2bb0c1f6e55fd7b5f1bff62ee4efbe42ca366563b643e32d708222d9e323db99"
+    }
+  },
+  "sole_adherent_house_head": {
+    "status": "UNRESOLVED",
+    "boundary": "Stock create_dynasty rejects current heads. Sole-adherent/head with no other live old-House member remains unqualified.",
+    "source": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R9-house-head-dynasty-fix-a01\\FINAL.md",
+      "bytes": 2539,
+      "sha256": "2bb0c1f6e55fd7b5f1bff62ee4efbe42ca366563b643e32d708222d9e323db99"
+    }
+  },
+  "next_barrier_candidate": {
+    "status": "CANDIDATE_NOT_ACTUAL_ACCEPTANCE",
+    "change": "Fixture schedules unchanged des_acceptance.2 at days2 instead of days1.",
+    "production_hook_changed": false,
+    "original_full_membership_assertions_retained": true,
+    "R0009_retroactive_credit": false,
+    "REQ05_same_conversion_sync_requirement_unchanged": true,
+    "required_new_evidence": "New graph: actual full members, pinned Saves and per-ID callback timing at +1/+2. +2 alone cannot qualify same-conversion sync.",
+    "candidate": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R9-rite-change-hook-a01\\CANDIDATE.actual.json",
+      "bytes": 1618,
+      "sha256": "1e1df9acf793a5026bcc077f897e47b8f3ea7a3bc1d3dfbeb2f393e9234635d2"
+    },
+    "review": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R9-fixture-barrier-review-a01\\REVIEW.md",
+      "bytes": 4852,
+      "sha256": "eed00e3fac517a0664f6c59a1045ae1107369339f0a9ab6fff608353b2ac6c87"
+    }
+  },
+  "capacity_deviation_preserved": {
+    "deviation": "Root orchestrator emitted the next queue call without consuming the prior exit2 as a stop condition. Native cancel and checkpoint actually completed. No claim that the failed capacity check passed.",
+    "failed_capacity_exit_code": 2,
+    "later_cancel_and_save_actually_completed": true,
+    "failed_check_not_reclassified_as_passed": true,
+    "followup": "All subsequent heavy writes and D Git operations paused pending revised phase-specific actual capacity; every dependent operation now requires explicit consumed exit0.",
+    "source": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a10\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0009\\operator-evidence\\root-pre-cancel-save-capacity-deviation.actual.json",
+      "bytes": 1189,
+      "sha256": "3d679f9a3dc9dd3dbc6c42cc19325d5fb7757c1ad50aa2dcdd2b35dfa19bdac0"
+    },
+    "failed_check": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\capacity\\R1179-ROOT-PRE-AFTER-CANCEL-SAVE-a31.actual.json",
+      "bytes": 2378,
+      "sha256": "8641648b97722dfb02c1ac7bfd00ae0b100c5d9c4489c1adf11c5dd59a765754"
+    },
+    "actual_later_queue": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a10\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0009\\operator-evidence\\r9-cancel-and-save-a01.actual.json",
+      "bytes": 93429,
+      "sha256": "b1147f2e6b516fe7e86d53b2b6ec2d34364e00447a0e6bc1c7321e9aab89b493"
+    }
+  },
+  "process_exit_codes": {
+    "original_game_handle": 0,
+    "original_host_popen": 0,
+    "original_public_run": 2,
+    "original_keeper_popen": 0,
+    "original_allocator": 0,
+    "actual_resource_consumer_capture": 0
+  },
+  "native_report_status": "GREEN",
+  "native_host_error": null,
+  "native_GREEN_scope": "Lifecycle only; case failed/public2.",
+  "typed_exit": {
+    "Game_retained_handle_exit_code": 0,
+    "process_creation_filetime_100ns": "134373451346471861",
+    "original_normal_close_qualified": true,
+    "normal_close_scope": "Lifecycle only; no whole-case credit.",
+    "autosave_verified": false,
+    "business_pass": false,
+    "normal_close": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a10\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0009\\case-output\\normal-close-result.json",
+      "bytes": 8315,
+      "sha256": "e164950982adc63c96883db480651a1be520f87aa41a7bb53909718e4330f7be"
+    },
+    "terminal_fact": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\attempt-a17\\state\\native-session\\normal-exit-map-requests\\1862c0e83f528be4c25d.observe-20056591b731444d.json",
+      "bytes": 4853,
+      "sha256": "294566e8d439395005bc275dbc155943d723dcd27f8d19a360d910d147851c79"
+    },
+    "observer_close": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\attempt-a17\\state\\native-session\\normal-exit-map-requests\\1862c0e83f528be4c25d.observer-close-ed4cdb25fb2c46be.json",
+      "bytes": 456,
+      "sha256": "df74d4c8ce0705fd338da1903fca954cf85f976cdbe665a9f56a08f47b3a320a"
+    }
+  },
+  "finish_hold": {
+    "automatic_original_step": "acceptance-normal-exit-finish-hold",
+    "automatic_successful_rows": 1,
+    "automatic_original": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a10\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0009\\case-output\\acceptance-normal-exit-finish-hold.actual-results.json",
+      "bytes": 2452,
+      "sha256": "f6b566f681052930dd46d3f43b985ce67ae4112f1b739534bdd3dd585002e49b"
+    },
+    "later_Root_request": "r9-failure-finish-hold-a01",
+    "later_queue_exit_code": 1,
+    "reason": "Original unfinished-hold guard refused after terminal; no replay.",
+    "later_rejection": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a10\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0009\\operator-evidence\\r9-failure-finish-hold-a01.actual.json",
+      "bytes": 2059,
+      "sha256": "825a2a85ade5087752dc40a7d102616ee8e2ecf6052eb2c04a011c6dff7c2d02"
+    }
+  },
+  "screen_release_sequence": 8808,
+  "keeper_last_sequence": 8806,
+  "cleanup_ok": true,
+  "resource_closure_mode": "previous-shared-managed-session",
+  "closure_consumer": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\R0009-resource-close-a01\\actual-consumer.actual.json",
+    "bytes": 2634,
+    "sha256": "b4d1aa72c21ec7f019082626f797817abbea2a786ae325c31c0c02b24144707b"
+  },
+  "closure_actual_Popen_exit0": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\R0009-resource-close-a01\\consumer-operation.actual.json",
+    "bytes": 1258,
+    "sha256": "28d5ba134a1dfd10b8133a581771cb933781600c90d43c98239c79102273ba08"
+  },
+  "resource_closure_scope": "Resource admission only; no failure-close bundle needed.",
+  "original_source_index": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\R0009-resource-close-a01\\original-pins.actual.json",
+    "bytes": 10120,
+    "sha256": "1e94533bb1faba8f53010d86512a7c314e383f678f954a24efc723cd86c73d16"
+  },
+  "runtime": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a10\\runtime.json",
+    "bytes": 990879,
+    "sha256": "eb40f17428f27c160fe9df471d77ff0c06a3dcf903e213fc2fed7a46674836a4"
+  },
+  "screen_release": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\R0009-screen-release.actual.json",
+    "bytes": 1402,
+    "sha256": "ea646f1d2fdd1c589bbf9643bd4f17cb1399d7eb9ca556fa39049848cb62604e"
+  },
+  "retention": {
+    "policy": "docs/storage-retention-policy.md and docs/storage-retention-policy.json",
+    "protection_review_utc_date": "2026-10-31",
+    "protected_scope": "R0009 originals, typed identity, selected-save diagnosis and closure proof.",
+    "reason": "Required for phase2/sole-head followup; time-limited protection."
+  },
+  "normal_close_qualified": true,
+  "normal_close_qualification_scope": "Original typed/managed lifecycle only; overall core business remains RED.",
+  "autosave_verified": false
+}

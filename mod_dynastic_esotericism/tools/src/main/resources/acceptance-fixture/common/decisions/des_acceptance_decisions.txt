@@ -40,7 +40,7 @@ des_acceptance_capture_created_decision = {
             scope:des_test_child = { set_character_rite = root.rite }
             var:des_test_ref_birth_father = { set_character_rite = root.rite }
             var:des_test_ref_birth_mother = { set_character_rite = root.rite }
-            trigger_event = { id = des_acceptance.2 days = 1 }
+            trigger_event = { id = des_acceptance.2 days = 2 }
         }
     }
     ai_check_interval = 0
