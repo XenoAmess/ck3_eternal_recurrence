@@ -49,10 +49,21 @@ rrf_prepare_draft_effect = {
     set_variable = { name = rrf_source_a_faith value = faith }
     set_variable = { name = rrf_source_b_faith value = scope:selected_item.faith }
     set_variable = { name = rrf_state value = flag:editing }
-    var:rrf_source_a = { rrf_collect_core_candidates_effect = yes }
-    var:rrf_source_b = { rrf_collect_core_candidates_effect = yes }
-    rrf_catalog_initialize_doctrines_effect = yes
-    rrf_refresh_validation_effect = yes
+    # Decision tooltip evaluation does not commit the preceding variable writes.
+    # hidden_effect hides text but still evaluates this chain. Enter the readers
+    # only after all four source references actually exist on the actor.
+    if = {
+        limit = {
+            has_variable = rrf_source_a
+            has_variable = rrf_source_b
+            has_variable = rrf_source_a_faith
+            has_variable = rrf_source_b_faith
+        }
+        var:rrf_source_a = { rrf_collect_core_candidates_effect = yes }
+        var:rrf_source_b = { rrf_collect_core_candidates_effect = yes }
+        rrf_catalog_initialize_doctrines_effect = yes
+        rrf_refresh_validation_effect = yes
+    }
 }
 
 # Rite scope: the default iterator enumerates THIS Rite's actual cores.

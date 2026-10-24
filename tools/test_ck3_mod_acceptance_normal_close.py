@@ -221,8 +221,13 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
         directory.mkdir(parents=True)
         bridge = REPO / 'ck3_autonomous_player/src/xar_autoplayer/bridge'
         index = root / 'source-index.json'
-        index.write_text(json.dumps({'files': [pin(bridge / (name + '.py')) for name in (
-            'normal_exit_process_observer_v1', 'normal_exit_contract_v1', 'normal_exit_public_wire_v2')]}), encoding='utf-8')
+        # build_runtime.py's actual source-index producer uses repository-relative
+        # keys and two-field signatures, rather than a list of absolute FilePins.
+        index.write_text(json.dumps({'schema': 'ck3-common-source-index-v1', 'files': {
+            (bridge / (name + '.py')).relative_to(REPO).as_posix(): {
+                key: pin(bridge / (name + '.py'))[key] for key in ('bytes', 'sha256')}
+            for name in ('normal_exit_process_observer_v1', 'normal_exit_contract_v1',
+                         'normal_exit_public_wire_v2')}}), encoding='utf-8')
         codec, _, _ = self.module._typed_quit_codec(REPO, index, pin(index))
         client.manifest.update({'source_root': {'path_key':'source_root'},
                                 'source_index': {'path_key':'source_index', **pin(index)}})
@@ -285,6 +290,14 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
             'dispatches':[{key:i==2 for key in ('claim_latched','dispatch_invoked','native_handled',
                 'post_read_complete','postcondition_observed')} for i in range(3)]}
         request_id = 'normal-exit-confirm_desktop-fixture'
+        (directory/(request_id+'.request.json')).write_text(json.dumps({
+            'type':'execute_step','protocol_version':1,'request_id':request_id,
+            'step':'normal-exit-map-v1','action':'confirm_desktop',
+            'expected_revision':native['native_revision'],'expected_player_character_id':31254,
+            'expected_game_pid':2468,'expected_connection_generation':1,
+            'expected_process_creation_filetime_100ns':birth,
+            'source_inventory_sha256':pin(inventory)['sha256'],'request_nonce':request_id,
+            'expected_exit_context_signature':'c'*64}),encoding='utf-8')
         identity = {'game_pid':2468,'creation_filetime_100ns':birth,'action':'confirm_desktop'}
         claim_key = hashlib.sha256(json.dumps(identity,sort_keys=True,separators=(',',':')).encode()).hexdigest()
         claim_path = directory/(claim_key+'.claim.json')
@@ -394,6 +407,100 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
                 self.assertFalse(result['normal_close_qualified'])
                 self.assertFalse(result['business_pass'])
                 self.assertEqual(result['host_error'],report['error'])
+
+    def test_typed_route_requires_actual_producer_index_shape_and_exact_leaf_pins(self):
+        from ck3_mod_acceptance import pin
+        for defect in ('schema', 'missing_files', 'list', 'null', 'bool', 'missing_leaf',
+                'absolute_key', 'bool_bytes', 'float_bytes', 'missing_sha', 'changed_sha', 'extra_path'):
+            with self.subTest(defect=defect), tempfile.TemporaryDirectory() as directory:
+                root=Path(directory)
+                client,_,_,report=self.make_client(root,review_at=None)
+                self.typed_route(root,client,report)
+                index=Path(client.manifest['source_index']['path'])
+                value=json.loads(index.read_bytes())
+                files=value['files']
+                leaf=next(iter(files))
+                if defect=='schema':value['schema']='authored-other-index'
+                elif defect=='missing_files':del value['files']
+                elif defect=='list':value['files']=[pin(REPO/path) for path in files]
+                elif defect=='null':value['files']=None
+                elif defect=='bool':value['files']=True
+                elif defect=='missing_leaf':del files[leaf]
+                elif defect=='absolute_key':files[str(REPO/leaf)]=files.pop(leaf)
+                elif defect=='bool_bytes':files[leaf]['bytes']=True
+                elif defect=='float_bytes':files[leaf]['bytes']=float(files[leaf]['bytes'])
+                elif defect=='missing_sha':del files[leaf]['sha256']
+                elif defect=='changed_sha':files[leaf]['sha256']='f'*64
+                elif defect=='extra_path':files[leaf]['path']=str(REPO/leaf)
+                index.write_text(json.dumps(value),encoding='utf-8')
+                client.manifest['source_index'].update(pin(index))
+                with self.assertRaises(ValueError):
+                    client.typed_normal_quit_evidence(report)
+
+    def test_typed_route_mapping_round_trips_only_three_frozen_codec_sources(self):
+        from ck3_mod_acceptance import pin
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            client,_,_,report=self.make_client(root,review_at=None)
+            self.typed_route(root,client,report)
+            index=Path(client.manifest['source_index']['path'])
+            original=json.loads(index.read_bytes())
+            # Match the real global index: unrelated source entries coexist with
+            # the three leaves; loading the codec must not execute those entries.
+            original['files']['authored-unselected.py']={'bytes':0,'sha256':'a'*64}
+            index.write_text(json.dumps(original),encoding='utf-8')
+            client.manifest['source_index'].update(pin(index))
+            evidence=client.typed_normal_quit_evidence(report)
+            self.assertIsNotNone(evidence)
+            self.assertEqual(len(evidence['source_modules']),3)
+            self.assertEqual(evidence['source_index'],pin(index))
+            self.assertEqual(json.loads(json.dumps(evidence)),evidence)
+            self.assertFalse(evidence['autosave_verified'])
+
+    def test_actual_submitted_native_request_binds_fresh_public_revision(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            client,_,_,report=self.make_client(root,review_at=None)
+            rows=self.typed_route(root,client,report)
+            confirm=rows[1]['plan']
+            del confirm['args']['expected_revision']
+            confirm['fresh_revision']=True
+            evidence=client.typed_normal_quit_evidence(report)
+            self.assertIsNotNone(evidence)
+            self.assertTrue(Path(evidence['confirmation_request']['path']).name.endswith('.request.json'))
+            for fresh in (False,None,1,'true'):
+                with self.subTest(fresh=fresh):
+                    confirm['fresh_revision']=fresh
+                    with self.assertRaises(ValueError):client.typed_normal_quit_evidence(report)
+            del confirm['fresh_revision']
+            with self.assertRaises(ValueError):client.typed_normal_quit_evidence(report)
+
+    def test_submitted_native_request_and_explicit_public_revision_keep_exact_guards(self):
+        for defect in ('revision','revision_bool','revision_float','pid','actor','birth','generation',
+                'nonce','inventory','signature','missing_request','explicit_wrong_revision'):
+            with self.subTest(defect=defect),tempfile.TemporaryDirectory() as directory:
+                root=Path(directory)
+                client,_,_,report=self.make_client(root,review_at=None)
+                rows=self.typed_route(root,client,report)
+                request=root/'state/native-session/normal-exit-map-requests/normal-exit-confirm_desktop-fixture.request.json'
+                value=json.loads(request.read_bytes())
+                if defect=='revision':value['expected_revision']=7
+                elif defect=='revision_bool':value['expected_revision']=True
+                elif defect=='revision_float':value['expected_revision']=6.0
+                elif defect=='pid':value['expected_game_pid']=99
+                elif defect=='actor':value['expected_player_character_id']=99
+                elif defect=='birth':value['expected_process_creation_filetime_100ns']+=1
+                elif defect=='generation':value['expected_connection_generation']=2
+                elif defect=='nonce':value['request_nonce']='other'
+                elif defect=='inventory':value['source_inventory_sha256']='f'*64
+                elif defect=='signature':value['expected_exit_context_signature']='f'*64
+                elif defect=='explicit_wrong_revision':
+                    rows[1]['plan']['fresh_revision']=True
+                    rows[1]['plan']['args']['expected_revision']='8'
+                if defect=='missing_request':request.unlink()
+                else:request.write_text(json.dumps(value),encoding='utf-8')
+                with self.assertRaises((ValueError,FileNotFoundError)):
+                    client.typed_normal_quit_evidence(report)
 
     def test_typed_route_uses_original_finish_hold_and_final_native_cleanup(self):
         with tempfile.TemporaryDirectory() as directory:

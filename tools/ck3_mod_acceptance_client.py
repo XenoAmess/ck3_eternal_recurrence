@@ -27,6 +27,7 @@ class TypedNormalQuitEvidenceV1(TypedDict):
     source_index: FilePin
     source_modules: list[FilePin]
     terminal_fact: FilePin
+    confirmation_request: FilePin
     observer_close: FilePin
     claim: FilePin
     autosave_disabled: FilePin
@@ -73,9 +74,8 @@ def _typed_quit_codec(source_root: Path, index_path: Path, reference: object) ->
     import uuid
     index_pin, index = _typed_quit_original(index_path, reference)
     rows = index.get('files')
-    if not isinstance(rows, list):
-        raise ValueError('Typed normal Quit frozen SDK source index is missing')
-    sources = [file_pin(row) for row in rows]
+    if index.get('schema') != 'ck3-common-source-index-v1' or not isinstance(rows, dict):
+        raise ValueError('Typed normal Quit requires the canonical frozen SDK source index mapping')
     directory = source_root / 'ck3_autonomous_player/src/xar_autoplayer/bridge'
     names = ('normal_exit_process_observer_v1', 'normal_exit_contract_v1', 'normal_exit_public_wire_v2')
     namespace = '_normal_quit_codec_' + uuid.uuid4().hex
@@ -87,10 +87,13 @@ def _typed_quit_codec(source_root: Path, index_path: Path, reference: object) ->
     try:
         for name in names:
             path = (directory / (name + '.py')).resolve()
-            matches = [row for row in sources if Path(row['path']).resolve() == path]
-            if len(matches) != 1:
+            relative = path.relative_to(source_root.resolve()).as_posix()
+            if relative not in rows:
                 raise ValueError('Typed normal Quit SDK leaf is not uniquely frozen: ' + name)
-            row = matches[0]
+            metadata = json_object(rows[relative])
+            if set(metadata) != {'bytes', 'sha256'}:
+                raise ValueError('Typed normal Quit canonical SDK leaf metadata fields differ: ' + name)
+            row = keyed_file_pin(str(path), metadata)
             raw = path.read_bytes()
             if path.is_symlink() or len(raw) != row['bytes'] or hashlib.sha256(raw).hexdigest() != row['sha256']:
                 raise ValueError('Typed normal Quit SDK source changed: ' + name)
@@ -200,11 +203,27 @@ def typed_normal_quit_evidence_v1(report_value: object, *, live: Path, state: Pa
         raise ValueError('Typed normal Quit requires exactly one original desktop confirmation')
     confirm = confirms[0]
     confirm_result = json_object(codec.parse_normal_exit_public_result_v2(confirm.get('result')).to_memory())
-    confirm_args = json_object(json_object(confirm['plan']).get('args'))
+    confirm_plan = json_object(confirm['plan'])
+    confirm_args = json_object(confirm_plan.get('args'))
+    request_pin, request = original(str(directory / (request_id + '.request.json')))
+    expected_request: JsonObject = {'type': 'execute_step', 'protocol_version': 1,
+        'request_id': request_id, 'step': 'normal-exit-map-v1', 'action': 'confirm_desktop',
+        'expected_revision': native.get('native_revision'),
+        'expected_player_character_id': native.get('played_character_id'),
+        'expected_game_pid': pid, 'expected_connection_generation': native.get('connection_generation'),
+        'expected_process_creation_filetime_100ns': int(birth),
+        'source_inventory_sha256': memory.get('source_inventory_sha256'),
+        'request_nonce': request_id, 'expected_exit_context_signature': native.get('exit_context_signature')}
+    # The SDK durably records the actual native request before dispatch. Its
+    # native revision differs from the public revision injected by fresh().
+    if json.dumps(request, sort_keys=True) != json.dumps(expected_request, sort_keys=True):
+        raise ValueError('Typed normal Quit original submitted desktop request differs')
+    revision_matches = (confirm_args.get('expected_revision') == wire.get('public_revision')
+        if 'expected_revision' in confirm_args else confirm_plan.get('fresh_revision') is True)
     if (confirm.get('ok') is not True or not confirm.get('finished_at') or confirm_result.get('request_id') != request_id
             or confirm_result.get('native_observation') != native or confirm_result.get('process_preconfirm_pin') != preconfirm
             or confirm_args.get('expected_exit_context_signature') != native.get('exit_context_signature')
-            or confirm_args.get('expected_revision') != wire.get('public_revision')
+            or not revision_matches
             or confirm_result.get('native_submission_count') != 1):
         raise ValueError('Typed normal Quit original desktop confirmation binding differs')
     profile_ref = file_pin(context.get('normal_exit_managed_profile'))
@@ -260,7 +279,8 @@ def typed_normal_quit_evidence_v1(report_value: object, *, live: Path, state: Pa
         observed_at_utc=datetime.now(timezone.utc).isoformat(),
         terminal_step_id=text_field(row, 'id'), process_creation_filetime_100ns=birth,
         profile=profile_pin, source_inventory=inventory_pin, source_index=index_pin, source_modules=sdk_pins,
-        terminal_fact=fact_pin, observer_close=close_pin, claim=claim_pin, autosave_disabled=disable_pin,
+        terminal_fact=fact_pin, confirmation_request=request_pin, observer_close=close_pin,
+        claim=claim_pin, autosave_disabled=disable_pin,
         autosave_verified=False)
 
 
