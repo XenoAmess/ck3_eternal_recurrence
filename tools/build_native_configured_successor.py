@@ -618,6 +618,20 @@ class Producer:
             ("/c" if token == "-c" else token).replace("\\", "/").lower().replace(source_text, "@native@").replace(build_text, "@build@")
             for token in command[1:]]]
 
+    def unit_options(self, command: tuple[str, ...], source: Path, build: Path,
+                     unit: Path, output: Path) -> list[str]:
+        """Compare target options while retaining exactly one source/object binding."""
+        normalized = self.normalize(command, source, build)
+        unit_name = unit.as_posix().lower().replace(source.as_posix().lower(), "@native@")
+        output_names = {output.as_posix().lower().replace(build.as_posix().lower(), "@build@"),
+                        output.relative_to(build).as_posix().lower()}
+        object_tokens = {"/fo" + name for name in output_names}
+        require(normalized.count(unit_name) == 1 and
+                sum(token in object_tokens for token in normalized) == 1,
+                "New production unit requires one exact source/object compiler argument")
+        return ["@unit@" if token == unit_name else "/fo@object@" if token in object_tokens else token
+                for token in normalized]
+
     def plan(self, rows: list[Compile], *, existing_plan: Pin | None = None,
              noncompiled_replay: object = None) -> tuple[list[Compile], dict[str, Path], Pin]:
         c = self.config
@@ -681,12 +695,14 @@ class Producer:
         old_commands_raw: object = json.loads(Path(checked(baseline_scope["compile_commands"])["path"])
                                             .read_text(encoding="utf-8-sig"))
         old_commands: dict[str, tuple[str, ...]] = {}
+        old_units: dict[str, Path] = {}
         old_build = Path(string(obj(arr(old_commands_raw)[0])["directory"]))
         for raw in arr(old_commands_raw):
             item = obj(raw)
             output = Path(string(item["output"]))
             output = output if output.is_absolute() else old_build / output
             old_commands[output.relative_to(old_build).as_posix()] = tuple(self.arguments(string(item["command"])))
+            old_units[output.relative_to(old_build).as_posix()] = Path(string(item["file"]))
             if replay is not None:
                 require(not any(name.lower() in argument.replace("\\", "/").lower()
                                 for name in replay.originals
@@ -715,14 +731,32 @@ class Producer:
         memo: dict[Path, set[Path]] = {}
         production_rows = [row for row in rows if row.target in PRODUCTION]
         require({row.target for row in production_rows} == set(PRODUCTION), "Incomplete production commands")
+        outputs = [row.output.relative_to(self.build).as_posix() for row in production_rows]
+        require(len(outputs) == len(set(outputs)), "Duplicate production output")
+        old_production = {name for name in old_commands
+                          if any(name.startswith("CMakeFiles/" + target + ".dir/") for target in PRODUCTION)}
+        require(old_production <= set(outputs), "Removing or renaming a retained production unit is unsupported")
         for row in production_rows:
             output_name = row.output.relative_to(self.build).as_posix()
-            require(output_name in old_commands and self.normalize(row.argv, self.native, self.build)
-                    == self.normalize(old_commands[output_name], old_native, old_build),
-                    "Production compile options changed: " + output_name)
             relative_source = row.source.relative_to(self.native).as_posix()
             old_dependencies = dependencies.get(output_name)
-            require(old_dependencies is not None, "Actual old compiler dependencies missing: " + output_name)
+            new_unit = output_name not in old_commands
+            if new_unit:
+                require(relative_source not in old_files and relative_source in current
+                        and old_dependencies is None
+                        and row.target in ("xar_ck3_bridge", "xar_ck3_12002_runtime"),
+                        "New production output must bind a genuinely new supported source without old dependencies")
+                templates = [name for name in old_production
+                             if name.startswith("CMakeFiles/" + row.target + ".dir/")]
+                options = self.unit_options(row.argv, self.native, self.build, row.source, row.output)
+                require(any(options == self.unit_options(old_commands[name], old_native, old_build,
+                                                        old_units[name], old_build / name) for name in templates),
+                        "New production unit changed target compiler options")
+            else:
+                require(self.normalize(row.argv, self.native, self.build)
+                        == self.normalize(old_commands[output_name], old_native, old_build),
+                        "Production compile options changed: " + output_name)
+                require(old_dependencies is not None, "Actual old compiler dependencies missing: " + output_name)
             old_names = {path.relative_to(original_complete_source).as_posix() for path in old_dependencies or set()
                          if path.is_relative_to(original_complete_source)}
             new_names = {path.relative_to(self.native).as_posix() for path in self.closure(row.source, self.native, memo)
@@ -732,6 +766,9 @@ class Producer:
                 selected.append(row)
             selection.append({"target": row.target, "output": output_name, "source": relative_source,
                               "changed_dependencies": affected, "compiled": bool(affected)})
+            if new_unit:
+                require(bool(affected), "A new production unit must actually be compiled")
+                selection[-1]["new_translation_unit"] = True
         require(selected, "No changed production input; refusing to relabel an old native qualification")
         retained_map = {Path(item["path"]).resolve(): item for item in retained}
         borrowed: dict[str, Path] = {}
@@ -739,6 +776,8 @@ class Producer:
             if row.target != "xar_ck3_bridge":
                 continue
             name = row.output.relative_to(self.build).as_posix()
+            if name not in old_commands:
+                continue  # New bridge objects must come from the actual compile, never a borrowed path.
             path = replacements.get(name, c.complete_build / name)
             require(path in retained_map or path == new_path, "Bridge object lacks predecessor link provenance")
             borrowed[name] = path

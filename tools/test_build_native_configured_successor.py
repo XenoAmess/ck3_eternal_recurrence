@@ -369,7 +369,14 @@ class ConfiguredSuccessorTests(unittest.TestCase):
     def test_noncompiled_replay_ignores_unbuilt_generated_sources_but_requires_declared_inputs(self) -> None:
         self._readonly_plan_replay(consumer=True, unbuilt_generated=True)
 
-    def _readonly_plan_replay(self, *, consumer: bool, unbuilt_generated: bool = False) -> None:
+    def test_new_runtime_unit_replay_requires_actual_current_source_and_target_options(self) -> None:
+        self._readonly_plan_replay(consumer=False, new_unit="xar_ck3_12002_runtime")
+
+    def test_new_bridge_unit_is_compiled_and_never_borrowed(self) -> None:
+        self._readonly_plan_replay(consumer=False, new_unit="xar_ck3_bridge")
+
+    def _readonly_plan_replay(self, *, consumer: bool, unbuilt_generated: bool = False,
+                              new_unit: str | None = None) -> None:
         native = self.root / "ck3_autonomous_player/native_bridge"
         native.mkdir(parents=True)
         header = native / "include/xar/activity_typed_planner_v1.hpp"
@@ -453,9 +460,24 @@ class ConfiguredSuccessorTests(unittest.TestCase):
                               producer.build / "CMakeFiles/unbuilt_generated_fixture.dir/generated.cpp.obj",
                               (sys.executable, "/c", str(missing)))
             rows.append(dormant)
+        added: Compile | None = None
+        changed_paths = ["src/runtime.cpp"]
+        if new_unit is not None:
+            source = native / "src/added.cpp"
+            source.write_text("int added_source;\n", encoding="utf-8")
+            names.append(source.relative_to(self.root).as_posix())
+            output_name = "CMakeFiles/" + new_unit + ".dir/src/added.cpp.obj"
+            output = producer.build / output_name
+            added = Compile(new_unit, source, output,
+                            (sys.executable, "/c", str(source), "/Fo" + str(output)))
+            rows.append(added)
+            changed_paths.append("src/added.cpp")
+            selections.append({"target": new_unit, "output": output_name, "source": "src/added.cpp",
+                               "changed_dependencies": ["src/added.cpp"], "compiled": True,
+                               "new_translation_unit": True})
         plan = {"machine_id": config.machine_id, "observed_at_utc": "owned fixture",
             "source_commit": config.source_commit, "baseline_qualification": baseline, "baseline_incremental_inputs": inputs,
-            "original_dependencies": pin(dependency_path), "changed_native_paths": ["src/runtime.cpp"],
+            "original_dependencies": pin(dependency_path), "changed_native_paths": sorted(changed_paths),
             "production_selections": selections, "retained_link_inputs": [pin(borrowed)],
             "retained_incremental_object": pin(borrowed), "archive_copies": 0}
         reference = put("original-plan.json", plan)
@@ -468,9 +490,32 @@ class ConfiguredSuccessorTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "Recomputed source/options/dependency"):
                     producer.plan(rows, existing_plan=reference)
             selected, actual_borrowed, original = producer.plan(rows, existing_plan=reference, noncompiled_replay=replay)
-            self.assertEqual([row.target for row in selected], ["xar_ck3_12002_runtime"])
+            self.assertEqual([row.target for row in selected],
+                             ["xar_ck3_12002_runtime", *([new_unit] if new_unit is not None else [])])
             self.assertEqual(actual_borrowed, {"CMakeFiles/xar_ck3_bridge.dir/src/bridge.cpp.obj": borrowed})
             self.assertEqual(original, reference)
+            if added is not None:
+                with self.assertRaisesRegex(ValueError, "target compiler options"):
+                    producer.plan([*rows[:-1], replace(added, argv=(*added.argv, "/DUNREVIEWED=1"))],
+                                  existing_plan=reference)
+                with self.assertRaisesRegex(ValueError, "genuinely new"):
+                    old_source = native / "src/runtime.cpp"
+                    producer.plan([*rows[:-1], replace(added, source=old_source,
+                        argv=(sys.executable, "/c", str(old_source), "/Fo" + str(added.output)))], existing_plan=reference)
+                with self.assertRaisesRegex(ValueError, "Duplicate production output"):
+                    producer.plan([*rows, added], existing_plan=reference)
+                with self.assertRaisesRegex(ValueError, "Removing or renaming"):
+                    removed = "runtime.cpp" if new_unit == "xar_ck3_12002_runtime" else "bridge.cpp"
+                    producer.plan([row for row in rows if row.source.name != removed], existing_plan=reference)
+                previous_dependencies = dependency_path.read_bytes()
+                dependency_path.write_bytes(previous_dependencies + ("\n" + added.output.relative_to(producer.build).as_posix()
+                    + ": #deps 1, deps mtime 1 (VALID)\n    " + str(added.source) + "\n").encode())
+                plan["original_dependencies"] = pin(dependency_path)
+                dependency_plan = put("new-unit-invented-old-dependency-plan.json", plan)
+                with self.assertRaisesRegex(ValueError, "genuinely new"):
+                    producer.plan(rows, existing_plan=dependency_plan)
+                dependency_path.write_bytes(previous_dependencies)
+                plan["original_dependencies"] = pin(dependency_path)
             if dormant is not None:
                 self.assertFalse(dormant.source.exists())
                 for required_target in ("wire_fixture", "xar_ck3_bridge"):
