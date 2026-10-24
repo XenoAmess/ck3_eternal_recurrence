@@ -33,6 +33,52 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 final class CiBootstrapTest {
+    @Test
+    void mavenOnlyInvocationRetainsDefaultCommandAndRejectsPipelineRequests() {
+        String[] arguments = {"--ensure-default-maven-only", "--repo-root", "repo", "--work-root", "work",
+                "--python-executable", "python", "--system-growth-reserve-bytes", "2147483648", "--max-project-bytes", "8589934592"};
+        var invocation = CiBootstrap.invocation(arguments);
+        assertEquals(CiBootstrap.BootstrapMode.MAVEN_ONLY, invocation.mode());
+        assertEquals(5, invocation.values().size());
+        assertEquals("repo", invocation.values().get("--repo-root"));
+        assertEquals(CiBootstrap.BootstrapMode.PIPELINE,
+                CiBootstrap.invocation(java.util.Arrays.copyOfRange(arguments, 1, arguments.length)).mode());
+        String[] fixture = java.util.Arrays.copyOf(arguments, arguments.length + 6);
+        System.arraycopy(new String[] {"--fixture-production-request", "request", "--fixture-production-request-bytes", "1",
+                "--fixture-production-request-sha256", "0".repeat(64)}, 0, fixture, arguments.length, 6);
+        assertThrows(IllegalArgumentException.class, () -> CiBootstrap.invocation(fixture));
+    }
+
+    @Test
+    void mavenOnlyTerminalDoesNotClaimPipelineQualification() {
+        assertEquals(CiBootstrap.BootstrapTerminalStatus.MAVEN_READY_NO_PIPELINE_QUALIFICATION,
+                CiBootstrap.completionStatus(CiBootstrap.BootstrapMode.MAVEN_ONLY, true, null));
+        assertEquals(CiBootstrap.BootstrapTerminalStatus.RED,
+                CiBootstrap.completionStatus(CiBootstrap.BootstrapMode.MAVEN_ONLY, false, null));
+        assertEquals(CiBootstrap.BootstrapTerminalStatus.RED,
+                CiBootstrap.completionStatus(CiBootstrap.BootstrapMode.MAVEN_ONLY, true, "actual failure"));
+        assertEquals(CiBootstrap.BootstrapTerminalStatus.PIPELINE_EXIT_0,
+                CiBootstrap.completionStatus(CiBootstrap.BootstrapMode.PIPELINE, true, null));
+    }
+
+    @Test
+    void persistedMavenOnlyAdmissionIsReadBackWithoutPipelinePlan(@TempDir Path temporary) throws Exception {
+        Path home = Files.createDirectories(temporary.resolve("home/bin")).getParent();
+        Path launcher = home.resolve("bin/mvn.cmd"); Files.writeString(launcher, "authored launcher");
+        Path source = temporary.resolve("bootstrap-source.java"); Files.writeString(source, "authored source");
+        Path logs = Files.createDirectory(temporary.resolve("logs"));
+        Path stdout = logs.resolve("maven-version-1.log");
+        List<CiBootstrap.FilePin> refs = new ArrayList<>();
+        String output = versionOutput("3.10.0", home);
+        CiBootstrap.recordedMavenProbe(() -> { Files.writeString(stdout, output); return output; }, () -> launcher,
+                stdout, logs.resolve("maven-observation-1.json"), "fixture-only-machine", CiBootstrap.measure(source),
+                CiBootstrap.MavenProbePhase.BEFORE_ENSURE, true, refs);
+        CiBootstrap.DefaultMaven admitted = CiBootstrap.requireDefaultMaven(output);
+        CiBootstrap.publish(logs.resolve("bootstrap-actual.json"), new CiBootstrap.BootstrapActual(
+                "xar.java-control-CI-bootstrap-actual/v3", "fixture-only-machine", Instant.now().toString(), Instant.now().toString(),
+                CiBootstrap.BootstrapTerminalStatus.MAVEN_READY_NO_PIPELINE_QUALIFICATION, null, null, admitted, refs, false, false));
+        assertEquals(1, CiBootstrap.verifyMavenEvidence(temporary, "fixture-only-machine"));
+    }
     private static final long GIB = 1L << 30;
     private static final String DEFAULT_WINDOWS_PATHEXT = ".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC";
     private static final String POLICY = """
@@ -721,7 +767,7 @@ final class CiBootstrapTest {
         assertNull(receipt.outputRef()); assertNull(receipt.observation()); assertNull(receipt.selectedLauncherRef());
         CiBootstrap.publish(logs.resolve("bootstrap-actual.json"), new CiBootstrap.BootstrapActual(
                 "xar.java-control-CI-bootstrap-actual/v3", "fixture-only-machine", Instant.now().toString(), Instant.now().toString(),
-                "RED", rejected.getMessage(), null, null, refs, false, false));
+                CiBootstrap.BootstrapTerminalStatus.RED, rejected.getMessage(), null, null, refs, false, false));
         assertEquals(1, CiBootstrap.verifyMavenEvidence(temporary, "fixture-only-machine"));
     }
 
@@ -795,7 +841,7 @@ final class CiBootstrapTest {
         assertEquals(home.toRealPath().toString(), observed.observation().reportedHome());
         CiBootstrap.BootstrapActual actual = new CiBootstrap.BootstrapActual(
                 "xar.java-control-CI-bootstrap-actual/v3", "fixture-only-machine", Instant.now().toString(),
-                Instant.now().toString(), "RED", failure.getMessage(), null, null, refs, false, false);
+                Instant.now().toString(), CiBootstrap.BootstrapTerminalStatus.RED, failure.getMessage(), null, null, refs, false, false);
         Path terminal = logs.resolve("bootstrap-actual.json"); CiBootstrap.publish(terminal, actual);
         CiBootstrap.BootstrapActual readback = ControlBuild.strictMapper().readValue(Files.readAllBytes(terminal),
                 CiBootstrap.BootstrapActual.class);
@@ -835,7 +881,7 @@ final class CiBootstrapTest {
         assertEquals(newHome.toRealPath().toString(), readMavenProbe(refs.get(1)).observation().reportedHome());
         CiBootstrap.publish(logs.resolve("bootstrap-actual.json"), new CiBootstrap.BootstrapActual(
                 "xar.java-control-CI-bootstrap-actual/v3", "fixture-only-machine", Instant.now().toString(),
-                Instant.now().toString(), "RED", "actual default changed its installation", null, null, refs, false, false));
+                Instant.now().toString(), CiBootstrap.BootstrapTerminalStatus.RED, "actual default changed its installation", null, null, refs, false, false));
         assertEquals(2, CiBootstrap.verifyMavenEvidence(temporary, "fixture-only-machine"));
     }
 
@@ -862,7 +908,7 @@ final class CiBootstrapTest {
         Path terminal = logs.resolve("bootstrap-actual.json");
         CiBootstrap.publish(terminal, new CiBootstrap.BootstrapActual(
                 "xar.java-control-CI-bootstrap-actual/v3", "fixture-only-machine", Instant.now().toString(),
-                Instant.now().toString(), "PIPELINE_EXIT_0", null, null, admitted, refs, false, false));
+                Instant.now().toString(), CiBootstrap.BootstrapTerminalStatus.PIPELINE_EXIT_0, null, null, admitted, refs, false, false));
         assertEquals(2, CiBootstrap.verifyMavenEvidence(temporary, "fixture-only-machine"));
         // The first launcher hash is deliberately historical and differs after the real in-place write.
         assertFalse(readMavenProbe(refs.getFirst()).selectedLauncherRef().equals(CiBootstrap.measure(launcher)));

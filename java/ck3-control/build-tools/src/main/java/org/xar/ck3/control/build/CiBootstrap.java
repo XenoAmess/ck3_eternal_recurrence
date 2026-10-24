@@ -234,12 +234,24 @@ public final class CiBootstrap {
     }
 
     public record BootstrapActual(String schema, String machineId, String startedAtUtc,
-                                  String observedAtUtc, String status, String error,
+                                  String observedAtUtc, BootstrapTerminalStatus status, String error,
                                    FilePin planRef, DefaultMaven defaultMaven,
                                    List<FilePin> mavenProbeRefs,
                                    boolean bootstrapNativeJobHardBound,
                                   boolean bootstrapAloneGrantsPipelineQualification) {
-        public BootstrapActual { mavenProbeRefs = List.copyOf(mavenProbeRefs); }
+        public BootstrapActual {
+            Objects.requireNonNull(status, "status");
+            mavenProbeRefs = List.copyOf(mavenProbeRefs);
+        }
+    }
+
+    public enum BootstrapMode { PIPELINE, MAVEN_ONLY }
+    public enum BootstrapTerminalStatus { RED, PIPELINE_EXIT_0, MAVEN_READY_NO_PIPELINE_QUALIFICATION }
+    public record Invocation(BootstrapMode mode, Map<String, String> values) {
+        public Invocation {
+            Objects.requireNonNull(mode, "mode");
+            values = Map.copyOf(values);
+        }
     }
 
     public record DefaultMaven(String command, String reportedVersion, String minimumVersion,
@@ -334,7 +346,8 @@ public final class CiBootstrap {
             System.out.println("Verified " + count + " persisted Maven probe records; evidence integrity grants no pipeline qualification");
             return;
         }
-        Map<String, String> values = arguments(arguments);
+        Invocation invocation = invocation(arguments);
+        Map<String, String> values = invocation.values();
         FilePin fixtureProduction = fixtureProductionPin(values);
         Path repo = Path.of(values.get("--repo-root")).toRealPath();
         Path root = Path.of(values.get("--work-root")).toAbsolutePath().normalize();
@@ -423,6 +436,11 @@ public final class CiBootstrap {
                         ordinal == 1 ? MavenProbePhase.BEFORE_ENSURE : MavenProbePhase.AFTER_IN_PLACE_UPGRADE,
                         true, mavenProbeRefs);
             }, observedInstallation -> installOfficialMaven(observedInstallation, root, machine, volumes, () -> guard(root, volumes, timing.workDeadline())));
+            if (invocation.mode() == BootstrapMode.MAVEN_ONLY) {
+                if (!before.equals(sourcePins(source))) throw new IOException("bootstrap source changed during default Maven admission");
+                completed = true;
+                return;
+            }
             Path maven = Path.of(defaultMaven.distributionLauncherRef().path());
             Path batch = root.resolve("scratch/bootstrap-verify.cmd");
             Files.writeString(batch, "@echo off\r\ncall mvn -B -ntp -e -s \"" + settings
@@ -462,10 +480,10 @@ public final class CiBootstrap {
         } catch (Exception error) {
             failure = error.getClass().getName() + ": " + error.getMessage();
         } finally {
-            if (!completed && failure == null) failure = "bootstrap did not reach complete downstream terminal validation";
+            if (!completed && failure == null) failure = "bootstrap did not reach its requested terminal validation";
             publish(root.resolve("logs/bootstrap-actual.json"), new BootstrapActual(
                     "xar.java-control-CI-bootstrap-actual/v3", machine, started, Instant.now().toString(),
-                    completed && failure == null ? "PIPELINE_EXIT_0" : "RED", failure, planRef, defaultMaven,
+                    completionStatus(invocation.mode(), completed, failure), failure, planRef, defaultMaven,
                     mavenProbeRefs, false, false));
         }
         if (!completed || failure != null) throw new IllegalStateException(failure);
@@ -602,10 +620,12 @@ public final class CiBootstrap {
                 observations.add(probe);
             }
             DefaultMaven admitted = parseDefaultMaven(field(terminal, "default_maven"));
-            String status = string(field(terminal, "status"));
+            BootstrapTerminalStatus status = BootstrapTerminalStatus.valueOf(string(field(terminal, "status")));
             String error = nullableText(field(terminal, "error"));
-            if ((!status.equals("RED") && !status.equals("PIPELINE_EXIT_0"))
-                    || (status.equals("RED") != (error != null))) throw new IOException("terminal bootstrap status/error differs");
+            if ((status == BootstrapTerminalStatus.RED) != (error != null)) throw new IOException("terminal bootstrap status/error differs");
+            if (status == BootstrapTerminalStatus.MAVEN_READY_NO_PIPELINE_QUALIFICATION && field(terminal, "plan_ref") != JNull.VALUE) {
+                throw new IOException("Maven-only admission cannot include a pipeline plan");
+            }
             if (observations.size() == 2) {
                 MavenProbeActual before = observations.getFirst();
                 if (before.status() != MavenProbeStatus.OBSERVED || atMinimum(before.observation().reportedVersion())) {
@@ -630,8 +650,8 @@ public final class CiBootstrap {
                     throw new IOException("admitted upgrade changed the original default installation");
                 }
                 verifyPin(admitted.distributionLauncherRef());
-            } else if (status.equals("PIPELINE_EXIT_0")) {
-                throw new IOException("successful pipeline has no admitted default Maven");
+            } else if (status != BootstrapTerminalStatus.RED) {
+                throw new IOException("successful bootstrap has no admitted default Maven");
             }
             return observations.size();
         } catch (IllegalArgumentException error) {
@@ -1227,6 +1247,23 @@ public final class CiBootstrap {
             }
             return HexFormat.of().formatHex(hash.digest());
         } catch (NoSuchAlgorithmException error) { throw new IllegalStateException(error); }
+    }
+
+    static BootstrapTerminalStatus completionStatus(BootstrapMode mode, boolean completed, String failure) {
+        Objects.requireNonNull(mode, "mode");
+        if (!completed || failure != null) return BootstrapTerminalStatus.RED;
+        return mode == BootstrapMode.MAVEN_ONLY ? BootstrapTerminalStatus.MAVEN_READY_NO_PIPELINE_QUALIFICATION
+                : BootstrapTerminalStatus.PIPELINE_EXIT_0;
+    }
+
+    static Invocation invocation(String[] arguments) {
+        boolean mavenOnly = arguments.length > 0 && arguments[0].equals("--ensure-default-maven-only");
+        String[] parameters = mavenOnly ? java.util.Arrays.copyOfRange(arguments, 1, arguments.length) : arguments;
+        Map<String, String> values = arguments(parameters);
+        if (mavenOnly && values.containsKey("--fixture-production-request")) {
+            throw new IllegalArgumentException("Maven-only admission cannot request fixture production");
+        }
+        return new Invocation(mavenOnly ? BootstrapMode.MAVEN_ONLY : BootstrapMode.PIPELINE, values);
     }
 
     static Map<String, String> arguments(String[] arguments) {

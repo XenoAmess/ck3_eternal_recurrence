@@ -1,0 +1,100 @@
+﻿# Observer Character scope; TARGET is a saved Character scope.
+# Either side's persisted index proves this pair was already issued this phase.
+# Do not re-add a consumed/pardoned reason merely because an opinion is absent.
+des_ensure_pair_effect = {
+	if = {
+		limit = { des_is_penalty_pair_trigger = { TARGET = $TARGET$ } }
+		save_scope_as = des_pair_observer
+		if = {
+			limit = {
+				NOT = { is_target_in_variable_list = { name = des_penalty_targets target = $TARGET$ } }
+				$TARGET$ = {
+					NOT = { is_target_in_variable_list = { name = des_observers target = scope:des_pair_observer } }
+				}
+			}
+			add_opinion = { target = $TARGET$ modifier = des_apostasy_opinion }
+		}
+		if = {
+			limit = {
+				NOT = { is_target_in_variable_list = { name = des_penalty_targets target = $TARGET$ } }
+			}
+			add_to_variable_list = { name = des_penalty_targets target = $TARGET$ }
+		}
+		$TARGET$ = {
+			if = {
+				limit = {
+					NOT = { is_target_in_variable_list = { name = des_observers target = scope:des_pair_observer } }
+				}
+				add_to_variable_list = { name = des_observers target = scope:des_pair_observer }
+			}
+		}
+	}
+}
+
+des_remove_pair_effect = {
+	save_scope_as = des_pair_observer
+	remove_opinion = { target = $TARGET$ modifier = des_apostasy_opinion }
+	remove_list_variable = { name = des_penalty_targets target = $TARGET$ }
+	$TARGET$ = { remove_list_variable = { name = des_observers target = scope:des_pair_observer } }
+}
+
+# Target Character scope. Clear only this product's relationship source.
+des_clear_apostasy_effect = {
+	save_scope_as = des_clear_target
+	des_snapshot_relationships_effect = { SOURCE = des_observers }
+	every_in_list = {
+		variable = des_relationship_snapshot
+		des_remove_pair_effect = { TARGET = scope:des_clear_target }
+	}
+	clear_variable_list = des_relationship_snapshot
+	if = {
+		limit = { exists = var:des_apostate_rite }
+		var:des_apostate_rite = {
+			remove_list_variable = { name = des_apostates target = scope:des_clear_target }
+		}
+	}
+	remove_list_global_variable = { name = des_apostates target = this }
+	clear_variable_list = des_observers
+	remove_variable = des_apostate_rite
+	if = { limit = { has_trait = des_apostate } remove_trait = des_apostate }
+}
+
+# Target Character scope. Existing observers are checked before adding newcomers.
+des_sync_apostate_pairs_effect = {
+	save_scope_as = des_pair_target
+	des_snapshot_relationships_effect = { SOURCE = des_observers }
+	every_in_list = {
+		variable = des_relationship_snapshot
+		if = {
+			limit = { NOT = { des_is_penalty_pair_trigger = { TARGET = scope:des_pair_target } } }
+			des_remove_pair_effect = { TARGET = scope:des_pair_target }
+		}
+	}
+	clear_variable_list = des_relationship_snapshot
+	if = {
+		limit = { des_is_apostate_trigger = yes }
+		dynasty.var:des_bound_rite = {
+			save_scope_as = des_pair_rite
+			faith = {
+				every_faith_character = {
+					limit = { is_alive = yes rite = scope:des_pair_rite }
+					des_ensure_pair_effect = { TARGET = scope:des_pair_target }
+				}
+			}
+		}
+	}
+}
+
+# Owner scope with a list of Characters. Removals modify original indexes. Iterate
+# a separate snapshot so correctness does not depend on vector mutation behavior.
+des_snapshot_relationships_effect = {
+	clear_variable_list = des_relationship_snapshot
+	save_scope_as = des_snapshot_owner
+	every_in_list = {
+		variable = $SOURCE$
+		save_scope_as = des_snapshot_member
+		scope:des_snapshot_owner = {
+			add_to_variable_list = { name = des_relationship_snapshot target = scope:des_snapshot_member }
+		}
+	}
+}

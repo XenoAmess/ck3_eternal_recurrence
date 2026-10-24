@@ -1,0 +1,298 @@
+{
+  "schema": "xar.dynastic-esotericism.java-tooling-actual.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T08:55:37.760394+00:00",
+  "maven_command": "mvn -o -f mod_dynastic_esotericism/tools/pom.xml -Ddes.build.root=C:/ck3-dynastic-esotericism-20261024/java-build verify",
+  "maven_verify_exit_code": 0,
+  "java_release": 21,
+  "compiler_checks": [
+    "-Xlint:all",
+    "-Werror"
+  ],
+  "tests": {
+    "tests": 10,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "success_log": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\java-verify-20261024-r7.log",
+    "bytes": 4474,
+    "sha256": "6eb273aa2f091610e70c0f67643e0c5f036f53b44841916c3e646d82a936766c"
+  },
+  "junit_reports": [
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\java-build\\dynastic-esotericism-tools\\surefire-reports\\TEST-org.xar.ck3.dynastic.acceptance.FixtureEmitterTest.xml",
+      "bytes": 18778,
+      "sha256": "b2bce824c554568df705194efd72fa3ae440329a8160ea5fa4c9c0dc4900616c"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\java-build\\dynastic-esotericism-tools\\surefire-reports\\TEST-org.xar.ck3.dynastic.acceptance.SharedRuntimeComposerTest.xml",
+      "bytes": 18342,
+      "sha256": "efd84b6cde3812811e29d578d4b57ac1f872183b0360dc98dd3295ad38d52059"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\java-build\\dynastic-esotericism-tools\\surefire-reports\\TEST-org.xar.ck3.dynastic.release.DefaultMavenTest.xml",
+      "bytes": 18718,
+      "sha256": "53b1370fc872e349ec2caf6f1d2bc04f1db6f122a14903e3b3a21dfe542f9aa9"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\java-build\\dynastic-esotericism-tools\\surefire-reports\\TEST-org.xar.ck3.dynastic.release.ReleaseBuilderTest.xml",
+      "bytes": 18916,
+      "sha256": "e88f9cbddb9efd38d05706c1f8dcd5fd8bd3162ec3e22a2015876f6a9450a96a"
+    }
+  ],
+  "shared_bootstrap_actual": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\shared-bootstrap-actual-r3.json",
+    "bytes": 2846,
+    "sha256": "033a8f786b7fa7ab9f8274c1fc561fca8663675ff04f6d1f2510aa07aa70ba69"
+  },
+  "runner": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\java-build\\dynastic-esotericism-tools\\quarkus-app\\quarkus-run.jar",
+    "bytes": 853,
+    "sha256": "57d067f449fc9f8ed5a05291dd3fcfba1a171f2aa617eb7e0d4cdd78438c9529"
+  },
+  "staging": "C:\\ck3-dynastic-esotericism-20261024\\tooling-staging-r7",
+  "manifest": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\tooling-staging-r7.manifest.json",
+    "bytes": 3159,
+    "sha256": "7826b0635d7c62ed8cbe122fc16410327cdf558535903940a8761722c5f8174e"
+  },
+  "archive": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\tooling-staging-r7.zip",
+    "bytes": 562795,
+    "sha256": "80ca46507a45dff0f16807b3037cf1ba79ece135e6464b05ec5df6c6bffa9934"
+  },
+  "runtime_files": 17,
+  "runtime_bytes": 627454,
+  "canonical_python_manifest_consumer_verified_files": 17,
+  "canonical_python_descriptor_projection_exact": true,
+  "double_build": {
+    "exit_code": 0,
+    "output": "C:\\ck3-dynastic-esotericism-20261024\\tooling-check-r7",
+    "manifest_sha256": "7826b0635d7c62ed8cbe122fc16410327cdf558535903940a8761722c5f8174e",
+    "zip_sha256": "80ca46507a45dff0f16807b3037cf1ba79ece135e6464b05ec5df6c6bffa9934"
+  },
+  "actual_cli_commands": [
+    {
+      "operation": "validate",
+      "argv": [
+        "java",
+        "-jar",
+        "C:\\ck3-dynastic-esotericism-20261024\\java-build\\dynastic-esotericism-tools\\quarkus-app\\quarkus-run.jar",
+        "validate"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\tooling-r7-validate.log",
+        "bytes": 79,
+        "sha256": "e877fc264885eea01d1bf7ad294b345afb9f5141c19ce15e79bbb5ede71a30ca"
+      },
+      "result": {
+        "fileCount": 17,
+        "totalBytes": 627436,
+        "modVersion": "0.1.0"
+      }
+    },
+    {
+      "operation": "check",
+      "argv": [
+        "java",
+        "-jar",
+        "C:\\ck3-dynastic-esotericism-20261024\\java-build\\dynastic-esotericism-tools\\quarkus-app\\quarkus-run.jar",
+        "check",
+        "--output",
+        "C:\\ck3-dynastic-esotericism-20261024\\tooling-check-r7"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\tooling-r7-check.log",
+        "bytes": 201,
+        "sha256": "a5e79bc8053ec93ef04e9f0f1a22c5d95650d4532d85da8714459f0d8cb10f7a"
+      },
+      "result": {
+        "fileCount": 17,
+        "manifestSha256": "7826b0635d7c62ed8cbe122fc16410327cdf558535903940a8761722c5f8174e",
+        "zipSha256": "80ca46507a45dff0f16807b3037cf1ba79ece135e6464b05ec5df6c6bffa9934"
+      }
+    },
+    {
+      "operation": "build",
+      "argv": [
+        "java",
+        "-jar",
+        "C:\\ck3-dynastic-esotericism-20261024\\java-build\\dynastic-esotericism-tools\\quarkus-app\\quarkus-run.jar",
+        "build",
+        "--output",
+        "C:\\ck3-dynastic-esotericism-20261024\\tooling-staging-r7"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\tooling-r7-build.log",
+        "bytes": 351,
+        "sha256": "c6e96f6fd93382b443f70827cb4a01185f6e688ed10ce1de8308b4347a87fe28"
+      },
+      "result": {
+        "staging": "C:\\ck3-dynastic-esotericism-20261024\\tooling-staging-r7",
+        "manifest": "C:\\ck3-dynastic-esotericism-20261024\\tooling-staging-r7.manifest.json",
+        "archive": "C:\\ck3-dynastic-esotericism-20261024\\tooling-staging-r7.zip",
+        "fileCount": 17,
+        "gitSha": "cf8d709ce1ac801b9d069d310ab0bc2df6f493c8",
+        "gitTag": null
+      }
+    },
+    {
+      "operation": "verify",
+      "argv": [
+        "java",
+        "-jar",
+        "C:\\ck3-dynastic-esotericism-20261024\\java-build\\dynastic-esotericism-tools\\quarkus-app\\quarkus-run.jar",
+        "verify",
+        "--output",
+        "C:\\ck3-dynastic-esotericism-20261024\\tooling-staging-r7",
+        "--manifest",
+        "C:\\ck3-dynastic-esotericism-20261024\\tooling-staging-r7.manifest.json"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\tooling-r7-verify.log",
+        "bytes": 115,
+        "sha256": "661a6b7024f6681a658b06857812de16e2596dbcb30d3c6046f5805d6705fa7c"
+      },
+      "result": {
+        "verifiedFiles": 17,
+        "modVersion": "0.1.0",
+        "gitSha": "cf8d709ce1ac801b9d069d310ab0bc2df6f493c8"
+      }
+    }
+  ],
+  "prebuilt_consumer_regression": {
+    "argv": [
+      "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "tools/test_prebuilt_fixture_prepare.py"
+    ],
+    "exit_code": 0,
+    "log": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\prebuilt-seven-final.log",
+      "bytes": 110,
+      "sha256": "c3169ec99df0bd3d233ce774f9e3746906b6d72cb997d03eae119bc157e6fa01"
+    }
+  },
+  "sources": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\decisions\\des_initialization_decisions.txt",
+      "bytes": 662,
+      "sha256": "0add0fe2410f37d900d16b023267e4317a886fb72b24856c9e51e6ac5764d8fe"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\on_action\\des_on_actions.txt",
+      "bytes": 3093,
+      "sha256": "430d9e5c4a7a637acf4482f21dee9eb9f83617e4783571911fbe15a5fb7e0ca0"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\opinion_modifiers\\des_opinions.txt",
+      "bytes": 228,
+      "sha256": "3c14840d2186037d7742b85ee13ea3ecce0a545c05841836018805f473a54c1b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\religion\\doctrine_group_types\\des_doctrine_groups.txt",
+      "bytes": 225,
+      "sha256": "9817b4d229c24592c727b65aaec648bdc6d6be3a161da8034e2932f7bc143eba"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\religion\\doctrine_types\\des_doctrines.txt",
+      "bytes": 387,
+      "sha256": "e117d09ebbe37dba74eb2395508236f63964f2f00fb89e1de07550191852365d"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\scripted_effects\\des_binding_effects.txt",
+      "bytes": 3483,
+      "sha256": "d1f849f3a40bdd21bfbd36835a804873d7fe6571362c81574a29a36af9e73972"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\scripted_effects\\des_character_effects.txt",
+      "bytes": 2639,
+      "sha256": "a54faed9643296017d4a57239bb13c423b61ff8c6e739cab36cadd5721e94941"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\scripted_effects\\des_crime_effects.txt",
+      "bytes": 3502,
+      "sha256": "7793db89c2a1efd0fddcb87d7cd8dbeea9765f3cc30cd08485b9990a6b145781"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\scripted_effects\\des_initialization_effects.txt",
+      "bytes": 1851,
+      "sha256": "d673adf24a0eda17e8895b17890c35531a6f0466f9c1c3efb6ff4024914e018e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\scripted_effects\\des_maintenance_effects.txt",
+      "bytes": 3167,
+      "sha256": "f83926ab7ca6a90b281a5562874dc1184c616b0ec0df80a82fd06ce5f1bca7cf"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\scripted_triggers\\des_dynastic_triggers.txt",
+      "bytes": 1046,
+      "sha256": "2acd4665e4bfecd39d399ad4c39c640d9a9135b2e9db752aff4e55ab40c3c36e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\traits\\des_traits.txt",
+      "bytes": 313,
+      "sha256": "776e5763a6721096552786b24b8ed76c4f3b1db4c64a9532680f06a56087633b"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\descriptor.mod",
+      "bytes": 146,
+      "sha256": "ae75450975b8b9e4aac2ba9f0b2004fb40462ce05595ccaadce9f617b9dac8a9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\gfx\\interface\\icons\\faith_doctrine_groups\\des_dynastic_membership.dds",
+      "bytes": 57728,
+      "sha256": "d6a2e601f4c14424693b0aa6c3d1664b180dc3ee362a044c5be3db60353ce3e7"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\localization\\english\\des_l_english.yml",
+      "bytes": 1874,
+      "sha256": "8a60fa6cf7eeec4b6f80f38eb9e49c16e0334d2609da6a5c2e4588a816ef0129"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\localization\\simp_chinese\\des_l_simp_chinese.yml",
+      "bytes": 1755,
+      "sha256": "8baa714bde3b712d3dd939b2a7e190bd0b07ba641c8f3425f93acfbaa68dd3d3"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\thumbnail.png",
+      "bytes": 545337,
+      "sha256": "3a81e6c88de042dc91ca88a0388b7a811be7030cbb3308a3e4a4e1813a40c17f"
+    }
+  ],
+  "python_manifest_consumer_source": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\independent_mod_release.py",
+    "bytes": 17076,
+    "sha256": "83783e794d14b86380219e5b53a384578c59ac62cc03bc5a2d36166b3b0eca1d"
+  },
+  "compatibility_renderer_source": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\workshop_compatibility_tags.py",
+    "bytes": 3351,
+    "sha256": "20fbb78f2d3ad571f1ad32fc111ee87af2d6c9b951259be35297bb28fc9bf491"
+  },
+  "git_sha": "cf8d709ce1ac801b9d069d310ab0bc2df6f493c8",
+  "git_tag": null,
+  "source_commit_frozen": false,
+  "business_acceptance": "NOT_RUN",
+  "publication_state": "NOT_PUBLISHED",
+  "hosted_ci_execution": "NOT_RUN_ON_THIS_MACHINE",
+  "previous_qualified_result": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\tooling-actual-r6.json",
+    "bytes": 9173,
+    "sha256": "65c3cd09f93fc845aa09ef9d5bad49a76cccc63c52e164f6ccfd182de216034f"
+  },
+  "build_output_retention": "The external reusable Maven build directory, including r6 runner and Surefire reports, was rebuilt for r7. Prior output pins remain historical; their original bytes are no longer at those mutable build paths. Prior full Maven logs, staging, manifests, ZIPs and receipts remain retained.",
+  "compiled_and_tested_inputs": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\java-r7-inputs.actual.json",
+    "bytes": 11096,
+    "sha256": "7c21131c75231f7bc437591bbb29c886c5a248cb929dec381bf5773693183d1d"
+  }
+}

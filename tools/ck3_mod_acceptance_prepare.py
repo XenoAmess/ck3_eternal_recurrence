@@ -10,15 +10,146 @@ import re
 import runpy
 import shutil
 import sys
+from datetime import datetime
+from typing import Literal, TypedDict
+
+from ck3_mod_acceptance_background_types import FilePin, JsonObject, file_pin, json_object, object_field, text_field
 
 CONFIG_NAMES = ('pdx_settings.txt','tutorial.txt','presets.txt','player/game_rules/presets.txt')
 
 
-def require(value, message):
+class PrebuiltFixtureReceipt(TypedDict):
+    required_markers: list[str]
+    required_product_markers_minimum: dict[str, int]
+    fixture_contains_business_effects: bool
+
+
+class PrebuiltFixtureMaterialization(TypedDict):
+    manifest: FilePin
+    producer_source_pins: list[FilePin]
+    machine_id: str
+    observed_at_utc: str
+    game_started: Literal[False]
+    business_acceptance: Literal['NOT_ASSESSED']
+
+
+def _prebuilt_checked_pin(value: object) -> FilePin:
+    row = json_object(value)
+    if set(row) != {'path', 'bytes', 'sha256'}:
+        raise ValueError('Prebuilt fixture file pin fields differ')
+    expected = file_pin(row)
+    actual = pin(expected['path'])
+    if actual != expected:
+        raise ValueError('Prebuilt fixture frozen file changed: ' + expected['path'])
+    return expected
+
+
+def _prebuilt_relative_path(value: str) -> Path:
+    if (not value or '\\' in value or ':' in value or value.startswith('/')
+            or any(part in ('', '.', '..') for part in value.split('/'))):
+        raise ValueError('Prebuilt fixture requires a canonical relative file path')
+    return Path(*value.split('/'))
+
+
+def materialize_prebuilt_fixture(
+    context: JsonObject, manifest_value: object, destination: Path,
+) -> tuple[Path, PrebuiltFixtureReceipt, PrebuiltFixtureMaterialization]:
+    """Import an exact pre-generated fixture without running another interpreter.
+
+    The producer may be Java or another existing non-Python build tool. Its
+    immutable manifest, complete file closure and source pins are validated
+    before copying; the ordinary shared profile builder remains authoritative.
+    """
+    manifest_pin = _prebuilt_checked_pin(manifest_value)
+    row = json_object(json.loads(Path(manifest_pin['path']).read_text(encoding='utf-8-sig')))
+    fields = {'schema', 'product', 'case_id', 'machine_id', 'observed_at_utc',
+              'fixture_root', 'producer_source_pins', 'files', 'receipt'}
+    if (set(row) != fields or row.get('schema') != 'ck3-mod-acceptance-prebuilt-fixture-v1'
+            or row.get('product') != context.get('product') or row.get('case_id') != context.get('case')):
+        raise ValueError('Prebuilt fixture crossed product/case/schema')
+    shared_pin = _prebuilt_checked_pin(context.get('runtime_manifest'))
+    shared = json_object(json.loads(Path(shared_pin['path']).read_text(encoding='utf-8-sig')))
+    machine = text_field(row, 'machine_id')
+    if machine != shared.get('machine_id'):
+        raise ValueError('Prebuilt fixture belongs to another execution machine')
+    stamp = text_field(row, 'observed_at_utc')
+    if datetime.fromisoformat(stamp.replace('Z', '+00:00')).utcoffset() is None:
+        raise ValueError('Prebuilt fixture timestamp needs an explicit timezone')
+    source_values = row.get('producer_source_pins')
+    if not isinstance(source_values, list) or not 1 <= len(source_values) <= 64:
+        raise ValueError('Prebuilt fixture producer source pins required')
+    source_pins = [_prebuilt_checked_pin(value) for value in source_values]
+    if len({value['path'] for value in source_pins}) != len(source_pins):
+        raise ValueError('Prebuilt fixture producer source pins repeat')
+    repo = Path(text_field(context, 'repo_root')).resolve()
+    if any(not Path(value['path']).resolve().is_relative_to(repo) for value in source_pins):
+        raise ValueError('Prebuilt fixture producer is outside the selected repository')
+    root_value = text_field(row, 'fixture_root')
+    if not Path(root_value).is_absolute():
+        raise ValueError('Prebuilt fixture root must be absolute')
+    source_root = Path(root_value)
+    root = source_root.resolve()
+    if not root.is_dir() or source_root.is_symlink() or source_root.is_junction():
+        raise ValueError('Prebuilt fixture requires an ordinary directory')
+    files = object_field(row, 'files')
+    if not files or len(files) > 1024 or 'descriptor.mod' not in files:
+        raise ValueError('Prebuilt fixture needs its complete bounded file closure')
+    declared: dict[str, FilePin] = {}
+    for relative, value in files.items():
+        path = root / _prebuilt_relative_path(relative)
+        expected = json_object(value)
+        if set(expected) != {'bytes', 'sha256'}:
+            raise ValueError('Prebuilt fixture inventory fields differ')
+        declared[relative] = file_pin({'path': str(path), **expected})
+    actual_paths: set[str] = set()
+    for path in root.rglob('*'):
+        if path.is_symlink() or path.is_junction():
+            raise ValueError('Prebuilt fixture cannot follow filesystem links')
+        if path.is_file():
+            actual_paths.add(path.relative_to(root).as_posix())
+    if actual_paths != set(declared):
+        raise ValueError('Prebuilt fixture inventory differs from actual files')
+    for expected_pin in declared.values():
+        _prebuilt_checked_pin(expected_pin)
+    receipt_row = object_field(row, 'receipt')
+    if set(receipt_row) != {'required_markers', 'required_product_markers_minimum', 'fixture_contains_business_effects'}:
+        raise ValueError('Prebuilt fixture receipt fields differ')
+    marker_values = receipt_row.get('required_markers')
+    if (not isinstance(marker_values, list) or not marker_values
+            or any(not isinstance(value, str) or not value for value in marker_values)):
+        raise ValueError('Prebuilt fixture requires actual assertion marker names')
+    markers = [value for value in marker_values if isinstance(value, str)]
+    if len(set(markers)) != len(markers):
+        raise ValueError('Prebuilt fixture assertion markers repeat')
+    minima: dict[str, int] = {}
+    for key, value in object_field(receipt_row, 'required_product_markers_minimum').items():
+        if type(value) is not int or not isinstance(value, int) or value <= 0:
+            raise ValueError('Prebuilt fixture marker minima must be positive integers')
+        minima[key] = value
+    business_effects = receipt_row.get('fixture_contains_business_effects')
+    if type(business_effects) is not bool or not isinstance(business_effects, bool):
+        raise ValueError('Prebuilt fixture business-effect flag must be Boolean')
+    receipt = PrebuiltFixtureReceipt(required_markers=markers,
+        required_product_markers_minimum=minima, fixture_contains_business_effects=business_effects)
+    if destination.exists() or destination.is_symlink() or destination.is_junction():
+        raise ValueError('Unused prebuilt fixture destination required')
+    destination.mkdir(parents=True)
+    for relative, expected_pin in declared.items():
+        target = destination / _prebuilt_relative_path(relative)
+        copied = checked_copy(expected_pin, target)
+        if copied['bytes'] != expected_pin['bytes'] or copied['sha256'] != expected_pin['sha256']:
+            raise ValueError('Prebuilt fixture copy differs from its frozen inventory')
+    materialized = PrebuiltFixtureMaterialization(manifest=manifest_pin,
+        producer_source_pins=source_pins, machine_id=machine, observed_at_utc=stamp,
+        game_started=False, business_acceptance='NOT_ASSESSED')
+    return destination, receipt, materialized
+
+
+def require(value: object, message: str) -> None:
     if not value: raise ValueError(message)
 
 
-def pin(path):
+def pin(path: str | Path) -> FilePin:
     path=Path(path).resolve();raw=path.read_bytes()
     return {'path':str(path),'bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()}
 
@@ -29,7 +160,7 @@ def write_json(path,value):
         json.dump(value,stream,ensure_ascii=False,indent=2);stream.write('\n')
 
 
-def checked_copy(row,target):
+def checked_copy(row: FilePin, target: str | Path) -> FilePin:
     source=Path(row['path']).resolve()
     actual=pin(source)
     require(actual['bytes']==row['bytes'] and actual['sha256']==row['sha256'].lower(), 'Frozen input changed: '+str(source))
@@ -147,7 +278,7 @@ def restore_prepared_profile(context,beforelaunch_inventory):
     for relative,row in rows.items():
         require(not Path(relative).is_absolute() and '..' not in Path(relative).parts,'Input path must remain below profile')
         source=(root/relative).resolve();require(source.is_relative_to(root),'Snapshot path escaped')
-        checked_copy({'path':str(source),**{key:row[key] for key in ('bytes','sha256')}},profile/relative)
+        checked_copy(file_pin({'path':str(source),'bytes':row['bytes'],'sha256':row['sha256']}),profile/relative)
         if relative in ('mod/fixture.mod','mod/product.mod'):
             target=profile/'mod-content'/Path(relative).stem
             old=(profile/relative).read_bytes()
@@ -173,8 +304,8 @@ def materialize_product_profile(context,product_dir,plain_configuration,*,worksh
     if product_dir is None:
         require(workshop_cache_files is None,'A vanilla saved campaign cannot declare Workshop product files')
         write_json(profile/'dlc_load.json',{'enabled_mods':[],'disabled_dlcs':[]})
-        inventory={'schema':'ck3-saved-campaign-vanilla-profile-v1','profile_path':str(profile.resolve()),
-                   'enabled_mods':[],'product_files':[]}
+        inventory=json_object({'schema':'ck3-saved-campaign-vanilla-profile-v1','profile_path':str(profile.resolve()),
+                   'enabled_mods':[],'product_files':[]})
         path=Path(context['output'])/'saved-product-inventory.json';write_json(path,inventory)
         rows={p.relative_to(profile).as_posix():pin(p) for p in sorted(profile.rglob('*')) if p.is_file()}
         return {'state_dir':str(state),'profile':str(profile),'product_inventory':pin(path),'files':rows,
@@ -196,9 +327,9 @@ def materialize_product_profile(context,product_dir,plain_configuration,*,worksh
     write_json(profile/'dlc_load.json',{'enabled_mods':['mod/product.mod'],'disabled_dlcs':[]})
     products=([pin(outer),*workshop_cache_files] if workshop_cache_files is not None else
               [pin(p) for p in [outer,*sorted(p for p in target.rglob('*') if p.is_file())]])
-    inventory={'schema':('ck3-workshop-cache-product-only-profile-v1' if workshop_cache_files is not None else
+    inventory=json_object({'schema':('ck3-workshop-cache-product-only-profile-v1' if workshop_cache_files is not None else
                          'ck3-saved-campaign-product-only-profile-v1'),'profile_path':str(profile.resolve()),
-               'enabled_mods':['mod/product.mod'],'product_files':products}
+               'enabled_mods':['mod/product.mod'],'product_files':products})
     path=Path(context['output'])/'saved-product-inventory.json';write_json(path,inventory)
     rows={p.relative_to(profile).as_posix():pin(p) for p in sorted(profile.rglob('*')) if p.is_file()}
     return {'state_dir':str(state),'profile':str(profile),'product_inventory':pin(path),'files':rows,

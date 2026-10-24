@@ -1,0 +1,112 @@
+﻿# Character scope. A genuine adherent is the only founder of a new binding.
+des_ensure_own_rite_binding_effect = {
+	if = {
+		limit = { exists = rite }
+		rite = { des_initialize_rite_effect = yes }
+		if = {
+			limit = { rite = { rite_has_doctrine = des_doctrine_dynastic } }
+			rite = { des_repair_rite_binding_effect = yes }
+			if = {
+				limit = {
+					rite = {
+						NOR = {
+							has_variable = des_bound_dynasty
+							has_variable = des_join_house
+							has_variable = des_binding_in_progress
+						}
+					}
+				}
+				des_create_rite_dynasty_effect = yes
+			}
+		}
+	}
+}
+
+des_create_rite_dynasty_effect = {
+	rite = {
+		save_scope_as = des_binding_rite
+		set_variable = { name = des_binding_in_progress value = yes }
+	}
+	create_dynasty = {
+		spread_to_descendants = no
+		save_scope_as = des_created_dynasty
+	}
+	if = {
+		limit = {
+			exists = scope:des_created_dynasty
+			dynasty = scope:des_created_dynasty
+			exists = house
+		}
+		house = { save_scope_as = des_created_house }
+		scope:des_binding_rite = {
+			set_variable = { name = des_bound_dynasty value = scope:des_created_dynasty }
+			set_variable = { name = des_join_house value = scope:des_created_house }
+		}
+		scope:des_created_dynasty = {
+			set_variable = { name = des_bound_rite value = scope:des_binding_rite }
+		}
+		add_to_global_variable_list = { name = des_bound_rites target = scope:des_binding_rite }
+	}
+	else = {
+		scope:des_binding_rite = { set_variable = { name = des_binding_fault value = yes } }
+		debug_log = "DES: failed to create a valid dynasty/house binding; no fallback identity assigned"
+	}
+	scope:des_binding_rite = { remove_variable = des_binding_in_progress }
+}
+
+# Rite scope. Repair only missing components whose remaining object identity proves
+# the relationship. A conflicting backlink is diagnosed, never overwritten.
+des_repair_rite_binding_effect = {
+	save_scope_as = des_repair_rite
+	if = {
+		limit = {
+			NOT = { has_variable = des_bound_dynasty }
+			exists = var:des_join_house.dynasty
+			var:des_join_house.dynasty.var:des_bound_rite = this
+		}
+		set_variable = { name = des_bound_dynasty value = var:des_join_house.dynasty }
+	}
+	if = {
+		limit = { exists = var:des_bound_dynasty }
+		var:des_bound_dynasty = {
+			if = {
+				limit = { NOT = { has_variable = des_bound_rite } }
+				set_variable = { name = des_bound_rite value = scope:des_repair_rite }
+				debug_log = "DES: restored missing dynasty backlink from the persisted rite binding"
+			}
+		}
+		if = {
+			limit = {
+				NOT = { exists = var:des_join_house }
+				var:des_bound_dynasty.var:des_bound_rite = this
+			}
+			var:des_bound_dynasty = {
+				every_dynasty_house = {
+					limit = { NOT = { exists = scope:des_repair_rite.var:des_join_house } }
+					save_scope_as = des_recovered_house
+					scope:des_repair_rite = {
+						set_variable = { name = des_join_house value = scope:des_recovered_house }
+					}
+				}
+			}
+		}
+	}
+	if = {
+		limit = { des_has_binding_trigger = yes }
+		remove_variable = des_binding_fault
+		if = {
+			limit = {
+				NOT = { is_target_in_global_variable_list = { name = des_bound_rites target = this } }
+			}
+			add_to_global_variable_list = { name = des_bound_rites target = this }
+		}
+	}
+	else_if = {
+		limit = {
+			OR = { has_variable = des_bound_dynasty has_variable = des_join_house }
+			NOT = { has_variable = des_binding_fault }
+		}
+		set_variable = { name = des_binding_fault value = yes }
+		debug_log = "DES: conflicting or unavailable persisted binding; migration paused for this rite"
+	}
+}

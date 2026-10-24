@@ -1,0 +1,50 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "dynastic-esotericism",
+  "fixture_source": {
+    "kind": "prebuilt_manifest"
+  },
+  "failure_prefixes": [
+    "DESAF:"
+  ],
+  "source_contracts": [
+    "mod_dynastic_esotericism/docs/requirements.md",
+    "mod_dynastic_esotericism/docs/test-plan.md",
+    "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/acceptance/FixtureEmitter.java",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_acceptance_events.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/scripted_effects/des_acceptance_extended_effects.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_acceptance_extended_decisions.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/on_action/des_acceptance_extended_on_actions.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_acceptance_extended_events.txt",
+    "mod_dynastic_esotericism/docs/acceptance/operator-runbook.md"
+  ],
+  "post_start": {
+    "government_key": "feudal_government",
+    "primary_title_tier_key": "duchy",
+    "independent": true
+  },
+  "forbidden_startup": [
+    "DESAF: TEST FAIL"
+  ],
+  "business_contract_applicable": true,
+  "case_id": "old_save_bootstrap",
+  "acceptance_scope": "actual_pre_product_save_loaded_then_formal_bootstrap",
+  "maximum_natural_days": 2,
+  "startup_mode": "saved_campaign",
+  "required_startup": [],
+  "gui_phases": [
+    {
+      "id": "actual-real-pre-product-save-and-formal-bootstrap",
+      "at_day": 0,
+      "requirements": [
+        "actual_source_campaign_was_created_and_saved_with_formal_product_absent",
+        "actual_new_pid_and_creation_identity_and_original_saved_player_date",
+        "actual_legacy_before_decision_proves_uninitialized_before_formal_bootstrap",
+        "actual_original_des_initialize_decision_once_then_after_readback",
+        "actual_no_dynasty_or_house_migration_for_none_rite_and_both_doctrine_knowledge",
+        "actual_initialized_saved_state_and_real_native_creation_options_after_bootstrap"
+      ]
+    }
+  ],
+  "calendar_bound_provenance": "At most2 natural days for formal bootstrap next-day readback; source is a separately saved real pre-product campaign, not a cleared product variable."
+}

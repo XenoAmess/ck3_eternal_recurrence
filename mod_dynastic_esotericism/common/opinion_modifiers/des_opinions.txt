@@ -1,0 +1,9 @@
+﻿# Only explicit, identity-checked observer -> apostate pairs receive this source.
+des_apostasy_opinion = {
+	opinion = -100
+	stacking = no
+	decaying = no
+	imprisonment_reason = yes
+	banish_reason = yes
+	execute_reason = yes
+}

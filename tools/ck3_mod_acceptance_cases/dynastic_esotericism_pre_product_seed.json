@@ -1,0 +1,50 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "dynastic-esotericism",
+  "fixture_source": {
+    "kind": "prebuilt_manifest"
+  },
+  "failure_prefixes": [
+    "DESAF:"
+  ],
+  "source_contracts": [
+    "mod_dynastic_esotericism/docs/requirements.md",
+    "mod_dynastic_esotericism/docs/test-plan.md",
+    "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/acceptance/FixtureEmitter.java",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_acceptance_events.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/scripted_effects/des_acceptance_extended_effects.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_acceptance_extended_decisions.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/on_action/des_acceptance_extended_on_actions.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_acceptance_extended_events.txt",
+    "mod_dynastic_esotericism/docs/acceptance/operator-runbook.md"
+  ],
+  "post_start": {
+    "government_key": "feudal_government",
+    "primary_title_tier_key": "duchy",
+    "independent": true
+  },
+  "forbidden_startup": [
+    "DESAF: TEST FAIL"
+  ],
+  "business_contract_applicable": true,
+  "case_id": "pre_product_seed",
+  "acceptance_scope": "real_pre_product_campaign_seed",
+  "maximum_natural_days": 0,
+  "product_loading": "absent",
+  "required_startup": [
+    "DESAF: TEST PASS legacy_seed_ready"
+  ],
+  "gui_phases": [
+    {
+      "id": "actual-pre-product-seed-save",
+      "at_day": 0,
+      "requirements": [
+        "actual_enabled_mods_excludes_formal_product_and_no_product_initialization_state",
+        "actual_normal_new_campaign_player_date_and_process_identity",
+        "actual_native_saved_checkpoint_independently_proves_product_absent",
+        "source_save_and_profile_inventory_pinned_for_later_bootstrap"
+      ]
+    }
+  ],
+  "calendar_bound_provenance": "Zero-day fresh stock campaign saved through the managed normal Save channel; fixture only logs readiness and never writes product state."
+}

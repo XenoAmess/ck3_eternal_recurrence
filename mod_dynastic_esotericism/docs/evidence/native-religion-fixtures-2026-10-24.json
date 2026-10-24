@@ -1,0 +1,24 @@
+{
+  "schema": "dynastic-esotericism.shared-native-offline-fixture-evidence.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T08:49:24.459811+00:00",
+  "state": "offline_fixtures_pass",
+  "fixture_qualification": {
+    "path": "C:\\w\\des1024-rite-tests-a01\\evidence\\FIXTURE-QUALIFICATION.actual.json",
+    "bytes": 9027,
+    "sha256": "31b2d23104d7264b644c34ffc07a72ff7a524f189ce029cd82f14f4473e00418"
+  },
+  "original_native_source_index": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\native-religion-01\\native-source-index.actual.json",
+    "bytes": 4357,
+    "sha256": "2e5914aa157fc104f90b2b63f59bcba80628dc1d979d233d19189f1f0b697fa3"
+  },
+  "production_four_source_bytes_match14": true,
+  "original14_UAC_failure_preserved": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\native-religion-01\\successor-14flags\\admin-exe-registration\\ORIGINAL-WAIT.actual.json",
+    "bytes": 653,
+    "sha256": "9e99d8600d1885e4d7b5d370bc00c726e65e68ae13aa3383d2651e278ba8a25b"
+  },
+  "live_qualified": false,
+  "published": false
+}

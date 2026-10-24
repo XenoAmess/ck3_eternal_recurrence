@@ -1,0 +1,19 @@
+{
+  "schema": "dynastic-esotericism.shared-native-build-evidence.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T07:44:25.237457+00:00",
+  "state": "native_compiler_pass_tail_hook_failed_live_pending",
+  "native_source_index": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\native-religion-01\\native-source-index.12flags.actual.json",
+    "bytes": 3971,
+    "sha256": "a6b3fb8d86c4a40016924d71882198bec43fecdeae3d7f3087d8843c9aa28c0e"
+  },
+  "build_output": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\native-religion-01\\BUILD-OUTPUT.12flags.actual.json",
+    "bytes": 5757,
+    "sha256": "d4cd3810b25b8df2bae6c1b9b5d2eb447a882f1385485069e65d206310bb2559"
+  },
+  "live_qualified": false,
+  "game_started_by_this_builder": false,
+  "published": false
+}

@@ -276,18 +276,60 @@ def resolve_post_start(context):
     return context
 
 
+def _saved_fixture_startup(context: JsonObject, profile: JsonObject) -> JsonObject:
+    """Bind an explicit saved input to the existing role-bound shared inventory."""
+    from ck3_mod_acceptance_saved_profile_v2 import write_saved_profile_inventory_v2
+    saved = object_field(context, 'saved_campaign')
+    if set(saved) != {'save', 'bytes', 'sha256', 'player_id', 'date_raw'}:
+        raise ValueError('Saved fixture input requires exactly save/bytes/sha256/player_id/date_raw')
+    expected = file_pin({'path': text_field(saved, 'save'), 'bytes': saved['bytes'], 'sha256': saved['sha256']})
+    actual = pin(expected['path'])
+    if actual != expected or Path(expected['path']).suffix.casefold() != '.ck3':
+        raise ValueError('Actual immutable external .ck3 input differs from its source pin')
+    for field in ('player_id', 'date_raw'):
+        value = saved[field]
+        if type(value) is not int or not isinstance(value, int) or not 0 < value < 2**31:
+            raise ValueError('Saved fixture input requires exact positive bounded integer ' + field)
+    profile_path = Path(text_field(profile, 'profile'))
+    if Path(expected['path']).is_relative_to(profile_path):
+        raise ValueError('Saved fixture input must remain outside the new profile')
+    files = object_field(profile, 'files')
+    product_files = [file_pin(row) for relative, row in files.items()
+                     if relative.startswith(('mod/', 'mod-content/'))]
+    inventory = write_saved_profile_inventory_v2(Path(text_field(context, 'output')) / 'saved-fixture-inventory-v2.json',
+        profile=profile_path, mode='enabled', enabled_mods=['mod/product.mod', 'mod/fixture.mod'],
+        product_files=product_files, roles={'mod/product.mod': 'formal_product', 'mod/fixture.mod': 'case_fixture'})
+    return json_object({'mode': 'saved_campaign', 'state_dir': text_field(context, 'state_dir'),
+        'saved_campaign': {**saved, 'product_inventory': inventory['path']}})
+
+
 def _prepare_fixture_case(context):
     from ck3_mod_acceptance_prepare import invoke_fixture_prepare, materialize_fixture_profile
     context = resolve_post_start(context)
     config = context['case_contract']
     require(config['product'] == context['product'], 'Case crossed canonical product')
     inputs = context['case_inputs']
-    product = Path(inputs['product_dir']).resolve()
-    require((product / 'descriptor.mod').is_file(), 'Already built exact product projection required')
+    product_loading = config.get('product_loading', 'present')
+    require(product_loading in ('present', 'absent'), 'Explicit product loading mode required')
+    if product_loading == 'absent':
+        require(inputs.get('product_dir') is None, 'Pre-product case cannot mount a formal product')
+        product = None
+    else:
+        product = Path(inputs['product_dir']).resolve()
+        require((product / 'descriptor.mod').is_file(), 'Already built exact product projection required')
     output = Path(context['output'])
     emitter = config.get('fixture_emitter')
+    prebuilt = config.get('fixture_source')
     emitted = None
-    if emitter:
+    if prebuilt is not None:
+        from ck3_mod_acceptance_prepare import materialize_prebuilt_fixture
+        if prebuilt != {'kind': 'prebuilt_manifest'} or emitter is not None:
+            raise ValueError('Prebuilt fixture source cannot include a legacy emitter')
+        fixture, prebuilt_receipt, prebuilt_emission = materialize_prebuilt_fixture(
+            json_object(context), inputs.get('prebuilt_fixture_manifest'), output / 'prebuilt-fixture')
+        receipt = json_object(prebuilt_receipt)
+        emitted = json_object(prebuilt_emission)
+    elif emitter:
         generated = output / 'original-fixture-emission'
         args = [s.format(output=str(generated), repo=context['repo_root'], product_dir=str(product))
                 for s in emitter['arguments']]
@@ -297,6 +339,8 @@ def _prepare_fixture_case(context):
                             else generated / emitter['receipt_relative'])
     else:
         # Product-only load boundary: no business effect, actor or marker setter.
+        if product is None:
+            raise ValueError('A pre-product fixture requires an explicit frozen fixture source')
         fixture = output / 'empty-load-carrier'
         fixture.mkdir()
         text = (product / 'descriptor.mod').read_text(encoding='utf-8-sig')
@@ -320,15 +364,18 @@ def _prepare_fixture_case(context):
         'case': context['case'], 'config': config, 'required_markers': required,
         'product_marker_minimum': receipt.get('required_product_markers_minimum', {}),
         'original_receipt': receipt, 'assertion_source_pins': source_pins,
-        'emitter': emitted, 'product_descriptor': pin(product / 'descriptor.mod'),
+        'emitter': emitted, 'product_descriptor': pin(product / 'descriptor.mod') if product is not None else None,
         'whole_product_release_pass': False,
     }
     write_once(fixture / '_case_contract.json', compiled)
     profile = materialize_fixture_profile(context, fixture, product, inputs['plain_configuration'])
     initial = output / 'initial-plan.json'
     write_once(initial, {'steps': []})
-    startup = {'mode': 'fixture', 'state_dir': profile['state_dir'],
+    startup: JsonObject = {'mode': 'fixture', 'state_dir': profile['state_dir'],
                'fixture_start_policy': profile['fixture_start_policy']}
+    if config.get('startup_mode') == 'saved_campaign':
+        require(product_loading == 'present', 'Saved fixture startup requires the actual formal product')
+        startup = _saved_fixture_startup(json_object(context), json_object(profile))
     if config.get('frontend_rules'):
         rules = output / 'frontend-rules-plan.json'
         write_once(rules, {'schema': 'ck3-frontend-rules-plan-v1', 'schema_version': 1,
@@ -462,10 +509,21 @@ def _run_fixture_case(context, client):
     phases = {}
     static_load_only = config['acceptance_scope'] == 'static_and_basicload'
     profile = Path(context['state_dir']) / 'profile'
-    enabled = read_json(profile / 'dlc_load.json')['enabled_mods']
-    require('mod/product.mod' in enabled, 'Actual prepared product is not mounted')
-    require((profile / 'mod/product.mod').is_file() and (profile / 'mod-content/product/descriptor.mod').is_file(),
-            'Actual product descriptors missing')
+    enabled_value = read_json(profile / 'dlc_load.json')['enabled_mods']
+    if not isinstance(enabled_value, list):
+        raise ValueError('Actual enabled_mods must be a string array')
+    enabled: list[str] = []
+    for descriptor in enabled_value:
+        if not isinstance(descriptor, str) or not descriptor:
+            raise ValueError('Actual enabled_mods must contain nonempty descriptor paths')
+        enabled.append(descriptor)
+    if config.get('product_loading', 'present') == 'absent':
+        require('mod/product.mod' not in enabled and not (profile / 'mod/product.mod').exists()
+                and not (profile / 'mod-content/product').exists(), 'Pre-product campaign unexpectedly mounted a product')
+    else:
+        require('mod/product.mod' in enabled, 'Actual prepared product is not mounted')
+        require((profile / 'mod/product.mod').is_file() and (profile / 'mod-content/product/descriptor.mod').is_file(),
+                'Actual product descriptors missing')
     observed = {'qualified': static_load_only, 'counts': {}, 'missing': [], 'duplicates': {}, 'failure_lines': [], 'product_marker_minimum': {}}
     if not static_load_only:
         sequence = 0

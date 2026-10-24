@@ -27,6 +27,295 @@
     "menu_mount_evidence_sufficient": true
   },
   "products": {
+    "dynastic-esotericism": {
+      "directory": "mod_dynastic_esotericism",
+      "workshop_item_id": null,
+      "forbidden_upstream_ids": [],
+      "builder": "{repo_root}/mod_dynastic_esotericism/tools/pom.xml",
+      "integration_status": "java_prebuilt_fixture_source_ready_live_not_run",
+      "runtime_mod_key": "dynastic-esotericism",
+      "external_mod": false,
+      "cases": [
+        {
+          "id": "core",
+          "status": "ready",
+          "implementation_credit": "Shared generic adapter and exact Java prebuilt fixture; source business and release NOT_RUN",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/dynastic_esotericism_core.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/prepared/frontend-fixture-start-policy.json"
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 5400,
+            "hold_seconds": 3600,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_open_ingame_decisions_v1",
+            "ck3_query_ingame_decision_item_v1",
+            "ck3_select_ingame_decision_item_v1",
+            "ck3_confirm_ingame_decision_outcome_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_save_checkpoint",
+            "ck3_query_player_religion_context_v1",
+            "ck3_query_player_religion_doctrines_v1",
+            "ck3_query_player_religion_reform_context_v1",
+            "ck3_query_player_religion_draft_groups_v1",
+            "ck3_query_player_religion_draft_doctrine_choices_v1",
+            "ck3_query_player_religion_draft_resource_costs_v1",
+            "ck3_query_player_rite_creation_action_context_v1",
+            "ck3_execute_player_rite_creation_action_v1",
+            "ck3_collect_player_rite_creation_action_result_v1",
+            "ck3_query_character_interaction_ordinary_v1",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1",
+            "ck3_verify_player_rite_creation_action_completed_v1",
+            "ck3_initiate_character_interaction_ordinary_v1"
+          ],
+          "opt_in_player_rite_creation_actions": true,
+          "opt_in_read_only_mcp_tools": [
+            "ck3_query_player_religion_context_v1",
+            "ck3_query_player_religion_doctrines_v1",
+            "ck3_query_player_religion_reform_context_v1",
+            "ck3_query_player_religion_draft_groups_v1",
+            "ck3_query_player_religion_draft_doctrine_choices_v1",
+            "ck3_query_player_religion_draft_resource_costs_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "original_rite_ui_and_real_script_predicate_readbacks",
+          "whole_product_acceptance_credit": false,
+          "budget_provenance": "Prospective first source case: shared1800s readiness, fixed3600s business hold,400 natural-day cap to cover actual280-day pregnancy plus next-day birth and31-day maintenance observations,180s normal closure reserve; no measured runtime or inherited product PASS."
+        },
+        {
+          "id": "cold_reload",
+          "status": "ready",
+          "implementation_credit": "Public generic saved-profile v2 and Java prebuilt fixture; actual gameplay NOT_RUN",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/dynastic_esotericism_cold_reload.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 3600,
+            "hold_seconds": 900,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_open_ingame_decisions_v1",
+            "ck3_query_ingame_decision_item_v1",
+            "ck3_select_ingame_decision_item_v1",
+            "ck3_confirm_ingame_decision_outcome_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_save_checkpoint",
+            "ck3_query_player_religion_context_v1",
+            "ck3_query_player_religion_doctrines_v1",
+            "ck3_query_player_religion_reform_context_v1",
+            "ck3_query_player_religion_draft_groups_v1",
+            "ck3_query_player_religion_draft_doctrine_choices_v1",
+            "ck3_query_player_religion_draft_resource_costs_v1",
+            "ck3_query_player_rite_creation_action_context_v1",
+            "ck3_execute_player_rite_creation_action_v1",
+            "ck3_collect_player_rite_creation_action_result_v1",
+            "ck3_query_character_interaction_ordinary_v1",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1",
+            "ck3_verify_player_rite_creation_action_completed_v1",
+            "ck3_initiate_character_interaction_ordinary_v1"
+          ],
+          "opt_in_player_rite_creation_actions": true,
+          "opt_in_read_only_mcp_tools": [
+            "ck3_query_player_religion_context_v1",
+            "ck3_query_player_religion_doctrines_v1",
+            "ck3_query_player_religion_reform_context_v1",
+            "ck3_query_player_religion_draft_groups_v1",
+            "ck3_query_player_religion_draft_doctrine_choices_v1",
+            "ck3_query_player_religion_draft_resource_costs_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "actual_new_process_exact_saved_rite_dynasty_and_pardon_state",
+          "whole_product_acceptance_credit": false,
+          "budget_provenance": "Zero natural-day readback of a genuine preceding core save in a fresh managed process; no on-start fixture registrar."
+        },
+        {
+          "id": "old_save_bootstrap",
+          "status": "ready",
+          "implementation_credit": "Public generic saved-profile v2 and Java prebuilt fixture; actual gameplay NOT_RUN",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/dynastic_esotericism_old_save_bootstrap.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 3600,
+            "hold_seconds": 1800,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_open_ingame_decisions_v1",
+            "ck3_query_ingame_decision_item_v1",
+            "ck3_select_ingame_decision_item_v1",
+            "ck3_confirm_ingame_decision_outcome_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_save_checkpoint",
+            "ck3_query_player_religion_context_v1",
+            "ck3_query_player_religion_doctrines_v1",
+            "ck3_query_player_religion_reform_context_v1",
+            "ck3_query_player_religion_draft_groups_v1",
+            "ck3_query_player_religion_draft_doctrine_choices_v1",
+            "ck3_query_player_religion_draft_resource_costs_v1",
+            "ck3_query_player_rite_creation_action_context_v1",
+            "ck3_execute_player_rite_creation_action_v1",
+            "ck3_collect_player_rite_creation_action_result_v1",
+            "ck3_query_character_interaction_ordinary_v1",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1",
+            "ck3_verify_player_rite_creation_action_completed_v1",
+            "ck3_initiate_character_interaction_ordinary_v1"
+          ],
+          "opt_in_player_rite_creation_actions": true,
+          "opt_in_read_only_mcp_tools": [
+            "ck3_query_player_religion_context_v1",
+            "ck3_query_player_religion_doctrines_v1",
+            "ck3_query_player_religion_reform_context_v1",
+            "ck3_query_player_religion_draft_groups_v1",
+            "ck3_query_player_religion_draft_doctrine_choices_v1",
+            "ck3_query_player_religion_draft_resource_costs_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "actual_pre_product_save_loaded_then_formal_bootstrap",
+          "whole_product_acceptance_credit": false,
+          "budget_provenance": "At most2 natural days for formal bootstrap next-day readback; source is a separately saved real pre-product campaign, not a cleared product variable."
+        },
+        {
+          "id": "pre_product_seed",
+          "status": "ready",
+          "implementation_credit": "Public generic saved-profile v2 and Java prebuilt fixture; actual gameplay NOT_RUN",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/dynastic_esotericism_pre_product_seed.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/prepared/frontend-fixture-start-policy.json"
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 3600,
+            "hold_seconds": 900,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step",
+            "ck3_open_ingame_decisions_v1",
+            "ck3_query_ingame_decision_item_v1",
+            "ck3_select_ingame_decision_item_v1",
+            "ck3_confirm_ingame_decision_outcome_v1",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_save_checkpoint",
+            "ck3_query_player_religion_context_v1",
+            "ck3_query_player_religion_doctrines_v1",
+            "ck3_query_player_religion_reform_context_v1",
+            "ck3_query_player_religion_draft_groups_v1",
+            "ck3_query_player_religion_draft_doctrine_choices_v1",
+            "ck3_query_player_religion_draft_resource_costs_v1",
+            "ck3_query_player_rite_creation_action_context_v1",
+            "ck3_execute_player_rite_creation_action_v1",
+            "ck3_collect_player_rite_creation_action_result_v1",
+            "ck3_query_character_interaction_ordinary_v1",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1",
+            "ck3_verify_player_rite_creation_action_completed_v1",
+            "ck3_initiate_character_interaction_ordinary_v1"
+          ],
+          "opt_in_player_rite_creation_actions": true,
+          "opt_in_read_only_mcp_tools": [
+            "ck3_query_player_religion_context_v1",
+            "ck3_query_player_religion_doctrines_v1",
+            "ck3_query_player_religion_reform_context_v1",
+            "ck3_query_player_religion_draft_groups_v1",
+            "ck3_query_player_religion_draft_doctrine_choices_v1",
+            "ck3_query_player_religion_draft_resource_costs_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "real_pre_product_campaign_seed",
+          "whole_product_acceptance_credit": false,
+          "budget_provenance": "Zero-day fresh stock campaign saved through the managed normal Save channel; fixture only logs readiness and never writes product state."
+        }
+      ]
+    },
     "eternal-recurrence": {
       "directory": "XenoAmess_s_Eternal_Recurrence",
       "workshop_item_id": "3784706360",

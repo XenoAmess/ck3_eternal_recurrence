@@ -1,0 +1,7 @@
+# Real pre-product campaign seed. No product initialization, character, or state writes.
+on_game_start_after_lobby = { on_actions = { des_acceptance_pre_product_seed_start } }
+des_acceptance_pre_product_seed_start = {
+    effect = {
+        every_player = { debug_log = "DESAF: TEST PASS legacy_seed_ready" }
+    }
+}

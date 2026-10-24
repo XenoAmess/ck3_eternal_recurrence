@@ -1,0 +1,119 @@
+﻿# Extend vanilla chains; never replace their effect/trigger/events blocks.
+on_game_start = { on_actions = { des_new_game_initialize } }
+on_game_start_after_lobby = { on_actions = { des_new_game_reconcile } }
+on_rite_created = { on_actions = { des_on_rite_created } }
+on_rite_updated = { on_actions = { des_on_rite_updated } }
+on_rite_change = { on_actions = { des_on_rite_change } }
+on_birth_child = { on_actions = { des_on_character_finalization } }
+on_character_created = { on_actions = { des_on_character_finalization } }
+yearly_global_pulse = { on_actions = { des_annual_watchdog } }
+random_yearly_everyone_pulse = { on_actions = { des_character_watchdog } }
+on_death = { on_actions = { des_on_death } }
+
+des_new_game_initialize = {
+	effect = { des_initialize_world_effect = yes }
+}
+
+des_new_game_reconcile = {
+	effect = {
+		des_initialize_world_effect = yes
+		des_maintenance_effect = yes
+	}
+}
+
+des_on_rite_created = {
+	effect = {
+		if = {
+			limit = { has_global_variable = des_initialized is_alive = yes }
+			des_sync_character_effect = yes
+			rite = { des_sync_rite_effect = yes }
+		}
+	}
+}
+
+des_on_rite_updated = {
+	effect = {
+		if = {
+			limit = { has_global_variable = des_initialized }
+			des_sync_rite_effect = yes
+		}
+	}
+}
+
+des_on_rite_change = {
+	effect = {
+		if = {
+			limit = { has_global_variable = des_initialized is_alive = yes }
+			des_sync_character_effect = yes
+		}
+	}
+}
+
+des_on_character_finalization = {
+	effect = {
+		if = {
+			limit = { has_global_variable = des_initialized is_alive = yes }
+			des_teach_doctrines_effect = yes
+			# Vanilla birth/creation can assign a House later in its own chain.
+			trigger_event = { on_action = des_character_finalized days = 1 }
+		}
+	}
+}
+
+des_character_finalized = {
+	effect = {
+		if = {
+			limit = { has_global_variable = des_initialized is_alive = yes }
+			des_sync_character_effect = yes
+		}
+	}
+}
+
+# Root is the persistent Religion selected by des_ensure_maintenance_effect.
+des_monthly_maintenance = {
+	effect = {
+		if = {
+			limit = { has_global_variable = des_initialized }
+			des_maintenance_effect = yes
+			set_global_variable = { name = des_maintenance_queued value = yes days = 31 }
+			trigger_event = { on_action = des_monthly_maintenance days = 30 }
+		}
+	}
+}
+
+des_annual_watchdog = {
+	effect = {
+		if = {
+			limit = { has_global_variable = des_initialized }
+			des_ensure_maintenance_effect = yes
+		}
+	}
+}
+
+des_character_watchdog = {
+	effect = {
+		if = {
+			limit = { has_global_variable = des_initialized is_alive = yes }
+			des_sync_character_effect = yes
+		}
+	}
+}
+
+des_on_death = {
+	effect = {
+		if = {
+			limit = { has_global_variable = des_initialized }
+			# Clear outgoing pairs before death without rewriting historical dynasty.
+			save_scope_as = des_dying_observer
+			des_snapshot_relationships_effect = { SOURCE = des_penalty_targets }
+			every_in_list = {
+				variable = des_relationship_snapshot
+				save_scope_as = des_death_target
+				scope:des_dying_observer = {
+					des_remove_pair_effect = { TARGET = scope:des_death_target }
+				}
+			}
+			clear_variable_list = des_relationship_snapshot
+		}
+	}
+}

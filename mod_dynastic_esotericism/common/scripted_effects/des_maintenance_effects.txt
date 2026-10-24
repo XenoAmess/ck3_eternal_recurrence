@@ -1,0 +1,106 @@
+﻿# Any scope. Scan Rite identities every 30 days; do not scan the world's
+# characters daily. This also finds scripted create_dynamic_rite paths.
+des_discover_rites_effect = {
+	every_religion_global = {
+		every_faith = {
+			every_faith_rite = {
+				des_initialize_rite_effect = yes
+				if = {
+					limit = {
+						OR = {
+							rite_has_doctrine = des_doctrine_dynastic
+							has_variable = des_bound_dynasty
+							has_variable = des_join_house
+						}
+					}
+					des_repair_rite_binding_effect = yes
+					if = {
+						limit = {
+							rite_has_doctrine = des_doctrine_dynastic
+							NOT = { des_has_binding_trigger = yes }
+						}
+						save_scope_as = des_discovered_rite
+						faith = {
+							random_faith_character = {
+								limit = { is_alive = yes rite = scope:des_discovered_rite }
+								des_ensure_own_rite_binding_effect = yes
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+# Rite scope. Migrate adherents first, then inspect actual dynasty members.
+# The temporary member list avoids moving people while iterating a dynasty index.
+des_sync_rite_effect = {
+	save_scope_as = des_sync_rite
+	des_initialize_rite_effect = yes
+	des_repair_rite_binding_effect = yes
+	if = {
+		limit = { rite_has_doctrine = des_doctrine_dynastic }
+		faith = {
+			every_faith_character = {
+				limit = { is_alive = yes rite = scope:des_sync_rite }
+				des_join_rite_dynasty_effect = yes
+			}
+			every_faith_character = {
+				limit = { is_alive = yes rite = scope:des_sync_rite }
+				des_refresh_apostasy_effect = yes
+				des_refresh_observer_effect = yes
+			}
+		}
+	}
+	if = {
+		limit = { des_has_binding_trigger = yes }
+		clear_variable_list = des_sync_members
+		var:des_bound_dynasty = {
+			every_dynasty_member = {
+				limit = { is_alive = yes }
+				save_scope_as = des_collect_member
+				scope:des_sync_rite = {
+					add_to_variable_list = { name = des_sync_members target = scope:des_collect_member }
+				}
+			}
+		}
+		every_in_list = {
+			variable = des_sync_members
+			des_sync_character_effect = yes
+		}
+		clear_variable_list = des_sync_members
+	}
+	# This index retains targets that external scripts moved out of the dynasty.
+	des_snapshot_relationships_effect = { SOURCE = des_apostates }
+	every_in_list = {
+		variable = des_relationship_snapshot
+		des_refresh_apostasy_effect = yes
+	}
+	clear_variable_list = des_relationship_snapshot
+}
+
+des_maintenance_effect = {
+	des_discover_rites_effect = yes
+	clear_global_variable_list = des_bound_rites_snapshot
+	every_in_global_list = {
+		variable = des_bound_rites
+		add_to_global_variable_list = { name = des_bound_rites_snapshot target = this }
+	}
+	every_in_global_list = {
+		variable = des_bound_rites_snapshot
+		des_sync_rite_effect = yes
+	}
+	clear_global_variable_list = des_bound_rites_snapshot
+	# Snapshot the global apostate index because a refresh can remove its target.
+	clear_global_variable_list = des_apostates_snapshot
+	every_in_global_list = {
+		variable = des_apostates
+		add_to_global_variable_list = { name = des_apostates_snapshot target = this }
+	}
+	every_in_global_list = {
+		variable = des_apostates_snapshot
+		des_refresh_apostasy_effect = yes
+	}
+	clear_global_variable_list = des_apostates_snapshot
+}

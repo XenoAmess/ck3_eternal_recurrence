@@ -1,0 +1,7 @@
+﻿# Rite-owned choice. Zero divergence keeps this independent of faith separation.
+des_dynastic_membership = {
+	category = main_group
+	divergence = category
+	doctrine_lock = none
+	is_available_on_create = { always = yes }
+}

@@ -1,0 +1,11 @@
+﻿# A visible state marker only. No global sin or triggered-opinion side effects.
+des_apostate = {
+	category = fame
+	icon = "gfx/interface/icons/traits/excommunicated.dds"
+	shown_in_encyclopedia = no
+	shown_in_ruler_designer = no
+	random_creation = 0
+	random_creation_weight = 0
+	birth = 0
+	inherit_chance = 0
+}

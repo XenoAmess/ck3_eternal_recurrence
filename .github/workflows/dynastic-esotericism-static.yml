@@ -1,0 +1,91 @@
+name: Dynastic Esotericism Static
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'mod_dynastic_esotericism/**'
+      - 'tools/ck3_mod_acceptance_prepare.py'
+      - 'tools/ck3_mod_acceptance_products.json'
+      - 'tools/ck3_mod_acceptance_build_runtime.py'
+      - 'tools/ck3_mod_acceptance_saved_profile_v2.py'
+      - 'tools/ck3_mod_acceptance_cases/dynastic_esotericism*.json'
+      - 'tools/ck3_mod_acceptance_cases/generic_product_adapter.py'
+      - 'tools/test_prebuilt_fixture_prepare.py'
+      - 'tools/test_canonical_host_successor.py'
+      - 'tools/ck3_mod_acceptance_build_runtime.py'
+      - 'tools/test_canonical_host_successor.py'
+      - 'ck3_workshop_mcp/src/ck3_workshop_mcp/compatibility_tags.py'
+      - 'java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java'
+      - 'java/ck3-control/ci-profile.json'
+      - 'docs/storage-retention-policy.json'
+      - '.github/workflows/dynastic-esotericism-static.yml'
+  pull_request:
+    paths:
+      - 'mod_dynastic_esotericism/**'
+      - 'tools/ck3_mod_acceptance_prepare.py'
+      - 'tools/ck3_mod_acceptance_products.json'
+      - 'tools/ck3_mod_acceptance_build_runtime.py'
+      - 'tools/ck3_mod_acceptance_saved_profile_v2.py'
+      - 'tools/ck3_mod_acceptance_cases/dynastic_esotericism*.json'
+      - 'tools/ck3_mod_acceptance_cases/generic_product_adapter.py'
+      - 'tools/test_prebuilt_fixture_prepare.py'
+      - 'tools/test_canonical_host_successor.py'
+      - 'tools/ck3_mod_acceptance_build_runtime.py'
+      - 'tools/test_canonical_host_successor.py'
+      - 'ck3_workshop_mcp/src/ck3_workshop_mcp/compatibility_tags.py'
+      - 'java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java'
+      - 'java/ck3-control/ci-profile.json'
+      - 'docs/storage-retention-policy.json'
+      - '.github/workflows/dynastic-esotericism-static.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static:
+    runs-on: windows-latest
+    timeout-minutes: 25
+    env:
+      GIT_CONFIG_COUNT: '1'
+      GIT_CONFIG_KEY_0: core.longpaths
+      GIT_CONFIG_VALUE_0: 'true'
+    defaults:
+      run:
+        shell: cmd
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - name: Ensure the default Maven in its existing installation
+        run: java -Xms32m -Xmx128m -Djava.io.tmpdir="%RUNNER_TEMP%" java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java --ensure-default-maven-only --repo-root "%GITHUB_WORKSPACE%" --work-root "%RUNNER_TEMP%\dynastic-esotericism-maven" --python-executable "%pythonLocation%\python.exe" --system-growth-reserve-bytes 2147483648 --max-project-bytes 8589934592
+      - name: Read back the actual default Maven observations
+        run: java -Xms32m -Xmx128m -Djava.io.tmpdir="%RUNNER_TEMP%" java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java --verify-maven-evidence-root "%RUNNER_TEMP%\dynastic-esotericism-maven"
+      - name: Observe default Maven
+        run: mvn --version
+      - name: Compile and verify the actual product builder and fixture producer
+        run: mvn --batch-mode --no-transfer-progress -f mod_dynastic_esotericism/tools/pom.xml -Ddes.build.root=${{ runner.temp }}/dynastic-esotericism-build verify
+      - name: Install the shared SDK and strict type-check dependencies
+        run: python -m pip install mcp==2.0.0 pydantic==2.13.5 mypy==2.4.0 opencv-python==5.0.0.93 numpy==2.5.2 Pillow==12.3.0
+      - name: Verify the shared prebuilt fixture consumer
+        run: python -B -X utf8 tools/test_prebuilt_fixture_prepare.py
+      - name: Verify the canonical host producer and actual SDK factory
+        run: python -B -X utf8 tools/test_canonical_host_successor.py
+      - name: Strict types for the complete new regression modules
+        env:
+          MYPYPATH: tools;ck3_autonomous_player/src
+        run: python -B -X utf8 -m mypy --strict --strict-equality --follow-imports=silent --no-incremental --cache-dir=${{ runner.temp }}/dynastic-esotericism-mypy tools/test_prebuilt_fixture_prepare.py tools/test_canonical_host_successor.py
+      - name: Preserve default Maven observations and test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dynastic-esotericism-static-evidence
+          path: |
+            ${{ runner.temp }}/dynastic-esotericism-maven/logs/
+            ${{ runner.temp }}/dynastic-esotericism-build/dynastic-esotericism-tools/surefire-reports/

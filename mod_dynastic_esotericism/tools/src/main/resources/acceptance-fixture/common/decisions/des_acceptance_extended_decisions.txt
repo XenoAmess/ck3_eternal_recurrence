@@ -1,0 +1,219 @@
+﻿# Each entry discloses a distinct test input or a read-only assertion.
+des_acceptance_extended_start_decision = {
+	is_shown = { is_ai = no has_character_flag = des_test_reopened_verified NOT = { has_character_flag = des_test_extended_started } }
+	is_valid = { rite = var:des_test_primary_rite rite = { des_has_active_binding_trigger = yes } }
+	effect = {
+		hidden_effect = {
+			des_acceptance_extended_restore_refs_effect = yes
+			add_character_flag = des_test_extended_started
+			scope:des_test_birth_father = { set_character_rite = scope:des_test_primary }
+			scope:des_test_birth_mother = { set_character_rite = scope:des_test_primary }
+			if = {
+				limit = {
+					scope:des_test_old_descendant = {
+						father = root
+						rite = rite:byzantine_rite
+						house = root.var:des_test_old_descendant_house
+						dynasty = root.var:des_test_old_descendant_dynasty
+						NOT = { dynasty = scope:des_test_dynasty }
+					}
+				}
+				add_character_flag = des_test_descendant_verified
+				debug_log = "DESAF: TEST PASS unchanged_unconverted_descendant"
+			}
+			else = { debug_log = "DESAF: TEST FAIL unchanged_unconverted_descendant" }
+			scope:des_test_peer = {
+				create_cadet_branch = { save_scope_as = des_test_cadet_house }
+			}
+			set_variable = { name = des_test_cadet_house value = scope:des_test_cadet_house }
+			scope:des_test_child = { set_house = scope:des_test_outsider.house }
+			if = {
+				limit = {
+					scope:des_test_peer = { dynasty = scope:des_test_dynasty house = scope:des_test_cadet_house }
+					scope:des_test_child = { rite = scope:des_test_primary NOT = { dynasty = scope:des_test_dynasty } }
+				}
+				debug_log = "DESAF: PREPARATION PASS cadet_and_house_drift"
+			}
+			else = { debug_log = "DESAF: TEST FAIL cadet_and_house_drift_setup" }
+			create_character = { employer = root age = 26 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = des_test_generated }
+			set_variable = { name = des_test_ref_generated value = scope:des_test_generated }
+			trigger_event = { id = des_acceptance_extended.1 days = 1 }
+			trigger_event = { id = des_acceptance_extended.2 days = 31 }
+		}
+	}
+	ai_check_interval = 0
+}
+
+des_acceptance_second_rite_decision = {
+	is_shown = { is_ai = no has_character_flag = des_test_extended_started NOT = { has_character_flag = des_test_second_started } }
+	is_valid = { rite = var:des_test_primary_rite rite = { des_has_active_binding_trigger = yes } }
+	effect = { hidden_effect = { add_character_flag = des_test_second_started des_acceptance_prepare_second_rite_effect = yes } }
+	ai_check_interval = 0
+}
+
+des_acceptance_cross_rites_decision = {
+	is_shown = { is_ai = no has_character_flag = des_test_second_verified NOT = { has_character_flag = des_test_cross_rites_started } }
+	is_valid = { rite = var:des_test_primary_rite }
+	effect = {
+		hidden_effect = {
+			add_character_flag = des_test_cross_rites_started
+			des_acceptance_extended_restore_refs_effect = yes
+			scope:des_test_target = { set_character_rite = scope:des_test_primary set_character_rite = scope:des_test_source_rite }
+			scope:des_test_second_target = { set_character_rite = scope:des_test_source_rite }
+			trigger_event = { id = des_acceptance_extended.11 days = 1 }
+		}
+	}
+	ai_check_interval = 0
+}
+
+des_acceptance_cross_migration_decision = {
+	is_shown = { is_ai = no has_character_flag = des_test_cross_rites_verified NOT = { has_character_flag = des_test_cross_migration_started } }
+	is_valid = { rite = var:des_test_primary_rite }
+	effect = {
+		hidden_effect = {
+			add_character_flag = des_test_cross_migration_started
+			des_acceptance_extended_restore_refs_effect = yes
+			scope:des_test_target = { set_character_rite = scope:des_test_second_rite }
+			scope:des_test_second_target = { set_character_rite = scope:des_test_primary }
+			trigger_event = { id = des_acceptance_extended.12 days = 1 }
+		}
+	}
+	ai_check_interval = 0
+}
+
+des_acceptance_stock_crime_decision = {
+	is_shown = { is_ai = no has_character_flag = des_test_cross_migration_verified NOT = { has_character_flag = des_test_stock_crime_started } }
+	is_valid = { rite = var:des_test_primary_rite }
+	effect = {
+		hidden_effect = {
+			add_character_flag = des_test_stock_crime_started
+			des_acceptance_extended_restore_refs_effect = yes
+			scope:des_test_target = { set_character_rite = scope:des_test_primary }
+			add_opinion = { target = scope:des_test_target modifier = attempted_murder_me_crime }
+			scope:des_test_target = { set_character_rite = scope:des_test_source_rite }
+			debug_log = "DESAF: PREPARATION stock_attempted_murder_reason"
+			trigger_event = { id = des_acceptance_extended.20 days = 1 }
+		}
+	}
+	ai_check_interval = 0
+}
+
+des_acceptance_stock_repent_decision = {
+	is_shown = { is_ai = no has_character_flag = des_test_stock_crime_seen NOT = { has_character_flag = des_test_stock_repent_started } }
+	is_valid = { rite = var:des_test_primary_rite }
+	effect = {
+		hidden_effect = {
+			add_character_flag = des_test_stock_repent_started
+			des_acceptance_extended_restore_refs_effect = yes
+			scope:des_test_target = { set_character_rite = scope:des_test_primary }
+			trigger_event = { id = des_acceptance_extended.21 days = 1 }
+		}
+	}
+	ai_check_interval = 0
+}
+
+des_acceptance_pardon_prepare_decision = {
+	is_shown = { is_ai = no has_character_flag = des_test_stock_retained NOT = { has_character_flag = des_test_pardon_started } }
+	is_valid = { rite = var:des_test_primary_rite }
+	effect = {
+		hidden_effect = {
+			des_acceptance_extended_restore_refs_effect = yes
+			remove_opinion = { target = scope:des_test_target modifier = attempted_murder_me_crime }
+			if = {
+				limit = {
+					NOT = { has_imprisonment_reason = scope:des_test_target }
+					NOT = { has_banish_reason = scope:des_test_target }
+					NOT = { has_execute_reason = scope:des_test_target }
+				}
+				add_character_flag = des_test_pardon_started
+				scope:des_test_target = { set_character_rite = scope:des_test_source_rite }
+				trigger_event = { id = des_acceptance_extended.22 days = 1 }
+			}
+			else = { debug_log = "DESAF: TEST FAIL pardon_clean_baseline" }
+		}
+	}
+	ai_check_interval = 0
+}
+
+# This entry cannot perform a pardon. Submit the stock interaction independently.
+des_acceptance_pardon_observe_decision = {
+	is_shown = { is_ai = no has_character_flag = des_test_pardon_candidate NOT = { has_character_flag = des_test_pardon_observed } }
+	is_valid = { rite = var:des_test_primary_rite }
+	effect = {
+		hidden_effect = {
+			des_acceptance_extended_restore_refs_effect = yes
+			if = {
+				limit = {
+					scope:des_test_target = { des_is_apostate_trigger = yes has_trait = des_apostate }
+					has_opinion_modifier = { target = scope:des_test_target modifier = des_apostasy_opinion }
+					is_target_in_variable_list = { name = des_penalty_targets target = scope:des_test_target }
+					NOT = { has_imprisonment_reason = scope:des_test_target }
+					NOT = { has_banish_reason = scope:des_test_target }
+					NOT = { has_execute_reason = scope:des_test_target }
+				}
+				add_character_flag = des_test_pardon_observed
+				debug_log = "DESAF: TEST PASS pardon_consumed"
+				trigger_event = { id = des_acceptance_extended.23 days = 31 }
+			}
+			else = { debug_log = "DESAF: TEST FAIL pardon_consumed" }
+		}
+	}
+	ai_check_interval = 0
+}
+
+des_acceptance_founder_death_decision = {
+	is_shown = { is_ai = no has_character_flag = des_test_second_verified NOT = { has_character_flag = des_test_founder_death_started } }
+	is_valid = { var:des_test_ref_second_founder = { is_alive = yes } }
+	effect = {
+		hidden_effect = {
+			add_character_flag = des_test_founder_death_started
+			des_acceptance_extended_restore_refs_effect = yes
+			set_variable = { name = des_test_timer_before_death value = global_var:des_test_timer_count }
+			scope:des_test_second_founder = { death = { death_reason = death_natural_causes } }
+			create_character = { employer = root age = 29 gender_female_chance = 0 culture = root.culture faith = scope:des_test_second_rite.faith rite = scope:des_test_second_rite dynasty = none random_traits = no save_scope_as = des_test_after_death }
+			set_variable = { name = des_test_ref_after_death value = scope:des_test_after_death }
+			debug_log = "DESAF: PREPARATION stock_death_of_second_founder"
+			trigger_event = { id = des_acceptance_extended.50 days = 1 }
+			trigger_event = { id = des_acceptance_extended.51 days = 31 }
+		}
+	}
+	ai_check_interval = 0
+}
+
+des_acceptance_cold_anchor_decision = {
+	is_shown = { is_ai = no has_character_flag = des_test_pardon_stable has_character_flag = des_test_founder_death_verified NOT = { has_character_flag = des_test_cold_anchor } }
+	is_valid = { rite = var:des_test_primary_rite }
+	effect = { hidden_effect = { des_acceptance_extended_anchor_effect = yes } }
+	ai_check_interval = 0
+}
+
+# Readback alone does not prove a cold process; the public saved-campaign run does.
+des_acceptance_cold_readback_decision = {
+	is_shown = { is_ai = no has_character_flag = des_test_cold_anchor NOT = { has_character_flag = des_test_cold_state_verified } }
+	is_valid = { always = yes }
+	effect = { hidden_effect = { trigger_event = des_acceptance_extended.70 } }
+	ai_check_interval = 0
+}
+
+# Use these two entries in a separate real save created without the product.
+des_acceptance_legacy_before_decision = {
+	is_shown = { is_ai = no NOT = { has_global_variable = des_initialized } NOT = { has_character_flag = des_test_legacy_before } }
+	is_valid = { always = yes }
+	effect = {
+		hidden_effect = {
+			set_variable = { name = des_test_legacy_rite value = rite }
+			if = { limit = { exists = house } set_variable = { name = des_test_legacy_house value = house } }
+			if = { limit = { exists = dynasty } set_variable = { name = des_test_legacy_dynasty value = dynasty } }
+			add_character_flag = des_test_legacy_before
+			debug_log = "DESAF: TEST PASS legacy_uninitialized_observed"
+		}
+	}
+	ai_check_interval = 0
+}
+
+des_acceptance_legacy_after_decision = {
+	is_shown = { is_ai = no has_character_flag = des_test_legacy_before has_global_variable = des_initialized NOT = { has_character_flag = des_test_legacy_verified } }
+	is_valid = { always = yes }
+	effect = { hidden_effect = { trigger_event = des_acceptance_extended.71 } }
+	ai_check_interval = 0
+}

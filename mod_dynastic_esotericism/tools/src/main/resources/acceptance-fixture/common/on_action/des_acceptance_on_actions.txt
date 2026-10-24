@@ -1,0 +1,12 @@
+# External fixture only. Does not create, edit or initialize a product Rite.
+on_game_start_after_lobby = { on_actions = { des_acceptance_start } }
+des_acceptance_start = {
+    effect = {
+        every_player = {
+            limit = { NOT = { has_character_flag = des_test_armed } }
+            add_character_flag = des_test_armed
+            trigger_event = { id = des_acceptance.1 days = 1 }
+            debug_log = "DESAF: FIXTURE_ARMED core"
+        }
+    }
+}

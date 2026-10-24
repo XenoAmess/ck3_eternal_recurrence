@@ -17,7 +17,7 @@ inline constexpr std::uint32_t absent = 0xFFFFFFFFU;
 
 enum class Operation { open_create_draft, open_edit_current_rite_draft,
  select_core_tenet, select_doctrine, set_name_field, preview,
- prepare_confirmation, confirm_once };
+ prepare_confirmation, confirm_once, observe_current_rite, cancel_draft };
 enum class NameField { name, adjective, adherent, adherent_plural, description };
 enum class Outcome { create_faith, create_rite, edit_rite };
 enum class ModalStage { unknown, none, confirmation };
@@ -69,6 +69,21 @@ struct Quote {
  static constexpr std::int64_t raw_scale=100000;
  bool operator==(const Quote&)const=default;
 };
+struct CurrentRitePoststate {
+ bool observed=false;
+ std::string unavailable_reason="not_read";
+ // Immutable original request anchor; rite_id below is independently current
+ // and may differ after create_faith/create_rite.
+ std::uint32_t source_rite_id_anchor=absent;
+ std::optional<std::uint32_t>rite_id,faith_id,religion_id,founder_character_id;
+ // Persistent custom UTF-8 fields, including legal empty strings. No tooltip,
+ // translated fallback, command draft, or reconstructed display name is used.
+ std::optional<std::array<std::string,5>>names;
+ std::optional<std::vector<TenetSelection>>core_tenets;
+ std::optional<std::vector<DoctrineSelection>>doctrines;
+ std::optional<bool>confirmation_modal_open,creation_window_visible;
+ bool operator==(const CurrentRitePoststate&)const=default;
+};
 struct Result {
  Operation operation=Operation::preview;bool available=false;
  std::string status="unavailable",unavailable_reason="not_read";
@@ -84,6 +99,7 @@ struct Result {
  bool already_in_requested_state=false,selection_or_name_postcondition_observed=false;
  bool draft_open_postcondition_observed=false,native_once_claimed=false;
  std::optional<std::string>action_id;
+ std::optional<CurrentRitePoststate>current_rite_poststate;
 };
 
 using ReadMemory=bool(*)(void*,const void*,void*,std::size_t);

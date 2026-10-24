@@ -1,0 +1,62 @@
+﻿# Any scope. New games run this automatically; an old save uses the native decision.
+des_initialize_world_effect = {
+	if = {
+		limit = { NOT = { has_global_variable = des_initialized } }
+		set_global_variable = { name = des_initialized value = yes }
+		every_religion_global = {
+			every_faith = {
+				every_faith_rite = { des_initialize_rite_effect = yes }
+				every_faith_character = {
+					limit = { is_alive = yes }
+					des_teach_doctrines_effect = yes
+				}
+			}
+		}
+		des_discover_rites_effect = yes
+	}
+	des_ensure_maintenance_effect = yes
+}
+
+# Rite scope. Do not overwrite a submitted choice or enable existing rites.
+des_initialize_rite_effect = {
+	if = {
+		limit = {
+			NOR = {
+				rite_has_doctrine = des_doctrine_none
+				rite_has_doctrine = des_doctrine_dynastic
+			}
+		}
+		add_rite_doctrine = des_doctrine_none
+	}
+}
+
+# Character scope, including AI, children, and unlanded characters.
+des_teach_doctrines_effect = {
+	if = {
+		limit = { NOT = { knows_doctrine = doctrine:des_doctrine_none } }
+		add_known_doctrine = des_doctrine_none
+	}
+	if = {
+		limit = { NOT = { knows_doctrine = doctrine:des_doctrine_dynastic } }
+		add_known_doctrine = des_doctrine_dynastic
+	}
+}
+
+# Keep the delayed queue on a persistent Religion, rather than a mortal founder.
+# The lease also permits the annual watchdog to recover an interrupted queue.
+des_ensure_maintenance_effect = {
+	if = {
+		limit = {
+			has_global_variable = des_initialized
+			NOT = { has_global_variable = des_maintenance_queued }
+		}
+		every_religion_global = {
+			# Check at execution time, independently of iterator candidate snapshots.
+			if = {
+				limit = { NOT = { has_global_variable = des_maintenance_queued } }
+				set_global_variable = { name = des_maintenance_queued value = yes days = 31 }
+				trigger_event = { on_action = des_monthly_maintenance days = 30 }
+			}
+		}
+	}
+}

@@ -1,5 +1,13 @@
 // Generated from exact-.4 bounded source packets; no RVA adjustment.
-inline constexpr std::array<Pin,38>kRiteCreationPins{{
+inline constexpr std::array<Pin,44>kRiteCreationPins{{
+ // Independent persistent custom text and original Close proofs:
+ // mod_dynastic_esotericism/docs/evidence/rite-persisted-names-12004-2026-10-24.json.
+ {0x14F38D0,"40534883ec20488b01488bd9ff5020c68338100000004883c4205bc3"},
+ {0x24F6EF0,"40534883ec20488b81b0040000488bda8178384f624447751d80b9ea04000000"},
+ {0xB80400,"488d8170050000c3"},
+ {0x24F4C30,"488d81a0050000c3"},
+ {0x24F4C40,"488d81d0050000c3"},
+ {0x24F4C50,"488d8100060000c3"},
  {0xB19A70,"4883ec2865488b042558000000ba10000000488b088b040a3905264920057f0c"},
  {0xAF39E0,"48895c2408488974241048897c241841564883ec504d8bf08bfa488bd9e84eff"},
  {0xC45DF0,"40534883ec30488b05234702054c8d0d5ce68c044c8d052de68c04c744242000"},

@@ -1,0 +1,71 @@
+{
+  "schema": "xar.mcp-service-factory-summary.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T08:44:38.748915+00:00",
+  "factory_parameter": "service_override: GameplayBridgeService | None = None",
+  "runtime_contract": "exact GameplayBridgeService; identical driver object; default constructs one service",
+  "actual_client_regressions": [
+    "wrong type/subclass/foreign driver rejected",
+    "default factory constructs one real service",
+    "canonical and retained-control fixture share one service",
+    "normal-exit revision metadata is string; unsafe integer rejected before service; decimal string reaches same service losslessly"
+  ],
+  "scoped_strict": "new helper plus actual create_server signature and changed service assignment; real imported dependency models; unchanged legacy body excluded",
+  "checks": [
+    {
+      "name": "install",
+      "exit_code": 0
+    },
+    {
+      "name": "mypy",
+      "exit_code": 0
+    },
+    {
+      "name": "rite-unit",
+      "exit_code": 0
+    },
+    {
+      "name": "service-factory-unit-and-scoped-strict",
+      "exit_code": 0
+    }
+  ],
+  "rite_tests": 19,
+  "factory_tests": 4,
+  "receipt": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\service-factory-final-a02\\verification.json",
+  "receipt_sha256": "a1ef4ff82a172a0f78b2a12c45c4e88d4f3831ce9a0affe59d9223c3d81a8c96",
+  "isolated_python": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\venv\\Scripts\\python.exe",
+  "no_system_or_user_site_packages": true,
+  "task_logical_bytes": 308124959,
+  "sources": [
+    {
+      "path": ".github/workflows/rite-confirmation-sdk.yml",
+      "sha256": "8393ae13d07203f68ee5735c8b515fcec41a9665df9f261c989652e36e02d9eb"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "sha256": "fd4ba4fbe16c352e193ef56c7f8cdd30b3bebde7443fa7b3804a3a939b46e962"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_mcp_service_override_factory.py",
+      "sha256": "b0f7b1f0f088751cc04535dd7640540fa2cb7eb7e0098565807e8734823d1d00"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/rite_creation_action_private_v1.py",
+      "sha256": "ce030a17f8d024460052deede2069f5cff3c34c876e13d2b359af3d1d6e62284"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/rite_creation_action_mcp_v1.py",
+      "sha256": "35a88078407304a7dfa5d255ef82a94d99ebbfb83dbb90143341d410784bc6e0"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_rite_creation_action_private_v1.py",
+      "sha256": "0eadc23ef8f20e7d695f25420027d5907c17addf352e6cf8e06fbe14d0bb0eb9"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance.py",
+      "sha256": "33faedd34d58eacee924072dff4f87b6d4340f70d855d2efb83e121adce43562"
+    }
+  ],
+  "remote_checkout_result_claimed": false,
+  "native_or_game_started": false
+}

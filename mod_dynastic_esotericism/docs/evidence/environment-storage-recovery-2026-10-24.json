@@ -1,0 +1,72 @@
+{
+  "schema": "xar.dynastic-esotericism.environment-storage-recovery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T08:02:34.677377+00:00",
+  "status": "C4GiB_D32MiB_ADMITTED_AFTER_ACTUAL_RECOVERY",
+  "all_volumes_green": true,
+  "Game_execution_admitted": false,
+  "capacity_revision_before": 1146,
+  "pending_capacity_revision": 1147,
+  "final_capacity_registry_revision": 1148,
+  "storage_revision_before": 34,
+  "final_storage_revision": 36,
+  "pending_CAS": {
+    "adopted": true,
+    "storage_revision": 35,
+    "lock_hold_seconds": 0.001717899926006794
+  },
+  "actual_result_and_readmission_CAS": {
+    "adopted": true,
+    "storage_revision": 36,
+    "lock_hold_seconds": 0.0036502000875771046
+  },
+  "admission": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\capacity\\CAPACITY-D32-READMITTED-ACTUAL-RECOVERY-r1148.actual.json",
+    "bytes": 7750,
+    "sha256": "174a15f4c7f76c67360e14a8eecb8b032f00e50fb2bef45c073e63b147a1a6a0"
+  },
+  "approved_plan_sha256": "691caf8040ec3d8e870d285d8e71eb8a52c85193a7bcc323abef9cbfe44d30d9",
+  "actual_deleted_files": 580,
+  "actual_deleted_logical_bytes": 134397338,
+  "allocation_size_sum_of_deleted_single_link_files_bytes": 135669080,
+  "D_free_before_bytes": 21577687040,
+  "D_free_after_bytes": 21712904192,
+  "D_free_delta_bytes": 135217152,
+  "volume_delta_not_exclusively_attributed_to_cleanup": true,
+  "C_reserved_bytes": 4294967296,
+  "D_reserved_bytes": 33554432,
+  "budgets": {
+    "C:/": {
+      "total_volume_bytes": 511133945856,
+      "available_bytes": 59054112768,
+      "this_write_peak": 4294967296,
+      "other_unspent_reservations": 0,
+      "system_growth_reserve": 4294967296,
+      "safety_bytes": 21474836480,
+      "current_project_usage_conservative_upper_bound": 452079833088,
+      "project_usage_method": "whole-volume used including nonproject and unknown content conservative upper bound",
+      "effective_project_quota": 465000000000,
+      "required_free_bytes": 30064771072,
+      "free_margin_bytes": 28989341696
+    },
+    "D:/": {
+      "total_volume_bytes": 500090007552,
+      "available_bytes": 21712904192,
+      "this_write_peak": 33554432,
+      "other_unspent_reservations": 0,
+      "system_growth_reserve": 134217728,
+      "safety_bytes": 21474836480,
+      "current_project_usage_conservative_upper_bound": 478377103360,
+      "project_usage_method": "whole-volume used including nonproject and unknown content conservative upper bound",
+      "effective_project_quota": 479000000000,
+      "required_free_bytes": 21642608640,
+      "free_margin_bytes": 70295552
+    }
+  },
+  "hard_deadline_utc": "2026-10-25T07:30:00Z",
+  "originals_now_unavailable": true,
+  "exact_availability_results": "C:\\ck3-dynastic-esotericism-20261024\\capacity\\D-EXACT-RECLAMATION-OPERATION-UNADOPTED.actual.json",
+  "native_runtime_DLL_preserved": true,
+  "directories_DLL_sources_raw_evidence_unique_backups_other_files_deleted": 0,
+  "record_review_after_close_hours": 4320
+}

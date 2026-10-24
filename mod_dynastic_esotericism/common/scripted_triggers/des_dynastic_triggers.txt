@@ -1,0 +1,30 @@
+﻿# Rite scope: validate actual object identity in both directions.
+des_has_binding_trigger = {
+	exists = var:des_bound_dynasty
+	exists = var:des_join_house
+	var:des_bound_dynasty.var:des_bound_rite = this
+	var:des_join_house.dynasty = var:des_bound_dynasty
+}
+
+des_has_active_binding_trigger = {
+	rite_has_doctrine = des_doctrine_dynastic
+	des_has_binding_trigger = yes
+}
+
+# Character scope. Faith equality is deliberately insufficient: compare the Rite.
+des_is_apostate_trigger = {
+	is_alive = yes
+	exists = dynasty.var:des_bound_rite
+	dynasty.var:des_bound_rite = { des_has_active_binding_trigger = yes }
+	dynasty = dynasty.var:des_bound_rite.var:des_bound_dynasty
+	NOT = { rite = dynasty.var:des_bound_rite }
+}
+
+# Observer Character scope; TARGET must be an actual Character scope reference.
+# The observer's Rite, rather than a shared doctrine parameter, grants the reason.
+des_is_penalty_pair_trigger = {
+	is_alive = yes
+	$TARGET$ = { des_is_apostate_trigger = yes }
+	NOT = { this = $TARGET$ }
+	rite = $TARGET$.dynasty.var:des_bound_rite
+}

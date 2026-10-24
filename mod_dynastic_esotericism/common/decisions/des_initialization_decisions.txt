@@ -1,0 +1,21 @@
+﻿# Production compatibility entry for an existing save without this product's state.
+des_initialize_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+	desc = des_initialize_decision_desc
+	selection_tooltip = des_initialize_decision_tooltip
+	confirm_text = des_initialize_decision_confirm
+	ai_check_interval = 0
+	is_shown = {
+		is_ai = no
+		NOT = { has_global_variable = des_initialized }
+	}
+	is_valid = { always = yes }
+	effect = {
+		custom_tooltip = des_initialize_decision_effect
+		hidden_effect = {
+			des_initialize_world_effect = yes
+			des_maintenance_effect = yes
+		}
+	}
+	ai_potential = { always = no }
+}

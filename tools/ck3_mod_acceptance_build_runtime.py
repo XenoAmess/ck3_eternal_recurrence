@@ -14,7 +14,7 @@ import shlex
 import shutil
 import subprocess
 import sys
-from typing import TypedDict
+from typing import Literal, TypedDict
 
 import build_native_configured_successor as native_successor
 from ck3_mod_acceptance_background_types import (
@@ -81,6 +81,11 @@ EXTRA_CAPABILITIES: dict[str, list[str]] = {
     "ck3_remove_holy_site_relic_v1": ["XAR_ENABLE_HOLY_SITE_RELIC_TYPED_UI12004", "XAR_ENABLE_HOLY_SITE_RELIC_BUTTON_ACTION12004"],
 }
 REGISTRATION_READ_ONLY_FLAGS = {
+    "ck3_query_player_religion_doctrines_v1": "allow_private_player_religion_doctrines_query",
+    "ck3_query_player_religion_reform_context_v1": "allow_private_player_religion_reform_context_query",
+    "ck3_query_player_religion_draft_groups_v1": "allow_private_player_religion_draft_groups_query",
+    "ck3_query_player_religion_draft_doctrine_choices_v1": "allow_private_player_religion_draft_doctrine_choices_query",
+    "ck3_query_player_religion_draft_resource_costs_v1": "allow_private_player_religion_draft_resource_costs_query",
     "ck3_query_player_holy_site_creation_context_v1": "allow_private_player_holy_site_creation_context_query",
     "ck3_query_player_holy_site_relic_action_context_v1": "allow_private_player_holy_site_relic_action_context_query",
     "ck3_query_player_holy_site_relic_permissions_v1": "allow_private_player_holy_site_relic_permissions_query",
@@ -113,6 +118,12 @@ def registration_driver(case):
 
         def take_snapshot(self):
             raise RuntimeError("registration-only validation must never take a game snapshot")
+
+        def execute_step(self, step: str, *, expected_revision: int | None = None) -> dict[str, object]:
+            raise RuntimeError("registration-only validation must never submit a game action")
+
+        def wait_for_change(self, after_revision: int, *, timeout_seconds: float) -> dict[str, object]:
+            raise RuntimeError("registration-only validation must never wait on a game")
 
     driver = RegistrationOnlyDriver()
     driver.allow_private_holy_site_adoption_detail_query = bool({
@@ -1059,24 +1070,167 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest,
             "research_delta": source_checkout.get("research_delta")}
 
 
-def project_host(root, old_host, old_runtime, new_runtime, source_files):
+class RegistrationFactoryProjectionV1(TypedDict):
+    parent: FilePin
+    current_factory: FilePin
+    projected: FilePin
+    binding: Literal['existing_same_service_builder_to_current_global_factory']
+
+
+def canonical_registration_projection(source_root: Path, runtime: JsonObject, previous_host: str,
+                                        destination: Path) -> tuple[bytes, RegistrationFactoryProjectionV1] | None:
+    parent_servers = [node for node in ast.parse(previous_host).body
+                      if isinstance(node, ast.FunctionDef) and node.name == 'native_server']
+    if not parent_servers or not any(isinstance(node, ast.ImportFrom) and node.module == 'registration_mcp'
+                                     for node in parent_servers[0].body):
+        return None
+    search = json_object(runtime.get('runtime_environment')).get('PYTHONPATH')
+    if not isinstance(search, list):
+        raise ValueError('Existing global registration requires its explicit import roots')
+    candidates: list[Path] = []
+    for item in search:
+        if not isinstance(item, str):
+            raise ValueError('Existing global registration import roots must be strings')
+        candidate = (Path(item) / 'registration_mcp.py').resolve()
+        if candidate.is_file() and candidate not in candidates:
+            candidates.append(candidate)
+    if not candidates:
+        raise ValueError('Existing global registration provider is unavailable')
+    parent = candidates[0]
+    overlay = json_object(runtime.get('allocator_overlay'))
+    references: list[FilePin] = []
+    for value in overlay.values():
+        if not isinstance(value, dict):
+            continue
+        declared_path = value.get('path')
+        if isinstance(declared_path, str) and Path(declared_path).resolve() == parent:
+            references.append(checked_host_support_pin(value))
+    if len(references) != 1:
+        raise ValueError('The selected existing registration provider must have one parent source pin')
+    factory = source_root / 'ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py'
+    factory_nodes = [node for node in ast.parse(factory.read_text(encoding='utf-8-sig')).body
+                     if isinstance(node, ast.FunctionDef) and node.name == 'create_server']
+    if len(factory_nodes) != 1 or not any(arg.arg == 'service_override' for arg in factory_nodes[0].args.kwonlyargs):
+        raise ValueError('Current global factory must expose the checked same-service override')
+    raw = parent.read_text(encoding='utf-8-sig')
+    creators = [node for node in ast.parse(raw).body if isinstance(node, ast.FunctionDef) and node.name == 'create_server']
+    if len(creators) != 1:
+        raise ValueError('The existing global registration factory must be unique')
+    creator = creators[0]
+    matches = [index for index, node in enumerate(creator.body) if isinstance(node, ast.Assign)
+        and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name) and node.targets[0].id == 'module']
+    if len(matches) != 1 or creator.end_lineno is None:
+        raise ValueError('The existing scoped-factory binding must be explicit and unique')
+    original = creator.body[matches[0]]
+    if not isinstance(original, ast.Assign) or not isinstance(original.value, ast.Call) or not isinstance(original.value.func, ast.Name) or original.value.func.id != 'load_module':
+        raise ValueError('Unknown existing scoped-factory binding')
+    creator.body[matches[0]] = ast.ImportFrom(module='xar_autoplayer.bridge',
+        names=[ast.alias(name='mcp_server', asname='module')], level=0)
+    lines = raw.splitlines(keepends=True)
+    projected = ''.join(lines[:creator.lineno - 1]) + ast.unparse(ast.fix_missing_locations(creator)) + '\n' + ''.join(lines[creator.end_lineno:])
+    encoded = BOM + projected.encode('utf-8')
+    evidence = RegistrationFactoryProjectionV1(parent=references[0], current_factory=_support_file_pin(factory),
+        projected=_support_output_pin(destination, encoded), binding='existing_same_service_builder_to_current_global_factory')
+    return encoded, evidence
+
+
+def project_host(root: Path, old_host: Path, old_runtime: Path, new_runtime: Path,
+                 source_files: Mapping[str, object], *, registration_override: FilePin | None = None) -> bytes:
     canonical_raw = (root / HOST_RELATIVE).read_bytes()
-    require(sig(canonical_raw) == source_files[HOST_RELATIVE], "Actual global host differs from the selected source index")
+    declared_host = json_object(source_files.get(HOST_RELATIVE))
+    if set(declared_host) != {'bytes', 'sha256'}:
+        raise ValueError('Exact canonical host source metadata required')
+    checked_host_support_pin({'path': str((root / HOST_RELATIVE).resolve()),
+                              'bytes': declared_host['bytes'], 'sha256': declared_host['sha256']})
     canonical = canonical_raw.removeprefix(BOM).decode("utf-8")
     previous = old_host.read_text(encoding="utf-8-sig")
     marker = "# Explicit static normal-exit binding projection; ordinary shared host remains above."
+    if marker not in previous:
+        # Current shared hosts bind normal exit through the allocated managed
+        # profile rather than a literal runtime tail. Preserve that authority.
+        def binding_tree(text: str) -> str:
+            matches = [node for node in ast.parse(text).body
+                       if isinstance(node, ast.FunctionDef) and node.name == 'bind_normal_exit_managed_profile']
+            require(len(matches) == 1, 'Unique managed normal-exit profile binding required')
+            return ast.dump(matches[0], include_attributes=False)
+        require(binding_tree(previous) == binding_tree(canonical),
+                'Canonical successor changed the existing managed normal-exit binding')
+        def options(text: str) -> set[str]:
+            return {node.args[0].value for node in ast.walk(ast.parse(text))
+                    if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
+                    and node.func.attr == 'add_argument' and node.args
+                    and isinstance(node.args[0], ast.Constant) and isinstance(node.args[0].value, str)
+                    and node.args[0].value.startswith('--')}
+        require(options(previous) <= options(canonical), 'Canonical successor removed an existing public host option')
+        require('saved_campaign_profile_inventory_v2' in canonical,
+                'Canonical successor must consume the current role-bound saved inventory')
+        old_servers = [node for node in ast.parse(previous).body
+                       if isinstance(node, ast.FunctionDef) and node.name == 'native_server']
+        if old_servers and any(isinstance(node, ast.ImportFrom) and node.module == 'progress_driver'
+                               for node in old_servers[0].body):
+            # Preserve the already selected global R05 registration provider;
+            # replacing the host must not silently remove its advertised tools.
+            parent_server = old_servers[0]
+            modules = {'registration_bootstrap', 'progress_driver', 'registration_mcp'}
+            imports = [node for node in parent_server.body
+                       if isinstance(node, ast.ImportFrom) and node.module in modules]
+            calls = [node for node in parent_server.body if isinstance(node, ast.Expr)
+                     and isinstance(node.value, ast.Call) and isinstance(node.value.func, ast.Name)
+                     and node.value.func.id == 'bind_registration' and not node.value.args and not node.value.keywords]
+            if len(imports) != 3 or {node.module for node in imports} != modules or len(calls) != 1:
+                raise ValueError('Existing global registration provider closure is incomplete')
+            current_servers = [node for node in ast.parse(canonical).body
+                               if isinstance(node, ast.FunctionDef) and node.name == 'native_server']
+            if len(current_servers) != 1:
+                raise ValueError('Canonical native server must be unique')
+            current_server = current_servers[0]
+            drivers = [node for node in current_server.body
+                       if isinstance(node, ast.ClassDef) and node.name == 'RecordingDriver']
+            if (len(drivers) != 1 or len(drivers[0].bases) != 1
+                    or not isinstance(drivers[0].bases[0], ast.Name)
+                    or drivers[0].bases[0].id != 'NativeHeadlessGameplayDriver'):
+                raise ValueError('Canonical recording driver has an unknown authority')
+            drivers[0].bases = [ast.Name(id='ProgressDailyDriver', ctx=ast.Load())]
+            current_server.body = [node for node in current_server.body
+                if not (isinstance(node, ast.ImportFrom) and node.module == 'xar_autoplayer.bridge.mcp_server')]
+            if registration_override is None:
+                raise ValueError('Existing global R05 tools require an explicit same-service current-factory projection')
+            provider_pin = ast.Dict(keys=[ast.Constant(key) for key in ('path', 'bytes', 'sha256')],
+                values=[ast.Constant(registration_override['path']), ast.Constant(registration_override['bytes']),
+                        ast.Constant(registration_override['sha256'])])
+            insertion: list[ast.stmt] = [imports[0], calls[0], *[node for node in imports if node.module == 'progress_driver'],
+                ast.ImportFrom(module='progress_contract', names=[ast.alias(name='Pin', asname='_SharedRegistrationPin')], level=0),
+                ast.ImportFrom(module='progress_boundary', names=[ast.alias(name='load_module', asname='_load_shared_registration')], level=0),
+                ast.Assign(targets=[ast.Name(id='_shared_registration', ctx=ast.Store())],
+                    value=ast.Call(func=ast.Name(id='_load_shared_registration', ctx=ast.Load()),
+                        args=[ast.Call(func=ast.Attribute(value=ast.Name(id='_SharedRegistrationPin', ctx=ast.Load()), attr='parse', ctx=ast.Load()), args=[provider_pin], keywords=[]),
+                              ast.Constant('xar_autoplayer.bridge.selected_r05_registration_factory_v1')], keywords=[])),
+                ast.Assign(targets=[ast.Name(id='create_server', ctx=ast.Store())],
+                    value=ast.Attribute(value=ast.Name(id='_shared_registration', ctx=ast.Load()), attr='create_server', ctx=ast.Load()))]
+            current_server.body[1:1] = insertion
+            if current_server.end_lineno is None:
+                raise ValueError('Canonical native server source span unavailable')
+            lines = canonical.splitlines(keepends=True)
+            replacement = ast.unparse(ast.fix_missing_locations(current_server)) + '\n'
+            canonical = ''.join(lines[:current_server.lineno - 1]) + replacement + ''.join(lines[current_server.end_lineno:])
+            ast.parse(canonical)
+        return BOM + canonical.encode('utf-8')
     require(previous.count(marker) == 1, "Existing shared normal-exit projection boundary differs")
     tail = previous[previous.index(marker):]
     assignments = [node.value for node in ast.walk(ast.parse(tail)) if isinstance(node, ast.Assign)
                    and any(isinstance(target, ast.Name) and target.id == "_runtime_path" for target in node.targets)]
-    require(len(assignments) == 1 and isinstance(assignments[0], ast.Call)
-            and isinstance(assignments[0].func, ast.Name) and assignments[0].func.id == "Path"
-            and len(assignments[0].args) == 1 and isinstance(assignments[0].args[0], ast.Constant)
-            and isinstance(assignments[0].args[0].value, str), "Unique literal existing runtime binding required")
+    if (len(assignments) != 1 or not isinstance(assignments[0], ast.Call)
+            or not isinstance(assignments[0].func, ast.Name) or assignments[0].func.id != "Path"
+            or len(assignments[0].args) != 1 or not isinstance(assignments[0].args[0], ast.Constant)
+            or not isinstance(assignments[0].args[0].value, str)):
+        raise ValueError('Unique literal existing runtime binding required')
     bound_path = Path(assignments[0].args[0].value).resolve()
-    bound_runtime, selected_runtime = read(bound_path), read(old_runtime)
-    bound_manifest = read(checked(bound_runtime["manifest"])["path"])
-    selected_manifest = read(checked(selected_runtime["manifest"])["path"])
+    bound_runtime = json_object(json.loads(bound_path.read_bytes()))
+    selected_runtime = json_object(json.loads(old_runtime.read_bytes()))
+    bound_manifest_pin = checked_host_support_pin(bound_runtime.get('manifest'))
+    selected_manifest_pin = checked_host_support_pin(selected_runtime.get('manifest'))
+    bound_manifest = json_object(json.loads(Path(bound_manifest_pin['path']).read_bytes()))
+    selected_manifest = json_object(json.loads(Path(selected_manifest_pin['path']).read_bytes()))
     require(all(bound_manifest[key] == selected_manifest[key] for key in
                 ("host", "source_root", "source_index", "native_source_index", "native", "game")),
             "A recording clone must retain the existing actual global source/native host binding")
@@ -1088,6 +1242,68 @@ def project_host(root, old_host, old_runtime, new_runtime, source_files):
     result = canonical.replace(sentinel, "", 1).rstrip() + "\n\n" + tail
     ast.parse(result)
     return BOM + result.encode("utf-8")
+
+
+def build_canonical_host_successor(base_runtime: Path, source_root: Path, runtime_binding: Path,
+                                    destination: Path, machine_id: str) -> FilePin:
+    """Freeze the existing canonical producer; no process, SDK or live admission."""
+    from ck3_live_run_id import current_machine_id
+    if current_machine_id() != machine_id:
+        raise ValueError('Canonical host successor requires the observed current machine')
+    runtime = json_object(json.loads(base_runtime.read_bytes()))
+    manifest_pin = checked_host_support_pin(runtime.get('manifest'))
+    manifest = json_object(json.loads(Path(manifest_pin['path']).read_bytes()))
+    if (runtime.get('schema') != 'ck3-mod-acceptance-runtime-v1'
+            or manifest.get('schema') != 'ck3-mod-acceptance-shared-runtime-v1'
+            or runtime.get('machine_id') != machine_id or manifest.get('machine_id') != machine_id):
+        raise ValueError('Actual common parent runtime and manifest required')
+    paths = json_object(runtime.get('paths'))
+    host_row = json_object(manifest.get('host'))
+    host_path = Path(text_field(paths, text_field(host_row, 'path_key')))
+    host_pin = checked_host_support_pin({'path': str(host_path.resolve()),
+                                        'bytes': host_row.get('bytes'), 'sha256': host_row.get('sha256')})
+    canonical_path = source_root / HOST_RELATIVE
+    canonical_pin = _support_file_pin(canonical_path)
+    source_files: dict[str, object] = {HOST_RELATIVE: {'bytes': canonical_pin['bytes'], 'sha256': canonical_pin['sha256']}}
+    destination = destination.resolve()
+    if destination.exists() or destination.is_relative_to(source_root.resolve()):
+        raise ValueError('A fresh external canonical-host successor directory is required')
+    registration = canonical_registration_projection(source_root, runtime, host_path.read_text(encoding='utf-8-sig'),
+                                                       destination / 'registration_mcp.py')
+    raw = project_host(source_root, host_path, base_runtime, runtime_binding, source_files,
+                       registration_override=registration[1]['projected'] if registration is not None else None)
+    destination.mkdir(parents=True)
+    if registration is not None:
+        with (destination / 'registration_mcp.py').open('xb') as stream:
+            stream.write(registration[0])
+    target = destination / 'shared-host.py'
+    with target.open('xb') as stream:
+        stream.write(raw)
+    receipt = destination / 'canonical-host-projection.json'
+    payload = json_object({'schema': 'ck3-common-canonical-host-successor-v1',
+        'machine_id': machine_id, 'observed_at_utc': datetime.now(timezone.utc).isoformat(),
+        'qualification': 'SOURCE_PROJECTION_ONLY_LIVE_NOT_QUALIFIED',
+        'parent_runtime': _support_file_pin(base_runtime), 'parent_manifest': manifest_pin,
+        'parent_host': host_pin, 'canonical_host': canonical_pin, 'producer': _support_file_pin(Path(__file__)),
+        'projected_host': _support_file_pin(target), 'runtime_binding': str(runtime_binding.resolve()),
+        'game_started': False, 'allocated': False, 'actual_live_qualified': False})
+    if registration is not None:
+        payload['registration_projection'] = json_object(registration[1])
+    with receipt.open('xb') as stream:
+        stream.write(_support_json(payload))
+    return _support_file_pin(receipt)
+
+
+def _canonical_host_main(argv: list[str]) -> int:
+    parser = argparse.ArgumentParser(description='Freeze the existing canonical common host without starting a game')
+    for name in ('base-runtime', 'source-root', 'runtime-binding', 'output'):
+        parser.add_argument('--' + name, type=Path, required=True)
+    parser.add_argument('--machine-id', required=True)
+    args = parser.parse_args(argv)
+    result = build_canonical_host_successor(args.base_runtime, args.source_root, args.runtime_binding,
+                                            args.output, args.machine_id)
+    print(json.dumps({'receipt': result, 'game_started': False, 'allocated': False}))
+    return 0
 
 
 def check_index_only_changes(root, changed_paths):
@@ -1293,6 +1509,8 @@ def _host_running_date_main(argv: list[str]) -> int:
 
 def main(argv: list[str] | None = None) -> int:
     selected = sys.argv[1:] if argv is None else argv
+    if selected and selected[0] == 'host-canonical-successor':
+        return _canonical_host_main(selected[1:])
     if selected and selected[0] == 'host-running-date-support':
         return _host_running_date_main(selected[1:])
     sys.dont_write_bytecode = True

@@ -1,0 +1,32 @@
+﻿# Passive witnesses only; never trigger a product on_action from this fixture.
+on_birth_child = { on_actions = { des_acceptance_extended_birth_seen } }
+des_monthly_maintenance = { on_actions = { des_acceptance_extended_timer_seen } }
+
+des_acceptance_extended_birth_seen = {
+	effect = {
+		if = {
+			limit = {
+				exists = global_var:des_test_extended_owner
+				scope:mother = { has_character_flag = des_test_birth_mother }
+			}
+			save_scope_as = des_test_actual_newborn
+			global_var:des_test_extended_owner = {
+				set_variable = { name = des_test_ref_newborn value = scope:des_test_actual_newborn }
+				set_variable = { name = des_test_actual_birth_date value = current_date }
+				add_character_flag = des_test_actual_birth_seen
+				debug_log = "DESAF: OBSERVED actual_birth_callback"
+				trigger_event = { id = des_acceptance_extended.40 days = 1 }
+			}
+		}
+	}
+}
+
+des_acceptance_extended_timer_seen = {
+	effect = {
+		if = {
+			limit = { exists = global_var:des_test_extended_owner }
+			change_global_variable = { name = des_test_timer_count add = 1 }
+			set_global_variable = { name = des_test_timer_root value = this }
+		}
+	}
+}

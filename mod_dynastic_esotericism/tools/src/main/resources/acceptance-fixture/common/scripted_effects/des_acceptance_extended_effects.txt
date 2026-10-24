@@ -1,0 +1,113 @@
+﻿# External test preparation only. No des_* product state is assigned here.
+des_acceptance_extended_setup_effect = {
+	if = {
+		limit = { NOT = { has_character_flag = des_test_extended_armed } }
+		add_character_flag = des_test_extended_armed
+		set_global_variable = { name = des_test_extended_owner value = this }
+		set_global_variable = { name = des_test_timer_count value = 0 }
+		set_variable = { name = des_test_pregnancy_date value = current_date }
+		create_character = { employer = root age = 30 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = des_test_birth_father }
+		create_character = { employer = root age = 28 gender_female_chance = 100 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = des_test_birth_mother }
+		scope:des_test_birth_father = { marry = scope:des_test_birth_mother }
+		scope:des_test_birth_mother = {
+			add_character_flag = des_test_birth_mother
+			make_pregnant = { father = scope:des_test_birth_father }
+		}
+		set_variable = { name = des_test_ref_birth_father value = scope:des_test_birth_father }
+		set_variable = { name = des_test_ref_birth_mother value = scope:des_test_birth_mother }
+		if = {
+			limit = { exists = house }
+			# An explicitly prepared pre-existing descendant, not the natural-birth case.
+			create_character = { age = 18 gender_female_chance = 0 father = root culture = root.culture faith = faith:orthodox rite = rite:byzantine_rite dynasty_house = root.house random_traits = no save_scope_as = des_test_old_descendant }
+			set_variable = { name = des_test_ref_old_descendant value = scope:des_test_old_descendant }
+			set_variable = { name = des_test_old_descendant_house value = scope:des_test_old_descendant.house }
+			set_variable = { name = des_test_old_descendant_dynasty value = scope:des_test_old_descendant.dynasty }
+		}
+		if = {
+			limit = { scope:des_test_birth_mother = { is_pregnant = yes } }
+			debug_log = "DESAF: PREPARATION PASS natural_pregnancy"
+		}
+		else = { debug_log = "DESAF: TEST FAIL natural_pregnancy_setup" }
+		trigger_event = { id = des_acceptance_extended.60 days = 61 }
+	}
+}
+
+des_acceptance_extended_restore_refs_effect = {
+	des_acceptance_restore_refs_effect = yes
+	if = { limit = { exists = var:des_test_ref_birth_father } var:des_test_ref_birth_father = { save_scope_as = des_test_birth_father } }
+	if = { limit = { exists = var:des_test_ref_birth_mother } var:des_test_ref_birth_mother = { save_scope_as = des_test_birth_mother } }
+	if = { limit = { exists = var:des_test_ref_newborn } var:des_test_ref_newborn = { save_scope_as = des_test_newborn } }
+	if = { limit = { exists = var:des_test_ref_old_descendant } var:des_test_ref_old_descendant = { save_scope_as = des_test_old_descendant } }
+	if = { limit = { exists = var:des_test_cadet_house } var:des_test_cadet_house = { save_scope_as = des_test_cadet_house } }
+	if = { limit = { exists = var:des_test_ref_generated } var:des_test_ref_generated = { save_scope_as = des_test_generated } }
+	if = { limit = { exists = var:des_test_ref_second_founder } var:des_test_ref_second_founder = { save_scope_as = des_test_second_founder } }
+	if = { limit = { exists = var:des_test_ref_second_observer } var:des_test_ref_second_observer = { save_scope_as = des_test_second_observer } }
+	if = { limit = { exists = var:des_test_ref_second_target } var:des_test_ref_second_target = { save_scope_as = des_test_second_target } }
+	if = { limit = { exists = var:des_test_second_rite } var:des_test_second_rite = { save_scope_as = des_test_second_rite } }
+	if = { limit = { exists = var:des_test_second_dynasty } var:des_test_second_dynasty = { save_scope_as = des_test_second_dynasty } }
+	if = { limit = { exists = var:des_test_second_house } var:des_test_second_house = { save_scope_as = des_test_second_house } }
+	if = { limit = { exists = var:des_test_ref_after_death } var:des_test_ref_after_death = { save_scope_as = des_test_after_death } }
+}
+
+# A disclosed stock dynamic-Rite input for the cross-Rite negative controls.
+# The primary Rite's original GUI creation is tested separately. This input
+# neither edits product state nor calls any product synchronization effect.
+des_acceptance_prepare_second_rite_effect = {
+	des_acceptance_extended_restore_refs_effect = yes
+	create_character = { employer = root age = 32 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = des_test_second_founder }
+	set_variable = { name = des_test_ref_second_founder value = scope:des_test_second_founder }
+	# Let the real generated-character hook establish knowledge and House first.
+	trigger_event = { id = des_acceptance_extended.8 days = 1 }
+}
+
+des_acceptance_create_second_rite_effect = {
+	des_acceptance_extended_restore_refs_effect = yes
+	if = {
+		limit = {
+			scope:des_test_second_founder = {
+				is_alive = yes
+				rite = scope:des_test_primary
+				dynasty = scope:des_test_dynasty
+				knows_doctrine = des_doctrine_none
+				knows_doctrine = des_doctrine_dynastic
+			}
+		}
+		scope:des_test_second_founder = {
+			create_dynamic_rite = {
+				save_scope_as = des_test_second_rite
+				convert = yes
+				target_divergence = 0
+				include_unknown = no
+				override_tenets_first = no
+			}
+		}
+	}
+	if = {
+		limit = {
+			exists = scope:des_test_second_rite
+			scope:des_test_second_rite = { NOT = { this = scope:des_test_primary } rite_has_doctrine = des_doctrine_dynastic }
+			scope:des_test_second_founder = { rite = scope:des_test_second_rite }
+		}
+		set_variable = { name = des_test_second_rite value = scope:des_test_second_rite }
+		set_variable = { name = des_test_second_creation_path value = flag:stock_dynamic_rite }
+		create_character = { employer = root age = 35 gender_female_chance = 0 culture = root.culture faith = scope:des_test_second_rite.faith rite = scope:des_test_second_rite dynasty = none random_traits = no save_scope_as = des_test_second_observer }
+		create_character = { employer = root age = 31 gender_female_chance = 0 culture = root.culture faith = scope:des_test_second_rite.faith rite = scope:des_test_second_rite dynasty = none random_traits = no save_scope_as = des_test_second_target }
+		set_variable = { name = des_test_ref_second_observer value = scope:des_test_second_observer }
+		set_variable = { name = des_test_ref_second_target value = scope:des_test_second_target }
+		debug_log = "DESAF: PREPARATION PASS second_stock_rite"
+		trigger_event = { id = des_acceptance_extended.10 days = 31 }
+	}
+	else = { debug_log = "DESAF: TEST FAIL second_stock_rite_setup" }
+}
+
+des_acceptance_extended_anchor_effect = {
+	des_acceptance_extended_restore_refs_effect = yes
+	set_variable = { name = des_test_cold_rite value = rite }
+	set_variable = { name = des_test_cold_dynasty value = dynasty }
+	set_variable = { name = des_test_cold_house value = house }
+	set_variable = { name = des_test_cold_target_rite value = scope:des_test_target.rite }
+	set_variable = { name = des_test_cold_target_dynasty value = scope:des_test_target.dynasty }
+	set_variable = { name = des_test_cold_target_house value = scope:des_test_target.house }
+	add_character_flag = des_test_cold_anchor
+	debug_log = "DESAF: PREPARATION PASS cold_anchor"
+}

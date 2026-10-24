@@ -1,0 +1,16 @@
+﻿des_doctrine_none = {
+	doctrine_group_type = des_dynastic_membership
+	index = 0
+	divergence = 0
+	icon = "doctrine_pluralism_pluralistic"
+	piety_cost = { value = 0 }
+}
+
+des_doctrine_dynastic = {
+	doctrine_group_type = des_dynastic_membership
+	index = 1
+	divergence = 0
+	icon = "doctrine_pluralism_fundamentalist"
+	piety_cost = { value = 0 }
+	parameters = { des_dynastic_membership }
+}

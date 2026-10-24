@@ -72,6 +72,7 @@
 - `mod_superman_qiang/` — “超人强：越超人越强”原创独立版；Workshop item id：**3812991990**；无上游产品；正式发布只使用其 `tools/build_release.py` 生成的 22 文件 staging。测试方案、实机和发布证据在该模组 `docs/`，永久 changelog 在 `docs/release-changelogs/superman-qiang/`；remote_file_id 仅保留用户目录外层 `.mod`。
 - `mod_superman_qiang/` — 原创独立版“超人强：越超人越强”；Workshop item ID 待实际首次发布；规则、验收及发布记录在其 `docs/`。正式上传只用其 `tools/build_release.py` 生成的 22 文件 staging，角色经验与六项净属性修正由变量保存，生成文件只改生成器再运行。
 - `mod_li_yu_dao/` — “礼与道：儒家礼仪与学统 / Rites and the Way”；Workshop item ID：**3817934804**。0.1.0 Beta 为首次公开试玩基线；0.1.2 Alpha 已按用户2026-10-15明确指令发布为内部测试，一期仍未完整验收。正式上传只用其 `tools/build_release.py` 生成的 staging（0.1.2 含 83 文件，排除无有效条目的历史占位；0.1.1 历史发布为 71 文件）；说明见 `workshop/li_yu_dao_description.bbcode`，永久发布记录见 `docs/release-changelogs/li-yu-dao/`，`remote_file_id` 仅保留用户目录外层 `.mod`。[2026-10-15 历史切换证据](skills/steam-ck3-versions/references/qualification-2026-10-15.json)记录某台机器从1.20.1回切至1.20.0.4/build25734779并恢复 Steam 离线，但其 `machine_id: unknown`，所属机器未核实，不能代表当前执行机器。每次实机仍核机器 ID、实际 EXE 与运行时绑定，不因其他机器的版本回切追认本机业务资格，缓存加载不抵扣业务验收。
+- `mod_dynastic_esotericism/` — “宗族化密教 / Dynastic Esotericism”原创独立版，Workshop ID 待实际首发；需求、测试、研究和实际状态在其 `docs/`。正式上传只用其 Java／Quarkus `tools/` 构建器的显式清单 staging，不上传源目录或验收 fixture。用户于2026-10-24授权按需求→测试方案→编码→验收→发布完成全流程。
 - `Crusader Kings III/` — 游戏本体目录（仅作参考/逆向用，已被 .gitignore 排除）
 - `docs/` — 知识库（跨存档存储机制、GUI 系统、语法踩坑），改机制前先读
 - `coat_of_arms_editer_of_ck3/` — 独立 Vue 3 家徽编辑器；正式站点由 GitHub Pages Actions 构建，禁止把 CK3、MCP 或 Java 后端变成线上运行依赖
@@ -591,6 +592,7 @@ tools/.venv/Scripts/python.exe -B -X utf8 tools/ck3_mod_acceptance.py plan --run
   伯爵和男爵只能被考核，不能建立 cohort、分配配额或校准别人。该例外只覆盖此 mod，不能外推到主 mod、白绮版或其他政府。
 - 用户于 2026-10-04 明确授权独立 `mod_superman_qiang/` 对每个合格角色记录性经验：年满 18 岁、在世的 AI 与玩家使用相同计数及属性转移规则；查看交互由玩家发起。此例外只覆盖本产品两个原版性行为效果接入点，不外推到其他产品。
 - 用户于 2026-10-22 明确授权独立 `mod_living_artifacts/` 的 AI/NPC 正常获取、装备、培养活武器，与玩家使用同一觉醒、自动成长、喂养、压制及反噬规则；包括原版允许持有装备的无地 NPC，不能在 NPC 手中休眠。卸下可免费停止成长，同时失去活武器加成；继续装备时仅可付费暂时压制。喂养按原版四档稀有度且无 CD，不提供手动升级许可、免费锁级或六路线加点。此例外仅覆盖本独立产品，当前仍为设计阶段；详见 `mod_living_artifacts/docs/design.md`。
+- 用户于2026-10-24明确授权独立 `mod_dynastic_esotericism/` 对全部存活信徒实施宗族归属与背离规则，含AI、无地者与儿童，按同一礼仪／宗族绑定处理。玩家限定不适用于该产品后台同步；监禁、放逐、处决只提供相应犯罪理由，不自动执行处罚。范围与恢复、赦免规则见该产品 `docs/requirements.md`。
 - 所有脚本文件 **UTF-8 BOM**；yml 缺 BOM 直接不加载
 - script values 目录是 `common/script_values`（**不是** scripted_values）
 - `is_tutorial_lesson_completed` 是 interface trigger，只能用于 customizable_localization / GUI，游戏状态脚本禁用

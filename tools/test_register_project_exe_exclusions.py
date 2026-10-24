@@ -1,8 +1,11 @@
 from pathlib import Path
 import copy
+import ast
 import json
 import os
 import tempfile
+import subprocess
+import sys
 import unittest
 from unittest.mock import patch
 
@@ -183,6 +186,62 @@ class ExtraProvenanceTest(unittest.TestCase):
     setUp=RegistrationTest.setUp
     write_metadata=RegistrationTest.write_metadata
     collect=RegistrationTest.collect
+    def test_dll_only_typed_helpers_pass_strict_static_check(self) -> None:
+        source=Path(m.__file__).read_text(encoding='utf-8-sig')
+        module=ast.parse(source)
+        names={'ProjectExeBuildHookResult','NoProjectExecutableReceipt',
+               'FailedBuildExclusionReceipt','_write_receipt',
+               '_no_project_executable_result','_build_hook_status'}
+        selected=[node for node in module.body if isinstance(node,(ast.FunctionDef,ast.ClassDef))
+                  and node.name in names]
+        self.assertEqual(len(selected),len(names))
+        imports=[node for node in module.body if isinstance(node,(ast.Import,ast.ImportFrom))]
+        constants=[node for node in module.body if isinstance(node,ast.Assign)
+                   and any(isinstance(target,ast.Name) and target.id=='SCHEMA' for target in node.targets)]
+        checked=self.root/'dll_hook_types.py'
+        checked.write_text(ast.unparse(ast.Module(body=imports+constants+selected,type_ignores=[])),encoding='utf-8')
+        environment=os.environ.copy()
+        environment['MYPYPATH']=str(Path(m.__file__).resolve().parent)
+        result=subprocess.run([sys.executable,'-B','-m','mypy','--strict','--follow-imports=skip',
+                               '--no-incremental','--cache-dir',str(self.root/'mypy-cache'),str(checked)],
+                              env=environment,capture_output=True,text=True,check=False)
+        self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+    def test_dll_only_cmake_target_does_not_dispatch_exe_registration(self) -> None:
+        dll=self.build/'fixture.dll'
+        dll.write_bytes(b'MZ named DLL artifact; unrelated EXEs stay outside target closure')
+        self.target['type']='SHARED_LIBRARY'
+        self.target['artifacts']=[{'path':'fixture.dll'}]
+        self.write_metadata()
+        with patch.object(m,'opted_in',return_value=True), patch.object(
+                m,'register_manifest',side_effect=AssertionError('DLL-only target must not dispatch broker or WMI')):
+            result=m.after_successful_build(self.repo,self.source,self.build,'Release',['fixture'])
+        self.assertEqual(result['status'],'not_applicable')
+        receipt=json.loads(Path(result['receipt']).read_text())
+        manifest=json.loads(Path(result['manifest']).read_text())
+        self.assertEqual(manifest['files'],[])
+        self.assertFalse(receipt['broker_called'])
+        self.assertFalse(receipt['wmi_called'])
+        self.assertIsInstance(receipt['machine_id'],str)
+        self.assertTrue(receipt['observed_at_utc'])
+        self.assertFalse(receipt['settings_success_is_runtime_trust'])
+        self.assertTrue((self.build/'unrelated.exe').is_file())
+    def test_dll_target_with_executable_dependency_still_registers(self) -> None:
+        self.target['type']='SHARED_LIBRARY'
+        self.target['artifacts']=[{'path':'fixture.dll'}]
+        self.write_metadata()
+        dependency={'id':'lib','name':'library','type':'EXECUTABLE','paths':{'source':'.'},
+                    'artifacts':[{'path':'fixture.exe'}]}
+        (self.reply/'lib.json').write_text(json.dumps(dependency))
+        def register_dependency(manifest: object, receipt_path: Path, *, manifest_bytes: bytes) -> dict[str, str]:
+            receipt_path.write_text(json.dumps({'status':'verified'}))
+            return {'status':'verified'}
+        with patch.object(m,'opted_in',return_value=True), patch.object(
+                m,'register_manifest',side_effect=register_dependency) as register:
+            result=m.after_successful_build(self.repo,self.source,self.build,'Release',['fixture'])
+        self.assertEqual(result['status'],'verified')
+        self.assertEqual(register.call_count,1)
+        submitted=register.call_args.args[0]
+        self.assertEqual([row['path'] for row in submitted['files']],[str(self.exe.resolve())])
     def test_invalid_manifest_provenance_writes_failure_receipt_without_wmi(self):
         with patch.object(m,'opted_in',return_value=True),patch.object(m,'collect_manifest',side_effect=ValueError('bad codemodel')),patch.object(m,'DefenderWmi',side_effect=AssertionError('must not connect')):
             result=m.after_successful_build(self.repo,self.source,self.build,'Release',['fixture'])

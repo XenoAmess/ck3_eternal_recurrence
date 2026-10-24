@@ -1,0 +1,141 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "dynastic-esotericism",
+  "case_id": "core",
+  "acceptance_scope": "actual_rite_ui_creation_and_editing_dynasty_membership_directional_apostasy",
+  "fixture_source": {
+    "kind": "prebuilt_manifest"
+  },
+  "maximum_natural_days": 400,
+  "failure_prefixes": [
+    "DESAF:"
+  ],
+  "gui_phases": [
+    {
+      "id": "actual-default-cancel-and-create-ui",
+      "at_day": 1,
+      "requirements": [
+        "actual_player_no_prophet_two_known_selectable_doctrines_default_none",
+        "actual_create_and_reform_edit_gui_group_visible",
+        "cancelled_draft_preserves_rite_dynasty_house_resources_and_no_binding",
+        "actual_original_final_can_and_price_then_one_gui_creation_confirmation",
+        "created_rite_full_identity_current_player_and_unique_new_dynasty_bound",
+        "actual_capture_created_test_decision_once_after_ui_creation"
+      ]
+    },
+    {
+      "id": "actual-members-and-same-faith-input",
+      "when_markers": [
+        "DESAF: TEST PASS binding_and_members"
+      ],
+      "requirements": [
+        "actual_root_target_peer_child_outsider_ids_rite_dynasty_house_saved_readback",
+        "all_living_created_rite_members_in_bound_dynasty_and_original_nonconverts_preserved",
+        "actual_single_same_faith_test_decision_then_no_direct_product_state_writes"
+      ]
+    },
+    {
+      "id": "actual-same-faith-crime-direction-and-cross-faith-input",
+      "when_markers": [
+        "DESAF: TEST PASS same_faith_apostasy"
+      ],
+      "requirements": [
+        "actual_unique_minus100_product_opinion_source_from_rite_observers",
+        "actual_imprisonment_banish_execution_reason_source_and_original_jurisdiction",
+        "actual_nonrite_observer_no_product_opinion_or_reason",
+        "actual_lawful_prisoner_execution_banish_preview_without_automatic_punishment",
+        "actual_single_cross_faith_test_decision"
+      ]
+    },
+    {
+      "id": "actual-cross-faith-crime-and-repentance-input",
+      "when_markers": [
+        "DESAF: TEST PASS cross_faith_apostasy"
+      ],
+      "requirements": [
+        "actual_cross_faith_target_retains_bound_dynasty_and_directional_product_reasons",
+        "actual_other_rite_and_other_dynasty_observers_no_product_reason",
+        "actual_single_repentance_test_decision"
+      ]
+    },
+    {
+      "id": "actual-repentance-disable-and-reenable-ui",
+      "when_markers": [
+        "DESAF: TEST PASS repentance"
+      ],
+      "requirements": [
+        "actual_repentance_removes_only_product_state_and_independent_crime_preserved",
+        "actual_repeat_apostasy_and_stock_pardon_not_refreshed_by_repair",
+        "actual_second_dynastic_rite_crossover_without_old_pair_pollution",
+        "actual_native_edit_none_confirmation_then_closed_readback_decision",
+        "actual_native_edit_dynastic_confirmation_then_reopened_readback_decision",
+        "actual_same_rite_and_same_bound_dynasty_reused_not_recreated"
+      ],
+      "operator_sequence": [
+        "native_edit_none_then_closed_readback",
+        "native_edit_dynastic_then_reopened_readback",
+        "des_acceptance_extended_start_decision",
+        "des_acceptance_second_rite_decision_and31_natural_days",
+        "des_acceptance_cross_rites_decision_and1_natural_day",
+        "des_acceptance_cross_migration_decision_and1_natural_day",
+        "des_acceptance_stock_crime_decision_and1_natural_day",
+        "des_acceptance_stock_repent_decision_and1_natural_day",
+        "des_acceptance_pardon_prepare_decision_and1_natural_day",
+        "actual_stock_pardon_interaction_once",
+        "des_acceptance_pardon_observe_decision_and31_natural_days",
+        "des_acceptance_founder_death_decision_and31_natural_days_may_run_in_parallel_after_second_verified"
+      ]
+    },
+    {
+      "id": "actual-lifecycle-and-save-for-cold-reload",
+      "when_markers": [
+        "DESAF: TEST PASS reopened_binding"
+      ],
+      "requirements": [
+        "actual_birth_generated_character_next_day_and_legal_cadet_house_preserved",
+        "actual_external_house_change_corrected_within_documented_period",
+        "actual_founder_death_or_head_succession_binding_preserved",
+        "actual_final_save_independent_rite_dynasty_house_and_relationship_readback",
+        "separate_real_cold_reload_and_old_save_bootstrap_cases_remain_required"
+      ],
+      "operator_sequence": [
+        "continue_actual_natural_days_to_observed_birth_plus_exactly1_day",
+        "verify_actual_birth_date_identity_rite_dynasty_house_and_knowledge",
+        "verify_cadet_drift_and_two_timer_callback_markers",
+        "des_acceptance_cold_anchor_decision",
+        "actual_native_save_then_independent_saved_state_readback"
+      ]
+    }
+  ],
+  "source_contracts": [
+    "mod_dynastic_esotericism/docs/requirements.md",
+    "mod_dynastic_esotericism/docs/test-plan.md",
+    "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/acceptance/FixtureEmitter.java",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_acceptance_events.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/scripted_effects/des_acceptance_extended_effects.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_acceptance_extended_decisions.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/on_action/des_acceptance_extended_on_actions.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_acceptance_extended_events.txt",
+    "mod_dynastic_esotericism/docs/acceptance/operator-runbook.md"
+  ],
+  "post_start": {
+    "government_key": "feudal_government",
+    "primary_title_tier_key": "duchy",
+    "independent": true
+  },
+  "required_startup": [
+    "DESAF: FIXTURE_ARMED core"
+  ],
+  "forbidden_startup": [
+    "DESAF: TEST FAIL"
+  ],
+  "uncovered_product_business": [
+    "Generated scripts and marker checks are not CK3 scope or gameplay qualification.",
+    "This process-bound case does not establish cold reload or compatibility initialization from a real pre-product save.",
+    "The fixture does not execute real Rite creation or edits. Root must use the original GUI or independently admitted typed actions and retain the actual submitted outcome.",
+    "Rite doctrine knowledge, landholders, birth, cadet-house and pardon/crossover paths require their declared Root native/GUI/saved evidence; prepared controls do not infer them.",
+    "Multiplayer remains untested unless a separate real multiplayer result is recorded."
+  ],
+  "business_contract_applicable": true,
+  "calendar_bound_provenance": "Declared before first allocation:400 days covers stock280-day pregnancy, exact next-day birth observation and31-day maintenance checks. No prior failure is reclassified; fixed3600s hold remains unchanged."
+}

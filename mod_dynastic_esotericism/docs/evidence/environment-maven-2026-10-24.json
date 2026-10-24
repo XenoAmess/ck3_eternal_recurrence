@@ -1,0 +1,62 @@
+{
+  "schema": "xar.dynastic-esotericism.maven-upgrade-actual.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T07:15:51.956762+00:00",
+  "status": "passed",
+  "old_version": "3.9.16",
+  "new_version": "3.10.0",
+  "maven_home": "D:\\apache-maven-3.9.16",
+  "default_command": "mvn -version",
+  "path_unchanged": true,
+  "where_before": [
+    "D:\\apache-maven-3.9.16\\bin\\mvn",
+    "D:\\apache-maven-3.9.16\\bin\\mvn.cmd"
+  ],
+  "where_after": [
+    "D:\\apache-maven-3.9.16\\bin\\mvn",
+    "D:\\apache-maven-3.9.16\\bin\\mvn.cmd"
+  ],
+  "before_stdout": "Apache Maven 3.9.16 (2bdd9fddda4b155ebf8000e807eb73fd829a51d5)\nMaven home: D:\\apache-maven-3.9.16\nJava version: 25.0.4.1, vendor: GraalVM Community, runtime: D:\\graalvm-community-25.3.4.1+1.1\nDefault locale: zh_CN, platform encoding: UTF-8\nOS name: \"windows 10\", version: \"10.0\", arch: \"amd64\", family: \"windows\"\n",
+  "after_stdout": "Apache Maven 3.10.0 (c43a36b8d67be7e0805a411bc0898af1a51f5472)\nMaven home: D:\\apache-maven-3.9.16\nJava version: 25.0.4.1, vendor: GraalVM Community, runtime: D:\\graalvm-community-25.3.4.1+1.1\nDefault locale: zh_CN, platform encoding: UTF-8, time zone: Asia/Shanghai\nOS name: \"windows 10\", version: \"10.0\", arch: \"amd64\", family: \"windows\"\n",
+  "official_download_page": "https://maven.apache.org/download.cgi",
+  "binary_download_url": "https://dlcdn.apache.org/maven/maven-3/3.10.0/binaries/apache-maven-3.10.0-bin.zip",
+  "sha512_download_url": "https://downloads.apache.org/maven/maven-3/3.10.0/binaries/apache-maven-3.10.0-bin.zip.sha512",
+  "archive_sha256": "1f6d9909266510f039f59aa0e13dcd2c66da85f043e56276e41f2918f8bddaff",
+  "archive_sha512": "22d31676d5b92ed53308c19ecded3245d0efd0cddfec51ec7bab62f4f13ad70ddddceff8e62940e0e8e2421f3cde8106737f4becec0aa034ffeff2a754e88337",
+  "published_sha512": "22d31676d5b92ed53308c19ecded3245d0efd0cddfec51ec7bab62f4f13ad70ddddceff8e62940e0e8e2421f3cde8106737f4becec0aa034ffeff2a754e88337",
+  "sha512_match": true,
+  "old_installation_backup": "C:\\ck3-dynastic-esotericism-20261024\\maven-old-backup",
+  "backup_manifest_path": "C:\\ck3-dynastic-esotericism-20261024\\maven-upgrade-prepared.actual.json",
+  "old_runtime_exact_files_removed": 93,
+  "new_runtime_exact_files_installed_and_sha256_verified": 110,
+  "configuration_files_preserved": [
+    {
+      "relative_path": "conf/settings.xml",
+      "bytes": 10528,
+      "sha256": "2f552325aedd9a9c9268df520be22cfe3aa86260b76a0f830d2796d2f0e22bd4",
+      "conf_preserved": true
+    },
+    {
+      "relative_path": "conf/toolchains.xml",
+      "bytes": 3645,
+      "sha256": "716a6e73e4b0131a72c7329cf7a9cbfb75afc3042ed732cd1862bdfcd89c1311",
+      "conf_preserved": true
+    },
+    {
+      "relative_path": "conf/logging/simplelogger.properties",
+      "bytes": 1338,
+      "sha256": "42140f6ec135827bec255a2ebdfa11211387402d13296792ff40e56a96ceddf8",
+      "conf_preserved": true
+    }
+  ],
+  "estimated_final_net_growth_bytes": 914386,
+  "estimated_final_4096rounded_net_growth_bytes": 974848,
+  "D_free_before_bytes": 21624369152,
+  "D_free_after_old_runtime_removal_bytes": 21635371008,
+  "D_free_after_bytes": 21623386112,
+  "free_space_change_is_not_exclusive_attribution": true,
+  "temporary_retention_review_at_utc": "2026-10-26T07:30:00Z",
+  "permanent_installation_retention": "current required dependency; not a temporary asset",
+  "capacity_admission": "C:\\ck3-dynastic-esotericism-20261024\\capacity\\CAPACITY-ADMISSION-r1145.actual.json",
+  "installer_script_sha256": "b53f4229f521536443e70a8d06ef7bac90bdcf96c6039643719eebb7b7d9f92e"
+}

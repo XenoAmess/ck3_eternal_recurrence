@@ -75,13 +75,15 @@ def observed_fixture(root: Path, run: str, *, features: bool = True, preserved_c
     request["expected_target_id"] = None
     process["request"] = json_value(write_once(root / "request-final.json", request))
     response["process_receipt"] = json_value(write_once(root / "process-final.json", process))
-    save_ref = write_once(root / "save.actual-results.json", {"rows": [{"plan": {"tool": "ck3_save_checkpoint"}, "ok": True, "error": None,
+    save_payload: Object = {"rows": [{"plan": {"tool": "ck3_save_checkpoint"}, "ok": True, "error": None,
         "result": {"checkpoint": {"status": "saved", "path": source["path"], "size": source["bytes"], "sha256": source["sha256"], "date_raw": 123456},
-            "materialization": {"available": True}}, "after_snapshot": snapshot}]})
-    item_ref = write_once(root / "item.actual-results.json", {"rows": [{"plan": {"tool": "ck3_query_player_artifact_personal_use_v1"},
+            "materialization": {"available": True}}, "after_snapshot": snapshot}]}
+    save_ref = write_once(root / "save.actual-results.json", save_payload)
+    item_payload: Object = {"rows": [{"plan": {"tool": "ck3_query_player_artifact_personal_use_v1"},
         "ok": True, "error": None, "result": {"available": True, "read_only": True, "loaded_source_pins_verified": True,
             "personally_owned": True, "inventory_artifact": True, "equipped": True, "requested_artifact_id": 12,
-            "played_character_id": 91, "date_raw": 123456, "owned_ids": [12]}, "after_snapshot": snapshot}]})
+            "played_character_id": 91, "date_raw": 123456, "owned_ids": [12]}, "after_snapshot": snapshot}]}
+    item_ref = write_once(root / "item.actual-results.json", item_payload)
     frame = Frame.parse(snapshot, run_id=run, machine_id="unit-machine", manifest=manifest)
     inputs, _ = verify_readback(response, run_id=run, machine_id="unit-machine", reviewer="unit-root", frame=frame,
         source_save=source, expected_material_rarities=())

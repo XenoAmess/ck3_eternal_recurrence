@@ -10,10 +10,10 @@
 
 namespace xar::ck3_12004::religion::rite_creation_actions {
 namespace {
-constexpr std::array<std::string_view, 8> operations{
+constexpr std::array<std::string_view, 10> operations{
     "open_create_draft", "open_edit_current_rite_draft", "select_core_tenet",
     "select_doctrine", "set_name_field", "preview", "prepare_confirmation",
-    "confirm_once"};
+    "confirm_once", "observe_current_rite", "cancel_draft"};
 constexpr std::array<std::string_view, 5> name_fields{
     "name", "adjective", "adherent", "adherent_plural", "description"};
 constexpr std::array<std::string_view, 3> outcomes{
@@ -332,6 +332,17 @@ bool ResultContract(const Result& result, std::string& reason) {
   } else if (result.preview_identity) {
     return Fail(reason, "rite_creation_unavailable_preview_identity_has_value");
   }
+  if (result.current_rite_poststate) {
+    const auto& state = *result.current_rite_poststate;
+    if (state.source_rite_id_anchor == absent)
+      return Fail(reason, "rite_creation_poststate_original_source_anchor_required");
+    if (state.observed && (!state.unavailable_reason.empty() || !state.rite_id ||
+        !state.faith_id || !state.religion_id || !state.names || !state.core_tenets ||
+        !state.doctrines || !state.confirmation_modal_open || !state.creation_window_visible))
+      return Fail(reason, "rite_creation_poststate_complete_persistent_graph_required");
+    if (!state.observed && state.unavailable_reason.empty())
+      return Fail(reason, "rite_creation_poststate_unavailable_reason_required");
+  }
   return true;
 }
 void FrameJson(Json& json, const Frame& value) {
@@ -414,6 +425,56 @@ void QuoteJson(Json& json, const Quote& value) {
   json.text += ','; json.Key("raw_scale"); json.Integer(Quote::raw_scale);
   json.text += '}';
 }
+void PoststateJson(Json& json, const std::optional<CurrentRitePoststate>& value) {
+  if (!value) { json.text += "null"; return; }
+  const auto& state = *value;
+  json.text += '{'; json.Key("schema"); json.String("ck3_12004_rite_creation_poststate_v1");
+  json.text += ','; json.Key("observed"); json.Boolean(state.observed);
+  json.text += ','; json.Key("source_rite_id_anchor"); json.Integer(state.source_rite_id_anchor);
+  json.text += ','; json.Key("unavailable_reason");
+  if (state.observed) json.text += "null"; else json.String(state.unavailable_reason);
+  json.text += ','; json.Key("rite_id"); json.Optional(state.rite_id);
+  json.text += ','; json.Key("faith_id"); json.Optional(state.faith_id);
+  json.text += ','; json.Key("religion_id"); json.Optional(state.religion_id);
+  json.text += ','; json.Key("founder_character_id"); json.Optional(state.founder_character_id);
+  json.text += ','; json.Key("names");
+  if (!state.names) json.text += "null";
+  else {
+    json.text += '{';
+    for (std::size_t i = 0; i < name_fields.size(); ++i) {
+      if (i) json.text += ',';
+      json.Key(name_fields[i]); json.String((*state.names)[i]);
+    }
+    json.text += '}';
+  }
+  json.text += ','; json.Key("core_tenets");
+  if (!state.core_tenets) json.text += "null";
+  else {
+    json.text += '[';
+    for (std::size_t i = 0; i < state.core_tenets->size(); ++i) {
+      if (i) json.text += ',';
+      const auto& row = (*state.core_tenets)[i];
+      json.text += '{'; json.Key("slot_index"); json.Integer(row.slot_index);
+      json.text += ','; json.Key("tenet_key"); json.String(row.tenet_key); json.text += '}';
+    }
+    json.text += ']';
+  }
+  json.text += ','; json.Key("doctrines");
+  if (!state.doctrines) json.text += "null";
+  else {
+    json.text += '[';
+    for (std::size_t i = 0; i < state.doctrines->size(); ++i) {
+      if (i) json.text += ',';
+      const auto& row = (*state.doctrines)[i];
+      json.text += '{'; json.Key("group_key"); json.String(row.group_key);
+      json.text += ','; json.Key("doctrine_key"); json.String(row.doctrine_key); json.text += '}';
+    }
+    json.text += ']';
+  }
+  json.text += ','; json.Key("confirmation_modal_open"); json.Optional(state.confirmation_modal_open);
+  json.text += ','; json.Key("creation_window_visible"); json.Optional(state.creation_window_visible);
+  json.text += '}';
+}
 void LeafJson(Json& json, const Result& value) {
   json.text += '{'; json.Key("schema"); json.String(schema);
   json.text += ','; json.Key("operation"); json.String(Name(value.operation, operations));
@@ -426,6 +487,7 @@ void LeafJson(Json& json, const Result& value) {
   json.text += ','; json.Key("modal"); ModalJson(json, value.modal);
   json.text += ','; json.Key("full_can"); FullCanJson(json, value.full_can);
   json.text += ','; json.Key("quote"); QuoteJson(json, value.quote);
+  json.text += ','; json.Key("current_rite_poststate"); PoststateJson(json, value.current_rite_poststate);
   json.text += ','; json.Key("preview_identity_available"); json.Boolean(value.preview_identity_available);
   json.text += ','; json.Key("preview_identity"); json.Optional(value.preview_identity);
   json.text += ','; json.Key("complete_command_payload_observed"); json.Boolean(value.complete_command_payload_observed);
@@ -517,7 +579,9 @@ bool ParseRequest12004(std::string_view input, WireRequest& output,
       }
       case Operation::open_create_draft:
       case Operation::open_edit_current_rite_draft:
-      case Operation::preview: break;
+      case Operation::preview:
+      case Operation::observe_current_rite:
+      case Operation::cancel_draft: break;
     }
     if (values.size() != admitted.size() || std::any_of(values.begin(), values.end(), [&](const Value& value) {
           return std::find(admitted.begin(), admitted.end(), value.key) == admitted.end();
@@ -583,7 +647,7 @@ bool FormatResult12004(const Result& result, std::string& output,
     json.text += ','; json.Key("status"); json.String(result.status);
     json.text += ','; json.Key("snapshot_revision"); json.Integer(result.frame.native_revision);
     json.text += ','; json.Key("date_raw"); json.Integer(result.frame.date_raw);
-    json.text += ','; json.Key("read_only"); json.Boolean(result.operation == Operation::preview);
+    json.text += ','; json.Key("read_only"); json.Boolean(result.operation == Operation::preview || result.operation == Operation::observe_current_rite);
     json.text += ','; json.Key("domain_key"); json.String(domain_key);
     json.text += ','; json.Key("backend_id"); json.String(native_backend_id);
     json.text += ','; json.Key("game_version"); json.String(ck3_12004::kGameVersion);

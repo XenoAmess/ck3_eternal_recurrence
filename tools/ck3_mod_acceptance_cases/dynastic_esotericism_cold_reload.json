@@ -1,0 +1,49 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "dynastic-esotericism",
+  "fixture_source": {
+    "kind": "prebuilt_manifest"
+  },
+  "failure_prefixes": [
+    "DESAF:"
+  ],
+  "source_contracts": [
+    "mod_dynastic_esotericism/docs/requirements.md",
+    "mod_dynastic_esotericism/docs/test-plan.md",
+    "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/acceptance/FixtureEmitter.java",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_acceptance_events.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/scripted_effects/des_acceptance_extended_effects.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_acceptance_extended_decisions.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/on_action/des_acceptance_extended_on_actions.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_acceptance_extended_events.txt",
+    "mod_dynastic_esotericism/docs/acceptance/operator-runbook.md"
+  ],
+  "post_start": {
+    "government_key": "feudal_government",
+    "primary_title_tier_key": "duchy",
+    "independent": true
+  },
+  "forbidden_startup": [
+    "DESAF: TEST FAIL"
+  ],
+  "business_contract_applicable": true,
+  "case_id": "cold_reload",
+  "acceptance_scope": "actual_new_process_exact_saved_rite_dynasty_and_pardon_state",
+  "maximum_natural_days": 0,
+  "startup_mode": "saved_campaign",
+  "required_startup": [],
+  "gui_phases": [
+    {
+      "id": "actual-cold-persistence",
+      "at_day": 0,
+      "requirements": [
+        "actual_new_pid_and_creation_identity_distinct_from_source_session",
+        "actual_source_save_identity_player_date_and_exact_formal_product_plus_passive_fixture",
+        "actual_persisted_rite_dynasty_house_binding_cadet_and_pardoned_pair_before_any_product_input",
+        "actual_readback_decision_and_independent_cold_save_match_source_graph",
+        "no_initialization_or_product_repair_used_to_mask_loaded_state"
+      ]
+    }
+  ],
+  "calendar_bound_provenance": "Zero natural-day readback of a genuine preceding core save in a fresh managed process; no on-start fixture registrar."
+}

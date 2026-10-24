@@ -1,0 +1,65 @@
+{
+  "schema": "ck3-dynastic-acceptance-source-preparation-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T08:55:41.860668+00:00",
+  "qualification": "OFFLINE_PRODUCER_AND_REGISTRATION_ONLY",
+  "business_acceptance": "NOT_RUN",
+  "game_started": false,
+  "owner_changed": false,
+  "formal_clean_source_lease_qualified": false,
+  "checks": [
+    {
+      "scope": "canonical host projection producer and consumer regression",
+      "actual_tests": 5,
+      "receipt": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\acceptance-preparation\\canonical-host-current-factory-r6.actual.json",
+        "bytes": 472,
+        "sha256": "59148f53ad19920357ec9b556e52d1a2a551c8ef6a39b5b0331bb220a6b07b5b"
+      }
+    },
+    {
+      "scope": "actual parent R05 provider through explicit pin projection to current SDK factory, runtime interpreter",
+      "registered_tools": 220,
+      "parent_missing": [],
+      "case_missing": [],
+      "retained_control_missing": [],
+      "same_actual_service": true,
+      "normal_exit_expected_revision_json_type": "string",
+      "receipt": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\acceptance-preparation\\registration-probe-r7\\actual.json",
+        "bytes": 23249,
+        "sha256": "66990241c25bd69ee1cac3181dd21f33de024a77fcd56eb27329d5d274e24cae"
+      }
+    },
+    {
+      "scope": "actual keeper argv generation and current clean lease helper/task bus readback; no registration/acquire",
+      "receipt": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\acceptance-preparation\\keeper-closure-readonly.actual.json",
+        "bytes": 2129,
+        "sha256": "e81a127fecebee5e5c6aaccbbcb383d6ee2834ae679d3399218822df8f6acc10"
+      }
+    }
+  ],
+  "source_files": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_build_runtime.py",
+      "bytes": 121605,
+      "sha256": "26aaaf26cad0dba54e95c45ad2382bcc34f6b3aa731904322af382ecadce6f94"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_canonical_host_successor.py",
+      "bytes": 10811,
+      "sha256": "137c433a8b5c2eacff3a47a728e28882d56a2a7192498e34616808a66f3bbdf6"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\tools\\src\\main\\java\\org\\xar\\ck3\\dynastic\\acceptance\\SharedRuntimeComposer.java",
+      "bytes": 29918,
+      "sha256": "2aa6f76f312ac85876522a3728ab41183c6ac01e5ef18d62f6be769207ef675d"
+    }
+  ],
+  "remaining": [
+    "Final Maven and strict receipts are recorded separately by the sole builder.",
+    "Formal committed clean checkout must produce runtime, fixture and staging, then pass actual public plan and prepare.",
+    "All business GUI/save/reload/bootstrap and publishing acceptance remain NOT_RUN."
+  ]
+}

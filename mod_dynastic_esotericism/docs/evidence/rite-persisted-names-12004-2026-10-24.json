@@ -1,0 +1,141 @@
+{
+  "schema": "xar-rite-persisted-names-static-proof-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T07:57:25.343793+00:00",
+  "steam_app_id": "1158310",
+  "steam_build_id": "25734779",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "status": "STATIC_CONFIRMED_NOT_LIVE_VALIDATED",
+  "source_binary_slices_path": "C:/ck3-dynastic-esotericism-20261024/rite-persisted-names-01/binary-slices.json",
+  "source_binary_slices_sha256": "98dd4bbe79218a179dec90e8c8ee28c2d1085110e0d5fe6bdb80be9eda010e81",
+  "fields": [
+    {
+      "field": "name",
+      "persistent_string_offset": "0x540",
+      "reflection_name": "GetName",
+      "registration_name_read_rva": "0x4ed9cd",
+      "registration_callback_lea_rva": "0x4eda53",
+      "reflection_callback_rva": "0x24fbe00",
+      "tooltip_getter_rva": "0x24f6e20",
+      "raw_copy_proof_rva": "0x24f6f26",
+      "note": "GetNameNoTooltip: registration 0x4edb53/0x4edbc9 -> callback0x24fbe40 -> core0x24f6ef0. It can calculate a type-derived fallback through0x3275df0; raw field may legitimately be empty. Do not use fallback text as raw custom input."
+    },
+    {
+      "field": "adjective",
+      "persistent_string_offset": "0x570",
+      "reflection_name": "GetAdjectiveNoTooltip",
+      "registration_name_read_rva": "0x4ede43",
+      "registration_callback_lea_rva": "0x4edec8",
+      "reflection_callback_rva": "0x24fbec0",
+      "raw_getter_rva": "0xb80400",
+      "raw_getter_bytes": "488d8170050000c3"
+    },
+    {
+      "field": "adherent",
+      "persistent_string_offset": "0x5a0",
+      "reflection_name": "GetAdherentNameNoTooltip",
+      "registration_name_read_rva": "0x4ee153",
+      "registration_callback_lea_rva": "0x4ee1d2",
+      "reflection_callback_rva": "0x24fbf50",
+      "raw_getter_rva": "0x24f4c30",
+      "raw_getter_bytes": "488d81a0050000c3"
+    },
+    {
+      "field": "adherent_plural",
+      "persistent_string_offset": "0x5d0",
+      "reflection_name": "GetAdherentNamePluralNoTooltip",
+      "registration_name_read_rva": "0x4ee463",
+      "registration_callback_lea_rva": "0x4ee4f6",
+      "reflection_callback_rva": "0x24fbfe0",
+      "raw_getter_rva": "0x24f4c40",
+      "raw_getter_bytes": "488d81d0050000c3"
+    },
+    {
+      "field": "description",
+      "persistent_string_offset": "0x600",
+      "reflection_name": "GetFlavorDescription",
+      "registration_name_read_rva": "0x4ee773",
+      "registration_callback_lea_rva": "0x4ee7ee",
+      "reflection_callback_rva": "0x24fc070",
+      "raw_getter_rva": "0x24f4c50",
+      "raw_getter_bytes": "488d8100060000c3",
+      "note": "GetDescription callback0x24fc030/core0x24f7060 combines generated faith/rite description with this raw field. It is unsuitable for exact custom input comparison."
+    }
+  ],
+  "string_layout": {
+    "encoding": "UTF-8 as stored by custom user text",
+    "read_object_bytes": 32,
+    "size_offset": "0x10",
+    "capacity_offset": "0x18",
+    "small_string_rule": "capacity < 16: inline; otherwise heap pointer at offset0",
+    "proof": "Native CEditRiteCommand.Can 0x29a2620 separately resolves committed CRite and compares all five stored String32 fields against command input at0x29a2857..0x29a292a. Each field explicitly branches on capacity+0x18. CString copy0x855f00 reads size+0x10 and capacity+0x18."
+  },
+  "current_rite_proof": {
+    "native_validator_rva": "0x29a2620",
+    "full_function_end_exclusive": "0x29a2ab7",
+    "comparison_range_start": "0x29a2857",
+    "comparison_range_end_exclusive": "0x29a292f",
+    "mapping": [
+      "command+0x58 -> committed CRite+0x540",
+      "command+0x88 -> committed CRite+0x570",
+      "command+0xb8 -> committed CRite+0x5a0",
+      "command+0xe8 -> committed CRite+0x5d0",
+      "command+0x118 -> committed CRite+0x600"
+    ],
+    "comparison_target_rva": "0x3f6d2b0",
+    "interpretation": "Read raw committed custom text from independently resolved current CRite, not any RiteCreationWindow draft. The 0x30 field spacing does not add a wrapper before each String32."
+  },
+  "cancel_draft": {
+    "stock_gui_path": "game/gui/window_rite_creation.gui",
+    "stock_gui_sha256": "9476299fdbf0975e41923eac9b192d3fe0b2cd74a4da0d928d0da7974b7ea9f8",
+    "stock_gui_lines": [
+      45,
+      67
+    ],
+    "gui_callback": "RiteCreationWindow.Close",
+    "registration_name_read_rva": "0x22947d",
+    "registration_callback_lea_rva": "0x2294f5",
+    "reflection_callback_rva": "0x1031e60",
+    "virtual_dispatch_thunk_rva": "0x1038604",
+    "primary_vtable_rva": "0x4565c40",
+    "primary_vtable_col_rva": "0x4b71488",
+    "primary_vtable_type_descriptor_rva": "0x57a59c0",
+    "primary_vtable_rtti_name": ".?AVCRiteCreationWindow@@",
+    "primary_vtable_subobject_offset": 0,
+    "virtual_slot": "0x88",
+    "close_core_rva": "0x14f38d0",
+    "close_core_end_exclusive": "0x14f38ec",
+    "close_core_bytes": "40534883ec20488b01488bd9ff5020c68338100000004883c4205bc3",
+    "abi": "void Close(CRiteCreationWindow* this); no other semantic arguments",
+    "behavior": "Calls primary virtual slot0x20 (0x110b0e0) then clears byte this+0x1038. Reflection bool return is ACK only.",
+    "runtime_guards": [
+      "Exact EXE and code pins",
+      "Current primary vtable and current owner frame",
+      "Expected live window/source/actor binding",
+      "Refuse while confirmation modal or submission outcome is pending"
+    ],
+    "poststate": [
+      "Creation window becomes invisible",
+      "Played character and current committed rite full IDs remain unchanged",
+      "Raw committed five names, core tenets and doctrine choices remain unchanged"
+    ],
+    "not_equivalent": [
+      "Picker cancel buttons only clearing VariableSystem faith_creation_right_view",
+      "Retracting an already submitted game command"
+    ]
+  },
+  "unknowns": [
+    "Native provider live integration has not been exercised by this read-only subtask.",
+    "Save and reload roundtrip of the committed fields has not been executed.",
+    "Rite save serialization writer/reader entry points have not been traced; current committed model fields are independently proven by native getter and native command-validation consumers."
+  ],
+  "storage": {
+    "policy_version": "1.0.0",
+    "summary_class": "record",
+    "summary_review_at_utc": "2027-04-22T07:57:25.343793+00:00",
+    "external_slice_class": "derived",
+    "external_slice_expires_at_utc": "2026-10-26T07:57:25.343793+00:00",
+    "external_slice_protected_until_utc": "2026-10-31T07:57:25.343793+00:00",
+    "protected_reason": "Minimum evidence for the unresolved current-rite readback and draft-cancel live verification; no automatic renewal."
+  }
+}

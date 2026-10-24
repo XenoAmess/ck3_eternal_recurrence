@@ -12,6 +12,9 @@ import os
 from pathlib import Path
 import subprocess
 import uuid
+from collections.abc import Mapping, Sequence
+from typing import Literal, Never, NotRequired, TypedDict
+from ck3_live_run_id import current_machine_id
 
 CONFIG_KEY = "xar.defenderProjectExeExclusions"
 NAMESPACE = r"root\Microsoft\Windows\Defender"
@@ -282,7 +285,7 @@ class DefenderWmi:
                     "return_decode_error": str(error), "return_decode_error_type": type(error).__name__}
 
 
-def _write_receipt(path: Path, receipt: dict) -> None:
+def _write_receipt(path: Path, receipt: Mapping[str, object]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     raw = getattr(receipt, "broker_raw_bytes", None)
     if raw is not None:
@@ -429,8 +432,78 @@ def register_manifest(manifest: dict, receipt_path: Path, *, client=None, admin:
     return receipt
 
 
+class ProjectExeBuildHookResult(TypedDict):
+    status: Literal["disabled", "verified", "settings_failed", "not_applicable"]
+    reason: NotRequired[str]
+    manifest: NotRequired[str]
+    receipt: NotRequired[str]
+    receipt_sha256: NotRequired[str]
+    error: NotRequired[str | None]
+
+
+class NoProjectExecutableReceipt(TypedDict):
+    schema: str
+    machine_id: str
+    observed_at_utc: str
+    status: Literal["not_applicable"]
+    reason: str
+    source_dir: str
+    build_dir: str
+    requested_targets: list[str]
+    broker_called: Literal[False]
+    wmi_called: Literal[False]
+    settings_success_is_runtime_trust: Literal[False]
+
+
+class FailedBuildExclusionReceipt(TypedDict):
+    schema: str
+    status: Literal["settings_failed"]
+    error: str
+    error_type: str
+    method: str
+    before: None
+    after: None
+    calls: list[Never]
+    files: list[Never]
+    source_dir: str
+    build_dir: str
+    settings_success_is_runtime_trust: Literal[False]
+
+
+def _no_project_executable_result(
+    source: Path, build: Path, targets: Sequence[str], manifest_path: Path,
+    receipt_path: Path,
+) -> ProjectExeBuildHookResult:
+    receipt: NoProjectExecutableReceipt = {
+        "schema": SCHEMA, "status": "not_applicable",
+        "machine_id": current_machine_id(),
+        "observed_at_utc": datetime.now(timezone.utc).isoformat(),
+        "reason": "Validated requested CMake target closure contains no project executable outputs",
+        "source_dir": str(source), "build_dir": str(build),
+        "requested_targets": list(targets), "broker_called": False,
+        "wmi_called": False, "settings_success_is_runtime_trust": False,
+    }
+    _write_receipt(receipt_path, receipt)
+    return {
+        "status": "not_applicable", "manifest": str(manifest_path),
+        "receipt": str(receipt_path),
+        "receipt_sha256": hashlib.sha256(receipt_path.read_bytes()).hexdigest(),
+        "error": None,
+    }
+
+
+def _build_hook_status(value: object) -> Literal["disabled", "verified", "settings_failed"]:
+    if value == "disabled":
+        return "disabled"
+    if value == "verified":
+        return "verified"
+    if value == "settings_failed":
+        return "settings_failed"
+    raise ValueError("Project EXE registration returned an invalid terminal status")
+
+
 def after_successful_build(repo: Path, source: Path, build: Path, configuration: str,
-                           targets: list[str], external_candidate: str | None = None) -> dict:
+                           targets: list[str], external_candidate: str | None = None) -> ProjectExeBuildHookResult:
     if not opted_in(repo):
         return {"status": "disabled", "reason": "Local Git opt-in absent/false or CI environment"}
     attempt = build / "defender-exe-exclusions" / (datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid.uuid4().hex[:8])
@@ -438,7 +511,7 @@ def after_successful_build(repo: Path, source: Path, build: Path, configuration:
     try:
         manifest = collect_manifest(repo, source, build, configuration, targets, external_candidate)
     except Exception as error:
-        failed = {"schema": SCHEMA, "status": "settings_failed", "error": str(error),
+        failed: FailedBuildExclusionReceipt = {"schema": SCHEMA, "status": "settings_failed", "error": str(error),
                   "error_type": type(error).__name__, "method": "not-called; invalid CMake provenance",
                   "before": None, "after": None, "calls": [], "files": [],
                   "source_dir": str(source), "build_dir": str(build),
@@ -449,10 +522,16 @@ def after_successful_build(repo: Path, source: Path, build: Path, configuration:
                 "error": str(error)}
     manifest_path = attempt / "manifest.json"
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    if manifest["files"] == []:
+        return _no_project_executable_result(
+            source, build, targets, manifest_path, attempt / "receipt.json")
     result = register_manifest(manifest, attempt / "receipt.json", manifest_bytes=manifest_path.read_bytes())
-    return {"status": result["status"], "manifest": str(manifest_path), "receipt": str(attempt / "receipt.json"),
+    result_error: object = result.get("error")
+    if result_error is not None and not isinstance(result_error, str):
+        raise ValueError("Project EXE registration returned an invalid error value")
+    return {"status": _build_hook_status(result["status"]), "manifest": str(manifest_path), "receipt": str(attempt / "receipt.json"),
             "receipt_sha256": hashlib.sha256((attempt / "receipt.json").read_bytes()).hexdigest(),
-            "error": result.get("error")}
+            "error": result_error}
 
 
 def main() -> int:

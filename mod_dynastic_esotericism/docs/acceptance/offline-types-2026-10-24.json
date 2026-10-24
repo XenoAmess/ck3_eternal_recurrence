@@ -1,0 +1,622 @@
+{
+  "schema": "xar.dynastic-esotericism.offline-types.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T09:00:52.444268+00:00",
+  "typechecker": "mypy 2.4.0 (compiled: yes)",
+  "scope": "Strict exact modified definitions, saved startup and prebuilt/present/absent adapter statements plus two complete new public regression modules; imported legacy diagnostics are silent for these three strict targets, with full selected legacy modules measured independently below.",
+  "sources": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_background_types.py",
+      "bytes": 26662,
+      "sha256": "b568e1947d94b6c9412c7e49bce49eb0169b3d0b9ca4c2e0ac4ad99713a7a02a",
+      "extracted": [
+        {
+          "name": "JsonValue",
+          "start_line": 13,
+          "end_line": 13
+        },
+        {
+          "name": "JsonObject",
+          "start_line": 14,
+          "end_line": 14
+        },
+        {
+          "name": "FilePin",
+          "start_line": 16,
+          "end_line": 19
+        },
+        {
+          "name": "json_value",
+          "start_line": 52,
+          "end_line": 63
+        },
+        {
+          "name": "json_object",
+          "start_line": 65,
+          "end_line": 68
+        },
+        {
+          "name": "file_pin",
+          "start_line": 70,
+          "end_line": 77
+        },
+        {
+          "name": "text_field",
+          "start_line": 112,
+          "end_line": 115
+        },
+        {
+          "name": "object_field",
+          "start_line": 117,
+          "end_line": 118
+        }
+      ]
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_prepare.py",
+      "bytes": 21863,
+      "sha256": "1894d45fc33394599c63810c4858ec2f51b26d6790a03db1128ffe74f4ceaac7",
+      "extracted": [
+        {
+          "name": "PrebuiltFixtureReceipt",
+          "start_line": 21,
+          "end_line": 24
+        },
+        {
+          "name": "PrebuiltFixtureMaterialization",
+          "start_line": 27,
+          "end_line": 33
+        },
+        {
+          "name": "_prebuilt_checked_pin",
+          "start_line": 36,
+          "end_line": 44
+        },
+        {
+          "name": "_prebuilt_relative_path",
+          "start_line": 47,
+          "end_line": 51
+        },
+        {
+          "name": "materialize_prebuilt_fixture",
+          "start_line": 54,
+          "end_line": 145
+        },
+        {
+          "name": "require",
+          "start_line": 148,
+          "end_line": 149
+        },
+        {
+          "name": "pin",
+          "start_line": 152,
+          "end_line": 154
+        },
+        {
+          "name": "checked_copy",
+          "start_line": 163,
+          "end_line": 170
+        },
+        {
+          "name": "restore_prepared_profile checked_copy boundary",
+          "start_line": 281,
+          "end_line": 281
+        },
+        {
+          "name": "materialize_product_profile inventory JSON boundary",
+          "start_line": 307,
+          "end_line": 308
+        },
+        {
+          "name": "materialize_product_profile inventory JSON boundary",
+          "start_line": 330,
+          "end_line": 332
+        }
+      ]
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+      "bytes": 75934,
+      "sha256": "c0700cf7796c478f31064d7719891b2185be1b2d53b8e0c44bab1955e5288f86",
+      "extracted": [
+        {
+          "name": "_prepare_fixture_case prebuilt assignments and branch",
+          "start_line": 321,
+          "end_line": 331
+        },
+        {
+          "name": "read_json",
+          "start_line": 236,
+          "end_line": 237
+        },
+        {
+          "name": "_saved_fixture_startup",
+          "start_line": 279,
+          "end_line": 303
+        },
+        {
+          "name": "_run_fixture_case exact enabled_mods validation and present/absent product branch",
+          "start_line": 512,
+          "end_line": 526
+        }
+      ],
+      "harness": "Only typed wrapper parameters and return were added; selected original assignment/branch statement bodies were copied without editing. Legacy emitter/empty-carrier branches were excluded and assessed separately."
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 284356,
+      "sha256": "fd4ba4fbe16c352e193ef56c7f8cdd30b3bebde7443fa7b3804a3a939b46e962",
+      "extracted": [
+        {
+          "name": "_resolve_service_override_v1",
+          "start_line": 1663,
+          "end_line": 1674
+        },
+        {
+          "name": "create_server exact service_override binding statement",
+          "start_line": 1694,
+          "end_line": 1694
+        }
+      ],
+      "boundary": "Exact new resolver plus the actual factory binding statement in an explicitly typed wrapper; whole pre-existing MCP facade is not qualified by this extract."
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_build_runtime.py",
+      "bytes": 121605,
+      "sha256": "26aaaf26cad0dba54e95c45ad2382bcc34f6b3aa731904322af382ecadce6f94",
+      "extracted": [
+        {
+          "name": "require",
+          "start_line": 141,
+          "end_line": 143
+        },
+        {
+          "name": "_support_file_pin",
+          "start_line": 1350,
+          "end_line": 1353
+        },
+        {
+          "name": "_support_output_pin",
+          "start_line": 1356,
+          "end_line": 1357
+        },
+        {
+          "name": "_support_json",
+          "start_line": 1360,
+          "end_line": 1361
+        },
+        {
+          "name": "RegistrationFactoryProjectionV1",
+          "start_line": 1073,
+          "end_line": 1077
+        },
+        {
+          "name": "canonical_registration_projection",
+          "start_line": 1080,
+          "end_line": 1134
+        },
+        {
+          "name": "project_host",
+          "start_line": 1137,
+          "end_line": 1244
+        },
+        {
+          "name": "build_canonical_host_successor",
+          "start_line": 1247,
+          "end_line": 1294
+        },
+        {
+          "name": "_canonical_host_main",
+          "start_line": 1297,
+          "end_line": 1306
+        },
+        {
+          "name": "registration_driver.RegistrationOnlyDriver.execute_step",
+          "start_line": 122,
+          "end_line": 123
+        },
+        {
+          "name": "registration_driver.RegistrationOnlyDriver.wait_for_change",
+          "start_line": 125,
+          "end_line": 126
+        }
+      ],
+      "boundary": "Complete canonical host functions and exact newly added registration-only methods; legacy dynamic facade is not fully qualified."
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_canonical_host_successor.py",
+      "bytes": 10811,
+      "sha256": "137c433a8b5c2eacff3a47a728e28882d56a2a7192498e34616808a66f3bbdf6",
+      "extracted": [
+        {
+          "name": "complete actual regression module",
+          "start_line": 1,
+          "end_line": 174
+        }
+      ]
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_prebuilt_fixture_prepare.py",
+      "bytes": 12324,
+      "sha256": "32984c34df7f2bddff5a80fa2f51bcbc4092e4ed00ed09ce19a2acac4dc5b43a",
+      "extracted": [
+        {
+          "name": "complete actual regression module",
+          "start_line": 1,
+          "end_line": 214
+        }
+      ]
+    }
+  ],
+  "baseline_git_sha": "cf8d709ce1ac801b9d069d310ab0bc2df6f493c8",
+  "baseline_sources": [
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\typecheck-followup\\prepare_baseline.py",
+      "bytes": 14430,
+      "sha256": "37d74c8703c809575f9ecebe89475fb8ff05fe6cd4aecdd54e0ec65d57e6e55b"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\typecheck-followup\\generic_baseline.py",
+      "bytes": 71936,
+      "sha256": "117d175e6d2de17d97d50badaad3b043266e32387a5003bc2ece9aea707d337d"
+    }
+  ],
+  "extracts": [
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\typecheck-followup\\modified_scope_r7.py",
+      "bytes": 15085,
+      "sha256": "917e2b0ae2f06d9b017c23381e3d6b2165fb8b8b7da55d63e7a663a50977110c"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\typecheck-followup\\runtime_host_scope_r7.py",
+      "bytes": 19797,
+      "sha256": "f7b73be68b10e582df0cb670802aa2a753ca3eb57bf329731d76f449e70b8957"
+    }
+  ],
+  "checks": [
+    {
+      "name": "modified-scope-strict-r2",
+      "argv": [
+        "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "mypy",
+        "--no-incremental",
+        "--cache-dir",
+        "C:\\ck3-dynastic-esotericism-20261024\\typecheck-followup\\modified-scope-strict-r2-r7-cache",
+        "--strict",
+        "--strict-equality",
+        "--follow-imports=silent",
+        "C:\\ck3-dynastic-esotericism-20261024\\typecheck-followup\\modified_scope_r7.py"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\typecheck-followup\\modified-scope-strict-r2-r7.log",
+        "bytes": 43,
+        "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff"
+      },
+      "diagnostic_count": 0,
+      "summary": "Success: no issues found in 1 source file"
+    },
+    {
+      "name": "tests-strict-final",
+      "argv": [
+        "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "mypy",
+        "--no-incremental",
+        "--cache-dir",
+        "C:\\ck3-dynastic-esotericism-20261024\\typecheck-followup\\tests-strict-final-r7-cache",
+        "--strict",
+        "--strict-equality",
+        "--follow-imports=silent",
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_prebuilt_fixture_prepare.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_canonical_host_successor.py"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\typecheck-followup\\tests-strict-final-r7.log",
+        "bytes": 44,
+        "sha256": "0c37c4158c91ef55c724ba017bf6465f26018199badb08e3ff13f98acdf056c2"
+      },
+      "diagnostic_count": 0,
+      "summary": "Success: no issues found in 2 source files"
+    },
+    {
+      "name": "host-scope-strict-final",
+      "argv": [
+        "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "mypy",
+        "--no-incremental",
+        "--cache-dir",
+        "C:\\ck3-dynastic-esotericism-20261024\\typecheck-followup\\host-scope-strict-final-r7-cache",
+        "--strict",
+        "--strict-equality",
+        "--follow-imports=silent",
+        "C:\\ck3-dynastic-esotericism-20261024\\typecheck-followup\\runtime_host_scope_r7.py"
+      ],
+      "exit_code": 0,
+      "log": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\typecheck-followup\\host-scope-strict-final-r7.log",
+        "bytes": 43,
+        "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff"
+      },
+      "diagnostic_count": 0,
+      "summary": "Success: no issues found in 1 source file"
+    },
+    {
+      "name": "prepare-legacy-r2",
+      "argv": [
+        "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "mypy",
+        "--no-incremental",
+        "--cache-dir",
+        "C:\\ck3-dynastic-esotericism-20261024\\typecheck-followup\\prepare-legacy-r2-r7-cache",
+        "--check-untyped-defs",
+        "--follow-imports=silent",
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_prepare.py"
+      ],
+      "exit_code": 1,
+      "log": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\typecheck-followup\\prepare-legacy-r2-r7.log",
+        "bytes": 571,
+        "sha256": "5898359da8c52e2676efdc2996af9d5c093d5fdef8ac9239ace3bb8ec8a44c2c"
+      },
+      "diagnostic_count": 4,
+      "summary": "Found 4 errors in 1 file (checked 1 source file)"
+    },
+    {
+      "name": "generic-legacy-r2",
+      "argv": [
+        "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "mypy",
+        "--no-incremental",
+        "--cache-dir",
+        "C:\\ck3-dynastic-esotericism-20261024\\typecheck-followup\\generic-legacy-r2-r7-cache",
+        "--check-untyped-defs",
+        "--follow-imports=silent",
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py"
+      ],
+      "exit_code": 1,
+      "log": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\typecheck-followup\\generic-legacy-r2-r7.log",
+        "bytes": 19147,
+        "sha256": "2c06ddcb97755574cbcb0a402fae2782e0a8cfa594688c9ac62633d5ac4a02f4"
+      },
+      "diagnostic_count": 90,
+      "summary": "Found 90 errors in 1 file (checked 1 source file)"
+    },
+    {
+      "name": "prepare-baseline",
+      "argv": [
+        "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "mypy",
+        "--no-incremental",
+        "--cache-dir",
+        "C:\\ck3-dynastic-esotericism-20261024\\typecheck-followup\\prepare-baseline-r7-cache",
+        "--check-untyped-defs",
+        "--follow-imports=silent",
+        "C:\\ck3-dynastic-esotericism-20261024\\typecheck-followup\\prepare_baseline.py"
+      ],
+      "exit_code": 1,
+      "log": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\typecheck-followup\\prepare-baseline-r7.log",
+        "bytes": 727,
+        "sha256": "86e9d76509d8eaaebc02889e183f5619897fa4d2ef3083bed9f3e1dc236c8ce4"
+      },
+      "diagnostic_count": 4,
+      "summary": "Found 4 errors in 1 file (checked 1 source file)"
+    },
+    {
+      "name": "generic-baseline",
+      "argv": [
+        "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "mypy",
+        "--no-incremental",
+        "--cache-dir",
+        "C:\\ck3-dynastic-esotericism-20261024\\typecheck-followup\\generic-baseline-r7-cache",
+        "--check-untyped-defs",
+        "--follow-imports=silent",
+        "C:\\ck3-dynastic-esotericism-20261024\\typecheck-followup\\generic_baseline.py"
+      ],
+      "exit_code": 1,
+      "log": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\typecheck-followup\\generic-baseline-r7.log",
+        "bytes": 21271,
+        "sha256": "29051fbbe873c80589941e4ee56fc1722289e8d157391dec9bba5e397d901a7c"
+      },
+      "diagnostic_count": 91,
+      "summary": "Found 91 errors in 1 file (checked 1 source file)"
+    }
+  ],
+  "source_drift": [],
+  "modified_scope_status": "PASS",
+  "whole_legacy_modules_status": "NOT_GREEN",
+  "excluded_scope": "Untyped legacy prepare engine/profile orchestration, ordinary_promotion and other generic adapter branches; no full-module strict qualification is asserted.",
+  "no_new_any_cast_or_type_ignore": true,
+  "business_acceptance": "NOT_RUN",
+  "complete_cold_ci_step": {
+    "status": "PASS",
+    "actual": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\cold-ci-step-r5\\complete-step-actual.json",
+      "bytes": 23917,
+      "sha256": "13d9424ccd9e2c07db1e6371742113fc73420662c215e3b9af1cd0db26a64735"
+    },
+    "commands": [
+      {
+        "name": "complete-product-consumers",
+        "exit_code": 0,
+        "tests": 232,
+        "skipped": 0
+      },
+      {
+        "name": "strict-cold-six-files",
+        "exit_code": 0,
+        "tests": null,
+        "skipped": 0
+      },
+      {
+        "name": "saved-profile-v2",
+        "exit_code": 0,
+        "tests": 8,
+        "skipped": 0
+      },
+      {
+        "name": "vanilla-profile",
+        "exit_code": 0,
+        "tests": 8,
+        "skipped": 0
+      }
+    ],
+    "source_drift": [],
+    "hosted_ci_execution": "NOT_RUN",
+    "scope": "The complete existing four-command cold CI step was rerun once after the final SDK factory and all producer/consumer sources froze; Python 3.14 isolated SDK dependencies were used locally."
+  },
+  "canonical_host_projection_regression": {
+    "tests": 5,
+    "failures": 0,
+    "skipped": 0,
+    "actual": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\cold-ci-step-r5\\complete-step-actual.json",
+      "bytes": 23917,
+      "sha256": "13d9424ccd9e2c07db1e6371742113fc73420662c215e3b9af1cd0db26a64735"
+    },
+    "scope": "Separate complete current canonical-host regression command and strict module; no game/live qualification."
+  },
+  "prebuilt_consumer_regression": {
+    "tests": 7,
+    "failures": 0,
+    "skipped": 0,
+    "actual": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\tooling-actual-r7.json",
+      "bytes": 12888,
+      "sha256": "797d2022e83b90025d7953279b128ffdb06907d28655a69bcf6bf343bb7a3229"
+    }
+  },
+  "java_product_tooling": {
+    "tests": 10,
+    "failures": 0,
+    "skipped": 0,
+    "actual": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\tooling-actual-r7.json",
+      "bytes": 12888,
+      "sha256": "797d2022e83b90025d7953279b128ffdb06907d28655a69bcf6bf343bb7a3229"
+    },
+    "compiled_and_tested_source_index": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\java-r7-inputs.actual.json",
+      "bytes": 11096,
+      "sha256": "7c21131c75231f7bc437591bbb29c886c5a248cb929dec381bf5773693183d1d"
+    },
+    "maven_terminal": "BUILD_SUCCESS",
+    "runtime_files": 17,
+    "old_manifest_consumer_verified_files": 17,
+    "qualification": "Offline production build/test/readback only; no game or publication qualification."
+  },
+  "sdk_service_factory": {
+    "rite_tests": 19,
+    "factory_tests": 4,
+    "strict": "PASS",
+    "actual": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\SERVICE-FACTORY-SUMMARY.actual.json",
+      "bytes": 2982,
+      "sha256": "64ba459d46b407725c0b8626e7bf8a2206073b7a6e035b385be96ab259c3eb7a"
+    },
+    "source_drift": [],
+    "scope": "Reuses the actual source-bound isolated SDK receipt; not a new execution or full-SDK qualification claim."
+  },
+  "additional_cold_test_source": {
+    "source": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_cold_persistence_acceptance_adapter.py",
+      "bytes": 26637,
+      "sha256": "c4a37c8991290370213d0d90b80e4593d8ea116a884f2a5d092d250c61e27428"
+    },
+    "change": "Two authored native response payloads explicitly use the existing Object JSON contract before write_once; runtime JSON and production behavior are unchanged.",
+    "static_scope": "Entire file included in the complete six-file strict command recorded above."
+  },
+  "shared_java_bootstrap": {
+    "tests": 42,
+    "failures": 0,
+    "skipped": 0,
+    "actual": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\shared-bootstrap-actual-r3.json",
+      "bytes": 2846,
+      "sha256": "033a8f786b7fa7ab9f8274c1fc561fca8663675ff04f6d1f2510aa07aa70ba69"
+    },
+    "hosted_maven_only_main_execution": "NOT_RUN_ON_THIS_MACHINE"
+  },
+  "persistent_ci_workflow": {
+    "source": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\.github\\workflows\\dynastic-esotericism-static.yml",
+      "bytes": 4682,
+      "sha256": "e1091e3e16d5100ca140c34bc8ed1878da62176f5151c29cc1d397338282084d"
+    },
+    "execution": "NOT_RUN_ON_THIS_MACHINE",
+    "scope": "Shared existing-home default Maven ensure/readback; product Java verify; complete prebuilt and canonical host regression modules; strict types of both complete new modules.",
+    "python": "3.14",
+    "dependencies": [
+      "mcp==2.0.0",
+      "pydantic==2.13.5",
+      "mypy==2.4.0",
+      "opencv-python==5.0.0.93",
+      "numpy==2.5.2",
+      "Pillow==12.3.0"
+    ]
+  },
+  "earlier_attempts": [
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\cold-ci-step\\timeout.actual.json",
+      "bytes": 812,
+      "sha256": "b66fe660f7de6907c6c30b182d7747d18a065f8fd7f69b126d0ff886c6f54d20"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\cold-ci-step-r2\\complete-step-actual.json",
+      "bytes": 18974,
+      "sha256": "4978ae38cae798ea5f92e623c5d5452ed015b73b5a46e20df45c82c0ba8fa640"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\cold-ci-step-r3\\complete-step-actual.json",
+      "bytes": 20901,
+      "sha256": "5ac95fd0e80ebafd289c7b96c92a49f38d92e09a501de2586f802cce234c36a2"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\cold-ci-step-r4\\complete-step-actual.json",
+      "bytes": 23367,
+      "sha256": "823f47f80c22a70c5301685fd39e7356e2ef20cc7e04eb99711b438d3550f65a"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\cold-ci-step-r4\\complete-step-scope-actual.json",
+      "bytes": 21171,
+      "sha256": "ceae672c4593b9653a274b88e594c26d59705c4001f05864b690b3d9dbe99392"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\tooling-actual-r6.json",
+      "bytes": 9173,
+      "sha256": "65c3cd09f93fc845aa09ef9d5bad49a76cccc63c52e164f6ccfd182de216034f"
+    }
+  ]
+}

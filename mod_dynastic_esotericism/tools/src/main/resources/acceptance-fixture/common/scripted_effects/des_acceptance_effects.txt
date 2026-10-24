@@ -1,0 +1,44 @@
+# Fixture aliases never write des_* product binding/trait/relationship state.
+des_acceptance_restore_refs_effect = {
+    var:des_test_ref_target = { save_scope_as = des_test_target }
+    var:des_test_ref_peer = { save_scope_as = des_test_peer }
+    var:des_test_ref_child = { save_scope_as = des_test_child }
+    var:des_test_ref_outsider = { save_scope_as = des_test_outsider }
+    var:des_test_source_rite = { save_scope_as = des_test_source_rite }
+    if = {
+        limit = { has_variable = des_test_primary_rite }
+        var:des_test_primary_rite = { save_scope_as = des_test_primary }
+    }
+    if = {
+        limit = { has_variable = des_test_bound_dynasty }
+        var:des_test_bound_dynasty = { save_scope_as = des_test_dynasty }
+    }
+}
+
+des_acceptance_positive_pair_effect = {
+    if = {
+        limit = {
+            has_opinion_modifier = { target = scope:des_test_target modifier = des_apostasy_opinion }
+            has_imprisonment_reason = scope:des_test_target
+            has_banish_reason = scope:des_test_target
+            has_execute_reason = scope:des_test_target
+            des_is_penalty_pair_trigger = { TARGET = scope:des_test_target }
+        }
+        debug_log = "$PASS$"
+    }
+    else = { debug_log = "$FAIL$" }
+}
+
+des_acceptance_negative_pair_effect = {
+    if = {
+        limit = {
+            NOT = { has_opinion_modifier = { target = scope:des_test_target modifier = des_apostasy_opinion } }
+            NOT = { has_imprisonment_reason = scope:des_test_target }
+            NOT = { has_banish_reason = scope:des_test_target }
+            NOT = { has_execute_reason = scope:des_test_target }
+            NOT = { des_is_penalty_pair_trigger = { TARGET = scope:des_test_target } }
+        }
+        debug_log = "$PASS$"
+    }
+    else = { debug_log = "$FAIL$" }
+}

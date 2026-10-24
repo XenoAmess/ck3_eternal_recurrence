@@ -1,0 +1,104 @@
+{
+  "schema": "xar.dynastic-esotericism.environment-storage-admission.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T07:17:42.918518+00:00",
+  "task_id": "dynastic-esotericism-implementation-20261024",
+  "owner": "/root",
+  "policy_version": "1.0.0",
+  "status": "admitted",
+  "capacity_registry_revision": 1145,
+  "storage_revision": 33,
+  "admission": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\capacity\\CAPACITY-ADMISSION-r1145.actual.json",
+    "bytes": 11306,
+    "sha256": "d5a92bb467cf82b851d3ae507e75f5373eee2bca04a524bfdcd021e1394527ef"
+  },
+  "adopted_claim_required": true,
+  "shared_coordination": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+  "shared_commit_implementation": "tools/storage_short_commit.py",
+  "shared_commit_sha256": "dc431baa8b8ac0c59209cbc6ad32c17b96973266f17048b48ce477574b5a20bb",
+  "shared_policy_sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5",
+  "owner_purpose": "C:\\ck3-dynastic-esotericism-20261024\\capacity\\OWNER-PURPOSE.actual.json",
+  "machine_profile": "C:\\ck3-dynastic-esotericism-20261024\\capacity\\machine-profile.actual.json",
+  "explicit_asset_ledger": "C:\\ck3-dynastic-esotericism-20261024\\capacity\\asset-ledger.actual.json",
+  "approved_roots": {
+    "external": "C:\\ck3-dynastic-esotericism-20261024",
+    "source": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism",
+    "maven_installation": "D:/apache-maven-3.9.16",
+    "central_capacity_bus": "D:\\workspace\\.codex-task-bus"
+  },
+  "budgets_at_admission": {
+    "C:/": {
+      "available_bytes": 59822706688,
+      "current_project_usage_conservative_upper_bound": 451311239168,
+      "effective_project_quota": 465000000000,
+      "free_margin_bytes": 30831677440,
+      "other_unspent_reservations": 0,
+      "project_usage_method": "whole volume used; includes nonproject and unknown content; no empty inference",
+      "quota_margin_bytes": 10467535360,
+      "required_free_bytes": 28991029248,
+      "safety_bytes": 21474836480,
+      "system_growth_reserve": 4294967296,
+      "this_write_peak": 3221225472,
+      "total_volume_bytes": 511133945856
+    },
+    "D:/": {
+      "available_bytes": 21624397824,
+      "current_project_usage_conservative_upper_bound": 478465609728,
+      "effective_project_quota": 479000000000,
+      "free_margin_bytes": 10100736,
+      "other_unspent_reservations": 0,
+      "project_usage_method": "whole volume used; includes nonproject and unknown content; no empty inference",
+      "quota_margin_bytes": 529147392,
+      "required_free_bytes": 21614297088,
+      "safety_bytes": 21474836480,
+      "system_growth_reserve": 134217728,
+      "this_write_peak": 5242880,
+      "total_volume_bytes": 500090007552
+    }
+  },
+  "fresh_volumes_after_environment_work": {
+    "C:/": {
+      "total_bytes": 511133945856,
+      "free_bytes": 59740188672,
+      "project_usage_conservative_upper_bound_bytes": 451393757184,
+      "project_usage_method": "whole-volume used includes project, nonproject and all unknown content; this is an upper bound, not measured project usage",
+      "system_growth_reserve_bytes": 4294967296,
+      "reserved_future_bytes": 3221225472,
+      "effective_project_quota_bytes": 465000000000
+    },
+    "D:/": {
+      "total_bytes": 500090007552,
+      "free_bytes": 21622669312,
+      "project_usage_conservative_upper_bound_bytes": 478467338240,
+      "project_usage_method": "whole-volume used includes project, nonproject and all unknown content; this is an upper bound, not measured project usage",
+      "system_growth_reserve_bytes": 134217728,
+      "reserved_future_bytes": 5242880,
+      "effective_project_quota_bytes": 479000000000
+    }
+  },
+  "maven_installation_logical_net_growth_bytes": 914386,
+  "maven_installation_4096rounded_net_growth_bytes": 974848,
+  "remaining_D_source_document_preview_budget_after_Maven_bytes": 4268032,
+  "hard_deadline_utc": "2026-10-25T07:30:00Z",
+  "temporary_environment_assets_review_at_utc": "2026-10-26T07:17:42.918518+00:00",
+  "retention": "48h derived review; active task references and explicit expiry must be reevaluated, not automatic deletion; installation is a current dependency",
+  "storage_actions": {
+    "central_CAS_adopted": true,
+    "old_closed_head_preserved_in_admission_report": true,
+    "asset_reclamation_for_capacity": 0,
+    "Game_started": false,
+    "Steam_changed": false
+  },
+  "scope_limit": "storage admission covers bounded bytes only, not CK3 runtime qualification or functional acceptance; other machine states are not inferred",
+  "task_start_retention_inspection": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\storage-checks\\20261024T071722382192Z-task-start.json",
+    "sha256": "3e9069a6301d8567f31312268050be66ef5904f5df21a7a6960f1f9bf18aa953",
+    "counts": {
+      "already_unavailable": 156,
+      "review_due": 1
+    },
+    "deletions": 0,
+    "boundary": "historical explicit same-machine ledger only; 156 already unavailable, one due for review, not presumed empty or reclaimed; no capacity credit from review candidates"
+  }
+}

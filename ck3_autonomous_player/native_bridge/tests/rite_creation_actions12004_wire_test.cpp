@@ -1,6 +1,5 @@
-// Future C++ unit fixture source only. This file has not been built or run by
-// the source lane. Synthetic DTOs below test JSON formatting; no JSON packet is
-// emitted or saved, and none is evidence of an original CK3 call or live result.
+// Offline C++ unit fixture. Synthetic DTOs below test JSON formatting; no JSON
+// packet is game evidence and none proves an original CK3 call or live result.
 #include "xar_bridge/rite_creation_actions12004_wire.hpp"
 
 #include <array>
@@ -36,17 +35,18 @@ void Reject(const std::string& json, const char* label) {
 }
 void Parsing() {
   const std::string token(64, 'a');
-  const std::array<std::pair<std::string, std::string>, 8> cases{{
+  const std::array<std::pair<std::string, std::string>, 10> cases{{
       {"open_create_draft", ""}, {"open_edit_current_rite_draft", ""},
       {"select_core_tenet", R"(,"core_slot_index":0,"tenet_key":"tenet_ritual_cannibalism")"},
       {"select_doctrine", R"(,"group_key":"doctrine_clerical_marriage","doctrine_key":"doctrine_clerical_marriage_allowed")"},
       {"set_name_field", R"(,"name_field":"name","text":"")"}, {"preview", ""},
       {"prepare_confirmation", ",\"expected_preview_identity\":\"" + token + "\",\"expected_outcome_kind\":\"create_faith\""},
-      {"confirm_once", ",\"expected_preview_identity\":\"" + token + "\",\"expected_outcome_kind\":\"edit_rite\",\"action_id\":\"rite-action-0123456789abcdef0123456789abcdef\""}
+      {"confirm_once", ",\"expected_preview_identity\":\"" + token + "\",\"expected_outcome_kind\":\"edit_rite\",\"action_id\":\"rite-action-0123456789abcdef0123456789abcdef\""},
+      {"observe_current_rite", ""}, {"cancel_draft", ""}
   }};
   for (std::size_t n = 0; n != cases.size(); ++n) {
     a::WireRequest request{}; std::string reason;
-    Check(a::ParseRequest12004(Make(cases[n].first, cases[n].second), request, reason), "all eight finite operations parse");
+    Check(a::ParseRequest12004(Make(cases[n].first, cases[n].second), request, reason), "all ten finite operations parse");
     Check(static_cast<std::size_t>(request.request.operation) == n && reason.empty(), "operation identity preserved");
     Check(request.expected_revision == 9 && request.expected_connection_generation == 7 &&
         request.expected_date_raw == -100 && request.expected_player_character_id == 42 &&
@@ -74,6 +74,8 @@ void Parsing() {
   Check(a::ParseRequest12004(Replace(Make("preview"), "\"expected_source_rite_id\":17", "\"expected_source_rite_id\":0"), request, reason), "source full ID zero is not absent sentinel");
 
   Reject(Make("arbitrary_native_call"), "unknown operation rejected");
+  Reject(Make("observe_current_rite", R"(,"text":"draft")"), "persistent observation cannot accept a draft selector");
+  Reject(Make("cancel_draft", R"(,"expected_outcome_kind":"edit_rite")"), "cancel cannot contain a submission expectation");
   Reject(Make("set_name_field", R"(,"name_field":"faith_icon","text":"x")"), "unknown name field rejected");
   Reject(Make("preview", R"(,"operation":"confirm_once")"), "duplicate operation rejected");
   Reject(Make("preview", R"(,"oper\u0061tion":"confirm_once")"), "duplicate decoded key rejected");
@@ -213,6 +215,29 @@ void FormattingOnlySyntheticUnitValues() {
   result.frame = {20, 55, 44, -10, 123}; result.action_id = "rite-action-unit-only";
   Check(!a::SerializeCommandResult12004(result, "rite-action-unit-only").empty(), "known-no-dispatch confirmation retains action ID metadata");
   Check(a::SerializeCommandResult12004(result, "rite-action-other").empty(), "formatter refuses a foreign confirmation request identity");
+
+  result = {}; result.operation = a::Operation::observe_current_rite;
+  result.frame = {20, 55, 44, -10, 123};
+  result.current_rite_poststate.emplace();
+  result.current_rite_poststate->source_rite_id_anchor = 17;
+  Check(a::FormatResult12004(result, json, reason), "unavailable persistent observation remains typed");
+  Check(json.find("\"names\":null") != std::string::npos &&
+      json.find("\"read_only\":true") != std::string::npos,
+      "persistent null data cannot masquerade as empty committed input");
+  auto& state = *result.current_rite_poststate;
+  state.observed = true; state.unavailable_reason.clear();
+  state.rite_id = 0; state.faith_id = 2; state.religion_id = 3;
+  state.names = std::array<std::string, 5>{"", "adjective", "adherent", "plural", "line\nquote\""};
+  state.core_tenets.emplace(); state.doctrines.emplace();
+  state.confirmation_modal_open = false; state.creation_window_visible = false;
+  result.available = true; result.status = "observed"; result.unavailable_reason.clear();
+  Check(a::FormatResult12004(result, json, reason), "complete independent committed graph formats");
+  Check(json.find("\"rite_id\":0") != std::string::npos &&
+      json.find("\"core_tenets\":[]") != std::string::npos &&
+      json.find("\"confirmation_modal_open\":false") != std::string::npos,
+      "zero full ID, observed empty vectors, and closed modal stay distinct from missing values");
+  state.names.reset();
+  Check(!a::FormatResult12004(result, json, reason), "partial committed text cannot be marked observed");
 }
 }  // namespace
 int main() {

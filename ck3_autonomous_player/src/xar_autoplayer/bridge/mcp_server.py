@@ -9,7 +9,10 @@ import importlib
 import json
 import os
 from pathlib import Path
-from typing import Annotated, Callable, Literal, Mapping
+from typing import Annotated, Callable, Literal, Mapping, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from mcp.server import MCPServer
 from pydantic import AfterValidator, Field
 
 from .confucian_challenger_graph_v1 import validate_faith_ids
@@ -1657,13 +1660,28 @@ def _ck3_query_current_battle_knight_v1(
         expected_snapshot_id=expected_snapshot_id,
     )
 
+def _resolve_service_override_v1(
+    driver: GameplayBridgeDriver,
+    service_override: GameplayBridgeService | None,
+) -> GameplayBridgeService:
+    """Use only the exact existing service bound to this exact driver object."""
+    if service_override is None:
+        return GameplayBridgeService(driver)
+    if type(service_override) is not GameplayBridgeService:
+        raise TypeError("service_override must be an exact GameplayBridgeService instance")
+    if service_override.driver is not driver:
+        raise ValueError("service_override must retain the identical driver object")
+    return service_override
+
+
 def create_server(
     driver: GameplayBridgeDriver,
     *,
     profile_dir: str | os.PathLike[str] | None = None,
     before_auto_turn_submit: Callable[[dict[str, object]], dict[str, object] | None]
     | None = None,
-):
+    service_override: GameplayBridgeService | None = None,
+) -> MCPServer:
     """Build the MCP server lazily so baseline vision installs need no SDK."""
     try:
         from mcp.server import MCPServer
@@ -1673,7 +1691,7 @@ def create_server(
             "MCP mode requires the optional dependency: pip install 'mcp==2.0.0'"
         ) from error
 
-    service = GameplayBridgeService(driver)
+    service = _resolve_service_override_v1(driver, service_override)
     from .successor_ui_app_owner_v1 import install_successor_ui_app_owner_v1
     successor_owner = install_successor_ui_app_owner_v1(service, before_submit=before_auto_turn_submit)
     artifact_inspector = (

@@ -368,6 +368,85 @@ bool Owner(const Bindings&b,const Admission&a,const Frame&f) {
   f.played_character_id>0&&Read(b,a.jomini_owner,0x10,gfx)&&gfx&&Read(b,gfx,0x88,handler)&&handler==a.handler&&
   Read(b,reinterpret_cast<const void*>(b.image_base+0x54DBC00),0,actor)&&actor==static_cast<std::uint32_t>(f.played_character_id);
 }
+bool CaptureCurrentRite(const Bindings&b,const Admission&a,const Frame&f,const Request&r,
+ CurrentRitePoststate&out) {
+ auto fail=[&](const char*why){out={};out.source_rite_id_anchor=r.expected_source_rite_id;out.unavailable_reason=why;return false;};
+ if(!Owner(b,a,f))return fail("rite_poststate_exact_owner_frame_unverified");
+ const auto cb=BindReligionContextImage12004(b.image_base,ck3_12004::kExecutableSha256);
+ ck3_12002::religion::Context context{};
+ if(!ReadPlayedReligionContext12004(cb,f.capture_epoch,context)||!context.available||
+    context.date_raw!=f.date_raw||context.played_character_id!=f.played_character_id||
+    !context.rite_id||*context.rite_id==absent||!context.faith_id||!context.religion_id||
+    (r.operation!=Operation::observe_current_rite&&context.rite_id!=r.expected_source_rite_id))
+  return fail("rite_poststate_current_player_context_changed");
+ auto*character=ck3_12002::ResolveCoreCharacter(cb.core,f.played_character_id);
+ const void*rite=character&&cb.character_rite?cb.character_rite(character):nullptr;
+ std::uint32_t identity=absent,magic=0,faith=absent,founder=absent;
+ if(!rite||!Read(b,rite,8,identity)||identity!=*context.rite_id||
+    !Read(b,rite,0xC,magic)||magic!=0x52697465U||!Read(b,rite,0x4B8,faith)||
+    faith!=*context.faith_id||!Read(b,rite,0x4BC,founder))
+  return fail("rite_poststate_full_persistent_reference_unverified");
+ CurrentRitePoststate value{};value.source_rite_id_anchor=r.expected_source_rite_id;
+ value.rite_id=identity;value.faith_id=faith;value.religion_id=context.religion_id;
+ if(founder!=absent)value.founder_character_id=founder;
+ constexpr std::array<std::size_t,5>offsets{0x540,0x570,0x5A0,0x5D0,0x600};
+ std::array<std::string,5>names{};
+ for(std::size_t i=0;i<offsets.size();++i)
+  if(!String(b,At(rite,offsets[i]),names[i])||!Utf8Text(names[i],16384,true))
+   return fail("rite_poststate_persistent_custom_text_unavailable");
+ value.names=std::move(names);Header core{},doctrines{};
+ if(!Array(b,rite,0x758,core,64)||!Array(b,rite,0x7A0,doctrines,8192))
+  return fail("rite_poststate_complete_persistent_collections_unavailable");
+ std::vector<TenetSelection>tenet_rows;std::vector<DoctrineSelection>doctrine_rows;
+ for(std::int32_t i=0;i<core.count;++i){const void*def=nullptr;std::string key,group;
+  if(!Read(b,core.data,static_cast<std::size_t>(i)*8,def)||!Definition(b,def,true,key,group)||
+     std::any_of(tenet_rows.begin(),tenet_rows.end(),[&](const auto&row){return row.tenet_key==key;}))
+   return fail("rite_poststate_core_definition_unavailable_or_duplicate");
+  tenet_rows.push_back({static_cast<std::uint32_t>(i),std::move(key)});}
+ for(std::int32_t i=0;i<doctrines.count;++i){const void*def=nullptr;std::string key,group;
+  if(!Read(b,doctrines.data,static_cast<std::size_t>(i)*8,def)||!Definition(b,def,false,key,group)||
+     std::any_of(doctrine_rows.begin(),doctrine_rows.end(),[&](const auto&row){return row.group_key==group;}))
+   return fail("rite_poststate_doctrine_definition_unavailable_or_duplicate");
+  doctrine_rows.push_back({std::move(group),std::move(key)});}
+ value.core_tenets=std::move(tenet_rows);value.doctrines=std::move(doctrine_rows);
+ reform::DraftWindowView window{};
+ if(!reform::ReadCurrentRiteCreationWindow12002(
+      BindCurrentRiteCreationWindow12004(b.image_base,ck3_12004::kExecutableSha256),f.capture_epoch,window)||
+    !window.available||window.date_raw!=f.date_raw||window.played_character_id!=static_cast<std::uint32_t>(f.played_character_id))
+  return fail("rite_poststate_creation_window_presence_unavailable");
+ value.creation_window_visible=window.visible;
+ const void*manager=nullptr;Header dialogs{};
+ if(!PopupManager(b,manager)||!Array(b,manager,0x18,dialogs,128))return fail("rite_poststate_popup_manager_unavailable");
+ const void*active_root=nullptr;bool modal_open=false;
+ for(std::int32_t i=0;i<dialogs.count;++i){const void*dialog=nullptr,*root=nullptr;std::uintptr_t vt=0;std::uint8_t closed=1;
+  if(!Read(b,dialogs.data,static_cast<std::size_t>(i)*8,dialog))return fail("rite_poststate_popup_collection_unavailable");
+  if(!dialog)continue;
+  if(!Read(b,dialog,0,vt)||!Read(b,dialog,0xA8,closed)||!Read(b,dialog,0x70,root)||closed>1)
+   return fail("rite_poststate_popup_identity_unavailable");
+  if(closed||!root)continue;
+  if(vt!=b.image_base+0x4565DB8&&vt!=b.image_base+0x4565D10)
+   return fail("rite_poststate_unrelated_active_popup");
+  bool visible=false,enabled=false;
+  if(!a.gui_root_state(a.gui_context,root,"basic_confirmation_popup",visible,enabled))
+   return fail("rite_poststate_confirmation_visibility_unavailable");
+  if(visible){if(modal_open)return fail("rite_poststate_confirmation_not_unique");modal_open=true;active_root=root;}}
+ value.confirmation_modal_open=modal_open;
+ Header core_after{},doctrines_after{},dialogs_after{};std::uint32_t identity_after=absent;
+ if(!Array(b,rite,0x758,core_after,64)||core_after!=core||!Array(b,rite,0x7A0,doctrines_after,8192)||
+    doctrines_after!=doctrines||!Array(b,manager,0x18,dialogs_after,128)||dialogs_after!=dialogs||
+    !Read(b,rite,8,identity_after)||identity_after!=identity||!Owner(b,a,f)||
+    !a.modal_scope_state(a.gui_context,active_root))return fail("rite_poststate_persistent_or_modal_frame_changed");
+ value.observed=true;value.unavailable_reason.clear();out=std::move(value);return true;
+}
+bool ObserveCurrentRite(const Bindings&b,const Admission&a,const Frame&f,const Request&r,Result&out) {
+ CurrentRitePoststate first{},last{};
+ if(!CaptureCurrentRite(b,a,f,r,first)||!CaptureCurrentRite(b,a,f,r,last)||first!=last){
+  CurrentRitePoststate unavailable{};unavailable.source_rite_id_anchor=r.expected_source_rite_id;
+  unavailable.unavailable_reason=!first.observed?first.unavailable_reason:
+   !last.observed?last.unavailable_reason:"rite_poststate_changed_during_independent_read";
+  out.unavailable_reason=unavailable.unavailable_reason;out.current_rite_poststate=std::move(unavailable);return false;}
+ out.current_rite_poststate=std::move(last);out.available=true;out.status="observed";out.unavailable_reason.clear();return true;
+}
 bool Capture(const Bindings&b,const Admission&a,const Frame&f,const Request&r,Pass&p,std::string&why) {
  auto fail=[&](const char*v){why=v;return false;};
  if(!Owner(b,a,f))return fail("rite_creation_exact_owner_paused_frame_unverified");
@@ -530,6 +609,8 @@ bool ValidateRequest(const Request&r) noexcept {
  switch(r.operation){
   case Operation::open_create_draft:case Operation::open_edit_current_rite_draft:case Operation::preview:
    return no_selection()&&r.expected_preview_identity.empty()&&r.action_id.empty();
+  case Operation::observe_current_rite:case Operation::cancel_draft:
+   return no_selection()&&!r.expected_outcome_kind&&r.expected_preview_identity.empty()&&r.action_id.empty();
   case Operation::select_core_tenet:return r.core_slot_index&&*r.core_slot_index<64&&AsciiKey(r.tenet_key)&&r.group_key.empty()&&r.doctrine_key.empty()&&!r.name_field&&r.text.empty()&&r.expected_preview_identity.empty()&&r.action_id.empty();
   case Operation::select_doctrine:return !r.core_slot_index&&r.tenet_key.empty()&&AsciiKey(r.group_key)&&AsciiKey(r.doctrine_key)&&!r.name_field&&r.text.empty()&&r.expected_preview_identity.empty()&&r.action_id.empty();
   case Operation::set_name_field:return r.name_field&&!r.core_slot_index&&r.tenet_key.empty()&&r.group_key.empty()&&r.doctrine_key.empty()&&r.expected_preview_identity.empty()&&r.action_id.empty()&&
@@ -565,6 +646,7 @@ bool ExecuteRiteCreationAction12004(const Bindings&b,const Admission&a,const Fra
    out.status=out.native_dispatch_attempted?"unavailable_after_draft_callback":"unavailable";out.unavailable_reason=why;return false;};
   if(!ValidateRequest(r))return fail("rite_creation_request_invalid");
   if(!Pins(b))return fail("rite_creation_loaded_source_pins_changed");
+  if(r.operation==Operation::observe_current_rite)return ObserveCurrentRite(b,a,f,r,out);
   if(r.operation==Operation::preview)return ReadRiteCreationController12004(b,a,f,r,out);
   if(!a.draft_action_opt_in||!Owner(b,a,f))return fail("rite_creation_explicit_draft_optin_owner_required");
   if(r.operation==Operation::open_create_draft||r.operation==Operation::open_edit_current_rite_draft){
@@ -615,6 +697,17 @@ bool ExecuteRiteCreationAction12004(const Bindings&b,const Admission&a,const Fra
   }
   Pass state{};std::string why;
   if(!Capture(b,a,f,r,state,why)){out.unavailable_reason=why;return false;}out=state.value;
+  if(r.operation==Operation::cancel_draft){
+   if(out.modal.stage!=ModalStage::none||!Stable(b,a,f,r,state))return fail("rite_creation_cancel_requires_unobstructed_same_draft");
+   std::uintptr_t primary=0,close=0;
+   if(!Read(b,state.window,0,primary)||primary!=b.image_base+0x4565C40||
+      !Read(b,reinterpret_cast<const void*>(primary),0x88,close)||close!=b.image_base+0x14F38D0)
+    return fail("rite_creation_cancel_original_close_slot_changed");
+   const bool invoked=CallVoid(b,0x14F38D0,state.window,out.native_dispatch_attempted);Ack(out,invoked,false);
+   if(invoked){Result after{};after.operation=r.operation;after.frame=f;
+    if(ObserveCurrentRite(b,a,f,r,after))out.current_rite_poststate=std::move(after.current_rite_poststate);}
+   return invoked;
+  }
   if(r.expected_outcome_kind&&r.expected_outcome_kind!=out.draft.actual_outcome_kind)return fail("rite_creation_native_outcome_differs_from_expectation");
   if(r.operation==Operation::prepare_confirmation||r.operation==Operation::confirm_once){
    if(!CompleteCommandPreview(b,a,f,r,state,out)){out.available=false;out.status="unavailable";return false;}

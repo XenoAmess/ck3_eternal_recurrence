@@ -1,0 +1,39 @@
+{
+  "schema": "xar.dynastic-esotericism.java-tooling-actual.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T07:23:34.941446+00:00",
+  "maven_command": "mvn -o -f mod_dynastic_esotericism/tools/pom.xml -Ddes.build.root=C:/ck3-dynastic-esotericism-20261024/java-build verify",
+  "maven_verify_exit_code": 0,
+  "java_release": 21,
+  "compiler_checks": [
+    "-Xlint:all",
+    "-Werror"
+  ],
+  "tests": {
+    "run": 7,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "success_log": "C:\\ck3-dynastic-esotericism-20261024\\java-verify-20261024-r4.log",
+  "success_log_sha256": "af1f95189f5e95eb1c4131e457487e03e3f80a22d49817034e3a3f87e967baa4",
+  "previous_failure_logs": [
+    "C:\\ck3-dynastic-esotericism-20261024\\java-verify-20261024.log",
+    "C:\\ck3-dynastic-esotericism-20261024\\java-verify-20261024-r2.log",
+    "C:\\ck3-dynastic-esotericism-20261024\\java-verify-20261024-r3.log"
+  ],
+  "runner": "C:\\ck3-dynastic-esotericism-20261024\\java-build\\dynastic-esotericism-tools\\quarkus-app\\quarkus-run.jar",
+  "staging": "C:\\ck3-dynastic-esotericism-20261024\\tooling-staging01",
+  "manifest": "C:\\ck3-dynastic-esotericism-20261024\\tooling-staging01.manifest.json",
+  "manifest_sha256": "778e1f7e923681e6e2ecb9d5f3dae073377798e6d616b942ed8935cf144b2eac",
+  "archive_sha256": "2907b18c9c3b616e44f5ea05608bee3ddd88603897a1441ca5a7a61cde281df6",
+  "runtime_files": 17,
+  "canonical_python_manifest_consumer_verified_files": 17,
+  "canonical_python_descriptor_projection_exact": true,
+  "double_build_manifest_sha256": "778e1f7e923681e6e2ecb9d5f3dae073377798e6d616b942ed8935cf144b2eac",
+  "double_build_zip_sha256": "2907b18c9c3b616e44f5ea05608bee3ddd88603897a1441ca5a7a61cde281df6",
+  "source_commit_frozen": false,
+  "git_tag": null,
+  "business_acceptance": "NOT_RUN",
+  "publication_state": "NOT_PUBLISHED"
+}

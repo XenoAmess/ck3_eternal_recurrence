@@ -1,0 +1,87 @@
+﻿# Character scope. All normal lifecycle routes enter this same production path.
+des_sync_character_effect = {
+	if = {
+		limit = { is_alive = yes }
+		des_join_rite_dynasty_effect = yes
+		des_refresh_apostasy_effect = yes
+		des_refresh_observer_effect = yes
+	}
+}
+
+# Character scope. Bulk Rite synchronization runs this for all adherents before
+# evaluating any new criminal pair, so migration and penalties have clear phases.
+des_join_rite_dynasty_effect = {
+	des_teach_doctrines_effect = yes
+	des_ensure_own_rite_binding_effect = yes
+	if = {
+		limit = {
+			rite = { des_has_active_binding_trigger = yes }
+			NOT = { dynasty = rite.var:des_bound_dynasty }
+		}
+		# No descendant propagation; existing legal cadet houses are retained.
+		set_house = rite.var:des_join_house
+	}
+}
+
+des_refresh_apostasy_effect = {
+	if = {
+		limit = { des_is_apostate_trigger = yes }
+		if = {
+			limit = {
+				OR = {
+					NOT = { exists = var:des_apostate_rite }
+					NOT = { var:des_apostate_rite = dynasty.var:des_bound_rite }
+				}
+			}
+			des_clear_apostasy_effect = yes
+			set_variable = { name = des_apostate_rite value = dynasty.var:des_bound_rite }
+			save_scope_as = des_new_apostate
+			var:des_apostate_rite = {
+				add_to_variable_list = { name = des_apostates target = scope:des_new_apostate }
+			}
+			add_to_global_variable_list = { name = des_apostates target = this }
+		}
+		if = { limit = { NOT = { has_trait = des_apostate } } add_trait = des_apostate }
+		des_sync_apostate_pairs_effect = yes
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_variable = des_apostate_rite
+				has_variable_list = des_observers
+				has_trait = des_apostate
+			}
+		}
+		des_clear_apostasy_effect = yes
+	}
+}
+
+# Observer Character scope. A change of Rite retracts old directional pairs even
+# when the former target is no longer in the observer's current dynasty or faith.
+des_refresh_observer_effect = {
+	save_scope_as = des_refresh_observer
+	des_snapshot_relationships_effect = { SOURCE = des_penalty_targets }
+	every_in_list = {
+		variable = des_relationship_snapshot
+		save_scope_as = des_observed_target
+		scope:des_refresh_observer = {
+			if = {
+				limit = { NOT = { des_is_penalty_pair_trigger = { TARGET = scope:des_observed_target } } }
+				des_remove_pair_effect = { TARGET = scope:des_observed_target }
+			}
+		}
+	}
+	clear_variable_list = des_relationship_snapshot
+	if = {
+		limit = { rite = { des_has_active_binding_trigger = yes } }
+		rite = {
+			every_in_list = {
+				variable = des_apostates
+				save_scope_as = des_observed_target
+				scope:des_refresh_observer = {
+					des_ensure_pair_effect = { TARGET = scope:des_observed_target }
+				}
+			}
+		}
+	}
+}

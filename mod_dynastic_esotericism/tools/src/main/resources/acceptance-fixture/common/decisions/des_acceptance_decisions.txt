@@ -1,0 +1,120 @@
+﻿# Each decision is a separate disclosed test input or readback; no product UI submission is replaced.
+des_acceptance_capture_created_decision = {
+    is_shown = { is_ai = no has_character_flag = des_test_ready NOT = { has_variable = des_test_primary_rite } }
+    is_valid = { rite = { des_has_active_binding_trigger = yes } }
+    effect = {
+        hidden_effect = {
+            set_variable = { name = des_test_primary_rite value = rite }
+            rite = {
+                root = { set_variable = { name = des_test_bound_dynasty value = prev.var:des_bound_dynasty } }
+            }
+            des_acceptance_restore_refs_effect = yes
+            # Disclosed negative input after stock court conversions. This is
+            # not evidence that an unconverted historical descendant kept its House.
+            scope:des_test_outsider = {
+                set_character_faith = scope:des_test_source_rite.faith
+                set_character_rite = scope:des_test_source_rite
+                if = {
+                    limit = { dynasty = scope:des_test_dynasty }
+                    create_dynasty = { spread_to_descendants = no }
+                }
+            }
+            scope:des_test_target = { set_character_rite = root.rite }
+            scope:des_test_peer = { set_character_rite = root.rite }
+            scope:des_test_child = { set_character_rite = root.rite }
+            var:des_test_ref_birth_father = { set_character_rite = root.rite }
+            var:des_test_ref_birth_mother = { set_character_rite = root.rite }
+            trigger_event = { id = des_acceptance.2 days = 1 }
+        }
+    }
+    ai_check_interval = 0
+}
+
+des_acceptance_same_faith_decision = {
+    is_shown = { is_ai = no has_character_flag = des_test_members_verified NOT = { has_character_flag = des_test_same_started } }
+    is_valid = { rite = var:des_test_primary_rite }
+    effect = {
+        hidden_effect = {
+            add_character_flag = des_test_same_started
+            des_acceptance_restore_refs_effect = yes
+            scope:des_test_target = { set_character_rite = scope:des_test_source_rite }
+            trigger_event = { id = des_acceptance.3 days = 1 }
+        }
+    }
+    ai_check_interval = 0
+}
+
+des_acceptance_cross_faith_decision = {
+    is_shown = { is_ai = no has_character_flag = des_test_same_verified NOT = { has_character_flag = des_test_cross_started } }
+    is_valid = { rite = var:des_test_primary_rite NOT = { faith = faith:orthodox } }
+    effect = {
+        hidden_effect = {
+            add_character_flag = des_test_cross_started
+            des_acceptance_restore_refs_effect = yes
+            scope:des_test_target = {
+                set_character_faith = faith:orthodox
+                set_character_rite = rite:byzantine_rite
+            }
+            trigger_event = { id = des_acceptance.4 days = 1 }
+        }
+    }
+    ai_check_interval = 0
+}
+
+des_acceptance_repent_decision = {
+    is_shown = { is_ai = no has_character_flag = des_test_cross_verified NOT = { has_character_flag = des_test_repent_started } }
+    is_valid = { rite = var:des_test_primary_rite }
+    effect = {
+        hidden_effect = {
+            add_character_flag = des_test_repent_started
+            des_acceptance_restore_refs_effect = yes
+            scope:des_test_target = { set_character_faith = root.faith set_character_rite = scope:des_test_primary }
+            trigger_event = { id = des_acceptance.5 days = 1 }
+        }
+    }
+    ai_check_interval = 0
+}
+
+des_acceptance_closed_readback_decision = {
+    is_shown = { is_ai = no has_character_flag = des_test_repent_verified NOT = { has_character_flag = des_test_closed_verified } }
+    is_valid = { rite = var:des_test_primary_rite rite = { rite_has_doctrine = des_doctrine_none } }
+    effect = {
+        hidden_effect = {
+            des_acceptance_restore_refs_effect = yes
+            if = {
+                limit = {
+                    dynasty = scope:des_test_dynasty
+                    scope:des_test_primary = { var:des_bound_dynasty = scope:des_test_dynasty }
+                    scope:des_test_target = { NOT = { has_trait = des_apostate } }
+                    NOT = { has_opinion_modifier = { target = scope:des_test_target modifier = des_apostasy_opinion } }
+                }
+                add_character_flag = des_test_closed_verified
+                debug_log = "DESAF: TEST PASS closed_binding"
+            }
+            else = { debug_log = "DESAF: TEST FAIL closed_binding" }
+        }
+    }
+    ai_check_interval = 0
+}
+
+des_acceptance_reopened_readback_decision = {
+    is_shown = { is_ai = no has_character_flag = des_test_closed_verified NOT = { has_character_flag = des_test_reopened_verified } }
+    is_valid = { rite = var:des_test_primary_rite rite = { des_has_active_binding_trigger = yes } }
+    effect = {
+        hidden_effect = {
+            des_acceptance_restore_refs_effect = yes
+            if = {
+                limit = {
+                    dynasty = scope:des_test_dynasty
+                    scope:des_test_primary = { var:des_bound_dynasty = scope:des_test_dynasty }
+                    scope:des_test_dynasty = { var:des_bound_rite = scope:des_test_primary }
+                    scope:des_test_target = { dynasty = scope:des_test_dynasty }
+                }
+                add_character_flag = des_test_reopened_verified
+                debug_log = "DESAF: TEST PASS reopened_binding"
+            }
+            else = { debug_log = "DESAF: TEST FAIL reopened_binding" }
+        }
+    }
+    ai_check_interval = 0
+}
