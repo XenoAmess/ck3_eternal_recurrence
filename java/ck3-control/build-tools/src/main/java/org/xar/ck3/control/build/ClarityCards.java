@@ -34,7 +34,7 @@ public final class ClarityCards {
     private static final Color MUTED = new Color(0xb6a98e);
     private static final Color GOLD = new Color(0xd6b464);
     private static final Set<String> CARD_FIELDS = Set.of("id", "cue", "anchor_zh", "title", "kicker",
-            "lines", "rows", "result", "note", "icon", "highlight");
+            "lines", "rows", "result", "note", "icon", "highlight", "illustrations");
 
     private ClarityCards() { }
 
@@ -47,15 +47,35 @@ public final class ClarityCards {
         }
     }
     public record Row(String label, String value) { }
+    public enum Column { LABEL, VALUE }
+    public record Illustration(Pin source, int row, Column column) { }
+    private record Position(int row, Column column) { }
     public record Card(String id, String cue, String anchorZh, String title, String kicker,
-                       List<String> lines, List<Row> rows, String result, String note, Pin icon, int highlight) { }
-    public record Specification(String machineId, Pin ffmpeg, List<Card> cards) { }
+                       List<String> lines, List<Row> rows, String result, String note, Pin icon, int highlight,
+                       List<Illustration> illustrations) {
+        public Card {
+            lines = List.copyOf(lines);
+            rows = List.copyOf(rows);
+            illustrations = List.copyOf(illustrations);
+        }
+    }
+    public record Specification(String machineId, Pin ffmpeg, List<Card> cards) {
+        public Specification { cards = List.copyOf(cards); }
+    }
     public record TextBox(String text, int x, int y, int width, int height, int fontPixels) { }
     public record Rendered(String id, String cue, String anchorZh, Pin image, List<TextBox> text,
-                           boolean subtitleAreaClear, boolean decodedAfterSave, Pin icon) { }
+                           boolean subtitleAreaClear, boolean decodedAfterSave, Pin icon,
+                           List<Illustration> illustrations) {
+        public Rendered {
+            text = List.copyOf(text);
+            illustrations = List.copyOf(illustrations);
+        }
+    }
     public record Receipt(String schema, String machineId, String observedAtUtc, Pin specification,
                           List<Rendered> cards, boolean voiceCreated, boolean gameAccessed,
-                          boolean humanVideoSignoff) { }
+                          boolean humanVideoSignoff) {
+        public Receipt { cards = List.copyOf(cards); }
+    }
 
     public static void main(String[] args) throws Exception {
         require(args.length == 3, "spec.json output-directory receipt.json required");
@@ -70,7 +90,7 @@ public final class ClarityCards {
         Files.createDirectory(directory);
         List<Rendered> rendered = new ArrayList<>();
         for (Card card : spec.cards()) rendered.add(render(card, spec.ffmpeg(), directory));
-        Receipt actual = new Receipt("xar.clarity-cards.actual/v1", spec.machineId(), Instant.now().toString(),
+        Receipt actual = new Receipt("xar.clarity-cards.actual/v2", spec.machineId(), Instant.now().toString(),
                 pin(specification), List.copyOf(rendered), false, false, false);
         Files.write(receipt, JSON.writerWithDefaultPrettyPrinter().writeValueAsBytes(actual), StandardOpenOption.CREATE_NEW);
         System.out.println(JSON.writeValueAsString(pin(receipt)));
@@ -80,7 +100,7 @@ public final class ClarityCards {
         require(Files.size(file) <= 1024 * 1024, "bounded specification required");
         JsonNode root = JSON.readTree(Files.readAllBytes(file));
         fields(root, Set.of("schema", "machine_id", "ffmpeg", "cards"));
-        require(text(root, "schema").equals("xar.clarity-cards.spec/v1"), "unsupported schema");
+        require(text(root, "schema").equals("xar.clarity-cards.spec/v2"), "unsupported schema");
         JsonNode cards = root.get("cards");
         require(cards.isArray() && cards.size() > 0 && cards.size() <= 160, "1..160 pages required");
         Set<String> ids = new HashSet<>();
@@ -103,10 +123,25 @@ public final class ClarityCards {
             require(active.isIntegralNumber() && active.canConvertToInt(), "integer highlight required");
             int highlight = active.intValue();
             require(highlight >= -1 && highlight < Math.max(lines.size(), parsedRows.size()), "highlight out of range");
+            JsonNode illustrations = item.get("illustrations");
+            require(illustrations.isArray(), "illustrations array required");
+            List<Illustration> parsedIllustrations = new ArrayList<>();
+            Set<Position> positions = new HashSet<>();
+            for (JsonNode illustration : illustrations) {
+                fields(illustration, Set.of("source", "row", "column"));
+                JsonNode row = illustration.get("row");
+                require(row.isIntegralNumber() && row.canConvertToInt(), "exact integer illustration row required");
+                int index = row.intValue();
+                require(index >= 0 && index < Math.max(lines.size(), parsedRows.size()), "illustration row out of range");
+                Column column = Column.valueOf(text(illustration, "column"));
+                require(column != Column.VALUE || !parsedRows.isEmpty(), "VALUE illustration requires rows layout");
+                require(positions.add(new Position(index, column)), "duplicate illustration position");
+                parsedIllustrations.add(new Illustration(parsePin(illustration.get("source")), index, column));
+            }
             JsonNode icon = item.get("icon");
             result.add(new Card(id, cue, text(item, "anchor_zh"), text(item, "title"), text(item, "kicker"),
                     lines, List.copyOf(parsedRows), text(item, "result"), text(item, "note"),
-                    icon.isNull() ? null : parsePin(icon), highlight));
+                    icon.isNull() ? null : parsePin(icon), highlight, parsedIllustrations));
         }
         return new Specification(text(root, "machine_id"), parsePin(root.get("ffmpeg")), List.copyOf(result));
     }
@@ -141,11 +176,14 @@ public final class ClarityCards {
                 if (active) { g.setColor(new Color(0x4b3b22)); g.fillRoundRect(145, baseline - 48, 2270, 66, 10, 10); }
                 Color color = active ? GOLD : FG;
                 if (!card.lines().isEmpty()) {
-                    draw(g, boxes, card.lines().get(i), 176, baseline, 46, color, 2200);
+                    drawIllustrated(g, boxes, card.lines().get(i), 176, baseline, 46, color, 2200,
+                            illustrationAt(card, i, Column.LABEL), ffmpeg);
                 } else {
                     Row row = card.rows().get(i);
-                    draw(g, boxes, row.label(), 176, baseline, count > 6 ? 34 : 40, color, 1220);
-                    draw(g, boxes, row.value(), 1450, baseline, count > 6 ? 34 : 40, color, 900);
+                    drawIllustrated(g, boxes, row.label(), 176, baseline, count > 6 ? 34 : 40, color, 1220,
+                            illustrationAt(card, i, Column.LABEL), ffmpeg);
+                    drawIllustrated(g, boxes, row.value(), 1450, baseline, count > 6 ? 34 : 40, color, 900,
+                            illustrationAt(card, i, Column.VALUE), ffmpeg);
                 }
             }
             if (!card.result().isEmpty()) draw(g, boxes, card.result(), 176, 906, 58, GOLD, 2140);
@@ -164,7 +202,29 @@ public final class ClarityCards {
         BufferedImage decoded = ImageIO.read(output.toFile());
         require(decoded != null && decoded.getWidth() == 2560 && decoded.getHeight() == 1440, "PNG readback failed");
         require(Files.size(output) <= 512 * 1024, "page byte cap exceeded");
-        return new Rendered(card.id(), card.cue(), card.anchorZh(), pin(output), List.copyOf(boxes), true, true, card.icon());
+        return new Rendered(card.id(), card.cue(), card.anchorZh(), pin(output), List.copyOf(boxes), true, true,
+                card.icon(), card.illustrations());
+    }
+
+    private static Illustration illustrationAt(Card card, int row, Column column) {
+        for (Illustration illustration : card.illustrations()) {
+            if (illustration.row() == row && illustration.column() == column) return illustration;
+        }
+        return null;
+    }
+
+    private static void drawIllustrated(Graphics2D g, List<TextBox> boxes, String text, int x, int baseline,
+                                        int pixels, Color color, int width, Illustration illustration,
+                                        Pin ffmpeg) throws Exception {
+        if (illustration != null) {
+            BufferedImage source = decodeIcon(illustration.source(), ffmpeg);
+            double scale = Math.min(60.0 / source.getWidth(), 60.0 / source.getHeight());
+            int w = (int) Math.round(source.getWidth() * scale), h = (int) Math.round(source.getHeight() * scale);
+            g.drawImage(source, x + (60 - w) / 2, baseline - 48 + (60 - h) / 2, w, h, null);
+            x += 76;
+            width -= 76;
+        }
+        draw(g, boxes, text, x, baseline, pixels, color, width);
     }
 
     private static BufferedImage decodeIcon(Pin input, Pin ffmpeg) throws Exception {
