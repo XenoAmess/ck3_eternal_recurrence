@@ -31,13 +31,19 @@ jobs:
       PYTHONDONTWRITEBYTECODE: '1'
       PYTHONUTF8: '1'
       PYTHONPATH: ${{ github.workspace }}/ck3_autonomous_player/src
-      TMP: ${{ runner.temp }}
-      TEMP: ${{ runner.temp }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v6
         with:
           python-version: '3.14'
+      - name: Map temporary files to the runner volume
+        run: |
+          echo TMP=%RUNNER_TEMP%>>"%GITHUB_ENV%"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          echo TEMP=%RUNNER_TEMP%>>"%GITHUB_ENV%"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          echo PIP_CACHE_DIR=%RUNNER_TEMP%\rite-confirmation-pip>>"%GITHUB_ENV%"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Install transport and type-check dependencies
         # The actual MCP server imports its shared CoA framebuffer module.
         run: python -m pip install mcp==2.0.0 pydantic==2.13.5 mypy==2.4.0 opencv-python==5.0.0.93 numpy==2.5.2 Pillow==12.3.0

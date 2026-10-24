@@ -1,0 +1,14 @@
+{
+  "schema": "xar.dynastic-esotericism.remote-sdk-ci-repair.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T08:34:14.383176+00:00",
+  "original_head": "735bb0ad6b2b4bf35605acda1e5abde4b4bc0a0a",
+  "original_run_id": "40077866750",
+  "original_run_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40077866750",
+  "original_conclusion": "failure",
+  "cli_observation": "This run likely failed because of a workflow file issue.",
+  "diagnosis": "job-level env used runner.temp although runner context is unavailable there; confirmed against official context availability, not a job execution error",
+  "documentation": "https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#context-availability",
+  "repair": "Use existing cmd GITHUB_ENV mechanism after runner starts; production code and local 19-test result unchanged",
+  "replacement_run_status": "NOT_RUN"
+}
