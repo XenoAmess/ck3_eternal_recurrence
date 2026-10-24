@@ -63,3 +63,4 @@
  RRF_REQUIRE_THREE_CORES:0 "Exactly three different core tenets are selected"
  RRF_REQUIRE_BOTH_SOURCES:0 "Each source contributes at least one unique final tenet or doctrine"
  RRF_REQUIRE_COST:0 "You can afford the displayed fusion cost"
+ RRF_OPEN_FUSION_DRAFT:0 "Open the fusion draft to choose core tenets and doctrines."

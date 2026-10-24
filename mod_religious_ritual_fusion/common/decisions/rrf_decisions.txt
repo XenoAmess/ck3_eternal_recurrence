@@ -31,7 +31,10 @@
 			scope:actor = { rrf_target_rite_trigger = yes }
 		}
 	}
-	effect = { rrf_open_rite_effect = yes }
+	effect = {
+		custom_tooltip = RRF_OPEN_FUSION_DRAFT
+		hidden_effect = { rrf_open_rite_effect = yes }
+	}
 	ai_potential = { always = no }
 	ai_will_do = { base = 0 }
 }
@@ -66,7 +69,10 @@ rrf_begin_faith_fusion_decision = {
 			scope:actor = { rrf_target_faith_trigger = yes }
 		}
 	}
-	effect = { rrf_open_faith_effect = yes }
+	effect = {
+		custom_tooltip = RRF_OPEN_FUSION_DRAFT
+		hidden_effect = { rrf_open_faith_effect = yes }
+	}
 	ai_potential = { always = no }
 	ai_will_do = { base = 0 }
 }

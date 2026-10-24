@@ -9,7 +9,7 @@
 	using = Window_Decoration
 
 	vbox = {
-		margin = { 15 10 }
+		using = Window_Margins
 		spacing = 10
 		header_pattern = {
 			layoutpolicy_horizontal = expanding
@@ -48,7 +48,7 @@
 		text_multi = {
 			layoutpolicy_horizontal = expanding
 			autoresize = yes
-			max_width = 1240
+			max_width = 1200
 			text = "RRF_SELECTION_GUIDANCE"
 			default_format = "#weak"
 		}
@@ -72,7 +72,7 @@
 			}
 
 			vbox = {
-				minimumsize = { 680 0 }
+				minimumsize = { 650 0 }
 				layoutpolicy_horizontal = expanding
 				layoutpolicy_vertical = expanding
 				spacing = 8
@@ -96,7 +96,7 @@
 				text_label_left = { text = "RRF_CANDIDATE_DOCTRINES" }
 				text_multi = {
 					text = "RRF_DOCTRINE_GUIDANCE"
-					max_width = 650
+					max_width = 630
 					autoresize = yes
 					default_format = "#weak"
 				}
@@ -147,19 +147,19 @@
 		text_multi = {
 			visible = "[GetScriptedGui( 'rrf_editing_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 			text = "[GetScriptedGui( 'rrf_commit_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-			max_width = 1230
+			max_width = 1200
 			autoresize = yes
 		}
 		text_multi = {
 			visible = "[GetScriptedGui( 'rrf_committing_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 			text = "RRF_COMMITTING"
-			max_width = 1230
+			max_width = 1200
 			autoresize = yes
 		}
 		text_multi = {
 			visible = "[GetScriptedGui( 'rrf_unresolved_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 			text = "RRF_UNRESOLVED"
-			max_width = 1230
+			max_width = 1200
 			autoresize = yes
 		}
 
@@ -210,6 +210,7 @@ types ReligiousRitualFusion {
 			expand = {}
 		}
 		text_multi = {
+			layoutpolicy_horizontal = expanding
 			text = "[Rite.GetNameNoTooltip]"
 			max_width = 250
 			autoresize = yes
@@ -217,6 +218,7 @@ types ReligiousRitualFusion {
 			default_format = "#high"
 		}
 		text_multi = {
+			layoutpolicy_horizontal = expanding
 			text = "[Faith.GetNameNoTooltip]"
 			max_width = 250
 			autoresize = yes
@@ -237,6 +239,7 @@ types ReligiousRitualFusion {
 						tooltipwidget = { using = tenet_type_tooltip }
 					}
 					text_multi = {
+						layoutpolicy_horizontal = expanding
 						text = "[TenetType.GetNameNoTooltip( Rite.Self )]"
 						max_width = 205
 						autoresize = yes
@@ -245,6 +248,7 @@ types ReligiousRitualFusion {
 			}
 		}
 		text_multi = {
+			layoutpolicy_horizontal = expanding
 			block "contribution_ok" {}
 			text = "RRF_CONTRIBUTION_OK"
 			max_width = 250
@@ -252,6 +256,7 @@ types ReligiousRitualFusion {
 			tooltip = "RRF_CONTRIBUTION_TT"
 		}
 		text_multi = {
+			layoutpolicy_horizontal = expanding
 			block "contribution_missing" {}
 			text = "RRF_CONTRIBUTION_MISSING"
 			max_width = 250
@@ -260,6 +265,7 @@ types ReligiousRitualFusion {
 		}
 		expand = {}
 		text_multi = {
+			layoutpolicy_horizontal = expanding
 			text = "RRF_ADOPTION_PREVIEW"
 			max_width = 250
 			autoresize = yes
@@ -306,6 +312,7 @@ types ReligiousRitualFusion {
 	type rrf_doctrine_choice = button_group {
 		datacontext = "[Scope.DoctrineType]"
 		datacontext = "[GetPlayer.GetFaith]"
+		datacontext = "[DoctrineType.GetGroup.GetCategory]"
 		layoutpolicy_horizontal = expanding
 		minimumsize = { 0 65 }
 		enabled = "[GetScriptedGui( 'rrf_choose_doctrine_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'rrf_item', DoctrineType.MakeScope ).End )]"
@@ -317,8 +324,21 @@ types ReligiousRitualFusion {
 			button_radio = {
 				down = "[GetScriptedGui( 'rrf_doctrine_selected_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'rrf_item', DoctrineType.MakeScope ).End )]"
 			}
-			icon = {
+			icon_doctrine = {
 				size = { 40 40 }
+				visible = "[DoctrineCategoryType.HasTag( 'main' )]"
+				texture = "[DoctrineType.GetIcon]"
+				tooltipwidget = { using = doctrine_type_tooltip }
+			}
+			icon_doctrine = {
+				size = { 40 40 }
+				visible = "[And( Not( DoctrineCategoryType.HasTag( 'main' ) ), Not( DoctrineCategoryType.HasTag( 'special' ) ) )]"
+				texture = "[DoctrineType.GetGroup.GetIcon]"
+				tooltipwidget = { using = doctrine_type_tooltip }
+			}
+			icon_doctrine = {
+				size = { 40 40 }
+				visible = "[DoctrineCategoryType.HasTag( 'special' )]"
 				texture = "[DoctrineType.GetIcon]"
 				tooltipwidget = { using = doctrine_type_tooltip }
 			}

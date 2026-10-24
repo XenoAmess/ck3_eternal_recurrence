@@ -63,3 +63,4 @@
  RRF_REQUIRE_THREE_CORES:0 "恰好选择三个不同的核心信条"
  RRF_REQUIRE_BOTH_SOURCES:0 "双方各贡献至少一项独有的最终信条或教义"
  RRF_REQUIRE_COST:0 "能够支付所示的融合费用"
+ RRF_OPEN_FUSION_DRAFT:0 "打开融合草稿，选择核心信条和教义。"
