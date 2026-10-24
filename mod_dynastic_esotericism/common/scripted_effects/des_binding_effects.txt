@@ -61,10 +61,10 @@ des_repair_rite_binding_effect = {
 	if = {
 		limit = {
 			NOT = { has_variable = des_bound_dynasty }
-			exists = var:des_join_house.dynasty
-			var:des_join_house.dynasty.var:des_bound_rite = this
+			exists = var:des_join_house.house_dynasty
+			var:des_join_house.house_dynasty.var:des_bound_rite = this
 		}
-		set_variable = { name = des_bound_dynasty value = var:des_join_house.dynasty }
+		set_variable = { name = des_bound_dynasty value = var:des_join_house.house_dynasty }
 	}
 	if = {
 		limit = { exists = var:des_bound_dynasty }

@@ -56,6 +56,7 @@ EXTRA_CAPABILITIES: dict[str, list[str]] = {
     "ck3_query_player_rite_governance_v1": ["XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1"],
     "ck3_query_player_religion_doctrines_v1": ["XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1"],
     "ck3_query_player_religion_tenets_v1": ["XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1"],
+    "ck3_query_player_rite_members_v1": ["XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1"],
     "ck3_select_ingame_decision_item_v1": ["XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1", "XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1"],
     "ck3_confirm_ingame_decision_outcome_v1": ["XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1", "XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1"],
     "ck3_query_player_artifact_personal_use_v1": ["XAR_CK3_ENABLE_G2_PLAYER_ARTIFACT_PERSONAL_USE_READONLY_V1"],
@@ -84,7 +85,8 @@ EXTRA_CAPABILITIES: dict[str, list[str]] = {
     "ck3_enshrine_holy_site_relic_v1": ["XAR_ENABLE_HOLY_SITE_RELIC_TYPED_UI12004", "XAR_ENABLE_HOLY_SITE_RELIC_BUTTON_ACTION12004"],
     "ck3_remove_holy_site_relic_v1": ["XAR_ENABLE_HOLY_SITE_RELIC_TYPED_UI12004", "XAR_ENABLE_HOLY_SITE_RELIC_BUTTON_ACTION12004"],
 }
-REGISTRATION_READ_ONLY_FLAGS = {
+REGISTRATION_READ_ONLY_FLAGS: dict[str, str] = {
+    "ck3_query_player_rite_members_v1": "allow_private_player_rite_members_query",
     "ck3_query_player_religion_doctrines_v1": "allow_private_player_religion_doctrines_query",
     "ck3_query_player_religion_tenets_v1": "allow_private_player_religion_tenets_query",
     "ck3_query_player_religion_reform_context_v1": "allow_private_player_religion_reform_context_query",

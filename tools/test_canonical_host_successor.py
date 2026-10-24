@@ -13,7 +13,7 @@ import unittest
 
 from ck3_live_run_id import current_machine_id
 from ck3_mod_acceptance_background_types import JsonObject, file_pin, json_object
-from ck3_mod_acceptance_build_runtime import HOST_RELATIVE, build_canonical_host_successor, project_host, registration_driver
+from ck3_mod_acceptance_build_runtime import EXTRA_CAPABILITIES, HOST_RELATIVE, build_canonical_host_successor, project_host, registration_driver
 
 REPOSITORY = Path(__file__).resolve().parents[1]
 
@@ -30,6 +30,27 @@ def actual_pin(path: Path) -> JsonObject:
 
 
 class CanonicalHostSuccessorTests(unittest.TestCase):
+    def test_actual_members_registration_policy_roundtrip_is_default_off_and_preserves_native_flag(self) -> None:
+        sys.path.insert(0, str(REPOSITORY / 'ck3_autonomous_player/src'))
+        from xar_autoplayer.bridge.mcp_server import create_server
+        from xar_autoplayer.bridge.driver import GameplayBridgeDriver
+        tool = 'ck3_query_player_rite_members_v1'
+        self.assertEqual(EXTRA_CAPABILITIES[tool], ['XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1'])
+        producer: object = registration_driver
+        if not isinstance(producer, RegistrationProducer):
+            raise ValueError('Existing shared registration producer must be callable')
+        for requested in ([], [tool]):
+            case = json_object(json.loads(json.dumps({'opt_in_read_only_mcp_tools': requested})))
+            driver = producer(case)
+            if not isinstance(driver, GameplayBridgeDriver):
+                raise ValueError('Registration facade must expose the existing semantic driver boundary')
+            self.assertIs(getattr(driver, 'allow_private_player_rite_members_query'), bool(requested))
+            async def names() -> set[str]:
+                return {row.name for row in await create_server(driver).list_tools()}
+            registered = asyncio.run(names())
+            self.assertEqual(tool in registered, bool(requested))
+            self.assertNotIn('ck3_execute_player_rite_creation_action_v1', registered)
+
     def test_actual_global_factory_registers_all_four_rite_tools_and_declared_queries(self) -> None:
         sys.path.insert(0, str(REPOSITORY / 'ck3_autonomous_player/src'))
         from xar_autoplayer.bridge.mcp_server import create_server

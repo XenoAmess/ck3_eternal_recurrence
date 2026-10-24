@@ -1442,6 +1442,7 @@ def native_server(args: argparse.Namespace) -> None:
     driver.allow_private_player_holy_site_creation_ui = bool(getattr(args, "private_player_holy_site_creation_ui", False))
     driver.case_declared_read_only_mcp_tools = frozenset(getattr(args, "case_read_only_mcp_tool", []))
     driver.allow_private_player_rite_governance_query = "ck3_query_player_rite_governance_v1" in driver.case_declared_read_only_mcp_tools
+    driver.allow_private_player_rite_members_query = "ck3_query_player_rite_members_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_pilgrimage_activities_query = "ck3_query_player_pilgrimage_activities_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_war_cash_query = bool(getattr(args, "private_war_cash_queries", False))
     driver.allow_private_holy_site_relic_actions = args.private_holy_site_relic_actions
@@ -5056,6 +5057,7 @@ def parser() -> argparse.ArgumentParser:
         help="explicit opt-in for four finite relic actions; default off, never a read-only tool declaration")
     result.add_argument("--case-read-only-mcp-tool", action="append", default=[], choices=(
         "ck3_query_player_rite_governance_v1", "ck3_query_player_pilgrimage_activities_v1",
+        "ck3_query_player_rite_members_v1",
         "ck3_query_faith_power_ui_v1", "ck3_query_faith_power_tooltip_v1",
         "ck3_query_player_holy_site_creation_context_v1",
         "ck3_query_player_holy_site_relic_action_context_v1",

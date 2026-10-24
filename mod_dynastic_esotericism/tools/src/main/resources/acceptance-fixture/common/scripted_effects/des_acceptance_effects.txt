@@ -1,6 +1,7 @@
 # Fixture aliases never write des_* product binding/trait/relationship state.
 # Disclosed original-game input, not an interaction submission or payment receipt.
-# Called only by the fresh setup event, without the six optional interaction scopes.
+# Called only by fresh setup or the explicit first-head/successor edit preparation.
+# These three fixture routes supply none of the six optional interaction scopes.
 des_acceptance_prepare_original_rite_input_effect = {
     if = {
         limit = {
@@ -30,20 +31,20 @@ des_acceptance_prepare_original_rite_input_effect = {
     }
 }
 
-# Read real original-game state anew. This fixture flag is not a full draft Can.
-des_acceptance_read_original_rite_input_effect = {
+# Shared relationship observation; this flag never certifies a native draft Can.
+des_acceptance_read_original_rite_relation_effect = {
     save_scope_as = des_rite_input_actor
-    remove_character_flag = des_test_original_rite_input_ready
+    remove_character_flag = des_test_original_rite_relation_ready
     if = {
         limit = { exists = cp:councillor_court_chaplain }
         debug_log = "DESAF: PRECONDITION PASS actual_court_chaplain"
     }
-    else = { debug_log = "DESAF: TEST FAIL actual_court_chaplain" }
+    else = { debug_log = "DESAF: NOT_READY actual_court_chaplain" }
     if = {
         limit = { exists = puppet:theological_agent_puppet }
         debug_log = "DESAF: PRECONDITION PASS actual_theological_puppet"
     }
-    else = { debug_log = "DESAF: TEST FAIL actual_theological_puppet" }
+    else = { debug_log = "DESAF: NOT_READY actual_theological_puppet" }
     if = {
         limit = {
             trigger_if = {
@@ -57,12 +58,12 @@ des_acceptance_read_original_rite_input_effect = {
         }
         debug_log = "DESAF: PRECONDITION PASS actual_reverse_puppeteer"
     }
-    else = { debug_log = "DESAF: TEST FAIL actual_reverse_puppeteer" }
+    else = { debug_log = "DESAF: NOT_READY actual_reverse_puppeteer" }
     if = {
         limit = { is_puppet_action_valid = puppet_trigger_can_create_rite }
         debug_log = "DESAF: PRECONDITION PASS actual_puppet_action_valid"
     }
-    else = { debug_log = "DESAF: TEST FAIL actual_puppet_action_valid" }
+    else = { debug_log = "DESAF: NOT_READY actual_puppet_action_valid" }
     if = {
         limit = {
             can_have_realm_priest_puppet_trigger = yes
@@ -83,12 +84,44 @@ des_acceptance_read_original_rite_input_effect = {
             }
             trigger_else = { always = no }
             is_puppet_action_valid = puppet_trigger_can_create_rite
+        }
+        add_character_flag = des_test_original_rite_relation_ready
+        debug_log = "DESAF: PRECONDITION PASS original_rite_relationship"
+    }
+    else = { debug_log = "DESAF: NOT_READY original_rite_relationship" }
+}
+
+# Creation and editing have distinct stock eligibility. Creation becomes used
+# legitimately; no fixture resets either stock once-only variable.
+des_acceptance_read_original_rite_input_effect = {
+    remove_character_flag = des_test_original_rite_input_ready
+    des_acceptance_read_original_rite_relation_effect = yes
+    if = {
+        limit = {
+            has_character_flag = des_test_original_rite_relation_ready
             can_create_rite_trigger = yes
         }
         add_character_flag = des_test_original_rite_input_ready
         debug_log = "DESAF: PRECONDITION PASS original_rite_scripted_eligibility"
     }
-    else = { debug_log = "DESAF: TEST FAIL original_rite_scripted_eligibility" }
+    else = { debug_log = "DESAF: NOT_READY original_rite_scripted_eligibility" }
+}
+
+des_acceptance_read_original_edit_input_effect = {
+    remove_character_flag = des_test_original_edit_input_ready
+    des_acceptance_read_original_rite_relation_effect = yes
+    if = {
+        limit = {
+            has_character_flag = des_test_original_rite_relation_ready
+            exists = rite.head_of_rite
+            rite.head_of_rite = this
+            NOT = { has_variable = has_edited_a_rite }
+            can_edit_rite_trigger = yes
+        }
+        add_character_flag = des_test_original_edit_input_ready
+        debug_log = "DESAF: PRECONDITION PASS original_edit_scripted_eligibility"
+    }
+    else = { debug_log = "DESAF: NOT_READY original_edit_scripted_eligibility" }
 }
 
 des_acceptance_restore_refs_effect = {

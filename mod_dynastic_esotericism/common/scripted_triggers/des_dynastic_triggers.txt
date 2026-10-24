@@ -3,7 +3,7 @@ des_has_binding_trigger = {
 	exists = var:des_bound_dynasty
 	exists = var:des_join_house
 	var:des_bound_dynasty.var:des_bound_rite = this
-	var:des_join_house.dynasty = var:des_bound_dynasty
+	var:des_join_house.house_dynasty = var:des_bound_dynasty
 }
 
 des_has_active_binding_trigger = {

@@ -8,6 +8,14 @@
     "kind": "prebuilt_manifest"
   },
   "maximum_natural_days": 400,
+  "allow_actor_change": true,
+  "actor_transition_days": [],
+  "continue_as_heir_requirements": [
+    "actual_predecessor_death_and_primary_title_succession",
+    "actual_current_player_is_the_pinned_living_primary_heir",
+    "actual_same_primary_rite_and_bound_dynasty_survive",
+    "actual_native_current_rite_head_is_the_successor"
+  ],
   "failure_prefixes": [
     "DESAF:"
   ],
@@ -72,21 +80,39 @@
         "actual_second_dynastic_rite_crossover_without_old_pair_pollution",
         "actual_native_edit_none_confirmation_then_closed_readback_decision",
         "actual_native_edit_dynastic_confirmation_then_reopened_readback_decision",
-        "actual_same_rite_and_same_bound_dynasty_reused_not_recreated"
+        "actual_same_rite_and_same_bound_dynasty_reused_not_recreated",
+        "actual_predecessor_death_and_primary_title_succession",
+        "actual_current_player_is_the_pinned_living_primary_heir",
+        "actual_same_primary_rite_and_bound_dynasty_survive",
+        "actual_native_current_rite_head_is_the_successor"
       ],
       "operator_sequence": [
-        "native_edit_none_then_closed_readback",
-        "native_edit_dynastic_then_reopened_readback",
         "des_acceptance_extended_start_decision",
         "des_acceptance_second_rite_decision_and31_natural_days",
         "des_acceptance_cross_rites_decision_and1_natural_day",
         "des_acceptance_cross_migration_decision_and1_natural_day",
         "des_acceptance_stock_crime_decision_and1_natural_day",
         "des_acceptance_stock_repent_decision_and1_natural_day",
+        "continue_actual_natural_days_to_observed_birth_plus_exactly1_day",
+        "verify_actual_birth_date_identity_rite_dynasty_house_and_knowledge",
+        "verify_cadet_drift_and_two_timer_callback_markers",
+        "des_acceptance_founder_death_decision_and31_natural_days_may_run_in_parallel_after_second_verified",
+        "des_acceptance_primary_heir_prepare_decision",
+        "advance_at_least1_actual_natural_day_then_verify_settled_heir_membership_and_pinned_primary_title_inheritance_identity",
+        "des_acceptance_primary_heir_readback_decision",
+        "des_acceptance_edit_input_prepare_decision",
+        "des_acceptance_edit_input_readback_decision",
+        "native_edit_none_then_closed_readback",
+        "des_acceptance_primary_death_stage_decision",
+        "actual_event_boundary_predecessor_death_and_primary_title_succession",
+        "actual_native_and_saved_living_player_equals_pinned_heir_same_rite_dynasty_and_actual_native_head",
+        "des_acceptance_successor_readback_decision",
+        "des_acceptance_edit_input_prepare_decision",
+        "des_acceptance_edit_input_readback_decision",
+        "native_edit_dynastic_then_reopened_readback",
         "des_acceptance_pardon_prepare_decision_and1_natural_day",
         "actual_stock_pardon_interaction_once",
-        "des_acceptance_pardon_observe_decision_and31_natural_days",
-        "des_acceptance_founder_death_decision_and31_natural_days_may_run_in_parallel_after_second_verified"
+        "des_acceptance_pardon_observe_decision_and31_natural_days"
       ]
     },
     {
@@ -99,12 +125,15 @@
         "actual_external_house_change_corrected_within_documented_period",
         "actual_founder_death_or_head_succession_binding_preserved",
         "actual_final_save_independent_rite_dynasty_house_and_relationship_readback",
-        "separate_real_cold_reload_and_old_save_bootstrap_cases_remain_required"
+        "separate_real_cold_reload_and_old_save_bootstrap_cases_remain_required",
+        "actual_pinned_long_term_predecessor_evidence_rechecked_without_relabeling",
+        "actual_current_new_head_same_rite_bound_dynasty_and_pardon_stable_cold_anchor",
+        "actual_current_new_head_to_target_has_no_three_product_crime_reasons"
       ],
       "operator_sequence": [
-        "continue_actual_natural_days_to_observed_birth_plus_exactly1_day",
-        "verify_actual_birth_date_identity_rite_dynasty_house_and_knowledge",
-        "verify_cadet_drift_and_two_timer_callback_markers",
+        "recheck_pinned_actual_birth_plus1_generated_cadet_external_house_timer61_and_second_founder31_evidence",
+        "recheck_actual_primary_heir_successor_and_native_current_rite_head",
+        "recheck_final_new_head_pardon_consumed_and31_day_stability",
         "des_acceptance_cold_anchor_decision",
         "actual_native_save_then_independent_saved_state_readback"
       ]

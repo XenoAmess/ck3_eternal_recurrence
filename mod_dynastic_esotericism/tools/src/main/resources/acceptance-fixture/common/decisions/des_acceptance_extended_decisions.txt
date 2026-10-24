@@ -1,7 +1,7 @@
 ﻿# Each entry discloses a distinct test input or a read-only assertion.
 des_acceptance_extended_start_decision = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
-	is_shown = { is_ai = no has_character_flag = des_test_reopened_verified NOT = { has_character_flag = des_test_extended_started } }
+	is_shown = { is_ai = no has_character_flag = des_test_repent_verified NOT = { has_character_flag = des_test_extended_started } }
 	is_valid = { rite = var:des_test_primary_rite rite = { des_has_active_binding_trigger = yes } }
 	effect = {
 		hidden_effect = {
@@ -120,7 +120,7 @@ des_acceptance_stock_repent_decision = {
 
 des_acceptance_pardon_prepare_decision = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
-	is_shown = { is_ai = no has_character_flag = des_test_stock_retained NOT = { has_character_flag = des_test_pardon_started } }
+	is_shown = { is_ai = no has_character_flag = des_test_stock_retained has_character_flag = des_test_successor_verified has_character_flag = des_test_reopened_verified NOT = { has_character_flag = des_test_pardon_started } }
 	is_valid = { rite = var:des_test_primary_rite }
 	effect = {
 		hidden_effect = {
@@ -191,7 +191,7 @@ des_acceptance_founder_death_decision = {
 
 des_acceptance_cold_anchor_decision = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
-	is_shown = { is_ai = no has_character_flag = des_test_pardon_stable has_character_flag = des_test_founder_death_verified NOT = { has_character_flag = des_test_cold_anchor } }
+	is_shown = { is_ai = no has_character_flag = des_test_pardon_stable has_character_flag = des_test_successor_verified has_character_flag = des_test_reopened_verified has_character_flag = des_test_founder_death_verified NOT = { has_character_flag = des_test_cold_anchor } }
 	is_valid = { rite = var:des_test_primary_rite }
 	effect = { hidden_effect = { des_acceptance_extended_anchor_effect = yes } }
 	ai_check_interval = 0
@@ -229,4 +229,191 @@ des_acceptance_legacy_after_decision = {
 	is_valid = { always = yes }
 	effect = { hidden_effect = { trigger_event = des_acceptance_extended.71 } }
 	ai_check_interval = 0
+}
+
+# No native player/head selectors or stock once-flag mutations exist in this fixture.
+des_acceptance_primary_heir_prepare_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+    is_shown = { is_ai = no has_character_flag = des_test_extended_started NOT = { has_character_flag = des_test_primary_heir_prepared } }
+    is_valid = { always = yes }
+    effect = {
+        hidden_effect = {
+            if = {
+                limit = {
+                    has_character_flag = des_test_ready
+                    has_character_flag = des_test_members_verified
+                    has_character_flag = des_test_same_verified
+                    has_character_flag = des_test_cross_verified
+                    has_character_flag = des_test_repent_verified
+                    has_character_flag = des_test_extended_armed
+                    has_character_flag = des_test_extended_started
+                    has_character_flag = des_test_actual_birth_seen
+                    has_character_flag = des_test_birth_verified
+                    has_character_flag = des_test_descendant_verified
+                    has_character_flag = des_test_generated_verified
+                    has_character_flag = des_test_membership_correction_verified
+                    has_character_flag = des_test_timer_verified
+                    has_character_flag = des_test_second_verified
+                    has_character_flag = des_test_cross_rites_verified
+                    has_character_flag = des_test_cross_migration_verified
+                    has_character_flag = des_test_founder_death_verified
+                    has_character_flag = des_test_after_death_join_verified
+                    has_character_flag = des_test_stock_crime_seen
+                    has_character_flag = des_test_stock_retained
+                    this = global_var:des_test_extended_owner
+                    exists = primary_heir
+                    exists = primary_title
+                    primary_title = { holder = root }
+                    rite = var:des_test_primary_rite
+                    rite = { des_has_active_binding_trigger = yes }
+                    primary_heir = {
+                        is_alive = yes
+                        is_adult = yes
+                        is_incapable = no
+                        NOT = { this = root }
+                        faith = root.faith
+                        NOT = { has_variable = has_edited_a_rite }
+                    }
+                }
+                set_variable = { name = des_test_ref_predecessor value = this }
+                set_variable = { name = des_test_ref_primary_heir value = primary_heir }
+                set_variable = { name = des_test_ref_primary_title value = primary_title }
+                set_variable = { name = des_test_heir_input_date value = current_date }
+                add_character_flag = des_test_primary_heir_prepared
+                primary_heir = { set_character_rite = root.rite }
+                debug_log = "DESAF: PREPARATION stock_primary_heir_rite_input"
+            }
+            else = { debug_log = "DESAF: NOT_READY actual_primary_heir_input" }
+        }
+    }
+    ai_check_interval = 0
+}
+
+des_acceptance_primary_heir_readback_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+    is_shown = { is_ai = no has_character_flag = des_test_primary_heir_prepared NOT = { has_character_flag = des_test_primary_heir_ready } }
+    is_valid = { always = yes }
+    effect = {
+        hidden_effect = {
+            if = {
+                limit = {
+                    current_date > var:des_test_heir_input_date
+                    exists = primary_heir
+                    exists = primary_title
+                    primary_heir = var:des_test_ref_primary_heir
+                    primary_title = var:des_test_ref_primary_title
+                    primary_title = { holder = root }
+                    primary_heir = {
+                        is_alive = yes
+                        is_adult = yes
+                        is_incapable = no
+                        faith = root.faith
+                        rite = root.var:des_test_primary_rite
+                        dynasty = root.var:des_test_bound_dynasty
+                        house = root.var:des_test_primary_rite.var:des_join_house
+                        NOT = { has_variable = has_edited_a_rite }
+                    }
+                }
+                add_character_flag = des_test_primary_heir_ready
+                debug_log = "DESAF: PRECONDITION PASS actual_primary_heir_rite_and_membership"
+            }
+            else = { debug_log = "DESAF: NOT_READY actual_primary_heir_rite_and_membership" }
+        }
+    }
+    ai_check_interval = 0
+}
+
+# The disclosed empty-slot stock input is separate from the independent readback.
+des_acceptance_edit_input_prepare_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+    is_shown = { is_ai = no has_character_flag = des_test_ready has_variable = des_test_primary_rite NOT = { has_character_flag = des_test_original_edit_input_prepared } }
+    is_valid = { always = yes }
+    effect = {
+        hidden_effect = {
+            if = {
+                limit = {
+                    rite = var:des_test_primary_rite
+                    exists = rite.head_of_rite
+                    rite.head_of_rite = root
+                    NOT = { has_variable = has_edited_a_rite }
+                    OR = {
+                        AND = { has_character_flag = des_test_primary_heir_ready NOT = { has_character_flag = des_test_closed_verified } }
+                        AND = { has_character_flag = des_test_successor_verified has_character_flag = des_test_closed_verified NOT = { has_character_flag = des_test_reopened_verified } }
+                    }
+                }
+                add_character_flag = des_test_original_edit_input_prepared
+                des_acceptance_prepare_original_rite_input_effect = yes
+                debug_log = "DESAF: PREPARATION original_edit_empty_slot_input"
+            }
+            else = { debug_log = "DESAF: NOT_READY original_edit_input_actor" }
+        }
+    }
+    ai_check_interval = 0
+}
+
+des_acceptance_edit_input_readback_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+    is_shown = { is_ai = no has_character_flag = des_test_ready has_variable = des_test_primary_rite }
+    is_valid = { always = yes }
+    effect = { hidden_effect = { des_acceptance_read_original_edit_input_effect = yes } }
+    ai_check_interval = 0
+}
+
+des_acceptance_primary_death_stage_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+    is_shown = { is_ai = no has_character_flag = des_test_closed_verified has_character_flag = des_test_primary_heir_ready NOT = { has_character_flag = des_test_primary_death_staged } }
+    is_valid = { always = yes }
+    effect = {
+        hidden_effect = {
+            if = {
+                limit = {
+                    has_character_flag = des_test_ready
+                    has_character_flag = des_test_members_verified
+                    has_character_flag = des_test_same_verified
+                    has_character_flag = des_test_cross_verified
+                    has_character_flag = des_test_repent_verified
+                    has_character_flag = des_test_closed_verified
+                    has_character_flag = des_test_extended_armed
+                    has_character_flag = des_test_extended_started
+                    has_character_flag = des_test_actual_birth_seen
+                    has_character_flag = des_test_birth_verified
+                    has_character_flag = des_test_descendant_verified
+                    has_character_flag = des_test_generated_verified
+                    has_character_flag = des_test_membership_correction_verified
+                    has_character_flag = des_test_timer_verified
+                    has_character_flag = des_test_second_verified
+                    has_character_flag = des_test_cross_rites_verified
+                    has_character_flag = des_test_cross_migration_verified
+                    has_character_flag = des_test_founder_death_verified
+                    has_character_flag = des_test_after_death_join_verified
+                    has_character_flag = des_test_stock_crime_seen
+                    has_character_flag = des_test_stock_retained
+                    this = global_var:des_test_extended_owner
+                    is_alive = yes
+                    has_variable = has_edited_a_rite
+                    exists = primary_heir
+                    primary_heir = var:des_test_ref_primary_heir
+                    primary_title = var:des_test_ref_primary_title
+                    primary_title = { holder = root }
+                    rite = var:des_test_primary_rite
+                    rite = { rite_has_doctrine = des_doctrine_none var:des_bound_dynasty = root.var:des_test_bound_dynasty }
+                    primary_heir = { is_alive = yes is_adult = yes rite = root.rite dynasty = root.var:des_test_bound_dynasty house = root.rite.var:des_join_house NOT = { has_variable = has_edited_a_rite } }
+                }
+                add_character_flag = des_test_primary_death_staged
+                trigger_event = { id = des_acceptance_extended.80 days = 1 }
+                debug_log = "DESAF: PREPARATION one_shot_stock_predecessor_death_next_day"
+            }
+            else = { debug_log = "DESAF: NOT_READY primary_death_stage" }
+        }
+    }
+    ai_check_interval = 0
+}
+
+# Root must first independently prove the actual current player/heir/title/head.
+des_acceptance_successor_readback_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+    is_shown = { is_ai = no exists = global_var:des_test_extended_owner NOT = { has_character_flag = des_test_successor_verified } }
+    is_valid = { always = yes }
+    effect = { hidden_effect = { des_acceptance_successor_readback_effect = yes } }
+    ai_check_interval = 0
 }
