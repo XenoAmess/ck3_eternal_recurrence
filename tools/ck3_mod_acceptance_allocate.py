@@ -1846,6 +1846,179 @@ class PreservedFailureOS0Facts(TypedDict):
     win32_birth_filetime: str
 
 
+class PreservedTypedObserverSources(TypedDict):
+    receipt_pin: FilePin
+    receipt: JsonObject
+    close_pin: FilePin
+    close: JsonObject
+    claim_pin: FilePin
+    claim: JsonObject
+    inventory_pin: FilePin
+
+
+PRESERVED_TYPED_OBSERVER_SOURCE_KEYS = (
+    'typed_exit_observer_receipt', 'typed_exit_observer_close', 'typed_exit_confirm_claim',
+    'normal_exit_profile', 'normal_exit_source_inventory', 'normal_exit_wire_source',
+    'normal_exit_observer_source', 'normal_exit_process_source', 'normal_exit_frozen_source_index')
+
+
+def preserved_failure_typed_format(bundle_value: object) -> bool:
+    """Select one explicit original evidence format, rejecting mixed bundles."""
+    bundle = json_object(bundle_value)
+    refs = object_field(bundle, 'original_evidence')
+    typed = bundle.get('process_exit_evidence_format') == 'typed-native-observer-v2'
+    if 'process_exit_evidence_format' in bundle and (
+            not typed or bundle.get('closure_kind') != 'preserved-failure-native-process-exit-zero'):
+        raise ValueError('Preserved failure process evidence format is unknown or crossed closure kinds')
+    if typed and any(key in refs for key in ('root_window_start', 'root_window_exit')):
+        raise ValueError('Typed observer must not mix GUI window originals')
+    if not typed and any(key in refs for key in PRESERVED_TYPED_OBSERVER_SOURCE_KEYS):
+        raise ValueError('Typed observer originals require their explicit evidence format')
+    return typed
+
+
+def preserved_typed_observer_sources(freeze_value: object, ready_value: object,
+        refs_value: object) -> PreservedTypedObserverSources:
+    """Read the same original SDK receipt/profile/sources, never a GUI projection."""
+    freeze, ready, refs = (json_object(value) for value in (freeze_value, ready_value, refs_value))
+    if any(key in refs for key in ('root_window_start', 'root_window_exit')):
+        raise ValueError('Typed observer must not mix GUI window originals')
+    pins: dict[str, FilePin] = {}
+    for key in PRESERVED_TYPED_OBSERVER_SOURCE_KEYS:
+        ref = file_pin(refs.get(key))
+        bound = 16777216 if key == 'normal_exit_frozen_source_index' else 1048576
+        if set(object_field(refs, key)) != {'path', 'bytes', 'sha256'} or ref['bytes'] > bound:
+            raise ValueError('Bounded exact typed observer original pin required: ' + key)
+        path = Path(ref['path'])
+        if (not path.is_absolute() or path.is_symlink() or not path.is_file()
+                or path.stat().st_size != ref['bytes'] or _verification_actual_pin_v1(path) != ref):
+            raise ValueError('Typed observer original bytes changed: ' + key)
+        pins[key] = ref
+    files = object_field(freeze, 'files')
+    # The public wire was indexed by the original frozen source graph, rather
+    # than repeated in frozen-argv.files. Consume that original graph as well.
+    for key in ('normal_exit_profile', 'normal_exit_source_inventory', 'normal_exit_frozen_source_index'):
+        ref = pins[key]
+        if files.get(ref['path']) != {'bytes': ref['bytes'], 'sha256': ref['sha256']}:
+            raise ValueError('Typed observer source/profile is not an original frozen input: ' + key)
+    index = json_object(json.loads(Path(pins['normal_exit_frozen_source_index']['path']).read_bytes()))
+    indexed_files = index.get('files')
+    if (index.get('schema') != 'ck3-shared-source-frozen-successor-v1'
+            or index.get('machine_id') != text_field(object_field(freeze, 'identity_allocation'), 'machine_id')
+            or not isinstance(indexed_files, list)):
+        raise ValueError('Original frozen source index schema/machine/files required')
+    indexed = [file_pin(item) for item in indexed_files]
+    root = Path(text_field(freeze, 'source_root')).resolve()
+    for key, name in (('normal_exit_wire_source', 'normal_exit_public_wire_v2.py'),
+                      ('normal_exit_observer_source', 'normal_exit_pending_observer_v1.py'),
+                      ('normal_exit_process_source', 'normal_exit_process_observer_v1.py')):
+        ref = pins[key]
+        path = Path(ref['path']).resolve()
+        if (path != root/'ck3_autonomous_player/src/xar_autoplayer/bridge'/name
+                or sum(item['path'] == ref['path'] for item in indexed) != 1 or ref not in indexed):
+            raise ValueError('Typed observer SDK source belongs to a different frozen source')
+    profile_ref = pins['normal_exit_profile']
+    profile = json_object(json.loads(Path(profile_ref['path']).read_bytes()))
+    inventory = object_field(profile, 'normal_exit_source_inventory')
+    if (type(profile.get('schema_version')) is not int or profile.get('schema_version') != 1
+            or ready.get('normal_exit_managed_profile') != profile_ref
+            or inventory != {'path': pins['normal_exit_source_inventory']['path'],
+                             'sha256': pins['normal_exit_source_inventory']['sha256']}
+            or Path(text_field(profile, 'state_directory')).resolve() != Path(text_field(freeze, 'state_dir')).resolve()
+            or Path(text_field(profile, 'evidence_directory')).resolve() != Path(profile_ref['path']).resolve().parent.parent
+            or Path(profile_ref['path']).resolve().parent.name != 'normal-exit-binding'
+            or Path(profile_ref['path']).resolve().parent.parent.name != freeze.get('run_id')):
+        raise ValueError('Typed observer original profile/inventory crossed the allocated run')
+    requests = Path(text_field(freeze, 'state_dir')).resolve()/'native-session/normal-exit-map-requests'
+    if any(Path(pins[key]['path']).resolve().parent != requests for key in
+           ('typed_exit_observer_receipt', 'typed_exit_observer_close', 'typed_exit_confirm_claim')):
+        raise ValueError('Typed observer original receipts crossed the allocated state directory')
+    return PreservedTypedObserverSources(
+        receipt_pin=pins['typed_exit_observer_receipt'],
+        receipt=json_object(json.loads(Path(pins['typed_exit_observer_receipt']['path']).read_bytes())),
+        close_pin=pins['typed_exit_observer_close'],
+        close=json_object(json.loads(Path(pins['typed_exit_observer_close']['path']).read_bytes())),
+        claim_pin=pins['typed_exit_confirm_claim'],
+        claim=json_object(json.loads(Path(pins['typed_exit_confirm_claim']['path']).read_bytes())),
+        inventory_pin=pins['normal_exit_source_inventory'])
+
+
+def validate_preserved_typed_observer(report_value: object, sources: PreservedTypedObserverSources,
+        pid: int) -> str:
+    from xar_autoplayer.bridge.normal_exit_public_wire_v2 import (
+        normal_exit_public_result_v2, parse_normal_exit_public_result_v2)
+    report = json_object(report_value)
+    steps = report.get('steps')
+    if not isinstance(steps, list):
+        raise ValueError('Original typed observer steps required')
+    rows = [json_object(row) for row in steps]
+    observed = [row for row in rows if object_field(row, 'plan').get('tool') == 'ck3_observe_normal_exit_v1'
+                and row.get('ok') is True and object_field(row, 'result').get('process_exit_observed') is True]
+    if len(observed) != 1:
+        raise ValueError('Exactly one successful original terminal observer is required')
+    public = object_field(observed[0], 'result')
+    parsed = parse_normal_exit_public_result_v2(public)
+    projected = json_object(normal_exit_public_result_v2(sources['receipt']))
+    expected: JsonObject = {**projected, 'observer_retained': False,
+        'observer_close_receipt_path': sources['close_pin']['path']}
+    if public != expected:
+        raise ValueError('Public typed observer differs from its original receipt and explicit handle close')
+    confirms = [row for row in rows if object_field(row, 'plan').get('tool') == 'ck3_request_normal_exit_v1'
+                and object_field(object_field(row, 'plan'), 'args').get('action') == 'confirm_desktop'
+                and row.get('ok') is True]
+    if len(confirms) != 1:
+        raise ValueError('Exactly one original desktop confirmation is required')
+    confirmed = object_field(confirms[0], 'result')
+    confirmed_model = parse_normal_exit_public_result_v2(confirmed,
+        expected_process_creation_filetime_100ns=parsed.process_creation_filetime_100ns)
+    for key in ('request_id', 'claim_path', 'source_inventory_sha256', 'process_creation_filetime_100ns', 'process_preconfirm_pin'):
+        if public.get(key) != confirmed.get(key):
+            raise ValueError('Terminal observer crossed the original once-only desktop confirmation')
+    process, preconfirm = object_field(public, 'process_observation'), object_field(public, 'process_preconfirm_pin')
+    birth = text_field(public, 'process_creation_filetime_100ns')
+    if (public.get('schema') != 'ck3-normal-exit-process-observation-result-v2'
+            or public.get('action') != 'confirm_desktop' or public.get('status') != 'process_exit_observed_zero'
+            or public.get('process_exit_observed') is not True or public.get('typed_normal_exit_observed') is not True
+            or public.get('retry_authorized') is not False or public.get('autosave_verified') is not False
+            or type(public.get('exit_code')) is not int or public.get('exit_code') != 0
+            or type(public.get('native_submission_count')) is not int or public.get('native_submission_count') != 0
+            or type(confirmed.get('native_submission_count')) is not int or confirmed.get('native_submission_count') != 1
+            or process.get('pid') != pid or type(process.get('pid')) is not int
+            or process.get('wait_state') != 'signaled' or type(process.get('wait_result')) is not int or process.get('wait_result') != 0
+            or process.get('process_identity_verified') is not True or process.get('process_exit_observed') is not True
+            or process.get('creation_filetime_100ns') != birth or preconfirm.get('creation_filetime_100ns') != birth
+            or process.get('retained_handle_token') != preconfirm.get('retained_handle_token')
+            or public.get('receipt_path') != sources['receipt_pin']['path']
+            or public.get('claim_path') != sources['claim_pin']['path']
+            or public.get('source_inventory_sha256') != sources['inventory_pin']['sha256']):
+        raise ValueError('Original typed native observer does not establish the same retained OS0 process')
+    close, claim = sources['close'], sources['claim']
+    identity = object_field(claim, 'identity')
+    confirmed_memory = json_object(confirmed_model.to_memory())
+    native_confirmation = object_field(confirmed_memory, 'native_observation')
+    if (set(close) != {'schema', 'reason', 'fact_receipt_path', 'pid', 'creation_filetime_100ns',
+                       'retained_handle_token', 'close_error', 'retry_authorized'}
+            or set(claim) != {'schema', 'identity', 'request_id', 'status', 'exit_context_signature',
+                              'source_inventory_sha256', 'process_preconfirm_pin'}
+            or set(identity) != {'game_pid', 'creation_filetime_100ns', 'action'}
+            or close.get('schema') != 'ck3-normal-exit-observer-close-v1'
+            or close.get('reason') != 'independent_exit_fact_preserved' or close.get('close_error') is not None
+            or close.get('retry_authorized') is not False or close.get('fact_receipt_path') != sources['receipt_pin']['path']
+            or type(close.get('pid')) is not int or close.get('pid') != pid
+            or str(_late_integer(close.get('creation_filetime_100ns'), 'Observer close birth')) != birth
+            or close.get('retained_handle_token') != preconfirm.get('retained_handle_token')
+            or claim.get('schema') != 'ck3-normal-exit-once-claim-v1' or claim.get('request_id') != public.get('request_id')
+            or claim.get('status') != 'claimed_result_unknown_no_retry'
+            or claim.get('source_inventory_sha256') != public.get('source_inventory_sha256')
+            or claim.get('process_preconfirm_pin') != confirmed_memory.get('process_preconfirm_pin')
+            or claim.get('exit_context_signature') != native_confirmation.get('exit_context_signature')
+            or type(identity.get('game_pid')) is not int or identity.get('game_pid') != pid
+            or str(_late_integer(identity.get('creation_filetime_100ns'), 'Original claim birth')) != birth
+            or identity.get('action') != 'confirm_desktop'):
+        raise ValueError('Original observer close/once claim belongs to another process or source')
+    return birth
+
+
 def _late_object(value: object, label: str) -> dict[str, object]:
     if not isinstance(value, dict) or any(not isinstance(k, str) for k in value):
         raise ValueError(label + ' must be an object')
@@ -1865,11 +2038,12 @@ def _late_check(condition: bool, message: str) -> None:
 
 def validate_preserved_failure_native_os0(normal_value: object, retained_value: object,
         game_value: object, native_value: object, report_value: object,
-        window_start_value: object, window_exit_value: object, machine_id: str) -> PreservedFailureOS0Facts:
+        window_start_value: object, window_exit_value: object, machine_id: str, *,
+        typed_observer_sources: PreservedTypedObserverSources | None = None) -> PreservedFailureOS0Facts:
     """Read the completed failure lifecycle without rewriting the original close."""
-    normal, retained, game, native, report, window_start, window_exit = (
+    normal, retained, game, native, report = (
         json_object(value) for value in (normal_value, retained_value, game_value, native_value,
-                                        report_value, window_start_value, window_exit_value))
+                                        report_value))
     shutdown = object_field(native, 'shutdown')
     pid = _late_integer(game.get('pid'), 'Original retained CK3 PID')
     native_pid = _late_integer(native.get('pid'), 'Original native CK3 PID')
@@ -1928,16 +2102,22 @@ def validate_preserved_failure_native_os0(normal_value: object, retained_value: 
         ((native, 'finished_at'), (row, 'finished_at'), (report, 'finished_at')))
     if any(stamp.tzinfo is None for stamp in (native_end, finish_end, host_end)) or not native_end <= finish_end <= host_end:
         raise ValueError('Native exit, failure finish_hold and host completion chronology differs')
-    filetime = text_field(window_start, 'birth_filetime')
+    if typed_observer_sources is not None:
+        if window_start_value is not None or window_exit_value is not None:
+            raise ValueError('Typed native observer evidence cannot be mixed with GUI window receipts')
+        filetime = validate_preserved_typed_observer(report, typed_observer_sources, pid)
+    else:
+        window_start, window_exit = json_object(window_start_value), json_object(window_exit_value)
+        filetime = text_field(window_start, 'birth_filetime')
+        if (window_start.get('machine_id') != machine_id or window_exit.get('machine_id') != machine_id
+                or type(window_start.get('pid')) is not int or window_start.get('pid') != pid
+                or type(window_exit.get('pid')) is not int or window_exit.get('pid') != pid
+                or window_exit.get('opened') is not True or window_exit.get('exit_code_read') is not True
+                or type(window_exit.get('wait_result')) is not int or window_exit.get('wait_result') != 0
+                or type(window_exit.get('actual_exit_code')) is not int or window_exit.get('actual_exit_code') != 0):
+            raise ValueError('Original Root window observation does not prove the same PID signaled OS0')
     if re.fullmatch('[1-9][0-9]{0,19}', filetime) is None or int(filetime) >= 1 << 64:
         raise ValueError('Original Win32 birth FILETIME requires a canonical uint64 decimal string')
-    if (window_start.get('machine_id') != machine_id or window_exit.get('machine_id') != machine_id
-            or type(window_start.get('pid')) is not int or window_start.get('pid') != pid
-            or type(window_exit.get('pid')) is not int or window_exit.get('pid') != pid
-            or window_exit.get('opened') is not True or window_exit.get('exit_code_read') is not True
-            or type(window_exit.get('wait_result')) is not int or window_exit.get('wait_result') != 0
-            or type(window_exit.get('actual_exit_code')) is not int or window_exit.get('actual_exit_code') != 0):
-        raise ValueError('Original Root window observation does not prove the same PID signaled OS0')
     # FILETIME is preserved at native precision. The existing Popen numeric
     # create_time and WMI microsecond string remain independent original facts.
     return PreservedFailureOS0Facts(closure_kind='preserved-failure-native-process-exit-zero',
@@ -1957,7 +2137,19 @@ def validate_root_observed_public_exit(value: object, machine: str,
     indices = [i for i, item in enumerate(argv) if Path(item).name == 'ck3_mod_acceptance.py']
     if len(indices) != 1 or indices[0] + 1 >= len(argv) or argv[indices[0] + 1] != mode:
         raise ValueError('Root-observed original public command mode differs')
-    stamp = row.get('finished_at_utc') if mode == 'run' else row.get('observed_at_utc')
+    # Historical Root allocator observations carry observed_at_utc. The later
+    # original command producer carries a started/finished pair instead. These
+    # are distinct original receipt shapes, never synthesized timestamp aliases.
+    if mode == 'allocate' and any(key in row for key in ('started_at_utc', 'finished_at_utc')):
+        if 'observed_at_utc' in row:
+            raise ValueError('Root-observed allocator terminal timestamp formats cannot be mixed')
+        started = datetime.fromisoformat(text_field(row, 'started_at_utc'))
+        finished = datetime.fromisoformat(text_field(row, 'finished_at_utc'))
+        if started.tzinfo is None or finished.tzinfo is None or started > finished:
+            raise ValueError('Root-observed allocator command completion chronology differs')
+        stamp = row['finished_at_utc']
+    else:
+        stamp = row.get('finished_at_utc') if mode == 'run' else row.get('observed_at_utc')
     if not isinstance(stamp, str) or datetime.fromisoformat(stamp).tzinfo is None:
         raise ValueError('Root-observed original public terminal timestamp absent')
     return argv
@@ -2492,6 +2684,7 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
     late_cleanup = bundle.get('closure_kind') == 'retained-wait-expired-then-native-cleanup'
     gui_os0 = bundle.get('closure_kind') == 'failed-host-gui-os0-cleanup-complete'
     preserved_os0 = bundle.get('closure_kind') == 'preserved-failure-native-process-exit-zero'
+    typed_observer = preserved_failure_typed_format(bundle)
     split_public = bundle.get('public_wait_format') == 'command-intent-process-exit-completion'
     recorded_public = bundle.get('public_wait_format') == 'recorded-actual-command-started-exit-v1'
     root_observed_public = bundle.get('public_wait_format') == 'root-observed-command-exit-v1'
@@ -2652,8 +2845,15 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
         late_facts = validate_late_native_cleanup(normal, retained, game, native, report,
             (previous/'case-output/normal-close-result.json').stat().st_mtime_ns, diagnostic)
     elif preserved_os0:
-        preserved_facts = validate_preserved_failure_native_os0(normal, retained, game, native, report,
-            original('root_window_start'), original('root_window_exit'), bundle['machine_id'])
+        machine = text_field(json_object(bundle), 'machine_id')
+        if typed_observer:
+            typed_sources = preserved_typed_observer_sources(freeze, ready, refs)
+            evidence.update({key: refs[key] for key in PRESERVED_TYPED_OBSERVER_SOURCE_KEYS})
+            preserved_facts = validate_preserved_failure_native_os0(normal, retained, game, native, report,
+                None, None, machine, typed_observer_sources=typed_sources)
+        else:
+            preserved_facts = validate_preserved_failure_native_os0(normal, retained, game, native, report,
+                original('root_window_start'), original('root_window_exit'), machine)
     elif gui_os0:
         gui_refs = _late_object(refs, 'Failed GUI original references')
         review = _failed_gui_source(gui_refs, 'manual_gui_review', previous/'case-output/normal-quit-root-result.json')

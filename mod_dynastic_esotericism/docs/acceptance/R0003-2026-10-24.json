@@ -1,0 +1,87 @@
+{
+  "schema": "xar.dynastic-esotericism.live-acceptance-summary.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T12:38:55.211679+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0003",
+  "runtime": "common-runtime-a05",
+  "keeper": "keeper-core-a18",
+  "status": "RED",
+  "business_pass": false,
+  "product_release_pass": false,
+  "root_gui_phases_passed": 0,
+  "original_exit_codes": {
+    "ck3": 0,
+    "host": 1,
+    "public_run": 2,
+    "keeper": 0
+  },
+  "screen_release_sequence": 8619,
+  "public_verify": {
+    "exit_code": 2,
+    "status": "NOT_RUN",
+    "case_contract_qualified": false,
+    "gui_contract_qualified": false,
+    "business_pass": false,
+    "normal_close_qualified": false
+  },
+  "actual_process_exit_evidence": {
+    "format": "typed-native-observer-v2",
+    "process_creation_filetime_100ns": "134373157160016545",
+    "pid": 31096,
+    "same_retained_handle_wait_result": 0,
+    "typed_normal_exit_observed": true,
+    "autosave_verified": false
+  },
+  "failures": [
+    "Four fixture loading errors remained in the original JAR: dynasty_head link, repeated debug_log quotes and two independently generated characters without location.",
+    "Caller used final-confirm collect for a nonconfirm open pending receipt; no final-confirm claim had been produced.",
+    "No GUI business phase completed; original normal-close remained unqualified."
+  ],
+  "autosave_boundary": "autosave_verified is save-integrity credit and remains false by contract even when exit autosave is disabled. R0003 did not submit disable_exit_autosave; this does not replace its preserved host error and missing normal-route evidence.",
+  "resource_closure": {
+    "scope": "administrative resource admission only",
+    "actual_consumer_exit_code": 0,
+    "normal_close_qualified": false,
+    "business_pass": false,
+    "release_pass": false,
+    "closure": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0003-preserved-failure-close-a01\\failure-close.json",
+      "bytes": 9391,
+      "sha256": "1a7f11e3719dc219f4f005586c8b69208d611eb920b8549be526e81e0f1288a6"
+    },
+    "actual_consumer": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0003-preserved-failure-close-a01\\consumer-check-final-a03.actual.json",
+      "bytes": 11727,
+      "sha256": "af691cb1d5c5b0cf7ee91e9e14474967006ea33c1e341d7e9c397a5194c9ddaf"
+    },
+    "regression_summary": "C:\\ck3-dynastic-esotericism-20261024\\typed-closure-regression-final-a01\\FINAL-SUMMARY.actual.json"
+  },
+  "evidence": {
+    "public_run": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\run-core-a18.actual.json",
+      "bytes": 1032,
+      "sha256": "db5b6a2a373b44eef0bf4ecfcac7c80bfb56f884456a9f1c120c2a0457b295fe"
+    },
+    "public_verify": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\verify-R0003.actual.json",
+      "bytes": 1207,
+      "sha256": "6e6f8624eb8903ac9dd3e3b6e6461bfe211941b7b0add2c7be56c0a5fc756264"
+    },
+    "public_verify_stdout": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\verify-R0003.stdout.log",
+      "bytes": 3755,
+      "sha256": "be30608d302252970dd4959e9331d6c2729d83630bde0c354bd6245ec2ef9cd4"
+    },
+    "screen_release": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0003-screen-release.actual.json",
+      "bytes": 1351,
+      "sha256": "c218d0acc709100ab01347d16b2543759ec1a13d06c53a3c1ec327d67a75ead2"
+    },
+    "loading_error_snapshot": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0003-loading-script-red.actual.json",
+      "bytes": 8394,
+      "sha256": "59b07b81afc4d3e3abdb21c8db00d9afac50e4c87b754c1a2225cc742d32f6ab"
+    }
+  },
+  "next_case_boundary": "Fresh common-runtime-a06, source and fixture rebuild, new state parent and real latest R0003 predecessor; no business or publication qualification."
+}

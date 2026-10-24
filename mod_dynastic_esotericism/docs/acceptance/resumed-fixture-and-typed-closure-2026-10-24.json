@@ -1,0 +1,65 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T12:43:47.442756+00:00",
+  "scope": "Resumed fixture rebuild and administrative typed resource closure",
+  "tested_product_commit": "35923604938a71be220dcdecb7bfd469b7efe548",
+  "product_master_commit": "b4a58ed38eea6f9b1d9e9d0a2b9f238ec7fe0f14",
+  "linear_rebase_only_unrelated_covers": true,
+  "product_build": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-builder-a06\\SUMMARY.actual.json",
+    "bytes": 43564,
+    "sha256": "92c26a8407ce43b6411159b411aa3504978f35f93e3431768383d895594a64c2"
+  },
+  "junit": {
+    "tests": 15,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "packaged_resources_matching": 15,
+  "development_package_files": 17,
+  "core_fixture_files": 13,
+  "fixture_producer_pins_matching": 14,
+  "typed_failure_regression": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\typed-closure-regression-final-a01\\FINAL-SUMMARY.actual.json",
+    "bytes": 4543,
+    "sha256": "e7ab98fac0fed3d406e1e313267b2ac37cd19ede18e9f5545ad48cc55236d7f8"
+  },
+  "resource_tests": 22,
+  "same_ci_step_other_tests": [
+    13,
+    12
+  ],
+  "split_public_history_tests": 20,
+  "actual_R1_GUI_consumer": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\typed-closure-regression-final-a01\\R0001-original-consumer.actual.json",
+    "bytes": 9915,
+    "sha256": "7722407cfd8acc80cef89fb8446906dbab63b04b1d1a34b08ec8365e18899e89"
+  },
+  "actual_R3_typed_consumer": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\R0003-preserved-failure-close-a01\\consumer-check-final-a03.actual.json",
+    "bytes": 11727,
+    "sha256": "af691cb1d5c5b0cf7ee91e9e14474967006ea33c1e341d7e9c397a5194c9ddaf"
+  },
+  "strict_scope": "8 complete actual production definitions plus actual preserved consumer dispatch statements, within final 22 tests; not the full historical allocator module",
+  "capacity": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\capacity\\RESUME-CAPACITY-ADMISSION-r1158.actual.json",
+    "bytes": 8166,
+    "sha256": "0921ac40da92aedda2ce712e1557f54ce2caa51e409bc582268dd45cde028c66"
+  },
+  "installed_game": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-installed-game.actual.json",
+    "bytes": 6476,
+    "sha256": "99c9d739eb264ef68932d4abd5c8787abe36d07dbc92879b6c0c91a4b70f78b4"
+  },
+  "initial_background_offline": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-initial-steam-offline.actual.json",
+    "bytes": 2461,
+    "sha256": "7c4a7d9863bfe3b1c1317d005f24f0c58db74dd45411784d03e2f3ee51c219db"
+  },
+  "not_current_launch_qualification": true,
+  "business_pass": false,
+  "product_release_pass": false,
+  "normal_close_qualified": false,
+  "semantic_profile": "ck3-1.20.0.4 UNSUPPORTED; prior grammar parse only"
+}

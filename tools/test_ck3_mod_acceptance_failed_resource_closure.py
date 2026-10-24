@@ -1,5 +1,7 @@
 """Offline regression for an actual failed-case resource boundary, with no process queries."""
 from __future__ import annotations
+import ast
+import copy
 import json
 from pathlib import Path
 import sys
@@ -11,6 +13,7 @@ from unittest.mock import patch
 TOOLS=Path(__file__).resolve().parent
 if str(TOOLS) not in sys.path:sys.path.insert(0,str(TOOLS))
 import ck3_mod_acceptance_allocate as allocation
+from ck3_mod_acceptance_background_types import FilePin, JsonObject, json_object, object_field, text_field
 
 
 class FailedResourceClosureTests(unittest.TestCase):
@@ -147,6 +150,349 @@ class FailedResourceClosureTests(unittest.TestCase):
         self.bundle['normal_close_result_original']=self.normal
         self.amend_original('original_normal_close_result',self.normal)
         with self.assertRaisesRegex(ValueError,'claims PASS'):self.check()
+
+
+class PreservedObserverClosureTests(unittest.TestCase):
+    """Actual SDK claim/observer/wire producers reach the full resource consumer.
+
+    The surrounding host/keeper files and process absence are synthetic. The
+    original SDK writes its own once claim, pending/final fact and handle-close
+    receipts; no game, native process, queue or task-bus operation is invoked.
+    """
+
+    def setUp(self) -> None:
+        import test_ck3_mod_acceptance_split_public_closure as existing
+        repo = TOOLS.parent
+        sys.path[:0] = [str(repo/'ck3_autonomous_player/src'), str(repo/'ck3_autonomous_player/tests/unit')]
+        from test_normal_exit_integrated_v1 import FakeExitDriver, driver_module
+        from xar_autoplayer.bridge.normal_exit_public_wire_v2 import normal_exit_public_result_v2
+
+        self.fixture = existing.SplitPublicClosureTests()
+        self.addCleanup(self.fixture.doCleanups)
+        self.fixture.setUp()
+        f = self.fixture
+        self.source_root = Path(str(f.freeze['source_root']))
+        self.requests = f.state/'native-session/normal-exit-map-requests'
+        self.inventory_pin = self.write(f.state/'profile/normal-exit-source-inventory-v1.json',
+            {'schema': 'SYNTHETIC_SOURCE_INVENTORY_NO_GAME'})
+        profile_pin = self.write(f.run_dir/'normal-exit-binding/normal-exit-managed-profile.json',
+            {'schema_version': 1, 'state_directory': str(f.state), 'evidence_directory': str(f.run_dir),
+             'normal_exit_source_inventory': {'path': self.inventory_pin['path'], 'sha256': self.inventory_pin['sha256']}})
+        self.sdk_pins: dict[str, FilePin] = {}
+        for key, name in (('normal_exit_wire_source', 'normal_exit_public_wire_v2.py'),
+                          ('normal_exit_observer_source', 'normal_exit_pending_observer_v1.py'),
+                          ('normal_exit_process_source', 'normal_exit_process_observer_v1.py')):
+            relative = Path('ck3_autonomous_player/src/xar_autoplayer/bridge')/name
+            path = self.source_root/relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes((repo/relative).read_bytes())
+            self.sdk_pins[key] = allocation.pin(path)
+        # Match R0003's real graph: wire is in source-index.files, without a
+        # duplicate direct frozen-argv.files entry.
+        self.index = {'schema': 'ck3-shared-source-frozen-successor-v1',
+                      'machine_id': f.machine, 'files': list(self.sdk_pins.values())}
+        index_pin = self.write(self.source_root.parent/'source-index.json', self.index)
+        refs = f.refs
+        refs.update(self.sdk_pins)
+        refs.update(normal_exit_profile=profile_pin, normal_exit_source_inventory=self.inventory_pin,
+                    normal_exit_frozen_source_index=index_pin)
+        f.freeze['files'] = {pin['path']: {'bytes': pin['bytes'], 'sha256': pin['sha256']}
+                             for pin in (profile_pin, self.inventory_pin, index_pin)}
+        f.reseal('frozen_argv', f.freeze)
+        ready = json_object(json.loads(Path(str(json_object(f.refs['ready_context'])['path'])).read_bytes()))
+        ready['normal_exit_managed_profile'] = profile_pin
+        ready['frozen_argv'] = f.refs['frozen_argv']
+        f.reseal('ready_context', ready)
+
+        driver = FakeExitDriver(f.state/'native-session')
+        driver.path.mkdir(parents=True)
+        driver.remain_pending = True
+        driver.normal_exit_managed_profile['normal_exit_source_inventory'] = {
+            'path': self.inventory_pin['path'], 'sha256': self.inventory_pin['sha256']}
+        with patch.object(driver_module, 'verify_source_inventory_v1',
+                          return_value={'source_inventory_sha256': self.inventory_pin['sha256']}):
+            first = driver.query_normal_exit_context_v1(expected_revision=72)
+            driver.request_normal_exit_v1('prepare_confirmation', expected_revision=72,
+                expected_exit_context_signature=first['exit_context_signature'])
+            context = driver.query_normal_exit_context_v1(expected_revision=72)
+            confirm = driver.request_normal_exit_v1('confirm_desktop', expected_revision=72,
+                expected_exit_context_signature=context['exit_context_signature'])
+            pending = driver.observe_normal_exit_v1()
+            driver.api.wait_result, driver.api.code = 0, 0
+            final = driver.observe_normal_exit_v1()
+        self.birth = str(driver.api.creation)
+        self.final = json_object(normal_exit_public_result_v2(final))
+        self.confirm = json_object(normal_exit_public_result_v2(confirm))
+        for key, field in (('typed_exit_observer_receipt', 'receipt_path'),
+                           ('typed_exit_observer_close', 'observer_close_receipt_path'),
+                           ('typed_exit_confirm_claim', 'claim_path')):
+            refs[key] = allocation.pin(Path(text_field(self.final, field)))
+        f.bundle.update(closure_kind='preserved-failure-native-process-exit-zero',
+            public_wait_format='root-observed-command-exit-v1', process_exit_evidence_format='typed-native-observer-v2')
+        f.bundle.pop('failed_query')
+        for mode, code in (('run', 2), ('allocate', 0)):
+            command = existing.obj(f.leaves[mode+'_command'])
+            wait = {'machine_id': f.machine, 'argv': command['argv'], 'exit_code': code,
+                    'started_at_utc': '2026-10-24T10:00:00+00:00',
+                    'finished_at_utc': '2026-10-24T11:00:00+00:00'}
+            refs[mode+'_wait'] = self.write(f.root/(mode+'-root.actual.json'), wait)
+        error = 'SYNTHETIC preserved original business failure'
+        f.native.update(pid=43, process_exit_code=0, exit_reason='process_exit',
+                        finished_at='2026-10-24T10:58:00+00:00')
+        shutdown = existing.obj(f.native['shutdown'])
+        shutdown.update(ck3_pid=43, ck3_exit_code=0, job_active_processes_before_termination=0)
+        f.native['shutdown'] = shutdown
+        session = existing.obj(f.native_report['session'])
+        session['report'] = f.native
+        f.native_report['session'] = session
+        after = {'status': 'failure_shutdown_lifecycle_only', 'business_pass': False,
+                 'normal_close_qualified': False, 'process_exit_zero_proof': {
+                     'managed_session_done': True, 'pid': 43, 'exit_reason': 'process_exit',
+                     'process_exit_code': 0, 'shutdown': shutdown}}
+        game = existing.obj(f.leaves['retained_identity'])
+        game['pid'] = 43
+        retained = {**game, 'signaled': True, 'exit_code': 0, 'actual_retained_os0': True}
+        f.normal.update(retained_handle=retained, failure_preserved=True,
+            failure_shutdown_proof=after, host_error=error, managed_thread_finished=True,
+            cleanup_ok=True, host_finished_at='2026-10-24T10:59:00+00:00')
+        f.native_report.update(error=error, finished_at=f.normal['host_finished_at'], steps=[
+            {'id': 'original-business-error', 'ok': False, 'plan': {'kind': 'query'}, 'error': error},
+            {'ok': True, 'plan': {'tool': 'ck3_request_normal_exit_v1', 'args': {'action': 'confirm_desktop'}},
+             'result': self.confirm},
+            {'ok': True, 'plan': {'tool': 'ck3_observe_normal_exit_v1'},
+             'result': normal_exit_public_result_v2(pending)},
+            {'ok': True, 'plan': {'tool': 'ck3_observe_normal_exit_v1'}, 'result': self.final},
+            {'ok': True, 'plan': {'kind': 'finish_hold', 'failure_shutdown': True},
+             'result': {'hold_finished': True, 'failure_preserved': True, 'host_error': error,
+                        'business_pass': False, 'normal_close_qualified': False},
+             'after_snapshot': after, 'finished_at': '2026-10-24T10:58:30+00:00'}])
+        f.reseal('retained_identity', game)
+        f.reseal('retained_exit', retained)
+        f.reseal('normal_close', f.normal)
+        f.reseal('native_report', f.native_report)
+        self.driver = driver
+
+    def write(self, path: Path, value: object) -> FilePin:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(value)+'\n', encoding='utf-8')
+        return allocation.pin(path)
+
+    def save(self) -> None:
+        self.fixture.write(self.fixture.close, self.fixture.bundle)
+
+    def check(self) -> JsonObject:
+        return json_object(self.fixture.check())
+
+    def test_actual_sdk_pending_then_terminal_producer_to_full_consumer_roundtrip(self) -> None:
+        original = {key: Path(str(json_object(value)['path'])).read_bytes()
+                    for key, value in self.fixture.refs.items()}
+        proof = object_field(self.check(), 'failure_cleanup')
+        self.assertEqual(proof['win32_birth_filetime'], self.birth)
+        self.assertIs(proof['actual_retained_os0'], True)
+        self.assertIs(proof['failure_lifecycle_completed'], True)
+        self.assertIs(proof['original_normal_close_lifecycle_completed'], False)
+        for key in ('normal_close_qualified', 'typed_normal_exit_proven', 'business_pass', 'release_pass'):
+            self.assertIs(proof[key], False)
+        self.assertIs(self.final['autosave_verified'], False)
+        self.assertEqual(sum(row[0] == 'close' for row in self.driver.api.calls), 3)
+        self.assertEqual(original, {key: Path(str(json_object(value)['path'])).read_bytes()
+                                   for key, value in self.fixture.refs.items()})
+        serialized = json.loads(json.dumps(self.fixture.bundle))
+        self.fixture.bundle = serialized
+        self.save()
+        self.assertEqual(object_field(self.check(), 'failure_cleanup')['win32_birth_filetime'], self.birth)
+
+    def test_historical_gui_window_format_remains_a_separate_valid_route(self) -> None:
+        f = self.fixture
+        f.bundle.pop('process_exit_evidence_format')
+        for key in allocation.PRESERVED_TYPED_OBSERVER_SOURCE_KEYS:
+            f.refs.pop(key)
+        f.refs['root_window_start'] = self.write(f.root/'root-window-start.json',
+            {'machine_id': f.machine, 'pid': 43, 'birth_filetime': self.birth})
+        f.refs['root_window_exit'] = self.write(f.root/'root-window-exit.json',
+            {'machine_id': f.machine, 'pid': 43, 'opened': True, 'exit_code_read': True,
+             'wait_result': 0, 'actual_exit_code': 0})
+        # Historical allocator snapshots retain their observed timestamp.
+        wait = json_object(json.loads(Path(str(json_object(f.refs['allocate_wait'])['path'])).read_bytes()))
+        wait.pop('started_at_utc'); wait.pop('finished_at_utc')
+        wait['observed_at_utc'] = '2026-10-24T11:00:00+00:00'
+        f.reseal('allocate_wait', wait)
+        self.assertEqual(object_field(self.check(), 'failure_cleanup')['win32_birth_filetime'], self.birth)
+
+    def test_mixed_and_missing_explicit_formats_are_rejected(self) -> None:
+        f = self.fixture
+        f.refs['root_window_start'] = self.write(f.root/'mixed.json', {})
+        self.save()
+        with self.assertRaisesRegex(ValueError, 'mix GUI'):
+            self.check()
+        f.refs.pop('root_window_start'); f.bundle.pop('process_exit_evidence_format'); self.save()
+        with self.assertRaisesRegex(ValueError, 'explicit evidence format'):
+            self.check()
+
+    def test_changed_original_receipt_is_rejected_before_use(self) -> None:
+        path = Path(str(json_object(self.fixture.refs['typed_exit_observer_receipt'])['path']))
+        path.write_bytes(path.read_bytes()+b' ')
+        with self.assertRaisesRegex(ValueError, 'original bytes changed'):
+            self.check()
+
+    def test_other_state_and_unfrozen_sdk_source_are_rejected(self) -> None:
+        f = self.fixture
+        path = f.root/'other-state/normal-exit-map-requests/claim.json'
+        value = json.loads(Path(str(json_object(f.refs['typed_exit_confirm_claim'])['path'])).read_bytes())
+        f.refs['typed_exit_confirm_claim'] = self.write(path, value); self.save()
+        with self.assertRaisesRegex(ValueError, 'allocated state directory'):
+            self.check()
+        f.refs['typed_exit_confirm_claim'] = allocation.pin(Path(text_field(self.final, 'claim_path')))
+        f.refs['normal_exit_wire_source'] = self.write(f.root/'normal_exit_public_wire_v2.py', {})
+        self.save()
+        with self.assertRaisesRegex(ValueError, 'different frozen source'):
+            self.check()
+
+    def test_bool_float_missing_null_and_rounded_public_identity_are_rejected(self) -> None:
+        f = self.fixture
+        report = copy.deepcopy(f.native_report)
+        for value in (True, 1.0, None, int(self.birth), str(int(float(self.birth)))):
+            with self.subTest(value=value):
+                bad = copy.deepcopy(report)
+                json_object(bad)  # Prove the fixture remains in the JSON domain.
+                final = next(row['result'] for row in bad['steps'] if
+                             row.get('result', {}).get('schema') == 'ck3-normal-exit-process-observation-result-v2'
+                             and row['result'].get('process_exit_observed') is True)
+                final['process_creation_filetime_100ns'] = value
+                f.reseal('native_report', bad)
+                with self.assertRaises(ValueError):
+                    self.check()
+        bad = copy.deepcopy(report)
+        final = next(row['result'] for row in bad['steps'] if
+                     row.get('result', {}).get('process_exit_observed') is True)
+        final.pop('process_creation_filetime_100ns')
+        f.reseal('native_report', bad)
+        with self.assertRaises(ValueError):
+            self.check()
+
+    def test_source_inventory_claim_and_handle_must_match_original_confirmation(self) -> None:
+        f = self.fixture
+        path = Path(str(json_object(f.refs['typed_exit_confirm_claim'])['path']))
+        original = json_object(json.loads(path.read_bytes()))
+        for key, value in (('source_inventory_sha256', 'a'*64), ('request_id', 'other-confirm'),
+                           ('process_preconfirm_pin', {}), ('exit_context_signature', 'a'*64)):
+            with self.subTest(key=key):
+                f.reseal('typed_exit_confirm_claim', {**original, key: value})
+                with self.assertRaises(ValueError):
+                    self.check()
+
+    def test_wrong_close_identity_and_unknown_format_cannot_grant_resource_credit(self) -> None:
+        f = self.fixture
+        for value in (None, True, 'typed-native-observer-v1'):
+            with self.subTest(format=value):
+                f.bundle['process_exit_evidence_format'] = value; self.save()
+                with self.assertRaisesRegex(ValueError, 'evidence format'):
+                    self.check()
+        f.bundle['process_exit_evidence_format'] = 'typed-native-observer-v2'
+        path = Path(str(json_object(f.refs['typed_exit_observer_close'])['path']))
+        original = json_object(json.loads(path.read_bytes()))
+        for key, value in (('pid', True), ('pid', 43.0), ('creation_filetime_100ns', True),
+                           ('creation_filetime_100ns', float(self.birth)),
+                           ('retained_handle_token', 'other-handle'), ('close_error', 'failed')):
+            with self.subTest(key=key, value=value):
+                f.reseal('typed_exit_observer_close', {**original, key: value})
+                with self.assertRaises(ValueError):
+                    self.check()
+        missing = dict(original); missing.pop('close_error')
+        f.reseal('typed_exit_observer_close', missing)
+        with self.assertRaises(ValueError):
+            self.check()
+
+    def test_frozen_source_index_requires_original_version_machine_and_unique_wire(self) -> None:
+        f = self.fixture
+        index_path = Path(str(json_object(f.refs['normal_exit_frozen_source_index'])['path']))
+        original = json_object(json.loads(index_path.read_bytes()))
+        for key, value in (('schema', None), ('schema', 'other-index-v1'), ('machine_id', 'other-machine'),
+                           ('files', [self.sdk_pins['normal_exit_wire_source']]*2)):
+            with self.subTest(key=key, value=value):
+                ref = self.write(index_path, {**original, key: value})
+                f.refs['normal_exit_frozen_source_index'] = ref
+                files = json_object(f.freeze['files'])
+                files[ref['path']] = {'bytes': ref['bytes'], 'sha256': ref['sha256']}
+                f.freeze['files'] = files
+                f.reseal('frozen_argv', f.freeze)
+                with self.assertRaises(ValueError):
+                    self.check()
+
+    def test_actual_modified_consumer_scope_is_strict(self) -> None:
+        from mypy import api
+        source = TOOLS/'ck3_mod_acceptance_allocate.py'
+        tree = ast.parse(source.read_text(encoding='utf-8-sig'))
+        names = {'PreservedFailureOS0Facts', 'PreservedTypedObserverSources',
+                 'preserved_failure_typed_format', 'preserved_typed_observer_sources',
+                 'validate_preserved_typed_observer', '_late_integer',
+                 'validate_preserved_failure_native_os0', 'validate_root_observed_public_exit'}
+        nodes = [node for node in tree.body if isinstance(node, (ast.ClassDef, ast.FunctionDef))
+                 and node.name in names]
+        self.assertEqual({node.name for node in nodes}, names)
+        prelude = '''from __future__ import annotations
+from typing import Literal, TypedDict
+from collections.abc import Callable
+from datetime import datetime
+from pathlib import Path
+import json, math, re
+from ck3_mod_acceptance_background_types import FilePin, JsonObject, json_object, file_pin, object_field, text_field, strings_field
+from ck3_mod_acceptance import _verification_actual_pin_v1
+'''
+        constants = [node for node in tree.body if isinstance(node, ast.Assign) and
+                     any(isinstance(target, ast.Name) and target.id == 'PRESERVED_TYPED_OBSERVER_SOURCE_KEYS'
+                         for target in node.targets)]
+        self.assertEqual(len(constants), 1)
+        consumer = next(node for node in tree.body if isinstance(node, ast.FunctionDef)
+                        and node.name == 'previous_failed_live_resource_closure')
+        branches = [node for node in ast.walk(consumer) if isinstance(node, ast.If)
+                    and isinstance(node.test, ast.Name) and node.test.id == 'preserved_os0']
+        self.assertEqual(len(branches), 1)
+        dispatch = ast.parse('''def checked_dispatch(freeze: JsonObject, ready: JsonObject,
+        refs: JsonObject, evidence: JsonObject, bundle: JsonObject, typed_observer: bool,
+        normal: object, retained: object, game: object, native: object, report: object,
+        original: Callable[[str], object]) -> PreservedFailureOS0Facts:
+    pass
+''').body[0]
+        self.assertIsInstance(dispatch, ast.FunctionDef)
+        dispatch.body = copy.deepcopy(branches[0].body)+[ast.Return(value=ast.Name(id='preserved_facts', ctx=ast.Load()))]
+        actual = prelude+ast.unparse(ast.fix_missing_locations(
+            ast.Module(body=[*constants, *nodes, dispatch], type_ignores=[])))
+        stdout, stderr, code = api.run(['--strict', '--strict-equality', '--follow-imports=silent',
+            '--no-incremental', '--cache-dir', 'nul', '-c', actual])
+        self.assertEqual(code, 0, stdout+stderr)
+
+
+class RootObservedCompletionTests(unittest.TestCase):
+    def example(self) -> JsonObject:
+        return {'machine_id': 'authored-machine', 'exit_code': 0,
+                'argv': ['python.exe', 'ck3_mod_acceptance.py', 'allocate'],
+                'started_at_utc': '2026-10-24T10:00:00+00:00',
+                'finished_at_utc': '2026-10-24T11:00:00+00:00'}
+
+    def test_explicit_original_timestamp_shapes_remain_readable(self) -> None:
+        current = self.example()
+        expected = ['python.exe', 'ck3_mod_acceptance.py', 'allocate']
+        self.assertEqual(allocation.validate_root_observed_public_exit(
+            current, 'authored-machine', 'allocate', 0), expected)
+        current.pop('started_at_utc'); current.pop('finished_at_utc')
+        current['observed_at_utc'] = '2026-10-24T11:00:00+00:00'
+        self.assertEqual(allocation.validate_root_observed_public_exit(
+            current, 'authored-machine', 'allocate', 0), expected)
+
+    def test_wrong_missing_mixed_or_reversed_completion_fails(self) -> None:
+        for field, value in (('started_at_utc', None), ('finished_at_utc', True),
+                             ('started_at_utc', '2026-10-24T12:00:00+00:00'),
+                             ('finished_at_utc', '2026-10-24T11:00:00'),
+                             ('observed_at_utc', '2026-10-24T11:00:00+00:00'),
+                             ('exit_code', False), ('exit_code', 0.0)):
+            with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                allocation.validate_root_observed_public_exit(
+                    {**self.example(), field: value}, 'authored-machine', 'allocate', 0)
+        for field in ('started_at_utc', 'finished_at_utc'):
+            bad = self.example(); bad.pop(field)
+            with self.subTest(missing=field), self.assertRaises(ValueError):
+                allocation.validate_root_observed_public_exit(bad, 'authored-machine', 'allocate', 0)
 
 
 if __name__=='__main__':unittest.main()
