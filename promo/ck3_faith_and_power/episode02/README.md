@@ -1,5 +1,9 @@
 # CK3:信仰引擎 第二期
 
+**正式标题：** 【CK3:信仰引擎#2】朝圣到底赚什么？讲透花费、虔诚与朝圣者成长
+
+2026-10-24由用户选定；与[系列标题表](../README.md)一致。旧稿及历史交付中的《朝圣在奖励什么？》保留为制作暂名。
+
 **当前审阅版：[V8图标一致性修订版——29分30.93秒，1440p](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/v8-clarity-20261024-a01/icon-consistency-a01/sample/build-a01/native-run/derived/direct/episode02-review.mp4)。** 2026-10-24，`machine_id: 4-8e1c2f1861`：135张实际路由图片的配置已审计，19张卡片统一同级图标，62处重复引用同步。整片自动检查、109份工件核对和19张修订卡最终帧查看通过；三种字幕与讲稿沿用上一版原字节，完整人工1×听看待审。[本轮制作记录](docs/production-v8-icon-consistency-2026-10-24.md)；[双语字幕](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/v8-clarity-20261024-a01/icon-consistency-a01/sample/build-a01/native-run/derived/direct/text/episode02.bilingual.srt)；[配套讲稿](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/v8-clarity-20261024-a01/icon-consistency-a01/sample/build-a01/native-run/derived/direct/text/episode02-script.md)。六项内容修订与前轮来源见[原V8记录](docs/production-v8-local-review-2026-10-24.md)，旧交付保留历史身份。
 
 **历史审阅版：[V7《朝圣在奖励什么？》——22分49.6秒，1440p](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/final-render-a01/sample/build-a03/native-run/derived/direct/episode02-review.mp4)。** 2026-10-24，`machine_id: 4-8e1c2f1861`：已嵌入原版图标、31处界面与规则组合画面，补拍普通虔诚报价及朝觐者／朝圣者共存，并加入学识、文化勇武及诺斯替主义条件收益。全片自动音画／时间戳／配乐检查与10张最终帧抽查通过，完整人工听看待审。[制作记录、补镜位置与能力边界](docs/production-v7-local-review-2026-10-24.md)；[双语字幕](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/final-render-a01/sample/build-a03/native-run/derived/direct/text/episode02.bilingual.srt)。下列V6及旧交接保留各自历史状态。
