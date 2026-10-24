@@ -1,0 +1,270 @@
+diff --git a/mod_dynastic_esotericism/docs/acceptance/operator-runbook.md b/mod_dynastic_esotericism/docs/acceptance/operator-runbook.md
+index 0c2498465c7b5df0b6d9d3a46e6931a8b36aa07a..7e8bf8aff3d69ca68a3113e796d34efb08ff0185 100644
+--- a/mod_dynastic_esotericism/docs/acceptance/operator-runbook.md
++++ b/mod_dynastic_esotericism/docs/acceptance/operator-runbook.md
+@@ -58 +58 @@ java -jar C:/ck3-dynastic-esotericism-20261024/java-build/dynastic-esotericism-t
+-Root 在真实分配前完成存储原子准入、干净 checkout 和屏幕 owner 前置。受管启动前用公共后台 Steam probe 取得新鲜 `offline=true` 回执。未知状态不能启动。本次开局前声明固定 hold 3600 秒、整个命令 5400 秒、readiness 1800 秒、正常退出保留 180 秒；400 自然日上限覆盖真实 280 日妊娠、出生翌日和 31 日维护观察。运行中不延长冻结 deadline。
++Root 在真实分配前完成存储原子准入、干净 checkout 和屏幕 owner 前置。受管启动前用公共后台 Steam probe 取得新鲜 `offline=true` 回执。未知状态不能启动。R0001–R0003 的固定 hold 3600 秒、整个命令 5400 秒及原失败记录保留。R0004 分配前改为固定 hold 9000 秒、整个命令 10800 秒，readiness 1800 秒、正常退出保留 180 秒、400 自然日上限保持。依据是 R0003 实际单日动作 8.566 秒，加后续队列／snapshot 约 3.749 秒；仅 400 日的规划估计已约 82 分钟，另需原生 GUI 和退出时间。该估计不代表业务通过，也不延长任何已冻结场次的 deadline。
+@@ -69,0 +70,2 @@ Root 在真实分配前完成存储原子准入、干净 checkout 和屏幕 owne
++R0004 起，首个 phase 等待实际 `DESAF: TEST PASS fixture_ready`，不按“已到第 1 日”推算延迟事件已执行。准备 fixture 不改角色 Faith；保留开局 Catholic／Roman Rite，实际知识、无先知、资源和原生 `Can` 均须重新读回，不能把儒家身份当作前提。
++
+@@ -89 +91 @@ Root 在真实分配前完成存储原子准入、干净 checkout 和屏幕 owne
+-6. 返回 pending 时仅用 `ck3_collect_player_rite_creation_action_result_v1(action_request_id)` 收集原请求；UNKNOWN 不重放。
++6. 仅对 `confirm_once` 的 pending 结果调用 `ck3_collect_player_rite_creation_action_result_v1(action_request_id)` 收集原最终确认。非 confirm 操作没有此 final-confirm claim；开窗 pending 时保留原 receipt，不重放，用原 action context 的 `observation=draft/current_rite` 独立观察，再按真实草案查询 groups。UNKNOWN 不重放。
+diff --git a/mod_dynastic_esotericism/docs/test-plan.md b/mod_dynastic_esotericism/docs/test-plan.md
+index 5bae5d949d6030f4b798722db29b7c8a29bfff39..251918269e3e95e0ee72651231243e4724ffa7bc 100644
+--- a/mod_dynastic_esotericism/docs/test-plan.md
++++ b/mod_dynastic_esotericism/docs/test-plan.md
+@@ -45,0 +46,2 @@
++2026-10-24 R0003 后、R0004 分配前调整：首次 GUI phase 以实际 `DESAF: TEST PASS fixture_ready` 为门槛；原准备事件使用 `days = 1`，到第 1 日不能替代事件、知识及资金后态。开局保留原 Catholic／Roman Rite，最终资格按原生草案 `Can` 验证。R0003 实际单日动作耗时 8.566 秒，至后续 snapshot 完成共约 12.315 秒；400 日的纯日推进规划估计约 82 分钟。故下一场预先固定 hold 9000 秒、整体 timeout 10800 秒，readiness 1800 秒、正常退出预留 180 秒、400 自然日上限不变。R0001–R0003 原输入、3600／5400 秒预算及 RED 结果不修改；运行中仍不得延长 deadline。此安排与语法修正均不授予业务通过。
++
+diff --git a/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/scripted_effects/des_acceptance_effects.txt b/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/scripted_effects/des_acceptance_effects.txt
+index 8f3eb44a4d2775eb7a51f2289603a25962796eac..5847bfc48a29543a4002bbe9a641f2c579b68baf 100644
+--- a/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/scripted_effects/des_acceptance_effects.txt
++++ b/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/scripted_effects/des_acceptance_effects.txt
+@@ -27 +27 @@ des_acceptance_positive_pair_effect = {
+-        debug_log = "$PASS$"
++        debug_log = $PASS$
+@@ -29 +29 @@ des_acceptance_positive_pair_effect = {
+-    else = { debug_log = "$FAIL$" }
++    else = { debug_log = $FAIL$ }
+@@ -41 +41 @@ des_acceptance_negative_pair_effect = {
+-        debug_log = "$PASS$"
++        debug_log = $PASS$
+@@ -43 +43 @@ des_acceptance_negative_pair_effect = {
+-    else = { debug_log = "$FAIL$" }
++    else = { debug_log = $FAIL$ }
+diff --git a/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/scripted_effects/des_acceptance_extended_effects.txt b/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/scripted_effects/des_acceptance_extended_effects.txt
+index 8f77145a5e2df1c68f93dee1bfa782bd2c57f7c4..953ef2229641dbdbd68e22d7edc967ba0cd3998e 100644
+--- a/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/scripted_effects/des_acceptance_extended_effects.txt
++++ b/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/scripted_effects/des_acceptance_extended_effects.txt
+@@ -21 +21 @@ des_acceptance_extended_setup_effect = {
+-			create_character = { age = 18 gender_female_chance = 0 father = root culture = root.culture faith = faith:orthodox rite = rite:byzantine_rite dynasty_house = root.house random_traits = no save_scope_as = des_test_old_descendant }
++			create_character = { location = root.location age = 18 gender_female_chance = 0 father = root culture = root.culture faith = faith:orthodox rite = rite:byzantine_rite dynasty_house = root.house random_traits = no save_scope_as = des_test_old_descendant }
+diff --git a/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_acceptance_events.txt b/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_acceptance_events.txt
+index b752b8d3564177a43bb242dfb3b25be3dbb05144..47f94fe50b9ec27f9390422cbb7844c7a339f05e 100644
+--- a/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_acceptance_events.txt
++++ b/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_acceptance_events.txt
+@@ -15 +15 @@ des_acceptance.1 = {
+-        create_character = { age = 30 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = des_test_outsider }
++        create_character = { location = root.location age = 30 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = des_test_outsider }
+diff --git a/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_acceptance_extended_events.txt b/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_acceptance_extended_events.txt
+index 566b3a77cd483a50db1dea8cea56f4754acd0405..a4ce5b212d94e8303fb5aa2f06ff0ee2fc6335e0 100644
+--- a/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_acceptance_extended_events.txt
++++ b/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_acceptance_extended_events.txt
+@@ -280 +280 @@ des_acceptance_extended.51 = {
+-				scope:des_test_second_dynasty = { var:des_bound_rite = scope:des_test_second_rite exists = dynasty_head dynasty_head = { is_alive = yes NOT = { this = scope:des_test_second_founder } } }
++				scope:des_test_second_dynasty = { var:des_bound_rite = scope:des_test_second_rite exists = dynast dynast = { is_alive = yes NOT = { this = scope:des_test_second_founder } } }
+diff --git a/tools/ck3_mod_acceptance_allocate.py b/tools/ck3_mod_acceptance_allocate.py
+index 36ec11afe6a50af0df42bfdadf559a6254a79d93..e037f5b2487040228682dad362efa0be68ea3d21 100644
+--- a/tools/ck3_mod_acceptance_allocate.py
++++ b/tools/ck3_mod_acceptance_allocate.py
+@@ -1848,0 +1849,126 @@ class PreservedFailureOS0Facts(TypedDict):
++class PreservedTypedObserverSources(TypedDict):
++    receipt_pin: FilePin
++    receipt: JsonObject
++    close_pin: FilePin
++    close: JsonObject
++    claim_pin: FilePin
++    claim: JsonObject
++    inventory_pin: FilePin
++
++
++PRESERVED_TYPED_OBSERVER_SOURCE_KEYS = (
++    'typed_exit_observer_receipt', 'typed_exit_observer_close', 'typed_exit_confirm_claim',
++    'normal_exit_profile', 'normal_exit_source_inventory', 'normal_exit_wire_source',
++    'normal_exit_observer_source', 'normal_exit_process_source')
++
++
++def preserved_typed_observer_sources(freeze_value: object, ready_value: object,
++        refs_value: object) -> PreservedTypedObserverSources:
++    """Read the same original SDK receipt/profile/sources, never a GUI projection."""
++    freeze, ready, refs = (json_object(value) for value in (freeze_value, ready_value, refs_value))
++    pins: dict[str, FilePin] = {}
++    for key in PRESERVED_TYPED_OBSERVER_SOURCE_KEYS:
++        ref = file_pin(refs.get(key))
++        if set(object_field(refs, key)) != {'path', 'bytes', 'sha256'} or ref['bytes'] > 1048576:
++            raise ValueError('Bounded exact typed observer original pin required: ' + key)
++        path = Path(ref['path']).resolve()
++        if path.is_symlink() or _verification_actual_pin_v1(path) != ref:
++            raise ValueError('Typed observer original bytes changed: ' + key)
++        pins[key] = ref
++    files = object_field(freeze, 'files')
++    for key in ('normal_exit_profile', 'normal_exit_source_inventory', 'normal_exit_wire_source',
++                'normal_exit_observer_source', 'normal_exit_process_source'):
++        ref = pins[key]
++        if files.get(ref['path']) != {'bytes': ref['bytes'], 'sha256': ref['sha256']}:
++            raise ValueError('Typed observer source/profile is not an original frozen input: ' + key)
++    root = Path(text_field(freeze, 'source_root')).resolve()
++    for key, name in (('normal_exit_wire_source', 'normal_exit_public_wire_v2.py'),
++                      ('normal_exit_observer_source', 'normal_exit_pending_observer_v1.py'),
++                      ('normal_exit_process_source', 'normal_exit_process_observer_v1.py')):
++        path = Path(pins[key]['path']).resolve()
++        if not path.is_relative_to(root) or path.name != name:
++            raise ValueError('Typed observer SDK source belongs to a different frozen source')
++    profile_ref = pins['normal_exit_profile']
++    profile = json_object(json.loads(Path(profile_ref['path']).read_bytes()))
++    inventory = object_field(profile, 'normal_exit_source_inventory')
++    if (ready.get('normal_exit_managed_profile') != profile_ref
++            or inventory != {'path': pins['normal_exit_source_inventory']['path'],
++                             'sha256': pins['normal_exit_source_inventory']['sha256']}
++            or Path(text_field(profile, 'state_directory')).resolve() != Path(text_field(freeze, 'state_dir')).resolve()
++            or Path(text_field(profile, 'evidence_directory')).resolve().name != freeze.get('run_id')):
++        raise ValueError('Typed observer original profile/inventory crossed the allocated run')
++    return PreservedTypedObserverSources(
++        receipt_pin=pins['typed_exit_observer_receipt'],
++        receipt=json_object(json.loads(Path(pins['typed_exit_observer_receipt']['path']).read_bytes())),
++        close_pin=pins['typed_exit_observer_close'],
++        close=json_object(json.loads(Path(pins['typed_exit_observer_close']['path']).read_bytes())),
++        claim_pin=pins['typed_exit_confirm_claim'],
++        claim=json_object(json.loads(Path(pins['typed_exit_confirm_claim']['path']).read_bytes())),
++        inventory_pin=pins['normal_exit_source_inventory'])
++
++
++def validate_preserved_typed_observer(report_value: object, sources: PreservedTypedObserverSources,
++        pid: int) -> str:
++    from xar_autoplayer.bridge.normal_exit_public_wire_v2 import (
++        normal_exit_public_result_v2, parse_normal_exit_public_result_v2)
++    report = json_object(report_value)
++    steps = report.get('steps')
++    if not isinstance(steps, list):
++        raise ValueError('Original typed observer steps required')
++    rows = [json_object(row) for row in steps]
++    observed = [row for row in rows if object_field(row, 'plan').get('tool') == 'ck3_observe_normal_exit_v1'
++                and row.get('ok') is True]
++    if len(observed) != 1:
++        raise ValueError('Exactly one successful original terminal observer is required')
++    public = object_field(observed[0], 'result')
++    parsed = parse_normal_exit_public_result_v2(public)
++    projected = json_object(normal_exit_public_result_v2(sources['receipt']))
++    expected: JsonObject = {**projected, 'observer_retained': False,
++        'observer_close_receipt_path': sources['close_pin']['path']}
++    if public != expected:
++        raise ValueError('Public typed observer differs from its original receipt and explicit handle close')
++    confirms = [row for row in rows if object_field(row, 'plan').get('tool') == 'ck3_request_normal_exit_v1'
++                and object_field(object_field(row, 'plan'), 'args').get('action') == 'confirm_desktop'
++                and row.get('ok') is True]
++    if len(confirms) != 1:
++        raise ValueError('Exactly one original desktop confirmation is required')
++    confirmed = object_field(confirms[0], 'result')
++    parse_normal_exit_public_result_v2(confirmed, expected_process_creation_filetime_100ns=parsed.process_creation_filetime_100ns)
++    for key in ('request_id', 'claim_path', 'source_inventory_sha256', 'process_creation_filetime_100ns', 'process_preconfirm_pin'):
++        if public.get(key) != confirmed.get(key):
++            raise ValueError('Terminal observer crossed the original once-only desktop confirmation')
++    process, preconfirm = object_field(public, 'process_observation'), object_field(public, 'process_preconfirm_pin')
++    birth = text_field(public, 'process_creation_filetime_100ns')
++    if (public.get('schema') != 'ck3-normal-exit-process-observation-result-v2'
++            or public.get('action') != 'confirm_desktop' or public.get('status') != 'process_exit_observed_zero'
++            or public.get('process_exit_observed') is not True or public.get('typed_normal_exit_observed') is not True
++            or public.get('retry_authorized') is not False or public.get('autosave_verified') is not False
++            or type(public.get('exit_code')) is not int or public.get('exit_code') != 0
++            or type(public.get('native_submission_count')) is not int or public.get('native_submission_count') != 0
++            or type(confirmed.get('native_submission_count')) is not int or confirmed.get('native_submission_count') != 1
++            or process.get('pid') != pid or type(process.get('pid')) is not int
++            or process.get('wait_state') != 'signaled' or type(process.get('wait_result')) is not int or process.get('wait_result') != 0
++            or process.get('process_identity_verified') is not True or process.get('process_exit_observed') is not True
++            or process.get('creation_filetime_100ns') != birth or preconfirm.get('creation_filetime_100ns') != birth
++            or process.get('retained_handle_token') != preconfirm.get('retained_handle_token')
++            or public.get('receipt_path') != sources['receipt_pin']['path']
++            or public.get('claim_path') != sources['claim_pin']['path']
++            or public.get('source_inventory_sha256') != sources['inventory_pin']['sha256']):
++        raise ValueError('Original typed native observer does not establish the same retained OS0 process')
++    close, claim = sources['close'], sources['claim']
++    identity = object_field(claim, 'identity')
++    if (close.get('schema') != 'ck3-normal-exit-observer-close-v1'
++            or close.get('reason') != 'independent_exit_fact_preserved' or close.get('close_error') is not None
++            or close.get('retry_authorized') is not False or close.get('fact_receipt_path') != sources['receipt_pin']['path']
++            or type(close.get('pid')) is not int or close.get('pid') != pid
++            or str(_late_integer(close.get('creation_filetime_100ns'), 'Observer close birth')) != birth
++            or close.get('retained_handle_token') != preconfirm.get('retained_handle_token')
++            or claim.get('schema') != 'ck3-normal-exit-once-claim-v1' or claim.get('request_id') != public.get('request_id')
++            or claim.get('source_inventory_sha256') != public.get('source_inventory_sha256')
++            or type(identity.get('game_pid')) is not int or identity.get('game_pid') != pid
++            or str(_late_integer(identity.get('creation_filetime_100ns'), 'Original claim birth')) != birth
++            or identity.get('action') != 'confirm_desktop'):
++        raise ValueError('Original observer close/once claim belongs to another process or source')
++    return birth
++
++
+@@ -1868 +1994,2 @@ def validate_preserved_failure_native_os0(normal_value: object, retained_value:
+-        window_start_value: object, window_exit_value: object, machine_id: str) -> PreservedFailureOS0Facts:
++        window_start_value: object, window_exit_value: object, machine_id: str, *,
++        typed_observer_sources: PreservedTypedObserverSources | None = None) -> PreservedFailureOS0Facts:
+@@ -1870 +1997 @@ def validate_preserved_failure_native_os0(normal_value: object, retained_value:
+-    normal, retained, game, native, report, window_start, window_exit = (
++    normal, retained, game, native, report = (
+@@ -1872 +1999 @@ def validate_preserved_failure_native_os0(normal_value: object, retained_value:
+-                                        report_value, window_start_value, window_exit_value))
++                                        report_value))
+@@ -1931 +2058,14 @@ def validate_preserved_failure_native_os0(normal_value: object, retained_value:
+-    filetime = text_field(window_start, 'birth_filetime')
++    if typed_observer_sources is not None:
++        if window_start_value is not None or window_exit_value is not None:
++            raise ValueError('Typed native observer evidence cannot be mixed with GUI window receipts')
++        filetime = validate_preserved_typed_observer(report, typed_observer_sources, pid)
++    else:
++        window_start, window_exit = json_object(window_start_value), json_object(window_exit_value)
++        filetime = text_field(window_start, 'birth_filetime')
++        if (window_start.get('machine_id') != machine_id or window_exit.get('machine_id') != machine_id
++                or type(window_start.get('pid')) is not int or window_start.get('pid') != pid
++                or type(window_exit.get('pid')) is not int or window_exit.get('pid') != pid
++                or window_exit.get('opened') is not True or window_exit.get('exit_code_read') is not True
++                or type(window_exit.get('wait_result')) is not int or window_exit.get('wait_result') != 0
++                or type(window_exit.get('actual_exit_code')) is not int or window_exit.get('actual_exit_code') != 0):
++            raise ValueError('Original Root window observation does not prove the same PID signaled OS0')
+@@ -1934,7 +2073,0 @@ def validate_preserved_failure_native_os0(normal_value: object, retained_value:
+-    if (window_start.get('machine_id') != machine_id or window_exit.get('machine_id') != machine_id
+-            or type(window_start.get('pid')) is not int or window_start.get('pid') != pid
+-            or type(window_exit.get('pid')) is not int or window_exit.get('pid') != pid
+-            or window_exit.get('opened') is not True or window_exit.get('exit_code_read') is not True
+-            or type(window_exit.get('wait_result')) is not int or window_exit.get('wait_result') != 0
+-            or type(window_exit.get('actual_exit_code')) is not int or window_exit.get('actual_exit_code') != 0):
+-        raise ValueError('Original Root window observation does not prove the same PID signaled OS0')
+@@ -2494,0 +2628,5 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
++    typed_observer = bundle.get('process_exit_evidence_format') == 'typed-native-observer-v2'
++    require('process_exit_evidence_format' not in bundle or typed_observer and preserved_os0,
++            'Preserved failure process evidence format is unknown or crossed closure kinds')
++    require(not typed_observer or not any(key in bundle.get('original_evidence', {})
++            for key in ('root_window_start', 'root_window_exit')), 'Typed observer must not mix GUI window originals')
+@@ -2655,2 +2793,8 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
+-        preserved_facts = validate_preserved_failure_native_os0(normal, retained, game, native, report,
+-            original('root_window_start'), original('root_window_exit'), bundle['machine_id'])
++        if typed_observer:
++            typed_sources = preserved_typed_observer_sources(freeze, ready, refs)
++            evidence.update({key: refs[key] for key in PRESERVED_TYPED_OBSERVER_SOURCE_KEYS})
++            preserved_facts = validate_preserved_failure_native_os0(normal, retained, game, native, report,
++                None, None, bundle['machine_id'], typed_observer_sources=typed_sources)
++        else:
++            preserved_facts = validate_preserved_failure_native_os0(normal, retained, game, native, report,
++                original('root_window_start'), original('root_window_exit'), bundle['machine_id'])
+diff --git a/tools/ck3_mod_acceptance_cases/dynastic_esotericism_core.json b/tools/ck3_mod_acceptance_cases/dynastic_esotericism_core.json
+index ee500810d80c4d0bb46f5c6c17aa22a296f05622..15cd58320f8b1e702e14288c2700470c92830794 100644
+--- a/tools/ck3_mod_acceptance_cases/dynastic_esotericism_core.json
++++ b/tools/ck3_mod_acceptance_cases/dynastic_esotericism_core.json
+@@ -17 +17,3 @@
+-      "at_day": 1,
++      "when_markers": [
++        "DESAF: TEST PASS fixture_ready"
++      ],
+@@ -141 +143 @@
+-  "calendar_bound_provenance": "Declared before first allocation:400 days covers stock280-day pregnancy, exact next-day birth observation and31-day maintenance checks. No prior failure is reclassified; fixed3600s hold remains unchanged."
++  "calendar_bound_provenance": "The400-day cap remains unchanged. Before R0004, wait for actual fixture_ready rather than assuming a delayed event has executed after day1. Prospective fixed9000s hold and10800s overall timeout cover R0003's measured8.566s native day plus snapshot/queue overhead and original UI work. R0001-R0003 source and deadlines remain preserved; no running scene is extended."
+diff --git a/tools/ck3_mod_acceptance_products.json b/tools/ck3_mod_acceptance_products.json
+index 330a8da6ff97c2bdc5f68dbf7ad92ee1ced11f23..1551bfa60b4991d74536c1a4ba81a3b4898f8f14 100644
+--- a/tools/ck3_mod_acceptance_products.json
++++ b/tools/ck3_mod_acceptance_products.json
+@@ -56,2 +56,2 @@
+-            "timeout": 5400,
+-            "hold_seconds": 3600,
++            "timeout": 10800,
++            "hold_seconds": 9000,
+@@ -103 +103 @@
+-          "budget_provenance": "Prospective first source case: shared1800s readiness, fixed3600s business hold,400 natural-day cap to cover actual280-day pregnancy plus next-day birth and31-day maintenance observations,180s normal closure reserve; no measured runtime or inherited product PASS."
++          "budget_provenance": "Prospective R0004 budget, declared before allocation after R0003 observed an8.566s exact natural day plus about3.748s queue/snapshot overhead: fixed9000s hold,10800s overall timeout,1800s readiness and180s normal closure reserve. The400-day cap is unchanged. Original R0001-R0003 budgets and RED results remain intact; no live deadline extension or business credit."
+diff --git a/tools/test_product_acceptance_purpose.py b/tools/test_product_acceptance_purpose.py
+index 30e410f04ffdc11505a595d869262b252c09e3c7..d85b85d53e5660b3a254636509c9f3d0d6523d70 100644
+--- a/tools/test_product_acceptance_purpose.py
++++ b/tools/test_product_acceptance_purpose.py
+@@ -200,0 +201,2 @@ class ProductPurposeTests(unittest.TestCase):
++        selection.case = {'id': 'core', 'execution_purpose': 'product_acceptance',
++                          'required_mcp_tools': ['ck3_take_snapshot']}

@@ -1,0 +1,342 @@
+{
+  "schema": "dynastic-esotericism-vacation-handover-snapshot-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T12:09:13.146573+00:00",
+  "source_base_commit": "70355cbc7b072687b03fa82dd8912c9ed85b8492",
+  "pushed_source_commit": "8bcff51b0d7767b69643e5ec77920c1c932abed5",
+  "patch": {
+    "path": "docs/handover/2026-10-24-dynastic-esotericism-working-tree.patch",
+    "bytes": 24538,
+    "sha256": "5670d9ea7882c07fa3f0149d91ac67849f8b312d34dbe52650b655e0010a41c3",
+    "purpose": "Preserve all ten own working-tree files without installing untested WIP into master. Do not apply on a dirty tree. Untested partial native-observer branch must be reviewed before execution.",
+    "format": "git diff --binary --full-index --unified=0; git apply requires --unidiff-zero"
+  },
+  "working_files": [
+    {
+      "path": "mod_dynastic_esotericism/docs/acceptance/operator-runbook.md",
+      "bytes": 17753,
+      "sha256": "1090e59929c02472d01bd5a16d9a37fd992bc3e63766abe2308edc8db1f95fed",
+      "base_blob": "0c2498465c7b5df0b6d9d3a46e6931a8b36aa07a",
+      "base_equals_pushed_8bc": true,
+      "status": "UNCOMMITTED_CANDIDATE_SEE_HANDOVER"
+    },
+    {
+      "path": "mod_dynastic_esotericism/docs/test-plan.md",
+      "bytes": 9228,
+      "sha256": "8b545621951f8f3726956f32967b3c8f0f396df7eea3a4dddde0a03f1edbabf2",
+      "base_blob": "5bae5d949d6030f4b798722db29b7c8a29bfff39",
+      "base_equals_pushed_8bc": true,
+      "status": "UNCOMMITTED_CANDIDATE_SEE_HANDOVER"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/scripted_effects/des_acceptance_effects.txt",
+      "bytes": 1793,
+      "sha256": "98a4147b70cf6a3b2d87f456c856a3f9f23493fdf34fda95912951e227d795e8",
+      "base_blob": "8f3eb44a4d2775eb7a51f2289603a25962796eac",
+      "base_equals_pushed_8bc": true,
+      "status": "UNCOMMITTED_CANDIDATE_SEE_HANDOVER"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/scripted_effects/des_acceptance_extended_effects.txt",
+      "bytes": 7768,
+      "sha256": "688fee437ec228ffa640c52b58713de67b49b61f030464ab31afda040a6e9ce6",
+      "base_blob": "8f77145a5e2df1c68f93dee1bfa782bd2c57f7c4",
+      "base_equals_pushed_8bc": true,
+      "status": "UNCOMMITTED_CANDIDATE_SEE_HANDOVER"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_acceptance_events.txt",
+      "bytes": 7793,
+      "sha256": "6ca898543d99d0f863a633d72eeeccef2e001dd8ff06848028e9d77f7a239a4f",
+      "base_blob": "b752b8d3564177a43bb242dfb3b25be3dbb05144",
+      "base_equals_pushed_8bc": true,
+      "status": "UNCOMMITTED_CANDIDATE_SEE_HANDOVER"
+    },
+    {
+      "path": "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_acceptance_extended_events.txt",
+      "bytes": 14477,
+      "sha256": "1f2332e1132716502b58fcd8c8b5f7f9c538de3975ffb44ab5bc84d17c545ff7",
+      "base_blob": "566b3a77cd483a50db1dea8cea56f4754acd0405",
+      "base_equals_pushed_8bc": true,
+      "status": "UNCOMMITTED_CANDIDATE_SEE_HANDOVER"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_allocate.py",
+      "bytes": 258671,
+      "sha256": "0a20183539a4f266993a655af3f721dbbff4a625e576a2fa9272aeaff1faab34",
+      "base_blob": "36ec11afe6a50af0df42bfdadf559a6254a79d93",
+      "base_equals_pushed_8bc": true,
+      "status": "UNTESTED_PARTIAL_PRODUCTION_BRANCH"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/dynastic_esotericism_core.json",
+      "bytes": 7156,
+      "sha256": "d171d0939165df4bde973bab69c9a4e7953dbb42839ab86f0b7ecfa406f44884",
+      "base_blob": "ee500810d80c4d0bb46f5c6c17aa22a296f05622",
+      "base_equals_pushed_8bc": true,
+      "status": "UNCOMMITTED_CANDIDATE_SEE_HANDOVER"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_products.json",
+      "bytes": 203412,
+      "sha256": "5e33a4265e98019ad2cfd7bdbb20061b198f14c84742f0fd69322ef32ec1c222",
+      "base_blob": "330a8da6ff97c2bdc5f68dbf7ad92ee1ced11f23",
+      "base_equals_pushed_8bc": true,
+      "status": "UNCOMMITTED_CANDIDATE_SEE_HANDOVER"
+    },
+    {
+      "path": "tools/test_product_acceptance_purpose.py",
+      "bytes": 13194,
+      "sha256": "059fdc57bb586fe557884d3f1320c8e4e9c61e4584deaa7471e55997aac837d2",
+      "base_blob": "30e410f04ffdc11505a595d869262b252c09e3c7",
+      "base_equals_pushed_8bc": true,
+      "status": "UNCOMMITTED_CANDIDATE_SEE_HANDOVER"
+    }
+  ],
+  "excluded_user_file": "docs/handover/2026-10-22-war-episode04-vacation-handover.md",
+  "external_closure_readback": "C:/ck3-dynastic-esotericism-20261024/handover-2026-10-24/closure-readback.actual.json",
+  "game_active": false,
+  "screen_owner_active": false,
+  "business_pass": false,
+  "published": false,
+  "final_readback_at_utc": "2026-10-24T12:14:13.086319+00:00",
+  "R0003": {
+    "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0003",
+    "native_report": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a05\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0003\\native-report.json",
+      "bytes": 9293167,
+      "sha256": "2650413888f50def7d9323db8da709d36a2b1adcbb25eb9d507d7fb695467b1a"
+    },
+    "native_terminal": {
+      "status": "RED",
+      "finished_at": "2026-10-24T11:58:16.984216+00:00",
+      "error": "RuntimeError: MCP tool ck3_collect_player_rite_creation_action_result_v1 returned an error: Error executing tool ck3_collect_player_rite_creation_action_result_v1: original local Rite claim is missing or ambiguous",
+      "managed_session_done": true,
+      "managed_session_thread_finished": true,
+      "cleanup_ok": true
+    },
+    "typed_observer": {
+      "id": "operator-normal-exit-observe-002",
+      "started_at": "2026-10-24T11:57:43.978823+00:00",
+      "ok": true,
+      "result": {
+        "schema": "ck3-normal-exit-process-observation-result-v2",
+        "action": "confirm_desktop",
+        "public_revision": "7",
+        "request_id": "normal-exit-confirm_desktop-bb0bf25a544241309d4588fd27845a67",
+        "claim_path": "C:\\ck3-dynastic-esotericism-20261024\\attempt-a06\\state\\native-session\\normal-exit-map-requests\\416f575a6455f669bdc53f405740af2bdc726d3ab324b0c70be04cb9d2e7adbe.claim.json",
+        "source_inventory_sha256": "10f0539935248d0b0d66bc5673c3f26f6dfc1c690483041e51f1592c18e081b9",
+        "process_creation_filetime_100ns": "134373157160016545",
+        "process_preconfirm_pin": {
+          "pid": 31096,
+          "creation_filetime_100ns": "134373157160016545",
+          "retained_handle_token": "ce3df0f20c6a1cdc513498b82a2f6601",
+          "wait_result": 258,
+          "verified_monotonic_ns": "2065701068343900",
+          "observation_clock_domain": "driver_monotonic_v1"
+        },
+        "claim_consumed": true,
+        "retry_authorized": false,
+        "process_exit_observed": true,
+        "exit_code": 0,
+        "typed_normal_exit_observed": true,
+        "autosave_verified": false,
+        "status": "process_exit_observed_zero",
+        "native_observation": {
+          "schema": "ck3-normal-exit-map-v2",
+          "step": "normal-exit-map-v1",
+          "action": "confirm_desktop",
+          "status": "dispatch_pending",
+          "native_revision": "6",
+          "connection_generation": "1",
+          "game_pid": 31096,
+          "played_character_id": 31254,
+          "process_creation_filetime_100ns": "134373157160016545",
+          "pump_epoch": "74258",
+          "exact_build_verified": true,
+          "owner_verified": true,
+          "process_identity_verified": true,
+          "source_abi_pins_verified": true,
+          "stock_files_verified": true,
+          "loaded_source_binding_verified": true,
+          "frame_verified": true,
+          "context_signature_verified": true,
+          "confirmation_visible": true,
+          "exit_autosave": {
+            "state_available": true,
+            "control_visible": true,
+            "control_enabled": true,
+            "should_save": false,
+            "disable_claimed": false,
+            "dispatch_invoked": false,
+            "postcondition_observed": false
+          },
+          "orderly_exit_verified": false,
+          "autosave_verified": false,
+          "exit_context_signature": "f4cb19fe41e80dd11ab82d6cb0478be95a02f12399ddcf8b2215d083f4899451",
+          "reason": "desktop_dispatch_pending_independent_process_observation",
+          "stage_consumed": [
+            true,
+            true,
+            true
+          ],
+          "targets": [
+            {
+              "read_complete": true,
+              "root_exists": true,
+              "root_visible": false,
+              "target_exists": true,
+              "target_visible": false,
+              "target_enabled": true,
+              "unique_target": true,
+              "dispatch_admitted": false,
+              "target_vtable_rva": "76961544"
+            },
+            {
+              "read_complete": true,
+              "root_exists": true,
+              "root_visible": true,
+              "target_exists": true,
+              "target_visible": true,
+              "target_enabled": true,
+              "unique_target": true,
+              "dispatch_admitted": true,
+              "target_vtable_rva": "76961544"
+            },
+            {
+              "read_complete": true,
+              "root_exists": true,
+              "root_visible": true,
+              "target_exists": true,
+              "target_visible": true,
+              "target_enabled": true,
+              "unique_target": true,
+              "dispatch_admitted": true,
+              "target_vtable_rva": "76961544"
+            }
+          ],
+          "dispatches": [
+            {
+              "claim_latched": false,
+              "dispatch_invoked": false,
+              "native_handled": false,
+              "post_read_complete": false,
+              "postcondition_observed": false
+            },
+            {
+              "claim_latched": false,
+              "dispatch_invoked": false,
+              "native_handled": false,
+              "post_read_complete": false,
+              "postcondition_observed": false
+            },
+            {
+              "claim_latched": true,
+              "dispatch_invoked": true,
+              "native_handled": true,
+              "post_read_complete": true,
+              "postcondition_observed": false
+            }
+          ]
+        },
+        "process_observation": {
+          "pid": 31096,
+          "creation_filetime_100ns": "134373157160016545",
+          "retained_handle_token": "ce3df0f20c6a1cdc513498b82a2f6601",
+          "wait_result": 0,
+          "wait_state": "signaled",
+          "exit_code": 0,
+          "process_identity_verified": true,
+          "process_exit_observed": true,
+          "observed_monotonic_ns": "2065772076683300",
+          "timeout_ms": 5000,
+          "observation_deadline_reached": false,
+          "observation_clock_domain": "driver_monotonic_v1",
+          "errors": []
+        },
+        "driver_dispatch_receipt_observed_monotonic_ns": "2065701230065100",
+        "receipt_clock_meaning": "driver observed validated dispatch_invoked response; not native callback time",
+        "observer_retained": false,
+        "snapshot_after_required": false,
+        "native_submission_count": 0,
+        "uses_desktop_input": false,
+        "uses_ocr": false,
+        "receipt_path": "C:\\ck3-dynastic-esotericism-20261024\\attempt-a06\\state\\native-session\\normal-exit-map-requests\\d836388aa86de398e64e.observe-bdfae6b0971e47b0.json",
+        "observer_close_receipt_path": "C:\\ck3-dynastic-esotericism-20261024\\attempt-a06\\state\\native-session\\normal-exit-map-requests\\d836388aa86de398e64e.observer-close-2865a45a2aae4316.json"
+      },
+      "finished_at": "2026-10-24T11:57:44.142457+00:00"
+    },
+    "original_host_exit": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a05\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0003\\host-original-process-exit.json",
+      "bytes": 258,
+      "sha256": "1cbbb52365491f5101a3cea9eed8a2bcb804e698b458ec9dd037b7fbf806c7d4"
+    },
+    "public_run_exit": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\run-core-a18.actual.json",
+      "bytes": 1032,
+      "sha256": "db5b6a2a373b44eef0bf4ecfcac7c80bfb56f884456a9f1c120c2a0457b295fe"
+    },
+    "original_allocator_exit": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\allocate-core-a18.actual.json",
+      "bytes": 1638,
+      "sha256": "b75b8d799eeb35244093495e9985f1d6261a006be0e285b44e6a709b60032b19"
+    },
+    "keeper_parent_exit": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a05\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0003\\keeper-actual-parent-exit.json",
+      "bytes": 615,
+      "sha256": "72e1b8391211ccad4ba25969c0a088c2670a7e3b06887ae7de28c5c47c3e4579"
+    },
+    "screen_release": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0003-screen-release.actual.json",
+      "bytes": 1351,
+      "sha256": "c218d0acc709100ab01347d16b2543759ec1a13d06c53a3c1ec327d67a75ead2"
+    },
+    "public_verify": "NOT_RUN",
+    "successor_closure": "NOT_GENERATED",
+    "normal_close_qualified": false,
+    "business_pass": false
+  },
+  "storage_closure": {
+    "capacity_registry_revision": 1157,
+    "storage_revision": 45,
+    "state": "closed-no-heavy-write-admission",
+    "retention_review_due_utc": "2026-10-31T00:00:00Z",
+    "receipt": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\capacity\\VACATION-WAITING-FUTURE-RESERVATIONS-CLOSED-r1157.actual.json",
+      "bytes": 12516,
+      "sha256": "880f578ddf489237d54750534f98ad3541b6e59fd48fab94ef9672dfe546df27"
+    },
+    "readback": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\capacity\\VACATION-STORAGE-CLOSED-READBACK.actual.json",
+      "bytes": 1397,
+      "sha256": "0d95527743d6e0f989f5c5c390961e44c4f6d8a054ec08251447d53c0ed6c066"
+    }
+  },
+  "fresh_offline_observation": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\handover-2026-10-24\\steam-offline.actual.json",
+    "bytes": 2461,
+    "sha256": "048238b8f7c1d8d9eb13b37036ab9a3fbe4ecbf3898f0ecd09dd0b3d28c18b9f"
+  },
+  "handover_document_checks": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-24T12:16:00.092461+00:00",
+    "working_file_sha_readback": "all ten unchanged since snapshot",
+    "relative_markdown_links": "all existing",
+    "patch_check": {
+      "argv": [
+        "git",
+        "-C",
+        "C:/ck3-dynastic-esotericism-20261024/s",
+        "apply",
+        "--check",
+        "--unidiff-zero",
+        "D:\\workspace\\ck3_eternal_recurrence\\docs\\handover\\2026-10-24-dynastic-esotericism-working-tree.patch"
+      ],
+      "against_commit": "8bcff51b0d7767b69643e5ec77920c1c932abed5",
+      "exit_code": 0,
+      "applied": false
+    },
+    "staged_diff_check_exit_code": 0,
+    "business_tests_run_for_handover": false
+  }
+}
