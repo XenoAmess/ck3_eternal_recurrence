@@ -58,6 +58,39 @@ class LegacyThresholdGuiQualificationV1(TypedDict):
     original_result_modified: Literal[False]
 
 
+def recording_source_files_v1(recording: object, base: Path, repo: Path) -> list[FilePin]:
+    """Close the actual recorder configuration before allocation and at use."""
+    declared = json_object(recording)
+    if set(declared) != {'config', 'service'}:
+        raise ValueError('Shared recording requires exactly config/service pins')
+
+    def checked(value: object) -> FilePin:
+        expected = file_pin(value)
+        path = Path(expected['path'])
+        path = (path if path.is_absolute() else base / path).resolve()
+        return _verification_checked_pin_v1(path, {**expected, 'path': str(path)})
+
+    references = [checked(declared[key]) for key in ('config', 'service')]
+    service = Path(references[1]['path'])
+    name = '_ck3_recording_source_closure_' + hashlib.sha256(str(service).encode()).hexdigest()
+    spec = importlib.util.spec_from_file_location(name, service)
+    if spec is None or spec.loader is None:
+        raise ValueError('Actual pinned recorder service cannot be loaded')
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[name] = module
+    spec.loader.exec_module(module)
+    consumer = getattr(module, 'recording_source_files_v1', None)
+    if not callable(consumer):
+        raise ValueError('Actual recorder service lacks its shared source closure')
+    result: object = consumer(declared, base, repo)
+    if not isinstance(result, list) or len(result) != 6:
+        raise ValueError('Actual recorder service returned an incomplete source closure')
+    pins = [file_pin(row) for row in result]
+    if pins[:2] != references:
+        raise ValueError('Actual recorder closure crossed configuration/service source')
+    return pins
+
+
 def _verification_file_pin_v1(value: object) -> FilePin:
     row = json_object(value)
     if set(row) != {"path", "bytes", "sha256"}:
@@ -772,6 +805,9 @@ class Selection:
             if sources is not None:
                 for reference in (sources['helper'], sources['contract']):
                     checks.append(check_pin(Path(reference['path']), dict(reference)))
+                allocation = json_object(self.runtime['allocation'])
+                checks.extend(recording_source_files_v1(
+                    allocation['recording'], self.runtime_path.parent, self.locations['repo_root']))
         except (OSError, ValueError, AttributeError, ImportError) as error:
             errors.append('Running input source closure: ' + str(error))
         for key in ("python", "repo_root", "game_dir", "userdir_root"):

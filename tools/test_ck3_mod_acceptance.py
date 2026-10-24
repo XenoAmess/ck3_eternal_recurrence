@@ -143,7 +143,7 @@ class SharedEntryTests(unittest.TestCase):
         shared_tools.mkdir(parents=True)
         names = {*CONTROL_QUEUE_MODULE_ORDER_V1, 'ck3_mod_acceptance_launcher',
                  'ck3_mod_acceptance_keeper', 'ck3_mod_acceptance_steam_gate',
-                 'ck3_mod_acceptance_recorder', 'ck3_mod_acceptance_runtime_inputs'}
+                  'ck3_mod_acceptance_recorder', 'ck3_mod_acceptance_runtime_inputs'}
         for name in names:
             (shared_tools / (name + '.py')).write_bytes((Path(__file__).parent / (name + '.py')).read_bytes())
         relative = Path('ck3_autonomous_player/src/xar_autoplayer/bridge/runtime_input_contract_v1.py')
@@ -154,7 +154,19 @@ class SharedEntryTests(unittest.TestCase):
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(original.read_bytes())
         self.runtime['reviewed_launcher'] = entry.pin(shared_tools / 'ck3_mod_acceptance_launcher.py')
-        self.runtime['allocation'] = {'recording': {}}
+        config = self.root / 'recording-config.json'
+        job = self.locations['repo'] / 'promo/ck3_native_war_ai/integration/recorder_job.py'
+        job.parent.mkdir(parents=True)
+        job.write_text('# no OS recorder is launched\n', encoding='utf-8')
+        dependencies = {'recorder_job': job}
+        for key in ('ffmpeg', 'ffprobe', 'storage_reservation'):
+            path = self.root / (key + '.input')
+            path.write_bytes(b'{"machine_id":"unit-recording-machine"}')
+            dependencies[key] = path
+        config.write_text(json.dumps({'schema': 'ck3-mod-acceptance-recording-config-v2',
+            'machine_id': 'unit-recording-machine', **{key: entry.pin(path) for key, path in dependencies.items()}}), encoding='utf-8')
+        self.runtime['allocation'] = {'recording': {
+            'config': entry.pin(config), 'service': entry.pin(shared_tools / 'ck3_mod_acceptance_recorder.py')}}
         self.runtime_path.write_text(json.dumps(self.runtime), encoding='utf-8')
         self.products['products']['xqol']['cases'][0]['startup']['state_dir'] = str(self.root / 'actual-recording-state')
         self.products_path.write_text(json.dumps(self.products), encoding='utf-8')
@@ -162,6 +174,8 @@ class SharedEntryTests(unittest.TestCase):
         preflight = selected.preflight()
         self.assertEqual(preflight['blockers'], [])
         self.assertIn(entry.pin(current), preflight['checked_inputs'])
+        for dependency in dependencies.values():
+            self.assertIn(entry.pin(dependency), preflight['checked_inputs'])
         produced = allocator.recording_input_files(selected)
         self.assertIn(current.resolve(), produced)
         self.assertNotIn(checkout_contract.resolve(), produced)
@@ -184,12 +198,8 @@ class SharedEntryTests(unittest.TestCase):
         sibling.write_bytes(b'')
         dlc = profile / 'dlc_load.json'
         dlc.write_bytes(b'{"enabled_mods": []}')
-        config = self.root / 'recording-config.json'
-        job = self.root / 'synthetic-job.py'
-        job.write_text('# no OS recorder is launched\n', encoding='utf-8')
-        config.write_text(json.dumps({'machine_id': 'unit-recording-machine', 'recorder_job': entry.pin(job)}), encoding='utf-8')
-        paths = [*produced, checkout_contract, settings, snapshot, rules, rules_snapshot, sibling, dlc,
-                 config, job, self.host,
+        paths = [*[Path(row['path']) for row in preflight['checked_inputs']],
+                 *produced, checkout_contract, settings, snapshot, rules, rules_snapshot, sibling, dlc, self.host,
                  *[shared_tools / (name + '.py') for name in names], self.manifest_path]
         files = {str(path.resolve()): {key: value for key, value in entry.pin(path).items() if key != 'path'} for path in paths}
         frozen = json_object({'run_id': live.name, 'argv': selected.argv, 'state_dir': str(selected.state_dir),
@@ -239,16 +249,35 @@ checks=[]
 keeper.live_lease=lambda *args,**kwargs:checks.append('synthetic-cas-leaf')
 service=object.__new__(recorder.ScreenCaptureService)
 service.keeper_root=Path(context['keeper_root']);service.task_id=frozen['screen_task']
-service.config_path=config;service.config=json.loads(config.read_text());service.keeper=SimpleNamespace(require_live=lambda:checks.append('keeper-leaf'))
+service.config_path=config;service.config=json.loads(config.read_text());service.repo=Path(sys.argv[3]);service.keeper=SimpleNamespace(require_live=lambda:checks.append('keeper-leaf'))
 actual,qualified=service._live(live)
 assert actual==live.resolve() and checks==['synthetic-cas-leaf','keeper-leaf']
 print(json.dumps({'running_inputs':qualified['_runtime_input_observation'],'recorder_live_guard':True}))
 '''
-        command = [sys.executable, '-B', '-X', 'utf8', '-c', script, str(live), str(config)]
+        command = [sys.executable, '-B', '-X', 'utf8', '-c', script, str(live), str(config), str(self.locations['repo'])]
         environment = dict(os.environ, PYTHONPATH=str(shared_tools))
         result = subprocess.run(command, cwd=shared, env=environment, capture_output=True, text=True, timeout=60)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertTrue(json.loads(result.stdout)['recorder_live_guard'])
+        for dependency in dependencies.values():
+            with self.subTest(missing_allocation_dependency=dependency):
+                broken = copy.deepcopy(frozen)
+                broken['files'].pop(str(dependency.resolve()))
+                (live / 'frozen-argv.json').write_text(json.dumps(broken), encoding='utf-8')
+                (live / 'ready-context.json').write_text(json.dumps({'run_id': live.name, 'run_dir': str(live),
+                    'keeper_root': str(self.root / 'unit-keeper'), 'frozen_argv': entry.pin(live / 'frozen-argv.json')}), encoding='utf-8')
+                rejected = subprocess.run(command, cwd=shared, env=environment, capture_output=True, text=True, timeout=60)
+                self.assertNotEqual(rejected.returncode, 0)
+                self.assertIn('source absent from actual allocation pins', rejected.stderr)
+        (live / 'frozen-argv.json').write_text(json.dumps(frozen), encoding='utf-8')
+        (live / 'ready-context.json').write_text(json.dumps({'run_id': live.name, 'run_dir': str(live),
+            'keeper_root': str(self.root / 'unit-keeper'), 'frozen_argv': entry.pin(live / 'frozen-argv.json')}), encoding='utf-8')
+        for key, dependency in dependencies.items():
+            with self.subTest(changed_dependency=key):
+                dependency_bytes = dependency.read_bytes()
+                dependency.write_bytes(dependency_bytes + b'changed')
+                self.assertTrue(any('Running input source closure' in message for message in selected.preflight()['blockers']))
+                dependency.write_bytes(dependency_bytes)
         settings.write_bytes(b'game-owned settings output')
         fixture = Path(__file__).parent / 'test-fixtures/r25-rule-output/LastAppliedRules.txt'
         self.assertEqual(entry.pin(fixture)['sha256'],
@@ -271,6 +300,25 @@ print(json.dumps({'running_inputs':qualified['_runtime_input_observation'],'reco
                 self.assertIn('Original mutable input snapshot changed' if immutable in (snapshot, rules_snapshot)
                               else 'Immutable original input changed', result.stderr)
                 immutable.write_bytes(original_bytes)
+        original_config = config.read_bytes()
+        for key in dependencies:
+            changed_config = json.loads(original_config)
+            changed_config[key]['bytes'] = True
+            config.write_text(json.dumps(changed_config), encoding='utf-8')
+            with self.subTest(invalid_dependency_type=key), self.assertRaises(ValueError):
+                entry.recording_source_files_v1({'config': entry.pin(config),
+                    'service': entry.pin(shared_tools / 'ck3_mod_acceptance_recorder.py')},
+                    self.root, self.locations['repo'])
+        invalid_schemas: tuple[object, ...] = (None, [], True, 'unknown')
+        for schema in invalid_schemas:
+            changed_config = json.loads(original_config)
+            changed_config['schema'] = schema
+            config.write_text(json.dumps(changed_config), encoding='utf-8')
+            with self.subTest(invalid_schema=schema), self.assertRaises(ValueError):
+                entry.recording_source_files_v1({'config': entry.pin(config),
+                    'service': entry.pin(shared_tools / 'ck3_mod_acceptance_recorder.py')},
+                    self.root, self.locations['repo'])
+        config.write_bytes(original_config)
         current.write_bytes(current.read_bytes() + b'\n# changed after allocation\n')
         result = subprocess.run(command, cwd=shared, env=environment, capture_output=True, text=True, timeout=60)
         self.assertNotEqual(result.returncode, 0)

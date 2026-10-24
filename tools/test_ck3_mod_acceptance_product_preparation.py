@@ -1,5 +1,6 @@
 """Product preparation must be consumable by the real normal-exit inventory path."""
 import copy
+from collections.abc import Callable
 import json
 from pathlib import Path
 import sys
@@ -13,6 +14,7 @@ import ck3_mod_acceptance_prepare as prepare
 import ck3_mod_acceptance_normal_exit_profile as normal
 import build_normal_exit_source_inventory_v1 as builder
 from ck3_mod_acceptance_cases import generic_product_adapter as generic
+from ck3_mod_acceptance_background_types import json_object, object_field, text_field
 
 
 class ProductPreparationTests(unittest.TestCase):
@@ -191,6 +193,75 @@ class OrdinaryPromotionTests(ProductPreparationTests):
         path.write_bytes(json.dumps(value).encode());response['captures']=[prepare.pin(path)]
         with self.assertRaisesRegex(ValueError,'terminal'):
             generic.validate_ordinary_capture_evidence(context,response)
+
+    def test_ordinary_real_caseclient_gui_actor_change_and_retained_verify(self) -> None:
+        from ck3_mod_acceptance_client import CaseClient
+        capture: Callable[[], tuple[object, object]] = self.capture_evidence
+        context_value, response_value = capture()
+        context, response = json_object(context_value), json_object(response_value)
+        generic.prepare_case(context)
+        game = object_field(context, 'shared_game')
+
+        def frame(actor: int, *, pid: int = 90, generation: int = 2) -> dict[str, object]:
+            return {'source': 'injected-dll-named-pipe', 'backend_id': 'native-headless',
+                'map_ready': True, 'paused': True, 'episode_projection': 'native_campaign',
+                'active_event': None, 'played_character': {'character_id': actor, 'alive': True, 'source': 'native'},
+                'diagnostics': {'bridge_pid': pid, 'connection_generation': generation,
+                    'hello': {'pid': pid, 'connection_generation': generation, 'ck3_build_match': True,
+                        'expected_ck3_version': game['version'], 'expected_ck3_sha256': game['exe_sha256']}}}
+
+        class Client:
+            def __init__(inner, final: dict[str, object]) -> None:
+                inner.native = object.__new__(CaseClient)
+                inner.native.manifest = {'game': game}
+                inner.native._binding = None
+                inner.frames = iter([frame(3096), final])
+                inner.flags: list[bool] = []
+
+            def snapshot(inner, *, allow_actor_change: bool = False, require_event_free: bool = True) -> object:
+                inner.flags.append(allow_actor_change)
+                return inner.native.validate_frame(next(inner.frames), allow_actor_change, require_event_free)
+
+            def root_checkpoint(inner, name: str, request: dict[str, object], reserve: int = 90) -> object:
+                self.assertEqual(name, 'ordinary-promotion-capture')
+                required = request.get('required_assertions')
+                if not isinstance(required, list):
+                    raise ValueError('Actual required assertions list missing')
+                self.assertIn('normal_gui_actor_changes_reviewed', required)
+                self.assertEqual(reserve, 180)
+                return response
+
+            def checkpoint(inner, name: str, value: dict[str, object]) -> object:
+                prepare.write_json(Path(text_field(context, 'output')) / (name + '.json'), value)
+                return value
+
+        client = Client(frame(4100))
+        facts = generic.run_case(context, client)
+        self.assertEqual(client.flags, [False, True])
+        self.assertEqual(facts['initial_native_frame']['played_character']['character_id'], 3096)
+        self.assertEqual(facts['final_native_frame']['played_character']['character_id'], 4100)
+        self.assertEqual(facts['actor_transition']['initial_actor_id'], 3096)
+        self.assertEqual(facts['actor_transition']['final_actor_id'], 4100)
+        self.assertTrue(facts['actor_transition']['actor_changed'])
+        self.assertFalse(facts['actor_transition']['inheritance_inferred'])
+        self.assertEqual(generic.verify_case(context), json.loads(json.dumps(facts)))
+        for final in (frame(4100, pid=91), frame(4100, generation=3)):
+            with self.subTest(final=final), self.assertRaisesRegex(ValueError, 'owner/actor changed'):
+                generic.run_case(context, Client(final))
+        for bad_actor in (True, 0):
+            with self.subTest(actor=bad_actor), self.assertRaises(ValueError):
+                generic.ordinary_capture_actor_transition(frame(3096), frame(bad_actor))
+        retained = Path(text_field(context, 'output')) / 'ordinary-promotion-result.json'
+        tampered = copy.deepcopy(facts)
+        tampered['actor_transition']['final_actor_id'] = 3096
+        retained.write_text(json.dumps(tampered), encoding='utf-8')
+        with self.assertRaisesRegex(ValueError, 'differs from actual frames'):
+            generic.verify_case(context)
+        assertions = object_field(response, 'assertions')
+        assertions.pop('normal_gui_actor_changes_reviewed')
+        response['assertions'] = assertions
+        with self.assertRaisesRegex(ValueError, 'Actual Root'):
+            generic.validate_ordinary_capture_evidence(context, response)
 
 
 if __name__=='__main__':unittest.main()

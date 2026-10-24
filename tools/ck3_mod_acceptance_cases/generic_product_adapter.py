@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 
 
 class OrdinaryCaptureClient(Protocol):
-    def snapshot(self, *, require_event_free: bool = True) -> object: ...
+    def snapshot(self, *, allow_actor_change: bool = False, require_event_free: bool = True) -> object: ...
     def root_checkpoint(self, name: str, request: JsonObject, reserve: int = 90) -> object: ...
     def checkpoint(self, name: str, value: JsonObject) -> object: ...
 
@@ -34,6 +34,7 @@ ORDINARY_REVIEW_ASSERTIONS = (
     'formal_product_only_ordinary_play',
     'selected_gameplay_frames_reviewed',
     'no_fixture_or_debug_visible',
+    'normal_gui_actor_changes_reviewed',
 )
 
 
@@ -149,6 +150,34 @@ def validate_ordinary_capture_evidence(context: JsonObject, response: JsonObject
                         'clean_spans_certified': False, 'human_review_performed': False})
 
 
+def ordinary_capture_actor_transition(before: JsonObject, after: JsonObject) -> JsonObject:
+    def binding(frame: JsonObject) -> tuple[int, int, int]:
+        actor = object_field(frame, 'played_character')
+        diagnostics = object_field(frame, 'diagnostics')
+        hello = object_field(diagnostics, 'hello')
+        values = (diagnostics.get('bridge_pid'), diagnostics.get('connection_generation'), actor.get('character_id'))
+        if (frame.get('source') != 'injected-dll-named-pipe' or frame.get('backend_id') != 'native-headless'
+                or frame.get('episode_projection') != 'native_campaign' or frame.get('map_ready') is not True
+                or frame.get('paused') is not True or actor.get('source') != 'native' or actor.get('alive') is not True
+                or any(type(value) is not int or value <= 0 for value in values)
+                or type(hello.get('pid')) is not int or type(hello.get('connection_generation')) is not int
+                or hello.get('ck3_build_match') is not True
+                or hello.get('pid') != values[0] or hello.get('connection_generation') != values[1]):
+            raise ValueError('Actual ordinary capture native identity required')
+        pid, generation, character = values
+        if type(pid) is not int or type(generation) is not int or type(character) is not int:
+            raise ValueError('Actual ordinary capture integer identity required')
+        return pid, generation, character
+
+    initial, final = binding(before), binding(after)
+    if initial[:2] != final[:2]:
+        raise ValueError('Ordinary capture crossed actual bridge/connection')
+    return json_object({'bridge_pid': initial[0], 'connection_generation': initial[1],
+                        'initial_actor_id': initial[2], 'final_actor_id': final[2],
+                        'actor_changed': initial[2] != final[2],
+                        'selection_route': 'normal_gui', 'inheritance_inferred': False})
+
+
 def run_ordinary_capture(context: JsonObject, client: OrdinaryCaptureClient) -> JsonObject:
     config = ordinary_contract(context)
     profile = Path(text_field(context, 'state_dir')) / 'profile'
@@ -163,10 +192,12 @@ def run_ordinary_capture(context: JsonObject, client: OrdinaryCaptureClient) -> 
         'action': 'Normal GUI gameplay and same-keeper bounded recording; no fixture or forced outcomes',
         'business_pass': False}), reserve=180))
     media = validate_ordinary_capture_evidence(context, response)
-    after = json_object(client.snapshot(require_event_free=False))
-    facts = json_object({'schema': 'ck3-ordinary-promotion-result-v1', 'run_id': context['run_id'],
+    after = json_object(client.snapshot(allow_actor_change=True, require_event_free=False))
+    transition = ordinary_capture_actor_transition(before, after)
+    facts = json_object({'schema': 'ck3-ordinary-promotion-result-v2', 'run_id': context['run_id'],
         'product': context['product'], 'case': context['case'], 'review': response, 'media': media,
         'initial_native_frame': before, 'final_native_frame': after, 'fixture_mounted': False,
+        'actor_transition': transition,
         'raw_frame_review_performed_by_root': True,
         'case_contract_qualified': True, 'gui_contract_qualified': True,
         'business_contract_applicable': False, 'business_pass': False, 'product_release_pass': False,
@@ -181,7 +212,13 @@ def verify_ordinary_capture(context: JsonObject) -> JsonObject:
     facts = json_object(read_json(path))
     if any(facts.get(key) != context.get(key) for key in ('run_id', 'product', 'case')):
         raise ValueError('Ordinary promotion result crossed scene')
+    if facts.get('schema') != 'ck3-ordinary-promotion-result-v2':
+        raise ValueError('Explicit ordinary capture actor contract required')
     validate_ordinary_capture_evidence(context, object_field(facts, 'review'))
+    transition = ordinary_capture_actor_transition(
+        object_field(facts, 'initial_native_frame'), object_field(facts, 'final_native_frame'))
+    if object_field(facts, 'actor_transition') != transition:
+        raise ValueError('Ordinary capture actor transition differs from actual frames')
     return facts
 
 

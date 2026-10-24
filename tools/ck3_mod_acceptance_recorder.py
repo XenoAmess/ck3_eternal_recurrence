@@ -16,6 +16,7 @@ import sys
 import threading
 import time
 from typing import TypedDict
+from ck3_mod_acceptance_background_types import FilePin, file_pin, json_object
 
 
 class RecorderFilePin(TypedDict):
@@ -45,6 +46,40 @@ def file_identity(path: str | Path) -> RecorderFilePin:
         for block in iter(lambda: handle.read(1024 * 1024), b""):
             value.update(block)
     return {"path": str(path), "bytes": path.stat().st_size, "sha256": value.hexdigest()}
+
+
+def recording_source_files_v1(recording: object, base: Path, repo: Path) -> list[FilePin]:
+    """The actual service owns one source closure for allocation and live use."""
+    declared = json_object(recording)
+    if set(declared) != {'config', 'service'}:
+        raise ValueError('Shared recording requires exactly config/service pins')
+
+    def checked(value: object) -> FilePin:
+        expected = file_pin(value)
+        path = Path(expected['path'])
+        path = (path if path.is_absolute() else base / path).resolve()
+        actual = file_pin(file_identity(path))
+        if actual != {**expected, 'path': str(path)}:
+            raise ValueError('Pinned recorder input changed: ' + str(path))
+        return actual
+
+    references = [checked(declared[key]) for key in ('config', 'service')]
+    if Path(references[1]['path']) != Path(__file__).resolve():
+        raise ValueError('Recording closure must execute its actual pinned service')
+    config = json_object(json.loads(Path(references[0]['path']).read_bytes()))
+    if config.get('schema') not in ('ck3-mod-acceptance-recording-config-v1',
+                                    'ck3-mod-acceptance-recording-config-v2'):
+        raise ValueError('Unknown shared recorder configuration')
+    dependencies = {key: checked(config.get(key))
+                    for key in ('ffmpeg', 'ffprobe', 'recorder_job', 'storage_reservation')}
+    if Path(dependencies['recorder_job']['path']) != (
+            repo / 'promo/ck3_native_war_ai/integration/recorder_job.py').resolve():
+        raise ValueError('Only the existing shared RecorderJob is supported')
+    storage = json_object(json.loads(Path(dependencies['storage_reservation']['path']).read_bytes()))
+    if (not isinstance(config.get('machine_id'), str) or not config['machine_id']
+            or storage.get('machine_id') != config['machine_id']):
+        raise ValueError('Recording reservation crossed machine')
+    return references + list(dependencies.values())
 
 
 def write(path, document):
@@ -457,7 +492,10 @@ class ScreenCaptureService:
                 or frozen["screen_task"] != self.task_id
                 or frozen["identity_allocation"]["machine_id"] != self.config["machine_id"]):
             raise ValueError("Recorder request belongs to another actual allocation/keeper")
-        for reference in (file_identity(self.config_path), file_identity(Path(__file__)), self.config["recorder_job"]):
+        references = recording_source_files_v1(
+            {"config": file_identity(self.config_path), "service": file_identity(Path(__file__))},
+            self.config_path.parent, self.repo)
+        for reference in references:
             current = frozen["files"].get(str(Path(reference["path"]).resolve()))
             if not current or current["sha256"].lower() != reference["sha256"].lower():
                 raise ValueError("Recording config/service/Job source absent from actual allocation pins")
