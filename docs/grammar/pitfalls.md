@@ -2,6 +2,12 @@
 
 已记录的报错与原版合同。遇到报错先在这里检索关键词；各条分别注明源码确认、实机观察与修复验收的边界。
 
+## 运行期：教义知识拒绝不可玩角色
+
+| 现象 | 原因 | 解法 |
+|---|---|---|
+| `add_known_doctrine effect [ Character ... is not playable ]` | CK3 1.20.0.4 的知识原语要求原版可玩角色；仅检查存活仍会在全局初始化、改礼仪和生成 NPC 时大量报错 | 只在传授知识的 helper 内检查 `is_alive = yes is_playable_character = yes`；宗族、信仰或其他全员规则按各产品合同执行，不能随知识资格缩小。`machine_id: desktop-3fevhd2-1c74096080`，2026-10-24T09:48:14Z 的 [R0001实际失败](../../mod_dynastic_esotericism/docs/acceptance/R0001-2026-10-24.json)已证原错误；[增量解析](../../mod_dynastic_esotericism/docs/acceptance/playable-knowledge-parser-2026-10-24.json)通过仅证明语法，修复的实机结果待新场次。 |
+
 ## 运行期：批量互动把拒绝当作接受
 
 | 现象 | 原因 | 解法 |

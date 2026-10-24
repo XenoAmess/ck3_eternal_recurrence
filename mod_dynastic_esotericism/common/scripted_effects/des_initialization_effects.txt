@@ -30,15 +30,19 @@ des_initialize_rite_effect = {
 	}
 }
 
-# Character scope, including AI, children, and unlanded characters.
+# Character scope. The native knowledge effect requires a playable character;
+# this eligibility check does not limit dynasty membership or apostasy rules.
 des_teach_doctrines_effect = {
 	if = {
-		limit = { NOT = { knows_doctrine = doctrine:des_doctrine_none } }
-		add_known_doctrine = des_doctrine_none
-	}
-	if = {
-		limit = { NOT = { knows_doctrine = doctrine:des_doctrine_dynastic } }
-		add_known_doctrine = des_doctrine_dynastic
+		limit = { is_alive = yes is_playable_character = yes }
+		if = {
+			limit = { NOT = { knows_doctrine = doctrine:des_doctrine_none } }
+			add_known_doctrine = des_doctrine_none
+		}
+		if = {
+			limit = { NOT = { knows_doctrine = doctrine:des_doctrine_dynastic } }
+			add_known_doctrine = des_doctrine_dynastic
+		}
 	}
 }
 

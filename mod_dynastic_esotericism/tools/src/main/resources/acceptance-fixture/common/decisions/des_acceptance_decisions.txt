@@ -1,5 +1,6 @@
 ﻿# Each decision is a separate disclosed test input or readback; no product UI submission is replaced.
 des_acceptance_capture_created_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
     is_shown = { is_ai = no has_character_flag = des_test_ready NOT = { has_variable = des_test_primary_rite } }
     is_valid = { rite = { des_has_active_binding_trigger = yes } }
     effect = {
@@ -31,6 +32,7 @@ des_acceptance_capture_created_decision = {
 }
 
 des_acceptance_same_faith_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
     is_shown = { is_ai = no has_character_flag = des_test_members_verified NOT = { has_character_flag = des_test_same_started } }
     is_valid = { rite = var:des_test_primary_rite }
     effect = {
@@ -45,6 +47,7 @@ des_acceptance_same_faith_decision = {
 }
 
 des_acceptance_cross_faith_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
     is_shown = { is_ai = no has_character_flag = des_test_same_verified NOT = { has_character_flag = des_test_cross_started } }
     is_valid = { rite = var:des_test_primary_rite NOT = { faith = faith:orthodox } }
     effect = {
@@ -62,6 +65,7 @@ des_acceptance_cross_faith_decision = {
 }
 
 des_acceptance_repent_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
     is_shown = { is_ai = no has_character_flag = des_test_cross_verified NOT = { has_character_flag = des_test_repent_started } }
     is_valid = { rite = var:des_test_primary_rite }
     effect = {
@@ -76,6 +80,7 @@ des_acceptance_repent_decision = {
 }
 
 des_acceptance_closed_readback_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
     is_shown = { is_ai = no has_character_flag = des_test_repent_verified NOT = { has_character_flag = des_test_closed_verified } }
     is_valid = { rite = var:des_test_primary_rite rite = { rite_has_doctrine = des_doctrine_none } }
     effect = {
@@ -98,6 +103,7 @@ des_acceptance_closed_readback_decision = {
 }
 
 des_acceptance_reopened_readback_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
     is_shown = { is_ai = no has_character_flag = des_test_closed_verified NOT = { has_character_flag = des_test_reopened_verified } }
     is_valid = { rite = var:des_test_primary_rite rite = { des_has_active_binding_trigger = yes } }
     effect = {

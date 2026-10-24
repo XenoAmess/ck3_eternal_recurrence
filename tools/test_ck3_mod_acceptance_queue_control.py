@@ -57,7 +57,7 @@ class QueueFailureSuccessorTests(unittest.TestCase):
         self.report['error'] = 'SYNTHETIC ORIGINAL BUSINESS FAILURE'
         result,_ = self.submit({'steps':[{'id':'synthetic-business','tool':'SYNTHETIC-NO-REAL-TOOL'}]})
         self.assertNotEqual(result.returncode,0)
-        self.assertIn(b'only one preserved-failure finish_hold',result.stderr)
+        self.assertIn(b'only one typed normal-exit operation or preserved-failure finish_hold',result.stderr)
         self.assertEqual(list(self.controls.iterdir()),[])
 
     def test_wrong_arguments_field_is_rejected_without_creating_request(self):

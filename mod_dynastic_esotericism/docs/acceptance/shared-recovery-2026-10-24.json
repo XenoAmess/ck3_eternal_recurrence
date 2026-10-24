@@ -1,0 +1,148 @@
+{
+  "schema": "xar.dynastic-esotericism.shared-recovery-offline-summary.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T10:28:13.015420+00:00",
+  "source_checkout": "D:\\workspace\\ck3_eternal_recurrence",
+  "source_head": "1268da7ee35fa1d3760134f566d269db86c7c3e0",
+  "source_state": "uncommitted replacement candidate; no frozen R0001 source rewritten",
+  "results": {
+    "acceptance_regressions": {
+      "status": "PASS",
+      "tests": 20,
+      "scope": "four complete acceptance regression modules; no game"
+    },
+    "strict": {
+      "status": "PASS",
+      "complete_modules": 5,
+      "legacy_host_allocator_full_strict": "NOT_CLAIMED"
+    },
+    "parent_driver_dispatch": {
+      "status": "PASS",
+      "scope": "actual c09 parent producer, actual R05 Governor/driver and current projected RecordingDriver; missing-scope refusal retained, explicit product purpose day31 accepted; no pipe/actions"
+    },
+    "script_grammar": {
+      "status": "PASS",
+      "files": 5,
+      "semantic_120004_profile": "UNAVAILABLE_EXIT_4"
+    },
+    "failed_live_resource_consumer": {
+      "status": "PASS_RESOURCE_ADMISSION_ONLY",
+      "original_host_exit_code": 1,
+      "public_run_exit_code": 2,
+      "original_ck3_exit_code": 0,
+      "keeper_exit_code": 0,
+      "screen_release_sequence": 8596,
+      "original_normal_close_lifecycle_completed": false,
+      "normal_close_qualified": false,
+      "typed_normal_exit_proven": false,
+      "business_pass": false,
+      "release_pass": false
+    },
+    "whole_cold_ci": {
+      "status": "PASS",
+      "source_drift": [],
+      "summary": "shared-offline-final-2026-10-24.json",
+      "evidence": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\shared-acceptance-final-a01\\complete-step-actual.json",
+        "bytes": 676697,
+        "sha256": "6aa6d0b39de39ce5dfcb56baa0255480aaf1bf88a86f864205f528e885c0ab22"
+      },
+      "completed_at_utc": "2026-10-24T10:31:50.114381+00:00"
+    },
+    "R0002_business": "NOT_RUN",
+    "whole_cold_ci_history": [
+      {
+        "observed_at_utc": "2026-10-24T10:28:13.015420+00:00",
+        "status": "PENDING_FINAL_BUILDER_GROUP"
+      }
+    ]
+  },
+  "changes": [
+    "Only playable characters receive doctrine knowledge; all-character membership and apostasy rules remain covered.",
+    "All 19 fixture decisions use the existing original decision_misc picture.",
+    "Product cases explicitly bind their Root-reviewed prepared/frozen purpose and original natural-day budget; R05 scope/30day/once remain separate.",
+    "Failed host permits existing typed normal-exit cleanup via its original service/session; UNKNOWN remains non-replayable.",
+    "Resource closure reads the original false normal-close and true later native exit/finish lifecycle; original evidence is preserved."
+  ],
+  "evidence": {
+    "acceptance_regressions": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\purpose-validation-final-a01\\tests.actual.json",
+      "bytes": 3866,
+      "sha256": "537eae2cc15b3c1dfee57ba9ec81c555390ef18c8a43f845c7baebfbc97fd0ec"
+    },
+    "complete_modules_strict": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\purpose-validation-final-a01\\strict.actual.json",
+      "bytes": 1747,
+      "sha256": "6afadcd16f2f0bfde42418565c2c4c87e4e88eb5568bdf4137f2b91b73d3282e"
+    },
+    "actual_parent_driver_dispatch": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\purpose-validation-a01\\actual-r05-dispatch.json",
+      "bytes": 1137,
+      "sha256": "1213d8fa87f689cfdde28811d0c46bdcc4d4859216832dd4ba30330fe8963752"
+    },
+    "actual_parent_host_producer": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\purpose-validation-a01\\host\\canonical-host-projection.json",
+      "bytes": 2598,
+      "sha256": "1a473eb1330ddfbfcb6cc85ead02eddad0c832581464fa89126569714d8ba215"
+    },
+    "actual_failed_live_consumer": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0001-preserved-failure-close\\validated.actual.json",
+      "bytes": 9268,
+      "sha256": "1f4854334965ab9754e683e15dbd32b1858c4944e20af62963c56cc52396af8c"
+    },
+    "failure_close_input": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0001-preserved-failure-close\\failure-close.json",
+      "bytes": 7006,
+      "sha256": "8cb8207eb8e92cecf0f9e8dc5b66814a385e51cbfdf7c61a508c79e0db7fda0c"
+    },
+    "incremental_script_grammar": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\acceptance-preparation\\native-playability-fix\\incremental-parser-r3.actual.json",
+      "bytes": 8307,
+      "sha256": "3f069d2fce5ae923c64301c2dae8ad3c02f6f8377ed75d067be25c3d6ba7e7fb"
+    },
+    "whole_cold_ci_final_summary": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\docs\\acceptance\\shared-offline-final-2026-10-24.json",
+      "bytes": 8893,
+      "sha256": "68746d3c2e4d560d0f26c39917c759261427c5a36dbb075c76521d0de2b5c1c3"
+    }
+  },
+  "modified_source_pins": {
+    "tools/ck3_mod_acceptance_background_types.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_background_types.py",
+      "bytes": 35744,
+      "sha256": "8512c80b104db069aae31fe6358d1742f6bfbd878e7ac7c41dfe5ccca80220da"
+    },
+    "tools/ck3_mod_acceptance.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+      "bytes": 85754,
+      "sha256": "8edd301bfcac9dcdccb753f61bbf7b3a02ec9cfe5aead3c8ba9f4e76425993e3"
+    },
+    "tools/ck3_mod_acceptance_allocate.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_allocate.py",
+      "bytes": 245229,
+      "sha256": "08ff36c4e32b009bcd8a81034b409c301414f8906d439d322dda73e87bf0e997"
+    },
+    "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 346767,
+      "sha256": "7bb3e33f245e6649acd22f6bc224fffd0e6cfc7b757de53eae69aa6aed91f3b7"
+    },
+    "tools/test_product_acceptance_purpose.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_product_acceptance_purpose.py",
+      "bytes": 13040,
+      "sha256": "51c6e6b5cfad611a1294772105641685d30734d7390e12ed1606ef45ad938083"
+    },
+    "tools/test_preserved_failure_native_os0.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_preserved_failure_native_os0.py",
+      "bytes": 8030,
+      "sha256": "88d3ad6717c0d5091a6cbfbd1134ddd9744160b4a7b8beb45012371c42e7ae3c"
+    },
+    ".github/workflows/dynastic-esotericism-static.yml": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\.github\\workflows\\dynastic-esotericism-static.yml",
+      "bytes": 5691,
+      "sha256": "2b0d596eb172cfaa354bf367e2e2e254d7c2cde078e2065695829f570d78ab9d"
+    }
+  },
+  "retention_review_due_utc": "2026-10-31T09:52:54Z",
+  "boundary": "Offline source/grammar/resource closure validation only. R0001 remains RED with zero completed GUI business phases; no publication or next game launch credit."
+}

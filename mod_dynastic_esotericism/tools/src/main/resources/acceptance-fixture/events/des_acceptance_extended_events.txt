@@ -8,7 +8,16 @@ des_acceptance_extended.1 = {
 		des_acceptance_extended_restore_refs_effect = yes
 		if = {
 			limit = {
-				scope:des_test_generated = { is_alive = yes rite = scope:des_test_primary dynasty = scope:des_test_dynasty knows_doctrine = des_doctrine_none knows_doctrine = des_doctrine_dynastic }
+				scope:des_test_generated = {
+					is_alive = yes
+					rite = scope:des_test_primary
+					dynasty = scope:des_test_dynasty
+					trigger_if = {
+						limit = { is_playable_character = yes }
+						knows_doctrine = des_doctrine_none
+						knows_doctrine = des_doctrine_dynastic
+					}
+				}
 				scope:des_test_birth_father = { rite = scope:des_test_primary dynasty = scope:des_test_dynasty }
 				scope:des_test_birth_mother = { rite = scope:des_test_primary dynasty = scope:des_test_dynasty is_pregnant = yes }
 			}
@@ -228,8 +237,11 @@ des_acceptance_extended.41 = {
 					rite = scope:des_test_primary
 					dynasty = scope:des_test_dynasty
 					house = { dynasty = scope:des_test_dynasty }
-					knows_doctrine = des_doctrine_none
-					knows_doctrine = des_doctrine_dynastic
+					trigger_if = {
+						limit = { is_playable_character = yes }
+						knows_doctrine = des_doctrine_none
+						knows_doctrine = des_doctrine_dynastic
+					}
 				}
 			}
 			add_character_flag = des_test_birth_verified
@@ -318,6 +330,7 @@ des_acceptance_extended.71 = {
 		if = {
 			limit = {
 				has_global_variable = des_initialized
+				is_playable_character = yes
 				rite = var:des_test_legacy_rite
 				rite = { rite_has_doctrine = des_doctrine_none NOT = { has_variable = des_bound_dynasty } }
 				knows_doctrine = des_doctrine_none

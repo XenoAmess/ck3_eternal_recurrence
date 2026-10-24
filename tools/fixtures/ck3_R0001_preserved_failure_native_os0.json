@@ -1,0 +1,930 @@
+{
+  "schema": "ck3-preserved-failure-native-os0-source-excerpt-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T10:19:35.455948+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001",
+  "original_root": "C:\\ck3-dynastic-esotericism-20261024",
+  "source_pins": {
+    "frozen_argv": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\frozen-argv.json",
+      "bytes": 500539,
+      "sha256": "fabb1562b9b81079c1239d369653e8965901644cb867f13655cad9002680b5ce"
+    },
+    "ready_context": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\ready-context.json",
+      "bytes": 2263,
+      "sha256": "f36861a0ebb30599cdafc54c44c2d2bd6a622bdd1051320d6ee4e33c4cdbf2da"
+    },
+    "prepared_case": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\prepared-core-a03\\prepared-case.json",
+      "bytes": 17972,
+      "sha256": "e8c886078800dc968cfb4a17ad61f7c86619b30737eeeaa04489c6478ae93736"
+    },
+    "host_started": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\host-started.json",
+      "bytes": 3712,
+      "sha256": "06fc98a84c29acdd774a5ca769acf8c7b93648566d1a7e32d3f6bc9fc23afd44"
+    },
+    "host_exit": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\host-original-process-exit.json",
+      "bytes": 258,
+      "sha256": "67974f7c11438e9297433a3c55612c261cab01f3271933a19f08bbbb1c591bfb"
+    },
+    "host_supervisor": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\host-supervisor-started.json",
+      "bytes": 936,
+      "sha256": "bf7b125da6f24950002e2c4ef1c9674bc4b684f63698f03f24a1a34b38a5de53"
+    },
+    "normal_close": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\case-output\\normal-close-result.json",
+      "bytes": 3113,
+      "sha256": "bc7b6eff80feaf9e881e6fc648603e31f5255fe3c0cd1ae091db0911ec0abfcd"
+    },
+    "retained_identity": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\case-output\\retained-current-process-identity.json",
+      "bytes": 110,
+      "sha256": "bc4a4316345298790d0bb3f2ef0c01c1863d3e9d0633de09bbf9af770b531bda"
+    },
+    "retained_exit": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\case-output\\actual-retained-handle-os-exit.json",
+      "bytes": 179,
+      "sha256": "7bc2fe0c03cf4174f71d5b493e1d22310e08e07c0e744a28c536579e741c4408"
+    },
+    "native_report": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\native-report.json",
+      "bytes": 6231965,
+      "sha256": "4ae23068dfa99dff6cc10a7cfed55c13fae5a9423135d3fa10490997b51b6ba5"
+    },
+    "server_stderr": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\native-report.server-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "keeper_report": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\keeper-core-a16\\report.json",
+      "bytes": 439,
+      "sha256": "d01eaa1d07615e5ad9927442a1a0c54ee104b58de39f63d9fc72c6367508abdf"
+    },
+    "keeper_stop": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\keeper-core-a16\\STOP",
+      "bytes": 212,
+      "sha256": "a04d46c13d4925be2c41a7a10368037f822429af3fc8094d21f868f469988014"
+    },
+    "keeper_exit": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\keeper-actual-parent-exit.json",
+      "bytes": 615,
+      "sha256": "d7a4df5d3769708afd50ad5fd1116ff5d936580e471281dc5c784e872a844255"
+    },
+    "keeper_process": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\keeper-process.json",
+      "bytes": 752,
+      "sha256": "366121917a4af1b32b9dbe144495ec047a5cea4f43fc084dffe3e889d1722820"
+    },
+    "release": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0001-screen-release.actual.json",
+      "bytes": 1317,
+      "sha256": "b8de72480855b5e53db46a45cf365719b8bfc446310486117ff7367685874298"
+    },
+    "run_wait": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\run-core-a16-r2.actual.json",
+      "bytes": 1020,
+      "sha256": "5b04be9e01d7e7de297ecba516d8cb81308ad1012a4c1bf2a47d0b3f7895ff1a"
+    },
+    "allocate_wait": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\allocate-core-a16-final.actual.json",
+      "bytes": 6192,
+      "sha256": "3bc353ab13efea0b9c00ac424b5af8aa418713e48703384093f77af6b9626b7d"
+    },
+    "run_stdout": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\run-core-a16-r2.stdout.log",
+      "bytes": 26630,
+      "sha256": "57805a921a1ce253bfceee3f302d08fa3a8846aa8de12318e7c17fb6be7d9ef7"
+    },
+    "run_stderr": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\run-core-a16-r2.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "allocate_stdout": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\allocate-core-a16-final.actual.json",
+      "bytes": 6192,
+      "sha256": "3bc353ab13efea0b9c00ac424b5af8aa418713e48703384093f77af6b9626b7d"
+    },
+    "allocate_stderr": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\allocate-core-a16-final.actual.json",
+      "bytes": 6192,
+      "sha256": "3bc353ab13efea0b9c00ac424b5af8aa418713e48703384093f77af6b9626b7d"
+    },
+    "root_window_start": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\window-normal-close-a16.actual.json",
+      "bytes": 720,
+      "sha256": "3a7b067bf2f5b173f1febd890ee67c97b4f9bf0f0981b3a59450c8a850777c16"
+    },
+    "root_window_exit": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\window-close-post-click-a16.actual.json",
+      "bytes": 240,
+      "sha256": "bd44bb3b13939fcf497fbe970480feb4a12fcb226b4ff4e587f46e09ebeb9d71"
+    }
+  },
+  "leaves": {
+    "frozen_argv": {
+      "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001",
+      "mod_key": "dynastic-esotericism",
+      "cell": "core",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\ck3-dynastic-esotericism-20261024\\host-successor-a03\\shared-host.py",
+        "--agent-source-root",
+        "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\source",
+        "--game-dir",
+        "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+        "--bridge-dll",
+        "C:\\ck3-dynastic-esotericism-20261024\\native-religion-01\\build\\xar_ck3_bridge.dll",
+        "--bridge-injector",
+        "C:\\w\\e04a41\\xar_ck3_bridge_injector.exe",
+        "--bridge-pipe",
+        "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001",
+        "--output",
+        "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\native-report.json",
+        "--state-dir",
+        "C:\\ck3-dynastic-esotericism-20261024\\state-core-a03",
+        "--plan",
+        "C:\\ck3-dynastic-esotericism-20261024\\prepared-core-a03\\initial-plan.json",
+        "--control-plan-dir",
+        "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\controls",
+        "--private-war-cash-queries",
+        "--command-timeout",
+        "300",
+        "--readiness-timeout",
+        "1800",
+        "--timeout",
+        "5400",
+        "--poll-interval",
+        "0.5",
+        "--hold-seconds",
+        "3600",
+        "--fixture-profile",
+        "--frontend-robert-bootstrap",
+        "--frontend-fixture-start-policy",
+        "C:\\ck3-dynastic-esotericism-20261024\\prepared-core-a03\\frontend-fixture-start-policy.json",
+        "--private-player-rite-creation-actions",
+        "--case-read-only-mcp-tool",
+        "ck3_query_player_religion_context_v1",
+        "--case-read-only-mcp-tool",
+        "ck3_query_player_religion_doctrines_v1",
+        "--case-read-only-mcp-tool",
+        "ck3_query_player_religion_reform_context_v1",
+        "--case-read-only-mcp-tool",
+        "ck3_query_player_religion_draft_groups_v1",
+        "--case-read-only-mcp-tool",
+        "ck3_query_player_religion_draft_doctrine_choices_v1",
+        "--case-read-only-mcp-tool",
+        "ck3_query_player_religion_draft_resource_costs_v1"
+      ],
+      "state_dir": "C:\\ck3-dynastic-esotericism-20261024\\state-core-a03",
+      "source_root": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\source",
+      "runtime_manifest": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\manifest.json",
+        "bytes": 16676,
+        "sha256": "7f2513da288ded2eecb3b33734414bef006e6b0f05dae68c714e87dcb641e1ed"
+      },
+      "screen_task": "ck3-common-12004-20261023-a16",
+      "identity_allocation": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "state_root": "C:\\Users\\1\\AppData\\Local\\XarCk3Acceptance\\live-run-ids-v1"
+      }
+    },
+    "ready_context": {
+      "schema": "ck3-mod-acceptance-run-context-v1",
+      "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001",
+      "run_dir": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001",
+      "keeper_root": "C:\\ck3-dynastic-esotericism-20261024\\keeper-core-a16",
+      "prepared_case": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\prepared-core-a03\\prepared-case.json",
+        "bytes": 17972,
+        "sha256": "e8c886078800dc968cfb4a17ad61f7c86619b30737eeeaa04489c6478ae93736"
+      },
+      "case_inputs": {
+        "product_dir": "C:\\ck3-dynastic-esotericism-20261024\\formal-staging-a03",
+        "prebuilt_fixture_manifest": {
+          "path": "C:\\ck3-dynastic-esotericism-20261024\\fixture-core-a02.fixture.json",
+          "bytes": 7869,
+          "sha256": "5cc4d7673414bc3e58e86b16c9b4c19f8ae523d7ae0b5e0816462830cd2a470a"
+        },
+        "plain_configuration": {
+          "pdx_settings.txt": {
+            "path": "C:\\ck3-dynastic-esotericism-20261024\\inputs\\plain-configuration\\pdx_settings.txt",
+            "bytes": 7133,
+            "sha256": "bc84f30bcc7f0104b194a8cab61b723903e94e68347bb48400d83aecf17ae751"
+          },
+          "tutorial.txt": {
+            "path": "C:\\ck3-dynastic-esotericism-20261024\\inputs\\plain-configuration\\tutorial.txt",
+            "bytes": 61,
+            "sha256": "19f461abd92cc828c19d1cf77355ef6513682423721d64787756cf8465c2ef7d"
+          },
+          "presets.txt": {
+            "path": "C:\\ck3-dynastic-esotericism-20261024\\inputs\\plain-configuration\\presets.txt",
+            "bytes": 2785,
+            "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+          },
+          "player/game_rules/presets.txt": {
+            "path": "C:\\ck3-dynastic-esotericism-20261024\\inputs\\plain-configuration\\player\\game_rules\\presets.txt",
+            "bytes": 2785,
+            "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+          }
+        }
+      },
+      "product": "dynastic-esotericism",
+      "case": "core",
+      "frozen_argv": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\frozen-argv.json",
+        "bytes": 500539,
+        "sha256": "fabb1562b9b81079c1239d369653e8965901644cb867f13655cad9002680b5ce"
+      }
+    },
+    "prepared_case": {
+      "startup": {
+        "mode": "fixture",
+        "state_dir": "C:\\ck3-dynastic-esotericism-20261024\\state-core-a03",
+        "fixture_start_policy": {
+          "path": "C:\\ck3-dynastic-esotericism-20261024\\prepared-core-a03\\frontend-fixture-start-policy.json",
+          "bytes": 5571,
+          "sha256": "2a0f68fc7c1e588c985689611201fcf5d8a9e8589aced902fb10db20f20f4033"
+        }
+      },
+      "runtime_manifest": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\manifest.json",
+        "bytes": 16676,
+        "sha256": "7f2513da288ded2eecb3b33734414bef006e6b0f05dae68c714e87dcb641e1ed"
+      }
+    },
+    "host_started": {
+      "at_utc": "2026-10-24T09:39:40.281541+00:00",
+      "pid": 21184,
+      "create_time": 1792834780.266509,
+      "supervisor_pid": 3364,
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\ck3-dynastic-esotericism-20261024\\host-successor-a03\\shared-host.py",
+        "--agent-source-root",
+        "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\source",
+        "--game-dir",
+        "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+        "--bridge-dll",
+        "C:\\ck3-dynastic-esotericism-20261024\\native-religion-01\\build\\xar_ck3_bridge.dll",
+        "--bridge-injector",
+        "C:\\w\\e04a41\\xar_ck3_bridge_injector.exe",
+        "--bridge-pipe",
+        "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001",
+        "--output",
+        "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\native-report.json",
+        "--state-dir",
+        "C:\\ck3-dynastic-esotericism-20261024\\state-core-a03",
+        "--plan",
+        "C:\\ck3-dynastic-esotericism-20261024\\prepared-core-a03\\initial-plan.json",
+        "--control-plan-dir",
+        "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\controls",
+        "--private-war-cash-queries",
+        "--command-timeout",
+        "300",
+        "--readiness-timeout",
+        "1800",
+        "--timeout",
+        "5400",
+        "--poll-interval",
+        "0.5",
+        "--hold-seconds",
+        "3600",
+        "--fixture-profile",
+        "--frontend-robert-bootstrap",
+        "--frontend-fixture-start-policy",
+        "C:\\ck3-dynastic-esotericism-20261024\\prepared-core-a03\\frontend-fixture-start-policy.json",
+        "--private-player-rite-creation-actions",
+        "--case-read-only-mcp-tool",
+        "ck3_query_player_religion_context_v1",
+        "--case-read-only-mcp-tool",
+        "ck3_query_player_religion_doctrines_v1",
+        "--case-read-only-mcp-tool",
+        "ck3_query_player_religion_reform_context_v1",
+        "--case-read-only-mcp-tool",
+        "ck3_query_player_religion_draft_groups_v1",
+        "--case-read-only-mcp-tool",
+        "ck3_query_player_religion_draft_doctrine_choices_v1",
+        "--case-read-only-mcp-tool",
+        "ck3_query_player_religion_draft_resource_costs_v1"
+      ],
+      "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001",
+      "admitted_lease": {
+        "checkout_head": "09e7043669a326c1d22e8bd4ce8e23b3745afba7",
+        "cli_sha256": "9198718F0F0931D93ED7F1557CA1CBEDD1FA086A4A1CFF210BCA10404A305D7F",
+        "event_id": "f6ef29c9979742e5862ad40b07529d75",
+        "expected_sequence": 8590,
+        "installed_cli": "D:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+        "repo": "C:\\ck3-dynastic-esotericism-20261024\\s",
+        "schema": "xar.promo.screen-lease-cas/v1",
+        "screen_resource": "ck3-screen:acquired",
+        "sequence": 8591,
+        "source_cli": "C:\\ck3-dynastic-esotericism-20261024\\s\\tools\\codex_task_bus.py",
+        "task_id": "ck3-common-12004-20261023-a16",
+        "updated_at_utc": "2026-10-24T09:39:06.968883+00:00"
+      },
+      "background_offline_admission": {
+        "schema": "ck3-mod-acceptance-background-offline-admission-v1",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-10-24T09:39:31.212976+00:00",
+        "receipt": {
+          "path": "C:\\ck3-dynastic-esotericism-20261024\\steam-offline-launch-a16-r2.actual.json",
+          "bytes": 2461,
+          "sha256": "0ef4ac5e9dedec9f3952e594f2f7be06720d025393de4c01ef38d3bfd18d604d"
+        },
+        "steam_pid": 13256,
+        "steam_birth_filetime": "134369289811819170",
+        "observation_method": "native_current_user_byte",
+        "background_only": true
+      },
+      "actual_popen_retained": true,
+      "business_pass": false
+    },
+    "host_exit": {
+      "at_utc": "2026-10-24T09:52:13.168043+00:00",
+      "pid": 21184,
+      "returncode": 1,
+      "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001",
+      "actual_original_popen_wait": true,
+      "normal_ck3_exit_inferred": false,
+      "business_pass": false
+    },
+    "host_supervisor": {
+      "at_utc": "2026-10-24T09:39:36.600082+00:00",
+      "pid": 24272,
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\source\\tools\\ck3_mod_acceptance_launcher.py",
+        "--run-root",
+        "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001",
+        "--keeper-root",
+        "C:\\ck3-dynastic-esotericism-20261024\\keeper-core-a16",
+        "--steam-offline-receipt",
+        "C:\\ck3-dynastic-esotericism-20261024\\steam-offline-launch-a16-r2.actual.json",
+        "--supervise",
+        "--launch-ticket",
+        "0d5531c6041f2f345fa9ab4419e279d40f7630467581f8e7a8d8648e4ddb9457"
+      ],
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original_popen_identity": {
+        "pid": 24272,
+        "birth_filetime": "134373083765897956"
+      },
+      "business_pass": false
+    },
+    "normal_close": {
+      "root_normal_gui_review": null,
+      "operator_normal_gui_review": null,
+      "normal_quit_automation": null,
+      "normal_quit_automation_failure_preserved": null,
+      "retained_handle": {
+        "signaled": true,
+        "exit_code": 0,
+        "actual_retained_os0": true,
+        "pid": 29452,
+        "create_time": 1792834794.2703872,
+        "retained_synchronize_query_handle_acquired": true
+      },
+      "native_zero_proof": null,
+      "finish_hold_rows": null,
+      "host_finished_at": "2026-10-24T09:52:12.758433+00:00",
+      "managed_thread_finished": true,
+      "cleanup_ok": true,
+      "host_error": "RuntimeError: MCP tool ck3_execute_step returned an error: Error executing tool ck3_execute_step: Actual independent progress scope absent",
+      "failure_shutdown_proof": {
+        "status": "failure_shutdown_lifecycle_only",
+        "reason": "preserved_failure_native_process_exit_zero_cleanup_proven",
+        "failure_preserved": true,
+        "host_error": "RuntimeError: MCP tool ck3_execute_step returned an error: Error executing tool ck3_execute_step: Actual independent progress scope absent",
+        "alive_or_business_credit": false,
+        "business_pass": false,
+        "normal_close_qualified": false,
+        "process_exit_zero_proof": {
+          "status": "not_applicable",
+          "reason": "finished_native_process_exit_zero_cleanup_proven",
+          "alive_or_business_credit": false,
+          "managed_session_done": true,
+          "pid": 29452,
+          "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001",
+          "started_at": "2026-10-24T09:39:50.683188+00:00",
+          "finished_at": "2026-10-24T09:51:38.512249+00:00",
+          "exit_reason": "process_exit",
+          "process_exit_code": 0,
+          "shutdown": {
+            "nonce": "bda0544775f04263a5ad5054d58183ea",
+            "ck3_pid": 29452,
+            "ck3_creation_date": "20261024093954.270387+000",
+            "ck3_exit_code": 0,
+            "job_active_processes_before_termination": 0,
+            "job_active_processes_final": 0,
+            "tree_gone": true,
+            "cleanup_proven": true,
+            "final_ck3_inventory": {
+              "tasklist_returncode": 0,
+              "tasklist_pids": [],
+              "wmi_pids": [],
+              "native_pids": [],
+              "inventory_backend": "tasklist+toolhelp32",
+              "processes": []
+            },
+            "watchdog_pid": 29644,
+            "watchdog_creation_date": "20261024093951.676864+000",
+            "watchdog_state_before": "running",
+            "watchdog_state_after": "absent",
+            "control_files_absent": {
+              "C:\\ck3-dynastic-esotericism-20261024\\state-core-a03\\control\\ck3.json": true,
+              "C:\\ck3-dynastic-esotericism-20261024\\state-core-a03\\control\\watchdog-bda0544775f04263a5ad5054d58183ea.ready.json": true,
+              "C:\\ck3-dynastic-esotericism-20261024\\state-core-a03\\control\\ck3.watchdog_error": true,
+              "C:\\ck3-dynastic-esotericism-20261024\\state-core-a03\\control\\unsafe-cleanup.json": true
+            },
+            "contract_errors": [],
+            "ok": true
+          }
+        }
+      },
+      "failure_preserved": true,
+      "failure_lifecycle_completed": false,
+      "business_pass": false,
+      "normal_close_qualified": false
+    },
+    "retained_identity": {
+      "pid": 29452,
+      "create_time": 1792834794.2703872,
+      "retained_synchronize_query_handle_acquired": true
+    },
+    "retained_exit": {
+      "signaled": true,
+      "exit_code": 0,
+      "actual_retained_os0": true,
+      "pid": 29452,
+      "create_time": 1792834794.2703872,
+      "retained_synchronize_query_handle_acquired": true
+    },
+    "native_report": {
+      "status": "RED",
+      "finished_at": "2026-10-24T09:52:12.758433+00:00",
+      "error": "RuntimeError: MCP tool ck3_execute_step returned an error: Error executing tool ck3_execute_step: Actual independent progress scope absent",
+      "state_dir": "C:\\ck3-dynastic-esotericism-20261024\\state-core-a03",
+      "agent_source_root": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\source",
+      "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001",
+      "server_stderr": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\native-report.server-stderr.log",
+      "session": {
+        "report": {
+          "format_version": 1,
+          "kind": "ck3_native_headless_session",
+          "mode": "native-headless",
+          "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001",
+          "pid": 29452,
+          "started_at": "2026-10-24T09:39:50.683188+00:00",
+          "finished_at": "2026-10-24T09:51:38.512249+00:00",
+          "elapsed_seconds": 707.829,
+          "exit_reason": "process_exit",
+          "process_exit_code": 0,
+          "shutdown": {
+            "nonce": "bda0544775f04263a5ad5054d58183ea",
+            "ck3_pid": 29452,
+            "ck3_creation_date": "20261024093954.270387+000",
+            "ck3_exit_code": 0,
+            "job_active_processes_before_termination": 0,
+            "job_active_processes_final": 0,
+            "tree_gone": true,
+            "cleanup_proven": true,
+            "final_ck3_inventory": {
+              "tasklist_returncode": 0,
+              "tasklist_pids": [],
+              "wmi_pids": [],
+              "native_pids": [],
+              "inventory_backend": "tasklist+toolhelp32",
+              "processes": []
+            },
+            "watchdog_pid": 29644,
+            "watchdog_creation_date": "20261024093951.676864+000",
+            "watchdog_state_before": "running",
+            "watchdog_state_after": "absent",
+            "control_files_absent": {
+              "C:\\ck3-dynastic-esotericism-20261024\\state-core-a03\\control\\ck3.json": true,
+              "C:\\ck3-dynastic-esotericism-20261024\\state-core-a03\\control\\watchdog-bda0544775f04263a5ad5054d58183ea.ready.json": true,
+              "C:\\ck3-dynastic-esotericism-20261024\\state-core-a03\\control\\ck3.watchdog_error": true,
+              "C:\\ck3-dynastic-esotericism-20261024\\state-core-a03\\control\\unsafe-cleanup.json": true
+            },
+            "contract_errors": [],
+            "ok": true
+          },
+          "restart_count": 0,
+          "restart_shutdowns": [],
+          "cold_start_checkpoint": null,
+          "frontend_first_warmup": null,
+          "startup_slot0_probe": null,
+          "terminal": null,
+          "error": null,
+          "ok": true,
+          "injector_attestation": {
+            "schema": "xar.ck3.native-injector-attempt.v1",
+            "status": "INJECTOR_EXIT_ZERO_TREE_PROVEN",
+            "argv": [
+              "C:\\w\\e04a41\\xar_ck3_bridge_injector.exe",
+              "29452",
+              "C:\\ck3-dynastic-esotericism-20261024\\native-religion-01\\build\\xar_ck3_bridge.dll"
+            ],
+            "parent_pid": 22380,
+            "target_ck3_pid": 29452,
+            "pid": 13336,
+            "creation_utc": "2026-10-24T09:39:54.912000+00:00",
+            "creation_source": "CreateProcess pinned handle/GetProcessTimes",
+            "returncode": 0,
+            "stdout_sha256": "1DA6B79D380371389F30BD8E35A3EEE5C288A45D77585B04ED3D90CFCDA65128",
+            "stderr_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+            "stdout_bytes": 83,
+            "stderr_bytes": 0,
+            "injector_root_reaped": true,
+            "complete_process_tree_proven": true,
+            "contained_job_report_validated": true,
+            "role_query_authorized": false,
+            "evidence_dir": "C:\\ck3-dynastic-esotericism-20261024\\state-core-a03\\injector-attempts\\bda0544775f04263a5ad5054d58183ea",
+            "argv_asset": {
+              "path": "C:\\ck3-dynastic-esotericism-20261024\\state-core-a03\\injector-attempts\\bda0544775f04263a5ad5054d58183ea\\argv.json",
+              "bytes": 152,
+              "sha256": "E9BE17CAFE29FE66252DE3B1C3B41014515EDD45F327B3568EB7799BC3FAAC10"
+            },
+            "evidence": {
+              "schema": "xar.ck3.injector-evidence.v1",
+              "assets": {
+                "stdout": {
+                  "present": true,
+                  "path": "C:\\ck3-dynastic-esotericism-20261024\\state-core-a03\\injector-attempts\\bda0544775f04263a5ad5054d58183ea\\stdout.bin",
+                  "bytes": 83,
+                  "sha256": "1DA6B79D380371389F30BD8E35A3EEE5C288A45D77585B04ED3D90CFCDA65128"
+                },
+                "stderr": {
+                  "present": true,
+                  "path": "C:\\ck3-dynastic-esotericism-20261024\\state-core-a03\\injector-attempts\\bda0544775f04263a5ad5054d58183ea\\stderr.bin",
+                  "bytes": 0,
+                  "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+                },
+                "job_report": {
+                  "path": "C:\\ck3-dynastic-esotericism-20261024\\state-core-a03\\injector-attempts\\bda0544775f04263a5ad5054d58183ea\\job-report.json",
+                  "bytes": 1387,
+                  "sha256": "81A31DDA0CB7B101F987EAEDEF51796AC6DFD74885F45A644D91FD2DA8F93725"
+                },
+                "helper_error": {
+                  "path": "C:\\ck3-dynastic-esotericism-20261024\\state-core-a03\\injector-attempts\\bda0544775f04263a5ad5054d58183ea\\helper-error.json",
+                  "bytes": 20,
+                  "sha256": "7CAEEFE05C039F6C30BD0593D321171609C89CB15AC218F9E059154B1C8A035A"
+                }
+              },
+              "index": {
+                "path": "C:\\ck3-dynastic-esotericism-20261024\\state-core-a03\\injector-attempts\\bda0544775f04263a5ad5054d58183ea\\evidence-index.json",
+                "bytes": 1178,
+                "sha256": "5914BE83B234E6D8FD0F23F02CEF6701D55AE7130D2CEB385AF02FF3C5F4DB3A"
+              }
+            },
+            "pinned_executable": "C:\\w\\e04a41\\xar_ck3_bridge_injector.exe",
+            "executable_sha256": "208C091A07DDD812F31EA20A70A9F31EB81B22972EFE43D6F944D60A09435630",
+            "job_limit_flags": 8200,
+            "pre_resume_job_pids": [
+              13336
+            ],
+            "job_active_final": 0,
+            "job_pids_final": [],
+            "resume_previous_count": 1,
+            "stdout_retained_sha256": "1DA6B79D380371389F30BD8E35A3EEE5C288A45D77585B04ED3D90CFCDA65128",
+            "stderr_retained_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+            "stdout_retained_bytes": 83,
+            "stderr_retained_bytes": 0,
+            "contained_job_report": {
+              "schema": "xar.ck3.contained-injector-job.v1",
+              "status": "EXIT",
+              "argv": [
+                "C:\\w\\e04a41\\xar_ck3_bridge_injector.exe",
+                "29452",
+                "C:\\ck3-dynastic-esotericism-20261024\\native-religion-01\\build\\xar_ck3_bridge.dll"
+              ],
+              "pid": 13336,
+              "creation_utc": "2026-10-24T09:39:54.912000+00:00",
+              "pinned_executable": "C:\\w\\e04a41\\xar_ck3_bridge_injector.exe",
+              "executable_sha256": "208C091A07DDD812F31EA20A70A9F31EB81B22972EFE43D6F944D60A09435630",
+              "job_limit_flags": 8200,
+              "pre_resume_job_pids": [
+                13336
+              ],
+              "job_active_final": 0,
+              "job_pids_final": [],
+              "resume_previous_count": 1,
+              "returncode": 0,
+              "injector_root_reaped": true,
+              "complete_process_tree_proven": true,
+              "stdout_sha256": "1DA6B79D380371389F30BD8E35A3EEE5C288A45D77585B04ED3D90CFCDA65128",
+              "stderr_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+              "stdout_bytes": 83,
+              "stderr_bytes": 0,
+              "stdout_retained_sha256": "1DA6B79D380371389F30BD8E35A3EEE5C288A45D77585B04ED3D90CFCDA65128",
+              "stderr_retained_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+              "stdout_retained_bytes": 83,
+              "stderr_retained_bytes": 0,
+              "stdout_complete": true,
+              "stderr_complete": true,
+              "output_limit_bytes": 8388608,
+              "stdout_overflow": false,
+              "stdout_reader_error": null,
+              "stderr_overflow": false,
+              "stderr_reader_error": null
+            }
+          },
+          "fixture_profile": true
+        },
+        "error": null
+      },
+      "managed_session_done": true,
+      "managed_session_thread_finished": true,
+      "cleanup_ok": true,
+      "steps": [
+        {
+          "id": "failure-finish-hold-001",
+          "plan": {
+            "id": "failure-finish-hold-001",
+            "kind": "finish_hold",
+            "failure_shutdown": true,
+            "expect": {
+              "hold_finished": true,
+              "failure_preserved": true,
+              "business_pass": false,
+              "normal_close_qualified": false
+            }
+          },
+          "started_at": "2026-10-24T09:52:11.831087+00:00",
+          "ok": true,
+          "result": {
+            "hold_finished": true,
+            "failure_preserved": true,
+            "host_error": "RuntimeError: MCP tool ck3_execute_step returned an error: Error executing tool ck3_execute_step: Actual independent progress scope absent",
+            "business_pass": false,
+            "normal_close_qualified": false
+          },
+          "resolved_expect": {
+            "hold_finished": true,
+            "failure_preserved": true,
+            "business_pass": false,
+            "normal_close_qualified": false
+          },
+          "after_snapshot": {
+            "status": "failure_shutdown_lifecycle_only",
+            "reason": "preserved_failure_native_process_exit_zero_cleanup_proven",
+            "failure_preserved": true,
+            "host_error": "RuntimeError: MCP tool ck3_execute_step returned an error: Error executing tool ck3_execute_step: Actual independent progress scope absent",
+            "alive_or_business_credit": false,
+            "business_pass": false,
+            "normal_close_qualified": false,
+            "process_exit_zero_proof": {
+              "status": "not_applicable",
+              "reason": "finished_native_process_exit_zero_cleanup_proven",
+              "alive_or_business_credit": false,
+              "managed_session_done": true,
+              "pid": 29452,
+              "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001",
+              "started_at": "2026-10-24T09:39:50.683188+00:00",
+              "finished_at": "2026-10-24T09:51:38.512249+00:00",
+              "exit_reason": "process_exit",
+              "process_exit_code": 0,
+              "shutdown": {
+                "nonce": "bda0544775f04263a5ad5054d58183ea",
+                "ck3_pid": 29452,
+                "ck3_creation_date": "20261024093954.270387+000",
+                "ck3_exit_code": 0,
+                "job_active_processes_before_termination": 0,
+                "job_active_processes_final": 0,
+                "tree_gone": true,
+                "cleanup_proven": true,
+                "final_ck3_inventory": {
+                  "tasklist_returncode": 0,
+                  "tasklist_pids": [],
+                  "wmi_pids": [],
+                  "native_pids": [],
+                  "inventory_backend": "tasklist+toolhelp32",
+                  "processes": []
+                },
+                "watchdog_pid": 29644,
+                "watchdog_creation_date": "20261024093951.676864+000",
+                "watchdog_state_before": "running",
+                "watchdog_state_after": "absent",
+                "control_files_absent": {
+                  "C:\\ck3-dynastic-esotericism-20261024\\state-core-a03\\control\\ck3.json": true,
+                  "C:\\ck3-dynastic-esotericism-20261024\\state-core-a03\\control\\watchdog-bda0544775f04263a5ad5054d58183ea.ready.json": true,
+                  "C:\\ck3-dynastic-esotericism-20261024\\state-core-a03\\control\\ck3.watchdog_error": true,
+                  "C:\\ck3-dynastic-esotericism-20261024\\state-core-a03\\control\\unsafe-cleanup.json": true
+                },
+                "contract_errors": [],
+                "ok": true
+              }
+            }
+          },
+          "finished_at": "2026-10-24T09:52:11.916552+00:00"
+        }
+      ]
+    },
+    "keeper_report": {
+      "schema": "xar.promo.screen-lease-keeper/v1",
+      "task_id": "ck3-common-12004-20261023-a16",
+      "last_sequence": 8595,
+      "failure": null,
+      "thread_exited": true,
+      "journal": "C:\\ck3-dynastic-esotericism-20261024\\keeper-core-a16\\journal.jsonl",
+      "at_utc": "2026-10-24T09:52:45.417466+00:00",
+      "entry_error": null,
+      "checkout_head": "09e7043669a326c1d22e8bd4ce8e23b3745afba7",
+      "screen_released": false,
+      "game_actions": false
+    },
+    "keeper_exit": {
+      "keeper_actual_exit_code": 0,
+      "keeper_report": {
+        "schema": "xar.promo.screen-lease-keeper/v1",
+        "task_id": "ck3-common-12004-20261023-a16",
+        "last_sequence": 8595,
+        "failure": null,
+        "thread_exited": true,
+        "journal": "C:\\ck3-dynastic-esotericism-20261024\\keeper-core-a16\\journal.jsonl",
+        "at_utc": "2026-10-24T09:52:45.417466+00:00",
+        "entry_error": null,
+        "checkout_head": "09e7043669a326c1d22e8bd4ce8e23b3745afba7",
+        "screen_released": false,
+        "game_actions": false
+      },
+      "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001",
+      "business_pass": false
+    },
+    "keeper_process": {
+      "pid": 9724,
+      "create_time": 1792834563.15898,
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\source\\tools\\ck3_mod_acceptance_keeper.py",
+        "--repo",
+        "C:\\ck3-dynastic-esotericism-20261024\\s",
+        "--root",
+        "C:\\ck3-dynastic-esotericism-20261024\\keeper-core-a16",
+        "--task",
+        "ck3-common-12004-20261023-a16",
+        "--sequence",
+        "8589",
+        "--bus-dir",
+        "D:\\workspace\\.codex-task-bus",
+        "--bus-cli",
+        "C:\\ck3-dynastic-esotericism-20261024\\s\\tools\\codex_task_bus.py",
+        "--bus-cli-sha256",
+        "9198718F0F0931D93ED7F1557CA1CBEDD1FA086A4A1CFF210BCA10404A305D7F"
+      ]
+    },
+    "release": {
+      "schema": "codex.task_bus.v1",
+      "ok": true,
+      "task": {
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "09e7043669a326c1d22e8bd4ce8e23b3745afba7"
+        },
+        "last_sequence": 8596,
+        "next_step": "",
+        "pid": 31924,
+        "repo": "C:\\ck3-dynastic-esotericism-20261024\\s",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "state": "done",
+        "summary": "R0001 preserved RED; original CK3 exit0, native cleanup and host actual exit retained; keeper thread exit0",
+        "task_id": "ck3-common-12004-20261023-a16",
+        "updated_at_utc": "2026-10-24T09:52:54.565622+00:00"
+      },
+      "event": {
+        "schema": "codex.task_bus.v1",
+        "sequence": 8596,
+        "event_id": "57bff50925364ecba985700ec22148ce",
+        "timestamp_utc": "2026-10-24T09:52:54.566900+00:00",
+        "kind": "completed",
+        "task_id": "ck3-common-12004-20261023-a16",
+        "to": [
+          "*"
+        ],
+        "state": "done",
+        "summary": "R0001 preserved RED; original CK3 exit0, native cleanup and host actual exit retained; keeper thread exit0",
+        "next_step": "",
+        "resources": [],
+        "repo": "C:\\ck3-dynastic-esotericism-20261024\\s",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "09e7043669a326c1d22e8bd4ce8e23b3745afba7"
+        }
+      }
+    },
+    "run_wait": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "started_at_utc": "2026-10-24T09:39:31.279726+00:00",
+      "finished_at_utc": "2026-10-24T09:52:13.461352+00:00",
+      "argv": [
+        "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-X",
+        "utf8",
+        "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\source\\tools\\ck3_mod_acceptance.py",
+        "run",
+        "--runtime",
+        "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runtime.json",
+        "--products",
+        "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\source\\tools\\ck3_mod_acceptance_products.json",
+        "--product",
+        "dynastic-esotericism",
+        "--case",
+        "core",
+        "--prepared-case",
+        "C:\\ck3-dynastic-esotericism-20261024\\prepared-core-a03\\prepared-case.json",
+        "--run-context",
+        "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\root-reviewed-offline-context.json"
+      ],
+      "exit_code": 2
+    },
+    "allocate_wait": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "observed_at_utc": "2026-10-24T09:52:45.567308+00:00",
+      "argv": [
+        "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-X",
+        "utf8",
+        "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\source\\tools\\ck3_mod_acceptance.py",
+        "allocate",
+        "--runtime",
+        "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runtime.json",
+        "--products",
+        "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\source\\tools\\ck3_mod_acceptance_products.json",
+        "--product",
+        "dynastic-esotericism",
+        "--case",
+        "core",
+        "--prepared-case",
+        "C:\\ck3-dynastic-esotericism-20261024\\prepared-core-a03\\prepared-case.json",
+        "--attempt",
+        "a16",
+        "--keeper-output",
+        "C:\\ck3-dynastic-esotericism-20261024\\keeper-core-a16",
+        "--previous-live",
+        "C:/ck3-superman-validation-20261023/runs/desktop-3fevhd2-1c74096080--superman-qiang--R0037",
+        "--previous-keeper",
+        "C:/ck3-superman-validation-20261023/workshop-cache-keeper-a15",
+        "--previous-release",
+        "C:/ck3-superman-validation-20261023/ops/R0037-screen-release.actual.json",
+        "--latest-screen-release",
+        "C:\\ck3-dynastic-esotericism-20261024\\uac-screen-release.actual.json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"status\": \"ACTUAL_ALLOCATED_KEEPER_READY_NOT_RUN\",\n  \"live\": \"C:\\\\ck3-dynastic-esotericism-20261024\\\\common-runtime-a03\\\\runs\\\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\",\n  \"task\": \"ck3-common-12004-20261023-a16\",\n  \"sequence\": 8589,\n  \"keeper_ready\": {\n    \"at_utc\": \"2026-10-24T09:36:07.680240+00:00\",\n    \"lease\": {\n      \"schema\": \"xar.promo.screen-lease-cas/v1\",\n      \"task_id\": \"ck3-common-12004-20261023-a16\",\n      \"expected_sequence\": 8589,\n      \"sequence\": 8590,\n      \"event_id\": \"63a32e96b79149e1b209597369dcec34\",\n      \"updated_at_utc\": \"2026-10-24T09:36:06.929127+00:00\",\n      \"repo\": \"C:\\\\ck3-dynastic-esotericism-20261024\\\\s\",\n      \"checkout_head\": \"09e7043669a326c1d22e8bd4ce8e23b3745afba7\",\n      \"source_cli\": \"C:\\\\ck3-dynastic-esotericism-20261024\\\\s\\\\tools\\\\codex_task_bus.py\",\n      \"installed_cli\": \"D:\\\\workspace\\\\.codex-task-bus\\\\bin\\\\codex_task_bus.py\",\n      \"cli_sha256\": \"9198718F0F0931D93ED7F1557CA1CBEDD1FA086A4A1CFF210BCA10404A305D7F\",\n      \"screen_resource\": \"ck3-screen:acquired\"\n    },\n    \"inputs\": {\n      \"path\": \"C:\\\\ck3-dynastic-esotericism-20261024\\\\keeper-core-a16\\\\inputs.json\",\n      \"bytes\": 824,\n      \"sha256\": \"c7e39b376ff32966cb1fec658331ff9b912d9db7478ac005f04bff08174c1464\"\n    }\n  },\n  \"keeper_pid\": 9724,\n  \"keeper_root\": \"C:\\\\ck3-dynastic-esotericism-20261024\\\\keeper-core-a16\",\n  \"register_to_keeper_ready_seconds\": 4.579012600006536,\n  \"context\": \"C:\\\\ck3-dynastic-esotericism-20261024\\\\common-runtime-a03\\\\runs\\\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\\\ready-context.json\",\n  \"prepared_case\": \"C:\\\\ck3-dynastic-esotericism-20261024\\\\prepared-core-a03\\\\prepared-case.json\",\n  \"actual_host_argv\": \"C:\\\\ck3-dynastic-esotericism-20261024\\\\common-runtime-a03\\\\runs\\\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\\\frozen-argv.json\",\n  \"game_started\": false,\n  \"business_pass\": false\n}\n{\n  \"status\": \"ACTUAL_ALLOCATED_KEEPER_READY_NOT_RUN\",\n  \"live\": \"C:\\\\ck3-dynastic-esotericism-20261024\\\\common-runtime-a03\\\\runs\\\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\",\n  \"task\": \"ck3-common-12004-20261023-a16\",\n  \"sequence\": 8589,\n  \"keeper_ready\": {\n    \"at_utc\": \"2026-10-24T09:36:07.680240+00:00\",\n    \"lease\": {\n      \"schema\": \"xar.promo.screen-lease-cas/v1\",\n      \"task_id\": \"ck3-common-12004-20261023-a16\",\n      \"expected_sequence\": 8589,\n      \"sequence\": 8590,\n      \"event_id\": \"63a32e96b79149e1b209597369dcec34\",\n      \"updated_at_utc\": \"2026-10-24T09:36:06.929127+00:00\",\n      \"repo\": \"C:\\\\ck3-dynastic-esotericism-20261024\\\\s\",\n      \"checkout_head\": \"09e7043669a326c1d22e8bd4ce8e23b3745afba7\",\n      \"source_cli\": \"C:\\\\ck3-dynastic-esotericism-20261024\\\\s\\\\tools\\\\codex_task_bus.py\",\n      \"installed_cli\": \"D:\\\\workspace\\\\.codex-task-bus\\\\bin\\\\codex_task_bus.py\",\n      \"cli_sha256\": \"9198718F0F0931D93ED7F1557CA1CBEDD1FA086A4A1CFF210BCA10404A305D7F\",\n      \"screen_resource\": \"ck3-screen:acquired\"\n    },\n    \"inputs\": {\n      \"path\": \"C:\\\\ck3-dynastic-esotericism-20261024\\\\keeper-core-a16\\\\inputs.json\",\n      \"bytes\": 824,\n      \"sha256\": \"c7e39b376ff32966cb1fec658331ff9b912d9db7478ac005f04bff08174c1464\"\n    }\n  },\n  \"keeper_pid\": 9724,\n  \"keeper_root\": \"C:\\\\ck3-dynastic-esotericism-20261024\\\\keeper-core-a16\",\n  \"register_to_keeper_ready_seconds\": 4.579012600006536,\n  \"context\": \"C:\\\\ck3-dynastic-esotericism-20261024\\\\common-runtime-a03\\\\runs\\\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\\\ready-context.json\",\n  \"prepared_case\": \"C:\\\\ck3-dynastic-esotericism-20261024\\\\prepared-core-a03\\\\prepared-case.json\",\n  \"actual_host_argv\": \"C:\\\\ck3-dynastic-esotericism-20261024\\\\common-runtime-a03\\\\runs\\\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\\\frozen-argv.json\",\n  \"game_started\": false,\n  \"business_pass\": false,\n  \"keeper_actual_exit_code\": 0,\n  \"keeper_report\": {\n    \"schema\": \"xar.promo.screen-lease-keeper/v1\",\n    \"task_id\": \"ck3-common-12004-20261023-a16\",\n    \"last_sequence\": 8595,\n    \"failure\": null,\n    \"thread_exited\": true,\n    \"journal\": \"C:\\\\ck3-dynastic-esotericism-20261024\\\\keeper-core-a16\\\\journal.jsonl\",\n    \"at_utc\": \"2026-10-24T09:52:45.417466+00:00\",\n    \"entry_error\": null,\n    \"checkout_head\": \"09e7043669a326c1d22e8bd4ce8e23b3745afba7\",\n    \"screen_released\": false,\n    \"game_actions\": false\n  },\n  \"run_id\": \"desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\"\n}\n",
+      "stderr": ""
+    },
+    "root_window_start": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "observed_at_utc": "2026-10-24T09:49:15.662269+00:00",
+      "pid": 29452,
+      "birth_filetime": "134373083942703873",
+      "exe": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "windows": [
+        {
+          "hwnd": "109120652",
+          "title": "Crusader Kings III"
+        }
+      ],
+      "reason": "Actual preserved-failure host public MCP queue refused normal-exit query; normal window WM_CLOSE fallback authorized",
+      "method": "PostMessageW WM_CLOSE",
+      "intent_only": false,
+      "post_message_ack": true,
+      "wait_result": 258,
+      "exit_code_read": true,
+      "actual_exit_code": 259,
+      "finished_at_utc": "2026-10-24T09:49:25.666976+00:00"
+    },
+    "root_window_exit": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "observed_at_utc": "2026-10-24T09:51:53.359971+00:00",
+      "pid": 29452,
+      "opened": true,
+      "open_error": 0,
+      "wait_result": 0,
+      "exit_code_read": true,
+      "actual_exit_code": 0
+    }
+  },
+  "boundary": "Selected original fields only; tests relocate and reseal authored files. Original pins refer to retained full originals, never to this projection. No business or release credit."
+}

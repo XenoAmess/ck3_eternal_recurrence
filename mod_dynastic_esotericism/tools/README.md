@@ -28,3 +28,14 @@ Manifest 沿用 `independent_mod_release` 的 v1 JSON 字段：`format_version`�
 静态检查确认正式清单、UTF-8/BOM、括号／引号、两语言 key、版本及图像文件头。它不替代 CK3 解析器和实际业务验收；实机与发布按产品 [测试方案](../docs/test-plan.md) 执行。`fixture` 子命令仅用于公共验收入口所需的外置准备夹具，不进入正式 allowlist。
 
 `verify` 的 `DefaultMavenTest` 会实际调用 PATH 选择的 `mvn --version`，记录 Maven home 并拒绝低于 3.10.0 的默认工具；它同样适用于 CI。`runtime` 子命令只为公共验收生成有限共同 runtime 后继，不授予业务资格；其参数为 `--repo-root`、`--base-runtime`、`--native-index`、`--host-projection`、`--output`、`--machine-id`，必须各提供一次。运行输入须使用已经冻结的公共 runtime 和实际构建的 native index。
+
+`validate`、`check`、`build`、`verify` 都接受独立开关 `--release-localization`。普通模式继续投影中英 17 文件，忽略源码中七个已知外语文件；未知文件仍拒绝进入正式树。发布模式使用明确九语 24 文件清单，验证各文件 UTF-8 BOM、语言 header、`:0`、精确 15 key、引号/转义和保护 token（含 `−100`），并在 staging 回读时重新验证格式。非中文只认证格式，允许没有保护 token 的可见文本为空；不以语义、术语、翻译完成度或游戏内显示作为门槛。
+
+```text
+java -jar <runner> validate --release-localization
+java -jar <runner> check --release-localization --output <新的外置双构建目录>
+java -jar <runner> build --release-localization --output <新的外置staging> --git-tag dynastic-esotericism-v0.1.0
+java -jar <runner> verify --release-localization --output <staging> --manifest <staging>.manifest.json
+```
+
+发布格式检查仅由 `dynastic-esotericism-v*` tag 或人工发布 workflow dispatch 触发。普通 push/PR 只运行开发检查和使用临时九语 fixture 的合同测试，不要求生产七语完成。当前生产中英尚未使用 `:0`，发布模式会明确拒绝；七语候选尚未落盘，不构成已经认证的正式发布文件。翻译落盘及中英版本字段整理由产品发布阶段完成，本构建器不生成或改写译文。格式合同沿用仓库共享本地化 parser/token 规则，JUnit 通过现有 Python parser、token 校验与 manifest 消费者独立验证真实 24 文件构建；不新增 Python 生产入口或 Java 运行时依赖到游戏中。

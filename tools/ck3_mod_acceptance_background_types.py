@@ -117,6 +117,161 @@ def text_field(row: JsonObject, key: str) -> str:
 def object_field(row: JsonObject, key: str) -> JsonObject:
     return json_object(row.get(key))
 
+
+@dataclass(frozen=True)
+class ProductAcceptancePurposeV1:
+    machine_id: str
+    run_id: str
+    product: str
+    case: str
+    state_dir: Path
+    bridge_pipe: str
+    maximum_natural_days: int
+
+
+def _purpose_original(reference: object) -> tuple[FilePin, JsonObject]:
+    pin = file_pin(reference)
+    if set(json_object(reference)) != {'path', 'bytes', 'sha256'} or pin['bytes'] > 8 * 1024 * 1024:
+        raise ValueError('Bounded exact product-purpose original required')
+    path = Path(pin['path'])
+    if not path.is_absolute() or path.is_symlink() or not path.is_file():
+        raise ValueError('Product-purpose original must be an absolute ordinary file')
+    raw = path.read_bytes()
+    if len(raw) != pin['bytes'] or hashlib.sha256(raw).hexdigest() != pin['sha256']:
+        raise ValueError('Product-purpose original changed: ' + str(path))
+    return pin, json_object(json.loads(raw))
+
+
+def product_acceptance_purpose_v1(value: object, *, purpose_path: Path,
+                                  host_path: Path, state_dir: Path,
+                                  bridge_pipe: str) -> ProductAcceptancePurposeV1:
+    """One Root-reviewed public prepared case; never an R05 progress admission."""
+    row = json_object(value)
+    if (set(row) != {'schema', 'purpose', 'machine_id', 'reviewed_context'}
+            or row.get('schema') != 'ck3-product-acceptance-purpose-v1'
+            or row.get('purpose') != 'product_acceptance'):
+        raise ValueError('Explicit product acceptance purpose required')
+    context_pin, context = _purpose_original(row['reviewed_context'])
+    frozen_pin, frozen = _purpose_original(context.get('frozen_argv'))
+    prepared_pin, prepared = _purpose_original(context.get('prepared_case'))
+    _, contract = _purpose_original(prepared.get('contract'))
+    run_root = purpose_path.resolve().parent
+    run_id = text_field(context, 'run_id')
+    machine_id = text_field(object_field(frozen, 'identity_allocation'), 'machine_id')
+    product, case = text_field(context, 'product'), text_field(context, 'case')
+    argv = strings_field(frozen, 'argv')
+
+    def option(flag: str) -> str:
+        if argv.count(flag) != 1 or argv.index(flag) + 1 >= len(argv):
+            raise ValueError('Product-purpose frozen argv requires exactly one ' + flag)
+        return argv[argv.index(flag) + 1]
+
+    if (row.get('machine_id') != machine_id
+            or context.get('schema') != 'ck3-mod-acceptance-run-context-v1'
+            or context.get('reviewer') != '/root' or 'operator_delegation' in context
+            or Path(context_pin['path']).resolve().parent != run_root
+            or run_id != run_root.name or Path(text_field(context, 'run_dir')).resolve() != run_root
+            or Path(frozen_pin['path']).resolve() != run_root / 'frozen-argv.json'
+            or frozen.get('run_id') != run_id or frozen.get('mod_key') != product or frozen.get('cell') != case
+            or prepared.get('schema') != 'ck3-mod-acceptance-prepared-case-v1'
+            or prepared.get('product') != product or prepared.get('case') != case
+            or context.get('case_inputs') != prepared.get('case_inputs')
+            or frozen.get('runtime_manifest') != prepared.get('runtime_manifest')
+            or contract.get('schema') != 'ck3-mod-acceptance-product-case-v1'
+            or contract.get('product') != product or contract.get('case_id') != case
+            or contract.get('execution_purpose') != 'product_acceptance'
+            or len(argv) < 5 or Path(argv[4]).resolve() != host_path.resolve()
+            or Path(option('--product-acceptance-purpose')).resolve() != purpose_path.resolve()
+            or Path(option('--state-dir')).resolve() != state_dir.resolve()
+            or Path(text_field(frozen, 'state_dir')).resolve() != state_dir.resolve()
+            or option('--bridge-pipe') != bridge_pipe
+            or Path(option('--output')).resolve() != run_root / 'native-report.json'):
+        raise ValueError('Product-purpose crossed Root review, prepared case or original host/run/state/pipe')
+    # The prepared object is pinned by both the reviewed context and the
+    # allocator's original ready context, rather than selected by filename.
+    ready = json_object(json.loads((run_root / 'ready-context.json').read_bytes()))
+    if (ready.get('run_id') != run_id or ready.get('prepared_case') != prepared_pin
+            or ready.get('frozen_argv') != frozen_pin):
+        raise ValueError('Product-purpose differs from original allocated ready context')
+    maximum = contract.get('maximum_natural_days')
+    if type(maximum) is not int or not isinstance(maximum, int) or not 0 <= maximum <= 400:
+        raise ValueError('Original product-purpose natural-day budget must be an integer from 0 through 400')
+    return ProductAcceptancePurposeV1(machine_id, run_id, product, case, state_dir.resolve(), bridge_pipe, maximum)
+
+
+def write_product_acceptance_purpose_v1(purpose_path: Path, reviewed_context: Path, *,
+                                        host_path: Path, state_dir: Path,
+                                        bridge_pipe: str) -> ProductAcceptancePurposeV1:
+    raw = reviewed_context.read_bytes()
+    context = json_object(json.loads(raw))
+    _, frozen = _purpose_original(context.get('frozen_argv'))
+    row: JsonObject = {'schema': 'ck3-product-acceptance-purpose-v1', 'purpose': 'product_acceptance',
+        'machine_id': text_field(object_field(frozen, 'identity_allocation'), 'machine_id'),
+        'reviewed_context': {'path': str(reviewed_context.resolve()), 'bytes': len(raw),
+                             'sha256': hashlib.sha256(raw).hexdigest()}}
+    purpose = product_acceptance_purpose_v1(row, purpose_path=purpose_path,
+        host_path=host_path, state_dir=state_dir, bridge_pipe=bridge_pipe)
+    with purpose_path.open('x', encoding='utf-8', newline='\n') as stream:
+        json.dump(row, stream, ensure_ascii=False, indent=2)
+        stream.write('\n')
+    return purpose
+
+
+@dataclass
+class ProductAcceptanceClockV1:
+    purpose: ProductAcceptancePurposeV1
+    start_date_raw: int | None = None
+    actor: int | None = None
+    bridge_pid: int | None = None
+    generation: int | None = None
+    last_date_raw: int | None = None
+
+    def observe(self, value: object) -> None:
+        row = json_object(value)
+        if row.get('map_ready') is not True or row.get('paused') is not True:
+            return
+        diagnostics = object_field(row, 'diagnostics')
+
+        def positive(item: object) -> int:
+            if type(item) is not int or not isinstance(item, int) or item <= 0:
+                raise ValueError('Product-purpose clock requires an actual paused native map integer identity')
+            return item
+
+        actor = positive(object_field(row, 'played_character').get('character_id'))
+        date = positive(row.get('date_raw'))
+        pid, generation = positive(diagnostics.get('bridge_pid')), positive(diagnostics.get('connection_generation'))
+        if diagnostics.get('pipe_name') != self.purpose.bridge_pipe:
+            raise ValueError('Product-purpose native pipe differs')
+        if self.start_date_raw is None:
+            self.start_date_raw, self.actor, self.bridge_pid, self.generation = date, actor, pid, generation
+        elif (actor, pid, generation) != (self.actor, self.bridge_pid, self.generation):
+            raise ValueError('Product-purpose native actor/process/generation changed')
+        if self.last_date_raw is not None and date < self.last_date_raw:
+            raise ValueError('Product-purpose actual native date rewound')
+        self.last_date_raw = date
+
+    def deadline(self, starting: object, target_date_raw: int, *, r05_scope_bound: bool) -> JsonObject:
+        if type(r05_scope_bound) is not bool:
+            raise ValueError('Explicit R05 scope-presence boolean required')
+        if r05_scope_bound:
+            raise ValueError('Product acceptance and an R05 progress scope cannot share clock authority')
+        self.observe(starting)
+        row = json_object(starting)
+        current = row.get('date_raw')
+        start = self.start_date_raw
+        if (start is None or type(current) is not int or not isinstance(current, int)
+                or row.get('paused') is not True or row.get('map_ready') is not True
+                or type(target_date_raw) is not int or current < start or (current - start) % 24
+                or target_date_raw != current + 24):
+            raise ValueError('Product acceptance permits only an original actual paused one-day request')
+        endpoint = start + self.purpose.maximum_natural_days * 24
+        if current >= endpoint:
+            raise ValueError('Original product-acceptance natural-day budget exhausted')
+        return {'schema': 'ck3-product-acceptance-clock-v1', 'run_id': self.purpose.run_id,
+            'starting_date_raw': current, 'requested_target_date_raw': target_date_raw,
+            'target_date_raw': target_date_raw, 'endpoint_date_raw': endpoint,
+            'boundary_date_raw': endpoint, 'status': 'advance', 'policy_choices_changed': False}
+
 def strings_field(row: JsonObject, key: str) -> list[str]:
     value=row.get(key)
     if not isinstance(value,list) or not value:raise ValueError('Nonempty string list required: '+key)

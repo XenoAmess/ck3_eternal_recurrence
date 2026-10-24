@@ -137,6 +137,14 @@ class CanonicalHostSuccessorTests(unittest.TestCase):
             actual = (output / 'shared-host.py').read_text(encoding='utf-8-sig')
             self.assertIn('selected_r05_registration_factory_v1', actual)
             self.assertIn('class RecordingDriver(ProgressDailyDriver)', actual)
+            canonical_server = next(node for node in ast.parse((source / HOST_RELATIVE).read_text(encoding='utf-8-sig')).body
+                if isinstance(node, ast.FunctionDef) and node.name == 'native_server')
+            projected_server = next(node for node in ast.parse(actual).body
+                if isinstance(node, ast.FunctionDef) and node.name == 'native_server')
+            canonical_driver = next(node for node in canonical_server.body if isinstance(node, ast.ClassDef) and node.name == 'RecordingDriver')
+            projected_driver = next(node for node in projected_server.body if isinstance(node, ast.ClassDef) and node.name == 'RecordingDriver')
+            self.assertEqual([ast.dump(node, include_attributes=False) for node in canonical_driver.body],
+                             [ast.dump(node, include_attributes=False) for node in projected_driver.body])
             projected_registration = (output / 'registration_mcp.py').read_text(encoding='utf-8-sig')
             self.assertIn('from xar_autoplayer.bridge import mcp_server as module', projected_registration)
             self.assertIn('service_override=service_override', projected_registration)

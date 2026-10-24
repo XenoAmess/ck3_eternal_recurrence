@@ -665,6 +665,12 @@ class Selection:
                 "--bridge-pipe", pipe, "--output", str(self.run_dir / "native-report.json"),
                 "--state-dir", str(state), "--plan", str(self.case_path(self.case["initial_plan"])),
                 "--control-plan-dir", str(self.run_dir / "controls")]
+        if self.adapter_config is not None:
+            contract = json_object(read_json(self.adapter_config))
+            if 'execution_purpose' in contract:
+                if contract['execution_purpose'] != 'product_acceptance':
+                    raise ValueError('Unknown explicit product execution purpose')
+                argv += ['--product-acceptance-purpose', str(self.run_dir / 'product-acceptance-purpose.json')]
         features = self.manifest.get("host_features", {})
         if not isinstance(features, dict) or set(features) - {"succession_title_readonly", "confucian_challenger_readonly", "stock_grant_title_picker", "war_cash_queries", "saved_campaign_inject_after_load", "saved_campaign_debug_mode", "wire_evidence_codec"}:
             raise ValueError("Unknown shared host feature")
@@ -1194,6 +1200,12 @@ class Selection:
         if self.adapter_path:
             from ck3_mod_acceptance_client import resolve_operator_reviewer
             resolve_operator_reviewer(self)
+        if '--product-acceptance-purpose' in self.argv:
+            from ck3_mod_acceptance_background_types import write_product_acceptance_purpose_v1
+            write_product_acceptance_purpose_v1(
+                Path(self.argv[self.argv.index('--product-acceptance-purpose') + 1]), self.context_path,
+                host_path=Path(self.argv[4]), state_dir=self.state_dir,
+                bridge_pipe=self.argv[self.argv.index('--bridge-pipe') + 1])
         completed = subprocess.run(argv, cwd=self.locations["repo_root"], env=environment, check=False)
         result.update(status="REVIEWED_LAUNCHER_RETURNED" if completed.returncode == 0 else "LAUNCHER_FAILED",
                       launcher_argv=argv, launcher_exit_code=completed.returncode,

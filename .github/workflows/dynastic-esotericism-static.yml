@@ -6,14 +6,19 @@ on:
     paths:
       - 'mod_dynastic_esotericism/**'
       - 'tools/ck3_mod_acceptance_prepare.py'
+      - 'tools/ck3_mod_acceptance.py'
+      - 'tools/ck3_mod_acceptance_background_types.py'
+      - 'tools/test_product_acceptance_purpose.py'
+      - 'tools/ck3_mod_acceptance_allocate.py'
+      - 'tools/test_preserved_failure_native_os0.py'
+      - 'tools/fixtures/ck3_R0001_preserved_failure_native_os0.json'
+      - 'ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py'
       - 'tools/ck3_mod_acceptance_products.json'
       - 'tools/ck3_mod_acceptance_build_runtime.py'
       - 'tools/ck3_mod_acceptance_saved_profile_v2.py'
       - 'tools/ck3_mod_acceptance_cases/dynastic_esotericism*.json'
       - 'tools/ck3_mod_acceptance_cases/generic_product_adapter.py'
       - 'tools/test_prebuilt_fixture_prepare.py'
-      - 'tools/test_canonical_host_successor.py'
-      - 'tools/ck3_mod_acceptance_build_runtime.py'
       - 'tools/test_canonical_host_successor.py'
       - 'ck3_workshop_mcp/src/ck3_workshop_mcp/compatibility_tags.py'
       - 'java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java'
@@ -24,14 +29,19 @@ on:
     paths:
       - 'mod_dynastic_esotericism/**'
       - 'tools/ck3_mod_acceptance_prepare.py'
+      - 'tools/ck3_mod_acceptance.py'
+      - 'tools/ck3_mod_acceptance_background_types.py'
+      - 'tools/test_product_acceptance_purpose.py'
+      - 'tools/ck3_mod_acceptance_allocate.py'
+      - 'tools/test_preserved_failure_native_os0.py'
+      - 'tools/fixtures/ck3_R0001_preserved_failure_native_os0.json'
+      - 'ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py'
       - 'tools/ck3_mod_acceptance_products.json'
       - 'tools/ck3_mod_acceptance_build_runtime.py'
       - 'tools/ck3_mod_acceptance_saved_profile_v2.py'
       - 'tools/ck3_mod_acceptance_cases/dynastic_esotericism*.json'
       - 'tools/ck3_mod_acceptance_cases/generic_product_adapter.py'
       - 'tools/test_prebuilt_fixture_prepare.py'
-      - 'tools/test_canonical_host_successor.py'
-      - 'tools/ck3_mod_acceptance_build_runtime.py'
       - 'tools/test_canonical_host_successor.py'
       - 'ck3_workshop_mcp/src/ck3_workshop_mcp/compatibility_tags.py'
       - 'java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java'
@@ -77,10 +87,14 @@ jobs:
         run: python -B -X utf8 tools/test_prebuilt_fixture_prepare.py
       - name: Verify the canonical host producer and actual SDK factory
         run: python -B -X utf8 tools/test_canonical_host_successor.py
+      - name: Verify the explicit product-purpose producer and actual host clock
+        run: python -B -X utf8 tools/test_product_acceptance_purpose.py
+      - name: Verify preserved-failure native OS0 resource closure
+        run: python -B -X utf8 tools/test_preserved_failure_native_os0.py
       - name: Strict types for the complete new regression modules
         env:
           MYPYPATH: tools;ck3_autonomous_player/src
-        run: python -B -X utf8 -m mypy --strict --strict-equality --follow-imports=silent --no-incremental --cache-dir=${{ runner.temp }}/dynastic-esotericism-mypy tools/test_prebuilt_fixture_prepare.py tools/test_canonical_host_successor.py
+        run: python -B -X utf8 -m mypy --strict --strict-equality --follow-imports=silent --no-incremental --cache-dir=${{ runner.temp }}/dynastic-esotericism-mypy tools/test_prebuilt_fixture_prepare.py tools/test_canonical_host_successor.py tools/test_product_acceptance_purpose.py tools/test_preserved_failure_native_os0.py tools/ck3_mod_acceptance_background_types.py
       - name: Preserve default Maven observations and test results
         if: always()
         uses: actions/upload-artifact@v4

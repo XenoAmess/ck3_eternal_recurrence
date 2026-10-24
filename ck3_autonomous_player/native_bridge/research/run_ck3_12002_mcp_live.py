@@ -28,6 +28,7 @@ from typing import TYPE_CHECKING, Literal, TypedDict
 if TYPE_CHECKING:
     from ck3_mod_acceptance_background_types import (
         WireEvidenceCodec, WireEvidenceCommit, WireEvidenceKind,
+        ProductAcceptanceClockV1,
     )
     from xar_autoplayer.saved_campaign_profile_inventory_v2 import ProfileDirectories
 
@@ -612,6 +613,18 @@ def allocated_managed_campaign_run_binding(args: argparse.Namespace) -> dict[str
         raise ValueError("managed camera identity requires an existing campaign startup mode")
     return {"run_id": record["run_id"], "state_dir": str(state), "bridge_pipe": args.bridge_pipe,
         "host_path": str(Path(__file__).resolve()), "frozen_argv_sha256": hashlib.sha256(raw).hexdigest()}
+
+
+def load_product_acceptance_clock_v1(args: argparse.Namespace) -> ProductAcceptanceClockV1 | None:
+    path: object = getattr(args, 'product_acceptance_purpose', None)
+    if path is None:
+        return None
+    if not isinstance(path, Path) or path.is_symlink() or not path.is_file() or path.stat().st_size > 32768:
+        raise ValueError('Exact bounded product-acceptance purpose file required')
+    from ck3_mod_acceptance_background_types import ProductAcceptanceClockV1, product_acceptance_purpose_v1
+    allocated_managed_campaign_run_binding(args)
+    return ProductAcceptanceClockV1(product_acceptance_purpose_v1(json.loads(path.read_bytes()),
+        purpose_path=path, host_path=Path(__file__), state_dir=args.state_dir, bridge_pipe=args.bridge_pipe))
 
 
 def finished_native_process_exit_zero_proof(report: dict[str, object], managed_done: bool,
@@ -1377,8 +1390,23 @@ def native_server(args: argparse.Namespace) -> None:
             super().send(frame, packet_evidence_path=packet_evidence_path)
 
     class RecordingDriver(NativeHeadlessGameplayDriver):
+        def _campaign_advance_deadline_v1(self, starting: dict[str, object], target_date_raw: int) -> dict[str, object] | None:
+            if product_clock is None:
+                return super()._campaign_advance_deadline_v1(starting, target_date_raw)
+            result: dict[str, object] = {}
+            result.update(product_clock.deadline(starting, target_date_raw,
+                r05_scope_bound=getattr(getattr(self, 'progress_governor', None), 'scope', None) is not None))
+            return result
+
+        def cap_campaign_advance_plan_v1(self, planned: dict[str, object]) -> dict[str, object]:
+            if product_clock is not None:
+                raise ValueError('Product acceptance requires explicit original one-day requests; R05 AUTO is a separate purpose')
+            return super().cap_campaign_advance_plan_v1(planned)
+
         def _with_one_life_episode(self, snapshot: dict[str, object]) -> dict[str, object]:
             projected = super()._with_one_life_episode(snapshot)
+            if product_clock is not None:
+                product_clock.observe(projected)
             if self.episode_projection == "native_campaign" and managed_campaign_run_binding is not None:
                 return {**projected, "managed_campaign_run_binding": dict(managed_campaign_run_binding)}
             return projected
@@ -1394,6 +1422,7 @@ def native_server(args: argparse.Namespace) -> None:
             args.frontend_fixture_start_policy, args.state_dir / "profile")
     managed_campaign_run_binding = (allocated_managed_campaign_run_binding(args)
         if fixture_policy is not None or args.saved_campaign_server or getattr(args, "ordinary_gui_campaign", False) else None)
+    product_clock = load_product_acceptance_clock_v1(args)
     driver_options = {"episode_projection": "native_campaign"} if managed_campaign_run_binding is not None else {}
     if getattr(args, "private_succession_title_readonly", False):
         driver_options.update(allow_private_actor_cached_succession_queries=True,
@@ -2848,6 +2877,9 @@ class PlanClient:
         for index, step in enumerate(steps, 1):
             row = {"id": step.get("id", f"step-{len(self.report['steps']) + 1}"),
                    "plan": step, "started_at": now(), "ok": False}
+            if self.report.get("error") is not None and any(
+                    old.get("id") == row["id"] for old in self.report["steps"]):
+                raise ValueError("failed host lifecycle step ID already consumed; never replay")
             self.report["steps"].append(row)
             self.write()
             try:
@@ -2862,6 +2894,9 @@ class PlanClient:
                     raise ValueError("Previous-row revision is unavailable in menu-only observations")
                 failure_shutdown = step.get("failure_shutdown") is True
                 failure_proof = None
+                if self.report.get("error") is not None and not (kind == "finish_hold" and failure_shutdown):
+                    from xar_autoplayer.bridge.normal_exit_host_terminal_v1 import require_failed_host_normal_exit_plan_v1
+                    require_failed_host_normal_exit_plan_v1(steps)
                 if failure_shutdown:
                     if kind != "finish_hold" or self.report.get("post_failure_exit_finish_hold") is not None:
                         raise RuntimeError("failure shutdown is a once-only finish_hold lifecycle control")
@@ -4626,6 +4661,8 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
     write()
     child_args = [str(Path(__file__).resolve()), "--server", "--bridge-pipe", args.bridge_pipe,
                   "--native-wire", str(native_wire), "--command-timeout", str(args.command_timeout)]
+    if getattr(args, 'product_acceptance_purpose', None) is not None:
+        child_args += ['--product-acceptance-purpose', str(args.product_acceptance_purpose)]
     if codec == "gzip-members":
         child_args += ["--wire-evidence-codec", codec]
         if args.sdk_smoke_test:
@@ -4976,6 +5013,8 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--game-dir", type=Path)
     result.add_argument("--bridge-dll", type=Path)
     result.add_argument("--bridge-injector", type=Path)
+    result.add_argument('--product-acceptance-purpose', type=Path,
+                        help='One Root-reviewed prepared product case with its original natural-day budget')
     result.add_argument("--normal-exit-managed-profile", type=Path,
                         help="Explicit actual managed-profile/source-inventory binding; default off")
     result.add_argument("--normal-exit-managed-profile-sha256")

@@ -1791,6 +1791,16 @@ class FailedGuiOS0CleanupFacts(TypedDict):
     native_cleanup_qualified: Literal[True]
 
 
+class PreservedFailureOS0Facts(TypedDict):
+    closure_kind: Literal['preserved-failure-native-process-exit-zero']
+    original_ck3_exit_code: Literal[0]
+    actual_retained_os0: Literal[True]
+    native_cleanup_qualified: Literal[True]
+    failure_lifecycle_completed: Literal[True]
+    original_normal_close_lifecycle_completed: bool
+    win32_birth_filetime: str
+
+
 def _late_object(value: object, label: str) -> dict[str, object]:
     if not isinstance(value, dict) or any(not isinstance(k, str) for k in value):
         raise ValueError(label + ' must be an object')
@@ -1806,6 +1816,106 @@ def _late_integer(value: object, label: str) -> int:
 def _late_check(condition: bool, message: str) -> None:
     if not condition:
         raise ValueError(message)
+
+
+def validate_preserved_failure_native_os0(normal_value: object, retained_value: object,
+        game_value: object, native_value: object, report_value: object,
+        window_start_value: object, window_exit_value: object, machine_id: str) -> PreservedFailureOS0Facts:
+    """Read the completed failure lifecycle without rewriting the original close."""
+    normal, retained, game, native, report, window_start, window_exit = (
+        json_object(value) for value in (normal_value, retained_value, game_value, native_value,
+                                        report_value, window_start_value, window_exit_value))
+    shutdown = object_field(native, 'shutdown')
+    pid = _late_integer(game.get('pid'), 'Original retained CK3 PID')
+    native_pid = _late_integer(native.get('pid'), 'Original native CK3 PID')
+    shutdown_pid = _late_integer(shutdown.get('ck3_pid'), 'Original shutdown CK3 PID')
+    birth = game.get('create_time')
+    if (type(birth) not in (int, float) or not isinstance(birth, (int, float))
+            or not math.isfinite(birth) or pid <= 0):
+        raise ValueError('Original retained CK3 process identity absent')
+    error = text_field(report, 'error')
+    original_lifecycle = normal.get('failure_lifecycle_completed')
+    if type(original_lifecycle) is not bool or not isinstance(original_lifecycle, bool):
+        raise ValueError('Original close lifecycle boolean must remain explicit')
+    if (retained.get('pid') != pid or type(retained.get('pid')) is not int
+            or retained.get('create_time') != birth or type(retained.get('create_time')) not in (int, float)
+            or retained.get('signaled') is not True or retained.get('actual_retained_os0') is not True
+            or type(retained.get('exit_code')) is not int or retained.get('exit_code') != 0
+            or retained.get('retained_synchronize_query_handle_acquired') is not True
+            or game.get('retained_synchronize_query_handle_acquired') is not True
+            or normal.get('retained_handle') != retained or normal.get('host_error') != error
+            or normal.get('normal_close_qualified') is not False or normal.get('business_pass') is not False
+            or normal.get('failure_preserved') is not True
+            or normal.get('managed_thread_finished') is not True or normal.get('cleanup_ok') is not True
+            or normal.get('host_finished_at') != report.get('finished_at')
+            or native.get('exit_reason') != 'process_exit' or native_pid != pid
+            or type(native.get('process_exit_code')) is not int or native.get('process_exit_code') != 0
+            or shutdown_pid != pid or type(shutdown.get('ck3_exit_code')) is not int
+            or shutdown.get('ck3_exit_code') != 0
+            or type(shutdown.get('job_active_processes_before_termination')) is not int
+            or shutdown.get('job_active_processes_before_termination') != 0
+            or type(shutdown.get('job_active_processes_final')) is not int
+            or shutdown.get('job_active_processes_final') != 0
+            or shutdown.get('ok') is not True or shutdown.get('cleanup_proven') is not True):
+        raise ValueError('Preserved failure must retain actual OS0, native process exit and zero pre-cleanup Job count')
+    steps = report.get('steps')
+    if not isinstance(steps, list):
+        raise ValueError('Original failure lifecycle steps absent')
+    finishes = [json_object(item) for item in steps
+                if object_field(json_object(item), 'plan').get('kind') == 'finish_hold']
+    if len(finishes) != 1:
+        raise ValueError('Exactly one original failure finish_hold is required')
+    row = finishes[0]
+    plan, result, after = object_field(row, 'plan'), object_field(row, 'result'), object_field(row, 'after_snapshot')
+    proof = object_field(after, 'process_exit_zero_proof')
+    if (plan.get('failure_shutdown') is not True or row.get('ok') is not True
+            or result.get('hold_finished') is not True or result.get('failure_preserved') is not True
+            or result.get('host_error') != error or result.get('business_pass') is not False
+            or result.get('normal_close_qualified') is not False
+            or after != normal.get('failure_shutdown_proof')
+            or after.get('status') != 'failure_shutdown_lifecycle_only'
+            or after.get('business_pass') is not False or after.get('normal_close_qualified') is not False
+            or proof.get('managed_session_done') is not True or _late_integer(proof.get('pid'), 'Failure proof CK3 PID') != pid
+            or proof.get('exit_reason') != 'process_exit' or type(proof.get('process_exit_code')) is not int
+            or proof.get('process_exit_code') != 0 or proof.get('shutdown') != shutdown):
+        raise ValueError('Original finish_hold did not consume this preserved failure native exit proof')
+    native_end, finish_end, host_end = (datetime.fromisoformat(text_field(value, key)) for value, key in
+        ((native, 'finished_at'), (row, 'finished_at'), (report, 'finished_at')))
+    if any(stamp.tzinfo is None for stamp in (native_end, finish_end, host_end)) or not native_end <= finish_end <= host_end:
+        raise ValueError('Native exit, failure finish_hold and host completion chronology differs')
+    filetime = text_field(window_start, 'birth_filetime')
+    if re.fullmatch('[1-9][0-9]{0,19}', filetime) is None or int(filetime) >= 1 << 64:
+        raise ValueError('Original Win32 birth FILETIME requires a canonical uint64 decimal string')
+    if (window_start.get('machine_id') != machine_id or window_exit.get('machine_id') != machine_id
+            or type(window_start.get('pid')) is not int or window_start.get('pid') != pid
+            or type(window_exit.get('pid')) is not int or window_exit.get('pid') != pid
+            or window_exit.get('opened') is not True or window_exit.get('exit_code_read') is not True
+            or type(window_exit.get('wait_result')) is not int or window_exit.get('wait_result') != 0
+            or type(window_exit.get('actual_exit_code')) is not int or window_exit.get('actual_exit_code') != 0):
+        raise ValueError('Original Root window observation does not prove the same PID signaled OS0')
+    # FILETIME is preserved at native precision. The existing Popen numeric
+    # create_time and WMI microsecond string remain independent original facts.
+    return PreservedFailureOS0Facts(closure_kind='preserved-failure-native-process-exit-zero',
+        original_ck3_exit_code=0, actual_retained_os0=True, native_cleanup_qualified=True,
+        failure_lifecycle_completed=True, original_normal_close_lifecycle_completed=original_lifecycle,
+        win32_birth_filetime=filetime)
+
+
+def validate_root_observed_public_exit(value: object, machine: str,
+        mode: Literal['run', 'allocate'], code: int) -> list[str]:
+    """Consume the Root's actual original command receipt, without invented Popen fields."""
+    row = json_object(value)
+    if (row.get('machine_id') != machine or type(row.get('exit_code')) is not int
+            or row.get('exit_code') != code):
+        raise ValueError('Root-observed original public command exit differs')
+    argv = strings_field(row, 'argv')
+    indices = [i for i, item in enumerate(argv) if Path(item).name == 'ck3_mod_acceptance.py']
+    if len(indices) != 1 or indices[0] + 1 >= len(argv) or argv[indices[0] + 1] != mode:
+        raise ValueError('Root-observed original public command mode differs')
+    stamp = row.get('finished_at_utc') if mode == 'run' else row.get('observed_at_utc')
+    if not isinstance(stamp, str) or datetime.fromisoformat(stamp).tzinfo is None:
+        raise ValueError('Root-observed original public terminal timestamp absent')
+    return argv
 
 
 def validate_late_native_cleanup(normal_value: object, retained_value: object,
@@ -2336,9 +2446,13 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
                                                        keeper_root, release_path, bus_packet)
     late_cleanup = bundle.get('closure_kind') == 'retained-wait-expired-then-native-cleanup'
     gui_os0 = bundle.get('closure_kind') == 'failed-host-gui-os0-cleanup-complete'
+    preserved_os0 = bundle.get('closure_kind') == 'preserved-failure-native-process-exit-zero'
     split_public = bundle.get('public_wait_format') == 'command-intent-process-exit-completion'
     recorded_public = bundle.get('public_wait_format') == 'recorded-actual-command-started-exit-v1'
-    require('public_wait_format' not in bundle or split_public or recorded_public,
+    root_observed_public = bundle.get('public_wait_format') == 'root-observed-command-exit-v1'
+    require(not root_observed_public or preserved_os0, 'Root-observed public format requires preserved native process OS0')
+    require(not preserved_os0 or root_observed_public, 'Preserved native process OS0 requires its actual Root public receipts')
+    require('public_wait_format' not in bundle or split_public or recorded_public or root_observed_public,
             'Failed-live public wait format is unknown')
     require(not (split_public or recorded_public) or late_cleanup or gui_os0,
             'Recorded public wait requires original expired retained wait')
@@ -2386,7 +2500,9 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
     def public_wait(mode, code):
         value = original(mode + '_wait')
         parent = Path(refs[mode + '_wait']['path']).resolve().parent
-        if recorded_public:
+        if root_observed_public:
+            argv = validate_root_observed_public_exit(value, bundle['machine_id'], mode, code)
+        elif recorded_public:
             exit_path = Path(refs[mode + '_wait']['path']).resolve()
             require(exit_path.name.startswith(mode + '-') and exit_path.name.endswith('.EXIT.actual.json'),
                     'Recorded public original EXIT path differs')
@@ -2439,16 +2555,16 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
             if recorded_public:
                 require(stem == mode + '-' + argument('--attempt'),
                         'Recorded public receipt crossed allocator attempt')
-        if not (late_cleanup or gui_os0):
+        if not (late_cleanup or gui_os0 or preserved_os0):
             intent = original(mode + '_intent', parent/'intent.json')
             require(intent.get('argv') == argv and intent.get('phase') == mode,
                     'Failed-live original command intent differs')
         stdout_name = (stem + '.stdout.json') if recorded_public else (
             'stdout.json' if split_public else ('stdout.txt' if late_cleanup else 'stdout.log'))
-        original(mode + '_stdout', parent/stdout_name, decode=False, max_bytes=16777216)
+        original(mode + '_stdout', None if root_observed_public else parent/stdout_name, decode=False, max_bytes=16777216)
         stderr_name = (stem + '.stderr.txt') if recorded_public else (
             'stderr.txt' if late_cleanup and not split_public else 'stderr.log')
-        original(mode + '_stderr', parent/stderr_name, decode=False, max_bytes=16777216)
+        original(mode + '_stderr', None if root_observed_public else parent/stderr_name, decode=False, max_bytes=16777216)
         return Path(argument('--runtime')).resolve()
     require(public_wait('run', 2) == public_wait('allocate', 0), 'Failed-live public runtime differs')
     require(not recorded_public or len(recorded_attempts) == 2 and
@@ -2456,7 +2572,7 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
             'Recorded public STARTED/EXIT pair crossed attempts')
     report = original('native_report', previous/'native-report.json', max_bytes=67108864)
     diagnostic = bundle.get('failed_query')
-    if gui_os0:
+    if gui_os0 or preserved_os0:
         require('failed_query' not in bundle and isinstance(report.get('error'), str) and bool(report['error']),
                 'Failed GUI OS0 requires its original top-level host error, not a fabricated failed query')
     else:
@@ -2486,9 +2602,13 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
     retained = original('retained_exit', previous/'case-output/actual-retained-handle-os-exit.json')
     late_facts = None
     gui_facts = None
+    preserved_facts = None
     if late_cleanup:
         late_facts = validate_late_native_cleanup(normal, retained, game, native, report,
             (previous/'case-output/normal-close-result.json').stat().st_mtime_ns, diagnostic)
+    elif preserved_os0:
+        preserved_facts = validate_preserved_failure_native_os0(normal, retained, game, native, report,
+            original('root_window_start'), original('root_window_exit'), bundle['machine_id'])
     elif gui_os0:
         gui_refs = _late_object(refs, 'Failed GUI original references')
         review = _failed_gui_source(gui_refs, 'manual_gui_review', previous/'case-output/normal-quit-root-result.json')
@@ -2522,7 +2642,7 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
                 'Failed-live original retained nonzero CK3 exit differs')
     original('server_stderr', report['server_stderr'], decode=False, max_bytes=16777216)
     keeper = original('keeper_report', keeper_root/'report.json')
-    if split_public or recorded_public:
+    if split_public or recorded_public or root_observed_public:
         require(bool(original('keeper_stop', keeper_root/'STOP', decode=False)),
                 'Failed-live original cooperative keeper STOP is missing')
     waited = original('keeper_exit', previous/'keeper-actual-parent-exit.json')
@@ -2591,6 +2711,8 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
         result['failure_cleanup'].update(late_facts)
     if gui_facts is not None:
         result['failure_cleanup'].update(gui_facts)
+    if preserved_facts is not None:
+        result['failure_cleanup'].update(preserved_facts)
     if supervisor_facts is not None:
         result['failure_cleanup'].update(supervisor_facts)
     return result

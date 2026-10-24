@@ -11,6 +11,8 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +26,19 @@ public final class StaticValidation {
     private static final byte[] BOM = {(byte) 0xef, (byte) 0xbb, (byte) 0xbf};
     private static final Pattern VERSION = Pattern.compile("(?m)^[ \\t]*version[ \\t]*=[ \\t]*\"([^\"\\r\\n]+)\"[ \\t]*(?:#[^\\r\\n]*)?$");
     private static final Pattern LOCALIZATION_KEY = Pattern.compile("(?m)^[ \\t]+([A-Za-z0-9_.-]+):[0-9]*[ \\t]+\"");
+    // Same raw-entry and protected-token contract as tools/translate_localization_minimax.py.
+    private static final Pattern RELEASE_ENTRY = Pattern.compile("^ ([^:\\s]+):0 \"((?:[^\"\\\\]|\\\\.)*)\"$");
+    private static final Pattern ICU_PREFIX = Pattern.compile("^\\{[^{},]+,\\s*(?:plural|selectordinal|select)\\s*,");
+    private static final Pattern PROTECTED = Pattern.compile(
+            "https?://[^\\s<>\"'\\\\]+|<[^<>\\r\\n]+>|\\[[^\\[\\]\\r\\n]+\\]"
+            + "|\\$\\{[^{}\\r\\n]+\\}|\\{\\{[^{}\\r\\n]+\\}\\}|\\{[^{}\\r\\n]+\\}|\\$[^$\\r\\n]+\\$"
+            + "|@[A-Za-z0-9_.:/-]+!|#[A-Za-z0-9_]+|#!|\u00a7."
+            + "|%(?:\\d+\\$)?[-+0#]*\\d*(?:\\.\\d+)?[hlLzjt]*[diuoxXfFeEgGaAcspn%]|\\\\.|\u2212100");
+    private static final Set<String> RELEASE_KEYS = Set.of(
+            "des_dynastic_membership_name", "des_dynastic_membership_desc", "des_doctrine_none_name", "des_doctrine_none_desc",
+            "des_doctrine_dynastic_name", "des_doctrine_dynastic_desc", "doctrine_parameter_des_dynastic_membership",
+            "trait_des_apostate", "trait_des_apostate_desc", "des_apostasy_opinion", "des_initialize_decision",
+            "des_initialize_decision_desc", "des_initialize_decision_tooltip", "des_initialize_decision_confirm", "des_initialize_decision_effect");
 
     private StaticValidation() { }
 
@@ -31,6 +46,11 @@ public final class StaticValidation {
 
     public static ValidationReport validate(ReleaseProduct product, Path repository) throws IOException {
         Map<String, Path> files = inventory(product.source(), true);
+        if (product.localizationMode() == ReleaseProduct.LocalizationMode.RELEASE_LOCALIZATION) {
+            validateLocalization(product, product.source());
+        } else if (product.productId().equals(ReleaseProduct.PRODUCT_ID)) {
+            files.keySet().removeAll(ReleaseProduct.additionalLocalizationFiles());
+        }
         if (!files.keySet().equals(Set.copyOf(product.runtimeFiles()))) {
             Set<String> missing = new HashSet<>(product.runtimeFiles());
             missing.removeAll(files.keySet());
@@ -39,19 +59,83 @@ public final class StaticValidation {
             throw new IllegalArgumentException("source inventory mismatch; missing=" + missing + ", extra=" + extra);
         }
         long bytes = 0;
-        Set<String> english = Set.of();
-        Set<String> chinese = Set.of();
         for (Map.Entry<String, Path> entry : files.entrySet()) {
             byte[] data = Files.readAllBytes(entry.getValue());
             bytes = Math.addExact(bytes, data.length);
             validateBytes(entry.getKey(), data);
-            if (entry.getKey().equals("localization/english/des_l_english.yml")) english = localizationKeys(text(data), "l_english:");
-            if (entry.getKey().equals("localization/simp_chinese/des_l_simp_chinese.yml")) chinese = localizationKeys(text(data), "l_simp_chinese:");
         }
-        if (!english.equals(chinese)) throw new IllegalArgumentException("English and Chinese localization keys differ");
+        if (product.localizationMode() == ReleaseProduct.LocalizationMode.DEVELOPMENT) validateLocalization(product, product.source());
         String descriptor = Files.readString(product.source().resolve("descriptor.mod"), StandardCharsets.UTF_8);
         CompatibilityTags.label(descriptor, repository);
         return new ValidationReport(files.size(), bytes, descriptorVersion(descriptor));
+    }
+
+    /** Product-local format certification only; no non-Chinese semantic or game qualification. */
+    public static void validateLocalization(ReleaseProduct product, Path root) throws IOException {
+        if (product.localizationMode() == ReleaseProduct.LocalizationMode.DEVELOPMENT) {
+            Set<String> english = developmentKeys(root, ReleaseProduct.Language.ENGLISH);
+            Set<String> chinese = developmentKeys(root, ReleaseProduct.Language.SIMP_CHINESE);
+            if (!english.equals(chinese)) throw new IllegalArgumentException("English and Chinese localization keys differ");
+            return;
+        }
+        Map<String, String> english = releaseEntries(root, ReleaseProduct.Language.ENGLISH);
+        for (ReleaseProduct.Language language : ReleaseProduct.Language.values()) {
+            Map<String, String> entries = language == ReleaseProduct.Language.ENGLISH ? english : releaseEntries(root, language);
+            for (String key : RELEASE_KEYS) {
+                if (language == ReleaseProduct.Language.SIMP_CHINESE && entries.get(key).isBlank()) {
+                    throw new IllegalArgumentException("visible Chinese localization must not be empty: " + key);
+                }
+                if (!protectedTokens(english.get(key)).equals(protectedTokens(entries.get(key)))) {
+                    throw new IllegalArgumentException("protected localization tokens differ: " + language + "/" + key);
+                }
+            }
+        }
+    }
+
+    private static Set<String> developmentKeys(Path root, ReleaseProduct.Language language) throws IOException {
+        Path path = root.resolve(language.relativePath());
+        return Files.isRegularFile(path) ? localizationKeys(text(Files.readAllBytes(path)), language.header()) : Set.of();
+    }
+
+    private static Map<String, String> releaseEntries(Path root, ReleaseProduct.Language language) throws IOException {
+        byte[] raw = Files.readAllBytes(root.resolve(language.relativePath()));
+        validateBytes(language.relativePath(), raw);
+        Map<String, String> result = new TreeMap<>();
+        boolean header = false;
+        for (String line : text(raw).split("\\R", -1)) {
+            if (line.isEmpty() || line.stripLeading().startsWith("#")) continue;
+            if (!header) {
+                if (!line.equals(language.header())) throw new IllegalArgumentException("invalid release localization header: " + language);
+                header = true;
+                continue;
+            }
+            Matcher entry = RELEASE_ENTRY.matcher(line);
+            if (!entry.matches()) throw new IllegalArgumentException("release localization requires :0 and a quoted single-line entry: " + language);
+            if (result.putIfAbsent(entry.group(1), entry.group(2)) != null) {
+                throw new IllegalArgumentException("duplicate release localization key: " + language + "/" + entry.group(1));
+            }
+        }
+        if (!header || !result.keySet().equals(RELEASE_KEYS)) {
+            throw new IllegalArgumentException("release localization requires the exact 15-key product contract: " + language);
+        }
+        return Map.copyOf(result);
+    }
+
+    private static Map<String, Integer> protectedTokens(String value) {
+        Map<String, Integer> counts = new TreeMap<>();
+        PROTECTED.matcher(value).results().forEach(token -> counts.merge(token.group(), 1, Integer::sum));
+        Deque<Integer> starts = new ArrayDeque<>();
+        for (int index = 0; index < value.length(); index++) {
+            if (value.charAt(index) == '{') starts.push(index);
+            else if (value.charAt(index) == '}' && !starts.isEmpty()) {
+                int start = starts.pop();
+                if (starts.isEmpty()) {
+                    String block = value.substring(start, index + 1);
+                    if (ICU_PREFIX.matcher(block).find()) counts.merge(block, 1, Integer::sum);
+                }
+            }
+        }
+        return counts;
     }
 
     public static Map<String, Path> inventory(Path root, boolean allowSourceOnly) throws IOException {

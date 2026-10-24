@@ -1,5 +1,6 @@
 ﻿# Each entry discloses a distinct test input or a read-only assertion.
 des_acceptance_extended_start_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
 	is_shown = { is_ai = no has_character_flag = des_test_reopened_verified NOT = { has_character_flag = des_test_extended_started } }
 	is_valid = { rite = var:des_test_primary_rite rite = { des_has_active_binding_trigger = yes } }
 	effect = {
@@ -45,6 +46,7 @@ des_acceptance_extended_start_decision = {
 }
 
 des_acceptance_second_rite_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
 	is_shown = { is_ai = no has_character_flag = des_test_extended_started NOT = { has_character_flag = des_test_second_started } }
 	is_valid = { rite = var:des_test_primary_rite rite = { des_has_active_binding_trigger = yes } }
 	effect = { hidden_effect = { add_character_flag = des_test_second_started des_acceptance_prepare_second_rite_effect = yes } }
@@ -52,6 +54,7 @@ des_acceptance_second_rite_decision = {
 }
 
 des_acceptance_cross_rites_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
 	is_shown = { is_ai = no has_character_flag = des_test_second_verified NOT = { has_character_flag = des_test_cross_rites_started } }
 	is_valid = { rite = var:des_test_primary_rite }
 	effect = {
@@ -67,6 +70,7 @@ des_acceptance_cross_rites_decision = {
 }
 
 des_acceptance_cross_migration_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
 	is_shown = { is_ai = no has_character_flag = des_test_cross_rites_verified NOT = { has_character_flag = des_test_cross_migration_started } }
 	is_valid = { rite = var:des_test_primary_rite }
 	effect = {
@@ -82,6 +86,7 @@ des_acceptance_cross_migration_decision = {
 }
 
 des_acceptance_stock_crime_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
 	is_shown = { is_ai = no has_character_flag = des_test_cross_migration_verified NOT = { has_character_flag = des_test_stock_crime_started } }
 	is_valid = { rite = var:des_test_primary_rite }
 	effect = {
@@ -99,6 +104,7 @@ des_acceptance_stock_crime_decision = {
 }
 
 des_acceptance_stock_repent_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
 	is_shown = { is_ai = no has_character_flag = des_test_stock_crime_seen NOT = { has_character_flag = des_test_stock_repent_started } }
 	is_valid = { rite = var:des_test_primary_rite }
 	effect = {
@@ -113,6 +119,7 @@ des_acceptance_stock_repent_decision = {
 }
 
 des_acceptance_pardon_prepare_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
 	is_shown = { is_ai = no has_character_flag = des_test_stock_retained NOT = { has_character_flag = des_test_pardon_started } }
 	is_valid = { rite = var:des_test_primary_rite }
 	effect = {
@@ -137,6 +144,7 @@ des_acceptance_pardon_prepare_decision = {
 
 # This entry cannot perform a pardon. Submit the stock interaction independently.
 des_acceptance_pardon_observe_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
 	is_shown = { is_ai = no has_character_flag = des_test_pardon_candidate NOT = { has_character_flag = des_test_pardon_observed } }
 	is_valid = { rite = var:des_test_primary_rite }
 	effect = {
@@ -162,6 +170,7 @@ des_acceptance_pardon_observe_decision = {
 }
 
 des_acceptance_founder_death_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
 	is_shown = { is_ai = no has_character_flag = des_test_second_verified NOT = { has_character_flag = des_test_founder_death_started } }
 	is_valid = { var:des_test_ref_second_founder = { is_alive = yes } }
 	effect = {
@@ -181,6 +190,7 @@ des_acceptance_founder_death_decision = {
 }
 
 des_acceptance_cold_anchor_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
 	is_shown = { is_ai = no has_character_flag = des_test_pardon_stable has_character_flag = des_test_founder_death_verified NOT = { has_character_flag = des_test_cold_anchor } }
 	is_valid = { rite = var:des_test_primary_rite }
 	effect = { hidden_effect = { des_acceptance_extended_anchor_effect = yes } }
@@ -189,6 +199,7 @@ des_acceptance_cold_anchor_decision = {
 
 # Readback alone does not prove a cold process; the public saved-campaign run does.
 des_acceptance_cold_readback_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
 	is_shown = { is_ai = no has_character_flag = des_test_cold_anchor NOT = { has_character_flag = des_test_cold_state_verified } }
 	is_valid = { always = yes }
 	effect = { hidden_effect = { trigger_event = des_acceptance_extended.70 } }
@@ -197,6 +208,7 @@ des_acceptance_cold_readback_decision = {
 
 # Use these two entries in a separate real save created without the product.
 des_acceptance_legacy_before_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
 	is_shown = { is_ai = no NOT = { has_global_variable = des_initialized } NOT = { has_character_flag = des_test_legacy_before } }
 	is_valid = { always = yes }
 	effect = {
@@ -212,6 +224,7 @@ des_acceptance_legacy_before_decision = {
 }
 
 des_acceptance_legacy_after_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
 	is_shown = { is_ai = no has_character_flag = des_test_legacy_before has_global_variable = des_initialized NOT = { has_character_flag = des_test_legacy_verified } }
 	is_valid = { always = yes }
 	effect = { hidden_effect = { trigger_event = des_acceptance_extended.71 } }

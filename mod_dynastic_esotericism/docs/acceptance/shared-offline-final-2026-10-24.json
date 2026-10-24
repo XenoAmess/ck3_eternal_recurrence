@@ -1,0 +1,217 @@
+{
+  "schema": "xar.dynastic-esotericism.shared-offline-final-summary.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T10:32:04.385003+00:00",
+  "status": "PASS_OFFLINE_DECLARED_SCOPE",
+  "source_head": "1268da7ee35fa1d3760134f566d269db86c7c3e0",
+  "source_state": "Reviewed uncommitted D candidate; next clean C checkout requires its own build; frozen R0001/r10 not modified",
+  "whole_cold_ci": {
+    "workflow": ".github/workflows/living-artifacts-cold-persistence.yml",
+    "step": "Test complete product consumers and strict cold source without CK3",
+    "status": "PASS",
+    "commands": [
+      {
+        "name": "complete-product-consumers",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 346.637,
+        "tests": 232,
+        "summary": [
+          "CK3_ROOT_CHECKPOINT C:\\ck3-dynastic-esotericism-20261024\\shared-acceptance-final-a01\\tmp\\tmpnmjz0rxi\\threshold-case-output\\checkpoint-readback-06-awaiting.json",
+          "CK3_ROOT_CHECKPOINT C:\\ck3-dynastic-esotericism-20261024\\shared-acceptance-final-a01\\tmp\\tmpnmjz0rxi\\threshold-case-output\\checkpoint-readback-07-awaiting.json",
+          ".",
+          "----------------------------------------------------------------------",
+          "Ran 232 tests in 344.920s",
+          "",
+          "OK"
+        ]
+      },
+      {
+        "name": "strict-cold-six-files",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 3.168,
+        "tests": null,
+        "summary": [
+          "Success: no issues found in 6 source files"
+        ]
+      },
+      {
+        "name": "saved-profile-v2",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 24.46,
+        "tests": 8,
+        "summary": [
+          "........",
+          "----------------------------------------------------------------------",
+          "Ran 8 tests in 24.049s",
+          "",
+          "OK"
+        ]
+      },
+      {
+        "name": "vanilla-profile",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 1.088,
+        "tests": 8,
+        "summary": [
+          "........",
+          "----------------------------------------------------------------------",
+          "Ran 8 tests in 0.356s",
+          "",
+          "OK"
+        ]
+      }
+    ],
+    "source_drift": []
+  },
+  "direct_regressions": [
+    {
+      "name": "test_prebuilt_fixture_prepare",
+      "exit_code": 0,
+      "summary": [
+        ".......",
+        "----------------------------------------------------------------------",
+        "Ran 7 tests in 1.120s",
+        "",
+        "OK"
+      ]
+    },
+    {
+      "name": "test_canonical_host_successor",
+      "exit_code": 0,
+      "summary": [
+        ".....",
+        "----------------------------------------------------------------------",
+        "Ran 5 tests in 6.944s",
+        "",
+        "OK"
+      ]
+    },
+    {
+      "name": "test_product_acceptance_purpose",
+      "exit_code": 0,
+      "summary": [
+        ".....",
+        "----------------------------------------------------------------------",
+        "Ran 5 tests in 1.385s",
+        "",
+        "OK"
+      ]
+    },
+    {
+      "name": "test_preserved_failure_native_os0",
+      "exit_code": 0,
+      "summary": [
+        "...",
+        "----------------------------------------------------------------------",
+        "Ran 3 tests in 1.188s",
+        "",
+        "OK"
+      ]
+    }
+  ],
+  "strict": {
+    "complete_modules": [
+      "tools/ck3_mod_acceptance_background_types.py",
+      "tools/test_product_acceptance_purpose.py",
+      "tools/test_preserved_failure_native_os0.py",
+      "tools/test_prebuilt_fixture_prepare.py",
+      "tools/test_canonical_host_successor.py"
+    ],
+    "complete_modules_status": "PASS",
+    "exact_ast_status": "PASS",
+    "exact_ast_scope": [
+      "allocation PreservedFailureOS0Facts, two new validators and actual typed _late_integer dependency",
+      "host load_product_acceptance_clock_v1 and RecordingDriver three methods",
+      "Selection.build_argv purpose if, Selection.run pre-launch purpose producer if",
+      "host child argv purpose if and parser option expression"
+    ],
+    "source_and_ast_ranges": "Exact original source SHA/ranges/segment SHA and generated harness pins in strict-scope-actual.json and integration-scope-actual.json",
+    "legacy_allocation": {
+      "check_mode": "Complete module --check-untyped-defs --follow-imports=silent against HEAD baseline, both actual commands exit1",
+      "baseline_errors": 74,
+      "current_errors": 74,
+      "diagnostics_including_notes": 94,
+      "added_normalized_diagnostics": [],
+      "removed_normalized_diagnostics": [],
+      "strict_clean": false
+    },
+    "full_legacy_host_selection_allocation_strict": "NOT_CLAIMED"
+  },
+  "evidence": {
+    "whole_cold_ci": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\shared-acceptance-final-a01\\complete-step-actual.json",
+      "bytes": 676697,
+      "sha256": "6aa6d0b39de39ce5dfcb56baa0255480aaf1bf88a86f864205f528e885c0ab22"
+    },
+    "strict_scope": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\shared-acceptance-final-a01\\strict-scope-actual.json",
+      "bytes": 8328,
+      "sha256": "e09bab3425a4d32f975135b4271afecac6c9f0b06bd7c8b286127cbb41f69a1b"
+    },
+    "direct_and_legacy_comparison": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\shared-acceptance-final-a01\\integration-scope-actual.json",
+      "bytes": 12024,
+      "sha256": "eacd29e98242bffe5912ea01f22b00167ab01744a41a9b2ab9e7296620905531"
+    }
+  },
+  "source_pins": {
+    "tools/ck3_mod_acceptance_background_types.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_background_types.py",
+      "bytes": 35744,
+      "sha256": "8512c80b104db069aae31fe6358d1742f6bfbd878e7ac7c41dfe5ccca80220da"
+    },
+    "tools/ck3_mod_acceptance.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+      "bytes": 85754,
+      "sha256": "8edd301bfcac9dcdccb753f61bbf7b3a02ec9cfe5aead3c8ba9f4e76425993e3"
+    },
+    "tools/ck3_mod_acceptance_allocate.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_allocate.py",
+      "bytes": 245229,
+      "sha256": "08ff36c4e32b009bcd8a81034b409c301414f8906d439d322dda73e87bf0e997"
+    },
+    "tools/test_product_acceptance_purpose.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_product_acceptance_purpose.py",
+      "bytes": 13040,
+      "sha256": "51c6e6b5cfad611a1294772105641685d30734d7390e12ed1606ef45ad938083"
+    },
+    "tools/test_preserved_failure_native_os0.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_preserved_failure_native_os0.py",
+      "bytes": 8030,
+      "sha256": "88d3ad6717c0d5091a6cbfbd1134ddd9744160b4a7b8beb45012371c42e7ae3c"
+    },
+    "tools/test_prebuilt_fixture_prepare.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_prebuilt_fixture_prepare.py",
+      "bytes": 12324,
+      "sha256": "32984c34df7f2bddff5a80fa2f51bcbc4092e4ed00ed09ce19a2acac4dc5b43a"
+    },
+    "tools/test_canonical_host_successor.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_canonical_host_successor.py",
+      "bytes": 11691,
+      "sha256": "bfc2665f1093e5659de77b1b06cd44c056663f72310bd7575670d85c361dc3f0"
+    },
+    "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 346767,
+      "sha256": "7bb3e33f245e6649acd22f6bc224fffd0e6cfc7b757de53eae69aa6aed91f3b7"
+    },
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/normal_exit_host_terminal_v1.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_host_terminal_v1.py",
+      "bytes": 7998,
+      "sha256": "a0c07cb90e2be72f3f54802e17660d41a4c00d7baad40bd2a18e2c8d7d96922f"
+    }
+  },
+  "frozen_r10_unchanged": true,
+  "storage": {
+    "root": "C:\\ck3-dynastic-esotericism-20261024\\shared-acceptance-final-a01",
+    "estimate_peak_bytes": 33554432,
+    "parent_budget": "Root combined 2GiB including R1; no dependency installation",
+    "closing_logical_bytes": 1040271
+  },
+  "qualification_boundary": "Offline tests and declared static scope only. Does not grant game, R0002, native business, source lease, typed normal exit, release or publication PASS. No unchanged 19+4/native matrix rerun. Historical R0001 RED preserved.",
+  "retention_review_due_utc": "2026-10-31T10:30:00Z"
+}

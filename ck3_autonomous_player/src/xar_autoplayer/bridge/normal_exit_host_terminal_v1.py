@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from typing import Literal, TypedDict
 
+from .normal_exit_contract_v1 import MAP_EXIT_ACTIONS, exit_signature
 from .normal_exit_public_wire_v2 import (
     UINT64_MAX, parse_normal_exit_public_result_v2,
     parse_normal_exit_public_revision_v2, validate_normal_exit_public_revision_v2,
@@ -15,6 +16,48 @@ from .normal_exit_public_wire_v2 import (
 NORMAL_EXIT_REVISION_TOOLS = frozenset({
     "ck3_query_normal_exit_context_v1", "ck3_request_normal_exit_v1",
 })
+
+
+def require_failed_host_normal_exit_plan_v1(value: object) -> None:
+    """Admit one existing exit operation; the original driver owns once/UNKNOWN.
+
+    This only checks the queued intent. It neither supplies a process identity
+    nor creates a service, dispatch claim, retry permission or exit proof.
+    """
+    if not isinstance(value, list) or len(value) != 1:
+        raise ValueError("failed host normal exit requires one explicit lifecycle step")
+    step = _object(value[0], "failed host normal-exit step")
+    if set(step) - {"id", "kind", "tool", "args", "fresh_revision", "expect"}:
+        raise ValueError("failed host normal-exit step contains unsupported fields")
+    identity = step.get("id")
+    if type(identity) is not str or not identity:
+        raise ValueError("failed host normal-exit step requires an explicit ID")
+    if step.get("kind", "tool") != "tool":
+        raise ValueError("failed host permits only the existing typed normal-exit tools")
+    tool = step.get("tool")
+    if tool not in (*NORMAL_EXIT_REVISION_TOOLS, "ck3_observe_normal_exit_v1"):
+        raise ValueError("failed host permits only the existing typed normal-exit tools")
+    fresh = step.get("fresh_revision", True)
+    if type(fresh) is not bool:
+        raise ValueError("failed host fresh_revision requires a literal boolean")
+    _object(step.get("expect", {}), "failed host normal-exit expectations")
+    args = _object(step.get("args", {}), "failed host normal-exit arguments")
+    if tool == "ck3_observe_normal_exit_v1":
+        if args:
+            raise ValueError("normal-exit observer uses only its retained original process")
+        return
+    required = ({"action", "expected_exit_context_signature"}
+                if tool == "ck3_request_normal_exit_v1" else set())
+    if set(args) - (required | {"expected_revision"}) or not required <= set(args):
+        raise ValueError("failed host normal-exit arguments differ from the existing tool contract")
+    if "expected_revision" in args:
+        validate_normal_exit_public_revision_v2(args["expected_revision"])
+    elif not fresh:
+        raise ValueError("normal exit without a fresh snapshot requires an explicit public revision")
+    if required:
+        if type(args["action"]) is not str or args["action"] not in MAP_EXIT_ACTIONS:
+            raise ValueError("failed host normal exit requires an existing fixed exit action")
+        exit_signature(args["expected_exit_context_signature"])
 
 
 def normal_exit_revision_from_snapshot_v2(value: object) -> str:

@@ -1,0 +1,88 @@
+{
+  "schema": "xar.dynastic-esotericism.failed-live-summary.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T09:59:27.225229+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001",
+  "source_commit": "09e7043669a326c1d22e8bd4ce8e23b3745afba7",
+  "game_version": "1.20.0.4",
+  "steam_build": "25734779",
+  "game_pid": 29452,
+  "game_birth_filetime": "134373083942703873",
+  "business_status": "RED",
+  "release_status": "NOT_PUBLISHED",
+  "failures": [
+    "add_known_doctrine rejected nonplayable characters during world initialization and later normal hooks",
+    "inherited R05 progress governor rejected generic product natural-day request: Actual independent progress scope absent",
+    "failed-host control guard rejected typed normal-exit query; original GUI exit was required"
+  ],
+  "completed_gui_business_phases": 0,
+  "original_ck3_exit_code": 0,
+  "original_host_exit_code": 1,
+  "original_keeper_exit_code": 0,
+  "cleanup_ok": true,
+  "screen_release_sequence": 8596,
+  "game_force_terminated": false,
+  "error_sample_counts": {
+    "not_playable_errors": 35240,
+    "distinct_characters": 32728,
+    "world_initialization_errors": 30072,
+    "rite_change_errors": 2512,
+    "new_character_errors": 2656,
+    "maximum_repeated_character_errors": 3
+  },
+  "recursion_finding": "Bounded frozen sample shows broad initialization fanout and normal hooks, not growing recursive helper frames; not a proof about every future state.",
+  "retention_review_due_utc": "2026-10-31T09:52:54Z",
+  "retention_reason": "Active regression inputs until source fixes receive actual replacement game evidence.",
+  "evidence": [
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\native-report.json",
+      "bytes": 6231965,
+      "sha256": "4ae23068dfa99dff6cc10a7cfed55c13fae5a9423135d3fa10490997b51b6ba5"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\host-original-process-exit.json",
+      "bytes": 258,
+      "sha256": "67974f7c11438e9297433a3c55612c261cab01f3271933a19f08bbbb1c591bfb"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\keeper-actual-parent-exit.json",
+      "bytes": 615,
+      "sha256": "d7a4df5d3769708afd50ad5fd1116ff5d936580e471281dc5c784e872a844255"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0001-screen-release.actual.json",
+      "bytes": 1317,
+      "sha256": "b8de72480855b5e53db46a45cf365719b8bfc446310486117ff7367685874298"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\window-close-post-click-a16.actual.json",
+      "bytes": 240,
+      "sha256": "bd44bb3b13939fcf497fbe970480feb4a12fcb226b4ff4e587f46e09ebeb9d71"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\run-core-a16-r2.actual.json",
+      "bytes": 1020,
+      "sha256": "5b04be9e01d7e7de297ecba516d8cb81308ad1012a4c1bf2a47d0b3f7895ff1a"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\keeper-core-a16\\report.json",
+      "bytes": 439,
+      "sha256": "d01eaa1d07615e5ad9927442a1a0c54ee104b58de39f63d9fc72c6367508abdf"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\failure-evidence\\FAILURE.actual.json",
+      "bytes": 1623,
+      "sha256": "99f36e764509716414db88f518d39b8a3f8020566c1b5ccf7f16e462aedcfc88"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\verify-R0001.actual.json",
+      "bytes": 4815,
+      "sha256": "23afa7481bcf4b9ba7bd3984dbbb78ee0c59662463ae6479e55083561f4a3eb2"
+    }
+  ],
+  "public_run_exit_code": 2,
+  "public_verify_exit_code": 2,
+  "public_verify_status": "NOT_RUN",
+  "public_verify_normal_close_qualified": false,
+  "public_verify_boundary": "Generic GUI business case remains NOT_RUN because no GUI phase was completed; actual product script errors and host RED are independently preserved."
+}

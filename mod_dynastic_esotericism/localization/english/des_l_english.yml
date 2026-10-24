@@ -10,7 +10,7 @@
  trait_des_apostate_desc: "This character belongs to a dynasty bound to a rite but currently follows another rite. Only adherents of the bound rite receive the dynastic apostasy opinion and criminal reasons."
  des_apostasy_opinion: "Betrayed the Dynasty's Rite"
  des_initialize_decision: "Enable Dynastic Esotericism"
- des_initialize_decision_desc: "Prepare this existing campaign for Dynastic Esotericism. Existing rites receive the default None option, and every living character learns both choices. No existing rite becomes dynastic automatically. Afterwards, choose Dynastic in the normal rite creation or editing window."
+ des_initialize_decision_desc: "Prepare this existing campaign for Dynastic Esotericism. Existing rites receive the default None option, and living characters with native playable eligibility learn both choices. No existing rite becomes dynastic automatically. Afterwards, choose Dynastic in the normal rite creation or editing window."
  des_initialize_decision_tooltip: "Initialize the rite options in this existing campaign"
  des_initialize_decision_confirm: "Enable the rite options"
  des_initialize_decision_effect: "Initialize the None / Dynastic options without changing anyone's current dynasty."

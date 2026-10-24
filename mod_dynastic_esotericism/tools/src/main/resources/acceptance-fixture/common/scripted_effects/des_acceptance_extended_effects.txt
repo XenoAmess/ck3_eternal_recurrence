@@ -54,10 +54,25 @@ des_acceptance_extended_restore_refs_effect = {
 # neither edits product state nor calls any product synchronization effect.
 des_acceptance_prepare_second_rite_effect = {
 	des_acceptance_extended_restore_refs_effect = yes
-	create_character = { employer = root age = 32 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = des_test_second_founder }
-	set_variable = { name = des_test_ref_second_founder value = scope:des_test_second_founder }
-	# Let the real generated-character hook establish knowledge and House first.
-	trigger_event = { id = des_acceptance_extended.8 days = 1 }
+	# Native doctrine knowledge rejects unplayable courtiers. Use an actual
+	# existing adult Count; no test effect grants rank, knowledge or product state.
+	random_vassal_or_below = {
+		limit = {
+			is_alive = yes
+			is_adult = yes
+			is_playable_character = yes
+			highest_held_title_tier = tier_county
+		}
+		save_scope_as = des_test_second_founder
+	}
+	if = {
+		limit = { exists = scope:des_test_second_founder }
+		set_variable = { name = des_test_ref_second_founder value = scope:des_test_second_founder }
+		scope:des_test_second_founder = { set_character_rite = scope:des_test_primary }
+		# Let the normal conversion and next-day hooks settle before native creation.
+		trigger_event = { id = des_acceptance_extended.8 days = 1 }
+	}
+	else = { debug_log = "DESAF: TEST FAIL second_playable_count_setup" }
 }
 
 des_acceptance_create_second_rite_effect = {
@@ -66,6 +81,9 @@ des_acceptance_create_second_rite_effect = {
 		limit = {
 			scope:des_test_second_founder = {
 				is_alive = yes
+				is_adult = yes
+				is_playable_character = yes
+				highest_held_title_tier = tier_county
 				rite = scope:des_test_primary
 				dynasty = scope:des_test_dynasty
 				knows_doctrine = des_doctrine_none

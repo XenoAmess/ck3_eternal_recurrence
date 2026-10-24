@@ -1,19 +1,24 @@
-"""Append one reviewed plan; errored hosts admit only failure finish_hold transport."""
+"""Append one reviewed plan; failed hosts retain typed exit and finish transport."""
+from __future__ import annotations
 import argparse
 import hashlib
 import json
 import os
 from pathlib import Path
+import sys
 import time
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'ck3_autonomous_player/src'))
+from xar_autoplayer.bridge.normal_exit_host_terminal_v1 import require_failed_host_normal_exit_plan_v1
 
-def require(condition, message):
+
+def require(condition: bool, message: str) -> None:
     if not condition:
         raise ValueError(message)
 
 
-def failure_finish_only(steps):
-    if len(steps) != 1 or not isinstance(steps[0], dict):
+def failure_finish_only(steps: object) -> bool:
+    if not isinstance(steps, list) or len(steps) != 1 or not isinstance(steps[0], dict):
         return False
     step = steps[0]
     expected = step.get('expect')
@@ -24,7 +29,7 @@ def failure_finish_only(steps):
             and expected['business_pass'] is False and expected['normal_close_qualified'] is False)
 
 
-def main():
+def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument('--live', required=True, type=Path)
     p.add_argument('--plan', required=True, type=Path)
@@ -44,14 +49,18 @@ def main():
     require(all(row.get('finished_at') for row in report.get('steps', [])), 'Original step is incomplete')
     raw = args.plan.read_bytes()
     plan = json.loads(raw)
-    require(isinstance(plan['steps'], list) and plan['steps'], 'A nonempty step list is required')
+    require(isinstance(plan['steps'], list) and bool(plan['steps']), 'A nonempty step list is required')
     for step in plan['steps']:
         require(isinstance(step, dict) and 'arguments' not in step,
                 'Plan steps use args, not arguments; rejected before dispatch')
         require(isinstance(step.get('args', {}), dict), 'Plan args must be an object; rejected before dispatch')
     lifecycle_only = report.get('error') is not None
-    require(not lifecycle_only or failure_finish_only(plan['steps']),
-            'Failed host admits only one preserved-failure finish_hold lifecycle request')
+    if lifecycle_only and not failure_finish_only(plan['steps']):
+        try:
+            require_failed_host_normal_exit_plan_v1(plan['steps'])
+        except ValueError as error:
+            raise ValueError('Failed host admits only one typed normal-exit operation or '
+                             'preserved-failure finish_hold lifecycle request: ' + str(error)) from error
     new_ids = [row['id'] for row in plan['steps']]
     require(len(new_ids) == len(set(new_ids)), 'Duplicate step IDs in plan')
     require(not set(new_ids) & {row['id'] for row in report['steps']}, 'Step ID already consumed; never replay')

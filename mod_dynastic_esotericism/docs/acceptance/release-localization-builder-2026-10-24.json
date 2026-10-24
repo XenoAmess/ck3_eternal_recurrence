@@ -1,0 +1,78 @@
+{
+  "schema": "xar.dynastic-esotericism.release-localization-preparation.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T10:15:25.154224+00:00",
+  "qualification": "BUILDER_CONTRACTS_AND_SYNTHETIC_RELEASE_FORMAT_ONLY",
+  "maven_actual": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\release-localization-builder-a01\\maven-verify-r2.actual.json",
+    "bytes": 2227,
+    "sha256": "a5384a1f35d17c302275923a66118790e04edf0bf0e0b3aa26e0733f04a7d67b"
+  },
+  "tests": {
+    "tests": 14,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "compiler_release": 21,
+  "compiler_checks": [
+    "-Xlint:all",
+    "-Werror"
+  ],
+  "test_reports": [
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\release-localization-builder-a01\\dynastic-esotericism-tools\\surefire-reports\\TEST-org.xar.ck3.dynastic.acceptance.FixtureEmitterTest.xml",
+      "bytes": 19085,
+      "sha256": "b1b73d44b95af4b273ad28eef43d439690ed32676aaf99ca6a092540ed65abe5"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\release-localization-builder-a01\\dynastic-esotericism-tools\\surefire-reports\\TEST-org.xar.ck3.dynastic.acceptance.SharedRuntimeComposerTest.xml",
+      "bytes": 18649,
+      "sha256": "67cf5fbef664c061d3418b76e0323819b6ab08b016b9722ee4583672c2530e82"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\release-localization-builder-a01\\dynastic-esotericism-tools\\surefire-reports\\TEST-org.xar.ck3.dynastic.release.DefaultMavenTest.xml",
+      "bytes": 19025,
+      "sha256": "36b25cd952ee54ccc650c19784424d7e079c1935d30101d7a154cc7ed3dc40ca"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\release-localization-builder-a01\\dynastic-esotericism-tools\\surefire-reports\\TEST-org.xar.ck3.dynastic.release.ReleaseBuilderTest.xml",
+      "bytes": 19224,
+      "sha256": "0b986da95dacf3f49258c9b55c4ff1a32d89339776203905d41c8e7d908b8724"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\release-localization-builder-a01\\dynastic-esotericism-tools\\surefire-reports\\TEST-org.xar.ck3.dynastic.release.ReleaseLocalizationTest.xml",
+      "bytes": 19595,
+      "sha256": "7019a21ac82ac9a839bae8540f3325e9a9b80164dffcfb4dcfa130abb1e69708"
+    }
+  ],
+  "cli_actual": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\release-localization-builder-a01\\cli-verify.actual.json",
+    "bytes": 6492,
+    "sha256": "68463cc360229a3ed0be69f87c5c55a0f6d24d4cb2f9ca26a85b7ad3273552b1"
+  },
+  "source_input_index": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\release-localization-builder-a01\\source-inputs.actual.json",
+    "bytes": 14657,
+    "sha256": "5d5b6077c9c5f9682893b5b6f2fe4109c79cff8b9c59503d70bd0f505542f780"
+  },
+  "new_output_root": "C:\\ck3-dynastic-esotericism-20261024\\release-localization-builder-a01",
+  "budget_bytes": 33554432,
+  "sampled_file_allocation_peak_bytes": 12333824,
+  "frozen_r10_unchanged": true,
+  "new_dependencies": [],
+  "production_translations_written": false,
+  "actual_production_release_format": "REFUSED_EXPECTED_MISSING_:0; seven production translations pending Root",
+  "synthetic_release_files": 24,
+  "existing_python_manifest_consumer_verified_files": 24,
+  "existing_shared_parser_token_consumer_languages": 9,
+  "release_workflow_trigger_scope": "Only dynastic-esotericism-v* tag or manual workflow_dispatch; no ordinary push/PR release-format gate",
+  "hosted_release_workflow_executed": false,
+  "original_red": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\release-localization-builder-a01\\maven-verify.actual.json",
+    "bytes": 2222,
+    "sha256": "8b60c8bede91d01add0f66c6b9f205bfc5726b38c189f53eea7d33751f6f2f75"
+  },
+  "original_red_explanation": "The new test originally passed JSON in a Windows argv. It was corrected to a JSON input file and the complete Maven verification rerun; product validation was not weakened.",
+  "business_or_live_or_publication_qualification": false
+}

@@ -9,13 +9,25 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 /** Reviewed product identity and runtime inventory; never inferred from a glob. */
-public record ReleaseProduct(String productId, Path source, String tagPrefix, List<String> runtimeFiles) {
+public record ReleaseProduct(String productId, Path source, String tagPrefix, List<String> runtimeFiles,
+        LocalizationMode localizationMode) {
     public static final String PRODUCT_ID = "mod_dynastic_esotericism";
     public static final String TAG_PREFIX = "dynastic-esotericism-v";
     public static final Pattern VERSION = Pattern.compile("[0-9]+(?:\\.[0-9]+){0,3}(?:[-+][A-Za-z0-9.-]+)?");
     public static final Pattern REVISION = Pattern.compile("[0-9a-f]{40}");
     public static final Pattern DIGEST = Pattern.compile("[0-9a-f]{64}");
     private static final BigInteger UINT64_MAX = new BigInteger("18446744073709551615");
+    public enum LocalizationMode { DEVELOPMENT, RELEASE_LOCALIZATION }
+
+    public enum Language {
+        ENGLISH("english"), SIMP_CHINESE("simp_chinese"), FRENCH("french"), GERMAN("german"),
+        JAPANESE("japanese"), KOREAN("korean"), POLISH("polish"), RUSSIAN("russian"), SPANISH("spanish");
+
+        private final String folder;
+        Language(String folder) { this.folder = folder; }
+        public String header() { return "l_" + folder + ":"; }
+        public String relativePath() { return "localization/" + folder + "/des_l_" + folder + ".yml"; }
+    }
     private static final List<String> RUNTIME_FILES = List.of(
             "common/decisions/des_initialization_decisions.txt",
             "common/on_action/des_on_actions.txt",
@@ -40,6 +52,7 @@ public record ReleaseProduct(String productId, Path source, String tagPrefix, Li
         Objects.requireNonNull(source, "source");
         Objects.requireNonNull(tagPrefix, "tagPrefix");
         Objects.requireNonNull(runtimeFiles, "runtimeFiles");
+        Objects.requireNonNull(localizationMode, "localizationMode");
         if (!productId.matches("[a-z][a-z0-9_]*") || tagPrefix.isBlank() || tagPrefix.chars().anyMatch(Character::isWhitespace)) {
             throw new IllegalArgumentException("invalid product identity or tag prefix");
         }
@@ -54,8 +67,24 @@ public record ReleaseProduct(String productId, Path source, String tagPrefix, Li
         }
     }
 
+    public ReleaseProduct(String productId, Path source, String tagPrefix, List<String> runtimeFiles) {
+        this(productId, source, tagPrefix, runtimeFiles, LocalizationMode.DEVELOPMENT);
+    }
+
     public static ReleaseProduct official(Path source) {
-        return new ReleaseProduct(PRODUCT_ID, source, TAG_PREFIX, RUNTIME_FILES);
+        return official(source, LocalizationMode.DEVELOPMENT);
+    }
+
+    public static ReleaseProduct official(Path source, LocalizationMode mode) {
+        List<String> files = mode == LocalizationMode.DEVELOPMENT ? RUNTIME_FILES
+                : java.util.stream.Stream.concat(RUNTIME_FILES.stream(), additionalLocalizationFiles().stream()).toList();
+        return new ReleaseProduct(PRODUCT_ID, source, TAG_PREFIX, files, mode);
+    }
+
+    /** These seven known source files do not enter or gate the ordinary two-language build. */
+    public static Set<String> additionalLocalizationFiles() {
+        return Set.of(Language.FRENCH.relativePath(), Language.GERMAN.relativePath(), Language.JAPANESE.relativePath(),
+                Language.KOREAN.relativePath(), Language.POLISH.relativePath(), Language.RUSSIAN.relativePath(), Language.SPANISH.relativePath());
     }
 
     public static String relativePath(String raw) {

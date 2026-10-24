@@ -10,7 +10,7 @@
  trait_des_apostate_desc: "此人属于与某个礼仪绑定的宗族，却正信奉其他礼仪。只有绑定礼仪的信徒对其获得背离罪行的好感修正与处罚理由。"
  des_apostasy_opinion: "背离宗族礼仪"
  des_initialize_decision: "启用宗族化密教"
- des_initialize_decision_desc: "为此旧存档初始化宗族化密教。现存礼仪补入默认的“无”，所有在世角色学会两个选项，不会自动将任何已有礼仪宗族化。之后可在原版创建或改革礼仪窗口选择“宗族化”。"
+ des_initialize_decision_desc: "为此旧存档初始化宗族化密教。现存礼仪补入默认的“无”，符合原版可玩资格的在世角色学会两个选项，不会自动将任何已有礼仪宗族化。之后可在原版创建或改革礼仪窗口选择“宗族化”。"
  des_initialize_decision_tooltip: "在此旧存档中初始化宗族化选项"
  des_initialize_decision_confirm: "启用礼仪选项"
  des_initialize_decision_effect: "初始化“无／宗族化”选项，不改变任何人的现有宗族。"

@@ -1,0 +1,49 @@
+name: Dynastic Esotericism Release Localization
+
+on:
+  push:
+    tags: ['dynastic-esotericism-v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  release-format:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    env:
+      GIT_CONFIG_COUNT: '1'
+      GIT_CONFIG_KEY_0: core.longpaths
+      GIT_CONFIG_VALUE_0: 'true'
+    defaults:
+      run:
+        shell: cmd
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - name: Ensure the existing default Maven installation
+        run: java -Xms32m -Xmx128m -Djava.io.tmpdir="%RUNNER_TEMP%" java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java --ensure-default-maven-only --repo-root "%GITHUB_WORKSPACE%" --work-root "%RUNNER_TEMP%/dynastic-esotericism-release-maven" --python-executable "%pythonLocation%/python.exe" --system-growth-reserve-bytes 2147483648 --max-project-bytes 8589934592
+      - name: Read back default Maven qualification
+        run: java -Xms32m -Xmx128m -Djava.io.tmpdir="%RUNNER_TEMP%" java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java --verify-maven-evidence-root "%RUNNER_TEMP%/dynastic-esotericism-release-maven"
+      - name: Verify the builder and synthetic release-format contracts
+        run: mvn --batch-mode --no-transfer-progress -f mod_dynastic_esotericism/tools/pom.xml -Ddes.build.root="%RUNNER_TEMP%/dynastic-esotericism-release-build" verify
+      - name: Certify the actual nine-language release source format
+        run: java -jar "%RUNNER_TEMP%/dynastic-esotericism-release-build/dynastic-esotericism-tools/quarkus-app/quarkus-run.jar" validate --release-localization
+      - name: Build and read back the actual 24-file release projection twice
+        run: java -jar "%RUNNER_TEMP%/dynastic-esotericism-release-build/dynastic-esotericism-tools/quarkus-app/quarkus-run.jar" check --release-localization --output "%RUNNER_TEMP%/dynastic-esotericism-release-check"
+      - name: Preserve release format and build evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dynastic-esotericism-release-localization
+          path: |
+            ${{ runner.temp }}/dynastic-esotericism-release-maven/logs/
+            ${{ runner.temp }}/dynastic-esotericism-release-build/dynastic-esotericism-tools/surefire-reports/
+            ${{ runner.temp }}/dynastic-esotericism-release-check/

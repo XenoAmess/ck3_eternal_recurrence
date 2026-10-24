@@ -1,0 +1,193 @@
+{
+  "schema": "ck3-failed-host-normal-exit-fix-offline-summary-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T10:18:02.040489+00:00",
+  "source_head_at_verification": "1268da7ee35fa1d3760134f566d269db86c7c3e0",
+  "scope": "existing failed-host typed normal-exit queue and consumer admission",
+  "verification": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\failed-host-exit-final-a03\\verification.json",
+    "bytes": 11931,
+    "sha256": "437b3e0fa18c6200044c9257feabecf145d22c8d921eef7095b2bfbae33d7cc7"
+  },
+  "source_pins": {
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/normal_exit_host_terminal_v1.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_host_terminal_v1.py",
+      "bytes": 7998,
+      "sha256": "a0c07cb90e2be72f3f54802e17660d41a4c00d7baad40bd2a18e2c8d7d96922f"
+    },
+    "tools/ck3_mod_acceptance_queue_control.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_queue_control.py",
+      "bytes": 4260,
+      "sha256": "7f2866a215bbc167b1bec14f113c453abf9aa8ec000b8c8cd6e96e3fde3af789"
+    },
+    "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 346767,
+      "sha256": "7bb3e33f245e6649acd22f6bc224fffd0e6cfc7b757de53eae69aa6aed91f3b7"
+    },
+    "tools/test_ck3_mod_acceptance_failed_host_normal_exit.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_failed_host_normal_exit.py",
+      "bytes": 18308,
+      "sha256": "bfc36f6d9ee7d94ad877b0f6843ae30c8448d4f29ce578bcee1a8c084f6a0cd8"
+    },
+    "tools/test_ck3_mod_acceptance_queue_control.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_queue_control.py",
+      "bytes": 5372,
+      "sha256": "c757f74a574ef504949521f17109693952a2fe37c30c39f70784b66ccd3fe8d5"
+    },
+    ".github/workflows/rite-confirmation-sdk.yml": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\.github\\workflows\\rite-confirmation-sdk.yml",
+      "bytes": 4823,
+      "sha256": "5c28df477fa06bf83f97d816287d630e399a01bd9d59f64456c909117e605305"
+    }
+  },
+  "commands": [
+    {
+      "name": "production strict (2 modules)",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\failed-host-exit-final-a03\\01.stdout.log",
+        "bytes": 44,
+        "sha256": "0c37c4158c91ef55c724ba017bf6465f26018199badb08e3ff13f98acdf056c2"
+      },
+      "stderr": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\failed-host-exit-final-a03\\01.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "new finite exit regression + exact host scope strict (5 tests)",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\failed-host-exit-final-a03\\02.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\failed-host-exit-final-a03\\02.stderr.log",
+        "bytes": 1008,
+        "sha256": "b922937666c1b61a432aa7eb09ec8b98733a83832a81258ff2f503445efd40a7"
+      }
+    },
+    {
+      "name": "existing public queue (6 tests)",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\failed-host-exit-final-a03\\03.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\failed-host-exit-final-a03\\03.stderr.log",
+        "bytes": 1138,
+        "sha256": "6dae2098858e5292ae3e6a4d8a565faccd2569f83b9b1f0c64840f68888d11b6"
+      }
+    },
+    {
+      "name": "failure shutdown (4 tests)",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\failed-host-exit-final-a03\\04.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\failed-host-exit-final-a03\\04.stderr.log",
+        "bytes": 107,
+        "sha256": "8f285d7196c20d476716ea649ab0c2363ec271014dedcd206dca0cad0c161436"
+      }
+    },
+    {
+      "name": "managed profile/terminal execution (5 tests)",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\failed-host-exit-final-a03\\05.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\failed-host-exit-final-a03\\05.stderr.log",
+        "bytes": 108,
+        "sha256": "b41b573c07ec540055a8fbdd70bc75b350870b409faa7fb44ba9a6c15aeb0551"
+      }
+    },
+    {
+      "name": "host terminal consumer (8 tests)",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\failed-host-exit-final-a03\\06.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\failed-host-exit-final-a03\\06.stderr.log",
+        "bytes": 111,
+        "sha256": "84f6f1ccc6c869876aae4d618da73d8dc9efc2e613038603f92137fa26e1895f"
+      }
+    },
+    {
+      "name": "initial failure hold (1 test)",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\failed-host-exit-final-a03\\07.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\failed-host-exit-final-a03\\07.stderr.log",
+        "bytes": 333,
+        "sha256": "764892db9b66aeea423bfa562bf42c2e0bcf45dd7f7964873789fb12382a4feb"
+      }
+    }
+  ],
+  "complete_dedicated_ci_step": true,
+  "unittests_passed": 29,
+  "production_strict_modules": 2,
+  "host_modified_ast_scope_strict": true,
+  "source_unchanged_during_step": true,
+  "python_environment": "C isolated py314 venv, six exact direct dependencies, no tools site-packages fallback",
+  "synthetic_native_endpoint_and_process_api": true,
+  "real_game_test_performed": false,
+  "original_R0001_requalified": false,
+  "native_or_public_exit_wire_modified": false,
+  "original_failure_evidence": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\failure-evidence\\FAILURE.actual.json",
+    "bytes": 1623,
+    "sha256": "99f36e764509716414db88f518d39b8a3f8020566c1b5ccf7f16e462aedcfc88"
+  },
+  "original_rejected_plan": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a03\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001\\operator-plans\\failure-exit-query-001.json",
+    "bytes": 178,
+    "sha256": "1944c1f1d29769742fb20443f089bbe871b3783acecdb82cf7694d1e0741a822"
+  },
+  "original_gui_exit_zero": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\window-close-post-click-a16.actual.json",
+    "bytes": 240,
+    "sha256": "bd44bb3b13939fcf497fbe970480feb4a12fcb226b4ff4e587f46e09ebeb9d71"
+  },
+  "baseline_red": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\failed-host-exit-a01\\initial-verification.json",
+    "bytes": 2069,
+    "sha256": "e1294c6e4c6441c44dbe37bc061c4b3c58d553277cb27015e11371493177064d"
+  },
+  "earlier_test_fixture_red_logs": [
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\failed-host-exit-a01\\maintained-source.stderr.log",
+      "bytes": 9170,
+      "sha256": "089403fdda8b4a431417e5df59abeff20b56389652c90501edea826258b82624"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\failed-host-exit-a02\\suite.stderr.log",
+      "bytes": 5513,
+      "sha256": "f78f466ac07bbce148d279c147107b2e3e11bcdc6299843e4f354f6503d0365b"
+    }
+  ],
+  "storage_close": {
+    "C_free_bytes": 56948936704,
+    "isolated_root_bytes": 327964655,
+    "approved_subbudget_bytes": 536870912,
+    "review_at_utc": "2026-10-31T10:18:02.040489+00:00",
+    "reason": "retain source-bound RED and GREEN offline evidence pending next actual product attempt"
+  }
+}

@@ -1,5 +1,6 @@
 {
   "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
   "product": "dynastic-esotericism",
   "case_id": "core",
   "acceptance_scope": "actual_rite_ui_creation_and_editing_dynasty_membership_directional_apostasy",

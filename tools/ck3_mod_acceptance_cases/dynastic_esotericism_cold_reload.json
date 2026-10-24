@@ -1,5 +1,6 @@
 {
   "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
   "product": "dynastic-esotericism",
   "fixture_source": {
     "kind": "prebuilt_manifest"

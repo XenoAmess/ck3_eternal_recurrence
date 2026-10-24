@@ -1,0 +1,222 @@
+{
+  "schema": "des.acceptance.native-playability-fix-parser.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T10:15:42.362908+00:00",
+  "scope": "Incremental parse of product knowledge helper and four modified fixture script resources only.",
+  "open_kaishek": {
+    "repo": "D:/workspace/open_kaishek",
+    "commit": "d2a2627e3023310d96f1a2d1e63478f6a6ee7a57",
+    "working_tree_clean_observed": true,
+    "jar": {
+      "path": "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+      "bytes": 433166,
+      "sha256": "6ac143ebf03f3e1a041dff01b2d808e60de8e289d18cebf9855682f0a80b6d82"
+    },
+    "existing_jar_not_rebuilt_in_this_task": true
+  },
+  "ck3": {
+    "version": "1.20.0.4",
+    "build": "25734779",
+    "version_source": "Previously qualified exact EXE identity; fresh SHA-256 equality readback in this receipt.",
+    "build_source": "C:/SteamLibrary/steamapps/appmanifest_1158310.acf",
+    "executable": {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+      "bytes": 101040248,
+      "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+    }
+  },
+  "pins_observed_before_utc": "2026-10-24T10:15:19.934630+00:00",
+  "final_source_pins": [
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/mod_dynastic_esotericism/common/scripted_effects/des_initialization_effects.txt",
+      "sha256": "59a5c07f5f71b429fd83b11311d62fb3dbbc85915f0198940566fc0f1b1f321c",
+      "bytes": 2015
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/scripted_effects/des_acceptance_extended_effects.txt",
+      "sha256": "76eb0730377520e2821d8f702d66a97e41cde7df98628dbda5855098ac012d73",
+      "bytes": 7743
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_acceptance_extended_events.txt",
+      "sha256": "6e0224105fe6bed191c424d2d872e8df150bbc45299b90b7e8af4e158ebfea79",
+      "bytes": 14489
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_acceptance_extended_decisions.txt",
+      "sha256": "01bd43c74f81734e2a768043f363440c75443bd5cf2d17fb9365eff7b02f70eb",
+      "bytes": 11347
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_acceptance_decisions.txt",
+      "sha256": "b7e8f1c7db71c18e65b2ec7aae85a997721383c9ccfa73e2c7265ed464e4ad4f",
+      "bytes": 6185
+    }
+  ],
+  "source_pins_unchanged_during_parse": true,
+  "commands": [
+    {
+      "argv": [
+        "java",
+        "-Xmx128m",
+        "-jar",
+        "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+        "parse",
+        "--file",
+        "D:/workspace/ck3_eternal_recurrence/mod_dynastic_esotericism/common/scripted_effects/des_initialization_effects.txt"
+      ],
+      "observed_at_utc": "2026-10-24T10:15:28.213Z",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1542697,
+      "stdout": "{\"status\":\"PARSED\",\"bytes\":2015,\"tokens\":573,\"blocks\":33,\"diagnostics\":[],\"roundTrip\":true}\r\n",
+      "parsed_stdout": {
+        "status": "PARSED",
+        "bytes": 2015,
+        "tokens": 573,
+        "blocks": 33,
+        "diagnostics": [],
+        "roundTrip": true
+      }
+    },
+    {
+      "argv": [
+        "java",
+        "-Xmx128m",
+        "-jar",
+        "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+        "parse",
+        "--file",
+        "D:/workspace/ck3_eternal_recurrence/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/scripted_effects/des_acceptance_extended_effects.txt"
+      ],
+      "observed_at_utc": "2026-10-24T10:15:28.217Z",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1674909,
+      "stdout": "{\"status\":\"PARSED\",\"bytes\":7743,\"tokens\":2234,\"blocks\":100,\"diagnostics\":[],\"roundTrip\":true}\r\n",
+      "parsed_stdout": {
+        "status": "PARSED",
+        "bytes": 7743,
+        "tokens": 2234,
+        "blocks": 100,
+        "diagnostics": [],
+        "roundTrip": true
+      }
+    },
+    {
+      "argv": [
+        "java",
+        "-Xmx128m",
+        "-jar",
+        "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+        "parse",
+        "--file",
+        "D:/workspace/ck3_eternal_recurrence/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_acceptance_extended_events.txt"
+      ],
+      "observed_at_utc": "2026-10-24T10:15:28.217Z",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1401187,
+      "stdout": "{\"status\":\"PARSED\",\"bytes\":14489,\"tokens\":4007,\"blocks\":184,\"diagnostics\":[],\"roundTrip\":true}\r\n",
+      "parsed_stdout": {
+        "status": "PARSED",
+        "bytes": 14489,
+        "tokens": 4007,
+        "blocks": 184,
+        "diagnostics": [],
+        "roundTrip": true
+      }
+    },
+    {
+      "argv": [
+        "java",
+        "-Xmx128m",
+        "-jar",
+        "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+        "parse",
+        "--file",
+        "D:/workspace/ck3_eternal_recurrence/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_acceptance_extended_decisions.txt"
+      ],
+      "observed_at_utc": "2026-10-24T10:15:28.217Z",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1370816,
+      "stdout": "{\"status\":\"PARSED\",\"bytes\":11347,\"tokens\":3278,\"blocks\":161,\"diagnostics\":[],\"roundTrip\":true}\r\n",
+      "parsed_stdout": {
+        "status": "PARSED",
+        "bytes": 11347,
+        "tokens": 3278,
+        "blocks": 161,
+        "diagnostics": [],
+        "roundTrip": true
+      }
+    },
+    {
+      "argv": [
+        "java",
+        "-Xmx128m",
+        "-jar",
+        "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+        "parse",
+        "--file",
+        "D:/workspace/ck3_eternal_recurrence/mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_acceptance_decisions.txt"
+      ],
+      "observed_at_utc": "2026-10-24T10:15:28.217Z",
+      "exit_code": 0,
+      "elapsed_seconds": 0.1227711,
+      "stdout": "{\"status\":\"PARSED\",\"bytes\":6185,\"tokens\":1544,\"blocks\":80,\"diagnostics\":[],\"roundTrip\":true}\r\n",
+      "parsed_stdout": {
+        "status": "PARSED",
+        "bytes": 6185,
+        "tokens": 1544,
+        "blocks": 80,
+        "diagnostics": [],
+        "roundTrip": true
+      }
+    },
+    {
+      "argv": [
+        "java",
+        "-Xmx128m",
+        "-jar",
+        "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+        "validate",
+        "--profile",
+        "ck3-1.20.0.4",
+        "--file",
+        "D:/workspace/ck3_eternal_recurrence/mod_dynastic_esotericism/common/scripted_effects/des_initialization_effects.txt"
+      ],
+      "observed_at_utc": "2026-10-24T10:15:28.217Z",
+      "exit_code": 4,
+      "elapsed_seconds": 0.1365857,
+      "stdout": "{\"status\":\"UNSUPPORTED\",\"reason\":\"profile-not-registered\",\"profile\":\"ck3-1.20.0.4\"}\r\n",
+      "parsed_stdout": {
+        "status": "UNSUPPORTED",
+        "reason": "profile-not-registered",
+        "profile": "ck3-1.20.0.4"
+      }
+    }
+  ],
+  "grammar": {
+    "files": 5,
+    "parsed": 5,
+    "errors": 0,
+    "all_round_trip": true,
+    "exit_codes": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "semantic_qualification": {
+    "profile": "ck3-1.20.0.4",
+    "exit_code": 4,
+    "status": "UNSUPPORTED",
+    "reason": "profile-not-registered",
+    "business_credit": false
+  },
+  "predecessor_receipt": "C:/ck3-dynastic-esotericism-20261024/acceptance-preparation/all-fixture-parser-r2.actual.json",
+  "qualification_limit": "Grammar only. Does not qualify CK3 1.20 script semantics, native effect eligibility, GUI creation, dynasty membership, criminal reasons, or live business acceptance.",
+  "game_started": false,
+  "frozen_c_runtime_modified": false,
+  "source_modified_by_this_check": false,
+  "business_acceptance": "NOT_RUN"
+}

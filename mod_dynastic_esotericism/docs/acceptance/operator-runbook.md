@@ -47,15 +47,19 @@ java -jar C:/ck3-dynastic-esotericism-20261024/java-build/dynastic-esotericism-t
 
 ## 分配、预检和运行
 
-本机已有 57 次公共 admission，不能使用 first-machine-bootstrap。以下是截至本卡调查时已核实存在的上次关闭来源；分配前由 Root 重读当前 canonical admission，若已有新场次必须使用真实最新前序。
+本机已有公共 admission，不能使用 first-machine-bootstrap。2026-10-24 的 R0001 已保留为 RED 并正常关闭：原宿主退出 1、公共 run 退出 2、CK3 原进程退出 0、keeper 退出 0，SCREEN 释放序号 8596。后继使用该真实 R0001；其有限 failure-close 只准入已结束资源，保留业务与正常关闭资格为 false。以下路径属于 `machine_id: desktop-3fevhd2-1c74096080`；分配前仍由 Root 重读当前 canonical admission。
 
 ```bat
-<python> <entry> allocate --runtime <runtime> --products <products> --product dynastic-esotericism --case core --prepared-case C:/ck3-dynastic-esotericism-20261024/prepared-core-a01/prepared-case.json --attempt a01 --keeper-output C:/ck3-dynastic-esotericism-20261024/keeper-core-a01 --previous-live C:/ck3-superman-validation-20261023/runs/desktop-3fevhd2-1c74096080--superman-qiang--R0037 --previous-keeper C:/ck3-superman-validation-20261023/workshop-cache-keeper-a15 --previous-release C:/ck3-superman-validation-20261023/ops/R0037-screen-release.actual.json --latest-screen-release C:/ck3-dynastic-esotericism-20261024/uac-screen-release.actual.json
+<python> <entry> allocate --runtime <new-runtime> --products <new-products> --product dynastic-esotericism --case core --prepared-case <new-prepared-case> --attempt a17 --keeper-output C:/ck3-dynastic-esotericism-20261024/keeper-core-a17 --previous-live C:/ck3-dynastic-esotericism-20261024/common-runtime-a03/runs/desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001 --previous-keeper C:/ck3-dynastic-esotericism-20261024/keeper-core-a16 --previous-release C:/ck3-dynastic-esotericism-20261024/R0001-screen-release.actual.json --previous-failure-close C:/ck3-dynastic-esotericism-20261024/R0001-preserved-failure-close/failure-close.json --latest-screen-release C:/ck3-dynastic-esotericism-20261024/R0001-screen-release.actual.json
 <python> <entry> preflight --runtime <runtime> --products <products> --product dynastic-esotericism --case core --prepared-case C:/ck3-dynastic-esotericism-20261024/prepared-core-a01/prepared-case.json --run-context <allocated-context>
 <python> <entry> run --runtime <runtime> --products <products> --product dynastic-esotericism --case core --prepared-case C:/ck3-dynastic-esotericism-20261024/prepared-core-a01/prepared-case.json --run-context <allocated-context>
 ```
 
 Root 在真实分配前完成存储原子准入、干净 checkout 和屏幕 owner 前置。受管启动前用公共后台 Steam probe 取得新鲜 `offline=true` 回执。未知状态不能启动。本次开局前声明固定 hold 3600 秒、整个命令 5400 秒、readiness 1800 秒、正常退出保留 180 秒；400 自然日上限覆盖真实 280 日妊娠、出生翌日和 31 日维护观察。运行中不延长冻结 deadline。
+
+上例 a17 只是在此次读回时尚未注册的参数，分配时须重验未消费。新 state 使用新的父目录，例如 `C:/ck3-dynastic-esotericism-20261024/attempt-a04/state`；先前 `state-core-a03` 的父目录已有实际消费过的 single-use-ledger，不能只在同一父目录换 state 名。若期间发生新的 SCREEN 任务，`--latest-screen-release` 必须换成它的实际释放原件。
+
+分配后由 Root 以新文件提交 reviewed context，字段是 `reviewer: "/root"`，并补 `steam_offline_receipt` 的新鲜后台回执路径；实际 `run` 消费此新 context。四个产品合同显式声明 `execution_purpose=product_acceptance`。公共入口在启动前生成一次目的文件，宿主核 Root context、prepared/contract、冻结 argv、当前 run/state/pipe 后，按真实首帧身份与原自然日上限推进。R05 的独立 scope、30 日与 once 守卫保留；本产品场次不申请 R05 scope。
 
 ## 六个 GUI phase 的操作与签认
 
@@ -76,7 +80,7 @@ Root 在真实分配前完成存储原子准入、干净 checkout 和屏幕 owne
 礼仪操作全部复用 `ck3_execute_player_rite_creation_action_v1`，每步传当前 `expected_source_rite_id` 并绑定当前 revision：
 
 1. 从真实 religion context 取当前完整 `faith_id`，先调用 `ck3_open_faith_window_v1(faith_id,expected_revision)`，再用 `ck3_query_ingame_ui_window_v1(window_kind="faith",expected_revision)` 独立核原版窗口与所选身份；实际信仰窗口可见后才提交 `open_create_draft` 或 `open_edit_current_rite_draft`。
-2. 查询当前 draft groups、doctrine choices、resource costs 和 action context，保留两个教义实际 `shown/can/selected` 与默认“无”。知识查询未接入本宿主；其范围由真实 UI 可选状态与 fixture 的真实 `knows_doctrine` trigger 共同验收。
+2. 查询当前 draft groups、doctrine choices、resource costs 和 action context，保留两个教义实际 `shown/can/selected` 与默认“无”。知识查询未接入本宿主；其范围由真实 UI 可选状态与可玩角色的真实 `knows_doctrine` trigger 共同验收。原版不允许向不可玩角色写教义知识；不可玩成员与新生儿的 Rite、Dynasty、House 断言仍全部保留。
 3. `select_doctrine` 使用 `group_key=des_dynastic_membership`、`doctrine_key=des_doctrine_dynastic` 或 `des_doctrine_none`。创建需要的原版名称字段用 `set_name_field`；保持其他教义不变以得到同 Faith 的新 Rite。
 4. 保存实际完整 `Can`、价格和 draft identity；`prepare_confirmation` 打开原版确认界面。
 5. 仅在原始结果已知时 `confirm_once` 一次，传真实 `expected_preview_identity` 和预期 `create_rite/edit_rite`。

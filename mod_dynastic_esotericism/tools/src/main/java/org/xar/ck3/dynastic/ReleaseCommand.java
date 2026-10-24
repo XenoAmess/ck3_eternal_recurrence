@@ -28,10 +28,11 @@ public final class ReleaseCommand implements QuarkusApplication {
             if (args.length == 0) throw new IllegalArgumentException("expected validate, build, verify, check, fixture or runtime");
             if (args[0].equals("fixture")) return FixtureEmitter.run(Arrays.copyOfRange(args, 1, args.length));
             if (args[0].equals("runtime")) return SharedRuntimeComposer.run(Arrays.copyOfRange(args, 1, args.length));
-            Map<String, String> options = parse(Arrays.copyOfRange(args, 1, args.length));
+            ParsedOptions parsed = parse(Arrays.copyOfRange(args, 1, args.length));
+            Map<String, String> options = parsed.values();
             Path source = Path.of(options.getOrDefault("--source", "mod_dynastic_esotericism")).toAbsolutePath().normalize();
             Path repository = Path.of(options.getOrDefault("--repo-root", source.getParent().toString())).toAbsolutePath().normalize();
-            ReleaseProduct product = ReleaseProduct.official(source);
+            ReleaseProduct product = ReleaseProduct.official(source, parsed.localizationMode());
             ReleaseBuilder builder = new ReleaseBuilder();
             Object result;
             switch (args[0]) {
@@ -67,15 +68,25 @@ public final class ReleaseCommand implements QuarkusApplication {
 
     public record BuildReport(String staging, String manifest, String archive, int fileCount, String gitSha, String gitTag) { }
 
-    private static Map<String, String> parse(String[] args) {
-        if (args.length % 2 != 0) throw new IllegalArgumentException("options require values");
+    private record ParsedOptions(Map<String, String> values, ReleaseProduct.LocalizationMode localizationMode) { }
+
+    private static ParsedOptions parse(String[] args) {
         Map<String, String> result = new HashMap<>();
-        for (int index = 0; index < args.length; index += 2) {
-            if (!OPTIONS.contains(args[index]) || args[index + 1].isEmpty() || result.putIfAbsent(args[index], args[index + 1]) != null) {
+        ReleaseProduct.LocalizationMode mode = ReleaseProduct.LocalizationMode.DEVELOPMENT;
+        for (int index = 0; index < args.length;) {
+            if (args[index].equals("--release-localization")) {
+                if (mode == ReleaseProduct.LocalizationMode.RELEASE_LOCALIZATION) throw new IllegalArgumentException("duplicate --release-localization");
+                mode = ReleaseProduct.LocalizationMode.RELEASE_LOCALIZATION;
+                index++;
+                continue;
+            }
+            if (index + 1 >= args.length || !OPTIONS.contains(args[index]) || args[index + 1].isEmpty()
+                    || result.putIfAbsent(args[index], args[index + 1]) != null) {
                 throw new IllegalArgumentException("unknown, duplicate or empty option: " + args[index]);
             }
+            index += 2;
         }
-        return Map.copyOf(result);
+        return new ParsedOptions(Map.copyOf(result), mode);
     }
 
     private static String required(Map<String, String> options, String key) {
