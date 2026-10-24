@@ -4,7 +4,11 @@
 
 封面主标题为「传世之物，饥渴长存」，副标题保留正式模组名「活武器：饥渴的传世之物」。
 
-当前交付：**完整导演稿 v1 与 promo 项目**，建议约 3 分 30 秒、八幕，气质为阴暗、冷峻、克制。以一件自然觉醒的宝物串起培养、收益、代价和玩家取舍；尚未拍摄、配音或输出成片。
+当前交付：**3 分 30 秒首版视频已输出并上传 GitHub Release**，1080p30，晓晓中文旁白与字幕；原 xp_field1.mid 直接合成，全片固定配乐增益，不做说话压低。片尾保留 14 秒完整工坊 URL 与二维码，已从最终视频帧扫描验证。
+
+[下载 MP4](https://github.com/XenoAmess/ck3_eternal_recurrence/releases/download/living-artifacts-promo-20261024/living-artifacts-original-midi-xiaoxiao.mp4) · [Release 页面](https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/living-artifacts-promo-20261024) · [交付与验证记录](evidence/video-release-20261024.json)。公开附件已匿名完整下载，字节与 SHA-256 均匹配本地最终版。
+
+影片包含普通战役及自然觉醒的「★君王之杖」实拍。未拍到的培养、喂养、镇压和异能／诅咒结果明确使用机制说明卡，没有伪造游戏窗口或已执行结果。完整解码、6300 帧、音轨与十一张卡片时点检查已通过；人工完整观看和审听尚未完成。新工坊配图、正文嵌图与缓存实际加载仍待完成。
 
 - [导演稿与逐幕旁白](director.md)：LA-01–08 分镜、画面、声音、事实限制和同场截图表。
 - [机器可读导演数据](director.json)：本项目专用导演稿数据，与章节和旁白对应。
@@ -20,13 +24,13 @@
 
 当前导演 run 为 [director-v1-selected-title-20261024-a02](runs/director-v1-selected-title-20261024-a02/run-manifest.json)。`start-run`、当前配置 `validate --profile authoring --json`、该 run 的同项验证均实际退出 0；两次验证均为 `GREEN`、八章、零媒体 artifact，并实际核对引用文件字节与 SHA。标题及八幕旁白在 Markdown、导演 JSON 与项目配置间一致。[作者阶段验证记录](evidence/director-v1-authoring.json)保留命令、进程结果与稿件来源。
 
-`generic/default` 是当前 authoring 占位配置，不代表实际剪辑 composer 或媒体 producer 已接入。后续 `plan/build` 必须绑定实际可用的 adapter、preset 与 composer；本次只调用项目初始化、run 固定与验证，不把这些命令当成成片。
+`generic/default` 是导演阶段的 authoring 占位配置，不代表实际剪辑 composer 或媒体 producer 已接入。后续 `plan/build` 必须绑定实际可用的 adapter、preset 与 composer；导演阶段仅调用项目初始化、run 固定与验证；本轮成片另外使用官方 render、audio、visuals API 与独立 run 保全，详见交付记录。
 
 ## 一次拍摄，两类交付
 
 按照导演稿 P01–P05 拍摄视频，关键 UI 顺手保留稳定段及原始静帧。W01 宝物详情、W02 喂养确认和结果、W03 管理取舍来自同一正式拍摄；不再为补图独立开场。旧验收夹具与两张已撤下的 R8 图片不进入本片或新图库。
 
-当前没有登记可用原片、截图或音频。未来取得实际素材后再注册工具链 artifact，并记录原片时间码及身份；不把计划中的 P01 或 W01 填成已存在的 artifact。
+导演阶段尚无媒体。2026-10-24 已在独立 render-real-a01 run 保全 24 项成片、配音、字幕、卡片及审阅证据；旧导演 run 和早期 formal-capture run 保留当时状态。原片来自 R31，实际来源与未拍范围见上述交付记录。
 
 正式拍摄与渲染须重新计算含原片和缓存的容量，沿 [统一存储策略](../../docs/storage-retention-policy.md)执行。创意稿不依赖某台机器的盘符；本页绝对路径仅为上述机器当时执行证据。
 

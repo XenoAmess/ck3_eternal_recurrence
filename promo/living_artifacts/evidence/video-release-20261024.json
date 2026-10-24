@@ -1,0 +1,89 @@
+{
+  "schema": "living-artifacts-video-release-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-24T10:59:37.567532+00:00",
+  "title": "传世之物，饥渴长存｜CK3模组推荐《活武器：饥渴的传世之物》",
+  "delivery": {
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "observed_at_utc": "2026-10-24T10:59:37.567532+00:00",
+    "release_id": 422633262,
+    "release_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/living-artifacts-promo-20261024",
+    "asset_id": 672015341,
+    "asset_name": "living-artifacts-original-midi-xiaoxiao.mp4",
+    "download_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/releases/download/living-artifacts-promo-20261024/living-artifacts-original-midi-xiaoxiao.mp4",
+    "github_digest": "sha256:bde4528480fa995eac1ad3d517c858dfa9f4f60329772131739b5d4b6e9fed33",
+    "downloaded_bytes": 18612584,
+    "download_sha256": "bde4528480fa995eac1ad3d517c858dfa9f4f60329772131739b5d4b6e9fed33",
+    "anonymous": true,
+    "download_exit": 0,
+    "http_status": 200
+  },
+  "video": {
+    "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\revision-xiaoxiao-original-midi-a01\\living-artifacts-original-midi-xiaoxiao.mp4",
+    "bytes": 18612584,
+    "sha256": "bde4528480fa995eac1ad3d517c858dfa9f4f60329772131739b5d4b6e9fed33"
+  },
+  "duration_seconds": 210,
+  "decoded_video_frames": 6300,
+  "geometry": [
+    1920,
+    1080
+  ],
+  "fps": "30/1",
+  "narration_voice": "zh-CN-XiaoxiaoNeural",
+  "music": {
+    "source": "user original xp_field1.mid",
+    "source_bytes": 21627,
+    "source_sha256": "91f4f34740bcc1e99ba34d41ce0df90191a409c977634333d7801e047875d3e3",
+    "events_changed": 0,
+    "tempo_factor": 1,
+    "program_overrides": 0,
+    "fixed_gain_db": -14,
+    "ducking": false,
+    "fades": false
+  },
+  "outro": {
+    "start_seconds": 196,
+    "end_seconds": 210,
+    "workshop_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3825237804",
+    "qr_pixels": 343,
+    "decoded_final_frame_times_seconds": [
+      196.5,
+      209.0
+    ]
+  },
+  "proofs": [
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\revision-xiaoxiao-original-midi-a01\\delivery-terminal.json",
+      "bytes": 10902,
+      "sha256": "126f5d736081bc0442ca6e157d53f376b0d8b57c9e0f0427540b5cbfaa14ac7e"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\revision-xiaoxiao-original-midi-a01\\validation\\final-media-qualification.json",
+      "bytes": 1014,
+      "sha256": "b04fbfe3171037d49118f8cb517adc2818ef1487fa8e9d49ed0ba6cb150bb5fe"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\revision-xiaoxiao-original-midi-a01\\validation\\qr-final-frame-result.json",
+      "bytes": 1330,
+      "sha256": "0a58ea3f5f7b60a569dc96eaa49af07b302acd43c1b7c5631e64245e25396066"
+    },
+    {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\revision-xiaoxiao-original-midi-a01\\validation\\aac-packet-copy-result.json",
+      "bytes": 1073,
+      "sha256": "42e76a596fefdb546d3369677462f2549ba7239e562fb620a28efe709a4da5c6"
+    }
+  ],
+  "promo_version": "0.3.0",
+  "human_one_times_watch": false,
+  "audio_audition": false,
+  "human_signoff": false,
+  "content_boundary": "Ordinary campaign and natural star-item footage; unfilmed training, feeding, suppression and unobserved power/curse results use clearly labelled mechanism cards.",
+  "delivery_override_scope": "This video delivered via GitHub Release by explicit user request",
+  "superseded_public_asset_id": 671858433,
+  "superseded_asset_retired": true,
+  "remaining_work": [
+    "Workshop replacement images and embedded URLs not yet published",
+    "Workshop cache actual menu load pending"
+  ]
+}
