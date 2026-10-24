@@ -9,12 +9,15 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HexFormat;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -35,8 +38,73 @@ final class SharedRuntimeComposerTest {
         Files.writeString(path, JSON.writeValueAsString(node));
     }
 
+    private record PythonResult(int exitCode, String output) { }
+
+    private static PythonResult python(String program, List<String> arguments) throws IOException, InterruptedException {
+        List<String> command = new ArrayList<>(List.of("python", "-B", "-X", "utf8", "-c", program));
+        command.addAll(arguments);
+        Process process = new ProcessBuilder(command).redirectErrorStream(true).start();
+        if (!process.waitFor(30, TimeUnit.SECONDS)) {
+            process.destroyForcibly();
+            process.waitFor();
+            throw new IOException("Existing public Selection consumer timed out");
+        }
+        return new PythonResult(process.exitValue(), new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8));
+    }
+
+    private static void assertPublicSelectionConsumesProducedRuntime(Path runtime, Path products)
+            throws IOException, InterruptedException {
+        Path repository = Path.of(System.getProperty("dynastic.source")).toAbsolutePath().normalize().getParent();
+        String program = """
+                from pathlib import Path
+                import copy,json,sys
+                repository,runtime_path,products_path=map(Path,sys.argv[1:])
+                sys.path.insert(0,str(repository/'tools'))
+                from ck3_mod_acceptance import Selection,pin
+                tool='ck3_query_player_rite_members_v1'
+                original_runtime=json.loads(runtime_path.read_bytes())
+                manifest_path=Path(original_runtime['manifest']['path'])
+                original_manifest=json.loads(manifest_path.read_bytes())
+                original_bytes=manifest_path.read_bytes()
+                selected=Selection(runtime_path,products_path,'authored-product','core')
+                result=selected.preflight()
+                assert result['blockers']==[],result
+                assert result['status']=='READY_FOR_EXISTING_REVIEWED_LAUNCH',result
+                assert result['business_acceptance']=='NOT_ASSESSED',result
+                status=result['tool_status'][tool]
+                assert status['source_build_ready'] is True,status
+                assert status['actual_live_qualified'] is False,status
+                evidence=status['evidence']
+                assert pin(Path(evidence['path']))==evidence,evidence
+                assert result['tool_status']['ck3_take_snapshot']==original_manifest['capabilities']['ck3_take_snapshot']
+                index=selected.argv.index('--case-read-only-mcp-tool')
+                assert selected.argv[index+1]==tool,selected.argv
+                failure='Required MCP tool has no shared build-ready evidence: '+tool
+                for label,status in [('missing',None),('false',{'source_build_ready':False}),
+                                     ('integer',{'source_build_ready':1}),('null',{'source_build_ready':None})]:
+                    manifest=copy.deepcopy(original_manifest)
+                    if status is None: del manifest['capabilities'][tool]
+                    else: manifest['capabilities'][tool]=status
+                    candidate_manifest=runtime_path.parent/(label+'-manifest.json')
+                    candidate_manifest.write_text(json.dumps(manifest),encoding='utf-8')
+                    candidate=copy.deepcopy(original_runtime)
+                    candidate['manifest']=pin(candidate_manifest)
+                    candidate_runtime=runtime_path.parent/(label+'-runtime.json')
+                    candidate_runtime.write_text(json.dumps(candidate),encoding='utf-8')
+                    rejected=Selection(candidate_runtime,products_path,'authored-product','core').preflight()
+                    assert rejected['status']=='BLOCKED',rejected
+                    assert rejected['blockers']==[failure],rejected
+                assert manifest_path.read_bytes()==original_bytes
+                print('actual Java runtime -> public Selection.preflight; ready plus four missing/type negatives; live false')
+                """;
+        PythonResult result = python(program, List.of(repository.toString(), runtime.toString(), products.toString()));
+        assertEquals(0, result.exitCode(), result.output());
+        assertTrue(result.output().contains("actual Java runtime -> public Selection.preflight"), result.output());
+    }
+
     @Test
-    void freezesCurrentInputsPreservesParentFieldsAndRecordsRealDifferences() throws IOException, NoSuchAlgorithmException {
+    void freezesCurrentInputsPreservesParentFieldsAndRecordsRealDifferences()
+            throws IOException, NoSuchAlgorithmException, InterruptedException {
         Path repo = temporary.resolve("repo");
         Path sdk = repo.resolve("ck3_autonomous_player/src/xar_autoplayer");
         Path tools = repo.resolve("tools");
@@ -49,7 +117,15 @@ final class SharedRuntimeComposerTest {
         Files.writeString(currentFactory, "# authored current global factory source\n");
         Path canonicalHost = repo.resolve("ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py");
         Files.createDirectories(canonicalHost.getParent());
-        Files.writeString(canonicalHost, "# authored canonical host bytes; not a runtime qualification\n");
+        StringBuilder host = new StringBuilder("import argparse\np=argparse.ArgumentParser()\n");
+        for (String flag : List.of("--agent-source-root", "--game-dir", "--bridge-dll", "--bridge-injector",
+                "--bridge-pipe", "--output", "--state-dir", "--plan", "--control-plan-dir", "--command-timeout",
+                "--readiness-timeout", "--timeout", "--poll-interval", "--hold-seconds", "--fixture-profile",
+                "--ordinary-gui-campaign", "--case-read-only-mcp-tool")) {
+            host.append("p.add_argument('").append(flag).append("')\n");
+        }
+        host.append("raise RuntimeError('Authored host must never execute')\n");
+        Files.writeString(canonicalHost, host.toString());
         for (String name : List.of("ck3_mod_acceptance_launcher.py", "ck3_mod_acceptance_queue.py", "ck3_mod_acceptance_keeper.py",
                 "ck3_mod_acceptance_build_runtime.py", "codex_task_bus.py", "build_normal_exit_source_inventory_v1.py")) {
             Files.writeString(tools.resolve(name), "# authored tool\n");
@@ -76,7 +152,10 @@ final class SharedRuntimeComposerTest {
         manifest.put("schema", "ck3-mod-acceptance-shared-runtime-v1");
         manifest.put("machine_id", "authored-machine");
         manifest.putObject("native");
-        manifest.putObject("capabilities");
+        ObjectNode retainedCapability = manifest.putObject("capabilities").putObject("ck3_take_snapshot");
+        retainedCapability.put("source_build_ready", true);
+        retainedCapability.put("actual_live_qualified", false);
+        retainedCapability.put("parent_marker", "preserve exact parent capability");
         manifest.putObject("host_features");
         manifest.putObject("source_root").put("path_key", "source_root");
         ObjectNode parentSourceMetadata = manifest.putObject("source_index");
@@ -85,12 +164,22 @@ final class SharedRuntimeComposerTest {
         parentSourceMetadata.set("bytes", sourceIdentity.get("bytes"));
         parentSourceMetadata.set("sha256", sourceIdentity.get("sha256"));
         manifest.put("preserved_unknown_parent_field", "retain exactly");
+        Path game = temporary.resolve("game");
+        Files.createDirectories(game.resolve("binaries"));
+        Path executable = game.resolve("binaries/ck3.exe");
+        Files.writeString(executable, "authored test bytes, never executed");
+        manifest.putObject("game").put("version", "authored-not-a-game-qualification")
+                .put("exe_sha256", pin(executable).path("sha256").textValue());
         Path parentManifest = temporary.resolve("parent-manifest.json");
         write(parentManifest, manifest);
         ObjectNode runtime = JSON.createObjectNode();
         runtime.put("schema", "ck3-mod-acceptance-runtime-v1");
         runtime.put("machine_id", "authored-machine");
         runtime.put("repo_root", oldRepo.toString());
+        PythonResult interpreter = python("import sys; print(sys.executable)", List.of());
+        assertEquals(0, interpreter.exitCode(), interpreter.output());
+        runtime.put("python", interpreter.output().strip());
+        runtime.put("game_dir", game.toString());
         runtime.set("manifest", pin(parentManifest));
         runtime.putObject("paths").put("source_index", parentIndex.toString()).put("source_root", oldRepo.toString())
                 .put("host", canonicalHost.toString());
@@ -221,9 +310,52 @@ final class SharedRuntimeComposerTest {
         assertEquals(SharedRuntimeComposer.Qualification.SHARED_SOURCE_AND_NATIVE_BUILD_SUCCESSOR_LIVE_NOT_QUALIFIED,
                 result.qualification());
         assertFalse(actualManifest.path("capabilities").path("ck3_execute_player_rite_creation_action_v1").path("actual_live_qualified").booleanValue());
+        assertEquals(retainedCapability, actualManifest.path("capabilities").path("ck3_take_snapshot"));
+        JsonNode members = actualManifest.path("capabilities").path("ck3_query_player_rite_members_v1");
+        assertTrue(members.path("source_build_ready").isBoolean());
+        assertTrue(members.path("source_build_ready").booleanValue());
+        assertTrue(members.path("actual_live_qualified").isBoolean());
+        assertFalse(members.path("actual_live_qualified").booleanValue());
+        assertEquals(pin(output.resolve("SOURCE-BUILD-ADMISSION.json")), members.path("evidence"));
+        Path products = temporary.resolve("products.json");
+        ObjectNode registry = JSON.createObjectNode();
+        registry.put("schema", "ck3-mod-acceptance-products-v1");
+        ObjectNode selectedCase = registry.putObject("products").putObject("authored-product").putArray("cases").addObject();
+        selectedCase.put("id", "core");
+        selectedCase.put("status", "ready");
+        selectedCase.putObject("startup").put("mode", "ordinary_gui_campaign").put("state_dir", "{run_dir}/state");
+        Path plan = temporary.resolve("plan.json");
+        write(plan, JSON.createArrayNode());
+        selectedCase.put("initial_plan", plan.toString());
+        selectedCase.putArray("required_mcp_tools").add("ck3_take_snapshot").add("ck3_query_player_rite_members_v1");
+        selectedCase.putArray("opt_in_read_only_mcp_tools").add("ck3_query_player_rite_members_v1");
+        selectedCase.putObject("budgets").put("command_timeout", 300).put("readiness_timeout", 1800)
+                .put("timeout", 3600).put("poll_interval", 0.05).put("hold_seconds", 0);
+        write(products, registry);
+        assertPublicSelectionConsumesProducedRuntime(Path.of(result.runtime()), products);
         assertTrue(Files.isRegularFile(output.resolve("source/tools/ck3_mod_acceptance_cases/generic_product_adapter.py")));
         assertThrows(IllegalArgumentException.class,
                 () -> SharedRuntimeComposer.compose(repo, parentRuntime, nativePath, projectionPath, output, "authored-machine"));
+        int defect = 0;
+        for (JsonNode invalid : List.of(JSON.getNodeFactory().textNode("OFF"), JSON.getNodeFactory().booleanNode(true),
+                JSON.getNodeFactory().nullNode())) {
+            flags.set("XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1", invalid);
+            write(flagsPath, flags);
+            nativeIndex.set("feature_flags", pin(flagsPath));
+            build.set("feature_flags", pin(flagsPath));
+            write(buildPath, build);
+            nativeIndex.set("build_output", pin(buildPath));
+            nativeIndex.set("production_qualification", pin(buildPath));
+            write(nativePath, nativeIndex);
+            Path rejected = temporary.resolve("rejected-members-" + defect++);
+            projection.put("runtime_binding", rejected.resolve("runtime.json").toString());
+            write(projectionPath, projection);
+            IllegalArgumentException invalidMemberFlag = assertThrows(IllegalArgumentException.class,
+                    () -> SharedRuntimeComposer.compose(repo, parentRuntime, nativePath, projectionPath, rejected, "authored-machine"));
+            assertTrue(invalidMemberFlag.getMessage().contains("native provider not compiled: XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1"));
+            assertFalse(Files.exists(rejected));
+        }
+        flags.put("XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1", "ON");
         flags.put("XAR_ENABLE_RITE_CREATION_ACTIONS12004", "OFF");
         write(flagsPath, flags);
         nativeIndex.set("feature_flags", pin(flagsPath));
