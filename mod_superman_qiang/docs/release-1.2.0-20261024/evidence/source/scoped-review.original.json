@@ -1,0 +1,57 @@
+{
+  "schema": "sxad-superman-scoped-publication-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T02:45:43.087220+00:00",
+  "source_commit": "bcb9e9f11658519c5277e0d304a02e5028bbd760",
+  "source_tag": "superman-qiang-v1.2.0",
+  "item_id": "3812991990",
+  "previous_version": "1.1.0",
+  "version": "1.2.0",
+  "user_authorization": "User explicitly requests publication and permanent changelog, following scoped monthly/cold validation and unresolved notification report.",
+  "formal_exact_loaded_runtime_files": true,
+  "formal_double_build_exact_manifest_and_zip": true,
+  "file_count": 35,
+  "runtime_bytes": 1010859,
+  "manifest": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\formal-a01.manifest.json",
+    "bytes": 6404,
+    "sha256": "9db0f28a9f08215ecd7747f7406acc8b379c54d87dc8964551829dccb0dad7ba"
+  },
+  "archive": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\formal-a01.zip",
+    "bytes": 826470,
+    "sha256": "d6a566f1f3f785336f33247423772d7c2a45e0fef8ea93becea8364b77818f86"
+  },
+  "original_source_projection": {
+    "path": "C:\\ck3-superman-validation-20261023\\source-staging-a05.manifest.json",
+    "bytes": 10326,
+    "sha256": "3443f1954fa7c6bf2252358b38a7caf52b9401dfebebad1584e0766e9944732c"
+  },
+  "original_release_audit": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\delivery-audit-a01\\RELEASE-GATES.actual.json",
+    "bytes": 24833,
+    "sha256": "08bef4c8a6f03ce83d9842e49a167245f8406f8abcabbf819337efa140ee93a8"
+  },
+  "localization_format": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\FORMAT-CERTIFICATION.actual.json",
+    "bytes": 6852,
+    "sha256": "05b265cfa5ca833f222fe21b9ef93f717b9f6e18a392b63b15e847a0966e38d7"
+  },
+  "publication_helper_checks": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-helper-fix-a02\\RESULT.actual.json",
+    "bytes": 5319,
+    "sha256": "255788ee65bb86cd9affb54df3a1acd671e08a761cdbcdfc705afdea7b6e54b4"
+  },
+  "known_limits": [
+    "C2 new pregnancy/pilgrimage branches have offline semantic checks; full individual engine branches remain unrun.",
+    "Notification diagnostic unresolved; original run/verify exit2 retained; no claim fixed or five complete seductions.",
+    "Same-sex marriage setting not independently engine-tested."
+  ],
+  "original_whole_product_release_pass": false,
+  "published": false,
+  "steam_notes": {
+    "characters": 930,
+    "lines": 28,
+    "sha256": "939510478a9d23ea35a0d99721360b87fe20c3c8e6e07302ddabdc59083a68cd"
+  }
+}

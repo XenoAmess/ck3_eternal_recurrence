@@ -1,0 +1,131 @@
+{
+  "schema": "sxad-publication-helper-regression.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T02:42:29.483903+00:00",
+  "source_head": "f8032008c64e467701e6a26b0239a13c163c2fec",
+  "files_before": [
+    {
+      "path": "D:\\sxad1023\\mod_superman_qiang\\tools\\prepare_publication.py",
+      "bytes": 11025,
+      "sha256": "a0179835ad6ef48fe6e756bebb50a37b742f5da4182f7ec7a90227f14612b123"
+    },
+    {
+      "path": "D:\\sxad1023\\mod_superman_qiang\\tools\\test_build_release.py",
+      "bytes": 22893,
+      "sha256": "8c04da3243f6a1512d2f22b63f58b0b45cf98e5595a3b602c8fafb7527280110"
+    }
+  ],
+  "files_after": [
+    {
+      "path": "D:\\sxad1023\\mod_superman_qiang\\tools\\prepare_publication.py",
+      "bytes": 11025,
+      "sha256": "a0179835ad6ef48fe6e756bebb50a37b742f5da4182f7ec7a90227f14612b123"
+    },
+    {
+      "path": "D:\\sxad1023\\mod_superman_qiang\\tools\\test_build_release.py",
+      "bytes": 22893,
+      "sha256": "8c04da3243f6a1512d2f22b63f58b0b45cf98e5595a3b602c8fafb7527280110"
+    }
+  ],
+  "source_bytes_unchanged_during_checks": true,
+  "commands": [
+    {
+      "name": "unittest-all-existing-builder-publication",
+      "argv": [
+        "C:/ck3-superman-validation-20261023/ops/shared-ci-clean-venv-a01/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "mod_superman_qiang/tools/test_build_release.py"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-helper-fix-a02\\unittest-all-existing-builder-publication.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-helper-fix-a02\\unittest-all-existing-builder-publication.stderr.log",
+        "bytes": 2850,
+        "sha256": "0f19ff2a74da1a305846048985837597aa1dbaf2dec3292cccbc5543f1dd1b1e"
+      }
+    },
+    {
+      "name": "mypy-publication-strict",
+      "argv": [
+        "C:/ck3-superman-validation-20261023/ops/shared-ci-clean-venv-a01/Scripts/python.exe",
+        "-B",
+        "-m",
+        "mypy",
+        "--strict",
+        "--follow-imports=silent",
+        "--no-incremental",
+        "mod_superman_qiang/tools/prepare_publication.py"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-helper-fix-a02\\mypy-publication-strict.stdout.log",
+        "bytes": 43,
+        "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-helper-fix-a02\\mypy-publication-strict.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "mypy-two-full-files",
+      "argv": [
+        "C:/ck3-superman-validation-20261023/ops/shared-ci-clean-venv-a01/Scripts/python.exe",
+        "-B",
+        "-m",
+        "mypy",
+        "--follow-imports=silent",
+        "--no-incremental",
+        "mod_superman_qiang/tools/prepare_publication.py",
+        "mod_superman_qiang/tools/test_build_release.py"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-helper-fix-a02\\mypy-two-full-files.stdout.log",
+        "bytes": 44,
+        "sha256": "0c37c4158c91ef55c724ba017bf6465f26018199badb08e3ff13f98acdf056c2"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-helper-fix-a02\\mypy-two-full-files.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "diff-check",
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-helper-fix-a02\\diff-check.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-helper-fix-a02\\diff-check.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "all_exit_zero": true,
+  "environment_overrides": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "TMP": "C:\\ck3-superman-validation-20261023\\ops\\publication-helper-fix-a02\\temporary",
+    "TEMP": "C:\\ck3-superman-validation-20261023\\ops\\publication-helper-fix-a02\\temporary",
+    "MYPY_CACHE_DIR": "C:\\ck3-superman-validation-20261023\\ops\\publication-helper-fix-a02\\mypy-cache",
+    "PYTHONPATH": "D:/workspace/ck3-superman-redesign-20261023/typecheck-deps",
+    "MYPYPATH": "D:/sxad1023/mod_superman_qiang/tools;D:/sxad1023/tools;D:/sxad1023/ck3_workshop_mcp/src"
+  },
+  "scope": "Only existing publication helper and its existing test module changed. Dummy DLL never loaded; native _prepare_plan is local-only. No Steam/Game/HEAD changes."
+}

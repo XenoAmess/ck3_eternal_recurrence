@@ -1,0 +1,63 @@
+{
+  "schema": "superman-qiang.publication.frozen-inputs.v1",
+  "created_at_utc": "2026-10-24T02:45:59.084818+00:00",
+  "product_key": "superman-qiang",
+  "version": "1.2.0",
+  "operation": "update",
+  "operation_id": "superman-qiang-1.2.0-20261024-P0001",
+  "item_id": "3812991990",
+  "git_sha": "bcb9e9f11658519c5277e0d304a02e5028bbd760",
+  "git_tag": "superman-qiang-v1.2.0",
+  "runtime_file_count": 35,
+  "staging_manifest": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\formal-a01.manifest.json",
+    "size": 6404,
+    "sha256": "9db0f28a9f08215ecd7747f7406acc8b379c54d87dc8964551829dccb0dad7ba"
+  },
+  "acceptance_report": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\SCOPED-REVIEW.actual.json",
+    "size": 2682,
+    "sha256": "f1fa297d051e5bf00f5c9f2e13e37d0bfbfac74e5a6f08e34a4c98fd34a51278"
+  },
+  "native_payload_sha256": "51398795af749b30f2bc98ed36b3f98983fcd493801dfc1826c8b81896d50b05",
+  "tags_input": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\tags-before.json",
+    "size": 68,
+    "sha256": "6bd033996b59b4cbd29fe377dab1c10d35f9381160f9c366eda018e51c3860eb"
+  },
+  "frozen_tags_input": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\update-freeze\\tags-input.json",
+    "size": 68,
+    "sha256": "6bd033996b59b4cbd29fe377dab1c10d35f9381160f9c366eda018e51c3860eb"
+  },
+  "submitted_tags": [
+    "Gameplay",
+    "Balance",
+    "Events",
+    "1.20 'Crozier'"
+  ],
+  "description": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\update-freeze\\description.bbcode",
+    "size": 5447,
+    "sha256": "603eb8b4d0d8f288c8b4e26356aeb2618b1f2c8d2f96bc828c986edff2a587e0",
+    "characters": 2172,
+    "lines": 66
+  },
+  "change_notes": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\update-freeze\\change-notes.txt",
+    "size": 2600,
+    "sha256": "939510478a9d23ea35a0d99721360b87fe20c3c8e6e07302ddabdc59083a68cd",
+    "characters": 930,
+    "lines": 28
+  },
+  "thumbnail": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\formal-a01\\thumbnail.png",
+    "size": 785139,
+    "sha256": "e70f54115bef351ee6e363bb116ee81bb25570f683cdc7606cf769b45d2b4f9b"
+  },
+  "media": [],
+  "steam_dll_loaded": false,
+  "steam_mode_changed": false,
+  "published": false,
+  "offline_restoration_required_after_online_window": true
+}

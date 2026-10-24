@@ -1,0 +1,540 @@
+{
+  "schema": "sxad-release-1.2.0-delivery-audit.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "machine_probe": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T02:24:43.563446+00:00",
+  "scope": "Read-only source/evidence audit. No source edits, Game, allocation, Steam online, upload or new qualification.",
+  "source_head": "f8032008c64e467701e6a26b0239a13c163c2fec",
+  "source_clean": true,
+  "product": {
+    "key": "superman-qiang",
+    "item_id": "3812991990",
+    "version": "1.2.0",
+    "previous_tag": "superman-qiang-v1.1.0",
+    "new_tag_present": false
+  },
+  "exact_reuse": {
+    "manifest": {
+      "path": "C:\\ck3-superman-validation-20261023\\source-staging-a05.manifest.json",
+      "bytes": 10326,
+      "sha256": "3443f1954fa7c6bf2252358b38a7caf52b9401dfebebad1584e0766e9944732c"
+    },
+    "original_source_commit_preserved": "26ee285c3debec9fffc9d406f3ed411e253a8d96",
+    "files": 35,
+    "bytes": 1010859,
+    "all_current_source_and_loaded_projection_pins_match": true,
+    "mismatches": [],
+    "formal_tagged_staging": false,
+    "inventory": {
+      "common/character_interactions/sxad_interactions.txt": {
+        "bytes": 1177,
+        "sha256": "49af8002a9d26eeb08b99073bb2393a6bd7c2e25f11610df990bcebbfe8e92d5"
+      },
+      "common/modifiers/sxad_skill_balance_modifiers.txt": {
+        "bytes": 2342,
+        "sha256": "c21257a41a0b83428b0840ea198bd62581d1b02879235a86d056bc98d81bf995"
+      },
+      "common/on_action/sxad_natural_on_actions.txt": {
+        "bytes": 524,
+        "sha256": "3b509bc54abc48e6abed83fc99a3c97e07908ccdb111d7c97df90672e921a005"
+      },
+      "common/script_values/sxad_natural_values.txt": {
+        "bytes": 365,
+        "sha256": "b380725e0dd4ecb3c6c96c1c58efcb9a8ad8fd28c2c6406a19ed2803a5a00566"
+      },
+      "common/script_values/sxad_values.txt": {
+        "bytes": 5344,
+        "sha256": "fd7c4dfad2de83a6bcd7a3d0ab303835ead7a103abe5d954f0bb2e5a82b94a7d"
+      },
+      "common/scripted_effects/sxad_experience_effects.txt": {
+        "bytes": 3033,
+        "sha256": "05f68a64fc25690f50035f69c493dcc5b58c138c426815e372a354a16f63f905"
+      },
+      "common/scripted_effects/sxad_natural_effects.txt": {
+        "bytes": 3373,
+        "sha256": "e707d6a037db6ff777fbb6bfa40929972db5b9eae564febff32058809aaf6394"
+      },
+      "common/scripted_effects/sxad_probe_skill_effects.txt": {
+        "bytes": 11144,
+        "sha256": "e4d6e1d40b552440a5f5042d1d6833337cfb1b55565504e1cd5dea4ef12ab7cd"
+      },
+      "common/scripted_effects/sxad_transfer_effects.txt": {
+        "bytes": 11909,
+        "sha256": "7991c7000897755735fad9d6785ee3840811b3ad958a155675b9d67918a59458"
+      },
+      "common/scripted_effects/zz_sxad_had_sex_with_effect.txt": {
+        "bytes": 9868,
+        "sha256": "a942dc45d11c21fb31afb26753cda28891c08423a7331d0f8f4b446cd9bc685f"
+      },
+      "common/scripted_effects/zz_sxad_had_sex_with_unknown_effect.txt": {
+        "bytes": 1353,
+        "sha256": "496708bcf73fccf051be18ce097300f95bd03360f3c9436c8d88e1185e9b0907"
+      },
+      "common/scripted_effects/zz_sxad_mandala_story_creation_aspect_get_kids_effect.txt": {
+        "bytes": 1370,
+        "sha256": "0276864b7fb3b255519b260b2b3f64c119e94ad695a3be9c567e38df5ab5ffe8"
+      },
+      "common/scripted_effects/zz_sxad_rakish_brothel_night_effect.txt": {
+        "bytes": 2849,
+        "sha256": "ce835516cffedd2133899a68cdc2f137b23bb804c75f9174158d7ff5875271e6"
+      },
+      "common/traits/sxad_traits.txt": {
+        "bytes": 482,
+        "sha256": "2139b3fb753bb72607162f65f88eb94e1494057060550bf9ba8fb5bbdd07d53d"
+      },
+      "descriptor.mod": {
+        "bytes": 174,
+        "sha256": "45b514f48fc3021ecd4869906fb69c333d8d64fc0ae8d32a8ce620f8e9aa1805"
+      },
+      "events/sxad_events.txt": {
+        "bytes": 243,
+        "sha256": "e21cfe6edc1a0f511eb90f0bc6083988e3a596cec947039268175b6652272701"
+      },
+      "events/sxad_natural_events.txt": {
+        "bytes": 748,
+        "sha256": "9ebf663fcda5d405ce5fa7fcc17dd159c63989b2570dfcccc6eb160ccfcc58af"
+      },
+      "events/zz_sxad_fund_inspiration_6513.txt": {
+        "bytes": 4744,
+        "sha256": "1168768b23e5dfe01fafca98d14a86c6757bba2f7a2c63cd8e19ef58c2d9c4de"
+      },
+      "events/zz_sxad_learning_medicine_2022.txt": {
+        "bytes": 8540,
+        "sha256": "47d698ffa99a7ba343e20e1f3ec5dd64065ada6f44733b17d58b3d52fd9e4e2b"
+      },
+      "events/zz_sxad_learning_medicine_2023.txt": {
+        "bytes": 9025,
+        "sha256": "626f9e88f9b109c9f44b951073aea46da8aad4a5c0c948855b179d1bb5b8e2a8"
+      },
+      "events/zz_sxad_mpo_events_tova_0035.txt": {
+        "bytes": 4276,
+        "sha256": "4139cefcfd0366b4ed2efa2573d2d8ceaa23d34dd1f457e9c0c8a956607fd770"
+      },
+      "events/zz_sxad_mpo_temujin_flavor_0030.txt": {
+        "bytes": 4072,
+        "sha256": "d9a932950cc9558bb0546f68cc340e7db4d21c52decb840e47e5507be1143098"
+      },
+      "events/zz_sxad_pilgrimage_2101.txt": {
+        "bytes": 9350,
+        "sha256": "8bacda731e339748caf29ee5e53e151a706157af841d4e44504485d61e2bc9a7"
+      },
+      "events/zz_sxad_stewardship_duty_1055.txt": {
+        "bytes": 39833,
+        "sha256": "30218ccbf8e70082244caeda4d32809979f5f459356765365d7dd95013845c23"
+      },
+      "gfx/interface/icons/traits/sxad_sex_experience.dds": {
+        "bytes": 57728,
+        "sha256": "7f4c9f2925ac10d6803261ae0e28ec0b417b3a9917664b5297e45a955c4de5b5"
+      },
+      "localization/english/sxad_l_english.yml": {
+        "bytes": 3411,
+        "sha256": "4b4463ca896283eb257ef3d21cf7d8f40cc98c13c63773a70661422dc58a02d1"
+      },
+      "localization/french/sxad_l_french.yml": {
+        "bytes": 3573,
+        "sha256": "2b3b48fe869a443401d5e4e1aeb4506c7e5611ab9efdafc6025a8b9141734aa6"
+      },
+      "localization/german/sxad_l_german.yml": {
+        "bytes": 3558,
+        "sha256": "81489afa363913e1bd603a4b9470e9993d4d34ce9bb7410b2d9e874c16595bdb"
+      },
+      "localization/japanese/sxad_l_japanese.yml": {
+        "bytes": 3479,
+        "sha256": "0dd9e99bce94a25db06b6bc3c873f774d88eda064ba75a291b8fab8d2dfd0cc0"
+      },
+      "localization/korean/sxad_l_korean.yml": {
+        "bytes": 3445,
+        "sha256": "6028daac727d6d647a0e9d0fccc63e3a7997297b6bb9fe6ebdf9c61689fbd699"
+      },
+      "localization/polish/sxad_l_polish.yml": {
+        "bytes": 3580,
+        "sha256": "83e411c370d779ae84b2d93821215664714040cbb857f2332a4d874c2ad2c058"
+      },
+      "localization/russian/sxad_l_russian.yml": {
+        "bytes": 3967,
+        "sha256": "39077ed3df3ecd9ceb2036e713e98148f18073f2900ab1dad813599f5c7ca0ab"
+      },
+      "localization/simp_chinese/sxad_l_simp_chinese.yml": {
+        "bytes": 3338,
+        "sha256": "1bfd5e568a8f449de617176e1346d7c2407023e0ae6028c9918971b653cd2b6f"
+      },
+      "localization/spanish/sxad_l_spanish.yml": {
+        "bytes": 3503,
+        "sha256": "a23f49df3f868960254298a655cf690ac9d0b6bdc4ecdb896ef8b259d2e722af"
+      },
+      "thumbnail.png": {
+        "bytes": 785139,
+        "sha256": "e70f54115bef351ee6e363bb116ee81bb25570f683cdc7606cf769b45d2b4f9b"
+      }
+    }
+  },
+  "previous_release_comparison": {
+    "unchanged": [
+      "common/character_interactions/sxad_interactions.txt",
+      "common/modifiers/sxad_skill_balance_modifiers.txt",
+      "common/script_values/sxad_values.txt",
+      "common/scripted_effects/sxad_probe_skill_effects.txt",
+      "common/scripted_effects/sxad_transfer_effects.txt",
+      "common/traits/sxad_traits.txt",
+      "events/sxad_events.txt",
+      "gfx/interface/icons/traits/sxad_sex_experience.dds",
+      "thumbnail.png"
+    ],
+    "changed": [
+      "common/scripted_effects/sxad_experience_effects.txt",
+      "common/scripted_effects/zz_sxad_had_sex_with_effect.txt",
+      "common/scripted_effects/zz_sxad_had_sex_with_unknown_effect.txt",
+      "descriptor.mod",
+      "localization/english/sxad_l_english.yml",
+      "localization/french/sxad_l_french.yml",
+      "localization/german/sxad_l_german.yml",
+      "localization/japanese/sxad_l_japanese.yml",
+      "localization/korean/sxad_l_korean.yml",
+      "localization/polish/sxad_l_polish.yml",
+      "localization/russian/sxad_l_russian.yml",
+      "localization/simp_chinese/sxad_l_simp_chinese.yml",
+      "localization/spanish/sxad_l_spanish.yml"
+    ],
+    "added": [
+      "common/on_action/sxad_natural_on_actions.txt",
+      "common/script_values/sxad_natural_values.txt",
+      "common/scripted_effects/sxad_natural_effects.txt",
+      "common/scripted_effects/zz_sxad_mandala_story_creation_aspect_get_kids_effect.txt",
+      "common/scripted_effects/zz_sxad_rakish_brothel_night_effect.txt",
+      "events/sxad_natural_events.txt",
+      "events/zz_sxad_fund_inspiration_6513.txt",
+      "events/zz_sxad_learning_medicine_2022.txt",
+      "events/zz_sxad_learning_medicine_2023.txt",
+      "events/zz_sxad_mpo_events_tova_0035.txt",
+      "events/zz_sxad_mpo_temujin_flavor_0030.txt",
+      "events/zz_sxad_pilgrimage_2101.txt",
+      "events/zz_sxad_stewardship_duty_1055.txt"
+    ],
+    "limit": "Nine files byte-identical to 1.1.0 do not make all new 1.2 behavior engine-validated. Unchanged transfer/skill/UI bodies retain historical evidence scope."
+  },
+  "ci_reuse": {
+    "source": {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\FINAL.verified.json",
+      "bytes": 117055,
+      "sha256": "dd735d174e67ec98b4bf7d73bb6b16f111fd38c5ff6291e20faedda9ca21157b"
+    },
+    "head": "f8032008c64e467701e6a26b0239a13c163c2fec",
+    "commands": 105,
+    "all_105_passed": true,
+    "test_executions": 1058,
+    "mypy_commands": 17,
+    "steps": [
+      {
+        "name": "Test shared CK3 acceptance without installed CK3",
+        "commands": 90,
+        "unittest_executions": 795,
+        "mypy_commands": 12,
+        "all_exit_zero": true
+      },
+      {
+        "name": "Test public case frozen SDK imports and finite pilgrimage policy",
+        "commands": 8,
+        "unittest_executions": 162,
+        "mypy_commands": 3,
+        "all_exit_zero": true
+      },
+      {
+        "name": "Test formal product ordinary campaign and capture admission without CK3",
+        "commands": 3,
+        "unittest_executions": 36,
+        "mypy_commands": 1,
+        "all_exit_zero": true
+      },
+      {
+        "name": "Test retired legacy decision panel before new recording",
+        "commands": 2,
+        "unittest_executions": 32,
+        "mypy_commands": 0,
+        "all_exit_zero": true
+      },
+      {
+        "name": "Check public normal-exit uint64 wire and registered MCP roundtrip without CK3",
+        "commands": 2,
+        "unittest_executions": 33,
+        "mypy_commands": 1,
+        "all_exit_zero": true
+      }
+    ],
+    "type_limit": "Strict archived/current entry+allocator+tests both 771; function-qualified diagnostic multisets identical. Ordinary archived/current both 22 legacy errors. Loader and core contract full strict PASS. No all-module strict/ordinary PASS claim.",
+    "repeat_required_for_unchanged_shared_source": false
+  },
+  "product_ci_reuse": {
+    "source": {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\product-ci-r28-fixture-fix-a01\\SUMMARY.actual.json",
+      "bytes": 25645,
+      "sha256": "1a613e216d133b9282d9fbec3762b9e78fc881547a201d4ce24f43d061aebd8a"
+    },
+    "five_steps_all_exit_zero": true,
+    "test_executions": 87,
+    "counts": [
+      13,
+      12,
+      62
+    ],
+    "includes_static_and_double_build35": true,
+    "mypy_two_files": {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\product-ci-r28-fixture-fix-a01\\MYPY.actual.json",
+      "bytes": 738,
+      "sha256": "4014abe98c5aa01ad1f1795e669410847dcef2e229c7cb63afc0aea5422ba1eb"
+    },
+    "limit": "Historical actual command credit and identical runtime bytes; not a fabricated fresh formal tag build."
+  },
+  "engine_case_facts": {
+    "R0030": {
+      "source": {
+        "path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0030\\case-output\\generic-product-case-result.json",
+        "bytes": 769224,
+        "sha256": "f84e74d21c987055070ba15ab7fd5bcb1460569826160344bde439e620762265"
+      },
+      "case_contract_qualified": true,
+      "gui_contract_qualified": true,
+      "business_pass": false,
+      "product_release_pass": false,
+      "limit": "Qualified scoped case; aggregate business/release flags remain false by contract"
+    },
+    "R0031": {
+      "source": {
+        "path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0031\\case-output\\generic-product-case-result.json",
+        "bytes": 45215,
+        "sha256": "20ae9941a96822150acad8494b6e8b1bedaf5d359f3684d74c907865af5c39cd"
+      },
+      "case_contract_qualified": true,
+      "gui_contract_qualified": true,
+      "business_pass": false,
+      "product_release_pass": false,
+      "limit": "Qualified scoped case; aggregate business/release flags remain false by contract"
+    }
+  },
+  "release_gate_assessment": [
+    {
+      "id": "C1",
+      "status": "source_and_static_pass_plus_actual_load",
+      "scope": "35-file source pins, inverse expansion/10 helpers, real installed-source guards and R30/R31 load. Fresh formal tag build still required."
+    },
+    {
+      "id": "C2",
+      "status": "offline_semantic_regression_pass_engine_branches_not_run",
+      "scope": "Medical failure/success/twins, pilgrimage pair+STD unknown suppression and later independent calls have source-bound static interpreter tests. R30/R31 do not execute these plot branches."
+    },
+    {
+      "id": "C3",
+      "status": "scoped_engine_pass",
+      "scope": "R30 spouses, consort reverse relation, pregnancy, infertility, crossfaith, exclusion boundaries and same-month dedup. Same-sex engine setting remains untested."
+    },
+    {
+      "id": "C4",
+      "status": "scoped_engine_pass",
+      "scope": "R30 actual monthly pulse once, spouses already XP2 before explicit supplemental callback and final XP2; not separate per-pair natural callback attribution."
+    },
+    {
+      "id": "C5",
+      "status": "scoped_engine_pass",
+      "scope": "R31 distinct process, zero-day cold save, exact12 character fields/list/month states. R35 five independent pair records same date give actual XP5 increments."
+    },
+    {
+      "id": "N1",
+      "status": "incomplete_diagnostic",
+      "scope": "R33 N0 and R35 N5 independent baselines, one sampled visible death feed each, not same-SAVE counterfactual or complete N0/1/2/5 original/production matrix."
+    },
+    {
+      "id": "N2",
+      "status": "unresolved_not_fixed",
+      "scope": "No actual accumulating notification instances/root cause captured. Cannot claim fixed, excluded, or full case PASS."
+    }
+  ],
+  "notification_actual_failure": {
+    "source": {
+      "path": "C:\\ck3-superman-validation-20261023\\notification-scene-n5-a04\\public-verify.actual.json",
+      "bytes": 10275,
+      "sha256": "023e3f7eca10d18656a93e0962448ce480309454b89f912163b81a675b1db43a"
+    },
+    "case_acceptance_pass": false,
+    "qualified_boundary_pass": false,
+    "status": "NOT_RUN",
+    "run_and_verify_actual_exit": 2,
+    "normal_close_qualified": true,
+    "actual_root_assertions": "Only assertion3 relationship/notification-settings false; other8 true. Preserve original diagnostic FAIL and extra-natural-day deviation."
+  },
+  "necessary_delivery_actions": [
+    "Record current user authorization to publish the scoped 1.2.0 update with the unresolved notification limitation. Preserve old N1/N2 and C2 engine gaps, never convert them to PASS.",
+    "If claiming the entire original C1-C5 engine plan rather than scoped release, run only the missing C2 representative script attempts and same-sex setting affected case. No need to repeat unchanged105/full old health or32-cell notification matrix merely to publish the scoped update.",
+    "Create clean source commit and superman-qiang-v1.2.0 tag; formal build via existing builder --output NEW_C_PATH --git-tag superman-qiang-v1.2.0 --workshop-item-id3812991990. Verify manifest exact35 against this audited projection and perform tagged double-build/reproducibility checks.",
+    "Freeze complete player-visible Steam Change Notes text with chars/lines/SHA, update truthful description/known limits, reuse unchanged thumbnail/media if not claiming new unobserved UI behavior.",
+    "Update existing item3812991990 only, preserve complete tags including1.20 'Crozier'; no CreateItem. Preserve actual owner/app/callback receipt; anonymously verify full decoded normalized Change Notes targetentry/chars/lines/SHA and public metadata.",
+    "Actual SDKDownloadItem must obtain current published bytes; compare strict formal manifest, then shared workshop_cache actual menu-load case and normal GUI/OS0/native0 cleanup. No campaign/NewGame/fixture/business replay.",
+    "Rebuild staging to clear launcher-injected remote_file_id; keep canonicalID only outer user .mod. Restore fresh-confirmed Steam offline and release all resources.",
+    "Permanent1.2.0 changelog relative1.1.0, exacttag/commit/evidence/knownlimits; final report and master commit/push. GitHub release attachedZIP/manifest actual redownload-match per product release plan."
+  ],
+  "workshop_cache_recipe": {
+    "runtime": {
+      "path": "C:\\ck3-common-runtime-20261024\\runtime.selected-common-c09.json",
+      "bytes": 461012,
+      "sha256": "4b67cd9aa2de605da21efa183533572ea56d1030e31dcf29b5b82c927dbd0cd9"
+    },
+    "source_entry": "D:/sxad1023/tools/ck3_mod_acceptance.py",
+    "products": "D:/sxad1023/tools/ck3_mod_acceptance_products.json",
+    "product": "superman-qiang",
+    "case": "workshop_cache",
+    "top_input_fields": [
+      "state_dir",
+      "case_inputs"
+    ],
+    "case_input_exact_fields": [
+      "cache_path",
+      "formal_manifest",
+      "native_download_receipt",
+      "plain_configuration"
+    ],
+    "plain_configuration_exact_files": [
+      "pdx_settings.txt",
+      "tutorial.txt",
+      "presets.txt",
+      "player/game_rules/presets.txt"
+    ],
+    "cache_path_suffix": "workshop/content/1158310/3812991990",
+    "download_contract": "ok=true,status=complete,started=true,error=null,canonicalapp/item,callbackresult int1,install_info.path exact,installed=true/update/downloadpendingfalse; checked original envelope accepted",
+    "formal_contract": "format_version1or2, canonicalitem, existing exacttag+40SHA, unique relative list path/size/SHA with descriptor; candidate source projection manifest is NOT accepted formal release identity",
+    "prepare": "python -B tools/ck3_mod_acceptance.py prepare --runtime C:/ck3-common-runtime-20261024/runtime.selected-common-c09.json --products D:/sxad1023/tools/ck3_mod_acceptance_products.json --product superman-qiang --case workshop_cache --case-inputs NEW_INPUTS_JSON --prepare-output NEW_C_PREPARED_DIR",
+    "next": "plan/preflight use same runtime/products/product/case and --prepared-case NEW_C_PREPARED_DIR/prepared-case.json. Existing owner performs allocate/run/verify after new capacity/offline/screen admission; this audit executes none.",
+    "scope": "Six ordinary profile inputs only; directly points at Steam cache; no cache copy, fixture, SAVE or campaign. New source-ready runtime does not independently grant new live qualification. Existing frozen game/SDK/native pins remain unchanged."
+  },
+  "storage": {
+    "policy_source": "D:/workspace/ck3_eternal_recurrence/docs/storage-retention-policy.json",
+    "volumes": {
+      "C:/": {
+        "total": 511133945856,
+        "used": 450495115264,
+        "free": 60638830592
+      },
+      "D:/": {
+        "total": 500090007552,
+        "used": 478384521216,
+        "free": 21705486336
+      }
+    },
+    "write_limit_bytes": 100000,
+    "audit_output_only": true,
+    "limit": "Fresh volume facts for this machine/time only. Existing finite whole-volume cap/reserves/review remain; publisher must admit its new build/cache/run footprint before heavy writes. No deletes."
+  },
+  "sources": [
+    {
+      "path": "D:\\sxad1023\\mod_superman_qiang\\docs\\release-plan.md",
+      "bytes": 3482,
+      "sha256": "9e82ed259ba3e6ceee5826967434c16b67405281af8f2257025582afc0442efa"
+    },
+    {
+      "path": "D:\\sxad1023\\mod_superman_qiang\\docs\\test-plan.md",
+      "bytes": 18432,
+      "sha256": "abc27e3b96695654a37c16341280899a4e1d997325ea377dfe51fc49082fd49f"
+    },
+    {
+      "path": "D:\\sxad1023\\mod_superman_qiang\\docs\\product-contract.md",
+      "bytes": 10366,
+      "sha256": "2e4ceeec0de62a72434510988457deabd010c00696b91fc3a43bdc6782693233"
+    },
+    {
+      "path": "D:\\sxad1023\\mod_superman_qiang\\docs\\2026-10-23-script-coverage.json",
+      "bytes": 20325,
+      "sha256": "1cb11666a725acbd2c4103b7b995f14e8e30c8264b6ad58979384cabb3650462"
+    },
+    {
+      "path": "D:\\sxad1023\\mod_superman_qiang\\docs\\2026-10-24-monthly-and-cold-native-acceptance.md",
+      "bytes": 6740,
+      "sha256": "ce684761f4fdc7a3625035317c2f578c4e89e796ef2dafec3a98c54a985bdf8e"
+    },
+    {
+      "path": "D:\\sxad1023\\mod_superman_qiang\\docs\\2026-10-24-notification-diagnostic.md",
+      "bytes": 8715,
+      "sha256": "bbcc443a7343b39c0c2c96d680caae949f9a33bd3afd4130e62ace19dd458862"
+    },
+    {
+      "path": "D:\\sxad1023\\mod_superman_qiang\\docs\\2026-10-24-notification-diagnostic.json",
+      "bytes": 52233,
+      "sha256": "44ea5cbadb826b87d3a0748fd28de90be3dec735de14969920662b9ac3b4f308"
+    },
+    {
+      "path": "D:\\sxad1023\\tools\\ck3_mod_acceptance_cases\\workshop_cache_adapter.py",
+      "bytes": 17762,
+      "sha256": "a5619392ed4df4b873f3c4c6ebd4f390396e963eb1e3007394d2c7bc676dcb4c"
+    },
+    {
+      "path": "D:\\sxad1023\\tools\\ck3_mod_acceptance_cases\\workshop_cache.json",
+      "bytes": 565,
+      "sha256": "63fb803fe238d2cb75910a572a3cce50e3c2c30f34198621b39b9364fb41d6d2"
+    },
+    {
+      "path": "D:\\sxad1023\\tools\\ck3_mod_acceptance_products.json",
+      "bytes": 185292,
+      "sha256": "e956e7e092d82a916c19ab55b697344cb1cf94a250aa3152debb35679f80e336"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.md",
+      "bytes": 17121,
+      "sha256": "6a92bd77cd3166707472c43f2eb06c3bba0a6510a23ae2eeccb5006f5e49ba09"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\workshop-cache-acceptance.md",
+      "bytes": 6174,
+      "sha256": "33dff1146bccfa05fcf747f476e09d1d0f7db96c55a091a6530bf933177f5831"
+    },
+    {
+      "path": "C:\\ck3-superman-validation-20261023\\source-staging-a05.manifest.json",
+      "bytes": 10326,
+      "sha256": "3443f1954fa7c6bf2252358b38a7caf52b9401dfebebad1584e0766e9944732c"
+    },
+    {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\FINAL.verified.json",
+      "bytes": 117055,
+      "sha256": "dd735d174e67ec98b4bf7d73bb6b16f111fd38c5ff6291e20faedda9ca21157b"
+    },
+    {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\product-ci-r28-fixture-fix-a01\\SUMMARY.actual.json",
+      "bytes": 25645,
+      "sha256": "1a613e216d133b9282d9fbec3762b9e78fc881547a201d4ce24f43d061aebd8a"
+    },
+    {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\product-ci-r28-fixture-fix-a01\\MYPY.actual.json",
+      "bytes": 738,
+      "sha256": "4014abe98c5aa01ad1f1795e669410847dcef2e229c7cb63afc0aea5422ba1eb"
+    },
+    {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\open-kaishek-precheck-a01\\RESULT.actual.json",
+      "bytes": 7446,
+      "sha256": "a7cce5b6025c72277c76bcb790da05927fdf5c2ba4972ec5adad76509365dc92"
+    },
+    {
+      "path": "C:\\ck3-superman-validation-20261023\\natural-cold-scene-a01\\public-verify.actual.json",
+      "bytes": 56565,
+      "sha256": "65e8b1f7248a70d8feed0534d1204440d0ece1fa59cd6b7d6b5142fc6a199659"
+    },
+    {
+      "path": "C:\\ck3-superman-validation-20261023\\notification-scene-n5-a04\\public-verify.actual.json",
+      "bytes": 10275,
+      "sha256": "023e3f7eca10d18656a93e0962448ce480309454b89f912163b81a675b1db43a"
+    },
+    {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\R0035-closed-capacity-admission.actual.json",
+      "bytes": 10190,
+      "sha256": "ce3bc6ba10886408ad70a74408bb94b26b5292586e734c161758a5764e5fbfdb"
+    },
+    {
+      "path": "C:\\ck3-common-runtime-20261024\\runtime.selected-common-c09.json",
+      "bytes": 461012,
+      "sha256": "4b67cd9aa2de605da21efa183533572ea56d1030e31dcf29b5b82c927dbd0cd9"
+    }
+  ],
+  "retention": {
+    "review_at_utc": "2027-04-21T00:00:00Z",
+    "reason": "Small active release decision/provenance record; source and old failure receipts unchanged."
+  }
+}

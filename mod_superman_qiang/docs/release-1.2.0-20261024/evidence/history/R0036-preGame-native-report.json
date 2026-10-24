@@ -1,0 +1,79 @@
+{
+  "status": "RED",
+  "phase": "initializing-mcp",
+  "started_at": "2026-10-24T03:00:32.192108+00:00",
+  "fixture_only": false,
+  "fixture_profile": true,
+  "steps": [],
+  "state_dir": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a02\\state",
+  "agent_source_root": "D:\\workspace\\ck3_eternal_recurrence",
+  "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--superman-qiang--R0036",
+  "native_wire": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0036\\native-report.native-wire.jsonl",
+  "mcp_wire": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0036\\native-report.mcp-wire.jsonl",
+  "mcp_calls": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0036\\native-report.mcp-calls.jsonl",
+  "server_stderr": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0036\\native-report.server-stderr.log",
+  "session": {
+    "report": null,
+    "error": null
+  },
+  "error": "ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+  "frontend_observations_journal": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0036\\native-report.frontend-observations.jsonl",
+  "profile": {
+    "mode": "explicit-external-fixture",
+    "prepared_manifest": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a02\\state\\profile\\xar-autoplayer-environment.json",
+    "enabled_mod_profile": {
+      "enabled_mods": [
+        "mod/product.mod"
+      ],
+      "disabled_dlcs": []
+    },
+    "production_profile_verified": false
+  },
+  "frontend_mod_load_profile": {
+    "profile_dir": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a02\\state\\profile",
+    "preparation_path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a02\\state\\preparation.json",
+    "preparation_sha256": "1b9d9f135ebd5a41af38de628a3559d7cb002e633c51f92d3f1f4bd205c431bc",
+    "preparation": {
+      "schema": "ck3-mod-acceptance-profile-startup-evidence-v1",
+      "profile_dir": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a02\\state\\profile",
+      "profile_files": [
+        "dlc_load.json",
+        "mod/product.mod",
+        "pdx_settings.txt",
+        "player/game_rules/presets.txt",
+        "presets.txt",
+        "tutorial.txt"
+      ],
+      "profile_input_sha256": {
+        "dlc_load.json": "913df90d75091a6ee81e6dae148f4a39863354d7777a07362d85eea3be4cd320",
+        "mod/product.mod": "11854fd4d3c778caf8cbd7713091e5d662d61506f794a67c1b6bafc4baab6731",
+        "pdx_settings.txt": "bc84f30bcc7f0104b194a8cab61b723903e94e68347bb48400d83aecf17ae751",
+        "player/game_rules/presets.txt": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0",
+        "presets.txt": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0",
+        "tutorial.txt": "19f461abd92cc828c19d1cf77355ef6513682423721d64787756cf8465c2ef7d"
+      },
+      "preparation": {
+        "path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a02\\prepared\\profile-preparation.json",
+        "bytes": 2697,
+        "sha256": "40ff480db4cf48acabeb6006822f804025f4b67767fc04c37c1e434074139852"
+      },
+      "runtime_status": "NOT_RUN"
+    }
+  },
+  "frontend_mod_load_launch": {
+    "status": "WAITING_FOR_ACTUAL_SINGLE_MENU_LAUNCH"
+  },
+  "identity": {
+    "game_executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "game_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "dll": "C:\\w\\e04date32a01\\build-a01\\xar_ck3_bridge.dll",
+    "dll_sha256": "062b2ae3639c230d2ca4552d5de67c9536605b1fbda2045c040d3fd6f25ca746",
+    "injector": "C:\\w\\e04a41\\xar_ck3_bridge_injector.exe",
+    "injector_sha256": "208c091a07ddd812f31ea20a70a9f31eb81b22972efe43d6f944d60a09435630"
+  },
+  "managed_session_done": false,
+  "managed_session_thread_finished": false,
+  "exception_traceback": "  + Exception Group Traceback (most recent call last):\n  |   File \"C:\\ck3-common-runtime-20261024\\running-date-support-a01\\shared-host.py\", line 4253, in run\n  |     async with stdio_client(parameters, errlog=stderr) as (read_stream, write_stream):\n  |                ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  |   File \"C:\\Users\\1\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\contextlib.py\", line 235, in __aexit__\n  |     await self.gen.athrow(value)\n  |   File \"D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\mcp\\client\\stdio.py\", line 200, in stdio_client\n  |     async with anyio.create_task_group() as tg:\n  |                ~~~~~~~~~~~~~~~~~~~~~~~^^\n  |   File \"D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\anyio\\_backends\\_asyncio.py\", line 847, in __aexit__\n  |     raise BaseExceptionGroup(\n  |         \"unhandled errors in a TaskGroup\", self._exceptions\n  |     ) from None\n  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)\n  +-+---------------- 1 ----------------\n    | Exception Group Traceback (most recent call last):\n    |   File \"D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\mcp\\client\\stdio.py\", line 204, in stdio_client\n    |     yield read_stream, write_stream\n    |   File \"C:\\ck3-common-runtime-20261024\\running-date-support-a01\\shared-host.py\", line 4254, in run\n    |     async with ClientSession(\n    |                ~~~~~~~~~~~~~^\n    |         RecordedStream(read_stream, rpc_wire, \"server-to-client\"),\n    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    |         RecordedStream(write_stream, rpc_wire, \"client-to-server\"),\n    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    |         read_timeout_seconds=args.command_timeout + 15,\n    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    |     ) as session:\n    |     ^\n    |   File \"D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\mcp\\client\\session.py\", line 481, in __aexit__\n    |     result = await self._task_group.__aexit__(exc_type, exc_val, exc_tb)\n    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    |   File \"D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\anyio\\_backends\\_asyncio.py\", line 847, in __aexit__\n    |     raise BaseExceptionGroup(\n    |         \"unhandled errors in a TaskGroup\", self._exceptions\n    |     ) from None\n    | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)\n    +-+---------------- 1 ----------------\n      | Traceback (most recent call last):\n      |   File \"C:\\ck3-common-runtime-20261024\\running-date-support-a01\\shared-host.py\", line 4259, in run\n      |     report[\"mcp_initialize\"] = serialized(await session.initialize())\n      |                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n      |   File \"D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\mcp\\client\\session.py\", line 616, in initialize\n      |     result = await self.send_request(\n      |              ^^^^^^^^^^^^^^^^^^^^^^^^\n      |     ...<9 lines>...\n      |     )\n      |     ^\n      |   File \"D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\mcp\\client\\session.py\", line 553, in send_request\n      |     raw = await self._dispatcher.send_raw_request(method, data.get(\"params\"), opts)\n      |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n      |   File \"D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\mcp\\shared\\jsonrpc_dispatcher.py\", line 444, in send_raw_request\n      |     raise MCPError(code=outcome.code, message=outcome.message, data=outcome.data)\n      | mcp.shared.exceptions.MCPError: Connection closed\n      +------------------------------------\n",
+  "finished_at": "2026-10-24T03:00:41.073202+00:00",
+  "cleanup_ok": false
+}

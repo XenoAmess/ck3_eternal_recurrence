@@ -1,0 +1,38 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T03:17:48.791982+00:00",
+  "scope": "Actual frozen SDK factory construction/list_tools only. Constructor endpoint.start intercepted once with inert no-op; factory restart/send fail closed; no connection, tool invocation/Game/lease",
+  "original_failure_reproduced": "One original ordinary service/driver",
+  "new_factory_constructed": true,
+  "default_episode_projection": "one_life",
+  "stock_factory": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+    "bytes": 280396,
+    "sha256": "8d197c312691f5320f8a99b1f28231fb838e420aa5a7ace24c73faffdb7ef1d7"
+  },
+  "campaign_factory": {
+    "path": "C:\\ck3-e04-resume-20261022-b01\\r05-mcp-registration-fix-a01\\registration_mcp.py",
+    "bytes": 10815,
+    "sha256": "abf993fb2a4c081d30a2b576acaf71d90d453f89198710bc62f2739d6ab36c9a"
+  },
+  "canonical_public_import_source": {
+    "path": "D:\\sxad1023\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+    "bytes": 341748,
+    "sha256": "9a13cc0eae8dcb960dafc1b9115dc170a4c4baaf7c4c6b911c3e9a5d4adbbad9"
+  },
+  "static_projected_host": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\r36-shared-repair-a01\\static-projected-host.py",
+    "bytes": 318549,
+    "sha256": "9609b81768e5d2f2c8586e6d433f30880e2516791acbbddd5721244999c15982"
+  },
+  "required_factory_tools": [
+    "ck3_inspect_frontend_gui_tree_v1",
+    "ck3_query_engine_diagnostics_v1",
+    "ck3_query_engine_log_literals_v1",
+    "ck3_query_frontend_gui_route_v1"
+  ],
+  "all_required_factory_tools_registered": true,
+  "pipe_diagnostics_source": "Original host native_server decorator unchanged",
+  "new_runtime_built": false,
+  "source_not_yet_committed": true
+}

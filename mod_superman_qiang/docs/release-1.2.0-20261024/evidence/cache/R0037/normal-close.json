@@ -1,0 +1,206 @@
+{
+  "root_normal_gui_review": {
+    "run_id": "desktop-3fevhd2-1c74096080--superman-qiang--R0037",
+    "reviewer": "/root",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-24T03:27:04.665564+00:00",
+    "normal_gui_quit": true,
+    "pid": 16564,
+    "create_time": 1792812114.0472128,
+    "original_hold_deadline": 1792813155.9414313,
+    "autosave_control_applicable": false,
+    "campaign_started": false,
+    "final_click": {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\R0037-normal-quit-click-a01.png.json",
+      "bytes": 1490,
+      "sha256": "f3c4b0e36f29860e6ea02ef965f4fbba20534b03c267201ed1243b6df8f82654"
+    },
+    "evidence": [
+      {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\R0037-normal-quit-source-a01.png",
+        "bytes": 1399988,
+        "sha256": "370fc1778500883ecb1f976abccb12d3f0eae3a76378e5afe232924fe886feff"
+      },
+      {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\R0037-normal-quit-click-a01.png.json",
+        "bytes": 1490,
+        "sha256": "f3c4b0e36f29860e6ea02ef965f4fbba20534b03c267201ed1243b6df8f82654"
+      },
+      {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\R0037-normal-quit-click-a01.png",
+        "bytes": 1847536,
+        "sha256": "6629e8cf71378e69dbfef1fb88cddf1f3509404e18b09c146a6ef34f666f051d"
+      },
+      {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\R0037-normal-quit-after-a01.png",
+        "bytes": 1870734,
+        "sha256": "2457abf5f8db4cd931efb2ab596fc82423d0831007db0dffc98cb7f8eab7bdae"
+      }
+    ],
+    "notes": "Root personally reviewed the fresh actual main menu and selected its original 退出到桌面 button once via canonical coordinate mapping (actual2560x1440, reviewed2048x1152 preview, expected HWND). No campaign was started and this menu has no autosave control. After-image temporarily shows Not Responding during quit; retained OS0/native0 are separate shared-client evidence, not inferred from this click or review. No force termination, keyboard shortcut, or replay."
+  },
+  "operator_normal_gui_review": {
+    "run_id": "desktop-3fevhd2-1c74096080--superman-qiang--R0037",
+    "reviewer": "/root",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-24T03:27:04.665564+00:00",
+    "normal_gui_quit": true,
+    "pid": 16564,
+    "create_time": 1792812114.0472128,
+    "original_hold_deadline": 1792813155.9414313,
+    "autosave_control_applicable": false,
+    "campaign_started": false,
+    "final_click": {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\R0037-normal-quit-click-a01.png.json",
+      "bytes": 1490,
+      "sha256": "f3c4b0e36f29860e6ea02ef965f4fbba20534b03c267201ed1243b6df8f82654"
+    },
+    "evidence": [
+      {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\R0037-normal-quit-source-a01.png",
+        "bytes": 1399988,
+        "sha256": "370fc1778500883ecb1f976abccb12d3f0eae3a76378e5afe232924fe886feff"
+      },
+      {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\R0037-normal-quit-click-a01.png.json",
+        "bytes": 1490,
+        "sha256": "f3c4b0e36f29860e6ea02ef965f4fbba20534b03c267201ed1243b6df8f82654"
+      },
+      {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\R0037-normal-quit-click-a01.png",
+        "bytes": 1847536,
+        "sha256": "6629e8cf71378e69dbfef1fb88cddf1f3509404e18b09c146a6ef34f666f051d"
+      },
+      {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\R0037-normal-quit-after-a01.png",
+        "bytes": 1870734,
+        "sha256": "2457abf5f8db4cd931efb2ab596fc82423d0831007db0dffc98cb7f8eab7bdae"
+      }
+    ],
+    "notes": "Root personally reviewed the fresh actual main menu and selected its original 退出到桌面 button once via canonical coordinate mapping (actual2560x1440, reviewed2048x1152 preview, expected HWND). No campaign was started and this menu has no autosave control. After-image temporarily shows Not Responding during quit; retained OS0/native0 are separate shared-client evidence, not inferred from this click or review. No force termination, keyboard shortcut, or replay."
+  },
+  "normal_quit_automation": null,
+  "normal_quit_automation_failure_preserved": null,
+  "retained_handle": {
+    "signaled": true,
+    "exit_code": 0,
+    "actual_retained_os0": true,
+    "pid": 16564,
+    "create_time": 1792812114.0472128,
+    "retained_synchronize_query_handle_acquired": true
+  },
+  "native_zero_proof": {
+    "status": "not_applicable",
+    "reason": "finished_native_process_exit_zero_cleanup_proven",
+    "alive_or_business_credit": false,
+    "managed_session_done": true,
+    "pid": 16564,
+    "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--superman-qiang--R0037",
+    "started_at": "2026-10-24T03:21:51.109517+00:00",
+    "finished_at": "2026-10-24T03:27:15.296615+00:00",
+    "exit_reason": "process_exit",
+    "process_exit_code": 0,
+    "shutdown": {
+      "nonce": "2c771f44cbec49eeb599e322da8a4c59",
+      "ck3_pid": 16564,
+      "ck3_creation_date": "20261024032154.047212+000",
+      "ck3_exit_code": 0,
+      "job_active_processes_before_termination": 0,
+      "job_active_processes_final": 0,
+      "tree_gone": true,
+      "cleanup_proven": true,
+      "final_ck3_inventory": {
+        "tasklist_returncode": 0,
+        "tasklist_pids": [],
+        "wmi_pids": [],
+        "native_pids": [],
+        "inventory_backend": "tasklist+toolhelp32",
+        "processes": []
+      },
+      "watchdog_pid": 12268,
+      "watchdog_creation_date": "20261024032152.048639+000",
+      "watchdog_state_before": "running",
+      "watchdog_state_after": "absent",
+      "control_files_absent": {
+        "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state\\control\\ck3.json": true,
+        "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state\\control\\watchdog-2c771f44cbec49eeb599e322da8a4c59.ready.json": true,
+        "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state\\control\\ck3.watchdog_error": true,
+        "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state\\control\\unsafe-cleanup.json": true
+      },
+      "contract_errors": [],
+      "ok": true
+    }
+  },
+  "finish_hold_rows": [
+    {
+      "id": "acceptance-normal-exit-finish-hold",
+      "plan": {
+        "id": "acceptance-normal-exit-finish-hold",
+        "kind": "finish_hold",
+        "expect": {
+          "hold_finished": true
+        }
+      },
+      "started_at": "2026-10-24T03:27:20.254106+00:00",
+      "ok": true,
+      "result": {
+        "hold_finished": true
+      },
+      "resolved_expect": {
+        "hold_finished": true
+      },
+      "after_snapshot": {
+        "status": "not_applicable",
+        "reason": "finished_native_process_exit_zero_cleanup_proven",
+        "alive_or_business_credit": false,
+        "managed_session_done": true,
+        "pid": 16564,
+        "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--superman-qiang--R0037",
+        "started_at": "2026-10-24T03:21:51.109517+00:00",
+        "finished_at": "2026-10-24T03:27:15.296615+00:00",
+        "exit_reason": "process_exit",
+        "process_exit_code": 0,
+        "shutdown": {
+          "nonce": "2c771f44cbec49eeb599e322da8a4c59",
+          "ck3_pid": 16564,
+          "ck3_creation_date": "20261024032154.047212+000",
+          "ck3_exit_code": 0,
+          "job_active_processes_before_termination": 0,
+          "job_active_processes_final": 0,
+          "tree_gone": true,
+          "cleanup_proven": true,
+          "final_ck3_inventory": {
+            "tasklist_returncode": 0,
+            "tasklist_pids": [],
+            "wmi_pids": [],
+            "native_pids": [],
+            "inventory_backend": "tasklist+toolhelp32",
+            "processes": []
+          },
+          "watchdog_pid": 12268,
+          "watchdog_creation_date": "20261024032152.048639+000",
+          "watchdog_state_before": "running",
+          "watchdog_state_after": "absent",
+          "control_files_absent": {
+            "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state\\control\\ck3.json": true,
+            "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state\\control\\watchdog-2c771f44cbec49eeb599e322da8a4c59.ready.json": true,
+            "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state\\control\\ck3.watchdog_error": true,
+            "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state\\control\\unsafe-cleanup.json": true
+          },
+          "contract_errors": [],
+          "ok": true
+        }
+      },
+      "finished_at": "2026-10-24T03:27:20.269718+00:00"
+    }
+  ],
+  "host_finished_at": "2026-10-24T03:27:21.091911+00:00",
+  "managed_thread_finished": true,
+  "cleanup_ok": true,
+  "host_error": null,
+  "failure_shutdown_proof": null,
+  "failure_preserved": false,
+  "failure_lifecycle_completed": false,
+  "business_pass": false,
+  "normal_close_qualified": true
+}

@@ -1,0 +1,104 @@
+{
+  "schema": "sxad-github-release-public-and-exact-assets-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T02:58:04.111933+00:00",
+  "state": "GITHUB_RELEASE_PUBLIC_FULL_NOTES_AND_BOTH_ASSETS_EXACT",
+  "repository": "XenoAmess/ck3_eternal_recurrence",
+  "tag": "superman-qiang-v1.2.0",
+  "source_commit": "bcb9e9f11658519c5277e0d304a02e5028bbd760",
+  "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/superman-qiang-v1.2.0",
+  "published_at": "2026-10-24T02:57:18Z",
+  "is_draft": false,
+  "is_prerelease": false,
+  "absence_lookup": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\github-release-a01\\LOOKUP.actual.json",
+    "bytes": 1939,
+    "sha256": "5d39e6c7d197534614c1ea590a91edd1d8912b12851e738232e1337970187570"
+  },
+  "create_attempts": 1,
+  "create_return_code": 0,
+  "create_error": null,
+  "original_create_marker": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\github-release-a01\\CREATE-ATTEMPT.actual.json",
+    "bytes": 1790,
+    "sha256": "7e0233ba003a0c1d66c7527325b9fadcf945428cb9685ac1084a892e3c03ff5d"
+  },
+  "command_receipts": [
+    {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\github-release-a01\\remote-tag-ref.COMMAND.actual.json",
+      "bytes": 841,
+      "sha256": "0747b25c9eb92f75eabd9a7f882014b7a6b80aa94a1e929ff74841a246365560"
+    },
+    {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\github-release-a01\\release-create.COMMAND.actual.json",
+      "bytes": 1372,
+      "sha256": "70c35455aa3d0bcafce5bb86cbf5c815b9887ed9980ab415fb606a43acf7b267"
+    },
+    {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\github-release-a01\\release-after.COMMAND.actual.json",
+      "bytes": 946,
+      "sha256": "7407e1bbb6761f33b0cd4aa3c0148872d465bbffa92c75ba2980c9da323ee2c3"
+    },
+    {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\github-release-a01\\asset-download.COMMAND.actual.json",
+      "bytes": 1097,
+      "sha256": "55b7060d7efa95f45ed0ecea791f2997c89ae6020b066b415696fde6542f14f7"
+    }
+  ],
+  "body": {
+    "expected": {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\github-release-a01\\release-notes.md",
+      "bytes": 3850,
+      "sha256": "61d9480564027eacc362df8d95430c8a9d2976aed744fcf3e83b7a7558d36c95"
+    },
+    "actual_remote_normalized": {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\github-release-a01\\release-body.remote.normalized.md",
+      "bytes": 3849,
+      "sha256": "040dbc6a903a9f1affa5ee33c2ba58037ab3ddb5b73ec83476bedd4810485792"
+    },
+    "normalized_text_exact": true,
+    "normalized_characters": 1697,
+    "normalized_lines": 40,
+    "full_frozen_change_notes_included": true,
+    "scope_appendix_explicit": true
+  },
+  "assets": [
+    {
+      "name": "mod_superman_qiang.zip",
+      "downloaded": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\github-release-a01\\downloaded-assets\\mod_superman_qiang.zip",
+        "bytes": 826470,
+        "sha256": "d6a566f1f3f785336f33247423772d7c2a45e0fef8ea93becea8364b77818f86"
+      },
+      "formal_original": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\formal-a01.zip",
+        "bytes": 826470,
+        "sha256": "d6a566f1f3f785336f33247423772d7c2a45e0fef8ea93becea8364b77818f86"
+      },
+      "actual_remote_download": true,
+      "byte_equal_to_formal": true
+    },
+    {
+      "name": "mod_superman_qiang.manifest.json",
+      "downloaded": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\github-release-a01\\downloaded-assets\\mod_superman_qiang.manifest.json",
+        "bytes": 6404,
+        "sha256": "9db0f28a9f08215ecd7747f7406acc8b379c54d87dc8964551829dccb0dad7ba"
+      },
+      "formal_original": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\formal-a01.manifest.json",
+        "bytes": 6404,
+        "sha256": "9db0f28a9f08215ecd7747f7406acc8b379c54d87dc8964551829dccb0dad7ba"
+      },
+      "actual_remote_download": true,
+      "byte_equal_to_formal": true
+    }
+  ],
+  "zip_runtime_files": 35,
+  "cache_loading_completion_claimed": false,
+  "whole_product_or_C2_native_acceptance_claimed": false,
+  "notification_root_cause_resolved_claimed": false,
+  "Steam_Game_screen_or_lease_actions": false,
+  "source_or_HEAD_modified": false,
+  "repository_commit_created": false
+}

@@ -1,0 +1,28 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--superman-qiang--R0037",
+  "at_utc": "2026-10-24T03:21:32.472899+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:/sxad1023/tools/ck3_mod_acceptance.py",
+    "run",
+    "--runtime",
+    "C:/ck3-common-runtime-20261024/menu-factory-v2-a01/runtime.local.json",
+    "--products",
+    "D:/sxad1023/tools/ck3_mod_acceptance_products.json",
+    "--product",
+    "superman-qiang",
+    "--case",
+    "workshop_cache",
+    "--prepared-case",
+    "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\prepared\\prepared-case.json",
+    "--run-context",
+    "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0037\\reviewed-context-a01.json"
+  ],
+  "replayed": false,
+  "finished_at_utc": "2026-10-24T03:27:21.206307+00:00",
+  "exit_code": 0
+}

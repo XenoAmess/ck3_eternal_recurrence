@@ -1,0 +1,111 @@
+{
+  "schema": "sxad-compatible-version-sidebar-public-readback-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "assessed_at_utc": "2026-10-24T03:07:02.912545+00:00",
+  "status": "exact",
+  "ok": true,
+  "item_id": "3812991990",
+  "app_id": "1158310",
+  "expected_label": "1.20 'Crozier'",
+  "formal_descriptor": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\formal-a02\\descriptor.mod",
+    "bytes": 174,
+    "sha256": "45b514f48fc3021ecd4869906fb69c333d8d64fc0ae8d32a8ce620f8e9aa1805"
+  },
+  "supported_version": "1.20.*",
+  "registry": {
+    "source": "git show HEAD:ck3_workshop_mcp/src/ck3_workshop_mcp/compatibility_tags.py",
+    "source_head": "bcb9e9f11658519c5277e0d304a02e5028bbd760",
+    "bytes": 3226,
+    "sha256": "47ff303baf94867db406ec9dab52037b83551b8c39a8dff0a0bdceafed7c2d90"
+  },
+  "http": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\public-anonymous-investigation-a01\\item-sidebar-a01\\http.actual.json",
+    "bytes": 3009,
+    "sha256": "c32e282d36d110182aaaad497e585e8e9219d2a679beae7bc951b61c8cfbe52f"
+  },
+  "raw_html": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\public-anonymous-investigation-a01\\item-sidebar-a01\\item.raw.html",
+    "bytes": 99172,
+    "sha256": "bc347abede0a4568c05c1850899bfbda49e7114ed7aff48a3bffc52556b1deb8"
+  },
+  "http_status": 200,
+  "request_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990&l=schinese",
+  "request_started_at_utc": "2026-10-24T03:01:58.070207+00:00",
+  "request_finished_at_utc": "2026-10-24T03:01:59.316225+00:00",
+  "response_date": "Sat, 24 Oct 2026 03:02:03 GMT",
+  "matched_sidebar_categories": 1,
+  "sidebar": {
+    "title_decoded": "Compatible Version: ",
+    "label_decoded": "1.20 'Crozier'",
+    "href_decoded": "https://steamcommunity.com/workshop/browse/?appid=1158310&browsesort=toprated&section=readytouseitems&requiredtags%5B%5D=1.20+%27Crozier%27",
+    "inside_rightDetailsBlock": true,
+    "ancestor_classes": [
+      [
+        "responsive",
+        "DesktopUI"
+      ],
+      [
+        "flat_page",
+        "responsive_page"
+      ],
+      [
+        "responsive_page_frame",
+        "with_header"
+      ],
+      [
+        "responsive_page_content"
+      ],
+      [
+        "responsive_page_template_content"
+      ],
+      [
+        "smallheader",
+        "item"
+      ],
+      [
+        "workshopItemPreviewArea"
+      ],
+      [
+        "workshop_item_header"
+      ],
+      [
+        "col_right",
+        "responsive_local_menu"
+      ],
+      [
+        "rightDetailsBlock"
+      ]
+    ]
+  },
+  "requiredtags_link_query_decoded": {
+    "appid": [
+      "1158310"
+    ],
+    "browsesort": [
+      "toprated"
+    ],
+    "section": [
+      "readytouseitems"
+    ],
+    "requiredtags[]": [
+      "1.20 'Crozier'"
+    ]
+  },
+  "requiredtags_exact": true,
+  "label_exact": true,
+  "public_network_only": true,
+  "authentication_or_cookie_sent": false,
+  "no_old_local_cached_response_reused": true,
+  "Steam_CDN_internal_cache_behavior_not_determined": true,
+  "fresh_small_write_admission": {
+    "C_used_bytes": 450856730624,
+    "C_free_bytes": 60277215232,
+    "C_whole_volume_cap_bytes": 464000000000,
+    "maximum_incremental_bytes": 20000,
+    "guard": "publication-1.2.0-a01/ADMISSION.actual.json"
+  },
+  "raw_review_by_utc": "2026-11-23T00:00:00Z",
+  "findings_review_by_utc": "2027-04-22T00:00:00Z",
+  "scope": "Anonymous published HTML sidebar and requiredtags link only; no game, screen, Steam state, login, source, HEAD, or publication changes."
+}

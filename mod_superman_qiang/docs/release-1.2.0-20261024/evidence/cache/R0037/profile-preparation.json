@@ -1,0 +1,57 @@
+{
+  "schema": "ck3-mod-acceptance-prepared-workshop-cache-v1",
+  "game_version": "1.20.0.4",
+  "steam_build_id": "25734779",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "runtime_status": "NOT_RUN",
+  "state_dir": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state",
+  "profile_dir": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state\\profile",
+  "files": {
+    "dlc_load.json": {
+      "path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state\\profile\\dlc_load.json",
+      "bytes": 73,
+      "sha256": "913df90d75091a6ee81e6dae148f4a39863354d7777a07362d85eea3be4cd320"
+    },
+    "mod/product.mod": {
+      "path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state\\profile\\mod\\product.mod",
+      "bytes": 271,
+      "sha256": "11854fd4d3c778caf8cbd7713091e5d662d61506f794a67c1b6bafc4baab6731"
+    },
+    "pdx_settings.txt": {
+      "path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state\\profile\\pdx_settings.txt",
+      "bytes": 7133,
+      "sha256": "bc84f30bcc7f0104b194a8cab61b723903e94e68347bb48400d83aecf17ae751"
+    },
+    "player/game_rules/presets.txt": {
+      "path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state\\profile\\player\\game_rules\\presets.txt",
+      "bytes": 2785,
+      "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+    },
+    "presets.txt": {
+      "path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state\\profile\\presets.txt",
+      "bytes": 2785,
+      "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+    },
+    "tutorial.txt": {
+      "path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state\\profile\\tutorial.txt",
+      "bytes": 61,
+      "sha256": "19f461abd92cc828c19d1cf77355ef6513682423721d64787756cf8465c2ef7d"
+    }
+  },
+  "cache_path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990",
+  "workshop_item_id": "3812991990",
+  "exact_cache": {
+    "path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\prepared\\workshop-cache-exact-formal.json",
+    "bytes": 9662,
+    "sha256": "89ca5f4d1d3abbfe9657c8b7e6abfeb5e3e725ff7874c50b16431605a0e68614"
+  },
+  "product_inventory": {
+    "path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\prepared\\saved-product-inventory.json",
+    "bytes": 9138,
+    "sha256": "4f4c2cee02592fcf36f63ea2fc940f287bac050223d7d2b60bfdffc2c7d84fe8"
+  },
+  "fixture_mounted": false,
+  "cache_content_copied": false,
+  "campaign_started": false,
+  "business_acceptance": "NOT_ASSESSED"
+}

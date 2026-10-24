@@ -1,0 +1,216 @@
+{
+  "schema": "sxad.static-validation.v1",
+  "status": "GREEN",
+  "errors": [],
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T02:40:04.892082+00:00",
+  "git_sha": "f8032008c64e467701e6a26b0239a13c163c2fec",
+  "runtime_file_count": 35,
+  "source_files": [
+    {
+      "path": "common/character_interactions/sxad_interactions.txt",
+      "size": 1177,
+      "sha256": "49af8002a9d26eeb08b99073bb2393a6bd7c2e25f11610df990bcebbfe8e92d5"
+    },
+    {
+      "path": "common/modifiers/sxad_skill_balance_modifiers.txt",
+      "size": 2342,
+      "sha256": "c21257a41a0b83428b0840ea198bd62581d1b02879235a86d056bc98d81bf995"
+    },
+    {
+      "path": "common/on_action/sxad_natural_on_actions.txt",
+      "size": 524,
+      "sha256": "3b509bc54abc48e6abed83fc99a3c97e07908ccdb111d7c97df90672e921a005"
+    },
+    {
+      "path": "common/script_values/sxad_natural_values.txt",
+      "size": 365,
+      "sha256": "b380725e0dd4ecb3c6c96c1c58efcb9a8ad8fd28c2c6406a19ed2803a5a00566"
+    },
+    {
+      "path": "common/script_values/sxad_values.txt",
+      "size": 5344,
+      "sha256": "fd7c4dfad2de83a6bcd7a3d0ab303835ead7a103abe5d954f0bb2e5a82b94a7d"
+    },
+    {
+      "path": "common/scripted_effects/sxad_experience_effects.txt",
+      "size": 3033,
+      "sha256": "05f68a64fc25690f50035f69c493dcc5b58c138c426815e372a354a16f63f905"
+    },
+    {
+      "path": "common/scripted_effects/sxad_natural_effects.txt",
+      "size": 3373,
+      "sha256": "e707d6a037db6ff777fbb6bfa40929972db5b9eae564febff32058809aaf6394"
+    },
+    {
+      "path": "common/scripted_effects/sxad_probe_skill_effects.txt",
+      "size": 11144,
+      "sha256": "e4d6e1d40b552440a5f5042d1d6833337cfb1b55565504e1cd5dea4ef12ab7cd"
+    },
+    {
+      "path": "common/scripted_effects/sxad_transfer_effects.txt",
+      "size": 11909,
+      "sha256": "7991c7000897755735fad9d6785ee3840811b3ad958a155675b9d67918a59458"
+    },
+    {
+      "path": "common/scripted_effects/zz_sxad_had_sex_with_effect.txt",
+      "size": 9868,
+      "sha256": "a942dc45d11c21fb31afb26753cda28891c08423a7331d0f8f4b446cd9bc685f"
+    },
+    {
+      "path": "common/scripted_effects/zz_sxad_had_sex_with_unknown_effect.txt",
+      "size": 1353,
+      "sha256": "496708bcf73fccf051be18ce097300f95bd03360f3c9436c8d88e1185e9b0907"
+    },
+    {
+      "path": "common/scripted_effects/zz_sxad_mandala_story_creation_aspect_get_kids_effect.txt",
+      "size": 1370,
+      "sha256": "0276864b7fb3b255519b260b2b3f64c119e94ad695a3be9c567e38df5ab5ffe8"
+    },
+    {
+      "path": "common/scripted_effects/zz_sxad_rakish_brothel_night_effect.txt",
+      "size": 2849,
+      "sha256": "ce835516cffedd2133899a68cdc2f137b23bb804c75f9174158d7ff5875271e6"
+    },
+    {
+      "path": "common/traits/sxad_traits.txt",
+      "size": 482,
+      "sha256": "2139b3fb753bb72607162f65f88eb94e1494057060550bf9ba8fb5bbdd07d53d"
+    },
+    {
+      "path": "descriptor.mod",
+      "size": 174,
+      "sha256": "45b514f48fc3021ecd4869906fb69c333d8d64fc0ae8d32a8ce620f8e9aa1805"
+    },
+    {
+      "path": "events/sxad_events.txt",
+      "size": 243,
+      "sha256": "e21cfe6edc1a0f511eb90f0bc6083988e3a596cec947039268175b6652272701"
+    },
+    {
+      "path": "events/sxad_natural_events.txt",
+      "size": 748,
+      "sha256": "9ebf663fcda5d405ce5fa7fcc17dd159c63989b2570dfcccc6eb160ccfcc58af"
+    },
+    {
+      "path": "events/zz_sxad_fund_inspiration_6513.txt",
+      "size": 4744,
+      "sha256": "1168768b23e5dfe01fafca98d14a86c6757bba2f7a2c63cd8e19ef58c2d9c4de"
+    },
+    {
+      "path": "events/zz_sxad_learning_medicine_2022.txt",
+      "size": 8540,
+      "sha256": "47d698ffa99a7ba343e20e1f3ec5dd64065ada6f44733b17d58b3d52fd9e4e2b"
+    },
+    {
+      "path": "events/zz_sxad_learning_medicine_2023.txt",
+      "size": 9025,
+      "sha256": "626f9e88f9b109c9f44b951073aea46da8aad4a5c0c948855b179d1bb5b8e2a8"
+    },
+    {
+      "path": "events/zz_sxad_mpo_events_tova_0035.txt",
+      "size": 4276,
+      "sha256": "4139cefcfd0366b4ed2efa2573d2d8ceaa23d34dd1f457e9c0c8a956607fd770"
+    },
+    {
+      "path": "events/zz_sxad_mpo_temujin_flavor_0030.txt",
+      "size": 4072,
+      "sha256": "d9a932950cc9558bb0546f68cc340e7db4d21c52decb840e47e5507be1143098"
+    },
+    {
+      "path": "events/zz_sxad_pilgrimage_2101.txt",
+      "size": 9350,
+      "sha256": "8bacda731e339748caf29ee5e53e151a706157af841d4e44504485d61e2bc9a7"
+    },
+    {
+      "path": "events/zz_sxad_stewardship_duty_1055.txt",
+      "size": 39833,
+      "sha256": "30218ccbf8e70082244caeda4d32809979f5f459356765365d7dd95013845c23"
+    },
+    {
+      "path": "gfx/interface/icons/traits/sxad_sex_experience.dds",
+      "size": 57728,
+      "sha256": "7f4c9f2925ac10d6803261ae0e28ec0b417b3a9917664b5297e45a955c4de5b5"
+    },
+    {
+      "path": "localization/english/sxad_l_english.yml",
+      "size": 3411,
+      "sha256": "4b4463ca896283eb257ef3d21cf7d8f40cc98c13c63773a70661422dc58a02d1"
+    },
+    {
+      "path": "localization/french/sxad_l_french.yml",
+      "size": 3573,
+      "sha256": "2b3b48fe869a443401d5e4e1aeb4506c7e5611ab9efdafc6025a8b9141734aa6"
+    },
+    {
+      "path": "localization/german/sxad_l_german.yml",
+      "size": 3558,
+      "sha256": "81489afa363913e1bd603a4b9470e9993d4d34ce9bb7410b2d9e874c16595bdb"
+    },
+    {
+      "path": "localization/japanese/sxad_l_japanese.yml",
+      "size": 3479,
+      "sha256": "0dd9e99bce94a25db06b6bc3c873f774d88eda064ba75a291b8fab8d2dfd0cc0"
+    },
+    {
+      "path": "localization/korean/sxad_l_korean.yml",
+      "size": 3445,
+      "sha256": "6028daac727d6d647a0e9d0fccc63e3a7997297b6bb9fe6ebdf9c61689fbd699"
+    },
+    {
+      "path": "localization/polish/sxad_l_polish.yml",
+      "size": 3580,
+      "sha256": "83e411c370d779ae84b2d93821215664714040cbb857f2332a4d874c2ad2c058"
+    },
+    {
+      "path": "localization/russian/sxad_l_russian.yml",
+      "size": 3967,
+      "sha256": "39077ed3df3ecd9ceb2036e713e98148f18073f2900ab1dad813599f5c7ca0ab"
+    },
+    {
+      "path": "localization/simp_chinese/sxad_l_simp_chinese.yml",
+      "size": 3338,
+      "sha256": "1bfd5e568a8f449de617176e1346d7c2407023e0ae6028c9918971b653cd2b6f"
+    },
+    {
+      "path": "localization/spanish/sxad_l_spanish.yml",
+      "size": 3503,
+      "sha256": "a23f49df3f868960254298a655cf690ac9d0b6bdc4ecdb896ef8b259d2e722af"
+    },
+    {
+      "path": "thumbnail.png",
+      "size": 785139,
+      "sha256": "e70f54115bef351ee6e363bb116ee81bb25570f683cdc7606cf769b45d2b4f9b"
+    }
+  ],
+  "scripted_effect_counts": {
+    "common/scripted_effects/sxad_experience_effects.txt": 3,
+    "common/scripted_effects/sxad_natural_effects.txt": 3,
+    "common/scripted_effects/sxad_probe_skill_effects.txt": 15,
+    "common/scripted_effects/sxad_transfer_effects.txt": 8,
+    "common/scripted_effects/zz_sxad_had_sex_with_effect.txt": 1,
+    "common/scripted_effects/zz_sxad_had_sex_with_unknown_effect.txt": 1,
+    "common/scripted_effects/zz_sxad_mandala_story_creation_aspect_get_kids_effect.txt": 1,
+    "common/scripted_effects/zz_sxad_rakish_brothel_night_effect.txt": 1
+  },
+  "localization_key_counts": {
+    "english": 25,
+    "simp_chinese": 25,
+    "french": 25,
+    "german": 25,
+    "japanese": 25,
+    "korean": 25,
+    "polish": 25,
+    "russian": 25,
+    "spanish": 25
+  },
+  "generated_file_count": 33,
+  "ledger_skills_checked": 6,
+  "transfer_attributes_checked": 7,
+  "vanilla_files": [],
+  "ck3_exe_sha256": null,
+  "game_root": null,
+  "game_version_contract": "1.20.0.4",
+  "evidence_layer": "static-structure-and-byte-contract",
+  "ck3_started": false
+}

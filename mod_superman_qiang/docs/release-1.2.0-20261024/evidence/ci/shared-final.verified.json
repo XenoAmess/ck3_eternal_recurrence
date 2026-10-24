@@ -1,0 +1,2472 @@
+{
+  "schema": "ck3-superman-final-integration-source-validation-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T00:56:27.756725+00:00",
+  "source": "Actual complete latest workflow steps, actual modified-scope mypy and actual C-only public reanchor/prepare/plan/preflight",
+  "source_head": "f8032008c64e467701e6a26b0239a13c163c2fec",
+  "source_clean_and_byte_pins_unchanged": true,
+  "workflow": {
+    "path": "D:\\sxad1023\\.github\\workflows\\static-ci.yml",
+    "bytes": 118772,
+    "sha256": "7fec063aff25316f2dfb96935d199e851bb8606a597052d8bef5011b55afaf6b"
+  },
+  "command_count": 105,
+  "all_105_passed": true,
+  "unittest_executions": 1058,
+  "test_execution_count_is_not_unique_test_count": true,
+  "mypy_commands_in_workflow": 17,
+  "steps": [
+    {
+      "name": "Test shared CK3 acceptance without installed CK3",
+      "commands": 90,
+      "unittest_executions": 795,
+      "mypy_commands": 12,
+      "all_exit_zero": true
+    },
+    {
+      "name": "Test public case frozen SDK imports and finite pilgrimage policy",
+      "commands": 8,
+      "unittest_executions": 162,
+      "mypy_commands": 3,
+      "all_exit_zero": true
+    },
+    {
+      "name": "Test formal product ordinary campaign and capture admission without CK3",
+      "commands": 3,
+      "unittest_executions": 36,
+      "mypy_commands": 1,
+      "all_exit_zero": true
+    },
+    {
+      "name": "Test retired legacy decision panel before new recording",
+      "commands": 2,
+      "unittest_executions": 32,
+      "mypy_commands": 0,
+      "all_exit_zero": true
+    },
+    {
+      "name": "Check public normal-exit uint64 wire and registered MCP roundtrip without CK3",
+      "commands": 2,
+      "unittest_executions": 33,
+      "mypy_commands": 1,
+      "all_exit_zero": true
+    }
+  ],
+  "ci_result": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\RESULT.actual.json",
+    "bytes": 83390,
+    "sha256": "8c53518a5350cb9e3a0ff900496ce8b4cdcaa4ca1114128fea0827b1370c304a"
+  },
+  "stdio_log_pins": [
+    {
+      "ordinal": 0,
+      "command": "python -B -O -X utf8 tools/test_ck3_mod_acceptance_native_exact_tree_binding.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\000.cmd",
+        "bytes": 141,
+        "sha256": "cfb694d72af598eafdd20f2ca89de8ae0718b151ba69a9e70fe65b0787942480"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\000.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\000.stderr.log",
+        "bytes": 1354,
+        "sha256": "b9211db960b55216892071e72ab27c584f5876bebf75a806977d1a6ea3b782cb"
+      }
+    },
+    {
+      "ordinal": 1,
+      "command": "python -B -O -X utf8 tools/test_ck3_mod_acceptance_same_root_host_delta.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\001.cmd",
+        "bytes": 136,
+        "sha256": "941c023ff38f502dbe543a6fe16cdd6fe3bc5f7996152b8cafe537bfcf721d83"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\001.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\001.stderr.log",
+        "bytes": 4289,
+        "sha256": "4bc37642755b000031b11fda2fa40db33f024ada9389ae55cfb3b99d4759e8e9"
+      }
+    },
+    {
+      "ordinal": 2,
+      "command": "python -B -m mypy --strict tools/ck3_mod_acceptance_native_source_binding.py tools/test_ck3_mod_acceptance_same_root_host_delta.py tools/test_ck3_mod_acceptance_native_exact_tree_binding.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\002.cmd",
+        "bytes": 251,
+        "sha256": "dd07dcfcc8760af821f80cd8ec2763ceb2ac3426c79e883de4803fcd4b447f4e"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\002.stdout.log",
+        "bytes": 44,
+        "sha256": "281a094c39385b4d7b53e5db635f52158036861433c2a4975b9039e77a627a24"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\002.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "ordinal": 3,
+      "command": "python -B -m mypy --check-untyped-defs tools/ck3_mod_acceptance_native_source_binding.py tools/ck3_mod_acceptance_shared_python_host_delta.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\003.cmd",
+        "bytes": 203,
+        "sha256": "ba295742d7738875173390fd6df69d213d2a3771e0315f8113e0d88f2a50ab90"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\003.stdout.log",
+        "bytes": 44,
+        "sha256": "0c37c4158c91ef55c724ba017bf6465f26018199badb08e3ff13f98acdf056c2"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\003.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "ordinal": 4,
+      "command": "python -B -O -X utf8 tools/test_ck3_mod_acceptance_native_research_delta.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\004.cmd",
+        "bytes": 137,
+        "sha256": "b191fcac145ac4ba3fa4fb13acbda6f74e6d4829fc51831461c55ba122c1c552"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\004.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\004.stderr.log",
+        "bytes": 1137,
+        "sha256": "707e3fb35c77beb46ae2c4d688eb087ca392cc8a72fdd54748f70f5558f05aad"
+      }
+    },
+    {
+      "ordinal": 5,
+      "command": "python -B -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p test_native_bridge_driver.py -k resume_life_advance",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\005.cmd",
+        "bytes": 191,
+        "sha256": "133a34669998a96ac8795a05b1297b6fe0081077c91124f3edbf1e30834a44a0"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\005.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\005.stderr.log",
+        "bytes": 107,
+        "sha256": "10ef5195a288217d8b26fafa1b49c3449ccb9113e3248f9367a86f352c5c1dad"
+      }
+    },
+    {
+      "ordinal": 6,
+      "command": "python -B -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p test_managed_pause_owner_v1.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\006.cmd",
+        "bytes": 170,
+        "sha256": "d7ffd9e5797f6a36fbd4575e091c55a4d93e0c711d9b0d098b1826e7e700628c"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\006.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\006.stderr.log",
+        "bytes": 108,
+        "sha256": "ed904c03cd17bdf76d684b824a51bc69aa1241eafe95ab3e42ac20b0317d893b"
+      }
+    },
+    {
+      "ordinal": 7,
+      "command": "python -B -O -X utf8 tools/test_ck3_mod_acceptance_native_day.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\007.cmd",
+        "bytes": 126,
+        "sha256": "9b184735a5da2225e73c6ab73fc52c9602637f279b805d7a77179979d44b460a"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\007.stdout.log",
+        "bytes": 1134,
+        "sha256": "eecb7b1ed5ad36e90c0a3c7ce35d337b404040aabe3e2b301f6c5cb17f0f2163"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\007.stderr.log",
+        "bytes": 2452,
+        "sha256": "c10cdaa904f595a0fab8f84748da10c228a4b56d1451f19f679aebd2e14bce1d"
+      }
+    },
+    {
+      "ordinal": 8,
+      "command": "python -B -m mypy --strict --follow-imports=silent tools/ck3_mod_acceptance_native_day.py ck3_autonomous_player/src/xar_autoplayer/bridge/campaign_interaction_boundary_v1.py ck3_autonomous_player/src/xar_autoplayer/bridge/managed_pause_owner_v1.py ck3_autonomous_player/tests/unit/test_managed_pause_owner_v1.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\008.cmd",
+        "bytes": 373,
+        "sha256": "76ac005bc725c8e9c69a723249326a11182bac08e27ece818f189ecbea0ac66a"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\008.stdout.log",
+        "bytes": 44,
+        "sha256": "d9a5631f7d87a741fbecc3236286d1792d22d349ff13846d71cdc9217307bb76"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\008.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "ordinal": 9,
+      "command": "python -B -O -X utf8 tools/test_ck3_mod_acceptance_late_native_cleanup.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\009.cmd",
+        "bytes": 135,
+        "sha256": "89a205e6f3feae52d3956aec026be144ddb5d242668422c0b47ecedfcde8d7b3"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\009.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\009.stderr.log",
+        "bytes": 933,
+        "sha256": "f8fe572f10b506ca9f032e340d64bd4788aa3c934c9bce5c5afcd46db92b874b"
+      }
+    },
+    {
+      "ordinal": 10,
+      "command": "python -B -O -X utf8 tools/test_ck3_mod_acceptance_split_public_closure.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\010.cmd",
+        "bytes": 136,
+        "sha256": "12a9f6ed0e93c4d065d14483d04d83a32e2d5341832373db2bff9e5e35cfab48"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\010.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\010.stderr.log",
+        "bytes": 1347,
+        "sha256": "db54f77eff3aec7bdcae5948c20093e81a6f2e561fd5837c455eac5eba1c7b71"
+      }
+    },
+    {
+      "ordinal": 11,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_interrupted.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\011.cmd",
+        "bytes": 124,
+        "sha256": "d08a51bc5aa0b011831743cb24668228b85743b472ea45d54e5aa0037330f469"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\011.stdout.log",
+        "bytes": 111,
+        "sha256": "b2dfb7a782c0d7cd2a3474026315a62324e597e1f5a20a297da250d33d11a8ff"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\011.stderr.log",
+        "bytes": 116,
+        "sha256": "a2b49999f32b1fd7b0562c238485911b2a9928c3ce12c4acac155a1a74c2d56e"
+      }
+    },
+    {
+      "ordinal": 12,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_campaign_interaction_boundary.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\012.cmd",
+        "bytes": 142,
+        "sha256": "3c1f363c7434cd65f61ecd6f8f32a52bf67dfadfc289cd05c8e92e2f48da2762"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\012.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\012.stderr.log",
+        "bytes": 460,
+        "sha256": "59c39c7b03dd442352f573beadb63947cd02268055db34a617a5d8400d8e8545"
+      }
+    },
+    {
+      "ordinal": 13,
+      "command": "python -B -m mypy --strict --follow-imports=silent ck3_autonomous_player/src/xar_autoplayer/bridge/campaign_interaction_boundary_v1.py tools/test_ck3_mod_acceptance_campaign_interaction_boundary.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\013.cmd",
+        "bytes": 259,
+        "sha256": "56b6efa429ec0418d5e82b9f01a72bd4d2f56291c2fa63d4ad65842c71de19fb"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\013.stdout.log",
+        "bytes": 44,
+        "sha256": "0c37c4158c91ef55c724ba017bf6465f26018199badb08e3ff13f98acdf056c2"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\013.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "ordinal": 14,
+      "command": "python -B -X utf8 -m unittest discover -s tools -p test_ck3_mod_acceptance_unrun_stages.py -v",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\014.cmd",
+        "bytes": 155,
+        "sha256": "c70ab8b9db86318575edbb5c06c2f5126a4ec0e9770474b9212cec7416bf3534"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\014.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\014.stderr.log",
+        "bytes": 2239,
+        "sha256": "4060a8a29fc4d39c344e4bec6d0896af5d3466ce02399d28d0e501e857f82afb"
+      }
+    },
+    {
+      "ordinal": 15,
+      "command": "python -B -X utf8 -m unittest discover -s tools -p test_steam_offline_native_profiles.py -v",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\015.cmd",
+        "bytes": 153,
+        "sha256": "7ee57b22bcb9f160f248b110287eb6764c20ea96d182106dafa40ece85403959"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\015.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\015.stderr.log",
+        "bytes": 1401,
+        "sha256": "91bcb1c9f1f6689d5ce72e608b8fc8fc01e1adfd7a99c2902c4b9dfa315bef2e"
+      }
+    },
+    {
+      "ordinal": 16,
+      "command": "python -B -m mypy --strict --follow-imports=silent tools/steam_offline_native_profiles.py tools/test_steam_offline_native_profiles.py tools/test_ck3_mod_acceptance_unrun_stages.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\016.cmd",
+        "bytes": 241,
+        "sha256": "3ecc2d6224f2b4b125c9f0077f75fe61cf95a613b4426dfef94719ee7dfc5a4a"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\016.stdout.log",
+        "bytes": 44,
+        "sha256": "281a094c39385b4d7b53e5db635f52158036861433c2a4975b9039e77a627a24"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\016.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "ordinal": 17,
+      "command": "python -B -m mypy --strict --follow-imports=skip --no-incremental --cache-dir nul tools/ck3_mod_acceptance_interrupted.py tools/test_ck3_mod_acceptance_interrupted.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\017.cmd",
+        "bytes": 228,
+        "sha256": "12f3a7c58a5ea82c1afd047f52eae824b5c00ffbc142e3935ec67c7432d13e46"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\017.stdout.log",
+        "bytes": 44,
+        "sha256": "0c37c4158c91ef55c724ba017bf6465f26018199badb08e3ff13f98acdf056c2"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\017.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "ordinal": 18,
+      "command": "python -B -O -X utf8 tools/test_hof_shared_terms_typing_v1.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\018.cmd",
+        "bytes": 123,
+        "sha256": "209fdd5ab2535f3b24010ff362f850e0aad50a9308f68a66ddca01ddb26abdda"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\018.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\018.stderr.log",
+        "bytes": 1108,
+        "sha256": "4d4094ec47cfad519452e55501a35e1a6bd5e2bd8141113c3d860be65a641b65"
+      }
+    },
+    {
+      "ordinal": 19,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\019.cmd",
+        "bytes": 112,
+        "sha256": "d06c23c68facc0e7f3b2751a4361a912f5e46828b6ee1e774148d5b109cea5fd"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\019.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\019.stderr.log",
+        "bytes": 5273,
+        "sha256": "dd33decb17f1ff6597f9572f8e97b8ed9ffd2725145ed9dc287441dae28dd5be"
+      }
+    },
+    {
+      "ordinal": 20,
+      "command": "python -B -X utf8 -m unittest discover -s tools -p test_ck3_mod_acceptance_native_projection.py -v",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\020.cmd",
+        "bytes": 160,
+        "sha256": "d89ef7fd162cef70feff7da02ebfe2d9e4f9bc5b74db6948d258c210dc474656"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\020.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\020.stderr.log",
+        "bytes": 541,
+        "sha256": "039b2239170d8c6daa471135ee01340c46c629cafc451bc7221f776d41017322"
+      }
+    },
+    {
+      "ordinal": 21,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_grant_title_picker.py -v",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\021.cmd",
+        "bytes": 134,
+        "sha256": "d77a5cf17b580ffee56ac4c8a066fd1182e696ab7aa965fa76b45bc07d44d52e"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\021.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\021.stderr.log",
+        "bytes": 1483,
+        "sha256": "be6c163f3df0e595f33ba24259b0be82f3bf668faeb9fdb1c60ba34dc1ea49ef"
+      }
+    },
+    {
+      "ordinal": 22,
+      "command": "python -B -X utf8 tools/test_c3_common_g4_observation.py -v",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\022.cmd",
+        "bytes": 121,
+        "sha256": "287d95ab73019f7aa5de6558669c32dd62d787fa6001355df0bc915be309cdc9"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\022.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\022.stderr.log",
+        "bytes": 1688,
+        "sha256": "eb98fd50f6d1975b298d0406ff80fcbcfbc6d8e03ecd6bf3ca490069e498350a"
+      }
+    },
+    {
+      "ordinal": 23,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_readiness_window.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\023.cmd",
+        "bytes": 129,
+        "sha256": "b24f70162355efc9875934329c2650d1b2fe186e4975e080a3c7ee8e7c2d13b7"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\023.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\023.stderr.log",
+        "bytes": 110,
+        "sha256": "afe414390ad1bd25715ec01e6528b0fe1d2af25b3bbe3ea5f443bd139ca5cde6"
+      }
+    },
+    {
+      "ordinal": 24,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_readiness_handoff.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\024.cmd",
+        "bytes": 130,
+        "sha256": "b442311a37d7cb63aced3796fa16fc320a45bad00461b19b175847ee426e559f"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\024.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\024.stderr.log",
+        "bytes": 103,
+        "sha256": "ac233b8687c01b071e98acc86277d228902659e53e4f67ab6251283def8cbff5"
+      }
+    },
+    {
+      "ordinal": 25,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_i4_batch_002.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\025.cmd",
+        "bytes": 125,
+        "sha256": "c203cffa746726b13c8384cc739b02fdc4430736c965d28d7ce84870305000ed"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\025.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\025.stderr.log",
+        "bytes": 109,
+        "sha256": "26271a32847b08f3fd50277b545fd6b2d61ca485528257fa7b1f3aa9a83b907d"
+      }
+    },
+    {
+      "ordinal": 26,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_previous_row_readonly.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\026.cmd",
+        "bytes": 134,
+        "sha256": "7efd9d9d65c564948e2bad6a172b14d31f0d2592d18b728b6a673e9a19e4526a"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\026.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\026.stderr.log",
+        "bytes": 114,
+        "sha256": "6cc78a314cbb65bf2552bec1b12723ff6dd367d03a456e412b98429e1ce5d9f8"
+      }
+    },
+    {
+      "ordinal": 27,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_i4_natural_expiry.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\027.cmd",
+        "bytes": 130,
+        "sha256": "9a7145b44ac7db809e8e920a0efb79a4ca7c501982e57be7b5d76bb6004e1b4c"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\027.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\027.stderr.log",
+        "bytes": 3025,
+        "sha256": "98ba8d71201ac47e597b7b46f8d825d2ab24080dd4d4cd22838cbfd4c63522ff"
+      }
+    },
+    {
+      "ordinal": 28,
+      "command": "python -B -X utf8 tools/ck3_mod_acceptance_cases/test_lyd_i4_expiry_cold_reload.py -v",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\028.cmd",
+        "bytes": 147,
+        "sha256": "212ca140835e33b01013fb7b615e18b566b169e95612a111d743ac951889026b"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\028.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\028.stderr.log",
+        "bytes": 1479,
+        "sha256": "08756d30cddbd46119cf6dedadf481bc40be11b91caaf2d93d0f15c788d2ceaf"
+      }
+    },
+    {
+      "ordinal": 29,
+      "command": "python -B -X utf8 tools/test_lyd_i4_natural_event_context.py -v",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\029.cmd",
+        "bytes": 125,
+        "sha256": "4bf3231a958b338a9d92968baabc9e55d93628d44e51a364e63476b073947aa3"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\029.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\029.stderr.log",
+        "bytes": 731,
+        "sha256": "458279cc48557d40452f3dc09a5d9809ad1713cbea9565d0cdb53677e2bd38a7"
+      }
+    },
+    {
+      "ordinal": 30,
+      "command": "python -B -X utf8 tools/test_lyd_i4_natural_event_continuation.py -v",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\030.cmd",
+        "bytes": 130,
+        "sha256": "3130c7a1b7a7b8ccf7f8c01058f569597f0097f38b05b80e4ac20c2ccb02a6a2"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\030.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\030.stderr.log",
+        "bytes": 1832,
+        "sha256": "a2868e8d6b390ec6fcebbbb2856f1be4e36a3d9b435031a288e616120304b712"
+      }
+    },
+    {
+      "ordinal": 31,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_i4_day_frame.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\031.cmd",
+        "bytes": 125,
+        "sha256": "7ccffbdac5a38a533c8e6676fef880a6b6b0af7f3196d8548b1c1f23bac9a907"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\031.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\031.stderr.log",
+        "bytes": 109,
+        "sha256": "9fffdea0efcd3158e0ccb98821834c20fd1bae324487987a4e66293ade84ab8b"
+      }
+    },
+    {
+      "ordinal": 32,
+      "command": "python -B -X utf8 -m unittest tools.test_ck3_mod_acceptance_normal_close tools.test_ck3_mod_acceptance_operator_quit tools.test_ck3_mod_acceptance_ui_reviewer tools.test_ck3_mod_acceptance_template_click",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\032.cmd",
+        "bytes": 265,
+        "sha256": "b3f2ad8bc225a727a9d1400998a74e07fe774197f945ba7d96f6756146d1b495"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\032.stdout.log",
+        "bytes": 6459,
+        "sha256": "83161610de072d667c34b92b075bbc5068302f5b5b6215e589722cf01f31459c"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\032.stderr.log",
+        "bytes": 141,
+        "sha256": "37091c4b2d9c00d1bbb47f7dd4ac9cf9be87b3db9721f6a06ffdd5a3f1694c54"
+      }
+    },
+    {
+      "ordinal": 33,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_appointment.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\033.cmd",
+        "bytes": 124,
+        "sha256": "53c003743da2d5fdda63b44219fedc326d32bcee5ff7451895c6bcac0645573b"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\033.stdout.log",
+        "bytes": 369,
+        "sha256": "ab41c2d8998dc0c1f5f773b2c0cf91fb1b246d274391e2e26bbb28af6b505f89"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\033.stderr.log",
+        "bytes": 1984,
+        "sha256": "5c6ff2e48714ab69473fc95ad61f8f1b1bc1950b1cf5de98ba1c7c4ee14ed056"
+      }
+    },
+    {
+      "ordinal": 34,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_xqol_followups.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\034.cmd",
+        "bytes": 127,
+        "sha256": "7f89172fe3ec5434500d0071910803a806cad42244700eb33be131948c6a616f"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\034.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\034.stderr.log",
+        "bytes": 128,
+        "sha256": "d728e50214ac6e4d27a8efabed7b4329b3e629b52690dd07915f3534bf2e6869"
+      }
+    },
+    {
+      "ordinal": 35,
+      "command": "python -B -X utf8 ck3_autonomous_player/tests/test_appointment_window_contract.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\035.cmd",
+        "bytes": 143,
+        "sha256": "f36a36a9f09fc6ddf0ae8b67596021d8c774bae7ce97dc714bb1beaf948f4e9b"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\035.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\035.stderr.log",
+        "bytes": 126,
+        "sha256": "3c0e323462276f8fefd45f07bf25282c3f7f4bf3158410aa27d7d19ee288c365"
+      }
+    },
+    {
+      "ordinal": 36,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_failure_shutdown.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\036.cmd",
+        "bytes": 129,
+        "sha256": "cdfb289aa2ecd072d68af64bf0c7b23ebaeb2afb19fe5c7970df40a6600a7b0c"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\036.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\036.stderr.log",
+        "bytes": 107,
+        "sha256": "6fb5790b12d7b62b82431026871762280bacc204a6d9c8c849ec273af7b6998e"
+      }
+    },
+    {
+      "ordinal": 37,
+      "command": "python -B -X utf8 tools/test_ck3_host_terminal_observation.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\037.cmd",
+        "bytes": 123,
+        "sha256": "1f3cea838eefb27d87b1a274a9627f2abea69799f96c459708239781184e0651"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\037.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\037.stderr.log",
+        "bytes": 111,
+        "sha256": "bb21c30b620483f73cd2e9fa580e485c0ca5ba99d8e73bc071efbd43d6e38630"
+      }
+    },
+    {
+      "ordinal": 38,
+      "command": "python -B -m mypy --strict --follow-imports=silent ck3_autonomous_player/src/xar_autoplayer/bridge/normal_exit_host_terminal_v1.py tools/test_ck3_host_terminal_observation.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\038.cmd",
+        "bytes": 236,
+        "sha256": "a2d91feb1e905c414f05c202f2be646bce80529d2e8d54eccd6264a66a39a54d"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\038.stdout.log",
+        "bytes": 44,
+        "sha256": "0c37c4158c91ef55c724ba017bf6465f26018199badb08e3ff13f98acdf056c2"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\038.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "ordinal": 39,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_initial_plan_failure_hold.py --host-source ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\039.cmd",
+        "bytes": 223,
+        "sha256": "38d339d38e2186893589c4d34ab520782dcbb90f349a68fa2d1ddebc3e93c9fa"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\039.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\039.stderr.log",
+        "bytes": 333,
+        "sha256": "9187e7c2a47ba9e81a3daae11ea91c33950da071f22dbc3b92b436900492fd09"
+      }
+    },
+    {
+      "ordinal": 40,
+      "command": "python -B -X utf8 ck3_autonomous_player/native_bridge/research/test_ck3_12002_mcp_live.py -v",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\040.cmd",
+        "bytes": 154,
+        "sha256": "63439b6ad0b4057c9670906b8aca2e5ef468c054d9be13d450a575d9658e732e"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\040.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\040.stderr.log",
+        "bytes": 6891,
+        "sha256": "825d00e7f794d3522c0242797e806e6cf04be9aa6e5e20a9dd2b0a7a065eacbd"
+      }
+    },
+    {
+      "ordinal": 41,
+      "command": "python -B -X utf8 tools/test_r05_amount_common_wire.py -v",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\041.cmd",
+        "bytes": 119,
+        "sha256": "01c2b27719276ee089ccb7f1565949def4e155dd9109c60464acbe515c9bd8a5"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\041.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\041.stderr.log",
+        "bytes": 530,
+        "sha256": "d4b1e90eb2753a725ad8fecb5c831d8edbd524fb005bb1c4dd98b5e6856a4d0f"
+      }
+    },
+    {
+      "ordinal": 42,
+      "command": "python -B -X utf8 -m mypy --strict --strict-equality --follow-imports=skip --no-incremental --cache-dir nul tools/ck3_mod_acceptance_background_types.py tools/ck3_mod_acceptance_army_wire.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\042.cmd",
+        "bytes": 252,
+        "sha256": "52546ef73a2e1c423ea70673696e26adaf7b7996d6c145d52b80a5b0fecc8ba3"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\042.stdout.log",
+        "bytes": 44,
+        "sha256": "0c37c4158c91ef55c724ba017bf6465f26018199badb08e3ff13f98acdf056c2"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\042.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "ordinal": 43,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_manual_fallback.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\043.cmd",
+        "bytes": 128,
+        "sha256": "87670491c1c5ce6fc2047361639ac742499cea6bb02057846f80a4a9cbce1e41"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\043.stdout.log",
+        "bytes": 1335,
+        "sha256": "c1dc8718f9599ce3da45591cc44bfceda2c47aa0600a014a28e1fc2db36039d1"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\043.stderr.log",
+        "bytes": 107,
+        "sha256": "ee2e0fc999924c05991e44deaba53a40c76fc656fc0feba23d7d610c07cbd33b"
+      }
+    },
+    {
+      "ordinal": 44,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_manual_quit_review.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\044.cmd",
+        "bytes": 131,
+        "sha256": "49fc4e6904dc9f6f7aa840018cd5ad68deaad5ca77dde9649d285140de214434"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\044.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\044.stderr.log",
+        "bytes": 926,
+        "sha256": "8f945611ca2aecf28e6a30542419114b3b296fd4526abecfae067485de0c2cf4"
+      }
+    },
+    {
+      "ordinal": 45,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_manual_quit_retained_exit.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\045.cmd",
+        "bytes": 138,
+        "sha256": "90c05d70b3bb973d19954153752dce73769018e9043f33a238729f0206572d91"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\045.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\045.stderr.log",
+        "bytes": 839,
+        "sha256": "3c23ee7861318e3c1323219406d614814f40be054ec307b4099b26e86c89e1db"
+      }
+    },
+    {
+      "ordinal": 46,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_merit_loaded_pool_scope.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\046.cmd",
+        "bytes": 136,
+        "sha256": "1a28fcf998f2e5ad099ada423bdc417f184cdf432cb651e15bc03441c12aff94"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\046.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\046.stderr.log",
+        "bytes": 1523,
+        "sha256": "f3aaab8b586f653a92cc05911b81c423670d735a46f6bf78929d167e49fec8a6"
+      }
+    },
+    {
+      "ordinal": 47,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_normal_quit_reviewer.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\047.cmd",
+        "bytes": 133,
+        "sha256": "0bdd4b60d9042e18c67edcad2233b8b2153023d521e51ee643a7293d419f6df4"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\047.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\047.stderr.log",
+        "bytes": 105,
+        "sha256": "9a5d42d6ea7f848c017a4c7053ba9f7b74f838e0ddfdb6a064ce2cc698c16e57"
+      }
+    },
+    {
+      "ordinal": 48,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_business_reviewer.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\048.cmd",
+        "bytes": 130,
+        "sha256": "c587b1de8d182907383f980b461090d3cab72d3399da1d469f9973db44523509"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\048.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\048.stderr.log",
+        "bytes": 1883,
+        "sha256": "537d8529af10d8ce9e2408bda30eebcd7a6831471bc526ab6928aeb528d6d806"
+      }
+    },
+    {
+      "ordinal": 49,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_reviewer_prelaunch.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\049.cmd",
+        "bytes": 131,
+        "sha256": "a873223a3380c037d90d1eec363952ef892b956ff002d9fb314d76b41f86d3e9"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\049.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\049.stderr.log",
+        "bytes": 1485,
+        "sha256": "0d81b85bec46e36e36a1885021424ff26467c28ca3237324cfaede7cd8f2d6df"
+      }
+    },
+    {
+      "ordinal": 50,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_title_reference.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\050.cmd",
+        "bytes": 128,
+        "sha256": "3abfa0e252f9f8e46d743e22b0564f4cf6483882e3faafacbdfa82ed1193fabf"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\050.stdout.log",
+        "bytes": 133,
+        "sha256": "b7541bec60604fc6eccb228a2415946dad997bdb488135108f2d5508c1d12cd0"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\050.stderr.log",
+        "bytes": 465,
+        "sha256": "6e005a3b4454ddb090038f7fdbe297287c23c126746ed6bc0e9d19b8d2e7c0ad"
+      }
+    },
+    {
+      "ordinal": 51,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_queue_control.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\051.cmd",
+        "bytes": 126,
+        "sha256": "bf43a4b7c223bd2861006f4f1d491ce5001a437ed9aad986d2a1ce1e11dbfc63"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\051.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\051.stderr.log",
+        "bytes": 1137,
+        "sha256": "7d666bd0faeb6726d0057aee29f28c51de65c3ca8a1a6410728c8a40cdf79a7a"
+      }
+    },
+    {
+      "ordinal": 52,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_queue_inprocess.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\052.cmd",
+        "bytes": 128,
+        "sha256": "f73d5bdf02744b0803e9281e04f05a12a592c62722dab3c98803708eddbb10c4"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\052.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\052.stderr.log",
+        "bytes": 127,
+        "sha256": "10ce932082c08572bf22e8e8694d2efbcb84a7edadfe77c2c1da14640be23308"
+      }
+    },
+    {
+      "ordinal": 53,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_queue_failure_shutdown.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\053.cmd",
+        "bytes": 135,
+        "sha256": "b5337c4373634c7b9ad6e02fed20b974c119be731a6170a2e958a7473adb5643"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\053.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\053.stderr.log",
+        "bytes": 863,
+        "sha256": "b8ebb40246462b38781652642ee050e83938f9ac2262fccd53ae160b5d138fcc"
+      }
+    },
+    {
+      "ordinal": 54,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_readonly_observers.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\054.cmd",
+        "bytes": 131,
+        "sha256": "71dc5a119a73f4f9ef8b4a4638c994465cda30662c053f13f5148f79b1cf3d95"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\054.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\054.stderr.log",
+        "bytes": 1756,
+        "sha256": "176e4f075d50ed774e06504fc86e9a1bc8ea3a4b7df3e5c51c69e04d31905938"
+      }
+    },
+    {
+      "ordinal": 55,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_local_launch.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\055.cmd",
+        "bytes": 125,
+        "sha256": "bd0a46b66007e175b4ad98f1a7eff33450aa1b311d08c6824de66cd029047bea"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\055.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\055.stderr.log",
+        "bytes": 114,
+        "sha256": "ad7756d994bbc8c50c2786263fd8752339aaa1431335183ed7a80bd829644bd8"
+      }
+    },
+    {
+      "ordinal": 56,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_bootstrap.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\056.cmd",
+        "bytes": 122,
+        "sha256": "0c115dbacc75a2f1d5ac37c360ab295839bf7ce7dfa04005bab1673fcff4ffee"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\056.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\056.stderr.log",
+        "bytes": 114,
+        "sha256": "a7dd4e1343448453e8018eecc8e7a475fa6e453dfce46009cc6d4046092679bf"
+      }
+    },
+    {
+      "ordinal": 57,
+      "command": "python -B -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p test_saved_campaign_startup_admission.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\057.cmd",
+        "bytes": 180,
+        "sha256": "8f4693fcf6a5a686558ee5e1307ff7ca7aee574f509ce6f712234334b7645409"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\057.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\057.stderr.log",
+        "bytes": 115,
+        "sha256": "5dfc636e39e7265d3101b8693327d12c9ee3fc080d4ddefd5c32c3e0a94e49de"
+      }
+    },
+    {
+      "ordinal": 58,
+      "command": "python -B -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p test_saved_campaign_vanilla_profile.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\058.cmd",
+        "bytes": 178,
+        "sha256": "87be4bc5d3019c787583c120c8d81f6c01140b90d0ebb4b365a48d0e4efe75e6"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\058.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\058.stderr.log",
+        "bytes": 111,
+        "sha256": "ebacdd01b8dbcdf7ba2fbe196053402af7eade220dd76a726582e690fd1481ae"
+      }
+    },
+    {
+      "ordinal": 59,
+      "command": "python -B -X utf8 tools/test_saved_campaign_profile_inventory_v2.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\059.cmd",
+        "bytes": 129,
+        "sha256": "daddbc3dce003109a2098581f4fc9974fa47080f4e02440d80b8db898a395188"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\059.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\059.stderr.log",
+        "bytes": 112,
+        "sha256": "a6ac4955b8e1c26daf8f2303add161dde002fe26893846a9c717d755070602f4"
+      }
+    },
+    {
+      "ordinal": 60,
+      "command": "python -B -X utf8 -m mypy --strict --follow-imports=silent --no-incremental --cache-dir nul ck3_autonomous_player/src/xar_autoplayer/saved_campaign_profile_inventory_v2.py tools/ck3_mod_acceptance_saved_profile_v2.py tools/test_saved_campaign_profile_inventory_v2.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\060.cmd",
+        "bytes": 328,
+        "sha256": "85757de5de7140d809c37b86ba8346f837438868f072ecd0327c336644258d9d"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\060.stdout.log",
+        "bytes": 44,
+        "sha256": "281a094c39385b4d7b53e5db635f52158036861433c2a4975b9039e77a627a24"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\060.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "ordinal": 61,
+      "command": "python -B -X utf8 tools/test_lyd_transaction_control_adapter.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\061.cmd",
+        "bytes": 125,
+        "sha256": "d3930800d6fed73a0d2efd073740ac1a4a43b7b3191f80a2678997313a3dd3cc"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\061.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\061.stderr.log",
+        "bytes": 115,
+        "sha256": "c97308a4ab62c1f6694e3069c3799251bc41f1b154b76b1b1fb8bb87473fb3b7"
+      }
+    },
+    {
+      "ordinal": 62,
+      "command": "python -B -X utf8 tools/test_lyd_i3b_formal_adapter.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\062.cmd",
+        "bytes": 116,
+        "sha256": "a6dc9080a96fe5c92b585308ce50c892ca33de5d7cb199e195835a7c84042125"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\062.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\062.stderr.log",
+        "bytes": 2238,
+        "sha256": "0acf2f90713ec5260b93ba67be225a20c9bd81e04161229f734b79d3693e146f"
+      }
+    },
+    {
+      "ordinal": 63,
+      "command": "python -B -X utf8 tools/test_lyd_i3b_formal_b5_adapter.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\063.cmd",
+        "bytes": 119,
+        "sha256": "67e972d0bc97631b3073f27bbe9a94cfe22923a65ac3b6e978663687848dea96"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\063.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\063.stderr.log",
+        "bytes": 112,
+        "sha256": "cb062ee694194c467f93fa8df1233dabae2e82db90d763815f60b4a63aaa9b6c"
+      }
+    },
+    {
+      "ordinal": 64,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_holder_stage_diagnostic.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\064.cmd",
+        "bytes": 136,
+        "sha256": "d4c81f513f98a4e61d8ac96ec43b0dfdf81daa1ee330096dce32d4022567dffd"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\064.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\064.stderr.log",
+        "bytes": 110,
+        "sha256": "a90c3337b15a21cf48868a2d16bfd5a4cf6b5d6ac8c4947a820c55b9d6c6ac54"
+      }
+    },
+    {
+      "ordinal": 65,
+      "command": "python -B -X utf8 mod_li_yu_dao/tools/test_factory_diagnostic.py FactoryDiagnosticHeirProbeTests",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\065.cmd",
+        "bytes": 158,
+        "sha256": "a5b37f586a6f1d20297b9d3cff96f938448ca00ba04c3620c2befa824aebbd01"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\065.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\065.stderr.log",
+        "bytes": 106,
+        "sha256": "3ed9eaae30353ccc9d1c78ab6470a6d96ff0137128b89e08a1185b907f5eed7a"
+      }
+    },
+    {
+      "ordinal": 66,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_workshop_cache.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\066.cmd",
+        "bytes": 127,
+        "sha256": "0e71bf7fe8c8b7feb2f50c4f4c8e5104fe6da297c255aec22138863f6efbb9df"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\066.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\066.stderr.log",
+        "bytes": 2212,
+        "sha256": "edb233a56bef9e5aee8b8efab85ef1ea28f02715c187fed78fd5f655cd767fbe"
+      }
+    },
+    {
+      "ordinal": 67,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_reviewed_python_cache_compatibility.py -v",
+      "guard": "if errorlevel 1 exit /b 1",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\067.cmd",
+        "bytes": 129,
+        "sha256": "ac15f1ba3db5f5fdb045627f2b91b0a7fff9a28747ec27ab24115b6acbfe9366"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\067.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\067.stderr.log",
+        "bytes": 1167,
+        "sha256": "5c89d3222c1664f7b5375eeb1de5b7f27c3702131bca710bef3eede3c97f389e"
+      }
+    },
+    {
+      "ordinal": 68,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_adapters.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\068.cmd",
+        "bytes": 121,
+        "sha256": "f6a2822fd7b8a1b69183b96f27b6549875994b3e395ce22d342ab20f6ea1032f"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\068.stdout.log",
+        "bytes": 963,
+        "sha256": "499aae99a71cfbb6f950a6b569da73cbe02bb954a7a16894283a5305312ef3c1"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\068.stderr.log",
+        "bytes": 129,
+        "sha256": "4c5c42b04e85f6aeac293aaf9b682073ffd304fe915c847a3dbf05c40a7995a0"
+      }
+    },
+    {
+      "ordinal": 69,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_completion.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\069.cmd",
+        "bytes": 123,
+        "sha256": "da3388df5aaecf7ad1d9ba27c55ac24ba4d51c1f8744f6dd0f8638906e4feebb"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\069.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\069.stderr.log",
+        "bytes": 106,
+        "sha256": "b462b9d0595be1ef10937deddfe5dec95f43f3d1c3d933c29b770d0cf5c4e075"
+      }
+    },
+    {
+      "ordinal": 70,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_pause.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\070.cmd",
+        "bytes": 118,
+        "sha256": "184dea26656a0e4a201d4503d1f5b6119fc30f4539d30b2b6c98f6ec1d9da46a"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\070.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\070.stderr.log",
+        "bytes": 1600,
+        "sha256": "03e0e68883ef7047a35113fc0013b6c743b748d4bbec9ad8e7d85451fa05a4f8"
+      }
+    },
+    {
+      "ordinal": 71,
+      "command": "python -B -X utf8 ck3_autonomous_player/tests/unit/test_campaign_pause_same_owner_diagnostic.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\071.cmd",
+        "bytes": 157,
+        "sha256": "9b82d17220f315b07f320026319108ac30ee889d444a1c37329b41a10b005afa"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\071.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\071.stderr.log",
+        "bytes": 109,
+        "sha256": "ba9882e9ac323861c4e47fd88f712e12a56b4bd76a6d541faec02026dfe5f209"
+      }
+    },
+    {
+      "ordinal": 72,
+      "command": "python -B -X utf8 ck3_autonomous_player/tests/unit/test_campaign_pause_ready_convergence.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\072.cmd",
+        "bytes": 153,
+        "sha256": "20a7c8cdc0fed93e5ddf8aa01a41266136933a3b88ec80ee78c59a4e3579c1cd"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\072.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\072.stderr.log",
+        "bytes": 5205,
+        "sha256": "d32c130c57cfba71dd03d43c439cb0d1b1b59e0edf948f28799a8c382260744e"
+      }
+    },
+    {
+      "ordinal": 73,
+      "command": "python -B -X utf8 ck3_autonomous_player/tests/unit/test_campaign_running_date_convergence.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\073.cmd",
+        "bytes": 154,
+        "sha256": "7bcf7362b34f3c56805cbb568cb868a69f319d5b57507a60c3b4861b28d41aa2"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\073.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\073.stderr.log",
+        "bytes": 6035,
+        "sha256": "1fcf451d3759d5c3e9b5496335a44339e273a955a8743b7bf5aecab316efc68a"
+      }
+    },
+    {
+      "ordinal": 74,
+      "command": "python -B -X utf8 ck3_autonomous_player/tests/unit/test_campaign_running_date_publication_v1.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\074.cmd",
+        "bytes": 157,
+        "sha256": "e0f1674daafa4b745ba5dc63cc0934c1a66ab74675689e9071e4bda4e3b73ec7"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\074.stdout.log",
+        "bytes": 70083,
+        "sha256": "34805760d2c71889520bc27bfc87404353c4b85183a08f83a76826a833b86a7c"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\074.stderr.log",
+        "bytes": 112,
+        "sha256": "32981beefdc67ca14a4623bab241f5cb89b2c6abfc0311d0815e59e77da2f1dc"
+      }
+    },
+    {
+      "ordinal": 75,
+      "command": "python -B -m mypy --strict --strict-equality --follow-imports=skip --no-incremental --cache-dir nul ck3_autonomous_player/src/xar_autoplayer/bridge/campaign_running_date_publication_v1.py ck3_autonomous_player/tests/unit/test_campaign_running_date_publication_v1.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\075.cmd",
+        "bytes": 327,
+        "sha256": "00e3bff0d3619a8ef5f781e59ce8a16e17e46a228270130ff0180ae803e2bf96"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\075.stdout.log",
+        "bytes": 44,
+        "sha256": "0c37c4158c91ef55c724ba017bf6465f26018199badb08e3ff13f98acdf056c2"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\075.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "ordinal": 76,
+      "command": "python -B -X utf8 ck3_autonomous_player/tests/unit/test_timeline_snapshot_publication_12004.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\076.cmd",
+        "bytes": 156,
+        "sha256": "4e8699cc6ad1b617cb0ca3d07c7fcb4c0dcd52211c1bfae18c19a83976082ac0"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\076.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\076.stderr.log",
+        "bytes": 106,
+        "sha256": "711235a7340f3b5030faefa76a2289ad36ad9e0aa3b3a463a250fb87c13e01a0"
+      }
+    },
+    {
+      "ordinal": 77,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_day_result.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\077.cmd",
+        "bytes": 123,
+        "sha256": "0127e86009684338073ca25b9088147c70a0daf030976a37e5460121677b4deb"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\077.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\077.stderr.log",
+        "bytes": 793,
+        "sha256": "f688974caeb28543f548a394bb43118f89e0a29dc5949a61ee056a9944516bbd"
+      }
+    },
+    {
+      "ordinal": 78,
+      "command": "python -B -X utf8 tools/test_legacy_live_acceptance_entry_guard.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\078.cmd",
+        "bytes": 128,
+        "sha256": "e934e285f4192a57794d8dd71742b5e74e7b46c74bbc2520055b9bb59f566c54"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\078.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\078.stderr.log",
+        "bytes": 131,
+        "sha256": "f80f399482565906027fd3178101f1f5f644cde003ca4d597077d04289f7b4a1"
+      }
+    },
+    {
+      "ordinal": 79,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_campaign_event.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\079.cmd",
+        "bytes": 127,
+        "sha256": "32b9364b27d0097430e96c8bc4cdebac2246f1096d52156a89e4524322ed7a94"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\079.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\079.stderr.log",
+        "bytes": 1529,
+        "sha256": "c88f05fc59615c976a86fcb3a836dac8db4aca96a4585eb38c5c92d342b18151"
+      }
+    },
+    {
+      "ordinal": 80,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_poll_reporting.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\080.cmd",
+        "bytes": 127,
+        "sha256": "dc42503b0073525da07e0751f8916e9e596628865ee8526216157c55b94438be"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\080.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\080.stderr.log",
+        "bytes": 1149,
+        "sha256": "234d933f7d5c5b6fae285686534831c5415308dddb92a56e4f29e62dba39298b"
+      }
+    },
+    {
+      "ordinal": 81,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_preaction.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\081.cmd",
+        "bytes": 122,
+        "sha256": "0f54174f5bb6cd1008cc9a3dd3f6474d17bcb433c95882e868f40467d66ca1ec"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\081.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\081.stderr.log",
+        "bytes": 2183,
+        "sha256": "e6bfd2f2f081ebe1bdfacdd7fd31193fdb5da7d02eee00c4277cacd13660aa09"
+      }
+    },
+    {
+      "ordinal": 82,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_menu_mod_load.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\082.cmd",
+        "bytes": 126,
+        "sha256": "7676d329f73f814e613ec3fbc7cc8a12812afaf9c46d6c283c51043c3482fb36"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\082.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\082.stderr.log",
+        "bytes": 109,
+        "sha256": "5c65efed71faf3afd8e91c5ba7ad5133a338e81997b2037a7d60a189002dc2f4"
+      }
+    },
+    {
+      "ordinal": 83,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_song_holding.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\083.cmd",
+        "bytes": 125,
+        "sha256": "95c4d0599224b63e02d0432ca27595e4ee14a21400c59f580efba6d61a2815e7"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\083.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\083.stderr.log",
+        "bytes": 753,
+        "sha256": "772560bbb69bfed06f2b80e4a4b721f438a61d68aa18164beb5c8c68684ddf6c"
+      }
+    },
+    {
+      "ordinal": 84,
+      "command": "python -B -X utf8 tools/test_title_holder_stable_key_contract.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\084.cmd",
+        "bytes": 126,
+        "sha256": "e0f823997b08c2ef481cd6fcca506ce1b5f58a1d972703378a14b54db871f063"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\084.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\084.stderr.log",
+        "bytes": 109,
+        "sha256": "fa59defc26fd5febca5ba4add6b3520374cf9d7bec67bd8928f4b0654c070fcb"
+      }
+    },
+    {
+      "ordinal": 85,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_event_callsite.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\085.cmd",
+        "bytes": 127,
+        "sha256": "930e15ebe744fc24070e1a83c07eae8e85f43caab7382c805fc7a8a50c675bc5"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\085.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\085.stderr.log",
+        "bytes": 112,
+        "sha256": "31ad4ce4dea527f6fdcbe7b7030d19e996dc40a0c79ceaeecf5514a732de44a6"
+      }
+    },
+    {
+      "ordinal": 86,
+      "command": "python -B -X utf8 tools/test_ingame_ui_managed_binding.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\086.cmd",
+        "bytes": 119,
+        "sha256": "2bccdfc4f91c63ff368c15ae1d4ab31a624742461b976794b697eb1e425f6dc8"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\086.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\086.stderr.log",
+        "bytes": 110,
+        "sha256": "e4b523aeae32a1fe83c884ceea02e558a6a4879c72ab8c7a04c9010fb9aa8625"
+      }
+    },
+    {
+      "ordinal": 87,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_log_contract.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\087.cmd",
+        "bytes": 125,
+        "sha256": "dc7b01890cbf5683363484428a216eea8ca8c9b6290dd81827c3d711cc9e5fbe"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\087.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\087.stderr.log",
+        "bytes": 111,
+        "sha256": "1700fc73d6da25cbd0524d36fddbecea5f59edda84a9cf07494fcaeadfc3def8"
+      }
+    },
+    {
+      "ordinal": 88,
+      "command": "python -B -m mypy --follow-imports=skip --no-incremental --cache-dir nul tools/ck3_mod_acceptance_queue.py tools/test_ck3_mod_acceptance_previous_row_readonly.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\088.cmd",
+        "bytes": 223,
+        "sha256": "c2bd16276192d168dd72d4960ae8454f4ff38560cc0f0cbee96f809334e5a797"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\088.stdout.log",
+        "bytes": 44,
+        "sha256": "0c37c4158c91ef55c724ba017bf6465f26018199badb08e3ff13f98acdf056c2"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\088.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "ordinal": 89,
+      "command": "python -B -m mypy --follow-imports=skip --check-untyped-defs --no-incremental --cache-dir nul tools/test_ck3_mod_acceptance_queue_inprocess.py tools/test_ck3_mod_acceptance_workshop_cache.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\089.cmd",
+        "bytes": 252,
+        "sha256": "0a46fe02904ed5ff6a54f82b4bf834241bf5f4daa692c85dd97fdce3d19f3289"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\089.stdout.log",
+        "bytes": 44,
+        "sha256": "0c37c4158c91ef55c724ba017bf6465f26018199badb08e3ff13f98acdf056c2"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\089.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "ordinal": 90,
+      "command": "python -B -X utf8 -c \"import sys,unittest; suite=unittest.defaultTestLoader.loadTestsFromNames(['tools.test_ck3_mod_acceptance_case_imports']); count=suite.countTestCases(); result=unittest.TextTestRunner(verbosity=2).run(suite); sys.exit(0 if count>0 and result.testsRun==count and result.wasSuccessful() and not result.skipped else 1)\"",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\090.cmd",
+        "bytes": 399,
+        "sha256": "6a1c8b49b87509327ff82345e2b48318432edba54af143aa19795557dfbb8efa"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\090.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\090.stderr.log",
+        "bytes": 1265,
+        "sha256": "5a6a593582cdb30b067500ee829390cf8e17bdb546db7ffe58bb5ce2dd8bcf6c"
+      }
+    },
+    {
+      "ordinal": 91,
+      "command": "python -B -X utf8 -c \"import sys,unittest; suite=unittest.defaultTestLoader.loadTestsFromNames(['tools.test_ck3_mod_acceptance','tools.test_ck3_mod_acceptance_adapters']); count=suite.countTestCases(); result=unittest.TextTestRunner(verbosity=2).run(suite); sys.exit(0 if count>0 and result.testsRun==count and result.wasSuccessful() and not result.skipped else 1)\"",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\091.cmd",
+        "bytes": 427,
+        "sha256": "388e7ca7d0940d71dbe7a9fb39fd957de09e551bce3907f6f0c63e3fac8de1ad"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\091.stdout.log",
+        "bytes": 964,
+        "sha256": "8251e5832b7118f7a7f3fe1af9b985a8a0f17d86b6b5b50aaf43923657c5e8f1"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\091.stderr.log",
+        "bytes": 10574,
+        "sha256": "48a469a706d848f130083ba5e5f912b805bcc0de3afd78b5762195a46bf7b14e"
+      }
+    },
+    {
+      "ordinal": 92,
+      "command": "python -B -X utf8 -c \"import sys,unittest; suite=unittest.defaultTestLoader.loadTestsFromNames(['tools.test_faith_e02_pilgrimage_workflow','tools.test_faith_e02_pilgrimage_event_policy','tools.test_faith_e02_pilgrimage_milestone_observations']); count=suite.countTestCases(); result=unittest.TextTestRunner(verbosity=2).run(suite); sys.exit(0 if count>0 and result.testsRun==count and result.wasSuccessful() and not result.skipped else 1)\"",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\092.cmd",
+        "bytes": 501,
+        "sha256": "abea7037051ba721449d0b90612ca31fb79000f936e678f9f41ddf0f61dd942f"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\092.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\092.stderr.log",
+        "bytes": 11630,
+        "sha256": "898a8b4a8d5ef6a02cbff605072c9ab87081f877329be618a11c9527326555a8"
+      }
+    },
+    {
+      "ordinal": 93,
+      "command": "python -B -X utf8 -c \"import unittest; s=unittest.defaultTestLoader.loadTestsFromNames(['tools.test_faith_e02_d1_adapter_entry','tools.test_ck3_mod_acceptance_graphics_cache']); n=s.countTestCases(); r=unittest.TextTestRunner(verbosity=2).run(s); raise SystemExit(0 if n>0 and r.testsRun==n and r.wasSuccessful() and not r.skipped else 1)\"",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\093.cmd",
+        "bytes": 401,
+        "sha256": "08ac75336e0aab3eabbd857f809341638ea77fa428241b7ce7d6e30931e739b2"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\093.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\093.stderr.log",
+        "bytes": 6529,
+        "sha256": "93b8f2f9dccb18a37330fbcae315e8e1d64559bb7badcfffef4497259f3435fa"
+      }
+    },
+    {
+      "ordinal": 94,
+      "command": "python -B -X utf8 -m mypy --strict --strict-equality --follow-imports=skip --no-incremental --cache-dir nul tools/test_ck3_mod_acceptance_case_imports.py tools/ck3_mod_acceptance_cases/faith_e02_pilgrimage_contract.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\094.cmd",
+        "bytes": 279,
+        "sha256": "b13b8a6ffe484602bdc11e418fe24142345cd3baa8d5c4897130977a061e4cd5"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\094.stdout.log",
+        "bytes": 44,
+        "sha256": "0c37c4158c91ef55c724ba017bf6465f26018199badb08e3ff13f98acdf056c2"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\094.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "ordinal": 95,
+      "command": "python -B -X utf8 -m mypy --check-untyped-defs --follow-imports=skip --no-incremental --cache-dir nul tools/ck3_mod_acceptance_cases/faith_e02_pilgrimage_adapter.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\095.cmd",
+        "bytes": 226,
+        "sha256": "ff20caacb71fdff4b987a5c702c21c7d73ffc588a3c618727a8864d6e04ff81c"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\095.stdout.log",
+        "bytes": 43,
+        "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\095.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "ordinal": 96,
+      "command": "python -B -X utf8 -c \"import sys,unittest; suite=unittest.defaultTestLoader.loadTestsFromNames(['ck3_autonomous_player.tests.unit.test_r0031_source_only_event_knowledge_mcp']); count=suite.countTestCases(); result=unittest.TextTestRunner(verbosity=2).run(suite); sys.exit(0 if count>0 and result.testsRun==count and result.wasSuccessful() and not result.skipped else 1)\"",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\096.cmd",
+        "bytes": 432,
+        "sha256": "2d62274519962c157db39bd28371b8d8d3317fe62cdee84aa023cb4eef94560f"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\096.stdout.log",
+        "bytes": 1197,
+        "sha256": "0312349d756542ef23c9edeb6e2be555e0a8a79ba5d4c8b37d7d5d0bb3b17fbb"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\096.stderr.log",
+        "bytes": 9367,
+        "sha256": "4244229ded3d63e9f5c9e7f16e2f69d99e05ab10e05eb9668376a8f11a9cc3bc"
+      }
+    },
+    {
+      "ordinal": 97,
+      "command": "python -B -X utf8 -m mypy --strict --strict-equality --follow-imports=skip --no-incremental --cache-dir nul ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_pilgrimage_travel_source_only_12004.py ck3_autonomous_player/tests/unit/test_r0031_source_only_event_knowledge_mcp.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\097.cmd",
+        "bytes": 351,
+        "sha256": "25828a14896773132d936d0c1c296307ac8de3d938ce0c416545583b36ba0423"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\097.stdout.log",
+        "bytes": 44,
+        "sha256": "0c37c4158c91ef55c724ba017bf6465f26018199badb08e3ff13f98acdf056c2"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\097.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "ordinal": 98,
+      "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_product_preparation.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\098.cmd",
+        "bytes": 132,
+        "sha256": "694f1963ed5cc56aa56ca75b2b524c6a8d9ae0060afe1ce646bb655089263fa9"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\098.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\098.stderr.log",
+        "bytes": 126,
+        "sha256": "97471283a74f36fc173ece84be190d10e6169c88408f706e8839627e50c8117f"
+      }
+    },
+    {
+      "ordinal": 99,
+      "command": "python -B -X utf8 ck3_autonomous_player/tests/unit/test_frontend_fixture_scenario_host.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\099.cmd",
+        "bytes": 151,
+        "sha256": "55acdae842719aa90736c99a69be6872b8aa21c25a2c96f5a1552c667158cdb1"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\099.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\099.stderr.log",
+        "bytes": 2154,
+        "sha256": "c88417b5fd8efb9566565786c295a164b0a6c3f6b564ac432f26c5e9be3c2300"
+      }
+    },
+    {
+      "ordinal": 100,
+      "command": "python -B -m mypy --follow-imports=silent --ignore-missing-imports --no-incremental tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\100.cmd",
+        "bytes": 203,
+        "sha256": "3f55cf7d36fdb9e00963dfaa157f394880413129cbebc8a99c21ae5cf379e3e8"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\100.stdout.log",
+        "bytes": 43,
+        "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\100.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "ordinal": 101,
+      "command": "python -B -X utf8 -m unittest discover -s tools -p \"test_legacy_decision_overlay_retirement.py\" -v",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\101.cmd",
+        "bytes": 160,
+        "sha256": "a922e89ecd551e42827b4e038801b60656423e413a4ec1a94531c765ea54a121"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\101.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\101.stderr.log",
+        "bytes": 1741,
+        "sha256": "382b9207853e215ac80d72c77d5d57f542168e3be94e75c384fa0399185392c4"
+      }
+    },
+    {
+      "ordinal": 102,
+      "command": "python -B -X utf8 -m unittest discover -s tools -p \"test_ck3_mod_acceptance_segmented_recorder.py\" -v",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\102.cmd",
+        "bytes": 163,
+        "sha256": "088f0ab3f7adcb98106a055e102d569f194adcf724368746888922ac1bbfcfdc"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\102.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\102.stderr.log",
+        "bytes": 5200,
+        "sha256": "487758275b987d681ea9928eb08ba572c709cdb212e5440963bbb2545f759dbc"
+      }
+    },
+    {
+      "ordinal": 103,
+      "command": "python -B -X utf8 -m mypy --strict --strict-equality --explicit-package-bases --follow-imports=silent --no-incremental --cache-dir nul -m xar_autoplayer.bridge.normal_exit_public_wire_v2 -m test_normal_exit_public_wire_v2 -m xar_autoplayer.bridge.runtime_input_contract_v1",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\103.cmd",
+        "bytes": 334,
+        "sha256": "a31815255207256504674f829f0a61aec2d0a5ae520dbbdffdd268eb14d89dec"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\103.stdout.log",
+        "bytes": 44,
+        "sha256": "281a094c39385b4d7b53e5db635f52158036861433c2a4975b9039e77a627a24"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\103.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "ordinal": 104,
+      "command": "python -B -X utf8 -m unittest -v test_normal_exit_public_wire_v2 test_normal_exit_integrated_v1",
+      "guard": "if not \"%errorlevel%\"==\"0\" exit /b %errorlevel%",
+      "cmd": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\104.cmd",
+        "bytes": 157,
+        "sha256": "c0034cfae14c2c06f1d09315756ebd94c1aecea63bc46f09fdeb51481c724e16"
+      },
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\104.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\104.stderr.log",
+        "bytes": 9696,
+        "sha256": "ebf6eefe931fa1b6fbfc11430b704736fbc4f20082ba6c796e47b760626e7629"
+      }
+    },
+    {
+      "operation": "reanchor",
+      "argv": [
+        "C:/ck3-superman-validation-20261023/ops/shared-ci-clean-venv-a01/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\refresh_common_c09.py",
+        "--source-ready-commit",
+        "f8032008c64e467701e6a26b0239a13c163c2fec"
+      ],
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\reanchor.stdout.log",
+        "bytes": 65,
+        "sha256": "1d1b1801431322b333fe218663c180cc73cbff53f64cf128b51318f6ac7840a2"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\reanchor.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "operation": "prepare",
+      "argv": [
+        "C:/ck3-superman-validation-20261023/ops/shared-ci-clean-venv-a01/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\sxad1023\\tools\\ck3_mod_acceptance.py",
+        "prepare",
+        "--runtime",
+        "C:/ck3-common-runtime-20261024/runtime.selected-common-c09.json",
+        "--products",
+        "D:\\sxad1023\\tools\\ck3_mod_acceptance_products.json",
+        "--product",
+        "superman-qiang",
+        "--case",
+        "notification-investigation",
+        "--case-inputs",
+        "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\fresh-notification-a01\\case-inputs.json",
+        "--prepare-output",
+        "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\fresh-notification-a01\\prepared"
+      ],
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\prepare.stdout.log",
+        "bytes": 22214,
+        "sha256": "dc835d33c4fc16c074ba359c0dd232dbf5b5b5d826c66e8e5501cfe796d3c6b8"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\prepare.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "operation": "plan",
+      "argv": [
+        "C:/ck3-superman-validation-20261023/ops/shared-ci-clean-venv-a01/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\sxad1023\\tools\\ck3_mod_acceptance.py",
+        "plan",
+        "--runtime",
+        "C:/ck3-common-runtime-20261024/runtime.selected-common-c09.json",
+        "--products",
+        "D:\\sxad1023\\tools\\ck3_mod_acceptance_products.json",
+        "--product",
+        "superman-qiang",
+        "--case",
+        "notification-investigation",
+        "--prepared-case",
+        "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\fresh-notification-a01\\prepared\\prepared-case.json"
+      ],
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\plan.stdout.log",
+        "bytes": 5202,
+        "sha256": "3471143afef8c6c2d0192b1c99a2d160d51f5253a91a744fa650cdf91620d22a"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\plan.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "operation": "preflight",
+      "argv": [
+        "C:/ck3-superman-validation-20261023/ops/shared-ci-clean-venv-a01/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\sxad1023\\tools\\ck3_mod_acceptance.py",
+        "preflight",
+        "--runtime",
+        "C:/ck3-common-runtime-20261024/runtime.selected-common-c09.json",
+        "--products",
+        "D:\\sxad1023\\tools\\ck3_mod_acceptance_products.json",
+        "--product",
+        "superman-qiang",
+        "--case",
+        "notification-investigation",
+        "--prepared-case",
+        "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\fresh-notification-a01\\prepared\\prepared-case.json"
+      ],
+      "stdout": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\preflight.stdout.log",
+        "bytes": 10529,
+        "sha256": "53eb20fd07a7c3a8922e2f26fa23c10f775ea035348891caa4f6e5c4f71d49bc"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\preflight.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "static_diagnostic_log": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\type-scope-a01\\baseline-ordinary.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "static_diagnostic_log": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\type-scope-a01\\baseline-ordinary.stdout.log",
+        "bytes": 4709,
+        "sha256": "5f8b99cfecd1738999f79a1bde655423f9c27b33b3b8437e339181fc90357cc4"
+      }
+    },
+    {
+      "static_diagnostic_log": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\type-scope-a01\\baseline-strict.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "static_diagnostic_log": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\type-scope-a01\\baseline-strict.stdout.log",
+        "bytes": 255868,
+        "sha256": "f940128c1389a843e72baece62bb085f0bf0f3435853d2ceb3b5e3afcf204dc1"
+      }
+    },
+    {
+      "static_diagnostic_log": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\type-scope-a01\\current-ordinary.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "static_diagnostic_log": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\type-scope-a01\\current-ordinary.stdout.log",
+        "bytes": 2906,
+        "sha256": "91f26754b78a79433fadac685dc4851723dc43f3b74e3d1abc081e55e69f2851"
+      }
+    },
+    {
+      "static_diagnostic_log": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\type-scope-a01\\current-strict.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "static_diagnostic_log": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\type-scope-a01\\current-strict.stdout.log",
+        "bytes": 188801,
+        "sha256": "c412d953eea45f0fc4a47cca749a9c6b9f51582e9b7dff9d1dd202b590ee761c"
+      }
+    },
+    {
+      "static_diagnostic_log": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\type-scope-a01\\loader-strict.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "static_diagnostic_log": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\type-scope-a01\\loader-strict.stdout.log",
+        "bytes": 43,
+        "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff"
+      }
+    },
+    {
+      "external_producer_static_log": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\c09-refresher-mypy.stdout.log",
+        "bytes": 43,
+        "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff"
+      }
+    },
+    {
+      "external_producer_static_log": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\c09-refresher-mypy.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "modified_type_scope": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\type-scope-a01\\FUNCTION-COMPARISON.actual.json",
+    "bytes": 1823,
+    "sha256": "4efa86e76b76485fb098129d6630d413b8901430863e5aba50918cd71af03cdb"
+  },
+  "type_limit": "Strict archived/current entry+allocator+tests both 771; function-qualified diagnostic multisets identical. Ordinary archived/current both 22 legacy errors. Loader and core contract full strict PASS. No all-module strict/ordinary PASS claim.",
+  "external_c09_producer_strict_pass": true,
+  "isolated_interpreter_has_no_ambient_sdk": true,
+  "environment": {
+    "executable": "C:\\ck3-superman-validation-20261023\\ops\\shared-ci-clean-venv-a01\\Scripts\\python.exe",
+    "version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+    "packages": {
+      "mypy": "2.4.0",
+      "jsonschema": "4.26.0",
+      "types-jsonschema": "4.26.0.20261006",
+      "types-psutil": "7.2.2.20260906",
+      "pywin32": "312"
+    }
+  },
+  "actual_environment_overrides": {
+    "PATH": "C:\\ck3-superman-validation-20261023\\ops\\shared-ci-clean-venv-a01\\Scripts;C:\\Users\\1\\.codex\\tmp\\arg0-windows\\codex-arg0nJsIjD;C:\\Users\\1\\AppData\\Local\\pnpm\\global\\v11\\51cc-18e0e810fb9bf56c-0\\node_modules\\.pnpm\\@openai+codex@0.163.0-win32-x64\\node_modules\\@openai\\codex\\vendor\\x86_64-pc-windows-msvc\\codex-path;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\dotnet\\;C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\Git\\cmd;D:\\Program Files\\GitHub CLI\\;D:\\tools;D:\\graalvm-community-25.3.4.1+1.1\\bin;D:\\apache-maven-3.9.16\\bin;C:\\Users\\1\\AppData\\Local\\pnpm\\bin;C:\\Users\\1\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\1\\.dotnet\\tools;D:\\Users\\1\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Users\\1\\AppData\\Roaming\\npm;C:\\Users\\1\\AppData\\Local\\Python\\bin;C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\GitHub.cli_Microsoft.Winget.Source_8wekyb3d8bbwe\\bin;C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin;",
+    "PYTHONPATH": "D:/sxad1023;D:/sxad1023/tools;D:/sxad1023/ck3_autonomous_player/src;D:/workspace/ck3-superman-redesign-20261023/typecheck-deps",
+    "MYPYPATH": "D:/sxad1023/tools;D:/sxad1023/ck3_autonomous_player/src;D:/sxad1023/ck3_workshop_mcp/src",
+    "MYPY_CACHE_DIR": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\mypy-cache",
+    "TMP": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02",
+    "TEMP": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02",
+    "RUNNER_TEMP": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02"
+  },
+  "per_step_environment_evidence": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a02\\RESULT.actual.json",
+    "bytes": 83390,
+    "sha256": "8c53518a5350cb9e3a0ff900496ce8b4cdcaa4ca1114128fea0827b1370c304a"
+  },
+  "reanchored_runtime": {
+    "path": "C:\\ck3-common-runtime-20261024\\runtime.selected-common-c09.json",
+    "bytes": 461012,
+    "sha256": "4b67cd9aa2de605da21efa183533572ea56d1030e31dcf29b5b82c927dbd0cd9"
+  },
+  "reanchor_receipt": {
+    "path": "C:\\ck3-common-runtime-20261024\\refresh-common-c09.actual.json",
+    "bytes": 6807,
+    "sha256": "9e07d504aac8d75fb1ed36d8be5b118bf68eea264df6e066121d0efd3d7df1c7"
+  },
+  "immutable_original_runtime": {
+    "path": "C:\\ck3-common-runtime-20261024\\running-date-support-a01\\runtime.local.json",
+    "bytes": 461012,
+    "sha256": "2afce59cd300fa7ecdb30e076e28c361c307810a4e583d6198a4139a548223f6"
+  },
+  "original_2af_unchanged": true,
+  "manifest_host_sidecar_sdk_native_game_unchanged": true,
+  "changed_overlay_keys": [
+    "shared-helper-c04-ck3_mod_acceptance",
+    "shared-helper-c04-ck3_mod_acceptance_allocate"
+  ],
+  "recording_still_absent": true,
+  "new_runtime_source_head": "f8032008c64e467701e6a26b0239a13c163c2fec",
+  "fresh_prepared_case": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\fresh-notification-a01\\prepared\\prepared-case.json",
+    "bytes": 25770,
+    "sha256": "f5e70b24b0a139b8b1c548448011bb1f43c9340f8e0e6c69ddf2ee54d4b8ae39"
+  },
+  "public_operations": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\PUBLIC-OPERATIONS.actual.json",
+    "bytes": 3505,
+    "sha256": "c14a67348aeaa0c7d6a8c3f585e1ab85010b11fb67a1bff21428eaf88c73a1f3"
+  },
+  "all_four_public_operations_exit_zero": true,
+  "plan_blockers": [],
+  "preflight_blockers": [],
+  "scope_limit": "Source-only validation/preparation; no Game, allocation, publishing, recording or new native/business qualifications",
+  "initial_runner_start_failure": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\ci-a01\\STARTUP-FAILED.actual.json",
+    "bytes": 597,
+    "sha256": "af02c95b18d17cd9c2e9e7859f2bb3395958ee6b929213f0e9fe2acccd4e7e00"
+  },
+  "analysis_retry": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\type-scope-a01\\ANALYSIS-RETRY.actual.json",
+    "bytes": 599,
+    "sha256": "faed1fed646b838f50e9d7109bbd601aa991ac22360ad030776cdf1cdb5f8e1b"
+  },
+  "capacity": {
+    "admission": {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\R0035-closed-capacity-admission.actual.json",
+      "bytes": 10190,
+      "sha256": "ce3bc6ba10886408ad70a74408bb94b26b5292586e734c161758a5764e5fbfdb"
+    },
+    "remaining_forecast_unchanged_bytes": 637534208,
+    "system_reserve_bytes": 4294967296,
+    "finite_C_cap_bytes": 464000000000,
+    "postdeath_credit_taken_bytes": 0,
+    "volumes": {
+      "C:/": {
+        "used": 451843026944,
+        "free": 59290918912
+      },
+      "D:/": {
+        "used": 478378500096,
+        "free": 21711507456
+      }
+    }
+  },
+  "asset_retention": {
+    "owner": "/root",
+    "policy_version": "1.0.0",
+    "record_review_at_utc": "2027-04-22T00:56:27.756725+00:00",
+    "cache_review_at_utc": "2026-10-31T00:56:27.756725+00:00",
+    "active_runtime_preparation_protected_until_utc": "2026-10-24T15:45:00Z",
+    "protection_reason": "Current final integration inputs for coordinator review and final source publication; no auto-renewal or deletion asserted"
+  }
+}

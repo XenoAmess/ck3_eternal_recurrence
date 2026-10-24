@@ -1,0 +1,26 @@
+{
+  "schema": "ck3-mod-acceptance-profile-startup-evidence-v1",
+  "profile_dir": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state\\profile",
+  "profile_files": [
+    "dlc_load.json",
+    "mod/product.mod",
+    "pdx_settings.txt",
+    "player/game_rules/presets.txt",
+    "presets.txt",
+    "tutorial.txt"
+  ],
+  "profile_input_sha256": {
+    "dlc_load.json": "913df90d75091a6ee81e6dae148f4a39863354d7777a07362d85eea3be4cd320",
+    "mod/product.mod": "11854fd4d3c778caf8cbd7713091e5d662d61506f794a67c1b6bafc4baab6731",
+    "pdx_settings.txt": "bc84f30bcc7f0104b194a8cab61b723903e94e68347bb48400d83aecf17ae751",
+    "player/game_rules/presets.txt": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0",
+    "presets.txt": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0",
+    "tutorial.txt": "19f461abd92cc828c19d1cf77355ef6513682423721d64787756cf8465c2ef7d"
+  },
+  "preparation": {
+    "path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\prepared\\profile-preparation.json",
+    "bytes": 2697,
+    "sha256": "3883f6e1570b8b0d7ff4d56aec447998a5750db620619fc736e33baf5345eacc"
+  },
+  "runtime_status": "NOT_RUN"
+}

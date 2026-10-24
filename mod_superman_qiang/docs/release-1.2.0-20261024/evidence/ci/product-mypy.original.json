@@ -1,0 +1,27 @@
+{
+  "schema": "sxanf-product-mypy-result-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-23T20:49:40.769919+00:00",
+  "actual_tool_result": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "0150c7",
+      "wall_time_seconds": 6.1987148,
+      "exit_code": 0,
+      "original_token_count": 11,
+      "output": "Success: no issues found in 2 source files\r\n"
+    }
+  },
+  "MYPYPATH": [
+    "D:/sxad1023/mod_superman_qiang/tools",
+    "D:/sxad1023/tools"
+  ],
+  "flags": [
+    "--follow-imports=silent",
+    "--ignore-missing-imports"
+  ],
+  "source_files": [
+    "mod_superman_qiang/tools/test_runtime.py",
+    "mod_superman_qiang/tools/prepare_live_fixture.py"
+  ]
+}

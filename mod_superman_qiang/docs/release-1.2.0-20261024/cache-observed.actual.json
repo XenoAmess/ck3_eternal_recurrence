@@ -1,0 +1,53 @@
+{
+  "schema": "superman-qiang-cache-observed-projection-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T03:34:41.235918+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--superman-qiang--R0037",
+  "scope": "read-only projection from original common public result and native report; source originals not rewritten",
+  "public_verify": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\final-docs-a02\\tracked\\mod_superman_qiang\\docs\\release-1.2.0-20261024\\evidence\\cache\\R0037\\public-verify.json",
+    "bytes": 104540,
+    "sha256": "eadc7a92d9102379eb524a9df2080b5a16d82b372d72494a2eeb56bdc085aee5"
+  },
+  "normal_close": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\final-docs-a02\\tracked\\mod_superman_qiang\\docs\\release-1.2.0-20261024\\evidence\\cache\\R0037\\normal-close.json",
+    "bytes": 9018,
+    "sha256": "a1c792ee5e3b6e74c66a2d631c6e9e247b85d7e78c52e4e59a3a9690473f5563"
+  },
+  "original_native_report": {
+    "path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0037\\native-report.json",
+    "bytes": 1221848,
+    "sha256": "92c50427fa97c96e9ff2cfe213e8def32f62b5920084778d0d4f662ecd0ffb15"
+  },
+  "common_runtime": {
+    "path": "C:\\ck3-common-runtime-20261024\\menu-factory-v2-a01\\runtime.local.json",
+    "bytes": 460992,
+    "sha256": "af9118978b4c0f4238480d2b40e754b1505f2a87a29229b71a81f85fe51e8655"
+  },
+  "common_source_commit": "91295b2152ecdb469aaab349029f0e72e5d002d8",
+  "product_tag_commit": "bcb9e9f11658519c5277e0d304a02e5028bbd760",
+  "load_evidence_kind": "COMBINED_MANAGED_CACHE_PROFILE_AND_ACTUAL_MAIN_MENU_LOAD",
+  "independent_engine_vfs_path_readback": "UNKNOWN",
+  "actual_cache_mount_proven_by_independent_vfs": false,
+  "case_acceptance_pass": true,
+  "qualified_boundary_pass": true,
+  "business_contract_applicable": false,
+  "business_pass": false,
+  "product_release_pass": false,
+  "pid": 16564,
+  "campaign_started": false,
+  "actions_submitted": 0,
+  "route": "main_menu",
+  "native_status": "GREEN",
+  "normal_close_qualified": true,
+  "retained_os_exit_code": 0,
+  "native_exit_code": 0,
+  "job_active_before": 0,
+  "job_active_final": 0,
+  "cleanup_ok": true,
+  "managed_thread_finished": true,
+  "release_sequence": 8575,
+  "resources": [],
+  "repository_delivery": "PENDING",
+  "release_delivery_complete": false
+}

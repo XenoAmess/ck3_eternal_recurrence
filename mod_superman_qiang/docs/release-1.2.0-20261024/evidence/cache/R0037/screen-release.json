@@ -1,0 +1,42 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": null,
+      "dirty_entries": 0,
+      "head": "91295b2152ecdb469aaab349029f0e72e5d002d8"
+    },
+    "last_sequence": 8575,
+    "next_step": "",
+    "pid": 36504,
+    "repo": "D:\\sxad1023",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "R0037-formal-cache-loaded-normal0-Steam-offline-resource-release",
+    "task_id": "ck3-common-12004-20261023-a15",
+    "updated_at_utc": "2026-10-24T03:30:24.210570+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 8575,
+    "event_id": "6755d6a920c54208ba9fa90137e51c8f",
+    "timestamp_utc": "2026-10-24T03:30:24.211876+00:00",
+    "kind": "completed",
+    "task_id": "ck3-common-12004-20261023-a15",
+    "to": [
+      "*"
+    ],
+    "state": "done",
+    "summary": "R0037-formal-cache-loaded-normal0-Steam-offline-resource-release",
+    "next_step": "",
+    "resources": [],
+    "repo": "D:\\sxad1023",
+    "git": {
+      "branch": null,
+      "dirty_entries": 0,
+      "head": "91295b2152ecdb469aaab349029f0e72e5d002d8"
+    }
+  }
+}

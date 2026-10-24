@@ -1,0 +1,22 @@
+{
+  "schema": "sxad-root-steam-offline-image-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T02:52:32.634147+00:00",
+  "actor": "/root",
+  "steam_offline_confirmed": true,
+  "root_personally_reviewed": true,
+  "review": "Fresh actual Steam window displacement 20px changed pixels. Root inspected moved original desktop image: Steam bottom says 离线模式; clock10:51 matches current local10:51. Native byte probe also offline=true with same live Steam PID/birth and exact qualified module. No CK3 started online.",
+  "image": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\offline-restored-fresh-a01\\steam-moved.png",
+    "bytes": 754763,
+    "sha256": "1e95e276aa7674429c81d7eb98124164074cc5884532fef7f74fda95eaaa2fbf"
+  },
+  "freshness": null,
+  "native_probe": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\offline-restored-state.actual.json",
+    "bytes": 2461,
+    "sha256": "537c14033ee27961032427a0adf1f24f94ca1c987a62390203a9a8bbd007394d"
+  },
+  "before_online_review": "Root inspected offline-before-fresh-a01/steam-moved.png showing 离线模式 and original+20px changed desktop pixels before necessary publication task.",
+  "menu_click_readback_limit": "Coordinate clicks opened Steam popup and returned3 for foreground HWND change; no clicks replayed. The resulting same-PID popup was independently scanned and exact UIA mode control invoked once. Actual online native owner probe and final offline image/probe separately establish business states."
+}

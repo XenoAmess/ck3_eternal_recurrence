@@ -1,0 +1,72 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T03:19:53.349271+00:00",
+  "head_at_handoff": "91295b2152ecdb469aaab349029f0e72e5d002d8",
+  "source_files": [
+    {
+      "path": "D:\\sxad1023\\tools\\ck3_mod_acceptance_allocate.py",
+      "bytes": 189201,
+      "sha256": "93440064e83eb25b4de861af6ec2ae874e365efbadc0e56a7f0bc6a98274f886"
+    },
+    {
+      "path": "D:\\sxad1023\\tools\\ck3_mod_acceptance_background_types.py",
+      "bytes": 26662,
+      "sha256": "b568e1947d94b6c9412c7e49bce49eb0169b3d0b9ca4c2e0ac4ad99713a7a02a"
+    },
+    {
+      "path": "D:\\sxad1023\\tools\\ck3_mod_acceptance_build_runtime.py",
+      "bytes": 105790,
+      "sha256": "3de91ba2b01e4d7a6eec08fe6c1ba7d9c581455fa00002c2eac59c1c6157e0d6"
+    },
+    {
+      "path": "D:\\sxad1023\\tools\\test_ck3_mod_acceptance_host_running_date_support.py",
+      "bytes": 24191,
+      "sha256": "7801ce4fe1525408a33ec262ac42b94c52afc61f39c46801a77a81513dd61081"
+    },
+    {
+      "path": "D:\\sxad1023\\tools\\test_ck3_mod_acceptance_prelaunch_host_failure.py",
+      "bytes": 29947,
+      "sha256": "4b8d9a5db49ff76e8dd2d96be20be9212160684f7209600a7085ab19b2e438d2"
+    }
+  ],
+  "test_and_type_scope": {
+    "closure_tests": 19,
+    "support_tests": 10,
+    "menu_tests": 6,
+    "background_and_support_test_full_strict": true,
+    "builder_full_ordinary": true,
+    "allocate_ordinary_baseline_errors": 18,
+    "allocate_ordinary_current_errors": 18,
+    "same_function_qualified_diagnostic_multiset": true,
+    "new_menu_helper_errors": 0
+  },
+  "static_real_factory": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\r36-shared-repair-a01\\REAL-FACTORY-STATIC.actual.json",
+    "bytes": 1855,
+    "sha256": "2944ee56e589dc93401b403ed0dfe303f5dd9b204ec0a456de9221c29c256cea"
+  },
+  "failed_R36_bundle": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\r36-shared-repair-a01\\R0036-FAILURE-CLOSURE.actual.json",
+    "bytes": 4129,
+    "sha256": "1e148450fa9d7a7cec896661f9589a1cdbefbf537ec766facfee349284f1bcc7"
+  },
+  "formal_base_recipe": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\r36-shared-repair-a01\\prepare_v2_base.py",
+    "bytes": 4814,
+    "sha256": "aa925a5c3ca1bdfe3e2bd10200fe18c0f4299e1507dadf3845eddcbf4a36d3d1"
+  },
+  "source_editing_finished": true,
+  "commit_performed": false,
+  "formal_runtime_not_yet_built": true,
+  "no_Game_Steam_lease_actions": true,
+  "volume_fresh": {
+    "C:/": {
+      "used": 450935779328,
+      "free": 60198166528
+    },
+    "D:/": {
+      "used": 478395047936,
+      "free": 21694959616
+    }
+  }
+}

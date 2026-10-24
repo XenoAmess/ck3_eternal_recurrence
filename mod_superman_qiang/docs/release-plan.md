@@ -1,6 +1,14 @@
 # 《超人强》发布方案
 
-## 当前 1.2.0 同ID发布计划
+## 1.2.0实际公开更新（2026-10-24）
+
+同一Workshop item **3812991990**已完成一次原生更新，2026-10-24T02:48:35.240588Z返回EResult=1；完整Steam Change Notes条目 **1792810119** 匿名回读精确匹配930字符、28行及冻结SHA。标题、完整描述、全部tags和Compatible Version侧栏已公开核对。正式tag `superman-qiang-v1.2.0` 固定于 `bcb9e9f11658519c5277e0d304a02e5028bbd760`，GitHub两附件均经实际下载核验。
+
+真实Steam下载35文件与正式manifest一致。`machine_id: desktop-3fevhd2-1c74096080` 的R0037完成限定菜单缓存加载、原进程OS0/native0、Job终止前与最终均0及cleanup=true；Steam已恢复并保持离线，屏幕CAS8575释放。未进入战役、挂载业务fixture或重跑业务矩阵。R0036在游戏启动前遇到共用factory误配，其失败与后继公共修复记录保留；这些共用工具修复没有改变正式mod运行字节。
+
+本次仍保留C2完整逐分支实机缺口、同性设置未独立验收和重复通知根因未定位，不声称整个产品业务矩阵通过。永久[1.2.0 changelog](../../docs/release-changelogs/superman-qiang/1.2.0.md)及[发布报告](release-1.2.0-20261024/README.md)记录实际发布、验收和仓库交付。以下是上传前计划，按当时状态保留。
+
+## 1.2.0同ID发布前计划（历史输入）
 
 2026-10-24，用户已明确授权发布1.2.0并编写相对上一公开1.1.0的永久changelog。目标仅为现有 Workshop **3812991990** 的更新，不再次CreateItem。计划tag为 `superman-qiang-v1.2.0`；上一公开tag/commit为 `superman-qiang-v1.1.0` / `f7fde816e295a62807ab636ee2d93cf307ea69cf`。正式上传和公开回读尚未发生，当前实际公开版本仍为1.1.0。
 

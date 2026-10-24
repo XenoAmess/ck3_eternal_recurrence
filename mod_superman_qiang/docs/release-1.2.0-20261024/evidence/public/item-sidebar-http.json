@@ -1,0 +1,38 @@
+{
+  "schema": "sxad-anonymous-item-html-response-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-24T03:01:58.070207+00:00",
+  "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990&l=schinese",
+  "method": "GET",
+  "request_headers": {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.7",
+    "Cache-Control": "no-cache"
+  },
+  "Cookie_or_authorization_header_sent": false,
+  "no_local_cached_response_reused": true,
+  "Steam_CDN_internal_cache_behavior_not_determined": true,
+  "status": 200,
+  "final_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990&l=schinese",
+  "response_headers": {
+    "Server": "nginx",
+    "Content-Type": "text/html; charset=UTF-8",
+    "X-Frame-Options": "SAMEORIGIN",
+    "Content-Security-Policy": "default-src blob: data: https: 'unsafe-inline' 'unsafe-eval'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://community.akamai.steamstatic.com/ https://cdn.akamai.steamstatic.com/steamcommunity/public/assets/ https://api.steampowered.com/ https://recaptcha.net https://www.google.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://www.gstatic.com/recaptcha/ https://www.youtube.com/ https://s.ytimg.com https://player.vimeo.com; object-src 'none'; connect-src 'self' https://community.akamai.steamstatic.com/ https://store.steampowered.com/ https://checkout.steampowered.com/ wss://community.steam-api.com/websocket/ https://api.steampowered.com/ https://login.steampowered.com/ https://help.steampowered.com/ https://steam.tv/ https://steamcommunity.com/ https://*.valvesoftware.com https://*.steambeta.net https://*.discovery.beta.steamserver.net https://*.steamcontent.com https://steambroadcast.akamaized.net https://steambroadcast-test.akamaized.net https://broadcast.st.dl.eccdnx.com https://lv.queniujq.cn https://steambroadcastchat.akamaized.net http://127.0.0.1:27060 ws://127.0.0.1:27060 https://video.steamstatic.com https://steamvideo-a.akamaihd.net/video/ https://sketchfab.com; frame-ancestors 'self' https://steamloopback.host ;",
+    "Expires": "Mon, 26 Jul 1997 05:00:00 GMT",
+    "Cache-Control": "no-cache",
+    "Vary": "Accept-Encoding",
+    "Date": "Sat, 24 Oct 2026 03:02:03 GMT",
+    "Transfer-Encoding": "chunked",
+    "Connection": "Transfer-Encoding",
+    "Set-Cookie": "steamCountry=JP%7C50839908e1e267443715a8e41afccdca; path=/; secure; HttpOnly; SameSite=None"
+  },
+  "truncated": false,
+  "body": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\public-anonymous-investigation-a01\\item-sidebar-a01\\item.raw.html",
+    "bytes": 99172,
+    "sha256": "bc347abede0a4568c05c1850899bfbda49e7114ed7aff48a3bffc52556b1deb8"
+  },
+  "finished_at_utc": "2026-10-24T03:01:59.316225+00:00"
+}

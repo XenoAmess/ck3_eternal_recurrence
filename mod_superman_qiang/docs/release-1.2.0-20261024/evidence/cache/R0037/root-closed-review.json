@@ -1,0 +1,36 @@
+{
+  "schema": "sxad-root-cache-closure-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--superman-qiang--R0037",
+  "reviewer": "/root",
+  "observed_at_utc": "2026-10-24T03:30:22.531563+00:00",
+  "cache_case_pass": true,
+  "normal_close_qualified": true,
+  "steam_offline_confirmed": true,
+  "review": "Root personally inspected fresh moved Steam desktop after original normal GUI quit. 离线模式 visible, clock11:29 current.20px window displacement and new pixels prove capture freshness; independent current native byte probe also offline. Actual retained OS0, native0, Job0 before/final and cleanup true are original common-client receipts. No campaign, fixture or business replay.",
+  "normal_close": {
+    "path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0037\\case-output\\normal-close-result.json",
+    "bytes": 9018,
+    "sha256": "a1c792ee5e3b6e74c66a2d631c6e9e247b85d7e78c52e4e59a3a9690473f5563"
+  },
+  "public_verification": {
+    "path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\public-verify.actual.json",
+    "bytes": 104540,
+    "sha256": "eadc7a92d9102379eb524a9df2080b5a16d82b372d72494a2eeb56bdc085aee5"
+  },
+  "image": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\steam-window-fresh-R0037-closed-a01\\steam-moved.png",
+    "bytes": 748360,
+    "sha256": "e910fe69c966c4180440cede3f7be0df753c212fd644f70eff8c8bab2c546b2d"
+  },
+  "freshness": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\steam-window-fresh-R0037-closed-a01\\steam-frame-freshness.json",
+    "bytes": 1169,
+    "sha256": "5b36223debeeb67663bf995c051b65c5ea850404e4e25d3d9f73ee5d562f8c81"
+  },
+  "native_probe": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\steam-background-R0037-closed-a01.json",
+    "bytes": 2461,
+    "sha256": "90b8cc99ee3adaff95f5c266e565b9ca87cfd1c7aea0ba1e458aa37a5b11cc89"
+  }
+}

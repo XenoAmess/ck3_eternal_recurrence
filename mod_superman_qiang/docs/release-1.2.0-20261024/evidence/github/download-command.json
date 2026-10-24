@@ -1,0 +1,30 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-24T02:58:00.812757+00:00",
+  "finished_at_utc": "2026-10-24T02:58:04.037815+00:00",
+  "argv": [
+    "D:\\Program Files\\GitHub CLI\\gh.EXE",
+    "release",
+    "download",
+    "superman-qiang-v1.2.0",
+    "--repo",
+    "XenoAmess/ck3_eternal_recurrence",
+    "--dir",
+    "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\github-release-a01\\downloaded-assets",
+    "--pattern",
+    "mod_superman_qiang.zip",
+    "--pattern",
+    "mod_superman_qiang.manifest.json"
+  ],
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\github-release-a01\\asset-download.stdout.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\github-release-a01\\asset-download.stderr.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

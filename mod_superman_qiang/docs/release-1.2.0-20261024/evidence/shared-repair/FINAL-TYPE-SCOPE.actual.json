@@ -1,0 +1,12 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T03:18:35.638296+00:00",
+  "baseline_errors": 18,
+  "current_errors": 18,
+  "same_function_qualified_diagnostic_multiset": true,
+  "new_menu_helper_errors": 0,
+  "full_ordinary_module_green": false,
+  "final_closure_tests_exit": 0,
+  "all19_final_tests_passed": true,
+  "source_editing_finished": true
+}

@@ -1,0 +1,41 @@
+{
+  "schema": "sxad-publication-helper-handoff.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T02:43:04.509257+00:00",
+  "source_head": "f8032008c64e467701e6a26b0239a13c163c2fec",
+  "modified_files": [
+    {
+      "path": "D:\\sxad1023\\mod_superman_qiang\\tools\\prepare_publication.py",
+      "bytes": 11025,
+      "sha256": "a0179835ad6ef48fe6e756bebb50a37b742f5da4182f7ec7a90227f14612b123"
+    },
+    {
+      "path": "D:\\sxad1023\\mod_superman_qiang\\tools\\test_build_release.py",
+      "bytes": 22893,
+      "sha256": "8c04da3243f6a1512d2f22b63f58b0b45cf98e5595a3b602c8fafb7527280110"
+    }
+  ],
+  "production35_mismatches": [],
+  "all35_unchanged": true,
+  "ci": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-helper-fix-a02\\RESULT.actual.json",
+    "bytes": 5319,
+    "sha256": "255788ee65bb86cd9affb54df3a1acd671e08a761cdbcdfc705afdea7b6e54b4"
+  },
+  "original_red": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-helper-fix-a01\\RESULT.actual.json",
+    "bytes": 5320,
+    "sha256": "25d24a6f2e5dea9370a97bf334501758133296266b180d38625b7d3d3c5b4a50"
+  },
+  "instruction": "For update supply --tags-json explicit complete JSON array. Initial baseline required only for create. No commit/head, Steam, Game actions. All temp/cache outputs C.",
+  "volumes": {
+    "C:/": {
+      "used": 450502455296,
+      "free": 60631490560
+    },
+    "D:/": {
+      "used": 478385557504,
+      "free": 21704450048
+    }
+  }
+}

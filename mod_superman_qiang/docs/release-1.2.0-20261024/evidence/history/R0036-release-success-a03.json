@@ -1,0 +1,42 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": null,
+      "dirty_entries": 0,
+      "head": "bcb9e9f11658519c5277e0d304a02e5028bbd760"
+    },
+    "last_sequence": 8569,
+    "next_step": "",
+    "pid": 9960,
+    "repo": "D:\\sxad1023",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "R0036-preGame-factory-failure-preserved-resource-release",
+    "task_id": "ck3-common-12004-20261023-a14",
+    "updated_at_utc": "2026-10-24T03:06:00.236458+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 8569,
+    "event_id": "ab6e785302724f659fad0798e8e6a622",
+    "timestamp_utc": "2026-10-24T03:06:00.237726+00:00",
+    "kind": "completed",
+    "task_id": "ck3-common-12004-20261023-a14",
+    "to": [
+      "*"
+    ],
+    "state": "done",
+    "summary": "R0036-preGame-factory-failure-preserved-resource-release",
+    "next_step": "",
+    "resources": [],
+    "repo": "D:\\sxad1023",
+    "git": {
+      "branch": null,
+      "dirty_entries": 0,
+      "head": "bcb9e9f11658519c5277e0d304a02e5028bbd760"
+    }
+  }
+}

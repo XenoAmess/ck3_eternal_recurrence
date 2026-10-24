@@ -1,0 +1,846 @@
+{
+  "schema": "superman-qiang-release-evidence-index-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T03:34:41.235918+00:00",
+  "state": "CACHE_ACCEPTED_REPOSITORY_DELIVERY_PENDING",
+  "copied_files": 92,
+  "copied_bytes": 742096,
+  "copies_byte_exact": true,
+  "source_paths_are_historical": true,
+  "historical_status_fields_preserved": true,
+  "no_large_save_game_or_zip_copies": true,
+  "retention_policy": "docs/storage-retention-policy.md",
+  "transient_original_review_after_utc": "2026-11-23T00:00:00+00:00",
+  "transient_original_reason": "publication closure remains active; review original C evidence after repository archive and cache closure are committed",
+  "entries": [
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\formal-a01.manifest.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/formal/manifest.json",
+      "archive_relative_path": "evidence/formal/manifest.json",
+      "bytes": 6404,
+      "sha256": "9db0f28a9f08215ecd7747f7406acc8b379c54d87dc8964551829dccb0dad7ba",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\SCOPED-REVIEW.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/source/scoped-review.original.json",
+      "archive_relative_path": "evidence/source/scoped-review.original.json",
+      "bytes": 2682,
+      "sha256": "f1fa297d051e5bf00f5c9f2e13e37d0bfbfac74e5a6f08e34a4c98fd34a51278",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\update-freeze\\native-receipt.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/steam/native-update-receipt.json",
+      "archive_relative_path": "evidence/steam/native-update-receipt.json",
+      "bytes": 663,
+      "sha256": "b49047a65f01cdc9c774683dcb44a253f9241fd1d09df6a285d33453fdaa215f",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\native-update-a01\\transport.finished.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/steam/native-update-transport.json",
+      "archive_relative_path": "evidence/steam/native-update-transport.json",
+      "bytes": 1254,
+      "sha256": "09d9539fbfc0aed8715da173a05e22460d1ba15414885907daaf0e5e295550a2",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\update-freeze\\change-notes.txt",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/steam/change-notes.expected.txt",
+      "archive_relative_path": "evidence/steam/change-notes.expected.txt",
+      "bytes": 2600,
+      "sha256": "939510478a9d23ea35a0d99721360b87fe20c3c8e6e07302ddabdc59083a68cd",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\update-freeze\\description.bbcode",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/steam/description.expected.bbcode",
+      "archive_relative_path": "evidence/steam/description.expected.bbcode",
+      "bytes": 5447,
+      "sha256": "603eb8b4d0d8f288c8b4e26356aeb2618b1f2c8d2f96bc828c986edff2a587e0",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\update-freeze\\tags-input.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/steam/tags.input.json",
+      "archive_relative_path": "evidence/steam/tags.input.json",
+      "bytes": 68,
+      "sha256": "6bd033996b59b4cbd29fe377dab1c10d35f9381160f9c366eda018e51c3860eb",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\update-freeze\\frozen-inputs.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/steam/frozen-inputs.original.json",
+      "archive_relative_path": "evidence/steam/frozen-inputs.original.json",
+      "bytes": 2465,
+      "sha256": "9df2f64f50b02ced6495dab04dcb2b1177b8491aa88c127fbf2299942e13bb13",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\native-download-a01\\stdout.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/cache/native-download.json",
+      "archive_relative_path": "evidence/cache/native-download.json",
+      "bytes": 2677,
+      "sha256": "4365cc627d4248c636b2a3121be5d6696133b92a81d5c3025a17267dab091295",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\native-download-a01\\transport.finished.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/cache/native-download-transport.json",
+      "archive_relative_path": "evidence/cache/native-download-transport.json",
+      "bytes": 1260,
+      "sha256": "37481633cc5a45b2fed41bf9610050f8cb69ecf229d1b11fa4a0f15a046aa87c",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\outer-deployment.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/deployment/outer-descriptor.json",
+      "archive_relative_path": "evidence/deployment/outer-descriptor.json",
+      "bytes": 770,
+      "sha256": "3192ce3b3a16f8f2e400089a5ed6c7de286a7faed5765887ff7b7cc7fec70023",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\offline-restored-state.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/steam/offline-restored-state.json",
+      "archive_relative_path": "evidence/steam/offline-restored-state.json",
+      "bytes": 2461,
+      "sha256": "537c14033ee27961032427a0adf1f24f94ca1c987a62390203a9a8bbd007394d",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\ROOT-OFFLINE-REVIEW.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/steam/root-offline-review.json",
+      "archive_relative_path": "evidence/steam/root-offline-review.json",
+      "bytes": 1602,
+      "sha256": "27ceeab7551cbed67bfb08f416e2cff26e5fb34f8f70c4bb6d59bb5af89ee4c0",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\public-anonymous-investigation-a01\\verification-a01\\verification.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/public/verification.json",
+      "archive_relative_path": "evidence/public/verification.json",
+      "bytes": 4173,
+      "sha256": "f08f1e2c6b87cdaf7a73044354f6c0d8c0718862575bf5c03595b3f271f50211",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\public-anonymous-investigation-a01\\verification-a01\\public-item-api.raw.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/public/item-api.raw.json",
+      "archive_relative_path": "evidence/public/item-api.raw.json",
+      "bytes": 6289,
+      "sha256": "9d50719a360d5be6da5abe8d1a9a3b3ee377cbbdd0c930ddc73f70a837f61bf4",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\public-anonymous-investigation-a01\\verification-a01\\steam-change-notes.public.txt",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/public/change-notes.actual.txt",
+      "archive_relative_path": "evidence/public/change-notes.actual.txt",
+      "bytes": 2600,
+      "sha256": "939510478a9d23ea35a0d99721360b87fe20c3c8e6e07302ddabdc59083a68cd",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\public-anonymous-investigation-a01\\verification-a01\\description.public.bbcode",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/public/description.actual.bbcode",
+      "archive_relative_path": "evidence/public/description.actual.bbcode",
+      "bytes": 5447,
+      "sha256": "603eb8b4d0d8f288c8b4e26356aeb2618b1f2c8d2f96bc828c986edff2a587e0",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\public-anonymous-investigation-a01\\attempt-01\\response.raw.html",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/public/changelog.raw.html",
+      "archive_relative_path": "evidence/public/changelog.raw.html",
+      "bytes": 59064,
+      "sha256": "96f7975f395176ddab865e66d7e9ccc2e8a48eb8fae34b2034f0856cb75e6091",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\public-anonymous-investigation-a01\\attempt-01\\response.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/public/changelog-http.json",
+      "archive_relative_path": "evidence/public/changelog-http.json",
+      "bytes": 2976,
+      "sha256": "88aa2236ea3681e35b47bb0a82a85487da45be6fe7af85a039d7a762b64f4899",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\public-anonymous-investigation-a01\\item-sidebar-a01\\verification.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/public/compatible-version-verification.json",
+      "archive_relative_path": "evidence/public/compatible-version-verification.json",
+      "bytes": 3588,
+      "sha256": "57fb56ab275c9bb04e977c26414f13e03f442d47d2dfc00d3712935eada98a74",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\public-anonymous-investigation-a01\\item-sidebar-a01\\item.raw.html",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/public/item-sidebar.raw.html",
+      "archive_relative_path": "evidence/public/item-sidebar.raw.html",
+      "bytes": 99172,
+      "sha256": "bc347abede0a4568c05c1850899bfbda49e7114ed7aff48a3bffc52556b1deb8",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\public-anonymous-investigation-a01\\item-sidebar-a01\\http.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/public/item-sidebar-http.json",
+      "archive_relative_path": "evidence/public/item-sidebar-http.json",
+      "bytes": 3009,
+      "sha256": "c32e282d36d110182aaaad497e585e8e9219d2a679beae7bc951b61c8cfbe52f",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\github-release-a01\\GITHUB-RELEASE.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/github/release.json",
+      "archive_relative_path": "evidence/github/release.json",
+      "bytes": 4703,
+      "sha256": "390736c53ff3756a33ff3d294c5cf8122b2285e45165f1864447726fefae6284",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\github-release-a01\\release-after.stdout.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/github/release-view.raw.json",
+      "archive_relative_path": "evidence/github/release-view.raw.json",
+      "bytes": 5243,
+      "sha256": "17d051aeadb7b76addc3a68c793bb157588147d84202c02a0dc303517064fa09",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\github-release-a01\\release-notes.md",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/github/notes.expected.md",
+      "archive_relative_path": "evidence/github/notes.expected.md",
+      "bytes": 3850,
+      "sha256": "61d9480564027eacc362df8d95430c8a9d2976aed744fcf3e83b7a7558d36c95",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\github-release-a01\\release-body.remote.normalized.md",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/github/notes.actual.md",
+      "archive_relative_path": "evidence/github/notes.actual.md",
+      "bytes": 3849,
+      "sha256": "040dbc6a903a9f1affa5ee33c2ba58037ab3ddb5b73ec83476bedd4810485792",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\github-release-a01\\asset-download.COMMAND.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/github/download-command.json",
+      "archive_relative_path": "evidence/github/download-command.json",
+      "bytes": 1097,
+      "sha256": "55b7060d7efa95f45ed0ecea791f2997c89ae6020b066b415696fde6542f14f7",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\delivery-audit-a01\\RELEASE-GATES.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/source/release-gates.original.json",
+      "archive_relative_path": "evidence/source/release-gates.original.json",
+      "bytes": 24833,
+      "sha256": "08bef4c8a6f03ce83d9842e49a167245f8406f8abcabbf819337efa140ee93a8",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\FORMAT-CERTIFICATION.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/format/certification.json",
+      "archive_relative_path": "evidence/format/certification.json",
+      "bytes": 6852,
+      "sha256": "05b265cfa5ca833f222fe21b9ef93f717b9f6e18a392b63b15e847a0966e38d7",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\newfinalintegration-a01\\FINAL.verified.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/ci/shared-final.verified.json",
+      "archive_relative_path": "evidence/ci/shared-final.verified.json",
+      "bytes": 117055,
+      "sha256": "dd735d174e67ec98b4bf7d73bb6b16f111fd38c5ff6291e20faedda9ca21157b",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\product-ci-r28-fixture-fix-a01\\SUMMARY.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/ci/product-summary.original.json",
+      "archive_relative_path": "evidence/ci/product-summary.original.json",
+      "bytes": 25645,
+      "sha256": "1a613e216d133b9282d9fbec3762b9e78fc881547a201d4ce24f43d061aebd8a",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\product-ci-r28-fixture-fix-a01\\MYPY.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/ci/product-mypy.original.json",
+      "archive_relative_path": "evidence/ci/product-mypy.original.json",
+      "bytes": 738,
+      "sha256": "4014abe98c5aa01ad1f1795e669410847dcef2e229c7cb63afc0aea5422ba1eb",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-helper-fix-a02\\RESULT.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/ci/publication-helper.json",
+      "archive_relative_path": "evidence/ci/publication-helper.json",
+      "bytes": 5319,
+      "sha256": "255788ee65bb86cd9affb54df3a1acd671e08a761cdbcdfc705afdea7b6e54b4",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\R0036-screen-release.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/history/R0036-release-rejected-a01.json",
+      "archive_relative_path": "evidence/history/R0036-release-rejected-a01.json",
+      "bytes": 171,
+      "sha256": "f2af5c90ef00c7e811a3873bf48f3098eba716104bb732376e15db873588c8c3",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\R0036-screen-release-a03.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/history/R0036-release-success-a03.json",
+      "archive_relative_path": "evidence/history/R0036-release-success-a03.json",
+      "bytes": 1160,
+      "sha256": "fa8576705fb4ff1fe060620f06c52398d121f6bdf952ab72d2815dc2b30223d2",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a02\\prepared\\workshop-cache-exact-formal.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/cache/exact-formal.json",
+      "archive_relative_path": "evidence/cache/exact-formal.json",
+      "bytes": 9662,
+      "sha256": "89ca5f4d1d3abbfe9657c8b7e6abfeb5e3e725ff7874c50b16431605a0e68614",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0036\\native-report.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/history/R0036-preGame-native-report.json",
+      "archive_relative_path": "evidence/history/R0036-preGame-native-report.json",
+      "bytes": 8159,
+      "sha256": "de5ca23ee0e613efb7af8d6edc2b63d137dcaed9f5b1bf340013ba7dcd183f9d",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\R0036-screen-release-a02.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/history/R0036-release-rejected-a02.json",
+      "archive_relative_path": "evidence/history/R0036-release-rejected-a02.json",
+      "bytes": 171,
+      "sha256": "f2af5c90ef00c7e811a3873bf48f3098eba716104bb732376e15db873588c8c3",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\build-check.COMMAND.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/format/build-check.COMMAND.actual.json",
+      "archive_relative_path": "evidence/format/build-check.COMMAND.actual.json",
+      "bytes": 739,
+      "sha256": "b4efa7613df56d56450b1516d3137096f7a4c34e0f062fc262d60580c4dbe0fb",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\build-check.stderr.txt",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/format/build-check.stderr.txt",
+      "archive_relative_path": "evidence/format/build-check.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\build-check.stdout.txt",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/format/build-check.stdout.txt",
+      "archive_relative_path": "evidence/format/build-check.stdout.txt",
+      "bytes": 201,
+      "sha256": "c5dcf3adaff17d63f3590cc2a727afe3e31cda12bafe904d52ad1da75c97602f",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\generated-check.COMMAND.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/format/generated-check.COMMAND.actual.json",
+      "archive_relative_path": "evidence/format/generated-check.COMMAND.actual.json",
+      "bytes": 745,
+      "sha256": "511e6d74a2f70c04c5077fd00157c29db259a33759137e380449e3de72e044ea",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\generated-check.stderr.txt",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/format/generated-check.stderr.txt",
+      "archive_relative_path": "evidence/format/generated-check.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\generated-check.stdout.txt",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/format/generated-check.stdout.txt",
+      "archive_relative_path": "evidence/format/generated-check.stdout.txt",
+      "bytes": 26,
+      "sha256": "92cfbc5fd51aa6147601a031480292097ccea33dcaaed60baf9d0e26ffed352b",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\product-static.COMMAND.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/format/product-static.COMMAND.actual.json",
+      "archive_relative_path": "evidence/format/product-static.COMMAND.actual.json",
+      "bytes": 731,
+      "sha256": "a5616d9f66b9008817bc9f0d05550d41d6886eea22c8bf70b489376860ba0502",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\product-static.stderr.txt",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/format/product-static.stderr.txt",
+      "archive_relative_path": "evidence/format/product-static.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\product-static.stdout.txt",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/format/product-static.stdout.txt",
+      "archive_relative_path": "evidence/format/product-static.stdout.txt",
+      "bytes": 7755,
+      "sha256": "6b64f2ac15e6c94dcf30697e3414e162b7d57cd2eea81c4b386eb380f09eb612",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-helper-fix-a02\\diff-check.stderr.log",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/ci/publication-helper/diff-check.stderr.log",
+      "archive_relative_path": "evidence/ci/publication-helper/diff-check.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-helper-fix-a02\\diff-check.stdout.log",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/ci/publication-helper/diff-check.stdout.log",
+      "archive_relative_path": "evidence/ci/publication-helper/diff-check.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-helper-fix-a02\\mypy-publication-strict.stderr.log",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/ci/publication-helper/mypy-publication-strict.stderr.log",
+      "archive_relative_path": "evidence/ci/publication-helper/mypy-publication-strict.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-helper-fix-a02\\mypy-publication-strict.stdout.log",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/ci/publication-helper/mypy-publication-strict.stdout.log",
+      "archive_relative_path": "evidence/ci/publication-helper/mypy-publication-strict.stdout.log",
+      "bytes": 43,
+      "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-helper-fix-a02\\mypy-two-full-files.stderr.log",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/ci/publication-helper/mypy-two-full-files.stderr.log",
+      "archive_relative_path": "evidence/ci/publication-helper/mypy-two-full-files.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-helper-fix-a02\\mypy-two-full-files.stdout.log",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/ci/publication-helper/mypy-two-full-files.stdout.log",
+      "archive_relative_path": "evidence/ci/publication-helper/mypy-two-full-files.stdout.log",
+      "bytes": 44,
+      "sha256": "0c37c4158c91ef55c724ba017bf6465f26018199badb08e3ff13f98acdf056c2",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-helper-fix-a02\\unittest-all-existing-builder-publication.stderr.log",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/ci/publication-helper/unittest-all-existing-builder-publication.stderr.log",
+      "archive_relative_path": "evidence/ci/publication-helper/unittest-all-existing-builder-publication.stderr.log",
+      "bytes": 2850,
+      "sha256": "0f19ff2a74da1a305846048985837597aa1dbaf2dec3292cccbc5543f1dd1b1e",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-helper-fix-a02\\unittest-all-existing-builder-publication.stdout.log",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/ci/publication-helper/unittest-all-existing-builder-publication.stdout.log",
+      "archive_relative_path": "evidence/ci/publication-helper/unittest-all-existing-builder-publication.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\public-verify.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/cache/R0037/public-verify.json",
+      "archive_relative_path": "evidence/cache/R0037/public-verify.json",
+      "bytes": 104540,
+      "sha256": "eadc7a92d9102379eb524a9df2080b5a16d82b372d72494a2eeb56bdc085aee5",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\public-run-exit.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/cache/R0037/public-run-exit.json",
+      "archive_relative_path": "evidence/cache/R0037/public-run-exit.json",
+      "bytes": 989,
+      "sha256": "b54d65ec446a8ef2286c74d5cec941ef3477c6f2508458edad789b1ad383a19a",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\prepared\\profile-preparation.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/cache/R0037/profile-preparation.json",
+      "archive_relative_path": "evidence/cache/R0037/profile-preparation.json",
+      "bytes": 2697,
+      "sha256": "3883f6e1570b8b0d7ff4d56aec447998a5750db620619fc736e33baf5345eacc",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\prepared\\prepared-case.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/cache/R0037/prepared-case.json",
+      "archive_relative_path": "evidence/cache/R0037/prepared-case.json",
+      "bytes": 6258,
+      "sha256": "c29adee774b31fa16eac6342768fb1ac03c4373db2b8cb5e44d95ca9caee3ec8",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\prepared\\workshop-cache-exact-formal.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/cache/R0037/exact-formal.json",
+      "archive_relative_path": "evidence/cache/R0037/exact-formal.json",
+      "bytes": 9662,
+      "sha256": "89ca5f4d1d3abbfe9657c8b7e6abfeb5e3e725ff7874c50b16431605a0e68614",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state\\preparation.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/cache/R0037/startup-evidence.json",
+      "archive_relative_path": "evidence/cache/R0037/startup-evidence.json",
+      "bytes": 1186,
+      "sha256": "569bad28aa3f26d0cb832fd9befe405e8f1ec9ae575ba822da09ef49cfbe2bc7",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state\\profile\\dlc_load.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/cache/R0037/profile-dlc-load.json",
+      "archive_relative_path": "evidence/cache/R0037/profile-dlc-load.json",
+      "bytes": 73,
+      "sha256": "913df90d75091a6ee81e6dae148f4a39863354d7777a07362d85eea3be4cd320",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state\\profile\\mod\\product.mod",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/cache/R0037/product.mod",
+      "archive_relative_path": "evidence/cache/R0037/product.mod",
+      "bytes": 271,
+      "sha256": "11854fd4d3c778caf8cbd7713091e5d662d61506f794a67c1b6bafc4baab6731",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0037\\case-output\\normal-close-result.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/cache/R0037/normal-close.json",
+      "archive_relative_path": "evidence/cache/R0037/normal-close.json",
+      "bytes": 9018,
+      "sha256": "a1c792ee5e3b6e74c66a2d631c6e9e247b85d7e78c52e4e59a3a9690473f5563",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0037\\case-output\\workshop-cache-case-result.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/cache/R0037/case-result.json",
+      "archive_relative_path": "evidence/cache/R0037/case-result.json",
+      "bytes": 91832,
+      "sha256": "4d1b0797acd70d3332b5aa07bc9a576330c6c31b2a53d63be3a94cf330e39916",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0037\\case-output\\actual-retained-handle-os-exit.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/cache/R0037/retained-os-exit.json",
+      "archive_relative_path": "evidence/cache/R0037/retained-os-exit.json",
+      "bytes": 179,
+      "sha256": "1f76bfc5c64bad26f967e1c02e149ce05f9c0af07fe33295537562083715e08b",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0037\\case-output\\retained-current-process-identity.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/cache/R0037/process-identity.json",
+      "archive_relative_path": "evidence/cache/R0037/process-identity.json",
+      "bytes": 110,
+      "sha256": "186f08e70338a2ef59f49b2936dbc4586ba817567bcac4d3c75b3c0fe83a6bd9",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0037\\ready-context.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/cache/R0037/ready-context.json",
+      "archive_relative_path": "evidence/cache/R0037/ready-context.json",
+      "bytes": 2532,
+      "sha256": "e0696780a3ef6d8e238ddd1745dd595ea37b0e83a111644eaebde65ac4cbf568",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0037\\reviewed-context-a01.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/cache/R0037/reviewed-context.json",
+      "archive_relative_path": "evidence/cache/R0037/reviewed-context.json",
+      "bytes": 2715,
+      "sha256": "c9580e9d18def6a2e36f70b8bc982cf481dd2a30b9149f8ab15ca294ae6320cb",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0037\\host-original-process-exit.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/cache/R0037/host-original-process-exit.json",
+      "archive_relative_path": "evidence/cache/R0037/host-original-process-exit.json",
+      "bytes": 252,
+      "sha256": "ca7510ec0a0926a251c55ae20278cf241cfa2c67b552e87818e65a1e8fc8856e",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0037\\keeper-actual-parent-exit.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/cache/R0037/keeper-parent-exit.json",
+      "archive_relative_path": "evidence/cache/R0037/keeper-parent-exit.json",
+      "bytes": 618,
+      "sha256": "ac10cd7b080c6bc22a70030da3d38db339aa48a70043c898a7e443fed3177887",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\steam-background-R0037-closed-a01.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/cache/R0037/steam-offline-closed.json",
+      "archive_relative_path": "evidence/cache/R0037/steam-offline-closed.json",
+      "bytes": 2461,
+      "sha256": "90b8cc99ee3adaff95f5c266e565b9ca87cfd1c7aea0ba1e458aa37a5b11cc89",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\R0037-root-closed-review.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/cache/R0037/root-closed-review.json",
+      "archive_relative_path": "evidence/cache/R0037/root-closed-review.json",
+      "bytes": 1984,
+      "sha256": "08b6cc5b9111cbe0057b570968ea735a0639e75a2181b2cc0226f57ea396ea72",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\R0037-screen-release.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/cache/R0037/screen-release.json",
+      "archive_relative_path": "evidence/cache/R0037/screen-release.json",
+      "bytes": 1177,
+      "sha256": "3759f197319f8e57bec5e0b8e2d6e5ecc454cb5c5afdf137d0de4a07feeee60d",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\steam-window-fresh-R0037-closed-a01\\steam-frame-freshness.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/cache/R0037/steam-frame-freshness.json",
+      "archive_relative_path": "evidence/cache/R0037/steam-frame-freshness.json",
+      "bytes": 1169,
+      "sha256": "5b36223debeeb67663bf995c051b65c5ea850404e4e25d3d9f73ee5d562f8c81",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\workshop-cache-keeper-a15\\report.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/cache/R0037/keeper-report.json",
+      "archive_relative_path": "evidence/cache/R0037/keeper-report.json",
+      "bytes": 448,
+      "sha256": "7c60e2612bc584d727317cc5d3962e8920ba2480a84f77ade530bf02fe8ce6cd",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\workshop-cache-keeper-a15\\STOP",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/cache/R0037/keeper-STOP",
+      "archive_relative_path": "evidence/cache/R0037/keeper-STOP",
+      "bytes": 85,
+      "sha256": "f929f8fe7ced6b222368b51d63ce706188430695bf359187f78676f953c12960",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\r36-shared-repair-a01\\HANDOFF.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/shared-repair/HANDOFF.actual.json",
+      "archive_relative_path": "evidence/shared-repair/HANDOFF.actual.json",
+      "bytes": 2661,
+      "sha256": "607e6d79f916c49f3c87fc6d3f884b82fd551fc15aa79354e97c39e693ce5edf",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\r36-shared-repair-a01\\FINAL-TYPE-SCOPE.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/shared-repair/FINAL-TYPE-SCOPE.actual.json",
+      "archive_relative_path": "evidence/shared-repair/FINAL-TYPE-SCOPE.actual.json",
+      "bytes": 396,
+      "sha256": "61be37161bee9eeabad85a991605e6e6e68e6b20d7361c26249f0e7e7d2682d7",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\r36-shared-repair-a01\\REAL-FACTORY-STATIC.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/shared-repair/REAL-FACTORY-STATIC.actual.json",
+      "archive_relative_path": "evidence/shared-repair/REAL-FACTORY-STATIC.actual.json",
+      "bytes": 1855,
+      "sha256": "2944ee56e589dc93401b403ed0dfe303f5dd9b204ec0a456de9221c29c256cea",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\r36-shared-repair-a01\\R0036-FAILURE-CLOSURE.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/shared-repair/R0036-FAILURE-CLOSURE.actual.json",
+      "archive_relative_path": "evidence/shared-repair/R0036-FAILURE-CLOSURE.actual.json",
+      "bytes": 4129,
+      "sha256": "1e148450fa9d7a7cec896661f9589a1cdbefbf537ec766facfee349284f1bcc7",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\r36-shared-repair-a01\\R0036-FAILURE-CLOSURE-VALIDATION.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/shared-repair/R0036-FAILURE-CLOSURE-VALIDATION.actual.json",
+      "archive_relative_path": "evidence/shared-repair/R0036-FAILURE-CLOSURE-VALIDATION.actual.json",
+      "bytes": 5885,
+      "sha256": "2dad36d908729d4a42ffea6fdd036d133b762647537997b0e3a3273c9e83ad61",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\r36-shared-repair-a01\\RESULT.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/shared-repair/RESULT.actual.json",
+      "archive_relative_path": "evidence/shared-repair/RESULT.actual.json",
+      "bytes": 2019,
+      "sha256": "5589e750df8debb569cd23b0062632ae11e53d5616b1628732c216d52f5a1403",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\r36-shared-repair-a01\\final-closure-tests.stderr.log",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/shared-repair/final-closure-tests.stderr.log",
+      "archive_relative_path": "evidence/shared-repair/final-closure-tests.stderr.log",
+      "bytes": 123,
+      "sha256": "a556cbb50252ff63796d80fdb3f689080cdb735ea41fd37fe2814771d47e63e2",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\r36-shared-repair-a01\\support-tests.stderr.log",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/shared-repair/support-tests.stderr.log",
+      "archive_relative_path": "evidence/shared-repair/support-tests.stderr.log",
+      "bytes": 115,
+      "sha256": "a4f7523d0055f021b08aa4b2d40b7f5e4403bdfc22f12ef23b3ce6683ce542b2",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\r36-shared-repair-a01\\menu-tests.stderr.log",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/shared-repair/menu-tests.stderr.log",
+      "archive_relative_path": "evidence/shared-repair/menu-tests.stderr.log",
+      "bytes": 109,
+      "sha256": "ca59c23b1b43b1d45c47b31dc93c6689cd6876337befe0d22fecdee6813842d1",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\r36-shared-repair-a01\\strict-support.stdout.log",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/shared-repair/strict-support.stdout.log",
+      "archive_relative_path": "evidence/shared-repair/strict-support.stdout.log",
+      "bytes": 21710,
+      "sha256": "ce15307ab94ac78a7da8453c042ca4f7b370420260e26bed79f4055daf2e9037",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\r36-shared-repair-a01\\ordinary-closure.stdout.log",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/shared-repair/ordinary-closure.stdout.log",
+      "archive_relative_path": "evidence/shared-repair/ordinary-closure.stdout.log",
+      "bytes": 5097,
+      "sha256": "d6e29520ef8ca49079fcca7dfe92419b1ea74dbec689117435f3155db539cdca",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\r36-shared-repair-a01\\current-ordinary-mypy.stdout.log",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/shared-repair/current-ordinary-mypy.stdout.log",
+      "archive_relative_path": "evidence/shared-repair/current-ordinary-mypy.stdout.log",
+      "bytes": 2406,
+      "sha256": "ba976f420a8490b86ea534fad9af2f051c0cf5e6c833748552ac074f83d8c166",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\r36-shared-repair-a01\\baseline-ordinary-mypy.stdout.log",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/shared-repair/baseline-ordinary-mypy.stdout.log",
+      "archive_relative_path": "evidence/shared-repair/baseline-ordinary-mypy.stdout.log",
+      "bytes": 3576,
+      "sha256": "ac4b9219aeb639a99b2150ea127f675bffd017978ca7827cc232d6a368991074",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-helper-fix-a02\\HANDOFF.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/ci/publication-helper-handoff.json",
+      "archive_relative_path": "evidence/ci/publication-helper-handoff.json",
+      "bytes": 1544,
+      "sha256": "5f8bb7285b337fae92dee7e57cb78ac62bf257de2ae4d9add2c72627f5a53769",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    },
+    {
+      "source_path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\ADMISSION-closing.actual.json",
+      "intended_repository_path": "mod_superman_qiang/docs/release-1.2.0-20261024/evidence/storage/closing-admission.json",
+      "archive_relative_path": "evidence/storage/closing-admission.json",
+      "bytes": 1903,
+      "sha256": "51f7d21c55dee1a405ab552b7e3e674578deb9f9cfb969afbe9b5a4f0f7cc02d",
+      "source_available_at_copy": true,
+      "copy_mode": "byte_exact_small_evidence"
+    }
+  ],
+  "prior_draft": "publication-1.2.0-a01/final-docs-draft-a01 preserved"
+}

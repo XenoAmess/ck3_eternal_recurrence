@@ -1,0 +1,145 @@
+{
+  "schema": "ck3-mod-acceptance-prepared-case-v1",
+  "product": "superman-qiang",
+  "case": "workshop_cache",
+  "runtime_manifest": {
+    "path": "C:\\ck3-common-runtime-20261024\\menu-factory-v2-a01\\manifest.json",
+    "bytes": 8660,
+    "sha256": "e85f5eb635e473d394aa013590bb9d8a7fba550cfe7a0ac488ca73428d2561f5"
+  },
+  "case_inputs": {
+    "cache_path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990",
+    "formal_manifest": {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\formal-a01.manifest.json",
+      "bytes": 6404,
+      "sha256": "9db0f28a9f08215ecd7747f7406acc8b379c54d87dc8964551829dccb0dad7ba"
+    },
+    "native_download_receipt": {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\native-download-a01\\stdout.json",
+      "bytes": 2677,
+      "sha256": "4365cc627d4248c636b2a3121be5d6696133b92a81d5c3025a17267dab091295"
+    },
+    "plain_configuration": {
+      "pdx_settings.txt": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\r05-live\\prepared\\state-a01\\profile\\pdx_settings.txt",
+        "bytes": 7133,
+        "sha256": "bc84f30bcc7f0104b194a8cab61b723903e94e68347bb48400d83aecf17ae751"
+      },
+      "tutorial.txt": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\r05-live\\prepared\\state-a01\\profile\\tutorial.txt",
+        "bytes": 61,
+        "sha256": "19f461abd92cc828c19d1cf77355ef6513682423721d64787756cf8465c2ef7d"
+      },
+      "presets.txt": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\r05-live\\prepared\\state-a01\\profile\\presets.txt",
+        "bytes": 2785,
+        "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+      },
+      "player/game_rules/presets.txt": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\r05-live\\prepared\\state-a01\\profile\\player\\game_rules\\presets.txt",
+        "bytes": 2785,
+        "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+      }
+    }
+  },
+  "startup": {
+    "mode": "workshop_cache",
+    "state_dir": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state"
+  },
+  "initial_plan": {
+    "path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\prepared\\initial-plan.json",
+    "bytes": 18,
+    "sha256": "06a47cf1fb789f4455b297272f9ec7cf2fd1b612e10a35886ecdbce39669b6b4"
+  },
+  "adapter": {
+    "path": "D:\\sxad1023\\tools\\ck3_mod_acceptance_cases\\workshop_cache_adapter.py",
+    "bytes": 17762,
+    "sha256": "a5619392ed4df4b873f3c4c6ebd4f390396e963eb1e3007394d2c7bc676dcb4c"
+  },
+  "contract": {
+    "path": "D:\\sxad1023\\tools\\ck3_mod_acceptance_cases\\workshop_cache.json",
+    "bytes": 565,
+    "sha256": "63fb803fe238d2cb75910a572a3cce50e3c2c30f34198621b39b9364fb41d6d2"
+  },
+  "preparation": {
+    "startup": {
+      "mode": "workshop_cache",
+      "state_dir": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state"
+    },
+    "initial_plan": {
+      "path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\prepared\\initial-plan.json",
+      "bytes": 18,
+      "sha256": "06a47cf1fb789f4455b297272f9ec7cf2fd1b612e10a35886ecdbce39669b6b4"
+    },
+    "profile_preparation": {
+      "path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\prepared\\profile-preparation.json",
+      "bytes": 2697,
+      "sha256": "3883f6e1570b8b0d7ff4d56aec447998a5750db620619fc736e33baf5345eacc"
+    },
+    "startup_evidence": {
+      "path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state\\preparation.json",
+      "bytes": 1186,
+      "sha256": "569bad28aa3f26d0cb832fd9befe405e8f1ec9ae575ba822da09ef49cfbe2bc7"
+    },
+    "exact_cache": {
+      "path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\prepared\\workshop-cache-exact-formal.json",
+      "bytes": 9662,
+      "sha256": "89ca5f4d1d3abbfe9657c8b7e6abfeb5e3e725ff7874c50b16431605a0e68614"
+    },
+    "files": {
+      "dlc_load.json": {
+        "path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state\\profile\\dlc_load.json",
+        "bytes": 73,
+        "sha256": "913df90d75091a6ee81e6dae148f4a39863354d7777a07362d85eea3be4cd320"
+      },
+      "mod/product.mod": {
+        "path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state\\profile\\mod\\product.mod",
+        "bytes": 271,
+        "sha256": "11854fd4d3c778caf8cbd7713091e5d662d61506f794a67c1b6bafc4baab6731"
+      },
+      "pdx_settings.txt": {
+        "path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state\\profile\\pdx_settings.txt",
+        "bytes": 7133,
+        "sha256": "bc84f30bcc7f0104b194a8cab61b723903e94e68347bb48400d83aecf17ae751"
+      },
+      "player/game_rules/presets.txt": {
+        "path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state\\profile\\player\\game_rules\\presets.txt",
+        "bytes": 2785,
+        "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+      },
+      "presets.txt": {
+        "path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state\\profile\\presets.txt",
+        "bytes": 2785,
+        "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+      },
+      "tutorial.txt": {
+        "path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\state\\profile\\tutorial.txt",
+        "bytes": 61,
+        "sha256": "19f461abd92cc828c19d1cf77355ef6513682423721d64787756cf8465c2ef7d"
+      }
+    },
+    "business_contract_applicable": false,
+    "runtime_status": "NOT_RUN",
+    "business_pass": false,
+    "product_release_pass": false
+  },
+  "effective_budgets": {
+    "command_timeout": 300,
+    "readiness_timeout": 1800,
+    "timeout": 3600,
+    "poll_interval": 0.5,
+    "hold_seconds": 900
+  },
+  "readiness_policy": {
+    "schema": "ck3-mod-acceptance-readiness-policy-v1",
+    "policy_id": "future-readiness-minimum-2026-10-15",
+    "source": "explicit-user-instruction-2026-10-15",
+    "minimum_seconds": 1800,
+    "requested_seconds": 400,
+    "effective_seconds": 1800,
+    "floor_applied": true,
+    "historical_receipts_reclassified": false
+  },
+  "runtime_status": "NOT_RUN",
+  "business_acceptance": "NOT_ASSESSED"
+}

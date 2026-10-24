@@ -1,0 +1,158 @@
+{
+  "schema": "superman-qiang-release-actual-draft-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T03:35:18.616247+00:00",
+  "status": "CACHE_ACCEPTED_REPOSITORY_DELIVERY_PENDING",
+  "release_delivery_complete": false,
+  "source": {
+    "tag": "superman-qiang-v1.2.0",
+    "commit": "bcb9e9f11658519c5277e0d304a02e5028bbd760",
+    "previous_tag": "superman-qiang-v1.1.0",
+    "previous_commit": "f7fde816e295a62807ab636ee2d93cf307ea69cf",
+    "observed_repository_head": "91295b2152ecdb469aaab349029f0e72e5d002d8",
+    "business_runtime_files": 35,
+    "business_runtime_bytes": 1010859,
+    "shared_repair_commit": "91295b2152ecdb469aaab349029f0e72e5d002d8"
+  },
+  "game": {
+    "version": "1.20.0.4",
+    "steam_build": "25734779",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "machine_scope": "exact_machine_historical_business_validation"
+  },
+  "formal_zip": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\formal-a01.zip",
+    "bytes": 826470,
+    "sha256": "d6a566f1f3f785336f33247423772d7c2a45e0fef8ea93becea8364b77818f86"
+  },
+  "formal_manifest": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\formal-a01.manifest.json",
+    "bytes": 6404,
+    "sha256": "9db0f28a9f08215ecd7747f7406acc8b379c54d87dc8964551829dccb0dad7ba"
+  },
+  "steam": {
+    "item_id": "3812991990",
+    "app_id": "1158310",
+    "submitted_at_utc": "2026-10-24T02:48:35.240588+00:00",
+    "update_actual": true,
+    "native_result": 1,
+    "public_notes_exact": true,
+    "public_entry_id": "1792810119",
+    "notes_characters": 930,
+    "notes_lines": 28,
+    "notes_sha256": "939510478a9d23ea35a0d99721360b87fe20c3c8e6e07302ddabdc59083a68cd",
+    "tags": [
+      "Gameplay",
+      "Balance",
+      "Events",
+      "1.20 'Crozier'"
+    ],
+    "compatible_version_public_exact": true
+  },
+  "github": {
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/superman-qiang-v1.2.0",
+    "created_actual": true,
+    "assets_downloaded_actual": true,
+    "zip_manifest_bytes_exact": true,
+    "receipt": "evidence/github/release.json"
+  },
+  "cache": {
+    "downloaded_by_steam": true,
+    "files_exact_formal": true,
+    "matched_files": 35,
+    "source_copied_to_cache": false,
+    "ck3_load": "PASS_QUALIFIED_COMBINED_MENU_BOUNDARY",
+    "R0036_result": "RED_preGame_failure",
+    "R0036_release_sequence": 8569,
+    "R0036_release_done": true,
+    "R0036_resources": [],
+    "successor_result": "evidence/cache/R0037/public-verify.json",
+    "R0037_result": "PASS_cache_boundary_and_normal0",
+    "R0037_case_acceptance_pass": true,
+    "R0037_qualified_boundary_pass": true,
+    "R0037_run_id": "desktop-3fevhd2-1c74096080--superman-qiang--R0037",
+    "R0037_pid": 16564,
+    "load_evidence_kind": "COMBINED_MANAGED_CACHE_PROFILE_AND_ACTUAL_MAIN_MENU_LOAD",
+    "independent_engine_vfs_path_readback": "UNKNOWN",
+    "actual_cache_mount_proven_by_independent_vfs": false,
+    "campaign_started": false,
+    "business_fixture_mounted": false,
+    "actions_submitted": 0,
+    "normal_close_qualified": true,
+    "os_exit_code": 0,
+    "native_exit_code": 0,
+    "job_active_before": 0,
+    "job_active_final": 0,
+    "cleanup_ok": true,
+    "managed_thread_finished": true,
+    "steam_offline_closed_confirmed": true,
+    "keeper_exit_code": 0,
+    "release_sequence": 8575,
+    "resources": []
+  },
+  "validation": {
+    "monthly_R0030": "PASS_scoped",
+    "cold_R0031": "PASS_scoped_new_PID_0days",
+    "language_format": "PASS_format_only_9_existing_languages",
+    "C2_per_branch_engine": "NOT_PERFORMED",
+    "notification_root_cause": "UNRESOLVED",
+    "same_sex_engine": "NOT_PERFORMED",
+    "whole_product_pass_claimed": false,
+    "shared_historical": {
+      "source_commit": "f8032008c64e467701e6a26b0239a13c163c2fec",
+      "commands": 105,
+      "unittest_executions": 1058,
+      "mypy_commands": 17,
+      "not_rerun_for_new_HEAD": true
+    },
+    "publication_helper_tests": 16,
+    "shared_repair": {
+      "source_commit": "91295b2152ecdb469aaab349029f0e72e5d002d8",
+      "related_tests": 35,
+      "groups": [
+        19,
+        10,
+        6
+      ],
+      "allocate_baseline_ordinary_errors": 18,
+      "allocate_current_ordinary_errors": 18,
+      "same_qualified_diagnostic_multiset": true,
+      "new_menu_helper_errors": 0,
+      "whole_allocate_module_pass_claimed": false
+    }
+  },
+  "evidence_index": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\final-docs-a02\\tracked\\mod_superman_qiang\\docs\\release-1.2.0-20261024\\evidence-index.json",
+    "bytes": 51499,
+    "sha256": "54bf01d12d6d3e5a933cfb42f1530a2a2a70c79198fef54df396c83a0e4be077"
+  },
+  "preserved_history": "Original evidence remains byte exact. R0036 RED is not rewritten by R0037 PASS. The old prepublication false fields and old source-stage CI remain historical.",
+  "future_completion": "Root review, copy tracked tree, commit and push permanent changelog and release report to master; record actual repository delivery before setting release_delivery_complete true.",
+  "repository_delivery": {
+    "status": "PENDING",
+    "permanent_changelog_commit": null,
+    "pushed": false
+  },
+  "common_runtime": {
+    "path": "C:\\ck3-common-runtime-20261024\\menu-factory-v2-a01\\runtime.local.json",
+    "bytes": 460992,
+    "sha256": "af9118978b4c0f4238480d2b40e754b1505f2a87a29229b71a81f85fe51e8655"
+  },
+  "cache_observed": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\final-docs-a02\\tracked\\mod_superman_qiang\\docs\\release-1.2.0-20261024\\cache-observed.actual.json",
+    "bytes": 2477,
+    "sha256": "fa2770b570d2c401a008fe05347532d48445ee7b992a611d63986a2cbb0997a7"
+  },
+  "documents": [
+    {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\final-docs-a02\\tracked\\docs\\release-changelogs\\superman-qiang\\1.2.0.md",
+      "bytes": 6745,
+      "sha256": "2499950ebcdd29109a6f27da8d1d67dcb1cdf7d4a3fa3400fd517bf93a761aa0"
+    },
+    {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\final-docs-a02\\tracked\\mod_superman_qiang\\docs\\release-1.2.0-20261024\\README.md",
+      "bytes": 10881,
+      "sha256": "2f4c363c6052f8c62894c08dd07c816d892c24fb663ba8300c380bb31f1dfb92"
+    }
+  ]
+}

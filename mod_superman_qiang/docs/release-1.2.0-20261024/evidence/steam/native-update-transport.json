@@ -1,0 +1,33 @@
+{
+  "schema": "superman-qiang.native-call.transport.v1",
+  "started_at_utc": "2026-10-24T02:48:21.237650+00:00",
+  "tool": "workshop_native_publish",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-m",
+    "ck3_workshop_mcp.call_tool",
+    "--provider",
+    "steam-native",
+    "--state-dir",
+    "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\native-update-a01\\mcp-state",
+    "--tool",
+    "workshop_native_publish",
+    "--arguments-file",
+    "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\native-update-a01\\arguments.snapshot.json"
+  ],
+  "cwd": "D:\\sxad1023",
+  "arguments_sha256": "6eb1a2385bc444a6efc91549f084493475395ac48f97bbdf7ba7b556bb7fd91c",
+  "retry": false,
+  "process_local_app_context": {
+    "SteamAppId": "1158310",
+    "SteamGameId": "1158310"
+  },
+  "finished_at_utc": "2026-10-24T02:48:35.621785+00:00",
+  "returncode": 0,
+  "stdout_sha256": "879321104d9cd8a22f5e5958ffbdd018c36ca13ea5b69721798b3ba91388ef96",
+  "stderr_sha256": "2d979cdbfe9eed3ec4e84c0893899b0a437a6adb721095807ec5097c20804101",
+  "transport_ok": true,
+  "business_ok": true,
+  "business_status": "complete",
+  "item_id": "3812991990"
+}

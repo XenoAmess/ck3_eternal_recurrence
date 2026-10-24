@@ -1,0 +1,53 @@
+{
+  "schema": "ck3-mod-acceptance-run-context-v1",
+  "run_id": "desktop-3fevhd2-1c74096080--superman-qiang--R0037",
+  "run_dir": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0037",
+  "keeper_root": "C:\\ck3-superman-validation-20261023\\workshop-cache-keeper-a15",
+  "prepared_case": {
+    "path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a03\\prepared\\prepared-case.json",
+    "bytes": 6258,
+    "sha256": "c29adee774b31fa16eac6342768fb1ac03c4373db2b8cb5e44d95ca9caee3ec8"
+  },
+  "case_inputs": {
+    "cache_path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990",
+    "formal_manifest": {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\formal-a01.manifest.json",
+      "bytes": 6404,
+      "sha256": "9db0f28a9f08215ecd7747f7406acc8b379c54d87dc8964551829dccb0dad7ba"
+    },
+    "native_download_receipt": {
+      "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\native-download-a01\\stdout.json",
+      "bytes": 2677,
+      "sha256": "4365cc627d4248c636b2a3121be5d6696133b92a81d5c3025a17267dab091295"
+    },
+    "plain_configuration": {
+      "pdx_settings.txt": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\r05-live\\prepared\\state-a01\\profile\\pdx_settings.txt",
+        "bytes": 7133,
+        "sha256": "bc84f30bcc7f0104b194a8cab61b723903e94e68347bb48400d83aecf17ae751"
+      },
+      "tutorial.txt": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\r05-live\\prepared\\state-a01\\profile\\tutorial.txt",
+        "bytes": 61,
+        "sha256": "19f461abd92cc828c19d1cf77355ef6513682423721d64787756cf8465c2ef7d"
+      },
+      "presets.txt": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\r05-live\\prepared\\state-a01\\profile\\presets.txt",
+        "bytes": 2785,
+        "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+      },
+      "player/game_rules/presets.txt": {
+        "path": "C:\\ck3-e04-resume-20261023-a01\\r05-live\\prepared\\state-a01\\profile\\player\\game_rules\\presets.txt",
+        "bytes": 2785,
+        "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+      }
+    }
+  },
+  "product": "superman-qiang",
+  "case": "workshop_cache",
+  "frozen_argv": {
+    "path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0037\\frozen-argv.json",
+    "bytes": 457720,
+    "sha256": "6beb893a611ef83a36f376c5f2bab33814128c5b86b2ee9d0173e9914efcd13a"
+  }
+}

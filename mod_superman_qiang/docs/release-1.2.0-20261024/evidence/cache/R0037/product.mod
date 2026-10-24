@@ -1,0 +1,12 @@
+version="1.2.0"
+tags={
+    "Gameplay"
+    "Balance"
+    "Events"
+    "1.20 'Crozier'"
+}
+name="超人强：越超人越强"
+supported_version="1.20.*"
+picture="thumbnail.png"
+path="C:/SteamLibrary/steamapps/workshop/content/1158310/3812991990"
+remote_file_id="3812991990"

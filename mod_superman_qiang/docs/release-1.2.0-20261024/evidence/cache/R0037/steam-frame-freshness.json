@@ -1,0 +1,46 @@
+{
+  "schema": "ck3.steam_fresh_desktop_frame.v1",
+  "captured_at_utc": "2026-10-24T03:29:05.597065+00:00",
+  "steam_hwnd": 1574264,
+  "steam_pid": 32512,
+  "desktop_size": [
+    2560,
+    1440
+  ],
+  "before_rect": [
+    0,
+    0,
+    1010,
+    767
+  ],
+  "moved_rect": [
+    20,
+    0,
+    1030,
+    767
+  ],
+  "restored_rect": [
+    0,
+    0,
+    1010,
+    767
+  ],
+  "before_path": "C:\\ck3-superman-validation-20261023\\ops\\steam-window-fresh-R0037-closed-a01\\steam-before.png",
+  "before_sha256": "EA98F6798415B1C2F713A0DEC87F43179E9652ACA27112955BDF06BD2CCFE5A2",
+  "moved_path": "C:\\ck3-superman-validation-20261023\\ops\\steam-window-fresh-R0037-closed-a01\\steam-moved.png",
+  "moved_sha256": "E910FE69C966C4180440CEDE3F7BE0DF753C212FD644F70EFF8C8BAB2C546B2D",
+  "moved_identity": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\steam-window-fresh-R0037-closed-a01\\steam-moved.png",
+    "bytes": 748360,
+    "sha256": "E910FE69C966C4180440CEDE3F7BE0DF753C212FD644F70EFF8C8BAB2C546B2D"
+  },
+  "pixel_difference_bbox": [
+    0,
+    0,
+    1043,
+    780
+  ],
+  "moving_edge_changed": true,
+  "clock_check": null,
+  "offline_status_observed": null
+}

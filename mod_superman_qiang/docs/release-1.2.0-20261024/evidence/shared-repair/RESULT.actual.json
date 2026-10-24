@@ -1,0 +1,72 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T03:11:47.955559+00:00",
+  "results": [
+    {
+      "name": "closure-tests",
+      "argv": [
+        "C:/ck3-superman-validation-20261023/ops/shared-ci-clean-venv-a01/Scripts/python.exe",
+        "-B",
+        "tools/test_ck3_mod_acceptance_prelaunch_host_failure.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "support-tests",
+      "argv": [
+        "C:/ck3-superman-validation-20261023/ops/shared-ci-clean-venv-a01/Scripts/python.exe",
+        "-B",
+        "tools/test_ck3_mod_acceptance_host_running_date_support.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "menu-tests",
+      "argv": [
+        "C:/ck3-superman-validation-20261023/ops/shared-ci-clean-venv-a01/Scripts/python.exe",
+        "-B",
+        "tools/test_ck3_mod_acceptance_menu_mod_load.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "strict-support",
+      "argv": [
+        "C:/ck3-superman-validation-20261023/ops/shared-ci-clean-venv-a01/Scripts/python.exe",
+        "-B",
+        "-m",
+        "mypy",
+        "--strict",
+        "--follow-imports=silent",
+        "--no-incremental",
+        "tools/ck3_mod_acceptance_background_types.py",
+        "tools/ck3_mod_acceptance_build_runtime.py",
+        "tools/test_ck3_mod_acceptance_host_running_date_support.py"
+      ],
+      "exit_code": 1
+    },
+    {
+      "name": "ordinary-closure",
+      "argv": [
+        "C:/ck3-superman-validation-20261023/ops/shared-ci-clean-venv-a01/Scripts/python.exe",
+        "-B",
+        "-m",
+        "mypy",
+        "--follow-imports=silent",
+        "--no-incremental",
+        "tools/ck3_mod_acceptance_allocate.py",
+        "tools/test_ck3_mod_acceptance_prelaunch_host_failure.py"
+      ],
+      "exit_code": 1
+    },
+    {
+      "name": "diff-check",
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0
+    }
+  ]
+}

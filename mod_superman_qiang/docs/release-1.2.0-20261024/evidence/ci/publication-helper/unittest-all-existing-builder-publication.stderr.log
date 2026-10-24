@@ -1,0 +1,21 @@
+test_claimed_or_malformed_notification_results_are_rejected (__main__.SupermanNotificationFixtureTests.test_claimed_or_malformed_notification_results_are_rejected) ... ok
+test_existing_output_and_product_paths_are_rejected_without_overwrite (__main__.SupermanNotificationFixtureTests.test_existing_output_and_product_paths_are_rejected_without_overwrite) ... ok
+test_existing_sidecar_receipt_is_rejected_without_creating_output (__main__.SupermanNotificationFixtureTests.test_existing_sidecar_receipt_is_rejected_without_creating_output) ... ok
+test_json_integer_fields_reject_bool_and_equal_float_values (__main__.SupermanNotificationFixtureTests.test_json_integer_fields_reject_bool_and_equal_float_values) ... ok
+test_materialized_files_are_complete_byte_copies_with_roundtrip_receipt (__main__.SupermanNotificationFixtureTests.test_materialized_files_are_complete_byte_copies_with_roundtrip_receipt) ... ok
+test_missing_cell_fields_and_duplicate_indices_are_rejected (__main__.SupermanNotificationFixtureTests.test_missing_cell_fields_and_duplicate_indices_are_rejected) ... ok
+test_n5_real_emitter_requires_five_visible_confirmations_before_probe (__main__.SupermanNotificationFixtureTests.test_n5_real_emitter_requires_five_visible_confirmations_before_probe) ... ok
+test_create_still_requires_initial_baseline_and_keeps_legacy_default_tags (__main__.SupermanPublicationTests.test_create_still_requires_initial_baseline_and_keeps_legacy_default_tags) ... ok
+test_malformed_tag_json_cannot_freeze_an_update (__main__.SupermanPublicationTests.test_malformed_tag_json_cannot_freeze_an_update) ... ok
+test_update_requires_explicit_tags_before_creating_output (__main__.SupermanPublicationTests.test_update_requires_explicit_tags_before_creating_output) ... ok
+test_update_without_initial_baseline_freezes_complete_native_tags (__main__.SupermanPublicationTests.test_update_without_initial_baseline_freezes_complete_native_tags) ... ok
+test_descriptor_workshop_id_and_unreviewed_runtime_are_rejected (__main__.SupermanReleaseTests.test_descriptor_workshop_id_and_unreviewed_runtime_are_rejected) ... ok
+test_existing_attempt_and_wrong_product_tag_are_rejected (__main__.SupermanReleaseTests.test_existing_attempt_and_wrong_product_tag_are_rejected) ... ok
+test_manifest_and_archive_are_byte_reproducible (__main__.SupermanReleaseTests.test_manifest_and_archive_are_byte_reproducible) ... ok
+test_mutated_staging_is_rejected_even_with_same_file_size (__main__.SupermanReleaseTests.test_mutated_staging_is_rejected_even_with_same_file_size) ... ok
+test_release_has_exact_allowlist_and_excludes_source_and_fixture_assets (__main__.SupermanReleaseTests.test_release_has_exact_allowlist_and_excludes_source_and_fixture_assets) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 8.808s
+
+OK

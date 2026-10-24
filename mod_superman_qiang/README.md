@@ -1,8 +1,10 @@
 # 超人强：越超人越强
 
-**1.2.0 发布候选：月度计数与独立冷重载已验证，用户已授权同ID发布。** 每对在世成年配偶/侧室每自然月模拟一次性生活；已接入的原版脚本受孕尝试失败也计数，同次行为中的受孕、疾病及后续结果不重复计数。模拟使用原版月度回调，不额外制造怀孕，不需要原生组件或外部后台。[R0030/R0031](docs/2026-10-24-monthly-and-cold-native-acceptance.md)证明的是限定月度和保存范围；C2脚本受孕分支的逐分支实机仍有缺口，详见下文。新规则与去重边界见[重新设计](docs/2026-10-23-encounter-redesign.md)。
+**当前公开版本为1.2.0**，2026-10-24同ID更新：[Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990) · [GitHub下载](https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/superman-qiang-v1.2.0) · [永久changelog](../docs/release-changelogs/superman-qiang/1.2.0.md)。完整Steam更新说明、描述和兼容标签已匿名核对，真实下载的35文件与正式构建一致，R0037完成缓存菜单加载与正常退出，Steam保持离线。来源和证据见[发布报告](docs/release-1.2.0-20261024/README.md)。
 
-当前实际公开版本仍为 **1.1.0**，2026-10-04 更新：[Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990) · [GitHub 下载](https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/superman-qiang-v1.1.0)。该版本的健康吸取、保存重载和通知一步查看已通过当时的实机验收，完整更新说明、封面、五张媒体和真实订阅包均已核对。1.2.0正在准备正式上传、公开全文回读与真实订阅缓存加载；这些发布事实完成前不将候选称为已发布。计划与待补回执见[发布方案](docs/release-plan.md)。
+以上本机验收记录属于 `machine_id: desktop-3fevhd2-1c74096080`；闭场观察时间为2026-10-24T03:30:22.531563Z，出处为[闭场实际审阅](docs/release-1.2.0-20261024/evidence/cache/R0037/root-closed-review.json)。
+
+每对在世成年配偶/侧室每自然月模拟一次性生活；已接入的原版脚本受孕尝试失败也计数，同次行为中的受孕、疾病及后续结果不重复计数。模拟使用原版月度回调，不额外制造怀孕，不需要原生组件或外部后台。[R0030/R0031](docs/2026-10-24-monthly-and-cold-native-acceptance.md)验证的是限定月度和保存范围；新增剧情分支的逐分支实机仍有缺口，重复通知仍未定位。新规则和去重边界见[重新设计](docs/2026-10-23-encounter-redesign.md)，历史1.1.0保持原有验收范围。
 
 独立 CK3 模组。明确性交、已接入的脚本受孕尝试和月度夫妻生活模拟共用结算；两位合格成年角色经验不同时，经验较多的一方可以从经验较少的一方吸取随机属性。
 

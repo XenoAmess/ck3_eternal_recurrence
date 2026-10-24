@@ -1,0 +1,15 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T02:40:04.940960+00:00",
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "D:/sxad1023/mod_superman_qiang/tools/validate_static.py"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 1.6432223999872804,
+  "stdout": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\product-static.stdout.txt",
+  "stderr": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\product-static.stderr.txt",
+  "temporary_root": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\tmp",
+  "bytecode_write_disabled": true
+}

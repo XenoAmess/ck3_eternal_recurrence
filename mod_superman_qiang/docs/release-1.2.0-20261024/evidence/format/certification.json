@@ -1,0 +1,144 @@
+{
+  "schema": "sxad-release-localization-format-certification-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T02:41:16.978790+00:00",
+  "status": "format-certified",
+  "errors": [],
+  "source_head_before": "f8032008c64e467701e6a26b0239a13c163c2fec",
+  "source_head_after": "f8032008c64e467701e6a26b0239a13c163c2fec",
+  "input_pins": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\INPUTS.before.actual.json",
+    "bytes": 2639,
+    "sha256": "326e1c5df188d5bfad8398a8fc44b0a0c16583b9f4f4124317262a89aae5a3f3"
+  },
+  "commands": [
+    {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "observed_at_utc": "2026-10-24T02:40:03.971043+00:00",
+      "argv": [
+        "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "D:/sxad1023/mod_superman_qiang/tools/gen_runtime.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.7374308998696506,
+      "stdout": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\generated-check.stdout.txt",
+      "stderr": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\generated-check.stderr.txt",
+      "temporary_root": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\tmp",
+      "bytecode_write_disabled": true,
+      "command_receipt": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\generated-check.COMMAND.actual.json",
+        "bytes": 745,
+        "sha256": "511e6d74a2f70c04c5077fd00157c29db259a33759137e380449e3de72e044ea"
+      },
+      "stdout_pin": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\generated-check.stdout.txt",
+        "bytes": 26,
+        "sha256": "92cfbc5fd51aa6147601a031480292097ccea33dcaaed60baf9d0e26ffed352b"
+      },
+      "stderr_pin": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\generated-check.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "observed_at_utc": "2026-10-24T02:40:04.940960+00:00",
+      "argv": [
+        "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "D:/sxad1023/mod_superman_qiang/tools/validate_static.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.6432223999872804,
+      "stdout": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\product-static.stdout.txt",
+      "stderr": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\product-static.stderr.txt",
+      "temporary_root": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\tmp",
+      "bytecode_write_disabled": true,
+      "command_receipt": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\product-static.COMMAND.actual.json",
+        "bytes": 731,
+        "sha256": "a5616d9f66b9008817bc9f0d05550d41d6886eea22c8bf70b489376860ba0502"
+      },
+      "stdout_pin": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\product-static.stdout.txt",
+        "bytes": 7755,
+        "sha256": "6b64f2ac15e6c94dcf30697e3414e162b7d57cd2eea81c4b386eb380f09eb612"
+      },
+      "stderr_pin": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\product-static.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "observed_at_utc": "2026-10-24T02:40:06.057197+00:00",
+      "argv": [
+        "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "D:/sxad1023/mod_superman_qiang/tools/build_release.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.7060211000498384,
+      "stdout": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\build-check.stdout.txt",
+      "stderr": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\build-check.stderr.txt",
+      "temporary_root": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\tmp",
+      "bytecode_write_disabled": true,
+      "command_receipt": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\build-check.COMMAND.actual.json",
+        "bytes": 739,
+        "sha256": "b4efa7613df56d56450b1516d3137096f7a4c34e0f062fc262d60580c4dbe0fb"
+      },
+      "stdout_pin": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\build-check.stdout.txt",
+        "bytes": 201,
+        "sha256": "c5dcf3adaff17d63f3590cc2a727afe3e31cda12bafe904d52ad1da75c97602f"
+      },
+      "stderr_pin": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\release-localization-format-1.2.0-a01\\build-check.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "language_key_counts": {
+    "english": 25,
+    "french": 25,
+    "german": 25,
+    "japanese": 25,
+    "korean": 25,
+    "polish": 25,
+    "russian": 25,
+    "simp_chinese": 25,
+    "spanish": 25
+  },
+  "checks": {
+    "all_required_command_actual_exit_codes_zero": true,
+    "exact_language_key_sets": true,
+    "utf8_bom": true,
+    "exact_language_headers": true,
+    "placeholder_and_protected_token_multisets": true,
+    "escaped_yml_parse": true,
+    "duplicate_keys_rejected_by_parser": true,
+    "nine_locale_file_bytes_unchanged": true
+  },
+  "generated_output_count": 33,
+  "builder_runtime_file_count": 35,
+  "deterministic_builder_result": {
+    "file_count": 35,
+    "manifest_sha256": "9c9ce3b5a966dfe7876f8ba744da18019b3a4be8bfe2634d4a81dbe1914c774e",
+    "zip_sha256": "d6a566f1f3f785336f33247423772d7c2a45e0fef8ea93becea8364b77818f86"
+  },
+  "translation_api_called": false,
+  "translation_changes": 0,
+  "non_chinese_semantic_review_performed": false,
+  "non_chinese_live_verified": false,
+  "business_qualification_granted_by_this_report": false,
+  "scope": "Current nine localization files are retained byte-for-byte. Format certification only; no additional semantic, terminology or foreign-language live/layout gate.",
+  "D_written": false,
+  "Game_Steam_screen_HEAD_operated": false
+}

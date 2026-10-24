@@ -1,0 +1,126 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T03:14:16.382426+00:00",
+  "release": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\R0036-screen-release-a03.actual.json",
+    "bytes": 1160,
+    "sha256": "fa8576705fb4ff1fe060620f06c52398d121f6bdf952ab72d2815dc2b30223d2"
+  },
+  "bundle": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\r36-shared-repair-a01\\R0036-FAILURE-CLOSURE.actual.json",
+    "bytes": 4129,
+    "sha256": "1e148450fa9d7a7cec896661f9589a1cdbefbf537ec766facfee349284f1bcc7"
+  },
+  "verdict": {
+    "mode": "previous-shared-menu-initialization-failure",
+    "actual_process_inventory": {
+      "at_utc": "2026-10-24T03:14:16.381415+00:00",
+      "scanned_process_count": 261,
+      "python_controllers_inspected": [
+        {
+          "pid": 28664,
+          "name": "python.exe",
+          "runtime_controller_match": false
+        },
+        {
+          "pid": 32988,
+          "name": "python.exe",
+          "runtime_controller_match": false
+        },
+        {
+          "pid": 34660,
+          "name": "python.exe",
+          "runtime_controller_match": false
+        }
+      ],
+      "blockers": [],
+      "process_absence_is_normal_exit_proof": false
+    },
+    "failure_cleanup": {
+      "close": {
+        "path": "C:\\ck3-superman-validation-20261023\\ops\\r36-shared-repair-a01\\R0036-FAILURE-CLOSURE.actual.json",
+        "bytes": 4129,
+        "sha256": "1e148450fa9d7a7cec896661f9589a1cdbefbf537ec766facfee349284f1bcc7"
+      },
+      "original_evidence": {
+        "frozen_argv": {
+          "path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0036\\frozen-argv.json",
+          "bytes": 454261,
+          "sha256": "fba5425c578ec8b2ed8d3f0661aefca9995f02bc3359753bcda3106f21c67772"
+        },
+        "ready_context": {
+          "path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0036\\ready-context.json",
+          "bytes": 2532,
+          "sha256": "1e86e9eaa452e8082ca19880b9ded20a58eb8631589824284c61a3f569b9cc54"
+        },
+        "prepared_case": {
+          "path": "C:\\ck3-superman-validation-20261023\\workshop-cache-scene-a02\\prepared\\prepared-case.json",
+          "bytes": 6271,
+          "sha256": "96c573d0816eb7014bf544c0d2eb341f73edf96dff97d4ba794028324ca7938c"
+        },
+        "host_started": {
+          "path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0036\\host-started.json",
+          "bytes": 2872,
+          "sha256": "b739ceef4855bd1ec8537b837a1f189cced20325bebe691aeed86ce7f09d6d4a"
+        },
+        "host_exit": {
+          "path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0036\\host-original-process-exit.json",
+          "bytes": 252,
+          "sha256": "657d3886f2ca899dc504cb508cf865a99e09d7f8c96e7f205dbaba6f2ad00a57"
+        },
+        "host_supervisor": {
+          "path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0036\\host-supervisor-started.json",
+          "bytes": 861,
+          "sha256": "c42fd1170e1ef6fd4990f8fbdaed91bdc173b44acd6707e35c118e02c7a8a9ef"
+        },
+        "native_report": {
+          "path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0036\\native-report.json",
+          "bytes": 8159,
+          "sha256": "de5ca23ee0e613efb7af8d6edc2b63d137dcaed9f5b1bf340013ba7dcd183f9d"
+        },
+        "server_stderr": {
+          "path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0036\\native-report.server-stderr.log",
+          "bytes": 1416,
+          "sha256": "3e27ce9c028fab0ad7f142521f741c5b29a026405d43732a2605c1891290a89b"
+        },
+        "readiness_result": {
+          "path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0036\\case-output\\readiness-window-result.json",
+          "bytes": 1568,
+          "sha256": "8d73117a44fa85fbcbb808050c2da853ab166cc2220ee17a0dfc08251640fb4a"
+        },
+        "entry_result": {
+          "path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0036\\case-output\\entry-run-result.json",
+          "bytes": 12217,
+          "sha256": "5b715fb74185e80de2485f7b6f71c946337070191907db90efa4f3bdb62675f8"
+        },
+        "keeper_report": {
+          "path": "C:\\ck3-superman-validation-20261023\\workshop-cache-keeper-a14\\report.json",
+          "bytes": 448,
+          "sha256": "18e3a03c011d45c2a5f934e9f5e778d7def817bd41e8fe63ef3ba1838c192653"
+        },
+        "keeper_parent_exit": {
+          "path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0036\\keeper-actual-parent-exit.json",
+          "bytes": 618,
+          "sha256": "460ca176d780bc71ad0318b69f47e7bf26db16e33833eaf4c55c5de70bf18282"
+        },
+        "keeper_process": {
+          "path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0036\\keeper-process.json",
+          "bytes": 655,
+          "sha256": "7e92e3127d22af74f680c93ddb8e2e1561bd9aecf5952ebd957adeeaa784de09"
+        }
+      },
+      "original_host_exit_code": 1,
+      "original_host_wait_proven": true,
+      "original_ck3_exit_code": null,
+      "native_cleanup_qualified": null,
+      "normal_close_qualified": false,
+      "typed_normal_exit_proven": false,
+      "business_pass": false,
+      "release_pass": false,
+      "original_cleanup_ok": false,
+      "administrative_resource_admission_only": true
+    }
+  },
+  "current_canonical_tasks_read": 1074,
+  "no_lease_or_Game_actions": true
+}

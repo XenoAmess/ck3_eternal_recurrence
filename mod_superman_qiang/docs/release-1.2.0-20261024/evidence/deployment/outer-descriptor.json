@@ -1,0 +1,13 @@
+{
+  "schema": "sxad-superman-outer-deployment.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T02:55:56.862178+00:00",
+  "outer_path": "C:\\Users\\1\\Documents\\Paradox Interactive\\Crusader Kings III\\mod\\superman_qiang.mod",
+  "staging": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\formal-after-upload-a03",
+  "outer_bytes": 295,
+  "outer_sha256": "02f919dc4d93c5c9a57eb6b44d67a30453958a4e7e1995648cbc6ee720ec3d80",
+  "remote_id_only_outer": true,
+  "staging_rebuilt_after_upload": true,
+  "formal_rebuild_exact_manifest_and_zip": true,
+  "new_staging_required_input_protection": "Keep while canonical user outer descriptor refers to this formal stage; review with next release or 2026-11-23."
+}

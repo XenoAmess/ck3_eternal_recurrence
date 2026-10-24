@@ -1,0 +1,45 @@
+{
+  "schema": "sxad-publication-storage-admission.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T03:31:30.876718+00:00",
+  "owner": "/root",
+  "owner_task": "ck3-superman-redesign-20261023",
+  "policy_version": "1.0.0",
+  "quota_review_at_utc": "2026-10-24T15:45:00Z",
+  "scope": "Bounded 1.2.0 formal double build, existing native upload/download, public readback, single menu-only cache case and repository delivery. No campaign or SAVE. 1 GiB remaining output envelope with fresh 6 GiB live system-growth reserve; existing finite cap unchanged. No deletion, general quota or automatic reservation deployment.",
+  "canonical_registry": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 7824,
+    "sha256": "7888299015f5d99106c4bd3f726ab600dd57a95cdd08111f21505b068296bb78"
+  },
+  "volumes": {
+    "C:/": {
+      "total": 511133945856,
+      "used": 451126546432,
+      "free": 60007399424,
+      "remaining_write_peak": 1073741824,
+      "system_growth_reserve": 6442450944,
+      "other_registered_future": 0,
+      "safety": 21474836480,
+      "max_project_bytes_conservative_whole_volume": 464000000000,
+      "required_free": 28991029248,
+      "projected_conservative_usage": 458642739200,
+      "pass_admission": true
+    },
+    "D:/": {
+      "total": 500090007552,
+      "used": 478395060224,
+      "free": 21694947328,
+      "remaining_write_peak": 8388608,
+      "system_growth_reserve": 134217728,
+      "other_registered_future": 0,
+      "safety": 21474836480,
+      "max_project_bytes_conservative_whole_volume": 478600000000,
+      "required_free": 21617442816,
+      "projected_conservative_usage": 478537666560,
+      "pass_admission": true
+    }
+  },
+  "raw_evidence_review_at_utc": "2026-11-23T00:00:00Z",
+  "record_review_at_utc": "2027-04-22T00:00:00Z"
+}

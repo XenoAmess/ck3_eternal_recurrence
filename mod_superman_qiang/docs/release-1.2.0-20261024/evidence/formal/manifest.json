@@ -1,0 +1,185 @@
+{
+  "files": [
+    {
+      "path": "common/character_interactions/sxad_interactions.txt",
+      "sha256": "49af8002a9d26eeb08b99073bb2393a6bd7c2e25f11610df990bcebbfe8e92d5",
+      "size": 1177
+    },
+    {
+      "path": "common/modifiers/sxad_skill_balance_modifiers.txt",
+      "sha256": "c21257a41a0b83428b0840ea198bd62581d1b02879235a86d056bc98d81bf995",
+      "size": 2342
+    },
+    {
+      "path": "common/on_action/sxad_natural_on_actions.txt",
+      "sha256": "3b509bc54abc48e6abed83fc99a3c97e07908ccdb111d7c97df90672e921a005",
+      "size": 524
+    },
+    {
+      "path": "common/script_values/sxad_natural_values.txt",
+      "sha256": "b380725e0dd4ecb3c6c96c1c58efcb9a8ad8fd28c2c6406a19ed2803a5a00566",
+      "size": 365
+    },
+    {
+      "path": "common/script_values/sxad_values.txt",
+      "sha256": "fd7c4dfad2de83a6bcd7a3d0ab303835ead7a103abe5d954f0bb2e5a82b94a7d",
+      "size": 5344
+    },
+    {
+      "path": "common/scripted_effects/sxad_experience_effects.txt",
+      "sha256": "05f68a64fc25690f50035f69c493dcc5b58c138c426815e372a354a16f63f905",
+      "size": 3033
+    },
+    {
+      "path": "common/scripted_effects/sxad_natural_effects.txt",
+      "sha256": "e707d6a037db6ff777fbb6bfa40929972db5b9eae564febff32058809aaf6394",
+      "size": 3373
+    },
+    {
+      "path": "common/scripted_effects/sxad_probe_skill_effects.txt",
+      "sha256": "e4d6e1d40b552440a5f5042d1d6833337cfb1b55565504e1cd5dea4ef12ab7cd",
+      "size": 11144
+    },
+    {
+      "path": "common/scripted_effects/sxad_transfer_effects.txt",
+      "sha256": "7991c7000897755735fad9d6785ee3840811b3ad958a155675b9d67918a59458",
+      "size": 11909
+    },
+    {
+      "path": "common/scripted_effects/zz_sxad_had_sex_with_effect.txt",
+      "sha256": "a942dc45d11c21fb31afb26753cda28891c08423a7331d0f8f4b446cd9bc685f",
+      "size": 9868
+    },
+    {
+      "path": "common/scripted_effects/zz_sxad_had_sex_with_unknown_effect.txt",
+      "sha256": "496708bcf73fccf051be18ce097300f95bd03360f3c9436c8d88e1185e9b0907",
+      "size": 1353
+    },
+    {
+      "path": "common/scripted_effects/zz_sxad_mandala_story_creation_aspect_get_kids_effect.txt",
+      "sha256": "0276864b7fb3b255519b260b2b3f64c119e94ad695a3be9c567e38df5ab5ffe8",
+      "size": 1370
+    },
+    {
+      "path": "common/scripted_effects/zz_sxad_rakish_brothel_night_effect.txt",
+      "sha256": "ce835516cffedd2133899a68cdc2f137b23bb804c75f9174158d7ff5875271e6",
+      "size": 2849
+    },
+    {
+      "path": "common/traits/sxad_traits.txt",
+      "sha256": "2139b3fb753bb72607162f65f88eb94e1494057060550bf9ba8fb5bbdd07d53d",
+      "size": 482
+    },
+    {
+      "path": "descriptor.mod",
+      "sha256": "45b514f48fc3021ecd4869906fb69c333d8d64fc0ae8d32a8ce620f8e9aa1805",
+      "size": 174
+    },
+    {
+      "path": "events/sxad_events.txt",
+      "sha256": "e21cfe6edc1a0f511eb90f0bc6083988e3a596cec947039268175b6652272701",
+      "size": 243
+    },
+    {
+      "path": "events/sxad_natural_events.txt",
+      "sha256": "9ebf663fcda5d405ce5fa7fcc17dd159c63989b2570dfcccc6eb160ccfcc58af",
+      "size": 748
+    },
+    {
+      "path": "events/zz_sxad_fund_inspiration_6513.txt",
+      "sha256": "1168768b23e5dfe01fafca98d14a86c6757bba2f7a2c63cd8e19ef58c2d9c4de",
+      "size": 4744
+    },
+    {
+      "path": "events/zz_sxad_learning_medicine_2022.txt",
+      "sha256": "47d698ffa99a7ba343e20e1f3ec5dd64065ada6f44733b17d58b3d52fd9e4e2b",
+      "size": 8540
+    },
+    {
+      "path": "events/zz_sxad_learning_medicine_2023.txt",
+      "sha256": "626f9e88f9b109c9f44b951073aea46da8aad4a5c0c948855b179d1bb5b8e2a8",
+      "size": 9025
+    },
+    {
+      "path": "events/zz_sxad_mpo_events_tova_0035.txt",
+      "sha256": "4139cefcfd0366b4ed2efa2573d2d8ceaa23d34dd1f457e9c0c8a956607fd770",
+      "size": 4276
+    },
+    {
+      "path": "events/zz_sxad_mpo_temujin_flavor_0030.txt",
+      "sha256": "d9a932950cc9558bb0546f68cc340e7db4d21c52decb840e47e5507be1143098",
+      "size": 4072
+    },
+    {
+      "path": "events/zz_sxad_pilgrimage_2101.txt",
+      "sha256": "8bacda731e339748caf29ee5e53e151a706157af841d4e44504485d61e2bc9a7",
+      "size": 9350
+    },
+    {
+      "path": "events/zz_sxad_stewardship_duty_1055.txt",
+      "sha256": "30218ccbf8e70082244caeda4d32809979f5f459356765365d7dd95013845c23",
+      "size": 39833
+    },
+    {
+      "path": "gfx/interface/icons/traits/sxad_sex_experience.dds",
+      "sha256": "7f4c9f2925ac10d6803261ae0e28ec0b417b3a9917664b5297e45a955c4de5b5",
+      "size": 57728
+    },
+    {
+      "path": "localization/english/sxad_l_english.yml",
+      "sha256": "4b4463ca896283eb257ef3d21cf7d8f40cc98c13c63773a70661422dc58a02d1",
+      "size": 3411
+    },
+    {
+      "path": "localization/french/sxad_l_french.yml",
+      "sha256": "2b3b48fe869a443401d5e4e1aeb4506c7e5611ab9efdafc6025a8b9141734aa6",
+      "size": 3573
+    },
+    {
+      "path": "localization/german/sxad_l_german.yml",
+      "sha256": "81489afa363913e1bd603a4b9470e9993d4d34ce9bb7410b2d9e874c16595bdb",
+      "size": 3558
+    },
+    {
+      "path": "localization/japanese/sxad_l_japanese.yml",
+      "sha256": "0dd9e99bce94a25db06b6bc3c873f774d88eda064ba75a291b8fab8d2dfd0cc0",
+      "size": 3479
+    },
+    {
+      "path": "localization/korean/sxad_l_korean.yml",
+      "sha256": "6028daac727d6d647a0e9d0fccc63e3a7997297b6bb9fe6ebdf9c61689fbd699",
+      "size": 3445
+    },
+    {
+      "path": "localization/polish/sxad_l_polish.yml",
+      "sha256": "83e411c370d779ae84b2d93821215664714040cbb857f2332a4d874c2ad2c058",
+      "size": 3580
+    },
+    {
+      "path": "localization/russian/sxad_l_russian.yml",
+      "sha256": "39077ed3df3ecd9ceb2036e713e98148f18073f2900ab1dad813599f5c7ca0ab",
+      "size": 3967
+    },
+    {
+      "path": "localization/simp_chinese/sxad_l_simp_chinese.yml",
+      "sha256": "1bfd5e568a8f449de617176e1346d7c2407023e0ae6028c9918971b653cd2b6f",
+      "size": 3338
+    },
+    {
+      "path": "localization/spanish/sxad_l_spanish.yml",
+      "sha256": "a23f49df3f868960254298a655cf690ac9d0b6bdc4ecdb896ef8b259d2e722af",
+      "size": 3503
+    },
+    {
+      "path": "thumbnail.png",
+      "sha256": "e70f54115bef351ee6e363bb116ee81bb25570f683cdc7606cf769b45d2b4f9b",
+      "size": 785139
+    }
+  ],
+  "format_version": 1,
+  "git_sha": "bcb9e9f11658519c5277e0d304a02e5028bbd760",
+  "git_tag": "superman-qiang-v1.2.0",
+  "mod_version": "1.2.0",
+  "product_id": "mod_superman_qiang",
+  "workshop_item_id": "3812991990"
+}

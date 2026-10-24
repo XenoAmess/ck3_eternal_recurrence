@@ -1,0 +1,22 @@
+{
+  "app_id": 1158310,
+  "created_at": "2026-10-24T02:48:23.646738+00:00",
+  "item_id": "3812991990",
+  "legal_agreement_required": false,
+  "operation": "update",
+  "operation_id": "superman-qiang-1.2.0-20261024-P0001",
+  "payload_sha256": "51398795af749b30f2bc98ed36b3f98983fcd493801dfc1826c8b81896d50b05",
+  "schema": "ck3_workshop_mcp.steam_native.receipt.v1",
+  "stage": "complete",
+  "steam_result": 1,
+  "submitted_at": "2026-10-24T02:48:35.240588+00:00",
+  "tags": [
+    "Gameplay",
+    "Balance",
+    "Events",
+    "1.20 'Crozier'"
+  ],
+  "tags_only": false,
+  "update_scope": "content_and_metadata",
+  "updated_at": "2026-10-24T02:48:35.240632+00:00"
+}

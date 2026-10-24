@@ -1,0 +1,96 @@
+{
+  "title_exact": true,
+  "description_exact": true,
+  "description_characters": 2172,
+  "description_sha256": "603EB8B4D0D8F288C8B4E26356AEB2618B1F2C8D2F96BC828C986EDFF2A587E0",
+  "expected_description_sha256": "603EB8B4D0D8F288C8B4E26356AEB2618B1F2C8D2F96BC828C986EDFF2A587E0",
+  "change_notes_exact": true,
+  "changelog_entry_id": "1792810119",
+  "change_notes_characters": 930,
+  "change_notes_lines": 28,
+  "change_notes_sha256": "939510478A9D23EA35A0D99721360B87FE20C3C8E6E07302DDABDC59083A68CD",
+  "expected_change_notes_characters": 930,
+  "expected_change_notes_lines": 28,
+  "expected_change_notes_sha256": "939510478A9D23EA35A0D99721360B87FE20C3C8E6E07302DDABDC59083A68CD",
+  "time_updated": 1792810119,
+  "file_size": "1010859",
+  "ok": true,
+  "schema": "sxad-anonymous-publication-readback-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T02:54:22.139997+00:00",
+  "workshop_item_id": "3812991990",
+  "app_id": 1158310,
+  "creator": "76561198273714027",
+  "public_visibility": 0,
+  "public_time_updated_decimal": "1792810119",
+  "public_tags": [
+    "Gameplay",
+    "Balance",
+    "Events",
+    "1.20 'Crozier'"
+  ],
+  "frozen_tags": [
+    "Gameplay",
+    "Balance",
+    "Events",
+    "1.20 'Crozier'"
+  ],
+  "tags_exact_and_ordered": true,
+  "raw_changelog": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\public-anonymous-investigation-a01\\attempt-01\\response.raw.html",
+    "bytes": 59064,
+    "sha256": "96f7975f395176ddab865e66d7e9ccc2e8a48eb8fae34b2034f0856cb75e6091"
+  },
+  "changelog_http": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\public-anonymous-investigation-a01\\attempt-01\\response.actual.json",
+    "bytes": 2976,
+    "sha256": "88aa2236ea3681e35b47bb0a82a85487da45be6fe7af85a039d7a762b64f4899"
+  },
+  "item_api_http": {
+    "url": "https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/",
+    "final_url": "https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/",
+    "method": "POST",
+    "status": 200,
+    "response_headers": {
+      "Server": "nginx",
+      "Content-Type": "application/json; charset=UTF-8",
+      "Content-Length": "6289",
+      "Expires": "Sat, 24 Oct 2026 03:24:26 GMT",
+      "Date": "Sat, 24 Oct 2026 02:54:26 GMT",
+      "Connection": "close"
+    },
+    "started_at_utc": "2026-10-24T02:54:21.123960+00:00",
+    "Cookie_or_authorization_header_sent": false
+  },
+  "public_item_api": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\public-anonymous-investigation-a01\\verification-a01\\public-item-api.raw.json",
+    "bytes": 6289,
+    "sha256": "9d50719a360d5be6da5abe8d1a9a3b3ee377cbbdd0c930ddc73f70a837f61bf4"
+  },
+  "public_notes": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\public-anonymous-investigation-a01\\verification-a01\\steam-change-notes.public.txt",
+    "bytes": 2600,
+    "sha256": "939510478a9d23ea35a0d99721360b87fe20c3c8e6e07302ddabdc59083a68cd"
+  },
+  "expected_notes": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\update-freeze\\change-notes.txt",
+    "bytes": 2600,
+    "sha256": "939510478a9d23ea35a0d99721360b87fe20c3c8e6e07302ddabdc59083a68cd"
+  },
+  "expected_description": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\update-freeze\\description.bbcode",
+    "bytes": 5447,
+    "sha256": "603eb8b4d0d8f288c8b4e26356aeb2618b1f2c8d2f96bc828c986edff2a587e0"
+  },
+  "verifier_source": {
+    "path": "D:\\sxad1023\\tools\\verify_workshop_publication.py",
+    "bytes": 6655,
+    "sha256": "1355c850003812c650317e19e4293f48bdf14229dc2c9704696266885777a8f4"
+  },
+  "Steam_Game_or_login_state_operated": false,
+  "public_description": {
+    "path": "C:\\ck3-superman-validation-20261023\\ops\\publication-1.2.0-a01\\public-anonymous-investigation-a01\\verification-a01\\description.public.bbcode",
+    "bytes": 5447,
+    "sha256": "603eb8b4d0d8f288c8b4e26356aeb2618b1f2c8d2f96bc828c986edff2a587e0"
+  }
+}
