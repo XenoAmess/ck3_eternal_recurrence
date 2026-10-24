@@ -220,6 +220,8 @@ public final class ClarityCards {
             BufferedImage source = decodeIcon(illustration.source(), ffmpeg);
             double scale = Math.min(60.0 / source.getWidth(), 60.0 / source.getHeight());
             int w = (int) Math.round(source.getWidth() * scale), h = (int) Math.round(source.getHeight() * scale);
+            g.setColor(new Color(0xe8d8b5));
+            g.fillRoundRect(x - 2, baseline - 50, 64, 64, 8, 8);
             g.drawImage(source, x + (60 - w) / 2, baseline - 48 + (60 - h) / 2, w, h, null);
             x += 76;
             width -= 76;
