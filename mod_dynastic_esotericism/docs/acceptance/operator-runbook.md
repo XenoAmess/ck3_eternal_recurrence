@@ -94,10 +94,14 @@ R0004 的日志故障候选修复只改日志位置：`.3/.4` 外层完整 obser
 1. 从真实 religion context 取当前完整 `faith_id`，先调用 `ck3_open_faith_window_v1(faith_id,expected_revision)`，再用 `ck3_query_ingame_ui_window_v1(window_kind="faith",expected_revision)` 独立核原版窗口与所选身份；实际信仰窗口可见后才提交 `open_create_draft` 或 `open_edit_current_rite_draft`。
 2. 查询当前 draft groups、doctrine choices、resource costs 和 action context，保留两个教义实际 `shown/can/selected` 与默认“无”。知识查询未接入本宿主；其范围由真实 UI 可选状态与可玩角色的真实 `knows_doctrine` trigger 共同验收。原版不允许向不可玩角色写教义知识；不可玩成员与新生儿的 Rite、Dynasty、House 断言仍全部保留。
 3. `select_doctrine` 使用 `group_key=des_dynastic_membership`、`doctrine_key=des_doctrine_dynastic` 或 `des_doctrine_none`。创建需要的原版名称字段用 `set_name_field`；保持其他教义不变以得到同 Faith 的新 Rite。
-4. 保存实际完整 `Can`、价格和 draft identity；`prepare_confirmation` 打开原版确认界面。
-5. 仅在原始结果已知时 `confirm_once` 一次，传真实 `expected_preview_identity` 和预期 `create_rite/edit_rite`。
+4. 保存实际完整 `Can`、价格和当前 `preview_identity`；`prepare_confirmation` 必须同时传真实 `expected_preview_identity` 和 `expected_outcome_kind`（实际创建为 `create_rite`，实际编辑为 `edit_rite`），才可打开原版确认界面。
+5. 仅在原始结果已知时 `confirm_once` 一次；它同样必须同时传当前草案的真实 `expected_preview_identity` 和实际 `expected_outcome_kind`，不能省略任一字段，也不能用另一草案或旧 revision 的身份。
 6. 仅对 `confirm_once` 的 pending 结果调用 `ck3_collect_player_rite_creation_action_result_v1(action_request_id)` 收集原最终确认。非 confirm 操作没有此 final-confirm claim；开窗 pending 时保留原 receipt，不重放，用原 action context 的 `observation=draft/current_rite` 独立观察，再按真实草案查询 groups。UNKNOWN 不重放。
 7. 新的 `ck3_verify_player_rite_creation_action_completed_v1(action_request_id,expected_revision)` 独立核对真实当前 Rite、名称、core、doctrines 和窗口/确认框关闭后态。该最终 SDK 工具实际冻结并进入 required tools 后才可执行；旧 collect/ACK 不代替本步。
+
+每次排队前，先对本次真实值只读调用冻结 SDK 的 `request_fields(operation, actual_source_rite_id, **selectors)`，按该 operation 的 exact required selectors 预验；它只校参数合同，不查询或提交游戏，也不证明草案仍新鲜、完整 Can 或业务成功。`prepare_confirmation` 与 `confirm_once` 的 selectors 都恰为 `{expected_preview_identity, expected_outcome_kind}`。`expected_revision` 由 MCP 参数层独立绑定，不放进这个函数的 selectors。不能只看 MCP 包装器为统一多 operation 而声明的 Optional 签名：缺失字段会被过滤后在 SDK 拒绝。来源固定为 `7def6fe3e740b85099e1016f7ee0027048cb7d1a` 的 [request_fields 第 508–516 行](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/7def6fe3e740b85099e1016f7ee0027048cb7d1a/ck3_autonomous_player/src/xar_autoplayer/bridge/rite_creation_action_private_v1.py#L508-L516)；R5 实际冻结文件 59,698 B，SHA `ce030a17f8d024460052deede2069f5cff3c34c876e13d2b359af3d1d6e62284`。
+
+R0005（`machine_id: desktop-3fevhd2-1c74096080`）于 2026-10-24T15:09:20.731249Z 提交的 `root-create-prepare-once` 仅带 `operation=prepare_confirmation`、`expected_source_rite_id=0`，漏了上述两个 selector；15:09:21.132971Z 在原生 dispatch 前被 `unexpected or missing Rite creation selector` 拒绝。该场保持 0/6 与业务 RED，shared host 保留原错误，不能续发业务操作、取消礼仪草案或重放 prepare。原件为 `common-runtime-a07/runs/desktop-3fevhd2-1c74096080--dynastic-esotericism--R0005/native-report.json`；闭场进行中的原报告可能继续更新，本次错误及原失败 step 已只读保全到 `C:/ck3-dynastic-esotericism-20261024/R5-selector-rejection-a01.actual.json`（3,522 B，SHA `24a64e4dbbd3c5dab421a6cf0ece600c2cde6f5cf727bc95f8232bf3eab14910`）。原拒绝不清除，正常退出后再用同一 runtime 分配新场次；本段不追认正常关闭或下一场成功。
 
 原版取消草案也必须保留真实取消前后 Rite/Dynasty/House/资源和窗口证据。新版同一 execute 工具提供 `cancel_draft`；取消后用原 query 的 `observation=current_rite` 独立观察持久图与窗口关闭。未知 claim 禁止发送取消，不能用 fixture 改状态模拟取消。
 
@@ -141,3 +145,5 @@ fixture 决议也通过公共原生决议工具依次打开、query、select、c
 R0003证明同handle退出0，但原正常闭场因宿主错误及缺少路由证据仍为false。后继共享CaseClient增加独立typed路由；正常关闭组40项与原共享step全部91条命令已实际通过（分次修复后汇总，原RED保留），不追认R0003。`autosave_verified=false`按SDK表示没有保存完整性资格，即使关闭退出自动存档也保持false；真正Save与独立保存读回另验。
 
 业务场景完成后，等本次CaseClient写出`normal-quit-awaiting.json`，在其原deadline内走同一queue：新query→prepare_confirmation一次；pending后仅query，确认stage0已消费、stage1可用才continue_preparation一次；新query见真实确认框后disable_exit_autosave一次（should_save已false时保留原生已关闭观察）；再新query取新context signature→confirm_desktop一次；pending后仅observe_normal_exit_v1收集同原handle到实际exit0。未知或已消费stage不重放。不先退出游戏再调用normal_close。新的路由保留GUI review=null，并独立消费原fact/close/claim/profile/source inventory；原finish_hold仅一次，最后仍要求原handleOS0、无host error、完整native清理。
+
+宿主已经记录 error 时，每个队列 plan 只能放**一个**有全新 step ID 的 typed lifecycle step：`ck3_query_normal_exit_context_v1`、`ck3_request_normal_exit_v1` 或 `ck3_observe_normal_exit_v1`。正常退出 query 和 request 也必须分成两个独立 plan，不能合成“先 query 后 request”；礼仪 `cancel_draft` 等业务操作不在白名单。这里的正常退出 `prepare_confirmation` 是 `ck3_request_normal_exit_v1` 的 action，不能与前文礼仪工具的同名 operation 混用。该规则来自同一冻结 SDK 的 `normal_exit_host_terminal_v1.py:21–60`，文件 SHA `a0c07cb90e2be72f3f54802e17660d41a4c00d7baad40bd2a18e2c8d7d96922f`；失败宿主只允许完成原生命周期，原业务错误始终保留。

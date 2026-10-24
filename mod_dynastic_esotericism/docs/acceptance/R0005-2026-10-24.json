@@ -1,0 +1,71 @@
+{
+  "schema": "xar.dynastic-esotericism.actual-run-summary.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T15:21:47.977206+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0005",
+  "source_commit": "7def6fe3e740b85099e1016f7ee0027048cb7d1a",
+  "business_phase_passed": 0,
+  "business_phase_total": 6,
+  "business_pass": false,
+  "release_pass": false,
+  "normal_close_qualified": false,
+  "failure": "Operator prepare_confirmation omitted the two selectors required by frozen SDK request_fields. Rejected before native dispatch; original host error retained.",
+  "actual_final_confirmation_submitted": false,
+  "partial_observations": [
+    "Fresh offline gate and public preflight passed",
+    "Original court chaplain and theological puppet/reverse relationship readback passed",
+    "Both new doctrines shown, known and selectable; default none",
+    "Complete original Can true with all five draft names, price3705 piety",
+    "Cancellation left actual Rite0 and closed draft/modal; gold/prestige/piety unchanged"
+  ],
+  "process_exit_codes": {
+    "original_game_handle": 0,
+    "original_host_popen": 1,
+    "original_public_run": 2,
+    "original_keeper_popen": 0
+  },
+  "cleanup_ok": true,
+  "screen_release_sequence": 8689,
+  "evidence": [
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R5-selector-rejection-a01.actual.json",
+      "bytes": 3522,
+      "sha256": "24a64e4dbbd3c5dab421a6cf0ece600c2cde6f5cf727bc95f8232bf3eab14910"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\run-core-a20.actual.json",
+      "bytes": 1189,
+      "sha256": "af9fbabb7c391a9e0d2ca78e99457e3ff37c21f5ad32cf37709af02de93ce36e"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a07\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0005\\host-original-process-exit.json",
+      "bytes": 258,
+      "sha256": "2f29bb4b493caed0cb8464fb3d2e89ef0f967661561e4a4410c8bff4419211cf"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a07\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0005\\case-output\\normal-close-result.json",
+      "bytes": 3275,
+      "sha256": "1a66dd37938d98693aa90fe05e0a29b99998c5fb4d98b4ec45dd9896a56436d7"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\keeper-core-a20\\report.json",
+      "bytes": 439,
+      "sha256": "57a5bc0c403ebb3eb347734040d09e14cbfe2ca56c9db913cd86516a8026992a"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\allocate-core-a20.actual.json",
+      "bytes": 1482,
+      "sha256": "b6679e130d5357d6e28b840727b8ff6295f7ac85cfd06b4b6f60fb8763d1c35f"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0005-screen-release.actual.json",
+      "bytes": 1429,
+      "sha256": "b9d2c5868cbfea30f6fff027ad8a9f40658280073f17143c03d77efac0d0d387"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\release-preflight-a03\\LOCAL-PREPARE-FINAL.actual.json",
+      "bytes": 2006,
+      "sha256": "40c82e14787e6dec6471199a08120aea01230c9de01e6fe0482396e134292087"
+    }
+  ]
+}
