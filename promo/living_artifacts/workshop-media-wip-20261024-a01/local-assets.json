@@ -1,0 +1,64 @@
+{
+  "schema": "living-artifacts-workshop-media-local-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-24T14:00:13Z",
+  "status": "LOCAL_REVIEWED_NOT_UPLOADED",
+  "assets": [
+    {
+      "file": "art/01-hero.jpg",
+      "bytes": 581668,
+      "sha256": "1f8d1f502ea41bf9b8e45f6a4e07f6c27ace3e283d940972224e054767b90145",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "file": "art/01-hero.png",
+      "bytes": 2540898,
+      "sha256": "07ddf6837c7fd94c899341b3236cd62d88c80dc00772fd9b0c99e1d14f9e07dd",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "file": "art/03-feeding-concept.jpg",
+      "bytes": 535535,
+      "sha256": "0b18e9032d2e4f4d46d222a46707d5f80eb093fded93d8248c6864bd44a068ec",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "file": "art/03-feeding-concept.png",
+      "bytes": 2416833,
+      "sha256": "e7be503f1c08b1158fea4136bab88d7a21bdfa3a5081ac0f2e437e335bb28381",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "file": "screenshots/02-natural-awakening-r31.jpg",
+      "bytes": 487158,
+      "sha256": "155993e42aa2f3a14e487e76e731ef2af5ea0c6605b51920c6f17b3092bdc541",
+      "width": 1920,
+      "height": 1080
+    },
+    {
+      "file": "screenshots/02-natural-awakening-r31.png",
+      "bytes": 2705586,
+      "sha256": "4f6e2bf37db99f99d599dc16db797537d6980149dac544d14a2fe4341edeee34",
+      "width": 1920,
+      "height": 1080
+    }
+  ],
+  "real_play_source": {
+    "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0031",
+    "player_character_id": 33702,
+    "game_pid": 3364,
+    "game_birth_unix": 1792826563.9571812,
+    "captured_at_utc": "2026-10-24T07:48:36.453525Z",
+    "game_version": "1.20.0.4",
+    "build": "25734779",
+    "original_path": "C:/codex-ck3-demos/living-artifacts-promo-20261024/recordings/scene09/navigation/20261024T074835829156Z-living-detail-a01.png",
+    "original_sha256": "4f6e2bf37db99f99d599dc16db797537d6980149dac544d14a2fe4341edeee34",
+    "scope": "Natural star item and original base attributes; no feeding, training or suppression completion claim",
+    "scene_normal_close_qualified": false
+  },
+  "review_after_utc": "2027-01-22T00:00:00Z"
+}

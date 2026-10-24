@@ -1,0 +1,24 @@
+{
+  "schema": "living-artifacts-workshop-art-generation-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-24T13:08:23Z",
+  "tool_mode": "built-in image_gen.imagegen",
+  "reference": "../covers/bilibili-cover-16x9-v1.png",
+  "assets": [
+    {
+      "file": "art/01-hero.png",
+      "source_path": "C:/Users/Administrator/.codex/generated_images/01a16561-4773-7432-a839-85d49afb65eb/exec-b789383a-de3a-4814-b131-694e839cbb44.png",
+      "role": "Concept art: mod-page hero",
+      "prompt": "Use case: ads-marketing. Asset type: Steam Workshop description hero artwork for a Chinese Crusader Kings III mod. Edit the reference into a polished dark aristocratic medieval key art banner, 16:9 landscape, same ancient gold-hilt living sword with one restrained crimson eye in its blade, cold black stone throne, burgundy velvet and discarded crown. Preserve campaign identity, dramatic right-hand sword silhouette, left-hand typography, elegant dark realism and bone-gold Chinese Song-style serif lettering. CHANGE TEXT for a mod page, not a video cover: small eyebrow exactly '活武器'; main title on two large lines exactly '传世之物' then '饥渴长存'; below it the full mod name exactly '活武器：饥渴的传世之物'. Remove the previous eyebrow 'CK3 模组推荐' entirely. Give the artwork slightly more breathing room and keep all typography inside an 8% margin. A hungry heirloom silently outliving its owners; restrained ominous crimson veins, fine aged gold and iron texture, cold distant cathedral light. Clear at Steam page width. No game interface, no mock game screenshot, no stats, no test equipment, no watermark, no extra text, no QR code. This is concept art only. Return ONE complete finished landscape banner."
+    },
+    {
+      "file": "art/03-feeding-concept.png",
+      "source_path": "C:/Users/Administrator/.codex/generated_images/01a16561-4773-7432-a839-85d49afb65eb/exec-ef422cc0-04b6-4e30-b6c2-ace9135990d0.png",
+      "role": "Concept art: consuming artifacts to grow",
+      "prompt": "Use case: ads-marketing. Asset type: second concept-art banner embedded beside a Steam Workshop mod's feeding-and-growth explanation, 16:9 landscape. Input image is a REFERENCE for the same living sword and restrained dark aristocratic medieval style, not a screenshot to edit. Create a DISTINCT scene: close view of an ancient ornate gold-hilt sword laid diagonally on a black stone reliquary table at RIGHT, its single crimson living eye watching a precious offered gold ring and a small silver reliquary brooch. Delicate threads of red light draw from the offered brooch toward the blade, suggesting consuming a cherished artifact to grow; keep the weapon recognizable, never give it teeth, arms or a monster mouth. A medieval noble's black gloved hand hesitates near the offered ring; a dim crown and closed heirloom chest in the shadows imply precious belongings, candle-lit aged gold, cool slate architecture, burgundy velvet. Paint with detailed realistic metal, quiet cold dread, restrained cinematic lighting, no lurid magic, no gore. LEFT has clean dark negative space and beautifully legible bone-gold Chinese Song-style serif typography: large main title TWO lines exactly '以珍宝' and '饲活物'; a smaller line exactly '力量与诅咒，一同生长'. Put tiny '概念美术' in a corner, inside safe margins, visibly marking illustration. Do not imply an actual gameplay result. This is an atmospheric illustration for a mod where sacrificing ordinary artifacts grants experience and automatic growth may add powers or curses. No game interface, no fake windows or buttons, no numerical promises, no equipment test fixtures, no extra copy, no English, no watermarks. Keep text and eye clearly separated, comfortable 8% safe margins. One complete premium landscape artwork, not a collage."
+    }
+  ],
+  "export": "PNG sources preserved byte-identically; upload JPG copies exported using existing FFmpeg -q:v 2, full frame, no compositing.",
+  "review_after_utc": "2027-01-22T00:00:00Z",
+  "retention_purpose": "Current Workshop artwork and reproducible generation prompts; review when superseded."
+}
