@@ -927,12 +927,16 @@ public final class NativeFixtureBuild {
     }
 
     private static VctipProbeFacts.Analysis vendorAnalysis(Actual actual, VctipProbeFacts.ProbeCase probe) throws IOException {
+        return vendorAnalysis(actual, probe, vendorPin());
+    }
+
+    private static VctipProbeFacts.Analysis vendorAnalysis(Actual actual, VctipProbeFacts.ProbeCase probe,
+            ControlBuild.FileRef pin) throws IOException {
         require(probe == VctipProbeFacts.ProbeCase.IDLE_ONE || probe == VctipProbeFacts.ProbeCase.IDLE_TWO, "only declared idle cases allowed");
-        ControlBuild.FileRef pin = vendorPin();
         require(actual.command().size() == 2 && Path.of(actual.command().getFirst()).normalize().equals(Path.of(pin.path()).normalize())
                 && actual.command().get(1).equals(VctipProbeFacts.arguments(probe).getFirst()) && actual.toolRefs().contains(pin), "exact pinned vendor arguments and tool role required");
         VctipProbeFacts.Analysis value = VctipProbeFacts.analyze(probe, actual.result(),
-                bytes(Path.of(actual.stdoutRef().path()), 65536), bytes(Path.of(actual.stderrRef().path()), 65536));
+                bytes(Path.of(actual.stdoutRef().path()), 65536), bytes(Path.of(actual.stderrRef().path()), 65536), pin);
         require(value.observation() == VctipProbeFacts.Observation.NATURAL_ZERO_EXIT_OBSERVED
                 && value.qualification() == VctipProbeFacts.Qualification.NONE && actual.result().elapsedSeconds() < 30,
                 "vendor observation cannot qualify a compiler or cleaned Job");
@@ -941,12 +945,19 @@ public final class NativeFixtureBuild {
 
     /** Historical file-bound vendor observations, without granting present-stage or configure authority. */
     public static VendorTimeouts readVendorTimeouts(Path path) throws IOException {
+        return readVendorTimeouts(path, vendorPin());
+    }
+
+    /** Shared file-bound validation; the public route supplies only the fixed production vendor pin. */
+    static VendorTimeouts readVendorTimeouts(Path path, ControlBuild.FileRef expectedVendor) throws IOException {
         require(path != null && path.isAbsolute(), "absolute vendor observation path required");
+        require(expectedVendor != null, "exact expected vendor pin required");
+        expectedVendor.verify();
         VendorTimeouts value = JSON.readValue(bytes(path, 262144), VendorTimeouts.class);
         require(value != null, "typed vendor observations required");
         for (ControlBuild.FileRef pin : List.of(value.vendorRef(), value.sourceManifestRef(), value.toolsReceiptRef(),
                 value.environmentRef(), value.firstActualRef(), value.secondActualRef())) pin.verify();
-        require(value.vendorRef().equals(vendorPin()), "vendor observation names another executable");
+        require(value.vendorRef().equals(expectedVendor), "vendor observation names another executable");
         Actual first = readActual(Path.of(value.firstActualRef().path()), ActualStage.VENDOR_TIMEOUT_ONE);
         Actual second = readActual(Path.of(value.secondActualRef().path()), ActualStage.VENDOR_TIMEOUT_TWO);
         require(!first.ownerIdentity().equals(second.ownerIdentity()) && !value.firstActualRef().equals(value.secondActualRef())
@@ -956,8 +967,8 @@ public final class NativeFixtureBuild {
         require(!firstAt.isAfter(secondAt) && !secondAt.isAfter(at) && at.isBefore(Instant.parse(value.stageDeadlineAtUtc())), "vendor chronology differs from the original stage window");
         for (Actual actual : List.of(first, second)) require(actual.sourceManifestRef().equals(value.sourceManifestRef())
                 && actual.toolsReceiptRef().equals(value.toolsReceiptRef()) && actual.environmentRef().equals(value.environmentRef()), "vendor source/tools/environment changed between cases");
-        require(value.firstAnalysis().equals(vendorAnalysis(first, VctipProbeFacts.ProbeCase.IDLE_ONE))
-                && value.secondAnalysis().equals(vendorAnalysis(second, VctipProbeFacts.ProbeCase.IDLE_TWO)), "stored vendor analysis differs from the original raw terminals");
+        require(value.firstAnalysis().equals(vendorAnalysis(first, VctipProbeFacts.ProbeCase.IDLE_ONE, expectedVendor))
+                && value.secondAnalysis().equals(vendorAnalysis(second, VctipProbeFacts.ProbeCase.IDLE_TWO, expectedVendor)), "stored vendor analysis differs from the original raw terminals");
         return value;
     }
 

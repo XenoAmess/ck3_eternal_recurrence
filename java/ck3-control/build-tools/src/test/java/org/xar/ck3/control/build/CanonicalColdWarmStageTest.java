@@ -33,7 +33,12 @@ final class CanonicalColdWarmStageTest {
         String raw = Files.readString(Path.of(inputs.repositoryRoot()).resolve(".github/workflows/static-ci.yml")); var step = CanonicalColdWarmStage.parseStep(raw);
         assertEquals(30, step.pythonCommands()); assertEquals(60, step.commandLines().size());
         assertThrows(IOException.class, () -> CanonicalColdWarmStage.parseStep(raw.replace("CurrentSavedSdkPersistenceTests.test_sdk_persist_closed_rejection_warm_binding_and_wrong_generations", "removed_continuation")));
-        assertThrows(IOException.class, () -> CanonicalColdWarmStage.parseStep(raw.replaceFirst("python -B -m mypy", "echo removed")));
+        String mypyCommand = step.commandLines().stream().filter(line -> line.startsWith("python -B -m mypy ")).findFirst().orElseThrow();
+        String mypyLine = "          " + mypyCommand;
+        assertEquals(1L, raw.lines().filter(mypyLine::equals).count());
+        String removedMypy = String.join("\n", raw.lines().map(line -> line.equals(mypyLine) ? "          echo removed" : line).toList());
+        assertNotEquals(raw.lines().toList(), removedMypy.lines().toList());
+        assertThrows(IOException.class, () -> CanonicalColdWarmStage.parseStep(removedMypy));
     }
     @Test void combinedUnittestSkipAndExpectedFailureCannotBecomePass() throws Exception {
         var combined = CanonicalColdWarmStage.summary("Ran 8 tests in 0.12s\nOK (skipped=1, expected failures=2)\n");

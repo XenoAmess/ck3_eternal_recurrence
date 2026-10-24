@@ -1,0 +1,192 @@
+{
+  "schema": "xar.dynastic-esotericism.actual-run-summary.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T16:17:44.458845+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0006",
+  "source_commit": "7def6fe3e740b85099e1016f7ee0027048cb7d1a",
+  "business_phase_passed": 0,
+  "business_phase_total": 6,
+  "business_pass": false,
+  "release_pass": false,
+  "normal_close_qualified": false,
+  "failure": "After once-only legal create_rite confirmation, a new actual event remained active. Operator invoked completion verification before handling it; the existing event-free current-frame guard correctly refused. Original host error retained.",
+  "actual_final_confirmation_submitted": true,
+  "partial_observations": [
+    "Actual original Can and confirmation modal were legal",
+    "Once-only final confirmation retained pending; actual charge and new event do not prove completed Rite creation",
+    "Earlier cancellation has selected-record local evidence only; no Root phase signature or overall acceptance credit"
+  ],
+  "process_exit_codes": {
+    "original_game_handle": 0,
+    "original_host_popen": 1,
+    "original_public_run": 2,
+    "original_keeper_popen": 0
+  },
+  "cleanup_ok": true,
+  "screen_release_sequence": 8714,
+  "evidence": [
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0006-preserved-failure-close-a01\\failure-close.json",
+      "bytes": 9222,
+      "sha256": "50aed1d21c012afcad6f6cc6b3df62c71dd5dde770946393e8e1dbf40906669b"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0006-preserved-failure-close-a01\\actual-consumer.actual.json",
+      "bytes": 13230,
+      "sha256": "8eeffacbec68339659b5db2890990fa816155211c1abf5bc495925827c2972bf"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a07\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0006\\native-report.json",
+      "bytes": 12106757,
+      "sha256": "83f68ab4f0023b687e5d8180fe43a8870f154a857bf7b25da11d92240d040899"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a07\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0006\\operator-evidence\\R6-cancel-proof-a01.json",
+      "bytes": 28946,
+      "sha256": "50617cf2c87e7089fb26fd218d4c36c4ae2ffcde40dd972bea7e4a35d95bd9e4"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\rite-completion-diagnosis-a01\\FINAL.actual.json",
+      "bytes": 1580,
+      "sha256": "2ff7c83546e6ec4158e3b253a30ac3ecdac73b3c35779d3f84085596e3ffe9b0"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\rite-completion-diagnosis-a01\\guard-reproduction.actual.json",
+      "bytes": 6748,
+      "sha256": "429f0f4b8946b2619140a8a6450686829b5c51f887c9cf2c4a03c6dd9a8d7363"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\run-core-a21.actual.json",
+      "bytes": 1188,
+      "sha256": "0920ba3205c9d7ae8d97fc8a4bcd1e571ea1d4b163bdeb3106c1f0d49b886acb"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a07\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0006\\host-original-process-exit.json",
+      "bytes": 258,
+      "sha256": "cae7cf81f081df08fbea79b7164e4aa84eb53a4fe9f8bae4b1cbc33db66850ab"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a07\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0006\\case-output\\normal-close-result.json",
+      "bytes": 3380,
+      "sha256": "e539b31c038a9851ea650d6c53875fb92bf9e40fb8775be4b2bb8627dfed4ddf"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a07\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0006\\keeper-actual-parent-exit.json",
+      "bytes": 615,
+      "sha256": "edc28cc86ebb471ea6704e713fe44582cf10cfa592b86090369043b3b4bc3119"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0006-screen-release.actual.json",
+      "bytes": 1397,
+      "sha256": "25462f97aed398d817c64adbb3ea3346e35f018f4c31e3b28202fe5c09db3d1f"
+    }
+  ],
+  "started_at_utc": "2026-10-24T15:26:50.006504+00:00",
+  "finished_at_utc": "2026-10-24T15:56:56.556203+00:00",
+  "runtime_binding": {
+    "runtime": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a07\\runtime.json",
+      "bytes": 990879,
+      "sha256": "324959877d7a159f14c206f7ebe260f2900cef98878b3e5df6e03e000b5cd04b"
+    },
+    "manifest": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a07\\manifest.json",
+      "bytes": 16673,
+      "sha256": "e6aea50b2663ec7928c9a35f6ca14ca7fce0dfa5f8c76915bdacb13caefac3d7"
+    },
+    "source_index": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a07\\source-index.json",
+      "bytes": 1057186,
+      "sha256": "91a7c5d3d09dc08e51d95fe1334768ebdc8c59c689df14ddefab935f3e8c5de6"
+    },
+    "prepared_case": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\prepared-core-a09\\prepared-case.json",
+      "bytes": 18181,
+      "sha256": "3e342ad257ddccf34a8238ab042ad92605cc3a751041dbd4631b95d4c89290f1"
+    },
+    "frozen_argv": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a07\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0006\\frozen-argv.json",
+      "bytes": 510287,
+      "sha256": "742e09b3305eda829e9a68b6f831f297457da797f6f81c9e2030f6f2f66057c6"
+    },
+    "state_dir": "C:\\ck3-dynastic-esotericism-20261024\\attempt-a09\\state",
+    "native_identity": {
+      "game_executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "game_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "dll": "C:\\ck3-dynastic-esotericism-20261024\\native-religion-01\\build\\xar_ck3_bridge.dll",
+      "dll_sha256": "2ea5b48e6e8fd900ac4d1ac9e52378d16b77857201a723a9db70cc9e8d49fe4d",
+      "injector": "C:\\w\\e04a41\\xar_ck3_bridge_injector.exe",
+      "injector_sha256": "208c091a07ddd812f31ea20a70a9f31eb81b22972efe43d6f944d60a09435630"
+    }
+  },
+  "autosave_verified": false,
+  "resource_closure_mode": "previous-shared-failed-live-resource-closed",
+  "resource_closure_scope": "administrative resource admission only; original business error and unqualified normal close preserved",
+  "final_confirmation_count": 1,
+  "final_confirmation_request_id": "rite-action-df640506a3144010aedbf34b8db4ebb0",
+  "original_confirmation_status": "acknowledged_verification_pending",
+  "collected_original_confirmation_status": "acknowledged_verification_pending",
+  "rite_creation_completion_verified": false,
+  "completion_not_inferred_from_pending_charge_or_event": true,
+  "piety_observation": {
+    "scale": 100000,
+    "before_raw": 10015000000,
+    "after_raw": 9644500000,
+    "deducted_raw": 370500000,
+    "deducted_piety": 3705
+  },
+  "active_event_before_failed_verify": {
+    "source": "native",
+    "instance_id": 1,
+    "option_count": 2,
+    "title": null,
+    "options": [
+      {
+        "index": 0,
+        "option_number": 1,
+        "label": null,
+        "enabled": true
+      },
+      {
+        "index": 1,
+        "option_number": 2,
+        "label": null,
+        "enabled": true
+      }
+    ]
+  },
+  "actual_event_definition_or_rendered_selection_queried": false,
+  "original_host_error": "RuntimeError: MCP tool ck3_verify_player_rite_creation_action_completed_v1 returned an error: Error executing tool ck3_verify_player_rite_creation_action_completed_v1: title-map native campaign lacks an allocated run and full current paused frame",
+  "event_free_guard_diagnosis": "Actual frozen _binding passed confirm frame and rejected collect and immediately preceding MCP snapshot. Managed binding was complete; active_event was present. No SDK guard change.",
+  "partial_cancel": {
+    "local_poststate_verified": true,
+    "selected_records": [
+      "character:31254",
+      "dynasty:174",
+      "faith:13",
+      "house:174",
+      "rite:0"
+    ],
+    "original_rite_after_cancel": {
+      "rite_id": 0,
+      "faith_id": 13,
+      "creation_window_visible": false,
+      "confirmation_modal_open": false
+    },
+    "resources_equal": true,
+    "selected_identity_joins_equal": true,
+    "selected_DES_owners_and_values_equal": true,
+    "character_raw_AST_equal": false,
+    "comparison_normalization": "sort variables.data anonymous rows by unique flag; compare complete raw row content; no other AST list sorting",
+    "Root_phase_result_written": false,
+    "business_pass": false,
+    "scope": "local cancellation poststate of five selected original records; no Root phase result or overall business signature"
+  },
+  "native_process_identity": {
+    "pid": 34188,
+    "process_creation_filetime_100ns": "134373292408884023",
+    "connection_generation": 1,
+    "played_character_id": 31254,
+    "date_raw": 53144352
+  }
+}

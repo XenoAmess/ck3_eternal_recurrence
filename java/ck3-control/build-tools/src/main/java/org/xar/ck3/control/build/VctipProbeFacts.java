@@ -26,11 +26,17 @@ public final class VctipProbeFacts {
     }
     public static Analysis analyze(ProbeCase probeCase, WindowsJobProcess.CommandResult result,
             byte[] stdout, byte[] stderr) {
+        return analyze(probeCase, result, stdout, stderr, VENDOR);
+    }
+    /** The caller verifies this exact file pin before interpreting historical terminal evidence. */
+    static Analysis analyze(ProbeCase probeCase, WindowsJobProcess.CommandResult result,
+            byte[] stdout, byte[] stderr, ControlBuild.FileRef expectedVendor) {
         if (probeCase == null || result == null || stdout == null || stderr == null
-                || stdout.length > 65536 || stderr.length > 65536) throw new IllegalArgumentException("bounded exact probe facts required");
+                || expectedVendor == null || stdout.length > 65536 || stderr.length > 65536)
+            throw new IllegalArgumentException("bounded exact probe facts required");
         boolean settled = result.stopReason() == null && result.accounting().activeProcesses() == 0
                 && Path.of(result.identity().executable()).toAbsolutePath().normalize()
-                        .equals(Path.of(VENDOR.path()).toAbsolutePath().normalize())
+                        .equals(Path.of(expectedVendor.path()).toAbsolutePath().normalize())
                 && result.accounting().memoryLimitBytes() == 268435456
                 && result.accounting().peakJobMemoryBytes() <= result.accounting().memoryLimitBytes()
                 && result.accounting().limitFlags() == 8704;

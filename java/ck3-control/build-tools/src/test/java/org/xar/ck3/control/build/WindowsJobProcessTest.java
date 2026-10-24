@@ -1,6 +1,11 @@
 package org.xar.ck3.control.build;
 
 import static org.junit.jupiter.api.Assertions.*;
+import com.sun.jna.Native;
+import com.sun.jna.Pointer;
+import com.sun.jna.platform.win32.Shell32Util;
+import com.sun.jna.win32.StdCallLibrary;
+import com.sun.jna.win32.W32APIOptions;
 import java.math.BigInteger;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,12 +24,15 @@ import org.junit.jupiter.api.io.TempDir;
 final class WindowsJobProcessTest {
     @TempDir Path temporary;
     private enum DrainFailure { COMMAND_TIMEOUT, LEASE_EXPIRED, GUARD, INTERRUPTED }
-    public record DetachedArgv(String mode, List<String> arguments) {
+    public record DetachedArgv(String mode, List<String> nativeArguments,
+            List<String> launcherArguments, String nativeEncoding) {
         public DetachedArgv {
             if (!"detached-argv".equals(mode)) throw new IllegalArgumentException("Exact detached argv mode required");
-            arguments = List.copyOf(arguments);
+            nativeArguments = List.copyOf(nativeArguments); launcherArguments = List.copyOf(launcherArguments);
+            if (nativeEncoding == null || nativeEncoding.isBlank()) throw new IllegalArgumentException("Observed native encoding required");
         }
     }
+    public interface CommandLineKernel32 extends StdCallLibrary { Pointer GetCommandLineW(); }
 
     @Test void actualChildExit42RetainsNativeBirthAndRejectsSuccess() throws Exception {
         Path output = temporary.resolve("exit42.stdout");
@@ -169,7 +177,12 @@ final class WindowsJobProcessTest {
         try (WindowsJobProcess owner = WindowsJobProcess.start(command, WindowsJobProcess.ConsoleMode.DETACHED);
                 WindowsJobProcess.ReadOnlyProcessHandle retained = WindowsJobProcess.retainReadOnlyProcess(owner.identity().pid())) {
             DetachedArgv actual = awaitDetachedArgv(output);
-            assertEquals(new DetachedArgv("detached-argv", expected), actual);
+            assertEquals("detached-argv", actual.mode()); assertEquals(expected, actual.nativeArguments());
+            assertEquals(expected.size(), actual.launcherArguments().size());
+            for (int index = 0; index < expected.size(); index++) {
+                if (expected.get(index).codePoints().allMatch(value -> value < 128))
+                    assertEquals(expected.get(index), actual.launcherArguments().get(index));
+            }
             assertEquals(owner.identity(), retained.identity()); assertEquals(258, retained.waitZero()); assertEquals(259, retained.exitCode());
             WindowsJobProcess.Accounting live = owner.accounting();
             assertEquals(1, live.activeProcesses(), "the live assigned Java root must be the one and only actual Job member");
@@ -410,9 +423,20 @@ final class WindowsJobProcessTest {
         public static void main(String[] args) throws Exception {
             if (args[0].equals("detached-argv")) {
                 if (args.length < 2) throw new IllegalArgumentException("One explicit detached release gate required");
-                Path gate = Path.of(args[1]); List<String> actual = new ArrayList<>();
-                for (int i = 2; i < args.length; i++) actual.add(args[i]);
-                System.out.write(ControlBuild.strictMapper().writeValueAsBytes(new DetachedArgv("detached-argv", actual)));
+                Path gate = Path.of(args[1]);
+                // JDK-8337506: Java 21 projects Windows argv through the ANSI code page.
+                // Observe CreateProcessW's UTF-16 arguments directly and retain that projection separately.
+                var api = Native.load("kernel32", CommandLineKernel32.class, W32APIOptions.UNICODE_OPTIONS);
+                List<String> nativeWords = List.of(Shell32Util.CommandLineToArgv(api.GetCommandLineW().getWideString(0)));
+                int mainClass = nativeWords.indexOf(Child.class.getName());
+                if (mainClass < 1 || nativeWords.lastIndexOf(Child.class.getName()) != mainClass)
+                    throw new IllegalStateException("Unique actual Java main class argument required");
+                List<String> nativeMain = nativeWords.subList(mainClass + 1, nativeWords.size());
+                if (nativeMain.size() != args.length || !nativeMain.get(0).equals(args[0]) || !nativeMain.get(1).equals(args[1]))
+                    throw new IllegalStateException("Native main arguments differ from the actual child invocation");
+                var actual = new DetachedArgv("detached-argv", nativeMain.subList(2, nativeMain.size()),
+                        List.of(args).subList(2, args.length), System.getProperty("native.encoding"));
+                System.out.write(ControlBuild.strictMapper().writeValueAsBytes(actual));
                 System.out.write('\n'); System.out.flush();
                 System.err.write("DETACHED_STDERR_OK\n".getBytes(java.nio.charset.StandardCharsets.UTF_8)); System.err.flush();
                 long deadline = System.nanoTime() + Duration.ofSeconds(20).toNanos();
