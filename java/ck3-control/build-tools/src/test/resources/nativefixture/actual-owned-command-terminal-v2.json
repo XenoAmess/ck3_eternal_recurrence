@@ -1,0 +1,331 @@
+{
+  "schema" : "xar.shared-owned-command-terminal/v2",
+  "machine_id" : "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc" : "2026-10-23T21:07:01.189526300Z",
+  "status" : "PASS",
+  "owner" : "/root/tools_c15",
+  "slot_id" : "g2-m4",
+  "borrowed_slot_id" : null,
+  "request_ref" : {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261024\\revisions\\budget_fast_lane\\full35runtime01\\NATIVE-SOURCECUT-HELPER-SPEC01.json",
+    "bytes" : 5550,
+    "sha256" : "2b095825ed044c50704a4677e2c7c00e8815023621b1fa2aeb981cb666b5bef3"
+  },
+  "standing_ref" : {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261024\\revisions\\budget_fast_lane\\full35runtime01\\STANDING02.json",
+    "bytes" : 5466,
+    "sha256" : "79c384ce8486e93195e4e35c97843a4ea2c631efd2a6a8f3ccd0f9f668603b45"
+  },
+  "launcher_source_ref" : {
+    "path" : "D:\\codex-ck3-demos\\2026-10-24-sharedwire-tools156-source16\\tools\\src\\main\\java\\org\\xar\\ck3\\control\\build\\SharedOwnedCommand.java",
+    "bytes" : 38286,
+    "sha256" : "8a6fa4514953997684c81f0c0b76b69bb1dbe04434b13f4ca2c5b4219478ecb1"
+  },
+  "complete_runtime" : [ {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools156-firstcut16\\ck3-control-build-tools\\ck3-control-build-tools-0.1.0-SNAPSHOT.jar",
+    "bytes" : 1695742,
+    "sha256" : "e49756a134bf33cd2346ff3f79a722b91fcc2de50753032345c4708fee889e04"
+  }, {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools156-firstcut16\\ck3-control-build-tools\\lib\\jackson-annotations-2.21.jar",
+    "bytes" : 82104,
+    "sha256" : "53ca085f4a150f703f49e1aabd935bd03b43e1ea3d55d135438292af22cef56b"
+  }, {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools156-firstcut16\\ck3-control-build-tools\\lib\\jackson-core-2.21.7.jar",
+    "bytes" : 594782,
+    "sha256" : "8c5623b98f32d5f7e1287ff61ed50e08ab7b11381e991fff89327faabba42261"
+  }, {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools156-firstcut16\\ck3-control-build-tools\\lib\\jackson-databind-2.21.7.jar",
+    "bytes" : 1709095,
+    "sha256" : "1290c2795e93e8a6861a6c4d9ff0d844d32f5ea178362cb2721edf5561e828b1"
+  }, {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools156-firstcut16\\ck3-control-build-tools\\lib\\jna-5.19.1.jar",
+    "bytes" : 1950853,
+    "sha256" : "4fb141dd8ef6b0585ffceea4bc49602fbc6312fa977e2c488794ea3e6aafecae"
+  }, {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools156-firstcut16\\ck3-control-build-tools\\lib\\jna-platform-5.19.1.jar",
+    "bytes" : 1416385,
+    "sha256" : "3b3864f5b449e9c3c24b16861524b622b086563f44e0cd8384c8efc5a6052f82"
+  } ],
+  "outer" : {
+    "pid_decimal" : "249324",
+    "reserved_memory_bytes" : 268435456,
+    "hard_job_enforced" : false,
+    "scope" : "Packaged outer JVM is a conservative reservation; no outer hard Job is claimed. Child and descendants are in the hard Job."
+  },
+  "child_started" : true,
+  "child" : {
+    "identity" : {
+      "pid" : 239780,
+      "creation_filetime_decimal" : "134372632191358586",
+      "executable" : "C:\\jdk-21\\bin\\javac.exe"
+    },
+    "exit_code" : 0,
+    "elapsed_seconds" : 1.9806288,
+    "accounting" : {
+      "peak_job_memory_bytes" : 260530176,
+      "active_processes" : 0,
+      "memory_limit_bytes" : 536870912,
+      "limit_flags" : 8704
+    },
+    "stop_reason" : null
+  },
+  "diagnostic" : {
+    "state" : "NOT_NEEDED",
+    "requested_path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\resume-current-20261024\\g2-m4\\tools_c15\\native-sourcecut-helper01\\before-cleanup.json",
+    "sidecar_ref" : null,
+    "error" : null
+  },
+  "input_precheck" : "MATCH",
+  "input_postcheck" : "MATCH",
+  "runtime_postcheck" : "MATCH",
+  "failure" : null,
+  "input_before" : [ {
+    "source" : {
+      "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261024\\revisions\\budget_fast_lane\\full35runtime01\\BINDING02.json",
+      "bytes" : 1473,
+      "sha256" : "5462702b0835bcde80feac45b0d1a8f50724ed6e79ef6cbf13fe281190cb9150"
+    },
+    "native_file" : {
+      "volume_serial_decimal" : "6505083400996699863",
+      "file_id_decimal" : "3096224756366132",
+      "legacy_volume_serial_decimal" : "1186119383",
+      "legacy_file_id_hex" : "000b000000bf7b34",
+      "creation_filetime_decimal" : "134372606096216779",
+      "last_write_filetime_decimal" : "134372606096216779",
+      "change_filetime_decimal" : "134372606096216779",
+      "logical_bytes" : 1473,
+      "allocated_bytes" : 4096,
+      "link_count" : 1
+    }
+  }, {
+    "source" : {
+      "path" : "C:\\jdk-21\\bin\\javac.exe",
+      "bytes" : 24744,
+      "sha256" : "5b36da4d2778bbd20afbc9d4b686b11488d7dd4a55a4bb003e6a97fd4b45bda7"
+    },
+    "native_file" : {
+      "volume_serial_decimal" : "5669105749829453645",
+      "file_id_decimal" : "153685337284426375",
+      "legacy_volume_serial_decimal" : "2897577805",
+      "legacy_file_id_hex" : "0222000000063a87",
+      "creation_filetime_decimal" : "134171179588118461",
+      "last_write_filetime_decimal" : "134134310220000000",
+      "change_filetime_decimal" : "134171179651767869",
+      "logical_bytes" : 24744,
+      "allocated_bytes" : 28672,
+      "link_count" : 1
+    }
+  }, {
+    "source" : {
+      "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools156-firstcut16\\ck3-control-build-tools\\ck3-control-build-tools-0.1.0-SNAPSHOT.jar",
+      "bytes" : 1695742,
+      "sha256" : "e49756a134bf33cd2346ff3f79a722b91fcc2de50753032345c4708fee889e04"
+    },
+    "native_file" : {
+      "volume_serial_decimal" : "6505083400996699863",
+      "file_id_decimal" : "1407374896093955",
+      "legacy_volume_serial_decimal" : "1186119383",
+      "legacy_file_id_hex" : "0005000000bf5b03",
+      "creation_filetime_decimal" : "134372569735636502",
+      "last_write_filetime_decimal" : "134372569736576020",
+      "change_filetime_decimal" : "134372569736576020",
+      "logical_bytes" : 1695742,
+      "allocated_bytes" : 1695744,
+      "link_count" : 1
+    }
+  }, {
+    "source" : {
+      "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools156-firstcut16\\ck3-control-build-tools\\lib\\jackson-annotations-2.21.jar",
+      "bytes" : 82104,
+      "sha256" : "53ca085f4a150f703f49e1aabd935bd03b43e1ea3d55d135438292af22cef56b"
+    },
+    "native_file" : {
+      "volume_serial_decimal" : "6505083400996699863",
+      "file_id_decimal" : "6473924476885936",
+      "legacy_volume_serial_decimal" : "1186119383",
+      "legacy_file_id_hex" : "0017000000bf5bb0",
+      "creation_filetime_decimal" : "134372569763087722",
+      "last_write_filetime_decimal" : "134132500340000000",
+      "change_filetime_decimal" : "134372569763097787",
+      "logical_bytes" : 82104,
+      "allocated_bytes" : 86016,
+      "link_count" : 1
+    }
+  }, {
+    "source" : {
+      "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools156-firstcut16\\ck3-control-build-tools\\lib\\jackson-core-2.21.7.jar",
+      "bytes" : 594782,
+      "sha256" : "8c5623b98f32d5f7e1287ff61ed50e08ab7b11381e991fff89327faabba42261"
+    },
+    "native_file" : {
+      "volume_serial_decimal" : "6505083400996699863",
+      "file_id_decimal" : "5066549593332657",
+      "legacy_volume_serial_decimal" : "1186119383",
+      "legacy_file_id_hex" : "0012000000bf5bb1",
+      "creation_filetime_decimal" : "134372569763107608",
+      "last_write_filetime_decimal" : "134344839940000000",
+      "change_filetime_decimal" : "134372569763285775",
+      "logical_bytes" : 594782,
+      "allocated_bytes" : 598016,
+      "link_count" : 1
+    }
+  }, {
+    "source" : {
+      "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools156-firstcut16\\ck3-control-build-tools\\lib\\jackson-databind-2.21.7.jar",
+      "bytes" : 1709095,
+      "sha256" : "1290c2795e93e8a6861a6c4d9ff0d844d32f5ea178362cb2721edf5561e828b1"
+    },
+    "native_file" : {
+      "volume_serial_decimal" : "6505083400996699863",
+      "file_id_decimal" : "5910974523464623",
+      "legacy_volume_serial_decimal" : "1186119383",
+      "legacy_file_id_hex" : "0015000000bf5baf",
+      "creation_filetime_decimal" : "134372569763059329",
+      "last_write_filetime_decimal" : "134344845970000000",
+      "change_filetime_decimal" : "134372569763074811",
+      "logical_bytes" : 1709095,
+      "allocated_bytes" : 1712128,
+      "link_count" : 1
+    }
+  }, {
+    "source" : {
+      "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools156-firstcut16\\ck3-control-build-tools\\lib\\jna-5.19.1.jar",
+      "bytes" : 1950853,
+      "sha256" : "4fb141dd8ef6b0585ffceea4bc49602fbc6312fa977e2c488794ea3e6aafecae"
+    },
+    "native_file" : {
+      "volume_serial_decimal" : "6505083400996699863",
+      "file_id_decimal" : "6192449500175276",
+      "legacy_volume_serial_decimal" : "1186119383",
+      "legacy_file_id_hex" : "0016000000bf5bac",
+      "creation_filetime_decimal" : "134372569762982709",
+      "last_write_filetime_decimal" : "134257565370000000",
+      "change_filetime_decimal" : "134372569763019943",
+      "logical_bytes" : 1950853,
+      "allocated_bytes" : 1953792,
+      "link_count" : 1
+    }
+  }, {
+    "source" : {
+      "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools156-firstcut16\\ck3-control-build-tools\\lib\\jna-platform-5.19.1.jar",
+      "bytes" : 1416385,
+      "sha256" : "3b3864f5b449e9c3c24b16861524b622b086563f44e0cd8384c8efc5a6052f82"
+    },
+    "native_file" : {
+      "volume_serial_decimal" : "6505083400996699863",
+      "file_id_decimal" : "5910974523464621",
+      "legacy_volume_serial_decimal" : "1186119383",
+      "legacy_file_id_hex" : "0015000000bf5bad",
+      "creation_filetime_decimal" : "134372569763035776",
+      "last_write_filetime_decimal" : "134257565370000000",
+      "change_filetime_decimal" : "134372569763045712",
+      "logical_bytes" : 1416385,
+      "allocated_bytes" : 1417216,
+      "link_count" : 1
+    }
+  }, {
+    "source" : {
+      "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261024\\bootstrap_integrated_tools\\source18\\QUALIFIED-DELIVERY16.json",
+      "bytes" : 14577,
+      "sha256" : "43daa51094c5c819171754234931bf5cb34282ea32008995fc30ad0bda9ce690"
+    },
+    "native_file" : {
+      "volume_serial_decimal" : "6505083400996699863",
+      "file_id_decimal" : "3940649686497653",
+      "legacy_volume_serial_decimal" : "1186119383",
+      "legacy_file_id_hex" : "000e000000bf7975",
+      "creation_filetime_decimal" : "134372580314079486",
+      "last_write_filetime_decimal" : "134372580314079486",
+      "change_filetime_decimal" : "134372580314079486",
+      "logical_bytes" : 14577,
+      "allocated_bytes" : 16384,
+      "link_count" : 1
+    }
+  }, {
+    "source" : {
+      "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\build-java-tools156-firstcut16.json",
+      "bytes" : 95392,
+      "sha256" : "10d69de937ef6cfb4ef7724f6c85df356e293f9ec490144d29041cabf0fb0554"
+    },
+    "native_file" : {
+      "volume_serial_decimal" : "6505083400996699863",
+      "file_id_decimal" : "3377699733068779",
+      "legacy_volume_serial_decimal" : "1186119383",
+      "legacy_file_id_hex" : "000c000000bf5beb",
+      "creation_filetime_decimal" : "134372571932017742",
+      "last_write_filetime_decimal" : "134372571932033412",
+      "change_filetime_decimal" : "134372571932033412",
+      "logical_bytes" : 95392,
+      "allocated_bytes" : 98304,
+      "link_count" : 1
+    }
+  }, {
+    "source" : {
+      "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\resume-current-20261024\\g2-m4\\tools_c15\\c16-reader-run01\\actual.json",
+      "bytes" : 6763,
+      "sha256" : "4bf7107fb4f0b12203c3f70106e090c56053b94c56bcd5a8a86e2958708be8a0"
+    },
+    "native_file" : {
+      "volume_serial_decimal" : "6505083400996699863",
+      "file_id_decimal" : "4222124663208260",
+      "legacy_volume_serial_decimal" : "1186119383",
+      "legacy_file_id_hex" : "000f000000bf7944",
+      "creation_filetime_decimal" : "134372578520065988",
+      "last_write_filetime_decimal" : "134372578520071052",
+      "change_filetime_decimal" : "134372578520071052",
+      "logical_bytes" : 6763,
+      "allocated_bytes" : 8192,
+      "link_count" : 1
+    }
+  }, {
+    "source" : {
+      "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261024\\revisions\\reference_main\\native_combined_cut01\\NativeCombinedSourceCut.java",
+      "bytes" : 31470,
+      "sha256" : "f885ac9866aedff4639f7d0a7c0a7daaa81fab5ddb2d99fe52c3044193d3c85e"
+    },
+    "native_file" : {
+      "volume_serial_decimal" : "6505083400996699863",
+      "file_id_decimal" : "3096224756365960",
+      "legacy_volume_serial_decimal" : "1186119383",
+      "legacy_file_id_hex" : "000b000000bf7a88",
+      "creation_filetime_decimal" : "134372595046224074",
+      "last_write_filetime_decimal" : "134372616382675480",
+      "change_filetime_decimal" : "134372616382675480",
+      "logical_bytes" : 31470,
+      "allocated_bytes" : 32768,
+      "link_count" : 1
+    }
+  }, {
+    "source" : {
+      "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-20261024\\revisions\\reference_main\\native_combined_cut01\\ROOT-EXECUTION01.json",
+      "bytes" : 15508,
+      "sha256" : "6734235356e87edb8989aa5bca0fc6175a9baf6a7ed6cdc37c369ebba651f87e"
+    },
+    "native_file" : {
+      "volume_serial_decimal" : "6505083400996699863",
+      "file_id_decimal" : "5629499546762396",
+      "legacy_volume_serial_decimal" : "1186119383",
+      "legacy_file_id_hex" : "0014000000bf7c9c",
+      "creation_filetime_decimal" : "134372614218938690",
+      "last_write_filetime_decimal" : "134372616512341784",
+      "change_filetime_decimal" : "134372616512341784",
+      "logical_bytes" : 15508,
+      "allocated_bytes" : 16384,
+      "link_count" : 1
+    }
+  } ],
+  "effective_arguments" : [ "-J-Djava.io.tmpdir=D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume-current-runtime-tmp-r3\\g2-m4\\tools_c15\\native-sourcecut-helper01", "-J-Djna.tmpdir=D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch", "-J-XX:ErrorFile=D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\resume-current-20261024\\g2-m4\\tools_c15\\native-sourcecut-helper01\\hs_err_pid%p.log", "-J-XX:ReplayDataFile=D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\resume-current-20261024\\g2-m4\\tools_c15\\native-sourcecut-helper01\\replay_pid%p.log", "-J-XX:HeapDumpPath=D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\resume-current-20261024\\g2-m4\\tools_c15\\native-sourcecut-helper01", "-J-Xmx256m", "--release", "21", "-proc:none", "-Xlint:all", "-Werror", "-sourcepath", "", "-cp", "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools156-firstcut16\\ck3-control-build-tools\\ck3-control-build-tools-0.1.0-SNAPSHOT.jar;D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools156-firstcut16\\ck3-control-build-tools\\lib\\jackson-annotations-2.21.jar;D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools156-firstcut16\\ck3-control-build-tools\\lib\\jackson-core-2.21.7.jar;D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools156-firstcut16\\ck3-control-build-tools\\lib\\jackson-databind-2.21.7.jar;D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools156-firstcut16\\ck3-control-build-tools\\lib\\jna-5.19.1.jar;D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools156-firstcut16\\ck3-control-build-tools\\lib\\jna-platform-5.19.1.jar", "-d", "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024/g2-m4/tools_c15/native-sourcecut-helper01/classes", "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/reference_main/native_combined_cut01/NativeCombinedSourceCut.java" ],
+  "stdout_ref" : {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\resume-current-20261024\\g2-m4\\tools_c15\\native-sourcecut-helper01\\stdout.log",
+    "bytes" : 0,
+    "sha256" : "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr_ref" : {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\resume-current-20261024\\g2-m4\\tools_c15\\native-sourcecut-helper01\\stderr.log",
+    "bytes" : 0,
+    "sha256" : "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "output_native_bytes_with_directory_guard" : 6611496,
+  "game_rpc_calls" : 0,
+  "actual_driver_or_save_body_reads" : 0
+}

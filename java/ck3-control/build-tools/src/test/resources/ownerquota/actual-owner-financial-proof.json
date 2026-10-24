@@ -1,0 +1,172 @@
+{
+  "schema": "xar.java-phase1.manual-capacity-release/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "owner": "/root",
+  "issuer_task": "/root/budget_fast_lane",
+  "observed_at_utc": "2026-10-23T22:26:35.701068Z",
+  "review_at_utc": "2026-10-24T04:30:00Z",
+  "status": "RELEASED_FINITE_R3_NEW_OUTPUT_BUDGET_ROOT_ONLY_STAGE_SPECS_REQUIRED",
+  "authorization": "User resumption and Root instruction appoint sole budget issuer and require independent Root C17/source-successor/Full35/Native32 budgets. New finite exact R3 outputs; old STOP/cards not renewed. No deletion or Game authority.",
+  "policy_ref": {
+    "path": "Z:/ck3_mod_rewrite/docs/storage-retention-policy.json",
+    "bytes": 4022,
+    "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+  },
+  "new_independent_workpackage_D_allowance_bytes": 3489660928,
+  "new_independent_workpackage_Z_allowance_bytes": 0,
+  "prior_R2_retained_whole_ceiling_bytes": 6979321856,
+  "current_full_workpackage_actual_bytes": null,
+  "new_R3_output_actual_bytes": null,
+  "prior_whole_actual_allocated_bytes": null,
+  "physical_release_credit_bytes": 0,
+  "deleted_files": 0,
+  "increment_earmarks_bytes": {
+    "owner_source_pool": 100663296,
+    "C17_unique_external_source": 5767168,
+    "C18_unique_external_source": 5767168,
+    "C18_unique_whole_Maven_packaging_ownarchive": 75497472,
+    "unique_Full35_final_source": 100663296,
+    "Full35_build_snapshot_tests_private_tmp": 536870912,
+    "Native32_combined_source_objects_lib_EXE_PDB_corpus_private_tmp": 1879048192,
+    "Reference_unique_view_and_outputs": 134217728,
+    "SDK_complete_cold_warm_continuation": 134217728,
+    "Maven_repository_growth": 67108864,
+    "Root_controls_logs_helpers": 67108864
+  },
+  "increment_earmarks_sum_bytes": 3106930688,
+  "unassigned_guard_bytes": 382730240,
+  "source_pool_accounting": "SOURCE-ADMISSION01 96MiB is INCLUDED ONCE in new R3 whole cap. Supplement02 only reallocates within it. All old R2 conservative bound is in other holds; no actual-zero claim.",
+  "volumes": {
+    "D:/": {
+      "total_volume_bytes": 14000483987456,
+      "available_bytes": 797742997504,
+      "current_project_usage_conservative_upper": 13202740989952,
+      "current_project_usage_actual_bytes": null,
+      "this_write_peak": 3489660928,
+      "other_unspent_reservations": 262075032444,
+      "system_growth_reserve": 21474836480,
+      "safety_reserve": 21474836480,
+      "required_free": 308514366332,
+      "effective_project_quota": 13960000000000,
+      "quota_override": {
+        "owner": "/root",
+        "reason": "Finite resumed R3 migration/G2 package with current used-volume conservative project upper and unchanged original other-task holds; actual old package remains unknown.",
+        "max_project_bytes": 13960000000000,
+        "review_at_utc": "2026-10-24T04:30:00Z"
+      },
+      "quota_formula_upper_bytes": 13468305683324
+    },
+    "C:/": {
+      "total_volume_bytes": 998748684288,
+      "available_bytes": 6698471424,
+      "system_growth_reserve": null,
+      "status": "NO_WRITE_ADMISSION_BELOW_POLICY_SAFETY_RESERVE_AND_UNKNOWN_SYSTEM_GROWTH"
+    },
+    "Z:/": {
+      "total_volume_bytes": 4096787476480,
+      "available_bytes": 136848490496,
+      "system_growth_reserve": 21474836480,
+      "status": "NO_NEW_WRITE_ADMISSION_SHARED_WRITER_RESERVATIONS_NOT_FRESHLY_CLOSED"
+    }
+  },
+  "approved_output_roots": [
+    "D:/codex-ck3-demos/2026-10-22-java-phase1"
+  ],
+  "financial_exact_output_scopes": [
+    {
+      "name": "R3_OWNER_SOURCES",
+      "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3",
+      "cap_bytes": 100663296
+    },
+    {
+      "name": "C17_SOURCE_ONLY",
+      "root": "D:/codex-ck3-demos/2026-10-24-sharedwire-tools166-source17-r3",
+      "cap_bytes": 5767168
+    },
+    {
+      "name": "C18_SOURCE",
+      "root": "D:/codex-ck3-demos/2026-10-24-sharedwire-tools170-source18-r3",
+      "cap_bytes": 5767168
+    },
+    {
+      "name": "C18_WHOLE",
+      "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/java-tools170-firstcut18-r3",
+      "cap_bytes": 75497472
+    },
+    {
+      "name": "FULL35_SOURCE",
+      "root": "D:/codex-ck3-demos/2026-10-24-java-g2-source09-r3",
+      "cap_bytes": 100663296
+    },
+    {
+      "name": "FULL35_BUILD",
+      "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/full35-r3",
+      "cap_bytes": 536870912
+    },
+    {
+      "name": "NATIVE_COMBINED",
+      "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024-r3/native_combined_control05",
+      "joint_cap_includes_source_bytes": 1879048192
+    },
+    {
+      "name": "NATIVE_SOURCE_INCLUDED_IN_COMBINED",
+      "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native-frozen-combined05",
+      "included_subcap_bytes": 100663296
+    },
+    {
+      "name": "ROOT_CONTROLS",
+      "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024-r3",
+      "cap_bytes": 67108864,
+      "overlap_rule": "native_combined_control05 excluded here and charged once to Native combined cap"
+    },
+    {
+      "name": "M2_GROWTH_ONLY",
+      "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/m2",
+      "cap_increment_bytes": 67108864,
+      "rule": "Exact before/after census; reuse canonical repository; no mirror clone"
+    }
+  ],
+  "Maven_repository": "D:/codex-ck3-demos/2026-10-22-java-phase1/m2",
+  "build_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/build",
+  "temporary_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch",
+  "test_RAM_joint_hard_bytes": 2147483648,
+  "ram_budget_bytes": 2147483648,
+  "Maven_heap_bytes": 805306368,
+  "outer_jvm_memory_bytes": 268435456,
+  "available_RAM_bytes": 48610873344,
+  "available_commit_bytes": 133521981440,
+  "memory_observed_at_utc": "2026-10-23T22:24:58.228375Z",
+  "controlled_execution_RAM_reserved_bytes_before_new_claims": null,
+  "preserved_RAM_headroom_bytes": 12884901888,
+  "joint_controlled_process_RAM_hard_bytes": 17179869184,
+  "single_Maven_writer": "/root",
+  "Maven_command": "mvn",
+  "Maven_minimum_version": "3.10.0",
+  "Maven_timeout_seconds": 900,
+  "financial_basis_refs": [
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/budget_fast_lane/VACATION-FINANCIAL-STOP01.json",
+      "bytes": 96929,
+      "sha256": "00ca210198ff9d9cfb5a042b96a869605569d22fc23e4791da2f8cfca4e039ec"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/ALL-HOLDS-CAPACITY-HEAD-V1.json",
+      "bytes": 8144,
+      "sha256": "bd99f24bdc363323856c72a47441e6f183470858563c02b7c63c3b0b1897eec3"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-19-robert-v20261019-storage01/STORAGE-SHORT-COMMIT-HEAD-V1.json",
+      "bytes": 6113,
+      "sha256": "ab06b24864a8012de4cc9957949c33421b211a127f4ebbebed85fa21cfc7b9db"
+    }
+  ],
+  "other_holds_method": "Fresh exact heads unchanged; conservatively retain previously signed255095710588 plus full oldR2 6979321856. No expired hold auto-released. R3 source96M included in this cap, not other holds.",
+  "retention_review_at_utc": "2026-10-30T16:30:00Z",
+  "automatic_renewal": false,
+  "automatic_capacity_reservation_or_financial_CAS_claimed": false,
+  "scope": "Financial cap only except explicit small source grants. Root operational fresh exact standing/spec required per stage with source refs, executable/runtime identity, timeout, Job terminal and privateTMP; predecessor failure must prevent successor. C17 only source207 then C18 relocation211, one C18 whole Maven+ownarchive. Whole old actual null stays null. Native only after source5511 and siblings, freshENV and coherent new graph; Full35 only after relocation contract. Complete CI/cold-warm/SDK inputs still mandatory. No Game/Steam/native mutation/ledger/SAVE authority.",
+  "census_status": "Small exact roots absence observed fresh; whole priorJ scan pending bounded metadata census. Conservative entire-volume usage supports quota bound; it is not old workpackage actual.",
+  "execution_order": "Root serial tool chain; never concurrent Maven/native builds. Fresh RAM/active writer check before actual heavy stage; unknown prior controlled RAM does not grant stage execution.",
+  "no_C_writes": "Route TEMP/TMP/java.io.tmpdir/jna.tmpdir/private roots to admitted D subtree. Do not create JDK/pip/npm/Maven cache on C. No implicit default temporary output.",
+  "operational_card_rule": "Only present J is listed for readLease toRealPath compatibility; future exact monetary roots require source scope card and exact Root spec. Do not precreate dummy future source roots."
+}

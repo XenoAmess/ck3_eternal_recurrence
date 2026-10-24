@@ -1,0 +1,1 @@
+{"schema":"xar.java-control.build-rejected/v1","status":"RED","observed_at_utc":"2026-10-23T22:42:14.091610200Z","error":"IOException: Explicit finite CI quota override required only for an insufficient default quota"}

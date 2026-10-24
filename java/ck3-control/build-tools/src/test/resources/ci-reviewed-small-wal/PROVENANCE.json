@@ -1,0 +1,55 @@
+{
+  "schema": "xar.supplemental-ci-original-evidence/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-22T20:10:54.755744+00:00",
+  "refs": [
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261019-campaign01\\runtime-a08\\a05-offline-evidence\\m7\\ROOT-FIRST-NATURAL-H-WAL01.json",
+        "bytes": 42506,
+        "sha256": "a7f9ec3a0462a61846185a52334d2010e28652ca2ccec22050c2f45aae176c84"
+      },
+      "transport": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume56-20261023\\persistent_ci_routes\\ROOT-FIRST-NATURAL-H-WAL01.json",
+        "bytes": 42506,
+        "sha256": "a7f9ec3a0462a61846185a52334d2010e28652ca2ccec22050c2f45aae176c84"
+      },
+      "format": "raw"
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\artifacts\\coldwarm-resume34-01\\pytest.xml",
+        "bytes": 111681,
+        "sha256": "a691913115bbff12a23532658023a12713893cf36c08e9445aefbb837a5f285c"
+      },
+      "transport": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume56-20261023\\persistent_ci_routes\\failed34.pytest.xml.gz",
+        "bytes": 8214,
+        "sha256": "9a70e155e9c89a1124d475c1c63ba17605c308f6aaede6055c0ddf7b431b23d7"
+      },
+      "format": "gzip"
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\artifacts\\coldwarm-resume34-01\\pytest.stdout.log",
+        "bytes": 109029,
+        "sha256": "54db35b4101b5758d59c3365805c6abe95beeb3a3f5376419b53081c71885475"
+      },
+      "transport": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume56-20261023\\persistent_ci_routes\\failed34.pytest.stdout.log.gz",
+        "bytes": 6624,
+        "sha256": "75149a68f77ea618698d2f11464570c279caf27919bc46adae0a22b06f9b6964"
+      },
+      "format": "gzip"
+    }
+  ],
+  "wal_provenance_index": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/ci-resume03/consumer-prepared/ACTUAL-SMALL-WAL-INPUT01.json",
+  "wal_scope": "One exact reviewed complete small production journal; base Driver and SAVE not opened. Repository copy has its own identity; historical identity is not inherited.",
+  "pytest_scope": "Exact original RED preserved; 41 parents=40 PASS+1 FAIL; 11 subtests=6 PASS+5 FAIL; aggregate failed=6. Gzip is reversible transport; raw byte SHA retained.",
+  "retention": {
+    "policy": "docs/storage-retention-policy.json",
+    "candidate_class": "build",
+    "candidate_review_at_utc": "2026-10-22T21:52:17.501144300Z",
+    "tracked_fixture_review_reason": "Actual production serialization regression and pytest9 parent/subtest parser failure; retain only while regression remains part of current CI, then maintain through normal tracked content review."
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "schema": "xar.shared-owned-command-spec/v2",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "owner": "/root/native_fixture09",
+  "coordinator": "/root/native_fixture09",
+  "slot_id": "native-vendor16",
+  "borrowed_slot_id": null,
+  "run_id": "help05",
+  "standing_ref": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/RESUME56-RUNTIME15-STANDING-GRANT.json",
+    "bytes": 12751,
+    "sha256": "11a350757b4befc8a10266ab863b82dd5c61a4dd25c8a2cb24216a3ac9534701"
+  },
+  "launcher_source_ref": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume56-20261023/shared-command-launcher01/SharedOwnedCommand05.java",
+    "bytes": 51240,
+    "sha256": "5efa09b73bf5e842b81e5df7f52d450e85f43e192fb16be4d2bcfdf6ac119963"
+  },
+  "operation_card_ref": {
+    "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/RESUME56-NATIVE-VENDOR-EXCEPTION16.json",
+    "bytes": 1943,
+    "sha256": "db334ef83a24b4c357e4d34a9378cdae750026aaddfff43a9374473815dc12b9"
+  },
+  "temporary_policy": "SLOT_PRIVATE",
+  "executable": {
+    "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x64/vctip.exe",
+    "bytes": 514528,
+    "sha256": "7775ba4e0e0b03de15caefc1b92e63acc0a3dd9e388648f5489c777dfdbaadc8"
+  },
+  "arguments": [
+    "-?"
+  ],
+  "cwd": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume56-20261023/native-lifecycle-next01",
+  "environment": {},
+  "inputs": [
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume56-20261023/native-lifecycle-next01/VctipProbeFacts.java",
+      "bytes": 7176,
+      "sha256": "ec366a09eaf4fea4f6a4c0d6a64a7571e46e0fb35e74e1cf16e6bd62cb82be6b"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/RESUME56-NATIVE-VENDOR-EXCEPTION16.json",
+      "bytes": 1943,
+      "sha256": "db334ef83a24b4c357e4d34a9378cdae750026aaddfff43a9374473815dc12b9"
+    }
+  ],
+  "output_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume56-20261023/native-vendor16/native_fixture09/help05",
+  "timeout_seconds": 30,
+  "memory_limit_bytes": 268435456,
+  "root_exit_drain_policy": "UNTIL_COMMAND_DEADLINE"
+}

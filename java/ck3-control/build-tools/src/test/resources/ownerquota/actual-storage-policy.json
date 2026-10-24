@@ -1,0 +1,78 @@
+{
+  "schema": "xar-storage-retention-policy-v1",
+  "policy_version": "1.0.0",
+  "effective_date": "2026-10-10",
+  "time_basis": "UTC",
+  "scope": "All execution machines and project-owned work packages",
+  "defaults": {
+    "derived": {"ttl_hours": 48, "action": "eligible_for_reclamation", "priority": 1},
+    "cache": {"ttl_hours": 168, "action": "eligible_for_reclamation", "priority": 2},
+    "build": {"ttl_hours": 336, "action": "eligible_for_reclamation", "priority": 3},
+    "checkpoint": {"ttl_hours": 336, "action": "eligible_for_reclamation", "priority": 4},
+    "raw_evidence": {"ttl_hours": 720, "action": "eligible_for_reclamation", "priority": 5},
+    "delivered_media": {"ttl_hours": 720, "action": "eligible_for_reclamation", "priority": 6},
+    "record": {"ttl_hours": 4320, "action": "review_and_consolidate", "priority": 7}
+  },
+  "lifecycle": {
+    "large_file_bytes": 1073741824,
+    "large_file_review_hours": 168,
+    "unclassified_review_hours": 48,
+    "protection_max_hours": 168,
+    "protection_auto_renew": false,
+    "protection_consecutive_renewal_review_count": 4,
+    "representative_failure_sets_per_unresolved_issue_default": 1,
+    "deletion_receipt_review_hours": 4320,
+    "detailed_deletion_ledger_ttl_hours": 720,
+    "expired_means_candidate_not_unconditional_delete": true,
+    "superseded_or_rebuildable_may_expire_early": true,
+    "mtime_alone_can_authorize_deletion": false,
+    "cool_storage_resets_expiry": false
+  },
+  "capacity": {
+    "safety_floor_bytes": 2147483648,
+    "safety_ceiling_bytes": 21474836480,
+    "safety_volume_fraction": 0.05,
+    "default_project_quota_ceiling_bytes": 107374182400,
+    "default_project_quota_volume_fraction": 0.10,
+    "known_output_uncompressed_multiplier": 1.0,
+    "missing_estimate_for_heavy_write": "BLOCKED",
+    "missing_system_growth_reserve": "BLOCKED",
+    "concurrent_reservations_must_be_counted": true,
+    "shared_volume_reservations_cover_all_machines": true,
+    "unknown_budget_inputs": "BLOCKED",
+    "budget_required_inputs": ["total_volume_bytes", "available_bytes", "this_write_peak", "other_unspent_reservations", "system_growth_reserve", "current_project_usage", "effective_project_quota"],
+    "required_free_formula": "this_write_peak + other_unspent_reservations + system_growth_reserve + max(safety_floor_bytes, min(safety_ceiling_bytes, total_volume_bytes * safety_volume_fraction))",
+    "quota_formula": "min(default_project_quota_ceiling_bytes, total_volume_bytes * default_project_quota_volume_fraction)",
+    "quota_override_requires": ["owner", "reason", "max_project_bytes", "review_at_utc"],
+    "quota_override_expires_at_review_time": true,
+    "quota_override_max_hours": 168
+  },
+  "execution": {
+    "required_checkpoints": ["task_start", "before_heavy_write", "task_close"],
+    "scan_project_roots_only": true,
+    "follow_links": false,
+    "whole_disk_body_hashing": false,
+    "inventory_max_seconds": 120,
+    "inventory_max_entries": 100000,
+    "inventory_report_max_bytes": 1048576,
+    "reclamation_plan_max_files_per_batch": 1000,
+    "delete_only_exact_planned_files": true,
+    "preserve_active_leases": true,
+    "verify_remote_copy_when_retention_depends_on_remote_replica": true,
+    "expired_unreferenced_last_copy_requires_remote_backup": false,
+    "rewrite_published_git_history": false,
+    "automatic_gc_implemented": false,
+    "automatic_capacity_reservations_implemented": false
+  },
+  "machine_profile_required_fields": [
+    "machine_id", "operator", "project_root_map", "volume_map",
+    "system_growth_reserve_bytes_by_volume", "quota_overrides", "policy_version"
+  ],
+  "asset_group_required_fields": [
+    "asset_id", "replica_id", "owner_task", "machine_id", "root_id", "relative_path",
+    "category", "state", "logical_bytes", "allocated_bytes_or_null",
+    "closed_at_utc_or_null", "last_used_at_utc", "expires_at_utc",
+    "active_references", "protected_until_utc_or_null", "protection_reason_or_null",
+    "source_pins_or_recipe", "availability"
+  ]
+}

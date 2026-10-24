@@ -63,6 +63,42 @@ final class ControlBuildTest {
         assertThrows(IOException.class, () -> ControlBuild.mutableInventoryBytes(missing, path -> {}));
     }
 
+
+    @Test void workpackageInventoryCountsRealDirectoriesSeparatelyFromRegularFiles() throws Exception {
+        Path root = Files.createDirectory(temporary.resolve("counted-workpackage"));
+        Path first = Files.createDirectory(root.resolve("first")), second = Files.createDirectory(root.resolve("second"));
+        Files.writeString(first.resolve("a"), "A"); Files.writeString(second.resolve("b"), "BB");
+        var limits = new ControlBuild.WorkpackageInventoryLimits(2, 3, 5);
+        assertEquals(3L, ControlBuild.mutableInventoryBytes(root, path -> {}, limits));
+        assertEquals(new ControlBuild.WorkpackageInventoryLimits(250000, 131072, 381072),
+                ControlBuild.WORKPACKAGE_INVENTORY_LIMITS);
+        // Three real directories no longer consume the two-file allowance.
+        assertEquals(3L, ControlBuild.mutableInventoryBytes(root, path -> {}));
+    }
+
+    @Test void workpackageInventoryRejectsEachIndependentExtentWithExactDiagnostics() throws Exception {
+        Path root = Files.createDirectory(temporary.resolve("bounded-workpackage"));
+        Path first = Files.createDirectory(root.resolve("first")), second = Files.createDirectory(root.resolve("second"));
+        Files.writeString(first.resolve("a"), "A"); Files.writeString(second.resolve("b"), "BB");
+        List<ControlBuild.WorkpackageInventoryLimits> limits = List.of(
+                new ControlBuild.WorkpackageInventoryLimits(1, 3, 5),
+                new ControlBuild.WorkpackageInventoryLimits(2, 2, 5),
+                new ControlBuild.WorkpackageInventoryLimits(2, 3, 4));
+        List<String> categories = List.of("REGULAR_FILES", "DIRECTORIES", "TOTAL_ENTRIES");
+        List<String> counters = List.of("counter=2 limit=1", "counter=3 limit=2", "counter=5 limit=4");
+        for (int i = 0; i < limits.size(); i++) {
+            var limit = limits.get(i);
+            IOException rejected = assertThrows(IOException.class,
+                    () -> ControlBuild.mutableInventoryBytes(root, path -> {}, limit));
+            assertTrue(rejected.getMessage().contains("category=" + categories.get(i)), rejected::getMessage);
+            assertTrue(rejected.getMessage().contains("path=" + root), rejected::getMessage);
+            assertTrue(rejected.getMessage().contains(counters.get(i)), rejected::getMessage);
+        }
+        assertThrows(IllegalArgumentException.class, () -> new ControlBuild.WorkpackageInventoryLimits(-1, 3, 5));
+        assertThrows(IllegalArgumentException.class, () -> new ControlBuild.WorkpackageInventoryLimits(2, 0, 5));
+        assertThrows(IllegalArgumentException.class, () -> new ControlBuild.WorkpackageInventoryLimits(2, 3, 0));
+    }
+
     @Test void actualPartAccountingRetriesScratchRealPathAndRetainsSiblingQuota() throws Exception {
         Path scratch = Files.createDirectory(temporary.resolve("scratch"));
         Path directory = Files.createDirectory(scratch.resolve("junit-org"));
@@ -211,14 +247,14 @@ final class ControlBuildTest {
         };
         IOException linkFailure = assertThrows(IOException.class,
                 () -> ControlBuild.sizes(temporary, Map.of("scratch", 8L), () -> {}, linked));
-        assertEquals("Inventory link, extent or time limit", linkFailure.getMessage());
+        assertEquals("Workpackage inventory category=SYMBOLIC_LINK path=" + file + " counter=1 limit=0", linkFailure.getMessage());
         IOException escapeFailure = assertThrows(IOException.class,
                 () -> ControlBuild.sizes(temporary, Map.of("scratch", 8L), () -> {}, new ControlBuild.InventoryIo() {
                     @Override public Path realPath(Path path) throws IOException {
                         return path.equals(file) ? temporary.toRealPath() : ControlBuild.InventoryIo.super.realPath(path);
                     }
                 }));
-        assertEquals("Inventory path escaped root", escapeFailure.getMessage());
+        assertEquals("Workpackage inventory category=PATH_ESCAPE path=" + file + " counter=1 limit=0", escapeFailure.getMessage());
     }
 
     @Test void nativeJobPeriodicAccountingSurvivesTransientScratchDenial() throws Exception {
@@ -334,18 +370,67 @@ final class ControlBuildTest {
         assertEquals(ControlBuild.FileRef.measure(bin.resolve("mvn.cmd")), evidence.distributionLauncherRef());
     }
 
+    @Test void ciStageUsesActualLeaseAndRejectsPendingMetadataBeforeArtifactCapIsExceeded() throws Exception {
+        Path repo = Files.createDirectories(temporary.resolve("ci-resource-source"));
+        Files.createDirectories(repo.resolve("java/ck3-control/build-tools"));
+        Path work = Files.createDirectory(temporary.resolve("ci-resource-work"));
+        for (String part : List.of("m2", "build", "tools", "scratch", "artifacts", "logs")) Files.createDirectory(work.resolve(part));
+        Path evidence = work.resolve("artifacts/actual-input.json"); Files.writeString(evidence, "retained-real-artifact");
+        ControlBuild.FileRef evidenceRef = ControlBuild.FileRef.measure(evidence);
+        Map<String, Long> caps = Map.of("m2", 1L << 20, "build", 1L << 20, "tools", 1L << 20,
+                "scratch", 1L << 20, "artifacts", 1L << 20, "logs", 1L << 20);
+        Map<String, Long> measured = ControlBuild.sizes(work, caps, () -> {}, new ControlBuild.InventoryIo() {});
+        Path policy = temporary.resolve("ci-resource-policy.json");
+        Files.writeString(policy, "{\"schema\":\"xar-storage-retention-policy-v1\"}");
+        var mapper = ControlBuild.strictMapper();
+        var release = mapper.createObjectNode();
+        release.put("schema", "xar.java-phase1.manual-capacity-release/v1");
+        release.put("status", "RELEASED_JAVA_PHASE1_BOUNDED_BUILD_AND_LOCAL_SERVICE");
+        String machine = WindowsJobProcess.currentMachineId(); Instant now = Instant.now();
+        release.put("machine_id", machine); release.put("single_Maven_writer", "resource-test");
+        release.put("review_at_utc", now.plusSeconds(60).toString());
+        release.putArray("approved_output_roots").add(temporary.toString());
+        release.put("Maven_repository", work.resolve("m2").toString()); release.put("build_root", work.resolve("build").toString());
+        release.put("temporary_root", work.resolve("scratch").toString());
+        var parts = release.putObject("parts");
+        for (String part : List.of("m2", "build", "tools", "scratch")) parts.put(part, caps.get(part));
+        parts.put("artifacts", measured.get("artifacts") + 1); parts.put("metadata_logs", caps.get("logs"));
+        release.set("policy_ref", mapper.valueToTree(ControlBuild.FileRef.measure(policy)));
+        var volume = release.putObject("volumes").putObject(work.getRoot().toString());
+        volume.put("required_free", 4); volume.put("this_write_peak", 1); volume.put("other_unspent_reservations", 1);
+        volume.put("system_growth_reserve", 1); volume.put("safety_reserve", 1);
+        volume.put("current_project_usage_conservative_upper", 1); volume.put("effective_project_quota", 100);
+        release.put("test_RAM_joint_hard_bytes", 256L << 20); release.put("Maven_heap_bytes", 96L << 20);
+        Path releasePath = temporary.resolve("ci-resource-release.json");
+        Files.write(releasePath, mapper.writeValueAsBytes(release));
+        CiBootstrap.FilePin pin = CiBootstrap.measure(policy);
+        CiBootstrap.Plan plan = new CiBootstrap.Plan(CiBootstrap.PLAN_SCHEMA, machine, now.toString(), now.plusSeconds(60).toString(),
+                repo.toString(), work.toString(), temporary.toString(), null, temporary.resolve("python.exe").toString(),
+                "resource-test", pin, Map.of(), Map.of(), Map.of(), List.of(pin), List.of(pin), false, false);
+        ControlBuild.revalidateCiResources(plan, releasePath, 0);
+        IOException failure = assertThrows(IOException.class, () -> ControlBuild.revalidateCiResources(plan, releasePath, 2));
+        assertTrue(failure.getMessage().contains("pending CI metadata"));
+        evidenceRef.verify();
+    }
+
     @Test void actualDefaultMavenReceivesFailAtEndAndRetainsItsNonzeroTerminalExit() throws Exception {
         Path bin = Files.createDirectories(temporary.resolve("command-home/bin"));
         Files.writeString(bin.resolve("mvn.cmd"), "@echo off\r\nif not \"%~1\"==\"--fail-at-end\" exit /b 91\r\n"
-                + "echo FAIL_AT_END_RECEIVED\r\n:arguments\r\nif \"%~1\"==\"\" exit /b 92\r\n"
+                + "echo FAIL_AT_END_RECEIVED\r\n:arguments\r\necho ARG:%~1\r\nif \"%~1\"==\"\" exit /b 92\r\n"
                 + "if \"%~1\"==\"verify\" goto failed\r\nshift\r\ngoto arguments\r\n:failed\r\n"
                 + "shift\r\nif not \"%~1\"==\"\" exit /b 93\r\necho VERIFY_RETURNED_FAILURE\r\nexit /b 37\r\n");
         Path working = Files.createDirectory(temporary.resolve("reactor working"));
         ControlBuild.Config config = new ControlBuild.Config(working, working, working.resolve("release.json"),
                 "command-fixture", "test", null, working, "3.10.0", 60, ControlBuild.TargetKind.SERVICE_FAST_JAR, ControlBuild.SourceLimitProfile.STANDARD_8_MIB);
         Path batch = temporary.resolve("reactor.cmd").toAbsolutePath();
+        String selectedPython = working.resolve("selected Python/python.exe").toString();
+        Map<String, String> selectedEnvironment = Map.of("XAR_ORACLE_PYTHON", selectedPython);
+        assertThrows(IllegalArgumentException.class, () -> ControlBuild.reactorVerifyArguments(config,
+                working, working, working, Map.of()));
+        assertThrows(IllegalArgumentException.class, () -> ControlBuild.reactorVerifyArguments(config,
+                working, working, working, Map.of("XAR_ORACLE_PYTHON", "relative/python.exe")));
         ControlBuild.writeMavenBatch(batch, null, ControlBuild.reactorVerifyArguments(config,
-                working.resolve("direct settings.xml"), working, working.resolve("output directory")));
+                working.resolve("direct settings.xml"), working, working.resolve("output directory"), selectedEnvironment));
         Map<String, String> environment = new TreeMap<>(String.CASE_INSENSITIVE_ORDER); environment.putAll(System.getenv());
         environment.put("PATH", bin + ";" + Path.of(System.getenv("SystemRoot"), "System32"));
         environment.put("PATHEXT", ".CMD;.BAT;.EXE;.COM");
@@ -357,6 +442,13 @@ final class ControlBuildTest {
             assertEquals(37, actual.exitCode()); assertFalse(actual.passed()); assertNull(actual.stopReason());
             assertEquals(0, actual.accounting().activeProcesses());
         }
+        assertTrue(Files.readString(output).contains("ARG:-Dxar.rootContext.testRoot="
+                + working.resolve("output directory/root-context-provider-test")));
+        assertTrue(Files.readString(output).contains("ARG:-Dxar.rootContext.pythonExecutable=" + selectedPython));
+        assertTrue(Files.readString(output).contains("ARG:-Dxar.g2.http.evidence-dir="
+                + working.resolve("output directory/g2-http-evidence")));
+        assertTrue(Files.readString(output).contains("ARG:-Dxar.scratch="
+                + working.resolve("output directory/integration-test-scratch")));
         String actual = Files.readString(output);
         assertTrue(actual.contains("FAIL_AT_END_RECEIVED")); assertTrue(actual.contains("VERIFY_RETURNED_FAILURE"));
     }
@@ -372,4 +464,127 @@ final class ControlBuildTest {
         assertThrows(IllegalArgumentException.class, () -> new ControlBuild.Config(root.resolve("source"), root.resolve("work"),
                 root.resolve("release.json"), "bad-minimum", "test", null, root.resolve("jdk"), "3.9.16", 60, ControlBuild.TargetKind.SERVICE_FAST_JAR, ControlBuild.SourceLimitProfile.STANDARD_8_MIB));
     }
+
+    /** Synthetic archive fixture with a real native0/Job0 terminal; never production qualification. */
+    static record CompletedReceiptFixture(Path receiptPath, ControlBuild.BuildReceipt receipt, Path releasePath,
+            Path sourceRoot, Path compiledRoot, Path deploymentRoot) {
+        ControlBuild.FileRef receiptRef() throws IOException { return ControlBuild.FileRef.measure(receiptPath); }
+    }
+
+    static CompletedReceiptFixture completedReceiptFixture(Path root) throws Exception {
+        root = Files.createDirectories(root.toAbsolutePath());
+        Path source = Files.createDirectory(root.resolve("source"));
+        Path compiled = Files.createDirectory(root.resolve("compiled"));
+        String pom = "<project><modelVersion>4.0.0</modelVersion><groupId>fixture</groupId><artifactId>receipt</artifactId><version>1</version></project>";
+        for (Path dir : List.of(source, compiled)) {
+            Files.writeString(dir.resolve("pom.xml"), pom);
+            Files.createDirectories(dir.resolve("src/main/java"));
+            Files.writeString(dir.resolve("src/main/java/ReceiptInput.java"), "final class ReceiptInput {}");
+        }
+        Path deployment = Files.createDirectory(root.resolve("deployment"));
+        Files.createDirectory(deployment.resolve("lib"));
+        Path archive = deployment.resolve("ck3-control-build-tools-0.1.0-SNAPSHOT.jar");
+        Files.writeString(archive, "synthetic archive fixture");
+        Path dependency = deployment.resolve("lib/fixture.jar"); Files.writeString(dependency, "synthetic dependency fixture");
+        Path scratch = Files.createDirectory(root.resolve("scratch"));
+        Path nativeRoot = Files.createDirectory(root.resolve("native"));
+        Path cmd = Path.of(System.getenv("SystemRoot"), "System32/cmd.exe");
+        Path batch = nativeRoot.resolve("fixture.cmd"); Files.writeString(batch, "@echo off\r\nexit /b 0\r\n");
+        Instant opened = Instant.now().minusSeconds(1);
+        WindowsJobProcess.CommandResult terminal;
+        try (WindowsJobProcess child = WindowsJobProcess.start(new WindowsJobProcess.CommandSpec(cmd,
+                List.of("/d", "/c", batch.toString()), root, Map.copyOf(System.getenv()),
+                nativeRoot.resolve("stdout.log"), nativeRoot.resolve("stderr.log"), 64L << 20))) {
+            terminal = child.await(Duration.ofSeconds(10), Instant.now().plusSeconds(15), () -> {});
+        }
+        assertTrue(terminal.passed()); assertEquals(0, terminal.accounting().activeProcesses());
+        Instant completed = Instant.now();
+        var mapper = ControlBuild.strictMapper(); var release = mapper.createObjectNode();
+        release.put("schema", "xar.java-phase1.manual-capacity-release/v1");
+        release.put("machine_id", WindowsJobProcess.currentMachineId());
+        release.put("status", "RELEASED_JAVA_PHASE1_BOUNDED_BUILD_AND_LOCAL_SERVICE");
+        release.put("observed_at_utc", opened.toString()); release.put("review_at_utc", completed.plusNanos(1).toString());
+        release.put("temporary_root", scratch.toString());
+        Path releasePath = root.resolve("historical-release.json");
+        Files.write(releasePath, mapper.writeValueAsBytes(release));
+        Path launcher = root.resolve("mvn.cmd"); Files.writeString(launcher, "@exit /b 0\r\n");
+        var toolchain = new ControlBuild.MavenToolchain(ControlBuild.MavenSelection.DEFAULT_COMMAND, "mvn",
+                root.toString(), "3.10.0", "3.10.0", ControlBuild.FileRef.measure(launcher), null);
+        var deploymentPins = new java.util.ArrayList<>(List.of(ControlBuild.FileRef.measure(archive), ControlBuild.FileRef.measure(dependency)));
+        deploymentPins.sort(java.util.Comparator.comparing(ControlBuild.FileRef::path));
+        var match = new ControlBuild.SourcePostcheck(ControlBuild.SourceState.MATCH, null);
+        var receipt = new ControlBuild.BuildReceipt(ControlBuild.SCHEMA, WindowsJobProcess.currentMachineId(), completed.toString(),
+                "PASS", source.toString(), compiled.toString(), deployment.toString(), match, match,
+                ControlBuild.TargetKind.BUILD_TOOLS_RUNTIME, ControlBuild.SourceLimitProfile.STANDARD_8_MIB,
+                ControlBuild.sourceManifest(source), ControlBuild.sourceManifest(compiled), deploymentPins,
+                List.of(ControlBuild.FileRef.measure(cmd)), ControlBuild.FileRef.measure(releasePath), toolchain,
+                ControlBuild.FileRef.measure(Path.of(System.getProperty("java.home"), "bin/java.exe")),
+                terminal, terminal, Map.of("fixture", 0L), null);
+        Path receiptPath = root.resolve("completed-build.json");
+        Files.write(receiptPath, mapper.writeValueAsBytes(receipt));
+        return new CompletedReceiptFixture(receiptPath, receipt, releasePath, source, compiled, deployment);
+    }
+
+    @Test void completedSoftwareRemainsVerifiedAfterItsBuildLeaseExpiresButLiveAcceptanceStillFails() throws Exception {
+        var fixture = completedReceiptFixture(temporary.resolve("completed-expiry"));
+        var ref = fixture.receiptRef();
+        assertEquals(fixture.receipt(), ControlBuild.verifiedCompletedReceipt(ref));
+        assertThrows(IOException.class, () -> ControlBuild.acceptedReceipt(fixture.receiptPath()));
+        ref.verify();
+    }
+
+    @Test void completedReaderRejectsForgedCompletionAndFailedOrIncompleteNativeTerminals() throws Exception {
+        var fixture = completedReceiptFixture(temporary.resolve("completed-rejections"));
+        var mapper = ControlBuild.strictMapper();
+        var base = mapper.valueToTree(fixture.receipt());
+        var release = mapper.readTree(Files.readAllBytes(fixture.releasePath()));
+        java.util.List<com.fasterxml.jackson.databind.node.ObjectNode> mutations = new java.util.ArrayList<>();
+        for (String time : List.of(release.get("observed_at_utc").asText(), release.get("review_at_utc").asText(),
+                Instant.now().plusSeconds(60).toString())) {
+            var changed = ((com.fasterxml.jackson.databind.node.ObjectNode) base).deepCopy();
+            changed.put("observed_at_utc", time); mutations.add(changed);
+        }
+        var red = ((com.fasterxml.jackson.databind.node.ObjectNode) base).deepCopy(); red.put("status", "RED"); mutations.add(red);
+        var exit = ((com.fasterxml.jackson.databind.node.ObjectNode) base).deepCopy();
+        ((com.fasterxml.jackson.databind.node.ObjectNode) exit.get("maven_result")).put("exit_code", 37); mutations.add(exit);
+        var active = ((com.fasterxml.jackson.databind.node.ObjectNode) base).deepCopy();
+        ((com.fasterxml.jackson.databind.node.ObjectNode) active.get("maven_result").get("accounting")).put("active_processes", 1); mutations.add(active);
+        var timeout = ((com.fasterxml.jackson.databind.node.ObjectNode) base).deepCopy();
+        ((com.fasterxml.jackson.databind.node.ObjectNode) timeout.get("maven_result")).put("stop_reason", "fixture timeout"); mutations.add(timeout);
+        var compiler = ((com.fasterxml.jackson.databind.node.ObjectNode) base).deepCopy();
+        ((com.fasterxml.jackson.databind.node.ObjectNode) compiler.get("java_executable_ref")).put("sha256", "0".repeat(64)); mutations.add(compiler);
+        int index = 0;
+        for (var changed : mutations) {
+            Path rejected = temporary.resolve("rejected-completed-" + (++index) + ".json");
+            Files.write(rejected, mapper.writeValueAsBytes(changed));
+            assertThrows(IOException.class, () -> ControlBuild.verifiedCompletedReceipt(ControlBuild.FileRef.measure(rejected)));
+        }
+        var pinned = fixture.receiptRef();
+        Files.writeString(fixture.receiptPath(), "{}");
+        assertThrows(IOException.class, () -> ControlBuild.verifiedCompletedReceipt(pinned));
+    }
+
+    @Test void completedReaderRetainsOriginalCompiledDeploymentAndProducerPinGuards() throws Exception {
+        var fixture = completedReceiptFixture(temporary.resolve("completed-drift"));
+        var ref = fixture.receiptRef();
+        for (Path path : List.of(fixture.sourceRoot().resolve("src/main/java/ReceiptInput.java"),
+                fixture.compiledRoot().resolve("src/main/java/ReceiptInput.java"),
+                fixture.deploymentRoot().resolve("ck3-control-build-tools-0.1.0-SNAPSHOT.jar"),
+                Path.of(fixture.receipt().mavenToolchain().distributionLauncherRef().path()))) {
+            byte[] original = Files.readAllBytes(path);
+            Files.writeString(path, "same path changed fixture bytes");
+            assertThrows(IOException.class, () -> ControlBuild.verifiedCompletedReceipt(ref));
+            Files.write(path, original);
+            assertEquals(fixture.receipt(), ControlBuild.verifiedCompletedReceipt(ref));
+        }
+        var mapper = ControlBuild.strictMapper();
+        var changed = (com.fasterxml.jackson.databind.node.ObjectNode) mapper.valueToTree(fixture.receipt());
+        ((com.fasterxml.jackson.databind.node.ObjectNode) changed.get("producer_runtime_pins").get(0)).put("sha256", "0".repeat(64));
+        Path rejected = temporary.resolve("producer-drift.json"); Files.write(rejected, mapper.writeValueAsBytes(changed));
+        assertThrows(IOException.class, () -> ControlBuild.verifiedCompletedReceipt(ControlBuild.FileRef.measure(rejected)));
+    }
+
 }
+
+
+

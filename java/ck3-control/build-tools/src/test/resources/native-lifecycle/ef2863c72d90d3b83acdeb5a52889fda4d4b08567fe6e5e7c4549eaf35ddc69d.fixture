@@ -1,0 +1,151 @@
+{
+  "schema" : "xar.shared-owned-command-terminal/v2",
+  "machine_id" : "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc" : "2026-10-22T21:49:00.630259400Z",
+  "status" : "RED",
+  "owner" : "/root/native_fixture09",
+  "slot_id" : "native-vendor16",
+  "borrowed_slot_id" : null,
+  "request_ref" : {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume56-20261023\\native-lifecycle-next01\\VENDOR-HELP05-SPEC.json",
+    "bytes" : 2158,
+    "sha256" : "ae774971848e68f5820cfafd61828bd9a4027035393218972e3de9223503589f"
+  },
+  "standing_ref" : {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\RESUME56-RUNTIME15-STANDING-GRANT.json",
+    "bytes" : 12751,
+    "sha256" : "11a350757b4befc8a10266ab863b82dd5c61a4dd25c8a2cb24216a3ac9534701"
+  },
+  "launcher_source_ref" : {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume56-20261023\\shared-command-launcher01\\SharedOwnedCommand05.java",
+    "bytes" : 51240,
+    "sha256" : "5efa09b73bf5e842b81e5df7f52d450e85f43e192fb16be4d2bcfdf6ac119963"
+  },
+  "complete_runtime" : [ {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools25-resume02\\ck3-control-build-tools\\ck3-control-build-tools-0.1.0-SNAPSHOT.jar",
+    "bytes" : 457425,
+    "sha256" : "cb6998b9eba46fe86e56a75f077eacc12b72b53d1b63bcdae9fa209cae7dd44a"
+  }, {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools25-resume02\\ck3-control-build-tools\\lib\\jackson-annotations-2.21.jar",
+    "bytes" : 82104,
+    "sha256" : "53ca085f4a150f703f49e1aabd935bd03b43e1ea3d55d135438292af22cef56b"
+  }, {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools25-resume02\\ck3-control-build-tools\\lib\\jackson-core-2.21.7.jar",
+    "bytes" : 594782,
+    "sha256" : "8c5623b98f32d5f7e1287ff61ed50e08ab7b11381e991fff89327faabba42261"
+  }, {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools25-resume02\\ck3-control-build-tools\\lib\\jackson-databind-2.21.7.jar",
+    "bytes" : 1709095,
+    "sha256" : "1290c2795e93e8a6861a6c4d9ff0d844d32f5ea178362cb2721edf5561e828b1"
+  }, {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools25-resume02\\ck3-control-build-tools\\lib\\jna-5.19.1.jar",
+    "bytes" : 1950853,
+    "sha256" : "4fb141dd8ef6b0585ffceea4bc49602fbc6312fa977e2c488794ea3e6aafecae"
+  }, {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools25-resume02\\ck3-control-build-tools\\lib\\jna-platform-5.19.1.jar",
+    "bytes" : 1416385,
+    "sha256" : "3b3864f5b449e9c3c24b16861524b622b086563f44e0cd8384c8efc5a6052f82"
+  } ],
+  "outer" : {
+    "pid_decimal" : "46376",
+    "reserved_memory_bytes" : 268435456,
+    "hard_job_enforced" : false,
+    "scope" : "Source-mode outer JVM is a conservative reservation; no outer hard Job is claimed. Child and descendants are in the hard Job."
+  },
+  "child_started" : true,
+  "child" : {
+    "identity" : {
+      "pid" : 173380,
+      "creation_filetime_decimal" : "134371793403030171",
+      "executable" : "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\vctip.exe"
+    },
+    "exit_code" : 1,
+    "elapsed_seconds" : 0.3091013,
+    "accounting" : {
+      "peak_job_memory_bytes" : 18661376,
+      "active_processes" : 0,
+      "memory_limit_bytes" : 268435456,
+      "limit_flags" : 8704
+    },
+    "stop_reason" : null
+  },
+  "diagnostic" : {
+    "state" : "NOT_NEEDED",
+    "requested_path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\resume56-20261023\\native-vendor16\\native_fixture09\\help05\\before-cleanup.json",
+    "sidecar_ref" : null,
+    "error" : null
+  },
+  "input_precheck" : "MATCH",
+  "input_postcheck" : "MATCH",
+  "runtime_postcheck" : "MATCH",
+  "failure" : null,
+  "input_before" : [ {
+    "source" : {
+      "path" : "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x64\\vctip.exe",
+      "bytes" : 514528,
+      "sha256" : "7775ba4e0e0b03de15caefc1b92e63acc0a3dd9e388648f5489c777dfdbaadc8"
+    },
+    "native_file" : {
+      "volume_serial_decimal" : "5669105749829453645",
+      "file_id_decimal" : "1688849861063436",
+      "legacy_volume_serial_decimal" : "2897577805",
+      "legacy_file_id_hex" : "00060000000c330c",
+      "creation_filetime_decimal" : "134344892121577414",
+      "last_write_filetime_decimal" : "134344892121607210",
+      "change_filetime_decimal" : "134344892121607210",
+      "logical_bytes" : 514528,
+      "allocated_bytes" : 516096,
+      "link_count" : 1
+    }
+  }, {
+    "source" : {
+      "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\resume56-20261023\\native-lifecycle-next01\\VctipProbeFacts.java",
+      "bytes" : 7176,
+      "sha256" : "ec366a09eaf4fea4f6a4c0d6a64a7571e46e0fb35e74e1cf16e6bd62cb82be6b"
+    },
+    "native_file" : {
+      "volume_serial_decimal" : "6505083400996699863",
+      "file_id_decimal" : "562949965880005",
+      "legacy_volume_serial_decimal" : "1186119383",
+      "legacy_file_id_hex" : "0002000000be1ac5",
+      "creation_filetime_decimal" : "134371762601822236",
+      "last_write_filetime_decimal" : "134371774200010678",
+      "change_filetime_decimal" : "134371774200010678",
+      "logical_bytes" : 7176,
+      "allocated_bytes" : 8192,
+      "link_count" : 1
+    }
+  }, {
+    "source" : {
+      "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\RESUME56-NATIVE-VENDOR-EXCEPTION16.json",
+      "bytes" : 1943,
+      "sha256" : "db334ef83a24b4c357e4d34a9378cdae750026aaddfff43a9374473815dc12b9"
+    },
+    "native_file" : {
+      "volume_serial_decimal" : "6505083400996699863",
+      "file_id_decimal" : "281474989170129",
+      "legacy_volume_serial_decimal" : "1186119383",
+      "legacy_file_id_hex" : "0001000000be1dd1",
+      "creation_filetime_decimal" : "134371767914977031",
+      "last_write_filetime_decimal" : "134371767914982099",
+      "change_filetime_decimal" : "134371767914982099",
+      "logical_bytes" : 1943,
+      "allocated_bytes" : 4096,
+      "link_count" : 1
+    }
+  } ],
+  "effective_arguments" : [ "-?" ],
+  "stdout_ref" : {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\resume56-20261023\\native-vendor16\\native_fixture09\\help05\\stdout.log",
+    "bytes" : 779,
+    "sha256" : "1009bbd252b2ebb0a99e6372aa6c379153ed41d49e74d9c844dfe97019f8340f"
+  },
+  "stderr_ref" : {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\resume56-20261023\\native-vendor16\\native_fixture09\\help05\\stderr.log",
+    "bytes" : 0,
+    "sha256" : "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "output_native_bytes_with_directory_guard" : 32768,
+  "game_rpc_calls" : 0,
+  "actual_driver_or_save_body_reads" : 0
+}

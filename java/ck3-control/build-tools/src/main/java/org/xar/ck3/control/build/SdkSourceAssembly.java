@@ -42,7 +42,7 @@ public final class SdkSourceAssembly {
     private static final ObjectMapper JSON = ControlBuild.strictMapper();
     private SdkSourceAssembly() { }
 
-    public enum SourceRole { SDK_SOURCE, SHARED_TRANSPORT, ORIGINAL_CONSUMER_TEST, PRODUCER, SUPPORT_RESOURCE }
+    public enum SourceRole { SDK_SOURCE, SHARED_TRANSPORT, ORIGINAL_CONSUMER_TEST, STAGED_CONSUMER_TEST, CONSUMER_SOURCE, PRODUCER, SUPPORT_RESOURCE }
     public enum InputOrigin { CURRENT_CANONICAL, FROZEN_SDK_SOURCE, STAGED_NEW_SOURCE }
     public enum ProtectedRole { FROZEN_SDK, FROZEN_HOST, FROZEN_RUNTIME }
     public enum AssemblyStatus { SOURCE_ASSEMBLED_NOT_IMPORTED, FAILED_PARTIAL_DO_NOT_REUSE }
@@ -66,6 +66,7 @@ public final class SdkSourceAssembly {
             ExactSourcePatch.relative(relativePath);
             if (relativePath.startsWith(".assembly/") || relativePath.equals(".assembly") || role == null || origin == null || original == null || original.bytes() > MAX_LEAF) throw new IllegalArgumentException("exact source input required");
             overlays = List.copyOf(overlays);
+            if ((role == SourceRole.STAGED_CONSUMER_TEST || role == SourceRole.CONSUMER_SOURCE) && origin != InputOrigin.STAGED_NEW_SOURCE) throw new IllegalArgumentException("staged consumers need explicit staged source provenance");
             if (overlays.size() > 32) throw new IllegalArgumentException("finite ordered source overlays required");
         }
     }
@@ -254,8 +255,11 @@ public final class SdkSourceAssembly {
         return review(request, requestRef, WindowsJobProcess.currentMachineId());
     }
     static Review review(Request request, FileRef requestRef, String actualMachineId) throws IOException {
+        return review(request, requestRef, actualMachineId, false);
+    }
+    private static Review review(Request request, FileRef requestRef, String actualMachineId, boolean referenceOnly) throws IOException {
         if (!request.machineId().equals(actualMachineId)) throw new IOException("source assembly machine differs");
-        if (!readRequest(requestRef).equals(request)) throw new IOException("in-memory request differs from its exact JSON reference");
+        if (!referenceOnly && !readRequest(requestRef).equals(request)) throw new IOException("in-memory request differs from its exact JSON reference");
         validateRoots(request);
         requestRef.verify();
         SdkInventory inventory = completeSdkInventory(request);
@@ -284,7 +288,7 @@ public final class SdkSourceAssembly {
             while (parent.contains("/")) { parent = parent.substring(0, parent.lastIndexOf('/')); directories.add(parent); }
         }
         validateImports(request, sources);
-        List<DeploymentEvidence> deployments = deployments(request);
+        List<DeploymentEvidence> deployments = referenceOnly ? List.of() : deployments(request);
         verifyInputs(request);
         return new Review(REVIEW_SCHEMA, actualMachineId, Instant.now().toString(), request, requestRef, sources, inventory, deployments,
                 sourceSetDigest(sources), new Quote(total, MAX_METADATA, sources.size(), directories.size(), request.outputHardBytes()), false, false);
@@ -318,10 +322,7 @@ public final class SdkSourceAssembly {
                 charged = Math.addExact(charged, round(bytes.length, permit.allocationUnitBytes()));
                 guard(liveCapacityGate, permit, charged);
                 Path destination = root.resolve(source.relativePath()).normalize();
-                Files.createDirectories(destination.getParent());
-                Files.write(destination, bytes, StandardOpenOption.CREATE_NEW);
-                FileRef actual = FileRef.measure(destination);
-                if (!content(actual).equals(expected.result())) throw new IOException("fresh graph write readback differs");
+                FileRef actual = exactLeaf(bytes, expected.result(), destination).source();
                 outputs.add(new OutputSource(source.relativePath(), source.role(), actual));
             }
             verifyInputs(fresh.request());
@@ -359,7 +360,7 @@ public final class SdkSourceAssembly {
                 fresh.sourceSetSha256(), permit.freshStorageEvidence(), charged, false, false, failure);
     }
 
-    public static final String VIEWS_SCHEMA = "xar.sdk-shared-source-views-request/v2";
+    public static final String VIEWS_SCHEMA = "xar.sdk-shared-source-views-request/v3";
     private static final String SOURCE32_EXPORTER_SHA256 = "8b6972ac2a82b30c92b531c640df0eb9aa6e43cc205ab9d7d23796d5739da432";
     /** This precise exporter binds SHA/blob and native volume/FileID; its links fields are observed snapshots. */
     public record Source32Reuse(FileRef baseFreezeRef, FileRef exporterSourceRef) {
@@ -402,11 +403,16 @@ public final class SdkSourceAssembly {
     }
     public record ViewsRequest(String schema, String machineId, String groupRoot,
                                FileRef baselineReviewRef, FileRef legacyReviewRef, FileRef consumerReviewRef,
-                               LegacyConstraint legacyConstraint, Source32Reuse source32Reuse, long cumulativePhysicalHardBytes) {
+                               LegacyConstraint legacyConstraint, Source32Reuse source32Reuse,
+                               SdkDerivedSource32.SourcePurpose consumerSourcePurpose, SdkDerivedSource32.NativeDriverIntent consumerNativeDriverIntent,
+                               long cumulativePhysicalHardBytes) {
         public ViewsRequest {
             absolute(groupRoot);
             if (!VIEWS_SCHEMA.equals(schema) || machineId == null || machineId.isBlank() || baselineReviewRef == null || legacyReviewRef == null || consumerReviewRef == null
-                    || legacyConstraint == null || source32Reuse == null || cumulativePhysicalHardBytes <= 0 || cumulativePhysicalHardBytes > MAX_OUTPUT) throw new IllegalArgumentException("exact three-review shared view and immutable-reuse request required");
+                    || legacyConstraint == null || source32Reuse == null || consumerSourcePurpose == null || consumerNativeDriverIntent == null || cumulativePhysicalHardBytes <= 0 || cumulativePhysicalHardBytes > MAX_OUTPUT) throw new IllegalArgumentException("exact three-review shared view and immutable-reuse request required");
+            if (consumerSourcePurpose == SdkDerivedSource32.SourcePurpose.PARENT_NATIVE_UNCHANGED
+                    && !consumerNativeDriverIntent.parentContent().equals(consumerNativeDriverIntent.selectedContent()))
+                throw new IllegalArgumentException("Parent-native source purpose requires unchanged exact native bytes");
         }
     }
     public record SharedQuote(String machineId, String groupRoot, long baselineCopyLogicalBytes,
@@ -456,7 +462,7 @@ public final class SdkSourceAssembly {
                               long chargedAllocationUpperBytes, boolean sdkExecuted, boolean runtimeQualified) {
         public ViewsActual {
             sdkSourceViews = List.copyOf(sdkSourceViews);
-            if (!"xar.sdk-shared-source-views-actual/v2".equals(schema) || machineId == null || machineId.isBlank() || status == null
+            if (!"xar.sdk-shared-source-views-actual/v3".equals(schema) || machineId == null || machineId.isBlank() || status == null
                     || requestRef == null || baselineActualRef == null || legacyActualRef == null || consumerActualRef == null || legacyConstraint == null || sourcePhysicalCensus == null
                     || source32ReuseActualRef == null || hardlinkAllocationActualRef == null || sdkSourceViews.size() != 3 || privateAtomicReplacements < 0 || storageEvidence == null || chargedAllocationUpperBytes <= 0 || chargedAllocationUpperBytes > MAX_OUTPUT || sdkExecuted || runtimeQualified) throw new IllegalArgumentException("complete unexecuted source view provenance required");
             Instant.parse(observedAtUtc);
@@ -487,7 +493,7 @@ public final class SdkSourceAssembly {
         Set<SourceViewRole> roles = new HashSet<>();
         for (Source32View binding : actual.sdkSourceViews()) {
             if (!roles.add(binding.role()) || !viewRefs.get(binding.role()).equals(binding.assemblyActualRef())) throw new IOException("one exact SDK source binding for each selected view required");
-            verifySource32View(binding, viewActuals.get(binding.role()), request.source32Reuse().baseFreezeRef());
+            verifySource32View(binding, viewActuals.get(binding.role()), request.source32Reuse().baseFreezeRef(), request.consumerSourcePurpose(), request.consumerNativeDriverIntent());
         }
         if (!physicalCensus(base, old, fresh).equals(actual.sourcePhysicalCensus())) throw new IOException("actual shared source physical census changed");
         actual.storageEvidence().verify(); return actual;
@@ -535,11 +541,11 @@ public final class SdkSourceAssembly {
         FileRef reuseActualRef = persistSource32ReuseActual(frozen, baseWitnesses, legacy, consumer, group, request.machineId(), liveGate, permit, charged);
         FileRef allocationActualRef = persistLinkAccounting(linkAccounting, group, request.machineId(), liveGate, permit, charged);
         List<Source32View> sdkViews = List.of(
-                persistSource32View(SourceViewRole.BASELINE, baseline, baselineRef, frozen, liveGate, permit, charged),
-                persistSource32View(SourceViewRole.LEGACY, legacyActual, legacyRef, frozen, liveGate, permit, charged),
-                persistSource32View(SourceViewRole.CONSUMER, consumerActual, consumerRef, frozen, liveGate, permit, charged));
+                persistSource32View(SourceViewRole.BASELINE, baseline, baselineRef, frozen, request, liveGate, permit, charged),
+                persistSource32View(SourceViewRole.LEGACY, legacyActual, legacyRef, frozen, request, liveGate, permit, charged),
+                persistSource32View(SourceViewRole.CONSUMER, consumerActual, consumerRef, frozen, request, liveGate, permit, charged));
         PhysicalCensus census = physicalCensus(baseWitnesses, legacy, consumer);
-        ViewsActual result = new ViewsActual("xar.sdk-shared-source-views-actual/v2", request.machineId(), Instant.now().toString(), SharedViewStatus.SOURCE_VIEWS_ASSEMBLED_NOT_IMPORTED,
+        ViewsActual result = new ViewsActual("xar.sdk-shared-source-views-actual/v3", request.machineId(), Instant.now().toString(), SharedViewStatus.SOURCE_VIEWS_ASSEMBLED_NOT_IMPORTED,
                 viewsRequestRef, baselineRef, legacyRef, consumerRef, request.legacyConstraint(), reuseActualRef, allocationActualRef, sdkViews, census, changes, permit.freshStorageEvidence(), forecast, false, false);
         byte[] metadata = JSON.writeValueAsBytes(result);
         if (metadata.length > MAX_METADATA) throw new IOException("shared source physical census exceeds its metadata reservation");
@@ -570,14 +576,13 @@ public final class SdkSourceAssembly {
             requireOriginalNativeIdentity(actual, oldNative.get(row.relative()));
             originals.put(row.relative(), actual);
         }
-        requireFrozenSet(root, originals);
         Map<String, SharedSourceFiles.Witness> reusable = new LinkedHashMap<>();
         String prefix = baseline.request().sdkRelativeRoot() + "/";
         for (ReviewedSource source : baseline.sourceClosure()) if (source.role() == SourceRole.SDK_SOURCE && source.relativePath().startsWith(prefix)) {
             SharedSourceFiles.Witness old = originals.get(source.relativePath().substring(prefix.length()));
             if (old != null && content(old.source()).equals(source.result())) reusable.put(source.relativePath(), old);
         }
-        verifyWitnesses(originals);
+        requireCurrentFrozenSources(root, originals);
         return new FrozenReuseState(contract, root, rows, originalNativeInventory, originals, reusable);
     }
     private record LegacySourceIdentity(String volumeSerialDecimal, String fileIdHex) { }
@@ -625,22 +630,22 @@ public final class SdkSourceAssembly {
     private static long jsonInteger(JsonNode value, String field) throws IOException {
         JsonNode item = value.get(field); if (item == null || !item.isIntegralNumber() || !item.canConvertToLong() || item.longValue() < 0) throw new IOException("required exact nonnegative integer field: " + field); return item.longValue();
     }
-    private static void requireFrozenSet(Path root, Map<String, SharedSourceFiles.Witness> originals) throws IOException {
+    static void requireFrozenSet(Path root, Map<String, SharedSourceFiles.Witness> originals) throws IOException {
         Set<Path> expected = new HashSet<>(); for (SharedSourceFiles.Witness witness : originals.values()) expected.add(Path.of(witness.source().path()));
         Set<Path> actual = new HashSet<>();
         try (var entries = Files.walk(root)) {
             for (Path path : entries.toList()) {
-                SharedSourceFiles.plainAncestors(path);
-                if (Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS)) continue;
-                if (!Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS)) throw new IOException("ordinary complete immutable source tree required");
-                actual.add(path);
+                if (sdkSourceLeaf(root, path)) actual.add(path);
             }
         }
         if (!actual.equals(expected)) throw new IOException("original immutable SDK file set grew or changed");
     }
+    static void requireCurrentFrozenSources(Path root, Map<String, SharedSourceFiles.Witness> originals) throws IOException {
+        requireFrozenSet(root, originals); verifyWitnesses(originals);
+    }
     private static void verifyFrozen(FrozenReuseState frozen) throws IOException {
         frozen.contract().baseFreezeRef().verify(); frozen.contract().exporterSourceRef().verify(); frozen.originalNativeInventory().verify();
-        requireFrozenSet(frozen.root(), frozen.originals()); verifyWitnesses(frozen.originals());
+        requireCurrentFrozenSources(frozen.root(), frozen.originals());
     }
     /** Mechanical baseline leaf operation: reuse only proven equal bytes; all other data is private/create-new. */
     static SharedSourceFiles.Witness baselineLeaf(Source source, ReviewedSource expected, Path destination,
@@ -652,10 +657,15 @@ public final class SdkSourceAssembly {
             return SharedSourceFiles.link(Path.of(original.source().path()), destination);
         }
         byte[] bytes = read(source.original(), MAX_LEAF);
-        if (!Digest.of(bytes).equals(expected.result())) throw new IOException("canonical private baseline bytes changed");
+        return exactLeaf(bytes, expected.result(), destination);
+    }
+    static SharedSourceFiles.Witness exactLeaf(byte[] bytes, Digest expected, Path destination) throws IOException {
+        if (!Digest.of(bytes).equals(expected)) throw new IOException("exact leaf source digest differs");
         SharedSourceFiles.plainAncestors(destination); Files.createDirectories(destination.getParent());
-        Files.write(destination, bytes, StandardOpenOption.CREATE_NEW); SharedSourceFiles.Witness actual = SharedSourceFiles.observe(destination);
-        if (!content(actual.source()).equals(expected.result())) throw new IOException("private canonical baseline readback differs"); return actual;
+        Files.write(destination, bytes, StandardOpenOption.CREATE_NEW);
+        SharedSourceFiles.Witness actual = SharedSourceFiles.observe(destination);
+        if (!content(actual.source()).equals(expected)) throw new IOException("exact leaf write readback differs");
+        return actual;
     }
     private static Actual assembleReusedBaseline(Review review, FileRef reviewRef, FrozenReuseState frozen,
                                                  SharedCapacityGate gate, WritePermit permit, long[] charged, LinkAccounting accounting) throws IOException {
@@ -727,10 +737,11 @@ public final class SdkSourceAssembly {
         requireFrozenSet(Path.of(actual.sourceRoot()), originals); return actual;
     }
     /** Existing Source32 content and canonical anchor, with only an explicit new physical view address. */
-    private static Source32View persistSource32View(SourceViewRole role, Actual actual, FileRef actualRef, FrozenReuseState frozen,
+    private static Source32View persistSource32View(SourceViewRole role, Actual actual, FileRef actualRef, FrozenReuseState frozen, ViewsRequest request,
                                                     SharedCapacityGate gate, WritePermit permit, long[] charged) throws IOException {
         JsonNode original = JSON.readTree(read(frozen.contract().baseFreezeRef(), MAX_METADATA));
-        requireExactSource32Content(actual, frozen.rows());
+        boolean derived = role == SourceViewRole.CONSUMER && !sameSource32Content(actual, frozen.rows());
+        if (!derived) requireExactSource32Content(actual, frozen.rows());
         if (!(original instanceof com.fasterxml.jackson.databind.node.ObjectNode object)) throw new IOException("original Source32 object required");
         FileRef anchor = JSON.treeToValue(original.get("source32_canonical_anchor"), FileRef.class); anchor.verify();
         var copy = object.deepCopy();
@@ -739,23 +750,33 @@ public final class SdkSourceAssembly {
         copy.put("source_view_role", role.name()); copy.put("source_view_content", "EXACT_ORIGINAL_SOURCE32_CONTENT_AND_ANCHOR");
         copy.set("source_view_original_freeze_ref", JSON.valueToTree(frozen.contract().baseFreezeRef()));
         copy.set("source_view_assembly_actual_ref", JSON.valueToTree(actualRef));
-        byte[] bytes = JSON.writeValueAsBytes(copy); if (bytes.length > 1_048_576) throw new IOException("SDK view inventory exceeds existing SDK ticket cap");
+        byte[] bytes = derived ? JSON.writeValueAsBytes(SdkDerivedSource32.derive(actual, actualRef, frozen.contract().baseFreezeRef(), request.consumerSourcePurpose(), request.consumerNativeDriverIntent())) : JSON.writeValueAsBytes(copy);
+        if (bytes.length > 1_048_576) throw new IOException("SDK view inventory exceeds existing SDK ticket cap");
         charged[0] = Math.addExact(charged[0], round(bytes.length, permit.allocationUnitBytes())); sharedGuard(gate, permit, charged[0]);
         Path path = Path.of(actual.graphRoot()).resolve(".assembly/SDK-SOURCE32-VIEW.json"); Files.write(path, bytes, StandardOpenOption.CREATE_NEW);
         Source32View binding = new Source32View(role, actualRef, actual.sdkRoot(), FileRef.measure(path), anchor);
-        verifySource32View(binding, actual, frozen.contract().baseFreezeRef()); return binding;
+        verifySource32View(binding, actual, frozen.contract().baseFreezeRef(), request.consumerSourcePurpose(), request.consumerNativeDriverIntent()); return binding;
     }
     private static void requireExactSource32Content(Actual actual, List<FrozenSourceRow> original) throws IOException {
+        if (!sameSource32Content(actual, original)) throw new IOException("this Source32 view preserves exact original SDK bytes/anchor; changed SDK content requires a separately explicit derived lineage");
+    }
+    private static boolean sameSource32Content(Actual actual, List<FrozenSourceRow> original) throws IOException {
         Map<String, Digest> expected = new LinkedHashMap<>(); for (FrozenSourceRow row : original) expected.put(row.relative(), row.content());
         Map<String, Digest> current = new LinkedHashMap<>(); String prefix = "ck3_autonomous_player/src/";
         for (OutputSource row : actual.actualSourceClosure()) if (row.relativePath().startsWith(prefix)) {
             row.actual().verify(); current.put(row.relativePath().substring(prefix.length()), content(row.actual()));
         }
-        if (!current.equals(expected)) throw new IOException("this Source32 view preserves exact original SDK bytes/anchor; changed SDK content requires a separately explicit derived lineage");
+        return current.equals(expected);
     }
-    private static void verifySource32View(Source32View binding, Actual actual, FileRef originalRef) throws IOException {
+    private static void verifySource32View(Source32View binding, Actual actual, FileRef originalRef, SdkDerivedSource32.SourcePurpose purpose, SdkDerivedSource32.NativeDriverIntent nativeIntent) throws IOException {
         if (!binding.sdkRoot().equals(actual.sdkRoot()) || !Path.of(binding.sdkFreezeRef().path()).equals(Path.of(actual.graphRoot()).resolve(".assembly/SDK-SOURCE32-VIEW.json"))) throw new IOException("SDK source inventory belongs to a different physical view");
         JsonNode original = JSON.readTree(read(originalRef, MAX_METADATA)), copy = JSON.readTree(read(binding.sdkFreezeRef(), 1_048_576));
+        if (SdkDerivedSource32.SCHEMA.equals(jsonText(copy, "schema"))) {
+            if (binding.role() != SourceViewRole.CONSUMER || !JSON.treeToValue(original.get("source32_canonical_anchor"), FileRef.class).equals(binding.source32AnchorRef())) throw new IOException("only consumer may declare a derived SDK with its real parent anchor");
+            var declared = SdkDerivedSource32.read(binding.sdkFreezeRef());
+            if (declared.sourcePurpose() != purpose || !declared.nativeDriverIntent().equals(nativeIntent)) throw new IOException("Derived source purpose or exact selected native intent differs from the shared request");
+            SdkDerivedSource32.verify(binding.sdkFreezeRef(), actual, binding.assemblyActualRef(), originalRef); binding.source32AnchorRef().verify(); return;
+        }
         List<FrozenSourceRow> rows = frozenRows(original); requireExactSource32Content(actual, rows);
         if (!rows.equals(frozenRows(copy)) || !actual.machineId().equals(jsonText(copy, "machine_id")) || !binding.sdkRoot().equals(jsonText(copy, "source_root"))
                 || !jsonText(original, "business_source_commit").equals(jsonText(copy, "business_source_commit"))
@@ -790,6 +811,10 @@ public final class SdkSourceAssembly {
         if (!legacyRows.get(request.legacyConstraint().nativeRelativePath()).result().equals(request.legacyConstraint().originalNative())
                 || !legacyRows.get(request.legacyConstraint().fixtureRelativePath()).result().equals(request.legacyConstraint().identicalPatchedFixture())
                 || !consumerRows.get(request.legacyConstraint().fixtureRelativePath()).result().equals(request.legacyConstraint().identicalPatchedFixture())) throw new IOException("legacy native or identical two-view fixture requirement differs");
+        Digest nativeBefore = baseRows.get(request.legacyConstraint().nativeRelativePath()).result();
+        Digest nativeSelected = consumerRows.get(request.legacyConstraint().nativeRelativePath()).result();
+        if (!nativeBefore.equals(request.consumerNativeDriverIntent().parentContent()) || !nativeSelected.equals(request.consumerNativeDriverIntent().selectedContent()))
+            throw new IOException("Explicit current native source intent differs from the actual reviewed baseline or selected consumer");
         return new ThreeReviews(baseline, legacy, consumer);
     }
     private static Review freshReview(FileRef reference) throws IOException {
@@ -1001,20 +1026,31 @@ public final class SdkSourceAssembly {
             if (output.startsWith(input) || input.startsWith(output)) throw new IOException("source graph cannot overlap an input source root");
         }
     }
+    private static final List<String> SDK_CACHE_DIRECTORIES = List.of("__pycache__", ".mypy_cache", ".pytest_cache");
+    /** One source domain for original inventory and frozen reuse. Excluded entries still pass ordinary/native path checks. */
+    private static boolean sdkSourceLeaf(Path root, Path path) throws IOException {
+        if (!path.startsWith(root)) throw new IOException("SDK source entry escaped its original root");
+        SharedSourceFiles.plainAncestors(path);
+        var attributes = Files.readAttributes(path, java.nio.file.attribute.BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+        if (attributes.isSymbolicLink() || (!attributes.isDirectory() && !attributes.isRegularFile())) throw new IOException("ordinary non-reparse SDK source entry required");
+        if (attributes.isDirectory()) return false;
+        Path relative = root.relativize(path);
+        for (Path part : relative) if (SDK_CACHE_DIRECTORIES.contains(part.toString())) return false;
+        String name = relative.toString().replace('\\', '/');
+        if (name.endsWith(".pyc") || name.endsWith(".pyo")) throw new IOException("compiled Python cache outside an excluded cache directory is not a source leaf");
+        return true;
+    }
     private record InventoryRow(String relative, long bytes, String sha256) { }
-    private static SdkInventory completeSdkInventory(Request request) throws IOException {
+    static SdkInventory completeSdkInventory(Request request) throws IOException {
         Path sdk = Path.of(request.sdkInputRoot()).toRealPath();
-        List<String> cacheNames = List.of("__pycache__", ".mypy_cache", ".pytest_cache");
+        List<String> cacheNames = SDK_CACHE_DIRECTORIES;
         List<InventoryRow> rows = new ArrayList<>(); Set<String> found = new HashSet<>();
         long bytes = 0;
         try (var paths = Files.walk(sdk)) {
             for (Path path : paths.toList()) {
-                Path relative = sdk.relativize(path); boolean cached = false;
-                for (Path part : relative) cached |= cacheNames.contains(part.toString());
-                if (cached || Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS)) continue;
-                if (Files.isSymbolicLink(path) || !Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS)) throw new IOException("ordinary complete SDK source file required");
+                if (!sdkSourceLeaf(sdk, path)) continue;
+                Path relative = sdk.relativize(path);
                 String name = relative.toString().replace('\\', '/');
-                if (name.endsWith(".pyc") || name.endsWith(".pyo")) throw new IOException("compiled Python cache outside an excluded cache directory is not a source leaf");
                 FileRef actual = FileRef.measure(path);
                 if (!found.add(name.toLowerCase(Locale.ROOT)) || rows.size() >= MAX_FILES || actual.bytes() > MAX_LEAF) throw new IOException("complete SDK inventory aliases or exceeds bounds");
                 bytes = Math.addExact(bytes, actual.bytes());
@@ -1034,7 +1070,7 @@ public final class SdkSourceAssembly {
         rows.sort(Comparator.comparing(InventoryRow::relative));
         return new SdkInventory(sdk.toString(), rows.size(), bytes, sha256(JSON.writeValueAsBytes(rows)), cacheNames);
     }
-    private static void validateSourceOrigin(Request request, Source source) throws IOException {
+    static void validateSourceOrigin(Request request, Source source) throws IOException {
         Path actual = Path.of(source.original().path()).toRealPath();
         if (source.origin() == InputOrigin.CURRENT_CANONICAL && !actual.startsWith(Path.of(request.canonicalRepository()).toRealPath())) throw new IOException("canonical source origin differs");
         if (source.origin() == InputOrigin.FROZEN_SDK_SOURCE) {
@@ -1043,6 +1079,7 @@ public final class SdkSourceAssembly {
         }
         if (source.origin() == InputOrigin.STAGED_NEW_SOURCE && actual.startsWith(Path.of(request.canonicalRepository()).toRealPath())) throw new IOException("new staged source cannot disguise an existing canonical input");
         if (source.role() == SourceRole.ORIGINAL_CONSUMER_TEST && (!actual.startsWith(Path.of(request.canonicalTestRepository()).toRealPath()) || source.relativePath().startsWith(request.sdkRelativeRoot() + "/"))) throw new IOException("original test import must not expose an old production SDK source");
+        if ((source.role() == SourceRole.STAGED_CONSUMER_TEST || source.role() == SourceRole.CONSUMER_SOURCE) && (source.origin() != InputOrigin.STAGED_NEW_SOURCE || source.relativePath().startsWith(request.sdkRelativeRoot() + "/") || actual.startsWith(Path.of(request.canonicalTestRepository()).toRealPath()))) throw new IOException("staged consumers require a separate exact staged input outside the original test repository and SDK production root");
     }
     private static void requireApprovedSource(Request request, FileRef reference) throws IOException {
         SharedSourceFiles.plainAncestors(Path.of(reference.path()));
@@ -1097,4 +1134,375 @@ public final class SdkSourceAssembly {
         try { return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(bytes)); }
         catch (NoSuchAlgorithmException error) { throw new IllegalStateException(error); }
     }
+  /** Source data for original-reference captures. It can never be read as an ordinary SDK Actual. */
+  public enum ReferencePurpose { REFERENCE_ORACLE_ONLY, LEGACY_REFERENCE_ONLY }
+  public enum ReferenceInputKind { ORIGINAL_PRODUCER_SOURCE, COMPATIBILITY_ADAPTER }
+  public record ReferenceSelection(String relativePath, ReferenceInputKind kind, FileRef parentSourceRef,
+                  FileRef selectedSourceRef, FileRef auditRef) {
+    public ReferenceSelection {
+      ExactSourcePatch.relative(relativePath); Objects.requireNonNull(kind);
+      if (kind == ReferenceInputKind.ORIGINAL_PRODUCER_SOURCE) Objects.requireNonNull(parentSourceRef);
+      Objects.requireNonNull(selectedSourceRef); Objects.requireNonNull(auditRef);
+    }
+  }
+  public record ReferenceRequest(String schema, String machineId, String ownerTask, ReferencePurpose purpose,
+                 FileRef sourceTemplateRef, FileRef qualifiedToolsBuildRef, FileRef constructionRequestRef, String outputRoot,
+                 List<String> approvedInputSourceRoots, List<Source> additionalSources,
+                 List<ReferenceSelection> selections, List<ImportRoute> additionalImportRoutes) {
+    public ReferenceRequest {
+      if (!"xar.sdk-reference-request/v1".equals(schema) || machineId == null || machineId.isBlank()
+          || ownerTask == null || !ownerTask.matches("/root/[a-z0-9_/-]+")
+          || (purpose == ReferencePurpose.REFERENCE_ORACLE_ONLY) != (constructionRequestRef != null))
+        throw new IllegalArgumentException("explicit reference-only source request required");
+      Objects.requireNonNull(purpose); Objects.requireNonNull(sourceTemplateRef); Objects.requireNonNull(qualifiedToolsBuildRef);
+      absolute(outputRoot); approvedInputSourceRoots = List.copyOf(approvedInputSourceRoots);
+      additionalSources = List.copyOf(additionalSources); selections = List.copyOf(selections);
+      additionalImportRoutes = List.copyOf(additionalImportRoutes);
+      if (approvedInputSourceRoots.isEmpty() || approvedInputSourceRoots.size() > 32
+          || additionalSources.size() > 128 || selections.size() > 32 || additionalImportRoutes.size() > 128)
+        throw new IllegalArgumentException("bounded explicit reference inputs required");
+    }
+  }
+  public record ReferenceReview(String schema, String machineId, String observedAtUtc, FileRef requestRef,
+                 ReferenceRequest request, Review parentSourceReview, Quote quote,
+                 String selectedSourceSetSha256) {
+    public ReferenceReview {
+      if (!"xar.sdk-reference-review/v1".equals(schema)) throw new IllegalArgumentException("reference review schema");
+      Instant.parse(observedAtUtc); Objects.requireNonNull(requestRef); Objects.requireNonNull(request);
+      Objects.requireNonNull(parentSourceReview); Objects.requireNonNull(quote);
+      if (!machineId.equals(request.machineId()) || !parentSourceReview.deploymentClosure().isEmpty()
+          || !selectedSourceSetSha256.matches("[0-9a-f]{64}"))
+        throw new IllegalArgumentException("reference review cannot contain runtime deployment qualification");
+    }
+  }
+  public record ReferenceActual(String schema, String machineId, ReferencePurpose purpose, String observedAtUtc,
+                 String status, FileRef reviewRef, String graphRoot, String sdkRoot,
+                 List<OutputSource> actualSourceClosure, List<String> importRoots, List<SelectedImportRoute> selectedImportRoutes,
+                 String sourceSetSha256, FileRef storageEvidence, long chargedAllocationUpperBytes,
+                 boolean actualImportsObserved, boolean runtimeQualified, boolean prepared) {
+    public ReferenceActual {
+      if (!"xar.sdk-reference-actual/v1".equals(schema) || !"REFERENCE_INPUTS_ASSEMBLED_NOT_IMPORTED".equals(status)
+          || actualImportsObserved || runtimeQualified || prepared || chargedAllocationUpperBytes <= 0
+          || !sourceSetSha256.matches("[0-9a-f]{64}"))
+        throw new IllegalArgumentException("reference inputs grant no import, runtime or Prepared qualification");
+      Objects.requireNonNull(purpose); Objects.requireNonNull(reviewRef); Objects.requireNonNull(storageEvidence);
+      absolute(graphRoot); absolute(sdkRoot); Instant.parse(observedAtUtc);
+      actualSourceClosure = List.copyOf(actualSourceClosure); importRoots = List.copyOf(importRoots); selectedImportRoutes = List.copyOf(selectedImportRoutes);
+    }
+  }
+  public interface ReferenceCapacityGate {
+    WritePermit acquire(ReferenceReview actualReview) throws IOException;
+    void revalidate(WritePermit permit, long consumedAllocationUpperBytes) throws IOException;
+  }
+  public static ReferenceReview reviewReference(FileRef requestRef) throws IOException {
+    ReferenceRequest reference = readReferenceRequest(requestRef);
+    String machine = WindowsJobProcess.currentMachineId();
+    if (!machine.equals(reference.machineId())) throw new IOException("reference request belongs to another machine");
+    ControlBuild.BuildReceipt tools = ControlBuild.verifiedCompletedReceipt(reference.qualifiedToolsBuildRef());
+    if (tools.targetKind() != ControlBuild.TargetKind.BUILD_TOOLS_RUNTIME)
+      throw new IOException("reference source writer requires a completely qualified tools runtime");
+    if (!ControlBuild.producerClosure().equals(tools.completeDeployment())
+        || !SdkSourceAssembly.class.getProtectionDomain().getCodeSource().getLocation().equals(ControlBuild.class.getProtectionDomain().getCodeSource().getLocation()))
+      throw new IOException("reference writer must execute the exact qualified tools deployment without class shadowing");
+    Request template = readRequest(reference.sourceTemplateRef());
+    if (!template.machineId().equals(machine)) throw new IOException("reference template machine differs");
+    List<Source> sources = new ArrayList<>(template.sources()); sources.addAll(reference.additionalSources());
+    List<ImportRoute> routes = new ArrayList<>(template.importRoutes()); routes.addAll(reference.additionalImportRoutes());
+    Request contract = new Request(REQUEST_SCHEMA, machine, template.canonicalRepository(), template.canonicalCommit(),
+        template.canonicalTestRepository(), reference.outputRoot(), template.sdkInputRoot(), template.sdkRelativeRoot(),
+        template.importRoots(), reference.approvedInputSourceRoots(), template.protectedRoots(), sources, routes,
+        template.deployments(), template.producerReuse(), template.outputHardBytes());
+    for (ImportRoute route : routes) if (route.location() != ImportSourceLocation.FRESH_GRAPH)
+      throw new IOException("reference import routes must select their physical fresh graph");
+    if (reference.purpose() == ReferencePurpose.LEGACY_REFERENCE_ONLY) {
+      if (!reference.selections().isEmpty()
+          || !absolute(contract.sdkInputRoot()).equals(absolute(contract.protectedRoots().stream().filter(row -> row.role() == ProtectedRole.FROZEN_SDK).findFirst().orElseThrow().path()))
+          || contract.sources().stream().anyMatch(row -> row.role() == SourceRole.SDK_SOURCE && (!row.overlays().isEmpty() || row.origin() != InputOrigin.FROZEN_SDK_SOURCE))
+          || reference.additionalSources().stream().anyMatch(row -> row.role() == SourceRole.SDK_SOURCE || row.role() == SourceRole.STAGED_CONSUMER_TEST || row.role() == SourceRole.CONSUMER_SOURCE || !row.overlays().isEmpty()))
+        throw new IOException("legacy reference preserves the original frozen SDK and original consumer sources");
+    }
+    // This private branch shares the full source/root/patch/import checks; it never accepts a Host.
+    Review parent = review(contract, requestRef, machine, true);
+    if (reference.purpose() == ReferencePurpose.LEGACY_REFERENCE_ONLY && parent.completeSdkInputInventory().originalFiles() != 1468)
+      throw new IOException("legacy Source32 reference requires the exact complete 1468-source domain");
+    Map<String, Source> byPath = new LinkedHashMap<>(); for (Source source : contract.sources()) byPath.put(source.relativePath(), source);
+    Map<String, ReferenceSelection> selected = new LinkedHashMap<>();
+    for (ReferenceSelection selection : reference.selections()) {
+      Source source = byPath.get(selection.relativePath());
+      boolean absent=template.sources().stream().noneMatch(row->row.relativePath().equals(selection.relativePath()));
+      verifyReferenceParent(selection,source,absent);
+      if(selected.put(selection.relativePath(),selection)!=null)throw new IOException("duplicate reference selection");
+      requireApprovedSource(contract, selection.selectedSourceRef()); requireApprovedSource(contract, selection.auditRef());
+      read(selection.selectedSourceRef(), MAX_LEAF); selection.auditRef().verify();
+    }
+    validateReferenceAudit(reference, parent);
+    List<DigestRow> rows = new ArrayList<>(); long total = 0;
+    for (ReviewedSource source : parent.sourceClosure()) {
+      ReferenceSelection selection = selected.get(source.relativePath());
+      Digest digest = selection == null ? source.result() : content(selection.selectedSourceRef());
+      rows.add(new DigestRow(source.relativePath(), digest)); total = Math.addExact(total, digest.bytes());
+    }
+    Quote quote = new Quote(total, MAX_METADATA, rows.size(), parent.quote().directoryCount(), contract.outputHardBytes());
+    requestRef.verify(); reference.sourceTemplateRef().verify();
+    return new ReferenceReview("xar.sdk-reference-review/v1", machine, Instant.now().toString(), requestRef, reference,
+        parent, quote, sha256(JSON.writeValueAsBytes(rows)));
+  }
+  public static FileRef writeReferenceReview(ReferenceReview review, Path output) throws IOException {
+    SharedSourceFiles.plainAncestors(output);
+    byte[] bytes = JSON.writerWithDefaultPrettyPrinter().writeValueAsBytes(review);
+    if (bytes.length > MAX_METADATA) throw new IOException("reference review metadata bound exceeded");
+    Files.write(output, bytes, StandardOpenOption.CREATE_NEW); return FileRef.measure(output);
+  }
+  public static ReferenceActual assembleReference(FileRef reviewRef, ReferenceCapacityGate gate) throws IOException {
+    ReferenceReview declared = JSON.readValue(read(reviewRef, MAX_METADATA), ReferenceReview.class);
+    ReferenceReview fresh = reviewReference(declared.requestRef());
+    if (!fresh.request().equals(declared.request()) || !fresh.parentSourceReview().sourceClosure().equals(declared.parentSourceReview().sourceClosure())
+        || !fresh.parentSourceReview().completeSdkInputInventory().equals(declared.parentSourceReview().completeSdkInputInventory())
+        || !fresh.quote().equals(declared.quote()) || !fresh.selectedSourceSetSha256().equals(declared.selectedSourceSetSha256()))
+      throw new IOException("reference sources changed after their exact review");
+    WritePermit permit = Objects.requireNonNull(gate).acquire(fresh);
+    Path root = absolute(fresh.request().outputRoot());
+    if (!permit.machineId().equals(fresh.machineId()) || !absolute(permit.exactOutputRoot()).equals(root)
+        || Files.exists(root, LinkOption.NOFOLLOW_LINKS)) throw new IOException("fresh exact reference output permit required");
+    long charged = Math.addExact(round(MAX_METADATA, permit.allocationUnitBytes()),
+        Math.multiplyExact(fresh.quote().directoryCount(), permit.perDirectoryGuardBytes()));
+    for (ReviewedSource source : fresh.parentSourceReview().sourceClosure())
+      charged = Math.addExact(charged, round(referenceDigest(fresh, source).bytes(), permit.allocationUnitBytes()));
+    referenceGuard(gate, permit, charged); Files.createDirectory(root); Files.createDirectory(root.resolve(".assembly"));
+    List<OutputSource> outputs = new ArrayList<>();
+    for (Source source : fresh.parentSourceReview().request().sources().stream().sorted(Comparator.comparing(Source::relativePath)).toList()) {
+      ReferenceSelection selection = fresh.request().selections().stream().filter(row -> row.relativePath().equals(source.relativePath())).findFirst().orElse(null);
+      byte[] bytes = selection == null ? material(source) : read(selection.selectedSourceRef(), MAX_LEAF);
+      ReviewedSource parent = fresh.parentSourceReview().sourceClosure().stream().filter(row -> row.relativePath().equals(source.relativePath())).findFirst().orElseThrow();
+      if (!Digest.of(bytes).equals(referenceDigest(fresh, parent))) throw new IOException("reference source drift before write");
+      referenceGuard(gate, permit, charged);
+      Path destination = root.resolve(source.relativePath());
+      FileRef actual = exactLeaf(bytes, referenceDigest(fresh, parent), destination).source();
+      outputs.add(new OutputSource(source.relativePath(), source.role(), actual));
+    }
+    ReferenceReview post = reviewReference(fresh.requestRef());
+    if (!post.selectedSourceSetSha256().equals(fresh.selectedSourceSetSha256())
+        || !post.parentSourceReview().sourceClosure().equals(fresh.parentSourceReview().sourceClosure()))
+      throw new IOException("reference source postcheck differs; partial output is not reusable");
+    requireExactOutputSet(root, outputs); List<SelectedImportRoute> routes = new ArrayList<>();
+    for (ImportRoute route : fresh.parentSourceReview().request().importRoutes()) {
+      if (route.location() != ImportSourceLocation.FRESH_GRAPH) throw new IOException("reference routes must use the selected physical graph");
+      OutputSource source = outputs.stream().filter(row -> row.relativePath().equals(route.relativeSource())).findFirst().orElseThrow();
+      routes.add(new SelectedImportRoute(route.module(), route.relativeSource(), route.location(), source.actual(), route.requiredBeforeConsumer()));
+    }
+    ReferenceActual actual = new ReferenceActual("xar.sdk-reference-actual/v1", fresh.machineId(), fresh.request().purpose(),
+        Instant.now().toString(), "REFERENCE_INPUTS_ASSEMBLED_NOT_IMPORTED", reviewRef, root.toString(),
+        root.resolve(fresh.parentSourceReview().request().sdkRelativeRoot()).toString(), outputs,
+        fresh.parentSourceReview().request().importRoots().stream().map(row -> row.equals(".") ? root.toString() : root.resolve(row).normalize().toString()).toList(), routes,
+        fresh.selectedSourceSetSha256(), permit.freshStorageEvidence(), charged, false, false, false);
+    byte[] receipt = JSON.writerWithDefaultPrettyPrinter().writeValueAsBytes(actual);
+    if (receipt.length > MAX_METADATA) throw new IOException("reference actual metadata bound exceeded");
+    referenceGuard(gate, permit, charged);
+    Files.write(root.resolve(".assembly/REFERENCE-ACTUAL.json"), receipt, StandardOpenOption.CREATE_NEW);
+    return readReferenceActual(FileRef.measure(root.resolve(".assembly/REFERENCE-ACTUAL.json")));
+  }
+  public static ReferenceActual readReferenceActual(FileRef reference) throws IOException {
+    ReferenceActual actual = JSON.readValue(read(reference, MAX_METADATA), ReferenceActual.class);
+    Path root = absolute(actual.graphRoot()); SharedSourceFiles.plainAncestors(root);
+    if (!actual.machineId().equals(WindowsJobProcess.currentMachineId())
+        || !Path.of(reference.path()).toAbsolutePath().normalize().equals(root.resolve(".assembly/REFERENCE-ACTUAL.json")))
+      throw new IOException("exact same-machine reference actual receipt required");
+    ReferenceReview review = JSON.readValue(read(actual.reviewRef(), MAX_METADATA), ReferenceReview.class);
+    ReferenceReview fresh = reviewReference(review.requestRef());
+    if (!fresh.request().equals(review.request()) || !fresh.parentSourceReview().sourceClosure().equals(review.parentSourceReview().sourceClosure())
+        || !fresh.parentSourceReview().completeSdkInputInventory().equals(review.parentSourceReview().completeSdkInputInventory())
+        || !fresh.quote().equals(review.quote()) || !fresh.selectedSourceSetSha256().equals(review.selectedSourceSetSha256())
+        || actual.purpose() != fresh.request().purpose()
+        || !absolute(actual.sdkRoot()).equals(root.resolve(fresh.parentSourceReview().request().sdkRelativeRoot()))
+        || !fresh.selectedSourceSetSha256().equals(actual.sourceSetSha256()) || !absolute(fresh.request().outputRoot()).equals(root)
+        || actual.actualSourceClosure().size() != fresh.parentSourceReview().sourceClosure().size())
+      throw new IOException("reference actual origin or complete inventory differs");
+    Set<String> seen = new HashSet<>();
+    for (OutputSource source : actual.actualSourceClosure()) {
+      if (!seen.add(source.relativePath()) || !absolute(source.actual().path()).equals(root.resolve(source.relativePath())))
+        throw new IOException("reference output path differs or duplicates");
+      source.actual().verify();
+      ReviewedSource parent = fresh.parentSourceReview().sourceClosure().stream().filter(row -> row.relativePath().equals(source.relativePath())).findFirst().orElseThrow();
+      if (source.role() != parent.role() || !content(source.actual()).equals(referenceDigest(fresh, parent)))
+        throw new IOException("reference output content or role differs");
+    }
+    List<String> expectedImportRoots = fresh.parentSourceReview().request().importRoots().stream().map(row -> row.equals(".") ? root.toString() : root.resolve(row).normalize().toString()).toList();
+    if (!expectedImportRoots.equals(actual.importRoots())) throw new IOException("reference physical import roots differ");
+    List<SelectedImportRoute> expectedRoutes = new ArrayList<>();
+    for (ImportRoute route : fresh.parentSourceReview().request().importRoutes()) {
+      OutputSource source = actual.actualSourceClosure().stream().filter(row -> row.relativePath().equals(route.relativeSource())).findFirst().orElseThrow();
+      expectedRoutes.add(new SelectedImportRoute(route.module(), route.relativeSource(), route.location(), source.actual(), route.requiredBeforeConsumer()));
+    }
+    if (!expectedRoutes.equals(actual.selectedImportRoutes())) throw new IOException("reference selected physical import routes differ");
+    requireExactOutputSet(root, actual.actualSourceClosure());
+    var storage=JSON.readValue(read(actual.storageEvidence(),131072),ControlBuild.CapacityRelease.class);
+    Instant observed=Instant.parse(actual.observedAtUtc());
+    if(!storage.machineId().equals(actual.machineId()) || !storage.ownerTask().equals(fresh.request().ownerTask())
+        || observed.isBefore(Instant.parse(storage.observedAtUtc())) || !observed.isBefore(Instant.parse(storage.reviewAtUtc()))
+        || storage.approvedOutputRoots().stream().noneMatch(path->root.startsWith(absolute(path)))
+        || actual.chargedAllocationUpperBytes()>storage.parts().getOrDefault("artifacts",0L))
+      throw new IOException("reference actual lacks its exact historical same-owner source write grant");
+    actual.storageEvidence().verify(); return actual;
+  }
+  private static Digest referenceDigest(ReferenceReview review, ReviewedSource source) {
+    return review.request().selections().stream().filter(row -> row.relativePath().equals(source.relativePath()))
+        .findFirst().map(row -> content(row.selectedSourceRef())).orElse(source.result());
+  }
+  private static void referenceGuard(ReferenceCapacityGate gate, WritePermit permit, long charged) throws IOException {
+    if (!permit.machineId().equals(WindowsJobProcess.currentMachineId())
+        || !Instant.now().isBefore(Instant.parse(permit.expiresAtUtc())) || charged > permit.allocationUpperLimitBytes())
+      throw new IOException("reference source write permit expired or exhausted");
+    permit.freshStorageEvidence().verify(); gate.revalidate(permit, charged);
+  }
+  public static ReferenceRequest readReferenceRequest(FileRef reference) throws IOException {
+    return JSON.readValue(read(reference,MAX_METADATA),ReferenceRequest.class);
+  }
+  static void verifyReferenceParent(ReferenceSelection selection,Source source,boolean absent) throws IOException {
+    if(source==null || !source.overlays().isEmpty() || (absent
+        ? selection.parentSourceRef()!=null || source.origin()!=InputOrigin.STAGED_NEW_SOURCE || !source.original().equals(selection.selectedSourceRef())
+        : !source.original().equals(selection.parentSourceRef())))
+      throw new IOException("reference selection must preserve an exact parent or explicit staged absence");
+  }
+  static void validateReferenceAudit(ReferenceRequest request, Review parent) throws IOException {
+    if (request.purpose()==ReferencePurpose.LEGACY_REFERENCE_ONLY) return;
+    FileRef binding=request.constructionRequestRef();
+    var construction=ConstructionOracleAssemblyRequest.read(read(binding,16384));
+    ConstructionOracleAssemblyRequest.assemble(construction,binding);
+    if (!construction.machineId().equals(request.machineId())) throw new IOException("construction original request machine differs");
+    for (var original:construction.referenceSources()) {
+      original.sourceRef().verify();
+      var found=parent.sourceClosure().stream().filter(row->row.relativePath().equals(original.repositoryTarget())).findFirst().orElseThrow(()->new IOException("original eight reference source missing"));
+      if (!found.original().equals(original.sourceRef()) || !found.overlays().isEmpty() || !found.result().equals(content(original.sourceRef())))
+        throw new IOException("original reference8 bytes or source differs");
+    }
+    construction.originalAuditRef().verify(); construction.separationAuditRef().verify();
+    FileRef pins=construction.referenceSources().stream().filter(row->row.repositoryTarget().endsWith("/source-pins.json")).findFirst().orElseThrow().sourceRef();
+    JsonNode originals=JSON.readTree(read(pins,65536));
+    if (!originals.path("schema").asText().equals("xar.construction-python-oracle-source/v1")
+        || !originals.path("machine_id").asText().equals(request.machineId()) || !originals.path("dependencies").isArray())
+      throw new IOException("typed original dependency audit required");
+    for (JsonNode dependency:originals.get("dependencies")) {
+      String path=dependency.path("path").asText();
+      Digest expected=new Digest(dependency.path("bytes").longValue(),dependency.path("sha256").asText());
+      var found=parent.sourceClosure().stream().filter(row->row.relativePath().equals(path)).findFirst().orElseThrow(()->new IOException("original dependency missing"));
+      var override=request.selections().stream().filter(row->row.relativePath().equals(path)).findFirst();
+      Digest selected=override.isPresent()?content(override.orElseThrow().selectedSourceRef()):found.result();
+      if (!expected.equals(selected)) throw new IOException("original reference dependency differs: "+path);
+      String prefix=parent.request().sdkRelativeRoot()+"/";
+      String module=path.startsWith(prefix)&&path.endsWith(".py")?path.substring(prefix.length(),path.length()-3).replace('/','.'):"";
+      if(module.isEmpty() || parent.request().importRoutes().stream().noneMatch(row->row.module().equals(module)&&row.relativeSource().equals(path)&&row.location()==ImportSourceLocation.FRESH_GRAPH))
+        throw new IOException("original reference dependency requires its exact physical import route: "+path);
+    }
+    for (ReferenceSelection selection:request.selections()) {
+      if (selection.kind()==ReferenceInputKind.ORIGINAL_PRODUCER_SOURCE) {
+        boolean match=false;
+        for (JsonNode dependency:originals.get("dependencies")) if (dependency.path("path").asText().equals(selection.relativePath())
+            && content(selection.selectedSourceRef()).equals(new Digest(dependency.path("bytes").longValue(),dependency.path("sha256").asText()))) match=true;
+        if (!selection.auditRef().equals(pins) || !match) throw new IOException("original source selection lacks the exact original dependency audit");
+      } else {
+        String path=selection.relativePath();
+        if (!path.equals("tools/g2_saved_campaign/java_map_admission_client_v1.py")
+            && !path.equals("ck3_autonomous_player/src/xar_autoplayer/construction_formal_consumer.py"))
+          throw new IOException("reference compatibility adapter is outside the existing construction/client seam");
+        var plan=JSON.readValue(read(selection.auditRef(),MAX_METADATA),SdkSourceIntent.Plan.class);
+        var chosen=plan.consumerSelections().stream().filter(row->row.relativePath().equals(path)).findFirst().orElseThrow(()->new IOException("selected adapter missing from owner intent"));
+        var parentSource=parent.request().sources().stream().filter(row->row.relativePath().equals(path)).findFirst().orElseThrow();
+        if (!plan.machineId().equals(request.machineId()) || chosen.role()!=parentSource.role() || (selection.parentSourceRef()==null
+              ? chosen.kind()!=SdkSourceIntent.SelectionKind.ADD_SOURCE || chosen.expectedTemplateSource()!=null
+              : chosen.kind()!=SdkSourceIntent.SelectionKind.REPLACE_CONTENT || chosen.expectedTemplateSource()==null
+                || !chosen.expectedTemplateSource().original().equals(selection.parentSourceRef()))
+            || !chosen.selectedSource().equals(selection.selectedSourceRef()))
+          throw new IOException("reference adapter intent parent/selected source differs");
+        if (path.startsWith("tools/") && !selection.selectedSourceRef().equals(construction.selectedClient().sourceRef()))
+          throw new IOException("reference helper requires the explicitly selected155 client");
+      }
+    }
+    for (String module:List.of("construction_python_oracle_v1","construction_java_fixture_v1","xar_autoplayer.construction_formal_consumer","tools.g2_saved_campaign.java_map_admission_client_v1"))
+      if(parent.request().importRoutes().stream().noneMatch(row->row.module().equals(module)&&row.location()==ImportSourceLocation.FRESH_GRAPH))
+        throw new IOException("reference requires each actual oracle/helper/adapter/client import route");
+    for (String required:List.of("tools/g2_saved_campaign/java_map_admission_client_v1.py","ck3_autonomous_player/src/xar_autoplayer/construction_formal_consumer.py"))
+      if(request.selections().stream().noneMatch(row->row.relativePath().equals(required)&&row.kind()==ReferenceInputKind.COMPATIBILITY_ADAPTER))
+        throw new IOException("reference imports require the declared client and formal compatibility adapters");
+  }
+  static final class ReferenceGate implements ReferenceCapacityGate {
+    private final FileRef permitRef; private final WritePermit permit; private final ReferenceRequest request;
+    private final Path reviewPath; private final ControlBuild.CapacityRelease release; private final List<Path> roots;
+    private final long initial, cap;
+    ReferenceGate(FileRef permitRef,ReferenceRequest request,Path reviewPath) throws IOException {
+      this.permitRef=permitRef; this.permit=JSON.readValue(read(permitRef,65536),WritePermit.class);
+      this.request=request; this.reviewPath=reviewPath.toAbsolutePath().normalize();
+      this.release=JSON.readValue(read(permit.freshStorageEvidence(),131072),ControlBuild.CapacityRelease.class);
+      if(!request.machineId().equals(WindowsJobProcess.currentMachineId()) || !release.ownerTask().equals(request.ownerTask()) || !release.machineId().equals(request.machineId())
+          || !permit.machineId().equals(request.machineId()) || !absolute(permit.exactOutputRoot()).equals(absolute(request.outputRoot()))
+          || Instant.now().isBefore(Instant.parse(release.observedAtUtc()))
+          || !Instant.now().isBefore(Instant.parse(release.reviewAtUtc()))
+          || !Instant.now().isBefore(Instant.parse(permit.expiresAtUtc()))
+          || Instant.parse(permit.expiresAtUtc()).isAfter(Instant.parse(release.reviewAtUtc())))
+        throw new IOException("reference current grant owner/machine/root/window differs");
+      if(release.approvedOutputRoots().stream().noneMatch(row->absolute(request.outputRoot()).startsWith(absolute(row)))
+          || release.approvedOutputRoots().stream().noneMatch(row->this.reviewPath.startsWith(absolute(row)))
+          || !absolute(System.getProperty("java.io.tmpdir")).startsWith(absolute(release.temporaryRoot()))
+          || release.approvedOutputRoots().stream().noneMatch(row->absolute(System.getProperty("jna.tmpdir")).startsWith(absolute(row))))
+        throw new IOException("reference output/review/ENTIRETMP outside actual grant");
+      Path output=absolute(request.outputRoot()); SharedSourceFiles.plainAncestors(output); SharedSourceFiles.plainAncestors(this.reviewPath);
+      if(!Files.isDirectory(output.getParent(),LinkOption.NOFOLLOW_LINKS) || !Files.isDirectory(this.reviewPath.getParent(),LinkOption.NOFOLLOW_LINKS)
+          || Files.exists(output,LinkOption.NOFOLLOW_LINKS) || Files.exists(this.reviewPath,LinkOption.NOFOLLOW_LINKS))
+        throw new IOException("fresh reference output and review in existing admitted parents required");
+      List<Path> volumeScopes=new ArrayList<>();
+      for(String scope:release.approvedOutputRoots()) volumeScopes.add(absolute(scope));
+      volumeScopes.addAll(List.of(output,this.reviewPath,absolute(release.temporaryRoot()),
+          absolute(System.getProperty("java.io.tmpdir")),absolute(System.getProperty("jna.tmpdir"))));
+      for(Path scope:volumeScopes) if(release.volumes().keySet().stream().noneMatch(volume->absolute(volume).equals(scope.getRoot())))
+        throw new IOException("reference volume budget missing for actual output/review/ENTIRETMP scope");
+      long unit=Math.max(4096,Files.getFileStore(output.getParent()).getBlockSize());
+      if(permit.allocationUnitBytes()<unit || permit.allocationUnitBytes()%unit!=0 || permit.perDirectoryGuardBytes()<4096)
+        throw new IOException("reference permit must conservatively charge actual allocation and directories");
+      release.policyRef().verify(); var policy=CiBootstrap.readPolicy(read(release.policyRef(),131072));
+      for(var entry:release.volumes().entrySet()) {
+        var volume=entry.getValue(); var override=release.quotaOverrides().get(entry.getKey());
+        if(absolute(request.outputRoot()).getRoot().equals(absolute(entry.getKey()).getRoot())
+            && volume.thisWritePeak()<Math.addExact(permit.allocationUpperLimitBytes(),MAX_METADATA))
+          throw new IOException("volume reservation cannot cover the complete pending source packet");
+        if(override!=null) new FileRef(override.sourceRef().path(),override.sourceRef().bytes(),override.sourceRef().sha256()).verify();
+        if(!volume.equals(CiBootstrap.calculate(policy,volume.totalVolumeBytes(),volume.availableBytes(),volume.thisWritePeak(),
+            volume.otherUnspentReservations(),volume.systemGrowthReserve(),volume.currentProjectUsageConservativeUpper(),
+            override,Instant.parse(release.observedAtUtc()),Instant.parse(release.reviewAtUtc()))))
+          throw new IOException("reference shared storage policy/volume reservation differs");
+      }
+      List<Path> scopes=new ArrayList<>();for(String row:release.approvedOutputRoots()) scopes.add(absolute(row));
+      scopes.add(absolute(release.temporaryRoot())); List<Path> minimal=new ArrayList<>();
+      for(Path path:scopes) if(scopes.stream().noneMatch(other->!other.equals(path)&&path.startsWith(other))&&!minimal.contains(path)) minimal.add(path);
+      roots=List.copyOf(minimal); cap=release.parts().getOrDefault("artifacts",0L);
+      initial=census(); if(Math.addExact(initial,Math.addExact(permit.allocationUpperLimitBytes(),MAX_METADATA))>cap)
+        throw new IOException("whole occupied outputs/ENTIRETMP cannot admit the reserved reference packet");
+      cheap(0);
+    }
+    private long census() throws IOException { long total=0;for(Path root:roots)total=Math.addExact(total,SharedOwnedCommand.allocated(root));return total; }
+    private void cheap(long charged) throws IOException {
+      permitRef.verify(); permit.freshStorageEvidence().verify(); release.policyRef().verify();
+      if(!Instant.now().isBefore(Instant.parse(release.reviewAtUtc())) || !Instant.now().isBefore(Instant.parse(permit.expiresAtUtc())) || charged>permit.allocationUpperLimitBytes())
+        throw new IOException("reference live grant expired/exhausted");
+      for(var entry:release.volumes().entrySet())if(Files.getFileStore(absolute(entry.getKey())).getUsableSpace()<entry.getValue().requiredFree())
+        throw new IOException("reference current volume reserve unavailable");
+    }
+    @Override public WritePermit acquire(ReferenceReview review) throws IOException {
+      if(!review.request().equals(request))throw new IOException("reference writer differs from admitted request"); cheap(0);return permit;
+    }
+    @Override public void revalidate(WritePermit current,long charged) throws IOException {
+      if(!current.equals(permit))throw new IOException("reference write permit changed");cheap(charged);
+    }
+    void finish() throws IOException {cheap(0);if(census()>cap)throw new IOException("whole reference outputs/ENTIRETMP exceed actual part cap");}
+  }
+  /** Current Root-issued CapacityRelease and actual owned-output census precede every metadata write. */
+  public static void main(String[] args) throws IOException {
+    if(args.length!=7)throw new IOException("reference-request path/bytes/sha permit path/bytes/sha new-review-path");
+    FileRef requestRef=new FileRef(args[0],Long.parseLong(args[1]),args[2]);
+    FileRef permitRef=new FileRef(args[3],Long.parseLong(args[4]),args[5]); Path output=Path.of(args[6]);
+    ReferenceRequest request=readReferenceRequest(requestRef); ReferenceGate gate=new ReferenceGate(permitRef,request,output);
+    ReferenceReview review=reviewReference(requestRef); gate.acquire(review);
+    FileRef reviewRef=writeReferenceReview(review,output);
+    ReferenceActual actual=assembleReference(reviewRef,gate);gate.finish();
+    System.out.println(JSON.writeValueAsString(FileRef.measure(Path.of(actual.graphRoot()).resolve(".assembly/REFERENCE-ACTUAL.json"))));
+  }
+
 }

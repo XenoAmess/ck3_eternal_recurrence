@@ -1,0 +1,55 @@
+{
+  "schema": "xar.java-control.capacity-release/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-23T22:37:29.919919+00:00",
+  "review_at_utc": "2026-10-24T04:30:00Z",
+  "status": "RELEASED",
+  "owner_task": "/root",
+  "policy_ref": {
+    "path": "Z:/ck3_mod_rewrite/docs/storage-retention-policy.json",
+    "bytes": 4022,
+    "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+  },
+  "approved_output_roots": [
+    "D:/codex-ck3-demos/2026-10-22-java-phase1",
+    "D:/codex-ck3-demos/2026-10-24-sharedwire-tools172-source18-r3"
+  ],
+  "temporary_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch",
+  "parts": {
+    "m2": 234881024,
+    "build": 2214592512,
+    "scratch": 1342177280,
+    "metadata_logs": 67108864,
+    "tools": 41943040,
+    "artifacts": 134217728
+  },
+  "volumes": {
+    "D:/": {
+      "total_volume_bytes": 14000483987456,
+      "available_bytes": 797715099648,
+      "this_write_peak": 159383552,
+      "other_unspent_reservations": 265405309820,
+      "system_growth_reserve": 21474836480,
+      "safety_reserve": 21474836480,
+      "current_project_usage_conservative_upper": 13202768887808,
+      "effective_project_quota": 13960000000000,
+      "required_free": 308514366332
+    }
+  },
+  "quota_overrides": {
+    "D:/": {
+      "owner": "/root",
+      "task": "/root",
+      "reason": "Root unique C18 whole verify/package/ownarchive72MiB plus shared64MiB canonicalm2 growth and16MiB boundedcontrols. Parts cover existingJ point-census with finiteguard, not newgrant perpart. No Native/Full35 concurrent execution, no repeated C17 Maven. Single3328MiB R3 financialcap and originaloldbounds retained.",
+      "max_project_bytes": 13960000000000,
+      "review_at_utc": "2026-10-24T04:30:00Z",
+      "source_ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/budget_fast_lane/ROOT-TOOLS-CAPACITY01.json",
+        "bytes": 8682,
+        "sha256": "14e095a5f3f6292c70e55c5fe3126ab1022a6813d0d4dd08727c05061e3b5fee"
+      }
+    }
+  },
+  "memory_limit_bytes": 2147483648,
+  "maven_heap_bytes": 805306368
+}

@@ -1,0 +1,102 @@
+{
+  "schema" : "xar.shared-native-stage-actual/v1",
+  "machine_id" : "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc" : "2026-10-22T20:32:56.502044400Z",
+  "status" : "RED",
+  "stage_id" : "configure-drain05",
+  "command" : [ "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe", "-S", "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge", "-B", "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\native-prisoners-combat04", "-G", "Ninja", "-DBUILD_TESTING=ON", "-DCMAKE_BUILD_TYPE=Release", "-DCMAKE_TRY_COMPILE_CONFIGURATION=Release", "-DCMAKE_MAKE_PROGRAM=C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja\\ninja.exe", "-DCMAKE_CXX_COMPILER=C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe", "-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\native-prisoners-combat04\\bin", "-DCMAKE_ARCHIVE_OUTPUT_DIRECTORY=D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\native-prisoners-combat04\\lib", "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\native-prisoners-combat04\\lib" ],
+  "cwd" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\native-prisoners-combat01",
+  "environment_ref" : {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\native-prisoners-combat01\\VCVARS-ENVIRONMENT01.properties",
+    "bytes" : 7467,
+    "sha256" : "0520241a10c0f78c3a0eb2c7839516dac8db4b7e14349dbfcef2e7c1d4417ec0"
+  },
+  "resource_card_ref" : {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\RESUME56-NATIVE-CONFIGURE-CARD12.json",
+    "bytes" : 3412,
+    "sha256" : "08de3ee3a3817740397505756f5b891af6836cdd383d5193c7ec277e8f7f2fd8"
+  },
+  "tools_receipt_ref" : {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\build-java-tools25-resume02.json",
+    "bytes" : 22776,
+    "sha256" : "3713992c7d4ae3bac001a3086293f44c41df64f446a8b8db0ff90d7ce0b764df"
+  },
+  "source_manifest_ref" : {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\native-prisoners-combat01\\BASE-SOURCE-MANIFEST09.json",
+    "bytes" : 80728,
+    "sha256" : "415f498fb694a36b5988dbfe8659a1b32d065d2109a961d7d8da815693a121b4"
+  },
+  "configured_graph_ref" : null,
+  "tool_refs" : [ {
+    "path" : "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe",
+    "bytes" : 14392928,
+    "sha256" : "87fafbe6507d4b23c38ccaf72a1859219d070acb57ef0160332df10945d2dfac"
+  }, {
+    "path" : "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe",
+    "bytes" : 3776568,
+    "sha256" : "9546466f0feca6d62d7d4ea9b7fbc381f8e302cb7f02f4ce327a39d8577bb293"
+  }, {
+    "path" : "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Auxiliary/Build/vcvars64.bat",
+    "bytes" : 39,
+    "sha256" : "6b516d8fcf543c14b2d861e1f45661e0029230fe0dc48e86ce78522801822209"
+  }, {
+    "path" : "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Auxiliary/Build/vcvarsall.bat",
+    "bytes" : 10163,
+    "sha256" : "693b4a30c7379e84d2675101a8d47178cf62f45df2e2f09be5c206107e9c9ca2"
+  }, {
+    "path" : "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/HostX64/x64/cl.exe",
+    "bytes" : 893288,
+    "sha256" : "315a654ea116864516a1674858e587e535e3bc3045ff32ed2f2739a2c1ec5640"
+  }, {
+    "path" : "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/HostX64/x64/link.exe",
+    "bytes" : 3701128,
+    "sha256" : "610aae3d74a66fa5ef54cac5df8ea8bcbb1fdd2a3db9087eb92088bd395eaf34"
+  }, {
+    "path" : "C:\\WINDOWS\\System32\\cmd.exe",
+    "bytes" : 327680,
+    "sha256" : "a6e3b3b22b7fe8ce2c9245816126723eaa13f43b9f591883e59959a2d409426a"
+  }, {
+    "path" : "C:\\jdk-21\\bin\\java.exe",
+    "bytes" : 50344,
+    "sha256" : "bd3d87dfb44651a1c61c995e08ca4fcadb458437a373d46941381f9aeff9d6a0"
+  }, {
+    "path" : "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+    "bytes" : 254832,
+    "sha256" : "d70fced7f461f38f9f224d8673fb74e96e4facb4283ff4e8697543b457fea8a0"
+  } ],
+  "linked_artifact_refs" : [ ],
+  "owner_identity" : {
+    "pid" : 224240,
+    "creation_filetime_decimal" : "134371745963270833",
+    "executable" : "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe"
+  },
+  "result" : {
+    "identity" : {
+      "pid" : 224240,
+      "creation_filetime_decimal" : "134371745963270833",
+      "executable" : "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe"
+    },
+    "exit_code" : 0,
+    "elapsed_seconds" : 180.1408111,
+    "accounting" : {
+      "peak_job_memory_bytes" : 109342720,
+      "active_processes" : 0,
+      "memory_limit_bytes" : 2147483648,
+      "limit_flags" : 8704
+    },
+    "stop_reason" : "timeout_or_release_expired"
+  },
+  "source_unchanged" : true,
+  "stdout_ref" : {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\native-prisoners-combat01\\configure-drain05.stdout.log",
+    "bytes" : 660,
+    "sha256" : "3bdf08b8732de210a9666b7718da08cea70c30a93bdf98e2236174417ec6ea9d"
+  },
+  "stderr_ref" : {
+    "path" : "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\scratch\\native-prisoners-combat01\\configure-drain05.stderr.log",
+    "bytes" : 545,
+    "sha256" : "6b51b14818f8e6b181de988c1abea2d1d5a1a1e1dfd7d640755a35debff967bd"
+  },
+  "output_refs" : [ ],
+  "error" : "java.io.IOException: native resource card expired"
+}

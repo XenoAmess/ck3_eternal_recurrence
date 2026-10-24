@@ -1,0 +1,13 @@
+Microsoft (R) VC++ Technology Improvement Program Uploader Version 14.51.36257.0
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Usage: VCTIP [options]
+
+Options:
+  -upload:[optout|optin|skip]    Permanently opt-out/opt-in to uploading or temporarily skip uploading
+  -unstable:[mark|clear|info]    Mark, clear, or get information on stability of VCTIP
+  -timeout:<seconds>             Specify server timeout in seconds (0 = disable timeout)
+  -sendDiscreteEvents            Send individual component events along side aggregated events
+  -agglimit:<num>                Specify maximum parallel aggregation keys
+  -aggtimeout:<seconds>          Specify aggregation timeout in seconds
+  -trace                         Output trace information during upload

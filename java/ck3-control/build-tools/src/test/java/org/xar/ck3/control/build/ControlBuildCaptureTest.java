@@ -6,11 +6,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.security.MessageDigest;
+import java.util.HexFormat;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.time.Instant;
+import java.time.Duration;
+import java.math.BigDecimal;
 import javax.tools.ToolProvider;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -31,6 +39,39 @@ class ControlBuildCaptureTest {
         assertTrue(arguments.contains("-Dmaven.test.skip=false")); assertFalse(arguments.contains("verify"));
         assertFalse(arguments.stream().anyMatch(arg -> arg.equals("-Dmaven.test.skip=true")));
         assertEquals("verify", ControlBuild.reactorVerifyArguments(config, root.resolve("settings.xml"), root.resolve("snapshot"), root.resolve("build")).getLast());
+    }
+
+    @Test void completedCaptureUsesItsExactRecordedPythonWithoutCurrentEnvironment() throws IOException {
+        Path root = temporary.toAbsolutePath();
+        var config = new ControlBuild.Config(root.resolve("source"), root.resolve("work"), root.resolve("lease.json"),
+                "recorded-capture", "/root/build", null, Path.of(System.getProperty("java.home")), "3.10.0", 30,
+                ControlBuild.TargetKind.SERVICE_FAST_JAR, ControlBuild.SourceLimitProfile.G2_RESEARCH_20261023);
+        Path settings = root.resolve("settings.xml"), snapshot = root.resolve("snapshot"), build = root.resolve("build");
+        String historicalPython = root.resolve("recorded environment/Scripts/python.exe").toString();
+        List<String> original = ControlBuild.reactorCaptureArguments(config, settings, snapshot, build,
+                Map.of("XAR_ORACLE_PYTHON", historicalPython));
+        byte[] wire = ControlBuild.strictMapper().writeValueAsBytes(original);
+        List<String> decoded = ControlBuild.strictMapper().readValue(wire,
+                new com.fasterxml.jackson.core.type.TypeReference<List<String>>() { });
+        assertEquals(original, ControlBuild.completedCaptureArguments(config, settings, snapshot, build, decoded));
+        assertTrue(original.contains("-Dxar.rootContext.pythonExecutable=" + historicalPython));
+        assertThrows(IllegalArgumentException.class,
+                () -> ControlBuild.reactorCaptureArguments(config, settings, snapshot, build, Map.of()));
+        List<String> duplicate = new ArrayList<>(original);
+        duplicate.add("-Dxar.rootContext.pythonExecutable=" + historicalPython);
+        assertThrows(IOException.class, () -> ControlBuild.completedCaptureArguments(config, settings, snapshot, build, duplicate));
+        List<String> missing = original.stream().filter(arg -> !arg.startsWith("-Dxar.rootContext.pythonExecutable=")).toList();
+        assertThrows(IOException.class, () -> ControlBuild.completedCaptureArguments(config, settings, snapshot, build, missing));
+        for (String invalid : List.of("", "relative/python.exe", historicalPython + "\n")) {
+            List<String> changed = original.stream().map(arg -> arg.startsWith("-Dxar.rootContext.pythonExecutable=")
+                    ? "-Dxar.rootContext.pythonExecutable=" + invalid : arg).toList();
+            assertThrows(IOException.class, () -> ControlBuild.completedCaptureArguments(config, settings, snapshot, build, changed));
+        }
+        for (String originalArgument : List.of("package", "-DskipTests=true", "-Dmaven.test.skip=false",
+                "-Dck3.build.root=" + build, "-f")) {
+            List<String> changed = new ArrayList<>(original); changed.set(changed.indexOf(originalArgument), "drift");
+            assertThrows(IOException.class, () -> ControlBuild.completedCaptureArguments(config, settings, snapshot, build, changed));
+        }
     }
 
     @Test void explicitMavenOverrideIsRefusedBeforeCaptureStartsAnyProcess() {
@@ -83,6 +124,187 @@ class ControlBuildCaptureTest {
         Path normal = temporary.resolve("normal.json");
         Files.writeString(normal, "{\"schema\":\"" + ControlBuild.SCHEMA + "\"}");
         assertThrows(IOException.class, () -> ControlBuild.acceptedCaptureReceipt(normal));
+    }
+
+    @Test void genuineFullG2RedReceiptUsesTheProductionSerializerWithinTheSharedBound() throws Exception {
+        ControlBuild.BuildReceipt original = genuineFullG2RedReceipt();
+        byte[] encoded = ControlBuild.buildReceiptBytes(original);
+        assertTrue(encoded.length > (1 << 20));
+        assertTrue(encoded.length <= ControlBuild.BUILD_RECEIPT_MAX_BYTES);
+        Path output = temporary.resolve("actual-red-envelope.json"); Files.write(output, encoded);
+        assertEquals(original, ControlBuild.readBuildReceiptEnvelope(output));
+        // Original RED/native failure remains RED; accepting the larger envelope grants no qualification.
+        IOException completed = assertThrows(IOException.class,
+                () -> ControlBuild.verifiedCompletedReceipt(ControlBuild.FileRef.measure(output)));
+        assertEquals("Build receipt did not establish current-machine complete qualification", completed.getMessage());
+        assertThrows(IOException.class, () -> ControlBuild.acceptedReceipt(output));
+        assertThrows(IOException.class, () -> ControlBuild.acceptedCaptureReceipt(output));
+        assertThrows(IOException.class, () -> ControlBuild.verifiedCompletedCaptureReceipt(ControlBuild.FileRef.measure(output)));
+    }
+
+    @Test void allBuildAndCaptureBoundariesRejectTheFirstByteBeyondTwoMiB() throws Exception {
+        assertEquals(2 << 20, ControlBuild.BUILD_RECEIPT_MAX_BYTES);
+        ControlBuild.BuildReceipt original = genuineFullG2RedReceipt();
+        ObjectNode oversized = (ObjectNode) ControlBuild.strictMapper().valueToTree(original);
+        // Synthetic error-text padding preserves the genuine source/native fields and cannot claim PASS.
+        oversized.put("error", "x".repeat(ControlBuild.BUILD_RECEIPT_MAX_BYTES));
+        ControlBuild.BuildReceipt large = ControlBuild.strictMapper().treeToValue(oversized, ControlBuild.BuildReceipt.class);
+        assertEquals("RED", large.status());
+        assertEquals("Build receipt exceeds finite 2 MiB byte limit",
+                assertThrows(IOException.class, () -> ControlBuild.buildReceiptBytes(large)).getMessage());
+        Path output = temporary.resolve("oversized-envelope.json");
+        Files.write(output, new byte[ControlBuild.BUILD_RECEIPT_MAX_BYTES + 1]);
+        assertEquals("JSON input exceeds limit",
+                assertThrows(IOException.class, () -> ControlBuild.readBuildReceiptEnvelope(output)).getMessage());
+        assertEquals("JSON input exceeds limit",
+                assertThrows(IOException.class, () -> ControlBuild.verifiedCompletedReceipt(ControlBuild.FileRef.measure(output))).getMessage());
+        assertEquals("JSON input exceeds limit",
+                assertThrows(IOException.class, () -> ControlBuild.acceptedReceipt(output)).getMessage());
+        assertEquals("JSON input exceeds limit",
+                assertThrows(IOException.class, () -> ControlBuild.acceptedCaptureReceipt(output)).getMessage());
+        assertEquals("JSON input exceeds limit",
+                assertThrows(IOException.class, () -> ControlBuild.verifiedCompletedCaptureReceipt(ControlBuild.FileRef.measure(output))).getMessage());
+    }
+
+
+    @Test void completedCaptureAuthorityUsesTheOriginalWindowWhileLiveAuthorityExpires() throws Exception {
+        CaptureLeaseFixture f = captureLeaseFixture(false);
+        // A real native terminal and synthetic bounded lease test this shared production boundary only.
+        // No complete Maven PASS/capture receipt is created or claimed by this unit fixture.
+        var window = ControlBuild.completedLeaseWindow(f.releaseRef(), WindowsJobProcess.currentMachineId(), f.completed());
+        ControlBuild.requireCompletedNativeWindow(f.terminal(), window.opened(), f.completed());
+        ControlBuild.readLeaseAt(f.config(), WindowsJobProcess.currentMachineId(), f.completed());
+        assertThrows(IOException.class, () -> ControlBuild.readLeaseAt(f.config(), WindowsJobProcess.currentMachineId(), Instant.now()));
+        assertThrows(IOException.class, () -> ControlBuild.completedLeaseWindow(f.releaseRef(),
+                WindowsJobProcess.currentMachineId(), window.opened().minusNanos(1)));
+        assertThrows(IOException.class, () -> ControlBuild.completedLeaseWindow(f.releaseRef(),
+                WindowsJobProcess.currentMachineId(), window.review()));
+        assertThrows(IOException.class, () -> ControlBuild.completedLeaseWindow(f.releaseRef(),
+                WindowsJobProcess.currentMachineId(), Instant.now().plusSeconds(60)));
+    }
+
+    @Test void typedCaptureLeaseChecksItsOriginalOverrideAndKeepsEveryPolicyGuard() throws Exception {
+        CaptureLeaseFixture f = captureLeaseFixture(true);
+        ControlBuild.readLeaseAt(f.config(), WindowsJobProcess.currentMachineId(), f.completed());
+        assertThrows(IOException.class, () -> ControlBuild.readLeaseAt(f.config(), WindowsJobProcess.currentMachineId(), Instant.now()));
+        var mapper = ControlBuild.strictMapper();
+        ObjectNode original = (ObjectNode) mapper.readTree(Files.readAllBytes(Path.of(f.releaseRef().path())));
+        List<ObjectNode> changed = new ArrayList<>();
+        ObjectNode writer = original.deepCopy(); writer.put("owner_task", "/root/another-writer"); changed.add(writer);
+        ObjectNode machine = original.deepCopy(); machine.put("machine_id", "another-machine"); changed.add(machine);
+        ObjectNode scratch = original.deepCopy(); scratch.put("temporary_root", temporary.resolve("wrong-scratch").toString()); changed.add(scratch);
+        ObjectNode missingCap = original.deepCopy(); ((ObjectNode) missingCap.get("parts")).remove("build"); changed.add(missingCap);
+        ObjectNode override = original.deepCopy();
+        var firstOverride = override.get("quota_overrides").properties().iterator().next().getValue();
+        ((ObjectNode) firstOverride).put("review_at_utc", f.completed().toString()); changed.add(override);
+        ObjectNode source = original.deepCopy();
+        var sourceOverride = source.get("quota_overrides").properties().iterator().next().getValue();
+        ((ObjectNode) sourceOverride.get("source_ref")).put("sha256", "0".repeat(64)); changed.add(source);
+        for (ObjectNode mutation : changed) {
+            Files.write(Path.of(f.releaseRef().path()), mapper.writeValueAsBytes(mutation));
+            assertThrows(IOException.class, () -> ControlBuild.readLeaseAt(f.config(), WindowsJobProcess.currentMachineId(), f.completed()));
+        }
+        Files.write(Path.of(f.releaseRef().path()), mapper.writeValueAsBytes(original));
+        ControlBuild.readLeaseAt(f.config(), WindowsJobProcess.currentMachineId(), f.completed());
+    }
+
+    @Test void completedCaptureChronologyRejectsForgedNativeBirthAndElapsed() throws Exception {
+        CaptureLeaseFixture f = captureLeaseFixture(false);
+        var window = ControlBuild.completedLeaseWindow(f.releaseRef(), WindowsJobProcess.currentMachineId(), f.completed());
+        var mapper = ControlBuild.strictMapper();
+        ObjectNode wrongBirth = mapper.valueToTree(f.terminal());
+        ((ObjectNode) wrongBirth.get("identity")).put("creation_filetime_decimal", "1");
+        var beforeLease = mapper.treeToValue(wrongBirth, WindowsJobProcess.CommandResult.class);
+        assertThrows(IOException.class, () -> ControlBuild.requireCompletedNativeWindow(beforeLease, window.opened(), f.completed()));
+        ObjectNode wrongElapsed = mapper.valueToTree(f.terminal());
+        wrongElapsed.put("elapsed_seconds", 86400.0);
+        var longerThanLease = mapper.treeToValue(wrongElapsed, WindowsJobProcess.CommandResult.class);
+        assertThrows(IOException.class, () -> ControlBuild.requireCompletedNativeWindow(longerThanLease, window.opened(), f.completed()));
+        assertTrue(f.terminal().passed()); assertEquals(0, f.terminal().accounting().activeProcesses());
+    }
+
+    private record CaptureLeaseFixture(ControlBuild.Config config, ControlBuild.FileRef releaseRef,
+            Instant completed, WindowsJobProcess.CommandResult terminal) { }
+
+    private CaptureLeaseFixture captureLeaseFixture(boolean typed) throws Exception {
+        var mapper = ControlBuild.strictMapper();
+        Path nativeRoot = Files.createDirectories(temporary.resolve(typed ? "typed-native" : "manual-native"));
+        Path command = Path.of(System.getenv("SystemRoot"), "System32/cmd.exe");
+        Path batch = nativeRoot.resolve("exit-zero.cmd"); Files.writeString(batch, "@echo off\r\nexit /b 0\r\n");
+        Instant opened = Instant.now().minusSeconds(1);
+        WindowsJobProcess.CommandResult terminal;
+        try (WindowsJobProcess child = WindowsJobProcess.start(new WindowsJobProcess.CommandSpec(command,
+                List.of("/d", "/c", batch.toString()), nativeRoot, Map.copyOf(System.getenv()),
+                nativeRoot.resolve("stdout.log"), nativeRoot.resolve("stderr.log"), 64L << 20))) {
+            terminal = child.await(Duration.ofSeconds(10), Instant.now().plusSeconds(15), () -> {});
+        }
+        assertTrue(terminal.passed()); assertEquals(0, terminal.accounting().activeProcesses());
+        Instant completed = Instant.now(); Instant review = completed.plusNanos(1);
+        Path sourceRoot = Files.createDirectories(temporary.resolve(typed ? "typed-source" : "manual-source"));
+        Path work = Files.createDirectories(temporary.resolve(typed ? "typed-work" : "manual-work"));
+        Path scratch = Files.createDirectories(work.resolve("scratch"));
+        Path policyPath = temporary.resolve(typed ? "typed-policy.json" : "manual-policy.json");
+        String policyJson = "{\"schema\":\"xar-storage-retention-policy-v1\",\"policy_version\":\"1.0.0\",\"capacity\":{"
+                + "\"safety_floor_bytes\":1,\"safety_ceiling_bytes\":1,\"safety_volume_fraction\":0.001,"
+                + "\"default_project_quota_ceiling_bytes\":1048576,\"default_project_quota_volume_fraction\":0.01,\"quota_override_max_hours\":24}}";
+        Files.writeString(policyPath, policyJson);
+        Path releasePath = temporary.resolve(typed ? "typed-capture-release.json" : "manual-capture-release.json");
+        String owner = "/root/capture-test", machine = WindowsJobProcess.currentMachineId();
+        Map<String, Long> parts = Map.of("m2", 1L << 20, "build", 1L << 20, "tools", 1L << 20,
+                "scratch", 1L << 20, "artifacts", 1L << 20, "metadata_logs", 1L << 20);
+        if (typed) {
+            var policy = new CiBootstrap.Policy(1, 1, new BigDecimal("0.001"), 1L << 20, new BigDecimal("0.01"), 24);
+            Path overridePath = temporary.resolve("typed-override-source.json");
+            Files.writeString(overridePath, "synthetic finite lease regression; no production authority");
+            ControlBuild.FileRef overrideRef = ControlBuild.FileRef.measure(overridePath);
+            var override = new CiBootstrap.QuotaOverride("test-owner", owner, "exercise original override clock", 8L << 30,
+                    review.toString(), new CiBootstrap.FilePin(overrideRef.path(), overrideRef.bytes(), overrideRef.sha256()));
+            var volume = CiBootstrap.calculate(policy, 16L << 30, 4L << 30, 1L << 30, 0, 1, 1L << 30,
+                    override, opened, review);
+            var release = new ControlBuild.CapacityRelease("xar.java-control.capacity-release/v1", machine,
+                    opened.toString(), review.toString(), "RELEASED", owner, ControlBuild.FileRef.measure(policyPath),
+                    List.of(temporary.toAbsolutePath().toString()), scratch.toString(), parts,
+                    Map.of(work.getRoot().toString(), volume), Map.of(work.getRoot().toString(), override), 64L << 20, 32L << 20);
+            Files.write(releasePath, mapper.writeValueAsBytes(release));
+        } else {
+            ObjectNode release = mapper.createObjectNode();
+            release.put("schema", "xar.java-phase1.manual-capacity-release/v1"); release.put("machine_id", machine);
+            release.put("status", "RELEASED_JAVA_PHASE1_BOUNDED_BUILD_AND_LOCAL_SERVICE"); release.put("single_Maven_writer", owner);
+            release.put("observed_at_utc", opened.toString()); release.put("review_at_utc", review.toString());
+            release.putArray("approved_output_roots").add(temporary.toAbsolutePath().toString());
+            release.put("Maven_repository", work.resolve("m2").toString()); release.put("build_root", work.resolve("build").toString());
+            release.put("temporary_root", scratch.toString()); release.set("parts", mapper.valueToTree(parts));
+            release.set("policy_ref", mapper.valueToTree(ControlBuild.FileRef.measure(policyPath)));
+            ObjectNode volume = release.putObject("volumes").putObject(work.getRoot().toString());
+            volume.put("required_free", 3); volume.put("this_write_peak", 1); volume.put("other_unspent_reservations", 0);
+            volume.put("system_growth_reserve", 1); volume.put("safety_reserve", 1);
+            volume.put("current_project_usage_conservative_upper", 1); volume.put("effective_project_quota", 100);
+            release.put("test_RAM_joint_hard_bytes", 64L << 20); release.put("Maven_heap_bytes", 32L << 20);
+            Files.write(releasePath, mapper.writeValueAsBytes(release));
+        }
+        var config = new ControlBuild.Config(sourceRoot, work, releasePath, "capture-lease-test", owner,
+                null, Path.of(System.getProperty("java.home")), "3.10.0", 30,
+                ControlBuild.TargetKind.SERVICE_FAST_JAR, ControlBuild.SourceLimitProfile.STANDARD_8_MIB);
+        return new CaptureLeaseFixture(config, ControlBuild.FileRef.measure(releasePath), completed, terminal);
+    }
+
+    private ControlBuild.BuildReceipt genuineFullG2RedReceipt() throws Exception {
+        byte[] raw;
+        try (InputStream input = ControlBuildCaptureTest.class.getResourceAsStream("/build-receipts/full-g2-capture01-red.json")) {
+            if (input == null) throw new IOException("Exact portable original capture failure fixture required");
+            raw = input.readNBytes(ControlBuild.BUILD_RECEIPT_MAX_BYTES + 1);
+        }
+        assertEquals(1201708, raw.length);
+        assertEquals("c2423f9f849244232fe4a592113c01a3fbb45af77436952c5a7157da5fa93c42",
+                HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(raw)));
+        var failure = ControlBuild.strictMapper().readTree(raw);
+        assertEquals("xar.java-control-test-compiled-capture-failure/v1", failure.path("schema").textValue());
+        // This is the source machine's recorded negative evidence, never a claim about the current machine.
+        assertEquals("xenoamess-full-tower-eb9d2c1186", failure.path("machine_id").textValue());
+        ControlBuild.BuildReceipt receipt = ControlBuild.strictMapper().treeToValue(failure.path("terminal"), ControlBuild.BuildReceipt.class);
+        assertEquals("RED", receipt.status()); assertFalse(receipt.mavenResult().passed());
+        assertEquals(1931, receipt.sourcePins().size()); assertEquals(1931, receipt.compiledSourcePins().size());
+        return receipt;
     }
 
     private ControlBuild.TestCompilationManifest collect(Fixture f, List<ControlBuild.FileRef> refs) throws IOException {

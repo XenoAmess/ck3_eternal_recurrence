@@ -53,6 +53,10 @@ import org.xml.sax.SAXException;
 /** The single Maven producer: pinned same-volume inputs, bounded Job and complete output closure. */
 public final class ControlBuild {
     public static final String SCHEMA = "xar.java-control.actual-build/v5";
+    /** One finite JSON byte contract for normal, completed and capture build receipts. */
+    public static final int BUILD_RECEIPT_MAX_BYTES = 2 << 20;
+    public static final int RESUMED_BUILD_RECEIPT_MAX_BYTES = 4 << 20;
+    public static final int BUILD_RECEIPT_ENVELOPE_MAX_BYTES = RESUMED_BUILD_RECEIPT_MAX_BYTES;
     private static final String LOCAL_MACHINE = "xenoamess-full-tower-eb9d2c1186";
     private static final Set<String> EXCLUDED = Set.of("target", ".git", "__pycache__", ".mypy_cache", ".pytest_cache");
     private static final ObjectMapper JSON = createMapper();
@@ -86,13 +90,25 @@ public final class ControlBuild {
     /** Explicit source-only envelopes; deployment, logs, JSON and Job caps are unchanged. */
     public enum SourceLimitProfile {
         STANDARD_8_MIB(1000, 8L << 20),
-        EXISTING_MIGRATION_20261022(1536, 24L << 20);
+        EXISTING_MIGRATION_20261022(1536, 24L << 20),
+        G2_RESEARCH_20261023(2304, 32L << 20),
+        G2_STABILIZATION_20261023(2304, 32L << 20),
+        G2_FULL_PARITY_20261024(3072, 40L << 20),
+        G2_FULL_PARITY_20261024_R2(4096, 64L << 20),
+        G2_FULL_PARITY_20261024_R3(4096, 64L << 20);
 
         private final int maxFiles;
         private final long maxBytes;
         SourceLimitProfile(int maxFiles, long maxBytes) { this.maxFiles = maxFiles; this.maxBytes = maxBytes; }
         public int maxFiles() { return maxFiles; }
         public long maxBytes() { return maxBytes; }
+        public boolean completeG2() {
+            return this == G2_RESEARCH_20261023 || this == G2_STABILIZATION_20261023
+                    || fullParity();
+        }
+        public boolean fullParity() { return this == G2_FULL_PARITY_20261024 || resumedParity(); }
+        public boolean resumedParity() { return this == G2_FULL_PARITY_20261024_R2 || this == G2_FULL_PARITY_20261024_R3; }
+        public int maxReactorProjects() { return fullParity() ? 35 : 32; }
     }
     private static final Set<String> EXISTING_MIGRATION_MODULES = Set.of(
             "contracts",
@@ -258,6 +274,9 @@ public final class ControlBuild {
             if (!attempt.matches("[a-zA-Z0-9][a-zA-Z0-9_-]{0,47}") || ownerTask.isBlank()
                     || !mavenVersionAtLeast(minimumMavenVersion, "3.10.0")
                     || timeoutSeconds <= 0 || timeoutSeconds > 900 || targetKind == null || sourceLimitProfile == null) throw new IllegalArgumentException("Invalid finite build parameters");
+            if (sourceLimitProfile == SourceLimitProfile.G2_FULL_PARITY_20261024_R3 && targetKind != TargetKind.SERVICE_FAST_JAR) {
+                throw new IllegalArgumentException("R3 full parity is the complete service reactor; standalone tools keep their independent standard profile");
+            }
         }
     }
 
@@ -309,21 +328,41 @@ public final class ControlBuild {
         return mapper;
     }
 
+    private record VerifiedCompletedBuild(BuildReceipt receipt, Instant leaseReviewAt, Path historicalScratch) { }
+
+    /** Complete software qualification plus the original still-live build capacity lease. */
     public static BuildReceipt acceptedReceipt(Path path) throws IOException {
-        BuildReceipt receipt = JSON.readValue(readLimited(path, 1024 * 1024), BuildReceipt.class);
-        JsonNode release = readObject(Path.of(receipt.capacityReleaseRef().path()));
-        requireNativeScratch(Path.of(text(release, "temporary_root")));
+        VerifiedCompletedBuild verified = verifyCompletedBuild(FileRef.measure(path));
+        requireNativeScratch(verified.historicalScratch());
+        if (!Instant.now().isBefore(verified.leaseReviewAt())) throw new IOException("Build capacity release expired");
+        return verified.receipt();
+    }
+
+    /**
+     * Verifies completed software evidence without granting present execution or storage authority.
+     * Callers must independently validate their current operation card, standing and allocation.
+     */
+    public static BuildReceipt verifiedCompletedReceipt(FileRef receiptRef) throws IOException {
+        return verifyCompletedBuild(receiptRef).receipt();
+    }
+
+    private static VerifiedCompletedBuild verifyCompletedBuild(FileRef receiptRef) throws IOException {
+        Objects.requireNonNull(receiptRef); receiptRef.verify();
+        BuildReceipt receipt = JSON.readValue(readReceiptEnvelope(receiptRef), BuildReceipt.class);
         if (!receipt.machineId().equals(WindowsJobProcess.currentMachineId()) || !receipt.status().equals("PASS")
-                || receipt.sourcePostcheck().state() != SourceState.MATCH || receipt.compiledSourcePostcheck().state() != SourceState.MATCH || receipt.error() != null
-                || receipt.toolchainProbe() == null || !receipt.toolchainProbe().passed()
-                || receipt.mavenToolchain() == null
-                || receipt.mavenResult() == null || !receipt.mavenResult().passed()
-                || receipt.sourcePins().isEmpty() || receipt.completeDeployment().isEmpty()) {
+                || receipt.sourcePostcheck().state() != SourceState.MATCH || receipt.compiledSourcePostcheck().state() != SourceState.MATCH
+                || receipt.error() != null || receipt.toolchainProbe() == null || !receipt.toolchainProbe().passed()
+                || receipt.mavenToolchain() == null || receipt.mavenResult() == null || !receipt.mavenResult().passed()
+                || receipt.sourcePins().isEmpty() || receipt.compiledSourcePins().isEmpty() || receipt.completeDeployment().isEmpty()) {
             throw new IOException("Build receipt did not establish current-machine complete qualification");
         }
-        receipt.capacityReleaseRef().verify(); receipt.mavenToolchain().distributionLauncherRef().verify(); receipt.javaExecutableRef().verify();
+        Instant completed = Instant.parse(receipt.observedAtUtc());
+        CompletedLeaseWindow window = completedLeaseWindow(receipt.capacityReleaseRef(), receipt.machineId(), completed);
+        Instant opened = window.opened(); Instant review = window.review();
+        requireCompletedNativeWindow(receipt.toolchainProbe(), opened, completed);
+        requireCompletedNativeWindow(receipt.mavenResult(), opened, completed);
+        receipt.mavenToolchain().distributionLauncherRef().verify(); receipt.javaExecutableRef().verify();
         if (receipt.mavenToolchain().explicitOverrideRef() != null) receipt.mavenToolchain().explicitOverrideRef().verify();
-        if (!Instant.now().isBefore(Instant.parse(text(release, "review_at_utc")))) throw new IOException("Build capacity release expired");
         for (FileRef reference : receipt.sourcePins()) reference.verify();
         for (FileRef reference : receipt.compiledSourcePins()) reference.verify();
         for (FileRef reference : receipt.completeDeployment()) reference.verify();
@@ -336,7 +375,48 @@ public final class ControlBuild {
         }
         List<FileRef> actual = deploymentManifest(Path.of(receipt.deploymentRoot()), receipt.targetKind());
         if (!actual.equals(receipt.completeDeployment())) throw new IOException("Deployment closure grew or changed");
-        return receipt;
+        if (receipt.sourceLimitProfile() == SourceLimitProfile.G2_FULL_PARITY_20261024_R3) FullParityCurrentBindings.completedBuildBindings(receipt);
+        receiptRef.verify(); receipt.capacityReleaseRef().verify();
+        return new VerifiedCompletedBuild(receipt, review, window.historicalScratch());
+    }
+
+    /** One original-lease chronology contract for normal and capture completion evidence. */
+    record CompletedLeaseWindow(Instant opened, Instant review, Path historicalScratch) { }
+
+    static CompletedLeaseWindow completedLeaseWindow(FileRef releaseRef, String machine, Instant completed) throws IOException {
+        Objects.requireNonNull(releaseRef); Objects.requireNonNull(completed); releaseRef.verify();
+        JsonNode release = readObject(Path.of(releaseRef.path()));
+        String schema = text(release, "schema");
+        boolean manual = schema.equals("xar.java-phase1.manual-capacity-release/v1");
+        boolean typed = schema.equals("xar.java-control.capacity-release/v1");
+        if ((!manual && !typed) || !text(release, "machine_id").equals(machine)
+                || !text(release, "status").equals(manual ? "RELEASED_JAVA_PHASE1_BOUNDED_BUILD_AND_LOCAL_SERVICE" : "RELEASED")) {
+            throw new IOException("Original build release schema, machine or state rejected");
+        }
+        Instant opened = Instant.parse(text(release, "observed_at_utc"));
+        Instant review = Instant.parse(text(release, "review_at_utc"));
+        if (!opened.isBefore(review) || completed.isBefore(opened) || !completed.isBefore(review) || completed.isAfter(Instant.now())) {
+            throw new IOException("Completed build observation is outside its original finite lease window");
+        }
+        releaseRef.verify();
+        return new CompletedLeaseWindow(opened, review, Path.of(text(release, "temporary_root")));
+    }
+
+    static void requireCompletedNativeWindow(WindowsJobProcess.CommandResult result, Instant opened, Instant completed) throws IOException {
+        java.math.BigInteger ticks = new java.math.BigInteger(result.identity().creationFiletimeDecimal());
+        java.math.BigInteger[] parts = ticks.divideAndRemainder(java.math.BigInteger.valueOf(10_000_000L));
+        Instant born;
+        try {
+            born = Instant.ofEpochSecond(parts[0].longValueExact() - 11_644_473_600L, parts[1].longValueExact() * 100L);
+        } catch (ArithmeticException | java.time.DateTimeException invalid) {
+            throw new IOException("Native process birth is outside the timestamp domain", invalid);
+        }
+        Duration lifetime = Duration.between(opened, completed);
+        double leaseElapsed = lifetime.getSeconds() + lifetime.getNano() / 1_000_000_000.0;
+        // elapsedSeconds begins before CreateProcess, so it cannot be added to FILETIME birth exactly.
+        if (born.isBefore(opened) || born.isAfter(completed) || result.elapsedSeconds() > leaseElapsed) {
+            throw new IOException("Native terminal chronology differs from the completed build lease window");
+        }
     }
 
     private enum BuildPurpose { VERIFY, TEST_COMPILED_CAPTURE_ONLY }
@@ -351,9 +431,26 @@ public final class ControlBuild {
             CaptureTestState tests, BuildReceipt terminal, List<String> mavenArguments,
             FileRef mavenCommandRef) { }
 
-    /** Strictly separate admission; a normal acceptedReceipt rejects this schema. */
+    private record VerifiedCompletedCapture(CaptureBuildReceipt receipt, Config config) { }
+
+    /** Capture compilation evidence plus the original still-live capacity lease. */
     public static CaptureBuildReceipt acceptedCaptureReceipt(Path path) throws IOException {
-        CaptureBuildReceipt receipt = JSON.readValue(readLimited(path, 1 << 20), CaptureBuildReceipt.class);
+        VerifiedCompletedCapture verified = verifyCompletedCapture(FileRef.measure(path));
+        readLease(verified.config(), verified.receipt().machineId());
+        return verified.receipt();
+    }
+
+    /**
+     * Verifies completed test compilation only; tests remain NOT_RUN.
+     * This supplies no present execution/storage authority: callers must validate their current card and standing.
+     */
+    public static CaptureBuildReceipt verifiedCompletedCaptureReceipt(FileRef receiptRef) throws IOException {
+        return verifyCompletedCapture(receiptRef).receipt();
+    }
+
+    private static VerifiedCompletedCapture verifyCompletedCapture(FileRef receiptRef) throws IOException {
+        Objects.requireNonNull(receiptRef); receiptRef.verify();
+        CaptureBuildReceipt receipt = JSON.readValue(readReceiptEnvelope(receiptRef), CaptureBuildReceipt.class);
         String machine = WindowsJobProcess.currentMachineId();
         if (!receipt.machineId().equals(machine)) throw new IOException("Capture receipt belongs to another machine");
         Path snapshot = Path.of(receipt.compiledSourceRoot()).toAbsolutePath().normalize();
@@ -367,12 +464,15 @@ public final class ControlBuild {
         Config config = new Config(Path.of(receipt.sourceRoot()), work, Path.of(receipt.capacityReleaseRef().path()),
                 receipt.attempt(), receipt.ownerTask(), null, Path.of(receipt.javaExecutableRef().path()).getParent().getParent(),
                 receipt.mavenToolchain().minimumVersion(), 900, receipt.targetKind(), receipt.sourceLimitProfile());
-        receipt.capacityReleaseRef().verify(); Lease lease = readLease(config, machine);
+        Instant completed = Instant.parse(receipt.observedAtUtc());
+        CompletedLeaseWindow window = completedLeaseWindow(receipt.capacityReleaseRef(), machine, completed);
+        requireCompletedNativeWindow(receipt.toolchainProbe(), window.opened(), completed);
+        requireCompletedNativeWindow(receipt.mavenResult(), window.opened(), completed);
+        Lease lease = readLeaseAt(config, machine, completed);
         if (receipt.mavenResult().accounting().memoryLimitBytes() != lease.memoryLimitBytes()
                 || receipt.toolchainProbe().accounting().memoryLimitBytes() != lease.memoryLimitBytes()) throw new IOException("Capture Job differs from the consumed single-Maven memory release");
         Path settings = logs.resolve("build-" + receipt.attempt() + "-settings.xml");
-        List<String> expectedArgs = reactorCaptureArguments(config, settings, snapshot, build);
-        if (!expectedArgs.equals(receipt.mavenArguments())) throw new IOException("Capture command arguments differ from explicit package/test-compile/no-run producer");
+        List<String> expectedArgs = completedCaptureArguments(config, settings, snapshot, build, receipt.mavenArguments());
         String prefix = "build-" + receipt.attempt();
         requireExactPath(receipt.mavenCommandRef(), logs.resolve(prefix + "-package.cmd"));
         requireExactPath(receipt.mavenStdoutRef(), logs.resolve(prefix + "-package.stdout.log"));
@@ -401,7 +501,8 @@ public final class ControlBuild {
         }
         if (!receipt.finalLogicalBytesByPart().keySet().equals(lease.caps().keySet())) throw new IOException("Complete capture final part accounting required");
         for (var item : receipt.finalLogicalBytesByPart().entrySet()) if (item.getValue() < 0 || item.getValue() > lease.caps().get(item.getKey())) throw new IOException("Capture final part exceeded its actual release");
-        receipt.testCompilationRef().verify(); return receipt;
+        receipt.testCompilationRef().verify(); receipt.capacityReleaseRef().verify(); receiptRef.verify();
+        return new VerifiedCompletedCapture(receipt, config);
     }
 
     private static void requireExactPath(FileRef reference, Path expected) throws IOException {
@@ -420,7 +521,56 @@ public final class ControlBuild {
         return buildExclusive(config, BuildPurpose.TEST_COMPILED_CAPTURE_ONLY).capture();
     }
 
+    /** Strict bounded envelope parsing only; this does not establish build qualification. */
+    static BuildReceipt readBuildReceiptEnvelope(Path path) throws IOException {
+        return JSON.readValue(readLimited(path, BUILD_RECEIPT_MAX_BYTES), BuildReceipt.class);
+    }
+
+    public static int receiptMaxBytes(SourceLimitProfile profile) {
+        return Objects.requireNonNull(profile).resumedParity()
+                ? RESUMED_BUILD_RECEIPT_MAX_BYTES : BUILD_RECEIPT_MAX_BYTES;
+    }
+
+    /** Actual bytes only. This checks the selected versioned envelope, not completed-build qualification. */
+    public static byte[] readReceiptEnvelope(FileRef ref) throws IOException {
+        if (ref.bytes() < 1 || ref.bytes() > BUILD_RECEIPT_ENVELOPE_MAX_BYTES)
+            throw new IOException("Bounded selected build receipt envelope required");
+        ref.verify(); byte[] bytes = readLimited(Path.of(ref.path()), BUILD_RECEIPT_ENVELOPE_MAX_BYTES);
+        final JsonNode envelope;
+        try { envelope = JSON.readTree(bytes); }
+        catch (com.fasterxml.jackson.core.JsonProcessingException error) {
+            if (bytes.length > BUILD_RECEIPT_MAX_BYTES) throw new IOException("JSON input exceeds limit", error);
+            throw error;
+        }
+        JsonNode selected = envelope == null ? null : envelope.get("source_limit_profile");
+        if (selected == null || !selected.isTextual()) throw new IOException("Explicit selected receipt source profile required");
+        final SourceLimitProfile profile;
+        try { profile = SourceLimitProfile.valueOf(selected.textValue()); }
+        catch (IllegalArgumentException error) { throw new IOException("Unknown selected receipt source profile", error); }
+        if (bytes.length > receiptMaxBytes(profile)) throw new IOException("Build receipt exceeds its finite selected profile byte limit");
+        ref.verify(); return bytes;
+    }
+
+    static byte[] buildReceiptBytes(BuildReceipt receipt) throws IOException {
+        return checkedBuildReceiptBytes(JSON.writerWithDefaultPrettyPrinter().writeValueAsBytes(Objects.requireNonNull(receipt)), receipt.sourceLimitProfile());
+    }
+
+    static byte[] captureReceiptBytes(CaptureBuildReceipt receipt) throws IOException {
+        return checkedBuildReceiptBytes(JSON.writerWithDefaultPrettyPrinter().writeValueAsBytes(Objects.requireNonNull(receipt)), receipt.sourceLimitProfile());
+    }
+
+    private static byte[] checkedBuildReceiptBytes(byte[] bytes) throws IOException {
+        if (bytes.length > BUILD_RECEIPT_MAX_BYTES) throw new IOException("Build receipt exceeds finite 2 MiB byte limit");
+        return bytes;
+    }
+    private static byte[] checkedBuildReceiptBytes(byte[] bytes, SourceLimitProfile profile) throws IOException {
+        if (!profile.resumedParity()) return checkedBuildReceiptBytes(bytes);
+        if (bytes.length > RESUMED_BUILD_RECEIPT_MAX_BYTES) throw new IOException("R2 build receipt exceeds finite 4 MiB byte limit");
+        return bytes;
+    }
+
     private static BuildOutcome buildExclusive(Config config, BuildPurpose purpose) throws IOException, InterruptedException {
+        CanonicalOracleEnvironment.require(System.getenv());
         requireNativeScratch(config.workRoot().resolve("scratch"));
         String machine = WindowsJobProcess.currentMachineId();
         Lease lease = readLease(config, machine);
@@ -435,7 +585,7 @@ public final class ControlBuild {
             try {
                 if (purpose == BuildPurpose.VERIFY) {
                     BuildReceipt receipt = normalReceipt(evidence, machine, evidence.failure());
-                    Files.write(receiptPath, JSON.writerWithDefaultPrettyPrinter().writeValueAsBytes(receipt), StandardOpenOption.CREATE_NEW);
+                    Files.write(receiptPath, buildReceiptBytes(receipt), StandardOpenOption.CREATE_NEW);
                     return new BuildOutcome(receipt, null);
                 }
                 if (evidence.failure() != null) throw new IOException(evidence.failure());
@@ -449,8 +599,7 @@ public final class ControlBuild {
                         FileRef.measure(logs.resolve("build-" + config.attempt() + "-package.stdout.log")),
                         FileRef.measure(logs.resolve("build-" + config.attempt() + "-package.stderr.log")),
                         FileRef.measure(logs.resolve("build-" + config.attempt() + "-version.stdout.log")), evidence.testCompilationRef(), evidence.finalSizes());
-                byte[] receiptBytes = JSON.writerWithDefaultPrettyPrinter().writeValueAsBytes(receipt);
-                if (receiptBytes.length > (1 << 20)) throw new IOException("Capture receipt exceeds the unchanged 1 MiB reader bound");
+                byte[] receiptBytes = captureReceiptBytes(receipt);
                 Files.write(receiptPath, receiptBytes, StandardOpenOption.CREATE_NEW);
                 return new BuildOutcome(null, receipt);
             } catch (IOException | RuntimeException error) {
@@ -460,7 +609,7 @@ public final class ControlBuild {
                     CaptureBuildFailure actual = new CaptureBuildFailure("xar.java-control-test-compiled-capture-failure/v1", machine,
                             Instant.now().toString(), CaptureTestState.NOT_RUN, normalReceipt(evidence, machine, failure),
                             evidence.mavenArguments(), Files.exists(command) ? FileRef.measure(command) : null);
-                    Files.write(receiptPath, JSON.writerWithDefaultPrettyPrinter().writeValueAsBytes(actual), StandardOpenOption.CREATE_NEW);
+                    Files.write(receiptPath, checkedBuildReceiptBytes(JSON.writerWithDefaultPrettyPrinter().writeValueAsBytes(actual), config.sourceLimitProfile()), StandardOpenOption.CREATE_NEW);
                 }
                 throw error;
             } finally { if (evidence.interrupted()) Thread.currentThread().interrupt(); }
@@ -486,6 +635,7 @@ public final class ControlBuild {
         if (source.isEmpty() || !Files.isRegularFile(config.sourceRoot().resolve("pom.xml"))) throw new IOException("Maven source closure is missing");
         Files.createDirectories(snapshot); Files.createDirectories(build);
         if (!Files.getFileStore(snapshot).equals(Files.getFileStore(build))) throw new IOException("Source snapshot and build output must share a filesystem");
+        Files.createDirectory(build.resolve("integration-test-scratch"));
         List<FileRef> compiled = new ArrayList<>();
         for (FileRef original : source) {
             Path relative = config.sourceRoot().relativize(Path.of(original.path()));
@@ -500,12 +650,14 @@ public final class ControlBuild {
         Map<String, String> environment = buildEnvironment(config, snapshot, lease);
         WindowsJobProcess.CommandResult probe = null, result = null; MavenToolchain toolchain = null;
         List<FileRef> closure = List.of(); String failure = null; boolean interrupted = false;
-        List<String> mavenArguments = purpose == BuildPurpose.VERIFY ? reactorVerifyArguments(config, settings, snapshot, build)
-                : reactorCaptureArguments(config, settings, snapshot, build);
+        List<String> mavenArguments = List.of();
         FileRef testCompilationRef = null;
         Path deployment = config.targetKind() == TargetKind.SERVICE_FAST_JAR
                 ? build.resolve("ck3-control-local-service/quarkus-app") : build.resolve("ck3-control-build-tools");
         try {
+            // Missing selected oracle inputs are a real RED build, with the same receipt and terminal accounting.
+            mavenArguments = purpose == BuildPurpose.VERIFY ? reactorVerifyArguments(config, settings, snapshot, build, environment)
+                    : reactorCaptureArguments(config, settings, snapshot, build, environment);
             probe = invoke(config, lease, snapshot, environment, logs, "version", List.of("-version"));
             interrupted |= Thread.interrupted();
             String versionOutput = Files.readString(logs.resolve("build-" + config.attempt() + "-version.stdout.log"));
@@ -516,6 +668,9 @@ public final class ControlBuild {
             result = invoke(config, lease, snapshot, environment, logs, purpose == BuildPurpose.VERIFY ? "verify" : "package", mavenArguments);
             interrupted |= Thread.interrupted();
             if (!result.passed()) throw new IOException("Maven failed, timed out, retained children, or exceeded Job memory");
+            if (purpose == BuildPurpose.VERIFY && config.sourceLimitProfile() == SourceLimitProfile.G2_FULL_PARITY_20261024_R3) {
+                FullParityCurrentBindings.retainCompletedInvocation(config, settings, snapshot, build, deployment, mavenArguments);
+            }
             for (FileRef reference : compiled) reference.verify();
             closure = deploymentManifest(deployment, config.targetKind());
             if (purpose == BuildPurpose.TEST_COMPILED_CAPTURE_ONLY) {
@@ -592,17 +747,81 @@ public final class ControlBuild {
 
     /** Collect independent reactor failures while Maven still returns a failing terminal exit. */
     static List<String> reactorVerifyArguments(Config config, Path settings, Path snapshot, Path build) {
-        return List.of("--fail-at-end", "-B", "-ntp", "-e", "-U",
+        return reactorVerifyArguments(config, settings, snapshot, build, System.getenv());
+    }
+
+    static List<String> reactorVerifyArguments(Config config, Path settings, Path snapshot, Path build,
+            Map<String, String> environment) {
+        String python = environment.get("XAR_ORACLE_PYTHON");
+        if (python == null || python.isBlank() || !Path.of(python).isAbsolute()
+                || python.chars().anyMatch(Character::isISOControl)) {
+            throw new IllegalArgumentException("Explicit absolute XAR_ORACLE_PYTHON from the selected bootstrap plan required");
+        }
+        FullParityOracleBindings.SelectedBindings bindings = config.sourceLimitProfile().fullParity()
+                ? FullParityOracleBindings.fromEnvironment(config.sourceLimitProfile(), environment, snapshot) : null;
+        return reactorVerifyArguments(config, settings, snapshot, build,
+                bindings == null ? python : bindings.python(), bindings);
+    }
+
+    static List<String> reactorVerifyArguments(Config config, Path settings, Path snapshot, Path build,
+            String python, FullParityOracleBindings.SelectedBindings bindings) {
+        // This sole complete producer owns ROOT_PYTHON; bindings contribute only the role fragment.
+        if (bindings != null && !Path.of(python).equals(Path.of(bindings.python())))
+            throw new IllegalArgumentException("Complete Maven invocation must bind one interpreter across Root context and original consumers");
+        List<String> arguments = new ArrayList<>(List.of("--fail-at-end", "-B", "-ntp", "-e", "-U",
                 "-s", settings.toString(), "-gs", settings.toString(), "-f", snapshot.resolve("pom.xml").toString(),
                 "-Dmaven.repo.local=" + config.workRoot().resolve("m2"), "-Dck3.build.root=" + build,
-                "-Djava.io.tmpdir=" + config.workRoot().resolve("scratch"), "-DargLine=-Xms32m -Xmx256m", "verify");
+                "-Dxar.rootContext.testRoot=" + build.resolve("root-context-provider-test"),
+                "-Dxar.rootContext.pythonExecutable=" + python,
+                "-Dxar.g2.http.evidence-dir=" + build.resolve("g2-http-evidence"),
+                "-Dxar.scratch=" + build.resolve("integration-test-scratch"),
+                "-Djava.io.tmpdir=" + config.workRoot().resolve("scratch"), "-DargLine=-Xms32m -Xmx256m", "verify"));
+        if (bindings instanceof FullParityCurrentBindings.Bindings current) current.requireCompiledRoot(snapshot);
+        if (bindings != null) arguments.addAll(arguments.size() - 1, bindings.mavenArguments());
+        return List.copyOf(arguments);
     }
 
     static List<String> reactorCaptureArguments(Config config, Path settings, Path snapshot, Path build) {
-        List<String> args = new ArrayList<>(reactorVerifyArguments(config, settings, snapshot, build));
+        return reactorCaptureArguments(config, settings, snapshot, build, System.getenv());
+    }
+
+    static List<String> reactorCaptureArguments(Config config, Path settings, Path snapshot, Path build,
+            Map<String, String> environment) {
+        return captureArguments(reactorVerifyArguments(config, settings, snapshot, build, environment));
+    }
+
+    private static List<String> captureArguments(List<String> verifyArguments) {
+        List<String> args = new ArrayList<>(verifyArguments);
         if (!args.removeLast().equals("verify")) throw new IllegalStateException("Exact existing verify argument contract required");
         args.add("-Dmaven.test.skip=false"); args.add("-DskipTests=true"); args.add("package");
         return List.copyOf(args);
+    }
+
+    /**
+     * Reconstructs the exact completed command from its recorded invocation, independent of current
+     * environment or execution authority. The caller also verifies the immutable command-file bytes.
+     */
+    static List<String> completedCaptureArguments(Config config, Path settings, Path snapshot, Path build,
+            List<String> recordedArguments) throws IOException {
+        final String property = "-Dxar.rootContext.pythonExecutable=";
+        List<String> selected = recordedArguments.stream().filter(arg -> arg.startsWith(property)).toList();
+        if (selected.size() != 1) throw new IOException("Exactly one recorded capture Python argument required");
+        final List<String> expected;
+        try {
+            if (config.sourceLimitProfile().fullParity()) {
+                FullParityOracleBindings.SelectedBindings bindings = FullParityOracleBindings.fromRecordedArguments(config.sourceLimitProfile(), recordedArguments);
+                expected = captureArguments(reactorVerifyArguments(config, settings, snapshot, build, bindings.python(), bindings));
+            } else {
+                expected = reactorCaptureArguments(config, settings, snapshot, build,
+                        Map.of("XAR_ORACLE_PYTHON", selected.getFirst().substring(property.length())));
+            }
+        } catch (IllegalArgumentException error) {
+            throw new IOException("Recorded absolute capture Python argument invalid", error);
+        }
+        if (!expected.equals(recordedArguments)) {
+            throw new IOException("Capture command arguments differ from explicit package/test-compile/no-run producer");
+        }
+        return expected;
     }
 
     /** All compiler-created test binaries must attest to one actual compiler input in this immutable module. */
@@ -695,7 +914,7 @@ public final class ControlBuild {
         Files.writeString(batch, mavenBatchText(explicitOverride, args), StandardCharsets.UTF_8, StandardOpenOption.CREATE_NEW);
     }
 
-    private static String mavenBatchText(Path explicitOverride, List<String> args) {
+    static String mavenBatchText(Path explicitOverride, List<String> args) {
         List<String> words = new ArrayList<>(); words.add(explicitOverride == null ? "mvn" : explicitOverride.toString()); words.addAll(args);
         for (String word : words) {
             if (word.isEmpty() || word.matches(".*[\\r\\n\"&|<>^%!].*")) throw new IllegalArgumentException("Unsafe CMD token");
@@ -731,8 +950,9 @@ public final class ControlBuild {
         return true;
     }
 
-    private static Map<String, String> buildEnvironment(Config config, Path snapshot, Lease lease) {
+    private static Map<String, String> buildEnvironment(Config config, Path snapshot, Lease lease) throws IOException {
         Map<String, String> env = new TreeInsensitiveMap(System.getenv()).values();
+        CanonicalOracleEnvironment.require(env);
         for (String key : List.of("MAVEN_ARGS", "MAVEN_DEBUG_OPTS", "MAVEN_BATCH_ECHO", "HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY", "JDK_JAVA_OPTIONS")) env.remove(key);
         String scratch = config.workRoot().resolve("scratch").toString();
         long heapMiB = Math.min(768, lease.mavenHeapBytes() / (1024 * 1024));
@@ -748,9 +968,15 @@ public final class ControlBuild {
     }
 
     private static Lease readLease(Config config, String machine) throws IOException {
+        return readLeaseAt(config, machine, Instant.now());
+    }
+
+    /** The authority instant is captured by the live caller or the already-validated original completion. */
+    static Lease readLeaseAt(Config config, String machine, Instant authorityAt) throws IOException {
+        Objects.requireNonNull(authorityAt);
         JsonNode data = readObject(config.capacityRelease());
         if (text(data, "schema").equals("xar.java-control.capacity-release/v1")) {
-            return readTypedLease(config, machine, JSON.treeToValue(data, CapacityRelease.class));
+            return readTypedLease(config, machine, JSON.treeToValue(data, CapacityRelease.class), authorityAt);
         }
         if (!text(data, "schema").equals("xar.java-phase1.manual-capacity-release/v1")
                 || !text(data, "status").equals("RELEASED_JAVA_PHASE1_BOUNDED_BUILD_AND_LOCAL_SERVICE")
@@ -758,7 +984,7 @@ public final class ControlBuild {
             throw new IOException("Capacity release schema, machine, state or writer mismatch");
         }
         Instant deadline = Instant.parse(text(data, "review_at_utc"));
-        if (!Instant.now().isBefore(deadline)) throw new IOException("Capacity release expired");
+        if (!authorityAt.isBefore(deadline)) throw new IOException("Capacity release expired");
         JsonNode approved = data.get("approved_output_roots");
         if (approved == null || !approved.isArray() || approved.isEmpty() || approved.size() > 16) throw new IOException("Approved roots are unavailable");
         boolean allowed = false, sourceAllowed = false;
@@ -793,10 +1019,10 @@ public final class ControlBuild {
         return new Lease(machine, deadline, Map.copyOf(caps), positive(data, "test_RAM_joint_hard_bytes"), positive(data, "Maven_heap_bytes"), Map.copyOf(minimum));
     }
 
-    private static Lease readTypedLease(Config config, String machine, CapacityRelease release) throws IOException {
+    private static Lease readTypedLease(Config config, String machine, CapacityRelease release, Instant authorityAt) throws IOException {
         Instant deadline = Instant.parse(release.reviewAtUtc());
         if (!machine.equals(release.machineId()) || !config.ownerTask().equals(release.ownerTask())
-                || !Instant.now().isBefore(deadline)) throw new IOException("Capacity machine, writer or deadline rejected");
+                || !authorityAt.isBefore(deadline)) throw new IOException("Capacity machine, writer or deadline rejected");
         boolean work = false, source = false;
         for (String root : release.approvedOutputRoots()) {
             Path approved = Path.of(root).toRealPath();
@@ -815,11 +1041,11 @@ public final class ControlBuild {
             CiBootstrap.QuotaOverride override = release.quotaOverrides().get(field.getKey());
             if (volume.effectiveProjectQuota() != defaultQuota) {
                 if (override == null || override.owner() == null || override.owner().isBlank() || !override.task().equals(release.ownerTask())
-                        || override.reason() == null || override.reason().isBlank() || override.maxProjectBytes() != (8L << 30)
-                        || override.maxProjectBytes() != volume.effectiveProjectQuota() || !Instant.now().isBefore(Instant.parse(override.reviewAtUtc()))
+                        || override.reason() == null || override.reason().isBlank()
+                        || override.maxProjectBytes() != volume.effectiveProjectQuota() || !authorityAt.isBefore(Instant.parse(override.reviewAtUtc()))
                         || Instant.parse(override.reviewAtUtc()).isAfter(deadline)
                         || Math.addExact(volume.currentProjectUsageConservativeUpper(), volume.thisWritePeak()) <= defaultQuota) {
-                    throw new IOException("Explicit finite CI quota override required only for an insufficient default quota");
+                    throw new IOException("Explicit finite owner quota override required only for an insufficient default quota");
                 }
                 new FileRef(override.sourceRef().path(), override.sourceRef().bytes(), override.sourceRef().sha256()).verify();
             } else if (override != null) throw new IOException("Unnecessary quota override rejected");
@@ -846,6 +1072,22 @@ public final class ControlBuild {
                 Path.of(plan.workRoot()).resolve("scratch").toString(), plan.parts(), plan.volumes(), plan.quotaOverrides(), 2L << 30, 768L << 20);
     }
 
+    /** Reuse the admitted CI lease and inventory for a stage's pending artifact metadata. */
+    public static void revalidateCiResources(CiBootstrap.Plan plan, Path release, long pendingMetadataBytes) throws IOException {
+        if (plan == null || release == null || pendingMetadataBytes < 0 || pendingMetadataBytes > (16L << 20)
+                || !CiBootstrap.PLAN_SCHEMA.equals(plan.schema())
+                || !WindowsJobProcess.currentMachineId().equals(plan.machineId())
+                || !Instant.now().isBefore(Instant.parse(plan.reviewAtUtc()))) {
+            throw new IOException("Current CI plan and bounded pending metadata required");
+        }
+        Config config = new Config(Path.of(plan.repoRoot()).resolve("java/ck3-control/build-tools"),
+                Path.of(plan.workRoot()), release, "ci-fixture-resource-check", plan.ownerTask(), null,
+                Path.of(plan.javaHome()), CiBootstrap.MINIMUM_MAVEN_VERSION, 900,
+                TargetKind.BUILD_TOOLS_RUNTIME, SourceLimitProfile.STANDARD_8_MIB);
+        Lease lease = readLease(config, plan.machineId());
+        guard(config, lease, () -> {}, pendingMetadataBytes);
+    }
+
     private static void requireToolPaths(Config config, String machine) throws IOException {
         requireRegular(config.javaHome().resolve("bin/java.exe"));
         if (config.mavenCommand() != null) requireRegular(config.mavenCommand());
@@ -863,6 +1105,10 @@ public final class ControlBuild {
     }
 
     private static void guard(Config config, Lease lease, CiBootstrap.IoGuard childDeadline) throws IOException {
+        guard(config, lease, childDeadline, 0);
+    }
+
+    private static void guard(Config config, Lease lease, CiBootstrap.IoGuard childDeadline, long pendingMetadataBytes) throws IOException {
         CiBootstrap.IoGuard active = () -> {
             if (Thread.currentThread().isInterrupted()) throw new InterruptedIOException("Build inventory interrupted");
             if (!Instant.now().isBefore(lease.deadline())) throw new IOException("Capacity release expired");
@@ -872,7 +1118,10 @@ public final class ControlBuild {
         for (var volume : lease.minimumFreeByVolume().entrySet()) {
             if (Files.getFileStore(volume.getKey()).getUsableSpace() < volume.getValue()) throw new IOException("Current volume free space is insufficient: " + volume.getKey());
         }
-        sizes(config.workRoot(), lease.caps(), active, NIO_INVENTORY);
+        Map<String, Long> measured = sizes(config.workRoot(), lease.caps(), active, NIO_INVENTORY);
+        if (Math.addExact(measured.get("artifacts"), pendingMetadataBytes) > lease.caps().get("artifacts")) {
+            throw new IOException("Workpackage artifact cap cannot admit pending CI metadata");
+        }
     }
 
     static Map<String, Long> sizes(Path root, Map<String, Long> caps, CiBootstrap.IoGuard active, InventoryIo io) throws IOException {
@@ -924,9 +1173,29 @@ public final class ControlBuild {
         return mutableInventoryBytes(root, observer, new InventoryAccess(false, () -> {}, NIO_INVENTORY));
     }
 
+    /** Output/cache inventory limits count the root directory and each observed entry exactly once. */
+    record WorkpackageInventoryLimits(int regularFiles, int directories, int totalEntries) {
+        WorkpackageInventoryLimits {
+            if (regularFiles < 0 || directories < 1 || totalEntries < 1) {
+                throw new IllegalArgumentException("Finite nonnegative files and positive directory/total limits required");
+            }
+        }
+    }
+    static final WorkpackageInventoryLimits WORKPACKAGE_INVENTORY_LIMITS =
+            new WorkpackageInventoryLimits(250000, 131072, 381072);
+
+    static long mutableInventoryBytes(Path root, InventoryObserver observer, WorkpackageInventoryLimits limits) throws IOException {
+        return mutableInventoryBytes(root, observer, new InventoryAccess(false, () -> {}, NIO_INVENTORY), limits);
+    }
+
     private static long mutableInventoryBytes(Path root, InventoryObserver observer, InventoryAccess access) throws IOException {
+        return mutableInventoryBytes(root, observer, access, WORKPACKAGE_INVENTORY_LIMITS);
+    }
+
+    private static long mutableInventoryBytes(Path root, InventoryObserver observer, InventoryAccess access,
+                                               WorkpackageInventoryLimits limits) throws IOException {
         AtomicLong total = new AtomicLong();
-        walk(root, false, 100000, true, observer, (path, active) -> {
+        walk(root, false, limits, true, true, observer, (path, active) -> {
             try { total.set(Math.addExact(total.get(), CiBootstrap.rereadScratchMetadata(
                     access.scratch() && !path.equals(root), active, () -> access.io().size(path)))); }
             catch (NoSuchFileException removedEntry) { /* A concurrent producer removed this output/cache entry. */ }
@@ -937,8 +1206,13 @@ public final class ControlBuild {
     private interface FileAction { void accept(Path path, CiBootstrap.IoGuard active) throws IOException; }
 
     private static List<FileRef> manifest(Path root, boolean excludeBuildCaches, int maxFiles, long maxBytes) throws IOException {
+        return manifest(root, excludeBuildCaches, maxFiles, maxFiles, maxBytes);
+    }
+
+    private static List<FileRef> manifest(Path root, boolean excludeBuildCaches, int maxFiles, int maxEntries, long maxBytes) throws IOException {
         List<FileRef> references = new ArrayList<>(); AtomicLong total = new AtomicLong();
-        walk(root, excludeBuildCaches, maxFiles, (path, active) -> {
+        walk(root, excludeBuildCaches, maxEntries, (path, active) -> {
+            if (references.size() >= maxFiles) throw new IOException("Manifest regular file limit exceeded");
             FileRef reference = FileRef.measure(path); total.set(Math.addExact(total.get(), reference.bytes()));
             if (total.get() > maxBytes) throw new IOException("Manifest content limit exceeded");
             references.add(reference);
@@ -953,9 +1227,29 @@ public final class ControlBuild {
     public static List<FileRef> sourceManifest(Path root, SourceLimitProfile profile) throws IOException {
         if (profile == null) throw new IllegalArgumentException("Explicit source limit profile required");
         List<FileRef> result = new ArrayList<>();
-        collectModule(root.toRealPath(), root.toRealPath(), new HashSet<>(), result, profile);
+        Path boundary = root.toRealPath(); Set<Path> visited = new HashSet<>();
+        collectModule(boundary, boundary, visited, result, profile);
+        if (profile.completeG2()) {
+            Set<Path> expected = new HashSet<>(); expected.add(boundary);
+            for (String module : completeG2Modules(profile)) expected.add(boundary.resolve(module));
+            if (!visited.equals(expected)) throw new IOException(profile.name()
+                    + " requires the complete " + (expected.size() - 1) + "-child/" + expected.size() + "-project source graph");
+            List<FileRef> ordinary = sourceManifestPart(boundary, profile, profile.maxBytes());
+            if (!new HashSet<>(ordinary).equals(new HashSet<>(result))) throw new IOException("G2 ordinary source inventory differs from canonical module roots");
+        }
         requireSourceExtent(result, profile);
         result.sort(Comparator.comparing(FileRef::path)); return List.copyOf(result);
+    }
+
+    // G2 admits directory-rich canonical source trees while bounding every visited entry.
+    // The regular-file and byte limits remain the profile's independent source extent.
+    private static final int G2_MAX_SOURCE_INVENTORY_ENTRIES = 8192;
+
+    private static List<FileRef> sourceManifestPart(Path root, SourceLimitProfile profile, long maxBytes) throws IOException {
+        if (profile.completeG2()) {
+            return manifest(root, false, profile.maxFiles(), G2_MAX_SOURCE_INVENTORY_ENTRIES, maxBytes);
+        }
+        return manifest(root, false, profile.maxFiles(), maxBytes);
     }
 
     private static void requireSourceExtent(List<FileRef> files, SourceLimitProfile profile) throws IOException {
@@ -976,16 +1270,32 @@ public final class ControlBuild {
         } catch (java.net.URISyntaxException error) { throw new IOException("Build producer runtime URI invalid", error); }
     }
 
+    private static Set<String> completeG2Modules(SourceLimitProfile profile) {
+        if (!profile.completeG2()) throw new IllegalArgumentException("Explicit complete G2 profile required");
+        Set<String> modules = new HashSet<>(EXISTING_MIGRATION_MODULES);
+        modules.add("g2-research");
+        if (profile == SourceLimitProfile.G2_STABILIZATION_20261023 || profile.fullParity())
+            modules.add("continuity-core");
+        if (profile.fullParity())
+            modules.addAll(Set.of("adapters-storage", "application", "native-transport"));
+        return Set.copyOf(modules);
+    }
+
     private static void collectModule(Path module, Path boundary, Set<Path> visited, List<FileRef> result, SourceLimitProfile profile) throws IOException {
-        if (!module.startsWith(boundary) || !visited.add(module) || visited.size() > 32) throw new IOException("Module graph escapes, repeats or exceeds limit");
+        if (!module.startsWith(boundary) || !visited.add(module) || visited.size() > profile.maxReactorProjects())
+            throw new IOException("Module graph escapes, repeats or exceeds limit");
         if (profile == SourceLimitProfile.EXISTING_MIGRATION_20261022 && !module.equals(boundary)
                 && !EXISTING_MIGRATION_MODULES.contains(boundary.relativize(module).toString().replace('\\', '/'))) {
             throw new IOException("Module is outside the existing finite migration cohort");
         }
+        if (profile.completeG2() && !module.equals(boundary)
+                && !completeG2Modules(profile).contains(boundary.relativize(module).toString().replace('\\', '/'))) {
+            throw new IOException("Module is outside the complete " + profile.name() + " cohort");
+        }
         Path pom = module.resolve("pom.xml"); result.add(FileRef.measure(pom));
         for (String directory : List.of("src", ".mvn")) {
             Path path = module.resolve(directory);
-            if (Files.exists(path)) result.addAll(manifest(path, false, profile.maxFiles(), 8L * 1024 * 1024));
+            if (Files.exists(path)) result.addAll(sourceManifestPart(path, profile, 8L * 1024 * 1024));
         }
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance(); factory.setNamespaceAware(true);
@@ -993,7 +1303,7 @@ public final class ControlBuild {
             factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
             factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
             Element project = factory.newDocumentBuilder().parse(pom.toFile()).getDocumentElement();
-            if (profile == SourceLimitProfile.EXISTING_MIGRATION_20261022) {
+            if (profile == SourceLimitProfile.EXISTING_MIGRATION_20261022 || profile.completeG2()) {
                 if (module.equals(boundary) && !"ck3-control-parent".equals(directText(project, "artifactId"))) {
                     throw new IOException("Finite migration profile requires the existing control parent");
                 }
@@ -1050,12 +1360,31 @@ public final class ControlBuild {
 
     private static void walk(Path root, boolean excludeBuildCaches, int maxFiles, boolean allowVanished,
                              InventoryObserver observer, FileAction action, InventoryAccess access) throws IOException {
-        if (!Files.isDirectory(root, LinkOption.NOFOLLOW_LINKS) || Files.isSymbolicLink(root)) throw new IOException("Actual plain inventory root required: " + root);
-        long deadline = System.nanoTime() + Duration.ofSeconds(120).toNanos(); AtomicLong count = new AtomicLong();
+        // Source and other immutable inventories retain their existing total-entry ceiling.
+        walk(root, excludeBuildCaches, new WorkpackageInventoryLimits(maxFiles, maxFiles, maxFiles),
+                false, allowVanished, observer, action, access);
+    }
+
+    private static IOException inventoryFailure(boolean detailed, String category, Path path,
+                                                long counter, long limit, String legacyMessage) {
+        return new IOException(detailed ? "Workpackage inventory category=" + category + " path=" + path
+                + " counter=" + counter + " limit=" + limit : legacyMessage);
+    }
+
+    private static void walk(Path root, boolean excludeBuildCaches, WorkpackageInventoryLimits limits,
+                             boolean detailed, boolean allowVanished, InventoryObserver observer,
+                             FileAction action, InventoryAccess access) throws IOException {
+        if (!Files.isDirectory(root, LinkOption.NOFOLLOW_LINKS) || Files.isSymbolicLink(root)) {
+            throw inventoryFailure(detailed, "ROOT_TYPE", root, 1, 0, "Actual plain inventory root required: " + root);
+        }
+        long started = System.nanoTime(), deadline = started + Duration.ofSeconds(120).toNanos();
+        AtomicLong count = new AtomicLong(), regularFiles = new AtomicLong(), directories = new AtomicLong();
+        var currentPath = new java.util.concurrent.atomic.AtomicReference<Path>(root);
         Path realRoot = access.io().realPath(root);
         CiBootstrap.IoGuard active = () -> {
             if (Thread.currentThread().isInterrupted()) throw new InterruptedIOException("Build inventory interrupted");
-            if (System.nanoTime() >= deadline) throw new IOException("Inventory time limit");
+            if (System.nanoTime() >= deadline) throw inventoryFailure(detailed, "TIME_MILLIS", currentPath.get(),
+                    (System.nanoTime() - started) / 1000000L, 120000L, "Inventory time limit");
             access.active().check();
         };
         access.io().walk(root, new SimpleFileVisitor<>() {
@@ -1065,7 +1394,7 @@ public final class ControlBuild {
             }
             @Override public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) throws IOException {
                 if (!check(file, attributes)) return FileVisitResult.CONTINUE;
-                if (!attributes.isRegularFile()) throw new IOException("Nonregular inventory file");
+                if (!attributes.isRegularFile()) throw inventoryFailure(detailed, "NONREGULAR", file, 1, 0, "Nonregular inventory file");
                 action.accept(file, active); return FileVisitResult.CONTINUE;
             }
             @Override public FileVisitResult visitFileFailed(Path file, IOException error) throws IOException {
@@ -1098,13 +1427,25 @@ public final class ControlBuild {
                 return super.postVisitDirectory(directory, error);
             }
             private boolean check(Path path, BasicFileAttributes attributes) throws IOException {
-                active.check();
+                currentPath.set(path); active.check();
                 observer.beforeCheck(path);
-                if (attributes.isSymbolicLink() || attributes.isOther() || count.incrementAndGet() > maxFiles
-                        || System.nanoTime() >= deadline) throw new IOException("Inventory link, extent or time limit");
+                if (attributes.isSymbolicLink()) throw inventoryFailure(detailed, "SYMBOLIC_LINK", path, 1, 0, "Inventory link, extent or time limit");
+                if (attributes.isOther()) throw inventoryFailure(detailed, "OTHER", path, 1, 0, "Inventory link, extent or time limit");
+                long entries = count.incrementAndGet();
+                if (attributes.isDirectory() && directories.incrementAndGet() > limits.directories()) {
+                    throw inventoryFailure(detailed, "DIRECTORIES", path, directories.get(), limits.directories(), "Inventory link, extent or time limit");
+                }
+                if (attributes.isRegularFile() && regularFiles.incrementAndGet() > limits.regularFiles()) {
+                    throw inventoryFailure(detailed, "REGULAR_FILES", path, regularFiles.get(), limits.regularFiles(), "Inventory link, extent or time limit");
+                }
+                if (entries > limits.totalEntries()) throw inventoryFailure(detailed, "TOTAL_ENTRIES", path, entries, limits.totalEntries(), "Inventory link, extent or time limit");
+                if (System.nanoTime() >= deadline) throw inventoryFailure(detailed, "TIME_MILLIS", path,
+                        (System.nanoTime() - started) / 1000000L, 120000L, "Inventory link, extent or time limit");
                 try {
                     if (!CiBootstrap.rereadScratchMetadata(scratchDescendant(path), active,
-                            () -> access.io().realPath(path)).startsWith(realRoot)) throw new IOException("Inventory path escaped root");
+                            () -> access.io().realPath(path)).startsWith(realRoot)) {
+                        throw inventoryFailure(detailed, "PATH_ESCAPE", path, 1, 0, "Inventory path escaped root");
+                    }
                     return true;
                 } catch (NoSuchFileException error) {
                     if (allowVanished && !path.equals(root)) return false;
@@ -1186,3 +1527,5 @@ public final class ControlBuild {
         }
     }
 }
+
+

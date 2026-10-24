@@ -66,11 +66,14 @@ public final class CiBootstrap {
     private static final URI MAVEN_CHECKSUM = URI.create(MAVEN_ZIP + ".sha512");
     private static final long MIB = 1L << 20;
     private static final long GIB = 1L << 30;
+    private static final Duration PIPELINE_TOTAL = Duration.ofMinutes(45);
+    private static final Duration PIPELINE_SETTLEMENT = Duration.ofSeconds(30);
     private static final Map<String, Long> PARTS = Map.of(
             "m2", 2 * GIB, "build", 768 * MIB, "tools", 128 * MIB,
             "scratch", 512 * MIB, "metadata_logs", 32 * MIB, "artifacts", 128 * MIB,
             "guard", 480 * MIB);
     private static final Pattern SIMPLE_PATH = Pattern.compile("[^\\s\"%&|<>^!]+", Pattern.UNICODE_CHARACTER_CLASS);
+
     private static final Pattern MAVEN_CHECKSUM_TEMPORARY = Pattern.compile(
             ".+\\.(?:md5|sha1|sha256|sha512)\\.(0|[1-9][0-9]{0,19})\\.tmp");
     private static final Pattern MAVEN_ARTIFACT_TEMPORARY = Pattern.compile(
@@ -123,6 +126,48 @@ public final class CiBootstrap {
                 throw new IllegalArgumentException("standard-JDK bootstrap cannot grant native Job or pipeline qualification");
             }
         }
+    }
+
+    /** One deadline from the original entry observation; nested commands never restart its clock. */
+    public record PipelineTiming(Instant observedAt, Instant workDeadline, Instant outerDeadline) {
+        public PipelineTiming {
+            Objects.requireNonNull(observedAt); Objects.requireNonNull(workDeadline); Objects.requireNonNull(outerDeadline);
+            if (!observedAt.isBefore(workDeadline) || !workDeadline.plus(PIPELINE_SETTLEMENT).equals(outerDeadline)
+                    || outerDeadline.isAfter(observedAt.plus(PIPELINE_TOTAL))) {
+                throw new IllegalArgumentException("Finite shared pipeline window and terminal settlement reserve required");
+            }
+        }
+        public Duration remainingWork(Instant now) throws IOException { return remaining(now, workDeadline); }
+        public Duration remainingOuter(Instant now) throws IOException { return remaining(now, outerDeadline); }
+        private Duration remaining(Instant now, Instant deadline) throws IOException {
+            if (now.isBefore(observedAt) || !now.isBefore(deadline)) throw new IOException("Shared pipeline deadline unavailable or expired");
+            return Duration.between(now, deadline);
+        }
+    }
+
+    public static PipelineTiming pipelineTiming(Plan plan) {
+        return pipelineTiming(Instant.parse(plan.observedAtUtc()), Instant.parse(plan.reviewAtUtc()));
+    }
+    private static PipelineTiming pipelineTiming(Instant observed, Instant review) {
+        Instant total = observed.plus(PIPELINE_TOTAL);
+        Instant outer = review.isBefore(total) ? review : total;
+        return new PipelineTiming(observed, outer.minus(PIPELINE_SETTLEMENT), outer);
+    }
+
+    /** Narrow the existing execution lease and any quota override; original plan/pins remain immutable. */
+    public static Plan pipelineExecutionPlan(Plan plan) {
+        String review = pipelineTiming(plan).workDeadline().toString();
+        Map<String, QuotaOverride> overrides = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        for (var entry : plan.quotaOverrides().entrySet()) {
+            QuotaOverride original = entry.getValue();
+            String bounded = Instant.parse(original.reviewAtUtc()).isBefore(Instant.parse(review)) ? original.reviewAtUtc() : review;
+            overrides.put(entry.getKey(), new QuotaOverride(original.owner(), original.task(), original.reason(),
+                    original.maxProjectBytes(), bounded, original.sourceRef()));
+        }
+        return new Plan(plan.schema(), plan.machineId(), plan.observedAtUtc(), review, plan.repoRoot(), plan.workRoot(),
+                plan.javaHome(), plan.mavenCommand(), plan.pythonExecutable(), plan.ownerTask(), plan.policyRef(),
+                plan.volumes(), overrides, plan.parts(), plan.sourcePins(), plan.bootstrapRuntimeClosure(),
+                plan.bootstrapNativeJobHardBound(), plan.bootstrapAloneGrantsPipelineQualification());
     }
 
     public record BootstrapActual(String schema, String machineId, String startedAtUtc,
@@ -222,6 +267,7 @@ public final class CiBootstrap {
             return;
         }
         Map<String, String> values = arguments(arguments);
+        FilePin fixtureProduction = fixtureProductionPin(values);
         Path repo = Path.of(values.get("--repo-root")).toRealPath();
         Path root = Path.of(values.get("--work-root")).toAbsolutePath().normalize();
         Path python = Path.of(values.get("--python-executable")).toRealPath();
@@ -256,6 +302,7 @@ public final class CiBootstrap {
         String machine = machineId(systemRoot);
         Instant observed = Instant.now();
         Instant expiry = observed.plus(Duration.ofMinutes(90));
+        PipelineTiming timing = pipelineTiming(observed, expiry);
         QuotaOverride override = new QuotaOverride(string(field(profile, "owner")), string(field(profile, "task")),
                 string(field(profile, "reason")), requestedQuota, expiry.toString(), measure(profilePath));
         Map<String, QuotaOverride> overrides = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
@@ -278,8 +325,7 @@ public final class CiBootstrap {
             Map<String, String> environment = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
             environment.putAll(System.getenv());
             environment.put("JAVA_HOME", javaHome.toString());
-            environment.put("XAR_ORACLE_PYTHON", python.toString());
-            environment.put("XAR_REPO_ROOT", repo.toString());
+            environment.putAll(CanonicalOracleEnvironment.bind(repo, python, environment));
             String scratch = root.resolve("scratch").toString();
             String jvm = "-Xms32m -Xmx512m -XX:MaxMetaspaceSize=192m -XX:ReservedCodeCacheSize=64m"
                     + " -XX:MaxDirectMemorySize=64m -Xss512k -Djava.io.tmpdir=" + scratch + " -Djna.tmpdir=" + scratch;
@@ -302,13 +348,13 @@ public final class CiBootstrap {
                 Path log = root.resolve("logs/maven-version-" + ordinal + ".log");
                 return recordedMavenProbe(() -> {
                     runPlain(List.of(systemRoot.resolve("System32/cmd.exe").toString(), "/d", "/c", versionBatch.toString()),
-                            root.resolve("scratch"), environment, log, Duration.ofSeconds(30), expiry, root, volumes);
+                            root.resolve("scratch"), environment, log, Duration.ofSeconds(30), timing.workDeadline(), root, volumes);
                     return Files.readString(log);
                 }, () -> defaultMavenLauncher(environment, root.resolve("scratch"), true), log,
                         root.resolve("logs/maven-observation-" + ordinal + ".json"), machine, bootstrapSourceRef,
                         ordinal == 1 ? MavenProbePhase.BEFORE_ENSURE : MavenProbePhase.AFTER_IN_PLACE_UPGRADE,
                         true, mavenProbeRefs);
-            }, observedInstallation -> installOfficialMaven(observedInstallation, root, machine, volumes, () -> guard(root, volumes, expiry)));
+            }, observedInstallation -> installOfficialMaven(observedInstallation, root, machine, volumes, () -> guard(root, volumes, timing.workDeadline())));
             Path maven = Path.of(defaultMaven.distributionLauncherRef().path());
             Path batch = root.resolve("scratch/bootstrap-verify.cmd");
             Files.writeString(batch, "@echo off\r\ncall mvn -B -ntp -e -s \"" + settings
@@ -317,7 +363,7 @@ public final class CiBootstrap {
                     + root.resolve("build/bootstrap-tools") + "\" verify\r\nexit /b %errorlevel%\r\n",
                     StandardOpenOption.CREATE_NEW);
             runPlain(List.of(systemRoot.resolve("System32/cmd.exe").toString(), "/d", "/c", batch.toString()),
-                    root.resolve("scratch"), environment, root.resolve("logs/bootstrap-verify.log"), Duration.ofMinutes(15), expiry, root, volumes);
+                    root.resolve("scratch"), environment, root.resolve("logs/bootstrap-verify.log"), Duration.ofMinutes(15), timing.workDeadline(), root, volumes);
             if (!before.equals(sourcePins(source))) throw new IOException("bootstrap source changed during full verify");
             Path output = root.resolve("build/bootstrap-tools/ck3-control-build-tools");
             List<FilePin> runtime = new ArrayList<>();
@@ -330,18 +376,19 @@ public final class CiBootstrap {
                     runtime.add(measure(path));
                 }
             }
-            Plan plan = new Plan(PLAN_SCHEMA, machine, Instant.now().toString(), expiry.toString(),
+            Plan plan = new Plan(PLAN_SCHEMA, machine, observed.toString(), expiry.toString(),
                     repo.toString(), root.toString(), javaHome.toString(), maven.toString(), python.toString(),
                     "github-actions-java-ci", measure(policyPath), volumes, overrides, PARTS, before, List.copyOf(runtime), false, false);
             planRef = publish(planPath, plan);
             String classpath = String.join(";", runtime.stream().map(FilePin::path).toList());
-            List<String> command = List.of(javaHome.resolve("bin/java.exe").toString(), "-Xms32m", "-Xmx128m",
+            List<String> command = new ArrayList<>(List.of(javaHome.resolve("bin/java.exe").toString(), "-Xms32m", "-Xmx128m",
                     "-XX:MaxMetaspaceSize=96m", "-XX:ReservedCodeCacheSize=48m", "-XX:MaxDirectMemorySize=32m",
                     "-Djava.io.tmpdir=" + scratch, "-Djna.tmpdir=" + scratch, "-cp", classpath,
-                    "org.xar.ck3.control.build.ControlCi", "--bootstrap-plan", planPath.toString());
+                    "org.xar.ck3.control.build.ControlCi", "--bootstrap-plan", planPath.toString()));
+            appendFixtureProduction(command, fixtureProduction);
             environment.remove("JAVA_TOOL_OPTIONS");
             runPlain(command, repo, environment, root.resolve("logs/qualified-pipeline.log"),
-                    Duration.ofMinutes(20), expiry, root, volumes);
+                    timing.remainingOuter(Instant.now()), timing.outerDeadline(), root, volumes);
             requireFree(volumes);
             completed = true;
         } catch (Exception error) {
@@ -880,7 +927,7 @@ public final class CiBootstrap {
             Path part = root.resolve(name);
             boolean scratch = name.equals("scratch");
             long limit = PARTS.get(name.equals("logs") ? "metadata_logs" : name);
-            // JUnit removes scratch entries; Maven retires update markers and repository temporaries.
+            // JUnit removes scratch entries and Maven retires update/checksum/download temporaries.
             // Handle only their actual disappearance, preserving every surviving sibling.
             walker.walk(part, new SimpleFileVisitor<>() {
                 private long size;
@@ -1114,16 +1161,38 @@ public final class CiBootstrap {
         } catch (NoSuchAlgorithmException error) { throw new IllegalStateException(error); }
     }
 
-    private static Map<String, String> arguments(String[] arguments) {
-        List<String> allowed = List.of("--repo-root", "--work-root", "--python-executable", "--system-growth-reserve-bytes", "--max-project-bytes");
-        if (arguments.length != allowed.size() * 2) throw new IllegalArgumentException("all five explicit bootstrap parameters required");
+    static Map<String, String> arguments(String[] arguments) {
+        List<String> required = List.of("--repo-root", "--work-root", "--python-executable", "--system-growth-reserve-bytes", "--max-project-bytes");
+        List<String> fixture = List.of("--fixture-production-request", "--fixture-production-request-bytes", "--fixture-production-request-sha256");
+        if (arguments.length != required.size() * 2 && arguments.length != (required.size() + fixture.size()) * 2) {
+            throw new IllegalArgumentException("All five bootstrap parameters and, when requested, all three exact fixture production fields required");
+        }
         Map<String, String> result = new LinkedHashMap<>();
         for (int index = 0; index < arguments.length; index += 2) {
-            if (!allowed.contains(arguments[index]) || result.putIfAbsent(arguments[index], arguments[index + 1]) != null) {
+            if ((!required.contains(arguments[index]) && !fixture.contains(arguments[index])) || result.putIfAbsent(arguments[index], arguments[index + 1]) != null) {
                 throw new IllegalArgumentException("unknown or duplicate bootstrap parameter");
             }
         }
+        if (!result.keySet().containsAll(required) || (!java.util.Collections.disjoint(result.keySet(), fixture) && !result.keySet().containsAll(fixture))) {
+            throw new IllegalArgumentException("Complete bootstrap and fixture production parameters required");
+        }
         return Map.copyOf(result);
+    }
+
+    static FilePin fixtureProductionPin(Map<String, String> values) throws IOException {
+        String path = values.get("--fixture-production-request");
+        if (path == null) return null;
+        String bytes = values.get("--fixture-production-request-bytes");
+        if (bytes == null || !bytes.matches("[1-9][0-9]{0,7}")) throw new IllegalArgumentException("Positive bounded fixture production bytes required");
+        FilePin pin = new FilePin(Path.of(path).toRealPath().toString(), Long.parseLong(bytes), values.get("--fixture-production-request-sha256"));
+        if (pin.bytes() > 4 * MIB || !pin.equals(measure(Path.of(pin.path())))) throw new IOException("Fixture production input changed or exceeds its bound");
+        return pin;
+    }
+
+    static void appendFixtureProduction(List<String> command, FilePin pin) throws IOException {
+        if (pin == null) return;
+        if (!pin.equals(measure(Path.of(pin.path())))) throw new IOException("Fixture production input changed before forwarding");
+        command.addAll(List.of("--fixture-production-request", pin.path(), Long.toString(pin.bytes()), pin.sha256()));
     }
 
     static FilePin publish(Path path, Record value) throws IOException {

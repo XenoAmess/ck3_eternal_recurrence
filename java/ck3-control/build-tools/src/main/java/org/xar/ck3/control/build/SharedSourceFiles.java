@@ -31,7 +31,9 @@ public final class SharedSourceFiles {
                              String lastWriteFiletimeDecimal, String changeFiletimeDecimal,
                              long logicalBytes, long allocatedBytes, long linkCount) {
         public NativeFile {
-            for (String value : List.of(volumeSerialDecimal, fileIdDecimal, legacyVolumeSerialDecimal, creationFiletimeDecimal, lastWriteFiletimeDecimal, changeFiletimeDecimal)) if (value == null || !value.matches("0|[1-9][0-9]*")) throw new IllegalArgumentException("canonical decimal native identity/time required");
+            unsignedDecimal(volumeSerialDecimal, 64); unsignedDecimal(fileIdDecimal, 128);
+            unsignedDecimal(legacyVolumeSerialDecimal, 32); unsignedDecimal(creationFiletimeDecimal, 64);
+            unsignedDecimal(lastWriteFiletimeDecimal, 64); unsignedDecimal(changeFiletimeDecimal, 64);
             if (legacyFileIdHex == null || !legacyFileIdHex.matches("[0-9a-f]{16}")) throw new IllegalArgumentException("exact original exporter native FileID64 required");
             if (logicalBytes < 0 || allocatedBytes < 0 || linkCount <= 0) throw new IllegalArgumentException("actual native file facts required");
         }
@@ -58,18 +60,43 @@ public final class SharedSourceFiles {
         if (!before.equals(after) || before.bytes() != nativeFile.logicalBytes()) throw new IOException("source changed while native identity/content was observed");
         return new Witness(after, nativeFile);
     }
-    public static NativeFile nativeFile(Path path) throws IOException {
+    public record DirectoryIdentity(String volumeSerialDecimal, String fileIdDecimal, String creationFiletimeDecimal) {
+        public DirectoryIdentity {
+            unsignedDecimal(volumeSerialDecimal, 64); unsignedDecimal(fileIdDecimal, 128);
+            unsignedDecimal(creationFiletimeDecimal, 64);
+        }
+    }
+    private static void unsignedDecimal(String value, int bits) {
+        if (value == null || !value.matches("0|[1-9][0-9]*") || new BigInteger(value).bitLength() > bits) {
+            throw new IllegalArgumentException("canonical unsigned native identity/time decimal within " + bits + " bits required");
+        }
+    }
+    public static DirectoryIdentity nativeDirectory(Path path) throws IOException {
+        NativeFile entry = nativeEntry(path, true);
+        return new DirectoryIdentity(entry.volumeSerialDecimal(), entry.fileIdDecimal(), entry.creationFiletimeDecimal());
+    }
+    public static NativeFile nativeFile(Path path) throws IOException { return nativeEntry(path, false); }
+    private static NativeFile nativeEntry(Path path, boolean directory) throws IOException {
         if (!com.sun.jna.Platform.isWindows() || !path.isAbsolute()) throw new IOException("actual Windows file metadata required");
         plainAncestors(path);
-        if (!Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS)) throw new IOException("ordinary source file required");
-        HANDLE handle = Kernel32.INSTANCE.CreateFile(path.toString(), 0x80, 7, null, 3, 0x00200000, null);
-        if (WinBase.INVALID_HANDLE_VALUE.equals(handle)) throw new IOException("source metadata open Win32=" + Native.getLastError());
+        if (directory ? !Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS) : !Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS)) throw new IOException("ordinary source entry of the expected type required");
+        HANDLE handle = Kernel32.INSTANCE.CreateFile(nativePath(path), 0x80, 7, null, 3, 0x00200000 | (directory ? 0x02000000 : 0), null);
+        if (WinBase.INVALID_HANDLE_VALUE.equals(handle)) throw new IOException("source metadata open Win32=" + Native.getLastError() + " path=" + path);
+        try { return nativeHeldEntry(handle, directory); }
+        finally { if (!Kernel32.INSTANCE.CloseHandle(handle)) throw new IOException("source metadata handle close Win32=" + Native.getLastError()); }
+    }
+    /** Same decoder on a caller's continuously retained file handle; never reopens a path. */
+    public static NativeFile nativeHeldFile(HANDLE handle) throws IOException {
+        if (handle == null || WinBase.INVALID_HANDLE_VALUE.equals(handle)) throw new IOException("actual held file handle required");
+        return nativeHeldEntry(handle, false);
+    }
+    private static NativeFile nativeHeldEntry(HANDLE handle, boolean directory) throws IOException {
         try (Memory id = new Memory(24); Memory basic = new Memory(40); Memory standard = new Memory(24); Memory legacy = new Memory(52)) {
             if (!Api.VALUE.GetFileInformationByHandleEx(handle, 18, id, 24)
                     || !Api.VALUE.GetFileInformationByHandleEx(handle, 0, basic, 40)
                     || !Api.VALUE.GetFileInformationByHandleEx(handle, 1, standard, 24)
                     || !Api.VALUE.GetFileInformationByHandle(handle, legacy)) throw new IOException("source metadata Win32=" + Native.getLastError());
-            if ((basic.getInt(32) & 0x400) != 0 || standard.getByte(20) != 0 || standard.getByte(21) != 0) throw new IOException("ordinary non-reparse non-delete-pending source required");
+            if ((basic.getInt(32) & 0x400) != 0 || standard.getByte(20) != 0 || ((standard.getByte(21) != 0) != directory)) throw new IOException("ordinary non-reparse non-delete-pending source required");
             byte[] little = id.getByteArray(8, 16), big = new byte[16];
             for (int index = 0; index < big.length; index++) big[index] = little[15 - index];
             long legacyBytes = (Integer.toUnsignedLong(legacy.getInt(32)) << 32) | Integer.toUnsignedLong(legacy.getInt(36));
@@ -79,7 +106,20 @@ public final class SharedSourceFiles {
                     java.util.HexFormat.of().toHexDigits(legacy.getInt(44)) + java.util.HexFormat.of().toHexDigits(legacy.getInt(48)), Long.toUnsignedString(basic.getLong(0)),
                     Long.toUnsignedString(basic.getLong(16)), Long.toUnsignedString(basic.getLong(24)),
                     standard.getLong(8), standard.getLong(0), Integer.toUnsignedLong(standard.getInt(16)));
-        } finally { if (!Kernel32.INSTANCE.CloseHandle(handle)) throw new IOException("source metadata handle close Win32=" + Native.getLastError()); }
+        }
+    }
+    /** Extended spelling is only for Win32 calls; persisted paths retain the caller's normalized Path. */
+    static String nativePath(Path path) throws IOException {
+        if (path == null || !path.isAbsolute()) throw new IOException("absolute native source path required");
+        return nativePathValue(path.toAbsolutePath().normalize().toString());
+    }
+    /** A Path can hide its extended spelling; keep this mechanical conversion independently testable. */
+    static String nativePathValue(String value) throws IOException {
+        if (value == null || value.indexOf('\0') >= 0) throw new IOException("ordinary absolute Windows spelling required");
+        if (value.startsWith("\\\\?\\")) return value;
+        if (value.startsWith("\\\\")) return "\\\\?\\UNC\\" + value.substring(2);
+        if (!value.matches("[A-Za-z]:\\\\.*")) throw new IOException("canonical Windows drive or UNC path required");
+        return "\\\\?\\" + value;
     }
     public static void plainAncestors(Path path) throws IOException {
         if (!path.isAbsolute()) throw new IOException("absolute source path required");
@@ -88,8 +128,8 @@ public final class SharedSourceFiles {
             if (Files.exists(current, LinkOption.NOFOLLOW_LINKS)) {
                 if (Files.isSymbolicLink(current)) throw new IOException("source symlink/reparse path rejected");
                 if (com.sun.jna.Platform.isWindows()) {
-                    int attributes = Kernel32.INSTANCE.GetFileAttributes(current.toString());
-                    if (attributes == -1 || (attributes & 0x400) != 0) throw new IOException("source path attributes unavailable or reparse");
+                    int attributes = Kernel32.INSTANCE.GetFileAttributes(nativePath(current));
+                    if (attributes == -1 || (attributes & 0x400) != 0) throw new IOException("source path attributes unavailable or reparse Win32=" + (attributes == -1 ? Native.getLastError() : 0) + " path=" + current);
                 }
             }
             current = current.getParent();

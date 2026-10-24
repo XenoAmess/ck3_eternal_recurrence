@@ -110,6 +110,7 @@ public final class WindowsJobProcess implements AutoCloseable {
         }
     }
 
+    public enum ConsoleMode { NO_WINDOW, DETACHED, GUI_MINIMIZED_NO_ACTIVATE, GUI_SHOWN_NO_ACTIVATE }
     public enum RootExitDrainPolicy { DEFAULT_FIVE_SECONDS, UNTIL_COMMAND_DEADLINE }
     public enum DiagnosticWriteState { NOT_REQUESTED, NOT_NEEDED, WRITTEN, UNAVAILABLE }
     public enum JobListState { COMPLETE, TRUNCATED, UNAVAILABLE }
@@ -222,17 +223,334 @@ public final class WindowsJobProcess implements AutoCloseable {
     private final long started = System.nanoTime();
     private ProcessIdentity identity;
     private boolean closed;
+    private final List<WindowsPreloadCustody.Lease> preloadLeases = new ArrayList<>();
+
+    @FunctionalInterface public interface PreResumeHook {
+        WindowsPreloadCustody.Lease beforeResume(SuspendedTarget target) throws IOException;
+    }
+    /** Minted only between actual CREATE_SUSPENDED/AssignJob and the one ResumeThread. */
+    public static final class SuspendedTarget {
+        private final WindowsJobProcess owner;
+        private boolean active = true;
+        private SuspendedTarget(WindowsJobProcess owner) { this.owner = owner; }
+        public ProcessIdentity identity() throws IOException { requireActive(); return owner.identity(); }
+        void requireActive() throws IOException {
+            if (!active || owner.closed || !owner.isRunning()) throw new IOException("original suspended target is no longer available");
+        }
+        HANDLE duplicateRead() throws IOException {
+            requireActive();
+            var out = new WinNT.HANDLEByReference();
+            HANDLE current = owner.nativeApi.GetCurrentProcess();
+            require(owner.nativeApi.DuplicateHandle(current, owner.process.hProcess, current, out,
+                    0x0400 | 0x0010 | 0x100000, false, 0));
+            return requireHandle(out.getValue());
+        }
+        void retain(WindowsPreloadCustody.Lease lease) throws IOException {
+            requireActive();
+            if (!owner.preloadLeases.isEmpty()) throw new IOException("pre-resume custody already acquired");
+            owner.preloadLeases.add(Objects.requireNonNull(lease));
+        }
+    }
+
+    @FunctionalInterface public interface StdioGuard { void verify() throws IOException; }
+    public record OwnedStdioSpec(CommandSpec command, ConsoleMode consoleMode,
+            ControlBuild.FileRef executableRef, List<ControlBuild.FileRef> programSourceRefs,
+            Instant deadline, int maxFrameBytes, long maxSentBytes, long maxReceivedBytes, StdioGuard guard) {
+        public OwnedStdioSpec {
+            Objects.requireNonNull(command); Objects.requireNonNull(consoleMode); Objects.requireNonNull(executableRef);
+            Objects.requireNonNull(deadline); Objects.requireNonNull(guard); programSourceRefs = List.copyOf(programSourceRefs);
+            if (programSourceRefs.isEmpty() || programSourceRefs.size() > 2048 || maxFrameBytes < 1
+                    || maxFrameBytes > (32 << 20) || maxSentBytes < 1 || maxSentBytes > (64L << 20)
+                    || maxReceivedBytes < maxFrameBytes || maxReceivedBytes > (64L << 20)
+                    || !Path.of(executableRef.path()).toAbsolutePath().normalize().equals(command.executable().toAbsolutePath().normalize())) {
+                throw new IllegalArgumentException("finite exact program/source stdio limits required");
+            }
+            if (command.executable().getFileName().toString().matches("(?i)(cmd|powershell|pwsh)\\.exe"))
+                throw new IllegalArgumentException("owned stdio accepts a direct pinned program, not a shell");
+            for (ControlBuild.FileRef ref : programSourceRefs) {
+                Path path = Path.of(ref.path()).toAbsolutePath().normalize();
+                if (path.equals(command.stdout()) || path.equals(command.stderr()))
+                    throw new IllegalArgumentException("stdio outputs cannot alias program sources");
+            }
+        }
+    }
+    /** Actual in-memory pipe completion only. This type grants no Native/Game classification. */
+    public static final class Arrival {
+        private final byte[] raw;
+        private final long sequence;
+        private final String nonce;
+        private final ProcessIdentity identity;
+        private final Instant deadline;
+        private Arrival(byte[] raw, long sequence, String nonce, ProcessIdentity identity, Instant deadline) {
+            this.raw = raw.clone(); this.sequence = sequence; this.nonce = nonce; this.identity = identity; this.deadline = deadline;
+        }
+        public byte[] rawBytes() { return raw.clone(); }
+        public long sequence() { return sequence; }
+        public String sessionNonce() { return nonce; }
+        public ProcessIdentity identity() { return identity; }
+        public Instant deadline() { return deadline; }
+    }
+    public static final class WriteReceipt {
+        private final long bytesWritten;
+        private final ProcessIdentity identity;
+        private final String nonce;
+        private WriteReceipt(long bytesWritten, ProcessIdentity identity, String nonce) {
+            this.bytesWritten = bytesWritten; this.identity = identity; this.nonce = nonce;
+        }
+        public long bytesWritten() { return bytesWritten; }
+        public ProcessIdentity identity() { return identity; }
+        public String sessionNonce() { return nonce; }
+    }
+    private record RedirectedStdio(HANDLE input, HANDLE output, StdioGuard beforeResume) { }
+
+    /** Finite real stdio resource using this class's original suspended child/Job/await producer. */
+    public static final class OwnedStdio implements AutoCloseable {
+        private final OwnedStdioSpec spec;
+        private final WindowsJobProcess owner;
+        private final Win32StdioPipes pipes;
+        private final List<SharedSourceFiles.Witness> sources;
+        private final java.io.OutputStream audit;
+        private final String nonce = java.util.UUID.randomUUID().toString().replace("-", "")
+                + java.util.UUID.randomUUID().toString().replace("-", "");
+        private final java.io.ByteArrayOutputStream partial = new java.io.ByteArrayOutputStream();
+        private final java.util.ArrayDeque<byte[]> frames = new java.util.ArrayDeque<>();
+        private long received, sent, sequence;
+        private String failed;
+        private boolean inputClosed, closed, awaitEntered;
+        private AwaitResult terminal;
+        private OwnedStdio(OwnedStdioSpec spec, WindowsJobProcess owner, Win32StdioPipes pipes,
+                List<SharedSourceFiles.Witness> sources, java.io.OutputStream audit) {
+            this.spec = spec; this.owner = owner; this.pipes = pipes; this.sources = List.copyOf(sources); this.audit = audit;
+        }
+        public OwnedStdioSpec spec() { return spec; }
+        public ProcessIdentity identity() { return owner.identity(); }
+        public String sessionNonce() { return nonce; }
+        public Instant deadline() { return spec.deadline(); }
+        synchronized void verifyLiveOwner() throws IOException {
+            verifyActualIdentityAndSources();
+            if (!owner.isRunning()) throw new IOException("actual owned server process is no longer live");
+        }
+        HANDLE duplicateOwnedHandle(String location) throws IOException {
+            synchronized (this) {
+                verifyLiveOwner();
+                if (location == null || !location.matches("[1-9][0-9]{0,19}")
+                        || new BigInteger(location).bitLength() > 64 || location.equals("18446744073709551615"))
+                    throw new IOException("canonical unsigned handle locator required");
+                var out = new WinNT.HANDLEByReference();
+                if (!owner.nativeApi.DuplicateHandle(owner.process.hProcess,
+                        new HANDLE(new Pointer(Long.parseUnsignedLong(location))), owner.nativeApi.GetCurrentProcess(),
+                        out, 0, false, 2))
+                    throw new IOException("duplicate actual owner handle Win32=" + Native.getLastError());
+                HANDLE result = out.getValue();
+                if (result == null || WinBase.INVALID_HANDLE_VALUE.equals(result))
+                    throw new IOException("actual owner handle duplication returned no retained handle");
+                try { verifyActualIdentityAndSources(); return result; }
+                catch (IOException | RuntimeException failure) { owner.nativeApi.CloseHandle(result); throw failure; }
+            }
+        }
+        public synchronized void verifyActualIdentityAndSources() throws IOException {
+            try { verifyPinnedResource(); }
+            catch (IOException failure) { fail(failure); throw failure; }
+            catch (RuntimeException failure) {
+                IOException invalid = new IOException("owned stdio native/source guard failed: " + failure, failure);
+                fail(invalid); throw invalid;
+            }
+        }
+        private void verifyPinnedResource() throws IOException {
+            if (closed) throw new IOException("owned stdio resource closed");
+            if (failed != null) throw new IOException("owned stdio outcome unknown: " + failed);
+            verifyHeldProcess();
+            Accounting accounting = owner.accounting();
+            if (accounting.limitFlags() != REQUIRED_FLAGS || accounting.memoryLimitBytes() != spec.command().memoryLimitBytes()
+                    || accounting.peakJobMemoryBytes() > accounting.memoryLimitBytes()) throw new IOException("owned stdio Job limits drift");
+            for (SharedSourceFiles.Witness source : sources) SharedSourceFiles.assertUnchanged(source);
+            spec.guard().verify();
+        }
+        private void verifyHeldProcess() throws IOException {
+            int signal = owner.nativeApi.WaitForSingleObject(owner.process.hProcess, 0);
+            if (signal == WAIT_FAILED) throw new Win32Exception(Native.getLastError());
+            if (signal == WAIT_TIMEOUT) {
+                try {
+                    ProcessIdentity actual = WindowsJobProcess.identity(owner.nativeApi, owner.process.hProcess, owner.identity().pid());
+                    if (!actual.equals(owner.identity())) throw new IOException("owned stdio child identity drift");
+                    IntByReference belongs = new IntByReference();
+                    require(owner.nativeApi.IsProcessInJob(owner.process.hProcess, owner.job, belongs));
+                    if (belongs.getValue() == 0) throw new IOException("live stdio child is outside its owned Job");
+                    return;
+                } catch (IOException | RuntimeException racedExit) {
+                    if (owner.nativeApi.WaitForSingleObject(owner.process.hProcess, 0) != 0) throw racedExit;
+                }
+            } else if (signal != 0) throw new IOException("unexpected owned process signal");
+            // The original held handle still binds its process object after exit. Live-only
+            // image/membership queries can then fail. PID and birth use that same handle;
+            // pre-resume/live membership and the unchanged no-breakaway Job remain mandatory.
+            long pid = Integer.toUnsignedLong(owner.nativeApi.GetProcessId(owner.process.hProcess));
+            String birth = creationFiletime(owner.nativeApi, owner.process.hProcess);
+            if (pid != owner.identity().pid() || !birth.equals(owner.identity().creationFiletimeDecimal()))
+                throw new IOException("signalled owned process handle identity differs");
+        }
+        private Instant operationDeadline(Instant requested) throws IOException {
+            Objects.requireNonNull(requested);
+            Instant effective = requested.isBefore(deadline()) ? requested : deadline();
+            Win32StdioPipes.check(effective, this::verifyActualIdentityAndSources); return effective;
+        }
+        private void fail(IOException failure) {
+            if (failed == null) {
+                String reason = failure.getClass().getSimpleName() + ": " + failure.getMessage();
+                failed = reason.substring(0, Math.min(1024, reason.length()));
+            }
+            if (!closed) try { owner.terminate(124); }
+            catch (RuntimeException cleanup) { failure.addSuppressed(cleanup); }
+        }
+        public synchronized WriteReceipt write(byte[] bytes, Instant requestedDeadline) throws IOException, InterruptedException {
+            Objects.requireNonNull(bytes); byte[] original = bytes.clone();
+            try {
+                Instant until = operationDeadline(requestedDeadline);
+                if (inputClosed || awaitEntered || !owner.isRunning()) throw new IOException("owned stdin is no longer writable");
+                if (original.length == 0 || original.length > spec.maxSentBytes() - sent) throw new IOException("owned stdin aggregate byte limit exceeded");
+                int offset = 0;
+                while (offset < original.length) {
+                    int count = pipes.write(original, offset, original.length - offset, until, this::verifyActualIdentityAndSources);
+                    if (count <= 0) throw new IOException("owned stdin made no write progress");
+                    offset += count; sent += count;
+                }
+                Win32StdioPipes.check(until, this::verifyActualIdentityAndSources);
+                return new WriteReceipt(offset, identity(), nonce);
+            } catch (IOException failure) { fail(failure); throw failure; }
+            catch (InterruptedException interrupted) {
+                fail(new IOException("owned stdin interrupted", interrupted)); Thread.currentThread().interrupt(); throw interrupted;
+            }
+        }
+        public synchronized Arrival readLine(Instant requestedDeadline) throws IOException, InterruptedException {
+            try {
+                Instant until = operationDeadline(requestedDeadline);
+                if (awaitEntered) throw new IOException("owned stdout terminal was already requested");
+                while (frames.isEmpty()) {
+                    byte[] chunk = pipes.read(until, this::verifyActualIdentityAndSources);
+                    if (chunk == null) throw new IOException(partial.size() == 0 ? "owned stdout EOF before next line" : "owned stdout EOF inside line");
+                    if (chunk.length > spec.maxReceivedBytes() - received) throw new IOException("owned stdout aggregate byte limit exceeded");
+                    received += chunk.length; audit.write(chunk); audit.flush();
+                    for (byte value : chunk) {
+                        if (partial.size() >= spec.maxFrameBytes()) throw new IOException("owned stdout line byte limit exceeded");
+                        partial.write(value);
+                        if (value == '\n') {
+                            if (frames.size() >= 256) throw new IOException("owned stdout queued line limit exceeded");
+                            frames.addLast(partial.toByteArray()); partial.reset();
+                        }
+                    }
+                }
+                Win32StdioPipes.check(until, this::verifyActualIdentityAndSources);
+                sequence = Math.addExact(sequence, 1);
+                return new Arrival(frames.removeFirst(), sequence, nonce, identity(), until);
+            } catch (IOException failure) { fail(failure); throw failure; }
+            catch (InterruptedException interrupted) {
+                fail(new IOException("owned stdout interrupted", interrupted)); Thread.currentThread().interrupt(); throw interrupted;
+            }
+        }
+        public synchronized void closeInput() {
+            if (!inputClosed) { pipes.closeInput(); inputClosed = true; }
+        }
+        public synchronized AwaitResult awaitExit(Path diagnosticSidecar) throws IOException, InterruptedException {
+            if (terminal != null) return terminal;
+            if (awaitEntered) throw new IOException("previous owned stdio terminal is unavailable; no repeated wait authority");
+            awaitEntered = true; closeInput();
+            Duration remaining = Duration.between(Instant.now(), deadline());
+            if (remaining.isNegative() || remaining.isZero()) remaining = Duration.ofNanos(1);
+            AwaitResult actual = owner.await(remaining, deadline(), () -> {
+                if (failed != null) throw new IllegalStateException(failed);
+                try { verifyActualIdentityAndSources(); }
+                catch (IOException failure) { throw new IllegalStateException(failure.getMessage(), failure); }
+            }, diagnosticSidecar, RootExitDrainPolicy.UNTIL_COMMAND_DEADLINE);
+            if (!pipes.settled()) throw new IOException("stdio I/O cancellation remains unobserved");
+            if (failed == null) Win32StdioPipes.check(deadline(), this::verifyActualIdentityAndSources);
+            // A completed root and a zero-member Job correctly skip the live
+            // guard. They cannot clear a protocol failure latched before await.
+            if (failed != null && actual.commandResult().stopReason() == null) {
+                CommandResult observed = actual.commandResult();
+                actual = new AwaitResult(new CommandResult(observed.identity(), observed.exitCode(),
+                        observed.elapsedSeconds(), observed.accounting(), "owned_stdio_unknown: " + failed),
+                        actual.diagnostic());
+            }
+            terminal = actual; return terminal;
+        }
+        @Override public synchronized void close() {
+            if (closed) return;
+            try { closeInput(); owner.close(); }
+            finally {
+                pipes.close();
+                try { audit.close(); } catch (IOException failure) { if (failed == null) failed = failure.toString(); }
+                closed = true;
+            }
+        }
+    }
+
+    public static synchronized OwnedStdio startOwnedStdio(OwnedStdioSpec spec) throws IOException {
+        Objects.requireNonNull(spec); requireWindows();
+        List<SharedSourceFiles.Witness> sources = new ArrayList<>();
+        for (ControlBuild.FileRef ref : java.util.stream.Stream.concat(java.util.stream.Stream.of(spec.executableRef()),
+                spec.programSourceRefs().stream()).toList()) {
+            ref.verify(); SharedSourceFiles.Witness witness = SharedSourceFiles.observe(Path.of(ref.path()));
+            if (witness.source().bytes() != ref.bytes() || !witness.source().sha256().equals(ref.sha256()))
+                throw new IOException("owned stdio program source differs from pinned bytes");
+            sources.add(witness);
+        }
+        StdioGuard programGuard = () -> {
+            for (SharedSourceFiles.Witness source : sources) SharedSourceFiles.assertUnchanged(source);
+            spec.guard().verify();
+        };
+        Win32StdioPipes.check(spec.deadline(), programGuard);
+        SharedSourceFiles.plainAncestors(spec.command().stdout().getParent());
+        SharedSourceFiles.plainAncestors(spec.command().stderr().getParent());
+        SharedSourceFiles.plainAncestors(spec.command().cwd());
+        java.io.OutputStream audit = Files.newOutputStream(spec.command().stdout(), java.nio.file.StandardOpenOption.CREATE_NEW,
+                java.nio.file.StandardOpenOption.WRITE);
+        Win32StdioPipes pipes = null;
+        WindowsJobProcess owner = null;
+        try {
+            pipes = Win32StdioPipes.create(spec.deadline(), programGuard);
+            owner = start(spec.command(), spec.consoleMode(), pipes.api(),
+                    new RedirectedStdio(pipes.childInput(), pipes.childOutput(),
+                            () -> Win32StdioPipes.check(spec.deadline(), programGuard)));
+            pipes.closeInheritedCopies();
+            OwnedStdio result = new OwnedStdio(spec, owner, pipes, sources, audit);
+            Win32StdioPipes.check(spec.deadline(), result::verifyActualIdentityAndSources); return result;
+        } catch (IOException | RuntimeException failure) {
+            if (owner != null) owner.close();
+            if (pipes != null) pipes.close();
+            try { audit.close(); } catch (IOException closeFailure) { failure.addSuppressed(closeFailure); }
+            throw failure;
+        }
+    }
 
     private WindowsJobProcess(JobKernel32 nativeApi, HANDLE job) {
         this.nativeApi = nativeApi; this.job = job;
     }
 
     public static WindowsJobProcess start(CommandSpec spec) throws IOException {
+        return start(spec, ConsoleMode.NO_WINDOW);
+    }
+
+    /** Per-call console creation choice; CommandSpec and the existing default remain unchanged. */
+    public static synchronized WindowsJobProcess start(CommandSpec spec, ConsoleMode consoleMode) throws IOException {
+        requireWindows();
+        return start(spec, consoleMode, Native.load("kernel32", JobKernel32.class, W32APIOptions.UNICODE_OPTIONS), null);
+    }
+    public static synchronized WindowsJobProcess start(CommandSpec spec, ConsoleMode consoleMode,
+            PreResumeHook hook) throws IOException {
+        requireWindows(); Objects.requireNonNull(hook);
+        return start(spec, consoleMode, Native.load("kernel32", JobKernel32.class, W32APIOptions.UNICODE_OPTIONS), null, hook);
+    }
+    private static WindowsJobProcess start(CommandSpec spec, ConsoleMode consoleMode, JobKernel32 api,
+            RedirectedStdio redirected) throws IOException {
+        return start(spec, consoleMode, api, redirected, null);
+    }
+    private static WindowsJobProcess start(CommandSpec spec, ConsoleMode consoleMode, JobKernel32 api,
+            RedirectedStdio redirected, PreResumeHook hook) throws IOException {
+        Objects.requireNonNull(consoleMode);
         requireWindows();
         if (!Files.isRegularFile(spec.executable()) || !Files.isDirectory(spec.cwd())) {
             throw new IllegalArgumentException("Actual executable and working directory must exist");
         }
-        JobKernel32 api = Native.load("kernel32", JobKernel32.class, W32APIOptions.UNICODE_OPTIONS);
         HANDLE job = requireHandle(api.CreateJobObjectW(null, null));
         WindowsJobProcess owner = new WindowsJobProcess(api, job);
         try {
@@ -247,14 +565,23 @@ public final class WindowsJobProcess implements AutoCloseable {
             WinBase.SECURITY_ATTRIBUTES inheritable = new WinBase.SECURITY_ATTRIBUTES();
             inheritable.bInheritHandle = true;
             WinBase.STARTUPINFO startup = new WinBase.STARTUPINFO();
-            startup.dwFlags = 0x100 | 0x1; startup.wShowWindow = new WORD(0);
-            startup.hStdInput = owner.openStream("NUL", WinNT.GENERIC_READ, 3, inheritable);
-            startup.hStdOutput = owner.openStream(spec.stdout().toString(), WinNT.GENERIC_WRITE, 1, inheritable);
+            startup.dwFlags = 0x100 | 0x1;
+            startup.wShowWindow = new WORD(switch (consoleMode) {
+                case NO_WINDOW, DETACHED -> 0;
+                case GUI_MINIMIZED_NO_ACTIVATE -> 7; // SW_SHOWMINNOACTIVE.
+                case GUI_SHOWN_NO_ACTIVATE -> 4; // SW_SHOWNOACTIVATE.
+            });
+            startup.hStdInput = redirected == null ? owner.openStream("NUL", WinNT.GENERIC_READ, 3, inheritable) : redirected.input();
+            startup.hStdOutput = redirected == null ? owner.openStream(spec.stdout().toString(), WinNT.GENERIC_WRITE, 1, inheritable) : redirected.output();
             startup.hStdError = owner.openStream(spec.stderr().toString(), WinNT.GENERIC_WRITE, 1, inheritable);
             String command = commandLine(spec);
+            int consoleFlag = switch (consoleMode) {
+                case NO_WINDOW, GUI_MINIMIZED_NO_ACTIVATE, GUI_SHOWN_NO_ACTIVATE -> 0x08000000; // CREATE_NO_WINDOW.
+                case DETACHED -> 0x00000008; // DETACHED_PROCESS: never combine CREATE_NO_WINDOW.
+            };
             try (Memory environment = environmentBlock(spec.environment())) {
                 require(api.CreateProcessW(spec.executable().toString(), Native.toCharArray(command),
-                        null, null, true, new DWORD(0x4 | 0x400 | 0x08000000), environment,
+                        null, null, true, new DWORD(0x4 | 0x400 | consoleFlag), environment,
                         spec.cwd().toString(), startup, owner.process));
             }
             require(api.AssignProcessToJobObject(job, owner.process.hProcess));
@@ -262,7 +589,23 @@ public final class WindowsJobProcess implements AutoCloseable {
             if (!Files.isSameFile(Path.of(owner.identity.executable()), spec.executable())) {
                 throw new IllegalStateException("Actual process image differs before resume");
             }
-            if (api.ResumeThread(owner.process.hThread) == -1) throw new Win32Exception(Native.getLastError());
+            if (redirected != null) {
+                IntByReference belongs = new IntByReference(); require(api.IsProcessInJob(owner.process.hProcess, job, belongs));
+                if (belongs.getValue() == 0) throw new IOException("stdio child Job assignment not observed before resume");
+                redirected.beforeResume().verify();
+            }
+            if (hook != null) {
+                SuspendedTarget target = new SuspendedTarget(owner);
+                try {
+                    WindowsPreloadCustody.Lease lease = hook.beforeResume(target);
+                    if (lease == null || !owner.preloadLeases.contains(lease) || !lease.from(target))
+                        throw new IOException("hook did not return its original retained preload custody");
+                    lease.verify();
+                } finally { target.active = false; }
+            }
+            int previousSuspendCount = api.ResumeThread(owner.process.hThread);
+            if (previousSuspendCount == -1) throw new Win32Exception(Native.getLastError());
+            if (previousSuspendCount != 1) throw new IOException("original primary thread suspend count differs from one");
             return owner;
         } catch (IOException | RuntimeException error) {
             if (owner.process.hProcess != null) api.TerminateProcess(owner.process.hProcess, 126);
@@ -304,6 +647,8 @@ public final class WindowsJobProcess implements AutoCloseable {
      * Explicit per-call drain choice. The deadline policy observes the entire owned
      * Job after root exit within the original command/lease limits and guard.
      * It does not ignore, rename or exempt any child and does not extend a deadline.
+     * After actual root exit, a zero-member Job skips the live periodic guard only.
+     * Callers retain final provenance, authority, and output/resource validation.
      */
     public AwaitResult await(Duration timeout, Instant leaseDeadline, Runnable periodicGuard, Path diagnosticSidecar,
             RootExitDrainPolicy rootExitDrainPolicy) throws InterruptedException {
@@ -336,17 +681,23 @@ public final class WindowsJobProcess implements AutoCloseable {
                 if (System.nanoTime() >= deadline || !Instant.now().isBefore(leaseDeadline)) {
                     reason = "timeout_or_release_expired"; break;
                 }
-                try { periodicGuard.run(); }
-                catch (RuntimeException error) { reason = "periodic_guard: " + error.getMessage(); break; }
                 Accounting remaining = accounting();
-                // Guard/native query time consumes the same original finite budget.
+                // Native queries and guard time consume the same original finite budget.
                 if (System.nanoTime() >= deadline || !Instant.now().isBefore(leaseDeadline)) {
                     reason = "timeout_or_release_expired"; break;
                 }
                 if (remaining.peakJobMemoryBytes() > remaining.memoryLimitBytes()) {
                     reason = "observed_job_peak_exceeded_limit"; break;
                 }
+                // The original root handle already reported exit before this drain.
+                // With no owned members left there is no live writer to guard here.
+                // Callers still perform their complete final source/resource checks.
                 if (remaining.activeProcesses() == 0) break;
+                try { periodicGuard.run(); }
+                catch (RuntimeException error) { reason = "periodic_guard: " + error.getMessage(); break; }
+                if (System.nanoTime() >= deadline || !Instant.now().isBefore(leaseDeadline)) {
+                    reason = "timeout_or_release_expired"; break;
+                }
                 try { Thread.sleep(100); }
                 catch (InterruptedException error) { interrupted = true; reason = "interrupted"; break; }
             }
@@ -374,7 +725,7 @@ public final class WindowsJobProcess implements AutoCloseable {
         IntByReference exit = new IntByReference();
         require(nativeApi.GetExitCodeProcess(process.hProcess, exit));
         Accounting finalState = accounting();
-        if (exit.getValue() == STILL_ACTIVE || finalState.activeProcesses() != 0) reason = "job_cleanup_incomplete";
+        if (finalState.activeProcesses() != 0) reason = "job_cleanup_incomplete";
         if (finalState.peakJobMemoryBytes() > finalState.memoryLimitBytes()) reason = "observed_job_peak_exceeded_limit";
         CommandResult result = new CommandResult(identity(), exit.getValue(), (System.nanoTime() - started) / 1_000_000_000.0,
                 finalState, reason);
@@ -521,14 +872,17 @@ public final class WindowsJobProcess implements AutoCloseable {
     }
 
     @Override public void close() {
-        if (closed) return;
-        try { nativeApi.TerminateJobObject(job, 125); }
-        finally {
-            if (process.hThread != null) nativeApi.CloseHandle(process.hThread);
-            if (process.hProcess != null) nativeApi.CloseHandle(process.hProcess);
-            for (HANDLE stream : streams) nativeApi.CloseHandle(stream);
-            nativeApi.CloseHandle(job); closed = true;
+        if (!closed) {
+            try { nativeApi.TerminateJobObject(job, 125); }
+            finally {
+                if (process.hThread != null) nativeApi.CloseHandle(process.hThread);
+                if (process.hProcess != null) nativeApi.CloseHandle(process.hProcess);
+                for (HANDLE stream : streams) nativeApi.CloseHandle(stream);
+                nativeApi.CloseHandle(job); closed = true;
+            }
         }
+        for (WindowsPreloadCustody.Lease lease : preloadLeases) try { lease.close(); }
+        catch (IOException failure) { throw new java.io.UncheckedIOException(failure); }
     }
 
     public static ProcessIdentity exactProcess(long pid) {
@@ -657,13 +1011,16 @@ public final class WindowsJobProcess implements AutoCloseable {
     }
 
     private static ProcessIdentity identity(Kernel32 api, HANDLE process, long pid) {
-        WinBase.FILETIME created = new WinBase.FILETIME();
-        require(api.GetProcessTimes(process, created, new WinBase.FILETIME(), new WinBase.FILETIME(), new WinBase.FILETIME()));
-        BigInteger filetime = BigInteger.valueOf(Integer.toUnsignedLong(created.dwHighDateTime)).shiftLeft(32)
-                .or(BigInteger.valueOf(Integer.toUnsignedLong(created.dwLowDateTime)));
+        String filetime = creationFiletime(api, process);
         char[] image = new char[32768]; IntByReference count = new IntByReference(image.length);
         require(api.QueryFullProcessImageName(process, 0, image, count));
-        return new ProcessIdentity(pid, filetime.toString(), new String(image, 0, count.getValue()));
+        return new ProcessIdentity(pid, filetime, new String(image, 0, count.getValue()));
+    }
+    private static String creationFiletime(Kernel32 api, HANDLE process) {
+        WinBase.FILETIME created = new WinBase.FILETIME();
+        require(api.GetProcessTimes(process, created, new WinBase.FILETIME(), new WinBase.FILETIME(), new WinBase.FILETIME()));
+        return BigInteger.valueOf(Integer.toUnsignedLong(created.dwHighDateTime)).shiftLeft(32)
+                .or(BigInteger.valueOf(Integer.toUnsignedLong(created.dwLowDateTime))).toString();
     }
 
     private static Memory environmentBlock(Map<String, String> environment) {
@@ -671,6 +1028,7 @@ public final class WindowsJobProcess implements AutoCloseable {
         if (sorted.size() != environment.size()) throw new IllegalArgumentException("Duplicate environment keys");
         StringBuilder text = new StringBuilder();
         sorted.forEach((key, value) -> text.append(key).append('=').append(value).append('\0'));
+        if (sorted.isEmpty()) text.append('\0');
         text.append('\0');
         byte[] encoded = text.toString().getBytes(StandardCharsets.UTF_16LE);
         Memory block = new Memory(encoded.length); block.write(0, encoded, 0, encoded.length); return block;

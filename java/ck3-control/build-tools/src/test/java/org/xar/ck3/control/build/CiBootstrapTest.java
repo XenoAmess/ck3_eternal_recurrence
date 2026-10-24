@@ -42,6 +42,63 @@ final class CiBootstrapTest {
             "quota_override_max_hours":168}}
             """;
 
+    private static CiBootstrap.Plan timingPlan(Instant observed, Instant review) {
+        var pin = new CiBootstrap.FilePin(Path.of("synthetic-policy.json").toAbsolutePath().toString(), 1, "0".repeat(64));
+        var override = new CiBootstrap.QuotaOverride("fixture-owner", "github-actions-java-ci", "synthetic finite quota",
+                8 * GIB, review.toString(), pin);
+        return new CiBootstrap.Plan(CiBootstrap.PLAN_SCHEMA, "fixture-machine", observed.toString(), review.toString(),
+                "synthetic-repo", "synthetic-work", "synthetic-java", null, "synthetic-python", "github-actions-java-ci", pin,
+                Map.of(), Map.of("fixture-volume", override), Map.of("scratch", 1024L), List.of(pin), List.of(pin), false, false);
+    }
+
+    @Test void pipelineDeadlineIncludesBootstrapAndNestedElapsedTimeWithoutRestarting() throws Exception {
+        Instant initial = Instant.parse("2026-10-23T00:00:00Z");
+        var plan = timingPlan(initial, initial.plus(Duration.ofMinutes(90)));
+        var timing = CiBootstrap.pipelineTiming(plan);
+        assertEquals(initial.plus(Duration.ofMinutes(45)), timing.outerDeadline());
+        assertEquals(timing.outerDeadline().minusSeconds(30), timing.workDeadline());
+        // Thirty minutes already spent in bootstrap/qualification leave one shared fourteen-and-a-half minutes.
+        assertEquals(Duration.ofMinutes(14).plusSeconds(30), timing.remainingWork(initial.plus(Duration.ofMinutes(30))));
+        assertEquals(timing, CiBootstrap.pipelineTiming(plan));
+        assertThrows(IOException.class, () -> timing.remainingWork(timing.workDeadline()));
+        assertEquals(Duration.ofSeconds(30), timing.remainingOuter(timing.workDeadline()));
+        assertThrows(IOException.class, () -> timing.remainingOuter(timing.outerDeadline()));
+    }
+
+    @Test void pipelineDeadlineClipsToEarlierAuthorityAndRejectsFutureOrExhaustedAdmission() throws Exception {
+        Instant initial = Instant.parse("2026-10-23T00:00:00Z");
+        Instant review = initial.plus(Duration.ofMinutes(10));
+        var timing = CiBootstrap.pipelineTiming(timingPlan(initial, review));
+        assertEquals(review, timing.outerDeadline()); assertEquals(review.minusSeconds(30), timing.workDeadline());
+        assertThrows(IOException.class, () -> timing.remainingWork(initial.minusNanos(1)));
+        assertThrows(IllegalArgumentException.class, () -> CiBootstrap.pipelineTiming(timingPlan(initial, initial.plusSeconds(30))));
+        assertThrows(IllegalArgumentException.class, () -> CiBootstrap.pipelineTiming(timingPlan(initial, initial.minusNanos(1))));
+        assertThrows(IllegalArgumentException.class, () -> new CiBootstrap.PipelineTiming(initial,
+                initial.plus(Duration.ofMinutes(45)), initial.plus(Duration.ofMinutes(45)).plusSeconds(30)));
+    }
+
+    @Test void executionLeaseNarrowsQuotaReviewWithoutExtendingOriginalPinsOrAuthority() throws Exception {
+        Instant initial = Instant.parse("2026-10-23T00:00:00Z");
+        var original = timingPlan(initial, initial.plus(Duration.ofMinutes(90)));
+        var execution = CiBootstrap.pipelineExecutionPlan(original);
+        String deadline = CiBootstrap.pipelineTiming(original).workDeadline().toString();
+        assertEquals(deadline, execution.reviewAtUtc());
+        assertEquals(deadline, execution.quotaOverrides().get("fixture-volume").reviewAtUtc());
+        assertEquals(original.observedAtUtc(), execution.observedAtUtc());
+        assertEquals(original.policyRef(), execution.policyRef()); assertEquals(original.sourcePins(), execution.sourcePins());
+        assertEquals(original.bootstrapRuntimeClosure(), execution.bootstrapRuntimeClosure());
+        assertEquals(original.parts(), execution.parts()); assertEquals(original.volumes(), execution.volumes());
+        assertEquals(initial.plus(Duration.ofMinutes(90)).toString(), original.reviewAtUtc());
+        assertEquals(original.reviewAtUtc(), original.quotaOverrides().get("fixture-volume").reviewAtUtc());
+        var earlier = new CiBootstrap.QuotaOverride("fixture-owner", "github-actions-java-ci", "shorter original authority",
+                8 * GIB, initial.plusSeconds(60).toString(), original.policyRef());
+        var shortOverride = new CiBootstrap.Plan(original.schema(), original.machineId(), original.observedAtUtc(), original.reviewAtUtc(),
+                original.repoRoot(), original.workRoot(), original.javaHome(), original.mavenCommand(), original.pythonExecutable(),
+                original.ownerTask(), original.policyRef(), original.volumes(), Map.of("fixture-volume", earlier), original.parts(),
+                original.sourcePins(), original.bootstrapRuntimeClosure(), false, false);
+        assertEquals(earlier, CiBootstrap.pipelineExecutionPlan(shortOverride).quotaOverrides().get("fixture-volume"));
+    }
+
     @Test
     void scratchMetadataDenialIsRereadThroughTheActualGuard(@TempDir Path temporary) throws Exception {
         Path file = guardedFile(temporary, "scratch");

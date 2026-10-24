@@ -19,6 +19,12 @@ import org.junit.jupiter.api.io.TempDir;
 final class WindowsJobProcessTest {
     @TempDir Path temporary;
     private enum DrainFailure { COMMAND_TIMEOUT, LEASE_EXPIRED, GUARD, INTERRUPTED }
+    public record DetachedArgv(String mode, List<String> arguments) {
+        public DetachedArgv {
+            if (!"detached-argv".equals(mode)) throw new IllegalArgumentException("Exact detached argv mode required");
+            arguments = List.copyOf(arguments);
+        }
+    }
 
     @Test void actualChildExit42RetainsNativeBirthAndRejectsSuccess() throws Exception {
         Path output = temporary.resolve("exit42.stdout");
@@ -152,6 +158,80 @@ final class WindowsJobProcessTest {
                 }
             }
         }
+    }
+
+    @Test void detachedJavaIsTheOnlyOwnedMemberAndPreservesCompleteOutputAndArguments() throws Exception {
+        Path output = temporary.resolve("detached-argv.stdout");
+        Path gate = temporary.resolve("detached-argv.release");
+        List<String> expected = List.of("", "value with spaces", "中文 Ω", "\"quoted\"", "trailing\\", "slash\\\"mix");
+        List<String> childArguments = new ArrayList<>(List.of(gate.toString())); childArguments.addAll(expected);
+        WindowsJobProcess.CommandSpec command = spec("detached-argv", output, childArguments);
+        try (WindowsJobProcess owner = WindowsJobProcess.start(command, WindowsJobProcess.ConsoleMode.DETACHED);
+                WindowsJobProcess.ReadOnlyProcessHandle retained = WindowsJobProcess.retainReadOnlyProcess(owner.identity().pid())) {
+            DetachedArgv actual = awaitDetachedArgv(output);
+            assertEquals(new DetachedArgv("detached-argv", expected), actual);
+            assertEquals(owner.identity(), retained.identity()); assertEquals(258, retained.waitZero()); assertEquals(259, retained.exitCode());
+            WindowsJobProcess.Accounting live = owner.accounting();
+            assertEquals(1, live.activeProcesses(), "the live assigned Java root must be the one and only actual Job member");
+            assertEquals(WindowsJobProcess.REQUIRED_FLAGS, live.limitFlags());
+            assertEquals(command.memoryLimitBytes(), live.memoryLimitBytes());
+            System.out.println("DETACHED_ONLY_MEMBER pid=" + owner.identity().pid() + " birth="
+                    + owner.identity().creationFiletimeDecimal() + " active=" + live.activeProcesses());
+            Files.createFile(gate);
+            WindowsJobProcess.CommandResult terminal = owner.await(Duration.ofSeconds(10), Instant.now().plusSeconds(15), () -> {});
+            assertTrue(terminal.passed()); assertEquals(0, terminal.exitCode()); assertNull(terminal.stopReason());
+            assertEquals(0, terminal.accounting().activeProcesses()); assertActuallyExitedChild(retained, 0);
+            assertEquals(actual, ControlBuild.strictMapper().readValue(Files.readAllBytes(output), DetachedArgv.class));
+            assertTrue(Files.readString(command.stderr()).contains("DETACHED_STDERR_OK"));
+        }
+    }
+
+    @Test void detachedTimeoutLeaseGuardAndInterruptRetainActualTerminalAndJobZero() throws Exception {
+        for (DrainFailure mode : DrainFailure.values()) {
+            Path output = temporary.resolve("detached-failure-" + mode + ".stdout");
+            Path sidecar = temporary.resolve("detached-failure-" + mode + ".job-members.json");
+            try (WindowsJobProcess owner = WindowsJobProcess.start(spec("wait", output), WindowsJobProcess.ConsoleMode.DETACHED);
+                    WindowsJobProcess.ReadOnlyProcessHandle retained = WindowsJobProcess.retainReadOnlyProcess(owner.identity().pid())) {
+                assertEquals(258, retained.waitZero()); assertEquals(1, owner.accounting().activeProcesses());
+                Duration timeout = mode == DrainFailure.COMMAND_TIMEOUT ? Duration.ofNanos(1) : Duration.ofSeconds(8);
+                Instant lease = mode == DrainFailure.LEASE_EXPIRED ? Instant.now().minusNanos(1) : Instant.now().plusSeconds(12);
+                AtomicInteger guards = new AtomicInteger();
+                try {
+                    if (mode == DrainFailure.INTERRUPTED) Thread.currentThread().interrupt();
+                    WindowsJobProcess.AwaitResult awaited = owner.await(timeout, lease, () -> {
+                        guards.incrementAndGet();
+                        if (mode == DrainFailure.GUARD) throw new IllegalStateException("detached actual guard rejected");
+                    }, sidecar);
+                    String reason = switch (mode) {
+                        case COMMAND_TIMEOUT, LEASE_EXPIRED -> "timeout_or_release_expired";
+                        case GUARD -> "periodic_guard: detached actual guard rejected";
+                        case INTERRUPTED -> "interrupted";
+                    };
+                    assertEquals(reason, awaited.commandResult().stopReason()); assertFalse(awaited.commandResult().passed());
+                    assertEquals(0, awaited.commandResult().accounting().activeProcesses());
+                    assertEquals(WindowsJobProcess.DiagnosticWriteState.WRITTEN, awaited.diagnostic().state());
+                    awaited.diagnostic().sidecarRef().verify();
+                    WindowsJobProcess.JobDiagnostic observed = ControlBuild.strictMapper().readValue(Files.readAllBytes(sidecar), WindowsJobProcess.JobDiagnostic.class);
+                    assertEquals(WindowsJobProcess.JobListState.COMPLETE, observed.listState()); assertEquals(1, observed.members().size());
+                    assertEquals(1, observed.accounting().activeProcesses()); assertEquals(owner.identity(), observed.members().getFirst().identity());
+                    assertEquals(Boolean.TRUE, observed.members().getFirst().inOwnedJob());
+                    if (mode == DrainFailure.COMMAND_TIMEOUT || mode == DrainFailure.LEASE_EXPIRED) assertEquals(0, guards.get());
+                    else assertTrue(guards.get() > 0);
+                    if (mode == DrainFailure.INTERRUPTED) assertTrue(Thread.currentThread().isInterrupted());
+                    Thread.interrupted(); assertActuallyExitedChild(retained, 124);
+                } finally { Thread.interrupted(); }
+            }
+        }
+    }
+
+    private static DetachedArgv awaitDetachedArgv(Path output) throws Exception {
+        long deadline = System.nanoTime() + Duration.ofSeconds(10).toNanos();
+        while (System.nanoTime() - deadline < 0) {
+            if (Files.isRegularFile(output) && Files.readString(output).endsWith("\n"))
+                return ControlBuild.strictMapper().readValue(Files.readAllBytes(output), DetachedArgv.class);
+            Thread.sleep(10);
+        }
+        throw new AssertionError("actual detached child output was not fully observed");
     }
 
     private static void awaitRootExit(WindowsJobProcess owner) throws InterruptedException {
@@ -328,6 +408,20 @@ final class WindowsJobProcessTest {
     public static final class Child {
         private Child() {}
         public static void main(String[] args) throws Exception {
+            if (args[0].equals("detached-argv")) {
+                if (args.length < 2) throw new IllegalArgumentException("One explicit detached release gate required");
+                Path gate = Path.of(args[1]); List<String> actual = new ArrayList<>();
+                for (int i = 2; i < args.length; i++) actual.add(args[i]);
+                System.out.write(ControlBuild.strictMapper().writeValueAsBytes(new DetachedArgv("detached-argv", actual)));
+                System.out.write('\n'); System.out.flush();
+                System.err.write("DETACHED_STDERR_OK\n".getBytes(java.nio.charset.StandardCharsets.UTF_8)); System.err.flush();
+                long deadline = System.nanoTime() + Duration.ofSeconds(20).toNanos();
+                while (!Files.isRegularFile(gate)) {
+                    if (System.nanoTime() - deadline >= 0) throw new IllegalStateException("Detached child release gate never opened");
+                    Thread.sleep(10);
+                }
+                System.exit(0);
+            }
             if (args[0].equals("exit42")) { Thread.sleep(1000); System.out.println("EXIT42"); System.exit(42); }
             if (args[0].startsWith("retained-exit")) {
                 if (args.length != 2) throw new IllegalArgumentException("One explicit release gate required");

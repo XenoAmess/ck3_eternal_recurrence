@@ -33,7 +33,18 @@ public final class MapAdmissionServiceOwner {
 
     public record Config(Path buildReceipt, Path workRoot, Path javaExecutable,
                          Instant leaseDeadline, int port, Path eventStateRoot, Path stockGameRoot, Path evidenceGrantsManifest,
-                         ProjectionOfflineContext.Publishing offlinePublishing) {
+                         ProjectionOfflineContext.Publishing offlinePublishing, ProjectionArtifactInputOwner.Config artifactInput,
+                         RootSoftwareFixtureHandoff.Request softwareFixture) {
+        public Config(Path buildReceipt, Path workRoot, Path javaExecutable, Instant leaseDeadline, int port,
+                Path eventStateRoot, Path stockGameRoot, Path evidenceGrantsManifest,
+                ProjectionOfflineContext.Publishing offlinePublishing, ProjectionArtifactInputOwner.Config artifactInput) {
+            this(buildReceipt, workRoot, javaExecutable, leaseDeadline, port, eventStateRoot, stockGameRoot,
+                    evidenceGrantsManifest, offlinePublishing, artifactInput, null);
+        }
+        public Config(Path buildReceipt, Path workRoot, Path javaExecutable, Instant leaseDeadline, int port,
+                Path eventStateRoot, Path stockGameRoot, Path evidenceGrantsManifest, ProjectionOfflineContext.Publishing offlinePublishing) {
+            this(buildReceipt, workRoot, javaExecutable, leaseDeadline, port, eventStateRoot, stockGameRoot, evidenceGrantsManifest, offlinePublishing, null);
+        }
         public Config(Path buildReceipt, Path workRoot, Path javaExecutable, Instant leaseDeadline, int port) {
             this(buildReceipt, workRoot, javaExecutable, leaseDeadline, port, null, null, null, null);
         }
@@ -126,7 +137,7 @@ public final class MapAdmissionServiceOwner {
             boolean compiledSourceMatchesOriginal, boolean runnerJarAloneIsNotDeploymentProof,
             ProjectionDeploymentProof.Attestation projection, ObservedHostContext hostContext,
             ProjectionRuntimeSources.ConfiguredManifest runtimeSources, ProjectionOfflineContext.Observed offlineContext,
-            ProjectionCaptureScope.Qualification qualification, ProjectionCaptureScope.Bound captureScope) {
+            ProjectionCaptureScope.Qualification qualification, ProjectionCaptureScope.Bound captureScope) implements ProjectionProgramView {
         public ProjectionProgramManifest {
             if (!"xar.java-projection-complete-fastjar-deployment/v2".equals(schema) || machineId == null
                     || machineId.isBlank() || projection == null || !compiledSourceMatchesOriginal
@@ -147,6 +158,43 @@ public final class MapAdmissionServiceOwner {
             Objects.requireNonNull(serviceEvidenceRef); Objects.requireNonNull(programRef); Objects.requireNonNull(attestation); Objects.requireNonNull(hostContext);
             if (processBefore == null || !processBefore.equals(processAfter)) throw new IllegalArgumentException("Same actual kernel generation before and after qualification required");
         }
+    }
+
+    public interface ProjectionProgramView {
+        ProjectionRuntimeSources.ConfiguredManifest runtimeSources();
+        ProjectionOfflineContext.Observed offlineContext();
+    }
+
+    /** Separate strict seventeen-field version. V2 remains the original exact sixteen-field record. */
+    public record ProjectionProgramManifestV3(String schema, String machineId, String observedAtUtc,
+            String deploymentRoot, List<ControlBuild.FileRef> files, List<ControlBuild.FileRef> sourceRefs,
+            ControlBuild.FileRef buildReceiptRef, ControlBuild.FileRef javaExecutableRef,
+            boolean compiledSourceMatchesOriginal, boolean runnerJarAloneIsNotDeploymentProof,
+            ProjectionDeploymentProof.Attestation projection, ObservedHostContext hostContext,
+            ProjectionRuntimeSources.ConfiguredManifest runtimeSources, ProjectionOfflineContext.Observed offlineContext,
+            ProjectionCaptureScope.Qualification qualification, ProjectionCaptureScope.Bound captureScope,
+            ProjectionArtifactAuthority.Observed artifactInputs) implements ProjectionProgramView {
+        public ProjectionProgramManifestV3 {
+            if (!"xar.java-projection-complete-fastjar-deployment/v3".equals(schema)
+                    || qualification != ProjectionCaptureScope.Qualification.FULL_SOFTWARE || captureScope != null || artifactInputs == null
+                    || artifactInputs.context().artifactInputs().isEmpty() || !machineId.equals(artifactInputs.context().machineId())) {
+                throw new IllegalArgumentException("full-purpose V3 requires its explicit actual Root artifact context");
+            }
+            new ProjectionProgramManifest("xar.java-projection-complete-fastjar-deployment/v2", machineId, observedAtUtc,
+                    deploymentRoot, files, sourceRefs, buildReceiptRef, javaExecutableRef, compiledSourceMatchesOriginal,
+                    runnerJarAloneIsNotDeploymentProof, projection, hostContext, runtimeSources, offlineContext, qualification, captureScope);
+            files = List.copyOf(files); sourceRefs = List.copyOf(sourceRefs);
+            var scope = artifactInputs.context().artifactInputs().orElseThrow().scope();
+            if (!scope.buildReceiptRef().equals(buildReceiptRef) || !files.contains(scope.producerArtifactRef())) {
+                throw new IllegalArgumentException("artifact scope must bind this exact accepted build and complete deployment");
+            }
+        }
+    }
+
+    static ProjectionProgramView readProjectionProgram(byte[] raw) throws IOException {
+        var tree = ControlBuild.strictMapper().readTree(raw);
+        if ("xar.java-projection-complete-fastjar-deployment/v3".equals(tree.path("schema").asText())) return ControlBuild.strictMapper().readValue(raw, ProjectionProgramManifestV3.class);
+        return ControlBuild.strictMapper().readValue(raw, ProjectionProgramManifest.class);
     }
 
 
@@ -204,7 +252,7 @@ public final class MapAdmissionServiceOwner {
             ControlBuild.BuildReceipt verifiedReceipt, ControlBuild.CaptureBuildReceipt captureReceipt) {
         static ServiceInputs read(Path path, boolean capture) throws IOException {
             if (capture) {
-                ControlBuild.CaptureBuildReceipt value = ControlBuild.acceptedCaptureReceipt(path);
+                ControlBuild.CaptureBuildReceipt value = ControlBuild.verifiedCompletedCaptureReceipt(ControlBuild.FileRef.measure(path));
                 return new ServiceInputs(value.machineId(), value.sourceRoot(), value.deploymentRoot(), value.sourcePins(),
                         value.completeDeployment(), value.javaExecutableRef(), ProjectionCaptureScope.Qualification.TEST_COMPILED_CAPTURE_ONLY, null, value);
             }
@@ -233,8 +281,12 @@ public final class MapAdmissionServiceOwner {
         private final ControlBuild.FileRef buildReceiptRef;
         private final ControlBuild.FileRef javaExecutableRef;
         private final ProjectionAdmission projection;
+        private final MapOnlyProjectionProof.Admission mapOnly;
         private final ServiceInputs artifact;
         private final ProjectionCaptureScope.Bound captureScope;
+        private final ProjectionArtifactInputOwner.Prepared artifactInput;
+        private final RootSoftwareFixtureHandoff.Prepared softwareFixture;
+        private final RootSoftwareFixtureHandoff.Admission softwareAdmission;
         private boolean closed;
 
         private Session(Config config, WindowsJobProcess child,
@@ -242,7 +294,8 @@ public final class MapAdmissionServiceOwner {
                         List<ControlBuild.FileRef> sources, List<ControlBuild.FileRef> deployment,
                         String machine, ControlBuild.FileRef buildReceiptRef,
                         ControlBuild.FileRef javaExecutableRef, ProjectionAdmission projection,
-                        ServiceInputs artifact, ProjectionCaptureScope.Bound captureScope) {
+                        ServiceInputs artifact, ProjectionCaptureScope.Bound captureScope, ProjectionArtifactInputOwner.Prepared artifactInput,
+                        RootSoftwareFixtureHandoff.Prepared softwareFixture, RootSoftwareFixtureHandoff.Admission softwareAdmission, MapOnlyProjectionProof.Admission mapOnly) {
             this.config = config;
             this.child = child;
             this.identity = child.identity();
@@ -256,6 +309,10 @@ public final class MapAdmissionServiceOwner {
             this.projection = projection;
             this.artifact = artifact;
             this.captureScope = captureScope;
+            this.artifactInput = artifactInput;
+            this.softwareFixture = softwareFixture;
+            this.softwareAdmission = softwareAdmission;
+            this.mapOnly = mapOnly;
         }
 
         public ProjectionCaptureScope.Qualification qualification() { return artifact.qualification(); }
@@ -265,9 +322,21 @@ public final class MapAdmissionServiceOwner {
         public ControlBuild.FileRef evidenceRef() { requireFullSoftwareBuild(); return evidenceRef; }
         public ControlBuild.FileRef manifestRef() { requireFullSoftwareBuild(); return manifestRef; }
         public WindowsJobProcess.ProcessIdentity identity() { return identity; }
+        public MapOnlyProjectionProof.Admission mapOnlyCaptureAdmission() {
+            requireCurrent();
+            if (mapOnly == null) throw new IllegalStateException("No MAP_ONLY_CAPTURE admission");
+            return mapOnly;
+        }
+
         public ProjectionAdmission projectionAdmission() {
             if (projection == null) throw new IllegalStateException("This session did not qualify projection service");
             return projection;
+        }
+
+        public RootSoftwareFixtureHandoff.Admission softwareFixtureAdmission() {
+            requireFullSoftwareBuild(); requireCurrent();
+            if (softwareAdmission == null) throw new IllegalStateException("No software fixture was requested or admitted");
+            return softwareAdmission;
         }
 
         /** Real kernel and native endpoint ownership; this cannot grant Game qualification. */
@@ -283,10 +352,20 @@ public final class MapAdmissionServiceOwner {
                 throw new IllegalStateException("actual Java service exceeded its hard Job memory bound");
             }
             requireOutputBudget(config.workRoot());
+            if (artifactInput != null) {
+                try { artifactInput.requireLive(identity); }
+                catch (IOException error) { throw new IllegalStateException("original artifact Owner or host lease unavailable", error); }
+            }
         }
 
         /** Source/closure measurements run at boundaries, not once for every HTTP request. */
         public void verifyImmutableInputs() throws IOException {
+            if (softwareFixture != null) softwareFixture.pendingRef().verify();
+            if (softwareAdmission != null) {
+                softwareAdmission.verify();
+                RootSoftwareFixtureHandoff.verifyActivation(softwareFixture.pending(),
+                        RootSoftwareFixtureHandoff.readActivation(softwareAdmission.activationRef()));
+            }
             if (evidenceRef != null) evidenceRef.verify();
             if (manifestRef != null) manifestRef.verify();
             if (captureScope != null) captureScope.verify();
@@ -294,10 +373,16 @@ public final class MapAdmissionServiceOwner {
             javaExecutableRef.verify();
             for (ControlBuild.FileRef reference : sources) { reference.verify(); }
             for (ControlBuild.FileRef reference : deployment) { reference.verify(); }
+            if (mapOnly != null) {
+                mapOnly.verify();
+                var current = MapOnlyProjectionProof.attest(Path.of(artifact.sourceRoot()), sources, deployment,
+                        getProjection(config.port(), "/v1/projections/identity", ProjectionDeploymentProof.Identity.class),
+                        getProjection(config.port(), "/v1/projections/catalogs", MapOnlyProjectionProof.Inventory.class), machine);
+                if (!current.equals(mapOnly.binding())) throw new IOException("Actual map registration or artifact changed");
+            }
             if (projection != null) {
                 projection.serviceEvidenceRef().verify(); projection.programRef().verify(); projection.hostContext().responseRef().verify();
-                ProjectionProgramManifest originalProgram = ControlBuild.strictMapper().readValue(
-                        Files.readAllBytes(Path.of(projection.programRef().path())), ProjectionProgramManifest.class);
+                ProjectionProgramView originalProgram = readProjectionProgram(Files.readAllBytes(Path.of(projection.programRef().path())));
                 if (originalProgram.runtimeSources() != null) originalProgram.runtimeSources().initialSnapshotRef().verify();
                 if (originalProgram.offlineContext() != null) {
                     originalProgram.offlineContext().responseRef().verify();
@@ -310,6 +395,12 @@ public final class MapAdmissionServiceOwner {
                 ProjectionDeploymentProof.Attestation current = accepted.attest(observed, catalogs, machine);
                 if (captureScope != null) captureScope.requireCatalog(current);
                 if (!projection.attestation().equals(current)) throw new IOException("Actual projection registration/profile/artifact closure changed");
+                if (artifactInput != null) {
+                    if (!(originalProgram instanceof ProjectionProgramManifestV3 v3)) throw new IOException("artifact Owner requires its exact V3 program");
+                    v3.artifactInputs().responseRef().verify(); artifactInput.verifyCurrent(identity);
+                    var actual = ProjectionArtifactAuthority.decodeContext(getProjection(config.port(), "/v1/projections/artifact-inputs", com.fasterxml.jackson.databind.JsonNode.class));
+                    if (!actual.artifactInputs().equals(v3.artifactInputs().context().artifactInputs()) || !actual.machineId().equals(machine)) throw new IOException("actual host artifact scope or lease drifted");
+                } else if (originalProgram instanceof ProjectionProgramManifestV3) throw new IOException("V3 artifact proof is absent from the original Owner configuration");
             }
             requireCurrent();
         }
@@ -318,6 +409,7 @@ public final class MapAdmissionServiceOwner {
         public void close() {
             if (closed) { return; }
             closed = true;
+            Throwable primary = null;
             try {
                 if (child.isRunning()) { child.terminate(75); }
                 WindowsJobProcess.CommandResult result = child.await(Duration.ofSeconds(10),
@@ -332,11 +424,24 @@ public final class MapAdmissionServiceOwner {
                         "CLOSED", ProcessWire.from(identity), result, active, peak, 0));
             } catch (InterruptedException error) {
                 Thread.currentThread().interrupt();
-                throw new IllegalStateException("actual Java service closure was interrupted", error);
+                var wrapped = new IllegalStateException("actual Java service closure was interrupted", error); primary = wrapped; throw wrapped;
             } catch (IOException error) {
-                throw new IllegalStateException("actual Java service closure evidence unavailable", error);
+                var wrapped = new IllegalStateException("actual Java service closure evidence unavailable", error); primary = wrapped; throw wrapped;
+            } catch (RuntimeException | Error failure) {
+                primary = failure; throw failure;
             } finally {
-                child.close();
+                Throwable cleanupFailure = null;
+                try { child.close(); } catch (RuntimeException | Error error) { cleanupFailure = error; }
+                if (artifactInput != null) try { artifactInput.close(); }
+                catch (IOException error) {
+                    var wrapped = new IllegalStateException("artifact writer lock closure unavailable", error);
+                    if (cleanupFailure == null) cleanupFailure = wrapped; else cleanupFailure.addSuppressed(wrapped);
+                }
+                if (cleanupFailure != null) {
+                    if (primary != null) primary.addSuppressed(cleanupFailure);
+                    else if (cleanupFailure instanceof Error error) throw error;
+                    else if (cleanupFailure instanceof RuntimeException error) throw error;
+                }
             }
         }
     }
@@ -349,20 +454,41 @@ public final class MapAdmissionServiceOwner {
     /** Same owner/JVM/Job, explicit request-limited pure-port capture; never publishes normal map/current evidence. */
     public static Session startForCapture(Config requested, Path captureRequestScope) throws IOException {
         Objects.requireNonNull(captureRequestScope);
-        if (requested.offlinePublishing() != null) throw new IllegalArgumentException("Capture-only startup cannot enable offline knowledge publication");
+        if (requested.offlinePublishing() != null || requested.artifactInput() != null) throw new IllegalArgumentException("Capture-only startup cannot enable offline publishing or business artifact inputs");
         return startInternal(requested, true, captureRequestScope);
     }
 
+    /** Same Owner and Job; explicitly map-only, never a full projection qualification. */
+    public static Session startMapOnlyCapture(Config requested, Path scope) throws IOException {
+        Objects.requireNonNull(scope);
+        if (requested.eventStateRoot() != null || requested.stockGameRoot() != null
+                || requested.evidenceGrantsManifest() != null || requested.offlinePublishing() != null
+                || requested.artifactInput() != null || requested.softwareFixture() != null)
+            throw new IllegalArgumentException("Pure MAP_ONLY_CAPTURE cannot install source or artifact authority");
+        return startInternal(requested, false, scope, true);
+    }
+
     private static Session startInternal(Config requested, boolean qualifyProjection, Path captureScopePath) throws IOException {
+        return startInternal(requested, qualifyProjection, captureScopePath, false);
+    }
+
+    private static Session startInternal(Config requested, boolean qualifyProjection, Path captureScopePath, boolean mapOnly) throws IOException {
+        if (requested.artifactInput() != null && (!qualifyProjection || captureScopePath != null)) throw new IllegalArgumentException("artifact inputs require the existing full projection Owner entrypoint");
+        if (requested.softwareFixture() != null && (!qualifyProjection || captureScopePath != null)) {
+            throw new IllegalArgumentException("Root software fixture requires the existing FULL projection Owner");
+        }
         Config config = new Config(requested.buildReceipt().toRealPath(),
                 requested.workRoot().toAbsolutePath().normalize(), requested.javaExecutable().toRealPath(),
                 requested.leaseDeadline(), requested.port(),
                 requested.eventStateRoot() == null ? null : requested.eventStateRoot().toRealPath(),
                 requested.stockGameRoot() == null ? null : requested.stockGameRoot().toRealPath(),
-                requested.evidenceGrantsManifest() == null ? null : requested.evidenceGrantsManifest().toAbsolutePath().normalize(), requested.offlinePublishing());
+                requested.evidenceGrantsManifest() == null ? null : requested.evidenceGrantsManifest().toAbsolutePath().normalize(), requested.offlinePublishing(), requested.artifactInput(), requested.softwareFixture());
         ServiceInputs build = ServiceInputs.read(config.buildReceipt(), captureScopePath != null);
         String machine = WindowsJobProcess.currentMachineId();
         ProjectionCaptureScope.Bound captureScope = captureScopePath == null ? null : ProjectionCaptureScope.read(captureScopePath, machine);
+        if (mapOnly && (qualifyProjection || captureScope == null
+                || !captureScope.request().operations().equals(List.of(MapOnlyProjectionProof.OPERATION))))
+            throw new IllegalArgumentException("Exactly the map operation capture scope required");
         if (!ControlBuild.FileRef.measure(config.javaExecutable()).equals(build.javaExecutableRef())) {
             throw new IllegalArgumentException("service must use the exact qualified Java executable");
         }
@@ -388,17 +514,23 @@ public final class MapAdmissionServiceOwner {
         Path logs = Files.createDirectory(config.workRoot().resolve("logs"));
         Path scratch = Files.createDirectory(config.workRoot().resolve("scratch"));
         ControlBuild.FileRef buildRef = ControlBuild.FileRef.measure(config.buildReceipt());
-        List<ControlBuild.FileRef> mapSources = captureScope == null ? mapSourcePins(build) : List.of();
-        ControlBuild.FileRef manifestRef = captureScope == null ? publishProgramManifest(logs.resolve("program-manifest.json"), new ProgramManifest(
-                "xar.java-map-complete-fastjar-deployment/v1", machine, Instant.now().toString(),
-                deployment.toString(), List.copyOf(build.completeDeployment()), mapSources,
-                buildRef, ControlBuild.FileRef.measure(config.javaExecutable()), true, true)) : null;
+        List<ControlBuild.FileRef> mapSources = captureScope == null || mapOnly ? mapSourcePins(build) : List.of();
+        ProgramManifest compiledBase = new ProgramManifest("xar.java-map-complete-fastjar-deployment/v1",
+                machine, Instant.now().toString(), deployment.toString(), List.copyOf(build.completeDeployment()),
+                mapSources, buildRef, ControlBuild.FileRef.measure(config.javaExecutable()), true, true);
+        ControlBuild.FileRef manifestRef = captureScope == null ? publishProgramManifest(logs.resolve("program-manifest.json"), compiledBase)
+                : mapOnly ? publishBounded(logs.resolve("map-only-base-program.json"), new MapOnlyProjectionProof.BaseProgram(
+                        "xar.java-map-only-capture-base/v1", MapOnlyProjectionProof.Qualification.MAP_ONLY_CAPTURE,
+                        false, false, compiledBase), MAX_PROGRAM_MANIFEST_BYTES) : null;
         Map<String, String> environment = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         environment.putAll(System.getenv());
         environment.put("TEMP", scratch.toString());
         environment.put("TMP", scratch.toString());
         environment.remove("JAVA_TOOL_OPTIONS");
         environment.remove("JDK_JAVA_OPTIONS");
+        environment.remove("XAR_PROJECTION_ARTIFACT_INPUT_SCOPE_PATH");
+        environment.remove("XAR_PROJECTION_ARTIFACT_INPUT_SCOPE_BYTES");
+        environment.remove("XAR_PROJECTION_ARTIFACT_INPUT_SCOPE_SHA256");
         List<String> arguments = new ArrayList<>(List.of("-Xms32m", "-Xmx256m", "-XX:MaxMetaspaceSize=96m",
                 "-XX:ReservedCodeCacheSize=48m", "-XX:MaxDirectMemorySize=32m", "-Xss512k",
                 "-Djava.io.tmpdir=" + scratch, "-Djna.tmpdir=" + scratch,
@@ -419,12 +551,38 @@ public final class MapAdmissionServiceOwner {
                 arguments.add("-Dxar.projection.offline.knowledge-root=" + config.offlinePublishing().knowledgeRoot());
             }
         }
+        RootSoftwareFixtureHandoff.Prepared softwareFixture = config.softwareFixture() == null ? null
+                : RootSoftwareFixtureHandoff.prepare(config.softwareFixture(), config.workRoot(), config.leaseDeadline(),
+                        machine, buildRef, build.javaExecutableRef(), build.sourcePins());
+        if (softwareFixture != null) {
+            arguments.add("-D" + RootSoftwareFixtureHandoff.PROPERTY + "="
+                    + ControlBuild.strictMapper().writeValueAsString(softwareFixture.pendingRef()));
+        }
+        List<Path> unrelatedRoots = new ArrayList<>();
+        if (config.eventStateRoot() != null) { unrelatedRoots.add(config.eventStateRoot()); unrelatedRoots.add(config.stockGameRoot()); }
+        if (config.offlinePublishing() != null && config.offlinePublishing().incidentRoot() != null) {
+            unrelatedRoots.add(config.offlinePublishing().incidentRoot()); unrelatedRoots.add(config.offlinePublishing().knowledgeRoot());
+        }
+        ProjectionArtifactInputOwner.Prepared artifactInput = config.artifactInput() == null ? null
+                : ProjectionArtifactInputOwner.prepare(config.artifactInput(), Objects.requireNonNull(build.verifiedReceipt()), buildRef,
+                        config.workRoot(), config.leaseDeadline(), machine, List.copyOf(unrelatedRoots));
+        if (artifactInput != null) {
+            arguments.add("-Dxar.projection.artifact-input.scope-path=" + artifactInput.scopeRef().path());
+            arguments.add("-Dxar.projection.artifact-input.scope-bytes=" + artifactInput.scopeRef().bytes());
+            arguments.add("-Dxar.projection.artifact-input.scope-sha256=" + artifactInput.scopeRef().sha256());
+        }
         arguments.add("-jar"); arguments.add(deployment.resolve("quarkus-run.jar").toString());
-        WindowsJobProcess child = WindowsJobProcess.start(new WindowsJobProcess.CommandSpec(
+        WindowsJobProcess child;
+        try { child = WindowsJobProcess.start(new WindowsJobProcess.CommandSpec(
                 config.javaExecutable(), arguments, deployment, Map.copyOf(environment),
-                logs.resolve("service.stdout.log"), logs.resolve("service.stderr.log"), MEMORY_LIMIT));
+                logs.resolve("service.stdout.log"), logs.resolve("service.stderr.log"), MEMORY_LIMIT)); }
+        catch (IOException | RuntimeException | Error failure) {
+            if (artifactInput != null) try { artifactInput.close(); } catch (IOException cleanup) { failure.addSuppressed(cleanup); }
+            throw failure;
+        }
         try {
             WindowsJobProcess.ProcessIdentity identity = child.identity();
+            if (artifactInput != null) artifactInput.publishLease(identity);
             ServiceStatus readiness;
             ProducerIdentity producer;
             long until = System.nanoTime() + Duration.ofSeconds(60).toNanos();
@@ -464,10 +622,15 @@ public final class MapAdmissionServiceOwner {
                         NativeTcpListener.owners(config.port()), readiness, producer, MEMORY_LIMIT, 0));
             }
             ProjectionAdmission projection = qualifyProjection
-                    ? qualifyProjection(config, child, build, manifestRef, logs, machine, captureScope) : null;
+                    ? qualifyProjection(config, child, build, manifestRef, logs, machine, captureScope, artifactInput) : null;
+            MapOnlyProjectionProof.Admission mapAdmission = mapOnly
+                    ? qualifyMapOnly(config, child, build, manifestRef, logs, machine) : null;
+            RootSoftwareFixtureHandoff.Admission softwareAdmission = softwareFixture == null ? null
+                    : RootSoftwareFixtureHandoff.admit(softwareFixture, Objects.requireNonNull(projection), config.port());
             buildRef.verify(); build.javaExecutableRef().verify();
             Session session = new Session(config, child, evidenceRef, manifestRef,
-                    build.sourcePins(), build.completeDeployment(), machine, buildRef, build.javaExecutableRef(), projection, build, captureScope);
+                    build.sourcePins(), build.completeDeployment(), machine, buildRef, build.javaExecutableRef(), projection,
+                    build, captureScope, artifactInput, softwareFixture, softwareAdmission, mapAdmission);
             session.requireCurrent();
             return session;
         } catch (IOException | RuntimeException | Error failure) {
@@ -475,6 +638,7 @@ public final class MapAdmissionServiceOwner {
             catch (IOException | RuntimeException | Error cleanup) { failure.addSuppressed(cleanup); }
             finally {
                 try { child.close(); } catch (RuntimeException | Error cleanup) { failure.addSuppressed(cleanup); }
+                if (artifactInput != null) try { artifactInput.close(); } catch (IOException cleanup) { failure.addSuppressed(cleanup); }
             }
             throw failure;
         }
@@ -514,8 +678,26 @@ public final class MapAdmissionServiceOwner {
         return List.copyOf(result);
     }
 
+    private static MapOnlyProjectionProof.Admission qualifyMapOnly(Config config, WindowsJobProcess child,
+            ServiceInputs build, ControlBuild.FileRef program, Path logs, String machine) throws IOException {
+        var before = WindowsJobProcess.exactProcess(child.identity().pid());
+        if (!before.equals(child.identity())) throw new IOException("Original map host generation required");
+        Path identityPath = logs.resolve("map-only-identity.json"), catalogsPath = logs.resolve("map-only-catalogs.json");
+        var identity = get(config.port(), "/v1/projections/identity", ProjectionDeploymentProof.Identity.class,
+                ProjectionDeploymentProof.MAX_OBSERVATION_BYTES, true, identityPath);
+        var catalogs = get(config.port(), "/v1/projections/catalogs", MapOnlyProjectionProof.Inventory.class,
+                ProjectionDeploymentProof.MAX_OBSERVATION_BYTES, true, catalogsPath);
+        var binding = MapOnlyProjectionProof.attest(Path.of(build.sourceRoot()), build.sourcePins(),
+                build.completeDeployment(), identity, catalogs, machine);
+        var after = WindowsJobProcess.exactProcess(child.identity().pid());
+        return new MapOnlyProjectionProof.Admission(MapOnlyProjectionProof.Qualification.MAP_ONLY_CAPTURE,
+                binding, program, ControlBuild.FileRef.measure(identityPath), ControlBuild.FileRef.measure(catalogsPath),
+                ProcessWire.from(before), ProcessWire.from(after));
+    }
+
     private static ProjectionAdmission qualifyProjection(Config config, WindowsJobProcess child, ServiceInputs build,
-            ControlBuild.FileRef mapProgramRef, Path logs, String machine, ProjectionCaptureScope.Bound captureScope) throws IOException {
+            ControlBuild.FileRef mapProgramRef, Path logs, String machine, ProjectionCaptureScope.Bound captureScope,
+            ProjectionArtifactInputOwner.Prepared artifactInput) throws IOException {
         WindowsJobProcess.ProcessIdentity before = WindowsJobProcess.exactProcess(child.identity().pid());
         if (!before.equals(child.identity())) throw new IOException("Original Java process generation changed before projection observation");
         ProjectionDeploymentProof.Identity observed = getProjection(config.port(), "/v1/projections/identity", ProjectionDeploymentProof.Identity.class);
@@ -552,10 +734,21 @@ public final class MapAdmissionServiceOwner {
             throw new IOException("Projection observation/source measurement lost original kernel/listener generation");
         }
         if (mapProgramRef != null) mapProgramRef.verify();
-        ControlBuild.FileRef program = publishBounded(logs.resolve("projection-program-manifest.json"),
-                new ProjectionProgramManifest("xar.java-projection-complete-fastjar-deployment/v2", machine, Instant.now().toString(),
+        ProjectionArtifactAuthority.Observed artifactContext = null;
+        if (artifactInput != null) {
+            Path responsePath = logs.resolve("projection-artifact-context-response.json");
+            var response = get(config.port(), "/v1/projections/artifact-inputs", com.fasterxml.jackson.databind.JsonNode.class,
+                    ProjectionArtifactAuthority.CONTEXT_MAX_BYTES, true, responsePath);
+            artifactContext = artifactInput.observe(ProjectionArtifactAuthority.decodeContext(response), ControlBuild.FileRef.measure(responsePath), after, proof);
+        }
+        ProjectionProgramView programValue = artifactContext == null
+                ? new ProjectionProgramManifest("xar.java-projection-complete-fastjar-deployment/v2", machine, Instant.now().toString(),
                         build.deploymentRoot(), build.completeDeployment(), build.sourcePins(), ControlBuild.FileRef.measure(config.buildReceipt()),
-                        build.javaExecutableRef(), true, true, proof, contextProof, runtimeSources, offlineContext, build.qualification(), captureScope), MAX_PROGRAM_MANIFEST_BYTES);
+                        build.javaExecutableRef(), true, true, proof, contextProof, runtimeSources, offlineContext, build.qualification(), captureScope)
+                : new ProjectionProgramManifestV3("xar.java-projection-complete-fastjar-deployment/v3", machine, Instant.now().toString(),
+                        build.deploymentRoot(), build.completeDeployment(), build.sourcePins(), ControlBuild.FileRef.measure(config.buildReceipt()),
+                        build.javaExecutableRef(), true, true, proof, contextProof, runtimeSources, offlineContext, build.qualification(), captureScope, artifactContext);
+        ControlBuild.FileRef program = publishBounded(logs.resolve("projection-program-manifest.json"), programValue, MAX_PROGRAM_MANIFEST_BYTES);
         ControlBuild.FileRef evidence = publishBounded(logs.resolve("projection-service-running.json"), new ProjectionRunningReceipt(
                 "xar.java-projection-service-running/v1", machine, Instant.now().toString(), "ACTUAL_RUNNING",
                 ProjectionDeploymentProof.PRODUCER, ProjectionDeploymentProof.VERSION,

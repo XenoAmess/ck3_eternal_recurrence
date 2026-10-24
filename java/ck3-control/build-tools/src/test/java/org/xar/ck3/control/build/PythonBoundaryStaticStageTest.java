@@ -103,7 +103,8 @@ class PythonBoundaryStaticStageTest {
             assertThrows(IOException.class, () -> ControlBuild.strictMapper().readValue(invalid, PythonBoundaryStaticStage.ScopeManifest.class));
         }
         var actual = new ControlCi.Receipt(ControlCi.ACTUAL_SCHEMA, "fixture-machine", "2026-10-22T00:00:00Z",
-                "2026-10-22T00:00:01Z", "RED", "expected incomplete fixture", null, null, null, null, null, null, List.of());
+                "2026-10-22T00:00:01Z", ControlCi.PipelineState.RED, "expected incomplete fixture", null, null, null, null, null, null, List.of(), null,
+                null, null, null, ControlCi.ExecutionPurpose.HOSTED_CI, null, ControlCi.initialStages());
         String actualRaw = ControlBuild.strictMapper().writeValueAsString(actual);
         assertThrows(IOException.class, () -> ControlBuild.strictMapper().readValue(
                 actualRaw.replace(ControlCi.ACTUAL_SCHEMA, "xar.java-control-CI-actual/v1"), ControlCi.Receipt.class));
