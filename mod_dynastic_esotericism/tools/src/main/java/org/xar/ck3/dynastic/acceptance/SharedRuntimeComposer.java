@@ -55,6 +55,7 @@ public final class SharedRuntimeComposer {
 
     public record FilePin(String path, long bytes, String sha256) { }
     public enum Qualification { SHARED_SOURCE_AND_NATIVE_BUILD_SUCCESSOR_LIVE_NOT_QUALIFIED }
+    private enum OverlayDisposition { CURRENT_FROZEN_INPUT, CURRENT_PROJECTED_HOST, PARENT_SOURCE_OUTSIDE_SELECTED_CLOSURE }
     public record Result(String runtime, String manifest, String sourceIndex, long copiedBytes, int copiedFiles,
             Qualification qualification) { }
 
@@ -259,6 +260,34 @@ public final class SharedRuntimeComposer {
         index.put("compared_parent_file_count", compared);
         index.put("out_of_scope_parent_file_count", oldFiles.size() - compared);
         index.set("actual_changed_parent_files", differences);
+        ObjectNode parentOverlays = object(runtime.get("allocator_overlay"), "parent allocator overlay").deepCopy();
+        runtime.set("parent_allocator_overlay", parentOverlays);
+        ObjectNode activeOverlays = JSON.createObjectNode();
+        ArrayNode overlayProjection = index.putArray("allocator_overlay_projection");
+        Path canonicalHostRelative = Path.of("ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py");
+        for (Map.Entry<String, JsonNode> entry : parentOverlays.properties()) {
+            FilePin previous = declaredPin(entry.getValue());
+            Path original = Path.of(previous.path()).toAbsolutePath().normalize();
+            Path relative = original.startsWith(parentSourceRoot) ? parentSourceRoot.relativize(original)
+                    : original.startsWith(parentRepository) ? parentRepository.relativize(original) : null;
+            if (relative == null) {
+                activeOverlays.set(entry.getKey(), JSON.valueToTree(checkedPin(entry.getValue())));
+                continue;
+            }
+            FilePin replacement = relative.equals(canonicalHostRelative) ? currentHost : actualByRelativePath.get(relative);
+            ObjectNode transition = overlayProjection.addObject();
+            transition.put("key", entry.getKey());
+            transition.set("parent_declared", entry.getValue().deepCopy());
+            OverlayDisposition disposition = replacement == null ? OverlayDisposition.PARENT_SOURCE_OUTSIDE_SELECTED_CLOSURE
+                    : relative.equals(canonicalHostRelative) ? OverlayDisposition.CURRENT_PROJECTED_HOST
+                    : OverlayDisposition.CURRENT_FROZEN_INPUT;
+            transition.put("disposition", disposition.name());
+            if (replacement != null) {
+                transition.set("current_active", JSON.valueToTree(replacement));
+                activeOverlays.set(entry.getKey(), JSON.valueToTree(replacement));
+            }
+        }
+        runtime.set("allocator_overlay", activeOverlays);
         Path sourceIndex = output.resolve("source-index.json");
         writeJson(sourceIndex, index);
         ObjectNode paths = object(runtime.get("paths"), "runtime paths");
@@ -278,6 +307,7 @@ public final class SharedRuntimeComposer {
         hostFeatures.put("saved_campaign_debug_mode", true);
         runtime.put("repo_root", repo.toString());
         runtime.put("userdir_root", output.resolve("userdirs").toString());
+        Files.createDirectory(output.resolve("userdirs"));
         runtime.put("artifacts_root", output.resolve("runs").toString());
         runtime.put("observed_at_utc", Instant.now().toString());
         runtime.put("qualification", Qualification.SHARED_SOURCE_AND_NATIVE_BUILD_SUCCESSOR_LIVE_NOT_QUALIFIED.name());
@@ -409,13 +439,21 @@ public final class SharedRuntimeComposer {
         return value.booleanValue();
     }
 
-    private static FilePin checkedPin(JsonNode value) throws IOException {
+    private static FilePin declaredPin(JsonNode value) {
         ObjectNode object = object(value, "file pin");
         JsonNode count = object.get("bytes");
         if (object.size() != 3 || count == null || !count.isIntegralNumber() || !count.canConvertToLong() || count.longValue() < 0) {
             throw new IllegalArgumentException("exact file pin fields and integral byte count required");
         }
         FilePin declared = new FilePin(text(object, "path"), count.longValue(), text(object, "sha256"));
+        if (!Path.of(declared.path()).isAbsolute() || !declared.sha256().matches("[0-9a-f]{64}")) {
+            throw new IllegalArgumentException("absolute file path and canonical SHA-256 required");
+        }
+        return declared;
+    }
+
+    private static FilePin checkedPin(JsonNode value) throws IOException {
+        FilePin declared = declaredPin(value);
         if (!pin(Path.of(declared.path())).equals(declared)) throw new IOException("frozen input changed: " + declared.path());
         return declared;
     }

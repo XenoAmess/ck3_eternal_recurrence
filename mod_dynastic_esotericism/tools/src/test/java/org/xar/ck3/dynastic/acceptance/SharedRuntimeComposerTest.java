@@ -98,7 +98,16 @@ final class SharedRuntimeComposerTest {
         Path parentRegistration = temporary.resolve("old-global/registration_mcp.py");
         Files.createDirectories(parentRegistration.getParent());
         Files.writeString(parentRegistration, "# authored predecessor registration provider\n");
-        runtime.putObject("allocator_overlay").set("parent-registration", pin(parentRegistration));
+        ObjectNode parentOverlay = runtime.putObject("allocator_overlay");
+        parentOverlay.set("parent-registration", pin(parentRegistration));
+        parentOverlay.set("old-sdk", old.deepCopy());
+        ObjectNode oldHost = pin(canonicalHost);
+        oldHost.put("path", oldRepo.resolve("ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py").toString());
+        oldHost.put("sha256", "0".repeat(64));
+        parentOverlay.set("old-host", oldHost);
+        ObjectNode unselected = old.deepCopy();
+        unselected.put("path", oldRepo.resolve("tools/unselected_previous_case.py").toString());
+        parentOverlay.set("old-unselected", unselected);
         runtime.putObject("runtime_environment").putArray("PYTHONPATH").add(temporary.resolve("old-import").toString());
         Path parentRuntime = temporary.resolve("parent-runtime.json");
         write(parentRuntime, runtime);
@@ -188,6 +197,13 @@ final class SharedRuntimeComposerTest {
                 .path("current-global-registration-provider").path("path").textValue());
         assertEquals(leaseHelper.toRealPath().toString(), actual.path("allocator_overlay")
                 .path("clean-lease-screen-helper").path("path").textValue());
+        assertEquals(output.resolve("source/ck3_autonomous_player/src/xar_autoplayer/__init__.py").toRealPath().toString(),
+                actual.path("allocator_overlay").path("old-sdk").path("path").textValue());
+        assertEquals(canonicalHost.toRealPath().toString(), actual.path("allocator_overlay").path("old-host").path("path").textValue());
+        assertFalse(actual.path("allocator_overlay").has("old-unselected"));
+        assertEquals(parentOverlay, actual.path("parent_allocator_overlay"));
+        assertEquals(3, actualIndex.path("allocator_overlay_projection").size());
+        assertTrue(Files.isDirectory(output.resolve("userdirs")));
         assertEquals(SharedRuntimeComposer.Qualification.SHARED_SOURCE_AND_NATIVE_BUILD_SUCCESSOR_LIVE_NOT_QUALIFIED,
                 result.qualification());
         assertFalse(actualManifest.path("capabilities").path("ck3_execute_player_rite_creation_action_v1").path("actual_live_qualified").booleanValue());
