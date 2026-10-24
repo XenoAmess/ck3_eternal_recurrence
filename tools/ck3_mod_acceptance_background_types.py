@@ -246,11 +246,15 @@ class ProductAcceptanceClockV1:
                 raise ValueError('Product-purpose clock requires an actual paused native map integer identity')
             return item
 
-        actor = positive(object_field(row, 'played_character').get('character_id'))
         date = positive(row.get('date_raw'))
         pid, generation = positive(diagnostics.get('bridge_pid')), positive(diagnostics.get('connection_generation'))
         if diagnostics.get('pipe_name') != self.purpose.bridge_pipe:
             raise ValueError('Product-purpose native pipe differs')
+        # Loading can publish a ready map before the player object. Only that
+        # explicit initial null waits; it cannot bind or advance this clock.
+        if self.start_date_raw is None and 'played_character' in row and row['played_character'] is None:
+            return
+        actor = positive(object_field(row, 'played_character').get('character_id'))
         if self.start_date_raw is None:
             self.start_date_raw, self.actor, self.bridge_pid, self.generation = date, actor, pid, generation
         elif ((pid, generation) != (self.bridge_pid, self.generation)

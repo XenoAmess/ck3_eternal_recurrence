@@ -20,9 +20,37 @@ from ck3_mod_acceptance_background_types import (
     FilePin, JsonObject, JsonValue, ProductAcceptanceClockV1, file_pin, json_object, strings_field,
     product_acceptance_purpose_v1, write_product_acceptance_purpose_v1,
 )
+from xar_autoplayer.bridge.native_driver import NativeProtocolState
 
 REPO = Path(__file__).resolve().parents[1]
 HOST = REPO / 'ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py'
+
+# Exact state_snapshot messages from machine 4-8e1c2f1861, R0005 native wire
+# logical lines 962/1203, 2026-10-24T21:17:08.557527Z/21:18:08.591696Z.
+# Tests supply an authored hello/pipe; these captured state messages stay intact.
+R0005_LOADING_FRAMES: tuple[dict[str, object], dict[str, object]] = (
+    {'type': 'state_snapshot', 'protocol_version': 1, 'snapshot_id': 'native:2', 'revision': 2,
+     'state': {'date_raw': 53144328, 'speed': 3, 'paused': True, 'local_player_id': 1,
+        'map_ready': True, 'played_character': None, 'played_character_gold': None,
+        'played_character_prestige': None, 'played_character_piety': None,
+        'one_life_settlement': None, 'active_event': None, 'pending_character_interaction': None,
+        'active_wars': [], 'player_armies': [], 'last_checkpoint_submission': None, 'history': []}},
+    {'type': 'state_snapshot', 'protocol_version': 1, 'snapshot_id': 'native:3', 'revision': 3,
+     'state': {'date_raw': 53144328, 'speed': 3, 'paused': True, 'local_player_id': 1,
+        'map_ready': True, 'played_character': {'character_id': 31254, 'alive': True,
+            'stress_points': 0, 'event_trait_membership': {
+                'schema': 'xar.ck3.player-event-trait-membership/v1', 'game_version': '1.20.0.4',
+                'executable_sha256': '98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518',
+                'status': 'available', 'snapshot_revision': 3, 'date_raw': 53144328,
+                'played_character_id': 31254, 'traits': {'lifestyle_poet': False, 'journaller': False},
+                'unavailable_reason': None}, 'betrothed_id': None, 'primary_spouse_id': 36311,
+            'spouse_ids': [36311]},
+        'played_character_gold': {'raw': 25500000, 'scale': 100000},
+        'played_character_prestige': {'raw': 220000000, 'scale': 100000},
+        'played_character_piety': {'raw': 15000000, 'scale': 100000},
+        'one_life_settlement': None, 'active_event': None, 'pending_character_interaction': None,
+        'active_wars': [], 'player_armies': [], 'last_checkpoint_submission': None, 'history': []}},
+)
 
 
 def pin(path: Path) -> FilePin:
@@ -371,6 +399,84 @@ class ProductPurposeTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'rewound'):
             driver._with_one_life_episode(rewound)
         self.assertEqual((clock.actor, clock.last_date_raw), (31254, 53144376))
+
+    def test_captured_loading_frames_reach_actual_host_without_starting_clock_early(self) -> None:
+        self.produce()
+        clock = self.consume()
+        driver = actual_recording_driver(clock)
+        state = NativeProtocolState(self.pipe)
+        state.ingest({'type': 'hello', 'protocol_version': 1, 'pid': 25808,
+            'connection_generation': 1, 'capabilities': ['game.state.snapshot']})
+        state.ingest(copy.deepcopy(R0005_LOADING_FRAMES[0]))
+        pending = state.semantic_snapshot()
+        self.assertIsNone(driver._with_one_life_episode(pending)['played_character'])
+        self.assertEqual((clock.start_date_raw, clock.actor, clock.bridge_pid,
+            clock.generation, clock.last_date_raw), (None, None, None, None, None))
+        with self.assertRaisesRegex(ValueError, 'actual paused one-day request'):
+            driver._campaign_advance_deadline_v1(pending, 53144352)
+        self.assertIsNone(clock.start_date_raw)
+        state.ingest(copy.deepcopy(R0005_LOADING_FRAMES[1]))
+        complete = state.semantic_snapshot()
+        driver._with_one_life_episode(complete)
+        self.assertEqual((clock.start_date_raw, clock.actor, clock.bridge_pid,
+            clock.generation, clock.last_date_raw), (53144328, 31254, 25808, 1, 53144328))
+        self.assertIsNotNone(driver._campaign_advance_deadline_v1(complete, 53144352))
+
+    def test_initial_actor_missing_or_wrong_type_does_not_become_loading_null(self) -> None:
+        self.produce()
+        bad_values: list[JsonValue] = [False, 1, 1.0, [], '', {},
+            {'character_id': None}, {'character_id': True}, {'character_id': 31254.0}]
+        missing = self.frame()
+        del missing['played_character']
+        candidates = [missing]
+        for value in bad_values:
+            candidate = self.frame()
+            candidate['played_character'] = value
+            candidates.append(candidate)
+        for candidate in candidates:
+            with self.subTest(candidate=candidate):
+                clock = self.consume()
+                with self.assertRaises(ValueError):
+                    actual_recording_driver(clock)._with_one_life_episode(candidate)
+                self.assertIsNone(clock.start_date_raw)
+
+    def test_initial_null_keeps_date_and_native_binding_validation(self) -> None:
+        self.produce()
+        for value in (None, True, 53144328.0, 0):
+            with self.subTest(date=value):
+                frame = self.frame()
+                frame.update(played_character=None, date_raw=value)
+                with self.assertRaises(ValueError):
+                    actual_recording_driver(self.consume())._with_one_life_episode(frame)
+        for key, native_value in [('bridge_pid', None), ('bridge_pid', True),
+                ('bridge_pid', 25808.0), ('connection_generation', 0), ('pipe_name', 'other')]:
+            with self.subTest(key=key, value=native_value):
+                frame = self.frame()
+                frame['played_character'] = None
+                frame['diagnostics'] = {'pipe_name': self.pipe, 'bridge_pid': 25808,
+                    'connection_generation': 1, key: native_value}
+                with self.assertRaises(ValueError):
+                    actual_recording_driver(self.consume())._with_one_life_episode(frame)
+
+    def test_bound_null_actor_still_refuses_without_mutating_clock(self) -> None:
+        for enabled in (False, True):
+            with self.subTest(allow_actor_change=enabled):
+                if self.purpose_path.exists():
+                    self.purpose_path.unlink()
+                self.contract['allow_actor_change'] = enabled
+                self.refresh_contract()
+                self.produce()
+                clock = self.consume()
+                driver = actual_recording_driver(clock)
+                driver._with_one_life_episode(self.frame())
+                pending = self.frame(1)
+                pending['played_character'] = None
+                with self.assertRaises(ValueError):
+                    driver._with_one_life_episode(pending)
+                with self.assertRaises(ValueError):
+                    driver._campaign_advance_deadline_v1(pending, 53144376)
+                self.assertEqual((clock.start_date_raw, clock.actor, clock.bridge_pid,
+                    clock.generation, clock.last_date_raw), (53144328, 31254, 29452, 1, 53144328))
 
 
 if __name__ == '__main__':

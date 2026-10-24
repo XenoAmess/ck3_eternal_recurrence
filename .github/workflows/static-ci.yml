@@ -254,6 +254,10 @@ jobs:
           PYTHONPATH: ${{ github.workspace }}\tools;${{ github.workspace }}\ck3_autonomous_player\src
           MYPYPATH: ${{ github.workspace }}\tools;${{ github.workspace }}\ck3_autonomous_player\src
         run: |
+          python -B -X utf8 tools/test_product_acceptance_purpose.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -m mypy --strict --follow-imports=skip --no-incremental --cache-dir nul tools/ck3_mod_acceptance_background_types.py tools/test_product_acceptance_purpose.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_host_running_date_support.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -O -X utf8 tools/test_ck3_mod_acceptance_host_running_date_support.py
