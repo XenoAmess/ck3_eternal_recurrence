@@ -68,6 +68,27 @@ final class SharedSourceFilesNativePathTest {
         assertEquals("original = 1\n", Files.readString(original));
     }
 
+    @Test void heldDirectoryUsesTheSameNativeDecoderAndRejectsAFile() throws Exception {
+        Path parent = Files.createDirectory(directory.resolve("held-native-directory"));
+        var api = com.sun.jna.platform.win32.Kernel32.INSTANCE;
+        var held = api.CreateFile(SharedSourceFiles.nativePath(parent), 0x80, 3, null, 3, 0x02200000, null);
+        assertNotEquals(com.sun.jna.platform.win32.WinBase.INVALID_HANDLE_VALUE, held);
+        var directoryHandle = held;
+        try {
+            var actual = SharedSourceFiles.nativeHeldDirectory(directoryHandle);
+            assertEquals(SharedSourceFiles.nativeDirectory(parent), new SharedSourceFiles.DirectoryIdentity(
+                    actual.volumeSerialDecimal(), actual.fileIdDecimal(), actual.creationFiletimeDecimal()));
+            assertTrue(actual.allocatedBytes() >= 0); assertTrue(actual.linkCount() > 0);
+            assertThrows(IOException.class, () -> SharedSourceFiles.nativeHeldFile(directoryHandle));
+        } finally { assertTrue(api.CloseHandle(held)); }
+        assertThrows(IOException.class, () -> SharedSourceFiles.nativeHeldDirectory(null));
+        Path leaf = Files.writeString(parent.resolve("file.txt"), "file");
+        held = api.CreateFile(SharedSourceFiles.nativePath(leaf), 0x80, 3, null, 3, 0x00200000, null);
+        var fileHandle = held;
+        try { assertThrows(IOException.class, () -> SharedSourceFiles.nativeHeldDirectory(fileHandle)); }
+        finally { assertTrue(api.CloseHandle(held)); }
+    }
+
     private Path longDirectory(String label) throws IOException {
         Path path = directory.resolve(label);
         while (path.toString().length() < 310) path = path.resolve("ordinary-native-source-path-segment");

@@ -55,6 +55,69 @@ import java.util.zip.ZipInputStream;
  * It cannot qualify the pipeline. ControlCi must subsequently validate all stages.
  */
 public final class CiBootstrap {
+    /** Sole oracle engine, kept here so the JDK21 source-file entry has no sibling dependency. */
+    static final class OracleEnvironment {
+        private OracleEnvironment() { }
+
+        public record Inputs(String python, String repositoryRoot) {
+            public Inputs {
+                absolute(python); absolute(repositoryRoot);
+            }
+        }
+
+        /** Live validation. Both repository roles must independently name the same real source root. */
+        public static Inputs require(Map<String, String> environment) throws IOException {
+            Path python = plainFile(required(environment, "XAR_ORACLE_PYTHON"));
+            Path oracle = plainDirectory(required(environment, "XAR_ORACLE_REPO"));
+            Path canonical = plainDirectory(required(environment, "XAR_REPO_ROOT"));
+            if (!oracle.equals(canonical))
+                throw new IOException("XAR_ORACLE_REPO and XAR_REPO_ROOT must bind the same actual repository");
+            Path workflow = oracle.resolve(".github/workflows/static-ci.yml");
+            if (!Files.isRegularFile(workflow, LinkOption.NOFOLLOW_LINKS) || Files.size(workflow) < 1
+                    || !workflow.toRealPath().equals(workflow))
+                throw new IOException("Actual canonical workflow source is unavailable");
+            return new Inputs(python.toString(), oracle.toString());
+        }
+
+        /** A producer deliberately sets all three roles; no missing role is inferred by a reader. */
+        public static Map<String, String> bind(Path repository, Path python, Map<String, String> inherited) throws IOException {
+            Map<String, String> environment = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+            environment.putAll(inherited);
+            environment.put("XAR_ORACLE_PYTHON", python.toString());
+            environment.put("XAR_ORACLE_REPO", repository.toString());
+            environment.put("XAR_REPO_ROOT", repository.toString());
+            require(environment);
+            return Map.copyOf(environment);
+        }
+
+        private static String required(Map<String, String> environment, String name) throws IOException {
+            String value = environment.get(name);
+            if (value == null || value.isBlank()) throw new IOException("NOT EXECUTED: explicit " + name + " required");
+            return value;
+        }
+        private static Path plainFile(String value) throws IOException {
+            Path path = absolute(value);
+            if (!Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS) || Files.size(path) < 1
+                    || !path.toRealPath().equals(path)) throw new IOException("Plain actual interpreter required: " + path);
+            return path;
+        }
+        private static Path plainDirectory(String value) throws IOException {
+            Path path = absolute(value);
+            if (!Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS) || !path.toRealPath().equals(path))
+                throw new IOException("Plain actual repository required: " + path);
+            return path;
+        }
+        private static Path absolute(String value) {
+            if (value == null || value.isBlank() || value.length() > 4096
+                    || value.codePoints().anyMatch(point -> point < 32 || point == 127))
+                throw new IllegalArgumentException("Bounded plain absolute source path required");
+            Path path = Path.of(value);
+            if (!path.isAbsolute() || !path.equals(path.normalize()))
+                throw new IllegalArgumentException("Canonical absolute source path required");
+            return path;
+        }
+    }
+
     public static final String PLAN_SCHEMA = "xar.java-control-CI-bootstrap-plan/v1";
     public static final String MAVEN_VERSION = "3.10.0";
     public static final String MINIMUM_MAVEN_VERSION = "3.10.0";
@@ -260,6 +323,11 @@ public final class CiBootstrap {
         if (!System.getProperty("os.name").startsWith("Windows") || Runtime.version().feature() != 21) {
             throw new IllegalStateException("explicit installed Windows JDK21 required; no skip");
         }
+        if (arguments.length == 1 && arguments[0].equals("--verify-canonical-oracle-environment")) {
+            OracleEnvironment.require(System.getenv());
+            System.out.println("Verified explicit canonical oracle environment; no pipeline qualification");
+            return;
+        }
         if (arguments.length == 2 && arguments[0].equals("--verify-maven-evidence-root")) {
             String machine = machineId(Path.of(Objects.requireNonNull(System.getenv("SystemRoot"))).toRealPath());
             int count = verifyMavenEvidence(Path.of(arguments[1]), machine);
@@ -325,7 +393,7 @@ public final class CiBootstrap {
             Map<String, String> environment = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
             environment.putAll(System.getenv());
             environment.put("JAVA_HOME", javaHome.toString());
-            environment.putAll(CanonicalOracleEnvironment.bind(repo, python, environment));
+            environment.putAll(OracleEnvironment.bind(repo, python, environment));
             String scratch = root.resolve("scratch").toString();
             String jvm = "-Xms32m -Xmx512m -XX:MaxMetaspaceSize=192m -XX:ReservedCodeCacheSize=64m"
                     + " -XX:MaxDirectMemorySize=64m -Xss512k -Djava.io.tmpdir=" + scratch + " -Djna.tmpdir=" + scratch;

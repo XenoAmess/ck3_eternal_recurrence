@@ -4,18 +4,21 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/** Metadata/filesystem and command construction only; no vcvars, CMD or native process is started. */
+/** Software metadata producer/reader and owned metadata CLI; no vcvars or native build is dispatched. */
 final class NativeBuildEnvironmentTest {
     private static final String MACHINE = "software-fixture-machine";
     @TempDir Path temporary;
@@ -85,6 +88,91 @@ final class NativeBuildEnvironmentTest {
         assertThrows(IOException.class, () -> NativeBuildEnvironment.readConfiguration(mapper.readTree(wire), temporary.resolve("old-scratch")));
         assertThrows(IOException.class, () -> NativeBuildEnvironment.readConfiguration(mapper.readTree(
                 "{\"schema\":true,\"snapshot_output\":null}"), scratch));
+    }
+
+    @Test void actualOsCaseNamesBecomeCanonicalOnlyAtCaptureAndRoundTripThroughTheRealReader() throws Exception {
+        Path scratch = Files.createDirectory(temporary.resolve("os-case"));
+        Map<String, String> canonical = values(scratch), rawWindows = new HashMap<>();
+        canonical.forEach((key, value) -> rawWindows.put(key.toLowerCase(Locale.ROOT), value));
+        rawWindows.put("SYSTEMROOT", rawWindows.remove("systemroot"));
+        rawWindows.put("UNRELATED_SECRET", "never persisted");
+        var snapshot = NativeBuildEnvironment.capture(scratch, MACHINE, rawWindows, Instant.now());
+        assertEquals(canonical, snapshot.values());
+        assertTrue(rawWindows.containsKey("SYSTEMROOT"));
+        assertFalse(rawWindows.containsKey("SystemRoot"));
+        Path output = scratch.resolve(NativeBuildEnvironment.SNAPSHOT_NAME);
+        NativeBuildEnvironment.write(scratch, output, snapshot);
+        assertEquals(snapshot, NativeBuildEnvironment.read(scratch, MACHINE, Files.readAllBytes(output)));
+        assertTrue(Files.readString(output, StandardCharsets.ISO_8859_1).contains("SystemRoot="));
+        assertFalse(Files.readString(output, StandardCharsets.ISO_8859_1).contains("SYSTEMROOT="));
+    }
+
+    @Test void ambiguousOsCaseNamesEvenWithEqualValuesAndMissingSystemRootRemainRejected() throws Exception {
+        Path scratch = Files.createDirectory(temporary.resolve("ambiguous-case"));
+        for (boolean sameValue : List.of(true, false)) {
+            Map<String, String> ambiguous = values(scratch);
+            ambiguous.put("SYSTEMROOT", sameValue ? ambiguous.get("SystemRoot") : "different actual value");
+            IOException failure = assertThrows(IOException.class,
+                    () -> NativeBuildEnvironment.capture(scratch, MACHINE, ambiguous, Instant.now()));
+            assertEquals("ambiguous case-insensitive actual environment field: SystemRoot", failure.getMessage());
+        }
+        Map<String, String> missing = values(scratch); missing.remove("SystemRoot");
+        IOException failure = assertThrows(IOException.class,
+                () -> NativeBuildEnvironment.capture(scratch, MACHINE, missing, Instant.now()));
+        assertEquals("invalid allowlisted vcvars snapshot", failure.getMessage());
+        assertEquals("missing actual environment field: SystemRoot", failure.getCause().getMessage());
+        Map<String, String> nullValue = values(scratch); nullValue.put("SystemRoot", null);
+        assertThrows(IOException.class, () -> NativeBuildEnvironment.capture(scratch, MACHINE, nullValue, Instant.now()));
+    }
+
+    @Test void persistedV1NamesStayExactAndCannotSmuggleOsCaseAliasesThroughTheReader() throws Exception {
+        Path scratch = Files.createDirectory(temporary.resolve("canonical-wire"));
+        var snapshot = NativeBuildEnvironment.capture(scratch, MACHINE, values(scratch), Instant.now());
+        Path output = scratch.resolve(NativeBuildEnvironment.SNAPSHOT_NAME);
+        NativeBuildEnvironment.write(scratch, output, snapshot);
+        String wire = Files.readString(output, StandardCharsets.ISO_8859_1);
+        for (String changed : List.of(wire.replace("SystemRoot=", "SYSTEMROOT="),
+                wire + "\nsystemroot=alias\n", wire + "\nSystem\\u0052oot=decoded-duplicate\n")) {
+            assertThrows(IOException.class, () -> NativeBuildEnvironment.read(scratch, MACHINE,
+                    changed.getBytes(StandardCharsets.ISO_8859_1)));
+        }
+        Map<String, String> noncanonical = values(scratch);
+        noncanonical.put("SYSTEMROOT", noncanonical.remove("SystemRoot"));
+        assertThrows(IllegalArgumentException.class, () -> new NativeBuildEnvironment.Snapshot(
+                snapshot.schema(), MACHINE, snapshot.observedAt(), noncanonical));
+    }
+
+    @Test void actualSharedMetadataCliReadsUppercaseOsSystemRootInsideItsOwnedJob() throws Exception {
+        Path scratch = Files.createDirectory(temporary.resolve("cli-case"));
+        Map<String, String> environment = new HashMap<>(System.getenv());
+        Map<String, String> fixture = values(scratch);
+        String realSystemRoot = System.getenv("SystemRoot");
+        assertTrue(realSystemRoot != null && !realSystemRoot.isBlank());
+        fixture.put("SystemRoot", realSystemRoot);
+        for (String key : fixture.keySet()) environment.keySet().removeIf(actual -> actual.equalsIgnoreCase(key));
+        fixture.forEach((key, value) -> environment.put(key.toUpperCase(Locale.ROOT), value));
+        for (String option : List.of("JAVA_TOOL_OPTIONS", "JDK_JAVA_OPTIONS", "_JAVA_OPTIONS"))
+            environment.keySet().removeIf(actual -> actual.equalsIgnoreCase(option));
+        String classpath = System.getProperty("surefire.test.class.path", System.getProperty("java.class.path"));
+        Path output = scratch.resolve(NativeBuildEnvironment.SNAPSHOT_NAME), stdout = scratch.resolve("cli.stdout"),
+                stderr = scratch.resolve("cli.stderr");
+        var spec = new WindowsJobProcess.CommandSpec(Path.of(System.getProperty("java.home"), "bin/java.exe"),
+                List.of("-Xms16m", "-Xmx64m", "-XX:+UseSerialGC", "-XX:ActiveProcessorCount=2",
+                        "-XX:MaxMetaspaceSize=64m", "-XX:ReservedCodeCacheSize=16m",
+                        "-XX:MaxDirectMemorySize=8m", "-Xss256k",
+                        "-Djava.io.tmpdir=" + scratch, "-Djna.tmpdir=" + scratch,
+                        "-cp", classpath, NativeBuildEnvironment.class.getName(), "capture", scratch.toString(),
+                        output.toString(), WindowsJobProcess.currentMachineId()),
+                scratch, environment, stdout, stderr, 256L << 20);
+        WindowsJobProcess.CommandResult terminal;
+        try (WindowsJobProcess owner = WindowsJobProcess.start(spec)) {
+            terminal = owner.await(Duration.ofSeconds(30), Instant.now().plusSeconds(45), () -> { });
+        }
+        assertTrue(terminal.passed(), Files.readString(stderr));
+        assertEquals(0, terminal.accounting().activeProcesses()); assertNull(terminal.stopReason());
+        var snapshot = NativeBuildEnvironment.read(scratch, WindowsJobProcess.currentMachineId(), Files.readAllBytes(output));
+        assertEquals(realSystemRoot, snapshot.values().get("SystemRoot"));
+        assertFalse(snapshot.values().containsKey("SYSTEMROOT"));
     }
 
     private static Map<String, String> values(Path scratch) {

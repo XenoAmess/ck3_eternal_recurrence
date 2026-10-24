@@ -80,8 +80,18 @@ public final class NativeBuildEnvironment {
 
     public static Snapshot capture(Path scratch, String machineId, Map<String, String> environment, Instant observedAt) throws IOException {
         require(environment != null, "actual named environment required");
+        // Windows names follow the native process provider's case-insensitive comparison.
+        // Only this OS-input boundary canonicalizes spelling; persisted v1 names stay exact.
+        Map<String, String> canonicalNames = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        for (String key : KEYS) canonicalNames.put(key, key);
         Map<String, String> allowed = new TreeMap<>();
-        for (String key : KEYS) if (environment.containsKey(key)) allowed.put(key, environment.get(key));
+        for (var entry : environment.entrySet()) {
+            require(entry.getKey() != null, "actual Windows environment name required");
+            String canonical = canonicalNames.get(entry.getKey());
+            if (canonical == null) continue;
+            require(!allowed.containsKey(canonical), "ambiguous case-insensitive actual environment field: " + canonical);
+            allowed.put(canonical, entry.getValue());
+        }
         try {
             Snapshot snapshot = new Snapshot(SCHEMA, machineId, observedAt, allowed);
             snapshot.validateScratch(scratch); return snapshot;

@@ -90,6 +90,11 @@ public final class SharedSourceFiles {
         if (handle == null || WinBase.INVALID_HANDLE_VALUE.equals(handle)) throw new IOException("actual held file handle required");
         return nativeHeldEntry(handle, false);
     }
+    /** Actual directory allocation and identity from the caller's continuously retained handle. */
+    public static NativeFile nativeHeldDirectory(HANDLE handle) throws IOException {
+        if (handle == null || WinBase.INVALID_HANDLE_VALUE.equals(handle)) throw new IOException("actual held directory handle required");
+        return nativeHeldEntry(handle, true);
+    }
     private static NativeFile nativeHeldEntry(HANDLE handle, boolean directory) throws IOException {
         try (Memory id = new Memory(24); Memory basic = new Memory(40); Memory standard = new Memory(24); Memory legacy = new Memory(52)) {
             if (!Api.VALUE.GetFileInformationByHandleEx(handle, 18, id, 24)
