@@ -1,0 +1,139 @@
+{
+  "schema": "des-product-ci-pythonpath-actual-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T23:15:35.146027+00:00",
+  "original_ci_run": 40138521414,
+  "original_ci_commit": "a6c10a9a720d5c650c11c1e5032716348efe7cde",
+  "original_ci_failure": "Top-level NativeProtocolState import could not resolve xar_autoplayer; OS0 consumer imports the same module in another process. Original RED remains.",
+  "change": "Product static job adds exact checkout SDK src PYTHONPATH for all independent consumers. SDK/product/runtime unchanged.",
+  "actual_local_commands": [
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/test_prebuilt_fixture_prepare.py"
+      ],
+      "started_at_utc": "2026-10-24T23:07:13.596268+00:00",
+      "finished_at_utc": "2026-10-24T23:07:15.704787+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 2.108540399931371
+    },
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/test_canonical_host_successor.py"
+      ],
+      "started_at_utc": "2026-10-24T23:07:15.704878+00:00",
+      "finished_at_utc": "2026-10-24T23:07:34.831576+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 19.126730400137603
+    },
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/test_product_acceptance_purpose.py"
+      ],
+      "started_at_utc": "2026-10-24T23:07:34.831747+00:00",
+      "finished_at_utc": "2026-10-24T23:07:49.000014+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 14.168298400007188
+    },
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/test_preserved_failure_native_os0.py"
+      ],
+      "started_at_utc": "2026-10-24T23:07:49.000166+00:00",
+      "finished_at_utc": "2026-10-24T23:07:53.536998+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 4.536849500145763
+    },
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/test_ck3_mod_acceptance_offline_ttl_unrun.py"
+      ],
+      "started_at_utc": "2026-10-24T23:07:53.537077+00:00",
+      "finished_at_utc": "2026-10-24T23:08:11.584151+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 18.047092400025576
+    },
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "mypy",
+        "--strict",
+        "--strict-equality",
+        "--follow-imports=silent",
+        "--no-incremental",
+        "--cache-dir=C:\\ck3-dynastic-esotericism-20261024\\resume-static-a11\\product-ci-40138521414-pythonpath-a01\\tmp\\dynastic-esotericism-mypy",
+        "tools/test_prebuilt_fixture_prepare.py",
+        "tools/test_canonical_host_successor.py",
+        "tools/test_product_acceptance_purpose.py",
+        "tools/test_preserved_failure_native_os0.py",
+        "tools/test_ck3_mod_acceptance_offline_ttl_unrun.py",
+        "tools/ck3_mod_acceptance_launcher_protocol_v1.py",
+        "tools/ck3_mod_acceptance_background_types.py"
+      ],
+      "started_at_utc": "2026-10-24T23:08:11.584245+00:00",
+      "finished_at_utc": "2026-10-24T23:08:31.589028+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 20.004799999762326
+    }
+  ],
+  "test_counts": [
+    7,
+    6,
+    14,
+    3,
+    6
+  ],
+  "total_tests": 36,
+  "complete_mypy_source_files": 7,
+  "local_environment": {
+    "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "dependencies": {
+      "mcp": "2.0.0",
+      "pydantic": "2.13.5",
+      "mypy": "2.4.0",
+      "psutil": "7.2.2",
+      "types-psutil": "7.2.2.20260906",
+      "opencv-python": "5.0.0.93",
+      "numpy": "2.5.2",
+      "Pillow": "12.3.0"
+    },
+    "pythonpath": "C:\\ck3-dynastic-esotericism-20261024\\main11\\ck3_autonomous_player\\src;C:\\ck3-dynastic-esotericism-20261024\\typecheck-packages",
+    "note": "Existing C typecheck-packages supplies mypy2.4.0 locally; no download or SDK fallback. The initial metadata precheck found no mypy in the tools venv and ran zero tests; that setup refusal is retained."
+  },
+  "actual_evidence": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-static-a11\\product-ci-40138521414-pythonpath-a01\\receipts\\FINAL.actual.json",
+    "bytes": 3928,
+    "sha256": "a93c32a1849ff7f378fdee6066b2634c6b07537973f105beec2ab206339f1860"
+  },
+  "workflow": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\main11\\.github\\workflows\\dynastic-esotericism-static.yml",
+    "bytes": 6538,
+    "sha256": "64f83473105337cc9acad178f78e93df877c5fe6e51dea8f86b270e4c6e2c9a4"
+  },
+  "business_pass": false,
+  "new_remote_ci_status": "PENDING_NEW_COMMIT",
+  "unchanged_builder": "Prior actual 16 Java tests and three exact-source product producer commands retained; no duplicate Maven build for this CI environment-only change."
+}

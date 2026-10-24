@@ -1,0 +1,63 @@
+{
+  "schema": "des-actual-run-status-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0011",
+  "product_source_commit": "a6c10a9a720d5c650c11c1e5032716348efe7cde",
+  "sdk_source_commit": "2e7b8bf26cb4fa6606402f5689db8bdd1043e693",
+  "product_artifact": "C:/ck3-dynastic-esotericism-20261024/resume-builder-a14/formal-staging",
+  "fixture_artifact": "C:/ck3-dynastic-esotericism-20261024/resume-builder-a13/fixture-core.fixture.json",
+  "profile": "C:/ck3-dynastic-esotericism-20261024/attempt-a19/state/profile",
+  "outcome": "FAILED_OPERATOR_SEQUENCE",
+  "accepted_core_phases": 0,
+  "business_pass": false,
+  "release_pass": false,
+  "independent_positive_scope": {
+    "default_none_and_both_doctrines_known_and_selectable": true,
+    "cancel_comparison": "NO_SUBSTANTIVE_CHANGE_IN_SELECTED_CANCEL_SCOPE",
+    "selected_records": ["character:31254", "rite:0", "faith:13", "house:174", "dynasty:174"],
+    "comparison_limit": "The five selected records only; no whole-world membership or full core qualification.",
+    "root_raw_difference": "Only the order of two named fixture-variable rows changed. All 21 variable values and all other character fields match; the other four raw records match exactly.",
+    "evidence": {
+      "path": "C:/ck3-dynastic-esotericism-20261024/R0011-cancel-comparison-a01/COMPARISON.actual.json",
+      "bytes": 25834,
+      "sha256": "993160cbcf2a66de9427139ba1cd9ec91581b3bb5dd263688265999213f1a856"
+    }
+  },
+  "failures_preserved": [
+    "An initial create-draft opening had no native dispatch because the original faith window was not enabled. Reopening and observing that window corrected the precondition.",
+    "After the once-only creation confirmation, collection returned an active event instance 1. Root incorrectly batched a current-Rite query after collection; its event-free-frame guard refused and the host preserved the error. The event definition and displayed labels were not collected. Creation and dynasty binding were not independently verified.",
+    "Root omitted a fresh exit-context query after disabling exit autosave. The original typed confirm was rejected before native dispatch for a stale signature; its SDK terminal claim remained consumed. It was never cleared or replayed.",
+    "The first SCREEN release used a lowercase CLI digest and was refused before CAS. The original refusal remains; the correct uppercase schema succeeded at sequence 8845."
+  ],
+  "resource_closure": {
+    "actual_game_pid": 25908,
+    "birth_filetime": "134373547095919150",
+    "actual_game_exit_code": 0,
+    "game_finished_at_utc": "2026-10-24T23:00:25.685929+00:00",
+    "host_exit_code": 1,
+    "original_public_exit_code": 2,
+    "original_allocator_exit_code": 0,
+    "keeper_exit_code": 0,
+    "screen_release_sequence": 8845,
+    "route": "Existing CaseClient normal-quit request, directly reviewed unchecked screenshot, one guarded mapped GUI Quit click, actual native/thread cleanup, original automatic failure finish_hold.",
+    "mode": "previous-shared-failed-live-resource-closed",
+    "normal_close_qualified": false,
+    "typed_normal_exit_proven": false,
+    "autosave_verified": false,
+    "public_verify_exit_code": 2,
+    "closure": {
+      "path": "C:/ck3-dynastic-esotericism-20261024/R0011-preserved-failure-close-a01/failure-close-root-window-a02.json",
+      "bytes": 7546,
+      "sha256": "a6effe35fedb394844d703a2e3a7aef6b10b3153123853ca11919dae7259b15f"
+    },
+    "actual_frozen_consumer": {
+      "path": "C:/ck3-dynastic-esotericism-20261024/R0011-preserved-failure-close-a01/actual-consumer-a02.actual.json",
+      "bytes": 10990,
+      "sha256": "8f09a9eeb70a76942b29228c1cf6c12f0baa44ec709149def3a31030ab9b6411"
+    },
+    "consumer_actual_exit_code": 0,
+    "start_identity_provenance": "Transparent projection of the actual pre-exit Win32 identity observation; original observation time and projection time are distinct. Exit proof is Root's new actual Win32 same-birth readback with wait_result=0 and exit_code=0; the old pending typed observer was not promoted."
+  },
+  "next_required": ["Full core including all current members and both stock head-boundary inputs", "Product-absent seed, passive cold reload, old-save bootstrap", "Formal nine-language build, actual Workshop publication and cache loading"],
+  "retained_inputs_review_at_utc": "2026-10-31T00:00:00Z"
+}
