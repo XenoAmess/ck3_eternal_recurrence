@@ -1,0 +1,173 @@
+{
+  "schema": "ck3-faith-engine-episode02-v7-local-review-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-24T02:38:24.256928+00:00",
+  "delivery_mode": "local_only",
+  "status": "ENCODED_REVIEW_PENDING",
+  "final": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\final-render-a01\\sample\\build-a03\\native-run\\derived\\direct\\episode02-review.mp4",
+    "bytes": 82445250,
+    "sha256": "0cbcff0ccc9a7e6809fc61425952ef06c9e38a457bdb0d0b97382a0e2fd3b68e"
+  },
+  "render_source_commit": "082bce5fd9c8e7fb88665c1c56363dc511388dde",
+  "source_input": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v7-authoring-final-a09\\V7.FORMAL-INPUT.a11.candidate.json",
+    "bytes": 503347,
+    "sha256": "c7d849225c292c5ea63fb999dbe6a7a20cd884caa76c402d884d9a8633f4faf0"
+  },
+  "toolchain_version": "0.3.0",
+  "render_original_exit": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\v7-authoring-final-a09\\ROOT-FORMAL-BUILD.a03.EXIT.actual.json",
+    "bytes": 1438,
+    "sha256": "497992332fa2bf663fccd8e51608b42a6f71ae8696138676514c15d800d4ac92"
+  },
+  "video_frames": 41088,
+  "video_seconds": 1369.6,
+  "container_seconds": 1369.621354,
+  "geometry": [
+    2560,
+    1440,
+    30
+  ],
+  "video_first_pts": "328",
+  "video_time_base": "1/15360",
+  "text": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\final-render-a01\\sample\\build-a03\\native-run\\derived\\direct\\text\\episode02.zh.srt",
+      "bytes": 23439,
+      "sha256": "b9d7d6c915a6e5c0224497552fd774138be509c00b415fb96a2c7764c9c897c5"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\final-render-a01\\sample\\build-a03\\native-run\\derived\\direct\\text\\episode02.en.srt",
+      "bytes": 25972,
+      "sha256": "15e404fb6e628e25a502aced349a943769c00d5c4f26c2b9bdf4ba759984d161"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\final-render-a01\\sample\\build-a03\\native-run\\derived\\direct\\text\\episode02.bilingual.srt",
+      "bytes": 42905,
+      "sha256": "9bd28c0ab267d7419938ad866ffb0ed9fdc8f2d8d05e30901424af9e38d8e253"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\final-render-a01\\sample\\build-a03\\native-run\\derived\\direct\\text\\episode02-script.md",
+      "bytes": 36718,
+      "sha256": "40beb64391257df6a319ce931f4a549448b3427df7ed7e3c286feb6aab609df8"
+    }
+  ],
+  "strict_AV_full_decode_exit_code": 0,
+  "all_final_frame_PTS_checked": true,
+  "audio_signal": {
+    "mean_volume_db": -22.7,
+    "max_volume_db": -4.0,
+    "human_listening_performed": false
+  },
+  "music": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\final-render-a01\\sample\\build-a03\\music-presence.json",
+    "bytes": 3501,
+    "sha256": "dd125a5d16dba0d13b4ce3538f1ee2480505d7f6132c70e2b1e66be5a74d1021"
+  },
+  "completed_review": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\final-render-a01\\sample\\build-a03\\completed-review.json",
+    "bytes": 4839,
+    "sha256": "7e7ca73bb903c64ff6aa6c40bdb2cddce8660ed41d0aa7c9f4e7b20304c300e2"
+  },
+  "final_map": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\final-render-a01\\sample\\build-a03\\raw-to-final-map.json",
+    "bytes": 542159,
+    "sha256": "af97fa30965554b31db5cb9ff5b3be349ae6599d2b676814ad4962985a4ae856"
+  },
+  "native_run_final_snapshot": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\final-render-a01\\sample\\build-a03\\formal-native-run-final-snapshot.json",
+    "bytes": 407,
+    "sha256": "60f5e163c13fa77be56e89a26f2a870c7d47006773dbc62af1fc34d9adab680c"
+  },
+  "root_final_frame_review": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\final-render-a01\\sample\\build-a03\\root-final-review-a01\\ROOT-VISUAL-REVIEW.actual.json",
+    "bytes": 1891,
+    "sha256": "f9d7df16209395deb2819da0e6826330d03d953643c957d13599f419409d93e3"
+  },
+  "sampled_final_frames": 10,
+  "human_full_1x_review_performed": false,
+  "human_listening_performed": false,
+  "human_signoff_recorded": false,
+  "screen_balance_frames": {
+    "raw": 3158,
+    "original_UI_stills": 7382,
+    "mixed_UI_rules": 4393,
+    "DDS_icon_cards": 24007,
+    "abstract_cards": 2148
+  },
+  "raw_audit": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\final-media-audit-a01\\AUDIT.actual.json",
+    "bytes": 10127,
+    "sha256": "f6dec56e21d7e52035a514a5cd8d612358d284f29b55934f251c58c4cfca947d"
+  },
+  "raw_root_review": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\final-media-audit-a01\\ROOT-REVIEWED-SOURCES.actual.json",
+    "bytes": 3448,
+    "sha256": "705dbab0bcb9685695f0e8ddbfeec779096934a77f81b845be40d2dd284e747c"
+  },
+  "R0046_scope": {
+    "ordinary_days": 45,
+    "prebooking_days": 1,
+    "case_status": "PARTIAL_NATIVE_CONTRACT_GAP",
+    "public_run_exit": 2,
+    "normal_close_qualified": false,
+    "business_pass": false,
+    "both_traits_observed": true,
+    "pilgrim_XP": 0,
+    "full_return_observed": false,
+    "new_save": false
+  },
+  "R0046_resource_closure": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\r0046-resource-closure-a01\\RESOURCE-CLOSED.actual.json",
+    "bytes": 2021,
+    "sha256": "cb442ba48a2baf64c639c89ecbb70e0adb610774c906181bb7aaabe248ee6f1a"
+  },
+  "R0046_resource_CAS": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\R0046-CAS-RELEASE.a01.actual.json",
+    "bytes": 1709,
+    "sha256": "12755a04a03bb9b8e9f4aac023f7e18e38d9868e7daaba67ca68fa412e56a55b"
+  },
+  "source_only_kb_validation": {
+    "status": "PASS",
+    "MCP_whole_module_tests": 18,
+    "skipped": 0,
+    "strict_complete_modified_modules": 2,
+    "actual_original_exit_codes": [
+      0,
+      0
+    ],
+    "checks": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\source-checks\\r0046-kb-apply-g48-a01\\CHECKS.actual.json",
+      "bytes": 9000,
+      "sha256": "135c8eed248f318646a8af08ba5407ff987d0b4c3a7f5b3450ba9c6fa298139d"
+    },
+    "source_before_commit": "082bce5fd9c8e7fb88665c1c56363dc511388dde",
+    "scope": "four-file SourceOnly change; no current native action permission"
+  },
+  "retention": {
+    "policy_version": "1.0.0",
+    "final_and_raw_review_at_utc": "2026-11-23T02:30:00Z",
+    "active_inputs_protected_until_utc": "2026-10-31T02:30:00Z",
+    "protection_reason": "local review corrections; no automatic renewal",
+    "derived_default_hours": 48,
+    "record_default_review_hours": 4320,
+    "deletion_performed_in_final_close": false
+  },
+  "storage": {
+    "G47": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\ADMISSION.render-only-a02.actual.json",
+      "bytes": 12401,
+      "sha256": "cf3b1c9891d8c001bf7d1eb41b9de8b9665f8197a9f8e496fd951e0f954826e0"
+    },
+    "G48": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\ADMISSION.closed-final-source-knowledge-a01.actual.json",
+      "bytes": 8228,
+      "sha256": "cae580a2fe6f900c50e6f79a441efb6f2deddb6461578fc750e019604adc1d33"
+    },
+    "render_future_released_to_finite_closed_bytes": 16777216,
+    "final_release_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\FINAL-LOCAL-DELIVERY-CLOSED.actual.json",
+    "terminal_release_is_external": true,
+    "terminal_rule": "Read actual terminal receipt; this repository record does not pre-claim final head CAS."
+  }
+}
