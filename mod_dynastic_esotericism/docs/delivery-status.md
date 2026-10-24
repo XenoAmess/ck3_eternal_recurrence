@@ -1,5 +1,9 @@
 # 制作与发布状态
 
+2026-10-24T21:40Z（北京时间10月25日05:40），machine_id: `desktop-3fevhd2-1c74096080`：用户确定先交接旧House族长，仍无合法founder时生成真实同礼仪创始人物。最终隔离候选2e7b8bf完整默认Maven原会话94612退出0，16项无失败／错误／跳过；实际生产链validate/build/fixture/verify均0，15JAR资源、17开发包／ZIP、13fixture及14pins一致。新runtime a11与prepared a18正在生成，尚未启动新场。原R0009公共verify实际退出2，normalclose仅生命周期true，phase1六断言接受、phase2 FAIL不变；seed/cold/old及发布均未完成，总体约60%。新两cell只经stock factory输入，+2独立保存核真实交接、NPC及Root身份，不给旗标业务信用。详见[机制及实际构建](2026-10-25-house-head-handover.md)。
+
+容量已实际原子准入r1184/storage72，原6GiB执行池覆盖9个profile与新a18/a29，构建／源／运行准备峰值504MiB包含两份135MiB源、Git32MiB、runtime42MiB、builders48MiB和共享未来test/temp112MiB；C build/test总额仍512MiB，D未来仅2MiB小元数据，D Git28MiB未激活。原20GiB安全、C16GiB/D128MiB系统未来预留和2026-10-25T07:30Z期限不变，没有物理回收或延时。 authority `C:/ck3-dynastic-esotericism-20261024/capacity/NINE-POOL6-C-BUILDERS48-TEMP112-PEAK504-D2-ADMISSION-r1184.actual.json`，SHA `293ae0c11a47ad65e12f5a5b0114f9c3b843eb3bcf2424f8f05c45b8b8c706d6`；每次重型操作另做新鲜实际检查。05:50启动为计划，07:10–07:40汇报核心实际结果；发布依赖核心、cold与旧档通过。
+
 本次用户指令：依次完成需求文档、测试方案、编码、测试验收、发布。开始时间 2026-10-24；本机 `machine_id: desktop-3fevhd2-1c74096080`。
 
 | 阶段 | 当前事实 | 依据 |
@@ -9,6 +13,8 @@
 | 编码 | 新候选b8c7fc3仅改fixture等待与中英前缀；完整Maven16项和源→JAR→fixture／清单消费者通过。生产同步未改，sole-head建族边界未解决 | [R0009](acceptance/R0009-2026-10-25.json)、[测试方案](test-plan.md) |
 | 测试验收 | R0009第一phase六项断言接受；第二phase全员归族FAIL，核心整体仍RED。seed/cold/old未完成 | [R0009失败与正常资源终态](acceptance/R0009-2026-10-25.json) |
 | 发布 | NOT_PUBLISHED，Workshop ID 未分配 | 待业务验收及正式发布闭环 |
+
+2026-10-24T21:15Z补记（北京时间05:15，machine_id: `desktop-3fevhd2-1c74096080`）：用户提出卸任家族族长再建新宗族。已核 exact .4 原版 `set_house_head` 会同步重算 Dynast；窄生产候选优先已有合格真实信徒，无人时才让另一存活同旧House人物接任，并在实际双重离任守卫后建族。旧House只有本人时仍未解决，不默认新建NPC，等待用户对该边界的选择。见[原版来源、影响和待验边界](2026-10-25-house-head-handover.md)。新S11候选61b4b05不改SDK/native，完整默认Maven16项0失败/错误/跳过及15资源、17文件开发包/ZIP/13文件fixture实际生产链通过，回执 `C:/ck3-dynastic-esotericism-20261024/resume-builder-a12/SUMMARY.actual.json`，SHA `b0977cbc628e5c2c9021774fe48c706e7846ab1f15baaa3db8da06bf1b181076`。当前新增交接路径尚未实机，不能从构建或研究追认通过；下一图准备还将检查能否以真实输入触发fallback。R0009公共verify已实际退出2，case_acceptance_pass及qualified_boundary_pass为false，原normal_close=true仅生命周期继续保留。
 
 2026-10-24T20:49Z更新（北京时间10月25日04:49，machine_id: `desktop-3fevhd2-1c74096080`）：R0009已通过创建／取消／费用／真实绑定的第一phase，六项断言只计该phase。创建日47名成员全部已进入House12760/Dyn12156；次日新增13人仍在旧House，其中六人明确仍属Dyn174，原全量检查FAIL，原错误与保存保留。首批43人的原版转换标记在下一日期才出现，新增13人当时尚无标记；exact .4调用链与逐人对照支持排队时序调查，不足以追认产品正确。下一图仅把fixture检查由+1改+2日，保留全量守卫与REQ-05同次同步要求，分别在两日读取原生名单和保存。中英fixture的方括号标题前缀另改为普通文字，解决其被当作data function解释的真实日志错误。候选b8c7fc3的完整默认Maven16项、15项JAR资源、17文件开发包／ZIP／清单消费者、13文件core fixture／14项生产来源均通过；实机尚未复验。实际包回执 `C:/ck3-dynastic-esotericism-20261024/resume-builder-a11/SUMMARY.actual.json`，SHA-256 `b0acbc24f97e4da377a35aebe6686336e2fe7b84dae5b5176bfc53f358430114`。
 

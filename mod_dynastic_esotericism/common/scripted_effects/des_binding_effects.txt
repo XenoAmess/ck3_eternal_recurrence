@@ -27,31 +27,129 @@ des_create_rite_dynasty_effect = {
 		save_scope_as = des_binding_rite
 		set_variable = { name = des_binding_in_progress value = yes }
 	}
-	create_dynasty = {
-		spread_to_descendants = no
-		save_scope_as = des_created_dynasty
+	save_scope_as = des_requested_dynasty_founder
+	save_scope_as = des_selected_dynasty_founder
+	# Prefer a real eligible adherent before handing over the old House.
+	if = {
+		limit = { OR = { is_house_head = yes is_dynast = yes } }
+		scope:des_binding_rite = {
+			faith = {
+				random_faith_character = {
+					limit = {
+						is_alive = yes
+						rite = scope:des_binding_rite
+						is_house_head = no
+						is_dynast = no
+					}
+					save_scope_as = des_selected_dynasty_founder
+				}
+			}
+		}
 	}
+	scope:des_selected_dynasty_founder = { des_relinquish_old_house_head_effect = yes }
+	# User-authorized final fallback is a real adult adherent, not a disposable identity.
 	if = {
 		limit = {
-			exists = scope:des_created_dynasty
-			dynasty = scope:des_created_dynasty
-			exists = house
+			scope:des_selected_dynasty_founder = { OR = { is_house_head = yes is_dynast = yes } }
+			exists = scope:des_requested_dynasty_founder.location
+			exists = scope:des_requested_dynasty_founder.culture
+			exists = scope:des_binding_rite.faith
 		}
-		house = { save_scope_as = des_created_house }
-		scope:des_binding_rite = {
-			set_variable = { name = des_bound_dynasty value = scope:des_created_dynasty }
-			set_variable = { name = des_join_house value = scope:des_created_house }
+		# Reset the result scope before production so a failed create cannot reuse stale identity.
+		scope:des_selected_dynasty_founder = { save_scope_as = des_generated_dynasty_founder }
+		create_character = {
+			age = 30
+			dynasty = none
+			location = scope:des_requested_dynasty_founder.location
+			culture = scope:des_requested_dynasty_founder.culture
+			faith = scope:des_binding_rite.faith
+			rite = scope:des_binding_rite
+			save_scope_as = des_generated_dynasty_founder
 		}
-		scope:des_created_dynasty = {
-			set_variable = { name = des_bound_rite value = scope:des_binding_rite }
+		scope:des_generated_dynasty_founder = {
+			if = {
+				limit = {
+					is_alive = yes
+					is_adult = yes
+					is_lowborn = yes
+					rite = scope:des_binding_rite
+					faith = scope:des_binding_rite.faith
+				}
+				save_scope_as = des_selected_dynasty_founder
+			}
 		}
-		add_to_global_variable_list = { name = des_bound_rites target = scope:des_binding_rite }
 	}
-	else = {
-		scope:des_binding_rite = { set_variable = { name = des_binding_fault value = yes } }
-		debug_log = "DES: failed to create a valid dynasty/house binding; no fallback identity assigned"
+	scope:des_selected_dynasty_founder = {
+		if = {
+			limit = {
+				is_alive = yes
+				rite = scope:des_binding_rite
+				faith = scope:des_binding_rite.faith
+				is_house_head = no
+				is_dynast = no
+				trigger_if = {
+					limit = { exists = house.house_head }
+					NOT = { this = house.house_head }
+				}
+				trigger_if = {
+					limit = { exists = dynasty.dynast }
+					NOT = { this = dynasty.dynast }
+				}
+			}
+			create_dynasty = {
+				spread_to_descendants = no
+				save_scope_as = des_created_dynasty
+			}
+			if = {
+				limit = {
+					exists = scope:des_created_dynasty
+					dynasty = scope:des_created_dynasty
+					exists = house
+				}
+				house = { save_scope_as = des_created_house }
+				scope:des_binding_rite = {
+					set_variable = { name = des_bound_dynasty value = scope:des_created_dynasty }
+					set_variable = { name = des_join_house value = scope:des_created_house }
+				}
+				scope:des_created_dynasty = {
+					set_variable = { name = des_bound_rite value = scope:des_binding_rite }
+				}
+				add_to_global_variable_list = { name = des_bound_rites target = scope:des_binding_rite }
+			}
+			else = {
+				scope:des_binding_rite = { set_variable = { name = des_binding_fault value = yes } }
+				debug_log = "DES: failed to create a valid dynasty/house binding; no fallback identity assigned"
+			}
+		}
+		else = {
+			scope:des_binding_rite = { set_variable = { name = des_binding_fault value = yes } }
+			debug_log = "DES: no valid native dynasty founder after eligible-adherent, House-head, and generated-adherent paths"
+		}
 	}
 	scope:des_binding_rite = { remove_variable = des_binding_in_progress }
+}
+
+# Character scope. Only a real other living member of this same old House may take over.
+des_relinquish_old_house_head_effect = {
+	if = {
+		limit = { is_house_head = yes exists = house.house_head }
+		save_scope_as = des_relinquishing_founder
+		house = {
+			random_house_member = {
+				limit = {
+					is_alive = yes
+					house = scope:des_relinquishing_founder.house
+					NOT = { this = scope:des_relinquishing_founder }
+				}
+				save_scope_as = des_old_house_successor
+				house = { set_house_head = scope:des_old_house_successor }
+			}
+		}
+		if = {
+			limit = { is_house_head = yes }
+			debug_log = "DES: no living other old House member available for head handover"
+		}
+	}
 }
 
 # Rite scope. Repair only missing components whose remaining object identity proves

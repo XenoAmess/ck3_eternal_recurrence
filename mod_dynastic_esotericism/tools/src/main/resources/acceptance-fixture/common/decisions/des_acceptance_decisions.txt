@@ -139,3 +139,24 @@ des_acceptance_reopened_readback_decision = {
     }
     ai_check_interval = 0
 }
+
+# One disclosed stock-input attempt on the original Root; no business assertion.
+des_acceptance_head_cells_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+    is_shown = {
+        is_ai = no
+        has_character_flag = des_test_members_verified
+        NOT = { has_character_flag = des_test_head_cells_started }
+        exists = global_var:des_test_extended_owner
+        this = global_var:des_test_extended_owner
+    }
+    is_valid = {
+        exists = var:des_test_primary_rite
+        exists = var:des_test_source_rite
+        rite = var:des_test_primary_rite
+        var:des_test_primary_rite = { des_has_active_binding_trigger = yes }
+        var:des_test_source_rite = { rite_has_doctrine = des_doctrine_none }
+    }
+    effect = { hidden_effect = { des_acceptance_prepare_head_cells_effect = yes } }
+    ai_check_interval = 0
+}
