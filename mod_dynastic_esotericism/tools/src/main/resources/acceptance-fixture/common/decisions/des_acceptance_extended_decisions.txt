@@ -297,7 +297,13 @@ des_acceptance_primary_heir_readback_decision = {
         hidden_effect = {
             if = {
                 limit = {
-                    current_date > var:des_test_heir_input_date
+                    has_variable = des_test_heir_input_date
+                    # Stock date values are numeric days. The current_date
+                    # date trigger accepts a literal, not a variable date.
+                    var:des_test_heir_input_date <= {
+                        value = current_date
+                        subtract = 1
+                    }
                     exists = primary_heir
                     exists = primary_title
                     primary_heir = var:des_test_ref_primary_heir
