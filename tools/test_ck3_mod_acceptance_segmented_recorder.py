@@ -135,9 +135,11 @@ class SegmentedRecorderPublicService(unittest.TestCase):
         self.keeper.require_live()
         return self.live, {"synthetic_live_guard": True}
 
-    def job_spec(self, name, path):
-        self.assertEqual(Path(path).resolve(), self.job_source.resolve())
-        return importlib.machinery.ModuleSpec(name, SyntheticLoader(self))
+    def job_spec(self, name: str, path: str | Path) -> importlib.machinery.ModuleSpec | None:
+        if name == "faith_bound_recorder_job":
+            self.assertEqual(Path(path).resolve(), self.job_source.resolve())
+            return importlib.machinery.ModuleSpec(name, SyntheticLoader(self))
+        return REAL_SPEC_FROM_FILE_LOCATION(name, path)
 
     def spawn_job(self, argv, *, stdout, stderr, unsafe_marker, start_receipt, failure_receipt):
         self.spawned.append(list(argv))
@@ -544,6 +546,15 @@ class SegmentedRecorderPublicService(unittest.TestCase):
         selected_service = self.repo / "tools/ck3_mod_acceptance_recorder.py"
         selected_service.parent.mkdir()
         selected_service.write_bytes(Path(RECORDER.__file__).read_bytes())
+        selected_launcher = selected_service.with_name("existing_reviewed_launcher.py")
+        selected_launcher.write_bytes(entry_fixture.launcher.read_bytes())
+        selected_helper = selected_service.with_name("ck3_mod_acceptance_runtime_inputs.py")
+        selected_helper.write_bytes((HERE / selected_helper.name).read_bytes())
+        relative_contract = Path("ck3_autonomous_player/src/xar_autoplayer/bridge/runtime_input_contract_v1.py")
+        selected_contract = self.repo / relative_contract
+        selected_contract.parent.mkdir(parents=True)
+        selected_contract.write_bytes((HERE.parent / relative_contract).read_bytes())
+        entry_fixture.runtime["reviewed_launcher"] = RECORDER.file_identity(selected_launcher)
         entry_fixture.runtime["repo_root"] = str(self.repo)
         entry_fixture.runtime["machine_id"] = MACHINE
         entry_fixture.runtime["allocation"] = {"recording": {
@@ -551,7 +562,10 @@ class SegmentedRecorderPublicService(unittest.TestCase):
             "service": RECORDER.file_identity(selected_service)}}
         entry_fixture.write(entry_fixture.runtime_path, entry_fixture.runtime)
         selected = entry_fixture.select()
-        self.assertEqual(selected.preflight()["blockers"], [])
+        preflight = selected.preflight()
+        self.assertEqual(preflight["blockers"], [])
+        for source in (selected_helper, selected_contract):
+            self.assertIn(RECORDER.file_identity(source), preflight["checked_inputs"])
         for machine in ("different-selected-runtime", None, True):
             with self.subTest(machine=machine):
                 entry_fixture.runtime["machine_id"] = machine
