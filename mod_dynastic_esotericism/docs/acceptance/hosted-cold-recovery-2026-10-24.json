@@ -1,0 +1,201 @@
+{
+  "schema": "xar.dynastic-esotericism.hosted-cold-regression-recovery.v2",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T11:38:16.243681+00:00",
+  "status": "COLD_FOUR_COMMANDS_PASS_WITH_RECORDED_AUXILIARY_SOURCE_DRIFT_AND_FINAL_UNRUN_PASS",
+  "trigger": {
+    "kind": "ACTUAL_HOSTED_COLD_REGRESSION",
+    "github_run_id": "40088036030",
+    "source_commit_prefix": "2afe",
+    "failed_command": "complete product consumers unittest discovery",
+    "tests": 232,
+    "failures": 1,
+    "errors": 1,
+    "log": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\hosted-cold-2afe-failure.log",
+      "bytes": 98444,
+      "sha256": "f15c269bc3ed675a2d88b4c02f38540433f432ab9bd3b08ae298e0dab855dedc"
+    }
+  },
+  "source_head_before": "585e9a7b576b9d05f8e34cda2d726b303d0fdc3b",
+  "source_head_after": "585e9a7b576b9d05f8e34cda2d726b303d0fdc3b",
+  "whole_cold_step": {
+    "workflow": ".github/workflows/living-artifacts-cold-persistence.yml",
+    "step": "Test complete product consumers and strict cold source without CK3",
+    "commands_status": "PASS",
+    "commands": [
+      {
+        "name": "complete-product-consumers",
+        "exit_code": 0,
+        "timed_out": false,
+        "tests": 232,
+        "elapsed_seconds": 341.42,
+        "summary": [
+          "CK3_ROOT_CHECKPOINT C:\\ck3-dynastic-esotericism-20261024\\hosted-cold-recovery-a02\\tmp\\tmpr7g61kte\\threshold-case-output\\checkpoint-readback-06-awaiting.json",
+          "CK3_ROOT_CHECKPOINT C:\\ck3-dynastic-esotericism-20261024\\hosted-cold-recovery-a02\\tmp\\tmpr7g61kte\\threshold-case-output\\checkpoint-readback-07-awaiting.json",
+          ".",
+          "----------------------------------------------------------------------",
+          "Ran 232 tests in 339.734s",
+          "",
+          "OK"
+        ]
+      },
+      {
+        "name": "strict-cold-six-files",
+        "exit_code": 0,
+        "timed_out": false,
+        "tests": null,
+        "elapsed_seconds": 3.203,
+        "summary": [
+          "Success: no issues found in 6 source files"
+        ]
+      },
+      {
+        "name": "saved-profile-v2",
+        "exit_code": 0,
+        "timed_out": false,
+        "tests": 8,
+        "elapsed_seconds": 24.657,
+        "summary": [
+          "........",
+          "----------------------------------------------------------------------",
+          "Ran 8 tests in 24.268s",
+          "",
+          "OK"
+        ]
+      },
+      {
+        "name": "vanilla-profile",
+        "exit_code": 0,
+        "timed_out": false,
+        "tests": 8,
+        "elapsed_seconds": 1.074,
+        "summary": [
+          "........",
+          "----------------------------------------------------------------------",
+          "Ran 8 tests in 0.351s",
+          "",
+          "OK"
+        ]
+      }
+    ],
+    "broad_source_pin_observer_status": "FAIL",
+    "broad_source_drift": [
+      "D:\\workspace\\ck3_eternal_recurrence\\.github\\workflows\\dynastic-esotericism-static.yml",
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_unrun.py",
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_offline_ttl_unrun.py"
+    ],
+    "source_pin_count": 1281,
+    "unchanged_consumers": "All Living Artifacts tools, all SDK src modules, current public ck3_mod_acceptance.py, the Living Artifacts cold workflow, saved-profile-v2 and vanilla-profile direct inputs retained exact before/after hashes. The three reported changes are the separate product static workflow, unrun closure producer and its new test.",
+    "boundary": "Commands passed; this does not retroactively certify a frozen full source graph or turn the broad observer FAIL into PASS. Counter-snapshot/typed-dependency changes were separately validated after their final freeze.",
+    "source_navigation": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\hosted-cold-recovery-a02\\cold-unrun-consumer-scope.actual.json",
+      "bytes": 1522,
+      "sha256": "060122203d121dfd31b815ac45222366c339f96c0263e96120d290ce5345ee9d"
+    }
+  },
+  "final_unrun": {
+    "status": "PASS",
+    "tests": 5,
+    "includes": "Actual public native_dispatch -> allocator -> real ID writer -> frozen/read_inputs roundtrip; canonical counter advances R2 to R3 while original evidence pins only immutable snapshot.",
+    "commands": [
+      {
+        "name": "offline-ttl-final-five-tests",
+        "exit_code": 0,
+        "summary": [
+          "test_actual_allocator_counter_advance_keeps_only_immutable_snapshot_frozen (__main__.OfflineTTLUnrunTests.test_actual_allocator_counter_advance_keeps_only_immutable_snapshot_frozen) ... ok",
+          "test_actual_producer_consumer_roundtrip_preserves_refusal_and_consumed_purpose (__main__.OfflineTTLUnrunTests.test_actual_producer_consumer_roundtrip_preserves_refusal_and_consumed_purpose) ... ok",
+          "test_exact_modified_production_scope_is_strict (__main__.OfflineTTLUnrunTests.test_exact_modified_production_scope_is_strict) ... ok",
+          "test_false_credit_float_bool_and_wrong_source_are_rejected (__main__.OfflineTTLUnrunTests.test_false_credit_float_bool_and_wrong_source_are_rejected) ... ok",
+          "test_fresh_receipt_same_state_or_actual_host_evidence_refuse (__main__.OfflineTTLUnrunTests.test_fresh_receipt_same_state_or_actual_host_evidence_refuse) ... ok",
+          "",
+          "----------------------------------------------------------------------",
+          "Ran 5 tests in 11.068s",
+          "",
+          "OK"
+        ]
+      },
+      {
+        "name": "offline-ttl-final-r2-new-test-and-registry-strict",
+        "exit_code": 0,
+        "summary": [
+          "Success: no issues found in 2 source files"
+        ]
+      }
+    ],
+    "strict_scope": "Six exact actual producer definitions inside the test, plus complete new five-test module and complete launcher protocol registry. No whole legacy module strict-clean claim.",
+    "source_drift": [],
+    "source_pins": [
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_unrun.py",
+        "bytes": 72113,
+        "sha256": "00c2ef112969052f2b4e95c66b759686b5fe59b7fcf8f227a2ccc91f78d43900"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_allocate.py",
+        "bytes": 248491,
+        "sha256": "6dc5930871766621fa6bbe3f1883fc63fa071ea8e5ef784170a127b9ee575e1a"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_launcher_protocol_v1.py",
+        "bytes": 5111,
+        "sha256": "1256620a1d221307fe9703423ea7fe530da6ef15124fa6f018a07b985679ba70"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_offline_ttl_unrun.py",
+        "bytes": 19053,
+        "sha256": "37303ddeb25e134356f0636b357f0d6b559fa7a57ea8390f64038d488ba0b0d4"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\ck3_R0002_pre_intent_offline_ttl.json",
+        "bytes": 118804,
+        "sha256": "70f3b5ac5ff288665cfe2c9c66cec076bdea70d951fccbcc033b1e9b608f0018"
+      }
+    ],
+    "actual": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\hosted-cold-recovery-a02\\offline-ttl-final-five-test-strict.actual.json",
+      "bytes": 5534,
+      "sha256": "0345969e654d0473eb35b5575e69694322567289ed224d66e0b35f2703882c76"
+    },
+    "exact_source_ranges": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\hosted-cold-recovery-a02\\offline-ttl-final-source-ranges.actual.json",
+      "bytes": 2140,
+      "sha256": "4fd397180610e2a9b2c68b76552e55db75e76e7b7273748a1bbb281163b2b017"
+    },
+    "read_only_stub_reuse": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\hosted-cold-recovery-a02\\check-dependencies\\reused-types-psutil.actual.json",
+      "bytes": 9953,
+      "sha256": "5a3cc905f9afcff5d879dbd182a46636649ff931dadeadc71c58a81528b9cf15"
+    }
+  },
+  "evidence": {
+    "cold": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\hosted-cold-recovery-a02\\complete-step-actual.json",
+      "bytes": 679854,
+      "sha256": "a63189e9f07a7de5e3068927ce37af186d3d4bf3865c60e61ea9193d9d240169"
+    },
+    "initial_observer_prestart_failure": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\hosted-cold-recovery-a01\\observer-prestart.actual.json",
+      "bytes": 399,
+      "sha256": "8525df3a653055ba859c5ee55583954e411e3e881322bda25342b0f830330f60"
+    },
+    "initial_missing_stub_red": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\hosted-cold-recovery-a02\\offline-ttl-final-test-strict.actual.json",
+      "bytes": 5326,
+      "sha256": "afe651cb1b1d679352a6b7a3ebc0a17a5030fdc079194ba8c3e5c82444199467"
+    }
+  },
+  "preserved_artifacts": {
+    "r10_unchanged": true,
+    "480ea_unchanged": true
+  },
+  "toolchain": {
+    "python": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\venv\\Scripts\\python.exe",
+    "version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+    "hosted_workflow_python": "3.13",
+    "venv_modified": false,
+    "downloaded_dependencies": false
+  },
+  "qualification_boundary": "Local offline Python CI and named static scope only. No repeated Maven/native matrix, broad 74-error legacy scan, game, business, publication or later Hosted run PASS. Original 2afe Hosted RED and both local observation/environment failures remain retained.",
+  "retention_review_due_utc": "2026-10-31T11:30:00Z"
+}

@@ -12,6 +12,10 @@ on:
       - 'tools/ck3_mod_acceptance_allocate.py'
       - 'tools/test_preserved_failure_native_os0.py'
       - 'tools/fixtures/ck3_R0001_preserved_failure_native_os0.json'
+      - 'tools/ck3_mod_acceptance_unrun.py'
+      - 'tools/ck3_mod_acceptance_launcher_protocol_v1.py'
+      - 'tools/test_ck3_mod_acceptance_offline_ttl_unrun.py'
+      - 'tools/fixtures/ck3_R0002_pre_intent_offline_ttl.json'
       - 'ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py'
       - 'tools/ck3_mod_acceptance_products.json'
       - 'tools/ck3_mod_acceptance_build_runtime.py'
@@ -35,6 +39,10 @@ on:
       - 'tools/ck3_mod_acceptance_allocate.py'
       - 'tools/test_preserved_failure_native_os0.py'
       - 'tools/fixtures/ck3_R0001_preserved_failure_native_os0.json'
+      - 'tools/ck3_mod_acceptance_unrun.py'
+      - 'tools/ck3_mod_acceptance_launcher_protocol_v1.py'
+      - 'tools/test_ck3_mod_acceptance_offline_ttl_unrun.py'
+      - 'tools/fixtures/ck3_R0002_pre_intent_offline_ttl.json'
       - 'ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py'
       - 'tools/ck3_mod_acceptance_products.json'
       - 'tools/ck3_mod_acceptance_build_runtime.py'
@@ -82,7 +90,7 @@ jobs:
       - name: Compile and verify the actual product builder and fixture producer
         run: mvn --batch-mode --no-transfer-progress -f mod_dynastic_esotericism/tools/pom.xml -Ddes.build.root=${{ runner.temp }}/dynastic-esotericism-build verify
       - name: Install the shared SDK and strict type-check dependencies
-        run: python -m pip install mcp==2.0.0 pydantic==2.13.5 mypy==2.4.0 opencv-python==5.0.0.93 numpy==2.5.2 Pillow==12.3.0
+        run: python -m pip install mcp==2.0.0 pydantic==2.13.5 mypy==2.4.0 psutil==7.2.2 types-psutil==7.2.2.20260906 opencv-python==5.0.0.93 numpy==2.5.2 Pillow==12.3.0
       - name: Verify the shared prebuilt fixture consumer
         run: python -B -X utf8 tools/test_prebuilt_fixture_prepare.py
       - name: Verify the canonical host producer and actual SDK factory
@@ -91,10 +99,12 @@ jobs:
         run: python -B -X utf8 tools/test_product_acceptance_purpose.py
       - name: Verify preserved-failure native OS0 resource closure
         run: python -B -X utf8 tools/test_preserved_failure_native_os0.py
+      - name: Verify pre-intent offline TTL refusal resource closure and exact modified scope types
+        run: python -B -X utf8 tools/test_ck3_mod_acceptance_offline_ttl_unrun.py
       - name: Strict types for the complete new regression modules
         env:
           MYPYPATH: tools;ck3_autonomous_player/src
-        run: python -B -X utf8 -m mypy --strict --strict-equality --follow-imports=silent --no-incremental --cache-dir=${{ runner.temp }}/dynastic-esotericism-mypy tools/test_prebuilt_fixture_prepare.py tools/test_canonical_host_successor.py tools/test_product_acceptance_purpose.py tools/test_preserved_failure_native_os0.py tools/ck3_mod_acceptance_background_types.py
+        run: python -B -X utf8 -m mypy --strict --strict-equality --follow-imports=silent --no-incremental --cache-dir=${{ runner.temp }}/dynastic-esotericism-mypy tools/test_prebuilt_fixture_prepare.py tools/test_canonical_host_successor.py tools/test_product_acceptance_purpose.py tools/test_preserved_failure_native_os0.py tools/test_ck3_mod_acceptance_offline_ttl_unrun.py tools/ck3_mod_acceptance_launcher_protocol_v1.py tools/ck3_mod_acceptance_background_types.py
       - name: Preserve default Maven observations and test results
         if: always()
         uses: actions/upload-artifact@v4

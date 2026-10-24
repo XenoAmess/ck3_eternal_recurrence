@@ -47,10 +47,17 @@ SIBLING_QUEUE_SOURCE_PROTOCOL_V1 = LauncherSourcePairV1(
     "background-keyed-pins-v2", 16864,
     "9ebb997e5496d430fa018348b65f6fe3eb59949bfe00e623482aeba58a9f55df",
     6023, "a17c9cea468c3700925ec651cd9881596c642edbe3725c642842001d07332274")
+# Reviewed retained-process identity launcher. The parent still validates the
+# same 30-second background gate before creating its once-only launch intent.
+RETAINED_IDENTITY_SOURCE_PROTOCOL_V1 = LauncherSourcePairV1(
+    "background-keyed-pins-v2", 17726,
+    "e721654fba9c3a4d7ccba94a7fc2df757ec92925507ae7d1cde20c20a5222514",
+    6023, "a17c9cea468c3700925ec651cd9881596c642edbe3725c642842001d07332274")
 LAUNCHER_PROTOCOL_REGISTRY_V1 = (
     LEGACY_BACKGROUND_PROTOCOL_V1, CURRENT_BACKGROUND_PROTOCOL_V1,
     FRESH_MACHINE_BOOTSTRAP_PROTOCOL_V1,
     SIBLING_QUEUE_SOURCE_PROTOCOL_V1,
+    RETAINED_IDENTITY_SOURCE_PROTOCOL_V1,
 )
 
 

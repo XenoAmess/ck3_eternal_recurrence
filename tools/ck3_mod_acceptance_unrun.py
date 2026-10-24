@@ -7,14 +7,228 @@ from pathlib import Path, PureWindowsPath
 from datetime import datetime, timezone
 from dataclasses import dataclass
 from collections.abc import Mapping
-from typing import Literal, TypedDict
+from typing import Literal, TypedDict, Protocol, runtime_checkable
 import argparse, hashlib, importlib, json, math, os, re, sys
 from ck3_mod_acceptance import check_pin, pin, read_json, same_directory_control_peer
 from ck3_mod_acceptance_launcher_pin_refusal import public_operation_argv, validate_launcher_pin_refusal
-from ck3_mod_acceptance_background_types import FilePin, JsonObject, file_pin, json_object, object_field
+from ck3_mod_acceptance_background_types import FilePin, JsonObject, file_pin, json_object, object_field, text_field, strings_field
 
 SCHEMA = 'ck3-mod-acceptance-allocated-unrun-closure-v1'
 ABORTED_KIND = 'wrapper-aborted-before-launch-without-terminal-waits'
+OFFLINE_TTL_KIND: Literal['pre-intent-background-offline-ttl-refused'] = 'pre-intent-background-offline-ttl-refused'
+
+
+@runtime_checkable
+class _UnrunProcessInventory(Protocol):
+    def __call__(self, process_module: object, current_pid: int) -> object: ...
+
+
+def _ttl_pin(path: Path) -> FilePin:
+    if not path.is_absolute() or path.is_symlink() or not path.is_file() or path.stat().st_size > 1048576:
+        raise ValueError('Bounded ordinary original TTL-refusal metadata required')
+    raw = path.read_bytes()
+    return FilePin(path=str(path.resolve()), bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest())
+
+
+def _ttl_original(refs: JsonObject, key: str, expected: Path | None = None) -> tuple[FilePin, JsonObject]:
+    ref = file_pin(refs.get(key))
+    if set(json_object(refs[key])) != {'path', 'bytes', 'sha256'}:
+        raise ValueError('Exact TTL-refusal original pin fields required: ' + key)
+    path = Path(ref['path']).resolve()
+    if (expected is not None and path != expected.resolve()) or _ttl_pin(path) != ref:
+        raise ValueError('TTL-refusal original path or bytes changed: ' + key)
+    return ref, json_object(json.loads(path.read_bytes()))
+
+
+def _ttl_allocator_stdout(refs: JsonObject) -> JsonObject:
+    ref = file_pin(refs.get('allocator_stdout'))
+    path = Path(ref['path']).resolve()
+    if set(json_object(refs['allocator_stdout'])) != {'path', 'bytes', 'sha256'} or _ttl_pin(path) != ref:
+        raise ValueError('Original complete allocator stdout changed')
+    raw, decoder, rows = path.read_text(encoding='utf-8'), json.JSONDecoder(), []
+    while raw.strip():
+        raw = raw.lstrip()
+        value, end = decoder.raw_decode(raw)
+        rows.append(json_object(value))
+        raw = raw[end:]
+    if len(rows) != 2 or {key: value for key, value in rows[1].items()
+            if key not in ('keeper_actual_exit_code', 'keeper_report', 'run_id')} != rows[0]:
+        raise ValueError('Original allocator stdout must retain READY followed by the matching keeper completion')
+    return rows[1]
+
+
+def validate_pre_intent_offline_ttl_refusal(previous: Path, freeze_value: object, close_path: Path,
+        keeper_root: Path, release_value: object, bus_value: object, next_state: Path) -> JsonObject:
+    """Resource admission after the original parent rejected an expired receipt."""
+    import ck3_live_run_id as ids
+    import psutil
+    from ck3_mod_acceptance_allocate import validate_root_observed_public_exit
+    from ck3_mod_acceptance_launcher_protocol_v1 import build_launcher_protocol_v1
+    from ck3_mod_acceptance_background_types import product_acceptance_purpose_v1
+    from steam_offline_state_contract import parse_result
+
+    bundle = json_object(json.loads(close_path.read_bytes()))
+    freeze, release, bus = json_object(freeze_value), json_object(release_value), json_object(bus_value)
+    machine, run, task = ids.current_machine_id(), text_field(freeze, 'run_id'), text_field(freeze, 'screen_task')
+    state = Path(text_field(freeze, 'state_dir')).resolve()
+    if (bundle.get('schema') != SCHEMA or bundle.get('closure_kind') != OFFLINE_TTL_KIND
+            or bundle.get('machine_id') != machine or bundle.get('run_id') != run or previous.name != run
+            or object_field(freeze, 'identity_allocation').get('machine_id') != machine
+            or Path(text_field(bundle, 'quarantined_state')).resolve() != state
+            or next_state.resolve() == state or next_state.resolve().is_relative_to(state) or state.is_relative_to(next_state.resolve())
+            or any(bundle.get(key) is not False for key in ('host_started', 'native_session_started', 'game_started',
+                'normal_close_qualified', 'typed_normal_exit_proven', 'original_host_exit0', 'business_pass', 'release_pass'))):
+        raise ValueError('TTL-refusal must preserve this unlaunched allocation and require a separate next state')
+    refs = object_field(bundle, 'original_evidence')
+    frozen_pin, original = _ttl_original(refs, 'frozen', previous / 'frozen-argv.json')
+    _, ready = _ttl_original(refs, 'ready', previous / 'ready-context.json')
+    _, allocated = _ttl_original(refs, 'allocated_context', previous / 'allocated-context.json')
+    prepared_pin, prepared = _ttl_original(refs, 'prepared_case')
+    context_pin, context = _ttl_original(refs, 'reviewed_context')
+    if (original != freeze or ready.get('run_id') != run or allocated.get('run_id') != run
+            or context.get('run_id') != run or context.get('reviewer') != '/root'
+            or any(Path(text_field(row, 'run_dir')).resolve() != previous.resolve() for row in (ready, allocated, context))
+            or any(Path(text_field(row, 'keeper_root')).resolve() != keeper_root.resolve() for row in (ready, allocated, context))
+            or any(row.get('prepared_case') != prepared_pin for row in (ready, allocated, context))
+            or ready.get('frozen_argv') != frozen_pin or context.get('frozen_argv') != frozen_pin
+            or prepared.get('runtime_manifest') != freeze.get('runtime_manifest')
+            or Path(text_field(object_field(prepared, 'startup'), 'state_dir')).resolve() != state):
+        raise ValueError('TTL-refusal crossed the original allocation, Root review or preparation')
+    _, run_result = _ttl_original(refs, 'run_result')
+    _, allocate_result = _ttl_original(refs, 'allocator_result')
+    run_argv = validate_root_observed_public_exit(run_result, machine, 'run', 2)
+    allocate_argv = validate_root_observed_public_exit(allocate_result, machine, 'allocate', 0)
+
+    def option(argv: list[str], flag: str) -> str:
+        if argv.count(flag) != 1 or argv.index(flag) + 1 >= len(argv):
+            raise ValueError('Original TTL-refusal public argument absent: ' + flag)
+        return argv[argv.index(flag) + 1]
+
+    if (Path(option(run_argv, '--run-context')).resolve() != Path(context_pin['path']).resolve()
+            or Path(option(allocate_argv, '--keeper-output')).resolve() != keeper_root.resolve()
+            or any(Path(option(argv, '--prepared-case')).resolve() != Path(prepared_pin['path']).resolve()
+                   or option(argv, '--product') != ready.get('product') or option(argv, '--case') != ready.get('case')
+                   for argv in (run_argv, allocate_argv))
+            or option(run_argv, '--runtime') != option(allocate_argv, '--runtime')):
+        raise ValueError('TTL-refusal original public commands crossed run, case, runtime or keeper')
+    _, stdout = _ttl_original(refs, 'run_stdout')
+    _, stderr = _ttl_original(refs, 'run_stderr')
+    if (stdout.get('run_id') != run or stdout.get('host_argv') != freeze.get('argv')
+            or stdout.get('runtime_status') != 'LAUNCH_FAILED' or stdout.get('business_acceptance') != 'NOT_ASSESSED'
+            or type(stdout.get('launcher_exit_code')) is not int or stdout.get('launcher_exit_code') != 2
+            or stderr != {'status': 'BLOCKED', 'error': "BackgroundGateRefusal('Fresh same-machine background offline observation required')", 'business_pass': False}):
+        raise ValueError('Original parent TTL-refusal terminal differs')
+    allocator_stdout = _ttl_allocator_stdout(refs)
+    if (allocator_stdout.get('status') != 'ACTUAL_ALLOCATED_KEEPER_READY_NOT_RUN'
+            or allocator_stdout.get('task') != task or Path(text_field(allocator_stdout, 'live')).resolve() != previous.resolve()):
+        raise ValueError('Original allocator READY output differs')
+    offline_pin, offline = _ttl_original(refs, 'offline_receipt', Path(text_field(context, 'steam_offline_receipt')))
+    observation = parse_result(offline)
+    run_started = _timestamp(run_result.get('started_at_utc'), 'Original refused run start')
+    run_finished = _timestamp(run_result.get('finished_at_utc'), 'Original refused run finish')
+    observed = _timestamp(observation.observed_at_utc, 'Historical offline observation')
+    if (observation.machine_id != machine or observation.status != 'offline' or observation.steam is None
+            or observation.source is None or not observed < run_started <= run_finished
+            or (run_started - observed).total_seconds() <= 30):
+        raise ValueError('Original receipt is not proved expired before this parent launcher attempt')
+    launchers = [Path(value).resolve() for value in strings_field(stdout, 'launcher_argv')
+                 if Path(value).name == 'ck3_mod_acceptance_launcher.py']
+    if len(launchers) != 1:
+        raise ValueError('Original refused launcher identity absent')
+    launcher_source = file_pin(json_object(refs['launcher_source']))
+    gate_source = file_pin(json_object(refs['gate_source']))
+    files = object_field(freeze, 'files')
+    if (Path(launcher_source['path']).resolve() != launchers[0] or _ttl_pin(launchers[0]) != launcher_source
+            or Path(gate_source['path']).resolve() != launchers[0].with_name('ck3_mod_acceptance_steam_gate.py')
+            or _ttl_pin(Path(gate_source['path'])) != gate_source
+            or any(object_field(files, ref['path']) != {'bytes': ref['bytes'], 'sha256': ref['sha256']}
+                   for ref in (launcher_source, gate_source))):
+        raise ValueError('TTL-refusal source branch differs from the original frozen launcher/gate')
+    protocol = build_launcher_protocol_v1(launcher_source, gate_source)
+    purpose_pin, purpose = _ttl_original(refs, 'purpose', previous / 'product-acceptance-purpose.json')
+    host_argv = strings_field(freeze, 'argv')
+    product_acceptance_purpose_v1(purpose, purpose_path=Path(purpose_pin['path']), host_path=Path(host_argv[4]),
+        state_dir=state, bridge_pipe=option(host_argv, '--bridge-pipe'))
+    profile_pin, _ = _ttl_original(refs, 'normal_exit_profile', Path(option(host_argv, '--normal-exit-managed-profile')))
+    if context.get('normal_exit_managed_profile') != profile_pin or option(host_argv, '--normal-exit-managed-profile-sha256') != profile_pin['sha256']:
+        raise ValueError('Original prepared normal-exit profile binding changed')
+    _, keeper = _ttl_original(refs, 'keeper', keeper_root / 'report.json')
+    _, parent = _ttl_original(refs, 'keeper_parent_exit', previous / 'keeper-actual-parent-exit.json')
+    _, keeper_ready = _ttl_original(refs, 'keeper_ready', keeper_root / 'ready.json')
+    _, stop = _ttl_original(refs, 'keeper_stop', keeper_root / 'STOP')
+    if (keeper.get('task_id') != task or keeper.get('thread_exited') is not True
+            or keeper.get('failure') is not None or keeper.get('entry_error') is not None or keeper.get('game_actions') is not False
+            or parent.get('run_id') != run or type(parent.get('keeper_actual_exit_code')) is not int
+            or parent.get('keeper_actual_exit_code') != 0 or parent.get('keeper_report') != keeper
+            or allocator_stdout.get('run_id') != run or allocator_stdout.get('keeper_report') != keeper
+            or type(allocator_stdout.get('keeper_actual_exit_code')) is not int or allocator_stdout.get('keeper_actual_exit_code') != 0
+            or stop.get('machine_id') != machine or stop.get('reason') != 'Public launcher refused expired background offline receipt before host/Game start; preserve source and original failure, close keeper cooperatively.'
+            or not _timestamp(keeper_ready.get('at_utc'), 'Keeper ready') <= run_started <= run_finished
+                    <= _timestamp(stop.get('observed_at_utc'), 'Original cooperative STOP') <= _timestamp(keeper.get('at_utc'), 'Keeper completion')):
+        raise ValueError('Original cooperative no-game keeper STOP/wait0 differs')
+    cas_pin, cas_source = _ttl_original(refs, 'CAS_release')
+    _, done_source = _ttl_original(refs, 'admin_done')
+    _, root_release = _ttl_original(refs, 'root_release')
+    allocator = same_directory_control_peer('ck3_mod_acceptance_allocate')
+    cas = json_object(allocator.read_failed_runtime_release(Path(cas_pin['path'])))
+    _release_stages(keeper, cas, release, cas_source, done_source, release, task)
+    if root_release.get('event') != release.get('event') or root_release.get('task') != release.get('task'):
+        raise ValueError('Root original release and canonical reconstruction differ')
+    counter_path = (ids.default_state_root() / machine / text_field(freeze, 'mod_key') / 'counter.json').resolve()
+    counter_snapshot, counter = _ttl_original(refs, 'counter', close_path.parent / 'counter.original.json')
+    provenance = object_field(bundle, 'counter_snapshot_provenance')
+    source_counter = file_pin(provenance.get('source'))
+    if (set(provenance) != {'machine_id', 'observed_at_utc', 'source'}
+            or provenance.get('machine_id') != machine
+            or _timestamp(provenance.get('observed_at_utc'), 'Counter snapshot observation') > datetime.now(timezone.utc)
+            or Path(source_counter['path']).resolve() != counter_path or _ttl_pin(counter_path) != source_counter
+            or source_counter['bytes'] != counter_snapshot['bytes'] or source_counter['sha256'] != counter_snapshot['sha256']
+            or counter_path.read_bytes() != Path(counter_snapshot['path']).read_bytes()):
+        raise ValueError('Current canonical counter differs from its original immutable TTL snapshot')
+    sequence = _integer(counter.get('last_sequence'), 'Original product counter', 1)
+    if ids.format_run_id(machine, text_field(freeze, 'mod_key'), sequence) != run:
+        raise ValueError('TTL-refusal predecessor is not the latest product counter')
+    absent: JsonObject = {name: not (previous / name).exists() for name in (
+        'launch-intent.json', 'host-started.json', 'host-supervisor-started.json', 'host-original-process-exit.json',
+        'native-report.json', 'native-report.session.log', 'case-output')}
+    absent.update({'state/control': not (state / 'control').exists(), 'state/native-session': not (state / 'native-session').exists(),
+        'controls-empty': (previous / 'controls').is_dir() and not any((previous / 'controls').iterdir())})
+    for name in ('logs', 'save games', 'run'):
+        path = state / 'profile' / name
+        absent['profile/' + name] = not path.exists() or not any(path.iterdir())
+    if any(value is not True for value in absent.values()):
+        raise ValueError('TTL-refused allocation has actual launch/native/control/save evidence')
+    tasks = bus.get('tasks')
+    if not isinstance(tasks, list):
+        raise ValueError('Original current task list required')
+    current_tasks = [json_object(row) for row in tasks]
+    for row in current_tasks:
+        resources = row.get('resources')
+        if (not isinstance(resources, list) or any(not isinstance(item, str) for item in resources)
+                or 'ck3-screen:acquired' in resources):
+            raise ValueError('TTL-refused allocation still has a screen owner')
+    matching = [row for row in current_tasks if row.get('task_id') == task]
+    released_task = object_field(release, 'task')
+    if (len(matching) != 1 or {key: matching[0].get(key) for key in released_task} != released_task
+            or set(matching[0]) != set(released_task) | {'age_seconds', 'stale'}
+            or type(matching[0].get('age_seconds')) is not int or matching[0].get('stale') is not False):
+        raise ValueError('TTL-refusal current canonical task differs from the actual release')
+    from xar_autoplayer.bridge.runtime_input_contract_v1 import validate_running_inputs
+    inputs = validate_running_inputs(previous, freeze)
+    inventory_reader: object = allocator.runtime_process_inventory
+    if not isinstance(inventory_reader, _UnrunProcessInventory):
+        raise ValueError('Existing process inventory boundary unavailable')
+    inventory = json_object(inventory_reader(psutil, os.getpid()))
+    if inventory.get('blockers') != []:
+        raise ValueError('TTL-refused predecessor still has active runtime processes')
+    return json_object({'mode': 'previous-shared-allocated-pre-intent-offline-ttl-refused', 'actual_process_inventory': inventory,
+        'failure_cleanup': {'close': _ttl_pin(close_path), 'original_evidence': refs, 'launcher_protocol': protocol,
+            'offline_observation_age_at_run_start_seconds': (run_started - observed).total_seconds(),
+            'historical_receipt_is_current_offline_admission': False, 'original_keeper_exit_code': 0,
+            'original_host_exit_code': None, 'original_ck3_exit_code': None, 'host_started': False, 'native_session_started': False,
+            'normal_close_qualified': False, 'typed_normal_exit_proven': False, 'business_pass': False, 'release_pass': False,
+            'consumed_purpose_preserved': purpose_pin, 'original_inputs_verified': inputs,
+            'absent_launch_native_control_Save': absent}})
 
 
 class ExternalCompletionRequest(TypedDict):
@@ -529,6 +743,11 @@ def validate_aborted_allocation_v1(previous: Path, freeze_value: object, close_p
 
 
 def validate_allocated_unrun(previous, freeze, close_path, keeper_root, release, bus_packet, *, next_state=None):
+    if _read(close_path).get('closure_kind') == OFFLINE_TTL_KIND:
+        if not isinstance(next_state, Path):
+            raise ValueError('TTL-refused allocation requires a separate next state')
+        return validate_pre_intent_offline_ttl_refusal(Path(previous), freeze, Path(close_path),
+            Path(keeper_root), release, bus_packet, next_state)
     if _read(close_path).get('closure_kind') == ABORTED_KIND:
         if not isinstance(next_state,Path):raise ValueError('Aborted allocation requires a new separate state')
         return validate_aborted_allocation_v1(Path(previous),freeze,Path(close_path),Path(keeper_root),release,bus_packet,next_state)
@@ -636,6 +855,75 @@ def _write(path: str | Path, value: object) -> FilePin:
     path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
     with path.open('x',encoding='utf-8',newline='\n') as f:json.dump(value,f,ensure_ascii=False,indent=2);f.write('\n')
     return file_pin(pin(path))
+
+
+def build_pre_intent_offline_ttl_bundle(args: argparse.Namespace, frozen_value: object,
+        proofs_value: object, output: Path) -> UnrunBundleReport:
+    """Pin the original rejected public call; never recreate a launch or wait."""
+    import ck3_live_run_id as ids
+    frozen, proofs = json_object(frozen_value), json_object(proofs_value)
+    live, keeper = args.previous_live.resolve(), args.keeper_root.resolve()
+    if not all(isinstance(getattr(args, name, None), Path) for name in (
+            'allocator_result', 'pre_intent_offline_run_result', 'public_run_stdout',
+            'public_run_stderr', 'root_screen_release', 'next_state')):
+        raise ValueError('TTL closure requires original Root run/allocate waits, streams, release and a separate next state')
+    ready = _read(live / 'ready-context.json')
+    run = _read(args.pre_intent_offline_run_result)
+    argv = strings_field(run, 'argv')
+    if argv.count('--run-context') != 1 or argv.index('--run-context') + 1 >= len(argv):
+        raise ValueError('Original public run context argument required')
+    context_path = Path(argv[argv.index('--run-context') + 1])
+    context = _read(context_path)
+    stdout = _read(args.public_run_stdout)
+    launchers = [Path(value) for value in strings_field(stdout, 'launcher_argv')
+                 if Path(value).name == 'ck3_mod_acceptance_launcher.py']
+    if len(launchers) != 1:
+        raise ValueError('Original refused launcher path required')
+    paths: dict[str, Path] = {
+        'ready': live / 'ready-context.json', 'frozen': live / 'frozen-argv.json',
+        'allocated_context': live / 'allocated-context.json',
+        'prepared_case': Path(file_pin(ready.get('prepared_case'))['path']),
+        'reviewed_context': context_path, 'run_result': args.pre_intent_offline_run_result,
+        'run_stdout': args.public_run_stdout, 'run_stderr': args.public_run_stderr,
+        'allocator_result': args.allocator_result, 'allocator_stdout': args.allocator_stdout,
+        'offline_receipt': Path(text_field(context, 'steam_offline_receipt')),
+        'launcher_source': launchers[0], 'gate_source': launchers[0].with_name('ck3_mod_acceptance_steam_gate.py'),
+        'purpose': live / 'product-acceptance-purpose.json',
+        'normal_exit_profile': Path(file_pin(context.get('normal_exit_managed_profile'))['path']),
+        'keeper': keeper / 'report.json', 'keeper_parent_exit': live / 'keeper-actual-parent-exit.json',
+        'keeper_ready': keeper / 'ready.json', 'keeper_stop': keeper / 'STOP',
+        'root_release': args.root_screen_release}
+    refs: JsonObject = {name: json_object(_ttl_pin(path.resolve())) for name, path in paths.items()}
+    refs.update(proofs)
+    canonical_counter = (ids.default_state_root() / ids.current_machine_id() / text_field(frozen, 'mod_key') / 'counter.json').resolve()
+    source_counter = _ttl_pin(canonical_counter)
+    counter_bytes = canonical_counter.read_bytes()
+    if len(counter_bytes) != source_counter['bytes'] or hashlib.sha256(counter_bytes).hexdigest() != source_counter['sha256']:
+        raise ValueError('Canonical counter changed during original snapshot acquisition')
+    counter_snapshot = output / 'counter.original.json'
+    with counter_snapshot.open('xb') as stream:
+        stream.write(counter_bytes)
+    refs['counter'] = json_object(_ttl_pin(counter_snapshot))
+    bundle: JsonObject = {'schema': SCHEMA, 'closure_kind': OFFLINE_TTL_KIND,
+        'machine_id': ids.current_machine_id(), 'observed_at_utc': datetime.now(timezone.utc).isoformat(),
+        'run_id': text_field(frozen, 'run_id'), 'quarantined_state': text_field(frozen, 'state_dir'),
+        'original_evidence': refs,
+        'counter_snapshot_provenance': {'machine_id': ids.current_machine_id(),
+            'observed_at_utc': datetime.now(timezone.utc).isoformat(), 'source': json_object(source_counter)},
+        **{name: False for name in ('host_started', 'native_session_started', 'game_started', 'normal_close_qualified',
+             'typed_normal_exit_proven', 'original_host_exit0', 'business_pass', 'release_pass')}}
+    bundle_pin = _write(output / 'ALLOCATED-UNRUN.actual.json', bundle)
+    allocator = same_directory_control_peer('ck3_mod_acceptance_allocate')
+    release_pin = file_pin(proofs['admin_done'])
+    release = allocator.read_failed_runtime_release(Path(release_pin['path']))
+    bus = args.task_bus_root / 'bin/codex_task_bus.py'
+    packet = allocator.current_screen_absent(Path(text_field(frozen, 'lease_anchor')), args.task_bus_root,
+        text_field(object_field(object_field(frozen, 'files'), str(bus.resolve())), 'sha256'), None)
+    verdict = validate_pre_intent_offline_ttl_refusal(live, frozen, Path(bundle_pin['path']), keeper,
+        release, packet, args.next_state)
+    return {'bundle': bundle_pin, 'previous_release': release_pin, 'validation': verdict, 'SDK_or_launch': False}
+
+
 def build_bundle(args: argparse.Namespace) -> UnrunBundleReport:
     if getattr(args,'aborted_wrapper',None):
         return build_aborted_bundle_v1(args)
@@ -662,6 +950,8 @@ def build_bundle(args: argparse.Namespace) -> UnrunBundleReport:
             'machine_id':machine,'source_event_stream':str(journal.resolve()),'source_event_byte_offset':offset,
             'source_event_bytes':len(line),'source_event_raw_utf8':line.decode(),'source_event_raw_sha256':hashlib.sha256(line).hexdigest(),
             'event':event,'actual_task_pin':pin(taskpath),'task':task,'release_confirmed_by_canonical_readback':True,'original_stdout_captured':False})
+    if getattr(args, 'pre_intent_offline_run_result', None):
+        return build_pre_intent_offline_ttl_bundle(args, freeze, proofs, output)
     row={'schema':SCHEMA,'machine_id':machine,'observed_at_utc':datetime.now(timezone.utc).isoformat(),'run_id':freeze['run_id'],
          **{k:False for k in ('host_started','native_session_started','game_started','normal_close_qualified','original_host_exit0','business_pass')},**proofs}
     paths={'ready':live/'ready-context.json','frozen':live/'frozen-argv.json','allocated_context':live/'allocated-context.json',
@@ -734,6 +1024,10 @@ def main() -> None:
     p.add_argument('--admin-release',type=Path)
     p.add_argument('--next-state',type=Path)
     p.add_argument('--launcher-pin-refusal',type=Path)
+    p.add_argument('--pre-intent-offline-run-result',type=Path)
+    p.add_argument('--public-run-stdout',type=Path)
+    p.add_argument('--public-run-stderr',type=Path)
+    p.add_argument('--root-screen-release',type=Path)
     allocator.add_argument('--allocator-intent',type=Path)
     p.add_argument('--allocator-process',type=Path);p.add_argument('--allocator-exit',type=Path)
     p.add_argument('--allocator-stdout',type=Path,required=True);p.add_argument('--task-bus-root',type=Path,required=True)

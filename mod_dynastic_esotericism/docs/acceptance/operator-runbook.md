@@ -47,19 +47,21 @@ java -jar C:/ck3-dynastic-esotericism-20261024/java-build/dynastic-esotericism-t
 
 ## 分配、预检和运行
 
-本机已有公共 admission，不能使用 first-machine-bootstrap。2026-10-24 的 R0001 已保留为 RED 并正常关闭：原宿主退出 1、公共 run 退出 2、CK3 原进程退出 0、keeper 退出 0，SCREEN 释放序号 8596。后继使用该真实 R0001；其有限 failure-close 只准入已结束资源，保留业务与正常关闭资格为 false。以下路径属于 `machine_id: desktop-3fevhd2-1c74096080`；分配前仍由 Root 重读当前 canonical admission。
+本机已有公共 admission，不能使用 first-machine-bootstrap。2026-10-24 的 R0001 保留为 RED：原宿主退出 1、公共 run 退出 2、CK3 原进程退出 0、keeper 退出 0，SCREEN 释放序号 8596。其后 R0002 的公共 run 因后台离线观察过期退出 2，尚未创建 launch-intent、host 或 CK3；原目的文件仍保留且不可重放。R0002 keeper 合作退出 0，SCREEN 实际释放序号 8607。后继使用该真实 R0002；有限 TTL failure-close 只准入已结束资源，正常关闭、业务和发布资格均为 false。以下路径属于 `machine_id: desktop-3fevhd2-1c74096080`；分配前仍由 Root 重读当前 canonical admission。
 
 ```bat
-<python> <entry> allocate --runtime <new-runtime> --products <new-products> --product dynastic-esotericism --case core --prepared-case <new-prepared-case> --attempt a17 --keeper-output C:/ck3-dynastic-esotericism-20261024/keeper-core-a17 --previous-live C:/ck3-dynastic-esotericism-20261024/common-runtime-a03/runs/desktop-3fevhd2-1c74096080--dynastic-esotericism--R0001 --previous-keeper C:/ck3-dynastic-esotericism-20261024/keeper-core-a16 --previous-release C:/ck3-dynastic-esotericism-20261024/R0001-screen-release.actual.json --previous-failure-close C:/ck3-dynastic-esotericism-20261024/R0001-preserved-failure-close/failure-close.json --latest-screen-release C:/ck3-dynastic-esotericism-20261024/R0001-screen-release.actual.json
+<python> <entry> allocate --runtime <new-runtime> --products <new-products> --product dynastic-esotericism --case core --prepared-case <new-prepared-case> --attempt a18 --keeper-output C:/ck3-dynastic-esotericism-20261024/keeper-core-a18 --previous-live C:/ck3-dynastic-esotericism-20261024/common-runtime-a04/runs/desktop-3fevhd2-1c74096080--dynastic-esotericism--R0002 --previous-keeper C:/ck3-dynastic-esotericism-20261024/keeper-core-a17 --previous-release C:/ck3-dynastic-esotericism-20261024/R0002-screen-release.actual.json --previous-failure-close C:/ck3-dynastic-esotericism-20261024/R0002-offline-ttl-close-a03/ALLOCATED-UNRUN.actual.json
 <python> <entry> preflight --runtime <runtime> --products <products> --product dynastic-esotericism --case core --prepared-case C:/ck3-dynastic-esotericism-20261024/prepared-core-a01/prepared-case.json --run-context <allocated-context>
 <python> <entry> run --runtime <runtime> --products <products> --product dynastic-esotericism --case core --prepared-case C:/ck3-dynastic-esotericism-20261024/prepared-core-a01/prepared-case.json --run-context <allocated-context>
 ```
 
 Root 在真实分配前完成存储原子准入、干净 checkout 和屏幕 owner 前置。受管启动前用公共后台 Steam probe 取得新鲜 `offline=true` 回执。未知状态不能启动。本次开局前声明固定 hold 3600 秒、整个命令 5400 秒、readiness 1800 秒、正常退出保留 180 秒；400 自然日上限覆盖真实 280 日妊娠、出生翌日和 31 日维护观察。运行中不延长冻结 deadline。
 
-上例 a17 只是在此次读回时尚未注册的参数，分配时须重验未消费。新 state 使用新的父目录，例如 `C:/ck3-dynastic-esotericism-20261024/attempt-a04/state`；先前 `state-core-a03` 的父目录已有实际消费过的 single-use-ledger，不能只在同一父目录换 state 名。若期间发生新的 SCREEN 任务，`--latest-screen-release` 必须换成它的实际释放原件。
+上例 a18 只是在此次读回时尚未注册的参数，分配时须重验未消费。新 state 使用新的父目录，例如 `C:/ck3-dynastic-esotericism-20261024/attempt-a06/state`；先前消费过的 single-use-ledger 和目的文件均保留，不能只在同一父目录换 state 名。绑定旧 runtime 的 prepared 不改写复用，须对新 runtime 重新 prepare。前序释放后没有插入其他 SCREEN 任务时，省略可选的 `--latest-screen-release`。只有出现更晚的 SCREEN 释放时才传它的实际原件，且其序号必须严格大于 `--previous-release`；不能把同一释放传两次。2026-10-24 a17 首次分配已实际在 ID 前拒绝同序号参数，任务、keeper 与新 run 均未产生；后续按真实未消费状态以新日志重试。
 
 分配后由 Root 以新文件提交 reviewed context，字段是 `reviewer: "/root"`，并补 `steam_offline_receipt` 的新鲜后台回执路径；实际 `run` 消费此新 context。四个产品合同显式声明 `execution_purpose=product_acceptance`。公共入口在启动前生成一次目的文件，宿主核 Root context、prepared/contract、冻结 argv、当前 run/state/pipe 后，按真实首帧身份与原自然日上限推进。R05 的独立 scope、30 日与 once 守卫保留；本产品场次不申请 R05 scope。
+
+当前冻结后台 gate 的新鲜窗口为 **30 秒**。先完成独立 preflight，再在同一执行脚本中连续完成新 probe → 新 Root context → public run，中间不得等待模型回合；run 自身仍执行预检和 launcher 守卫。先前 60 秒的描述已更正，不修改历史失败回执，也不放宽 gate 或目的文件一次守卫。进入稳定地图及首个自然日后，业务操作前先通过同一 queue/driver 只读查询 `ck3_query_normal_exit_context_v1`，确认本次 normal-exit profile/source inventory 确实被消费；不提交退出请求，实际闭场时再按新 revision 查询。
 
 ## 六个 GUI phase 的操作与签认
 

@@ -1,0 +1,119 @@
+{
+  "schema": "dynastic-esotericism-offline-ttl-recovery-evidence-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T11:37:38.824947+00:00",
+  "original_scene": "R0002",
+  "original_result_summary": "R0002-2026-10-24.json",
+  "scope": "Resource successor admission only. No historical Selection construction, host/Game start, normal-close, business or publication credit.",
+  "sources": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_unrun.py",
+      "bytes": 72113,
+      "sha256": "00c2ef112969052f2b4e95c66b759686b5fe59b7fcf8f227a2ccc91f78d43900"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_launcher_protocol_v1.py",
+      "bytes": 5111,
+      "sha256": "1256620a1d221307fe9703423ea7fe530da6ef15124fa6f018a07b985679ba70"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_offline_ttl_unrun.py",
+      "bytes": 19053,
+      "sha256": "37303ddeb25e134356f0636b357f0d6b559fa7a57ea8390f64038d488ba0b0d4"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\fixtures\\ck3_R0002_pre_intent_offline_ttl.json",
+      "bytes": 118804,
+      "sha256": "70f3b5ac5ff288665cfe2c9c66cec076bdea70d951fccbcc033b1e9b608f0018"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\.github\\workflows\\dynastic-esotericism-static.yml",
+      "bytes": 6470,
+      "sha256": "d54a74c62e7aba30db4cb9479911d4b951c8b333b8a73c05f0882f769c676251"
+    }
+  ],
+  "regressions": {
+    "actual_test_count": 5,
+    "failed": 0,
+    "skipped": 0,
+    "complete_module_strict_count": 2,
+    "production_strict_scope": [
+      {
+        "name": "_UnrunProcessInventory",
+        "first_line": 22,
+        "last_line": 23
+      },
+      {
+        "name": "_ttl_pin",
+        "first_line": 26,
+        "last_line": 30
+      },
+      {
+        "name": "_ttl_original",
+        "first_line": 33,
+        "last_line": 40
+      },
+      {
+        "name": "_ttl_allocator_stdout",
+        "first_line": 43,
+        "last_line": 57
+      },
+      {
+        "name": "validate_pre_intent_offline_ttl_refusal",
+        "first_line": 60,
+        "last_line": 231
+      },
+      {
+        "name": "build_pre_intent_offline_ttl_bundle",
+        "first_line": 860,
+        "last_line": 924
+      }
+    ],
+    "receipt": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\offline-ttl-final-a01\\verification.actual.json",
+      "bytes": 4645,
+      "sha256": "73ad6fdd704a67bb1e1b3cac2487edf10e1720634f7df79faca8f4ee94206a79"
+    },
+    "source_drift": [],
+    "post_identity_test": "Real public native_dispatch, allocator, isolated ID writer and frozen-input verifier; authored OS/keeper/bus boundaries. Counter advances R2 to R3 while immutable predecessor snapshot stays fixed."
+  },
+  "actual_originals": {
+    "producer": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0002-offline-ttl-producer-a03.actual.json",
+      "bytes": 2697,
+      "sha256": "7026ad11978d947b0dfefbed4e98f559d84f49dd7cff79be0a288e733c4ef89a"
+    },
+    "public_predecessor_branch": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0002-offline-ttl-close-a03\\public-predecessor.actual.json",
+      "bytes": 13160,
+      "sha256": "4c4af96a38bf5d19829922b311b337c2b6b357465301a5317009f3ed96dc82c6"
+    },
+    "closure": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0002-offline-ttl-close-a03\\ALLOCATED-UNRUN.actual.json",
+      "bytes": 6819,
+      "sha256": "93e1d54324a502d5ff5830eb4dd0cddf147a8c9a141efb126071a72affdf7a00"
+    },
+    "frozen_immutable_inputs_checked": 1967,
+    "mutable_original_snapshots_checked": 2,
+    "latest_actual_screen_release": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0002-screen-release.actual.json",
+      "bytes": 1345,
+      "sha256": "361528fb977788286a0a1953b488f835f4f6ab7dc28cc66c50485e5f23f3c156"
+    },
+    "counter_snapshot": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0002-offline-ttl-close-a03\\counter.original.json",
+      "bytes": 306,
+      "sha256": "2eb1424ab447338e583ca6045fb8547ccacc0a1f3909c3711aa5afe9a652b071"
+    }
+  },
+  "source_gate_freshness_seconds": 30,
+  "runbook_sequence": "Independent preflight then fresh background probe, new Root context and public run in one exec without model-turn delay. No intervening SCREEN epoch: omit optional latest-screen-release.",
+  "superseded_closures": [
+    "R0002-offline-ttl-close-a01",
+    "R0002-offline-ttl-close-a02"
+  ],
+  "superseded_reason": "Preserved prior attempts pin mutable canonical counter and are not valid successor inputs. a03 snapshots original bytes; admission independently checks the canonical counter is still the exact R2 source.",
+  "normal_close_qualified": false,
+  "business_pass": false,
+  "release_pass": false
+}

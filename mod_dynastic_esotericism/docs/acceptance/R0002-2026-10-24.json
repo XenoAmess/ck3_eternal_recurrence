@@ -1,0 +1,84 @@
+{
+  "schema": "xar.dynastic-esotericism.prelaunch-refusal-summary.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T11:15:25.590678+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0002",
+  "source_commit": "2afeacbafc8477e2c170aebc6e73ab4bcfc78997",
+  "runtime_source_build_commit": "480ea2538a8f36ac253cd9ff0834b2586232b530",
+  "status": "PRE_LAUNCH_REFUSED",
+  "business_status": "NOT_RUN",
+  "release_status": "NOT_PUBLISHED",
+  "host_started": false,
+  "game_started": false,
+  "completed_gui_business_phases": 0,
+  "original_host_exit_code": null,
+  "original_ck3_exit_code": null,
+  "public_run_exit_code": 2,
+  "public_allocate_exit_code": 0,
+  "original_keeper_exit_code": 0,
+  "screen_release_sequence": 8607,
+  "offline_gate_maximum_age_seconds": 30,
+  "offline_receipt_age_at_public_run_start_seconds": 73.432211,
+  "error": "BackgroundGateRefusal('Fresh same-machine background offline observation required')",
+  "cause": "Root separated the offline probe and public run beyond the pinned gate freshness window; no host intent or Game was created.",
+  "source_of_30_second_limit": "Frozen steam_gate.validate_observation age <= 30; not the earlier incorrect 60-second commentary.",
+  "retention_review_due_utc": "2026-10-31T11:05:30Z",
+  "retention_reason": "Actual pre-intent refusal originals required by the finite shared resource-closure regression and next admission.",
+  "evidence": [
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\run-core-a17.actual.json",
+      "bytes": 1167,
+      "sha256": "0fb2f5ddf108f059a11551397df5b1b673b47b69f2c205e3d90a86ed0cc34b04"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\run-core-a17.stdout.log",
+      "bytes": 21416,
+      "sha256": "586b39a1dc9910aceec81e0fffcc218ddee8e2e9fadab2ef3ff0615fd7742cc0"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\run-core-a17.stderr.log",
+      "bytes": 143,
+      "sha256": "021fff0707f6b7602927fe975dc8fcc52a7aa9698b0d83d8905816dd1f4bc5ab"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\allocate-core-a17-r2.actual.json",
+      "bytes": 1665,
+      "sha256": "59a7fd1da435dd53b499c8ad9944d1c58a3ac464d58ecbc84b371dcd31a9d1e6"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\steam-offline-launch-a17.actual.json",
+      "bytes": 2461,
+      "sha256": "a5ea11a2808f2626b171981d1db4e51ddc4265f139e5a992fc0fe4b249199b4c"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a04\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0002\\root-reviewed-context.json",
+      "bytes": 2845,
+      "sha256": "58ad81ce6f19cec9e4937975fdc749164aaccb9d908d5c65786910997cfe6192"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a04\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0002\\product-acceptance-purpose.json",
+      "bytes": 426,
+      "sha256": "27524b11f86ececdd9a6a269024b17fc66f5404c113cab4f0ef957b07849d012"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a04\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0002\\keeper-actual-parent-exit.json",
+      "bytes": 615,
+      "sha256": "5e972ebeb664f21480cd469d0aa268c9597b7bee0e1c13562f636a27c6f02fae"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\keeper-core-a17\\report.json",
+      "bytes": 439,
+      "sha256": "e476414d481572e2c7309c59e32b96be972447ba4b1b94d951df20e4813d84e8"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0002-screen-release.actual.json",
+      "bytes": 1345,
+      "sha256": "361528fb977788286a0a1953b488f835f4f6ab7dc28cc66c50485e5f23f3c156"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a04\\source\\tools\\ck3_mod_acceptance_steam_gate.py",
+      "bytes": 6023,
+      "sha256": "a17c9cea468c3700925ec651cd9881596c642edbe3725c642842001d07332274"
+    }
+  ]
+}

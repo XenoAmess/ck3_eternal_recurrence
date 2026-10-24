@@ -734,9 +734,7 @@ class Selection:
         normal_exit_enabled = normal_exit_tools_opted_in_v1(self.case.get('required_mcp_tools', []))
         if 'normal_exit_managed_profile' in self.context and not normal_exit_enabled:
             raise ValueError('Normal-exit profile requires the three explicitly declared MCP tools')
-        if normal_exit_enabled and self.context:
-            if 'normal_exit_managed_profile' not in self.context:
-                raise ValueError('Actual allocated normal-exit profile reference is missing')
+        if normal_exit_enabled and 'normal_exit_managed_profile' in self.context:
             binding = normal_exit_static_binding_v1(self.context['normal_exit_managed_profile'],
                 state_dir=state, run_dir=self.run_dir,
                 runtime_manifest=_verification_actual_pin_v1(self.manifest_path))
@@ -1257,6 +1255,9 @@ class Selection:
         return result
 
     def run(self) -> dict[str, object]:
+        if (normal_exit_tools_opted_in_v1(self.case.get('required_mcp_tools', []))
+                and self.context and 'normal_exit_managed_profile' not in self.context):
+            raise ValueError('Actual allocated normal-exit profile reference is missing for launch')
         result = self.preflight()
         if result["blockers"]:
             raise ValueError("Preflight blocked: " + "; ".join(result["blockers"]))

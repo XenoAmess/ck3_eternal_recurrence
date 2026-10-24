@@ -3,7 +3,9 @@ from __future__ import annotations
 import ast
 import copy
 import json
+import os
 from pathlib import Path
+import subprocess
 import sys
 from types import SimpleNamespace
 import tempfile
@@ -126,8 +128,16 @@ class AllocatedNormalExitTests(unittest.TestCase):
             else: context['normal_exit_managed_profile']['sha256'] = '0' * 64
             path = self.live / (mode + '-context.json')
             self.write(path, context)
-            with self.subTest(mode=mode), self.assertRaises(ValueError):
-                self.selected(path)
+            with self.subTest(mode=mode):
+                if mode == 'missing':
+                    historical = self.selected(path)
+                    self.assertNotIn('--normal-exit-managed-profile', historical.argv)
+                    with patch.object(historical, 'preflight', side_effect=AssertionError('No launch preflight admitted')):
+                        with self.assertRaisesRegex(ValueError, 'missing for launch'):
+                            historical.run()
+                else:
+                    with self.assertRaises(ValueError):
+                        self.selected(path)
         profile = Path(original['normal_exit_managed_profile']['path'])
         value = entry.read_json(profile)
         value['state_directory'] = str(self.root / 'wrong-state')
@@ -196,6 +206,10 @@ def consume(self: Selection, state: Path, argv: list[str]) -> None:
 ''')
         consumer = unit.body.pop()
         consumer.body = copy.deepcopy(method.body[start:start + 3])
+        run = next(node for node in selected.body if isinstance(node, ast.FunctionDef) and node.name == 'run')
+        self.assertIsInstance(run.body[0], ast.If)
+        self.assertIn('normal_exit_managed_profile', ast.unparse(run.body[0]))
+        consumer.body.append(copy.deepcopy(run.body[0]))
         unit.body.extend([*nodes, consumer])
         with tempfile.TemporaryDirectory(prefix='SYNTHETIC_NORMAL_EXIT_TYPE_SCOPE_') as temporary:
             path = Path(temporary) / 'allocated_normal_exit_scope.py'
@@ -204,6 +218,19 @@ def consume(self: Selection, state: Path, argv: list[str]) -> None:
                 stdout, stderr, code = api.run(['--strict', '--follow-imports=silent', '--no-incremental',
                     '--cache-dir', str(Path(temporary) / 'mypy-cache'), str(path)])
         self.assertEqual(code, 0, stdout + stderr)
+
+    def test_historical_v1_v2_public_verifiers_keep_original_argv(self):
+        """Run the two original hosted-RED consumer chains in a fresh process."""
+        paths = [REPO / 'mod_living_artifacts/tools', REPO / 'tools', REPO,
+                 REPO / 'ck3_autonomous_player/src']
+        environment = {**os.environ, 'PYTHONDONTWRITEBYTECODE': '1',
+                       'PYTHONPATH': os.pathsep.join(map(str, paths))}
+        completed = subprocess.run([sys.executable, '-B', '-X', 'utf8', '-m', 'unittest', '-v',
+            'test_threshold_acceptance_adapter.ThresholdAcceptanceTests.test_actual_v2_producer_public_selection_and_cli_exit',
+            'test_threshold_acceptance_adapter.ThresholdAcceptanceTests.test_actual_frozen_v1_producer_legacy_public_verification_fresh_process'],
+            cwd=REPO, env=environment, capture_output=True, text=True, encoding='utf-8', timeout=180)
+        self.assertEqual(completed.returncode, 0, completed.stdout + completed.stderr)
+        self.assertIn('Ran 2 tests', completed.stderr)
 
 
 if __name__ == '__main__':

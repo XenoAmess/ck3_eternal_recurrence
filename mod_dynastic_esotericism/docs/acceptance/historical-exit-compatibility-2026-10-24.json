@@ -1,0 +1,111 @@
+{
+  "schema": "ck3-historical-normal-exit-consumer-summary-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T11:24:58.429928+00:00",
+  "verification": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\historical-normal-exit-final-a02\\verification.json",
+    "bytes": 14921,
+    "sha256": "9e670ad3fea66c10ea38e18f97f5e0ae314d73fea23f1d36bad6430f3d07f75d"
+  },
+  "complete_dedicated_ci_step": true,
+  "command_exit_codes": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "top_level_unittests_passed": 34,
+  "additional_original_legacy_tests_in_fresh_process": 2,
+  "production_strict_scope": [
+    "two complete SDK/queue modules",
+    "new main/allocator helpers and actual Selection build_argv/run guard AST",
+    "failed-host actual guard AST"
+  ],
+  "historical_missing_reference_reconstructs_original_argv": true,
+  "historical_v1_v2_actual_public_verification_passed": true,
+  "new_launch_missing_reference_refused_before_preflight_or_launcher": true,
+  "present_invalid_or_null_reference_still_rejected": true,
+  "new_allocation_still_uses_existing_profile_producer": true,
+  "source_unchanged_during_final_step": true,
+  "git_head_before": "585e9a7b576b9d05f8e34cda2d726b303d0fdc3b",
+  "git_head_after": "585e9a7b576b9d05f8e34cda2d726b303d0fdc3b",
+  "source_pins": {
+    "tools/ck3_mod_acceptance.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance.py",
+      "bytes": 90595,
+      "sha256": "f3dd697b20562cc693109728d44c3aa4a19ab9a55ec9c9759df18c5b6713d4b0"
+    },
+    "tools/ck3_mod_acceptance_allocate.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_allocate.py",
+      "bytes": 248491,
+      "sha256": "6dc5930871766621fa6bbe3f1883fc63fa071ea8e5ef784170a127b9ee575e1a"
+    },
+    "tools/ck3_mod_acceptance_normal_exit_profile.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_normal_exit_profile.py",
+      "bytes": 6978,
+      "sha256": "440479fbb254117e2bdb656de89b0a5af0afa2bd52671f119fc565d699f6e218"
+    },
+    "tools/build_normal_exit_source_inventory_v1.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\build_normal_exit_source_inventory_v1.py",
+      "bytes": 5059,
+      "sha256": "60d2567cd65fc677c654c88be0b0c1820172795955e3e9c9e292e9de4c36a993"
+    },
+    "tools/test_ck3_mod_acceptance_allocated_normal_exit.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_allocated_normal_exit.py",
+      "bytes": 14876,
+      "sha256": "57d9c85a23db28869739cb6fb615775288fe4135d84f631fbb68c35cfecf8310"
+    },
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/normal_exit_host_terminal_v1.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_host_terminal_v1.py",
+      "bytes": 7998,
+      "sha256": "a0c07cb90e2be72f3f54802e17660d41a4c00d7baad40bd2a18e2c8d7d96922f"
+    },
+    "tools/ck3_mod_acceptance_queue_control.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_queue_control.py",
+      "bytes": 4260,
+      "sha256": "7f2866a215bbc167b1bec14f113c453abf9aa8ec000b8c8cd6e96e3fde3af789"
+    },
+    "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 346767,
+      "sha256": "7bb3e33f245e6649acd22f6bc224fffd0e6cfc7b757de53eae69aa6aed91f3b7"
+    },
+    "tools/test_ck3_mod_acceptance_failed_host_normal_exit.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_mod_acceptance_failed_host_normal_exit.py",
+      "bytes": 18375,
+      "sha256": "699b98c7d92f8598a571ced7b910e3b5b8de6e6d8a58527e9be1ca8409942d03"
+    },
+    ".github/workflows/rite-confirmation-sdk.yml": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\.github\\workflows\\rite-confirmation-sdk.yml",
+      "bytes": 5230,
+      "sha256": "0be92f76305d53a8e797ff636c823a6d8ad72f7c442092628640440003901b96"
+    },
+    "mod_living_artifacts/tools/test_threshold_acceptance_adapter.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_living_artifacts\\tools\\test_threshold_acceptance_adapter.py",
+      "bytes": 42393,
+      "sha256": "e9254b912459d8af100ea911e7ac1135f610d6ad902f7acaab2dcd79f7556765"
+    }
+  },
+  "hosted_red_preserved": {
+    "machine_id": "unknown",
+    "run_id": "40088036030",
+    "source_commit_prefix": "2afe",
+    "log": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\hosted-cold-2afe-failure.log",
+      "bytes": 98444,
+      "sha256": "f15c269bc3ed675a2d88b4c02f38540433f432ab9bd3b08ae298e0dab855dedc"
+    }
+  },
+  "real_game_started": false,
+  "native_or_maven_build_run": false,
+  "full_cold_group_run_by_this_agent": false,
+  "storage_close": {
+    "C_free_bytes": 56785637376,
+    "isolated_root_bytes": 366794765,
+    "approved_subbudget_bytes": 536870912,
+    "review_at_utc": "2026-10-31T11:24:58.429928+00:00"
+  }
+}
