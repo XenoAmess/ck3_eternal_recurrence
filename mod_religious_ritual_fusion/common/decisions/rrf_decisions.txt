@@ -1,0 +1,112 @@
+﻿rrf_begin_rite_fusion_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+	decision_group_type = religious
+	sort_order = 210
+	desc = rrf_begin_rite_fusion_decision_desc
+	selection_tooltip = rrf_begin_rite_fusion_decision_tooltip
+	confirm_text = rrf_begin_rite_fusion_decision_confirm
+	is_shown = { is_ai = no is_landed = yes }
+	is_valid = { rrf_actor_eligible_trigger = yes }
+	widget = {
+		gui = "decision_view_widget_select_rite"
+		controller = select_scope_object
+		show_from_start = yes
+		decision_to_second_step_button = "RRF_SELECT_SOURCE"
+		setup_items = {
+			every_religion_global = {
+				every_faith = {
+					limit = { this = scope:actor.faith }
+					every_faith_rite = {
+						limit = {
+							this != scope:actor.rite
+							can_convert_to_rite = yes
+						}
+						add_to_list = item_list
+					}
+				}
+			}
+		}
+		is_item_valid = {
+			save_temporary_scope_as = selected_item
+			scope:actor = { rrf_target_rite_trigger = yes }
+		}
+	}
+	effect = { rrf_open_rite_effect = yes }
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+rrf_begin_faith_fusion_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+	decision_group_type = religious
+	sort_order = 211
+	desc = rrf_begin_faith_fusion_decision_desc
+	selection_tooltip = rrf_begin_faith_fusion_decision_tooltip
+	confirm_text = rrf_begin_faith_fusion_decision_confirm
+	is_shown = { is_ai = no is_landed = yes }
+	is_valid = { rrf_actor_eligible_trigger = yes }
+	widget = {
+		gui = "decision_view_widget_select_rite"
+		controller = select_scope_object
+		show_from_start = yes
+		decision_to_second_step_button = "RRF_SELECT_SOURCE"
+		setup_items = {
+			every_religion_global = {
+				every_faith = {
+					limit = { this != scope:actor.faith }
+					every_faith_rite = {
+						limit = { can_convert_to_rite = yes }
+						add_to_list = item_list
+					}
+				}
+			}
+		}
+		is_item_valid = {
+			save_temporary_scope_as = selected_item
+			scope:actor = { rrf_target_faith_trigger = yes }
+		}
+	}
+	effect = { rrf_open_faith_effect = yes }
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+# Read-only history uses references recorded on the actual result Rite.
+rrf_view_pending_fusion_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+	decision_group_type = religious
+	sort_order = 212
+	desc = rrf_view_pending_fusion_decision_desc
+	selection_tooltip = rrf_view_pending_fusion_decision_tooltip
+	confirm_text = rrf_view_pending_fusion_decision_confirm
+	is_shown = { is_ai = no var:rrf_state ?= flag:unresolved }
+	effect = { remove_character_flag = rrf_window_dismissed }
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+rrf_view_last_fusion_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+	decision_group_type = religious
+	sort_order = 212
+	desc = rrf_view_last_fusion_decision_desc
+	selection_tooltip = rrf_view_last_fusion_decision_tooltip
+	confirm_text = rrf_view_last_fusion_decision_confirm
+	is_shown = {
+		is_ai = no
+		exists = var:rrf_last_result_rite
+		var:rrf_last_result_rite = {
+			exists = var:rrf_origin_a
+			exists = var:rrf_origin_b
+		}
+	}
+	effect = {
+		send_interface_toast = {
+			title = RRF_HISTORY_TITLE
+			left_icon = root
+			custom_tooltip = rrf_view_last_fusion_decision_desc
+		}
+	}
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}

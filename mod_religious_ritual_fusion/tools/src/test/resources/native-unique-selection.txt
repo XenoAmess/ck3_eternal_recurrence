@@ -1,0 +1,28 @@
+# Minimal source excerpt, not an entire native source copy.
+# machine_id: 4-8e1c2f1861; observed: 2026-10-24
+# source: common/scripted_triggers/00_religious_triggers.txt
+# source SHA-256: e9d0b56130464eabdcd670fa6cf814534d11c99da1e8b3fc1e69e9c3e36d2bb2
+# Native comment: can_pick only check when you pick, so amount = 0
+unique_syncretism_trigger = {
+    custom_description = {
+        text = incompatible_tenet_other_syncretism_trigger
+        NOR = {
+            tenet:tenet_eastern_syncretism = { is_in_list = selected_doctrines }
+            tenet:tenet_unreformed_syncretism = { is_in_list = selected_doctrines }
+            tenet:tenet_christian_syncretism = { is_in_list = selected_doctrines }
+            tenet:tenet_islamic_syncretism = { is_in_list = selected_doctrines }
+            tenet:tenet_jewish_syncretism = { is_in_list = selected_doctrines }
+            tenet:tenet_sinitic_syncretism = { is_in_list = selected_doctrines }
+        }
+    }
+}
+unique_christology_trigger = {
+    custom_tooltip = {
+        text = INCOMPATIBLE_TENET_OTHER_CHRISTOLOGY_TRIGGER
+        NOR = {
+            tenet:tenet_adoptionism = { is_in_list = selected_doctrines }
+            tenet:tenet_miaphysitism = { is_in_list = selected_doctrines }
+            tenet:tenet_monophysitism = { is_in_list = selected_doctrines }
+        }
+    }
+}

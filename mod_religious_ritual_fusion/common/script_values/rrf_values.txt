@@ -1,0 +1,10 @@
+﻿# Product prices; not the native RiteCreationWindow quote.
+rrf_rite_cost_value = 500
+rrf_faith_cost_value = 1000
+rrf_current_cost_value = {
+    value = rrf_rite_cost_value
+    if = {
+        limit = { var:rrf_mode = flag:faith }
+        value = rrf_faith_cost_value
+    }
+}

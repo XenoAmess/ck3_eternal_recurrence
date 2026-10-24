@@ -1,0 +1,340 @@
+﻿window = {
+	name = "rrf_fusion_window"
+	parentanchor = center
+	size = { 1300 950 }
+	layer = middle
+	movable = yes
+	visible = "[And( GetPlayer.IsValid, GetScriptedGui( 'rrf_window_gui' ).IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+	using = Window_Background
+	using = Window_Decoration
+
+	vbox = {
+		margin = { 15 10 }
+		spacing = 10
+		header_pattern = {
+			layoutpolicy_horizontal = expanding
+			blockoverride "header_text" { text = "RRF_WINDOW_TITLE" }
+			blockoverride "button_close" {
+				enabled = "[GetScriptedGui( 'rrf_dismiss_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				onclick = "[GetScriptedGui( 'rrf_dismiss_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				tooltip = "RRF_DISMISS_TT"
+			}
+		}
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			spacing = 15
+			text_label_left = {
+				visible = "[GetScriptedGui( 'rrf_rite_mode_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				text = "RRF_MODE_RITE"
+			}
+			text_label_left = {
+				visible = "[Not( GetScriptedGui( 'rrf_rite_mode_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+				text = "RRF_MODE_FAITH"
+			}
+			expand = {}
+			text_single = {
+				visible = "[GetScriptedGui( 'rrf_rite_mode_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				text = "RRF_RITE_COST"
+				tooltip = "RRF_COST_TT"
+			}
+			text_single = {
+				visible = "[Not( GetScriptedGui( 'rrf_rite_mode_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+				text = "RRF_FAITH_COST"
+				tooltip = "RRF_COST_TT"
+			}
+		}
+
+		text_multi = {
+			layoutpolicy_horizontal = expanding
+			autoresize = yes
+			max_width = 1240
+			text = "RRF_SELECTION_GUIDANCE"
+			default_format = "#weak"
+		}
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			spacing = 15
+
+			rrf_source_card = {
+				blockoverride "source_context" {
+					datacontext = "[GetPlayer.MakeScope.Var( 'rrf_source_a' ).Rite]"
+				}
+				blockoverride "source_header" { text = "RRF_SOURCE_A" }
+				blockoverride "contribution_ok" {
+					visible = "[GetScriptedGui( 'rrf_source_a_contribution_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				}
+				blockoverride "contribution_missing" {
+					visible = "[Not( GetScriptedGui( 'rrf_source_a_contribution_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+				}
+			}
+
+			vbox = {
+				minimumsize = { 680 0 }
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				spacing = 8
+
+				text_label_left = { text = "RRF_CANDIDATE_TENETS" }
+				text_single = { text = "RRF_SELECTED_TENET_COUNT" }
+				scrollbox = {
+					name = "rrf_candidate_tenets_scroll"
+					size = { 0 245 }
+					layoutpolicy_horizontal = expanding
+					blockoverride "scrollbox_content" {
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							spacing = 6
+							datamodel = "[GetPlayer.MakeScope.GetList( 'rrf_candidate_tenets' )]"
+							item = { rrf_tenet_choice = {} }
+						}
+					}
+				}
+
+				text_label_left = { text = "RRF_CANDIDATE_DOCTRINES" }
+				text_multi = {
+					text = "RRF_DOCTRINE_GUIDANCE"
+					max_width = 650
+					autoresize = yes
+					default_format = "#weak"
+				}
+				scrollbox = {
+					name = "rrf_candidate_doctrines_scroll"
+					size = { 0 270 }
+					layoutpolicy_horizontal = expanding
+					blockoverride "scrollbox_content" {
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							spacing = 6
+							datamodel = "[GetPlayer.MakeScope.GetList( 'rrf_candidate_doctrines' )]"
+							item = { rrf_doctrine_choice = {} }
+						}
+					}
+				}
+
+				text_label_left = { text = "RRF_FINAL_CORE_PREVIEW" }
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					spacing = 2
+					datamodel = "[GetPlayer.MakeScope.GetList( 'rrf_selected_tenets' )]"
+					item = {
+						text_single = {
+							datacontext = "[Scope.TenetType]"
+							datacontext = "[GetPlayer.GetRite]"
+							text = "[TenetType.GetNameNoTooltip( Rite.Self )]"
+						}
+					}
+				}
+				expand = {}
+			}
+
+			rrf_source_card = {
+				blockoverride "source_context" {
+					datacontext = "[GetPlayer.MakeScope.Var( 'rrf_source_b' ).Rite]"
+				}
+				blockoverride "source_header" { text = "RRF_SOURCE_B" }
+				blockoverride "contribution_ok" {
+					visible = "[GetScriptedGui( 'rrf_source_b_contribution_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				}
+				blockoverride "contribution_missing" {
+					visible = "[Not( GetScriptedGui( 'rrf_source_b_contribution_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+				}
+			}
+		}
+
+		text_multi = {
+			visible = "[GetScriptedGui( 'rrf_editing_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			text = "[GetScriptedGui( 'rrf_commit_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			max_width = 1230
+			autoresize = yes
+		}
+		text_multi = {
+			visible = "[GetScriptedGui( 'rrf_committing_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			text = "RRF_COMMITTING"
+			max_width = 1230
+			autoresize = yes
+		}
+		text_multi = {
+			visible = "[GetScriptedGui( 'rrf_unresolved_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			text = "RRF_UNRESOLVED"
+			max_width = 1230
+			autoresize = yes
+		}
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			spacing = 15
+			button_standard = {
+				text = "RRF_CANCEL"
+				tooltip = "RRF_CANCEL_TT"
+				enabled = "[GetScriptedGui( 'rrf_cancel_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				onclick = "[GetScriptedGui( 'rrf_cancel_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			}
+			button_standard = {
+				text = "RRF_REFRESH"
+				tooltip = "RRF_REFRESH_TT"
+				enabled = "[GetScriptedGui( 'rrf_refresh_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				onclick = "[GetScriptedGui( 'rrf_refresh_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			}
+			expand = {}
+			button_primary = {
+				name = "rrf_commit"
+				size = { 350 50 }
+				text = "RRF_COMMIT"
+				tooltip = "RRF_COMMIT_TT"
+				enabled = "[GetScriptedGui( 'rrf_commit_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				onclick = "[GetScriptedGui( 'rrf_commit_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			}
+		}
+	}
+}
+
+types ReligiousRitualFusion {
+	type rrf_source_card = vbox {
+		block "source_context" {}
+		datacontext = "[Rite.GetFaith]"
+		minimumsize = { 260 0 }
+		maximumsize = { 260 -1 }
+		layoutpolicy_vertical = expanding
+		spacing = 10
+		text_label_center = {
+			layoutpolicy_horizontal = expanding
+			block "source_header" { text = "RRF_SOURCE_A" }
+		}
+		button_rite_icon = { parentanchor = hcenter size = { 75 75 } }
+		text_multi = {
+			text = "[Rite.GetNameNoTooltip]"
+			max_width = 250
+			autoresize = yes
+			align = hcenter
+			default_format = "#high"
+		}
+		text_multi = {
+			text = "[Faith.GetNameNoTooltip]"
+			max_width = 250
+			autoresize = yes
+			align = hcenter
+			default_format = "#weak"
+		}
+		text_label_left = { text = "RRF_SOURCE_CORE_TENETS" }
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			spacing = 10
+			datamodel = "[Rite.GetTenets]"
+			item = {
+				hbox = {
+					spacing = 8
+					proportional_icon = {
+						size = { 32 45 }
+						texture = "[TenetType.GetIcon( Faith.Self )]"
+						tooltipwidget = { using = tenet_type_tooltip }
+					}
+					text_multi = {
+						text = "[TenetType.GetNameNoTooltip( Rite.Self )]"
+						max_width = 205
+						autoresize = yes
+					}
+				}
+			}
+		}
+		text_multi = {
+			block "contribution_ok" {}
+			text = "RRF_CONTRIBUTION_OK"
+			max_width = 250
+			autoresize = yes
+			tooltip = "RRF_CONTRIBUTION_TT"
+		}
+		text_multi = {
+			block "contribution_missing" {}
+			text = "RRF_CONTRIBUTION_MISSING"
+			max_width = 250
+			autoresize = yes
+			tooltip = "RRF_CONTRIBUTION_TT"
+		}
+		expand = {}
+		text_multi = {
+			text = "RRF_ADOPTION_PREVIEW"
+			max_width = 250
+			autoresize = yes
+			default_format = "#weak"
+		}
+	}
+
+	type rrf_tenet_choice = button_group {
+		datacontext = "[Scope.TenetType]"
+		datacontext = "[GetPlayer.GetRite]"
+		datacontext = "[GetPlayer.GetFaith]"
+		layoutpolicy_horizontal = expanding
+		minimumsize = { 0 65 }
+		enabled = "[GetScriptedGui( 'rrf_toggle_tenet_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'rrf_item', TenetType.MakeScope ).End )]"
+		onclick = "[GetScriptedGui( 'rrf_toggle_tenet_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'rrf_item', TenetType.MakeScope ).End )]"
+		tooltip = "[GetScriptedGui( 'rrf_toggle_tenet_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'rrf_item', TenetType.MakeScope ).End )]"
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			spacing = 10
+			button_checkbox = {
+				checked = "[GetScriptedGui( 'rrf_tenet_selected_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'rrf_item', TenetType.MakeScope ).End )]"
+			}
+			proportional_icon = {
+				size = { 35 50 }
+				texture = "[TenetType.GetIcon( Faith.Self )]"
+				tooltipwidget = { using = tenet_type_tooltip }
+			}
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				text_multi = {
+					text = "[TenetType.GetNameNoTooltip( Rite.Self )]"
+					max_width = 520
+					autoresize = yes
+				}
+				text_single = {
+					visible = "[Not( GetScriptedGui( 'rrf_tenet_known_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'rrf_item', TenetType.MakeScope ).End ) )]"
+					text = "RRF_KNOWLEDGE_REQUIRED"
+					tooltip = "RRF_KNOWLEDGE_TT"
+				}
+			}
+		}
+	}
+
+	type rrf_doctrine_choice = button_group {
+		datacontext = "[Scope.DoctrineType]"
+		datacontext = "[GetPlayer.GetFaith]"
+		layoutpolicy_horizontal = expanding
+		minimumsize = { 0 65 }
+		enabled = "[GetScriptedGui( 'rrf_choose_doctrine_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'rrf_item', DoctrineType.MakeScope ).End )]"
+		onclick = "[GetScriptedGui( 'rrf_choose_doctrine_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'rrf_item', DoctrineType.MakeScope ).End )]"
+		tooltip = "[GetScriptedGui( 'rrf_choose_doctrine_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'rrf_item', DoctrineType.MakeScope ).End )]"
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			spacing = 10
+			button_radio = {
+				down = "[GetScriptedGui( 'rrf_doctrine_selected_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'rrf_item', DoctrineType.MakeScope ).End )]"
+			}
+			icon = {
+				size = { 40 40 }
+				texture = "[DoctrineType.GetIcon]"
+				tooltipwidget = { using = doctrine_type_tooltip }
+			}
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				text_single = {
+					text = "[DoctrineType.GetGroup.GetName( Faith.Self )]"
+					max_width = 520
+					default_format = "#weak"
+				}
+				text_multi = {
+					text = "[DoctrineType.GetNameNoTooltip( Faith.Self )]"
+					max_width = 520
+					autoresize = yes
+				}
+				text_single = {
+					visible = "[Not( GetScriptedGui( 'rrf_doctrine_known_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'rrf_item', DoctrineType.MakeScope ).End ) )]"
+					text = "RRF_KNOWLEDGE_REQUIRED"
+					tooltip = "RRF_KNOWLEDGE_TT"
+				}
+			}
+		}
+	}
+}

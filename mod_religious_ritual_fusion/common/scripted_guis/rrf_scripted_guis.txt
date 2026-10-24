@@ -1,0 +1,103 @@
+﻿# Every operation receives the actor Character as root. Item operations receive
+# a typed Tenet/Doctrine scope as rrf_item; effects revalidate through shared code.
+rrf_window_gui = {
+	scope = character
+	is_shown = {
+		has_variable = rrf_state
+		NOT = { has_character_flag = rrf_window_dismissed }
+		OR = {
+			var:rrf_state = flag:editing
+			var:rrf_state = flag:committing
+			var:rrf_state = flag:unresolved
+		}
+	}
+}
+
+rrf_editing_gui = {
+	scope = character
+	is_valid = { has_variable = rrf_state var:rrf_state = flag:editing }
+}
+rrf_committing_gui = {
+	scope = character
+	is_valid = { has_variable = rrf_state var:rrf_state = flag:committing }
+}
+rrf_unresolved_gui = {
+	scope = character
+	is_valid = { has_variable = rrf_state var:rrf_state = flag:unresolved }
+}
+rrf_rite_mode_gui = {
+	scope = character
+	is_valid = { has_variable = rrf_mode var:rrf_mode = flag:rite }
+}
+
+rrf_toggle_tenet_gui = {
+	scope = character
+	saved_scopes = { rrf_item }
+	is_valid = { rrf_tenet_selectable_trigger = yes }
+	effect = { rrf_toggle_tenet_effect = yes }
+}
+rrf_choose_doctrine_gui = {
+	scope = character
+	saved_scopes = { rrf_item }
+	is_valid = { rrf_doctrine_selectable_trigger = yes }
+	effect = { rrf_choose_doctrine_effect = yes }
+}
+rrf_tenet_selected_gui = {
+	scope = character
+	saved_scopes = { rrf_item }
+	is_valid = {
+		is_target_in_variable_list = { name = rrf_selected_tenets target = scope:rrf_item }
+	}
+}
+rrf_doctrine_selected_gui = {
+	scope = character
+	saved_scopes = { rrf_item }
+	is_valid = {
+		is_target_in_variable_list = { name = rrf_selected_doctrines target = scope:rrf_item }
+	}
+}
+
+rrf_tenet_known_gui = {
+	scope = character
+	saved_scopes = { rrf_item }
+	is_valid = { rrf_tenet_knowledge_trigger = yes }
+}
+rrf_doctrine_known_gui = {
+	scope = character
+	saved_scopes = { rrf_item }
+	is_valid = { rrf_doctrine_knowledge_trigger = yes }
+}
+rrf_source_a_contribution_gui = {
+	scope = character
+	is_valid = { has_character_flag = rrf_contribution_a }
+}
+rrf_source_b_contribution_gui = {
+	scope = character
+	is_valid = { has_character_flag = rrf_contribution_b }
+}
+
+rrf_cancel_gui = {
+	scope = character
+	is_valid = { has_variable = rrf_state var:rrf_state = flag:editing }
+	effect = { rrf_cancel_effect = yes }
+}
+rrf_dismiss_gui = {
+	scope = character
+	is_valid = {
+		OR = {
+			var:rrf_state ?= flag:editing
+			var:rrf_state ?= flag:unresolved
+		}
+	}
+	effect = { rrf_dismiss_effect = yes }
+}
+rrf_commit_gui = {
+	scope = character
+	is_valid = { rrf_ready_trigger = yes }
+	effect = { rrf_commit_effect = yes }
+}
+rrf_refresh_gui = {
+	scope = character
+	is_valid = { has_variable = rrf_state var:rrf_state = flag:editing }
+	effect = { rrf_refresh_validation_effect = yes }
+}

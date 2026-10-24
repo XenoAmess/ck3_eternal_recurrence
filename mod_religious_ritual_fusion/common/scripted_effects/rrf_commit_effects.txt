@@ -1,0 +1,157 @@
+﻿# Sole game-object creation authority for both product modes.
+rrf_commit_effect = {
+    if = {
+        limit = { var:rrf_state = flag:editing }
+        # Recompute current source membership, knowledge and whole-draft rules.
+        rrf_refresh_validation_effect = yes
+        if = {
+            limit = { rrf_ready_trigger = yes }
+            rrf_capture_core_scopes_effect = yes
+            clear_saved_scope = rrf_new_rite
+            clear_saved_scope = rrf_new_faith
+            set_variable = { name = rrf_state value = flag:committing }
+            set_variable = { name = rrf_charged_cost value = 0 }
+            create_dynamic_rite = {
+                save_scope_as = rrf_new_rite
+                convert = no
+                target_divergence = 0
+                core_tenet_override_entry = scope:rrf_core_one
+                core_tenet_override_entry = scope:rrf_core_two
+                core_tenet_override_entry = scope:rrf_core_three
+            }
+            if = {
+                limit = { exists = scope:rrf_new_rite }
+                set_variable = { name = rrf_last_result_rite value = scope:rrf_new_rite }
+                rrf_apply_selected_doctrines_effect = yes
+                if = {
+                    limit = { var:rrf_mode = flag:faith }
+                    detach_rite_to_new_faith = {
+                        target = scope:rrf_new_rite
+                        save_scope_as = rrf_new_faith
+                    }
+                }
+                rrf_check_created_result_effect = yes
+                if = {
+                    limit = { NOT = { has_character_flag = rrf_result_invalid } }
+                    rrf_complete_success_effect = yes
+                }
+                else = { rrf_mark_unresolved_effect = yes }
+            }
+            else = { rrf_mark_unresolved_effect = yes }
+        }
+        else = {
+            send_interface_toast = {
+                title = RRF_SUBMISSION_REFUSED
+                left_icon = root
+                custom_tooltip = RRF_SUBMISSION_REFUSED_DESC
+            }
+        }
+    }
+}
+
+rrf_capture_core_scopes_effect = {
+    clear_saved_scope = rrf_core_one
+    clear_saved_scope = rrf_core_two
+    clear_saved_scope = rrf_core_three
+    set_variable = { name = rrf_core_index value = 0 }
+    every_in_list = {
+        variable = rrf_selected_tenets
+        if = {
+            limit = { scope:rrf_actor.var:rrf_core_index = 0 }
+            save_scope_as = rrf_core_one
+        }
+        else_if = {
+            limit = { scope:rrf_actor.var:rrf_core_index = 1 }
+            save_scope_as = rrf_core_two
+        }
+        else_if = {
+            limit = { scope:rrf_actor.var:rrf_core_index = 2 }
+            save_scope_as = rrf_core_three
+        }
+        scope:rrf_actor = { change_variable = { name = rrf_core_index add = 1 } }
+    }
+    remove_variable = rrf_core_index
+}
+
+rrf_apply_selected_doctrines_effect = {
+    every_in_list = {
+        variable = rrf_selected_doctrines
+        save_scope_as = rrf_item
+        scope:rrf_new_rite = { change_rite_doctrine = scope:rrf_item }
+    }
+}
+
+rrf_check_created_result_effect = {
+    remove_character_flag = rrf_result_invalid
+    set_variable = { name = rrf_result_core_count value = 0 }
+    if = {
+        limit = {
+            OR = {
+                scope:rrf_new_rite = var:rrf_source_a
+                scope:rrf_new_rite = var:rrf_source_b
+            }
+        }
+        add_character_flag = rrf_result_invalid
+    }
+    if = {
+        limit = { var:rrf_mode = flag:rite }
+        if = {
+            limit = { scope:rrf_new_rite.faith != var:rrf_source_a_faith }
+            add_character_flag = rrf_result_invalid
+        }
+    }
+    else = {
+        if = {
+            limit = { NOT = { exists = scope:rrf_new_faith } }
+            add_character_flag = rrf_result_invalid
+        }
+        else = {
+            set_variable = { name = rrf_last_result_faith value = scope:rrf_new_faith }
+            if = {
+                limit = {
+                    OR = {
+                        scope:rrf_new_faith = var:rrf_source_a_faith
+                        scope:rrf_new_faith = var:rrf_source_b_faith
+                        scope:rrf_new_rite.faith != scope:rrf_new_faith
+                        scope:rrf_new_faith.main_rite != scope:rrf_new_rite
+                        scope:rrf_new_faith.religion != var:rrf_source_a_faith.religion
+                    }
+                }
+                add_character_flag = rrf_result_invalid
+            }
+        }
+    }
+    scope:rrf_new_rite = {
+        every_rite_tenet = {
+            scope:rrf_actor = { change_variable = { name = rrf_result_core_count add = 1 } }
+        }
+    }
+    if = {
+        limit = { NOT = { var:rrf_result_core_count = 3 } }
+        add_character_flag = rrf_result_invalid
+    }
+    every_in_list = {
+        variable = rrf_selected_tenets
+        save_scope_as = rrf_item
+        scope:rrf_actor = {
+            if = {
+                limit = {
+                    NOT = {
+                        scope:rrf_new_rite = { any_rite_tenet = { this = scope:rrf_item } }
+                    }
+                }
+                add_character_flag = rrf_result_invalid
+            }
+        }
+    }
+    every_in_list = {
+        variable = rrf_selected_doctrines
+        save_scope_as = rrf_item
+        scope:rrf_actor = {
+            if = {
+                limit = { NOT = { scope:rrf_new_rite = { rite_has_doctrine = scope:rrf_item } } }
+                add_character_flag = rrf_result_invalid
+            }
+        }
+    }
+}

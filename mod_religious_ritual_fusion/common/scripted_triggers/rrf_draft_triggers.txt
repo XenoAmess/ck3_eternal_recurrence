@@ -1,0 +1,96 @@
+﻿# All entry points consume the same Character-owned draft.
+rrf_draft_current_trigger = {
+    var:rrf_state = flag:editing
+    exists = var:rrf_source_a
+    exists = var:rrf_source_b
+    exists = var:rrf_source_a_faith
+    exists = var:rrf_source_b_faith
+    rite = var:rrf_source_a
+    faith = var:rrf_source_a_faith
+    var:rrf_source_a != var:rrf_source_b
+    var:rrf_source_a.faith = var:rrf_source_a_faith
+    var:rrf_source_b.faith = var:rrf_source_b_faith
+    var:rrf_source_b = { can_convert_to_rite = yes }
+    OR = {
+        AND = {
+            var:rrf_mode = flag:faith
+            var:rrf_source_a_faith != var:rrf_source_b_faith
+        }
+        AND = {
+            var:rrf_mode = flag:rite
+            var:rrf_source_a_faith = var:rrf_source_b_faith
+        }
+    }
+}
+
+rrf_ready_trigger = {
+    rrf_actor_eligible_trigger = yes
+    custom_description = {
+        text = RRF_REQUIRE_SOURCE_CURRENT
+        rrf_draft_current_trigger = yes
+    }
+    custom_description = {
+        text = RRF_REQUIRE_REVALIDATED
+        has_character_flag = rrf_selection_checked
+    }
+    custom_description = {
+        text = RRF_REQUIRE_CONTENT_VALID
+        NOT = { has_character_flag = rrf_invalid_selection }
+    }
+    custom_description = {
+        text = RRF_REQUIRE_THREE_CORES
+        var:rrf_core_count = 3
+    }
+    custom_description = {
+        text = RRF_REQUIRE_BOTH_SOURCES
+        rrf_sources_contributed_trigger = yes
+    }
+    custom_description = {
+        text = RRF_REQUIRE_COST
+        piety >= rrf_current_cost_value
+    }
+}
+
+rrf_tenet_selectable_trigger = {
+    rrf_draft_current_trigger = yes
+    exists = scope:rrf_item
+    is_target_in_variable_list = {
+        name = rrf_candidate_tenets
+        target = scope:rrf_item
+    }
+    custom_description = {
+        text = RRF_REQUIRE_TENET_KNOWN
+        OR = {
+            is_target_in_variable_list = { name = rrf_selected_tenets target = scope:rrf_item }
+            rrf_tenet_knowledge_trigger = yes
+        }
+    }
+}
+
+rrf_doctrine_selectable_trigger = {
+    rrf_draft_current_trigger = yes
+    exists = scope:rrf_item
+    is_target_in_variable_list = {
+        name = rrf_candidate_doctrines
+        target = scope:rrf_item
+    }
+    custom_description = {
+        text = RRF_REQUIRE_DOCTRINE_KNOWN
+        rrf_doctrine_knowledge_trigger = yes
+    }
+}
+
+rrf_tenet_knowledge_trigger = {
+    OR = {
+        knows_tenet = scope:rrf_item
+        var:rrf_source_a = { any_rite_tenet = { this = scope:rrf_item } }
+    }
+}
+
+rrf_doctrine_knowledge_trigger = {
+    OR = {
+        knows_doctrine = scope:rrf_item
+        has_perk = prophet_perk
+        var:rrf_source_a = { rite_has_doctrine = scope:rrf_item }
+    }
+}

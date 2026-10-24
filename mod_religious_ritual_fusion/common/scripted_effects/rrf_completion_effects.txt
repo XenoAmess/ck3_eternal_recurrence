@@ -1,0 +1,57 @@
+﻿# Shared completion. Do not call the whole stock on_rite_created action.
+rrf_complete_success_effect = {
+    rrf_record_result_effect = yes
+    set_variable = { name = rrf_charged_cost value = rrf_current_cost_value }
+    add_piety = {
+        value = rrf_current_cost_value
+        multiply = -1
+    }
+    add_character_flag = { flag = rrf_fusion_cooldown years = 10 }
+    set_character_rite = scope:rrf_new_rite
+    if = {
+        limit = { rite = scope:rrf_new_rite }
+        set_variable = { name = rrf_state value = flag:succeeded }
+        send_interface_toast = {
+            title = RRF_FUSION_SUCCEEDED
+            left_icon = root
+            custom_tooltip = RRF_FUSION_SUCCEEDED_DESC
+        }
+        rrf_clear_draft_effect = yes
+    }
+    else = { rrf_mark_unresolved_effect = yes }
+}
+
+rrf_record_result_effect = {
+    scope:rrf_new_rite = {
+        set_variable = { name = rrf_rules_version value = 1 }
+        set_variable = { name = rrf_origin_a value = scope:rrf_actor.var:rrf_source_a }
+        set_variable = { name = rrf_origin_b value = scope:rrf_actor.var:rrf_source_b }
+        set_variable = { name = rrf_origin_a_faith value = scope:rrf_actor.var:rrf_source_a_faith }
+        set_variable = { name = rrf_origin_b_faith value = scope:rrf_actor.var:rrf_source_b_faith }
+        set_variable = { name = rrf_origin_mode value = scope:rrf_actor.var:rrf_mode }
+        set_variable = { name = rrf_origin_founder value = scope:rrf_actor }
+    }
+    every_in_list = {
+        variable = rrf_selected_tenets
+        save_scope_as = rrf_item
+        scope:rrf_new_rite = {
+            add_to_variable_list = { name = rrf_origin_core_tenets target = scope:rrf_item }
+        }
+    }
+    every_in_list = {
+        variable = rrf_selected_doctrines
+        save_scope_as = rrf_item
+        scope:rrf_new_rite = {
+            add_to_variable_list = { name = rrf_origin_doctrines target = scope:rrf_item }
+        }
+    }
+}
+
+rrf_mark_unresolved_effect = {
+    set_variable = { name = rrf_state value = flag:unresolved }
+    send_interface_toast = {
+        title = RRF_FUSION_UNRESOLVED
+        left_icon = root
+        custom_tooltip = RRF_FUSION_UNRESOLVED_DESC
+    }
+}

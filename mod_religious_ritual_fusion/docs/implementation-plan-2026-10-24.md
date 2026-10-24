@@ -4,7 +4,7 @@
 
 ## 产品范围
 
-首期实现两个入口：**礼仪融合**从玩家当前 Rite 与同 Faith 的另一 Rite 创建第三个 Rite；**宗教融合**从玩家当前 Rite 与另一 Rite 创建独立 Faith，原生 Religion 归属以玩家当前 Religion 为基础。允许研究跨 Religion 的内容选择，但保留实际知识、DLC、教义限定和互斥条件。两来源原对象保持各自身份；不迁移或改写它们。
+首期实现两个入口：**礼仪融合**从玩家当前 Rite 与同 Faith 的另一 Rite 创建第三个 Rite；**宗教融合**从玩家当前 Rite 与不同 Faith 的另一 Rite 创建独立 Faith，原生 Religion 归属以玩家当前 Religion 为基础。允许研究跨 Religion 的内容选择，但保留实际知识、DLC、教义限定和互斥条件。两来源原对象保持各自身份；不迁移或改写它们。
 
 采用独立决策目标选择器和融合窗口。按文化融合方式对照两来源，从双方核心信条池选三个不重复的最终核心；按教义组选择 A 或 B 的现有值。预览显示来源、最终选择、Rite／Faith 模式、费用及采用范围。双方至少各贡献一个独有的最终内容，公共项不能伪造双方贡献。
 
@@ -21,7 +21,7 @@
 
 草稿存在玩家 Character 上：`rrf_source_a`、`rrf_source_b` 为真实 Rite scope，`rrf_source_a_faith`／`rrf_source_b_faith` 为打开时 Faith，`rrf_mode` 为 `flag:rite`／`flag:faith`，`rrf_selected_tenets` 为 Tenet scope 列表，`rrf_selected_doctrines` 为 Doctrine scope 列表。候选、最终选项与规则版本使用同一合同，不在 GUI 和提交端各维护一套拼写。
 
-草稿状态为 editing → committing → succeeded／unresolved；取消只清草稿。成功结果保存为 `rrf_last_result_rite`／`rrf_last_result_faith`；真实生成对象与双来源历史另存在结果 Rite 上。未知或部分结果保留实际对象引用和诊断，禁止自动重发创建或扣款。
+草稿状态为 editing → committing → succeeded／unresolved；取消只清草稿。成功结果保存为 `rrf_last_result_rite`／`rrf_last_result_faith`；真实生成对象与双来源历史另存在结果 Rite 上。未知或部分结果保留实际对象引用和诊断，禁止自动重发创建或扣款；可以隐藏诊断窗口并通过“查看未决融合”重新打开，隐藏不解除未决状态。
 
 ## 原生接口与合法性
 

@@ -1,0 +1,50 @@
+name: Religious Ritual Fusion Static
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'mod_religious_ritual_fusion/**'
+      - '.github/workflows/religious-ritual-fusion-static.yml'
+      - 'java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java'
+  pull_request:
+    paths:
+      - 'mod_religious_ritual_fusion/**'
+      - '.github/workflows/religious-ritual-fusion-static.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: cmd
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - name: Ensure default Maven in its existing installation
+        run: java -Xms32m -Xmx128m -Djava.io.tmpdir="%RUNNER_TEMP%" java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java --ensure-default-maven-only --repo-root "%GITHUB_WORKSPACE%" --work-root "%RUNNER_TEMP%\rrf-maven" --python-executable "%pythonLocation%\python.exe" --system-growth-reserve-bytes 2147483648 --max-project-bytes 8589934592
+      - name: Verify actual default Maven observations
+        run: java -Xms32m -Xmx128m -Djava.io.tmpdir="%RUNNER_TEMP%" java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java --verify-maven-evidence-root "%RUNNER_TEMP%\rrf-maven"
+      - name: Read default Maven version
+        run: mvn --version
+      - name: Verify full product producer and staging chain
+        run: mvn --batch-mode --no-transfer-progress -f mod_religious_ritual_fusion/tools/pom.xml -Drrf.build.root=${{ runner.temp }}/rrf-build verify
+      - name: Preserve Maven observations and test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: religious-ritual-fusion-static-evidence
+          path: |
+            ${{ runner.temp }}/rrf-maven/logs/
+            ${{ runner.temp }}/rrf-build/**/surefire-reports/

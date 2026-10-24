@@ -1,0 +1,97 @@
+﻿# Actor-owned preparation; opening and cancelling never create a game object.
+rrf_clear_draft_effect = {
+    clear_variable_list = rrf_candidate_tenets
+    clear_variable_list = rrf_candidate_doctrines
+    clear_variable_list = rrf_selected_tenets
+    clear_variable_list = rrf_selected_doctrines
+    remove_variable = rrf_source_a
+    remove_variable = rrf_source_b
+    remove_variable = rrf_source_a_faith
+    remove_variable = rrf_source_b_faith
+    remove_variable = rrf_mode
+    remove_variable = rrf_core_count
+    remove_character_flag = rrf_contribution_a
+    remove_character_flag = rrf_contribution_b
+    remove_character_flag = rrf_selection_checked
+    remove_character_flag = rrf_invalid_selection
+    remove_character_flag = rrf_window_dismissed
+}
+
+rrf_open_rite_effect = {
+    if = {
+        limit = {
+            rrf_actor_eligible_trigger = yes
+            rrf_target_rite_trigger = yes
+        }
+        rrf_clear_draft_effect = yes
+        set_variable = { name = rrf_mode value = flag:rite }
+        rrf_prepare_draft_effect = yes
+    }
+}
+
+rrf_open_faith_effect = {
+    if = {
+        limit = {
+            rrf_actor_eligible_trigger = yes
+            rrf_target_faith_trigger = yes
+        }
+        rrf_clear_draft_effect = yes
+        set_variable = { name = rrf_mode value = flag:faith }
+        rrf_prepare_draft_effect = yes
+    }
+}
+
+rrf_prepare_draft_effect = {
+    save_scope_as = rrf_actor
+    save_scope_as = actor
+    set_variable = { name = rrf_source_a value = rite }
+    set_variable = { name = rrf_source_b value = scope:selected_item }
+    set_variable = { name = rrf_source_a_faith value = faith }
+    set_variable = { name = rrf_source_b_faith value = scope:selected_item.faith }
+    set_variable = { name = rrf_state value = flag:editing }
+    var:rrf_source_a = { rrf_collect_core_candidates_effect = yes }
+    var:rrf_source_b = { rrf_collect_core_candidates_effect = yes }
+    rrf_catalog_initialize_doctrines_effect = yes
+    rrf_refresh_validation_effect = yes
+}
+
+# Rite scope: the default iterator enumerates THIS Rite's actual cores.
+# A status filter would instead filter by the parent Faith main Rite's stance.
+rrf_collect_core_candidates_effect = {
+    every_rite_tenet = {
+        save_scope_as = rrf_item
+        scope:rrf_actor = {
+            if = {
+                limit = {
+                    NOT = {
+                        is_target_in_variable_list = {
+                            name = rrf_candidate_tenets
+                            target = scope:rrf_item
+                        }
+                    }
+                }
+                add_to_variable_list = { name = rrf_candidate_tenets target = scope:rrf_item }
+            }
+        }
+    }
+}
+
+rrf_cancel_effect = {
+    if = {
+        limit = { var:rrf_state = flag:editing }
+        rrf_clear_draft_effect = yes
+        remove_variable = rrf_state
+    }
+}
+
+# Hiding diagnostics preserves the unresolved attempt and its no-replay guard.
+rrf_dismiss_effect = {
+    if = {
+        limit = { var:rrf_state = flag:editing }
+        rrf_cancel_effect = yes
+    }
+    else_if = {
+        limit = { var:rrf_state = flag:unresolved }
+        add_character_flag = rrf_window_dismissed
+    }
+}

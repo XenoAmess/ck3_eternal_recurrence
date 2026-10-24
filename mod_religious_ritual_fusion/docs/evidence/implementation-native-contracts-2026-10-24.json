@@ -1,0 +1,844 @@
+{
+  "schema_version": 1,
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-24T15:18:52.370297+00:00",
+  "mode": "local read-only static analysis; no game execution",
+  "source": {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "size_bytes": 101040248,
+    "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "pe_image_base": "0x140000000",
+    "address_domain": "RVA with per-slice PE-mapped file offsets",
+    "accepted_baseline": "Empire Faith Gate is an original game version as confirmed by user."
+  },
+  "single_item_native_qualification": {
+    "tenet_name": {
+      "rva": "0x4783880",
+      "file_offset": "0x4782680",
+      "text": "rite_can_choose_tenet"
+    },
+    "tenet_help": {
+      "rva": "0x47837c0",
+      "file_offset": "0x47825c0",
+      "text": "Can the given rite pick the target tenet as core tenet? Checks both is_shown and can_pick, using the head of rite as reference character.\n<scope:rite> = { rite_can_choose_tenet = tenet_key }"
+    },
+    "doctrine_name": {
+      "rva": "0x47837a0",
+      "file_offset": "0x47825a0",
+      "text": "rite_can_choose_doctrine"
+    },
+    "doctrine_help": {
+      "rva": "0x47836e0",
+      "file_offset": "0x47824e0",
+      "text": "Can the given rite pick the target doctrine? Checks both is_shown and can_pick, using the head of rite as reference character.\n<scope:rite> = { rite_can_choose_doctrine = doctrine_key }"
+    },
+    "typed_registration": {
+      "tenet": {
+        "name_reference_rva": "0x57e9f1",
+        "entry_vtable_rva": "0x4786058",
+        "entry_type": "CTriggerEntry<CRiteCanPickTenetTrigger>",
+        "factory_rva": "0x2aec110",
+        "trigger_vtable_rva": "0x47842f8",
+        "eval_rva": "0x2aeb070"
+      },
+      "doctrine": {
+        "name_reference_rva": "0x57ea91",
+        "entry_vtable_rva": "0x4786018",
+        "entry_type": "CTriggerEntry<CRiteCanPickDoctrineTrigger>",
+        "factory_rva": "0x2aec160",
+        "trigger_vtable_rva": "0x47850a8",
+        "eval_rva": "0x2aeb1c0"
+      }
+    },
+    "finding": "Both evaluate is_shown and can_pick against existing Rite state and its head reference character. They do not evaluate an arbitrary full draft or replace initiator knowledge checks.",
+    "context_fields": {
+      "rite_core_list": "+0x758",
+      "rite_doctrine_list": "+0x7a0",
+      "reference_character": "+0x4c0",
+      "rite_faith_id": "+0x4b8",
+      "context_builder_rva": "0x2bd7de0"
+    },
+    "evidence": [
+      {
+        "rva": "0x57ea59",
+        "file_offset": "0x57de59",
+        "size_bytes": 31,
+        "hex": "48 8d 0d f8 75 20 04 48 89 08 48 8b cb 89 78 10 48 8b 5c 24 48 48 83 c4 30 5f e9 98 d2 1a 03",
+        "purpose": "Install typed tenet trigger entry and register it.",
+        "instructions": [
+          {
+            "rva": "0x57ea59",
+            "text": "lea rcx, [rip + 0x42075f8]"
+          },
+          {
+            "rva": "0x57ea60",
+            "text": "mov qword ptr [rax], rcx"
+          },
+          {
+            "rva": "0x57ea63",
+            "text": "mov rcx, rbx"
+          },
+          {
+            "rva": "0x57ea66",
+            "text": "mov dword ptr [rax + 0x10], edi"
+          },
+          {
+            "rva": "0x57ea69",
+            "text": "mov rbx, qword ptr [rsp + 0x48]"
+          },
+          {
+            "rva": "0x57ea6e",
+            "text": "add rsp, 0x30"
+          },
+          {
+            "rva": "0x57ea72",
+            "text": "pop rdi"
+          },
+          {
+            "rva": "0x57ea73",
+            "text": "jmp 0x372bd10"
+          }
+        ]
+      },
+      {
+        "rva": "0x57eaf9",
+        "file_offset": "0x57def9",
+        "size_bytes": 31,
+        "hex": "48 8d 0d 18 75 20 04 48 89 08 48 8b cb 89 78 10 48 8b 5c 24 48 48 83 c4 30 5f e9 f8 d1 1a 03",
+        "purpose": "Install typed doctrine trigger entry and register it.",
+        "instructions": [
+          {
+            "rva": "0x57eaf9",
+            "text": "lea rcx, [rip + 0x4207518]"
+          },
+          {
+            "rva": "0x57eb00",
+            "text": "mov qword ptr [rax], rcx"
+          },
+          {
+            "rva": "0x57eb03",
+            "text": "mov rcx, rbx"
+          },
+          {
+            "rva": "0x57eb06",
+            "text": "mov dword ptr [rax + 0x10], edi"
+          },
+          {
+            "rva": "0x57eb09",
+            "text": "mov rbx, qword ptr [rsp + 0x48]"
+          },
+          {
+            "rva": "0x57eb0e",
+            "text": "add rsp, 0x30"
+          },
+          {
+            "rva": "0x57eb12",
+            "text": "pop rdi"
+          },
+          {
+            "rva": "0x57eb13",
+            "text": "jmp 0x372bd10"
+          }
+        ]
+      },
+      {
+        "rva": "0x2aeb0e4",
+        "file_offset": "0x2aea4e4",
+        "size_bytes": 40,
+        "hex": "8b 8b c0 04 00 00 4c 8d 8b a0 07 00 00 4c 8d 83 58 07 00 00 89 4c 24 20 8b 93 b8 04 00 00 48 8d 4c 24 30 e8 d4 cc 0e 00",
+        "purpose": "Tenet eval reads head, existing core/doctrine lists and parent Faith into native context builder.",
+        "instructions": [
+          {
+            "rva": "0x2aeb0e4",
+            "text": "mov ecx, dword ptr [rbx + 0x4c0]"
+          },
+          {
+            "rva": "0x2aeb0ea",
+            "text": "lea r9, [rbx + 0x7a0]"
+          },
+          {
+            "rva": "0x2aeb0f1",
+            "text": "lea r8, [rbx + 0x758]"
+          },
+          {
+            "rva": "0x2aeb0f8",
+            "text": "mov dword ptr [rsp + 0x20], ecx"
+          },
+          {
+            "rva": "0x2aeb0fc",
+            "text": "mov edx, dword ptr [rbx + 0x4b8]"
+          },
+          {
+            "rva": "0x2aeb102",
+            "text": "lea rcx, [rsp + 0x30]"
+          },
+          {
+            "rva": "0x2aeb107",
+            "text": "call 0x2bd7de0"
+          }
+        ]
+      },
+      {
+        "rva": "0x2aeb10d",
+        "file_offset": "0x2aea50d",
+        "size_bytes": 48,
+        "hex": "48 8d 8f 58 06 00 00 48 8d 54 24 30 e8 f2 2d c4 00 84 c0 74 19 48 8d 8f b8 04 00 00 48 8d 54 24 30 e8 dd 2d c4 00 84 c0 74 04 b3 01 eb 02 32 db",
+        "purpose": "Tenet eval executes both native rule containers; either false rejects.",
+        "instructions": [
+          {
+            "rva": "0x2aeb10d",
+            "text": "lea rcx, [rdi + 0x658]"
+          },
+          {
+            "rva": "0x2aeb114",
+            "text": "lea rdx, [rsp + 0x30]"
+          },
+          {
+            "rva": "0x2aeb119",
+            "text": "call 0x372df10"
+          },
+          {
+            "rva": "0x2aeb11e",
+            "text": "test al, al"
+          },
+          {
+            "rva": "0x2aeb120",
+            "text": "je 0x2aeb13b"
+          },
+          {
+            "rva": "0x2aeb122",
+            "text": "lea rcx, [rdi + 0x4b8]"
+          },
+          {
+            "rva": "0x2aeb129",
+            "text": "lea rdx, [rsp + 0x30]"
+          },
+          {
+            "rva": "0x2aeb12e",
+            "text": "call 0x372df10"
+          },
+          {
+            "rva": "0x2aeb133",
+            "text": "test al, al"
+          },
+          {
+            "rva": "0x2aeb135",
+            "text": "je 0x2aeb13b"
+          },
+          {
+            "rva": "0x2aeb137",
+            "text": "mov bl, 1"
+          },
+          {
+            "rva": "0x2aeb139",
+            "text": "jmp 0x2aeb13d"
+          },
+          {
+            "rva": "0x2aeb13b",
+            "text": "xor bl, bl"
+          }
+        ]
+      },
+      {
+        "rva": "0x2aeb234",
+        "file_offset": "0x2aea634",
+        "size_bytes": 40,
+        "hex": "8b 8b c0 04 00 00 4c 8d 8b a0 07 00 00 4c 8d 83 58 07 00 00 89 4c 24 20 8b 93 b8 04 00 00 48 8d 4c 24 30 e8 84 cb 0e 00",
+        "purpose": "Doctrine eval constructs the same existing-Rite/reference-character context.",
+        "instructions": [
+          {
+            "rva": "0x2aeb234",
+            "text": "mov ecx, dword ptr [rbx + 0x4c0]"
+          },
+          {
+            "rva": "0x2aeb23a",
+            "text": "lea r9, [rbx + 0x7a0]"
+          },
+          {
+            "rva": "0x2aeb241",
+            "text": "lea r8, [rbx + 0x758]"
+          },
+          {
+            "rva": "0x2aeb248",
+            "text": "mov dword ptr [rsp + 0x20], ecx"
+          },
+          {
+            "rva": "0x2aeb24c",
+            "text": "mov edx, dword ptr [rbx + 0x4b8]"
+          },
+          {
+            "rva": "0x2aeb252",
+            "text": "lea rcx, [rsp + 0x30]"
+          },
+          {
+            "rva": "0x2aeb257",
+            "text": "call 0x2bd7de0"
+          }
+        ]
+      },
+      {
+        "rva": "0x2aeb25d",
+        "file_offset": "0x2aea65d",
+        "size_bytes": 48,
+        "hex": "48 8d 8f b8 01 00 00 48 8d 54 24 30 e8 a2 2c c4 00 84 c0 74 19 48 8d 8f e8 00 00 00 48 8d 54 24 30 e8 8d 2c c4 00 84 c0 74 04 b3 01 eb 02 32 db",
+        "purpose": "Doctrine eval executes both native rule containers.",
+        "instructions": [
+          {
+            "rva": "0x2aeb25d",
+            "text": "lea rcx, [rdi + 0x1b8]"
+          },
+          {
+            "rva": "0x2aeb264",
+            "text": "lea rdx, [rsp + 0x30]"
+          },
+          {
+            "rva": "0x2aeb269",
+            "text": "call 0x372df10"
+          },
+          {
+            "rva": "0x2aeb26e",
+            "text": "test al, al"
+          },
+          {
+            "rva": "0x2aeb270",
+            "text": "je 0x2aeb28b"
+          },
+          {
+            "rva": "0x2aeb272",
+            "text": "lea rcx, [rdi + 0xe8]"
+          },
+          {
+            "rva": "0x2aeb279",
+            "text": "lea rdx, [rsp + 0x30]"
+          },
+          {
+            "rva": "0x2aeb27e",
+            "text": "call 0x372df10"
+          },
+          {
+            "rva": "0x2aeb283",
+            "text": "test al, al"
+          },
+          {
+            "rva": "0x2aeb285",
+            "text": "je 0x2aeb28b"
+          },
+          {
+            "rva": "0x2aeb287",
+            "text": "mov bl, 1"
+          },
+          {
+            "rva": "0x2aeb289",
+            "text": "jmp 0x2aeb28d"
+          },
+          {
+            "rva": "0x2aeb28b",
+            "text": "xor bl, bl"
+          }
+        ]
+      }
+    ]
+  },
+  "rite_tenet_iterator": {
+    "help": {
+      "rva": "0x4651270",
+      "file_offset": "0x4650070",
+      "text": "Iterate through the core tenets of a Rite.\nCan filter by core/permitted status for its parent faith.\n\nscope:rite = {\n  random_rite_tenet = {\n\tstatus = core | permitted | prohibited | known\n    ...\n  }\n}"
+    },
+    "registration_rva": "0x37274d",
+    "every_entry_vtable_rva": "0x46629c8",
+    "every_factory_rva": "0x1d27380",
+    "every_effect_vtable_rva": "0x4658618",
+    "builder_callback_rva": "0x1d30790",
+    "builder_rva": "0x1cfd270",
+    "finding": "Without status, enumerate the scoped Rite own current core list. Specified status is an additional exact-state filter against the parent Faith main Rite, not a filter selecting the scoped Rite core records.",
+    "default_status": {
+      "numeric_value": 5,
+      "meaning": "No status filter; direct append path",
+      "builder_field": "+0x141",
+      "every_effect_field": "+0x371"
+    },
+    "specified_status_path": [
+      "Resolve current Rite and its parent Faith from Rite+0x4b8.",
+      "Iterate current Rite+0x758/+0x764 core pointer list.",
+      "If builder status equals 5, append current core as Tenet scope directly.",
+      "Otherwise resolve parent Faith+0x98 main Rite; search its +0x788/+0x794 tenet-state records.",
+      "Read matching record+8 status, or 0 if missing; compare exactly with requested status.",
+      "Only matching items are appended."
+    ],
+    "implementation_consequence": "Do not add status=core when collecting, counting or testing membership of a Rite own core tenets; doing so loses divergent cores not core in parent main Rite.",
+    "evidence": [
+      {
+        "rva": "0x1d273fb",
+        "file_offset": "0x1d267fb",
+        "size_bytes": 9,
+        "hex": "66 c7 86 70 03 00 00 02 05",
+        "purpose": "Every factory initializes builder metadata to 02 05: status defaults to 5.",
+        "instructions": [
+          {
+            "rva": "0x1d273fb",
+            "text": "mov word ptr [rsi + 0x370], 0x502"
+          }
+        ]
+      },
+      {
+        "rva": "0x1d307b7",
+        "file_offset": "0x1d2fbb7",
+        "size_bytes": 25,
+        "hex": "48 81 c1 30 02 00 00 4d 8b c1 48 8b d6 4d 8b f1 48 63 7e 0c e8 a0 ca fc ff",
+        "purpose": "Every builder callback dispatches to real Rite-tenet list builder.",
+        "instructions": [
+          {
+            "rva": "0x1d307b7",
+            "text": "add rcx, 0x230"
+          },
+          {
+            "rva": "0x1d307be",
+            "text": "mov r8, r9"
+          },
+          {
+            "rva": "0x1d307c1",
+            "text": "mov rdx, rsi"
+          },
+          {
+            "rva": "0x1d307c4",
+            "text": "mov r14, r9"
+          },
+          {
+            "rva": "0x1d307c7",
+            "text": "movsxd rdi, dword ptr [rsi + 0xc]"
+          },
+          {
+            "rva": "0x1d307cb",
+            "text": "call 0x1cfd270"
+          }
+        ]
+      },
+      {
+        "rva": "0x1cfd2e6",
+        "file_offset": "0x1cfc6e6",
+        "size_bytes": 53,
+        "hex": "44 8b 8a b8 04 00 00 41 8b c1 25 ff ff ff 00 41 3b 40 2c 73 19 8b c8 49 8b 40 20 48 03 c9 48 8b 7c c8 08 48 85 ff 74 06 44 39 4f 08 74 07 48 8b 3d c5 0f 02 04",
+        "purpose": "Resolve parent Faith from current Rite+0x4b8 into RDI.",
+        "instructions": [
+          {
+            "rva": "0x1cfd2e6",
+            "text": "mov r9d, dword ptr [rdx + 0x4b8]"
+          },
+          {
+            "rva": "0x1cfd2ed",
+            "text": "mov eax, r9d"
+          },
+          {
+            "rva": "0x1cfd2f0",
+            "text": "and eax, 0xffffff"
+          },
+          {
+            "rva": "0x1cfd2f5",
+            "text": "cmp eax, dword ptr [r8 + 0x2c]"
+          },
+          {
+            "rva": "0x1cfd2f9",
+            "text": "jae 0x1cfd314"
+          },
+          {
+            "rva": "0x1cfd2fb",
+            "text": "mov ecx, eax"
+          },
+          {
+            "rva": "0x1cfd2fd",
+            "text": "mov rax, qword ptr [r8 + 0x20]"
+          },
+          {
+            "rva": "0x1cfd301",
+            "text": "add rcx, rcx"
+          },
+          {
+            "rva": "0x1cfd304",
+            "text": "mov rdi, qword ptr [rax + rcx*8 + 8]"
+          },
+          {
+            "rva": "0x1cfd309",
+            "text": "test rdi, rdi"
+          },
+          {
+            "rva": "0x1cfd30c",
+            "text": "je 0x1cfd314"
+          },
+          {
+            "rva": "0x1cfd30e",
+            "text": "cmp dword ptr [rdi + 8], r9d"
+          },
+          {
+            "rva": "0x1cfd312",
+            "text": "je 0x1cfd31b"
+          },
+          {
+            "rva": "0x1cfd314",
+            "text": "mov rdi, qword ptr [rip + 0x4020fc5]"
+          }
+        ]
+      },
+      {
+        "rva": "0x1cfd31b",
+        "file_offset": "0x1cfc71b",
+        "size_bytes": 18,
+        "hex": "48 8b 9a 58 07 00 00 48 63 82 64 07 00 00 48 8d 34 c3",
+        "purpose": "Read scoped Rite own core pointer list and count.",
+        "instructions": [
+          {
+            "rva": "0x1cfd31b",
+            "text": "mov rbx, qword ptr [rdx + 0x758]"
+          },
+          {
+            "rva": "0x1cfd322",
+            "text": "movsxd rax, dword ptr [rdx + 0x764]"
+          },
+          {
+            "rva": "0x1cfd329",
+            "text": "lea rsi, [rbx + rax*8]"
+          }
+        ]
+      },
+      {
+        "rva": "0x1cfd350",
+        "file_offset": "0x1cfc750",
+        "size_bytes": 21,
+        "hex": "45 0f b6 8e 41 01 00 00 4c 8b 03 41 80 f9 05 0f 84 c0 00 00 00",
+        "purpose": "Default status 5 branches directly to unfiltered append.",
+        "instructions": [
+          {
+            "rva": "0x1cfd350",
+            "text": "movzx r9d, byte ptr [r14 + 0x141]"
+          },
+          {
+            "rva": "0x1cfd358",
+            "text": "mov r8, qword ptr [rbx]"
+          },
+          {
+            "rva": "0x1cfd35b",
+            "text": "cmp r9b, 5"
+          },
+          {
+            "rva": "0x1cfd35f",
+            "text": "je 0x1cfd425"
+          }
+        ]
+      },
+      {
+        "rva": "0x1cfd36a",
+        "file_offset": "0x1cfc76a",
+        "size_bytes": 6,
+        "hex": "8b 97 98 00 00 00",
+        "purpose": "Specified-status path reads parent Faith+0x98 main Rite ID.",
+        "instructions": [
+          {
+            "rva": "0x1cfd36a",
+            "text": "mov edx, dword ptr [rdi + 0x98]"
+          }
+        ]
+      },
+      {
+        "rva": "0x1cfd398",
+        "file_offset": "0x1cfc798",
+        "size_bytes": 21,
+        "hex": "48 8b 81 88 07 00 00 48 63 91 94 07 00 00 48 c1 e2 04 48 03 d0",
+        "purpose": "Read that main Rite full tenet-state vector.",
+        "instructions": [
+          {
+            "rva": "0x1cfd398",
+            "text": "mov rax, qword ptr [rcx + 0x788]"
+          },
+          {
+            "rva": "0x1cfd39f",
+            "text": "movsxd rdx, dword ptr [rcx + 0x794]"
+          },
+          {
+            "rva": "0x1cfd3a6",
+            "text": "shl rdx, 4"
+          },
+          {
+            "rva": "0x1cfd3aa",
+            "text": "add rdx, rax"
+          }
+        ]
+      },
+      {
+        "rva": "0x1cfd3c7",
+        "file_offset": "0x1cfc7c7",
+        "size_bytes": 18,
+        "hex": "48 85 c0 74 06 0f b6 48 08 eb 02 32 c9 41 3a c9 75 78",
+        "purpose": "Read matched record status byte or 0, then require exact requested status.",
+        "instructions": [
+          {
+            "rva": "0x1cfd3c7",
+            "text": "test rax, rax"
+          },
+          {
+            "rva": "0x1cfd3ca",
+            "text": "je 0x1cfd3d2"
+          },
+          {
+            "rva": "0x1cfd3cc",
+            "text": "movzx ecx, byte ptr [rax + 8]"
+          },
+          {
+            "rva": "0x1cfd3d0",
+            "text": "jmp 0x1cfd3d4"
+          },
+          {
+            "rva": "0x1cfd3d2",
+            "text": "xor cl, cl"
+          },
+          {
+            "rva": "0x1cfd3d4",
+            "text": "cmp cl, r9b"
+          },
+          {
+            "rva": "0x1cfd3d7",
+            "text": "jne 0x1cfd451"
+          }
+        ]
+      },
+      {
+        "rva": "0x1cfd425",
+        "file_offset": "0x1cfc825",
+        "size_bytes": 30,
+        "hex": "49 63 40 10 48 8d 54 24 30 48 89 44 24 38 c7 44 24 30 28 00 00 00 48 8b cd e8 ed 2d b8 fe",
+        "purpose": "No-filter path directly appends current core as typed Tenet scope.",
+        "instructions": [
+          {
+            "rva": "0x1cfd425",
+            "text": "movsxd rax, dword ptr [r8 + 0x10]"
+          },
+          {
+            "rva": "0x1cfd429",
+            "text": "lea rdx, [rsp + 0x30]"
+          },
+          {
+            "rva": "0x1cfd42e",
+            "text": "mov qword ptr [rsp + 0x38], rax"
+          },
+          {
+            "rva": "0x1cfd433",
+            "text": "mov dword ptr [rsp + 0x30], 0x28"
+          },
+          {
+            "rva": "0x1cfd43b",
+            "text": "mov rcx, rbp"
+          },
+          {
+            "rva": "0x1cfd43e",
+            "text": "call 0x880230"
+          }
+        ]
+      }
+    ]
+  },
+  "candidate_self_exclusion_and_local_lists": {
+    "finding": "Native can_pick assumes selected_doctrines contains the other selected items, excluding the candidate being evaluated. Including the candidate itself makes unique-family predicates reject even a lone family member.",
+    "examples": [
+      "unique_syncretism_trigger NOR includes all six syncretism tenets, including the candidate itself.",
+      "unique_christology_trigger NOR likewise includes its own family members."
+    ],
+    "implementation_consequence": "Before each selected candidate can_pick check, remove that candidate from the local selected_doctrines list; evaluate; restore it afterward. Clear local lists before rebuilding them so repeated validation in one effect chain cannot retain previous selections.",
+    "local_list_clear_syntax": "every_in_list = { list = selected_doctrines remove_from_list = selected_doctrines }",
+    "local_list_clear_scope": "Iterator current scope is the item to remove. This is a local list operation, not clear_variable_list and not an invented clear_list effect.",
+    "script_evidence": [
+      {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_religious_triggers.txt",
+        "relative_game_path": "common/scripted_triggers/00_religious_triggers.txt",
+        "sha256": "e9d0b56130464eabdcd670fa6cf814534d11c99da1e8b3fc1e69e9c3e36d2bb2",
+        "excerpts": [
+          {
+            "start_line": 2047,
+            "end_line": 2069,
+            "lines": [
+              {
+                "line": 2047,
+                "text": "# can_pick only check when you pick, so amount = 0"
+              },
+              {
+                "line": 2048,
+                "text": "unique_syncretism_trigger = {"
+              },
+              {
+                "line": 2049,
+                "text": "\tcustom_description = {"
+              },
+              {
+                "line": 2050,
+                "text": "\t\ttext = incompatible_tenet_other_syncretism_trigger"
+              },
+              {
+                "line": 2051,
+                "text": "\t\tNOR = {"
+              },
+              {
+                "line": 2052,
+                "text": "\t\t\ttenet:tenet_eastern_syncretism = { is_in_list = selected_doctrines }"
+              },
+              {
+                "line": 2053,
+                "text": "\t\t\ttenet:tenet_unreformed_syncretism = { is_in_list = selected_doctrines }"
+              },
+              {
+                "line": 2054,
+                "text": "\t\t\ttenet:tenet_christian_syncretism = { is_in_list = selected_doctrines }"
+              },
+              {
+                "line": 2055,
+                "text": "\t\t\ttenet:tenet_islamic_syncretism = { is_in_list = selected_doctrines }"
+              },
+              {
+                "line": 2056,
+                "text": "\t\t\ttenet:tenet_jewish_syncretism = { is_in_list = selected_doctrines }"
+              },
+              {
+                "line": 2057,
+                "text": "\t\t\ttenet:tenet_sinitic_syncretism = { is_in_list = selected_doctrines }"
+              },
+              {
+                "line": 2058,
+                "text": "\t\t}"
+              },
+              {
+                "line": 2059,
+                "text": "\t}"
+              },
+              {
+                "line": 2060,
+                "text": "}"
+              },
+              {
+                "line": 2061,
+                "text": "unique_christology_trigger = {"
+              },
+              {
+                "line": 2062,
+                "text": "\tcustom_tooltip = {"
+              },
+              {
+                "line": 2063,
+                "text": "\t\ttext = INCOMPATIBLE_TENET_OTHER_CHRISTOLOGY_TRIGGER"
+              },
+              {
+                "line": 2064,
+                "text": "\t\tNOR = {"
+              },
+              {
+                "line": 2065,
+                "text": "\t\t\ttenet:tenet_adoptionism = { is_in_list = selected_doctrines }"
+              },
+              {
+                "line": 2066,
+                "text": "\t\t\ttenet:tenet_miaphysitism = { is_in_list = selected_doctrines }"
+              },
+              {
+                "line": 2067,
+                "text": "\t\t\ttenet:tenet_monophysitism = { is_in_list = selected_doctrines }"
+              },
+              {
+                "line": 2068,
+                "text": "\t\t}"
+              },
+              {
+                "line": 2069,
+                "text": "\t}"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_faction_effects.txt",
+        "relative_game_path": "common/scripted_effects/00_faction_effects.txt",
+        "sha256": "c7f853b9c8cf836cfc6b635c58bfa3c31a686528e99f5628e320a1d97a5efc70",
+        "excerpts": [
+          {
+            "start_line": 258,
+            "end_line": 265,
+            "lines": [
+              {
+                "line": 258,
+                "text": "\t\tevery_in_list = {"
+              },
+              {
+                "line": 259,
+                "text": "\t\t\tlist = tmp_potential_kingdoms"
+              },
+              {
+                "line": 260,
+                "text": "\t\t\tremove_from_list = tmp_potential_kingdoms"
+              },
+              {
+                "line": 261,
+                "text": "\t\t}"
+              },
+              {
+                "line": 262,
+                "text": "\t\tevery_in_list = {"
+              },
+              {
+                "line": 263,
+                "text": "\t\t\tlist = tmp_potential_duchies"
+              },
+              {
+                "line": 264,
+                "text": "\t\t\tremove_from_list = tmp_potential_duchies"
+              },
+              {
+                "line": 265,
+                "text": "\t\t}"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\tenet_types\\00_tenet_types.txt",
+        "relative_game_path": "common/religion/tenet_types/00_tenet_types.txt",
+        "sha256": "d9e18a077d81f18f030d795ef45cb4aa5b7db246007043d5b0fe401baaf88abd",
+        "excerpts": [
+          {
+            "start_line": 3908,
+            "end_line": 3908,
+            "lines": [
+              {
+                "line": 3908,
+                "text": "tenet_eastern_syncretism = {"
+              }
+            ]
+          },
+          {
+            "start_line": 3947,
+            "end_line": 3950,
+            "lines": [
+              {
+                "line": 3947,
+                "text": "\t\t\t}"
+              },
+              {
+                "line": 3948,
+                "text": "\t\t}"
+              },
+              {
+                "line": 3949,
+                "text": "\t\tunique_syncretism_trigger = yes"
+              },
+              {
+                "line": 3950,
+                "text": "\t\ttrigger_if = {"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "limits": [
+    "Static native and script contracts only; no CK3 parser/live/save-load test executed in this review.",
+    "No production files modified by this reviewer; this evidence JSON is the only newly written file for this supplement.",
+    "Earlier reports that treated status=core as scoped Rite current-core filtering must be corrected as historical research conclusions, not retrospectively treated as validated observations."
+  ]
+}

@@ -1,0 +1,38 @@
+﻿# Shared actor and source qualification. root is the initiating Character.
+rrf_actor_eligible_trigger = {
+    is_adult = yes
+    is_landed = yes
+    is_at_war = no
+    is_imprisoned = no
+    exists = rite
+    custom_description = {
+        text = RRF_REQUIRE_NO_COOLDOWN
+        NOT = { has_character_flag = rrf_fusion_cooldown }
+    }
+    custom_description = {
+        text = RRF_REQUIRE_NO_PENDING
+        NOT = { var:rrf_state ?= flag:committing }
+        NOT = { var:rrf_state ?= flag:unresolved }
+    }
+}
+
+rrf_target_common_trigger = {
+    exists = scope:selected_item
+    scope:selected_item != rite
+    scope:selected_item = { can_convert_to_rite = yes }
+}
+
+rrf_target_faith_trigger = {
+    rrf_target_common_trigger = yes
+    scope:selected_item.faith != faith
+}
+
+rrf_target_rite_trigger = {
+    rrf_target_common_trigger = yes
+    scope:selected_item.faith = faith
+}
+
+rrf_sources_contributed_trigger = {
+    has_character_flag = rrf_contribution_a
+    has_character_flag = rrf_contribution_b
+}
