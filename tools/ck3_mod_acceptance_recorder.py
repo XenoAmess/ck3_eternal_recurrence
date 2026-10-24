@@ -299,7 +299,11 @@ def validate_runtime_recording(runtime: object, base: Path, repo: Path) -> list[
         raise ValueError("Shared recording requires exactly config/service pins")
     config = _recording_file_pin(recording["config"], base)
     service = _recording_file_pin(recording["service"], base)
-    if Path(service["path"]) != repo.resolve() / "tools/ck3_mod_acceptance_recorder.py":
+    paths = _recording_object(document.get("paths"), "Runtime paths")
+    source_root = paths.get("source_root")
+    if type(source_root) is not str or not source_root or not Path(source_root).is_absolute():
+        raise ValueError("Recording attachment requires the selected shared source root")
+    if Path(service["path"]) != Path(source_root).resolve() / "tools/ck3_mod_acceptance_recorder.py":
         raise ValueError("Recorder service must be the selected shared recorder source")
     validated = validate_recording_configuration(Path(config["path"]), config["sha256"], repo)
     if validated.config["machine_id"] != machine:

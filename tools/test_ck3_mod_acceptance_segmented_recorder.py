@@ -543,15 +543,17 @@ class SegmentedRecorderPublicService(unittest.TestCase):
                              total_seconds=50, total_raw_bytes=64 * MiB)
         config_path = self.work / "public-recorder.json"
         config_path.write_text(json.dumps(config), encoding="utf-8")
-        selected_service = self.repo / "tools/ck3_mod_acceptance_recorder.py"
-        selected_service.parent.mkdir()
+        selected_source = Path(entry_fixture.runtime["paths"]["source_root"])
+        self.assertNotEqual(selected_source.resolve(), self.repo.resolve())
+        selected_service = selected_source / "tools/ck3_mod_acceptance_recorder.py"
+        selected_service.parent.mkdir(parents=True, exist_ok=True)
         selected_service.write_bytes(Path(RECORDER.__file__).read_bytes())
         selected_launcher = selected_service.with_name("existing_reviewed_launcher.py")
         selected_launcher.write_bytes(entry_fixture.launcher.read_bytes())
         selected_helper = selected_service.with_name("ck3_mod_acceptance_runtime_inputs.py")
         selected_helper.write_bytes((HERE / selected_helper.name).read_bytes())
         relative_contract = Path("ck3_autonomous_player/src/xar_autoplayer/bridge/runtime_input_contract_v1.py")
-        selected_contract = self.repo / relative_contract
+        selected_contract = selected_source / relative_contract
         selected_contract.parent.mkdir(parents=True)
         selected_contract.write_bytes((HERE.parent / relative_contract).read_bytes())
         entry_fixture.runtime["reviewed_launcher"] = RECORDER.file_identity(selected_launcher)
@@ -566,6 +568,17 @@ class SegmentedRecorderPublicService(unittest.TestCase):
         self.assertEqual(preflight["blockers"], [])
         for source in (selected_helper, selected_contract):
             self.assertIn(RECORDER.file_identity(source), preflight["checked_inputs"])
+        # Matching bytes in the CLI checkout cannot substitute for the selected
+        # immutable service. The job still belongs to the actual CLI repo.
+        wrong_service = self.repo / "tools/ck3_mod_acceptance_recorder.py"
+        wrong_service.parent.mkdir(parents=True, exist_ok=True)
+        wrong_service.write_bytes(selected_service.read_bytes())
+        attachment = entry_fixture.runtime["allocation"]["recording"]
+        attachment["service"] = RECORDER.file_identity(wrong_service)
+        entry_fixture.write(entry_fixture.runtime_path, entry_fixture.runtime)
+        self.assertTrue(any("Shared recording configuration" in error
+                            for error in entry_fixture.select().preflight()["blockers"]))
+        attachment["service"] = RECORDER.file_identity(selected_service)
         for machine in ("different-selected-runtime", None, True):
             with self.subTest(machine=machine):
                 entry_fixture.runtime["machine_id"] = machine
