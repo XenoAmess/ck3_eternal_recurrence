@@ -1,0 +1,5 @@
+l_simp_chinese:
+ ${OBSERVATION_DECISION}:0 "【验收】只读核对融合状态"
+ rrfa_observation_decision_desc:0 "仅供验收夹具使用。请先完成实际融合界面操作，再读取当前结果或拒绝后的未变状态，并写入诊断日志。"
+ rrfa_observation_decision_tooltip:0 "只读验收：不创建融合、不改变虔诚、不推进日期。"
+ rrfa_observation_decision_confirm:0 "读取实际状态"

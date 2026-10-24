@@ -31,7 +31,8 @@ import org.xar.ck3.rrf.acceptance.FixtureContracts.Request;
 public final class FixtureEmitter {
     private static final String MAIN = "mod_religious_ritual_fusion/tools/src/main/";
     private static final List<String> COMMON = List.of("descriptor.mod", "common/scripted_triggers/rrfa_observation_triggers.txt", "common/script_values/rrfa_observation_values.txt", "events/rrfa_observation_events.txt");
-    private static final List<String> FRESH = List.of("common/on_action/rrfa_fresh_startup.txt", "common/scripted_effects/rrfa_seed_effects.txt", "events/rrfa_seed_events.txt");
+    private static final List<String> FRESH = List.of("common/on_action/rrfa_fresh_startup.txt", "common/scripted_effects/rrfa_seed_effects.txt", "events/rrfa_seed_events.txt",
+            "common/decisions/rrfa_observation_decisions.txt", "localization/english/rrfa_observation_l_english.yml", "localization/simp_chinese/rrfa_observation_l_simp_chinese.yml");
     private static final List<String> TENETS = List.of("tenet_esotericism", "tenet_legalism", "tenet_astrology", "tenet_communal_identity");
     private FixtureEmitter() { }
     public enum BusinessAcceptance { NOT_RUN }
@@ -70,7 +71,9 @@ public final class FixtureEmitter {
             byte[] original = checkedResource(template, "/acceptance/" + relative); pins.add(pin(template));
             String rendered = new String(original, StandardCharsets.UTF_8).replace("${CASE}", request.kind().wire()).replace("${MODE}", request.mode().wire()).replace("${COST}", Integer.toString(request.mode().cost()))
                     .replace("${PIETY}", request.setup() instanceof FreshSetup fresh ? Integer.toString(fresh.piety()) : "0")
-                    .replace("${EXPECTED_B}", request.mode() == FixtureContracts.Mode.RITE ? "rrfa_source_b_rite" : "rrfa_source_b_faith_rite");
+                    .replace("${EXPECTED_B}", request.mode() == FixtureContracts.Mode.RITE ? "rrfa_source_b_rite" : "rrfa_source_b_faith_rite")
+                    .replace("${OBSERVATION_DECISION}", "rrfa_observe_" + request.kind().wire() + "_decision")
+                    .replace("${OBSERVATION_EVENT}", request.kind() == CaseKind.UI_REJECTION ? "rrfa.30" : request.mode() == FixtureContracts.Mode.RITE ? "rrfa.20" : "rrfa.21");
             if (rendered.contains("${")) throw new IllegalArgumentException("unresolved fixture template token");
             payloads.put(relative, (relative.equals("descriptor.mod") ? rendered : "\ufeff" + rendered).getBytes(StandardCharsets.UTF_8));
         }

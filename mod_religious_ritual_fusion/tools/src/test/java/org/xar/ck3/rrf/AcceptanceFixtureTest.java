@@ -29,7 +29,7 @@ final class AcceptanceFixtureTest {
         Request request = new Request(1, CaseKind.CORE, Mode.RITE, 29829, new FreshSetup(500));
         FixtureEmitter.Emission emitted = FixtureEmitter.emit(repository, directory.resolve("fixture"), "synthetic-fixture-machine", request);
         FixtureContracts.Manifest decoded = Json.read(Files.readAllBytes(emitted.manifest()), FixtureContracts.Manifest.class);
-        assertEquals(decoded, emitted.payload()); assertEquals(7, decoded.files().size());
+        assertEquals(decoded, emitted.payload()); assertEquals(10, decoded.files().size());
         assertEquals(request, Json.read(Files.readAllBytes(emitted.requestSnapshot()), Request.class));
         assertEquals(List.of("RRFAT: TEST PASS fixture_ready", "RRFAT: TEST PASS rite_success_readback"), decoded.receipt().requiredMarkers());
         for (FixtureContracts.FilePin pin : decoded.producerSourcePins()) {
@@ -43,12 +43,14 @@ final class AcceptanceFixtureTest {
             assertEquals(decoded.files().get(relative).sha256(), ReleaseBuilder.sha256(bytes));
             String text = new String(bytes, StandardCharsets.UTF_8); assertFalse(text.contains("${"));
             if (!relative.equals("descriptor.mod")) assertTrue(text.startsWith("\ufeff"));
+            if (relative.endsWith(".yml")) continue;
             Clausewitz.Block body = Clausewitz.parse(text); allKeys.addAll(keys(body));
             assertFalse(keys(body).contains("rrf_commit_effect"));
             if (relative.contains("observation")) assertReadOnly(keys(body));
         }
         assertEquals(3, allKeys.stream().filter("create_dynamic_rite"::equals).count());
         assertEquals(1, allKeys.stream().filter("detach_rite_to_new_faith"::equals).count());
+        assertObservationDecision(emitted.fixture(), request);
         assertTrue(allKeys.contains("add_known_tenet")); assertTrue(allKeys.contains("add_known_doctrine"));
         assertThrows(IllegalArgumentException.class, () -> FixtureEmitter.emit(repository, emitted.fixture(), "synthetic-fixture-machine", request));
         assertEquals(67, ContentValidator.validate(repository.resolve("mod_religious_ritual_fusion")).runtimeFiles());
@@ -63,8 +65,9 @@ final class AcceptanceFixtureTest {
                 assertEquals(5, emitted.payload().files().size());
                 assertFalse(emitted.payload().receipt().containsBusinessEffects());
                 assertTrue(emitted.payload().files().keySet().stream().noneMatch(p -> p.contains("seed") || p.contains("fresh")));
+                assertTrue(emitted.payload().files().keySet().stream().noneMatch(p -> p.startsWith("common/decisions/") || p.startsWith("localization/")));
                 for (String relative : emitted.payload().files().keySet()) assertReadOnly(keys(Clausewitz.parse(Files.readString(target.resolve(relative)))));
-            }
+            } else { assertEquals(10, emitted.payload().files().size()); assertObservationDecision(target, request); }
             assertTrue(Files.readString(target.resolve("events/rrfa_observation_events.txt")).contains(request.mode().wire() + "_persisted_readback"));
         }
     }
@@ -80,6 +83,29 @@ final class AcceptanceFixtureTest {
         assertThrows(IOException.class, () -> Json.read("{\"schemaVersion\":1,\"kind\":\"cold_reload\",\"mode\":\"rite\",\"actorId\":29829,\"setup\":{\"type\":\"saved\",\"piety\":500}}".getBytes(StandardCharsets.UTF_8), Request.class));
     }
     private static List<String> keys(Clausewitz.Block block) { List<String> keys = new ArrayList<>(); for (Clausewitz.Entry e : block.entries()) { keys.add(e.key()); if (e.value() instanceof Clausewitz.Block child) keys.addAll(keys(child)); } return keys; }
+    private static void assertObservationDecision(Path fixture, Request request) throws IOException {
+        String key = "rrfa_observe_" + request.kind().wire() + "_decision";
+        Clausewitz.Block decision = Clausewitz.parse(Files.readString(fixture.resolve("common/decisions/rrfa_observation_decisions.txt"))).block(key);
+        for (String gate : List.of("is_shown", "is_valid")) {
+            assertEquals("no", decision.block(gate).atom("is_ai", ""));
+            assertEquals("character:29829", decision.block(gate).atom("this", ""));
+            assertEquals("rrfa_seed_done", decision.block(gate).atom("has_character_flag", ""));
+        }
+        Clausewitz.Block effect = decision.block("effect"); assertEquals(1, effect.entries().size());
+        assertEquals("trigger_event", effect.entries().getFirst().key());
+        Clausewitz.Block trigger = effect.block("trigger_event"); assertEquals(1, trigger.entries().size());
+        assertEquals(request.kind() == CaseKind.UI_REJECTION ? "rrfa.30" : request.mode() == Mode.RITE ? "rrfa.20" : "rrfa.21", trigger.atom("id", ""));
+        assertReadOnly(keys(effect));
+        for (String forbidden : List.of("cost", "cooldown", "days")) assertFalse(keys(decision).contains(forbidden));
+        Set<String> expected = Set.of(key, "rrfa_observation_decision_desc", "rrfa_observation_decision_tooltip", "rrfa_observation_decision_confirm");
+        for (String language : List.of("english", "simp_chinese")) {
+            String text = Files.readString(fixture.resolve("localization/" + language + "/rrfa_observation_l_" + language + ".yml"));
+            assertTrue(text.startsWith("\ufeffl_" + language + ":\n"));
+            Set<String> actual = new java.util.LinkedHashSet<>();
+            for (String line : text.lines().skip(1).toList()) if (!line.isBlank()) { assertTrue(line.matches(" [A-Za-z_][A-Za-z0-9_]*:0 \\\".*\\\"")); actual.add(line.substring(1, line.indexOf(':'))); }
+            assertEquals(expected, actual);
+        }
+    }
     private static void assertReadOnly(List<String> keys) {
         Set<String> writes = Set.of("set_variable", "add_character_flag", "remove_character_flag", "add_to_variable_list", "clear_variable_list", "add_piety", "set_character_rite", "change_rite_doctrine", "create_dynamic_rite", "detach_rite_to_new_faith", "add_known_tenet", "add_known_doctrine");
         assertTrue(keys.stream().noneMatch(writes::contains), keys.toString());

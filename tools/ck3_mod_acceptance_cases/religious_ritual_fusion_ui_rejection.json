@@ -57,7 +57,10 @@
     "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/events/rrfa_observation_events.txt",
     "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/common/on_action/rrfa_fresh_startup.txt",
     "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/common/scripted_effects/rrfa_seed_effects.txt",
-    "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/events/rrfa_seed_events.txt"
+    "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/events/rrfa_seed_events.txt",
+    "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/common/decisions/rrfa_observation_decisions.txt",
+    "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/localization/english/rrfa_observation_l_english.yml",
+    "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/localization/simp_chinese/rrfa_observation_l_simp_chinese.yml"
   ],
   "post_start": {
     "government_key": "feudal_government",

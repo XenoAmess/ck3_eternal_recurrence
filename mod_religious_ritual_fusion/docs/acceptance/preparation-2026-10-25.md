@@ -39,3 +39,9 @@ Java 工具新增严格 fixture request、显式 prebuilt manifest 和独立准�
 实际 native 生产 DLL 位于 `C:/workspace/rrf-development-20261024/build/native-a01/xar_ck3_bridge.dll`，15,710,208 bytes，SHA-256 `5166991c7de5c0ec0d7de06f236b4a34dae57a2a9b0a8ff2fb508ca5ed7e5da4`。7 个受影响 TU 实际严格编译与链接均退出 0，旧冻结 DLL 未改；来源、借用对象、真实依赖和链接回执见同目录 `INCREMENTAL-BUILD.actual.json`。该结果尚不是新 FileAPI qualified runtime 或实际控件通过。
 
 当前正在修复现有 configured successor 对新增 TU 缺少 old_commands／旧 dependencies 的实际拒绝路径；保留严格来源及真实 FileAPI，完成正式资格封包后继续实机。没有伪造 qualification，也没有启动游戏。另已读回当前桌面 1024×768、显示设备实际支持 2560×1440；将在排他现场按实际模式设置并读回，截图不会放大冒充原尺寸。
+
+该拒绝路径已修入既有共享 producer：新增 TU 必须确为新源文件、沿用同 target 的实际编译选项，并实际编译；不接受伪造旧依赖、移除旧生产 TU 或借用新增对象。机器 `4-8e1c2f1861` 于 `2026-10-24T16:43:27.831586Z` 完成全模块 26 项回归，实际原进程退出 0；两个完整模块的 strict mypy 通过。持久 CI 已调用同一测试与静态检查入口。小型原始回执分别位于工作根 `build/producer-checks-a02/RESULT.actual.json` 和 `build/producer-static-a01/RESULT.actual.json`。
+
+正式 successor 仍须从完整旧 archive 链重新计算所有受影响 TU，并生成真实 CMake FileAPI 资格；手工 DLL 不替代它。为覆盖这部分真实输出，既定 1 GiB 总峰值内的 native 子限调整为 192 MiB、截图子限调整为 224 MiB；正式 producer 自身输出上限 160 MiB。总峰值、系统增长预留和其他占用上界保持，最新容量准入以机器工作根的版本化实际回执为准。
+
+新局 fixture 已补真实公共决议入口调用只读观察事件，避免依赖不存在的按定义触发 event 工具。core 按模式触发 `.20/.21`，拒绝场触发 `.30`；仅玩家 Robert 29829 且准备完成可见／可用，不改产品结果。fresh 现为 10 文件，cold 保持 5 文件且无 seed／观察决议。机器 `4-8e1c2f1861` 于 `2026-10-24T16:46:40Z` 完整 Maven verify 通过 13 tests／0 failures／0 skipped，33.272 秒；随后 rite／faith／ui 三种实际 CLI 生成均退出 0。正式 67 文件未变。此前 7 文件输出保留为历史准备输入，不用于新运行。
