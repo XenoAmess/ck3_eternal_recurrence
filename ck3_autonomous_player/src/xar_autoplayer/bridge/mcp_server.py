@@ -21,6 +21,15 @@ from .normal_exit_public_wire_v2 import (
     normal_exit_public_result_v2, parse_normal_exit_public_revision_v2,
     validate_normal_exit_public_revision_v2,
 )
+from .gui_window_tree_contract import scripted_widget_decimal_v1, scripted_widget_public_result_v1
+
+ScriptedWidgetDecimalV1 = Annotated[
+    str, Field(strict=True, min_length=1, max_length=20, pattern=r"^[1-9][0-9]{0,19}$"),
+    AfterValidator(scripted_widget_decimal_v1),
+]
+ScriptedWidgetRootV1 = Annotated[
+    str, Field(strict=True, min_length=1, max_length=128, pattern=r"^[A-Za-z_][A-Za-z0-9_.-]{0,127}$"),
+]
 
 IngameUiHandleV1 = Annotated[int, Field(strict=True, gt=0, lt=2**32 - 1)]
 PublicCUnitId = Annotated[int, Field(strict=True, ge=0, le=2**31 - 1)]
@@ -4481,6 +4490,23 @@ def create_server(
         return service.open_ingame_decisions_v1(expected_revision=expected_revision)
 
     @server.tool()
+    def ck3_query_scripted_widget_controls_v1(
+        root_name: ScriptedWidgetRootV1, expected_revision: ScriptedWidgetDecimalV1,
+    ) -> dict[str, object]:
+        """Observe any actual native root and receive fresh opaque control identities; no OCR/input."""
+        return scripted_widget_public_result_v1(service.query_scripted_widget_controls_v1(
+            root_name, expected_revision=int(expected_revision)))
+
+    @server.tool()
+    def ck3_activate_scripted_widget_control_v1(
+        query_generation: ScriptedWidgetDecimalV1, widget_id: ScriptedWidgetDecimalV1,
+        expected_revision: ScriptedWidgetDecimalV1,
+    ) -> dict[str, object]:
+        """Invoke one freshly observed native button once; actual business effects need a separate read."""
+        return scripted_widget_public_result_v1(service.activate_scripted_widget_control_v1(
+            query_generation, widget_id, expected_revision=int(expected_revision)))
+
+    @server.tool()
     def ck3_inspect_gui_window_tree_v1(
         window_kind: Literal["ingame_topbar", "decisions", "decision_detail", "courtier", "vivhite_courtier", "death_succession", "death_destiny", "military", "holy_site"],
     ) -> dict[str, object]:
@@ -5317,6 +5343,8 @@ def create_server(
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_inspect_gui_window_tree_v1"
     )
+    _forbid_unknown_tool_arguments_v1(server, "ck3_query_scripted_widget_controls_v1")
+    _forbid_unknown_tool_arguments_v1(server, "ck3_activate_scripted_widget_control_v1")
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_inspect_frontend_gui_tree_v1"
     )

@@ -834,6 +834,12 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
                 None, extra_tools=('ck3_unreviewed_faith_tool_v1',),
                 expected_error='Unreviewed global capability rule')
 
+    def test_scripted_widget_tools_reach_actual_runtime_and_sdk_consumers(self) -> None:
+        tools = ('ck3_query_scripted_widget_controls_v1', 'ck3_activate_scripted_widget_control_v1')
+        for codec in (None, 'gzip-members'):
+            with self.subTest(codec=codec):
+                self.assert_formal_runtime_producer(codec, extra_tools=tools)
+
     def assert_formal_runtime_producer(
         self, codec: str | None, *, extra_tools: tuple[str, ...] = (),
         presentation_flag: str | None = 'ON', expected_error: str | None = None,

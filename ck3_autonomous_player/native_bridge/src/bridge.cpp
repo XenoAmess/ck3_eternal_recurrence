@@ -2326,6 +2326,12 @@ std::string HelloFrame(const xar::game::GameAdapter &game,
       AppendJsonString(result, capability);
     }
   }
+  if (game.enabled() && xar::game::IsCk3_12004Descriptor(descriptor)) {
+    result += ',';
+    AppendJsonString(result, xar::ck3_11906::kScriptedWidgetQueryCapability12004);
+    result += ',';
+    AppendJsonString(result, xar::ck3_11906::kScriptedWidgetActionCapability12004);
+  }
 #if defined(XAR_ENABLE_RITE_CREATION_ACTIONS12004) && XAR_ENABLE_RITE_CREATION_ACTIONS12004
   if (game.enabled() && xar::game::IsCk3_12004Descriptor(descriptor)) {
     result += ',';
@@ -12904,6 +12910,7 @@ struct WorkerState {
   CheckpointSubmission checkpoint_submission{};
   std::uint64_t published_checkpoint_sequence = 0;
   std::optional<xar::game::Snapshot> previous_snapshot;
+  xar::ck3_11906::ScriptedWidgetProvider12004 scripted_widget_provider{};
   std::uint64_t declaration_query_sequence = 0;
   std::vector<xar::game::DeclarableWarSnapshot> declarable_wars;
   std::uint64_t war_entry_assessment_query_sequence = 0;
@@ -16156,6 +16163,8 @@ void RunConnectedSession(
           }
           connected = write_frame(pipe, response);
         } else if (!game.supports_step(step)
+                   && step != xar::ck3_11906::kScriptedWidgetQueryStep12004
+                   && step != xar::ck3_11906::kScriptedWidgetActionStep12004
                    && step != xar::ck3_11906::kFrontendGuiLobbyBackPrivateV1Step
 #if defined(XAR_CK3_ENABLE_PLAYER_CONTROL_PRIVATE_V1)
                    && step != xar::ck3_12003::kPlayerControlV1Step
@@ -18772,6 +18781,76 @@ void RunConnectedSession(
               connected=write_frame(pipe,response);
             }
 #endif
+          } else if (step == xar::ck3_11906::kScriptedWidgetQueryStep12004 ||
+                     step == xar::ck3_11906::kScriptedWidgetActionStep12004) {
+            const bool action = step == xar::ck3_11906::kScriptedWidgetActionStep12004;
+            std::uint64_t expected_revision=0, expected_actor=0, expected_pid=0, expected_generation=0, widget_generation=0, widget_id=0;
+            std::string root_name, generation_text, widget_text;
+            const bool parsed_target = action ?
+                (xar::bridge::JsonStringField(incoming.payload,"query_generation",generation_text,20) &&
+                 xar::bridge::JsonStringField(incoming.payload,"widget_id",widget_text,20) &&
+                 xar::ck3_11906::ParseScriptedWidgetOpaqueId12004(generation_text,widget_generation) &&
+                 xar::ck3_11906::ParseScriptedWidgetOpaqueId12004(widget_text,widget_id)) :
+                (xar::bridge::JsonStringField(incoming.payload,"root_name",root_name,128) &&
+                 xar::ck3_11906::ScriptedWidgetRootName12004(root_name));
+            xar::game::Snapshot current{};
+            if (!parsed_target || !game.enabled() || !xar::game::IsCk3_12004Descriptor(game.descriptor()) ||
+                !xar::bridge::JsonUnsignedField(incoming.payload,"expected_revision",expected_revision) ||
+                !xar::bridge::JsonUnsignedField(incoming.payload,"expected_player_character_id",expected_actor) ||
+                !xar::bridge::JsonUnsignedField(incoming.payload,"expected_game_pid",expected_pid) ||
+                !xar::bridge::JsonUnsignedField(incoming.payload,"expected_connection_generation",expected_generation) ||
+                expected_revision==0 || expected_revision!=state_revision ||
+                expected_pid!=GetCurrentProcessId() || expected_generation!=connection_generation ||
+                !previous_snapshot || !xar::game::ReadSnapshot(game,current) || current!=*previous_snapshot ||
+                !current.map_ready || !current.paused || !current.has_played_character || !current.played_character_alive ||
+                current.has_active_event || current.played_character_id<=0 || expected_actor!=static_cast<std::uint64_t>(current.played_character_id)) {
+              connected=write_frame(pipe,CommandResultFrame(request_id,step,false,"scripted_widget_exact_paused_episode_binding_changed"));
+            } else {
+              xar::ck3_11906::FrontendGuiRouteMailboxContextV1 query{};
+              query.mailbox=&g_main_thread_query_mailbox_v1;
+              query.operation=xar::ck3_11906::FrontendGuiRouteOperationV1::scripted_widget_control;
+              auto &control=query.scripted_widget_control;
+              control.game=&game; control.expected_snapshot=current; control.native_revision=state_revision;
+              control.connection_generation=connection_generation; control.provider=&state.scripted_widget_provider;
+              control.action=action; control.root_name=std::move(root_name);
+              control.query_generation=widget_generation; control.widget_id=widget_id;
+              const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+              query.environment=xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base,true,
+                  xar::ck3_11906::GuiAbiRevisionV1::crozier12004,game.descriptor().executable_sha256);
+              query.dispatch_environment=xar::ck3_11906::BindZhongguoScoreboardActionDispatchEnvironmentV1(base,true,
+                  xar::ck3_11906::GuiAbiRevisionV1::crozier12004);
+              const auto submitted=xar::ck3_11906::TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,
+                  &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1,&query,query.ticket);
+              std::string response;
+              if(submitted==xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+                auto waited=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,8'000);
+                while(waited==xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+                  waited=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,2'000);
+                if(waited==xar::ck3_11906::MainThreadQueryWaitResultV1::completed) {
+                  // Action frame qualification is the actual pre-dispatch frame.
+                  // Native GUI execution may legitimately close or change a window.
+                  xar::game::Snapshot completion{};
+                  const bool binding_changed=state_revision!=expected_revision || connection_generation!=expected_generation ||
+                      (!action && (!xar::game::ReadSnapshot(game,completion) || completion!=current));
+                  if(binding_changed) {
+                    control.result.available=false; control.result.frame.frame_verified=false;
+                    control.result.unavailable_reason="scripted_widget_pipe_completion_binding_changed";
+                    state.scripted_widget_provider.valid=false;
+                    if(!action) {control.result.widgets.clear();control.result.complete=false;control.result.query_generation=0;}
+                  }
+                  response="{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"";
+                  response+=request_id;response+="\",\"ok\":true,\"result\":";
+                  response+=xar::ck3_11906::SerializeScriptedWidgetControl12004(control.result);response+='}';
+                }
+                if(xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket)!=
+                    xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed)response.clear();
+              }
+              if(response.empty()) {
+                state.scripted_widget_provider.valid=false;
+                response=CommandResultFrame(request_id,step,false,"scripted_widget_owner_submission_or_completion_failed_no_retry");
+              }
+              connected=write_frame(pipe,response);
+            }
 #if defined(XAR_CK3_ENABLE_WHITE_CONTROL_ACTIONS_PRIVATE_V1)
           } else if (step == xar::ck3_11906::kWhiteControlActionV1Step || step == xar::ck3_11906::kWhiteNumericControlActionV1Step) {
             std::uint64_t expected_revision=0, expected_actor=0, expected_pid=0, expected_generation=0, expected_age=0;

@@ -1678,6 +1678,8 @@ add_library(xar_ck3_bridge SHARED
   src/aub_policy_options_mailbox_v1.cpp
   src/aub_business_state_v1.cpp
   src/white_control_action_v1.cpp
+  src/scripted_widget_control12004.cpp
+  src/scripted_widget_control12004_native.cpp
   src/frontend_game_rules_v1.cpp
   src/game_adapter.cpp
   src/game_adapter_capabilities.cpp
@@ -9266,6 +9268,17 @@ if(WIN32 AND MSVC)
   target_compile_options(xar_ck3_aub_business_state_v1_test PRIVATE /EHsc /W4 /WX /UNDEBUG)
   add_test(NAME xar_ck3_aub_business_state_v1_test COMMAND xar_ck3_aub_business_state_v1_test)
   add_test(NAME xar_ck3_aub_business_state_serialization_v1_test COMMAND xar_ck3_aub_business_state_v1_test serialization)
+endif()
+
+# Generic native widget witness/action reducer; never starts or attaches CK3.
+if(BUILD_TESTING AND WIN32 AND MSVC)
+  add_executable(xar_ck3_scripted_widget_control12004_test
+    src/scripted_widget_control12004.cpp tests/scripted_widget_control12004_test.cpp)
+  target_include_directories(xar_ck3_scripted_widget_control12004_test PRIVATE include)
+  target_compile_features(xar_ck3_scripted_widget_control12004_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_scripted_widget_control12004_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+  target_compile_options(xar_ck3_scripted_widget_control12004_test PRIVATE /EHsc /W4 /WX /UNDEBUG)
+  add_test(NAME xar_ck3_scripted_widget_control12004_test COMMAND xar_ck3_scripted_widget_control12004_test)
 endif()
 
 # Six literal skill+1 mappings; never starts or attaches CK3.

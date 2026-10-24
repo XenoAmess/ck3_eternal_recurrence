@@ -73,7 +73,9 @@
             "ck3_inspect_gui_window_tree_v1",
             "ck3_query_normal_exit_context_v1",
             "ck3_request_normal_exit_v1",
-            "ck3_observe_normal_exit_v1"
+            "ck3_observe_normal_exit_v1",
+            "ck3_query_scripted_widget_controls_v1",
+            "ck3_activate_scripted_widget_control_v1"
           ],
           "opt_in_read_only_mcp_tools": [
             "ck3_query_player_religion_context_v1",
@@ -127,7 +129,9 @@
             "ck3_inspect_gui_window_tree_v1",
             "ck3_query_normal_exit_context_v1",
             "ck3_request_normal_exit_v1",
-            "ck3_observe_normal_exit_v1"
+            "ck3_observe_normal_exit_v1",
+            "ck3_query_scripted_widget_controls_v1",
+            "ck3_activate_scripted_widget_control_v1"
           ],
           "opt_in_read_only_mcp_tools": [
             "ck3_query_player_religion_context_v1",
@@ -188,7 +192,9 @@
             "ck3_inspect_gui_window_tree_v1",
             "ck3_query_normal_exit_context_v1",
             "ck3_request_normal_exit_v1",
-            "ck3_observe_normal_exit_v1"
+            "ck3_observe_normal_exit_v1",
+            "ck3_query_scripted_widget_controls_v1",
+            "ck3_activate_scripted_widget_control_v1"
           ],
           "opt_in_read_only_mcp_tools": [
             "ck3_query_player_religion_context_v1",

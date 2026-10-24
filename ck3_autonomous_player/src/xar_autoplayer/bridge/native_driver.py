@@ -7,6 +7,8 @@ semantic driver interface used by the visual and data-Mod backends.
 
 from __future__ import annotations
 
+from .gui_window_tree_contract import ScriptedWidgetActionV1, ScriptedWidgetQueryV1
+
 from .player_pilgrimage_planner_contract import PilgrimageOptionKey
 
 from .holy_site_decision_action_v1 import HolySiteDecisionActionV1
@@ -8415,6 +8417,137 @@ class NativeHeadlessGameplayDriver:
                                  error=f"{type(error).__name__}: {error}")
             raise
         self._record_command(STEP, ok=True, result=result)
+        return result
+
+    def query_scripted_widget_controls_v1(
+        self, root_name: str, *, expected_revision: int,
+    ) -> ScriptedWidgetQueryV1:
+        """Observe an actual root and persist only provider-issued control identities."""
+        from .gui_window_tree_contract import (
+            SCRIPTED_WIDGET_QUERY_STEP, SCRIPTED_WIDGET_QUERY_CAPABILITY,
+            scripted_widget_root_v1, scripted_widget_binding_v1,
+            normalize_scripted_widget_query_v1, write_scripted_widget_evidence_v1,
+        )
+        root_name = scripted_widget_root_v1(root_name)
+        _validate_revision(expected_revision, "expected_revision")
+        starting = self.take_snapshot()
+        binding = scripted_widget_binding_v1(starting)
+        if starting.get("revision") != expected_revision:
+            raise PreSubmissionRevisionMismatchError("scripted widget public revision changed")
+        raw = self._execute_primitive_step(
+            SCRIPTED_WIDGET_QUERY_STEP, expected_revision=expected_revision,
+            required_capability=SCRIPTED_WIDGET_QUERY_CAPABILITY,
+            request_fields={"root_name": root_name,
+                "expected_player_character_id": binding["played_character_id"],
+                "expected_game_pid": binding["game_pid"],
+                "expected_connection_generation": binding["connection_generation"]},
+        )
+        result = normalize_scripted_widget_query_v1(raw, root_name, binding)
+        ending = self.take_snapshot()
+        if scripted_widget_binding_v1(ending) != binding or not _same_paused_native_frame(starting, ending):
+            raise BridgeUnavailableError("scripted widget query crossed its paused frame")
+        result["public_revision"] = str(expected_revision)
+        if result["available"]:
+            directory = self._native_driver_state_path().parent / "scripted-widget-controls"
+            path = directory / (f"query-{binding['game_pid']}-{binding['connection_generation']}-"
+                                f"{result['query_generation']}.json")
+            write_scripted_widget_evidence_v1(path, {"binding": binding, "query": result})
+        return result
+
+    def activate_scripted_widget_control_v1(
+        self, query_generation: str, widget_id: str, *, expected_revision: int,
+    ) -> ScriptedWidgetActionV1:
+        """Consume one observed control identity; native dispatch is not business proof."""
+        from .gui_window_tree_contract import (
+            SCRIPTED_WIDGET_ACTION_STEP, SCRIPTED_WIDGET_ACTION_CAPABILITY,
+            scripted_widget_decimal_v1, scripted_widget_binding_v1, scripted_widget_object_v1,
+            normalize_scripted_widget_query_v1, normalize_scripted_widget_action_v1,
+            read_scripted_widget_evidence_v1, write_scripted_widget_evidence_v1,
+        )
+        query_generation = scripted_widget_decimal_v1(query_generation)
+        widget_id = scripted_widget_decimal_v1(widget_id)
+        _validate_revision(expected_revision, "expected_revision")
+        starting = self.take_snapshot()
+        binding = scripted_widget_binding_v1(starting)
+        if starting.get("revision") != expected_revision:
+            raise PreSubmissionRevisionMismatchError("scripted widget public revision changed")
+        directory = self._native_driver_state_path().parent / "scripted-widget-controls"
+        query_path = directory / f"query-{binding['game_pid']}-{binding['connection_generation']}-{query_generation}.json"
+        try:
+            saved = read_scripted_widget_evidence_v1(query_path)
+            if saved.get("binding") != binding:
+                raise ValueError("scripted widget observation is from a different episode/frame")
+            saved_query = scripted_widget_object_v1(saved.get("query"))
+            root_name = saved_query.get("root_name")
+            if not isinstance(root_name, str):
+                raise ValueError("scripted widget saved root is missing")
+            query = normalize_scripted_widget_query_v1(saved_query, root_name, binding)
+            if query.get("public_revision") != str(expected_revision):
+                raise ValueError("scripted widget action changed its observed public revision")
+        except (OSError, ValueError) as error:
+            raise BridgeUnavailableError("scripted widget action lacks its actual saved query") from error
+        rows = [row for row in query["widgets"] if row["widget_id"] == widget_id]
+        if not query["available"] or len(rows) != 1:
+            raise BridgeUnavailableError("scripted widget identity is absent from the saved actual query")
+        row = rows[0]
+        if not row["effective_visible"] or not row["enabled"] or not row["clickable"]:
+            raise BridgeUnavailableError("scripted widget control is hidden, disabled, or not clickable")
+        identity = {"episode_run_id": binding["episode_run_id"], "game_pid": binding["game_pid"],
+                    "played_character_id": binding["played_character_id"], "root_name": root_name,
+                    "child_path": row["child_path"], "runtime_name": row["runtime_name"],
+                    "vtable_rva": row["vtable_rva"]}
+        # A new query or connection cannot make an unknown invocation retryable.
+        for previous_path in directory.glob("*.claim.json"):
+            try:
+                previous = read_scripted_widget_evidence_v1(previous_path)
+                if previous.get("action_identity") != identity:
+                    continue
+                acknowledgement = read_scripted_widget_evidence_v1(previous_path.with_suffix(".dispatch.json"))
+                previous_query = scripted_widget_decimal_v1(previous.get("query_generation"))
+                previous_widget = scripted_widget_decimal_v1(previous.get("widget_id"))
+                previous_result = normalize_scripted_widget_action_v1(acknowledgement.get("result"), previous_query, previous_widget)
+                if acknowledgement.get("request_id") != previous.get("request_id") or previous_result["root_name"] != root_name:
+                    raise ValueError("scripted widget dispatch acknowledgement identity changed")
+                if previous_result["dispatch_attempted"] and not previous_result["dispatch_invoked"]:
+                    raise ValueError("scripted widget previous invocation remains unknown")
+            except (OSError, ValueError) as error:
+                raise BridgeUnavailableError("scripted widget action already has an unknown result; no retry") from error
+        claim = directory / f"action-{binding['game_pid']}-{binding['connection_generation']}-{query_generation}-{widget_id}.claim.json"
+        request_id = "scripted-widget-" + uuid.uuid4().hex
+        try:
+            write_scripted_widget_evidence_v1(claim, {
+                "schema": "ck3-scripted-widget-once-claim-v1", "request_id": request_id,
+                "action_identity": identity, "binding": binding,
+                "query_generation": query_generation, "widget_id": widget_id,
+                "status": "claimed_result_unknown_no_retry",
+            })
+        except FileExistsError as error:
+            raise BridgeUnavailableError("scripted widget query/control was already consumed; no retry") from error
+        raw: object = None
+        try:
+            raw = self._execute_primitive_step(
+                SCRIPTED_WIDGET_ACTION_STEP, expected_revision=expected_revision,
+                required_capability=SCRIPTED_WIDGET_ACTION_CAPABILITY,
+                request_fields={"query_generation": query_generation, "widget_id": widget_id,
+                    "expected_player_character_id": binding["played_character_id"],
+                    "expected_game_pid": binding["game_pid"],
+                    "expected_connection_generation": binding["connection_generation"]},
+                protocol_request_id=request_id,
+            )
+            write_scripted_widget_evidence_v1(claim.with_suffix(".result.json"), {"request_id": request_id, "raw": raw})
+            result = normalize_scripted_widget_action_v1(raw, query_generation, widget_id, binding)
+            result["public_revision"] = str(expected_revision)
+            if result["root_name"] != root_name:
+                raise ValueError("scripted widget native action changed its observed root")
+            if result["dispatch_attempted"] and not result["dispatch_invoked"]:
+                raise BridgeUnavailableError("scripted widget native invocation result is unknown; no retry")
+            write_scripted_widget_evidence_v1(claim.with_suffix(".dispatch.json"), {"request_id": request_id, "result": result})
+        except Exception as error:
+            self._record_command(SCRIPTED_WIDGET_ACTION_STEP, ok=False,
+                result={"raw": raw, "action_claim_path": str(claim)}, error=f"{type(error).__name__}: {error}")
+            raise
+        self._record_command(SCRIPTED_WIDGET_ACTION_STEP, ok=True,
+            result={"native_ack": result, "action_claim_path": str(claim), "business_postcondition_verified": False})
         return result
 
     def inspect_gui_window_tree_v1(self, window_kind: str) -> dict[str, object]:

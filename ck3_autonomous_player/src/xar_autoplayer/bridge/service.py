@@ -2,6 +2,11 @@
 
 from __future__ import annotations
 
+from .gui_window_tree_contract import (
+    ScriptedWidgetActionV1, ScriptedWidgetQueryV1,
+    normalize_scripted_widget_action_v1, normalize_scripted_widget_query_v1,
+)
+
 from .holy_site_decision_action_v1 import (
     HolySiteDecisionActionV1, normalize_holy_site_decision_action_v1,
 )
@@ -14888,6 +14893,25 @@ class GameplayBridgeService:
         if not isinstance(result, dict) or result.get("schema") != "ck3-ingame-decisions-open-v1" or result.get("postcondition_verified") is not True:
             raise BridgeUnavailableError("typed Decisions opener lacks later visibility proof")
         return result
+
+    def query_scripted_widget_controls_v1(
+        self, root_name: str, *, expected_revision: int,
+    ) -> ScriptedWidgetQueryV1:
+        """Read the actual requested root; no product or outcome inference."""
+        method = getattr(self.driver, "query_scripted_widget_controls_v1", None)
+        if not callable(method):
+            raise UnsupportedStepError("selected backend lacks generic scripted widget controls")
+        return normalize_scripted_widget_query_v1(method(root_name, expected_revision=expected_revision), root_name)
+
+    def activate_scripted_widget_control_v1(
+        self, query_generation: str, widget_id: str, *, expected_revision: int,
+    ) -> ScriptedWidgetActionV1:
+        """Dispatch one provider-issued identity; keep business verification pending."""
+        method = getattr(self.driver, "activate_scripted_widget_control_v1", None)
+        if not callable(method):
+            raise UnsupportedStepError("selected backend lacks generic scripted widget activation")
+        return normalize_scripted_widget_action_v1(
+            method(query_generation, widget_id, expected_revision=expected_revision), query_generation, widget_id)
 
     def inspect_gui_window_tree_v1(self, window_kind: str) -> dict[str, object]:
         """Read a native window census; a hidden root is not an open modal."""

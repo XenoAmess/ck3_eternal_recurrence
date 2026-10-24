@@ -19,6 +19,7 @@
 #include "xar_bridge/aub_policy_options_mailbox_v1.hpp"
 #include "xar_bridge/aub_business_state_v1.hpp"
 #include "xar_bridge/white_control_action_v1.hpp"
+#include "xar_bridge/scripted_widget_control12004.hpp"
 #include "xar_bridge/ck3_11906.hpp"
 #include "xar_bridge/game_adapter.hpp"
 #if defined(XAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1)
@@ -277,6 +278,7 @@ enum class FrontendGuiRouteOperationV1 : std::uint32_t {
   lobby_back = 41,
   open_ingame_military = 42,
   set_military_reinforcement = 43,
+  scripted_widget_control = 44,
 };
 
 enum class FrontendGuiRouteV1 : std::uint32_t {
@@ -333,6 +335,7 @@ struct FrontendGuiRouteMailboxContextV1 {
   ck3_12003::AubBusinessStateContextV1 aub_business_state{};
   ck3_12003::AubConfirmContextV1 aub_confirm{};
   WhiteControlActionContextV1 white_control_action{};
+  ScriptedWidgetControlContext12004 scripted_widget_control{};
 #if defined(XAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1)
   ck3_12003::GrantTitlePickerContextV1 grant_title_picker{};
 #endif

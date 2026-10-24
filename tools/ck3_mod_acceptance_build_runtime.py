@@ -48,6 +48,8 @@ EXTRA_CAPABILITIES: dict[str, list[str]] = {
     "ck3_query_player_holy_site_decision_detail_v1": [],
     "ck3_query_player_holy_site_decision_cooldown_v1": [],
     "ck3_inspect_gui_window_tree_v1": [],
+    "ck3_query_scripted_widget_controls_v1": [],
+    "ck3_activate_scripted_widget_control_v1": [],
     "ck3_open_ingame_decisions_v1": ["XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1"],
     "ck3_query_ingame_decision_item_v1": [],
     "ck3_query_player_holy_site_v1": ["XAR_CK3_ENABLE_G2_PLAYER_HOLY_SITE_CREATION_CONTEXT_PRIVATE_QUERY_V1"],

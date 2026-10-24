@@ -863,6 +863,10 @@ bool ExecuteFrontendGuiRouteMailboxV1(
     return false;
   }
   query->result = {};
+  if (query->operation == FrontendGuiRouteOperationV1::scripted_widget_control) {
+    return ExecuteScriptedWidgetControl12004(query->scripted_widget_control,
+        *query->mailbox, stamp, query->environment, query->dispatch_environment);
+  }
 #if defined(XAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1)
   if(query->operation==FrontendGuiRouteOperationV1::grant_title_picker)
     return ck3_12003::ExecuteGrantTitlePickerV1(query->grant_title_picker,*query->mailbox,stamp,query->environment);

@@ -2151,6 +2151,10 @@ class PlanClient:
             NORMAL_EXIT_REVISION_TOOLS, normal_exit_revision_from_snapshot_v2,
         )
         from xar_autoplayer.bridge.normal_exit_public_wire_v2 import validate_normal_exit_public_revision_v2
+        from xar_autoplayer.bridge.gui_window_tree_contract import (
+            SCRIPTED_WIDGET_REVISION_TOOLS, scripted_widget_decimal_v1,
+            scripted_widget_revision_from_snapshot_v1,
+        )
         properties = self.tools.get(name, {}).get("inputSchema", {}).get("properties", {})
         needs_snapshot = fresh_revision and "expected_revision" in properties
         if needs_snapshot or "$" in json.dumps(arguments):
@@ -2166,10 +2170,15 @@ class PlanClient:
             raise ValueError("resolved MCP tool arguments require a string-keyed object")
         resolved: dict[str, object] = {key: value for key, value in resolved_raw.items()}
         if needs_snapshot and "expected_revision" not in resolved:
-            resolved["expected_revision"] = (normal_exit_revision_from_snapshot_v2(self.snapshot["revision"])
-                if name in NORMAL_EXIT_REVISION_TOOLS else self.snapshot["revision"])
+            if name in SCRIPTED_WIDGET_REVISION_TOOLS:
+                resolved["expected_revision"] = scripted_widget_revision_from_snapshot_v1(self.snapshot["revision"])
+            else:
+                resolved["expected_revision"] = (normal_exit_revision_from_snapshot_v2(self.snapshot["revision"])
+                    if name in NORMAL_EXIT_REVISION_TOOLS else self.snapshot["revision"])
         if name in NORMAL_EXIT_REVISION_TOOLS:
             resolved["expected_revision"] = validate_normal_exit_public_revision_v2(resolved.get("expected_revision"))
+        if name in SCRIPTED_WIDGET_REVISION_TOOLS:
+            resolved["expected_revision"] = scripted_widget_decimal_v1(resolved.get("expected_revision"))
         return await self.call(name, resolved)
 
     async def wait_snapshot(self, expected: dict[str, object], timeout: float) -> dict[str, object]:

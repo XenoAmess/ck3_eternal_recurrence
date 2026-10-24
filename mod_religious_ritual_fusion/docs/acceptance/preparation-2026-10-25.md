@@ -27,3 +27,15 @@ Java 工具新增严格 fixture request、显式 prebuilt manifest 和独立准�
 后续顺序为：完成并验证通用原生控件链 → 固定源码／DLL／公共 runtime → 公共 prepare／allocate／preflight → 两模式真实窗口、费用和结果 → 正常保存及独立冷重载 → 受控拒绝／兼容场景与素材收集。进入冻结现场后，修改保全到外置后继包，闭场后再合入。
 
 截图目标为约 24–36 张不同构图，覆盖选择来源、三栏内容、核心／教义选择、最终费用、融合结果、历史及原版宗教详情。原图保留实际尺寸、run／PID／游戏日期／界面状态和 SHA，商店候选避开诊断覆盖、控制台、遮挡和空白控件。真实失败画面作为诊断保存，不包装成成功玩法素材；本轮不合成或伪造实机图。
+
+## 通用控件链后继
+
+两个通用工具已贯通 native／SDK／service／MCP／shared host：`ck3_query_scripted_widget_controls_v1` 查询实际窗口与控件身份；`ck3_activate_scripted_widget_control_v1` 消费该次查询的 opaque widget ID、generation 和 public revision，调用原 ShortcutManager。动作使用 `fresh_revision=false`，后态另取新鲜快照，ACK 不授业务成功。稳定 paused 身份不要求跨调用的 render 帧号相同。
+
+既有 SDK workflow 已加入完整独立 step。本机四阶段配置／编译／native reducer／SDK 组实际退出 0，13 项 SDK 回归包含 C++ 实际 serializer、完整工厂消费者、host revision codec、独立进程 continuation 与严格类型检查。严格检查范围为完整 `gui_window_tree_contract.py` 及实际提取的 6 个新增方法，不声称旧大模块全绿。原始小回执已保全至 `C:/workspace/rrf-development-20261024/sdk-ci-a01`，原执行目录和日志引用保持。
+
+公共 runtime 生产者加入两个 capability 后，使用 `tools/.venv/Scripts/python.exe -X utf8 -m unittest discover -s tools -p test_ck3_mod_acceptance_build_runtime.py`，完整 63 项通过，含两工具经正式 producer 到 SDK／runtime 消费者的 legacy 与 gzip 两路。首次误用无 pydantic 的系统 Python 导致环境错误，未修改生产逻辑来绕过；不将该次失败归为产品实机结果。
+
+实际 native 生产 DLL 位于 `C:/workspace/rrf-development-20261024/build/native-a01/xar_ck3_bridge.dll`，15,710,208 bytes，SHA-256 `5166991c7de5c0ec0d7de06f236b4a34dae57a2a9b0a8ff2fb508ca5ed7e5da4`。7 个受影响 TU 实际严格编译与链接均退出 0，旧冻结 DLL 未改；来源、借用对象、真实依赖和链接回执见同目录 `INCREMENTAL-BUILD.actual.json`。该结果尚不是新 FileAPI qualified runtime 或实际控件通过。
+
+当前正在修复现有 configured successor 对新增 TU 缺少 old_commands／旧 dependencies 的实际拒绝路径；保留严格来源及真实 FileAPI，完成正式资格封包后继续实机。没有伪造 qualification，也没有启动游戏。另已读回当前桌面 1024×768、显示设备实际支持 2560×1440；将在排他现场按实际模式设置并读回，截图不会放大冒充原尺寸。
