@@ -321,12 +321,21 @@ def previous_allocated_unused_closure(previous,freeze,close_path,keeper_root,rel
                 'business_pass':False}}
 
 
-def predecessor_keeper_report_v1(keeper_root: Path, *, allocated_unrun: bool,
+def predecessor_keeper_report_v1(keeper_root: Path, *, aborted_wrapper: bool,
         pre_ready: bool, expired_keeper: bool, interrupted_owner: bool) -> JsonObject | None:
     """Let each exceptional reducer validate its own original terminal evidence."""
-    if allocated_unrun or pre_ready or expired_keeper or interrupted_owner:
+    if aborted_wrapper or pre_ready or expired_keeper or interrupted_owner:
         return None
     return json_object(read_json(keeper_root/'report.json'))
+
+
+def require_predecessor_keeper_release_v1(keeper: JsonObject | None, release: JsonObject,
+        task: str, *, exceptional_terminal_validated: bool) -> None:
+    """An exceptional reducer owns terminal evidence; ordinary closure needs the report."""
+    if exceptional_terminal_validated:
+        return
+    if keeper is None or not closed_lease(keeper,release,task):
+        raise ValueError('Previous screen keeper/release is not closed')
 
 
 def wait_for_allocated_keeper(child,live,keeper_root,*,idle_seconds=600):
@@ -3074,7 +3083,9 @@ def _allocate_and_keep_impl(selection,args):
             report=read_json(previous/'native-report.json')
         else:
             report,report_reference,report_projection=previous_native_cleanup(previous,freeze)
-        prior_keeper=predecessor_keeper_report_v1(args.previous_keeper,allocated_unrun=allocated_unrun,
+        aborted_wrapper=(allocated_unrun and failure_bundle.get('closure_kind')==
+                         'wrapper-aborted-before-launch-without-terminal-waits')
+        prior_keeper=predecessor_keeper_report_v1(args.previous_keeper,aborted_wrapper=aborted_wrapper,
             pre_ready=pre_ready,expired_keeper=expired_keeper,interrupted_owner=interrupted_owner)
         # The canonical bus event/task reconstruction is valid for a successful
         # predecessor too; its bytes are verified by read_failed_runtime_release.
@@ -3120,8 +3131,10 @@ def _allocate_and_keep_impl(selection,args):
                              previous_session_closure(previous,freeze,report,report_reference))
         if report_projection is not None:
             session_closure['native_cleanup_projection']=report_projection
-        if not (pre_ready or expired_keeper or interrupted_owner):
-            require(closed_lease(prior_keeper,release,freeze['screen_task']),'Previous screen keeper/release is not closed')
+        require_predecessor_keeper_release_v1(prior_keeper,json_object(release),freeze['screen_task'],
+            exceptional_terminal_validated=(pre_ready or expired_keeper or interrupted_owner or
+                (aborted_wrapper and session_closure.get('mode')==
+                 'previous-shared-allocated-aborted-wrapper-resource-only')))
         require_latest_screen_release(release,args.latest_screen_release)
         closure={**session_closure,'run_id':freeze['run_id'],
                  'previous_live':str(previous),'previous_keeper':str(args.previous_keeper.resolve()),

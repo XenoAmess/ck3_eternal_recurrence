@@ -308,12 +308,13 @@ class AbortedAllocationTests(unittest.TestCase):
 
     def test_actual_producer_dispatch_consumer_and_json_round_trip_keep_waits_unknown(self) -> None:
         report=self.produce();verdict=report['validation'];cleanup=member(verdict,'failure_cleanup')
-        from ck3_mod_acceptance_allocate import predecessor_keeper_report_v1
+        from ck3_mod_acceptance_allocate import (predecessor_keeper_report_v1,
+                                                require_predecessor_keeper_release_v1)
         self.assertFalse((self.keeper/'report.json').exists())
-        self.assertIsNone(predecessor_keeper_report_v1(self.keeper,allocated_unrun=True,
+        self.assertIsNone(predecessor_keeper_report_v1(self.keeper,aborted_wrapper=True,
             pre_ready=False,expired_keeper=False,interrupted_owner=False))
         with self.assertRaises(FileNotFoundError):
-            predecessor_keeper_report_v1(self.keeper,allocated_unrun=False,
+            predecessor_keeper_report_v1(self.keeper,aborted_wrapper=False,
                 pre_ready=False,expired_keeper=False,interrupted_owner=False)
         self.assertFalse(cleanup['original_allocator_wait_proven']);self.assertIsNone(cleanup['original_allocator_exit_code'])
         self.assertFalse(cleanup['original_keeper_wait_proven']);self.assertIsNone(cleanup['original_keeper_exit_code'])
@@ -321,6 +322,11 @@ class AbortedAllocationTests(unittest.TestCase):
         actual=subject.validate_aborted_allocation_v1(self.live,json.loads(json.dumps(self.freeze)),
             Path(report['bundle']['path']),self.keeper,self.done,json.loads(json.dumps(self.packet)),next_state=self.root/'new-state')
         self.assertEqual(actual['mode'],'previous-shared-allocated-aborted-wrapper-resource-only')
+        require_predecessor_keeper_release_v1(None,self.done,str(self.freeze['screen_task']),
+            exceptional_terminal_validated=actual['mode']=='previous-shared-allocated-aborted-wrapper-resource-only')
+        with self.assertRaisesRegex(ValueError,'keeper/release'):
+            require_predecessor_keeper_release_v1(None,self.done,str(self.freeze['screen_task']),
+                exceptional_terminal_validated=False)
 
     def test_any_actual_launch_or_terminal_evidence_refuses_missing_wait_branch(self) -> None:
         for name in ('launch-intent.json','host-started.json','native-report.json','keeper-actual-parent-exit.json'):
