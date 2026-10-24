@@ -43,6 +43,7 @@ public final class SharedRuntimeComposer {
             "ck3_open_ingame_decisions_v1", "ck3_query_ingame_decision_item_v1",
             "ck3_select_ingame_decision_item_v1", "ck3_confirm_ingame_decision_outcome_v1",
             "ck3_select_event_option", "ck3_query_player_religion_context_v1",
+            "ck3_query_player_rite_members_v1",
             "ck3_query_player_religion_doctrines_v1", "ck3_query_player_religion_doctrine_knowledge_v1",
             "ck3_query_player_religion_reform_context_v1", "ck3_query_player_religion_draft_groups_v1",
             "ck3_query_player_religion_draft_doctrine_choices_v1", "ck3_query_player_religion_draft_resource_costs_v1",
