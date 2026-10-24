@@ -23,35 +23,96 @@ des_ensure_own_rite_binding_effect = {
 }
 
 des_create_rite_dynasty_effect = {
-	rite = {
-		save_scope_as = des_binding_rite
-		set_variable = { name = des_binding_in_progress value = yes }
-	}
-	create_dynasty = {
-		spread_to_descendants = no
-		save_scope_as = des_created_dynasty
-	}
+	save_scope_as = des_requested_dynasty_founder
+	save_scope_as = des_selected_dynasty_founder
+	# Prefer an existing eligible adherent before transferring an old House head.
 	if = {
-		limit = {
-			exists = scope:des_created_dynasty
-			dynasty = scope:des_created_dynasty
-			exists = house
+		limit = { OR = { is_house_head = yes is_dynast = yes } }
+		faith = {
+			random_faith_character = {
+				limit = {
+					is_alive = yes
+					rite = scope:des_requested_dynasty_founder.rite
+					is_house_head = no
+					is_dynast = no
+				}
+				save_scope_as = des_selected_dynasty_founder
+			}
 		}
-		house = { save_scope_as = des_created_house }
-		scope:des_binding_rite = {
-			set_variable = { name = des_bound_dynasty value = scope:des_created_dynasty }
-			set_variable = { name = des_join_house value = scope:des_created_house }
-		}
-		scope:des_created_dynasty = {
-			set_variable = { name = des_bound_rite value = scope:des_binding_rite }
-		}
-		add_to_global_variable_list = { name = des_bound_rites target = scope:des_binding_rite }
 	}
-	else = {
-		scope:des_binding_rite = { set_variable = { name = des_binding_fault value = yes } }
-		debug_log = "DES: failed to create a valid dynasty/house binding; no fallback identity assigned"
+	scope:des_selected_dynasty_founder = {
+		des_relinquish_old_house_head_effect = yes
+		if = {
+			limit = {
+				is_house_head = no
+				is_dynast = no
+				trigger_if = {
+					limit = { exists = house.house_head }
+					NOT = { this = house.house_head }
+				}
+				trigger_if = {
+					limit = { exists = dynasty.dynast }
+					NOT = { this = dynasty.dynast }
+				}
+			}
+			rite = {
+				save_scope_as = des_binding_rite
+				set_variable = { name = des_binding_in_progress value = yes }
+			}
+			create_dynasty = {
+				spread_to_descendants = no
+				save_scope_as = des_created_dynasty
+			}
+			if = {
+				limit = {
+					exists = scope:des_created_dynasty
+					dynasty = scope:des_created_dynasty
+					exists = house
+				}
+				house = { save_scope_as = des_created_house }
+				scope:des_binding_rite = {
+					set_variable = { name = des_bound_dynasty value = scope:des_created_dynasty }
+					set_variable = { name = des_join_house value = scope:des_created_house }
+				}
+				scope:des_created_dynasty = {
+					set_variable = { name = des_bound_rite value = scope:des_binding_rite }
+				}
+				add_to_global_variable_list = { name = des_bound_rites target = scope:des_binding_rite }
+			}
+			else = {
+				scope:des_binding_rite = { set_variable = { name = des_binding_fault value = yes } }
+				debug_log = "DES: failed to create a valid dynasty/house binding; no fallback identity assigned"
+			}
+			scope:des_binding_rite = { remove_variable = des_binding_in_progress }
+		}
+		else = {
+			rite = { set_variable = { name = des_binding_fault value = yes } }
+			debug_log = "DES: no legal native dynasty founder after old House head handover; binding remains unavailable"
+		}
 	}
-	scope:des_binding_rite = { remove_variable = des_binding_in_progress }
+}
+
+# Character scope. Only a real other living member of this same old House may take over.
+des_relinquish_old_house_head_effect = {
+	if = {
+		limit = { is_house_head = yes exists = house.house_head }
+		save_scope_as = des_relinquishing_founder
+		house = {
+			random_house_member = {
+				limit = {
+					is_alive = yes
+					house = scope:des_relinquishing_founder.house
+					NOT = { this = scope:des_relinquishing_founder }
+				}
+				save_scope_as = des_old_house_successor
+				house = { set_house_head = scope:des_old_house_successor }
+			}
+		}
+		if = {
+			limit = { is_house_head = yes }
+			debug_log = "DES: no living other old House member available for head handover"
+		}
+	}
 }
 
 # Rite scope. Repair only missing components whose remaining object identity proves
