@@ -1,0 +1,1139 @@
+{
+  "schema": "sxant-notification-diagnostic-v1",
+  "document_state": "FINAL_PARTIAL_DIAGNOSTIC_BUG_OPEN",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T00:05:17.981628+00:00",
+  "source_head": "9ab8e9b14ecadb15ce47035bc2ea02b4cf335464",
+  "source_dirty": false,
+  "runtime": {
+    "path": "C:\\ck3-common-runtime-20261024\\running-date-support-a01\\runtime.local.json",
+    "bytes": 461012,
+    "sha256": "2afce59cd300fa7ecdb30e076e28c361c307810a4e583d6198a4139a548223f6"
+  },
+  "runtime_manifest": {
+    "path": "C:\\ck3-common-runtime-20261024\\running-date-support-a01\\manifest.json",
+    "bytes": 6349,
+    "sha256": "6bcef695f40de403f3d5965cad561465d39497437ca07bba7048299ac193ca09"
+  },
+  "game": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "steam_app_manifest": {
+    "path": "C:\\SteamLibrary\\steamapps\\appmanifest_1158310.acf",
+    "bytes": 4266,
+    "sha256": "f9ad568e8daa298e25c8272fe38f7ad63f474b799bba52004e965f760665bb0c"
+  },
+  "steam_build_id": "25734779",
+  "product_projection_manifest": {
+    "path": "C:\\ck3-superman-validation-20261023\\source-staging-a05.manifest.json",
+    "bytes": 10326,
+    "sha256": "3443f1954fa7c6bf2252358b38a7caf52b9401dfebebad1584e0766e9944732c"
+  },
+  "case_contract": {
+    "path": "D:\\sxad1023\\tools\\ck3_mod_acceptance_cases\\superman_qiang_notification_investigation.json",
+    "bytes": 2815,
+    "sha256": "93d5a42d49986ea4f42952886ba54c9a9b46bdc58e536ee503d77d58983b8641"
+  },
+  "fixture_events": {
+    "path": "D:\\sxad1023\\mod_superman_qiang\\tools\\notification_fixture\\events\\sxant_events.txt",
+    "bytes": 66828,
+    "sha256": "ed67fe2c18ff18585a53bf8fe5ec7dd5fccb434bab7e40bb077c4bc2348acf9e"
+  },
+  "runs": [
+    {
+      "sequence": 32,
+      "run_id": "desktop-3fevhd2-1c74096080--superman-qiang--R0032",
+      "actor_full_id": 31254,
+      "subject_full_id": 65837,
+      "samples": [
+        {
+          "sample": "baseline",
+          "assessment": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0032-notification-a01\\baseline-assessment-a01\\ASSESSMENT.actual.json",
+            "bytes": 7811,
+            "sha256": "992fc43296c81d8642ab5224286d830b366d7a30b331b783c34dd7317df17a7c"
+          },
+          "decoder_receipt": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0032-notification-a01\\baseline\\decoder.actual.json",
+            "bytes": 1918,
+            "sha256": "108f81ece2c0cc6de10c65c57a12e7ae73634073b0bb45ecd601d572ebd9f06c"
+          },
+          "original_save": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0032-notification-a01\\baseline\\original.ck3",
+            "bytes": 68592019,
+            "sha256": "c7a2853db05b0975640fe149153dfb8182139e36f28b8b53445765f3e07fb880"
+          },
+          "melt": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0032-notification-a01\\baseline\\melted.txt",
+            "bytes": 100221236,
+            "sha256": "9c6dfa2cdc57230880fa20f4e01d0207ab0f55cadb7c41d5e65f9042e305e757"
+          }
+        }
+      ],
+      "closure_evidence": [
+        {
+          "path": "C:\\ck3-superman-validation-20261023\\ops\\R0032-screen-release.actual.json",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "C:\\ck3-superman-validation-20261023\\ops\\R0032-abort-closure.actual.json",
+          "bytes": 4603,
+          "sha256": "d2bddc47742ec0c35c2dbbc95d0381b89d732edaead26baa4d21eb3567985c69"
+        }
+      ],
+      "final_closure_state": "SOURCE_RECORDS_RETAINED"
+    },
+    {
+      "sequence": 33,
+      "run_id": "desktop-3fevhd2-1c74096080--superman-qiang--R0033",
+      "actor_full_id": 31254,
+      "subject_full_id": 65869,
+      "samples": [
+        {
+          "sample": "baseline",
+          "assessment": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0033-notification-a01\\baseline-assessment-a01\\ASSESSMENT.actual.json",
+            "bytes": 7079,
+            "sha256": "5f311decc15fac433a6bb2486b245972ddfb04cc67cfc353a4a1af30e5407cea"
+          },
+          "decoder_receipt": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0033-notification-a01\\baseline\\decoder.actual.json",
+            "bytes": 1918,
+            "sha256": "d7239729a37058889c93935001ad3cf04e588aa5c98e8f0de9dfbd2314dc77be"
+          },
+          "original_save": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0033-notification-a01\\baseline\\original.ck3",
+            "bytes": 68514148,
+            "sha256": "7b2c99404a0879be2f91f55808e97175fef93affba808782c35b57055e7b2e23"
+          },
+          "melt": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0033-notification-a01\\baseline\\melted.txt",
+            "bytes": 100071976,
+            "sha256": "12dbe45c82f3846e8d382b62c2b5f6e2169410d61df05d69b7ee44ecb6aa0f7a"
+          }
+        },
+        {
+          "sample": "postdeath",
+          "assessment": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0033-notification-a01\\postdeath-assessment-a01\\ASSESSMENT.actual.json",
+            "bytes": 15300,
+            "sha256": "4e87c0e65e3e361cd91183f216f30c4d1f8026538635b937c0ba0190f9add6bc"
+          },
+          "decoder_receipt": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0033-notification-a01\\postdeath\\decoder.actual.json",
+            "bytes": 1923,
+            "sha256": "11e0cd94388c10183e4ab0b46ed0b8e9f9b7fafb9af48b5c84625283fc65eb73"
+          },
+          "original_save": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0033-notification-a01\\postdeath\\original.ck3",
+            "bytes": 68240444,
+            "sha256": "edefe2654d931a175e976a64ad141ed3bc6fcf29c38172b94541ecb6ee247c03"
+          },
+          "melt": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0033-notification-a01\\postdeath\\melted.txt",
+            "bytes": 99625355,
+            "sha256": "ad841e55e92f6c1f2b760409417b5d12ba606958fecbbd7e60b752795a4e2045"
+          }
+        }
+      ],
+      "closure_evidence": [
+        {
+          "path": "C:\\ck3-superman-validation-20261023\\ops\\R0033-operator-retained-exit.actual.json",
+          "bytes": 544,
+          "sha256": "3af131c141e7b077bcd9ee901d0ea876065dcfdd00d4893acf2fecdb32f5ea8f"
+        },
+        {
+          "path": "C:\\ck3-superman-validation-20261023\\ops\\R0033-screen-release.actual.json",
+          "bytes": 1191,
+          "sha256": "d5fc8b7ec71ed0dd783aed2e9a5653fadbc9623e44734222fc2c818f8c6619e9"
+        },
+        {
+          "path": "C:\\ck3-superman-validation-20261023\\notification-scene-n0-a04\\public-verify.actual.json",
+          "bytes": 10275,
+          "sha256": "f4b3d9473055fba9f90e579da5cd7a6b87d3622738f12b5dd34d0a46a50a1555"
+        }
+      ],
+      "final_closure_state": "NORMAL_CLOSED_BUSINESS_CASE_NOT_ACCEPTED",
+      "final_closure": {
+        "public_verify": {
+          "path": "C:\\ck3-superman-validation-20261023\\notification-scene-n0-a04\\public-verify.actual.json",
+          "bytes": 10275,
+          "sha256": "f4b3d9473055fba9f90e579da5cd7a6b87d3622738f12b5dd34d0a46a50a1555"
+        },
+        "normal_close_qualified": true,
+        "case_acceptance_pass": false,
+        "session_process_exit_code": 0,
+        "native_ck3_exit_code": 0,
+        "job_before": 0,
+        "job_final": 0,
+        "cleanup_proven": true,
+        "host_finished_at": "2026-10-23T23:05:52.577490+00:00"
+      }
+    },
+    {
+      "sequence": 34,
+      "run_id": "desktop-3fevhd2-1c74096080--superman-qiang--R0034",
+      "actor_full_id": 31254,
+      "subject_full_id": 65868,
+      "samples": [
+        {
+          "sample": "baseline",
+          "assessment": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0034-notification-a01\\baseline-assessment-a01\\ASSESSMENT.actual.json",
+            "bytes": 7237,
+            "sha256": "2bbdbd8e98cb21ec817c908c663c823562b7112adf96ee39c6305c8c5eff68ef"
+          },
+          "decoder_receipt": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0034-notification-a01\\baseline\\decoder.actual.json",
+            "bytes": 1918,
+            "sha256": "df6d461c6a88a3fbe3bcb19ee7675d4977814034cb0feb95746695b815d8d26a"
+          },
+          "original_save": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0034-notification-a01\\baseline\\original.ck3",
+            "bytes": 68521156,
+            "sha256": "0c616e91ea05a9d60dcc34a126bdddf512e7037999902a6cd3d896b351571cd2"
+          },
+          "melt": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0034-notification-a01\\baseline\\melted.txt",
+            "bytes": 100080713,
+            "sha256": "4b97d4b98c214ea1542ce6d87a306ae02e0eda05c59b065d41621c7221af7e4c"
+          }
+        }
+      ],
+      "closure_evidence": [
+        {
+          "path": "C:\\ck3-superman-validation-20261023\\ops\\R0034-operator-retained-exit.actual.json",
+          "bytes": 544,
+          "sha256": "338b0928e74a5091d30414a6aadc933b05c9984fda83a747e2a0c578ee78fa3b"
+        },
+        {
+          "path": "C:\\ck3-superman-validation-20261023\\ops\\R0034-screen-release.actual.json",
+          "bytes": 1149,
+          "sha256": "e4416ab5b8c3081b83475f65a56b579d332379748c84d33245cbec943f09e85d"
+        },
+        {
+          "path": "C:\\ck3-superman-validation-20261023\\notification-scene-n5-a03\\public-verify.actual.json",
+          "bytes": 10277,
+          "sha256": "375548b0bcd74c3b6381f97825685430b1f55411c85a716ccf10ad387ec8cea4"
+        }
+      ],
+      "final_closure_state": "NORMAL_CLOSED_BUSINESS_CASE_NOT_ACCEPTED",
+      "final_closure": {
+        "public_verify": {
+          "path": "C:\\ck3-superman-validation-20261023\\notification-scene-n5-a03\\public-verify.actual.json",
+          "bytes": 10277,
+          "sha256": "375548b0bcd74c3b6381f97825685430b1f55411c85a716ccf10ad387ec8cea4"
+        },
+        "normal_close_qualified": true,
+        "case_acceptance_pass": false,
+        "session_process_exit_code": 0,
+        "native_ck3_exit_code": 0,
+        "job_before": 0,
+        "job_final": 0,
+        "cleanup_proven": true,
+        "host_finished_at": "2026-10-23T23:31:23.697217+00:00"
+      }
+    },
+    {
+      "sequence": 35,
+      "run_id": "desktop-3fevhd2-1c74096080--superman-qiang--R0035",
+      "actor_full_id": 31254,
+      "subject_full_id": 65860,
+      "samples": [
+        {
+          "sample": "baseline",
+          "assessment": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0035-notification-a01\\baseline-assessment-a01\\ASSESSMENT.actual.json",
+            "bytes": 7225,
+            "sha256": "e776b2da471dc9f98276e503f02cd94ec69384728e3ab58d3dc8a5ba27d4719d"
+          },
+          "decoder_receipt": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0035-notification-a01\\baseline\\decoder.actual.json",
+            "bytes": 1918,
+            "sha256": "d4c5a5e62938459b8a54c2b20da5b22005f98b3743b121f6cf89a3190f884c97"
+          },
+          "original_save": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0035-notification-a01\\baseline\\original.ck3",
+            "bytes": 68628276,
+            "sha256": "aa78281758f32e5cceaa5b68592b40828723ead199c1e97244a3b7cac1ce85f7"
+          },
+          "melt": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0035-notification-a01\\baseline\\melted.txt",
+            "bytes": 100285889,
+            "sha256": "e15dba128d29c144065781e985695d5b80b353a510ecd5bd1fad1efc5a8cd7ba"
+          }
+        },
+        {
+          "sample": "predeath",
+          "assessment": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0035-notification-a01\\predeath-assessment-a01\\ASSESSMENT.actual.json",
+            "bytes": 10697,
+            "sha256": "24a3a7efeee9030130e2c68251ac1f57724dcd1b279eeef3f2d9bc2c41231ef3"
+          },
+          "decoder_receipt": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0035-notification-a01\\predeath\\decoder.actual.json",
+            "bytes": 1918,
+            "sha256": "8d8565e2f2a8fe05a5f8169822b9a9d6f266e4ba874e6e1395bf70dd538bdca0"
+          },
+          "original_save": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0035-notification-a01\\predeath\\original.ck3",
+            "bytes": 68851785,
+            "sha256": "89053a75e4ea9ea549867ca7bb090325ac5d9eecf167ffeb0d5fdeca6346ae7f"
+          },
+          "melt": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0035-notification-a01\\predeath\\melted.txt",
+            "bytes": 100697558,
+            "sha256": "152e0f995c6d377f7179e0f11dc82d4338bdcfdb737271bbbbc13f50769d752a"
+          }
+        },
+        {
+          "sample": "postdeath",
+          "assessment": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0035-notification-a01\\postdeath-assessment-a01\\ASSESSMENT.actual.json",
+            "bytes": 21752,
+            "sha256": "a3d5fd58d1cb22320a8a1131755c158aa4cb3730e24101b7bd73dd71c1f6f685"
+          },
+          "decoder_receipt": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0035-notification-a01\\postdeath\\decoder.actual.json",
+            "bytes": 1924,
+            "sha256": "dbac31c640a1b1e438db5069bf26dd349c3ea237a95cd7bbc324729418826e23"
+          },
+          "original_save": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0035-notification-a01\\postdeath\\original.ck3",
+            "bytes": 68578142,
+            "sha256": "72bf3fa76370b6fe20b2308148291e4b003df836819d7d1b29a095ec53ff3099"
+          },
+          "melt": {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0035-notification-a01\\postdeath\\melted.txt",
+            "bytes": 100250313,
+            "sha256": "b46259b19692f40a4f4557b6ced9a148b86f30c1aa983adeed3dafd72710cb31"
+          }
+        }
+      ],
+      "closure_evidence": [
+        {
+          "path": "C:\\ck3-superman-validation-20261023\\ops\\R0035-operator-retained-exit.actual.json",
+          "bytes": 544,
+          "sha256": "5942016ecab4812e336f7479d7d0653d3dda3579854e9bfe39cb2cf3ff837082"
+        }
+      ],
+      "final_closure_state": "NORMAL_CLOSED_BUSINESS_CASE_FAILED_SETTINGS",
+      "final_closure": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-10-24T00:17:50.414685+00:00",
+        "retained_os0_at_utc": "2026-10-24T00:01:25.241967+00:00",
+        "birth_filetime": "134372724270891329",
+        "os_exit_code": 0,
+        "session_process_exit_code": 0,
+        "native_ck3_exit_code": 0,
+        "job_before": 0,
+        "job_final": 0,
+        "cleanup_proven": true,
+        "tree_gone": true,
+        "inventory_empty": true,
+        "native_host_status": "GREEN",
+        "host_finished_at": "2026-10-24T00:05:32.769298+00:00",
+        "public_run_exit_code": 2,
+        "public_verify_exit_code": 2,
+        "public_exit_codes_source": "Root final actual observation; immutable outputs preserved",
+        "normal_close_qualified": true,
+        "case_acceptance_pass": false,
+        "negative_assertion_keys": [
+          "actual_relationship_and_notification_settings"
+        ],
+        "keeper_original_actual_exit_code": 0,
+        "keeper_last_sequence": 8558,
+        "screen_release_CAS": 8559,
+        "Steam_offline": true,
+        "normal_close_notes_template_gap": "notes retain false3/false4 phrase; actual Root assertion object has only settings false, and is authoritative",
+        "evidence": [
+          {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0035-operator-retained-exit.actual.json",
+            "bytes": 544,
+            "sha256": "5942016ecab4812e336f7479d7d0653d3dda3579854e9bfe39cb2cf3ff837082"
+          },
+          {
+            "path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0035\\native-report.json",
+            "bytes": 9500337,
+            "sha256": "d2444480b71e9cbe135dc639018b1b4a673e04ba7aaa58548ae85ae35feb7a07"
+          },
+          {
+            "path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0035\\host-original-process-exit.json",
+            "bytes": 252,
+            "sha256": "77fb2885676e48f3c8abf9e06994a2a6de63e0cdba919048f22a7a533141c29e"
+          },
+          {
+            "path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0035\\keeper-actual-parent-exit.json",
+            "bytes": 616,
+            "sha256": "746eb2c0693c84f07acc354e85c28888e8390271f4de56276e75a6f914669ce4"
+          },
+          {
+            "path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0035\\case-output\\notification-baseline-and-original-probe-root-result.json",
+            "bytes": 1629,
+            "sha256": "354347820be38661bee11c765b8f03dedd32967b359bfc87743994467a1ad909"
+          },
+          {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0035-notification-a01\\ROOT-DIAGNOSTIC.actual.json",
+            "bytes": 4486,
+            "sha256": "97eda6c29f3c1a60ae87c7f2c7049f647ea93edacd73305c1b602439e2647279"
+          },
+          {
+            "path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0035\\case-output\\normal-close-result.json",
+            "bytes": 9382,
+            "sha256": "aaad6cd2d85216ab51403ce6de9d6f21647031d010b15b6abc88fe5d99ba2076"
+          },
+          {
+            "path": "C:\\ck3-superman-validation-20261023\\notification-scene-n5-a04\\public-verify.actual.json",
+            "bytes": 10275,
+            "sha256": "023e3f7eca10d18656a93e0962448ce480309454b89f912163b81a675b1db43a"
+          },
+          {
+            "path": "C:\\ck3-superman-validation-20261023\\notification-keeper-a13\\report.json",
+            "bytes": 446,
+            "sha256": "af76223794389ffe14ab94b89f29cbe717ebe5156e77aac7b6f045f164d2ba01"
+          },
+          {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0035-screen-release.actual.json",
+            "bytes": 1207,
+            "sha256": "5edc88289003c24c65a7d7e5a89299685be3762877ad4b7f674534ac01650c50"
+          },
+          {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\steam-background-R0035-closed-a01.json",
+            "bytes": 2461,
+            "sha256": "d42fcbfd88a7295cb2ad9a966d1f9df3d491e062ef158676d2e318fb69441d81"
+          },
+          {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0035-closed-capacity-admission.actual.json",
+            "bytes": 10190,
+            "sha256": "ce3bc6ba10886408ad70a74408bb94b26b5292586e734c161758a5764e5fbfdb"
+          }
+        ]
+      }
+    }
+  ],
+  "public_110_source_investigation": {
+    "handoff": {
+      "path": "C:\\ck3-superman-notification-20261024\\public-110-relation-addendum-a01\\HANDOFF.actual.json",
+      "bytes": 2338,
+      "sha256": "eaf69a03bb614905403917a5b0cd98badf50e8bdb4437dafe0b67d3938627841"
+    },
+    "files": [
+      {
+        "path": "C:\\ck3-superman-notification-20261024\\public-110-relation-addendum-a01\\ADDENDUM.md",
+        "bytes": 3837,
+        "sha256": "33ba032b8a8901a5ee26faadd6270d17adc5daa1de42ddd17a84a2b894401c40"
+      },
+      {
+        "path": "C:\\ck3-superman-notification-20261024\\public-110-relation-addendum-a01\\historical-core-comparison.actual.json",
+        "bytes": 1967,
+        "sha256": "5094c8da7548983a4418eaf3e9011d5693c095fdc650efc7905eb97ad99c1317"
+      },
+      {
+        "path": "C:\\ck3-superman-notification-20261024\\public-110-relation-addendum-a01\\native-set-relation.actual.json",
+        "bytes": 145192,
+        "sha256": "56cdef5f584354a862c5dd099fd14a2254461e709a18f00a8d3be5769dd512eb"
+      },
+      {
+        "path": "C:\\ck3-superman-notification-20261024\\public-110-relation-addendum-a01\\public-110-save-relations.actual.json",
+        "bytes": 3399,
+        "sha256": "a77c557da493d2d4ce6d646cf1e1cbf6df399f056cc945d98c0f20b1cc37d5d4"
+      },
+      {
+        "path": "C:\\ck3-superman-notification-20261024\\public-110-relation-addendum-a01\\r29-save-relations.actual.json",
+        "bytes": 2211,
+        "sha256": "fbc32b634d7c8f5793f35768d30517bdc1c4cbdf8cbc6272e54c2a2210e14837"
+      },
+      {
+        "path": "C:\\ck3-superman-notification-20261024\\public-110-relation-addendum-a01\\source-comparison.actual.json",
+        "bytes": 4572,
+        "sha256": "70a03f9c5243ecf4f5d9693ee8501fdbb3009b85e6d856a7506907052d591e35"
+      },
+      {
+        "path": "C:\\ck3-superman-notification-20261024\\public-110-relation-addendum-a01\\STREAM-attempt1.actual.json",
+        "bytes": 520,
+        "sha256": "d50a84a593bbb91ad7f8a99467468e2741b30ebea806fe58d7935d12d47606d5"
+      }
+    ],
+    "raw_large_saves_not_copied": true,
+    "compact_source_index": {
+      "schema": "sxant-public110-compact-source-index-v1",
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "assembled_at_utc": "2026-10-24T00:17:50.411714+00:00",
+      "source_comparison": {
+        "schema": "sxant-public-110-current-source-comparison-v1",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-10-23T21:38:27.953596+00:00",
+        "public_tag": "superman-qiang-v1.1.0",
+        "public_commit": "f7fde816e295a62807ab636ee2d93cf307ea69cf",
+        "current_head": "2d810e442d28ade91df09052ca72fa4f4f56cb6f",
+        "files": [
+          {
+            "path": "common/scripted_effects/zz_sxad_had_sex_with_effect.txt",
+            "public_bytes": 9868,
+            "public_sha256": "46e066aa7e7e81ab2f6292e9650a479de9e8c7ae7e5808d35868396bf99c4ba2",
+            "current_bytes": 9868,
+            "current_sha256": "a942dc45d11c21fb31afb26753cda28891c08423a7331d0f8f4b446cd9bc685f",
+            "byte_equal": false,
+            "equal_ignoring_projection_comment": true
+          },
+          {
+            "path": "common/scripted_effects/zz_sxad_had_sex_with_unknown_effect.txt",
+            "public_bytes": 1353,
+            "public_sha256": "afaab280b0be669bf019203e2b3d16f97f087daa5b682338fdcb3bbfaca75fe1",
+            "current_bytes": 1353,
+            "current_sha256": "496708bcf73fccf051be18ce097300f95bd03360f3c9436c8d88e1185e9b0907",
+            "byte_equal": false,
+            "equal_ignoring_projection_comment": true
+          },
+          {
+            "path": "common/scripted_effects/sxad_experience_effects.txt",
+            "public_bytes": 2872,
+            "public_sha256": "3ba408a0320378b6f09c4d16880d925a16aab07a5904847e0e59af2a183e8a50",
+            "current_bytes": 3033,
+            "current_sha256": "05f68a64fc25690f50035f69c493dcc5b58c138c426815e372a354a16f63f905",
+            "byte_equal": false,
+            "equal_ignoring_projection_comment": false
+          },
+          {
+            "path": "common/scripted_effects/sxad_transfer_effects.txt",
+            "public_bytes": 11909,
+            "public_sha256": "7991c7000897755735fad9d6785ee3840811b3ad958a155675b9d67918a59458",
+            "current_bytes": 11909,
+            "current_sha256": "7991c7000897755735fad9d6785ee3840811b3ad958a155675b9d67918a59458",
+            "byte_equal": true,
+            "equal_ignoring_projection_comment": true
+          },
+          {
+            "path": "common/scripted_effects/sxad_probe_skill_effects.txt",
+            "public_bytes": 11144,
+            "public_sha256": "e4d6e1d40b552440a5f5042d1d6833337cfb1b55565504e1cd5dea4ef12ab7cd",
+            "current_bytes": 11144,
+            "current_sha256": "e4d6e1d40b552440a5f5042d1d6833337cfb1b55565504e1cd5dea4ef12ab7cd",
+            "byte_equal": true,
+            "equal_ignoring_projection_comment": true
+          },
+          {
+            "path": "common/traits/sxad_traits.txt",
+            "public_bytes": 482,
+            "public_sha256": "2139b3fb753bb72607162f65f88eb94e1494057060550bf9ba8fb5bbdd07d53d",
+            "current_bytes": 482,
+            "current_sha256": "2139b3fb753bb72607162f65f88eb94e1494057060550bf9ba8fb5bbdd07d53d",
+            "byte_equal": true,
+            "equal_ignoring_projection_comment": true
+          },
+          {
+            "path": "common/character_interactions/sxad_interactions.txt",
+            "public_bytes": 1177,
+            "public_sha256": "49af8002a9d26eeb08b99073bb2393a6bd7c2e25f11610df990bcebbfe8e92d5",
+            "current_bytes": 1177,
+            "current_sha256": "49af8002a9d26eeb08b99073bb2393a6bd7c2e25f11610df990bcebbfe8e92d5",
+            "byte_equal": true,
+            "equal_ignoring_projection_comment": true
+          }
+        ],
+        "public_script_files_scanned": 10,
+        "public_direct_set_relation_calls": 0,
+        "public_direct_toast_calls": 1,
+        "current_stock_sources": [
+          {
+            "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_scheme_scripted_effects.txt",
+            "bytes": 424808,
+            "sha256": "57e30da751f6fd4c4513d6fec3e7aec008ffcf621ca2c79c3aa472197b4d3456"
+          },
+          {
+            "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\schemes\\scheme_types\\seduce_scheme.txt",
+            "bytes": 32768,
+            "sha256": "4f37de42079a928039d87294a21fb1d6147d27aedfe43df3425437877b41415d"
+          },
+          {
+            "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_relations\\00_scripted_relations.txt",
+            "bytes": 4626,
+            "sha256": "3a72e905048d65d5d9610fee2c3eb37e5fe3f2d393b400e10ac9bf908668beda"
+          },
+          {
+            "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\scheme_events\\seduce_scheme\\seduce_scheme_outcome_events.txt",
+            "bytes": 104190,
+            "sha256": "39b85e789d6573a73ca85f745c2afb5eac3154d958875ec6c904df2112214115"
+          }
+        ],
+        "root_cause_proven": false,
+        "scope": "Stock seduction scheme and relation helper are current installed1.20.0.4 sources; no unverified assertion of historical1.20.0.3 identity."
+      },
+      "historical_core_comparison": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-10-23T21:39:22.050941+00:00",
+        "historical_R21_core_commit": "ff5b112d8bde46948538678b58705ad88b69e406",
+        "public_tag": "superman-qiang-v1.1.0",
+        "verified_equal_mechanism_files": [
+          {
+            "path": "mod_superman_qiang/common/scripted_effects/zz_sxad_had_sex_with_effect.txt",
+            "core_and_public_equal": true,
+            "sha256": "46e066aa7e7e81ab2f6292e9650a479de9e8c7ae7e5808d35868396bf99c4ba2"
+          },
+          {
+            "path": "mod_superman_qiang/common/scripted_effects/zz_sxad_had_sex_with_unknown_effect.txt",
+            "core_and_public_equal": true,
+            "sha256": "afaab280b0be669bf019203e2b3d16f97f087daa5b682338fdcb3bbfaca75fe1"
+          },
+          {
+            "path": "mod_superman_qiang/common/scripted_effects/sxad_experience_effects.txt",
+            "core_and_public_equal": true,
+            "sha256": "3ba408a0320378b6f09c4d16880d925a16aab07a5904847e0e59af2a183e8a50"
+          },
+          {
+            "path": "mod_superman_qiang/common/scripted_effects/sxad_transfer_effects.txt",
+            "core_and_public_equal": true,
+            "sha256": "7991c7000897755735fad9d6785ee3840811b3ad958a155675b9d67918a59458"
+          },
+          {
+            "path": "mod_superman_qiang/common/scripted_effects/sxad_probe_skill_effects.txt",
+            "core_and_public_equal": true,
+            "sha256": "e4d6e1d40b552440a5f5042d1d6833337cfb1b55565504e1cd5dea4ef12ab7cd"
+          },
+          {
+            "path": "mod_superman_qiang/common/traits/sxad_traits.txt",
+            "core_and_public_equal": true,
+            "sha256": "2139b3fb753bb72607162f65f88eb94e1494057060550bf9ba8fb5bbdd07d53d"
+          }
+        ],
+        "retained_original_save_after_stream_sha256": "d0323776c51534a417b1bd27a36ae90f2ff006f1d5fab82d0274742ae6a351df",
+        "public_cache_acceptance_claimed": false,
+        "scope": "R21 documentation binds historical candidate to this core. Six mechanism files equal the later public tag; this does not relabel the candidate as formal staging/cache."
+      },
+      "historical_genuine_seduction_save_excerpt": {
+        "schema": "sxant-public-110-save-relations-readonly-v1",
+        "attempt": 2,
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-10-23T21:37:55.407491+00:00",
+        "historical_run_identity": {
+          "schema": "xar.ck3-live-run-identity.v1",
+          "run_id": "desktop-3fevhd2-1c74096080--superman-qiang--R0022",
+          "execution_id": "41b96675-e030-4453-8dbf-ba9810afabf4",
+          "machine_id": "desktop-3fevhd2-1c74096080",
+          "mod_key": "superman-qiang",
+          "sequence": 22,
+          "allocated_at_utc": "2026-10-04T05:24:45.815877+00:00",
+          "allocator_pid": 17112,
+          "legacy_alias": null
+        },
+        "source_checkpoint": {
+          "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0004\\session\\save-readback-normal-after-views-A0001\\checkpoint.ck3",
+          "bytes": 87247120,
+          "sha256": "d0323776c51534a417b1bd27a36ae90f2ff006f1d5fab82d0274742ae6a351df"
+        },
+        "decoder": {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+          "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d"
+        },
+        "argv": [
+          "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+          "melt",
+          "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0004\\session\\save-readback-normal-after-views-A0001\\checkpoint.ck3",
+          "--format",
+          "ck3",
+          "--to-stdout"
+        ],
+        "exit_code": 0,
+        "stderr": "",
+        "melted_stream_bytes": 130785694,
+        "melted_stream_sha256": "d8e7939b5ecfa7b3bf7652c16a618f6a222d42b35a791437d0db943f03a0c80f",
+        "version": "1.20.0.3",
+        "opinion_records_checked": 25215,
+        "directed_lover_pairs": 118,
+        "duplicate_directed_lover_rows": [],
+        "selected_actual_pair": [
+          {
+            "owner_id": "32535",
+            "target_id": "31254",
+            "lover_fields": 1,
+            "source_record": "\t\t{\n\t\t\towner=32535\n\t\t\ttarget=31254\n\t\t\ttemporary_opinion={\n\t\t\t\tmodifier=\"gift_opinion\"\n\t\t\t\tstart_date=1069.4.3\n\t\t\t\texpiration_date=1075.7.2\n\t\t\t\tvalue=19\n\t\t\t\tmodify=19\n\t\t\t}\n\t\t\ttemporary_opinion={\n\t\t\t\tmodifier=\"romance_opinion\"\n\t\t\t\tstart_date=1069.10.26\n\t\t\t\texpiration_date=1082.2.23\n\t\t\t\tvalue=15\n\t\t\t\tmodify=15\n\t\t\t}\n\t\t\ttemporary_opinion={\n\t\t\t\tmodifier=\"romance_opinion\"\n\t\t\t\tstart_date=1070.3.20\n\t\t\t\texpiration_date=1086.8.27\n\t\t\t\tvalue=20\n\t\t\t\tmodify=20\n\t\t\t}\n\t\t\tscripted_relations={\n\t\t\t\tlover={\n\t\t\t\t\tflags=\"AA==\"\n\t\t\t\t\treason=\"lover_seducing_privy_corresponding\"\n\t\t\t\t\tprovince=2619\n\t\t\t\t}\n\t\t\t}\n\t\t}\n"
+          },
+          {
+            "owner_id": "31254",
+            "target_id": "32535",
+            "lover_fields": 1,
+            "source_record": "\t\t{\n\t\t\towner=31254\n\t\t\ttarget=32535\n\t\t\ttemporary_opinion={\n\t\t\t\tmodifier=\"romance_opinion\"\n\t\t\t\tstart_date=1069.10.26\n\t\t\t\texpiration_date=1082.2.23\n\t\t\t\tvalue=15\n\t\t\t\tmodify=15\n\t\t\t}\n\t\t\tscripted_relations={\n\t\t\t\tlover={\n\t\t\t\t\tflags=\"AA==\"\n\t\t\t\t\treason=\"lover_seducing_privy\"\n\t\t\t\t\tprovince=2619\n\t\t\t\t}\n\t\t\t}\n\t\t}\n"
+          }
+        ],
+        "large_melt_file_written": false,
+        "root_cause_proven": false,
+        "scope": "Historical retained genuine save after one seduction; not repeated-seduction reproduction."
+      },
+      "r29_baseline_excerpt": {
+        "schema": "sxant-existing-r29-save-relations-readonly-v1",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-10-23T21:36:30.806462+00:00",
+        "original_ck3": {
+          "path": "C:\\ck3-superman-validation-20261023\\ops\\R0029-baseline-readback-a01\\BASELINE.original.ck3",
+          "bytes": 68456640,
+          "sha256": "a7beecc88f6de4b3323f2d24465398051cd91a3e48f6d6ad65a85bd9b73eb234",
+          "file_identity_decimal": "281474979363161"
+        },
+        "existing_melt": {
+          "path": "C:\\ck3-superman-validation-20261023\\ops\\R0029-baseline-readback-a01\\melted.ck3",
+          "bytes": 100025230,
+          "sha256": "a665d21c02af7313ef10a299ed03c7b90b8c16367be264c9a6d21ff73c618b8b",
+          "file_identity_decimal": "281474979363163"
+        },
+        "melt_reused_without_new_copy_or_decode": true,
+        "opinion_records_checked": 1504,
+        "directed_lover_pairs": 14,
+        "undirected_lover_pairs": 7,
+        "duplicate_directed_lover_rows": [],
+        "all_relationship_ids_resolved_by_existing_character_reader": true,
+        "root_31254_lover_rows": 0,
+        "examples": [
+          {
+            "owner_id": "32399",
+            "target_id": "33089",
+            "lover_fields": 1,
+            "source_record": "\t\t{\n\t\t\towner=32399\n\t\t\ttarget=33089\n\t\t\tscripted_relations={\n\t\t\t\tlover={\n\t\t\t\t\tflags=\"AA==\"\n\t\t\t\t\treason=\"lover_history\"\n\t\t\t\t}\n\t\t\t}\n\t\t}\n"
+          },
+          {
+            "owner_id": "33089",
+            "target_id": "32399",
+            "lover_fields": 1,
+            "source_record": "\t\t{\n\t\t\towner=33089\n\t\t\ttarget=32399\n\t\t\ttemporary_opinion={\n\t\t\t\tmodifier=\"love_opinion\"\n\t\t\t\tstart_date=1045.1.1\n\t\t\t\texpiration_date=1110.10.3\n\t\t\t\tvalue=40\n\t\t\t\tmodify=40\n\t\t\t}\n\t\t\ttemporary_opinion={\n\t\t\t\tmodifier=\"divorced_me_opinion\"\n\t\t\t\tstart_date=1066.1.1\n\t\t\t\texpiration_date=1116.1.1\n\t\t\t\tvalue=-40\n\t\t\t\tmodify=-40\n\t\t\t\tdays=18250\n\t\t\t}\n\t\t\tscripted_relations={\n\t\t\t\tlover={\n\t\t\t\t\tflags=\"AA==\"\n\t\t\t\t\treason=\"lover_history_corresponding\"\n\t\t\t\t}\n\t\t\t}\n\t\t}\n"
+          }
+        ],
+        "scope": "Existing unrelated stock/history lover relations in current baseline. No repeated-seduction input and no claim about player reported save."
+      },
+      "current_EXE_native_span_index": {
+        "schema": "sxant-set-relation-native-offline-evidence-v1",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-10-23T21:36:09.982002+00:00",
+        "exe": {
+          "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+          "bytes": 101040248,
+          "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+        },
+        "image_base": "0x140000000",
+        "version": "1.20.0.4",
+        "version_source": "C:/ck3-common-runtime-20261024/running-date-support-a01/manifest.json:game",
+        "method": "PE direct span reads and Capstone x86-64 disassembly; RIP references and RTTI used only to identify this current-EXE normal set_relation path",
+        "prefix_string_rva": "0x48c5418",
+        "prefix_pointer_table_rva": "0x4441fc8",
+        "entry_vtable_rva": "0x48c6100",
+        "effect_vtable_rva": "0x48c5ba8",
+        "rtti": "CSetScriptedRelationEffect",
+        "spans": [
+          {
+            "name": "set_relation_prefix_registration",
+            "rva": "0x318a0ad",
+            "bytes": 192,
+            "sha256": "af4e71fad89d6aa7bff1af57bd2183243e0b16242317bfad69923d42c00f57f1"
+          },
+          {
+            "name": "effect_entry_factory",
+            "rva": "0x318ba90",
+            "bytes": 263,
+            "sha256": "fe07c0aafb22d671eb67429d4d2eb161c90e2509deaecf4c2987472c407ab3f3"
+          },
+          {
+            "name": "set_relation_effect_execute",
+            "rva": "0x421eb30",
+            "bytes": 1724,
+            "sha256": "d639b268c25049ff543a7787bb2a135305604197535ba3db3285ead7317df855"
+          },
+          {
+            "name": "relation_manager_add",
+            "rva": "0x2a636f0",
+            "bytes": 814,
+            "sha256": "8073e977176dd144b297e79b2da24a3d65159d0a7a97c66269904002cb576eb8"
+          },
+          {
+            "name": "pair_lookup_full_id",
+            "rva": "0x2949a80",
+            "bytes": 138,
+            "sha256": "a61d4f9a10f1362f865155f8f7ff8e09416cdbd754fbb0226373ea7ad13fc586"
+          },
+          {
+            "name": "remove_opposites",
+            "rva": "0x2a63510",
+            "bytes": 298,
+            "sha256": "bf0f0f9e4c1597d48e933353775789a6af8024385e9f8c67ea835034185af7a8"
+          },
+          {
+            "name": "one_pair_add_relation",
+            "rva": "0x25963e0",
+            "bytes": 1001,
+            "sha256": "0c0fd28da416cd5353588c5bc51fe6fd71fca85fc20e9a15437dae92d49e7e1d"
+          },
+          {
+            "name": "relation_definition_pointer_equal",
+            "rva": "0x25942a0",
+            "bytes": 7,
+            "sha256": "00682a3eaf4c4630ba53ae720976e9a0bc25599d904cf62ca6eb7a6d9fbad506"
+          },
+          {
+            "name": "manager_add_one_pair",
+            "rva": "0x2a63640",
+            "bytes": 164,
+            "sha256": "88e9f65a8c3a965d4a27754a9fa65fa5e4267cace75cfc91e33414141bf62ab6"
+          }
+        ],
+        "engine_or_steam_started": false,
+        "root_cause_proven": false,
+        "boundary": "No claim about every indirect caller, corrupt/legacy save, downstream HUD subscriptions, or historical1.20.0.3 implementation.",
+        "retention": {
+          "category": "raw_evidence",
+          "review_after_utc": "2026-11-23T00:00:00Z",
+          "automatic_deletion": false
+        }
+      },
+      "raw_instructions_embedded": false,
+      "large_save_or_melt_copied": false,
+      "original_evidence_pins": [
+        {
+          "path": "C:\\ck3-superman-notification-20261024\\public-110-relation-addendum-a01\\ADDENDUM.md",
+          "bytes": 3837,
+          "sha256": "33ba032b8a8901a5ee26faadd6270d17adc5daa1de42ddd17a84a2b894401c40"
+        },
+        {
+          "path": "C:\\ck3-superman-notification-20261024\\public-110-relation-addendum-a01\\HANDOFF.actual.json",
+          "bytes": 2338,
+          "sha256": "eaf69a03bb614905403917a5b0cd98badf50e8bdb4437dafe0b67d3938627841"
+        },
+        {
+          "path": "C:\\ck3-superman-notification-20261024\\public-110-relation-addendum-a01\\historical-core-comparison.actual.json",
+          "bytes": 1967,
+          "sha256": "5094c8da7548983a4418eaf3e9011d5693c095fdc650efc7905eb97ad99c1317"
+        },
+        {
+          "path": "C:\\ck3-superman-notification-20261024\\public-110-relation-addendum-a01\\native-set-relation.actual.json",
+          "bytes": 145192,
+          "sha256": "56cdef5f584354a862c5dd099fd14a2254461e709a18f00a8d3be5769dd512eb"
+        },
+        {
+          "path": "C:\\ck3-superman-notification-20261024\\public-110-relation-addendum-a01\\public-110-save-relations.actual.json",
+          "bytes": 3399,
+          "sha256": "a77c557da493d2d4ce6d646cf1e1cbf6df399f056cc945d98c0f20b1cc37d5d4"
+        },
+        {
+          "path": "C:\\ck3-superman-notification-20261024\\public-110-relation-addendum-a01\\r29-save-relations.actual.json",
+          "bytes": 2211,
+          "sha256": "fbc32b634d7c8f5793f35768d30517bdc1c4cbdf8cbc6272e54c2a2210e14837"
+        },
+        {
+          "path": "C:\\ck3-superman-notification-20261024\\public-110-relation-addendum-a01\\source-comparison.actual.json",
+          "bytes": 4572,
+          "sha256": "70a03f9c5243ecf4f5d9693ee8501fdbb3009b85e6d856a7506907052d591e35"
+        },
+        {
+          "path": "C:\\ck3-superman-notification-20261024\\public-110-relation-addendum-a01\\STREAM-attempt1.actual.json",
+          "bytes": 520,
+          "sha256": "d50a84a593bbb91ad7f8a99467468e2741b30ebea806fe58d7935d12d47606d5"
+        }
+      ]
+    }
+  },
+  "root_cause_proven": false,
+  "fix_proven": false,
+  "strict_32_cell_passed": false,
+  "five_full_seduction_schemes_tested": false,
+  "workshop_published": false,
+  "storage": {
+    "policy_version": "1.0.0",
+    "raw_evidence_ttl_hours": 720,
+    "findings_review_days": 180,
+    "findings_review_at_utc": "2027-04-22T00:05:17.981628+00:00",
+    "automatic_deletion": false,
+    "large_raw_copy_created": false,
+    "referenced_raw_expiry_not_extended": true,
+    "raw_review_ceiling_utc": "2026-11-22T00:00:00Z"
+  },
+  "original_report": {
+    "workshop_item_id": "3812991990",
+    "author": "1668788452",
+    "posted_at_beijing": "2026-10-10 21:35",
+    "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990#comment_581684714275963017",
+    "text": "似乎有点问题,勾引过后这个统计次数的功能可能会导致后续关于被勾引角色的消息重复出现.右边的xx怎么了弹窗每勾引一次就会多弹出一次",
+    "message_type_supplied": false,
+    "player_save_or_screenshot_supplied": false
+  },
+  "source_findings": {
+    "public_tag": "superman-qiang-v1.1.0",
+    "public_commit": "f7fde816e295a62807ab636ee2d93cf307ea69cf",
+    "comparison_source_head": "2d810e442d28ade91df09052ca72fa4f4f56cb6f",
+    "current_test_head": "9ab8e9b14ecadb15ce47035bc2ea02b4cf335464",
+    "paired_and_unknown_body_equal_ignoring_projection_version_comment": true,
+    "transfer_probe_traits_and_xp_view_bytes_equal": true,
+    "record_helper_current_difference": "two skip-record scope guards",
+    "public_direct_set_relation_calls": 0,
+    "public_direct_toast_calls": 1,
+    "public_toast_scope": "explicit XP-view interaction only",
+    "stock_seduction_guards_existing_lover": true,
+    "normal_current_EXE_relation_path": {
+      "exe_version": "1.20.0.4",
+      "manager_rva": "0x2A636F0",
+      "target_full_id_lookup_rva": "0x2949A80",
+      "relation_pair_add_rva": "0x25963E0",
+      "same_relation_definition_check_span": [
+        "0x2596432",
+        "0x259646B"
+      ],
+      "existing_relation_result": "false before append/on-add",
+      "coverage_limit": "normal set_relation path in this exact current EXE; not all callers, historical1.20.0.3 or downstream HUD subscriptions"
+    },
+    "historical_candidate_save": {
+      "game_version": "1.20.0.3",
+      "actual_seduction_count_evidenced": 1,
+      "directed_lover_rows": 118,
+      "duplicate_directed_lover_rows": 0,
+      "actual_pair": [
+        31254,
+        32535
+      ],
+      "seducing_privy_each_direction": 1,
+      "formal_cache_claimed": false
+    },
+    "r29_baseline": {
+      "game_version": "1.20.0.4",
+      "directed_lover_rows": 14,
+      "duplicate_directed_lover_rows": 0,
+      "repeated_seduction_evidence": false
+    },
+    "root_cause_excluded_globally": false,
+    "current_seven_compared_files_match_live_product_projection": true
+  },
+  "selected_cell_findings": {
+    "R0032": {
+      "case_actions": 0,
+      "death_probes": 0,
+      "reason": "registered but unadvertised character-window MCP call was rejected; Root operator error",
+      "notification_result": "NOT_TESTED",
+      "native_forced_exit_code": 1,
+      "public_run_exit": 2,
+      "public_verify_exit": 2,
+      "normal_close_qualified": false,
+      "cleanup_proven": true,
+      "screen_release_CAS": 8523
+    },
+    "R0033": {
+      "case_index": 9,
+      "repetitions_selection": 0,
+      "actor_xp": 5,
+      "actor_stage_after_death": 3,
+      "subject_dead_variable": 1,
+      "subject_XP1_readback": false,
+      "subject_XP_reason": "predeath SAVE not retained; dead-prunable compaction removed variables",
+      "repetitions_saved": {
+        "present": true,
+        "type": "value",
+        "identity_field_present": false,
+        "raw_identity_decimal": null
+      },
+      "confirmed_invocations_field_present": false,
+      "strict_numeric_zero_claimed": false,
+      "baseline_lover_each_direction": 1,
+      "reviewed_frame_visible_cards": 1,
+      "extra_natural_days_for_dispatch": 1,
+      "fixture_zero_day_deviation": true,
+      "negative_public_phases": [
+        3,
+        4
+      ],
+      "screen_release_CAS": 8535
+    },
+    "R0034": {
+      "case_actions": 0,
+      "death_probes": 0,
+      "reason": "Root closed after scheduled-restart warning; no actual restart asserted",
+      "notification_result": "NOT_TESTED",
+      "screen_release_CAS": 8545
+    },
+    "R0035": {
+      "case_index": 12,
+      "repetitions": 5,
+      "confirmed_invocations": 5,
+      "event_definitions": [
+        "sxant.1201",
+        "sxant.1202",
+        "sxant.1203",
+        "sxant.1204",
+        "sxant.1205"
+      ],
+      "actual_event_instance_ids": [
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "native_revisions": [
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "predeath": {
+        "actor_XP_before": 5,
+        "actor_XP_after": 10,
+        "subject_XP_before": 1,
+        "subject_XP_after": 6,
+        "stage": 2,
+        "lover_each_direction": 1,
+        "duplicate_sxad_modifier_names": false,
+        "actor_ledger": {
+          "diplomacy": "1",
+          "martial": "1",
+          "stewardship": "1",
+          "prowess": "1",
+          "health": "0.00075",
+          "intrigue": null,
+          "learning": null
+        },
+        "subject_ledger": {
+          "diplomacy": "-1",
+          "martial": "-1",
+          "stewardship": "-1",
+          "prowess": "-1",
+          "health": "-0.00075",
+          "intrigue": null,
+          "learning": null
+        }
+      },
+      "postdeath": {
+        "actor_XP": 10,
+        "stage": 3,
+        "subject_dead_variable": 1,
+        "subject_level": 2,
+        "subject_reason": "death_natural_causes",
+        "subject_variables_removed": true,
+        "pinned_character_ids": [
+          65860
+        ]
+      },
+      "reviewed_frame_visible_cards": 1,
+      "Root_review_frame00_and07_each_visible_cards": 1,
+      "extra_natural_days_for_dispatch": 1,
+      "fixture_zero_day_deviation": true,
+      "negative_public_phases": [
+        3
+      ],
+      "final_closure": {
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "observed_at_utc": "2026-10-24T00:17:50.414685+00:00",
+        "retained_os0_at_utc": "2026-10-24T00:01:25.241967+00:00",
+        "birth_filetime": "134372724270891329",
+        "os_exit_code": 0,
+        "session_process_exit_code": 0,
+        "native_ck3_exit_code": 0,
+        "job_before": 0,
+        "job_final": 0,
+        "cleanup_proven": true,
+        "tree_gone": true,
+        "inventory_empty": true,
+        "native_host_status": "GREEN",
+        "host_finished_at": "2026-10-24T00:05:32.769298+00:00",
+        "public_run_exit_code": 2,
+        "public_verify_exit_code": 2,
+        "public_exit_codes_source": "Root final actual observation; immutable outputs preserved",
+        "normal_close_qualified": true,
+        "case_acceptance_pass": false,
+        "negative_assertion_keys": [
+          "actual_relationship_and_notification_settings"
+        ],
+        "keeper_original_actual_exit_code": 0,
+        "keeper_last_sequence": 8558,
+        "screen_release_CAS": 8559,
+        "Steam_offline": true,
+        "normal_close_notes_template_gap": "notes retain false3/false4 phrase; actual Root assertion object has only settings false, and is authoritative",
+        "evidence": [
+          {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0035-operator-retained-exit.actual.json",
+            "bytes": 544,
+            "sha256": "5942016ecab4812e336f7479d7d0653d3dda3579854e9bfe39cb2cf3ff837082"
+          },
+          {
+            "path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0035\\native-report.json",
+            "bytes": 9500337,
+            "sha256": "d2444480b71e9cbe135dc639018b1b4a673e04ba7aaa58548ae85ae35feb7a07"
+          },
+          {
+            "path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0035\\host-original-process-exit.json",
+            "bytes": 252,
+            "sha256": "77fb2885676e48f3c8abf9e06994a2a6de63e0cdba919048f22a7a533141c29e"
+          },
+          {
+            "path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0035\\keeper-actual-parent-exit.json",
+            "bytes": 616,
+            "sha256": "746eb2c0693c84f07acc354e85c28888e8390271f4de56276e75a6f914669ce4"
+          },
+          {
+            "path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0035\\case-output\\notification-baseline-and-original-probe-root-result.json",
+            "bytes": 1629,
+            "sha256": "354347820be38661bee11c765b8f03dedd32967b359bfc87743994467a1ad909"
+          },
+          {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0035-notification-a01\\ROOT-DIAGNOSTIC.actual.json",
+            "bytes": 4486,
+            "sha256": "97eda6c29f3c1a60ae87c7f2c7049f647ea93edacd73305c1b602439e2647279"
+          },
+          {
+            "path": "C:\\ck3-superman-validation-20261023\\runs\\desktop-3fevhd2-1c74096080--superman-qiang--R0035\\case-output\\normal-close-result.json",
+            "bytes": 9382,
+            "sha256": "aaad6cd2d85216ab51403ce6de9d6f21647031d010b15b6abc88fe5d99ba2076"
+          },
+          {
+            "path": "C:\\ck3-superman-validation-20261023\\notification-scene-n5-a04\\public-verify.actual.json",
+            "bytes": 10275,
+            "sha256": "023e3f7eca10d18656a93e0962448ce480309454b89f912163b81a675b1db43a"
+          },
+          {
+            "path": "C:\\ck3-superman-validation-20261023\\notification-keeper-a13\\report.json",
+            "bytes": 446,
+            "sha256": "af76223794389ffe14ab94b89f29cbe717ebe5156e77aac7b6f045f164d2ba01"
+          },
+          {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0035-screen-release.actual.json",
+            "bytes": 1207,
+            "sha256": "5edc88289003c24c65a7d7e5a89299685be3762877ad4b7f674534ac01650c50"
+          },
+          {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\steam-background-R0035-closed-a01.json",
+            "bytes": 2461,
+            "sha256": "d42fcbfd88a7295cb2ad9a966d1f9df3d491e062ef158676d2e318fb69441d81"
+          },
+          {
+            "path": "C:\\ck3-superman-validation-20261023\\ops\\R0035-closed-capacity-admission.actual.json",
+            "bytes": 10190,
+            "sha256": "ce3bc6ba10886408ad70a74408bb94b26b5292586e734c161758a5764e5fbfdb"
+          }
+        ]
+      }
+    }
+  },
+  "shared_limits": {
+    "different_true_baselines_not_same_save_counterfactual": true,
+    "complete_seduction_schemes": false,
+    "complete_32_cell_matrix": false,
+    "other_notification_types_tested": false,
+    "per_type_active_message_settings_observed": false,
+    "profile_notifications_representation": "banner_timeout=2 only",
+    "native_HUD_type_subject_and_instance_ids_available": false,
+    "event_instance_ids_are_not_HUD_ids": true,
+    "complete_HUD_unique_instance_count_claimed": false,
+    "public_110_repeated_seduction_reproduced": false,
+    "bug_closed": false
+  },
+  "finalized_at_utc": "2026-10-24T00:17:50.414685+00:00",
+  "source_ready_head_at_live_tests": "9ab8e9b14ecadb15ce47035bc2ea02b4cf335464",
+  "integration_target_head": null,
+  "integration_target_head_status": "not yet assigned; Root rebase in progress",
+  "final_write_guard": {
+    "source": "C:\\ck3-superman-validation-20261023\\ops\\R0035-closed-capacity-admission.actual.json",
+    "fresh_observed_at_utc": "2026-10-24T00:18:37.063209+00:00",
+    "disk_C": {
+      "total": 511133945856,
+      "used": 451793874944,
+      "free": 59340070912
+    },
+    "cap": 464000000000
+  },
+  "source_bind_preserved_during_rebase": true,
+  "D_written": false
+}
