@@ -4,7 +4,7 @@
  des_doctrine_none_name:0 "None"
  des_doctrine_none_desc:0 "This rite does not assign a dynasty to its adherents."
  des_doctrine_dynastic_name:0 "Dynastic"
- des_doctrine_dynastic_desc:0 "All living adherents, including the founder, join this rite's dynasty. This replaces their former house and dynasty, affecting names, inheritance, dynasty heads and renown. Members who follow another rite are apostates: this rite's adherents receive a −100 opinion modifier and grounds for imprisonment, banishment and execution. Normal jurisdiction and interaction rules still apply."
+ des_doctrine_dynastic_desc:0 "All living adherents, including the founder, join this rite's dynasty. This replaces their former house and dynasty, affecting names, inheritance, dynasty heads and renown. Any noble-family title follows the new head when a handover is required. If no existing adherent can found the dynasty, a real new adherent is created as founder. Members who follow another rite are apostates: this rite's adherents receive a −100 opinion modifier and grounds for imprisonment, banishment and execution. Normal jurisdiction and interaction rules still apply."
  doctrine_parameter_des_dynastic_membership:0 "Adherents join the dynasty bound to this exact rite. Members following another rite incur −100 opinion and criminal reasons from this rite's adherents."
  trait_des_apostate:0 "Dynastic Apostate"
  trait_des_apostate_desc:0 "This character belongs to a dynasty bound to a rite but currently follows another rite. Only adherents of the bound rite receive the dynastic apostasy opinion and criminal reasons."

@@ -271,3 +271,160 @@ des_acceptance_successor_readback_effect = {
     }
     else = { debug_log = "DESAF: NOT_READY successor_predecessor_anchor" }
 }
+
+# Disclosed stock inputs only. Readiness is not product branch/business credit.
+des_acceptance_prepare_head_cells_effect = {
+    if = {
+        limit = {
+            has_character_flag = des_test_members_verified
+            NOT = { has_character_flag = des_test_head_cells_started }
+            exists = global_var:des_test_extended_owner
+            this = global_var:des_test_extended_owner
+            exists = var:des_test_primary_rite
+            exists = var:des_test_source_rite
+            rite = var:des_test_primary_rite
+            var:des_test_primary_rite = { des_has_active_binding_trigger = yes }
+            var:des_test_source_rite = { rite_has_doctrine = des_doctrine_none }
+        }
+        add_character_flag = des_test_head_cells_started
+        save_scope_as = des_test_head_cells_root
+        set_variable = { name = des_test_cell_root_actor value = this }
+        set_variable = { name = des_test_cell_root_title value = primary_title }
+        set_variable = { name = des_test_cell_root_house value = house }
+        set_variable = { name = des_test_cell_root_dynasty value = dynasty }
+        if = { limit = { exists = house.house_head } set_variable = { name = des_test_cell_root_house_head value = house.house_head } }
+        if = { limit = { exists = dynasty.dynast } set_variable = { name = des_test_cell_root_dynast value = dynasty.dynast } }
+
+        create_character = { location = root.location age = 30 gender_female_chance = 0 culture = root.culture faith = var:des_test_primary_rite.faith rite = var:des_test_primary_rite dynasty = generate random_traits = no save_scope_as = des_test_handover_actor }
+        set_variable = { name = des_test_handover_actor value = scope:des_test_handover_actor }
+        set_variable = { name = des_test_handover_old_house value = scope:des_test_handover_actor.house }
+        set_variable = { name = des_test_handover_old_dynasty value = scope:des_test_handover_actor.dynasty }
+        create_character = { location = root.location age = 31 gender_female_chance = 0 culture = root.culture faith = var:des_test_source_rite.faith rite = var:des_test_source_rite dynasty_house = scope:des_test_handover_actor.house random_traits = no save_scope_as = des_test_handover_successor }
+        set_variable = { name = des_test_handover_successor value = scope:des_test_handover_successor }
+        if = {
+            limit = {
+                scope:des_test_handover_actor = {
+                    is_alive = yes
+                    is_landed = no
+                    NOT = { exists = employer }
+                    NOT = { exists = father }
+                    NOT = { exists = mother }
+                    NOT = { any_spouse = { always = yes } }
+                    NOT = { any_child = { always = yes } }
+                    rite = scope:des_test_head_cells_root.var:des_test_primary_rite
+                    house = scope:des_test_head_cells_root.var:des_test_handover_old_house
+                    dynasty = scope:des_test_head_cells_root.var:des_test_handover_old_dynasty
+                    is_house_head = yes
+                    is_dynast = yes
+                    exists = house.house_head
+                    house.house_head = this
+                    exists = dynasty.dynast
+                    dynasty.dynast = this
+                    house = {
+                        NOT = { any_house_member = { is_alive = yes NOR = { this = scope:des_test_handover_actor this = scope:des_test_handover_successor } } }
+                    }
+                }
+                scope:des_test_handover_successor = {
+                    is_alive = yes
+                    is_landed = no
+                    NOT = { exists = employer }
+                    house = scope:des_test_handover_actor.house
+                    dynasty = scope:des_test_handover_actor.dynasty
+                    rite = scope:des_test_head_cells_root.var:des_test_source_rite
+                }
+            }
+            add_character_flag = des_test_handover_input_prechecked
+            debug_log = "DESAF: INPUT_PRECHECK stock_handover_old_head_and_successor"
+            scope:des_test_handover_actor = {
+                create_dynamic_rite = { save_scope_as = des_test_handover_rite convert = yes target_divergence = 0 include_unknown = yes override_tenets_first = no }
+            }
+            if = {
+                limit = {
+                    exists = scope:des_test_handover_rite
+                    scope:des_test_handover_rite = { NOT = { this = scope:des_test_head_cells_root.var:des_test_primary_rite } rite_has_doctrine = des_doctrine_dynastic }
+                    scope:des_test_handover_actor = { rite = scope:des_test_handover_rite }
+                }
+                set_variable = { name = des_test_handover_rite value = scope:des_test_handover_rite }
+                add_character_flag = des_test_handover_input_ready
+                debug_log = "DESAF: INPUT_READY stock_handover_cell"
+            }
+            else = { debug_log = "DESAF: INPUT_NOT_READY stock_handover_factory_or_doctrine" }
+        }
+        else = { debug_log = "DESAF: INPUT_NOT_READY stock_handover_old_head_or_successor" }
+
+        create_character = { location = root.location age = 32 gender_female_chance = 0 culture = root.culture faith = var:des_test_primary_rite.faith rite = var:des_test_primary_rite dynasty = generate random_traits = no save_scope_as = des_test_singleton_actor }
+        set_variable = { name = des_test_singleton_actor value = scope:des_test_singleton_actor }
+        set_variable = { name = des_test_singleton_old_house value = scope:des_test_singleton_actor.house }
+        set_variable = { name = des_test_singleton_old_dynasty value = scope:des_test_singleton_actor.dynasty }
+        if = {
+            limit = {
+                scope:des_test_singleton_actor = {
+                    is_alive = yes
+                    is_landed = no
+                    NOT = { exists = employer }
+                    NOT = { exists = father }
+                    NOT = { exists = mother }
+                    NOT = { any_spouse = { always = yes } }
+                    NOT = { any_child = { always = yes } }
+                    rite = scope:des_test_head_cells_root.var:des_test_primary_rite
+                    house = scope:des_test_head_cells_root.var:des_test_singleton_old_house
+                    dynasty = scope:des_test_head_cells_root.var:des_test_singleton_old_dynasty
+                    is_house_head = yes
+                    is_dynast = yes
+                    exists = house.house_head
+                    house.house_head = this
+                    exists = dynasty.dynast
+                    dynasty.dynast = this
+                    house = { NOT = { any_house_member = { is_alive = yes NOT = { this = scope:des_test_singleton_actor } } } }
+                }
+            }
+            add_character_flag = des_test_singleton_input_prechecked
+            debug_log = "DESAF: INPUT_PRECHECK stock_singleton_old_head_and_alone"
+            scope:des_test_singleton_actor = {
+                create_dynamic_rite = { save_scope_as = des_test_singleton_rite convert = yes target_divergence = 0 include_unknown = yes override_tenets_first = no }
+            }
+            if = {
+                limit = {
+                    exists = scope:des_test_singleton_rite
+                    scope:des_test_singleton_rite = { NOT = { this = scope:des_test_head_cells_root.var:des_test_primary_rite } rite_has_doctrine = des_doctrine_dynastic }
+                    scope:des_test_singleton_actor = { rite = scope:des_test_singleton_rite }
+                }
+                set_variable = { name = des_test_singleton_rite value = scope:des_test_singleton_rite }
+                add_character_flag = des_test_singleton_input_ready
+                debug_log = "DESAF: INPUT_READY stock_singleton_cell"
+            }
+            else = { debug_log = "DESAF: INPUT_NOT_READY stock_singleton_factory_or_doctrine" }
+        }
+        else = { debug_log = "DESAF: INPUT_NOT_READY stock_singleton_old_head_or_alone" }
+
+        # Actual pre/post input identity check; Root also independently verifies native/Save state.
+        if = {
+            limit = {
+                has_variable = des_test_cell_root_actor
+                has_variable = des_test_cell_root_title
+                has_variable = des_test_cell_root_house
+                has_variable = des_test_cell_root_dynasty
+                this = var:des_test_cell_root_actor
+                primary_title = var:des_test_cell_root_title
+                primary_title = { exists = holder holder = scope:des_test_head_cells_root.var:des_test_cell_root_actor }
+                house = var:des_test_cell_root_house
+                dynasty = var:des_test_cell_root_dynasty
+                trigger_if = {
+                    limit = { has_variable = des_test_cell_root_house_head }
+                    exists = house.house_head
+                    house.house_head = var:des_test_cell_root_house_head
+                }
+                trigger_else = { NOT = { exists = house.house_head } }
+                trigger_if = {
+                    limit = { has_variable = des_test_cell_root_dynast }
+                    exists = dynasty.dynast
+                    dynasty.dynast = var:des_test_cell_root_dynast
+                }
+                trigger_else = { NOT = { exists = dynasty.dynast } }
+            }
+            debug_log = "DESAF: INPUT_READY root_identity_preserved"
+        }
+        else = { debug_log = "DESAF: INPUT_NOT_READY root_identity_preserved" }
+    }
+    else = { debug_log = "DESAF: INPUT_NOT_READY stock_head_cells_root_precondition" }
+}
