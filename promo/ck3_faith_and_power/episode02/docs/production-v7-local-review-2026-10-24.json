@@ -116,7 +116,8 @@
     "both_traits_observed": true,
     "pilgrim_XP": 0,
     "full_return_observed": false,
-    "new_save": false
+    "new_save": false,
+    "arrival_event_4001_observed_and_selected": true
   },
   "R0046_resource_closure": {
     "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\r0046-resource-closure-a01\\RESOURCE-CLOSED.actual.json",
@@ -168,6 +169,47 @@
     "render_future_released_to_finite_closed_bytes": 16777216,
     "final_release_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\FINAL-LOCAL-DELIVERY-CLOSED.actual.json",
     "terminal_release_is_external": true,
-    "terminal_rule": "Read actual terminal receipt; this repository record does not pre-claim final head CAS."
+    "terminal_rule": "Read actual terminal receipt; this repository record does not pre-claim final head CAS.",
+    "later_manual_git_sync": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\storage-preparation\\GIT-SYNC-CAPACITY.a01.actual.json",
+      "bytes": 4495,
+      "sha256": "9b54da74af1c6c670d2645e8923c957c00c7b641f56c16c0c88dbfdc6e3f9943"
+    },
+    "later_manual_git_sync_future_bytes": 67108864,
+    "old_Source_epoch_observer_called_after_commit": false
+  },
+  "mainline_integration": {
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-24 04:34:47 UTC",
+    "tested_source_commit": "ddc1ae0b4a69f38d3cee8b5acfb6501ec259c7ce",
+    "upstream_base": "ca37fba46fe4dd05b40bfecd923312762bbfff5c",
+    "archive_tag": "archive/faith-e02-v7-pre-rebase-20261024",
+    "archive_original_commit": "ce624000a5b804af9726a96d6b80750b7e3df8d6",
+    "ci_closure": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\source-checks\\v7-master-integration-ci-a06\\CLOSURE.actual.json",
+      "bytes": 4692,
+      "sha256": "4de6f2b99809a517560df1721883cf2bc70f7e51d338bd6d2cd61284a604f6af"
+    },
+    "new_source_commands": 100,
+    "new_source_tests": 915,
+    "skipped": 0,
+    "historical_normal_exit_source": "c4ae0faa728aff43f62f4b194cdfa485aa957e31",
+    "historical_normal_exit_commands": 2,
+    "historical_normal_exit_tests": 33,
+    "all_102_at_one_HEAD_claimed": false,
+    "entry_complete_module_type_diagnostics": {
+      "baseline_commit": "ca37fba46fe4dd05b40bfecd923312762bbfff5c",
+      "baseline": 9,
+      "current": 9,
+      "added": 0,
+      "removed": 0,
+      "original_exits": [
+        1,
+        1
+      ]
+    },
+    "push_receipt_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode02\\v7-filming-20261023-a02\\source-checks\\v7-master-integration-a01\\PUSH.actual.json",
+    "push_result_is_external": true,
+    "new_game_native_or_render_qualification": false
   }
 }
