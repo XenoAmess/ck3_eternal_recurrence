@@ -1,0 +1,109 @@
+{
+  "schema": "xar.dynastic-esotericism.github-workflow-observations.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "machine_role": "local read-only observer",
+  "observed_at_utc": "2026-10-24T09:07:12.295805+00:00",
+  "repository": "XenoAmess/ck3_eternal_recurrence",
+  "expected_head_sha": "56d5627a0017ff086795ac394420d260782eb5da",
+  "runs": [
+    {
+      "run_id": "40080391492",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40080391492",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "56d5627a0017ff086795ac394420d260782eb5da",
+      "status_observation": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\github-runs-56d5627\\40080391492-final.status.json",
+        "bytes": 3663,
+        "sha256": "02c503739bb1e592876c2a500fd0cc9fe145a8d4564ebcee8d771960079cd29c"
+      },
+      "query_argv": [
+        "gh",
+        "run",
+        "view",
+        "40080391492",
+        "--repo",
+        "XenoAmess/ck3_eternal_recurrence",
+        "--json",
+        "databaseId,headSha,status,conclusion,name,workflowName,event,createdAt,updatedAt,url,jobs"
+      ],
+      "jobs": [
+        {
+          "job_id": "120832536973",
+          "name": "static",
+          "status": "completed",
+          "conclusion": "success",
+          "failed_steps": []
+        }
+      ],
+      "full_log": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\github-runs-56d5627\\40080391492-final.log",
+        "bytes": 88992,
+        "sha256": "cc1140e341d993a3cf422c6df4cd0bf8b384b5845409fa9d5142d4c39055e21b"
+      },
+      "log_query_argv": [
+        "gh",
+        "run",
+        "view",
+        "40080391492",
+        "--repo",
+        "XenoAmess/ck3_eternal_recurrence",
+        "--log"
+      ],
+      "execution_machine_id": "unknown",
+      "execution_machine_identity_note": "GitHub-hosted execution; no stable CK3 machine ID is asserted from runner labels. Local receipt observer identity is recorded separately."
+    },
+    {
+      "run_id": "40080391574",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40080391574",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "56d5627a0017ff086795ac394420d260782eb5da",
+      "status_observation": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\github-runs-56d5627\\40080391574-final.status.json",
+        "bytes": 2571,
+        "sha256": "41dde592c1a934b5e992255c85ca49cae22bd412b8be2ceea6978e5e19191bfd"
+      },
+      "query_argv": [
+        "gh",
+        "run",
+        "view",
+        "40080391574",
+        "--repo",
+        "XenoAmess/ck3_eternal_recurrence",
+        "--json",
+        "databaseId,headSha,status,conclusion,name,workflowName,event,createdAt,updatedAt,url,jobs"
+      ],
+      "jobs": [
+        {
+          "job_id": "120832537305",
+          "name": "contract",
+          "status": "completed",
+          "conclusion": "success",
+          "failed_steps": []
+        }
+      ],
+      "full_log": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\github-runs-56d5627\\40080391574-final.log",
+        "bytes": 73168,
+        "sha256": "7de866f93351307e69d675930564db4e33d98e5b240f199f7fa20a8df8947eba"
+      },
+      "log_query_argv": [
+        "gh",
+        "run",
+        "view",
+        "40080391574",
+        "--repo",
+        "XenoAmess/ck3_eternal_recurrence",
+        "--log"
+      ],
+      "execution_machine_id": "unknown",
+      "execution_machine_identity_note": "GitHub-hosted execution; no stable CK3 machine ID is asserted from runner labels. Local receipt observer identity is recorded separately."
+    }
+  ],
+  "all_terminal": true,
+  "all_success": true,
+  "source_modified": false,
+  "local_checks_rerun_by_this_observation": false,
+  "qualification": "Exact remote workflow execution only; no CK3 game or release qualification."
+}

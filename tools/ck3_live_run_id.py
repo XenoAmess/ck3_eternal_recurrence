@@ -31,6 +31,7 @@ CANONICAL_MOD_KEYS = frozenset(
     {
         "auto-upgrade-buildings",
         "celestial-commerce-corruption",
+        "dynastic-esotericism",
         "eternal-recurrence",
         "li-yu-dao",
         "living-artifacts",

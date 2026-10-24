@@ -1,0 +1,84 @@
+{
+  "schema": "xar.dynastic-esotericism.java-tooling-r8-actual.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T09:09:34.495309+00:00",
+  "source_checkout": "C:\\ck3-dynastic-esotericism-20261024\\s",
+  "head_sha": "56d5627a0017ff086795ac394420d260782eb5da",
+  "git_status_porcelain": "",
+  "maven_command": "mvn -o -f C:/ck3-dynastic-esotericism-20261024/s/mod_dynastic_esotericism/tools/pom.xml -Ddes.build.root=C:/ck3-dynastic-esotericism-20261024/java-build verify",
+  "working_directory": "C:\\ck3-dynastic-esotericism-20261024\\s",
+  "exit_code": 0,
+  "terminal": "BUILD_SUCCESS",
+  "elapsed_seconds_from_maven": 16.4,
+  "tests": {
+    "tests": 10,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "compiler_release": 21,
+  "compiler_checks": [
+    "-Xlint:all",
+    "-Werror"
+  ],
+  "log": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\java-verify-20261024-r8.log",
+    "bytes": 4503,
+    "sha256": "eced46af0081721d53e1ce1b10439548e0761237926cb23798de47c2d3df635d"
+  },
+  "junit_reports": [
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\java-build\\dynastic-esotericism-tools\\surefire-reports\\TEST-org.xar.ck3.dynastic.acceptance.FixtureEmitterTest.xml",
+      "bytes": 18783,
+      "sha256": "b2c953dd6c170a59b8ecb0f07f29d04ac6fe9b196b664f07476dd6d0a29cb04f"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\java-build\\dynastic-esotericism-tools\\surefire-reports\\TEST-org.xar.ck3.dynastic.acceptance.SharedRuntimeComposerTest.xml",
+      "bytes": 18348,
+      "sha256": "10a0443359eafcfeb966d18a81f1ae5526bbebd911fdde5a186a21da1ec3b507"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\java-build\\dynastic-esotericism-tools\\surefire-reports\\TEST-org.xar.ck3.dynastic.release.DefaultMavenTest.xml",
+      "bytes": 18724,
+      "sha256": "26e138222e9f46c0a89394cba621930564afb8aa2f0121e4cd63ccac118057cf"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\java-build\\dynastic-esotericism-tools\\surefire-reports\\TEST-org.xar.ck3.dynastic.release.ReleaseBuilderTest.xml",
+      "bytes": 18923,
+      "sha256": "8f03a8e6809cdf701d6014c0ac8033c50e66d7ffd6712cb3557ffa2f0c3d6116"
+    }
+  ],
+  "source_index": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\java-r8-inputs.actual.json",
+    "bytes": 11119,
+    "sha256": "f54dd74c0f19f9d33b125702cee26832153c6caa475adfbfca297dd1b96d081c"
+  },
+  "package_index": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\java-r8-package.actual.json",
+    "bytes": 27367,
+    "sha256": "22d9a5e563608adf404062278216017a664f24d684b48d7a9f3b08f80db3066b"
+  },
+  "runner": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\java-build\\dynastic-esotericism-tools\\quarkus-app\\quarkus-run.jar",
+    "bytes": 853,
+    "sha256": "57d067f449fc9f8ed5a05291dd3fcfba1a171f2aa617eb7e0d4cdd78438c9529"
+  },
+  "application_jar": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\java-build\\dynastic-esotericism-tools\\quarkus-app\\app\\dynastic-esotericism-tools-0.1.0.jar",
+    "bytes": 93943,
+    "sha256": "b7909b044761e45d8ec5d0fad09f87c59e2abda44ba36d21873a5352086bb851"
+  },
+  "exact_Cclean_resource_file_count": 15,
+  "all_packaged_resources_match_Cclean_bytes": true,
+  "rebuild_reason": "The exact committed clean checkout stores LF resource bytes. Previous D-worktree r7 resources used CRLF and correctly failed the existing byte comparison. Rebuild from the frozen checkout fixes producer inputs without changing code or weakening validation.",
+  "previous_result": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\tooling-actual-r7.json",
+    "bytes": 12888,
+    "sha256": "797d2022e83b90025d7953279b128ffdb06907d28655a69bcf6bf343bb7a3229"
+  },
+  "reused_output_retention": "The explicitly reusable external Maven build directory, including previous runner/app/resources/Surefire reports, now contains r8. Historical old output pins do not assert their old bytes still exist there; previous complete Maven logs, source indices, staging, ZIPs and receipts remain retained.",
+  "source_modified": false,
+  "frozen_checkout_modified": false,
+  "business_acceptance": "NOT_RUN",
+  "publication_state": "NOT_PUBLISHED"
+}
