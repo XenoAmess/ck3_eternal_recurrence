@@ -154,19 +154,28 @@ class SharedEntryTests(unittest.TestCase):
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(original.read_bytes())
         self.runtime['reviewed_launcher'] = entry.pin(shared_tools / 'ck3_mod_acceptance_launcher.py')
-        config = self.root / 'recording-config.json'
+        service = self.locations['repo'] / 'tools/ck3_mod_acceptance_recorder.py'
+        service.parent.mkdir()
+        service.write_bytes((Path(__file__).parent / service.name).read_bytes())
         job = self.locations['repo'] / 'promo/ck3_native_war_ai/integration/recorder_job.py'
         job.parent.mkdir(parents=True)
-        job.write_text('# no OS recorder is launched\n', encoding='utf-8')
-        dependencies = {'recorder_job': job}
-        for key in ('ffmpeg', 'ffprobe', 'storage_reservation'):
-            path = self.root / (key + '.input')
-            path.write_bytes(b'{"machine_id":"unit-recording-machine"}')
-            dependencies[key] = path
+        job.write_bytes((Path(__file__).resolve().parents[1] / job.relative_to(self.locations['repo'])).read_bytes())
+        ffmpeg, ffprobe = self.root / 'unit-ffmpeg.exe', self.root / 'unit-ffprobe.exe'
+        for executable in (ffmpeg, ffprobe):
+            executable.write_bytes(b'synthetic identity only; never executed')
+        storage = self.root / 'unit-recording-storage.json'
+        storage.write_text(json.dumps({'machine_id': 'unit-recording-machine', 'approved_root': str(self.root),
+            'this_write_peak_bytes': 896 * 1024**2, 'raw_subcap_bytes': 64 * 1024**2}), encoding='utf-8')
+        config = self.root / 'recording-config.json'
         config.write_text(json.dumps({'schema': 'ck3-mod-acceptance-recording-config-v2',
-            'machine_id': 'unit-recording-machine', **{key: entry.pin(path) for key, path in dependencies.items()}}), encoding='utf-8')
-        self.runtime['allocation'] = {'recording': {
-            'config': entry.pin(config), 'service': entry.pin(shared_tools / 'ck3_mod_acceptance_recorder.py')}}
+            'machine_id': 'unit-recording-machine', 'capture_root': str(self.root / 'captures'),
+            'ffmpeg': entry.pin(ffmpeg), 'ffprobe': entry.pin(ffprobe), 'recorder_job': entry.pin(job),
+            'storage_reservation': entry.pin(storage), 'reservation_task': 'unit-recording',
+            'max_seconds': 10, 'peak_bytes': 32 * 1024**2, 'required_size': [2560, 1440],
+            'max_takes': 2, 'total_seconds': 20, 'total_raw_bytes': 64 * 1024**2}), encoding='utf-8')
+        dependencies = {'recorder_job': job, 'ffmpeg': ffmpeg, 'ffprobe': ffprobe, 'storage_reservation': storage}
+        self.runtime['machine_id'] = 'unit-recording-machine'
+        self.runtime['allocation'] = {'recording': {'config': entry.pin(config), 'service': entry.pin(service)}}
         self.runtime_path.write_text(json.dumps(self.runtime), encoding='utf-8')
         self.products['products']['xqol']['cases'][0]['startup']['state_dir'] = str(self.root / 'actual-recording-state')
         self.products_path.write_text(json.dumps(self.products), encoding='utf-8')
@@ -174,8 +183,8 @@ class SharedEntryTests(unittest.TestCase):
         preflight = selected.preflight()
         self.assertEqual(preflight['blockers'], [])
         self.assertIn(entry.pin(current), preflight['checked_inputs'])
-        for dependency in dependencies.values():
-            self.assertIn(entry.pin(dependency), preflight['checked_inputs'])
+        for source in (config, service, *dependencies.values()):
+            self.assertIn(entry.pin(source), preflight['checked_inputs'])
         produced = allocator.recording_input_files(selected)
         self.assertIn(current.resolve(), produced)
         self.assertNotIn(checkout_contract.resolve(), produced)
@@ -199,7 +208,8 @@ class SharedEntryTests(unittest.TestCase):
         dlc = profile / 'dlc_load.json'
         dlc.write_bytes(b'{"enabled_mods": []}')
         paths = [*[Path(row['path']) for row in preflight['checked_inputs']],
-                 *produced, checkout_contract, settings, snapshot, rules, rules_snapshot, sibling, dlc, self.host,
+                 *produced, checkout_contract, settings, snapshot, rules, rules_snapshot, sibling, dlc,
+                 config, job, service, ffmpeg, ffprobe, storage, self.host,
                  *[shared_tools / (name + '.py') for name in names], self.manifest_path]
         files = {str(path.resolve()): {key: value for key, value in entry.pin(path).items() if key != 'path'} for path in paths}
         frozen = json_object({'run_id': live.name, 'argv': selected.argv, 'state_dir': str(selected.state_dir),
@@ -255,7 +265,7 @@ assert actual==live.resolve() and checks==['synthetic-cas-leaf','keeper-leaf']
 print(json.dumps({'running_inputs':qualified['_runtime_input_observation'],'recorder_live_guard':True}))
 '''
         command = [sys.executable, '-B', '-X', 'utf8', '-c', script, str(live), str(config), str(self.locations['repo'])]
-        environment = dict(os.environ, PYTHONPATH=str(shared_tools))
+        environment = dict(os.environ, PYTHONPATH=os.pathsep.join((str(service.parent), str(shared_tools))))
         result = subprocess.run(command, cwd=shared, env=environment, capture_output=True, text=True, timeout=60)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertTrue(json.loads(result.stdout)['recorder_live_guard'])
@@ -307,7 +317,7 @@ print(json.dumps({'running_inputs':qualified['_runtime_input_observation'],'reco
             config.write_text(json.dumps(changed_config), encoding='utf-8')
             with self.subTest(invalid_dependency_type=key), self.assertRaises(ValueError):
                 entry.recording_source_files_v1({'config': entry.pin(config),
-                    'service': entry.pin(shared_tools / 'ck3_mod_acceptance_recorder.py')},
+                    'service': entry.pin(service)},
                     self.root, self.locations['repo'])
         invalid_schemas: tuple[object, ...] = (None, [], True, 'unknown')
         for schema in invalid_schemas:
@@ -316,7 +326,7 @@ print(json.dumps({'running_inputs':qualified['_runtime_input_observation'],'reco
             config.write_text(json.dumps(changed_config), encoding='utf-8')
             with self.subTest(invalid_schema=schema), self.assertRaises(ValueError):
                 entry.recording_source_files_v1({'config': entry.pin(config),
-                    'service': entry.pin(shared_tools / 'ck3_mod_acceptance_recorder.py')},
+                    'service': entry.pin(service)},
                     self.root, self.locations['repo'])
         config.write_bytes(original_config)
         current.write_bytes(current.read_bytes() + b'\n# changed after allocation\n')
