@@ -45,3 +45,17 @@ Java 工具新增严格 fixture request、显式 prebuilt manifest 和独立准�
 正式 successor 仍须从完整旧 archive 链重新计算所有受影响 TU，并生成真实 CMake FileAPI 资格；手工 DLL 不替代它。为覆盖这部分真实输出，既定 1 GiB 总峰值内的 native 子限调整为 192 MiB、截图子限调整为 224 MiB；正式 producer 自身输出上限 160 MiB。总峰值、系统增长预留和其他占用上界保持，最新容量准入以机器工作根的版本化实际回执为准。
 
 新局 fixture 已补真实公共决议入口调用只读观察事件，避免依赖不存在的按定义触发 event 工具。core 按模式触发 `.20/.21`，拒绝场触发 `.30`；仅玩家 Robert 29829 且准备完成可见／可用，不改产品结果。fresh 现为 10 文件，cold 保持 5 文件且无 seed／观察决议。机器 `4-8e1c2f1861` 于 `2026-10-24T16:46:40Z` 完整 Maven verify 通过 13 tests／0 failures／0 skipped，33.272 秒；随后 rite／faith／ui 三种实际 CLI 生成均退出 0。正式 67 文件未变。此前 7 文件输出保留为历史准备输入，不用于新运行。
+
+## d13 正式运行图准备与实际拒绝
+
+机器 `4-8e1c2f1861` 的正式 successor 已在 `2026-10-24T17:01:11Z` 实际完成 41 个受影响 TU、archive 和生产链接，五组 fixture 及额外只读四包均退出 0。正式 DLL 为 15,711,744 bytes，SHA-256 `ff6916d2ff3cff737803c910ac28452ad1d141fe540b7a0994e05197f91a74af`；`build/native-qualified-a01/native-a01/PUBLIC-RUNTIME-QUALIFICATION.actual.json` 及公共 `qualify_native` 消费回执保留完整 FileAPI／来源／旧链接输入／Defender 闭包。手工 DLL 仍只作此前有限编译证据。
+
+最终提交 `d13c6721b281235dad3628674b85b1b321118b33` 的 SDK 87、wire seam 115、public-control／case-hooks 1290 次实际测试执行均零跳过；host 879 为相关完整组的重叠汇总，不能与前述数字相加称独立测试总量。先前 mypy 1.15 与 CI 指定 2.4 的类型推断差异，以及缺少两份 HOF 原生包导致的 skip 均保留原 RED；隔离使用 2.4、读取本机实际同 SHA 原生原件后，受影响完整步骤已实际通过。
+
+公共 builder 随后真实拒绝 RRF 两项已有查询能力：`ck3_query_player_religion_doctrines_v1` 与 `ck3_query_player_religion_tenets_v1` 未进入全局额外能力规则。真实 native profile 的两项 PRIVATE_QUERY flags 均为 ON；正在修共享规则及生产者到 MCP 工厂的回归。拒绝发生在运行目录写入前，不是实机故障，也不授游戏通过；游戏和商店截图仍未执行。修复形成普通后继提交，旧资格保全，同源部分以实际逐文件相等绑定复用，不把继承结果写成新提交重跑。
+
+容量准入已为 a06／rev78：总新峰值仍 1 GiB，native 160 MiB、cache 288 MiB、save 240 MiB、截图 208 MiB、wire 80 MiB、runtime 16 MiB、闭场 32 MiB。native 清点曾漏掉 SDK 临时 VS 生成树，已如实补记；精确回收可重建未引用元数据后，全范围现存 151,649,355 bytes，低于 native 子限。旧 RED 类型缓存和 pip 派生缓存已精确回收，原日志／参数／源 Pin 保留。实际原件、用途及回收清单均在工作根，不改写旧回执。
+
+独立存档工具来自 [Rakaly 官方发布](https://github.com/rakaly/cli/releases/tag/v0.8.22)，本机实读版本 0.8.22、EXE 6,867,456 bytes、SHA-256 `9d3404f6eb08db3a3d2196a5b2e1ce9b4c8687f2d7df60a4f79cafe75f043101`。来源摘要见 `runtime-tools-a01/PROVENANCE.actual.json`，不留重复 ZIP、不改 PATH、不为第三方加 Defender 排除。其 [官方变更记录](https://github.com/rakaly/cli/blob/master/CHANGELOG.md)列明 0.8.21 已增加 CK3 1.20 支持；本场存档的实际解码及对象图仍须现场验证。
+
+能力漏项已修入同一共享 builder 的三行规则：两项 native flag，以及 Tenets 在注册工厂中的既有权限镜像。新增闭环回归实际验证生成器→Selection argv→MCP 工厂，并逐项验证 native flag OFF／缺失及未授工具权限时拒绝、不写运行目录。canonical host 本身已经具有对应权限设置，不需改动。最终完整 CI 四命令实际 26+64+28=118 次测试执行、0 skip，两项 CI 静态与额外完整 builder mypy 均退出 0；原件 `public-chain-a01/runtime-capability-fix-a03/validation.actual.json` SHA-256 `27fa2156ef6ae8ccd5b291955e607364b131aa186e58de00277803dafaafdfd0`。它明确记录待提交源码身份，不冒充已对未来 commit 执行；后继以实际字节相等绑定最终提交。

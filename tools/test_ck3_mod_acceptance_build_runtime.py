@@ -840,9 +840,40 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
             with self.subTest(codec=codec):
                 self.assert_formal_runtime_producer(codec, extra_tools=tools)
 
+    def test_religion_content_queries_require_exact_native_flags_and_reach_actual_consumers(self) -> None:
+        tools_and_flags = {
+            'ck3_query_player_religion_doctrines_v1': 'XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1',
+            'ck3_query_player_religion_tenets_v1': 'XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1',
+        }
+        tools = tuple(tools_and_flags)
+        undeclared = CapabilityRegistrationConsumer.registered({})
+        self.assertFalse(set(tools) & undeclared)
+        for tool in tools:
+            declared = CapabilityRegistrationConsumer.registered({'opt_in_read_only_mcp_tools': [tool]})
+            self.assertIn(tool, declared)
+            self.assertFalse((set(tools) - {tool}) & declared)
+        for codec in (None, 'gzip-members'):
+            with self.subTest(codec=codec, flags='ON'):
+                self.assert_formal_runtime_producer(
+                    codec, extra_tools=tools, extra_read_only_tools=tools,
+                    profile_flags={flag: 'ON' for flag in tools_and_flags.values()})
+        for tool, flag in tools_and_flags.items():
+            for state in ('OFF', None):
+                with self.subTest(tool=tool, flag=state):
+                    self.assert_formal_runtime_producer(
+                        None, extra_tools=(tool,), extra_read_only_tools=(tool,),
+                        profile_flags={} if state is None else {flag: state},
+                        expected_error='Qualified profile lacks required flag')
+            with self.subTest(tool=tool, only_other_flag='ON'):
+                self.assert_formal_runtime_producer(
+                    None, extra_tools=(tool,), extra_read_only_tools=(tool,),
+                    profile_flags={other: 'ON' for other in tools_and_flags.values() if other != flag},
+                    expected_error='Qualified profile lacks required flag')
+
     def assert_formal_runtime_producer(
         self, codec: str | None, *, extra_tools: tuple[str, ...] = (),
         presentation_flag: str | None = 'ON', expected_error: str | None = None,
+        extra_read_only_tools: tuple[str, ...] = (), profile_flags: dict[str, str] | None = None,
     ) -> None:
         # Real metadata writer and complete downstream consumers; upstream Native input is owned fixture data.
         from test_ck3_mod_acceptance import SharedEntryTests, entry
@@ -889,7 +920,7 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
             owned.write(contract_path, contract)
             owned.case.update(id=case_id, required_mcp_tools=tools, opt_in_player_pilgrimage_execution=True,
                               opt_in_read_only_mcp_tools=['ck3_query_player_pilgrimage_activities_v1',
-                                                          'ck3_query_player_religion_context_v1'], adapter={
+                                                          'ck3_query_player_religion_context_v1', *extra_read_only_tools], adapter={
                                   'module': 'tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_adapter',
                                   'config': str(contract_path)})
             products = {'schema': entry.PRODUCTS_SCHEMA, 'product_inventory': str(owned.files['inventory']),
@@ -914,6 +945,8 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
             refs = {name: builder.pin(owned.paths[name]) for name in ('host', 'dll', 'source_index', 'native_source_index')}
             identity = builder.pin(owned.files['inventory'])
             flags = {} if presentation_flag is None else {'XAR_ENABLE_RELIGION_UI12004_PRESENTATION': presentation_flag}
+            if profile_flags is not None:
+                flags.update(profile_flags)
             bundle = {'old_profile': {'flags': {}}, 'profile': {'flags': flags}, 'profile_ref': identity,
                       'freeze_ref': identity, 'qualification_ref': identity, 'dll': builder.pin(dll),
                       'native_files': {}, 'snapshot_root': str(native_dir), 'compile_commit': 'a' * 40,
@@ -947,6 +980,10 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
             self.assertEqual(json.loads(stdout.getvalue())['wire_evidence_codec'], selected_codec)
             selected = entry.Selection(destination / 'runtime.local.json', owned.products_path, 'faith-engine', case_id)
             self.assertEqual(selected.preflight()['blockers'], [])
+            actual_read_only_tools = [selected.argv[index + 1] for index, value in enumerate(selected.argv)
+                                      if value == '--case-read-only-mcp-tool']
+            for tool in extra_read_only_tools:
+                self.assertEqual(actual_read_only_tools.count(tool), 1)
             actual_source = Path(selected.argv[selected.argv.index('--agent-source-root') + 1])
             self.assertEqual(actual_source, root)
             projected_host = builder.module(destination / 'shared-host.py', 'wire_codec_actual_generated_host')
