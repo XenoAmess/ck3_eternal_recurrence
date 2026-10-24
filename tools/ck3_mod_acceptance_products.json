@@ -2719,6 +2719,53 @@
             "tributary-expansion-directives"
           ],
           "calendar_bound_provenance": "new shared case bounded calendar guard; original emitter schedule/markers unchanged, not a historical native hold claim"
+        },
+        {
+          "id": "migration-one-year",
+          "status": "ready",
+          "implementation_credit": "User-requested 1.20.0.4 one-year smoke; actual live result pending",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/zhongguo_361_migration_one_year.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "fixture",
+            "state_dir": "{run_dir}/state",
+            "fixture_start_policy": "{run_dir}/prepared/frontend-fixture-start-policy.json"
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 7200,
+            "hold_seconds": 5400,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_execute_step"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 90,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "one_year_12004_compatibility_smoke",
+          "whole_product_acceptance_credit": false,
+          "build_route": {
+            "directory": "mod_zhongguo_style",
+            "builder": "tools/build_mod_zhongguo_style_release.py",
+            "release_flags": [
+              "--release",
+              "--output",
+              "{new-output}",
+              "--workshop-item-id",
+              "3792585972"
+            ],
+            "workshop_item_id": "3792585972"
+          },
+          "budget_provenance": "Explicit short-scope compatibility test requested 2026-10-25; time budget includes normal startup on this machine; no full scenario replay"
         }
       ],
       "legacy_inventory": {

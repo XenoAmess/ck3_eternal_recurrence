@@ -1,0 +1,12 @@
+﻿on_game_start_after_lobby = {
+	on_actions = { zg361_smoke_start }
+}
+
+zg361_smoke_start = {
+	effect = {
+		random_player = {
+			debug_log = "ZG361SMOKE: START character_entered"
+			trigger_event = { id = zg361smoke.1 days = 365 }
+		}
+	}
+}

@@ -1,0 +1,16 @@
+﻿namespace = zg361smoke
+
+# Observation only: no date/resource/government/product-state setters.
+zg361smoke.1 = {
+	type = character_event
+	hidden = yes
+	immediate = {
+		if = {
+			limit = { is_alive = yes is_ai = no is_landed = yes }
+			debug_log = "ZG361SMOKE: PASS 365_natural_days_alive_player"
+		}
+		else = {
+			debug_log = "ZG361SMOKE: FAIL original_player_not_playable"
+		}
+	}
+}
