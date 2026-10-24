@@ -1,0 +1,74 @@
+{
+  "schema": "xar.dynastic-esotericism.software-preparation/v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T18:52:14.523232+00:00",
+  "frozen_game_source_commit": "1df185f0528b11347f74a246d3515a2eb32355d6",
+  "new_run_id": null,
+  "overall_progress_estimate_percent": 60,
+  "actual_core_phases_passed": 0,
+  "actual_core_phases_total": 6,
+  "R8_Game_started": false,
+  "business_pass": false,
+  "publication_pass": false,
+  "workshop_item_id": null,
+  "results": {
+    "java_junit": {
+      "run": 16,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "packaged_resources_exact": 15,
+    "development_files_verified": 17,
+    "formal_release_files_verified": 24,
+    "formal_release_localization_files": 9,
+    "full_product_ci_commands_exit_zero": 6,
+    "full_product_ci_tests": 32,
+    "full_shared_ci_commands_exit_zero": 91,
+    "full_cold_warm_ci_commands_exit_zero": 30,
+    "cold_warm_independent_sdk_continuation": {
+      "run": 1,
+      "skipped": 0,
+      "exit_code": 0
+    }
+  },
+  "explicit_not_executed": [
+    "shared command19: actual HoF component wires absent",
+    "canonical command23: optional reviewed actual small-WAL diagnostic input absent"
+  ],
+  "qualification": "Command exit0 is not zero skipped tests or Game business completion. Earlier RED attempts retained. Frozen s08/a08 is not edited by subsequent test annotations/source pin fixes.",
+  "evidence": [
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\D-code-delivery-a12\\SOFTWARE-PREPARATION-a08.actual.json",
+      "bytes": 1900,
+      "sha256": "27d295dc7f7a27fa934203cd8af4f3412b1eb6c0e3cae54ba53db863d3227002"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\shared-canonical-clock-a08\\FINAL.actual.json",
+      "bytes": 5352,
+      "sha256": "ad5dfe1a3a73ab8178fc3eb12858965e0b061bc227264318d7b45a10eef4e87e"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\shared-canonical-clock-a02\\FINAL.actual.json",
+      "bytes": 3845,
+      "sha256": "3138b2237b2b68c2371ba43251f67e761825582d3ee2d8f56611b64d39001743"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\hof-shared-native-component-inputs-lookup-a01.actual.json",
+      "bytes": 6483,
+      "sha256": "74002315c3bbd618df919542eedf3547184d3f65b985bb9a51b005be76c6ca0c"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\D-code-delivery-a12\\SOURCE32-TAG-RESTORED.actual.json",
+      "bytes": 462,
+      "sha256": "26a0b8e881f87cc849d6a217597d7b4b69f405537a1c0acd9eef4b67c82fac82"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\capacity\\D-OBJECTS-CONSUMPTION-AND-25FFD-PEAK-a25.actual.json",
+      "bytes": 31586,
+      "sha256": "31ea749b9a02612a708aec2549f0a551cb69124db0fe871fb84c206b471f5078"
+    }
+  ],
+  "next_step": "Commit and synchronize five shared CI fixes; consume fresh launch gates and run actual full core; seed/cold/old remain required.",
+  "retention_review_due": "2026-10-31"
+}

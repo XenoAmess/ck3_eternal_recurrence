@@ -6,15 +6,15 @@
 | --- | --- | --- |
 | 需求 | 已制定版本 1 | [requirements.md](requirements.md) |
 | 测试方案 | 已制定版本 1，尚未授予测试通过 | [test-plan.md](test-plan.md) |
-| 编码 | 首版及九语正式24文件清单已实现；R0007发现的House作用域修正、真实继承夹具与共享观察合同正在形成下一干净候选 | [既有可行性研究](feasibility-2026-10-24.md)、[House修复](2026-10-25-engine-house-dynasty-fix.md)与产品源码 |
+| 编码 | R0007的House作用域修正、真实继承夹具与共享观察合同已形成干净候选1df185f；Java构建16项通过，九语正式24文件另行构建校验通过 | [House修复](2026-10-25-engine-house-dynasty-fix.md)与[后继软件回执](acceptance/r8-software-preparation-2026-10-25.json) |
 | 测试验收 | R0007原生取消与实际创建分别有独立后态；创建后的夹具确认被真实产品脚本错误阻断，完整核心仍0/6，等待新候选实测 | [R0007失败与资源终态](acceptance/R0007-2026-10-25.json)、[测试方案](test-plan.md) |
 | 发布 | NOT_PUBLISHED，Workshop ID 未分配 | 待业务验收及正式发布闭环 |
 
-截至2026-10-24T17:32:54Z（北京时间10月25日），总体约60%是规划估计；核心0/6、cold/seed/old未完成，Workshop未创建。R0007已原生退出，Game原Popen0、host1、public2、keeper0，SCREEN8743释放；资源终态不授业务通过。后续现场使用全新source/runtime，保留a07原件。
+截至2026-10-24T18:46:46Z（北京时间10月25日02:46），总体约60%是规划估计；核心0/6、cold/seed/old未完成，Workshop未创建。R0007已原生退出，Game原Popen0、host1、public2、keeper0，SCREEN8743释放；资源终态不授业务通过。后继s08/common-runtime-a08已冻结，公共plan/prepare实际通过；尚未分配或启动R0008，保留a07原件。
 
-工具链已在以上机器原位升级默认 Maven 3.9.16→3.10.0，PATH与原配置保留；实际来源和读回见[环境回执](evidence/environment-maven-2026-10-24.json)。当前容量依据为机器绑定的 `C:/ck3-dynastic-esotericism-20261024/capacity/SEVEN-POOL6-D34-ADMISSION-r1173.actual.json`（SHA-256 `2317feb631edc125fa57209bf4ab9b0aebdeb9f8a16cb2f0e0e6a8215386945b`）：七个实际Game profile共用6GiB执行池，另保留a11未启动的旧seed准备材料；build/test512MiB，D未来34MiB，硬期限2026-10-25T07:30Z。core/seed/cold/old新state分别为a12/a13/a14/a15；r1173仅补正已存在a11引起的scope冲突，预算与期限未变。重型写入及启动前仍须实际新鲜检查；旧4GiB/32MiB记录只作历史。这些资格不代表游戏业务已通过。
+工具链已在以上机器原位升级默认 Maven 3.9.16→3.10.0，PATH与原配置保留；实际来源和读回见[环境回执](evidence/environment-maven-2026-10-24.json)。当前容量依据为机器绑定的 `C:/ck3-dynastic-esotericism-20261024/capacity/SEVEN-POOL6-D35-ADMISSION-r1174.actual.json`（SHA-256 `389fed488fb7e94e32b4aebc8dac0f34988bedc951d57fb4d009f5c9624c1bc5`）：七个实际Game profile共用6GiB执行池，另保留a11未启动的旧seed准备材料；build/test512MiB，D未来35MiB，硬期限2026-10-25T07:30Z。core/seed/cold/old新state分别为a12/a13/a14/a15；D预算根据实际索引、固定远端增量和临时写入峰值修订，后续远端移动仍须重测。重型写入及启动前仍须实际新鲜检查；旧4GiB/32MiB记录只作历史。这些资格不代表游戏业务已通过。
 
-当前软件增量：共享目的消费者从原合同顶层消费既有 `allow_actor_change`，真实producer→JSON→host loader→实际driver回归10/10，preserved3/3、offline-TTL6/6及7完整模块strict通过；这仅允许观察合同声明的actor变化，PID/generation/pipe、单调日期与原400日预算继续生效。实际继承和新礼仪领袖仍按原生与保存证据独立验收，不能据软件测试签业务。完整共享91命令与cold/warm30命令（含独立SDK continuation）按新源码执行中。
+当前软件增量：共享目的消费者从原合同顶层消费既有 `allow_actor_change`，真实producer→JSON→host loader→实际driver回归10/10，preserved3/3、offline-TTL6/6及7完整模块strict通过；同一原生成员查询已接通公共只读路由，完整产品CI step六条命令32项退出0。该许可只允许观察合同声明的actor变化，PID/generation/pipe、单调日期与原400日预算继续生效；实际继承和新礼仪领袖仍须原生与保存证据。完整共享91条命令退出0，其中一项HoF原生wire测试缺真实输入，明确NOT_EXECUTED。cold/warm完整30条命令已顺序全部退出0，包含独立Python进程SDK continuation；其中第23条的可选真实小WAL诊断缺输入，明确NOT_EXECUTED，不计全测试零跳过。已修正既有测试合同、两处局部类型推断及其两个来源指纹消费者，并恢复远端已发布的精确Source32历史标签。此前失败保留，不冒充一次无失败执行，也不授实机业务通过。
 
 云端06d2358的产品和线性历史CI已success；Official实际Java两轮各633项通过后，完整parity因缺少真实fixture-production request拒绝，后续step未执行。已保留来源调查与原RED，没有伪造请求、放松guard或报告全仓绿色。以下按观察时间保留历史进展。
 

@@ -6,6 +6,7 @@ Historical source identities below are metadata, never executed substitutes.
 from __future__ import annotations
 
 import ast
+from collections.abc import Callable
 from copy import deepcopy
 from datetime import datetime
 from enum import IntEnum
@@ -21,12 +22,13 @@ import ck3_mod_acceptance_launcher as launcher
 from ck3_mod_acceptance_keeper import check_pin
 from ck3_mod_acceptance_background_types import (
     CONTROL_QUEUE_MODULE_ORDER_V1, FilePin, JsonObject, file_pin, json_object,
-    json_value, keyed_file_pin,
+    json_value, keyed_file_pin, object_field,
 )
 from ck3_mod_acceptance_launcher_protocol_v1 import (
     CURRENT_CLOSURE_SCHEMA_V1, LEGACY_CLOSURE_SCHEMA_V1,
     CURRENT_BACKGROUND_PROTOCOL_V1, FRESH_MACHINE_BOOTSTRAP_PROTOCOL_V1,
     SIBLING_QUEUE_SOURCE_PROTOCOL_V1,
+    RETAINED_IDENTITY_SOURCE_PROTOCOL_V1,
     LAUNCHER_PROTOCOL_REGISTRY_V1,
     LAUNCHER_PROTOCOL_SHA256, build_launcher_protocol_v1,
     verify_closure_protocol_v1,
@@ -97,6 +99,7 @@ class KeyedFilePinTests(unittest.TestCase):
     temporary: tempfile.TemporaryDirectory[str]
     root: Path
     host: Path
+    runtime_manifest: Path
 
     @staticmethod
     def refused_timeline() -> dict[str, datetime]:
@@ -141,6 +144,15 @@ class KeyedFilePinTests(unittest.TestCase):
         self.root = Path(self.temporary.name).resolve()
         self.host = self.root / "nonexecuted-host.py"
         self.host.write_bytes(b"# nonexecuted fixture input\n")
+        # This authored host has no running-date projection or runtime feature.
+        # The retained launcher reads a real manifest, independently of host bytes.
+        self.runtime_manifest = self.write("runtime-manifest.json", {
+            "schema": "ck3-mod-acceptance-shared-runtime-v1",
+            "machine_id": "authored-keyed-pin-test-machine",
+            "host": {"path_key": "host", "bytes": self.host.stat().st_size,
+                     "sha256": source_pin(self.host)["sha256"]},
+            "host_features": {},
+        })
 
     def write(self, name: str, value: object) -> Path:
         path = self.root / name
@@ -148,7 +160,7 @@ class KeyedFilePinTests(unittest.TestCase):
         return path
 
     def rows(self) -> JsonObject:
-        paths = [self.host, Path(launcher.__file__).with_name(
+        paths = [self.host, self.runtime_manifest, Path(launcher.__file__).with_name(
             "ck3_mod_acceptance_runtime_inputs.py").resolve()]
         paths += [Path(launcher.__file__).with_name(name + ".py").resolve()
                   for name in CONTROL_QUEUE_MODULE_ORDER_V1]
@@ -162,7 +174,7 @@ class KeyedFilePinTests(unittest.TestCase):
             "launch_requires_fresh_owned_cas_and_background_offline": True,
             "previous_session_closed": True,
             "previous_screen_released": True,
-            "runtime_manifest": json_object(source_pin(self.host)),
+            "runtime_manifest": json_object(source_pin(self.runtime_manifest)),
         }
         path = self.write("frozen-argv.json", frozen)
         self.write("ready-context.json", {
@@ -229,6 +241,17 @@ class KeyedFilePinTests(unittest.TestCase):
                 self.freeze(json_object(json.loads(json.dumps(rows))))
                 frozen, _ = launcher.frozen_run(self.root)
                 self.assertEqual(frozen["run_id"], "synthetic-keyed-pins")
+                manifest = json_object(json.loads(self.runtime_manifest.read_bytes()))
+                self.assertEqual(manifest["host_features"], {})
+                self.assertEqual(object_field(manifest, "host")["sha256"], source_pin(self.host)["sha256"])
+
+    def test_real_launcher_still_rejects_malformed_or_nonobject_runtime_manifest(self) -> None:
+        for raw in (b"# not JSON\n", b"[]", b"null", b"true", b"1.0"):
+            with self.subTest(raw=raw):
+                self.runtime_manifest.write_bytes(raw)
+                self.freeze(self.rows())
+                with self.assertRaises(ValueError):
+                    launcher.frozen_run(self.root)
 
     def test_all_four_launcher_seams_reject_before_target_pin_or_load(self) -> None:
         helper = Path(launcher.__file__).with_name(
@@ -241,7 +264,7 @@ class KeyedFilePinTests(unittest.TestCase):
             ("host", self.host, False, "launch"),
             ("running-input", runtime, True, "running"),
         )
-        original_check = check_pin
+        original_check: Callable[[object], object] = check_pin
         for label, target, all_pins, phase in cases:
             for wrong in ("another.py", None, True, 1.0):
                 with self.subTest(seam=label, wrong=wrong):
@@ -343,8 +366,12 @@ class LauncherProtocolTests(unittest.TestCase):
     def test_all_reviewed_source_pairs_keep_their_exact_wire_protocol(self) -> None:
         current, gate, _ = self.pins()
         self.assertEqual((current["bytes"], current["sha256"]),
-                         (SIBLING_QUEUE_SOURCE_PROTOCOL_V1.launcher_bytes,
-                          SIBLING_QUEUE_SOURCE_PROTOCOL_V1.launcher_sha256))
+                         (RETAINED_IDENTITY_SOURCE_PROTOCOL_V1.launcher_bytes,
+                          RETAINED_IDENTITY_SOURCE_PROTOCOL_V1.launcher_sha256))
+        self.assertIn(SIBLING_QUEUE_SOURCE_PROTOCOL_V1, LAUNCHER_PROTOCOL_REGISTRY_V1)
+        self.assertEqual((SIBLING_QUEUE_SOURCE_PROTOCOL_V1.launcher_bytes,
+                          SIBLING_QUEUE_SOURCE_PROTOCOL_V1.launcher_sha256),
+                         (16864, "9ebb997e5496d430fa018348b65f6fe3eb59949bfe00e623482aeba58a9f55df"))
         versions: list[str] = []
         for pair in LAUNCHER_PROTOCOL_REGISTRY_V1:
             source = FilePin(path=current["path"], bytes=pair.launcher_bytes,
@@ -365,7 +392,7 @@ class LauncherProtocolTests(unittest.TestCase):
                 versions.append(descriptor["version"])
         self.assertEqual(versions, ["background-offline-v1",
                                     "background-keyed-pins-v2", "background-keyed-pins-v2",
-                                    "background-keyed-pins-v2"])
+                                    "background-keyed-pins-v2", "background-keyed-pins-v2"])
 
     def test_reviewed_bootstrap_does_not_whitelist_crossed_or_future_source(self) -> None:
         current, gate, _ = self.pins()

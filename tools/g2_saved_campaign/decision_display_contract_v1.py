@@ -314,7 +314,7 @@ def _fallback_plan(plan: Record, error: ValueError | TypeError | OverflowError) 
 def project_plan(actual: object) -> Record:
     plan = record(actual)
     _required_step(plan)  # Never soften malformed business/action identity.
-    result = {key: plan[key] for key in ("policy", "phase", "selected_step", "reason", "decision",
+    result: Record = {key: plan[key] for key in ("policy", "phase", "selected_step", "reason", "decision",
               "declaration", "prewar_force_admission", "event_choice_utility") if key in plan}
     for key in ("reason", "policy"):
         value = result.get(key)
@@ -385,7 +385,7 @@ def project_result(row: object, body: object) -> Record:
     plan = record(actual["plan"]) if isinstance(actual.get("plan"), dict) else None
     if plan is not None:
         _required_step(plan)
-    result = {key: actual[key] for key in ("status", "selected_step", "step", "accepted", "camera_follow") if key in actual}
+    result: Record = {key: actual[key] for key in ("status", "selected_step", "step", "accepted", "camera_follow") if key in actual}
     if plan is not None:
         result["plan"] = project_plan(plan)
     inner = maybe_record(actual.get("result")) or actual

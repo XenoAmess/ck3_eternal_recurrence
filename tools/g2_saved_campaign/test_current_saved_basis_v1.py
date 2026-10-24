@@ -20,7 +20,7 @@ sys.path.insert(0, str(SDK))
 
 from xar_autoplayer.cold_checkpoint_validator import validate_cold_start_checkpoint_payload_for_pipe
 from tools.g2_saved_campaign.current_saved_basis_v1 import (
-    BasisRefsV1, CampaignOriginV1, CurrentSavedBasisInputsV1,
+    BasisRefsV1, CampaignOriginV1, CurrentSavedBasisInputsV1, JsonObject,
     CurrentSavedBasisV1, ExactRefV1, PinnedCheckpointValidatorV1, ProgressReconciliationV1, rows,
     UnknownHistoricalRequestV1, build_current_saved_basis_v1, decode_current_saved_basis_v1,
     encode_current_saved_basis_v1, parse_current_saved_basis_v1, parse_json,
@@ -937,13 +937,15 @@ class CapPretransportFailureFixture:
         result = object_row(self.restore["result"])
         result["lifecycle"] = {"previous_pid": 43, "pid": 61}
         self.restore["result"] = result
+        recorded_identity: JsonObject = {"bridge_pid": 61,
+            "episode_character_id": old.frame.actor_character_id,
+            "episode_run_id": old.frame.episode_run_id, "pipe_name": "pipe"}
         raw = put("raw-observation.json", {"schema": "xar.raw-closed-driver-observation/v1",
             "status": "OBSERVED_NOT_QUALIFIED", "machine_id": MACHINE,
             "Driver_ref": driver_ref.to_wire(), "Driver_identity": stat_wire(self.driver_id),
             "SAVE_identity": stat_wire(old.save_identity), "format_version": 2, "command_history_count": 3,
             "last_checkpoint": self.checkpoint, "post_checkpoint_history": [base.restore, self.restore],
-            "recorded_identity": {"bridge_pid": 61, "episode_character_id": old.frame.actor_character_id,
-                "episode_run_id": old.frame.episode_run_id, "pipe_name": "pipe"},
+            "recorded_identity": recorded_identity,
             "campaign_goal": old.campaign_goal_anchor, "session_binding_present": False,
             "session_binding_value": None, "payload_top_keys": ["command_history"],
             "driver_payload_flags": {"managed_restore_transaction": None, "rollback_war_failure": None,

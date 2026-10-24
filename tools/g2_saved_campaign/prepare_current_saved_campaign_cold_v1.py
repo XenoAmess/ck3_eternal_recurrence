@@ -1260,7 +1260,7 @@ def probe_current_saved_supervisor_import_chain_v1(
  return SupervisorImportChainV1(origin("root_owned_generation"),origin("root_retained_screen_keeper"),
                                 creators,origin("g2_saved_campaign.sdk_process_custody"))
 
-CURRENT_SAVED_RENDERER_PIN_V1 = (21038, "fb5eaa7217da027770272784da0d725cc605953f2547c62636bc6188e1589feb")
+CURRENT_SAVED_RENDERER_PIN_V1 = (21054, "8a22290ae0e156b3035d39f774cb029284e7fb5855448ccd423d02ea078bf5dd")
 CURRENT_SAVED_RENDERER_PATHS_V1 = (
  "decision_display_contract_v1.py",
  "presentation-c23/g2_saved_campaign/decision_display_contract_v1.py",
