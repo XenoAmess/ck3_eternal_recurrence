@@ -157,3 +157,50 @@ ShellExecuteEx 的启动成功只证明进程启动；上面另外要求 child e
 本次实际前后设置唯一新增 `future-no-uac-net-build-a01/build/xar_ck3_12003_war_cash_net_income_test.exe`，117,760 字节，SHA `f7f27d0a99a50022d7cb13f98dd2e253af693972783a80e0dc1c34cffb340649`。`missing_requested_paths=[]`，所有旧 ExclusionPath 保留，ExclusionExtension 和 ExclusionProcess 集合未变，`partial_mutation=false`。只读逐字节及集合复核保存在 `project-exe-broker-client-publication-fix-a01/ordinary-a02-readonly-review-a02/result.json`；复核没有重跑任务或设置操作。修复源提交 `a601cde4701e86551aa66352f01f0f5f0c1aa87b` 的 [Official Runner CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37269955420) 也已实际完成并通过。
 
 这项实测闭合的是首次管理员安装之后，为本项目允许来源 CMake 产出的一个新完整 EXE 路径进行普通调用登记。固定任务不接受任意命令或任务参数，不能据此运行通用管理员操作。六个 producer 的公共 helper 与两种已知清单合同范围继续适用；未接入的旧生产器仍须先接入来源合同。此次 CMake 路径实测不能替代其他 producer 的未来现场结果，也不证明该 EXE 运行可信或完成发布签核。
+
+## 2026-10-24 C 到 D 迁移追加：候选字节已核对，登记尚未开始
+
+本节绑定 `machine_id: xenoamess-full-tower-eb9d2c1186`，准备回执观察时间 `2026-10-24T15:49:02Z`。
+上文及引用原件中没有明确机器 ID 的历史记录仍标为 `machine_id: unknown`、所属机器未核实；
+其 238 项排除、固定 broker 安装或旧构建成功不能追认为本机当前状态。完整迁移进度见[本机维护记录](../maintenance/2026-10-24-c-to-d-project-storage-xenoamess-full-tower-eb9d2c1186.md)。
+
+本次只核对归档 `migration4-complete-domain-build/strict07/binaries-qualified-runtime10/` 中三个有来源声明的小型 EXE：
+
+| EXE | 字节数 | 原冻结 SHA-256，当前 C 与 D 副本均吻合 |
+| --- | ---: | --- |
+| `xar_ck3_bridge_injector.exe` | 39,936 | `a99f71135e2ba4bceb9f87b497d2f8609c690effcd53e85d7a0ce5624c54383f` |
+| `xar_ck3_bridge_host.exe` | 71,680 | `b765e34f17906d5fe59cfa7c64aa2574ac69b31ce29d1eaba6859032ec7fbc4d` |
+| `xar_ck3_bridge_attach_host.exe` | 66,048 | `57343fb89a84ed00824cfa4f4a45714196916920d39cd067e418f37ed2613712` |
+
+目标根是 `D:/codex-ck3-background/`。这些核对只证明列出的三份归档 EXE 当前字节与历史生产清单相同，
+不是迁移范围内全部 EXE 的完整清单，也不授予排除登记资格。原构建记录缺少 `machine_id`，当前字节相等不补填其历史执行机器。
+旧 `NATIVE-MSVC-RESULT.json` 的 `built=true/build_succeeded=true` 与外层 `BUILD-RESULT.json` 的 `RED/exit_code=1` 分别保留。
+
+现有 helper 需要真正的 `xar.project-exe-exclusions.v1` 清单，并先从实际 CMake File API codemodel-v2 或成功的绝对输出
+MSVC 命令来源重新核对。此次有限元数据查找没有找到原 helper manifest 或保留的 File API codemodel；
+旧 native result 也没有实际 CL/LINK argv 或 `source_commands`。现存 `compile_commands.json` 使用相对 `/FoCMakeFiles/...`，
+`rules.ninja` 的 `/out:$TARGET_FILE` 展开后也是相对输出，不能交给要求绝对输出操作数的现有 collector。
+归档 EXE 位于原 `cache-observers` 构建根之外，其生产 binary manifest 也是另一 schema。
+不能改写旧 argv、重建冻结 CMake 图或只改盘符来制造可接受的历史生产来源。
+
+本机操作员报告当前 token 非管理员、固定 SYSTEM broker 未安装；本次准备没有另外发起特权探测。
+Git-local `xar.defenderProjectExeExclusions=true` 已实际读回，但 opt-in 不等于设置已生效。
+由于没有可接受的 manifest，**本次没有发起 UAC、WMI Add 或登记请求，D 盘路径尚未取得排除设置读回资格**。
+不能把候选 JSON 传给登记 CLI，也不能把普通 token 的空设置视图当作未排除证明。
+
+本轮没有新构建 native EXE。后续新构建继续通过上文既有 hook 生成真实来源清单并登记；
+旧对象如取得受支持的原 File API 或成功绝对输出命令，需保留原 argv，结合已验证的 C 到 D 路径映射重新收集新清单。
+实际登记仍要求 child exit 0、新回执 `status=verified/admin_token=true`，以及同一管理员 client 对全部精确 D 路径和既有设置的前后读回；
+旧 C 排除和历史回执保留。本节没有新增 collector 格式或声称全部迁移 EXE 已覆盖。
+后继 `2026-10-24T16:49:05.432379Z` 的背景切换回执已确认 C 根准确联接 D；
+该路径兼容事实仍不补齐上述缺失的 File API/实际命令来源，也不等于已经执行 Defender 登记。
+最终 `2026-10-24T17:08:35.793001Z` 已完成 43 根物理迁移、旧 C 载荷清理和本轮已识别活动路径注册，
+详见上述本机维护记录；其完成状态继续明确保留本节 **D EXE 排除未登记/未验证** 的边界，不能写成全部注册或全部检查 GREEN。
+
+本次只读准备原件位于
+`Z:/codex-storage-audit/2026-10-24-xenoamess-full-tower-eb9d2c1186/migration-execution/`：
+
+| 原件 | 大小（B） | SHA-256 |
+| --- | ---: | --- |
+| [defender-registration-candidates.json](Z:/codex-storage-audit/2026-10-24-xenoamess-full-tower-eb9d2c1186/migration-execution/defender-registration-candidates.json) | 7,998 | `9aac2328033d5c0e49dcfe6242c7052f16cb3e5c903df79c19452be07da1bbaa` |
+| [defender-registration-steps.txt](Z:/codex-storage-audit/2026-10-24-xenoamess-full-tower-eb9d2c1186/migration-execution/defender-registration-steps.txt) | 6,603 | `5e4a04acb058d0728ebab507d5a14bd6ec825317a2e9ebbd44fbfa673714b8dc` |

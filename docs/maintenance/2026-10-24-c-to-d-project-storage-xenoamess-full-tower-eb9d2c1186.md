@@ -1,132 +1,116 @@
-# 项目工作目录从 C 盘迁至 D 盘（2026-10-24）
+# 项目工作目录从 C 盘迁至 D 盘（2026-10-24—25）
 
-`machine_id: xenoamess-full-tower-eb9d2c1186`。整体状态：**IN_PROGRESS**。
-本进度稿建立于 `2026-10-24T15:44:42Z`，本次按实际回执更新至 `2026-10-24T15:48:35Z`。
-42 个状态目录的迁移、联接切换及旧 C 载荷清理已完成；背景目录复制、worktree 修复、Defender 新路径登记与容量闭账仍在进行。
-本页不将状态文件迁移、MCP 静态查询或 Java 测试通过写成全部迁移或 CK3 续接验收完成。
+`machine_id: xenoamess-full-tower-eb9d2c1186`。完成时间：`2026-10-24T17:08:35.793001Z`（北京时间 10 月 25 日 01:08:35）。
+状态：**STORAGE_MIGRATION_AND_ACTIVE_PATH_REGISTRATIONS_COMPLETE_WITH_RECORDED_LIMITS**。
 
-## 范围与选址原因
+**C 盘最终可用 186.420 GiB，起始为 7.517 GiB；D 盘最终可用 599.019 GiB。** 本次完成 43 个项目根目录迁移，
+原清单共 **3,095,167 个文件、190,454,212,290 B（177.3743 GiB）逻辑量**。43 份退役 C 载荷均已不存在，原 C 入口均准确联接 D 盘目标。
+本状态表示目录迁移及本轮已识别活动路径注册完成；Defender、官方 CI、历史合同和证据覆盖范围的限制在下文分别保留。
 
-用户授权迁移本项目的两类大目录，并要求后续大体量工作输出避开系统盘。系统 `LOCALAPPDATA`、`TEMP`、账户配置、
-已安装依赖及其他项目不随本次项目根迁移。
+## 最终位置与容量
 
-| 用途 | 原位置 | 目标位置 | 当前状态 |
-| --- | --- | --- | --- |
-| 背景源码工作树、构建、冻结来源及证据 | `C:/codex-ck3-background` | `D:/codex-ck3-background` | 复制中；最终清单、校验和切换回执待补 |
-| 原 `XarAutoplayer*` 隔离状态和场次 | `C:/Users/xenoa/AppData/Local/<原目录名>` | `D:/ck3-state/<原目录名>` | 42 个目录全部 `VERIFIED`，旧入口均为准确指向 D 的联接，退役 C 载荷均已不存在 |
+| 用途 | 实际载荷位置 | 根数 | 原清单文件数 / 目录数 | 原逻辑字节数 | 内容哈希文件数 |
+| --- | --- | ---: | ---: | ---: | ---: |
+| 背景源码、构建、冻结来源和证据 | `D:/codex-ck3-background` | 1 | 2,870,504 / 198,946 | 117,061,683,398 | 5,196 |
+| 原 `XarAutoplayer*` 状态和场次 | `D:/ck3-state/<原目录名>` | 42 | 224,663 / 1,722 | 73,392,528,892 | 77 |
 
-`state-migration-final.json` 于 `2026-10-24T15:45:53.226180Z` 实际记录
-`ALL_42_VERIFIED_CUTOVER_AND_SOURCE_REMOVED`；每根均有 `junction=true`、`resolves_exact=true`、
-`retired_source_absent=true` 和 `verify_status=VERIFIED`。精确 42 对旧/新路径保存在该回执，不把前缀匹配当作额外删除范围。
-同一时点 C 可用 **76,649,082,880 B（71.39 GiB）**，D 可用 **726,716,248,064 B（676.81 GiB）**。
-这是阶段容量快照，背景复制仍在写入，空闲差额不排他归因本次迁移。
-背景目录约 287 万文件是复制进行时的规模反馈，最终文件数和字节数待完成清单确认。
+旧 `C:/codex-ck3-background` 与 `C:/Users/xenoa/AppData/Local/<原 XarAutoplayer 目录名>` 保留目录联接，
+不另存一份 C 盘载荷。`final-root-bindings.json` 逐根记录原身份、新目标和联接身份，43 项均确认旧实体 absent、D 目标准确。
+文件总数来自 Git 管理路径修复前的迁移清单；后续 Git locator/config 的明确变更单独记录，不改写冻结 runtime manifest 和历史来源。
 
-历史背景构建转到 C 盘的明确原因是当时 Z 盘容量不足，见 [2026-W41 记录](../autonomous-agent-progress/weekly/2026-W41.md)
-和[当时的 sparse lane 说明](../ck3-native-ai/combat-phase-warmonger-predicate-12003.md)。
-自动游玩状态原位置来自 `%LOCALAPPDATA%/XarAutoplayer` 的用户隔离默认值，入口已有显式 state 路径配置。
-本机 D 盘为机械盘，容量迁移不构成性能改善结论。
+`migration-final.json` 的起始 C 可用量为 **8,071,397,376 B**（`2026-10-24T14:40:54.393022Z`），
+最终 C 为 **200,167,440,384 B**、D 为 **643,191,857,152 B**（完成时刻）。早期 15:45 的 C 盘 71.39 GiB 是中途快照。
+空闲差额包含系统和并发变化，不能排他归因本次迁移；`allocated_bytes_or_null=null`，逻辑长度不冒充实际分配量或物理释放量。
+本机 C/D/Z 经 `GetDiskFreeSpaceW` 实读分配单元均为 4,096 B，也不据此推算精确物理回收量。
 
-## 执行与兼容边界
+历史背景构建转到 C 的明确原因是当时 Z 盘容量不足，见 [2026-W41 记录](../autonomous-agent-progress/weekly/2026-W41.md)
+和[当时的 sparse lane 说明](../ck3-native-ai/combat-phase-warmonger-predicate-12003.md)。状态目录来自用户隔离默认 `%LOCALAPPDATA%/XarAutoplayer`。
+本机 D 是机械盘，本次容量迁移不构成性能改善结论。
 
-本轮按[通用存储策略 1.0.0](../storage-retention-policy.md)检查目标卷、复制峰值、并发预留、配额和期限。
-实际准入见 `admission.json`：`2026-10-24T15:07:24.805080Z`、owner `c-to-d-project-migration-20261024`，
-状态 `ADMITTED_USER_AUTHORIZED_RELOCATION`；D 当时可用 **844,950,630,400 B**，迁移峰值预留 **256 GiB**，
-系统增长预留 **64 GiB**，安全量 **20 GiB**。项目用量保守计入当时 D 全部占用，采用此次用户授权迁移专用的七日配额例外，
-截止复核时间 `2026-10-31T15:07:24.805080Z`。准入明确 `new_game_or_build_admission=false`，
-删除范围只包括已验证迁移的原副本。最终容量闭账仍待完成；移动到 D 盘不刷新原资产寿命，也不扩大永久保留例外。
+## 数据验证与旧载荷清理
 
-复制、文件内容验证、目录联接切换、旧副本删除及最终容量读回分别记录。跨卷后的卷身份和 FileID 是新副本事实，
-原 SHA、来源、历史路径、时间、GREEN/RED/UNKNOWN 及失败回执保留；旧副本删除后另记原件可用性和精确替代位置。
-清理只覆盖本次计划内、已完成切换的旧副本，不递归跟随 C 盘联接进入新的 D 盘载荷。
+背景复制于 `2026-10-24T16:19:46.798998300Z` 完成；内层 Robocopy exit **1** 为正常复制结果，协调者读回外层 wrapper exit **0**。
+独立完整根验证于 `16:46:54.251328300Z` 完成，结果 **VERIFIED**，最终原 Robocopy `/L` exit **0**。
+全清单按相对名称、大小、完整 100 ns FILETIME 及额外条目核对，错误 0、`skipped_reparse=0`；关键配置及 MOD/EXE/DLL/PYD 等
+共 5,196 文件、2,487,128,701 B 做内容哈希。状态清单错误也为 0、`skipped_reparse=0`，内容哈希覆盖 77 文件、1,268,005 B。
+其余文件没有全量 body hash；ACL、备用数据流和旧原生文件身份不在 `/COPY:DAT` 验证范围。背景整根验证实际耗时 1,552.4015783 秒。
 
-后续任务显式使用 `D:/codex-ck3-background` 与 `D:/ck3-state/<工作包或原目录名>`。
-已有 MCP 注册的 `--state-dir`、`--userdir` 和解释器绝对路径优先于环境变量默认值；现有注册、venv、冻结 profile、
-checkpoint 和账本不能因复制及旧入口联接仍可读而自动取得新路径资格。新的直接 D 路径合同继续通过现行准备、rebind 和资格入口产生，
-不对旧冻结 JSON 作批量路径替换。本轮现有 MCP 的配置更新与静态验证范围如下；未重新准备游戏 profile，也没有执行 CK3 恢复或动作。
+`2026-10-24T16:49:05.432379Z` 完成背景 C→D 联接切换，原实体移至 `C:/codex-ck3-background.c2d-retired-20261024`。
+随后的删除进程 exit **0**，最终 remove 回执为 **REMOVED**：准确删除 2,870,504 文件、198,946 目录，错误 0、保留 reparse 0。
+[background-migration-data-final.json](Z:/codex-storage-audit/2026-10-24-xenoamess-full-tower-eb9d2c1186/migration-execution/background-migration-data-final.json)
+确认旧背景实体 absent；[background-ledger-integrity.json](Z:/codex-storage-audit/2026-10-24-xenoamess-full-tower-eb9d2c1186/migration-execution/background-ledger-integrity.json)
+确认 gzip footer/CRC 和 2,871 个 checkpoint 批次计数完整，最大成功文件增量 1,000，最终成功文件数 2,870,504。
+该检查没有重新解析全部逐文件 JSON 语义。状态清理的另一份中断日志缺口仍按下文保留。
 
-linked Git worktree 需要复核 common-dir、双向登记、exact HEAD 和 dirty/untracked 内容；继续开发的新物理路径按
-[worktree 迁移流程](../branch-management.md)修复并读回。旧构建 cache 和启动 argv 的绝对路径不作无条件可移植承诺。
-新 EXE 完整路径的 Defender 登记与实际设置读回另按[现行专题](../ck3-native-ai/project-exe-defender-exclusions.md)处理，旧 C 盘设置不外推到 D 盘。
+## Git 与活动路径注册
 
-## 后续写入配置与代码范围
+[background-git-repair-execution.json](Z:/codex-storage-audit/2026-10-24-xenoamess-full-tower-eb9d2c1186/migration-execution/background-git-repair-execution.json)
+记录必要 alternates locator 更新和 `git worktree repair`，于 `17:03:05.298712Z` 完成。
+后继 `background-git-status-after.json` 于 `17:05:30.872513Z` 确认 **245/245** 条 Git 检查 GREEN：
+HEAD 全部吻合、porcelain 状态输出逐字节匹配基线，核对期间 HEAD/index 元数据变化 0。**5 个原有 dirty 工作树照实保留**，没有为取得 clean 状态丢弃改动。
+245 条包括关联外部工作树的定位核对，不能称作 245 棵树都被搬盘。
 
-`registrations-and-environment.json` 于 `2026-10-24T15:12:29.319018Z` 保存以下用户环境实际值，旧值均为未设置：
+`background-git-local-storage-policy.json` 对修复计划内 **39 个独立 common-dir** 写入并读回 **117 项**本机设置：
+`xar.projectForbidSystemVolumeBulk=true`、`xar.projectStorageRoot=D:/codex-ck3-background`、
+`xar.autoplayerStateRoot=D:/ck3-state/XarAutoplayer`。范围是这些已核对项目仓库的可变本地配置，没有改写源码、runtime 或冻结 manifest。
 
-| 配置 | 实际值 |
-| --- | --- |
-| `XAR_AUTOPLAYER_STATE_DIR` | `D:/ck3-state/XarAutoplayer` |
-| `XAR_PROJECT_STORAGE_ROOT` | `D:/codex-ck3-background` |
-| `XAR_CK3_BACKGROUND_ROOT` | `D:/codex-ck3-background` |
-| `XAR_PROJECT_FORBID_SYSTEM_VOLUME_BULK` | `true` |
-| `XAR_PROJECT_TEMP_ROOT` | `D:/ck3-state/tmp` |
+本机用户配置已将 state、background 与项目临时根指向 D；后续仍显式传 `--state-dir`、`--userdir` 和构建输出根。
+现有 `ck3-causality` MCP 的 state/environment 路径已更新，项目专属 `TEMP`/`TMP` 为 `D:/ck3-state/tmp`；
+实际登记 argv+env 完成 initialize、list 和历史静态知识复验，返回 **122** 个工具，知识响应保持且无错误。
+原 profile 字节保持（SHA-256 `09aa8a538949355d4924a21fe27ed88fcd77eff7d4d4582a4e01ee1d4ef8110e`）。
+这些是 `mcp-scoped-environment-verification.json` 的静态范围，没有启动、attach 或操作游戏，也没有重新 prepare profile。
 
-环境变更广播返回 **1**；新启动进程读取新用户设置，已经运行的 Codex 进程环境不会因此改变。
-`2026-10-24T15:48:35Z` 在 `Z:/cmig24` 通过 `git config --local --show-origin --get` 逐项实际读回：
-共享 `Z:/ck3_mod_rewrite/.git/config` 中 `xar.projectForbidSystemVolumeBulk=true`、
-`xar.projectStorageRoot=D:/codex-ck3-background`。这两项 Git-local 设置使同一 common-dir 的现有工作树可读取本机 opt-in。
+`live-guard-verification.json` 的四个真实只读探针全部符合预期：当前进程没有新的用户环境 forbid flag，仍能通过 Git-local fallback
+拒绝 C 实体输出，允许 D 路径及两种 C→D 兼容联接路径；四项均 `no_output_created=true`。
+有限外部核对覆盖 207 个计划任务、35 个 Run/RunOnce 值、909 个服务 ImagePath，以及 90 个外层 mod descriptor，
+均无匹配、无读取错误；探测路径未发现启动器数据库，未查询其文本列。没有展开间接脚本，不据此声称所有外部注册或所有机器均已覆盖。
 
-Java 守卫依次读取 JVM 属性、进程环境和 Git-local opt-in，检查输出最近存在祖先解析后的实体卷；拒绝系统卷实体输出，
-不迁移输入、安装路径或小型元数据，也不宣称已经拦截全部旧生产工具。
+## 容量闭账与长期放置偏好
 
-本次补丁在 `ControlBuild.buildExclusive` 接入同一守卫，覆盖普通 verify 和 capture 构建；
-`SdkSourceAssembly.assemble`、`assembleViews` 与 `assembleReference` 在批量写入前调用该守卫。
-未接入的旧工具仍须逐次核对实际输出根和峰值。
-现行说明同步到 [AGENTS](../../AGENTS.md)、[自动游玩 README](../../ck3_autonomous_player/README.md)、
-[账户 MCP 安装说明](../ck3-portable-codex-mcp-setup.md)和[工作树迁移说明](../branch-management.md)，不替换历史报告中的旧路径。
+`reservation-release.json` 已将本轮 **256 GiB** 迁移预约从 274,877,906,944 B 核销为 **0 B**。
+`reservation-release-adoption.json` 确认 CAS 实际采用，storage revision **2**，临界区持锁 **0.000955300172790885 秒**。
+预约核销不是额外释放 256 GiB 硬盘。
 
-## 已完成的 MCP 配置与静态验证
+`machine-storage-profile-final.json` 的迁移专用 quota override 已关闭，`quota_overrides=[]`，未来重型写入须按
+[通用存储策略 1.0.0](../storage-retention-policy.md)做新鲜准入，不能复用此次配额或旧空闲快照。
+七日迁移配额及审计资料到期不撤销用户的持久偏好：**项目大体量输出避开系统盘，直到用户明确撤销；数据盘空间不足时不得自动回退 C 盘。**
+本轮没有修改全局 `LOCALAPPDATA`、`TEMP`/`TMP` 或其他项目设置。D 盘仍保留本机 64 GiB 系统增长预算。
+最终审计/机器映射复核时间为 `2026-11-23T17:00:00Z`；迁移不刷新底层资产寿命，不声称已经部署全机或跨机自动 GC。
 
-同一份 `registrations-and-environment.json` 保存 `C:/Users/xenoa/.codex/config.toml` 的旧副本和前后 SHA，
-本轮只更新 `ck3-causality` 的 state 路径及 environment manifest 路径到 `D:/ck3-state/XarAutoplayer-1.20.0.3-migration`，
-并移除已退役的 nonwar 开关；其余 MCP server 保持。配置 SHA 从
-`0cc5fe5f2b54e7273f7f8e84fa6e528ecb904be4113aba26b71677f2f30d0370` 变为
-`c29f0b6a453f9fdfbd476cc900d7c43bb19a630f0df47d60a1cd935e206b6801`。
+## 保留的实际边界
 
-`mcp-destination-final-verification.json` 于 `2026-10-24T15:31:52.591850Z` 实际完成 MCP initialize、list-tools，
-枚举 **122** 个工具，并调用历史静态事件知识 `health.1015`，响应可用且 `knowledge_is_error=false`，
-结果 `MCP_TRANSPORT_AND_OFFLINE_KNOWLEDGE_VERIFIED`。122 是该次源码的观察结果，不是 ABI 常量。
-查询返回的是既有 **1.20.0.3** 知识数据，不证明当前 CK3 安装版本、native 可用、profile 合格或游戏业务完成。
-该次验证没有启动/操作 Game，也没有重新 prepare profile。
+- **Defender D 路径登记未完成。** 本轮仅核对三个归档 EXE 的 C/D 字节相等，不是完整 EXE 清单；旧 File API/实际绝对 argv 来源
+  不满足现有 collector 合同。当前非管理员且 broker 缺失，没有 UAC/Add 或新 native EXE 构建，不能声称 D 路径已排除。
+  后续新构建沿既有 hook 登记，详见[本轮 Defender 专题](../ck3-native-ai/project-exe-defender-exclusions.md#2026-10-24-c-到-d-迁移追加候选字节已核对登记尚未开始)。
+- **完整 Official Runner CI 为 RED。** 守卫提交 `4ead5f6366a38a4f859ccdc82daada27d0a14670` 的
+  [run 40108917267](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40108917267) 在来源机器
+  `runnervmdaln5-5f47da6a04` 的 bootstrap 阶段执行 632 项，2 failure、4 error、0 skipped；守卫自身 10/10 通过。
+  仅 Canonical 负例已在父 run 实际复现；另两组为缺失 `vctip.exe` 输入和 Unicode 参数断言，父 run 未到达它们，不能一并追认为旧失败。
+  **full reactor 和 actual HTTP consumer chain 均未执行**。归因见 [ci-attribution.json](Z:/codex-storage-audit/2026-10-24-xenoamess-full-tower-eb9d2c1186/ci-failure-40108917267/ci-attribution.json)
+  （18,552 B，SHA-256 `6fdf52913d1d7fdd63a2eccf7fed7efa4d5f90541a1fe549debed26d9b156d7a`）；没有修无关 CI 或重跑测试。
+- **本地验证范围有限。** `2026-10-24T15:26:42Z` 的[验证回执](D:/ck3-state/storage-guard-verification-publication/VERIFICATION.actual.json)
+  记录默认 `mvn` 3.10.0（当时 home `C:/apache-maven`）、JDK 21.0.10（`C:/jdk-21`）；
+  完整编译 76 个生产和 94 个测试源码，`-Xlint:all -Werror`，只选测 4 类共 61 项，全部通过、零跳过。
+  这些机器/路径是观察事实，不锁定未来 Maven 命令；选测通过不替代失败的完整 CI。
+- **状态删除日志有 453 条不可恢复记录。** 旧慢工具完成 4 根后主动中断（exit 15），原未闭合 gzip 保留；
+  完整前缀仅恢复 1,000 INTENT 和 1,000 DELETED，另外 453 条无法从日志复原，没有补造记录或原生身份。
+  新批次重新观察剩余原件，最终 42 个状态旧实体均 absent；这不等于存在完整逐文件删除日志，详见
+  [state-interrupted-ledger-closure.json](Z:/codex-storage-audit/2026-10-24-xenoamess-full-tower-eb9d2c1186/migration-execution/state-interrupted-ledger-closure.json)。
+- **迁移不授予游戏资格。** 没有执行新的 Game/profile preparation、rebind、continuity reducer 实机接续或 CK3 业务验收。
+  原合同和历史 SHA/结果保留，新物理路径/身份需在后续实际使用时走正常资格流程；缺少 machine_id 的旧历史仍为 unknown。
 
-## 已完成的必要 Java 验证
+## 最终证据索引
 
-验证机器为本页 `machine_id`，观察时间 `2026-10-24T15:26:42Z`。
-独立 sparse worktree `Z:/cmig24` 固定在 `85905d4ced48e59f826aa6bb92245af7dd1ea5d9`，移植本轮文档和守卫，
-未混入主工作树的其他既有 dirty 内容。默认 `mvn` 实读 **3.10.0**，Maven home `C:/apache-maven`；JDK **21.0.10**，`C:/jdk-21`。
-这些路径是本次观察事实，后续执行继续使用机器默认 `mvn`。
+外置根为 `Z:/codex-storage-audit/2026-10-24-xenoamess-full-tower-eb9d2c1186/migration-execution/`；逐根清单和过程回执留在该根，
+本页只保留结论和关键 pin。文件大小均为 B；SHA-256 已实际读回。
 
-使用既有 `D:/codex-ck3-demos/2026-10-22-java-phase1/m2`，build、`java.io.tmpdir` 和 `jna.tmpdir` 均位于
-`D:/ck3-state/storage-guard-verification-publication`。完整编译 build-tools 的 **76 个生产源码、94 个测试源码**，
-启用 `-Xlint:all -Werror`；实际只执行 `ControlBuildTest` 22、`ProjectStoragePolicyTest` 10、
-`SdkReferenceAssemblyTest` 4、`SdkSourceAssemblyTest` 25，共 **61 项，失败 0、错误 0、跳过 0**。
-Maven exit **0**，日志报告 `Total time` **33.708 秒**；其余测试已编译但未执行，没有启动 CK3 或 Steam。
-
-外置 [VERIFICATION.actual.json](D:/ck3-state/storage-guard-verification-publication/VERIFICATION.actual.json) 记录范围和机器身份；
-同目录 `default-maven.log` 为版本读回，`maven-test.log` 的 SHA-256 为
-`21174aca43bfce79f21f3d49eecb342c942f1a5d4a3e06909af1e41d37cc4063`。
-本次测试结果只证明选定存储守卫和 Java 构建入口兼容范围，不抵扣目录迁移或游戏状态接续的实际验收。
-
-## 已读取的迁移阶段回执
-
-以下原件均绑定本页 `machine_id`，位于
-`Z:/codex-storage-audit/2026-10-24-xenoamess-full-tower-eb9d2c1186/migration-execution/`。
-本次只读取和哈希这些小回执，没有重新运行迁移或 Java 测试。
-
-| 回执 | 大小（B） | SHA-256 |
+| 回执 | 大小 | SHA-256 |
 | --- | ---: | --- |
-| [state-migration-final.json](Z:/codex-storage-audit/2026-10-24-xenoamess-full-tower-eb9d2c1186/migration-execution/state-migration-final.json) | 13,330 | `4f436cda1a7bc88d80a29fa717ada5522fcaf383731b4f994d125e02d33ae55e` |
-| [registrations-and-environment.json](Z:/codex-storage-audit/2026-10-24-xenoamess-full-tower-eb9d2c1186/migration-execution/registrations-and-environment.json) | 1,842 | `24de6f10d90ce8b8841f0729d08869c82aa5456bcdf6b70e5ff0d2e6d42482d5` |
-| [mcp-destination-final-verification.json](Z:/codex-storage-audit/2026-10-24-xenoamess-full-tower-eb9d2c1186/migration-execution/mcp-destination-final-verification.json) | 115,816 | `5de7b270ca44a6fa924d0d735b6c21be8ad70a5550cde72045d7f30258fb0308` |
-| [admission.json](Z:/codex-storage-audit/2026-10-24-xenoamess-full-tower-eb9d2c1186/migration-execution/admission.json) | 1,462 | `013ad7363bc206bc7b0f5609a88139cf08babeca3f23cf5fe1c3448d90fa67c4` |
-
-## 待闭场的事实与证据
-
-| 项目 | 必须补齐的实际事实 |
-| --- | --- |
-| 背景目录迁移 | 复制完成时间、最终文件/字节清单、内容验证、联接切换、旧 C 副本处置及错误/重试原件 |
-| 背景 worktree 修复 | 精确迁移根的 repair、common-dir、HEAD/status 和未提交内容读回；后续直接 D 路径合同仍按各自入口验收 |
-| Defender 新路径 | 已迁移项目 EXE 的精确来源/清单、实际新路径登记及设置读回范围，未完成项如实保留 |
-| 最终容量与交付闭账 | C/D 结束观察时间、free、实际删除/分配量、预留/配额结算及汇总回执；空闲差额不排他归因本次迁移，实际提交与 CI 终态另记 |
-
-上述事实未收齐前，本页整体状态保持 **IN_PROGRESS**。
+| [migration-final.json](Z:/codex-storage-audit/2026-10-24-xenoamess-full-tower-eb9d2c1186/migration-execution/migration-final.json) | 3,873 | `2b83b7f63e5ec52e6d4b438b4dd545b71211bc53b0d19ec6e8e1747279ad5daa` |
+| [final-root-bindings.json](Z:/codex-storage-audit/2026-10-24-xenoamess-full-tower-eb9d2c1186/migration-execution/final-root-bindings.json) | 59,500 | `f94bd6d82e368c9fec65f96ff8435157e777c167aa863be00d00daaba77f9b3d` |
+| [background-git-status-after.json](Z:/codex-storage-audit/2026-10-24-xenoamess-full-tower-eb9d2c1186/migration-execution/background-git-status-after.json) | 11,076,407 | `2c8e335e5636586f93006e332bbeabf2a62ac8bbdce0552a9cbddd2292cedcbf` |
+| [background-git-local-storage-policy.json](Z:/codex-storage-audit/2026-10-24-xenoamess-full-tower-eb9d2c1186/migration-execution/background-git-local-storage-policy.json) | 98,905 | `dfb41616af16014e20246d007440e31086a237c6bc10a4fcc6de0b2d9d425cad` |
+| [background-ledger-integrity.json](Z:/codex-storage-audit/2026-10-24-xenoamess-full-tower-eb9d2c1186/migration-execution/background-ledger-integrity.json) | 839 | `68ead4cacd4dd0e198a0cf02c4db5c5033525f20870010b6ea0cc11197498966` |
+| [machine-storage-profile-final.json](Z:/codex-storage-audit/2026-10-24-xenoamess-full-tower-eb9d2c1186/migration-execution/machine-storage-profile-final.json) | 1,900 | `72c76ba7b1d9281403c55a5b6ec2079d4137fbe88497e1f18a0b3493fcc44d2e` |
+| [reservation-release.json](Z:/codex-storage-audit/2026-10-24-xenoamess-full-tower-eb9d2c1186/migration-execution/reservation-release.json) | 952 | `e17e202a283865d499144d08296739ca8015fb2a7e2f046c7efc76fb4e18e320` |
+| [reservation-release-adoption.json](Z:/codex-storage-audit/2026-10-24-xenoamess-full-tower-eb9d2c1186/migration-execution/reservation-release-adoption.json) | 205 | `ec2396a1ceac0a6d23d23ca10366cd02269346bcfcf2aa172eb62278bf65538b` |

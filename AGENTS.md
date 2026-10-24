@@ -5,7 +5,7 @@
 - 用户明确要求迁移本项目的 C 盘工作目录，并约束后续任务不要再向 C 盘累积数百 GiB 的工作树、构建、运行与证据。新任务必须先读取目标机器的根映射；小型账户配置和已安装依赖不由此迁移，不修改全局 `LOCALAPPDATA`、`TEMP` 或其他项目配置。
 - 对 `machine_id: xenoamess-full-tower-eb9d2c1186`，背景工作树和构建根使用 `D:/codex-ck3-background`，隔离状态、场次及其临时输出使用 `D:/ck3-state/<工作包或原目录名>`。显式传递 `--state-dir`、`--userdir`、构建输出根，沿用本机 `XAR_AUTOPLAYER_STATE_DIR` / `XAR_PROJECT_STORAGE_ROOT` 配置；不得为新工作包在 `%LOCALAPPDATA%` 下另建真实的 `XarAutoplayer*` 大目录。
 - 本机启用 `XAR_PROJECT_FORBID_SYSTEM_VOLUME_BULK=true`。已接入 Java SDK/构建入口按解析后的实体卷检查输出，拒绝系统盘实体目录；未接入的旧工具仍须在执行前核对实际输出根和峰值，不能把局部入口保护声称为全机拦截。旧 C 路径若保留目录联接，只能指向已验证的 D 盘目标，不再存放一份 C 盘载荷。
-- D 盘容量、配额、预留与期限继续按通用存储策略检查；本机 D 盘为机械盘，不能把迁移当作性能提升。其他机器自行选择获准数据卷，不照搬本机盘符。迁移结果、旧新路径和验收边界见 [本机迁移记录](docs/maintenance/2026-10-24-c-to-d-project-storage-xenoamess-full-tower-eb9d2c1186.md)。
+- D 盘容量、配额、预留与期限继续按通用存储策略检查；数据卷容量不足时先按策略清理、停止重型写入或选择获准的其他数据卷，不得自动回退系统盘。本机 D 盘为机械盘，不能把迁移当作性能提升。其他机器自行选择获准数据卷，不照搬本机盘符。迁移结果、旧新路径和验收边界见 [本机迁移记录](docs/maintenance/2026-10-24-c-to-d-project-storage-xenoamess-full-tower-eb9d2c1186.md)。
 
 ## Java 优先与逐项迁移（2026-10-22 用户指令）
 
