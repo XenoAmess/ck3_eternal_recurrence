@@ -6,9 +6,13 @@
 | --- | --- | --- |
 | 需求 | 已制定版本 1 | [requirements.md](requirements.md) |
 | 测试方案 | 已制定版本 1，尚未授予测试通过 | [test-plan.md](test-plan.md) |
-| 编码 | R0007的House作用域修正、真实继承夹具与共享观察合同已形成干净候选1df185f；Java构建16项通过，九语正式24文件另行构建校验通过 | [House修复](2026-10-25-engine-house-dynasty-fix.md)与[后继软件回执](acceptance/r8-software-preparation-2026-10-25.json) |
-| 测试验收 | R0007原生取消与实际创建分别有独立后态；创建后的夹具确认被真实产品脚本错误阻断，完整核心仍0/6，等待新候选实测 | [R0007失败与资源终态](acceptance/R0007-2026-10-25.json)、[测试方案](test-plan.md) |
+| 编码 | House作用域与Java成员查询登记已修；新增继承日期守卫修复cff81b3已推送，新隔离候选0c54184完整Maven16项通过 | [House修复](2026-10-25-engine-house-dynasty-fix.md)、[Java登记修复](acceptance/runtime-members-capability-2026-10-25.json) |
+| 测试验收 | R0008已加载地图；Root只读工具名错误使宿主停止业务，正常退出并保留失败。完整核心仍0/6，修正后的新图待实测 | [R0008失败与资源终态](acceptance/R0008-2026-10-25.json)、[测试方案](test-plan.md) |
 | 发布 | NOT_PUBLISHED，Workshop ID 未分配 | 待业务验收及正式发布闭环 |
+
+2026-10-24T19:46Z更新（北京时间10月25日03:46，machine_id: `desktop-3fevhd2-1c74096080`）：R0008已正常结束，Game原保留句柄观察退出0、host1、public2、keeper0，SCREEN8784释放。原宿主因Root将只读工具名误写为缺少`_v1`的名称而停止业务，后续业务请求被门禁拒绝；没有执行创建或迁移，也不增加核心通过数。启动日志另发现继承夹具把变量当日期字面量解析，原错误保留于`C:/ck3-dynastic-esotericism-20261024/R8-heir-date-guard-fix-a01/CANDIDATE.actual.json`。修复改用原版同构的数值天数比较，保留缺变量拒绝和至少一日要求；主线cff81b3已推送并回读。新隔离候选0c54184的完整Maven原会话55072退出0，16项测试无失败、错误或跳过，15资源打包后的生产者到消费者核验和新实机仍在继续。当前总体约60%，核心0/6，seed/cold/old与发布均未完成。
+
+最新容量为r1178/storage66：`C:/ck3-dynastic-esotericism-20261024/capacity/EIGHT-POOL6-D28-SCOPE-A17-ADMISSION-r1178.actual.json`，SHA-256 `3183055c901d0f5eac9acff8a5c578e9716d75a76724e47f5aaf6857b7e4babf`。八个累计Game profile共用原6GiB池，旧a16保留、新core为a17/keeper-a28；build/test仍512MiB、D未来仍28MiB、安全预留与2026-10-25T07:30Z期限不变。运行中同FileID的pagefile实配新增曾消费9,250,131,968B系统增长预留，关场后实际回退，因此已恢复原16GiB未来预留、consumed归零，未提高原总额。重型写入和新启动仍执行新鲜检查；以下旧容量与场次记录按原观察时间保留。
 
 截至2026-10-24T18:46:46Z（北京时间10月25日02:46），总体约60%是规划估计；核心0/6、cold/seed/old未完成，Workshop未创建。R0007已原生退出，Game原Popen0、host1、public2、keeper0，SCREEN8743释放；资源终态不授业务通过。后继s08/common-runtime-a08已冻结，公共plan/prepare实际通过；尚未分配或启动R0008，保留a07原件。
 

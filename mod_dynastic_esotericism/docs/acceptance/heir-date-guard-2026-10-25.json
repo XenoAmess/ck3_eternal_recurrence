@@ -1,0 +1,47 @@
+{
+  "schema": "des-heir-numeric-day-guard-fix-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T19:48:19.940839+00:00",
+  "main_source_commit": "cff81b321cc099a45f9636ca11ec91a06d4a4feb",
+  "actual_isolated_source_commit": "0c54184a9098845edff827529a4045bf84e51158",
+  "failure_and_stock_source_analysis": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\R8-heir-date-guard-fix-a01\\CANDIDATE.actual.json",
+    "bytes": 5040,
+    "sha256": "dcf7b6f03de6272e1b975187189bb4e212b0638ac0c0ef30b5d132e461a9f577"
+  },
+  "actual_original_full_maven": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-builder-a10\\maven-original-exec.actual.json",
+    "bytes": 820,
+    "sha256": "bd464b468e761c703d023680c1adfc1f301810f42edfaa47a0bc8049e5ee5432"
+  },
+  "original_exec_session": 55072,
+  "original_exit_code": 0,
+  "junit": {
+    "tests": 16,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "fix": "Use stored numeric day value on the left of a scripted-value <= current_date minus one day, with required input variable. Preserve at least one natural day and all existing identity/legitimacy guards.",
+  "actual_engine_validation_of_new_graph": false,
+  "business_pass": false,
+  "core_completed_phases": 0,
+  "publication_pass": false,
+  "workshop_item_id": null,
+  "source_files": [
+    {
+      "path": "mod_dynastic_esotericism\\tools\\src\\main\\resources\\acceptance-fixture\\common\\decisions\\des_acceptance_extended_decisions.txt",
+      "bytes": 21996,
+      "sha256": "75d5ba4460ca63deb2b66467786dbb1b930222d4e94bd03455ee7f5abdc86037"
+    },
+    {
+      "path": "mod_dynastic_esotericism\\tools\\src\\test\\java\\org\\xar\\ck3\\dynastic\\acceptance\\FixtureEmitterTest.java",
+      "bytes": 32410,
+      "sha256": "a947ec5c898fdc18c0100a44c6b40d272aa459020bff26e15e66364308dea3e5"
+    }
+  ],
+  "default_maven": "3.10.0",
+  "default_maven_observed_home": "D:/apache-maven-3.9.16",
+  "default_jdk": "25.0.4.1",
+  "scope": "No live graph edited; new fixture and runtime must be generated and started independently."
+}

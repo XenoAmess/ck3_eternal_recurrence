@@ -1,0 +1,176 @@
+{
+  "schema": "xar.dynastic-esotericism.actual-run-summary.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T19:47:55.733077+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0008",
+  "source_commit": "25e7e5cb817bf0c511875dd3c16c376856c39224",
+  "status": "RED",
+  "started_at_utc": "2026-10-24T19:25:15.760007+00:00",
+  "finished_at_utc": "2026-10-24T19:41:32.566865+00:00",
+  "local_date_note": "Original timestamps are 2026-10-24 UTC; closure is 2026-10-25 Asia/Shanghai.",
+  "business_phase_passed": 0,
+  "business_phase_total": 6,
+  "business_pass": false,
+  "release_pass": false,
+  "normal_close_qualified": false,
+  "autosave_verified": false,
+  "failure": "Root submitted readonly tool ck3_query_campaign_root_context without the required _v1 suffix. Its Unknown tool error put the host in an error state; later business requests were refused.",
+  "original_host_error": "RuntimeError: MCP tool ck3_query_campaign_root_context returned an error: Unknown tool: ck3_query_campaign_root_context",
+  "native_process_identity": {
+    "pid": 29772,
+    "process_creation_filetime_100ns": "134373435503286799",
+    "connection_generation": 1,
+    "played_character_id": 31254,
+    "state_dir": "C:\\ck3-dynastic-esotericism-20261024\\attempt-a16\\state",
+    "birth_source": "Original typed observer receipt; decimal string, never derived from retained float."
+  },
+  "typed_sdk_process_exit": {
+    "status": "process_exit_observed_zero",
+    "retained_original_handle_exit_code": 0,
+    "process_exit_observed": true,
+    "typed_normal_exit_observed": true,
+    "claim_consumed": true,
+    "autosave_verified": false,
+    "normal_close_qualified": false,
+    "scope": "Independent SDK process-exit-zero fact only. Original host failure and whole-case rejection remain preserved."
+  },
+  "independent_startup_engine_error": {
+    "message": "Invalid date string due to: Invalid year var:des_test_heir_input_date",
+    "file": "common/decisions/des_acceptance_extended_decisions.txt",
+    "near_lines": [
+      299,
+      305
+    ],
+    "source": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a09\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0008\\operator-evidence\\startup-date-error.actual.log",
+      "bytes": 2183,
+      "sha256": "ffe5fae1e375c73dfc8f8b24a15d82b1d6932baffe5eea357aa5d270b1d476c7"
+    },
+    "scope": "Independent of the operator MCP tool-name error; no heir phase ran or passed."
+  },
+  "candidate_followup": {
+    "source_fix_commit": "cff81b321cc099a45f9636ca11ec91a06d4a4feb",
+    "candidate": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R8-heir-date-guard-fix-a01\\CANDIDATE.actual.json",
+      "bytes": 5040,
+      "sha256": "dcf7b6f03de6272e1b975187189bb4e212b0638ac0c0ef30b5d132e461a9f577"
+    },
+    "fix": "Keep stored date input; use its presence guard and numeric days comparison var:des_test_heir_input_date <= { value=current_date subtract=1 }.",
+    "validation_scope": "Candidate records AST/Java grammar checks. No new Maven/runtime/engine acceptance is credited here.",
+    "frozen_runtime_modified": false,
+    "retroactive_R0008_acceptance_credit": false
+  },
+  "process_exit_codes": {
+    "original_game_handle": 0,
+    "original_host_popen": 1,
+    "original_public_run": 2,
+    "original_keeper_popen": 0,
+    "original_allocator": 0,
+    "actual_resource_consumer_capture": 0
+  },
+  "cleanup_ok": true,
+  "screen_release_sequence": 8784,
+  "resource_closure_mode": "previous-shared-failed-live-resource-closed",
+  "resource_closure_scope": "Administrative resource admission only; business=false, normal_close_qualified=false and autosave=false remain preserved.",
+  "closure_consumer": {
+    "frozen_function": "previous_failed_live_resource_closure",
+    "frozen_source": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a09\\source\\tools\\ck3_mod_acceptance_allocate.py",
+      "bytes": 262817,
+      "sha256": "98ebaf009a03f41cce25b41cd5752892f919d1e4b59d321cc3473ebc1630b255"
+    },
+    "original_operation_exit_code": 0,
+    "production_bus_list_exit_code": 0,
+    "original_evidence_pin_drift": [],
+    "allocated": false
+  },
+  "runtime_binding": {
+    "runtime": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a09\\runtime.json",
+      "bytes": 990879,
+      "sha256": "f3f81612b2063d9dfec3c8efb0d8c6b6a7b3dc51a3af9a1927e53246c74f0b77"
+    },
+    "manifest": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a09\\manifest.json",
+      "bytes": 17054,
+      "sha256": "cce0d7c9db57364e55c9b7234d5d9bbed45b1c40b334e8051ef9c25442da9676"
+    },
+    "source_index": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a09\\source-index.json",
+      "bytes": 1057186,
+      "sha256": "fa4a618b5a6afc4cd083898ec24e98431d9f69f1efdfbc79383c474fe6c38046"
+    },
+    "prepared_case": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\prepared-core-a16\\prepared-case.json",
+      "bytes": 18184,
+      "sha256": "6865a614997ecbe74f327e69d61fca0da8e85df736347d90812270b412f537ae"
+    },
+    "frozen_argv": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a09\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0008\\frozen-argv.json",
+      "bytes": 511114,
+      "sha256": "61c5fd48ab9b1c400fb3b9800fba5251dd9bb8fbc7f6db98c7aa62a2ee8b2ee0"
+    }
+  },
+  "evidence": [
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a09\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0008\\native-report.json",
+      "bytes": 8375566,
+      "sha256": "bbe4c53873e80ffc47215bde1dbbef8e719ed8a852f0ba7582b06d3d1a4a7b68"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a09\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0008\\case-output\\normal-close-result.json",
+      "bytes": 3124,
+      "sha256": "94ca40f4b68a8d3686a0a4eab2846e11d594554881978b0ed674cb418cc9afc9"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a09\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0008\\case-output\\actual-retained-handle-os-exit.json",
+      "bytes": 177,
+      "sha256": "c6bb6e0d29b34b003d63b0563749f22d5f1eccf7d48f8662f69e2a111ca1f8fc"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a09\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0008\\host-original-process-exit.json",
+      "bytes": 258,
+      "sha256": "7c86d161d24d3c5464038e27ba9d7d66a5fed826596bcb745faf402c0828f475"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a09\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0008\\keeper-actual-parent-exit.json",
+      "bytes": 615,
+      "sha256": "e39135416d8364ad54f84e5b2edd72d3f21ef4bd78678aba60af43582fbfd69c"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\attempt-a16\\state\\native-session\\normal-exit-map-requests\\5c9e0cb1009b37a80a35.observe-dd9469420baf42dd.json",
+      "bytes": 4853,
+      "sha256": "0281a889c8eeaf1751f21c6e479d935c530dc5847e8af101aa0920ef760076d9"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\attempt-a16\\state\\native-session\\normal-exit-map-requests\\5c9e0cb1009b37a80a35.observer-close-6322dba6d07b49e0.json",
+      "bytes": 457,
+      "sha256": "7ec2776e70145034644c8ec1ff96f3e6d4ae40b930528e0f854e1dad560e7bc1"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\attempt-a16\\state\\native-session\\normal-exit-map-requests\\0bae0a9c24d21840471e255bae06e07c6b9127b005c4691b2c23c35e0a2befff.claim.json",
+      "bytes": 789,
+      "sha256": "5ce031ae584432dcae60d98f0d935ff6856f5831d2b56c103273cc13b1dffb04"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0008-screen-release.actual.json",
+      "bytes": 1427,
+      "sha256": "7a5524f6e965e26296e8d5cc02ea678c3ecbde71f79849b5542539c0cae2f1f9"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0008-preserved-failure-close-a01\\failure-close.json",
+      "bytes": 9392,
+      "sha256": "cc3e2fd809f170c27c303ebc5c412633322c561d36c9d816f9fc40da476b256c"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0008-preserved-failure-close-a01\\actual-consumer.actual.json",
+      "bytes": 13165,
+      "sha256": "59a8278d843b6e92a52c70721ff0297072839130c9253437410000f6b5d5b02e"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0008-preserved-failure-close-a01\\consumer-operation-attempt02.actual.json",
+      "bytes": 1330,
+      "sha256": "8b7de2b614801446e08eed1cdef11adf906620169a6e4bbd89228fc0cc0ff6a1"
+    }
+  ]
+}
