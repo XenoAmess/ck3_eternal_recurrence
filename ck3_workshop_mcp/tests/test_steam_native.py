@@ -140,6 +140,31 @@ class SteamNativeTests(unittest.TestCase):
             ),
         )
 
+    def test_oversized_utf8_description_is_rejected_before_client_or_receipt(self) -> None:
+        # The real 361 update had 5111 characters but 8590 UTF-8 bytes and
+        # Steam returned EResult 8 after accepting all setters.
+        self.description.write_text("官" * 2667, encoding="utf-8")
+        with patch.object(steam_native, "_open_client") as opened:
+            with self.assertRaisesRegex(steam_native.SteamNativeError, "description.*UTF-8 bytes"):
+                steam_native.publish("unused.dll", self.plan_file, self.receipt_file)
+            opened.assert_not_called()
+        self.assertFalse(self.receipt_file.exists())
+
+    def test_utf8_description_fitting_buffer_reaches_real_publish_path(self) -> None:
+        value = "官" * 2666 + "a"  # 7999 bytes, plus native NUL = 8000.
+        self.description.write_text(value, encoding="utf-8")
+        client = FakeSteamClient()
+        self.assertTrue(self._publish(client)["ok"])
+        self.assertIn(("description", value), client.fields)
+
+    def test_title_and_change_note_reject_native_truncation(self) -> None:
+        for field, value in (("title", "官" * 43), ("change_note", "官" * 2667),
+                             ("change_note", "before\0after")):
+            with self.subTest(field=field, value_bytes=len(value.encode("utf-8"))):
+                plan = dict(self.plan, **{field: value})
+                with self.assertRaises(steam_native.SteamNativeError):
+                    steam_native._prepare_plan(plan)
+
     def test_create_records_item_and_completed_receipt_prevents_duplicate(self) -> None:
         client = FakeSteamClient()
         result = self._publish(client)

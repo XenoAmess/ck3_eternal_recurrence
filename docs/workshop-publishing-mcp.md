@@ -1,5 +1,7 @@
 # CK3 Workshop 发布 MCP：Paradox Launcher 真实调用链预研
 
+2026-10-24 UTC，`machine_id: pc-20260924rtuf-f11af23c08` 的 361 0.4.0 更新实际遇到 `SubmitItemUpdate EResult=8`：说明仅 5111 字符，却有 8590 UTF-8 字节。精简重复英文图注后 7892 字节的同一内容更新得到 EResult=1，公开全文与 Notes 精确回读通过。原失败 receipt 保持 `submit_failed`，修正版使用新 operation，不重试未知提交。[Valve 头文件](https://github.com/ValveSoftware/source-sdk-2013/blob/master/src/public/steam/isteamremotestorage.h)定义标题缓冲 129、说明及 Change Notes 缓冲各 8000 字节（包含结尾 NUL）。共享原生 producer 现已在创建 receipt／打开 SDK 前验证 UTF-8 字节数及内嵌 NUL；16 项原生发布回归及完整 `steam_native.py` mypy 通过，接入持续 CI。正式产品 runtime 文件不因文案精简改变。
+
 > 状态：针对本机 Paradox Launcher `2026.11.1` 的只读静态逆向结论。本文没有上传物品、接受法律协议、读取凭据或操作 Steam/Launcher/CK3 进程。
 
 > 2026-09-12 实施补记：下文保留原始预研及失败分析。主线程最终通过 `ck3_workshop_mcp` 的 `steam-native` 工具真实发布了 [3800124956](https://steamcommunity.com/sharedfiles/filedetails/?id=3800124956)，Create/Submit 均为 `EResult=1`；公开文案与 14 文件下载缓存一致，Steam 随后恢复离线。完整事实见 [1.19.0 changelog](release-changelogs/auto-upgrade-buildings/1.19.0.md)。原生更新分支有离线测试，尚未实机更新验证；CDP 未通过实机验证，未使用。

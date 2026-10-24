@@ -961,6 +961,15 @@ def _preview_files(value: object, *, indexed: bool) -> tuple[_PreviewFile, ...]:
     return tuple(entries)
 
 
+def _validate_publish_text(value: str, field: str, buffer_bytes: int) -> None:
+    # Valve isteamremotestorage.h constants include the terminating NUL.
+    # UTF-8 byte length matters even when the number of Chinese characters fits.
+    if "\0" in value or len(value.encode("utf-8")) >= buffer_bytes:
+        raise SteamNativeError(
+            "INVALID_PLAN", f"{field} must fit {buffer_bytes - 1} UTF-8 bytes without NUL"
+        )
+
+
 def _prepare_plan(data: Mapping[str, object]) -> _PreparedPlan:
     operation_id = _require_string(data, "operation_id")
     operation = _require_string(data, "operation").lower()
@@ -988,6 +997,8 @@ def _prepare_plan(data: Mapping[str, object]) -> _PreparedPlan:
 
     title = _require_string(data, "title")
     description, description_identity = _read_description(data)
+    _validate_publish_text(title, "title", 129)
+    _validate_publish_text(description, "description", 8000)
     content_value = data.get("content_path", data.get("staging_dir"))
     if not isinstance(content_value, str) or not content_value:
         raise SteamNativeError("INVALID_PLAN", "content_path is required")
@@ -1037,6 +1048,7 @@ def _prepare_plan(data: Mapping[str, object]) -> _PreparedPlan:
     change_note = data.get("change_note", "")
     if not isinstance(change_note, str):
         raise SteamNativeError("INVALID_PLAN", "change_note must be a string")
+    _validate_publish_text(change_note, "change_note", 8000)
     legal_accepted = data.get("workshop_legal_agreement_accepted", False)
     if not isinstance(legal_accepted, bool):
         raise SteamNativeError(

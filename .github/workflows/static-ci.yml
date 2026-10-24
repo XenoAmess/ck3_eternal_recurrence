@@ -79,6 +79,14 @@ jobs:
         run: python tools/test_audit_coa_runtime_registry_boundary.py
       - name: Test Steam CK3 version skill without Steam or desktop access
         run: python -B -X utf8 tools/test_steam_ck3_versions.py
+      - name: Test native Workshop publication text bounds without Steam
+        env:
+          PYTHONPATH: ck3_workshop_mcp/src
+        run: |
+          python -B -X utf8 -m unittest discover -s ck3_workshop_mcp/tests -p "test_steam_native.py"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m mypy --follow-imports=silent ck3_workshop_mcp/src/ck3_workshop_mcp/steam_native.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test native research planning and evidence rendering
         run: python tools/test_native_research_plan.py
       - name: Test protected project EXE broker source without privileged actions
