@@ -1,6 +1,8 @@
 package org.xar.ck3.rrf;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.util.DefaultIndenter;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,5 +35,9 @@ public final class Json {
         if (node == null || !node.isObject()) throw new IllegalArgumentException("JSON object required");
         return MAPPER.treeToValue(node, type);
     }
-    public static byte[] write(Object value) throws IOException { return MAPPER.writerWithDefaultPrettyPrinter().writeValueAsBytes(value); }
+    public static byte[] write(Object value) throws IOException {
+        DefaultIndenter linefeed = new DefaultIndenter("  ", "\n");
+        DefaultPrettyPrinter printer = new DefaultPrettyPrinter().withObjectIndenter(linefeed).withArrayIndenter(linefeed);
+        return MAPPER.writer(printer).writeValueAsBytes(value);
+    }
 }

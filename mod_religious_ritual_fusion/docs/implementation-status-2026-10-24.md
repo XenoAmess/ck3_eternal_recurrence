@@ -14,13 +14,15 @@
 
 ## 已执行验证
 
-机器 `4-8e1c2f1861` 于 `2026-10-24T15:33:49Z` 完成以下命令，退出码 0，耗时 17.841 秒：
+机器 `4-8e1c2f1861` 于 `2026-10-24T15:36:21Z` 完成以下命令，退出码 0，耗时 23.822 秒：
 
 ```text
 mvn --batch-mode --no-transfer-progress -f mod_religious_ritual_fusion/tools/pom.xml verify
 ```
 
-结果为 **9 tests，0 failures，0 errors，0 skipped**，覆盖严格 JSON、真实目录到消费者与 staging 的闭环、模式锁、候选自排除及苦行信条最终组合互斥。编译目标 Java 21，实际启用 `-Xlint:all -Werror`。完整模块通过不外推为 CK3 解析或业务通过。
+结果为 **10 tests，0 failures，0 errors，0 skipped**，覆盖严格 JSON、真实目录到消费者与 staging 的闭环、模式锁、候选自排除、苦行信条最终组合互斥及实际 Git LF checkout 后的完整生产链。编译目标 Java 21，实际启用 `-Xlint:all -Werror`。完整模块通过不外推为 CK3 解析或业务通过。
+
+同步主线后曾实际复现 `catalog source hash differs`：Windows 默认 JSON 换行为 CRLF，经 Git 的 LF 规则归一化后与清单不符。共享序列化器现已显式输出 LF，再由原生成入口重建目录和清单；新增回归真实执行 Git add／checkout-index，再进入 validator、staging 和独立 verify，并保留篡改拒绝。没有放松 SHA 检查。
 
 同机 `2026-10-24T15:30:57Z` 再读命令行默认 Maven 为 3.10.0，实际 home 为 `C:/apache-maven-3.9.16`，来源 `where mvn` 为该目录下的 `bin/mvn` 与 `bin/mvn.cmd`；目录名不能代替版本读回。实际 JVM 为 GraalVM Community 25.0.4.1。这些是机器和时间绑定的环境事实，生产命令只使用默认 `mvn`。
 
