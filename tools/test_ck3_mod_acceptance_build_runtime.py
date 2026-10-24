@@ -870,10 +870,22 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
                     profile_flags={other: 'ON' for other in tools_and_flags.values() if other != flag},
                     expected_error='Qualified profile lacks required flag')
 
+    def test_actual_generic_rrf_core_reaches_writer_prepare_preflight_and_mcp_without_validator(self) -> None:
+        for codec in (None, 'gzip-members'):
+            with self.subTest(codec=codec):
+                self.assert_formal_runtime_producer(codec, generic_rrf=True)
+
+    def test_existing_optional_validator_still_rejects_invalid_contract_after_candidate_write(self) -> None:
+        self.assert_formal_runtime_producer(
+            None, invalid_validator_contract=True, expected_error='Save scope must be an explicit boolean',
+            expected_partial_output=True)
+
     def assert_formal_runtime_producer(
         self, codec: str | None, *, extra_tools: tuple[str, ...] = (),
         presentation_flag: str | None = 'ON', expected_error: str | None = None,
         extra_read_only_tools: tuple[str, ...] = (), profile_flags: dict[str, str] | None = None,
+        generic_rrf: bool = False, invalid_validator_contract: bool = False,
+        expected_partial_output: bool = False,
     ) -> None:
         # Real metadata writer and complete downstream consumers; upstream Native input is owned fixture data.
         from test_ck3_mod_acceptance import SharedEntryTests, entry
@@ -900,6 +912,7 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
                                   'if __name__ == "__main__":\n    raise SystemExit(main())\n', encoding='utf-8')
             owned.manifest['host'].update(builder.sig(owned.host.read_bytes()))
             owned.manifest['native']['dll'].update(builder.sig(dll.read_bytes()))
+            product_key = 'faith-engine'
             case_id = 'faith-engine-e02-pilgrimage-mechanism-v2'
             tools = ['ck3_take_snapshot', 'ck3_query_player_pilgrimage_planner_v1',
                      'ck3_submit_player_pilgrimage_planner_v1', 'ck3_query_player_pilgrimage_activities_v1',
@@ -917,14 +930,24 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
                         'policy': {'reserve_gold_raw': 0, 'max_journey_days': 30, 'max_day_requests': 60,
                                    'max_public_requests': 500, 'max_events': 16, 'one_day_timeout': 60,
                                    'quit_reserve_seconds': 120}}
+            if invalid_validator_contract:
+                contract['scope']['new_save_allowed'] = 1
             owned.write(contract_path, contract)
             owned.case.update(id=case_id, required_mcp_tools=tools, opt_in_player_pilgrimage_execution=True,
                               opt_in_read_only_mcp_tools=['ck3_query_player_pilgrimage_activities_v1',
                                                           'ck3_query_player_religion_context_v1', *extra_read_only_tools], adapter={
                                   'module': 'tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_adapter',
                                   'config': str(contract_path)})
+            if generic_rrf:
+                product_key = 'religious-ritual-fusion'
+                registered = builder.read(root / 'tools/ck3_mod_acceptance_products.json')['products'][product_key]
+                owned.case = json.loads(json.dumps(next(case for case in registered['cases'] if case['id'] == 'core')))
+                case_id = owned.case['id']
+                tools = list(owned.case['required_mcp_tools'])
+                owned.manifest['capabilities'] = {
+                    tool: {'source_build_ready': True, 'actual_live_qualified': False} for tool in tools}
             products = {'schema': entry.PRODUCTS_SCHEMA, 'product_inventory': str(owned.files['inventory']),
-                        'products': {'faith-engine': {'cases': [owned.case]}}}
+                        'products': {product_key: {'cases': [owned.case]}}}
             owned.write(owned.products_path, products)
             owned.write(owned.manifest_path, owned.manifest)
             owned.runtime['manifest'] = entry.pin(owned.manifest_path)
@@ -955,18 +978,20 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
                     ('scene-root', scene), ('storage-admission', grant), ('products', owned.products_path),
                     ('case-inputs', inputs), ('output', destination), ('qualified-native', owned.files['inventory']))
                     for part in ('--' + name, str(path))]
-            argv += ['--source-commit', 'a' * 40, '--product', 'faith-engine', '--case', case_id]
+            argv += ['--source-commit', 'a' * 40, '--product', product_key, '--case', case_id]
             if codec is not None:
                 argv += ['--wire-evidence-codec', codec]
+            import ck3_live_run_id as live_ids
             with patch.object(builder, 'load_base', return_value=(owned.runtime, owned.manifest, refs, {'files': files})), \
                  patch.object(builder, 'apply_delta', return_value=(files, set(), [])), \
                  patch.object(builder, 'qualify_native', return_value=bundle), \
-                 patch.dict(sys.modules, {'ck3_live_run_id': types.SimpleNamespace(current_machine_id=lambda: MACHINE)}), \
+                 patch.object(live_ids, 'current_machine_id', return_value=MACHINE), \
                  redirect_stdout(io.StringIO()) as stdout:
                 if expected_error is not None:
                     with self.assertRaisesRegex(ValueError, expected_error):
                         builder.main(argv)
-                    self.assertFalse(destination.exists())
+                    self.assertEqual(destination.exists(), expected_partial_output)
+                    self.assertFalse((destination / 'STATIC-VALIDATION.actual.json').exists())
                     return
                 self.assertEqual(builder.main(argv), 0)
             selected_codec = 'plain' if codec is None else codec
@@ -978,7 +1003,44 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
             for name in ('ENTRY-COMMANDS.json', 'SOURCE-BINDINGS.actual.json', 'STATIC-VALIDATION.actual.json'):
                 self.assertEqual(builder.read(destination / name)['wire_evidence_codec'], selected_codec)
             self.assertEqual(json.loads(stdout.getvalue())['wire_evidence_codec'], selected_codec)
-            selected = entry.Selection(destination / 'runtime.local.json', owned.products_path, 'faith-engine', case_id)
+            selected = entry.Selection(destination / 'runtime.local.json', owned.products_path, product_key, case_id)
+            writer_selection_argv = list(selected.argv)
+            if generic_rrf:
+                adapter = selected.load_adapter()
+                self.assertEqual(Path(adapter.__file__).resolve(), root / 'tools/ck3_mod_acceptance_cases/generic_product_adapter.py')
+                self.assertFalse(hasattr(adapter, 'validate_contract'))
+                import ck3_mod_acceptance_prepare as preparation
+                # Authored SYNTHETIC metadata exercises the real generic importer/profile copy.
+                # Only upstream engine identity is replaced; no game or Java fixture execution is claimed.
+                product = owned.root / 'SYNTHETIC-product'
+                fixture = owned.root / 'SYNTHETIC-fixture'
+                product.mkdir(); fixture.mkdir()
+                (product / 'descriptor.mod').write_text('name="SYNTHETIC RRF product metadata"\n', encoding='utf-8')
+                (fixture / 'descriptor.mod').write_text('name="SYNTHETIC RRF fixture metadata"\n', encoding='utf-8')
+                plain = {}
+                for relative in preparation.CONFIG_NAMES:
+                    path = owned.root / 'plain' / relative
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_text('# SYNTHETIC config metadata only\n', encoding='utf-8')
+                    plain[relative] = builder.pin(path)
+                prebuilt = owned.root / 'SYNTHETIC-fixture.json'
+                owned.write(prebuilt, {
+                    'schema': 'ck3-mod-acceptance-prebuilt-fixture-v1', 'product': product_key,
+                    'case_id': case_id, 'machine_id': MACHINE, 'observed_at_utc': observed.isoformat(),
+                    'fixture_root': str(fixture), 'producer_source_pins': [builder.pin(Path(__file__))],
+                    'files': {'descriptor.mod': builder.sig((fixture / 'descriptor.mod').read_bytes())},
+                    'receipt': {'required_markers': ['SYNTHETIC_RRF_METADATA_READY'],
+                        'required_product_markers_minimum': {}, 'fixture_contains_business_effects': False}})
+                owned.write(inputs, {'state_dir': str(owned.root / 'prepared-state'), 'case_inputs': {
+                    'product_dir': str(product), 'prebuilt_fixture_manifest': builder.pin(prebuilt),
+                    'plain_configuration': plain}})
+                with patch.object(preparation, '_engine', return_value=(None, {
+                        'game_version': 'SYNTHETIC_ONLY', 'exe_sha256': '0' * 64})):
+                    prepared = selected.prepare(inputs, owned.root / 'prepared-case')
+                self.assertEqual(prepared['status'], 'CASE_PREPARED_NOT_ALLOCATED_NOT_RUN')
+                selected = entry.Selection(destination / 'runtime.local.json', owned.products_path, product_key,
+                                           case_id, prepared_path=Path(prepared['prepared_case']['path']))
+                self.assertEqual(builder.read(Path(prepared['prepared_case']['path']))['runtime_status'], 'NOT_RUN')
             self.assertEqual(selected.preflight()['blockers'], [])
             actual_read_only_tools = [selected.argv[index + 1] for index, value in enumerate(selected.argv)
                                       if value == '--case-read-only-mcp-tool']
@@ -994,7 +1056,7 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
             finally:
                 sys.path[:] = previous_imports
             actual = builder.read(destination / 'STATIC-VALIDATION.actual.json')
-            self.assertEqual(actual['public_Selection_argv'], selected.argv)
+            self.assertEqual(actual['public_Selection_argv'], writer_selection_argv)
             self.assertEqual(actual['actual_registered_required_MCP_tools'], sorted(tools))
             self.assertIn('ck3_mod_acceptance_background_types.py', selected.runtime['allocator_overlay'])
             if codec is None:

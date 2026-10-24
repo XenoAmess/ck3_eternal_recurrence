@@ -59,3 +59,7 @@ Java 工具新增严格 fixture request、显式 prebuilt manifest 和独立准�
 独立存档工具来自 [Rakaly 官方发布](https://github.com/rakaly/cli/releases/tag/v0.8.22)，本机实读版本 0.8.22、EXE 6,867,456 bytes、SHA-256 `9d3404f6eb08db3a3d2196a5b2e1ce9b4c8687f2d7df60a4f79cafe75f043101`。来源摘要见 `runtime-tools-a01/PROVENANCE.actual.json`，不留重复 ZIP、不改 PATH、不为第三方加 Defender 排除。其 [官方变更记录](https://github.com/rakaly/cli/blob/master/CHANGELOG.md)列明 0.8.21 已增加 CK3 1.20 支持；本场存档的实际解码及对象图仍须现场验证。
 
 能力漏项已修入同一共享 builder 的三行规则：两项 native flag，以及 Tenets 在注册工厂中的既有权限镜像。新增闭环回归实际验证生成器→Selection argv→MCP 工厂，并逐项验证 native flag OFF／缺失及未授工具权限时拒绝、不写运行目录。canonical host 本身已经具有对应权限设置，不需改动。最终完整 CI 四命令实际 26+64+28=118 次测试执行、0 skip，两项 CI 静态与额外完整 builder mypy 均退出 0；原件 `public-chain-a01/runtime-capability-fix-a03/validation.actual.json` SHA-256 `27fa2156ef6ae8ccd5b291955e607364b131aa186e58de00277803dafaafdfd0`。它明确记录待提交源码身份，不冒充已对未来 commit 执行；后继以实际字节相等绑定最终提交。
+
+下一次实际构建通过了 native／capability 校验，写入候选 `runtime-a01` 后，因 builder 无条件调用 generic adapter 不提供的可选 `validate_contract` 而失败。该不完整目录和原始退出／错误保留，不作 runnable runtime 使用。修复与公共 Selection 的既有合同一致：仅当钩子可调用时，在 `case_imports` 中执行；有钩子的拒绝继续向上传播，不给 generic 添加空实现。
+
+机器 `4-8e1c2f1861` 于 `2026-10-24T17:55Z` 完成受影响完整 CI 命令组：26+66+28=120 次测试执行、0 skip，以及 CI 静态和额外完整 builder strict mypy，原进程均退出 0。新增回归用实际 RRF core 注册项及真实 generic adapter，覆盖 plain／gzip 的 writer→MCP 工厂→公共 prepare→preflight；输入明确为 synthetic 元数据，不声称运行 Java fixture 或游戏。已有 validator 的非法合同仍实际拒绝，写入的失败候选不产生 STATIC 验证。原始命令、等待结果和日志位于工作根 `public-chain-a01/generic-adapter-fix-a03/`。后续使用全新 `runtime-a02`；游戏内业务和截图状态仍为 NOT_RUN。

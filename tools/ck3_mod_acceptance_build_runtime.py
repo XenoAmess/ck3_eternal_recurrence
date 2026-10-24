@@ -1713,7 +1713,9 @@ def main(argv: list[str] | None = None) -> int:
     selection = entry.Selection(destination / "runtime.local.json", args.products, args.product, args.case)
     adapter = selection.load_adapter()
     inputs = read(args.case_inputs).get("case_inputs", {}) if args.case_inputs.exists() else {}
-    adapter.validate_contract(selection.adapter_context(inputs=inputs))
+    if callable(getattr(adapter, "validate_contract", None)):
+        with selection.case_imports():
+            adapter.validate_contract(selection.adapter_context(inputs=inputs))
     require(set(selection.case["required_mcp_tools"]) <= set(new_manifest["capabilities"]), "Required global capability evidence missing")
     # Register the unchanged real global MCP factory against an offline facade.
     # No method other than capabilities may run; list_tools is registration only.
