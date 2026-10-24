@@ -4,6 +4,8 @@
 
 封面主标题为「传世之物，饥渴长存」，副标题保留正式模组名「活武器：饥渴的传世之物」。
 
+Bilibili 投稿封面已完成：[4:3 PNG](covers/bilibili-cover-4x3-v1.png)（1448×1086）· [16:9 PNG](covers/bilibili-cover-16x9-v1.png)（1664×936）。两版独立构图与生成记录见 [封面目录](covers/README.md)。
+
 当前交付：**3 分 30 秒首版视频已输出并上传 GitHub Release**，1080p30，晓晓中文旁白与字幕；原 xp_field1.mid 直接合成，全片固定配乐增益，不做说话压低。片尾保留 14 秒完整工坊 URL 与二维码，已从最终视频帧扫描验证。
 
 [下载 MP4](https://github.com/XenoAmess/ck3_eternal_recurrence/releases/download/living-artifacts-promo-20261024/living-artifacts-original-midi-xiaoxiao.mp4) · [Release 页面](https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/living-artifacts-promo-20261024) · [交付与验证记录](evidence/video-release-20261024.json)。公开附件已匿名完整下载，字节与 SHA-256 均匹配本地最终版。

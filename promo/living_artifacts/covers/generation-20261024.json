@@ -1,0 +1,63 @@
+{
+  "schema": "living-artifacts-bilibili-covers-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-24T12:34:50Z",
+  "tool_mode": "default built-in image_gen.imagegen; no CLI/API fallback",
+  "main_title": "传世之物，饥渴长存",
+  "mod_title": "活武器：饥渴的传世之物",
+  "intent": "Two Bilibili cover illustrations; not gameplay screenshots",
+  "assets": [
+    {
+      "file": "bilibili-cover-16x9-v1.png",
+      "width": 1664,
+      "height": 936,
+      "bytes": 2324517,
+      "sha256": "a45faf04736ce4759e1f8c692ad0e622e8ebd8b5e0d4e591c555bad30a792b1d",
+      "aspect_ratio": "16:9",
+      "source_path": "C:/Users/Administrator/.codex/generated_images/01a16561-4773-7432-a839-85d49afb65eb/exec-8e3842da-1e0e-4c69-8ba6-1a7493245b2d.png",
+      "source_geometry": [
+        1672,
+        941
+      ],
+      "export": {
+        "method": "FFmpeg PNG export, lossless edge trim only; no resampling",
+        "crop": {
+          "x": 4,
+          "y": 2,
+          "width": 1664,
+          "height": 936
+        }
+      },
+      "prompt": "Use case: ads-marketing. Create ONE finished Bilibili video thumbnail, exact 16:9 landscape canvas, ideally 2048x1152. This is a Chinese CK3 mod recommendation video. Dark, austere, cold, aristocratic medieval horror, premium historical strategy game key art, not cartoon and not garish clickbait. Use the established Living Artifacts motif: a single magnificent ancient straight sword with weathered gold filigree hilt, a subtle ember-red living eye embedded at the base of its blade, resting vertically against a carved black stone throne draped with dark burgundy velvet; a medieval crown barely visible nearby. The weapon is the dominant focal object on the RIGHT, cropped close enough to read on a small thumbnail; old gold and bone highlights, iron gray, near-black, restrained deep crimson, drifting ash, believable engraved metal, moody cold rim light. Suggest a relic quietly feeding on its owner's wealth and life, through restrained red vein-like light, no gore or open monster mouth. LEFT half has deep clean charcoal negative space with bold, very legible, meticulously rendered Chinese display typography. Exact text and hierarchy: small eyebrow 'CK3 模组推荐'; huge main title in two lines, line 1 '传世之物', line 2 '饥渴长存'; smaller but clear full product subtitle '活武器：饥渴的传世之物'. Main title bone-white / aged pale gold in strong elegant Chinese Song-style serif, high contrast and broad strokes, not scratchy illegible calligraphy. Keep a comfortable 6% safe margin from ALL edges, and leave bottom-right corner unobtrusive for platform duration badge. Main title should occupy nearly half image height and remain instantly readable at 320px width. Full bleed illustration integrated with typography, clear silhouette, sharp crafted design. No GUI screenshot, no test objects, no extra text, no fake stats, no QR code, no logos or watermark, no English subtitle. Return exactly one complete 16:9 cover, not a collage or multiple mockups."
+    },
+    {
+      "file": "bilibili-cover-4x3-v1.png",
+      "width": 1448,
+      "height": 1086,
+      "bytes": 2491210,
+      "sha256": "3d06cc7b93df06b21843ab798d0253c328b44e1322e49ed66fb6abf48dbdbd78",
+      "aspect_ratio": "4:3",
+      "source_path": "C:/Users/Administrator/.codex/generated_images/01a16561-4773-7432-a839-85d49afb65eb/exec-5a21ee7c-c4ce-468d-915f-513a48f40428.png",
+      "source_geometry": [
+        1448,
+        1086
+      ],
+      "export": {
+        "method": "byte-identical copy"
+      },
+      "prompt": "Use case: ads-marketing, precise layout adaptation. Edit the provided 16:9 Bilibili cover into ONE exact 4:3 landscape cover, ideally 1536x1152. This is the SAME campaign and the same living sword, not a new weapon or new style. Preserve the exquisite aged gold filigree hilt, ember-red eye in the blade, throne, dark burgundy velvet, cold gothic atmosphere and bone-gold Chinese lettering from the reference. Recompose and extend the environment for 4:3, do not crop away a title character and do not squeeze or stretch the picture. Keep sword dominant on RIGHT, its eye clearly visible, typography on LEFT with generous breathing room, small-thumbnail readability. Exact text: small eyebrow 'CK3 模组推荐'; very large main title on TWO lines, '传世之物' and '饥渴长存'; smaller subtitle exactly '活武器：饥渴的传世之物'. This title and product name must be letter-perfect Simplified Chinese. Keep all text fully inside a 6% outer safe margin, and separated from the blade silhouette. Confident, cold, restrained medieval horror game poster, crisp Chinese Song-style serif, no excessive bright magic, no gore, no fake GUI, no stats, no added English, no watermark, no QR code. Keep bottom-right corner unobtrusive for platform duration badge. Return a single finished exact 4:3 image, not a collage."
+    }
+  ],
+  "validation": {
+    "png_decodes": true,
+    "exact_aspect_ratios": true,
+    "chinese_titles_visually_checked": true,
+    "composition_visually_checked": true,
+    "originals_preserved": true
+  },
+  "retention": {
+    "role": "Current requested cover deliverables and reproducible prompt record",
+    "review_after_utc": "2027-01-22T00:00:00Z",
+    "review_basis": "Review continued use or replacement; no automatic deletion"
+  }
+}
