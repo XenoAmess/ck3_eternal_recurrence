@@ -1,0 +1,170 @@
+{
+  "schema": "des.actual-run-summary.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T22:19:03.673799+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0010",
+  "runtime": "a11",
+  "prepared": "a18",
+  "keeper": "a29",
+  "frozen_SDK_source": "2e7b8bf26cb4fa6606402f5689db8bdd1043e693",
+  "formal_product_source": "2e7b8bf26cb4fa6606402f5689db8bdd1043e693",
+  "business_pass": false,
+  "root_gui_phases_accepted": 0,
+  "native_creation_completed": true,
+  "creation_request": "rite-action-b16a541ce6a04d7892bd6fa6bd87d4c2",
+  "actual_created_rite_id": 150,
+  "faith_id": 13,
+  "cancel_comparison_pass": true,
+  "day1": {
+    "date_raw": 53144376,
+    "native_member_ids": [
+      31254,
+      31538,
+      31692,
+      32236,
+      32535,
+      32536,
+      32658,
+      33234,
+      33542,
+      34232,
+      34741,
+      34968,
+      34973,
+      34975,
+      35386,
+      35598,
+      35899,
+      36311,
+      36329,
+      36333,
+      36445,
+      36638,
+      36663,
+      36847,
+      36873,
+      37064,
+      37221,
+      37244,
+      37702,
+      38561,
+      38924,
+      38925,
+      39045,
+      39171,
+      39348,
+      39352,
+      39527,
+      39979,
+      40259,
+      40270,
+      40507,
+      40526,
+      40670,
+      40694,
+      40695,
+      40843,
+      40847,
+      41028,
+      41032,
+      41235,
+      41288,
+      41495,
+      50627,
+      58481,
+      65854,
+      65855,
+      65856,
+      65858,
+      65859,
+      65864,
+      65865,
+      65866,
+      65867
+    ],
+    "count": 63,
+    "full_saved_selection_matches_native": true,
+    "bound_dynasty": 12156,
+    "join_house": 12760,
+    "known_wrong_dynasty_174_characters": [
+      38561,
+      39045,
+      39171,
+      39352,
+      39527,
+      40259
+    ],
+    "other_House_parent_dynasties_not_yet_selected": true
+  },
+  "day2": {
+    "advance_rejected_before_new_day": true,
+    "members_and_save_executed": false,
+    "reason": "RuntimeError: campaign pause readback lost the complete same-owner frame",
+    "failed_condition": 9,
+    "observed_date_raw": 53144376,
+    "operator_cause": "Root submitted another advance with a pre-existing active event; guard correct, no SDK change."
+  },
+  "loading_failure": "NPC create_character missing mandatory gender data; original PostValidate false at production binding effect line60.",
+  "next_candidate": {
+    "single_added_line": "gender_female_chance = 50",
+    "production_file_bytes": 6584,
+    "sha256": "26facf1631bb80e1bfd39528bf5830635cf53f9403bc15aa7a96ee61b2504fde",
+    "grammar_only_pass": true,
+    "actual_loading_or_NPC_pass": false
+  },
+  "lifecycle": {
+    "game_pid": 30108,
+    "game_creation_filetime_100ns": "134373517333377540",
+    "original_retained_handle_exit": 0,
+    "host_exit": 1,
+    "public_exit": 2,
+    "keeper_exit": 0,
+    "allocator_exit": 0,
+    "cleanup_ok": true,
+    "screen_release_sequence": 8830,
+    "normal_close_qualified": false,
+    "autosave_verified": false
+  },
+  "evidence": [
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a11\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0010\\operator-evidence\\cancel-independent-comparison-a01.json",
+      "bytes": 5772,
+      "sha256": "10a953d9df52a4133bff7a507f84340e25839c65de2e4a3216308b9e69dde2e2"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a11\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0010\\operator-evidence\\r10-create-verify-a01.actual.json",
+      "bytes": 218503,
+      "sha256": "b0291796bed9020d0c25dfb50cb733dd57808a40654146b24dcf646c368f0dd5"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a11\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0010\\operator-evidence\\day1-all63-selected-save-a01.json",
+      "bytes": 652371,
+      "sha256": "83ca995f5163b053e96a3941f74132db4cdd780a20b1bacb0984b8d5a6a1d934"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a11\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0010\\operator-evidence\\loading-errors-a01.actual.json",
+      "bytes": 717,
+      "sha256": "a472fc03a7972f46812d1dfa55d1025a6a3eda651cf7d134c6c76c5bc19f9ecb"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a11\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0010\\operator-evidence\\r10-day2-members-save-a01.actual.json",
+      "bytes": 14389,
+      "sha256": "38297bba998cdefeee06ba5f2e23fbc94279c65bb09b3d0d2994235b1479d123"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a11\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0010\\operator-evidence\\r10-failure-normal-observe-a01.actual.json",
+      "bytes": 8579,
+      "sha256": "da0889b2faee335fc282c631838c88a52ce040ab9a930f9945946024d01f7c17"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0010-screen-release.actual.json",
+      "bytes": 1435,
+      "sha256": "a16c66f4860084b64e97526355ec8a265b0032e6718cfb0cdd8f1056ccb72048"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0010-public-verify.actual.json",
+      "bytes": 1191,
+      "sha256": "767636ddd5798c6a372a893704b4ef4037d8e473c7956399a9bef14baa1a64cf"
+    }
+  ]
+}
