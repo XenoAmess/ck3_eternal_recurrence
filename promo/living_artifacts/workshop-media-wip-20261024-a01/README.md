@@ -1,6 +1,6 @@
 # 活武器：工坊媒体素材
 
-本目录保存 2026-10-24 用户要求补齐工坊艺术图与实机图的素材。四张 JPG 已上传至 [工坊图库](https://steamcommunity.com/sharedfiles/filedetails/?id=3825237804)，并全部嵌入正文对应段落。公开 API 全文及四个 Steam CDN 原图已匿名回读通过；实际记录见 [publication.json](publication.json)。
+本目录保存 2026-10-24 用户要求补齐工坊艺术图与实机图的素材。四张 JPG 已上传至 [工坊图库](https://steamcommunity.com/sharedfiles/filedetails/?id=3825237804)，并全部嵌入正文对应段落。公开 API 全文、网页唯一正文的全部文字与四个图片地址、四个 Steam CDN 原图均已匿名回读通过；实际记录见 [publication.json](publication.json)。
 
 | 文件 | 用途 |
 | --- | --- |

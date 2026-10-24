@@ -1,0 +1,29 @@
+{
+  "title_exact": true,
+  "description_exact": true,
+  "description_characters": 3347,
+  "description_sha256": "3BB1214611DF0465A17B7AF636D2EDD570801BF9A9F26E0FE7188D69E87CD4FF",
+  "expected_description_sha256": "3BB1214611DF0465A17B7AF636D2EDD570801BF9A9F26E0FE7188D69E87CD4FF",
+  "change_notes_exact": true,
+  "changelog_entry_id": "1792759339",
+  "change_notes_characters": 877,
+  "change_notes_lines": 23,
+  "change_notes_sha256": "852C7AD9817260C8316105024AAD00298522CBE70D9F0930F3A1D3277D28DFE0",
+  "expected_change_notes_characters": 877,
+  "expected_change_notes_lines": 23,
+  "expected_change_notes_sha256": "852C7AD9817260C8316105024AAD00298522CBE70D9F0930F3A1D3277D28DFE0",
+  "time_updated": 1792759339,
+  "file_size": "2071121",
+  "ok": true,
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-24T16:17:36.032164+00:00",
+  "html_description_unique": true,
+  "html_text_exact_after_formatting": true,
+  "html_embedded_image_urls_exact": true,
+  "html_embedded_images": [
+    "https://images.steamusercontent.com/ugc/15441903631624296074/E5C0F7460A2495AA8AB17FBDCE8EFF790B441CA0/",
+    "https://images.steamusercontent.com/ugc/16686420290950891485/8A0DBF3EFA31E75240F7B33B0E7E248F2DE3E92E/",
+    "https://images.steamusercontent.com/ugc/12123211491384207815/BEDD267F70DC11206575BB1404375D99CFFCE624/",
+    "https://images.steamusercontent.com/ugc/12812883247729063140/8BCDE95586432886495CC7D2533F7BAB1AEF44A8/"
+  ]
+}

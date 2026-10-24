@@ -5,15 +5,15 @@
   "item_id": "3825237804",
   "workshop_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3825237804",
   "owner": "76561198273714027",
-  "status": "PUBLISHED_API_AND_CDN_VERIFIED",
+  "status": "PUBLISHED_PUBLIC_HTML_API_CDN_VERIFIED",
   "description_utf8_bytes": 7413,
   "description_sha256": "abdc4e16474689176338458e1db333f89d9962202a7376c826e2bf245d73ce4a",
   "description_exact_public_api": true,
   "gallery_images": 4,
   "embedded_images": 4,
   "all_cdn_files_exact": true,
-  "html_rendering_check": "pending; Steam Community HTTP429 received, no fabricated pass",
-  "changelog_readback_this_update": "HTTP429; empty change_note submitted twice; earlier exact Notes evidence remains historical",
+  "html_rendering_check": "PASS: unique description subtree, all text and ordered four img src exact",
+  "changelog_readback_this_update": "PASS: unique original877character23line Notes unchanged; entry1792759339",
   "update_scope": "content_and_metadata",
   "product_content_files": 57,
   "product_content_bytes": 2071121,
@@ -61,7 +61,23 @@
       "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\living_artifacts\\workshop-media-wip-20261024-a01\\publication\\public-final-api.json",
       "bytes": 8292,
       "sha256": "770eec2cd4f67b5545b7d2b1f7a0207c2c80e6c5ed52e467ad5e9035c76527ea"
+    },
+    "public-page.html": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\living_artifacts\\workshop-media-wip-20261024-a01\\publication\\public-page.html",
+      "bytes": 71591,
+      "sha256": "755b28316176c4cbd5381c0001000630ad127535c66dda2dfe9a738d3e44376d"
+    },
+    "public-changelog.html": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\living_artifacts\\workshop-media-wip-20261024-a01\\publication\\public-changelog.html",
+      "bytes": 52852,
+      "sha256": "90c93d33d0312652b4dcd698035440c5563c5be5828318d5594ecb32b408b356"
+    },
+    "public-page-verification.json": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\living_artifacts\\workshop-media-wip-20261024-a01\\publication\\public-page-verification.json",
+      "bytes": 1482,
+      "sha256": "3dc27e691a6d2523ae13fee8550e5bf2b0ca95f95b771b487e197b26c63284d7"
     }
   },
-  "review_after_utc": "2027-01-22T00:00:00Z"
+  "review_after_utc": "2027-01-22T00:00:00Z",
+  "public_page_verification": "publication/public-page-verification.json"
 }

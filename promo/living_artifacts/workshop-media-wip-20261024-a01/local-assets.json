@@ -2,7 +2,7 @@
   "schema": "living-artifacts-workshop-media-local-v1",
   "machine_id": "pc-20260924rtuf-f11af23c08",
   "observed_at_utc": "2026-10-24T14:00:13Z",
-  "status": "PUBLISHED_API_AND_CDN_VERIFIED",
+  "status": "PUBLISHED_PUBLIC_HTML_API_CDN_VERIFIED",
   "assets": [
     {
       "file": "art/01-hero.jpg",

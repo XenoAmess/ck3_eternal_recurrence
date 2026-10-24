@@ -11,6 +11,8 @@
 
 图库四张均嵌入 [BBCode](living_artifacts_description.bbcode)，使用本次 SDK 实际返回的 Steam CDN 地址。最终描述 7413 UTF-8 字节，四组 `[img]`，匿名公开 API 全文与冻结稿完全相同。四张公开原图 HTTP 200，尺寸、字节数、SHA-256 与提交文件逐一相同。
 
+网页限流后再次匿名取得物品页与更新记录页 HTTP200；唯一正文区的全部文字在去除格式和空白后完全匹配，有序四个实际 `img src` 与 BBCode 一致。共享 verifier 对已保存的真实响应验证 PASS，原始 Notes 877 字符/23 行、唯一 entry `1792759339` 完全不变，未使用旧回读代替本轮结果。
+
 [素材目录](../promo/living_artifacts/workshop-media-wip-20261024-a01/README.md)保留 PNG 原件、上传 JPG、完整艺术生成提示词、游戏来源与哈希。[实际发布记录](../promo/living_artifacts/workshop-media-wip-20261024-a01/publication.json)绑定 SDK 提交和公开回读证据。
 
 两张实机图未挂业务测试夹具，未裁掉测试名冒充自然游玩。R31 图只展示自然觉醒与原物属性；R33 图只展示管理说明，不能证明喂养、训练、镇压付款、升级或期限已生效。这些关键操作结果图仍未取得。两场后续失败、未获正常退出资格的事实独立保留。
