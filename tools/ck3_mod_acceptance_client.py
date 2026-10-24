@@ -209,6 +209,7 @@ def typed_normal_quit_evidence_v1(report_value: object, *, live: Path, state: Pa
         raise ValueError('Typed normal Quit original desktop confirmation binding differs')
     profile_ref = file_pin(context.get('normal_exit_managed_profile'))
     profile_pin, profile = _typed_quit_original(Path(profile_ref['path']), profile_ref)
+    profile_userdir = Path(text_field(profile, 'userdir'))
     argv = frozen.get('argv')
     if not isinstance(argv, list) or any(not isinstance(arg, str) for arg in argv):
         raise ValueError('Typed normal Quit original host argv is missing')
@@ -216,15 +217,16 @@ def typed_normal_quit_evidence_v1(report_value: object, *, live: Path, state: Pa
             or argv[argv.index('--normal-exit-managed-profile') + 1] != profile_pin['path']
             or argv[argv.index('--normal-exit-managed-profile-sha256') + 1] != profile_pin['sha256']
             or Path(text_field(profile, 'state_directory')).resolve() != state.resolve()
-            or Path(text_field(profile, 'userdir')).resolve() != state.resolve() / 'profile'):
+            or not profile_userdir.is_absolute() or profile_userdir.resolve() != state.resolve() / 'profile'):
         raise ValueError('Typed normal Quit managed profile differs from frozen host/state')
     inventory_ref = json_object(profile.get('normal_exit_source_inventory'))
     inventory_pin, inventory = _typed_quit_original(Path(text_field(inventory_ref, 'path')))
+    inventory_userdir = Path(text_field(inventory, 'userdir'))
     if (set(inventory_ref) != {'path', 'sha256'} or inventory_pin['sha256'] != inventory_ref.get('sha256')
             or memory.get('source_inventory_sha256') != inventory_pin['sha256']
             or inventory.get('schema') != 'ck3-normal-exit-source-inventory-v1'
             or Path(inventory_pin['path']) != state.resolve() / 'profile/normal-exit-source-inventory-v1.json'
-            or inventory.get('userdir') != profile.get('userdir')):
+            or not inventory_userdir.is_absolute() or inventory_userdir.resolve() != profile_userdir.resolve()):
         raise ValueError('Typed normal Quit source inventory differs from allocated profile')
     from_profile = {key: profile[key] for key in ('schema_version', 'guard_profile', 'guard_profile_sha256',
         'userdir', 'evidence_directory', 'game_version', 'state_directory', 'dll', 'injector')}

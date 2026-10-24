@@ -207,9 +207,11 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
             self.assertFalse((Path(directory) / 'normal-close-result.json').exists())
             client.execute_plan.assert_not_called()
 
-    def typed_route(self, root, client, report, *, observe=True):
-        """Actual frozen SDK encoder -> JSON -> CaseClient, with inert native facts."""
+    def typed_route(self, root, client, report, *, observe=True, inventory_defect=None):
+        """Actual inventory producer/SDK encoder -> CaseClient, with inert native facts."""
         from ck3_mod_acceptance import pin
+        from build_normal_exit_source_inventory_v1 import (
+            build_inventory, STOCK_GUI_PATHS, verify_source_inventory_v1)
         birth = 134373157160016545
         client._process['creation_filetime_100ns'] = str(birth)
         client._process['retained_synchronize_query_handle_acquired'] = True
@@ -232,9 +234,30 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
             'injector':{'path':str(root/'injector.exe'), 'sha256':'b'*64}}
         inventory = client.state/'profile/normal-exit-source-inventory-v1.json'
         inventory.parent.mkdir()
-        inventory.write_text(json.dumps({'schema':'ck3-normal-exit-source-inventory-v1',
-            'userdir':profile['userdir'], 'profile_binding_sha256':hashlib.sha256(json.dumps(
-                profile, sort_keys=True, ensure_ascii=False, separators=(',', ':')).encode()).hexdigest()}),encoding='utf-8')
+        (inventory.parent/'pdx_settings.txt').write_bytes(b'authored static inventory fixture settings')
+        (inventory.parent/'dlc_load.json').write_text(json.dumps({'enabled_mods':[]}),encoding='utf-8')
+        game=root/'authored-stock-game'
+        for relative in STOCK_GUI_PATHS:
+            path=game/relative;path.parent.mkdir(parents=True,exist_ok=True)
+            path.write_bytes(b'authored protected stock GUI fixture')
+        executable=root/'authored-executable.bin';executable.write_bytes(b'authored exact-build fixture')
+        producer_profile={**profile,'guard':{'target':{'executable':str(executable),
+            'executable_sha256':hashlib.sha256(executable.read_bytes()).hexdigest()}}}
+        produced,_=build_inventory(producer_profile,game)
+        inventory.write_text(json.dumps(produced),encoding='utf-8')
+        inventory_reference={key:pin(inventory)[key] for key in ('path','sha256')}
+        self.assertTrue(verify_source_inventory_v1(inventory_reference,producer_profile)['static_sources_verified'])
+        # Mutate only authored negative inputs after exercising the real producer
+        # and verifier. Every later reference is freshly bound, so these cases
+        # reach the consumer's path guard rather than merely failing a SHA check.
+        if inventory_defect=='wrong_root':produced['userdir']=(root/'other-state/profile').resolve().as_posix()
+        elif inventory_defect=='relative':produced['userdir']='profile'
+        elif inventory_defect=='missing':del produced['userdir']
+        elif inventory_defect=='null':produced['userdir']=None
+        elif inventory_defect=='bool':produced['userdir']=True
+        elif inventory_defect=='float':produced['userdir']=1.0
+        elif inventory_defect is not None:raise ValueError('Unknown authored inventory defect')
+        inventory.write_text(json.dumps(produced),encoding='utf-8')
         profile['normal_exit_source_inventory'] = {key:pin(inventory)[key] for key in ('path','sha256')}
         profile_path = root/'normal-exit-managed-profile.json'
         profile_path.write_text(json.dumps(profile),encoding='utf-8')
@@ -333,6 +356,30 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
                 self.assertFalse(result['typed_normal_exit_route']['autosave_verified'])
                 self.assertFalse(result['business_pass'])
                 client.execute_plan.assert_not_called()
+
+    def test_actual_inventory_producer_path_representation_reaches_normal_close(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            client,_,fake_time,report=self.make_client(root,review_at=None)
+            self.typed_route(root,client,report)
+            profile=json.loads(Path(client.context['normal_exit_managed_profile']['path']).read_text(encoding='utf-8'))
+            inventory=json.loads(Path(profile['normal_exit_source_inventory']['path']).read_text(encoding='utf-8'))
+            self.assertEqual(inventory['userdir'],Path(profile['userdir']).resolve().as_posix())
+            self.assertEqual(Path(inventory['userdir']).resolve(),Path(profile['userdir']).resolve())
+            if sys.platform=='win32':
+                self.assertNotEqual(inventory['userdir'],profile['userdir'])
+            with patch.object(self.module,'time',fake_time):result=client.normal_close('authored-real-producer-path')
+            self.assertTrue(result['normal_close_qualified'])
+            self.assertFalse(result['typed_normal_exit_route']['autosave_verified'])
+            self.assertFalse(result['business_pass'])
+
+    def test_actual_inventory_producer_keeps_wrong_root_relative_missing_and_type_guards(self):
+        for defect in ('wrong_root','relative','missing','null','bool','float'):
+            with self.subTest(defect=defect),tempfile.TemporaryDirectory() as directory:
+                root=Path(directory)
+                client,_,_,report=self.make_client(root,review_at=None)
+                self.typed_route(root,client,report,inventory_defect=defect)
+                with self.assertRaises(ValueError):client.typed_normal_quit_evidence(report)
 
     def test_typed_route_preserves_host_error_and_cleanup_failure(self):
         for defect in ('host_error','cleanup','native_exit','retained_exit'):
