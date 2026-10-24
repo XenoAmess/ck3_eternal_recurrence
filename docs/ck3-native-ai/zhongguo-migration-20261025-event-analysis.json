@@ -1,0 +1,69 @@
+{
+  "schema": "xar.ck3.source-bound-event-analysis.v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-24T19:46:03.299854+00:00",
+  "game_version": "1.20.0.4",
+  "steam_build_id": 25734779,
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "run_id": "pc-20260924rtuf-f11af23c08--zhongguo-style--R0002",
+  "knowledge_boundary": "Persistent source-bound offline analysis indexed by event key; no frozen runtime hot update or new automatic policy qualification. Reuse only after matching source hash and actual rendered options.",
+  "events": [
+    {
+      "event_definition_key": "bookmark.1070",
+      "event_instance_id": 1,
+      "root_character_id": 31254,
+      "definition": {
+        "relative_path": "events/bookmark_events.txt",
+        "sha256": "5a5ce08980d8c4fda1dcf40ec26e12d8973c01286f4da42a6d939776cfd50e03"
+      },
+      "review_status": "source-reviewed-observed-envelope",
+      "analysis": "Actual first rendered choice was selected; existing dedicated Norman/Sicily policy was discovered afterward. Do not treat this exemplar as dedicated-policy compliance.",
+      "choice_policy": "actual first rendered option via native interface; no OCR or pointer selection",
+      "selection_ack_and_window_disappearance_recorded": true,
+      "material_effect_verified": false,
+      "observation": {
+        "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\r2-boundary-01.original-native.json",
+        "bytes": 97721,
+        "sha256": "8ed70ac89ef09a997cb3c95c60b9a12736fe8e7cacb81a9e5c6fc349a06ba9d1"
+      }
+    },
+    {
+      "event_definition_key": "pam_secular_faith_events.0055",
+      "event_instance_id": 2,
+      "root_character_id": 31254,
+      "definition": {
+        "relative_path": "events/dlc/pam/pam_secular_faith_events.txt",
+        "sha256": "3f426901da4b9f71d10cf320ed8102c7d9df23ade3e41b1955d8467d4bdb4789"
+      },
+      "review_status": "source-reviewed-observed-envelope",
+      "analysis": "Authored .b: scholar trait/XP helper VALUE=30 and chaplain upset opinion -25; authored .a: minor piety, blessed bell county modifier 25 years, cynical stress; .c: spiritual fulfillment and zealous stress. Helper internals and material numerical poststate were not measured.",
+      "choice_policy": "actual first rendered option via native interface; no OCR or pointer selection",
+      "selection_ack_and_window_disappearance_recorded": true,
+      "material_effect_verified": false,
+      "observation": {
+        "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\r2-boundary-02.original-native.json",
+        "bytes": 30925,
+        "sha256": "574c64928e00d18e5691a798d278e284d62339e2831fac93cfc810ed995af33d"
+      }
+    },
+    {
+      "event_definition_key": "global_culture.3011",
+      "event_instance_id": 3,
+      "root_character_id": 31254,
+      "definition": {
+        "relative_path": "events/global_culture_events.txt",
+        "sha256": "af85fb3ef6049dd7112bcd2255e2a0f33b6b5b58dbc0b415625b6b8df239e32c"
+      },
+      "review_status": "source-reviewed-observed-envelope",
+      "analysis": "Sole option .a changes county_to_change culture to Sicilian. Immediate chooses eligible held county and sets had_sicilian_county_conversion. No independent county culture readback was collected.",
+      "choice_policy": "actual first rendered option via native interface; no OCR or pointer selection",
+      "selection_ack_and_window_disappearance_recorded": true,
+      "material_effect_verified": false,
+      "observation": {
+        "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\r2-boundary-03.original-native.json",
+        "bytes": 26294,
+        "sha256": "a9e95f4712d45bc510d076e2aac2d9e97cbe858cda6012effac4f6fa897d384f"
+      }
+    }
+  ]
+}
