@@ -1,0 +1,231 @@
+{
+  "schema": "xar.ck3.zhongguo-361-publication.v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-24T20:16:08.920032+00:00",
+  "version": "0.4.0",
+  "game_version": "1.20.0.4",
+  "steam_build_id": 25734779,
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "git_tag": "zhongguo-361-v0.4.0",
+  "build_revision": "a2dcb492702571fc256fb8e1cbd4704ee1ba1bf3",
+  "file_count": 1034,
+  "workshop_item_id": "3792585972",
+  "published": true,
+  "public_full_text_exact": true,
+  "public_notes_entry_id": "1792871456",
+  "smoke": {
+    "natural_days": 405,
+    "player_id": 31254,
+    "player_alive": true,
+    "launch_character_entry_one_year_observed": true,
+    "new_product_runtime_error_lines": [],
+    "known_load_diagnostics_remain": true,
+    "whole_phase2_business_pass": false,
+    "common_daily_case_pass": false
+  },
+  "steam_final_offline": true,
+  "evidence": {
+    "formal/zhongguo-361-v0.4.0.manifest.json": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\formal\\zhongguo-361-v0.4.0.manifest.json",
+      "bytes": 213477,
+      "sha256": "27fdc64fbc9a0dee757f95e151b44f99a0d9c8dee6c27ac653e6b00c3c9e959e"
+    },
+    "tested-formal-equality.json": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\tested-formal-equality.json",
+      "bytes": 405,
+      "sha256": "1e7cc8fd4c9681c0bbf63dd2f41e8e520f69be6c183accc52b85742f7ecaca58"
+    },
+    "vanilla-source-review.json": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\vanilla-source-review.json",
+      "bytes": 2007,
+      "sha256": "47b2ddec51d01672221961b3eae4eb927ce91c33a77e404d8fe84dc7bfc6f0c2"
+    },
+    "one-year-smoke-result.json": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\one-year-smoke-result.json",
+      "bytes": 2990,
+      "sha256": "80402b794e617a47764e69aa4868e05d0dca962551299cea10db960ff049ebce"
+    },
+    "r2-year-complete-native-frame.json": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\r2-year-complete-native-frame.json",
+      "bytes": 37256,
+      "sha256": "f11b171555550737ae3d41058040551c881f1e45f76bf8c621edb77f3d0a259c"
+    },
+    "closed-log-snapshots/year-error.log": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\closed-log-snapshots\\year-error.log",
+      "bytes": 3485795,
+      "sha256": "baef812774f933d153a64641a4f68d034b51d5e17fdaf8c421f65822e844f59e"
+    },
+    "closed-log-snapshots/year-debug.log": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\closed-log-snapshots\\year-debug.log",
+      "bytes": 1468569,
+      "sha256": "d24899336485a6117bd00a378f2cfc07f6da2da90b0bead436cc573d07fb2122"
+    },
+    "publisher/publish-a02.receipt.json": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\publisher\\publish-a02.receipt.json",
+      "bytes": 630,
+      "sha256": "61111b4703f29e8e553655eee4334eb066ff5b10ba9e3c5f3fbfe496e99ab752"
+    },
+    "publisher/publish.receipt.json": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\publisher\\publish.receipt.json",
+      "bytes": 581,
+      "sha256": "95f707bc3b899c06ad902b34934783a85ac8556f6a68dcad56dcbdd48dc5fb5c"
+    },
+    "publisher/public-verification-a01/verification.json": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\publisher\\public-verification-a01\\verification.json",
+      "bytes": 756,
+      "sha256": "49118454f99669eb0f146c82729d1a309021782663f3651a7717d8b3808c7616"
+    },
+    "publisher/public-verification-a01/public_item_api_raw.json": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\publisher\\public-verification-a01\\public_item_api_raw.json",
+      "bytes": 8765,
+      "sha256": "4bcfc7ed25e9352b0059d60e623493c21bd211d9b0b541ed55bd9b55fcfb83e1"
+    },
+    "publisher/public-verification-a01/public_changelog_raw.html": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\publisher\\public-verification-a01\\public_changelog_raw.html",
+      "bytes": 51594,
+      "sha256": "50588804f22ba246598e1d21019a8fd22df3b294e18b8d34b89a4c2c62044d11"
+    },
+    "publisher/download.stdout.json": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\publisher\\download.stdout.json",
+      "bytes": 2541,
+      "sha256": "b0cae6fa187f4804e709efa2c850566595b8c08f9b95e1f345ad3ec53de39be9"
+    },
+    "cache-prepared-a01/workshop-cache-exact-formal.json": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\cache-prepared-a01\\workshop-cache-exact-formal.json",
+      "bytes": 288566,
+      "sha256": "08997bcbe892ac2b98f51f3a3ff757510fcca3809eb3a5a29fd6eb5a37edf66a"
+    },
+    "cache-menu-original.png": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\cache-menu-original.png",
+      "bytes": 2601048,
+      "sha256": "170a2f131207595b595ae8a3304a559af6889a1fb27e338dd950610c022edb66"
+    },
+    "cache-window-normal-close.json": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\cache-window-normal-close.json",
+      "bytes": 207,
+      "sha256": "f2d9df31ce46ba5ed48acbdef0143a9bae22541a0eeea936b06445da879f673e"
+    },
+    "cache-screen-release.json": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\cache-screen-release.json",
+      "bytes": 1330,
+      "sha256": "4d0e06a8b61bbbc64f43a42ca850af349bda7e78eea0e122de3628e272ce8eba"
+    },
+    "steam-offline-final.json": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\steam-offline-final.json",
+      "bytes": 2332,
+      "sha256": "e83ea4a4d529a279ece911ae79000304322dbfedef4a0a3a6e245987a38a2658"
+    },
+    "steam-unrelated-preallocation-cleanup/result.json": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\steam-unrelated-preallocation-cleanup\\result.json",
+      "bytes": 12040,
+      "sha256": "5c05b7090e9c2cb2a1dcf6f5f2b3529efa1c654542815d97f38f5673cf33ef95"
+    },
+    "publisher/text-boundary-regression.txt": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\publisher\\text-boundary-regression.txt",
+      "bytes": 2676,
+      "sha256": "e96ce687cb670bca4c01ef48773d19249cfb60531119404c19c4258cf1f4e76f"
+    },
+    "publisher/steam-native-mypy.txt": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\publisher\\steam-native-mypy.txt",
+      "bytes": 43,
+      "sha256": "8e63ae22e8213e327a5e9cbd584067681681bd8ef7f25c869877887ccdcfc4ff"
+    },
+    "year/normal-close-result.json": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\live\\pc-20260924rtuf-f11af23c08--zhongguo-style--R0002\\case-output\\normal-close-result.json",
+      "bytes": 9758,
+      "sha256": "e6b02e49728334ce54a075471ee9a939ca4315946cf8401b6aea60a20ca48481"
+    },
+    "cache/normal-close-result.json": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\live\\pc-20260924rtuf-f11af23c08--zhongguo-style--R0003\\case-output\\normal-close-result.json",
+      "bytes": 9296,
+      "sha256": "de166ac9fcfa198e7bff8ea883b3ad7cc46e152936037c4c9c25ef46326d4cf6"
+    },
+    "cache/workshop-cache-case-result.json": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\live\\pc-20260924rtuf-f11af23c08--zhongguo-style--R0003\\case-output\\workshop-cache-case-result.json",
+      "bytes": 127073,
+      "sha256": "789be1859da555cc731d1c1f2a4378cad8067685a45379fa7d436abc4629b579"
+    },
+    "steam-unrelated-preallocation-cleanup/permanent-index-late-audit.json": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\steam-unrelated-preallocation-cleanup\\permanent-index-late-audit.json",
+      "bytes": 636,
+      "sha256": "89fee1bca00b80f5db69d9bf1e553c9f819583f69e71d1a94730158e2b5ce4bd"
+    },
+    "steam-unrelated-preallocation-cleanup/plan-index.json": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\steam-unrelated-preallocation-cleanup\\plan-index.json",
+      "bytes": 12039,
+      "sha256": "b73d9871bda822053cd60c41818a1a66c972968691ab76f8950d174a279934e4"
+    },
+    "task_close_storage": {
+      "path": "D:\\workspace\\ck3-zhongguo-12004-20261025\\storage\\task-close\\20261024T202043671019Z-task-close.json",
+      "bytes": 180068,
+      "sha256": "1176fe30b55beb167e5b85493d5de9b8c8d68dc490d3770a6cd61bd633745039"
+    }
+  },
+  "year_close": {
+    "retained_handle": {
+      "signaled": true,
+      "exit_code": 0,
+      "actual_retained_os0": true,
+      "pid": 6036,
+      "create_time": 1792866954.6989648,
+      "retained_synchronize_query_handle_acquired": true
+    },
+    "cleanup_ok": true,
+    "host_error": "RuntimeError: MCP tool ck3_execute_step returned an error: Error executing tool ck3_execute_step: native life-advance-one-day revision mismatch: expected 74, current 326",
+    "failure_lifecycle_completed": true,
+    "normal_close_qualified": false
+  },
+  "cache_close": {
+    "retained_handle": {
+      "signaled": true,
+      "exit_code": 0,
+      "actual_retained_os0": true,
+      "pid": 15244,
+      "create_time": 1792872049.2021377,
+      "retained_synchronize_query_handle_acquired": true
+    },
+    "cleanup_ok": true,
+    "host_error": "ValueError: menu mod-load observation cannot Start, load, select, advance or execute an action",
+    "failure_lifecycle_completed": true,
+    "normal_close_qualified": false
+  },
+  "cache": {
+    "file_count": 1034,
+    "combined_managed_cache_profile_and_actual_menu_load": true,
+    "case_contract_qualified": true,
+    "gui_contract_qualified": true,
+    "cache_path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3792585972",
+    "chinese_main_menu_directly_reviewed": true,
+    "campaign_started": false
+  },
+  "preallocation_side_effect": {
+    "files_deleted": 42209,
+    "logical_bytes_deleted": 61352837990,
+    "c_free_before": 228642226176,
+    "c_free_after": 290106220544,
+    "installed_content_deleted": false,
+    "steam_subscriptions_changed": false,
+    "prior_payload_readable": false,
+    "budget_incident": "Steam unexpectedly preallocated unrelated pending downloads beyond 64MiB C reservation. Restored offline, then reclaimed only exact newly-created uncommitted files. Not presented as compliant pre-estimated peak.",
+    "permanent_index_audit": "After execution only: registry has no same-machine replicas or target overlap; mandatory pre-plan/pre-execution read was omitted and is not claimed as completed."
+  },
+  "retention": {
+    "raw_days": 30,
+    "profile_days": 14,
+    "build_days": 14
+  },
+  "limits": [
+    "Not full phase-two business acceptance",
+    "No old-save, multi-year or Chinese gameplay semantic claim",
+    "Original shared driver RED reports remain unchanged; actual bounded observations and publication are recorded separately"
+  ],
+  "storage_close": {
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "report": "D:\\workspace\\ck3-zhongguo-12004-20261025\\storage\\task-close\\20261024T202043671019Z-task-close.json",
+    "counts": {
+      "within_retention": 334
+    },
+    "deletions": 0
+  },
+  "integrated_source_projection_still_equals_published_files": true
+}
