@@ -57,6 +57,34 @@ R0004 的实际 native Can 在名称、`des_dynastic`、资源齐备后仍以“
 
 setup 与独立读回决议分别重读真实 cp、神学傀儡、反向操控者、`is_puppet_action_valid`，逐项记录静态 PASS／FAIL；聚合资格还要求同一 cp、原版 actor/recipient 约束和 `can_create_rite_trigger`。`fixture_ready` 必须消费这次实际读回得到的 fixture 旗标。这里认证范围只是原版角色关系和已知脚本门禁；后继实机须在独立 epoch 读取 council full ID，并填齐五项名称、教义和资源后，读取草案完整 native Can，再执行原有 prepare／confirm-once 与 Rite 独立保存后态。当前新关系输入尚未实机执行，R0004 仍为 RED。
 
+## 真继承后由新族长重新开启：后继 core 候选
+
+2026-10-25，`machine_id: desktop-3fevhd2-1c74096080`：R0007 已在实际 CK3 1.20.0.4 创建 Rite 150／Faith 13，实际玩家为 31254；随后 capture 决议因 House 使用 Character 的 `dynasty` 链而原生拒绝，整体仍为 **0/6、业务 RED**。产品四处 `house_dynasty` 修复见[引擎错误记录](2026-10-25-engine-house-dynasty-fix.md)，须由新构建／新图／新实机验证；不回写 R0007。下列配置、fixture 与共享 clock 的继承支持均为待验候选，不能把源码准备当作已继承。
+
+core 原始 JSON 本身是 adapter 配置。现有三个策略字段放在它的**顶层**：`allow_actor_change=true`、`actor_transition_days=[]`、`continue_as_heir_requirements`。不新增嵌套 `adapter_config` 或其他公共字段。空 transition 数组不预选任何自动 adapter advance 序号；它不是日期表。actor 许可只允许观察身份中的玩家分量改变，同 run／pipe／PID／generation、暂停可用原生帧、日期单调、最初起日及截止日守卫保持；缺少字段的其他 case 仍默认禁止。共享 clock 必须从同一已 pin 的原 prepared contract 顶层消费该布尔值，不能重置计时或用第二份可编辑 JSON 提权。
+
+以下四条既放入 `continue_as_heir_requirements`，也放入 phase 5 的普通 requirements。内部推进可能不触发 adapter 的 dead-player fallback，Root 仍须逐项保留真实原件：
+
+1. `actual_predecessor_death_and_primary_title_succession`：前任真实死亡，原主头衔实际继承。
+2. `actual_current_player_is_the_pinned_living_primary_heir`：新存活玩家等于事前 pin 的真实 primary heir。
+3. `actual_same_primary_rite_and_bound_dynasty_survive`：原 primary Rite 与绑定 Dynasty 身份持续一致。
+4. `actual_native_current_rite_head_is_the_successor`：新玩家确为当前原生 Rite head；继承头衔不自动等于成为 Rite head。
+
+六个 phase、旧 required assertions 和原 marker 含义全部保留。phase 1–4 仍完成默认／取消／真实创建、成员、同 Faith／跨 Faith 背离、罪行方向及悔改。phase 5 的内部顺序调整为：
+
+1. **旧 Root 存活且仍为玩家时先做完长程观察**：`des_acceptance_extended_start_decision`、第二 Rite 31 日、cross-rites／migration、独立 stock crime 加 repentance、实际出生再推进恰好一日、生成／合法旁支／外改 House 校正、原 61 日 timer 证据，以及**既有第二位 NPC founder 死亡后真实 31 日稳定性**。第二 founder 证明不能被新的玩家死亡替代。所有 observer、真实日期与原 actor 证据在转移前固定；允许时间重叠不保证预算足够。
+2. `des_acceptance_primary_heir_prepare_decision` pin 真实前任／primary heir／primary title，仅以公开 stock `set_character_rite` 输入让真实继承人进入已创建的同 Faith Rite。至少经过一个实际自然日后，`des_acceptance_primary_heir_readback_decision` 重验继承人仍相同、存活成年、实际继承资格及自然形成的 Rite／Dynasty／House；另留 native 与独立 Save 读回。不能设置其 House／Dynasty 或产品绑定；未成年、失位、缺失或不合格为 NOT_READY。
+3. 对实际旧 head 执行 `des_acceptance_edit_input_prepare_decision` → `des_acceptance_edit_input_readback_decision`，只复用原空槽神学傀儡准备并读回真实关系。编辑 readiness 与创建 readiness 分开；创建后 `can_create_rite_trigger=false` 不等于不可编辑。实际选择 None，验证实质草案变化、完整原生 Can／报价，确认一次并独立核 closed、同 Rite／Dynasty。
+4. 所有旧 Root observer 完成且 closed 已证实后，`des_acceptance_primary_death_stage_decision` 一次安排次日 stock death；用已有事件边界推进观察真实转换。先从 native 与独立 Save 证明上述四项，再调用 `des_acceptance_successor_readback_decision`。它没有选择／设置玩家或 head 的功能，不等待额外 fixture 事件；缺少自动续行的可用原生帧、要求未支持的 Continue 或新玩家不是实际 head 均停止为真实未合格，不改原版一次限制。
+5. 在真正新 head 上再次执行同一 edit prepare／readback，独立确认其 `has_edited_a_rite` 未用过；不清除、复制或伪造原版 once flags。实际选择 Dynastic、完整 Can／报价、确认一次、处理真实事件并独立核 reopened 与原绑定复用。
+6. **最后才在最终新当前 head 上完成原赦免整链**：`des_acceptance_pardon_prepare_decision` 后真实一日 → 实际合法 `pardon_interaction` 一次 → `des_acceptance_pardon_observe_decision` 后真实 31 日。保留每个原 pardon assertion／marker；不能迁移旧 Root 已完成的赦免观察。独立原版犯罪保留仍由前面的原 observer 证明；最终新 head 对目标的实际读回要求本来源 trait／opinion／pair 保留、三种产品犯罪理由均无，不能借 actor 改变豁免。
+
+fixture 单一命名合同为上述六个新决议，新增唯一 marker `DESAF: TEST PASS actual_primary_heir_successor`；旧 22 个 literal marker 保留。三引用是 `des_test_ref_predecessor`、`des_test_ref_primary_heir`、`des_test_ref_primary_title`。`des_test_primary_heir_prepared`／`des_test_primary_heir_ready`／`des_test_primary_death_staged` 只属于旧 Root；`des_test_successor_verified` 仅在新 Root 实际身份守卫成立后设置。原 `global_var:des_test_extended_owner` 保持前任审计锚点，不另设可切换 owner。仅迁移 fixture producer 明列且确实存在的有限引用与已证实历史旗标，历史证据仍归原 actor；不迁移 pardon／reopened／冷载锚点、准备计时器或待执行事件，不扫 `des_test_*` 前缀，不复制／直接写产品状态、原版 flags、head 或 player。资源生产者、Java emitter 与 Root 消费者须共同核这个合同。
+
+phase 6 的 `reopened_binding` marker 只使其可就绪；phase 5 必须先完成新 head 的真实 pardon31 后才返回。phase 6 再核全部已 pin 长程原件、前任／继承／新 head／原绑定和最终赦免后态，再为**当前新 head 与最终目标**调用 `des_acceptance_cold_anchor_decision` 并实际 Save。保存的 player ID／date、Rite／Dynasty／House／关系必须独立解码；cold 使用这份精确保存与当前新 head，零自然日重载后仍须检查新 head 对目标无三种产品犯罪理由。原前任 Save 不能改标签充当新 head 保存；独立 old-save bootstrap 仍必做。
+
+400 自然日、9000 秒 hold、10800 秒整体 timeout 以及原 readiness／正常退出预留不变。死亡／赦免前须测实际已用天数与剩余墙钟，不能延长冻结场次。完整 Java clean verify、producer／资源／manifest／包导入闭环与共享 clock CI 通过后才可构建新候选图；它们仍不替代实际继承、两次原生编辑和完整六 phase 业务。
+
 ## 发布验证
 
 | 编号 | 必须完成 |

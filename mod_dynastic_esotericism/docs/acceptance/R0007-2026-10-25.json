@@ -1,0 +1,205 @@
+{
+  "schema": "xar.dynastic-esotericism.actual-run-summary.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T17:06:27.919478+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0007",
+  "source_commit": "7def6fe3e740b85099e1016f7ee0027048cb7d1a",
+  "status": "RED",
+  "started_at_utc": "2026-10-24T16:15:14.573702+00:00",
+  "finished_at_utc": "2026-10-24T17:00:03.149094+00:00",
+  "local_date_note": "Original run is 2026-10-24 UTC and 2026-10-25 Asia/Shanghai; this summary uses the local closure date without changing original timestamps.",
+  "business_phase_passed": 0,
+  "business_phase_total": 6,
+  "business_pass": false,
+  "release_pass": false,
+  "normal_close_qualified": false,
+  "autosave_verified": false,
+  "failure": "Actual House->dynasty scope errors in the product binding trigger made capture_created is_valid fail. The native fixed confirmation receiver refused before dispatch; SDK reported malformed generic decision dispatch acknowledgement. Original failed run remains RED.",
+  "original_host_error": "RuntimeError: MCP tool ck3_confirm_ingame_decision_outcome_v1 returned an error: Error executing tool ck3_confirm_ingame_decision_outcome_v1: malformed generic decision dispatch acknowledgement",
+  "native_process_identity": {
+    "pid": 18964,
+    "process_creation_filetime_100ns": "134373321304813381",
+    "connection_generation": 1,
+    "played_character_id": 31254,
+    "date_raw": 53144352,
+    "saved_date": "1066.9.16",
+    "state_dir": "C:\\ck3-dynastic-esotericism-20261024\\attempt-a10\\state",
+    "birth_source": "original R7 normal-query public string; retained float not converted"
+  },
+  "rite_creation": {
+    "status": "completed",
+    "action_request_id": "rite-action-3358dc5d673647068862eca1e0bfe1de",
+    "completion_observed_at_utc": "2026-10-24T16:34:46.947881+00:00",
+    "rite_creation_completion_verified": true,
+    "status_scope": "independent_current_rite_matches_submitted_payload",
+    "automatic_retry": false,
+    "rite_id": 150,
+    "faith_id": 13,
+    "founder_character_id": 31254,
+    "doctrine": "des_doctrine_dynastic",
+    "scope": "Independent original SDK current-Rite poststate verified the once-submitted native creation. No complete product phase or overall acceptance credit."
+  },
+  "capture_failure": {
+    "request_id": "decision-outcome-9c24052a09c24c6d9e81e7047cbe1d0d",
+    "native_reason": "fixed_visible_confirm_receiver_unqualified",
+    "dispatch_invoked": false,
+    "native_call_completed": false,
+    "native_effect_dispatched_by_this_request": false,
+    "business_effects_verified": false,
+    "original_claim_remains_no_retry": true,
+    "engine_scope_error": "Event target link 'dynasty' did not get a matching scope type. Expected 'character', but got 'dynasty_house'",
+    "engine_stack": [
+      "des_dynastic_triggers.txt:6 des_has_binding_trigger",
+      "des_dynastic_triggers.txt:11 des_has_active_binding_trigger",
+      "des_acceptance_decisions.txt:13 is_valid"
+    ],
+    "actual_error_excerpt_groups": 4,
+    "product_source_sites_repaired": 4,
+    "receiver_boundary": "Native refusal before dispatch is directly observed. Exact internal disabled receiver subpredicate was not serialized; actual is_valid House scope errors are independently preserved.",
+    "tooltip_alias_boundary": "Undefined des_test_dynasty at fixture effect line 27 was logged while building tooltip/description. It does not prove the capture effect executed."
+  },
+  "partial_cancel": {
+    "local_poststate_verified": true,
+    "original_rite_after_cancel": {
+      "rite_id": 0,
+      "faith_id": 13,
+      "creation_window_visible": false,
+      "confirmation_modal_open": false
+    },
+    "resources_equal": true,
+    "selected_identity_joins_equal": true,
+    "selected_DES_owners_and_values_equal": true,
+    "comparison_normalization": "sort variables.data anonymous rows by unique flag; compare complete raw row content; no other AST list sorting",
+    "Root_phase_result_written": false,
+    "business_pass": false,
+    "scope": "local cancellation poststate of five selected original records; no Root phase result or overall business signature"
+  },
+  "candidate_followup": {
+    "product": "Four House source links changed to house_dynasty in source only; existing identity guards retained.",
+    "fixture": "Tooltip outsider comparison now reads persistent root.rite.var:des_bound_dynasty; two House blocks use house_dynasty. Outsider negative control retained.",
+    "validation_scope": "Existing Java parser accepted the two fixture files with empty diagnostics and exact roundtrip. Full new producer/runtime and actual engine business verification remain pending.",
+    "frozen_runtime_modified": false,
+    "retroactive_R0007_acceptance_credit": false
+  },
+  "process_exit_codes": {
+    "original_game_handle": 0,
+    "original_host_popen": 1,
+    "original_public_run": 2,
+    "original_keeper_popen": 0
+  },
+  "cleanup_ok": true,
+  "screen_release_sequence": 8743,
+  "resource_closure_mode": "previous-shared-failed-live-resource-closed",
+  "resource_closure_scope": "Administrative resource admission only; original business error and unqualified normal close preserved.",
+  "closure_consumer": {
+    "frozen_function": "previous_failed_live_resource_closure",
+    "original_operation_exit_code": 0,
+    "production_bus_list_exit_code": 0,
+    "active_SCREEN_tasks_at_consumer_observation": [],
+    "original_evidence_pin_drift": []
+  },
+  "runtime_binding": {
+    "runtime": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a07\\runtime.json",
+      "bytes": 990879,
+      "sha256": "324959877d7a159f14c206f7ebe260f2900cef98878b3e5df6e03e000b5cd04b"
+    },
+    "manifest": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a07\\manifest.json",
+      "bytes": 16673,
+      "sha256": "e6aea50b2663ec7928c9a35f6ca14ca7fce0dfa5f8c76915bdacb13caefac3d7"
+    },
+    "source_index": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a07\\source-index.json",
+      "bytes": 1057186,
+      "sha256": "91a7c5d3d09dc08e51d95fe1334768ebdc8c59c689df14ddefab935f3e8c5de6"
+    },
+    "prepared_case": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\prepared-core-a10\\prepared-case.json",
+      "bytes": 18181,
+      "sha256": "32b7efccd91e4f076e8d03d68483ebb351218f9b3c4604510135bec613c0e9b3"
+    },
+    "frozen_argv": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a07\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0007\\frozen-argv.json",
+      "bytes": 510287,
+      "sha256": "da32e21cdcfce350a4304d4298f957c2d47f353c8a7d99ac329538e54e2797e2"
+    }
+  },
+  "evidence": [
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0007-preserved-failure-close-a01\\failure-close.json",
+      "bytes": 9221,
+      "sha256": "72153066d9db559c47b11b92d59f02409e0e79396dc58ca457af9f576a1a0fe8"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0007-preserved-failure-close-a01\\actual-consumer.actual.json",
+      "bytes": 12934,
+      "sha256": "efdb9325e5b0a562216e3b9a0a8cea73aee6aa1d295ef4126a92421326617eb2"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a07\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0007\\native-report.json",
+      "bytes": 13559745,
+      "sha256": "72e27b5269de0ba0c536af0a24440a1ed89f9ba9e1a4d93fc57481c68e866a20"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a07\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0007\\case-output\\normal-close-result.json",
+      "bytes": 3273,
+      "sha256": "2ff8f7b73bfa1b1b0016f2aa17dd6f6b4c831ba3f10334ab9f4ae79c1669a92d"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a07\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0007\\host-original-process-exit.json",
+      "bytes": 258,
+      "sha256": "df3f0864fa814b49cddbcb3d1068e166a33079829713655e67a658fd01b730e4"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a07\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0007\\keeper-actual-parent-exit.json",
+      "bytes": 615,
+      "sha256": "646ebb866569d36e861265eac28ed97c0ee872e4cc1e893636b2d7444dbf6091"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\run-core-a22.actual.json",
+      "bytes": 1189,
+      "sha256": "904f4447452799e67089b3d7f430fd469962b898b8c11bd0a9e8533a141efda3"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0007-screen-release.actual.json",
+      "bytes": 1473,
+      "sha256": "486b7a84fe73e98897847e7286091f18ed9d544ce84bd1d1fa0a18441adbf3f8"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a07\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0007\\operator-evidence\\root-create-verify-a01.actual.json",
+      "bytes": 77600,
+      "sha256": "976e03471d9a8375e8ab78ec4c89a4afbc86f62463ab8151eeb642bf7c183349"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\attempt-a10\\state\\native-session\\rite-creation-actions\\rite-action-3358dc5d673647068862eca1e0bfe1de.completed.json",
+      "bytes": 6105,
+      "sha256": "573b3f0d7718cd2b0115d8bde619ea4d5e29986369535e6959d21bcf00a873be"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a07\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0007\\operator-evidence\\root-capture-created-confirm-and-save-a01.actual.json",
+      "bytes": 2522,
+      "sha256": "6838dc0235aa6a21c8fe4f569956434ef8677e9cb16a78f52425b1c76c617805"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a07\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0007\\operator-evidence\\R7-cancel-proof-a01.json",
+      "bytes": 31747,
+      "sha256": "b31df8dec7177a0aa72f2d9c0b9a1bf029eff70c789194f1d5ea3f2fe443acd9"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R7-capture-confirm-diagnosis-a01\\FINAL.actual.json",
+      "bytes": 11716,
+      "sha256": "1bbba133803bf663647e849a349a075fcc75aafbb0aed06a4ce92a2fe164f0bd"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R7-capture-confirm-diagnosis-a01\\game-error-excerpts.actual.json",
+      "bytes": 6494,
+      "sha256": "39e57780a94cc8999791901f2be7970d992a37028846fa643cebcfbe6d5d19ab"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R7-fixture-scope-fix-a01\\CANDIDATE.actual.json",
+      "bytes": 10047,
+      "sha256": "05703b195b34ee77562002773cb8aef2133ad3c9fe75712e80fd715878d41c73"
+    }
+  ]
+}

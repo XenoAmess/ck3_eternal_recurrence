@@ -1,8 +1,8 @@
 # 公共入口与现场操作卡
 
-适用机器：`desktop-3fevhd2-1c74096080`。记录日期：2026-10-24。以下是尚待实际执行的操作合同，命令示例不构成启动、业务或发布通过记录。执行者须保留每一外层命令真实退出码。
+适用机器：`desktop-3fevhd2-1c74096080`。记录日期：2026-10-24；继承候选更新于 2026-10-25。以下是尚待实际执行的操作合同，命令示例不构成启动、业务或发布通过记录。执行者须保留每一外层命令真实退出码。
 
-R0004 已实际消费下文 a06 runtime、a19 keeper、`prepared-core-a07` 与 `attempt-a07/state`，并再次暴露整句日志参数展开失败；这些路径和分配例现为该失败场次的历史输入，不能复制重放。R0004 完整资源闭场与创建资格调查完成前，不填下一场前序或新 run ID。下一场须使用重新构建的静态日志候选及新的 runtime／prepared／state 父目录，经当时容量准入与 canonical allocator 重新分配；C 上 R0004 冻结源码保持原样。
+R0004 已实际消费下文 a06 runtime、a19 keeper、`prepared-core-a07` 与 `attempt-a07/state`，并再次暴露整句日志参数展开失败；这些路径和分配例现为该失败场次的历史输入，不能复制重放。R0007 后继实机已独立确认创建 Rite 150／Faith 13／actor 31254，但后续 capture 因产品 House→Dynasty 链错误被原生提交前拒绝，整体仍为 **0/6、业务 RED**；原件是 `C:/ck3-dynastic-esotericism-20261024/common-runtime-a07/runs/desktop-3fevhd2-1c74096080--dynastic-esotericism--R0007`。新 House 修复、下文真实继承顺序及共享 clock／fixture 均须在新构建图验证，不能热改或追认该原场。Root 在真实分配前消费当时最新 canonical closure／release 原件与容量准入，重新固定全部 runtime／prepared／state／keeper 路径；下文历史命令中的旧前序与 a 编号不代表当前可执行值。
 
 本次使用已有公共验收入口、c09 宿主和公共原生 provider 的有限后继。Java 工具只生成外置 fixture 与精确来源绑定的共享 runtime；它不启动 CK3，也不授予 live qualification。最终 native index、SDK 提交验证入口和扩展 fixture 全部冻结后，才生成正式 prepared case。
 
@@ -71,11 +71,31 @@ Root 在真实分配前完成存储原子准入、干净 checkout 和屏幕 owne
 
 控制器会打印 `CK3_ROOT_CHECKPOINT <run>/case-output/<phase>-awaiting.json`。Root 先读取该文件的实际 snapshot、要求、原始 hold deadline，再提交原生操作。控制器此时保持同一会话；每个公开队列计划必须用新的文件名与 step ID。
 
+### 两位真实 head 的后继 core 顺序（候选，未授继承资格）
+
+保留 core 全部六个 phase、原 required assertions 与 marker 含义。原始 `dynastic_esotericism_core.json` 是 adapter 配置，`allow_actor_change=true`、`actor_transition_days=[]` 和 `continue_as_heir_requirements` 是其**顶层现有字段**，没有新的 `adapter_config` 对象。空数组表示不指定自动 advance 序号，不是游戏日期；许可仅使同一 run／pipe／PID／generation 下的新实际 actor 可被观察，不能证明继承或允许任意换人。共享 purpose／clock 必须从同一已 pin 原合同消费该布尔值，保留初始起日、日期单调与预算；缺字段的其他 case 默认 false。R0007 实际 tools/list 注册了 `ck3_set_played_character_v1`，但注册不授予原生可用性或真继承资格；本流程绝不调用它。当前没有已核可用于本次真继承验收的 Continue-as-Heir 路径，遇必须点击 Continue 且无合法原生路径时保留未合格，不创造命令或改玩家。
+
+phase 1–4 按原要求完成；phase 5 从 `repentance` 就绪后按以下顺序执行，Root 必须始终读取本次 awaiting 原要求与原 deadline：
+
+1. **先在旧 Root 上完成全部长程路径**：`des_acceptance_extended_start_decision`；`des_acceptance_second_rite_decision` 后真实 31 日；`des_acceptance_cross_rites_decision`／`des_acceptance_cross_migration_decision` 后各真实一日；`des_acceptance_stock_crime_decision`／`des_acceptance_stock_repent_decision` 后各真实一日；实际出生再推进恰好一日并独立验证身份／归属／有资格者知识；生成、合法旁支、外改 House 校正、原 timer 的真实 61 日与两次 callback 证据。最后也须完成原 `des_acceptance_founder_death_decision` 的**第二位 NPC founder 死亡后真实 31 日**，可在 second_verified 后与其他计时重叠，但不能以稍后的玩家死亡替代。此时不执行 pardon_prepare，不先开关教义。
+2. 新 step 执行 `des_acceptance_primary_heir_prepare_decision`，pin 真实 `primary_heir`、前任及原主头衔；只公开执行 stock 同 Faith Rite 输入，不能设置其 Dynasty／House／产品绑定。至少经过一个实际自然日（`current_date > des_test_heir_input_date`，不是要求恰好一日）后调用 `des_acceptance_primary_heir_readback_decision`，并独立保存 native／Save 的 heir 身份、存活成年、当前继承资格及实际 Rite／Dynasty／House。缺失、未成年、继承改变或不合格均为 NOT_READY，不能造继承人。
+3. 对当前真实旧 head 执行 `des_acceptance_edit_input_prepare_decision` → `des_acceptance_edit_input_readback_decision`。它们只复用空槽原版司祭／神学傀儡 helper；没有清理冲突或重置 once flag 的权限。编辑资格与创建资格分开，创建后 aggregate create-ready 不能当作 edit-ready。通过下文通用礼仪操作真实选择 None，验证实质变化、完整 Can 与报价，prepare／confirm 各一次，按事件规则处理后独立 verify，再 `des_acceptance_closed_readback_decision`；固定同一 Rite／绑定 Dynasty。
+4. 旧 Root 的全部 observer 与 closed 原件齐全后，`des_acceptance_primary_death_stage_decision` 只安排一次次日 stock death。使用现有事件边界原生 advance，并显式允许观察 actor 改变；返回后先处理实际事件，再独立确认可用暂停帧。不要预先认为 title heir 就是 Rite head，不重置 clock 或原 deadline。
+5. 先从实际 native 和独立 Save 固定四项证据：`actual_predecessor_death_and_primary_title_succession`、`actual_current_player_is_the_pinned_living_primary_heir`、`actual_same_primary_rite_and_bound_dynasty_survive`、`actual_native_current_rite_head_is_the_successor`。再调用 `des_acceptance_successor_readback_decision`，其脚本必要条件还核原 title holder／primary title、olddead、真实新 head 与绑定；它不等待额外 fixture 事件，不设置玩家／head。唯一新增 marker 是 `DESAF: TEST PASS actual_primary_heir_successor`。四证据同时列于 phase 5 requirements，不能依赖可能未触发的 dead-player fallback。
+6. 仅在真实新 head 身份合格后，在其身上重做同名 edit prepare／readback；独立读取其 `has_edited_a_rite` 未消耗。用真正原生编辑选择 Dynastic，完整 Can／当前报价、prepare／confirm 各一次，处理事件并 verify，然后执行 `des_acceptance_reopened_readback_decision`。原版按 head 的一次编辑限制保持，不能清除／复制 `has_edited_a_rite`、`has_created_a_faith` 或制造 head。
+7. **最终新当前 head 才做完整原赦免链**：`des_acceptance_pardon_prepare_decision` → 真实一日 → 原版合法 `pardon_interaction` 一次 → `des_acceptance_pardon_observe_decision` → 真实 31 日。逐项留存原 pardon consumed／stable marker、trait／opinion／pair 及新 head 对同一目标无三种产品犯罪理由；不用旧 Root 的赦免结果替代。先前独立原版犯罪保留仍保留其原 observer／原件，不重标为新 head。
+
+新 fixture 引用仅为 `des_test_ref_predecessor`、`des_test_ref_primary_heir`、`des_test_ref_primary_title`；前任仍由原 `global_var:des_test_extended_owner` 审计。旧 Root 的 `des_test_primary_heir_prepared`／`des_test_primary_heir_ready`／`des_test_primary_death_staged` 不迁移，`des_test_successor_verified` 只在新 Root 必要身份守卫后产生。迁移仅用 producer 明列的真实有限 fixture 引用和有旧 actor 原件支持的历史完成旗标；缺失值不补默认。不扫前缀、不转移 pardon／reopened／冷载锚点／原版 once flags，不写产品绑定、犯罪、trait、opinion、head 或 player。
+
+phase 5 只有在最终新 head pardon31 完成后才能返回。phase 6 的原 `reopened_binding` marker 仍是就绪门槛；到它时重新核全部历史 pin、实际出生+1／timer61／第二 founder31、真实继承与当前新 head／原绑定／最终 pardon31。然后调用 `des_acceptance_cold_anchor_decision`，为**当前新 head 与最终目标**计算新锚点，再真实 Save 并独立解码当前 player ID／date、Rite／Dynasty／House／关系。cold 仅加载这份精确新 head Save，零自然日仍要求新 head 对目标无三种产品犯罪理由；不能用前任 Save 改标签，也不豁免独立旧档 bootstrap。
+
+整个 case 仍为 400 自然日、9000 秒 hold、10800 秒整体 timeout，原 readiness 1800 秒与正常退出预留 180 秒保持。安排死亡和最终赦免前核实际已用自然日／墙钟／剩余预算；时间可重叠不是额度保证。完整 Java producer／13 资源／manifest／导入闭环、共享 clock CI 与新图来源固定完成前不分配执行；通过后仍只授新场开始条件，实际继承／head／编辑／业务各自取证。
+
 R0004 起，首个 phase 等待实际 `DESAF: TEST PASS fixture_ready`，不按“已到第 1 日”推算延迟事件已执行。准备 fixture 不改角色 Faith；保留开局 Catholic／Roman Rite，实际知识、无先知、资源和原生 `Can` 均须重新读回，不能把儒家身份当作前提。
 
 R0004 的日志故障候选修复只改日志位置：`.3/.4` 外层完整 observer／outsider 守卫保持，四条 PASS 采用静态带引号 `debug_log`，移除重复的 positive／negative 日志 helper；不能再传整句 `$PASS$`／`$FAIL$`，也不另换 CASE 宏猜引擎行为。旧 R0004 原输入及两份坏资源在 Java 回归中保留，实际旧输入须被非字面量日志检查拒绝。新 JAR／fixture 和后继实机尚未因此通过；完整证据与边界见[测试方案](../test-plan.md)。五项名称、教义与资源齐备仍不能代替实际原生 `Can`，R0004 观察到的创建资格缺口须独立闭合。
 
-后继 fixture 的原版关系输入已明确公开：优先当前真实宫廷司祭，缺失时只运行一次原版 landed realm priest 筛选；其后仅为合格司祭与空槽建立原版神学傀儡关系，不清除冲突、不选择六项互动支持、不声称互动已经提交、接受或支付。setup 的 `fixture_ready` 需要真实关系和已知脚本资格读回通过。开窗前调用独立 `[测试] 观察原版神学傀儡前置输入` 决议，检查 cp／puppet／反向 puppeteer／puppet_action_valid 的静态日志，并从新 epoch 另读 council full ID。该决议只读原版关系，只更新 fixture 观察旗标；它不重新任命或创建傀儡。草案五名称、教义和资源齐备后仍须原生完整 Can；关系前置日志不能替代该结果，原版确认仍只能执行一次。
+后继 fixture 的原版关系输入已明确公开：优先当前真实宫廷司祭，缺失时只运行一次原版 landed realm priest 筛选；其后仅为合格司祭与空槽建立原版神学傀儡关系，不清除冲突、不选择六项互动支持、不声称互动已经提交、接受或支付。setup 的 `fixture_ready` 需要真实关系和已知脚本资格读回通过。**首次创建**开窗前调用独立 `[测试] 观察原版神学傀儡前置输入` 决议，检查 cp／puppet／反向 puppeteer／puppet_action_valid 的静态日志，并从新 epoch 另读 council full ID。该决议只读原版关系，只更新 fixture 观察旗标；它不重新任命或创建傀儡。创建后的两次编辑采用上节各 head 自己的 edit prepare／readback，不使用包含 `can_create_rite_trigger` 的创建聚合资格代替。草案五名称、教义和资源齐备后仍须原生完整 Can；关系前置日志不能替代该结果，原版确认仍只能执行一次。
 
 ```bat
 <python> <frozen-source>/tools/ck3_mod_acceptance_queue_control.py --live <run> --plan <new-plan.json> --name root-rite-001.json

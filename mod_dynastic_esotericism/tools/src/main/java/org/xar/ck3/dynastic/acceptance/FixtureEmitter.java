@@ -62,7 +62,8 @@ public final class FixtureEmitter {
             "DESAF: TEST PASS join_after_founder_death",
             "DESAF: TEST PASS founder_death_and_head_change",
             "DESAF: TEST PASS two_periodic_callbacks",
-            "DESAF: TEST PASS actual_birth_next_day");
+            "DESAF: TEST PASS actual_birth_next_day",
+            "DESAF: TEST PASS actual_primary_heir_successor");
 
     private FixtureEmitter() { }
 

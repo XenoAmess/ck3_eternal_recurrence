@@ -35,7 +35,7 @@ des_acceptance_extended.2 = {
 		if = {
 			limit = {
 				scope:des_test_peer = { is_alive = yes rite = scope:des_test_primary dynasty = scope:des_test_dynasty house = scope:des_test_cadet_house }
-				scope:des_test_cadet_house = { dynasty = scope:des_test_dynasty NOT = { this = scope:des_test_primary.var:des_join_house } }
+				scope:des_test_cadet_house = { house_dynasty = scope:des_test_dynasty NOT = { this = scope:des_test_primary.var:des_join_house } }
 				scope:des_test_child = { is_alive = yes rite = scope:des_test_primary dynasty = scope:des_test_dynasty house = scope:des_test_primary.var:des_join_house NOT = { has_trait = des_apostate } }
 			}
 			add_character_flag = des_test_membership_correction_verified
@@ -236,7 +236,7 @@ des_acceptance_extended.41 = {
 					father = scope:des_test_birth_father
 					rite = scope:des_test_primary
 					dynasty = scope:des_test_dynasty
-					house = { dynasty = scope:des_test_dynasty }
+					house = { house_dynasty = scope:des_test_dynasty }
 					trigger_if = {
 						limit = { is_playable_character = yes }
 						knows_doctrine = des_doctrine_none
@@ -349,4 +349,31 @@ des_acceptance_extended.71 = {
 		}
 		else = { debug_log = "DESAF: TEST FAIL legacy_bootstrap" }
 	}
+}
+
+# A staged stock death only. The engine, not this script, chooses player and head.
+des_acceptance_extended.80 = {
+    hidden = yes
+    immediate = {
+        if = {
+            limit = {
+                is_alive = yes
+                this = global_var:des_test_extended_owner
+                has_character_flag = des_test_primary_death_staged
+                has_character_flag = des_test_primary_heir_ready
+                has_character_flag = des_test_closed_verified
+                has_variable = has_edited_a_rite
+                exists = primary_heir
+                primary_heir = var:des_test_ref_primary_heir
+                primary_title = var:des_test_ref_primary_title
+                primary_title = { holder = root }
+                rite = var:des_test_primary_rite
+                rite = { rite_has_doctrine = des_doctrine_none var:des_bound_dynasty = root.var:des_test_bound_dynasty }
+                primary_heir = { is_alive = yes is_adult = yes rite = root.rite dynasty = root.var:des_test_bound_dynasty house = root.rite.var:des_join_house NOT = { has_variable = has_edited_a_rite } }
+            }
+            debug_log = "DESAF: PREPARATION stock_predecessor_death"
+            death = { death_reason = death_natural_causes }
+        }
+        else = { debug_log = "DESAF: NOT_READY staged_predecessor_death" }
+    }
 }

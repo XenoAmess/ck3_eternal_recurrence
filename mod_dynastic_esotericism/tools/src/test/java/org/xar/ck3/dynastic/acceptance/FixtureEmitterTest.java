@@ -42,7 +42,7 @@ final class FixtureEmitterTest {
         assertEquals("authored-machine", decoded.path("machine_id").textValue());
         assertEquals(13, decoded.path("files").size());
         assertEquals(14, decoded.path("producer_source_pins").size());
-        assertEquals(22, decoded.path("receipt").path("required_markers").size());
+        assertEquals(23, decoded.path("receipt").path("required_markers").size());
         assertTrue(decoded.path("receipt").path("fixture_contains_business_effects").booleanValue());
         for (var entry : result.payload().files().entrySet()) {
             byte[] bytes = Files.readAllBytes(result.fixture().resolve(entry.getKey()));
@@ -92,10 +92,19 @@ final class FixtureEmitterTest {
     @Test
     void rejectsChangedFixtureSourcesBeforeEmittingFromPackagedResources() throws IOException {
         List<String> changedResources = List.of(
+                "descriptor.mod",
+                "common/on_action/des_acceptance_on_actions.txt",
+                "common/decisions/des_acceptance_decisions.txt",
                 "common/scripted_effects/des_acceptance_effects.txt",
                 "common/scripted_effects/des_acceptance_extended_effects.txt",
+                "common/decisions/des_acceptance_extended_decisions.txt",
+                "common/on_action/des_acceptance_extended_on_actions.txt",
                 "events/des_acceptance_events.txt",
-                "events/des_acceptance_extended_events.txt");
+                "events/des_acceptance_extended_events.txt",
+                "localization/english/des_acceptance_l_english.yml",
+                "localization/simp_chinese/des_acceptance_l_simp_chinese.yml",
+                "localization/english/des_acceptance_extended_l_english.yml",
+                "localization/simp_chinese/des_acceptance_extended_l_simp_chinese.yml");
         for (int index = 0; index < changedResources.size(); index++) {
             String relative = changedResources.get(index);
             Path copiedRepository = temporary.resolve("changed-source-" + index);
@@ -126,6 +135,19 @@ final class FixtureEmitterTest {
         assertEquals(current.payload().receipt().requiredMarkers().size(), observation.path("required_marker_count").intValue());
         assertEquals(2, observation.path("unchanged_guard_count").intValue());
         assertTrue(observation.path("original_rite_readback_only_observes").booleanValue());
+        assertEquals(24, observation.path("successor_reference_transfer_count").intValue());
+        assertEquals(21, observation.path("successor_history_transfer_count").intValue());
+        assertFalse(observation.path("engine_semantics_verified").booleanValue());
+
+        for (String mutation : List.of("missing-head", "product-write", "pardon-copy")) {
+            ProbeResult forbidden = probeFixture(current, baseline, mutation);
+            assertNotEquals(0, forbidden.exitCode(), forbidden.output());
+            assertEquals(switch (mutation) {
+                case "missing-head" -> "SUCCESSOR_IDENTITY_GUARD_MISSING";
+                case "product-write" -> "SUCCESSOR_REFERENCE_TRANSFER_OUTSIDE_CONTRACT";
+                default -> "SUCCESSOR_FLAG_TRANSFER_OUTSIDE_CONTRACT";
+            }, new ObjectMapper().readTree(forbidden.output()).path("reason").textValue());
+        }
 
         FixtureEmitter.Emission failedR0004 = FixtureEmitter.emit(repository(), temporary.resolve("original-r0004"), "authored-machine");
         JsonNode sources = new ObjectMapper().readTree(baseline.toFile()).path("original_fixture_sources");
@@ -154,10 +176,16 @@ final class FixtureEmitterTest {
 
     private static ProbeResult probeFixture(FixtureEmitter.Emission fixture, Path baseline)
             throws IOException, InterruptedException {
+        return probeFixture(fixture, baseline, "none");
+    }
+
+    private static ProbeResult probeFixture(FixtureEmitter.Emission fixture, Path baseline, String mutation)
+            throws IOException, InterruptedException {
         String program = """
                 import io,json,sys
                 from pathlib import Path
-                repository,fixture,manifest,baseline=map(Path,sys.argv[1:])
+                repository,fixture,manifest,baseline=map(Path,sys.argv[1:5])
+                mutation=sys.argv[5]
                 sys.path.insert(0,str(repository/'ck3_autonomous_player/src'))
                 from xar_autoplayer.campaign_score_save_reader import melt_tokens
                 sys.path.insert(0,str(repository/'tools/lyd_i3b_checkpoint_readback/reader/dependencies'))
@@ -199,8 +227,11 @@ final class FixtureEmitterTest {
                     return found
                 setup=one(one(events,'des_acceptance.1',required=True),'immediate',required=True)
                 setup_calls=[row for row in setup if row['key']==prepare_key and row['value']=='yes']
-                if len(setup_calls)!=1 or sum(len(calls(entries)) for entries in parsed.values())!=1:
-                    reject('ORIGINAL_RELATION_PREPARATION_OUTSIDE_FRESH_SETUP')
+                extended_decisions=parsed['common/decisions/des_acceptance_extended_decisions.txt']
+                edit_prepare=one(extended_decisions,'des_acceptance_edit_input_prepare_decision',required=True)
+                edit_body=one(one(edit_prepare,'effect',required=True),'hidden_effect',required=True)
+                if len(setup_calls)!=1 or len(calls(edit_body))!=1 or sum(len(calls(entries)) for entries in parsed.values())!=2:
+                    reject('ORIGINAL_RELATION_PREPARATION_OUTSIDE_DECLARED_ROUTES')
                 effects=parsed['common/scripted_effects/des_acceptance_effects.txt']
                 decisions=parsed['common/decisions/des_acceptance_decisions.txt']
                 readback=one(effects,'des_acceptance_read_original_rite_input_effect',required=True)
@@ -210,16 +241,125 @@ final class FixtureEmitterTest {
                         if key in ('if','else'):
                             readback_effects([entry for entry in value if entry['key']!='limit'])
                         elif key in ('add_character_flag','remove_character_flag'):
-                            if value!='des_test_original_rite_input_ready':
+                            if value not in ('des_test_original_rite_input_ready','des_test_original_edit_input_ready','des_test_original_rite_relation_ready'):
                                 reject('READBACK_WRITES_NON_FIXTURE_FLAG',key=key,value=value)
+                        elif key=='des_acceptance_read_original_rite_relation_effect' and value=='yes':
+                            readback_effects(one(effects,key,required=True))
                         elif key not in ('save_scope_as','debug_log'):
                             reject('READBACK_HAS_MUTATING_EFFECT',key=key)
                 readback_effects(readback)
+                readback_effects(one(effects,'des_acceptance_read_original_edit_input_effect',required=True))
                 decision=one(decisions,'des_acceptance_original_rite_input_readback_decision',required=True)
                 invoked=one(one(decision,'effect',required=True),'hidden_effect',required=True)
                 if invoked != [{'key':'des_acceptance_read_original_rite_input_effect','value':'yes'}]:
                     reject('INDEPENDENT_READBACK_HAS_OTHER_EFFECTS')
+                edit_readback=one(extended_decisions,'des_acceptance_edit_input_readback_decision',required=True)
+                if one(one(edit_readback,'effect',required=True),'hidden_effect',required=True)!=[{'key':'des_acceptance_read_original_edit_input_effect','value':'yes'}]:
+                    reject('INDEPENDENT_EDIT_READBACK_HAS_OTHER_EFFECTS')
+                def require(entries,key,value,reason):
+                    if {'key':key,'value':value} not in entries:
+                        reject(reason,key=key)
+                original_prepare=one(effects,prepare_key,required=True)
+                prepare_branches=[row['value'] for row in original_prepare if row['key']=='if']
+                if len(prepare_branches)!=2:
+                    reject('ORIGINAL_RELATION_PREPARATION_CHANGED')
+                missing_priest=one(prepare_branches[0],'limit',required=True)
+                require(missing_priest,'NOT',[{'key':'exists','value':'cp:councillor_court_chaplain'}],'PRIEST_ASSIGNMENT_WITHOUT_MISSING_GUARD')
+                empty_slot=one(prepare_branches[1],'limit',required=True)
+                require(empty_slot,'exists','cp:councillor_court_chaplain','PUPPET_WITHOUT_ACTUAL_CHAPLAIN')
+                require(empty_slot,'NOT',[{'key':'exists','value':'puppet:theological_agent_puppet'}],'PUPPET_WITHOUT_EMPTY_SLOT')
+                # The unchanged save AST represents optional cp ?= as an
+                # anonymous cp token followed by the '?' block; no new parser.
+                require(empty_slot,None,'cp:councillor_court_chaplain','PUPPET_WITHOUT_ACTUAL_CHAPLAIN')
+                cp=one(empty_slot,'?',required=True)
+                require(cp,'NOT',[{'key':'exists','value':'puppeteer'}],'PUPPET_WITH_CONFLICTING_RELATION')
+                require(prepare_branches[1],'set_puppet',[{'key':'target','value':'scope:recipient'},{'key':'type','value':'theological_agent_puppet'}],'CHANGED_STOCK_PUPPET_INPUT')
+                extended_effects=parsed['common/scripted_effects/des_acceptance_extended_effects.txt']
+                transfer=one(extended_effects,'des_acceptance_successor_readback_effect',required=True)
+                if [row['key'] for row in transfer]!=['if','else'] or any(row['key']!='debug_log' for row in one(transfer,'else',required=True)):
+                    reject('SUCCESSOR_EFFECT_OUTSIDE_IDENTITY_GUARD')
+                anchored=one(transfer,'if',required=True)
+                if [row['key'] for row in anchored]!=['limit','global_var:des_test_extended_owner','if','else']:
+                    reject('SUCCESSOR_EFFECT_OUTSIDE_IDENTITY_GUARD')
+                if one(anchored,'global_var:des_test_extended_owner',required=True)!=[{'key':'save_scope_as','value':'des_test_predecessor'}]:
+                    reject('SUCCESSOR_PREDECESSOR_ANCHOR_CHANGED')
+                branch=one(anchored,'if',required=True)
+                guard=one(branch,'limit',required=True)
+                if mutation=='missing-head':
+                    rite_guard=next(row['value'] for row in guard if row['key']=='rite' and isinstance(row['value'],list))
+                    rite_guard[:]=[row for row in rite_guard if row['key']!='head_of_rite']
+                elif mutation=='product-write':
+                    branch.append({'key':'set_variable','value':[{'key':'name','value':'des_bound_dynasty'},{'key':'value','value':'scope:des_test_predecessor.var:des_bound_dynasty'}]})
+                elif mutation=='pardon-copy':
+                    branch.append({'key':'add_character_flag','value':'des_test_pardon_stable'})
+                elif mutation!='none':
+                    reject('UNKNOWN_TEST_MUTATION')
+                identity_reason='SUCCESSOR_IDENTITY_GUARD_MISSING'
+                require(one(anchored,'limit',required=True),'exists','global_var:des_test_extended_owner',identity_reason)
+                for key,value in [('is_ai','no'),('is_alive','yes'),('is_adult','yes'),('this','scope:des_test_predecessor.var:des_test_ref_primary_heir'),('primary_title','scope:des_test_predecessor.var:des_test_ref_primary_title'),('rite','scope:des_test_predecessor.var:des_test_primary_rite'),('dynasty','scope:des_test_predecessor.var:des_test_bound_dynasty'),('house','scope:des_test_predecessor.var:des_test_primary_rite.var:des_join_house')]:
+                    require(guard,key,value,identity_reason)
+                require(guard,'NOT',[{'key':'has_variable','value':'has_edited_a_rite'}],identity_reason)
+                rite_guard=next(row['value'] for row in guard if row['key']=='rite' and isinstance(row['value'],list))
+                require(rite_guard,'head_of_rite','root',identity_reason)
+                require(rite_guard,'exists','head_of_rite',identity_reason)
+                require(rite_guard,'rite_has_doctrine','des_doctrine_none',identity_reason)
+                require(one(guard,'scope:des_test_predecessor.var:des_test_ref_primary_title',required=True),'holder','root',identity_reason)
+                predecessor=[row['value'] for row in guard if row['key']=='scope:des_test_predecessor' and isinstance(row['value'],list)]
+                predecessor=next(rows for rows in predecessor if {'key':'is_alive','value':'no'} in rows)
+                for key,value in [('is_alive','no'),('has_character_flag','des_test_primary_death_staged'),('has_character_flag','des_test_primary_heir_ready'),('has_variable','has_edited_a_rite')]:
+                    require(predecessor,key,value,identity_reason)
+                refs='des_test_primary_rite des_test_bound_dynasty des_test_source_rite des_test_source_dynasty des_test_ref_target des_test_ref_peer des_test_ref_child des_test_ref_outsider des_test_ref_birth_father des_test_ref_birth_mother des_test_ref_newborn des_test_ref_old_descendant des_test_old_descendant_house des_test_old_descendant_dynasty des_test_cadet_house des_test_ref_generated des_test_ref_second_founder des_test_ref_second_observer des_test_ref_second_target des_test_second_rite des_test_second_dynasty des_test_second_house des_test_second_creation_path des_test_ref_after_death'.split()
+                flags='des_test_ready des_test_members_verified des_test_same_verified des_test_cross_verified des_test_repent_verified des_test_closed_verified des_test_extended_armed des_test_extended_started des_test_actual_birth_seen des_test_birth_verified des_test_descendant_verified des_test_generated_verified des_test_membership_correction_verified des_test_timer_verified des_test_second_verified des_test_cross_rites_verified des_test_cross_migration_verified des_test_founder_death_verified des_test_after_death_join_verified des_test_stock_crime_seen des_test_stock_retained'.split()
+                for name in refs:
+                    require(predecessor,'has_variable',name,'SUCCESSOR_SOURCE_VALUE_MISSING')
+                for name in flags:
+                    require(predecessor,'has_character_flag',name,'SUCCESSOR_HISTORY_NOT_PROVEN')
+                expected_writes={name:'scope:des_test_predecessor.var:'+name for name in refs}
+                expected_writes.update(des_test_ref_predecessor='scope:des_test_predecessor',des_test_ref_primary_heir='this',des_test_ref_primary_title='primary_title')
+                actual_writes={}
+                actual_flags=[]
+                for row in branch:
+                    key,value=row['key'],row['value']
+                    if key=='set_variable':
+                        name=one(value,'name',required=True)
+                        actual=one(value,'value',required=True)
+                        if name in actual_writes or name not in expected_writes or expected_writes[name]!=actual:
+                            reject('SUCCESSOR_REFERENCE_TRANSFER_OUTSIDE_CONTRACT',name=name)
+                        actual_writes[name]=actual
+                    elif key=='add_character_flag':
+                        if value not in flags+['des_test_successor_verified'] or value in actual_flags:
+                            reject('SUCCESSOR_FLAG_TRANSFER_OUTSIDE_CONTRACT',name=value)
+                        actual_flags.append(value)
+                    elif key not in ('limit','debug_log'):
+                        reject('SUCCESSOR_UNDECLARED_EFFECT',key=key)
+                if actual_writes!=expected_writes or set(actual_flags)!=set(flags+['des_test_successor_verified']):
+                    reject('SUCCESSOR_FINITE_TRANSFER_INCOMPLETE')
+                stage=one(extended_decisions,'des_acceptance_primary_death_stage_decision',required=True)
+                staged=one(one(one(stage,'effect',required=True),'hidden_effect',required=True),'if',required=True)
+                for name in flags:
+                    require(one(staged,'limit',required=True),'has_character_flag',name,'DEATH_BEFORE_OLD_OBSERVERS_FINISH')
+                require(staged,'trigger_event',[{'key':'id','value':'des_acceptance_extended.80'},{'key':'days','value':'1'}],'DEATH_NOT_STAGED_NEXT_DAY')
+                death=one(parsed['events/des_acceptance_extended_events.txt'],'des_acceptance_extended.80',required=True)
+                death=one(one(death,'immediate',required=True),'if',required=True)
+                require(death,'death',[{'key':'death_reason','value':'death_natural_causes'}],'CHANGED_STOCK_DEATH_INPUT')
+                require(one(death,'limit',required=True),'primary_heir','var:des_test_ref_primary_heir',identity_reason)
+                forbidden_names={'des_bound_dynasty','des_bound_rite','des_join_house','des_penalty_targets','des_observers','des_apostate_rite','has_edited_a_rite','has_created_a_faith'}
+                def forbidden_writes(entries):
+                    for row in entries:
+                        key,value=row['key'],row['value']
+                        if key in ('set_variable','remove_variable','set_global_variable','remove_global_variable','add_to_variable_list','remove_list_variable'):
+                            name=one(value,'name',required=True) if isinstance(value,list) else value
+                            if name in forbidden_names:
+                                reject('FORBIDDEN_PRODUCT_OR_STOCK_WRITE',name=name)
+                        if key in ('set_player_character','set_player','set_head_of_rite','set_rite_head','set_dynasty_head','set_house_head','clear_puppet','remove_puppet'):
+                            reject('FORBIDDEN_IDENTITY_OR_RELATION_WRITE',key=key)
+                        if isinstance(value,list):
+                            forbidden_writes(value)
+                for entries in parsed.values():
+                    forbidden_writes(entries)
                 required=json.loads(manifest.read_bytes())['receipt']['required_markers']
+                if len(required)!=23 or literals.count('DESAF: TEST PASS actual_primary_heir_successor')!=1:
+                    reject('SUCCESSOR_MARKER_CONTRACT_CHANGED')
                 missing=sorted(set(required)-set(literals))
                 if missing:
                     reject('MISSING_LITERAL_REQUIRED_MARKER',markers=missing)
@@ -233,10 +373,10 @@ final class FixtureEmitterTest {
                     outsider=json.loads(one(one(branch,'scope:des_test_outsider',required=True),'debug_log',required=True))
                     if [observer,outsider]!=guard['success_logs']:
                         reject('CHANGED_SCOPED_SUCCESS_MARKERS',event=event)
-                print(json.dumps({'status':'ACCEPTED','required_marker_count':len(required),'unchanged_guard_count':len(expected),'original_rite_readback_only_observes':True}))
+                print(json.dumps({'status':'ACCEPTED','required_marker_count':len(required),'unchanged_guard_count':len(expected),'original_rite_readback_only_observes':True,'successor_reference_transfer_count':len(refs),'successor_history_transfer_count':len(flags),'engine_semantics_verified':False}))
                 """;
         Process process = new ProcessBuilder("python", "-B", "-X", "utf8", "-c", program,
-                repository().toString(), fixture.fixture().toString(), fixture.manifest().toString(), baseline.toString())
+                repository().toString(), fixture.fixture().toString(), fixture.manifest().toString(), baseline.toString(), mutation)
                 .redirectErrorStream(true).start();
         assertTrue(process.waitFor(30, TimeUnit.SECONDS), "existing lexer/AST fixture probe timed out");
         return new ProbeResult(process.exitValue(), new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8));

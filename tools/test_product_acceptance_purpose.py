@@ -44,6 +44,7 @@ class ClockDriver(Protocol):
     progress_governor: object
     def _campaign_advance_deadline_v1(self, starting: dict[str, object], target_date_raw: int) -> dict[str, object] | None: ...
     def cap_campaign_advance_plan_v1(self, planned: dict[str, object]) -> dict[str, object]: ...
+    def _with_one_life_episode(self, snapshot: dict[str, object]) -> dict[str, object]: ...
 
 
 @runtime_checkable
@@ -53,6 +54,10 @@ class DriverFactory(Protocol):
 
 class OriginalR05Boundary:
     progress_governor: object = SimpleNamespace(scope=None)
+    episode_projection: str = 'native_campaign'
+
+    def _with_one_life_episode(self, snapshot: dict[str, object]) -> dict[str, object]:
+        return snapshot
 
     def _campaign_advance_deadline_v1(self, starting: dict[str, object], target_date_raw: int) -> dict[str, object] | None:
         raise RuntimeError('Actual independent progress scope absent')
@@ -67,7 +72,8 @@ def actual_recording_driver(clock: ProductAcceptanceClockV1 | None) -> ClockDriv
     driver = next(node for node in server.body if isinstance(node, ast.ClassDef) and node.name == 'RecordingDriver')
     # Execute the actual class source, retaining the selected parent seam. The
     # authored parent reproduces the observed R0001 refusal without any pipe.
-    namespace: dict[str, object] = {'NativeHeadlessGameplayDriver': OriginalR05Boundary, 'product_clock': clock}
+    namespace: dict[str, object] = {'NativeHeadlessGameplayDriver': OriginalR05Boundary,
+        'product_clock': clock, 'managed_campaign_run_binding': None}
     exec(compile(ast.Module(body=[driver], type_ignores=[]), str(HOST), 'exec'), namespace)
     factory = namespace['RecordingDriver']
     if not isinstance(factory, DriverFactory):
@@ -119,6 +125,13 @@ class ProductPurposeTests(unittest.TestCase):
         write_product_acceptance_purpose_v1(self.purpose_path, self.context_path,
             host_path=HOST, state_dir=self.state, bridge_pipe=self.pipe)
 
+    def refresh_contract(self) -> None:
+        write(self.contract_path, self.contract)
+        self.prepared['contract'] = json_object(pin(self.contract_path))
+        write(self.prepared_path, self.prepared)
+        self.context['prepared_case'] = json_object(pin(self.prepared_path))
+        self.refresh_context()
+
     def consume(self) -> ProductAcceptanceClockV1:
         spec = importlib.util.spec_from_file_location('actual_product_purpose_host', HOST)
         if spec is None or spec.loader is None:
@@ -145,6 +158,7 @@ class ProductPurposeTests(unittest.TestCase):
         clock = self.consume()
         self.assertEqual(clock.purpose.maximum_natural_days, 400)
         self.assertEqual(clock.purpose.machine_id, 'authored-unit-machine')
+        self.assertIs(clock.purpose.allow_actor_change, False)
         driver = actual_recording_driver(clock)
         first = driver._campaign_advance_deadline_v1(self.frame(), 53144352)
         self.assertIsNotNone(first)
@@ -179,7 +193,8 @@ class ProductPurposeTests(unittest.TestCase):
         self.refresh_context()
         self.produce()
         baseline = json_object(json.loads(self.purpose_path.read_bytes()))
-        changes: list[tuple[str, JsonValue]] = [('purpose', 'r05'), ('extra', True), ('machine_id', 'other')]
+        changes: list[tuple[str, JsonValue]] = [('purpose', 'r05'), ('extra', True), ('machine_id', 'other'),
+            ('allow_actor_change', True)]
         for key, changed_value in changes:
             row = copy.deepcopy(baseline)
             row[key] = changed_value
@@ -246,6 +261,116 @@ class ProductPurposeTests(unittest.TestCase):
         changed['played_character'] = {'character_id': 99}
         with self.assertRaises(ValueError):
             clock.deadline(changed, 53144376, r05_scope_bound=False)
+
+    def test_explicit_case_policy_round_trips_through_real_producer_loader_and_snapshot_consumer(self) -> None:
+        for enabled in (False, True):
+            with self.subTest(enabled=enabled):
+                if self.purpose_path.exists():
+                    self.purpose_path.unlink()
+                self.contract['allow_actor_change'] = enabled
+                self.refresh_contract()
+                self.produce()
+                wire = json_object(json.loads(self.purpose_path.read_bytes()))
+                self.assertEqual(set(wire), {'schema', 'purpose', 'machine_id', 'reviewed_context'})
+                clock = self.consume()
+                self.assertIs(clock.purpose.allow_actor_change, enabled)
+                driver = actual_recording_driver(clock)
+                driver._with_one_life_episode(self.frame())
+                changed = self.frame(31)
+                changed['played_character'] = {'character_id': 99}
+                if not enabled:
+                    with self.assertRaisesRegex(ValueError, 'actor/process/generation changed'):
+                        driver._with_one_life_episode(changed)
+                    self.assertEqual(clock.actor, 31254)
+                    continue
+                self.assertEqual(driver._with_one_life_episode(changed), changed)
+                self.assertEqual(clock.actor, 99)
+                deadline = driver._campaign_advance_deadline_v1(changed, 53144328 + 32 * 24)
+                self.assertIsNotNone(deadline)
+                self.assertEqual(clock.start_date_raw, 53144328)
+                self.assertEqual(clock.last_date_raw, 53144328 + 31 * 24)
+                end = self.frame(400)
+                end['played_character'] = {'character_id': 99}
+                with self.assertRaisesRegex(ValueError, 'budget exhausted'):
+                    driver._campaign_advance_deadline_v1(end, 53144328 + 401 * 24)
+
+    def test_actor_policy_wrong_types_fail_before_purpose_is_written(self) -> None:
+        bad_policies: list[JsonValue] = [None, [], {}, 1, 0, 1.0, 'true']
+        for policy in bad_policies:
+            with self.subTest(policy=policy):
+                self.contract['allow_actor_change'] = policy
+                self.refresh_contract()
+                with self.assertRaises(ValueError):
+                    self.produce()
+                self.assertFalse(self.purpose_path.exists())
+
+    def test_invented_nested_policy_does_not_grant_actor_observation(self) -> None:
+        self.contract['adapter_config'] = {'allow_actor_change': True}
+        self.refresh_contract()
+        self.produce()
+        clock = self.consume()
+        self.assertIs(clock.purpose.allow_actor_change, False)
+        driver = actual_recording_driver(clock)
+        driver._with_one_life_episode(self.frame())
+        changed = self.frame(1)
+        changed['played_character'] = {'character_id': 99}
+        with self.assertRaises(ValueError):
+            driver._with_one_life_episode(changed)
+
+    def test_real_source_case_policy_is_consumed_from_the_same_top_level_field(self) -> None:
+        cases = REPO / 'tools/ck3_mod_acceptance_cases'
+        for name in ('auto_upgrade_buildings_source_upgrade_core.json',
+                     'dynastic_esotericism_core.json', 'dynastic_esotericism_cold_reload.json'):
+            with self.subTest(case=name):
+                if self.purpose_path.exists():
+                    self.purpose_path.unlink()
+                source_case = json_object(json.loads((cases / name).read_bytes()))
+                expected = source_case.get('allow_actor_change', False)
+                self.assertIs(type(expected), bool)
+                # Keep actual policy/config placement; only remap identity and
+                # purpose to this authored non-game Root-reviewed allocation.
+                self.contract = source_case
+                self.contract['product'] = 'unit-product'
+                self.contract['case_id'] = 'core'
+                self.contract['execution_purpose'] = 'product_acceptance'
+                self.refresh_contract()
+                self.produce()
+                clock = self.consume()
+                self.assertIs(clock.purpose.allow_actor_change, expected)
+
+    def test_enabled_policy_keeps_process_generation_pipe_identity_and_monotonic_date_guards(self) -> None:
+        self.contract['allow_actor_change'] = True
+        self.refresh_contract()
+        self.produce()
+        for key, value in [('bridge_pid', 99), ('connection_generation', 2), ('pipe_name', 'other')]:
+            with self.subTest(key=key):
+                clock = self.consume()
+                driver = actual_recording_driver(clock)
+                driver._with_one_life_episode(self.frame(1))
+                changed = self.frame(2)
+                changed['played_character'] = {'character_id': 99}
+                changed['diagnostics'] = {'pipe_name': self.pipe, 'bridge_pid': 29452,
+                    'connection_generation': 1, key: value}
+                with self.assertRaises(ValueError):
+                    driver._with_one_life_episode(changed)
+                self.assertEqual((clock.actor, clock.last_date_raw), (31254, 53144352))
+        for actor in (True, 99.0, None):
+            with self.subTest(actor=actor):
+                clock = self.consume()
+                driver = actual_recording_driver(clock)
+                driver._with_one_life_episode(self.frame(1))
+                changed = self.frame(2)
+                changed['played_character'] = {'character_id': actor}
+                with self.assertRaises(ValueError):
+                    driver._with_one_life_episode(changed)
+        clock = self.consume()
+        driver = actual_recording_driver(clock)
+        driver._with_one_life_episode(self.frame(2))
+        rewound = self.frame(1)
+        rewound['played_character'] = {'character_id': 99}
+        with self.assertRaisesRegex(ValueError, 'rewound'):
+            driver._with_one_life_episode(rewound)
+        self.assertEqual((clock.actor, clock.last_date_raw), (31254, 53144376))
 
 
 if __name__ == '__main__':

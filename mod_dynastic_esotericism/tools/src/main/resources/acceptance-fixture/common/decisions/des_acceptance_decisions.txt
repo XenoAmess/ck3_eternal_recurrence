@@ -24,7 +24,14 @@ des_acceptance_capture_created_decision = {
                 set_character_faith = scope:des_test_source_rite.faith
                 set_character_rite = scope:des_test_source_rite
                 if = {
-                    limit = { dynasty = scope:des_test_dynasty }
+                    limit = {
+                        # Tooltip preview does not commit the aliases written above.
+                        trigger_if = {
+                            limit = { root.rite = { has_variable = des_bound_dynasty } }
+                            dynasty = root.rite.var:des_bound_dynasty
+                        }
+                        trigger_else = { always = no }
+                    }
                     create_dynasty = { spread_to_descendants = no }
                 }
             }

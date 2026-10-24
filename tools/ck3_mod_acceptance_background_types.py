@@ -127,6 +127,11 @@ class ProductAcceptancePurposeV1:
     state_dir: Path
     bridge_pipe: str
     maximum_natural_days: int
+    allow_actor_change: bool = False
+
+    def __post_init__(self) -> None:
+        if type(self.allow_actor_change) is not bool:
+            raise ValueError('Exact product-purpose actor-observation boolean required')
 
 
 def _purpose_original(reference: object) -> tuple[FilePin, JsonObject]:
@@ -196,7 +201,11 @@ def product_acceptance_purpose_v1(value: object, *, purpose_path: Path,
     maximum = contract.get('maximum_natural_days')
     if type(maximum) is not int or not isinstance(maximum, int) or not 0 <= maximum <= 400:
         raise ValueError('Original product-purpose natural-day budget must be an integer from 0 through 400')
-    return ProductAcceptancePurposeV1(machine_id, run_id, product, case, state_dir.resolve(), bridge_pipe, maximum)
+    allow_actor_change = contract.get('allow_actor_change', False)
+    if type(allow_actor_change) is not bool or not isinstance(allow_actor_change, bool):
+        raise ValueError('Exact original case allow_actor_change boolean required')
+    return ProductAcceptancePurposeV1(machine_id, run_id, product, case, state_dir.resolve(), bridge_pipe,
+        maximum, allow_actor_change)
 
 
 def write_product_acceptance_purpose_v1(purpose_path: Path, reviewed_context: Path, *,
@@ -244,10 +253,14 @@ class ProductAcceptanceClockV1:
             raise ValueError('Product-purpose native pipe differs')
         if self.start_date_raw is None:
             self.start_date_raw, self.actor, self.bridge_pid, self.generation = date, actor, pid, generation
-        elif (actor, pid, generation) != (self.actor, self.bridge_pid, self.generation):
+        elif ((pid, generation) != (self.bridge_pid, self.generation)
+                or actor != self.actor and not self.purpose.allow_actor_change):
             raise ValueError('Product-purpose native actor/process/generation changed')
         if self.last_date_raw is not None and date < self.last_date_raw:
             raise ValueError('Product-purpose actual native date rewound')
+        # This records an observation only. Native action and independent
+        # succession/head proofs remain the responsibility of their consumers.
+        self.actor = actor
         self.last_date_raw = date
 
     def deadline(self, starting: object, target_date_raw: int, *, r05_scope_bound: bool) -> JsonObject:

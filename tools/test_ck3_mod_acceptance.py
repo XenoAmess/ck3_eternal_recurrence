@@ -486,7 +486,7 @@ print(json.dumps({'running_inputs':qualified['_runtime_input_observation'],'reco
                                               ('--agent-source-root', '--bridge-dll', '--bridge-injector')) + (argv[4],))
         self.assertEqual(len(runtime_choices), 1)
 
-    def test_case_readonly_optin_is_explicit_finite_and_cannot_select_an_unknown_case(self):
+    def test_case_readonly_optin_is_explicit_finite_and_cannot_select_an_unknown_case(self) -> None:
         self.assertNotIn('--case-read-only-mcp-tool', self.select().argv)
         tools = sorted(entry.CASE_READ_ONLY_MCP_TOOLS)
         case = self.products['products']['xqol']['cases'][0]
@@ -498,7 +498,8 @@ print(json.dumps({'running_inputs':qualified['_runtime_input_observation'],'reco
                           if value == '--case-read-only-mcp-tool'], tools)
         self.assertEqual(selected.describe()['opt_in_read_only_mcp_tools'], tools)
         self.assertTrue(any('lacks declared CLI' in value for value in selected.preflight()['blockers']))
-        for invalid in ('tool-name', ['unknown'], [tools[0], tools[0]], [False]):
+        for invalid in ('tool-name', None, True, 1, 1.0, {}, ['unknown'],
+                        [tools[0], tools[0]], [False], [1], [tools[0], True]):
             with self.subTest(invalid=invalid):
                 case['opt_in_read_only_mcp_tools'] = invalid
                 self.write(self.products_path, self.products)
@@ -512,7 +513,7 @@ print(json.dumps({'running_inputs':qualified['_runtime_input_observation'],'reco
         with self.assertRaisesRegex(ValueError, 'Exactly one product case'):
             entry.Selection(self.runtime_path, self.products_path, 'xqol', 'unknown-case')
 
-    def test_costs_and_hostility_case_route_enables_only_declared_readers(self):
+    def test_costs_and_hostility_case_route_enables_only_declared_readers(self) -> None:
         import argparse, ast, asyncio
         from types import SimpleNamespace
         repo = Path(__file__).resolve().parents[1]
@@ -526,6 +527,8 @@ print(json.dumps({'running_inputs':qualified['_runtime_input_observation'],'reco
                 'allow_private_player_religion_draft_resource_costs_query',
             'ck3_query_player_religion_hostility_v1':
                 'allow_private_player_religion_hostility_query',
+            'ck3_query_player_rite_members_v1':
+                'allow_private_player_rite_members_query',
         }
         # Execute the actual finite CLI declaration and driver assignments,
         # without importing or starting the managed game/session host.
@@ -549,7 +552,7 @@ print(json.dumps({'running_inputs':qualified['_runtime_input_observation'],'reco
             and node.iter.args[1].value == 'case_read_only_mcp_tool'
             and any(isinstance(child, ast.Name) and child.id == 'child_args'
                     for child in ast.walk(node))]
-        self.assertEqual((len(declarations), len(mappings), len(forwarders)), (1, 2, 1))
+        self.assertEqual((len(declarations), len(mappings), len(forwarders)), (1, 3, 1))
         cli = argparse.ArgumentParser()
         exec(compile(ast.Module(body=declarations, type_ignores=[]), str(host), 'exec'), {'result': cli})
         case = self.products['products']['xqol']['cases'][0]
@@ -557,8 +560,8 @@ print(json.dumps({'running_inputs':qualified['_runtime_input_observation'],'reco
         async def advertised(driver):
             async with Client(create_server(driver)) as client:
                 return {tool.name: tool for tool in (await client.list_tools()).tools}
-        costs, hostility = permissions
-        for requested in ([], [costs], [hostility], [costs, hostility]):
+        costs, hostility, members = permissions
+        for requested in ([], [costs], [hostility], [members], [costs, hostility], [costs, hostility, members]):
             with self.subTest(requested=requested):
                 case['required_mcp_tools'] = required + requested
                 case['opt_in_read_only_mcp_tools'] = requested

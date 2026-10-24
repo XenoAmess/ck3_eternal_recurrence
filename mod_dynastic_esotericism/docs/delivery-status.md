@@ -6,11 +6,17 @@
 | --- | --- | --- |
 | 需求 | 已制定版本 1 | [requirements.md](requirements.md) |
 | 测试方案 | 已制定版本 1，尚未授予测试通过 | [test-plan.md](test-plan.md) |
-| 编码 | 首版候选已实现，17文件正式清单、Java／Quarkus构建、独立验收夹具 | [既有可行性研究](feasibility-2026-10-24.md)与产品源码 |
-| 测试验收 | 最终离线构建、原生测试、宿主注册与类型范围检查通过；扩展夹具已解析；首轮实机业务 RED，修复后待重新验收 | [最终干净提交构建回执](acceptance/offline-build-clean-checkout-2026-10-24.json)、[SDK回归](acceptance/rite-confirmation-sdk-2026-10-24.json)、[共享服务绑定](acceptance/rite-service-factory-2026-10-24.json)、[原生测试](evidence/native-religion-fixtures-2026-10-24.json) |
+| 编码 | 首版及九语正式24文件清单已实现；R0007发现的House作用域修正、真实继承夹具与共享观察合同正在形成下一干净候选 | [既有可行性研究](feasibility-2026-10-24.md)、[House修复](2026-10-25-engine-house-dynasty-fix.md)与产品源码 |
+| 测试验收 | R0007原生取消与实际创建分别有独立后态；创建后的夹具确认被真实产品脚本错误阻断，完整核心仍0/6，等待新候选实测 | [R0007失败与资源终态](acceptance/R0007-2026-10-25.json)、[测试方案](test-plan.md) |
 | 发布 | NOT_PUBLISHED，Workshop ID 未分配 | 待业务验收及正式发布闭环 |
 
-工具链已在以上机器原位升级默认 Maven 3.9.16→3.10.0，PATH与原配置保留；实际来源和读回见[环境回执](evidence/environment-maven-2026-10-24.json)。本任务已取得共享策略下的有限容量准入，见[首次存储回执](evidence/environment-storage-2026-10-24.json)及[实际回收与重新准入](evidence/environment-storage-recovery-2026-10-24.json)：当前期限内预留为 C 4GiB、D 32MiB。这些资格不代表游戏业务已通过。
+截至2026-10-24T17:32:54Z（北京时间10月25日），总体约60%是规划估计；核心0/6、cold/seed/old未完成，Workshop未创建。R0007已原生退出，Game原Popen0、host1、public2、keeper0，SCREEN8743释放；资源终态不授业务通过。后续现场使用全新source/runtime，保留a07原件。
+
+工具链已在以上机器原位升级默认 Maven 3.9.16→3.10.0，PATH与原配置保留；实际来源和读回见[环境回执](evidence/environment-maven-2026-10-24.json)。当前容量依据为机器绑定的 `C:/ck3-dynastic-esotericism-20261024/capacity/SEVEN-POOL6-D34-ADMISSION-r1173.actual.json`（SHA-256 `2317feb631edc125fa57209bf4ab9b0aebdeb9f8a16cb2f0e0e6a8215386945b`）：七个实际Game profile共用6GiB执行池，另保留a11未启动的旧seed准备材料；build/test512MiB，D未来34MiB，硬期限2026-10-25T07:30Z。core/seed/cold/old新state分别为a12/a13/a14/a15；r1173仅补正已存在a11引起的scope冲突，预算与期限未变。重型写入及启动前仍须实际新鲜检查；旧4GiB/32MiB记录只作历史。这些资格不代表游戏业务已通过。
+
+当前软件增量：共享目的消费者从原合同顶层消费既有 `allow_actor_change`，真实producer→JSON→host loader→实际driver回归10/10，preserved3/3、offline-TTL6/6及7完整模块strict通过；这仅允许观察合同声明的actor变化，PID/generation/pipe、单调日期与原400日预算继续生效。实际继承和新礼仪领袖仍按原生与保存证据独立验收，不能据软件测试签业务。完整共享91命令与cold/warm30命令（含独立SDK continuation）按新源码执行中。
+
+云端06d2358的产品和线性历史CI已success；Official实际Java两轮各633项通过后，完整parity因缺少真实fixture-production request拒绝，后续step未执行。已保留来源调查与原RED，没有伪造请求、放松guard或报告全仓绿色。以下按观察时间保留历史进展。
 
 截至2026-10-24T09:02Z，首轮候选已完成最终离线准备：Java／Quarkus构建10项测试全部通过，17文件清单及既有清单消费者一致；启用14项所需能力的原生DLL已生成，三个原生测试在受管构建目录实际通过并取得SYSTEM精确路径登记回执。早先空EXE尾钩失败、外置来源登记拒绝及UAC取消仍保留为原始事实，没有将其标成成功。
 
