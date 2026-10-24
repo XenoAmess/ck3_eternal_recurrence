@@ -138,13 +138,18 @@ final class FixtureEmitterTest {
         assertEquals(24, observation.path("successor_reference_transfer_count").intValue());
         assertEquals(21, observation.path("successor_history_transfer_count").intValue());
         assertFalse(observation.path("engine_semantics_verified").booleanValue());
+        assertTrue(observation.path("heir_minimum_day_guard_validated").booleanValue());
 
-        for (String mutation : List.of("missing-head", "product-write", "pardon-copy")) {
+        for (String mutation : List.of("missing-head", "product-write", "pardon-copy",
+                "date-literal", "date-no-source", "date-same-day")) {
             ProbeResult forbidden = probeFixture(current, baseline, mutation);
             assertNotEquals(0, forbidden.exitCode(), forbidden.output());
             assertEquals(switch (mutation) {
                 case "missing-head" -> "SUCCESSOR_IDENTITY_GUARD_MISSING";
                 case "product-write" -> "SUCCESSOR_REFERENCE_TRANSFER_OUTSIDE_CONTRACT";
+                case "date-literal" -> "INVALID_DATE_LITERAL_VARIABLE_TRIGGER";
+                case "date-no-source" -> "MISSING_HEIR_INPUT_DATE_GUARD";
+                case "date-same-day" -> "HEIR_MINIMUM_DAY_GUARD_CHANGED";
                 default -> "SUCCESSOR_FLAG_TRANSFER_OUTSIDE_CONTRACT";
             }, new ObjectMapper().readTree(forbidden.output()).path("reason").textValue());
         }
@@ -259,6 +264,27 @@ final class FixtureEmitterTest {
                 def require(entries,key,value,reason):
                     if {'key':key,'value':value} not in entries:
                         reject(reason,key=key)
+                heir_readback=one(extended_decisions,'des_acceptance_primary_heir_readback_decision',required=True)
+                heir_branch=one(one(one(heir_readback,'effect',required=True),'hidden_effect',required=True),'if',required=True)
+                heir_guard=one(heir_branch,'limit',required=True)
+                if mutation=='date-literal':
+                    # Reintroduce the actual R0008 loader failure in the parsed
+                    # producer output, without teaching a new script parser.
+                    heir_guard[:0]=parse_block('{ current_date > var:des_test_heir_input_date }')
+                elif mutation=='date-no-source':
+                    heir_guard[:]=[row for row in heir_guard if row!={'key':'has_variable','value':'des_test_heir_input_date'}]
+                elif mutation=='date-same-day':
+                    one(heir_guard,'<',required=True)[1]['value']='0'
+                if {'key':None,'value':'current_date'} in heir_guard:
+                    reject('INVALID_DATE_LITERAL_VARIABLE_TRIGGER')
+                require(heir_guard,'has_variable','des_test_heir_input_date','MISSING_HEIR_INPUT_DATE_GUARD')
+                date_left={'key':None,'value':'var:des_test_heir_input_date'}
+                date_right={'key':'<','value':[{'key':'value','value':'current_date'},{'key':'subtract','value':'1'}]}
+                pairs=list(zip(heir_guard,heir_guard[1:]))
+                # The existing AST keeps '<=' as an anonymous left value and
+                # a '<' assignment block. Check its order and exact day offset.
+                if pairs.count((date_left,date_right))!=1:
+                    reject('HEIR_MINIMUM_DAY_GUARD_CHANGED')
                 original_prepare=one(effects,prepare_key,required=True)
                 prepare_branches=[row['value'] for row in original_prepare if row['key']=='if']
                 if len(prepare_branches)!=2:
@@ -373,7 +399,7 @@ final class FixtureEmitterTest {
                     outsider=json.loads(one(one(branch,'scope:des_test_outsider',required=True),'debug_log',required=True))
                     if [observer,outsider]!=guard['success_logs']:
                         reject('CHANGED_SCOPED_SUCCESS_MARKERS',event=event)
-                print(json.dumps({'status':'ACCEPTED','required_marker_count':len(required),'unchanged_guard_count':len(expected),'original_rite_readback_only_observes':True,'successor_reference_transfer_count':len(refs),'successor_history_transfer_count':len(flags),'engine_semantics_verified':False}))
+                print(json.dumps({'status':'ACCEPTED','required_marker_count':len(required),'unchanged_guard_count':len(expected),'original_rite_readback_only_observes':True,'successor_reference_transfer_count':len(refs),'successor_history_transfer_count':len(flags),'heir_minimum_day_guard_validated':True,'engine_semantics_verified':False}))
                 """;
         Process process = new ProcessBuilder("python", "-B", "-X", "utf8", "-c", program,
                 repository().toString(), fixture.fixture().toString(), fixture.manifest().toString(), baseline.toString(), mutation)
