@@ -1,0 +1,17 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T12:55:57.428386+00:00",
+  "hosted_run": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40094916525",
+  "hosted_machine_id": "unknown",
+  "cause": "8.3 TEMP frozen fixture map keys differed from canonical producer paths; fixture root now resolves before relocation",
+  "production_unrun_guard_changed": false,
+  "local_actual_short_TEMP_tests": 6,
+  "full_test_module_strict_exit_code": 0,
+  "exact_evidence": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\offline-ttl-hosted-ci-fix-a01\\FINAL.actual.json",
+    "bytes": 2509,
+    "sha256": "0405f5645e3eef0125b30f267150cd6e09a704b7d51fd1904aba7781659b917c"
+  },
+  "allocator_compatibility": "Restore historical started_at_utc plus observed_at_utc without requiring a fabricated finished_at_utc",
+  "business_pass": false
+}

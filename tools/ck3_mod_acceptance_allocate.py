@@ -2140,7 +2140,7 @@ def validate_root_observed_public_exit(value: object, machine: str,
     # Historical Root allocator observations carry observed_at_utc. The later
     # original command producer carries a started/finished pair instead. These
     # are distinct original receipt shapes, never synthesized timestamp aliases.
-    if mode == 'allocate' and any(key in row for key in ('started_at_utc', 'finished_at_utc')):
+    if mode == 'allocate' and 'finished_at_utc' in row:
         if 'observed_at_utc' in row:
             raise ValueError('Root-observed allocator terminal timestamp formats cannot be mixed')
         started = datetime.fromisoformat(text_field(row, 'started_at_utc'))

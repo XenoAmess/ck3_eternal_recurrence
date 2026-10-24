@@ -40,7 +40,9 @@ class OfflineTTLUnrunTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temp = tempfile.TemporaryDirectory(prefix='AUTHORED_R2_TTL_')
         self.addCleanup(self.temp.cleanup)
-        self.root = Path(self.temp.name)
+        # Hosted Windows TEMP can use an 8.3 alias. The real producer pins
+        # resolved paths, so authored frozen-file keys must use that same root.
+        self.root = Path(self.temp.name).resolve()
         self.source = json_object(json.loads((REPO / 'tools/fixtures/ck3_R0002_pre_intent_offline_ttl.json').read_bytes()))
         self.machine = text_field(self.source, 'machine_id')
         self.leaves = json_object(self.relocate(self.source['leaves']))
@@ -196,6 +198,28 @@ class OfflineTTLUnrunTests(unittest.TestCase):
         self.path('launcher_source').write_bytes(b'# altered launcher\n')
         with self.assertRaises(ValueError):
             self.produce()
+
+    def test_noncanonical_temporary_root_reaches_the_real_source_guard(self) -> None:
+        # A lexical alias reproduces the same key/ref mismatch on every runner;
+        # no platform-specific short-name support or production bypass is needed.
+        (self.root / 'alias-parent').mkdir()
+        (self.root / 'alias-target').mkdir()
+        alias = self.root / 'alias-parent' / '..' / 'alias-target'
+        temporary = SimpleNamespace(name=str(alias), cleanup=lambda: None)
+        harness = OfflineTTLUnrunTests()
+        self.addCleanup(harness.doCleanups)
+        with patch.object(tempfile, 'TemporaryDirectory', return_value=temporary):
+            harness.setUp()
+        self.assertEqual(harness.root, alias.resolve())
+        result = harness.produce()
+        facts = object_field(result['validation'], 'failure_cleanup')
+        originals = object_field(facts, 'original_evidence')
+        files = object_field(harness.frozen, 'files')
+        for key in ('launcher_source', 'gate_source'):
+            ref = file_pin(originals[key])
+            self.assertEqual(object_field(files, ref['path']),
+                             {'bytes': ref['bytes'], 'sha256': ref['sha256']})
+        self.assertIs(facts['business_pass'], False)
 
     def test_fresh_receipt_same_state_or_actual_host_evidence_refuse(self) -> None:
         self.args.next_state = self.state
