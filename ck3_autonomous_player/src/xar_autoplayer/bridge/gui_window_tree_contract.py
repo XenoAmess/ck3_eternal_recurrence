@@ -1,10 +1,11 @@
 """Native named-window census; business model and hover reads remain separate."""
 from __future__ import annotations
 import json
+import ntpath
 import os
 from pathlib import Path
 import re
-from typing import NotRequired, TypedDict
+from typing import Literal, NotRequired, TypedDict
 from .frontend_gui_route_contract import normalize_frontend_gui_tree_inspection_v1
 from .version_identity import CK3_12004, require_exact_native_build
 
@@ -65,13 +66,35 @@ SCRIPTED_WIDGET_REVISION_TOOLS = frozenset({
 })
 
 
+class ScriptedWidgetEpisodeScopeV1(TypedDict):
+    kind: Literal["one_life_episode"]
+    episode_run_id: str
+
+
+class ScriptedWidgetManagedRunV1(TypedDict):
+    run_id: str
+    state_dir: str
+    bridge_pipe: str
+    host_path: str
+    frozen_argv_sha256: str
+
+
+class ScriptedWidgetCampaignScopeV1(TypedDict):
+    kind: Literal["managed_native_campaign"]
+    run_binding: ScriptedWidgetManagedRunV1
+
+
+ScriptedWidgetScopeV1 = ScriptedWidgetEpisodeScopeV1 | ScriptedWidgetCampaignScopeV1
+
+
 class ScriptedWidgetBindingV1(TypedDict):
     native_revision: int
     connection_generation: int
     game_pid: int
     played_character_id: int
     date_raw: int
-    episode_run_id: str
+    episode_run_id: str | None
+    scope: ScriptedWidgetScopeV1
 
 
 class ScriptedWidgetControlV1(TypedDict):
@@ -82,6 +105,26 @@ class ScriptedWidgetControlV1(TypedDict):
     effective_visible: bool
     enabled: bool
     clickable: bool
+
+
+class _ScriptedWidgetActionIdentityV1(TypedDict):
+    game_pid: int
+    played_character_id: int
+    root_name: str
+    child_path: str
+    runtime_name: str
+    vtable_rva: int
+
+
+class ScriptedWidgetEpisodeActionIdentityV1(_ScriptedWidgetActionIdentityV1):
+    episode_run_id: str
+
+
+class ScriptedWidgetCampaignActionIdentityV1(_ScriptedWidgetActionIdentityV1):
+    managed_campaign_state_dir: str
+
+
+ScriptedWidgetActionIdentityV1 = ScriptedWidgetEpisodeActionIdentityV1 | ScriptedWidgetCampaignActionIdentityV1
 
 
 class ScriptedWidgetFrameV1(TypedDict):
@@ -184,9 +227,29 @@ def scripted_widget_binding_v1(snapshot: object) -> ScriptedWidgetBindingV1:
             or hello.get("ck3_build_match") is not True or frame.get("paused") is not True
             or frame.get("map_ready") is not True or actor.get("alive") is not True):
         raise ValueError("scripted widget controls require the exact .4 alive paused map")
-    episode = _widget_text(frame.get("episode_run_id"), "episode_run_id")
-    if not episode:
-        raise ValueError("scripted widget episode is missing")
+    scope: ScriptedWidgetScopeV1
+    episode: str | None
+    if frame.get("episode_projection") == "native_campaign":
+        from .title_map_navigation_contract import managed_campaign_title_map_navigation_v1_binding
+        # Validate the allocator's existing native campaign provenance. A run is
+        # not a one-life episode and must never fill the nullable episode field.
+        managed_campaign_title_map_navigation_v1_binding(frame)
+        run = scripted_widget_object_v1(frame.get("managed_campaign_run_binding"))
+        scope = {"kind": "managed_native_campaign", "run_binding": {
+            "run_id": _widget_text(run.get("run_id"), "run_id"),
+            "state_dir": _widget_text(run.get("state_dir"), "state_dir"),
+            "bridge_pipe": _widget_text(run.get("bridge_pipe"), "bridge_pipe"),
+            "host_path": _widget_text(run.get("host_path"), "host_path"),
+            "frozen_argv_sha256": _widget_text(run.get("frozen_argv_sha256"), "frozen_argv_sha256"),
+        }}
+        episode = None
+    else:
+        if frame.get("managed_campaign_run_binding") is not None:
+            raise ValueError("scripted widget managed run requires native_campaign projection")
+        episode = _widget_text(frame.get("episode_run_id"), "episode_run_id")
+        if not episode:
+            raise ValueError("scripted widget episode is missing")
+        scope = {"kind": "one_life_episode", "episode_run_id": episode}
     return {
         "native_revision": _widget_integer(frame.get("native_revision"), "native_revision"),
         "connection_generation": _widget_integer(diagnostics.get("connection_generation"), "connection_generation"),
@@ -194,7 +257,26 @@ def scripted_widget_binding_v1(snapshot: object) -> ScriptedWidgetBindingV1:
         "played_character_id": _widget_integer(actor.get("character_id"), "played_character_id", maximum=2**32 - 2),
         "date_raw": _widget_integer(frame.get("date_raw"), "date_raw", minimum=-(2**31), maximum=2**31 - 1),
         "episode_run_id": episode,
+        "scope": scope,
     }
+
+
+def scripted_widget_action_identity_v1(
+    binding: ScriptedWidgetBindingV1, root_name: str, row: ScriptedWidgetControlV1,
+) -> ScriptedWidgetActionIdentityV1:
+    """Keep unknown intents durable across queries, reconnects and run argv changes."""
+    common: _ScriptedWidgetActionIdentityV1 = {
+        "game_pid": binding["game_pid"], "played_character_id": binding["played_character_id"],
+        "root_name": root_name, "child_path": row["child_path"],
+        "runtime_name": row["runtime_name"], "vtable_rva": row["vtable_rva"],
+    }
+    scope = binding["scope"]
+    if scope["kind"] == "managed_native_campaign":
+        # Match the existing Rite intent scope: neither a new run ID nor a
+        # transport/frozen-argv change creates permission to replay UNKNOWN.
+        return {**common, "managed_campaign_state_dir": ntpath.normcase(ntpath.normpath(scope["run_binding"]["state_dir"]))}
+    # Preserve the exact legacy one-life claim identity, including old claims.
+    return {**common, "episode_run_id": scope["episode_run_id"]}
 
 
 def _scripted_widget_frame(raw: dict[str, object], binding: ScriptedWidgetBindingV1 | None) -> ScriptedWidgetFrameV1:

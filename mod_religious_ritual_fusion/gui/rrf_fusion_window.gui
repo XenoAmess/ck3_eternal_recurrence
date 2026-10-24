@@ -203,7 +203,12 @@ types ReligiousRitualFusion {
 			layoutpolicy_horizontal = expanding
 			block "source_header" { text = "RRF_SOURCE_A" }
 		}
-		button_rite_icon = { parentanchor = hcenter size = { 75 75 } }
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			expand = {}
+			button_rite_icon = { size = { 75 75 } }
+			expand = {}
+		}
 		text_multi = {
 			text = "[Rite.GetNameNoTooltip]"
 			max_width = 250

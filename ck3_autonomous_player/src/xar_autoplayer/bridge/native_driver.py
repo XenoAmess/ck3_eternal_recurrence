@@ -8462,6 +8462,7 @@ class NativeHeadlessGameplayDriver:
             SCRIPTED_WIDGET_ACTION_STEP, SCRIPTED_WIDGET_ACTION_CAPABILITY,
             scripted_widget_decimal_v1, scripted_widget_binding_v1, scripted_widget_object_v1,
             normalize_scripted_widget_query_v1, normalize_scripted_widget_action_v1,
+            scripted_widget_action_identity_v1,
             read_scripted_widget_evidence_v1, write_scripted_widget_evidence_v1,
         )
         query_generation = scripted_widget_decimal_v1(query_generation)
@@ -8492,10 +8493,7 @@ class NativeHeadlessGameplayDriver:
         row = rows[0]
         if not row["effective_visible"] or not row["enabled"] or not row["clickable"]:
             raise BridgeUnavailableError("scripted widget control is hidden, disabled, or not clickable")
-        identity = {"episode_run_id": binding["episode_run_id"], "game_pid": binding["game_pid"],
-                    "played_character_id": binding["played_character_id"], "root_name": root_name,
-                    "child_path": row["child_path"], "runtime_name": row["runtime_name"],
-                    "vtable_rva": row["vtable_rva"]}
+        identity = scripted_widget_action_identity_v1(binding, root_name, row)
         # A new query or connection cannot make an unknown invocation retryable.
         for previous_path in directory.glob("*.claim.json"):
             try:

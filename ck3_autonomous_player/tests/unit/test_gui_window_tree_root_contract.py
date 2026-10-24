@@ -28,6 +28,12 @@ def scripted_frame() -> dict[str, object]:
                 "expected_ck3_version": CK3_12004.game_version, "expected_ck3_sha256": CK3_12004.executable_sha256}}}
 
 
+def actual_campaign_frame() -> dict[str, object]:
+    path = Path(__file__).resolve().parents[1] / "fixtures/scripted_widget_native_campaign_R0003_snapshot.json"
+    fixture = contract.scripted_widget_object_v1(json.loads(path.read_text(encoding="utf-8")))
+    return contract.scripted_widget_object_v1(fixture["snapshot"])
+
+
 def scripted_query(binding: contract.ScriptedWidgetBindingV1, generation: str = "9007199254740999") -> dict[str, object]:
     return {"schema": "ck3-native-scripted-widget-controls-v1", "step": contract.SCRIPTED_WIDGET_QUERY_STEP,
             **{key: binding[key] for key in ("native_revision", "connection_generation", "game_pid", "played_character_id", "date_raw")},
@@ -78,6 +84,109 @@ class ScriptedWidgetTests(unittest.IsolatedAsyncioTestCase):
 
     def activate(self) -> contract.ScriptedWidgetActionV1:
         return self.driver.activate_scripted_widget_control_v1(str(self.generation), "9007199254741001", expected_revision=self.frame["revision"])
+
+    def use_actual_campaign(self) -> None:
+        self.frame = actual_campaign_frame()
+        self.binding = contract.scripted_widget_binding_v1(self.frame)
+        self.native_action = scripted_action(self.binding, str(self.generation))
+
+    def assert_unknown_in_independent_process(self) -> None:
+        import subprocess
+        check = """import sys,json
+from pathlib import Path
+from unittest.mock import Mock
+from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
+from xar_autoplayer.bridge.driver import BridgeUnavailableError
+directory=Path(sys.argv[1]); frame=json.loads(sys.argv[2])
+driver=object.__new__(NativeHeadlessGameplayDriver)
+driver.take_snapshot=Mock(return_value=frame)
+driver._native_driver_state_path=Mock(return_value=directory/'driver-state.json')
+driver._execute_primitive_step=Mock(side_effect=AssertionError('must not dispatch'))
+try: driver.activate_scripted_widget_control_v1(sys.argv[3],'9007199254741001',expected_revision=frame['revision'])
+except BridgeUnavailableError as error:
+ assert 'unknown' in str(error),str(error)
+else: raise AssertionError('unknown action replayed')
+driver._execute_primitive_step.assert_not_called()
+"""
+        completed = subprocess.run([sys.executable, "-c", check, self.temp.name, json.dumps(self.frame), str(self.generation)], capture_output=True, text=True)
+        self.assertEqual(completed.returncode, 0, completed.stdout + completed.stderr)
+
+    async def test_actual_R0003_campaign_snapshot_reaches_mcp_without_fabricating_episode(self) -> None:
+        """Real failed-run snapshot; primitive response is the named test fixture, not a live query."""
+        self.use_actual_campaign()
+        self.assertNotIn("episode_run_id", self.frame)
+        self.assertIsNone(self.binding["episode_run_id"])
+        self.assertEqual(self.binding["played_character_id"], 31254)
+        self.assertEqual(self.binding["scope"]["kind"], "managed_native_campaign")
+        self.assertEqual(self.binding["scope"]["run_binding"], self.frame["managed_campaign_run_binding"])
+        async with Client(mcp_server.create_server(self.driver)) as client:
+            observed = await client.session.call_tool("ck3_query_scripted_widget_controls_v1", {
+                "root_name": "custom_actual_window", "expected_revision": "7"})
+            self.assertFalse(observed.is_error, str(observed))
+            result = await client.session.call_tool("ck3_activate_scripted_widget_control_v1", {
+                "query_generation": str(self.generation), "widget_id": "9007199254741001", "expected_revision": "7"})
+            self.assertFalse(result.is_error, str(result))
+            self.assertFalse(result.structured_content["postcondition_verified"])
+        self.assertNotIn("episode_run_id", self.frame)
+        self.assertEqual(self.driver._execute_primitive_step.call_count, 2)
+
+    def test_campaign_requires_complete_actual_run_and_nullable_episode_only_in_campaign(self) -> None:
+        original = actual_campaign_frame()
+        for mutation in ("missing_run", "extra_field", "missing_field", "empty_run", "bool_run", "wrong_pipe",
+                         "nonnull_episode", "wrong_projection", "wrong_backend", "missing_episode_projection"):
+            with self.subTest(mutation=mutation):
+                frame = deepcopy(original)
+                if mutation == "missing_run": del frame["managed_campaign_run_binding"]
+                elif mutation == "extra_field": frame["managed_campaign_run_binding"]["extra"] = "x"
+                elif mutation == "missing_field": del frame["managed_campaign_run_binding"]["state_dir"]
+                elif mutation == "empty_run": frame["managed_campaign_run_binding"]["run_id"] = ""
+                elif mutation == "bool_run": frame["managed_campaign_run_binding"]["run_id"] = True
+                elif mutation == "wrong_pipe": frame["managed_campaign_run_binding"]["bridge_pipe"] = "different-pipe"
+                elif mutation == "nonnull_episode": frame["episode_run_id"] = "manufactured-episode"
+                elif mutation == "wrong_projection": frame["episode_projection"] = "one_life"
+                elif mutation == "wrong_backend": frame["backend_id"] = "mock"
+                else: del frame["episode_projection"]
+                with self.assertRaises(ValueError): contract.scripted_widget_binding_v1(frame)
+        for episode in (None, "", True):
+            frame = scripted_frame(); frame["episode_run_id"] = episode
+            with self.assertRaises(ValueError): contract.scripted_widget_binding_v1(frame)
+
+    def test_campaign_saved_query_requires_same_full_managed_binding(self) -> None:
+        for field in ("run_id", "state_dir", "bridge_pipe", "host_path", "frozen_argv_sha256"):
+            with self.subTest(field=field):
+                self.use_actual_campaign(); self.generation += 1
+                self.query()
+                run = self.frame["managed_campaign_run_binding"]
+                run[field] = "a" * 64 if field == "frozen_argv_sha256" else run[field] + "-changed"
+                if field == "bridge_pipe": self.frame["diagnostics"]["pipe_name"] = run[field]
+                with self.assertRaisesRegex(BridgeUnavailableError, "saved query"): self.activate()
+        self.assertEqual(self.driver._execute_primitive_step.call_count, 5)
+
+    def test_campaign_query_ending_requires_same_managed_run(self) -> None:
+        self.use_actual_campaign()
+        ending = deepcopy(self.frame)
+        ending["managed_campaign_run_binding"]["run_id"] += "-changed"
+        self.driver.take_snapshot = Mock(side_effect=[deepcopy(self.frame), ending])
+        with self.assertRaisesRegex(BridgeUnavailableError, "paused frame"): self.query()
+        self.assertEqual(self.driver._execute_primitive_step.call_count, 1)
+
+    def test_campaign_unknown_survives_run_transport_changes_and_independent_process(self) -> None:
+        self.use_actual_campaign(); self.query()
+        self.native_action.update(available=False, unavailable_reason="native_invocation_result_unknown",
+                                  dispatch_invoked=False, native_handled=False)
+        with self.assertRaisesRegex(BridgeUnavailableError, "unknown"): self.activate()
+        run = self.frame["managed_campaign_run_binding"]
+        run["run_id"] += "-successor"
+        run["host_path"] += "-successor"
+        run["frozen_argv_sha256"] = "a" * 64
+        # Equivalent Windows spelling must not turn UNKNOWN into a fresh intent.
+        run["state_dir"] = run["state_dir"].upper() + "\\."
+        self.frame["diagnostics"]["connection_generation"] += 1
+        self.frame["diagnostics"]["hello"]["connection_generation"] += 1
+        self.generation += 1; self.query()
+        with self.assertRaisesRegex(BridgeUnavailableError, "unknown"): self.activate()
+        self.assertEqual(self.driver._execute_primitive_step.call_count, 3)
+        self.assert_unknown_in_independent_process()
 
     def test_strict_wire_and_json_roundtrip_preserve_provider_identity(self) -> None:
         result = self.query()
@@ -176,25 +285,7 @@ class ScriptedWidgetTests(unittest.IsolatedAsyncioTestCase):
         self.query()
         with self.assertRaisesRegex(BridgeUnavailableError, "unknown"): self.activate()
         self.assertEqual(self.driver._execute_primitive_step.call_count, 3)
-        import subprocess
-        check = """import sys,json
-from pathlib import Path
-from unittest.mock import Mock
-from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
-from xar_autoplayer.bridge.driver import BridgeUnavailableError
-directory=Path(sys.argv[1]); frame=json.loads(sys.argv[2])
-driver=object.__new__(NativeHeadlessGameplayDriver)
-driver.take_snapshot=Mock(return_value=frame)
-driver._native_driver_state_path=Mock(return_value=directory/'driver-state.json')
-driver._execute_primitive_step=Mock(side_effect=AssertionError('must not dispatch'))
-try: driver.activate_scripted_widget_control_v1('9007199254741000','9007199254741001',expected_revision=9007199254740993)
-except BridgeUnavailableError as error:
- assert 'unknown' in str(error),str(error)
-else: raise AssertionError('unknown action replayed')
-driver._execute_primitive_step.assert_not_called()
-"""
-        completed = subprocess.run([sys.executable, "-c", check, self.temp.name, json.dumps(self.frame)], capture_output=True, text=True)
-        self.assertEqual(completed.returncode, 0, completed.stdout + completed.stderr)
+        self.assert_unknown_in_independent_process()
 
     def test_lost_ack_or_malformed_ack_never_becomes_repeatable(self) -> None:
         self.query()

@@ -44,3 +44,15 @@ java -jar mod_religious_ritual_fusion/tools/target/quarkus-app/quarkus-run.jar f
 实际生产 GUI 后调用 `rrfa.20`（礼仪）／`rrfa.21`（宗教）只读核对；`rrfa.30` 核取消／拒绝后钱包、身份和来源未变。冷读包不携带 seed 文件，启动时立即执行 `rrfa.22`。所有观察只运行谓词和日志，不写预期 flag、钱包、对象或冷却。精准钱包差要求暂停且日期不变；全局新增对象计数、冷却到期日和自然收入归因仍须公共原生／存档独立读回。
 
 启动标记为 `RRFAT: FIXTURE_ARMED <case>`，失败前缀 `RRFAT: TEST FAIL`。core receipt 要求 fixture_ready 及对应模式 success_readback；ui_rejection 要求 fixture_ready 与 no_product_change_readback；cold_reload 仅要求对应 persisted_readback。生成成功的业务状态始终是 NOT_RUN，不能替代公共 prepare、原生加载或业务验收。
+
+## 独立存档 oracle
+
+```text
+java -jar mod_religious_ritual_fusion/tools/target/quarkus-app/quarkus-run.jar inspect-save --inputs <request.json> --output <new-report.json>
+```
+
+严格输入为 `schemaVersion=1`、`machineId`、绝对 `repository`、`save`／`decoder` 的 `{path, bytes, sha256}`、显式 `layout` 和 `selection`。`layout` 含 `actorTable`／`riteTable`／`faithTable`／`religionTable` 路径数组；`selection` 含运行时 `actorId` 及 `riteIds`／`faithIds`／`religionIds` 数组，所有身份均为规范无符号十进制字符串。此处是原生运行时 ID，不能使用 fixture 的历史 ID 1128。未知字段、缺失、null、数字／布尔 ID、重复／不安全身份、错误 SHA 或布局均拒绝。
+
+本机 Rakaly 0.8.22 的实际观察使用 `living`、`rites/database`、`faiths/database`、`religion/religions`；调用者必须按自己的 decoder／存档确认并显式填写，不自动将旧 `jens_*` 归一化。工具只运行已 pin 的 `melt -c --format ck3 --unknown-key error`，完整消费 stdout，验证词法与括号、退出码和 stderr；不落地完整 melt 或复制原始存档。对原档持共享只读锁，并在前后核大小、SHA、FileKey 与修改时间。
+
+输出保留三类完整对象 ID 集合，选中 actor／Rite／Faith／Religion 的完整有类型 AST，以及资源原 decimal、变量、列表、期限与未知原字段；属性重复和列表顺序不归一化。元数据仅输出直接 scalar，`coverage=DIRECT_SCALARS` 明确区别于选中业务对象的 `FULL_RECORD`，其 token SHA 仍绑定完整原块。根 scalar 保留实际日期。原子 `raw` 含引号和原 lexeme，未出现字段不补零。`canonicalTokenSha256` 绑定仅用空格分隔 token 的规范形式；完整 stdout 另有字节 SHA。上限为 512 MiB 解码流、128 层、单 token 2 MiB、单选中块 512 KiB、合计选中 4 MiB、报告 1 MiB、stderr 64 KiB 和 120 秒。截断、重复身份或任何预算超限失败，不生成通过报告。报告只证明所 pin 存档的离线状态；前后差分、原生 GUI 业务、冷重载和实机验收由公共流程独立判定。

@@ -14,6 +14,7 @@ on:
       - 'ck3_autonomous_player/native_bridge/tests/scripted_widget_control12004_test.cpp'
       - 'ck3_autonomous_player/native_bridge/CMakeLists.txt'
       - 'ck3_autonomous_player/tests/unit/test_gui_window_tree_root_contract.py'
+      - 'ck3_autonomous_player/tests/fixtures/scripted_widget_native_campaign_R0003_snapshot.json'
       - 'ck3_autonomous_player/tests/unit/test_rite_creation_action_private_v1.py'
       - 'ck3_autonomous_player/tests/unit/test_mcp_service_override_factory.py'
       - 'tools/ck3_mod_acceptance.py'
@@ -38,6 +39,7 @@ on:
       - 'ck3_autonomous_player/native_bridge/tests/scripted_widget_control12004_test.cpp'
       - 'ck3_autonomous_player/native_bridge/CMakeLists.txt'
       - 'ck3_autonomous_player/tests/unit/test_gui_window_tree_root_contract.py'
+      - 'ck3_autonomous_player/tests/fixtures/scripted_widget_native_campaign_R0003_snapshot.json'
       - 'ck3_autonomous_player/tests/unit/test_rite_creation_action_private_v1.py'
       - 'ck3_autonomous_player/tests/unit/test_mcp_service_override_factory.py'
       - 'tools/ck3_mod_acceptance.py'
@@ -92,13 +94,17 @@ jobs:
         run: python -B -m unittest discover -s tests/unit -p test_rite_creation_action_private_v1.py -v
       - name: Check and exercise the shared service factory boundary
         run: python -B -m unittest discover -s tests/unit -p test_mcp_service_override_factory.py -v
-      - name: Check generic scripted widgets through native serializer, SDK, MCP and host
+      - name: Build and exercise the generic scripted widget native serializer fixture
         run: |
           cmake -S native_bridge -B "%RUNNER_TEMP%\scripted-widget-native" -A x64 -DBUILD_TESTING=ON
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           cmake --build "%RUNNER_TEMP%\scripted-widget-native" --config Release --target xar_ck3_scripted_widget_control12004_test
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           "%RUNNER_TEMP%\scripted-widget-native\Release\xar_ck3_scripted_widget_control12004_test.exe"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Check generic scripted widgets through native serializer, SDK, MCP and host
+        run: |
+          python -B -m mypy --strict --follow-imports=skip --no-incremental --cache-dir=%RUNNER_TEMP%\scripted-widget-contract-mypy src/xar_autoplayer/bridge/gui_window_tree_contract.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           set "XAR_SCRIPTED_WIDGET_NATIVE_TEST_EXE=%RUNNER_TEMP%\scripted-widget-native\Release\xar_ck3_scripted_widget_control12004_test.exe"
           python -B -m unittest discover -s tests/unit -p test_gui_window_tree_root_contract.py -v

@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import org.xar.ck3.rrf.acceptance.FixtureEmitter;
+import org.xar.ck3.rrf.save.SaveInspector;
 import org.xar.ck3.rrf.Contracts.Catalog;
 
 /** Quarkus CLI only. CK3 consumes generated scripts and never depends on this process. */
@@ -17,8 +18,9 @@ import org.xar.ck3.rrf.Contracts.Catalog;
 public final class Command implements QuarkusApplication {
     @Override public int run(String... args) {
         try {
-            if (args.length == 0) throw new IllegalArgumentException("expected generate, validate, build, verify or fixture");
+            if (args.length == 0) throw new IllegalArgumentException("expected generate, validate, build, verify, fixture or inspect-save");
             if (args[0].equals("fixture")) return FixtureEmitter.run(java.util.Arrays.copyOfRange(args, 1, args.length));
+            if (args[0].equals("inspect-save")) return SaveInspector.run(java.util.Arrays.copyOfRange(args, 1, args.length));
             Map<String, String> options = options(args);
             Path source = Path.of(options.getOrDefault("--source", "mod_religious_ritual_fusion")).toAbsolutePath().normalize();
             Object result;

@@ -1,6 +1,6 @@
 # 实机验收接入：2026-10-25
 
-状态：**实机已启动，R0002 发现夹具身份错误并已闭场修复；融合业务尚未执行，商店候选截图尚未采集。** 用户已授权执行[实机方案](../live-acceptance-plan-2026-10-24.md)，并要求多截可用作商店页面素材的真实画面。本记录随工作包更新，不以源码、准备或 ACK 代替业务通过。
+状态：**R0003 已进入正式融合决策的目标选择器，共享控件 SDK 身份校验失败并超时闭场；正在修复。尚未创建融合结果，商店图尚未筛选。** 用户已授权执行[实机方案](../live-acceptance-plan-2026-10-24.md)，并要求多截可用作商店页面素材的真实画面。本记录随工作包更新，不以源码、准备或 ACK 代替业务通过。
 
 ## 已完成的公共接入
 
@@ -89,3 +89,28 @@ Root 于 `18:01:40Z` 停止 keeper，原 allocate 的 retained wait、keeper 和
 该场通过原游戏菜单退出，实际观察并取消勾选 autosave_exit；桌面输入均保留原图、实际 2560×1440、焦点与规范坐标回执。后台 MCP 退出查询在启动失败状态不可用的真实拒绝亦保留。CaseClient retained OS0、原 native process exit0、tree_gone、cleanup 与线程完成均已读回，`failure_lifecycle_completed=true`，原 run=2／host RED／normal_close=false 保持。keeper 原 wait0，最后序号 13701，CAS 于 `18:38:24Z` 释放为 13702。现有普通 predecessor 消费者已实际接受资源接续，无需另造闭场格式。
 
 `screenshots/R0002/diagnostics/` 的加载、失败开局和退出画面仅作诊断，不计商店素材。当前实机发现的产品加载提示为四个决策未写 ai_check_interval（引擎置零）；未以这几条非致命提示授业务通过。继续使用新夹具重验真实融合界面及结果。
+
+
+## R0003: real selector reached; SDK campaign binding rejected (2026-10-25)
+
+`machine_id: 4-8e1c2f1861`; observations `2026-10-24T18:54:50Z` to `19:36:12Z`. Source `eca450e2a3db52520de4b0b8d1ea807189fa35d6`, runtime `runtime-a04`, prepared `prepared-a03`, run `4-8e1c2f1861--religious-ritual-fusion--R0003`. The corrected history link `character:1128` seeded the actual runtime actor `31254`. At paused `1066.9.16` (`date_raw=53144352`), native observations read Rite `150`, Faith `13`, Religion `8`, piety `500`, and the expected source A core tenets. The production decision `rrf_begin_rite_fusion_decision` opened its real target selector.
+
+`root-execution-a03/03-selector-query.actual-results.json` preserves the rejection `invalid scripted widget text episode_run_id`. It occurred in SDK binding validation **before the primitive/native query was submitted**. A native campaign intentionally has no one-life episode ID; the fix must validate its existing managed campaign binding rather than invent an episode. No target was selected, fusion draft opened, fee charged or new object created by this run.
+
+The baseline save command produced three identical 68,465,188-byte files, SHA-256 `b08959442ba2052b26543edecc74d518a0cf7e4eb29c91b67dea8966a459a857`. Canonical evidence is `managed-states/core-rite-a03/state/profile/save games/xar_checkpoint.ck3` under the machine work root. The native save/file exists; the SDK state replacement remained `unconfirmed/save_binding_mismatch`, so this is not a qualified persistent SDK checkpoint or a successful fusion save.
+
+The original hold deadline expired at `2026-10-24T19:29:45Z` before manual normal Quit was completed. The actual native session reports `ck3_exit_code=1`, `tree_gone=true`, `cleanup_proven=true`; public run returned `2`. This is timeout cleanup, **not normal OS exit 0 or business acceptance**. The keeper original process returned `0`, stopped at `19:32:28Z`; the exact CAS release is sequence `13718` at `19:36:12Z`, preserved in `root-execution-a03/RELEASE-SCREEN.actual.json`. Earlier R0002 normal exit remains only an R0002 fact.
+
+Storage admissions evolved beyond the initial 1 GiB plan: a07 reserved 1280 MiB of task-owned files, a08 retained a separate 4 GiB conservative whole-volume observation ceiling and accounted for actual pagefile growth against the unchanged 17 GiB system reserve. The original 250 MiB scene limit was exceeded by the triple save write. a09 explicitly changed the scene limit to 512 MiB and save lane to 352 MiB, preserving the original overrun and restricting that supplement to closure. It is not permission for another launch. Exact source evidence, finite expiry and actual reclamation lists remain in `live-admission/` and `reclamation-r0002-cache-and-manual-a01/`; replaced derived binaries/cache were reclaimed, unique saves and raw failure evidence retained.
+
+`screenshots/R0003/diagnostics/01-before-close.png` is a genuine 2560x1440 capture of the production target selector. It may support an entry illustration after review; it proves no fusion result. Other R0003 captures document attempted closure. No curated successful gameplay gallery exists yet.
+
+
+R0003 SDK repair validation on the same machine: the complete final scripted-widget CI step ran whole-module strict mypy plus 18 transport tests with zero skips, including actual native serializer packets, the captured R0003 managed campaign identity, and independent-process UNKNOWN replay rejection. The changed native driver also passed the original full seam groups (98+11+6), their static checks and the 14-input wire consumer. These are interface checks; production fusion still awaits the next run. The native source tree and qualified DLL were unchanged and inherited with exact source/EXE pins.
+
+The R0003 engine log also reported `Widget cannot have a position in a layout` at `rrf_fusion_window.gui:206`. The source card's Rite icon had `parentanchor` inside a vbox. It now centers through an hbox with expand widgets; this is a product GUI change and requires a new formal staging rather than editing a frozen profile. Actual visual acceptance remains pending.
+
+
+At `2026-10-24T19:49Z`, SDK qualification `sdk-native-campaign-a03/QUALIFICATION.sdk-native-campaign.actual.json` (SHA-256 `e004b12977208cacbc38030857d67f0c21cd6d1d3af3dd239d54ce8f7045b74c`) preserved the actual 18-test execution and separately inherited 74 byte-identical non-GUI tests. This is not a claim that all 92 were rerun. Current seam validation is `public-chain-a01/seam-native-campaign-a01/validation.actual.json` (SHA-256 `48554352913e1c0476bfa6b4b25eeab56edb4ad20b805900ac65ecb57deb77ed`).
+
+The Java tools gained the typed, bounded `inspect-save` command. On this machine, complete default Maven verify finished with 19 tests, no failures/errors/skips; strict Java compiler flags remained enabled. The actual Quarkus CLI decoded the retained R0003 baseline in 5.485 seconds without a full melt file: 99,832,347 stdout bytes, 16,366,955 tokens, SHA-256 `1ecb3de41d3ad25bb6c2c614adc619ddcab82cada647a3d099d625280e24cc5f`. Save SHA remained unchanged. The 509,103-byte report `save-oracle-a01/baseline.actual.json` (SHA-256 `73152d12dc1e8ba73de3ad1b682d3187c46f22babaa1b3b1a34c0d2582fea52b`) contains complete Rite/Faith/Religion identity sets and the selected full business records; metadata coverage is explicitly direct scalars. Qualification `save-oracle-a01/QUALIFICATION.actual.json` (SHA-256 `97bd3a9471a9cbc7715fc3e0f71c3598b1fe26b7649938d160f03742be04f3f1`) binds original waits, source pins, decoder and save. The first test-fixture syntax failure remains a RED log; the corrected complete verify passed. This offline readback establishes the oracle, not fusion or cold-reload acceptance.
