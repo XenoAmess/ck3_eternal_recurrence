@@ -301,8 +301,10 @@ SAVED_FLAGS = {
 CASE_HOLY_SITE_RELIC_ACTION_MCP_TOOLS = frozenset({'ck3_set_holy_site_relic_slot_selection_v1', 'ck3_select_holy_site_relic_artifact_v1', 'ck3_remove_holy_site_relic_v1', 'ck3_enshrine_holy_site_relic_v1'})
 CASE_RITE_CREATION_ACTION_MCP_TOOLS = frozenset({
     "ck3_query_player_rite_creation_action_context_v1", "ck3_execute_player_rite_creation_action_v1",
-    "ck3_collect_player_rite_creation_action_result_v1",
+    "ck3_collect_player_rite_creation_action_result_v1", "ck3_verify_player_rite_creation_action_completed_v1",
 })
+CASE_RITE_CREATION_ACTION_REQUIRED_MCP_TOOLS = CASE_RITE_CREATION_ACTION_MCP_TOOLS - {
+    "ck3_verify_player_rite_creation_action_completed_v1"}
 CASE_PLAYER_INVENTORY_WINDOW_OPEN_MCP_TOOLS = frozenset({
     "ck3_open_player_inventory_window_v1", "ck3_query_player_inventory_window_open_post_v1",
 })
@@ -452,7 +454,7 @@ class Selection:
         self.opt_in_player_rite_creation_actions = self.case.get("opt_in_player_rite_creation_actions", False)
         if type(self.opt_in_player_rite_creation_actions) is not bool:
             raise ValueError("opt_in_player_rite_creation_actions must be an explicit Boolean")
-        if self.opt_in_player_rite_creation_actions and not CASE_RITE_CREATION_ACTION_MCP_TOOLS <= set(self.case.get("required_mcp_tools", [])):
+        if self.opt_in_player_rite_creation_actions and not CASE_RITE_CREATION_ACTION_REQUIRED_MCP_TOOLS <= set(self.case.get("required_mcp_tools", [])):
             raise ValueError("Rite action opt-in must declare query, finite action and retained collect tools as required")
         if not self.opt_in_player_rite_creation_actions and CASE_RITE_CREATION_ACTION_MCP_TOOLS & set(self.case.get("required_mcp_tools", [])):
             raise ValueError("Rite action tools require their explicit case opt-in")

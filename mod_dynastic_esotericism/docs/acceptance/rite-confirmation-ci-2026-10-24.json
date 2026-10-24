@@ -1,0 +1,61 @@
+{
+  "schema": "xar.rite-sdk-ci-isolated-summary.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T08:14:50.596555+00:00",
+  "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "python": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\venv\\Scripts\\python.exe",
+  "versions": {
+    "mcp": "2.0.0",
+    "pydantic": "2.13.5",
+    "mypy": "2.4.0",
+    "opencv-python": "5.0.0.93",
+    "numpy": "2.5.2",
+    "Pillow": "12.3.0"
+  },
+  "include_system_site_packages": false,
+  "user_site_enabled": false,
+  "all_dependency_modules_loaded_from_isolated_venv": true,
+  "tools_venv_site_packages_on_child_sys_path": false,
+  "baseline_red": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\baseline-red-a01\\verification.json",
+  "red_reason": "actual MCP server imports service -> coat_of_arms_framebuffer -> cv2; baseline lacked opencv/numpy/Pillow",
+  "fixed_group_receipt": "C:\\ck3-dynastic-esotericism-20261024\\sdk-ci-isolated-py314-a01\\fixed-command-group-a02\\verification.json",
+  "fixed_group_receipt_sha256": "70668530c47e7b91aa0abe7bae8b329c9ea1b95d00b1fa3ab6aa35e632b99b42",
+  "checks": [
+    {
+      "name": "mypy",
+      "exit_code": 0
+    },
+    {
+      "name": "unit",
+      "exit_code": 0
+    }
+  ],
+  "unittest_count": 19,
+  "task_logical_bytes": 308095486,
+  "approved_subbudget_bytes": 536870912,
+  "sources": [
+    {
+      "path": ".github/workflows/rite-confirmation-sdk.yml",
+      "sha256": "c635c144eaf4f42687d7bd8d01d87d6f32ba073aba65c1f13fd0cbb2cae7e9aa"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/rite_creation_action_private_v1.py",
+      "sha256": "ce030a17f8d024460052deede2069f5cff3c34c876e13d2b359af3d1d6e62284"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/rite_creation_action_mcp_v1.py",
+      "sha256": "35a88078407304a7dfa5d255ef82a94d99ebbfb83dbb90143341d410784bc6e0"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_rite_creation_action_private_v1.py",
+      "sha256": "0eadc23ef8f20e7d695f25420027d5907c17addf352e6cf8e06fbe14d0bb0eb9"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance.py",
+      "sha256": "33faedd34d58eacee924072dff4f87b6d4340f70d855d2efb83e121adce43562"
+    }
+  ],
+  "native_tests_or_live_game_run": false,
+  "venv_review_at_utc": "2026-10-26T08:15:57.814404+00:00",
+  "retention_reason": "Active isolated dependency-closure evidence for SDK CI freeze; reconstructable from pinned workflow after review."
+}

@@ -18,6 +18,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 from xar_autoplayer.bridge import rite_creation_action_private_v1 as action
+from xar_autoplayer.bridge import rite_creation_action_private_v1 as contract
 from xar_autoplayer.bridge.driver import BridgeUnavailableError, UnsupportedStepError
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
 from xar_autoplayer.bridge.version_identity import CK3_12004
@@ -33,7 +34,7 @@ SOURCE_TEXT_OVERRIDE = None
 
 def unavailable(operation, native_revision=9):
     return {"step": action.STEP, "accepted": True, "status": "unavailable", "private_build": True,
-        "advertised": False, "read_only": operation == "preview", "game_version": CK3_12004.game_version,
+        "advertised": False, "read_only": operation in action.READ_OPERATIONS, "game_version": CK3_12004.game_version,
         "executable_sha256": CK3_12004.executable_sha256,
         "backend_id": "ck3-1.20.0.4-native-rite-creation-action-v1",
         "domain_key": action.DOMAIN_KEY, "snapshot_revision": native_revision, "date_raw": DATE,
@@ -89,6 +90,16 @@ def synthetic_context(snapshot, *, rite=RITE, faith=27, main=RITE):
         "queried_revision": snapshot["revision"], "snapshot_revision": snapshot["native_revision"]}
 
 
+def synthetic_poststate(preview, *, rite=92, faith=91):
+    payload = contract.submitted_payload_from_draft(preview[action.BODY_KEY]["draft"])
+    return {"schema": "ck3_12004_rite_creation_poststate_v1", "observed": True,
+        "unavailable_reason": None, "source_rite_id_anchor": payload["source_rite_id"],
+        "rite_id": rite, "faith_id": faith, "religion_id": 28,
+        "founder_character_id": ACTOR, "names": payload["names"],
+        "core_tenets": payload["core_tenets"], "doctrines": payload["doctrines"],
+        "confirmation_modal_open": False, "creation_window_visible": False}
+
+
 class Endpoint:
     pipe_name = r"\\.\pipe\synthetic-rite-action-transport-only"
     def __init__(self):
@@ -96,10 +107,20 @@ class Endpoint:
         self.timeout = False
         self.known_reject = False
         self.on_send_check = None
+        self.preview = None
+        self.poststate = None
+        self.poststate_epoch = 4
     def start(self, on_frame, on_disconnect): self.on_frame = on_frame
     def publish(self, frame): self.on_frame(deepcopy(frame))
     def packet(self, request):
         raw = unavailable(request["operation"], request["expected_revision"])
+        if request["operation"] == "preview" and self.preview is not None:
+            raw = deepcopy(self.preview)
+        if request["operation"] == "observe_current_rite" and self.poststate is not None:
+            raw.update(status="observed")
+            raw[action.BODY_KEY].update(available=True, unavailable_reason=None,
+                current_rite_poststate=deepcopy(self.poststate))
+            raw[action.BODY_KEY]["frame"]["capture_epoch"] = self.poststate_epoch
         if request["operation"] == "confirm_once":
             raw[action.BODY_KEY]["action_id"] = request["action_id"]
             if not self.known_reject:
@@ -225,19 +246,26 @@ class RiteCreationAdapterTests(unittest.TestCase):
         definition = next(node for node in tree.body if isinstance(node, ast.Assign)
             and any(isinstance(target, ast.Name) and target.id == "CASE_RITE_CREATION_ACTION_MCP_TOOLS" for target in node.targets))
         tools = frozenset(ast.literal_eval(definition.value.args[0]))
+        required_definition = next((node for node in tree.body if isinstance(node, ast.Assign)
+            and any(isinstance(target, ast.Name) and target.id == "CASE_RITE_CREATION_ACTION_REQUIRED_MCP_TOOLS"
+                for target in node.targets)), None)
+        globals_scope = {"CASE_RITE_CREATION_ACTION_MCP_TOOLS": tools}
+        if required_definition is not None:
+            exec(compile(ast.fix_missing_locations(ast.Module(body=[required_definition], type_ignores=[])), str(path), "exec"), globals_scope)
+        required_tools = globals_scope.get("CASE_RITE_CREATION_ACTION_REQUIRED_MCP_TOOLS", tools)
         cls = next(node for node in tree.body if isinstance(node, ast.ClassDef) and node.name == "Selection")
         init = next(node for node in cls.body if isinstance(node, ast.FunctionDef) and node.name == "__init__")
         index = next(index for index, node in enumerate(init.body) if isinstance(node, ast.Assign)
             and any(isinstance(target, ast.Attribute) and target.attr == "opt_in_player_rite_creation_actions" for target in node.targets))
         code = compile(ast.fix_missing_locations(ast.Module(body=init.body[index:index + 4], type_ignores=[])), str(path), "exec")
-        for case, expected in (({}, False), ({"opt_in_player_rite_creation_actions": True, "required_mcp_tools": list(tools)}, True)):
+        for case, expected in (({}, False), ({"opt_in_player_rite_creation_actions": True, "required_mcp_tools": list(required_tools)}, True)):
             selected = SimpleNamespace(case=case)
-            exec(code, {"self": selected, "CASE_RITE_CREATION_ACTION_MCP_TOOLS": tools})
+            exec(code, {**globals_scope, "self": selected})
             self.assertIs(selected.opt_in_player_rite_creation_actions, expected)
         for case in ({"opt_in_player_rite_creation_actions": 1}, {"opt_in_player_rite_creation_actions": "true"},
                 {"opt_in_player_rite_creation_actions": True}, {"required_mcp_tools": [next(iter(tools))]}):
             with self.assertRaises(ValueError):
-                exec(code, {"self": SimpleNamespace(case=case), "CASE_RITE_CREATION_ACTION_MCP_TOOLS": tools})
+                exec(code, {**globals_scope, "self": SimpleNamespace(case=case)})
         branch = next(node for node in ast.walk(cls) if isinstance(node, ast.If)
             and isinstance(node.test, ast.Attribute) and node.test.attr == "opt_in_player_rite_creation_actions")
         for enabled in (False, True):
@@ -357,6 +385,130 @@ class RiteCreationAdapterTests(unittest.TestCase):
         self.assertEqual(list(Path(self.temp.name).rglob("*.claim.json")), [])
         self.assertEqual(len(list(Path(self.temp.name).rglob("*.safe-no-dispatch.json"))), 1)
 
+    def test_complete_payload_roundtrip_rejects_wrong_missing_fields_and_boolean_ids(self) -> None:
+        payload = contract.submitted_payload_from_draft(synthetic_preview()[action.BODY_KEY]["draft"])
+        self.assertEqual(contract.parse_submitted_payload(json.loads(json.dumps(payload))), payload)
+        for field, value in (("source_rite_id", True), ("source_faith_id", 27.0),
+                ("core_tenets", None), ("doctrines", {}), ("names", {"name": "fixture"})):
+            invalid = deepcopy(payload)
+            invalid[field] = value
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                contract.parse_submitted_payload(invalid)
+        invalid = deepcopy(payload)
+        invalid["source_rite"] = invalid.pop("source_rite_id")
+        with self.assertRaises(ValueError): contract.parse_submitted_payload(invalid)
+        invalid = deepcopy(payload)
+        invalid["core_tenets"][0]["slot_index"] = False
+        with self.assertRaises(ValueError): contract.parse_submitted_payload(invalid)
+        invalid = deepcopy(payload)
+        invalid["doctrines"].append(deepcopy(invalid["doctrines"][0]))
+        with self.assertRaises(ValueError): contract.parse_submitted_payload(invalid)
+        post = synthetic_poststate(synthetic_preview())
+        self.assertEqual(contract.parse_current_rite_poststate(json.loads(json.dumps(post))), post)
+        for field in post:
+            invalid = deepcopy(post)
+            del invalid[field]
+            with self.subTest(missing=field), self.assertRaises(ValueError):
+                contract.parse_current_rite_poststate(invalid)
+
+    def test_verified_successor_keeps_original_claim_and_requires_different_business_payload(self) -> None:
+        driver, endpoint = self.driver()
+        preview = synthetic_preview()
+        first = self.confirm(driver)
+        claim_path = next(Path(self.temp.name).rglob("*.claim.json"))
+        original_bytes = claim_path.read_bytes()
+        endpoint.poststate = synthetic_poststate(preview)
+        verified = action.verify_completed_private_v1(driver, action_request_id=first["action_request_id"],
+            expected_revision=driver.take_snapshot_without_native_command_history()["revision"])
+        self.assertTrue(verified["business_outcome_verified"])
+        self.assertEqual(claim_path.read_bytes(), original_bytes)
+        with self.assertRaises(BridgeUnavailableError): self.confirm(driver, token="b" * 64)
+        second_preview = synthetic_preview(token="b" * 64)
+        second_preview[action.BODY_KEY]["draft"]["names"]["name"] = "another explicit authored name"
+        second = self.call(driver, "confirm_once", expected_preview_identity="b" * 64,
+            expected_outcome_kind="create_faith", observed_preview=second_preview)
+        claims = list(Path(self.temp.name).rglob("*.claim.json"))
+        self.assertEqual(len(claims), 2)
+        self.assertEqual(claim_path.read_bytes(), original_bytes)
+        successor = next(json.loads(path.read_text()) for path in claims if path != claim_path)
+        self.assertEqual(successor["predecessor_request_id"], first["action_request_id"])
+        self.assertNotEqual(first["action_request_id"], second["action_request_id"])
+        self.assertEqual([request["operation"] for request in endpoint.requests],
+            ["confirm_once", "observe_current_rite", "confirm_once"])
+        with self.assertRaises(BridgeUnavailableError): self.confirm(driver, token="c" * 64)
+
+    def test_false_or_stale_poststate_and_changed_evidence_never_admit_a_successor(self) -> None:
+        driver, endpoint = self.driver()
+        first = self.confirm(driver)
+        original = synthetic_poststate(synthetic_preview())
+        for field, value in (("rite_id", RITE), ("founder_character_id", ACTOR + 1),
+                ("confirmation_modal_open", True), ("creation_window_visible", True),
+                ("names", {**original["names"], "name": "different"}), ("doctrines", [])):
+            endpoint.poststate = {**deepcopy(original), field: value}
+            with self.subTest(field=field):
+                result = action.verify_completed_private_v1(driver, action_request_id=first["action_request_id"],
+                    expected_revision=driver.take_snapshot_without_native_command_history()["revision"])
+                self.assertFalse(result["business_outcome_verified"])
+                self.assertEqual(result["status"], "poststate_mismatch")
+        self.assertEqual(list(Path(self.temp.name).rglob("*.completed.json")), [])
+        endpoint.poststate = original
+        endpoint.poststate_epoch = 3
+        with self.assertRaises(BridgeUnavailableError):
+            action.verify_completed_private_v1(driver, action_request_id=first["action_request_id"],
+                expected_revision=driver.take_snapshot_without_native_command_history()["revision"])
+        endpoint.poststate_epoch = 4
+        complete = action.verify_completed_private_v1(driver, action_request_id=first["action_request_id"],
+            expected_revision=driver.take_snapshot_without_native_command_history()["revision"])
+        receipt_path = Path(complete["completion_receipt"])
+        receipt = json.loads(receipt_path.read_text())
+        evidence = receipt_path.parent / receipt["poststate_native_result_file"]
+        evidence.write_text(evidence.read_text() + " ")
+        changed = synthetic_preview(token="b" * 64)
+        changed[action.BODY_KEY]["draft"]["names"]["name"] = "new intent"
+        with self.assertRaises(BridgeUnavailableError):
+            self.call(driver, "confirm_once", expected_preview_identity="b" * 64,
+                expected_outcome_kind="create_faith", observed_preview=changed)
+
+    def test_unknown_and_legacy_claims_cannot_be_reclassified_by_current_payload(self) -> None:
+        driver, endpoint = self.driver()
+        endpoint.timeout = True
+        first_id = None
+        with self.assertRaises(BridgeUnavailableError): self.confirm(driver)
+        claim_path = next(Path(self.temp.name).rglob("*.claim.json"))
+        record = json.loads(claim_path.read_text())
+        first_id = record["request_id"]
+        endpoint.poststate = synthetic_poststate(synthetic_preview())
+        pending = action.verify_completed_private_v1(driver, action_request_id=first_id,
+            expected_revision=driver.take_snapshot_without_native_command_history()["revision"])
+        self.assertEqual(pending["status"], "pending_unknown")
+        self.assertEqual(len(endpoint.requests), 1)
+        record.pop("submitted_payload")
+        record.pop("predecessor_request_id")
+        record["schema"] = "xar.ck3-rite-confirm-once.v1"
+        claim_path.write_text(json.dumps(record))
+        with self.assertRaises(BridgeUnavailableError):
+            action.verify_completed_private_v1(driver, action_request_id=first_id,
+                expected_revision=driver.take_snapshot_without_native_command_history()["revision"])
+        with self.assertRaises(BridgeUnavailableError): self.confirm(driver, token="d" * 64)
+        self.assertEqual(len(endpoint.requests), 1)
+
+    def test_cancel_or_actual_source_change_does_not_release_an_unknown_confirmation(self) -> None:
+        driver, endpoint = self.driver()
+        self.confirm(driver)
+        claim_path = next(Path(self.temp.name).rglob("*.claim.json"))
+        before = claim_path.read_bytes()
+        with self.assertRaises(BridgeUnavailableError): self.call(driver, "cancel_draft")
+        self.assertEqual(claim_path.read_bytes(), before)
+        moved = synthetic_preview(token="e" * 64)
+        moved[action.BODY_KEY]["draft"]["source_rite_id"] = 93
+        moved[action.BODY_KEY]["draft"]["names"]["name"] = "other authored Rite"
+        with self.assertRaises(BridgeUnavailableError):
+            action.execute_private_v1(driver, operation="confirm_once",
+                expected_revision=driver.take_snapshot_without_native_command_history()["revision"],
+                expected_source_rite_id=93, expected_preview_identity="e" * 64,
+                expected_outcome_kind="create_faith", observed_preview=moved)
+        self.assertEqual([request["operation"] for request in endpoint.requests], ["confirm_once"])
+
     def test_independent_poststate_distinguishes_new_faith_rite_quote_and_unknown_wallet(self):
         driver, endpoint = self.driver()
         before = driver.take_snapshot_without_native_command_history()
@@ -391,6 +543,82 @@ class RiteCreationMcpTests(unittest.IsolatedAsyncioTestCase):
     setUp = RiteCreationAdapterTests.setUp
     driver = RiteCreationAdapterTests.driver
     actual_mcp_summaries = []
+
+    async def test_real_mcp_cancel_diagnostic_and_independent_current_rite_read(self) -> None:
+        driver, endpoint = self.driver()
+        endpoint.poststate = synthetic_poststate(synthetic_preview(), rite=RITE, faith=27)
+        public = driver.take_snapshot_without_native_command_history()["revision"]
+        async with Client(create_server(driver)) as client:
+            cancel = await client.session.call_tool("ck3_execute_player_rite_creation_action_v1", {
+                "operation": "cancel_draft", "expected_revision": public, "expected_source_rite_id": RITE})
+            self.assertFalse(cancel.is_error, str(cancel))
+            self.assertFalse(cancel.structured_content[action.BODY_KEY]["available"])
+            self.assertEqual(cancel.structured_content[action.BODY_KEY]["unavailable_reason"],
+                "synthetic_complete_payload_not_observed")
+            current = await client.session.call_tool("ck3_query_player_rite_creation_action_context_v1", {
+                "expected_revision": public, "expected_source_rite_id": RITE, "observation": "current_rite"})
+            self.assertFalse(current.is_error, str(current))
+            self.assertTrue(current.structured_content["read_only"])
+            self.assertEqual(current.structured_content[action.BODY_KEY]["current_rite_poststate"], endpoint.poststate)
+            self.assertFalse(current.structured_content["business_outcome_verified"])
+            rejected = await client.session.call_tool("ck3_query_player_rite_creation_action_context_v1", {
+                "expected_revision": public, "expected_source_rite_id": RITE, "observation": "invented"})
+            self.assertTrue(rejected.is_error)
+        self.assertEqual([request["operation"] for request in endpoint.requests], ["cancel_draft", "observe_current_rite"])
+        self.assertEqual(list(Path(self.temp.name).rglob("*.claim.json")), [])
+
+    async def test_real_mcp_verified_edits_then_new_rite_use_distinct_immutable_claims(self) -> None:
+        driver, endpoint = self.driver()
+        query = "ck3_query_player_rite_creation_action_context_v1"
+        write = "ck3_execute_player_rite_creation_action_v1"
+        verify = "ck3_verify_player_rite_creation_action_completed_v1"
+        driver.allow_private_player_rite_creation_actions = False
+        async with Client(create_server(driver)) as client:
+            self.assertNotIn(verify, {tool.name for tool in (await client.session.list_tools()).tools})
+        driver.allow_private_player_rite_creation_actions = True
+        completed_ids = []
+        original_claim_bytes = None
+        async with Client(create_server(driver)) as client:
+            tools = {tool.name: tool for tool in (await client.session.list_tools()).tools}
+            self.assertTrue(tools[verify].annotations.read_only_hint)
+            self.assertNotIn("current_rite_poststate", tools[verify].input_schema["properties"])
+            for index, (kind, doctrine, name) in enumerate((
+                    ("edit_rite", "doctrine_fixture_enabled", "fixture"),
+                    ("edit_rite", "doctrine_fixture_none", "fixture"),
+                    ("edit_rite", "doctrine_fixture_enabled", "fixture"),
+                    ("create_rite", "doctrine_fixture_enabled", "a genuinely different authored Rite"))):
+                token = format(index + 10, "064x")
+                preview = synthetic_preview(token=token)
+                draft = preview[action.BODY_KEY]["draft"]
+                draft["actual_outcome_kind"] = kind
+                draft["names"]["name"] = name
+                draft["selected_doctrines"] = [{"group_key": "doctrine_fixture", "doctrine_key": doctrine}]
+                preview[action.BODY_KEY]["full_can"].update(can_edit=kind == "edit_rite", can_create=kind != "edit_rite")
+                endpoint.preview = preview
+                endpoint.poststate = synthetic_poststate(preview, rite=RITE if kind == "edit_rite" else 92, faith=27)
+                public = driver.take_snapshot_without_native_command_history()["revision"]
+                read = await client.session.call_tool(query, {"expected_revision": public, "expected_source_rite_id": RITE})
+                self.assertFalse(read.is_error, str(read))
+                submitted = await client.session.call_tool(write, {"operation": "confirm_once", "expected_revision": public,
+                    "expected_source_rite_id": RITE, "expected_preview_identity": token, "expected_outcome_kind": kind})
+                self.assertFalse(submitted.is_error, str(submitted))
+                request_id = submitted.structured_content["action_request_id"]
+                self.assertFalse(submitted.structured_content["business_outcome_verified"])
+                confirmed = await client.session.call_tool(verify, {"action_request_id": request_id, "expected_revision": public})
+                self.assertFalse(confirmed.is_error, str(confirmed))
+                self.assertTrue(confirmed.structured_content["business_outcome_verified"])
+                self.assertEqual(confirmed.structured_content["status"], "completed")
+                completed_ids.append(request_id)
+                first_claim = next(path for path in Path(self.temp.name).rglob("*.claim.json")
+                    if json.loads(path.read_text())["predecessor_request_id"] is None)
+                if original_claim_bytes is None:
+                    original_claim_bytes = first_claim.read_bytes()
+                self.assertEqual(first_claim.read_bytes(), original_claim_bytes)
+        self.assertEqual(len(set(completed_ids)), 4)
+        self.assertEqual(len(list(Path(self.temp.name).rglob("*.claim.json"))), 4)
+        self.assertEqual(len(list(Path(self.temp.name).rglob("*.completed.json"))), 4)
+        self.assertEqual(sum(request["operation"] == "confirm_once" for request in endpoint.requests), 4)
+        self.assertEqual(sum(request["operation"] == "observe_current_rite" for request in endpoint.requests), 4)
 
     async def test_real_mcp_default_off_finite_selectors_and_missing_native_proof(self):
         driver, endpoint = self.driver()
