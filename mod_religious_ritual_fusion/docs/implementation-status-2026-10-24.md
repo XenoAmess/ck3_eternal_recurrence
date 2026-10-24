@@ -26,7 +26,9 @@ mvn --batch-mode --no-transfer-progress -f mod_religious_ritual_fusion/tools/pom
 
 同机 `2026-10-24T15:30:57Z` 再读命令行默认 Maven 为 3.10.0，实际 home 为 `C:/apache-maven-3.9.16`，来源 `where mvn` 为该目录下的 `bin/mvn` 与 `bin/mvn.cmd`；目录名不能代替版本读回。实际 JVM 为 GraalVM Community 25.0.4.1。这些是机器和时间绑定的环境事实，生产命令只使用默认 `mvn`。
 
-固定提交 staging、独立 verify 和 open_kaishek parser 的实际结果在后续[静态验收回执](evidence/implementation-static-2026-10-24.json)中记录；未生成回执前不将其计为通过。
+生产代码已推送主线；固定源提交为 `42af27c3b1601a7066636a75414defd48972a3f0`。该提交的正式构建与独立 verify 均退出 0，逐文件核对 67 文件一致。机器 `4-8e1c2f1861` 的输出为 `C:/workspace/rrf-development-20261024/01-staging`，旁置 manifest SHA-256 为 `f302e8b3e71dbd1a85dd18842aa5e1150d30baa97b51b5f44a196bc3466b1137`。完整命令、逐文件清单、测试报告 SHA 和观察时间见[静态验收回执](evidence/implementation-static-2026-10-24.json)。
+
+同机 open_kaishek 工作树提交 `2b559966c72f4e845111e3e15652ae2354aaed57` 的现有 CLI 对该 staging 执行 corpus parser，64 个脚本／GUI 文件、312354 bytes、0 errors，corpus SHA-256 为 `cb1342f1a198baecf2aefabfe9acf3b8b3babaf1765f1d007e2ff9d2dbe99ee9`。另三项 descriptor／本地化由产品 validator 检查。该预验仅覆盖通用语法；当前工具没有 CK3 1.20 宗教融合语义 profile，不能替代原生 L1–L3。实际 CLI JAR SHA 另记在回执中，不从工作树 HEAD 推认其构建来源。
 
 ## 已落实的原生语义
 

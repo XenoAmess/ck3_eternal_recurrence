@@ -1,0 +1,551 @@
+{
+  "schema": "rrf-implementation-static-v1",
+  "machine_id": "4-8e1c2f1861",
+  "product": "religious-ritual-fusion",
+  "version": "0.1.0",
+  "readiness": "static-ready",
+  "game_baseline": {
+    "version": "1.20.0.4",
+    "build": "25734779",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "source": "docs/evidence/source-observation.json",
+    "baseline_note": "Empire Faith Gate is part of this original game version, as confirmed by the user."
+  },
+  "environment": {
+    "observed_at_utc": "2026-10-24T15:30:57Z",
+    "maven_version": "3.10.0",
+    "maven_home": "C:/apache-maven-3.9.16",
+    "maven_source": [
+      "C:/apache-maven-3.9.16/bin/mvn",
+      "C:/apache-maven-3.9.16/bin/mvn.cmd"
+    ],
+    "jvm": "GraalVM Community 25.0.4.1",
+    "java_release": 21,
+    "compiler_options": [
+      "-Xlint:all",
+      "-Werror"
+    ]
+  },
+  "regression_failure": {
+    "observed_at_utc": "2026-10-24T15:35:46.308167Z",
+    "failed_command": "java -jar mod_religious_ritual_fusion/tools/target/quarkus-app/quarkus-run.jar validate --source mod_religious_ritual_fusion",
+    "exit_code": 1,
+    "stderr": "RRF FAILED: catalog source hash differs",
+    "cause": "Platform-dependent CRLF JSON serialization changed by repository LF checkout.",
+    "expected_catalog_sha256": "2eb2bc485920b376a4b56f7f894e5c027e26a2c2a9d6f73c673ff9a39b55846b",
+    "actual_catalog_sha256": "60b877aed282a99108dd5a293eacedb8433edd7901a6926c08cd11d48575210f",
+    "repair": "Use explicit LF JSON indentation in shared serializer, regenerate through the same producer, and retain exact-byte SHA verification. Add real Git add/checkout regression."
+  },
+  "not_executed": [
+    "CK3 native parsing and mount",
+    "Actual GUI scope bindings",
+    "RRF-01 through RRF-12 gameplay and persistence acceptance",
+    "Public acceptance fixture/adapter execution",
+    "AI or multiplayer qualification",
+    "Workshop publication or cache acceptance"
+  ],
+  "runtime_actions": {
+    "ck3_launched": false,
+    "steam_mode_changed": false,
+    "game_deployed": false
+  },
+  "storage": {
+    "policy": "docs/storage-retention-policy.json",
+    "policy_version": "1.0.0",
+    "task_start": {
+      "observed_at_utc": "2026-10-24T15:00:53Z",
+      "total_bytes": 511776722944,
+      "free_bytes": 91424800768
+    },
+    "pre_staging_observation": {
+      "observed_at_utc": "2026-10-24T15:30:57.562519Z",
+      "total_bytes": 511776722944,
+      "free_bytes": 91190562816
+    },
+    "heavy_write_admission": false,
+    "reason": "Only source, small build outputs and explicit runtime staging; no game, EXE or save copies. Observed free space is not a complete reservation/quota admission.",
+    "deletion_performed": false,
+    "retention": {
+      "record_review_hours": 4320,
+      "build_eligible_after_hours": 336,
+      "expired_is_unconditional_delete": false
+    },
+    "task_close": {
+      "observed_at_utc": "2026-10-24T15:39:00.793937+00:00",
+      "total_bytes": 511776722944,
+      "free_bytes": 91195666432,
+      "mod_source_and_local_build_bytes": 9069052,
+      "java_target_bytes": 8382531,
+      "staging_bytes": 325805,
+      "manifest_bytes": 12752
+    },
+    "build_review_at_utc": "2026-11-07T15:39:00.793937+00:00",
+    "record_review_at_utc": "2027-04-22T15:39:00.793937+00:00"
+  },
+  "source_revision": "42af27c3b1601a7066636a75414defd48972a3f0",
+  "observed_at_utc": "2026-10-24T15:39:00.793937+00:00",
+  "maven": {
+    "command": "mvn -B -ntp -f mod_religious_ritual_fusion/tools/pom.xml verify",
+    "exit_code": 0,
+    "finished_at_utc": "2026-10-24T15:36:21Z",
+    "elapsed_seconds": 23.822,
+    "reports": [
+      {
+        "path": "mod_religious_ritual_fusion/tools/target/surefire-reports/TEST-org.xar.ck3.rrf.FinalTenetExclusionTest.xml",
+        "sha256": "2ede75f5078383134fdaf489fbbd0519a4844ac62e9087efd75493c97bf83685",
+        "suite": "org.xar.ck3.rrf.FinalTenetExclusionTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "path": "mod_religious_ritual_fusion/tools/target/surefire-reports/TEST-org.xar.ck3.rrf.ModeLockProjectionTest.xml",
+        "sha256": "1ca3ba97c859962afa24b02d0aaf1d00e554a3ab6b2ffadcad0ab9c2aa7f53de",
+        "suite": "org.xar.ck3.rrf.ModeLockProjectionTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "path": "mod_religious_ritual_fusion/tools/target/surefire-reports/TEST-org.xar.ck3.rrf.NativeSelectionProjectionTest.xml",
+        "sha256": "38fed4a7d8844efc4a936d8a3585d7f6c1bb1d4ccfd27e1529ab5fde8205701c",
+        "suite": "org.xar.ck3.rrf.NativeSelectionProjectionTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "path": "mod_religious_ritual_fusion/tools/target/surefire-reports/TEST-org.xar.ck3.rrf.ProducerPipelineTest.xml",
+        "sha256": "ba4b9a752d278b7c6b18eb6167a013729e60a75798d6e8d227cdc6c141503e6c",
+        "suite": "org.xar.ck3.rrf.ProducerPipelineTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "path": "mod_religious_ritual_fusion/tools/target/surefire-reports/TEST-org.xar.ck3.rrf.ProductionGraphTest.xml",
+        "sha256": "a961fc827490187b91660be4f949689af26ba593b899eb885dbed7f7bd776ba2",
+        "suite": "org.xar.ck3.rrf.ProductionGraphTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    ],
+    "totals": {
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "execution_evidence": "Completed tools-agent command; final Surefire reports independently read and hashed."
+  },
+  "build": {
+    "command": "java -jar mod_religious_ritual_fusion/tools/target/quarkus-app/quarkus-run.jar build --output C:/workspace/rrf-development-20261024/01-staging --revision 42af27c3b1601a7066636a75414defd48972a3f0 --machine-id 4-8e1c2f1861",
+    "exit_code": 0,
+    "staging": "C:/workspace/rrf-development-20261024/01-staging",
+    "manifest": "C:/workspace/rrf-development-20261024/01-staging.manifest.json",
+    "files": 67,
+    "manifest_sha256": "f302e8b3e71dbd1a85dd18842aa5e1150d30baa97b51b5f44a196bc3466b1137",
+    "manifest_content": {
+      "schemaVersion": 1,
+      "productId": "religious_ritual_fusion",
+      "version": "0.1.0",
+      "revision": "42af27c3b1601a7066636a75414defd48972a3f0",
+      "provenance": {
+        "kind": "OBSERVED_MACHINE",
+        "machineId": "4-8e1c2f1861",
+        "observedAt": "2026-10-24T15:37:44.300070700Z"
+      },
+      "files": [
+        {
+          "path": "descriptor.mod",
+          "size": 130,
+          "sha256": "4ff400cc04eab5947a0d99cbbfa739a8502fde295b1cca894b7c5ce28337c57d"
+        },
+        {
+          "path": "common/scripted_effects/rrf_draft_effects.txt",
+          "size": 3207,
+          "sha256": "20f57842e17d89fffa73d30ecf51daccf1e23ec8e2871d20b010dd2ce12a8c0e"
+        },
+        {
+          "path": "common/scripted_effects/rrf_selection_effects.txt",
+          "size": 4651,
+          "sha256": "98787cd2567e6b39de4f0d9739a15019a0ba7c13bdaefe51e3e8e426b0b61b68"
+        },
+        {
+          "path": "common/scripted_effects/rrf_commit_effects.txt",
+          "size": 5526,
+          "sha256": "9d29c4c3ceebd78b01bf3933613d48f50d32028986d6c98f3754d64d4d4a7b8e"
+        },
+        {
+          "path": "common/scripted_effects/rrf_completion_effects.txt",
+          "size": 2186,
+          "sha256": "bf660d1e71f8ccb56a78249d2b06121ef8f3e551bab9c85daf82868f4a757928"
+        },
+        {
+          "path": "common/scripted_triggers/rrf_eligibility_triggers.txt",
+          "size": 1007,
+          "sha256": "293c6dbeb40a3cf50135d2ea6382a6d903f6bb8b7a077ba5753ed5407f9f9c72"
+        },
+        {
+          "path": "common/scripted_triggers/rrf_draft_triggers.txt",
+          "size": 2686,
+          "sha256": "86130cca551bf2b3a6e423b803616c37002e29bc5c555b56e9e35b664ea3848c"
+        },
+        {
+          "path": "common/script_values/rrf_values.txt",
+          "size": 277,
+          "sha256": "129cc52a166fe1a027ca52af8703023a8e2a99783ebf8fb13542113fa02a5df2"
+        },
+        {
+          "path": "common/decisions/rrf_decisions.txt",
+          "size": 3490,
+          "sha256": "bb09c47ce7cbe514ff71b4ea7a68ce153db688fc6015e8fd65f0b9ee769d77e7"
+        },
+        {
+          "path": "common/scripted_guis/rrf_scripted_guis.txt",
+          "size": 2674,
+          "sha256": "6276329098fd089eeb3cded1c1ddf2de4f6cf909cf3eb009cc28ece8da281d26"
+        },
+        {
+          "path": "gui/rrf_fusion_window.gui",
+          "size": 11168,
+          "sha256": "ced71aafeba7ea564cbccc6937d5719a32b99f7d571a348fcd94fb03a6d86150"
+        },
+        {
+          "path": "gui/scripted_widgets/rrf_widgets.txt",
+          "size": 49,
+          "sha256": "8d019f2f42c7799efb2ab5a4416a11e190d469963bf2b8adcc5394ed1dd3bfdd"
+        },
+        {
+          "path": "localization/english/rrf_l_english.yml",
+          "size": 6929,
+          "sha256": "5340989887d88dcb49866aaf366fec19967cc1b28049aa2526aeae90898aece8"
+        },
+        {
+          "path": "localization/simp_chinese/rrf_l_simp_chinese.yml",
+          "size": 6392,
+          "sha256": "90970d23748ea8a2c1adf8c42c769043fa69fe1b54453c2ad7f421cfbc846e4f"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_initialize_00.txt",
+          "size": 3043,
+          "sha256": "0e671ae390447a15c4f9e56ebd676e3a6e87461734553ade3feefc1793f082ea"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_initialize_01.txt",
+          "size": 4822,
+          "sha256": "8f0624e429cbbfd4ddf459e2e2a0135e083b697a3831795f78e365a6b6418675"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_initialize_02.txt",
+          "size": 5112,
+          "sha256": "9ee02c202590e868ac28804b10093ab73ebe0cdd9d428e1771d402975be4e14b"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_initialize_03.txt",
+          "size": 4902,
+          "sha256": "087592468de0c5c417d95d41de6095caa84c71c44b229dbba006c702c1dbc2ba"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_initialize_04.txt",
+          "size": 4226,
+          "sha256": "69b3ba90bf0d27edf6300872375c7f25961c985e59073b26fa26f5e0b9834a42"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_initialize_05.txt",
+          "size": 4914,
+          "sha256": "e4fd21d248cabdd9d3293203743c1dbb935ad47c400dfa7987d149d8c7eeb615"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_initialize_06.txt",
+          "size": 5367,
+          "sha256": "a56c22007d2717cf037c379bdfb3f7478ad630a34407a5218e845484c71c041e"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_initialize_07.txt",
+          "size": 4727,
+          "sha256": "382ae1b4cd0cc3a0c7012ec916d623457febb96055d8dea94321c68aff7a3c2c"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_initialize_08.txt",
+          "size": 3667,
+          "sha256": "adacccae7aea739c571404edb54be472196bcad276f22f5babf24056139b1a00"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_initialize_09.txt",
+          "size": 5182,
+          "sha256": "05cd949f03686f7b34ef0c6d0eee09042c10cff605019425eb1f86cee22806ff"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_initialize_10.txt",
+          "size": 3398,
+          "sha256": "8dfe4f6d46f0803403c52423e9edd80bee7ccca46d6a0eca2e2bc31a578cdabe"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_initialize_11.txt",
+          "size": 4522,
+          "sha256": "5c1b68761d63b21177ba147198d2175c30e11811d7a64820fb7b5f7dcbdee919"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_initialize_12.txt",
+          "size": 1068,
+          "sha256": "b34c1dcebd5a767cf79b27e1431c1a7f6a125822b44d4e2aa8bde2bf0b175801"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_select_00.txt",
+          "size": 3072,
+          "sha256": "fd1b7466f208cd1a6a58bd7e38d9604d505df36d6894bd1b841c472f95344de7"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_select_01.txt",
+          "size": 5382,
+          "sha256": "98dde9cc3c4001c5df66e9e93a5fb4534289db57187d7109b94a8fac8e4a4e9b"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_select_02.txt",
+          "size": 6135,
+          "sha256": "a9d0b125c63a4bc0901aae6e8b46146694ae34f03560cce7a16b2d5706a22e9b"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_select_03.txt",
+          "size": 6183,
+          "sha256": "4e88f59e018abe2e9869a71906b8bec55df6777f036be3bd9e5f02a97721c0f1"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_select_04.txt",
+          "size": 4772,
+          "sha256": "469f75fca055e18453af5fab41e6eb976b3869ea5e16dc2f1813162b3a6ce4e5"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_select_05.txt",
+          "size": 5077,
+          "sha256": "ec411b2d7c0cddce63d9729e0c04444cc9bf0f26a406c662b237db1b978c6137"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_select_06.txt",
+          "size": 7909,
+          "sha256": "d270e0fbd9cd62a685ae1c398f1083052b5407a6f69f6f111f25217542d49e39"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_select_07.txt",
+          "size": 6205,
+          "sha256": "9d516ae5dd35680812fb4c5de6286da41a29f57b1f9792c2b3835eb75ae0f6d2"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_select_08.txt",
+          "size": 4073,
+          "sha256": "f45fb321cbf9a135731a5561eccb6e9c80323d612e28d03e24a0b1d24fb6841a"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_select_09.txt",
+          "size": 5679,
+          "sha256": "2e4bbb66e64c9cb94cae454481c0cf44553700f5945412eb75b002340c5cb83d"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_select_10.txt",
+          "size": 2131,
+          "sha256": "83f18815e8018f6f897d63901544ba26da9a8803a006c1f3e8deb4c8858bdfaf"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_select_11.txt",
+          "size": 3755,
+          "sha256": "1fa2a149eaed939604be1c6b21554d491354113d9698ba4862846a988d6f3c42"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_select_12.txt",
+          "size": 717,
+          "sha256": "c5a64d6f51a97edc56b16c716f92d8bfaba32e2a61471488e6e0e4c421cc8ac1"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_validate_00.txt",
+          "size": 5806,
+          "sha256": "c38688e63f13e1689a8257fde3c5222905af1fc34e3707c90e9874c6138deeb5"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_validate_01.txt",
+          "size": 5857,
+          "sha256": "80289e8c52c1cda127db99ff13ef00e59cfe435dfc2d132e2cacde82467d3ece"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_validate_02.txt",
+          "size": 7543,
+          "sha256": "cb5d202ccf7f612d4b8b332379c676c2c80aa58a2da424ff246759a7971ef0a9"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_validate_03.txt",
+          "size": 6761,
+          "sha256": "35a49c3d9493eb77687ad72533be0af43e0fe2bf968c1c0db36cb09c4d38c347"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_validate_04.txt",
+          "size": 5595,
+          "sha256": "30d9a088f20ea8d56e2d206a463828b1ae1b7ce21ecfd5142f74b4ddd2c1f6ec"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_validate_05.txt",
+          "size": 7194,
+          "sha256": "045723e0471a6cd3291e0fdf1d8f2a62cfaa9da3fd5918d28755f1c971d2d8d6"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_validate_06.txt",
+          "size": 6968,
+          "sha256": "5b9f1c0af6baf03ce14bde343ca7edabc9530b6a1b1f63d191cee8c3625b7c92"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_validate_07.txt",
+          "size": 6697,
+          "sha256": "34b9ae3a151a8cebfbd5d8d8dfebf7687fd5297cc1591b4da6bc85bc5db20ea5"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_validate_08.txt",
+          "size": 7254,
+          "sha256": "424873d65df2e9e4dec7b0c74a4b9547ef4ac59bc9206e3d1d9364028a28923d"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_validate_09.txt",
+          "size": 6082,
+          "sha256": "6a558a261095901234217f24f3ae920707f70394752b7b7409b3c20c104e33aa"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_validate_10.txt",
+          "size": 4274,
+          "sha256": "ddf5c6534849124f3375465c79a9da54a4a1fb3cf76990434ff7caa901e466c7"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_validate_11.txt",
+          "size": 4600,
+          "sha256": "5cc47d6f49d3dc369cd25f56d7a893dd3f88f232f2c15bb356c0454768a5a383"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_validate_12.txt",
+          "size": 4522,
+          "sha256": "2e51ba83f79adf424a08607601fb9b1511edb792b7f5010ed1a60a8672232f3c"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_validate_13.txt",
+          "size": 4833,
+          "sha256": "25b4ec908cd123e19b34ff475a69264d9dbaf989d3c2a5cb34f9feef9d3fa3d2"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_validate_14.txt",
+          "size": 4766,
+          "sha256": "96b0cb3d6dd97d6eec47bc9fa12ae140d4afe934418d6967fa6a85aa28183751"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_validate_15.txt",
+          "size": 5169,
+          "sha256": "0297f6da417494e5ad315fe3206de3edc84479dd3d06f308f8697c8f651a31a4"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_validate_16.txt",
+          "size": 4682,
+          "sha256": "60033571c27fc6bf7ed8080e8bc375abb33ded239414d4ffcc0bf538c7e254c7"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_validate_17.txt",
+          "size": 5114,
+          "sha256": "67b72934dbbe69dca1ba53d57e55c51e2f6a8b3bf78ae56b768f16eba1559b8e"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_validate_18.txt",
+          "size": 5320,
+          "sha256": "6f23e067aafa6b2e579baf9d6f718fb6a2c9d68889e066b148569ba7f802d54f"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_validate_19.txt",
+          "size": 4958,
+          "sha256": "fc689d1fd3a03f8f0df0e8438385eaa24aa0e69ec3c46353fbb54503e784e8ce"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_validate_20.txt",
+          "size": 4768,
+          "sha256": "9b9560f95d8a91000fb297597676fdfd715d6397fc3a96fba18b06f9a3c89f0a"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_validate_21.txt",
+          "size": 4988,
+          "sha256": "e5d453eb08170b549fda334de6528b4abc56054ba524660cda3384f853c51195"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_validate_22.txt",
+          "size": 4742,
+          "sha256": "69109e6af89623e1f9a8854ec22665b091b8e4419d68dc2a404d311771f7c3a4"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_validate_23.txt",
+          "size": 5030,
+          "sha256": "f03397b176fa90c282e28830103fdfb4e432677689688019c6bdfc72fa19484f"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_validate_24.txt",
+          "size": 5190,
+          "sha256": "a7dd86831bdb5e5029c9d388f2d20f4235f988bdc6e2b0f97d97c942448786b9"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_validate_25.txt",
+          "size": 3300,
+          "sha256": "3651d428fc57a99786ece8218b3489995d6830f8d497892e9bb63ad97236da8f"
+        },
+        {
+          "path": "common/scripted_effects/rrf_catalog_dispatch_00.txt",
+          "size": 17380,
+          "sha256": "f0d85d1c64cce718bfb33d6db969f63fd24661e7c5f5488f886949ecf3c8ab36"
+        }
+      ]
+    }
+  },
+  "verify": {
+    "command": "java -jar mod_religious_ritual_fusion/tools/target/quarkus-app/quarkus-run.jar verify --output C:/workspace/rrf-development-20261024/01-staging --manifest C:/workspace/rrf-development-20261024/01-staging.manifest.json",
+    "exit_code": 0,
+    "result": {
+      "files": 67,
+      "version": "0.1.0",
+      "revision": "42af27c3b1601a7066636a75414defd48972a3f0"
+    }
+  },
+  "open_kaishek": {
+    "workspace": "C:/workspace/open_kaishek",
+    "workspace_commit": "2b559966c72f4e845111e3e15652ae2354aaed57",
+    "workspace_dirty": false,
+    "artifact": "C:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+    "artifact_sha256": "6ac143ebf03f3e1a041dff01b2d808e60de8e289d18cebf9855682f0a80b6d82",
+    "profile": "Version-independent parser; CLI 0.1.0-SNAPSHOT; no CK3 1.20 semantic profile available.",
+    "command": "java -jar C:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar corpus C:/workspace/rrf-development-20261024/01-staging --require-corpus",
+    "exit_code": 0,
+    "result": {
+      "status": "OK",
+      "root": "C:\\workspace\\rrf-development-20261024\\01-staging",
+      "files": 64,
+      "parsed": 64,
+      "errors": 0,
+      "errorFiles": [],
+      "bytes": 312354,
+      "corpusSha256": "cb1342f1a198baecf2aefabfe9acf3b8b3babaf1765f1d007e2ff9d2dbe99ee9"
+    },
+    "not_covered": [
+      "Descriptor and two localization YAML files are outside corpus script extensions.",
+      "No 1.20 Rite/Faith creation, GUI binding, piety, conversion or persistence semantics certified.",
+      "Workspace HEAD and artifact SHA observed separately; no artifact build provenance inferred."
+    ]
+  },
+  "catalog": {
+    "path": "catalog/generated-catalog.json",
+    "sha256": "de37087f2472398c2cedd92d75ecfa0f0ad038ab9c14c58441fea2051629d8f7",
+    "source_files": 157,
+    "groups": 49,
+    "tenets": 97,
+    "doctrines": 126,
+    "statically_blocked_definitions": 21
+  },
+  "ci": {
+    "workflow": ".github/workflows/religious-ritual-fusion-static.yml",
+    "local_verify_passed": true,
+    "remote_result": "not-observed"
+  }
+}
