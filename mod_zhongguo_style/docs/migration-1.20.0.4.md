@@ -8,12 +8,18 @@
 
 核对范围：`game/common/governments/00_government_types.txt` 中 `celestial_government`、`government_is_celestial`、贤能资格和 `character_max_merit_level_add`；`common/on_action/_on_actions.info`、`yearly_on_actions.txt` 的年度 playable/everyone pulse；`common/modifiers/10_tgp_modifiers.txt` 的贤能及 `monthly_treasury_from_salary_budget_mult`；原版活动类型与本产品京察的参与者 scope、host 限定、取消及 treasury 成本接口。现存接口继续用于二期生产路径，不另建平行实现。
 
-描述文件原先已标记 1.20.0.4，但仍使用 0.3.1 版本号。此次将完整仓库二期投影正式标记为 0.4.0，并同步当前说明；不把旧版加载或历史场次当作本次实测。
+描述文件原先已标记 1.20.0.4，但仍使用 0.3.1 版本号。此次将完整仓库二期投影正式标记为 0.4.0，并同步当前说明；不把旧版加载或历史场次当作本次实测。首次实际加载发现京察缺少 `header_background`，已按原版 `feast.txt:1182` 补入实际存在的宴会顶部背景。
 
 ## 简短实测合同
 
 公共入口选择 `zhongguo-361 / migration-one-year`，沿用本机共同 runtime 与原生 MCP。1066 罗贝尔正常入场，启用年度严格 361；天朝 AI 仍走真实生产年度链。独立观察夹具仅在入场和 365 个自然日后记录日志，不改日期、角色、资源或产品状态，不进入发布包。验收同时读取原生日期、玩家身份和游戏错误日志。
 
 当前：静态校验通过；实机与 Workshop 更新待本次实际执行后追加。
+
+首场 `pc-20260924rtuf-f11af23c08--zhongguo-style--R0001` 在人物入场前因共同 DLL 不提供 `query-frontend-game-rules-window-v1` 而失败。三项规则本来就是产品默认值，后继直接消费默认值，不增加 native 施工。首场同时保留大量二期未使用变量的加载分析诊断，不能称为零诊断。
+
+执行者在首场运行时修改 lease anchor 工作树，导致 keeper 因 checkout dirty 退出；这是执行流程失误。游戏经实际主菜单 Exit to Desktop 退出，原生 session 证明 Game OS0、Job0、完整 tree/control/watchdog 清理。原 host 因旧队列要求已结束 keeper 仍持有新鲜租约而停在无游戏的 hold，已在共享队列补入显式 `--terminal-cleanup`：只接受单个 `failure_shutdown=true` 的 `finish_hold`，复用原 host 的实际 native-zero 谓词，核原 keeper 线程已结束及当前无 CK3，返回 `lease=null`，保留失败且不授业务/正常退出信用。未热改冻结 runtime；新队列消费原 frozen helper，原 host 自己执行尾部 finally 并写出 RED/cleanup true。42 项队列回归通过，完整 `ck3_mod_acceptance_queue.py` 的 mypy 检查通过；回归已在现有 static CI step 持续执行。
+
+后继 `R0002` 使用独立、干净的本机 `c23` lease anchor、修正版 staging 和新 profile；主仓后续文档与发布准备不修改该冻结 anchor。
 
 过程证据：`D:/workspace/ck3-zhongguo-12004-20261025`，原始日志按通用策略保留 30 天，运行 profile/存档 14 天，当前必要恢复输入最长七天复核。未删除旧证据。

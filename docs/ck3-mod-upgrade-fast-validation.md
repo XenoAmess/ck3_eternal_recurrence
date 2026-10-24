@@ -1,5 +1,9 @@
 # CK3 mod升级提速与公共验收入口（2026-10-08）
 
+## 2026-10-25 已退出游戏的失败 host 收尾
+
+361 迁移实机（`machine_id: pc-20260924rtuf-f11af23c08`）发现真实阻塞：原 keeper 因执行者修改 lease anchor 而结束，游戏已由 GUI 退出且原 native session 完整证明 OS0/Job0/tree/control 清理，但队列仍要求 keeper 新鲜租约才能让 host 结束 hold。共享队列现提供显式 `--terminal-cleanup`，仅向原 host 提交单个 `failure_shutdown=true` 的 `finish_hold`。它验证原 host 的 native-zero 清理谓词、原 keeper 已结束及当前无 CK3，回执 `lease=null`，不授正常退出或业务 PASS。普通游戏命令仍走原租约路径。原失败、冻结 runtime 和 keeper 报告不变；不通过删除报告或复活旧租约收尾。真实来源与回归见 [361 迁移记录](../mod_zhongguo_style/docs/migration-1.20.0.4.md)。
+
 ## 2026-10-15 重整河山：两场迁移差异门槛
 
 遵照用户反复要求继续缩减，本轮 RMTM 使用 `migration_delta_v1`，不再把 core26 辅助 GUI 全回归作为发布门槛。此变更只适用于新准备/新场，不改判 R17、A210 或 A211 的整场 RED，也不授 core26/full36 通过。生产36文件、现有fixture、原死亡/次日callback/两日D8探针调度、14日上限和原预算均不改。

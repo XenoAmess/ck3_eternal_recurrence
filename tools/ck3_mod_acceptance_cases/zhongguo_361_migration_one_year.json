@@ -3,27 +3,44 @@
   "product": "zhongguo-361",
   "case_id": "migration-one-year",
   "acceptance_scope": "one_year_12004_compatibility_smoke",
-  "fixture_source": {"kind": "prebuilt_manifest"},
+  "fixture_source": {
+    "kind": "prebuilt_manifest"
+  },
   "maximum_natural_days": 366,
-  "failure_prefixes": ["ZG361SMOKE:"],
+  "failure_prefixes": [
+    "ZG361SMOKE:"
+  ],
   "gui_phases": [],
-  "source_contracts": ["mod_zhongguo_style/docs/migration-1.20.0.4.md"],
-  "uncovered_product_business": ["Full phase-two scenario matrix, old-save migration and multiplayer are outside this user-requested one-year smoke test."],
-  "post_start": {"government_key": "feudal_government", "primary_title_tier_key": "duchy", "independent": true},
-  "required_startup": ["ZG361SMOKE: START character_entered"],
-  "forbidden_startup": ["ZG361SMOKE: FAIL"],
+  "source_contracts": [
+    "mod_zhongguo_style/docs/migration-1.20.0.4.md"
+  ],
+  "uncovered_product_business": [
+    "Full phase-two scenario matrix, old-save migration and multiplayer are outside this user-requested one-year smoke test."
+  ],
+  "post_start": {
+    "government_key": "feudal_government",
+    "primary_title_tier_key": "duchy",
+    "independent": true
+  },
+  "required_startup": [
+    "ZG361SMOKE: START character_entered"
+  ],
+  "forbidden_startup": [
+    "ZG361SMOKE: FAIL"
+  ],
   "source_catalogue": {
     "directory": "mod_zhongguo_style",
     "builder": "tools/build_mod_zhongguo_style_release.py",
-    "release_flags": ["--release", "--output", "{new-output}", "--workshop-item-id", "3792585972"],
+    "release_flags": [
+      "--release",
+      "--output",
+      "{new-output}",
+      "--workshop-item-id",
+      "3792585972"
+    ],
     "workshop_item_id": "3792585972"
   },
   "business_contract_applicable": true,
   "calendar_bound_provenance": "2026-10-25 user explicitly requests character entry and one actual year without errors, replacing the older full release test matrix for this update.",
-  "frontend_rules": [
-    {"rule_key": "zg361_enabled", "desired_setting_key": "zg361_on"},
-    {"rule_key": "zg361_frequency", "desired_setting_key": "zg361_freq_yearly"},
-    {"rule_key": "zg361_bottom_ratio", "desired_setting_key": "zg361_ratio_strict"}
-  ],
-  "frontend_rules_sources": ["mod_zhongguo_style/common/game_rules/zg361_game_rules.txt"]
+  "ordinary_rules": "Use actual declared defaults zg361_on / zg361_freq_yearly / zg361_ratio_strict; no unsupported frontend rule mutation."
 }

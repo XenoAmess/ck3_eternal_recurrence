@@ -72,13 +72,40 @@ class FailureShutdownQueue(unittest.TestCase):
         for patcher in self.patchers:
             patcher.start(); self.addCleanup(patcher.stop)
 
-    def enqueue(self, flag=True, *, include=True):
+    def enqueue(self, flag=True, *, include=True, terminal_cleanup=False):
         step = {'id':'new-lifecycle-only', 'kind':'finish_hold'}
         if include:
             step['failure_shutdown'] = flag
         plan = self.live/'plan.json'
         plan.write_text(json.dumps({'steps':[step]}),encoding='utf-8')
-        return self.queue.enqueue(self.live, plan, 'new-lifecycle-only.json')
+        return self.queue.enqueue(self.live, plan, 'new-lifecycle-only.json', terminal_cleanup=terminal_cleanup)
+
+    def test_ended_keeper_can_finish_actual_proved_cleanup_without_claiming_a_lease(self):
+        self.frozen['screen_task'] = 'ended-keeper'
+        (self.live/'report.json').write_text(json.dumps({'task_id':'ended-keeper',
+            'thread_exited':True, 'entry_error':'checkout changed'}), encoding='utf-8')
+        with mock.patch('psutil.process_iter', return_value=[]), mock.patch.object(
+                self.queue, 'live_lease', side_effect=ValueError('keeper already ended')) as lease:
+            result = self.enqueue(terminal_cleanup=True)
+        lease.assert_not_called()
+        self.assertIsNone(result['lease'])
+        self.assertIs(result['terminal_cleanup']['normal_close_qualified'], False)
+        self.assertEqual(result['terminal_cleanup']['native_failure_cleanup'][
+            'process_exit_zero_proof']['pid'], 2088)
+        self.assertTrue((self.live/'controls/new-lifecycle-only.json').is_file())
+
+    def test_terminal_cleanup_refuses_game_commands_and_a_current_ck3(self):
+        self.frozen['screen_task'] = 'ended-keeper'
+        (self.live/'report.json').write_text(json.dumps({'task_id':'ended-keeper',
+            'thread_exited':True}), encoding='utf-8')
+        with self.assertRaisesRegex(ValueError, 'no game commands'):
+            self.queue.terminal_cleanup_evidence(self.live, self.frozen, self.report,
+                [{'id':'advance', 'kind':'advance_day', 'days':1}])
+        process = mock.Mock(info={'name':'ck3.exe'})
+        with mock.patch('psutil.process_iter', return_value=[process]), self.assertRaisesRegex(
+                ValueError, 'while a CK3 process exists'):
+            self.enqueue(terminal_cleanup=True)
+        self.assertFalse((self.live/'control-once-ledger').exists())
 
     def test_explicit_failure_uses_real_host_proof_and_once_publication(self):
         before = copy.deepcopy(self.report)

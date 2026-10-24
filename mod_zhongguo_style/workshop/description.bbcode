@@ -11,7 +11,9 @@
 3.25/PIP/末位与申诉都已落地。首次建账的存量官员不算新人；只有基线建立后新到任者，
 才在本人第一次受评时免入 3.25。1–2 人小组仍排名并按 3.5 结算，只是不硬凑校准或末位。
 
-Version 0.3.0 · CK3 1.20.0.4
+Version 0.4.0 · CK3 1.20.0.4
+
+[i]以下八张图片保留自 0.3.0 / CK3 1.19.0.6 的真实实机，不作为本次二期逐项验收证据。[/i]
 
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/aff24a7dbe2e53e749a85983cce8f63ac518f08c/mod_zhongguo_style/workshop/media/03_scoreboard.jpg[/img]
 [i]考核榜：排名、KPI、价值观与档位全部上墙 / Scoreboard: rank, KPI, values and rating—on the wall[/i]
@@ -47,7 +49,7 @@ Version 0.3.0 · CK3 1.20.0.4
 
 [b]3.25 · 待改进[/b]
 地方国库 -50（有国库时）、个人金币 -25、贤能 -60（有贤能制时）、一年俸禄 -25%（有俸禄时），并进入 PIP；连续两轮可能免费夺爵、强制致仕、降岗留用，或再留一年。
-申诉若改判，会按本轮案卷退回固定罚没并修正榜单统计。
+申诉若改判，会按同一案卷退回实际扣款并修正榜单统计。二期保留冻结证据、送达状态和个人清算单，拒收改为见证送达，不能借此逃过处分。
 
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/aff24a7dbe2e53e749a85983cce8f63ac518f08c/mod_zhongguo_style/workshop/media/06_superior_325_result.jpg[/img]
 [i]上司考定：画面明示 3.25、KPI 与名次；四重后果由同轮实机对账核验 / Superior result: 3.25, KPI and rank on screen; fourfold consequences verified in the same run[/i]
@@ -67,12 +69,12 @@ AI 默认履责并后台结算，不占用活动 UI。
 [h1]361 条制度，不是 361 个皮肤[/h1]
 
 编号 001–361 各有政策卡、A/B/C 路线、玩家/AI 入口和持久选择；正常考核逐次抛出未配置卡，也可加速建设或采用参考宪章。
-这些卡会谈到 OKR、互评、晋升、HC、抢功、技术债、加班和《三六一绩效宪章》，但 0.3.0 交付的是[b]制度配置层[/b]，
-不是 361 套独立领域小游戏。
+这些卡会谈到 OKR、互评、晋升、HC、抢功、技术债、加班和《三六一绩效宪章》。0.4.0 在原有[b]制度配置层[/b]之上，
+纳入仓库现有二期领域运行时；逐号配置数量不代表同等数量的独立机制已经逐一实测。
 
 选择共用 17 类后果 profile，并写入 14 本组织账：证据可信、互信、行政负担、申诉风险、交付、稳定性、技术债、
-数据质量、倦怠、人才、HC 压力、薪酬债、制度债和预算压力；当前只提供组织气候与有限 KPI 回流。独立 HC 槽、
-晋升包案卷、贡献争议和事故时间线等领域状态机属于下一版本预研，不冒充本版已落地。
+数据质量、倦怠、人才、HC 压力、薪酬债、制度债和预算压力。二期代码还包含人事与编制、晋升与 PIP、薪酬、贡献争议、
+事故及管理者案卷等链路；本次兼容更新仅进行一年稳定性冒烟测试，未重新覆盖这些链路的全部分支。
 
 [img]https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/aff24a7dbe2e53e749a85983cce8f63ac518f08c/mod_zhongguo_style/workshop/media/07_policy_001_kpi_evidence.jpg[/img]
 [i]#001 KPI 分项证据单：先摊证据，再打分 / #001 KPI evidence: receipts before ratings[/i]
@@ -102,16 +104,16 @@ AI 默认履责并后台结算，不占用活动 UI。
 
 [h1]实机证据与发布状态[/h1]
 
-CK3 1.20.0.4 实机合批 GREEN：宋帝 23 人严格 7/14/2，361/361 配置账本、考核榜、京察、上司明示本人
-3.25 与六张代表政策卡全链通过；项目诊断为 0，干净画面无测试决议。
-361/361 仅指逐号配置、唯一选择状态与 14 本共享账通过，不等于 361 个领域状态机或 1,083 个分支全实现。
-0.3.0 已完成正式构建、宣传成片、Workshop 上传、空缓存逐文件复验与 fresh-cache 实机合批。
+0.4.0 按用户指定范围检查 CK3 1.20.0.4 启动、人物入场与自然运行一年，不重做完整二期矩阵。
+0.3.0 在 CK3 1.19.0.6 的宋帝 23 人 7/14/2、361 项配置账本、考核榜、京察、个人告身及代表政策卡实机属于历史证据；
+不能将它改写为 1.20.0.4 的完整通过。二期仍有未使用变量的加载分析诊断，完整领域回归、旧存档与多人游戏不在本次验收范围内。
 
 [h1]English Summary[/h1]
 
 Eligible celestial duke-or-higher rulers review direct officials; counts and barons are reviewees only. Frozen 30/60/10
 boards drive the current rating, PIP and appeal loop. The 361 policy cards persist selected routes into fourteen shared
-ledgers with limited KPI feedback; richer HC, promotion and cross-team domain runtimes are future work.
+ledgers. Version 0.4.0 packages the repository's existing phase-two runtime for CK3 1.20.0.4. This update uses a
+one-year compatibility smoke test; it does not requalify every domain branch, old saves or multiplayer.
 
 [h1]源码 / Source[/h1]
 
