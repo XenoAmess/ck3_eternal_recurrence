@@ -1,0 +1,54 @@
+{
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-24T16:11:22.524078+00:00",
+  "images": [
+    {
+      "index": 0,
+      "original_filename": "01-hero.jpg",
+      "type": 0,
+      "url": "https://images.steamusercontent.com/ugc/15441903631624296074/E5C0F7460A2495AA8AB17FBDCE8EFF790B441CA0/",
+      "http_status": 200,
+      "bytes": 581668,
+      "sha256": "1f8d1f502ea41bf9b8e45f6a4e07f6c27ace3e283d940972224e054767b90145",
+      "width": 1672,
+      "height": 941,
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\workshop-media-remediation-a01\\publisher\\public-01-hero.jpg"
+    },
+    {
+      "index": 1,
+      "original_filename": "02-natural-awakening-r31.jpg",
+      "type": 0,
+      "url": "https://images.steamusercontent.com/ugc/16686420290950891485/8A0DBF3EFA31E75240F7B33B0E7E248F2DE3E92E/",
+      "http_status": 200,
+      "bytes": 487158,
+      "sha256": "155993e42aa2f3a14e487e76e731ef2af5ea0c6605b51920c6f17b3092bdc541",
+      "width": 1920,
+      "height": 1080,
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\workshop-media-remediation-a01\\publisher\\public-02-natural-awakening-r31.jpg"
+    },
+    {
+      "index": 2,
+      "original_filename": "03-feeding-concept.jpg",
+      "type": 0,
+      "url": "https://images.steamusercontent.com/ugc/12123211491384207815/BEDD267F70DC11206575BB1404375D99CFFCE624/",
+      "http_status": 200,
+      "bytes": 535535,
+      "sha256": "0b18e9032d2e4f4d46d222a46707d5f80eb093fded93d8248c6864bd44a068ec",
+      "width": 1672,
+      "height": 941,
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\workshop-media-remediation-a01\\publisher\\public-03-feeding-concept.jpg"
+    },
+    {
+      "index": 3,
+      "original_filename": "04-management-guide-r33.jpg",
+      "type": 0,
+      "url": "https://images.steamusercontent.com/ugc/12812883247729063140/8BCDE95586432886495CC7D2533F7BAB1AEF44A8/",
+      "http_status": 200,
+      "bytes": 507531,
+      "sha256": "46bedf09fa8b9077d836568e8dd1bfef5b6c2811dee8932ceb2d51b9dc0b215e",
+      "width": 1920,
+      "height": 1080,
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\workshop-media-remediation-a01\\publisher\\public-04-management-guide-r33.jpg"
+    }
+  ]
+}

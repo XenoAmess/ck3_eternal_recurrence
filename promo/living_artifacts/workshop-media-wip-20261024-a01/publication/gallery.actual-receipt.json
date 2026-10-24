@@ -1,0 +1,53 @@
+{
+  "additional_preview_changes": {
+    "add": [
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\living_artifacts\\workshop-media-wip-20261024-a01\\art\\01-hero.jpg",
+        "sha256": "1f8d1f502ea41bf9b8e45f6a4e07f6c27ace3e283d940972224e054767b90145",
+        "size": 581668
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\living_artifacts\\workshop-media-wip-20261024-a01\\screenshots\\02-natural-awakening-r31.jpg",
+        "sha256": "155993e42aa2f3a14e487e76e731ef2af5ea0c6605b51920c6f17b3092bdc541",
+        "size": 487158
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\living_artifacts\\workshop-media-wip-20261024-a01\\art\\03-feeding-concept.jpg",
+        "sha256": "0b18e9032d2e4f4d46d222a46707d5f80eb093fded93d8248c6864bd44a068ec",
+        "size": 535535
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\living_artifacts\\workshop-media-wip-20261024-a01\\screenshots\\04-management-guide-r33.jpg",
+        "sha256": "46bedf09fa8b9077d836568e8dd1bfef5b6c2811dee8932ceb2d51b9dc0b215e",
+        "size": 507531
+      }
+    ],
+    "remove_indices": [],
+    "update": []
+  },
+  "additional_previews_before": {
+    "app_id": 1158310,
+    "item_id": "3825237804",
+    "previews": []
+  },
+  "app_id": 1158310,
+  "created_at": "2026-10-24T16:07:30.213162+00:00",
+  "item_id": "3825237804",
+  "legal_agreement_required": false,
+  "operation": "update",
+  "operation_id": "living-artifacts-workshop-art-20261025-gallery-a01",
+  "payload_sha256": "d9b0c80edb18102b02bdec04c7511f9a6bc606219ca010bcb4873626e1fa9842",
+  "schema": "ck3_workshop_mcp.steam_native.receipt.v1",
+  "stage": "complete",
+  "steam_result": 1,
+  "submitted_at": "2026-10-24T16:07:52.463050+00:00",
+  "tags": [
+    "Artifacts",
+    "Events",
+    "Gameplay",
+    "1.20 'Crozier'"
+  ],
+  "tags_only": false,
+  "update_scope": "content_and_metadata",
+  "updated_at": "2026-10-24T16:07:52.463098+00:00"
+}

@@ -30,3 +30,13 @@ Steam 主窗模式切换后产生旧黑窗；Root 经官方托盘“库”重新
 该独立回读包为 `19 文件 / 223683 B`，无临时文件、future-write `0`；[原件 Pins](D:/workspace/ck3-living-artifacts-20261022/environment/promo-description-public-readback-a01/terminal-pins.json)绑定各份原 HTTP、命令、退出和摘要。存储独立复核数量、字节和 Pins 后，[task-close](D:/workspace/ck3-living-artifacts-20261022/environment/storage-promo-description-public-readback-a01/task-close/20261023T135055548805Z-task-close.json)实际退出 `0`；只关闭该子包，不释放父 other128。
 
 旧两图移除后的空条带见 [SDK 原回读](D:/workspace/ck3-living-artifacts-20261022/release/living-artifacts-promotion-remediation-a01/previews-after-removal-01-call.json)。空条带只说明不合格旧素材已撤除：**普通游玩新图、正式图片上传及正文 `[img]` 嵌入仍未完成**，不能据本次描述与 Notes 回读通过宣称全部宣传整改完成。
+
+## 2026-10-24 后继：已补图库与正文图片
+
+`machine_id: pc-20260924rtuf-f11af23c08`，北京时间 10 月 25 日。当前 [工坊页面](https://steamcommunity.com/sharedfiles/filedetails/?id=3825237804)已新增四图：冷峻主视觉、普通战役自然觉醒「★君王之杖」、吞噬珍宝主题概念美术、正常决议打开的管理说明。两张美术明确为概念图；两张实机没有业务夹具、控制台造物、改金币或伪造游戏窗口。四图均已嵌入正文对应段落，最终 [BBCode](../../workshop/living_artifacts_description.bbcode) 使用实际 Steam CDN 地址，7413 UTF-8 字节、四组 `[img]`。
+
+SDK 两次实际提交原退出均为 0，最终回执 complete/SteamResult1；新鲜所有者、AppID 和完整图库快照在写入前核验。既有生产入口同时重传完全相同的正式 57 文件/2071121 B，逐文件 SHA 已核对；本次没有产品代码、版本变化或重发 changelog。实际上传与媒体来源、公开回读见 [配图索引](../../workshop/living_artifacts_screenshots.md)和 [publication.json](../../promo/living_artifacts/workshop-media-wip-20261024-a01/publication.json)。
+
+匿名公开 API 全文与冻结描述完全相同；四个公开 Steam 原图均 HTTP200，字节、SHA-256 与尺寸匹配提交文件。Steam 经官方菜单恢复离线，`2026-10-24T16:10:47.625517Z` 新鲜后台原生回执实际为 offline/true。网页渲染与 Notes 本轮回读的状态在 publication 记录中单独列出，不能用 SDK ACK 外推。
+
+仍未取得同物喂养前后、实际升级结果、镇压报价及付款期限截图。R33 在管理说明后调用不适用于正式模组 profile 的库存原生接口被守卫拒绝，保留 RED；R34 在地图就绪前超时。原 public 退出分别为 2、2，资源已关闭但没有正常退出或业务通过信用。上述四图只证明各自呈现的内容，不把这两场失败或缺图记成已完成。

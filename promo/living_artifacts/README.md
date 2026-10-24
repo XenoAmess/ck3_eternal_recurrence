@@ -10,12 +10,12 @@ Bilibili 投稿封面已完成：[4:3 PNG](covers/bilibili-cover-4x3-v1.png)（1
 
 [下载 MP4](https://github.com/XenoAmess/ck3_eternal_recurrence/releases/download/living-artifacts-promo-20261024/living-artifacts-original-midi-xiaoxiao.mp4) · [Release 页面](https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/living-artifacts-promo-20261024) · [交付与验证记录](evidence/video-release-20261024.json)。公开附件已匿名完整下载，字节与 SHA-256 均匹配本地最终版。
 
-影片包含普通战役及自然觉醒的「★君王之杖」实拍。未拍到的培养、喂养、镇压和异能／诅咒结果明确使用机制说明卡，没有伪造游戏窗口或已执行结果。完整解码、6300 帧、音轨与十一张卡片时点检查已通过；人工完整观看和审听尚未完成。新工坊配图、正文嵌图与缓存实际加载仍待完成。
+影片包含普通战役及自然觉醒的「★君王之杖」实拍。未拍到的培养、喂养、镇压和异能／诅咒结果明确使用机制说明卡，没有伪造游戏窗口或已执行结果。完整解码、6300 帧、音轨与十一张卡片时点检查已通过；人工完整观看和审听尚未完成。工坊已补两张概念美术、自然觉醒与正常管理说明两张实机图，四图均嵌入正文；[配图与公开回读](../../workshop/living_artifacts_screenshots.md)。实际喂养、镇压结果图和缓存实际加载仍待完成。
 
 - [导演稿与逐幕旁白](director.md)：LA-01–08 分镜、画面、声音、事实限制和同场截图表。
 - [机器可读导演数据](director.json)：本项目专用导演稿数据，与章节和旁白对应。
 - [promo 项目配置](promo-project.json)：既有工具链 v1 配置，章节 `planned`，素材引用为空。
-- [工坊介绍 BBCode](../../workshop/living_artifacts_description.bbcode)：已重写并公开核对；新图将在视频拍摄过程中取得后上传并嵌入。
+- [工坊介绍 BBCode](../../workshop/living_artifacts_description.bbcode)：已重写、嵌入四张实际 Steam 图，并与匿名公开 API 全文核对。
 - [正式模组与规则](../../mod_living_artifacts/README.md)；[宣传整改记录](../../mod_living_artifacts/docs/workshop-promotion-remediation-2026-10-23.md)。
 
 ## 本轮实际工具使用

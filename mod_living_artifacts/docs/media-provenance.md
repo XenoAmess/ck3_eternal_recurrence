@@ -25,3 +25,13 @@ R6 图显示中文测试夹具的目标与四档材料，拍摄仍在实际装�
 2026-10-22 名称需求追加后的[带星号中文库存原图](evidence/r7-star-inventory.png)：1920×1080、2,449,041 字节，SHA `6f0627796769c80eecd2d564b312c6ba8d69ca8ca37dcf650f311fe7aa7bb210`。`machine_id: pc-20260924rtuf-f11af23c08`，拍摄时间 `2026-10-22T07:36:24.839185Z`，R0007/PID10940/generation1，CK3 1.20.0.4/build25734779，冻结源码 `7559ccccf66348d9dae3b50b1cc2f40145c05df3`。库存实际显示 `★待测活武器`，四档普通材料无星号；同场严格解包的真实存档名称一致。[原始 capture 字节副本](evidence/r7-star-inventory.capture.json)和[来源、加载 manifest、实际存档及审阅索引](evidence/r7-star-inventory.provenance.json)均已保存。该图拍摄于装备前，仅证明初始测试目标的名称显示与保存，不授予成长、喂养、AI、传承或完整发布通过。
 
 该图已[上传 GitHub](https://raw.githubusercontent.com/XenoAmess/ck3_eternal_recurrence/10c37fa927e1df033c2d837c96f8d696ed4eadc2/mod_living_artifacts/docs/evidence/r7-star-inventory.png)。来源机器 `pc-20260924rtuf-f11af23c08` 于 `2026-10-22T07:40:16.886968Z` 实际匿名下载，HTTP 200、字节数与原图 SHA 精确一致；原始回执 `D:/workspace/ck3-living-artifacts-20261022/environment/r7-star-image-public-GitHub-readback-a01.json`。后续升级与中断失败范围另见[R7 报告](runtime-r7-star-growth-and-interruption.md)，不能仅凭截图授予整体验收。Steam additional previews 仍待实际发布时上传。
+
+## 2026-10-24 工坊艺术与普通游玩配图
+
+以上“未上传”属于各历史时点。`machine_id: pc-20260924rtuf-f11af23c08` 于本日实际向物品 `3825237804` 新增四张合格配图，并在正文嵌入四个 SDK 实际返回的 Steam CDN 地址，未复用 R2、R6、R7 或已撤下的 R8 夹具图。顺序、公开地址和范围见 [工坊配图索引](../../workshop/living_artifacts_screenshots.md)。
+
+新主视觉与喂养主题图为内置 imagegen 概念美术，完整提示词、原件与导出记录保存在 [素材目录](../../promo/living_artifacts/workshop-media-wip-20261024-a01/README.md)。概念图没有冒充游戏界面。R31 的自然「★君王之杖」原屏和 R33 正常决议打开的「活武器管理」说明均来自无业务夹具的普通正式战役；全帧导出 JPG，没有重绘、拼接或裁去测试字样。
+
+R33 原屏为 1920×1080、2781251 B，SHA-256 `2c24add09d23879d784a20e18fed0934eff01ab583817ba6bddebaed52dbe29f`；原文件 mtime 为 `2026-10-24T13:48:02.358732Z`，此处只记录文件时标，不替代单独捕获回执。PID16224、出生时间 Unix `1792847623.400076`、玩家33702、CK3 1.20.0.4/build25734779；原生步骤 `r33-confirm-manage-01` 在 `13:43:23.164431Z` 实际观察到 `xalw.12`。该图仅为管理入口说明，不展示训练、喂养、镇压付款或成长结果。R31/R33 后续失败及未获正常退出资格保持原样，图片像素真实性不授予整场业务通过。
+
+本次两次 SDK 提交实际原退出均为 0、`steam_result=1`、`stage=complete`。匿名公开 API 的 7413 B 描述与冻结 BBCode 完全一致；四张 Steam CDN 图均 HTTP200，字节、SHA 和尺寸逐一匹配上传 JPG。实际证据及未完成范围见 [publication.json](../../promo/living_artifacts/workshop-media-wip-20261024-a01/publication.json)。旧夹具证据继续保留其开发用途，不进入本次宣传图库。

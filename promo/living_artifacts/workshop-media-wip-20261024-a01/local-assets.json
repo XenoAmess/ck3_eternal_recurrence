@@ -2,7 +2,7 @@
   "schema": "living-artifacts-workshop-media-local-v1",
   "machine_id": "pc-20260924rtuf-f11af23c08",
   "observed_at_utc": "2026-10-24T14:00:13Z",
-  "status": "LOCAL_REVIEWED_NOT_UPLOADED",
+  "status": "PUBLISHED_API_AND_CDN_VERIFIED",
   "assets": [
     {
       "file": "art/01-hero.jpg",
@@ -45,6 +45,20 @@
       "sha256": "4f6e2bf37db99f99d599dc16db797537d6980149dac544d14a2fe4341edeee34",
       "width": 1920,
       "height": 1080
+    },
+    {
+      "file": "screenshots/04-management-guide-r33.jpg",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 507531,
+      "sha256": "46bedf09fa8b9077d836568e8dd1bfef5b6c2811dee8932ceb2d51b9dc0b215e"
+    },
+    {
+      "file": "screenshots/04-management-guide-r33.png",
+      "width": 1920,
+      "height": 1080,
+      "bytes": 2781251,
+      "sha256": "2c24add09d23879d784a20e18fed0934eff01ab583817ba6bddebaed52dbe29f"
     }
   ],
   "real_play_source": {
@@ -60,5 +74,28 @@
     "scope": "Natural star item and original base attributes; no feeding, training or suppression completion claim",
     "scene_normal_close_qualified": false
   },
-  "review_after_utc": "2027-01-22T00:00:00Z"
+  "review_after_utc": "2027-01-22T00:00:00Z",
+  "publication_record": "publication.json",
+  "management_source": {
+    "run_id": "pc-20260924rtuf-f11af23c08--living-artifacts--R0033",
+    "player_character_id": 33702,
+    "game_pid": 16224,
+    "game_birth_unix": 1792847623.400076,
+    "game_version": "1.20.0.4",
+    "build": "25734779",
+    "source_file": {
+      "path": "C:\\codex-ck3-demos\\living-artifacts-promo-20261024\\postproduction\\workshop-media-remediation-a01\\captures\\manage-initial.png",
+      "bytes": 2781251,
+      "sha256": "2c24add09d23879d784a20e18fed0934eff01ab583817ba6bddebaed52dbe29f"
+    },
+    "source_file_mtime_utc": "2026-10-24T13:48:02.358732+00:00",
+    "event_definition": "xalw.12",
+    "native_observed_at_utc": "2026-10-24T13:43:23.164431Z",
+    "native_step": "r33-confirm-manage-01",
+    "native_status": "observed_current_event_window",
+    "native_report": "C:/codex-ck3-demos/living-artifacts-promo-20261024/live/pc-20260924rtuf-f11af23c08--living-artifacts--R0033/native-report.json",
+    "fixture_only": false,
+    "scope": "Ordinary campaign management instructions only; no feeding, payment, training or suppression result",
+    "scene_normal_close_qualified": false
+  }
 }

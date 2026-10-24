@@ -1,0 +1,57 @@
+{
+  "additional_preview_changes": {
+    "add": [],
+    "remove_indices": [],
+    "update": []
+  },
+  "additional_previews_before": {
+    "app_id": 1158310,
+    "item_id": "3825237804",
+    "previews": [
+      {
+        "index": 0,
+        "original_filename": "01-hero.jpg",
+        "type": 0,
+        "url": "https://images.steamusercontent.com/ugc/15441903631624296074/E5C0F7460A2495AA8AB17FBDCE8EFF790B441CA0/"
+      },
+      {
+        "index": 1,
+        "original_filename": "02-natural-awakening-r31.jpg",
+        "type": 0,
+        "url": "https://images.steamusercontent.com/ugc/16686420290950891485/8A0DBF3EFA31E75240F7B33B0E7E248F2DE3E92E/"
+      },
+      {
+        "index": 2,
+        "original_filename": "03-feeding-concept.jpg",
+        "type": 0,
+        "url": "https://images.steamusercontent.com/ugc/12123211491384207815/BEDD267F70DC11206575BB1404375D99CFFCE624/"
+      },
+      {
+        "index": 3,
+        "original_filename": "04-management-guide-r33.jpg",
+        "type": 0,
+        "url": "https://images.steamusercontent.com/ugc/12812883247729063140/8BCDE95586432886495CC7D2533F7BAB1AEF44A8/"
+      }
+    ]
+  },
+  "app_id": 1158310,
+  "created_at": "2026-10-24T16:08:44.602771+00:00",
+  "item_id": "3825237804",
+  "legal_agreement_required": false,
+  "operation": "update",
+  "operation_id": "living-artifacts-workshop-art-20261025-body-a01",
+  "payload_sha256": "89ef8776a34d07e9e10fc69feed0762f2de8de0e8a87c775ce88da38a30a769a",
+  "schema": "ck3_workshop_mcp.steam_native.receipt.v1",
+  "stage": "complete",
+  "steam_result": 1,
+  "submitted_at": "2026-10-24T16:08:51.825301+00:00",
+  "tags": [
+    "Artifacts",
+    "Events",
+    "Gameplay",
+    "1.20 'Crozier'"
+  ],
+  "tags_only": false,
+  "update_scope": "content_and_metadata",
+  "updated_at": "2026-10-24T16:08:51.825330+00:00"
+}

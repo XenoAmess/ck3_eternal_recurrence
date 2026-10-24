@@ -1,0 +1,67 @@
+{
+  "schema": "living-artifacts-workshop-media-publication-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-24T16:13:09.364507+00:00",
+  "item_id": "3825237804",
+  "workshop_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3825237804",
+  "owner": "76561198273714027",
+  "status": "PUBLISHED_API_AND_CDN_VERIFIED",
+  "description_utf8_bytes": 7413,
+  "description_sha256": "abdc4e16474689176338458e1db333f89d9962202a7376c826e2bf245d73ce4a",
+  "description_exact_public_api": true,
+  "gallery_images": 4,
+  "embedded_images": 4,
+  "all_cdn_files_exact": true,
+  "html_rendering_check": "pending; Steam Community HTTP429 received, no fabricated pass",
+  "changelog_readback_this_update": "HTTP429; empty change_note submitted twice; earlier exact Notes evidence remains historical",
+  "update_scope": "content_and_metadata",
+  "product_content_files": 57,
+  "product_content_bytes": 2071121,
+  "product_content_unchanged_sha_verified": true,
+  "original_publish_wait_codes": [
+    0,
+    0
+  ],
+  "steam_restored_offline": true,
+  "gameplay_scope": [
+    "R31 natural awakening and original attributes",
+    "R33 normal management instructions"
+  ],
+  "gameplay_gaps": [
+    "feeding and upgrade results",
+    "suppression quote and actual paid state"
+  ],
+  "evidence": {
+    "body.actual-receipt.json": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\living_artifacts\\workshop-media-wip-20261024-a01\\publication\\body.actual-receipt.json",
+      "bytes": 1812,
+      "sha256": "0b302b0110eb3dc5ec54d7209973c43fcbfa26e3d51d76e2c909a86df59c0a04"
+    },
+    "gallery.actual-receipt.json": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\living_artifacts\\workshop-media-wip-20261024-a01\\publication\\gallery.actual-receipt.json",
+      "bytes": 1987,
+      "sha256": "0243fb9bd7a98d1e266a9195decf0925b2bd60534f8ea6cb80921bf4ef281f54"
+    },
+    "image-public-readback.json": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\living_artifacts\\workshop-media-wip-20261024-a01\\publication\\image-public-readback.json",
+      "bytes": 2394,
+      "sha256": "518e67796376f532b016f213e552ae5ac1f1163c5166eef3855ebfba4ac921d6"
+    },
+    "offline-final-02.json": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\living_artifacts\\workshop-media-wip-20261024-a01\\publication\\offline-final-02.json",
+      "bytes": 2332,
+      "sha256": "b57d6ee15657ced48eb7caf4f5cc7f43d604b344fabc92bfb7083085fe06fba8"
+    },
+    "previews-final.actual.json": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\living_artifacts\\workshop-media-wip-20261024-a01\\publication\\previews-final.actual.json",
+      "bytes": 2115,
+      "sha256": "596758d1edc075d8e700dc2c1e365cc20b5ad8190dc95b37ca165d43fbb5804d"
+    },
+    "public-final-api.json": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\living_artifacts\\workshop-media-wip-20261024-a01\\publication\\public-final-api.json",
+      "bytes": 8292,
+      "sha256": "770eec2cd4f67b5545b7d2b1f7a0207c2c80e6c5ed52e467ad5e9035c76527ea"
+    }
+  },
+  "review_after_utc": "2027-01-22T00:00:00Z"
+}
