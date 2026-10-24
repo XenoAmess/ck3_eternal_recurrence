@@ -1,0 +1,69 @@
+{
+  "schema": "xar.dynastic-esotericism.java-members-preallocation-repair/v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-24T19:21:47.103811+00:00",
+  "prior_status": "Public allocate refused before assigning RunID or starting Game: actual Java composer omitted existing member-query capability. Original a08 is unchanged.",
+  "production_fix": "One existing member-query tool added to Java SharedRuntimeComposer TOOLS; original14 compiled feature flags and source evidence remain mandatory.",
+  "main_fix_commit": "90a4c0902986ce710e4feb699ee31ef1b942b2f7",
+  "frozen_execution_commit": "25e7e5cb817bf0c511875dd3c16c376856c39224",
+  "frozen_sdk_base": "1df185f0528b11347f74a246d3515a2eb32355d6",
+  "java_clean_verify": {
+    "exit_code": 0,
+    "tests": 16,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "actual_produced_runtime_preflight": "READY_FOR_EXISTING_REVIEWED_LAUNCH; blockers=[]; member build evidence read from actual new Java artifact",
+  "actual_live_qualified": false,
+  "run_id": null,
+  "Game_started": false,
+  "core_phases_passed": 0,
+  "core_total": 6,
+  "published": false,
+  "evidence": [
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\allocate-core-a23.actual.json",
+      "bytes": 1595,
+      "sha256": "d18189b7f23a2cbb816ecd2cb98126895f89e495a9c507671bfe304a0c092d99"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\allocate-core-a23.stdout.json",
+      "bytes": 228,
+      "sha256": "7285f12445f48fbde5c0579757e8efd10904b8f5adc7da3de4aefce8e682d3c5"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\java-members-capability-a01\\SOURCE-FINAL.actual.json",
+      "bytes": 2450,
+      "sha256": "a2a96bc0eb8093f1052a7920a3ab958a1b76d6ba1373af4bd32dd9e0dbdb2af2"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-builder-a09\\SUMMARY.actual.json",
+      "bytes": 61139,
+      "sha256": "f6061bfff8a098932acb4c230b12e3174d225979ca36e78ac33daa3c56b3bfce"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\runtime-operations-a09\\SUMMARY.actual.json",
+      "bytes": 112513,
+      "sha256": "4bf11bd172aad17f5024f0af6201548a16ee9d4bc8829ec1b62e89325b29ade0"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\runtime-operations-a09\\ACTUAL-PRODUCED-PREFLIGHT.actual.json",
+      "bytes": 20325,
+      "sha256": "533c8375df39ca7a07e72c62bc920371ffa8a4798114c8f42366c7945c1d27e3"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\capacity\\R1176-ROOT-CAS-COMMITTED-a27.actual.json",
+      "bytes": 492,
+      "sha256": "59fdbb80e601c469d5e593bed391382c22226be84fb6c193cc7506bc702435d2"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\s09\\.xar-frozen-evidence.json",
+      "bytes": 698,
+      "sha256": "4496c28678e5222025cecc07351e3a30b974ea4a9ccf5fbc98a0f429ed0085e8"
+    }
+  ],
+  "new_core_state": "attempt-a16/state",
+  "new_keeper": "keeper-core-a27",
+  "retention_review_due": "2026-10-31"
+}
