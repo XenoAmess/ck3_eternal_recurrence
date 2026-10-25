@@ -157,7 +157,8 @@ def assert_prisoner_preview_provider_chain(host: Path, declared: list[str],
                 'one_life_settlement': None, 'active_wars': [], 'player_armies': []}})
         # Run the actual canonical assignment; action permissions stay default off.
         setattr(driver, 'case_declared_read_only_mcp_tools', frozenset(declared))
-        exec(compile(ast.Module(body=assignments, type_ignores=[]), str(host), 'exec'), {'driver': driver})
+        statements: list[ast.stmt] = [*assignments]
+        exec(compile(ast.Module(body=statements, type_ignores=[]), str(host), 'exec'), {'driver': driver})
 
         async def exercise() -> None:
             async with Client(factory(driver)) as client:
@@ -168,7 +169,8 @@ def assert_prisoner_preview_provider_chain(host: Path, declared: list[str],
                 if tool not in declared:
                     assert endpoint.requests == []
                     return
-                assert tools[tool].annotations is not None and tools[tool].annotations.read_only_hint is True
+                annotations = tools[tool].annotations
+                assert annotations is not None and annotations.read_only_hint is True
                 revision = driver.take_snapshot()['revision']
                 assert isinstance(revision, int) and not isinstance(revision, bool)
                 arguments: dict[str, object] = {'expected_revision': revision, 'release_option_keys': ['banish']}
