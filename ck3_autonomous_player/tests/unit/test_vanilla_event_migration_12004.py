@@ -9,7 +9,10 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 
-from xar_autoplayer.vanilla_events import query_vanilla_event_knowledge_v1
+from xar_autoplayer.vanilla_events import (
+    query_vanilla_event_knowledge_v1,
+    query_vanilla_event_source_provenance_v1,
+)
 from xar_autoplayer.vanilla_events.builds import (
     CURRENT_CK3_BUILD,
     CURRENT_CK3_EXE_SHA256,
@@ -183,7 +186,7 @@ def _faction_frames() -> tuple[dict[str, object], dict[str, object]]:
 
 
 class VanillaEventMigration12004Tests(unittest.TestCase):
-    def test_source_migration_registers_new_tuple_and_drives_current_consumers(self):
+    def test_source_migration_registers_new_tuple_and_drives_current_consumers(self) -> None:
         self.assertEqual((CURRENT_CK3_BUILD, CURRENT_CK3_EXE_SHA256), (BUILD, EXE_SHA256))
         self.assertEqual(SUPPORTED_CK3_EXE_SHA256["1.20.0.3"], PREVIOUS_EXE_SHA256)
         self.assertIn(BUILD, MIGRATED_CK3_BUILDS)
@@ -197,11 +200,34 @@ class VanillaEventMigration12004Tests(unittest.TestCase):
         source3 = load_vanilla_event_source_index(build="1.20.0.3")
         source4 = load_vanilla_event_source_index(build=BUILD)
         self.assertEqual((source4["ck3_build"], source4["ck3_exe_sha256"]), (BUILD, EXE_SHA256))
-        self.assertEqual(len(source4["events"]), len(source3["events"]) + 2)
+        # The exact-build producer adds these definitions, independently of
+        # later observation-only appends to their knowledge records.
+        additions: tuple[str, ...] = (
+            "faith_creation.1021", "head_of_faith.0100", "pam_bull_events.0004",
+        )
+        self.assertEqual(set(source4["events"]) - set(source3["events"]), set(additions))
+        self.assertEqual(len(source4["events"]), len(source3["events"]) + len(additions))
         self.assertEqual({key: row for key, row in source4["events"].items()
-                          if key not in ("faith_creation.1021", "head_of_faith.0100")}, source3["events"])
+                          if key not in additions}, source3["events"])
         self.assertEqual(source4["source_additions_1_20_0_4"]["event_keys"],
-                         ["faith_creation.1021", "head_of_faith.0100"])
+                         sorted(additions))
+        for key in additions:
+            with self.subTest(source_addition=key):
+                current = query_vanilla_event_knowledge_v1(key, BUILD)
+                provenance = query_vanilla_event_source_provenance_v1(key, build=BUILD)
+                definition = source4["events"][key]["definition"]
+                self.assertEqual(current["status"], "available")
+                self.assertEqual(current["analysis"]["exact_build"], EXACT_BUILD)
+                self.assertEqual(provenance["status"], "available")
+                self.assertEqual((provenance["build"], provenance["ck3_exe_sha256"]),
+                                 (BUILD, EXE_SHA256))
+                self.assertEqual(provenance["definition"], definition)
+                self.assertEqual(provenance["dataset_sha256"], source4["dataset_sha256"])
+                self.assertEqual(current["analysis"]["source_sha256"][definition["relative_path"]],
+                                 definition["file_sha256"])
+                self.assertTrue(provenance["caller_candidates_are_lexical_only"])
+                self.assertEqual(query_vanilla_event_knowledge_v1(key, "1.20.0.3")["unavailable_reason"],
+                                 "event_definition_key_not_registered")
         self.assertEqual(source3["dataset_sha256"], PREVIOUS_DATASET_SHA256)
         reuse = source4["source_reuse_1_20_0_4"]
         self.assertEqual(reuse["previous_build"], "1.20.0.3")

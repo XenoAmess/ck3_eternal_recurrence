@@ -21,6 +21,9 @@ on:
       - 'tools/ck3_mod_acceptance_launcher_protocol_v1.py'
       - 'tools/test_ck3_mod_acceptance_offline_ttl_unrun.py'
       - 'tools/fixtures/ck3_R0002_pre_intent_offline_ttl.json'
+      - 'ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_faith_creation1021_12004.py'
+      - 'ck3_autonomous_player/tests/unit/test_faith_creation1021_12004.py'
+      - 'ck3_autonomous_player/tests/unit/test_vanilla_event_migration_12004.py'
       - 'ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py'
       - 'tools/ck3_mod_acceptance_products.json'
       - 'tools/ck3_mod_acceptance_build_runtime.py'
@@ -53,6 +56,9 @@ on:
       - 'tools/ck3_mod_acceptance_launcher_protocol_v1.py'
       - 'tools/test_ck3_mod_acceptance_offline_ttl_unrun.py'
       - 'tools/fixtures/ck3_R0002_pre_intent_offline_ttl.json'
+      - 'ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_faith_creation1021_12004.py'
+      - 'ck3_autonomous_player/tests/unit/test_faith_creation1021_12004.py'
+      - 'ck3_autonomous_player/tests/unit/test_vanilla_event_migration_12004.py'
       - 'ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py'
       - 'tools/ck3_mod_acceptance_products.json'
       - 'tools/ck3_mod_acceptance_build_runtime.py'
@@ -117,6 +123,12 @@ jobs:
         env:
           MYPYPATH: tools;ck3_autonomous_player/src
         run: python -B -X utf8 -m mypy --strict --strict-equality --follow-imports=silent --no-incremental --cache-dir=${{ runner.temp }}/dynastic-esotericism-mypy tools/test_prebuilt_fixture_prepare.py tools/test_canonical_host_successor.py tools/test_product_acceptance_purpose.py tools/test_preserved_failure_native_os0.py tools/test_ck3_mod_acceptance_offline_ttl_unrun.py tools/ck3_mod_acceptance_launcher_protocol_v1.py tools/ck3_mod_acceptance_background_types.py
+      - name: Verify complete stock event knowledge and migration modules without skips
+        run: python -B -X utf8 -c "import sys,unittest; names=['ck3_autonomous_player.tests.unit.test_faith_creation1021_12004','ck3_autonomous_player.tests.unit.test_vanilla_event_migration_12004']; suites=[unittest.defaultTestLoader.loadTestsFromName(name) for name in names]; counts=[suite.countTestCases() for suite in suites]; suite=unittest.TestSuite(suites); result=unittest.TextTestRunner(verbosity=2).run(suite); sys.exit(0 if all(count>0 for count in counts) and result.testsRun==sum(counts) and result.wasSuccessful() and not result.skipped else 1)"
+      - name: Strict types for the complete stock event migration regression and faith record
+        env:
+          MYPYPATH: tools;ck3_autonomous_player/src
+        run: python -B -X utf8 -m mypy --strict --strict-equality --follow-imports=skip --no-incremental --cache-dir=nul ck3_autonomous_player/tests/unit/test_vanilla_event_migration_12004.py ck3_autonomous_player/src/xar_autoplayer/vanilla_events/records_faith_creation1021_12004.py
       - name: Preserve default Maven observations and test results
         if: always()
         uses: actions/upload-artifact@v4
