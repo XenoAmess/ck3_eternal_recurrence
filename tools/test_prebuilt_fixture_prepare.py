@@ -142,6 +142,56 @@ class PrebuiltFixtureTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             adapter._saved_fixture_startup(context, json_object({'profile': str(profile_path), 'files': files}))
 
+    def test_saved_campaign_prepare_keeps_engine_cache_out_of_public_json(self) -> None:
+        # Exercise the actual saved branch after real _engine has inserted its
+        # private (module, identity) cache. The older direct-helper test never
+        # executed this production order and therefore missed the R9 failure.
+        self.test_real_generic_prepare_consumes_roundtripped_manifest()
+        from test_saved_campaign_profile_inventory_v2 import ProfileSpec, actual_host_preparer
+        engine = self.repo / 'tools/fixture_engine_prepare.py'
+        engine.parent.mkdir()
+        engine.write_text("def engine_identity(repo, **kwargs):\n"
+                          "    return {'game_version': 'authored-only-no-game', 'exe_sha256': '" + '0' * 64 + "'}\n",
+                          encoding='utf-8')
+        contract = json_object(json.loads((self.root / 'state/profile/mod-content/fixture/_case_contract.json').read_bytes())['config'])
+        contract['startup_mode'] = 'saved_campaign'
+        source = self.root / 'saved-branch-authored.ck3'
+        source.write_bytes(b'AUTHORED PREPARE INPUT; NEVER LOADED IN CK3\n')
+        identity = file_identity(source)
+        saved = json_object({'save': identity['path'], 'bytes': identity['bytes'], 'sha256': identity['sha256'],
+                             'player_id': 31254, 'date_raw': 53144352})
+        context = json_object({**self.context, 'state_dir': str(self.root / 'cold-state'),
+            'output': str(self.root / 'cold-prepare'), 'case_contract': contract, 'saved_campaign': saved,
+            'shared_source_root': str(self.repo), 'game_dir': str(self.root / 'no-game'),
+            'shared_game': {'version': 'authored-only-no-game', 'exe_sha256': '0' * 64},
+            'case_inputs': json_object({'product_dir': str(self.root / 'product'),
+                'plain_configuration': {relative: file_identity(self.root / ('plain-' + str(index)))
+                                        for index, relative in enumerate(prepare.CONFIG_NAMES)},
+                'prebuilt_fixture_manifest': self.frozen_manifest()})})
+        with patch.object(prepare, '_engine', wraps=prepare._engine) as actual_engine:
+            result = adapter.prepare_case(context)
+        cached = actual_engine.call_args.args[0]['_selected_engine']
+        self.assertIs(type(cached), tuple)
+        self.assertIsInstance(cached[0], ModuleType)
+        with self.assertRaisesRegex(ValueError, 'finite JSON type domain'):
+            json_object(actual_engine.call_args.args[0])
+        # Only public inputs reach the persisted startup, which remains strict
+        # JSON and is consumed by the actual canonical saved-profile preparer.
+        result = json_object(json.loads(json.dumps(result, allow_nan=False)))
+        startup = json_object(result['startup'])
+        self.assertEqual(startup['mode'], 'saved_campaign')
+        seed = json_object(startup['saved_campaign'])
+        self.assertEqual({key: value for key, value in seed.items() if key != 'product_inventory'}, saved)
+        inventory = json.loads(Path(str(seed['product_inventory'])).read_bytes())
+        self.assertEqual({row['descriptor']: row['source_role'] for row in inventory['projections']},
+                         {'mod/product.mod': 'formal_product', 'mod/fixture.mod': 'case_fixture'})
+        args = argparse.Namespace(saved_campaign_save=source, saved_campaign_save_bytes=identity['bytes'],
+            saved_campaign_save_sha256=identity['sha256'], saved_campaign_player_id=31254,
+            saved_campaign_date_raw=53144352, saved_campaign_product_inventory=Path(str(seed['product_inventory'])))
+        copied = json_object(actual_host_preparer()(args, ProfileSpec(self.root / 'cold-state/profile', self.root / 'cold-state')))
+        self.assertEqual(Path(str(copied['copied_save_path'])).read_bytes(), source.read_bytes())
+        self.assertNotIn('_selected_engine', json.dumps(result))
+
     def test_actual_pre_product_profile_has_only_fixture_and_no_formal_product(self) -> None:
         self.test_real_generic_prepare_consumes_roundtripped_manifest()
         compiled = json.loads((self.root / 'state/profile/mod-content/fixture/_case_contract.json').read_bytes())

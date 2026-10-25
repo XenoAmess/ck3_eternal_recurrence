@@ -375,7 +375,11 @@ def _prepare_fixture_case(context):
                'fixture_start_policy': profile['fixture_start_policy']}
     if config.get('startup_mode') == 'saved_campaign':
         require(product_loading == 'present', 'Saved fixture startup requires the actual formal product')
-        startup = _saved_fixture_startup(json_object(context), json_object(profile))
+        # Materialization caches a private (module, identity) engine in context.
+        # Only the saved-startup public fields belong to the JSON boundary.
+        startup = _saved_fixture_startup(json_object({
+            'saved_campaign': context['saved_campaign'], 'output': context['output'],
+            'state_dir': context['state_dir']}), json_object(profile))
     if config.get('frontend_rules'):
         rules = output / 'frontend-rules-plan.json'
         write_once(rules, {'schema': 'ck3-frontend-rules-plan-v1', 'schema_version': 1,
