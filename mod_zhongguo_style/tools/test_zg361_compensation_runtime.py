@@ -587,10 +587,10 @@ class CompensationRuntimeTests(unittest.TestCase):
         )
 
         historical_bytes = generator.render_effects()
-        self.assertEqual(len(historical_bytes), 627_773)
+        self.assertEqual(len(historical_bytes), 628_011)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "0234ca8201835a57b2fb7efee75da0dc62798d7d63f5307f584a71da2a706e6a",
+            "2ced8073f02b88a6f757e054ebc9f56600ee007dbd7028c4396a4de8313ea8f0",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -2293,9 +2293,28 @@ class CompensationRuntimeTests(unittest.TestCase):
         self.assertNotIn("mcp live green", header)
 
 
+class OptionalLHistoryScriptExecutor(PayrollScriptExecutor):
+    """Reject unset reads at the two optional L-history branches only."""
+
+    STRICT_VARIABLES: frozenset[str] = frozenset({
+        "zg361_comp_m082_consumed", "zg361_comp_m082_fixed_pay",
+        "zg361_comp_m082_role_allowance", "zg361_comp_m089_consumed",
+        "zg361_comp_m089_cash_raise",
+    })
+
+    def value(self, value: str | tuple[ScriptNode, ...], current: str, previous: str) -> ScriptValue:
+        if isinstance(value, str) and value.startswith("var:"):
+            variable = value[4:]
+            if variable in self.STRICT_VARIABLES and variable not in self.characters[current].variables:
+                raise AssertionError(f"unset optional L-history variable: {variable}")
+        return super().value(value, current, previous)
+
+
 class PayrollProductionChainTests(unittest.TestCase):
-    def open_statement(self, extra_month_route: int = 1) -> PayrollScriptExecutor:
-        vm = PayrollScriptExecutor()
+    def open_statement(self, extra_month_route: int = 1,
+                       vm: PayrollScriptExecutor | None = None) -> PayrollScriptExecutor:
+        if vm is None:
+            vm = PayrollScriptExecutor()
         manager = vm.characters["manager"]
         manager.flags.add("zg361_comp_portfolio_active")
         manager.variables.update({
@@ -2330,6 +2349,44 @@ class PayrollProductionChainTests(unittest.TestCase):
         # Native character deadline events have the recipient as ROOT.
         vm.root = "subject"
         vm.execute(node_block(named_node(vm.definitions[event], "immediate")), "subject", "subject")
+
+    def test_optional_l_history_missing_uses_default_base_without_unset_reads(self) -> None:
+        for existing in ((), ("zg361_comp_m082_consumed",), ("zg361_comp_m089_consumed",),
+                         ("zg361_comp_m082_consumed", "zg361_comp_m089_consumed")):
+            with self.subTest(existing=existing):
+                vm = OptionalLHistoryScriptExecutor()
+                subject = vm.characters["subject"]
+                for variable in ("zg361_comp_m082_consumed", "zg361_comp_m089_consumed"):
+                    # Prove this harness rejects the formerly silent zero read.
+                    with self.assertRaisesRegex(AssertionError, "unset optional L-history variable"):
+                        vm.single_condition(ScriptNode(f"var:{variable}", "=", "1"), "subject", "manager")
+                subject.variables.update({name: 0.0 for name in existing})
+                self.open_statement(vm=vm)
+                self.assertEqual(subject.variables["zg361_comp_ae_statement_base"], 15)
+                self.assertEqual(subject.variables["zg361_comp_ae_statement_payable"], 21)
+                self.assertEqual(subject.variables["zg361_comp_ae_statement_owed"], 21)
+                self.assertEqual(subject.variables["zg361_case_ae_state"], 2)
+
+    def test_optional_l_history_consumed_retains_previous_pay_values(self) -> None:
+        cases: tuple[tuple[dict[str, ScriptValue], float], ...] = (
+            ({"zg361_comp_m082_consumed": 1.0, "zg361_comp_m082_fixed_pay": 20.0,
+              "zg361_comp_m082_role_allowance": 4.0}, 24.0),
+            ({"zg361_comp_m089_consumed": 1.0, "zg361_comp_m089_cash_raise": 2.0}, 17.0),
+            ({"zg361_comp_m082_consumed": 1.0, "zg361_comp_m082_fixed_pay": 20.0,
+              "zg361_comp_m082_role_allowance": 4.0,
+              "zg361_comp_m089_consumed": 1.0, "zg361_comp_m089_cash_raise": 2.0}, 26.0),
+        )
+        for history, base in cases:
+            with self.subTest(history=history):
+                vm = OptionalLHistoryScriptExecutor()
+                subject = vm.characters["subject"]
+                subject.variables.update(history)
+                self.open_statement(vm=vm)
+                self.assertEqual(subject.variables["zg361_comp_ae_statement_base"], base)
+                self.assertEqual(subject.variables["zg361_comp_ae_statement_payable"], base + 6)
+                self.assertEqual(subject.variables["zg361_comp_ae_statement_owed"], base + 6)
+                self.assertEqual(subject.variables["zg361_comp_ae_statement_paid"], 0)
+                self.assertEqual(subject.variables["zg361_case_ae_state"], 2)
 
     def test_first_card_opens_a_complete_nonzero_statement_for_all_extra_month_routes(self) -> None:
         for route, amount in ((1, 21), (2, 18), (3, 15)):

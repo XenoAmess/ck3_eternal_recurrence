@@ -1,170 +1,294 @@
 {
-  "schema": "zg361-ui-salary-fix-validation-v1",
+  "schema": "zg361-ui-salary-fix-validation-v2",
   "machine_id": "pc-20260924rtuf-f11af23c08",
-  "observed_at_utc": "2026-10-25T07:19:32.882635+00:00",
-  "scope": "generated CK3 script subset execution and static regressions; actual engine hover not yet verified",
+  "observed_at_utc": "2026-10-25T08:04:04.448818+00:00",
+  "scope": "Optional L-history existence guards; bounded actual production opener to AE1 execution and complete module static checks. Current R0004/PID 12132 still loads the pre-fix foundation.",
   "tests": {
-    "compensation_runtime": 42,
-    "compensation_model": 58,
-    "promotion_compensation_copy": 6,
-    "central_runtime": 45,
-    "b1_runtime": 76,
-    "release_localization": 23
+    "compensation_runtime": 44
   },
   "mypy_full_modules": [
     "gen_361_compensation_runtime.py",
-    "test_zg361_compensation_runtime.py",
-    "test_prepare_release_localization.py"
+    "test_zg361_compensation_runtime.py"
   ],
   "generator_check": "GREEN",
-  "product_static": "GREEN",
-  "release_double_build": "GREEN: 1034 files",
-  "evidence_root": "D:\\workspace\\ck3-361-ui-20261025",
+  "regression_before_fix": {
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "observed_at_utc": "2026-10-25T08:01:42.085396+00:00",
+    "argv": [
+      "D:/workspace/ck3-living-artifacts-20261022/runtime/venv/Scripts/python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-m",
+      "unittest",
+      "test_zg361_compensation_runtime.PayrollProductionChainTests.test_optional_l_history_missing_uses_default_base_without_unset_reads",
+      "test_zg361_compensation_runtime.PayrollProductionChainTests.test_optional_l_history_consumed_retains_previous_pay_values"
+    ],
+    "original_exit_code": 1,
+    "wall_seconds": 5.250665499945171,
+    "log": "D:\\workspace\\ck3-361-ui-20261025\\salary-optional-l-before.log",
+    "purpose": "New production-path regressions must reject old unguarded optional L-history reads"
+  },
+  "current_checks": [
+    {
+      "machine_id": "pc-20260924rtuf-f11af23c08",
+      "observed_at_utc": "2026-10-25T08:03:35.925786+00:00",
+      "argv": [
+        "D:/workspace/ck3-living-artifacts-20261022/runtime/venv/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "mod_zhongguo_style/tools/test_zg361_compensation_runtime.py"
+      ],
+      "original_exit_code": 0,
+      "wall_seconds": 13.561901600041892,
+      "log": "D:\\workspace\\ck3-361-ui-20261025\\salary-optional-l-runtime-a02.log"
+    },
+    {
+      "machine_id": "pc-20260924rtuf-f11af23c08",
+      "observed_at_utc": "2026-10-25T08:03:35.941436+00:00",
+      "argv": [
+        "D:/workspace/ck3-living-artifacts-20261022/runtime/venv/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "mypy",
+        "--follow-imports=silent",
+        "mod_zhongguo_style/tools/gen_361_compensation_runtime.py",
+        "mod_zhongguo_style/tools/test_zg361_compensation_runtime.py"
+      ],
+      "original_exit_code": 0,
+      "wall_seconds": 3.3328517000190914,
+      "log": "D:\\workspace\\ck3-361-ui-20261025\\salary-optional-l-mypy-a02.log"
+    },
+    {
+      "machine_id": "pc-20260924rtuf-f11af23c08",
+      "observed_at_utc": "2026-10-25T08:02:17.431288+00:00",
+      "argv": [
+        "D:/workspace/ck3-living-artifacts-20261022/runtime/venv/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "mod_zhongguo_style/tools/gen_361_compensation_runtime.py",
+        "--check"
+      ],
+      "original_exit_code": 0,
+      "wall_seconds": 0.793797500024084,
+      "log": "D:\\workspace\\ck3-361-ui-20261025\\salary-optional-l-generator.log"
+    }
+  ],
+  "loaded_candidate": {
+    "path": "D:\\workspace\\ck3-361-ui-20261025\\candidate\\common\\scripted_effects\\zg361_compensation_00_foundation_effects.txt",
+    "bytes": 57196,
+    "sha256": "3c0a41147e6debdfa66cc608ad030b20869a0c9ec309a5e14f4251820dfffffc"
+  },
+  "loaded_profile": {
+    "path": "D:\\workspace\\ck3-361-ui-20261025\\profiles\\ae2-a02\\state\\profile\\mod-content\\product\\common\\scripted_effects\\zg361_compensation_00_foundation_effects.txt",
+    "bytes": 57196,
+    "sha256": "3c0a41147e6debdfa66cc608ad030b20869a0c9ec309a5e14f4251820dfffffc"
+  },
+  "current_PID_does_not_load_this_new_source_fix": true,
+  "live_validation_of_optional_L_read_fix": "NOT_RUN",
+  "other_model_and_central_tests_rerun_for_this_followup": false,
+  "evidence_root": "D:/workspace/ck3-361-ui-20261025",
   "evidence_logs": [
-    "salary-static-validation.json",
-    "salary-copy-final-v2-validation.json",
-    "flags-b1-tests.txt",
-    "flags-localization-r3.txt",
-    "flags-mypy-r2.txt",
-    "product-static.txt",
-    "build-check.txt"
+    "salary-optional-l-validation.json",
+    "salary-optional-l-before.log",
+    "salary-optional-l-runtime-a02.log",
+    "salary-optional-l-mypy-a02.log",
+    "salary-optional-l-generator.log"
   ],
   "files": [
     {
-      "path": "mod_zhongguo_style/common/decisions/zg361_decisions.txt",
-      "sha256": "15b413a33c405a863d6e8f6864a5da512b9f648ce6b13f356027df02a380b076"
-    },
-    {
-      "path": "mod_zhongguo_style/common/scripted_effects/zg361_compensation_04_conservation_ledgers_effects.txt",
-      "sha256": "1feb39ce429aacfdb8e2d9cb0aeaf6f1ef29e381942d12bfa40cf6db2f474d22"
-    },
-    {
-      "path": "mod_zhongguo_style/common/scripted_effects/zg361_compensation_05_ae_due_appeal_effects.txt",
-      "sha256": "2d15b7bdc9bd740c340b6ed52eb1cb70b56e83cff45619a9f40f5945a7f62903"
-    },
-    {
-      "path": "mod_zhongguo_style/common/scripted_effects/zg361_compensation_07b_portfolio_apply_stage_effects.txt",
-      "sha256": "98d894dd07319942e9bf3588c0e0f9901eb3e96b638e3a86dc3d036c02b39013"
-    },
-    {
-      "path": "mod_zhongguo_style/common/scripted_effects/zg361_compensation_07c_portfolio_refresh_effects.txt",
-      "sha256": "e8b7c4b8c45e13cc23936fd73a3c53bf85a8a329e2723906d8bd5ae50a81dbec"
-    },
-    {
-      "path": "mod_zhongguo_style/common/scripted_effects/zg361_compensation_12_ae_stage_01_effects.txt",
-      "sha256": "d32d053cc3363ef3475902fec9845db60c22f03b39c49bd684e5d2eb971b6267"
-    },
-    {
-      "path": "mod_zhongguo_style/common/scripted_effects/zg361_compensation_13_ae_stage_02_effects.txt",
-      "sha256": "46d0928db75bfe5151854d0b24eb8b8fdbad49f9e590f75b3046030acfa5e98d"
-    },
-    {
-      "path": "mod_zhongguo_style/common/scripted_effects/zg361_compensation_14_ae_stage_03_effects.txt",
-      "sha256": "7523f24347b5af93939a5c7be551462e4c007ee6c1f8dca702553a1acd4f398a"
-    },
-    {
-      "path": "mod_zhongguo_style/common/scripted_effects/zg361_compensation_15_ae_stage_04_effects.txt",
-      "sha256": "c20067cbacb142f0e753f55f550fbc006b1f5b7a6dc0080f2b8368c160a02cb9"
-    },
-    {
-      "path": "mod_zhongguo_style/common/scripted_effects/zg361_compensation_16_ae_stage_05_effects.txt",
-      "sha256": "4a5907181596c14b149838fdba9284c6e1936a4349f8d9039521772573fe10e8"
-    },
-    {
-      "path": "mod_zhongguo_style/common/scripted_triggers/zg361_triggers.txt",
-      "sha256": "535608b60ce455871850f5c4c6722047fcc19fbdbabc50dc51c365a225f0b1d2"
-    },
-    {
-      "path": "mod_zhongguo_style/docs/361-compensation-lti-ck3-runtime-spec.md",
-      "sha256": "4c5b742af462812ea7eaeb9b71aa163f7b64e5195de86a489cc154ba8a2a6855"
-    },
-    {
-      "path": "mod_zhongguo_style/events/zg361_generated_compensation_runtime_events.txt",
-      "sha256": "7340e1decbfe211115d6792299765701d93b8155fe9605a9645414a5cf55157e"
-    },
-    {
-      "path": "mod_zhongguo_style/localization/english/zg361_compensation_runtime_l_english.yml",
-      "sha256": "5efbe34418e8c01c465fce1c33d9a47b6e6c7b76455739fa2168a4b6564c3c21"
-    },
-    {
-      "path": "mod_zhongguo_style/localization/english/zg361_l_english.yml",
-      "sha256": "18e6b40e9cad347694639a1a583ef9dd88859aebc883b855705aefc8e9c5bf89"
-    },
-    {
-      "path": "mod_zhongguo_style/localization/french/zg361_compensation_runtime_l_french.yml",
-      "sha256": "a1a4938745c7ba447765802ce14291d9e939a9bf08bed310a1a055dc2cddce04"
-    },
-    {
-      "path": "mod_zhongguo_style/localization/french/zg361_l_french.yml",
-      "sha256": "51b9efd194152bfba32131c1e607438448a5031c5c604096f3ee725c625581f8"
-    },
-    {
-      "path": "mod_zhongguo_style/localization/german/zg361_compensation_runtime_l_german.yml",
-      "sha256": "ed44509993f2627955ee57986fcdfee422583e433c54404eee5d1248f6af9b22"
-    },
-    {
-      "path": "mod_zhongguo_style/localization/german/zg361_l_german.yml",
-      "sha256": "a75fd8e259267c34c4fb64cb8bfb1402da149bfc6648b0901532c70c42fd936a"
-    },
-    {
-      "path": "mod_zhongguo_style/localization/japanese/zg361_compensation_runtime_l_japanese.yml",
-      "sha256": "c7af2b240bf8c8f1bc6f7909f81043f2f6b1fa7b80f974e0a215ccd72e92085d"
-    },
-    {
-      "path": "mod_zhongguo_style/localization/japanese/zg361_l_japanese.yml",
-      "sha256": "98f093366808c8262b052f90afbc63383aae9628faa2f9e9256fb2efc846972f"
-    },
-    {
-      "path": "mod_zhongguo_style/localization/korean/zg361_compensation_runtime_l_korean.yml",
-      "sha256": "39f341bfb4ccf8da164d4b3d48bc12d007fc1de91227e0238b0acc9fc5a10a01"
-    },
-    {
-      "path": "mod_zhongguo_style/localization/korean/zg361_l_korean.yml",
-      "sha256": "d602a10c2632fa274d542aa51392e81b5045738cb05df560be7c2a9a724d84c3"
-    },
-    {
-      "path": "mod_zhongguo_style/localization/polish/zg361_compensation_runtime_l_polish.yml",
-      "sha256": "4cf19eed823051bd9adf39c2ea1ef87a32e19fee1a06cbc3a05b9d9587667e2d"
-    },
-    {
-      "path": "mod_zhongguo_style/localization/polish/zg361_l_polish.yml",
-      "sha256": "29b6fa5ac2ee3280d33de3e54aa3069a152b2c5f332f399bdc3716685f597e78"
-    },
-    {
-      "path": "mod_zhongguo_style/localization/russian/zg361_compensation_runtime_l_russian.yml",
-      "sha256": "be7c18ef72316c3171fa008553ce1cc97840275d5f6844407c537a3e70a2323a"
-    },
-    {
-      "path": "mod_zhongguo_style/localization/russian/zg361_l_russian.yml",
-      "sha256": "666e9521fd6b28e8ef6c3d8972f6bd867e596f78fbaf445f3f87625a98177c89"
-    },
-    {
-      "path": "mod_zhongguo_style/localization/simp_chinese/zg361_compensation_runtime_l_simp_chinese.yml",
-      "sha256": "b24c14a102b90904b36d937e2536253e6081cb0a6dd720ea2484523876719edc"
-    },
-    {
-      "path": "mod_zhongguo_style/localization/simp_chinese/zg361_l_simp_chinese.yml",
-      "sha256": "1f3854df7becab09d9da92bff92c3cfc55dbbf5d6d0f8f3581b232a2c2e4e3ea"
-    },
-    {
-      "path": "mod_zhongguo_style/localization/spanish/zg361_compensation_runtime_l_spanish.yml",
-      "sha256": "f14ff617b90f869c7347da2cfd224ef283828db3433941cf1d0b91a3e95a5d81"
-    },
-    {
-      "path": "mod_zhongguo_style/localization/spanish/zg361_l_spanish.yml",
-      "sha256": "8ea719baa566dd148a0ed7444a18e860eba3b208ab9265ae6cd2d75c814e8239"
-    },
-    {
       "path": "mod_zhongguo_style/tools/gen_361_compensation_runtime.py",
-      "sha256": "09cb04a7904577c95fd15602b556d7d8ff7efd2da4498be2d522883bcb9d5ff8"
-    },
-    {
-      "path": "mod_zhongguo_style/tools/test_prepare_release_localization.py",
-      "sha256": "59d56b1d6165928808724933acc977441a7ae39ffde9b3bdbf8a2cc5e3805234"
+      "bytes": 211650,
+      "sha256": "4218b2e685ca6c4ddb41b49e7b840a461d86f3cbc4c55b95b5b7f81a25af8c6c"
     },
     {
       "path": "mod_zhongguo_style/tools/test_zg361_compensation_runtime.py",
-      "sha256": "898b5cb6448f8836371c456b5409f80b6c3e215195af1a57f539fee8400a834b"
+      "bytes": 123245,
+      "sha256": "036675e8cb32751dfff0ad8a1222867ceff0c4ccc10e9c3b6aef4168d36a0d07"
+    },
+    {
+      "path": "mod_zhongguo_style/common/scripted_effects/zg361_compensation_00_foundation_effects.txt",
+      "bytes": 57434,
+      "sha256": "9b3fa2139c6a9b3e244f8f35c70922b873f6349c450fc19115af5afaf80b678d"
+    },
+    {
+      "path": "mod_zhongguo_style/docs/361-compensation-lti-ck3-runtime-spec.md",
+      "bytes": 20219,
+      "sha256": "14583d64d8812bf32013d61840380e8c1bbdf9a0d6ebb0f7ae6e59ad7d5842ba"
     }
-  ]
+  ],
+  "baseline_validation_retained": {
+    "schema": "zg361-ui-salary-fix-validation-v1",
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "observed_at_utc": "2026-10-25T07:19:32.882635+00:00",
+    "scope": "generated CK3 script subset execution and static regressions; actual engine hover not yet verified",
+    "tests": {
+      "compensation_runtime": 42,
+      "compensation_model": 58,
+      "promotion_compensation_copy": 6,
+      "central_runtime": 45,
+      "b1_runtime": 76,
+      "release_localization": 23
+    },
+    "mypy_full_modules": [
+      "gen_361_compensation_runtime.py",
+      "test_zg361_compensation_runtime.py",
+      "test_prepare_release_localization.py"
+    ],
+    "generator_check": "GREEN",
+    "product_static": "GREEN",
+    "release_double_build": "GREEN: 1034 files",
+    "evidence_root": "D:\\workspace\\ck3-361-ui-20261025",
+    "evidence_logs": [
+      "salary-static-validation.json",
+      "salary-copy-final-v2-validation.json",
+      "flags-b1-tests.txt",
+      "flags-localization-r3.txt",
+      "flags-mypy-r2.txt",
+      "product-static.txt",
+      "build-check.txt"
+    ],
+    "files": [
+      {
+        "path": "mod_zhongguo_style/common/decisions/zg361_decisions.txt",
+        "sha256": "15b413a33c405a863d6e8f6864a5da512b9f648ce6b13f356027df02a380b076"
+      },
+      {
+        "path": "mod_zhongguo_style/common/scripted_effects/zg361_compensation_04_conservation_ledgers_effects.txt",
+        "sha256": "1feb39ce429aacfdb8e2d9cb0aeaf6f1ef29e381942d12bfa40cf6db2f474d22"
+      },
+      {
+        "path": "mod_zhongguo_style/common/scripted_effects/zg361_compensation_05_ae_due_appeal_effects.txt",
+        "sha256": "2d15b7bdc9bd740c340b6ed52eb1cb70b56e83cff45619a9f40f5945a7f62903"
+      },
+      {
+        "path": "mod_zhongguo_style/common/scripted_effects/zg361_compensation_07b_portfolio_apply_stage_effects.txt",
+        "sha256": "98d894dd07319942e9bf3588c0e0f9901eb3e96b638e3a86dc3d036c02b39013"
+      },
+      {
+        "path": "mod_zhongguo_style/common/scripted_effects/zg361_compensation_07c_portfolio_refresh_effects.txt",
+        "sha256": "e8b7c4b8c45e13cc23936fd73a3c53bf85a8a329e2723906d8bd5ae50a81dbec"
+      },
+      {
+        "path": "mod_zhongguo_style/common/scripted_effects/zg361_compensation_12_ae_stage_01_effects.txt",
+        "sha256": "d32d053cc3363ef3475902fec9845db60c22f03b39c49bd684e5d2eb971b6267"
+      },
+      {
+        "path": "mod_zhongguo_style/common/scripted_effects/zg361_compensation_13_ae_stage_02_effects.txt",
+        "sha256": "46d0928db75bfe5151854d0b24eb8b8fdbad49f9e590f75b3046030acfa5e98d"
+      },
+      {
+        "path": "mod_zhongguo_style/common/scripted_effects/zg361_compensation_14_ae_stage_03_effects.txt",
+        "sha256": "7523f24347b5af93939a5c7be551462e4c007ee6c1f8dca702553a1acd4f398a"
+      },
+      {
+        "path": "mod_zhongguo_style/common/scripted_effects/zg361_compensation_15_ae_stage_04_effects.txt",
+        "sha256": "c20067cbacb142f0e753f55f550fbc006b1f5b7a6dc0080f2b8368c160a02cb9"
+      },
+      {
+        "path": "mod_zhongguo_style/common/scripted_effects/zg361_compensation_16_ae_stage_05_effects.txt",
+        "sha256": "4a5907181596c14b149838fdba9284c6e1936a4349f8d9039521772573fe10e8"
+      },
+      {
+        "path": "mod_zhongguo_style/common/scripted_triggers/zg361_triggers.txt",
+        "sha256": "535608b60ce455871850f5c4c6722047fcc19fbdbabc50dc51c365a225f0b1d2"
+      },
+      {
+        "path": "mod_zhongguo_style/docs/361-compensation-lti-ck3-runtime-spec.md",
+        "sha256": "4c5b742af462812ea7eaeb9b71aa163f7b64e5195de86a489cc154ba8a2a6855"
+      },
+      {
+        "path": "mod_zhongguo_style/events/zg361_generated_compensation_runtime_events.txt",
+        "sha256": "7340e1decbfe211115d6792299765701d93b8155fe9605a9645414a5cf55157e"
+      },
+      {
+        "path": "mod_zhongguo_style/localization/english/zg361_compensation_runtime_l_english.yml",
+        "sha256": "5efbe34418e8c01c465fce1c33d9a47b6e6c7b76455739fa2168a4b6564c3c21"
+      },
+      {
+        "path": "mod_zhongguo_style/localization/english/zg361_l_english.yml",
+        "sha256": "18e6b40e9cad347694639a1a583ef9dd88859aebc883b855705aefc8e9c5bf89"
+      },
+      {
+        "path": "mod_zhongguo_style/localization/french/zg361_compensation_runtime_l_french.yml",
+        "sha256": "a1a4938745c7ba447765802ce14291d9e939a9bf08bed310a1a055dc2cddce04"
+      },
+      {
+        "path": "mod_zhongguo_style/localization/french/zg361_l_french.yml",
+        "sha256": "51b9efd194152bfba32131c1e607438448a5031c5c604096f3ee725c625581f8"
+      },
+      {
+        "path": "mod_zhongguo_style/localization/german/zg361_compensation_runtime_l_german.yml",
+        "sha256": "ed44509993f2627955ee57986fcdfee422583e433c54404eee5d1248f6af9b22"
+      },
+      {
+        "path": "mod_zhongguo_style/localization/german/zg361_l_german.yml",
+        "sha256": "a75fd8e259267c34c4fb64cb8bfb1402da149bfc6648b0901532c70c42fd936a"
+      },
+      {
+        "path": "mod_zhongguo_style/localization/japanese/zg361_compensation_runtime_l_japanese.yml",
+        "sha256": "c7af2b240bf8c8f1bc6f7909f81043f2f6b1fa7b80f974e0a215ccd72e92085d"
+      },
+      {
+        "path": "mod_zhongguo_style/localization/japanese/zg361_l_japanese.yml",
+        "sha256": "98f093366808c8262b052f90afbc63383aae9628faa2f9e9256fb2efc846972f"
+      },
+      {
+        "path": "mod_zhongguo_style/localization/korean/zg361_compensation_runtime_l_korean.yml",
+        "sha256": "39f341bfb4ccf8da164d4b3d48bc12d007fc1de91227e0238b0acc9fc5a10a01"
+      },
+      {
+        "path": "mod_zhongguo_style/localization/korean/zg361_l_korean.yml",
+        "sha256": "d602a10c2632fa274d542aa51392e81b5045738cb05df560be7c2a9a724d84c3"
+      },
+      {
+        "path": "mod_zhongguo_style/localization/polish/zg361_compensation_runtime_l_polish.yml",
+        "sha256": "4cf19eed823051bd9adf39c2ea1ef87a32e19fee1a06cbc3a05b9d9587667e2d"
+      },
+      {
+        "path": "mod_zhongguo_style/localization/polish/zg361_l_polish.yml",
+        "sha256": "29b6fa5ac2ee3280d33de3e54aa3069a152b2c5f332f399bdc3716685f597e78"
+      },
+      {
+        "path": "mod_zhongguo_style/localization/russian/zg361_compensation_runtime_l_russian.yml",
+        "sha256": "be7c18ef72316c3171fa008553ce1cc97840275d5f6844407c537a3e70a2323a"
+      },
+      {
+        "path": "mod_zhongguo_style/localization/russian/zg361_l_russian.yml",
+        "sha256": "666e9521fd6b28e8ef6c3d8972f6bd867e596f78fbaf445f3f87625a98177c89"
+      },
+      {
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_compensation_runtime_l_simp_chinese.yml",
+        "sha256": "b24c14a102b90904b36d937e2536253e6081cb0a6dd720ea2484523876719edc"
+      },
+      {
+        "path": "mod_zhongguo_style/localization/simp_chinese/zg361_l_simp_chinese.yml",
+        "sha256": "1f3854df7becab09d9da92bff92c3cfc55dbbf5d6d0f8f3581b232a2c2e4e3ea"
+      },
+      {
+        "path": "mod_zhongguo_style/localization/spanish/zg361_compensation_runtime_l_spanish.yml",
+        "sha256": "f14ff617b90f869c7347da2cfd224ef283828db3433941cf1d0b91a3e95a5d81"
+      },
+      {
+        "path": "mod_zhongguo_style/localization/spanish/zg361_l_spanish.yml",
+        "sha256": "8ea719baa566dd148a0ed7444a18e860eba3b208ab9265ae6cd2d75c814e8239"
+      },
+      {
+        "path": "mod_zhongguo_style/tools/gen_361_compensation_runtime.py",
+        "sha256": "09cb04a7904577c95fd15602b556d7d8ff7efd2da4498be2d522883bcb9d5ff8"
+      },
+      {
+        "path": "mod_zhongguo_style/tools/test_prepare_release_localization.py",
+        "sha256": "59d56b1d6165928808724933acc977441a7ae39ffde9b3bdbf8a2cc5e3805234"
+      },
+      {
+        "path": "mod_zhongguo_style/tools/test_zg361_compensation_runtime.py",
+        "sha256": "898b5cb6448f8836371c456b5409f80b6c3e215195af1a57f539fee8400a834b"
+      }
+    ]
+  }
 }

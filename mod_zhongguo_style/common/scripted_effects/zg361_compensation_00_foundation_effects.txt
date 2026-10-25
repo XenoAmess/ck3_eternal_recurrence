@@ -350,13 +350,19 @@ zg361_comp_open_ae_case_effect = {
             set_variable = { name = zg361_comp_ae_personal_settled value = 0 }
             set_variable = { name = zg361_comp_ae_statement_base value = 15 }
             if = {
-                limit = { var:zg361_comp_m082_consumed = 1 }
-                set_variable = { name = zg361_comp_ae_statement_base value = var:zg361_comp_m082_fixed_pay }
-                change_variable = { name = zg361_comp_ae_statement_base add = var:zg361_comp_m082_role_allowance }
+                limit = { has_variable = zg361_comp_m082_consumed }
+                if = {
+                    limit = { var:zg361_comp_m082_consumed = 1 }
+                    set_variable = { name = zg361_comp_ae_statement_base value = var:zg361_comp_m082_fixed_pay }
+                    change_variable = { name = zg361_comp_ae_statement_base add = var:zg361_comp_m082_role_allowance }
+                }
             }
             if = {
-                limit = { var:zg361_comp_m089_consumed = 1 }
-                change_variable = { name = zg361_comp_ae_statement_base add = var:zg361_comp_m089_cash_raise }
+                limit = { has_variable = zg361_comp_m089_consumed }
+                if = {
+                    limit = { var:zg361_comp_m089_consumed = 1 }
+                    change_variable = { name = zg361_comp_ae_statement_base add = var:zg361_comp_m089_cash_raise }
+                }
             }
             if = {
                 limit = { has_variable = zg361_comp_ae_next_cycle_base_delta }
