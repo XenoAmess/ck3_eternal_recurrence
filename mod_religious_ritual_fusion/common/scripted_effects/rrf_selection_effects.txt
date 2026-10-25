@@ -10,7 +10,7 @@ rrf_toggle_tenet_effect = {
         }
         else = {
             if = {
-                limit = { var:rrf_core_count < 3 }
+                limit = { var:rrf_core_count < rrf_core_limit_value }
                 add_to_variable_list = { name = rrf_selected_tenets target = scope:rrf_item }
             }
         }
@@ -34,6 +34,7 @@ rrf_refresh_validation_effect = {
     remove_character_flag = rrf_invalid_selection
     remove_character_flag = rrf_selection_checked
     set_variable = { name = rrf_core_count value = 0 }
+    set_variable = { name = rrf_core_limit value = rrf_core_limit_value }
     # Stock 00_faction_effects uses this exact per-item local-list clearing form.
     every_in_list = { list = selected_tenets remove_from_list = selected_tenets }
     every_in_list = { list = selected_doctrines remove_from_list = selected_doctrines }
@@ -44,22 +45,30 @@ rrf_refresh_validation_effect = {
             variable = rrf_selected_tenets
             save_scope_as = rrf_item
             if = {
-                limit = { is_in_list = rrf_seen_cores }
-                scope:rrf_actor = { add_character_flag = rrf_invalid_selection }
+                limit = { rrf_real_tenet_trigger = yes }
+                if = {
+                    limit = { is_in_list = rrf_seen_cores }
+                    scope:rrf_actor = { add_character_flag = rrf_invalid_selection }
+                }
+                else = { add_to_list = rrf_seen_cores }
+                add_to_list = selected_tenets
+                add_to_list = selected_doctrines
+                scope:rrf_actor = {
+                    change_variable = { name = rrf_core_count add = 1 }
+                    rrf_validate_core_member_effect = yes
+                }
             }
-            else = { add_to_list = rrf_seen_cores }
-            add_to_list = selected_tenets
-            add_to_list = selected_doctrines
-            scope:rrf_actor = {
-                change_variable = { name = rrf_core_count add = 1 }
-                rrf_validate_core_member_effect = yes
-            }
+            else = { scope:rrf_actor = { add_character_flag = rrf_invalid_selection } }
         }
         every_in_list = {
             variable = rrf_selected_doctrines
             save_scope_as = rrf_item
-            add_to_list = selected_doctrines
-            scope:rrf_actor = { rrf_validate_doctrine_member_effect = yes }
+            if = {
+                limit = { rrf_real_doctrine_trigger = yes }
+                add_to_list = selected_doctrines
+                scope:rrf_actor = { rrf_validate_doctrine_member_effect = yes }
+            }
+            else = { scope:rrf_actor = { add_character_flag = rrf_invalid_selection } }
         }
         # Do not replace this with single-item checks against the old Rite.
         rrf_catalog_validate_effect = yes
@@ -70,64 +79,72 @@ rrf_refresh_validation_effect = {
 
 rrf_validate_core_member_effect = {
     if = {
-        limit = {
-            NOR = {
-                var:rrf_source_a = { any_rite_tenet = { this = scope:rrf_item } }
-                var:rrf_source_b = { any_rite_tenet = { this = scope:rrf_item } }
+        limit = { scope:rrf_item = { rrf_real_tenet_trigger = yes } }
+        if = {
+            limit = {
+                NOR = {
+                    var:rrf_source_a = { any_rite_tenet = { this = scope:rrf_item } }
+                    var:rrf_source_b = { any_rite_tenet = { this = scope:rrf_item } }
+                }
             }
+            add_character_flag = rrf_invalid_selection
         }
-        add_character_flag = rrf_invalid_selection
-    }
-    if = {
-        limit = {
-            NOT = { rrf_tenet_knowledge_trigger = yes }
+        if = {
+            limit = {
+                NOT = { rrf_tenet_knowledge_trigger = yes }
+            }
+            add_character_flag = rrf_invalid_selection
         }
-        add_character_flag = rrf_invalid_selection
-    }
-    if = {
-        limit = {
-            var:rrf_source_a = { any_rite_tenet = { this = scope:rrf_item } }
-            NOT = { var:rrf_source_b = { any_rite_tenet = { this = scope:rrf_item } } }
+        if = {
+            limit = {
+                var:rrf_source_a = { any_rite_tenet = { this = scope:rrf_item } }
+                NOT = { var:rrf_source_b = { any_rite_tenet = { this = scope:rrf_item } } }
+            }
+            add_character_flag = rrf_contribution_a
         }
-        add_character_flag = rrf_contribution_a
-    }
-    if = {
-        limit = {
-            var:rrf_source_b = { any_rite_tenet = { this = scope:rrf_item } }
-            NOT = { var:rrf_source_a = { any_rite_tenet = { this = scope:rrf_item } } }
+        if = {
+            limit = {
+                var:rrf_source_b = { any_rite_tenet = { this = scope:rrf_item } }
+                NOT = { var:rrf_source_a = { any_rite_tenet = { this = scope:rrf_item } } }
+            }
+            add_character_flag = rrf_contribution_b
         }
-        add_character_flag = rrf_contribution_b
     }
+    else = { add_character_flag = rrf_invalid_selection }
 }
 
 rrf_validate_doctrine_member_effect = {
     if = {
-        limit = {
-            NOR = {
-                var:rrf_source_a = { rite_has_doctrine = scope:rrf_item }
-                var:rrf_source_b = { rite_has_doctrine = scope:rrf_item }
+        limit = { scope:rrf_item = { rrf_real_doctrine_trigger = yes } }
+        if = {
+            limit = {
+                NOR = {
+                    var:rrf_source_a = { rite_has_doctrine = scope:rrf_item }
+                    var:rrf_source_b = { rite_has_doctrine = scope:rrf_item }
+                }
             }
+            add_character_flag = rrf_invalid_selection
         }
-        add_character_flag = rrf_invalid_selection
-    }
-    if = {
-        limit = {
-            NOT = { rrf_doctrine_knowledge_trigger = yes }
+        if = {
+            limit = {
+                NOT = { rrf_doctrine_knowledge_trigger = yes }
+            }
+            add_character_flag = rrf_invalid_selection
         }
-        add_character_flag = rrf_invalid_selection
-    }
-    if = {
-        limit = {
-            var:rrf_source_a = { rite_has_doctrine = scope:rrf_item }
-            NOT = { var:rrf_source_b = { rite_has_doctrine = scope:rrf_item } }
+        if = {
+            limit = {
+                var:rrf_source_a = { rite_has_doctrine = scope:rrf_item }
+                NOT = { var:rrf_source_b = { rite_has_doctrine = scope:rrf_item } }
+            }
+            add_character_flag = rrf_contribution_a
         }
-        add_character_flag = rrf_contribution_a
-    }
-    if = {
-        limit = {
-            var:rrf_source_b = { rite_has_doctrine = scope:rrf_item }
-            NOT = { var:rrf_source_a = { rite_has_doctrine = scope:rrf_item } }
+        if = {
+            limit = {
+                var:rrf_source_b = { rite_has_doctrine = scope:rrf_item }
+                NOT = { var:rrf_source_a = { rite_has_doctrine = scope:rrf_item } }
+            }
+            add_character_flag = rrf_contribution_b
         }
-        add_character_flag = rrf_contribution_b
     }
+    else = { add_character_flag = rrf_invalid_selection }
 }

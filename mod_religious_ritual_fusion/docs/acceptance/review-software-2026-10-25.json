@@ -1,0 +1,784 @@
+{
+  "schemaVersion": 1,
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-25T10:54:14.739015+00:00",
+  "base_commit": "a4bdcaaa57f981d107fdfd7440b6d6eaf1d7e9e4",
+  "dirty_source": true,
+  "command": "mvn -f mod_religious_ritual_fusion/tools/pom.xml verify",
+  "status": "PASS",
+  "exit_code": 0,
+  "tests": {
+    "run": 53,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "static_scope": {
+    "java_production_files": 14,
+    "java_test_files": 11,
+    "compiler_flags": [
+      "-Xlint:all",
+      "-Werror"
+    ],
+    "release": 21
+  },
+  "runtime_validation": {
+    "version": "0.2.0-alpha",
+    "runtime_files": 89,
+    "catalog_definitions": 223,
+    "blocked_definitions": 21
+  },
+  "logs": [
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\java-package-a01.log",
+      "bytes": 2812,
+      "sha256": "267e33c34ece5a8ca91015680700051165a8b8acc9e480221a05a96ae666fbcc",
+      "status": "COMPILE_ONLY"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\java-verify-a01.log",
+      "bytes": 44898,
+      "sha256": "a0894ddacaef5ad619b439414d647f71877a40211b728e53218cd3c01c8fed04",
+      "status": "FAIL"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\java-verify-a02.log",
+      "bytes": 8833,
+      "sha256": "9a0e2d4136d57d04c9363c54fec31e73784316dd0870e61f2096b74291be8554",
+      "status": "FAIL"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\java-verify-a03.log",
+      "bytes": 4973,
+      "sha256": "3717e2756791d0ee383ef23a5d90ce1a40782171b2ab777f3f2f831c8f452059",
+      "status": "PASS"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "mod_dynastic_esotericism/common/on_action/des_on_actions.txt",
+      "bytes": 3493,
+      "sha256": "f81f597c567034baeb7262664558228f906ed8f4db382466077c18f485b1576a"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/scripted_effects/des_initialization_effects.txt",
+      "bytes": 2771,
+      "sha256": "f666725f9b4e9bc10b3184dcda0ebc7dbfe091634aa7664676451f5c02e541b3"
+    },
+    {
+      "path": "mod_dynastic_esotericism/common/scripted_effects/des_maintenance_effects.txt",
+      "bytes": 3226,
+      "sha256": "e377df47a9b047c0489cca34e371ed894ccefd252b6caec26f0b7d0e1e7d6f15"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/catalog/generated-catalog.json",
+      "bytes": 124585,
+      "sha256": "de37087f2472398c2cedd92d75ecfa0f0ad038ab9c14c58441fea2051629d8f7"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/catalog/generated-files.json",
+      "bytes": 3327,
+      "sha256": "52e012c66e4dbfe33a7b8da17d06d8e1fa291f3adba2ead8ab64232d2277939b"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/decision_group_types/rrf_decision_groups.txt",
+      "bytes": 65,
+      "sha256": "53e02f5b0dbfc3deaa53291bd921c03578d3a2cd17da37493e407ec2c7a761a7"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/decisions/rrf_decisions.txt",
+      "bytes": 5705,
+      "sha256": "eefc41145d626df5bac3c822c21678344964160b2a080dd0865756b59cba4114"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/modifiers/rrf_native_setup_modifiers.txt",
+      "bytes": 354,
+      "sha256": "fc32c2e1ac1c3a569bf8dbcafeac248e6bd90963cf5e419d22d44ec92d383091"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/on_action/rrf_native_setup_on_actions.txt",
+      "bytes": 447,
+      "sha256": "0d6ddacbc8ceffbfcb371fa83c2a3af2bc6d5a4a88958d0a406030fb81c2560d"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/script_values/rrf_values.txt",
+      "bytes": 622,
+      "sha256": "f985fe84cbe5f6a263a0eaedc75bd24c516fc0ddd6066a6acac3f493d94ec520"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_dispatch_00.txt",
+      "bytes": 15926,
+      "sha256": "7e7dd95c9ad5a41be04216d3644acd09fb5dd024c292ed3cef7c1c14cf8b9d0b"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_00.txt",
+      "bytes": 3131,
+      "sha256": "f70226b80d551a6a04725a947b1dc53bd1d149097ab55cea45559e4b502363bf"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_01.txt",
+      "bytes": 4822,
+      "sha256": "8f0624e429cbbfd4ddf459e2e2a0135e083b697a3831795f78e365a6b6418675"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_02.txt",
+      "bytes": 5112,
+      "sha256": "9ee02c202590e868ac28804b10093ab73ebe0cdd9d428e1771d402975be4e14b"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_03.txt",
+      "bytes": 4902,
+      "sha256": "087592468de0c5c417d95d41de6095caa84c71c44b229dbba006c702c1dbc2ba"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_04.txt",
+      "bytes": 4270,
+      "sha256": "79f74ab98dd7877ae81361cf96363e57ba0c3aba12e1f95917fdd68ac46030af"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_05.txt",
+      "bytes": 4936,
+      "sha256": "00b42f68b471da084b5877aed3d8c0f37cb4a100ddca2cbbc79f6da89b840794"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_06.txt",
+      "bytes": 5367,
+      "sha256": "a56c22007d2717cf037c379bdfb3f7478ad630a34407a5218e845484c71c041e"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_07.txt",
+      "bytes": 4727,
+      "sha256": "382ae1b4cd0cc3a0c7012ec916d623457febb96055d8dea94321c68aff7a3c2c"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_08.txt",
+      "bytes": 3733,
+      "sha256": "347d80718f3f0342599040b66305bb0e72c15f19169ba9926d0e0a6a2c4af515"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_09.txt",
+      "bytes": 5182,
+      "sha256": "05cd949f03686f7b34ef0c6d0eee09042c10cff605019425eb1f86cee22806ff"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_10.txt",
+      "bytes": 3486,
+      "sha256": "6871a6916317e8a615022c6552c6d408db707c0f00d65ca1b96bd33eed1b9e86"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_11.txt",
+      "bytes": 4566,
+      "sha256": "c767950eebc38145f288a3c9548938611a726d7ac3099816e945599de93fd9f5"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_initialize_12.txt",
+      "bytes": 1178,
+      "sha256": "5a5d347c1e1d55f63b7fd6c83472c0bf17936b4a48dae038605278ac714c341e"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_00.txt",
+      "bytes": 3072,
+      "sha256": "fd1b7466f208cd1a6a58bd7e38d9604d505df36d6894bd1b841c472f95344de7"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_01.txt",
+      "bytes": 5382,
+      "sha256": "98dde9cc3c4001c5df66e9e93a5fb4534289db57187d7109b94a8fac8e4a4e9b"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_02.txt",
+      "bytes": 6135,
+      "sha256": "a9d0b125c63a4bc0901aae6e8b46146694ae34f03560cce7a16b2d5706a22e9b"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_03.txt",
+      "bytes": 6183,
+      "sha256": "4e88f59e018abe2e9869a71906b8bec55df6777f036be3bd9e5f02a97721c0f1"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_04.txt",
+      "bytes": 4772,
+      "sha256": "469f75fca055e18453af5fab41e6eb976b3869ea5e16dc2f1813162b3a6ce4e5"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_05.txt",
+      "bytes": 5077,
+      "sha256": "ec411b2d7c0cddce63d9729e0c04444cc9bf0f26a406c662b237db1b978c6137"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_06.txt",
+      "bytes": 7909,
+      "sha256": "d270e0fbd9cd62a685ae1c398f1083052b5407a6f69f6f111f25217542d49e39"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_07.txt",
+      "bytes": 6205,
+      "sha256": "9d516ae5dd35680812fb4c5de6286da41a29f57b1f9792c2b3835eb75ae0f6d2"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_08.txt",
+      "bytes": 4073,
+      "sha256": "f45fb321cbf9a135731a5561eccb6e9c80323d612e28d03e24a0b1d24fb6841a"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_09.txt",
+      "bytes": 5679,
+      "sha256": "2e4bbb66e64c9cb94cae454481c0cf44553700f5945412eb75b002340c5cb83d"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_10.txt",
+      "bytes": 2131,
+      "sha256": "83f18815e8018f6f897d63901544ba26da9a8803a006c1f3e8deb4c8858bdfaf"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_11.txt",
+      "bytes": 3755,
+      "sha256": "1fa2a149eaed939604be1c6b21554d491354113d9698ba4862846a988d6f3c42"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_select_12.txt",
+      "bytes": 717,
+      "sha256": "c5a64d6f51a97edc56b16c716f92d8bfaba32e2a61471488e6e0e4c421cc8ac1"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_00.txt",
+      "bytes": 5806,
+      "sha256": "c38688e63f13e1689a8257fde3c5222905af1fc34e3707c90e9874c6138deeb5"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_01.txt",
+      "bytes": 5857,
+      "sha256": "80289e8c52c1cda127db99ff13ef00e59cfe435dfc2d132e2cacde82467d3ece"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_02.txt",
+      "bytes": 7543,
+      "sha256": "cb5d202ccf7f612d4b8b332379c676c2c80aa58a2da424ff246759a7971ef0a9"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_03.txt",
+      "bytes": 6761,
+      "sha256": "35a49c3d9493eb77687ad72533be0af43e0fe2bf968c1c0db36cb09c4d38c347"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_04.txt",
+      "bytes": 5595,
+      "sha256": "30d9a088f20ea8d56e2d206a463828b1ae1b7ce21ecfd5142f74b4ddd2c1f6ec"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_05.txt",
+      "bytes": 7194,
+      "sha256": "045723e0471a6cd3291e0fdf1d8f2a62cfaa9da3fd5918d28755f1c971d2d8d6"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_06.txt",
+      "bytes": 6968,
+      "sha256": "5b9f1c0af6baf03ce14bde343ca7edabc9530b6a1b1f63d191cee8c3625b7c92"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_07.txt",
+      "bytes": 6697,
+      "sha256": "34b9ae3a151a8cebfbd5d8d8dfebf7687fd5297cc1591b4da6bc85bc5db20ea5"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_08.txt",
+      "bytes": 7254,
+      "sha256": "424873d65df2e9e4dec7b0c74a4b9547ef4ac59bc9206e3d1d9364028a28923d"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_09.txt",
+      "bytes": 6082,
+      "sha256": "6a558a261095901234217f24f3ae920707f70394752b7b7409b3c20c104e33aa"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_10.txt",
+      "bytes": 4274,
+      "sha256": "ddf5c6534849124f3375465c79a9da54a4a1fb3cf76990434ff7caa901e466c7"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_11.txt",
+      "bytes": 4600,
+      "sha256": "5cc47d6f49d3dc369cd25f56d7a893dd3f88f232f2c15bb356c0454768a5a383"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_12.txt",
+      "bytes": 4522,
+      "sha256": "2e51ba83f79adf424a08607601fb9b1511edb792b7f5010ed1a60a8672232f3c"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_13.txt",
+      "bytes": 4833,
+      "sha256": "25b4ec908cd123e19b34ff475a69264d9dbaf989d3c2a5cb34f9feef9d3fa3d2"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_14.txt",
+      "bytes": 4766,
+      "sha256": "96b0cb3d6dd97d6eec47bc9fa12ae140d4afe934418d6967fa6a85aa28183751"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_15.txt",
+      "bytes": 5169,
+      "sha256": "0297f6da417494e5ad315fe3206de3edc84479dd3d06f308f8697c8f651a31a4"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_16.txt",
+      "bytes": 4682,
+      "sha256": "60033571c27fc6bf7ed8080e8bc375abb33ded239414d4ffcc0bf538c7e254c7"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_17.txt",
+      "bytes": 5114,
+      "sha256": "67b72934dbbe69dca1ba53d57e55c51e2f6a8b3bf78ae56b768f16eba1559b8e"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_18.txt",
+      "bytes": 5320,
+      "sha256": "6f23e067aafa6b2e579baf9d6f718fb6a2c9d68889e066b148569ba7f802d54f"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_19.txt",
+      "bytes": 4958,
+      "sha256": "fc689d1fd3a03f8f0df0e8438385eaa24aa0e69ec3c46353fbb54503e784e8ce"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_20.txt",
+      "bytes": 4768,
+      "sha256": "9b9560f95d8a91000fb297597676fdfd715d6397fc3a96fba18b06f9a3c89f0a"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_21.txt",
+      "bytes": 4988,
+      "sha256": "e5d453eb08170b549fda334de6528b4abc56054ba524660cda3384f853c51195"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_22.txt",
+      "bytes": 4742,
+      "sha256": "69109e6af89623e1f9a8854ec22665b091b8e4419d68dc2a404d311771f7c3a4"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_23.txt",
+      "bytes": 5030,
+      "sha256": "f03397b176fa90c282e28830103fdfb4e432677689688019c6bdfc72fa19484f"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_24.txt",
+      "bytes": 5190,
+      "sha256": "a7dd86831bdb5e5029c9d388f2d20f4235f988bdc6e2b0f97d97c942448786b9"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_catalog_validate_25.txt",
+      "bytes": 3300,
+      "sha256": "3651d428fc57a99786ece8218b3489995d6830f8d497892e9bb63ad97236da8f"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_commit_effects.txt",
+      "bytes": 8031,
+      "sha256": "6cc39c7dccedafea65977940a0e773c7041856617374dbd2e193367e56d03bc2"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_completion_effects.txt",
+      "bytes": 2230,
+      "sha256": "019368d8207d2648dc14b699a0a3e96286696e76e64dd695279691839a782de1"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_conversion_effects.txt",
+      "bytes": 7268,
+      "sha256": "820fc6ce3e1ddb6709591e16e7986c19df3587304b16434539f7897b14ce1e13"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_creation_options_effects.txt",
+      "bytes": 3111,
+      "sha256": "1c64b33f0c71eff7ad45f2c3085b7ee2bb9aec31f84c5c2fa0582b4219de5442"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_draft_effects.txt",
+      "bytes": 4457,
+      "sha256": "3614aebab1614b4e9ca6d5078538ed46f00a973e8cedd1cf4d26d67658dcb98f"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_native_setup_effects.txt",
+      "bytes": 2437,
+      "sha256": "0c54b9b43d27fdc1ea4195992ac9e60837b502d7b6b46ae241fa992ab702065c"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_effects/rrf_selection_effects.txt",
+      "bytes": 5680,
+      "sha256": "a8442f178a645c4f0bef3b7ebd0b126de2d981f29da6f7c9744009fb453ead41"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_guis/rrf_scripted_guis.txt",
+      "bytes": 4624,
+      "sha256": "1f0335d8b268ac2996c1e23a53b572578ee311aba75d5a9ecda4d4407010beda"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_rules/zz_rrf_native_setup_rules.txt",
+      "bytes": 642,
+      "sha256": "0fb16a6b4d6036530af4a3874b05e7d3bbe28c397a6cfc41e623673c6f83e727"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_triggers/rrf_catalog_membership_00.txt",
+      "bytes": 8611,
+      "sha256": "04e82740cefe068fa25c2a462f1bae455633eddf1b7cf9d9a3e66dc418a40e1e"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_triggers/rrf_conversion_triggers.txt",
+      "bytes": 3046,
+      "sha256": "63a362200a1cb5ee605bdbf62884b56ac1bcfb03617d170999d070b9e36d70e0"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_triggers/rrf_draft_triggers.txt",
+      "bytes": 3097,
+      "sha256": "4596f6d8d514951e3b72fdcb1af110b9f1df2b881bef76f61dbbdd29aab8a73b"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_triggers/rrf_eligibility_triggers.txt",
+      "bytes": 1007,
+      "sha256": "293c6dbeb40a3cf50135d2ea6382a6d903f6bb8b7a077ba5753ed5407f9f9c72"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/common/scripted_triggers/rrf_native_setup_triggers.txt",
+      "bytes": 982,
+      "sha256": "f21041feda808a7be033c4784df5b0d4e49a649cdf421af5f19337bf73c52b6f"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/descriptor.mod",
+      "bytes": 160,
+      "sha256": "f769e7b623391894d29b17d8952a393255bd26bf0e98de0633842335bd7da9dd"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/gui/rrf_fusion_window.gui",
+      "bytes": 19124,
+      "sha256": "3402205e056d6dcfde53179d11cd79ca4072e6939d2a5f43c0880718bf7eea89"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/gui/rrf_native_setup_window.gui",
+      "bytes": 17214,
+      "sha256": "d733ca71fab66e298d1cda55577b29dbc03e992eaeab14a84c2f21eb1b548741"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/gui/rrf_result_window.gui",
+      "bytes": 7296,
+      "sha256": "d8eef3e4ec5dda7b48431b57378a4f22f2bb089d70acf6aead09d2a3b237d26b"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/gui/scripted_widgets/rrf_native_setup_widgets.txt",
+      "bytes": 61,
+      "sha256": "729fcd80d2c131da93e6840dbd22bbb7789edde572a489c37fafa56e109181fa"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/gui/scripted_widgets/rrf_result_widgets.txt",
+      "bytes": 103,
+      "sha256": "5bf86ebb439b6cd68fd2e8345085c53851ce6841b5af3538fee2a0d3650ae6f6"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/gui/scripted_widgets/rrf_widgets.txt",
+      "bytes": 49,
+      "sha256": "8d019f2f42c7799efb2ab5a4416a11e190d469963bf2b8adcc5394ed1dd3bfdd"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/localization/english/rrf_l_english.yml",
+      "bytes": 13546,
+      "sha256": "afeed9d86b775e64b0784bf6fa2ba4f6b8f01483992d5b9b6f7b1df870f7f46c"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/localization/french/rrf_l_french.yml",
+      "bytes": 14341,
+      "sha256": "d52bcf7b658c36dd4f74be4840a31a443bce73684f3c82c68f7ca5beab0a3cfa"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/localization/german/rrf_l_german.yml",
+      "bytes": 14605,
+      "sha256": "af02dc60c8126b1d461a30e813d845804ad7dd76c0da24f9d1c20a51e81fdc34"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/localization/japanese/rrf_l_japanese.yml",
+      "bytes": 14561,
+      "sha256": "1871cc6120715d6c5b5b55f8ecdf63d733d83d464439a1d14de009205e8d2d7c"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/localization/korean/rrf_l_korean.yml",
+      "bytes": 14417,
+      "sha256": "ed7f601045554ea6a61caaaa0f5bd0752f12f3e3a0ae83ab950e596226a05463"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/localization/polish/rrf_l_polish.yml",
+      "bytes": 13869,
+      "sha256": "9808febf3f9860c215b4b2fd226325b40a9a26ba02eaa47481f03f225a033ddd"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/localization/russian/rrf_l_russian.yml",
+      "bytes": 17069,
+      "sha256": "72e70319d5013890e37023eae81e20fe69d62ca934fce9bbd438034dcea4b51b"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/localization/simp_chinese/rrf_l_simp_chinese.yml",
+      "bytes": 12323,
+      "sha256": "1648332dc12e9591df0cd795b459d1329f7b57782702e78913cfe4245f005d96"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/localization/spanish/rrf_l_spanish.yml",
+      "bytes": 14038,
+      "sha256": "a324b99fe5caeaac76c1c8facfd432e649429bc01999e25ab5fcc4221b51ea61"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/pom.xml",
+      "bytes": 2815,
+      "sha256": "4e9e70ed8f4251505f6f5fa05c9c3a7b1d114e66e371ec85143c31f931a7ebea"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/product.json",
+      "bytes": 1843,
+      "sha256": "b37d638b9408b895a97eed2db0f9bd44e020f8836b3963bd8f81cfc1ed0338f3"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/acceptance/FixtureContracts.java",
+      "bytes": 6204,
+      "sha256": "2f8a26ce8e95f9b6fa41669020be537c88e47980c95165db37abe69f3f2548b7"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/acceptance/FixtureEmitter.java",
+      "bytes": 10962,
+      "sha256": "1db5e49b8042e1f794d358d4a80fa4b84ef67b415a172abd8d5aacf1a4399d8c"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/CatalogGenerator.java",
+      "bytes": 11035,
+      "sha256": "07c786e146a34e83461384cc965da56bb4e03001dbe9360742bac37f88212b1d"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/CatalogReader.java",
+      "bytes": 6955,
+      "sha256": "4e484b975e84bdc7b4a48930c6e0319f4ae73e31a18a061f45dc2715b8226bc5"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/Clausewitz.java",
+      "bytes": 5693,
+      "sha256": "ce5b563b60bfbfb9cc21bb4c07dcc525e8f02033c16a4b074823c0edc55af798"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/Command.java",
+      "bytes": 4337,
+      "sha256": "d4448bb5230c5b6c6459c44f90670f0a30a651fa2fe6b7ba674951da8ebb5440"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/ContentValidator.java",
+      "bytes": 11150,
+      "sha256": "b8a843c4c6c05d3eca9e64c6263945e6bb8ba56a0fbb5935deec111dac9529b4"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/Contracts.java",
+      "bytes": 7484,
+      "sha256": "67b5ddf139d8df883443b82983c13bc719e9ccca47464671e637a113da2b6985"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/Json.java",
+      "bytes": 2702,
+      "sha256": "03b6ed50b884bf8d5113ae807434e3640e23e6b901922ed8775072cc298781be"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/ReleaseBuilder.java",
+      "bytes": 6448,
+      "sha256": "70c44f709b99989642d2a6019fbd5ec19a416d8e639f9f34568978f64ae98619"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/RuleProjection.java",
+      "bytes": 1896,
+      "sha256": "0fc2992ee974ae71a4049cea62791509ab60e03c5332a0969f373252e5833e31"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/save/SaveContracts.java",
+      "bytes": 6069,
+      "sha256": "fd8838040da6851966c2075dad4b5aaa3d185152ac2863756c2617209dda2e75"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/save/SaveInspector.java",
+      "bytes": 9412,
+      "sha256": "ad5daf3672c134201e32f37f5db69c7544d196859cdf1a78678c22872789133c"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf/save/SaveStream.java",
+      "bytes": 11052,
+      "sha256": "6171332acbf08805e9188dcd519587ac21beb78d1a2316878fd361dbc79fa341"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/common/decisions/rrfa_cold_observation_decisions.txt",
+      "bytes": 628,
+      "sha256": "b265197288208ca28a120eeb3295fbf42c1f79ac688d74052fce43ae33976fde"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/common/decisions/rrfa_observation_decisions.txt",
+      "bytes": 660,
+      "sha256": "fe1d636dc11ef79e183d9d583141af2d879a03d90ce5f0668b508a16d5fa02d8"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/common/on_action/rrfa_fresh_startup.txt",
+      "bytes": 626,
+      "sha256": "37ba3d36eb0f118e6143e49b855e1c890b61f66bc27b700c7d567b84ab344fa0"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/common/script_values/rrfa_observation_values.txt",
+      "bytes": 173,
+      "sha256": "1c589476e9f3f9b277d8ae61df97b2475562bed9a273c30e41263fa02dd00576"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/common/scripted_effects/rrfa_seed_effects.txt",
+      "bytes": 3852,
+      "sha256": "82d8b636c304632aa87514e47406389a7c86e7fc46f65d7df9418c3c4fd4ac55"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/common/scripted_triggers/rrfa_observation_triggers.txt",
+      "bytes": 4977,
+      "sha256": "00ed124e3a6d95e8eea9cc5427b3e01a5fd9b41bce2ac582c271147541e8c48f"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/descriptor.mod",
+      "bytes": 111,
+      "sha256": "314aa1803689a6226126bf3a755cfe603e1d5577b103e6670313ee82ce92ef2c"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/events/rrfa_observation_events.txt",
+      "bytes": 1100,
+      "sha256": "4b0875f92585132f9b18045f243b09f10def7697e07563373da4333d2911c160"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/events/rrfa_seed_events.txt",
+      "bytes": 719,
+      "sha256": "f8cb20db35b951bc72a6976f090bf82fd812074044658922b3b6deef27246861"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/localization/english/rrfa_observation_l_english.yml",
+      "bytes": 489,
+      "sha256": "36df593c6b0342c238e592d5e9da11fe36d61135f4ea178d25b3689718d05d6b"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/localization/simp_chinese/rrfa_observation_l_simp_chinese.yml",
+      "bytes": 466,
+      "sha256": "b6194468bb6fa7dd076ae0758c36d7de3a268566d631db87be3b3f7c787ca91c"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/native-source-evidence.json",
+      "bytes": 1768,
+      "sha256": "d8b0fb0aa9d51e4bb362d3fb46885734deeec0b5cb23d5b50510f213023737a3"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/requests/cold-faith.json",
+      "bytes": 129,
+      "sha256": "eb0cd268e849a1952bb7cc8d0070fdf666b833d15c188fda2f2052a9447a0a3a"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/requests/cold-rite.json",
+      "bytes": 128,
+      "sha256": "756e50c01d4d84ea6a0c8ad2e1552f4797315f1008d77c48406fe0bde88503aa"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/requests/core-faith.json",
+      "bytes": 137,
+      "sha256": "bebe292432070f1d80a78a5d78966e718111caf9a0a48848725b0872dc34a9fb"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/requests/core-rite.json",
+      "bytes": 135,
+      "sha256": "f13d2a62c0b094ea5b715101bfac3cf555e6c527f593fe807e91fbb9a2302f01"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/acceptance/requests/ui-rejection.json",
+      "bytes": 143,
+      "sha256": "a70c333f8d928659f400456da04d9b2d407013d3255276bb8db467e1c6bd3112"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/main/resources/application.properties",
+      "bytes": 86,
+      "sha256": "be1e711886f0c27fae675b6dcc92045499542ab6830848c94c378943e8c7130c"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/AcceptanceFixtureTest.java",
+      "bytes": 14147,
+      "sha256": "8ed4c61d86f27cec05867d00196624ba393fa93d16eae550fbe67f38ca5e3933"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/CanonicalReleaseTest.java",
+      "bytes": 12066,
+      "sha256": "ba67a8b8a07af7c83b6022780baaa4ed929ecb0796f7f28b1f71ccdebb3e6bc1"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/FinalTenetExclusionTest.java",
+      "bytes": 2680,
+      "sha256": "9422ced7b9b319f61008492e7683c6221ea86409f71f845c84d492f64b70ff70"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/ModeLockProjectionTest.java",
+      "bytes": 5374,
+      "sha256": "c3f9aab4f3159298ee2837f6461a4e21af6ac72d846e402fa75b0f7f940d5779"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/MoreTenetsCompatibilityTest.java",
+      "bytes": 25109,
+      "sha256": "b03283ae7e5372f44e9e570b8e40059537ad8dafbb26be706946eeb9e02766fc"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/NativeSelectionProjectionTest.java",
+      "bytes": 3390,
+      "sha256": "edc0fc24e3838f1a2b985e6ca622245fa5064a294e106754b1d0bae523cef3be"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/NativeSetupLifecycleTest.java",
+      "bytes": 31201,
+      "sha256": "37a225f7e4bdf85c017a8f91d51e029d397317d19eb5dfdfa12d1faac1c5e666"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/OptionalReformAndConversionTest.java",
+      "bytes": 26504,
+      "sha256": "384dec102704b9fdc10892d96dc31bd6dab0a14cb62dff9c7243457cc8a01653"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/ProducerPipelineTest.java",
+      "bytes": 12760,
+      "sha256": "341be0f48ee88f6029fcd30246795b6241302d75dbc0d3a790f4aeeaf3558268"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/ProductionGraphTest.java",
+      "bytes": 5997,
+      "sha256": "1b08f80e7a1cf8eae479e908124b3d6ae60cbe6f0af2ed58c63e74684b41567d"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/test/java/org/xar/ck3/rrf/save/SaveInspectionTest.java",
+      "bytes": 10553,
+      "sha256": "264b12478a3828af3266b3ef10f4a326c1f0273e87c6371aa689615912d36e49"
+    },
+    {
+      "path": "mod_religious_ritual_fusion/tools/src/test/resources/native-unique-selection.txt",
+      "bytes": 1333,
+      "sha256": "49d3d71e613b4d8bc98e8f2eefe660671790f92b4d2d2b57bfce939adbac9c1e"
+    }
+  ],
+  "live_status": "NOT_RUN",
+  "limits": [
+    "Native command results, GUI parsing/layout, zero actual edit fee, names/color/icon writes, conversion and combined-mod loading require separate live evidence.",
+    "Seven foreign-language changed keys use English placeholders; no completed translation claim."
+  ],
+  "des_builder": {
+    "command": "mvn -f mod_dynastic_esotericism/tools/pom.xml -Ddes.build.root=C:/workspace/rrf-development-20261024/review-fixes-a01/java-des -Ddynastic.python=C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe verify",
+    "observed_at_utc": "2026-10-25T10:57:16Z",
+    "status": "PASS",
+    "tests": {
+      "run": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "logs": [
+      {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\java-des-verify-a01.log",
+        "bytes": 9184,
+        "sha256": "f39a952d7f53739c7112338ccb333fafd135af1b333768fbc3b06e9df4576106",
+        "status": "FAIL_MISSING_SYSTEM_PYTHON_PYDANTIC"
+      },
+      {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\java-des-verify-a02.log",
+        "bytes": 4838,
+        "sha256": "1790added73d0b4437d110837bb714df95ead8d14b4ed613805755461f92271b",
+        "status": "PASS"
+      }
+    ]
+  }
+}

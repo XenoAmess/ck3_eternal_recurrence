@@ -1,0 +1,62 @@
+﻿# Fusion has already paid its advertised fixed fee. The native editor updates
+# that same object; this bounded session includes its presentation/extensions.
+rrf_begin_native_setup_effect = {
+    if = {
+        limit = {
+            rrf_native_setup_target_trigger = yes
+            var:rrf_last_result_rite = { NOT = { has_variable = rrf_native_configuration_complete } }
+        }
+        add_character_flag = { flag = rrf_native_setup_active years = 1 }
+        add_character_modifier = { modifier = rrf_native_setup_cost_waiver years = 1 }
+        add_character_flag = rrf_native_open_requested
+        remove_character_flag = rrf_native_apply_requested
+        remove_character_flag = rrf_result_dialog
+    }
+}
+
+rrf_mark_native_apply_effect = {
+    if = {
+        limit = { rrf_native_setup_permission_trigger = yes }
+        # This means the native confirmation was requested, not that Edit ran.
+        # The model's own confirmation/cancel path remains authoritative.
+        add_character_flag = rrf_native_apply_requested
+    }
+}
+
+rrf_finish_native_setup_effect = {
+    if = {
+        limit = { rrf_native_setup_target_trigger = yes }
+        var:rrf_last_result_rite = {
+            set_variable = { name = rrf_native_configuration_complete value = yes }
+        }
+        remove_character_modifier = rrf_native_setup_cost_waiver
+        remove_character_flag = rrf_native_setup_active
+        remove_character_flag = rrf_native_open_requested
+        remove_character_flag = rrf_native_apply_requested
+        add_character_flag = rrf_result_dialog
+        rrf_refresh_vassal_conversion_preview_effect = yes
+    }
+}
+
+# Called by the delayed stock update hook after the actual interface edit. A
+# merely closed window or an unrelated background update cannot grant success.
+rrf_on_native_setup_applied_effect = {
+    if = {
+        limit = {
+            exists = scope:consume_rite_edit_token
+            exists = var:rrf_origin_founder
+        }
+        save_scope_as = rrf_updated_rite
+        var:rrf_origin_founder = {
+            if = {
+                limit = {
+                    has_character_flag = rrf_native_setup_active
+                    has_character_flag = rrf_native_apply_requested
+                    var:rrf_last_result_rite = scope:rrf_updated_rite
+                    rite = scope:rrf_updated_rite
+                }
+                rrf_finish_native_setup_effect = yes
+            }
+        }
+    }
+}

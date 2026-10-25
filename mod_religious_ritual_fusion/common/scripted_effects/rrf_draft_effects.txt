@@ -1,5 +1,6 @@
 ﻿# Actor-owned preparation; opening and cancelling never create a game object.
 rrf_clear_draft_effect = {
+    rrf_clear_creation_options_effect = yes
     clear_variable_list = rrf_candidate_tenets
     clear_variable_list = rrf_candidate_doctrines
     clear_variable_list = rrf_selected_tenets
@@ -10,6 +11,7 @@ rrf_clear_draft_effect = {
     remove_variable = rrf_source_b_faith
     remove_variable = rrf_mode
     remove_variable = rrf_core_count
+    remove_variable = rrf_core_limit
     remove_character_flag = rrf_contribution_a
     remove_character_flag = rrf_contribution_b
     remove_character_flag = rrf_selection_checked
@@ -61,7 +63,21 @@ rrf_prepare_draft_effect = {
         }
         var:rrf_source_a = { rrf_collect_core_candidates_effect = yes }
         var:rrf_source_b = { rrf_collect_core_candidates_effect = yes }
+        # Keep every real core from our Rite, including cores above slot three.
+        var:rrf_source_a = {
+            every_rite_tenet = {
+                limit = { rrf_real_tenet_trigger = yes }
+                save_scope_as = rrf_item
+                scope:rrf_actor = {
+                    if = {
+                        limit = { NOT = { is_target_in_variable_list = { name = rrf_selected_tenets target = scope:rrf_item } } }
+                        add_to_variable_list = { name = rrf_selected_tenets target = scope:rrf_item }
+                    }
+                }
+            }
+        }
         rrf_catalog_initialize_doctrines_effect = yes
+        rrf_initialize_creation_options_effect = yes
         rrf_refresh_validation_effect = yes
     }
 }
@@ -70,6 +86,7 @@ rrf_prepare_draft_effect = {
 # A status filter would instead filter by the parent Faith main Rite's stance.
 rrf_collect_core_candidates_effect = {
     every_rite_tenet = {
+        limit = { rrf_real_tenet_trigger = yes }
         save_scope_as = rrf_item
         scope:rrf_actor = {
             if = {

@@ -55,11 +55,13 @@ public final class CatalogGenerator {
                     + "every_in_list = { variable = rrf_selected_doctrines save_scope_as = rrf_catalog_candidate scope:actor = { rrf_catalog_check_known_doctrine_effect = yes } }\n")
                 + knownEffect(catalog, Kind.TENET) + knownEffect(catalog, Kind.DOCTRINE);
         files.put("common/scripted_effects/rrf_catalog_dispatch_00.txt", dispatch);
+        files.put("common/scripted_triggers/rrf_catalog_membership_00.txt",
+                membershipTrigger(catalog, Kind.TENET) + membershipTrigger(catalog, Kind.DOCTRINE));
         files.replaceAll((path, content) -> content.replaceAll("(?m)[ \\t]+$", "").stripTrailing() + "\n");
         return java.util.Collections.unmodifiableMap(new LinkedHashMap<>(files));
     }
     private static String initialize(Definition d, Catalog catalog) {
-        if (!d.blockedReasons().isEmpty()) return "# " + d.id() + " disabled: " + String.join(", ", d.blockedReasons()) + "\n";
+        if (!playerContent(d)) return "# " + d.id() + " disabled: non-player content or " + String.join(", ", d.blockedReasons()) + "\n";
         String key = "doctrine:" + d.id();
         Group group = group(catalog, d);
         String bSource = group.lock().equals("religion") ? "" : "var:rrf_source_b = { rite_has_doctrine = " + d.id() + " }";
@@ -69,11 +71,24 @@ public final class CatalogGenerator {
     }
     private static String knownEffect(Catalog catalog, Kind kind) {
         String type = kind == Kind.TENET ? "tenet" : "doctrine";
-        String cases = String.join(" ", catalog.definitions().stream().filter(d -> d.kind() == kind).map(d -> "scope:rrf_catalog_candidate = " + type + ":" + d.id()).toList());
+        String cases = String.join(" ", catalog.definitions().stream().filter(d -> d.kind() == kind && playerContent(d)).map(d -> "scope:rrf_catalog_candidate = " + type + ":" + d.id()).toList());
         return effect("rrf_catalog_check_known_" + type + "_effect", "if = { limit = { NOR = { " + cases + " } } add_character_flag = rrf_invalid_selection }\n");
     }
+    /** The same source-bound content identity is consumed by candidates, previews and commit checks. */
+    private static String membershipTrigger(Catalog catalog, Kind kind) {
+        String type = kind == Kind.TENET ? "tenet" : "doctrine";
+        List<String> members = catalog.definitions().stream().filter(d -> d.kind() == kind && playerContent(d))
+                .map(d -> "this = " + type + ":" + d.id()).toList();
+        return effect("rrf_real_" + type + "_trigger", members.isEmpty() ? "always = no\n" : "OR = { " + String.join(" ", members) + " }\n");
+    }
+    private static boolean playerContent(Definition definition) {
+        // MTS 1.20 uses hidden doctrine metadata, never real tenets. Its old empty-tenet IDs are not content.
+        return definition.visible() && definition.blockedReasons().isEmpty()
+                && !definition.id().startsWith("mts_selector_")
+                && !definition.id().startsWith("tenet_zz_empty_") && !definition.id().equals("tenet_empty");
+    }
     private static String select(Definition d, Catalog catalog) {
-        if (!d.blockedReasons().isEmpty()) return "# " + d.id() + " selection disabled\n";
+        if (!playerContent(d)) return "# " + d.id() + " selection disabled\n";
         StringBuilder body = new StringBuilder("if = { limit = { scope:rrf_item = doctrine:").append(d.id()).append(" }\n");
         for (Definition sibling : catalog.definitions()) if (sibling.kind() == Kind.DOCTRINE && sibling.group().equals(d.group())) body.append("remove_list_variable = { name = rrf_selected_doctrines target = doctrine:").append(sibling.id()).append(" }\n");
         return body.append("add_to_variable_list = { name = rrf_selected_doctrines target = doctrine:").append(d.id()).append(" }\n}\n").toString();
@@ -81,7 +96,7 @@ public final class CatalogGenerator {
     private static String validate(Definition d, Catalog catalog) {
         String type = d.kind() == Kind.TENET ? "tenet" : "doctrine"; String list = d.kind() == Kind.TENET ? "rrf_selected_tenets" : "rrf_selected_doctrines";
         StringBuilder failure = new StringBuilder();
-        if (!d.blockedReasons().isEmpty()) failure.append("always = no\n");
+        if (!playerContent(d)) failure.append("always = no\n");
         else {
             if (!d.requiresDlc().isEmpty()) failure.append("scope:actor = { has_dlc_feature = ").append(d.requiresDlc()).append(" }\n");
             if (d.kind() == Kind.DOCTRINE) {

@@ -5,11 +5,17 @@ on:
     branches: [master]
     paths:
       - 'mod_religious_ritual_fusion/**'
+      - 'mod_dynastic_esotericism/common/on_action/des_on_actions.txt'
+      - 'mod_dynastic_esotericism/common/scripted_effects/des_initialization_effects.txt'
+      - 'mod_dynastic_esotericism/common/scripted_effects/des_maintenance_effects.txt'
       - '.github/workflows/religious-ritual-fusion-static.yml'
       - 'java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java'
   pull_request:
     paths:
       - 'mod_religious_ritual_fusion/**'
+      - 'mod_dynastic_esotericism/common/on_action/des_on_actions.txt'
+      - 'mod_dynastic_esotericism/common/scripted_effects/des_initialization_effects.txt'
+      - 'mod_dynastic_esotericism/common/scripted_effects/des_maintenance_effects.txt'
       - '.github/workflows/religious-ritual-fusion-static.yml'
   workflow_dispatch:
 

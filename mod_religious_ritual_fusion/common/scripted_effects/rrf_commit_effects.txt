@@ -20,8 +20,14 @@ rrf_commit_effect = {
                 core_tenet_override_entry = scope:rrf_core_three
             }
             if = {
-                limit = { exists = scope:rrf_new_rite }
+                limit = {
+                    exists = scope:rrf_new_rite
+                    scope:rrf_new_rite != var:rrf_source_a
+                    scope:rrf_new_rite != var:rrf_source_b
+                }
                 set_variable = { name = rrf_last_result_rite value = scope:rrf_new_rite }
+                # The three overrides seed native creation; the full choice owns the final set.
+                rrf_align_created_core_set_effect = yes
                 rrf_apply_selected_doctrines_effect = yes
                 if = {
                     limit = { var:rrf_mode = flag:faith }
@@ -30,6 +36,7 @@ rrf_commit_effect = {
                         save_scope_as = rrf_new_faith
                     }
                 }
+                rrf_apply_creation_options_effect = yes
                 rrf_check_created_result_effect = yes
                 if = {
                     limit = { NOT = { has_character_flag = rrf_result_invalid } }
@@ -71,6 +78,40 @@ rrf_capture_core_scopes_effect = {
         scope:rrf_actor = { change_variable = { name = rrf_core_index add = 1 } }
     }
     remove_variable = rrf_core_index
+}
+
+# Mutate only the new Rite. Snapshot removals before editing its native vector.
+rrf_align_created_core_set_effect = {
+    every_in_list = { list = rrf_cores_to_remove remove_from_list = rrf_cores_to_remove }
+    scope:rrf_new_rite = {
+        every_rite_tenet = {
+            save_scope_as = rrf_item
+            if = {
+                limit = {
+                    scope:rrf_actor = {
+                        NOT = { is_target_in_variable_list = { name = rrf_selected_tenets target = scope:rrf_item } }
+                    }
+                }
+                add_to_list = rrf_cores_to_remove
+            }
+        }
+    }
+    every_in_list = {
+        list = rrf_cores_to_remove
+        save_scope_as = rrf_item
+        scope:rrf_new_rite = { remove_rite_tenet = scope:rrf_item }
+    }
+    every_in_list = { list = rrf_cores_to_remove remove_from_list = rrf_cores_to_remove }
+    every_in_list = {
+        variable = rrf_selected_tenets
+        save_scope_as = rrf_item
+        scope:rrf_new_rite = {
+            if = {
+                limit = { NOT = { any_rite_tenet = { this = scope:rrf_item } } }
+                add_rite_tenet = scope:rrf_item
+            }
+        }
+    }
 }
 
 rrf_apply_selected_doctrines_effect = {
@@ -123,11 +164,30 @@ rrf_check_created_result_effect = {
     }
     scope:rrf_new_rite = {
         every_rite_tenet = {
-            scope:rrf_actor = { change_variable = { name = rrf_result_core_count add = 1 } }
+            save_scope_as = rrf_item
+            if = {
+                limit = { NOT = { rrf_real_tenet_trigger = yes } }
+                scope:rrf_actor = { add_character_flag = rrf_result_invalid }
+            }
+            scope:rrf_actor = {
+                change_variable = { name = rrf_result_core_count add = 1 }
+                if = {
+                    limit = {
+                        NOT = { is_target_in_variable_list = { name = rrf_selected_tenets target = scope:rrf_item } }
+                    }
+                    add_character_flag = rrf_result_invalid
+                }
+            }
         }
     }
     if = {
-        limit = { NOT = { var:rrf_result_core_count = 3 } }
+        limit = {
+            OR = {
+                var:rrf_result_core_count != var:rrf_core_count
+                var:rrf_result_core_count < 3
+                var:rrf_result_core_count > rrf_core_limit_value
+            }
+        }
         add_character_flag = rrf_result_invalid
     }
     every_in_list = {
@@ -136,8 +196,9 @@ rrf_check_created_result_effect = {
         scope:rrf_actor = {
             if = {
                 limit = {
-                    NOT = {
-                        scope:rrf_new_rite = { any_rite_tenet = { this = scope:rrf_item } }
+                    OR = {
+                        NOT = { scope:rrf_item = { rrf_real_tenet_trigger = yes } }
+                        NOT = { scope:rrf_new_rite = { any_rite_tenet = { this = scope:rrf_item } } }
                     }
                 }
                 add_character_flag = rrf_result_invalid
@@ -149,7 +210,12 @@ rrf_check_created_result_effect = {
         save_scope_as = rrf_item
         scope:rrf_actor = {
             if = {
-                limit = { NOT = { scope:rrf_new_rite = { rite_has_doctrine = scope:rrf_item } } }
+                limit = {
+                    OR = {
+                        NOT = { scope:rrf_item = { rrf_real_doctrine_trigger = yes } }
+                        NOT = { scope:rrf_new_rite = { rite_has_doctrine = scope:rrf_item } }
+                    }
+                }
                 add_character_flag = rrf_result_invalid
             }
         }

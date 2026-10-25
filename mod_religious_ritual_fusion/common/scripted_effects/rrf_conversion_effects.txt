@@ -1,0 +1,162 @@
+﻿# These lists belong to one actual adopted result. rrf_vassal_converts is the
+# single AI-acceptance list consumed by the GUI, never a second prediction copy.
+rrf_reset_vassal_conversion_effect = {
+    clear_variable_list = rrf_vassal_converts
+    clear_variable_list = rrf_vassal_declines
+    clear_variable_list = rrf_vassal_ineligible
+    clear_variable_list = rrf_vassal_players
+    clear_variable_list = rrf_vassal_invited
+    clear_variable_list = rrf_vassal_converted
+    clear_variable_list = rrf_vassal_pending
+    remove_variable = rrf_vassal_preview_result
+}
+
+rrf_refresh_vassal_conversion_preview_effect = {
+    save_scope_as = rrf_conversion_actor
+    if = {
+        limit = { rrf_conversion_context_trigger = yes }
+        if = {
+            limit = {
+                OR = {
+                    NOT = { has_variable = rrf_vassal_preview_result }
+                    var:rrf_vassal_preview_result != var:rrf_last_result_rite
+                }
+            }
+            rrf_reset_vassal_conversion_effect = yes
+            set_variable = { name = rrf_vassal_preview_result value = var:rrf_last_result_rite }
+        }
+        clear_variable_list = rrf_vassal_converts
+        clear_variable_list = rrf_vassal_declines
+        clear_variable_list = rrf_vassal_ineligible
+        clear_variable_list = rrf_vassal_players
+        every_vassal = {
+            limit = { NOT = { rite = scope:rrf_conversion_actor.rite } }
+            save_scope_as = rrf_conversion_target
+            scope:rrf_conversion_actor = {
+                if = {
+                    limit = {
+                        NOT = { is_target_in_variable_list = { name = rrf_vassal_invited target = scope:rrf_conversion_target } }
+                    }
+                    if = {
+                        limit = { rrf_vassal_conversion_valid_trigger = yes }
+                        if = {
+                            limit = { scope:rrf_conversion_target = { is_ai = no } }
+                            add_to_variable_list = { name = rrf_vassal_players target = scope:rrf_conversion_target }
+                        }
+                        else_if = {
+                            limit = { rrf_vassal_conversion_accepts_trigger = yes }
+                            add_to_variable_list = { name = rrf_vassal_converts target = scope:rrf_conversion_target }
+                        }
+                        else = { add_to_variable_list = { name = rrf_vassal_declines target = scope:rrf_conversion_target } }
+                    }
+                    else = { add_to_variable_list = { name = rrf_vassal_ineligible target = scope:rrf_conversion_target } }
+                }
+            }
+        }
+        rrf_check_vassal_conversion_results_effect = yes
+    }
+    else = {
+        clear_variable_list = rrf_vassal_converts
+        clear_variable_list = rrf_vassal_declines
+        clear_variable_list = rrf_vassal_ineligible
+        clear_variable_list = rrf_vassal_players
+    }
+}
+
+# A click consumes precisely the displayed list snapshot; it never discovers
+# and invites additional people. Native validity/acceptance is rechecked per
+# recipient after earlier native charges, so stale previews grant no spending.
+rrf_invite_previewed_vassals_effect = {
+    save_scope_as = rrf_conversion_actor
+    if = {
+        limit = { rrf_can_invite_vassals_trigger = yes }
+        every_in_list = { list = rrf_vassal_invitation_snapshot remove_from_list = rrf_vassal_invitation_snapshot }
+        every_in_list = { variable = rrf_vassal_converts add_to_list = rrf_vassal_invitation_snapshot }
+        every_in_list = { variable = rrf_vassal_players add_to_list = rrf_vassal_invitation_snapshot }
+        every_in_list = {
+            list = rrf_vassal_invitation_snapshot
+            save_scope_as = rrf_conversion_target
+            scope:rrf_conversion_actor = {
+                if = {
+                    limit = {
+                        NOT = { is_target_in_variable_list = { name = rrf_vassal_invited target = scope:rrf_conversion_target } }
+                        rrf_vassal_conversion_valid_trigger = yes
+                        OR = {
+                            scope:rrf_conversion_target = { is_ai = no }
+                            rrf_vassal_conversion_accepts_trigger = yes
+                        }
+                    }
+                    # This is an attempted native dispatch, not proof of sending
+                    # or conversion. Unknown outcomes are never replayed.
+                    add_to_variable_list = { name = rrf_vassal_invited target = scope:rrf_conversion_target }
+                    rrf_dispatch_vassal_conversion_effect = yes
+                }
+            }
+        }
+        every_in_list = { list = rrf_vassal_invitation_snapshot remove_from_list = rrf_vassal_invitation_snapshot }
+        rrf_refresh_vassal_conversion_preview_effect = yes
+    }
+}
+
+# Execute in the actual actor scope. The stock interaction owns cost, offers,
+# celestial modifiers and conversion effects. No direct set_character_rite.
+rrf_dispatch_vassal_conversion_effect = {
+    if = {
+        limit = { faith = scope:rrf_conversion_target.faith }
+        if = {
+            limit = { scope:rrf_conversion_target = { is_ai = no } }
+            run_interaction = {
+                interaction = sway_vassal_to_my_rite_interaction
+                actor = scope:rrf_conversion_actor
+                recipient = scope:rrf_conversion_target
+                send_threshold = decline
+            }
+        }
+        else = {
+            run_interaction = {
+                interaction = sway_vassal_to_my_rite_interaction
+                actor = scope:rrf_conversion_actor
+                recipient = scope:rrf_conversion_target
+                execute_threshold = accept
+            }
+        }
+    }
+    else = {
+        if = {
+            limit = { scope:rrf_conversion_target = { is_ai = no } }
+            run_interaction = {
+                interaction = ask_for_conversion_interaction
+                actor = scope:rrf_conversion_actor
+                recipient = scope:rrf_conversion_target
+                send_threshold = decline
+            }
+        }
+        else = {
+            run_interaction = {
+                interaction = ask_for_conversion_interaction
+                actor = scope:rrf_conversion_actor
+                recipient = scope:rrf_conversion_target
+                execute_threshold = accept
+            }
+        }
+    }
+}
+
+# Pending includes unresolved dispatches; it does not claim a pending native
+# interaction exists. Only an actual current Rite match counts as converted.
+rrf_check_vassal_conversion_results_effect = {
+    save_scope_as = rrf_conversion_actor
+    clear_variable_list = rrf_vassal_converted
+    clear_variable_list = rrf_vassal_pending
+    every_in_list = {
+        variable = rrf_vassal_invited
+        save_scope_as = rrf_conversion_target
+        if = {
+            limit = { rite = scope:rrf_conversion_actor.rite }
+            scope:rrf_conversion_actor = { add_to_variable_list = { name = rrf_vassal_converted target = scope:rrf_conversion_target } }
+        }
+        else = {
+            scope:rrf_conversion_actor = { add_to_variable_list = { name = rrf_vassal_pending target = scope:rrf_conversion_target } }
+        }
+    }
+}

@@ -1,0 +1,30 @@
+﻿# This permission is limited to the one newly created current Rite and its
+# recorded founder. It never changes a source Rite or its religious leadership.
+rrf_native_setup_target_trigger = {
+    is_ai = no
+    exists = var:rrf_last_result_rite
+    rite = var:rrf_last_result_rite
+    var:rrf_last_result_rite = {
+        exists = var:rrf_origin_founder
+        var:rrf_origin_founder = prev
+    }
+}
+
+rrf_native_setup_permission_trigger = {
+    custom_description = {
+        text = RRF_REQUIRE_OWN_FUSION_RESULT
+        rrf_native_setup_target_trigger = yes
+    }
+    custom_description = {
+        text = RRF_REQUIRE_FREE_SETUP_SESSION
+        has_character_flag = rrf_native_setup_active
+        has_character_modifier = rrf_native_setup_cost_waiver
+    }
+    is_adult = yes
+    is_at_war = no
+    is_imprisoned = no
+    custom_description = {
+        text = ecumenical_council_already_ongoing_tt
+        NOT = { faith = { has_variable = ecumenical_council_ongoing } }
+    }
+}

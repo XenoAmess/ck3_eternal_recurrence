@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "productId": "religious_ritual_fusion",
-  "version": "0.1.0-alpha",
+  "version": "0.2.0-alpha",
   "runtimeFiles": [
     "descriptor.mod",
     "thumbnail.png",
@@ -24,6 +24,19 @@
     "localization/korean/rrf_l_korean.yml",
     "localization/polish/rrf_l_polish.yml",
     "localization/russian/rrf_l_russian.yml",
-    "localization/spanish/rrf_l_spanish.yml"
+    "localization/spanish/rrf_l_spanish.yml",
+    "common/decision_group_types/rrf_decision_groups.txt",
+    "common/modifiers/rrf_native_setup_modifiers.txt",
+    "common/on_action/rrf_native_setup_on_actions.txt",
+    "common/scripted_effects/rrf_creation_options_effects.txt",
+    "common/scripted_effects/rrf_native_setup_effects.txt",
+    "common/scripted_effects/rrf_conversion_effects.txt",
+    "common/scripted_triggers/rrf_native_setup_triggers.txt",
+    "common/scripted_triggers/rrf_conversion_triggers.txt",
+    "common/scripted_rules/zz_rrf_native_setup_rules.txt",
+    "gui/rrf_native_setup_window.gui",
+    "gui/rrf_result_window.gui",
+    "gui/scripted_widgets/rrf_native_setup_widgets.txt",
+    "gui/scripted_widgets/rrf_result_widgets.txt"
   ]
 }

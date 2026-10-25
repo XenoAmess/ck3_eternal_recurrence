@@ -38,8 +38,9 @@ rrf_ready_trigger = {
         NOT = { has_character_flag = rrf_invalid_selection }
     }
     custom_description = {
-        text = RRF_REQUIRE_THREE_CORES
-        var:rrf_core_count = 3
+        text = RRF_REQUIRE_CORE_RANGE
+        var:rrf_core_count >= 3
+        var:rrf_core_count <= rrf_core_limit_value
     }
     custom_description = {
         text = RRF_REQUIRE_BOTH_SOURCES
@@ -54,6 +55,7 @@ rrf_ready_trigger = {
 rrf_tenet_selectable_trigger = {
     rrf_draft_current_trigger = yes
     exists = scope:rrf_item
+    scope:rrf_item = { rrf_real_tenet_trigger = yes }
     is_target_in_variable_list = {
         name = rrf_candidate_tenets
         target = scope:rrf_item
@@ -65,11 +67,19 @@ rrf_tenet_selectable_trigger = {
             rrf_tenet_knowledge_trigger = yes
         }
     }
+    custom_description = {
+        text = RRF_REQUIRE_CORE_CAPACITY
+        OR = {
+            is_target_in_variable_list = { name = rrf_selected_tenets target = scope:rrf_item }
+            var:rrf_core_count < rrf_core_limit_value
+        }
+    }
 }
 
 rrf_doctrine_selectable_trigger = {
     rrf_draft_current_trigger = yes
     exists = scope:rrf_item
+    scope:rrf_item = { rrf_real_doctrine_trigger = yes }
     is_target_in_variable_list = {
         name = rrf_candidate_doctrines
         target = scope:rrf_item

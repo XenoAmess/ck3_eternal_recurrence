@@ -17,6 +17,7 @@ rrf_complete_success_effect = {
             custom_tooltip = RRF_FUSION_SUCCEEDED_DESC
         }
         rrf_clear_draft_effect = yes
+        rrf_begin_native_setup_effect = yes
     }
     else = { rrf_mark_unresolved_effect = yes }
 }

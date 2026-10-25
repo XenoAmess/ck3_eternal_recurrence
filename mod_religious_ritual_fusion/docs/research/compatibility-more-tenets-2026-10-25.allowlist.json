@@ -1,0 +1,455 @@
+{
+  "schema_version": 1,
+  "machine_id": "4-8e1c2f1861",
+  "observed_at": "2026-10-25T09:49:02Z",
+  "repository": "XenoAmess/ck3_mod_more_tenant_slots",
+  "source_commit": "fae5b3bfda87f872f42052c5ab4d729efb3b4d19",
+  "formal_release_commit": "d1c9deee5c0214f9418c8df821a8ac9f3f97d334",
+  "formal_release_tag": "more-tenets-slots-v11-ck3-1.20.0.4",
+  "workshop_item_id": "3182367229",
+  "version": "11",
+  "release_file_count": 48,
+  "total_payload_bytes": 1015384,
+  "payloads_downloaded": false,
+  "source_tree_and_release_tree_blob_equality": true,
+  "build_entry": "dev_tools/validate_and_build.py",
+  "build_entry_url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/dev_tools/validate_and_build.py",
+  "manifest_url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/docs/workshop/release-manifest-v11.json",
+  "manifest_bytes": 9159,
+  "manifest_git_blob": "1a3dc9702ed9ac77607b9a884055cb507c95755a",
+  "files": [
+    {
+      "path": "common/defines/more_tenets_slots.txt",
+      "bytes": 129,
+      "sha256": "a508d40033eac55cf81f8bf529ca7d4008a57da5f343cdb34c089a555d184b99",
+      "blob_sha": "9e31a984834e8fc6557f9219ed745347fd018828",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/common/defines/more_tenets_slots.txt"
+    },
+    {
+      "path": "common/on_action/zz_mts_selector_on_action.txt",
+      "bytes": 2697,
+      "sha256": "6747d9ae8f60852249eb347f7a6f3af2db3de27c6c60481f31c02ccf8e96dd2c",
+      "blob_sha": "31e50d06b9ba21defcce6dfc3981d237a7d9ecc5",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/common/on_action/zz_mts_selector_on_action.txt"
+    },
+    {
+      "path": "common/religion/doctrine_group_types/mts_selector_00.txt",
+      "bytes": 1501,
+      "sha256": "cd9c2be4eb3de18e431ddfcc235b47133bb06e919d5afbcf92ba49a592074859",
+      "blob_sha": "193a61097182a667fce25f4386e9dbc4edf51208",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/common/religion/doctrine_group_types/mts_selector_00.txt"
+    },
+    {
+      "path": "common/religion/doctrine_group_types/mts_selector_01.txt",
+      "bytes": 1501,
+      "sha256": "040fd2b3929dfb98fb6bfdddc765ed230e8d62e36e565d3d7bcc21169858788e",
+      "blob_sha": "3c91c6c5d704a7117f5317aca97414c66c3db55d",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/common/religion/doctrine_group_types/mts_selector_01.txt"
+    },
+    {
+      "path": "common/religion/doctrine_group_types/mts_selector_02.txt",
+      "bytes": 1501,
+      "sha256": "12f8279b23b669fc70b9b952086f6707113bc7677e3a90e50b3bf500e176ee62",
+      "blob_sha": "27eabfbf2789937bf0cb49fcc99efb8a4a26bc06",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/common/religion/doctrine_group_types/mts_selector_02.txt"
+    },
+    {
+      "path": "common/religion/doctrine_group_types/mts_selector_03.txt",
+      "bytes": 1501,
+      "sha256": "5369ebea2c77e32b97778ca54b68391db78810050d1f0fc4afe9d4fa25e63bb4",
+      "blob_sha": "61180fdd27417105b2c381f561e99e15cb71ccee",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/common/religion/doctrine_group_types/mts_selector_03.txt"
+    },
+    {
+      "path": "common/religion/doctrine_group_types/mts_selector_04.txt",
+      "bytes": 1501,
+      "sha256": "851a40d9cf49a332e755a8594d96e4e4bf62087f6ad384ab18068a0b4880dcc4",
+      "blob_sha": "85b3aeb75858d081c979067da882b11286274290",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/common/religion/doctrine_group_types/mts_selector_04.txt"
+    },
+    {
+      "path": "common/religion/doctrine_group_types/mts_selector_05.txt",
+      "bytes": 1501,
+      "sha256": "8802dfefc5788967e4f8bc1e3c647844b8a56dadbfac5b272a7472c8609dceb2",
+      "blob_sha": "d63f1ebcc9fcb0092c01f018a7041884ca0ad070",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/common/religion/doctrine_group_types/mts_selector_05.txt"
+    },
+    {
+      "path": "common/religion/doctrine_group_types/mts_selector_06.txt",
+      "bytes": 1501,
+      "sha256": "ee904cf882c329a1f7954760773fd70ba3a510e34076d561b32bcb14547dd52e",
+      "blob_sha": "a9aefc44890d0f79f3f3ffae264e7293c5f526c6",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/common/religion/doctrine_group_types/mts_selector_06.txt"
+    },
+    {
+      "path": "common/religion/doctrine_group_types/mts_selector_07.txt",
+      "bytes": 1501,
+      "sha256": "793b65e89db297529944e5071b5f9d20b7efde50bbff0c631f560862f6dd0efe",
+      "blob_sha": "7a08f809b3ae13957388c0bd552c5302f028f632",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/common/religion/doctrine_group_types/mts_selector_07.txt"
+    },
+    {
+      "path": "common/religion/doctrine_group_types/mts_selector_08.txt",
+      "bytes": 1501,
+      "sha256": "c2b83e94ca6a3679df4c22d37fcbd373f98d1b4c312315373bd91b2b87778c39",
+      "blob_sha": "59a999df184aab030f0199cf21dede2b66cd5251",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/common/religion/doctrine_group_types/mts_selector_08.txt"
+    },
+    {
+      "path": "common/religion/doctrine_group_types/mts_selector_09.txt",
+      "bytes": 1501,
+      "sha256": "2d56e1f5a21a59e584141bc1111d7dc30dfe81ec070d4c82c5e1c5e43580f9a0",
+      "blob_sha": "86e222ca8779ba01b006dadfde31136ac00e6cdb",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/common/religion/doctrine_group_types/mts_selector_09.txt"
+    },
+    {
+      "path": "common/religion/doctrine_types/mts_selector_00.txt",
+      "bytes": 1431,
+      "sha256": "d13e016fa5fdf3de3daeee4070f265df1a44de151d0c1bbdb8e6c11fe98cbee8",
+      "blob_sha": "bf8348b1997ca89b9d34c573392f114a2a7fe3d5",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/common/religion/doctrine_types/mts_selector_00.txt"
+    },
+    {
+      "path": "common/religion/doctrine_types/mts_selector_01.txt",
+      "bytes": 1431,
+      "sha256": "e74c99f9192b7a95398a531718ee3d640dc670580f25a0089a730bb4457ccdb4",
+      "blob_sha": "a2ee07f97b9e693e06cab0a6233894d3a400a295",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/common/religion/doctrine_types/mts_selector_01.txt"
+    },
+    {
+      "path": "common/religion/doctrine_types/mts_selector_02.txt",
+      "bytes": 1431,
+      "sha256": "3660ca34c4a349bedd4668504e73cd1f5f37f5e02119f0f804f71b6a1e3726e1",
+      "blob_sha": "a0d0d866c2ff3c454b2cd496a0077e2617d2580a",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/common/religion/doctrine_types/mts_selector_02.txt"
+    },
+    {
+      "path": "common/religion/doctrine_types/mts_selector_03.txt",
+      "bytes": 1431,
+      "sha256": "9cd20a6de9801c247fad41a800e9670b3132a60334ee89878659edc16a531fb3",
+      "blob_sha": "255e6d6457f214947caf529ec897a8b3b6223e1a",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/common/religion/doctrine_types/mts_selector_03.txt"
+    },
+    {
+      "path": "common/religion/doctrine_types/mts_selector_04.txt",
+      "bytes": 1431,
+      "sha256": "c89974e89bd934bd2732c470fae6d5c86a8532fbc278ec8bba9eca198fe3f107",
+      "blob_sha": "b8d7620af9d20417e87daebc2792f44eae6c1750",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/common/religion/doctrine_types/mts_selector_04.txt"
+    },
+    {
+      "path": "common/religion/doctrine_types/mts_selector_05.txt",
+      "bytes": 1431,
+      "sha256": "6ef3399a4a4a986b9f76aa56c00906f42f480630fa15a7ed3e0c0a4f277a6453",
+      "blob_sha": "c4d9f71552de55eaeb0d79f2d761cb4a1affb6d1",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/common/religion/doctrine_types/mts_selector_05.txt"
+    },
+    {
+      "path": "common/religion/doctrine_types/mts_selector_06.txt",
+      "bytes": 1431,
+      "sha256": "1aad65cd352cbdc81827332cdd652c3dc2e5828b8054b3b2e83944b3b4a5ca7f",
+      "blob_sha": "2585fa01dfd9949c3c16918aa562d27d2f68c859",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/common/religion/doctrine_types/mts_selector_06.txt"
+    },
+    {
+      "path": "common/religion/doctrine_types/mts_selector_07.txt",
+      "bytes": 1431,
+      "sha256": "50b506c98feb5fda1e53fc667959d7cda73c3ae442674d8baea354b1563fcacf",
+      "blob_sha": "d0a62b65f85e1ef992af7fa71d99e1d311892a05",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/common/religion/doctrine_types/mts_selector_07.txt"
+    },
+    {
+      "path": "common/religion/doctrine_types/mts_selector_08.txt",
+      "bytes": 1431,
+      "sha256": "afc456dddfb722251f52f86ca9757cbf55bade47422a652b2f31566c14cecc49",
+      "blob_sha": "2197a3cf1532e2cb999cd6a61442d1089736a42a",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/common/religion/doctrine_types/mts_selector_08.txt"
+    },
+    {
+      "path": "common/religion/doctrine_types/mts_selector_09.txt",
+      "bytes": 1431,
+      "sha256": "8873c12b7c7f2359d6c59f7c74189540de5609fa0ef93df4a1300f014ca17429",
+      "blob_sha": "82e967789c8c8411141c549680959670476fd944",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/common/religion/doctrine_types/mts_selector_09.txt"
+    },
+    {
+      "path": "common/script_values/zz_mts_core_tenets_cap.txt",
+      "bytes": 134,
+      "sha256": "acd95b47fff9f740ee31ed94ce040d910e0da6da2bbea7abd326ef95e0a58687",
+      "blob_sha": "c7a1acbabfd09fc62755868c9908aefb259cd337",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/common/script_values/zz_mts_core_tenets_cap.txt"
+    },
+    {
+      "path": "common/scripted_effects/mts_selector.txt",
+      "bytes": 13301,
+      "sha256": "eb4816d467af2a139189762b7b0dbf991c0f739866eb67fa78b3f3b408e145a5",
+      "blob_sha": "2de45a0a38fc5e087faa5463a0e5b079ec925f87",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/common/scripted_effects/mts_selector.txt"
+    },
+    {
+      "path": "common/scripted_guis/mts_selector.txt",
+      "bytes": 324,
+      "sha256": "932d74b738c86746cb459e6b6edfc0f2aade8024b6eb7d45ee27dd9cb8b5d970",
+      "blob_sha": "c3835dd6f9e0218cfa2ec3d3495acbec6d9a934c",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/common/scripted_guis/mts_selector.txt"
+    },
+    {
+      "path": "common/scripted_triggers/mts_selector.txt",
+      "bytes": 5048,
+      "sha256": "0eb7645ce98bafcafa76e108bfd21060f010817051fd6d43180eca9c3072069a",
+      "blob_sha": "384dc97f156f739ba502e562da1fb185f42ff0f9",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/common/scripted_triggers/mts_selector.txt"
+    },
+    {
+      "path": "descriptor.mod",
+      "bytes": 139,
+      "sha256": "6bdad8f4ccde917c5bc4bfec499aa374fc5bd3ee0452a7bad664a7afd3baacdb",
+      "blob_sha": "da13a75670a28ac0d4d93ba5fb78ddd107067591",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/descriptor.mod"
+    },
+    {
+      "path": "gui/window_faith.gui",
+      "bytes": 145357,
+      "sha256": "a6b6bc58d1f093ef80d02ea6e73e38a207fdb3c6f5e5c6f4e52a9a4c51adf9ac",
+      "blob_sha": "ff4864ad010551d6fbca75fdd821860f5833ed24",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/gui/window_faith.gui"
+    },
+    {
+      "path": "gui/window_rite_creation.gui",
+      "bytes": 43790,
+      "sha256": "0b4c9eeff1fe0f6948e4e09d03bbb96241c0b8449a401bfe3d1f728a62a8ceda",
+      "blob_sha": "9c348c746fa0d75a7bdac47a3f6a459eb58c46a3",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/gui/window_rite_creation.gui"
+    },
+    {
+      "path": "localization/english/religion/MTS_religion_confucianism_l_english.yml",
+      "bytes": 414,
+      "sha256": "4f208cf09da82d17aa9ada4da8d44a681c66c28b82d465d4e5add63c335e5cf2",
+      "blob_sha": "365e2bce528b917a1b28e8c495bcf44b3520332c",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/localization/english/religion/MTS_religion_confucianism_l_english.yml"
+    },
+    {
+      "path": "localization/english/religion/mts_selector_l_english.yml",
+      "bytes": 10873,
+      "sha256": "59a4118683364f39442cd6804c2659be075625b4237744b11051958debee740d",
+      "blob_sha": "361e6af612366f94327e1177bd5f01228dac0f2e",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/localization/english/religion/mts_selector_l_english.yml"
+    },
+    {
+      "path": "localization/french/religion/MTS_religion_confucianism_l_french.yml",
+      "bytes": 456,
+      "sha256": "aaa39b17ab2d39bd2fa028b9b7176ba43451019bf4925b41c6c49576e47898d7",
+      "blob_sha": "3bf98bbf60e3fd1a648ee0dcf049069979a30dc7",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/localization/french/religion/MTS_religion_confucianism_l_french.yml"
+    },
+    {
+      "path": "localization/french/religion/mts_selector_l_french.yml",
+      "bytes": 10872,
+      "sha256": "b787edab30a16b4e35a9e5d92a3e536b0abbb33cd8e3c0de6a72e24fd13c04c1",
+      "blob_sha": "66a4a4b12de42e1356e213ba6fed0a540337eca8",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/localization/french/religion/mts_selector_l_french.yml"
+    },
+    {
+      "path": "localization/german/religion/MTS_religion_confucianism_l_german.yml",
+      "bytes": 416,
+      "sha256": "ed1a3cbd278d3ea7c08f587fb6fde19cd2b96624fbd6ecd5bff1e5f1ec7eb46c",
+      "blob_sha": "e50d4213213b9b794635bd416a6f9fa7f25c1166",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/localization/german/religion/MTS_religion_confucianism_l_german.yml"
+    },
+    {
+      "path": "localization/german/religion/mts_selector_l_german.yml",
+      "bytes": 10872,
+      "sha256": "de656e22025ba7abb4b646b3f0722d0a284198e2aec8fef0f9a3cf027d9e0534",
+      "blob_sha": "cf0a55cdc83fc35433112eecc93d7009e6821d9d",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/localization/german/religion/mts_selector_l_german.yml"
+    },
+    {
+      "path": "localization/japanese/religion/MTS_religion_confucianism_l_japanese.yml",
+      "bytes": 377,
+      "sha256": "c42b3dc8df7bd6bbfd5b9efa50e121b29a18e412371e13bee2f30a88a61cf5fa",
+      "blob_sha": "ec39f958a4869ced9f049318a3c0bb2492efdabe",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/localization/japanese/religion/MTS_religion_confucianism_l_japanese.yml"
+    },
+    {
+      "path": "localization/japanese/religion/mts_selector_l_japanese.yml",
+      "bytes": 10874,
+      "sha256": "ecea43c39f0ffa353bde12432f3d9f41175ba73e53bb0c374bfca2f0a847faea",
+      "blob_sha": "267a54b7497483a5dd451af6f8b27c76f344fee8",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/localization/japanese/religion/mts_selector_l_japanese.yml"
+    },
+    {
+      "path": "localization/korean/religion/MTS_religion_confucianism_l_korean.yml",
+      "bytes": 453,
+      "sha256": "f3f812cd1ad349339173961f9bf1595ce9a9c339a2984339f425fefa6901c691",
+      "blob_sha": "79a089feb67d40db1eb9a071462789c6905887b0",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/localization/korean/religion/MTS_religion_confucianism_l_korean.yml"
+    },
+    {
+      "path": "localization/korean/religion/mts_selector_l_korean.yml",
+      "bytes": 10872,
+      "sha256": "81d2d6b142437b5f12ff636ff5dba570c55790e1154097e238ad5ef0741c1c38",
+      "blob_sha": "24d7661eb4086a97f7f999001931dedd0748d068",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/localization/korean/religion/mts_selector_l_korean.yml"
+    },
+    {
+      "path": "localization/polish/religion/MTS_religion_confucianism_l_polish.yml",
+      "bytes": 445,
+      "sha256": "ed4567f35af191012c68a29491d4bcfde8a1205398ca13782a47fe718290a769",
+      "blob_sha": "6fa072fe4346103770560d391ebc7ca324970590",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/localization/polish/religion/MTS_religion_confucianism_l_polish.yml"
+    },
+    {
+      "path": "localization/polish/religion/mts_selector_l_polish.yml",
+      "bytes": 10872,
+      "sha256": "f2fad8d6c21fc80e96713c0c6e7855038918b4209b8c5a73402e60dcb3fdca10",
+      "blob_sha": "e6e5f6a0fe522a369c640002d8891346bdd71308",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/localization/polish/religion/mts_selector_l_polish.yml"
+    },
+    {
+      "path": "localization/russian/religion/MTS_religion_confucianism_l_russian.yml",
+      "bytes": 654,
+      "sha256": "e10a4ff1ed98504ecc109572305d31e402ca8797cd2278e16c93a4d6c69da9d5",
+      "blob_sha": "26d386c18f5c24e7d2c3448ae452e33c462a164a",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/localization/russian/religion/MTS_religion_confucianism_l_russian.yml"
+    },
+    {
+      "path": "localization/russian/religion/mts_selector_l_russian.yml",
+      "bytes": 10873,
+      "sha256": "f839dc5506e9caea52766e768f000c3deed03f4b0ca15158e441ab5623f93d0e",
+      "blob_sha": "89503881258d191439d54e69a3e5257ccc457e63",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/localization/russian/religion/mts_selector_l_russian.yml"
+    },
+    {
+      "path": "localization/simp_chinese/religion/MTS_religion_confucianism_l_simp_chinese.yml",
+      "bytes": 336,
+      "sha256": "cb7dc44fbd6655a015036b34f21c92acd1894b65bbc2fc0de2c2b65de9afd070",
+      "blob_sha": "a136e201b3101563339664c56594449bc8ce9c41",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/localization/simp_chinese/religion/MTS_religion_confucianism_l_simp_chinese.yml"
+    },
+    {
+      "path": "localization/simp_chinese/religion/mts_selector_l_simp_chinese.yml",
+      "bytes": 10878,
+      "sha256": "875afae3379202810c3a47a45ce3e55590c88c11f0fd645be7c4a3459491f8ac",
+      "blob_sha": "0e3a0a77567145efc41bc501e516d632fc8e9b1c",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/localization/simp_chinese/religion/mts_selector_l_simp_chinese.yml"
+    },
+    {
+      "path": "localization/spanish/religion/MTS_religion_confucianism_l_spanish.yml",
+      "bytes": 426,
+      "sha256": "c16856d5fd705f8d36cfa734ea47e42b53b241dc08ccc51a7b1e17e2be2e8082",
+      "blob_sha": "7e0df22e90b80965b2982e3530f812d978e3fa1d",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/localization/spanish/religion/MTS_religion_confucianism_l_spanish.yml"
+    },
+    {
+      "path": "localization/spanish/religion/mts_selector_l_spanish.yml",
+      "bytes": 10873,
+      "sha256": "e98f3dd22ac9ec2c804f0770435c9e46ea9d156b6568932fa2d47a7c8b3e23e4",
+      "blob_sha": "2dcff12792b1fed68c2549e6b1d6079bdcfe0ac9",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/localization/spanish/religion/mts_selector_l_spanish.yml"
+    },
+    {
+      "path": "thumbnail.png",
+      "bytes": 673309,
+      "sha256": "53fa59a29aa04d18a7ac623dc19223f7d213938ac5a8a692531d5616e2ba0690",
+      "blob_sha": "beea92370409e83266af8496cd1430f2bd637381",
+      "source_matches_formal": true,
+      "tree_size_matches_manifest": true,
+      "url": "https://raw.githubusercontent.com/XenoAmess/ck3_mod_more_tenant_slots/fae5b3bfda87f872f42052c5ab4d729efb3b4d19/more_tenets_slots_xa_dev/thumbnail.png"
+    }
+  ]
+}
+

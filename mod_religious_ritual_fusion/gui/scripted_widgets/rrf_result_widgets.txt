@@ -1,0 +1,2 @@
+﻿gui/rrf_result_window.gui = rrf_native_setup_launcher
+gui/rrf_result_window.gui = rrf_result_window

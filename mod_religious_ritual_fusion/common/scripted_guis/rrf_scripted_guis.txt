@@ -101,3 +101,63 @@ rrf_refresh_gui = {
 	is_valid = { has_variable = rrf_state var:rrf_state = flag:editing }
 	effect = { rrf_refresh_validation_effect = yes }
 }
+
+# The native model owns the editable draft. These actions never create a Rite.
+rrf_native_setup_window_gui = {
+	scope = character
+	is_shown = { rrf_native_setup_target_trigger = yes has_character_flag = rrf_native_setup_active }
+}
+rrf_native_launch_gui = {
+	scope = character
+	is_shown = {
+		rrf_native_setup_target_trigger = yes
+		has_character_flag = rrf_native_setup_active
+		has_character_flag = rrf_native_open_requested
+	}
+}
+rrf_native_open_ack_gui = {
+	scope = character
+	is_valid = { rrf_native_setup_target_trigger = yes has_character_flag = rrf_native_open_requested }
+	effect = { remove_character_flag = rrf_native_open_requested }
+}
+rrf_mark_native_apply_gui = {
+	scope = character
+	is_valid = { rrf_native_setup_permission_trigger = yes }
+	effect = { rrf_mark_native_apply_effect = yes }
+}
+rrf_cancel_native_setup_gui = {
+	scope = character
+	is_valid = { rrf_native_setup_target_trigger = yes has_character_flag = rrf_native_setup_active }
+	effect = { rrf_finish_native_setup_effect = yes }
+}
+rrf_resume_native_setup_gui = {
+	scope = character
+	is_valid = { rrf_native_setup_permission_trigger = yes }
+	effect = {
+		add_character_flag = rrf_native_open_requested
+		remove_character_flag = rrf_result_dialog
+	}
+}
+rrf_result_window_gui = {
+	scope = character
+	is_shown = { rrf_native_setup_target_trigger = yes has_character_flag = rrf_result_dialog }
+}
+rrf_configured_result_gui = {
+	scope = character
+	is_valid = { rrf_conversion_context_trigger = yes }
+}
+rrf_close_result_gui = {
+	scope = character
+	is_valid = { has_character_flag = rrf_result_dialog }
+	effect = { remove_character_flag = rrf_result_dialog }
+}
+rrf_invite_vassals_gui = {
+	scope = character
+	is_valid = { rrf_can_invite_vassals_trigger = yes }
+	effect = { rrf_invite_previewed_vassals_effect = yes }
+}
+rrf_refresh_result_gui = {
+	scope = character
+	is_valid = { rrf_conversion_context_trigger = yes }
+	effect = { rrf_refresh_vassal_conversion_preview_effect = yes }
+}

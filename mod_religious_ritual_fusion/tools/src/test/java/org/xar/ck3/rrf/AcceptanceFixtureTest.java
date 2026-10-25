@@ -62,7 +62,7 @@ final class AcceptanceFixtureTest {
         assertObservationDecision(emitted.fixture(), request);
         assertTrue(allKeys.contains("add_known_tenet")); assertTrue(allKeys.contains("add_known_doctrine"));
         assertThrows(IllegalArgumentException.class, () -> FixtureEmitter.emit(repository, emitted.fixture(), "synthetic-fixture-machine", request));
-        assertEquals(75, ContentValidator.validate(repository.resolve("mod_religious_ritual_fusion")).runtimeFiles());
+        assertEquals(89, ContentValidator.validate(repository.resolve("mod_religious_ritual_fusion")).runtimeFiles());
     }
     @Test void faithRejectionAndColdClosuresUseActualModeAndColdCannotSeed() throws IOException {
         Path repository = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize().getParent();

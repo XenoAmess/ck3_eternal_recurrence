@@ -1,0 +1,499 @@
+﻿# Post-creation editor: the object has already been created by the RRF
+# creation effect. This window only submits native EditRite for that exact Rite.
+window = {
+	name = "rrf_native_setup_window"
+	parentanchor = center
+	size = { 1300 950 }
+	layer = top
+	movable = no
+	visible = "[And4( GetPlayer.IsValid, IsGameViewOpen( 'rite_creation' ), ObjectsEqual( RiteCreationWindow.GetRite, GetPlayer.MakeScope.Var( 'rrf_last_result_rite' ).Rite ), GetScriptedGui( 'rrf_native_setup_window_gui' ).IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+	datacontext = "[GetVariableSystem]"
+	using = Window_Background
+	using = Window_Decoration
+
+	state = {
+		name = _show
+		using = Animation_FadeIn_Quick
+		on_start = "[GetVariableSystem.Set( 'rrf_native_setup_page', 'identity' )]"
+		on_start = "[GetVariableSystem.Clear( 'faith_creation_right_view' )]"
+	}
+	state = { name = _hide using = Animation_FadeOut_Quick }
+
+	vbox = {
+		using = Window_Margins
+		spacing = 10
+		header_pattern = {
+			layoutpolicy_horizontal = expanding
+			blockoverride "header_text" { text = "RRF_NATIVE_SETUP_TITLE" }
+			blockoverride "button_close" {
+				enabled = "[GetScriptedGui( 'rrf_cancel_native_setup_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				onclick = "[RiteCreationWindow.Close]"
+				onclick = "[GetScriptedGui( 'rrf_cancel_native_setup_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				tooltip = "RRF_NATIVE_SETUP_SKIP_TT"
+			}
+		}
+		text_multi = {
+			text = "RRF_NATIVE_SETUP_INTRO"
+			max_width = 1200
+			autoresize = yes
+		}
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			spacing = 12
+			vbox = {
+				name = "rrf_native_editor"
+				size = { 750 100% }
+				layoutpolicy_vertical = expanding
+				spacing = 12
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					spacing = 12
+					icon = { size = { 58 58 } texture = "[RiteCreationWindow.GetFaithIcon]" }
+					text_multi = {
+						text = "[RiteCreationWindow.GetNewRiteName]"
+						max_width = 650
+						autoresize = yes
+						using = Font_Size_Big
+						default_format = "#high"
+					}
+				}
+				hbox = {
+					layoutpolicy_horizontal = expanding
+
+				button_tab = {
+					down = "[GetVariableSystem.HasValue( 'rrf_native_setup_page', 'identity' )]"
+					onclick = "[GetVariableSystem.Set( 'rrf_native_setup_page', 'identity' )]"
+					onclick = "[GetVariableSystem.Clear( 'faith_creation_right_view' )]"
+					blockoverride "tab_label" { text = "RRF_NATIVE_SETUP_NAMES_TAB" }
+				}
+
+				button_tab = {
+					down = "[GetVariableSystem.HasValue( 'rrf_native_setup_page', 'icons' )]"
+					onclick = "[GetVariableSystem.Set( 'rrf_native_setup_page', 'icons' )]"
+					onclick = "[GetVariableSystem.Clear( 'faith_creation_right_view' )]"
+					blockoverride "tab_label" { text = "RRF_NATIVE_SETUP_ICONS_TAB" }
+				}
+
+				button_tab = {
+					down = "[GetVariableSystem.HasValue( 'rrf_native_setup_page', 'doctrines' )]"
+					onclick = "[GetVariableSystem.Set( 'rrf_native_setup_page', 'doctrines' )]"
+					onclick = "[GetVariableSystem.Clear( 'faith_creation_right_view' )]"
+					blockoverride "tab_label" { text = "RRF_NATIVE_SETUP_DOCTRINES_TAB" }
+				}
+				}
+
+				widget = {
+					name = "rrf_native_pages"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					background = { using = Background_Area alpha = 0.75 }
+
+					scrollbox = {
+						name = "rrf_native_identity_scroll"
+						visible = "[GetVariableSystem.HasValue( 'rrf_native_setup_page', 'identity' )]"
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						blockoverride "scrollbox_content" {
+							hbox = {
+								layoutpolicy_horizontal = expanding
+								margin = { 12 12 }
+								spacing = 12
+								vbox = {
+									size = { 390 0 }
+									layoutpolicy_vertical = expanding
+									spacing = 18
+									text_label_left = { text = "RITE_CREATION_VIEW_NAMING_HEADER" }
+
+								name_entry_big = {
+									size = { 390 40 }
+									blockoverride "label" { text = "RITE_CREATION_VIEW_NAMING_NAME" }
+									blockoverride "editbox_properties" {
+										name = "faith_name_edit"
+										ontextedited = "[RiteCreationWindow.OnEditName]"
+										maxcharacters = 30
+										text = "[RiteCreationWindow.GetNewRiteName]"
+									}
+								}
+
+								name_entry_big = {
+									size = { 390 40 }
+									blockoverride "label" { text = "RITE_CREATION_VIEW_NAMING_ADJECTIVE" }
+									blockoverride "editbox_properties" {
+										name = "faith_adjective_edit"
+										ontextedited = "[RiteCreationWindow.OnEditAdjective]"
+										maxcharacters = 30
+										text = "[RiteCreationWindow.GetRite.GetAdjectiveNoTooltip]"
+
+									}
+								}
+
+								name_entry_big = {
+									size = { 390 40 }
+									blockoverride "label" { text = "RITE_CREATION_VIEW_NAMING_FOLLOWER" }
+									blockoverride "editbox_properties" {
+										name = "faith_adherent_edit"
+										ontextedited = "[RiteCreationWindow.OnEditAdherent]"
+										maxcharacters = 30
+										text = "[RiteCreationWindow.GetRite.GetAdherentNameNoTooltip]"
+
+									}
+								}
+
+								name_entry_big = {
+									size = { 390 40 }
+									blockoverride "label" { text = "RITE_CREATION_VIEW_NAMING_FOLLOWERS" }
+									blockoverride "editbox_properties" {
+										name = "faith_adherent_plural_edit"
+										ontextedited = "[RiteCreationWindow.OnEditAdherentPlural]"
+										maxcharacters = 30
+										text = "[RiteCreationWindow.GetRite.GetAdherentNamePluralNoTooltip]"
+
+									}
+								}
+								}
+								divider = { layoutpolicy_vertical = expanding }
+								vbox = {
+									size = { 310 0 }
+									spacing = 10
+									text_label_left = { text = "RITE_CREATION_VIEW_COLOR_HEADER" }
+									colorpicker_simple = {
+										size = { 310 350 }
+										color = "[RiteCreationWindow.GetColor]"
+										oncoloredited = "[RiteCreationWindow.SetColor]"
+									}
+								}
+							}
+						}
+					}
+
+					scrollbox = {
+						name = "rrf_native_icons_scroll"
+						visible = "[GetVariableSystem.HasValue( 'rrf_native_setup_page', 'icons' )]"
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						blockoverride "scrollbox_content" {
+							vbox = {
+								layoutpolicy_horizontal = expanding
+								margin = { 12 12 }
+								spacing = 10
+								text_label_left = { text = "RITE_CREATION_VIEW_ICON_SELECT" }
+								fixedgridbox = {
+									layoutpolicy_horizontal = expanding
+									addcolumn = 70
+									addrow = 74
+									datamodel_wrap = 10
+									flipdirection = yes
+									datamodel = "[RiteCreationWindow.GetFaithIcons]"
+									item = {
+										button_normal = {
+											size = { 60 60 }
+											onclick = "[RiteCreationWindow.SelectFaithIcon( FaithIcon.GetName )]"
+											texture = "[FaithIcon.GetTexture]"
+											tooltipwidget = { using = rite_creation_icon_select_cooltip }
+											glow = {
+												using = Color_Orange
+												visible = "[FaithIcon.IsSelected]"
+												glow_radius = 5
+												using = Glow_Standard
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+
+					vbox = {
+						name = "rrf_native_doctrines_page"
+						visible = "[GetVariableSystem.HasValue( 'rrf_native_setup_page', 'doctrines' )]"
+						margin = { 12 12 }
+						spacing = 10
+
+						scrollbox = {
+							name = "rrf_native_doctrine_categories_scroll"
+							visible = "[Not( GetVariableSystem.HasValue( 'faith_creation_right_view', 'doctrine_selection' ) )]"
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+							blockoverride "scrollbox_content" {
+								vbox = {
+									layoutpolicy_horizontal = expanding
+									spacing = 10
+
+								text_label_left = { text = "FAITH_DOCTRINES_IMPORTANT" default_format = "#high" }
+								fixedgridbox = {
+									name = "rrf_native_doctrines_main_group"
+									layoutpolicy_horizontal = expanding
+									addcolumn = 350
+									addrow = 68
+									datamodel_wrap = 2
+									flipdirection = yes
+									datamodel = "[RiteCreationWindow.GetCategoryHelper( 'main_group' ).GetCategory]"
+									item = {
+										widget_doctrine_selection_item = {
+											size = { 340 60 }
+											blockoverride "doctrine_icon_texture" { texture = "[DoctrineType.GetIcon]" }
+										}
+									}
+								}
+								divider_light = { layoutpolicy_horizontal = expanding }
+
+								text_label_left = { text = "FAITH_DOCTRINES_MARRIAGE" default_format = "#high" }
+								fixedgridbox = {
+									name = "rrf_native_doctrines_marriage"
+									layoutpolicy_horizontal = expanding
+									addcolumn = 350
+									addrow = 68
+									datamodel_wrap = 2
+									flipdirection = yes
+									datamodel = "[RiteCreationWindow.GetCategoryHelper( 'marriage' ).GetCategory]"
+									item = {
+										widget_doctrine_selection_item = {
+											size = { 340 60 }
+
+										}
+									}
+								}
+								divider_light = { layoutpolicy_horizontal = expanding }
+
+								text_label_left = { text = "FAITH_DOCTRINES_CRIMES" default_format = "#high" }
+								fixedgridbox = {
+									name = "rrf_native_doctrines_crimes"
+									layoutpolicy_horizontal = expanding
+									addcolumn = 350
+									addrow = 68
+									datamodel_wrap = 2
+									flipdirection = yes
+									datamodel = "[RiteCreationWindow.GetCategoryHelper( 'crimes' ).GetCategory]"
+									item = {
+										widget_doctrine_selection_item = {
+											size = { 340 60 }
+
+										}
+									}
+								}
+								divider_light = { layoutpolicy_horizontal = expanding }
+
+								text_label_left = { text = "FAITH_DOCTRINES_CLERGY" default_format = "#high" }
+								fixedgridbox = {
+									name = "rrf_native_doctrines_clergy"
+									layoutpolicy_horizontal = expanding
+									addcolumn = 350
+									addrow = 68
+									datamodel_wrap = 2
+									flipdirection = yes
+									datamodel = "[RiteCreationWindow.GetCategoryHelper( 'clergy' ).GetCategory]"
+									item = {
+										widget_doctrine_selection_item = {
+											size = { 340 60 }
+
+										}
+									}
+								}
+								divider_light = { layoutpolicy_horizontal = expanding }
+
+								text_label_left = { text = "RRF_NATIVE_SETUP_SPECIAL_DOCTRINES" default_format = "#high" }
+								fixedgridbox = {
+									name = "rrf_native_doctrines_special"
+									layoutpolicy_horizontal = expanding
+									addcolumn = 350
+									addrow = 68
+									datamodel_wrap = 2
+									flipdirection = yes
+									datamodel = "[RiteCreationWindow.GetCategoryHelper( 'special' ).GetCategory]"
+									item = {
+										widget_doctrine_selection_item = {
+											size = { 340 60 }
+											blockoverride "doctrine_icon_texture" { texture = "[DoctrineType.GetIcon]" }
+										}
+									}
+								}
+								divider_light = { layoutpolicy_horizontal = expanding }
+								}
+							}
+						}
+
+						# The original picker receives real DoctrineItem values from
+						# GetCategoryHelper/ShowWindow and retains CanPick, knowledge,
+						# TopScope, actual blockers and native SelectDoctrine.
+						vbox_doctrine_selection = {
+							visible = "[GetVariableSystem.HasValue( 'faith_creation_right_view', 'doctrine_selection' )]"
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+						}
+					}
+				}
+			}
+
+			divider = { layoutpolicy_vertical = expanding }
+
+			vbox = {
+				name = "rrf_native_preview"
+				size = { 440 100% }
+				layoutpolicy_vertical = expanding
+				spacing = 10
+				scrollbox = {
+					name = "rrf_native_preview_scroll"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					blockoverride "scrollbox_background" { background = { using = Background_Area alpha = 0.8 } }
+					blockoverride "scrollbox_content" {
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							margin = { 12 10 }
+							spacing = 10
+							text_label_left = { text = "RRF_NATIVE_SETUP_BELIEFS" }
+
+							text_label_left = { text = "FAITH_WINDOW_VIRTUES" }
+							fixedgridbox = {
+								layoutpolicy_horizontal = expanding
+								addcolumn = 200
+								addrow = 66
+								datamodel_wrap = 2
+								flipdirection = yes
+								datamodel = "[RiteCreationWindow.GetVirtues]"
+								item = {
+									hbox = {
+										datacontext = "[VirtueOrSinItem.GetTrait]"
+										spacing = 7
+										size = { 195 60 }
+										icon = {
+											size = { 45 45 }
+											texture = "[Trait.GetIcon( GetPlayer )]"
+											tooltipwidget = { using = faith_window_trait_tooltip }
+										}
+										text_multi = {
+											text = "[Trait.GetNameNoTooltip( GetPlayer )]"
+											max_width = 140
+											autoresize = yes
+										}
+									}
+								}
+							}
+							divider_light = { layoutpolicy_horizontal = expanding }
+
+							text_label_left = { text = "FAITH_WINDOW_SINS" }
+							fixedgridbox = {
+								layoutpolicy_horizontal = expanding
+								addcolumn = 200
+								addrow = 66
+								datamodel_wrap = 2
+								flipdirection = yes
+								datamodel = "[RiteCreationWindow.GetSins]"
+								item = {
+									hbox = {
+										datacontext = "[VirtueOrSinItem.GetTrait]"
+										spacing = 7
+										size = { 195 60 }
+										icon = {
+											size = { 45 45 }
+											texture = "[Trait.GetIcon( GetPlayer )]"
+											tooltipwidget = { using = faith_window_trait_tooltip }
+										}
+										text_multi = {
+											text = "[Trait.GetNameNoTooltip( GetPlayer )]"
+											max_width = 140
+											autoresize = yes
+										}
+									}
+								}
+							}
+							divider = { layoutpolicy_horizontal = expanding }
+							text_label_left = { text = "RRF_NATIVE_SETUP_LOCKED_CORES" }
+							text_multi = {
+								text = "RRF_NATIVE_SETUP_LOCKED_CORES_TT"
+								max_width = 400
+								autoresize = yes
+							}
+							# Actual stored Rite contents, not GetTenets' editable
+							# slot model. No blank capacity slots are instantiated.
+							fixedgridbox = {
+								datacontext = "[RiteCreationWindow.GetRite]"
+								datacontext = "[Rite.GetFaith]"
+								layoutpolicy_horizontal = expanding
+								addcolumn = 100
+								addrow = 130
+								datamodel_wrap = 4
+								flipdirection = yes
+								datamodel = "[Rite.GetTenets]"
+								item = {
+									vbox = {
+										size = { 96 122 }
+										spacing = 3
+										hbox = {
+											expand = {}
+											proportional_icon = {
+												size = { 55 70 }
+												texture = "[TenetType.GetIcon( Faith.Self )]"
+												tooltipwidget = { using = tenet_type_tooltip }
+											}
+											expand = {}
+										}
+										text_multi = {
+											text = "[TenetType.GetNameNoTooltip( Rite.Self )]"
+											max_width = 96
+											align = hcenter
+											autoresize = yes
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+
+				text_multi = {
+					text = "RRF_NATIVE_SETUP_FREE"
+					max_width = 420
+					autoresize = yes
+					default_format = "#high"
+				}
+				text_single = {
+					text = "FAITH_CREATION_TOTAL_COST"
+					tooltip = "RITE_TOTAL_COST_TOOLTIP"
+					default_format = "#high"
+				}
+				scrollbox = {
+					name = "rrf_native_edit_blockers"
+					visible = "[Not( And3( RiteCreationWindow.CanEditRite, EqualTo_CFixedPoint( RiteCreationWindow.CalcPietyCost, '(CFixedPoint)0' ), GetScriptedGui( 'rrf_mark_native_apply_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ) )]"
+					size = { 440 140 }
+					layoutpolicy_horizontal = expanding
+					blockoverride "scrollbox_content" {
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							spacing = 5
+							text_label_left = { text = "RRF_NATIVE_SETUP_BLOCKERS" }
+							text_multi = { text = "[RiteCreationWindow.GetEditBlockers]" max_width = 410 autoresize = yes }
+							text_multi = { text = "[GetScriptedGui( 'rrf_mark_native_apply_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" max_width = 410 autoresize = yes }
+						}
+					}
+				}
+				text_multi = {
+					visible = "[NotEqualTo_CFixedPoint( RiteCreationWindow.CalcPietyCost, '(CFixedPoint)0' )]"
+					text = "RRF_NATIVE_SETUP_COST_NONZERO"
+					max_width = 420
+					autoresize = yes
+				}
+				button_primary = {
+					name = "rrf_native_apply"
+					size = { 440 52 }
+					text = "RRF_NATIVE_SETUP_APPLY"
+					enabled = "[And3( RiteCreationWindow.CanEditRite, EqualTo_CFixedPoint( RiteCreationWindow.CalcPietyCost, '(CFixedPoint)0' ), GetScriptedGui( 'rrf_mark_native_apply_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+					tooltip = "[Localize( 'RRF_NATIVE_SETUP_APPLY_TT' )]\n\n[RiteCreationWindow.GetEditBlockers]"
+					onclick = "[GetScriptedGui( 'rrf_mark_native_apply_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+					onclick = "[RiteCreationWindow.EditRite]"
+				}
+				button_standard = {
+					name = "rrf_native_skip"
+					size = { 440 42 }
+					text = "RRF_NATIVE_SETUP_SKIP"
+					tooltip = "RRF_NATIVE_SETUP_SKIP_TT"
+					enabled = "[GetScriptedGui( 'rrf_cancel_native_setup_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+					onclick = "[RiteCreationWindow.Close]"
+					onclick = "[GetScriptedGui( 'rrf_cancel_native_setup_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				}
+			}
+		}
+	}
+}

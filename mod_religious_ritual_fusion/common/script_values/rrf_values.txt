@@ -8,3 +8,14 @@ rrf_current_cost_value = {
         value = rrf_faith_cost_value
     }
 }
+
+# MTS v11 publishes this same mirror with its native FAITH_CORE_TENETS_CAP=100.
+# Do not override the mirror or define: ordinary CK3 remains exactly three cores.
+rrf_core_limit_value = {
+    value = 3
+    if = {
+        limit = { pam_faith_core_tenets_cap_value = 100 }
+        value = pam_faith_core_tenets_cap_value
+        max = 100
+    }
+}

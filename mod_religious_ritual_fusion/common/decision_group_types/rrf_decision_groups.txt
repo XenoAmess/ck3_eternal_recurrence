@@ -1,0 +1,4 @@
+﻿rrf_fusion = {
+	sort_order = 110
+	gui_tags = { big_button }
+}

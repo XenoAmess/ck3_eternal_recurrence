@@ -10,6 +10,16 @@ yearly_global_pulse = { on_actions = { des_annual_watchdog } }
 random_yearly_everyone_pulse = { on_actions = { des_character_watchdog } }
 on_death = { on_actions = { des_on_death } }
 
+# Neutral creation contract. Consumers may broadcast this before creating a Rite
+# even when a paused old save predates the persisted defaults registry.
+xar_rite_creation_collect_optional_default_doctrines = {
+	on_actions = { des_register_optional_rite_creation_defaults }
+}
+
+des_register_optional_rite_creation_defaults = {
+	effect = { des_register_optional_rite_creation_defaults_effect = yes }
+}
+
 des_new_game_initialize = {
 	effect = { des_initialize_world_effect = yes }
 }

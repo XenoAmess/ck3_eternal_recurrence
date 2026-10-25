@@ -1,0 +1,7 @@
+﻿# on_actions lists are additive; do not replace stock/DES/MTS effect blocks.
+on_rite_updated = { on_actions = { rrf_native_setup_applied } }
+rrf_native_setup_applied = { effect = { rrf_on_native_setup_applied_effect = yes } }
+
+# Loaded extension providers append their own child action and register typed
+# optional-default doctrines. The empty consumer is valid without any provider.
+xar_rite_creation_collect_optional_default_doctrines = { }

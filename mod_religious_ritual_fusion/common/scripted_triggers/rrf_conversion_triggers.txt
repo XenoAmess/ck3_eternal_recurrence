@@ -1,0 +1,85 @@
+﻿# Character scope. Invitations concern the adopted, configured result only.
+rrf_conversion_context_trigger = {
+    custom_description = {
+        text = RRF_CONVERSION_REQUIRE_CONFIGURED_RESULT
+        is_alive = yes
+        var:rrf_state = flag:succeeded
+        exists = var:rrf_last_result_rite
+        rite = var:rrf_last_result_rite
+        var:rrf_last_result_rite.var:rrf_origin_founder = this
+        var:rrf_last_result_rite = {
+            has_variable = rrf_native_configuration_complete
+            var:rrf_native_configuration_complete = yes
+        }
+    }
+}
+
+# Character actor scope; rrf_conversion_target is a real direct vassal.
+# Keep native availability, quote/affordability, cooldowns and conditions intact.
+rrf_vassal_conversion_valid_trigger = {
+    rrf_conversion_context_trigger = yes
+    custom_description = {
+        text = RRF_CONVERSION_REQUIRE_CURRENT_VASSAL
+        exists = scope:rrf_conversion_target
+        scope:rrf_conversion_target = {
+            is_alive = yes
+            liege = scope:rrf_conversion_actor
+            NOT = { rite = scope:rrf_conversion_actor.rite }
+        }
+    }
+    custom_description = {
+        text = RRF_CONVERSION_NATIVE_UNAVAILABLE
+        trigger_if = {
+            limit = { faith = scope:rrf_conversion_target.faith }
+            is_character_interaction_valid = {
+                interaction = sway_vassal_to_my_rite_interaction
+                recipient = scope:rrf_conversion_target
+            }
+        }
+        trigger_else = {
+            is_character_interaction_valid = {
+                interaction = ask_for_conversion_interaction
+                recipient = scope:rrf_conversion_target
+            }
+        }
+    }
+}
+
+# No copied opinion threshold or AI score: both branches query the native interaction.
+rrf_vassal_conversion_accepts_trigger = {
+    rrf_vassal_conversion_valid_trigger = yes
+    scope:rrf_conversion_target = { is_ai = yes }
+    trigger_if = {
+        limit = { faith = scope:rrf_conversion_target.faith }
+        pam_sway_to_rite_variant_can_send_trigger = {
+            ARCHBISHOP = scope:rrf_conversion_actor
+            TARGET = scope:rrf_conversion_target
+        }
+        is_character_interaction_potentially_accepted = {
+            interaction = sway_vassal_to_my_rite_interaction
+            recipient = scope:rrf_conversion_target
+            required_response = yes
+            ai_accept = 0
+        }
+    }
+    trigger_else = {
+        is_character_interaction_potentially_accepted = {
+            interaction = ask_for_conversion_interaction
+            recipient = scope:rrf_conversion_target
+            required_response = yes
+            ai_accept = 0
+        }
+    }
+}
+
+rrf_can_invite_vassals_trigger = {
+    rrf_conversion_context_trigger = yes
+    custom_description = {
+        text = RRF_CONVERSION_REQUIRE_PREVIEW
+        var:rrf_vassal_preview_result = var:rrf_last_result_rite
+        OR = {
+            has_variable_list = rrf_vassal_converts
+            has_variable_list = rrf_vassal_players
+        }
+    }
+}

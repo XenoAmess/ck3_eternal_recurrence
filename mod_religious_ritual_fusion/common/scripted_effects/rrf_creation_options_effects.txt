@@ -1,0 +1,78 @@
+﻿# Optional extension defaults are typed Doctrine scopes supplied by loaded mods.
+# No optional mod's identifier is parsed by this consumer.
+rrf_initialize_creation_options_effect = {
+    rrf_refresh_family_preview_effect = yes
+}
+
+rrf_clear_creation_options_effect = {
+    clear_variable_list = rrf_family_converts
+}
+
+rrf_apply_creation_options_effect = {
+    trigger_event = { on_action = xar_rite_creation_collect_optional_default_doctrines }
+    every_in_global_list = {
+        variable = xar_rite_creation_optional_default_doctrines
+        save_scope_as = rrf_optional_default
+        scope:rrf_new_rite = { change_rite_doctrine = scope:rrf_optional_default }
+    }
+    # The stock family conversion event consumes these same source identities.
+    # Both RRF result modes keep the creator's Religion, so its same-Religion
+    # branch can be previewed without allocating a temporary Rite or Faith.
+    rrf_refresh_family_preview_effect = yes
+    every_in_list = {
+        variable = rrf_family_converts
+        save_scope_as = rrf_family_member
+        scope:rrf_new_rite = {
+            add_to_variable_list = { name = rrf_expected_family target = scope:rrf_family_member }
+        }
+    }
+}
+
+rrf_refresh_family_preview_effect = {
+    save_scope_as = rrf_actor
+    clear_variable_list = rrf_family_converts
+    if = {
+        limit = { exists = var:rrf_source_a exists = var:rrf_source_a_faith }
+        var:rrf_source_a = { save_scope_as = old_rite }
+        var:rrf_source_a_faith = {
+            save_scope_as = old_faith
+            save_scope_as = new_faith
+        }
+        every_spouse = {
+            limit = { faith_conversion_0003_valid_character = yes is_landed = no }
+            save_scope_as = rrf_family_member
+            scope:rrf_actor = {
+                add_to_variable_list = { name = rrf_family_converts target = scope:rrf_family_member }
+            }
+        }
+        every_close_family_member = {
+            limit = {
+                faith_conversion_0003_valid_character = yes
+                OR = {
+                    AND = {
+                        is_child_of = scope:rrf_actor
+                        OR = { is_adult = no is_landed = no }
+                        trigger_if = {
+                            limit = { is_adult = no any_relation = { type = guardian } }
+                            any_relation = {
+                                type = guardian
+                                count = all
+                                target_is_liege_or_above = scope:rrf_actor
+                            }
+                        }
+                    }
+                    target_is_liege_or_above = scope:rrf_actor
+                }
+                NOT = {
+                    scope:rrf_actor = {
+                        is_target_in_variable_list = { name = rrf_family_converts target = prev }
+                    }
+                }
+            }
+            save_scope_as = rrf_family_member
+            scope:rrf_actor = {
+                add_to_variable_list = { name = rrf_family_converts target = scope:rrf_family_member }
+            }
+        }
+    }
+}

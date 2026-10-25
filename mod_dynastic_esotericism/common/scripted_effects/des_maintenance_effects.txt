@@ -81,6 +81,7 @@ des_sync_rite_effect = {
 }
 
 des_maintenance_effect = {
+	des_register_optional_rite_creation_defaults_effect = yes
 	des_discover_rites_effect = yes
 	clear_global_variable_list = des_bound_rites_snapshot
 	every_in_global_list = {

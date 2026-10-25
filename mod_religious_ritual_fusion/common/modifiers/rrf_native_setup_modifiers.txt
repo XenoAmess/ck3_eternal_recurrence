@@ -1,0 +1,7 @@
+﻿# Native cost calculation clamps its final adjusted cost to zero. The own
+# modifier is removed on the actual delayed update or explicit skip, and its
+# finite expiry cannot leave a permanent discount in a partially saved session.
+rrf_native_setup_cost_waiver = {
+    rite_creation_piety_cost_mult = -1000
+    rite_creation_piety_cost_add = -100000
+}

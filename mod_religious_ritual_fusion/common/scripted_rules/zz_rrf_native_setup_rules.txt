@@ -1,0 +1,18 @@
+﻿# Preserve stock rules outside the already-paid, exact-result setup session.
+# Blocking Create here is also effective for the original window's shortcuts;
+# a visual overlay alone is not a prohibition on creating a second result.
+can_create_rite = {
+    custom_description = {
+        text = RRF_NO_SECOND_NATIVE_CREATION
+        NOT = { has_character_flag = rrf_native_setup_active }
+    }
+    can_create_rite_trigger = yes
+}
+
+can_edit_rite = {
+    trigger_if = {
+        limit = { has_character_flag = rrf_native_setup_active }
+        rrf_native_setup_permission_trigger = yes
+    }
+    trigger_else = { can_edit_rite_trigger = yes }
+}

@@ -1,5 +1,6 @@
 ﻿# Any scope. New games run this automatically; an old save uses the native decision.
 des_initialize_world_effect = {
+	des_register_optional_rite_creation_defaults_effect = yes
 	if = {
 		limit = { NOT = { has_global_variable = des_initialized } }
 		set_global_variable = { name = des_initialized value = yes }
@@ -15,6 +16,27 @@ des_initialize_world_effect = {
 		des_discover_rites_effect = yes
 	}
 	des_ensure_maintenance_effect = yes
+}
+
+# Shared, optional creation contract. A consumer applies these Doctrine scopes
+# only to its newly created Rite, before adoption or a native configuration step.
+# Register our neutral choice without requiring any consumer mod to be installed.
+# Repeated startup/load reconciliation must preserve other mods' entries.
+des_register_optional_rite_creation_defaults_effect = {
+	if = {
+		limit = {
+			NOT = {
+				is_target_in_global_variable_list = {
+					name = xar_rite_creation_optional_default_doctrines
+					target = doctrine:des_doctrine_none
+				}
+			}
+		}
+		add_to_global_variable_list = {
+			name = xar_rite_creation_optional_default_doctrines
+			target = doctrine:des_doctrine_none
+		}
+	}
 }
 
 # Rite scope. Do not overwrite a submitted choice or enable existing rites.

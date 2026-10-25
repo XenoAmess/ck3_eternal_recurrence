@@ -16,6 +16,6 @@ if = { limit = { OR = { var:rrf_source_a = { rite_has_doctrine = doctrine_theocr
 if = { limit = { var:rrf_source_a = { rite_has_doctrine = doctrine_theocracy_temporal } } add_to_variable_list = { name = rrf_selected_doctrines target = doctrine:doctrine_theocracy_temporal } }
 if = { limit = { OR = { var:rrf_source_a = { rite_has_doctrine = doctrine_theocracy_lay_clergy } var:rrf_source_b = { rite_has_doctrine = doctrine_theocracy_lay_clergy } } } add_to_variable_list = { name = rrf_candidate_doctrines target = doctrine:doctrine_theocracy_lay_clergy } }
 if = { limit = { var:rrf_source_a = { rite_has_doctrine = doctrine_theocracy_lay_clergy } } add_to_variable_list = { name = rrf_selected_doctrines target = doctrine:doctrine_theocracy_lay_clergy } }
-# doctrine_no_head disabled: hidden_definition
-# doctrine_spiritual_head disabled: hidden_definition
+# doctrine_no_head disabled: non-player content or hidden_definition
+# doctrine_spiritual_head disabled: non-player content or hidden_definition
 }
