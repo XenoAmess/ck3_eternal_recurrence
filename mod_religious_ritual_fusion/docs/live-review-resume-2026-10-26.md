@@ -50,3 +50,13 @@ R0015完整原件在同一外置scene的`live/4-8e1c2f1861--religious-ritual-fus
 完整对应CI step实际执行31＋74＋28＋28＝161项测试及两个完整模块mypy strict，五个原wait均0、无跳过。首次严格检查因测试空容器变量缺少标注失败，补明确类型后整组重跑。新证明`metadata/native-successor-a01/EXECUTION.shared-producer-ci.a02.actual.json`为7556 B，SHA-256 `2bd3ae9478bc57ac8b749b159f18ea52abe865caf6e2f17ff1a57553d0925123`。修改两模块禁用Shell检查通过；未将局部检查外推为全仓通过。
 
 这些结果只证明共享构建修复。新DLL尚待重新准入和实际构建，原生编辑、零追加费用、同ID保存及冷载仍未通过。
+
+## 2026-10-26接手续验
+
+`machine_id: 4-8e1c2f1861`，2026-10-25T19:45Z后续工。读取上轮最终闭场文件与实际账本rev165后，已在新准入下补验clean提交`2570a55a1ef5e6864ac258aaae2f366bb52dea50`的受影响闭包：完整RRF Maven90、DES Maven36、公共三模块61、RRF五消费者48、信仰事件完整模块2，以及共享原生生产者完整CI命令组31＋74＋28＋28均通过；对应严格类型检查也通过。没有将旧提交的测试追认为本轮结果。
+
+N3原wait0、57生产单元及8个fixture的构建结果已实际消费。新14个execution包与4个readonly包进入完整SDK wire命令组，98＋11＋6项测试、两组mypy、真实CLI14包、prisoner10项检查及两项原CTest均通过。新的seam Q绑定N3，保留原生提交`0646058`与执行提交`2570a55`；这段实际diff仅两份文档。九份critical源码均核对，其中八份在三测试进程中实际导入，未补造第九份的导入记录。
+
+首次DES选择系统Python而缺少pydantic，保留失败后改用项目已有虚拟环境并完整重跑。wire首段七命令通过后，因PATH缺少CTest在Popen前失败；第一次续段又在读取历史CMakeCache编码时失败。两失败保留，只续跑一次实际CTest，没有重跑前七条。CTest使用原文件的逐字节副本及原EXE/参数，日志和相对输出迁入新准入wire-root；没有写回N3。
+
+逐组原始命令、原wait、源码与输入前后身份、新seam和失败段见[本轮软件回执](acceptance/review-resume-software-2026-10-26.json)。这批仅补齐软件与新原生消费者验证；尚未启动R0016，原生定制、零追加费用、同ID保存、四核心、联合模式及冷载仍待实机。

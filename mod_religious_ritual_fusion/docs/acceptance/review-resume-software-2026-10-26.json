@@ -1,0 +1,97 @@
+{
+  "schema": "rrf-review-software-resume-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-25T19:48:07.193541+00:00",
+  "source_commit": "2570a55a1ef5e6864ac258aaae2f366bb52dea50",
+  "scope": "Actual complete affected Maven and SDK/public/native-consumer CI command groups. No new game, no live business or release qualification.",
+  "result": "PASS_FOR_LISTED_SOFTWARE_SCOPE",
+  "tests": {
+    "rrf_maven": 90,
+    "des_maven": 36,
+    "public_modules": 61,
+    "rrf_five_consumers": 48,
+    "faith_creation_module": 2,
+    "shared_native_ci_groups": [
+      31,
+      74,
+      28,
+      28
+    ],
+    "wire_ci_groups": [
+      98,
+      11,
+      6
+    ],
+    "prisoner_sdk_checks": 10,
+    "native_ctest": 2
+  },
+  "static_checks": {
+    "compatibility_module": "strict strict-equality PASS",
+    "faith_records_module": "strict strict-equality PASS",
+    "shared_native_modules": "two complete modules strict PASS",
+    "wire_modules": "two strict and three check-untyped-defs PASS"
+  },
+  "executions": {
+    "rrf": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\zh-live-a01\\metadata\\product-validation-a12\\EXECUTION.rrf.actual.json",
+      "bytes": 113876,
+      "sha256": "8fc8c84b88c32de71246e66a30197a4a1330d3e13d349f165e654bd632e65390"
+    },
+    "des": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\zh-live-a01\\metadata\\product-validation-a12\\remaining-a02\\EXECUTION.des.actual.json",
+      "bytes": 61036,
+      "sha256": "76068b1e47012c7fcf248a10623bc2d5209782691f8360b8424fe2061a2ecd2c"
+    },
+    "public": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\zh-live-a01\\metadata\\product-validation-a12\\remaining-a02\\EXECUTION.public.actual.json",
+      "bytes": 47389,
+      "sha256": "ff749fd07f9533bf710fb40fdf4a28154df5b8acb342b911db30047140c171a9"
+    },
+    "consumers": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\zh-live-a01\\metadata\\product-validation-a12\\remaining-a02\\EXECUTION.consumers.actual.json",
+      "bytes": 142612,
+      "sha256": "aee80b0beca622cf9de53b02f4c965f786b9a09f8f2c70cbd39d2e5bb2ab9e01"
+    },
+    "faith": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\zh-live-a01\\metadata\\product-validation-a12\\remaining-a02\\EXECUTION.faith.actual.json",
+      "bytes": 247483,
+      "sha256": "0ab1c5e383009d1619cfe7c744bd2b877ac68ca142766d84d02362dff8890590"
+    },
+    "shared": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\zh-live-a01\\metadata\\product-validation-a12\\remaining-a02\\EXECUTION.shared.actual.json",
+      "bytes": 49895,
+      "sha256": "d6cb90129210b873712595ff693c233de01881464ad6201f93d92b4566b2b855"
+    },
+    "wire_seam": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\zh-live-a01\\metadata\\product-validation-a12\\wire-root\\QUALIFICATION.pilgrimage_wire_seam.actual.json",
+      "bytes": 112761,
+      "sha256": "8576bc3ba33ef36df3f1eef0bed7d12d1ec9d0253e92431c547cf1345c198980"
+    },
+    "wire_combined": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\zh-live-a01\\metadata\\product-validation-a12\\wire-root\\COMBINED.actual.json",
+      "bytes": 1402080,
+      "sha256": "0bd35afab7a8aa77a7cac0ba408e11148065410859f1a968dab45fb6208345d0"
+    }
+  },
+  "preserved_failures": [
+    {
+      "scope": "First DES Maven",
+      "reason": "Operator draft selected system Python without pydantic; corrected to existing tools/.venv and repeated complete DES verify, preserving failed receipts.",
+      "receipt": {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\zh-live-a01\\metadata\\product-validation-a12\\EXECUTION.des.actual.json",
+        "bytes": 61006,
+        "sha256": "dd5b5576006c63609a9d2beaae3754d77c84cea30f63d9410a032dffbf8bd28b"
+      }
+    },
+    {
+      "scope": "Wire first segment",
+      "reason": "First seven commands passed; missing CTest on PATH failed before Popen. First continuation failed decoding historical CMakeCache before Popen. Exact CTest source found in original cache; only CTest was continued once. Combined receipt preserves both failures."
+    }
+  ],
+  "wire_import_observation": "Nine critical source files matched; three test processes actually imported eight. exact_clock_failure_diagnostic_v1.py was not imported, and has no fabricated import record.",
+  "native_source_commit": "0646058deffcb1e3b386786a53269df89d919de6",
+  "native_to_execution_commit_diff": "Only two documentation files changed; no native or SDK source drift.",
+  "game_started": false,
+  "actual_live_business_qualified": false,
+  "release_qualified": false
+}
