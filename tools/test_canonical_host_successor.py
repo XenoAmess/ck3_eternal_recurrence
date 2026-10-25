@@ -8,6 +8,7 @@ from copy import deepcopy
 import hashlib
 import importlib.util
 import json
+import os
 from pathlib import Path
 import subprocess
 import tempfile
@@ -318,7 +319,8 @@ driver: Driver
             source.write_text(prelude + ast.unparse(module) + '\n', encoding='utf-8')
             result = subprocess.run([sys.executable, '-B', '-m', 'mypy', '--strict',
                 '--follow-imports=skip', '--no-incremental', '--cache-dir', str(root / 'cache'),
-                str(source)], capture_output=True, text=True, encoding='utf-8', timeout=120)
+                str(source)], capture_output=True, text=True, encoding='utf-8', timeout=120,
+                env={**os.environ, 'MYPYPATH': str(REPOSITORY / 'ck3_autonomous_player/src')})
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_prisoner_readonly_host_factory_transport_is_default_off_and_keeps_banish_gate(self) -> None:
