@@ -493,7 +493,7 @@ driver: Driver
             self.assertEqual(projection['parent'], actual_pin(output / 'registration_mcp.py'))
             self.assertEqual((second / 'registration_mcp.py').read_bytes(),
                              (output / 'registration_mcp.py').read_bytes())
-            self.assertIn(str(second / 'registration_mcp.py').replace('\\', '\\\\'),
+            self.assertIn(str((second / 'registration_mcp.py').resolve()).replace('\\', '\\\\'),
                           (second / 'shared-host.py').read_text(encoding='utf-8-sig'))
             registration_path = output / 'registration_mcp.py'
             registration_bytes = registration_path.read_bytes()
