@@ -215,7 +215,7 @@
     },
     "dynastic-esotericism": {
       "directory": "mod_dynastic_esotericism",
-      "workshop_item_id": null,
+      "workshop_item_id": "3826991345",
       "forbidden_upstream_ids": [],
       "builder": "{repo_root}/mod_dynastic_esotericism/tools/pom.xml",
       "integration_status": "java_prebuilt_fixture_source_ready_live_not_run",

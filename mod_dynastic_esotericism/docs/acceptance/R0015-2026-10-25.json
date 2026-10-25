@@ -1,0 +1,101 @@
+{
+  "schema": "des-actual-attempt-summary-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-25T12:46:09.555566+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0015",
+  "sdk_source_head": "9c4b1bf999471eedfeaea36dad78c80f5e5d6430",
+  "actual_passed_root_phases": 4,
+  "required_root_phases": 6,
+  "actual_members_first_day": 62,
+  "R15_exact_plus2_saved_observation": false,
+  "actual_observed_member_save_dates_raw": [
+    53144376,
+    53144424
+  ],
+  "business_pass": false,
+  "release_pass": false,
+  "failed_tool": "ck3_open_ingame_decisions_v1",
+  "failure": "Root repeated opener at same public revision after extended_start; exact action claim already existed and guard correctly rejected before native dispatch. Existing SDK/persistence/once rules unchanged.",
+  "correction": "Query original keyed decision tree before opening; if currently visible choose actual item without another opener. Complete plus1/plus2 Saves before phase1 signoff; consume each CaseClient automatic date advance before another manual day.",
+  "actual_original_exit_codes": {
+    "game": 0,
+    "host": 1,
+    "public_run": 2,
+    "allocator": 0,
+    "public_verify": 2,
+    "failure_resource_consumer": 0
+  },
+  "failure_lifecycle_completed": true,
+  "normal_close_qualified": false,
+  "screen_release_sequence": 8968,
+  "Native05_actual_fix_verified": true,
+  "actual_banish_option_mask": 4,
+  "actual_banish_Can": true,
+  "actual_banish_send": false,
+  "actual_directional_product_opinion_counts": [
+    1,
+    1,
+    0,
+    0
+  ],
+  "actual_positive_product_opinion": -100,
+  "future_primary_heir_input_defect_detected_before_execution": true,
+  "evidence": {
+    "phase1": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a14\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0015\\case-output\\actual-default-cancel-and-create-ui-accepted.json",
+      "bytes": 3777,
+      "sha256": "348e115880ef99eb6765ea817ddfba4d438a00de4f0341a767ab7e0933c8da8d"
+    },
+    "phase2": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a14\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0015\\case-output\\actual-members-and-same-faith-input-accepted.json",
+      "bytes": 2301,
+      "sha256": "95f23e008c300cce5432016c52919bb08eacf48b617b18051b62a4b9fdd98c01"
+    },
+    "phase3": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a14\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0015\\case-output\\actual-same-faith-crime-direction-and-cross-faith-input-accepted.json",
+      "bytes": 2638,
+      "sha256": "63a8b9afeb37472cb00061a47fbca34c87edda8542ec7e592c9e5b1c7199f6d8"
+    },
+    "phase4": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a14\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0015\\case-output\\actual-cross-faith-crime-and-repentance-input-accepted.json",
+      "bytes": 1616,
+      "sha256": "3f3ee69e2e6cda5e986ab71dbe29f53a8a21267ece4c9995e81941b766a9b621"
+    },
+    "timing_gap": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a14\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0015\\operator-evidence\\r15-member-observation-timing-gap-a01.json",
+      "bytes": 995,
+      "sha256": "95f94fc0f1d41551bc2e9d1982142f1f2dc4454d49bcb8059cb41bfdb4c2ac8d"
+    },
+    "failure": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a14\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0015\\operator-evidence\\r15-second-open-a01.actual.json",
+      "bytes": 1882,
+      "sha256": "a012371f5ab5a684df6caac1634267d17cf3c3a533edb4507027803deffeb21c"
+    },
+    "banish": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a14\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0015\\operator-evidence\\r15-control-banish-preview-a01.actual.json",
+      "bytes": 71254,
+      "sha256": "30aa3a475a393681ea81842056c1fe05f8d17f5af3c56fe808d92b19ae108af0"
+    },
+    "directional_opinions": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\operations-r15-opinion-pairs-a01\\SELECTED-PAIRS.actual.json",
+      "bytes": 12665,
+      "sha256": "2a17257f001afad7b516d0f7d385525451ef31cc9fd7c8b474b5e3209eba2195"
+    },
+    "closure": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0015-preserved-failure-close-a01\\failure-close.json",
+      "bytes": 9533,
+      "sha256": "f9c58de37bcfe3ecb1b867b8a1dbed81b0bbb54db72e879d1b2d983b268c9684"
+    },
+    "closure_consumer": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R0015-preserved-failure-close-a01\\actual-consumer.actual.json",
+      "bytes": 13198,
+      "sha256": "f7c7424291b249f28f60c8cf1c8299dd2de4d37cebaaf27958b5d64bf5c630d0"
+    },
+    "primary_heir_contract_review": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\R15-primary-heir-contract-review-a01\\REVIEW.actual.json",
+      "bytes": 11745,
+      "sha256": "d74ad2213be48bb04bd192d00408d88f01b49ad91df19a9476a5f16abe3695ee"
+    }
+  },
+  "review_at_utc": "2026-10-31T00:00:00Z"
+}

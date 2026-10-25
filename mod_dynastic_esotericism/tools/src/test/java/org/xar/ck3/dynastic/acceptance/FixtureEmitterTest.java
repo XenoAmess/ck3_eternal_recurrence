@@ -139,10 +139,12 @@ final class FixtureEmitterTest {
         assertEquals(21, observation.path("successor_history_transfer_count").intValue());
         assertFalse(observation.path("engine_semantics_verified").booleanValue());
         assertTrue(observation.path("heir_minimum_day_guard_validated").booleanValue());
+        assertTrue(observation.path("heir_stock_faith_rite_input_validated").booleanValue());
         assertTrue(observation.path("separate_prisoner_control_custody_validated").booleanValue());
 
         for (String mutation : List.of("missing-head", "product-write", "pardon-copy",
                 "date-literal", "date-no-source", "date-same-day",
+                "heir-same-faith", "heir-no-faith-input", "heir-root-input", "heir-input-order",
                 "prison-main-target", "prison-no-reason", "prison-product-write")) {
             ProbeResult forbidden = probeFixture(current, baseline, mutation);
             assertNotEquals(0, forbidden.exitCode(), forbidden.output());
@@ -152,6 +154,10 @@ final class FixtureEmitterTest {
                 case "date-literal" -> "INVALID_DATE_LITERAL_VARIABLE_TRIGGER";
                 case "date-no-source" -> "MISSING_HEIR_INPUT_DATE_GUARD";
                 case "date-same-day" -> "HEIR_MINIMUM_DAY_GUARD_CHANGED";
+                case "heir-same-faith" -> "HEIR_CROSS_FAITH_INPUT_BLOCKED";
+                case "heir-no-faith-input" -> "HEIR_STOCK_FAITH_INPUT_CHANGED";
+                case "heir-root-input" -> "HEIR_INPUT_RECIPIENT_CHANGED";
+                case "heir-input-order" -> "HEIR_STOCK_INPUT_ORDER_CHANGED";
                 case "prison-main-target" -> "PRISON_CUSTODY_TARGET_CHANGED";
                 case "prison-no-reason" -> "PRISON_PRE_CUSTODY_REASON_MISSING";
                 case "prison-product-write" -> "PRISON_UNDECLARED_EFFECT";
@@ -353,6 +359,46 @@ final class FixtureEmitterTest {
                     require(ready_guard,reason,control_scope,'PRISON_CUSTODY_READBACK_MISSING')
                 require(ready,'add_character_flag','des_test_prison_control_ready','PRISON_CUSTODY_READBACK_MISSING')
                 require(ready,'debug_log',json.dumps('DESAF: TEST PASS prisoner_control_ready'),'PRISON_CUSTODY_READBACK_MISSING')
+                # R0015's real primary heir is the Orthodox old-descendant
+                # input. The emitted preparation must support that real heir
+                # through stock Faith then Rite, without writing membership.
+                heir_prepare=one(extended_decisions,'des_acceptance_primary_heir_prepare_decision',required=True)
+                heir_input_branch=one(one(one(heir_prepare,'effect',required=True),'hidden_effect',required=True),'if',required=True)
+                heir_input_guard=one(heir_input_branch,'limit',required=True)
+                heir_identity=one(heir_input_guard,'primary_heir',required=True)
+                if mutation=='heir-same-faith':
+                    heir_identity.append({'key':'faith','value':'root.faith'})
+                if any(row['key']=='faith' for row in walk(heir_identity)):
+                    reject('HEIR_CROSS_FAITH_INPUT_BLOCKED')
+                identity_reason='HEIR_PREPARATION_IDENTITY_GUARD_MISSING'
+                for key,value in [('is_alive','yes'),('is_adult','yes'),('is_incapable','no'),('NOT',[{'key':'this','value':'root'}]),('NOT',[{'key':'has_variable','value':'has_edited_a_rite'}])]:
+                    require(heir_identity,key,value,identity_reason)
+                for key,value in [('this','global_var:des_test_extended_owner'),('exists','primary_heir'),('exists','primary_title'),('primary_title',[{'key':'holder','value':'root'}]),('rite','var:des_test_primary_rite'),('rite',[{'key':'des_has_active_binding_trigger','value':'yes'}])]:
+                    require(heir_input_guard,key,value,identity_reason)
+                inputs=[row for row in heir_input_branch if row['key']=='primary_heir']
+                if mutation=='heir-root-input':
+                    inputs[0]['key']='root'
+                inputs=[row for row in heir_input_branch if row['key']=='primary_heir']
+                if len(inputs)!=1:
+                    reject('HEIR_INPUT_RECIPIENT_CHANGED')
+                heir_input=inputs[0]['value']
+                faith_input=one(heir_input,'if',required=True)
+                if mutation=='heir-no-faith-input':
+                    faith_input[:]=[row for row in faith_input if row['key']!='set_character_faith']
+                elif mutation=='heir-input-order':
+                    heir_input.reverse()
+                if faith_input!=[{'key':'limit','value':[{'key':'NOT','value':[{'key':'faith','value':'root.faith'}]}]},{'key':'set_character_faith','value':'root.faith'}]:
+                    reject('HEIR_STOCK_FAITH_INPUT_CHANGED')
+                if heir_input!=[{'key':'if','value':faith_input},{'key':'set_character_rite','value':'root.rite'}]:
+                    reject('HEIR_STOCK_INPUT_ORDER_CHANGED')
+                pinned={'des_test_ref_predecessor':'this','des_test_ref_primary_heir':'primary_heir','des_test_ref_primary_title':'primary_title','des_test_heir_input_date':'current_date'}
+                writes=[row for row in heir_input_branch if row['key']=='set_variable']
+                if writes!=[{'key':'set_variable','value':[{'key':'name','value':name},{'key':'value','value':value}]} for name,value in pinned.items()]:
+                    reject('HEIR_PREPARATION_WRITES_OUTSIDE_CONTRACT')
+                if any(heir_input_branch.index(row)>=heir_input_branch.index(inputs[0]) for row in writes):
+                    reject('HEIR_IDENTITY_NOT_PINNED_BEFORE_INPUT')
+                if [row for row in heir_input_branch if row['key']=='add_character_flag']!=[{'key':'add_character_flag','value':'des_test_primary_heir_prepared'}] or any(row['key'] not in ('limit','set_variable','add_character_flag','primary_heir','debug_log') for row in heir_input_branch):
+                    reject('HEIR_PREPARATION_WRITES_OUTSIDE_CONTRACT')
                 heir_readback=one(extended_decisions,'des_acceptance_primary_heir_readback_decision',required=True)
                 heir_branch=one(one(one(heir_readback,'effect',required=True),'hidden_effect',required=True),'if',required=True)
                 heir_guard=one(heir_branch,'limit',required=True)
@@ -374,6 +420,14 @@ final class FixtureEmitterTest {
                 # a '<' assignment block. Check its order and exact day offset.
                 if pairs.count((date_left,date_right))!=1:
                     reject('HEIR_MINIMUM_DAY_GUARD_CHANGED')
+                for key,value in [('exists','primary_heir'),('exists','primary_title'),('primary_heir','var:des_test_ref_primary_heir'),('primary_title','var:des_test_ref_primary_title'),('primary_title',[{'key':'holder','value':'root'}])]:
+                    require(heir_guard,key,value,'HEIR_SETTLED_IDENTITY_GUARD_MISSING')
+                # The guard contains both a scalar identity and a scoped block.
+                settled_heirs=[row['value'] for row in heir_guard if row['key']=='primary_heir' and isinstance(row['value'],list)]
+                if len(settled_heirs)!=1:
+                    reject('HEIR_SETTLED_IDENTITY_GUARD_MISSING')
+                for key,value in [('is_alive','yes'),('is_adult','yes'),('is_incapable','no'),('faith','root.faith'),('rite','root.var:des_test_primary_rite'),('dynasty','root.var:des_test_bound_dynasty'),('house','root.var:des_test_primary_rite.var:des_join_house'),('NOT',[{'key':'has_variable','value':'has_edited_a_rite'}])]:
+                    require(settled_heirs[0],key,value,'HEIR_SETTLED_IDENTITY_GUARD_MISSING')
                 original_prepare=one(effects,prepare_key,required=True)
                 prepare_branches=[row['value'] for row in original_prepare if row['key']=='if']
                 if len(prepare_branches)!=2:
@@ -429,6 +483,8 @@ final class FixtureEmitterTest {
                     require(predecessor,'has_variable',name,'SUCCESSOR_SOURCE_VALUE_MISSING')
                 for name in flags:
                     require(predecessor,'has_character_flag',name,'SUCCESSOR_HISTORY_NOT_PROVEN')
+                    if name!='des_test_closed_verified':
+                        require(heir_input_guard,'has_character_flag',name,'HEIR_PREDECESSOR_HISTORY_NOT_PROVEN')
                 expected_writes={name:'scope:des_test_predecessor.var:'+name for name in refs}
                 expected_writes.update(des_test_ref_predecessor='scope:des_test_predecessor',des_test_ref_primary_heir='this',des_test_ref_primary_title='primary_title')
                 actual_writes={}
@@ -488,7 +544,7 @@ final class FixtureEmitterTest {
                     outsider=json.loads(one(one(branch,'scope:des_test_outsider',required=True),'debug_log',required=True))
                     if [observer,outsider]!=guard['success_logs']:
                         reject('CHANGED_SCOPED_SUCCESS_MARKERS',event=event)
-                print(json.dumps({'status':'ACCEPTED','required_marker_count':len(required),'unchanged_guard_count':len(expected),'original_rite_readback_only_observes':True,'successor_reference_transfer_count':len(refs),'successor_history_transfer_count':len(flags),'heir_minimum_day_guard_validated':True,'separate_prisoner_control_custody_validated':True,'engine_semantics_verified':False}))
+                print(json.dumps({'status':'ACCEPTED','required_marker_count':len(required),'unchanged_guard_count':len(expected),'original_rite_readback_only_observes':True,'successor_reference_transfer_count':len(refs),'successor_history_transfer_count':len(flags),'heir_minimum_day_guard_validated':True,'heir_stock_faith_rite_input_validated':True,'separate_prisoner_control_custody_validated':True,'engine_semantics_verified':False}))
                 """;
         Process process = new ProcessBuilder("python", "-B", "-X", "utf8", "-c", program,
                 repository().toString(), fixture.fixture().toString(), fixture.manifest().toString(), baseline.toString(), mutation)

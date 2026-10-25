@@ -73,13 +73,17 @@ Root 在真实分配前完成存储原子准入、干净 checkout 和屏幕 owne
 
 控制器会打印 `CK3_ROOT_CHECKPOINT <run>/case-output/<phase>-awaiting.json`。Root 先读取该文件的实际 snapshot、要求、原始 hold deadline，再提交原生操作。控制器此时保持同一会话；每个公开队列计划必须用新的文件名与 step ID。
 
-创建后的 capture 决议仅提交一次，保留独立后态。新 fixture 的实验等待为 +2 日：Root 在 capture 后真实 +1、+2 自然日分别固定完整原生成员名单及保存，按本场实际 ID 对照 House→Dynasty 和 stock 回调标记；不复用 R0009 的成员 ID，不以单一 flag 授资格。只消费原 `binding_and_members` 全量守卫；+2 未同步或其他原守卫失败仍为 FAIL，不延后等待周期修复、不补写产品状态、不重放 capture。两次读回计入原 deadline／400 日预算。R0009 不追认，REQ-05 普通转换同次同步另按原要求验收。
+创建后的 capture 决议仅提交一次，保留独立后态。新 fixture 的实验等待为 +2 日：Root 必须在签认 phase 1 前，先于 capture 后真实 +1、+2 自然日分别固定完整原生成员名单、同帧 Save／原 SDK pin／保全副本，并完成独立解码核图；签认后先消费控制器自动推进、重新读取实际日期，再决定是否推进下一日。按本场实际 ID 对照 House→Dynasty 和 stock 回调标记；不复用 R0009 的成员 ID，不以单一 flag 授资格。只消费原 `binding_and_members` 全量守卫；+2 未同步或其他原守卫失败仍为 FAIL，不延后等待周期修复、不补写产品状态、不重放 capture。两次读回计入原 deadline／400 日预算。R0009 不追认，REQ-05 普通转换同次同步另按原要求验收。
+
+R0015（`machine_id: desktop-3fevhd2-1c74096080`）只固定了 +1（1066.9.17）和 +3（1066.9.19）的成员 Save；+2 时点未保存，原缺口与签认保留，不能把 +3 充当 +2 证据。
 
 R0013已实际通过前两阶段、两日全部61名成员归族及两种head建族分支，但第三阶段的合法囚犯预览未完成。Game／host实际0，public2、keeper／allocator0、SCREEN8892；normal-close=true仅生命周期。后继不修改其冻结图，不重复提交其动作，不把原监禁查询的`can_send=true`当作监禁已生效。原件见[R0013](R0013-2026-10-25.json)。
 
 后继phase 3仍由原`same_faith_apostasy` marker进入Root等待；不要把尚待Root调用的囚犯准备marker加入该入口条件。先从本场baseline保存读取`des_test_ref_prison_control`的真实完整ID。该独立廷臣与主`des_test_target`分开，初始创建和后续普通改信均为公开fixture输入。只提交一次`des_acceptance_prisoner_control_decision`，经过真实一日，并处理实际事件边界。`.8`只有在原生引擎判定该control的实际背离、好感、penalty及全部三类理由成立后，才调用原版`imprison_character_effect`形成受限囚犯输入；原主目标、产品状态和计时器不写入。`DESAF: TEST PASS prisoner_control_ready`还要求control存活、确由当前Root监禁且驱逐／处决理由仍在。该日志证明fixture观察范围，不代表原监禁互动已发送或自动处罚功能。
 
 保存并独立核对control身份与Root的实际监禁关系，再查询原`execute_prisoner_interaction`的完整当前预览。驱逐必须使用`release_from_prison_interaction`的`banish`选项；不存在独立的`banish_interaction`。新图仅在实际DLL的两项囚犯只读编译开关、来源／ABI及本core的宿主权限都资格化后，通过既有`ck3_query_player_prisoner_collection_private_v1`传`release_option_keys=["banish"]`（原合同mask=4）。读取实际control行、精确所选flag、原完整Can及成本／接受度和同一暂停帧；工具注册、编译或ACK不能代替这些读回。执行与驱逐均只预览，不发送；保留全部action开关关闭。接口不可用、仍非Root囚犯、选项映射不符或原Can拒绝时如实保留未验，不用默认释放预览抵扣。
+
+普通囚犯交互菜单先查询本场实际 keyed scripted-widget tree 与可见状态；菜单已显示时直接选择当前实际 key，不在同 revision 再调用 opener。只有菜单尚未显示且原生通道可用时才提交一次打开请求，随后独立 query。R0015 的同 revision 重复 opener 被 once 守卫正确拒绝，属于调用顺序错误；不修改 SDK、一次性或持久化合同，不重放已提交或结果未知的打开动作。
 
 主目标的−100唯一来源和三类理由另按原要求核对，非礼仪观察者的负例方向必须是`outsider→apostate`，不能用`Root→outsider`或反向记录替代。完成囚犯预览及上述读回后，才调用原跨信仰输入决议并签认phase 3。新增control不进入继任者迁移白名单，不改原23个marker含义；core新增`prisoner_control_ready`后共24个必需marker，其他case仍保留各自原输入及范围。
 
@@ -90,7 +94,7 @@ R0013已实际通过前两阶段、两日全部61名成员归族及两种head建
 phase 1–4 按原要求完成；phase 5 从 `repentance` 就绪后按以下顺序执行，Root 必须始终读取本次 awaiting 原要求与原 deadline：
 
 1. **先在旧 Root 上完成全部长程路径**：`des_acceptance_extended_start_decision`；`des_acceptance_second_rite_decision` 后真实 31 日；`des_acceptance_cross_rites_decision`／`des_acceptance_cross_migration_decision` 后各真实一日；`des_acceptance_stock_crime_decision`／`des_acceptance_stock_repent_decision` 后各真实一日；实际出生再推进恰好一日并独立验证身份／归属／有资格者知识；生成、合法旁支、外改 House 校正、原 timer 的真实 61 日与两次 callback 证据。最后也须完成原 `des_acceptance_founder_death_decision` 的**第二位 NPC founder 死亡后真实 31 日**，可在 second_verified 后与其他计时重叠，但不能以稍后的玩家死亡替代。此时不执行 pardon_prepare，不先开关教义。
-2. 新 step 执行 `des_acceptance_primary_heir_prepare_decision`，pin 真实 `primary_heir`、前任及原主头衔；只公开执行 stock 同 Faith Rite 输入，不能设置其 Dynasty／House／产品绑定。至少经过一个实际自然日（`current_date > des_test_heir_input_date`，不是要求恰好一日）后调用 `des_acceptance_primary_heir_readback_decision`，并独立保存 native／Save 的 heir 身份、存活成年、当前继承资格及实际 Rite／Dynasty／House。缺失、未成年、继承改变或不合格均为 NOT_READY，不能造继承人。
+2. 旧 Root 全部长期 observer 通过后，新 step 执行 `des_acceptance_primary_heir_prepare_decision`，pin 当前真实 `primary_heir`、前任及原主头衔。继承人 Faith 不同时公开执行 stock `set_character_faith = root.faith`，随后执行 `set_character_rite = root.rite`；不预先要求同 Faith，不另选继承人，不设置其 Dynasty／House／产品绑定。若该继承人也是旧后代负例，先固定其仍未改信且未被连带迁族的历史证据；本次主动改信之后不再把它标为未改信负例。至少经过一个实际自然日（`current_date > des_test_heir_input_date`，不是要求恰好一日）后调用 `des_acceptance_primary_heir_readback_decision`，并独立保存 native／Save 的 heir 身份、存活成年、当前继承资格及实际 Rite／Dynasty／House。缺失、未成年、继承改变或不合格均为 NOT_READY，不能造继承人。
 3. 对当前真实旧 head 执行 `des_acceptance_edit_input_prepare_decision` → `des_acceptance_edit_input_readback_decision`。它们只复用空槽原版司祭／神学傀儡 helper；没有清理冲突或重置 once flag 的权限。编辑资格与创建资格分开，创建后 aggregate create-ready 不能当作 edit-ready。通过下文通用礼仪操作真实选择 None，验证实质变化、完整 Can 与报价，prepare／confirm 各一次，按事件规则处理后独立 verify，再 `des_acceptance_closed_readback_decision`；固定同一 Rite／绑定 Dynasty。
 4. 旧 Root 的全部 observer 与 closed 原件齐全后，`des_acceptance_primary_death_stage_decision` 只安排一次次日 stock death。使用现有事件边界原生 advance，并显式允许观察 actor 改变；返回后先处理实际事件，再独立确认可用暂停帧。不要预先认为 title heir 就是 Rite head，不重置 clock 或原 deadline。
 5. 先从实际 native 和独立 Save 固定四项证据：`actual_predecessor_death_and_primary_title_succession`、`actual_current_player_is_the_pinned_living_primary_heir`、`actual_same_primary_rite_and_bound_dynasty_survive`、`actual_native_current_rite_head_is_the_successor`。再调用 `des_acceptance_successor_readback_decision`，其脚本必要条件还核原 title holder／primary title、olddead、真实新 head 与绑定；它不等待额外 fixture 事件，不设置玩家／head。唯一新增 marker 是 `DESAF: TEST PASS actual_primary_heir_successor`。四证据同时列于 phase 5 requirements，不能依赖可能未触发的 dead-player fallback。

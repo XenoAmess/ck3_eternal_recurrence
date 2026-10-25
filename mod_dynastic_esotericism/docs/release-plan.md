@@ -1,5 +1,7 @@
 # 0.1.0 首次发布准备
 
+2026-10-25T13:30:38.536581Z补记，machine_id: desktop-3fevhd2-1c74096080：用户明确改为“先发布，然后继续本地验证；有问题修复验证后更新”。该最新指令取代下文历史草案的完整业务先行顺序。现已公开首发0.1.0测试版，Workshop ID 3826991345；实际Create/Submit EResult1，公共API全文/可见性/标签一致，Steam后台确认恢复离线。完整业务、缓存验收仍未通过，公开Change Notes页HTTP429待补查。首发实际正式包来源6241c6134ddb5a166f5c7228f3bf84b178487e74，25文件，manifest未预填tag；历史构建来源不改写。后续同条目更新仍须修复后验证。见[首发实际记录](acceptance/first-publication-2026-10-25.json)。
+
 状态：DRAFT／NOT_PUBLISHED。产品 Workshop ID 未分配，不预填其他产品 ID；用户本次已明确授权测试验收后发布。
 
 标题拟用“宗族化密教 / Dynastic Esotericism”；描述源为 [BBCode](../../workshop/dynastic_esotericism_description.bbcode)，完整更新说明源为 [Change Notes](../../workshop/dynastic_esotericism_change_notes_0.1.0.txt)。当前文字描述目标行为；业务验收后按真实结果复核并冻结，不能以草稿推导已发布事实。

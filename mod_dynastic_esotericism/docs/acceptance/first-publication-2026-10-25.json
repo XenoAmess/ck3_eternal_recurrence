@@ -1,0 +1,20 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "published_at_utc": "2026-10-25T13:28:15.832604+00:00",
+  "workshop_item_id": "3826991345",
+  "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3826991345",
+  "version": "0.1.0",
+  "create_result": 1,
+  "submit_result": 1,
+  "public_title_description_visibility_app_tags_verified": true,
+  "change_notes_public_readback": "HTTP429_PENDING",
+  "cache_acceptance": "NOT_RUN",
+  "full_business_acceptance": false,
+  "upload_source_head": "6241c6134ddb5a166f5c7228f3bf84b178487e74",
+  "SDK_native_source_head": "9c4b1bf999471eedfeaea36dad78c80f5e5d6430",
+  "formal_files": 25,
+  "upload_evidence": "C:\\ck3-dynastic-esotericism-20261024\\first-publication-a01\\create-receipt.json",
+  "public_api_evidence": "C:\\ck3-dynastic-esotericism-20261024\\first-publication-a01\\anonymous-item-raw-a02.json",
+  "offline_restored_evidence": "C:\\ck3-dynastic-esotericism-20261024\\first-publication-a01\\STEAM-OFFLINE-RESTORED.actual.json",
+  "user_order": "Publish first, then continue local validation; fix and validate before later same-item updates."
+}

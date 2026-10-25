@@ -271,7 +271,6 @@ des_acceptance_primary_heir_prepare_decision = {
                         is_adult = yes
                         is_incapable = no
                         NOT = { this = root }
-                        faith = root.faith
                         NOT = { has_variable = has_edited_a_rite }
                     }
                 }
@@ -280,7 +279,13 @@ des_acceptance_primary_heir_prepare_decision = {
                 set_variable = { name = des_test_ref_primary_title value = primary_title }
                 set_variable = { name = des_test_heir_input_date value = current_date }
                 add_character_flag = des_test_primary_heir_prepared
-                primary_heir = { set_character_rite = root.rite }
+                primary_heir = {
+                    if = {
+                        limit = { NOT = { faith = root.faith } }
+                        set_character_faith = root.faith
+                    }
+                    set_character_rite = root.rite
+                }
                 debug_log = "DESAF: PREPARATION stock_primary_heir_rite_input"
             }
             else = { debug_log = "DESAF: NOT_READY actual_primary_heir_input" }

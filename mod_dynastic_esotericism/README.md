@@ -2,7 +2,7 @@
 
 独立模组预研目录：`mod_dynastic_esotericism/`；产品 key：`dynastic-esotericism`；拟用脚本前缀：`des_`。
 
-当前为开发候选：游戏脚本、原创图标与工坊预览、Java 正式构建器及测试夹具已实现，离线构建检查已执行；实际游戏业务验收进行中，尚未公开发布或分配 Workshop ID。具体结果以[交付状态](docs/delivery-status.md)与实际回执为准。
+0.1.0 已作为初始公开测试版发布：[Steam 创意工坊 3826991345](https://steamcommunity.com/sharedfiles/filedetails/?id=3826991345)。实际游戏业务验收继续进行，完整矩阵与缓存加载验收尚未通过。具体结果以[交付状态](docs/delivery-status.md)与实际回执为准。
 
 需求包括：礼仪创建／改革时选择“宗族化”或“无”；宗族化礼仪创建对应宗族，创建者与全部信徒加入；宗族成员背离对应礼仪时，受到该礼仪信徒的一项 `-100` 好感修正，并被视为具有监禁、处决等惩罚理由。
 

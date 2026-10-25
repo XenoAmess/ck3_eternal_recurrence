@@ -52,7 +52,7 @@
  des_acceptance_legacy_after_decision_confirm: "执行此声明的验收步骤"
  des_acceptance_legacy_after_decision_tooltip: "测试准备或原生读回；业务通过仍须实际证据。"
  des_acceptance_primary_heir_prepare_decision: "[验收] 准备真实第一继承人的礼仪"
- des_acceptance_primary_heir_prepare_decision_desc: "完成前任全部长期观察后，固定真实存活成年第一继承人和主头衔。仅对同信仰继承人施加原版角色礼仪输入，不制造继承人、不设置家族、宗族、玩家或领袖。至少推进一个自然日后独立读回自然归族；缺资格时保留 NOT_READY。"
+ des_acceptance_primary_heir_prepare_decision_desc: "完成前任全部长期观察后，固定真实存活成年第一继承人和主头衔。继承人信仰不同时先用原版效果转为玩家的当前信仰，再转为玩家的当前礼仪，由正常产品路径自然归族；不制造或另选继承人，不设置家族、宗族、玩家或领袖。至少推进一个自然日后独立读回归属。若该继承人也是旧后代负例，其未改信负例证明仅限本次公开输入之前；缺资格时保留 NOT_READY。"
  des_acceptance_primary_heir_prepare_decision_confirm: "施加公开的原版输入"
  des_acceptance_primary_heir_prepare_decision_tooltip: "仅属准备；真实继承和礼仪领袖仍须独立证明。"
  des_acceptance_primary_heir_readback_decision: "[验收] 读回实际第一继承人"

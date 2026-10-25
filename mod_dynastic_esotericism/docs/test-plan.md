@@ -48,7 +48,9 @@
 
 人数、Rite／Dynasty／House 对象、角色当前归属、好感逐项来源、`has_imprisonment_reason`／`has_execute_reason`／`has_banish_reason` 与交互最终理由须来自实际原生读回、游戏保存内容或实际界面。解析错误、raw key、错误罪行方向、跨派污染和未移除的本来源均为业务失败；fixture／宿主故障单独分类并保留原回执。
 
-2026-10-25，`machine_id: desktop-3fevhd2-1c74096080`：R0009 的原 `binding_and_members` FAIL 保留。下一轮 capture 后的原 `des_acceptance.2` 改在真实 +2 日检查，仅用于区分原版转换与 `on_rite_change` 的完成时序；生产同步、全成员量词及 REQ-05“同次同步”不变。这不是两日产品时限或修复通过。Root 须在真实 +1、+2 日分别读取完整原生成员集合及同帧保存，逐 ID 对照 Rite／Faith、存活、实际 House→Dynasty 和 stock `changed_rite_flag` 原始 presence／value／tick，保留新增／消失及原 House。缺失、null、false 不合并，不以不同 House 直接推断不同 Dynasty。单个 flag 不能独立证明本次回调时点。+2 仍有任何活成员未归族或原必要守卫失败即保持 FAIL，不等周期校正、不补写状态、不筛除新增者；即使 +2 后态通过，也不能替代 LIVE-04 的普通转换时序验收。详见 [R0009 原件摘要](acceptance/R0009-2026-10-25.json)。
+2026-10-25，`machine_id: desktop-3fevhd2-1c74096080`：R0009 的原 `binding_and_members` FAIL 保留。下一轮 capture 后的原 `des_acceptance.2` 改在真实 +2 日检查，仅用于区分原版转换与 `on_rite_change` 的完成时序；生产同步、全成员量词及 REQ-05“同次同步”不变。这不是两日产品时限或修复通过。Root 须在签认 phase 1 之前，先于真实 +1、+2 日分别读取完整原生成员集合及同帧保存并完成独立解码核图；签认后先消费 CaseClient 的自动推进并查询实际日期，再决定下一次 advance。逐 ID 对照 Rite／Faith、存活、实际 House→Dynasty 和 stock `changed_rite_flag` 原始 presence／value／tick，保留新增／消失及原 House。缺失、null、false 不合并，不以不同 House 直接推断不同 Dynasty。单个 flag 不能独立证明本次回调时点。+2 仍有任何活成员未归族或原必要守卫失败即保持 FAIL，不等周期校正、不补写状态、不筛除新增者；即使 +2 后态通过，也不能替代 LIVE-04 的普通转换时序验收。详见 [R0009 原件摘要](acceptance/R0009-2026-10-25.json)。
+
+2026-10-25，`machine_id: desktop-3fevhd2-1c74096080`：R0015 的真实 +1 Save 为 1066.9.17，后继保存已到 +3 的 1066.9.19；phase 1 签认后的自动一日推进与额外 advance 之间没有固定 +2 Save。保留该缺口，不能以 +3 改标签补签 +2 的同帧存档证明，也不修改原签认或回执。
 
 真正多人场景尚无预先资格，不以单人多角色控制宣称多人通过；首次发布如未进行多人验收，明确标注“多人未验收”。其余上述首版核心功能未通过时不公开发布完整功能版本。
 
@@ -82,7 +84,7 @@ core 原始 JSON 本身是 adapter 配置。现有三个策略字段放在它的
 六个 phase、旧 required assertions 和原 marker 含义全部保留。phase 1–4 仍完成默认／取消／真实创建、成员、同 Faith／跨 Faith 背离、罪行方向及悔改。phase 5 的内部顺序调整为：
 
 1. **旧 Root 存活且仍为玩家时先做完长程观察**：`des_acceptance_extended_start_decision`、第二 Rite 31 日、cross-rites／migration、独立 stock crime 加 repentance、实际出生再推进恰好一日、生成／合法旁支／外改 House 校正、原 61 日 timer 证据，以及**既有第二位 NPC founder 死亡后真实 31 日稳定性**。第二 founder 证明不能被新的玩家死亡替代。所有 observer、真实日期与原 actor 证据在转移前固定；允许时间重叠不保证预算足够。
-2. `des_acceptance_primary_heir_prepare_decision` pin 真实前任／primary heir／primary title，仅以公开 stock `set_character_rite` 输入让真实继承人进入已创建的同 Faith Rite。至少经过一个实际自然日后，`des_acceptance_primary_heir_readback_decision` 重验继承人仍相同、存活成年、实际继承资格及自然形成的 Rite／Dynasty／House；另留 native 与独立 Save 读回。不能设置其 House／Dynasty 或产品绑定；未成年、失位、缺失或不合格为 NOT_READY。
+2. `des_acceptance_primary_heir_prepare_decision` 在全部前任长期观察完成后 pin 真实前任／primary heir／primary title，不预先要求继承人与 Root 同 Faith。继承人 Faith 不同时公开执行 stock `set_character_faith = root.faith`，随后执行 `set_character_rite = root.rite`，由共享产品路径自然形成宗族／家族归属。若该真实继承人也是旧后代负例，只保留此公开输入之前未被连带迁族的历史证明；主动改信后不能继续称其未改信。至少经过一个实际自然日后，`des_acceptance_primary_heir_readback_decision` 重验继承人仍相同、存活成年、实际继承资格及自然形成的 Rite／Dynasty／House；另留 native 与独立 Save 读回。不能设置其 House／Dynasty 或产品绑定；未成年、失位、缺失或不合格为 NOT_READY。
 3. 对实际旧 head 执行 `des_acceptance_edit_input_prepare_decision` → `des_acceptance_edit_input_readback_decision`，只复用原空槽神学傀儡准备并读回真实关系。编辑 readiness 与创建 readiness 分开；创建后 `can_create_rite_trigger=false` 不等于不可编辑。实际选择 None，验证实质草案变化、完整原生 Can／报价，确认一次并独立核 closed、同 Rite／Dynasty。
 4. 所有旧 Root observer 完成且 closed 已证实后，`des_acceptance_primary_death_stage_decision` 一次安排次日 stock death；用已有事件边界推进观察真实转换。先从 native 与独立 Save 证明上述四项，再调用 `des_acceptance_successor_readback_decision`。它没有选择／设置玩家或 head 的功能，不等待额外 fixture 事件；缺少自动续行的可用原生帧、要求未支持的 Continue 或新玩家不是实际 head 均停止为真实未合格，不改原版一次限制。
 5. 在真正新 head 上再次执行同一 edit prepare／readback，独立确认其 `has_edited_a_rite` 未用过；不清除、复制或伪造原版 once flags。实际选择 Dynastic、完整 Can／报价、确认一次、处理真实事件并独立核 reopened 与原绑定复用。

@@ -129,7 +129,7 @@
     {
       "key": "dynastic-esotericism",
       "directory": "mod_dynastic_esotericism",
-      "workshop_item_id": null,
+      "workshop_item_id": "3826991345",
       "forbidden_upstream_ids": [],
       "builder": "mod_dynastic_esotericism/tools/pom.xml",
       "release_flags": [
@@ -137,9 +137,11 @@
         "--output",
         "{new-output}",
         "--git-tag",
-        "{matching-product-tag}"
+        "{matching-product-tag}",
+        "--workshop-item-id",
+        "3826991345"
       ],
-      "publication": "Not published; first Workshop item ID remains null until actual CreateItem. Java/Quarkus release builder is compiled through this Maven POM."
+      "publication": "0.1.0 initial public test; actual CreateItem and SubmitItemUpdate EResult1 on 2026-10-25. Core partial; continued local validation and cache acceptance pending."
     },
     {
       "key": "religious-ritual-fusion",

@@ -52,7 +52,7 @@
  des_acceptance_legacy_after_decision_confirm: "Perform this disclosed test step"
  des_acceptance_legacy_after_decision_tooltip: "Test preparation or native readback; business credit requires actual evidence."
  des_acceptance_primary_heir_prepare_decision: "[TEST] Prepare the actual primary heir's rite"
- des_acceptance_primary_heir_prepare_decision_desc: "After all predecessor-owned observations, pin the real living adult primary heir and title. Apply only the stock character-rite input to a same-faith heir. No heir, House, dynasty, player or head is created or selected. Wait at least one natural day and read the actual natural membership. Ineligible inputs remain NOT_READY."
+ des_acceptance_primary_heir_prepare_decision_desc: "After all predecessor-owned observations, pin the real living adult primary heir and title. If the heir has another faith, apply the stock change to the player's faith, then apply the stock change to the player's current rite. Dynasty and House membership must form through the normal product path. No heir, House, dynasty, player or head is created or selected here. Wait at least one natural day and read actual membership. An old descendant used as this heir is an unconverted negative control only before this disclosed input. Ineligible inputs remain NOT_READY."
  des_acceptance_primary_heir_prepare_decision_confirm: "Apply this disclosed stock input"
  des_acceptance_primary_heir_prepare_decision_tooltip: "Preparation only; real inheritance and rite-head succession require independent evidence."
  des_acceptance_primary_heir_readback_decision: "[TEST] Read the settled primary heir"
