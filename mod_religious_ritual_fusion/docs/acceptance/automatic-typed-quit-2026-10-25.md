@@ -12,4 +12,6 @@ R8 原证据只到 query_context。其后测试响应明确为 authored，不冒
 
 原证据 `C:/workspace/rrf-development-20261024/public-chain-a01/r8-auto-quit-a02/VALIDATION.full-scope.actual.json`，7271 bytes，SHA-256 `b71b3182c642084d73ce410a43b5d1f13fb57bb474d0b970ec6fa9e74636e3a4`。client 102638 bytes／SHA-256 `f8685bd09b3ab5ee73ab920a626896d868dda5814729c26d930e49919e18db8b`；queue 25017 bytes／`e15fa52a8634d4199c9753113915d6e6ee92ecc478f9f74e823b2079a6c1df5f`。
 
-后继 cold-rite 将实机验证自动协调和真实正常退出。这份离线验证不授新的 OS 或产品实机通过。远端 allocator 的独立来源索引修复合回后另跑相关完整组，不继承为本机已测。
+后继 cold-rite 将实机验证自动协调和真实正常退出。这份离线验证不授新的 OS 或产品实机通过。
+
+远端 allocator 的独立来源索引修复已线性合回，随后本机实际完成相关四条原命令：25／13／12／20，共70 tests、0 skip、各原wait0，包含新增 typed helper／完整消费者 strict 与 strict-equality。仅把测试的显式 mypy 缓存位置改回 `nul`，避免额外大缓存；不改生产校验。回执 `public-chain-a01/r8-allocator-remote-a01/VALIDATION.actual.json`，2960 bytes／SHA-256 `734ccb635b99ae1c17a2f01567a947d1a71d4b1e1ccbb52ce0e7b00d8f062872`。前述124受测生产及fixture原字节完全相同，没有重跑或继承其他机器的实际环境事实。

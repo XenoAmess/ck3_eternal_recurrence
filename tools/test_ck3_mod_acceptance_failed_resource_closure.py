@@ -528,7 +528,7 @@ from ck3_mod_acceptance import _verification_actual_pin_v1
             (TOOLS, TOOLS.parent/'ck3_autonomous_player'/'src'))
         with patch.dict(os.environ, {'MYPYPATH': source_roots}):
             stdout, stderr, code = api.run(['--strict', '--strict-equality', '--follow-imports=silent',
-                '--no-incremental', '--cache-dir', str(self.fixture.root/'mypy-cache'), '-c', actual])
+                '--no-incremental', '--cache-dir', 'nul', '-c', actual])
         self.assertEqual(code, 0, stdout+stderr)
 
 
