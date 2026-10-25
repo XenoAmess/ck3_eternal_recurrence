@@ -225,15 +225,18 @@ final class SharedRuntimeComposerTest {
                 import json,sys
                 from unittest.mock import patch
                 repository,runtime_path,product=map(Path,sys.argv[1:4])
-                sys.path.insert(0,str(repository/'tools'))
-                from ck3_mod_acceptance import Selection,pin
-                from ck3_mod_acceptance_prepare import CONFIG_NAMES
                 runtime=json.loads(runtime_path.read_bytes())
                 manifest=json.loads(Path(runtime['manifest']['path']).read_bytes())
                 source=Path(runtime['paths']['source_root']);repo=Path(runtime['repo_root'])
+                # The real host starts from frozen tools. Preserve that lookup order
+                # for lazy saved-profile imports instead of falling back to Main12.
+                sys.path[:0]=[str(source/'tools'),str(repository/'tools')]
+                from ck3_mod_acceptance import Selection,pin
+                from ck3_mod_acceptance_prepare import CONFIG_NAMES
                 index=json.loads(Path(runtime['paths']['source_index']).read_bytes())
                 registry=json.loads((repository/'tools/ck3_mod_acceptance_products.json').read_bytes())
                 declared={c['id']:c for c in registry['products']['dynastic-esotericism']['cases']}
+                prepared_count=blocked_count=0
                 for fixture_manifest in map(Path,sys.argv[4:]):
                     fixture=json.loads(fixture_manifest.read_bytes());case_id=fixture['case_id']
                     saved=case_id.endswith(('_cold','_restore'));restore=case_id.endswith('_restore')
@@ -259,8 +262,18 @@ final class SharedRuntimeComposerTest {
                             'primary_title_tier_key':'empire','independent':True}
                     inputs=root/'inputs.json';inputs.write_text(json.dumps(values),encoding='utf-8')
                     identity={'game_version':manifest['game']['version'],'exe_sha256':manifest['game']['exe_sha256']}
+                    if restore:
+                        # Registration is an execution guard, not merely a test label.
+                        try:selected.prepare(inputs,root/'prepared')
+                        except ValueError as error:
+                            assert str(error)=='Explicitly blocked product adapter cannot prepare',error
+                        else:raise AssertionError('blocked restoration prepared')
+                        assert not (root/'prepared').exists() and not (root/'state').exists()
+                        blocked_count+=1
+                        continue
                     with patch('ck3_mod_acceptance_prepare._engine',return_value=(None,identity)):
                         result=selected.prepare(inputs,root/'prepared')
+                    prepared_count+=1
                     assert result['status']=='CASE_PREPARED_NOT_ALLOCATED_NOT_RUN'
                     prepared_path=Path(result['prepared_case']['path'])
                     prepared=json.loads(prepared_path.read_bytes())
@@ -273,14 +286,26 @@ final class SharedRuntimeComposerTest {
                     resumed=Selection(runtime_path,catalog,'dynastic-esotericism',case_id,prepared_path=prepared_path)
                     assert resumed.prepared['contract']==prepared['contract']
                     assert prepared['preparation']['business_pass'] is False and prepared['runtime_status']=='NOT_RUN'
-                    if restore: assert resumed.case['status']=='blocked'
-                print('actual seven scoped Java fixtures/runtime -> normal Selection.prepare/Prepared and frozen source pins; restore blocked; live false')
+                    if saved:
+                        import xar_autoplayer
+                        import xar_autoplayer.saved_campaign_profile_inventory_v2 as inventory
+                        import ck3_mod_acceptance_saved_profile_v2 as saved_tool
+                        assert Path(xar_autoplayer.__file__).resolve()==(source/'ck3_autonomous_player/src/xar_autoplayer/__init__.py').resolve()
+                        for module,relative in [(inventory,'ck3_autonomous_player/src/xar_autoplayer/saved_campaign_profile_inventory_v2.py'),
+                            (saved_tool,'tools/ck3_mod_acceptance_saved_profile_v2.py')]:
+                            frozen=source/relative;active=repo/relative
+                            assert Path(module.__file__).resolve()==frozen.resolve()
+                            actual=pin(frozen)
+                            assert {k:actual[k] for k in ('bytes','sha256')}==index['files'][relative]
+                            assert active.read_bytes()==frozen.read_bytes()
+                assert prepared_count==5 and blocked_count==2,(prepared_count,blocked_count)
+                print('actual five executable scoped Java fixtures/runtime -> normal Selection.prepare/Prepared and frozen source pins; two restore preparations rejected; live false')
                 """;
         List<String> headArguments = new ArrayList<>(List.of(repository.toString(), runtime.toString(), presetProduct.toString()));
         headArguments.addAll(headManifests.stream().map(Path::toString).toList());
         PythonResult headResult = python(headProgram, headArguments);
         assertEquals(0, headResult.exitCode(), headResult.output());
-        assertTrue(headResult.output().contains("actual seven scoped Java fixtures/runtime -> normal Selection.prepare"),
+        assertTrue(headResult.output().contains("actual five executable scoped Java fixtures/runtime -> normal Selection.prepare"),
                 headResult.output());
 
     }
@@ -305,6 +330,12 @@ final class SharedRuntimeComposerTest {
             Files.copy(actualRepository.resolve("ck3_autonomous_player/src/xar_autoplayer/bridge").resolve(name),
                     currentFactory.getParent().resolve(name));
         }
+        // Cold profile preparation consumes this real tool/model pair lazily.
+        // Include both in the actual Java composer input, not ambient SDK fallback.
+        Files.copy(actualRepository.resolve("ck3_autonomous_player/src/xar_autoplayer/saved_campaign_profile_inventory_v2.py"),
+                sdk.resolve("saved_campaign_profile_inventory_v2.py"));
+        Files.copy(actualRepository.resolve("tools/ck3_mod_acceptance_saved_profile_v2.py"),
+                tools.resolve("ck3_mod_acceptance_saved_profile_v2.py"));
         String fixtureMachine = JSON.readTree(actualRepository.resolve("tools/fixtures/ck3_r11_failed_resource_closure.json").toFile())
                 .path("machine_id").textValue();
         for (String name : List.of("normal_exit_process_observer_v1.py", "normal_exit_contract_v1.py",
@@ -556,7 +587,7 @@ final class SharedRuntimeComposerTest {
         assertEquals("retain exactly", actualManifest.path("preserved_unknown_parent_field").textValue());
         assertEquals(7, actual.path("allocation").path("preserved_allocation_field").intValue());
         assertEquals(1, actualIndex.path("actual_changed_parent_files").size());
-        assertEquals(34, result.copiedFiles());
+        assertEquals(36, result.copiedFiles());
         assertEquals("ck3-common-source-index-v1", actualIndex.path("schema").textValue());
         assertTrue(actualIndex.path("files").isObject());
         assertEquals(result.copiedFiles(), actualIndex.path("files").size());
@@ -583,7 +614,7 @@ final class SharedRuntimeComposerTest {
         assertEquals(2, normalExitBuilderMetadata.size());
         assertEquals(frozenNormalExitBuilderPin.path("bytes"), normalExitBuilderMetadata.path("bytes"));
         assertEquals(frozenNormalExitBuilderPin.path("sha256"), normalExitBuilderMetadata.path("sha256"));
-        assertEquals(34, SharedRuntimeComposer.parentSourceFiles((ObjectNode) actualIndex,
+        assertEquals(36, SharedRuntimeComposer.parentSourceFiles((ObjectNode) actualIndex,
                 output.resolve("source"), fixtureMachine).size());
         assertEquals(pin(Path.of(result.sourceIndex())).path("sha256"), actualManifest.path("source_index").path("sha256"));
         assertEquals(pin(Path.of(result.manifest())), actual.path("manifest"));
