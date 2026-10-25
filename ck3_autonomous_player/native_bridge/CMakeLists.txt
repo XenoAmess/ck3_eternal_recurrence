@@ -1877,7 +1877,8 @@ endif()
 if(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
   target_sources(xar_ck3_bridge PRIVATE
     src/player_prisoner_collection_query_v1_private.cpp
-    src/player_prisoner_collection_private_transport_v1.cpp)
+    src/player_prisoner_collection_private_transport_v1.cpp
+    src/player_prisoner_ransom_wire_v1.cpp)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1=1)
 endif()
@@ -1890,8 +1891,7 @@ if(XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1)
 endif()
 if(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1)
   target_sources(xar_ck3_bridge PRIVATE
-    src/player_prisoner_ransom_private_v1.cpp
-    src/player_prisoner_ransom_wire_v1.cpp)
+    src/player_prisoner_ransom_private_v1.cpp)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1=1)
 endif()
