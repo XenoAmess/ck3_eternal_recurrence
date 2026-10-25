@@ -86,3 +86,7 @@ Java原始回执在 `C:/workspace/rrf-development-20261024/publication-java-a01/
 外置原件根为 `publication-a01/inactive-cmake-final-f48-a02/`。`HANDOFF.actual.json`：7,322B，SHA `4aec2dd9a8f1dceaff36edf9efff63633f2e8c125195dec9f34ea7e380b27477`；`QUALIFY-NATIVE.actual.json`：4,489B，SHA `c5f3cb62b5b84818e1b03d474b9ac915451a7b674a87e150333241d57068e0f6`；binding：2,714B，SHA `00b40e7814318a7f0366c9aa923540e40ce0c6d55eebfb87ea9d60c7563c6568`。完整原argv、PID、原wait、stdout/stderr及16项pin都在交接中。
 
 该资格只绑定f48c，不等于runtime已构建、Steam缓存已下载、CK3已加载缓存或任何实际业务通过。后续master为接收其他产品和下载器更新而线性rebase；不能将f48c资格外推为新HEAD已验收。当前真实来源须在后继runtime中重新绑定，原DLL、回归和业务历史身份保持。产品登记中的正式命令参数同步补入现在必填的`--git-tag`和`--workshop-item-id`；不会据此重写已经保全的a03包。
+
+## 云端检出故障修复
+
+收尾master `2f7b10ea5cfa890dce8c316148fa9c18f3213c07` 的 [RRF静态CI 40174479553](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40174479553) 于07:54Z在actions/checkout失败，原日志为`Filename too long`／Git exit128，尚未执行Maven或产品测试。日志原件在 `publication-a01/CI.failed-40174479553.log`。RRF工作流补入既有Official Runner CI使用的job级`GIT_CONFIG_COUNT/KEY_0/VALUE_0`，使长路径配置在checkout之前生效；未改载荷或重跑本机已通过的23项测试。后继云端实际结果另以run原件记录，不能把该检出失败称为测试已通过。
