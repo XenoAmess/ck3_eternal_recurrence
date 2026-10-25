@@ -10,6 +10,10 @@ on:
       - 'tools/ck3_mod_acceptance_background_types.py'
       - 'tools/test_product_acceptance_purpose.py'
       - 'tools/ck3_mod_acceptance_allocate.py'
+      - 'tools/ck3_mod_acceptance_client.py'
+      - 'tools/test_ck3_mod_acceptance_failed_resource_closure.py'
+      - 'ck3_autonomous_player/src/xar_autoplayer/bridge/normal_exit_*.py'
+      - 'ck3_autonomous_player/tests/unit/test_normal_exit_*.py'
       - 'tools/test_preserved_failure_native_os0.py'
       - 'tools/fixtures/ck3_R0001_preserved_failure_native_os0.json'
       - 'tools/ck3_mod_acceptance_unrun.py'
@@ -37,6 +41,10 @@ on:
       - 'tools/ck3_mod_acceptance_background_types.py'
       - 'tools/test_product_acceptance_purpose.py'
       - 'tools/ck3_mod_acceptance_allocate.py'
+      - 'tools/ck3_mod_acceptance_client.py'
+      - 'tools/test_ck3_mod_acceptance_failed_resource_closure.py'
+      - 'ck3_autonomous_player/src/xar_autoplayer/bridge/normal_exit_*.py'
+      - 'ck3_autonomous_player/tests/unit/test_normal_exit_*.py'
       - 'tools/test_preserved_failure_native_os0.py'
       - 'tools/fixtures/ck3_R0001_preserved_failure_native_os0.json'
       - 'tools/ck3_mod_acceptance_unrun.py'
@@ -88,10 +96,11 @@ jobs:
         run: java -Xms32m -Xmx128m -Djava.io.tmpdir="%RUNNER_TEMP%" java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java --verify-maven-evidence-root "%RUNNER_TEMP%\dynastic-esotericism-maven"
       - name: Observe default Maven
         run: mvn --version
-      - name: Compile and verify the actual product builder and fixture producer
-        run: mvn --batch-mode --no-transfer-progress -f mod_dynastic_esotericism/tools/pom.xml -Ddes.build.root=${{ runner.temp }}/dynastic-esotericism-build verify
       - name: Install the shared SDK and strict type-check dependencies
         run: python -m pip install mcp==2.0.0 pydantic==2.13.5 mypy==2.4.0 psutil==7.2.2 types-psutil==7.2.2.20260906 opencv-python==5.0.0.93 numpy==2.5.2 Pillow==12.3.0
+      - name: Compile and verify the actual product builder and fixture producer
+        # The Java source composer tests consume the actual SDK normal-exit chain.
+        run: mvn --batch-mode --no-transfer-progress -f mod_dynastic_esotericism/tools/pom.xml -Ddes.build.root=${{ runner.temp }}/dynastic-esotericism-build verify
       - name: Verify the shared prebuilt fixture consumer
         run: python -B -X utf8 tools/test_prebuilt_fixture_prepare.py
       - name: Verify the canonical host producer and actual SDK factory

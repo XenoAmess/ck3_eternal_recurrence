@@ -1,0 +1,47 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-10-25T00:03:25.441948+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0012",
+  "business_pass": false,
+  "core_phases_passed": 0,
+  "error": "Initial snapshot: map_ready=true, paused=true, played_character=null; old clock raised JSON metadata object required",
+  "Game_pid": 14344,
+  "Game_birth_filetime": "134373572468141977",
+  "actual_exit_codes": {
+    "Game": 0,
+    "host": 1,
+    "public_run": 2,
+    "allocator": 0,
+    "keeper": 0,
+    "public_verify": 2
+  },
+  "screen_release_sequence": 8858,
+  "normal_close_qualified": false,
+  "autosave_verified": false,
+  "typed_exit_lifecycle_observed": true,
+  "resource_consumer_passed": true,
+  "closure": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\R0012-preserved-failure-close-a01\\failure-close.json",
+    "bytes": 9220,
+    "sha256": "e1626ad085e999099f7f4257be3a1052d80b0ac30488f683db6e64d00167d141"
+  },
+  "actual_consumer": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\R0012-preserved-failure-close-a01\\actual-consumer.actual.json",
+    "bytes": 12998,
+    "sha256": "4fb99c7044cd4ec10f199da4a4882b786143459e66c7507f7234918a558dccd9"
+  },
+  "summary": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\R0012-preserved-failure-close-a01\\FINAL.actual.json",
+    "bytes": 12943,
+    "sha256": "dd62300816f652dc0e030b4a79fec4410a1c63a30babc4e580679a937f84e547"
+  },
+  "root_independent_os0": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\R0012-root-process-exit-observation-a01.actual.json",
+    "bytes": 248,
+    "sha256": "a92d5097aba21410ce33852e5df79d3254c1569fd064b117e995989e3b3d88cc"
+  },
+  "preserved_rejections": [
+    "confirm-a01 unsupported input field refused before dispatch; only confirm-a02 reached native"
+  ],
+  "next_requirement": "Fresh shared runtime containing current clock startup-null fix; no old frozen source edits"
+}

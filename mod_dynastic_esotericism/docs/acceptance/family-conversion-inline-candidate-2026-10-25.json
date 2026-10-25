@@ -1,0 +1,37 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-10-25T00:03:25.441948+00:00",
+  "status": "candidate_not_live_qualified",
+  "event_id": "faith_conversion.0003",
+  "id_override_priority": 1,
+  "source_stock_sha256": "690962331397af4f0a0a4b9d92bf4b6f6c320f400e7c65c34716e8cbad488ec0",
+  "event_override_docs_sha256": "ccd628f42374eb300199a2676bde45ba60af0be056290f191bfc72461910a5fd",
+  "candidate": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\main11\\mod_dynastic_esotericism\\events\\des_stock_family_conversion_events.txt",
+    "bytes": 1945,
+    "sha256": "854905f65b604942da6bf444c5e4f54eff3872514a6446e6b945dc5312281505"
+  },
+  "binding_requested_first": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\main11\\mod_dynastic_esotericism\\common\\scripted_effects\\des_binding_effects.txt",
+    "bytes": 6675,
+    "sha256": "f279cbc89b5f85433c81403964b0285c830095bf81f91f2c651177a51799e134"
+  },
+  "source_analysis": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\R10-family-inline-sync-candidate-a01\\CANDIDATE.actual.json",
+    "bytes": 18698,
+    "sha256": "f2b13c01d1b1289a3e99ef09e31b4c2fc0f2d135557649312d5e6a932c023bff"
+  },
+  "review": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\R10-family-inline-sync-candidate-a01\\REVIEW.md",
+    "bytes": 7670,
+    "sha256": "6af3480d7837234f5373d847833602f9afff208e7a3675e31005f2b5e9f18a3c"
+  },
+  "complete_parser_stock_and_candidate": "Both actual exit1: unsupported stock file-local scripted_trigger declaration",
+  "partial_parser_helper_body_and_event_block": "Both actual exit0; no complete grammar or engine credit",
+  "formal_inventory": {
+    "development_files": 18,
+    "release_localization_files": 25,
+    "fixture_files": 13
+  },
+  "business_pass": false
+}

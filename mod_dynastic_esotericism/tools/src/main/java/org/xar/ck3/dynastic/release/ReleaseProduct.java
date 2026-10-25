@@ -42,6 +42,7 @@ public record ReleaseProduct(String productId, Path source, String tagPrefix, Li
             "common/scripted_triggers/des_dynastic_triggers.txt",
             "common/traits/des_traits.txt",
             "descriptor.mod",
+            "events/des_stock_family_conversion_events.txt",
             "gfx/interface/icons/faith_doctrine_groups/des_dynastic_membership.dds",
             "localization/english/des_l_english.yml",
             "localization/simp_chinese/des_l_simp_chinese.yml",

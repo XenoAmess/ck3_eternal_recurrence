@@ -1,5 +1,7 @@
 # 制作与发布状态
 
+观察2026-10-25T00:03:25.441948+00:00（machine_id: `desktop-3fevhd2-1c74096080`）：R0012已完成typed原生退出与资源闭场，业务0/6；原失败和autosave=false保留。e703产品静态CI40143646790实际success。新候选统一canonical source index并显式保历史只读兼容；原请求者优先卸任、singleton生成真实NPC，以及stock家庭转换同callback共享同步均纳入新源码。18文件开发包／25文件九语清单已同步，完整回归、a15工具／a16新包／runtimea12和全部实机矩阵仍在执行，不能拿旧产物抵扣。当前总体约60%，seed/cold/old与Workshop尚未完成。以下为各观察时间的历史记录。
+
 观察2026-10-24T22:20Z（北京时间06:20），machine_id: `desktop-3fevhd2-1c74096080`：R0010真实创建与独立completion通过，原取消前后Rite／House／资源／无绑定保持；+1原生63成员与保存选择完全相等，其中六名实际仍在旧Dyn174，其余不同House不能直接当作不同Dyn。+2前已有新事件，Root漏先处理，guard9正确拒绝，日期仍+1，+2查询和保存未执行；这不是SDK读取故障，不改共享守卫。另实际加载报告新NPC create_character缺必填gender；最小源码修正仅增加 gender_female_chance=50，有exact原版用例和grammar原exit0，新图加载／NPC仍待验证。详见[R0010原件摘要](acceptance/R0010-2026-10-25.json)。
 
 原生同handle Game退出0、host1/public2、keeper及原allocator0，SCREEN8830释放；公共verify实际2、业务及normal-close资格仍false，autosave=false。两次误用参数／finish intent均在分派前拒绝，修正后仅有一次真实各阶段动作，旧回执保留。整体约60%，完整核心、seed/cold/old及发布未完成。下一节点06:35启动修正版、07:45–08:15汇报核心实际结果，依赖真实资格与后态。

@@ -420,12 +420,76 @@ class PreservedObserverClosureTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     self.check()
 
+    def replace_source_index(self, value: object) -> None:
+        """Reseal only authored temporary test inputs, never a recorded predecessor."""
+        f = self.fixture
+        path = Path(text_field(json_object(f.refs['normal_exit_frozen_source_index']), 'path'))
+        ref = self.write(path, value)
+        f.refs['normal_exit_frozen_source_index'] = ref
+        files = json_object(f.freeze['files'])
+        files[ref['path']] = {'bytes': ref['bytes'], 'sha256': ref['sha256']}
+        f.freeze['files'] = files
+        f.reseal('frozen_argv', f.freeze)
+        ready = json_object(json.loads(Path(text_field(json_object(f.refs['ready_context']), 'path')).read_bytes()))
+        ready['frozen_argv'] = f.refs['frozen_argv']
+        f.reseal('ready_context', ready)
+
+    def canonical_index(self) -> JsonObject:
+        return json_object({'schema': 'ck3-common-source-index-v1',
+            'machine_id': self.fixture.machine, 'files': {
+                Path(row['path']).relative_to(self.source_root).as_posix(): {
+                    'bytes': row['bytes'], 'sha256': row['sha256']}
+                for row in self.sdk_pins.values()}})
+
+    def test_canonical_source_index_serialization_reaches_full_preserved_consumer(self) -> None:
+        self.replace_source_index(json.loads(json.dumps(self.canonical_index())))
+        result = object_field(self.check(), 'failure_cleanup')
+        self.assertIs(result['actual_retained_os0'], True)
+        self.assertIs(result['failure_lifecycle_completed'], True)
+        self.assertIs(result['business_pass'], False)
+
+    def test_canonical_signature_types_paths_and_missing_wire_are_rejected(self) -> None:
+        baseline = self.canonical_index()
+        wire = Path(self.sdk_pins['normal_exit_wire_source']['path']).relative_to(self.source_root).as_posix()
+        for defect in ('missing', 'bool', 'float', 'null', 'extra_path', 'escape', 'backslash', 'absolute'):
+            with self.subTest(defect=defect):
+                candidate = copy.deepcopy(baseline)
+                entries = object_field(candidate, 'files')
+                row = object_field(entries, wire)
+                if defect == 'missing': del entries[wire]
+                elif defect in ('bool', 'float', 'null'):
+                    row['bytes'] = {'bool': True, 'float': 1.0, 'null': None}[defect]
+                    entries[wire] = row
+                elif defect == 'extra_path':
+                    row['path'] = self.sdk_pins['normal_exit_wire_source']['path']; entries[wire] = row
+                else:
+                    key = '../'+wire if defect == 'escape' else wire.replace('/', '\\') if defect == 'backslash' else self.sdk_pins['normal_exit_wire_source']['path']
+                    entries[key] = entries.pop(wire)
+                candidate['files'] = entries
+                self.replace_source_index(candidate)
+                with self.assertRaises(ValueError): self.check()
+
+    def test_recorded_r0012_legacy_sdk_sources_still_reach_full_consumer(self) -> None:
+        # Source excerpt only: actual R0012's immutable a11 index is 1057186B,
+        # SHA c87f6fea5f65a5135acac5476672c69c9b39fc1b90d812fe9057a13148670fa0.
+        # This test uses relocated temporary files with their own pins. The
+        # recorded R0012 original is never read, changed, or presented as new.
+        recorded = {
+            'normal_exit_wire_source': (14287, '63f06a97d555fbf6b6ff12012d9d6f297f77de4be54349aed1af93c5b67d564d'),
+            'normal_exit_observer_source': (6415, '630ab09bd15ac6558b878332de0956579e8231f1178484731b185794a1b03996'),
+            'normal_exit_process_source': (10155, 'ed6e041ed0555807cd7956cb73c0d978a5b39945a9b69beb6a9724796bd8dd70')}
+        for key, (size, digest) in recorded.items():
+            self.assertEqual((self.sdk_pins[key]['bytes'], self.sdk_pins[key]['sha256']), (size, digest))
+        self.assertEqual(self.index['schema'], 'ck3-shared-source-frozen-successor-v1')
+        self.assertIs(object_field(self.check(), 'failure_cleanup')['actual_retained_os0'], True)
+
     def test_actual_modified_consumer_scope_is_strict(self) -> None:
         from mypy import api
         source = TOOLS/'ck3_mod_acceptance_allocate.py'
         tree = ast.parse(source.read_text(encoding='utf-8-sig'))
         names = {'PreservedFailureOS0Facts', 'PreservedTypedObserverSources',
-                 'preserved_failure_typed_format', 'preserved_typed_observer_sources',
+                  'preserved_failure_typed_format', 'preserved_typed_observer_sources',
+                  '_canonical_source_index_files', '_typed_frozen_source_index_files',
                  'validate_preserved_typed_observer', '_late_integer',
                  'validate_preserved_failure_native_os0', 'validate_root_observed_public_exit'}
         nodes = [node for node in tree.body if isinstance(node, (ast.ClassDef, ast.FunctionDef))
@@ -437,7 +501,7 @@ from collections.abc import Callable
 from datetime import datetime
 from pathlib import Path
 import json, math, re
-from ck3_mod_acceptance_background_types import FilePin, JsonObject, json_object, file_pin, object_field, text_field, strings_field
+from ck3_mod_acceptance_background_types import FilePin, JsonObject, json_object, file_pin, keyed_file_pin, object_field, text_field, strings_field
 from ck3_mod_acceptance import _verification_actual_pin_v1
 '''
         constants = [node for node in tree.body if isinstance(node, ast.Assign) and
@@ -464,8 +528,97 @@ from ck3_mod_acceptance import _verification_actual_pin_v1
             (TOOLS, TOOLS.parent/'ck3_autonomous_player'/'src'))
         with patch.dict(os.environ, {'MYPYPATH': source_roots}):
             stdout, stderr, code = api.run(['--strict', '--strict-equality', '--follow-imports=silent',
-                '--no-incremental', '--cache-dir', 'nul', '-c', actual])
+                '--no-incremental', '--cache-dir', str(self.fixture.root/'mypy-cache'), '-c', actual])
         self.assertEqual(code, 0, stdout+stderr)
+
+
+def assert_java_produced_source_consumers(runtime_path: Path) -> None:
+    """JUnit supplies the real Java output; the process/host facts stay inert."""
+    from test_ck3_mod_acceptance_normal_close import NormalCloseReviewRaceTests
+    runtime = json_object(json.loads(runtime_path.read_bytes()))
+    paths = object_field(runtime, 'paths')
+    source = Path(text_field(paths, 'source_root')).resolve()
+    index_path = Path(text_field(paths, 'source_index'))
+    index = json_object(json.loads(index_path.read_bytes()))
+    index_original = index_path.read_bytes()
+    if index.get('schema') != 'ck3-common-source-index-v1':
+        raise AssertionError('Java must emit the single canonical source-index version')
+    codec_names = ('normal_exit_process_observer_v1', 'normal_exit_contract_v1', 'normal_exit_public_wire_v2')
+    NormalCloseReviewRaceTests.setUpClass()
+    normal = NormalCloseReviewRaceTests()
+    try:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            client, _, fake_time, report = normal.make_client(root, review_at=None)
+            normal.typed_route(root, client, report)
+            client.manifest['source_root'] = {'path_key': 'source_root'}
+            client.manifest['source_index'] = {'path_key': 'source_index', **allocation.pin(index_path)}
+            previous_resolver = client.selection.manifest_path_key
+            client.selection.manifest_path_key = lambda ref: {
+                'source_root': source, 'source_index': index_path}.get(ref.get('path_key'), previous_resolver(ref))
+            codec, consumed, leaves = normal.module._typed_quit_codec(source, index_path, allocation.pin(index_path))
+            if consumed != allocation.pin(index_path) or {Path(row['path']).stem for row in leaves} != set(codec_names):
+                raise AssertionError('Actual Java source index did not supply the three real codec modules')
+            with patch.object(normal.module, 'time', fake_time):
+                result = client.normal_close('authored-Java-source-index-roundtrip')
+            if result['normal_close_qualified'] is not True:
+                raise AssertionError(result)
+            original_entries = object_field(index, 'files')
+            leaf = 'ck3_autonomous_player/src/xar_autoplayer/bridge/normal_exit_public_wire_v2.py'
+            for defect in ('missing', 'bool', 'float', 'null', 'extra_path', 'basename'):
+                bad = copy.deepcopy(index)
+                entries = object_field(bad, 'files')
+                row = object_field(entries, leaf)
+                if defect == 'missing': del entries[leaf]
+                elif defect == 'basename': entries[Path(leaf).name] = entries.pop(leaf)
+                elif defect == 'extra_path':
+                    row['path'] = str(source/leaf); entries[leaf] = row
+                else:
+                    row['bytes'] = {'bool': True, 'float': 1.0, 'null': None}[defect]; entries[leaf] = row
+                bad['files'] = entries
+                candidate = root/(defect+'-index.json')
+                candidate.write_text(json.dumps(bad), encoding='utf-8')
+                with normal.assertRaises(ValueError):
+                    normal.module._typed_quit_codec(source, candidate, allocation.pin(candidate))
+            if original_entries != object_field(json_object(json.loads(index_path.read_bytes())), 'files'):
+                raise AssertionError('Negative fixtures changed the actual Java output')
+    finally:
+        NormalCloseReviewRaceTests.doClassCleanups()
+    preserved = PreservedObserverClosureTests()
+    preserved.setUp()
+    try:
+        f = preserved.fixture
+        if text_field(index, 'machine_id') != f.machine:
+            raise AssertionError('Java authored machine must match the independently sourced closure fixture')
+        f.freeze['source_root'] = str(source)
+        f.native_report['agent_source_root'] = str(source)
+        f.reseal('native_report', f.native_report)
+        for key, name in (('normal_exit_wire_source', 'normal_exit_public_wire_v2.py'),
+                          ('normal_exit_observer_source', 'normal_exit_pending_observer_v1.py'),
+                          ('normal_exit_process_source', 'normal_exit_process_observer_v1.py')):
+            f.refs[key] = allocation.pin(source/'ck3_autonomous_player/src/xar_autoplayer/bridge'/name)
+        index_ref = allocation.pin(index_path)
+        f.refs['normal_exit_frozen_source_index'] = index_ref
+        files = json_object(f.freeze['files'])
+        files[index_ref['path']] = {'bytes': index_ref['bytes'], 'sha256': index_ref['sha256']}
+        f.freeze['files'] = files
+        f.reseal('frozen_argv', f.freeze)
+        ready = json_object(json.loads(Path(text_field(json_object(f.refs['ready_context']), 'path')).read_bytes()))
+        ready['frozen_argv'] = f.refs['frozen_argv']
+        f.reseal('ready_context', ready)
+        sources = allocation.preserved_typed_observer_sources(f.freeze, ready, f.refs)
+        birth = allocation.validate_preserved_typed_observer(f.native_report, sources, 43)
+        if birth != preserved.birth:
+            raise AssertionError('Actual Java index crossed the independent SDK process observer')
+        full = object_field(preserved.check(), 'failure_cleanup')
+        if full['actual_retained_os0'] is not True or full['failure_lifecycle_completed'] is not True:
+            raise AssertionError(full)
+        if full['business_pass'] is not False:
+            raise AssertionError('A preserved business failure cannot be upgraded by the new source index')
+    finally:
+        preserved.doCleanups()
+    if index_path.read_bytes() != index_original:
+        raise AssertionError('Actual producer output was modified by a consumer')
 
 
 class RootObservedCompletionTests(unittest.TestCase):

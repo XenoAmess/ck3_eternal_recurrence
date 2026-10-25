@@ -2,6 +2,10 @@
 
 版本：1；制定日期：2026-10-24。本文在[需求文档](requirements.md)之后、功能编码之前制定。目标版本 0.1.0；尚无业务 PASS 或发布事实。
 
+2026-10-25 同步候选：正式清单新增单事件 `faith_conversion.0003` override（`id_override_priority=1`），完整保留 exact .4 的局部 trigger、筛选和枚举顺序，仅在两处原版 `set_character_rite` 后调用共享 `des_sync_character_effect`。开发包18／发布包25文件，fixture仍13文件。新进程必须证明 override／局部声明被引擎接受，并逐一核对实际所有存活当前信徒的 Rite、House→Dynasty 和独立保存；任何错族仍使 REQ-05 失败，不授予多等一日或周期补迁的宽限。重复回调须保持唯一绑定、意见和犯罪来源。原未改信后代等负例照旧；未出现的原版筛选分支不得宣称已测。
+
+家族族长两个真实输入 cell 保留：A先把旧House族长交给真实B，再由A建新宗族；旧House只剩C时生成真实同礼仪D建族，C经共享同步加入，D保持存活。两个分支均保原玩家／领地身份和保存读回。当前完整 parser 不支持原版文件局部 `scripted_trigger <name>` 声明，stock和候选均真实拒绝；仅helper body及event block的局部解析通过，不替代上述引擎验收。来源及原结果见[候选记录](acceptance/family-conversion-inline-candidate-2026-10-25.json)。
+
 ## 测试分层与证据
 
 离线校验确认文件格式、引用、两选项合同、生产者到 staging／manifest 消费者及重建一致性；实际游戏验证 GUI、宗族、好感和犯罪理由。先检查 `open_kaishek` 是否能覆盖确定性语义；可用则运行相应子集，不可用或不支持则记录实际原因与未覆盖范围，不能冒充游戏结果。

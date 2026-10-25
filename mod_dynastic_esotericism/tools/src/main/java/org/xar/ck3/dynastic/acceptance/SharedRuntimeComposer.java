@@ -1,5 +1,6 @@
 package org.xar.ck3.dynastic.acceptance;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -16,6 +17,7 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HexFormat;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +26,8 @@ import java.util.stream.Stream;
 
 /** Freezes a shared source successor and binds an explicitly qualified native producer. */
 public final class SharedRuntimeComposer {
-    private static final ObjectMapper JSON = new ObjectMapper();
+    private static final ObjectMapper JSON = new ObjectMapper().enable(JsonParser.Feature.STRICT_DUPLICATE_DETECTION);
+    private static final String SOURCE_INDEX_SCHEMA = "ck3-common-source-index-v1";
     private static final long MAX_SOURCE_BYTES = 128L * 1024L * 1024L;
     private static final List<String> REQUIRED_FLAGS = List.of(
             "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1",
@@ -55,6 +58,13 @@ public final class SharedRuntimeComposer {
     private SharedRuntimeComposer() { }
 
     public record FilePin(String path, long bytes, String sha256) { }
+    public record SourceContent(long bytes, String sha256) {
+        public SourceContent {
+            if (bytes < 0 || sha256 == null || !sha256.matches("[0-9a-f]{64}")) {
+                throw new IllegalArgumentException("canonical source content signature required");
+            }
+        }
+    }
     public enum Qualification { SHARED_SOURCE_AND_NATIVE_BUILD_SUCCESSOR_LIVE_NOT_QUALIFIED }
     private enum OverlayDisposition { CURRENT_FROZEN_INPUT, CURRENT_PROJECTED_HOST, PARENT_SOURCE_OUTSIDE_SELECTED_CLOSURE }
     public record Result(String runtime, String manifest, String sourceIndex, long copiedBytes, int copiedFiles,
@@ -150,8 +160,7 @@ public final class SharedRuntimeComposer {
             throw new IllegalArgumentException("parent source index differs from its manifest");
         }
         ObjectNode parentSource = object(JSON.readTree(Path.of(parentSourcePin.path()).toFile()), "parent source index");
-        JsonNode oldFiles = parentSource.get("files");
-        if (oldFiles == null || !oldFiles.isArray()) throw new IllegalArgumentException("parent source index file list required");
+        List<FilePin> oldFiles = parentSourceFiles(parentSource, parentSourceRoot, machineId);
         ObjectNode nativeRow = object(JSON.readTree(nativeIndex.toFile()), "qualified native index");
         if (!text(nativeRow, "schema").equals("xar.common-native-qualified-producer-index.v1")
                 || !text(nativeRow, "machine_id").equals(machineId)
@@ -221,18 +230,24 @@ public final class SharedRuntimeComposer {
             copied.add(after);
         }
         ObjectNode index = JSON.createObjectNode();
-        index.put("schema", "ck3-shared-source-frozen-successor-v1");
+        index.put("schema", SOURCE_INDEX_SCHEMA);
         index.put("machine_id", machineId);
         index.put("observed_at_utc", Instant.now().toString());
         index.set("parent_runtime", JSON.valueToTree(pin(baseRuntime)));
         index.set("parent_manifest", JSON.valueToTree(parentManifestPin));
         index.set("parent_source_index", JSON.valueToTree(parentSourcePin));
         index.put("source_only_no_live_qualification", true);
-        ArrayNode sourcePins = JSON.valueToTree(copied);
-        if (registrationProvider != null) sourcePins.add(JSON.valueToTree(registrationProvider));
-        sourcePins.add(JSON.valueToTree(leaseHelper));
-        sourcePins.add(JSON.valueToTree(leaseBus));
-        index.set("files", sourcePins);
+        Map<String, SourceContent> sourceContents = new LinkedHashMap<>();
+        for (FilePin file : copied) {
+            String relative = source.relativize(Path.of(file.path())).toString().replace(java.io.File.separatorChar, '/');
+            sourceRelativePath(relative);
+            if (sourceContents.putIfAbsent(relative, new SourceContent(file.bytes(), file.sha256())) != null) {
+                throw new IllegalArgumentException("duplicate canonical source file: " + relative);
+            }
+        }
+        // Registration and clean lease inputs remain exact external pins in the
+        // existing host projection and allocator_overlay, never relative aliases.
+        index.set("files", JSON.valueToTree(sourceContents));
         index.set("canonical_host_projection", JSON.valueToTree(pin(hostProjection)));
         ArrayNode differences = JSON.createArrayNode();
         Map<Path, FilePin> actualByRelativePath = new LinkedHashMap<>();
@@ -240,17 +255,14 @@ public final class SharedRuntimeComposer {
             actualByRelativePath.put(repo.relativize(selected.get(number)), copied.get(number));
         }
         int compared = 0;
-        for (JsonNode oldFile : oldFiles) {
-            ObjectNode old = object(oldFile, "parent source file");
-            Path oldPath = Path.of(text(old, "path")).toAbsolutePath().normalize();
+        for (FilePin old : oldFiles) {
+            Path oldPath = Path.of(old.path()).toAbsolutePath().normalize();
             FilePin current = oldPath.startsWith(parentSourceRoot)
                     ? actualByRelativePath.get(parentSourceRoot.relativize(oldPath)) : null;
-            JsonNode count = old.get("bytes");
-            if (count == null || !count.isIntegralNumber() || !count.canConvertToLong()) throw new IllegalArgumentException("parent byte count required");
             if (current != null) compared++;
-            if (current != null && (current.bytes() != count.longValue() || !current.sha256().equals(text(old, "sha256")))) {
+            if (current != null && (current.bytes() != old.bytes() || !current.sha256().equals(old.sha256()))) {
                 ObjectNode difference = JSON.createObjectNode();
-                difference.set("parent_declared", old.deepCopy());
+                difference.set("parent_declared", JSON.valueToTree(old));
                 difference.set("current_frozen", JSON.valueToTree(current));
                 differences.add(difference);
             }
@@ -411,6 +423,56 @@ public final class SharedRuntimeComposer {
     private static boolean sourceFile(Path path) {
         String name = path.getFileName().toString();
         return name.endsWith(".py") || name.endsWith(".json") || name.endsWith(".txt") || name.endsWith(".yml");
+    }
+
+    private static Path sourceRelativePath(String value) {
+        if (value.isEmpty() || value.indexOf('\\') >= 0 || value.indexOf(':') >= 0 || value.indexOf('\0') >= 0) {
+            throw new IllegalArgumentException("canonical relative source path required");
+        }
+        for (String part : value.split("/", -1)) {
+            if (part.isEmpty() || part.equals(".") || part.equals("..")) {
+                throw new IllegalArgumentException("source path cannot escape or alias its frozen root");
+            }
+        }
+        Path path = Path.of(value);
+        if (path.isAbsolute()) throw new IllegalArgumentException("relative source path required");
+        return path;
+    }
+
+    static List<FilePin> parentSourceFiles(ObjectNode index, Path sourceRoot, String machineId) {
+        if (!text(index, "machine_id").equals(machineId)) throw new IllegalArgumentException("parent source machine differs");
+        String schema = text(index, "schema");
+        JsonNode files = index.get("files");
+        List<FilePin> result = new ArrayList<>();
+        if (schema.equals(SOURCE_INDEX_SCHEMA)) {
+            ObjectNode entries = object(files, "canonical parent source files");
+            for (Map.Entry<String, JsonNode> entry : entries.properties()) {
+                Path relative = sourceRelativePath(entry.getKey());
+                ObjectNode metadata = object(entry.getValue(), "source content signature");
+                JsonNode count = metadata.get("bytes");
+                if (metadata.size() != 2 || count == null || !count.isIntegralNumber()
+                        || !count.canConvertToLong() || count.longValue() < 0) {
+                    throw new IllegalArgumentException("exact source signature fields and integral bytes required");
+                }
+                SourceContent content = new SourceContent(count.longValue(), text(metadata, "sha256"));
+                result.add(new FilePin(sourceRoot.resolve(relative).toString(), content.bytes(), content.sha256()));
+            }
+        } else if (schema.equals("xar.e04.r15.selected-source-index.v1")
+                || schema.equals("ck3-shared-source-frozen-successor-v1")) {
+            // Explicit import of pinned historical parents; no new output or
+            // live consumer is allowed to use their absolute FilePin list.
+            if (files == null || !files.isArray()) throw new IllegalArgumentException("historical parent file list required");
+            for (JsonNode file : files) result.add(declaredPin(file));
+        } else {
+            throw new IllegalArgumentException("unsupported pinned parent source index schema");
+        }
+        Set<Path> unique = new HashSet<>();
+        for (FilePin file : result) {
+            if (!unique.add(Path.of(file.path()).toAbsolutePath().normalize())) {
+                throw new IllegalArgumentException("duplicate parent source file");
+            }
+        }
+        return List.copyOf(result);
     }
 
     private static ObjectNode keyedPin(String key, FilePin pin) {

@@ -1,0 +1,70 @@
+﻿# Version-bound exact .4 stock family conversion with immediate shared synchronization.
+# Stock predicates and iteration order are preserved; no binding implementation is copied.
+namespace = faith_conversion
+
+scripted_trigger faith_conversion_0003_valid_character = {
+	faith = scope:old_faith
+	# If conversion is within the same religion, check the rite is the same
+	trigger_if = {
+		limit = { scope:new_faith.religion = scope:old_faith.religion }
+		rite = scope:old_rite
+	}
+	is_alive = yes
+	is_ai = yes
+	# A relative's conversion must not drag along characters the rest of the conversion systems protect
+	NOR = {
+		has_character_flag = ai_will_not_convert
+		this = faith.religious_head
+		rite.head_of_rite ?= this
+	}
+}
+
+faith_conversion.0003 = {
+	id_override_priority = 1
+	hidden = yes
+
+	immediate = {
+		faith = { save_scope_as = new_faith }
+		rite = { save_scope_as = new_rite }
+		every_spouse = {
+			limit = {
+				faith_conversion_0003_valid_character = yes
+				is_landed = no
+			}
+			set_character_rite = root.rite
+			if = { limit = { has_global_variable = des_initialized is_alive = yes } des_sync_character_effect = yes }
+		}
+		every_close_family_member = {
+			limit = {
+				faith_conversion_0003_valid_character = yes
+				OR = {
+					# A minor fostered outside the realm keeps their guardian's rite
+					AND = {
+						is_child_of = root
+						OR = {
+							is_adult = no
+							is_landed = no
+						}
+						trigger_if = {
+							limit = {
+								is_adult = no
+								any_relation = {
+									type = guardian
+								}
+							}
+							any_relation = {
+								type = guardian
+								count = all
+								target_is_liege_or_above = root
+							}
+						}
+					}
+					# Cascade travels down the hierarchy, not up to a parent or sibling
+					target_is_liege_or_above = root
+				}
+			}
+			set_character_rite = root.rite
+			if = { limit = { has_global_variable = des_initialized is_alive = yes } des_sync_character_effect = yes }
+		}
+	}
+}

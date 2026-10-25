@@ -2,7 +2,7 @@
 from __future__ import annotations
 import ast
 from ck3_mod_acceptance_launcher_protocol_v1 import BACKGROUND_CLOSURE_SCHEMAS_V1
-from ck3_mod_acceptance_background_types import FilePin, JsonObject, ProcessGeneration, json_object, file_pin, object_field, text_field, strings_field, CONTROL_QUEUE_MODULE_ORDER_V1
+from ck3_mod_acceptance_background_types import FilePin, JsonObject, ProcessGeneration, json_object, file_pin, keyed_file_pin, object_field, text_field, strings_field, CONTROL_QUEUE_MODULE_ORDER_V1
 from ck3_mod_acceptance_fresh_machine_bootstrap import (
     FRESH_ADMISSION_MODE, FRESH_BOOTSTRAP_SCHEMA, MachineBinding,
     require_empty_machine_history, validate_fresh_bootstrap, create_current_process_observation,
@@ -1984,6 +1984,59 @@ def preserved_failure_typed_format(bundle_value: object) -> bool:
     return typed
 
 
+def _canonical_source_index_files(index_value: object, source_root: Path,
+        machine_id: str) -> dict[Path, FilePin]:
+    """Read canonical relative signatures without accepting historical list aliases."""
+    index = json_object(index_value)
+    if (index.get('schema') != 'ck3-common-source-index-v1'
+            or index.get('machine_id') != machine_id):
+        raise ValueError('Original canonical source index schema/machine required')
+    entries = object_field(index, 'files')
+    root = source_root.resolve()
+    result: dict[Path, FilePin] = {}
+    for relative, value in entries.items():
+        parts = relative.split('/')
+        if ('\\' in relative or ':' in relative or chr(0) in relative
+                or any(part in ('', '.', '..') for part in parts)):
+            raise ValueError('Canonical source path cannot escape or alias its frozen root')
+        path = root.joinpath(*parts)
+        actual = path.resolve()
+        if (not actual.is_relative_to(root) or actual != path
+                or path.is_symlink() or path.is_junction()):
+            raise ValueError('Canonical source path crosses its frozen root')
+        metadata = json_object(value)
+        if set(metadata) != {'bytes', 'sha256'}:
+            raise ValueError('Exact canonical source signature fields required')
+        ref = keyed_file_pin(str(actual), metadata)
+        if actual in result:
+            raise ValueError('Canonical source index repeats a file identity')
+        result[actual] = ref
+    return result
+
+
+def _typed_frozen_source_index_files(index_value: object, source_root: Path,
+        machine_id: str) -> dict[Path, FilePin]:
+    """Import a sealed historical predecessor or the single current wire format."""
+    index = json_object(index_value)
+    if index.get('schema') == 'ck3-common-source-index-v1':
+        return _canonical_source_index_files(index, source_root, machine_id)
+    rows = index.get('files')
+    if (index.get('schema') != 'ck3-shared-source-frozen-successor-v1'
+            or index.get('machine_id') != machine_id or not isinstance(rows, list)):
+        raise ValueError('Original frozen source index schema/machine/files required')
+    result: dict[Path, FilePin] = {}
+    for value in rows:
+        metadata = json_object(value)
+        if set(metadata) != {'path', 'bytes', 'sha256'}:
+            raise ValueError('Exact historical source file pin fields required')
+        ref = file_pin(metadata)
+        path = Path(ref['path'])
+        if not path.is_absolute() or path.resolve() in result:
+            raise ValueError('Historical source index repeats or aliases a file identity')
+        result[path.resolve()] = ref
+    return result
+
+
 def preserved_typed_observer_sources(freeze_value: object, ready_value: object,
         refs_value: object) -> PreservedTypedObserverSources:
     """Read the same original SDK receipt/profile/sources, never a GUI projection."""
@@ -2009,20 +2062,16 @@ def preserved_typed_observer_sources(freeze_value: object, ready_value: object,
         if files.get(ref['path']) != {'bytes': ref['bytes'], 'sha256': ref['sha256']}:
             raise ValueError('Typed observer source/profile is not an original frozen input: ' + key)
     index = json_object(json.loads(Path(pins['normal_exit_frozen_source_index']['path']).read_bytes()))
-    indexed_files = index.get('files')
-    if (index.get('schema') != 'ck3-shared-source-frozen-successor-v1'
-            or index.get('machine_id') != text_field(object_field(freeze, 'identity_allocation'), 'machine_id')
-            or not isinstance(indexed_files, list)):
-        raise ValueError('Original frozen source index schema/machine/files required')
-    indexed = [file_pin(item) for item in indexed_files]
     root = Path(text_field(freeze, 'source_root')).resolve()
+    indexed = _typed_frozen_source_index_files(index, root,
+        text_field(object_field(freeze, 'identity_allocation'), 'machine_id'))
     for key, name in (('normal_exit_wire_source', 'normal_exit_public_wire_v2.py'),
                       ('normal_exit_observer_source', 'normal_exit_pending_observer_v1.py'),
                       ('normal_exit_process_source', 'normal_exit_process_observer_v1.py')):
         ref = pins[key]
         path = Path(ref['path']).resolve()
         if (path != root/'ck3_autonomous_player/src/xar_autoplayer/bridge'/name
-                or sum(item['path'] == ref['path'] for item in indexed) != 1 or ref not in indexed):
+                or indexed.get(path) != ref):
             raise ValueError('Typed observer SDK source belongs to a different frozen source')
     profile_ref = pins['normal_exit_profile']
     profile = json_object(json.loads(Path(profile_ref['path']).read_bytes()))

@@ -2,6 +2,8 @@
 
 适用机器：`desktop-3fevhd2-1c74096080`。记录日期：2026-10-24；继承候选更新于 2026-10-25。以下是尚待实际执行的操作合同，命令示例不构成启动、业务或发布通过记录。执行者须保留每一外层命令真实退出码。
 
+2026-10-25T00:00Z当前接续边界：R0012在初始加载帧的玩家角色尚为null时被旧clock拒绝，未进入产品动作；当前主线已有该共享修复，必须生成全新runtime，不能重跑或热改a11。R0012实际typed退出Game0、host1、public2、keeper／allocator0、SCREEN8858；冻结消费者已实际接受资源闭场，业务及完整normal-close仍为false。原件摘要见[R0012](R0012-2026-10-25.json)。下一图新建a15工具、a16正式18文件包、a15 fixture13文件、runtimea12与prepared21，具体RunID仍由canonical分配；下文R0003／a06示例仅保历史。Root在新图中先验真实head交接／singleton NPC分支和家庭转换即时全员归族，不能拿旧a14产物或原phase1局部通过抵扣。
+
 R0004 已实际消费下文 a06 runtime、a19 keeper、`prepared-core-a07` 与 `attempt-a07/state`，并再次暴露整句日志参数展开失败；这些路径和分配例现为该失败场次的历史输入，不能复制重放。R0007 后继实机已独立确认创建 Rite 150／Faith 13／actor 31254，但后续 capture 因产品 House→Dynasty 链错误被原生提交前拒绝，整体仍为 **0/6、业务 RED**；原件是 `C:/ck3-dynastic-esotericism-20261024/common-runtime-a07/runs/desktop-3fevhd2-1c74096080--dynastic-esotericism--R0007`。新 House 修复、下文真实继承顺序及共享 clock／fixture 均须在新构建图验证，不能热改或追认该原场。Root 在真实分配前消费当时最新 canonical closure／release 原件与容量准入，重新固定全部 runtime／prepared／state／keeper 路径；下文历史命令中的旧前序与 a 编号不代表当前可执行值。
 
 本次使用已有公共验收入口、c09 宿主和公共原生 provider 的有限后继。Java 工具只生成外置 fixture 与精确来源绑定的共享 runtime；它不启动 CK3，也不授予 live qualification。最终 native index、SDK 提交验证入口和扩展 fixture 全部冻结后，才生成正式 prepared case。
@@ -18,7 +20,7 @@ java -jar <new-runner> fixture --repo-root <C-clean-checkout> --output C:/ck3-dy
 java -jar <new-runner> runtime --repo-root <C-clean-checkout> --base-runtime C:/ck3-common-runtime-20261024/runtime.selected-common-c09.json --native-index <final-native-source-index> --host-projection C:/ck3-dynastic-esotericism-20261024/host-successor-a06/canonical-host-projection.json --output C:/ck3-dynastic-esotericism-20261024/common-runtime-a06 --machine-id desktop-3fevhd2-1c74096080
 ```
 
-`<C-clean-checkout>` 必须包含该提交的产品 17 个正式运行文件、Java 源码与资源、需求/测试文档、公共入口和产品 case 合同；fixture 的 producer pins 全部须处于此根目录中。Composer 会另冻结实际 SDK 与公共 helper。父 index 的旧绝对路径按明确的父 source root 转为相对路径，再与新 checkout 的同路径比较，不能因 C/D 根目录变化漏记差异。
+`<C-clean-checkout>` 必须包含该提交的产品18个正式运行文件、Java源码与资源、需求／测试文档、公共入口和产品case合同；fixture的producer pins全部须处于此根目录中。Composer另冻结实际SDK与公共helper，新source index仅输出 `ck3-common-source-index-v1` 的相对路径→`{bytes,sha256}`；外部registration／lease仍由overlay／projection精确绑定。历史parent及已闭场predecessor按显式旧schema只读导入，不能将旧列表当新输出或绕过原身份／来源守卫。所有外层manifest／evidence／runtime按真实新index SHA重封；C/D根变化不能漏记来源差异。
 
 宿主投影保留父 R05 的六个控制工具，并将其原有同一 Service 的构造边界绑定到当前共享 SDK factory；外置 `registration_mcp.py` 的父文件、当前 factory 和新文件均由投影回执固定。不能热改旧 wrapper。`lease_repo` 指向实际干净 checkout；现有 `screen_bus_lease.py` 与该 checkout 的 task bus 也进入 source index 和 allocator overlay。keeper 的旧默认 SHA 不作为本次输入，公共 allocator 会显式传入 runtime 中实际 installed task bus 的 SHA。
 

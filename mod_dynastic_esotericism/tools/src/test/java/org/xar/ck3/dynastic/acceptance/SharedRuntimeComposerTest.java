@@ -41,7 +41,8 @@ final class SharedRuntimeComposerTest {
     private record PythonResult(int exitCode, String output) { }
 
     private static PythonResult python(String program, List<String> arguments) throws IOException, InterruptedException {
-        List<String> command = new ArrayList<>(List.of("python", "-B", "-X", "utf8", "-c", program));
+        String interpreter = System.getProperty("dynastic.python", "python");
+        List<String> command = new ArrayList<>(List.of(interpreter, "-B", "-X", "utf8", "-c", program));
         command.addAll(arguments);
         Process process = new ProcessBuilder(command).redirectErrorStream(true).start();
         if (!process.waitFor(30, TimeUnit.SECONDS)) {
@@ -95,7 +96,12 @@ final class SharedRuntimeComposerTest {
                     assert rejected['status']=='BLOCKED',rejected
                     assert rejected['blockers']==[failure],rejected
                 assert manifest_path.read_bytes()==original_bytes
+                sys.path[:0]=[str(repository/'ck3_autonomous_player/src'),
+                              str(repository/'ck3_autonomous_player/tests/unit')]
+                from test_ck3_mod_acceptance_failed_resource_closure import assert_java_produced_source_consumers
+                assert_java_produced_source_consumers(runtime_path)
                 print('actual Java runtime -> public Selection.preflight; ready plus four missing/type negatives; live false')
+                print('actual Java source index -> CaseClient.normal_close and preserved typed observer consumers; originals unchanged')
                 """;
         PythonResult result = python(program, List.of(repository.toString(), runtime.toString(), products.toString()));
         assertEquals(0, result.exitCode(), result.output());
@@ -115,6 +121,14 @@ final class SharedRuntimeComposerTest {
         Path currentFactory = sdk.resolve("bridge/mcp_server.py");
         Files.createDirectories(currentFactory.getParent());
         Files.writeString(currentFactory, "# authored current global factory source\n");
+        Path actualRepository = Path.of(System.getProperty("dynastic.source")).toAbsolutePath().normalize().getParent();
+        String fixtureMachine = JSON.readTree(actualRepository.resolve("tools/fixtures/ck3_r11_failed_resource_closure.json").toFile())
+                .path("machine_id").textValue();
+        for (String name : List.of("normal_exit_process_observer_v1.py", "normal_exit_contract_v1.py",
+                "normal_exit_public_wire_v2.py", "normal_exit_pending_observer_v1.py")) {
+            Files.copy(actualRepository.resolve("ck3_autonomous_player/src/xar_autoplayer/bridge").resolve(name),
+                    currentFactory.getParent().resolve(name));
+        }
         Path canonicalHost = repo.resolve("ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py");
         Files.createDirectories(canonicalHost.getParent());
         StringBuilder host = new StringBuilder("import argparse\np=argparse.ArgumentParser()\n");
@@ -146,11 +160,13 @@ final class SharedRuntimeComposerTest {
         old.put("sha256", "0".repeat(64));
         Path parentIndex = temporary.resolve("parent-source.json");
         ObjectNode parentSource = JSON.createObjectNode();
+        parentSource.put("schema", "xar.e04.r15.selected-source-index.v1");
+        parentSource.put("machine_id", fixtureMachine);
         parentSource.putArray("files").add(old);
         write(parentIndex, parentSource);
         ObjectNode manifest = JSON.createObjectNode();
         manifest.put("schema", "ck3-mod-acceptance-shared-runtime-v1");
-        manifest.put("machine_id", "authored-machine");
+        manifest.put("machine_id", fixtureMachine);
         manifest.putObject("native");
         ObjectNode retainedCapability = manifest.putObject("capabilities").putObject("ck3_take_snapshot");
         retainedCapability.put("source_build_ready", true);
@@ -174,7 +190,7 @@ final class SharedRuntimeComposerTest {
         write(parentManifest, manifest);
         ObjectNode runtime = JSON.createObjectNode();
         runtime.put("schema", "ck3-mod-acceptance-runtime-v1");
-        runtime.put("machine_id", "authored-machine");
+        runtime.put("machine_id", fixtureMachine);
         runtime.put("repo_root", oldRepo.toString());
         PythonResult interpreter = python("import sys; print(sys.executable)", List.of());
         assertEquals(0, interpreter.exitCode(), interpreter.output());
@@ -204,7 +220,7 @@ final class SharedRuntimeComposerTest {
         write(parentRuntime, runtime);
         ObjectNode projection = JSON.createObjectNode();
         projection.put("schema", "ck3-common-canonical-host-successor-v1");
-        projection.put("machine_id", "authored-machine");
+        projection.put("machine_id", fixtureMachine);
         projection.put("qualification", "SOURCE_PROJECTION_ONLY_LIVE_NOT_QUALIFIED");
         projection.put("runtime_binding", temporary.resolve("successor/runtime.json").toString());
         projection.set("parent_runtime", pin(parentRuntime));
@@ -240,7 +256,7 @@ final class SharedRuntimeComposerTest {
         write(flagsPath, flags);
         ObjectNode nativeIndex = JSON.createObjectNode();
         nativeIndex.put("schema", "xar.common-native-qualified-producer-index.v1");
-        nativeIndex.put("machine_id", "authored-machine");
+        nativeIndex.put("machine_id", fixtureMachine);
         nativeIndex.put("live_qualified", false);
         ObjectNode nativeTools = nativeIndex.putObject("runtime_native_tools");
         nativeTools.set("dll", pin(dll));
@@ -250,7 +266,7 @@ final class SharedRuntimeComposerTest {
         nativeIndex.set("native_source_manifest", pin(dll));
         Path waitPath = temporary.resolve("producer-wait.json");
         ObjectNode wait = JSON.createObjectNode();
-        wait.put("machine_id", "authored-machine");
+        wait.put("machine_id", fixtureMachine);
         wait.put("returncode", 0);
         wait.put("game_execution", false);
         wait.put("live_qualified", false);
@@ -258,7 +274,7 @@ final class SharedRuntimeComposerTest {
         nativeIndex.set("producer_original_wait", pin(waitPath));
         Path buildPath = temporary.resolve("build-output.json");
         ObjectNode build = JSON.createObjectNode();
-        build.put("machine_id", "authored-machine");
+        build.put("machine_id", fixtureMachine);
         build.put("compiler_linker_returncode", 0);
         build.put("outer_producer_returncode", 0);
         build.put("game_execution", false);
@@ -275,27 +291,32 @@ final class SharedRuntimeComposerTest {
         Path nativePath = temporary.resolve("native-index.json");
         write(nativePath, nativeIndex);
         Path output = temporary.resolve("successor");
-        SharedRuntimeComposer.Result result = SharedRuntimeComposer.compose(repo, parentRuntime, nativePath, projectionPath, output, "authored-machine");
+        SharedRuntimeComposer.Result result = SharedRuntimeComposer.compose(repo, parentRuntime, nativePath, projectionPath, output, fixtureMachine);
         JsonNode actual = JSON.readTree(Path.of(result.runtime()).toFile());
         JsonNode actualManifest = JSON.readTree(Path.of(result.manifest()).toFile());
         JsonNode actualIndex = JSON.readTree(Path.of(result.sourceIndex()).toFile());
         assertEquals("retain exactly", actualManifest.path("preserved_unknown_parent_field").textValue());
         assertEquals(7, actual.path("allocation").path("preserved_allocation_field").intValue());
         assertEquals(1, actualIndex.path("actual_changed_parent_files").size());
-        assertEquals(16, result.copiedFiles());
-        assertEquals(19, actualIndex.path("files").size());
+        assertEquals(20, result.copiedFiles());
+        assertEquals("ck3-common-source-index-v1", actualIndex.path("schema").textValue());
+        assertTrue(actualIndex.path("files").isObject());
+        assertEquals(result.copiedFiles(), actualIndex.path("files").size());
         Path frozenNormalExitBuilder = output.resolve("source/tools/build_normal_exit_source_inventory_v1.py");
         assertEquals(Files.readString(normalExitBuilder), Files.readString(frozenNormalExitBuilder));
         assertFalse(normalExitBuilder.toRealPath().equals(frozenNormalExitBuilder.toRealPath()));
         ObjectNode frozenNormalExitBuilderPin = pin(frozenNormalExitBuilder);
-        boolean normalExitBuilderIndexed = false;
-        for (JsonNode sourcePin : actualIndex.path("files")) {
-            if (frozenNormalExitBuilderPin.path("path").equals(sourcePin.path("path"))) {
-                assertEquals(frozenNormalExitBuilderPin, sourcePin);
-                normalExitBuilderIndexed = true;
-            }
-        }
-        assertTrue(normalExitBuilderIndexed);
+        JsonNode normalExitBuilderMetadata = actualIndex.path("files").path("tools/build_normal_exit_source_inventory_v1.py");
+        assertEquals(2, normalExitBuilderMetadata.size());
+        assertEquals(frozenNormalExitBuilderPin.path("bytes"), normalExitBuilderMetadata.path("bytes"));
+        assertEquals(frozenNormalExitBuilderPin.path("sha256"), normalExitBuilderMetadata.path("sha256"));
+        assertEquals(20, SharedRuntimeComposer.parentSourceFiles((ObjectNode) actualIndex,
+                output.resolve("source"), fixtureMachine).size());
+        assertEquals(pin(Path.of(result.sourceIndex())).path("sha256"), actualManifest.path("source_index").path("sha256"));
+        assertEquals(pin(Path.of(result.manifest())), actual.path("manifest"));
+        JsonNode admission = JSON.readTree(output.resolve("SOURCE-BUILD-ADMISSION.json").toFile());
+        assertEquals(pin(Path.of(result.sourceIndex())), admission.path("source_index"));
+        assertEquals(admission, actualManifest.path("shared_successor"));
         assertEquals(projectedRegistration.toRealPath().toString(), actual.path("allocator_overlay")
                 .path("current-global-registration-provider").path("path").textValue());
         assertEquals(leaseHelper.toRealPath().toString(), actual.path("allocator_overlay")
@@ -335,7 +356,7 @@ final class SharedRuntimeComposerTest {
         assertPublicSelectionConsumesProducedRuntime(Path.of(result.runtime()), products);
         assertTrue(Files.isRegularFile(output.resolve("source/tools/ck3_mod_acceptance_cases/generic_product_adapter.py")));
         assertThrows(IllegalArgumentException.class,
-                () -> SharedRuntimeComposer.compose(repo, parentRuntime, nativePath, projectionPath, output, "authored-machine"));
+                () -> SharedRuntimeComposer.compose(repo, parentRuntime, nativePath, projectionPath, output, fixtureMachine));
         int defect = 0;
         for (JsonNode invalid : List.of(JSON.getNodeFactory().textNode("OFF"), JSON.getNodeFactory().booleanNode(true),
                 JSON.getNodeFactory().nullNode())) {
@@ -351,7 +372,7 @@ final class SharedRuntimeComposerTest {
             projection.put("runtime_binding", rejected.resolve("runtime.json").toString());
             write(projectionPath, projection);
             IllegalArgumentException invalidMemberFlag = assertThrows(IllegalArgumentException.class,
-                    () -> SharedRuntimeComposer.compose(repo, parentRuntime, nativePath, projectionPath, rejected, "authored-machine"));
+                    () -> SharedRuntimeComposer.compose(repo, parentRuntime, nativePath, projectionPath, rejected, fixtureMachine));
             assertTrue(invalidMemberFlag.getMessage().contains("native provider not compiled: XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1"));
             assertFalse(Files.exists(rejected));
         }
@@ -367,7 +388,7 @@ final class SharedRuntimeComposerTest {
         projection.put("runtime_binding", temporary.resolve("rejected/runtime.json").toString());
         write(projectionPath, projection);
         IllegalArgumentException offFlag = assertThrows(IllegalArgumentException.class,
-                () -> SharedRuntimeComposer.compose(repo, parentRuntime, nativePath, projectionPath, temporary.resolve("rejected"), "authored-machine"));
+                () -> SharedRuntimeComposer.compose(repo, parentRuntime, nativePath, projectionPath, temporary.resolve("rejected"), fixtureMachine));
         assertTrue(offFlag.getMessage().contains("native provider not compiled"));
         assertFalse(Files.exists(temporary.resolve("rejected")));
         build.put("outer_producer_returncode", true);
@@ -378,7 +399,39 @@ final class SharedRuntimeComposerTest {
         projection.put("runtime_binding", temporary.resolve("boolean-code-rejected/runtime.json").toString());
         write(projectionPath, projection);
         IllegalArgumentException booleanCode = assertThrows(IllegalArgumentException.class,
-                () -> SharedRuntimeComposer.compose(repo, parentRuntime, nativePath, projectionPath, temporary.resolve("boolean-code-rejected"), "authored-machine"));
+                () -> SharedRuntimeComposer.compose(repo, parentRuntime, nativePath, projectionPath, temporary.resolve("boolean-code-rejected"), fixtureMachine));
         assertTrue(booleanCode.getMessage().contains("producer completion"));
+    }
+
+    @Test
+    void canonicalParentRoundTripRejectsAliasPathsAndWrongSignatureTypes() throws IOException {
+        Path root = temporary.resolve("frozen-source").toAbsolutePath();
+        ObjectNode index = JSON.createObjectNode();
+        index.put("schema", "ck3-common-source-index-v1").put("machine_id", "authored-machine");
+        ObjectNode files = index.putObject("files");
+        files.putObject("sdk/module.py").put("bytes", 3).put("sha256", "a".repeat(64));
+        List<SharedRuntimeComposer.FilePin> expected = List.of(new SharedRuntimeComposer.FilePin(
+                root.resolve("sdk/module.py").toString(), 3, "a".repeat(64)));
+        assertEquals(expected, SharedRuntimeComposer.parentSourceFiles(index, root, "authored-machine"));
+        assertEquals(expected, SharedRuntimeComposer.parentSourceFiles(
+                (ObjectNode) JSON.readTree(JSON.writeValueAsBytes(index)), root, "authored-machine"));
+        for (JsonNode invalid : List.of(JSON.getNodeFactory().booleanNode(true),
+                JSON.getNodeFactory().numberNode(3.0), JSON.getNodeFactory().nullNode())) {
+            ObjectNode bad = index.deepCopy();
+            ((ObjectNode) bad.path("files").path("sdk/module.py")).set("bytes", invalid);
+            assertThrows(IllegalArgumentException.class,
+                    () -> SharedRuntimeComposer.parentSourceFiles(bad, root, "authored-machine"));
+        }
+        for (String invalid : List.of("../sdk/module.py", "/sdk/module.py", "sdk//module.py", "sdk\\module.py")) {
+            ObjectNode bad = index.deepCopy();
+            ObjectNode badFiles = (ObjectNode) bad.path("files");
+            badFiles.set(invalid, badFiles.remove("sdk/module.py"));
+            assertThrows(IllegalArgumentException.class,
+                    () -> SharedRuntimeComposer.parentSourceFiles(bad, root, "authored-machine"));
+        }
+        ObjectNode missing = index.deepCopy();
+        ((ObjectNode) missing.path("files").path("sdk/module.py")).remove("bytes");
+        assertThrows(IllegalArgumentException.class,
+                () -> SharedRuntimeComposer.parentSourceFiles(missing, root, "authored-machine"));
     }
 }

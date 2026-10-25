@@ -29,7 +29,9 @@ des_create_rite_dynasty_effect = {
 	}
 	save_scope_as = des_requested_dynasty_founder
 	save_scope_as = des_selected_dynasty_founder
-	# Prefer a real eligible adherent before handing over the old House.
+	# First let the requested founder hand the old House to a real living successor.
+	scope:des_requested_dynasty_founder = { des_relinquish_old_house_head_effect = yes }
+	# If the requested founder remains ineligible, prefer another real adherent.
 	if = {
 		limit = { OR = { is_house_head = yes is_dynast = yes } }
 		scope:des_binding_rite = {
@@ -46,7 +48,6 @@ des_create_rite_dynasty_effect = {
 			}
 		}
 	}
-	scope:des_selected_dynasty_founder = { des_relinquish_old_house_head_effect = yes }
 	# User-authorized final fallback is a real adult adherent, not a disposable identity.
 	if = {
 		limit = {
