@@ -30,7 +30,8 @@
   "metadata_notes": [
     "13 unchanged raw images, all capture sidecars pinned.",
     "Image11 shows only the map after history invocation; not evidence of a readable history toast.",
-    "Image10 is disclosed hidden read-only fixture diagnostics, excluded from store."
+    "Image10 is disclosed hidden read-only fixture diagnostics, excluded from store.",
+    "Root additionally viewed originals02/04/06/07 on2026-10-25; source raw bytes unchanged. Supporting selection/guard illustrations, no additional success claim."
   ],
   "images": [
     {
@@ -75,7 +76,8 @@
       "business_image": true,
       "store_use": "supporting_candidate",
       "purpose": "Actual Norman source chosen, before opening production draft",
-      "visually_reviewed": false
+      "visually_reviewed": true,
+      "additional_visual_review_utc": "2026-10-25T02:09:15.598280+00:00"
     },
     {
       "sequence": 3,
@@ -119,7 +121,8 @@
       "business_image": true,
       "store_use": "process_reference",
       "purpose": "Repaired footer remains inside window with two selected core tenets; creation disabled",
-      "visually_reviewed": false
+      "visually_reviewed": true,
+      "additional_visual_review_utc": "2026-10-25T02:09:15.598280+00:00"
     },
     {
       "sequence": 5,
@@ -163,7 +166,8 @@
       "business_image": true,
       "store_use": "process_reference",
       "purpose": "Allowed divorce visibly selected; missing source-A exclusive contribution disables confirmation",
-      "visually_reviewed": false
+      "visually_reviewed": true,
+      "additional_visual_review_utc": "2026-10-25T02:09:15.598280+00:00"
     },
     {
       "sequence": 7,
@@ -185,7 +189,8 @@
       "business_image": true,
       "store_use": "process_reference",
       "purpose": "Two core choices and source-B allowed divorce; third core still required",
-      "visually_reviewed": false
+      "visually_reviewed": true,
+      "additional_visual_review_utc": "2026-10-25T02:09:15.598280+00:00"
     },
     {
       "sequence": 8,

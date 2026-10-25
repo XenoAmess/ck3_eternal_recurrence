@@ -71,13 +71,22 @@ final class AcceptanceFixtureTest {
             Path target = directory.resolve(request.kind().wire() + "-" + request.mode().wire());
             FixtureEmitter.Emission emitted = FixtureEmitter.emit(repository, target, "synthetic-fixture-machine", request);
             assertEquals(request.kind().wire(), emitted.payload().caseId());
-            assertHistoryLinks(target, emitted.payload().files().keySet(), request.kind() == CaseKind.COLD_RELOAD ? 3 : 6);
+            assertHistoryLinks(target, emitted.payload().files().keySet(), request.kind() == CaseKind.COLD_RELOAD ? 4 : 6);
             if (request.kind() == CaseKind.COLD_RELOAD) {
-                assertEquals(5, emitted.payload().files().size());
+                assertEquals(Set.of("descriptor.mod", "common/scripted_triggers/rrfa_observation_triggers.txt",
+                        "common/script_values/rrfa_observation_values.txt", "events/rrfa_observation_events.txt",
+                        "common/decisions/rrfa_cold_observation_decisions.txt", "localization/english/rrfa_observation_l_english.yml",
+                        "localization/simp_chinese/rrfa_observation_l_simp_chinese.yml"), emitted.payload().files().keySet());
+                assertEquals(7, emitted.payload().files().size());
+                assertEquals(emitted.payload(), Json.read(Files.readAllBytes(emitted.manifest()), FixtureContracts.Manifest.class));
                 assertFalse(emitted.payload().receipt().containsBusinessEffects());
-                assertTrue(emitted.payload().files().keySet().stream().noneMatch(p -> p.contains("seed") || p.contains("fresh")));
-                assertTrue(emitted.payload().files().keySet().stream().noneMatch(p -> p.startsWith("common/decisions/") || p.startsWith("localization/")));
-                for (String relative : emitted.payload().files().keySet()) assertReadOnly(keys(Clausewitz.parse(Files.readString(target.resolve(relative)))));
+                assertTrue(emitted.payload().files().keySet().stream().noneMatch(p -> p.contains("seed") || p.contains("fresh") || p.contains("on_action")));
+                for (String relative : emitted.payload().files().keySet()) if (!relative.endsWith(".yml")) {
+                    List<String> coldKeys = keys(Clausewitz.parse(Files.readString(target.resolve(relative))));
+                    assertReadOnly(coldKeys);
+                    for (String registrar : List.of("on_actions", "on_game_start_after_lobby", "events")) assertFalse(coldKeys.contains(registrar));
+                }
+                assertObservationDecision(target, request);
             } else { assertEquals(10, emitted.payload().files().size()); assertObservationDecision(target, request); }
             assertTrue(Files.readString(target.resolve("events/rrfa_observation_events.txt")).contains(request.mode().wire() + "_persisted_readback"));
         }
@@ -102,17 +111,19 @@ final class AcceptanceFixtureTest {
     }
     private static List<String> keys(Clausewitz.Block block) { List<String> keys = new ArrayList<>(); for (Clausewitz.Entry e : block.entries()) { keys.add(e.key()); if (e.value() instanceof Clausewitz.Block child) keys.addAll(keys(child)); } return keys; }
     private static void assertObservationDecision(Path fixture, Request request) throws IOException {
-        String key = "rrfa_observe_" + request.kind().wire() + "_decision";
-        Clausewitz.Block decision = Clausewitz.parse(Files.readString(fixture.resolve("common/decisions/rrfa_observation_decisions.txt"))).block(key);
+        boolean cold = request.kind() == CaseKind.COLD_RELOAD;
+        String key = cold ? "rrfa_observe_cold_decision" : "rrfa_observe_" + request.kind().wire() + "_decision";
+        String decisionFile = cold ? "rrfa_cold_observation_decisions.txt" : "rrfa_observation_decisions.txt";
+        Clausewitz.Block decision = Clausewitz.parse(Files.readString(fixture.resolve("common/decisions/" + decisionFile))).block(key);
         for (String gate : List.of("is_shown", "is_valid")) {
             assertEquals("no", decision.block(gate).atom("is_ai", ""));
             assertEquals("character:" + request.actorHistoryId().value(), decision.block(gate).atom("this", ""));
-            assertEquals("rrfa_seed_done", decision.block(gate).atom("has_character_flag", ""));
+            assertEquals(cold ? "rrfa_mode" : "rrfa_seed_done", decision.block(gate).atom(cold ? "has_variable" : "has_character_flag", ""));
         }
         Clausewitz.Block effect = decision.block("effect"); assertEquals(1, effect.entries().size());
         assertEquals("trigger_event", effect.entries().getFirst().key());
         Clausewitz.Block trigger = effect.block("trigger_event"); assertEquals(1, trigger.entries().size());
-        assertEquals(request.kind() == CaseKind.UI_REJECTION ? "rrfa.30" : request.mode() == Mode.RITE ? "rrfa.20" : "rrfa.21", trigger.atom("id", ""));
+        assertEquals(cold ? "rrfa.22" : request.kind() == CaseKind.UI_REJECTION ? "rrfa.30" : request.mode() == Mode.RITE ? "rrfa.20" : "rrfa.21", trigger.atom("id", ""));
         assertReadOnly(keys(effect));
         for (String forbidden : List.of("cost", "cooldown", "days")) assertFalse(keys(decision).contains(forbidden));
         Set<String> expected = Set.of(key, "rrfa_observation_decision_desc", "rrfa_observation_decision_tooltip", "rrfa_observation_decision_confirm");

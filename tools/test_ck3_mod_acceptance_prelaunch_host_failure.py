@@ -1,6 +1,8 @@
 """A failed host before CK3 startup can release resources without business credit."""
 import json
 import copy
+import ast
+import os
 from pathlib import Path
 import sys
 import tempfile
@@ -464,6 +466,172 @@ class PrelaunchHostFailureTests(unittest.TestCase):
         self.early_exit_result()
         with self.assertRaisesRegex(ValueError, 'host exit/cause'):
             self.check()
+
+    def inventory_registrar_failure(self) -> None:
+        """R0009's retained terminal/call sites, on authored paths and no game."""
+        from ck3_mod_acceptance_saved_profile_v2 import write_saved_profile_inventory_v2
+        self.allocated_profile_failure()
+        state = Path(self.freeze['state_dir'])
+        profile = state/'profile'
+        for name in ('product', 'fixture'):
+            target = profile/'mod-content'/name
+            target.mkdir(parents=True)
+            (target/'descriptor.mod').write_text('name="Authored closure input"\n')
+            outer = profile/'mod'/(name+'.mod')
+            outer.parent.mkdir(exist_ok=True)
+            outer.write_text('name="Authored closure input"\npath="'+target.as_posix()+'"\n')
+        registrar = profile/'mod-content/fixture/common/on_action/rrfa_cold_startup.txt'
+        registrar.parent.mkdir(parents=True)
+        registrar.write_text('on_game_start_after_lobby = { effect = { trigger_event = rrfa.22 } }\n')
+        self.write(profile/'dlc_load.json', {'enabled_mods': ['mod/product.mod', 'mod/fixture.mod'], 'disabled_dlcs': []})
+        inventory = self.root/'prepared/saved-fixture-inventory-v2.json'
+        write_saved_profile_inventory_v2(inventory, profile=profile, mode='enabled',
+            enabled_mods=['mod/product.mod', 'mod/fixture.mod'],
+            product_files=[allocation.pin(path) for path in profile.rglob('*') if path.is_file() and path.name!='dlc_load.json'],
+            roles={'mod/product.mod': 'formal_product', 'mod/fixture.mod': 'case_fixture'})
+        source = self.root/'sdk'
+        verifier = source/'ck3_autonomous_player/src/xar_autoplayer/saved_campaign_profile_inventory_v2.py'
+        verifier.parent.mkdir(parents=True)
+        verifier.write_bytes((TOOLS.parent/'ck3_autonomous_player/src/xar_autoplayer/saved_campaign_profile_inventory_v2.py').read_bytes())
+        selected = self.root/'shared-host.py'
+        lines = ['']*4640
+        lines[4636] = '            saved_campaign = prepare_saved_campaign(args, spec)'
+        lines[957] = '    inventory = verify_inventory(parse_inventory(inventory_value), profile=profile, actual_enabled_mods=dlc["enabled_mods"])'
+        selected.write_text('\n'.join(lines)+'\n')
+        self.freeze['source_root'] = str(source)
+        self.freeze['argv'] += ['--saved-campaign-product-inventory', str(inventory)]
+        index = self.root/'source-index.json'
+        self.write(index, {'schema': 'ck3-common-source-index-v1',
+            'machine_id': self.freeze['identity_allocation']['machine_id'],
+            'files': {verifier.relative_to(source).as_posix(): {
+                key: value for key,value in allocation.pin(verifier).items() if key!='path'}}})
+        self.freeze['files'] = {str(path.resolve()): {key:value for key,value in allocation.pin(path).items() if key!='path'}
+                                for path in (selected, index, inventory)}
+        self.freeze['runtime_manifest'] = {'path': str(self.root/'manifest.json'), 'bytes': 2, 'sha256': 'a'*64}
+        self.bundle.update(closure_kind='saved-campaign-v2-inventory-registrar-prelaunch',
+            machine_id=self.freeze['identity_allocation']['machine_id'], native_session_started=False,
+            typed_normal_exit_proven=False, release_pass=False, native_cleanup_qualified=None)
+        frozen = self.write(self.run/'frozen-argv.json', self.freeze)
+        prepared_path = Path(self.bundle['prepared_case']['path'])
+        self.bundle['prepared_case'] = self.write(prepared_path, {'startup': {
+            'mode': 'saved_campaign', 'state_dir': str(state),
+            'saved_campaign': {'product_inventory': str(inventory)}}, 'runtime_manifest': self.freeze['runtime_manifest'],
+            'preparation': {'profile_preparation': {'files': {path.relative_to(profile).as_posix(): allocation.pin(path)
+                for path in profile.rglob('*') if path.is_file()}}}})
+        self.freeze['files'][str(prepared_path.resolve())] = {
+            key:value for key,value in self.bundle['prepared_case'].items() if key!='path'}
+        frozen = self.write(self.run/'frozen-argv.json', self.freeze)
+        ready = json.loads((self.run/'ready-context.json').read_bytes())
+        ready.update(frozen_argv=frozen, prepared_case=self.bundle['prepared_case'])
+        self.bundle['ready_context'] = self.write(self.run/'ready-context.json', ready)
+        self.write(self.root/'reviewed-context.json', ready)
+        intent_path = self.run/'launch-intent.json'
+        intent = json.loads(intent_path.read_bytes());intent['frozen_argv'] = frozen
+        self.bundle['launch_intent'] = self.write(intent_path, intent)
+        host_path = self.run/'host-started.json'
+        host = json.loads(host_path.read_bytes());host['argv'] = self.freeze['argv']
+        self.bundle['host_started'] = self.write(host_path, host)
+        verifier_lines = verifier.read_text().splitlines()
+        raise_line = next(index+1 for index,line in enumerate(verifier_lines)
+                          if 'raise ValueError("Saved campaign fixture/overlay contains a cold-start registrar: "' in line)
+        stderr = self.run/'host-stderr.log'
+        stderr.write_text(f'  File "{selected}", line 4637, in run\n'+lines[4636]+'\n'
+            f'  File "{selected}", line 958, in prepare_saved_campaign\n'+lines[957]+'\n'
+            f'  File "{verifier}", line {raise_line}, in verify_inventory\n'+verifier_lines[raise_line-1]+'\n'
+            'ValueError: Saved campaign fixture/overlay contains a cold-start registrar: '+str(registrar)+'\n')
+        self.bundle['host_stderr'] = allocation.pin(stderr)
+        for mode,code in (('run',2),('allocate',0)):
+            key = 'public_'+mode
+            path = Path(self.bundle[key]['path'])
+            old = json.loads(path.read_bytes())
+            old['argv'][old['argv'].index('entry.py')] = str(TOOLS/'ck3_mod_acceptance.py')
+            machine = self.freeze['identity_allocation']['machine_id']
+            waited = {'machine_id':machine, 'original_wait_returncode':code, 'elapsed_seconds':5.5}
+            public_intent = {'machine_id':machine, 'argv':old['argv']}
+            if mode=='run':
+                waited.update(run_id=self.run.name, finished_at_utc='2026-10-24T18:00:49+00:00')
+                public_intent.update(run_id=self.run.name, started_at_utc='2026-10-24T18:00:42+00:00')
+            else:waited['observed_at_utc']='2026-10-24T18:00:49+00:00'
+            self.bundle[key] = self.write(path, waited)
+            self.bundle[key+'_intent'] = self.write(path.with_name(mode+'-intent.json'), public_intent)
+            producer = path.with_name(mode+'-producer.py')
+            producer.write_text("p = subprocess.Popen(a, cwd=repo)\ncode = p.wait()\n"
+                "with (e/'"+path.name+"').open('x') as f:\n    json.dump({'original_wait_returncode': code}, f)\n")
+            self.bundle[key+'_producer'] = allocation.pin(producer)
+        self.early_exit_result()
+
+    def test_r9_inventory_registrar_reproduces_frozen_verifier_without_game_credit(self):
+        self.inventory_registrar_failure()
+        result = self.check()['failure_cleanup']
+        self.assertEqual(result['original_host_exit_code'], 1)
+        self.assertIsNone(result['original_ck3_exit_code'])
+        self.assertIsNone(result['native_cleanup_qualified'])
+        self.assertFalse(result['business_pass'])
+        self.assertFalse(result['typed_normal_exit_proven'])
+        self.assertTrue(result['original_evidence']['frozen_V2_registrar_rejection']['original_rejection_reproduced'])
+
+    def test_r9_inventory_registrar_rejects_unbound_stack_source_and_content(self):
+        self.inventory_registrar_failure()
+        path = self.run/'host-stderr.log'
+        original = path.read_text()
+        for bad in (original.replace('in prepare_saved_campaign', 'in fixture_session'),
+                    original.replace('line 4637', 'line 4636')):
+            path.write_text(bad)
+            self.bundle['host_stderr'] = allocation.pin(path)
+            self.early_exit_result()
+            with self.assertRaisesRegex(ValueError, 'frozen source call chain'):
+                self.check()
+        path.write_text(original)
+        self.bundle['host_stderr'] = allocation.pin(path)
+        self.early_exit_result()
+        verifier = Path(self.freeze['source_root'])/'ck3_autonomous_player/src/xar_autoplayer/saved_campaign_profile_inventory_v2.py'
+        verifier.write_bytes(verifier.read_bytes()+b'\n# changed after frozen\n')
+        with self.assertRaises(ValueError):self.check()
+
+    def test_r9_inventory_registrar_rejects_forged_wait_producer_and_native_presence(self):
+        self.inventory_registrar_failure()
+        path = Path(self.bundle['public_run']['path'])
+        original = json.loads(path.read_bytes())
+        for wrong in (True, 0, 2.0):
+            self.bundle['public_run'] = self.write(path, {**original,'original_wait_returncode':wrong})
+            self.save()
+            with self.assertRaises(ValueError):self.check()
+        self.bundle['public_run'] = self.write(path, original)
+        producer = Path(self.bundle['public_run_producer']['path'])
+        raw = producer.read_text()
+        producer.write_text(raw.replace('code = p.wait()', 'code = 2'))
+        self.bundle['public_run_producer'] = allocation.pin(producer)
+        self.save()
+        with self.assertRaisesRegex(ValueError, 'original Popen.wait'):
+            self.check()
+        producer.write_text(raw)
+        self.bundle['public_run_producer'] = allocation.pin(producer)
+        self.save()
+        (self.run/'native-report.json').write_text('{}')
+        with self.assertRaisesRegex(ValueError, 'native/game/control'):
+            self.check()
+
+    def test_actual_v2_prelaunch_helpers_are_strict(self) -> None:
+        from mypy import api
+        tree = ast.parse((TOOLS/'ck3_mod_acceptance_allocate.py').read_text(encoding='utf-8-sig'))
+        names = {'_SavedInventoryVerifierV2', '_saved_inventory_registrar_prelaunch',
+                 '_prelaunch_root_public_wait', '_canonical_source_index_files'}
+        nodes = [node for node in tree.body if isinstance(node, (ast.FunctionDef, ast.ClassDef)) and node.name in names]
+        self.assertEqual({node.name for node in nodes}, names)
+        prelude = '''from __future__ import annotations
+from typing import Protocol, runtime_checkable, Literal
+from pathlib import Path
+from datetime import datetime
+import ast, json, math, re, sys, importlib.util
+from xar_autoplayer.saved_campaign_profile_inventory_v2 import Inventory
+from ck3_mod_acceptance_background_types import FilePin, JsonObject, json_object, file_pin, keyed_file_pin, object_field, text_field, strings_field
+from ck3_mod_acceptance import check_pin, pin, read_json
+'''
+        text = prelude+ast.unparse(ast.Module(body=nodes,type_ignores=[]))
+        with patch.dict(os.environ, {'MYPYPATH':os.pathsep.join((str(TOOLS),str(TOOLS.parent/'ck3_autonomous_player/src')))}):
+            stdout,stderr,code = api.run(['--strict','--strict-equality','--follow-imports=skip',
+                '--no-incremental','--cache-dir','nul','-c',text])
+        self.assertEqual(code,0,stdout+stderr)
 
     def test_bound_early_host_exit_does_not_require_readiness_timeout(self):
         self.early_exit_result()

@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     import argparse
     from ck3_mod_acceptance import Selection
+    from xar_autoplayer.saved_campaign_profile_inventory_v2 import Inventory
 from datetime import datetime,timezone
 import hashlib,importlib.util,json,os,platform,re,subprocess,sys,time
 import math
@@ -550,6 +551,170 @@ def _allocated_profile_prelaunch(stderr: object, frozen: object) -> bool:
     return True
 
 
+@runtime_checkable
+class _SavedInventoryVerifierV2(Protocol):
+    def parse_inventory(self, value: object) -> Inventory: ...
+    def verify_inventory(self, inventory: Inventory, *, profile: Path,
+                         actual_enabled_mods: object) -> Inventory: ...
+
+
+def _saved_inventory_registrar_prelaunch(stderr: object, frozen: object) -> JsonObject | None:
+    """Reproduce the exact frozen V2 rejection, before any managed game session."""
+    terminal = 'ValueError: Saved campaign fixture/overlay contains a cold-start registrar: '
+    if not isinstance(stderr, str) or not stderr.splitlines():
+        return None
+    last = stderr.splitlines()[-1]
+    if not last.startswith(terminal):
+        return None
+    fields = json_object(frozen)
+    argv: list[str] = strings_field(fields, 'argv')
+    files = object_field(fields, 'files')
+    hosts = [Path(arg).resolve() for arg in argv if Path(arg).name == 'shared-host.py']
+    indices = [Path(path).resolve() for path in files if Path(path).name == 'source-index.json']
+    if len(hosts) != 1 or len(indices) != 1:
+        raise ValueError('V2 registrar requires exact frozen host/source index')
+    host, index = hosts[0], indices[0]
+    check_pin(host, object_field(files, str(host)))
+    check_pin(index, object_field(files, str(index)))
+    root = Path(text_field(fields, 'source_root')).resolve()
+    machine = text_field(object_field(fields, 'identity_allocation'), 'machine_id')
+    sources = _canonical_source_index_files(read_json(index), root, machine)
+    verifier = root / 'ck3_autonomous_player/src/xar_autoplayer/saved_campaign_profile_inventory_v2.py'
+    if verifier not in sources:
+        raise ValueError('V2 registrar verifier is absent from frozen source index')
+    check_pin(verifier, dict(sources[verifier]))
+    frames = re.findall(r'  File "([^"]+)", line ([0-9]+), in ([^\r\n]+)\r?\n    ([^\r\n]+)', stderr)
+    expected = ((host, 'run', 'saved_campaign = prepare_saved_campaign(args, spec)'),
+                (host, 'prepare_saved_campaign', 'inventory = verify_inventory(parse_inventory(inventory_value), profile=profile, actual_enabled_mods=dlc["enabled_mods"])'),
+                (verifier, 'verify_inventory', 'raise ValueError("Saved campaign fixture/overlay contains a cold-start registrar: " + str(path))'))
+    if len(frames) < 3:
+        raise ValueError('V2 registrar frozen pre-game call chain missing')
+    for (path, line, function, statement), (source, name, code) in zip(frames[-3:], expected):
+        lines = source.read_text(encoding='utf-8-sig').splitlines()
+        if (Path(path).resolve() != source or function != name or statement.strip() != code
+                or not 0 < int(line) <= len(lines) or lines[int(line)-1].strip() != code):
+            raise ValueError('V2 registrar traceback differs from frozen source call chain')
+    def argument(flag: str) -> str:
+        if argv.count(flag) != 1 or argv.index(flag)+1 >= len(argv):
+            raise ValueError('V2 registrar frozen argument missing: ' + flag)
+        return argv[argv.index(flag)+1]
+    profile = Path(text_field(fields, 'state_dir')).resolve() / 'profile'
+    offending = Path(last[len(terminal):]).resolve()
+    if (not offending.is_relative_to(profile) or offending.suffix.casefold() != '.txt'
+            or not offending.is_file() or offending.is_symlink()):
+        raise ValueError('V2 registrar must identify its original prepared fixture file')
+    inventory = Path(argument('--saved-campaign-product-inventory')).resolve()
+    preparations = [Path(path).resolve() for path in files if Path(path).name=='prepared-case.json']
+    if len(preparations)!=1:
+        raise ValueError('V2 registrar original frozen preparation missing')
+    prepared_path = preparations[0]
+    check_pin(prepared_path, object_field(files, str(prepared_path)))
+    prepared = read_json(prepared_path)
+    startup = object_field(prepared, 'startup')
+    if (startup.get('mode')!='saved_campaign' or startup.get('state_dir')!=str(profile.parent)
+            or object_field(startup, 'saved_campaign').get('product_inventory')!=str(inventory)):
+        raise ValueError('V2 registrar inventory crossed frozen prepared startup')
+    profile_files = object_field(object_field(object_field(prepared, 'preparation'), 'profile_preparation'), 'files')
+    expected_products = [file_pin(value) for relative,value in profile_files.items()
+                         if relative.startswith(('mod/', 'mod-content/'))]
+    inventory_value = read_json(inventory)
+    product_values = inventory_value.get('product_files')
+    if (not isinstance(product_values, list) or not expected_products
+            or sorted((file_pin(value) for value in product_values), key=lambda row:row['path'])
+                != sorted(expected_products, key=lambda row:row['path'])):
+        raise ValueError('V2 registrar inventory differs from frozen prepared file closure')
+    spec = importlib.util.spec_from_file_location('_prelaunch_saved_inventory_v2', verifier)
+    if spec is None or spec.loader is None:
+        raise ValueError('Frozen V2 inventory verifier cannot be loaded')
+    module = importlib.util.module_from_spec(spec)
+    previous = sys.modules.get(spec.name)
+    sys.modules[spec.name] = module
+    try:
+        spec.loader.exec_module(module)
+        if not isinstance(module, _SavedInventoryVerifierV2):
+            raise ValueError('Frozen V2 inventory verifier interface missing')
+        try:
+            module.verify_inventory(module.parse_inventory(inventory_value), profile=profile,
+                                    actual_enabled_mods=read_json(profile/'dlc_load.json')['enabled_mods'])
+        except ValueError as error:
+            if str(error) != last[len('ValueError: '):]:
+                raise ValueError('Frozen V2 verifier did not reproduce the original registrar rejection') from error
+        else:
+            raise ValueError('Frozen V2 verifier no longer rejects the original registrar')
+    finally:
+        if previous is None:sys.modules.pop(spec.name, None)
+        else:sys.modules[spec.name] = previous
+    return json_object({'host': pin(host), 'source_index': pin(index), 'verifier': sources[verifier],
+                        'inventory': pin(inventory), 'prepared_case': pin(prepared_path),
+                        'inventory_binding': 'reproduced_from_frozen_prepared_file_closure', 'registrar': pin(offending),
+                        'original_rejection_reproduced': True})
+
+
+def _prelaunch_root_public_wait(wait_value: object, intent_value: object, producer: str, wait_path: Path,
+        machine: str, mode: Literal['run', 'allocate'], run_id: str) -> list[str]:
+    """Read the actual Root intent/wait pair without inventing Popen metadata."""
+    waited, intent = json_object(wait_value), json_object(intent_value)
+    code = 2 if mode == 'run' else 0
+    wait_fields = {'machine_id', 'original_wait_returncode', 'elapsed_seconds'}
+    intent_fields = {'machine_id', 'argv'}
+    if mode == 'run':
+        wait_fields |= {'run_id', 'finished_at_utc'}
+        intent_fields |= {'run_id', 'started_at_utc'}
+    else:
+        wait_fields.add('observed_at_utc')
+    if set(waited) != wait_fields or set(intent) != intent_fields:
+        raise ValueError('V2 registrar original Root intent/wait fields differ')
+    elapsed = waited.get('elapsed_seconds')
+    if (waited.get('machine_id') != machine or intent.get('machine_id') != machine
+            or type(waited.get('original_wait_returncode')) is not int
+            or waited['original_wait_returncode'] != code or type(elapsed) not in (int, float)
+            or not isinstance(elapsed, (int, float)) or not math.isfinite(elapsed) or elapsed <= 0):
+        raise ValueError('V2 registrar actual Root public wait differs')
+    stamp = datetime.fromisoformat(text_field(waited, 'finished_at_utc' if mode == 'run' else 'observed_at_utc'))
+    if stamp.tzinfo is None or stamp.utcoffset() is None:
+        raise ValueError('V2 registrar actual Root public wait timestamp lacks timezone')
+    if mode == 'run':
+        start = datetime.fromisoformat(text_field(intent, 'started_at_utc'))
+        if (start.tzinfo is None or start > stamp or waited.get('run_id') != run_id
+                or intent.get('run_id') != run_id):
+            raise ValueError('V2 registrar actual Root run identity/chronology differs')
+    tree = ast.parse(producer)
+    popens = [node.value for node in ast.walk(tree) if isinstance(node, ast.Assign)
+        and len(node.targets)==1 and isinstance(node.targets[0], ast.Name) and node.targets[0].id=='p'
+        and isinstance(node.value, ast.Call) and isinstance(node.value.func, ast.Attribute)
+        and isinstance(node.value.func.value, ast.Name) and node.value.func.value.id=='subprocess'
+        and node.value.func.attr=='Popen']
+    waits = [node for node in ast.walk(tree) if isinstance(node, ast.Assign)
+        and len(node.targets)==1 and isinstance(node.targets[0], ast.Name) and node.targets[0].id=='code'
+        and isinstance(node.value, ast.Call) and isinstance(node.value.func, ast.Attribute)
+        and isinstance(node.value.func.value, ast.Name) and node.value.func.value.id=='p'
+        and node.value.func.attr=='wait' and not node.value.args and not node.value.keywords]
+    targets = [node for node in ast.walk(tree) if isinstance(node, ast.With) and any(
+        isinstance(item.context_expr, ast.Call) and isinstance(item.context_expr.func, ast.Attribute)
+        and item.context_expr.func.attr=='open' and item.context_expr.args
+        and isinstance(item.context_expr.args[0], ast.Constant) and item.context_expr.args[0].value=='x'
+        and isinstance(item.context_expr.func.value, ast.BinOp)
+        and isinstance(item.context_expr.func.value.op, ast.Div)
+        and isinstance(item.context_expr.func.value.right, ast.Constant)
+        and item.context_expr.func.value.right.value==wait_path.name for item in node.items)]
+    dumps = [node for target in targets for node in ast.walk(target) if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute) and isinstance(node.func.value, ast.Name)
+        and node.func.value.id=='json' and node.func.attr=='dump' and node.args
+        and isinstance(node.args[0], ast.Dict) and any(isinstance(key, ast.Constant)
+            and key.value=='original_wait_returncode' and isinstance(value, ast.Name) and value.id=='code'
+            for key,value in zip(node.args[0].keys,node.args[0].values))]
+    if (len(popens)!=1 or len(waits)!=1 or len(dumps)!=1
+            or not (popens[0].lineno, popens[0].col_offset) < (waits[0].lineno, waits[0].col_offset) < (dumps[0].lineno, dumps[0].col_offset)
+            or any(keyword.arg=='shell' and not (isinstance(keyword.value, ast.Constant)
+                and keyword.value.value is False) for keyword in popens[0].keywords)):
+        raise ValueError('V2 registrar Root producer must record the original Popen.wait result')
+    argv: list[str] = strings_field(intent, 'argv')
+    indices = [index for index,arg in enumerate(argv) if Path(arg).name=='ck3_mod_acceptance.py']
+    if len(indices)!=1 or indices[0]+1>=len(argv) or argv[indices[0]+1]!=mode:
+        raise ValueError('V2 registrar actual Root command mode differs')
+    return argv
+
+
 def _prelaunch_background_admission(value: object, machine: object) -> None:
     """Read historical launch provenance only; this grants no current offline admission."""
     from steam_offline_state_contract import parse_result
@@ -758,7 +923,16 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
         'raise ValueError("saved campaign product-only profile contains a cold-start registrar: " + str(path))' in stderr)
     readonly_tail_rejected=_saved_readonly_tail_prelaunch(stderr,bundle)
     allocated_profile_rejected=_allocated_profile_prelaunch(stderr,freeze)
-    saved_profile_rejected=saved_registrar_rejected or readonly_tail_rejected
+    inventory_registrar=_saved_inventory_registrar_prelaunch(stderr,freeze)
+    if inventory_registrar is not None:
+        require(bundle.get('closure_kind')=='saved-campaign-v2-inventory-registrar-prelaunch' and
+                bundle.get('machine_id')==freeze.get('identity_allocation',{}).get('machine_id') and
+                all(bundle.get(key) is False for key in ('native_session_started','normal_close_qualified',
+                    'typed_normal_exit_proven','business_pass','release_pass')) and
+                'native_cleanup_qualified' in bundle and bundle['native_cleanup_qualified'] is None,
+                'V2 registrar closure must preserve exact no-native/no-business facts')
+    saved_profile_rejected=saved_registrar_rejected or readonly_tail_rejected or inventory_registrar is not None
+    background_rejected=allocated_profile_rejected or inventory_registrar is not None
     supervisor_bound=supervisor.get('pid')==host.get('supervisor_pid')
     supervisor_binding=None
     if saved_profile_rejected or allocated_profile_rejected:
@@ -778,7 +952,7 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
                 bool(intent.get('admitted_lease')) and host.get('admitted_lease')==intent['admitted_lease'] and
                 intent['admitted_lease'].get('task_id')==freeze['screen_task'],
                 'Saved registrar original supervisor launch ticket/lease chain differs')
-        if allocated_profile_rejected:
+        if background_rejected:
             machine=freeze.get('identity_allocation',{}).get('machine_id')
             identity=supervisor.get('original_popen_identity',{})
             admission=object_field(json_object(intent),'background_admission')
@@ -809,7 +983,7 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
                 all(a<=b for a,b in zip(stamps,stamps[1:])),
                 'Saved registrar original launcher/host timestamps differ')
         supervisor_bound=True
-        supervisor_binding={'mode':('original_background_launch_ticket_lease_chain' if allocated_profile_rejected else
+        supervisor_binding={'mode':('original_background_launch_ticket_lease_chain' if background_rejected else
                                     'original_launch_ticket_lease_proof_chain'),
             'launcher_popen_pid':supervisor['pid'],'actual_supervise_pid':host['supervisor_pid'],
             'parent_child_relationship_observed':False,'original_at_utc':[row['at_utc'] for row in (intent,supervisor,host,exited)]}
@@ -888,6 +1062,11 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
             require(registrar.is_relative_to(Path(freeze['state_dir']).resolve()/'profile') and
                     registrar.suffix.casefold()=='.txt',
                     'Saved registrar rejection crossed original prepared saved campaign/profile')
+        if inventory_registrar is not None:
+            require(prepared.get('runtime_manifest')==freeze.get('runtime_manifest') and
+                    prepared['startup']['saved_campaign']['product_inventory']==inventory_registrar['inventory']['path'],
+                    'V2 registrar rejected inventory crossed original prepared/runtime binding')
+            evidence['frozen_V2_registrar_rejection']=inventory_registrar
     def command(key,mode,code):
         row=bundle[key];path=Path(row['path']).resolve()
         check_pin(path,row);evidence[key]=row;value=read_json(path);argv=value.get('argv',[])
@@ -910,6 +1089,14 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
                         type(value.get('pid')) is int and value.get('returncode')==code and
                         started.get('at_utc')==value.get('at_utc') and value.get('completed_at_utc'),
                         'Cache original allocation parent completion differs')
+        elif inventory_registrar is not None:
+            intent_path=Path(bundle[key+'_intent']['path']).resolve()
+            producer_path=Path(bundle[key+'_producer']['path']).resolve()
+            require(intent_path.parent==path.parent and producer_path.parent==path.parent,
+                    'V2 registrar original Root intent/producer crossed execution directory')
+            argv=_prelaunch_root_public_wait(value,original(key+'_intent',intent_path),
+                original(key+'_producer',producer_path),path,freeze['identity_allocation']['machine_id'],
+                mode,freeze['run_id'])
         elif allocated_profile_rejected:
             argv=_profile_replacement_public_completion(value,mode,freeze.get('identity_allocation',{}).get('machine_id'))
         elif readonly_tail_rejected:
@@ -976,6 +1163,7 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
             keeper.get('game_actions') is False and
             parent.get('run_id')==freeze['run_id'] and
             parent.get('keeper_actual_exit_code')==0 and parent.get('keeper_report')==keeper and
+            (inventory_registrar is None or type(parent.get('keeper_actual_exit_code')) is int) and
             closed_lease(keeper,release,freeze['screen_task']),
             'Prelaunch keeper/original screen release differs')
     tasks=[row for row in bus_packet.get('tasks',[]) if row.get('task_id')==freeze['screen_task']]
@@ -1001,7 +1189,7 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
             'business_pass':False,'release_pass':False,'absent_game_controls':absent,
             **({'supervisor_binding':supervisor_binding} if saved_profile_rejected or allocated_profile_rejected else {}),
             **({'native_cleanup_qualified':None,'administrative_resource_admission_only':True}
-               if allocated_profile_rejected else {})}}
+               if background_rejected else {})}}
 
 
 class RecorderPreReadyClosure(TypedDict):

@@ -1,0 +1,11 @@
+# Fixture only. Explicitly read a genuine loaded result; never register an on-start action.
+rrfa_observe_cold_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+    desc = rrfa_observation_decision_desc
+    selection_tooltip = rrfa_observation_decision_tooltip
+    confirm_text = rrfa_observation_decision_confirm
+    is_shown = { is_ai = no this = character:${ACTOR_HISTORY_ID} has_variable = rrfa_mode }
+    is_valid = { is_ai = no this = character:${ACTOR_HISTORY_ID} has_variable = rrfa_mode }
+    effect = { trigger_event = { id = rrfa.22 } }
+    ai_check_interval = 365
+}

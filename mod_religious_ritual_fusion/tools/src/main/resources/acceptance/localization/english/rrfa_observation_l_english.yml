@@ -1,5 +1,5 @@
 l_english:
  ${OBSERVATION_DECISION}:0 "[Acceptance] Read actual fusion state"
- rrfa_observation_decision_desc:0 "Acceptance fixture only. Run after using the real fusion interface. This reads the current result or unchanged rejection state and writes a diagnostic log."
+ rrfa_observation_decision_desc:0 "Acceptance fixture only. For a fresh test, use the real fusion interface first. For a cold test, load the genuine saved result first. This reads the current state and writes a diagnostic log."
  rrfa_observation_decision_tooltip:0 "Acceptance readback only; does not create a fusion, change piety, or advance the date."
  rrfa_observation_decision_confirm:0 "Read actual state"

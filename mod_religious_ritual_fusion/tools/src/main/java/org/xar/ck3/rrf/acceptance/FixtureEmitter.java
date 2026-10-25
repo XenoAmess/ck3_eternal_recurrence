@@ -33,6 +33,8 @@ public final class FixtureEmitter {
     private static final List<String> COMMON = List.of("descriptor.mod", "common/scripted_triggers/rrfa_observation_triggers.txt", "common/script_values/rrfa_observation_values.txt", "events/rrfa_observation_events.txt");
     private static final List<String> FRESH = List.of("common/on_action/rrfa_fresh_startup.txt", "common/scripted_effects/rrfa_seed_effects.txt", "events/rrfa_seed_events.txt",
             "common/decisions/rrfa_observation_decisions.txt", "localization/english/rrfa_observation_l_english.yml", "localization/simp_chinese/rrfa_observation_l_simp_chinese.yml");
+    private static final List<String> COLD = List.of("common/decisions/rrfa_cold_observation_decisions.txt",
+            "localization/english/rrfa_observation_l_english.yml", "localization/simp_chinese/rrfa_observation_l_simp_chinese.yml");
     private static final List<String> TENETS = List.of("tenet_esotericism", "tenet_legalism", "tenet_astrology", "tenet_communal_identity");
     private FixtureEmitter() { }
     public enum BusinessAcceptance { NOT_RUN }
@@ -64,7 +66,7 @@ public final class FixtureEmitter {
         validateCatalog(Json.read(Files.readAllBytes(catalogPath), Catalog.class)); pins.add(pin(catalogPath));
         Path evidence = producer.resolve("resources/acceptance/native-source-evidence.json"); checkedResource(evidence, "/acceptance/native-source-evidence.json"); pins.add(pin(evidence));
         List<String> assets = new ArrayList<>(COMMON);
-        assets.addAll(request.kind() == CaseKind.COLD_RELOAD ? List.of("common/on_action/rrfa_cold_startup.txt") : FRESH);
+        assets.addAll(request.kind() == CaseKind.COLD_RELOAD ? COLD : FRESH);
         Map<String, byte[]> payloads = new LinkedHashMap<>();
         for (String relative : assets) {
             Path template = producer.resolve("resources/acceptance").resolve(relative);
@@ -73,8 +75,8 @@ public final class FixtureEmitter {
                     .replace("${ACTOR_HISTORY_ID}", request.actorHistoryId().value())
                     .replace("${PIETY}", request.setup() instanceof FreshSetup fresh ? Integer.toString(fresh.piety()) : "0")
                     .replace("${EXPECTED_B}", request.mode() == FixtureContracts.Mode.RITE ? "rrfa_source_b_rite" : "rrfa_source_b_faith_rite")
-                    .replace("${OBSERVATION_DECISION}", "rrfa_observe_" + request.kind().wire() + "_decision")
-                    .replace("${OBSERVATION_EVENT}", request.kind() == CaseKind.UI_REJECTION ? "rrfa.30" : request.mode() == FixtureContracts.Mode.RITE ? "rrfa.20" : "rrfa.21");
+                    .replace("${OBSERVATION_DECISION}", request.kind() == CaseKind.COLD_RELOAD ? "rrfa_observe_cold_decision" : "rrfa_observe_" + request.kind().wire() + "_decision")
+                    .replace("${OBSERVATION_EVENT}", request.kind() == CaseKind.COLD_RELOAD ? "rrfa.22" : request.kind() == CaseKind.UI_REJECTION ? "rrfa.30" : request.mode() == FixtureContracts.Mode.RITE ? "rrfa.20" : "rrfa.21");
             if (rendered.contains("${")) throw new IllegalArgumentException("unresolved fixture template token");
             payloads.put(relative, (relative.equals("descriptor.mod") ? rendered : "\ufeff" + rendered).getBytes(StandardCharsets.UTF_8));
         }
