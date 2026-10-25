@@ -15,3 +15,6 @@ R8 原证据只到 query_context。其后测试响应明确为 authored，不冒
 后继 cold-rite 将实机验证自动协调和真实正常退出。这份离线验证不授新的 OS 或产品实机通过。
 
 远端 allocator 的独立来源索引修复已线性合回，随后本机实际完成相关四条原命令：25／13／12／20，共70 tests、0 skip、各原wait0，包含新增 typed helper／完整消费者 strict 与 strict-equality。仅把测试的显式 mypy 缓存位置改回 `nul`，避免额外大缓存；不改生产校验。回执 `public-chain-a01/r8-allocator-remote-a01/VALIDATION.actual.json`，2960 bytes／SHA-256 `734ccb635b99ae1c17a2f01567a947d1a71d4b1e1ccbb52ce0e7b00d8f062872`。前述124受测生产及fixture原字节完全相同，没有重跑或继承其他机器的实际环境事实。
+# R0010 实机后继
+
+机器 `4-8e1c2f1861`，源码 `3836e7db1d2d4bfda5faf2ffdb8b2e1634107ad0`、runtime-a13：自动 typed Quit 已实际完成 query、准备、关闭退出自动保存、重新确认、一次确认及只读退出观察，保留 OS handle 退出0、native0、host0、cleanup完成，keeper0／CAS13805。`normal_close_qualified=true`。它在保留 Root 原阶段超时错误的同时正常退出，公共 run／verify 仍2，不授业务通过。精确原件与边界见[R0010](R0010-2026-10-25.md)。此前“实机待验证”文字保留其当时语义，不再代表最新状态。

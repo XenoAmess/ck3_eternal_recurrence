@@ -1,0 +1,78 @@
+{
+  "schema": "rrf.screenshot-manifest.v1",
+  "review_machine_id": "4-8e1c2f1861",
+  "reviewed_at_utc": "2026-10-25T04:45:07.495524+00:00",
+  "scope": "R0010 cold history only; eight save comparisons and normalclose passed; full caseGAP preserved",
+  "originals_modified": false,
+  "originals_copied": false,
+  "counts": {
+    "images": 3,
+    "store_candidates": 2,
+    "startup_diagnostics": 1
+  },
+  "images": [
+    {
+      "filename": "00-cold-load-diagnostic.png",
+      "path": "C:\\workspace\\rrf-development-20261024\\screenshots\\R0010\\00-cold-load-diagnostic.png",
+      "bytes": 6854871,
+      "sha256": "ae2810e70261c40a72729ddf9cd6cbb3a1fbeee90a46f9cf56bdccf9e4118566",
+      "width": 2560,
+      "height": 1440,
+      "capture_metadata": {
+        "path": "C:\\workspace\\rrf-development-20261024\\screenshots\\R0010\\00-cold-load-diagnostic.png.json",
+        "bytes": 496,
+        "sha256": "bac99f91fd6357cb1118ac6bd63bb687b73ad9396d0e1122f668331b5097bc6e"
+      },
+      "machine_id": "4-8e1c2f1861",
+      "run_id": "4-8e1c2f1861--religious-ritual-fusion--R0010",
+      "source_commit": "3836e7db1d2d4bfda5faf2ffdb8b2e1634107ad0",
+      "capture_utc": "2026-10-25T02:57:35.874206+00:00",
+      "raw_uncropped": true,
+      "store_candidate": false,
+      "visually_reviewed": true,
+      "purpose": "Startup diagnostic only; not store candidate"
+    },
+    {
+      "filename": "01-loaded-production-history.png",
+      "path": "C:\\workspace\\rrf-development-20261024\\screenshots\\R0010\\01-loaded-production-history.png",
+      "bytes": 4943226,
+      "sha256": "d79377ad72ed4da4ab69a687bd94e40e747ced3a26809308195ce613db898229",
+      "width": 2560,
+      "height": 1440,
+      "capture_metadata": {
+        "path": "C:\\workspace\\rrf-development-20261024\\screenshots\\R0010\\01-loaded-production-history.png.json",
+        "bytes": 743,
+        "sha256": "0d826b6a41d2c59c574f44a285088fa15de0f84ca0f4da8a967b726bcf5f956f"
+      },
+      "machine_id": "4-8e1c2f1861",
+      "run_id": "4-8e1c2f1861--religious-ritual-fusion--R0010",
+      "source_commit": "3836e7db1d2d4bfda5faf2ffdb8b2e1634107ad0",
+      "capture_utc": "2026-10-25T03:03:32.625293+00:00",
+      "raw_uncropped": true,
+      "store_candidate": true,
+      "visually_reviewed": true,
+      "purpose": "Cold loaded actual production history detail before activating history"
+    },
+    {
+      "filename": "02-loaded-history-toast.png",
+      "path": "C:\\workspace\\rrf-development-20261024\\screenshots\\R0010\\02-loaded-history-toast.png",
+      "bytes": 5189060,
+      "sha256": "f14ae479e4d51d3220454fad175076bad7cec519aedc5b9c23c828f345b19eeb",
+      "width": 2560,
+      "height": 1440,
+      "capture_metadata": {
+        "path": "C:\\workspace\\rrf-development-20261024\\screenshots\\R0010\\02-loaded-history-toast.png.json",
+        "bytes": 739,
+        "sha256": "a937f6c0fc991a8df21e2a31399e8c918c83224b93860cfe7f58e9f7dce0754e"
+      },
+      "machine_id": "4-8e1c2f1861",
+      "run_id": "4-8e1c2f1861--religious-ritual-fusion--R0010",
+      "source_commit": "3836e7db1d2d4bfda5faf2ffdb8b2e1634107ad0",
+      "capture_utc": "2026-10-25T03:05:25.637846+00:00",
+      "raw_uncropped": true,
+      "store_candidate": true,
+      "visually_reviewed": true,
+      "purpose": "Immediate actual history result after one production history activation"
+    }
+  ]
+}
