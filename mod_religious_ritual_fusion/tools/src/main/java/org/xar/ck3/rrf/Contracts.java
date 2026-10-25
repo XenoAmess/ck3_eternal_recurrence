@@ -39,7 +39,7 @@ public final class Contracts {
     }
     public record Product(int schemaVersion, String productId, String version, List<String> runtimeFiles) {
         public Product {
-            schema(schemaVersion); identifier(productId); if (version == null || !version.matches("[0-9]+\\.[0-9]+\\.[0-9]+")) throw new IllegalArgumentException("invalid version");
+            schema(schemaVersion); identifier(productId); releaseVersion(version);
             runtimeFiles = List.copyOf(runtimeFiles); runtimeFiles.forEach(Contracts::safeRuntimePath); unique(runtimeFiles);
             if (!runtimeFiles.contains("descriptor.mod")) throw new IllegalArgumentException("descriptor missing from product");
         }
@@ -52,11 +52,14 @@ public final class Contracts {
     }
     public record Manifest(int schemaVersion, String productId, String version, String revision, Provenance provenance, List<FileEntry> files) {
         public Manifest {
-            schema(schemaVersion); identifier(productId); if (version == null || !version.matches("[0-9]+\\.[0-9]+\\.[0-9]+")) throw new IllegalArgumentException("invalid manifest version");
+            schema(schemaVersion); identifier(productId); releaseVersion(version);
             if (revision == null || !revision.matches("[a-f0-9]{40}")) throw new IllegalArgumentException("full revision required"); if (provenance == null) throw new IllegalArgumentException("provenance required"); files = List.copyOf(files); unique(files.stream().map(FileEntry::path).toList());
         }
     }
     public static void schema(int version) { if (version != 1) throw new IllegalArgumentException("unsupported schemaVersion"); }
+    public static void releaseVersion(String value) {
+        if (value == null || !value.matches("[0-9]+\\.[0-9]+\\.[0-9]+(?:-[a-z0-9]+(?:\\.[a-z0-9]+)*)?")) throw new IllegalArgumentException("invalid release version token");
+    }
     public static void identifier(String value) { if (value == null || !value.matches("[A-Za-z_][A-Za-z_0-9]*")) throw new IllegalArgumentException("invalid identifier: " + value); }
     public static void digest(String value) { if (value == null || !value.matches("[a-f0-9]{64}")) throw new IllegalArgumentException("invalid SHA-256"); }
     public static void unique(List<String> values) { if (Set.copyOf(values).size() != values.size()) throw new IllegalArgumentException("duplicate entries"); }

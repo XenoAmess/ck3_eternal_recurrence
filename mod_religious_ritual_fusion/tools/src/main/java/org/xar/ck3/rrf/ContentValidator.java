@@ -16,11 +16,12 @@ import org.xar.ck3.rrf.Contracts.Catalog;
 import org.xar.ck3.rrf.Contracts.GeneratedFiles;
 import org.xar.ck3.rrf.Contracts.Product;
 
-/** Actual source/staging consumer: validates bytes, producer closure, references and bilingual localization. */
+/** Actual source/staging consumer: validates bytes, producer closure, references and declared localization formats. */
 public final class ContentValidator {
     private static final Pattern REFERENCE = Pattern.compile("\\brrf_[A-Za-z0-9_]+_(?:effect|trigger|value)\\b");
     private static final Pattern SCRIPTED_GUI = Pattern.compile("GetScriptedGui\\(\\s*'(?<name>rrf_[A-Za-z0-9_]+)'\\s*\\)");
-    private static final Pattern LOCALIZATION = Pattern.compile("^ ([A-Za-z_][A-Za-z0-9_]*):[0-9]* \\\"(?:[^\\\"\\\\]|\\\\.)*\\\"\\s*$");
+    private static final Pattern LOCALIZATION = Pattern.compile("^ ([A-Za-z_][A-Za-z0-9_]*):[0-9]* \\\"((?:[^\\\"\\\\]|\\\\.)*)\\\"\\s*$");
+    private static final Pattern PROTECTED_TOKEN = Pattern.compile("\\[[^\\[\\]\\r\\n]+\\]|\\$[^$\\r\\n]+\\$|@[A-Za-z0-9_.:/-]+!|#[A-Za-z0-9_]+|#!|§.|\\\\.");
     private static final Pattern LOC_REFERENCE = Pattern.compile("(?:\\$((?:rrf_|RRF_)[A-Za-z0-9_]+)\\$|\\b(?:text|desc|tooltip|title|confirm_text)\\s*=\\s*\\\"?((?:rrf_|RRF_)[A-Za-z0-9_]+)\\\"?)");
     private ContentValidator() { }
     public record Validation(String version, int runtimeFiles, int definitions, int blockedDefinitions) { }
@@ -74,15 +75,23 @@ public final class ContentValidator {
             Matcher gui = SCRIPTED_GUI.matcher(document.getValue());
             while (gui.find()) if (!guiDefinitions.contains(gui.group("name"))) throw new IllegalArgumentException("unresolved scripted GUI: " + gui.group("name"));
         }
-        Set<String> english = localization(directory, product.files(), "english"); Set<String> chinese = localization(directory, product.files(), "simp_chinese");
-        if (!english.equals(chinese)) throw new IllegalArgumentException("localization keys differ between languages");
+        Map<String, String> english = localization(directory, product.files(), "english");
+        Set<String> languages = new LinkedHashSet<>(List.of("english", "simp_chinese"));
+        for (String file : product.files()) if (file.startsWith("localization/") && file.endsWith(".yml")) languages.add(file.split("/")[1]);
+        for (String language : languages) {
+            Map<String, String> localized = localization(directory, product.files(), language);
+            if (!english.keySet().equals(localized.keySet())) throw new IllegalArgumentException("localization keys differ: " + language);
+            for (String key : english.keySet()) if (!protectedTokens(english.get(key)).equals(protectedTokens(localized.get(key)))) throw new IllegalArgumentException("localization protected tokens differ: " + language + ": " + key);
+        }
         for (Map.Entry<String, String> document : documents.entrySet()) {
             Matcher loc = LOC_REFERENCE.matcher(document.getValue());
-            while (loc.find()) { String key = loc.group(1) == null ? loc.group(2) : loc.group(1); if (!english.contains(key)) throw new IllegalArgumentException("unresolved localization in " + document.getKey() + ": " + key); }
+            while (loc.find()) { String key = loc.group(1) == null ? loc.group(2) : loc.group(1); if (!english.containsKey(key)) throw new IllegalArgumentException("unresolved localization in " + document.getKey() + ": " + key); }
         }
         String descriptor = Files.readString(directory.resolve("descriptor.mod"), StandardCharsets.UTF_8);
         String version = Clausewitz.parse(descriptor).atom("version", "").replace("\"", "");
         if (!version.equals(product.product().version())) throw new IllegalArgumentException("descriptor version differs from product");
+        String picture = Clausewitz.parse(descriptor).atom("picture", "").replace("\"", "");
+        if (!picture.isEmpty() && !product.files().contains(picture)) throw new IllegalArgumentException("descriptor picture missing from allowlist");
     }
     public static Map<String, Path> inventory(Path root, boolean all) throws IOException {
         Map<String, Path> result = new LinkedHashMap<>();
@@ -104,9 +113,15 @@ public final class ContentValidator {
             if (new String(bytes, StandardCharsets.UTF_8).contains("remote_file_id")) throw new IllegalArgumentException("internal Workshop remote ID");
         }
         if (bytes.length == 0) throw new IllegalArgumentException("empty runtime file: " + path);
+        if (path.equals("thumbnail.png") && (bytes.length < 8 || bytes[0] != (byte) 0x89 || bytes[1] != 'P' || bytes[2] != 'N' || bytes[3] != 'G' || bytes[4] != 13 || bytes[5] != 10 || bytes[6] != 26 || bytes[7] != 10)) throw new IllegalArgumentException("invalid PNG thumbnail");
     }
-    private static Set<String> localization(Path directory, List<String> files, String language) throws IOException {
-        Set<String> result = new LinkedHashSet<>();
+    private static Map<String, Long> protectedTokens(String value) {
+        Map<String, Long> result = new LinkedHashMap<>(); Matcher tokens = PROTECTED_TOKEN.matcher(value);
+        while (tokens.find()) result.merge(tokens.group(), 1L, Long::sum);
+        return result;
+    }
+    private static Map<String, String> localization(Path directory, List<String> files, String language) throws IOException {
+        Map<String, String> result = new LinkedHashMap<>();
         for (String file : files) {
             if (!file.startsWith("localization/" + language + "/")) continue;
             List<String> lines = Files.readAllLines(directory.resolve(file), StandardCharsets.UTF_8);
@@ -114,7 +129,7 @@ public final class ContentValidator {
             for (String line : lines.subList(1, lines.size())) {
                 if (line.isBlank() || line.stripLeading().startsWith("#")) continue;
                 Matcher matcher = LOCALIZATION.matcher(line);
-                if (!matcher.matches() || !result.add(matcher.group(1))) throw new IllegalArgumentException("invalid or duplicate localization: " + file + ": " + line);
+                if (!matcher.matches() || result.putIfAbsent(matcher.group(1), matcher.group(2)) != null) throw new IllegalArgumentException("invalid or duplicate localization: " + file + ": " + line);
             }
         }
         if (result.isEmpty()) throw new IllegalArgumentException("missing localization: " + language);

@@ -2,7 +2,7 @@
 
 目录采用仓库独立模组的 `mod_<英文小写下划线>` 约定：`mod_religious_ritual_fusion`。
 
-当前版本为 **0.1.0 开发候选**。用户已于 2026-10-24 授权编写编码／测试方案并开始实现。源代码包含同 Faith 礼仪融合、不同 Faith 宗教融合的目标选择、独立对照窗口、核心／教义选择、共享提交与来源记录；实际资格以当次验证记录为准，尚不能视为实机业务通过或已发布产品。
+当前版本为 **0.1.0 Alpha**，用户已于 2026-10-25 授权发布测试版。源代码包含同 Faith 礼仪融合、不同 Faith 宗教融合的目标选择、独立对照窗口、核心／教义选择、共享提交与来源记录。R0008 已观察到礼仪实际创建、扣费及保存，R0010 已冷加载并对比持久化对象；两场的完整公共验收仍为 GAP，宗教融合及完整矩阵尚未实机通过。完整边界见 [实机结果](docs/acceptance/live-results-2026-10-25.md) 和 [发布准备](docs/release-preparation-0.1.0-alpha-2026-10-25.md)。
 
 - [可行性分析报告](docs/feasibility-2026-10-24.md)
 - [编码方案](docs/implementation-plan-2026-10-24.md)
@@ -22,7 +22,7 @@ java -jar mod_religious_ritual_fusion/tools/target/quarkus-app/quarkus-run.jar v
 
 `tools/product.json` 与生成文件清单共同定义正式载荷；只用 Java 构建器产生的 staging 进行加载或后续发布。`catalog/generated-catalog.json` 保存本次原版目录的来源 SHA 与可投影规则；生成内容只改工具再生成。原版更新需要重新采集并审查差异，运行模组不读取本地原版路径。
 
-默认礼仪融合 500 虔诚、宗教融合 1000 虔诚，成功后十年冷却。所选核心限三项且双方各有独有贡献；未选旧核心可仍作为 permitted 存在。宗教融合产生单一 Religion 归属的新 Faith；不提供引擎双父 Religion。当前语言为简中／英文，AI 与多人资格尚未验收，尚无 Workshop ID。
+默认礼仪融合 500 虔诚、宗教融合 1000 虔诚，成功后十年冷却。所选核心限三项且双方各有独有贡献；未选旧核心可仍作为 permitted 存在。宗教融合产生单一 Religion 归属的新 Faith；不提供引擎双父 Religion。附带游戏九种语言的本地化文件，七种新增翻译已做格式和键检查，尚未逐语人工审校或实机验收。当前只向玩家开放，AI 与多人资格尚未验收。正式上传仅使用 Java 构建器生成的 75 文件 staging，Workshop 发布事实另记永久 changelog。
 
 ## Tooltip 预演的 L1 实机回归
 
