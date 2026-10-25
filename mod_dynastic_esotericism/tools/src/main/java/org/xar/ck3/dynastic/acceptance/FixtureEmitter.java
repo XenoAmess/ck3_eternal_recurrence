@@ -19,6 +19,7 @@ import java.util.HexFormat;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /** Emits an external CK3 fixture; the shared acceptance entry imports its frozen manifest. */
@@ -61,6 +62,54 @@ public final class FixtureEmitter {
     private static final List<String> INITIAL_REFORM_MARKERS = List.of(
             "DESIRF: FIXTURE_ARMED initial_reform",
             "DESIRF: QUALIFICATION_INPUT_APPLIED initial_reform");
+    private static final List<String> NATIVE_BINDING_TRANSFER_ASSETS = java.util.stream.Stream.concat(
+            SECT_ASSETS.stream(), java.util.stream.Stream.of(
+                    "common/scripted_effects/des_initial_reform_acceptance_effects.txt",
+                    "common/decisions/des_transfer_acceptance_decisions.txt",
+                    "localization/english/des_transfer_acceptance_l_english.yml",
+                    "localization/simp_chinese/des_transfer_acceptance_l_simp_chinese.yml")).toList();
+    private static final List<String> NATIVE_BINDING_TRANSFER_MARKERS = List.of(
+            "DESPAF: FIXTURE_ARMED sect_presets",
+            "DESPAF: INPUT APPLIED procreation_adopt",
+            "DESPAF: INPUT APPLIED procreation_leave",
+            "DESTRF: INPUT APPLIED qualification_and_stock_crime");
+    private static final List<String> EMPIRE_HEAD_ASSETS = List.of(
+            "descriptor.mod",
+            "common/on_action/des_empire_heads_acceptance_on_actions.txt",
+            "common/decisions/des_empire_heads_acceptance_decisions.txt",
+            "events/des_empire_heads_acceptance_events.txt",
+            "localization/english/des_empire_heads_acceptance_l_english.yml",
+            "localization/simp_chinese/des_empire_heads_acceptance_l_simp_chinese.yml");
+    private static final List<String> EMPIRE_HEAD_PASSIVE_ASSETS = List.of(
+            "descriptor.mod",
+            "common/decisions/des_empire_heads_readback_decisions.txt",
+            "localization/english/des_empire_heads_acceptance_l_english.yml",
+            "localization/simp_chinese/des_empire_heads_acceptance_l_simp_chinese.yml");
+    private static final List<String> EMPIRE_HEAD_INPUT_MARKERS = List.of(
+            "DES_EHF: INPUT APPLIED adopted",
+            "DES_EHF: INPUT APPLIED claim_preparation",
+            "DES_EHF: INPUT APPLIED heir_preparation",
+            "DES_EHF: OBSERVATION heir_ready",
+            "DES_EHF: INPUT APPLIED death_staged",
+            "DES_EHF: INPUT APPLIED predecessor_death",
+            "DES_EHF: OBSERVATION successor_current");
+
+    public enum EmpireHeadPreset {
+        PROCREATION("des_procreation_faith", "des_procreation_rite", "e_des_procreation_papacy"),
+        VIVHITE("des_vivhite_faith", "des_vivhite_rite", "e_des_vivhite_papacy");
+        private final String faith;
+        private final String rite;
+        private final String title;
+        EmpireHeadPreset(String faith, String rite, String title) {
+            this.faith = faith;
+            this.rite = rite;
+            this.title = title;
+        }
+        public String faith() { return faith; }
+        public String rite() { return rite; }
+        public String title() { return title; }
+    }
+
     private static final List<String> MARKERS = List.of(
             "DESAF: TEST PASS fixture_ready",
             "DESAF: TEST PASS binding_and_members",
@@ -92,10 +141,32 @@ public final class FixtureEmitter {
 
     public enum CaseKind {
         CORE("core"), COLD_RELOAD("cold_reload"), OLD_SAVE_BOOTSTRAP("old_save_bootstrap"),
-        PRE_PRODUCT_SEED("pre_product_seed"), SECT_PRESETS("sect_presets"), INITIAL_REFORM("initial_reform");
+        PRE_PRODUCT_SEED("pre_product_seed"), SECT_PRESETS("sect_presets"), INITIAL_REFORM("initial_reform"),
+        EMPIRE_HEADS_PROCREATION("empire_heads_procreation"),
+        EMPIRE_HEADS_VIVHITE("empire_heads_vivhite"),
+        EMPIRE_HEADS_PROCREATION_COLD("empire_heads_procreation_cold"),
+        EMPIRE_HEADS_VIVHITE_COLD("empire_heads_vivhite_cold"),
+        EMPIRE_HEADS_PROCREATION_RESTORE("empire_heads_procreation_restore"),
+        EMPIRE_HEADS_VIVHITE_RESTORE("empire_heads_vivhite_restore"),
+        NATIVE_BINDING_TRANSFER("native_binding_transfer");
         private final String value;
         CaseKind(String value) { this.value = value; }
         @JsonValue public String wireValue() { return value; }
+        public Optional<EmpireHeadPreset> empireHeadPreset() {
+            return switch (this) {
+                case EMPIRE_HEADS_PROCREATION, EMPIRE_HEADS_PROCREATION_COLD, EMPIRE_HEADS_PROCREATION_RESTORE ->
+                        Optional.of(EmpireHeadPreset.PROCREATION);
+                case EMPIRE_HEADS_VIVHITE, EMPIRE_HEADS_VIVHITE_COLD, EMPIRE_HEADS_VIVHITE_RESTORE ->
+                        Optional.of(EmpireHeadPreset.VIVHITE);
+                default -> Optional.empty();
+            };
+        }
+        public boolean empireHeadFresh() {
+            return this == EMPIRE_HEADS_PROCREATION || this == EMPIRE_HEADS_VIVHITE;
+        }
+        public boolean empireHeadRestore() {
+            return this == EMPIRE_HEADS_PROCREATION_RESTORE || this == EMPIRE_HEADS_VIVHITE_RESTORE;
+        }
         static CaseKind parse(String value) {
             for (CaseKind kind : values()) if (kind.value.equals(value)) return kind;
             throw new IllegalArgumentException("unknown fixture case");
@@ -169,6 +240,8 @@ public final class FixtureEmitter {
         List<String> assets = kind == CaseKind.PRE_PRODUCT_SEED ? List.of("descriptor.mod", SEED_START)
                 : kind == CaseKind.SECT_PRESETS ? SECT_ASSETS
                 : kind == CaseKind.INITIAL_REFORM ? INITIAL_REFORM_ASSETS
+                : kind == CaseKind.NATIVE_BINDING_TRANSFER ? NATIVE_BINDING_TRANSFER_ASSETS
+                : kind.empireHeadPreset().isPresent() ? (kind.empireHeadFresh() ? EMPIRE_HEAD_ASSETS : EMPIRE_HEAD_PASSIVE_ASSETS)
                 : kind == CaseKind.CORE ? ASSETS : ASSETS.stream()
                         .filter(name -> !name.equals("common/on_action/des_acceptance_on_actions.txt")).toList();
         for (String relative : assets) {
@@ -180,9 +253,10 @@ public final class FixtureEmitter {
                     throw new IOException("packaged fixture resource differs from current source: " + relative);
                 }
             }
-            payloads.put(relative, relative.equals("descriptor.mod") ? bytes.clone() : withBom(bytes));
+            byte[] payload = renderEmpireHeadAsset(bytes, kind);
+            payloads.put(relative, relative.equals("descriptor.mod") ? payload : withBom(payload));
         }
-        if (kind == CaseKind.INITIAL_REFORM) {
+        if (kind == CaseKind.INITIAL_REFORM || kind == CaseKind.NATIVE_BINDING_TRANSFER) {
             // Exact provenance for the four copied qualification definitions and
             // the disclosed stock resource inputs. These references are not mounted.
             sources.add(pin(source.resolve("resources/acceptance-fixture/common/scripted_effects/des_acceptance_effects.txt")));
@@ -200,16 +274,47 @@ public final class FixtureEmitter {
             case CORE -> MARKERS;
             case SECT_PRESETS -> SECT_MARKERS;
             case INITIAL_REFORM -> INITIAL_REFORM_MARKERS;
+            case NATIVE_BINDING_TRANSFER -> NATIVE_BINDING_TRANSFER_MARKERS;
+            case EMPIRE_HEADS_PROCREATION, EMPIRE_HEADS_VIVHITE,
+                    EMPIRE_HEADS_PROCREATION_COLD, EMPIRE_HEADS_VIVHITE_COLD,
+                    EMPIRE_HEADS_PROCREATION_RESTORE, EMPIRE_HEADS_VIVHITE_RESTORE -> empireHeadMarkers(kind);
             case COLD_RELOAD -> List.of("DESAF: TEST PASS persisted_state_readback");
             case OLD_SAVE_BOOTSTRAP -> List.of("DESAF: TEST PASS legacy_uninitialized_observed", "DESAF: TEST PASS legacy_bootstrap");
             case PRE_PRODUCT_SEED -> List.of("DESAF: TEST PASS legacy_seed_ready");
         };
         FixtureManifest payload = new FixtureManifest("ck3-mod-acceptance-prebuilt-fixture-v1", PRODUCT, kind.wireValue(),
                 machineId, Instant.now().toString(), destination.toString(), sources, files,
-                new FixtureReceipt(markers, Map.of(), kind != CaseKind.PRE_PRODUCT_SEED));
+                new FixtureReceipt(markers, Map.of(), kind != CaseKind.PRE_PRODUCT_SEED
+                        && (kind.empireHeadPreset().isEmpty() || kind.empireHeadFresh())));
         Files.writeString(manifest, JSON.writerWithDefaultPrettyPrinter().writeValueAsString(payload) + "\n",
                 StandardCharsets.UTF_8, StandardOpenOption.CREATE_NEW);
         return new Emission(destination, manifest, payload);
+    }
+
+    private static byte[] renderEmpireHeadAsset(byte[] source, CaseKind kind) {
+        Optional<EmpireHeadPreset> selected = kind.empireHeadPreset();
+        if (selected.isEmpty()) return source.clone();
+        EmpireHeadPreset preset = selected.orElseThrow();
+        String rendered = new String(source, StandardCharsets.UTF_8)
+                .replace("@DES_EHF_FAITH@", preset.faith())
+                .replace("@DES_EHF_RITE@", preset.rite())
+                .replace("@DES_EHF_TITLE@", preset.title())
+                .replace("@DES_EHF_CASE@", kind.wireValue());
+        if (rendered.contains("@DES_EHF_")) {
+            throw new IllegalArgumentException("unresolved empire head fixture token");
+        }
+        return rendered.getBytes(StandardCharsets.UTF_8);
+    }
+
+    private static List<String> empireHeadMarkers(CaseKind kind) {
+        if (kind.empireHeadFresh()) {
+            return java.util.stream.Stream.concat(
+                    java.util.stream.Stream.of("DES_EHF: FIXTURE_ARMED " + kind.wireValue()),
+                    EMPIRE_HEAD_INPUT_MARKERS.stream()).toList();
+        }
+        return kind.empireHeadRestore()
+                ? List.of("DES_EHF: OBSERVATION holderless_qualification", "DES_EHF: OBSERVATION current_head")
+                : List.of("DES_EHF: OBSERVATION current_head");
     }
 
     private static byte[] withBom(byte[] source) {

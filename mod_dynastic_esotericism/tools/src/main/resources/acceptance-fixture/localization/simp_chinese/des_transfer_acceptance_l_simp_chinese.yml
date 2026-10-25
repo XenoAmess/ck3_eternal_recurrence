@@ -1,0 +1,5 @@
+﻿l_simp_chinese:
+ des_transfer_prepare_decision:0 "[测试] 准备原生绑定转移输入"
+ des_transfer_prepare_decision_desc:0 "真实采用P且目标离开后的一次公开输入：保留全部旧绑定对象，添加原版谋杀未遂罪行及资源与空槽神学资格。不会指定礼仪、宗族、家族、产品状态、领袖或原版次数旗标。仍须原生完整Can与独立T0证据。"
+ des_transfer_prepare_decision_tooltip:0 "[测试] 准备原生绑定转移输入"
+ des_transfer_prepare_decision_confirm:0 "[测试] 准备原生绑定转移输入"

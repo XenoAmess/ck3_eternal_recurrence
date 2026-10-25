@@ -1,0 +1,29 @@
+﻿# Independent native-transfer input; does not create a Rite or touch product state.
+# Existing P ordinary adoption/leave precede this input. All setup is before T0.
+des_transfer_prepare_decision = {
+ picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+ is_shown = { is_ai = no has_character_flag = des_preset_fixture_p_left NOT = { has_character_flag = des_transfer_fixture_input_applied } }
+ is_valid = { is_ai = no is_alive = yes this = var:des_preset_fixture_ref_actor has_character_flag = des_preset_fixture_armed has_character_flag = des_preset_fixture_p_left NOT = { has_character_flag = des_transfer_fixture_input_applied } faith = faith:des_procreation_faith rite = rite:des_procreation_rite is_dynast = yes dynasty.dynast = this is_house_head = yes house.house_head = this house.house_dynasty = dynasty rite.var:des_bound_dynasty = dynasty rite.var:des_join_house = house dynasty.var:des_bound_rite = rite exists = var:des_preset_fixture_ref_target var:des_preset_fixture_p2_input_date <= { value = current_date subtract = 1 } var:des_preset_fixture_ref_target = { is_alive = yes dynasty = root.dynasty NOT = { rite = root.rite } var:des_apostate_rite = root.rite has_trait = des_apostate } }
+ effect = { hidden_effect = {
+  if = { limit = { is_ai = no is_alive = yes this = var:des_preset_fixture_ref_actor has_character_flag = des_preset_fixture_armed has_character_flag = des_preset_fixture_p_left NOT = { has_character_flag = des_transfer_fixture_input_applied } faith = faith:des_procreation_faith rite = rite:des_procreation_rite is_dynast = yes dynasty.dynast = this is_house_head = yes house.house_head = this house.house_dynasty = dynasty rite.var:des_bound_dynasty = dynasty rite.var:des_join_house = house dynasty.var:des_bound_rite = rite exists = var:des_preset_fixture_ref_target var:des_preset_fixture_p2_input_date <= { value = current_date subtract = 1 } var:des_preset_fixture_ref_target = { is_alive = yes dynasty = root.dynasty NOT = { rite = root.rite } var:des_apostate_rite = root.rite has_trait = des_apostate } }
+   add_character_flag = des_transfer_fixture_input_applied
+   set_variable = { name = des_transfer_fixture_input_actor value = this }
+   set_variable = { name = des_transfer_fixture_input_target value = var:des_preset_fixture_ref_target }
+   set_variable = { name = des_transfer_fixture_input_date value = current_date }
+   set_variable = { name = des_transfer_fixture_old_rite value = rite }
+   set_variable = { name = des_transfer_fixture_old_dynasty value = dynasty }
+   set_variable = { name = des_transfer_fixture_old_house value = house }
+   # Same stock independent crime as the original core fixture. Never add DES opinion or crime state.
+   add_opinion = { target = var:des_preset_fixture_ref_target modifier = attempted_murder_me_crime }
+   add_piety = 100000
+   change_spiritual_fulfillment = { value = 100 }
+   if = { limit = { has_perk = prophet_perk } remove_perk = prophet_perk }
+   # Reuse the four source-pinned stock qualification helpers unchanged, exactly once.
+   des_initial_reform_acceptance_prepare_original_rite_input_effect = yes
+   des_initial_reform_acceptance_read_original_rite_input_effect = yes
+   debug_log = "DESTRF: INPUT APPLIED qualification_and_stock_crime"
+  }
+  else = { debug_log = "DESTRF: NOT_READY qualification_and_stock_crime" }
+ } }
+ ai_check_interval = 0
+}

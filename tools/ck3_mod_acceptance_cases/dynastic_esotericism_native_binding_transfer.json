@@ -1,0 +1,158 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "dynastic-esotericism",
+  "case_id": "native_binding_transfer",
+  "acceptance_scope": "actual_native_created_rite_transfers_real_old_preset_dynasty_binding",
+  "fixture_source": {
+    "kind": "prebuilt_manifest"
+  },
+  "maximum_natural_days": 40,
+  "allow_actor_change": false,
+  "actor_transition_days": [],
+  "failure_prefixes": [
+    "DESPAF:",
+    "DESIRF:",
+    "DESTRF:"
+  ],
+  "gui_phases": [
+    {
+      "id": "actual-old-P-binding-and-source-preparation",
+      "when_markers": [
+        "DESPAF: FIXTURE_ARMED sect_presets"
+      ],
+      "requirements": [
+        "actual_new_run_current_actor_and_original_primary_title_pinned",
+        "actual_original_unused_create_once_flag_preserved_without_clearing",
+        "actual_P_is_selected_Faith_main_Rite_before_any_input",
+        "actual_P_stock_adopt_root_before_two_real_controls_once",
+        "actual_P_adoption_plus1_native_and_independent_Save",
+        "actual_P_to_D_and_H_and_D_to_P_bidirectional_binding",
+        "actual_actor_is_old_D_dynast_and_old_H_house_head",
+        "actual_P_complete_living_member_census_pinned",
+        "actual_target_stock_leave_P_once_and_exact_plus1_native_Save",
+        "actual_old_P_observer_target_product_minus100_opinion_source",
+        "actual_old_P_observer_target_three_product_crime_sources",
+        "actual_transfer_prepare_once_stock_crime_resources_and_original_empty_slot_qualification_inputs",
+        "actual_stock_attempted_murder_me_crime_source_present_independently",
+        "actual_native_original_creation_eligibility_read_without_fixture_permission_credit"
+      ],
+      "operator_sequence": [
+        "pin_new_run_B0_native_Save_actor_title_original_Faith_Rite_D_H_and_original_once_flags",
+        "des_preset_procreation_adopt_decision_once_then_exactly1_day_native_Save_and_real_P_D_H_census",
+        "des_preset_procreation_leave_decision_once_then_exactly1_day_native_Save_and_old_product_source_proof",
+        "des_transfer_prepare_decision_once_disclose_stock_independent_crime_resource_and_empty_slot_inputs",
+        "retain_all_preparation_before_the_native_transfer_T0_no_product_capture_sync_or_head_setter"
+      ]
+    },
+    {
+      "id": "actual-native-B-creation-and-same-day-transfer",
+      "when_markers": [
+        "DESTRF: INPUT APPLIED qualification_and_stock_crime"
+      ],
+      "requirements": [
+        "actual_native_open_create_draft_bound_to_current_P_source_id",
+        "actual_draft_preview_kind_create_rite_same_Faith_not_create_faith",
+        "actual_five_names_and_Dynastic_selected_other_tenets_doctrines_preserved",
+        "actual_fresh_full_native_Can_complete_costs_and_preview_identity",
+        "actual_T0_Save_after_all_setup_before_confirm_same_native_date",
+        "actual_T0_actor_primary_title_old_P_Faith_D_H_heads_and_each_full_CoA_pinned",
+        "actual_T0_product_pair_and_independent_stock_crime_sources_pinned",
+        "actual_T0_complete_Dynasty_and_House_ID_inventories",
+        "actual_T0_all_character_ID_inventory_including_dead",
+        "actual_one_prepare_and_confirm_request_no_UNKNOWN_replay",
+        "actual_current_event_instance_options_handled_and_original_completion_verified",
+        "actual_Tpost_D0_same_created_date_native_and_independent_Save",
+        "actual_Tpost_minus_T0_Dynasty_ID_set_empty",
+        "actual_Tpost_minus_T0_House_ID_set_empty",
+        "actual_Tpost_minus_T0_all_character_ID_set_empty_including_dead",
+        "actual_B_same_Faith_new_Rite_bound_to_exact_old_D_H",
+        "actual_D_backlink_is_B_and_mode_native_dynast_reuse",
+        "actual_B_native_source_actor_D_H_was_dynast_match_T0",
+        "actual_B_created_claim_date_attempted_succeeded_and_pending_absent",
+        "actual_same_actor_primary_title_dynast_and_house_head",
+        "actual_D_and_H_names_equal_actual_B_display_name",
+        "actual_D_CoA_object_and_complete_design_equal_T0",
+        "actual_H_CoA_own_field_presence_object_and_complete_design_equal_T0",
+        "actual_old_P_complete_doctrines_None_present_Dynastic_absent",
+        "actual_old_P_bound_D_H_mode_and_ordinary_deferred_admission_absent",
+        "actual_old_P_global_bound_and_ordinary_lists_exclude_P",
+        "actual_old_P_transfer_to_B_and_transfer_date_equal_creation",
+        "actual_old_P_all_product_pair_opinion_trait_and_crime_sources_cleared",
+        "actual_independent_stock_attempted_murder_source_preserved",
+        "actual_old_P_members_and_never_B_adopters_not_false_B_apostates",
+        "actual_exact_creation_plus1_native_Save_complete_member_and_old_P_binding_readback",
+        "actual_exact_creation_plus2_native_Save_same_identity_CoA_consumed_claim_and_old_P_None"
+      ],
+      "operator_sequence": [
+        "normal_native_open_create_draft_from_P_set_five_names_and_only_Dynastic_option_read_full_preview",
+        "save_T0_with_full_inventories_then_refresh_same_draft_Can_quote_revision_preview_identity",
+        "prepare_confirmation_once_confirm_once_expected_create_rite_collect_only_original_pending_and_verify_completed",
+        "query_actual_event_instance_with_required_id_choose_reviewed_real_option_then_event_free_D0_native_Save_Tpost",
+        "compare_complete_T0_Tpost_D_H_all_character_IDs_and_each_CoA_and_old_product_vs_stock_crime_sources",
+        "advance_one_day_at_a_time_to_exact_creation_plus1_and_plus2_native_Save_no_fixed_extra_advance"
+      ]
+    },
+    {
+      "id": "actual-created-plus31-maintenance-stability",
+      "when_markers": [
+        "DESTRF: INPUT APPLIED qualification_and_stock_crime"
+      ],
+      "requirements": [
+        "actual_original_creation_date_pinned_and_exact_plus31_native_Save",
+        "actual_normal_30_day_maintenance_cycle_crossed_without_manual_product_effect",
+        "actual_old_P_still_None_with_no_binding_or_recreated_D_H",
+        "actual_D_backlink_still_B_and_B_same_D_H",
+        "actual_same_D_and_H_each_CoA_full_design_no_reroll",
+        "actual_old_product_pair_opinion_trait_and_crime_sources_still_absent",
+        "actual_independent_stock_attempted_murder_source_still_preserved",
+        "actual_old_P_and_never_B_member_negative_cases_remain_source_correct",
+        "actual_source_claim_consumed_once_and_not_replayed_by_maintenance",
+        "actual_normal_shared_close_and_distinct_evidence_no_core_preset_or_R19_relabeling"
+      ],
+      "operator_sequence": [
+        "refresh_actual_date_after_phase_then_advance_only_to_original_created_date_plus31_with_real_event_boundaries",
+        "record_actual_calendar_and_normal_maintenance_queue_recurrence_evidence_when_available_no_manual_des_maintenance_call",
+        "native_and_independent_Save_compare_selected_P_B_D_H_sources_names_CoA_and_full_member_sets",
+        "shared_CaseClient_normal_close_preserving_actual_result_no_old_request_reuse"
+      ]
+    }
+  ],
+  "source_contracts": [
+    "mod_dynastic_esotericism/docs/requirements.md",
+    "mod_dynastic_esotericism/docs/test-plan.md",
+    "mod_dynastic_esotericism/docs/2026-10-26-native-dynast-reuse.md",
+    "mod_dynastic_esotericism/common/on_action/des_on_actions.txt",
+    "mod_dynastic_esotericism/common/scripted_effects/des_binding_effects.txt",
+    "mod_dynastic_esotericism/common/scripted_effects/des_crime_effects.txt",
+    "mod_dynastic_esotericism/common/scripted_effects/des_identity_effects.txt",
+    "mod_dynastic_esotericism/common/scripted_effects/des_maintenance_effects.txt",
+    "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/acceptance/FixtureEmitter.java",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/on_action/des_preset_acceptance_on_actions.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_preset_acceptance_decisions.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/scripted_effects/des_initial_reform_acceptance_effects.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_transfer_acceptance_decisions.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/english/des_transfer_acceptance_l_english.yml",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/simp_chinese/des_transfer_acceptance_l_simp_chinese.yml"
+  ],
+  "post_start": {
+    "government_key": "feudal_government",
+    "primary_title_tier_key": "duchy",
+    "independent": true
+  },
+  "required_startup": [
+    "DESPAF: FIXTURE_ARMED sect_presets"
+  ],
+  "forbidden_startup": [
+    "DESPAF: TEST FAIL",
+    "DESTRF: TEST FAIL"
+  ],
+  "uncovered_product_business": [
+    "This independent case proves ordinary P binding -> one real native-created same-Faith B conflict only. Existing core/preset/initial_reform contracts and results are unchanged.",
+    "Fixture markers report disclosed stock input invocation only. Full native Can, original confirmation/completion, selected object state and independent Saves are mandatory.",
+    "Independent stock crime keeps total reason booleans true; prove product-source removal and stock-source preservation separately, never infer cleanup from one aggregate reason.",
+    "Referenced A10 observer exposes alive-character IDs only. Strict D0 no-new-NPC assertion needs a complete all-character inventory including dead; preserve T0/Tpost originals and do not sign from alive counts.",
+    "This minimal case does not certify the native-edited transfer entry, warm continuation, cold persistence, or HoF restoration. Those remain NOT_RUN/NOT_READY as applicable."
+  ],
+  "business_contract_applicable": true
+}

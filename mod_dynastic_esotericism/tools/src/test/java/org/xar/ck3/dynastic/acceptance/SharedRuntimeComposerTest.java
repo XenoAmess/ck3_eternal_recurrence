@@ -56,7 +56,7 @@ final class SharedRuntimeComposerTest {
     }
 
     private static void assertPublicSelectionConsumesProducedRuntime(Path runtime, Path products,
-            Path presetManifest, Path initialReformManifest, Path presetProduct)
+            Path presetManifest, Path initialReformManifest, Path coreManifest, Path presetProduct, List<Path> headManifests)
             throws IOException, InterruptedException {
         Path repository = Path.of(System.getProperty("dynastic.source")).toAbsolutePath().normalize().getParent();
         String program = """
@@ -118,7 +118,7 @@ final class SharedRuntimeComposerTest {
         String presetProgram = """
                 from pathlib import Path
                 import copy,json,sys
-                repository,runtime_path,preset_manifest,initial_reform_manifest,preset_product=map(Path,sys.argv[1:])
+                repository,runtime_path,preset_manifest,initial_reform_manifest,core_manifest,preset_product=map(Path,sys.argv[1:])
                 sys.path.insert(0,str(repository/'tools'))
                 from ck3_mod_acceptance import Selection,pin
                 original_runtime=json.loads(runtime_path.read_bytes())
@@ -131,7 +131,7 @@ final class SharedRuntimeComposerTest {
                 source=Path(original_runtime['paths']['source_root'])
                 repo=Path(original_runtime['repo_root'])
                 prepared_cases=[]
-                for case_id,fixture_manifest in [('sect_presets',preset_manifest),('initial_reform',initial_reform_manifest)]:
+                for case_id,fixture_manifest in [('core',core_manifest),('sect_presets',preset_manifest),('initial_reform',initial_reform_manifest)]:
                     case_output=runtime_path.parent/case_id;case_output.mkdir()
                     registry=json.loads((repository/'tools/ck3_mod_acceptance_products.json').read_bytes())
                     preset=next(c for c in registry['products']['dynastic-esotericism']['cases'] if c['id']==case_id)
@@ -177,6 +177,17 @@ final class SharedRuntimeComposerTest {
                     assert len(actual_product)==56
                     assert actual_product=={p.relative_to(preset_product).as_posix():p.read_bytes()
                                             for p in preset_product.rglob('*') if p.is_file()}
+                    if case_id=='core':
+                        manifest=json.loads(fixture_manifest.read_bytes())
+                        assert len(manifest['files'])==13 and len(manifest['receipt']['required_markers'])==25
+                        fixture=Path(prepared['preparation']['profile_preparation']['profile'])/'mod-content/fixture'
+                        compiled=json.loads((fixture/'_case_contract.json').read_bytes())
+                        current=json.loads((repo/'tools/ck3_mod_acceptance_cases/dynastic_esotericism_core.json').read_bytes())
+                        assert compiled['config']==current and len(current['gui_phases'])==6
+                        assert compiled['required_markers']==manifest['receipt']['required_markers']
+                        source_fixture=Path(manifest['fixture_root'])
+                        for relative in manifest['files']:
+                            assert (fixture/relative).read_bytes()==(source_fixture/relative).read_bytes()
                     index=json.loads(Path(original_runtime['paths']['source_index']).read_bytes())
                     for field,relative in [('adapter','tools/ck3_mod_acceptance_cases/generic_product_adapter.py'),
                                            ('contract',f'tools/ck3_mod_acceptance_cases/dynastic_esotericism_{case_id}.json')]:
@@ -201,12 +212,77 @@ final class SharedRuntimeComposerTest {
                     finally:config.write_bytes(original)
                 """;
         PythonResult presetResult = python(presetProgram, List.of(repository.toString(), runtime.toString(),
-                presetManifest.toString(), initialReformManifest.toString(), presetProduct.toString()));
+                presetManifest.toString(), initialReformManifest.toString(), coreManifest.toString(), presetProduct.toString()));
         assertEquals(0, presetResult.exitCode(), presetResult.output());
+        assertTrue(presetResult.output().contains("actual core Java fixture/release -> normal registry Selection.prepare"),
+                presetResult.output());
         assertTrue(presetResult.output().contains("actual sect_presets Java fixture/release -> normal registry Selection.prepare"),
                 presetResult.output());
         assertTrue(presetResult.output().contains("actual initial_reform Java fixture/release -> normal registry Selection.prepare"),
                 presetResult.output());
+        String headProgram = """
+                from pathlib import Path
+                import json,sys
+                from unittest.mock import patch
+                repository,runtime_path,product=map(Path,sys.argv[1:4])
+                sys.path.insert(0,str(repository/'tools'))
+                from ck3_mod_acceptance import Selection,pin
+                from ck3_mod_acceptance_prepare import CONFIG_NAMES
+                runtime=json.loads(runtime_path.read_bytes())
+                manifest=json.loads(Path(runtime['manifest']['path']).read_bytes())
+                source=Path(runtime['paths']['source_root']);repo=Path(runtime['repo_root'])
+                index=json.loads(Path(runtime['paths']['source_index']).read_bytes())
+                registry=json.loads((repository/'tools/ck3_mod_acceptance_products.json').read_bytes())
+                declared={c['id']:c for c in registry['products']['dynastic-esotericism']['cases']}
+                for fixture_manifest in map(Path,sys.argv[4:]):
+                    fixture=json.loads(fixture_manifest.read_bytes());case_id=fixture['case_id']
+                    saved=case_id.endswith(('_cold','_restore'));restore=case_id.endswith('_restore')
+                    root=runtime_path.parent/('public-'+case_id);root.mkdir()
+                    case=declared[case_id]
+                    assert case['status']==('blocked' if restore else 'ready')
+                    catalog=root/'products.json'
+                    catalog.write_text(json.dumps({'schema':registry['schema'],'product_inventory':registry['product_inventory'],
+                        'products':{'dynastic-esotericism':{'cases':[case]}}}),encoding='utf-8')
+                    selected=Selection(runtime_path,catalog,'dynastic-esotericism',case_id)
+                    assert selected.case['status']==('blocked' if restore else 'ready')
+                    plain={}
+                    for name in CONFIG_NAMES:
+                        path=root/('plain-'+name);path.parent.mkdir(parents=True,exist_ok=True)
+                        path.write_text('authored plain configuration',encoding='utf-8');plain[name]=pin(path)
+                    values={'state_dir':str(root/'state'),'case_inputs':{'product_dir':str(product),
+                        'plain_configuration':plain,'prebuilt_fixture_manifest':pin(fixture_manifest)}}
+                    if saved:
+                        original=root/'authored-not-engine-save.ck3';original.write_bytes(b'authored test input')
+                        values['saved_campaign']={'save':str(original),'bytes':original.stat().st_size,
+                            'sha256':pin(original)['sha256'],'player_id':123,'date_raw':456}
+                        values['case_inputs']['post_start']={'government_key':'feudal_government',
+                            'primary_title_tier_key':'empire','independent':True}
+                    inputs=root/'inputs.json';inputs.write_text(json.dumps(values),encoding='utf-8')
+                    identity={'game_version':manifest['game']['version'],'exe_sha256':manifest['game']['exe_sha256']}
+                    with patch('ck3_mod_acceptance_prepare._engine',return_value=(None,identity)):
+                        result=selected.prepare(inputs,root/'prepared')
+                    assert result['status']=='CASE_PREPARED_NOT_ALLOCATED_NOT_RUN'
+                    prepared_path=Path(result['prepared_case']['path'])
+                    prepared=json.loads(prepared_path.read_bytes())
+                    for field,relative in [('adapter','tools/ck3_mod_acceptance_cases/generic_product_adapter.py'),
+                                           ('contract',f'tools/ck3_mod_acceptance_cases/dynastic_esotericism_{case_id}.json')]:
+                        active=pin(repo/relative);frozen=pin(source/relative)
+                        assert prepared[field]==active
+                        assert {k:active[k] for k in ('bytes','sha256')}==index['files'][relative]
+                        assert active['bytes']==frozen['bytes'] and active['sha256']==frozen['sha256']
+                    resumed=Selection(runtime_path,catalog,'dynastic-esotericism',case_id,prepared_path=prepared_path)
+                    assert resumed.prepared['contract']==prepared['contract']
+                    assert prepared['preparation']['business_pass'] is False and prepared['runtime_status']=='NOT_RUN'
+                    if restore: assert resumed.case['status']=='blocked'
+                print('actual seven scoped Java fixtures/runtime -> normal Selection.prepare/Prepared and frozen source pins; restore blocked; live false')
+                """;
+        List<String> headArguments = new ArrayList<>(List.of(repository.toString(), runtime.toString(), presetProduct.toString()));
+        headArguments.addAll(headManifests.stream().map(Path::toString).toList());
+        PythonResult headResult = python(headProgram, headArguments);
+        assertEquals(0, headResult.exitCode(), headResult.output());
+        assertTrue(headResult.output().contains("actual seven scoped Java fixtures/runtime -> normal Selection.prepare"),
+                headResult.output());
+
     }
 
     @Test
@@ -252,17 +328,41 @@ final class SharedRuntimeComposerTest {
         for (String name : List.of("__init__.py", "generic_product_adapter.py", "dynastic_esotericism_core.json",
                 "dynastic_esotericism_cold_reload.json", "dynastic_esotericism_old_save_bootstrap.json",
                 "dynastic_esotericism_pre_product_seed.json", "dynastic_esotericism_sect_presets.json",
-                "dynastic_esotericism_initial_reform.json")) {
+                "dynastic_esotericism_initial_reform.json",
+                "dynastic_esotericism_native_binding_transfer.json",
+                "dynastic_esotericism_empire_heads_procreation.json",
+                "dynastic_esotericism_empire_heads_procreation_cold.json",
+                "dynastic_esotericism_empire_heads_procreation_restore.json",
+                "dynastic_esotericism_empire_heads_vivhite.json",
+                "dynastic_esotericism_empire_heads_vivhite_cold.json",
+                "dynastic_esotericism_empire_heads_vivhite_restore.json")) {
             Files.writeString(tools.resolve("ck3_mod_acceptance_cases").resolve(name), "{}\n");
         }
-        for (String name : List.of("generic_product_adapter.py", "dynastic_esotericism_sect_presets.json",
-                "dynastic_esotericism_initial_reform.json")) {
+        for (String name : List.of("generic_product_adapter.py", "dynastic_esotericism_core.json", "dynastic_esotericism_sect_presets.json",
+                "dynastic_esotericism_initial_reform.json",
+                "dynastic_esotericism_native_binding_transfer.json",
+                "dynastic_esotericism_empire_heads_procreation.json",
+                "dynastic_esotericism_empire_heads_procreation_cold.json",
+                "dynastic_esotericism_empire_heads_procreation_restore.json",
+                "dynastic_esotericism_empire_heads_vivhite.json",
+                "dynastic_esotericism_empire_heads_vivhite_cold.json",
+                "dynastic_esotericism_empire_heads_vivhite_restore.json")) {
             Files.copy(actualRepository.resolve("tools/ck3_mod_acceptance_cases").resolve(name),
                     tools.resolve("ck3_mod_acceptance_cases").resolve(name), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
         }
         Path fixtureMain = Path.of("mod_dynastic_esotericism/tools/src/main");
         for (String relative : List.of("java/org/xar/ck3/dynastic/acceptance/FixtureEmitter.java",
                 "resources/acceptance-fixture/descriptor.mod",
+                "resources/acceptance-fixture/common/on_action/des_acceptance_on_actions.txt",
+                "resources/acceptance-fixture/common/decisions/des_acceptance_decisions.txt",
+                "resources/acceptance-fixture/localization/english/des_acceptance_l_english.yml",
+                "resources/acceptance-fixture/localization/simp_chinese/des_acceptance_l_simp_chinese.yml",
+                "resources/acceptance-fixture/common/scripted_effects/des_acceptance_extended_effects.txt",
+                "resources/acceptance-fixture/common/decisions/des_acceptance_extended_decisions.txt",
+                "resources/acceptance-fixture/common/on_action/des_acceptance_extended_on_actions.txt",
+                "resources/acceptance-fixture/events/des_acceptance_extended_events.txt",
+                "resources/acceptance-fixture/localization/english/des_acceptance_extended_l_english.yml",
+                "resources/acceptance-fixture/localization/simp_chinese/des_acceptance_extended_l_simp_chinese.yml",
                 "resources/acceptance-fixture/common/on_action/des_preset_acceptance_on_actions.txt",
                 "resources/acceptance-fixture/common/decisions/des_preset_acceptance_decisions.txt",
                 "resources/acceptance-fixture/localization/english/des_preset_acceptance_l_english.yml",
@@ -270,7 +370,16 @@ final class SharedRuntimeComposerTest {
                 "resources/acceptance-fixture/common/on_action/des_initial_reform_acceptance_on_actions.txt",
                 "resources/acceptance-fixture/common/scripted_effects/des_initial_reform_acceptance_effects.txt",
                 "resources/acceptance-fixture/common/scripted_effects/des_acceptance_effects.txt",
-                "resources/acceptance-fixture/events/des_acceptance_events.txt")) {
+                "resources/acceptance-fixture/events/des_acceptance_events.txt",
+                "resources/acceptance-fixture/common/decisions/des_transfer_acceptance_decisions.txt",
+                "resources/acceptance-fixture/localization/english/des_transfer_acceptance_l_english.yml",
+                "resources/acceptance-fixture/localization/simp_chinese/des_transfer_acceptance_l_simp_chinese.yml",
+                "resources/acceptance-fixture/common/on_action/des_empire_heads_acceptance_on_actions.txt",
+                "resources/acceptance-fixture/common/decisions/des_empire_heads_acceptance_decisions.txt",
+                "resources/acceptance-fixture/events/des_empire_heads_acceptance_events.txt",
+                "resources/acceptance-fixture/common/decisions/des_empire_heads_readback_decisions.txt",
+                "resources/acceptance-fixture/localization/english/des_empire_heads_acceptance_l_english.yml",
+                "resources/acceptance-fixture/localization/simp_chinese/des_empire_heads_acceptance_l_simp_chinese.yml")) {
             Path destination = repo.resolve(fixtureMain).resolve(relative);
             Files.createDirectories(destination.getParent());
             Files.copy(actualRepository.resolve(fixtureMain).resolve(relative), destination);
@@ -279,6 +388,21 @@ final class SharedRuntimeComposerTest {
                 fixtureMachine, FixtureEmitter.CaseKind.SECT_PRESETS);
         FixtureEmitter.Emission initialReformFixture = FixtureEmitter.emit(repo, temporary.resolve("initial-reform-fixture"),
                 fixtureMachine, FixtureEmitter.CaseKind.INITIAL_REFORM);
+        FixtureEmitter.Emission coreFixture = FixtureEmitter.emit(repo, temporary.resolve("core-fixture"),
+                fixtureMachine, FixtureEmitter.CaseKind.CORE);
+        assertEquals(13, coreFixture.payload().files().size());
+        assertEquals(25, coreFixture.payload().receipt().requiredMarkers().size());
+        List<Path> headManifests = new ArrayList<>();
+        for (FixtureEmitter.CaseKind kind : List.of(FixtureEmitter.CaseKind.EMPIRE_HEADS_PROCREATION,
+                FixtureEmitter.CaseKind.EMPIRE_HEADS_VIVHITE,
+                FixtureEmitter.CaseKind.EMPIRE_HEADS_PROCREATION_COLD,
+                FixtureEmitter.CaseKind.EMPIRE_HEADS_VIVHITE_COLD,
+                FixtureEmitter.CaseKind.EMPIRE_HEADS_PROCREATION_RESTORE,
+                FixtureEmitter.CaseKind.EMPIRE_HEADS_VIVHITE_RESTORE,
+                FixtureEmitter.CaseKind.NATIVE_BINDING_TRANSFER)) {
+            headManifests.add(FixtureEmitter.emit(repo, temporary.resolve("head-" + kind.wireValue()),
+                    fixtureMachine, kind).manifest());
+        }
         ReleaseBuilder.BuildResult presetProduct = new ReleaseBuilder().build(ReleaseProduct.official(
                 actualRepository.resolve("mod_dynastic_esotericism"), ReleaseProduct.LocalizationMode.RELEASE_LOCALIZATION),
                 actualRepository, temporary.resolve("preset-release"), "0".repeat(40), null, null);
@@ -432,10 +556,19 @@ final class SharedRuntimeComposerTest {
         assertEquals("retain exactly", actualManifest.path("preserved_unknown_parent_field").textValue());
         assertEquals(7, actual.path("allocation").path("preserved_allocation_field").intValue());
         assertEquals(1, actualIndex.path("actual_changed_parent_files").size());
-        assertEquals(27, result.copiedFiles());
+        assertEquals(34, result.copiedFiles());
         assertEquals("ck3-common-source-index-v1", actualIndex.path("schema").textValue());
         assertTrue(actualIndex.path("files").isObject());
         assertEquals(result.copiedFiles(), actualIndex.path("files").size());
+        for (String name : List.of("dynastic_esotericism_native_binding_transfer.json",
+                "dynastic_esotericism_empire_heads_procreation.json",
+                "dynastic_esotericism_empire_heads_procreation_cold.json",
+                "dynastic_esotericism_empire_heads_procreation_restore.json",
+                "dynastic_esotericism_empire_heads_vivhite.json",
+                "dynastic_esotericism_empire_heads_vivhite_cold.json",
+                "dynastic_esotericism_empire_heads_vivhite_restore.json")) {
+            assertTrue(actualIndex.path("files").has("tools/ck3_mod_acceptance_cases/" + name));
+        }
         Path presetSource = tools.resolve("ck3_mod_acceptance_cases/dynastic_esotericism_sect_presets.json");
         Path frozenPreset = output.resolve("source/tools/ck3_mod_acceptance_cases/dynastic_esotericism_sect_presets.json");
         assertEquals(Files.readString(presetSource), Files.readString(frozenPreset));
@@ -450,7 +583,7 @@ final class SharedRuntimeComposerTest {
         assertEquals(2, normalExitBuilderMetadata.size());
         assertEquals(frozenNormalExitBuilderPin.path("bytes"), normalExitBuilderMetadata.path("bytes"));
         assertEquals(frozenNormalExitBuilderPin.path("sha256"), normalExitBuilderMetadata.path("sha256"));
-        assertEquals(27, SharedRuntimeComposer.parentSourceFiles((ObjectNode) actualIndex,
+        assertEquals(34, SharedRuntimeComposer.parentSourceFiles((ObjectNode) actualIndex,
                 output.resolve("source"), fixtureMachine).size());
         assertEquals(pin(Path.of(result.sourceIndex())).path("sha256"), actualManifest.path("source_index").path("sha256"));
         assertEquals(pin(Path.of(result.manifest())), actual.path("manifest"));
@@ -496,7 +629,7 @@ final class SharedRuntimeComposerTest {
                 .put("timeout", 3600).put("poll_interval", 0.05).put("hold_seconds", 0);
         write(products, registry);
         assertPublicSelectionConsumesProducedRuntime(Path.of(result.runtime()), products,
-                presetFixture.manifest(), initialReformFixture.manifest(), presetProduct.staging());
+                presetFixture.manifest(), initialReformFixture.manifest(), coreFixture.manifest(), presetProduct.staging(), headManifests);
         assertTrue(Files.isRegularFile(output.resolve("source/tools/ck3_mod_acceptance_cases/generic_product_adapter.py")));
         assertThrows(IllegalArgumentException.class,
                 () -> SharedRuntimeComposer.compose(repo, parentRuntime, nativePath, projectionPath, output, fixtureMachine));

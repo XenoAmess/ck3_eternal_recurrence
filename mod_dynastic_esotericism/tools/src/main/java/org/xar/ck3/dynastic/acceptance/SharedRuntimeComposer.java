@@ -420,7 +420,14 @@ public final class SharedRuntimeComposer {
         for (String name : List.of("__init__.py", "generic_product_adapter.py", "dynastic_esotericism_core.json",
                 "dynastic_esotericism_cold_reload.json", "dynastic_esotericism_old_save_bootstrap.json",
                 "dynastic_esotericism_pre_product_seed.json", "dynastic_esotericism_sect_presets.json",
-                "dynastic_esotericism_initial_reform.json")) {
+                "dynastic_esotericism_initial_reform.json",
+                "dynastic_esotericism_native_binding_transfer.json",
+                "dynastic_esotericism_empire_heads_procreation.json",
+                "dynastic_esotericism_empire_heads_procreation_cold.json",
+                "dynastic_esotericism_empire_heads_procreation_restore.json",
+                "dynastic_esotericism_empire_heads_vivhite.json",
+                "dynastic_esotericism_empire_heads_vivhite_cold.json",
+                "dynastic_esotericism_empire_heads_vivhite_restore.json")) {
             result.add(root.resolve("tools/ck3_mod_acceptance_cases").resolve(name));
         }
         result.add(root.resolve("ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py"));

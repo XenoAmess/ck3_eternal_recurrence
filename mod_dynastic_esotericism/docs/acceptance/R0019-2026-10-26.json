@@ -1,0 +1,319 @@
+{
+  "schema": "des-live-acceptance-observation-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019",
+  "source_head": "ac6934229553c62d6f1fba754f7ce85183324f89",
+  "game": {
+    "version": "1.20.0.4",
+    "build": "25734779",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "pid": 26680,
+    "birth_filetime": "134374357704560805"
+  },
+  "overall_business_pass": false,
+  "signed_phases": 1,
+  "required_phases": 6,
+  "phase1": {
+    "result": "PASS",
+    "actor_id": 31254,
+    "rite_id": 152,
+    "faith_id": 13,
+    "dynasty_id": 174,
+    "house_id": 174,
+    "actual_unconverted_heir_id": 65854,
+    "confirm_request_id": "rite-action-f23189c57fa94f489400b84704c64d17",
+    "confirm_count": 1,
+    "piety_debit": 3705,
+    "native_source_was_dynast": true,
+    "binding_mode": "native_dynast_reuse",
+    "both_actual_heads": 31254,
+    "dynasty_and_house_name": "宗族归一礼",
+    "dynasty_coa_ast_sha256": "d166550b7e506c904a60205b1cb428876416c93a0821d3b46a3977b4d2cc692c",
+    "house_own_coa": "ABSENT_PRESERVED",
+    "d0_added_dynasties": 0,
+    "d0_removed_dynasties": 0,
+    "d0_added_houses": 0,
+    "d0_removed_houses": 0,
+    "d0_new_living_character_ids": [
+      65858,
+      65859,
+      65860,
+      65861
+    ],
+    "new_character_attribution": "Four real new living actors observed; exact stock producer not independently closed. Successful native reuse/source claims plus no new D/H exclude successful product fallback-founder path; no whole-world zero-NPC claim.",
+    "native_members_d0": 51,
+    "native_members_d1": 64,
+    "native_members_d2": 64,
+    "all_selected_members_independently_same_house_and_dynasty": true,
+    "old_additional_house_ids": [
+      10436,
+      10440
+    ],
+    "additional_houses_unchanged": true,
+    "all_living_members_in_additional_houses": 0,
+    "active_existing_cadet_positive": "NOT_PROVEN",
+    "none_detail_hidden": true,
+    "create_editor_none_and_dynastic_selectable": true,
+    "owned_edit_editor_none_and_dynastic_selectable": true,
+    "owned_edit_committed": false,
+    "outline_icon_displayed": true,
+    "user_icon_approval": "NOT_CLAIMED",
+    "changed_rite_flag_tick": "NOT_PERSISTED_IN_SELECTED_RAW_FLAGS; no invented callback tick"
+  },
+  "phase2": {
+    "result": "FAIL",
+    "original_marker": "DESAF: TEST FAIL requested_head_cells",
+    "factory_date": 389350,
+    "first_ordinary_request_date": 389351,
+    "h0_raw": 53144400,
+    "h1_raw": 53144424,
+    "h2_raw": 53144448,
+    "handover": {
+      "rite_id": 153,
+      "actor_id": 65868,
+      "successor_id": 65869,
+      "old_dynasty_id": 12156,
+      "old_house_id": 12760,
+      "new_dynasty_id": 12158,
+      "new_house_id": 12762
+    },
+    "singleton": {
+      "rite_id": 154,
+      "actor_id": 65870,
+      "fallback_actor_id": 65871,
+      "new_dynasty_id": 12159,
+      "new_house_id": 12763
+    },
+    "actual_h2_binding_and_heads_correct": true,
+    "original_date_equality_guard_pass": false,
+    "diagnosis": "Same-effect character creation/factory input first obtains ordinary deferred request on next-day character-finalized callback. H2 identities do not erase factory/request date mismatch. No relaxation, fake date, direct product metadata or repair credited in R19.",
+    "successor_fixture": "Two-stage same public decision candidate; fresh build and live H0/H1/H2 required."
+  },
+  "later_phases": "NOT_RUN",
+  "cold_seed_old": "NOT_RUN_IN_THIS_SESSION",
+  "workshop_0_2_0": "NOT_UPLOADED",
+  "retention": {
+    "reason": "Current failure baseline and narrow product reuse comparison",
+    "review_by_utc": "2026-11-02T00:00:00Z"
+  },
+  "observed_at_utc": "2026-10-25T22:38:36.162071+00:00",
+  "lifecycle": {
+    "original_game_exit_code": 0,
+    "original_host_exit_code": 0,
+    "original_public_run_exit_code": 2,
+    "original_public_verify_exit_code": 2,
+    "original_allocator_exit_code": 0,
+    "original_keeper_exit_code": 0,
+    "normal_close_qualified": true,
+    "failure_lifecycle_completed": false,
+    "cleanup_ok": true,
+    "business_pass": false,
+    "screen_release_sequence": 9061,
+    "predecessor_consumer_status": "NOT_RUN_FOR_NEXT_ALLOCATION"
+  },
+  "evidence": [
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\operations-core-a39\\R0019-CLOSURE.actual.json",
+      "bytes": 3111,
+      "sha256": "8a0a2e6159f3a7c3ffb262d8bf5e50132316f498956dd08bc20d8762b52aee61"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\case-output\\actual-default-cancel-and-create-ui-root-result.json",
+      "bytes": 7365,
+      "sha256": "e76657a4f515788b1d2d3ff8ae401052187071b0cd3593e3569c364b9f2bff05"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\case-output\\actual-members-and-same-faith-input-root-result.json",
+      "bytes": 4152,
+      "sha256": "e5d2a0582939669c01502cd810e5d0e287413993b46f0a189f224a985908a06a"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\r19-none-details-desktop-a01.png",
+      "bytes": 1697324,
+      "sha256": "f51a3ba73290152268b7041b4bd3a2b1a51ca58cb85951d9b3c7a7c6af222f58"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\r19-owned-edit-gui-visible-cancelled-review-a01.actual.json",
+      "bytes": 2094,
+      "sha256": "ff39f2491e4c5be95562249f41dbfc180092425d15ac087e69832713602c26f3"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\independent-after-cancel-observer-a10-a01\\AFTER-CANCEL-CHECK-CARD.actual.json",
+      "bytes": 13347,
+      "sha256": "4e9006979927bcbd0512b8d702f7ee84867449a6266368bfd633201402de5a0b"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\independent-baseline-observer-a10-a02\\BASELINE-CHECK-CARD.actual.json",
+      "bytes": 20477,
+      "sha256": "63eee69d06138693d845c583fa412b663211c8be7a6da95962812616dd062afd"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\independent-d0-native-pure-observer-a10-a01\\D0-NATIVE-PURE-CHECK-CARD.actual.json",
+      "bytes": 38054,
+      "sha256": "1726239d93659a0526aeefd069a546efc715ebb8d88259f510acc1f17f103597"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\independent-d1-observer-a10-a01\\D1-CHECK-CARD.actual.json",
+      "bytes": 62096,
+      "sha256": "914ede78368cfc686b77b4f2e71df793f60ed7c590c9bc7a4f48ba3c1a5a1a77"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\independent-d2-observer-a10-a01\\D2-CHECK-CARD.actual.json",
+      "bytes": 68278,
+      "sha256": "8261a8fd72d680755f8c1514fbb6efafbdd7a9beef4b40d21a01690b1f401341"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\independent-headcells-h1-cells-refs-observer-a10-a01\\HEAD-CELLS-H0-H1-DIAGNOSTIC.actual.json",
+      "bytes": 34781,
+      "sha256": "b358dd6d991e65d440448df8d7b17d4ad917d1df3e8805b7998bacbbbf7257fe"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\independent-headcells-h2-full-graph-observer-a10-a01\\HEAD-CELLS-H2-FAILURE-DIAGNOSTIC.actual.json",
+      "bytes": 58815,
+      "sha256": "516bcc3fc75e340ba61f95e21cbdc716718537d7dce3dfe96393492859d58ad4"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\independent-headcells-h2-full-graph-observer-a10-a01\\HEAD-CELLS-STOCK-EFFECT-CANDIDATE-SOURCE.corrected.actual.json",
+      "bytes": 5801,
+      "sha256": "b31c0db2d2017e393e94b61f0216bd8d8638ffe5fb1df765d09e59f5d4ce50e1"
+    }
+  ],
+  "retained_saves": [
+    {
+      "save": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\retained-saves\\r19-after-cancel.ck3",
+        "bytes": 68736109,
+        "sha256": "cae1bb8bbdc6c3b5ed1c30052a3590267a63d1b722c433b77db76bbcc6800ff9"
+      },
+      "sdk_pin": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\retained-saves\\r19-after-cancel.sdk-pin.json",
+        "bytes": 241,
+        "sha256": "7f91866f6e0ca27511bc13930529908781d8be709a94eaba01e15471a9ae20a2"
+      },
+      "custody": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\retained-saves\\r19-after-cancel.custody.json",
+        "bytes": 720,
+        "sha256": "a801c642a9a95c4ff8e05b1cedb25ef52121816eb76c6efacabcb9b8d8244b9c"
+      }
+    },
+    {
+      "save": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\retained-saves\\r19-baseline.ck3",
+        "bytes": 68732715,
+        "sha256": "168b74cb4c92c6a20fc9bc9f3527142728a0dab2f909017ce7ab60692c2d706c"
+      },
+      "sdk_pin": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\retained-saves\\r19-baseline.sdk-pin.json",
+        "bytes": 241,
+        "sha256": "fe8352cfc1afab205c32ef5d44ac65183b3e6948c7c4ec73108bff5a2449097e"
+      },
+      "custody": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\retained-saves\\r19-baseline.custody.json",
+        "bytes": 716,
+        "sha256": "2f8b9ffaab75a2c59f62501f67036c72749211c18ee17585c36ca9408ce59be3"
+      }
+    },
+    {
+      "save": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\retained-saves\\r19-d0-native-pure.ck3",
+        "bytes": 68793280,
+        "sha256": "686b6d7324a92179b0a21ee386e1e118f8b8536f238c75cd3910471044085011"
+      },
+      "sdk_pin": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\retained-saves\\r19-d0-native-pure.sdk-pin.json",
+        "bytes": 241,
+        "sha256": "f151718b7cedda4be874e881988be226d8b05bf73369cc4fbba0b05c51d694a7"
+      },
+      "custody": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\retained-saves\\r19-d0-native-pure.custody.json",
+        "bytes": 722,
+        "sha256": "f69226529c3adf430cd6a28328d05ecd47ed368ee436d608bc500ebfc390566b"
+      }
+    },
+    {
+      "save": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\retained-saves\\r19-d1.ck3",
+        "bytes": 68613673,
+        "sha256": "0734f67319c63b86e1c2f917901ce0e7ecd15d631b808f3fdf84b088eecff183"
+      },
+      "sdk_pin": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\retained-saves\\r19-d1.sdk-pin.json",
+        "bytes": 241,
+        "sha256": "03b10c7986f62c466283c1b2a340b919497ad4e559357824bde2daebba3b2f6a"
+      },
+      "custody": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\retained-saves\\r19-d1.custody.json",
+        "bytes": 710,
+        "sha256": "7360f4c3e6c66feb4aa323ceaf7895ad67428dc5e9e8e915edb069f09d75d437"
+      }
+    },
+    {
+      "save": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\retained-saves\\r19-d2.ck3",
+        "bytes": 68670429,
+        "sha256": "bac6a996d73e521bf88c5743dcd0b9373f89a133cee74ea1344eb32ef0d637be"
+      },
+      "sdk_pin": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\retained-saves\\r19-d2.sdk-pin.json",
+        "bytes": 241,
+        "sha256": "7c4462ee4d609b659edc5394a6a3092280022c1c5c3740ec6af0c7ccbe5627d6"
+      },
+      "custody": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\retained-saves\\r19-d2.custody.json",
+        "bytes": 710,
+        "sha256": "faa8d55b1b904cd74dcb4752b4370af2eb4362f44ec9caf95159ae307a970a93"
+      }
+    },
+    {
+      "save": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\retained-saves\\r19-h0.ck3",
+        "bytes": 68685256,
+        "sha256": "ab5e92eb2a86987e7ea123e1cbbf88c1ac82c123869f559be9d4f670d026965c"
+      },
+      "sdk_pin": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\retained-saves\\r19-h0.sdk-pin.json",
+        "bytes": 241,
+        "sha256": "84489bf8fef8ae7a0a2254757a6c7288e68887eee09209838a011e3af7169d11"
+      },
+      "custody": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\retained-saves\\r19-h0.custody.json",
+        "bytes": 710,
+        "sha256": "519694566e92ad1db1b1d02f69be56a771b63078b5230f39e379c50215676bf4"
+      }
+    },
+    {
+      "save": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\retained-saves\\r19-h1.ck3",
+        "bytes": 68762166,
+        "sha256": "3c87ba799ed04399fe1ca190b92fd651c473df2a5858d745bb99598e96564972"
+      },
+      "sdk_pin": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\retained-saves\\r19-h1.sdk-pin.json",
+        "bytes": 241,
+        "sha256": "aab28925e5989974923653fd80e2905c43b55d64ef997b2095366f85569755e3"
+      },
+      "custody": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\retained-saves\\r19-h1.custody.json",
+        "bytes": 710,
+        "sha256": "3c7b652232784c8203ab1b7f6f9570be50fe5b774b4cffacc827084ecb012a6e"
+      }
+    },
+    {
+      "save": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\retained-saves\\r19-h2.ck3",
+        "bytes": 68830146,
+        "sha256": "1c1d6a351bd84a7defa38eabdf5382b11e5e6f0cf9be878ba77bb9581f2f93f5"
+      },
+      "sdk_pin": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\retained-saves\\r19-h2.sdk-pin.json",
+        "bytes": 241,
+        "sha256": "515fbc4d2edb535853bd4cad2077554738ae9ba95a19ce5a2359c72fc0e271b2"
+      },
+      "custody": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a18\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0019\\operator-evidence\\retained-saves\\r19-h2.custody.json",
+        "bytes": 710,
+        "sha256": "d227047ac648a18a75ef4ddcb52b9c197587a8ad446515acc86f3de1464405b8"
+      }
+    }
+  ]
+}

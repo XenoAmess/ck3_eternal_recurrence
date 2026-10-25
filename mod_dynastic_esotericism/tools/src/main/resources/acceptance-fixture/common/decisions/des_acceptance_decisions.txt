@@ -220,7 +220,8 @@ des_acceptance_reopened_readback_decision = {
     ai_check_interval = 0
 }
 
-# One disclosed stock-input attempt on the original Root; no business assertion.
+# Same public input in two stages: original-None actors, then a later-date factory/adoption.
+# Each stage revalidates its own one-shot guard; neither asserts business success.
 des_acceptance_head_cells_decision = {
     picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
     is_shown = {
@@ -236,6 +237,14 @@ des_acceptance_head_cells_decision = {
         rite = var:des_test_primary_rite
         var:des_test_primary_rite = { des_has_active_binding_trigger = yes }
         var:des_test_source_rite = { rite_has_doctrine = des_doctrine_none }
+        trigger_if = {
+            limit = { has_character_flag = des_test_head_cells_actors_prepared }
+            has_variable = des_test_head_cells_prepared_date
+            var:des_test_head_cells_prepared_date <= { value = current_date subtract = 1 }
+            this = var:des_test_head_cells_preparation_actor
+            var:des_test_source_rite = var:des_test_head_cells_prepared_source_rite
+            var:des_test_source_rite.faith = var:des_test_head_cells_prepared_source_faith
+        }
     }
     effect = { hidden_effect = { des_acceptance_prepare_head_cells_effect = yes } }
     ai_check_interval = 0

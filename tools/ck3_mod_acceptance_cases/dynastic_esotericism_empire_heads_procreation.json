@@ -1,0 +1,107 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "dynastic-esotericism",
+  "case_id": "empire_heads_procreation",
+  "acceptance_scope": "normal_paid_static_empire_faith_head_acquisition_and_actual_succession",
+  "fixture_source": {
+    "kind": "prebuilt_manifest"
+  },
+  "maximum_natural_days": 12,
+  "allow_actor_change": true,
+  "actor_transition_days": [],
+  "failure_prefixes": [
+    "DES_EHF:"
+  ],
+  "source_contracts": [
+    "mod_dynastic_esotericism/docs/requirements.md",
+    "mod_dynastic_esotericism/docs/test-plan.md",
+    "mod_dynastic_esotericism/docs/2026-10-26-empire-heads.md",
+    "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/acceptance/FixtureEmitter.java",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/on_action/des_empire_heads_acceptance_on_actions.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_empire_heads_acceptance_decisions.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_empire_heads_acceptance_events.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_empire_heads_readback_decisions.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/english/des_empire_heads_acceptance_l_english.yml",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/simp_chinese/des_empire_heads_acceptance_l_simp_chinese.yml"
+  ],
+  "post_start": {
+    "government_key": "feudal_government",
+    "primary_title_tier_key": "duchy",
+    "independent": true
+  },
+  "required_startup": [
+    "DES_EHF: FIXTURE_ARMED empire_heads_procreation"
+  ],
+  "forbidden_startup": [
+    "DES_EHF: TEST FAIL"
+  ],
+  "business_contract_applicable": true,
+  "uncovered_product_business": [
+    "Disclosed county, resource, Faith/Rite and death inputs certify their invocation only. Actual ordinary Can, costs, holder/head pointers, succession and supplied CoA require native or GUI plus independent Save.",
+    "The product does not switch or maintain government. Read actual before/after government; no meritocratic, theocratic or administrative target assertion.",
+    "This scoped case is not a complete core, preset adoption, old-save or whole-product PASS.",
+    "Normal restoration remains NOT_READY in the separately blocked restore case. Acquisition and valid succession do not certify restoration.",
+    "Conditional automatic Faith activation/Rite-update creation is distinct from the paid decision and does not inherit its credit."
+  ],
+  "continue_as_heir_requirements": [
+    "actual_predecessor_dead_and_pinned_primary_title_inherited_by_engine",
+    "actual_current_living_player_is_the_pinned_actual_primary_heir",
+    "actual_current_player_faith_and_main_rite_are_the_same_selected_preset",
+    "actual_same_static_empire_title_holder_and_faith_religious_head_are_the_successor"
+  ],
+  "gui_phases": [
+    {
+      "id": "actual-normal-paid-procreation-empire-head",
+      "when_markers": [
+        "DES_EHF: FIXTURE_ARMED empire_heads_procreation"
+      ],
+      "requirements": [
+        "actual_original_single_player_independent_duke_product56_fixture6_only_baseline_native_and_Save_pinned",
+        "actual_selected_preset_static_empire_title_exists_but_has_no_holder_and_Faith_has_no_head_before_input",
+        "actual_des_ehf_adopt_once_stock_Faith_Rite_input_retained_without_head_title_or_doctrine_setter",
+        "actual_prequalification_create_hof_status_retained_before_any_county_or_resource_input",
+        "actual_des_ehf_prepare_claim_input_once_c_santiago_former_holder_grant_transaction_and_piety_input_disclosed",
+        "actual_controlled_santiago_county_holder_is_selected_Faith_devotion_at_least3_and_legal_direct_liege_tier_from_native_and_Save",
+        "actual_selected_create_hof_detail_complete_ordinary_Can_requirements_bypass_raw0_and_full10_native_affordable_quote",
+        "actual_create_hof_confirm_once_expected_outcome_decision_closed_original_receipt_and_wallet_change_no_UNKNOWN_replay",
+        "actual_exact_selected_static_empire_title_holder_and_Faith_head_same_actor_with_target_user_textured_CoA_and_actual_primary_title",
+        "actual_existing_head_create_hof_query_refuses_or_hides_without_second_confirm",
+        "actual_government_before_after_recorded_without_conversion_or_expected_government_assertion",
+        "actual_des_ehf_prepare_heir_once_pins_real_primary_heir_current_primary_title_and_stock_Faith_Rite_input_only"
+      ],
+      "operator_sequence": [
+        "Save_B0_before_any_input_then_des_ehf_adopt_decision_once_and_independently_check_target_Faith_main_Rite_still_headless",
+        "query_create_hof_before_preparation_then_des_ehf_prepare_claim_input_decision_once_read_native_and_Save_input_result",
+        "open_or_select_create_hof_read_complete_terms_and_record_once_intent_then_ck3_confirm_ingame_decision_outcome_v1_once",
+        "read_actual_holder_Faith_head_wallet_primary_title_government_and_full_CoA_Save_then_query_existing_head_refusal",
+        "des_ehf_prepare_heir_decision_once_pin_actual_predecessor_heir_title_Save_then_sign_phase"
+      ]
+    },
+    {
+      "id": "actual-procreation-empire-head-succession",
+      "when_markers": [
+        "DES_EHF: INPUT APPLIED heir_preparation"
+      ],
+      "requirements": [
+        "actual_exact_heir_input_plus1_day_native_and_Save_same_pinned_living_adult_primary_heir_Faith_Rite_and_primary_title",
+        "actual_des_ehf_read_heir_then_stage_death_once_next_day_stock_death_not_set_player_or_head_or_title",
+        "actual_predecessor_dead_and_pinned_primary_title_inherited_by_engine",
+        "actual_current_living_player_is_the_pinned_actual_primary_heir",
+        "actual_current_player_faith_and_main_rite_are_the_same_selected_preset",
+        "actual_same_static_empire_title_holder_and_faith_religious_head_are_the_successor",
+        "actual_same_empire_title_tier_full_CoA_AST_and_texture_sources_unchanged_after_real_succession",
+        "actual_successor_government_and_primary_title_read_as_engine_results_without_fixture_correction",
+        "actual_des_ehf_read_successor_observation_only_after_independent_native_and_Save_proof",
+        "actual_current_successor_final_Save_custody_player_date_and_full_product_inventory_pinned_for_separate_cold_case",
+        "actual_normal_shared_closure_no_relabelled_core_or_preset_anchor"
+      ],
+      "operator_sequence": [
+        "consume_shared_postphase_calendar_and_stop_at_exact_heir_input_plus1_native_Save_then_des_ehf_read_heir_decision_once",
+        "des_ehf_stage_death_decision_once_then_advance_to_actual_event_boundary_with_actor_change_permitted",
+        "prove_actual_death_player_primary_heir_title_and_Faith_head_from_native_and_Save_before_des_ehf_read_successor_decision",
+        "save_final_successor_input_for_new_process_zero_day_cold_case_then_shared_normal_close"
+      ]
+    }
+  ]
+}

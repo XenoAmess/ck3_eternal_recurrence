@@ -20,6 +20,8 @@ machine_id: desktop-3fevhd2-1c74096080。来源为本机 CK3 1.20.0.4；文件�
 
 ## 构建与实测边界
 
+2026-10-25T22:37Z，`machine_id: desktop-3fevhd2-1c74096080`：新增Java公开fixture候选及两帝国fresh／cold／restore case数据已合入施工源，尚未构建或实机。fresh经原版付费 `create_hof_decision` 并自然继承，cold只观察保存，不能免费发领袖头衔。restore尚无来源充分的合法holderless前态，公共registry明确阻止为NOT_READY；不能以杀人、强移头衔或fixture直接设holder冒认正常恢复。a07九步持久生产实际通过仅证明原正式56文件生产；R0019没有运行两帝国业务。
+
 Java `SectPreset` 保存 title ID、颜色、路径及每语25键合同，不含预期政府元数据。validator 校验标题、CoA 别名及两个有限兼容脚本的 token 合同。正式清单56文件，开发35文件，外语增量21文件。既有真实生产者→staging／manifest／ZIP→独立 AST／公共导入／generic prepare 回归保留帝国／纹章范围；撤销后的完整 Maven 由 Root 统一重建。
 
 直接源 AST、库存和 diff 检查只证明源码合同。还须实测正常取得、自然继承、非法领主层级及已有领袖拒绝，以及实际帝国头衔、主头衔、领袖指针与用户 CoA。旧预发布动态领袖不被本轮自动抢夺；没有两静态头衔的旧0.1存档不虚构迁移结果。

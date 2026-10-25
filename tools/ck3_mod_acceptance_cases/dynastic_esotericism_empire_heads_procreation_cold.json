@@ -1,0 +1,64 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "dynastic-esotericism",
+  "case_id": "empire_heads_procreation_cold",
+  "acceptance_scope": "zero_day_saved_static_empire_faith_head_and_supplied_coa",
+  "fixture_source": {
+    "kind": "prebuilt_manifest"
+  },
+  "maximum_natural_days": 0,
+  "allow_actor_change": false,
+  "actor_transition_days": [],
+  "failure_prefixes": [
+    "DES_EHF:"
+  ],
+  "source_contracts": [
+    "mod_dynastic_esotericism/docs/requirements.md",
+    "mod_dynastic_esotericism/docs/test-plan.md",
+    "mod_dynastic_esotericism/docs/2026-10-26-empire-heads.md",
+    "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/acceptance/FixtureEmitter.java",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/on_action/des_empire_heads_acceptance_on_actions.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_empire_heads_acceptance_decisions.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_empire_heads_acceptance_events.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_empire_heads_readback_decisions.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/english/des_empire_heads_acceptance_l_english.yml",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/simp_chinese/des_empire_heads_acceptance_l_simp_chinese.yml"
+  ],
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "required_startup": [],
+  "forbidden_startup": [
+    "DES_EHF: TEST FAIL"
+  ],
+  "business_contract_applicable": true,
+  "uncovered_product_business": [
+    "Disclosed county, resource, Faith/Rite and death inputs certify their invocation only. Actual ordinary Can, costs, holder/head pointers, succession and supplied CoA require native or GUI plus independent Save.",
+    "The product does not switch or maintain government. Read actual before/after government; no meritocratic, theocratic or administrative target assertion.",
+    "This scoped case is not a complete core, preset adoption, old-save or whole-product PASS.",
+    "Normal restoration remains NOT_READY in the separately blocked restore case. Acquisition and valid succession do not certify restoration.",
+    "Conditional automatic Faith activation/Rite-update creation is distinct from the paid decision and does not inherit its credit."
+  ],
+  "startup_mode": "saved_campaign",
+  "gui_phases": [
+    {
+      "id": "actual-cold-procreation-empire-head",
+      "at_day": 0,
+      "requirements": [
+        "actual_new_managed_PID_birth_identity_source_Save_SHA_player_date_and_exact_formal_product_plus_passive_fixture",
+        "actual_zero_natural_days_same_static_empire_title_holder_selected_Faith_head_main_Rite_primary_title_from_native_and_independent_Save",
+        "actual_exact_full_title_CoA_AST_and_resolved_corresponding_user_texture_unchanged_from_source_Save",
+        "actual_government_is_engine_loaded_result_no_fixture_startup_repair_or_conversion",
+        "actual_des_ehf_read_current_head_decision_is_passive_observer_only_and_source_Save_remains_immutable"
+      ],
+      "operator_sequence": [
+        "load_exact_successor_Save_in_fresh_process_without_day_advance",
+        "native_and_independent_Save_compare_then_des_ehf_read_current_head_decision_once",
+        "shared_normal_close"
+      ]
+    }
+  ]
+}

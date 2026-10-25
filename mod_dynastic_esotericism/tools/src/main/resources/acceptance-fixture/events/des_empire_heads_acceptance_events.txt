@@ -1,0 +1,16 @@
+﻿namespace = des_empire_heads_acceptance
+# One disclosed stock death. The engine owns actual inheritance and player change.
+des_empire_heads_acceptance.1 = {
+ hidden = yes
+ immediate = {
+  if = {
+   limit = {
+    is_ai = no is_alive = yes this = global_var:des_ehf_fixture_owner has_character_flag = des_ehf_fixture_armed faith = faith:@DES_EHF_FAITH@ rite = rite:@DES_EHF_RITE@ faith.religious_head = this title:@DES_EHF_TITLE@ = { holder = root } has_character_flag = des_ehf_fixture_heir_prepared exists = primary_heir primary_heir = var:des_ehf_fixture_heir primary_title = var:des_ehf_fixture_inherited_title primary_heir = { is_alive = yes is_adult = yes is_incapable = no faith = root.faith rite = root.rite } var:des_ehf_fixture_heir_input_date <= { value = current_date subtract = 1 }
+    has_character_flag = des_ehf_fixture_death_staged
+   }
+   debug_log = "DES_EHF: INPUT APPLIED predecessor_death"
+   death = { death_reason = death_natural_causes }
+  }
+  else = { debug_log = "DES_EHF: NOT_READY predecessor_death" }
+ }
+}

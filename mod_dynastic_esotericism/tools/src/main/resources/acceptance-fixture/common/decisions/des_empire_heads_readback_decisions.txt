@@ -1,0 +1,21 @@
+﻿# Passive observer: no startup, product setters, resources or title transactions.
+des_ehf_read_current_head_decision = {
+ picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+ is_shown = { is_ai = no }
+ is_valid = { is_ai = no is_alive = yes faith = faith:@DES_EHF_FAITH@ rite = rite:@DES_EHF_RITE@ faith.religious_head = this title:@DES_EHF_TITLE@ = { holder = root } }
+ effect = { hidden_effect = {
+  if = { limit = { is_ai = no is_alive = yes faith = faith:@DES_EHF_FAITH@ rite = rite:@DES_EHF_RITE@ faith.religious_head = this title:@DES_EHF_TITLE@ = { holder = root } } debug_log = "DES_EHF: OBSERVATION current_head" }
+  else = { debug_log = "DES_EHF: NOT_READY current_head" }
+ } }
+ ai_check_interval = 0
+}
+des_ehf_read_holderless_decision = {
+ picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+ is_shown = { is_ai = no }
+ is_valid = { is_ai = no is_alive = yes is_landed = yes faith = faith:@DES_EHF_FAITH@ rite = rite:@DES_EHF_RITE@ faith = { NOT = { exists = religious_head } } title:@DES_EHF_TITLE@ = { NOT = { exists = holder } } can_create_head_of_faith_title_trigger = { FAITH = root.faith } }
+ effect = { hidden_effect = {
+  if = { limit = { is_ai = no is_alive = yes is_landed = yes faith = faith:@DES_EHF_FAITH@ rite = rite:@DES_EHF_RITE@ faith = { NOT = { exists = religious_head } } title:@DES_EHF_TITLE@ = { NOT = { exists = holder } } can_create_head_of_faith_title_trigger = { FAITH = root.faith } } debug_log = "DES_EHF: OBSERVATION holderless_qualification" }
+  else = { debug_log = "DES_EHF: NOT_READY holderless_qualification" }
+ } }
+ ai_check_interval = 0
+}

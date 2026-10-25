@@ -142,13 +142,25 @@ final class FixtureEmitterTest {
         assertTrue(observation.path("heir_stock_faith_rite_input_validated").booleanValue());
         assertTrue(observation.path("separate_prisoner_control_custody_validated").booleanValue());
         assertTrue(observation.path("requested_head_cells_readback_validated").booleanValue());
+        assertTrue(observation.path("head_cells_two_stage_input_validated").booleanValue());
 
         for (String mutation : List.of("missing-head", "product-write", "pardon-copy",
                 "date-literal", "date-no-source", "date-same-day",
                 "heir-same-faith", "heir-no-faith-input", "heir-root-input", "heir-input-order",
                 "prison-main-target", "prison-no-reason", "prison-product-write",
                 "initial-missing-dynast", "singleton-npc-head", "head-readback-write",
-                "reuse-old-dynasty", "reuse-mode", "singleton-not-dynast", "factory-native-reuse", "descendant-false-apostate")) {
+                "reuse-old-dynasty", "reuse-mode", "singleton-not-dynast", "factory-native-reuse", "descendant-false-apostate",
+                "head-stage-repeat",
+                "head-stage-same-day",
+                "head-stage-source",
+                "head-stage-scope",
+                "head-factory-sameframe",
+                "head-factory-convert",
+                "head-factory-doctrine",
+                "head-stock-adoption",
+                "head-date-equality",
+                "head-readback-late",
+                "head-input-product-write")) {
             ProbeResult forbidden = probeFixture(current, baseline, mutation);
             assertNotEquals(0, forbidden.exitCode(), forbidden.output());
             assertEquals(switch (mutation) {
@@ -172,6 +184,17 @@ final class FixtureEmitterTest {
                 case "singleton-not-dynast" -> "SINGLETON_ORDINARY_SOURCE_PRESTATE_MISSING";
                 case "factory-native-reuse" -> "ORDINARY_FACTORY_MODE_OR_SOURCE_CHANGED";
                 case "descendant-false-apostate" -> "UNCONVERTED_DESCENDANT_FALSE_APOSTASY_GUARD_MISSING";
+                case "head-stage-repeat" -> "HEAD_ACTOR_STAGE_REPLAY_NOT_BLOCKED";
+                case "head-stage-same-day" -> "HEAD_ACTOR_MATURITY_GUARD_CHANGED";
+                case "head-stage-source" -> "HEAD_ACTOR_NONE_SOURCE_CHANGED";
+                case "head-stage-scope" -> "HEAD_ACTOR_STORED_SCOPE_CHANGED";
+                case "head-factory-sameframe" -> "HEAD_FACTORY_SAME_FRAME_ACTOR_CREATION";
+                case "head-factory-convert" -> "HEAD_FACTORY_CONVERSION_NOT_EXPLICIT";
+                case "head-factory-doctrine" -> "HEAD_FACTORY_DYNASTIC_OVERRIDE_CHANGED";
+                case "head-stock-adoption" -> "HEAD_FACTORY_STOCK_ADOPTION_CHANGED";
+                case "head-date-equality" -> "ORDINARY_FACTORY_MODE_OR_SOURCE_CHANGED";
+                case "head-readback-late" -> "HEAD_FACTORY_READBACK_DELAY_CHANGED";
+                case "head-input-product-write" -> "HEAD_INPUT_WRITES_PRODUCT_STATE";
                 default -> "SUCCESSOR_FLAG_TRANSFER_OUTSIDE_CONTRACT";
             }, new ObjectMapper().readTree(forbidden.output()).path("reason").textValue());
         }
@@ -330,8 +353,87 @@ final class FixtureEmitterTest {
                     require(primary,key,value,'INITIAL_NATIVE_REUSE_SOURCE_CHANGED')
                 require(one(primary,'trigger_else',required=True),'var:des_binding_mode','flag:new_dynasty','INITIAL_FRESH_MODE_CHANGED')
                 extended_effects=parsed['common/scripted_effects/des_acceptance_extended_effects.txt']
-                head_inputs=one(extended_effects,'des_acceptance_prepare_head_cells_effect',required=True)
+                actor_stage=one(one(extended_effects,'des_acceptance_prepare_head_cell_actors_effect',required=True),'if',required=True)
+                actor_guard=one(actor_stage,'limit',required=True)
+                if mutation=='head-stage-repeat':
+                    actor_guard[:]=[r for r in actor_guard if r!={'key':'NOT','value':[{'key':'has_character_flag','value':'des_test_head_cells_actors_prepared'}]}]
+                require(actor_guard,'NOT',[{'key':'has_character_flag','value':'des_test_head_cells_actors_prepared'}],'HEAD_ACTOR_STAGE_REPLAY_NOT_BLOCKED')
+                require(actor_guard,'NOT',[{'key':'has_character_flag','value':'des_test_head_cells_started'}],'HEAD_ACTOR_STAGE_REPLAY_NOT_BLOCKED')
+                if actor_stage[1]!={'key':'add_character_flag','value':'des_test_head_cells_actors_prepared'}:
+                    reject('HEAD_ACTOR_STAGE_REPLAY_NOT_BLOCKED')
+                actor_inputs=[r['value'] for r in actor_stage if r['key']=='create_character']
+                if len(actor_inputs)!=3 or any(r['key'] in ('create_dynamic_rite','set_character_rite') for r in walk(actor_stage)):
+                    reject('HEAD_ACTOR_NONE_SOURCE_CHANGED')
+                if mutation=='head-stage-source':
+                    one(actor_inputs[0],'rite',required=True)
+                    next(r for r in actor_inputs[0] if r['key']=='rite')['value']='var:des_test_primary_rite'
+                for actor_input in actor_inputs:
+                    require(actor_input,'faith','var:des_test_source_rite.faith','HEAD_ACTOR_NONE_SOURCE_CHANGED')
+                    require(actor_input,'rite','var:des_test_source_rite','HEAD_ACTOR_NONE_SOURCE_CHANGED')
+                router=one(extended_effects,'des_acceptance_prepare_head_cells_effect',required=True)
+                route=one(router,'if',required=True)
+                if route!=[{'key':'limit','value':[{'key':'has_character_flag','value':'des_test_head_cells_actors_prepared'}]},
+                    {'key':'des_acceptance_activate_head_cells_effect','value':'yes'}] or one(router,'else',required=True)!=[
+                    {'key':'des_acceptance_prepare_head_cell_actors_effect','value':'yes'}]:
+                    reject('HEAD_FACTORY_SAME_FRAME_ACTOR_CREATION')
+                head_inputs=one(extended_effects,'des_acceptance_activate_head_cells_effect',required=True)
                 input_branch=one(head_inputs,'if',required=True)
+                activation_guard=one(input_branch,'limit',required=True)
+                # The lossless parser retains <= as an anonymous field plus '<' assignment.
+                maturity={'key':None,'value':'var:des_test_head_cells_prepared_date'}
+                if mutation=='head-stage-same-day':
+                    activation_guard[:]=[r for r in activation_guard if r!=maturity]
+                if maturity not in activation_guard:
+                    reject('HEAD_ACTOR_MATURITY_GUARD_CHANGED')
+                date_index=activation_guard.index(maturity)
+                if activation_guard[date_index+1]!={'key':'<','value':[{'key':'value','value':'current_date'},{'key':'subtract','value':'1'}]}:
+                    reject('HEAD_ACTOR_MATURITY_GUARD_CHANGED')
+                require(activation_guard,'has_character_flag','des_test_head_cells_actors_prepared','HEAD_ACTOR_MATURITY_GUARD_CHANGED')
+                require(activation_guard,'NOT',[{'key':'has_character_flag','value':'des_test_head_cells_started'}],'HEAD_ACTOR_STAGE_REPLAY_NOT_BLOCKED')
+                for key,value in [('this','var:des_test_head_cells_preparation_actor'),
+                    ('var:des_test_source_rite','var:des_test_head_cells_prepared_source_rite'),
+                    ('var:des_test_source_rite.faith','var:des_test_head_cells_prepared_source_faith')]:
+                    require(activation_guard,key,value,'HEAD_ACTOR_NONE_SOURCE_CHANGED')
+                public_decision=one(decisions,'des_acceptance_head_cells_decision',required=True)
+                public_maturity=one(one(public_decision,'is_valid',required=True),'trigger_if',required=True)
+                for row in activation_guard[date_index:date_index+2]:
+                    if row not in public_maturity:reject('HEAD_ACTOR_MATURITY_GUARD_CHANGED')
+                for role in ('handover_actor','handover_successor','singleton_actor'):
+                    restored=one(input_branch,'var:des_test_'+role,required=True)
+                    if mutation=='head-stage-scope' and role=='handover_actor':
+                        restored[0]['value']='des_test_singleton_actor'
+                    if restored!=[{'key':'save_scope_as','value':'des_test_'+role}]:
+                        reject('HEAD_ACTOR_STORED_SCOPE_CHANGED')
+                if mutation=='head-factory-sameframe':input_branch.append({'key':'create_character','value':[]})
+                if any(r['key']=='create_character' for r in walk(input_branch)):
+                    reject('HEAD_FACTORY_SAME_FRAME_ACTOR_CREATION')
+                if mutation=='head-input-product-write':
+                    input_branch.append({'key':'set_variable','value':[{'key':'name','value':'des_deferred_binding_date'},{'key':'value','value':'current_date'}]})
+                for row in walk(actor_stage+input_branch):
+                    if row['key']=='set_variable' and not one(row['value'],'name',required=True).startswith('des_test_'):
+                        reject('HEAD_INPUT_WRITES_PRODUCT_STATE')
+                    if row['key'] in ('set_house','set_dynasty','set_house_head','set_dynasty_head','set_player_character',
+                        'add_rite_doctrine','remove_rite_doctrine','set_religious_head_title') or (
+                        row['key'] and row['key'].startswith('des_') and row['key'].endswith('_effect')
+                        and not row['key'].startswith('des_acceptance_')):
+                        reject('HEAD_INPUT_WRITES_PRODUCT_STATE')
+                factories=[r['value'] for r in walk(input_branch) if r['key']=='create_dynamic_rite']
+                if len(factories)!=2:reject('HEAD_FACTORY_CONVERSION_NOT_EXPLICIT')
+                for factory in factories:
+                    if mutation=='head-factory-convert':next(r for r in factory if r['key']=='convert')['value']='yes'
+                    require(factory,'convert','no','HEAD_FACTORY_CONVERSION_NOT_EXPLICIT')
+                    if mutation=='head-factory-doctrine':next(r for r in factory if r['key']=='doctrine_override_entry')['value']='doctrine:des_doctrine_none'
+                    require(factory,'doctrine_override_entry','doctrine:des_doctrine_dynastic','HEAD_FACTORY_DYNASTIC_OVERRIDE_CHANGED')
+                    require(factory,'target_divergence','0','HEAD_FACTORY_DYNASTIC_OVERRIDE_CHANGED')
+                adoptions=[r for r in walk(input_branch) if r['key']=='set_character_rite']
+                if mutation=='head-stock-adoption':adoptions[0]['key']='set_character_rite_history'
+                for cell in ('handover','singleton'):
+                    if {'key':'set_character_rite','value':'scope:des_test_'+cell+'_rite'} not in adoptions:
+                        reject('HEAD_FACTORY_STOCK_ADOPTION_CHANGED')
+                observed_events=[r['value'] for r in walk(input_branch) if r['key']=='trigger_event']
+                expected_event=[{'key':'id','value':'des_acceptance_extended.81'},{'key':'days','value':'2'}]
+                if mutation=='head-readback-late':observed_events[0][-1]['value']='3'
+                if observed_events!=[expected_event]:reject('HEAD_FACTORY_READBACK_DELAY_CHANGED')
                 singleton_guards=[row['value'] for row in walk(input_branch) if row['key']=='scope:des_test_singleton_actor'
                     and isinstance(row['value'],list) and {'key':'is_alive','value':'yes'} in row['value']]
                 if len(singleton_guards)!=1:
@@ -366,6 +468,8 @@ final class FixtureEmitterTest {
                     require(scoped_block(actor_guard,'house'),'house_head',actor,'REQUESTED_HEAD_CELL_GUARD_MISSING')
                     require(scoped_block(actor_guard,'dynasty'),'dynast',actor,'REQUESTED_HEAD_CELL_GUARD_MISSING')
                     cell_rite=one(cell_guard,'var:des_test_'+cell+'_rite',required=True)
+                    if mutation=='head-date-equality' and cell=='handover':
+                        next(r for r in cell_rite if r['key']=='var:des_deferred_binding_date')['value']='root.var:des_test_head_cells_prepared_date'
                     if mutation=='factory-native-reuse' and cell=='handover':
                         cell_rite[:]=[row for row in cell_rite if row['key']!='var:des_binding_mode']
                     for key,value in [('var:des_binding_mode','flag:new_dynasty'),
@@ -662,7 +766,7 @@ final class FixtureEmitterTest {
                     outsider=json.loads(one(one(branch,'scope:des_test_outsider',required=True),'debug_log',required=True))
                     if [observer,outsider]!=guard['success_logs']:
                         reject('CHANGED_SCOPED_SUCCESS_MARKERS',event=event)
-                print(json.dumps({'status':'ACCEPTED','required_marker_count':len(required),'unchanged_guard_count':len(expected),'original_rite_readback_only_observes':True,'successor_reference_transfer_count':len(refs),'successor_history_transfer_count':len(flags),'heir_minimum_day_guard_validated':True,'heir_stock_faith_rite_input_validated':True,'separate_prisoner_control_custody_validated':True,'requested_head_cells_readback_validated':True,'engine_semantics_verified':False}))
+                print(json.dumps({'status':'ACCEPTED','required_marker_count':len(required),'unchanged_guard_count':len(expected),'original_rite_readback_only_observes':True,'successor_reference_transfer_count':len(refs),'successor_history_transfer_count':len(flags),'heir_minimum_day_guard_validated':True,'heir_stock_faith_rite_input_validated':True,'separate_prisoner_control_custody_validated':True,'requested_head_cells_readback_validated':True,'head_cells_two_stage_input_validated':True,'engine_semantics_verified':False}))
                 """;
         // The existing AST regression now exceeds Windows' command-line limit.
         // Keep it a temporary test artifact, with the same real parser/consumers.

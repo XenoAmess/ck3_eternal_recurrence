@@ -1,0 +1,18 @@
+﻿# External single-player input fixture. No HoF or government setters.
+on_game_start_after_lobby = { on_actions = { des_ehf_arm } }
+des_ehf_arm = {
+ effect = {
+  every_player = {
+   limit = { is_alive = yes is_ai = no NOT = { exists = global_var:des_ehf_fixture_owner } }
+   set_global_variable = { name = des_ehf_fixture_owner value = this }
+   add_character_flag = des_ehf_fixture_armed
+   set_variable = { name = des_ehf_fixture_original_title value = primary_title }
+   set_variable = { name = des_ehf_fixture_original_faith value = faith }
+   set_variable = { name = des_ehf_fixture_original_rite value = rite }
+   set_variable = { name = des_ehf_fixture_input_faith value = faith:@DES_EHF_FAITH@ }
+   set_variable = { name = des_ehf_fixture_input_rite value = rite:@DES_EHF_RITE@ }
+   set_variable = { name = des_ehf_fixture_head_title value = title:@DES_EHF_TITLE@ }
+   debug_log = "DES_EHF: FIXTURE_ARMED @DES_EHF_CASE@"
+  }
+ }
+}

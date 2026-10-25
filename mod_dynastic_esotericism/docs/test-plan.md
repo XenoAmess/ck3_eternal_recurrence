@@ -8,6 +8,8 @@
 
 家族族长两个真实输入 cell 保留：A先把旧House族长交给真实B，再由A建新宗族；旧House只剩C时生成真实同礼仪D建族，C经共享同步加入，D保持存活。两个分支均保原玩家／领地身份和保存读回。当前完整 parser 不支持原版文件局部 `scripted_trigger <name>` 声明，stock和候选均真实拒绝；仅helper body及event block的局部解析通过，不替代上述引擎验收。来源及原结果见[候选记录](acceptance/family-conversion-inline-candidate-2026-10-25.json)。
 
+2026-10-26（machine_id: `desktop-3fevhd2-1c74096080`）：R0019 的 `requested_head_cells` 已真实 FAIL，独立 phase1 PASS 1/6 不扩为 Core 通过。旧 factory `convert=yes` 在 H0 没有排队，H1 的生成角色 finalization 才记录 requester/date，导致 H2 原 `deferredDate == factoryCreationDate` 断言失败。后继共享 fixture 采用同一公开决议两段输入：原 None Rite 准备 A/B/C，真实 +1 成熟后恢复持久引用，工厂只给新测试 Rite 配置 Dynastic、`convert=no`，再原版采用；H0 取实际第二段工厂日，原 +1/+2、.81、13 文件／25 marker／6 phase 和全部旧后态守卫保留。此为待新构建／新实机的修复，R0019 失败原件不改；详见[两阶段输入修复](2026-10-26-head-cells-two-stage-fixture.md)。
+
 ## 测试分层与证据
 
 离线校验确认文件格式、引用、两选项合同、生产者到 staging／manifest 消费者及重建一致性；实际游戏验证 GUI、宗族、好感和犯罪理由。先检查 `open_kaishek` 是否能覆盖确定性语义；可用则运行相应子集，不可用或不支持则记录实际原因与未覆盖范围，不能冒充游戏结果。

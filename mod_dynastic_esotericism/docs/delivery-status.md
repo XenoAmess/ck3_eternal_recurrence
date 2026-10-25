@@ -1,5 +1,11 @@
 # 制作与发布状态
 
+2026-10-25T22:37Z（北京时间10月26日06:37，`machine_id: desktop-3fevhd2-1c74096080`）：**R0019正式签署1/6，完整Core失败，0.2.0未上传。** 第一阶段真实原生创建一次，D0／D1／D2独立保存确认复用D174／H174，创建者31254是两者实际head，名称随Rite更新，D174原纹章完整AST不变，H174原本缺少自有纹章的状态保留；D0没有新增或删除Dynasty／House。世界实际新增四名存活人物，原版精确生产者尚未独立闭合，不能写成“全世界零新增NPC”。None详情隐藏、创建及编辑两选项可见、新轮廓图显示获得本场证据，图标未获得用户认可，编辑只查看并取消。见[R0019实际范围](acceptance/R0019-2026-10-26.json)。
+
+第二阶段保留原 `requested_head_cells` FAIL：同一effect新建测试人物与Rite，首次普通请求日期是H1，原factory日期是H0；H2绑定及head正确不能抹掉日期相等断言失败。共享夹具正在改为None礼仪准备人物、自然成熟一天、再经同一决议创建Rite并普通改礼；原H1／H2／日期守卫及13文件／25markers／6phase保持。新夹具、原完整后四阶段、cold／old／两预置、原生绑定冲突转移、两枚帝国领袖仍须新构建及实机，不追认通过。R0019正常退出Game／host／keeper／allocator均0，公共run／verify均2，`normal_close_qualified=true`仅授生命周期，SCREEN9061释放。
+
+交接中的“九步持久生产链NOT_RUN”已由后继实际执行更新：ac693／a07的九命令全部原退出0，保存的开发35／正式56文件、core13／sect5／initial3 fixture及清单／ZIP均核过，见[持久生产回执](acceptance/persistent-producers-a07-2026-10-26.json)。该证据仍只对应原冻结源；本次新fixture及Java消费者修改须a08完整重验。
+
 2026-10-25T20:23Z（北京时间10月26日04:23，`machine_id: desktop-3fevhd2-1c74096080`）：政体绑定／转换及相关回调、额外贤能制DLC门已按最终更正全部移除。两帝国级领袖和对应用户图纹章保留。最终a07完整Maven38项测试通过，无失败／错误／跳过；35开发／56正式文件的真实生产者与消费者回归通过，21打包资源与源码／classes／JAR一致，见[实际回执](acceptance/rebuild38-a07-2026-10-26.json)。这些均是离线结果，帝国头衔、纹章、None显示及新图尚待实机；R0018业务0/6与0.2.0未上传保持。
 
 2026-10-25T20:18Z（北京时间10月26日04:18，`machine_id: desktop-3fevhd2-1c74096080`）：用户最终撤销两枚信仰领袖头衔的政体绑定／转换，保留帝国等级及对应教派图纹章。代码正在按此移除转换、持续校正及仅为贤能制加入的DLC条件；用户原指定教义组合不变。[帝国领袖专题](2026-10-26-empire-heads.md)记录最终范围。此前a06完整38测试通过、57／36包清单属于撤销前候选，原实际回执保留并明确标记被后续更正取代；最终56／35候选需要重新构建。R0018实机业务仍0/6，没有新增实机或发布通过。
@@ -50,8 +56,8 @@ R0017已沿真实typed normal退出闭场：Game0／host0／public run2／public
 | --- | --- | --- |
 | 需求 | 已制定版本2，包含创建／改革者最终族长、名称／纹章及两项独立Faith／同名Rite | [requirements.md](requirements.md) |
 | 测试方案 | 版本2；新增矩阵不因静态通过或旧场子集而授予通过 | [test-plan.md](test-plan.md) |
-| 编码 | 0.2.0候选a04完整36项静态通过，当前正式52／开发31文件；新复用／转移、AI与详情／图标政策尚未实测，R0017失败保留 | [a04重建](acceptance/rebuild36-a04-2026-10-26.json)、[R0017](acceptance/R0017-2026-10-26.json) |
-| 测试验收 | R0017正式签署0/6、创建者族长FAIL；两日61人归族、名称及随机纹章共享子集有保存证据。原完整core、两预置矩阵、seed/cold/old未完成 | [R0017实际范围](acceptance/R0017-2026-10-26.json)、[R0015历史范围](acceptance/R0015-2026-10-25.json) |
+| 编码 | 0.2.0 a07完整38项静态及九步持久生产通过，正式56／开发35文件；新共享夹具及新增公开用例等待a08重验 | [a07重建](acceptance/rebuild38-a07-2026-10-26.json)、[持久生产](acceptance/persistent-producers-a07-2026-10-26.json) |
+| 测试验收 | R0019正式签署1/6；原生Dynast复用、D0/D1/D2归族及显示子集有保存；headcells日期失败。完整core、转移、帝国领袖、两预置与seed/cold/old未完成 | [R0019实际范围](acceptance/R0019-2026-10-26.json) |
 | 发布 | 0.1.0初始公开测试版已发布，Workshop3826991345；0.2.0未上传，Notes全文429及真实缓存下载／加载待验 | [首发实际范围](acceptance/first-publication-2026-10-25.json)、[R0017发布边界](acceptance/R0017-2026-10-26.json) |
 
 2026-10-24T21:15Z补记（北京时间05:15，machine_id: `desktop-3fevhd2-1c74096080`）：用户提出卸任家族族长再建新宗族。已核 exact .4 原版 `set_house_head` 会同步重算 Dynast；窄生产候选优先已有合格真实信徒，无人时才让另一存活同旧House人物接任，并在实际双重离任守卫后建族。旧House只有本人时仍未解决，不默认新建NPC，等待用户对该边界的选择。见[原版来源、影响和待验边界](2026-10-25-house-head-handover.md)。新S11候选61b4b05不改SDK/native，完整默认Maven16项0失败/错误/跳过及15资源、17文件开发包/ZIP/13文件fixture实际生产链通过，回执 `C:/ck3-dynastic-esotericism-20261024/resume-builder-a12/SUMMARY.actual.json`，SHA `b0977cbc628e5c2c9021774fe48c706e7846ab1f15baaa3db8da06bf1b181076`。当前新增交接路径尚未实机，不能从构建或研究追认通过；下一图准备还将检查能否以真实输入触发fallback。R0009公共verify已实际退出2，case_acceptance_pass及qualified_boundary_pass为false，原normal_close=true仅生命周期继续保留。

@@ -1,0 +1,305 @@
+{
+  "schema": "des-persistent-production-observation-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "ac6934229553c62d6f1fba754f7ce85183324f89",
+  "started_at_utc": "2026-10-25 20:49:48 UTC",
+  "finished_at_utc": "2026-10-25 20:50:22 UTC",
+  "observed_at_utc": "2026-10-25T22:38:38.595010+00:00",
+  "producer_chain": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\post-r18-heads-a01\\PRODUCER-CHAIN.actual.json",
+    "bytes": 26383,
+    "sha256": "cd7f655dd867e8198f382c44563ac362587c8c434a3fbcc81cdcfc79d4d83382"
+  },
+  "all_nine_original_exit_codes": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "commands": [
+    {
+      "name": "validate-dev",
+      "argv": [
+        "java",
+        "-Djava.io.tmpdir=C:/ck3-dynastic-esotericism-20261024/shared-temp-a20",
+        "-jar",
+        "C:/ck3-dynastic-esotericism-20261024/resume-builder-a20/attempt-a07/java-build/dynastic-esotericism-tools/quarkus-app/quarkus-run.jar",
+        "validate",
+        "--source",
+        "C:/ck3-dynastic-esotericism-20261024/main12/mod_dynastic_esotericism",
+        "--repo-root",
+        "C:/ck3-dynastic-esotericism-20261024/main12"
+      ],
+      "original_exec_result": {
+        "chunk_id": "bf9d9c",
+        "wall_time_seconds": 2.2245769,
+        "exit_code": 0,
+        "original_token_count": 0,
+        "output": ""
+      }
+    },
+    {
+      "name": "validate-release",
+      "argv": [
+        "java",
+        "-Djava.io.tmpdir=C:/ck3-dynastic-esotericism-20261024/shared-temp-a20",
+        "-jar",
+        "C:/ck3-dynastic-esotericism-20261024/resume-builder-a20/attempt-a07/java-build/dynastic-esotericism-tools/quarkus-app/quarkus-run.jar",
+        "validate",
+        "--release-localization",
+        "--source",
+        "C:/ck3-dynastic-esotericism-20261024/main12/mod_dynastic_esotericism",
+        "--repo-root",
+        "C:/ck3-dynastic-esotericism-20261024/main12"
+      ],
+      "original_exec_result": {
+        "chunk_id": "83d385",
+        "wall_time_seconds": 1.115185,
+        "exit_code": 0,
+        "original_token_count": 0,
+        "output": ""
+      }
+    },
+    {
+      "name": "build-dev",
+      "argv": [
+        "java",
+        "-Djava.io.tmpdir=C:/ck3-dynastic-esotericism-20261024/shared-temp-a20",
+        "-jar",
+        "C:/ck3-dynastic-esotericism-20261024/resume-builder-a20/attempt-a07/java-build/dynastic-esotericism-tools/quarkus-app/quarkus-run.jar",
+        "build",
+        "--source",
+        "C:/ck3-dynastic-esotericism-20261024/main12/mod_dynastic_esotericism",
+        "--repo-root",
+        "C:/ck3-dynastic-esotericism-20261024/main12",
+        "--output",
+        "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/post-r18-heads-a01/dev-staging",
+        "--workshop-item-id",
+        "3826991345"
+      ],
+      "original_exec_result": {
+        "chunk_id": "f83c95",
+        "wall_time_seconds": 1.5973753,
+        "exit_code": 0,
+        "original_token_count": 0,
+        "output": ""
+      }
+    },
+    {
+      "name": "verify-dev",
+      "argv": [
+        "java",
+        "-Djava.io.tmpdir=C:/ck3-dynastic-esotericism-20261024/shared-temp-a20",
+        "-jar",
+        "C:/ck3-dynastic-esotericism-20261024/resume-builder-a20/attempt-a07/java-build/dynastic-esotericism-tools/quarkus-app/quarkus-run.jar",
+        "verify",
+        "--source",
+        "C:/ck3-dynastic-esotericism-20261024/main12/mod_dynastic_esotericism",
+        "--repo-root",
+        "C:/ck3-dynastic-esotericism-20261024/main12",
+        "--output",
+        "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/post-r18-heads-a01/dev-staging",
+        "--manifest",
+        "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/post-r18-heads-a01/dev-staging.manifest.json"
+      ],
+      "original_exec_result": {
+        "chunk_id": "8ae632",
+        "wall_time_seconds": 0.9848735,
+        "exit_code": 0,
+        "original_token_count": 0,
+        "output": ""
+      }
+    },
+    {
+      "name": "build-release",
+      "argv": [
+        "java",
+        "-Djava.io.tmpdir=C:/ck3-dynastic-esotericism-20261024/shared-temp-a20",
+        "-jar",
+        "C:/ck3-dynastic-esotericism-20261024/resume-builder-a20/attempt-a07/java-build/dynastic-esotericism-tools/quarkus-app/quarkus-run.jar",
+        "build",
+        "--release-localization",
+        "--source",
+        "C:/ck3-dynastic-esotericism-20261024/main12/mod_dynastic_esotericism",
+        "--repo-root",
+        "C:/ck3-dynastic-esotericism-20261024/main12",
+        "--output",
+        "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/post-r18-heads-a01/release-staging",
+        "--workshop-item-id",
+        "3826991345"
+      ],
+      "original_exec_result": {
+        "chunk_id": "2608df",
+        "wall_time_seconds": 1.7431142,
+        "exit_code": 0,
+        "original_token_count": 0,
+        "output": ""
+      }
+    },
+    {
+      "name": "verify-release",
+      "argv": [
+        "java",
+        "-Djava.io.tmpdir=C:/ck3-dynastic-esotericism-20261024/shared-temp-a20",
+        "-jar",
+        "C:/ck3-dynastic-esotericism-20261024/resume-builder-a20/attempt-a07/java-build/dynastic-esotericism-tools/quarkus-app/quarkus-run.jar",
+        "verify",
+        "--release-localization",
+        "--source",
+        "C:/ck3-dynastic-esotericism-20261024/main12/mod_dynastic_esotericism",
+        "--repo-root",
+        "C:/ck3-dynastic-esotericism-20261024/main12",
+        "--output",
+        "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/post-r18-heads-a01/release-staging",
+        "--manifest",
+        "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/post-r18-heads-a01/release-staging.manifest.json"
+      ],
+      "original_exec_result": {
+        "chunk_id": "a272da",
+        "wall_time_seconds": 1.0485957,
+        "exit_code": 0,
+        "original_token_count": 0,
+        "output": ""
+      }
+    },
+    {
+      "name": "fixture-core",
+      "argv": [
+        "java",
+        "-Djava.io.tmpdir=C:/ck3-dynastic-esotericism-20261024/shared-temp-a20",
+        "-jar",
+        "C:/ck3-dynastic-esotericism-20261024/resume-builder-a20/attempt-a07/java-build/dynastic-esotericism-tools/quarkus-app/quarkus-run.jar",
+        "fixture",
+        "--repo-root",
+        "C:/ck3-dynastic-esotericism-20261024/main12",
+        "--output",
+        "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/post-r18-heads-a01/core-fixture",
+        "--machine-id",
+        "desktop-3fevhd2-1c74096080",
+        "--case",
+        "core"
+      ],
+      "original_exec_result": {
+        "chunk_id": "05fe55",
+        "wall_time_seconds": 0.9115745,
+        "exit_code": 0,
+        "original_token_count": 0,
+        "output": ""
+      }
+    },
+    {
+      "name": "fixture-sect-presets",
+      "argv": [
+        "java",
+        "-Djava.io.tmpdir=C:/ck3-dynastic-esotericism-20261024/shared-temp-a20",
+        "-jar",
+        "C:/ck3-dynastic-esotericism-20261024/resume-builder-a20/attempt-a07/java-build/dynastic-esotericism-tools/quarkus-app/quarkus-run.jar",
+        "fixture",
+        "--repo-root",
+        "C:/ck3-dynastic-esotericism-20261024/main12",
+        "--output",
+        "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/post-r18-heads-a01/sect-presets-fixture",
+        "--machine-id",
+        "desktop-3fevhd2-1c74096080",
+        "--case",
+        "sect_presets"
+      ],
+      "original_exec_result": {
+        "chunk_id": "f3dc4c",
+        "wall_time_seconds": 0.8708208,
+        "exit_code": 0,
+        "original_token_count": 0,
+        "output": ""
+      }
+    },
+    {
+      "name": "fixture-initial-reform",
+      "argv": [
+        "java",
+        "-Djava.io.tmpdir=C:/ck3-dynastic-esotericism-20261024/shared-temp-a20",
+        "-jar",
+        "C:/ck3-dynastic-esotericism-20261024/resume-builder-a20/attempt-a07/java-build/dynastic-esotericism-tools/quarkus-app/quarkus-run.jar",
+        "fixture",
+        "--repo-root",
+        "C:/ck3-dynastic-esotericism-20261024/main12",
+        "--output",
+        "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/post-r18-heads-a01/initial-reform-fixture",
+        "--machine-id",
+        "desktop-3fevhd2-1c74096080",
+        "--case",
+        "initial_reform"
+      ],
+      "original_exec_result": {
+        "chunk_id": "f32cfc",
+        "wall_time_seconds": 0.8134662,
+        "exit_code": 0,
+        "original_token_count": 0,
+        "output": ""
+      }
+    }
+  ],
+  "outputs": {
+    "dev-staging": {
+      "files": 35,
+      "logical_bytes": 1917898,
+      ".json": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\post-r18-heads-a01\\dev-staging.manifest.json",
+        "bytes": 6374,
+        "sha256": "0568857c01f5cf9103068b65134f111103c9de05bd18546764fab498361e9539"
+      },
+      ".zip": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\post-r18-heads-a01\\dev-staging.zip",
+        "bytes": 898539,
+        "sha256": "f6d4c336d81df49874bce3d169311db3cec3839a1befc033255f96fc7ca1eb59"
+      }
+    },
+    "release-staging": {
+      "files": 56,
+      "logical_bytes": 1951981,
+      ".json": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\post-r18-heads-a01\\release-staging.manifest.json",
+        "bytes": 9954,
+        "sha256": "4f83b27953bfdd16c190b03dea0a085563a719239d8d9d03f5ee3ddc9e548864"
+      },
+      ".zip": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\post-r18-heads-a01\\release-staging.zip",
+        "bytes": 916219,
+        "sha256": "91d3ea24860309c00c138a6697e24937e239ca19793477ece9b9b624717d6ef5"
+      }
+    },
+    "core-fixture": {
+      "files": 13,
+      "logical_bytes": 139853,
+      ".json": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\post-r18-heads-a01\\core-fixture.fixture.json",
+        "bytes": 8119,
+        "sha256": "6135cdd5ca4a6094a9bf5f3b37e5e7ba0fd8bc7158103d3efe722dde48462afa"
+      }
+    },
+    "sect-presets-fixture": {
+      "files": 5,
+      "logical_bytes": 18638,
+      ".json": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\post-r18-heads-a01\\sect-presets-fixture.fixture.json",
+        "bytes": 3525,
+        "sha256": "453d2505f7d991ed80dc9ea9519013afd664b3868522ff3057b6ab6382083b83"
+      }
+    },
+    "initial-reform-fixture": {
+      "files": 3,
+      "logical_bytes": 7822,
+      ".json": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\post-r18-heads-a01\\initial-reform-fixture.fixture.json",
+        "bytes": 2952,
+        "sha256": "83287fafc79cb1f10f7da8e95a9059ee747d95511cf9bfc7b9d49d8c4c443a8c"
+      }
+    }
+  },
+  "game_started": false,
+  "later_changed_fixture_sources": "Requires new a08 build; this evidence remains exact ac693/a07 only."
+}

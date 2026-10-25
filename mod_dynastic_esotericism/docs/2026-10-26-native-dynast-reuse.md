@@ -2,6 +2,10 @@
 
 日期：2026-10-26；machine_id：`desktop-3fevhd2-1c74096080`。本记录说明当前源码合同与静态验证，不表示新分支已实机通过。R0017 失败原件继续保留，不追认为本修复通过。
 
+后继观察2026-10-25T22:37Z：R0019第一阶段实际通过。真实创建前actor31254是D174的Dynast及H174的head；唯一确认请求创建Rite152后，D0纯产品保存、D1／D2原生全员及独立保存均确认复用原D174／H174、两head仍31254、两名称“宗族归一礼”。D174原CoA1783完整AST SHA `d166550b7e506c904a60205b1cb428876416c93a0821d3b46a3977b4d2cc692c`保留；H174仍没有自有CoA字段。D0完整Dynasty／House库存零增删。四名真实新增存活人物的原版精确来源未独立闭合，不能写“全世界零新NPC”；成功的native reuse与source claim、无新D/H排除本产品fallback-founder成功路径。D1／D2各64名实际Rite成员均核入H174→D174，未改信真实继承人65854仍为原Rite。
+
+D174另两House10436／10440完整AST在baseline／D2不变，全量存活人口核其成员均为0，因此只证明已有空旁支不被更改，不能授予活跃原旁支正例。原生绑定冲突转移、None→Dynastic首次编辑仍需独立真实用例。R0019第二阶段headcells日期断言FAIL、全Core仅1/6，不能外推完整验收。原件、八份retained Save与custody见[R0019回执](acceptance/R0019-2026-10-26.json)。
+
 用户要求：真实创建／改革操作前已经是 Dynast 的操作者，直接复用其原 Dynasty 与实际 House，不生成 Dynasty、House 或 NPC；按新 Rite 改名，两者各自原 CoA 保留，其他旁支与未入教原成员身份不变。原宗族若已有另一 Rite 绑定，则把绑定转给新 Rite，旧 Rite 实际改为 None 并解除本产品来源。普通采用预置 Rite 不属于创建／改革，不获得此复用政策。
 
 ## 先保身份，再分支

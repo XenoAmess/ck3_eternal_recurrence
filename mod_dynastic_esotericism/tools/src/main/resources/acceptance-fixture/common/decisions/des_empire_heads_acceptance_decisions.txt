@@ -1,0 +1,99 @@
+﻿# Disclosed stock inputs. INPUT/OBSERVATION markers never mean business PASS.
+des_ehf_adopt_decision = {
+ picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+ is_shown = { is_ai = no exists = global_var:des_ehf_fixture_owner }
+ is_valid = { is_ai = no is_alive = yes this = global_var:des_ehf_fixture_owner has_character_flag = des_ehf_fixture_armed NOT = { has_character_flag = des_ehf_fixture_adopted } faith:@DES_EHF_FAITH@ = { NOT = { exists = religious_head } } title:@DES_EHF_TITLE@ = { NOT = { exists = holder } } }
+ effect = { hidden_effect = {
+  if = { limit = { is_ai = no is_alive = yes this = global_var:des_ehf_fixture_owner has_character_flag = des_ehf_fixture_armed NOT = { has_character_flag = des_ehf_fixture_adopted } faith:@DES_EHF_FAITH@ = { NOT = { exists = religious_head } } title:@DES_EHF_TITLE@ = { NOT = { exists = holder } } }
+   add_character_flag = des_ehf_fixture_adopted
+   set_variable = { name = des_ehf_fixture_adoption_date value = current_date }
+   set_character_faith = faith:@DES_EHF_FAITH@
+   set_character_rite = rite:@DES_EHF_RITE@
+   debug_log = "DES_EHF: INPUT APPLIED adopted"
+  }
+  else = { debug_log = "DES_EHF: NOT_READY adopt" }
+ } }
+ ai_check_interval = 0
+}
+des_ehf_prepare_claim_input_decision = {
+ picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+ is_shown = { is_ai = no exists = global_var:des_ehf_fixture_owner }
+ is_valid = { is_ai = no is_alive = yes this = global_var:des_ehf_fixture_owner has_character_flag = des_ehf_fixture_armed faith = faith:@DES_EHF_FAITH@ rite = rite:@DES_EHF_RITE@ has_character_flag = des_ehf_fixture_adopted NOT = { has_character_flag = des_ehf_fixture_claim_input } is_independent_ruler = yes is_landed = yes primary_title.tier = tier_duchy faith = { NOT = { exists = religious_head } } title:@DES_EHF_TITLE@ = { NOT = { exists = holder } } exists = title:c_santiago.holder title:c_santiago = { NOT = { holder = root } } }
+ effect = { hidden_effect = {
+  if = { limit = { is_ai = no is_alive = yes this = global_var:des_ehf_fixture_owner has_character_flag = des_ehf_fixture_armed faith = faith:@DES_EHF_FAITH@ rite = rite:@DES_EHF_RITE@ has_character_flag = des_ehf_fixture_adopted NOT = { has_character_flag = des_ehf_fixture_claim_input } is_independent_ruler = yes is_landed = yes primary_title.tier = tier_duchy faith = { NOT = { exists = religious_head } } title:@DES_EHF_TITLE@ = { NOT = { exists = holder } } exists = title:c_santiago.holder title:c_santiago = { NOT = { holder = root } } }
+   add_character_flag = des_ehf_fixture_claim_input
+   set_variable = { name = des_ehf_fixture_claim_input_date value = current_date }
+   set_variable = { name = des_ehf_fixture_holy_county_original_holder value = title:c_santiago.holder }
+   # Ordinary county only. Stock grant transaction from 00_board_game_effects.
+   # No e_* transfer, head pointer, doctrine, government or native Can mutation.
+   create_title_and_vassal_change = { type = granted save_scope_as = des_ehf_county_change }
+   title:c_santiago = { change_title_holder = { holder = root change = scope:des_ehf_county_change } }
+   resolve_title_and_vassal_change = scope:des_ehf_county_change
+   add_piety = 100000
+   debug_log = "DES_EHF: INPUT APPLIED claim_preparation"
+  }
+  else = { debug_log = "DES_EHF: NOT_READY prepare_claim_input" }
+ } }
+ ai_check_interval = 0
+}
+des_ehf_prepare_heir_decision = {
+ picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+ is_shown = { is_ai = no exists = global_var:des_ehf_fixture_owner }
+ is_valid = { is_ai = no is_alive = yes this = global_var:des_ehf_fixture_owner has_character_flag = des_ehf_fixture_armed faith = faith:@DES_EHF_FAITH@ rite = rite:@DES_EHF_RITE@ faith.religious_head = this title:@DES_EHF_TITLE@ = { holder = root } has_character_flag = des_ehf_fixture_claim_input NOT = { has_character_flag = des_ehf_fixture_heir_prepared } exists = primary_title exists = primary_heir primary_heir = { is_alive = yes is_adult = yes is_incapable = no NOT = { this = root } } }
+ effect = { hidden_effect = {
+  if = { limit = { is_ai = no is_alive = yes this = global_var:des_ehf_fixture_owner has_character_flag = des_ehf_fixture_armed faith = faith:@DES_EHF_FAITH@ rite = rite:@DES_EHF_RITE@ faith.religious_head = this title:@DES_EHF_TITLE@ = { holder = root } has_character_flag = des_ehf_fixture_claim_input NOT = { has_character_flag = des_ehf_fixture_heir_prepared } exists = primary_title exists = primary_heir primary_heir = { is_alive = yes is_adult = yes is_incapable = no NOT = { this = root } } }
+   add_character_flag = des_ehf_fixture_heir_prepared
+   set_variable = { name = des_ehf_fixture_predecessor value = this }
+   set_variable = { name = des_ehf_fixture_heir value = primary_heir }
+   set_variable = { name = des_ehf_fixture_inherited_title value = primary_title }
+   set_variable = { name = des_ehf_fixture_heir_input_date value = current_date }
+   primary_heir = {
+    if = { limit = { NOT = { faith = root.faith } } set_character_faith = root.faith }
+    set_character_rite = root.rite
+   }
+   debug_log = "DES_EHF: INPUT APPLIED heir_preparation"
+  }
+  else = { debug_log = "DES_EHF: NOT_READY prepare_heir" }
+ } }
+ ai_check_interval = 0
+}
+des_ehf_read_heir_decision = {
+ picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+ is_shown = { is_ai = no exists = global_var:des_ehf_fixture_owner }
+ is_valid = { is_ai = no is_alive = yes this = global_var:des_ehf_fixture_owner has_character_flag = des_ehf_fixture_armed faith = faith:@DES_EHF_FAITH@ rite = rite:@DES_EHF_RITE@ faith.religious_head = this title:@DES_EHF_TITLE@ = { holder = root } has_character_flag = des_ehf_fixture_heir_prepared exists = primary_heir primary_heir = var:des_ehf_fixture_heir primary_title = var:des_ehf_fixture_inherited_title primary_heir = { is_alive = yes is_adult = yes is_incapable = no faith = root.faith rite = root.rite } var:des_ehf_fixture_heir_input_date <= { value = current_date subtract = 1 } NOT = { has_character_flag = des_ehf_fixture_heir_ready } }
+ effect = { hidden_effect = {
+  if = { limit = { is_ai = no is_alive = yes this = global_var:des_ehf_fixture_owner has_character_flag = des_ehf_fixture_armed faith = faith:@DES_EHF_FAITH@ rite = rite:@DES_EHF_RITE@ faith.religious_head = this title:@DES_EHF_TITLE@ = { holder = root } has_character_flag = des_ehf_fixture_heir_prepared exists = primary_heir primary_heir = var:des_ehf_fixture_heir primary_title = var:des_ehf_fixture_inherited_title primary_heir = { is_alive = yes is_adult = yes is_incapable = no faith = root.faith rite = root.rite } var:des_ehf_fixture_heir_input_date <= { value = current_date subtract = 1 } NOT = { has_character_flag = des_ehf_fixture_heir_ready } }
+   add_character_flag = des_ehf_fixture_heir_ready
+   debug_log = "DES_EHF: OBSERVATION heir_ready"
+  }
+  else = { debug_log = "DES_EHF: NOT_READY read_heir" }
+ } }
+ ai_check_interval = 0
+}
+des_ehf_stage_death_decision = {
+ picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+ is_shown = { is_ai = no exists = global_var:des_ehf_fixture_owner }
+ is_valid = { is_ai = no is_alive = yes this = global_var:des_ehf_fixture_owner has_character_flag = des_ehf_fixture_armed faith = faith:@DES_EHF_FAITH@ rite = rite:@DES_EHF_RITE@ faith.religious_head = this title:@DES_EHF_TITLE@ = { holder = root } has_character_flag = des_ehf_fixture_heir_prepared exists = primary_heir primary_heir = var:des_ehf_fixture_heir primary_title = var:des_ehf_fixture_inherited_title primary_heir = { is_alive = yes is_adult = yes is_incapable = no faith = root.faith rite = root.rite } var:des_ehf_fixture_heir_input_date <= { value = current_date subtract = 1 } has_character_flag = des_ehf_fixture_heir_ready NOT = { has_character_flag = des_ehf_fixture_death_staged } }
+ effect = { hidden_effect = {
+  if = { limit = { is_ai = no is_alive = yes this = global_var:des_ehf_fixture_owner has_character_flag = des_ehf_fixture_armed faith = faith:@DES_EHF_FAITH@ rite = rite:@DES_EHF_RITE@ faith.religious_head = this title:@DES_EHF_TITLE@ = { holder = root } has_character_flag = des_ehf_fixture_heir_prepared exists = primary_heir primary_heir = var:des_ehf_fixture_heir primary_title = var:des_ehf_fixture_inherited_title primary_heir = { is_alive = yes is_adult = yes is_incapable = no faith = root.faith rite = root.rite } var:des_ehf_fixture_heir_input_date <= { value = current_date subtract = 1 } has_character_flag = des_ehf_fixture_heir_ready NOT = { has_character_flag = des_ehf_fixture_death_staged } }
+   add_character_flag = des_ehf_fixture_death_staged
+   trigger_event = { id = des_empire_heads_acceptance.1 days = 1 }
+   debug_log = "DES_EHF: INPUT APPLIED death_staged"
+  }
+  else = { debug_log = "DES_EHF: NOT_READY stage_death" }
+ } }
+ ai_check_interval = 0
+}
+des_ehf_read_successor_decision = {
+ picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+ is_shown = { is_ai = no exists = global_var:des_ehf_fixture_owner }
+ is_valid = { is_ai = no is_alive = yes faith = faith:@DES_EHF_FAITH@ rite = rite:@DES_EHF_RITE@ faith.religious_head = this title:@DES_EHF_TITLE@ = { holder = root } exists = global_var:des_ehf_fixture_owner global_var:des_ehf_fixture_owner = { is_alive = no has_character_flag = des_ehf_fixture_death_staged } this = global_var:des_ehf_fixture_owner.var:des_ehf_fixture_heir primary_title = global_var:des_ehf_fixture_owner.var:des_ehf_fixture_inherited_title NOT = { has_character_flag = des_ehf_fixture_successor_observed } }
+ effect = { hidden_effect = {
+  if = { limit = { is_ai = no is_alive = yes faith = faith:@DES_EHF_FAITH@ rite = rite:@DES_EHF_RITE@ faith.religious_head = this title:@DES_EHF_TITLE@ = { holder = root } exists = global_var:des_ehf_fixture_owner global_var:des_ehf_fixture_owner = { is_alive = no has_character_flag = des_ehf_fixture_death_staged } this = global_var:des_ehf_fixture_owner.var:des_ehf_fixture_heir primary_title = global_var:des_ehf_fixture_owner.var:des_ehf_fixture_inherited_title NOT = { has_character_flag = des_ehf_fixture_successor_observed } }
+   add_character_flag = des_ehf_fixture_successor_observed
+   debug_log = "DES_EHF: OBSERVATION successor_current"
+  }
+  else = { debug_log = "DES_EHF: NOT_READY read_successor" }
+ } }
+ ai_check_interval = 0
+}
