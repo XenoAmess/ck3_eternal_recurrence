@@ -20,3 +20,7 @@ Native实际释放 **38,318,603,536B**；卷free从 `88,543,404,032B` 变为 `12
 本次实际准入：`live-admission/ADMISSION.publication-128MiB-a04.actual.json`，6,854B，SHA `d23a5e02da4b419f3fbda463b34ddc302fa34dc08c183c19737e68dad53cbb26`。清理后freshfree `126,868,594,688B`，保持原系统、安全和其他任务上界，物理余量 `37,975,740,826B`。
 
 后续将只下载发布条目3826756673做正式缓存验收；订阅后台下载在临时联网期间单独观察和控制，任务结束恢复Steam离线。保留本次小回执按record180天复核，大型逐文件删除清单30天后按统一策略归纳；本记录不延长原R8/R10保护期限。
+
+07:34Z后继发布在Submit前因本机认证失效被拒绝；实际Steam登录刷新窗口明确提示另一台计算机已登录。07:36:27Z退出操作后的实际Steam／CK3进程均0，下载暂停器正常退出0；最后离线探针未确认offline。发布尚未完成，当前阻断为账号认证，容量已经满足。实际证据见[发布记录](../../mod_religious_ritual_fusion/docs/publication-0.1.0-alpha-2026-10-25.md)。
+
+07:42Z统一账本head124已关闭publication／Java／menu预留，仅留来源资格与Root收尾共用32MiB，原08:30Z到期；旧128MiB不再授权继续Steam写入。实际freshfree126,848,888,832B，owned Native920,121,584B，physical margin38,055,649,690B。`publication-a01/PUBLICATION-CLOSED-ACCOUNT-BLOCKED.actual.json`：6,007B，SHA `996f564ba229ff5459715c66b84788b4775768c2a155968e56b7ce9d32014161`。用户重新登录后须以新的fresh状态重新授予发布和菜单预算；本清理结果不自动续期准入。
