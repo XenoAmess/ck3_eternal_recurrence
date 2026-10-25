@@ -558,7 +558,18 @@ class _SavedInventoryVerifierV2(Protocol):
                          actual_enabled_mods: object) -> Inventory: ...
 
 
-def _saved_inventory_registrar_prelaunch(stderr: object, frozen: object) -> JsonObject | None:
+class FrozenV2RegistrarRejection(TypedDict):
+    host: FilePin
+    source_index: FilePin
+    verifier: FilePin
+    inventory: FilePin
+    prepared_case: FilePin
+    registrar: FilePin
+    inventory_binding: Literal['reproduced_from_frozen_prepared_file_closure']
+    original_rejection_reproduced: Literal[True]
+
+
+def _saved_inventory_registrar_prelaunch(stderr: object, frozen: object) -> FrozenV2RegistrarRejection | None:
     """Reproduce the exact frozen V2 rejection, before any managed game session."""
     terminal = 'ValueError: Saved campaign fixture/overlay contains a cold-start registrar: '
     if not isinstance(stderr, str) or not stderr.splitlines():
@@ -644,10 +655,10 @@ def _saved_inventory_registrar_prelaunch(stderr: object, frozen: object) -> Json
     finally:
         if previous is None:sys.modules.pop(spec.name, None)
         else:sys.modules[spec.name] = previous
-    return json_object({'host': pin(host), 'source_index': pin(index), 'verifier': sources[verifier],
-                        'inventory': pin(inventory), 'prepared_case': pin(prepared_path),
-                        'inventory_binding': 'reproduced_from_frozen_prepared_file_closure', 'registrar': pin(offending),
-                        'original_rejection_reproduced': True})
+    return FrozenV2RegistrarRejection(host=file_pin(pin(host)), source_index=file_pin(pin(index)),
+        verifier=sources[verifier], inventory=file_pin(pin(inventory)),
+        prepared_case=file_pin(pin(prepared_path)), registrar=file_pin(pin(offending)),
+        inventory_binding='reproduced_from_frozen_prepared_file_closure', original_rejection_reproduced=True)
 
 
 def _prelaunch_root_public_wait(wait_value: object, intent_value: object, producer: str, wait_path: Path,
@@ -1066,7 +1077,10 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
             require(prepared.get('runtime_manifest')==freeze.get('runtime_manifest') and
                     prepared['startup']['saved_campaign']['product_inventory']==inventory_registrar['inventory']['path'],
                     'V2 registrar rejected inventory crossed original prepared/runtime binding')
-            evidence['frozen_V2_registrar_rejection']=inventory_registrar
+            evidence.update({'frozen_V2_'+key:ref for key,ref in {
+                'host':inventory_registrar['host'], 'source_index':inventory_registrar['source_index'],
+                'verifier':inventory_registrar['verifier'], 'inventory':inventory_registrar['inventory'],
+                'prepared_case':inventory_registrar['prepared_case'], 'registrar':inventory_registrar['registrar']}.items()})
     def command(key,mode,code):
         row=bundle[key];path=Path(row['path']).resolve()
         check_pin(path,row);evidence[key]=row;value=read_json(path);argv=value.get('argv',[])
@@ -1188,6 +1202,7 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
             'normal_close_qualified':False,'typed_normal_exit_proven':False,
             'business_pass':False,'release_pass':False,'absent_game_controls':absent,
             **({'supervisor_binding':supervisor_binding} if saved_profile_rejected or allocated_profile_rejected else {}),
+            **({'frozen_V2_registrar_rejection':inventory_registrar} if inventory_registrar is not None else {}),
             **({'native_cleanup_qualified':None,'administrative_resource_admission_only':True}
                if background_rejected else {})}}
 

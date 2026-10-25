@@ -471,6 +471,7 @@ class PrelaunchHostFailureTests(unittest.TestCase):
         """R0009's retained terminal/call sites, on authored paths and no game."""
         from ck3_mod_acceptance_saved_profile_v2 import write_saved_profile_inventory_v2
         self.allocated_profile_failure()
+        self.freeze['identity_allocation']['state_root'] = str(self.root/'isolated-id-state')
         state = Path(self.freeze['state_dir'])
         profile = state/'profile'
         for name in ('product', 'fixture'):
@@ -568,7 +569,15 @@ class PrelaunchHostFailureTests(unittest.TestCase):
         self.assertIsNone(result['native_cleanup_qualified'])
         self.assertFalse(result['business_pass'])
         self.assertFalse(result['typed_normal_exit_proven'])
-        self.assertTrue(result['original_evidence']['frozen_V2_registrar_rejection']['original_rejection_reproduced'])
+        self.assertTrue(result['frozen_V2_registrar_rejection']['original_rejection_reproduced'])
+        # The final allocator freezes every original_evidence value as FilePin.
+        # Structured facts must survive separately through JSON persistence.
+        roundtripped = json.loads(json.dumps(result))
+        frozen_files = {str(Path(row['path']).resolve()): allocation.file_pin(row)
+                        for row in roundtripped['original_evidence'].values()}
+        proof = roundtripped['frozen_V2_registrar_rejection']
+        for key in ('host', 'source_index', 'verifier', 'inventory', 'prepared_case', 'registrar'):
+            self.assertEqual(frozen_files[proof[key]['path']], proof[key])
 
     def test_r9_inventory_registrar_rejects_unbound_stack_source_and_content(self):
         self.inventory_registrar_failure()
@@ -587,6 +596,61 @@ class PrelaunchHostFailureTests(unittest.TestCase):
         verifier = Path(self.freeze['source_root'])/'ck3_autonomous_player/src/xar_autoplayer/saved_campaign_profile_inventory_v2.py'
         verifier.write_bytes(verifier.read_bytes()+b'\n# changed after frozen\n')
         with self.assertRaises(ValueError):self.check()
+
+    def test_public_allocate_main_freezes_v2_filepins_before_first_mutation(self):
+        import contextlib
+        import io
+        import subprocess
+        import test_ck3_mod_acceptance_r06_scope as fixture
+        import ck3_mod_acceptance as entry
+        import ck3_live_run_id as ids
+        self.inventory_registrar_failure()
+        harness = fixture.PublicR06ScopeTests('runTest')
+        harness.setUp()
+        self.addCleanup(harness.doCleanups)
+        catalog = json.loads(harness.products_path.read_bytes())
+        catalog['products']['war-episode04-r10']['runtime_mod_key'] = 'religious-ritual-fusion'
+        harness.products_path = harness.root/'products.json'
+        harness.write(harness.products_path,catalog)
+        harness.prepare()
+        # This is an authored no-game public entry fixture, with a real clean
+        # Git lease anchor. The production clean/source guards remain enabled.
+        lease = harness.root/'lease'
+        for command in (['git','init','-q'],['git','add','.'],
+                ['git','-c','user.name=Fixture','-c','user.email=fixture@example.invalid','commit','-qm','fixture']):
+            subprocess.run(command,cwd=lease,capture_output=True,check=True)
+        class BeforeMutation(BaseException):pass
+        frozen_inputs = {}
+        def stop(binding,selected,args,closure):
+            # Capture the actual already-composed input table in the caller.
+            frame = sys._getframe(1)
+            while frame.f_code.co_name!='_allocate_and_keep_impl':frame=frame.f_back
+            frozen_inputs.update(frame.f_locals['files'])
+            self.assertTrue(closure['failure_cleanup']['frozen_V2_registrar_rejection']['original_rejection_reproduced'])
+            raise BeforeMutation()
+        argv = ['allocate','--runtime',str(harness.runtime_path),'--products',str(harness.products_path),
+            '--product','war-episode04-r10','--case','r10-common-preparation',
+            '--prepared-case',str(harness.prepared_path),'--attempt','a01',
+            '--keeper-output',str(harness.root/'next-keeper'),'--previous-live',str(self.run),
+            '--previous-keeper',str(self.keeper),'--previous-release',str(self.root/'release.json'),
+            '--previous-failure-close',str(self.close)]
+        (self.root/'release.json').write_text('{}')
+        binding = dict(self.freeze['identity_allocation'])
+        with contextlib.ExitStack() as stack:
+            for name,value in (('actual_machine_binding',binding),('shared_bus_history',([],True)),
+                    ('current_screen_absent',self.bus),('closed_lease',True),
+                    ('read_failed_runtime_release',self.release),('runtime_process_inventory',{'blockers':[]})):
+                stack.enter_context(patch.object(allocation,name,return_value=value))
+            claim = stack.enter_context(patch.object(allocation,'claim_machine_admission',side_effect=stop))
+            allocate = stack.enter_context(patch.object(ids,'allocate_live_run_id',side_effect=AssertionError('Run-ID mutation forbidden')))
+            with self.assertRaises(BeforeMutation), contextlib.redirect_stdout(io.StringIO()):
+                entry.main(argv)
+        claim.assert_called_once()
+        allocate.assert_not_called()
+        self.assertGreater(len(frozen_inputs),30)
+        for path,row in frozen_inputs.items():self.assertEqual(Path(allocation.file_pin(row)['path']),path)
+        self.assertFalse((harness.state.parent/'single-use-ledger').exists())
+        self.assertFalse((harness.root/'next-keeper').exists())
 
     def test_r9_inventory_registrar_rejects_forged_wait_producer_and_native_presence(self):
         self.inventory_registrar_failure()
@@ -614,12 +678,12 @@ class PrelaunchHostFailureTests(unittest.TestCase):
     def test_actual_v2_prelaunch_helpers_are_strict(self) -> None:
         from mypy import api
         tree = ast.parse((TOOLS/'ck3_mod_acceptance_allocate.py').read_text(encoding='utf-8-sig'))
-        names = {'_SavedInventoryVerifierV2', '_saved_inventory_registrar_prelaunch',
+        names = {'_SavedInventoryVerifierV2', 'FrozenV2RegistrarRejection', '_saved_inventory_registrar_prelaunch',
                  '_prelaunch_root_public_wait', '_canonical_source_index_files'}
         nodes = [node for node in tree.body if isinstance(node, (ast.FunctionDef, ast.ClassDef)) and node.name in names]
         self.assertEqual({node.name for node in nodes}, names)
         prelude = '''from __future__ import annotations
-from typing import Protocol, runtime_checkable, Literal
+from typing import Protocol, runtime_checkable, Literal, TypedDict
 from pathlib import Path
 from datetime import datetime
 import ast, json, math, re, sys, importlib.util
