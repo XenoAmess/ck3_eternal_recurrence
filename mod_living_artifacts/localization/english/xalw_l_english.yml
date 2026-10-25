@@ -286,6 +286,7 @@
  xalw_hunger_5_modifier:0 "Living Hunger (5)"
  xalw_keep_interaction:0 "Toggle Feeding Protection"
  xalw_keep_interaction_desc:0 "Mark a personal artifact as protected, or release that protection. Protected artifacts cannot be consumed."
+ xalw_living_description:0 "【It is alive】\n[xalw_described_artifact.GetDesc]"
  xalw_manage_decision:0 "Listen to Living Artifacts"
  xalw_manage_decision_confirm:0 "Listen"
  xalw_manage_decision_desc:0 "Some treasures breathe, remember, and demand a price. Learn how to inspect and cultivate them."

@@ -398,3 +398,12 @@ xalw_ai_cultivate_effect = {
 	        }
 	    }
 }
+
+xalw_ensure_living_description_effect = {
+	if = {
+	    limit = { xalw_is_living_trigger = yes NOT = { has_variable = xalw_living_description_marked } }
+	    save_scope_as = xalw_described_artifact
+	    set_artifact_description = xalw_living_description
+	    set_variable = { name = xalw_living_description_marked value = yes }
+	}
+}

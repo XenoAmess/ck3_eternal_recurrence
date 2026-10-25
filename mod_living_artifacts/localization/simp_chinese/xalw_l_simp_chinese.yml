@@ -286,6 +286,7 @@
  xalw_hunger_5_modifier:0 "活武器饥渴（5）"
  xalw_keep_interaction:0 "切换喂养保护"
  xalw_keep_interaction_desc:0 "将个人装备标为保留，或解除保留；保留物品不会进入喂养清单。"
+ xalw_living_description:0 "【它是活的】\n[xalw_described_artifact.GetDesc]"
  xalw_manage_decision:0 "倾听活武器"
  xalw_manage_decision_confirm:0 "听听它们的声音"
  xalw_manage_decision_desc:0 "有些宝物会呼吸、记忆，也会索取代价。查看活武器的状态与培养方法。"

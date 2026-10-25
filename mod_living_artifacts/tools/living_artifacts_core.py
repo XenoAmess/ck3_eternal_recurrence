@@ -385,9 +385,10 @@ def render_core_effects() -> str:
     """))
     refresh_hunger = "\n".join(f"remove_artifact_modifier = xalw_hunger_{points}_modifier" for points in range(1, 6))
     refresh_hunger += "\n" + "\n".join(f"if = {{ limit = {{ NOT = {{ has_game_rule = xalw_backlash_mild }} xalw_actual_hunger_value = {points} }} add_artifact_modifier = xalw_hunger_{points}_modifier }}" for points in range(1, 6))
-    effects.append(_block("xalw_refresh_artifact_effect", "xalw_ensure_star_name_effect = yes\nxalw_content_refresh_artifact_effect = yes\n" + refresh_hunger))
+    effects.append(_block("xalw_refresh_artifact_effect", "xalw_ensure_star_name_effect = yes\nxalw_ensure_living_description_effect = yes\nxalw_content_refresh_artifact_effect = yes\n" + refresh_hunger))
     effects.append(_block("xalw_artifact_monthly_effect", """
         xalw_ensure_star_name_effect = yes
+        xalw_ensure_living_description_effect = yes
         if = {
             limit = { xalw_is_living_trigger = yes var:xalw_last_settled_month != xalw_current_month_value }
             set_variable = { name = xalw_last_settled_month value = xalw_current_month_value }
@@ -450,6 +451,17 @@ def render_core_effects() -> str:
         }
     """))
     effects.extend(_render_management_effects())
+    # As in vanilla sanctify_artifact_flavor_effect, GetDesc preserves the
+    # existing description when the replacement localization is resolved.
+    # An independent marker also migrates already-starred, unequipped old items.
+    effects.append(_block("xalw_ensure_living_description_effect", """
+        if = {
+            limit = { xalw_is_living_trigger = yes NOT = { has_variable = xalw_living_description_marked } }
+            save_scope_as = xalw_described_artifact
+            set_artifact_description = xalw_living_description
+            set_variable = { name = xalw_living_description_marked value = yes }
+        }
+    """))
     return "\n".join(effects)
 
 
@@ -932,6 +944,7 @@ def render_core_localization(language: Language) -> dict[str, str]:
     chinese = language == "simp_chinese"
     pairs: dict[str, tuple[str, str]] = {
         "xalw_star_name": (LIVING_NAME_PREFIX + "[xalw_named_artifact.GetNameNoTooltip]", LIVING_NAME_PREFIX + "[xalw_named_artifact.GetNameNoTooltip]"),
+        "xalw_living_description": ("【它是活的】\n[xalw_described_artifact.GetDesc]", "【It is alive】\n[xalw_described_artifact.GetDesc]"),
         "xalw_manage_decision": ("倾听活武器", "Listen to Living Artifacts"),
         "xalw_manage_decision_desc": ("有些宝物会呼吸、记忆，也会索取代价。查看活武器的状态与培养方法。", "Some treasures breathe, remember, and demand a price. Learn how to inspect and cultivate them."),
         "xalw_manage_decision_tooltip": ("打开活武器管理指引", "Open living artifact management guidance"),
