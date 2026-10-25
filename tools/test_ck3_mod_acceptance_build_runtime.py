@@ -855,6 +855,35 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
             with self.subTest(codec=codec):
                 self.assert_formal_runtime_producer(codec, extra_tools=tools)
 
+    def test_rite_creation_actions_require_case_opt_in_and_native_flag_through_actual_consumers(self) -> None:
+        tools = (
+            'ck3_query_player_rite_creation_action_context_v1',
+            'ck3_execute_player_rite_creation_action_v1',
+            'ck3_collect_player_rite_creation_action_result_v1',
+            'ck3_verify_player_rite_creation_action_completed_v1',
+        )
+        flag = 'XAR_ENABLE_RITE_CREATION_ACTIONS12004'
+        self.assertFalse(set(tools) & CapabilityRegistrationConsumer.registered({}))
+        declared = {'opt_in_player_rite_creation_actions': True, 'required_mcp_tools': list(tools)}
+        self.assertLessEqual(set(tools), CapabilityRegistrationConsumer.registered(declared))
+        for opt_in in (None, False):
+            with self.subTest(opt_in=opt_in):
+                self.assert_formal_runtime_producer(
+                    None, extra_tools=tools, rite_creation_opt_in=opt_in,
+                    profile_flags={flag: 'ON'},
+                    expected_error='Rite action tools require their explicit case opt-in')
+        for codec in (None, 'gzip-members'):
+            with self.subTest(codec=codec, flag='ON'):
+                self.assert_formal_runtime_producer(
+                    codec, extra_tools=tools, rite_creation_opt_in=True,
+                    profile_flags={flag: 'ON'})
+        for state in ('OFF', None):
+            with self.subTest(flag=state):
+                self.assert_formal_runtime_producer(
+                    None, extra_tools=tools, rite_creation_opt_in=True,
+                    profile_flags={} if state is None else {flag: state},
+                    expected_error='Qualified profile lacks required flag: ' + flag)
+
     def test_religion_content_queries_require_exact_native_flags_and_reach_actual_consumers(self) -> None:
         tools_and_flags = {
             'ck3_query_player_religion_doctrines_v1': 'XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1',
@@ -937,6 +966,7 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
         self, codec: str | None, *, extra_tools: tuple[str, ...] = (),
         presentation_flag: str | None = 'ON', expected_error: str | None = None,
         extra_read_only_tools: tuple[str, ...] = (), profile_flags: dict[str, str] | None = None,
+        rite_creation_opt_in: bool | None = None,
         generic_rrf: bool = False, invalid_validator_contract: bool = False,
         expected_partial_output: bool = False,
         workshop_cache: bool = False, missing_stock_source: str | None = None,
@@ -992,6 +1022,8 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
                                                           'ck3_query_player_religion_context_v1', *extra_read_only_tools], adapter={
                                   'module': 'tools.ck3_mod_acceptance_cases.faith_e02_pilgrimage_adapter',
                                   'config': str(contract_path)})
+            if rite_creation_opt_in is not None:
+                owned.case['opt_in_player_rite_creation_actions'] = rite_creation_opt_in
             if generic_rrf:
                 product_key = 'religious-ritual-fusion'
                 registered = builder.read(root / 'tools/ck3_mod_acceptance_products.json')['products'][product_key]
@@ -1086,6 +1118,8 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
             self.assertEqual(json.loads(stdout.getvalue())['wire_evidence_codec'], selected_codec)
             selected = entry.Selection(destination / 'runtime.local.json', owned.products_path, product_key, case_id)
             writer_selection_argv = list(selected.argv)
+            if rite_creation_opt_in is True:
+                self.assertEqual(writer_selection_argv.count('--private-player-rite-creation-actions'), 1)
             if workshop_cache:
                 self.assertEqual(selected.case, products['workshop_cache_case'])
                 self.assertEqual(Path(selected.load_adapter().__file__).resolve(),

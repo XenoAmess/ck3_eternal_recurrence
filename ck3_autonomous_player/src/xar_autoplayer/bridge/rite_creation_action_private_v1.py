@@ -240,8 +240,9 @@ def parse_current_rite_poststate(value: object) -> CurrentRitePoststate:
         "doctrines": None if row["doctrines"] is None else parse_doctrines(row["doctrines"]),
         "confirmation_modal_open": flags["confirmation_modal_open"],
         "creation_window_visible": flags["creation_window_visible"]}
-    if observed and any(result[key] is None for key in ("rite_id", "faith_id", "religion_id", "names",
-            "core_tenets", "doctrines", "confirmation_modal_open", "creation_window_visible")):
+    if observed and any(value is None for value in (result["rite_id"], result["faith_id"],
+            result["religion_id"], result["names"], result["core_tenets"], result["doctrines"],
+            result["confirmation_modal_open"], result["creation_window_visible"])):
         raise ValueError("observed independent current Rite is incomplete")
     return result
 
@@ -262,7 +263,8 @@ def poststate_matches_payload(payload: SubmittedPayload, current: CurrentRitePos
 
 
 def different_business_intent(first: SubmittedPayload, second: SubmittedPayload) -> bool:
-    return any(first[key] != second[key] for key in ("outcome_kind", "names", "core_tenets", "doctrines"))
+    return (first["outcome_kind"] != second["outcome_kind"] or first["names"] != second["names"]
+            or first["core_tenets"] != second["core_tenets"] or first["doctrines"] != second["doctrines"])
 
 
 

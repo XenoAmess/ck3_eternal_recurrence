@@ -1,0 +1,67 @@
+{
+  "schema": "rrf-rite-actions-runtime-repair-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-25T23:10:12.102348+00:00",
+  "source_identity": "SCOPED_WORKING_TREE",
+  "execution_head": "aef0a4ac8dc8e9f89ba172482810ad4e49bf429e",
+  "changed_files": [
+    "tools/ck3_mod_acceptance_build_runtime.py",
+    "tools/test_ck3_mod_acceptance_build_runtime.py",
+    "tools/ck3_mod_acceptance.py",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/rite_creation_action_private_v1.py"
+  ],
+  "runtime_registration": {
+    "tools": 4,
+    "required_native_flag": "XAR_ENABLE_RITE_CREATION_ACTIONS12004",
+    "explicit_case_opt_in_required": true,
+    "native_profile_default_changed": false
+  },
+  "validation": {
+    "complete_ci_commands": 11,
+    "typed_commands": 2,
+    "original_command_waits_all_zero": true,
+    "tests_executed_including_optimized_repeat": 215,
+    "static_check_commands": 5,
+    "skipped": 0,
+    "source_pins_before_after_equal": true,
+    "full_source_pins_per_snapshot": 10344
+  },
+  "failures_preserved": [
+    "public entry optional prepared value had no explicit None guard",
+    "private typed poststate used two dynamic TypedDict key expressions"
+  ],
+  "field_or_serialization_contract_changed": false,
+  "native_rebuilt": false,
+  "des": {
+    "tests": 38,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "formal_files": 56
+  },
+  "evidence": {
+    "pass": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\validation-typed-a01\\segment-a03\\EXECUTION.rite-route.actual.json",
+      "bytes": 5326396,
+      "sha256": "188e9dd254a15a9298f6a51dd671d732cbb07c70ab864ba783bed71c6ed82cf8"
+    },
+    "public_types_failure": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\validation-typed-a01\\EXECUTION.rite-route.actual.json",
+      "bytes": 5324191,
+      "sha256": "909a0ee6c675e4ce010eb834cec3939195d8c276a29835634b65a425749180c6"
+    },
+    "typed_types_failure": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\validation-typed-a01\\segment-a02\\EXECUTION.rite-route.actual.json",
+      "bytes": 5326396,
+      "sha256": "316ced1cab1dc0e26c8143cec9d7cf6e2d7b0dae0bcc36a890d2ab1fe9d99e7b"
+    },
+    "des": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\zh-live-a01\\metadata\\product-validation-a13-des-latest\\EXECUTION.des-latest38-formal56.actual.json",
+      "bytes": 155402,
+      "sha256": "c6479d6aed51c01f6d446f4b4a841c14cae230a71359766042719231b7604a8c"
+    }
+  },
+  "new_game_started": false,
+  "new_live_business_pass": false,
+  "release_pass": false
+}

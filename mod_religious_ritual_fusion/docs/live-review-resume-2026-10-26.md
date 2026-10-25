@@ -88,3 +88,11 @@ N3原wait0、57生产单元及8个fixture的构建结果已实际消费。新14�
 既有`ordinary_save_contract.native_owner`能从保存前后原生结果读取同一玩家／PID／代次与场次来源，但已关闭的宿主不再提供原内存CaseClient及其保留句柄。正式`retained_client(None)`结果为`unconfirmed / missing_or_malformed`；没有调用`begin_save`或`verify_save`，`one_life_identity_proven=false`。`metadata/review-resume-a01/ORDINARY-SAVE.R0016.actual.json`（5097 B，SHA-256 `b520d4c8a98b1ce20a3798da69f27df150bf7bb58dc041cb72da322ac4ef1a50`）保留此边界。原生文件与规范副本逐字节匹配及完整AST比较不授予该SDK合同资格。
 
 闭场实际存储rev174保留两项RED：native通道549507072 B超过432 MiB预算96522240 B，wire通道151764992 B超过144 MiB预算770048 B；owned／物理容量／配额／gross通过不抵通道超额。停止重型写入后，Root审查精确清单并实际回收五份已核SHA、不同FileID的保存副本及3740个已关闭shadercache文件，共498791216分配字节，原进程wait0。前后基线、R0015原保存、R0016创建与阻断草案规范原件及小型证据均保留。原profile五份副本与缓存路径已删除，不制造同名替代；下次冷载使用`native-saves/R0016-created.ck3`。`metadata/review-resume-a01/reclamation-R0016-a01/ACTUAL.actual.json`（38491 B，SHA-256 `33466d5adee75850ff64e6d99b97be91b437e10dcdcd0b56dbc85ae01ed973e5`）记录3745项确认删除与保护输入回读。CAS175→176加回实际retirement而不重置gross高水或追改本场RED；下一场仍须全量新观察和独立准入。
+
+## 原生编辑工具公共路由补齐
+
+2026-10-25T23:07:49Z，`machine_id: 4-8e1c2f1861`。共享runtime builder现为四个礼仪编辑工具登记真实`XAR_ENABLE_RITE_CREATION_ACTIONS12004`要求；保留case显式opt-in和默认关闭边界。新回归执行真实builder→manifest／静态校验→公共Selection／preflight→MCP工厂，覆盖无opt-in／false拒绝、plain／gzip启用、缺flag／OFF拒绝与单次参数转发。
+
+完整受影响两个CI step的11条命令，以及完整typed19项和两叶strict，共13条原wait均0、无跳过；测试执行215次包含优化模式重复10项，5组静态检查按实际完整模块范围记录。前两段分别在公共入口optional prepared值、SDK叶TypedDict动态键strict处失败，保留原件；修复为显式None拒绝及literal字段访问，未改字段、序列化、原生默认profile或持久化合同。实际四文件工作树前后10344项源码Pin一致；不冒充当时已有clean提交。详情与原始失败／成功Pin见[路由修复回执](acceptance/review-rite-runtime-route-2026-10-26.json)。
+
+并行补验远端新DES：完整Maven38项通过，正式56文件validate／build／verify原wait均0；原36项／52文件证据仍只证明旧输入。RRF生产字节未变，不重复其90项；旧RRF证明引用的公共入口依赖已有漂移，新完整回归覆盖该项，由Java资格生产者按同chain组合来源核验，不删除旧Pin或把整份旧证明追认为当前闭包。此时仍未启动新游戏，未授予四名、颜色、图标或保存的实机资格。

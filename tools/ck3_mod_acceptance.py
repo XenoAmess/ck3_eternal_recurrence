@@ -644,6 +644,8 @@ class Selection:
                 self.required_pins.append((path, row))
                 self.normal_quit_automation[key] = {**row, "path": str(path)}
         if self.prepared_path:
+            if self.prepared is None:
+                raise ValueError('Prepared case input unavailable')
             self.required_pins.append((self.prepared_path, pin(self.prepared_path)))
             from ck3_mod_acceptance_prepare import compatibility_mod_source_pins
             for reference in compatibility_mod_source_pins(self.prepared.get('case_inputs', {})):
