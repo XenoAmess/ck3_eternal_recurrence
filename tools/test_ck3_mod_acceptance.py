@@ -529,6 +529,8 @@ print(json.dumps({'running_inputs':qualified['_runtime_input_observation'],'reco
                 'allow_private_player_religion_hostility_query',
             'ck3_query_player_rite_members_v1':
                 'allow_private_player_rite_members_query',
+            'ck3_query_player_prisoner_collection_private_v1':
+                'allow_private_prisoner_collection_query',
         }
         # Execute the actual finite CLI declaration and driver assignments,
         # without importing or starting the managed game/session host.
@@ -552,7 +554,7 @@ print(json.dumps({'running_inputs':qualified['_runtime_input_observation'],'reco
             and node.iter.args[1].value == 'case_read_only_mcp_tool'
             and any(isinstance(child, ast.Name) and child.id == 'child_args'
                     for child in ast.walk(node))]
-        self.assertEqual((len(declarations), len(mappings), len(forwarders)), (1, 3, 1))
+        self.assertEqual((len(declarations), len(mappings), len(forwarders)), (1, 4, 1))
         cli = argparse.ArgumentParser()
         exec(compile(ast.Module(body=declarations, type_ignores=[]), str(host), 'exec'), {'result': cli})
         case = self.products['products']['xqol']['cases'][0]
@@ -560,8 +562,9 @@ print(json.dumps({'running_inputs':qualified['_runtime_input_observation'],'reco
         async def advertised(driver):
             async with Client(create_server(driver)) as client:
                 return {tool.name: tool for tool in (await client.list_tools()).tools}
-        costs, hostility, members = permissions
-        for requested in ([], [costs], [hostility], [members], [costs, hostility], [costs, hostility, members]):
+        costs, hostility, members, prisoners = permissions
+        for requested in ([], [costs], [hostility], [members], [prisoners],
+                          [costs, hostility], [costs, hostility, members, prisoners]):
             with self.subTest(requested=requested):
                 case['required_mcp_tools'] = required + requested
                 case['opt_in_read_only_mcp_tools'] = requested
@@ -586,6 +589,8 @@ print(json.dumps({'running_inputs':qualified['_runtime_input_observation'],'reco
                 for tool in requested:
                     self.assertTrue(tools[tool].annotations.read_only_hint)
                 self.assertNotIn('ck3_execute_player_rite_creation_action_v1', tools)
+                self.assertNotIn('ck3_release_player_prisoner_private_v1', tools)
+                self.assertNotIn('ck3_ransom_player_prisoner_private_v1', tools)
                 self.assertNotIn('ck3_query_player_religion_draft_tenet_choices_v1', tools)
         case['required_mcp_tools'] = required
         case['opt_in_read_only_mcp_tools'] = [costs]

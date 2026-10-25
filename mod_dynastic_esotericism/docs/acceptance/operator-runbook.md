@@ -75,6 +75,14 @@ Root 在真实分配前完成存储原子准入、干净 checkout 和屏幕 owne
 
 创建后的 capture 决议仅提交一次，保留独立后态。新 fixture 的实验等待为 +2 日：Root 在 capture 后真实 +1、+2 自然日分别固定完整原生成员名单及保存，按本场实际 ID 对照 House→Dynasty 和 stock 回调标记；不复用 R0009 的成员 ID，不以单一 flag 授资格。只消费原 `binding_and_members` 全量守卫；+2 未同步或其他原守卫失败仍为 FAIL，不延后等待周期修复、不补写产品状态、不重放 capture。两次读回计入原 deadline／400 日预算。R0009 不追认，REQ-05 普通转换同次同步另按原要求验收。
 
+R0013已实际通过前两阶段、两日全部61名成员归族及两种head建族分支，但第三阶段的合法囚犯预览未完成。Game／host实际0，public2、keeper／allocator0、SCREEN8892；normal-close=true仅生命周期。后继不修改其冻结图，不重复提交其动作，不把原监禁查询的`can_send=true`当作监禁已生效。原件见[R0013](R0013-2026-10-25.json)。
+
+后继phase 3仍由原`same_faith_apostasy` marker进入Root等待；不要把尚待Root调用的囚犯准备marker加入该入口条件。先从本场baseline保存读取`des_test_ref_prison_control`的真实完整ID。该独立廷臣与主`des_test_target`分开，初始创建和后续普通改信均为公开fixture输入。只提交一次`des_acceptance_prisoner_control_decision`，经过真实一日，并处理实际事件边界。`.8`只有在原生引擎判定该control的实际背离、好感、penalty及全部三类理由成立后，才调用原版`imprison_character_effect`形成受限囚犯输入；原主目标、产品状态和计时器不写入。`DESAF: TEST PASS prisoner_control_ready`还要求control存活、确由当前Root监禁且驱逐／处决理由仍在。该日志证明fixture观察范围，不代表原监禁互动已发送或自动处罚功能。
+
+保存并独立核对control身份与Root的实际监禁关系，再查询原`execute_prisoner_interaction`的完整当前预览。驱逐必须使用`release_from_prison_interaction`的`banish`选项；不存在独立的`banish_interaction`。新图仅在实际DLL的两项囚犯只读编译开关、来源／ABI及本core的宿主权限都资格化后，通过既有`ck3_query_player_prisoner_collection_private_v1`传`release_option_keys=["banish"]`（原合同mask=4）。读取实际control行、精确所选flag、原完整Can及成本／接受度和同一暂停帧；工具注册、编译或ACK不能代替这些读回。执行与驱逐均只预览，不发送；保留全部action开关关闭。接口不可用、仍非Root囚犯、选项映射不符或原Can拒绝时如实保留未验，不用默认释放预览抵扣。
+
+主目标的−100唯一来源和三类理由另按原要求核对，非礼仪观察者的负例方向必须是`outsider→apostate`，不能用`Root→outsider`或反向记录替代。完成囚犯预览及上述读回后，才调用原跨信仰输入决议并签认phase 3。新增control不进入继任者迁移白名单，不改原23个marker含义；core新增`prisoner_control_ready`后共24个必需marker，其他case仍保留各自原输入及范围。
+
 ### 两位真实 head 的后继 core 顺序（候选，未授继承资格）
 
 保留 core 全部六个 phase、原 required assertions 与 marker 含义。原始 `dynastic_esotericism_core.json` 是 adapter 配置，`allow_actor_change=true`、`actor_transition_days=[]` 和 `continue_as_heir_requirements` 是其**顶层现有字段**，没有新的 `adapter_config` 对象。空数组表示不指定自动 advance 序号，不是游戏日期；许可仅使同一 run／pipe／PID／generation 下的新实际 actor 可被观察，不能证明继承或允许任意换人。共享 purpose／clock 必须从同一已 pin 原合同消费该布尔值，保留初始起日、日期单调与预算；缺字段的其他 case 默认 false。R0007 实际 tools/list 注册了 `ck3_set_played_character_v1`，但注册不授予原生可用性或真继承资格；本流程绝不调用它。当前没有已核可用于本次真继承验收的 Continue-as-Heir 路径，遇必须点击 Continue 且无合法原生路径时保留未合格，不创造命令或改玩家。

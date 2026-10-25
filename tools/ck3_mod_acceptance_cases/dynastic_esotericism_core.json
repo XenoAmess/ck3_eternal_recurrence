@@ -56,6 +56,15 @@
         "actual_nonrite_observer_no_product_opinion_or_reason",
         "actual_lawful_prisoner_execution_banish_preview_without_automatic_punishment",
         "actual_single_cross_faith_test_decision"
+      ],
+      "operator_sequence": [
+        "read_actual_baseline_des_test_ref_prison_control_identity",
+        "des_acceptance_prisoner_control_decision_once_and1_natural_day",
+        "verify_actual_prisoner_control_ready_and_same_Root_custody",
+        "actual_readonly_execute_prisoner_interaction_preview_for_control",
+        "actual_readonly_release_banish_option_mask4_preview_for_control",
+        "verify_main_target_directional_opinion_reasons_and_nonrite_observer_negative",
+        "des_acceptance_cross_faith_decision_once"
       ]
     },
     {

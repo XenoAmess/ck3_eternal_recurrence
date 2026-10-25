@@ -129,6 +129,10 @@ des_acceptance_restore_refs_effect = {
     var:des_test_ref_peer = { save_scope_as = des_test_peer }
     var:des_test_ref_child = { save_scope_as = des_test_child }
     var:des_test_ref_outsider = { save_scope_as = des_test_outsider }
+    if = {
+        limit = { has_variable = des_test_ref_prison_control }
+        var:des_test_ref_prison_control = { save_scope_as = des_test_prison_control }
+    }
     var:des_test_source_rite = { save_scope_as = des_test_source_rite }
     if = {
         limit = { has_variable = des_test_primary_rite }

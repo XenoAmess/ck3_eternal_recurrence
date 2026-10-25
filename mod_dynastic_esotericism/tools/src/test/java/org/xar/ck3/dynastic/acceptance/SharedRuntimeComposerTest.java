@@ -75,11 +75,15 @@ final class SharedRuntimeComposerTest {
                 status=result['tool_status'][tool]
                 assert status['source_build_ready'] is True,status
                 assert status['actual_live_qualified'] is False,status
+                prisoner_status=result['tool_status']['ck3_query_player_prisoner_collection_private_v1']
+                assert prisoner_status['source_build_ready'] is True,prisoner_status
+                assert prisoner_status['actual_live_qualified'] is False,prisoner_status
                 evidence=status['evidence']
                 assert pin(Path(evidence['path']))==evidence,evidence
                 assert result['tool_status']['ck3_take_snapshot']==original_manifest['capabilities']['ck3_take_snapshot']
-                index=selected.argv.index('--case-read-only-mcp-tool')
-                assert selected.argv[index+1]==tool,selected.argv
+                declared=[selected.argv[i+1] for i,value in enumerate(selected.argv)
+                          if value=='--case-read-only-mcp-tool']
+                assert tool in declared,selected.argv
                 failure='Required MCP tool has no shared build-ready evidence: '+tool
                 for label,status in [('missing',None),('false',{'source_build_ready':False}),
                                      ('integer',{'source_build_ready':1}),('null',{'source_build_ready':None})]:
@@ -100,6 +104,8 @@ final class SharedRuntimeComposerTest {
                               str(repository/'ck3_autonomous_player/tests/unit')]
                 from test_ck3_mod_acceptance_failed_resource_closure import assert_java_produced_source_consumers
                 assert_java_produced_source_consumers(runtime_path)
+                from test_canonical_host_successor import assert_prisoner_preview_runtime_consumers
+                assert_prisoner_preview_runtime_consumers(runtime_path,selected.argv)
                 print('actual Java runtime -> public Selection.preflight; ready plus four missing/type negatives; live false')
                 print('actual Java source index -> CaseClient.normal_close and preserved typed observer consumers; originals unchanged')
                 """;
@@ -120,8 +126,14 @@ final class SharedRuntimeComposerTest {
         Files.writeString(changed, "# actual source now differs\n");
         Path currentFactory = sdk.resolve("bridge/mcp_server.py");
         Files.createDirectories(currentFactory.getParent());
-        Files.writeString(currentFactory, "# authored current global factory source\n");
         Path actualRepository = Path.of(System.getProperty("dynastic.source")).toAbsolutePath().normalize().getParent();
+        Files.copy(actualRepository.resolve("ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py"), currentFactory);
+        for (String name : List.of("native_driver.py", "player_prisoner_collection_private_transport.py",
+                "prisoner_release_preview_contract_12003.py", "prisoner_negotiated_preview_contract_12003.py",
+                "prisoner_selected_quote_source_contract_12004.py")) {
+            Files.copy(actualRepository.resolve("ck3_autonomous_player/src/xar_autoplayer/bridge").resolve(name),
+                    currentFactory.getParent().resolve(name));
+        }
         String fixtureMachine = JSON.readTree(actualRepository.resolve("tools/fixtures/ck3_r11_failed_resource_closure.json").toFile())
                 .path("machine_id").textValue();
         for (String name : List.of("normal_exit_process_observer_v1.py", "normal_exit_contract_v1.py",
@@ -131,15 +143,8 @@ final class SharedRuntimeComposerTest {
         }
         Path canonicalHost = repo.resolve("ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py");
         Files.createDirectories(canonicalHost.getParent());
-        StringBuilder host = new StringBuilder("import argparse\np=argparse.ArgumentParser()\n");
-        for (String flag : List.of("--agent-source-root", "--game-dir", "--bridge-dll", "--bridge-injector",
-                "--bridge-pipe", "--output", "--state-dir", "--plan", "--control-plan-dir", "--command-timeout",
-                "--readiness-timeout", "--timeout", "--poll-interval", "--hold-seconds", "--fixture-profile",
-                "--ordinary-gui-campaign", "--case-read-only-mcp-tool")) {
-            host.append("p.add_argument('").append(flag).append("')\n");
-        }
-        host.append("raise RuntimeError('Authored host must never execute')\n");
-        Files.writeString(canonicalHost, host.toString());
+        Files.copy(actualRepository.resolve("ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py"),
+                canonicalHost);
         for (String name : List.of("ck3_mod_acceptance_launcher.py", "ck3_mod_acceptance_queue.py", "ck3_mod_acceptance_keeper.py",
                 "ck3_mod_acceptance_build_runtime.py", "codex_task_bus.py", "build_normal_exit_source_inventory_v1.py")) {
             Files.writeString(tools.resolve(name), "# authored tool\n");
@@ -249,6 +254,9 @@ final class SharedRuntimeComposerTest {
             flags.put("XAR_CK3_ENABLE_G2_PLAYER_RELIGION_" + part + "_PRIVATE_QUERY_V1", "ON");
         }
         flags.put("XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1", "ON");
+        flags.put("XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1", "ON");
+        flags.put("XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1", "ON");
+        flags.put("XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1", "OFF");
         flags.put("XAR_ENABLE_RELIGION_UI12004_PRESENTATION", "ON");
         flags.put("XAR_ENABLE_RITE_CREATION_ACTIONS12004", "ON");
         flags.put("XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1", "ON");
@@ -298,7 +306,7 @@ final class SharedRuntimeComposerTest {
         assertEquals("retain exactly", actualManifest.path("preserved_unknown_parent_field").textValue());
         assertEquals(7, actual.path("allocation").path("preserved_allocation_field").intValue());
         assertEquals(1, actualIndex.path("actual_changed_parent_files").size());
-        assertEquals(20, result.copiedFiles());
+        assertEquals(25, result.copiedFiles());
         assertEquals("ck3-common-source-index-v1", actualIndex.path("schema").textValue());
         assertTrue(actualIndex.path("files").isObject());
         assertEquals(result.copiedFiles(), actualIndex.path("files").size());
@@ -310,7 +318,7 @@ final class SharedRuntimeComposerTest {
         assertEquals(2, normalExitBuilderMetadata.size());
         assertEquals(frozenNormalExitBuilderPin.path("bytes"), normalExitBuilderMetadata.path("bytes"));
         assertEquals(frozenNormalExitBuilderPin.path("sha256"), normalExitBuilderMetadata.path("sha256"));
-        assertEquals(20, SharedRuntimeComposer.parentSourceFiles((ObjectNode) actualIndex,
+        assertEquals(25, SharedRuntimeComposer.parentSourceFiles((ObjectNode) actualIndex,
                 output.resolve("source"), fixtureMachine).size());
         assertEquals(pin(Path.of(result.sourceIndex())).path("sha256"), actualManifest.path("source_index").path("sha256"));
         assertEquals(pin(Path.of(result.manifest())), actual.path("manifest"));
@@ -348,8 +356,10 @@ final class SharedRuntimeComposerTest {
         Path plan = temporary.resolve("plan.json");
         write(plan, JSON.createArrayNode());
         selectedCase.put("initial_plan", plan.toString());
-        selectedCase.putArray("required_mcp_tools").add("ck3_take_snapshot").add("ck3_query_player_rite_members_v1");
-        selectedCase.putArray("opt_in_read_only_mcp_tools").add("ck3_query_player_rite_members_v1");
+        selectedCase.putArray("required_mcp_tools").add("ck3_take_snapshot").add("ck3_query_player_rite_members_v1")
+                .add("ck3_query_player_prisoner_collection_private_v1");
+        selectedCase.putArray("opt_in_read_only_mcp_tools").add("ck3_query_player_rite_members_v1")
+                .add("ck3_query_player_prisoner_collection_private_v1");
         selectedCase.putObject("budgets").put("command_timeout", 300).put("readiness_timeout", 1800)
                 .put("timeout", 3600).put("poll_interval", 0.05).put("hold_seconds", 0);
         write(products, registry);
@@ -358,25 +368,34 @@ final class SharedRuntimeComposerTest {
         assertThrows(IllegalArgumentException.class,
                 () -> SharedRuntimeComposer.compose(repo, parentRuntime, nativePath, projectionPath, output, fixtureMachine));
         int defect = 0;
-        for (JsonNode invalid : List.of(JSON.getNodeFactory().textNode("OFF"), JSON.getNodeFactory().booleanNode(true),
-                JSON.getNodeFactory().nullNode())) {
-            flags.set("XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1", invalid);
-            write(flagsPath, flags);
-            nativeIndex.set("feature_flags", pin(flagsPath));
-            build.set("feature_flags", pin(flagsPath));
-            write(buildPath, build);
-            nativeIndex.set("build_output", pin(buildPath));
-            nativeIndex.set("production_qualification", pin(buildPath));
-            write(nativePath, nativeIndex);
-            Path rejected = temporary.resolve("rejected-members-" + defect++);
-            projection.put("runtime_binding", rejected.resolve("runtime.json").toString());
-            write(projectionPath, projection);
-            IllegalArgumentException invalidMemberFlag = assertThrows(IllegalArgumentException.class,
-                    () -> SharedRuntimeComposer.compose(repo, parentRuntime, nativePath, projectionPath, rejected, fixtureMachine));
-            assertTrue(invalidMemberFlag.getMessage().contains("native provider not compiled: XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1"));
-            assertFalse(Files.exists(rejected));
+        for (String flag : List.of("XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1",
+                "XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1",
+                "XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1",
+                "XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1")) {
+            boolean actionFlag = flag.equals("XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1");
+            for (JsonNode invalid : List.of(JSON.getNodeFactory().textNode(actionFlag ? "ON" : "OFF"),
+                    JSON.getNodeFactory().booleanNode(true), JSON.getNodeFactory().numberNode(1),
+                    JSON.getNodeFactory().nullNode(), JSON.getNodeFactory().textNode("MISSING"))) {
+                if (invalid.isTextual() && invalid.textValue().equals("MISSING")) flags.remove(flag);
+                else flags.set(flag, invalid);
+                write(flagsPath, flags);
+                nativeIndex.set("feature_flags", pin(flagsPath));
+                build.set("feature_flags", pin(flagsPath));
+                write(buildPath, build);
+                nativeIndex.set("build_output", pin(buildPath));
+                nativeIndex.set("production_qualification", pin(buildPath));
+                write(nativePath, nativeIndex);
+                Path rejected = temporary.resolve("rejected-provider-" + defect++);
+                projection.put("runtime_binding", rejected.resolve("runtime.json").toString());
+                write(projectionPath, projection);
+                IllegalArgumentException invalidFlag = assertThrows(IllegalArgumentException.class,
+                        () -> SharedRuntimeComposer.compose(repo, parentRuntime, nativePath, projectionPath, rejected, fixtureMachine));
+                assertTrue(invalidFlag.getMessage().contains(actionFlag
+                        ? "read-only prisoner preview requires prisoner actions compiled OFF" : "native provider not compiled: " + flag));
+                assertFalse(Files.exists(rejected));
+            }
+            flags.put(flag, actionFlag ? "OFF" : "ON");
         }
-        flags.put("XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1", "ON");
         flags.put("XAR_ENABLE_RITE_CREATION_ACTIONS12004", "OFF");
         write(flagsPath, flags);
         nativeIndex.set("feature_flags", pin(flagsPath));

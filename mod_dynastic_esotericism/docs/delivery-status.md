@@ -1,5 +1,7 @@
 # 制作与发布状态
 
+观察2026-10-25T02:55:27Z（machine_id: `desktop-3fevhd2-1c74096080`）：R0013实际通过核心前两阶段；创建后+1、+2日各61名原生信徒均由保存独立核为House12760→Dyn12156，未改信后代仍为House174→Dyn174。原族长交接给真实旧家族成员后建族，以及singleton生成并保留真实同礼仪成年创始人，两条分支均取得实际保存后态。正式创建、取消无副作用、两个教义的创建／编辑显示也通过。第三阶段尚缺合法囚犯的处决／驱逐选项预览，Root如实返回INCOMPLETE，没有提交不支持的监禁动作。Game0、host0、public2、keeper／allocator0、SCREEN8892，normal-close=true仅生命周期，完整核心仍未通过。当前总体约62%，完整矩阵、seed／cold／old和Workshop尚未完成。见[R0013实际证据](acceptance/R0013-2026-10-25.json)。下列较早观察保留其历史范围。
+
 观察2026-10-25T00:03:25.441948+00:00（machine_id: `desktop-3fevhd2-1c74096080`）：R0012已完成typed原生退出与资源闭场，业务0/6；原失败和autosave=false保留。e703产品静态CI40143646790实际success。新候选统一canonical source index并显式保历史只读兼容；原请求者优先卸任、singleton生成真实NPC，以及stock家庭转换同callback共享同步均纳入新源码。18文件开发包／25文件九语清单已同步，完整回归、a15工具／a16新包／runtimea12和全部实机矩阵仍在执行，不能拿旧产物抵扣。当前总体约60%，seed/cold/old与Workshop尚未完成。以下为各观察时间的历史记录。
 
 观察2026-10-24T22:20Z（北京时间06:20），machine_id: `desktop-3fevhd2-1c74096080`：R0010真实创建与独立completion通过，原取消前后Rite／House／资源／无绑定保持；+1原生63成员与保存选择完全相等，其中六名实际仍在旧Dyn174，其余不同House不能直接当作不同Dyn。+2前已有新事件，Root漏先处理，guard9正确拒绝，日期仍+1，+2查询和保存未执行；这不是SDK读取故障，不改共享守卫。另实际加载报告新NPC create_character缺必填gender；最小源码修正仅增加 gender_female_chance=50，有exact原版用例和grammar原exit0，新图加载／NPC仍待验证。详见[R0010原件摘要](acceptance/R0010-2026-10-25.json)。
@@ -18,8 +20,8 @@
 | --- | --- | --- |
 | 需求 | 已制定版本 1 | [requirements.md](requirements.md) |
 | 测试方案 | 已制定版本 1，尚未授予测试通过 | [test-plan.md](test-plan.md) |
-| 编码 | 新候选b8c7fc3仅改fixture等待与中英前缀；完整Maven16项和源→JAR→fixture／清单消费者通过。生产同步未改，sole-head建族边界未解决 | [R0009](acceptance/R0009-2026-10-25.json)、[测试方案](test-plan.md) |
-| 测试验收 | R0009第一phase六项断言接受；第二phase全员归族FAIL，核心整体仍RED。seed/cold/old未完成 | [R0009失败与正常资源终态](acceptance/R0009-2026-10-25.json) |
+| 编码 | 18de31e4源码的交接／singleton真实NPC及家庭转换同步已在R0013取得实际后态；现有囚犯预览通道与测试输入仍须补齐 | [R0013](acceptance/R0013-2026-10-25.json)、[测试方案](test-plan.md) |
+| 测试验收 | R0013核心2/6阶段通过，全体61人两日核对与两种建族分支通过；第三阶段未完整验收，核心整体INCOMPLETE。seed/cold/old未完成 | [R0013实际范围](acceptance/R0013-2026-10-25.json) |
 | 发布 | NOT_PUBLISHED，Workshop ID 未分配 | 待业务验收及正式发布闭环 |
 
 2026-10-24T21:15Z补记（北京时间05:15，machine_id: `desktop-3fevhd2-1c74096080`）：用户提出卸任家族族长再建新宗族。已核 exact .4 原版 `set_house_head` 会同步重算 Dynast；窄生产候选优先已有合格真实信徒，无人时才让另一存活同旧House人物接任，并在实际双重离任守卫后建族。旧House只有本人时仍未解决，不默认新建NPC，等待用户对该边界的选择。见[原版来源、影响和待验边界](2026-10-25-house-head-handover.md)。新S11候选61b4b05不改SDK/native，完整默认Maven16项0失败/错误/跳过及15资源、17文件开发包/ZIP/13文件fixture实际生产链通过，回执 `C:/ck3-dynastic-esotericism-20261024/resume-builder-a12/SUMMARY.actual.json`，SHA `b0977cbc628e5c2c9021774fe48c706e7846ab1f15baaa3db8da06bf1b181076`。当前新增交接路径尚未实机，不能从构建或研究追认通过；下一图准备还将检查能否以真实输入触发fallback。R0009公共verify已实际退出2，case_acceptance_pass及qualified_boundary_pass为false，原normal_close=true仅生命周期继续保留。

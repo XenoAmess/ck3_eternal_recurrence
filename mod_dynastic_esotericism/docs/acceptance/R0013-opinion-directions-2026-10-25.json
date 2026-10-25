@@ -1,0 +1,80 @@
+{
+  "schema": "des.r0013.opinion-directions-followup.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-25T03:17:49.663881+00:00",
+  "source_head": "18de31e4da8900651773553185817ce0184edccf",
+  "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0013",
+  "status": "PARTIAL_SAVED_OPINION_EVIDENCE",
+  "full_business_matrix_pass": false,
+  "original_phase3_result_changed": false,
+  "evidence": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\operations-core-a32\\opinion-pairs-readonly-a02\\SELECTED-PAIRS.actual.json",
+    "bytes": 8096,
+    "sha256": "79c364663a59b1350211d65b207236f00fff2a3dc42becbf1b1b8efcc380d03e"
+  },
+  "complete_saved_opinion_record_count": 1595,
+  "source_save": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\common-runtime-a12\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0013\\operator-evidence\\retained-saves\\same-faith.ck3",
+    "bytes": 68895917,
+    "sha256": "52cf1679c8dba10cd978e54b2ad0623c67a3c0043e820515be479eef90117482"
+  },
+  "held_file_identity_unchanged": true,
+  "original_decoder_exit_code": 0,
+  "directional_opinion_observations": [
+    {
+      "owner": "31254",
+      "target": "65819",
+      "complete_directional_pair_record_count": 1,
+      "des_apostasy_modifier_count": 1,
+      "saved_modifier_fields": [
+        {
+          "modifier": "\"des_apostasy_opinion\"",
+          "start_date": "1066.9.21",
+          "expiration_date": "9999.1.1",
+          "value": "-100",
+          "modify": "-100",
+          "days": null
+        }
+      ],
+      "evaluated_crime_reasons": null
+    },
+    {
+      "owner": "65820",
+      "target": "65819",
+      "complete_directional_pair_record_count": 1,
+      "des_apostasy_modifier_count": 1,
+      "saved_modifier_fields": [
+        {
+          "modifier": "\"des_apostasy_opinion\"",
+          "start_date": "1066.9.21",
+          "expiration_date": "9999.1.1",
+          "value": "-100",
+          "modify": "-100",
+          "days": null
+        }
+      ],
+      "evaluated_crime_reasons": null
+    },
+    {
+      "owner": "65822",
+      "target": "65819",
+      "complete_directional_pair_record_count": 0,
+      "des_apostasy_modifier_count": 0,
+      "saved_modifier_fields": [],
+      "evaluated_crime_reasons": null
+    },
+    {
+      "owner": "65819",
+      "target": "31254",
+      "complete_directional_pair_record_count": 0,
+      "des_apostasy_modifier_count": 0,
+      "saved_modifier_fields": [],
+      "evaluated_crime_reasons": null
+    }
+  ],
+  "scope": "Complete saved opinions table proves one source modifier of -100 in each positive observer-to-apostate direction and zero modifiers for outsider-to-apostate and reverse directions. a01 remains unchanged and its Root-to-outsider query is not relabeled.",
+  "unproven": [
+    "Three actual engine-evaluated imprisonment/banishment/execution reasons are not proven by stored modifier keys or authored definition flags.",
+    "No total opinion score, transient runtime cache, or later live state is inferred from this immutable Save."
+  ]
+}

@@ -1367,6 +1367,7 @@ def observe_only_fixture_initial_plan(args: argparse.Namespace) -> list[dict[str
         "ck3_query_player_religion_context_v1", "ck3_query_player_religion_personal_parameters_v1",
         "ck3_query_player_religion_doctrines_v1", "ck3_query_player_religion_tenets_v1",
         "ck3_query_player_rite_governance_v1", "ck3_query_player_rite_members_v1",
+        "ck3_query_player_prisoner_collection_private_v1",
         "ck3_query_holy_site_planning_knowledge_v1", "ck3_inspect_gui_window_tree_v1",
         "ck3_inspect_frontend_gui_tree_v1",
     }
@@ -1443,6 +1444,7 @@ def native_server(args: argparse.Namespace) -> None:
     driver.case_declared_read_only_mcp_tools = frozenset(getattr(args, "case_read_only_mcp_tool", []))
     driver.allow_private_player_rite_governance_query = "ck3_query_player_rite_governance_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_rite_members_query = "ck3_query_player_rite_members_v1" in driver.case_declared_read_only_mcp_tools
+    driver.allow_private_prisoner_collection_query = "ck3_query_player_prisoner_collection_private_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_pilgrimage_activities_query = "ck3_query_player_pilgrimage_activities_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_war_cash_query = bool(getattr(args, "private_war_cash_queries", False))
     driver.allow_private_holy_site_relic_actions = args.private_holy_site_relic_actions
@@ -5058,6 +5060,7 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--case-read-only-mcp-tool", action="append", default=[], choices=(
         "ck3_query_player_rite_governance_v1", "ck3_query_player_pilgrimage_activities_v1",
         "ck3_query_player_rite_members_v1",
+        "ck3_query_player_prisoner_collection_private_v1",
         "ck3_query_faith_power_ui_v1", "ck3_query_faith_power_tooltip_v1",
         "ck3_query_player_holy_site_creation_context_v1",
         "ck3_query_player_holy_site_relic_action_context_v1",

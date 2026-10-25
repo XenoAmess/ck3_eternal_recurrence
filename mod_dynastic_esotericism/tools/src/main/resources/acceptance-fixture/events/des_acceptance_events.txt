@@ -16,10 +16,14 @@ des_acceptance.1 = {
         create_character = { employer = root age = 8 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = des_test_child }
         create_character = { location = root.location age = 30 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = des_test_outsider }
         scope:des_test_outsider = { create_dynasty = { spread_to_descendants = no } }
+        # Separate ordinary courtier. Only the actual UI creation converts this
+        # control into the primary Rite; capture_created never forces it in.
+        create_character = { employer = root age = 30 gender_female_chance = 0 culture = root.culture faith = root.faith rite = root.rite dynasty = none random_traits = no save_scope_as = des_test_prison_control }
         set_variable = { name = des_test_ref_target value = scope:des_test_target }
         set_variable = { name = des_test_ref_peer value = scope:des_test_peer }
         set_variable = { name = des_test_ref_child value = scope:des_test_child }
         set_variable = { name = des_test_ref_outsider value = scope:des_test_outsider }
+        set_variable = { name = des_test_ref_prison_control value = scope:des_test_prison_control }
         add_character_flag = des_test_ready
         if = {
             limit = {
@@ -138,5 +142,80 @@ des_acceptance.5 = {
             debug_log = "DESAF: TEST PASS repentance"
         }
         else = { debug_log = "DESAF: TEST FAIL repentance" }
+    }
+}
+
+# Disclosed custody input, not an imprison-interaction submission. The original
+# target is never converted, imprisoned, punished or used as this control.
+des_acceptance.8 = {
+    hidden = yes
+    immediate = {
+        if = {
+            limit = {
+                is_alive = yes
+                is_ai = no
+                exists = global_var:des_test_extended_owner
+                this = global_var:des_test_extended_owner
+                has_character_flag = des_test_same_verified
+                has_character_flag = des_test_prison_control_started
+                NOT = { has_character_flag = des_test_cross_started }
+                NOT = { has_character_flag = des_test_prison_control_ready }
+                exists = var:des_test_ref_prison_control
+                exists = var:des_test_ref_target
+                exists = var:des_test_primary_rite
+                exists = var:des_test_source_rite
+                exists = var:des_test_bound_dynasty
+                rite = var:des_test_primary_rite
+                dynasty = var:des_test_bound_dynasty
+                var:des_test_primary_rite = { des_has_active_binding_trigger = yes }
+                var:des_test_source_rite = { faith = root.faith }
+                var:des_test_ref_target = { is_alive = yes dynasty = root.var:des_test_bound_dynasty rite = root.var:des_test_source_rite }
+                var:des_test_ref_prison_control = {
+                    is_alive = yes
+                    is_adult = yes
+                    is_ai = yes
+                    is_landed = no
+                    is_imprisoned = no
+                    is_courtier_of = root
+                    faith = root.faith
+                    rite = root.var:des_test_source_rite
+                    dynasty = root.var:des_test_bound_dynasty
+                    NOT = { this = root }
+                    NOT = { this = root.var:des_test_ref_target }
+                }
+                # The stock strife branch consumes reasons; this input supplies
+                # no such option and never clears an inherited option scope.
+                NOT = { exists = scope:use_strife_not_tyranny }
+                basic_allowed_to_imprison_character_trigger = { CHARACTER = var:des_test_ref_prison_control }
+            }
+            des_acceptance_restore_refs_effect = yes
+            if = {
+                limit = {
+                    scope:des_test_prison_control = { des_is_apostate_trigger = yes }
+                    has_opinion_modifier = { target = scope:des_test_prison_control modifier = des_apostasy_opinion }
+                    has_imprisonment_reason = scope:des_test_prison_control
+                    has_banish_reason = scope:des_test_prison_control
+                    has_execute_reason = scope:des_test_prison_control
+                    des_is_penalty_pair_trigger = { TARGET = scope:des_test_prison_control }
+                }
+                debug_log = "DESAF: PRECONDITION PASS prisoner_control_actual_apostasy_before_custody"
+                save_scope_as = actor
+                save_scope_as = puppet_or_actor
+                scope:des_test_prison_control = { save_scope_as = recipient }
+                imprison_character_effect = { TARGET = scope:des_test_prison_control IMPRISONER = root }
+                if = {
+                    limit = {
+                        scope:des_test_prison_control = { is_alive = yes is_imprisoned_by = root }
+                        has_banish_reason = scope:des_test_prison_control
+                        has_execute_reason = scope:des_test_prison_control
+                    }
+                    add_character_flag = des_test_prison_control_ready
+                    debug_log = "DESAF: TEST PASS prisoner_control_ready"
+                }
+                else = { debug_log = "DESAF: TEST FAIL prisoner_control_custody_readback" }
+            }
+            else = { debug_log = "DESAF: TEST FAIL prisoner_control_apostasy_before_custody" }
+        }
+        else = { debug_log = "DESAF: NOT_READY prisoner_control_custody_input" }
     }
 }

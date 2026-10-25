@@ -42,7 +42,7 @@ final class FixtureEmitterTest {
         assertEquals("authored-machine", decoded.path("machine_id").textValue());
         assertEquals(13, decoded.path("files").size());
         assertEquals(14, decoded.path("producer_source_pins").size());
-        assertEquals(23, decoded.path("receipt").path("required_markers").size());
+        assertEquals(24, decoded.path("receipt").path("required_markers").size());
         assertTrue(decoded.path("receipt").path("fixture_contains_business_effects").booleanValue());
         for (var entry : result.payload().files().entrySet()) {
             byte[] bytes = Files.readAllBytes(result.fixture().resolve(entry.getKey()));
@@ -139,9 +139,11 @@ final class FixtureEmitterTest {
         assertEquals(21, observation.path("successor_history_transfer_count").intValue());
         assertFalse(observation.path("engine_semantics_verified").booleanValue());
         assertTrue(observation.path("heir_minimum_day_guard_validated").booleanValue());
+        assertTrue(observation.path("separate_prisoner_control_custody_validated").booleanValue());
 
         for (String mutation : List.of("missing-head", "product-write", "pardon-copy",
-                "date-literal", "date-no-source", "date-same-day")) {
+                "date-literal", "date-no-source", "date-same-day",
+                "prison-main-target", "prison-no-reason", "prison-product-write")) {
             ProbeResult forbidden = probeFixture(current, baseline, mutation);
             assertNotEquals(0, forbidden.exitCode(), forbidden.output());
             assertEquals(switch (mutation) {
@@ -150,6 +152,9 @@ final class FixtureEmitterTest {
                 case "date-literal" -> "INVALID_DATE_LITERAL_VARIABLE_TRIGGER";
                 case "date-no-source" -> "MISSING_HEIR_INPUT_DATE_GUARD";
                 case "date-same-day" -> "HEIR_MINIMUM_DAY_GUARD_CHANGED";
+                case "prison-main-target" -> "PRISON_CUSTODY_TARGET_CHANGED";
+                case "prison-no-reason" -> "PRISON_PRE_CUSTODY_REASON_MISSING";
+                case "prison-product-write" -> "PRISON_UNDECLARED_EFFECT";
                 default -> "SUCCESSOR_FLAG_TRANSFER_OUTSIDE_CONTRACT";
             }, new ObjectMapper().readTree(forbidden.output()).path("reason").textValue());
         }
@@ -264,6 +269,90 @@ final class FixtureEmitterTest {
                 def require(entries,key,value,reason):
                     if {'key':key,'value':value} not in entries:
                         reject(reason,key=key)
+                # The real emitted route must prepare a distinct initial NPC,
+                # observe product reasons before custody, and invoke one stock
+                # custody writer. These are AST contracts, not engine verdicts.
+                control='des_test_prison_control'
+                ref='des_test_ref_prison_control'
+                control_scope='scope:'+control
+                def walk(entries):
+                    for row in entries:
+                        yield row
+                        if isinstance(row['value'],list):
+                            yield from walk(row['value'])
+                created=[row['value'] for row in setup if row['key']=='create_character' and one(row['value'],'save_scope_as')==control]
+                if len(created)!=1:
+                    reject('PRISON_CONTROL_NOT_UNIQUE_INITIAL_NPC')
+                for key,value in [('employer','root'),('age','30'),('faith','root.faith'),('rite','root.rite'),('culture','root.culture'),('dynasty','none'),('random_traits','no')]:
+                    require(created[0],key,value,'PRISON_CONTROL_NOT_ORDINARY_INITIAL_COURTIER')
+                require(setup,'set_variable',[{'key':'name','value':ref},{'key':'value','value':control_scope}],'PRISON_CONTROL_REFERENCE_NOT_SAVED')
+                capture=one(one(one(decisions,'des_acceptance_capture_created_decision',required=True),'effect',required=True),'hidden_effect',required=True)
+                if any(row['key'] in (control_scope,'var:'+ref) for row in walk(capture)):
+                    reject('PRISON_CONTROL_UI_CONVERSION_BYPASSED')
+                prison_decision=one(decisions,'des_acceptance_prisoner_control_decision',required=True)
+                shown=one(prison_decision,'is_shown',required=True)
+                stage=one(one(one(prison_decision,'effect',required=True),'hidden_effect',required=True),'if',required=True)
+                valid=one(prison_decision,'is_valid',required=True)
+                stage_guard=one(stage,'limit',required=True)
+                if stage_guard!=valid:
+                    reject('PRISON_DISPATCH_IDENTITY_NOT_REVALIDATED')
+                for rows in (shown,valid):
+                    require(rows,'has_character_flag','des_test_same_verified','PRISON_WRONG_PHASE')
+                    require(rows,'NOT',[{'key':'has_character_flag','value':'des_test_prison_control_started'}],'PRISON_REPLAY_NOT_BLOCKED')
+                    require(rows,'NOT',[{'key':'has_character_flag','value':'des_test_cross_started'}],'PRISON_WRONG_PHASE')
+                for key,value in [('exists','global_var:des_test_extended_owner'),('this','global_var:des_test_extended_owner'),('exists','var:'+ref),('exists','var:des_test_ref_target'),('rite','var:des_test_primary_rite'),('dynasty','var:des_test_bound_dynasty')]:
+                    require(valid,key,value,'PRISON_CONTROL_IDENTITY_NOT_BOUND')
+                control_guard=one(valid,'var:'+ref,required=True)
+                for key,value in [('is_alive','yes'),('is_adult','yes'),('is_ai','yes'),('is_landed','no'),('is_imprisoned','no'),('is_courtier_of','root'),('faith','root.faith'),('rite','root.var:des_test_primary_rite'),('dynasty','root.var:des_test_bound_dynasty')]:
+                    require(control_guard,key,value,'PRISON_CONTROL_IDENTITY_NOT_BOUND')
+                for other in ('root','root.var:des_test_ref_target'):
+                    require(control_guard,'NOT',[{'key':'this','value':other}],'PRISON_CONTROL_IS_MAIN_TARGET')
+                require(stage,control_scope,[{'key':'set_character_rite','value':'scope:des_test_source_rite'}],'PRISON_WRONG_APOSTASY_INPUT')
+                require(stage,'trigger_event',[{'key':'id','value':'des_acceptance.8'},{'key':'days','value':'1'}],'PRISON_CUSTODY_NOT_DELAYED')
+                require(stage,'add_character_flag','des_test_prison_control_started','PRISON_REPLAY_NOT_BLOCKED')
+                custody=one(one(one(events,'des_acceptance.8',required=True),'immediate',required=True),'if',required=True)
+                custody_guard=one(custody,'limit',required=True)
+                require(custody_guard,'this','global_var:des_test_extended_owner','PRISON_CONTROL_IDENTITY_NOT_BOUND')
+                require(custody_guard,'NOT',[{'key':'exists','value':'scope:use_strife_not_tyranny'}],'PRISON_CONSUMING_OPTION_NOT_EXCLUDED')
+                require(custody_guard,'basic_allowed_to_imprison_character_trigger',[{'key':'CHARACTER','value':'var:'+ref}],'PRISON_CUSTODY_PRECONDITION_MISSING')
+                prisoner=one(custody_guard,'var:'+ref,required=True)
+                for key,value in [('is_alive','yes'),('is_imprisoned','no'),('is_courtier_of','root'),('rite','root.var:des_test_source_rite')]:
+                    require(prisoner,key,value,'PRISON_CUSTODY_PRECONDITION_MISSING')
+                penalty=one(custody,'if',required=True)
+                pre=one(penalty,'limit',required=True)
+                stock=one(penalty,'imprison_character_effect',required=True)
+                if mutation=='prison-main-target':
+                    one(stock,'TARGET',required=True)
+                    stock[0]['value']='scope:des_test_target'
+                elif mutation=='prison-no-reason':
+                    pre[:]=[row for row in pre if row['key']!='has_execute_reason']
+                elif mutation=='prison-product-write':
+                    penalty.append({'key':'add_trait','value':'des_apostate'})
+                require(pre,control_scope,[{'key':'des_is_apostate_trigger','value':'yes'}],'PRISON_PRE_CUSTODY_REASON_MISSING')
+                for reason in ('has_imprisonment_reason','has_banish_reason','has_execute_reason'):
+                    require(pre,reason,control_scope,'PRISON_PRE_CUSTODY_REASON_MISSING')
+                require(pre,'has_opinion_modifier',[{'key':'target','value':control_scope},{'key':'modifier','value':'des_apostasy_opinion'}],'PRISON_PRE_CUSTODY_REASON_MISSING')
+                require(pre,'des_is_penalty_pair_trigger',[{'key':'TARGET','value':control_scope}],'PRISON_PRE_CUSTODY_REASON_MISSING')
+                if stock!=[{'key':'TARGET','value':control_scope},{'key':'IMPRISONER','value':'root'}]:
+                    reject('PRISON_CUSTODY_TARGET_CHANGED')
+                stock_calls=[row for value in parsed.values() for row in walk(value) if row['key']=='imprison_character_effect']
+                if len(stock_calls)!=1:
+                    reject('PRISON_CUSTODY_WRITER_NOT_UNIQUE')
+                allowed={'limit','debug_log','save_scope_as',control_scope,'imprison_character_effect','if','else'}
+                if any(row['key'] not in allowed for row in penalty):
+                    reject('PRISON_UNDECLARED_EFFECT')
+                require(penalty,control_scope,[{'key':'save_scope_as','value':'recipient'}],'PRISON_RECIPIENT_SCOPE_NOT_BOUND')
+                for name in ('actor','puppet_or_actor'):
+                    require(penalty,'save_scope_as',name,'PRISON_ACTOR_SCOPE_NOT_BOUND')
+                ready=one(penalty,'if',required=True)
+                if next(i for i,row in enumerate(penalty) if row['key']=='imprison_character_effect') >= next(i for i,row in enumerate(penalty) if row['key']=='if'):
+                    reject('PRISON_READY_BEFORE_STOCK_CUSTODY')
+                ready_guard=one(ready,'limit',required=True)
+                require(ready_guard,control_scope,[{'key':'is_alive','value':'yes'},{'key':'is_imprisoned_by','value':'root'}],'PRISON_CUSTODY_READBACK_MISSING')
+                for reason in ('has_banish_reason','has_execute_reason'):
+                    require(ready_guard,reason,control_scope,'PRISON_CUSTODY_READBACK_MISSING')
+                require(ready,'add_character_flag','des_test_prison_control_ready','PRISON_CUSTODY_READBACK_MISSING')
+                require(ready,'debug_log',json.dumps('DESAF: TEST PASS prisoner_control_ready'),'PRISON_CUSTODY_READBACK_MISSING')
                 heir_readback=one(extended_decisions,'des_acceptance_primary_heir_readback_decision',required=True)
                 heir_branch=one(one(one(heir_readback,'effect',required=True),'hidden_effect',required=True),'if',required=True)
                 heir_guard=one(heir_branch,'limit',required=True)
@@ -318,7 +407,7 @@ final class FixtureEmitterTest {
                     branch.append({'key':'set_variable','value':[{'key':'name','value':'des_bound_dynasty'},{'key':'value','value':'scope:des_test_predecessor.var:des_bound_dynasty'}]})
                 elif mutation=='pardon-copy':
                     branch.append({'key':'add_character_flag','value':'des_test_pardon_stable'})
-                elif mutation!='none':
+                elif mutation not in ('none','prison-main-target','prison-no-reason','prison-product-write'):
                     reject('UNKNOWN_TEST_MUTATION')
                 identity_reason='SUCCESSOR_IDENTITY_GUARD_MISSING'
                 require(one(anchored,'limit',required=True),'exists','global_var:des_test_extended_owner',identity_reason)
@@ -384,7 +473,7 @@ final class FixtureEmitterTest {
                 for entries in parsed.values():
                     forbidden_writes(entries)
                 required=json.loads(manifest.read_bytes())['receipt']['required_markers']
-                if len(required)!=23 or literals.count('DESAF: TEST PASS actual_primary_heir_successor')!=1:
+                if len(required)!=24 or literals.count('DESAF: TEST PASS actual_primary_heir_successor')!=1 or literals.count('DESAF: TEST PASS prisoner_control_ready')!=1:
                     reject('SUCCESSOR_MARKER_CONTRACT_CHANGED')
                 missing=sorted(set(required)-set(literals))
                 if missing:
@@ -399,7 +488,7 @@ final class FixtureEmitterTest {
                     outsider=json.loads(one(one(branch,'scope:des_test_outsider',required=True),'debug_log',required=True))
                     if [observer,outsider]!=guard['success_logs']:
                         reject('CHANGED_SCOPED_SUCCESS_MARKERS',event=event)
-                print(json.dumps({'status':'ACCEPTED','required_marker_count':len(required),'unchanged_guard_count':len(expected),'original_rite_readback_only_observes':True,'successor_reference_transfer_count':len(refs),'successor_history_transfer_count':len(flags),'heir_minimum_day_guard_validated':True,'engine_semantics_verified':False}))
+                print(json.dumps({'status':'ACCEPTED','required_marker_count':len(required),'unchanged_guard_count':len(expected),'original_rite_readback_only_observes':True,'successor_reference_transfer_count':len(refs),'successor_history_transfer_count':len(flags),'heir_minimum_day_guard_validated':True,'separate_prisoner_control_custody_validated':True,'engine_semantics_verified':False}))
                 """;
         Process process = new ProcessBuilder("python", "-B", "-X", "utf8", "-c", program,
                 repository().toString(), fixture.fixture().toString(), fixture.manifest().toString(), baseline.toString(), mutation)

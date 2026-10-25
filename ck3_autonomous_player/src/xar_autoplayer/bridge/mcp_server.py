@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from .player_pilgrimage_planner_contract import PilgrimageOptionKey
+from .prisoner_release_preview_contract_12003 import RELEASE_OPTION_KEYS_12003
 
 import argparse
 import importlib
@@ -1751,9 +1752,15 @@ def create_server(
     if getattr(driver, "allow_private_prisoner_collection_query", False) is True:
         @server.tool(annotations=read_only_tool)
         def ck3_query_player_prisoner_collection_private_v1(
-            expected_revision: int, ransom_ordinal: int = 0,
-            release_option_keys: list[str] | None = None,
-            release_material_target_character_id: int | None = None,
+            expected_revision: Annotated[int, Field(strict=True, gt=0, lt=2**64)],
+            ransom_ordinal: Annotated[int, Field(strict=True, ge=0, lt=64)] = 0,
+            release_option_keys: Annotated[
+                list[Annotated[str, Field(strict=True)]],
+                Field(strict=True, min_length=1, max_length=len(RELEASE_OPTION_KEYS_12003)),
+            ] | None = None,
+            release_material_target_character_id: Annotated[
+                int, Field(strict=True, gt=0, lt=2**32-1),
+            ] | None = None,
         ) -> dict[str, object]:
             """Read custody, release terms and an optional retained target's current relation."""
             if release_material_target_character_id is not None:
@@ -1776,6 +1783,8 @@ def create_server(
             return driver.query_player_prisoner_collection_private_v1(
                 expected_revision=expected_revision,
             )
+
+        _forbid_unknown_tool_arguments_v1(server, "ck3_query_player_prisoner_collection_private_v1")
 
     if getattr(driver, "allow_private_prisoner_ransom_action", False) is True:
         @server.tool()

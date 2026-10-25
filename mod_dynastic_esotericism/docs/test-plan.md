@@ -1,6 +1,8 @@
 # 宗族化密教：测试与发布方案
 
-版本：1；制定日期：2026-10-24。本文在[需求文档](requirements.md)之后、功能编码之前制定。目标版本 0.1.0；尚无业务 PASS 或发布事实。
+版本：1；制定日期：2026-10-24。本文在[需求文档](requirements.md)之后、功能编码之前制定。目标版本 0.1.0；完整业务矩阵与发布仍未完成，局部实机结果按各场原件限定范围。
+
+2026-10-25T02:55:27Z（machine_id: `desktop-3fevhd2-1c74096080`）：R0013核心前两阶段通过，+1／+2两日各61名成员全部归入实际绑定宗族，两种族长交接／singleton创始分支也取得保存后态；第三阶段因缺少实际囚犯与驱逐选项预览保持INCOMPLETE。后继增加单独的公开fixture囚犯control及只读预览接线，主叛教目标不改，原全部断言保留。`same_faith_apostasy`仍先进入Root等待，在其中执行一次control决议、真实一日和独立监禁后态／原处决及banish选项预览；新增ready marker不能成为进入该等待的前提。详见[操作顺序](acceptance/operator-runbook.md)与[R0013原件](acceptance/R0013-2026-10-25.json)。这些后继输入与接口尚待新构建和实机验收。
 
 2026-10-25 同步候选：正式清单新增单事件 `faith_conversion.0003` override（`id_override_priority=1`），完整保留 exact .4 的局部 trigger、筛选和枚举顺序，仅在两处原版 `set_character_rite` 后调用共享 `des_sync_character_effect`。开发包18／发布包25文件，fixture仍13文件。新进程必须证明 override／局部声明被引擎接受，并逐一核对实际所有存活当前信徒的 Rite、House→Dynasty 和独立保存；任何错族仍使 REQ-05 失败，不授予多等一日或周期补迁的宽限。重复回调须保持唯一绑定、意见和犯罪来源。原未改信后代等负例照旧；未出现的原版筛选分支不得宣称已测。
 

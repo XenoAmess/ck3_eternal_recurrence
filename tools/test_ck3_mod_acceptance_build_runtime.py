@@ -679,6 +679,20 @@ class CapabilityRegistrationConsumer(unittest.TestCase):
                      'ck3_query_character_skill_effects_v1', 'ck3_open_player_inventory_window_v1',
                      'ck3_query_player_inventory_window_open_post_v1'):
             self.assertNotIn(tool, names)
+        self.assertNotIn('ck3_query_player_prisoner_collection_private_v1', names)
+
+    def test_prisoner_readonly_declaration_reaches_existing_factory_without_actions(self):
+        tool = 'ck3_query_player_prisoner_collection_private_v1'
+        case = {'required_mcp_tools': [tool], 'opt_in_read_only_mcp_tools': [tool]}
+        self.assertEqual(builder.EXTRA_CAPABILITIES[tool], [
+            'XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1',
+            'XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1'])
+        driver = builder.registration_driver(json.loads(json.dumps(case)))
+        self.assertIs(driver.allow_private_prisoner_collection_query, True)
+        names = self.registered(case)
+        self.assertIn(tool, names)
+        self.assertNotIn('ck3_release_player_prisoner_private_v1', names)
+        self.assertNotIn('ck3_ransom_player_prisoner_private_v1', names)
 
     def test_read_only_declaration_does_not_enable_artifact_action(self):
         case = {'opt_in_read_only_mcp_tools': ['ck3_query_player_artifact_personal_use_v1']}

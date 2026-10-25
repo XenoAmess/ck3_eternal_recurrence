@@ -40,6 +40,8 @@ public final class SharedRuntimeComposer {
             "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_TENET_CHOICES_PRIVATE_QUERY_V1",
             "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1",
             "XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1",
+            "XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1",
+            "XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1",
             "XAR_ENABLE_RELIGION_UI12004_PRESENTATION", "XAR_ENABLE_RITE_CREATION_ACTIONS12004",
             "XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1", "XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1");
     private static final List<String> TOOLS = List.of(
@@ -47,6 +49,7 @@ public final class SharedRuntimeComposer {
             "ck3_select_ingame_decision_item_v1", "ck3_confirm_ingame_decision_outcome_v1",
             "ck3_select_event_option", "ck3_query_player_religion_context_v1",
             "ck3_query_player_rite_members_v1",
+            "ck3_query_player_prisoner_collection_private_v1",
             "ck3_query_player_religion_doctrines_v1", "ck3_query_player_religion_doctrine_knowledge_v1",
             "ck3_query_player_religion_reform_context_v1", "ck3_query_player_religion_draft_groups_v1",
             "ck3_query_player_religion_draft_doctrine_choices_v1", "ck3_query_player_religion_draft_resource_costs_v1",
@@ -203,6 +206,10 @@ public final class SharedRuntimeComposer {
             if (!flags.path(flag).isTextual() || !flags.path(flag).textValue().equals("ON")) {
                 throw new IllegalArgumentException("native provider not compiled: " + flag);
             }
+        }
+        if (!flags.path("XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1").isTextual()
+                || !flags.path("XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1").textValue().equals("OFF")) {
+            throw new IllegalArgumentException("read-only prisoner preview requires prisoner actions compiled OFF");
         }
         Path source = output.resolve("source");
         FilePin leaseHelper = pin(repo.resolve("promo/ck3_native_war_ai/integration/screen_bus_lease.py"));
