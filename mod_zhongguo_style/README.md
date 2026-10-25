@@ -9,6 +9,12 @@
 
 Steam Workshop：[3792585972](https://steamcommunity.com/sharedfiles/filedetails/?id=3792585972)（已于 2026-08-30 14:48 左右，Asia/Shanghai 公开发布）。
 
+## 0.4.1 薪酬与条件说明修复
+
+0.4.1 已更新到原 Workshop 物品。提前考核的要求改为四条可读条件；薪酬案卷三个选项的悬浮说明展示实际金额、国库与私库分摊、支付期限及资金不足后的处理。案卷管理的是本 mod 额外薪酬，原版俸禄继续支付。
+
+拖欠的收益是保留现金：承认补发则90日后尝试支付原欠款加4，驳回补发则180日后尝试支付原欠款。两者当前都记录信用−15，但尚无好感、忠诚或离职惩罚，因此后一选项的代价设计仍较弱。实际显示与付款验证、未实测分支及发布边界见[0.4.1 发布记录](../docs/release-changelogs/zhongguo-361/0.4.1.md)。
+
 ## 0.4.0 二期兼容更新
 
 0.4.0 已更新到原 Workshop 物品，适配 CK3 1.20.0.4。按用户要求完成启动、1066 罗贝尔入场及 405 个自然日的简短实测，玩家存活并正常退出；Steam 实际下载的 1034 文件与正式构建一致，已完成中文主菜单加载。已知加载分析诊断仍存在，未逐项重验的领域机制不由本次测试取得完整验收。见 [兼容更新记录](docs/migration-1.20.0.4.md)与[实际发布记录](../docs/release-changelogs/zhongguo-361/0.4.0.md)。
@@ -134,7 +140,7 @@ Workshop 上传、fresh-cache 签核与公开远端终验均已完成。
 - 逐号实现清单：`docs/361-mechanism-implementation-manifest.md`
 - 当前批量实机报告与证据边界：`docs/testing-report-2026-08-30.md`
 - 目标内静态校验：`py mod_zhongguo_style/tools/validate_local.py`
-- 隔离 CK3 实机验收：`tools\.venv\Scripts\python.exe tools\run_zhongguo_acceptance.py`
+- 隔离 CK3 实机验收：使用 `tools/ck3_mod_acceptance.py` 公共入口，产品 `zhongguo-361`；参数与共同 runtime 见[公共验收流程](../docs/ck3-mod-upgrade-fast-validation.md)。
 - release builder 单元测试：`py tools/test_build_mod_zhongguo_style_release.py`
 - release 可复现检查：`py tools/build_mod_zhongguo_style_release.py --check`
 - 正式构建：在干净、已提交且带 `zhongguo-361-v<版本>` tag 的候选上运行

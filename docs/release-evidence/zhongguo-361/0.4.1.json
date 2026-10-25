@@ -1,0 +1,517 @@
+{
+  "schema": "xar.ck3.zhongguo-361-publication.v1",
+  "record_state": "PUBLISHED_AND_CACHE_MENU_ACCEPTED_WITH_BOUNDED_R4_UI_PAYMENT",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-25T10:25:45.065734+00:00",
+  "version": "0.4.1",
+  "game_version": "1.20.0.4",
+  "steam_build_id": 25734779,
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "git_tag": "zhongguo-361-v0.4.1",
+  "build_revision": "3ce5f5fd4d257a8383886bd10f84b2709a23555a",
+  "annotated_tag_object": "d6c257b5730fc0a224bf6e27fa7212a97f6be3ce",
+  "tag_pushed": true,
+  "file_count": 1034,
+  "product_logical_bytes": 32911484,
+  "formal_manifest": {
+    "path": "D:\\workspace\\ck3-361-ui-20261025\\formal\\zhongguo-361-v0.4.1.manifest.json",
+    "bytes": 213478,
+    "sha256": "c982afc9918f027415f1c1f73206eabdab5783c9718bec833211e38e23376a5f"
+  },
+  "formal_zip": {
+    "path": "D:\\workspace\\ck3-361-ui-20261025\\formal\\zhongguo-361-v0.4.1.zip",
+    "bytes": 4437682,
+    "sha256": "c1b21ecd8093da4ddfeb12e1c78e69b8dc4d2b3886be5cbe44f51da4aae204f3"
+  },
+  "workshop_item_id": "3792585972",
+  "published": true,
+  "publication": {
+    "operation": "update",
+    "operation_id": "zhongguo-361-0.4.1-20261025-a01",
+    "submitted_at_utc": "2026-10-25T09:03:03.514699+00:00",
+    "submit_attempts": 1,
+    "stage": "complete",
+    "steam_result": 1,
+    "original_exit_code": 0,
+    "legal_agreement_required": false,
+    "payload_sha256": "53f4cb908cbd326ad18c6fb4f054c8a92d15c9d275a3f833e6bb0906048ee6de",
+    "tags": [
+      "Gameplay",
+      "1.20 'Crozier'"
+    ],
+    "steam_content_manifest": "2495077054818415918",
+    "native_owner": "76561198273714027"
+  },
+  "public_readback": {
+    "anonymous": true,
+    "title_exact": true,
+    "description_exact": true,
+    "complete_notes_exact": true,
+    "description_characters": 4549,
+    "description_sha256": "377025F75D23EE84D4164768F7467145AA9D545A087FDF567ADF7B8E7ACF6EC9",
+    "expected_description_sha256": "377025F75D23EE84D4164768F7467145AA9D545A087FDF567ADF7B8E7ACF6EC9",
+    "change_notes_exact": true,
+    "changelog_entry_id": "1792918982",
+    "change_notes_characters": 466,
+    "change_notes_lines": 9,
+    "change_notes_sha256": "421B2A2008CE1D041C9774F645FFBFAD307F3776A61260019169855C58DFAAF0",
+    "expected_change_notes_characters": 466,
+    "expected_change_notes_lines": 9,
+    "expected_change_notes_sha256": "421B2A2008CE1D041C9774F645FFBFAD307F3776A61260019169855C58DFAAF0",
+    "time_updated": 1792918982,
+    "file_size": "32911484",
+    "ok": true,
+    "frozen_description": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\publisher\\description.frozen.bbcode",
+      "bytes": 7829,
+      "sha256": "849609396a728c1ff9346e58b80baaf0eb00158f5609034816e4925365dff15e"
+    },
+    "frozen_notes": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\publisher\\notes.frozen.txt",
+      "bytes": 845,
+      "sha256": "a7719785af6b64112935c426ff2ac3a073ccf9bbea1976f6558426d08aef2387",
+      "characters_including_terminal_LF": 467,
+      "splitlines_count": 9
+    },
+    "notes_normalization": "Public comparison removes terminal newline: 466 characters/9 lines. Frozen raw input includes terminal LF:467 characters/845 UTF-8 bytes."
+  },
+  "static_validation": {
+    "runtime_tests": 44,
+    "generator_check": "GREEN",
+    "full_mypy_modules": [
+      "gen_361_compensation_runtime.py",
+      "test_zg361_compensation_runtime.py"
+    ],
+    "mypy_import_boundary": "--follow-imports=silent",
+    "optional_L_production_path_regressions": 2,
+    "regressions_failed_on_previous_source": true,
+    "formal_optional_L_guards_executed_in_AE2": false,
+    "formal_optional_L_validation": "STATIC_AND_BOUNDED_SCRIPT_EXECUTOR_ONLY; NOT_REEXECUTED_AE2",
+    "earlier_baseline_tests": {
+      "compensation_runtime": 42,
+      "compensation_model": 58,
+      "promotion_compensation_copy": 6,
+      "central_runtime": 45,
+      "b1_runtime": 76,
+      "release_localization": 23
+    },
+    "earlier_model_and_central_rerun_after_optional_L_patch": false
+  },
+  "r4_ui_payment": {
+    "run_id": "pc-20260924rtuf-f11af23c08--zhongguo-style--R0004",
+    "observed_at_utc": "2026-10-25T08:22:19.042661+00:00",
+    "pid": 12132,
+    "generation": 1,
+    "player_id": 31254,
+    "recipient_id": 33946,
+    "natural_days": 0,
+    "date_raw_before_and_after": 53144328,
+    "fixture": "Disclosed1066Robert celestial government, test funds and existing landed direct vassal; delivered performance prerequisites, then real production portfolio/open/AE1 consumers. Fixture excluded from release.",
+    "actual_ui_and_payment_observed": true,
+    "three_rendered_tooltips_visible": true,
+    "four_review_conditions_localized_without_internal_flags": true,
+    "hover_evidence_method": "Original rendered screenshots after mapped pointer-only moves. Native complete effect_preview unavailable; all decisions and event choices via MCP; no OCR.",
+    "frozen_quote": 21,
+    "actual_paid": 25,
+    "actual_owed": 0,
+    "treasury_delta": -18,
+    "personal_gold_delta": -7,
+    "recipient_gold_delta": 25,
+    "deferred_90_or_180_days_executed": false,
+    "case_contract_qualified": true,
+    "gui_contract_qualified": true,
+    "whole_report_status": "RED",
+    "runner_original_exit_code": 2,
+    "host_error": "RuntimeError: MCP tool ck3_query_normal_exit_context_v1 returned an error: Error executing tool ck3_query_normal_exit_context_v1: normal exit requires the fixed actual managed-source inventory",
+    "retained_handle": {
+      "signaled": true,
+      "exit_code": 0,
+      "actual_retained_os0": true,
+      "pid": 12132,
+      "create_time": 1792914469.0694537,
+      "retained_synchronize_query_handle_acquired": true
+    },
+    "cleanup_ok": true,
+    "failure_lifecycle_completed": true,
+    "normal_close_qualified": false,
+    "loaded_foundation_sha256": "3c0a41147e6debdfa66cc608ad030b20869a0c9ec309a5e14f4251820dfffffc",
+    "formal_foundation_sha256": "9b3fa2139c6a9b3e244f8f35c70922b873f6349c450fc19115af5afaf80b678d",
+    "other_1033_files_identical": true,
+    "diagnostics": "Optional-L unset-variable diagnostics retained in loaded R4 input; fixed later in formal source. Fixture current_date_trigger display diagnostic and existing unused-variable/isolated-event load diagnostics remain."
+  },
+  "previous_year_smoke": {
+    "release_version": "0.4.0",
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "natural_days": 405,
+    "separate_prior_evidence": true,
+    "new_one_year_run_for_041": false,
+    "whole_phase2_business_pass": false
+  },
+  "cache": {
+    "cache_path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3792585972",
+    "file_count": 1034,
+    "exact_formal_match": true,
+    "steam_content_manifest": "2495077054818415918",
+    "download": {
+      "callback": {
+        "app_id": 1158310,
+        "callback_id": 3406,
+        "item_id": "3792585972",
+        "result": 1
+      },
+      "worker_pid": 11228,
+      "worker_exit_code": 0,
+      "original_exit_code": 0,
+      "elapsed_seconds": 48.147,
+      "fresh_cache_requested": false,
+      "state_flags": {
+        "download_pending": false,
+        "downloading": false,
+        "installed": true,
+        "legacy": false,
+        "needs_update": false,
+        "raw": 5,
+        "subscribed": true
+      }
+    },
+    "descriptor_policy": "canonical",
+    "legacy_workshop_cache_flag_result": "REJECTED_CANONICAL_DESCRIPTOR_BECAUSE_IT_REQUIRES_LAUNCHER_REMOTE_FILE_ID; preserved original exit1",
+    "ordinary_strict_verify": "PASS_ALL_1034_WITHOUT_DESCRIPTOR_NORMALIZATION",
+    "shared_adapter_exact_cache_prepare": "PASS_EXACT_FORMAL_CACHE",
+    "menu_and_close": {
+      "status": "PASS",
+      "run_id": "pc-20260924rtuf-f11af23c08--zhongguo-style--R0005",
+      "actual_menu_loaded": true,
+      "load_evidence_kind": "COMBINED_MANAGED_CACHE_PROFILE_AND_ACTUAL_MAIN_MENU_LOAD",
+      "independent_engine_vfs_path_readback": "UNKNOWN",
+      "campaign_started": false,
+      "game_days_advanced": 0,
+      "normal_close_qualified": true,
+      "retained_handle": {
+        "signaled": true,
+        "exit_code": 0,
+        "actual_retained_os0": true,
+        "pid": 18276,
+        "create_time": 1792922721.8423688,
+        "retained_synchronize_query_handle_acquired": true
+      },
+      "native_process_exit_code": 0,
+      "cleanup_ok": true,
+      "managed_thread_finished": true,
+      "public_original_pid": 5072,
+      "public_original_exit_code": 0,
+      "host_original_pid": 16044,
+      "host_original_exit_code": 0,
+      "allocator_original_pid": 16684,
+      "allocator_original_exit_code": 0,
+      "keeper_original_exit_code": 0,
+      "screen_release_sequence": 1362,
+      "verify_original_exit_code": 0,
+      "new_business_credit": false
+    }
+  },
+  "publisher_close": {
+    "offline_observed_at_utc": "2026-10-25T09:06:06.452398+00:00",
+    "offline": true,
+    "offline_mode": true,
+    "keeper_original_exit_code": 0,
+    "screen_release_sequence": 1339
+  },
+  "preallocation_side_effect": {
+    "budget_status": "RED",
+    "budget_incident": "Shared Steam queue continued unrelated download staging after target completed; C64MiB planned reserve cannot be claimed met. High-priority DownloadItem does not isolate other subscriptions.",
+    "cleanup_machine_id": "pc-20260924rtuf-f11af23c08",
+    "cleanup_at_utc": "2026-10-25T09:49:46.467720+00:00",
+    "exact_root": "C:/SteamLibrary/steamapps/workshop/downloads/1158310/2224124758",
+    "item_id": "2224124758",
+    "manifest_id": "5738156956336905214",
+    "window_start_utc": "2026-10-25T09:05:04+00:00",
+    "window_end_bound_utc": "2026-10-25T09:06:06.452398+00:00",
+    "a01_assessment_preserved": true,
+    "a02_expansion": "04-second group matches same uncommitted manifest/job within this publisher online window, after prior task07:43UTC offline; separately authorized by Root.",
+    "permanent_index_read_before_plan_and_execution": true,
+    "method": "Existing Win32 helper, parent deny-delete handles, exclusive leaf DELETE|READ_ATTRIBUTES share0; exact native FileID/volume/CreationTime/LastWrite/size/link1 and handle path guards. Locked or changed files skipped; no force.",
+    "files_deleted": 6341,
+    "files_retained": 0,
+    "unknown_outcomes": 0,
+    "logical_bytes_deleted": 6971839628,
+    "native_single_link_allocation_bytes_deleted": 6990043456,
+    "allocation_method": "Same exclusive handle FileStandardInfo AllocationSize; earlier inventory GetCompressedFileSize values not equated to exact allocation.",
+    "original_exit_code": 0,
+    "directories_deleted": 0,
+    "installed_content_deleted": false,
+    "subscriptions_changed": false,
+    "acf_bytes_unchanged": true,
+    "c_free_before": 278717710336,
+    "c_free_after": 285708505088,
+    "whole_volume_free_delta_exclusively_credited": false,
+    "first_invocation_exit_code": 1,
+    "first_invocation_boundary": "Relative/absolute index-pin representation mismatch rejected before intent or deletion; original receipt and invocation retained. Corrected exact path only, then one completed deletion pass.",
+    "deleted_partial_originals_readable": false,
+    "same_name_substitutes": false,
+    "recovery": "Subscriptions/installed content/ACF remain. Steam may rebuild item2224124758/manifest5738156956336905214 if remotely available. No remote availability recheck or byte-exact partial backup; deleted partial originals and their FileIDs become unavailable.",
+    "offline_last_confirmed_at_utc": "2026-10-25T09:50:38.265880+00:00",
+    "offline_last_confirmed": true
+  },
+  "evidence_root": "D:/workspace/ck3-361-ui-20261025",
+  "evidence": {
+    "release-preparation.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\release-preparation.json",
+      "bytes": 2282,
+      "sha256": "e7c5773e6e29e78b809ca1257e3e822f70d048681acf7a18edbdde716d83ac52"
+    },
+    "formal-vs-live-candidate.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\formal-vs-live-candidate.json",
+      "bytes": 592,
+      "sha256": "adfcec8a7a06578aedcba7b7d64e4e41f6a68d6123ec6da726bf5f4862e442cc"
+    },
+    "run.original-exit.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\run.original-exit.json",
+      "bytes": 128,
+      "sha256": "818055c0cd797b0550a1eb86096b08f3e0c1db5d6900b3c97d5b17901db4082a"
+    },
+    "publisher/publisher-terminal-summary.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\publisher\\publisher-terminal-summary.json",
+      "bytes": 7006,
+      "sha256": "5cc67b8b1f34dd7e750c24b95ee5e444c886998d5933914e9d7f48841df33e49"
+    },
+    "publisher/publish-0.4.1-a01.receipt.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\publisher\\publish-0.4.1-a01.receipt.json",
+      "bytes": 630,
+      "sha256": "1fad701fc31a3fe683068f2b6651dd2c7a9fa62f4dc845d0bb8b8088821ea038"
+    },
+    "publisher/native-publish-a01.original-exit.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\publisher\\native-publish-a01.original-exit.json",
+      "bytes": 188,
+      "sha256": "f5b6d0fc425651202a07aa17ff9e60119a8f987995991b2aa66b01d687ee4a13"
+    },
+    "publisher/public-readback-a01/verification.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\publisher\\public-readback-a01\\verification.json",
+      "bytes": 756,
+      "sha256": "ae4990ae5e616d5eb1109763be7faa66ef83ec0768ffd672224b891283b420ce"
+    },
+    "publisher/public-readback-a01/public_item_api_raw.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\publisher\\public-readback-a01\\public_item_api_raw.json",
+      "bytes": 8702,
+      "sha256": "db36347d78e9a0144e54e2e1e5133432217b99d57f6b2ae5c76e689687f3b26e"
+    },
+    "publisher/public-readback-a01/public_changelog_raw.html": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\publisher\\public-readback-a01\\public_changelog_raw.html",
+      "bytes": 53066,
+      "sha256": "cdb5514bd929e55c3668dc2835787c8891e70f8e361c0ec3b18952f0fb41309e"
+    },
+    "publisher/native-download-a01.stdout.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\publisher\\native-download-a01.stdout.json",
+      "bytes": 2537,
+      "sha256": "fac8a87df9a0c6a32368cd6680a17d353f2baf8644e1c58b268e9a77f78fac22"
+    },
+    "publisher/native-download-a01.original-exit.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\publisher\\native-download-a01.original-exit.json",
+      "bytes": 188,
+      "sha256": "b82c19ff2ffed43f51dc71e4ef0bbb38cd54f76df88993e937de7eaa524ddb5f"
+    },
+    "publisher/cache-verify-exact-a02.original-exit.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\publisher\\cache-verify-exact-a02.original-exit.json",
+      "bytes": 555,
+      "sha256": "128db221c8b96bd7a76a9622b28aeecc726ded76c64d9784c03bc107b28052e8"
+    },
+    "publisher/cache-verify-a01.original-exit.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\publisher\\cache-verify-a01.original-exit.json",
+      "bytes": 579,
+      "sha256": "21fd73045ed7d6b90abc46184199892097a784fa7dfe730f19981de8f2ae5425"
+    },
+    "cache-prepared-a01/workshop-cache-exact-formal.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\cache-prepared-a01\\workshop-cache-exact-formal.json",
+      "bytes": 288562,
+      "sha256": "9416de4aefd87f0cb1043a3b0b643e2b116e3fc0972077a7a3cb0e2102f4f24e"
+    },
+    "publisher/game-identity-after.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\publisher\\game-identity-after.json",
+      "bytes": 471,
+      "sha256": "e4afe4f0d6dab00b4d215ce1a97c6c00102e7bedebb5adce1729c3804761caee"
+    },
+    "publisher/offline-after.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\publisher\\offline-after.json",
+      "bytes": 2332,
+      "sha256": "18ce7483c958ff541bb8490a53521d29380414e9be60f6050dc581552909eb2f"
+    },
+    "publisher/screen-release.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\publisher\\screen-release.json",
+      "bytes": 1438,
+      "sha256": "1723105056cbf9d3dfa6c4d26639fae6e28b4782b84a351ae7cd454b54bbd38b"
+    },
+    "publisher/preallocation-cleanup-a02/terminal-summary.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\publisher\\preallocation-cleanup-a02\\terminal-summary.json",
+      "bytes": 3898,
+      "sha256": "da6cdd4447997f028a47aeaf72d94d839956bf8901d663229fed190836c56575"
+    },
+    "publisher/preallocation-cleanup-a02/result.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\publisher\\preallocation-cleanup-a02\\result.json",
+      "bytes": 1510,
+      "sha256": "70766ad6280fc4a1316c84d29e81d041f8c72ccfe81cdd7251202dc968adf09d"
+    },
+    "publisher/preallocation-cleanup-a02/plan-index.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\publisher\\preallocation-cleanup-a02\\plan-index.json",
+      "bytes": 3676,
+      "sha256": "5bb11826b0289738a0a0d8c0db7a474eb334720f076e24270f1b65a7d1d55d0e"
+    },
+    "publisher/preallocation-cleanup-a02/execution.original-exit.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\publisher\\preallocation-cleanup-a02\\execution.original-exit.json",
+      "bytes": 385,
+      "sha256": "0f52ca29846eb45c819eb54eb29580707e517b4b139868d32bea407efe3fbb81"
+    },
+    "publisher/preallocation-cleanup-a02/execution-a02.original-exit.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\publisher\\preallocation-cleanup-a02\\execution-a02.original-exit.json",
+      "bytes": 390,
+      "sha256": "0d2a649523a9e42aa66e57dde214fdac8275abe06fdc798ea24ea74e0e213104"
+    },
+    "publisher/preallocation-cleanup-a02/offline-after-execution.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\publisher\\preallocation-cleanup-a02\\offline-after-execution.json",
+      "bytes": 2332,
+      "sha256": "12518c8d9816e3c844aa7978b0e566cbcf778ea33e25240e51aa6adba99947cf"
+    },
+    "r4/ae2-three-tooltips-and-immediate-payment-root-result.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\live\\pc-20260924rtuf-f11af23c08--zhongguo-style--R0004\\case-output\\ae2-three-tooltips-and-immediate-payment-root-result.json",
+      "bytes": 2797,
+      "sha256": "03900e171e1e432553eea6a7dfad176e97ef70a51452da9033db0b94ab6afbd9"
+    },
+    "r4/generic-product-case-result.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\live\\pc-20260924rtuf-f11af23c08--zhongguo-style--R0004\\case-output\\generic-product-case-result.json",
+      "bytes": 44479,
+      "sha256": "383cf0fbcd121e8698331273ef6193b2890db106ab639139ef07c0ea02777d4e"
+    },
+    "r4/normal-close-result.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\live\\pc-20260924rtuf-f11af23c08--zhongguo-style--R0004\\case-output\\normal-close-result.json",
+      "bytes": 9907,
+      "sha256": "103b523777334a2540d210ff318d9eae116360cc1dcc8e1febf41a6bf8700ac9"
+    },
+    "source_static": {
+      "path": "mod_zhongguo_style\\docs\\salary-tooltip-static-validation-2026-10-25.json",
+      "bytes": 12709,
+      "sha256": "2881f2d61548abee7aa047aabc79e3f943265c1839dc47326045b3c13a556227"
+    },
+    "previous_040": {
+      "path": "docs\\release-evidence\\zhongguo-361\\0.4.0.json",
+      "bytes": 11132,
+      "sha256": "992fe7cda64b27a57e01df59fa20236937f7349cdca1b22d0224c11731c17fbd"
+    },
+    "cache-run-r2-original-exit.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\cache-run-r2-original-exit.json",
+      "bytes": 79,
+      "sha256": "e6e3f9918e8c02343272c6fc6838783831a64279108dc5d21401edeea49bd5c8"
+    },
+    "cache-allocate-r3-original-exit.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\cache-allocate-r3-original-exit.json",
+      "bytes": 80,
+      "sha256": "929141753560bf3f88768b39e4eaded34f0f012f9c457962bb2d3514717bdd61"
+    },
+    "cache-verify-original-exit.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\cache-verify-original-exit.json",
+      "bytes": 64,
+      "sha256": "6df825f181be89fed73a7d816198421d6c21e41e44b6f480f778f1d34d07b5fe"
+    },
+    "cache-screen-release-r3.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\cache-screen-release-r3.json",
+      "bytes": 1449,
+      "sha256": "54a9231036d89c5f32f98a7d40f0e7ca0dd09623950c93155ac417f626cf717c"
+    },
+    "keeper-cache-a02/report.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\keeper-cache-a02\\report.json",
+      "bytes": 429,
+      "sha256": "75d41437aa073ca1abf9da3f82fa6a20f9119e0482b3992bc324933d79db6d52"
+    },
+    "offline-close.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\offline-close.json",
+      "bytes": 2332,
+      "sha256": "760000845c2a94bf24494a4f1fadd2eb6365d6c989b41a579c3923043b26edc9"
+    },
+    "cache-menu-a01.png": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\cache-menu-a01.png",
+      "bytes": 2600830,
+      "sha256": "c36c901250466da776ccdc61cd2ec45e80ce1f9d9665c50572e71914197a62f7"
+    },
+    "cache-quit-click-a01.mapping.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\cache-quit-click-a01.mapping.json",
+      "bytes": 1148,
+      "sha256": "184e52cb9b165fec78b7c2ed0478818173a7c1146070756375cbb2ea2b017eea"
+    },
+    "r5/case-output/workshop-cache-case-result.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\live\\pc-20260924rtuf-f11af23c08--zhongguo-style--R0005\\case-output\\workshop-cache-case-result.json",
+      "bytes": 128798,
+      "sha256": "ff3499c34288b9c85b6a30c43ea52bc0539bc9ac9f3f53565625587a8417155c"
+    },
+    "r5/case-output/normal-close-result.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\live\\pc-20260924rtuf-f11af23c08--zhongguo-style--R0005\\case-output\\normal-close-result.json",
+      "bytes": 8021,
+      "sha256": "64fa4ab26ae319db39588357b6d62e0d32f5284c39d8a61b7b7145eafc3cf45e"
+    },
+    "r5/case-output/normal-quit-root-result.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\live\\pc-20260924rtuf-f11af23c08--zhongguo-style--R0005\\case-output\\normal-quit-root-result.json",
+      "bytes": 1519,
+      "sha256": "f4524ffc3f78e4c47c3ca3493f391ed5b4183bc77f6507dd988b4f1de3e9996b"
+    },
+    "r5/host-original-process-exit.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\live\\pc-20260924rtuf-f11af23c08--zhongguo-style--R0005\\host-original-process-exit.json",
+      "bytes": 252,
+      "sha256": "4ea1d45c6bd836c764bf8ffe4f6a84f08c7f257e4cfad46ac8a8c9d47b4e73b9"
+    },
+    "r5/keeper-actual-parent-exit.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\live\\pc-20260924rtuf-f11af23c08--zhongguo-style--R0005\\keeper-actual-parent-exit.json",
+      "bytes": 599,
+      "sha256": "9bac92b01ab4102860f91574f564216310a3936053347d9ca5f0a35069b6549c"
+    },
+    "asset-ledger.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\asset-ledger.json",
+      "bytes": 68942,
+      "sha256": "b2d3e636a57a1c22bda1ed7eb24d78e970bfa1c456c80963273f0cf2d06554ff"
+    },
+    "storage-reservation.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\storage-reservation.json",
+      "bytes": 756,
+      "sha256": "beea38b1948e2f687431f4f6ca07754db8741aaafca8228d1dd9413958cecbfb"
+    },
+    "storage/close-candidate/close-summary.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\storage\\close-candidate\\close-summary.json",
+      "bytes": 4330,
+      "sha256": "1e8ce41b81c0dc09ee27dafd1f6c73a9991a999adfd51a90a424162f9df1db9d"
+    },
+    "storage/close-candidate/task-close-a02.original-exit.json": {
+      "path": "D:\\workspace\\ck3-361-ui-20261025\\storage\\close-candidate\\task-close-a02.original-exit.json",
+      "bytes": 655,
+      "sha256": "95f0cb4cb4133accdde6e88a990903a48a3ca8720f3733d828b707fcd90d4bf9"
+    }
+  },
+  "retention": {
+    "release_summary": "PERMANENT_USER_REQUESTED",
+    "raw_evidence_days": 30,
+    "profiles_days": 14,
+    "builds_days": 14,
+    "cleanup_detailed_ledger_review_at_utc": "2026-11-24T09:49:46.469202+00:00",
+    "cleanup_record_review_at_utc": "2027-04-23T09:49:46.469228+00:00"
+  },
+  "limits": [
+    "R4 observes fixture-scoped UI and immediate payment; the original whole common report remains RED.",
+    "Formal optional-L guards have static and bounded production-path regression credit, no re-executed AE2 live credit.",
+    "The prior0.4.0 405-day smoke is separate; no new year, complete phase2, old-save or multiplayer acceptance is claimed.",
+    "Cleanup does not turn the unplanned shared-queue storage incident GREEN.",
+    "R5 proves managed cache profile plus actual main-menu load and normal0; independent engine VFS path readback remains UNKNOWN; no campaign or AE2 business was replayed."
+  ],
+  "storage_close": {
+    "machine_id": "pc-20260924rtuf-f11af23c08",
+    "at_utc": "2026-10-25T10:31:38.946394+00:00",
+    "snapshot_logical_bytes": 715037133,
+    "snapshot_file_count": 13803,
+    "D_1GiB_task_budget_met_at_snapshot": true,
+    "C_64MiB_peak_budget_met": false,
+    "future_reserved_bytes": {
+      "D:/": 0,
+      "C:/": 0
+    },
+    "inventory_original_exit_code": 0,
+    "inventory_is_heavy_write_admission": false,
+    "snapshot_boundary": "Small final Root audit/git outputs after snapshot limited to1MiB; not counted as inspected zero",
+    "raw_evidence_expiry": "2026-11-24T10:26:27.614375+00:00",
+    "R4_key_protected_until": "2026-11-01T10:26:27.614375+00:00",
+    "auto_renew": false
+  }
+}
