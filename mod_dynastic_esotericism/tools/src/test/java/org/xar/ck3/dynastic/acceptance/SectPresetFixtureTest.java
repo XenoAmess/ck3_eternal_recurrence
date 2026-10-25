@@ -69,7 +69,7 @@ final class SectPresetFixtureTest {
                 ReleaseProduct.LocalizationMode.RELEASE_LOCALIZATION);
         ReleaseBuilder.BuildResult release = new ReleaseBuilder().build(product, repository(),
                 temporary.resolve("release"), "0".repeat(40), null, null);
-        assertEquals(52, release.payload().files().size());
+        assertEquals(56, release.payload().files().size());
         String program = """
                 from pathlib import Path
                 import copy,json,sys
@@ -125,7 +125,7 @@ final class SectPresetFixtureTest {
                 product_files={p.relative_to(staging).as_posix():p.read_bytes() for p in staging.rglob('*') if p.is_file()}
                 mounted=profile/'mod-content/product'
                 assert product_files=={p.relative_to(mounted).as_posix():p.read_bytes() for p in mounted.rglob('*') if p.is_file()}
-                assert len(product_files)==52
+                assert len(product_files)==56
                 compiled=json.loads((profile/'mod-content/fixture/_case_contract.json').read_bytes())
                 assert compiled['case']=='sect_presets' and len(compiled['required_markers'])==7
                 assert len(compiled['config']['gui_phases'])==2 and compiled['config']['maximum_natural_days']==16
@@ -134,7 +134,7 @@ final class SectPresetFixtureTest {
                 assert len(list(p for p in (profile/'mod-content/fixture').rglob('*') if p.is_file()))==6
                 assert json.loads(Path(result['initial_plan']['path']).read_bytes())=={'steps':[]}
                 assert manifest_path.read_bytes()==before
-                print('actual Java fixture5/release52 -> public import and generic preparation; six corruption negatives PASS; engine_semantics_verified=false')
+                print('actual Java fixture5/release56 -> public import and generic preparation; six corruption negatives PASS; engine_semantics_verified=false')
                 """;
         python(program, List.of(repository().toString(), emitted.manifest().toString(),
                 release.staging().toString(), temporary.resolve("consumer").toString()));

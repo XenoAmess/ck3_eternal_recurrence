@@ -6,6 +6,7 @@ des_procreation_faith = {
 		religion = christianity_religion
 		color = { 0.75 0.35 0.55 }
 		icon = des_procreation
+		religious_head = e_des_procreation_papacy
 		graphical_faith = catholic_gfx
 	}
 	origin = catholic
@@ -24,6 +25,7 @@ des_vivhite_faith = {
 		religion = christianity_religion
 		color = { 0.85 0.85 0.95 }
 		icon = des_vivhite
+		religious_head = e_des_vivhite_papacy
 		graphical_faith = catholic_gfx
 	}
 	origin = catholic

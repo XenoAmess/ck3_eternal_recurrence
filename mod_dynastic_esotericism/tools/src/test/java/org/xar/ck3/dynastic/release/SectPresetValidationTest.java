@@ -31,14 +31,14 @@ final class SectPresetValidationTest {
         ReleaseProduct product = ReleaseProduct.official(source, ReleaseProduct.LocalizationMode.RELEASE_LOCALIZATION);
         ReleaseBuilder builder = new ReleaseBuilder();
         ReleaseBuilder.BuildResult built = builder.build(product, source.getParent(), temporary.resolve("product"), REVISION, null, null);
-        assertEquals(52, ManifestJson.decode(Files.readAllBytes(built.manifest()), product).files().size());
-        assertEquals(52, builder.verify(product, built.staging(), built.manifest()).verifiedFiles());
+        assertEquals(56, ManifestJson.decode(Files.readAllBytes(built.manifest()), product).files().size());
+        assertEquals(56, builder.verify(product, built.staging(), built.manifest()).verifiedFiles());
         try (ZipFile archive = new ZipFile(built.archive().toFile(), StandardCharsets.UTF_8)) {
             for (String relative : product.runtimeFiles()) {
                 assertArrayEquals(Files.readAllBytes(built.staging().resolve(relative)), archive.getInputStream(archive.getEntry(product.productId() + "/" + relative)).readAllBytes());
             }
         }
-        List<ExpectedSect> expected = Arrays.stream(SectPreset.values()).map(preset -> new ExpectedSect(preset.faithId(), preset.riteId(), preset.icon(),
+        List<ExpectedSect> expected = Arrays.stream(SectPreset.values()).map(preset -> new ExpectedSect(preset.faithId(), preset.riteId(), preset.icon(), preset.headTitleId(), preset.headTitleColor(),
                 preset.tenets(), SectPreset.ORDINARY_DOCTRINES, preset.specialDoctrines())).toList();
         Path contract = temporary.resolve("preset-contract.json");
         Files.write(contract, new ObjectMapper().writeValueAsBytes(expected));
@@ -56,6 +56,10 @@ final class SectPresetValidationTest {
                 faiths=read('common/religion/faith_types/des_faiths.txt')
                 rites=read('common/religion/rite_types/des_rites.txt')
                 coats=read('common/coat_of_arms/coat_of_arms/des_rite_coa.txt')
+                titles=read('common/landed_titles/des_head_of_faith_titles.txt')
+                head_effects=read('common/scripted_effects/zz_des_temporal_head_of_faith_effects.txt')
+                head_effect=one(head_effects,'set_up_dynamic_temporal_hof_title_effect',required=True)
+                head_trigger=one(read('common/scripted_triggers/zz_des_temporal_head_of_faith_triggers.txt'),'can_create_temporal_head_of_faith_title_trigger',required=True)
                 doctrines=read('common/religion/doctrine_types/des_doctrines.txt')
                 none=one(doctrines,'des_doctrine_none',required=True)
                 dynastic=one(doctrines,'des_doctrine_dynastic',required=True)
@@ -72,6 +76,8 @@ final class SectPresetValidationTest {
                 assert icons[0]==icons[1]
                 for data in icons:
                     assert data[:4]==b'DDS ' and len(data)==128+120*120*4
+                    assert all(data[offset:offset+3]==bytes(3) for offset in range(128,len(data),4))
+                    assert 0 in data[131::4] and any(data[131::4])
                     assert [struct.unpack_from('<I',data,offset)[0] for offset in [12,16,20,28,80,84,88,92,96,100,104]]==[120,120,480,0,65,0,32,16711680,65280,255,4278190080]
                 gate=one(dynastic,'can_pick',required=True)
                 assert {row['key'] for row in gate}=={'exists','scope:actor'}
@@ -81,6 +87,22 @@ final class SectPresetValidationTest {
                 expected=json.loads(contract.read_bytes())
                 assert {row['key'] for row in faiths}=={item['faith'] for item in expected}
                 assert {row['key'] for row in rites}=={item['rite'] for item in expected}
+                assert {row['key'] for row in titles}=={item['headTitle'] for item in expected}
+                assert {row['key'] for row in coats}=={key for item in expected for key in [item['rite']+'_coa',item['headTitle']]}
+                fallback=one(one(head_effect,'else',required=True),'create_dynamic_title',required=True)
+                assert one(fallback,'tier',required=True)=='duchy'
+                assert one(fallback,'name',required=True)=='REL_HEAD_TITLE_NAME'
+                assert one(fallback,'adj',required=True)=='REL_HEAD_TITLE_ADJ'
+                assert one(one(head_effect,'create_title_and_vassal_change',required=True),'type',required=True)=='created'
+                assert {row['key'] for row in head_effects}=={'set_up_dynamic_temporal_hof_title_effect'}
+                title_flows=[row['value'] for row in head_effect if row['key']=='scope:new_title']
+                assert len(title_flows)==2
+                transfer=one(title_flows[0],'change_title_holder',required=True)
+                assert one(transfer,'holder',required=True)=='$NEW_HOLDER$'
+                assert one(transfer,'change',required=True)=='scope:change'
+                assert one(one(title_flows[1],'else',required=True),'generate_coa',required=True)=='religious_title'
+                assert one(title_flows[1],'add_title_law',required=True)=='temporal_head_of_faith_succession_law'
+                assert one(one(head_trigger,'num_realm_holy_sites_faithful_holders',required=True),'CHARACTER',required=True)=='root'
                 def values(entries,key):
                     rows=one(entries,key,required=True)
                     assert all(row['key'] is None and isinstance(row['value'],str) for row in rows)
@@ -91,6 +113,26 @@ final class SectPresetValidationTest {
                     assert one(faith,'main_rite',required=True)==item['rite']
                     details=one(faith,'faith_details',required=True)
                     assert one(details,'religion',required=True)=='christianity_religion'
+                    assert one(details,'religious_head',required=True)==item['headTitle']
+                    assert item['headTitle'].startswith('e_')
+                    title=one(titles,item['headTitle'],required=True)
+                    assert {row['key'] for row in title}=={'color','definite_form','ruler_uses_title_name','no_automatic_claims','always_follows_primary_heir','destroy_if_invalid_heir','can_be_named_after_dynasty','can_use_nomadic_naming','capital','can_create','can_create_on_partition'}
+                    assert values(title,'color')==[str(channel) for channel in item['headTitleColor']]
+                    for key in ['definite_form','no_automatic_claims','always_follows_primary_heir','destroy_if_invalid_heir']:
+                        assert one(title,key,required=True)=='yes'
+                    for key in ['ruler_uses_title_name','can_be_named_after_dynasty','can_use_nomadic_naming']:
+                        assert one(title,key,required=True)=='no'
+                    assert one(title,'capital',required=True)=='c_roma'
+                    for key in ['can_create','can_create_on_partition']:
+                        assert one(title,key,required=True)==[{'key':'always','value':'no'}]
+                    branches=[row['value'] for row in head_effect if row['key'] in ['if','else_if'] and any(child['key']=='title:'+item['headTitle'] for child in row['value'])]
+                    assert len(branches)==1
+                    branch=branches[0]
+                    assert one(one(branch,'limit',required=True),'faith',required=True)=='faith:'+item['faith']
+                    assert one(branch,'title:'+item['headTitle'],required=True)==[{'key':'save_scope_as','value':'new_title'}]
+                    coat_branch=one(title_flows[1],'if' if item['icon']=='des_procreation' else 'else_if',required=True)
+                    assert one(one(coat_branch,'limit',required=True),'scope:my_faith',required=True)=='faith:'+item['faith']
+                    assert one(coat_branch,'set_coa',required=True)==item['rite']+'_coa'
                     assert one(details,'icon',required=True)==one(rite,'icon',required=True)==item['icon']
                     assert one(rite,'faith',required=True)==item['faith']
                     assert one(rite,'name',required=True)==item['rite']
@@ -104,6 +146,7 @@ final class SectPresetValidationTest {
                     assert values(faith,'doctrines')==['special_doctrine_is_western_christian_faith']
                     assert (root/'gfx/interface/icons/faith'/(item['icon']+'.dds')).is_file()
                     coat=one(coats,item['rite']+'_coa',required=True)
+                    assert one(coats,item['headTitle'],required=True)==item['rite']+'_coa'
                     emblem=one(coat,'textured_emblem',required=True)
                     assert one(emblem,'texture',required=True)==json.dumps(item['icon']+'.dds')
                     assert (root/'gfx/coat_of_arms/textured_emblems'/(item['icon']+'.dds')).read_bytes()==(root/'gfx/interface/icons/faith'/(item['icon']+'.dds')).read_bytes()
@@ -162,7 +205,7 @@ final class SectPresetValidationTest {
         }
         Files.writeString(group, groupOriginal, StandardCharsets.UTF_8);
         // Actual static presets retain dynastic doctrines without a selecting actor.
-        assertEquals(52, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
+        assertEquals(56, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
     }
 
     @Test
@@ -178,7 +221,10 @@ final class SectPresetValidationTest {
                 faithOriginal.replace("religion = christianity_religion", "religion = catholic"),
                 faithOriginal.replace("historical = no", "historical = false"),
                 faithOriginal.replace("origin = catholic", "unreviewed = catholic origin = catholic"),
-                faithOriginal.replace("icon = des_procreation", "icon = des_vivhite"));
+                faithOriginal.replace("icon = des_procreation", "icon = des_vivhite"),
+                faithOriginal.replace("religious_head = e_des_procreation_papacy", "religious_head = e_des_vivhite_papacy"),
+                faithOriginal.replace("religious_head = e_des_procreation_papacy", "religious_head = { e_des_procreation_papacy }"),
+                faithOriginal.replace("religious_head = e_des_procreation_papacy", ""));
         for (String invalid : invalidFaiths) {
             Files.writeString(faith, invalid, StandardCharsets.UTF_8);
             assertThrows(IllegalArgumentException.class, () -> StaticValidation.validate(fixture.product(), fixture.repository()));
@@ -201,7 +247,71 @@ final class SectPresetValidationTest {
             assertThrows(IllegalArgumentException.class, () -> StaticValidation.validate(fixture.product(), fixture.repository()));
         }
         Files.writeString(rite, riteOriginal, StandardCharsets.UTF_8);
-        assertEquals(52, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
+        assertEquals(56, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
+    }
+
+    @Test
+    void empireHeadDefinitionsRetainStockFlowAndRejectRankScopeAndAutomaticGrantBypasses() throws IOException {
+        Fixture fixture = fixture();
+        String titles = Files.readString(fixture.product().source().resolve(SectPreset.HEAD_TITLE_FILE));
+        rejectChangedDefinitions(fixture, SectPreset.HEAD_TITLE_FILE, List.of(
+                titles.replace("e_des_procreation_papacy", "d_des_procreation_papacy"),
+                titles.replace("e_des_procreation_papacy", "e_des_vivhite_papacy"),
+                titles.replace("always_follows_primary_heir = yes", "always_follows_primary_heir = no"),
+                titles.replace("no_automatic_claims = yes", "no_automatic_claims = no"),
+                titles.replace("can_create = { always = no }", "can_create = { always = yes }"),
+                titles.replace("can_create_on_partition = { always = no }", "can_create_on_partition = { always = yes }"),
+                titles.replace("capital = c_roma", "capital = { c_roma }"),
+                titles.replace("capital = c_roma", "capital = c_roma holder = 142998")));
+        String trigger = Files.readString(fixture.product().source().resolve(SectPreset.TEMPORAL_HEAD_TRIGGER_FILE));
+        rejectChangedDefinitions(fixture, SectPreset.TEMPORAL_HEAD_TRIGGER_FILE, List.of(
+                trigger.replace("tier > tier_empire", "tier > tier_duchy"),
+                trigger.replace("tier > tier_empire", "tier >= tier_empire"),
+                trigger.replace("is_independent_ruler = yes", "always = yes"),
+                trigger.replace("this = faith:des_vivhite_faith", "this = faith:catholic"),
+                trigger.replace("root.piety_level >= high_piety_level", ""),
+                trigger.replace("COUNT = holy_sites_to_create_temporal_head_of_faith", "COUNT = 0"),
+                trigger.replace("has_global_variable = pam_great_schism_decision_taken", "always = yes"),
+                trigger.replace("faith.religious_head ?= this", "always = no"),
+                trigger.replace("root.piety_level", "root.piety _level")));
+        String effect = Files.readString(fixture.product().source().resolve(SectPreset.TEMPORAL_HEAD_EFFECT_FILE));
+        rejectChangedDefinitions(fixture, SectPreset.TEMPORAL_HEAD_EFFECT_FILE, List.of(
+                effect.replace("title:e_des_procreation_papacy", "title:e_des_vivhite_papacy"),
+                effect.replace("faith = faith:des_vivhite_faith", "faith = faith:catholic"),
+                effect.replace("tier = duchy", "tier = empire"),
+                effect.replace("holder = $NEW_HOLDER$", "holder = root"),
+                effect.replace("change = scope:change", "change = scope:unknown_change"),
+                effect.replace("add_title_law = temporal_head_of_faith_succession_law", ""),
+                effect.replace("generate_coa = religious_title", ""),
+                effect.replace("set_coa = des_procreation_rite_coa", "set_coa = des_vivhite_rite_coa"),
+                effect + "\nstartup_grant = { title:e_des_procreation_papacy = { change_title_holder = root } }\n"));
+        assertEquals(56, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
+    }
+
+    @Test
+    void stagedHeadContractsRejectTamperingEvenAfterManifestDigestIsRecomputed() throws IOException {
+        Fixture fixture = fixture();
+        ReleaseBuilder builder = new ReleaseBuilder();
+        ReleaseBuilder.BuildResult built = builder.build(fixture.product(), fixture.repository(), temporary.resolve("head-contract"), REVISION, null, null);
+        ReleaseManifest manifest = built.payload();
+        for (String relative : List.of(SectPreset.HEAD_TITLE_FILE, SectPreset.TEMPORAL_HEAD_TRIGGER_FILE, SectPreset.TEMPORAL_HEAD_EFFECT_FILE)) {
+            Path staged = built.staging().resolve(relative);
+            byte[] original = Files.readAllBytes(staged);
+            String text = new String(original, StandardCharsets.UTF_8);
+            String altered = relative.equals(SectPreset.HEAD_TITLE_FILE) ? text.replace("can_create = { always = no }", "can_create = { always = yes }")
+                    : relative.equals(SectPreset.TEMPORAL_HEAD_TRIGGER_FILE) ? text.replace("tier > tier_empire", "tier > tier_duchy")
+                    : text.replace("holder = $NEW_HOLDER$", "holder = root");
+            Files.writeString(staged, altered, StandardCharsets.UTF_8);
+            byte[] changed = Files.readAllBytes(staged);
+            List<ReleaseManifest.FileEntry> entries = manifest.files().stream().map(entry -> entry.path().equals(relative)
+                    ? new ReleaseManifest.FileEntry(entry.path(), changed.length, ReleaseBuilder.sha256(changed)) : entry).toList();
+            Files.write(built.manifest(), ManifestJson.encode(new ReleaseManifest(manifest.formatVersion(), manifest.productId(), manifest.modVersion(),
+                    manifest.gitTag(), manifest.gitSha(), manifest.workshopItemId(), entries)));
+            assertThrows(IllegalArgumentException.class, () -> builder.verify(fixture.product(), built.staging(), built.manifest()));
+            Files.write(staged, original);
+            Files.write(built.manifest(), ManifestJson.encode(manifest));
+        }
+        assertEquals(56, builder.verify(fixture.product(), built.staging(), built.manifest()).verifiedFiles());
     }
 
     @Test
@@ -217,6 +327,15 @@ final class SectPresetValidationTest {
                 ? new ReleaseManifest.FileEntry(entry.path(), changed.length, ReleaseBuilder.sha256(changed)) : entry).toList();
         Files.write(built.manifest(), ManifestJson.encode(new ReleaseManifest(old.formatVersion(), old.productId(), old.modVersion(), old.gitTag(), old.gitSha(), old.workshopItemId(), entries)));
         assertThrows(IllegalArgumentException.class, () -> builder.verify(fixture.product(), built.staging(), built.manifest()));
+        Files.write(staged, Files.readAllBytes(fixture.product().source().resolve(SectPreset.RITE_FILE)));
+        byte[] colored = Files.readAllBytes(built.staging().resolve(ReleaseProduct.DYNASTIC_GROUP_ICON));
+        colored[128] = 1;
+        for (String path : List.of(ReleaseProduct.DYNASTIC_GROUP_ICON, ReleaseProduct.DYNASTIC_DOCTRINE_ICON)) Files.write(built.staging().resolve(path), colored);
+        entries = old.files().stream().map(entry -> List.of(ReleaseProduct.DYNASTIC_GROUP_ICON, ReleaseProduct.DYNASTIC_DOCTRINE_ICON).contains(entry.path())
+                ? new ReleaseManifest.FileEntry(entry.path(), colored.length, ReleaseBuilder.sha256(colored)) : entry).toList();
+        Files.write(built.manifest(), ManifestJson.encode(new ReleaseManifest(old.formatVersion(), old.productId(), old.modVersion(), old.gitTag(), old.gitSha(), old.workshopItemId(), entries)));
+        IllegalArgumentException coloredError = assertThrows(IllegalArgumentException.class, () -> builder.verify(fixture.product(), built.staging(), built.manifest()));
+        assertTrue(coloredError.getMessage().contains("black-RGB alpha mask"));
     }
 
     @Test
@@ -227,7 +346,8 @@ final class SectPresetValidationTest {
         String name = original.lines().filter(line -> line.startsWith(" des_procreation_faith:0 ")).findFirst().orElseThrow();
         for (String invalid : List.of(original.replace(name + "\n", ""), original + name + "\n", original + " unreviewed:0 \"x\"\n",
                 original.replace(name, " des_procreation_faith:0 \"[ROOT.Char.GetName]\""),
-                original.replace("$des_procreation_faith$", "$des_vivhite_faith$"))) {
+                original.replace("$des_procreation_faith$", "$des_vivhite_faith$"),
+                original.replace("e_des_procreation_papacy_adj:0 \"$des_procreation_faith_adj$\"", "e_des_procreation_papacy_adj:0 \"$des_vivhite_faith_adj$\""))) {
             Files.writeString(french, invalid, StandardCharsets.UTF_8);
             assertThrows(IllegalArgumentException.class, () -> StaticValidation.validate(fixture.product(), fixture.repository()));
         }
@@ -257,7 +377,12 @@ final class SectPresetValidationTest {
         ByteBuffer.wrap(wrongDimensions).order(ByteOrder.LITTLE_ENDIAN).putInt(12, 60).putInt(16, 240).putInt(20, 960);
         byte[] missingAlpha = glyph.clone();
         ByteBuffer.wrap(missingAlpha).order(ByteOrder.LITTLE_ENDIAN).putInt(104, 0);
-        for (byte[] changed : List.of(wrongDimensions, missingAlpha)) {
+        byte[] colored = glyph.clone();
+        colored[128] = 1;
+        byte[] blank = glyph.clone();
+        byte[] solid = glyph.clone();
+        for (int offset = 131; offset < glyph.length; offset += 4) { blank[offset] = 0; solid[offset] = (byte) 255; }
+        for (byte[] changed : List.of(wrongDimensions, missingAlpha, colored, blank, solid)) {
             Files.write(groupIcon, changed);
             Files.write(selectedIcon, changed);
             assertThrows(IllegalArgumentException.class, () -> StaticValidation.validate(fixture.product(), fixture.repository()));
@@ -320,7 +445,21 @@ final class SectPresetValidationTest {
         return new Fixture(repository, product);
     }
 
+    private static void rejectChangedDefinitions(Fixture fixture, String relative, List<String> candidates) throws IOException {
+        Path file = fixture.product().source().resolve(relative);
+        byte[] original = Files.readAllBytes(file);
+        try {
+            for (String changed : candidates) {
+                Files.writeString(file, changed, StandardCharsets.UTF_8);
+                assertThrows(IllegalArgumentException.class, () -> StaticValidation.validate(fixture.product(), fixture.repository()), relative);
+            }
+        } finally {
+            Files.write(file, original);
+        }
+    }
+
     private static Path source() { return Path.of(System.getProperty("dynastic.source")).toAbsolutePath().normalize(); }
     private record Fixture(Path repository, ReleaseProduct product) { }
-    private record ExpectedSect(String faith, String rite, String icon, List<String> tenets, List<String> ordinary, List<String> specials) { }
+    private record ExpectedSect(String faith, String rite, String icon, String headTitle, List<Integer> headTitleColor,
+            List<String> tenets, List<String> ordinary, List<String> specials) { }
 }

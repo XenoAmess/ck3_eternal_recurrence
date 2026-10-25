@@ -1,0 +1,112 @@
+{
+  "schema": "des-empire-heads-source-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at": "2026-10-25T20:21:27.031889+00:00",
+  "status": "SOURCE_EMPIRE_TITLES_AND_COA_ONLY_ENGINE_NOT_VERIFIED",
+  "stock_sources": [
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/religion/faith_types/_faith_types.info",
+      "bytes": 4481,
+      "sha256": "55696aa5d3ac818fbd68d2b21be51213f02ef5ed4260627e2fbd8b5e321c9e42"
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/landed_titles/_landed_titles.info",
+      "bytes": 8689,
+      "sha256": "e61f22da0920ef6651840be82796b79e1dd7243a96e3c540f1f35d5e773686dd"
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/landed_titles/00_landed_titles.txt",
+      "bytes": 1315737,
+      "sha256": "fc8ea76e8bcc8c3aa8557dfb7226dc75b4aee8830e906c434754599ab8c75f55"
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/coat_of_arms/coat_of_arms/01_landed_titles.txt",
+      "bytes": 837078,
+      "sha256": "eef19e7a90809522676dbf4b525892cd9cfc487a32d97935e28482554595d0e2"
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/scripted_triggers/00_religious_triggers.txt",
+      "bytes": 88549,
+      "sha256": "e9d0b56130464eabdcd670fa6cf814534d11c99da1e8b3fc1e69e9c3e36d2bb2"
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/scripted_effects/00_religion_effects.txt",
+      "bytes": 41530,
+      "sha256": "5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931"
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/decisions/dlc_decisions/pam/pam_decisions.txt",
+      "bytes": 162367,
+      "sha256": "fe113568051ccf2243f08543a522bc5afeb3e25e6fb97e5440d2fae7a4cb7a64"
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/events/religion_events/faith_creation_events.txt",
+      "bytes": 33619,
+      "sha256": "419c04b9ca889e96e572b894ec346ae6119af2fd6eb9be4833d6659edfba923e"
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/on_action/religion_on_actions.txt",
+      "bytes": 59475,
+      "sha256": "ef9367ddf5f89c912b895743f8b72441e88af3a5b03a5c1a9eddea0e5681ee2d"
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/script_values/02_religion_values.txt",
+      "bytes": 118720,
+      "sha256": "9e55618b00b463589af310bd17511b4f260fea4d3acb43e512e209cfc1517ded"
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/script_values/00_basic_values.txt",
+      "bytes": 50566,
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef"
+    }
+  ],
+  "runtime_definitions": [
+    {
+      "path": "C:/ck3-dynastic-esotericism-20261024/main12/mod_dynastic_esotericism/common/religion/faith_types/des_faiths.txt",
+      "bytes": 1136,
+      "sha256": "ad32822b121f1e735a27eb7d1ddf17ff7fa04236442ad02d6bd412f54e31f8de"
+    },
+    {
+      "path": "C:/ck3-dynastic-esotericism-20261024/main12/mod_dynastic_esotericism/common/landed_titles/des_head_of_faith_titles.txt",
+      "bytes": 1052,
+      "sha256": "f3a0fb81adc74111b7a68b2a37b95ccae639d33008bb7856a3ce4d8a83e3b0f6"
+    },
+    {
+      "path": "C:/ck3-dynastic-esotericism-20261024/main12/mod_dynastic_esotericism/common/scripted_triggers/zz_des_temporal_head_of_faith_triggers.txt",
+      "bytes": 1408,
+      "sha256": "277e0a5ddfc3861a166a99aa7b81a5189a91fbae6562f899acb20f6f2cd3c6ec"
+    },
+    {
+      "path": "C:/ck3-dynastic-esotericism-20261024/main12/mod_dynastic_esotericism/common/scripted_effects/zz_des_temporal_head_of_faith_effects.txt",
+      "bytes": 1648,
+      "sha256": "409d9e7987178134b2bdce8228d14d097edbfa98b829b1102ab07d82b596b446"
+    },
+    {
+      "path": "C:/ck3-dynastic-esotericism-20261024/main12/mod_dynastic_esotericism/common/coat_of_arms/coat_of_arms/des_rite_coa.txt",
+      "bytes": 712,
+      "sha256": "ccc14ada211c50f5c1e0a83e8216080cde6a14fb74b09cc83d35493fee8c04e3"
+    }
+  ],
+  "formal_inventory": {
+    "release": 56,
+    "development": 35,
+    "foreign_localization": 21
+  },
+  "sect_localization_keys_per_language": 25,
+  "retained_checks": {
+    "direct_source_ast_smoke": "PASS after government withdrawal; existing independent lexer/AST consumer against source, not Java producer or staging",
+    "actual_source_inventory": "56 total / 21 foreign / 35 development",
+    "git_diff_check": "exit 0",
+    "cancelled_feature_absence": "callback file, government helper, expected government metadata, extra TGP gate and HoF-only temporary scope all absent",
+    "test_methods": 38
+  },
+  "build_owner": "Root; new complete build required after withdrawal (a07), not reusing a06 output",
+  "actual_game_verification": false,
+  "limits": [
+    "Static source checks do not prove acquisition, inheritance or actual title CoA.",
+    "No government conversion or maintenance; original doctrine DLC and can_pick rules are unchanged.",
+    "Historical a06 38-test receipts are retained separately by Root and do not validate this revised final artifact.",
+    "Temporal d_sunni and h_dar_al_islam omit landless; default no is retained."
+  ],
+  "government_binding": "WITHDRAWN_BY_USER; no conversion or maintenance callbacks remain"
+}

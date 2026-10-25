@@ -1,0 +1,580 @@
+{
+  "schema": "xar.government-faith-head.source-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-25T19:48:06.838155+00:00",
+  "installed_build_id": "25734779",
+  "ck3_exe": {
+    "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+    "size_bytes": 101040248,
+    "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "version_binding": "1.20.0.4 exact SHA independently compared to the project frozen build; no live process calls",
+  "main12_head": "6d38eadf8a4a48688835cbb41035d877bb3f4540",
+  "scope": "Source paths, hashes and studied line ranges only. No gameplay or complete native government-selection qualification.",
+  "observations": [
+    "2026-10-25T19:48:06.838155+00:00",
+    "2026-10-25T19:54:29.443754+00:00"
+  ],
+  "sources": [
+    {
+      "key": "government_schema",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/governments/_governments.info",
+      "size_bytes": 28672,
+      "sha256": "af825eb9fc59c3fde4cc74f11d2f9997419b9bd83bdf6a5dec8790d9d435b59a",
+      "studied_lines": [
+        {
+          "first_line": 73,
+          "last_line": 83
+        },
+        {
+          "first_line": 148,
+          "last_line": 173
+        },
+        {
+          "first_line": 346,
+          "last_line": 368
+        },
+        {
+          "first_line": 382,
+          "last_line": 425
+        }
+      ]
+    },
+    {
+      "key": "government_types",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/governments/00_government_types.txt",
+      "size_bytes": 34740,
+      "sha256": "f7f07123192eebf4053f917d8458639126ab42e2a7efa9176f43495a6275c86b",
+      "studied_lines": [
+        {
+          "first_line": 1,
+          "last_line": 62
+        },
+        {
+          "first_line": 105,
+          "last_line": 115
+        },
+        {
+          "first_line": 1239,
+          "last_line": 1275
+        },
+        {
+          "first_line": 1320,
+          "last_line": 1344
+        }
+      ]
+    },
+    {
+      "key": "theocratic_governments",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/governments/02_theocratic_government_types.txt",
+      "size_bytes": 4204,
+      "sha256": "2e79da9f428e508008afb7f472eda7da3573c5d4c97115c5f94d49f8d24ce322",
+      "studied_lines": [
+        {
+          "first_line": 1,
+          "last_line": 40
+        },
+        {
+          "first_line": 75,
+          "last_line": 140
+        }
+      ]
+    },
+    {
+      "key": "faith_schema",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/religion/faith_types/_faith_types.info",
+      "size_bytes": 4481,
+      "sha256": "55696aa5d3ac818fbd68d2b21be51213f02ef5ed4260627e2fbd8b5e321c9e42",
+      "studied_lines": [
+        {
+          "first_line": 1,
+          "last_line": 17
+        },
+        {
+          "first_line": 36,
+          "last_line": 43
+        },
+        {
+          "first_line": 64,
+          "last_line": 75
+        }
+      ]
+    },
+    {
+      "key": "rite_schema",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/religion/rite_types/_rite_types.info",
+      "size_bytes": 2995,
+      "sha256": "60fd476d72be0941d9c6dff4e83834016d6e32d16e855f3b258389061850828f",
+      "studied_lines": [
+        {
+          "first_line": 28,
+          "last_line": 44
+        },
+        {
+          "first_line": 68,
+          "last_line": 82
+        }
+      ]
+    },
+    {
+      "key": "christianity_mapping",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/religion/religion_types/00_christianity.txt",
+      "size_bytes": 29656,
+      "sha256": "d3f521850ab6aa7643bbb4e5c644ac5a70b8e5a8d1184a20aee7f9a509a9ae02",
+      "studied_lines": [
+        {
+          "first_line": 1,
+          "last_line": 17
+        }
+      ]
+    },
+    {
+      "key": "stock_doctrines",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/religion/doctrine_types/20_doctrines.txt",
+      "size_bytes": 54665,
+      "sha256": "ff663a8f6c5233628dbf6774b28412b918338fec823fe0f534c4cd03c8580504",
+      "studied_lines": [
+        {
+          "first_line": 1110,
+          "last_line": 1167
+        },
+        {
+          "first_line": 1200,
+          "last_line": 1258
+        }
+      ]
+    },
+    {
+      "key": "head_of_faith_decision",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/decisions/dlc_decisions/pam/pam_decisions.txt",
+      "size_bytes": 162367,
+      "sha256": "fe113568051ccf2243f08543a522bc5afeb3e25e6fb97e5440d2fae7a4cb7a64",
+      "studied_lines": [
+        {
+          "first_line": 425,
+          "last_line": 455
+        },
+        {
+          "first_line": 1091,
+          "last_line": 1091
+        },
+        {
+          "first_line": 1144,
+          "last_line": 1238
+        }
+      ]
+    },
+    {
+      "key": "head_of_faith_conditions",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/scripted_triggers/00_religious_triggers.txt",
+      "size_bytes": 88549,
+      "sha256": "e9d0b56130464eabdcd670fa6cf814534d11c99da1e8b3fc1e69e9c3e36d2bb2",
+      "studied_lines": [
+        {
+          "first_line": 1404,
+          "last_line": 1552
+        }
+      ]
+    },
+    {
+      "key": "head_of_faith_creation",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/scripted_effects/00_religion_effects.txt",
+      "size_bytes": 41530,
+      "sha256": "5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931",
+      "studied_lines": [
+        {
+          "first_line": 279,
+          "last_line": 335
+        },
+        {
+          "first_line": 346,
+          "last_line": 381
+        }
+      ]
+    },
+    {
+      "key": "head_of_faith_events",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/events/religion_events/faith_creation_events.txt",
+      "size_bytes": 33619,
+      "sha256": "419c04b9ca889e96e572b894ec346ae6119af2fd6eb9be4833d6659edfba923e",
+      "studied_lines": [
+        {
+          "first_line": 1,
+          "last_line": 45
+        },
+        {
+          "first_line": 111,
+          "last_line": 153
+        }
+      ]
+    },
+    {
+      "key": "head_of_faith_values",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/script_values/02_religion_values.txt",
+      "size_bytes": 118720,
+      "sha256": "9e55618b00b463589af310bd17511b4f260fea4d3acb43e512e209cfc1517ded",
+      "studied_lines": [
+        {
+          "first_line": 4094,
+          "last_line": 4188
+        }
+      ]
+    },
+    {
+      "key": "numeric_values",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/script_values/00_basic_values.txt",
+      "size_bytes": 50566,
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef",
+      "studied_lines": [
+        {
+          "first_line": 665,
+          "last_line": 671
+        },
+        {
+          "first_line": 1131,
+          "last_line": 1137
+        }
+      ]
+    },
+    {
+      "key": "theocratic_eligibility",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/scripted_triggers/pam_scripted_triggers.txt",
+      "size_bytes": 186187,
+      "sha256": "0ad98f123b6739593b9ab2c170d0e8c9b3d9d941baa9d3580296dd2139b2ea6e",
+      "studied_lines": [
+        {
+          "first_line": 6598,
+          "last_line": 6615
+        }
+      ]
+    },
+    {
+      "key": "theocratic_alignment",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/scripted_effects/11_dlc_pam_scripted_effects.txt",
+      "size_bytes": 50483,
+      "sha256": "ade936faf40ac2f2c928ba3bc0b618f62d324ce6f2af400e54da3b4bd975371f",
+      "studied_lines": [
+        {
+          "first_line": 390,
+          "last_line": 402
+        }
+      ]
+    },
+    {
+      "key": "title_acquisition_hook",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/on_action/title_on_actions.txt",
+      "size_bytes": 141749,
+      "sha256": "015a6165a999cada51424131fa9691c2556f91c607ce046d5d82bae0b3d84352",
+      "studied_lines": [
+        {
+          "first_line": 225,
+          "last_line": 242
+        },
+        {
+          "first_line": 270,
+          "last_line": 279
+        }
+      ]
+    },
+    {
+      "key": "government_assignment",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/scripted_effects/00_government_effects.txt",
+      "size_bytes": 3626,
+      "sha256": "356191f5b33de1e43e791598db60bdddfbbd61d93c4ea1c08b11346ed29cb939",
+      "studied_lines": [
+        {
+          "first_line": 1,
+          "last_line": 8
+        },
+        {
+          "first_line": 30,
+          "last_line": 72
+        },
+        {
+          "first_line": 75,
+          "last_line": 113
+        },
+        {
+          "first_line": 148,
+          "last_line": 165
+        }
+      ]
+    },
+    {
+      "key": "administrative_assignment",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/scripted_effects/00_administrative_effects.txt",
+      "size_bytes": 14065,
+      "sha256": "c8f8b4d41198afba045e22404445fc6d915bdc75334d9daf3c0f81df01b9c261",
+      "studied_lines": [
+        {
+          "first_line": 106,
+          "last_line": 132
+        },
+        {
+          "first_line": 188,
+          "last_line": 213
+        }
+      ]
+    },
+    {
+      "key": "meritocratic_conditions",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/scripted_triggers/10_tgp_triggers.txt",
+      "size_bytes": 29024,
+      "sha256": "4bb6f9edebe8114f2e6b27c730122453e8f87e42af0df4bfcc2fd7727542402c",
+      "studied_lines": [
+        {
+          "first_line": 512,
+          "last_line": 566
+        }
+      ]
+    },
+    {
+      "key": "title_schema",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/landed_titles/_landed_titles.info",
+      "size_bytes": 8689,
+      "sha256": "e61f22da0920ef6651840be82796b79e1dd7243a96e3c540f1f35d5e773686dd",
+      "studied_lines": [
+        {
+          "first_line": 7,
+          "last_line": 20
+        },
+        {
+          "first_line": 53,
+          "last_line": 69
+        },
+        {
+          "first_line": 91,
+          "last_line": 109
+        },
+        {
+          "first_line": 200,
+          "last_line": 218
+        }
+      ]
+    },
+    {
+      "key": "stock_head_titles",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/landed_titles/00_landed_titles.txt",
+      "size_bytes": 1315737,
+      "sha256": "fc8ea76e8bcc8c3aa8557dfb7226dc75b4aee8830e906c434754599ab8c75f55",
+      "studied_lines": [
+        {
+          "first_line": 68,
+          "last_line": 98
+        },
+        {
+          "first_line": 292,
+          "last_line": 323
+        }
+      ]
+    },
+    {
+      "key": "title_history",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/history/titles/00_other_titles.txt",
+      "size_bytes": 90807,
+      "sha256": "da859be2795690016e818b6c82072bba1d5c8062e3d778ce1b250c999f56caf5",
+      "studied_lines": [
+        {
+          "first_line": 1,
+          "last_line": 5
+        },
+        {
+          "first_line": 1739,
+          "last_line": 1745
+        }
+      ]
+    },
+    {
+      "key": "temporal_succession",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/laws/01_title_succession_laws.txt",
+      "size_bytes": 9179,
+      "sha256": "48593c818edb66b1ad1b41602f77ad9395ab92d6d16f11cf5b95b378b92e0d14",
+      "studied_lines": [
+        {
+          "first_line": 214,
+          "last_line": 234
+        }
+      ]
+    },
+    {
+      "key": "existing_head_challenge",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/decisions/dlc_decisions/pam/pam_antipope_decisions.txt",
+      "size_bytes": 13445,
+      "sha256": "01564604392c6ce5a9fcec9827c98ce3b62d2ebcdb61401055647cd6ae154bd8",
+      "studied_lines": [
+        {
+          "first_line": 346,
+          "last_line": 413
+        }
+      ]
+    },
+    {
+      "key": "head_grant_condition",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/character_interactions/00_grant_titles_interaction.txt",
+      "size_bytes": 63173,
+      "sha256": "89599ed8feb65bebac143b311550e7b6f82b5b477231bdd05be4548ad0f51a63",
+      "studied_lines": [
+        {
+          "first_line": 195,
+          "last_line": 204
+        }
+      ]
+    },
+    {
+      "key": "chinese_decision_text",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/simp_chinese/dlc/pam/pam_decisions_l_simp_chinese.yml",
+      "size_bytes": 106628,
+      "sha256": "cc309d79bad891ae010f4f8a47b65c30ded6924787f10c45857c129a77d9bff9",
+      "studied_lines": [
+        {
+          "first_line": 329,
+          "last_line": 340
+        }
+      ]
+    },
+    {
+      "key": "chinese_devotion_text",
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/simp_chinese/modifiers/modifiers_l_simp_chinese.yml",
+      "size_bytes": 160863,
+      "sha256": "c4b669dff52effa52412c52746845d4879f012e22b122e81e10ab19833650ada",
+      "studied_lines": [
+        {
+          "first_line": 1344,
+          "last_line": 1348
+        }
+      ]
+    },
+    {
+      "key": "product_faiths",
+      "path": "C:/ck3-dynastic-esotericism-20261024/main12/mod_dynastic_esotericism/common/religion/faith_types/des_faiths.txt",
+      "size_bytes": 1052,
+      "sha256": "6829aae7767e161a2f962b59b64f5f5ab0be1b2e13b998f1a401a60241369aa7",
+      "studied_lines": [
+        {
+          "first_line": 1,
+          "last_line": 37
+        }
+      ]
+    },
+    {
+      "key": "product_rites",
+      "path": "C:/ck3-dynastic-esotericism-20261024/main12/mod_dynastic_esotericism/common/religion/rite_types/des_rites.txt",
+      "size_bytes": 2693,
+      "sha256": "eae2e44d2dc30fb5ca45a7837ef3f21313bad28814a015250cbcd257c7715fdb",
+      "studied_lines": [
+        {
+          "first_line": 1,
+          "last_line": 97
+        }
+      ]
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/on_action/religion_on_actions.txt",
+      "size_bytes": 59475,
+      "sha256": "ef9367ddf5f89c912b895743f8b72441e88af3a5b03a5c1a9eddea0e5681ee2d",
+      "studied_lines": [
+        {
+          "first_line": 1,
+          "last_line": 12
+        },
+        {
+          "first_line": 398,
+          "last_line": 405
+        },
+        {
+          "first_line": 822,
+          "last_line": 829
+        }
+      ]
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/scripted_effects/00_major_decisions_scripted_effects_3.txt",
+      "size_bytes": 26750,
+      "sha256": "a86583f56a9a535d4127ad52ebd036601975d85f459f81e1823d54f47a9888e4",
+      "studied_lines": [
+        {
+          "first_line": 1108,
+          "last_line": 1149
+        }
+      ]
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/scripted_effects/11_dlc_pam_scripted_effects.txt",
+      "size_bytes": 50483,
+      "sha256": "ade936faf40ac2f2c928ba3bc0b618f62d324ce6f2af400e54da3b4bd975371f",
+      "studied_lines": [
+        {
+          "first_line": 105,
+          "last_line": 127
+        },
+        {
+          "first_line": 285,
+          "last_line": 305
+        },
+        {
+          "first_line": 323,
+          "last_line": 327
+        }
+      ]
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/history/titles/e_goryeo.txt",
+      "size_bytes": 38663,
+      "sha256": "1463b5c9f0cf523345088f313b5d9a96b440666561bd9d38388129f0f51a918b",
+      "studied_lines": [
+        {
+          "first_line": 1,
+          "last_line": 18
+        }
+      ]
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/history/titles/02_korea_noble_family.txt",
+      "size_bytes": 23062,
+      "sha256": "32c9c3abfbd4505bfefbe392066848aa3789d9bbbea8e76c12952ce17dc87eb5",
+      "studied_lines": [
+        {
+          "first_line": 1,
+          "last_line": 20
+        }
+      ]
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/on_action/game_start.txt",
+      "size_bytes": 218249,
+      "sha256": "f2f5ce78a03cfbdba0f5a68fc466f8bac89126cdd4843545b4ad6d468ed238b8",
+      "studied_lines": [
+        {
+          "first_line": 1326,
+          "last_line": 1353
+        }
+      ]
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/on_action/government_on_actions.txt",
+      "size_bytes": 3396,
+      "sha256": "075ad0a3d7a6d381e3187de32eb79d523ec2c5a14ffdea3e5f7e4dfdf4400cdd",
+      "studied_lines": [
+        {
+          "first_line": 1,
+          "last_line": 5
+        },
+        {
+          "first_line": 110,
+          "last_line": 115
+        }
+      ]
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/common/on_action/yearly_on_actions.txt",
+      "size_bytes": 147319,
+      "sha256": "14c97f3845138d74a2c2552c5dd3c95de1da035014a5cdf31c92540aae3390fe",
+      "studied_lines": [
+        {
+          "first_line": 2425,
+          "last_line": 2435
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,300 @@
+{
+  "schema": "des-offline-build-actual-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-25T20:24:27.331808+00:00",
+  "candidate_base_head": "6d38eadf8a4a48688835cbb41035d877bb3f4540",
+  "working_changes_recorded_by_original_maven_capture": true,
+  "original_execution": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-builder-a20\\attempt-a07\\maven-original-exec.actual.json",
+    "bytes": 14317,
+    "sha256": "ffba751a443cf73796aa16171a180f3288390b6080d4f03b2a90bf75487b73e1"
+  },
+  "original_returncode": 0,
+  "actual_original_popen_wait": true,
+  "elapsed_seconds": 64.40534830000252,
+  "default_maven_version": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-builder-a20\\attempt-a07\\maven-version.stdout.log",
+    "bytes": 344,
+    "sha256": "c3b7445ff40fe1f91a73415cc218e8c9e2132c766c47cc03f36581bcefb93b9e"
+  },
+  "stdout": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-builder-a20\\attempt-a07\\maven.stdout.log",
+    "bytes": 6276,
+    "sha256": "23616244c4d70cd3b1c5cbc94200cac08d05d2e3c06e19a399d10930ece1f626"
+  },
+  "stderr": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-builder-a20\\attempt-a07\\maven.stderr.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "tests": {
+    "total": 38,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": [
+      {
+        "name": "org.xar.ck3.dynastic.acceptance.FixtureEmitterTest",
+        "tests": "5",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "org.xar.ck3.dynastic.acceptance.HeadClaimContractTest",
+        "tests": "6",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "org.xar.ck3.dynastic.acceptance.InitialReformFixtureTest",
+        "tests": "2",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "org.xar.ck3.dynastic.acceptance.SectPresetFixtureTest",
+        "tests": "3",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "org.xar.ck3.dynastic.acceptance.SharedRuntimeComposerTest",
+        "tests": "2",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "org.xar.ck3.dynastic.release.DefaultMavenTest",
+        "tests": "1",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "org.xar.ck3.dynastic.release.ReleaseBuilderTest",
+        "tests": "5",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "org.xar.ck3.dynastic.release.ReleaseLocalizationTest",
+        "tests": "4",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      },
+      {
+        "name": "org.xar.ck3.dynastic.release.SectPresetValidationTest",
+        "tests": "10",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0"
+      }
+    ]
+  },
+  "resources_source_equals_classes_equals_packaged_jar": [
+    {
+      "path": "acceptance-fixture/common/decisions/des_acceptance_decisions.txt",
+      "bytes": 11809,
+      "sha256": "a1d0ae3ab63045ca04e6b4d531b354b198c835285b56ec76ab52eb1bef03613a"
+    },
+    {
+      "path": "acceptance-fixture/common/decisions/des_acceptance_extended_decisions.txt",
+      "bytes": 22542,
+      "sha256": "784926735f005fd95fd31387e49d4e666e3179eefd39346e289c025bbed5b41b"
+    },
+    {
+      "path": "acceptance-fixture/common/decisions/des_preset_acceptance_decisions.txt",
+      "bytes": 12626,
+      "sha256": "bcffaf4aaee820ef491d773933424c59141510b34c86173dfd35e4f02d38ef07"
+    },
+    {
+      "path": "acceptance-fixture/common/on_action/des_acceptance_extended_on_actions.txt",
+      "bytes": 1135,
+      "sha256": "e383f9b45d2eb5726933f5ade77e30d292b8f8b6a8048095d9a7ba2c57d17417"
+    },
+    {
+      "path": "acceptance-fixture/common/on_action/des_acceptance_on_actions.txt",
+      "bytes": 463,
+      "sha256": "49fb97beefa479ad622ae4f1866142927c57c184604bceb5dbb459f4c766bf79"
+    },
+    {
+      "path": "acceptance-fixture/common/on_action/des_acceptance_pre_product_seed.txt",
+      "bytes": 317,
+      "sha256": "94dc6522c237493797f7f12d92f32ac85d0aaac01250c8f8601ed5a4b393ee13"
+    },
+    {
+      "path": "acceptance-fixture/common/on_action/des_initial_reform_acceptance_on_actions.txt",
+      "bytes": 2541,
+      "sha256": "c2cf2a4a4799a68075b70a798616602dc3a6f50bcdd8127878ca9734df94032d"
+    },
+    {
+      "path": "acceptance-fixture/common/on_action/des_preset_acceptance_on_actions.txt",
+      "bytes": 1426,
+      "sha256": "494d3ae066898f31af09509054e6f3a5e502f74017233c9c39396296d513f423"
+    },
+    {
+      "path": "acceptance-fixture/common/scripted_effects/des_acceptance_effects.txt",
+      "bytes": 6039,
+      "sha256": "7fa96ee36f9c9b3815f9f1060c6ad46626bb906a9baf4f519889c3a60b436137"
+    },
+    {
+      "path": "acceptance-fixture/common/scripted_effects/des_acceptance_extended_effects.txt",
+      "bytes": 35667,
+      "sha256": "d6b4f3cb476ba798e75ea52a7420fdb94445fb9b8d854b7d2bf2fba85481ae3b"
+    },
+    {
+      "path": "acceptance-fixture/common/scripted_effects/des_initial_reform_acceptance_effects.txt",
+      "bytes": 5154,
+      "sha256": "f5ff6aa7151d71cdd7f96eadbb444ba13c1864b90a333f95662a61255ef364b3"
+    },
+    {
+      "path": "acceptance-fixture/descriptor.mod",
+      "bytes": 127,
+      "sha256": "79d6f9faf18492dedf337f713ae58bb8ccc34f39321642366b78b3d3233b2880"
+    },
+    {
+      "path": "acceptance-fixture/events/des_acceptance_events.txt",
+      "bytes": 14633,
+      "sha256": "cc06be2701df0be4c63538c064573ac9a829a438d1076543312d17c50dee85b6"
+    },
+    {
+      "path": "acceptance-fixture/events/des_acceptance_extended_events.txt",
+      "bytes": 16262,
+      "sha256": "04955d024caddcb67eb86f55164bd49326a24d2e3f6f15a7a7760f4356c2f839"
+    },
+    {
+      "path": "acceptance-fixture/localization/english/des_acceptance_extended_l_english.yml",
+      "bytes": 11849,
+      "sha256": "ffa5c22dbdab6818ad6a677321666a1b0ecdb04c56d065a81c3484ac73070b0d"
+    },
+    {
+      "path": "acceptance-fixture/localization/english/des_acceptance_l_english.yml",
+      "bytes": 4349,
+      "sha256": "4433f6a820ac0e4935f5e5e10583708a7a0ff65fb0970de7096c394587cae31c"
+    },
+    {
+      "path": "acceptance-fixture/localization/english/des_preset_acceptance_l_english.yml",
+      "bytes": 2328,
+      "sha256": "41ad811ac69cce981b2417a26506ee7fb83ac83bff3b43989ea78b06b871e136"
+    },
+    {
+      "path": "acceptance-fixture/localization/simp_chinese/des_acceptance_extended_l_simp_chinese.yml",
+      "bytes": 10866,
+      "sha256": "ff470ea81868a5016dec1ceeed2a20fe5cfc6a539e246211ff9ffc88a8410a28"
+    },
+    {
+      "path": "acceptance-fixture/localization/simp_chinese/des_acceptance_l_simp_chinese.yml",
+      "bytes": 4103,
+      "sha256": "e4d9644db5b750340c818c591979e4c95ab0e765404c73779f20ba270447b106"
+    },
+    {
+      "path": "acceptance-fixture/localization/simp_chinese/des_preset_acceptance_l_simp_chinese.yml",
+      "bytes": 2131,
+      "sha256": "a7f35e230146581b4067b283051f5059eb72b035d35e73e606b5ca1c4e8e23b3"
+    },
+    {
+      "path": "application.properties",
+      "bytes": 52,
+      "sha256": "5cdc2c742cf09ccea4040176ed155c8ec3e543986468e55bbc25ec570d3214a0"
+    }
+  ],
+  "packaged_application": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-builder-a20\\attempt-a07\\java-build\\dynastic-esotericism-tools\\quarkus-app\\app\\dynastic-esotericism-tools-0.2.0.jar",
+    "bytes": 155561,
+    "sha256": "ef7fa6f485b777042fd328a63d63f989515b8f44718184c4a1e99b300edb1891"
+  },
+  "observed_development_payload_files": 35,
+  "observed_release_payload_files": 56,
+  "prior_failure_preserved": {
+    "cause": "a05 ReleaseBuilderTest still expected31 instead of36; both old expectations corrected",
+    "original_execution": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-builder-a20\\attempt-a05\\maven-original-exec.actual.json",
+      "bytes": 14012,
+      "sha256": "17ba845ba780ec754f30b250baafe2c8b75df63ad7f336efb25a20a17d6f4945"
+    },
+    "original_returncode": 1,
+    "tests": 38,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "Game_executed": false,
+  "business_pass": false,
+  "release_uploaded": false,
+  "current_candidate": true,
+  "scope": "Final empire-tier and Faith-image CoA only; user-cancelled government conversion and enforcement absent.",
+  "prior_success_superseded_by_user_change": {
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\main12\\mod_dynastic_esotericism\\docs\\acceptance\\rebuild38-a06-2026-10-26.json",
+    "bytes": 8845,
+    "sha256": "e9130a9c1a8a84e54005256d50eb30c40d921ca01a148964c3666fdef15a7c11"
+  },
+  "java_production_source_pins": [
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\main12\\mod_dynastic_esotericism\\tools\\src\\main\\java\\org\\xar\\ck3\\dynastic\\acceptance\\FixtureEmitter.java",
+      "bytes": 13934,
+      "sha256": "3368b0093610cfb2bd3253662d5d664961e78a93289c6d7973cb3fe961f7c1d4"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\main12\\mod_dynastic_esotericism\\tools\\src\\main\\java\\org\\xar\\ck3\\dynastic\\acceptance\\SharedRuntimeComposer.java",
+      "bytes": 36750,
+      "sha256": "ee284127e5a7b1ba156a52118b583fcc85c7edc7efe6c9903ac64e8ad387147a"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\main12\\mod_dynastic_esotericism\\tools\\src\\main\\java\\org\\xar\\ck3\\dynastic\\artwork\\SectArtworkImporter.java",
+      "bytes": 5747,
+      "sha256": "1486391b0f5dcc8ad19958218f1e8ae0c8985befaba5050bd6151d2d00aeb823"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\main12\\mod_dynastic_esotericism\\tools\\src\\main\\java\\org\\xar\\ck3\\dynastic\\release\\CompatibilityTags.java",
+      "bytes": 5530,
+      "sha256": "e6bd658613338528ede0800bbd9b8e5678b180fa4ac1702dce03aadfba7c5b44"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\main12\\mod_dynastic_esotericism\\tools\\src\\main\\java\\org\\xar\\ck3\\dynastic\\release\\ManifestJson.java",
+      "bytes": 4083,
+      "sha256": "4aff48ee64585632792486b8c2db2b499be5ec6c13699e368eb9e22741f1d1d1"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\main12\\mod_dynastic_esotericism\\tools\\src\\main\\java\\org\\xar\\ck3\\dynastic\\release\\ReleaseBuilder.java",
+      "bytes": 7130,
+      "sha256": "64e1d6e5013c4c114e915ebd75825f5df448adcfe005ab7903eb111406e2e15c"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\main12\\mod_dynastic_esotericism\\tools\\src\\main\\java\\org\\xar\\ck3\\dynastic\\release\\ReleaseManifest.java",
+      "bytes": 1888,
+      "sha256": "1c6c5979272c7494ba601d6dcbcad1dde9c32f1b083ba6f1750354895064fe44"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\main12\\mod_dynastic_esotericism\\tools\\src\\main\\java\\org\\xar\\ck3\\dynastic\\release\\ReleaseProduct.java",
+      "bytes": 7896,
+      "sha256": "67e773a690c84d963c91b38a576b6883802378549af87ed4a5ff2729d8c8813e"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\main12\\mod_dynastic_esotericism\\tools\\src\\main\\java\\org\\xar\\ck3\\dynastic\\release\\SectPreset.java",
+      "bytes": 4627,
+      "sha256": "eb7c074624466153d311597d157e502e0b15557944c4fb56f68447ef3dfdf1e7"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\main12\\mod_dynastic_esotericism\\tools\\src\\main\\java\\org\\xar\\ck3\\dynastic\\release\\SectPresetValidation.java",
+      "bytes": 21099,
+      "sha256": "d782b6f52b7954fa5aa6c98f90cf7354c299dafb3168f99a84307bbb261e70c0"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\main12\\mod_dynastic_esotericism\\tools\\src\\main\\java\\org\\xar\\ck3\\dynastic\\release\\StaticValidation.java",
+      "bytes": 15989,
+      "sha256": "bf978af60b970ff7e73c376d84d7a7086fc4d7bb0148c99c76280d427a656cd8"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\main12\\mod_dynastic_esotericism\\tools\\src\\main\\java\\org\\xar\\ck3\\dynastic\\ReleaseCommand.java",
+      "bytes": 6792,
+      "sha256": "475babfbe9c1051fda4fde04ebd9ee95e18801cc5dcd0be3d14fc58697caa43d"
+    }
+  ]
+}

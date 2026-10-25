@@ -19,3 +19,8 @@
  des_vivhite_rite_adherent:0 "$des_vivhite_faith_adherent$"
  des_vivhite_rite_adherent_plural:0 "$des_vivhite_faith_adherent_plural$"
  des_vivhite_rite_desc:0 "$des_vivhite_faith_desc$"
+ e_des_procreation_papacy:0 "번육 교황청"
+ e_des_procreation_papacy_adj:0 "$des_procreation_faith_adj$"
+ e_des_vivhite_papacy:0 "비브하이트 교황청"
+ e_des_vivhite_papacy_adj:0 "$des_vivhite_faith_adj$"
+ des_sect_empire_hof_liege_requirement:0 "독립 통치자이거나, 직속 주군의 대표 작위가 제국보다 높은 등급이어야 합니다."

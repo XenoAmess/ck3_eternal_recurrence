@@ -19,3 +19,8 @@
  des_vivhite_rite_adherent:0 "$des_vivhite_faith_adherent$"
  des_vivhite_rite_adherent_plural:0 "$des_vivhite_faith_adherent_plural$"
  des_vivhite_rite_desc:0 "$des_vivhite_faith_desc$"
+ e_des_procreation_papacy:0 "Papado de la Procreación"
+ e_des_procreation_papacy_adj:0 "$des_procreation_faith_adj$"
+ e_des_vivhite_papacy:0 "Papado de Vivhite"
+ e_des_vivhite_papacy_adj:0 "$des_vivhite_faith_adj$"
+ des_sect_empire_hof_liege_requirement:0 "Eres independiente o el título principal de tu señor directo tiene un rango superior al imperial."

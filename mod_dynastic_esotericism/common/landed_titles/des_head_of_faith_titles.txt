@@ -1,0 +1,32 @@
+﻿# Empty titular HoF titles: stock qualified HoF flows grant them; no mod startup grant.
+# e_ is empire tier; succession properties follow stock d_sunni / h_dar_al_islam.
+
+e_des_procreation_papacy = {
+	color = { 191 89 140 }
+	definite_form = yes
+	ruler_uses_title_name = no
+	no_automatic_claims = yes
+	always_follows_primary_heir = yes
+	destroy_if_invalid_heir = yes
+	can_be_named_after_dynasty = no
+	can_use_nomadic_naming = no
+	capital = c_roma
+	# Creation and recreation use the stock HoF decision/event, not ordinary title creation.
+	can_create = { always = no }
+	can_create_on_partition = { always = no }
+}
+
+e_des_vivhite_papacy = {
+	color = { 217 217 242 }
+	definite_form = yes
+	ruler_uses_title_name = no
+	no_automatic_claims = yes
+	always_follows_primary_heir = yes
+	destroy_if_invalid_heir = yes
+	can_be_named_after_dynasty = no
+	can_use_nomadic_naming = no
+	capital = c_roma
+	# Creation and recreation use the stock HoF decision/event, not ordinary title creation.
+	can_create = { always = no }
+	can_create_on_partition = { always = no }
+}

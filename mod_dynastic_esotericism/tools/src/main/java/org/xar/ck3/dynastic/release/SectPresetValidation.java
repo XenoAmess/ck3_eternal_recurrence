@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -18,11 +19,15 @@ import java.util.regex.Pattern;
 /** Certification of the two finite static definitions; this is not a CK3 engine interpreter. */
 public final class SectPresetValidation {
     private static final Set<String> FAITH_FIELDS = Set.of("main_rite", "faith_details", "origin", "historical", "eminent_holy_sites", "holy_sites", "doctrines");
-    private static final Set<String> DETAIL_FIELDS = Set.of("religion", "color", "icon", "graphical_faith");
+    private static final Set<String> DETAIL_FIELDS = Set.of("religion", "color", "icon", "graphical_faith", "religious_head");
     private static final Set<String> RITE_FIELDS = Set.of("name", "desc", "faith", "create", "convert", "color", "icon", "tenets", "doctrines");
     private static final String DOCTRINE_FILE = "common/religion/doctrine_types/des_doctrines.txt";
     private static final String DOCTRINE_GROUP_FILE = "common/religion/doctrine_group_types/des_doctrine_groups.txt";
     private static final Pattern TOKEN = Pattern.compile("\"(?:[^\"\\\\\\r\\n]|\\\\.)*\"|[A-Za-z0-9_.:-]+|[{}=]|\\s+|#[^\\r\\n]*");
+    private static final Pattern HEAD_SCRIPT_TOKEN = Pattern.compile("\"(?:[^\"\\\\\\r\\n]|\\\\.)*\"|[A-Za-z0-9_.$:-]+|>=|<=|!=|\\?=|[{}=<>]|\\s+|#[^\\r\\n]*");
+    // Finite reviewed .4 compatibility overrides. These are token contracts, not an engine interpreter.
+    private static final String HEAD_TRIGGER_TOKENS = "e324d67a4dd06cfb45d388a143d1c7dd831f4964eee09073bbcea1b7cfe9cc6d";
+    private static final String HEAD_EFFECT_TOKENS = "5411680d82f15ad24f78372e3e4a4d9e711aceb62e18f908cd0f480829d173de";
     private static final Pattern COLOR = Pattern.compile("(?:0(?:\\.[0-9]+)?|1(?:\\.0+)?)");
 
     private SectPresetValidation() { }
@@ -33,9 +38,14 @@ public final class SectPresetValidation {
         Map<String, Value> faiths = assignments(read(root, SectPreset.FAITH_FILE), "faith definitions");
         Map<String, Value> rites = assignments(read(root, SectPreset.RITE_FILE), "rite definitions");
         Map<String, Value> coats = assignments(read(root, SectPreset.COAT_OF_ARMS_FILE), "coat of arms definitions");
+        Map<String, Value> headTitles = assignments(read(root, SectPreset.HEAD_TITLE_FILE), "head of faith titles");
         requireKeys(faiths, Set.of(SectPreset.PROCREATION.faithId(), SectPreset.VIVHITE.faithId()), "faith IDs");
         requireKeys(rites, Set.of(SectPreset.PROCREATION.riteId(), SectPreset.VIVHITE.riteId()), "rite IDs");
-        requireKeys(coats, Set.of(SectPreset.PROCREATION.coatOfArmsId(), SectPreset.VIVHITE.coatOfArmsId()), "coat of arms IDs");
+        requireKeys(coats, Set.of(SectPreset.PROCREATION.coatOfArmsId(), SectPreset.VIVHITE.coatOfArmsId(),
+                SectPreset.PROCREATION.headTitleId(), SectPreset.VIVHITE.headTitleId()), "Rite and HoF title coat of arms IDs");
+        requireKeys(headTitles, Set.of(SectPreset.PROCREATION.headTitleId(), SectPreset.VIVHITE.headTitleId()), "empire head title IDs");
+        validateHeadScript(root, SectPreset.TEMPORAL_HEAD_TRIGGER_FILE, HEAD_TRIGGER_TOKENS);
+        validateHeadScript(root, SectPreset.TEMPORAL_HEAD_EFFECT_FILE, HEAD_EFFECT_TOKENS);
         for (SectPreset preset : SectPreset.values()) {
             Map<String, Value> faith = assignments(block(faiths.get(preset.faithId()), preset.faithId()), preset.faithId());
             requireKeys(faith, FAITH_FIELDS, preset.faithId());
@@ -50,6 +60,8 @@ public final class SectPresetValidation {
             requireScalar(details, "religion", SectPreset.RELIGION);
             requireScalar(details, "icon", preset.icon());
             requireScalar(details, "graphical_faith", "catholic_gfx");
+            requireScalar(details, "religious_head", preset.headTitleId());
+            validateHeadTitle(headTitles.get(preset.headTitleId()), preset);
 
             Map<String, Value> rite = assignments(block(rites.get(preset.riteId()), preset.riteId()), preset.riteId());
             requireKeys(rite, RITE_FIELDS, preset.riteId());
@@ -65,7 +77,43 @@ public final class SectPresetValidation {
                 throw new IllegalArgumentException("Faith and main Rite colors differ: " + preset);
             }
             StaticValidation.validateBytes(preset.iconPath(), Files.readAllBytes(root.resolve(preset.iconPath())));
-            validateCoatOfArms(root, coats.get(preset.coatOfArmsId()), preset);
+            validateCoatOfArms(root, coats.get(preset.coatOfArmsId()), preset, preset.coatOfArmsId());
+            requireScalar(coats, preset.headTitleId(), preset.coatOfArmsId());
+        }
+    }
+
+    private static void validateHeadTitle(Value value, SectPreset preset) {
+        Map<String, Value> title = assignments(block(value, preset.headTitleId()), preset.headTitleId());
+        requireKeys(title, Set.of("color", "definite_form", "ruler_uses_title_name", "no_automatic_claims", "always_follows_primary_heir",
+                "destroy_if_invalid_heir", "can_be_named_after_dynasty", "can_use_nomadic_naming", "capital", "can_create", "can_create_on_partition"), preset.headTitleId());
+        for (Map.Entry<String, String> entry : Map.of("definite_form", "yes", "ruler_uses_title_name", "no", "no_automatic_claims", "yes",
+                "always_follows_primary_heir", "yes", "destroy_if_invalid_heir", "yes", "can_be_named_after_dynasty", "no",
+                "can_use_nomadic_naming", "no", "capital", "c_roma").entrySet()) requireScalar(title, entry.getKey(), entry.getValue());
+        if (!scalarList(title.get("color"), "head title color").equals(preset.headTitleColor().stream().map(String::valueOf).toList())) {
+            throw new IllegalArgumentException("head title color differs: " + preset);
+        }
+        for (String key : List.of("can_create", "can_create_on_partition")) {
+            Map<String, Value> gate = assignments(block(title.get(key), key), key);
+            requireKeys(gate, Set.of("always"), key);
+            requireScalar(gate, "always", "no");
+        }
+    }
+
+    private static void validateHeadScript(Path root, String relative, String expectedDigest) throws IOException {
+        byte[] bytes = Files.readAllBytes(root.resolve(relative));
+        StaticValidation.validateBytes(relative, bytes);
+        String source = StaticValidation.text(bytes);
+        List<String> tokens = new ArrayList<>();
+        Matcher matcher = HEAD_SCRIPT_TOKEN.matcher(source);
+        int offset = 0;
+        while (matcher.find()) {
+            if (matcher.start() != offset) throw new IllegalArgumentException("unsupported HoF compatibility syntax: " + relative + " at " + offset);
+            String token = matcher.group();
+            if (!Character.isWhitespace(token.charAt(0)) && token.charAt(0) != '#') tokens.add(token);
+            offset = matcher.end();
+        }
+        if (offset != source.length() || !ReleaseBuilder.sha256(String.join("\n", tokens).getBytes(StandardCharsets.UTF_8)).equals(expectedDigest)) {
+            throw new IllegalArgumentException("reviewed stock HoF compatibility contract differs: " + relative);
         }
     }
 
@@ -113,15 +161,25 @@ public final class SectPresetValidation {
                     || header.getInt(100) != 0xff || header.getInt(104) != 0xff000000) {
                 throw new IllegalArgumentException("dynastic group/selected icon must use the 120x120 BGRA8 single-level producer layout: " + relative);
             }
+            boolean transparent = false;
+            boolean visible = false;
+            for (int offset = 128; offset < data.length; offset += 4) {
+                if (data[offset] != 0 || data[offset + 1] != 0 || data[offset + 2] != 0) {
+                    throw new IllegalArgumentException("dynastic icon must be a black-RGB alpha mask: " + relative);
+                }
+                transparent |= data[offset + 3] == 0;
+                visible |= data[offset + 3] != 0;
+            }
+            if (!transparent || !visible) throw new IllegalArgumentException("dynastic icon alpha must contain both shape and transparent exterior: " + relative);
         }
         if (Files.mismatch(root.resolve(ReleaseProduct.DYNASTIC_GROUP_ICON), root.resolve(ReleaseProduct.DYNASTIC_DOCTRINE_ICON)) != -1) {
             throw new IllegalArgumentException("dynastic group and selected doctrine icons must use identical artwork");
         }
     }
 
-    private static void validateCoatOfArms(Path root, Value value, SectPreset preset) throws IOException {
-        Map<String, Value> coat = assignments(block(value, preset.coatOfArmsId()), preset.coatOfArmsId());
-        requireKeys(coat, Set.of("textured_emblem"), preset.coatOfArmsId());
+    private static void validateCoatOfArms(Path root, Value value, SectPreset preset, String coatId) throws IOException {
+        Map<String, Value> coat = assignments(block(value, coatId), coatId);
+        requireKeys(coat, Set.of("textured_emblem"), coatId);
         Map<String, Value> emblem = assignments(block(coat.get("textured_emblem"), "textured_emblem"), "textured_emblem");
         requireKeys(emblem, Set.of("texture", "instance"), "textured_emblem");
         requireScalar(emblem, "texture", "\"" + preset.icon() + ".dds\"");
@@ -143,6 +201,9 @@ public final class SectPresetValidation {
                 String key = preset.riteId() + suffix;
                 String expected = "$" + preset.faithId() + suffix + "$";
                 if (!expected.equals(entries.get(key))) throw new IllegalArgumentException("Rite localization must alias its own Faith: " + key);
+            }
+            if (!("$" + preset.faithId() + "_adj$").equals(entries.get(preset.headTitleId() + "_adj"))) {
+                throw new IllegalArgumentException("HoF title adjective must alias its own Faith: " + preset.headTitleId());
             }
         }
     }

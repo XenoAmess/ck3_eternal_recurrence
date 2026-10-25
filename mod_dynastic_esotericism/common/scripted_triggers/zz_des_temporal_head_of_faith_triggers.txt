@@ -1,0 +1,56 @@
+﻿# CK3 1.20.0.4: 00_religious_triggers.txt:1452-1486, preserved in full.
+# Override the shared temporal trigger so the stock decision and faith_creation.0011 agree.
+can_create_temporal_head_of_faith_title_trigger = {
+	trigger_if = {
+		limit = {
+			this = faith:christian_faith
+			exists = situation:the_christian_church
+		}
+		custom_tooltip = {
+			text = pam_great_schism_decision_taken
+			has_global_variable = pam_great_schism_decision_taken
+		}
+	}
+	num_realm_holy_sites_faithful_holders = {
+		COUNT = holy_sites_to_create_temporal_head_of_faith
+		CHARACTER = root
+	}
+	root.piety_level >= high_piety_level
+	trigger_if = {
+		limit = { root = { top_liege != this } }
+		custom_description = {
+			text = cannot_create_hof_title_at_or_above_liege_tier
+			root.liege.primary_title.tier > tier_duchy
+		}
+	}
+	root = {
+		trigger_if = {
+			limit = { faith.religious_head ?= this }
+			NOT = {
+				custom_tooltip = {
+					text = empire_faith_gate_hof_temporal_is_hof
+					faith.religious_head ?= this
+				}
+			}
+		}
+	}
+
+	# Only the two empire-tier presets need the stronger direct-liege requirement.
+	trigger_if = {
+		limit = {
+			OR = {
+				this = faith:des_procreation_faith
+				this = faith:des_vivhite_faith
+			}
+		}
+		root = {
+			custom_tooltip = {
+				text = des_sect_empire_hof_liege_requirement
+				OR = {
+					is_independent_ruler = yes
+					liege = { primary_title.tier > tier_empire }
+				}
+			}
+		}
+	}
+}

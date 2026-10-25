@@ -1,0 +1,159 @@
+{
+  "schema": "des-ci-pending-integration-facts-v1",
+  "collector_machine_id": "desktop-3fevhd2-1c74096080",
+  "assembled_at_utc": "2026-10-25T19:48:46.258732+00:00",
+  "original_terminal_observation_at_utc": "2026-10-25T19:24:16.246785+00:00",
+  "head_sha": "6d38eadf8a4a48688835cbb41035d877bb3f4540",
+  "applies_only_to_exact_head": true,
+  "later_Main12_dirty_changes_covered": false,
+  "pending_document_integration": true,
+  "runs": [
+    {
+      "workflow": "Official Runner CI",
+      "run_id": "40222604786",
+      "conclusion": "failure",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40222604786",
+      "updated_at_utc": "2026-10-25T19:19:50Z"
+    },
+    {
+      "workflow": "Li Yu Dao static checks",
+      "run_id": "40222604932",
+      "conclusion": "success",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40222604932",
+      "updated_at_utc": "2026-10-25T18:44:59Z"
+    },
+    {
+      "workflow": "Linear history",
+      "run_id": "40222604821",
+      "conclusion": "success",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40222604821",
+      "updated_at_utc": "2026-10-25T18:44:15Z"
+    },
+    {
+      "workflow": "Religious Ritual Fusion Static",
+      "run_id": "40222604807",
+      "conclusion": "success",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40222604807",
+      "updated_at_utc": "2026-10-25T18:47:13Z"
+    },
+    {
+      "workflow": "Dynastic Esotericism Static",
+      "run_id": "40222604816",
+      "conclusion": "success",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40222604816",
+      "updated_at_utc": "2026-10-25T18:47:17Z"
+    }
+  ],
+  "official": {
+    "job_id": "121257218151",
+    "runner_machine_id": "runnervmdaln5-5f47da6a04",
+    "runner_display_name": "GitHub Actions 1000065045",
+    "failed_step": {
+      "name": "Verify Java tools, full reactor and actual HTTP consumer chain",
+      "status": "completed",
+      "conclusion": "failure",
+      "number": 44,
+      "started_at": "2026-10-25T19:14:27Z",
+      "completed_at": "2026-10-25T19:19:41Z"
+    },
+    "actual_exit_code": 1,
+    "qualified_tools_build": "PASS",
+    "full_parity": "NOT_EXECUTED",
+    "error": "IOException: NOT EXECUTED: full parity requires the actual fixture-production request; fresh SDK and complete cold/warm cannot be omitted",
+    "fixture_production_request_ref": null,
+    "stages": [
+      {
+        "stage": "EXPECTED_MAVEN_RED",
+        "state": "PASS"
+      },
+      {
+        "stage": "REACTOR",
+        "state": "RED"
+      },
+      {
+        "stage": "REACTOR_TEST_CLOSURE",
+        "state": "NOT_RUN"
+      },
+      {
+        "stage": "MAP_CONSUMERS",
+        "state": "NOT_RUN"
+      },
+      {
+        "stage": "SDK_SENTINEL_STATIC",
+        "state": "NOT_RUN"
+      },
+      {
+        "stage": "MONTHLY_STATIC",
+        "state": "NOT_RUN"
+      },
+      {
+        "stage": "SUPPLEMENTAL",
+        "state": "NOT_RUN"
+      },
+      {
+        "stage": "FRESH_SDK",
+        "state": "NOT_RUN"
+      },
+      {
+        "stage": "CANONICAL_THIRTY",
+        "state": "NOT_RUN"
+      }
+    ],
+    "complete_reactor_HTTP_fresh_SDK_cold_warm_executed": false,
+    "same_error_as_prior_exact66e2_run": "40208887621",
+    "relevant_three_Git_blobs_identical_to_prior": true,
+    "raw_control_receipt_sha256": "894ff4f6e68696291abb171fa3309f4d372567820f59e88bf41782bc96327f94"
+  },
+  "CLA": {
+    "result": "NOT_TRIGGERED_PUSH_WITHOUT_ASSOCIATED_PR",
+    "associated_pull_requests": [],
+    "workflow_events": [
+      "pull_request_target",
+      "issue_comment",
+      "workflow_dispatch"
+    ],
+    "signature_pass_claimed": false
+  },
+  "source_evidence": [
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-builder-a20\\ci-6d38-a01\\FINAL.actual.json",
+      "bytes": 3735,
+      "sha256": "af59ef83677ffdfc0f1de16d1d593a5ef7fc2542ff6187921f8b4daddab5359c"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-builder-a20\\ci-6d38-a01\\REPORT.md",
+      "bytes": 3315,
+      "sha256": "634c9457d4d0ea2343a2ced9f814778af82274d5f7de32441a46457a60abed54"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-builder-a20\\ci-6d38-a01\\EVIDENCE-INDEX.actual.json",
+      "bytes": 9028,
+      "sha256": "8f1479323831ba68ac5571c14ea0534ceec7badd3c08d800bb1aa938b3d530dc"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-builder-a20\\ci-6d38-a01\\CLA-applicability.actual.json",
+      "bytes": 829,
+      "sha256": "1c917cde27bc2a521ec1db287a577652e7fb48e8b0523102a7563782330869ba"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-builder-a20\\ci-6d38-a01\\prior-failure-comparison.actual.json",
+      "bytes": 1529,
+      "sha256": "0e6a0facb873a4c75065be6b9459d18dde44191b0a11ac2387935c73674c6295"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-builder-a20\\ci-6d38-a01\\failure-source-control-ci-actual.json.gz",
+      "bytes": 953,
+      "sha256": "a1399ab719f24078049b5154f6bbea278e11b72cdaae184de93e4f7d3a8af2e7"
+    },
+    {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-builder-a20\\ci-6d38-a01\\failure-source-selection.actual.json",
+      "bytes": 1970,
+      "sha256": "d1c662b418ee24db833cb0b3ecf3b51b66d64fe5fa2fab52c33d905f80eadc9c"
+    }
+  ],
+  "all_original_indexed_file_pins_revalidated": true,
+  "new_CI_API_calls_or_downloads": 0,
+  "CI_rerun_or_dispatch": false,
+  "Main12_writes": 0,
+  "Game_or_artwork_acceptance_credit": false
+}

@@ -24,7 +24,7 @@
 - `common/religion/doctrine_types/40_doctrines_special.txt:455–464`：隐藏西方分类。
 - `common/defines/graphic/00_graphics.txt:747、750`：`DYNAMIC_RITE_ICON_PATH` 与 `FAITH_ICON_PATH` 都是 `gfx/interface/icons/faith`。两层均引用同一用户资源，正式文件为 `des_procreation.dds` 与 `des_vivhite.dds`。图标导入证据由单独资源流程保存，本文不宣称图片转换或游戏显示已通过。
 
-`localization/<language>/des_sects_l_<language>.yml` 提供九语、每语 20 个明确键。四个对象均有名称、`_adj`、`_adherent`、`_adherent_plural`、`_desc`；Rite 使用对应 Faith 的本地化引用，使两层名称保持一致。Faith 描述仅介绍教派理念与宗族归属，DLC 与工程边界留在本文。
+`localization/<language>/des_sects_l_<language>.yml` 提供九语、每语 25 个明确键：四个对象各五键，加两帝国教廷的名称／形容词及直属领主层级提示五键。Rite 使用对应 Faith 的本地化引用，使两层名称保持一致。Faith 描述仅介绍教派理念与宗族归属，DLC 与工程边界留在本文。2026-10-26追加的帝国领袖与用户图 CoA 见 [帝国领袖专题](2026-10-26-empire-heads.md)，政府绑定已按用户更正撤销；不放宽下述原版选择限制，实际取得与继承仍待验。
 
 ## 核心信条
 

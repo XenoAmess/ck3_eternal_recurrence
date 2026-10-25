@@ -174,7 +174,7 @@ final class SharedRuntimeComposerTest {
                     prepared=json.loads(prepared_path.read_bytes())
                     mounted=Path(prepared['preparation']['profile_preparation']['profile'])/'mod-content/product'
                     actual_product={p.relative_to(mounted).as_posix():p.read_bytes() for p in mounted.rglob('*') if p.is_file()}
-                    assert len(actual_product)==52
+                    assert len(actual_product)==56
                     assert actual_product=={p.relative_to(preset_product).as_posix():p.read_bytes()
                                             for p in preset_product.rglob('*') if p.is_file()}
                     index=json.loads(Path(original_runtime['paths']['source_index']).read_bytes())
@@ -282,7 +282,7 @@ final class SharedRuntimeComposerTest {
         ReleaseBuilder.BuildResult presetProduct = new ReleaseBuilder().build(ReleaseProduct.official(
                 actualRepository.resolve("mod_dynastic_esotericism"), ReleaseProduct.LocalizationMode.RELEASE_LOCALIZATION),
                 actualRepository, temporary.resolve("preset-release"), "0".repeat(40), null, null);
-        assertEquals(52, presetProduct.payload().files().size());
+        assertEquals(56, presetProduct.payload().files().size());
         Path oldRepo = temporary.resolve("previous-repo");
         ObjectNode old = pin(changed);
         old.put("path", oldRepo.resolve("ck3_autonomous_player/src/xar_autoplayer/__init__.py").toString());

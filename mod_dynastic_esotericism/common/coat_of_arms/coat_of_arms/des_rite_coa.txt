@@ -1,4 +1,4 @@
-﻿# Finite Rite icon mappings; each DDS is byte-identical to its Faith/Rite icon.
+﻿# Finite Rite and HoF title icon mappings; each DDS is byte-identical to its Faith/Rite icon.
 # Textured emblems retain the supplied RGBA colors and alpha without recoloring.
 # No extra charges, authored background pattern, or unrelated heraldic elements.
 des_procreation_rite_coa = {
@@ -14,3 +14,7 @@ des_vivhite_rite_coa = {
 		instance = { position = { 0.5 0.5 } scale = { 1.0 1.0 } }
 	}
 }
+
+# Same-database aliases follow stock b_vaticano = k_papal_state.
+e_des_procreation_papacy = des_procreation_rite_coa
+e_des_vivhite_papacy = des_vivhite_rite_coa

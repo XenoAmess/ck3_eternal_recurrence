@@ -1,6 +1,20 @@
 # 宗族化密教：原创预览图
 
-## 2026-10-26 专用宗族化图标
+## 2026-10-26 原版轮廓风格修订（待实机）
+
+用户在实际创建礼仪页面否决了下节的金红圆形树徽：其颜色、复杂度与原版主要教义图标不协调。金红图是已否决的历史输入，不能标为当前获认可的画面。
+
+新候选使用同一内置 imagegen 技能，参考当前安装原版的三张教义透明轮廓以及用户截图，生成简单的家谱树／三个人物轮廓。源图：[des_dynastic_membership_native_mask_20261026.png](../tools/artwork/source/des_dynastic_membership_native_mask_20261026.png)，1254×1254 RGBA，184,659 B，SHA `751318bc6f91b32a7e257ee457d3166f38a9d12d401caccfcad32908681ed827`。模式为 built-in image_gen，`transparent_background=true`，没有 CLI/API fallback。
+
+原版 `window_faith.gui` 的 `icon_doctrine` 经 `shared/icons.gui` 使用 `Icon_Flat_Standard`，添加 `colors_textured.dds` 第7帧的颜色，保留输入 alpha。因此运行素材必须是黑色 RGB 的透明轮廓，由游戏提供颜色；不应把金色、阴影或装饰圆盘直接画入纹理。原版 shader 的 add 运算与 alpha 保留见外置 `operator-reference/none-visible-r18-fix-a01/ICON-PIPELINE.md`。
+
+[Java 导出配方](../tools/artwork/ExportDoctrineIcon.java) 将完整原图的 alpha 双三次缩放到120×120，并编码为 RGB 全0的 BGRA8 DDS。没有裁切、阈值化、描边、重绘或预览合成。两份运行纹理同为57,728 B，SHA `21444eed8611e441d70e77bfb94ac9219750b83a9b8574534ad07324a434be8a`。首次外置导出的默认 javac／java 原进程均退出0，实际14,400像素回读一致；详见 `operator-reference/icon-style-r18-a02/native-mask-export-a01/EXPORT.actual.json`。源码及正式包共用的校验只约束这两张教义纹理的原版格式，不改变用户的彩色信仰／纹章素材。
+
+`machine_id: desktop-3fevhd2-1c74096080`；外置导出观察时间 `2026-10-25T19:33:37.770362700Z`，闭场后集成时间 `2026-10-25T19:43:45.417853Z`。新候选尚未经过游戏小尺寸视觉验收，不将生成／编码或测试通过称为用户认可。当前原图是可重建输入，2026-11-02复核用途；旧图、重复生成原件的保留沿用统一存储策略，复制不重置期限。
+
+完整生成提示词及参考图角色记录：[native-mask-generation.json](evidence/native-mask-generation-2026-10-26.json)。
+
+## 2026-10-26 金红专用图标（已被用户否决）
 
 用户要求检查图标是否专用并生成新图。此前 `des_doctrine_dynastic.icon` 实际引用原版 `doctrine_pluralism_fundamentalist`，即选项仍使用原版原教旨主义图标；旧组图的简易树形 DDS 不等于选项已经使用专用图。
 
@@ -8,11 +22,11 @@
 
 `machine_id: desktop-3fevhd2-1c74096080`；Java 格式导出实际结束于 `2026-10-25T18:19:48.151176Z`（北京时间 10 月 26 日）。默认 `javac -Xlint:all -Werror` 和默认 `java` 均退出 0。原始 PNG 为 1,949,246 B，SHA `f0f232960371884df1c8d6df1d63ea72ef31a40800f7e5699fc9dc9875599490`。原图位于 CODEX_HOME generated_images，源内副本逐字节一致。
 
-Java 只做双三次缩放到 120×120 并编码为带原 alpha 的 32 位 BGRA DDS；不裁切、不重绘、不增删画面元素。[导出配方](../tools/artwork/ExportDoctrineIcon.java) 完整保留。导出逐像素解码回读一致；两份 DDS 各 57,728 B，SHA 均为 `7642ef5c0b837d2a21ee3a1363f86337274c2af1c89b9ec2da8a4d212d2e3071`。原图与实际 DDS 解码的 120 像素预览均已查看。
+当时 Java 只做双三次缩放到 120×120 并编码为带原 alpha 的 32 位 BGRA DDS；不裁切、不重绘、不增删画面元素。彩色导出配方保存在原提交 `6d38eadf8a4a48688835cbb41035d877bb3f4540`；当前配方已按上节改为原版alpha素材格式。历史导出逐像素解码回读一致；两份 DDS 各 57,728 B，SHA 均为 `7642ef5c0b837d2a21ee3a1363f86337274c2af1c89b9ec2da8a4d212d2e3071`。原图与实际 DDS 解码的 120 像素预览均已查看。
 
 - 组图：[faith_doctrine_groups/des_dynastic_membership.dds](../gfx/interface/icons/faith_doctrine_groups/des_dynastic_membership.dds)，对应原版 `DOCTRINE_GROUP_TYPE_ICON_PATH`。
 - 选项图：[faith_doctrines/des_dynastic_membership.dds](../gfx/interface/icons/faith_doctrines/des_dynastic_membership.dds)，对应 `DOCTRINE_TYPE_ICON_PATH`，由 `icon="des_dynastic_membership"` 引用。
-- 两个路径都保留在正式显式清单，当前正式文件数变为 52；此前 a03 实际 51 文件构建记录不改写。
+- 两个路径都保留在正式显式清单，当时正式文件数为52；此前a03实际51文件构建记录不改写。仅GUI修订时正式清单为53文件；最终连同帝国领袖与纹章后的正式清单为56文件。
 
 实际回执为 `C:/ck3-dynastic-esotericism-20261024/resume-product-a20/operator-reference/EXCLUSIVE-ICON-EXPORT-a01.actual.json`。施工使用 r1228/storage116 的 C512MiB/D1MiB 池；复制前 fresh 检查通过。较早 r1225 的复制准入因闲置 Core 预留及当时实际空间不足被拒绝，未执行复制；随后实际关闭未消费预留，不声称因此回收物理磁盘。图标生成、导出和打包检查不替代游戏实际显示及 Workshop 更新。
 

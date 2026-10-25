@@ -7,16 +7,20 @@ import java.util.stream.Stream;
 
 /** Reviewed static presets, independent of a particular machine's CK3 installation. */
 public enum SectPreset {
-    PROCREATION("des_procreation", List.of("tenet_be_fruitful_and_multiply", "tenet_carnal_exaltation", "tenet_sacred_childbirth"),
+    PROCREATION("des_procreation", List.of(191, 89, 140), List.of("tenet_be_fruitful_and_multiply", "tenet_carnal_exaltation", "tenet_sacred_childbirth"),
             List.of("special_doctrine_is_jewish_faith", "special_doctrine_is_christian_faith", "special_doctrine_is_islamic_faith",
                     "special_doctrine_is_sinitic_faith", "special_doctrine_is_eastern_faith", "special_doctrine_is_gnostic_faith",
                     "special_doctrine_jizya", "special_doctrine_pope_blessing")),
-    VIVHITE("des_vivhite", List.of("tenet_warmonger", "tenet_miles_christi", "tenet_pursuit_of_power"),
+    VIVHITE("des_vivhite", List.of(217, 217, 242), List.of("tenet_warmonger", "tenet_miles_christi", "tenet_pursuit_of_power"),
             List.of("special_doctrine_jizya", "special_doctrine_pope_blessing"));
 
     public static final String FAITH_FILE = "common/religion/faith_types/des_faiths.txt";
     public static final String RITE_FILE = "common/religion/rite_types/des_rites.txt";
     public static final String COAT_OF_ARMS_FILE = "common/coat_of_arms/coat_of_arms/des_rite_coa.txt";
+    public static final String HEAD_TITLE_FILE = "common/landed_titles/des_head_of_faith_titles.txt";
+    public static final String TEMPORAL_HEAD_TRIGGER_FILE = "common/scripted_triggers/zz_des_temporal_head_of_faith_triggers.txt";
+    public static final String TEMPORAL_HEAD_EFFECT_FILE = "common/scripted_effects/zz_des_temporal_head_of_faith_effects.txt";
+    public static final String HEAD_TIER_TOOLTIP = "des_sect_empire_hof_liege_requirement";
     public static final String RELIGION = "christianity_religion";
     public static final List<String> LOCALIZATION_SUFFIXES = List.of("", "_adj", "_adherent", "_adherent_plural", "_desc");
     public static final List<String> ORDINARY_DOCTRINES = List.of(
@@ -30,11 +34,13 @@ public enum SectPreset {
             "doctrine_monasticism_encouraged", "doctrine_sacraments_central");
 
     private final String icon;
+    private final List<Integer> headTitleColor;
     private final List<String> tenets;
     private final List<String> specialDoctrines;
 
-    SectPreset(String icon, List<String> tenets, List<String> specialDoctrines) {
+    SectPreset(String icon, List<Integer> headTitleColor, List<String> tenets, List<String> specialDoctrines) {
         this.icon = icon;
+        this.headTitleColor = List.copyOf(headTitleColor);
         this.tenets = List.copyOf(tenets);
         this.specialDoctrines = List.copyOf(specialDoctrines);
     }
@@ -42,6 +48,8 @@ public enum SectPreset {
     public String faithId() { return icon + "_faith"; }
     public String riteId() { return icon + "_rite"; }
     public String icon() { return icon; }
+    public String headTitleId() { return "e_" + icon + "_papacy"; }
+    public List<Integer> headTitleColor() { return headTitleColor; }
     public String iconPath() { return "gfx/interface/icons/faith/" + icon + ".dds"; }
     public String coatOfArmsId() { return riteId() + "_coa"; }
     public String coatOfArmsTexturePath() { return "gfx/coat_of_arms/textured_emblems/" + icon + ".dds"; }
@@ -50,8 +58,9 @@ public enum SectPreset {
     public List<String> doctrines() { return Stream.concat(ORDINARY_DOCTRINES.stream(), specialDoctrines.stream()).toList(); }
 
     public static Set<String> localizationKeys() {
-        return Stream.of(values()).flatMap(preset -> Stream.of(preset.faithId(), preset.riteId()))
-                .flatMap(id -> LOCALIZATION_SUFFIXES.stream().map(suffix -> id + suffix))
+        return Stream.concat(Stream.of(values()).flatMap(preset -> Stream.concat(
+                        Stream.of(preset.faithId(), preset.riteId()).flatMap(id -> LOCALIZATION_SUFFIXES.stream().map(suffix -> id + suffix)),
+                        Stream.of(preset.headTitleId(), preset.headTitleId() + "_adj"))), Stream.of(HEAD_TIER_TOOLTIP))
                 .collect(Collectors.toUnmodifiableSet());
     }
 }
