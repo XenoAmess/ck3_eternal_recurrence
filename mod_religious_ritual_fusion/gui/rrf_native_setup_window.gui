@@ -480,7 +480,7 @@ window = {
 					size = { 440 52 }
 					text = "RRF_NATIVE_SETUP_APPLY"
 					enabled = "[And3( RiteCreationWindow.CanEditRite, EqualTo_CFixedPoint( RiteCreationWindow.CalcPietyCost, '(CFixedPoint)0' ), GetScriptedGui( 'rrf_mark_native_apply_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'rrf_native_target', RiteCreationWindow.GetRite.MakeScope ).End ) )]"
-					tooltip = "[Localize( 'RRF_NATIVE_SETUP_APPLY_TT' )]\n\n[RiteCreationWindow.GetEditBlockers]"
+					tooltip = "[Localize( 'RRF_NATIVE_SETUP_APPLY_TT' )] [RiteCreationWindow.GetEditBlockers]"
 					onclick = "[GetScriptedGui( 'rrf_mark_native_apply_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'rrf_native_target', RiteCreationWindow.GetRite.MakeScope ).End )]"
 					onclick = "[RiteCreationWindow.EditRite]"
 				}

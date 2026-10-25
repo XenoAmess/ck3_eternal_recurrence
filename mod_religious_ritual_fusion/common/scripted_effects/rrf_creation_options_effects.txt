@@ -39,7 +39,7 @@ rrf_refresh_family_preview_effect = {
             save_scope_as = new_faith
         }
         every_spouse = {
-            limit = { faith_conversion_0003_valid_character = yes is_landed = no }
+            limit = { rrf_family_conversion_valid_character_trigger = yes is_landed = no }
             save_scope_as = rrf_family_member
             scope:rrf_actor = {
                 add_to_variable_list = { name = rrf_family_converts target = scope:rrf_family_member }
@@ -47,7 +47,7 @@ rrf_refresh_family_preview_effect = {
         }
         every_close_family_member = {
             limit = {
-                faith_conversion_0003_valid_character = yes
+                rrf_family_conversion_valid_character_trigger = yes
                 OR = {
                     AND = {
                         is_child_of = scope:rrf_actor

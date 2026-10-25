@@ -349,7 +349,7 @@
 					name = "rrf_commit"
 					size = { 390 52 }
 					text = "RRF_COMMIT"
-					tooltip = "[Localize( 'RRF_COMMIT_TT' )]\n\n[GetScriptedGui( 'rrf_commit_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+					tooltip = "[Localize( 'RRF_COMMIT_TT' )] [GetScriptedGui( 'rrf_commit_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 					enabled = "[GetScriptedGui( 'rrf_commit_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 					onclick = "[GetScriptedGui( 'rrf_commit_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 				}

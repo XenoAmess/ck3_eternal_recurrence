@@ -113,7 +113,36 @@ public final class ContentValidator {
             if (new String(bytes, StandardCharsets.UTF_8).contains("remote_file_id")) throw new IllegalArgumentException("internal Workshop remote ID");
         }
         if (bytes.length == 0) throw new IllegalArgumentException("empty runtime file: " + path);
+        if (path.endsWith(".gui")) validateGuiQuotedEscapes(path, new String(bytes, StandardCharsets.UTF_8));
         if (path.equals("thumbnail.png") && (bytes.length < 8 || bytes[0] != (byte) 0x89 || bytes[1] != 'P' || bytes[2] != 'N' || bytes[3] != 'G' || bytes[4] != 13 || bytes[5] != 10 || bytes[6] != 26 || bytes[7] != 10)) throw new IllegalArgumentException("invalid PNG thumbnail");
+    }
+    /** Only the GUI lexer rule observed in R0011; this is not an engine grammar validator. */
+    private static void validateGuiQuotedEscapes(String path, String text) {
+        boolean quoted = false;
+        boolean comment = false;
+        int line = 1;
+        int column = 0;
+        for (int index = 0; index < text.length(); index++) {
+            char current = text.charAt(index);
+            if (current == '\n') { line++; column = 0; comment = false; continue; }
+            if (current != '\ufeff') column++;
+            if (comment) continue;
+            if (!quoted) {
+                if (current == '#') comment = true;
+                else if (current == '"') quoted = true;
+                continue;
+            }
+            if (current == '"') { quoted = false; continue; }
+            if (current != '\\') continue;
+            int escapeColumn = column;
+            if (index + 1 >= text.length()
+                    || (text.charAt(index + 1) != '\\' && text.charAt(index + 1) != '"')) {
+                throw new IllegalArgumentException("invalid GUI quoted escape at " + path + ":" + line + ":" + escapeColumn
+                        + ": backslash must be followed by quote or backslash");
+            }
+            index++;
+            column++;
+        }
     }
     private static Map<String, Long> protectedTokens(String value) {
         Map<String, Long> result = new LinkedHashMap<>(); Matcher tokens = PROTECTED_TOKEN.matcher(value);

@@ -72,6 +72,7 @@
 		custom_tooltip = RRF_OPEN_FUSION_DRAFT
 		hidden_effect = { rrf_open_rite_effect = yes }
 	}
+	ai_check_interval = 0
 	ai_potential = { always = no }
 	ai_will_do = { base = 0 }
 }
@@ -153,6 +154,7 @@ rrf_begin_faith_fusion_decision = {
 		custom_tooltip = RRF_OPEN_FUSION_DRAFT
 		hidden_effect = { rrf_open_faith_effect = yes }
 	}
+	ai_check_interval = 0
 	ai_potential = { always = no }
 	ai_will_do = { base = 0 }
 }
@@ -167,6 +169,7 @@ rrf_view_pending_fusion_decision = {
 	confirm_text = rrf_view_pending_fusion_decision_confirm
 	is_shown = { is_ai = no var:rrf_state ?= flag:unresolved }
 	effect = { remove_character_flag = rrf_window_dismissed }
+	ai_check_interval = 0
 	ai_potential = { always = no }
 	ai_will_do = { base = 0 }
 }
@@ -202,6 +205,7 @@ rrf_view_last_fusion_decision = {
 			}
 		}
 	}
+	ai_check_interval = 0
 	ai_potential = { always = no }
 	ai_will_do = { base = 0 }
 }

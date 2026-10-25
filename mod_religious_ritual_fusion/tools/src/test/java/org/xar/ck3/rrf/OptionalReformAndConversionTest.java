@@ -169,6 +169,53 @@ final class OptionalReformAndConversionTest {
         assertEquals(next, model.state(model.actor).links.get("rrf_vassal_preview_result"));
     }
 
+    @Test void familyPreviewResolvesGlobalHelperAndPreservesStockSavedScopeGuards() throws IOException {
+        Model model = model();
+        Path rrf = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize();
+        String source = Files.readString(rrf.resolve("common/scripted_effects/rrf_creation_options_effects.txt"));
+        String helperName = "rrf_family_conversion_valid_character_trigger";
+        Clausewitz.Block preview = Clausewitz.parse(source).block("rrf_refresh_family_preview_effect").block("if");
+        assertEquals("yes", preview.block("every_spouse").block("limit").atom(helperName, ""));
+        assertEquals("yes", preview.block("every_close_family_member").block("limit").atom(helperName, ""));
+        // The stock helper is event-file-local: a common effect must resolve a global definition.
+        assertFalse(source.contains("faith_conversion_0003_valid_character"));
+        Clausewitz.Block helper = Objects.requireNonNull(model.scripts.get(helperName), helperName);
+
+        Entity religion = entity(Kind.RELIGION, "source_religion");
+        model.state(model.faith).links.put("religion", religion);
+        model.saved.putAll(Map.of("old_faith", model.faith, "new_faith", model.faith, "old_rite", model.oldRite));
+        Entity relative = model.person("eligible_relative", model.oldRite, true);
+        assertTrue(model.check(helper, relative));
+
+        model.state(relative).links.put("rite", model.rite);
+        assertFalse(model.check(helper, relative), "same-religion conversion requires the old Rite");
+        Entity otherFaith = entity(Kind.FAITH, "different_religion");
+        model.state(otherFaith).links.put("religion", entity(Kind.RELIGION, "other_religion"));
+        model.saved.put("new_faith", otherFaith);
+        assertTrue(model.check(helper, relative), "the old-Rite guard is conditional on Religion identity");
+        model.state(relative).links.put("faith", otherFaith);
+        assertFalse(model.check(helper, relative), "the old Faith is always required");
+        model.state(relative).links.putAll(Map.of("rite", model.oldRite, "faith", model.faith));
+        model.saved.put("new_faith", model.faith);
+
+        model.state(relative).alive = false;
+        assertFalse(model.check(helper, relative));
+        model.state(relative).alive = true;
+        model.state(relative).ai = false;
+        assertFalse(model.check(helper, relative));
+        model.state(relative).ai = true;
+        model.state(relative).flags.add("ai_will_not_convert");
+        assertFalse(model.check(helper, relative));
+        model.state(relative).flags.clear();
+        model.state(model.faith).links.put("religious_head", relative);
+        assertFalse(model.check(helper, relative));
+        model.state(model.faith).links.remove("religious_head");
+        model.state(model.oldRite).links.put("head_of_rite", relative);
+        assertFalse(model.check(helper, relative));
+        model.state(model.oldRite).links.remove("head_of_rite");
+        assertTrue(model.check(helper, relative));
+    }
+
     private static Model model() throws IOException {
         Model model = new Model();
         Path rrf = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize();
@@ -178,7 +225,7 @@ final class OptionalReformAndConversionTest {
         return model;
     }
 
-    private enum Kind { CHARACTER, RITE, FAITH, DYNASTY, HOUSE, DOCTRINE }
+    private enum Kind { CHARACTER, RITE, FAITH, RELIGION, DYNASTY, HOUSE, DOCTRINE }
     private record Entity(Kind kind, String id) { }
     private record Opinion(Entity observer, Entity target, String modifier) { }
     private record NativeState(boolean available, boolean accepted, boolean actuallyConverts) { }
@@ -189,7 +236,7 @@ final class OptionalReformAndConversionTest {
         final Map<String, String> atoms = new LinkedHashMap<>();
         final Map<String, List<Entity>> lists = new LinkedHashMap<>();
         final Set<Entity> doctrines = new LinkedHashSet<>(), known = new LinkedHashSet<>();
-        final Set<String> traits = new LinkedHashSet<>();
+        final Set<String> traits = new LinkedHashSet<>(), flags = new LinkedHashSet<>();
         boolean alive = true, ai = true;
     }
 
@@ -272,6 +319,7 @@ final class OptionalReformAndConversionTest {
                 case "has_variable_list" -> !list(current, token).isEmpty();
                 case "is_alive" -> state(current).alive == token.equals("yes");
                 case "is_ai" -> state(current).ai == token.equals("yes");
+                case "has_character_flag" -> state(current).flags.contains(token);
                 case "is_playable_character" -> current.kind() == Kind.CHARACTER;
                 case "knows_doctrine" -> state(current).known.contains(resolve(token, current));
                 case "rite_has_doctrine" -> state(current).doctrines.contains(entity(Kind.DOCTRINE, token));

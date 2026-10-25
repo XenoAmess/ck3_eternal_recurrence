@@ -59,3 +59,17 @@ DES现有Java构建与共享消费者完整`verify`于10:57:16Z通过17项，0�
 41f169后继云端[40190781101](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40190781101)仍失败：Java来源资格六项已通过，失败移至实际Python公共prepare测试的存档来源pin。既有测试夹具仍从未规范化的临时父目录派生路径。本机于12:07Z前后将进程TEMP/TMP显式指向junction别名，复现同一`.ck3`来源差异（原wait1）；仅在新测试初始化原夹具前规范化父目录，之后同一别名下完整47项及完整新测试模块严格mypy均原wait0。生产pin校验没有放宽。原始云端日志、修复前／后进程与严格类型回执保存在外置`review-fixes-a01/compatibility-alias-*-a01.json`及相邻log，机器仍为`4-8e1c2f1861`。这不替代后继云端终态或游戏验收。
 
 该修正随后于12:12:37Z通过完整默认Maven `verify`：70项，0失败／错误／跳过；JVM临时根及Python进程TEMP/TMP均使用同一明确的junction别名。152项输入前后相同，原wait0；`review-fixes-a01/JAVA-VERIFY.a06.actual.json`为80,786 B，SHA-256 `ce7ae64a8b026439ecab6578b1dc3d899b8f080a0229f8d5a024bf255b37c6a7`，保留41f169执行起点与当时局部修改身份。
+
+提交`1a3403332f5194a11759163df997a5d758abeb11`的[官方RRF CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40192203274)已成功。之后完成新clean来源冻结、六链实际来源资格消费、既有原生二进制的来源绑定、公共runtime构建及prepare/preflight；这些仅授予运行准备，未授予产品业务通过。
+
+### R0011首次三模组联合冷载
+
+`machine_id: 4-8e1c2f1861`；2026-10-25T12:26:12Z至12:32:43Z；CK3实际PID22852，1.20.0.4，EXE SHA-256 `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`。新鲜后台Steam原生离线回执通过；隔离profile实际按slots→DES→RRF→fixture挂载。上游slots为固定v11源码投影，不能称Steam缓存验收。现场根为`review-fixes-a01/zh-live-a01`，run为`4-8e1c2f1861--religious-ritual-fusion--R0011`，keeper为a13。
+
+引擎实际报告：三份RRF GUI提示字符串各有两处非法裸反斜杠转义；四个决议未设置AI检查间隔；创建设置两处误用了原版事件文件内专用inline trigger。修复分别为合法文本组合、显式零AI间隔、保留原版逐字条件体的全局RRF trigger，后继必须重新冷载。MTS自身重写`on_rite_updated.effect`引起一条“using most recent”诊断，其实际文件SHA已核对，仍包住完整原版effect；RRF使用独立追加on-actions，本轮没有为消除上游诊断添加覆盖文件。
+
+本轮只确认冷载及准备链：`RRFAT: FIXTURE_ARMED core`出现一次，第一自然日的聚合`fixture_ready`失败，公共流程按合同退出，尚未进入融合GUI。源核心、知识、来源关系和转换资格中哪一项失败尚未查明；下一轮补逐项只读诊断，不能将“容量100导致”当成已实证根因。仅保存一张实际1024×768加载画面，未取得可宣传的融合界面图。
+
+原生正常退出、独立保留OS handle退出码、host和keeper均为0；公共run原wait2，产品业务未通过。keeper停止后于12:36:15Z以精确CAS13856释放为13857，之后才应用tracked修复。原始错误、公共结果、句柄、keeper退出与释放包均保存在场次根，不以正常退出抵扣业务失败。
+
+后继修复已加入GUI字节消费者的合法转义校验及四项真实故障回放，改信全局trigger的跨文件与实际AST边界回归，以及来源准备的快照后修改、原生枚举和逐项诊断。来源对齐只作用于fixture自己新建的三份输入，不调用产品融合效果。第一次完整a07有一项新增测试误用“唯一块”选择器而失败；修正为识别唯一快照块后，a08于12:53:52Z完整76项通过，0失败／错误／跳过，153份输入前后相同。原始`JAVA-VERIFY.a08.actual.json`为81,360 B，SHA-256 `043d9a001f84e4b9b3816949452fe22ee191e5b85f342edfb17fdac72a7300ca`；a07失败原件保留，后继实机仍待执行。

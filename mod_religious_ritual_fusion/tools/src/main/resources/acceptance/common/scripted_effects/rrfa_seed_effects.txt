@@ -1,5 +1,6 @@
 # PREPARATION ONLY. Never calls an RRF action, writes product state, or retries a partial seed.
 rrfa_seed_inputs_effect = {
+    save_scope_as = rrfa_seed_actor
     set_variable = { name = rrfa_original_rite value = rite }
     set_variable = { name = rrfa_original_faith value = faith }
     create_dynamic_rite = {
@@ -12,6 +13,11 @@ rrfa_seed_inputs_effect = {
     }
     if = {
         limit = { exists = scope:rrfa_a }
+        scope:rrfa_a = { save_scope_as = rrfa_seed_target }
+        set_variable = { name = rrfa_seed_third value = tenet:tenet_astrology }
+        debug_log = "RRFAT: DIAG SOURCE_A_CORE_PREPARATION_BEGIN"
+        rrfa_align_seed_core_effect = yes
+        debug_log = "RRFAT: DIAG SOURCE_A_CORE_PREPARATION_END"
         scope:rrfa_a = { change_rite_doctrine = doctrine:doctrine_divorce_disallowed }
         set_character_rite = scope:rrfa_a
         set_variable = { name = rrfa_source_a value = scope:rrfa_a }
@@ -26,6 +32,11 @@ rrfa_seed_inputs_effect = {
         }
         if = {
             limit = { exists = scope:rrfa_b }
+            scope:rrfa_b = { save_scope_as = rrfa_seed_target }
+            set_variable = { name = rrfa_seed_third value = tenet:tenet_communal_identity }
+            debug_log = "RRFAT: DIAG SOURCE_B_RITE_CORE_PREPARATION_BEGIN"
+            rrfa_align_seed_core_effect = yes
+            debug_log = "RRFAT: DIAG SOURCE_B_RITE_CORE_PREPARATION_END"
             scope:rrfa_b = { change_rite_doctrine = doctrine:doctrine_divorce_allowed }
             set_variable = { name = rrfa_source_b_rite value = scope:rrfa_b }
             create_dynamic_rite = {
@@ -42,6 +53,12 @@ rrfa_seed_inputs_effect = {
                 detach_rite_to_new_faith = { target = scope:rrfa_b_faith_rite save_scope_as = rrfa_b_faith }
                 if = {
                     limit = { exists = scope:rrfa_b_faith }
+                    # Align after native detachment as well as native creation.
+                    scope:rrfa_b_faith_rite = { save_scope_as = rrfa_seed_target }
+                    set_variable = { name = rrfa_seed_third value = tenet:tenet_communal_identity }
+                    debug_log = "RRFAT: DIAG SOURCE_B_FAITH_CORE_PREPARATION_BEGIN"
+                    rrfa_align_seed_core_effect = yes
+                    debug_log = "RRFAT: DIAG SOURCE_B_FAITH_CORE_PREPARATION_END"
                     set_variable = { name = rrfa_source_b_faith_rite value = scope:rrfa_b_faith_rite }
                     set_variable = { name = rrfa_source_b_faith value = scope:rrfa_b_faith }
                     set_variable = { name = rrfa_expected_b value = var:${EXPECTED_B} }
@@ -55,6 +72,7 @@ rrfa_seed_inputs_effect = {
                     add_piety = { value = ${PIETY} subtract = piety }
                     set_variable = { name = rrfa_piety_before value = piety }
                     add_character_flag = rrfa_seed_done
+                    rrfa_seed_readiness_diagnostics_effect = yes
                     if = {
                         limit = { rrfa_inputs_intact_trigger = yes rite = var:rrfa_source_a knows_tenet = tenet_communal_identity knows_doctrine = doctrine_divorce_allowed var:rrfa_expected_b = { can_convert_to_rite = yes } }
                         debug_log = "RRFAT: TEST PASS fixture_ready"
@@ -68,4 +86,202 @@ rrfa_seed_inputs_effect = {
         else = { debug_log = "RRFAT: TEST FAIL seed_same_faith_rite" }
     }
     else = { debug_log = "RRFAT: TEST FAIL seed_source_a" }
+}
+
+# Preparation mutates only the three just-created source Rites. Native override
+# entries are seeds, not an assertion that another mod left exactly three cores.
+# BEGIN/END delimit each source; counting the native iterator entry markers gives
+# its actual before/after cardinality. Scope dumps retain real Rite/Tenet IDs.
+rrfa_align_seed_core_effect = {
+    every_in_list = { list = rrfa_seed_cores_to_remove remove_from_list = rrfa_seed_cores_to_remove }
+    scope:rrfa_seed_target = {
+        debug_log = "RRFAT: DIAG CORE_BEFORE_IDENTITY"
+        debug_log_scopes = yes
+        every_rite_tenet = {
+            debug_log = "RRFAT: DIAG CORE_BEFORE_ENTRY"
+            debug_log_scopes = yes
+            save_scope_as = rrfa_seed_item
+            if = {
+                limit = {
+                    NOR = {
+                        this = tenet:tenet_esotericism
+                        this = tenet:tenet_legalism
+                        this = scope:rrfa_seed_actor.var:rrfa_seed_third
+                    }
+                }
+                add_to_list = rrfa_seed_cores_to_remove
+            }
+        }
+    }
+    # Snapshot first; never mutate the native core vector while enumerating it.
+    every_in_list = {
+        list = rrfa_seed_cores_to_remove
+        save_scope_as = rrfa_seed_item
+        scope:rrfa_seed_target = { remove_rite_tenet = scope:rrfa_seed_item }
+    }
+    every_in_list = { list = rrfa_seed_cores_to_remove remove_from_list = rrfa_seed_cores_to_remove }
+    scope:rrfa_seed_target = {
+        if = {
+            limit = { NOT = { any_rite_tenet = { this = tenet:tenet_esotericism } } }
+            add_rite_tenet = tenet:tenet_esotericism
+        }
+        if = {
+            limit = { NOT = { any_rite_tenet = { this = tenet:tenet_legalism } } }
+            add_rite_tenet = tenet:tenet_legalism
+        }
+        if = {
+            limit = { NOT = { any_rite_tenet = { this = scope:rrfa_seed_actor.var:rrfa_seed_third } } }
+            add_rite_tenet = scope:rrfa_seed_actor.var:rrfa_seed_third
+        }
+        debug_log = "RRFAT: DIAG CORE_AFTER_IDENTITY"
+        debug_log_scopes = yes
+        every_rite_tenet = {
+            debug_log = "RRFAT: DIAG CORE_AFTER_ENTRY"
+            debug_log_scopes = yes
+        }
+    }
+    remove_variable = rrfa_seed_third
+    clear_saved_scope = rrfa_seed_target
+    clear_saved_scope = rrfa_seed_item
+}
+
+# Read-only decomposition of the actual ready predicate; no expected flags.
+rrfa_seed_readiness_diagnostics_effect = {
+    debug_log = "RRFAT: DIAG READINESS_NATIVE_IDENTITY"
+    debug_log_scopes = yes
+    if = {
+        limit = { has_variable = rrfa_source_a }
+        debug_log = "RRFAT: DIAG SOURCE_A_VARIABLE YES"
+    }
+    else = { debug_log = "RRFAT: DIAG SOURCE_A_VARIABLE NO" }
+    if = {
+        limit = { has_variable = rrfa_source_b_rite }
+        debug_log = "RRFAT: DIAG SOURCE_B_RITE_VARIABLE YES"
+    }
+    else = { debug_log = "RRFAT: DIAG SOURCE_B_RITE_VARIABLE NO" }
+    if = {
+        limit = { has_variable = rrfa_source_b_faith_rite }
+        debug_log = "RRFAT: DIAG SOURCE_B_FAITH_RITE_VARIABLE YES"
+    }
+    else = { debug_log = "RRFAT: DIAG SOURCE_B_FAITH_RITE_VARIABLE NO" }
+    if = {
+        limit = { has_variable = rrfa_source_b_faith }
+        debug_log = "RRFAT: DIAG SOURCE_B_FAITH_VARIABLE YES"
+    }
+    else = { debug_log = "RRFAT: DIAG SOURCE_B_FAITH_VARIABLE NO" }
+    if = {
+        limit = { has_variable = rrfa_source_a_faith }
+        debug_log = "RRFAT: DIAG SOURCE_A_FAITH_VARIABLE YES"
+    }
+    else = { debug_log = "RRFAT: DIAG SOURCE_A_FAITH_VARIABLE NO" }
+    if = {
+        limit = { has_variable = rrfa_expected_b }
+        debug_log = "RRFAT: DIAG EXPECTED_B_VARIABLE YES"
+    }
+    else = { debug_log = "RRFAT: DIAG EXPECTED_B_VARIABLE NO" }
+    if = {
+        limit = { var:rrfa_source_a != var:rrfa_source_b_rite }
+        debug_log = "RRFAT: DIAG A_DISTINCT_B_RITE YES"
+    }
+    else = { debug_log = "RRFAT: DIAG A_DISTINCT_B_RITE NO" }
+    if = {
+        limit = { var:rrfa_source_a != var:rrfa_source_b_faith_rite }
+        debug_log = "RRFAT: DIAG A_DISTINCT_B_FAITH_RITE YES"
+    }
+    else = { debug_log = "RRFAT: DIAG A_DISTINCT_B_FAITH_RITE NO" }
+    if = {
+        limit = { var:rrfa_source_b_rite != var:rrfa_source_b_faith_rite }
+        debug_log = "RRFAT: DIAG B_RITES_DISTINCT YES"
+    }
+    else = { debug_log = "RRFAT: DIAG B_RITES_DISTINCT NO" }
+    if = {
+        limit = { var:rrfa_source_a = { rrfa_a_core_trigger = yes } }
+        debug_log = "RRFAT: DIAG SOURCE_A_CORE YES"
+    }
+    else = { debug_log = "RRFAT: DIAG SOURCE_A_CORE NO" }
+    if = {
+        limit = { var:rrfa_source_b_rite = { rrfa_b_core_trigger = yes } }
+        debug_log = "RRFAT: DIAG SOURCE_B_RITE_CORE YES"
+    }
+    else = { debug_log = "RRFAT: DIAG SOURCE_B_RITE_CORE NO" }
+    if = {
+        limit = { var:rrfa_source_b_faith_rite = { rrfa_b_core_trigger = yes } }
+        debug_log = "RRFAT: DIAG SOURCE_B_FAITH_CORE YES"
+    }
+    else = { debug_log = "RRFAT: DIAG SOURCE_B_FAITH_CORE NO" }
+    if = {
+        limit = { var:rrfa_source_a = { rite_has_doctrine = doctrine_divorce_disallowed } }
+        debug_log = "RRFAT: DIAG SOURCE_A_DOCTRINE YES"
+    }
+    else = { debug_log = "RRFAT: DIAG SOURCE_A_DOCTRINE NO" }
+    if = {
+        limit = { var:rrfa_source_b_rite = { rite_has_doctrine = doctrine_divorce_allowed } }
+        debug_log = "RRFAT: DIAG SOURCE_B_RITE_DOCTRINE YES"
+    }
+    else = { debug_log = "RRFAT: DIAG SOURCE_B_RITE_DOCTRINE NO" }
+    if = {
+        limit = { var:rrfa_source_b_faith_rite = { rite_has_doctrine = doctrine_divorce_allowed } }
+        debug_log = "RRFAT: DIAG SOURCE_B_FAITH_DOCTRINE YES"
+    }
+    else = { debug_log = "RRFAT: DIAG SOURCE_B_FAITH_DOCTRINE NO" }
+    if = {
+        limit = { var:rrfa_source_a = { faith = root.var:rrfa_source_a_faith } }
+        debug_log = "RRFAT: DIAG SOURCE_A_FAITH_MEMBERSHIP YES"
+    }
+    else = { debug_log = "RRFAT: DIAG SOURCE_A_FAITH_MEMBERSHIP NO" }
+    if = {
+        limit = { var:rrfa_source_b_rite = { faith = root.var:rrfa_source_a_faith } }
+        debug_log = "RRFAT: DIAG SOURCE_B_RITE_FAITH_MEMBERSHIP YES"
+    }
+    else = { debug_log = "RRFAT: DIAG SOURCE_B_RITE_FAITH_MEMBERSHIP NO" }
+    if = {
+        limit = { var:rrfa_source_b_faith_rite = { faith = root.var:rrfa_source_b_faith } }
+        debug_log = "RRFAT: DIAG SOURCE_B_FAITH_MEMBERSHIP YES"
+    }
+    else = { debug_log = "RRFAT: DIAG SOURCE_B_FAITH_MEMBERSHIP NO" }
+    if = {
+        limit = { var:rrfa_source_b_faith != var:rrfa_source_a_faith }
+        debug_log = "RRFAT: DIAG B_FAITH_DISTINCT_A YES"
+    }
+    else = { debug_log = "RRFAT: DIAG B_FAITH_DISTINCT_A NO" }
+    if = {
+        limit = { var:rrfa_source_b_faith = { main_rite = root.var:rrfa_source_b_faith_rite } }
+        debug_log = "RRFAT: DIAG B_FAITH_MAIN_RITE YES"
+    }
+    else = { debug_log = "RRFAT: DIAG B_FAITH_MAIN_RITE NO" }
+    if = {
+        limit = { var:rrfa_source_b_faith = { religion = root.var:rrfa_source_a_faith.religion } }
+        debug_log = "RRFAT: DIAG SOURCE_RELIGION_MEMBERSHIP YES"
+    }
+    else = { debug_log = "RRFAT: DIAG SOURCE_RELIGION_MEMBERSHIP NO" }
+    if = {
+        limit = { rite = var:rrfa_source_a }
+        debug_log = "RRFAT: DIAG ACTOR_CURRENT_RITE_A YES"
+    }
+    else = { debug_log = "RRFAT: DIAG ACTOR_CURRENT_RITE_A NO" }
+    if = {
+        limit = { knows_tenet = tenet_communal_identity }
+        debug_log = "RRFAT: DIAG KNOWN_B_EXCLUSIVE_CORE YES"
+    }
+    else = { debug_log = "RRFAT: DIAG KNOWN_B_EXCLUSIVE_CORE NO" }
+    if = {
+        limit = { knows_doctrine = doctrine_divorce_allowed }
+        debug_log = "RRFAT: DIAG KNOWN_B_DOCTRINE YES"
+    }
+    else = { debug_log = "RRFAT: DIAG KNOWN_B_DOCTRINE NO" }
+    if = {
+        limit = { var:rrfa_expected_b = { can_convert_to_rite = yes } }
+        debug_log = "RRFAT: DIAG EXPECTED_B_CONVERTIBLE YES"
+    }
+    else = { debug_log = "RRFAT: DIAG EXPECTED_B_CONVERTIBLE NO" }
+    if = {
+        limit = { rrfa_inputs_intact_trigger = yes }
+        debug_log = "RRFAT: DIAG INPUTS_INTACT_AGGREGATE YES"
+    }
+    else = { debug_log = "RRFAT: DIAG INPUTS_INTACT_AGGREGATE NO" }
+    if = {
+        limit = { var:rrfa_mode = flag:${MODE} }
+        debug_log = "RRFAT: DIAG REQUEST_MODE YES"
+    }
+    else = { debug_log = "RRFAT: DIAG REQUEST_MODE NO" }
 }

@@ -109,6 +109,54 @@ final class AcceptanceFixtureTest {
         assertThrows(IOException.class, () -> Json.read("{\"schemaVersion\":1,\"kind\":\"cold_reload\",\"mode\":\"rite\",\"actorId\":29829,\"setup\":{\"type\":\"saved\"}}".getBytes(StandardCharsets.UTF_8), Request.class));
         assertThrows(IOException.class, () -> Json.read("{\"schemaVersion\":2,\"kind\":\"cold_reload\",\"mode\":\"rite\",\"actorHistoryId\":\"1128\",\"setup\":{\"type\":\"saved\",\"piety\":500}}".getBytes(StandardCharsets.UTF_8), Request.class));
     }
+    @Test void freshSourceCorePreparationSnapshotsBeforeMutationAndReportsActualReadOnlyConditions() throws IOException {
+        Path repository = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize().getParent();
+        FixtureEmitter.Emission emitted = FixtureEmitter.emit(repository, directory.resolve("joint-fixture"), "synthetic-fixture-machine", bundledRequest(repository, "core-rite"));
+        Clausewitz.Block effects = Clausewitz.parse(Files.readString(emitted.fixture().resolve("common/scripted_effects/rrfa_seed_effects.txt")));
+        Clausewitz.Block seed = effects.block("rrfa_seed_inputs_effect");
+        assertEquals(3, keys(seed).stream().filter("rrfa_align_seed_core_effect"::equals).count());
+        assertEquals(3, keys(seed).stream().filter("create_dynamic_rite"::equals).count());
+        assertEquals(1, keys(seed).stream().filter("detach_rite_to_new_faith"::equals).count());
+        Clausewitz.Block align = effects.block("rrfa_align_seed_core_effect");
+        List<Clausewitz.Block> snapshotScopes = new ArrayList<>();
+        for (Clausewitz.Entry entry : align.entries()) {
+            if (entry.key().equals("scope:rrfa_seed_target") && entry.value() instanceof Clausewitz.Block block
+                    && keys(block).contains("add_to_list")) snapshotScopes.add(block);
+        }
+        assertEquals(1, snapshotScopes.size());
+        Clausewitz.Block snapshot = snapshotScopes.getFirst().block("every_rite_tenet");
+        assertTrue(keys(snapshot).contains("add_to_list"));
+        assertFalse(keys(snapshot).contains("remove_rite_tenet"));
+        assertFalse(keys(snapshot).contains("add_rite_tenet"));
+        int snapshotIndex = -1, mutationIndex = -1;
+        for (int index = 0; index < align.entries().size(); index++) {
+            Clausewitz.Entry entry = align.entries().get(index);
+            if (entry.key().equals("scope:rrfa_seed_target") && snapshotIndex < 0) snapshotIndex = index;
+            if (entry.value() instanceof Clausewitz.Block block && keys(block).contains("remove_rite_tenet")) {
+                assertEquals("every_in_list", entry.key());
+                assertEquals("rrfa_seed_cores_to_remove", block.atom("list", ""));
+                assertEquals("scope:rrfa_seed_item", block.block("scope:rrfa_seed_target").atom("remove_rite_tenet", ""));
+                mutationIndex = index;
+            }
+        }
+        assertTrue(snapshotIndex >= 0 && mutationIndex > snapshotIndex);
+        assertEquals(3, keys(align).stream().filter("add_rite_tenet"::equals).count());
+        Clausewitz.Block diagnostics = effects.block("rrfa_seed_readiness_diagnostics_effect");
+        assertReadOnly(keys(diagnostics));
+        assertEquals(27, diagnostics.entries().stream().filter(e -> e.key().equals("if")).count());
+        String text = Files.readString(emitted.fixture().resolve("common/scripted_effects/rrfa_seed_effects.txt"));
+        for (String source : List.of("SOURCE_A", "SOURCE_B_RITE", "SOURCE_B_FAITH")) {
+            assertTrue(text.contains(source + "_CORE_PREPARATION_BEGIN"));
+            assertTrue(text.contains(source + "_CORE_PREPARATION_END"));
+        }
+        for (String phase : List.of("BEFORE", "AFTER")) {
+            assertTrue(text.contains("RRFAT: DIAG CORE_" + phase + "_ENTRY"));
+            assertTrue(text.contains("RRFAT: DIAG CORE_" + phase + "_IDENTITY"));
+        }
+        assertTrue(text.contains("RRFAT: DIAG EXPECTED_B_CONVERTIBLE YES"));
+        assertTrue(text.contains("RRFAT: DIAG EXPECTED_B_CONVERTIBLE NO"));
+        assertFalse(keys(seed).stream().anyMatch(key -> key.startsWith("rrf_")));
+    }
     private static List<String> keys(Clausewitz.Block block) { List<String> keys = new ArrayList<>(); for (Clausewitz.Entry e : block.entries()) { keys.add(e.key()); if (e.value() instanceof Clausewitz.Block child) keys.addAll(keys(child)); } return keys; }
     private static void assertObservationDecision(Path fixture, Request request) throws IOException {
         boolean cold = request.kind() == CaseKind.COLD_RELOAD;
@@ -136,7 +184,7 @@ final class AcceptanceFixtureTest {
         }
     }
     private static void assertReadOnly(List<String> keys) {
-        Set<String> writes = Set.of("set_variable", "add_character_flag", "remove_character_flag", "add_to_variable_list", "clear_variable_list", "add_piety", "set_character_rite", "change_rite_doctrine", "create_dynamic_rite", "detach_rite_to_new_faith", "add_known_tenet", "add_known_doctrine");
+        Set<String> writes = Set.of("set_variable", "remove_variable", "change_variable", "save_scope_as", "clear_saved_scope", "add_character_flag", "remove_character_flag", "add_to_variable_list", "clear_variable_list", "add_piety", "set_character_rite", "change_rite_doctrine", "create_dynamic_rite", "detach_rite_to_new_faith", "add_rite_tenet", "remove_rite_tenet", "add_known_tenet", "add_known_doctrine");
         assertTrue(keys.stream().noneMatch(writes::contains), keys.toString());
     }
     private static Request bundledRequest(Path repository, String recipe) throws IOException {

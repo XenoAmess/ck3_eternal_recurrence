@@ -83,3 +83,22 @@ rrf_can_invite_vassals_trigger = {
         }
     }
 }
+
+# Global equivalent of the stock file-local family eligibility helper.
+# Source: faith_conversion_events.txt:199-214; same required saved scopes.
+rrf_family_conversion_valid_character_trigger = {
+	faith = scope:old_faith
+	# If conversion is within the same religion, check the rite is the same
+	trigger_if = {
+		limit = { scope:new_faith.religion = scope:old_faith.religion }
+		rite = scope:old_rite
+	}
+	is_alive = yes
+	is_ai = yes
+	# A relative's conversion must not drag along characters the rest of the conversion systems protect
+	NOR = {
+		has_character_flag = ai_will_not_convert
+		this = faith.religious_head
+		rite.head_of_rite ?= this
+	}
+}

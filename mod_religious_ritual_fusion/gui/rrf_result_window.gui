@@ -148,7 +148,7 @@ window = {
 			button_primary = {
 				text = "RRF_INVITE_VASSALS"
 				enabled = "[GetScriptedGui( 'rrf_invite_vassals_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-				tooltip = "[Localize( 'RRF_INVITE_VASSALS_TT' )]\n\n[GetScriptedGui( 'rrf_invite_vassals_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				tooltip = "[Localize( 'RRF_INVITE_VASSALS_TT' )] [GetScriptedGui( 'rrf_invite_vassals_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 				onclick = "[GetScriptedGui( 'rrf_invite_vassals_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 			}
 		}
