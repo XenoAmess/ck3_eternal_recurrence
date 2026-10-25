@@ -40,3 +40,13 @@ R0015完整原件在同一外置scene的`live/4-8e1c2f1861--religious-ritual-fus
 为下一场容量准备，已精确回收R0015的3740个可重建shadercache文件（分配量155353904 B），以及三份字节相同的存档副本（206073856 B）。`last_save.ck3`与`autosave.ck3`匹配after，`autosave_1.ck3`匹配before；删除前均核实际文件身份、SHA、永久索引与当前消费者。before-R0015.ck3、实际xar_checkpoint.ck3、完整AST报告及其他失败原件仍可读。旧三副本已删除，不在原路径制造替代文件。小回执分别在同一validation根的`closure-R0015-cache-a01/ACTUAL.actual.json`和`duplicate-save-reclamation-a01/ACTUAL.actual.json`（后者SHA-256 `d110bc85f67d817b17d9af9a6c869af94720710b71246e8d5499862bfb1e87a8`）。回收已加回gross累计账，不重置旧配额或旧RED。
 
 本段仍无新游戏业务通过；下一场必须取得新存储准入、干净来源冻结、完整Q、实际原生绑定及新鲜后台Steam离线凭据。
+
+## 后继原生构建的实际依赖故障
+
+2026-10-25T19:08Z，`machine_id: 4-8e1c2f1861`。远端同步带入实际编译的prisoner源码变更，旧DLL不能覆盖。新`native-qualified-a02`构建在生产编译前原wait1：共享构建器只接受Ninja的VALID依赖，而旧构建的582个对象已回收，当前捕获相应记录为STALE。原893项成功捕获与新捕获逐字节比较，仅这些状态不同，依赖顺序、数量和mtime未变；对应582个输出均不存在。原失败目录、捕获与wait保留，不改为成功。
+
+修复进入既有共享`build_native_configured_successor.py`，v2配置显式引用原成功qualification。它重验qualification→freeze→plan→原VALID捕获及实际成功link、机器、祖先提交、profile与仍可读的库；仅在当前完整捕获除状态外相同、STALE对象确实不存在时复用依赖选择证据。链接仍用保留输入和当前源码新编译对象，不复制旧库，不伪造compiled seed；公共fixture消费者、重放和seal继续重验同一来源。
+
+完整对应CI step实际执行31＋74＋28＋28＝161项测试及两个完整模块mypy strict，五个原wait均0、无跳过。首次严格检查因测试空容器变量缺少标注失败，补明确类型后整组重跑。新证明`metadata/native-successor-a01/EXECUTION.shared-producer-ci.a02.actual.json`为7556 B，SHA-256 `2bd3ae9478bc57ac8b749b159f18ea52abe865caf6e2f17ff1a57553d0925123`。修改两模块禁用Shell检查通过；未将局部检查外推为全仓通过。
+
+这些结果只证明共享构建修复。新DLL尚待重新准入和实际构建，原生编辑、零追加费用、同ID保存及冷载仍未通过。

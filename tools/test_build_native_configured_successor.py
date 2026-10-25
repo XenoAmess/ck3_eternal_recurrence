@@ -1,7 +1,7 @@
 """Finite admission, serialization and actual command-failure regressions."""
 from __future__ import annotations
 
-from dataclasses import replace
+from dataclasses import dataclass, replace
 import json
 import os
 from pathlib import Path
@@ -16,7 +16,7 @@ from typing import Protocol, runtime_checkable
 from build_native_configured_successor import (
     ChildEnvironment, Compile, Config, Fixture, MsvcInitializer, MsvcInstallation,
     HOST_TEST_COMPANION_RELATIVE, NONCOMPILED_CONSUMER_RELATIVE, NoncompiledConsumerReplay, NoncompiledReplayProof,
-    Pin, Producer, ROOT, allocated, cmake_boolean_flags,
+    Pin, Producer, ROOT, allocated, arr, cmake_boolean_flags,
     config_json, git, load_shared, obj, parse_config, parse_pin, pin, read,
     same_metadata_content, verified_fixture_object_bindings, verified_noncompiled_consumer_replay,
 )
@@ -52,6 +52,41 @@ class ProcessFixtureProducer(UngatedProducer):
             "production_execution": build_execution, "public_runtime_qualified": False})
 
 
+@dataclass
+class RetainedPlanFixture:
+    """Authored evidence exercises the real producer, without claiming native Q."""
+    producer: UngatedProducer
+    rows: list[Compile]
+    names: list[str]
+    documents: dict[str, dict[str, object]]
+    paths: dict[str, Path]
+    current_text: str
+
+    def refresh(self) -> None:
+        edges = {
+            "verification": {"source_manifest": "source"},
+            "incremental": {"production_plan": "plan", "actual_link": "execution"},
+            "freeze": {"incremental_production_plan": "plan", "incremental_production_result": "incremental",
+                "source_manifest": "source", "source_verification": "verification", "profile": "profile",
+                "scope": "scope", "build_execution": "execution"},
+            "qualification": {"snapshot": "source", "source_verification": "verification", "profile": "profile",
+                "configured_scope": "scope", "production_freeze": "freeze", "production_build_receipt": "execution"},
+        }
+        for name in ("source", "verification", "profile", "scope", "plan", "execution", "incremental", "freeze", "qualification"):
+            for field, dependency in edges.get(name, {}).items():
+                self.documents[name][field] = pin(self.paths[dependency])
+            self.paths[name].write_text(json.dumps(self.documents[name]), encoding="utf-8")
+        self.producer.config = replace(self.producer.config,
+            retained_dependency_evidence={"qualification": pin(self.paths["qualification"])})
+
+    def git_output(self, *arguments: str) -> str:
+        if arguments[0] == "merge-base":
+            return "b" * 40
+        if arguments[0] == "ls-files":
+            return "\n".join(self.names)
+        raise AssertionError("Unexpected Git boundary: " + repr(arguments))
+
+
 @runtime_checkable
 class ExactCommandBuildHook(Protocol):
     def __call__(self, repo: Path, source: Path, build: Path, compiler_argv: list[str],
@@ -74,6 +109,31 @@ class ConfiguredSuccessorTests(unittest.TestCase):
         decoded: object = json.loads(raw)
         self.assertEqual(parse_config(decoded), self.config)
         self.assertIsInstance(config_json(self.config)["fixtures"], list)
+
+    def test_v2_dependency_evidence_roundtrip_preserves_null_and_rejects_undeclared_authorities(self) -> None:
+        v2 = replace(self.config, schema="ck3-configured-native-successor-v2")
+        for config in (v2, replace(v2, retained_dependency_evidence={"qualification": reference("old-qualified.json")})):
+            self.assertEqual(parse_config(json.loads(json.dumps(config_json(config)))), config)
+        self.assertIsNone(config_json(v2)["retained_dependency_evidence"])
+        missing = config_json(v2)
+        del missing["retained_dependency_evidence"]
+        invalid: list[dict[str, object]] = [missing]
+        invalid_evidence: tuple[object, ...] = (
+            {}, [], {"qualification": None}, {"qualification": reference("q"), "undeclared": None},
+        )
+        for value in invalid_evidence:
+            item = config_json(v2)
+            item["retained_dependency_evidence"] = value
+            invalid.append(item)
+        v1 = config_json(self.config)
+        v1["retained_dependency_evidence"] = None
+        invalid.append(v1)
+        conflicting = config_json(replace(v2, retained_dependency_evidence={"qualification": reference("q")},
+                                         compiled_seed=reference("seed")))
+        invalid.append(conflicting)
+        for item in invalid:
+            with self.subTest(value=item), self.assertRaises(ValueError):
+                parse_config(item)
 
     def test_bool_float_and_negative_identity_sizes_rejected(self) -> None:
         for size in (True, 0.0, -1):
@@ -362,6 +422,285 @@ class ConfiguredSuccessorTests(unittest.TestCase):
 
     def test_readonly_existing_plan_recomputes_sources_options_and_dependencies_without_writes(self) -> None:
         self._readonly_plan_replay(consumer=False)
+
+    def retained_plan_fixture(self) -> RetainedPlanFixture:
+        """The changed macro header is visible only in the old compiler inventory."""
+        repository = self.root / "repo"
+        native = repository / "ck3_autonomous_player/native_bridge"
+        header = native / "include/xar/activity_typed_planner_v1.hpp"
+        header.parent.mkdir(parents=True)
+        header.write_text("// source-root identity\n", encoding="utf-8")
+        indirect = header.parent / "macro_selected.inc"
+        indirect.write_text("// changed macro-selected header\n", encoding="utf-8")
+        rows: list[Compile] = []
+        names = [path.relative_to(repository).as_posix() for path in (header, indirect)]
+        snapshot: list[dict[str, object]] = [{"native_relative": path.relative_to(native).as_posix(),
+            "bytes": 0 if path == indirect else pin(path)["bytes"], "sha256": pin(path)["sha256"]}
+            for path in (header, indirect)]
+        commands: list[dict[str, object]] = []
+        blocks: list[str] = []
+        for target, name in (("xar_bridge_protocol", "protocol"), ("xar_ck3_12002_runtime", "runtime"),
+                             ("xar_ck3_bridge", "bridge")):
+            source = native / ("src/" + name + ".cpp")
+            source.parent.mkdir(exist_ok=True)
+            source.write_text("#include MACRO_HEADER\nint " + name + ";\n", encoding="utf-8")
+            names.append(source.relative_to(repository).as_posix())
+            snapshot.append({"native_relative": source.relative_to(native).as_posix(),
+                "bytes": pin(source)["bytes"], "sha256": pin(source)["sha256"]})
+            output_name = "CMakeFiles/" + target + ".dir/src/" + name + ".cpp.obj"
+            output = self.config.output / "build" / output_name
+            old_output = self.config.complete_build / output_name
+            argv = (sys.executable, "/c", str(source), "/Fo" + str(output))
+            rows.append(Compile(target, source, output, argv))
+            commands.append({"directory": str(self.config.complete_build), "file": str(source),
+                "output": str(old_output), "command": subprocess.list2cmdline([
+                    sys.executable, "/c", str(source), "/Fo" + str(old_output)])})
+            deps = [str(source), str(header), *([str(indirect)] if name == "runtime" else [])]
+            blocks.append(output_name + ": #deps " + str(len(deps)) + ", deps mtime 123 (VALID)\n"
+                + "".join("    " + dependency + "\n" for dependency in deps) + "\n")
+        self.config.complete_build.mkdir(parents=True)
+        borrowed = self.config.complete_build / "CMakeFiles/xar_ck3_bridge.dir/src/bridge.cpp.obj"
+        borrowed.parent.mkdir(parents=True)
+        borrowed.write_bytes(b"unchanged physical bridge object")
+        libraries = [self.config.complete_build / name for name in ("xar_ck3_12002_runtime.lib", "xar_bridge_protocol.lib")]
+        for library in libraries:
+            library.write_bytes(b"immutable authored archive fixture")
+        retained = [pin(borrowed), *(pin(path) for path in libraries)]
+
+        def put(name: str, value: object) -> Pin:
+            path = self.root / name
+            path.write_text(json.dumps(value), encoding="utf-8")
+            return pin(path)
+
+        command_ref = put("old-commands.json", commands)
+        scope_ref = put("baseline-scope.json", {"compile_commands": command_ref})
+        snapshot_ref = put("baseline-source.json", {"snapshot_native_base": str(native), "files": snapshot})
+        baseline = put("baseline.json", {"machine_id": self.config.machine_id, "snapshot": snapshot_ref, "configured_scope": scope_ref})
+        inputs = put("inputs.json", {"inputs": retained, "new_object": pin(borrowed)})
+        profile_cmake = self.root / "profile.cmake"
+        profile_cmake.write_bytes(b"# same retained profile\n")
+        dependency_path = self.root / "old-dependencies.txt"
+        text = "".join(blocks)
+        dependency_path.write_text(text, encoding="utf-8")
+        log = self.root / "old-link.log"
+        log.write_bytes(b"authored successful link boundary\n")
+        dll = self.root / "old.dll"
+        dll.write_bytes(b"authored retained DLL identity\n")
+        unused = put("unconsumed-original.json", {"test_only": True})
+        config = replace(self.config, baseline=baseline, incremental_inputs=inputs, profile_cmake=pin(profile_cmake),
+            schema="ck3-configured-native-successor-v2")
+        producer = UngatedProducer(config)
+        producer.native = native
+        producer.tools = {"ninja": "authored-ninja-boundary"}
+        config.output.mkdir()
+        machine, commit = config.machine_id, "b" * 40
+        documents: dict[str, dict[str, object]] = {
+            "source": {"machine_id": machine, "root_commit": commit, "native_source_commit": commit,
+                "source_count": len(snapshot), "files": snapshot},
+            "verification": {"machine_id": machine, "root_commit": commit,
+                "all_snapshot_files_exactly_verified": len(snapshot), "all_original_inputs_still_exactly_verified": len(snapshot)},
+            "profile": {"machine_id": machine, "repository_default_flags_changed": False, "profile": pin(profile_cmake)},
+            "scope": {"compile_commands": command_ref},
+            "plan": {"machine_id": machine, "observed_at_utc": "authored", "source_commit": commit,
+                "baseline_qualification": baseline, "baseline_incremental_inputs": inputs,
+                "original_dependencies": pin(dependency_path), "changed_native_paths": [], "production_selections": [],
+                "retained_link_inputs": retained, "retained_incremental_object": pin(borrowed), "archive_copies": 0},
+            "execution": {"machine_id": machine, "source_commit": commit, "original_wait_returncode": 0,
+                "stopped_reason": None, "game_started_or_attached": False, "actual_live_business_qualified": False,
+                "log": pin(log), "response_files": []},
+            "incremental": {"machine_id": machine, "source_commit": commit, "dll": pin(dll), "archive_copies": 0,
+                "game_started_or_attached": False},
+            "freeze": {"machine_id": machine, "observed_at_utc": "authored", "root_commit": commit,
+                "original_DLL": pin(dll), "published_DLL": pin(dll), "no_fixture_target_in_production_dependency_closure": True,
+                "repository_default_flags_changed": False, "game_started_or_attached": False},
+            "qualification": {"schema": "ck3-qualified-native-build-v1", "machine_id": machine,
+                "observed_at_utc": "authored", "source_commit": commit, "actual_live_business_qualified": False,
+                "original_dll": pin(dll), "published_dll": pin(dll), "delivery": unused,
+                "defender_binding": unused, "fixture_results": [], "execution_wire_packets": unused},
+        }
+        fixture = RetainedPlanFixture(producer, rows, names, documents,
+            {name: self.root / ("old-" + name + ".json") for name in documents},
+            text.replace("runtime.cpp.obj: #deps 3, deps mtime 123 (VALID)",
+                         "runtime.cpp.obj: #deps 3, deps mtime 123 (STALE)"))
+        fixture.refresh()
+        return fixture
+
+    def test_actual_plan_reuses_qualified_inventory_for_indirect_macro_header_and_replays_without_writes(self) -> None:
+        fixture = self.retained_plan_fixture()
+        producer = fixture.producer
+        config = parse_config(json.loads(json.dumps(config_json(producer.config))))
+        self.assertEqual(config, producer.config)
+        with patch("build_native_configured_successor.ROOT", producer.native.parent.parent), \
+             patch("build_native_configured_successor.git", side_effect=fixture.git_output), \
+             patch("build_native_configured_successor.subprocess.run", return_value=SimpleNamespace(stdout=fixture.current_text)) as query:
+            without = replace(config, schema="ck3-configured-native-successor-v1", retained_dependency_evidence=None)
+            producer.config = without
+            with self.assertRaisesRegex(ValueError, "Actual old compiler dependencies missing"):
+                producer.plan(fixture.rows)
+            producer.config = config
+            selected, borrowed, plan_ref = producer.plan(fixture.rows)
+            self.assertEqual([row.target for row in selected], ["xar_ck3_12002_runtime"])
+            self.assertEqual(set(borrowed), {"CMakeFiles/xar_ck3_bridge.dir/src/bridge.cpp.obj"})
+            query.assert_called_with(["authored-ninja-boundary", "-C", str(config.complete_build), "-t", "deps"],
+                env={}, capture_output=True, check=True, text=True, encoding="utf-8")
+            plan = read(Path(plan_ref["path"]))
+            self.assertEqual(plan["original_dependencies"], fixture.documents["plan"]["original_dependencies"])
+            reuse = obj(plan["retained_dependency_reuse"])
+            self.assertEqual(reuse["stale_outputs"], ["CMakeFiles/xar_ck3_12002_runtime.dir/src/runtime.cpp.obj"])
+            capture = Path(parse_pin(reuse["current_capture"])["path"])
+            self.assertIn("(STALE)", capture.read_text())
+            self.assertEqual(obj(arr(plan["production_selections"])[1])["changed_dependencies"],
+                             ["include/xar/macro_selected.inc"])
+            # Authored process receipts exercise the public proof consumer, not a
+            # claim that these small fixture bytes were compiled by native CL.
+            log = config.output / "fixture-boundary.log"
+            log.write_bytes(b"authored process boundary, not actual native qualification")
+
+            def receipt(name: str, argv: list[str]) -> Pin:
+                return producer.save(name, {"machine_id": config.machine_id, "source_commit": config.source_commit,
+                    "original_wait_returncode": 0, "stopped_reason": None, "game_started_or_attached": False,
+                    "actual_live_business_qualified": False, "log": pin(log), "response_files": [],
+                    "argv": argv, "cwd": str(producer.build)})
+
+            producer.build.mkdir()
+            receipt("configure.actual.json", ["cmake", "-S", str(producer.native), "-B", str(producer.build),
+                "-G", "Ninja", "-DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=" + config.profile_cmake["path"],
+                "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"])
+            runtime = selected[0]
+            runtime.output.parent.mkdir(parents=True)
+            runtime.output.write_bytes(b"authored new runtime object identity")
+            compile_ref = receipt("runtime-compile.actual.json", list(runtime.argv))
+            link_ref = receipt("link-production.actual.json", ["link.exe", "/DLL"])
+            dll = producer.build / "xar_ck3_bridge.dll"
+            dll.write_bytes(b"authored completed DLL identity")
+            producer.save("native-a01/INCREMENTAL-RESULT.actual.json", {"machine_id": config.machine_id,
+                "observed_at_utc": "authored", "source_commit": config.source_commit, "production_plan": plan_ref,
+                "production_compiles": [{"target": runtime.target, "source": pin(runtime.source),
+                    "object": pin(runtime.output), "actual_compile": compile_ref, "compile_reused": False}],
+                "actual_link": link_ref, "dll": pin(dll), "archive_copies": 0,
+                "changed_runtime_archive": None, "changed_runtime_archive_execution": None,
+                "compiled_seed": None, "retained_archive_mode": "authored", "game_started_or_attached": False})
+            (producer.build / "compile_commands.json").write_text(json.dumps([
+                {"directory": str(producer.build), "file": str(row.source), "output": str(row.output),
+                 "command": subprocess.list2cmdline(row.argv)} for row in fixture.rows]), encoding="utf-8")
+            with patch("build_native_configured_successor.Producer", return_value=producer), \
+                 patch.object(producer, "commands", return_value=fixture.rows):
+                proof = verified_fixture_object_bindings(config_json(config), [str(runtime.output)])
+                self.assertEqual(proof.production_plan, plan_ref)
+                self.assertEqual(proof.original_dependencies, plan["original_dependencies"])
+                self.assertEqual(proof.objects[0]["object"], pin(runtime.output))
+            with patch.object(producer, "save", side_effect=AssertionError("Replay cannot write")), \
+                 patch("build_native_configured_successor.subprocess.run", side_effect=AssertionError("Replay cannot query Ninja")):
+                self.assertEqual(producer.plan(fixture.rows, existing_plan=plan_ref)[2], plan_ref)
+                output = config.complete_build / str(arr(reuse["stale_outputs"])[0])
+                output.parent.mkdir(parents=True, exist_ok=True)
+                output.write_bytes(b"object reappeared after capture")
+                with self.assertRaisesRegex(ValueError, "Stale dependency output is present"):
+                    producer.plan(fixture.rows, existing_plan=plan_ref)
+                with self.assertRaisesRegex(ValueError, "Stale dependency output is present"):
+                    producer.original_fixture_inputs(fixture.rows)
+                output.unlink()
+                capture.write_text(capture.read_text().replace("mtime 123", "mtime 124"), encoding="utf-8")
+                with self.assertRaisesRegex(ValueError, "Pinned input changed"):
+                    producer.plan(fixture.rows, existing_plan=plan_ref)
+
+    def test_actual_plan_rejects_dependency_record_drift_instead_of_reinterpreting_stale(self) -> None:
+        fixture = self.retained_plan_fixture()
+        text = fixture.current_text
+        records = text.split("\n\n")
+        runtime = records[1].splitlines()
+        variants = [text.replace("#deps 3", "#deps 2"), text.replace("mtime 123", "mtime 124"),
+            text.replace("(STALE)", "(UNKNOWN)"), text.replace("CMakeFiles/", "../CMakeFiles/", 1),
+            text.replace("runtime.cpp.obj", "substituted.cpp.obj"),
+            text.replace("macro_selected.inc", "substituted.inc"), "\n\n".join(records[:-2]) + "\n\n",
+            text + records[0] + "\n\n", text.replace("#deps 3,", "#deps 4,"),
+            text.replace("\n".join(runtime), "\n".join([runtime[0], runtime[2], runtime[1], runtime[3]])),
+            text.replace(runtime[3], runtime[2])]
+        with patch("build_native_configured_successor.ROOT", fixture.producer.native.parent.parent), \
+             patch("build_native_configured_successor.git", side_effect=fixture.git_output):
+            for changed in variants:
+                with self.subTest(capture=changed), \
+                     patch("build_native_configured_successor.subprocess.run", return_value=SimpleNamespace(stdout=changed)), \
+                     self.assertRaises(ValueError):
+                    fixture.producer.plan(fixture.rows)
+
+    def test_metadata_resume_and_final_seal_revalidate_retained_evidence_before_writes(self) -> None:
+        fixture = self.retained_plan_fixture()
+        producer = fixture.producer
+        with patch("build_native_configured_successor.ROOT", producer.native.parent.parent), \
+             patch("build_native_configured_successor.git", side_effect=fixture.git_output), \
+             patch("build_native_configured_successor.subprocess.run", return_value=SimpleNamespace(stdout=fixture.current_text)):
+            _, _, plan_ref = producer.plan(fixture.rows)
+            output = producer.config.complete_build / "CMakeFiles/xar_ck3_12002_runtime.dir/src/runtime.cpp.obj"
+            output.parent.mkdir(parents=True)
+            output.write_bytes(b"stale object reappeared before metadata continuation")
+            with patch.object(producer, "save", side_effect=AssertionError("Invalid evidence cannot write")), \
+                 patch.object(producer, "commands", return_value=fixture.rows), \
+                 patch("build_native_configured_successor.subprocess.check_output",
+                       return_value=producer.config.machine_id.encode("utf-8")):
+                with self.assertRaisesRegex(ValueError, "Stale dependency output is present"):
+                    producer.resume_seal()
+                with self.assertRaisesRegex(ValueError, "Stale dependency output is present"):
+                    producer.seal(fixture.rows, [], reference("unused-build"), reference("unused-defender"),
+                                  plan_ref, self.root / "unused.dll")
+
+    def test_actual_plan_rejects_rewritten_provenance_source_archives_and_present_stale_outputs(self) -> None:
+        fixture = self.retained_plan_fixture()
+        with patch("build_native_configured_successor.ROOT", fixture.producer.native.parent.parent), \
+             patch("build_native_configured_successor.git", side_effect=fixture.git_output), \
+             patch("build_native_configured_successor.subprocess.run", return_value=SimpleNamespace(stdout=fixture.current_text)):
+            mutations: tuple[tuple[str, str, object], ...] = (
+                ("qualification", "machine_id", "another-machine"), ("freeze", "root_commit", "c" * 40),
+                ("plan", "baseline_qualification", reference("other-baseline.json")),
+                ("plan", "baseline_incremental_inputs", reference("other-inputs.json")),
+                ("profile", "profile", reference("other-profile.cmake")), ("source", "root_commit", "c" * 40),
+                ("source", "source_count", True), ("verification", "all_snapshot_files_exactly_verified", 0),
+                ("execution", "original_wait_returncode", True), ("incremental", "game_started_or_attached", True))
+            for name, field, changed in mutations:
+                previous = fixture.documents[name][field]
+                fixture.documents[name][field] = changed
+                fixture.refresh()
+                with self.subTest(document=name, field=field), self.assertRaises((ValueError, FileNotFoundError)):
+                    fixture.producer.plan(fixture.rows)
+                fixture.documents[name][field] = previous
+                fixture.refresh()
+            with patch("build_native_configured_successor.git", side_effect=lambda *args: "c" * 40
+                       if args[0] == "merge-base" else fixture.git_output(*args)), \
+                 self.assertRaisesRegex(ValueError, "ancestor"):
+                fixture.producer.plan(fixture.rows)
+            archive = fixture.producer.config.complete_build / "xar_ck3_12002_runtime.lib"
+            original = archive.read_bytes()
+            archive.write_bytes(original + b"tamper")
+            with self.assertRaisesRegex(ValueError, "Pinned input changed"):
+                fixture.producer.plan(fixture.rows)
+            archive.write_bytes(original)
+            original_capture = Path(parse_pin(fixture.documents["plan"]["original_dependencies"])["path"])
+            valid_bytes = original_capture.read_bytes()
+            original_capture.write_bytes(valid_bytes.replace(b"(VALID)", b"(STALE)", 1))
+            fixture.documents["plan"]["original_dependencies"] = pin(original_capture)
+            fixture.refresh()
+            with self.assertRaisesRegex(ValueError, "beyond VALID/STALE"):
+                fixture.producer.plan(fixture.rows)
+            original_capture.write_bytes(valid_bytes)
+            fixture.documents["plan"]["original_dependencies"] = pin(original_capture)
+            fixture.refresh()
+            output = fixture.producer.config.complete_build / "CMakeFiles/xar_ck3_12002_runtime.dir/src/runtime.cpp.obj"
+            output.parent.mkdir(parents=True)
+            for directory in (False, True):
+                if directory:
+                    output.mkdir()
+                else:
+                    output.write_bytes(b"present object")
+                with self.subTest(directory=directory), self.assertRaisesRegex(ValueError, "Stale dependency output is present"):
+                    fixture.producer.plan(fixture.rows)
+                if directory:
+                    output.rmdir()
+                else:
+                    output.unlink()
+            proof = fixture.paths["qualification"]
+            proof.write_bytes(proof.read_bytes() + b" ")
+            with self.assertRaisesRegex(ValueError, "Pinned input changed"):
+                fixture.producer.plan(fixture.rows)
 
     def test_noncompiled_replay_preserves_original_plan_and_rejects_compiler_dependencies(self) -> None:
         self._readonly_plan_replay(consumer=True)

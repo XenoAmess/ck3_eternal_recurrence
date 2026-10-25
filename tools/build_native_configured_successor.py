@@ -23,7 +23,7 @@ import shutil
 import subprocess
 import sys
 import time
-from typing import NotRequired, Protocol, TypedDict, runtime_checkable
+from typing import Literal, NotRequired, Protocol, TypedDict, runtime_checkable
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -44,6 +44,25 @@ class NoncompiledConsumerReplay(TypedDict):
     before_blob: Pin
     after: Pin
     binding: Pin
+
+
+class RetainedDependencyEvidence(TypedDict):
+    qualification: Pin
+
+
+class RetainedDependencyReuse(TypedDict):
+    qualification: Pin
+    production_freeze: Pin
+    production_plan: Pin
+    current_capture: Pin
+    stale_outputs: list[str]
+
+
+@dataclass(frozen=True)
+class NinjaDependencyRecord:
+    output: str
+    status: Literal["VALID", "STALE"]
+    normalized: bytes
 
 
 @dataclass(frozen=True)
@@ -136,6 +155,8 @@ class Config:
     wire_directory: str
     wire_packets: tuple[str, ...]
     compiled_seed: Pin | None = None
+    retained_dependency_evidence: RetainedDependencyEvidence | None = None
+    schema: Literal["ck3-configured-native-successor-v1", "ck3-configured-native-successor-v2"] = "ck3-configured-native-successor-v1"
 
 
 @dataclass(frozen=True)
@@ -300,8 +321,20 @@ def parse_config(value: object) -> Config:
     expected = {"schema", "machine_id", "source_commit", "output_dir", "storage_admission",
                 "budget_bytes", "baseline_qualification", "complete_build_dir",
                 "incremental_inputs", "profile_cmake", "fixtures", "qualification_targets", "wire", "compiled_seed"}
-    require(set(row) == expected and row["schema"] == "ck3-configured-native-successor-v1",
+    schema = row.get("schema")
+    require(schema in ("ck3-configured-native-successor-v1", "ck3-configured-native-successor-v2"),
+            "Unsupported configured successor version")
+    if schema == "ck3-configured-native-successor-v2":
+        expected.add("retained_dependency_evidence")
+    require(set(row) == expected,
             "Exact configured successor contract required")
+    evidence: RetainedDependencyEvidence | None = None
+    if schema == "ck3-configured-native-successor-v2" and row["retained_dependency_evidence"] is not None:
+        declaration = obj(row["retained_dependency_evidence"])
+        require(set(declaration) == {"qualification"}, "Exact retained dependency evidence required")
+        evidence = {"qualification": parse_pin(declaration["qualification"])}
+    require(evidence is None or row["compiled_seed"] is None,
+            "Retained dependencies and compiled seed are distinct authorities")
     commit = string(row["source_commit"])
     require(re.fullmatch(r"[0-9a-f]{40}", commit), "Exact source commit required")
     budget = integer(row["budget_bytes"], 1)
@@ -337,12 +370,16 @@ def parse_config(value: object) -> Config:
         parse_pin(row["incremental_inputs"]), parse_pin(row["profile_cmake"]), tuple(fixtures), qualified,
         wire_target, relative(wire["source"]), relative(wire["directory"]),
         tuple(relative(path) for path in arr(wire["packets"])),
-        None if row["compiled_seed"] is None else parse_pin(row["compiled_seed"]))
+        None if row["compiled_seed"] is None else parse_pin(row["compiled_seed"]), evidence,
+        "ck3-configured-native-successor-v2" if schema == "ck3-configured-native-successor-v2"
+        else "ck3-configured-native-successor-v1")
 
 
 def config_json(config: Config) -> dict[str, object]:
     """The one JSON representation: tuple fields are encoded as JSON arrays."""
-    return {"schema": "ck3-configured-native-successor-v1", "machine_id": config.machine_id,
+    require(config.schema == "ck3-configured-native-successor-v2" or config.retained_dependency_evidence is None,
+            "Retained dependencies require the v2 contract")
+    result: dict[str, object] = {"schema": config.schema, "machine_id": config.machine_id,
         "source_commit": config.source_commit, "output_dir": str(config.output),
         "storage_admission": config.admission, "budget_bytes": config.budget,
         "baseline_qualification": config.baseline, "complete_build_dir": str(config.complete_build),
@@ -355,6 +392,43 @@ def config_json(config: Config) -> dict[str, object]:
                      for item in config.fixtures],
         "wire": {"target": config.wire_target, "source": config.wire_source,
                  "directory": config.wire_directory, "packets": list(config.wire_packets)}}
+    if config.schema == "ck3-configured-native-successor-v2":
+        result["retained_dependency_evidence"] = config.retained_dependency_evidence
+    return result
+
+
+def strict_ninja_dependency_records(reference: Pin) -> tuple[NinjaDependencyRecord, ...]:
+    """Preserve the full capture, including ordered dependencies and line endings."""
+    require(reference["bytes"] <= 16 * 1024 * 1024, "Dependency capture exceeds the finite input limit")
+    raw = Path(checked(reference)["path"]).read_bytes()
+    records: list[NinjaDependencyRecord] = []
+    seen: set[str] = set()
+    lines = raw.splitlines(keepends=True)
+    index = 0
+    while index < len(lines):
+        header = lines[index]
+        match = re.fullmatch(rb"([^\r\n]+): #deps (0|[1-9][0-9]*), deps mtime ([0-9]+) \((VALID|STALE)\)(\r?\n)", header)
+        require(match is not None, "Malformed Ninja dependency header")
+        if match is None:
+            raise ValueError("Malformed Ninja dependency header")
+        name = relative(match[1].decode("utf-8"))
+        require(name == match[1].decode("utf-8") and name.startswith("CMakeFiles/")
+                and name.endswith(".obj") and name.casefold() not in seen, "Unsafe or duplicate Ninja output")
+        count = int(match[2])
+        require(count <= len(lines) - index - 2, "Ninja dependency count differs")
+        body = lines[index + 1:index + 1 + count]
+        require(all(re.fullmatch(rb"    [^\r\n]+\r?\n", line) is not None for line in body)
+                and lines[index + 1 + count] == match[5], "Ninja dependency count/body differs")
+        # Decode every dependency strictly, without normalizing its spelling or order.
+        for line in body:
+            line.decode("utf-8")
+        normalized_header = header[:match.start(4)] + b"STATUS" + header[match.end(4):]
+        records.append(NinjaDependencyRecord(name, "VALID" if match[4] == b"VALID" else "STALE",
+            normalized_header + b"".join(body) + lines[index + 1 + count]))
+        seen.add(name.casefold())
+        index += count + 2
+    require(records, "Empty Ninja dependency capture")
+    return tuple(records)
 
 
 def cmake_boolean_flags(path: Path) -> dict[str, str]:
@@ -632,6 +706,120 @@ class Producer:
         return ["@unit@" if token == unit_name else "/fo@object@" if token in object_tokens else token
                 for token in normalized]
 
+    def retained_dependencies(self, current_capture: Pin) -> tuple[Pin, RetainedDependencyReuse]:
+        """Reclaimed objects grant dependency-selection evidence, never link bytes."""
+        c = self.config
+        require(c.schema == "ck3-configured-native-successor-v2"
+                and c.retained_dependency_evidence is not None and c.compiled_seed is None,
+                "Explicit v2 retained dependency authority required")
+        if c.retained_dependency_evidence is None:
+            raise ValueError("Explicit v2 retained dependency authority required")
+        require(Path(current_capture["path"]) == c.output / "original-ninja-dependencies.txt",
+                "Retained dependency replay requires the original current capture path")
+        qualification_ref = checked(c.retained_dependency_evidence["qualification"])
+        qualification = read(Path(qualification_ref["path"]))
+        require(set(qualification) == {"schema", "machine_id", "observed_at_utc", "source_commit",
+            "actual_live_business_qualified", "delivery", "snapshot", "profile", "configured_scope",
+            "source_verification", "production_freeze", "original_dll", "published_dll",
+            "production_build_receipt", "defender_binding", "fixture_results", "execution_wire_packets"}
+            and qualification["schema"] == "ck3-qualified-native-build-v1"
+            and qualification["machine_id"] == c.machine_id
+            and qualification["actual_live_business_qualified"] is False,
+            "Original configured qualification identity required")
+        commit = string(qualification["source_commit"])
+        require(re.fullmatch(r"[0-9a-f]{40}", commit), "Exact historical source commit required")
+        require(git("merge-base", commit, c.source_commit) == commit,
+                "Retained dependency source must be an ancestor of the current source")
+        freeze_ref = checked(qualification["production_freeze"])
+        freeze = read(Path(freeze_ref["path"]))
+        require(set(freeze) == {"machine_id", "observed_at_utc", "root_commit", "original_DLL", "published_DLL",
+            "build_execution", "source_manifest", "source_verification", "profile", "scope",
+            "no_fixture_target_in_production_dependency_closure", "repository_default_flags_changed",
+            "game_started_or_attached", "incremental_production_plan", "incremental_production_result"}
+            and freeze["machine_id"] == c.machine_id and freeze["root_commit"] == commit
+            and freeze["no_fixture_target_in_production_dependency_closure"] is True
+            and freeze["repository_default_flags_changed"] is False and freeze["game_started_or_attached"] is False,
+            "Original frozen production identity required")
+        for left, right in (("original_DLL", "original_dll"), ("published_DLL", "published_dll"),
+                ("build_execution", "production_build_receipt"), ("source_manifest", "snapshot"),
+                ("source_verification", "source_verification"), ("profile", "profile"), ("scope", "configured_scope")):
+            require(checked(freeze[left]) == checked(qualification[right]), "Qualified production freeze binding differs")
+        profile = read(Path(checked(qualification["profile"])["path"]))
+        require(profile.get("machine_id") == c.machine_id and profile.get("repository_default_flags_changed") is False
+                and checked(profile["profile"]) == checked(c.profile_cmake), "Retained dependency profile differs")
+        source_ref = checked(qualification["snapshot"])
+        source = read(Path(source_ref["path"]))
+        files = arr(source["files"])
+        require(files, "Historical source inventory is empty")
+        source_names: set[str] = set()
+        for raw in files:
+            item = obj(raw)
+            name = relative(item["native_relative"])
+            require(name not in source_names and integer(item["bytes"]) >= 0
+                    and re.fullmatch(r"[0-9a-f]{64}", string(item["sha256"])), "Invalid historical source inventory")
+            source_names.add(name)
+        verification = read(Path(checked(qualification["source_verification"])["path"]))
+        require(source.get("machine_id") == verification.get("machine_id") == c.machine_id
+                and source.get("root_commit") == source.get("native_source_commit") == verification.get("root_commit") == commit
+                and integer(source["source_count"]) == len(files)
+                and verification.get("source_manifest") == source_ref
+                and integer(verification["all_snapshot_files_exactly_verified"]) == len(files)
+                and integer(verification["all_original_inputs_still_exactly_verified"]) == len(files),
+                "Historical source verification differs")
+        plan_ref = checked(freeze["incremental_production_plan"])
+        plan = read(Path(plan_ref["path"]))
+        require(set(plan) == {"machine_id", "observed_at_utc", "source_commit", "baseline_qualification",
+            "baseline_incremental_inputs", "original_dependencies", "changed_native_paths", "production_selections",
+            "retained_link_inputs", "retained_incremental_object", "archive_copies"}
+            and plan["machine_id"] == c.machine_id and plan["source_commit"] == commit
+            and checked(plan["baseline_qualification"]) == checked(c.baseline)
+            and checked(plan["baseline_incremental_inputs"]) == checked(c.incremental_inputs)
+            and integer(plan["archive_copies"]) == 0, "Historical dependency plan provenance differs")
+        incremental = read(Path(checked(freeze["incremental_production_result"])["path"]))
+        require(incremental.get("machine_id") == c.machine_id and incremental.get("source_commit") == commit
+                and incremental.get("production_plan") == plan_ref
+                and incremental.get("actual_link") == qualification["production_build_receipt"]
+                and incremental.get("dll") == qualification["original_dll"]
+                and integer(incremental["archive_copies"]) == 0 and incremental.get("game_started_or_attached") is False,
+                "Historical production result differs")
+        execution = read(Path(checked(qualification["production_build_receipt"])["path"]))
+        require(execution.get("machine_id") == c.machine_id and execution.get("source_commit") == commit
+                and type(execution.get("original_wait_returncode")) is int and execution["original_wait_returncode"] == 0
+                and execution.get("stopped_reason") is None and execution.get("game_started_or_attached") is False
+                and execution.get("actual_live_business_qualified") is False, "Historical actual successful link required")
+        checked(execution["log"])
+        for response in arr(execution["response_files"]):
+            checked(response)
+        prior_inputs = read(Path(c.incremental_inputs["path"]))
+        retained = [checked(raw) for raw in arr(plan["retained_link_inputs"])]
+        require(retained == [checked(raw) for raw in arr(prior_inputs["inputs"])]
+                and checked(plan["retained_incremental_object"]) == checked(prior_inputs["new_object"]),
+                "Historical retained link inputs differ")
+        libraries = {str(c.complete_build / name) for name in ("xar_ck3_12002_runtime.lib", "xar_bridge_protocol.lib")}
+        require(libraries <= {item["path"] for item in retained}, "Retained archives do not bind the complete build root")
+        dependency_ref = checked(plan["original_dependencies"])
+        previous = strict_ninja_dependency_records(dependency_ref)
+        current = strict_ninja_dependency_records(current_capture)
+        require(len(previous) == len(current), "Retained dependency record count differs")
+        stale: list[str] = []
+        for before, after in zip(previous, current, strict=True):
+            require(before.status == "VALID" and before.normalized == after.normalized,
+                    "Retained dependency capture differs beyond VALID/STALE status")
+            if after.status == "STALE":
+                output = c.complete_build / after.output
+                require(output.resolve() == output and output.is_relative_to(c.complete_build),
+                        "Stale output escapes the complete build root")
+                try:
+                    output.lstat()
+                except FileNotFoundError:
+                    pass
+                else:
+                    raise ValueError("Stale dependency output is present; reclamation proof rejected")
+                stale.append(after.output)
+        require(stale, "Retained dependency evidence requires actual reclaimed outputs")
+        return dependency_ref, {"qualification": qualification_ref, "production_freeze": freeze_ref,
+            "production_plan": plan_ref, "current_capture": checked(current_capture), "stale_outputs": stale}
+
     def plan(self, rows: list[Compile], *, existing_plan: Pin | None = None,
              noncompiled_replay: object = None) -> tuple[list[Compile], dict[str, Path], Pin]:
         c = self.config
@@ -660,9 +848,15 @@ class Producer:
         changed_names = {name for name in old_files.keys() | current_signatures.keys()
                          if name not in old_files or name not in current_signatures
                          or old_files[name] != current_signatures[name]}
+        reuse: RetainedDependencyReuse | None = None
         if existing_plan is not None:
             original = read(Path(checked(existing_plan)["path"]))
             dependency_ref = checked(original["original_dependencies"])
+            if c.retained_dependency_evidence is not None:
+                declared_reuse = obj(original["retained_dependency_reuse"])
+                retained_ref, reuse = self.retained_dependencies(checked(declared_reuse["current_capture"]))
+                require(retained_ref == dependency_ref and declared_reuse == reuse,
+                        "Replayed retained dependency provenance differs")
             dependency_text = Path(dependency_ref["path"]).read_text(encoding="utf-8")
         elif c.compiled_seed is None:
             dependency_query = subprocess.run([self.tools["ninja"], "-C", str(c.complete_build), "-t", "deps"],
@@ -671,6 +865,9 @@ class Producer:
             dependency_file.write_text(dependency_query.stdout, encoding="utf-8")
             dependency_ref = pin(dependency_file)
             dependency_text = dependency_query.stdout
+            if c.retained_dependency_evidence is not None:
+                dependency_ref, reuse = self.retained_dependencies(dependency_ref)
+                dependency_text = Path(dependency_ref["path"]).read_text(encoding="utf-8")
         else:
             seed_declaration = read(Path(checked(c.compiled_seed)["path"]))
             dependency_ref = checked(seed_declaration["original_dependencies"])
@@ -787,6 +984,8 @@ class Producer:
             "original_dependencies": dependency_ref, "changed_native_paths": sorted(changed_names),
             "production_selections": selection, "retained_link_inputs": retained,
             "retained_incremental_object": new_object, "archive_copies": 0}
+        if c.schema == "ck3-configured-native-successor-v2":
+            value["retained_dependency_reuse"] = reuse
         if existing_plan is not None:
             require(same_metadata_content(read(Path(existing_plan["path"])), value),
                     "Recomputed source/options/dependency/retained production plan differs")
@@ -1064,6 +1263,10 @@ class Producer:
                 and original.get("baseline_incremental_inputs") == c.incremental_inputs,
                 "Original production plan provenance differs")
         checked(original["original_dependencies"])
+        if c.retained_dependency_evidence is not None:
+            dependency_ref, reuse = self.retained_dependencies(checked(obj(original["retained_dependency_reuse"])["current_capture"]))
+            require(original["original_dependencies"] == dependency_ref and original["retained_dependency_reuse"] == reuse,
+                    "Original fixture retained dependency provenance differs")
         production_rows = {row.output.relative_to(self.build).as_posix(): row for row in rows if row.target in PRODUCTION}
         declared: set[str] = set()
         selected: set[str] = set()
@@ -1217,7 +1420,10 @@ class Producer:
             str(ROOT / "tools/ck3_live_run_id.py"), "machine"], cwd=ROOT).decode("utf-8").strip()
         require(actual_machine == self.config.machine_id, "Actual continuation machine differs")
         self.gate()
-        self.successful_seeds(self.commands())
+        rows = self.commands()
+        if self.config.retained_dependency_evidence is not None:
+            self.plan(rows, existing_plan=pin(self.meta / "PLAN.actual.json"))
+        self.successful_seeds(rows)
         report = read(self.meta / "ALL-FIXTURES.actual.json")
         require(report.get("machine_id") == self.config.machine_id and report.get("source_commit") == self.config.source_commit
                 and report.get("actual_live_business_qualified") is False, "Original complete finite report required")
@@ -1402,6 +1608,8 @@ class Producer:
     def seal(self, rows: list[Compile], fixtures: list[dict[str, object]], build_execution: Pin,
              defender: Pin, plan: Pin, dll: Path, *, resume: bool = False) -> Pin:
         c = self.config
+        if c.retained_dependency_evidence is not None:
+            self.plan(rows, existing_plan=plan)
         sources: list[dict[str, object]] = []
         for name in git("ls-files", "--", PREFIX).splitlines():
             actual = pin(ROOT / name)
