@@ -13,6 +13,9 @@ public record ReleaseProduct(String productId, Path source, String tagPrefix, Li
         LocalizationMode localizationMode) {
     public static final String PRODUCT_ID = "mod_dynastic_esotericism";
     public static final String TAG_PREFIX = "dynastic-esotericism-v";
+    public static final String DYNASTIC_ICON_STEM = "des_dynastic_membership";
+    public static final String DYNASTIC_DOCTRINE_ICON = "gfx/interface/icons/faith_doctrines/" + DYNASTIC_ICON_STEM + ".dds";
+    public static final String DYNASTIC_GROUP_ICON = "gfx/interface/icons/faith_doctrine_groups/" + DYNASTIC_ICON_STEM + ".dds";
     public static final Pattern VERSION = Pattern.compile("[0-9]+(?:\\.[0-9]+){0,3}(?:[-+][A-Za-z0-9.-]+)?");
     public static final Pattern REVISION = Pattern.compile("[0-9a-f]{40}");
     public static final Pattern DIGEST = Pattern.compile("[0-9a-f]{64}");
@@ -53,7 +56,8 @@ public record ReleaseProduct(String productId, Path source, String tagPrefix, Li
             "gfx/coat_of_arms/textured_emblems/des_vivhite.dds",
             "gfx/interface/icons/faith/des_procreation.dds",
             "gfx/interface/icons/faith/des_vivhite.dds",
-            "gfx/interface/icons/faith_doctrine_groups/des_dynastic_membership.dds",
+            DYNASTIC_GROUP_ICON,
+            DYNASTIC_DOCTRINE_ICON,
             "localization/english/des_l_english.yml",
             "localization/english/des_identity_l_english.yml",
             "localization/english/des_sects_l_english.yml",

@@ -29,7 +29,7 @@ Manifest 沿用 `independent_mod_release` 的 v1 JSON 字段：`format_version`�
 
 `verify` 的 `DefaultMavenTest` 会实际调用 PATH 选择的 `mvn --version`，记录 Maven home 并拒绝低于 3.10.0 的默认工具；它同样适用于 CI。`runtime` 子命令只为公共验收生成有限共同 runtime 后继，不授予业务资格；其参数为 `--repo-root`、`--base-runtime`、`--native-index`、`--host-projection`、`--output`、`--machine-id`，必须各提供一次。运行输入须使用已经冻结的公共 runtime 和实际构建的 native index。
 
-`validate`、`check`、`build`、`verify` 都接受独立开关 `--release-localization`。0.2.0 候选普通模式投影中英 30 文件，忽略源码中七语各三份已知外语文件；未知文件仍拒绝进入正式树。发布模式使用明确九语 51 文件清单，验证各文件 UTF-8 BOM、语言 header、`:0`、引号／转义和保护 token（含 `−100`），并在 staging 回读时重新验证格式。原产品 15 key、教派 20 key、动态名称 1 key 保持三份独立精确合同；Rite 本地化引用对应 Faith，两预置纹章纹理与其图标逐字节一致。非中文只认证格式，不以游戏内语义或显示已验收作为结论。
+`validate`、`check`、`build`、`verify` 都接受独立开关 `--release-localization`。0.2.0 候选普通模式投影中英 31 文件，忽略源码中七语各三份已知外语文件；未知文件仍拒绝进入正式树。发布模式使用明确九语 52 文件清单，验证各文件 UTF-8 BOM、语言 header、`:0`、引号／转义和保护 token（含 `−100`），并在 staging 回读时重新验证格式。原产品 15 key、教派 20 key、动态名称 1 key 保持三份独立精确合同；Rite 本地化引用对应 Faith，两预置纹章纹理与其图标逐字节一致；宗族化专用组图／教义图同字节并验证实际120×120 BGRA8单层格式。None详情隐藏／编辑保留及AI选择合法性同时校验，但静态通过不表示实际GUI或AI行为已验收。非中文只认证格式，不以游戏内语义或显示已验收作为结论。
 
 ```text
 java -jar <runner> validate --release-localization
@@ -38,6 +38,6 @@ java -jar <runner> build --release-localization --output <新的外置staging> -
 java -jar <runner> verify --release-localization --output <staging> --manifest <staging>.manifest.json
 ```
 
-发布格式检查仅由 `dynastic-esotericism-v*` tag 或人工发布 workflow dispatch 触发。普通 push/PR 运行开发检查和九语合同测试。九语候选已落盘；格式检查不证明翻译语义或游戏显示通过。本构建器不生成或改写译文。JUnit 通过现有独立 parser、token 校验与 manifest 消费者验证真实 51 文件构建，不新增 Python 生产入口或 Java 运行时依赖到游戏中。
+发布格式检查仅由 `dynastic-esotericism-v*` tag 或人工发布 workflow dispatch 触发。普通 push/PR 运行开发检查和九语合同测试。九语候选已落盘；格式检查不证明翻译语义或游戏显示通过。本构建器不生成或改写译文。JUnit 通过现有独立 parser、token 校验与 manifest 消费者验证真实 52 文件构建，不新增 Python 生产入口或 Java 运行时依赖到游戏中。
 
 用户图标由同一 Java 模块导入：`java -jar <runner> artwork <uploaded-zip> <mod-source>`。繁育 DDS 原样保留，白绮 PNG 以保留透明度的双三次缩放转换为 256×256 RGBA DDS；两份纹章纹理与对应信仰图标相同。原 PNG 位于 `tools/artwork/source/`，不进入正式包。来源与实际导入回执见[素材记录](../docs/artwork.md)。

@@ -21,6 +21,14 @@ des_join_rite_dynasty_effect = {
 		# No descendant propagation; existing legal cadet houses are retained.
 		set_house = rite.var:des_join_house
 	}
+	if = {
+		limit = {
+			rite = { des_has_active_binding_trigger = yes }
+			dynasty = rite.var:des_bound_dynasty
+		}
+		# Reusing an old Dynasty does not convert its never-adopting members.
+		set_variable = { name = des_adopted_bound_rite value = rite }
+	}
 }
 
 des_refresh_apostasy_effect = {

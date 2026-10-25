@@ -2,6 +2,8 @@ package org.xar.ck3.dynastic.release;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -18,13 +20,16 @@ public final class SectPresetValidation {
     private static final Set<String> FAITH_FIELDS = Set.of("main_rite", "faith_details", "origin", "historical", "eminent_holy_sites", "holy_sites", "doctrines");
     private static final Set<String> DETAIL_FIELDS = Set.of("religion", "color", "icon", "graphical_faith");
     private static final Set<String> RITE_FIELDS = Set.of("name", "desc", "faith", "create", "convert", "color", "icon", "tenets", "doctrines");
-    private static final Pattern TOKEN = Pattern.compile("\"(?:[^\"\\\\\\r\\n]|\\\\.)*\"|[A-Za-z0-9_.-]+|[{}=]|\\s+|#[^\\r\\n]*");
+    private static final String DOCTRINE_FILE = "common/religion/doctrine_types/des_doctrines.txt";
+    private static final String DOCTRINE_GROUP_FILE = "common/religion/doctrine_group_types/des_doctrine_groups.txt";
+    private static final Pattern TOKEN = Pattern.compile("\"(?:[^\"\\\\\\r\\n]|\\\\.)*\"|[A-Za-z0-9_.:-]+|[{}=]|\\s+|#[^\\r\\n]*");
     private static final Pattern COLOR = Pattern.compile("(?:0(?:\\.[0-9]+)?|1(?:\\.0+)?)");
 
     private SectPresetValidation() { }
 
     public static void validate(ReleaseProduct product, Path root) throws IOException {
         if (!product.productId().equals(ReleaseProduct.PRODUCT_ID)) return;
+        validateDoctrineSelection(root);
         Map<String, Value> faiths = assignments(read(root, SectPreset.FAITH_FILE), "faith definitions");
         Map<String, Value> rites = assignments(read(root, SectPreset.RITE_FILE), "rite definitions");
         Map<String, Value> coats = assignments(read(root, SectPreset.COAT_OF_ARMS_FILE), "coat of arms definitions");
@@ -61,6 +66,56 @@ public final class SectPresetValidation {
             }
             StaticValidation.validateBytes(preset.iconPath(), Files.readAllBytes(root.resolve(preset.iconPath())));
             validateCoatOfArms(root, coats.get(preset.coatOfArmsId()), preset);
+        }
+    }
+
+    private static void validateDoctrineSelection(Path root) throws IOException {
+        Map<String, Value> definitions = assignments(read(root, DOCTRINE_FILE), "dynastic doctrine definitions");
+        requireKeys(definitions, Set.of("des_doctrine_none", "des_doctrine_dynastic"), "dynastic doctrine IDs");
+        Map<String, Value> none = assignments(block(definitions.get("des_doctrine_none"), "des_doctrine_none"), "des_doctrine_none");
+        requireKeys(none, Set.of("doctrine_group_type", "index", "divergence", "icon", "piety_cost", "visible", "is_shown"), "detail-hidden editor-selectable None doctrine");
+        requireScalar(none, "doctrine_group_type", ReleaseProduct.DYNASTIC_ICON_STEM);
+        requireScalar(none, "visible", "no");
+        Map<String, Value> shown = assignments(block(none.get("is_shown"), "None is_shown"), "None editor visibility");
+        requireKeys(shown, Set.of("always"), "None editor visibility");
+        requireScalar(shown, "always", "yes");
+        Map<String, Value> dynastic = assignments(block(definitions.get("des_doctrine_dynastic"), "des_doctrine_dynastic"), "des_doctrine_dynastic");
+        requireKeys(dynastic, Set.of("doctrine_group_type", "index", "divergence", "icon", "piety_cost", "parameters", "can_pick"), "player-selected dynastic doctrine");
+        requireScalar(dynastic, "doctrine_group_type", ReleaseProduct.DYNASTIC_ICON_STEM);
+        requireScalar(dynastic, "icon", "\"" + ReleaseProduct.DYNASTIC_ICON_STEM + "\"");
+        Map<String, Value> gate = assignments(block(dynastic.get("can_pick"), "can_pick"), "dynastic can_pick");
+        requireKeys(gate, Set.of("exists", "scope:actor"), "dynastic choice legality");
+        requireScalar(gate, "exists", "scope:actor");
+        Map<String, Value> actor = assignments(block(gate.get("scope:actor"), "scope:actor"), "dynastic selecting actor");
+        requireKeys(actor, Set.of("is_ai"), "dynastic selecting actor");
+        requireScalar(actor, "is_ai", "no");
+        Map<String, Value> groups = assignments(read(root, DOCTRINE_GROUP_FILE), "dynastic doctrine group");
+        requireKeys(groups, Set.of(ReleaseProduct.DYNASTIC_ICON_STEM), "dynastic doctrine group IDs");
+        Map<String, Value> group = assignments(block(groups.get(ReleaseProduct.DYNASTIC_ICON_STEM), "dynastic doctrine group"), "dynastic doctrine group");
+        requireKeys(group, Set.of("category", "divergence", "doctrine_lock", "is_available_on_create"), "dynastic doctrine group");
+        requireScalar(group, "category", "main_group");
+        requireScalar(group, "divergence", "category");
+        requireScalar(group, "doctrine_lock", "none");
+        Map<String, Value> available = assignments(block(group.get("is_available_on_create"), "group availability"), "group availability");
+        requireKeys(available, Set.of("always"), "group editor availability");
+        requireScalar(available, "always", "yes");
+        validateDynasticIcons(root);
+    }
+
+    private static void validateDynasticIcons(Path root) throws IOException {
+        for (String relative : List.of(ReleaseProduct.DYNASTIC_GROUP_ICON, ReleaseProduct.DYNASTIC_DOCTRINE_ICON)) {
+            byte[] data = Files.readAllBytes(root.resolve(relative));
+            StaticValidation.validateBytes(relative, data);
+            ByteBuffer header = ByteBuffer.wrap(data).order(ByteOrder.LITTLE_ENDIAN);
+            if (header.getInt(12) != 120 || header.getInt(16) != 120 || header.getInt(20) != 480
+                    || header.getInt(28) != 0 || header.getInt(80) != 0x41 || header.getInt(84) != 0
+                    || header.getInt(88) != 32 || header.getInt(92) != 0xff0000 || header.getInt(96) != 0xff00
+                    || header.getInt(100) != 0xff || header.getInt(104) != 0xff000000) {
+                throw new IllegalArgumentException("dynastic group/selected icon must use the 120x120 BGRA8 single-level producer layout: " + relative);
+            }
+        }
+        if (Files.mismatch(root.resolve(ReleaseProduct.DYNASTIC_GROUP_ICON), root.resolve(ReleaseProduct.DYNASTIC_DOCTRINE_ICON)) != -1) {
+            throw new IllegalArgumentException("dynastic group and selected doctrine icons must use identical artwork");
         }
     }
 

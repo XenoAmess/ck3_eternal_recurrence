@@ -1,0 +1,232 @@
+{
+  "schema": "des-actual-attempt-summary-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-25T17:20:22.257312+00:00",
+  "local_calendar_date": "2026-10-26",
+  "timezone": "Asia/Shanghai",
+  "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0017",
+  "product_source_head": "66e2c14a0e5e5565ad34c58c82e773c46158dd46",
+  "sdk_source_head": "66e2c14a0e5e5565ad34c58c82e773c46158dd46",
+  "product_version": "0.2.0",
+  "CK3_version": "1.20.0.4",
+  "CK3_executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "actual_passed_root_phases": 0,
+  "required_root_phases": 6,
+  "business_pass": false,
+  "release_pass": false,
+  "actual_rite_id": "152",
+  "actual_rite_creator": "31254",
+  "creator_head_requirement_pass": false,
+  "failure": "At exact +1 and +2, saved head_of_house and dynasty_head both remain character 41288 instead of actual Rite creator 31254. Birth field for 41288 is 1065.1.2. No later cells were executed.",
+  "days": [
+    {
+      "relative_game_day": 1,
+      "save_date": "1066.9.17",
+      "observed_at_utc": "2026-10-25T17:01:55.523046+00:00",
+      "readback_ref": {
+        "path": "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/runtime-a16/runs/desktop-3fevhd2-1c74096080--dynastic-esotericism--R0017/operator-evidence/r17-primary-plus1-save-readback-coa-a01.json",
+        "bytes": 756922,
+        "sha256": "3b636d3ca68afc634c8739d24d200f14fe70a5afe44195978a5c7c2d1b676de1"
+      },
+      "save_pin": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a16\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0017\\operator-evidence\\retained-saves\\r17-primary-plus1.ck3",
+        "bytes": 68624039,
+        "sha256": "53160c40489bd0d57b4071693370421139336eec7490063404ae11b2a35103a5"
+      },
+      "decoder_exit_code": 0,
+      "complete_stream": true,
+      "expected_creator_character_id": "31254",
+      "actual_house_id": "12760",
+      "actual_dynasty_id": "12156",
+      "actual_saved_head_of_house": "41288",
+      "actual_saved_dynasty_head": "41288",
+      "actual_house_localized_name": "\"R17 Dynastic Rite\"",
+      "actual_dynasty_localized_name": "\"R17 Dynastic Rite\"",
+      "head_character_birth": "1065.1.2",
+      "head_character_death": null,
+      "pinned_member_count": 61,
+      "pinned_members_all_in_bound_house": true,
+      "coat_of_arms_ids": [
+        "28817",
+        "28818"
+      ],
+      "coat_of_arms_AST_sha256": [
+        "bdd7195e38bdeebf98cbd08b13e0f25ec483a05954fa1b93678647dba232513c",
+        "bdd7195e38bdeebf98cbd08b13e0f25ec483a05954fa1b93678647dba232513c"
+      ]
+    },
+    {
+      "relative_game_day": 2,
+      "save_date": "1066.9.18",
+      "observed_at_utc": "2026-10-25T17:01:17.205363+00:00",
+      "readback_ref": {
+        "path": "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/runtime-a16/runs/desktop-3fevhd2-1c74096080--dynastic-esotericism--R0017/operator-evidence/r17-primary-plus2-save-readback-coa-a01.json",
+        "bytes": 777214,
+        "sha256": "51f0e5edf167e08457879b649eaeb603dfebced2f668320e8ce07aae817c5abd"
+      },
+      "save_pin": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a16\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0017\\operator-evidence\\retained-saves\\r17-primary-plus2.ck3",
+        "bytes": 68682975,
+        "sha256": "a8bdb5c9dc2c3ba0c62188fd46377b557972079c4543844fb9cbaafee997e5b6"
+      },
+      "decoder_exit_code": 0,
+      "complete_stream": true,
+      "expected_creator_character_id": "31254",
+      "actual_house_id": "12760",
+      "actual_dynasty_id": "12156",
+      "actual_saved_head_of_house": "41288",
+      "actual_saved_dynasty_head": "41288",
+      "actual_house_localized_name": "\"R17 Dynastic Rite\"",
+      "actual_dynasty_localized_name": "\"R17 Dynastic Rite\"",
+      "head_character_birth": "1065.1.2",
+      "head_character_death": null,
+      "pinned_member_count": 61,
+      "pinned_members_all_in_bound_house": true,
+      "coat_of_arms_ids": [
+        "28817",
+        "28818"
+      ],
+      "coat_of_arms_AST_sha256": [
+        "bdd7195e38bdeebf98cbd08b13e0f25ec483a05954fa1b93678647dba232513c",
+        "bdd7195e38bdeebf98cbd08b13e0f25ec483a05954fa1b93678647dba232513c"
+      ]
+    }
+  ],
+  "identity_scope": {
+    "custom_rite_dynasty_and_house_names_match": true,
+    "random_fallback_default_house_and_dynasty_same_complete_coat_AST": true,
+    "four_coat_AST_sha256": [
+      "bdd7195e38bdeebf98cbd08b13e0f25ec483a05954fa1b93678647dba232513c",
+      "bdd7195e38bdeebf98cbd08b13e0f25ec483a05954fa1b93678647dba232513c",
+      "bdd7195e38bdeebf98cbd08b13e0f25ec483a05954fa1b93678647dba232513c",
+      "bdd7195e38bdeebf98cbd08b13e0f25ec483a05954fa1b93678647dba232513c"
+    ],
+    "preset_sects_live_acceptance": "NOT_RUN",
+    "arbitrary_custom_rite_icon_copy_claimed": false,
+    "full_identity_requirement_pass": false
+  },
+  "normal_close_qualified": true,
+  "autosave_verified": false,
+  "root_save_anchor_created": false,
+  "actual_original_exit_codes": {
+    "game": 0,
+    "host": 0,
+    "public_run": 2,
+    "public_verify": 2,
+    "allocator": 0,
+    "keeper": 0
+  },
+  "screen_release_sequence": 9008,
+  "closure_ref": {
+    "path": "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/operations-core-a37/R0017-CLOSURE.actual.json",
+    "bytes": 5240,
+    "sha256": "79672d9d5b561a7e0828fde8982ec032c64cc4304b36919e515dd63aaea515ad"
+  },
+  "initial_failure_ref": {
+    "path": "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/runtime-a16/runs/desktop-3fevhd2-1c74096080--dynastic-esotericism--R0017/operator-evidence/r17-creator-head-failure-a01.actual.json",
+    "bytes": 8572,
+    "sha256": "9b8a46bded6db9257e0c9482b97b0d512dfad364c7966d7e0def65a072ce0001"
+  },
+  "initial_failure_scope_note": "Initial failure file says plus2 decode pending; the later independent plus2 readback above completes that observation without rewriting the original.",
+  "retained_saves": [
+    {
+      "custody_ref": {
+        "path": "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/runtime-a16/runs/desktop-3fevhd2-1c74096080--dynastic-esotericism--R0017/operator-evidence/retained-saves/r17-baseline.custody.json",
+        "bytes": 716,
+        "sha256": "10b431384a2047df5f534d200e5ed3ffa64ec518dacc6f9e9815ab3d462c3baf"
+      },
+      "sdk_pin_ref": {
+        "path": "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/runtime-a16/runs/desktop-3fevhd2-1c74096080--dynastic-esotericism--R0017/operator-evidence/retained-saves/r17-baseline.sdk-pin.json",
+        "bytes": 241,
+        "sha256": "ec34d9b05f7aa53a625aa15ae4c818bed28dcf1db6b9795a35be6517c66a2f2c"
+      },
+      "sdk_pin": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\attempt-core-a26\\state\\profile\\save games\\xar_checkpoint.ck3",
+        "bytes": 68749855,
+        "sha256": "30fa540593fe89e20b386dc080814599b9396f832927a42652b5dd622ce253ad"
+      }
+    },
+    {
+      "custody_ref": {
+        "path": "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/runtime-a16/runs/desktop-3fevhd2-1c74096080--dynastic-esotericism--R0017/operator-evidence/retained-saves/r17-after-cancel.custody.json",
+        "bytes": 720,
+        "sha256": "44a201e4d30f7d09b6fbcdca9313fc0928a0a58909275b22f6fe632ba9b38f5c"
+      },
+      "sdk_pin_ref": {
+        "path": "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/runtime-a16/runs/desktop-3fevhd2-1c74096080--dynastic-esotericism--R0017/operator-evidence/retained-saves/r17-after-cancel.sdk-pin.json",
+        "bytes": 241,
+        "sha256": "bbc2aa2714f234c8f71285e153fffb9989efcc6d660ab83b5b3c32af50772ade"
+      },
+      "sdk_pin": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\attempt-core-a26\\state\\profile\\save games\\xar_checkpoint.ck3",
+        "bytes": 68753249,
+        "sha256": "b11771d9633bb2398a6e043b15061db7e8389d5593a2f9dc2b6051519b13f645"
+      }
+    },
+    {
+      "custody_ref": {
+        "path": "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/runtime-a16/runs/desktop-3fevhd2-1c74096080--dynastic-esotericism--R0017/operator-evidence/retained-saves/r17-primary-plus1.custody.json",
+        "bytes": 721,
+        "sha256": "4a10d7aa4665b91dd4aef575ab386e5e99718b749f9fc130e4b31c2ff1a3f5ff"
+      },
+      "sdk_pin_ref": {
+        "path": "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/runtime-a16/runs/desktop-3fevhd2-1c74096080--dynastic-esotericism--R0017/operator-evidence/retained-saves/r17-primary-plus1.sdk-pin.json",
+        "bytes": 241,
+        "sha256": "516775f14bf4008abbd68eb7260fd0a4e56ea92dc38b8b562cc10d9d2e690a98"
+      },
+      "sdk_pin": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\attempt-core-a26\\state\\profile\\save games\\xar_checkpoint.ck3",
+        "bytes": 68624039,
+        "sha256": "53160c40489bd0d57b4071693370421139336eec7490063404ae11b2a35103a5"
+      }
+    },
+    {
+      "custody_ref": {
+        "path": "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/runtime-a16/runs/desktop-3fevhd2-1c74096080--dynastic-esotericism--R0017/operator-evidence/retained-saves/r17-primary-plus2.custody.json",
+        "bytes": 721,
+        "sha256": "f73a1b40c817eaeaef1159b5473039fc9081fe7e0a9084b7f85d474c42248977"
+      },
+      "sdk_pin_ref": {
+        "path": "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/runtime-a16/runs/desktop-3fevhd2-1c74096080--dynastic-esotericism--R0017/operator-evidence/retained-saves/r17-primary-plus2.sdk-pin.json",
+        "bytes": 241,
+        "sha256": "81fdeee9184e9a3aa52eb77633b32cb3711a39d6bf7271d2a0de047b6804a952"
+      },
+      "sdk_pin": {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\attempt-core-a26\\state\\profile\\save games\\xar_checkpoint.ck3",
+        "bytes": 68682975,
+        "sha256": "a8bdb5c9dc2c3ba0c62188fd46377b557972079c4543844fb9cbaafee997e5b6"
+      }
+    }
+  ],
+  "head_fix_candidate_live_acceptance": "NOT_RUN",
+  "workshop_item_id": "3826991345",
+  "public_workshop_version": "0.1.0",
+  "version_0_2_0_workshop_update_performed": false,
+  "last_notes_readback": {
+    "observed_at_utc": "2026-10-25T17:21:56.842698+00:00",
+    "HTTP_status": 429,
+    "full_text_verified": false,
+    "response_bytes": 5884,
+    "response_sha256": "dc0d04bad7d007f7900b1638f85a987e6a4bc20a1e64ccf2707296c6d6d29b58",
+    "Steam_mode_changed": false,
+    "workshop_update_performed": false,
+    "evidence": {
+      "path": "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/public-notes-a05/actual.json",
+      "bytes": 2156,
+      "sha256": "9f2952c357a64cf2bb2946ba3dea9213a7d9d26bf31dd2efa1fff222529ed3ac"
+    }
+  },
+  "review_at_utc": "2026-11-02T00:00:00Z",
+  "notes_readback_history": [
+    {
+      "observed_at_utc": "2026-10-25T15:38:21.129858+00:00",
+      "HTTP_status": 429,
+      "full_text_verified": false,
+      "evidence": {
+        "path": "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/public-notes-a04.actual.json",
+        "bytes": 2749,
+        "sha256": "20751961420b16e89704cfd20aea4fcd2788aec34ab0e06f8d55af767148f280"
+      }
+    }
+  ]
+}

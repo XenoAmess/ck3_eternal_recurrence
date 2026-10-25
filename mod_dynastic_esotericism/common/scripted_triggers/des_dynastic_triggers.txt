@@ -17,6 +17,12 @@ des_is_apostate_trigger = {
 	exists = dynasty.var:des_bound_rite
 	dynasty.var:des_bound_rite = { des_has_active_binding_trigger = yes }
 	dynasty = dynasty.var:des_bound_rite.var:des_bound_dynasty
+	OR = {
+		var:des_adopted_bound_rite = dynasty.var:des_bound_rite
+		# Existing explicit product apostasy is valid migration evidence; merely
+		# sharing the reused Dynasty is not evidence of prior adoption.
+		var:des_apostate_rite = dynasty.var:des_bound_rite
+	}
 	NOT = { rite = dynasty.var:des_bound_rite }
 }
 

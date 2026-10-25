@@ -2,6 +2,9 @@
 	doctrine_group_type = des_dynastic_membership
 	index = 0
 	divergence = 0
+	# Hide the neutral choice from Rite details; keep it available in the editor.
+	visible = no
+	is_shown = { always = yes }
 	icon = "doctrine_pluralism_pluralistic"
 	piety_cost = { value = 0 }
 }
@@ -10,7 +13,12 @@ des_doctrine_dynastic = {
 	doctrine_group_type = des_dynastic_membership
 	index = 1
 	divergence = 0
-	icon = "doctrine_pluralism_fundamentalist"
+	icon = "des_dynastic_membership"
 	piety_cost = { value = 0 }
+	# Choice legality belongs to the creator/reformer, not current followers.
+	can_pick = {
+		exists = scope:actor
+		scope:actor = { is_ai = no }
+	}
 	parameters = { des_dynastic_membership }
 }

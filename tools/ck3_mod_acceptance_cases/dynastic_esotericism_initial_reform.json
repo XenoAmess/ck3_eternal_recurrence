@@ -1,0 +1,103 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "dynastic-esotericism",
+  "case_id": "initial_reform",
+  "acceptance_scope": "actual_native_ui_unbound_none_to_first_dynastic_reform",
+  "fixture_source": {
+    "kind": "prebuilt_manifest"
+  },
+  "maximum_natural_days": 8,
+  "allow_actor_change": false,
+  "actor_transition_days": [],
+  "failure_prefixes": [
+    "DESIRF:"
+  ],
+  "gui_phases": [
+    {
+      "id": "actual-ui-none-creation-unbound-baseline",
+      "when_markers": [
+        "DESIRF: QUALIFICATION_INPUT_APPLIED initial_reform"
+      ],
+      "requirements": [
+        "actual_original_1066_player_primary_title_faith_rite_and_product52_fixture3_only_baseline_saved",
+        "actual_delayed_character_root_qualification_input_date_and_actor_match_native_and_independent_save",
+        "actual_native_fullCan_creation_eligibility_and_costs_no_fixture_log_as_permission",
+        "actual_unique_action_id_native_UI_create_none_once_from_pinned_source_rite_no_unknown_replay",
+        "actual_new_rite_none_doctrine_same_actor_stock_founder_and_head_original_player_primary_title_retained",
+        "actual_N1_native_and_independent_save_exact_creation_date_plus1_complete_living_member_identity_graph",
+        "actual_selected_new_rite_none_has_no_binding_join_house_in_progress_or_native_claim_actor_kind_date_pending_attempted_succeeded",
+        "actual_N1_object_present_and_all_typed_variable_owners_examined_absence_not_unselected_or_summary_missing",
+        "actual_creation_notifications_handled_by_current_native_instance_and_existing_vanilla_policy",
+        "actual_same_actor_unused_edit_lock_head_and_native_fullCan_edit_eligible_no_automatic_qualification_refresh",
+        "actual_N1_Robert_remains_preexisting_dynast_of_dynasty174_same_original_house_and_both_resolved_coa"
+      ],
+      "operator_sequence": [
+        "pin_B0_native_Save_actual_actor_title_original_faith_rite_and_budget",
+        "create_one_readably_named_None_Rite_via_original_native_UI_with_one_action_id",
+        "pause_at_exact_creation_date_plus1_and_collect_N1_native_Save_complete_member_graph_and_selected_Rite_binding_absence",
+        "retain_N1_as_the_only_input_to_phase2_no_core_capture_or_product_sync"
+      ]
+    },
+    {
+      "id": "actual-ui-first-dynastic-reform-and-stability",
+      "when_markers": [
+        "DESIRF: QUALIFICATION_INPUT_APPLIED initial_reform"
+      ],
+      "requirements": [
+        "actual_same_N1_rite_and_same_actor_current_head_native_fullCan_edit_source_identity_pinned",
+        "actual_single_UI_edit_optional_none_to_dynastic_other_tenets_doctrines_names_preserved_and_original_completion_verified",
+        "actual_edit_action_id_actor_source_rite_and_input_date_from_native_receipt_no_fixture_doctrine_or_head_setter",
+        "actual_E1_native_and_independent_save_exact_edit_date_plus1_same_player_title_rite_faith_all_living_members",
+        "actual_E1_native_editor_preexisting_dynast_reuses_pinned_dynasty174_and_actor_house_no_product_new_dynasty_or_founder_NPC",
+        "actual_E1_native_claim_actor_kind_edited_and_actual_edit_date_attempted_succeeded_no_pending_or_creator_fault",
+        "actual_E1_unique_bidirectional_reused_binding_actual_UI_actor_house_head_dynast_and_legal_multiple_houses_preserved",
+        "actual_E1_localized_dynasty_house_names_equal_actual_rite_display_name_not_localization_key_only",
+        "actual_E1_preexisting_dynasty_and_join_house_complete_coa_objects_and_designs_unchanged_from_pre_edit_N1",
+        "actual_E2_native_and_independent_save_exact_same_edit_date_plus2_same_binding_names_heads_coa_objects_and_designs",
+        "actual_E1_E2_member_differences_explained_by_ID_consumed_claim_not_reexecuted_or_rerandomized",
+        "actual_generic_postphase_calendar_refreshed_no_fixed_plus3_day_and_shared_normal_close_only",
+        "actual_initial_reform_is_not_existing_binding_close_reopen_static_preset_or_complete_core_cold_pass",
+        "actual_unconverted_old_dynasty_members_keep_original_faith_rite_house_cadet_names_coa_and_have_no_false_product_apostasy",
+        "actual_E1_des_binding_mode_native_dynast_reuse_and_native_source_actor_dynasty_house_was_dynast_match_pre_edit_N1"
+      ],
+      "operator_sequence": [
+        "use_N1_same_head_rite_actual_fullCan_and_change_only_des_doctrine_none_to_des_doctrine_dynastic_in_original_UI",
+        "record_native_edit_submission_day_source_actor_unique_action_id_and_original_completion",
+        "advance_exactly_to_edit_plus1_then_pause_native_Save_E1_all_members_heads_names_random_coa_full_objects_claim_provenance",
+        "advance_exactly_to_same_edit_plus2_then_pause_native_Save_E2_compare_exact_binding_names_heads_coa_and_consumed_claim",
+        "sign_only_with_actual_native_GUI_and_independent_Save_evidence_then_shared_normal_close_no_fixed_extra_day"
+      ]
+    }
+  ],
+  "source_contracts": [
+    "mod_dynastic_esotericism/docs/requirements.md",
+    "mod_dynastic_esotericism/docs/test-plan.md",
+    "mod_dynastic_esotericism/common/scripted_effects/des_binding_effects.txt",
+    "mod_dynastic_esotericism/common/on_action/des_on_actions.txt",
+    "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/acceptance/FixtureEmitter.java",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/on_action/des_initial_reform_acceptance_on_actions.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/scripted_effects/des_initial_reform_acceptance_effects.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/scripted_effects/des_acceptance_effects.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_acceptance_events.txt"
+  ],
+  "post_start": {
+    "government_key": "feudal_government",
+    "primary_title_tier_key": "duchy",
+    "independent": true
+  },
+  "required_startup": [
+    "DESIRF: FIXTURE_ARMED initial_reform"
+  ],
+  "forbidden_startup": [
+    "DESIRF: TEST FAIL"
+  ],
+  "uncovered_product_business": [
+    "Qualification markers report disclosed input invocation, never original native Can or product semantic PASS.",
+    "This Robert1066 profile begins as dynasty174 Dynast. True native creation/reform must reuse that pre-operation Dynasty and actor House, rename Dynasty/joinHouse and preserve both CoA. Other legal cadets remain; this does not certify a real non-Dynast native branch. Ordinary preset adoption still creates its separate new binding and exact preset icons.",
+    "No public qualification refresh is provided. Missing native creation/edit Can is a retained failure, without console, private effects, stock lock clearing or UNKNOWN replay.",
+    "This independent fresh profile does not create, relabel or replace core/cold anchors, existing-binding reopen tests, true succession or static-preset LIVE12/13.",
+    "Native05 standalone tenets/governance are OFF. Use qualified reform current_rite_model and creation-action current_rite_poststate with actual source Rite plus supported doctrines/members and independent Save."
+  ],
+  "business_contract_applicable": true
+}

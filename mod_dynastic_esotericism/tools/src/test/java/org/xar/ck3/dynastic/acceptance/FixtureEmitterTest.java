@@ -147,7 +147,8 @@ final class FixtureEmitterTest {
                 "date-literal", "date-no-source", "date-same-day",
                 "heir-same-faith", "heir-no-faith-input", "heir-root-input", "heir-input-order",
                 "prison-main-target", "prison-no-reason", "prison-product-write",
-                "initial-missing-dynast", "singleton-npc-head", "head-readback-write")) {
+                "initial-missing-dynast", "singleton-npc-head", "head-readback-write",
+                "reuse-old-dynasty", "reuse-mode", "singleton-not-dynast", "factory-native-reuse", "descendant-false-apostate")) {
             ProbeResult forbidden = probeFixture(current, baseline, mutation);
             assertNotEquals(0, forbidden.exitCode(), forbidden.output());
             assertEquals(switch (mutation) {
@@ -166,6 +167,11 @@ final class FixtureEmitterTest {
                 case "initial-missing-dynast" -> "INITIAL_REQUESTED_HEAD_GUARD_MISSING";
                 case "singleton-npc-head" -> "SINGLETON_INTERMEDIATE_FOUNDER_GUARD_MISSING";
                 case "head-readback-write" -> "HEAD_CELL_READBACK_WRITES_PRODUCT";
+                case "reuse-old-dynasty" -> "INITIAL_NATIVE_REUSE_SOURCE_CHANGED";
+                case "reuse-mode" -> "INITIAL_NATIVE_REUSE_MODE_CHANGED";
+                case "singleton-not-dynast" -> "SINGLETON_ORDINARY_SOURCE_PRESTATE_MISSING";
+                case "factory-native-reuse" -> "ORDINARY_FACTORY_MODE_OR_SOURCE_CHANGED";
+                case "descendant-false-apostate" -> "UNCONVERTED_DESCENDANT_FALSE_APOSTASY_GUARD_MISSING";
                 default -> "SUCCESSOR_FLAG_TRANSFER_OUTSIDE_CONTRACT";
             }, new ObjectMapper().readTree(forbidden.output()).path("reason").textValue());
         }
@@ -305,7 +311,51 @@ final class FixtureEmitterTest {
                 require(initial_guard,'this','var:des_test_initial_actor','INITIAL_REQUESTED_HEAD_GUARD_MISSING')
                 require(scoped_block(initial_guard,'house'),'house_head','root','INITIAL_REQUESTED_HEAD_GUARD_MISSING')
                 require(initial_dynasty,'dynast','root','INITIAL_REQUESTED_HEAD_GUARD_MISSING')
+                initial_reuse=one(initial_dynasty,'trigger_if',required=True)
+                if mutation=='reuse-old-dynasty':
+                    initial_reuse[:]=[row for row in initial_reuse if row['key']!='this']
+                require(initial_reuse,'this','root.var:des_test_source_dynasty','INITIAL_NATIVE_REUSE_SOURCE_CHANGED')
+                require(initial_reuse,'root',[{'key':'house','value':'var:des_test_source_house'}],'INITIAL_NATIVE_REUSE_SOURCE_CHANGED')
+                fresh=one(initial_dynasty,'trigger_else',required=True)
+                require(fresh,'NOT',[{'key':'this','value':'root.var:des_test_source_dynasty'}],'INITIAL_FRESH_DYNASTY_NOT_DISTINCT')
+                one(fresh,'dynasty_founder',required=True)
+                primary=one(initial_guard,'scope:des_test_primary',required=True)
+                primary_reuse=one(primary,'trigger_if',required=True)
+                if mutation=='reuse-mode':
+                    primary_reuse[:]=[row for row in primary_reuse if row['key']!='var:des_binding_mode']
+                require(primary_reuse,'var:des_binding_mode','flag:native_dynast_reuse','INITIAL_NATIVE_REUSE_MODE_CHANGED')
+                for key,value in [('var:des_native_source_actor','root.var:des_test_initial_actor'),
+                                  ('var:des_native_source_dynasty','root.var:des_test_source_dynasty'),
+                                  ('var:des_native_source_house','root.var:des_test_source_house')]:
+                    require(primary,key,value,'INITIAL_NATIVE_REUSE_SOURCE_CHANGED')
+                require(one(primary,'trigger_else',required=True),'var:des_binding_mode','flag:new_dynasty','INITIAL_FRESH_MODE_CHANGED')
                 extended_effects=parsed['common/scripted_effects/des_acceptance_extended_effects.txt']
+                head_inputs=one(extended_effects,'des_acceptance_prepare_head_cells_effect',required=True)
+                input_branch=one(head_inputs,'if',required=True)
+                singleton_guards=[row['value'] for row in walk(input_branch) if row['key']=='scope:des_test_singleton_actor'
+                    and isinstance(row['value'],list) and {'key':'is_alive','value':'yes'} in row['value']]
+                if len(singleton_guards)!=1:
+                    reject('SINGLETON_ORDINARY_SOURCE_PRESTATE_MISSING')
+                singleton_guard=singleton_guards[0]
+                if mutation=='singleton-not-dynast':
+                    singleton_guard[:]=[row for row in singleton_guard if row['key']!='is_dynast']
+                    singleton_guard.append({'key':'is_dynast','value':'no'})
+                for key,value in [('is_dynast','yes'),('is_house_head','yes'),('dynasty.dynast','this')]:
+                    require(singleton_guard,key,value,'SINGLETON_ORDINARY_SOURCE_PRESTATE_MISSING')
+                single_house=scoped_block(singleton_guard,'house')
+                require(single_house,'NOT',[{'key':'any_house_member','value':[{'key':'is_alive','value':'yes'},
+                    {'key':'NOT','value':[{'key':'this','value':'scope:des_test_singleton_actor'}]}]}],'SINGLETON_ORDINARY_SOURCE_PRESTATE_MISSING')
+                descendant=one(one(one(extended_decisions,'des_acceptance_extended_start_decision',required=True),'effect',required=True),'hidden_effect',required=True)
+                descendant_checks=[row['value'] for row in walk(descendant) if row['key']=='scope:des_test_old_descendant'
+                    and isinstance(row['value'],list) and {'key':'house','value':'root.var:des_test_old_descendant_house'} in row['value']]
+                if len(descendant_checks)!=1:
+                    reject('UNCONVERTED_DESCENDANT_FALSE_APOSTASY_GUARD_MISSING')
+                if mutation=='descendant-false-apostate':
+                    descendant_checks[0][:]=[row for row in descendant_checks[0] if row!={'key':'NOT','value':[{'key':'des_is_apostate_trigger','value':'yes'}]}]
+                for key,value in [('faith','faith:orthodox'),('rite','rite:byzantine_rite'),
+                                  ('NOT',[{'key':'des_is_apostate_trigger','value':'yes'}]),
+                                  ('NOT',[{'key':'has_trait','value':'des_apostate'}])]:
+                    require(descendant_checks[0],key,value,'UNCONVERTED_DESCENDANT_FALSE_APOSTASY_GUARD_MISSING')
                 cell_reader=one(extended_effects,'des_acceptance_read_head_cells_effect',required=True)
                 cells=one(one(cell_reader,'if',required=True),'if',required=True)
                 cell_guard=one(cells,'limit',required=True)
@@ -315,6 +365,20 @@ final class FixtureEmitterTest {
                     actor_guard=one(cell_guard,'var:des_test_'+cell+'_actor',required=True)
                     require(scoped_block(actor_guard,'house'),'house_head',actor,'REQUESTED_HEAD_CELL_GUARD_MISSING')
                     require(scoped_block(actor_guard,'dynasty'),'dynast',actor,'REQUESTED_HEAD_CELL_GUARD_MISSING')
+                    cell_rite=one(cell_guard,'var:des_test_'+cell+'_rite',required=True)
+                    if mutation=='factory-native-reuse' and cell=='handover':
+                        cell_rite[:]=[row for row in cell_rite if row['key']!='var:des_binding_mode']
+                    for key,value in [('var:des_binding_mode','flag:new_dynasty'),
+                                      ('var:des_deferred_binding_requester',actor),
+                                      ('var:des_deferred_binding_date','root.var:des_test_'+cell+'_creation_date'),
+                                      ('var:des_ordinary_binding_ready','yes')]:
+                        require(cell_rite,key,value,'ORDINARY_FACTORY_MODE_OR_SOURCE_CHANGED')
+                    for absent in ('des_deferred_binding_queued','des_native_source_actor','des_native_source_dynasty',
+                                   'des_native_source_house','des_native_source_was_dynast','des_native_head_claim_actor',
+                                   'des_native_head_claim_kind','des_native_head_claim_date','des_native_head_claim_pending',
+                                   'des_native_head_claim_dynasty','des_native_head_claim_house','des_native_head_claim_attempted',
+                                   'des_native_head_claim_succeeded'):
+                        require(cell_rite,'NOT',[{'key':'has_variable','value':absent}],'ORDINARY_FACTORY_MODE_OR_SOURCE_CHANGED')
                 npc=one(scoped_block(one(cell_guard,'var:des_test_singleton_actor',required=True),'dynasty'),'dynasty_founder',required=True)
                 if mutation=='singleton-npc-head':
                     npc[:]=[row for row in npc if row['key']!='is_house_head']
@@ -600,7 +664,11 @@ final class FixtureEmitterTest {
                         reject('CHANGED_SCOPED_SUCCESS_MARKERS',event=event)
                 print(json.dumps({'status':'ACCEPTED','required_marker_count':len(required),'unchanged_guard_count':len(expected),'original_rite_readback_only_observes':True,'successor_reference_transfer_count':len(refs),'successor_history_transfer_count':len(flags),'heir_minimum_day_guard_validated':True,'heir_stock_faith_rite_input_validated':True,'separate_prisoner_control_custody_validated':True,'requested_head_cells_readback_validated':True,'engine_semantics_verified':False}))
                 """;
-        Process process = new ProcessBuilder("python", "-B", "-X", "utf8", "-c", program,
+        // The existing AST regression now exceeds Windows' command-line limit.
+        // Keep it a temporary test artifact, with the same real parser/consumers.
+        Path probe = baseline.resolveSibling("fixture-ast-probe.py");
+        Files.writeString(probe, program, StandardCharsets.UTF_8);
+        Process process = new ProcessBuilder(System.getProperty("dynastic.python", "python"), "-B", "-X", "utf8", probe.toString(),
                 repository().toString(), fixture.fixture().toString(), fixture.manifest().toString(), baseline.toString(), mutation)
                 .redirectErrorStream(true).start();
         assertTrue(process.waitFor(30, TimeUnit.SECONDS), "existing lexer/AST fixture probe timed out");

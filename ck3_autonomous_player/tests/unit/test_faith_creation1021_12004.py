@@ -56,6 +56,56 @@ def _context():
 
 
 class FaithCreation1021KnowledgeTests(unittest.TestCase):
+    def test_r17_observation_does_not_qualify_inherited_scope_shape(self) -> None:
+        row = query_vanilla_event_knowledge_v1(KEY, "1.20.0.4")
+        observations: object = row["observations"]
+        assert isinstance(observations, dict)
+        exemplars = observations["exemplars"]
+        assert isinstance(exemplars, list)
+        observation = next(item for item in exemplars if isinstance(item, dict)
+                           and item.get("run_id") == "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0017")
+        scope_types = observation["observed_saved_scope_types"]
+        assert isinstance(scope_types, dict)
+        self.assertEqual(observation["saved_scope_count"], 17)
+        self.assertEqual(len(scope_types), 17)
+        self.assertFalse(observation["scope_contract_qualified"])
+        self.assertFalse(observation["material_reward_delta_verified"])
+        self.assertTrue(observation["postcondition_verified"])
+        self.assertIsNone(observation["terminal_active_event"])
+        self.assertEqual(observation["rendered_native_option_indices"], [0, 1])
+
+        contract = materialize_vanilla_timeline_contract(row["contract"], PLAYER)
+        self.assertEqual(contract["saved_scope_count"], 7)
+        variants: object = contract["scope_variants"]
+        assert isinstance(variants, (tuple, list))
+        self.assertEqual(len(variants), 1)
+        variant = variants[0]
+        assert isinstance(variant, dict)
+        self.assertEqual(variant["saved_scope_count"], 8)
+        context = _context()
+        # Only shape and types come from the observation; actors remain fixture-owned.
+        context["saved_scopes"] = [
+            {"name": name, "scope": _scope(kind, PLAYER if name == "founder" else
+                PLAYER + 1 if kind == "character" else None)}
+            for name, kind in scope_types.items()
+        ]
+        resolved, variant_index, error = _resolve_scope_variant_contract(context, contract)
+        self.assertIsNone(variant_index)
+        self.assertIsNone(error)  # Unmatched variants retain the base contract for refusal.
+        assert resolved is not None
+        self.assertFalse(all(_scope_projection_checks(context, resolved, PLAYER).values()))
+        decision = recommend_registered_vanilla_event_option_v1(
+            context, played_character_id=PLAYER, snapshot_option_count=4)
+        self.assertEqual(decision["status"], "blocked")
+        self.assertIsNone(decision["selected_option_number"])
+        analysis: object = row["analysis"]
+        assert isinstance(analysis, dict)
+        self.assertFalse(analysis["automatic_selection"])
+        correction = analysis["definition_block_hash_convention_correction"]
+        assert isinstance(correction, dict)
+        self.assertEqual(correction["actual_block_crlf_count"], 0)
+        self.assertIn("CRLF retained", correction["prior_description"])
+
     def test_exact_founder_contract_source_projection_and_old_build_isolation(self):
         row = query_vanilla_event_knowledge_v1(KEY, "1.20.0.4")
         self.assertEqual(row["status"], "available")

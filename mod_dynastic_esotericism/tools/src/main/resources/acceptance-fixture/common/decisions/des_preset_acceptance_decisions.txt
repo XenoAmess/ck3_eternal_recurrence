@@ -1,0 +1,171 @@
+﻿# Disclosed stock conversion inputs only. Markers report invocation, never product PASS.
+# Root must pin real actor/controls, advance actual days and independently save/read back.
+des_preset_procreation_adopt_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+	is_shown = { is_ai = no has_character_flag = des_preset_fixture_armed NOT = { has_character_flag = des_preset_fixture_p_adopted } }
+	is_valid = { is_ai = no is_alive = yes this = var:des_preset_fixture_ref_actor has_character_flag = des_preset_fixture_armed NOT = { has_character_flag = des_preset_fixture_p_adopted } exists = var:des_preset_fixture_source_faith exists = var:des_preset_fixture_source_rite }
+	effect = {
+		hidden_effect = {
+			if = {
+				limit = { is_ai = no is_alive = yes this = var:des_preset_fixture_ref_actor has_character_flag = des_preset_fixture_armed NOT = { has_character_flag = des_preset_fixture_p_adopted } exists = var:des_preset_fixture_source_faith exists = var:des_preset_fixture_source_rite }
+				add_character_flag = des_preset_fixture_p_adopted
+				set_variable = { name = des_preset_fixture_p1_input_date value = current_date }
+				set_variable = { name = des_preset_fixture_p1_input_actor value = this }
+				# Both real controls start in the original input Faith/Rite. Root adopts first.
+				create_character = {
+					gender_female_chance = 50
+					age = 30
+					location = root.location
+					culture = root.culture
+					faith = root.var:des_preset_fixture_source_faith
+					rite = root.var:des_preset_fixture_source_rite
+					save_scope_as = des_preset_fixture_observer
+				}
+				set_variable = { name = des_preset_fixture_ref_observer value = scope:des_preset_fixture_observer }
+				create_character = {
+					gender_female_chance = 50
+					age = 30
+					location = root.location
+					culture = root.culture
+					faith = root.var:des_preset_fixture_source_faith
+					rite = root.var:des_preset_fixture_source_rite
+					save_scope_as = des_preset_fixture_target
+				}
+				set_variable = { name = des_preset_fixture_ref_target value = scope:des_preset_fixture_target }
+				set_variable = { name = des_preset_fixture_p1_input_target value = var:des_preset_fixture_ref_target }
+				set_character_faith = faith:des_procreation_faith
+				set_character_rite = rite:des_procreation_rite
+				var:des_preset_fixture_ref_observer = {
+					set_character_faith = faith:des_procreation_faith
+					set_character_rite = rite:des_procreation_rite
+				}
+				var:des_preset_fixture_ref_target = {
+					set_character_faith = faith:des_procreation_faith
+					set_character_rite = rite:des_procreation_rite
+				}
+				debug_log = "DESPAF: INPUT APPLIED procreation_adopt"
+			}
+			else = { debug_log = "DESPAF: TEST FAIL input_not_ready procreation_adopt" }
+		}
+	}
+	ai_check_interval = 0
+}
+
+des_preset_procreation_leave_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+	is_shown = { is_ai = no has_character_flag = des_preset_fixture_p_adopted NOT = { has_character_flag = des_preset_fixture_p_left } }
+	is_valid = { is_ai = no is_alive = yes this = var:des_preset_fixture_ref_actor has_character_flag = des_preset_fixture_armed NOT = { has_character_flag = des_preset_fixture_p_left } exists = var:des_preset_fixture_ref_target faith = faith:des_procreation_faith rite = rite:des_procreation_rite has_character_flag = des_preset_fixture_p_adopted has_variable = des_preset_fixture_p1_input_date var:des_preset_fixture_p1_input_date <= { value = current_date subtract = 1 } }
+	effect = {
+		hidden_effect = {
+			if = {
+				limit = { is_ai = no is_alive = yes this = var:des_preset_fixture_ref_actor has_character_flag = des_preset_fixture_armed NOT = { has_character_flag = des_preset_fixture_p_left } exists = var:des_preset_fixture_ref_target faith = faith:des_procreation_faith rite = rite:des_procreation_rite has_character_flag = des_preset_fixture_p_adopted has_variable = des_preset_fixture_p1_input_date var:des_preset_fixture_p1_input_date <= { value = current_date subtract = 1 } }
+				add_character_flag = des_preset_fixture_p_left
+				set_variable = { name = des_preset_fixture_p2_input_date value = current_date }
+				set_variable = { name = des_preset_fixture_p2_input_actor value = this }
+				set_variable = { name = des_preset_fixture_p2_input_target value = var:des_preset_fixture_ref_target }
+				var:des_preset_fixture_ref_target = {
+					set_character_faith = root.var:des_preset_fixture_source_faith
+					set_character_rite = root.var:des_preset_fixture_source_rite
+				}
+				debug_log = "DESPAF: INPUT APPLIED procreation_leave"
+			}
+			else = { debug_log = "DESPAF: TEST FAIL input_not_ready procreation_leave" }
+		}
+	}
+	ai_check_interval = 0
+}
+
+des_preset_procreation_return_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+	is_shown = { is_ai = no has_character_flag = des_preset_fixture_p_left NOT = { has_character_flag = des_preset_fixture_p_returned } }
+	is_valid = { is_ai = no is_alive = yes this = var:des_preset_fixture_ref_actor has_character_flag = des_preset_fixture_armed NOT = { has_character_flag = des_preset_fixture_p_returned } exists = var:des_preset_fixture_ref_target faith = faith:des_procreation_faith rite = rite:des_procreation_rite has_character_flag = des_preset_fixture_p_left has_variable = des_preset_fixture_p2_input_date var:des_preset_fixture_p2_input_date <= { value = current_date subtract = 1 } }
+	effect = {
+		hidden_effect = {
+			if = {
+				limit = { is_ai = no is_alive = yes this = var:des_preset_fixture_ref_actor has_character_flag = des_preset_fixture_armed NOT = { has_character_flag = des_preset_fixture_p_returned } exists = var:des_preset_fixture_ref_target faith = faith:des_procreation_faith rite = rite:des_procreation_rite has_character_flag = des_preset_fixture_p_left has_variable = des_preset_fixture_p2_input_date var:des_preset_fixture_p2_input_date <= { value = current_date subtract = 1 } }
+				add_character_flag = des_preset_fixture_p_returned
+				set_variable = { name = des_preset_fixture_p3_input_date value = current_date }
+				set_variable = { name = des_preset_fixture_p3_input_actor value = this }
+				set_variable = { name = des_preset_fixture_p3_input_target value = var:des_preset_fixture_ref_target }
+				var:des_preset_fixture_ref_target = {
+					set_character_faith = faith:des_procreation_faith
+					set_character_rite = rite:des_procreation_rite
+				}
+				debug_log = "DESPAF: INPUT APPLIED procreation_return"
+			}
+			else = { debug_log = "DESPAF: TEST FAIL input_not_ready procreation_return" }
+		}
+	}
+	ai_check_interval = 0
+}
+
+des_preset_vivhite_adopt_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+	is_shown = { is_ai = no has_character_flag = des_preset_fixture_p_returned NOT = { has_character_flag = des_preset_fixture_w_adopted } }
+	is_valid = { is_ai = no is_alive = yes this = var:des_preset_fixture_ref_actor has_character_flag = des_preset_fixture_armed NOT = { has_character_flag = des_preset_fixture_w_adopted } exists = var:des_preset_fixture_ref_observer exists = var:des_preset_fixture_ref_target faith = faith:des_procreation_faith rite = rite:des_procreation_rite has_character_flag = des_preset_fixture_p_returned has_variable = des_preset_fixture_p3_input_date var:des_preset_fixture_p3_input_date <= { value = current_date subtract = 1 } }
+	effect = {
+		hidden_effect = {
+			if = {
+				limit = { is_ai = no is_alive = yes this = var:des_preset_fixture_ref_actor has_character_flag = des_preset_fixture_armed NOT = { has_character_flag = des_preset_fixture_w_adopted } exists = var:des_preset_fixture_ref_observer exists = var:des_preset_fixture_ref_target faith = faith:des_procreation_faith rite = rite:des_procreation_rite has_character_flag = des_preset_fixture_p_returned has_variable = des_preset_fixture_p3_input_date var:des_preset_fixture_p3_input_date <= { value = current_date subtract = 1 } }
+				add_character_flag = des_preset_fixture_w_adopted
+				set_variable = { name = des_preset_fixture_w1_input_date value = current_date }
+				set_variable = { name = des_preset_fixture_w1_input_actor value = this }
+				# Root is the first actual Vivhite adopter; both controls remain Procreation.
+				set_variable = { name = des_preset_fixture_w1_input_target value = var:des_preset_fixture_ref_target }
+				set_character_faith = faith:des_vivhite_faith
+				set_character_rite = rite:des_vivhite_rite
+				debug_log = "DESPAF: INPUT APPLIED vivhite_adopt"
+			}
+			else = { debug_log = "DESPAF: TEST FAIL input_not_ready vivhite_adopt" }
+		}
+	}
+	ai_check_interval = 0
+}
+
+des_preset_old_procreation_reason_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+	is_shown = { is_ai = no has_character_flag = des_preset_fixture_w_adopted NOT = { has_character_flag = des_preset_fixture_old_p_reason_input } }
+	is_valid = { is_ai = no is_alive = yes this = var:des_preset_fixture_ref_actor has_character_flag = des_preset_fixture_armed NOT = { has_character_flag = des_preset_fixture_old_p_reason_input } exists = var:des_preset_fixture_ref_observer exists = var:des_preset_fixture_ref_target faith = faith:des_vivhite_faith rite = rite:des_vivhite_rite has_character_flag = des_preset_fixture_w_adopted has_variable = des_preset_fixture_w1_input_date var:des_preset_fixture_w1_input_date <= { value = current_date subtract = 1 } }
+	effect = {
+		hidden_effect = {
+			if = {
+				limit = { is_ai = no is_alive = yes this = var:des_preset_fixture_ref_actor has_character_flag = des_preset_fixture_armed NOT = { has_character_flag = des_preset_fixture_old_p_reason_input } exists = var:des_preset_fixture_ref_observer exists = var:des_preset_fixture_ref_target faith = faith:des_vivhite_faith rite = rite:des_vivhite_rite has_character_flag = des_preset_fixture_w_adopted has_variable = des_preset_fixture_w1_input_date var:des_preset_fixture_w1_input_date <= { value = current_date subtract = 1 } }
+				add_character_flag = des_preset_fixture_old_p_reason_input
+				set_variable = { name = des_preset_fixture_w2_input_date value = current_date }
+				set_variable = { name = des_preset_fixture_w2_input_actor value = this }
+				set_variable = { name = des_preset_fixture_w2_input_target value = var:des_preset_fixture_ref_target }
+				var:des_preset_fixture_ref_target = {
+					set_character_faith = root.var:des_preset_fixture_source_faith
+					set_character_rite = root.var:des_preset_fixture_source_rite
+				}
+				debug_log = "DESPAF: INPUT APPLIED old_procreation_reason"
+			}
+			else = { debug_log = "DESPAF: TEST FAIL input_not_ready old_procreation_reason" }
+		}
+	}
+	ai_check_interval = 0
+}
+
+des_preset_vivhite_join_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+	is_shown = { is_ai = no has_character_flag = des_preset_fixture_old_p_reason_input NOT = { has_character_flag = des_preset_fixture_w_joined } }
+	is_valid = { is_ai = no is_alive = yes this = var:des_preset_fixture_ref_actor has_character_flag = des_preset_fixture_armed NOT = { has_character_flag = des_preset_fixture_w_joined } exists = var:des_preset_fixture_ref_target faith = faith:des_vivhite_faith rite = rite:des_vivhite_rite has_character_flag = des_preset_fixture_old_p_reason_input has_variable = des_preset_fixture_w2_input_date var:des_preset_fixture_w2_input_date <= { value = current_date subtract = 1 } }
+	effect = {
+		hidden_effect = {
+			if = {
+				limit = { is_ai = no is_alive = yes this = var:des_preset_fixture_ref_actor has_character_flag = des_preset_fixture_armed NOT = { has_character_flag = des_preset_fixture_w_joined } exists = var:des_preset_fixture_ref_target faith = faith:des_vivhite_faith rite = rite:des_vivhite_rite has_character_flag = des_preset_fixture_old_p_reason_input has_variable = des_preset_fixture_w2_input_date var:des_preset_fixture_w2_input_date <= { value = current_date subtract = 1 } }
+				add_character_flag = des_preset_fixture_w_joined
+				set_variable = { name = des_preset_fixture_w3_input_date value = current_date }
+				set_variable = { name = des_preset_fixture_w3_input_actor value = this }
+				set_variable = { name = des_preset_fixture_w3_input_target value = var:des_preset_fixture_ref_target }
+				var:des_preset_fixture_ref_target = {
+					set_character_faith = faith:des_vivhite_faith
+					set_character_rite = rite:des_vivhite_rite
+				}
+				debug_log = "DESPAF: INPUT APPLIED vivhite_join"
+			}
+			else = { debug_log = "DESPAF: TEST FAIL input_not_ready vivhite_join" }
+		}
+	}
+	ai_check_interval = 0
+}

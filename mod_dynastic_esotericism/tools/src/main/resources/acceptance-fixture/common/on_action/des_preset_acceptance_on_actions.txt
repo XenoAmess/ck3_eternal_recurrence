@@ -1,0 +1,22 @@
+﻿# External preset input fixture. Never creates a Faith/Rite or writes product state.
+on_game_start_after_lobby = { on_actions = { des_preset_acceptance_start } }
+des_preset_acceptance_start = {
+	effect = {
+		every_player = {
+			limit = { is_alive = yes NOT = { has_character_flag = des_preset_fixture_armed } }
+			add_character_flag = des_preset_fixture_armed
+			set_variable = { name = des_preset_fixture_ref_actor value = this }
+			set_variable = { name = des_preset_fixture_ref_primary_title value = primary_title }
+			set_variable = { name = des_preset_fixture_ref_p_faith value = faith:des_procreation_faith }
+			set_variable = { name = des_preset_fixture_ref_p_rite value = rite:des_procreation_rite }
+			set_variable = { name = des_preset_fixture_ref_w_faith value = faith:des_vivhite_faith }
+			set_variable = { name = des_preset_fixture_ref_w_rite value = rite:des_vivhite_rite }
+			set_variable = { name = des_preset_fixture_source_faith value = faith }
+			set_variable = { name = des_preset_fixture_source_rite value = rite }
+			if = { limit = { exists = dynasty } set_variable = { name = des_preset_fixture_source_dynasty value = dynasty } }
+			if = { limit = { exists = house } set_variable = { name = des_preset_fixture_source_house value = house } }
+			if = { limit = { is_dynast = yes } add_character_flag = des_preset_fixture_source_is_dynast }
+			debug_log = "DESPAF: FIXTURE_ARMED sect_presets"
+		}
+	}
+}

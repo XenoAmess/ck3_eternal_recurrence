@@ -2,6 +2,7 @@
 on_game_start = { on_actions = { des_new_game_initialize } }
 on_game_start_after_lobby = { on_actions = { des_new_game_reconcile } }
 on_rite_created = { on_actions = { des_on_rite_created } }
+on_rite_edited = { on_actions = { des_on_native_rite_edited } }
 on_rite_updated = { on_actions = { des_on_rite_updated } }
 on_rite_change = { on_actions = { des_on_rite_change } }
 on_birth_child = { on_actions = { des_on_character_finalization } }
@@ -35,8 +36,21 @@ des_on_rite_created = {
 	effect = {
 		if = {
 			limit = { has_global_variable = des_initialized is_alive = yes }
+			# Resolve the native source before any product member synchronization.
+			des_claim_native_created_rite_head_effect = yes
 			des_sync_character_effect = yes
 			rite = { des_sync_rite_effect = yes }
+		}
+	}
+}
+
+# Immediate native UI edit: record the actor and unbound starting state only.
+# Gameplay synchronization and the one-shot transfer remain in on_rite_updated.
+des_on_native_rite_edited = {
+	effect = {
+		if = {
+			limit = { has_global_variable = des_initialized }
+			des_record_native_rite_edit_head_claim_effect = yes
 		}
 	}
 }
@@ -45,9 +59,16 @@ des_on_rite_updated = {
 	effect = {
 		if = {
 			limit = { has_global_variable = des_initialized }
-			# The native interface editor is the current Rite head. Claim any new
-			# binding before the member iteration can select another adherent.
+			# Only a native edit token may consume the pre-sync source snapshot.
 			save_scope_as = des_updated_rite
+			if = {
+				limit = {
+					exists = scope:consume_rite_edit_token
+					has_variable = des_native_head_claim_pending
+					rite_has_doctrine = des_doctrine_dynastic
+				}
+				des_finalize_native_rite_head_claim_effect = yes
+			}
 			head_of_rite ?= {
 				if = {
 					limit = { is_alive = yes rite = scope:des_updated_rite faith = scope:des_updated_rite.faith }
@@ -55,6 +76,20 @@ des_on_rite_updated = {
 				}
 			}
 			des_sync_rite_effect = yes
+			if = {
+				limit = { exists = scope:consume_rite_edit_token }
+				if = {
+					limit = {
+						has_variable = des_native_head_claim_pending
+						NOT = { rite_has_doctrine = des_doctrine_dynastic }
+					}
+					# A real edit that did not activate this product grants no claim.
+					remove_variable = des_native_head_claim_pending
+					remove_variable = des_native_head_claim_actor
+					remove_variable = des_native_head_claim_kind
+					remove_variable = des_native_head_claim_date
+				}
+			}
 		}
 	}
 }
@@ -64,6 +99,42 @@ des_on_rite_change = {
 		if = {
 			limit = { has_global_variable = des_initialized is_alive = yes }
 			des_sync_character_effect = yes
+		}
+	}
+}
+
+# Rite scope. Unknown scripted Rites receive ordinary adoption eligibility on
+# day +1; an earlier native callback already resolved its own actor and policy.
+des_deferred_rite_binding = {
+	effect = {
+		if = {
+			limit = { has_global_variable = des_initialized has_variable = des_deferred_binding_queued }
+			if = {
+				limit = { has_variable = des_native_head_claim_pending }
+				# A genuine immediate edit may precede its delayed native update.
+				trigger_event = { on_action = des_deferred_rite_binding days = 1 }
+			}
+			else = {
+				remove_variable = des_deferred_binding_queued
+				if = {
+					limit = { rite_has_doctrine = des_doctrine_dynastic }
+					des_allow_ordinary_rite_binding_effect = yes
+				}
+				save_scope_as = des_deferred_rite
+				if = {
+					limit = {
+						NOR = { has_variable = des_bound_dynasty has_variable = des_join_house }
+						exists = var:des_deferred_binding_requester
+					}
+					var:des_deferred_binding_requester = {
+						if = {
+							limit = { is_alive = yes rite = scope:des_deferred_rite faith = scope:des_deferred_rite.faith }
+							des_ensure_own_rite_binding_effect = yes
+						}
+					}
+				}
+				des_sync_rite_effect = yes
+			}
 		}
 	}
 }

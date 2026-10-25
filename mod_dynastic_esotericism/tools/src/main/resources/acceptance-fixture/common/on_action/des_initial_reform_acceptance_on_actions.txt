@@ -1,0 +1,55 @@
+﻿# External input fixture. No core events, product setters, conversion or claim helpers.
+on_game_start_after_lobby = { on_actions = { des_initial_reform_acceptance_arm } }
+des_initial_reform_acceptance_arm = {
+    effect = {
+        every_player = {
+            limit = { is_alive = yes is_ai = no NOT = { has_character_flag = des_irf_fixture_armed } }
+            add_character_flag = des_irf_fixture_armed
+            trigger_event = { on_action = des_initial_reform_acceptance_setup days = 1 }
+            debug_log = "DESIRF: FIXTURE_ARMED initial_reform"
+        }
+    }
+}
+des_initial_reform_acceptance_setup = {
+    trigger = {
+        is_alive = yes
+        is_ai = no
+        this = root
+        is_incapable = no
+        exists = primary_title
+        exists = dynasty
+        exists = house
+        has_character_flag = des_irf_fixture_armed
+        NOT = { has_character_flag = des_irf_fixture_input_applied }
+    }
+    effect = {
+        if = {
+            limit = {
+                is_alive = yes
+                is_ai = no
+                this = root
+                is_incapable = no
+                exists = primary_title
+                exists = dynasty
+                exists = house
+                has_character_flag = des_irf_fixture_armed
+                NOT = { has_character_flag = des_irf_fixture_input_applied }
+            }
+            add_character_flag = des_irf_fixture_input_applied
+            set_variable = { name = des_irf_fixture_ref_actor value = this }
+            set_variable = { name = des_irf_fixture_ref_primary_title value = primary_title }
+            set_variable = { name = des_irf_fixture_source_faith value = faith }
+            set_variable = { name = des_irf_fixture_source_rite value = rite }
+            set_variable = { name = des_irf_fixture_input_date value = current_date }
+            set_variable = { name = des_irf_fixture_original_dynasty value = dynasty }
+            set_variable = { name = des_irf_fixture_original_house value = house }
+            if = { limit = { is_dynast = yes } add_character_flag = des_irf_fixture_original_is_dynast }
+            add_piety = 100000
+            change_spiritual_fulfillment = { value = 100 }
+            if = { limit = { has_perk = prophet_perk } remove_perk = prophet_perk }
+            des_initial_reform_acceptance_prepare_original_rite_input_effect = yes
+            des_initial_reform_acceptance_read_original_rite_input_effect = yes
+            debug_log = "DESIRF: QUALIFICATION_INPUT_APPLIED initial_reform"
+        }
+    }
+}

@@ -1,4 +1,5 @@
-﻿# Rite scope. Call once after creating a valid native Dynasty/House binding.
+﻿# Rite scope. Apply once to the exact newly established binding. Native Dynast
+# reuse changes names only and preserves the Dynasty and House CoAs separately.
 # Names use the actual Rite object, including dynamically created/custom-named Rites.
 # Exact icon CoAs are finite presets; other Rites use the approved native generator.
 # Runtime identity and rendering remain unaccepted until actual save/readback.
@@ -14,21 +15,24 @@ des_apply_rite_identity_effect = {
 		var:des_bound_dynasty = { set_dynasty_name = des_rite_dynasty_name }
 		var:des_join_house = { set_house_name = des_rite_dynasty_name }
 		if = {
-			limit = { this = rite:des_procreation_rite }
-			var:des_bound_dynasty = { set_coa = des_procreation_rite_coa }
-			var:des_join_house = { set_coa = des_procreation_rite_coa }
-		}
-		else_if = {
-			limit = { this = rite:des_vivhite_rite }
-			var:des_bound_dynasty = { set_coa = des_vivhite_rite_coa }
-			var:des_join_house = { set_coa = des_vivhite_rite_coa }
-		}
-		else = {
-			# No qualified direct Rite/Faith image-to-CoA binding exists here.
-			# Generate once on the Dynasty, then copy that exact object to its House.
-			var:des_bound_dynasty = { generate_coa = yes }
-			var:des_join_house = { set_coa = scope:des_identity_rite.var:des_bound_dynasty }
-			debug_log = "DES: requested one native generated Dynasty CoA and copied it to the House under the user-authorized random fallback."
+			limit = { NOT = { var:des_binding_mode = flag:native_dynast_reuse } }
+			if = {
+				limit = { this = rite:des_procreation_rite }
+				var:des_bound_dynasty = { set_coa = des_procreation_rite_coa }
+				var:des_join_house = { set_coa = des_procreation_rite_coa }
+			}
+			else_if = {
+				limit = { this = rite:des_vivhite_rite }
+				var:des_bound_dynasty = { set_coa = des_vivhite_rite_coa }
+				var:des_join_house = { set_coa = des_vivhite_rite_coa }
+			}
+			else = {
+				# No qualified direct Rite/Faith image-to-CoA binding exists here.
+				# Generate once on the Dynasty, then copy that exact object to its House.
+				var:des_bound_dynasty = { generate_coa = yes }
+				var:des_join_house = { set_coa = scope:des_identity_rite.var:des_bound_dynasty }
+				debug_log = "DES: requested one native generated Dynasty CoA and copied it to the House under the user-authorized random fallback."
+			}
 		}
 		# Clear the obsolete source-version diagnostic; this path now has a fallback.
 		remove_variable = des_rite_coa_unsupported

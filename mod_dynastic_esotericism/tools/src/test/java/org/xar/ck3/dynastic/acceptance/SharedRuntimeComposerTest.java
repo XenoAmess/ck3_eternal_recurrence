@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.xar.ck3.dynastic.release.ReleaseBuilder;
+import org.xar.ck3.dynastic.release.ReleaseProduct;
 
 final class SharedRuntimeComposerTest {
     private static final ObjectMapper JSON = new ObjectMapper();
@@ -53,7 +55,8 @@ final class SharedRuntimeComposerTest {
         return new PythonResult(process.exitValue(), new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8));
     }
 
-    private static void assertPublicSelectionConsumesProducedRuntime(Path runtime, Path products)
+    private static void assertPublicSelectionConsumesProducedRuntime(Path runtime, Path products,
+            Path presetManifest, Path initialReformManifest, Path presetProduct)
             throws IOException, InterruptedException {
         Path repository = Path.of(System.getProperty("dynastic.source")).toAbsolutePath().normalize().getParent();
         String program = """
@@ -112,6 +115,98 @@ final class SharedRuntimeComposerTest {
         PythonResult result = python(program, List.of(repository.toString(), runtime.toString(), products.toString()));
         assertEquals(0, result.exitCode(), result.output());
         assertTrue(result.output().contains("actual Java runtime -> public Selection.preflight"), result.output());
+        String presetProgram = """
+                from pathlib import Path
+                import copy,json,sys
+                repository,runtime_path,preset_manifest,initial_reform_manifest,preset_product=map(Path,sys.argv[1:])
+                sys.path.insert(0,str(repository/'tools'))
+                from ck3_mod_acceptance import Selection,pin
+                original_runtime=json.loads(runtime_path.read_bytes())
+                original_manifest=json.loads(Path(original_runtime['manifest']['path']).read_bytes())
+                # Use the normal registry templates and unchanged runtime.repo_root.
+                # Prepared pins are the actual consumer inputs; the composer index
+                # must contain byte-identical copies, not substitute test-only paths.
+                from unittest.mock import patch
+                from ck3_mod_acceptance_prepare import CONFIG_NAMES
+                source=Path(original_runtime['paths']['source_root'])
+                repo=Path(original_runtime['repo_root'])
+                prepared_cases=[]
+                for case_id,fixture_manifest in [('sect_presets',preset_manifest),('initial_reform',initial_reform_manifest)]:
+                    case_output=runtime_path.parent/case_id;case_output.mkdir()
+                    registry=json.loads((repository/'tools/ck3_mod_acceptance_products.json').read_bytes())
+                    preset=next(c for c in registry['products']['dynastic-esotericism']['cases'] if c['id']==case_id)
+                    public={'schema':registry['schema'],'product_inventory':registry['product_inventory'],
+                            'products':{'dynastic-esotericism':{'cases':[preset]}}}
+                    catalog=case_output/'preset-products.json';catalog.write_text(json.dumps(public),encoding='utf-8')
+                    preset_selected=Selection(runtime_path,catalog,'dynastic-esotericism',case_id)
+                    assert preset_selected.adapter_config==repo/f'tools/ck3_mod_acceptance_cases/dynastic_esotericism_{case_id}.json'
+                    assert '--private-player-rite-creation-actions' in preset_selected.argv
+                    assert '--case-read-only-mcp-tool' in preset_selected.argv
+                    declared=[preset_selected.argv[i+1] for i,v in enumerate(preset_selected.argv) if v=='--case-read-only-mcp-tool']
+                    assert 'ck3_query_player_religion_reform_context_v1' in declared
+                    for unavailable in ('ck3_query_player_religion_tenets_v1','ck3_query_player_rite_governance_v1'):
+                        assert unavailable not in preset['required_mcp_tools']
+                        assert unavailable not in declared
+                        assert unavailable not in original_manifest['capabilities']
+                    for key in ('opt_in_player_rite_creation_actions','ck3_query_player_rite_creation_action_context_v1',
+                                'ck3_execute_player_rite_creation_action_v1','ck3_collect_player_rite_creation_action_result_v1'):
+                        bad=copy.deepcopy(public);case=bad['products']['dynastic-esotericism']['cases'][0]
+                        if key=='opt_in_player_rite_creation_actions':case[key]=False
+                        else:case['required_mcp_tools'].remove(key)
+                        path=case_output/(key+'-invalid-products.json');path.write_text(json.dumps(bad),encoding='utf-8')
+                        try:Selection(runtime_path,path,'dynastic-esotericism',case_id)
+                        except ValueError:pass
+                        else:raise AssertionError('accepted invalid public rite action gate '+key)
+                    inputs=case_output/'preset-inputs.json';plain={}
+                    for name in CONFIG_NAMES:
+                        path=case_output/('plain-'+name);path.parent.mkdir(parents=True,exist_ok=True)
+                        path.write_text('authored plain configuration',encoding='utf-8');plain[name]=pin(path)
+                    inputs.write_text(json.dumps({'state_dir':str(case_output/'preset-state'),
+                        'case_inputs':{'product_dir':str(preset_product),'plain_configuration':plain,
+                                      'prebuilt_fixture_manifest':pin(fixture_manifest)}}),encoding='utf-8')
+                    # Installed-engine identity is an authored boundary only. Exercise
+                    # Selection.prepare -> generic.prepare_case -> actual profile builder.
+                    identity={'game_version':original_manifest['game']['version'],'exe_sha256':original_manifest['game']['exe_sha256']}
+                    with patch('ck3_mod_acceptance_prepare._engine',return_value=(None,identity)):
+                        prepared_result=preset_selected.prepare(inputs,case_output/'preset-prepared')
+                    assert prepared_result['status']=='CASE_PREPARED_NOT_ALLOCATED_NOT_RUN'
+                    prepared_path=Path(prepared_result['prepared_case']['path'])
+                    prepared=json.loads(prepared_path.read_bytes())
+                    mounted=Path(prepared['preparation']['profile_preparation']['profile'])/'mod-content/product'
+                    actual_product={p.relative_to(mounted).as_posix():p.read_bytes() for p in mounted.rglob('*') if p.is_file()}
+                    assert len(actual_product)==52
+                    assert actual_product=={p.relative_to(preset_product).as_posix():p.read_bytes()
+                                            for p in preset_product.rglob('*') if p.is_file()}
+                    index=json.loads(Path(original_runtime['paths']['source_index']).read_bytes())
+                    for field,relative in [('adapter','tools/ck3_mod_acceptance_cases/generic_product_adapter.py'),
+                                           ('contract',f'tools/ck3_mod_acceptance_cases/dynastic_esotericism_{case_id}.json')]:
+                        active=pin(repo/relative);frozen=pin(source/relative)
+                        assert prepared[field]==active
+                        assert {k:active[k] for k in ('bytes','sha256')}==index['files'][relative]
+                        assert active['bytes']==frozen['bytes'] and active['sha256']==frozen['sha256']
+                        assert (repo/relative).read_bytes()==(source/relative).read_bytes()
+                    resumed=Selection(runtime_path,catalog,'dynastic-esotericism',case_id,prepared_path=prepared_path)
+                    assert resumed.prepared['contract']==prepared['contract']
+                    assert resumed.prepared['adapter']==prepared['adapter']
+                    assert prepared['preparation']['business_pass'] is False and prepared['runtime_status']=='NOT_RUN'
+                    prepared_cases.append((case_id,catalog,prepared_path,preset_selected.adapter_config))
+                    print('actual '+case_id+' Java fixture/release -> normal registry Selection.prepare -> generic consumer -> Prepared exact pins and composer index; gate/source corruption negatives; live false')
+                for case_id,catalog,prepared_path,config in prepared_cases:
+                    original=config.read_bytes()
+                    config.write_bytes(original+b' ')
+                    try:
+                        bad=Selection(runtime_path,catalog,'dynastic-esotericism',case_id,prepared_path=prepared_path)
+                        result=bad.preflight()
+                        assert any('Pinned input changed:' in e and str(config) in e for e in result['blockers']),result
+                    finally:config.write_bytes(original)
+                """;
+        PythonResult presetResult = python(presetProgram, List.of(repository.toString(), runtime.toString(),
+                presetManifest.toString(), initialReformManifest.toString(), presetProduct.toString()));
+        assertEquals(0, presetResult.exitCode(), presetResult.output());
+        assertTrue(presetResult.output().contains("actual sect_presets Java fixture/release -> normal registry Selection.prepare"),
+                presetResult.output());
+        assertTrue(presetResult.output().contains("actual initial_reform Java fixture/release -> normal registry Selection.prepare"),
+                presetResult.output());
     }
 
     @Test
@@ -156,9 +251,38 @@ final class SharedRuntimeComposerTest {
         Files.writeString(leaseHelper, "# authored clean checkout lease helper\n");
         for (String name : List.of("__init__.py", "generic_product_adapter.py", "dynastic_esotericism_core.json",
                 "dynastic_esotericism_cold_reload.json", "dynastic_esotericism_old_save_bootstrap.json",
-                "dynastic_esotericism_pre_product_seed.json")) {
+                "dynastic_esotericism_pre_product_seed.json", "dynastic_esotericism_sect_presets.json",
+                "dynastic_esotericism_initial_reform.json")) {
             Files.writeString(tools.resolve("ck3_mod_acceptance_cases").resolve(name), "{}\n");
         }
+        for (String name : List.of("generic_product_adapter.py", "dynastic_esotericism_sect_presets.json",
+                "dynastic_esotericism_initial_reform.json")) {
+            Files.copy(actualRepository.resolve("tools/ck3_mod_acceptance_cases").resolve(name),
+                    tools.resolve("ck3_mod_acceptance_cases").resolve(name), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+        }
+        Path fixtureMain = Path.of("mod_dynastic_esotericism/tools/src/main");
+        for (String relative : List.of("java/org/xar/ck3/dynastic/acceptance/FixtureEmitter.java",
+                "resources/acceptance-fixture/descriptor.mod",
+                "resources/acceptance-fixture/common/on_action/des_preset_acceptance_on_actions.txt",
+                "resources/acceptance-fixture/common/decisions/des_preset_acceptance_decisions.txt",
+                "resources/acceptance-fixture/localization/english/des_preset_acceptance_l_english.yml",
+                "resources/acceptance-fixture/localization/simp_chinese/des_preset_acceptance_l_simp_chinese.yml",
+                "resources/acceptance-fixture/common/on_action/des_initial_reform_acceptance_on_actions.txt",
+                "resources/acceptance-fixture/common/scripted_effects/des_initial_reform_acceptance_effects.txt",
+                "resources/acceptance-fixture/common/scripted_effects/des_acceptance_effects.txt",
+                "resources/acceptance-fixture/events/des_acceptance_events.txt")) {
+            Path destination = repo.resolve(fixtureMain).resolve(relative);
+            Files.createDirectories(destination.getParent());
+            Files.copy(actualRepository.resolve(fixtureMain).resolve(relative), destination);
+        }
+        FixtureEmitter.Emission presetFixture = FixtureEmitter.emit(repo, temporary.resolve("preset-fixture"),
+                fixtureMachine, FixtureEmitter.CaseKind.SECT_PRESETS);
+        FixtureEmitter.Emission initialReformFixture = FixtureEmitter.emit(repo, temporary.resolve("initial-reform-fixture"),
+                fixtureMachine, FixtureEmitter.CaseKind.INITIAL_REFORM);
+        ReleaseBuilder.BuildResult presetProduct = new ReleaseBuilder().build(ReleaseProduct.official(
+                actualRepository.resolve("mod_dynastic_esotericism"), ReleaseProduct.LocalizationMode.RELEASE_LOCALIZATION),
+                actualRepository, temporary.resolve("preset-release"), "0".repeat(40), null, null);
+        assertEquals(52, presetProduct.payload().files().size());
         Path oldRepo = temporary.resolve("previous-repo");
         ObjectNode old = pin(changed);
         old.put("path", oldRepo.resolve("ck3_autonomous_player/src/xar_autoplayer/__init__.py").toString());
@@ -254,6 +378,8 @@ final class SharedRuntimeComposerTest {
             flags.put("XAR_CK3_ENABLE_G2_PLAYER_RELIGION_" + part + "_PRIVATE_QUERY_V1", "ON");
         }
         flags.put("XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1", "ON");
+        flags.put("XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1", "OFF");
+        flags.put("XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1", "OFF");
         flags.put("XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1", "ON");
         flags.put("XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1", "ON");
         flags.put("XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1", "OFF");
@@ -306,10 +432,16 @@ final class SharedRuntimeComposerTest {
         assertEquals("retain exactly", actualManifest.path("preserved_unknown_parent_field").textValue());
         assertEquals(7, actual.path("allocation").path("preserved_allocation_field").intValue());
         assertEquals(1, actualIndex.path("actual_changed_parent_files").size());
-        assertEquals(25, result.copiedFiles());
+        assertEquals(27, result.copiedFiles());
         assertEquals("ck3-common-source-index-v1", actualIndex.path("schema").textValue());
         assertTrue(actualIndex.path("files").isObject());
         assertEquals(result.copiedFiles(), actualIndex.path("files").size());
+        Path presetSource = tools.resolve("ck3_mod_acceptance_cases/dynastic_esotericism_sect_presets.json");
+        Path frozenPreset = output.resolve("source/tools/ck3_mod_acceptance_cases/dynastic_esotericism_sect_presets.json");
+        assertEquals(Files.readString(presetSource), Files.readString(frozenPreset));
+        JsonNode presetMetadata = actualIndex.path("files").path("tools/ck3_mod_acceptance_cases/dynastic_esotericism_sect_presets.json");
+        assertEquals(pin(frozenPreset).path("bytes"), presetMetadata.path("bytes"));
+        assertEquals(pin(frozenPreset).path("sha256"), presetMetadata.path("sha256"));
         Path frozenNormalExitBuilder = output.resolve("source/tools/build_normal_exit_source_inventory_v1.py");
         assertEquals(Files.readString(normalExitBuilder), Files.readString(frozenNormalExitBuilder));
         assertFalse(normalExitBuilder.toRealPath().equals(frozenNormalExitBuilder.toRealPath()));
@@ -318,7 +450,7 @@ final class SharedRuntimeComposerTest {
         assertEquals(2, normalExitBuilderMetadata.size());
         assertEquals(frozenNormalExitBuilderPin.path("bytes"), normalExitBuilderMetadata.path("bytes"));
         assertEquals(frozenNormalExitBuilderPin.path("sha256"), normalExitBuilderMetadata.path("sha256"));
-        assertEquals(25, SharedRuntimeComposer.parentSourceFiles((ObjectNode) actualIndex,
+        assertEquals(27, SharedRuntimeComposer.parentSourceFiles((ObjectNode) actualIndex,
                 output.resolve("source"), fixtureMachine).size());
         assertEquals(pin(Path.of(result.sourceIndex())).path("sha256"), actualManifest.path("source_index").path("sha256"));
         assertEquals(pin(Path.of(result.manifest())), actual.path("manifest"));
@@ -363,12 +495,14 @@ final class SharedRuntimeComposerTest {
         selectedCase.putObject("budgets").put("command_timeout", 300).put("readiness_timeout", 1800)
                 .put("timeout", 3600).put("poll_interval", 0.05).put("hold_seconds", 0);
         write(products, registry);
-        assertPublicSelectionConsumesProducedRuntime(Path.of(result.runtime()), products);
+        assertPublicSelectionConsumesProducedRuntime(Path.of(result.runtime()), products,
+                presetFixture.manifest(), initialReformFixture.manifest(), presetProduct.staging());
         assertTrue(Files.isRegularFile(output.resolve("source/tools/ck3_mod_acceptance_cases/generic_product_adapter.py")));
         assertThrows(IllegalArgumentException.class,
                 () -> SharedRuntimeComposer.compose(repo, parentRuntime, nativePath, projectionPath, output, fixtureMachine));
         int defect = 0;
         for (String flag : List.of("XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1",
+                "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1",
                 "XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1",
                 "XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1",
                 "XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1")) {

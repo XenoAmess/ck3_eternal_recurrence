@@ -1,0 +1,121 @@
+﻿# Four complete qualification helpers; stock relationship inputs and fixture-only observations.
+# Native fullCan and independent Save remain the acceptance authority.
+
+des_initial_reform_acceptance_prepare_original_rite_input_effect = {
+    if = {
+        limit = {
+            can_have_realm_priest_puppet_trigger = yes
+            is_incapable = no
+            NOT = { exists = cp:councillor_court_chaplain }
+        }
+        assign_landed_realm_priest_effect = yes
+    }
+    if = {
+        limit = {
+            can_have_realm_priest_puppet_trigger = yes
+            is_incapable = no
+            exists = cp:councillor_court_chaplain
+            NOT = { exists = puppet:theological_agent_puppet }
+            cp:councillor_court_chaplain ?= {
+                is_ai = yes
+                is_adult = yes
+                NOT = { has_trait = incapable }
+                NOT = { exists = puppeteer }
+            }
+        }
+        save_scope_as = actor
+        cp:councillor_court_chaplain = { save_scope_as = recipient }
+        set_puppet = { target = scope:recipient type = theological_agent_puppet }
+        pam_generic_set_puppet_interaction_side_effects = yes
+    }
+}
+
+des_initial_reform_acceptance_read_original_rite_relation_effect = {
+    save_scope_as = des_irf_fixture_relation_actor
+    remove_character_flag = des_irf_fixture_original_rite_relation_ready
+    if = {
+        limit = { exists = cp:councillor_court_chaplain }
+        debug_log = "DESIRF: QUALIFICATION_OBSERVED actual_court_chaplain"
+    }
+    else = { debug_log = "DESIRF: QUALIFICATION_UNAVAILABLE actual_court_chaplain" }
+    if = {
+        limit = { exists = puppet:theological_agent_puppet }
+        debug_log = "DESIRF: QUALIFICATION_OBSERVED actual_theological_puppet"
+    }
+    else = { debug_log = "DESIRF: QUALIFICATION_UNAVAILABLE actual_theological_puppet" }
+    if = {
+        limit = {
+            trigger_if = {
+                limit = {
+                    exists = cp:councillor_court_chaplain
+                    cp:councillor_court_chaplain ?= { exists = puppeteer }
+                }
+                cp:councillor_court_chaplain = { puppeteer = scope:des_irf_fixture_relation_actor }
+            }
+            trigger_else = { always = no }
+        }
+        debug_log = "DESIRF: QUALIFICATION_OBSERVED actual_reverse_puppeteer"
+    }
+    else = { debug_log = "DESIRF: QUALIFICATION_UNAVAILABLE actual_reverse_puppeteer" }
+    if = {
+        limit = { is_puppet_action_valid = puppet_trigger_can_create_rite }
+        debug_log = "DESIRF: QUALIFICATION_OBSERVED actual_puppet_action_valid"
+    }
+    else = { debug_log = "DESIRF: QUALIFICATION_UNAVAILABLE actual_puppet_action_valid" }
+    if = {
+        limit = {
+            can_have_realm_priest_puppet_trigger = yes
+            is_incapable = no
+            trigger_if = {
+                limit = {
+                    exists = cp:councillor_court_chaplain
+                    exists = puppet:theological_agent_puppet
+                }
+                puppet:theological_agent_puppet = cp:councillor_court_chaplain
+                cp:councillor_court_chaplain = {
+                    exists = puppeteer
+                    puppeteer ?= scope:des_irf_fixture_relation_actor
+                    is_ai = yes
+                    is_adult = yes
+                    NOT = { has_trait = incapable }
+                }
+            }
+            trigger_else = { always = no }
+            is_puppet_action_valid = puppet_trigger_can_create_rite
+        }
+        add_character_flag = des_irf_fixture_original_rite_relation_ready
+        debug_log = "DESIRF: QUALIFICATION_OBSERVED original_rite_relationship"
+    }
+    else = { debug_log = "DESIRF: QUALIFICATION_UNAVAILABLE original_rite_relationship" }
+}
+
+des_initial_reform_acceptance_read_original_rite_input_effect = {
+    remove_character_flag = des_irf_fixture_original_rite_input_ready
+    des_initial_reform_acceptance_read_original_rite_relation_effect = yes
+    if = {
+        limit = {
+            has_character_flag = des_irf_fixture_original_rite_relation_ready
+            can_create_rite_trigger = yes
+        }
+        add_character_flag = des_irf_fixture_original_rite_input_ready
+        debug_log = "DESIRF: QUALIFICATION_OBSERVED original_rite_scripted_eligibility"
+    }
+    else = { debug_log = "DESIRF: QUALIFICATION_UNAVAILABLE original_rite_scripted_eligibility" }
+}
+
+des_initial_reform_acceptance_read_original_edit_input_effect = {
+    remove_character_flag = des_irf_fixture_original_edit_input_ready
+    des_initial_reform_acceptance_read_original_rite_relation_effect = yes
+    if = {
+        limit = {
+            has_character_flag = des_irf_fixture_original_rite_relation_ready
+            exists = rite.head_of_rite
+            rite.head_of_rite = this
+            NOT = { has_variable = has_edited_a_rite }
+            can_edit_rite_trigger = yes
+        }
+        add_character_flag = des_irf_fixture_original_edit_input_ready
+        debug_log = "DESIRF: QUALIFICATION_OBSERVED original_edit_scripted_eligibility"
+    }
+    else = { debug_log = "DESIRF: QUALIFICATION_UNAVAILABLE original_edit_scripted_eligibility" }
+}

@@ -8,6 +8,8 @@ des_acceptance.1 = {
         set_variable = { name = des_test_initial_primary_title value = primary_title }
         set_variable = { name = des_test_source_rite value = rite }
         if = { limit = { exists = dynasty } set_variable = { name = des_test_source_dynasty value = dynasty } }
+        if = { limit = { exists = house } set_variable = { name = des_test_source_house value = house } }
+        if = { limit = { is_dynast = yes } add_character_flag = des_test_initial_was_dynast }
         add_piety = 100000
         change_spiritual_fulfillment = { value = 100 }
         if = { limit = { has_perk = prophet_perk } remove_perk = prophet_perk }
@@ -57,20 +59,40 @@ des_acceptance.2 = {
                 house = { house_head = root house_dynasty = scope:des_test_dynasty }
                 scope:des_test_dynasty = {
                     dynast = root
-                    dynasty_founder = {
-                        is_alive = yes
-                        rite = scope:des_test_primary
-                        dynasty = scope:des_test_dynasty
-                        trigger_if = {
-                            limit = { NOT = { this = root } }
-                            is_house_head = no
-                            is_dynast = no
+                    trigger_if = {
+                        limit = { root = { has_character_flag = des_test_initial_was_dynast } }
+                        this = root.var:des_test_source_dynasty
+                        root = { house = var:des_test_source_house }
+                    }
+                    trigger_else = {
+                        NOT = { this = root.var:des_test_source_dynasty }
+                        dynasty_founder = {
+                            is_alive = yes
+                            rite = scope:des_test_primary
+                            dynasty = scope:des_test_dynasty
+                            trigger_if = {
+                                limit = { NOT = { this = root } }
+                                is_house_head = no
+                                is_dynast = no
+                            }
                         }
                     }
                 }
                 scope:des_test_primary = {
                     des_has_active_binding_trigger = yes
                     NOT = { has_variable = des_creator_head_fault }
+                    var:des_native_source_actor = root.var:des_test_initial_actor
+                    var:des_native_source_dynasty = root.var:des_test_source_dynasty
+                    var:des_native_source_house = root.var:des_test_source_house
+                    trigger_if = {
+                        limit = { root = { has_character_flag = des_test_initial_was_dynast } }
+                        var:des_binding_mode = flag:native_dynast_reuse
+                        var:des_native_source_was_dynast = yes
+                    }
+                    trigger_else = {
+                        var:des_binding_mode = flag:new_dynasty
+                        NOT = { has_variable = des_native_source_was_dynast }
+                    }
                     faith = {
                         NOT = { any_faith_character = { is_alive = yes rite = scope:des_test_primary NOT = { dynasty = scope:des_test_dynasty } } }
                     }

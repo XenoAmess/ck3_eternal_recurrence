@@ -6,7 +6,15 @@ des_initialize_world_effect = {
 		set_global_variable = { name = des_initialized value = yes }
 		every_religion_global = {
 			every_faith = {
-				every_faith_rite = { des_initialize_rite_effect = yes }
+				every_faith_rite = {
+					des_initialize_rite_effect = yes
+					# A None Rite may later be edited natively. Its first activation
+					# must retain the barrier even if an on_change precedes edited.
+					if = {
+						limit = { rite_has_doctrine = des_doctrine_dynastic }
+						des_allow_ordinary_rite_binding_effect = yes
+					}
+				}
 				every_faith_character = {
 					limit = { is_alive = yes }
 					des_teach_doctrines_effect = yes
@@ -16,6 +24,16 @@ des_initialize_world_effect = {
 		des_discover_rites_effect = yes
 	}
 	des_ensure_maintenance_effect = yes
+}
+
+# Rite scope. Exact object membership, not an inherited boolean, admits the
+# ordinary creation path. This grants no native actor/reuse provenance.
+des_allow_ordinary_rite_binding_effect = {
+	set_variable = { name = des_ordinary_binding_ready value = yes }
+	if = {
+		limit = { NOT = { is_target_in_global_variable_list = { name = des_ordinary_binding_rites target = this } } }
+		add_to_global_variable_list = { name = des_ordinary_binding_rites target = this }
+	}
 }
 
 # Shared, optional creation contract. A consumer applies these Doctrine scopes

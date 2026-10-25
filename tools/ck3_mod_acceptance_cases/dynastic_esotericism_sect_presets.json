@@ -1,0 +1,101 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "dynastic-esotericism",
+  "case_id": "sect_presets",
+  "acceptance_scope": "predeclared_sect_faith_rite_adoption_membership_and_identity",
+  "fixture_source": {
+    "kind": "prebuilt_manifest"
+  },
+  "maximum_natural_days": 16,
+  "allow_actor_change": false,
+  "actor_transition_days": [],
+  "failure_prefixes": [
+    "DESPAF:"
+  ],
+  "gui_phases": [
+    {
+      "id": "actual-procreation-preset-adoption",
+      "when_markers": [
+        "DESPAF: FIXTURE_ARMED sect_presets"
+      ],
+      "requirements": [
+        "actual_original_1066_player_primary_title_and_product52_fixture5_only_baseline_saved",
+        "actual_B0_four_fixture_object_refs_complete_living_census_zero_presets_and_selected_rite_global_binding_absence",
+        "actual_stock_input_root_adopts_procreation_before_real_controls_no_product_state_setters",
+        "actual_plus1_native_and_independent_save_procreation_three_tenets25_ordinary8_special_and_inherited_sources",
+        "actual_procreation_first_adopter_is_house_head_and_dynast_same_player_primary_title",
+        "actual_procreation_rite_dynasty_house_names_and_resolved_exact_textured_coa_match_supplied_icon",
+        "actual_all_living_procreation_members_in_unique_bound_dynasty_both_real_controls_pinned",
+        "actual_procreation_target_leave_plus1_has_only_directional_product_opinion_and_three_reason_sources",
+        "actual_procreation_target_return_plus1_reuses_same_rite_dynasty_house_coa_and_clears_only_product_sources",
+        "actual_each_input_fixture_date_actor_target_pins_and_native_save_exact_plus1_before_next_input",
+        "actual_ordinary_preset_adoption_has_no_native_creator_editor_reuse_claim_even_if_actor_was_dynast_of174",
+        "actual_new_procreation_binding_differs_from_pinned_original_dynasty174_and_original_nonconverts_are_not_false_apostates",
+        "actual_preset_new_dynasty_mode_and_no_native_source_or_head_claim_metadata_even_for_dynast_adopter"
+      ],
+      "operator_sequence": [
+        "baseline_native_context_and_Save_independent_faith_rite_binding_inventory",
+        "des_preset_procreation_adopt_decision_once_then_exactly1_natural_day_native_and_Save_P1",
+        "des_preset_procreation_leave_decision_once_then_exactly1_natural_day_native_and_Save_P2",
+        "des_preset_procreation_return_decision_once_then_exactly1_natural_day_native_and_Save_P3",
+        "sign_phase_only_from_actual_native_or_gui_and_independent_save_evidence"
+      ]
+    },
+    {
+      "id": "actual-vivhite-preset-adoption-and-crossover",
+      "when_markers": [
+        "DESPAF: INPUT APPLIED procreation_return"
+      ],
+      "requirements": [
+        "actual_same_pinned_original_player_adopts_vivhite_first_with_stock_input_only",
+        "actual_plus1_native_and_independent_save_vivhite_three_tenets25_ordinary2_explicit_special_and_inherited_sources",
+        "actual_vivhite_first_adopter_is_new_house_head_and_dynast_original_primary_title_unchanged",
+        "actual_vivhite_rite_dynasty_house_names_and_resolved_exact_textured_coa_match_supplied_icon",
+        "actual_two_preset_bindings_remain_distinct_pinned_objects_and_procreation_controls_stay_in_old_dynasty",
+        "actual_old_procreation_observer_to_departed_target_product_reason_source_present_before_migration",
+        "actual_target_stock_vivhite_join_plus1_removes_old_procreation_pair_opinion_and_three_reason_sources",
+        "actual_target_joins_existing_vivhite_house_no_new_dynasty_or_coa_reroll_same_adopter_head",
+        "actual_final_native_and_independent_save_all_living_current_members_no_cross_rite_pollution",
+        "actual_presets_are_adopted_scripted_objects_not_claimed_as_faith_creation_UI_or_main_core_cold_anchor",
+        "actual_each_input_fixture_date_actor_target_pins_and_native_save_exact_plus1_before_next_input"
+      ],
+      "operator_sequence": [
+        "des_preset_vivhite_adopt_decision_once_then_exactly1_natural_day_native_and_Save_W1",
+        "des_preset_old_procreation_reason_decision_once_then_exactly1_natural_day_native_and_Save_W2",
+        "des_preset_vivhite_join_decision_once_then_exactly1_natural_day_native_and_Save_W3",
+        "compare_P1_P3_W1_W3_binding_name_and_resolved_coa_identity_with_independent_save_oracle",
+        "normal_close_owned_by_shared_CaseClient_and_no_core_anchor_relabeling"
+      ]
+    }
+  ],
+  "source_contracts": [
+    "mod_dynastic_esotericism/docs/requirements.md",
+    "mod_dynastic_esotericism/docs/test-plan.md",
+    "mod_dynastic_esotericism/docs/2026-10-25-sect-presets.md",
+    "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/acceptance/FixtureEmitter.java",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/on_action/des_preset_acceptance_on_actions.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_preset_acceptance_decisions.txt",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/english/des_preset_acceptance_l_english.yml",
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/simp_chinese/des_preset_acceptance_l_simp_chinese.yml"
+  ],
+  "post_start": {
+    "government_key": "feudal_government",
+    "primary_title_tier_key": "duchy",
+    "independent": true
+  },
+  "required_startup": [
+    "DESPAF: FIXTURE_ARMED sect_presets"
+  ],
+  "forbidden_startup": [
+    "DESPAF: TEST FAIL"
+  ],
+  "uncovered_product_business": [
+    "Preset stock input adoption is not original Faith/Rite creation UI, ordinary paid conversion or a full core PASS.",
+    "Input markers attest invocation only; each semantic assertion requires Root native/GUI and independent Save evidence.",
+    "This new profile does not replace the original core, true inheritance, cold, seed, old-save or Workshop cache cases.",
+    "All DLC, exact build, icon rendering and original picker restrictions remain actual observed qualifications.",
+    "Dynast reuse applies only to true native creation/reform. This stock ordinary-adoption case keeps separate new P/W bindings and exact supplied icons; it cannot prove native reuse or collision transfer."
+  ],
+  "business_contract_applicable": true
+}

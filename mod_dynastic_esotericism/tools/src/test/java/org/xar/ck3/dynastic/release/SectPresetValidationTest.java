@@ -31,8 +31,8 @@ final class SectPresetValidationTest {
         ReleaseProduct product = ReleaseProduct.official(source, ReleaseProduct.LocalizationMode.RELEASE_LOCALIZATION);
         ReleaseBuilder builder = new ReleaseBuilder();
         ReleaseBuilder.BuildResult built = builder.build(product, source.getParent(), temporary.resolve("product"), REVISION, null, null);
-        assertEquals(51, ManifestJson.decode(Files.readAllBytes(built.manifest()), product).files().size());
-        assertEquals(51, builder.verify(product, built.staging(), built.manifest()).verifiedFiles());
+        assertEquals(52, ManifestJson.decode(Files.readAllBytes(built.manifest()), product).files().size());
+        assertEquals(52, builder.verify(product, built.staging(), built.manifest()).verifiedFiles());
         try (ZipFile archive = new ZipFile(built.archive().toFile(), StandardCharsets.UTF_8)) {
             for (String relative : product.runtimeFiles()) {
                 assertArrayEquals(Files.readAllBytes(built.staging().resolve(relative)), archive.getInputStream(archive.getEntry(product.productId() + "/" + relative)).readAllBytes());
@@ -43,7 +43,7 @@ final class SectPresetValidationTest {
         Path contract = temporary.resolve("preset-contract.json");
         Files.write(contract, new ObjectMapper().writeValueAsBytes(expected));
         String program = """
-                import io,json,sys
+                import io,json,struct,sys
                 from pathlib import Path
                 repository,root,contract=map(Path,sys.argv[1:])
                 sys.path.insert(0,str(repository/'ck3_autonomous_player'/'src'))
@@ -56,6 +56,28 @@ final class SectPresetValidationTest {
                 faiths=read('common/religion/faith_types/des_faiths.txt')
                 rites=read('common/religion/rite_types/des_rites.txt')
                 coats=read('common/coat_of_arms/coat_of_arms/des_rite_coa.txt')
+                doctrines=read('common/religion/doctrine_types/des_doctrines.txt')
+                none=one(doctrines,'des_doctrine_none',required=True)
+                dynastic=one(doctrines,'des_doctrine_dynastic',required=True)
+                assert one(none,'can_pick') is None
+                assert one(none,'visible',required=True)=='no'
+                assert one(none,'is_shown',required=True)==[{'key':'always','value':'yes'}]
+                assert one(dynastic,'visible') is None
+                assert one(none,'doctrine_group_type',required=True)==one(dynastic,'doctrine_group_type',required=True)=='des_dynastic_membership'
+                group=one(read('common/religion/doctrine_group_types/des_doctrine_groups.txt'),'des_dynastic_membership',required=True)
+                assert one(group,'category',required=True)=='main_group'
+                assert one(group,'is_available_on_create',required=True)==[{'key':'always','value':'yes'}]
+                assert one(dynastic,'icon',required=True)==json.dumps('des_dynastic_membership')
+                icons=[(root/'gfx/interface/icons'/folder/'des_dynastic_membership.dds').read_bytes() for folder in ['faith_doctrine_groups','faith_doctrines']]
+                assert icons[0]==icons[1]
+                for data in icons:
+                    assert data[:4]==b'DDS ' and len(data)==128+120*120*4
+                    assert [struct.unpack_from('<I',data,offset)[0] for offset in [12,16,20,28,80,84,88,92,96,100,104]]==[120,120,480,0,65,0,32,16711680,65280,255,4278190080]
+                gate=one(dynastic,'can_pick',required=True)
+                assert {row['key'] for row in gate}=={'exists','scope:actor'}
+                assert one(gate,'exists',required=True)=='scope:actor'
+                actor=one(gate,'scope:actor',required=True)
+                assert actor==[{'key':'is_ai','value':'no'}]
                 expected=json.loads(contract.read_bytes())
                 assert {row['key'] for row in faiths}=={item['faith'] for item in expected}
                 assert {row['key'] for row in rites}=={item['rite'] for item in expected}
@@ -98,6 +120,52 @@ final class SectPresetValidationTest {
     }
 
     @Test
+    void packagedDoctrineRequiresRealPlayerChoiceLegalityAndLeavesNoneUnrestricted() throws IOException {
+        Fixture fixture = fixture();
+        Path doctrine = fixture.product().source().resolve("common/religion/doctrine_types/des_doctrines.txt");
+        String original = Files.readString(doctrine);
+        String gate = "can_pick = {\n\t\texists = scope:actor\n\t\tscope:actor = { is_ai = no }\n\t}";
+        String selectedIcon = "icon = \"des_dynastic_membership\"";
+        assertTrue(original.contains(gate));
+        assertTrue(original.contains(selectedIcon));
+        List<String> invalid = List.of(
+                original.replace(gate, ""),
+                original.replace(gate, "ai_chance = { value = 0 }"),
+                original.replace(gate, "is_shown = { scope:actor = { is_ai = no } }"),
+                original.replace("exists = scope:actor", "always = yes"),
+                original.replace("is_ai = no", "is_ai = yes"),
+                original.replace("is_ai = no", "is_ai = { no }"),
+                original.replace("is_ai = no", "always = yes"),
+                original.replace(gate, gate + "\n\t" + gate),
+                original.replace("visible = no", "visible = yes"),
+                original.replace("visible = no", "visible = { no }"),
+                original.replace("visible = no", ""),
+                original.replace("is_shown = { always = yes }", "is_shown = { always = no }"),
+                original.replace("is_shown = { always = yes }", "is_shown = { scope:actor = { is_ai = no } }"),
+                original.replace("is_shown = { always = yes }", ""),
+                original.replace(selectedIcon, "icon = \"doctrine_pluralism_fundamentalist\""),
+                original.replace(selectedIcon, "icon = { des_dynastic_membership }"),
+                original.replace(selectedIcon, ""),
+                original.replace("doctrine_group_type = des_dynastic_membership", "doctrine_group_type = doctrine_pluralism"),
+                original.replace("index = 0", "index = 0\n\tcan_pick = { scope:actor = { is_ai = no } }"));
+        for (String changed : invalid) {
+            Files.writeString(doctrine, changed, StandardCharsets.UTF_8);
+            assertThrows(IllegalArgumentException.class, () -> StaticValidation.validate(fixture.product(), fixture.repository()));
+        }
+        Files.writeString(doctrine, original, StandardCharsets.UTF_8);
+        Path group = fixture.product().source().resolve("common/religion/doctrine_group_types/des_doctrine_groups.txt");
+        String groupOriginal = Files.readString(group);
+        for (String changed : List.of(groupOriginal.replace("always = yes", "always = no"),
+                groupOriginal.replace("is_available_on_create = { always = yes }", ""))) {
+            Files.writeString(group, changed, StandardCharsets.UTF_8);
+            assertThrows(IllegalArgumentException.class, () -> StaticValidation.validate(fixture.product(), fixture.repository()));
+        }
+        Files.writeString(group, groupOriginal, StandardCharsets.UTF_8);
+        // Actual static presets retain dynastic doctrines without a selecting actor.
+        assertEquals(52, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
+    }
+
+    @Test
     void realDefinitionsRejectMissingUnknownDuplicateWrongTypeAndWrongDoctrineChoices() throws IOException {
         Fixture fixture = fixture();
         Path faith = fixture.product().source().resolve(SectPreset.FAITH_FILE);
@@ -133,7 +201,7 @@ final class SectPresetValidationTest {
             assertThrows(IllegalArgumentException.class, () -> StaticValidation.validate(fixture.product(), fixture.repository()));
         }
         Files.writeString(rite, riteOriginal, StandardCharsets.UTF_8);
-        assertEquals(51, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
+        assertEquals(52, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
     }
 
     @Test
@@ -181,6 +249,27 @@ final class SectPresetValidationTest {
             ByteBuffer.wrap(changed).order(ByteOrder.LITTLE_ENDIAN).putInt(invalid.getKey(), invalid.getValue());
             assertThrows(IllegalArgumentException.class, () -> StaticValidation.validateBytes(relative, changed));
         }
+        Fixture fixture = fixture();
+        Path groupIcon = fixture.product().source().resolve(ReleaseProduct.DYNASTIC_GROUP_ICON);
+        Path selectedIcon = fixture.product().source().resolve(ReleaseProduct.DYNASTIC_DOCTRINE_ICON);
+        byte[] glyph = Files.readAllBytes(groupIcon);
+        byte[] wrongDimensions = glyph.clone();
+        ByteBuffer.wrap(wrongDimensions).order(ByteOrder.LITTLE_ENDIAN).putInt(12, 60).putInt(16, 240).putInt(20, 960);
+        byte[] missingAlpha = glyph.clone();
+        ByteBuffer.wrap(missingAlpha).order(ByteOrder.LITTLE_ENDIAN).putInt(104, 0);
+        for (byte[] changed : List.of(wrongDimensions, missingAlpha)) {
+            Files.write(groupIcon, changed);
+            Files.write(selectedIcon, changed);
+            assertThrows(IllegalArgumentException.class, () -> StaticValidation.validate(fixture.product(), fixture.repository()));
+        }
+        Files.write(groupIcon, glyph);
+        Files.write(selectedIcon, glyph);
+        byte[] crossedArtwork = glyph.clone();
+        crossedArtwork[crossedArtwork.length - 1] ^= 1;
+        Files.write(selectedIcon, crossedArtwork);
+        assertThrows(IllegalArgumentException.class, () -> StaticValidation.validate(fixture.product(), fixture.repository()));
+        Files.delete(selectedIcon);
+        assertThrows(IllegalArgumentException.class, () -> StaticValidation.validate(fixture.product(), fixture.repository()));
     }
 
     @Test

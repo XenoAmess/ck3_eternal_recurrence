@@ -273,6 +273,8 @@ des_acceptance_successor_readback_effect = {
 }
 
 # Disclosed stock inputs only. Readiness is not product branch/business credit.
+# Vanilla create_dynamic_rite skips on_rite_created. Both factory cells exercise
+# ordinary deferred new-Dynasty finalization, never native UI reuse/AI Can.
 des_acceptance_prepare_head_cells_effect = {
     if = {
         limit = {
@@ -484,6 +486,23 @@ des_acceptance_read_head_cells_effect = {
                 var:des_test_handover_old_house = { house_head = root.var:des_test_handover_successor house_dynasty = root.var:des_test_handover_old_dynasty }
                 var:des_test_handover_rite = {
                     des_has_active_binding_trigger = yes
+                    var:des_binding_mode = flag:new_dynasty
+                    var:des_deferred_binding_requester = root.var:des_test_handover_actor
+                    var:des_deferred_binding_date = root.var:des_test_handover_creation_date
+                    var:des_ordinary_binding_ready = yes
+                    NOT = { has_variable = des_deferred_binding_queued }
+                    NOT = { has_variable = des_native_source_actor }
+                    NOT = { has_variable = des_native_source_dynasty }
+                    NOT = { has_variable = des_native_source_house }
+                    NOT = { has_variable = des_native_source_was_dynast }
+                    NOT = { has_variable = des_native_head_claim_actor }
+                    NOT = { has_variable = des_native_head_claim_kind }
+                    NOT = { has_variable = des_native_head_claim_date }
+                    NOT = { has_variable = des_native_head_claim_pending }
+                    NOT = { has_variable = des_native_head_claim_dynasty }
+                    NOT = { has_variable = des_native_head_claim_house }
+                    NOT = { has_variable = des_native_head_claim_attempted }
+                    NOT = { has_variable = des_native_head_claim_succeeded }
                     NOT = { has_variable = des_creator_head_fault }
                     faith = { NOT = { any_faith_character = { is_alive = yes rite = root.var:des_test_handover_rite NOT = { dynasty = root.var:des_test_handover_rite.var:des_bound_dynasty } } } }
                 }
@@ -512,6 +531,23 @@ des_acceptance_read_head_cells_effect = {
                 }
                 var:des_test_singleton_rite = {
                     des_has_active_binding_trigger = yes
+                    var:des_binding_mode = flag:new_dynasty
+                    var:des_deferred_binding_requester = root.var:des_test_singleton_actor
+                    var:des_deferred_binding_date = root.var:des_test_singleton_creation_date
+                    var:des_ordinary_binding_ready = yes
+                    NOT = { has_variable = des_deferred_binding_queued }
+                    NOT = { has_variable = des_native_source_actor }
+                    NOT = { has_variable = des_native_source_dynasty }
+                    NOT = { has_variable = des_native_source_house }
+                    NOT = { has_variable = des_native_source_was_dynast }
+                    NOT = { has_variable = des_native_head_claim_actor }
+                    NOT = { has_variable = des_native_head_claim_kind }
+                    NOT = { has_variable = des_native_head_claim_date }
+                    NOT = { has_variable = des_native_head_claim_pending }
+                    NOT = { has_variable = des_native_head_claim_dynasty }
+                    NOT = { has_variable = des_native_head_claim_house }
+                    NOT = { has_variable = des_native_head_claim_attempted }
+                    NOT = { has_variable = des_native_head_claim_succeeded }
                     NOT = { has_variable = des_creator_head_fault }
                     faith = { NOT = { any_faith_character = { is_alive = yes rite = root.var:des_test_singleton_rite NOT = { dynasty = root.var:des_test_singleton_rite.var:des_bound_dynasty } } } }
                 }

@@ -40,6 +40,27 @@ public final class FixtureEmitter {
             "localization/english/des_acceptance_extended_l_english.yml",
             "localization/simp_chinese/des_acceptance_extended_l_simp_chinese.yml");
     private static final String SEED_START = "common/on_action/des_acceptance_pre_product_seed.txt";
+    private static final List<String> SECT_ASSETS = List.of(
+            "descriptor.mod",
+            "common/on_action/des_preset_acceptance_on_actions.txt",
+            "common/decisions/des_preset_acceptance_decisions.txt",
+            "localization/english/des_preset_acceptance_l_english.yml",
+            "localization/simp_chinese/des_preset_acceptance_l_simp_chinese.yml");
+    private static final List<String> SECT_MARKERS = List.of(
+            "DESPAF: FIXTURE_ARMED sect_presets",
+            "DESPAF: INPUT APPLIED procreation_adopt",
+            "DESPAF: INPUT APPLIED procreation_leave",
+            "DESPAF: INPUT APPLIED procreation_return",
+            "DESPAF: INPUT APPLIED vivhite_adopt",
+            "DESPAF: INPUT APPLIED old_procreation_reason",
+            "DESPAF: INPUT APPLIED vivhite_join");
+    private static final List<String> INITIAL_REFORM_ASSETS = List.of(
+            "descriptor.mod",
+            "common/on_action/des_initial_reform_acceptance_on_actions.txt",
+            "common/scripted_effects/des_initial_reform_acceptance_effects.txt");
+    private static final List<String> INITIAL_REFORM_MARKERS = List.of(
+            "DESIRF: FIXTURE_ARMED initial_reform",
+            "DESIRF: QUALIFICATION_INPUT_APPLIED initial_reform");
     private static final List<String> MARKERS = List.of(
             "DESAF: TEST PASS fixture_ready",
             "DESAF: TEST PASS binding_and_members",
@@ -70,7 +91,8 @@ public final class FixtureEmitter {
     private FixtureEmitter() { }
 
     public enum CaseKind {
-        CORE("core"), COLD_RELOAD("cold_reload"), OLD_SAVE_BOOTSTRAP("old_save_bootstrap"), PRE_PRODUCT_SEED("pre_product_seed");
+        CORE("core"), COLD_RELOAD("cold_reload"), OLD_SAVE_BOOTSTRAP("old_save_bootstrap"),
+        PRE_PRODUCT_SEED("pre_product_seed"), SECT_PRESETS("sect_presets"), INITIAL_REFORM("initial_reform");
         private final String value;
         CaseKind(String value) { this.value = value; }
         @JsonValue public String wireValue() { return value; }
@@ -145,6 +167,8 @@ public final class FixtureEmitter {
         sources.add(pin(source.resolve("java/org/xar/ck3/dynastic/acceptance/FixtureEmitter.java")));
         Map<String, byte[]> payloads = new LinkedHashMap<>();
         List<String> assets = kind == CaseKind.PRE_PRODUCT_SEED ? List.of("descriptor.mod", SEED_START)
+                : kind == CaseKind.SECT_PRESETS ? SECT_ASSETS
+                : kind == CaseKind.INITIAL_REFORM ? INITIAL_REFORM_ASSETS
                 : kind == CaseKind.CORE ? ASSETS : ASSETS.stream()
                         .filter(name -> !name.equals("common/on_action/des_acceptance_on_actions.txt")).toList();
         for (String relative : assets) {
@@ -158,6 +182,12 @@ public final class FixtureEmitter {
             }
             payloads.put(relative, relative.equals("descriptor.mod") ? bytes.clone() : withBom(bytes));
         }
+        if (kind == CaseKind.INITIAL_REFORM) {
+            // Exact provenance for the four copied qualification definitions and
+            // the disclosed stock resource inputs. These references are not mounted.
+            sources.add(pin(source.resolve("resources/acceptance-fixture/common/scripted_effects/des_acceptance_effects.txt")));
+            sources.add(pin(source.resolve("resources/acceptance-fixture/events/des_acceptance_events.txt")));
+        }
         Files.createDirectories(destination);
         Map<String, FileContent> files = new LinkedHashMap<>();
         for (Map.Entry<String, byte[]> entry : payloads.entrySet()) {
@@ -168,6 +198,8 @@ public final class FixtureEmitter {
         }
         List<String> markers = switch (kind) {
             case CORE -> MARKERS;
+            case SECT_PRESETS -> SECT_MARKERS;
+            case INITIAL_REFORM -> INITIAL_REFORM_MARKERS;
             case COLD_RELOAD -> List.of("DESAF: TEST PASS persisted_state_readback");
             case OLD_SAVE_BOOTSTRAP -> List.of("DESAF: TEST PASS legacy_uninitialized_observed", "DESAF: TEST PASS legacy_bootstrap");
             case PRE_PRODUCT_SEED -> List.of("DESAF: TEST PASS legacy_seed_ready");

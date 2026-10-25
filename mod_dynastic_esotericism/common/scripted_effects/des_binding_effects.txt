@@ -13,10 +13,16 @@ des_ensure_own_rite_binding_effect = {
 							has_variable = des_bound_dynasty
 							has_variable = des_join_house
 							has_variable = des_binding_in_progress
+							has_variable = des_native_head_claim_pending
+							has_variable = des_native_initial_binding_fault
 						}
 					}
 				}
-				des_create_rite_dynasty_effect = yes
+				if = {
+					limit = { rite = { is_target_in_global_variable_list = { name = des_ordinary_binding_rites target = this } } }
+					des_create_rite_dynasty_effect = yes
+				}
+				else = { des_queue_unknown_rite_binding_effect = yes }
 			}
 		}
 	}
@@ -112,6 +118,7 @@ des_create_rite_dynasty_effect = {
 				scope:des_binding_rite = {
 					set_variable = { name = des_bound_dynasty value = scope:des_created_dynasty }
 					set_variable = { name = des_join_house value = scope:des_created_house }
+					set_variable = { name = des_binding_mode value = flag:new_dynasty }
 				}
 				scope:des_created_dynasty = {
 					set_variable = { name = des_bound_rite value = scope:des_binding_rite }
@@ -134,8 +141,9 @@ des_create_rite_dynasty_effect = {
 	scope:des_binding_rite = { remove_variable = des_binding_in_progress }
 }
 
-# Character scope. Only the successful create_dynasty branch calls this effect.
-# Never run it from repair, member synchronization, re-enabling, or maintenance.
+# Character scope. Successful native creation or an authorized first-binding
+# native completion claim calls this effect. Never call it from repair, member
+# synchronization, re-enabling, or maintenance.
 des_finalize_new_rite_head_effect = {
 	if = {
 		limit = {
@@ -264,5 +272,276 @@ des_repair_rite_binding_effect = {
 		}
 		set_variable = { name = des_binding_fault value = yes }
 		debug_log = "DES: conflicting or unavailable persisted binding; migration paused for this rite"
+	}
+}
+
+# Character scope. Unknown Rites cannot let a generic conversion wave migrate
+# the real native actor before on_rite_created supplies its trustworthy Root.
+des_queue_unknown_rite_binding_effect = {
+	save_scope_as = des_first_ordinary_requester
+	rite = {
+		if = {
+			limit = {
+				NOT = { is_target_in_global_variable_list = { name = des_ordinary_binding_rites target = this } }
+				NOR = {
+					has_variable = des_deferred_binding_queued
+					has_variable = des_bound_dynasty
+					has_variable = des_join_house
+				}
+			}
+			set_variable = { name = des_deferred_binding_requester value = scope:des_first_ordinary_requester }
+			set_variable = { name = des_deferred_binding_date value = current_date }
+			set_variable = { name = des_deferred_binding_queued value = yes }
+			trigger_event = { on_action = des_deferred_rite_binding days = 1 }
+		}
+	}
+}
+
+# Character scope, called only by a genuine native create/edit callback.
+# This runs before any product sync in that callback and while generic unknown
+# Rite migration remains barred. Never infer a native actor from a follower.
+des_capture_native_rite_source_effect = {
+	save_scope_as = des_native_source_actor
+	scope:des_native_source_rite = {
+		set_variable = { name = des_native_head_claim_actor value = scope:des_native_source_actor }
+		set_variable = { name = des_native_source_actor value = scope:des_native_source_actor }
+		set_variable = { name = des_native_head_claim_date value = current_date }
+		set_variable = { name = des_native_head_claim_pending value = yes }
+		remove_variable = des_native_source_was_dynast
+		remove_variable = des_native_source_dynasty
+		remove_variable = des_native_source_house
+	}
+	if = {
+		limit = { exists = dynasty exists = house house.house_dynasty = dynasty }
+		save_scope_as = des_native_original_actor
+		dynasty = { save_scope_as = des_native_original_dynasty }
+		house = { save_scope_as = des_native_original_house }
+		scope:des_native_source_rite = {
+			set_variable = { name = des_native_source_dynasty value = scope:des_native_original_dynasty }
+			set_variable = { name = des_native_source_house value = scope:des_native_original_house }
+		}
+		if = {
+			limit = { is_dynast = yes dynasty.dynast = this }
+			scope:des_native_source_rite = { set_variable = { name = des_native_source_was_dynast value = yes } }
+		}
+	}
+}
+
+# Character scope. The genuine on_rite_created Root is captured BEFORE sync.
+des_claim_native_created_rite_head_effect = {
+	if = {
+		limit = {
+			is_alive = yes
+			exists = rite
+			exists = scope:old_rite
+			NOT = { rite = scope:old_rite }
+		}
+		save_scope_as = des_native_creation_actor
+		rite = {
+			if = {
+				limit = {
+					rite_has_doctrine = des_doctrine_dynastic
+					NOR = {
+						has_variable = des_bound_dynasty
+						has_variable = des_join_house
+						has_variable = des_binding_in_progress
+						has_variable = des_native_head_claim_pending
+						has_variable = des_native_head_claim_attempted
+					}
+				}
+				save_scope_as = des_native_source_rite
+				set_variable = { name = des_native_head_claim_kind value = flag:created }
+				scope:des_native_creation_actor = { des_capture_native_rite_source_effect = yes }
+				des_finalize_native_rite_head_claim_effect = yes
+			}
+		}
+	}
+}
+
+# Rite scope. Record the native editor while this Rite is still unbound, without
+# assuming whether the edited doctrines have already been applied. Only updated
+# decides from the committed doctrine whether this is a first dynastic activation.
+# An already bound historical Rite never acquires this pending first-binding claim.
+des_record_native_rite_edit_head_claim_effect = {
+	if = {
+		limit = {
+			exists = head_of_rite
+			NOR = {
+				has_variable = des_bound_dynasty
+				has_variable = des_join_house
+				has_variable = des_binding_in_progress
+				has_variable = des_native_head_claim_pending
+				has_variable = des_native_head_claim_attempted
+			}
+		}
+		save_scope_as = des_native_edit_rite
+		head_of_rite = {
+			if = {
+				limit = { is_alive = yes rite = scope:des_native_edit_rite faith = scope:des_native_edit_rite.faith }
+				save_scope_as = des_native_edit_actor
+				scope:des_native_edit_rite = {
+					save_scope_as = des_native_source_rite
+					set_variable = { name = des_native_head_claim_kind value = flag:edited }
+					scope:des_native_edit_actor = { des_capture_native_rite_source_effect = yes }
+				}
+			}
+		}
+	}
+}
+
+# Rite scope. Only the native create/update completion routes consume this claim.
+# Consume before native mutation; maintenance, ordinary conversion and succession
+# never call this helper, and a failed attempt is diagnosed without replay.
+des_finalize_native_rite_head_claim_effect = {
+	if = {
+		limit = {
+			has_variable = des_native_head_claim_pending
+			NOT = { has_variable = des_native_head_claim_attempted }
+			rite_has_doctrine = des_doctrine_dynastic
+		}
+		set_variable = { name = des_native_head_claim_attempted value = yes }
+		remove_variable = des_native_head_claim_pending
+		save_scope_as = des_native_head_claim_rite
+		if = {
+			limit = {
+				exists = var:des_native_head_claim_actor
+				NOR = {
+					has_variable = des_bound_dynasty
+					has_variable = des_join_house
+					has_variable = des_binding_in_progress
+				}
+				var:des_native_head_claim_actor = {
+					is_alive = yes
+					rite = scope:des_native_head_claim_rite
+					faith = scope:des_native_head_claim_rite.faith
+				}
+			}
+			if = {
+				limit = { has_variable = des_native_source_was_dynast }
+				# A failed original-identity check must never fall through to a new
+				# Dynasty/NPC after losing the pre-operation source.
+				des_reuse_native_dynast_binding_effect = yes
+			}
+			else = {
+				var:des_native_head_claim_actor = { des_create_rite_dynasty_effect = yes }
+			}
+			des_allow_ordinary_rite_binding_effect = yes
+			if = {
+				limit = {
+					des_has_active_binding_trigger = yes
+					var:des_join_house.house_head = var:des_native_head_claim_actor
+					var:des_bound_dynasty.dynast = var:des_native_head_claim_actor
+				}
+				set_variable = { name = des_native_head_claim_succeeded value = yes }
+				remove_variable = des_native_initial_binding_fault
+				set_variable = { name = des_native_head_claim_dynasty value = var:des_bound_dynasty }
+				set_variable = { name = des_native_head_claim_house value = var:des_join_house }
+			}
+			else = {
+				set_variable = { name = des_native_initial_binding_fault value = yes }
+				set_variable = { name = des_creator_head_fault value = yes }
+				debug_log = "DES: native creator/editor claim did not finish with the requested actor as House head and Dynast"
+			}
+		}
+		else = {
+			set_variable = { name = des_native_initial_binding_fault value = yes }
+			set_variable = { name = des_creator_head_fault value = yes }
+			debug_log = "DES: native creator/editor claim consumed without a valid binding and living same-Rite actor"
+		}
+	}
+}
+
+# Rite scope. Only a consumed, trustworthy native operation reaches this helper.
+# No head setter, member migration, House creation or Dynasty creation is legal
+# in this branch. The source must still be the actor's actual original identity.
+des_reuse_native_dynast_binding_effect = {
+	save_scope_as = des_native_reuse_rite
+	if = {
+		limit = {
+			has_variable = des_native_source_was_dynast
+			exists = var:des_native_source_actor
+			exists = var:des_native_source_dynasty
+			exists = var:des_native_source_house
+			var:des_native_source_actor = {
+				is_alive = yes
+				is_dynast = yes
+				dynasty = scope:des_native_reuse_rite.var:des_native_source_dynasty
+				house = scope:des_native_reuse_rite.var:des_native_source_house
+			}
+			var:des_native_source_dynasty.dynast = var:des_native_source_actor
+			var:des_native_source_house.house_head = var:des_native_source_actor
+			var:des_native_source_house.house_dynasty = var:des_native_source_dynasty
+			trigger_if = {
+				limit = { exists = var:des_native_source_dynasty.var:des_bound_rite }
+				var:des_native_source_dynasty.var:des_bound_rite = {
+					des_has_binding_trigger = yes
+					var:des_bound_dynasty = scope:des_native_reuse_rite.var:des_native_source_dynasty
+				}
+			}
+		}
+		# A Dynasty belongs to one Rite. Explicit transfer disables the old Rite
+		# before clearing only its product sources; stock crimes are untouched.
+		if = {
+			limit = {
+				exists = var:des_native_source_dynasty.var:des_bound_rite
+				NOT = { var:des_native_source_dynasty.var:des_bound_rite = this }
+			}
+			var:des_native_source_dynasty.var:des_bound_rite = {
+				save_scope_as = des_transferred_old_rite
+				remove_rite_doctrine = des_doctrine_dynastic
+				add_rite_doctrine = des_doctrine_none
+				set_variable = { name = des_binding_transferred_to value = scope:des_native_reuse_rite }
+				set_variable = { name = des_binding_transfer_date value = current_date }
+				des_snapshot_relationships_effect = { SOURCE = des_apostates }
+				every_in_list = {
+					variable = des_relationship_snapshot
+					if = {
+						limit = { var:des_apostate_rite = scope:des_transferred_old_rite }
+						des_clear_apostasy_effect = yes
+					}
+				}
+				clear_variable_list = des_relationship_snapshot
+				clear_variable_list = des_apostates
+				scope:des_native_reuse_rite.var:des_native_source_dynasty = {
+					if = {
+						limit = { var:des_bound_rite = scope:des_transferred_old_rite }
+						remove_variable = des_bound_rite
+					}
+				}
+				remove_variable = des_bound_dynasty
+				remove_variable = des_join_house
+				remove_variable = des_binding_mode
+				remove_variable = des_binding_fault
+				remove_variable = des_creator_head_fault
+				remove_variable = des_rite_coa_unsupported
+				remove_variable = des_ordinary_binding_ready
+				remove_list_global_variable = { name = des_ordinary_binding_rites target = this }
+				remove_variable = des_native_head_claim_pending
+				remove_variable = des_native_head_claim_attempted
+				remove_variable = des_native_head_claim_succeeded
+				remove_variable = des_native_initial_binding_fault
+				remove_variable = des_native_head_claim_actor
+				remove_variable = des_native_head_claim_kind
+				remove_variable = des_native_head_claim_date
+				remove_variable = des_native_head_claim_dynasty
+				remove_variable = des_native_head_claim_house
+				remove_variable = des_native_source_actor
+				remove_variable = des_native_source_was_dynast
+				remove_variable = des_native_source_dynasty
+				remove_variable = des_native_source_house
+				remove_variable = des_deferred_binding_queued
+				remove_variable = des_deferred_binding_requester
+				remove_variable = des_deferred_binding_date
+				remove_list_global_variable = { name = des_bound_rites target = this }
+			}
+		}
+		set_variable = { name = des_binding_mode value = flag:native_dynast_reuse }
+		set_variable = { name = des_bound_dynasty value = var:des_native_source_dynasty }
+		set_variable = { name = des_join_house value = var:des_native_source_house }
+		var:des_native_source_dynasty = {
+			set_variable = { name = des_bound_rite value = scope:des_native_reuse_rite }
+		}
+		des_apply_rite_identity_effect = yes
+		add_to_global_variable_list = { name = des_bound_rites target = this }
 	}
 }

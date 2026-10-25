@@ -1,0 +1,177 @@
+{
+  "schema": "xar.ck3.r17-event-coa-source-observation.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-25T17:19:00.951563+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0017",
+  "scope": "Offline append and comparison of existing observations; no Game or new Save operation.",
+  "event": {
+    "event_definition_key": "faith_creation.1021",
+    "source_and_event_pins_rechecked": 12,
+    "definition_block": {
+      "at_utc": "2026-10-25T17:19:00.951563+00:00",
+      "file_sha256": "419c04b9ca889e96e572b894ec346ae6119af2fd6eb9be4833d6659edfba923e",
+      "file_LF_count": 1413,
+      "file_CRLF_count": 0,
+      "block_bytes": 2833,
+      "block_sha256": "dc10bf5f40558169ccfb0b8a38b4699c1b2f2f7338fd544b780945242fc01919",
+      "block_LF_count": 109,
+      "block_CRLF_count": 0,
+      "hypothetical_CRLF_block_sha256": "65a0be76e37bb3907f90aa9a58f97cec8d9fc165685a57e52cd0ae4b8a6444e7"
+    },
+    "saved_scope_count": 17,
+    "scope_contract_qualified": false,
+    "automatic_selection": false,
+    "qualified_scope_counts": [
+      7,
+      8
+    ],
+    "contract_sha256_after": "c53e62915766cdb2687675f4417b25b65cefe3623b6679155c6068fe3e0fc8bf",
+    "material_reward_delta_verified": false,
+    "analysis": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\operator-reference\\r17-faith-creation1021-offline-analysis-a01.json",
+      "bytes": 14676,
+      "sha256": "c75088819544822987ece80ac2ad1b50f4031315fcebf4bfd3bdce6d5b481a69"
+    },
+    "contract_sha256_before": "c53e62915766cdb2687675f4417b25b65cefe3623b6679155c6068fe3e0fc8bf"
+  },
+  "coa": {
+    "operation": {
+      "path": "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/operator-reference/observe-selected-save-a08-coa.py",
+      "bytes": 29709,
+      "sha256": "9a50f1a1ba8938ba2f898360a010c7e2dbb612a8fa475d976ed2e5e5a4f99b5c"
+    },
+    "baseline": {
+      "path": "C:/ck3-dynastic-esotericism-20261024/observe-selected-save-a07.py",
+      "bytes": 25750,
+      "sha256": "2a407ccaee4aadbadf9f9a53f7917fcb111b7e1b2eccc95532a5eaad0557e846"
+    },
+    "native_database_path": [
+      "coat_of_arms",
+      "coat_of_arms_manager_database",
+      "<decimal ID; zero valid>"
+    ],
+    "name_in_both_saves": "R17 Dynastic Rite",
+    "distinct_dynasty_and_house_coa_ids": true,
+    "all_four_complete_asts_equal": true,
+    "all_four_ast_sha256": "bdd7195e38bdeebf98cbd08b13e0f25ec483a05954fa1b93678647dba232513c",
+    "pattern": "pattern_solid.dds",
+    "colors": [
+      "white",
+      "red",
+      "blue"
+    ],
+    "colored_emblem": {
+      "texture": "ce_leopard_passant_guardant.dds",
+      "color1": "red",
+      "color2": "blue",
+      "instance_positions": [
+        [
+          "0.500000",
+          "0.160000"
+        ],
+        [
+          "0.500000",
+          "0.415000"
+        ],
+        [
+          "0.500000",
+          "0.670000"
+        ]
+      ],
+      "each_instance_scale": [
+        "0.850000",
+        "0.850000"
+      ]
+    },
+    "source_helpers": [
+      {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a16\\source\\ck3_autonomous_player\\src\\xar_autoplayer\\campaign_score_save_reader.py",
+        "bytes": 49118,
+        "sha256": "ffd650323c016b03204517f8ff460f1907ff603057b773372e1c836a74e19b2e"
+      },
+      {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\main12\\tools\\lyd_i3b_checkpoint_readback\\reader\\i3b_checkpoint_reader.py",
+        "bytes": 51455,
+        "sha256": "eb68af08c5d636e4b91caa4e0290bb889ae912ca5b7e0158f4e4d99f85958736"
+      },
+      {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\main12\\tools\\lyd_i3b_checkpoint_readback\\reader\\dependencies\\bounded_save_parser.py",
+        "bytes": 1998,
+        "sha256": "12bae20f113f57e144fb422fbac2b53b8cbd5fce2ae92cb9d09f779c123f4489"
+      },
+      {
+        "path": "C:\\ck3-dynastic-esotericism-20261024\\main12\\tools\\lyd_i3b_checkpoint_readback\\reader\\dependencies\\save_fields.py",
+        "bytes": 2236,
+        "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933"
+      }
+    ],
+    "days": [
+      {
+        "day": 1,
+        "projection": {
+          "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a16\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0017\\operator-evidence\\r17-primary-plus1-save-readback-coa-a01.json",
+          "bytes": 756922,
+          "sha256": "3b636d3ca68afc634c8739d24d200f14fe70a5afe44195978a5c7c2d1b676de1"
+        },
+        "save_pin": {
+          "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a16\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0017\\operator-evidence\\retained-saves\\r17-primary-plus1.ck3",
+          "bytes": 68624039,
+          "sha256": "53160c40489bd0d57b4071693370421139336eec7490063404ae11b2a35103a5"
+        },
+        "date": "1066.9.17",
+        "rows": [
+          {
+            "kind": "dynasty",
+            "id": "12156",
+            "coat_of_arms_id": "28817",
+            "AST_sha256": "bdd7195e38bdeebf98cbd08b13e0f25ec483a05954fa1b93678647dba232513c"
+          },
+          {
+            "kind": "house",
+            "id": "12760",
+            "coat_of_arms_id": "28818",
+            "AST_sha256": "bdd7195e38bdeebf98cbd08b13e0f25ec483a05954fa1b93678647dba232513c"
+          }
+        ],
+        "complete_stream": true
+      },
+      {
+        "day": 2,
+        "projection": {
+          "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a16\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0017\\operator-evidence\\r17-primary-plus2-save-readback-coa-a01.json",
+          "bytes": 777214,
+          "sha256": "51f0e5edf167e08457879b649eaeb603dfebced2f668320e8ce07aae817c5abd"
+        },
+        "save_pin": {
+          "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a16\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0017\\operator-evidence\\retained-saves\\r17-primary-plus2.ck3",
+          "bytes": 68682975,
+          "sha256": "a8bdb5c9dc2c3ba0c62188fd46377b557972079c4543844fb9cbaafee997e5b6"
+        },
+        "date": "1066.9.18",
+        "rows": [
+          {
+            "kind": "dynasty",
+            "id": "12156",
+            "coat_of_arms_id": "28817",
+            "AST_sha256": "bdd7195e38bdeebf98cbd08b13e0f25ec483a05954fa1b93678647dba232513c"
+          },
+          {
+            "kind": "house",
+            "id": "12760",
+            "coat_of_arms_id": "28818",
+            "AST_sha256": "bdd7195e38bdeebf98cbd08b13e0f25ec483a05954fa1b93678647dba232513c"
+          }
+        ],
+        "complete_stream": true
+      }
+    ],
+    "boundary": "Content equality and day+1/day+2 persistence only. Save object IDs differ. Save data alone does not count RNG invocations. No cold-load acceptance, exact-preset graphic acceptance, founder-head acceptance or complete product/release credit."
+  },
+  "validation": {
+    "unit_tests": "2 passed; ck3_autonomous_player.tests.unit.test_faith_creation1021_12004",
+    "data_record_mypy": "strict, strict-equality, follow-imports=silent; one complete source file passed",
+    "test_module_mypy": "default checking, follow-imports=silent; complete test file passed; historical untyped functions not claimed strict",
+    "new_production_python_modules": 0,
+    "business_pass": false
+  }
+}

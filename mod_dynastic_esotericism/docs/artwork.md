@@ -1,5 +1,29 @@
 # 宗族化密教：原创预览图
 
+## 2026-10-26 专用宗族化图标
+
+用户要求检查图标是否专用并生成新图。此前 `des_doctrine_dynastic.icon` 实际引用原版 `doctrine_pluralism_fundamentalist`，即选项仍使用原版原教旨主义图标；旧组图的简易树形 DDS 不等于选项已经使用专用图。
+
+本次使用内置 `image_gen.imagegen` 全新生成金红家谱树徽记，真实透明背景，不使用原版图标或参考图。应用技能为 `C:/Users/1/.codex/skills/.system/imagegen/SKILL.md`，未使用 CLI/API fallback。原始 PNG 已复制进源码：[生成原图](../tools/artwork/source/des_dynastic_membership_generated_20261026.png)。两份运行 DDS 使用同一幅专为本模组生成的画面。
+
+`machine_id: desktop-3fevhd2-1c74096080`；Java 格式导出实际结束于 `2026-10-25T18:19:48.151176Z`（北京时间 10 月 26 日）。默认 `javac -Xlint:all -Werror` 和默认 `java` 均退出 0。原始 PNG 为 1,949,246 B，SHA `f0f232960371884df1c8d6df1d63ea72ef31a40800f7e5699fc9dc9875599490`。原图位于 CODEX_HOME generated_images，源内副本逐字节一致。
+
+Java 只做双三次缩放到 120×120 并编码为带原 alpha 的 32 位 BGRA DDS；不裁切、不重绘、不增删画面元素。[导出配方](../tools/artwork/ExportDoctrineIcon.java) 完整保留。导出逐像素解码回读一致；两份 DDS 各 57,728 B，SHA 均为 `7642ef5c0b837d2a21ee3a1363f86337274c2af1c89b9ec2da8a4d212d2e3071`。原图与实际 DDS 解码的 120 像素预览均已查看。
+
+- 组图：[faith_doctrine_groups/des_dynastic_membership.dds](../gfx/interface/icons/faith_doctrine_groups/des_dynastic_membership.dds)，对应原版 `DOCTRINE_GROUP_TYPE_ICON_PATH`。
+- 选项图：[faith_doctrines/des_dynastic_membership.dds](../gfx/interface/icons/faith_doctrines/des_dynastic_membership.dds)，对应 `DOCTRINE_TYPE_ICON_PATH`，由 `icon="des_dynastic_membership"` 引用。
+- 两个路径都保留在正式显式清单，当前正式文件数变为 52；此前 a03 实际 51 文件构建记录不改写。
+
+实际回执为 `C:/ck3-dynastic-esotericism-20261024/resume-product-a20/operator-reference/EXCLUSIVE-ICON-EXPORT-a01.actual.json`。施工使用 r1228/storage116 的 C512MiB/D1MiB 池；复制前 fresh 检查通过。较早 r1225 的复制准入因闲置 Core 预留及当时实际空间不足被拒绝，未执行复制；随后实际关闭未消费预留，不声称因此回收物理磁盘。图标生成、导出和打包检查不替代游戏实际显示及 Workshop 更新。
+
+完整生成提示词（`transparent_background=true`，无参考图）：
+
+```text
+Use case: logo-brand. Asset type: original raster emblem for a 120 by 120 pixel doctrine-group icon in a medieval strategy game mod named Dynastic Esotericism. Create one distinctive original emblem of a sacred ancestral tree: one broad golden trunk unites three pairs of simple leaf-shaped heraldic medallions through clean branching lines; its roots join into a small interlaced knot. A single subtle circular ritual arc integrates with the tree, conveying a religious fellowship united as a dynasty. Restrained antique gold with small deep crimson enamel accents, slightly engraved and hand-painted medieval game-interface finish. Strong clean silhouette and broad shapes that remain readable when reduced to 48 pixels; balanced centered composition occupying about 80 percent of a square canvas. Genuine transparent background outside the emblem, preserve clean alpha edges. No text, no letters, no numbers, no watermark, no logos, no crown, no shield frame, no portrait, no game screenshot, no copied existing religious symbol or existing game icon. No background panel, no elaborate filigree, no glow cloud, no cast shadow outside the shape. Deliver a single finished emblem, not a mockup, sheet or alternatives.
+```
+
+新原图在源码内为当前重建输入，2026-11-02 复核使用情况。默认 CODEX_HOME 原件的实际文件时间为 `2026-10-25T18:10:24.436736Z`；其重复副本按同一起点及通用 raw_evidence 720 小时于 `2026-11-24T18:10:24.436736Z` 进入到期复核，复制不重置时钟，不自动删除仍被引用的输入。当前 DDS 是正式消费源资产，2026-11-02 复核是否仍在使用；后续替代及实际回收遵循仓库统一存储策略。
+
 ## 2026-10-25 用户提供的两教派图标
 
 本次新增图标直接来自用户上传的 `信仰礼仪图标.zip`，不是重新生成的图片。ZIP SHA-256 为 `46e977c19a555ce9cbaa9eb3ee4981e7e63eab3dfbbb7eb126d1e7b43e6a9586`。

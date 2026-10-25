@@ -1,5 +1,21 @@
 # 制作与发布状态
 
+观察 `2026-10-25T17:16:37.661096Z`（北京时间 **10月26日01:16:37**，`machine_id: desktop-3fevhd2-1c74096080`）：0.2.0 候选的 **R0017 实机业务 FAIL，正式签署0/6阶段**。真实创建 Rite152 的 actor 为31254；恰好+1日／+2日的保存分别为1066.9.17／1066.9.18，两次独立完整流解码均确认 House12760→Dyn12156 的 `head_of_house` 与 `dynasty_head` 仍是41288，而非创建者。该人物保存出生日期为1065.1.2，是儿童，不能把它记为已成功交回创建者。后继head修复仍待新冻结实机，不改签本场。见[R0017实际失败与保存引用](acceptance/R0017-2026-10-26.json)。
+
+本场61名已固定成员在两日独立保存中均位于绑定House；Dynasty及默认House的实际 `localized_name` 均为 `R17 Dynastic Rite`。两日各两份纹章完整AST共四份一致，SHA-256均为 `bdd7195e38bdeebf98cbd08b13e0f25ec483a05954fa1b93678647dba232513c`，只授予本次自创礼仪名称及用户允许随机fallback的共享／持久性子集，不代表两项预置教派的精确纹章、完整标识矩阵或领袖要求通过。四份原保存和独立读回保留在a20的R17 `operator-evidence/`；原+1失败记录当时的“+2解码待办”未覆写，由后继+2原件补齐事实。
+
+R0017已沿真实typed normal退出闭场：Game0／host0／public run2／public verify2／allocator0／keeper0，`normal_close_qualified=true`、`autosave_verified=false`、无最终母档，SCREEN9008已释放。正常闭场只授生命周期。0.1.0初始公开测试版仍是Workshop3826991345上的已发布版本，**0.2.0未更新Workshop**；Notes全文最新原回读 `2026-10-25T17:21:56.842698Z`（北京时间10月26日01:21:56）仍为HTTP429，a04历史回读保留。a05实际HTML为5,884 B、SHA-256 `dc0d04bad7d007f7900b1638f85a987e6a4bc20a1e64ccf2707296c6d6d29b58`；Steam未切换模式、无上传，`public_notes_verified=false`。Steam真实缓存下载／CK3缓存加载未完成。
+
+构建后继a02的默认Maven完整 `clean verify` 已实际24/24、无失败／错误／跳过，六生产命令全0，开发30／九语正式51／fixture13文件与25 markers闭合；a20首轮23通过、1项Windows引号失败原件保留。exact66e2的产品CI40208887654、Prisoner40208887665、Linear40208887636、LYD40208887711及RRF40208887612均成功；这些终态的本机回读发生北京时间10月26日00:03之后，不倒填成10月25日午夜已知。Official Runner [40208887621](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40208887621/job/121215658342) step44实际退出1：共享workflow未传真实 `fixture-production-request`，工具构建通过后在full parity前拒绝，完整reactor／HTTP／fresh SDK／cold-warm未执行。源runner实际 `machine_id: runnervmdaln5-5f47da6a04`；调用方和守卫与前一master及66e2父提交均相同，属于既有共享CI断链。前一master同step的实际错误是AccessDeniedException，不能记同根因。原RED、原日志与未执行边界继续保留，见[本次只读CI调查](acceptance/official-ci-66e2-2026-10-26.json)。
+
+`2026-10-25T17:31:23.199453Z`（北京时间10月26日01:31:23，同机）：Root统一a03默认Maven离线 `clean verify` 原进程实际退出0，完整耗时85.902875秒。实际读取8份Surefire XML，32测试、0失败／错误／跳过；12生产与8测试Java源按release21及既有 `-Xlint:all -Werror` 编译。19份实际源码资源与classes及打包JAR逐字节一致，包含新增 `sect_presets` fixture的生产、公共导入／generic prepare及AST回归；这些测试未执行CK3。原source HEAD仍66e2并带本次dirty增量，原porcelain和执行回执已保留，不称干净66e2构建。**head修复的新场及两预置教派Game验收仍NOT_RUN**，R0017原FAIL不变；新runtime／Prepared须由Root随后冻结生产。见[32项重建实际回执](acceptance/rebuild32-2026-10-26.json)。
+
+`2026-10-25T18:24:29.368212Z`（北京时间10月26日02:24:29，同机）：Root统一 **a04完整 `clean verify` 实际退出0，36测试、0失败／错误／跳过，墙钟61.991364秒**。独立重读9份Surefire XML，12生产／9测试Java源按release21及既有 `-Xlint:all -Werror` 编译；21份源码资源与classes／实际打包JAR逐字节一致。当前候选正式52文件／开发31文件，实际产品与fixture经过公共导入、generic prepare及挂载字节比较；来源仍为66e2 HEAD加本轮dirty增量，不能称干净66e2或后继提交构建。见[a04实际重建摘要](acceptance/rebuild36-a04-2026-10-26.json)；a03／32项／51文件原记录保持其历史范围。
+
+本轮新增用户政策已形成源码与静态合同：真实创建／首次改革前已为Dynast的操作者复用原Dynasty及实际House，按新礼仪改名并分别保留原CoA；若原宗族已绑另一Rite，转移时旧Rite实际改为None并精确清理本产品关系来源。未知Rite的普通首次同步延至次日，普通预置采用不冒充原生创建；从未采用新Rite的原宗族成员不因共享宗族被标背离。AI主动选择宗族化由原生 `can_pick` 的真实actor／`is_ai=no` 限制，None仍不受此限制。详情None使用 `visible=no`，创建／改革编辑器保留 `is_shown={always=yes}`；宗族化专用图标在原生组图与教义图两个目录使用同一份120×120透明DDS。**这些仅静态通过：新native复用、转移／旧None、实际AI选择、None隐藏不留空位及编辑可选、图标显示与两教派业务均为Game NOT_RUN**；任意同时更改head／governance的编辑actor来源仍有[明确边界](2026-10-26-native-dynast-reuse.md)。R0017仍FAIL／0/6，完整core、cold／seed／old、新母档、0.2.0 Workshop更新及Notes全文验证均未因此完成。
+
+以下各时间点为历史观察，不能覆盖上述当前失败、未执行和未发布范围。
+
 观察 2026-10-25T15:41Z（`machine_id: desktop-3fevhd2-1c74096080`）：用户恢复任务并追加两项独立信仰／同名礼仪、礼仪名称与纹章、建族后实际创建／改革者担任最终族长的要求；已确认新信仰归基督教大类。需求／测试版本2先落盘，0.2.0 候选实现及九语文案、用户图标已形成。两个预置纹章使用精确图标；任意自创礼仪原生无法直接复制图标时，按用户随后授权只随机生成一次宗族纹章并给默认 House 使用。尚未新开实机，未更新 Workshop。
 
 首轮 a20 默认 Maven 3.10.0、JDK25.0.4.1 实际构建运行24项测试，23通过／1失败／0跳过；唯一失败为新独立 Python AST 检查片段的 Windows 引号传递，已修复并单独核实际 Java textblock 生成后的语法，完整重跑待执行。原失败日志／原 Popen 结果位于 `C:/ck3-dynastic-esotericism-20261024/resume-builder-a20/`，未覆写。当前30文件开发包／51文件九语包为候选清单，不是已验收的新发布。新core仍须以R0016正常managed closure接续并另行取得存储与SCREEN资格，旧运行与冻结图不改。
@@ -24,11 +40,11 @@
 
 | 阶段 | 当前事实 | 依据 |
 | --- | --- | --- |
-| 需求 | 已制定版本 1 | [requirements.md](requirements.md) |
-| 测试方案 | 已制定版本 1，尚未授予测试通过 | [test-plan.md](test-plan.md) |
-| 编码 | 18de31e4源码的交接／singleton真实NPC及家庭转换同步已在R0013取得实际后态；现有囚犯预览通道与测试输入仍须补齐 | [R0013](acceptance/R0013-2026-10-25.json)、[测试方案](test-plan.md) |
-| 测试验收 | R0013核心2/6阶段通过，全体61人两日核对与两种建族分支通过；第三阶段未完整验收，核心整体INCOMPLETE。seed/cold/old未完成 | [R0013实际范围](acceptance/R0013-2026-10-25.json) |
-| 发布 | 0.1.0初始公开测试版已发布，Workshop ID 3826991345；继续本地验证，缓存与完整业务未通过 | [首发实际范围](acceptance/first-publication-2026-10-25.json) |
+| 需求 | 已制定版本2，包含创建／改革者最终族长、名称／纹章及两项独立Faith／同名Rite | [requirements.md](requirements.md) |
+| 测试方案 | 版本2；新增矩阵不因静态通过或旧场子集而授予通过 | [test-plan.md](test-plan.md) |
+| 编码 | 0.2.0候选a04完整36项静态通过，当前正式52／开发31文件；新复用／转移、AI与详情／图标政策尚未实测，R0017失败保留 | [a04重建](acceptance/rebuild36-a04-2026-10-26.json)、[R0017](acceptance/R0017-2026-10-26.json) |
+| 测试验收 | R0017正式签署0/6、创建者族长FAIL；两日61人归族、名称及随机纹章共享子集有保存证据。原完整core、两预置矩阵、seed/cold/old未完成 | [R0017实际范围](acceptance/R0017-2026-10-26.json)、[R0015历史范围](acceptance/R0015-2026-10-25.json) |
+| 发布 | 0.1.0初始公开测试版已发布，Workshop3826991345；0.2.0未上传，Notes全文429及真实缓存下载／加载待验 | [首发实际范围](acceptance/first-publication-2026-10-25.json)、[R0017发布边界](acceptance/R0017-2026-10-26.json) |
 
 2026-10-24T21:15Z补记（北京时间05:15，machine_id: `desktop-3fevhd2-1c74096080`）：用户提出卸任家族族长再建新宗族。已核 exact .4 原版 `set_house_head` 会同步重算 Dynast；窄生产候选优先已有合格真实信徒，无人时才让另一存活同旧House人物接任，并在实际双重离任守卫后建族。旧House只有本人时仍未解决，不默认新建NPC，等待用户对该边界的选择。见[原版来源、影响和待验边界](2026-10-25-house-head-handover.md)。新S11候选61b4b05不改SDK/native，完整默认Maven16项0失败/错误/跳过及15资源、17文件开发包/ZIP/13文件fixture实际生产链通过，回执 `C:/ck3-dynastic-esotericism-20261024/resume-builder-a12/SUMMARY.actual.json`，SHA `b0977cbc628e5c2c9021774fe48c706e7846ab1f15baaa3db8da06bf1b181076`。当前新增交接路径尚未实机，不能从构建或研究追认通过；下一图准备还将检查能否以真实输入触发fallback。R0009公共verify已实际退出2，case_acceptance_pass及qualified_boundary_pass为false，原normal_close=true仅生命周期继续保留。
 
