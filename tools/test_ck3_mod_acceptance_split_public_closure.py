@@ -82,7 +82,7 @@ class SplitPublicClosureTests(unittest.TestCase):
     def setUp(self) -> None:
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
-        self.root = Path(temporary.name)
+        self.root = Path(temporary.name).resolve()
         self.source = source_fixture()
         self.machine = string(self.source['machine_id'])
         self.original_leaves = obj(self.source['leaves'])
