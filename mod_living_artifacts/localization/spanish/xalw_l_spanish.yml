@@ -279,6 +279,7 @@
  xalw_hunger_5_modifier:0 "Hambre viviente (5)"
  xalw_keep_interaction:0 "Alternar protección de alimentación"
  xalw_keep_interaction_desc:0 "Marca un artefacto personal como protegido o libera esa protección. Los artefactos protegidos no pueden consumirse."
+ xalw_living_description:0 "【Está vivo】\n[xalw_described_artifact.GetDesc]"
  xalw_manage_decision:0 "Escuchar a los artefactos vivientes"
  xalw_manage_decision_confirm:0 "Escucharlos"
  xalw_manage_decision_desc:0 "Algunos tesoros respiran, recuerdan y exigen un precio. Aprende a inspeccionar y cultivarlos."

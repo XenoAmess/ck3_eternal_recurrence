@@ -279,6 +279,7 @@
  xalw_hunger_5_modifier:0 "Lebendiger Hunger (5)"
  xalw_keep_interaction:0 "Futterschutz umschalten"
  xalw_keep_interaction_desc:0 "Markiere ein persönliches Artefakt als geschützt oder hebe den Schutz auf. Geschützte Gegenstände können nicht gefüttert werden."
+ xalw_living_description:0 "【Es lebt】\n[xalw_described_artifact.GetDesc]"
  xalw_manage_decision:0 "Lebenden Artefakten zuhören"
  xalw_manage_decision_confirm:0 " ihnen zuhören"
  xalw_manage_decision_desc:0 "Manche Schätze atmen, erinnern sich und verlangen einen Preis. Erfahre, wie du lebende Artefakte betrachtest und kultivierst."

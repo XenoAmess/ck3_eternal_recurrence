@@ -279,6 +279,7 @@
  xalw_hunger_5_modifier:0 "Faim vivante (5)"
  xalw_keep_interaction:0 "Activer la protection de nourrissage"
  xalw_keep_interaction_desc:0 "Marquer un artefact personnel comme protégé, ou retirer cette protection. Les artefacts protégés ne peuvent pas être consommés."
+ xalw_living_description:0 "【Il est vivant】\n[xalw_described_artifact.GetDesc]"
  xalw_manage_decision:0 "Écouter les artefacts vivants"
  xalw_manage_decision_confirm:0 "Écouter"
  xalw_manage_decision_desc:0 "Certains trésors respirent, se souviennent et exigent un prix. Apprenez à les inspecter et à les cultiver."

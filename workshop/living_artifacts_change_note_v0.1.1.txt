@@ -1,0 +1,18 @@
+0.1.1 — 它是活的 / It is alive
+
+新增
+• 活武器的宝物说明首行新增【它是活的】，下方保留原有说明全文。
+• 新觉醒的活武器在刷新时获得标记；旧存档中的活武器在下次刷新或月度处理时补上，包括已带★名称和未装备的物品。
+• 标记仅追加一次；普通宝物不受影响。
+• 新增首行已补齐全部九种语言。
+
+兼容与范围
+可继续使用现有存档；暂停状态下尚未经过刷新或月度处理的旧物不会立即更新。成长、经验、异能、诅咒、喂养与金币数值沿用0.1.0。
+
+Changes
+• Living artifacts now begin their description with 【It is alive】, followed by the complete original description.
+• Newly awakened artifacts receive the marker on refresh. Existing living artifacts receive it on their next refresh or monthly processing, including starred and unequipped items.
+• The prefix is applied once and ordinary artifacts are unaffected. The new line is included in all nine localization files.
+
+Compatibility
+Existing saves remain supported. Paused older items update when their next refresh or monthly processing occurs. Growth, experience, powers, curses, feeding and gold values remain unchanged from0.1.0.

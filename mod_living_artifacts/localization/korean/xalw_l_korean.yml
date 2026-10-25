@@ -279,6 +279,7 @@
  xalw_hunger_5_modifier:0 "산성 무기 허기 (5)"
  xalw_keep_interaction:0 "급여 보호 전환"
  xalw_keep_interaction_desc:0 "개인 장비를 보호 대상으로 표시하거나 보호를 해제합니다. 보호된 장비는 급여 목록에 포함되지 않습니다."
+ xalw_living_description:0 "【살아 있다】\n[xalw_described_artifact.GetDesc]"
  xalw_manage_decision:0 "산성 무기의 속삭임 듣기"
  xalw_manage_decision_confirm:0 "그들의 소리를 듣기"
  xalw_manage_decision_desc:0 "일부 보물은 숨을 쉬고 기억하며 대가를 요구합니다. 산성 무기의 상태와육성 방법을 알아보세요."
