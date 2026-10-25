@@ -26,6 +26,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import org.xar.ck3.rrf.Json;
 import org.xar.ck3.rrf.ReleaseBuilder;
+import org.xar.ck3.rrf.acceptance.FixtureContracts;
+import org.xar.ck3.rrf.acceptance.FrozenFixtureReader;
+import org.xar.ck3.rrf.acceptance.FrozenFixtureReader.BoundRequest;
+import org.xar.ck3.rrf.acceptance.FrozenFixtureReader.PreparedBinding;
+import org.xar.ck3.rrf.save.SaveContracts.Assessment;
+import org.xar.ck3.rrf.save.SaveContracts.FusionSelection;
+import org.xar.ck3.rrf.save.SaveContracts.NotAssessed;
 import org.xar.ck3.rrf.save.SaveContracts.Pin;
 import org.xar.ck3.rrf.save.SaveContracts.Report;
 import org.xar.ck3.rrf.save.SaveContracts.Request;
@@ -55,6 +62,12 @@ public final class SaveInspector {
     @FunctionalInterface interface DecoderLauncher { Process start(Path decoder, Path save) throws IOException; }
     static Report inspect(Request request, DecoderLauncher launcher) throws IOException {
         Path save = Path.of(request.save().path()).toRealPath(); Path decoder = Path.of(request.decoder().path()).toRealPath();
+        BoundRequest fixture = null;
+        PreparedBinding prepared = null;
+        if (request.expectation() instanceof FusionSelection expected) {
+            fixture = fixture(request, expected);
+            prepared = prepared(expected, fixture);
+        }
         verifyPin(decoder, request.decoder()); BasicFileAttributes before = Files.readAttributes(save, BasicFileAttributes.class);
         try (FileChannel channel = FileChannel.open(save, StandardOpenOption.READ); FileLock lock = channel.lock(0, Long.MAX_VALUE, true)) {
             if (!lock.isValid()) throw new IOException("save read lock unavailable");
@@ -74,9 +87,14 @@ public final class SaveInspector {
                 verifyPin(save, request.save()); verifyPin(decoder, request.decoder());
                 BasicFileAttributes after = Files.readAttributes(save, BasicFileAttributes.class);
                 if (before.size() != after.size() || !before.lastModifiedTime().equals(after.lastModifiedTime()) || !java.util.Objects.equals(before.fileKey(), after.fileKey())) throw new IOException("save physical identity or timestamp changed during inspection");
-                return new Report("rrf-save-inspection-v1", request.machineId(), Instant.now().toString(), request, code, stderr,
+                Assessment assessment = new NotAssessed();
+                if (request.expectation() instanceof FusionSelection expected) {
+                    if (fixture == null || prepared == null || !fixture.equals(fixture(request, expected)) || !prepared.equals(prepared(expected, fixture))) throw new IOException("fixture selection/preparation changed during save inspection");
+                    assessment = SavedSelectionComparator.compare(request, projection.scopes(), fixture, prepared, expected.resultRiteId());
+                }
+                return new Report("rrf-save-inspection-v2", request.machineId(), Instant.now().toString(), request, code, stderr,
                         new StreamEvidence(HexFormat.of().formatHex(digest.digest()), Long.toString(bytes.count()), Long.toString(projection.tokens()), Integer.toString(projection.selectedTokenBytes()), projection.rootKeys(), projection.rootScalars()),
-                        projection.inventories(), projection.scopes(), producerPins(Path.of(request.repository())), true, false);
+                        projection.inventories(), projection.scopes(), producerPins(Path.of(request.repository())), true, false, assessment);
             } catch (InterruptedException interrupted) {
                 Thread.currentThread().interrupt(); throw new IOException("offline decoder interrupted", interrupted);
             } finally {
@@ -86,9 +104,17 @@ public final class SaveInspector {
             }
         }
     }
+    private static BoundRequest fixture(Request request, FusionSelection expected) throws IOException {
+        Pin pin = expected.fixtureManifest();
+        return FrozenFixtureReader.read(new FixtureContracts.FilePin(pin.path(), pin.bytes(), pin.sha256()), request.machineId(), Path.of(request.repository()));
+    }
+    private static PreparedBinding prepared(FusionSelection expected, BoundRequest fixture) throws IOException {
+        Pin pin = expected.preparedProfileInventory();
+        return FrozenFixtureReader.readPrepared(new FixtureContracts.FilePin(pin.path(), pin.bytes(), pin.sha256()), fixture);
+    }
     private static List<Pin> producerPins(Path repository) throws IOException {
         Path java = repository.resolve("mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf"); List<Pin> pins = new ArrayList<>();
-        for (String source : List.of("save/SaveContracts.java", "save/SaveStream.java", "save/SaveInspector.java", "Command.java", "Clausewitz.java", "Contracts.java", "Json.java", "ReleaseBuilder.java")) pins.add(pin(java.resolve(source)));
+        for (String source : List.of("save/SaveContracts.java", "save/SaveStream.java", "save/SaveInspector.java", "save/SavedSelectionComparator.java", "acceptance/FixtureContracts.java", "acceptance/FixtureEmitter.java", "acceptance/FrozenFixtureReader.java", "ExpectedSelection.java", "Command.java", "Clausewitz.java", "Contracts.java", "Json.java", "ReleaseBuilder.java")) pins.add(pin(java.resolve(source)));
         return List.copyOf(pins);
     }
     private static void drain(InputStream stream, ByteArrayOutputStream output, AtomicBoolean overflow, AtomicReference<IOException> failure) {

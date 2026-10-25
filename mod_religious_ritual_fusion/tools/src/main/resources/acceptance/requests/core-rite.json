@@ -1,7 +1,17 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "kind": "core",
   "mode": "rite",
   "actorHistoryId": "1128",
-  "setup": { "type": "fresh", "piety": 500 }
+  "setup": {
+    "type": "fresh",
+    "piety": 500
+  },
+  "expectedSelection": {
+    "coreTenets": [
+      "tenet_esotericism",
+      "tenet_astrology",
+      "tenet_communal_identity"
+    ]
+  }
 }

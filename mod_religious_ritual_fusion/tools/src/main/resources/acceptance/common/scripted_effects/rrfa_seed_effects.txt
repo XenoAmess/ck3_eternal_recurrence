@@ -7,14 +7,14 @@ rrfa_seed_inputs_effect = {
         save_scope_as = rrfa_a
         convert = no
         target_divergence = 0
-        core_tenet_override_entry = tenet:tenet_esotericism
-        core_tenet_override_entry = tenet:tenet_legalism
-        core_tenet_override_entry = tenet:tenet_astrology
+        core_tenet_override_entry = tenet:${SOURCE_SHARED_ONE}
+        core_tenet_override_entry = tenet:${SOURCE_SHARED_TWO}
+        core_tenet_override_entry = tenet:${SOURCE_A_EXCLUSIVE}
     }
     if = {
         limit = { exists = scope:rrfa_a }
         scope:rrfa_a = { save_scope_as = rrfa_seed_target }
-        set_variable = { name = rrfa_seed_third value = tenet:tenet_astrology }
+        set_variable = { name = rrfa_seed_third value = tenet:${SOURCE_A_EXCLUSIVE} }
         debug_log = "RRFAT: DIAG SOURCE_A_CORE_PREPARATION_BEGIN"
         rrfa_align_seed_core_effect = yes
         debug_log = "RRFAT: DIAG SOURCE_A_CORE_PREPARATION_END"
@@ -26,14 +26,14 @@ rrfa_seed_inputs_effect = {
             save_scope_as = rrfa_b
             convert = no
             target_divergence = 0
-            core_tenet_override_entry = tenet:tenet_esotericism
-            core_tenet_override_entry = tenet:tenet_legalism
-            core_tenet_override_entry = tenet:tenet_communal_identity
+            core_tenet_override_entry = tenet:${SOURCE_SHARED_ONE}
+            core_tenet_override_entry = tenet:${SOURCE_SHARED_TWO}
+            core_tenet_override_entry = tenet:${SOURCE_B_EXCLUSIVE}
         }
         if = {
             limit = { exists = scope:rrfa_b }
             scope:rrfa_b = { save_scope_as = rrfa_seed_target }
-            set_variable = { name = rrfa_seed_third value = tenet:tenet_communal_identity }
+            set_variable = { name = rrfa_seed_third value = tenet:${SOURCE_B_EXCLUSIVE} }
             debug_log = "RRFAT: DIAG SOURCE_B_RITE_CORE_PREPARATION_BEGIN"
             rrfa_align_seed_core_effect = yes
             debug_log = "RRFAT: DIAG SOURCE_B_RITE_CORE_PREPARATION_END"
@@ -43,9 +43,9 @@ rrfa_seed_inputs_effect = {
                 save_scope_as = rrfa_b_faith_rite
                 convert = no
                 target_divergence = 0
-                core_tenet_override_entry = tenet:tenet_esotericism
-                core_tenet_override_entry = tenet:tenet_legalism
-                core_tenet_override_entry = tenet:tenet_communal_identity
+                core_tenet_override_entry = tenet:${SOURCE_SHARED_ONE}
+                core_tenet_override_entry = tenet:${SOURCE_SHARED_TWO}
+                core_tenet_override_entry = tenet:${SOURCE_B_EXCLUSIVE}
             }
             if = {
                 limit = { exists = scope:rrfa_b_faith_rite }
@@ -55,7 +55,7 @@ rrfa_seed_inputs_effect = {
                     limit = { exists = scope:rrfa_b_faith }
                     # Align after native detachment as well as native creation.
                     scope:rrfa_b_faith_rite = { save_scope_as = rrfa_seed_target }
-                    set_variable = { name = rrfa_seed_third value = tenet:tenet_communal_identity }
+                    set_variable = { name = rrfa_seed_third value = tenet:${SOURCE_B_EXCLUSIVE} }
                     debug_log = "RRFAT: DIAG SOURCE_B_FAITH_CORE_PREPARATION_BEGIN"
                     rrfa_align_seed_core_effect = yes
                     debug_log = "RRFAT: DIAG SOURCE_B_FAITH_CORE_PREPARATION_END"
@@ -63,10 +63,10 @@ rrfa_seed_inputs_effect = {
                     set_variable = { name = rrfa_source_b_faith value = scope:rrfa_b_faith }
                     set_variable = { name = rrfa_expected_b value = var:${EXPECTED_B} }
                     set_variable = { name = rrfa_mode value = flag:${MODE} }
-                    add_known_tenet = tenet_esotericism
-                    add_known_tenet = tenet_legalism
-                    add_known_tenet = tenet_astrology
-                    add_known_tenet = tenet_communal_identity
+                    add_known_tenet = ${SOURCE_SHARED_ONE}
+                    add_known_tenet = ${SOURCE_SHARED_TWO}
+                    add_known_tenet = ${SOURCE_A_EXCLUSIVE}
+                    add_known_tenet = ${SOURCE_B_EXCLUSIVE}
                     add_known_doctrine = doctrine_divorce_disallowed
                     add_known_doctrine = doctrine_divorce_allowed
                     add_piety = { value = ${PIETY} subtract = piety }
@@ -74,7 +74,7 @@ rrfa_seed_inputs_effect = {
                     add_character_flag = rrfa_seed_done
                     rrfa_seed_readiness_diagnostics_effect = yes
                     if = {
-                        limit = { rrfa_inputs_intact_trigger = yes rite = var:rrfa_source_a knows_tenet = tenet_communal_identity knows_doctrine = doctrine_divorce_allowed var:rrfa_expected_b = { can_convert_to_rite = yes } }
+                        limit = { rrfa_inputs_intact_trigger = yes rite = var:rrfa_source_a knows_tenet = ${SOURCE_B_EXCLUSIVE} knows_doctrine = doctrine_divorce_allowed var:rrfa_expected_b = { can_convert_to_rite = yes } }
                         debug_log = "RRFAT: TEST PASS fixture_ready"
                     }
                     else = { debug_log = "RRFAT: TEST FAIL fixture_ready" }
@@ -102,8 +102,8 @@ rrfa_align_seed_core_effect = {
             if = {
                 limit = {
                     NOR = {
-                        this = tenet:tenet_esotericism
-                        this = tenet:tenet_legalism
+                        this = tenet:${SOURCE_SHARED_ONE}
+                        this = tenet:${SOURCE_SHARED_TWO}
                         this = scope:rrfa_seed_actor.var:rrfa_seed_third
                     }
                 }
@@ -120,12 +120,12 @@ rrfa_align_seed_core_effect = {
     every_in_list = { list = rrfa_seed_cores_to_remove remove_from_list = rrfa_seed_cores_to_remove }
     scope:rrfa_seed_target = {
         if = {
-            limit = { NOT = { any_rite_tenet = { this = tenet:tenet_esotericism } } }
-            add_rite_tenet = tenet:tenet_esotericism
+            limit = { NOT = { any_rite_tenet = { this = tenet:${SOURCE_SHARED_ONE} } } }
+            add_rite_tenet = tenet:${SOURCE_SHARED_ONE}
         }
         if = {
-            limit = { NOT = { any_rite_tenet = { this = tenet:tenet_legalism } } }
-            add_rite_tenet = tenet:tenet_legalism
+            limit = { NOT = { any_rite_tenet = { this = tenet:${SOURCE_SHARED_TWO} } } }
+            add_rite_tenet = tenet:${SOURCE_SHARED_TWO}
         }
         if = {
             limit = { NOT = { any_rite_tenet = { this = scope:rrfa_seed_actor.var:rrfa_seed_third } } }
@@ -253,7 +253,7 @@ rrfa_seed_readiness_diagnostics_effect = {
     }
     else = { debug_log = "RRFAT: DIAG ACTOR_CURRENT_RITE_A NO" }
     if = {
-        limit = { knows_tenet = tenet_communal_identity }
+        limit = { knows_tenet = ${SOURCE_B_EXCLUSIVE} }
         debug_log = "RRFAT: DIAG KNOWN_B_EXCLUSIVE_CORE YES"
     }
     else = { debug_log = "RRFAT: DIAG KNOWN_B_EXCLUSIVE_CORE NO" }

@@ -11,8 +11,10 @@ on:
       - 'tools/ck3_mod_acceptance.py'
       - 'tools/ck3_mod_acceptance_prepare.py'
       - 'tools/ck3_mod_acceptance_cases/generic_product_adapter.py'
+      - 'tools/ck3_mod_acceptance_cases/religious_ritual_fusion_core.json'
       - 'tools/test_compatibility_mod_profiles.py'
       - 'tools/test_prebuilt_fixture_prepare.py'
+      - 'tools/test_religious_ritual_fusion_prebuilt.py'
       - '.github/workflows/religious-ritual-fusion-static.yml'
       - 'java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java'
   pull_request:
@@ -24,8 +26,10 @@ on:
       - 'tools/ck3_mod_acceptance.py'
       - 'tools/ck3_mod_acceptance_prepare.py'
       - 'tools/ck3_mod_acceptance_cases/generic_product_adapter.py'
+      - 'tools/ck3_mod_acceptance_cases/religious_ritual_fusion_core.json'
       - 'tools/test_compatibility_mod_profiles.py'
       - 'tools/test_prebuilt_fixture_prepare.py'
+      - 'tools/test_religious_ritual_fusion_prebuilt.py'
       - '.github/workflows/religious-ritual-fusion-static.yml'
   workflow_dispatch:
 
@@ -64,7 +68,9 @@ jobs:
         run: mvn --batch-mode --no-transfer-progress -f mod_religious_ritual_fusion/tools/pom.xml -Drrf.build.root=${{ runner.temp }}/rrf-build verify
       - name: Verify full shared fixture and independent compatibility profile consumers
         working-directory: tools
-        run: python -B -X utf8 -m unittest test_prebuilt_fixture_prepare test_compatibility_mod_profiles test_ck3_mod_acceptance_adapters test_saved_campaign_profile_inventory_v2
+        env:
+          RRF_FIXTURE_CLI_JAR: ${{ runner.temp }}/rrf-build/quarkus-app/quarkus-run.jar
+        run: python -B -X utf8 -m unittest test_religious_ritual_fusion_prebuilt test_prebuilt_fixture_prepare test_compatibility_mod_profiles test_ck3_mod_acceptance_adapters test_saved_campaign_profile_inventory_v2
       - name: Strict-check independent compatibility tests and actual contract AST
         env:
           MYPYPATH: tools;ck3_autonomous_player/src

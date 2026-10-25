@@ -1,7 +1,16 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "kind": "cold_reload",
   "mode": "faith",
   "actorHistoryId": "1128",
-  "setup": { "type": "saved" }
+  "setup": {
+    "type": "saved"
+  },
+  "expectedSelection": {
+    "coreTenets": [
+      "tenet_esotericism",
+      "tenet_astrology",
+      "tenet_communal_identity"
+    ]
+  }
 }

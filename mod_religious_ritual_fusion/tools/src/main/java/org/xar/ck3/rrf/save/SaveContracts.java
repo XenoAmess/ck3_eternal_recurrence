@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.time.Instant;
 import java.util.List;
 import org.xar.ck3.rrf.Contracts;
+import org.xar.ck3.rrf.ExpectedSelection;
 
 /** Versioned offline evidence. Native identities and resource lexemes never pass through floating point. */
 public final class SaveContracts {
@@ -42,10 +43,18 @@ public final class SaveContracts {
             riteIds = checkedIds(riteIds); faithIds = checkedIds(faithIds); religionIds = checkedIds(religionIds);
         }
     }
-    public record Request(int schemaVersion, String machineId, String repository, Pin save, Pin decoder, Layout layout, Selection selection) {
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+    @JsonSubTypes({@JsonSubTypes.Type(value = InspectOnly.class, name = "inspect_only"), @JsonSubTypes.Type(value = FusionSelection.class, name = "fusion_selection")})
+    public sealed interface Expectation permits InspectOnly, FusionSelection { }
+    public record InspectOnly() implements Expectation { }
+    public record FusionSelection(Pin fixtureManifest, Pin preparedProfileInventory, NativeId resultRiteId) implements Expectation {
+        public FusionSelection { if (fixtureManifest == null || preparedProfileInventory == null || resultRiteId == null) throw new IllegalArgumentException("pinned fixture, public prepared inventory and actual result Rite required"); }
+    }
+    public record Request(int schemaVersion, String machineId, String repository, Pin save, Pin decoder, Layout layout, Selection selection, Expectation expectation) {
         public Request {
-            Contracts.schema(schemaVersion);
-            if (machineId == null || !machineId.matches("[a-z0-9][a-z0-9-]{2,95}") || repository == null || !Path.of(repository).isAbsolute() || save == null || decoder == null || layout == null || selection == null) throw new IllegalArgumentException("complete pinned save inspection request required");
+            if (schemaVersion != 2) throw new IllegalArgumentException("save inspection request schemaVersion 2 required");
+            if (machineId == null || !machineId.matches("[a-z0-9][a-z0-9-]{2,95}") || repository == null || !Path.of(repository).isAbsolute() || save == null || decoder == null || layout == null || selection == null || expectation == null) throw new IllegalArgumentException("complete pinned save inspection request and explicit expectation required");
+            if (expectation instanceof FusionSelection fusion && !selection.riteIds().contains(fusion.resultRiteId())) throw new IllegalArgumentException("actual fusion result Rite must be selected for complete AST inspection");
         }
     }
     public enum ScopeKind { METADATA, ACTOR, RITE, FAITH, RELIGION }
@@ -69,11 +78,26 @@ public final class SaveContracts {
     public record StreamEvidence(String sha256, String bytes, String tokens, String selectedTokenBytes, List<String> rootKeys, List<Entry> rootScalars) {
         public StreamEvidence { Contracts.digest(sha256); rootKeys = List.copyOf(rootKeys); rootScalars = List.copyOf(rootScalars); }
     }
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+    @JsonSubTypes({@JsonSubTypes.Type(value = NotAssessed.class, name = "not_assessed"), @JsonSubTypes.Type(value = SelectionVerified.class, name = "fixture_bound_selection_verified")})
+    public sealed interface Assessment permits NotAssessed, SelectionVerified { }
+    public record NotAssessed() implements Assessment { }
+    /** Only saved exact core/origin selection and both source contributions; no GUI, charge or reload claim. */
+    public record SelectionVerified(Pin fixtureManifest, Pin fixtureRequest, Pin preparedProfileInventory,
+                                    Pin preparedFixtureRequest, Pin preparedCaseContract, ExpectedSelection expectedSelection,
+                                    NativeId resultRiteId, NativeId sourceARiteId, NativeId sourceBRiteId) implements Assessment {
+        public SelectionVerified {
+            if (fixtureManifest == null || fixtureRequest == null || preparedProfileInventory == null || preparedFixtureRequest == null || preparedCaseContract == null || expectedSelection == null || resultRiteId == null || sourceARiteId == null || sourceBRiteId == null) throw new IllegalArgumentException("complete fixture-bound selection evidence required");
+        }
+    }
     public record Report(String schema, String machineId, String observedAtUtc, Request request, int decoderExitCode,
                          String decoderStderr, StreamEvidence stream, List<Inventory> inventories, List<Scope> scopes,
-                         List<Pin> producerSources, boolean saveUnchanged, boolean gameStarted) {
+                         List<Pin> producerSources, boolean saveUnchanged, boolean gameStarted, Assessment assessment) {
         public Report {
-            if (!"rrf-save-inspection-v1".equals(schema) || decoderExitCode != 0 || !saveUnchanged || gameStarted) throw new IllegalArgumentException("incomplete offline evidence");
+            if (!"rrf-save-inspection-v2".equals(schema) || decoderExitCode != 0 || !saveUnchanged || gameStarted || assessment == null) throw new IllegalArgumentException("incomplete offline evidence");
+            if ((request.expectation() instanceof FusionSelection) != (assessment instanceof SelectionVerified)) throw new IllegalArgumentException("saved selection expectation/assessment branch mismatch");
+            if (request.expectation() instanceof FusionSelection expected && assessment instanceof SelectionVerified verified
+                    && (!expected.fixtureManifest().equals(verified.fixtureManifest()) || !expected.preparedProfileInventory().equals(verified.preparedProfileInventory()) || !expected.resultRiteId().equals(verified.resultRiteId()))) throw new IllegalArgumentException("saved selection expectation/assessment identity mismatch");
             Instant.parse(observedAtUtc); inventories = List.copyOf(inventories); scopes = List.copyOf(scopes); producerSources = List.copyOf(producerSources);
         }
     }

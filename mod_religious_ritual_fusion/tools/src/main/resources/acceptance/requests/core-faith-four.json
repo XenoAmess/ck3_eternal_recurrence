@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 3,
+  "kind": "core",
+  "mode": "faith",
+  "actorHistoryId": "1128",
+  "setup": {
+    "type": "fresh",
+    "piety": 1000
+  },
+  "expectedSelection": {
+    "coreTenets": [
+      "tenet_esotericism",
+      "tenet_legalism",
+      "tenet_astrology",
+      "tenet_communal_identity"
+    ]
+  }
+}

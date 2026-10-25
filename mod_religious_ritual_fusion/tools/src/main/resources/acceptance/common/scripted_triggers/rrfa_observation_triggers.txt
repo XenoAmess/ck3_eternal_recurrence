@@ -1,21 +1,12 @@
 # All functions in this file are read-only. No expected-success flags are written.
 rrfa_a_core_trigger = {
-    any_rite_tenet = { this = tenet:tenet_esotericism }
-    any_rite_tenet = { this = tenet:tenet_legalism }
-    any_rite_tenet = { this = tenet:tenet_astrology }
-    NOT = { any_rite_tenet = { NOR = { this = tenet:tenet_esotericism this = tenet:tenet_legalism this = tenet:tenet_astrology } } }
+    ${SOURCE_A_CORE}
 }
 rrfa_b_core_trigger = {
-    any_rite_tenet = { this = tenet:tenet_esotericism }
-    any_rite_tenet = { this = tenet:tenet_legalism }
-    any_rite_tenet = { this = tenet:tenet_communal_identity }
-    NOT = { any_rite_tenet = { NOR = { this = tenet:tenet_esotericism this = tenet:tenet_legalism this = tenet:tenet_communal_identity } } }
+    ${SOURCE_B_CORE}
 }
 rrfa_result_core_trigger = {
-    any_rite_tenet = { this = tenet:tenet_esotericism }
-    any_rite_tenet = { this = tenet:tenet_astrology }
-    any_rite_tenet = { this = tenet:tenet_communal_identity }
-    NOT = { any_rite_tenet = { NOR = { this = tenet:tenet_esotericism this = tenet:tenet_astrology this = tenet:tenet_communal_identity } } }
+    ${EXPECTED_RESULT_CORE}
 }
 rrfa_inputs_intact_trigger = {
     has_variable = rrfa_source_a
@@ -59,10 +50,7 @@ rrfa_common_success_trigger = {
         var:rrf_origin_b_faith = root.var:rrfa_expected_b.faith
         var:rrf_origin_mode = flag:${MODE}
         var:rrf_origin_founder = root
-        is_target_in_variable_list = { name = rrf_origin_core_tenets target = tenet:tenet_esotericism }
-        is_target_in_variable_list = { name = rrf_origin_core_tenets target = tenet:tenet_astrology }
-        is_target_in_variable_list = { name = rrf_origin_core_tenets target = tenet:tenet_communal_identity }
-        NOT = { any_in_list = { variable = rrf_origin_core_tenets NOR = { this = tenet:tenet_esotericism this = tenet:tenet_astrology this = tenet:tenet_communal_identity } } }
+        ${EXPECTED_ORIGIN_CORE}
         is_target_in_variable_list = { name = rrf_origin_doctrines target = doctrine:doctrine_divorce_allowed }
         NOT = { is_target_in_variable_list = { name = rrf_origin_doctrines target = doctrine:doctrine_divorce_disallowed } }
     }

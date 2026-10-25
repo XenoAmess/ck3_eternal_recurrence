@@ -118,7 +118,12 @@ rrf_apply_selected_doctrines_effect = {
     every_in_list = {
         variable = rrf_selected_doctrines
         save_scope_as = rrf_item
-        scope:rrf_new_rite = { change_rite_doctrine = scope:rrf_item }
+        scope:rrf_new_rite = {
+            if = {
+                limit = { NOT = { rite_has_doctrine = scope:rrf_item } }
+                change_rite_doctrine = scope:rrf_item
+            }
+        }
     }
 }
 

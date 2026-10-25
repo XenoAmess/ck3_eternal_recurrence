@@ -56,7 +56,7 @@ final class SaveInspectionTest {
         assertEquals(1, scope(report.scopes(), ScopeKind.METADATA).ast().entries().size());
         assertTrue(report.saveUnchanged()); assertFalse(report.gameStarted());
         assertEquals(request.save(), SaveInspector.pin(Path.of(request.save().path())));
-        assertEquals(8, report.producerSources().size());
+        assertEquals(13, report.producerSources().size());
         assertEquals(Integer.toString(SAVE.getBytes(StandardCharsets.UTF_8).length), report.stream().bytes());
         assertTrue(new String(Json.write(report), StandardCharsets.UTF_8).contains("\"9007199254740993\""));
     }
@@ -78,9 +78,9 @@ final class SaveInspectionTest {
         for (String text : List.of(SAVE.substring(0, SAVE.lastIndexOf('}')), SAVE + "}", SAVE + "broken =", SAVE + "unexpected", SAVE.replace("150={faith", "150={} 150={faith"))) {
             assertThrows(IOException.class, () -> new SaveStream(new StringReader(text), request).read());
         }
-        Request oldLayout = new Request(1, request.machineId(), request.repository(), request.save(), request.decoder(), new Layout(List.of("living"), List.of("jens_180", "database"), List.of("faiths", "database"), List.of("religion", "religions")), request.selection());
+        Request oldLayout = new Request(2, request.machineId(), request.repository(), request.save(), request.decoder(), new Layout(List.of("living"), List.of("jens_180", "database"), List.of("faiths", "database"), List.of("religion", "religions")), request.selection(), request.expectation());
         assertThrows(IOException.class, () -> new SaveStream(new StringReader(SAVE), oldLayout).read());
-        Request missing = new Request(1, request.machineId(), request.repository(), request.save(), request.decoder(), request.layout(), new Selection(new NativeId("31254"), List.of(new NativeId("999")), List.of(), List.of()));
+        Request missing = new Request(2, request.machineId(), request.repository(), request.save(), request.decoder(), request.layout(), new Selection(new NativeId("31254"), List.of(new NativeId("999")), List.of(), List.of()), request.expectation());
         assertThrows(IOException.class, () -> new SaveStream(new StringReader(SAVE), missing).read());
     }
     @Test void strictInputSchemaRejectsLossyNativeIdentitiesUnknownFieldsAndOldTypes() throws Exception {
@@ -89,14 +89,14 @@ final class SaveInspectionTest {
         for (String value : List.of("31254", "31254.0", "true", "null", "{}", "[]", "\"031254\"", "\"18446744073709551616\"")) {
             assertThrows(IOException.class, () -> Json.read(json.replace("\"31254\"", value).getBytes(StandardCharsets.UTF_8), Request.class));
         }
-        for (String invalid : List.of(json.replace("\"schemaVersion\" : 1", "\"schemaVersion\" : 2"), json.replace("\"schemaVersion\" : 1", "\"schemaVersion\" : 1, \"extra\" : true"), json.replace("\"actorId\"", "\"actorHistoryId\""), json.replace("\"actorId\" : \"31254\",", ""))) {
+        for (String invalid : List.of(json.replace("\"schemaVersion\" : 2", "\"schemaVersion\" : 1"), json.replace("\"schemaVersion\" : 2", "\"schemaVersion\" : 2, \"extra\" : true"), json.replace("\"actorId\"", "\"actorHistoryId\""), json.replace("\"actorId\" : \"31254\",", ""))) {
             assertThrows(IOException.class, () -> Json.read(invalid.getBytes(StandardCharsets.UTF_8), Request.class));
         }
         assertThrows(IllegalArgumentException.class, () -> new Selection(new NativeId("31254"), List.of(new NativeId("150"), new NativeId("150")), List.of(), List.of()));
     }
     @Test void pinMismatchRejectsBeforeDecoderAndActualChildFailuresCannotProduceEvidence() throws Exception {
         Request request = request(); AtomicBoolean launched = new AtomicBoolean();
-        Request wrong = new Request(1, request.machineId(), request.repository(), new Pin(request.save().path(), request.save().bytes(), "0".repeat(64)), request.decoder(), request.layout(), request.selection());
+        Request wrong = new Request(2, request.machineId(), request.repository(), new Pin(request.save().path(), request.save().bytes(), "0".repeat(64)), request.decoder(), request.layout(), request.selection(), request.expectation());
         assertThrows(IOException.class, () -> SaveInspector.inspect(wrong, (decoder, save) -> { launched.set(true); throw new IOException("must not launch"); }));
         assertFalse(launched.get());
         for (String mode : List.of("nonzero", "truncated", "stderr-overflow")) assertThrows(IOException.class, () -> SaveInspector.inspect(request, fixture(mode)));
@@ -111,8 +111,8 @@ final class SaveInspectionTest {
     private Request request() throws IOException {
         Path save = directory.resolve("synthetic.ck3"); if (!Files.exists(save)) Files.writeString(save, SAVE);
         Path java = Path.of(System.getProperty("java.home"), "bin", System.getProperty("os.name").startsWith("Windows") ? "java.exe" : "java");
-        return new Request(1, "synthetic-fixture-machine", Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize().getParent().toString(), SaveInspector.pin(save), SaveInspector.pin(java),
-                new Layout(List.of("living"), List.of("rites", "database"), List.of("faiths", "database"), List.of("religion", "religions")), new Selection(new NativeId("31254"), List.of(new NativeId("150")), List.of(new NativeId("13")), List.of(new NativeId("8"))));
+        return new Request(2, "synthetic-fixture-machine", Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize().getParent().toString(), SaveInspector.pin(save), SaveInspector.pin(java),
+                new Layout(List.of("living"), List.of("rites", "database"), List.of("faiths", "database"), List.of("religion", "religions")), new Selection(new NativeId("31254"), List.of(new NativeId("150")), List.of(new NativeId("13")), List.of(new NativeId("8"))), new SaveContracts.InspectOnly());
     }
     private SaveInspector.DecoderLauncher fixture(String mode) throws URISyntaxException {
         String classes = Path.of(DecoderFixture.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toString();

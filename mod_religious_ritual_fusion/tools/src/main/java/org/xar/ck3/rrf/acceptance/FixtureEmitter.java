@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.xar.ck3.rrf.Contracts.Catalog;
+import org.xar.ck3.rrf.Contracts.Kind;
+import org.xar.ck3.rrf.ExpectedSelection;
+import org.xar.ck3.rrf.ExpectedSelection.TenetKey;
 import org.xar.ck3.rrf.Contracts.Definition;
 import org.xar.ck3.rrf.Contracts.Group;
 import org.xar.ck3.rrf.Json;
@@ -35,7 +38,7 @@ public final class FixtureEmitter {
             "common/decisions/rrfa_observation_decisions.txt", "localization/english/rrfa_observation_l_english.yml", "localization/simp_chinese/rrfa_observation_l_simp_chinese.yml");
     private static final List<String> COLD = List.of("common/decisions/rrfa_cold_observation_decisions.txt",
             "localization/english/rrfa_observation_l_english.yml", "localization/simp_chinese/rrfa_observation_l_simp_chinese.yml");
-    private static final List<String> TENETS = List.of("tenet_esotericism", "tenet_legalism", "tenet_astrology", "tenet_communal_identity");
+    private static final List<TenetKey> TENETS = java.util.stream.Stream.concat(FixtureContracts.SOURCE_A.stream(), FixtureContracts.SOURCE_B.stream()).distinct().toList();
     private FixtureEmitter() { }
     public enum BusinessAcceptance { NOT_RUN }
     public record Emission(Path fixture, Path manifest, Path requestSnapshot, Manifest payload) { }
@@ -59,11 +62,12 @@ public final class FixtureEmitter {
         Path producer = repo.resolve(MAIN);
         if (producer.startsWith(destination) || destination.startsWith(producer)) throw new IllegalArgumentException("fixture output overlaps producer sources");
         List<FilePin> pins = new ArrayList<>();
-        for (String java : List.of("org/xar/ck3/rrf/acceptance/FixtureEmitter.java", "org/xar/ck3/rrf/acceptance/FixtureContracts.java", "org/xar/ck3/rrf/Json.java", "org/xar/ck3/rrf/Contracts.java", "org/xar/ck3/rrf/Clausewitz.java", "org/xar/ck3/rrf/ReleaseBuilder.java")) {
+        for (String java : List.of("org/xar/ck3/rrf/acceptance/FixtureEmitter.java", "org/xar/ck3/rrf/acceptance/FixtureContracts.java", "org/xar/ck3/rrf/ExpectedSelection.java", "org/xar/ck3/rrf/Json.java", "org/xar/ck3/rrf/Contracts.java", "org/xar/ck3/rrf/Clausewitz.java", "org/xar/ck3/rrf/ReleaseBuilder.java")) {
             Path path = producer.resolve("java").resolve(java); checkedResource(path, "/producer-source/" + java); pins.add(pin(path));
         }
         Path catalogPath = repo.resolve("mod_religious_ritual_fusion/catalog/generated-catalog.json");
-        validateCatalog(Json.read(Files.readAllBytes(catalogPath), Catalog.class)); pins.add(pin(catalogPath));
+        Catalog catalog = Json.read(Files.readAllBytes(catalogPath), Catalog.class);
+        validateCatalog(catalog); request.expectedSelection().requireCatalog(catalog); pins.add(pin(catalogPath));
         Path evidence = producer.resolve("resources/acceptance/native-source-evidence.json"); checkedResource(evidence, "/acceptance/native-source-evidence.json"); pins.add(pin(evidence));
         List<String> assets = new ArrayList<>(COMMON);
         assets.addAll(request.kind() == CaseKind.COLD_RELOAD ? COLD : FRESH);
@@ -73,6 +77,14 @@ public final class FixtureEmitter {
             byte[] original = checkedResource(template, "/acceptance/" + relative); pins.add(pin(template));
             String rendered = new String(original, StandardCharsets.UTF_8).replace("${CASE}", request.kind().wire()).replace("${MODE}", request.mode().wire()).replace("${COST}", Integer.toString(request.mode().cost()))
                     .replace("${ACTOR_HISTORY_ID}", request.actorHistoryId().value())
+                    .replace("${SOURCE_A_CORE}", corePredicate(FixtureContracts.SOURCE_A))
+                    .replace("${SOURCE_B_CORE}", corePredicate(FixtureContracts.SOURCE_B))
+                    .replace("${EXPECTED_RESULT_CORE}", corePredicate(request.expectedSelection().coreTenets()))
+                    .replace("${EXPECTED_ORIGIN_CORE}", originPredicate(request.expectedSelection()))
+                    .replace("${SOURCE_SHARED_ONE}", FixtureContracts.SOURCE_A.get(0).value())
+                    .replace("${SOURCE_SHARED_TWO}", FixtureContracts.SOURCE_A.get(1).value())
+                    .replace("${SOURCE_A_EXCLUSIVE}", FixtureContracts.SOURCE_A.get(2).value())
+                    .replace("${SOURCE_B_EXCLUSIVE}", FixtureContracts.SOURCE_B.get(2).value())
                     .replace("${PIETY}", request.setup() instanceof FreshSetup fresh ? Integer.toString(fresh.piety()) : "0")
                     .replace("${EXPECTED_B}", request.mode() == FixtureContracts.Mode.RITE ? "rrfa_source_b_rite" : "rrfa_source_b_faith_rite")
                     .replace("${OBSERVATION_DECISION}", request.kind() == CaseKind.COLD_RELOAD ? "rrfa_observe_cold_decision" : "rrfa_observe_" + request.kind().wire() + "_decision")
@@ -80,6 +92,7 @@ public final class FixtureEmitter {
             if (rendered.contains("${")) throw new IllegalArgumentException("unresolved fixture template token");
             payloads.put(relative, (relative.equals("descriptor.mod") ? rendered : "\ufeff" + rendered).getBytes(StandardCharsets.UTF_8));
         }
+        payloads.put(FixtureContracts.REQUEST_FILE, Json.write(request));
         List<String> markers = switch (request.kind()) {
             case CORE -> List.of("RRFAT: TEST PASS fixture_ready", "RRFAT: TEST PASS " + request.mode().wire() + "_success_readback");
             case UI_REJECTION -> List.of("RRFAT: TEST PASS fixture_ready", "RRFAT: TEST PASS no_product_change_readback");
@@ -96,9 +109,10 @@ public final class FixtureEmitter {
         return new Emission(destination, manifest, snapshot, result);
     }
     public static void validateCatalog(Catalog catalog) {
-        for (String id : TENETS) {
+        for (TenetKey key : TENETS) {
+            String id = key.value();
             Definition definition = catalog.definitions().stream().filter(d -> d.id().equals(id)).findFirst().orElseThrow(() -> new IllegalArgumentException("fixture native tenet missing: " + id));
-            if (!definition.shown().isEmpty() || !(definition.canPick().isEmpty() || definition.canPick().equals("always = yes")) || !definition.requiresDlc().isEmpty() || !definition.blockedReasons().isEmpty()) throw new IllegalArgumentException("fixture simple-tenet assumption changed: " + id);
+            if (definition.kind() != Kind.TENET || !definition.visible() || !definition.shown().isEmpty() || !(definition.canPick().isEmpty() || definition.canPick().equals("always = yes")) || !definition.requiresDlc().isEmpty() || !definition.blockedReasons().isEmpty()) throw new IllegalArgumentException("fixture simple-tenet assumption changed: " + id);
         }
         Group divorce = catalog.groups().stream().filter(g -> g.id().equals("doctrine_divorce")).findFirst().orElseThrow();
         if (!divorce.lock().equals("none") || !divorce.availableOnCreate().isEmpty()) throw new IllegalArgumentException("fixture divorce group changed");
@@ -106,6 +120,22 @@ public final class FixtureEmitter {
             Definition d = catalog.definitions().stream().filter(row -> row.id().equals(id)).findFirst().orElseThrow();
             if (!d.group().equals(divorce.id()) || !d.shown().isEmpty() || !d.canPick().isEmpty() || !d.requiresDlc().isEmpty() || !d.blockedReasons().isEmpty()) throw new IllegalArgumentException("fixture divorce doctrine changed: " + id);
         }
+    }
+    /** Membership and cardinality are both checked; duplicates cannot satisfy the observer. */
+    public static String corePredicate(List<TenetKey> keys) {
+        ExpectedSelection.unique(keys, "rendered core predicate");
+        StringBuilder result = new StringBuilder("any_rite_tenet = { count = " + keys.size() + " }\n");
+        for (TenetKey key : keys) result.append("    any_rite_tenet = { this = tenet:").append(key.value()).append(" }\n");
+        result.append("    NOT = { any_rite_tenet = { NOR = { ");
+        for (TenetKey key : keys) result.append("this = tenet:").append(key.value()).append(' ');
+        return result.append("} } }").toString();
+    }
+    public static String originPredicate(ExpectedSelection selection) {
+        StringBuilder result = new StringBuilder("variable_list_size = { name = rrf_origin_core_tenets value = " + selection.coreTenets().size() + " }\n");
+        for (TenetKey key : selection.coreTenets()) result.append("        is_target_in_variable_list = { name = rrf_origin_core_tenets target = tenet:").append(key.value()).append(" }\n");
+        result.append("        NOT = { any_in_list = { variable = rrf_origin_core_tenets NOR = { ");
+        for (TenetKey key : selection.coreTenets()) result.append("this = tenet:").append(key.value()).append(' ');
+        return result.append("} } }").toString();
     }
     private static byte[] checkedResource(Path source, String resource) throws IOException {
         byte[] bytes = Files.readAllBytes(source);

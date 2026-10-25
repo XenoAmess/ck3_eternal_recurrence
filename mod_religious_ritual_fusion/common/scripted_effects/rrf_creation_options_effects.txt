@@ -13,7 +13,12 @@ rrf_apply_creation_options_effect = {
     every_in_global_list = {
         variable = xar_rite_creation_optional_default_doctrines
         save_scope_as = rrf_optional_default
-        scope:rrf_new_rite = { change_rite_doctrine = scope:rrf_optional_default }
+        scope:rrf_new_rite = {
+            if = {
+                limit = { NOT = { rite_has_doctrine = scope:rrf_optional_default } }
+                change_rite_doctrine = scope:rrf_optional_default
+            }
+        }
     }
     # The stock family conversion event consumes these same source identities.
     # Both RRF result modes keep the creator's Religion, so its same-Religion

@@ -11,10 +11,15 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import org.xar.ck3.rrf.Contracts;
+import org.xar.ck3.rrf.ExpectedSelection;
+import org.xar.ck3.rrf.ExpectedSelection.TenetKey;
 
 /** Private acceptance inputs and the exact public prebuilt-fixture import contract. */
 public final class FixtureContracts {
     private FixtureContracts() { }
+    public static final String REQUEST_FILE = "_rrfa_request.json";
+    public static final List<TenetKey> SOURCE_A = List.of(new TenetKey("tenet_esotericism"), new TenetKey("tenet_legalism"), new TenetKey("tenet_astrology"));
+    public static final List<TenetKey> SOURCE_B = List.of(new TenetKey("tenet_esotericism"), new TenetKey("tenet_legalism"), new TenetKey("tenet_communal_identity"));
     public enum CaseKind {
         CORE("core"), UI_REJECTION("ui_rejection"), COLD_RELOAD("cold_reload");
         private final String wire;
@@ -47,10 +52,11 @@ public final class FixtureContracts {
         }
         @JsonValue public String value() { return value; }
     }
-    public record Request(int schemaVersion, CaseKind kind, Mode mode, ActorHistoryId actorHistoryId, Setup setup) {
+    public record Request(int schemaVersion, CaseKind kind, Mode mode, ActorHistoryId actorHistoryId, Setup setup, ExpectedSelection expectedSelection) {
         public Request {
-            if (schemaVersion != 2) throw new IllegalArgumentException("fixture request schemaVersion 2 required");
-            if (kind == null || mode == null || actorHistoryId == null || setup == null) throw new IllegalArgumentException("fixture kind/mode/actorHistoryId/setup required");
+            if (schemaVersion != 3) throw new IllegalArgumentException("fixture request schemaVersion 3 required");
+            if (kind == null || mode == null || actorHistoryId == null || setup == null || expectedSelection == null) throw new IllegalArgumentException("fixture kind/mode/actorHistoryId/setup/expectedSelection required");
+            expectedSelection.requireSources(SOURCE_A, SOURCE_B);
             if ((kind == CaseKind.COLD_RELOAD) != (setup instanceof SavedSetup)) throw new IllegalArgumentException("cold_reload requires saved setup; fresh cases require fresh setup");
             if (kind == CaseKind.CORE && setup instanceof FreshSetup fresh && fresh.piety() < mode.cost()) throw new IllegalArgumentException("positive core fixture must be able to pay its mode cost");
         }
