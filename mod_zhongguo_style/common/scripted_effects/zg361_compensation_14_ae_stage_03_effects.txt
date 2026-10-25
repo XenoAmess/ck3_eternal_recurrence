@@ -177,9 +177,9 @@ zg361_comp_m283_consume_effect = {
                 change_variable = { name = zg361_comp_ae_statement_owed add = var:zg361_comp_m283_cash_raise }
             }
 
+        set_variable = { name = zg361_comp_m283_consumed value = 1 }
         zg361_comp_ae_recalculate_statement_effect = yes
 
-        set_variable = { name = zg361_comp_m283_consumed value = 1 }
         if = {
             limit = {
                 has_variable = zg361_pp_m147_receipt_active
@@ -385,9 +385,9 @@ zg361_comp_m284_consume_effect = {
             else_if = { limit = { var:zg361_comp_m284_route = 3 } set_variable = { name = zg361_comp_m284_steps value = 1 } set_variable = { name = zg361_comp_m284_next_cycle_delta value = -4 } }
             set_variable = { name = zg361_comp_ae_next_cycle_base_delta value = var:zg361_comp_m284_next_cycle_delta }
 
+        set_variable = { name = zg361_comp_m284_consumed value = 1 }
         zg361_comp_ae_recalculate_statement_effect = yes
 
-        set_variable = { name = zg361_comp_m284_consumed value = 1 }
         if = {
             limit = {
                 has_variable = zg361_pp_m147_receipt_active
@@ -609,9 +609,9 @@ zg361_comp_m285_consume_effect = {
                 change_variable = { name = zg361_comp_ae_statement_owed add = var:zg361_comp_m285_subject_raise }
             }
 
+        set_variable = { name = zg361_comp_m285_consumed value = 1 }
         zg361_comp_ae_recalculate_statement_effect = yes
 
-        set_variable = { name = zg361_comp_m285_consumed value = 1 }
         if = {
             limit = {
                 has_variable = zg361_pp_m147_receipt_active

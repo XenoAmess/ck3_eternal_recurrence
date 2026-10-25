@@ -52,6 +52,27 @@ zg361_comp_ae_recalculate_statement_effect = {
         limit = { var:zg361_comp_ae_statement_rhs = var:zg361_comp_ae_statement_payable }
         set_variable = { name = zg361_comp_ae_statement_conserved value = 1 }
     }
+    # The visible quote and the combined AE2 guard use these same amounts.
+    # They are projections of owed, not additional debts or payments.
+    set_variable = {
+        name = zg361_comp_ae_quote_treasury
+        value = { value = var:zg361_comp_ae_statement_owed multiply = 0.7 add = 0.5 floor = yes }
+    }
+    set_variable = {
+        name = zg361_comp_ae_quote_personal
+        value = { value = var:zg361_comp_ae_statement_owed subtract = var:zg361_comp_ae_quote_treasury }
+    }
+    set_variable = { name = zg361_comp_ae_quote_with_backpay value = { value = var:zg361_comp_ae_statement_owed add = 4 } }
+    set_variable = { name = zg361_comp_ae_quote_now_treasury value = { value = var:zg361_comp_ae_quote_treasury add = 3 } }
+    set_variable = { name = zg361_comp_ae_quote_now_personal value = { value = var:zg361_comp_ae_quote_personal add = 1 } }
+    set_variable = {
+        name = zg361_comp_ae_quote_deferred_treasury
+        value = { value = var:zg361_comp_ae_quote_with_backpay multiply = 0.7 add = 0.5 floor = yes }
+    }
+    set_variable = {
+        name = zg361_comp_ae_quote_deferred_personal
+        value = { value = var:zg361_comp_ae_quote_with_backpay subtract = var:zg361_comp_ae_quote_deferred_treasury }
+    }
 }
 
 zg361_comp_af_recalculate_units_effect = {

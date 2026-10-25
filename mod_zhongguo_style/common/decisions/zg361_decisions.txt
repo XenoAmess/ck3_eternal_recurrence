@@ -17,9 +17,8 @@ zg361_review_now_decision = {
 	is_valid = {
 		zg361_review_now_business_valid_trigger = yes
 	}
-	# The authoritative business gate above includes same-year variable comparisons.
-	# Do not render those engine predicates as player-facing failure text: CK3 exposes
-	# the internal `character_var_equal` key in this decision surface.
+	# The shared gate above supplies localized descriptions for every requirement.
+	# Keep it authoritative for both this decision and the native action route.
 	is_valid_showing_failures_only = {
 		always = yes
 	}

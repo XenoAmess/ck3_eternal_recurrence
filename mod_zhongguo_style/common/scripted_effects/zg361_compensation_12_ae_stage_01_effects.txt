@@ -166,9 +166,9 @@ zg361_comp_m278_consume_effect = {
             set_variable = { name = zg361_comp_m278_returned value = var:zg361_comp_ae_statement_returned }
             set_variable = { name = zg361_comp_m278_projection_mode value = var:zg361_comp_m278_route }
 
+        set_variable = { name = zg361_comp_m278_consumed value = 1 }
         zg361_comp_ae_recalculate_statement_effect = yes
 
-        set_variable = { name = zg361_comp_m278_consumed value = 1 }
         if = {
             limit = {
                 has_variable = zg361_pp_m147_receipt_active
@@ -369,9 +369,9 @@ zg361_comp_m279_consume_effect = {
             set_variable = { name = zg361_comp_m279_locked_cycle value = var:zg361_case_ae_cycle_serial }
             set_variable = { name = zg361_comp_m279_amount value = 6 }
 
+        set_variable = { name = zg361_comp_m279_consumed value = 1 }
         zg361_comp_ae_recalculate_statement_effect = yes
 
-        set_variable = { name = zg361_comp_m279_consumed value = 1 }
         if = {
             limit = {
                 has_variable = zg361_pp_m147_receipt_active
@@ -574,9 +574,9 @@ zg361_comp_m280_consume_effect = {
             if = { limit = { var:zg361_comp_m280_route = 2 } set_variable = { name = zg361_comp_m280_proration_bps value = 5000 } }
             else_if = { limit = { var:zg361_comp_m280_route = 3 } set_variable = { name = zg361_comp_m280_proration_bps value = 0 } }
 
+        set_variable = { name = zg361_comp_m280_consumed value = 1 }
         zg361_comp_ae_recalculate_statement_effect = yes
 
-        set_variable = { name = zg361_comp_m280_consumed value = 1 }
         if = {
             limit = {
                 has_variable = zg361_pp_m147_receipt_active

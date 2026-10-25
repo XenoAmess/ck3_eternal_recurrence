@@ -203,9 +203,9 @@ zg361_comp_m281_consume_effect = {
                 set_variable = { name = zg361_comp_ae_due_resolved value = 0 }
             }
 
+        set_variable = { name = zg361_comp_m281_consumed value = 1 }
         zg361_comp_ae_recalculate_statement_effect = yes
 
-        set_variable = { name = zg361_comp_m281_consumed value = 1 }
         if = {
             limit = {
                 has_variable = zg361_pp_m147_receipt_active
@@ -435,9 +435,9 @@ zg361_comp_m282_consume_effect = {
             }
             else = { set_variable = { name = zg361_comp_m282_object_materialized value = 0 } }
 
+        set_variable = { name = zg361_comp_m282_consumed value = 1 }
         zg361_comp_ae_recalculate_statement_effect = yes
 
-        set_variable = { name = zg361_comp_m282_consumed value = 1 }
         if = {
             limit = {
                 has_variable = zg361_pp_m147_receipt_active

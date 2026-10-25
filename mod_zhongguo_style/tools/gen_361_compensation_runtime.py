@@ -1383,6 +1383,15 @@ def render_consumer(mechanism_id: int, domain: str, state: int) -> str:
     reconcile_statement = recalculate_statement_call(mechanism_id)
     reconcile_lti = recalculate_lti_call(mechanism_id)
     post = post_consumer(mechanism_id)
+    # The AE initializer requires all three stage-one consumers.  Publish the
+    # consumed bit before reconciling so M280 initializes the statement before
+    # its stage barrier exposes AE2.  Keep the historical L/AF ordering intact.
+    consumed = f"set_variable = {{ name = {p}_consumed value = 1 }}"
+    accounting = "\n        ".join(
+        (consumed, reconcile_statement, reconcile_lti)
+        if domain == "ae"
+        else (reconcile_statement, reconcile_lti, consumed)
+    )
     barrier = (
         "zg361_comp_af_try_start_vesting_effect = yes"
         if domain == "af" and state == 4
@@ -1398,9 +1407,7 @@ def render_consumer(mechanism_id: int, domain: str, state: int) -> str:
         {freeze_business_object(mechanism_id, domain, state)}
         {special_payload(mechanism_id)}
         {post}
-        {reconcile_statement}
-        {reconcile_lti}
-        set_variable = {{ name = {p}_consumed value = 1 }}
+        {accounting}
         {publish_promotion_compensation_receipt(mechanism_id)}
         {barrier}
         debug_log = "ZG361COMP: consumed mechanism {mechanism_id:03d}"
@@ -2091,6 +2098,27 @@ def render_account_helpers() -> str:
         limit = { var:zg361_comp_ae_statement_rhs = var:zg361_comp_ae_statement_payable }
         set_variable = { name = zg361_comp_ae_statement_conserved value = 1 }
     }
+    # The visible quote and the combined AE2 guard use these same amounts.
+    # They are projections of owed, not additional debts or payments.
+    set_variable = {
+        name = zg361_comp_ae_quote_treasury
+        value = { value = var:zg361_comp_ae_statement_owed multiply = 0.7 add = 0.5 floor = yes }
+    }
+    set_variable = {
+        name = zg361_comp_ae_quote_personal
+        value = { value = var:zg361_comp_ae_statement_owed subtract = var:zg361_comp_ae_quote_treasury }
+    }
+    set_variable = { name = zg361_comp_ae_quote_with_backpay value = { value = var:zg361_comp_ae_statement_owed add = 4 } }
+    set_variable = { name = zg361_comp_ae_quote_now_treasury value = { value = var:zg361_comp_ae_quote_treasury add = 3 } }
+    set_variable = { name = zg361_comp_ae_quote_now_personal value = { value = var:zg361_comp_ae_quote_personal add = 1 } }
+    set_variable = {
+        name = zg361_comp_ae_quote_deferred_treasury
+        value = { value = var:zg361_comp_ae_quote_with_backpay multiply = 0.7 add = 0.5 floor = yes }
+    }
+    set_variable = {
+        name = zg361_comp_ae_quote_deferred_personal
+        value = { value = var:zg361_comp_ae_quote_with_backpay subtract = var:zg361_comp_ae_quote_deferred_treasury }
+    }
 }
 
 zg361_comp_af_recalculate_units_effect = {
@@ -2260,6 +2288,7 @@ zg361_comp_ae_consume_due_effect = {{
     if = {{
         limit = {{
             scope:zg361_comp_due_gross >= 2
+            var:zg361_comp_ae_statement_owed >= scope:zg361_comp_due_gross
             scope:zg361_comp_due_treasury >= 1
             scope:zg361_comp_due_personal >= 1
             var:{owner} = {{
@@ -2285,7 +2314,9 @@ zg361_comp_ae_consume_due_effect = {{
             trigger_else = {{ always = no }}
         }}
         change_variable = {{ name = zg361_comp_ae_statement_paid add = scope:zg361_comp_due_gross }}
-        set_variable = {{ name = zg361_comp_ae_statement_owed value = 0 }}
+        # AE3 may have added new debts after this due ticket was frozen.
+        # Settle only this ticket; keep those later debts on the statement.
+        change_variable = {{ name = zg361_comp_ae_statement_owed add = {{ value = 0 subtract = scope:zg361_comp_due_gross }} }}
     }}
     else = {{
         # Typed insufficient-funds RED: both real payer balances and the
@@ -2293,6 +2324,8 @@ zg361_comp_ae_consume_due_effect = {{
         set_variable = {{ name = zg361_comp_ae_payment_red value = 1 }}
         set_variable = {{ name = zg361_comp_typed_red value = 4 }}
     }}
+    # "Resolved" means this one due attempt finished, not that all debts were
+    # paid.  Insufficient funds still leave owed unchanged and payment_red=1.
     set_variable = {{ name = zg361_comp_ae_due_resolved value = 1 }}
     zg361_comp_ae_recalculate_statement_effect = yes
     zg361_comp_ae_try_advance_03_effect = yes
@@ -2490,6 +2523,50 @@ zg361_comp_af_consume_buyback_effect = {{
 }}'''
 
 
+def ae2_combined_guard(route: int | str) -> str:
+    """Qualify both AE2 writes before either receipt or wallet can change.
+
+    This is shared by the real portfolio dispatcher and the three option gates.
+    Numbered mechanisms retain their individual guards and journals as defense
+    in depth; the ordinary AE2 action always submits them together.
+    """
+
+    cash_guard = """var:zg361_comp_ae_quote_treasury >= 1
+                var:zg361_comp_ae_quote_personal >= 1
+                var:zg361_case_ae_owner = {
+                    has_treasury = yes
+                    treasury >= prev.var:zg361_comp_ae_quote_now_treasury
+                    gold >= prev.var:zg361_comp_ae_quote_now_personal
+                }
+                var:zg361_comp_ae_treasury_available >= var:zg361_comp_ae_quote_now_treasury
+                var:zg361_comp_ae_personal_available >= var:zg361_comp_ae_quote_now_personal
+                var:zg361_comp_ae_due_now_treasury_status = 0
+                var:zg361_comp_ae_due_now_personal_status = 0
+                var:zg361_comp_m282_pay_treasury_status = 0
+                var:zg361_comp_m282_pay_personal_status = 0"""
+    if isinstance(route, int):
+        if route not in {1, 2, 3}:
+            raise ValueError(f"invalid AE2 route: {route}")
+        route_guard = cash_guard if route == 1 else ""
+    elif route == "scope:zg361_comp_portfolio_route":
+        route_guard = f"""trigger_if = {{
+                limit = {{ {route} = 1 }}
+                {cash_guard}
+            }}
+            trigger_else = {{ always = yes }}"""
+    else:
+        raise ValueError(f"unsupported AE2 route source: {route}")
+    return f"""{full_guard("ae", 2, owner="root")}
+            var:zg361_comp_ae_statement_initialized = 1
+            var:zg361_comp_ae_statement_conserved = 1
+            var:zg361_comp_ae_statement_owed >= 2
+            var:zg361_comp_m281_receipt_active = 0
+            var:zg361_comp_m281_consumed = 0
+            var:zg361_comp_m282_receipt_active = 0
+            var:zg361_comp_m282_consumed = 0
+            {route_guard}"""
+
+
 def portfolio_domain_dispatch(domain: DomainSpec) -> str:
     state_branches = []
     for state, ids in enumerate(domain.stages, start=1):
@@ -2498,6 +2575,17 @@ def portfolio_domain_dispatch(domain: DomainSpec) -> str:
             for mechanism_id in ids
         )
         special = ""
+        if domain.key == "ae" and state == 2:
+            # Reconcile before testing the complete action.  This also repairs
+            # an older AE2 docket whose three AE1 consumers finished while its
+            # statement initializer was still waiting for M280's consumed bit.
+            calls = f'''zg361_comp_ae_recalculate_statement_effect = yes
+                if = {{
+                    limit = {{
+                        {ae2_combined_guard("scope:zg361_comp_portfolio_route")}
+                    }}
+                    {calls}
+                }}'''
         if domain.key == "af" and state == 4:
             special = '''if = {
                     limit = {
@@ -2597,7 +2685,7 @@ def render_portfolio_helpers() -> str:
             state_branches.append(
                 f'''{keyword} = {{
                     limit = {{ var:zg361_case_{domain.key}_state = {state} }}
-                    root = {{ set_variable = {{ name = zg361_comp_portfolio_stage value = {state} }} }}
+                    prev = {{ set_variable = {{ name = zg361_comp_portfolio_stage value = {state} }} }}
                 }}'''
             )
         stage_projection.append(
@@ -2814,6 +2902,8 @@ zg361_comp_portfolio_apply_stage_effect = {{
 }}
 
 zg361_comp_portfolio_refresh_effect = {{
+    # Stage selection runs manager -> subject.  The original ROOT can instead
+    # be the subject when a native deadline event notified this manager.
     zg361_comp_portfolio_drop_stale_subject_effect = yes
     if = {{
         limit = {{
@@ -2916,6 +3006,11 @@ def portfolio_option_trigger(
         raise ValueError(f"portfolio route must be 1, 2, or 3: {route}")
     base = f'''var:zg361_comp_portfolio_domain = {domain_number}
 var:zg361_comp_portfolio_stage = {state}'''
+    if key == "ae2":
+        return base + f'''
+var:zg361_comp_portfolio_subject = {{
+    {ae2_combined_guard(route)}
+}}'''
     if key != "af5" or route == 3:
         return base
     if route == 2:
@@ -2942,6 +3037,21 @@ var:zg361_comp_portfolio_subject = {
 }'''
 
 
+def portfolio_option_action(
+    key: str, domain_number: int, state: int, route: int
+) -> str:
+    action = f"zg361_comp_portfolio_apply_stage_effect = {{ ROUTE = {route} }}"
+    if key != "ae2":
+        return f"        {action}"
+    # Tooltip construction must not walk the full mutable payroll dispatcher.
+    # The explicit custom_tooltip remains visible; only the click runs it.
+    return f'''        show_as_unavailable = {{
+            var:zg361_comp_portfolio_domain = {domain_number}
+            var:zg361_comp_portfolio_stage = {state}
+        }}
+        hidden_effect = {{ {action} }}'''
+
+
 def render_events() -> bytes:
     hidden = [
         render_deadline_event("l_deferred", "zg361_comp_l_consume_deferred_effect"),
@@ -2961,7 +3071,7 @@ def render_events() -> bytes:
         trigger = {{
 {textwrap.indent(portfolio_option_trigger(key, domain_number, state, route), "            ")}
         }}
-        zg361_comp_portfolio_apply_stage_effect = {{ ROUTE = {route} }}
+{portfolio_option_action(key, domain_number, state, route)}
     }}'''
         for key, domain_number, state in PORTFOLIO_STAGES
         for route in (1, 2, 3)
@@ -2992,7 +3102,31 @@ __ZG361_COMP_PORTFOLIO_DESCRIPTIONS__
         }
         trigger_else = { always = no }
     }
-    immediate = { set_variable = { name = zg361_comp_portfolio_visible_pending value = 0 } }
+    immediate = {
+        set_variable = { name = zg361_comp_portfolio_visible_pending value = 0 }
+        var:zg361_comp_portfolio_subject = {
+            save_scope_as = zg361_comp_pay_subject
+            if = {
+                limit = {
+                    root = { var:zg361_comp_portfolio_domain = 2 var:zg361_comp_portfolio_stage = 2 }
+                    zg361_case_kernel_full_guard_trigger = {
+                        OWNER_VAR = zg361_case_ae_owner
+                        SUBJECT_VAR = zg361_case_ae_subject
+                        CYCLE_VAR = zg361_case_ae_cycle_serial
+                        CASE_VAR = zg361_case_ae_case_serial
+                        STATE_VAR = zg361_case_ae_state
+                        ACTIVE_VAR = zg361_case_ae_active
+                        EXPECTED_OWNER = root
+                        EXPECTED_SUBJECT = this
+                        EXPECTED_CYCLE = var:zg361_case_ae_cycle_serial
+                        EXPECTED_CASE = var:zg361_case_ae_case_serial
+                        EXPECTED_STATE = 2
+                    }
+                }
+                zg361_comp_ae_recalculate_statement_effect = yes
+            }
+        }
+    }
 __ZG361_COMP_PORTFOLIO_OPTIONS__
 }
 
@@ -3120,11 +3254,11 @@ def render_effects() -> bytes:
     sections.append(render_portfolio_helpers())
     for mechanism in MECHANISMS:
         mechanism_id = mechanism.mechanism_id
-        domain = mechanism.domain
+        domain_key = mechanism.domain
         state = STAGE_BY_ID[mechanism_id]
-        sections.append(render_manager_entry(mechanism_id, domain, state))
-        sections.append(render_core(mechanism_id, domain, state))
-        sections.append(render_consumer(mechanism_id, domain, state))
+        sections.append(render_manager_entry(mechanism_id, domain_key, state))
+        sections.append(render_core(mechanism_id, domain_key, state))
+        sections.append(render_consumer(mechanism_id, domain_key, state))
     for domain in DOMAINS:
         for state, ids in enumerate(domain.stages, start=1):
             if domain.key == "af" and state == 4:
@@ -3306,7 +3440,7 @@ def render_english_localization() -> bytes:
  zg361comp.1.l3:0 "The pay-band record for [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] is fixed for this review. Authority and future pay can now be recorded without pretending that either has already been delivered."
  zg361comp.1.l4:0 "A spot-award request for [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] is ready for settlement. Nothing has been paid under this request, and the two funding accounts remain distinct."
  zg361comp.1.ae1:0 "The annual statement for [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] is open. Its cycle and performance result are frozen before the extra-month entitlement is calculated."
- zg361comp.1.ae2:0 "The statement owed to [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] has been itemized. Its treasury and personal shares remain unpaid, and any delay must preserve the same frozen debt."
+ zg361comp.1.ae2:0 "The statement owed to [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] is [zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_statement_owed').GetValue|0]: [zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_quote_treasury').GetValue|0] from your treasury and [zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_quote_personal').GetValue|0] from your purse. The separate backpay claim is 4. Choose when to pay and whether to recognize that claim; the frozen performance grade stays unchanged."
  zg361comp.1.ae3:0 "[ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] already carries the responsibility named in the promotion record. The cash promise, same-band adjustment, and next-cycle base pay have not yet been recorded."
  zg361comp.1.ae4:0 "The frozen statement places [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] outside the intended band. The correction and its disclosure rule must be entered on the same receipt."
  zg361comp.1.ae5:0 "The incumbent/new-hire comparison for [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] is frozen at 15 against 20. The money appeal may change only the compensation account, never the performance grade."
@@ -3330,9 +3464,9 @@ def render_english_localization() -> bytes:
  zg361comp.1.ae1.r1:0 "Enter a fixed extra-month entitlement of 6 for [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName], prorated 12/12; pay 0 now and leave the frozen amount for statement settlement."
  zg361comp.1.ae1.r2:0 "If the frozen result is 3.75, enter a performance extra-month entitlement of 3 for [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName], prorated 6/12; pay 0 now and settle it later from your accounts."
  zg361comp.1.ae1.r3:0 "Enter a discretionary extra-month entitlement of 0 for [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName]; neither account pays now or later."
- zg361comp.1.ae2.r1:0 "Pay [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] the full frozen statement now from its recorded treasury/personal shares, then pay 4 backpay—3 from your treasury and 1 from your purse."
- zg361comp.1.ae2.r2:0 "Pay 0 now; keep [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName]'s full frozen statement due in 90 days and add 4 backpay to that debt."
- zg361comp.1.ae2.r3:0 "Pay 0 now; keep [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName]'s full frozen statement due in 180 days and deny the 4 backpay claim."
+ zg361comp.1.ae2.r1:0 "Pay the subject's statement of [zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_statement_owed').GetValue|0] plus 4 backpay now: [zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_quote_with_backpay').GetValue|0] total, taking [zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_quote_now_treasury').GetValue|0] from your treasury and [zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_quote_now_personal').GetValue|0] from your purse. The backpay portion is 3 treasury and 1 personal. Both accounts must cover the whole action before either payment can start.\n\nThis is additional pay created by this mod; vanilla salaries continue normally. Immediate payment transfers coin from your two accounts to the recipient vassal and clears this debt. It currently grants no additional opinion or loyalty benefit."
+ zg361comp.1.ae2.r2:0 "Pay the subject 0 now. Recognize 4 backpay and freeze a debt of [zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_quote_with_backpay').GetValue|0], including the original statement of [zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_statement_owed').GetValue|0]. In 90 days, attempt payment of [zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_quote_deferred_treasury').GetValue|0] from your treasury and [zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_quote_deferred_personal').GetValue|0] from your purse. If either account is short, neither pays and the debt remains; this due-date attempt ends without automatic retries. The frozen performance grade stays unchanged.\n\nThis is additional pay created by this mod; vanilla salaries continue normally. Deferral keeps cash available for other spending today, but you still owe the full amount in 90 days and recognize 4 extra backpay. Deferral lowers the recorded payment credibility by 15 (-15); it currently causes no direct opinion or loyalty penalty."
+ zg361comp.1.ae2.r3:0 "Pay the subject 0 now and deny the 4 backpay claim. Keep the original statement of [zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_statement_owed').GetValue|0] as a frozen debt. In 180 days, attempt payment of [zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_quote_treasury').GetValue|0] from your treasury and [zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_quote_personal').GetValue|0] from your purse. This defers the original pay rather than cancelling it; a short account leaves the debt unpaid and ends this due-date attempt without automatic retries. The frozen performance grade stays unchanged.\n\nThis is additional pay created by this mod; vanilla salaries continue normally. Compared with recognizing backpay, this keeps cash for 90 more days and saves 4, but the original pay is still owed. Deferral lowers the recorded payment credibility by 15 (-15); it currently causes no direct opinion or loyalty penalty."
  zg361comp.1.ae3.r1:0 "Responsibility came before pay: owe [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 4 by the next review, plus 4 calibration; pay 0 now and cut next-cycle base pay by 2."
  zg361comp.1.ae3.r2:0 "Responsibility came before pay: owe [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 2 by the second review, plus 2 calibration; pay 0 now and preserve current pay."
  zg361comp.1.ae3.r3:0 "Create no new debt for [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName], pay 0 from both accounts, and reduce next-cycle base pay by 4."
@@ -3403,7 +3537,7 @@ def render_simp_chinese_localization() -> bytes:
  zg361comp.1.l3:0 "本轮复核已经冻结 [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 的薪带位置。权责与未来俸额都尚未交付，须分别登记。"
  zg361comp.1.l4:0 "案前摆着一份给 [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 的专项奖申请。两处付款账户仍各自封存，尚未为此支出。"
  zg361comp.1.ae1:0 "当事人 [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 的年度薪酬单已经开立。周期与绩效结果均已冻结，额外月俸尚待核算。"
- zg361comp.1.ae2:0 "案吏已经逐项列明应付 [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 的薪酬。国库与私库所负份额都尚未支付，任何延期都必须承接同一笔冻结欠款。"
+ zg361comp.1.ae2:0 "本张薪酬单应付 [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] [zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_statement_owed').GetValue|0]，国库承担[zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_quote_treasury').GetValue|0]、你的私库承担[zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_quote_personal').GetValue|0]；另有补发四待裁定。你决定付款时间及是否承认补发，冻结绩效档不变。"
  zg361comp.1.ae3:0 "晋升记录表明 [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 已经承担相应职责。兑现承诺、同档调薪与下周期基础俸额都还没有入账。"
  zg361comp.1.ae4:0 "冻结薪酬单显示 [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 偏离了目标薪带。纠偏金额与披露方式必须写在同一张凭据上。"
  zg361comp.1.ae5:0 "案卷已经冻结 [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 与新进人员十五比二十的俸额对照。此次申诉只能改钱账，不能改写绩效档。"
@@ -3427,9 +3561,9 @@ def render_simp_chinese_localization() -> bytes:
  zg361comp.1.ae1.r1:0 "为 [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 登记固定额外月俸六，按十二个月全额折算；今日支付零，冻结金额留待薪酬单结算。"
  zg361comp.1.ae1.r2:0 "若冻结结果为三点七五，为 [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 登记绩效月俸三，按半年折算；今日支付零，日后由你的账户结算。"
  zg361comp.1.ae1.r3:0 "为 [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 登记酌情额外月俸零；国库与私库现在、以后都不付款。"
- zg361comp.1.ae2.r1:0 "现在依冻结凭据中的国库与私库份额，全额付清 [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 的薪酬单；再补发四，国库出三、你的私库出一。"
- zg361comp.1.ae2.r2:0 "今日支付零；把 [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 的完整冻结薪酬延至九十日后，并将补发四一并记为欠款。"
- zg361comp.1.ae2.r3:0 "今日支付零；把 [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 的完整冻结薪酬延至一百八十日后，并驳回补发四的请求。"
+ zg361comp.1.ae2.r1:0 "现在向当事人付清薪酬[zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_statement_owed').GetValue|0]并补发四，合计[zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_quote_with_backpay').GetValue|0]：国库出[zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_quote_now_treasury').GetValue|0]、你的私库出[zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_quote_now_personal').GetValue|0]；其中补发为国库三、私库一。两库必须同时负担全额，否则均不付款。\n\n这是本mod另加的薪酬，原版薪俸照常。立即付款会把两库金币转给受款封臣并清除此笔欠款；当前不会额外提高好感或忠诚。"
+ zg361comp.1.ae2.r2:0 "今日向当事人支付零；承认补发四，与原薪酬[zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_statement_owed').GetValue|0]合并冻结欠款[zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_quote_with_backpay').GetValue|0]。九十日后尝试付款：国库出[zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_quote_deferred_treasury').GetValue|0]、你的私库出[zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_quote_deferred_personal').GetValue|0]。任一库余额不足，两库均不扣款，欠款保留；本次到期结算结束，不会自动反复尝试。冻结绩效档不变。\n\n这是本mod另加的薪酬，原版薪俸照常。延期让你暂留资金用于其他开支，代价是九十日后仍须偿还全额，并承认补发四。延期会使兑现信用记录减少十五（-15），当前不会直接降低好感或忠诚。"
+ zg361comp.1.ae2.r3:0 "今日向当事人支付零，驳回补发四；原薪酬[zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_statement_owed').GetValue|0]仍记为冻结欠款。一百八十日后尝试付款：国库出[zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_quote_treasury').GetValue|0]、你的私库出[zg361_comp_pay_subject.MakeScope.Var('zg361_comp_ae_quote_personal').GetValue|0]。延期不免除原薪酬，到期余额不足仍记未付，随后本次到期结算结束，不会自动反复尝试；冻结绩效档不变。\n\n这是本mod另加的薪酬，原版薪俸照常。相比承认补发，可多周转九十日并少付四，但原薪酬仍须偿还。延期会使兑现信用记录减少十五（-15），当前不会直接降低好感或忠诚。"
  zg361comp.1.ae3.r1:0 "职责先加、俸额未跟：欠 [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 补发四，下轮复核到期；另欠调薪四。今日不付，下期基础俸减二。"
  zg361comp.1.ae3.r2:0 "职责先加、俸额未跟：欠 [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 补发二，第二轮复核到期；另欠校准二。今日不付，保留现俸。"
  zg361comp.1.ae3.r3:0 "不为 [ROOT.Var('zg361_comp_portfolio_subject').Char.GetShortUIName] 新增欠款；国库与私库今日都支付零，下周期基础俸减四。"

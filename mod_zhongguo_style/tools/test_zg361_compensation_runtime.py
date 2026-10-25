@@ -10,6 +10,8 @@ They are static-ready evidence only; they do not claim CK3 or MCP live proof.
 from __future__ import annotations
 
 import hashlib
+from dataclasses import dataclass, field
+import math
 from pathlib import Path
 import re
 import unittest
@@ -125,7 +127,271 @@ def assert_balanced(test: unittest.TestCase, text: str, label: str) -> None:
     test.assertEqual(depth, 0, f"{label}: brace imbalance")
 
 
+@dataclass(frozen=True)
+class ScriptNode:
+    key: str
+    operator: str
+    value: str | tuple[ScriptNode, ...]
+
+
+def script_nodes(source: str) -> tuple[ScriptNode, ...]:
+    """Parse the assignment subset used by the real AE production chain.
+
+    Preserve repeated keys and their order.  This is a bounded test executor,
+    not CK3 parser or native-UI evidence; unsupported syntax fails explicitly.
+    """
+
+    tokens = re.findall(r'#[^\n]*|"(?:\\.|[^"\\])*"|>=|<=|!=|[{}=<>]|[^\s{}=<>]+', source)
+    tokens = [token for token in tokens if not token.startswith("#")]
+    cursor = 0
+
+    def read_block(nested: bool) -> tuple[ScriptNode, ...]:
+        nonlocal cursor
+        rows: list[ScriptNode] = []
+        while cursor < len(tokens) and tokens[cursor] != "}":
+            key, operator = tokens[cursor : cursor + 2]
+            if operator not in {"=", ">=", "<=", "!=", ">", "<"}:
+                raise AssertionError(f"unsupported script operator: {key} {operator}")
+            cursor += 2
+            value: str | tuple[ScriptNode, ...]
+            if tokens[cursor] == "{":
+                cursor += 1
+                value = read_block(True)
+            else:
+                value = tokens[cursor].strip('"')
+                cursor += 1
+            rows.append(ScriptNode(key, operator, value))
+        if nested:
+            if cursor >= len(tokens) or tokens[cursor] != "}":
+                raise AssertionError("unterminated script block")
+            cursor += 1
+        return tuple(rows)
+
+    parsed = read_block(False)
+    if cursor != len(tokens):
+        raise AssertionError("unexpected closing script brace")
+    return parsed
+
+
+def node_block(node: ScriptNode) -> tuple[ScriptNode, ...]:
+    if isinstance(node.value, str):
+        raise AssertionError(f"expected block: {node.key}")
+    return node.value
+
+
+def node_atom(node: ScriptNode) -> str:
+    if not isinstance(node.value, str):
+        raise AssertionError(f"expected scalar: {node.key}")
+    return node.value
+
+
+def named_node(nodes: tuple[ScriptNode, ...], key: str) -> ScriptNode:
+    return next(node for node in nodes if node.key == key)
+
+
+ScriptValue = str | float
+
+
+@dataclass
+class ScriptCharacter:
+    variables: dict[str, ScriptValue] = field(default_factory=dict)
+    flags: set[str] = field(default_factory=set)
+    gold: float = 100.0
+    treasury: float | None = 200.0
+    liege: str | None = None
+    celestial: bool = True
+    tier: float = 3.0
+
+
+class PayrollScriptExecutor:
+    """Execute generated CK3 effects and the actual shared kernel in tests.
+
+    Only game-owned primitives (wallets, character traits and event scheduling)
+    are modeled.  Numbered mechanics, guards, transitions, journals and deadline
+    consumers are read from production files rather than reimplemented here.
+    """
+
+    def __init__(self) -> None:
+        paths = [
+            *EFFECTS_PATHS,
+            MOD_ROOT / "common/scripted_effects/zg361_case_kernel_001_shared_helpers_effects.txt",
+            MOD_ROOT / "common/scripted_effects/zg361_case_kernel_032_domain_ae_pay_statement_effects.txt",
+            MOD_ROOT / "common/scripted_triggers/zg361_case_kernel_triggers.txt",
+            MOD_ROOT / "common/scripted_triggers/zg361_triggers.txt",
+            EVENTS_PATH,
+        ]
+        self.definitions = {
+            node.key: node_block(node)
+            for path in paths
+            for node in script_nodes(path.read_text(encoding="utf-8-sig"))
+            if not isinstance(node.value, str)
+        }
+        self.characters = {
+            "manager": ScriptCharacter(),
+            "subject": ScriptCharacter(liege="manager", celestial=False, tier=2.0),
+        }
+        self.root = "manager"
+        self.scopes: dict[str, ScriptValue] = {}
+        self.events: list[tuple[str, str, float]] = []
+
+    def expand(self, nodes: tuple[ScriptNode, ...], parameters: dict[str, str]) -> tuple[ScriptNode, ...]:
+        def replace(text: str) -> str:
+            for key, value in parameters.items():
+                text = text.replace(f"${key}$", value)
+            if "$" in text:
+                raise AssertionError(f"unbound scripted parameter: {text}")
+            return text
+
+        return tuple(
+            ScriptNode(replace(node.key), node.operator, replace(node.value) if isinstance(node.value, str) else self.expand(node.value, parameters))
+            for node in nodes
+        )
+
+    def call_nodes(self, node: ScriptNode) -> tuple[ScriptNode, ...]:
+        parameters = {} if isinstance(node.value, str) else {
+            row.key: node_atom(row) for row in node.value
+        }
+        return self.expand(self.definitions[node.key], parameters)
+
+    def value(self, value: str | tuple[ScriptNode, ...], current: str, previous: str) -> ScriptValue:
+        if not isinstance(value, str):
+            result = 0.0
+            for node in value:
+                number = self.number(node.value, current, previous) if node.key != "floor" else 0.0
+                if node.key == "value": result = number
+                elif node.key == "add": result += number
+                elif node.key == "subtract": result -= number
+                elif node.key == "multiply": result *= number
+                elif node.key == "divide": result /= number
+                elif node.key == "floor": result = float(math.floor(result))
+                else: raise AssertionError(f"unsupported arithmetic: {node.key}")
+            return result
+        if value == "root": return self.root
+        if value == "this": return current
+        if value == "prev": return previous
+        if value == "yes": return 1.0
+        if value == "no": return 0.0
+        if value == "tier_duchy": return 3.0
+        if ".var:" in value:
+            target, variable = value.split(".var:", 1)
+            character = self.value(target, current, previous)
+            if not isinstance(character, str): raise AssertionError(f"non-character scope: {target}")
+            return self.characters[character].variables.get(variable, 0.0)
+        if value.startswith("var:"): return self.characters[current].variables.get(value[4:], 0.0)
+        if value.startswith("scope:"): return self.scopes[value[6:]]
+        try:
+            return float(value)
+        except ValueError:
+            return value
+
+    def number(self, value: str | tuple[ScriptNode, ...], current: str, previous: str) -> float:
+        result = self.value(value, current, previous)
+        if not isinstance(result, float): raise AssertionError(f"expected number: {result}")
+        return result
+
+    def character_scope(self, key: str, current: str, previous: str) -> str:
+        target = self.characters[current].liege if key == "liege" else self.value(key, current, previous)
+        if not isinstance(target, str) or target not in self.characters:
+            raise AssertionError(f"invalid character scope: {key} -> {target}")
+        return target
+
+    def condition(self, nodes: tuple[ScriptNode, ...], current: str, previous: str) -> bool:
+        matched = False
+        for node in nodes:
+            if node.key in {"trigger_if", "trigger_else_if", "trigger_else"}:
+                if node.key == "trigger_if": matched = False
+                if matched: continue
+                block = node_block(node)
+                applicable = node.key == "trigger_else" or self.condition(node_block(named_node(block, "limit")), current, previous)
+                if applicable:
+                    matched = True
+                    if not self.condition(tuple(row for row in block if row.key != "limit"), current, previous): return False
+            elif not self.single_condition(node, current, previous):
+                return False
+        return True
+
+    def single_condition(self, node: ScriptNode, current: str, previous: str) -> bool:
+        char = self.characters[current]
+        if node.key in {"AND", "OR", "NOT"}:
+            children = node_block(node)
+            if node.key == "OR": return any(self.condition((row,), current, previous) for row in children)
+            result = self.condition(children, current, previous)
+            return not result if node.key == "NOT" else result
+        if node.key in self.definitions:
+            return self.condition(self.call_nodes(node), current, previous)
+        if node.key == "save_temporary_scope_value_as":
+            self.execute((node,), current, previous)
+            return True
+        if node.key == "has_variable": return node_atom(node) in char.variables
+        if node.key == "has_character_flag": return node_atom(node) in char.flags
+        if node.key == "has_treasury": return (char.treasury is not None) == (node_atom(node) == "yes")
+        if node.key == "government_has_flag": return char.celestial and node_atom(node) == "government_is_celestial"
+        if isinstance(node.value, tuple):
+            return self.condition(node.value, self.character_scope(node.key, current, previous), current)
+        if node.key == "always": return node_atom(node) == "yes"
+        primitives = {"gold": char.gold, "treasury": char.treasury or 0.0, "highest_held_title_tier": char.tier,
+                      "is_alive": 1.0, "is_landed": 1.0, "is_ai": 1.0, "liege": char.liege}
+        if node.key in primitives: left = primitives[node.key]
+        elif node.key.startswith(("var:", "scope:")): left = self.value(node.key, current, previous)
+        else: raise AssertionError(f"unsupported trigger: {node.key}")
+        right = self.value(node.value, current, previous)
+        if node.operator == "=": return left == right
+        if node.operator == "!=": return left != right
+        if not isinstance(left, float) or not isinstance(right, float): raise AssertionError("ordered comparison requires numbers")
+        if node.operator == ">=": return left >= right
+        if node.operator == "<=": return left <= right
+        if node.operator == ">": return left > right
+        if node.operator == "<": return left < right
+        raise AssertionError(f"unsupported comparison: {node.operator}")
+
+    def execute(self, nodes: tuple[ScriptNode, ...], current: str, previous: str) -> None:
+        matched = False
+        for node in nodes:
+            char = self.characters[current]
+            if node.key in {"if", "else_if", "else"}:
+                if node.key == "if": matched = False
+                if matched: continue
+                block = node_block(node)
+                if node.key == "else" or self.condition(node_block(named_node(block, "limit")), current, previous):
+                    matched = True
+                    self.execute(tuple(row for row in block if row.key != "limit"), current, previous)
+            elif node.key in self.definitions:
+                self.execute(self.call_nodes(node), current, previous)
+            elif node.key in {"set_variable", "change_variable", "save_temporary_scope_value_as"}:
+                block = node_block(node)
+                name = node_atom(named_node(block, "name"))
+                field_name = "add" if node.key == "change_variable" else "value"
+                result = self.value(named_node(block, field_name).value, current, previous)
+                if node.key == "save_temporary_scope_value_as": self.scopes[name] = result
+                elif node.key == "set_variable": char.variables[name] = result
+                else: char.variables[name] = self.number(f"var:{name}", current, previous) + self.number(named_node(block, field_name).value, current, previous)
+            elif node.key == "remove_variable": char.variables.pop(node_atom(node), None)
+            elif node.key in {"save_scope_as", "save_temporary_scope_as"}: self.scopes[node_atom(node)] = current
+            elif node.key == "add_character_flag": char.flags.add(node_atom(node))
+            elif node.key == "remove_character_flag": char.flags.discard(node_atom(node))
+            elif node.key == "remove_treasury":
+                if char.treasury is None: raise AssertionError("payer has no treasury")
+                char.treasury -= self.number(node.value, current, previous)
+            elif node.key == "remove_short_term_gold": char.gold -= self.number(node.value, current, previous)
+            elif node.key == "add_gold": char.gold += self.number(node.value, current, previous)
+            elif node.key == "trigger_event":
+                block = node_block(node)
+                self.events.append((current, node_atom(named_node(block, "id")), self.number(named_node(block, "days").value, current, previous)))
+            elif node.key in {"hidden_effect", "immediate"}: self.execute(node_block(node), current, previous)
+            elif node.key in {"debug_log", "custom_tooltip", "name", "trigger", "show_as_unavailable"}: continue
+            elif isinstance(node.value, tuple): self.execute(node.value, self.character_scope(node.key, current, previous), current)
+            else: raise AssertionError(f"unsupported effect: {node.key}")
+
+    def run(self, name: str, current: str, route: int | None = None) -> None:
+        parameters = {} if route is None else {"ROUTE": str(route)}
+        self.execute(self.expand(self.definitions[name], parameters), current, self.root)
+
+
 class CompensationRuntimeTests(unittest.TestCase):
+    effect_parts: dict[str, str]
+    effects: str
+    events: str
+
     @classmethod
     def setUpClass(cls) -> None:
         cls.effect_parts = {
@@ -321,10 +587,10 @@ class CompensationRuntimeTests(unittest.TestCase):
         )
 
         historical_bytes = generator.render_effects()
-        self.assertEqual(len(historical_bytes), 623_878)
+        self.assertEqual(len(historical_bytes), 627_773)
         self.assertEqual(
             hashlib.sha256(historical_bytes).hexdigest(),
-            "4c77553ec78851fdada5fb039144e45fdc35e4bb9806f84eb473b42a76a38d52",
+            "0234ca8201835a57b2fb7efee75da0dc62798d7d63f5307f584a71da2a706e6a",
         )
         historical = historical_bytes.decode("utf-8-sig")
         historical_names = re.findall(
@@ -438,15 +704,15 @@ class CompensationRuntimeTests(unittest.TestCase):
             self.assertEqual(duplicates, [], label)
 
     def test_openers_and_all_manager_entries_enforce_duke_plus_and_reviewable_subject(self) -> None:
-        for domain in generator.DOMAINS:
-            with self.subTest(opener=domain.key):
+        for domain_spec in generator.DOMAINS:
+            with self.subTest(opener=domain_spec.key):
                 source = top_level_block(
-                    self.effects, f"zg361_comp_open_{domain.key}_case_effect"
+                    self.effects, f"zg361_comp_open_{domain_spec.key}_case_effect"
                 )
                 self.assertIn("zg361_is_celestial_liege_trigger = yes", source)
                 self.assertIn("zg361_is_reviewable_vassal_trigger = yes", source)
                 self.assertIn("liege = root", source)
-                self.assertIn(f"zg361_case_{domain.key}_open_effect = yes", source)
+                self.assertIn(f"zg361_case_{domain_spec.key}_open_effect = yes", source)
                 self.assertNotIn("is_ai = no", code_without_comments(source))
 
         for mechanism_id in generator.EXPECTED_IDS:
@@ -575,14 +841,14 @@ class CompensationRuntimeTests(unittest.TestCase):
                 )
                 self.assertIn(barrier, source)
 
-        for domain in generator.DOMAINS:
-            for state, ids in enumerate(domain.stages, start=1):
-                if domain.key == "af" and state == 4:
+        for domain_spec in generator.DOMAINS:
+            for state, ids in enumerate(domain_spec.stages, start=1):
+                if domain_spec.key == "af" and state == 4:
                     continue
-                with self.subTest(stage=f"{domain.key}:{state}"):
+                with self.subTest(stage=f"{domain_spec.key}:{state}"):
                     source = top_level_block(
                         self.effects,
-                        f"zg361_comp_{domain.key}_try_advance_{state:02d}_effect",
+                        f"zg361_comp_{domain_spec.key}_try_advance_{state:02d}_effect",
                     )
                     for mechanism_id in ids:
                         self.assertIn(
@@ -591,7 +857,7 @@ class CompensationRuntimeTests(unittest.TestCase):
                         )
                     self.assertEqual(
                         source.count(
-                            f"zg361_case_{domain.key}_advance_{state:02d}_effect"
+                            f"zg361_case_{domain_spec.key}_advance_{state:02d}_effect"
                         ),
                         1,
                     )
@@ -1340,14 +1606,17 @@ class CompensationRuntimeTests(unittest.TestCase):
                     trigger_pattern = r"\s+".join(
                         re.escape(token) for token in expected_trigger.split()
                     )
+                    action_pattern = r"\s+".join(
+                        re.escape(token)
+                        for token in generator.portfolio_option_action(key, domain_number, state, route).split()
+                    )
                     option_pattern = re.compile(
                         rf"option\s*=\s*\{{\s*"
                         rf"name\s*=\s*zg361comp\.1\.{key}\.r{route}\s*"
                         rf"custom_tooltip\s*=\s*zg361comp\.1\.{key}\.r{route}\.tt\s*"
                         rf"trigger\s*=\s*\{{\s*"
                         rf"{trigger_pattern}\s*\}}\s*"
-                        rf"zg361_comp_portfolio_apply_stage_effect\s*=\s*\{{\s*"
-                        rf"ROUTE\s*=\s*{route}\s*\}}\s*\}}",
+                        rf"{action_pattern}\s*\}}",
                         re.DOTALL,
                     )
                     self.assertRegex(player_card, option_pattern)
@@ -1366,14 +1635,14 @@ class CompensationRuntimeTests(unittest.TestCase):
                 titled_portfolio_cards.append(event_name)
         self.assertEqual(titled_portfolio_cards, ["zg361comp.1"])
         # One event-level alive guard plus the two AF5 resource gates.
-        self.assertEqual(player_card.count("var:zg361_comp_portfolio_subject = {"), 3)
+        self.assertEqual(player_card.count("var:zg361_comp_portfolio_subject = {"), 7)
         self.assertIn(
             "limit = { has_variable = zg361_comp_portfolio_subject }", player_card
         )
         self.assertIn(
             "var:zg361_comp_portfolio_subject = { is_alive = yes }", player_card
         )
-        self.assertEqual(player_card.count("var:zg361_comp_portfolio_stage ="), 56)
+        self.assertEqual(player_card.count("var:zg361_comp_portfolio_stage ="), 60)
 
         for mechanism_id in generator.EXPECTED_IDS:
             event_name = f"zg361comp.{mechanism_id}"
@@ -2004,7 +2273,7 @@ class CompensationRuntimeTests(unittest.TestCase):
                 numeric_variables = numeric_projection.findall(source)
                 self.assertEqual(len(numeric_variables), 21)
                 self.assertEqual(set(numeric_variables), expected_numeric_variables)
-                self.assertEqual(source.count(".GetValue"), 21)
+                self.assertEqual(source.count(".GetValue"), 35)
 
         for variable in (
             "zg361_comp_bonus_total",
@@ -2022,6 +2291,184 @@ class CompensationRuntimeTests(unittest.TestCase):
         self.assertNotIn("fixture-live", header)
         self.assertNotIn("production-live", header)
         self.assertNotIn("mcp live green", header)
+
+
+class PayrollProductionChainTests(unittest.TestCase):
+    def open_statement(self, extra_month_route: int = 1) -> PayrollScriptExecutor:
+        vm = PayrollScriptExecutor()
+        manager = vm.characters["manager"]
+        manager.flags.add("zg361_comp_portfolio_active")
+        manager.variables.update({
+            "zg361_review_serial": 1.0,
+            "zg361_comp_portfolio_domain": 2.0,
+            "zg361_comp_portfolio_stage": 1.0,
+            "zg361_comp_portfolio_cycle": 1.0,
+            "zg361_comp_portfolio_subject": "subject",
+            "zg361_comp_portfolio_result_owner": "manager",
+            "zg361_comp_portfolio_result_subject": "subject",
+            "zg361_comp_portfolio_result_cycle": 1.0,
+            "zg361_comp_portfolio_result_case": 7.0,
+            "zg361_comp_portfolio_result_state": 3.0,
+            "zg361_comp_portfolio_result_grade": 3.0,
+            "zg361_comp_portfolio_result_rating": 375.0,
+            "zg361_comp_portfolio_result_snapshot_applied": 1.0,
+            "zg361_comp_portfolio_visible_pending": 0.0,
+        })
+        vm.run("zg361_comp_open_ae_case_effect", "subject")
+        self.assertEqual(vm.characters["subject"].variables["zg361_case_ae_state"], 1)
+        vm.run("zg361_comp_portfolio_apply_stage_effect", "manager", extra_month_route)
+        return vm
+
+    def choose(self, vm: PayrollScriptExecutor, route: int) -> None:
+        # Run the same hidden click body emitted on the visible event option.
+        card = vm.definitions["zg361comp.1"]
+        vm.execute(node_block(named_node(card, "immediate")), "manager", "manager")
+        option = next(node for node in card if node.key == "option" and node_atom(named_node(node_block(node), "name")) == f"zg361comp.1.ae2.r{route}")
+        vm.execute(node_block(named_node(node_block(option), "hidden_effect")), "manager", "manager")
+
+    def run_due(self, vm: PayrollScriptExecutor, event: str) -> None:
+        # Native character deadline events have the recipient as ROOT.
+        vm.root = "subject"
+        vm.execute(node_block(named_node(vm.definitions[event], "immediate")), "subject", "subject")
+
+    def test_first_card_opens_a_complete_nonzero_statement_for_all_extra_month_routes(self) -> None:
+        for route, amount in ((1, 21), (2, 18), (3, 15)):
+            with self.subTest(route=route):
+                vm = self.open_statement(route)
+                variables = vm.characters["subject"].variables
+                self.assertEqual(variables["zg361_comp_ae_statement_initialized"], 1)
+                self.assertEqual(variables["zg361_comp_ae_statement_payable"], amount)
+                self.assertEqual(variables["zg361_comp_ae_statement_owed"], amount)
+                self.assertEqual(variables["zg361_comp_ae_statement_paid"], 0)
+                self.assertEqual(variables["zg361_comp_ae_statement_conserved"], 1)
+                self.assertEqual(variables["zg361_case_ae_state"], 2)
+                self.assertEqual(vm.characters["manager"].variables["zg361_comp_portfolio_stage"], 2)
+
+    def test_immediate_choice_pays_both_parts_and_reconciles_first_time(self) -> None:
+        vm = self.open_statement()
+        self.choose(vm, 1)
+        manager, subject = vm.characters["manager"], vm.characters["subject"]
+        self.assertEqual((manager.treasury, manager.gold, subject.gold), (182, 93, 125))
+        self.assertEqual(subject.variables["zg361_comp_ae_statement_payable"], 25)
+        self.assertEqual(subject.variables["zg361_comp_ae_statement_paid"], 25)
+        self.assertEqual(subject.variables["zg361_comp_ae_statement_owed"], 0)
+        self.assertEqual(subject.variables["zg361_comp_ae_statement_conserved"], 1)
+        self.assertEqual(subject.variables["zg361_comp_m281_consumed"], 1)
+        self.assertEqual(subject.variables["zg361_comp_m282_consumed"], 1)
+        self.assertEqual(subject.variables["zg361_case_ae_state"], 3)
+
+    def test_an_older_zero_initialized_ae2_card_reconciles_before_quoting_or_paying(self) -> None:
+        vm = self.open_statement()
+        subject = vm.characters["subject"]
+        subject.variables.update({
+            "zg361_comp_ae_statement_initialized": 0.0,
+            "zg361_comp_ae_statement_payable": 0.0,
+            "zg361_comp_ae_statement_owed": 0.0,
+        })
+        self.choose(vm, 1)
+        self.assertEqual(subject.variables["zg361_comp_ae_statement_paid"], 25)
+        self.assertEqual(subject.variables["zg361_comp_ae_statement_owed"], 0)
+        self.assertEqual(subject.variables["zg361_comp_ae_statement_conserved"], 1)
+        self.assertEqual(subject.gold, 125)
+
+    def test_combined_preflight_rejects_short_wallet_budget_or_one_used_journal(self) -> None:
+        # Each short balance still covers the main salary alone; an old
+        # independent M281/M282 path would pay only that first part.
+        for field_name, amount in (
+            ("treasury", 17), ("gold", 6),
+            ("zg361_comp_ae_treasury_available", 17),
+            ("zg361_comp_ae_personal_available", 6),
+            ("zg361_comp_m282_pay_personal_status", 2),
+            ("zg361_comp_ae_due_now_treasury_status", 2),
+            ("zg361_comp_m282_receipt_active", 1),
+        ):
+            with self.subTest(field=field_name):
+                vm = self.open_statement()
+                manager, subject = vm.characters["manager"], vm.characters["subject"]
+                if field_name == "treasury": manager.treasury = float(amount)
+                elif field_name == "gold": manager.gold = float(amount)
+                else: subject.variables[field_name] = float(amount)
+                wallets_before = (manager.treasury, manager.gold, subject.gold)
+                receipts_before = {key: value for key, value in subject.variables.items() if "_receipt_" in key or "_status" in key}
+                self.choose(vm, 1)
+                self.assertEqual((manager.treasury, manager.gold, subject.gold), wallets_before)
+                self.assertEqual({key: value for key, value in subject.variables.items() if "_receipt_" in key or "_status" in key}, receipts_before)
+                self.assertEqual(subject.variables["zg361_comp_ae_statement_paid"], 0)
+                self.assertEqual(subject.variables["zg361_comp_ae_statement_owed"], 21)
+                self.assertEqual(subject.variables["zg361_case_ae_state"], 2)
+                self.assertEqual(subject.variables["zg361_comp_m281_consumed"], 0)
+                self.assertEqual(subject.variables["zg361_comp_m282_consumed"], 0)
+                card = vm.definitions["zg361comp.1"]
+                option = next(node for node in card if node.key == "option" and node_atom(named_node(node_block(node), "name")) == "zg361comp.1.ae2.r1")
+                self.assertFalse(vm.condition(node_block(named_node(node_block(option), "trigger")), "manager", "manager"))
+                self.assertTrue(vm.condition(node_block(named_node(node_block(option), "show_as_unavailable")), "manager", "manager"))
+
+    def test_both_deferral_routes_preserve_the_full_debt_and_pay_at_the_real_deadline(self) -> None:
+        for route, debt, treasury, personal, event, days in (
+            (2, 25, 18, 7, "zg361comp.210", 90),
+            (3, 21, 15, 6, "zg361comp.211", 180),
+        ):
+            with self.subTest(route=route):
+                vm = self.open_statement()
+                self.choose(vm, route)
+                manager, subject = vm.characters["manager"], vm.characters["subject"]
+                self.assertEqual((manager.treasury, manager.gold, subject.gold), (200, 100, 100))
+                self.assertEqual(subject.variables["zg361_comp_ae_statement_owed"], debt)
+                self.assertEqual(subject.variables["zg361_comp_ae_due_frozen_gross"], debt)
+                self.assertEqual(subject.variables["zg361_comp_ae_due_frozen_treasury"], treasury)
+                self.assertEqual(subject.variables["zg361_comp_ae_due_frozen_personal"], personal)
+                self.assertIn(("subject", event, days), vm.events)
+                # AE3 adds eight after the deadline ticket was frozen.
+                vm.run("zg361_comp_portfolio_apply_stage_effect", "manager", 1)
+                self.assertEqual(subject.variables["zg361_comp_ae_statement_owed"], debt + 8)
+                self.run_due(vm, event)
+                self.assertEqual((manager.treasury, manager.gold, subject.gold), (200 - treasury, 100 - personal, 100 + debt))
+                self.assertEqual(subject.variables["zg361_comp_ae_statement_paid"], debt)
+                self.assertEqual(subject.variables["zg361_comp_ae_statement_owed"], 8)
+                self.assertEqual(subject.variables["zg361_comp_ae_statement_conserved"], 1)
+                self.assertEqual(subject.variables["zg361_case_ae_state"], 4)
+                self.assertEqual(manager.variables["zg361_comp_portfolio_stage"], 4)
+                self.assertNotIn("zg361_comp_portfolio_stage", subject.variables)
+                wallets_after = (manager.treasury, manager.gold, subject.gold)
+                self.run_due(vm, event)
+                self.assertEqual((manager.treasury, manager.gold, subject.gold), wallets_after)
+                self.assertEqual(subject.variables["zg361_comp_ae_statement_owed"], 8)
+
+    def test_insufficient_funds_at_deadline_leave_wallets_and_all_debts_unpaid(self) -> None:
+        vm = self.open_statement()
+        self.choose(vm, 2)
+        vm.run("zg361_comp_portfolio_apply_stage_effect", "manager", 1)
+        manager, subject = vm.characters["manager"], vm.characters["subject"]
+        manager.gold = 6.0
+        events_before = tuple(vm.events)
+        self.run_due(vm, "zg361comp.210")
+        self.assertEqual((manager.treasury, manager.gold, subject.gold), (200, 6, 100))
+        self.assertEqual(subject.variables["zg361_comp_ae_statement_paid"], 0)
+        self.assertEqual(subject.variables["zg361_comp_ae_statement_owed"], 33)
+        self.assertEqual(subject.variables["zg361_comp_ae_statement_conserved"], 1)
+        self.assertEqual(subject.variables["zg361_comp_ae_payment_red"], 1)
+        self.assertEqual(sum(row[1] == "zg361comp.210" for row in vm.events), sum(row[1] == "zg361comp.210" for row in events_before))
+
+    def test_tooltips_use_bound_subject_quotes_and_click_effects_stay_hidden(self) -> None:
+        vm = self.open_statement()
+        card = vm.definitions["zg361comp.1"]
+        vm.execute(node_block(named_node(card, "immediate")), "manager", "manager")
+        self.assertEqual(vm.scopes["zg361_comp_pay_subject"], "subject")
+        for route in (1, 2, 3):
+            option = next(node for node in card if node.key == "option" and node_atom(named_node(node_block(node), "name")) == f"zg361comp.1.ae2.r{route}")
+            self.assertEqual(node_atom(named_node(node_block(option), "custom_tooltip")), f"zg361comp.1.ae2.r{route}.tt")
+            self.assertTrue(vm.condition(node_block(named_node(node_block(option), "trigger")), "manager", "manager"))
+            self.assertEqual(node_block(named_node(node_block(option), "hidden_effect"))[0].key, "zg361_comp_portfolio_apply_stage_effect")
+        for render in (generator.render_english_localization, generator.render_simp_chinese_localization):
+            localized = render().decode("utf-8-sig")
+            variables = set(re.findall(r"zg361_comp_pay_subject.MakeScope.Var\('([^']+)'\)", localized))
+            self.assertEqual(variables, {
+                "zg361_comp_ae_statement_owed", "zg361_comp_ae_quote_treasury",
+                "zg361_comp_ae_quote_personal", "zg361_comp_ae_quote_with_backpay",
+                "zg361_comp_ae_quote_now_treasury", "zg361_comp_ae_quote_now_personal",
+                "zg361_comp_ae_quote_deferred_treasury", "zg361_comp_ae_quote_deferred_personal",
+            })
+            self.assertTrue(variables.issubset(vm.characters["subject"].variables))
 
 
 if __name__ == "__main__":

@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import re
 import sys
 from pathlib import Path
 import tempfile
@@ -15,20 +16,20 @@ import prepare_release_localization as release_loc  # noqa: E402
 
 
 class ReleaseLocalizationTests(unittest.TestCase):
-    def test_batches_cover_three_thousand_one_hundred_and_sixty_nine_keys_once(self) -> None:
+    def test_batches_cover_three_thousand_one_hundred_and_seventy_three_keys_once(self) -> None:
         batches = release_loc.build_batches()
         self.assertEqual(18, len(batches))
         core = [key for batch in batches if batch.source == "core" for key in batch.keys]
         mechanisms = [
             key for batch in batches if batch.source == "mechanisms" for key in batch.keys
         ]
-        self.assertEqual(236, len(core))
+        self.assertEqual(240, len(core))
         self.assertEqual(2933, len(mechanisms))
         self.assertEqual(len(core), len(set(core)))
         self.assertEqual(len(mechanisms), len(set(mechanisms)))
         self.assertEqual(80, len(batches[0].keys))
         self.assertEqual(80, len(batches[1].keys))
-        self.assertEqual(76, len(batches[2].keys))
+        self.assertEqual(80, len(batches[2].keys))
         self.assertEqual(245, len(batches[3].keys))
         self.assertEqual(88, len(batches[-1].keys))
 
@@ -470,9 +471,13 @@ class ReleaseLocalizationTests(unittest.TestCase):
         self.assertEqual("mod_zhongguo_style", payload["product_id"])
         self.assertEqual("GREEN", payload["result"])
         self.assertEqual(list(release_loc.AUDIT_CHECKS), payload["checks"])
-        self.assertEqual(4, len(payload["source_files"]))
-        self.assertEqual(14, len(payload["target_files"]))
-        for record in payload["source_files"] + payload["target_files"]:
+        source_records = payload["source_files"]
+        target_records = payload["target_files"]
+        if not isinstance(source_records, list) or not isinstance(target_records, list):
+            self.fail("audit source_files and target_files must be lists")
+        self.assertEqual(4, len(source_records))
+        self.assertEqual(14, len(target_records))
+        for record in source_records + target_records:
             self.assertRegex(record["sha256"], r"^[0-9a-f]{64}$")
             self.assertGreater(record["size"], 0)
             self.assertTrue(record["path"].startswith("mod_zhongguo_style/"))
@@ -496,10 +501,9 @@ class ReleaseLocalizationTests(unittest.TestCase):
                 )
             )
         )
-        # The authoritative validity path delegates to the shared business
-        # trigger.  The display-only path stays unconditional because rendering
-        # the same-year variable comparison exposes CK3's internal
-        # `character_var_equal` key to the player.
+        # The engine still expands the authoritative is_valid trigger even with
+        # an unconditional display-only block.  Its real requirements therefore
+        # need localized descriptions inside the shared business gate.
         decision = " ".join(
             decisions.partition("zg361_review_now_decision = {")[2]
             .partition("\n}")[0].split()
@@ -526,6 +530,14 @@ class ReleaseLocalizationTests(unittest.TestCase):
             business_trigger,
         )
         self.assertIn(guard, effects)
+        requirement_keys = re.findall(
+            r"custom_description = \{ text = ([a-z0-9_]+)", business_trigger
+        )
+        self.assertEqual(
+            set(requirement_keys),
+            {"zg361_review_no_active_cycle_tt", "zg361_review_year_available_tt",
+             "zg361_review_previous_cases_closed_tt", "zg361_review_has_official_tt"},
+        )
 
         description = "不等下一次京察召集，考功司现在便会冻结直属官员名册，开启本年的考绩程序。本决议只开启与京察共用的考核流程，不举办“京察大计”，也不视为完成京察履责。自评、互评、校准与公示会在后续阶段依次推进，通常约三百三十日后出榜。每次发起至少间隔一年，且同一自然年最多结算一次。"
         tooltip = "提前开启考核季并冻结至少一名直属在任官员；不举办京察，也不视为完成京察履责。"
@@ -537,6 +549,10 @@ class ReleaseLocalizationTests(unittest.TestCase):
                     self.assertIn(key, values)
                 self.assertNotIn("zg361_review_ready_tt", values)
                 self.assertNotIn("zg361_review_now_decision_valid_desc", values)
+                for key in requirement_keys:
+                    self.assertIn(key, values)
+                    self.assertTrue(values[key].strip())
+                    self.assertNotIn("zg361_", values[key])
                 if language == "simp_chinese":
                     self.assertEqual(description, values["zg361_review_now_decision_desc"])
                     self.assertEqual(tooltip, values["zg361_review_now_decision_tooltip"])

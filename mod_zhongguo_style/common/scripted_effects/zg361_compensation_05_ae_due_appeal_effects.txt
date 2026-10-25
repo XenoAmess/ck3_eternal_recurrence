@@ -56,6 +56,7 @@ zg361_comp_ae_consume_due_effect = {
     if = {
         limit = {
             scope:zg361_comp_due_gross >= 2
+            var:zg361_comp_ae_statement_owed >= scope:zg361_comp_due_gross
             scope:zg361_comp_due_treasury >= 1
             scope:zg361_comp_due_personal >= 1
             var:zg361_case_ae_owner = {
@@ -81,7 +82,9 @@ zg361_comp_ae_consume_due_effect = {
             trigger_else = { always = no }
         }
         change_variable = { name = zg361_comp_ae_statement_paid add = scope:zg361_comp_due_gross }
-        set_variable = { name = zg361_comp_ae_statement_owed value = 0 }
+        # AE3 may have added new debts after this due ticket was frozen.
+        # Settle only this ticket; keep those later debts on the statement.
+        change_variable = { name = zg361_comp_ae_statement_owed add = { value = 0 subtract = scope:zg361_comp_due_gross } }
     }
     else = {
         # Typed insufficient-funds RED: both real payer balances and the
@@ -89,6 +92,8 @@ zg361_comp_ae_consume_due_effect = {
         set_variable = { name = zg361_comp_ae_payment_red value = 1 }
         set_variable = { name = zg361_comp_typed_red value = 4 }
     }
+    # "Resolved" means this one due attempt finished, not that all debts were
+    # paid.  Insufficient funds still leave owed unchanged and payment_red=1.
     set_variable = { name = zg361_comp_ae_due_resolved value = 1 }
     zg361_comp_ae_recalculate_statement_effect = yes
     zg361_comp_ae_try_advance_03_effect = yes

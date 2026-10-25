@@ -306,7 +306,31 @@ zg361comp.1 = {
         }
         trigger_else = { always = no }
     }
-    immediate = { set_variable = { name = zg361_comp_portfolio_visible_pending value = 0 } }
+    immediate = {
+        set_variable = { name = zg361_comp_portfolio_visible_pending value = 0 }
+        var:zg361_comp_portfolio_subject = {
+            save_scope_as = zg361_comp_pay_subject
+            if = {
+                limit = {
+                    root = { var:zg361_comp_portfolio_domain = 2 var:zg361_comp_portfolio_stage = 2 }
+                    zg361_case_kernel_full_guard_trigger = {
+                        OWNER_VAR = zg361_case_ae_owner
+                        SUBJECT_VAR = zg361_case_ae_subject
+                        CYCLE_VAR = zg361_case_ae_cycle_serial
+                        CASE_VAR = zg361_case_ae_case_serial
+                        STATE_VAR = zg361_case_ae_state
+                        ACTIVE_VAR = zg361_case_ae_active
+                        EXPECTED_OWNER = root
+                        EXPECTED_SUBJECT = this
+                        EXPECTED_CYCLE = var:zg361_case_ae_cycle_serial
+                        EXPECTED_CASE = var:zg361_case_ae_case_serial
+                        EXPECTED_STATE = 2
+                    }
+                }
+                zg361_comp_ae_recalculate_statement_effect = yes
+            }
+        }
+    }
     option = {
         name = zg361comp.1.l1.r1
         custom_tooltip = zg361comp.1.l1.r1.tt
@@ -448,8 +472,47 @@ zg361comp.1 = {
         trigger = {
             var:zg361_comp_portfolio_domain = 2
             var:zg361_comp_portfolio_stage = 2
+            var:zg361_comp_portfolio_subject = {
+                zg361_case_kernel_full_guard_trigger = {
+                            OWNER_VAR = zg361_case_ae_owner
+                            SUBJECT_VAR = zg361_case_ae_subject
+                            CYCLE_VAR = zg361_case_ae_cycle_serial
+                            CASE_VAR = zg361_case_ae_case_serial
+                            STATE_VAR = zg361_case_ae_state
+                            ACTIVE_VAR = zg361_case_ae_active
+                            EXPECTED_OWNER = root
+                            EXPECTED_SUBJECT = this
+                            EXPECTED_CYCLE = var:zg361_case_ae_cycle_serial
+                            EXPECTED_CASE = var:zg361_case_ae_case_serial
+                            EXPECTED_STATE = 2
+                        }
+                        var:zg361_comp_ae_statement_initialized = 1
+                        var:zg361_comp_ae_statement_conserved = 1
+                        var:zg361_comp_ae_statement_owed >= 2
+                        var:zg361_comp_m281_receipt_active = 0
+                        var:zg361_comp_m281_consumed = 0
+                        var:zg361_comp_m282_receipt_active = 0
+                        var:zg361_comp_m282_consumed = 0
+                        var:zg361_comp_ae_quote_treasury >= 1
+                            var:zg361_comp_ae_quote_personal >= 1
+                            var:zg361_case_ae_owner = {
+                                has_treasury = yes
+                                treasury >= prev.var:zg361_comp_ae_quote_now_treasury
+                                gold >= prev.var:zg361_comp_ae_quote_now_personal
+                            }
+                            var:zg361_comp_ae_treasury_available >= var:zg361_comp_ae_quote_now_treasury
+                            var:zg361_comp_ae_personal_available >= var:zg361_comp_ae_quote_now_personal
+                            var:zg361_comp_ae_due_now_treasury_status = 0
+                            var:zg361_comp_ae_due_now_personal_status = 0
+                            var:zg361_comp_m282_pay_treasury_status = 0
+                            var:zg361_comp_m282_pay_personal_status = 0
+            }
         }
-        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 1 }
+        show_as_unavailable = {
+            var:zg361_comp_portfolio_domain = 2
+            var:zg361_comp_portfolio_stage = 2
+        }
+        hidden_effect = { zg361_comp_portfolio_apply_stage_effect = { ROUTE = 1 } }
     }
     option = {
         name = zg361comp.1.ae2.r2
@@ -457,8 +520,35 @@ zg361comp.1 = {
         trigger = {
             var:zg361_comp_portfolio_domain = 2
             var:zg361_comp_portfolio_stage = 2
+            var:zg361_comp_portfolio_subject = {
+                zg361_case_kernel_full_guard_trigger = {
+                            OWNER_VAR = zg361_case_ae_owner
+                            SUBJECT_VAR = zg361_case_ae_subject
+                            CYCLE_VAR = zg361_case_ae_cycle_serial
+                            CASE_VAR = zg361_case_ae_case_serial
+                            STATE_VAR = zg361_case_ae_state
+                            ACTIVE_VAR = zg361_case_ae_active
+                            EXPECTED_OWNER = root
+                            EXPECTED_SUBJECT = this
+                            EXPECTED_CYCLE = var:zg361_case_ae_cycle_serial
+                            EXPECTED_CASE = var:zg361_case_ae_case_serial
+                            EXPECTED_STATE = 2
+                        }
+                        var:zg361_comp_ae_statement_initialized = 1
+                        var:zg361_comp_ae_statement_conserved = 1
+                        var:zg361_comp_ae_statement_owed >= 2
+                        var:zg361_comp_m281_receipt_active = 0
+                        var:zg361_comp_m281_consumed = 0
+                        var:zg361_comp_m282_receipt_active = 0
+                        var:zg361_comp_m282_consumed = 0
+
+            }
         }
-        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 2 }
+        show_as_unavailable = {
+            var:zg361_comp_portfolio_domain = 2
+            var:zg361_comp_portfolio_stage = 2
+        }
+        hidden_effect = { zg361_comp_portfolio_apply_stage_effect = { ROUTE = 2 } }
     }
     option = {
         name = zg361comp.1.ae2.r3
@@ -466,8 +556,35 @@ zg361comp.1 = {
         trigger = {
             var:zg361_comp_portfolio_domain = 2
             var:zg361_comp_portfolio_stage = 2
+            var:zg361_comp_portfolio_subject = {
+                zg361_case_kernel_full_guard_trigger = {
+                            OWNER_VAR = zg361_case_ae_owner
+                            SUBJECT_VAR = zg361_case_ae_subject
+                            CYCLE_VAR = zg361_case_ae_cycle_serial
+                            CASE_VAR = zg361_case_ae_case_serial
+                            STATE_VAR = zg361_case_ae_state
+                            ACTIVE_VAR = zg361_case_ae_active
+                            EXPECTED_OWNER = root
+                            EXPECTED_SUBJECT = this
+                            EXPECTED_CYCLE = var:zg361_case_ae_cycle_serial
+                            EXPECTED_CASE = var:zg361_case_ae_case_serial
+                            EXPECTED_STATE = 2
+                        }
+                        var:zg361_comp_ae_statement_initialized = 1
+                        var:zg361_comp_ae_statement_conserved = 1
+                        var:zg361_comp_ae_statement_owed >= 2
+                        var:zg361_comp_m281_receipt_active = 0
+                        var:zg361_comp_m281_consumed = 0
+                        var:zg361_comp_m282_receipt_active = 0
+                        var:zg361_comp_m282_consumed = 0
+
+            }
         }
-        zg361_comp_portfolio_apply_stage_effect = { ROUTE = 3 }
+        show_as_unavailable = {
+            var:zg361_comp_portfolio_domain = 2
+            var:zg361_comp_portfolio_stage = 2
+        }
+        hidden_effect = { zg361_comp_portfolio_apply_stage_effect = { ROUTE = 3 } }
     }
     option = {
         name = zg361comp.1.ae3.r1

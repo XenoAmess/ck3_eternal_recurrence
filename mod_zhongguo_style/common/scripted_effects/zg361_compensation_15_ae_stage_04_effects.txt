@@ -173,9 +173,9 @@ zg361_comp_m286_consume_effect = {
                 change_variable = { name = zg361_comp_ae_statement_owed add = var:zg361_comp_m286_statement_delta }
             }
 
+        set_variable = { name = zg361_comp_m286_consumed value = 1 }
         zg361_comp_ae_recalculate_statement_effect = yes
 
-        set_variable = { name = zg361_comp_m286_consumed value = 1 }
         if = {
             limit = {
                 has_variable = zg361_pp_m147_receipt_active
@@ -376,9 +376,9 @@ zg361_comp_m287_consume_effect = {
             set_variable = { name = zg361_comp_m287_named_peer_salary_visible value = 0 }
             set_variable = { name = zg361_comp_m287_own_salary_visible value = 1 }
 
+        set_variable = { name = zg361_comp_m287_consumed value = 1 }
         zg361_comp_ae_recalculate_statement_effect = yes
 
-        set_variable = { name = zg361_comp_m287_consumed value = 1 }
         if = {
             limit = {
                 has_variable = zg361_pp_m147_receipt_active

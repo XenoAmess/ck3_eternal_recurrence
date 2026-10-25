@@ -1,6 +1,6 @@
 ﻿# 361 薪酬、发放与长期激励 CK3 运行时
 
-状态：**CK3 script static-ready；R630 已实见统一薪酬案卷的长按钮与旧 hover 缺陷，本次信息层级修复待 fresh CK3 复验**
+状态：**本页保留最初分层实现说明；2026-10-25 的 AE2 付款、延期与 hover 修复及实际边界见[薪酬选择说明](salary-choices-and-tooltip-fix.md)。该修复的静态回归已通过，实机结果另记。**
 
 生成器：`tools/gen_361_compensation_runtime.py`
 
@@ -262,5 +262,4 @@ AI 静默。七个非日常语言只是英文结构占位，不得称为完成�
 退款、追回、重复、改路、stale、权限和 FIFO。OCR 不得作为导航依据、数值来源或状态真值，只可在必要时做非权威
 画面辅助。
 
-当前尚未完成中央 hook 接线、CK3 parser log、真实 delayed-event 等待、paused snapshot、存读档或 live artifact。
-因此本文只能声明 **CK3 script static-ready**。
+上段是该分层最初交付时的验收范围。后续中央接线已进入生产树，不能继续据此声称没有 hook；具体入口见 `361-phase2-central-runtime-spec.md`。2026-10-25 更新后的生成器有 39 份输出、29 个 effect 分片、149 个 effect，专用 runtime 回归为 42 项。该回归含有限的实际生成脚本执行，不授予 CK3 引擎、实际 hover、存读档或完整二期业务通过；后续实机结果单独记录。

@@ -3,6 +3,8 @@
 # Honest boundary: generated CK3 source is static-ready until MCP-first live evidence exists.
 
 zg361_comp_portfolio_refresh_effect = {
+    # Stage selection runs manager -> subject.  The original ROOT can instead
+    # be the subject when a native deadline event notified this manager.
     zg361_comp_portfolio_drop_stale_subject_effect = yes
     if = {
         limit = {
@@ -157,19 +159,19 @@ AND = {
                 var:zg361_comp_portfolio_subject = {
                     if = {
                     limit = { var:zg361_case_l_state = 1 }
-                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 1 } }
+                    prev = { set_variable = { name = zg361_comp_portfolio_stage value = 1 } }
                 }
 else_if = {
                     limit = { var:zg361_case_l_state = 2 }
-                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 2 } }
+                    prev = { set_variable = { name = zg361_comp_portfolio_stage value = 2 } }
                 }
 else_if = {
                     limit = { var:zg361_case_l_state = 3 }
-                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 3 } }
+                    prev = { set_variable = { name = zg361_comp_portfolio_stage value = 3 } }
                 }
 else_if = {
                     limit = { var:zg361_case_l_state = 4 }
-                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 4 } }
+                    prev = { set_variable = { name = zg361_comp_portfolio_stage value = 4 } }
                 }
                 }
             }
@@ -178,23 +180,23 @@ else_if = {
                 var:zg361_comp_portfolio_subject = {
                     if = {
                     limit = { var:zg361_case_ae_state = 1 }
-                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 1 } }
+                    prev = { set_variable = { name = zg361_comp_portfolio_stage value = 1 } }
                 }
 else_if = {
                     limit = { var:zg361_case_ae_state = 2 }
-                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 2 } }
+                    prev = { set_variable = { name = zg361_comp_portfolio_stage value = 2 } }
                 }
 else_if = {
                     limit = { var:zg361_case_ae_state = 3 }
-                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 3 } }
+                    prev = { set_variable = { name = zg361_comp_portfolio_stage value = 3 } }
                 }
 else_if = {
                     limit = { var:zg361_case_ae_state = 4 }
-                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 4 } }
+                    prev = { set_variable = { name = zg361_comp_portfolio_stage value = 4 } }
                 }
 else_if = {
                     limit = { var:zg361_case_ae_state = 5 }
-                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 5 } }
+                    prev = { set_variable = { name = zg361_comp_portfolio_stage value = 5 } }
                 }
                 }
             }
@@ -203,23 +205,23 @@ else_if = {
                 var:zg361_comp_portfolio_subject = {
                     if = {
                     limit = { var:zg361_case_af_state = 1 }
-                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 1 } }
+                    prev = { set_variable = { name = zg361_comp_portfolio_stage value = 1 } }
                 }
 else_if = {
                     limit = { var:zg361_case_af_state = 2 }
-                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 2 } }
+                    prev = { set_variable = { name = zg361_comp_portfolio_stage value = 2 } }
                 }
 else_if = {
                     limit = { var:zg361_case_af_state = 3 }
-                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 3 } }
+                    prev = { set_variable = { name = zg361_comp_portfolio_stage value = 3 } }
                 }
 else_if = {
                     limit = { var:zg361_case_af_state = 4 }
-                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 4 } }
+                    prev = { set_variable = { name = zg361_comp_portfolio_stage value = 4 } }
                 }
 else_if = {
                     limit = { var:zg361_case_af_state = 5 }
-                    root = { set_variable = { name = zg361_comp_portfolio_stage value = 5 } }
+                    prev = { set_variable = { name = zg361_comp_portfolio_stage value = 5 } }
                 }
                 }
             }
