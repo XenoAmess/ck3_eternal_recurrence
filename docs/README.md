@@ -6,6 +6,7 @@
 
 ## 总纲
 
+- [mod-compatibility-static-2026-10-25.md](mod-compatibility-static-2026-10-25.md) — **17 个仓内 Mod 共用与冲突分析**：136 对组合矩阵、寺庙城寨功能抵消、宗教目录与宗族身份交互、原版覆盖点及静态证据边界
 - [project-system-overview.md](project-system-overview.md) — **咒、术、道与辉煌愿景**：统一描述全部玩家产品、自动游玩智能体、`open_kaishek`、Promo、工程方法、设计哲学，以及由四个无限演进 Loop 构成的自动化内容生产、测试、核验和发行闭环
 - [research-integrations-2026-10-10.md](research-integrations-2026-10-10.md) — 旧分支有价值研究的主线入口：宝物历史、宣称继承、朋党保留、圣人光环、枢机投票与第三方食人样本诊断；均保留原构建和证据边界
 - [project-causality-architecture/](project-causality-architecture/README.md) — **《project因果律》系统架构图册**：整体系统、四个 Loop、自动玩家 + MCP、自动化验收，以及权威证据、产品族、生成投影和四环飞轮共 11 张 Mermaid / SVG / PNG 架构图

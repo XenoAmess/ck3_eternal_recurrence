@@ -1,0 +1,231 @@
+{
+  "schema": "ck3.repository_mod_compatibility_static.v1",
+  "observed_at_utc": "2026-10-25T04:53:07Z",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "source_revision": "6b360480a5c8d9e123d09a8a735e96f31991dc22",
+  "report": "mod-compatibility-static-2026-10-25.md",
+  "evidence_level": "static_analysis_only",
+  "products": [
+    {
+      "source_directory": "Eternal_Recurrence_Vivhite_Courtier",
+      "release_file_count": 27,
+      "raw_source_logical_bytes": 1366111,
+      "raw_source_set_sha256": "40843ab77756c4dc57ffa23b434cdded1dba240415def158817c70e0a78c235f"
+    },
+    {
+      "source_directory": "mod_auto_upgrade_buildings",
+      "release_file_count": 17,
+      "raw_source_logical_bytes": 985281,
+      "raw_source_set_sha256": "4bda877c63aa6f22c033c075e0a46da40f2e994df544abbad7b0fac5d82294a8"
+    },
+    {
+      "source_directory": "mod_celestial_commerce_corruption",
+      "release_file_count": 22,
+      "raw_source_logical_bytes": 2288191,
+      "raw_source_set_sha256": "e423a3651a0fd3c6bb6a29fed8c2ac29e4d86b93e4cd10dea4318068e410b06d"
+    },
+    {
+      "source_directory": "mod_change_holding_types",
+      "release_file_count": 17,
+      "raw_source_logical_bytes": 101561,
+      "raw_source_set_sha256": "afe5ead7e1f7e4e7ab88f36676a8c9f884365b8b2ae05729b35f638ea71d2b77"
+    },
+    {
+      "source_directory": "mod_de_jure_conquest",
+      "release_file_count": 16,
+      "raw_source_logical_bytes": 147220,
+      "raw_source_set_sha256": "fea57111a60aeeaf2cfb64d239f49dd55e08e13b97b681082210d8a0996559cb"
+    },
+    {
+      "source_directory": "mod_dynastic_esotericism",
+      "release_file_count": 25,
+      "raw_source_logical_bytes": 653150,
+      "raw_source_set_sha256": "609f28292ca0fc13a39fac26146333ad688d87c02711b6c4969f8d1f352b3291"
+    },
+    {
+      "source_directory": "mod_living_artifacts",
+      "release_file_count": 57,
+      "raw_source_logical_bytes": 2071104,
+      "raw_source_set_sha256": "908b314f917e7ccbb54aee1edf4a67f5980acdfcc6c68b26e22a39944964e6b2"
+    },
+    {
+      "source_directory": "mod_li_yu_dao",
+      "release_file_count": 83,
+      "raw_source_logical_bytes": 860318,
+      "raw_source_set_sha256": "3ae409fb9fbc842c989500b1283856825134bf8ca0c3dcbc12a956cfa8e545c6"
+    },
+    {
+      "source_directory": "mod_reclaim_the_motherland",
+      "release_file_count": 36,
+      "raw_source_logical_bytes": 999162,
+      "raw_source_set_sha256": "a195bbbf4bd38d294e271a8c7674e436cb42479ff1441409462e4fe2484ec668"
+    },
+    {
+      "source_directory": "mod_religious_ritual_fusion",
+      "release_file_count": 67,
+      "raw_source_logical_bytes": 327505,
+      "raw_source_set_sha256": "f5f7de437c3ceeffd5b2722985098951dc7aa001ad7659ff5449312135f12e19"
+    },
+    {
+      "source_directory": "mod_remove_mandala",
+      "release_file_count": 15,
+      "raw_source_logical_bytes": 777261,
+      "raw_source_set_sha256": "96455cd84dcf6dffc4c057b96ce12180bfda59c6c885d14e21032825c304c975"
+    },
+    {
+      "source_directory": "mod_superman_qiang",
+      "release_file_count": 35,
+      "raw_source_logical_bytes": 1010859,
+      "raw_source_set_sha256": "a861ea31b6ad88784df3d6e2f087c33ec36d0f866bc1ec665bcfca131024c711"
+    },
+    {
+      "source_directory": "mod_tributary_expansion_directives",
+      "release_file_count": 16,
+      "raw_source_logical_bytes": 771456,
+      "raw_source_set_sha256": "ebffd2ceb9ad1aadfa927dd6d4b365e54003c637c834686aaa9aed0414fb8904"
+    },
+    {
+      "source_directory": "mod_xenoamess_quality_of_life",
+      "release_file_count": 27,
+      "raw_source_logical_bytes": 990983,
+      "raw_source_set_sha256": "68f99332816758a239e329c59495d959cb586276c3332cc2fa86745664ff6db9"
+    },
+    {
+      "source_directory": "mod_zhongguo_style",
+      "release_file_count": 1034,
+      "raw_source_logical_bytes": 32873058,
+      "raw_source_set_sha256": "b6a68cc7b35e265fd9a58fa952b6174a3d9cc5c19ab613b981c0fdbeb07279dc"
+    },
+    {
+      "source_directory": "ox_here",
+      "release_file_count": 22,
+      "raw_source_logical_bytes": 717555,
+      "raw_source_set_sha256": "202af32fe696342a70a3947cc6037d3ab4b0dc1a7a871d98e42e9bb8e0316636"
+    },
+    {
+      "source_directory": "XenoAmess_s_Eternal_Recurrence",
+      "release_file_count": 86,
+      "raw_source_logical_bytes": 6279998,
+      "raw_source_set_sha256": "e07d2aace370442c969c8a2ab132bd39ccc2920e5be07f9a22f15a425b4d0f5f"
+    }
+  ],
+  "input_definition": {
+    "inventory": "Existing release producer allowlists; use release-localization for CHT and DES; combine RRF base/runtimeFiles and generated/runtimeFiles; exclude development fixtures and LYD empty history placeholder.",
+    "raw_source_set_sha256_algorithm": "For each product, sort release relative POSIX paths lexicographically. Concatenate UTF-8 records: relative_path + TAB + lowercase SHA256(raw file bytes) + LF. SHA256 the concatenation. Includes descriptor and thumbnail where allowlisted; not a staging/ZIP digest.",
+    "main_projection": "Whole-file exclusions plus XAR_ACCEPTANCE_ONLY block removal and XAR_RELEASE_ONLY expansion, as in tools/build_release.py. Source fingerprints intentionally bind raw pre-projection input bytes."
+  },
+  "scan": {
+    "player_products": 17,
+    "unordered_pairs": 136,
+    "release_files": 1602,
+    "metadata_files_excluded_from_cross_path_comparison": 32,
+    "compared_runtime_files": 1570,
+    "top_level_blocks": 10345,
+    "language_scoped_localization_keys": 81135,
+    "cross_product_runtime_path_collisions": 0,
+    "cross_product_localization_key_collisions": 0,
+    "shared_top_level_block_ids_outside_on_action": 0,
+    "shared_public_on_action_ids": 7,
+    "all_shared_public_hooks_manually_checked_as_on_actions_list_extensions": true,
+    "descriptor_replace_path_declarations": 0,
+    "descriptor_dependencies_declarations": 0,
+    "classification_counts": {
+      "S": 129,
+      "R": 1,
+      "F": 1,
+      "H": 3,
+      "I": 2
+    },
+    "non_S_pairs": [
+      {
+        "products": [
+          "XAR",
+          "ERVC"
+        ],
+        "classification": "R"
+      },
+      {
+        "products": [
+          "MRM",
+          "CHT"
+        ],
+        "classification": "F"
+      },
+      {
+        "products": [
+          "XAR",
+          "DES"
+        ],
+        "classification": "H"
+      },
+      {
+        "products": [
+          "ERVC",
+          "DES"
+        ],
+        "classification": "H"
+      },
+      {
+        "products": [
+          "LYD",
+          "DES"
+        ],
+        "classification": "H"
+      },
+      {
+        "products": [
+          "LYD",
+          "RRF"
+        ],
+        "classification": "I"
+      },
+      {
+        "products": [
+          "DES",
+          "RRF"
+        ],
+        "classification": "I"
+      }
+    ]
+  },
+  "boundaries": [
+    "Not a full CK3 parser; nested database semantics and all vanilla references are not exhaustively resolved.",
+    "GUI naming, shared hooks and listed mechanism interactions were manually reviewed.",
+    "S means no direct conflict found within the declared static checks, not live compatibility qualification.",
+    "No CK3 or Steam start/connection, Workshop cache inspection, deployment, mod-source edit, playset edit, performance benchmark, save migration or multiplayer verification.",
+    "Not a universal compatibility statement for external mods or original upstream versions."
+  ],
+  "verification": {
+    "source_set_fingerprints": "PASS: 17 sets, 1602 files",
+    "markdown_source_links": "PASS: 92 existing targets",
+    "matrix": "PASS: 17 rows, 136 pairs, classifications match evidence",
+    "json_parse": "PASS: 17 product records",
+    "canonical_database_domain_scan": "PASS: recurse within the same common database category; inline event scripted triggers/effects share the relevant global category",
+    "game_business_tests": "NOT_RUN"
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "project_root_map": {
+      "repository": "D:/workspace/ck3_eternal_recurrence"
+    },
+    "resolved_repository_root": "D:/workspace/ck3_eternal_recurrence",
+    "task_start_volume_snapshot": {
+      "block_size_bytes": 4096,
+      "total_blocks": 122096000,
+      "available_blocks": 103243164
+    },
+    "task_close_volume_snapshot": {
+      "observed_at_utc": "2026-10-25T04:59:24.060Z",
+      "block_size_bytes": 4096,
+      "total_blocks": 122096000,
+      "available_blocks": 103242993,
+      "free_space_changes_not_attributed_to_this_task_alone": true
+    },
+    "complete_asset_ledger_available": false,
+    "quota_and_concurrent_reservations_verified": false,
+    "heavy_write_admission": "NOT_GRANTED_NOT_REQUIRED_FOR_SMALL_ANALYSIS_RECORDS",
+    "cleanup_scope": "Only this task's temporary Java analyzer and expanded input table; no other task assets.",
+    "retention_category": "record",
+    "review_after_days": 180
+  }
+}
