@@ -124,14 +124,14 @@ rrf_native_recovery_gui = {
 rrf_native_launch_gui = {
 	scope = character
 	is_shown = {
-		rrf_native_setup_target_trigger = yes
+		rrf_native_setup_mode_ready_trigger = yes
 		has_character_flag = rrf_native_setup_active
 		has_character_flag = rrf_native_open_requested
 	}
 }
 rrf_native_open_ack_gui = {
 	scope = character
-	is_valid = { rrf_native_setup_target_trigger = yes has_character_flag = rrf_native_open_requested }
+	is_valid = { rrf_native_setup_mode_ready_trigger = yes has_character_flag = rrf_native_setup_active has_character_flag = rrf_native_open_requested }
 	effect = { remove_character_flag = rrf_native_open_requested }
 }
 rrf_mark_native_apply_gui = {
@@ -156,10 +156,19 @@ rrf_keep_defaults_gui = {
 }
 rrf_resume_native_setup_gui = {
 	scope = character
+	is_shown = { rrf_native_setup_target_trigger = yes has_character_flag = rrf_native_setup_active }
 	is_valid = { rrf_native_setup_permission_trigger = yes }
 	effect = {
 		add_character_flag = rrf_native_open_requested
 		remove_character_flag = rrf_result_dialog
+	}
+}
+rrf_native_mode_unavailable_gui = {
+	scope = character
+	is_shown = {
+		rrf_native_setup_target_trigger = yes
+		has_character_flag = rrf_native_setup_active
+		NOT = { rrf_native_setup_mode_ready_trigger = yes }
 	}
 }
 rrf_result_window_gui = {

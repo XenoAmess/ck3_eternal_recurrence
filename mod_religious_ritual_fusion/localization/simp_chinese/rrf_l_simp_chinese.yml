@@ -86,6 +86,7 @@
  RRF_FAMILY_GUIDANCE:0 "以下至亲目前符合原版随创建者改信的条件。实际改信发生于采用新礼仪时，并受届时的角色状态与事件处理影响。"
  RRF_CONVERSION_PREVIEW_EMPTY:0 "当前没有符合预览条件的角色。"
  RRF_REQUIRE_OWN_FUSION_RESULT:0 "你正在采用自己刚创建并记录的融合礼仪"
+ RRF_REQUIRE_NATIVE_EDIT_MODE:0 "只有当前融合礼仪的实际领袖才能进入原版定制。未满足时仍可保留默认设置。"
  RRF_REQUIRE_FREE_SETUP_SESSION:0 "本次融合的免费定制尚未结束"
  RRF_NO_SECOND_NATIVE_CREATION:0 "请先完成当前融合礼仪的定制；此步骤仅修改已创建的结果"
  rrf_native_setup_cost_waiver:0 "融合礼仪免费定制"

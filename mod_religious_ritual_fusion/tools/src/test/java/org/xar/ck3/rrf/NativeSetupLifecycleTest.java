@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
-/** Executes the actual setup producers and consumers. Native setters/frames are explicit boundary inputs. */
+/** Executes actual script producers/consumers; native election outcomes and frames are authored boundaries. */
 final class NativeSetupLifecycleTest {
     @Test void editorControlsAreConsumedInsideTheOriginalNativeWindowInsteadOfAStandaloneContext() throws IOException {
         Path source = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize();
@@ -40,6 +40,7 @@ final class NativeSetupLifecycleTest {
         assertTrue(actions.getFirst().contains("rrf_mark_native_apply_gui"));
         assertTrue(actions.getFirst().contains("AddScope( 'rrf_native_target', RiteCreationWindow.GetRite.MakeScope )"));
         assertEquals("\"[RiteCreationWindow.EditRite]\"", actions.getLast());
+        assertTrue(apply.atom("enabled", "").contains("And( RiteCreationWindow.IsEditing,"));
         assertTrue(apply.atom("enabled", "").contains("RiteCreationWindow.CanEditRite"));
         assertTrue(apply.atom("enabled", "").contains("EqualTo_CFixedPoint( RiteCreationWindow.CalcPietyCost, '(CFixedPoint)0' )"));
         assertTrue(widget(window, "rrf_native_setup_details").orElseThrow().render().contains("RiteCreationWindow.GetEditBlockers"));
@@ -55,6 +56,14 @@ final class NativeSetupLifecycleTest {
             assertTrue(nativeBody.contains("RiteCreationWindow.GetCategoryHelper( '" + category + "' ).GetCategory"));
         for (String nativeInput : List.of("RiteCreationWindow.SelectFaithIcon", "RiteCreationWindow.SetColor", "RiteCreationWindow.GetSins", "RiteCreationWindow.GetVirtues"))
             assertTrue(nativeBody.contains(nativeInput));
+
+        Clausewitz.Block resultWindow = Clausewitz.parse(Files.readString(source.resolve("gui/rrf_result_window.gui"))).block("window");
+        Clausewitz.Block resume = widget(resultWindow, "rrf_result_resume_setup").orElseThrow();
+        assertTrue(resume.atom("visible", "").contains("rrf_resume_native_setup_gui' ).IsShown"));
+        assertTrue(resume.atom("enabled", "").contains("rrf_resume_native_setup_gui' ).IsValid"));
+        assertTrue(resume.atom("tooltip", "").contains("IsValidTooltip"));
+        assertEquals("\"RRF_REQUIRE_NATIVE_EDIT_MODE\"", widget(resultWindow, "rrf_native_mode_blocker").orElseThrow().atom("text", ""));
+        assertTrue(widget(resultWindow, "rrf_result_keep_defaults").orElseThrow().atom("onclick", "").contains("rrf_keep_defaults_gui"));
     }
 
     @Test void nativeWindowGateRequiresTheActualTargetWhileRecoveryDoesNotInventAnEditorContext() throws IOException {
@@ -98,6 +107,54 @@ final class NativeSetupLifecycleTest {
         assertFalse(model.trigger("rrf_native_setup_permission_trigger", model.actor));
         model.state(model.result).variables.put("rrf_origin_founder", new Reference(model.actor));
         assertTrue(model.trigger("rrf_native_setup_permission_trigger", model.actor));
+    }
+
+    @Test void wrongOrAbsentNativeHeadBlocksOpeningAndApplyWhileKeepingTheOwnedWindowAndDefaults() throws IOException {
+        for (boolean absent : List.of(false, true)) {
+            Model model = model(true);
+            if (absent) model.state(model.result).links.remove("head_of_rite");
+            else model.state(model.result).links.put("head_of_rite", model.other);
+            model.effect("rrf_begin_native_setup_effect", model.actor);
+            assertTrue(model.state(model.actor).flags.containsKey("rrf_native_setup_active"));
+            assertTrue(model.state(model.actor).modifiers.containsKey("rrf_native_setup_cost_waiver"));
+            assertFalse(model.state(model.actor).flags.containsKey("rrf_native_open_requested"));
+            assertTrue(model.guiShown("rrf_result_window_gui", model.actor));
+            assertTrue(model.guiShown("rrf_native_mode_unavailable_gui", model.actor));
+            assertTrue(model.guiShown("rrf_resume_native_setup_gui", model.actor));
+            assertFalse(model.guiValid("rrf_resume_native_setup_gui", model.actor));
+            assertFalse(model.trigger("rrf_native_setup_permission_trigger", model.actor));
+            assertFalse(model.guiValid("rrf_mark_native_apply_gui", model.actor));
+            assertTrue(model.guiValid("rrf_keep_defaults_gui", model.actor));
+            // An old open request cannot bypass the new actual-head guard.
+            model.state(model.actor).flags.put("rrf_native_open_requested", new Expiry(Integer.MAX_VALUE));
+            assertFalse(model.guiShown("rrf_native_launch_gui", model.actor));
+            assertFalse(model.guiValid("rrf_native_open_ack_gui", model.actor));
+            // Keep the owned-session shell even if native IsEditing is false;
+            // this shell hides the stock Create controls and retains safe exits.
+            assertTrue(model.guiShown("rrf_native_setup_window_gui", model.actor));
+            model.effect("rrf_mark_native_apply_effect", model.actor);
+            assertFalse(model.state(model.actor).flags.containsKey("rrf_native_apply_requested"));
+        }
+    }
+
+    @Test void lostHeadBlocksAnOpenSessionAndLaterObservedHeadCanResumeWithoutAnotherElection() throws IOException {
+        Model model = model(true);
+        model.effect("rrf_begin_native_setup_effect", model.actor);
+        model.guiExecute("rrf_native_open_ack_gui", model.actor);
+        model.state(model.result).links.put("head_of_rite", model.other);
+        assertFalse(model.trigger("rrf_native_setup_mode_ready_trigger", model.actor));
+        assertTrue(model.guiShown("rrf_native_setup_window_gui", model.actor));
+        assertTrue(model.guiShown("rrf_native_recovery_gui", model.actor));
+        assertFalse(model.guiValid("rrf_resume_native_setup_gui", model.actor));
+        assertFalse(model.guiValid("rrf_mark_native_apply_gui", model.actor));
+        assertTrue(model.guiValid("rrf_keep_defaults_gui", model.actor));
+        // This is a later authored native readback, not an election algorithm.
+        model.state(model.result).links.put("head_of_rite", model.actor);
+        model.guiExecute("rrf_resume_native_setup_gui", model.actor);
+        assertTrue(model.guiShown("rrf_native_launch_gui", model.actor));
+        assertTrue(model.guiValid("rrf_mark_native_apply_gui", model.actor));
+        assertTrue(model.nativeElectionObservations.isEmpty());
+        assertEquals(new BigDecimal("2000"), model.state(model.actor).piety);
     }
 
     @Test void setupBlocksAnotherCreationAndKeepsTheStockRulesOutsideTheSession() throws IOException {
@@ -259,6 +316,10 @@ final class NativeSetupLifecycleTest {
     @Test void realCompletionRecordsTheResultChargesOnceAndThenBeginsSetupAfterAdoption() throws IOException {
         Model model = model(true);
         model.state(model.actor).links.put("rite", model.sourceA);
+        model.state(model.result).links.remove("head_of_rite");
+        model.state(model.sourceA).links.put("head_of_rite", model.other);
+        Map<String, Node> sourceALinks = Map.copyOf(model.state(model.sourceA).links);
+        Map<String, Node> sourceBLinks = Map.copyOf(model.state(model.sourceB).links);
         model.effect("rrf_complete_success_effect", model.actor);
         assertEquals(new Reference(model.actor), model.state(model.result).variables.get("rrf_origin_founder"));
         assertEquals(new Reference(model.sourceA), model.state(model.result).variables.get("rrf_origin_a"));
@@ -266,10 +327,44 @@ final class NativeSetupLifecycleTest {
         assertEquals(new NumberValue(new BigDecimal("500")), model.state(model.actor).variables.get("rrf_charged_cost"));
         assertEquals(new BigDecimal("1500"), model.state(model.actor).piety);
         assertEquals(model.result, model.state(model.actor).links.get("rite"));
+        assertEquals(List.of(new NativeElectionObservation(model.result, model.result, Optional.of(model.actor))), model.nativeElectionObservations);
+        assertEquals(model.actor, model.state(model.result).links.get("head_of_rite"));
+        assertEquals(sourceALinks, model.state(model.sourceA).links);
+        assertEquals(sourceBLinks, model.state(model.sourceB).links);
         assertTrue(model.state(model.actor).flags.containsKey("rrf_native_open_requested"));
         assertTrue(model.state(model.actor).modifiers.containsKey("rrf_native_setup_cost_waiver"));
         assertFalse(model.state(model.actor).variables.containsKey("rrf_source_a"));
         assertFalse(model.state(model.result).variables.containsKey("rrf_native_configuration_complete"));
+    }
+
+    @Test void nativeElectionMayReturnNoHeadOrAnotherHeadAndDefaultsRemainACompleteSafeExit() throws IOException {
+        for (boolean electOther : List.of(false, true)) {
+            Model model = model(true);
+            model.state(model.actor).links.put("rite", model.sourceA);
+            model.state(model.result).links.remove("head_of_rite");
+            Optional<Node> outcome = electOther ? Optional.of(model.other) : Optional.empty();
+            model.authoredNativeElectionResults.put(model.result, outcome);
+            Set<Node> cores = Set.copyOf(model.state(model.result).cores);
+            Set<Node> doctrines = Set.copyOf(model.state(model.result).doctrines);
+            model.effect("rrf_complete_success_effect", model.actor);
+            assertEquals(List.of(new NativeElectionObservation(model.result, model.result, outcome)), model.nativeElectionObservations);
+            assertEquals(outcome, Optional.ofNullable(model.state(model.result).links.get("head_of_rite")));
+            assertEquals(new Token("flag:succeeded"), model.state(model.actor).variables.get("rrf_state"));
+            assertEquals(new BigDecimal("1500"), model.state(model.actor).piety);
+            assertTrue(model.state(model.actor).flags.containsKey("rrf_native_setup_active"));
+            assertTrue(model.state(model.actor).modifiers.containsKey("rrf_native_setup_cost_waiver"));
+            assertFalse(model.guiShown("rrf_native_launch_gui", model.actor));
+            assertTrue(model.guiShown("rrf_result_window_gui", model.actor));
+            assertFalse(model.guiValid("rrf_resume_native_setup_gui", model.actor));
+            model.guiExecute("rrf_keep_defaults_gui", model.actor);
+            assertEquals(new Token("yes"), model.state(model.result).variables.get("rrf_native_configuration_complete"));
+            assertEquals(cores, model.state(model.result).cores);
+            assertEquals(doctrines, model.state(model.result).doctrines);
+            assertEquals(outcome, Optional.ofNullable(model.state(model.result).links.get("head_of_rite")));
+            assertFalse(model.state(model.actor).flags.containsKey("rrf_native_setup_active"));
+            assertFalse(model.state(model.actor).modifiers.containsKey("rrf_native_setup_cost_waiver"));
+            assertTrue(model.guiValid("rrf_configured_result_gui", model.actor));
+        }
     }
 
     @Test void rejectedNativeAdoptionCannotEnterASetupOrClaimSuccess() throws IOException {
@@ -279,6 +374,7 @@ final class NativeSetupLifecycleTest {
         model.effect("rrf_complete_success_effect", model.actor);
         assertEquals(new Token("flag:unresolved"), model.state(model.actor).variables.get("rrf_state"));
         assertEquals(model.sourceA, model.state(model.actor).links.get("rite"));
+        assertTrue(model.nativeElectionObservations.isEmpty());
         assertFalse(model.state(model.actor).flags.containsKey("rrf_native_setup_active"));
         assertFalse(model.state(model.actor).modifiers.containsKey("rrf_native_setup_cost_waiver"));
     }
@@ -307,6 +403,7 @@ final class NativeSetupLifecycleTest {
     record Reference(Node node) implements Stored { }
     record Token(String token) implements Stored { }
     record NumberValue(BigDecimal value) implements Stored { }
+    record NativeElectionObservation(Node rite, Node actorCurrentRite, Optional<Node> electedHead) { }
     private record Expiry(int year) { }
     static Node node(Kind kind, String id) { return new Node(kind, id); }
     static final class State {
@@ -332,6 +429,9 @@ final class NativeSetupLifecycleTest {
         final Map<String, Boolean> nativeRules = Map.of("can_create_rite_trigger", true, "can_edit_rite_trigger", false);
         final Set<String> globalMarkers = new LinkedHashSet<>();
         final List<String> toasts = new ArrayList<>();
+        // Authored native observations, never a model of candidate eligibility.
+        final Map<Node, Optional<Node>> authoredNativeElectionResults = new LinkedHashMap<>();
+        final List<NativeElectionObservation> nativeElectionObservations = new ArrayList<>();
         boolean nativeAdoptionSucceeds = true;
         int year;
         Model() {
@@ -339,6 +439,8 @@ final class NativeSetupLifecycleTest {
             state(actor).variables.putAll(Map.of("rrf_last_result_rite", new Reference(result), "rrf_source_a", new Reference(sourceA), "rrf_source_b", new Reference(sourceB), "rrf_source_a_faith", new Reference(faith), "rrf_source_b_faith", new Reference(faith), "rrf_mode", new Token("flag:rite"), "rrf_state", new Token("flag:succeeded")));
             state(actor).booleans.putAll(Map.of("is_ai", false, "is_alive", true, "is_adult", true, "is_at_war", false, "is_imprisoned", false));
             state(result).variables.put("rrf_origin_founder", new Reference(actor));
+            state(result).links.put("head_of_rite", actor);
+            authoredNativeElectionResults.put(result, Optional.of(actor));
             for (Node rite : List.of(result, sourceA, sourceB)) state(rite).links.put("faith", faith);
             Node aCore = node(Kind.TENET, "a_core"), bCore = node(Kind.TENET, "b_core"), shared = node(Kind.TENET, "shared_core"), otherShared = node(Kind.TENET, "other_shared_core");
             state(sourceA).cores.addAll(List.of(aCore, shared, otherShared));
@@ -466,6 +568,17 @@ final class NativeSetupLifecycleTest {
                     case "add_to_list" -> locals.computeIfAbsent(text, unused -> new ArrayList<>()).add(frame.current());
                     case "remove_from_list" -> locals.computeIfAbsent(text, unused -> new ArrayList<>()).remove(frame.current());
                     case "set_character_rite" -> { if (nativeAdoptionSucceeds) state(frame.current()).links.put("rite", Objects.requireNonNull(target(text, frame))); }
+                    case "force_refresh_head_of_rite" -> {
+                        if (!text.equals("yes") || frame.current().kind() != Kind.RITE)
+                            throw new IllegalArgumentException("invalid native head election scope/value");
+                        Optional<Node> observedHead = Objects.requireNonNull(authoredNativeElectionResults.get(frame.current()), "unbound authored native election: " + frame.current());
+                        nativeElectionObservations.add(new NativeElectionObservation(frame.current(), Objects.requireNonNull(state(actor).links.get("rite")), observedHead));
+                        if (observedHead.isPresent()) {
+                            Node head = observedHead.orElseThrow();
+                            if (head.kind() != Kind.CHARACTER) throw new IllegalArgumentException("native head is not a character");
+                            state(frame.current()).links.put("head_of_rite", head);
+                        } else state(frame.current()).links.remove("head_of_rite");
+                    }
                     case "change_rite_doctrine" -> {
                         Node doctrine = Objects.requireNonNull(target(text, frame));
                         String group = Objects.requireNonNull(doctrineGroups.get(doctrine), "unbound native doctrine group: " + doctrine);

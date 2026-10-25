@@ -55,7 +55,7 @@ final class SavedSelectionTest {
         assertEquals("9d3404f6eb08db3a3d2196a5b2e1ce9b4c8687f2d7df60a4f79cafe75f043101", evidence.originalDecoder().sha256());
         assertEquals("INCOMPLETE_NOT_QUALIFIED", evidence.nativeEditStatus());
         Inputs inputs = inputs("core-rite", "retained-origin");
-        FixtureContracts.FilePin manifest = new FixtureContracts.FilePin(inputs.fixture().manifest().toString(), Files.size(inputs.fixture().manifest()), org.xar.ck3.rrf.ReleaseBuilder.sha256(Files.readAllBytes(inputs.fixture().manifest())));
+        FixtureContracts.FilePin manifest = new FixtureContracts.FilePin(inputs.fixture().manifest().toRealPath().toString(), Files.size(inputs.fixture().manifest()), org.xar.ck3.rrf.ReleaseBuilder.sha256(Files.readAllBytes(inputs.fixture().manifest())));
         var fixture = FrozenFixtureReader.read(manifest, inputs.request().machineId(), inputs.repository());
         FusionSelection expected = (FusionSelection) inputs.request().expectation();
         Pin inventory = expected.preparedProfileInventory();

@@ -481,6 +481,12 @@ window = {
 								text_multi = { text = "RRF_NATIVE_SETUP_LOCKED_CORES_TT" max_width = 440 autoresize = yes }
 								text_label_left = { text = "RRF_NATIVE_SETUP_FREE" }
 								text_multi = {
+									visible = "[Not( RiteCreationWindow.IsEditing )]"
+									text = "RRF_REQUIRE_NATIVE_EDIT_MODE"
+									max_width = 440
+									autoresize = yes
+								}
+								text_multi = {
 									visible = "[Not( RiteCreationWindow.CanEditRite )]"
 									text = "[RiteCreationWindow.GetEditBlockers]"
 									max_width = 440
@@ -641,8 +647,8 @@ window = {
 							name = "rrf_native_apply"
 							size = { 400 60 }
 							text = "RRF_NATIVE_SETUP_APPLY"
-							enabled = "[And4( RiteCreationWindow.CanEditRite, EqualTo_CFixedPoint( RiteCreationWindow.CalcPietyCost, '(CFixedPoint)0' ), Not( IsObserver ), GetScriptedGui( 'rrf_mark_native_apply_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'rrf_native_target', RiteCreationWindow.GetRite.MakeScope ).End ) )]"
-							tooltip = "[Localize( 'RRF_NATIVE_SETUP_APPLY_TT' )] [RiteCreationWindow.GetEditBlockers]"
+							enabled = "[And( RiteCreationWindow.IsEditing, And4( RiteCreationWindow.CanEditRite, EqualTo_CFixedPoint( RiteCreationWindow.CalcPietyCost, '(CFixedPoint)0' ), Not( IsObserver ), GetScriptedGui( 'rrf_mark_native_apply_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'rrf_native_target', RiteCreationWindow.GetRite.MakeScope ).End ) ) )]"
+							tooltip = "[Localize( 'RRF_NATIVE_SETUP_APPLY_TT' )] [RiteCreationWindow.GetEditBlockers] [GetScriptedGui( 'rrf_mark_native_apply_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'rrf_native_target', RiteCreationWindow.GetRite.MakeScope ).End )]"
 							onclick = "[GetScriptedGui( 'rrf_mark_native_apply_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'rrf_native_target', RiteCreationWindow.GetRite.MakeScope ).End )]"
 							onclick = "[RiteCreationWindow.EditRite]"
 						}

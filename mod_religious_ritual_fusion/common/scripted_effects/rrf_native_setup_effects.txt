@@ -8,9 +8,16 @@ rrf_begin_native_setup_effect = {
         }
         add_character_flag = { flag = rrf_native_setup_active years = 1 }
         add_character_modifier = { modifier = rrf_native_setup_cost_waiver years = 1 }
-        add_character_flag = rrf_native_open_requested
         remove_character_flag = rrf_native_apply_requested
-        remove_character_flag = rrf_result_dialog
+        if = {
+            limit = { rrf_native_setup_mode_ready_trigger = yes }
+            add_character_flag = rrf_native_open_requested
+            remove_character_flag = rrf_result_dialog
+        }
+        else = {
+            remove_character_flag = rrf_native_open_requested
+            add_character_flag = rrf_result_dialog
+        }
     }
 }
 

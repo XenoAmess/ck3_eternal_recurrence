@@ -26,3 +26,17 @@ R0015公共run原wait2，CK3原生及独立保留句柄退出0、host原wait0、
 R0015完整原件在同一外置scene的`live/4-8e1c2f1861--religious-ritual-fusion--R0015`、`root-execution-a17`及`managed-states/review-zh-core-a05/state`。实际创建后报告`operator-plans/save-oracle-created/report.json`为480295 B，SHA-256 `6b3162ca36efa54ad43eabed711178a123a2473dc7bd2202e365500e4199b780`；native保存68692199 B，SHA-256 `c903190f35fe8976f3ca4354519fb2a7495a53f91a39f5cdd33388fbd029ee3f`。SDK持久化仍独立报告save_binding_mismatch；原生保存成功不能抵扣该缺口。
 
 后继先修合法native首领重新选举与真实编辑模式守卫，继续核零报价、同ID保存、四名／图标／颜色、改信、DES、四核心及无MTS场景和独立冷载。没有将本软件包称为这八项的实机完成。
+
+## 原生模式修复与后继检查
+
+2026-10-25T18:27:57Z，`machine_id: 4-8e1c2f1861`。创建者成功采用实际新结果后，现在只对该结果调用原版`force_refresh_head_of_rite`，由游戏重新选举合法首领；不保证创建者必然当选。独立模式守卫读取实际首领及当前礼仪，原生保存另要求真实`RiteCreationWindow.IsEditing`与零报价。无首领或其他角色为首领时，有限定制会话仍可保留默认；恢复按钮禁用并显示原因。窗口所有权守卫继续隐藏原版Create入口。
+
+实际完整RRF Maven verify **90通过、0失败、0错误、0跳过**，其中19项生命周期测试将原生选举结果明确作为人工边界输入，不冒充游戏选举验收。原始Popen证明`metadata/product-validation-a10/rrf.a13.command.actual.json`为160237 B，SHA-256 `ab2d70f533e5e7fc7e9a3655e3712bd9b5e58375fe545aed62556f03e478f4f1`。
+
+远端同步带入的DES及登记合同补验：完整DES Maven 24项、三个公共测试模块61项，以及完整RRF消费者命令组48项均实际通过，原wait均0。第一次DES缺少子进程解释器依赖、第一次公共组缺少PYTHONPATH，均保留失败后修正进程环境重跑；没有安装新全局依赖。第一次消费者48项日志虽OK，外层监测脚本因并发临时文件消失而异常、缺少原Popen wait，未资格化；修复监测后完整重跑并保留原wait0。
+
+此前提交`dbe8a9918`的[官方RRF CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40220443650)真实失败：两份测试手造manifest pin未调用toRealPath，却交给要求规范路径的严格reader。已同步测试，新增三／四核心真实CLI producer→reader回归，显式验证Windows大小写别名及dot-path的非规范pin拒绝、规范pin接受；生产reader与身份守卫未放宽。原CI没有打印expected／actual路径，不追认其具体短名、盘符或大小写形态。上述90项包含该回归，后继提交的官方CI仍须独立读回。
+
+为下一场容量准备，已精确回收R0015的3740个可重建shadercache文件（分配量155353904 B），以及三份字节相同的存档副本（206073856 B）。`last_save.ck3`与`autosave.ck3`匹配after，`autosave_1.ck3`匹配before；删除前均核实际文件身份、SHA、永久索引与当前消费者。before-R0015.ck3、实际xar_checkpoint.ck3、完整AST报告及其他失败原件仍可读。旧三副本已删除，不在原路径制造替代文件。小回执分别在同一validation根的`closure-R0015-cache-a01/ACTUAL.actual.json`和`duplicate-save-reclamation-a01/ACTUAL.actual.json`（后者SHA-256 `d110bc85f67d817b17d9af9a6c869af94720710b71246e8d5499862bfb1e87a8`）。回收已加回gross累计账，不重置旧配额或旧RED。
+
+本段仍无新游戏业务通过；下一场必须取得新存储准入、干净来源冻结、完整Q、实际原生绑定及新鲜后台Steam离线凭据。

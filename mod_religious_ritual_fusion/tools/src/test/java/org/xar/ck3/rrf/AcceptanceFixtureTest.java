@@ -6,12 +6,15 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -173,7 +176,7 @@ final class AcceptanceFixtureTest {
             assertEquals(request, Json.read(bytes, Request.class));
             assertTrue(java.util.Arrays.equals(bytes, Files.readAllBytes(emitted.requestSnapshot())));
             org.xar.ck3.rrf.acceptance.FrozenFixtureReader.BoundRequest bound = org.xar.ck3.rrf.acceptance.FrozenFixtureReader.read(
-                    new FixtureContracts.FilePin(emitted.manifest().toString(), Files.size(emitted.manifest()), ReleaseBuilder.sha256(Files.readAllBytes(emitted.manifest()))), "synthetic-fixture-machine", repository);
+                    new FixtureContracts.FilePin(emitted.manifest().toRealPath().toString(), Files.size(emitted.manifest()), ReleaseBuilder.sha256(Files.readAllBytes(emitted.manifest()))), "synthetic-fixture-machine", repository);
             assertEquals(request, bound.request());
             String observed = Files.readString(emitted.fixture().resolve("common/scripted_triggers/rrfa_observation_triggers.txt"));
             Clausewitz.Block result = Clausewitz.parse(observed).block("rrfa_result_core_trigger");
@@ -182,6 +185,38 @@ final class AcceptanceFixtureTest {
             for (ExpectedSelection.TenetKey key : request.expectedSelection().coreTenets()) assertTrue(observed.contains("name = rrf_origin_core_tenets target = tenet:" + key.value()));
             Files.write(emitted.fixture().resolve(FixtureContracts.REQUEST_FILE), new byte[]{10}, java.nio.file.StandardOpenOption.APPEND);
             assertThrows(IOException.class, () -> org.xar.ck3.rrf.acceptance.FrozenFixtureReader.read(bound.manifestPin(), "synthetic-fixture-machine", repository));
+        }
+    }
+    @Test void actualCliCanonicalPinsSurviveWindowsOutputAliasesAndRejectNoncanonicalReferences() throws IOException {
+        Path repository = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize().getParent();
+        Path parent = Files.createDirectory(directory.resolve("MiXeDFixtureParent")).toRealPath();
+        boolean windows = System.getProperty("os.name").startsWith("Windows");
+        Path requestedParent = windows ? Path.of(parent.toString().toLowerCase(Locale.ROOT)) : parent;
+        assertTrue(Files.isSameFile(parent, requestedParent));
+        for (String recipe : List.of("core-rite", "core-rite-four")) {
+            Path inputs = repository.resolve("mod_religious_ritual_fusion/tools/src/main/resources/acceptance/requests/" + recipe + ".json");
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream(); PrintStream original = System.out;
+            int code;
+            try (PrintStream capture = new PrintStream(bytes, true, StandardCharsets.UTF_8)) {
+                System.setOut(capture);
+                try {
+                    code = FixtureEmitter.run(new String[]{"--repo-root", repository.toString(), "--output", requestedParent.resolve(recipe).toString(),
+                            "--machine-id", "synthetic-fixture-machine", "--inputs", inputs.toString()});
+                } finally { System.setOut(original); }
+            }
+            assertEquals(0, code);
+            FixtureEmitter.Report produced = Json.read(bytes.toByteArray(), FixtureEmitter.Report.class);
+            FixtureContracts.FilePin canonical = produced.manifest(); Path manifest = Path.of(canonical.path());
+            assertEquals(manifest.toRealPath().toString(), canonical.path());
+            List<Path> aliases = new ArrayList<>(List.of(manifest.getParent().resolve(".").resolve(manifest.getFileName())));
+            if (windows) aliases.add(Path.of(canonical.path().toLowerCase(Locale.ROOT)));
+            for (Path alias : aliases) {
+                assertFalse(alias.toString().equals(canonical.path())); assertTrue(Files.isSameFile(manifest, alias));
+                FixtureContracts.FilePin noncanonical = new FixtureContracts.FilePin(alias.toString(), canonical.bytes(), canonical.sha256());
+                assertThrows(IOException.class, () -> org.xar.ck3.rrf.acceptance.FrozenFixtureReader.read(noncanonical, "synthetic-fixture-machine", repository));
+            }
+            var accepted = org.xar.ck3.rrf.acceptance.FrozenFixtureReader.read(canonical, "synthetic-fixture-machine", repository);
+            assertEquals(canonical, accepted.manifestPin()); assertEquals(bundledRequest(repository, recipe), accepted.request());
         }
     }
     @Test void selectionRejectsWrongTypesDuplicatesFalseCatalogKindsAndEveryUnreachableFiveToHundredRecipe() throws IOException {

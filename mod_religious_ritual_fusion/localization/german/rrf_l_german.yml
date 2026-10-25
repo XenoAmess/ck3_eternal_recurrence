@@ -86,6 +86,7 @@
  RRF_FAMILY_GUIDANCE:0 "These close family members currently meet the native conditions for following their founder's conversion. Actual conversion occurs when you adopt the new rite and depends on their state and event processing at that time."
  RRF_CONVERSION_PREVIEW_EMPTY:0 "No characters currently meet the preview conditions."
  RRF_REQUIRE_OWN_FUSION_RESULT:0 "You currently follow the new fusion rite recorded with you as its founder"
+ RRF_REQUIRE_NATIVE_EDIT_MODE:0 "Für die Anpassung im Originalfenster musst du das aktuelle Oberhaupt dieses fusionierten Ritus sein. Andernfalls kannst du die Standardeinstellungen beibehalten."
  RRF_REQUIRE_FREE_SETUP_SESSION:0 "This fusion's free customization session is still active"
  RRF_NO_SECOND_NATIVE_CREATION:0 "Finish customizing the current fusion rite first; this step only edits the existing result"
  rrf_native_setup_cost_waiver:0 "Free Fusion Rite Customization"

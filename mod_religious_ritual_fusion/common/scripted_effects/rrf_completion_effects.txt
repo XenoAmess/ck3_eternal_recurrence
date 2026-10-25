@@ -10,6 +10,9 @@ rrf_complete_success_effect = {
     set_character_rite = scope:rrf_new_rite
     if = {
         limit = { rite = scope:rrf_new_rite }
+        # Ask the native election to refresh only the adopted new result.
+        # Founder status alone does not guarantee that it elects this actor.
+        scope:rrf_new_rite = { force_refresh_head_of_rite = yes }
         set_variable = { name = rrf_state value = flag:succeeded }
         send_interface_toast = {
             title = RRF_FUSION_SUCCEEDED

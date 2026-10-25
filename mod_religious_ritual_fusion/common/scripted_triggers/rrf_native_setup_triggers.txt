@@ -10,10 +10,24 @@ rrf_native_setup_target_trigger = {
     }
 }
 
+# Native IsEditing requires the current actor to be the actual Rite head.
+# Keep this separate from ownership so a blocked session can keep defaults.
+rrf_native_setup_mode_ready_trigger = {
+    rrf_native_setup_target_trigger = yes
+    rite = {
+        exists = head_of_rite
+        head_of_rite = prev
+    }
+}
+
 rrf_native_setup_permission_trigger = {
     custom_description = {
         text = RRF_REQUIRE_OWN_FUSION_RESULT
         rrf_native_setup_target_trigger = yes
+    }
+    custom_description = {
+        text = RRF_REQUIRE_NATIVE_EDIT_MODE
+        rrf_native_setup_mode_ready_trigger = yes
     }
     custom_description = {
         text = RRF_REQUIRE_FREE_SETUP_SESSION
