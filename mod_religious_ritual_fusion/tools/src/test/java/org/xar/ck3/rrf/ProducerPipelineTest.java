@@ -96,6 +96,34 @@ final class ProducerPipelineTest {
         Files.writeString(source.resolve("descriptor.mod"), "version=\"0.1.0\" remote_file_id=\"123\""); assertThrows(IllegalArgumentException.class, () -> ContentValidator.validate(source));
     }
 
+    @Test void prereleaseVersionAndDeclaredForeignLanguageUseRealBuilderAndTokenConsumer() throws IOException {
+        Path source = createProduct();
+        String tokens = "@piety_icon! [GetPlayer.GetName]\\n";
+        for (String language : List.of("english", "simp_chinese", "french")) {
+            write(source, "localization/" + language + "/rrf_l_" + language + ".yml", "\ufeffl_" + language + ":\n rrf_label:0 \"" + tokens + "Text\"\n rrf_hidden:0 \"\"\n");
+        }
+        Product previous = Json.read(Files.readAllBytes(source.resolve("tools/product.json")), Product.class);
+        List<String> files = new java.util.ArrayList<>(previous.runtimeFiles()); files.add("localization/french/rrf_l_french.yml");
+        Product product = new Product(1, previous.productId(), "0.1.0-alpha", files);
+        Files.write(source.resolve("tools/product.json"), Json.write(product));
+        Files.writeString(source.resolve("descriptor.mod"), Files.readString(source.resolve("descriptor.mod")).replace("0.1.0", product.version()));
+        new CatalogGenerator().generate(catalog(), source);
+        ReleaseBuilder builder = new ReleaseBuilder();
+        Contracts.Provenance provenance = new Contracts.Provenance(Contracts.ProvenanceKind.SYNTHETIC_FIXTURE, "synthetic-release-machine", "2026-10-25T00:00:00Z");
+        ReleaseBuilder.BuildResult built = builder.build(source, directory.resolve("alpha-staging"), "d".repeat(40), provenance);
+        assertEquals(product.version(), Json.read(Files.readAllBytes(Path.of(built.manifest())), Contracts.Manifest.class).version());
+        assertEquals(product.version(), builder.verify(source, Path.of(built.staging()), Path.of(built.manifest())).version());
+        Path french = source.resolve("localization/french/rrf_l_french.yml"); String original = Files.readString(french);
+        Files.writeString(french, original.replace("[GetPlayer.GetName]", "[GetPlayer.GetFaith.GetName]"));
+        assertThrows(IllegalArgumentException.class, () -> ContentValidator.validate(source));
+        Files.writeString(french, original.replace("rrf_hidden", "rrf_unknown"));
+        assertThrows(IllegalArgumentException.class, () -> ContentValidator.validate(source));
+        for (String invalid : List.of("0.1.0 Alpha", "0.1.0-", "0.1", "0.1.0-alpha..1")) {
+            assertThrows(IllegalArgumentException.class, () -> new Product(1, previous.productId(), invalid, files));
+            assertThrows(IllegalArgumentException.class, () -> new Contracts.Manifest(1, previous.productId(), invalid, "d".repeat(40), provenance, List.of()));
+        }
+    }
+
     private Catalog catalog() throws IOException {
         Path game = directory.resolve("game");
         write(game, "common/scripted_triggers/fixture.txt", "fixture_ok_trigger = { scope:actor = { is_landed = yes } }");

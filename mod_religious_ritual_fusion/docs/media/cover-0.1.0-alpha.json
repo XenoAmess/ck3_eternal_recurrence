@@ -1,0 +1,12 @@
+{
+  "schema": "rrf.cover.provenance.v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-25T05:36:00Z",
+  "mode": "imagegen built-in generate; no reference image",
+  "asset": "thumbnail.png",
+  "generated_original": "C:/Users/Administrator/.codex/generated_images/01a16e4d-3053-7c10-9a22-96270d0be5fa/exec-3e6680b1-455d-4d4a-a1fd-ce425ed5a741.png",
+  "generated_original_bytes": 3549414,
+  "packaging": "Java ImageIO bicubic resize to 512 x 512 RGB PNG, 696215 bytes; original preserved. 640 x 640 first derived output exceeded 1MiB and was removed.",
+  "kind": "promotional illustration; not a gameplay screenshot",
+  "prompt": "Use case: ads-marketing. Asset: square cover artwork for a Crusader Kings III original mod called Religious & Ritual Fusion, clearly illustrated promotional art, never a gameplay screenshot. Create a refined medieval manuscript and stained-glass style emblem: two small illuminated sacred books at left and right, their gold ribbons meeting in one central open codex, a warm light above it suggesting the joining of religious rites and traditions. Dark ink-blue background, restrained antique gold and ivory, tiny burgundy and teal accents. Strong readable silhouette as a small Steam Workshop thumbnail, decorative medieval border, elegant and dignified, no modern objects, no logos, no faces, no watermark. Exact text centered in lower quarter, large beautifully legible Chinese: 宗教礼仪融合 . Beneath, small simple uppercase ALPHA. Flat colored areas with subtle engraved texture, no busy photorealistic background. Square composition. Please produce a clean compact PNG illustration suitable for a sub-1MB thumbnail."
+}
