@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.xar.ck3.rrf.acceptance.CompatibilityModEmitter;
@@ -20,6 +21,11 @@ import org.xar.ck3.rrf.acceptance.FixtureContracts.FilePin;
 
 final class CompatibilityModEmitterTest {
     @TempDir Path temporary;
+
+    @BeforeEach void canonicalTemporaryRoot() throws IOException {
+        // Hosted Windows TEMP may use an alias; requests require canonical paths.
+        temporary = temporary.toRealPath();
+    }
 
     @Test void actualProducerReachesPublicPrepareSavedHostAndRealAllocatorFingerprint() throws Exception {
         Request request = request();

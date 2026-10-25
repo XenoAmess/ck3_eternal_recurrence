@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-25T11:52:48Z",
+  "status": "PASS",
+  "tests": {
+    "run": 70,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "execution_proof": {
+    "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\JAVA-VERIFY.a05.actual.json",
+    "bytes": 79241,
+    "sha256": "6f06a5a286377cd4335cfaf7388100e37059f6d291d6dda51252f0e9af5ca325"
+  },
+  "original_command": {
+    "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\JAVA-VERIFY.a05.command.actual.json",
+    "bytes": 908,
+    "sha256": "740d1e18742e06528a2815d177f937939cf718824d5ce70492fb643d67218d21"
+  },
+  "alias_fixture": {
+    "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\zh-live-a01\\ci-alias-a01\\ALIAS.actual.json",
+    "bytes": 450,
+    "sha256": "e67c27fef697db2a4f86ec671f20aa5d44c424196a4b9822ec2bd7985f0d6d12"
+  },
+  "source_files": 152,
+  "source_unchanged_during_execution": true,
+  "prior_ci": {
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40189738753",
+    "status": "FAIL",
+    "log": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\CI-40189738753.failed.log",
+      "bytes": 23108,
+      "sha256": "9b32b6df3da39ad6d23ca4283d316cf7ca608c9b56a667a88814d0f3e4a41b6c"
+    },
+    "machine_id": "unknown",
+    "reason": "Java/Python temporary root canonical representation mismatch; exact hosted alias type not observed"
+  },
+  "limits": [
+    "Trusted test temporary roots canonicalized; production link guards unchanged.",
+    "Local junction reproduction passed all70; later hosted CI requires its own observed terminal.",
+    "No game started."
+  ]
+}

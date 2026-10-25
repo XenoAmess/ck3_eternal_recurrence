@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.xar.ck3.rrf.qualification.SourceQualificationContracts.Chain;
@@ -31,6 +32,9 @@ import org.xar.ck3.rrf.qualification.SourceQualificationEmitter;
 /** Real producer and actual unchanged shared consumer, with synthetic provenance kept explicit. */
 final class SourceQualificationTest {
     @TempDir Path directory;
+    @BeforeEach void canonicalizeTemporaryDirectory() throws IOException {
+        directory = directory.toRealPath();
+    }
     private static final String HOST = "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py";
     private static final List<String> CRITICAL = List.of("player_pilgrimage_planner_private_transport.py", "player_pilgrimage_activities_private_transport.py", "native_driver.py", "mcp_server.py", "nonwar_private_build.py", "version_identity.py", "activity_feast_stage5_start_private_transport.py", "driver.py", "exact_clock_failure_diagnostic_v1.py");
     private record Fixture(Path root, Request request) { }
