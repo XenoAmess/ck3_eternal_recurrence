@@ -1089,36 +1089,80 @@ class RegistrationFactoryProjectionV1(TypedDict):
     binding: Literal['existing_same_service_builder_to_current_global_factory']
 
 
+def _registration_host_closure(previous_host: str, runtime: JsonObject) -> tuple[list[ast.stmt], FilePin] | None:
+    """Recognize only the legacy imports or this producer's exact pinned loader."""
+    servers = [node for node in ast.parse(previous_host).body
+               if isinstance(node, ast.FunctionDef) and node.name == 'native_server']
+    modules = {'registration_bootstrap', 'progress_driver', 'registration_mcp',
+               'progress_contract', 'progress_boundary'}
+    names = {'bind_registration', 'ProgressDailyDriver', '_SharedRegistrationPin',
+             '_load_shared_registration', '_shared_registration', 'create_server'}
+    selected: list[ast.stmt] = [node for server in servers for node in server.body
+        if (isinstance(node, ast.ImportFrom) and node.module in modules)
+        or (isinstance(node, ast.Assign) and any(isinstance(target, ast.Name) and target.id in names
+                                               for target in node.targets))
+        or (isinstance(node, ast.Expr) and isinstance(node.value, ast.Call)
+            and isinstance(node.value.func, ast.Name) and node.value.func.id == 'bind_registration')]
+    if not selected:
+        return None
+    if len(servers) != 1:
+        raise ValueError('Existing global registration native server must be unique')
+    prefix = ('from registration_bootstrap import bind_registration\n'
+              'bind_registration()\nfrom progress_driver import ProgressDailyDriver\n')
+    legacy = ast.parse(prefix + 'from registration_mcp import create_server\n').body
+    embedded: FilePin | None = None
+    if [ast.dump(node) for node in selected] != [ast.dump(node) for node in legacy]:
+        loaders = [node for node in selected if isinstance(node, ast.Assign)
+                   and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name)
+                   and node.targets[0].id == '_shared_registration']
+        if len(loaders) != 1:
+            raise ValueError('Existing global registration provider closure is incomplete')
+        call = loaders[0].value
+        if (not isinstance(call, ast.Call) or len(call.args) != 2
+                or not isinstance(call.args[0], ast.Call) or len(call.args[0].args) != 1):
+            raise ValueError('Unknown existing pinned registration loader')
+        try:
+            literal: object = ast.literal_eval(call.args[0].args[0])
+        except (ValueError, TypeError) as error:
+            raise ValueError('Literal existing registration source pin required') from error
+        embedded = checked_host_support_pin(literal)
+        projected = ast.parse(prefix
+            + 'from progress_contract import Pin as _SharedRegistrationPin\n'
+            + 'from progress_boundary import load_module as _load_shared_registration\n'
+            + f'_shared_registration = _load_shared_registration(_SharedRegistrationPin.parse({dict(embedded)!r}), '
+            + "'xar_autoplayer.bridge.selected_r05_registration_factory_v1')\n"
+            + 'create_server = _shared_registration.create_server\n').body
+        if [ast.dump(node) for node in selected] != [ast.dump(node) for node in projected]:
+            raise ValueError('Unknown existing pinned registration closure')
+    search = json_object(runtime.get('runtime_environment')).get('PYTHONPATH')
+    if not isinstance(search, list) or any(not isinstance(item, str) for item in search):
+        raise ValueError('Existing global registration requires explicit string import roots')
+    if embedded is None:
+        candidates = [(Path(item) / 'registration_mcp.py').resolve()
+                      for item in search if isinstance(item, str)]
+        parent = next((path for path in candidates if path.is_file()), None)
+        if parent is None:
+            raise ValueError('Existing global registration provider is unavailable')
+    else:
+        parent = Path(embedded['path']).resolve()
+    references: list[FilePin] = []
+    for value in json_object(runtime.get('allocator_overlay')).values():
+        if isinstance(value, dict):
+            declared = value.get('path')
+            if isinstance(declared, str) and Path(declared).resolve() == parent:
+                references.append(checked_host_support_pin(value))
+    if len(references) != 1 or embedded is not None and references[0] != embedded:
+        raise ValueError('The selected existing registration provider must have one exact parent source pin')
+    return selected[:3], references[0]
+
+
 def canonical_registration_projection(source_root: Path, runtime: JsonObject, previous_host: str,
                                         destination: Path) -> tuple[bytes, RegistrationFactoryProjectionV1] | None:
-    parent_servers = [node for node in ast.parse(previous_host).body
-                      if isinstance(node, ast.FunctionDef) and node.name == 'native_server']
-    if not parent_servers or not any(isinstance(node, ast.ImportFrom) and node.module == 'registration_mcp'
-                                     for node in parent_servers[0].body):
+    closure = _registration_host_closure(previous_host, runtime)
+    if closure is None:
         return None
-    search = json_object(runtime.get('runtime_environment')).get('PYTHONPATH')
-    if not isinstance(search, list):
-        raise ValueError('Existing global registration requires its explicit import roots')
-    candidates: list[Path] = []
-    for item in search:
-        if not isinstance(item, str):
-            raise ValueError('Existing global registration import roots must be strings')
-        candidate = (Path(item) / 'registration_mcp.py').resolve()
-        if candidate.is_file() and candidate not in candidates:
-            candidates.append(candidate)
-    if not candidates:
-        raise ValueError('Existing global registration provider is unavailable')
-    parent = candidates[0]
-    overlay = json_object(runtime.get('allocator_overlay'))
-    references: list[FilePin] = []
-    for value in overlay.values():
-        if not isinstance(value, dict):
-            continue
-        declared_path = value.get('path')
-        if isinstance(declared_path, str) and Path(declared_path).resolve() == parent:
-            references.append(checked_host_support_pin(value))
-    if len(references) != 1:
-        raise ValueError('The selected existing registration provider must have one parent source pin')
+    parent_pin = closure[1]
+    parent = Path(parent_pin['path'])
     factory = source_root / 'ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py'
     factory_nodes = [node for node in ast.parse(factory.read_text(encoding='utf-8-sig')).body
                      if isinstance(node, ast.FunctionDef) and node.name == 'create_server']
@@ -1131,17 +1175,50 @@ def canonical_registration_projection(source_root: Path, runtime: JsonObject, pr
     creator = creators[0]
     matches = [index for index, node in enumerate(creator.body) if isinstance(node, ast.Assign)
         and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name) and node.targets[0].id == 'module']
-    if len(matches) != 1 or creator.end_lineno is None:
+    imports = [index for index, node in enumerate(creator.body) if isinstance(node, ast.ImportFrom)
+               and node.module == 'xar_autoplayer.bridge'
+               and ast.dump(node) == ast.dump(ast.parse('from xar_autoplayer.bridge import mcp_server as module').body[0])]
+    if len(matches) + len(imports) != 1 or creator.end_lineno is None:
         raise ValueError('The existing scoped-factory binding must be explicit and unique')
-    original = creator.body[matches[0]]
-    if not isinstance(original, ast.Assign) or not isinstance(original.value, ast.Call) or not isinstance(original.value.func, ast.Name) or original.value.func.id != 'load_module':
-        raise ValueError('Unknown existing scoped-factory binding')
-    creator.body[matches[0]] = ast.ImportFrom(module='xar_autoplayer.bridge',
-        names=[ast.alias(name='mcp_server', asname='module')], level=0)
+    if matches:
+        original = creator.body[matches[0]]
+        if not isinstance(original, ast.Assign) or not isinstance(original.value, ast.Call) or not isinstance(original.value.func, ast.Name) or original.value.func.id != 'load_module':
+            raise ValueError('Unknown existing scoped-factory binding')
+        creator.body[matches[0]] = ast.ImportFrom(module='xar_autoplayer.bridge',
+            names=[ast.alias(name='mcp_server', asname='module')], level=0)
+    else:
+        builders = [node for node in ast.walk(creator) if isinstance(node, ast.Call)
+                    and isinstance(node.func, ast.Attribute) and node.func.attr == 'create_server'
+                    and isinstance(node.func.value, ast.Name) and node.func.value.id in {'module', 'builder'}]
+        if len(builders) != 1:
+            raise ValueError('Projected registration must retain one same-service factory call')
+        receiver = builders[0].func
+        if isinstance(receiver, ast.Attribute) and isinstance(receiver.value, ast.Name) and receiver.value.id == 'builder':
+            aliases = [node for node in creator.body
+                if (isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name) and node.target.id == 'builder')
+                or (isinstance(node, ast.Assign) and any(isinstance(target, ast.Name) and target.id == 'builder'
+                                                        for target in node.targets))]
+            if (len(aliases) != 1 or not isinstance(aliases[0].value, ast.Name)
+                    or aliases[0].value.id != 'module'
+                    or isinstance(aliases[0], ast.Assign) and len(aliases[0].targets) != 1):
+                raise ValueError('Projected registration builder must bind uniquely to the selected module')
+        services = [keyword.value for keyword in builders[0].keywords if keyword.arg == 'service_override']
+        if len(services) != 1 or not isinstance(services[0], ast.Name):
+            raise ValueError('Projected registration must retain its explicit same-service override')
+        service_name = services[0].id
+        parameters = {arg.arg for arg in creator.args.args + creator.args.kwonlyargs}
+        local_services = [node for node in creator.body if isinstance(node, ast.Assign)
+            and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name)
+            and node.targets[0].id == service_name and isinstance(node.value, ast.Call)
+            and isinstance(node.value.func, ast.Name) and node.value.func.id == 'GameplayBridgeService'
+            and len(node.value.args) == 1 and isinstance(node.value.args[0], ast.Name)
+            and node.value.args[0].id == 'driver' and not node.value.keywords]
+        if service_name not in parameters and len(local_services) != 1:
+            raise ValueError('Projected registration same-service source is unknown')
     lines = raw.splitlines(keepends=True)
     projected = ''.join(lines[:creator.lineno - 1]) + ast.unparse(ast.fix_missing_locations(creator)) + '\n' + ''.join(lines[creator.end_lineno:])
     encoded = BOM + projected.encode('utf-8')
-    evidence = RegistrationFactoryProjectionV1(parent=references[0], current_factory=_support_file_pin(factory),
+    evidence = RegistrationFactoryProjectionV1(parent=parent_pin, current_factory=_support_file_pin(factory),
         projected=_support_output_pin(destination, encoded), binding='existing_same_service_builder_to_current_global_factory')
     return encoded, evidence
 
@@ -1176,21 +1253,10 @@ def project_host(root: Path, old_host: Path, old_runtime: Path, new_runtime: Pat
         require(options(previous) <= options(canonical), 'Canonical successor removed an existing public host option')
         require('saved_campaign_profile_inventory_v2' in canonical,
                 'Canonical successor must consume the current role-bound saved inventory')
-        old_servers = [node for node in ast.parse(previous).body
-                       if isinstance(node, ast.FunctionDef) and node.name == 'native_server']
-        if old_servers and any(isinstance(node, ast.ImportFrom) and node.module == 'progress_driver'
-                               for node in old_servers[0].body):
+        closure = _registration_host_closure(previous, json_object(json.loads(old_runtime.read_bytes())))
+        if closure is not None:
             # Preserve the already selected global R05 registration provider;
             # replacing the host must not silently remove its advertised tools.
-            parent_server = old_servers[0]
-            modules = {'registration_bootstrap', 'progress_driver', 'registration_mcp'}
-            imports = [node for node in parent_server.body
-                       if isinstance(node, ast.ImportFrom) and node.module in modules]
-            calls = [node for node in parent_server.body if isinstance(node, ast.Expr)
-                     and isinstance(node.value, ast.Call) and isinstance(node.value.func, ast.Name)
-                     and node.value.func.id == 'bind_registration' and not node.value.args and not node.value.keywords]
-            if len(imports) != 3 or {node.module for node in imports} != modules or len(calls) != 1:
-                raise ValueError('Existing global registration provider closure is incomplete')
             current_servers = [node for node in ast.parse(canonical).body
                                if isinstance(node, ast.FunctionDef) and node.name == 'native_server']
             if len(current_servers) != 1:
@@ -1210,7 +1276,7 @@ def project_host(root: Path, old_host: Path, old_runtime: Path, new_runtime: Pat
             provider_pin = ast.Dict(keys=[ast.Constant(key) for key in ('path', 'bytes', 'sha256')],
                 values=[ast.Constant(registration_override['path']), ast.Constant(registration_override['bytes']),
                         ast.Constant(registration_override['sha256'])])
-            insertion: list[ast.stmt] = [imports[0], calls[0], *[node for node in imports if node.module == 'progress_driver'],
+            insertion: list[ast.stmt] = [*closure[0],
                 ast.ImportFrom(module='progress_contract', names=[ast.alias(name='Pin', asname='_SharedRegistrationPin')], level=0),
                 ast.ImportFrom(module='progress_boundary', names=[ast.alias(name='load_module', asname='_load_shared_registration')], level=0),
                 ast.Assign(targets=[ast.Name(id='_shared_registration', ctx=ast.Store())],

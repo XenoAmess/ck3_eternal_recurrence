@@ -476,6 +476,125 @@ driver: Driver
                 for node in ast.parse(actual).body if isinstance(node, ast.FunctionDef) and node.name != 'native_server'}
             self.assertEqual(canonical_functions, projected_functions)
 
+            # Consume the actual first producer's bytes as the next parent. The
+            # old import provider intentionally stays on PYTHONPATH: the pinned
+            # loader must select its own exact overlay rather than that legacy file.
+            manifest['host'] = {'path_key': 'host', **{key: actual_pin(output / 'shared-host.py')[key]
+                                                      for key in ('bytes', 'sha256')}}
+            manifest_path.write_text(json.dumps(manifest), encoding='utf-8')
+            parent_runtime['manifest'] = actual_pin(manifest_path)
+            parent_runtime['paths'] = {'host': str(output / 'shared-host.py')}
+            parent_runtime['allocator_overlay'] = {'registration': actual_pin(output / 'registration_mcp.py')}
+            runtime.write_text(json.dumps(parent_runtime), encoding='utf-8')
+            second = root / 'second-successor'
+            ref = build_canonical_host_successor(runtime, source, root / 'second-runtime.json', second, machine)
+            second_receipt = json_object(json.loads(Path(ref['path']).read_bytes()))
+            projection = json_object(second_receipt['registration_projection'])
+            self.assertEqual(projection['parent'], actual_pin(output / 'registration_mcp.py'))
+            self.assertEqual((second / 'registration_mcp.py').read_bytes(),
+                             (output / 'registration_mcp.py').read_bytes())
+            self.assertIn(str(second / 'registration_mcp.py').replace('\\', '\\\\'),
+                          (second / 'shared-host.py').read_text(encoding='utf-8-sig'))
+            registration_path = output / 'registration_mcp.py'
+            registration_bytes = registration_path.read_bytes()
+            original_registration_pin = actual_pin(registration_path)
+            for defect in ('incomplete', 'wrong-pin', 'missing-overlay', 'wrong-factory', 'lost-service'):
+                with self.subTest(defect=defect):
+                    registration_path.write_bytes(registration_bytes)
+                    changed = actual
+                    bad_runtime = deepcopy(parent_runtime)
+                    if defect == 'incomplete':
+                        changed = changed.replace('bind_registration()', 'bind_registration(1)', 1)
+                    elif defect == 'wrong-pin':
+                        changed = changed.replace(str(actual_pin(output / 'registration_mcp.py')['sha256']), '0' * 64, 1)
+                    elif defect == 'missing-overlay':
+                        bad_runtime['allocator_overlay'] = {}
+                    else:
+                        registration_text = registration_bytes.decode('utf-8-sig')
+                        if defect == 'wrong-factory':
+                            registration_text = registration_text.replace('from xar_autoplayer.bridge import mcp_server as module',
+                                                                         'from unknown import mcp_server as module', 1)
+                        else:
+                            registration_text = registration_text.replace('service_override=service_override',
+                                                                         'service_override=None', 1)
+                        registration_path.write_text(registration_text, encoding='utf-8-sig')
+                        changed_pin = actual_pin(registration_path)
+                        changed = changed.replace(str(original_registration_pin['sha256']), str(changed_pin['sha256']), 1)
+                        changed = changed.replace("'bytes': " + str(original_registration_pin['bytes']),
+                                                  "'bytes': " + str(changed_pin['bytes']), 1)
+                        bad_runtime['allocator_overlay'] = {'registration': changed_pin}
+                    (output / 'shared-host.py').write_text(changed, encoding='utf-8-sig')
+                    changed_host = actual_pin(output / 'shared-host.py')
+                    manifest['host'] = {'path_key': 'host', 'bytes': changed_host['bytes'], 'sha256': changed_host['sha256']}
+                    manifest_path.write_text(json.dumps(manifest), encoding='utf-8')
+                    bad_runtime['manifest'] = actual_pin(manifest_path)
+                    runtime.write_text(json.dumps(bad_runtime), encoding='utf-8')
+                    rejected = root / ('rejected-' + defect)
+                    with self.assertRaises(ValueError):
+                        build_canonical_host_successor(runtime, source, root / 'bad-runtime.json', rejected, machine)
+                    self.assertFalse(rejected.exists())
+
+    def test_projected_builder_and_local_service_require_the_selected_module(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            source, runtime, parent, machine = self.inputs(root)
+            parent.write_text(parent.read_text(encoding='utf-8') + '\n'
+                'def native_server(args):\n'
+                '    clean_imports(args.agent_source_root)\n'
+                '    from registration_bootstrap import bind_registration\n'
+                '    bind_registration()\n'
+                '    from progress_driver import ProgressDailyDriver\n'
+                '    from registration_mcp import create_server\n', encoding='utf-8')
+            manifest_path = root / 'parent-manifest.json'
+            manifest = json_object(json.loads(manifest_path.read_bytes()))
+            host_pin = actual_pin(parent)
+            manifest['host'] = {'path_key': 'host', 'bytes': host_pin['bytes'], 'sha256': host_pin['sha256']}
+            manifest_path.write_text(json.dumps(manifest), encoding='utf-8')
+            base = json_object(json.loads(runtime.read_bytes()))
+            base['manifest'] = actual_pin(manifest_path)
+            registration = root / 'registration/registration_mcp.py'
+            registration.parent.mkdir()
+            base['runtime_environment'] = {'PYTHONPATH': [str(registration.parent)]}
+            factory = source / 'ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py'
+            factory.parent.mkdir(parents=True)
+            factory.write_bytes((REPOSITORY / 'ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py').read_bytes())
+            # Reduced from the retained parent: real local service + Protocol
+            # alias + builder call, without copying unrelated registered tools.
+            provider = '''def create_server(driver, *, profile_dir=None, before_auto_turn_submit=None):
+    from xar_autoplayer.bridge.service import GameplayBridgeService
+    service = GameplayBridgeService(driver)
+    from xar_autoplayer.bridge import mcp_server as module
+    from typing import Protocol, runtime_checkable
+    @runtime_checkable
+    class Builder(Protocol):
+        def create_server(self, driver, *, service_override, profile_dir, before_auto_turn_submit): ...
+    builder: Builder = module
+    server = builder.create_server(driver, service_override=service, profile_dir=profile_dir,
+                                   before_auto_turn_submit=before_auto_turn_submit)
+    return server
+'''
+            for shape in ('annotated', 'assigned', 'wrong-builder', 'duplicate-builder'):
+                with self.subTest(shape=shape):
+                    selected = provider
+                    if shape == 'assigned':
+                        selected = selected.replace('builder: Builder = module', 'builder = module')
+                    elif shape == 'wrong-builder':
+                        selected = selected.replace('builder: Builder = module', 'builder: Builder = unknown_module')
+                    elif shape == 'duplicate-builder':
+                        selected = selected.replace('builder: Builder = module', 'builder: Builder = module\n    builder = module')
+                    registration.write_text(selected, encoding='utf-8')
+                    base['allocator_overlay'] = {'registration': actual_pin(registration)}
+                    runtime.write_text(json.dumps(base), encoding='utf-8')
+                    output = root / shape
+                    if shape in ('annotated', 'assigned'):
+                        build_canonical_host_successor(runtime, source, root / 'selected-runtime.json', output, machine)
+                        emitted = (output / 'registration_mcp.py').read_text(encoding='utf-8-sig')
+                        self.assertEqual(ast.dump(ast.parse(selected)), ast.dump(ast.parse(emitted)))
+                    else:
+                        with self.assertRaisesRegex(ValueError, 'builder must bind uniquely'):
+                            build_canonical_host_successor(runtime, source, root / 'selected-runtime.json', output, machine)
+                        self.assertFalse(output.exists())
+
     def test_changed_parent_pin_wrong_machine_and_changed_binding_reach_real_refusals(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
