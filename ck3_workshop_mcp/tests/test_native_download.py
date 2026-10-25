@@ -142,10 +142,11 @@ class NativeDownloadTests(unittest.TestCase):
         self.assertEqual(0, api.start_calls)
         self.assertEqual("preserve", old.read_text(encoding="utf-8"))
 
-    def test_manual_dispatch_frees_every_callback_and_copies_before_free(self):
+    def test_manual_dispatch_frees_every_callback_and_copies_before_free(self) -> None:
         payload = download.DownloadItemResult(APP, int(ITEM), 1)
         queue = [(123, None), (3406, payload)]
         freed = []
+        starts: list[tuple[int, int, bool]] = []
 
         def next_callback(pipe, message_pointer):
             if not queue:
@@ -168,7 +169,7 @@ class NativeDownloadTests(unittest.TestCase):
             SteamAPI_ManualDispatch_RunFrame=lambda pipe: None,
             SteamAPI_ManualDispatch_GetNextCallback=next_callback,
             SteamAPI_ManualDispatch_FreeLastCallback=free,
-            SteamAPI_ISteamUGC_DownloadItem=lambda ugc, item, priority: not priority,
+            SteamAPI_ISteamUGC_DownloadItem=lambda ugc, item, priority: starts.append((ugc, item, priority)) or True,
             SteamAPI_ISteamUGC_GetItemState=lambda *a: 4,
             SteamAPI_ISteamUGC_GetItemDownloadInfo=lambda *a: False,
             SteamAPI_ISteamUGC_GetItemInstallInfo=lambda *a: False)
@@ -187,6 +188,7 @@ class NativeDownloadTests(unittest.TestCase):
         self.assertEqual([7, 7], freed)
         self.assertEqual(1, event["result"])
         self.assertTrue(api.start(int(ITEM)))
+        self.assertEqual([(123, int(ITEM), True)], starts)
 
     def test_malformed_download_callback_is_freed_and_not_accepted(self):
         api = download._NativeDownloadApi.__new__(download._NativeDownloadApi)

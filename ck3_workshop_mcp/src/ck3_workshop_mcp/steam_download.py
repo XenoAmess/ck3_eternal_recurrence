@@ -93,8 +93,8 @@ class _NativeDownloadApi:
             raise SteamNativeError("INVALID_STEAM_PIPE", "SteamAPI_GetHSteamPipe returned no active pipe")
 
     def start(self, item_id: int) -> bool:
-        # High-priority true would suspend unrelated Steam downloads.
-        return bool(self._download(self.client.ugc, item_id, False))
+        # Valve pauses other downloads so this explicit item can finish first.
+        return bool(self._download(self.client.ugc, item_id, True))
 
     def callbacks(self):
         self._frame(self.pipe)
@@ -192,7 +192,8 @@ def _worker(arguments: dict[str, Any]) -> dict[str, Any]:
         metadata = symbols(arguments["dll_path"])
         if metadata["download_missing"]:
             raise SteamNativeError("MISSING_DOWNLOAD_EXPORTS", "Steam API DLL lacks native download exports", details={"missing": metadata["download_missing"]})
-        if ctypes.sizeof(ctypes.c_void_p) != 8 or metadata["pe"]["bits"] != 64:
+        pe = metadata["pe"]
+        if ctypes.sizeof(ctypes.c_void_p) != 8 or not isinstance(pe, dict) or pe.get("bits") != 64:
             raise SteamNativeError("UNSUPPORTED_DOWNLOAD_ABI", "Download worker requires the 64-bit Steam DLL and Python")
         with _open_client(arguments["dll_path"], arguments["app_id"]) as client:
             if not client.logged_on():

@@ -5,7 +5,7 @@ AppID and Workshop item. It starts an independent Python process so its manual
 callback queue cannot share ownership with a publication or preview query.
 The tool requires an existing authorized Steam session. It does not start Steam
 or CK3, change online/offline mode, subscribe to an item, create an item, publish,
-or move/delete any cache. The download uses normal priority. It now has a
+or move/delete any cache. The explicit item now uses native high priority; Valve pauses other downloads while it is serviced. It has a
 **first independent live acceptance** for item 3182367229, documented below;
 other targets and failure paths retain their existing static-test boundary.
 
@@ -161,3 +161,11 @@ records the actual combined recovery path; the download MCP has no mode-control
 capability.
 
 Current shared defaults and per-operation boundaries are documented in [Workshop operation timeouts](workshop-operation-timeouts.md).
+
+## 2026-10-25: explicit-item download priority
+
+On machine pc-20260924rtuf-f11af23c08, the Living Artifacts0.1.1 update at2026-10-25T07:28:04.406972Z was followed by Steam automatically staging other subscribed CK3 items. The requested two-megabyte item waited442.3seconds, ignoring253 unrelated callbacks, before its exact callback3406 returned1 and the worker exited0 at07:36:38.890608Z. The old producer passedfalse to DownloadItem. Its successful target result does not erase the unbudgeted bulk staging incident. The CK3 Workshop queue was paused through the official interface and a fresh background probe proved Steamoffline at07:38:20.409978Z.
+
+The shared producer now passestrue for this explicit-item request. [Valve documents](https://partner.steamgames.com/doc/api/ISteamUGC#DownloadItem) that high priority pauses existing downloads and starts the requested item immediately. The existing Flat-API regression records the actual item, interface and boolean argument while retaining callback-buffer checks. Thirteen native-download tests and whole-module mypy with check-untyped-defs passed; the initial mypy object-index error is retained and resolved by narrowing the PE metadata before reading bits.
+
+This new priority choice is source/offline validated only. The successful0.1.1 download used the oldfalse implementation; it was not downloaded again merely to test the new flag. Callback, exact-file, offline and no-automatic-retry requirements remain unchanged. Original receipts are under D:/workspace/ck3-living-artifacts-20261022/environment/living-description-release-20261025-a01/publisher-a01; incident records are under storage-a01/download-incident-a01.
