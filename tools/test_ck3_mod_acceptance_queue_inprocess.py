@@ -30,6 +30,7 @@ class FixtureFrozen(TypedDict):
     launch_requires_fresh_owned_cas_and_background_offline: NotRequired[bool]
     previous_session_closed: NotRequired[bool]
     previous_screen_released: NotRequired[bool]
+    screen_task: NotRequired[str]
 
 
 class NativeExitFixture(TypedDict):
@@ -371,6 +372,53 @@ class InprocessQueueTests(unittest.TestCase):
                 with self.assertRaises((ValueError,ValidationError)):
                     self.module.enqueue(self.live,plan,plan.name)
             self.assertFalse((self.controls/plan.name).exists())
+
+    def test_only_closed_typed_quit_intent_consumes_original_last_ninety_seconds(self) -> None:
+        fixture = normal_exit_fixture('ck3_query_normal_exit_context_v1')
+        self.report.update(fixture['report'])
+        self.report['hold_until_utc_estimated'] = time.time()+30
+        self.report['error'] = 'authored preserved host error'
+        (self.live/'native-report.json').write_text(json.dumps(self.report),encoding='utf-8')
+        steps = [{'id':'last-reserve-quit','tool':'ck3_query_normal_exit_context_v1','args':{},'fresh_revision':True}]
+        plan=self.root/'last-reserve-quit.json'
+        plan.write_text(json.dumps({'steps':steps}),encoding='utf-8')
+        self.assertEqual(self.module.enqueue(self.live,plan,plan.name)['status'],'QUEUED_ONCE_ACK_NOT_BUSINESS_PASS')
+        self.report.pop('error')
+        self.report['mcp_tools']={'tools':[{'name':'fixture_readonly_query',
+            'inputSchema':{'type':'object','properties':{},'additionalProperties':False}}]}
+        (self.live/'native-report.json').write_text(json.dumps(self.report),encoding='utf-8')
+        business=self.root/'last-reserve-business.json'
+        business.write_text(json.dumps({'steps':self.steps}),encoding='utf-8')
+        with self.assertRaisesRegex(ValueError,'normal Quit reserve'):
+            self.module.enqueue(self.live,business,business.name)
+        with self.assertRaises(ValueError):
+            self.client.execute_plan(self.steps,'business-reserve-zero',reserve=0)
+        self.report.update(fixture['report'])
+        self.report['hold_until_utc_estimated']=time.time()-1
+        (self.live/'native-report.json').write_text(json.dumps(self.report),encoding='utf-8')
+        expired=self.root/'expired-quit.json'
+        expired.write_text(json.dumps({'steps':[dict(steps[0],id='expired-quit')]}),encoding='utf-8')
+        with self.assertRaisesRegex(ValueError,'normal Quit reserve'):
+            self.module.enqueue(self.live,expired,expired.name)
+
+    def test_actual_client_guard_preserves_failed_host_only_for_closed_exit_steps(self) -> None:
+        self.client.keeper=self.keeper
+        self.frozen['screen_task']='pure-task'
+        (self.keeper/'journal.jsonl').write_text(json.dumps({'result':'OWNED_CAS',
+            'lease':{'task_id':'pure-task'}})+'\n',encoding='utf-8')
+        self.client.remaining=lambda:30
+        self.report['error']='authored original failed host'
+        def read_report(allow_error=False):
+            if not allow_error:raise ValueError('Original host error remains blocked')
+            return self.report
+        self.client.read_report=read_report
+        steps=[{'id':'guard-quit','tool':'ck3_observe_normal_exit_v1','args':{}}]
+        self.assertIs(self.client_module.CaseClient.guard(self.client,0,normal_exit_steps=steps),self.report)
+        with self.assertRaises(ValueError):
+            self.client_module.CaseClient.guard(self.client,0,normal_exit_steps=self.steps)
+        self.client.remaining=lambda:100
+        with self.assertRaisesRegex(ValueError,'Original host error'):
+            self.client_module.CaseClient.guard(self.client)
 
     def test_os_normal_exit_observer_and_other_normal_exit_named_tool_are_not_native_gated(self) -> None:
         for index, tool_name in enumerate(('ck3_observe_normal_exit_v1',

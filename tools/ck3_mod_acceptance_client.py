@@ -5,7 +5,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from typing import Literal, Protocol, TypedDict, runtime_checkable
 from ck3_mod_acceptance_background_types import (
     CONTROL_QUEUE_MODULE_ORDER_V1, ControlQueueBindingV1, FilePin, keyed_file_pin, json_object,
@@ -43,6 +43,111 @@ class NormalQuitDecodedV2(Protocol):
 class NormalQuitCodecV2(Protocol):
     def parse_normal_exit_public_result_v2(self, value: object) -> NormalQuitDecodedV2: ...
     def normal_exit_public_result_v2(self, value: object) -> dict[str, object]: ...
+
+
+def _typed_quit_plan_v1(value: object) -> bool:
+    """Recognize only the canonical single typed-exit intent, never business."""
+    if (not isinstance(value, list) or len(value) != 1 or not isinstance(value[0], dict)
+            or value[0].get('tool') not in ('ck3_query_normal_exit_context_v1',
+                'ck3_request_normal_exit_v1', 'ck3_observe_normal_exit_v1')):
+        return False
+    from xar_autoplayer.bridge.normal_exit_host_terminal_v1 import require_failed_host_normal_exit_plan_v1
+    require_failed_host_normal_exit_plan_v1(value)
+    return True
+
+
+def _typed_quit_preparation_v1(value: object) -> Literal['prepare_confirmation', 'continue_preparation'] | None:
+    """Choose one unconsumed official stage from a validated fresh context."""
+    native = json_object(value)
+    if native.get('confirmation_visible') is True:
+        return None
+    stages = native.get('stage_consumed')
+    if (isinstance(stages, list) and len(stages) == 3 and all(type(stage) is bool for stage in stages)
+            and stages == [False, False, False]):
+        targets = native.get('targets')
+        if isinstance(targets, list) and len(targets) == 3 and json_object(targets[0]).get('dispatch_admitted') is True:
+            return 'prepare_confirmation'
+    from xar_autoplayer.bridge.normal_exit_contract_v1 import continue_preparation_context_ready_v1
+    if continue_preparation_context_ready_v1(native):
+        return 'continue_preparation'
+    raise ValueError('Typed Quit has no fresh unconsumed official preparation stage; never replay')
+
+
+def _typed_quit_run_v1(codec: NormalQuitCodecV2, invoke: Callable[[str, JsonObject], JsonObject],
+        remaining: Callable[[], float], *, pid: int, birth: int) -> JsonObject:
+    """Coordinate existing public tools serially; SDK claims own every mutation."""
+    original_binding: tuple[object, ...] | None = None
+    def call(tool: str, arguments: JsonObject) -> JsonObject:
+        nonlocal original_binding
+        if remaining() <= 0:
+            raise TimeoutError('Original typed Quit deadline reached; no extension or replay')
+        memory = json_object(codec.parse_normal_exit_public_result_v2(invoke(tool, arguments)).to_memory())
+        schema = {'ck3_query_normal_exit_context_v1':'ck3-normal-exit-context-result-v1',
+            'ck3_request_normal_exit_v1':'ck3-normal-exit-request-result-v1',
+            'ck3_observe_normal_exit_v1':'ck3-normal-exit-process-observation-result-v1'}[tool]
+        if memory.get('schema') != schema or (tool == 'ck3_request_normal_exit_v1'
+                and memory.get('action') != arguments.get('action')):
+            raise ValueError('Typed Quit response differs from its submitted public operation')
+        if memory.get('process_creation_filetime_100ns') != birth:
+            raise ValueError('Typed Quit receipt crossed original retained process birth')
+        native = memory.get('native_observation')
+        if native is not None:
+            observation = json_object(native)
+            if observation.get('game_pid') != pid:
+                raise ValueError('Typed Quit receipt crossed original retained PID')
+            binding = tuple(observation.get(key) for key in ('game_pid', 'played_character_id',
+                'connection_generation', 'native_revision', 'process_creation_filetime_100ns')) + (
+                    memory.get('source_inventory_sha256'), memory.get('public_revision'))
+            if original_binding is not None and binding != original_binding:
+                raise ValueError('Typed Quit receipt crossed original actor/generation/revision/source binding')
+            original_binding = binding
+        if memory.get('retry_authorized') is not False:
+            raise ValueError('Typed Quit receipt cannot authorize replay')
+        if original_binding is not None and (memory.get('source_inventory_sha256'),
+                memory.get('public_revision')) != original_binding[-2:]:
+            raise ValueError('Typed Quit crossed original public revision/source binding')
+        return memory
+
+    def query() -> JsonObject:
+        result = call('ck3_query_normal_exit_context_v1', {})
+        if result.get('status') != 'context_observed':
+            raise ValueError('Typed Quit actual official context is unavailable')
+        return result
+
+    def request(action: str, context: JsonObject) -> JsonObject:
+        revision = context.get('public_revision')
+        if type(revision) is not int or not isinstance(revision, int) or revision < 1:
+            raise ValueError('Typed Quit actual public revision is missing')
+        return call('ck3_request_normal_exit_v1', {'action': action,
+            'expected_revision': str(revision),
+            'expected_exit_context_signature': context.get('exit_context_signature')})
+
+    context = query()
+    consumed: set[str] = set()
+    for _ in range(3):
+        action = _typed_quit_preparation_v1(context.get('native_observation'))
+        if action is None:
+            break
+        if action in consumed:
+            raise ValueError('Typed Quit preparation outcome is unknown; never replay')
+        consumed.add(action)
+        request(action, context)
+        context = query()  # Only a fresh native remaining-stage fact permits continuation.
+    else:
+        raise ValueError('Typed Quit bounded preparation did not reach official confirmation')
+    request('disable_exit_autosave', context)
+    context = query()
+    native = json_object(context.get('native_observation'))
+    autosave = json_object(native.get('exit_autosave'))
+    if (native.get('confirmation_visible') is not True or autosave.get('should_save') is not False
+            or any(autosave.get(key) is not True for key in ('state_available', 'control_visible', 'control_enabled'))):
+        raise ValueError('Typed Quit lacks fresh visible official confirmation with autosave disabled')
+    result = request('confirm_desktop', context)  # One call only, including UNKNOWN.
+    while result.get('process_exit_observed') is not True:
+        result = call('ck3_observe_normal_exit_v1', {})
+    if result.get('typed_normal_exit_observed') is not True or result.get('status') != 'process_exit_observed_zero':
+        raise ValueError('Original process exited without typed normal Quit proof; no replay')
+    return result
 
 
 def _typed_quit_pairs(pairs: list[tuple[str, object]]) -> dict[str, object]:
@@ -114,14 +219,17 @@ def _typed_quit_codec(source_root: Path, index_path: Path, reference: object) ->
 
 def typed_normal_quit_evidence_v1(report_value: object, *, live: Path, state: Path,
         retained_value: object, context_value: object, frozen_value: object,
-        source_root: Path, source_index: Path, source_index_reference: object) -> TypedNormalQuitEvidenceV1 | None:
+        source_root: Path, source_index: Path, source_index_reference: object,
+        allow_preserved_failure: bool = False) -> TypedNormalQuitEvidenceV1 | None:
     """Join a clean public terminal result to SDK originals and this allocated profile.
 
     This is route evidence only. The caller still needs its independently retained
     OS handle, the host's full native0 predicate, finish_hold and final cleanup.
     """
     report = json_object(report_value)
-    if report.get('error') or report.get('status') in ('ERROR', 'RED'):
+    if type(allow_preserved_failure) is not bool:
+        raise ValueError('Typed Quit failure allowance requires a literal boolean')
+    if (report.get('error') or report.get('status') in ('ERROR', 'RED')) and not allow_preserved_failure:
         return None
     rows_value = report.get('steps', [])
     if not isinstance(rows_value, list):
@@ -509,7 +617,7 @@ class CaseClient:
         deadline = self._hold if self._hold is not None else self._started + budgets['timeout'] + budgets['hold_seconds'] + 120
         return deadline - time.time()
 
-    def guard(self, reserve=90, *, failure_shutdown=False):
+    def guard(self, reserve=90, *, failure_shutdown=False, normal_exit_steps=None):
         require(self.remaining() > reserve, 'Original normal Quit reserve reached')
         keeper = self.keeper
         journal = keeper / 'journal.jsonl'
@@ -517,7 +625,9 @@ class CaseClient:
         require(lease.get('result') == 'OWNED_CAS' and not (keeper / 'report.json').exists(),
                 'Original screen keeper no longer owns this held scene')
         require(lease['lease']['task_id'] == self.frozen['screen_task'], 'Current keeper crossed actual allocation')
-        report = self.read_report(allow_error=failure_shutdown)
+        typed_exit = normal_exit_steps is not None
+        require(not typed_exit or _typed_quit_plan_v1(normal_exit_steps), 'Only the closed typed Quit intent may consume its reserve')
+        report = self.read_report(allow_error=failure_shutdown or typed_exit)
         if failure_shutdown:
             retained = getattr(self, '_failure_shutdown_retained', None)
             require(reserve == 0 and self.native_failure_shutdown_proof(report) is not None,
@@ -672,7 +782,8 @@ class CaseClient:
         limit = time.monotonic() + (timeout or self.selection.case['budgets']['command_timeout'])
         identifiers = [step['id'] for step in steps]
         while time.monotonic() < limit:
-            report = self.read_report(allow_error=True) if reserve==0 else self.guard(reserve)
+            report = (self.guard(reserve, normal_exit_steps=steps) if _typed_quit_plan_v1(steps)
+                else self.read_report(allow_error=True) if reserve==0 else self.guard(reserve))
             rows = []
             for step in steps:
                 found = [row for row in report.get('steps', []) if row.get('id') == step['id']]
@@ -688,15 +799,17 @@ class CaseClient:
         raise TimeoutError('Original step budget elapsed; submitted steps never replay')
 
     def execute_plan(self, steps, name, timeout=None, reserve=90):
-        require(reserve == 90 or reserve == 0 and len(steps) == 1 and steps[0].get('kind') == 'finish_hold',
+        typed_exit = _typed_quit_plan_v1(steps)
+        require(reserve == 90 or reserve == 0 and (typed_exit or len(steps) == 1 and steps[0].get('kind') == 'finish_hold'),
                 'Only proved native0 lifecycle completion can use the original Quit reserve')
         failure_shutdown = len(steps) == 1 and steps[0].get('failure_shutdown') is True
         require(not failure_shutdown or reserve == 0, 'Failure shutdown uses only the original lifecycle reserve')
-        if reserve == 0:
+        if reserve == 0 and not typed_exit:
             report = self.read_report(allow_error=failure_shutdown)
             proof = self.native_failure_shutdown_proof(report) if failure_shutdown else self.native_zero_proof(report)
             require(proof is not None, 'Original complete native0 lifecycle predicate did not admit finish_hold')
-        report = self.guard(reserve, failure_shutdown=failure_shutdown)
+        report = (self.guard(reserve, normal_exit_steps=steps) if typed_exit
+            else self.guard(reserve, failure_shutdown=failure_shutdown))
         require(all(row.get('finished_at') for row in report.get('steps', [])), 'Existing controls still in flight')
         require(isinstance(steps, list) and steps, 'Nonempty original plan required')
         require(Path(name).name == name, 'Control name must be a basename')
@@ -1186,15 +1299,7 @@ class CaseClient:
         """Use the exact UI delegate, otherwise the validated actual run reviewer."""
         return self.resolve_operator_reviewer()
 
-    def typed_normal_quit_evidence(self, report: object) -> TypedNormalQuitEvidenceV1 | None:
-        """Consume public/native evidence; never synthesize an operator GUI review."""
-        # Ordinary GUI-only runs and failed hosts need no new source/profile fields.
-        value = json_object(report)
-        rows = value.get('steps', [])
-        if value.get('error') or not isinstance(rows, list) or not any(
-                isinstance(row, dict) and isinstance(row.get('result'), dict)
-                and row['result'].get('typed_normal_exit_observed') is True for row in rows):
-            return None
+    def _typed_normal_quit_birth(self) -> int:
         if 'creation_filetime_100ns' not in self._process:
             import ctypes
             from ctypes.wintypes import FILETIME
@@ -1205,12 +1310,77 @@ class CaseClient:
             require(self._kernel.GetProcessTimes(self._handle, *(ctypes.byref(item) for item in times)),
                     'Original retained process creation FILETIME unavailable')
             self._process['creation_filetime_100ns'] = str((times[0].dwHighDateTime << 32) | times[0].dwLowDateTime)
+        birth = self._process['creation_filetime_100ns']
+        if type(birth) is not str or not birth.isdecimal() or str(int(birth)) != birth or not 0 < int(birth) < 2**64:
+            raise ValueError('Original retained process FILETIME must be a canonical uint64 string')
+        return int(birth)
+
+    def start_typed_normal_quit_automation(self) -> TypedNormalQuitEvidenceV1:
+        """Use the selected public queue and SDK; no shell, desktop input or new runner."""
+        from ck3_mod_acceptance import normal_exit_static_binding_v1, pin
+        require(self.remaining() > 0, 'Original typed Quit deadline expired')
+        reference = self.context.get('normal_exit_managed_profile')
+        binding = normal_exit_static_binding_v1(reference, state_dir=self.state, run_dir=self.live,
+            runtime_manifest=file_pin(pin(self.selection.manifest_path)))
+        profile = binding['profile']
+        argv = self.frozen['argv']
+        require(argv.count('--normal-exit-managed-profile') == 1 and argv.count('--normal-exit-managed-profile-sha256') == 1
+            and argv[argv.index('--normal-exit-managed-profile') + 1] == profile['path']
+            and argv[argv.index('--normal-exit-managed-profile-sha256') + 1] == profile['sha256'],
+            'Typed Quit automation profile differs from actual frozen host argv')
+        source = self.selection.manifest_path_key(self.manifest['source_root'])
+        index = self.selection.manifest_path_key(self.manifest['source_index'])
+        codec, index_pin, sdk_pins = _typed_quit_codec(source, index,
+            {'path':str(index), 'bytes':self.manifest['source_index']['bytes'], 'sha256':self.manifest['source_index']['sha256']})
+        birth = self._typed_normal_quit_birth()
+        self.checkpoint('normal-quit-typed-automation-once', {'profile':profile, 'source_index':index_pin,
+            'source_modules':sdk_pins, 'original_hold_deadline':self._hold, 'human_review_claimed':False,
+            'business_pass':False, 'confirm_maximum':1, 'unknown_replayed':False})
+        sequence = 0
+        paused_binding: tuple[object, ...] | None = None
+        def invoke(tool: str, arguments: JsonObject) -> JsonObject:
+            nonlocal sequence, paused_binding
+            sequence += 1
+            name = 'acceptance-typed-quit-' + str(sequence).zfill(3)
+            steps = [{'id':name, 'tool':tool, 'args':arguments, 'fresh_revision':False if 'expected_revision' in arguments else True}]
+            rows: object = self.execute_plan(steps, name, reserve=0)
+            if not isinstance(rows, list) or len(rows) != 1:
+                raise ValueError('Typed Quit requires one completed original public step')
+            row = json_object(rows[0])
+            result = json_object(row.get('result'))
+            if tool != 'ck3_observe_normal_exit_v1' and arguments.get('action') != 'confirm_desktop':
+                frame = json_object(row.get('after_snapshot'))
+                if frame.get('paused') is not True or type(frame.get('date_raw')) is not int:
+                    raise ValueError('Typed Quit requires its actual paused native date')
+                current = (frame['date_raw'], frame.get('native_revision'), frame.get('played_character'))
+                if paused_binding is not None and current != paused_binding:
+                    raise ValueError('Typed Quit crossed its original paused native frame')
+                paused_binding = current
+            return result
+        with self.selection.case_imports():
+            _typed_quit_run_v1(codec, invoke, self.remaining, pid=self._process['pid'], birth=birth)
+        evidence = self.typed_normal_quit_evidence(self.read_report(allow_error=True), allow_preserved_failure=True)
+        if evidence is None:
+            raise ValueError('Typed Quit automation lacks its original durable route evidence')
+        self.checkpoint('normal-quit-typed-automation-result', evidence)
+        return evidence
+
+    def typed_normal_quit_evidence(self, report: object, *, allow_preserved_failure: bool = False) -> TypedNormalQuitEvidenceV1 | None:
+        """Consume public/native evidence; never synthesize an operator GUI review."""
+        value = json_object(report)
+        rows = value.get('steps', [])
+        if ((value.get('error') and not allow_preserved_failure) or not isinstance(rows, list) or not any(
+                isinstance(row, dict) and isinstance(row.get('result'), dict)
+                and row['result'].get('typed_normal_exit_observed') is True for row in rows)):
+            return None
+        self._typed_normal_quit_birth()
         return typed_normal_quit_evidence_v1(value, live=self.live, state=self.state,
             retained_value=self._process, context_value=self.context, frozen_value=self.frozen,
             source_root=self.selection.manifest_path_key(self.manifest['source_root']),
             source_index=self.selection.manifest_path_key(self.manifest['source_index']),
             source_index_reference={'path':str(self.selection.manifest_path_key(self.manifest['source_index'])),
-                'bytes':self.manifest['source_index']['bytes'], 'sha256':self.manifest['source_index']['sha256']})
+                'bytes':self.manifest['source_index']['bytes'], 'sha256':self.manifest['source_index']['sha256']},
+            allow_preserved_failure=allow_preserved_failure)
 
     def validate_manual_normal_quit_review(self, review, *, require_mapped=False):
         from ck3_mod_acceptance import check_pin
@@ -1265,7 +1435,18 @@ class CaseClient:
         automation_failure = None
         manual_required = config is None
         helper_finished = False
-        if config is not None:
+        from ck3_mod_acceptance import normal_exit_tools_opted_in_v1
+        typed_selected = normal_exit_tools_opted_in_v1(self.selection.case.get('required_mcp_tools', []))
+        if typed_selected:
+            try:
+                typed_route = self.start_typed_normal_quit_automation()
+                manual_required = False
+            except Exception as error:
+                automation_failure = self.checkpoint('normal-quit-typed-automation-failure-preserved', {
+                    'error':type(error).__name__+': '+str(error), 'original_hold_deadline':self._hold,
+                    'automation_replayed':False, 'business_pass':False})
+                manual_required = True
+        elif config is not None:
             try:
                 process = self.start_normal_quit_automation(request, config)
                 while self.remaining()>0 and process.poll() is None:
@@ -1330,7 +1511,7 @@ class CaseClient:
         os0=available and code.value==0
         retained={'signaled':signaled,'exit_code':code.value if available else None,'actual_retained_os0':os0,**self._process}
         self.checkpoint('actual-retained-handle-os-exit',retained)
-        self._failure_shutdown_retained = retained if (review or automation) and os0 else None
+        self._failure_shutdown_retained = retained if (review or automation or typed_route) and os0 else None
         proof=None
         failure_proof=None
         while self.remaining()>0:
@@ -1343,7 +1524,7 @@ class CaseClient:
         if proof is not None and not report.get('finished_at'):
             finished=self.execute_plan([{'id':'acceptance-normal-exit-finish-hold','kind':'finish_hold',
                 'expect':{'hold_finished':True}}],'acceptance-normal-exit-finish-hold',reserve=0)
-        elif failure_proof is not None and (review or automation) and os0 and not report.get('finished_at'):
+        elif failure_proof is not None and (review or automation or typed_route) and os0 and not report.get('finished_at'):
             finished=self.execute_plan([{'id':'acceptance-failure-exit-finish-hold','kind':'finish_hold',
                 'failure_shutdown':True, 'expect':{'hold_finished':True,'failure_preserved':True,
                     'business_pass':False,'normal_close_qualified':False}}],
@@ -1361,7 +1542,7 @@ class CaseClient:
             'cleanup_ok':report.get('cleanup_ok'),'host_error':report.get('error'),
             'failure_shutdown_proof':failure_proof,
             'failure_preserved':bool(failure_proof is not None and report.get('error') == failure_proof['host_error']),
-            'failure_lifecycle_completed':bool((review or automation) and os0 and failure_proof is not None and
+            'failure_lifecycle_completed':bool((review or automation or typed_route) and os0 and failure_proof is not None and
                 report.get('finished_at') and report.get('managed_session_thread_finished') is True and
                 report.get('cleanup_ok') is True and report.get('error') == failure_proof['host_error'] and
                 isinstance(finished,list) and len(finished) == 1 and finished[0].get('ok') is True and

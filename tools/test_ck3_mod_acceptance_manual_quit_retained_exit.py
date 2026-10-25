@@ -89,7 +89,7 @@ class FakeClient:
         self._hold = 999.0
         self.live, self.keeper = Path('RAM-only-live'), Path('RAM-only-keeper')
         self.output = Output()
-        self.selection = SimpleNamespace(normal_quit_automation=None)
+        self.selection = SimpleNamespace(normal_quit_automation=None,case={})
         self.checkpoints, self.report_reads = {}, 0
 
     def remaining(self):

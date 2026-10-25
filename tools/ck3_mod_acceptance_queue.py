@@ -66,6 +66,14 @@ def _require_failed_host_exit_plan_v1(steps: object) -> None:
     require_failed_host_normal_exit_plan_v1(steps)
 
 
+def _normal_exit_plan_v1(steps: object) -> bool:
+    if (not isinstance(steps, list) or len(steps) != 1 or not isinstance(steps[0], dict)
+            or steps[0].get('tool') not in (*NORMAL_EXIT_NATIVE_TOOLS, 'ck3_observe_normal_exit_v1')):
+        return False
+    _require_failed_host_exit_plan_v1(steps)
+    return True
+
+
 def _queue_object(value: object, label: str) -> dict[str, object]:
     """Validate the inspected JSON object without trusting an annotation or alias."""
     if not isinstance(value, dict):
@@ -322,9 +330,10 @@ def enqueue(live: Path | str, plan: Path | str, name: str, *, deadline: float | 
     steps = value["steps"]
     ids = validate_steps(steps, report)
     finishing = len(steps) == 1 and steps[0].get("kind") == "finish_hold"
+    typed_exit = _normal_exit_plan_v1(steps)
     terminal = terminal_cleanup_evidence(keeper, frozen, report, steps) if terminal_cleanup else None
     hold_deadline = report.get("hold_until_utc_estimated")
-    require(type(hold_deadline) in (int, float) and hold_deadline - time.time() > (0 if finishing else 90),
+    require(type(hold_deadline) in (int, float) and hold_deadline - time.time() > (0 if finishing or typed_exit else 90),
             "Original host normal Quit reserve reached")
     recovery = None
     if startup_recovery_error is not None or startup_recovery_reviewer is not None:

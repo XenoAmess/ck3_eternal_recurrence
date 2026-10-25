@@ -151,6 +151,145 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
             self.assertIsNotNone(result['native_zero_proof'])
             client.execute_plan.assert_not_called()
 
+    def test_selected_typed_close_starts_immediately_without_root_or_template_wait(self):
+        for failed in (False, True):
+            with self.subTest(failed=failed), tempfile.TemporaryDirectory() as directory:
+                client, clock, fake_time, report = self.make_client(Path(directory), review_at=None)
+                self.typed_route(Path(directory), client, report)
+                client.selection.case['required_mcp_tools'] = ['ck3_query_normal_exit_context_v1',
+                    'ck3_request_normal_exit_v1', 'ck3_observe_normal_exit_v1']
+                client.selection.normal_quit_automation = {'must_not_run': True}
+                if failed:
+                    report['error'] = 'authored original failed host'
+                    report['status'] = 'RED'
+                evidence = client.typed_normal_quit_evidence(report, allow_preserved_failure=True)
+                client.start_typed_normal_quit_automation = Mock(return_value=evidence)
+                client.start_normal_quit_automation = Mock(side_effect=AssertionError('No template fallback'))
+                with patch.object(self.module, 'time', fake_time):
+                    result = client.normal_close('actual_case_evidence_recorded')
+                client.start_typed_normal_quit_automation.assert_called_once_with()
+                client.start_normal_quit_automation.assert_not_called()
+                self.assertFalse((Path(directory)/'manual-quit-awaiting.json').exists())
+                self.assertIsNotNone(result['typed_normal_exit_route'])
+                self.assertEqual(result['normal_close_qualified'], not failed)
+                self.assertEqual(report.get('error'), 'authored original failed host' if failed else None)
+
+    def test_actual_R0008_context_through_sdk_producer_and_automatic_typed_consumer(self):
+        sys.path.insert(0, str(REPO/'ck3_autonomous_player/tests/unit'))
+        self.addCleanup(sys.path.remove, str(REPO/'ck3_autonomous_player/tests/unit'))
+        from test_normal_exit_integrated_v1 import FakeExitDriver, driver_module
+        from xar_autoplayer.bridge.service import GameplayBridgeService
+        from xar_autoplayer.bridge.normal_exit_public_wire_v2 import parse_normal_exit_public_result_v2, normal_exit_public_result_v2
+        from xar_autoplayer.bridge import normal_exit_public_wire_v2 as codec
+        capture = json.loads((REPO/'tools/fixtures/ck3_R0008_normal_exit_context.json').read_bytes())
+        original = parse_normal_exit_public_result_v2(capture['result']).to_memory()
+        native_start = original['native_observation']
+        birth = original['process_creation_filetime_100ns']
+        pid = native_start['game_pid']
+        for unknown in (False, True):
+            with self.subTest(unknown=unknown), tempfile.TemporaryDirectory() as directory:
+                class R8Driver(FakeExitDriver):
+                    def __init__(self, path):
+                        super().__init__(path)
+                        self.api.pid, self.api.creation = pid, birth
+                        self.phase, self.save_enabled = 0, True
+                        self.remain_pending, self.fail_after_confirm = True, unknown
+                    def take_snapshot(self):
+                        if self.dead: raise AssertionError('No snapshot after desktop confirmation')
+                        return copy.deepcopy(capture['after_snapshot'])
+                    def send(self, request):
+                        self.sent.append(copy.deepcopy(request))
+                        action = request['action']
+                        if action == 'prepare_confirmation': self.phase = 1
+                        elif action == 'continue_preparation': self.phase = 2
+                        elif action == 'disable_exit_autosave': self.save_enabled = False
+                        elif action == 'confirm_desktop':
+                            self.dead = True
+                            if unknown: raise OSError('Authored unknown confirm delivery')
+                    def wait_for_command_result(self, request_id, timeout):
+                        request = self.sent[-1]
+                        action = request['action']
+                        native = copy.deepcopy(native_start)
+                        native.update(action=action, context_signature_verified=action!='query_context',
+                            confirmation_visible=self.phase==2, stage_consumed=[self.phase>=1,self.phase>=2,action=='confirm_desktop'])
+                        native['status'] = ('context_observed' if action=='query_context' else
+                            'autosave_disabled' if action=='disable_exit_autosave' else
+                            'confirmation_observed' if action=='continue_preparation' else 'dispatch_pending')
+                        if self.phase>=1:
+                            native['targets'][1].update({key:True for key,value in native['targets'][1].items() if type(value) is bool})
+                        if self.phase==2:
+                            native['targets'][2].update({key:True for key,value in native['targets'][2].items() if type(value) is bool})
+                            native['exit_autosave'].update(state_available=True,control_visible=True,
+                                control_enabled=True,should_save=self.save_enabled)
+                        if action=='disable_exit_autosave':
+                            native['exit_autosave'].update(disable_claimed=True,dispatch_invoked=True,postcondition_observed=True)
+                        elif action!='query_context':
+                            index = {'prepare_confirmation':0,'continue_preparation':1,'confirm_desktop':2}[action]
+                            native['dispatches'][index] = {key:True for key in native['dispatches'][index]}
+                        return {'ok':True,'request_id':request_id,'result':native}
+                driver = R8Driver(Path(directory))
+                service = GameplayBridgeService(driver)
+                initial_wire = None
+                def invoke(tool, arguments):
+                    nonlocal initial_wire
+                    if tool=='ck3_query_normal_exit_context_v1':
+                        value = service.query_normal_exit_context_v1(expected_revision=10)
+                        wire = normal_exit_public_result_v2(value)
+                        if initial_wire is None:
+                            initial_wire = wire
+                            self.assertEqual(wire, capture['result'])
+                        return wire
+                    if tool=='ck3_request_normal_exit_v1':
+                        return normal_exit_public_result_v2(service.request_normal_exit_v1(arguments['action'],
+                            expected_revision=int(arguments['expected_revision']),
+                            expected_exit_context_signature=arguments['expected_exit_context_signature']))
+                    self.assertEqual(tool,'ck3_observe_normal_exit_v1')
+                    driver.api.wait_result,driver.api.code=0,0
+                    return normal_exit_public_result_v2(service.observe_normal_exit_v1())
+                with patch.object(driver_module,'verify_source_inventory_v1',return_value={
+                        'source_inventory_sha256':capture['result']['source_inventory_sha256']}):
+                    if unknown:
+                        with self.assertRaisesRegex(ValueError,'without typed normal Quit proof'):
+                            self.module._typed_quit_run_v1(codec,invoke,lambda:80.0,pid=pid,birth=birth)
+                    else:
+                        result=self.module._typed_quit_run_v1(codec,invoke,lambda:80.0,pid=pid,birth=birth)
+                        self.assertTrue(result['typed_normal_exit_observed'])
+                        self.assertFalse(result['observer_retained'])
+                self.assertEqual([r['action'] for r in driver.sent],['query_context','prepare_confirmation',
+                    'query_context','continue_preparation','query_context','disable_exit_autosave','query_context','confirm_desktop'])
+                self.assertEqual(sum(r['action']=='confirm_desktop' for r in driver.sent),1)
+                self.assertIsNone(driver._normal_exit_owned_observer_v1)
+
+    def test_typed_automation_deadline_and_identity_do_not_dispatch_mutations(self):
+        from xar_autoplayer.bridge import normal_exit_public_wire_v2 as codec
+        capture=json.loads((REPO/'tools/fixtures/ck3_R0008_normal_exit_context.json').read_bytes())
+        invoke=Mock(return_value=capture['result'])
+        with self.assertRaises(TimeoutError):
+            self.module._typed_quit_run_v1(codec,invoke,lambda:0.0,pid=7552,birth=134373608090284000)
+        invoke.assert_not_called()
+        with self.assertRaisesRegex(ValueError,'retained PID'):
+            self.module._typed_quit_run_v1(codec,invoke,lambda:80.0,pid=7553,birth=134373608090284000)
+        self.assertEqual(invoke.call_args.args[0],'ck3_query_normal_exit_context_v1')
+        self.assertEqual(invoke.call_count,1)
+
+    def test_complete_modified_typed_quit_function_scope_is_strict(self):
+        import ast, os, subprocess
+        tree=ast.parse(CLIENT_SOURCE.read_text(encoding='utf-8-sig'))
+        names={'TypedNormalQuitEvidenceV1','NormalQuitDecodedV2','NormalQuitCodecV2',
+            '_typed_quit_plan_v1','_typed_quit_preparation_v1','_typed_quit_run_v1',
+            '_typed_quit_pairs','_typed_quit_original','_typed_quit_codec','typed_normal_quit_evidence_v1'}
+        nodes=[node for node in tree.body if isinstance(node,(ast.ClassDef,ast.FunctionDef)) and node.name in names]
+        self.assertEqual(len(nodes),len(names))
+        prefix='from __future__ import annotations\nfrom collections.abc import Callable\nfrom typing import Literal,Protocol,TypedDict,runtime_checkable\nfrom pathlib import Path\nfrom datetime import datetime,timezone\nimport hashlib,json\nfrom ck3_mod_acceptance_background_types import FilePin,JsonObject,json_object,keyed_file_pin,file_pin,text_field\n'
+        with tempfile.TemporaryDirectory() as directory:
+            source=Path(directory)/'actual_typed_quit_scope.py'
+            source.write_text(prefix+ast.unparse(ast.Module(body=nodes,type_ignores=[])),encoding='utf-8')
+            environment=dict(os.environ)
+            environment['MYPYPATH']=os.pathsep.join((str(REPO/'tools'),str(REPO/'ck3_autonomous_player/src'),environment.get('MYPYPATH','')))
+            result=subprocess.run([sys.executable,'-B','-m','mypy','--strict','--follow-imports=skip',
+                '--no-incremental','--cache-dir','nul',str(source)],cwd=REPO,env=environment,capture_output=True,text=True,timeout=60)
+            self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+
     def test_missing_review_waits_only_to_original_deadline_and_stays_unqualified(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
