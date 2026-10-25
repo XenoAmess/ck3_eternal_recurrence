@@ -7,7 +7,7 @@ semantic driver interface used by the visual and data-Mod backends.
 
 from __future__ import annotations
 
-from .gui_window_tree_contract import ScriptedWidgetActionV1, ScriptedWidgetQueryV1
+from .gui_window_tree_contract import ScriptedWidgetActionV1, ScriptedWidgetBindingV1, ScriptedWidgetQueryV1
 
 from .player_pilgrimage_planner_contract import PilgrimageOptionKey
 
@@ -8419,6 +8419,55 @@ class NativeHeadlessGameplayDriver:
         self._record_command(STEP, ok=True, result=result)
         return result
 
+    def _scripted_widget_stable_frame_v1(self) -> tuple[dict[str, object], ScriptedWidgetBindingV1]:
+        """Wait only for the observed one-pump diagnostic publication gap; never dispatch."""
+        from .gui_window_tree_contract import scripted_widget_binding_v1, scripted_widget_object_v1
+        initial = self.take_snapshot()
+        current = initial
+        for attempt in range(8):
+            try:
+                return current, scripted_widget_binding_v1(current)
+            except ValueError as error:
+                if (str(error) != "title-map native campaign lacks its current verified application owner"
+                        or current.get("episode_projection") != "native_campaign"):
+                    raise
+                diagnostics = scripted_widget_object_v1(current.get("diagnostics"))
+                heartbeat = scripted_widget_object_v1(diagnostics.get("last_heartbeat"))
+                mailbox = scripted_widget_object_v1(heartbeat.get("main_thread_query_mailbox_v1"))
+                observer = scripted_widget_object_v1(heartbeat.get("snapshot_observer_12002"))
+                pumps, verified = mailbox.get("pump_epochs"), mailbox.get("owner_verified_pump_epochs")
+                owner, thread = mailbox.get("owner_tid"), mailbox.get("current_tid")
+                started, completed = observer.get("started_ms"), observer.get("completed_ms")
+                if (type(pumps) is not int or not isinstance(pumps, int) or pumps < 2
+                        or type(verified) is not int or verified != pumps - 1
+                        or type(owner) is not int or not isinstance(owner, int) or owner < 1
+                        or type(thread) is not int or thread != owner
+                        or type(heartbeat.get("pid")) is not int or heartbeat.get("pid") != diagnostics.get("bridge_pid")
+                        or mailbox.get("installed") is not True or mailbox.get("ready") is not True
+                        or mailbox.get("stop") is not False or type(mailbox.get("failure")) is not int
+                        or mailbox.get("failure") != 0 or mailbox.get("stamp_read_success") is not True
+                        or type(mailbox.get("date_raw")) is not int or mailbox.get("date_raw") != current.get("date_raw")
+                        or observer.get("read_in_progress") is not False
+                        or type(started) is not int or not isinstance(started, int)
+                        or type(completed) is not int or not isinstance(completed, int) or completed < started):
+                    raise
+                if attempt == 7:
+                    raise BridgeUnavailableError("scripted widget owner sample did not stabilize before bounded read limit") from error
+                time.sleep(0.05)
+                later = self.take_snapshot()
+                later_diagnostics = scripted_widget_object_v1(later.get("diagnostics"))
+                later_heartbeat = scripted_widget_object_v1(later_diagnostics.get("last_heartbeat"))
+                later_mailbox = scripted_widget_object_v1(later_heartbeat.get("main_thread_query_mailbox_v1"))
+                if (not _same_paused_native_frame(initial, later)
+                        or any(later.get(key) != initial.get(key) for key in (
+                            "revision", "date_raw", "local_player_id", "played_character", "managed_campaign_run_binding"))
+                        or any(later_diagnostics.get(key) != diagnostics.get(key) for key in (
+                            "bridge_pid", "pipe_name", "hello"))
+                        or type(later_mailbox.get("owner_tid")) is not int or later_mailbox.get("owner_tid") != owner):
+                    raise BridgeUnavailableError("scripted widget owner sampling crossed its original paused frame")
+                current = later
+        raise BridgeUnavailableError("scripted widget owner sample unavailable")
+
     def query_scripted_widget_controls_v1(
         self, root_name: str, *, expected_revision: int,
     ) -> ScriptedWidgetQueryV1:
@@ -8430,8 +8479,7 @@ class NativeHeadlessGameplayDriver:
         )
         root_name = scripted_widget_root_v1(root_name)
         _validate_revision(expected_revision, "expected_revision")
-        starting = self.take_snapshot()
-        binding = scripted_widget_binding_v1(starting)
+        starting, binding = self._scripted_widget_stable_frame_v1()
         if starting.get("revision") != expected_revision:
             raise PreSubmissionRevisionMismatchError("scripted widget public revision changed")
         raw = self._execute_primitive_step(
@@ -8443,8 +8491,8 @@ class NativeHeadlessGameplayDriver:
                 "expected_connection_generation": binding["connection_generation"]},
         )
         result = normalize_scripted_widget_query_v1(raw, root_name, binding)
-        ending = self.take_snapshot()
-        if scripted_widget_binding_v1(ending) != binding or not _same_paused_native_frame(starting, ending):
+        ending, ending_binding = self._scripted_widget_stable_frame_v1()
+        if ending_binding != binding or not _same_paused_native_frame(starting, ending):
             raise BridgeUnavailableError("scripted widget query crossed its paused frame")
         result["public_revision"] = str(expected_revision)
         if result["available"]:
@@ -8468,8 +8516,7 @@ class NativeHeadlessGameplayDriver:
         query_generation = scripted_widget_decimal_v1(query_generation)
         widget_id = scripted_widget_decimal_v1(widget_id)
         _validate_revision(expected_revision, "expected_revision")
-        starting = self.take_snapshot()
-        binding = scripted_widget_binding_v1(starting)
+        starting, binding = self._scripted_widget_stable_frame_v1()
         if starting.get("revision") != expected_revision:
             raise PreSubmissionRevisionMismatchError("scripted widget public revision changed")
         directory = self._native_driver_state_path().parent / "scripted-widget-controls"

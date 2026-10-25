@@ -81,8 +81,8 @@
 				text_single = { text = "RRF_SELECTED_TENET_COUNT" }
 				scrollbox = {
 					name = "rrf_candidate_tenets_scroll"
-					size = { 0 245 }
 					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
 					blockoverride "scrollbox_content" {
 						vbox = {
 							layoutpolicy_horizontal = expanding
@@ -102,8 +102,8 @@
 				}
 				scrollbox = {
 					name = "rrf_candidate_doctrines_scroll"
-					size = { 0 270 }
 					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
 					blockoverride "scrollbox_content" {
 						vbox = {
 							layoutpolicy_horizontal = expanding
@@ -322,7 +322,7 @@ types ReligiousRitualFusion {
 			layoutpolicy_horizontal = expanding
 			spacing = 10
 			button_radio = {
-				down = "[GetScriptedGui( 'rrf_doctrine_selected_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'rrf_item', DoctrineType.MakeScope ).End )]"
+				frame = "[BoolTo1And2( GetScriptedGui( 'rrf_doctrine_selected_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'rrf_item', DoctrineType.MakeScope ).End ) )]"
 			}
 			icon_doctrine = {
 				size = { 40 40 }

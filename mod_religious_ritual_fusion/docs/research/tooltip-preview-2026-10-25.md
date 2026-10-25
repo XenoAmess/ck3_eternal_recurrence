@@ -84,3 +84,15 @@ if = {
 按既有原生路线重新执行目标选择器 → Next → 决策 Confirm → 生产草稿；点击前记录三份日志的实际身份、offset 和预定增量预算，点击后确认新增片段没有 RRF tooltip script error 且各项／合计均在预算内。还必须核真实草稿来源与候选数据确已初始化，避免把跳过实际初始化误认为修复成功。随后真实 toggle、doctrine 选择、refresh、最终提交分别检查新增日志和业务后态；ACK、窗口出现或 Maven 通过均不能替代这些断言。当前报告没有执行该回归。
 
 现有 [implementation status](../implementation-status-2026-10-24.md) 的 open_kaishek 证据是通用 corpus parser，工具工作树 commit `2b559966c72f4e845111e3e15652ae2354aaed57`；其回执明确没有 CK3 1.20 宗教融合语义 profile。通用语法检查不能模拟 effect tooltip 的惰性与写入物化，不能覆盖本次引擎行为。本轮不复跑旧 corpus、不新增测试框架；正式 Maven／staging 检查和下一场引擎结果另行记录。
+
+## R0007 预演通过与后续 GUI 修正
+
+机器仍为 `4-8e1c2f1861`。`root-execution-a07/PREVIEW-LOGS.after.actual.json`（外置证据根同上，SHA-256 `8842aa23adbe925e5df1cfbd8b255042ebd9be40f052f13b57d65cf94b5845bf`）在 `2026-10-24T23:07:08.707743+00:00` 记录源码 `ef195f23393bc83a1b4cfc711734639b359771c7` 的实际选择器 → Next → 生产草稿路径：三份日志身份与旧前缀不变、增量均为 0、无新增 RRF script error。该预演路径 **PASS**，回执明确当时尚未最终确认业务；不将此局部结果外推为整场通过。R7 后续闭场仍失败，Root 的 `SCREEN-RELEASE.actual.json` 实际释放 CAS sequence `13771`，原 public／host／native deadline 退出码为 2／1／1，keeper 为 0；没有 normal exit 0 声明。
+
+本轮在 `2026-10-24T23:45:27Z` 之后获释放授权才修改 GUI。已先实际查看 `screenshots/R0007/03-rite-fusion-draft.png`、`04-two-cores-require-third.png`、`05-one-source-contribution-refused.png`：零核心时 footer 在边框内，选中两项／三项后随 summary 下移；教义 radio 均为空圈，而核心 checkbox 的勾选可见。冻结场次中仅只读，未热改。
+
+`gui/rrf_fusion_window.gui` 的两项 candidate scrollbox 移除固定 245／270 高度，改用 `layoutpolicy_vertical = expanding`。原有主 hbox 与中心 vbox 已垂直 expanding；让列表视口分配剩余高度，避免已选核心的自然增高继续抬高整个正文的高度需求。原版 `game/gui/window_rite_creation.gui:444–446` 和 `game/gui/window_hybridize_culture.gui:333–336` 都采用不指定固定高度、双向 expanding 的 scrollbox。二者全文件 SHA-256 分别为 `9476299fdbf0975e41923eac9b192d3fe0b2cd74a4da0d928d0da7974b7ea9f8`、`7c02f13aba11962c30b86ae05dd3c3db56e4cbe41b08a3bdf71fd8f0cc3d5bbd`。
+
+同文件教义 radio 的 `down` 改为 `frame = BoolTo1And2(原有 selected predicate)`；不改 checkbox、点击路由或后台选择规则。原版 `game/gui/shared/buttons.gui:1340` 的 checkbox 是 `checkbutton`，但 1385–1403 的 radio 为 `button_toggle` 加 radio DDS；`game/gui/interaction_templates.gui:1669–1673`、`game/gui/window_activity_planner.gui:2101–2108` 直接以 `frame = BoolTo1And2(...)` 显示选中状态。三个原版文件全 SHA-256 依次为 `88403785a1acdacc628730aaa101a04b2ae6293e74aa706a93e0e1695f3b1a0c`、`8dc57c1edd8c682c78a0c54cd2d709f95707c6a33ad98d6242991e449db835bc`、`2f18263ad5be79bfc10c9bc33fd1ccff1e41a0be2bafc7d19e4f9cf0b58feb54`。
+
+这三处显示修正尚未经过新 staging／实机验收。`2026-10-24T23:46:24Z` 前完成静态检查：GUI 为 12,107 B、保留 UTF-8 BOM，SHA-256 `0a7db9e971aa8bf5d1388aeb049040919404e1fc5e6c607e2044d7e540f090b2`；`git diff --check` 退出 0。使用现有 JAR（SHA-256 `6ac143ebf03f3e1a041dff01b2d808e60de8e289d18cebf9855682f0a80b6d82`）执行 `java -jar C:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar corpus mod_religious_ritual_fusion/gui --require-corpus`，原命令退出 0，2 files／12,156 B／0 errors，corpus SHA-256 `beb4383236006e2e16cc49d1b41cf59ace7894868188eee2a41e7f39569e4837`。这只验证通用语法，不验证 binding 或实际布局；没有重复执行 Java／Maven／native 矩阵。下一场仍须实际核 0／2／3 核心时 footer 保持在边框内，以及默认教义与替换后教义各自显示正确选中点。

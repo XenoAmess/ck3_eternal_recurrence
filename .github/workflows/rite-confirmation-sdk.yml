@@ -15,6 +15,7 @@ on:
       - 'ck3_autonomous_player/native_bridge/CMakeLists.txt'
       - 'ck3_autonomous_player/tests/unit/test_gui_window_tree_root_contract.py'
       - 'ck3_autonomous_player/tests/fixtures/scripted_widget_native_campaign_R0003_snapshot.json'
+      - 'ck3_autonomous_player/tests/fixtures/scripted_widget_owner_sampling_R0007.json'
       - 'ck3_autonomous_player/tests/unit/test_rite_creation_action_private_v1.py'
       - 'ck3_autonomous_player/tests/unit/test_mcp_service_override_factory.py'
       - 'tools/ck3_mod_acceptance.py'
@@ -40,6 +41,7 @@ on:
       - 'ck3_autonomous_player/native_bridge/CMakeLists.txt'
       - 'ck3_autonomous_player/tests/unit/test_gui_window_tree_root_contract.py'
       - 'ck3_autonomous_player/tests/fixtures/scripted_widget_native_campaign_R0003_snapshot.json'
+      - 'ck3_autonomous_player/tests/fixtures/scripted_widget_owner_sampling_R0007.json'
       - 'ck3_autonomous_player/tests/unit/test_rite_creation_action_private_v1.py'
       - 'ck3_autonomous_player/tests/unit/test_mcp_service_override_factory.py'
       - 'tools/ck3_mod_acceptance.py'
@@ -104,18 +106,20 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Check generic scripted widgets through native serializer, SDK, MCP and host
         run: |
-          python -B -m mypy --strict --follow-imports=skip --no-incremental --cache-dir=%RUNNER_TEMP%\scripted-widget-contract-mypy src/xar_autoplayer/bridge/gui_window_tree_contract.py
+          python -B -m mypy --strict --follow-imports=skip --no-incremental --cache-dir=nul src/xar_autoplayer/bridge/gui_window_tree_contract.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           set "XAR_SCRIPTED_WIDGET_NATIVE_TEST_EXE=%RUNNER_TEMP%\scripted-widget-native\Release\xar_ck3_scripted_widget_control12004_test.exe"
           python -B -m unittest discover -s tests/unit -p test_gui_window_tree_root_contract.py -v
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Check failed-host typed normal-exit transport
         run: |
-          python -B -m mypy --strict --follow-imports=silent --no-incremental --cache-dir=${{ runner.temp }}/failed-host-exit-mypy src/xar_autoplayer/bridge/normal_exit_host_terminal_v1.py ../tools/ck3_mod_acceptance_queue_control.py
+          python -B -m mypy --strict --follow-imports=silent --no-incremental --cache-dir=nul src/xar_autoplayer/bridge/normal_exit_host_terminal_v1.py ../tools/ck3_mod_acceptance_queue_control.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -m unittest discover -s ../tools -p "test_ck3_mod_acceptance_*normal_exit.py" -v
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 ../tools/test_ck3_mod_acceptance_queue_control.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 ../tools/test_ck3_mod_acceptance_queue_inprocess.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 ../tools/test_ck3_mod_acceptance_failure_shutdown.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%

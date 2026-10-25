@@ -60,6 +60,12 @@ NORMAL_EXIT_NATIVE_TOOLS = frozenset({"ck3_query_normal_exit_context_v1", "ck3_r
 NORMAL_EXIT_NATIVE_CAPABILITY = "normal-exit-map-v1"
 
 
+def _require_failed_host_exit_plan_v1(steps: object) -> None:
+    """Use the host's existing exit-only contract; never grant business recovery."""
+    from xar_autoplayer.bridge.normal_exit_host_terminal_v1 import require_failed_host_normal_exit_plan_v1
+    require_failed_host_normal_exit_plan_v1(steps)
+
+
 def _queue_object(value: object, label: str) -> dict[str, object]:
     """Validate the inspected JSON object without trusting an annotation or alias."""
     if not isinstance(value, dict):
@@ -329,7 +335,9 @@ def enqueue(live: Path | str, plan: Path | str, name: str, *, deadline: float | 
         require(native_zero_proof(frozen, report, failure_shutdown=failure_shutdown) is not None,
                 "Original shared native-zero predicate rejects finish_hold")
     else:
-        require((not report.get("error") or recovery is not None) and not report.get("cleanup_ok"), "Original host failed or completed cleanup")
+        if report.get("error") and recovery is None:
+            _require_failed_host_exit_plan_v1(steps)
+        require(not report.get("cleanup_ok"), "Original host failed or completed cleanup")
     controls = Path(argv[argv.index("--control-plan-dir") + 1]).resolve()
     require(controls == live / "controls" and controls.is_dir(), "Control directory crossed actual allocation")
     target = controls / name

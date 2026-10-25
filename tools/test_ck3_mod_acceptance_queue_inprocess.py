@@ -56,7 +56,7 @@ def normal_exit_fixture(tool_name: str) -> NativeExitFixture:
     properties: dict[str, object] = {}
     required: list[str] = []
     if tool_name in ('ck3_query_normal_exit_context_v1', 'ck3_request_normal_exit_v1'):
-        properties['expected_revision'] = {'type': 'integer', 'minimum': 1}
+        properties['expected_revision'] = {'type': 'string', 'pattern': '^[1-9][0-9]*$'}
         required.append('expected_revision')
     if tool_name == 'ck3_request_normal_exit_v1':
         properties['action'] = {'type': 'string', 'enum': [
@@ -322,6 +322,55 @@ class InprocessQueueTests(unittest.TestCase):
             self.assertIs(ack['business_pass'], False)
         self.assertEqual(len(self.lease_calls), 2*len(scenarios))
         self.assertEqual(len(self.await_calls), len(scenarios))
+
+    def test_failed_R0007_host_allows_only_the_existing_typed_exit_route(self) -> None:
+        capture = CANDIDATE/'ck3_autonomous_player/tests/fixtures/scripted_widget_owner_sampling_R0007.json'
+        failure = json.loads(capture.read_bytes())['failed_host_error']
+        scenarios = [('ck3_query_normal_exit_context_v1', '')]
+        scenarios.extend(('ck3_request_normal_exit_v1', action) for action in (
+            'prepare_confirmation', 'continue_preparation', 'disable_exit_autosave', 'confirm_desktop'))
+        scenarios.append(('ck3_observe_normal_exit_v1', ''))
+        for index, (tool, action) in enumerate(scenarios):
+            fixture = normal_exit_fixture(tool)
+            self.report.update(fixture['report'])
+            self.report['error'] = failure
+            (self.live/'native-report.json').write_text(json.dumps(self.report),encoding='utf-8')
+            arguments: dict[str, object] = {}
+            if action: arguments.update(action=action, expected_exit_context_signature='b'*64)
+            steps = [{'id':'failed-exit-'+str(index),'tool':tool,'args':arguments,'fresh_revision':True}]
+            plan = self.root/('failed-exit-'+str(index)+'.json')
+            plan.write_text(json.dumps({'steps':steps}),encoding='utf-8')
+            result = self.module.enqueue(self.live,plan,plan.name)
+            self.assertEqual(result['status'],'QUEUED_ONCE_ACK_NOT_BUSINESS_PASS')
+            self.assertEqual(json.loads((self.live/'native-report.json').read_bytes())['error'],failure)
+            self.assertEqual(json.loads((self.controls/plan.name).read_bytes())['steps'],steps)
+
+    def test_failed_host_rejects_business_mixed_exit_and_bad_revision_before_claim(self) -> None:
+        from jsonschema import ValidationError
+        fixture = normal_exit_fixture('ck3_query_normal_exit_context_v1')
+        self.report.update(fixture['report'])
+        catalog = self.report['mcp_tools']
+        assert isinstance(catalog, dict)
+        advertised = catalog['tools']
+        assert isinstance(advertised, list)
+        advertised.append({'name':'fixture_readonly_query',
+            'inputSchema':{'type':'object','properties':{},'additionalProperties':False}})
+        self.report['error'] = 'RuntimeError: original R0007 owner failure'
+        (self.live/'native-report.json').write_text(json.dumps(self.report),encoding='utf-8')
+        business = {'id':'business-after-failure','tool':'fixture_readonly_query','args':{}}
+        query = {'id':'quit-after-failure','tool':'ck3_query_normal_exit_context_v1','args':{}}
+        invalid = [[business],[query,business],[dict(query,unexpected=True)],
+            [dict(query,fresh_revision=False)],
+            [dict(query,args={'expected_revision':True})],
+            [dict(query,args={'expected_revision':1})],
+            [dict(query,args={'expected_revision':1.0})]]
+        for index, steps in enumerate(invalid):
+            plan = self.root/('failed-reject-'+str(index)+'.json')
+            plan.write_text(json.dumps({'steps':steps}),encoding='utf-8')
+            with patch.object(self.module,'claim_plan',side_effect=AssertionError('must reject before claim')):
+                with self.assertRaises((ValueError,ValidationError)):
+                    self.module.enqueue(self.live,plan,plan.name)
+            self.assertFalse((self.controls/plan.name).exists())
 
     def test_os_normal_exit_observer_and_other_normal_exit_named_tool_are_not_native_gated(self) -> None:
         for index, tool_name in enumerate(('ck3_observe_normal_exit_v1',

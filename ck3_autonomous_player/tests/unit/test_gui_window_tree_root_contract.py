@@ -9,7 +9,7 @@ import os
 from pathlib import Path
 import sys
 import tempfile
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 from mcp import Client
 from xar_autoplayer.bridge import gui_window_tree_contract as contract, mcp_server
 from xar_autoplayer.bridge.driver import BridgeUnavailableError
@@ -32,6 +32,23 @@ def actual_campaign_frame() -> dict[str, object]:
     path = Path(__file__).resolve().parents[1] / "fixtures/scripted_widget_native_campaign_R0003_snapshot.json"
     fixture = contract.scripted_widget_object_v1(json.loads(path.read_text(encoding="utf-8")))
     return contract.scripted_widget_object_v1(fixture["snapshot"])
+
+
+def actual_R0007_owner_samples() -> tuple[dict[str, object], dict[str, object]]:
+    path = Path(__file__).resolve().parents[1] / "fixtures/scripted_widget_owner_sampling_R0007.json"
+    fixture = contract.scripted_widget_object_v1(json.loads(path.read_text(encoding="utf-8")))
+    samples = fixture["samples"]
+    if not isinstance(samples, list) or len(samples) != 2:
+        raise ValueError("Two original R0007 owner samples required")
+    frames = []
+    for row in samples:
+        sample = contract.scripted_widget_object_v1(row)
+        frame = deepcopy(contract.scripted_widget_object_v1(fixture["snapshot"]))
+        diagnostics = contract.scripted_widget_object_v1(frame["diagnostics"])
+        diagnostics["last_heartbeat"] = sample["heartbeat"]
+        frame["diagnostics"] = diagnostics
+        frames.append(frame)
+    return frames[0], frames[1]
 
 
 def scripted_query(binding: contract.ScriptedWidgetBindingV1, generation: str = "9007199254740999") -> dict[str, object]:
@@ -89,6 +106,85 @@ class ScriptedWidgetTests(unittest.IsolatedAsyncioTestCase):
         self.frame = actual_campaign_frame()
         self.binding = contract.scripted_widget_binding_v1(self.frame)
         self.native_action = scripted_action(self.binding, str(self.generation))
+
+    def test_actual_R0007_owner_samples_stabilize_before_one_action_claim(self) -> None:
+        pending, self.frame = actual_R0007_owner_samples()
+        self.binding = contract.scripted_widget_binding_v1(self.frame)
+        self.native_action = scripted_action(self.binding, str(self.generation))
+        with self.assertRaisesRegex(ValueError, "current verified application owner"):
+            contract.scripted_widget_binding_v1(pending)
+        self.query()
+        self.driver._execute_primitive_step.reset_mock()
+        self.driver.take_snapshot = Mock(side_effect=[pending, deepcopy(self.frame)])
+        with patch("xar_autoplayer.bridge.native_driver.time.sleep") as sleep:
+            result = self.activate()
+        self.assertTrue(result["dispatch_invoked"])
+        self.assertEqual(sleep.call_count, 1)
+        self.assertEqual(self.driver.take_snapshot.call_count, 2)
+        self.driver._execute_primitive_step.assert_called_once()
+        self.assertEqual(len(list(Path(self.temp.name).glob("scripted-widget-controls/*.claim.json"))), 1)
+
+    def test_owner_sampling_is_bounded_and_never_claims_or_dispatches_when_unstable(self) -> None:
+        pending, self.frame = actual_R0007_owner_samples()
+        self.binding = contract.scripted_widget_binding_v1(self.frame)
+        self.native_action = scripted_action(self.binding, str(self.generation))
+        self.query()
+        self.driver._execute_primitive_step.reset_mock()
+        self.driver.take_snapshot = Mock(side_effect=lambda: deepcopy(pending))
+        with patch("xar_autoplayer.bridge.native_driver.time.sleep") as sleep:
+            with self.assertRaisesRegex(BridgeUnavailableError, "bounded read limit"):
+                self.activate()
+        self.assertEqual(self.driver.take_snapshot.call_count, 8)
+        self.assertEqual(sleep.call_count, 7)
+        self.driver._execute_primitive_step.assert_not_called()
+        self.assertFalse(list(Path(self.temp.name).glob("scripted-widget-controls/*.claim.json")))
+
+    def test_owner_sampling_rejects_frame_and_owner_drift_before_dispatch(self) -> None:
+        pending, stable = actual_R0007_owner_samples()
+        for defect in ("revision", "date_raw", "played_character", "bridge_pid", "pipe_name", "owner_tid"):
+            with self.subTest(defect=defect):
+                later = deepcopy(stable)
+                if defect == "revision": later[defect] = 11
+                elif defect == "date_raw": later[defect] = 53144376
+                elif defect == "played_character": later[defect] = {"character_id": 99, "alive": True, "source": "native"}
+                else:
+                    diagnostics = contract.scripted_widget_object_v1(later["diagnostics"])
+                    if defect == "owner_tid":
+                        heartbeat = contract.scripted_widget_object_v1(diagnostics["last_heartbeat"])
+                        mailbox = contract.scripted_widget_object_v1(heartbeat["main_thread_query_mailbox_v1"])
+                        mailbox["owner_tid"] = 99
+                        heartbeat["main_thread_query_mailbox_v1"] = mailbox
+                        diagnostics["last_heartbeat"] = heartbeat
+                    else: diagnostics[defect] = 99 if defect == "bridge_pid" else "other-pipe"
+                    later["diagnostics"] = diagnostics
+                self.driver.take_snapshot = Mock(side_effect=[deepcopy(pending), later])
+                with patch("xar_autoplayer.bridge.native_driver.time.sleep"):
+                    with self.assertRaisesRegex(BridgeUnavailableError, "crossed its original paused frame"):
+                        self.driver._scripted_widget_stable_frame_v1()
+                self.driver._execute_primitive_step.assert_not_called()
+
+    def test_owner_sampling_does_not_relax_other_owner_failures_or_repeat_query(self) -> None:
+        pending, self.frame = actual_R0007_owner_samples()
+        self.binding = contract.scripted_widget_binding_v1(self.frame)
+        for key, value in (("owner_tid", 99), ("owner_verified_pump_epochs", 1), ("stamp_read_success", False)):
+            broken = deepcopy(pending)
+            diagnostics = contract.scripted_widget_object_v1(broken["diagnostics"])
+            heartbeat = contract.scripted_widget_object_v1(diagnostics["last_heartbeat"])
+            mailbox = contract.scripted_widget_object_v1(heartbeat["main_thread_query_mailbox_v1"])
+            mailbox[key] = value
+            heartbeat["main_thread_query_mailbox_v1"] = mailbox
+            diagnostics["last_heartbeat"] = heartbeat
+            broken["diagnostics"] = diagnostics
+            self.driver.take_snapshot = Mock(return_value=broken)
+            with patch("xar_autoplayer.bridge.native_driver.time.sleep") as sleep:
+                with self.assertRaises(ValueError): self.query()
+            sleep.assert_not_called()
+            self.driver._execute_primitive_step.assert_not_called()
+        # A transient ending observation permits only new reads, not a second primitive.
+        self.driver.take_snapshot = Mock(side_effect=[deepcopy(self.frame), pending, deepcopy(self.frame)])
+        with patch("xar_autoplayer.bridge.native_driver.time.sleep"):
+            self.query()
+        self.driver._execute_primitive_step.assert_called_once()
 
     def assert_unknown_in_independent_process(self) -> None:
         import subprocess
@@ -377,7 +473,7 @@ driver._execute_primitive_step.assert_not_called()
         from mypy import api
         base = Path(contract.__file__).parent
         selected = {
-            "native_driver.py": {"query_scripted_widget_controls_v1", "activate_scripted_widget_control_v1"},
+            "native_driver.py": {"_scripted_widget_stable_frame_v1", "query_scripted_widget_controls_v1", "activate_scripted_widget_control_v1"},
             "service.py": {"query_scripted_widget_controls_v1", "activate_scripted_widget_control_v1"},
             "mcp_server.py": {"ck3_query_scripted_widget_controls_v1", "ck3_activate_scripted_widget_control_v1"},
         }
@@ -408,9 +504,10 @@ driver._execute_primitive_step.assert_not_called()
         imports = """from __future__ import annotations
 from pathlib import Path
 import uuid
+import time
 from xar_autoplayer.bridge.driver import BridgeUnavailableError, UnsupportedStepError, PreSubmissionRevisionMismatchError
 from xar_autoplayer.bridge.native_driver import _validate_revision, _same_paused_native_frame
-from xar_autoplayer.bridge.gui_window_tree_contract import ScriptedWidgetActionV1, ScriptedWidgetQueryV1, normalize_scripted_widget_action_v1, normalize_scripted_widget_query_v1, scripted_widget_public_result_v1
+from xar_autoplayer.bridge.gui_window_tree_contract import ScriptedWidgetActionV1, ScriptedWidgetBindingV1, ScriptedWidgetQueryV1, normalize_scripted_widget_action_v1, normalize_scripted_widget_query_v1, scripted_widget_public_result_v1
 from xar_autoplayer.bridge.mcp_server import ScriptedWidgetDecimalV1, ScriptedWidgetRootV1
 from xar_autoplayer.bridge.service import GameplayBridgeService
 service: GameplayBridgeService
@@ -419,7 +516,7 @@ service: GameplayBridgeService
         path = Path(self.temp.name) / "changed_scripted_widget_methods.py"
         path.write_text(source, encoding="utf-8")
         stdout, stderr, status = api.run(["--strict", "--follow-imports=silent", "--no-incremental",
-            "--cache-dir=" + str(Path(self.temp.name) / "mypy-cache"), "--python-executable=" + sys.executable,
+            "--cache-dir=nul", "--python-executable=" + sys.executable,
             "--python-version=" + str(sys.version_info.major) + "." + str(sys.version_info.minor),
             str(Path(contract.__file__)), str(path)])
         self.assertEqual(status, 0, stdout + stderr)
