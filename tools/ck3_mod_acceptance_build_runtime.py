@@ -30,6 +30,39 @@ SDK_PREFIX = "ck3_autonomous_player/src/"
 NATIVE_PREFIX = "ck3_autonomous_player/native_bridge/"
 PROFILE_EXPANSION_RELATIVE = "tools/ck3_mod_acceptance_native_profile_expansions.json"
 TEST_PREFIX = "ck3_autonomous_player/tests/"
+
+
+@dataclass(frozen=True)
+class StockReadOnlyCapabilityRule:
+    native_sources: tuple[str, ...]
+    sdk_sources: tuple[str, ...]
+    required_flags: tuple[str, ...] = ()
+
+
+_FRONTEND_NATIVE_SOURCES = (
+    "src/bridge.cpp", "src/ck3_12004_adapter.cpp", "src/frontend_gui_route_v1.cpp",
+    "src/frontend_gui_result_v1.cpp",
+)
+_FRONTEND_SDK_SOURCES = (
+    "xar_autoplayer/bridge/mcp_server.py", "xar_autoplayer/bridge/service.py",
+    "xar_autoplayer/bridge/native_driver.py", "xar_autoplayer/bridge/frontend_gui_route_contract.py",
+)
+_FRONTEND_QUERY_FLAGS = (
+    "XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1",
+    "XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1",
+)
+STOCK_READ_ONLY_CAPABILITIES: dict[str, StockReadOnlyCapabilityRule] = {
+    "ck3_query_frontend_gui_route_v1": StockReadOnlyCapabilityRule(
+        _FRONTEND_NATIVE_SOURCES, _FRONTEND_SDK_SOURCES, _FRONTEND_QUERY_FLAGS),
+    "ck3_inspect_frontend_gui_tree_v1": StockReadOnlyCapabilityRule(
+        _FRONTEND_NATIVE_SOURCES, _FRONTEND_SDK_SOURCES, _FRONTEND_QUERY_FLAGS),
+    "ck3_migration_pipe_diagnostics": StockReadOnlyCapabilityRule(
+        ("src/bridge.cpp",), ("xar_autoplayer/bridge/native_driver.py",)),
+    "ck3_query_engine_diagnostics_v1": StockReadOnlyCapabilityRule(
+        (), ("xar_autoplayer/bridge/mcp_server.py", "xar_autoplayer/ck3_runtime_diagnostics.py")),
+    "ck3_query_engine_log_literals_v1": StockReadOnlyCapabilityRule(
+        (), ("xar_autoplayer/bridge/mcp_server.py", "xar_autoplayer/ck3_runtime_diagnostics.py")),
+}
 CRITICAL_TRANSPORTS = frozenset({
     "player_pilgrimage_planner_private_transport.py", "player_pilgrimage_activities_private_transport.py",
     "native_driver.py", "mcp_server.py", "nonwar_private_build.py", "version_identity.py",
@@ -153,6 +186,63 @@ def registration_driver(case):
 def require(value: object, message: str) -> None:
     if not value:
         raise ValueError(message)
+
+
+def stock_read_only_source_evidence(tool: str, root: Path, snapshot: Path,
+        native_files: Mapping[str, object], source_files: Mapping[str, object],
+        profile_flags: Mapping[str, object]) -> dict[str, FilePin]:
+    """Prove existing stock providers, without asserting an actual query or cache load."""
+    require(tool in STOCK_READ_ONLY_CAPABILITIES, "Unreviewed stock read-only capability: " + tool)
+    rule = STOCK_READ_ONLY_CAPABILITIES[tool]
+    for flag in rule.required_flags:
+        require(profile_flags.get(flag) == "ON", "Qualified profile lacks required stock query flag: " + flag)
+    evidence: dict[str, FilePin] = {}
+    for relative in rule.native_sources:
+        key = NATIVE_PREFIX + relative
+        path = snapshot / relative
+        require(key in native_files and path.is_file() and native_files[key] == sig(path.read_bytes()),
+                "Stock query provider is not an exact qualified production TU: " + key)
+        evidence[key] = pin(path)
+    for relative in rule.sdk_sources:
+        key = SDK_PREFIX + relative
+        path = root / key
+        require(key in source_files and path.is_file() and source_files[key] == sig(path.read_bytes()),
+                "Stock query SDK provider is outside the exact source index: " + key)
+        evidence[key] = pin(path)
+    if tool == "ck3_migration_pipe_diagnostics":
+        path = root / HOST_RELATIVE
+        require(source_files.get(HOST_RELATIVE) == sig(path.read_bytes()),
+                "Stock pipe diagnostics host is outside the exact source index")
+        evidence[HOST_RELATIVE] = pin(path)
+    return evidence
+
+
+async def registered_runtime_tool_names(case: JsonObject, host_path: Path, profile_dir: Path) -> set[str]:
+    """List the real SDK plus its existing canonical-host read-only registration."""
+    from xar_autoplayer.bridge.mcp_server import create_server
+    driver = registration_driver(case)
+    server = create_server(driver, profile_dir=profile_dir)
+    tools = case.get("required_mcp_tools", [])
+    require(isinstance(tools, list), "Required MCP tools must be a JSON list")
+    if isinstance(tools, list) and "ck3_migration_pipe_diagnostics" in tools:
+        tree = ast.parse(host_path.read_text(encoding="utf-8-sig"))
+        owners = [node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == "native_server"]
+        require(len(owners) == 1, "Canonical native-server registration owner missing")
+        functions = [node for node in owners[0].body if isinstance(node, ast.FunctionDef)
+                     and node.name == "ck3_migration_pipe_diagnostics"]
+        expected = ast.parse('''@server.tool()
+def ck3_migration_pipe_diagnostics() -> dict[str, object]:
+    """Inspect this harness's pipe, native hello, heartbeat and mailbox."""
+    return {"pipe": driver.pipe_name, "transport_error": driver.endpoint.transport_error(),
+            "diagnostics": driver.diagnostics()}
+''').body[0]
+        require(len(functions) == 1 and ast.dump(functions[0]) == ast.dump(expected),
+                "Canonical pipe diagnostics registration differs from the reviewed read-only provider")
+        # Execute only this exact existing declaration. Its body is never invoked.
+        statements: list[ast.stmt] = [*functions]
+        exec(compile(ast.Module(body=statements, type_ignores=[]), str(host_path), "exec"),
+             {"server": server, "driver": driver})
+    return {row.name for row in await server.list_tools()}
 
 
 def now():
@@ -1728,19 +1818,21 @@ def main(argv: list[str] | None = None) -> int:
         require(actual_sdk.get("actual_execution_wire_packets") == native_bundle["execution_wire"]["ref"],
                 "Current SDK seam must actually consume these new qualified native serializer outputs")
     index_only = check_index_only_changes(root, changed_paths)
-    products = read(args.products)
-    cases = [case for case in products["products"][args.product]["cases"] if case["id"] == args.case]
-    require(len(cases) == 1, "Exactly one independent public product case required")
-    case = cases[0]
-    needed = set(case["required_mcp_tools"])
+    entry = module(root / "tools/ck3_mod_acceptance.py", "qualified_actual_public_entry")
+    # Selection owns product cases and the one globally inherited workshop_cache case.
+    case = entry.Selection(args.base_runtime, args.products, args.product, args.case).case
     needed = set(case["required_mcp_tools"])
     old_profile = native_bundle["old_profile"]
     native_profile = native_bundle["profile"]
     capabilities = {}
     for tool in sorted(set(manifest.get("capabilities", {})) | needed):
+        stock_evidence = None
+        if tool in STOCK_READ_ONLY_CAPABILITIES:
+            stock_evidence = stock_read_only_source_evidence(tool, root, Path(native_bundle["snapshot_root"]),
+                                                            native_bundle["native_files"], files, native_profile["flags"])
         if tool not in manifest.get("capabilities", {}):
-            require(tool in EXTRA_CAPABILITIES, "Unreviewed global capability rule: " + tool)
-            for flag in EXTRA_CAPABILITIES[tool]:
+            require(tool in EXTRA_CAPABILITIES or stock_evidence is not None, "Unreviewed global capability rule: " + tool)
+            for flag in EXTRA_CAPABILITIES.get(tool, []):
                 require(native_profile["flags"].get(flag) == "ON", "Qualified profile lacks required flag: " + flag)
         capabilities[tool] = {"source_build_ready": True, "actual_live_qualified": False,
             "actual_global_native_profile": native_bundle["profile_ref"],
@@ -1748,6 +1840,8 @@ def main(argv: list[str] | None = None) -> int:
             "native_input_identity_evidence": native_bundle["qualification_ref"],
             "native_DLL": native_bundle["dll"],
             "scope": "exact shared production build and finite native fixtures; no live business credit"}
+        if stock_evidence is not None:
+            capabilities[tool]["stock_read_only_source_evidence"] = stock_evidence
     output = {}
 
     def add(name, value):
@@ -1833,7 +1927,6 @@ def main(argv: list[str] | None = None) -> int:
     require(pin(args.storage_admission) == grant_pin, "Fresh grant changed during metadata generation")
     write_bounded_metadata(destination, output, limit_bytes=2 * 1024 * 1024,
                            reserve_bytes=32768)
-    entry = module(root / "tools/ck3_mod_acceptance.py", "qualified_actual_public_entry")
     selection = entry.Selection(destination / "runtime.local.json", args.products, args.product, args.case)
     adapter = selection.load_adapter()
     inputs = read(args.case_inputs).get("case_inputs", {}) if args.case_inputs.exists() else {}
@@ -1844,12 +1937,8 @@ def main(argv: list[str] | None = None) -> int:
     # Register the unchanged real global MCP factory against an offline facade.
     # No method other than capabilities may run; list_tools is registration only.
     import asyncio
-    from xar_autoplayer.bridge.mcp_server import create_server
-
-    async def registered_names():
-        return {row.name for row in await create_server(registration_driver(selection.case)).list_tools()}
-
-    registered = asyncio.run(registered_names())
+    registered = asyncio.run(registered_runtime_tool_names(
+        json_object(selection.case), destination / "shared-host.py", scene / "managed-states/registration-only/profile"))
     require(needed <= registered, "Actual global MCP factory does not register required case tools: " + str(sorted(needed - registered)))
     missing = sorted({v for v in selection.argv if v.startswith("--")} - entry.host_cli_flags(destination / "shared-host.py"))
     require(not missing, "Current global host lacks actual public Selection CLI: " + str(missing))

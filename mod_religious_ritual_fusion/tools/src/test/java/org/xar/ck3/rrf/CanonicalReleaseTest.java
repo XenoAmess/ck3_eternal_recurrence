@@ -11,7 +11,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.xar.ck3.rrf.Contracts.Catalog;
@@ -123,10 +126,43 @@ final class CanonicalReleaseTest {
     private static String git(Path source, String... args) throws IOException, InterruptedException {
         List<String> command = new ArrayList<>(List.of("git", "-C", source.toString())); command.addAll(List.of(args)); return execute(command);
     }
+    @Test void drainsWindowsPipeBeforeWaitingAndStillRejectsOutputOverflow() throws IOException, InterruptedException {
+        String executable = Path.of(System.getProperty("java.home"), "bin", System.getProperty("os.name").startsWith("Windows") ? "java.exe" : "java").toString();
+        List<String> command = List.of(executable, "-cp", System.getProperty("java.class.path"), OutputProbe.class.getName(), "within-limit");
+        assertEquals(32_768, execute(command).length());
+        List<String> overflow = new ArrayList<>(command); overflow.set(overflow.size() - 1, "over-limit");
+        assertThrows(IOException.class, () -> execute(overflow));
+    }
+    public static final class OutputProbe {
+        private OutputProbe() { }
+        public static void main(String[] args) {
+            if (args.length != 1) throw new IllegalArgumentException("one probe mode required");
+            int bytes = switch (args[0]) { case "within-limit" -> 32_768; case "over-limit" -> 65_537; default -> throw new IllegalArgumentException("unknown probe mode"); };
+            System.out.print("x".repeat(bytes));
+        }
+    }
     private static String execute(List<String> command) throws IOException, InterruptedException {
         Process process = new ProcessBuilder(command).redirectErrorStream(true).start();
-        assertTrue(process.waitFor(30, TimeUnit.SECONDS), "bounded consumer timed out");
-        String output = new String(process.getInputStream().readNBytes(65_537), StandardCharsets.UTF_8);
-        assertTrue(output.length() <= 65_536, "bounded consumer output exceeded"); assertEquals(0, process.exitValue(), output); return output;
+        FutureTask<byte[]> output = new FutureTask<>(() -> {
+            try (var stream = process.getInputStream()) {
+                byte[] bytes = stream.readNBytes(65_537);
+                if (bytes.length > 65_536) throw new IOException("bounded consumer output exceeded");
+                return bytes;
+            } catch (IOException error) { process.destroyForcibly(); throw error; }
+        });
+        Thread reader = Thread.ofVirtual().name("rrf-test-consumer-output").start(output);
+        try {
+            assertTrue(process.waitFor(30, TimeUnit.SECONDS), "bounded consumer timed out: " + command);
+            byte[] bytes;
+            try { bytes = output.get(5, TimeUnit.SECONDS); }
+            catch (ExecutionException | TimeoutException error) { throw new IOException("bounded consumer output failed", error); }
+            String text = new String(bytes, StandardCharsets.UTF_8);
+            assertEquals(0, process.exitValue(), text); return text;
+        } finally {
+            if (process.isAlive()) { process.destroyForcibly(); process.waitFor(5, TimeUnit.SECONDS); }
+            process.getInputStream().close(); reader.interrupt(); reader.join(5_000);
+            assertFalse(process.isAlive(), "bounded consumer did not terminate");
+            assertFalse(reader.isAlive(), "bounded output reader did not terminate");
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿from __future__ import annotations
 import importlib.util
+import ast
 import hashlib
 import io
 import json
@@ -889,6 +890,44 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
             with self.subTest(codec=codec):
                 self.assert_formal_runtime_producer(codec, generic_rrf=True)
 
+    def test_global_cache_case_reaches_actual_writer_selection_adapter_and_host_mcp(self) -> None:
+        self.assert_formal_runtime_producer(None, workshop_cache=True)
+
+    def test_stock_cache_capabilities_require_exact_production_and_sdk_sources(self) -> None:
+        for missing in ('native', 'sdk'):
+            with self.subTest(missing=missing):
+                self.assert_formal_runtime_producer(None, workshop_cache=True, missing_stock_source=missing,
+                    expected_error='Stock query provider is not an exact qualified production TU' if missing == 'native'
+                    else 'Stock query SDK provider is outside the exact source index')
+
+    def test_frontend_cache_queries_require_both_actual_native_compile_flags(self) -> None:
+        flags = builder.STOCK_READ_ONLY_CAPABILITIES['ck3_query_frontend_gui_route_v1'].required_flags
+        self.assertEqual(flags, (
+            'XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1',
+            'XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1'))
+        for missing in flags:
+            for state in ('OFF', None):
+                with self.subTest(flag=missing, state=state):
+                    profile = {flag: 'ON' for flag in flags if flag != missing}
+                    if state is not None:
+                        profile[missing] = state
+                    self.assert_formal_runtime_producer(None, workshop_cache=True, profile_flags=profile,
+                        expected_error='Qualified profile lacks required stock query flag')
+
+    def test_cache_requires_actual_canonical_host_read_only_registration(self) -> None:
+        import asyncio
+        with tempfile.TemporaryDirectory() as temporary:
+            host = Path(temporary) / 'host.py'
+            tree = ast.parse((HERE.parent / builder.HOST_RELATIVE).read_text(encoding='utf-8-sig'))
+            owner = next(node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == 'native_server')
+            declaration = next(node for node in owner.body
+                if isinstance(node, ast.FunctionDef) and node.name == 'ck3_migration_pipe_diagnostics')
+            declaration.body[-1] = ast.parse('return driver.execute_step("pause-map")').body[0]
+            host.write_text(ast.unparse(tree), encoding='utf-8')
+            with self.assertRaisesRegex(ValueError, 'Canonical pipe diagnostics registration differs'):
+                asyncio.run(builder.registered_runtime_tool_names(
+                    {'required_mcp_tools': ['ck3_migration_pipe_diagnostics']}, host, Path(temporary) / 'profile'))
+
     def test_existing_optional_validator_still_rejects_invalid_contract_after_candidate_write(self) -> None:
         self.assert_formal_runtime_producer(
             None, invalid_validator_contract=True, expected_error='Save scope must be an explicit boolean',
@@ -900,6 +939,7 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
         extra_read_only_tools: tuple[str, ...] = (), profile_flags: dict[str, str] | None = None,
         generic_rrf: bool = False, invalid_validator_contract: bool = False,
         expected_partial_output: bool = False,
+        workshop_cache: bool = False, missing_stock_source: str | None = None,
     ) -> None:
         # Real metadata writer and complete downstream consumers; upstream Native input is owned fixture data.
         from test_ck3_mod_acceptance import SharedEntryTests, entry
@@ -962,6 +1002,13 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
                     tool: {'source_build_ready': True, 'actual_live_qualified': False} for tool in tools}
             products = {'schema': entry.PRODUCTS_SCHEMA, 'product_inventory': str(owned.files['inventory']),
                         'products': {product_key: {'cases': [owned.case]}}}
+            if workshop_cache:
+                products = builder.read(root / 'tools/ck3_mod_acceptance_products.json')
+                product_key = 'religious-ritual-fusion'
+                case_id = 'workshop_cache'
+                self.assertNotIn(case_id, [row['id'] for row in products['products'][product_key]['cases']])
+                tools = list(products['workshop_cache_case']['required_mcp_tools'])
+                owned.manifest['capabilities'] = {}
             owned.write(owned.products_path, products)
             owned.write(owned.manifest_path, owned.manifest)
             owned.runtime['manifest'] = entry.pin(owned.manifest_path)
@@ -979,15 +1026,33 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
             for relative in [builder.HOST_RELATIVE, 'promo/ck3_native_war_ai/integration/recorder_job.py',
                              *(builder.SDK_PREFIX + 'xar_autoplayer/bridge/' + name for name in builder.CRITICAL_TRANSPORTS)]:
                 files[relative] = builder.sig((root / relative).read_bytes())
+            if workshop_cache:
+                for rule in builder.STOCK_READ_ONLY_CAPABILITIES.values():
+                    for relative in rule.sdk_sources:
+                        key = builder.SDK_PREFIX + relative
+                        files[key] = builder.sig((root / key).read_bytes())
+                if missing_stock_source == 'sdk':
+                    files.pop(builder.SDK_PREFIX + 'xar_autoplayer/ck3_runtime_diagnostics.py')
             refs = {name: builder.pin(owned.paths[name]) for name in ('host', 'dll', 'source_index', 'native_source_index')}
             identity = builder.pin(owned.files['inventory'])
             flags = {} if presentation_flag is None else {'XAR_ENABLE_RELIGION_UI12004_PRESENTATION': presentation_flag}
             if profile_flags is not None:
                 flags.update(profile_flags)
+            elif workshop_cache:
+                flags.update({flag: 'ON' for rule in builder.STOCK_READ_ONLY_CAPABILITIES.values()
+                              for flag in rule.required_flags})
             bundle = {'old_profile': {'flags': {}}, 'profile': {'flags': flags}, 'profile_ref': identity,
                       'freeze_ref': identity, 'qualification_ref': identity, 'dll': builder.pin(dll),
                       'native_files': {}, 'snapshot_root': str(native_dir), 'compile_commit': 'a' * 40,
                       'source_checkout_binding': None, 'shared_python_host_delta': None, 'execution_wire': None}
+            if workshop_cache:
+                # Authored upstream qualification metadata uses real provider bytes, never loads the owned DLL.
+                bundle['snapshot_root'] = str(root / builder.NATIVE_PREFIX)
+                bundle['native_files'] = {builder.NATIVE_PREFIX + relative:
+                    builder.sig((root / builder.NATIVE_PREFIX / relative).read_bytes())
+                    for rule in builder.STOCK_READ_ONLY_CAPABILITIES.values() for relative in rule.native_sources}
+                if missing_stock_source == 'native':
+                    bundle['native_files'].pop(builder.NATIVE_PREFIX + 'src/frontend_gui_route_v1.cpp')
             argv = [part for name, path in (('base-runtime', owned.runtime_path), ('source-delta', delta),
                     ('scene-root', scene), ('storage-admission', grant), ('products', owned.products_path),
                     ('case-inputs', inputs), ('output', destination), ('qualified-native', owned.files['inventory']))
@@ -1011,14 +1076,24 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
             selected_codec = 'plain' if codec is None else codec
             manifest = builder.read(destination / 'manifest.json')
             self.assertEqual(manifest['host_features']['wire_evidence_codec'], selected_codec)
-            for tool in extra_tools:
+            for tool in tools if workshop_cache else extra_tools:
                 self.assertIs(manifest['capabilities'][tool]['actual_live_qualified'], False)
                 self.assertIs(manifest['capabilities'][tool]['source_build_ready'], True)
+                if workshop_cache:
+                    self.assertTrue(manifest['capabilities'][tool]['stock_read_only_source_evidence'])
             for name in ('ENTRY-COMMANDS.json', 'SOURCE-BINDINGS.actual.json', 'STATIC-VALIDATION.actual.json'):
                 self.assertEqual(builder.read(destination / name)['wire_evidence_codec'], selected_codec)
             self.assertEqual(json.loads(stdout.getvalue())['wire_evidence_codec'], selected_codec)
             selected = entry.Selection(destination / 'runtime.local.json', owned.products_path, product_key, case_id)
             writer_selection_argv = list(selected.argv)
+            if workshop_cache:
+                self.assertEqual(selected.case, products['workshop_cache_case'])
+                self.assertEqual(Path(selected.load_adapter().__file__).resolve(),
+                                 root / 'tools/ck3_mod_acceptance_cases/workshop_cache_adapter.py')
+                self.assertIn('--frontend-mod-load-observation', selected.argv)
+                for forbidden in ('--saved-campaign-save', '--frontend-robert-bootstrap', '--frontend-fixture-start-policy'):
+                    self.assertNotIn(forbidden, selected.argv)
+                self.assertIs(selected.case['business_contract_applicable'], False)
             if generic_rrf:
                 adapter = selected.load_adapter()
                 self.assertEqual(Path(adapter.__file__).resolve(), root / 'tools/ck3_mod_acceptance_cases/generic_product_adapter.py')
@@ -1055,7 +1130,13 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
                 selected = entry.Selection(destination / 'runtime.local.json', owned.products_path, product_key,
                                            case_id, prepared_path=Path(prepared['prepared_case']['path']))
                 self.assertEqual(builder.read(Path(prepared['prepared_case']['path']))['runtime_status'], 'NOT_RUN')
-            self.assertEqual(selected.preflight()['blockers'], [])
+            blockers = selected.preflight()['blockers']
+            if workshop_cache:
+                # Source construction cannot fabricate an actual download/Prepared case.
+                self.assertEqual(len(blockers), 1)
+                self.assertTrue(blockers[0].startswith('Prepared case input missing: --plan: '))
+            else:
+                self.assertEqual(blockers, [])
             actual_read_only_tools = [selected.argv[index + 1] for index, value in enumerate(selected.argv)
                                       if value == '--case-read-only-mcp-tool']
             for tool in extra_read_only_tools:

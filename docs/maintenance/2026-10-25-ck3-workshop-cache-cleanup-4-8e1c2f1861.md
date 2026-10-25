@@ -24,3 +24,9 @@ Native实际释放 **38,318,603,536B**；卷free从 `88,543,404,032B` 变为 `12
 07:34Z后继发布在Submit前因本机认证失效被拒绝；实际Steam登录刷新窗口明确提示另一台计算机已登录。07:36:27Z退出操作后的实际Steam／CK3进程均0，下载暂停器正常退出0；最后离线探针未确认offline。发布尚未完成，当前阻断为账号认证，容量已经满足。实际证据见[发布记录](../../mod_religious_ritual_fusion/docs/publication-0.1.0-alpha-2026-10-25.md)。
 
 07:42Z统一账本head124已关闭publication／Java／menu预留，仅留来源资格与Root收尾共用32MiB，原08:30Z到期；旧128MiB不再授权继续Steam写入。实际freshfree126,848,888,832B，owned Native920,121,584B，physical margin38,055,649,690B。`publication-a01/PUBLICATION-CLOSED-ACCOUNT-BLOCKED.actual.json`：6,007B，SHA `996f564ba229ff5459715c66b84788b4775768c2a155968e56b7ce9d32014161`。用户重新登录后须以新的fresh状态重新授予发布和菜单预算；本清理结果不自动续期准入。
+
+## 发布成功后的重新下载回收
+
+machine_id: `4-8e1c2f1861`。2026-10-25T08:31Z独立后台探针确认当前Steam11.15.70.27离线。联网期间07:58–08:22新建的8,388份旧CK3订阅临时载荷经精确清单及原生独占身份重验，9批删除、0拒绝，Native实际释放21,472,069,880B。控制文件、0B占位、ACL恢复输入、新条目3826756673、订阅和ACF均保留。
+
+原件 `C:/workspace/rrf-development-20261024/workshop-recreated-payload-cleanup-a01/ACTUAL.actual.json`，4068B，SHA `7fc24a7084bb328bc9ad8a7f78a92144d6336eea989b4618d3a935f1f6ec6396`。回收前后free为105,324,834,816和126,796,025,856B，计量依据是原生分配而非free差额；不对项目配额重复退款。原公开上传已完成，真实Steam缓存下载因旧item拒写中断，尚未启动CK3。

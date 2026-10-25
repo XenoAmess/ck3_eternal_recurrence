@@ -26,4 +26,19 @@ Root 的首发导出位于 `C:/workspace/rrf-development-20261024/publication-a0
 
 逐图捕获 UTC、机器／场次和 sidecar 身份见 [R0008 清单](../mod_religious_ritual_fusion/docs/media/screenshots-R0008-2026-10-25.json)与 [R0010 清单](../mod_religious_ritual_fusion/docs/media/screenshots-R0010-2026-10-25.json)。R0007 的旧 GUI 缺陷图、退出及桌面画面，以及 R0008／10、R0008／11、R0010／00 不属于本次六张商店素材。
 
-封面 `mod_religious_ritual_fusion/thumbnail.png` 为带 ALPHA 标识的独立生成插画，不是实机截图。六图的上传、公开顺序及公开回读尚须由本次发布回执确认；图片存在不代表整场验收通过，实际边界见[验收结论](../mod_religious_ritual_fusion/docs/acceptance/live-results-2026-10-25.md)。
+封面 `mod_religious_ritual_fusion/thumbnail.png` 为带 ALPHA 标识的独立生成插画，不是实机截图。六图已于2026-10-25实际提交并完成公开顺序和逐字节回读；图片存在不代表整场验收通过，实际边界见[验收结论](../mod_religious_ritual_fusion/docs/acceptance/live-results-2026-10-25.md)。
+
+## 实际公开素材
+
+机器 `4-8e1c2f1861`；08:30Z，六个公开原图均HTTP200、2560×1440，与冻结JPEG逐字节一致。Native查询index0–5为以下顺序。
+
+| 顺序 | 公开原图 | bytes | SHA-256 |
+| --- | --- | ---: | --- |
+| 1 | [01.jpg](https://images.steamusercontent.com/ugc/11949390021377429810/3A599321B3E44A9F088B90D90627E779F55D1E58/) | 630014 | `602dafb70d76a77913fca258d0784ebc11f2a700111bc3eea433187efdf620ed` |
+| 2 | [02.jpg](https://images.steamusercontent.com/ugc/14701561625571287741/51E23DEC091D62261743C53F391B0FFCCF7478B5/) | 751491 | `6de8da6457b05c7557f24136042e27c0e5d47fd04b6f451bac3338780c83caa4` |
+| 3 | [03.jpg](https://images.steamusercontent.com/ugc/17740379883873270313/CD252167CCBC2478DDF5D0D00554B958BBCEFFE0/) | 758692 | `fb4391ea90e1f1136a9729c0c1ef78f801242bb1272eb848698746cdd88460eb` |
+| 4 | [04.jpg](https://images.steamusercontent.com/ugc/14322138971414935161/84ABF19EA52A2A29ABFAD812C472801ACD778B59/) | 759825 | `39495dcc1492d726a8f01a803c120ec788137e9b8239fc9727157905c3d6056f` |
+| 5 | [05.jpg](https://images.steamusercontent.com/ugc/11055269871140543996/3F462CE380ABF535391048C18491EEB0B3A4214A/) | 726313 | `cca43fd4c3515bca79a6c8bfda5078eeb0b6d4e349905f6a7ec4647ca80d849f` |
+| 6 | [06.jpg](https://images.steamusercontent.com/ugc/15635122434027558454/E1F1D1E59DC806F3A58BC204CDACF40430E96A13/) | 741549 | `d1eba34145a11d370290580e3083c38ee1c78d4988a9cef05a8b19dbe0fd6dcd` |
+
+[公开回读证据](../mod_religious_ritual_fusion/docs/evidence/publication-public-readback-2026-10-25.json)。这些图片不改变原实机场次GAP。

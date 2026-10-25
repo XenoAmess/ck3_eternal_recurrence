@@ -1,6 +1,6 @@
-# 0.1.0 Alpha 首发执行记录（未完成）
+# 0.1.0 Alpha 首发执行记录（已公开，缓存验收未完成）
 
-`machine_id: 4-8e1c2f1861`；更新至2026-10-25T07:48Z。用户已明确要求发布到 Steam 创意工坊。新增授权清理本机CK3 Workshop载荷后，容量已通过；正式a03包和六张实机图已保全，条目仍为3826756673。07:34Z本机登录失效，实际窗口提示另一台计算机已登录，更新在Submit前被拒绝；目前等待用户完成本机登录，尚未公开发布或验收缓存。下文保留首次失败及后继实际结果，不把条目创建、构建或调用ACK计为公开发布。
+`machine_id: 4-8e1c2f1861`；2026-10-25。用户再次要求重试后，本机登录恢复，同一条目 **3826756673** 于08:02:19Z公开提交成功。匿名标题／完整说明／完整更新日志核对通过；六张公开实机图和封面均与提交素材逐字节相同。当前缓存下载因旧订阅目录拒写而失败，未启动缓存加载场次，完整release闭环仍未完成。Steam于08:25:11Z由后台原生探针确认恢复离线。下文保留最初网络失败、容量阻断、登录失效和后继实际结果。
 
 ## 05:46Z 首次提交所用载荷和页面素材（历史）
 
@@ -90,3 +90,39 @@ Java原始回执在 `C:/workspace/rrf-development-20261024/publication-java-a01/
 ## 云端检出故障修复
 
 收尾master `2f7b10ea5cfa890dce8c316148fa9c18f3213c07` 的 [RRF静态CI 40174479553](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40174479553) 于07:54Z在actions/checkout失败，原日志为`Filename too long`／Git exit128，尚未执行Maven或产品测试。日志原件在 `publication-a01/CI.failed-40174479553.log`。RRF工作流补入既有Official Runner CI使用的job级`GIT_CONFIG_COUNT/KEY_0/VALUE_0`，使长路径配置在checkout之前生效；未改载荷或重跑本机已通过的23项测试。后继云端实际结果另以run原件记录，不能把该检出失败称为测试已通过。
+
+## 08:02Z 公开成功及匿名回读
+
+用户回复“你再试试看”后正常重启客户端；08:01Z原生probe确认App1158310、账号76561198273714027、logged_on=true。使用原同一update计划和持久回执续行，没有Create新条目。08:02:19.714556Z实际`SubmitItemUpdate`返回EResult1，`stage=complete`；原生MCP子进程原wait0。Steam日志独立记录上传内容manifest **4029636242467382206**、封面、六图及`Upload finished ... : OK`。正式载荷仍为a03的75文件／1,083,422B，原publish1/f48c身份未改变。
+
+[公开条目](https://steamcommunity.com/sharedfiles/filedetails/?id=3826756673)的匿名API实际返回visibility0、正确owner和双AppID、完整标签`Religion`、`Gameplay`、`1.20 'Crozier'`。标题和说明全文exact。原`change_note`已经进入[公开更新日志](https://steamcommunity.com/sharedfiles/filedetails/changelog/3826756673)，entry **1792915338**，无需owner页面补写；HTML解码、换行及末尾文件换行归一化后全文862字符／14行，SHA `edecb0989f7d7da1bd7447d09c666b780ffa5b9254606ee86089660b55c457d7`，与同法处理的冻结全文exact。冻结文件原始863字符及SHA17176…保持，字符差为末尾文件换行，不是删减正文。
+
+SDK再次无缓存查询返回恰好六项，index0–5／文件名01.jpg–06.jpg。六个公开CDN原图HTTP200、2560×1440，逐字节等于已冻结JPEG，顺序与[截图说明](../../workshop/religious_ritual_fusion_screenshots.md)相同。公开封面HTTP200、512×512 PNG、696,215B，SHA与源封面相同。未重复存储与保留原件相同的公开图片正文。前端详情HTML另遇HTTP429，兼容版本右栏HTML仍待回读；没有用代理或更换凭据绕过限流。
+
+小型机器可读[公开证据](evidence/publication-public-readback-2026-10-25.json)包含实际API、Notes结果、六图、封面、离线及原件pins。本机外置原件根仍为`publication-a01/`，其中`public-update.completed.frozen.json`保全完成态，原登录失效回执的历史状态保留在当时操作记录。`public-readback-after-submit-a02/`保存匿名API、完整changelog原HTML及exact结果；`PUBLIC-SIX-IMAGES.actual.json`和`PUBLIC-COVER.actual.json`保存逐图验证。
+
+## 实际下载失败与离线恢复
+
+两次实际SDK下载均从目标缓存不存在开始。第一worker16444、第二worker17260，匹配App/item的callback3406均为EResult37，installed=false、install_info=null，原worker退出2。外层MCP传输成功／外层命令退出0不等于下载完成。第二次改为先resume再显式高优先级下载，仍然相同失败，未盲目重复第三次。
+
+Steam日志把失败绑定到旧订阅2993056101的`downloads/1158310/.../common/buildings/00_standard_economy_buildings.txt`预分配。该旧item目录实际保留Everyone拒写／删除ACL，父目录正常；全app校验被它中断，随后本目标返回I/O失败。当前ACF尚留91条Installed和85条Details，目标只在Details中。未解除这些控制、伪造安装索引、退订旧模组或复制staging到缓存；不将旧历史下载或源码加载代替本次Steam真实缓存。
+
+联网任务停止后正常shutdown Steam、退出临时SDK暂停器，原keeper正常退出并CAS释放13843，08:22:01Z实际Steam／CK3进程均0。客户端启动时已自行更新至11.15.70.27，不能沿用原11.12.30.7身份。因新客户端菜单未提供可用UIA树，在客户端完全停止时只对当前账号请求WantsOfflineMode=1并静默启动；该配置操作本身不算离线证明。08:25:11Z新的后台探针实际返回`status=offline, offline_mode=true`，PID26192／出生FILETIME134373902961232097，当前SteamUI SHA `cd9226db4e6c28942df70c22c0475d91fdd62cba5f100baae2d65af57cabb610`，前后身份及两次原生样本一致。未通过截图确认状态，未启动CK3。
+
+联网期间本机又产生8,388份CK3旧订阅临时下载载荷。沿用户已授予的全部本机CK3载荷删除范围，在确认离线、原生独占重验并排除控制／0B／ACL备份和新目标后，9批实际释放21,472,069,880B、0拒绝，订阅及ACF保持。`workshop-recreated-payload-cleanup-a01/ACTUAL.actual.json`为4,068B，SHA `7fc24a7084bb328bc9ad8a7f78a92144d6336eea989b4618d3a935f1f6ec6396`。这不重复计算首次38.3GB，也不按卷free差额给项目quota退款。
+
+后继仅继续必要CI修复、公共缓存runtime准备及下载阻断分析；a07源／元数据预算已独立登记，Java已闭场。菜单224MiB尚未准入，只有真正下载完成、逐文件匹配和fresh离线准入后才执行公共菜单加载；不重跑业务矩阵。
+
+## 云端测试进程故障的本地修复
+
+长路径修复后的云run40174667186已经检出并执行23tests，其中22通过、1失败：CanonicalReleaseTest的临时Git命令30秒超时，旧helper先等待退出再读输出，可能产生管道互等，且超时未回收子进程。未保留到导致填管道的具体Git警告，因此根因机制仍作推断。最小修复只改测试helper：并发有界读取、原30秒期限、64KiB上限和finally中的杀进程／等待／join；新增32KiB成功与65,537字节拒绝回归。
+
+同机默认mvn3.10.0、原Maven home实读为`C:/apache-maven-3.9.16`（事实记录，不作为执行命令）。一次完整`mvn --batch-mode --no-transfer-progress -f mod_religious_ritual_fusion/tools/pom.xml verify`原wait0，24tests全部通过／0skip，26.544秒。`publication-ci-fix-verification-a01/HANDOFF.actual.json`为3,961B，SHA `3c56be3b5626614a4ac47ad372544f7c7bc0bf2d1ab473dc56b3733c73faa8cd`。14份production源、187,192B appJar及75个发布文件均与publish1/a03相同；未重建正式包或移动tag。后继云结果仍以实际run为准。
+
+09:01:18Z同机对规范公开URL正常GET获得HTTP200，右侧Compatible Version实际为完整 `1.20 'Crozier'`；原HTML69,680B，SHA `b74274836f9bb6b97e945548260466dbd28c5b3daf783a7de5fb2f50c93996f2`。此前429保留为历史，不再阻断公开页面核对。
+
+## 公共缓存runtime生产路径修复
+
+实际公共Selection支持全局workshop_cache，而旧builder只检索产品局部case；后继在同一生产路径消费Selection全局case。原只读能力严格绑定source-index、原TU、snapshot SHA和实际host注册；两个前端能力还必须有原两项ON标志，未借此授予实际游戏资格。
+
+同机完整七条既有CI命令169tests零失败、零跳过及完整相关静态检查退出0。原件 publication-a01/workshop-cache-runtime-fix-a01/successor-a06/HANDOFF.actual.json：3866B，SHA `2d25478bb0100f642f67e99d903c6d5c5c14cc0bc384dcca0ad7fb8f8f096864`。只改现有builder和对应回归；未启动游戏、未编DLL或复制SDK，未声称实际缓存加载通过。

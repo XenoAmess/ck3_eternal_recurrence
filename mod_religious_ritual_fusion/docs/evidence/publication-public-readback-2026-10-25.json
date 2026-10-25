@@ -1,0 +1,278 @@
+{
+  "schema": "rrf-public-publication-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-25T08:37:20.761033+00:00",
+  "workshop_item_id": "3826756673",
+  "workshop_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3826756673",
+  "version": "0.1.0-alpha",
+  "formal_source_commit": "f48c3f2ed531ca60a802c11a74b93e5c394fe8b5",
+  "formal_git_tag": "religious-ritual-fusion-v0.1.0-alpha-publish1",
+  "payload_files": 75,
+  "payload_bytes": 1083422,
+  "submit_steam_result": 1,
+  "submit_updated_at": "2026-10-25T08:02:19.714556+00:00",
+  "public_visibility": 0,
+  "published_content_manifest": "4029636242467382206",
+  "full_public_tags": [
+    "Religion",
+    "Gameplay",
+    "1.20 'Crozier'"
+  ],
+  "anonymous_text": {
+    "title_exact": true,
+    "description_exact": true,
+    "description_characters": 1587,
+    "description_sha256": "2BF9FC70E108D4A328F929C06365A95AD601931AF48EA318222E50BEA09CA3D5",
+    "expected_description_sha256": "2BF9FC70E108D4A328F929C06365A95AD601931AF48EA318222E50BEA09CA3D5",
+    "change_notes_exact": true,
+    "changelog_entry_id": "1792915338",
+    "change_notes_characters": 862,
+    "change_notes_lines": 14,
+    "change_notes_sha256": "EDECB0989F7D7DA1BD7447D09C666B780FFA5B9254606EE86089660B55C457D7",
+    "expected_change_notes_characters": 862,
+    "expected_change_notes_lines": 14,
+    "expected_change_notes_sha256": "EDECB0989F7D7DA1BD7447D09C666B780FFA5B9254606EE86089660B55C457D7",
+    "time_updated": 1792915338,
+    "file_size": "1083422",
+    "ok": true
+  },
+  "public_image_evidence": {
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-25T08:30:00.080195+00:00",
+    "item_id": "3826756673",
+    "public_original_images": [
+      {
+        "index": 0,
+        "filename": "01.jpg",
+        "url": "https://images.steamusercontent.com/ugc/11949390021377429810/3A599321B3E44A9F088B90D90627E779F55D1E58/",
+        "http_status": 200,
+        "size": 630014,
+        "sha256": "602dafb70d76a77913fca258d0784ebc11f2a700111bc3eea433187efdf620ed",
+        "dimensions": [
+          2560,
+          1440
+        ],
+        "exact_source_bytes": true,
+        "expected_source_sha256": "602dafb70d76a77913fca258d0784ebc11f2a700111bc3eea433187efdf620ed",
+        "valid": true
+      },
+      {
+        "index": 1,
+        "filename": "02.jpg",
+        "url": "https://images.steamusercontent.com/ugc/14701561625571287741/51E23DEC091D62261743C53F391B0FFCCF7478B5/",
+        "http_status": 200,
+        "size": 751491,
+        "sha256": "6de8da6457b05c7557f24136042e27c0e5d47fd04b6f451bac3338780c83caa4",
+        "dimensions": [
+          2560,
+          1440
+        ],
+        "exact_source_bytes": true,
+        "expected_source_sha256": "6de8da6457b05c7557f24136042e27c0e5d47fd04b6f451bac3338780c83caa4",
+        "valid": true
+      },
+      {
+        "index": 2,
+        "filename": "03.jpg",
+        "url": "https://images.steamusercontent.com/ugc/17740379883873270313/CD252167CCBC2478DDF5D0D00554B958BBCEFFE0/",
+        "http_status": 200,
+        "size": 758692,
+        "sha256": "fb4391ea90e1f1136a9729c0c1ef78f801242bb1272eb848698746cdd88460eb",
+        "dimensions": [
+          2560,
+          1440
+        ],
+        "exact_source_bytes": true,
+        "expected_source_sha256": "fb4391ea90e1f1136a9729c0c1ef78f801242bb1272eb848698746cdd88460eb",
+        "valid": true
+      },
+      {
+        "index": 3,
+        "filename": "04.jpg",
+        "url": "https://images.steamusercontent.com/ugc/14322138971414935161/84ABF19EA52A2A29ABFAD812C472801ACD778B59/",
+        "http_status": 200,
+        "size": 759825,
+        "sha256": "39495dcc1492d726a8f01a803c120ec788137e9b8239fc9727157905c3d6056f",
+        "dimensions": [
+          2560,
+          1440
+        ],
+        "exact_source_bytes": true,
+        "expected_source_sha256": "39495dcc1492d726a8f01a803c120ec788137e9b8239fc9727157905c3d6056f",
+        "valid": true
+      },
+      {
+        "index": 4,
+        "filename": "05.jpg",
+        "url": "https://images.steamusercontent.com/ugc/11055269871140543996/3F462CE380ABF535391048C18491EEB0B3A4214A/",
+        "http_status": 200,
+        "size": 726313,
+        "sha256": "cca43fd4c3515bca79a6c8bfda5078eeb0b6d4e349905f6a7ec4647ca80d849f",
+        "dimensions": [
+          2560,
+          1440
+        ],
+        "exact_source_bytes": true,
+        "expected_source_sha256": "cca43fd4c3515bca79a6c8bfda5078eeb0b6d4e349905f6a7ec4647ca80d849f",
+        "valid": true
+      },
+      {
+        "index": 5,
+        "filename": "06.jpg",
+        "url": "https://images.steamusercontent.com/ugc/15635122434027558454/E1F1D1E59DC806F3A58BC204CDACF40430E96A13/",
+        "http_status": 200,
+        "size": 741549,
+        "sha256": "d1eba34145a11d370290580e3083c38ee1c78d4988a9cef05a8b19dbe0fd6dcd",
+        "dimensions": [
+          2560,
+          1440
+        ],
+        "exact_source_bytes": true,
+        "expected_source_sha256": "d1eba34145a11d370290580e3083c38ee1c78d4988a9cef05a8b19dbe0fd6dcd",
+        "valid": true
+      }
+    ],
+    "all_six_exact": true,
+    "duplicate_image_bodies_stored": false,
+    "retained_source_folder": "C:\\workspace\\rrf-development-20261024\\publication-a01\\media"
+  },
+  "public_cover_evidence": {
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-25T08:31:59.769666+00:00",
+    "url": "https://images.steamusercontent.com/ugc/9641755177836063252/A799A5A09D250A457D78434D50B70354D3A27195/",
+    "http_status": 200,
+    "public_size": 696215,
+    "dimensions": [
+      512,
+      512
+    ],
+    "format": "PNG",
+    "sha256": "1f6b9353d4df99eb5e34a2482aef561731d2df75976a36ffa2a01f7f95f5d5ba",
+    "source_sha256": "1f6b9353d4df99eb5e34a2482aef561731d2df75976a36ffa2a01f7f95f5d5ba",
+    "source_bytes_exact": true
+  },
+  "offline_probe": {
+    "schema": "xar.steam-offline-state-probe/v2",
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-25T08:25:11.470427+00:00",
+    "nonce": "38440b35970b7d13d0cc0ebaec5849f6",
+    "reason": "observed",
+    "steam": {
+      "pid": 26192,
+      "birth_filetime": "134373902961232097",
+      "exe": "C:\\Program Files (x86)\\Steam\\steam.exe",
+      "file_version": "11.15.70.27"
+    },
+    "source": {
+      "path": "C:\\Program Files (x86)\\Steam\\SteamUI.dll",
+      "bytes": 19452568,
+      "sha256": "cd9226db4e6c28942df70c22c0475d91fdd62cba5f100baae2d65af57cabb610",
+      "file_id": "1407374884294686",
+      "mtime_ns": "1792620918000000000"
+    },
+    "endpoint": null,
+    "diagnostics": [],
+    "observation_method": "native_current_user_byte",
+    "native_evidence": {
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-25T08:25:11.470427+00:00",
+      "nonce": "38440b35970b7d13d0cc0ebaec5849f6",
+      "module_base": "140724898955264",
+      "module_size": 19730432,
+      "value_rva": "18435783",
+      "value_address": "140724917391047",
+      "producer_rva": "6548332",
+      "producer_anchor_hex": "440fb6055363b500488d155da67700488bcbe80d713d00",
+      "producer_anchor_sha256": "16316f5b39bac43273fac08a65f62c45af1d41938ce2d13d830ab16e1474966a",
+      "raw_samples": [
+        1,
+        1
+      ],
+      "steam_before": {
+        "pid": 26192,
+        "birth_filetime": "134373902961232097",
+        "exe": "C:\\Program Files (x86)\\Steam\\steam.exe",
+        "file_version": "11.15.70.27"
+      },
+      "steam_after": {
+        "pid": 26192,
+        "birth_filetime": "134373902961232097",
+        "exe": "C:\\Program Files (x86)\\Steam\\steam.exe",
+        "file_version": "11.15.70.27"
+      },
+      "source_before": {
+        "path": "C:\\Program Files (x86)\\Steam\\SteamUI.dll",
+        "bytes": 19452568,
+        "sha256": "cd9226db4e6c28942df70c22c0475d91fdd62cba5f100baae2d65af57cabb610",
+        "file_id": "1407374884294686",
+        "mtime_ns": "1792620918000000000"
+      },
+      "source_after": {
+        "path": "C:\\Program Files (x86)\\Steam\\SteamUI.dll",
+        "bytes": 19452568,
+        "sha256": "cd9226db4e6c28942df70c22c0475d91fdd62cba5f100baae2d65af57cabb610",
+        "file_id": "1407374884294686",
+        "mtime_ns": "1792620918000000000"
+      },
+      "tray_manager_pointer_rva": "18428640",
+      "tray_manager_address": "2778795679872",
+      "tray_state_offset": "340",
+      "tray_state_samples": [
+        4,
+        4
+      ]
+    },
+    "status": "offline",
+    "offline_mode": true
+  },
+  "actual_cache_download_complete": false,
+  "actual_cache_load_complete": false,
+  "release_closure_complete": false,
+  "pending": [
+    "actual SDK cache download blocked by old app-wide download directory denial",
+    "actual shared menu-only cache load",
+    "public compatible-version sidebar HTML readback",
+    "successor CI and permanent final release closure"
+  ],
+  "pins": [
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-a01\\public-update.completed.frozen.json",
+      "bytes": 2163,
+      "sha256": "909edc98381ac10cb72daae65da27084557049bcd1ea56ce3bffbb74febf2180"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-a01\\public-readback-after-submit-a02\\public_item_api_raw.json",
+      "bytes": 3911,
+      "sha256": "c69de0a14aa950a2d41808fc965784e4bc67f31d47b61f1a0979de473bd6fad9"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-a01\\public-readback-after-submit-a02\\public_changelog_raw.html",
+      "bytes": 52272,
+      "sha256": "16686d11555e2927ff73eb0d1cc54185dcd721cb8fcf26b410186e6ad04afc8b"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-a01\\PREVIEWS.after-public-submit.actual.json",
+      "bytes": 1141,
+      "sha256": "8b8d20728eb2bfc8a5296317dc31d7560f394ee6286f91cd0b6fcf00cdb52bfa"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-a01\\PUBLIC-SIX-IMAGES.actual.json",
+      "bytes": 3447,
+      "sha256": "3341be3e2cc8d5f3006e3871c99add8ce139a9b9c1e3e2e8cad9a9c344a21c9a"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-a01\\PUBLIC-COVER.actual.json",
+      "bytes": 509,
+      "sha256": "cf32b5a013603af00c4579047da144e1302b91d057fa3b30b7fe136e07a2b394"
+    }
+  ],
+  "public_compatibility_sidebar": {
+    "observed_at_utc": "2026-10-25T09:01:17.974804+00:00",
+    "http_status": 200,
+    "version": "1.20 'Crozier'",
+    "right_sidebar_exact": true,
+    "raw_html_sha256": "b74274836f9bb6b97e945548260466dbd28c5b3daf783a7de5fb2f50c93996f2",
+    "raw_html_size": 69680,
+    "raw_html_path": "C:\\workspace\\rrf-development-20261024\\publication-a01\\PUBLIC-DETAILS.raw.html"
+  }
+}
