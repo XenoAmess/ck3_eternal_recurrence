@@ -1,0 +1,55 @@
+name: Prisoner Selected Source Contract
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'ck3_autonomous_player/native_bridge/**'
+      - 'ck3_autonomous_player/src/xar_autoplayer/bridge/prisoner*'
+      - 'ck3_autonomous_player/src/xar_autoplayer/bridge/player_prisoner_collection_private_transport.py'
+      - 'ck3_autonomous_player/tests/prisoner_selected_quote_source_wire_first.py'
+      - '.github/workflows/prisoner-selected-source.yml'
+  pull_request:
+    paths:
+      - 'ck3_autonomous_player/native_bridge/**'
+      - 'ck3_autonomous_player/src/xar_autoplayer/bridge/prisoner*'
+      - 'ck3_autonomous_player/src/xar_autoplayer/bridge/player_prisoner_collection_private_transport.py'
+      - 'ck3_autonomous_player/tests/prisoner_selected_quote_source_wire_first.py'
+      - '.github/workflows/prisoner-selected-source.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-wire:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: cmd
+        working-directory: ck3_autonomous_player
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONUTF8: '1'
+      PYTHONPATH: ${{ github.workspace }}/ck3_autonomous_player/src
+      GIT_CONFIG_COUNT: '1'
+      GIT_CONFIG_KEY_0: core.longpaths
+      GIT_CONFIG_VALUE_0: 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.14'
+      - name: Install shared SDK test dependencies
+        run: python -m pip install mcp==2.0.0 pydantic==2.13.5 opencv-python==5.0.0.93 numpy==2.5.2 Pillow==12.3.0 psutil==7.2.2
+      - name: Build and consume the actual selected source wire
+        run: |
+          python -B -X utf8 ../tools/run_native_msvc.py --build-dir "%RUNNER_TEMP%\prisoner-source-native" --configuration Release --jobs 3 --configure --build --target xar_prisoner_selected_quote_source_12004_test ck3_12003_prisoner_negotiated_preview_test --cmake-define BUILD_TESTING=ON
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          "%RUNNER_TEMP%\prisoner-source-native\xar_prisoner_selected_quote_source_12004_test.exe" --prisoner-selected-quote-source-wire-repair-12004 > "%RUNNER_TEMP%\prisoner-source-wire.stdout.txt"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tests/prisoner_selected_quote_source_wire_first.py --native-stdout "%RUNNER_TEMP%\prisoner-source-wire.stdout.txt" --result "%RUNNER_TEMP%\prisoner-source-wire.result.json"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          ctest --test-dir "%RUNNER_TEMP%\prisoner-source-native" -C Release -R "^(xar_prisoner_selected_quote_source_12004_test|ck3_12003_prisoner_negotiated_preview_test)$" --output-on-failure --no-tests=error
+          if not "%errorlevel%"=="0" exit /b %errorlevel%

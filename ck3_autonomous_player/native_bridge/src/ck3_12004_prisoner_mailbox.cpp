@@ -195,7 +195,9 @@ bool ExecutePlayerPrisonerCollection12004(void *opaque,
     if (query.ordinal < query.collection.returned_count) {
       const auto prisoner = query.collection.rows[query.ordinal].full_character_id;
       PrisonerQuoteSourceFrame12004 source_frame{};
-      source_frame.executable_sha256 = kExecutableSha256;
+      if (envelope->game)
+        (void)BindPrisonerQuoteSourceExecutable12004(
+            source_frame, envelope->game->descriptor().executable_sha256);
       source_frame.module_base = query.module;
       source_frame.native_revision = query.collection.frame.native_revision;
       source_frame.query_sequence = query.source_query_sequence;

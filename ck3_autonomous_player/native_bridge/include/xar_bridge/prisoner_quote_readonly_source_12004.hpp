@@ -5,6 +5,7 @@
 #include <limits>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #define XAR_HAS_PRISONER_QUOTE_READONLY_SOURCE_12004 1
@@ -36,6 +37,23 @@ struct PrisonerQuoteSourceFrame12004 {
   friend bool operator==(const PrisonerQuoteSourceFrame12004 &,
                          const PrisonerQuoteSourceFrame12004 &) = default;
 };
+// The game descriptor admits this exact hash using hexadecimal identity. The
+// selected-source wire contract uses its canonical lowercase representation.
+// Validate the supplied identity before writing; an unknown build stays unbound.
+inline bool BindPrisonerQuoteSourceExecutable12004(
+    PrisonerQuoteSourceFrame12004 &frame, std::string_view admitted_sha256) {
+  frame.executable_sha256.clear();
+  constexpr std::string_view expected{kPrisonerQuoteSourceExecutableSha25612004};
+  if (admitted_sha256.size() != expected.size()) return false;
+  for (std::size_t index = 0; index < expected.size(); ++index) {
+    const char input = admitted_sha256[index];
+    const char canonical = input >= 'A' && input <= 'F'
+        ? static_cast<char>(input + ('a' - 'A')) : input;
+    if (canonical != expected[index]) return false;
+  }
+  frame.executable_sha256.assign(expected);
+  return true;
+}
 inline bool PrisonerQuoteSourceFrameReady12004(const PrisonerQuoteSourceFrame12004 &frame) noexcept {
   return frame.executable_sha256 == kPrisonerQuoteSourceExecutableSha25612004 &&
       frame.module_base != 0 && frame.native_revision != 0 && frame.query_sequence != 0 &&

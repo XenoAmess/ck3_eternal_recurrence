@@ -1,5 +1,6 @@
 #include "xar_bridge/prisoner_selected_quote_query_capture_12004.hpp"
 #include "xar_bridge/ck3_12004_prisoner_collection_result.hpp"
+#include "xar_bridge/ck3_12004.hpp"
 #include <cstring>
 #include <iostream>
 #include <stdexcept>
@@ -56,8 +57,9 @@ struct Graph {
     Put(vtable, 0x30, std::uintptr_t{0x72000000});
     rows.fill(reinterpret_cast<std::uintptr_t>(modifier.data()));
   }
-  PrisonerQuoteSourceFrame12004 Seed() const {
-    PrisonerQuoteSourceFrame12004 f{}; f.executable_sha256 = kPrisonerQuoteSourceExecutableSha25612004;
+  PrisonerQuoteSourceFrame12004 Seed(std::string_view executable_sha256 = kExecutableSha256) const {
+    PrisonerQuoteSourceFrame12004 f{};
+    Check(BindPrisonerQuoteSourceExecutable12004(f, executable_sha256), "shared mailbox seed build binding");
     f.module_base = 0x10000000; f.native_revision = 17; f.query_sequence = 23; f.proof_epoch = 29;
     f.date_raw = std::int32_t{0}; f.jailer_full_id = std::uint32_t{0x41000001}; f.prisoner_full_id = std::uint32_t{0x41000002};
     f.same_frame_confirmed = true; return f;
@@ -81,6 +83,25 @@ struct Graph {
 };
 Graph *original_graph = nullptr;
 std::string cost_wire;
+void CheckExecutableBinding() {
+  Graph graph{};
+  for (const std::string_view sha : {std::string_view{kExecutableSha256},
+      std::string_view{kPrisonerQuoteSourceExecutableSha25612004},
+      std::string_view{"98702f88A547cDe2eAf29a85F93b85F68ee4Cf8148336A4f7aFaeb75319DD518"}}) {
+    Check(graph.Seed(sha).executable_sha256 == kPrisonerQuoteSourceExecutableSha25612004,
+        "known admitted build canonicalized");
+  }
+  const std::string valid{kExecutableSha256};
+  auto wrong = valid; wrong[0] = '0';
+  auto nonhex = valid; nonhex[0] = 'g';
+  auto nonascii = valid; nonascii[0] = static_cast<char>(0xE9);
+  auto nul = valid; nul[0] = '\0';
+  for (const auto &sha : {std::string{}, valid.substr(1), valid + "0", wrong, nonhex, nonascii, nul}) {
+    auto frame = graph.Seed();
+    Check(!BindPrisonerQuoteSourceExecutable12004(frame, sha) && frame.executable_sha256.empty() &&
+        !PrisonerQuoteSourceFrameReady12004(frame), "unknown or malformed build remains unbound");
+  }
+}
 std::int64_t *OriginalScore(void *context, std::int64_t *output) {
   auto &g = *original_graph; ++g.calls; g.seen_context = context; g.seen_output = output;
   *output = -123456; return g.wrong_return ? output + 1 : output;
@@ -144,6 +165,7 @@ std::string RunRemainingWire() {
 int main(int argc, char **argv) {
   if (argc != 2 || std::string_view(argv[1]) != "--prisoner-selected-quote-source-wire-repair-12004") return 64;
   try {
+    CheckExecutableBinding();
     const auto wire = RunRemainingWire();
     std::cout << "SOURCE_WIRE_BEGIN\n" << wire << "\nSOURCE_WIRE_END\n";
     std::cout << "SOURCE_COST_BEGIN\n" << cost_wire << "\nSOURCE_COST_END\n";
