@@ -462,6 +462,71 @@ final class CiBootstrapTest {
         assertEquals("original child deadline", failure.getMessage());
     }
 
+    @Test
+    void scratchTraversalDenialRetriesActualWalkerWithFreshAccounting(@TempDir Path temporary) throws Exception {
+        Path sibling = guardedFile(temporary, "scratch");
+        Path directory = Files.createDirectories(sibling.getParent().resolve("baseline/governance-policy"));
+        Path nested = directory.resolve("pom.xml"); Files.writeString(nested, "actual nested file");
+        AtomicInteger walks = new AtomicInteger(), siblingReads = new AtomicInteger(), nestedReads = new AtomicInteger();
+        CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(10), () -> {}, path -> {
+            BasicFileAttributes actual = attributes(path);
+            if (path.equals(sibling)) {
+                siblingReads.incrementAndGet();
+                // Two partial-pass charges would exceed the real 512 MiB scratch limit.
+                return new SizedAttributes(actual, 300L << 20);
+            }
+            if (path.equals(nested)) nestedReads.incrementAndGet();
+            return actual;
+        }, (part, visitor) -> {
+            if (part.equals(sibling.getParent()) && walks.incrementAndGet() == 1) {
+                visitor.preVisitDirectory(part, attributes(part));
+                Files.walkFileTree(sibling, visitor);
+                visitor.visitFileFailed(directory, new AccessDeniedException(directory.toString()));
+            } else Files.walkFileTree(part, visitor);
+        });
+        assertEquals(2, walks.get());
+        assertEquals(2, siblingReads.get());
+        assertEquals(1, nestedReads.get());
+        assertEquals("actual nested file", Files.readString(nested));
+    }
+
+    @Test
+    void scratchTraversalRetryStillRejectsSurvivingOversizeFile(@TempDir Path temporary) throws Exception {
+        Path sibling = guardedFile(temporary, "scratch");
+        Path directory = Files.createDirectories(sibling.getParent().resolve("baseline/governance-policy"));
+        AtomicInteger walks = new AtomicInteger();
+        IOException failure = assertThrows(IOException.class, () -> CiBootstrap.guard(temporary, Map.of(),
+                Instant.now().plusSeconds(10), () -> {}, path -> {
+                    BasicFileAttributes actual = attributes(path);
+                    return path.equals(sibling) ? new SizedAttributes(actual, (512L << 20) + 1) : actual;
+                }, (part, visitor) -> {
+                    if (part.equals(sibling.getParent()) && walks.incrementAndGet() == 1) {
+                        visitor.visitFileFailed(directory, new AccessDeniedException(directory.toString()));
+                    } else Files.walkFileTree(part, visitor);
+                }));
+        assertEquals("task part budget exceeded: scratch", failure.getMessage());
+        assertEquals(2, walks.get());
+        assertTrue(Files.isRegularFile(sibling));
+    }
+
+    @Test
+    void persistentScratchTraversalDenialRemainsFatalAfterFourWalks(@TempDir Path temporary) throws Exception {
+        Path sibling = guardedFile(temporary, "scratch");
+        Path directory = Files.createDirectories(sibling.getParent().resolve("baseline/governance-policy"));
+        AccessDeniedException denied = new AccessDeniedException(directory.toString());
+        AtomicInteger walks = new AtomicInteger();
+        IOException failure = assertThrows(AccessDeniedException.class, () -> CiBootstrap.guard(temporary, Map.of(),
+                Instant.now().plusSeconds(10), () -> {}, CiBootstrapTest::attributes, (part, visitor) -> {
+                    if (part.equals(sibling.getParent())) {
+                        walks.incrementAndGet();
+                        visitor.postVisitDirectory(directory, denied);
+                    } else Files.walkFileTree(part, visitor);
+                }));
+        assertEquals(denied, failure);
+        assertEquals(4, walks.get());
+        assertTrue(Files.isDirectory(directory));
+    }
+
     private static CiBootstrap.TreeWalker removeBeforeTraversal(Path vanished) {
         return (part, visitor) -> {
             if (!part.equals(vanished.getParent())) {

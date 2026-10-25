@@ -21,4 +21,14 @@
 
 原 CI profile 要求真实 isolated hosted runner、非系统卷工作根和其版本化配额；这些守卫没有修改，本机没有伪装 hosted 环境。本地通过范围仅为完整 build-tools bootstrap 子阶段。完整第 43 步以及后续流程须由新 exact commit 的真实云端结果确认。
 
+## 2026-10-26：临时目录遍历拒绝访问
+
+本段观察机器为`machine_id: 4-8e1c2f1861`。原`4e584e`官方run40221657946的step44在bootstrap扫描`scratch/baseline/governance-policy`时抛`AccessDeniedException`；完整reactor／HTTP尚未执行。原artifact没有内部stack，不能确认具体触发回调。确定性回归另证实：现有属性读取重试没有覆盖`visitFileFailed`／`postVisitDirectory`的目录遍历失败分支。
+
+生产扫描现在仅对scratch的这类遍历拒绝进行最多四次完整分项遍历，每遍重新计算字节数，避免重复累计已扫描文件。必须实际完成遍历；持续拒绝、真实超限、期限和中断仍失败，既有属性读取重试次数保持。三个新回归在旧实现上实际得到2 failure／1 error；修复后的完整`CiBootstrapTest`45项通过。
+
+本机完整build-tools `verify`实际原wait1：636项中626通过、9 failure、1 error、0 skipped。两项明确要求JDK21而当前为Java25.0.4.1；另有原生线程／G1分配失败、三项Job峰值超限、两项已失去原stderr正文的长度断言，以及原因未确认的PID就绪超时。没有把所有失败归因于JDK版本。本机有界查找未发现JDK21，没有引用上文另一机器的BellSoft安装，也未下载依赖或放宽断言。默认Maven仍为3.10.0。
+
+本段只交付已复现分支的最小修复与45项修改范围通过，不声称完整模块或官方step通过。[本轮原始回执索引](evidence/java-ci-scratch-traversal-2026-10-26.json)保留逐项失败、源码前后身份、旧实现RED及所有原wait；对应JDK21官方结果仍须独立回读。
+
 本机证据入口为 `C:/ck3-dynastic-esotericism-20261024/ci-1cdf30-a01/FINAL.actual.json` 和 `C:/ck3-dynastic-esotericism-20261024/official-java-step43-red-a01/FINAL.actual.json`；后者索引原始 ZIP、保真 XML、两次本地结果、实际命令、源码指纹、容量卡与工具来源。临时目录、M2 和 targets 均在 C 盘；最新 r1170 容量检查通过，新 verify 输出峰值 18,567,168 B，低于 128 MiB 限额。必要证据用途复核日期为 `2026-10-31`。

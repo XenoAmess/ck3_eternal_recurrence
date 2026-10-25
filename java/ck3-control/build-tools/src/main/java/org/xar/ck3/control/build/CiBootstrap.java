@@ -1017,8 +1017,9 @@ public final class CiBootstrap {
             long limit = PARTS.get(name.equals("logs") ? "metadata_logs" : name);
             // JUnit removes scratch entries and Maven retires update/checksum/download temporaries.
             // Handle only their actual disappearance, preserving every surviving sibling.
-            walker.walk(part, new SimpleFileVisitor<>() {
+            class BudgetVisitor extends SimpleFileVisitor<Path> {
                 private long size;
+                private boolean traversalDenied;
                 @Override public FileVisitResult preVisitDirectory(Path directory, BasicFileAttributes attributes) throws IOException {
                     return inspect(directory) ? FileVisitResult.CONTINUE : FileVisitResult.SKIP_SUBTREE;
                 }
@@ -1037,6 +1038,7 @@ public final class CiBootstrap {
                     boolean mavenTemporary = name.equals("m2") && mavenTransientRepositoryFile(path);
                     if (!path.equals(part) && path.startsWith(part) && (scratch || mavenTemporary)
                             && error instanceof NoSuchFileException) return FileVisitResult.CONTINUE;
+                    if (scratch && error instanceof AccessDeniedException) traversalDenied = true;
                     throw error;
                 }
                 private boolean inspect(Path path) throws IOException {
@@ -1052,7 +1054,19 @@ public final class CiBootstrap {
                         failed(path, removedTemporary); return false;
                     }
                 }
-            });
+            }
+            for (int attempt = 0; ; attempt++) {
+                BudgetVisitor visitor = new BudgetVisitor();
+                try {
+                    walker.walk(part, visitor);
+                    break;
+                } catch (AccessDeniedException denied) {
+                    // A Windows delete-pending directory can fail enumeration before
+                    // inspect() runs. Retry that traversal with fresh byte accounting.
+                    if (!scratch || !visitor.traversalDenied || attempt == 3) throw denied;
+                    pauseScratchMetadataRetry(active);
+                }
+            }
         }
     }
 
@@ -1088,13 +1102,17 @@ public final class CiBootstrap {
             try { return operation.read(); }
             catch (AccessDeniedException denied) {
                 if (!scratch || attempt == 3) throw denied;
-                active.check();
-                try { Thread.sleep(25); }
-                catch (InterruptedException interrupted) {
-                    Thread.currentThread().interrupt();
-                    throw new InterruptedIOException("scratch metadata retry interrupted");
-                }
+                pauseScratchMetadataRetry(active);
             }
+        }
+    }
+
+    private static void pauseScratchMetadataRetry(IoGuard active) throws IOException {
+        active.check();
+        try { Thread.sleep(25); }
+        catch (InterruptedException interrupted) {
+            Thread.currentThread().interrupt();
+            throw new InterruptedIOException("scratch metadata retry interrupted");
         }
     }
 

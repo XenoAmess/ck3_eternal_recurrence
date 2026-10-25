@@ -1,0 +1,52 @@
+{
+  "schema": "java-ci-scratch-traversal-repair-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-25T20:00:55.091153+00:00",
+  "execution": {
+    "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\zh-live-a01\\metadata\\product-validation-a12\\ci-fix\\EXECUTION.ci-fix-a02.actual.json",
+    "bytes": 15873,
+    "sha256": "c86fb3cf4635818ca10b5de7eac87355dcaaa7bd44ccb17535651f7c624e18d8"
+  },
+  "diagnosis": {
+    "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\zh-live-a01\\metadata\\product-validation-a12\\ci-fix\\FAILURE-ANALYSIS.txt",
+    "bytes": 5141,
+    "sha256": "361f8aaabfb39beac0cffc901c8e872f1f5e28612eba9841165d5b91e243f651"
+  },
+  "expected_red": {
+    "tests": 3,
+    "failures": 2,
+    "errors": 1,
+    "skipped": 0,
+    "original_wait_returncode": 1
+  },
+  "modified_suite": {
+    "tests": 45,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "complete_module": {
+    "tests": 636,
+    "passed": 626,
+    "failures": 9,
+    "errors": 1,
+    "skipped": 0,
+    "original_wait_returncode": 1
+  },
+  "runtime": {
+    "java": "25.0.4.1",
+    "maven": "3.10.0",
+    "jdk21_local": "not found in bounded installed-dependency search; no download"
+  },
+  "original_official_failure": {
+    "run": "40221657946",
+    "job": "121254323890",
+    "step": 44,
+    "error": "AccessDeniedException in bootstrap storage guard for scratch baseline/governance-policy",
+    "full_stack_available": false,
+    "exact_callback": "not proven by original artifact"
+  },
+  "fix_scope": "Retry scratch traversal AccessDenied at most four whole-part traversals, with fresh byte accounting. Metadata retries retain their previous limit. Persistent denial, real budget failures and deadlines remain errors.",
+  "official_jdk21_full_step": "NOT_RUN_FOR_THIS_CANDIDATE",
+  "live_business_qualified": false
+}
