@@ -645,6 +645,9 @@ class Selection:
                 self.normal_quit_automation[key] = {**row, "path": str(path)}
         if self.prepared_path:
             self.required_pins.append((self.prepared_path, pin(self.prepared_path)))
+            from ck3_mod_acceptance_prepare import compatibility_mod_source_pins
+            for reference in compatibility_mod_source_pins(self.prepared.get('case_inputs', {})):
+                self.required_pins.append((Path(reference['path']), dict(reference)))
         self.adapter_path: Path | None = None
         self.adapter_config: Path | None = None
         adapter = self.case.get('adapter')

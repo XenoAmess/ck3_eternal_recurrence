@@ -279,6 +279,7 @@ def resolve_post_start(context):
 def _saved_fixture_startup(context: JsonObject, profile: JsonObject) -> JsonObject:
     """Bind an explicit saved input to the existing role-bound shared inventory."""
     from ck3_mod_acceptance_saved_profile_v2 import write_saved_profile_inventory_v2
+    from ck3_mod_acceptance_prepare import fixture_enabled_mods
     saved = object_field(context, 'saved_campaign')
     if set(saved) != {'save', 'bytes', 'sha256', 'player_id', 'date_raw'}:
         raise ValueError('Saved fixture input requires exactly save/bytes/sha256/player_id/date_raw')
@@ -296,23 +297,30 @@ def _saved_fixture_startup(context: JsonObject, profile: JsonObject) -> JsonObje
     files = object_field(profile, 'files')
     product_files = [file_pin(row) for relative, row in files.items()
                      if relative.startswith(('mod/', 'mod-content/'))]
+    enabled = fixture_enabled_mods(profile_path)
+    from ck3_mod_acceptance_saved_profile_v2 import Role
+    roles: dict[str, Role] = {descriptor: ('case_fixture' if descriptor == 'mod/fixture.mod' else 'formal_product')
+                                 for descriptor in enabled}
     inventory = write_saved_profile_inventory_v2(Path(text_field(context, 'output')) / 'saved-fixture-inventory-v2.json',
-        profile=profile_path, mode='enabled', enabled_mods=['mod/product.mod', 'mod/fixture.mod'],
-        product_files=product_files, roles={'mod/product.mod': 'formal_product', 'mod/fixture.mod': 'case_fixture'})
+        profile=profile_path, mode='enabled', enabled_mods=enabled,
+        product_files=product_files, roles=roles)
     return json_object({'mode': 'saved_campaign', 'state_dir': text_field(context, 'state_dir'),
         'saved_campaign': {**saved, 'product_inventory': inventory['path']}})
 
 
 def _prepare_fixture_case(context):
-    from ck3_mod_acceptance_prepare import invoke_fixture_prepare, materialize_fixture_profile
+    from ck3_mod_acceptance_prepare import (invoke_fixture_prepare, materialize_fixture_profile,
+                                           compatibility_mods, compatibility_mods_json)
     context = resolve_post_start(context)
     config = context['case_contract']
     require(config['product'] == context['product'], 'Case crossed canonical product')
     inputs = context['case_inputs']
+    compatibility = compatibility_mods(inputs)
     product_loading = config.get('product_loading', 'present')
     require(product_loading in ('present', 'absent'), 'Explicit product loading mode required')
     if product_loading == 'absent':
         require(inputs.get('product_dir') is None, 'Pre-product case cannot mount a formal product')
+        require(not compatibility, 'Pre-product case cannot mount compatibility mods')
         product = None
     else:
         product = Path(inputs['product_dir']).resolve()
@@ -366,9 +374,13 @@ def _prepare_fixture_case(context):
         'original_receipt': receipt, 'assertion_source_pins': source_pins,
         'emitter': emitted, 'product_descriptor': pin(product / 'descriptor.mod') if product is not None else None,
         'whole_product_release_pass': False,
+        'compatibility_mods': compatibility_mods_json(compatibility),
+        'enabled_mods': (['mod/' + mod.mount_name + '.mod' for mod in compatibility]
+                         + (['mod/product.mod'] if product is not None else []) + ['mod/fixture.mod']),
     }
     write_once(fixture / '_case_contract.json', compiled)
-    profile = materialize_fixture_profile(context, fixture, product, inputs['plain_configuration'])
+    profile = materialize_fixture_profile(context, fixture, product, inputs['plain_configuration'],
+                                          compatibility=compatibility)
     initial = output / 'initial-plan.json'
     write_once(initial, {'steps': []})
     startup: JsonObject = {'mode': 'fixture', 'state_dir': profile['state_dir'],
@@ -521,6 +533,10 @@ def _run_fixture_case(context, client):
         if not isinstance(descriptor, str) or not descriptor:
             raise ValueError('Actual enabled_mods must contain nonempty descriptor paths')
         enabled.append(descriptor)
+    expected_enabled = compiled.get('enabled_mods',
+        ['mod/fixture.mod'] if config.get('product_loading', 'present') == 'absent'
+        else ['mod/product.mod', 'mod/fixture.mod'])
+    require(enabled == expected_enabled, 'Actual independent mod load order differs from the prepared contract')
     if config.get('product_loading', 'present') == 'absent':
         require('mod/product.mod' not in enabled and not (profile / 'mod/product.mod').exists()
                 and not (profile / 'mod-content/product').exists(), 'Pre-product campaign unexpectedly mounted a product')

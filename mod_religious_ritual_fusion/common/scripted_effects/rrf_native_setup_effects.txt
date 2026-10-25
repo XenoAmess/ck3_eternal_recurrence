@@ -16,25 +16,47 @@ rrf_begin_native_setup_effect = {
 
 rrf_mark_native_apply_effect = {
     if = {
-        limit = { rrf_native_setup_permission_trigger = yes }
+        limit = { rrf_native_apply_target_trigger = yes }
         # This means the native confirmation was requested, not that Edit ran.
         # The model's own confirmation/cancel path remains authoritative.
         add_character_flag = rrf_native_apply_requested
     }
 }
 
+# Closing the editor never removes a waiver needed by an accepted, queued native
+# command. Native confirmation may also have been declined; neither means done.
+rrf_defer_native_setup_effect = {
+    if = {
+        limit = { rrf_native_setup_target_trigger = yes has_character_flag = rrf_native_setup_active }
+        remove_character_flag = rrf_native_open_requested
+        add_character_flag = rrf_result_dialog
+    }
+}
+
 rrf_finish_native_setup_effect = {
     if = {
         limit = { rrf_native_setup_target_trigger = yes }
-        var:rrf_last_result_rite = {
-            set_variable = { name = rrf_native_configuration_complete value = yes }
+        rrf_validate_final_configuration_effect = yes
+        if = {
+            limit = { NOT = { has_character_flag = rrf_final_configuration_invalid } }
+            var:rrf_last_result_rite = {
+                set_variable = { name = rrf_native_configuration_complete value = yes }
+            }
+            remove_character_modifier = rrf_native_setup_cost_waiver
+            remove_character_flag = rrf_native_setup_active
+            remove_character_flag = rrf_native_open_requested
+            remove_character_flag = rrf_native_apply_requested
+            add_character_flag = rrf_result_dialog
+            rrf_refresh_vassal_conversion_preview_effect = yes
         }
-        remove_character_modifier = rrf_native_setup_cost_waiver
-        remove_character_flag = rrf_native_setup_active
-        remove_character_flag = rrf_native_open_requested
-        remove_character_flag = rrf_native_apply_requested
-        add_character_flag = rrf_result_dialog
-        rrf_refresh_vassal_conversion_preview_effect = yes
+        else = {
+            add_character_flag = rrf_result_dialog
+            send_interface_toast = {
+                title = RRF_FINAL_CONFIGURATION_INVALID
+                left_icon = root
+                custom_tooltip = RRF_FINAL_CONFIGURATION_INVALID_DESC
+            }
+        }
     }
 }
 

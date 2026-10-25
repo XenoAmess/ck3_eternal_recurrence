@@ -46,6 +46,7 @@ rrf_record_result_effect = {
             add_to_variable_list = { name = rrf_origin_doctrines target = scope:rrf_item }
         }
     }
+    rrf_record_final_configuration_contract_effect = yes
 }
 
 rrf_mark_unresolved_effect = {

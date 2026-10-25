@@ -34,6 +34,13 @@ window = {
 			}
 		}
 		text_multi = { text = "RRF_RESULT_COMPLETE_GUIDANCE" max_width = 1200 autoresize = yes }
+		text_multi = {
+			visible = "[GetScriptedGui( 'rrf_final_configuration_invalid_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			text = "RRF_FINAL_CONFIGURATION_INVALID_DESC"
+			max_width = 1200
+			autoresize = yes
+			default_format = "#N"
+		}
 		hbox = {
 			layoutpolicy_horizontal = expanding
 			layoutpolicy_vertical = expanding

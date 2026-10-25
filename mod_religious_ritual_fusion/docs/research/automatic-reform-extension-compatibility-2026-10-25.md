@@ -190,3 +190,43 @@ Root 需将两份新载荷纳入 RRF 清单并统一接 ScriptedGUI、结果页�
 | RRF `common/scripted_triggers/rrf_conversion_triggers.txt` | 3046 | `63a362200a1cb5ee605bdbf62884b56ac1bcfb03617d170999d070b9e36d70e0` |
 | RRF `tools/src/test/java/org/xar/ck3/rrf/OptionalReformAndConversionTest.java` | 26470 | `b4a7eee3f793961bf3ecc4800be41ca4398c240a38372ec429a328b52368ea85` |
 
+## 独立兼容模组验收载入合同（2026-10-25 追加）
+
+`machine_id: 4-8e1c2f1861`；观察时间 `2026-10-25T11:24:51Z`。本节是代码与隔离文件系统回归的结果，不是 CK3 联合实机通过。此前只支持 product／fixture 的共享 prepare 已修改；不能把 MTS／DES 的内容合入 fixture 后声称完成三个独立模组的兼容验收。
+
+新 Java／Quarkus 命令为 `compatibility-mods --inputs REQUEST.json --output NEW_DIRECTORY`。请求字段固定为：
+
+```json
+{
+  "schema_version": 1,
+  "machine_id": "4-8e1c2f1861",
+  "mods": [
+    {
+      "key": "slots",
+      "directory": "ABSOLUTE_CANONICAL_FORMAL_STAGING",
+      "source_manifest": {"path": "ABSOLUTE_RELEASE_MANIFEST", "bytes": 123, "sha256": "64_LOWERCASE_HEX"}
+    }
+  ]
+}
+```
+
+占位字符串仅说明字段，不能作为实际请求。每个 source manifest 必须位于载荷树外，包含完整 `files` 数组；数组每行严格为 `path`、`sha256`、`bytes` 或 `size` 三项。路径必须是规范相对路径，字节数必须是非负整数，拒绝布尔、浮点、重复路径以及符号链接／联接。实际文件集合和每个文件长度、SHA 必须与 manifest 完全一致，包括 `descriptor.mod`。当前合同明确支持仓库 Java release 的 `size` 和 MTS v11 的 `bytes` 拼写；不把未知 manifest 格式猜成已核验来源。
+
+输出 `compatibility-mods.json` 保存机器、时间、未启动游戏／未评估业务状态，以及 `case_inputs.compatibility_mods` 片段。将该片段加入实际 public prepare 的 `case_inputs`；顺序就是显式载入顺序。每行固定为 `key`、`directory`、`source_manifest: FilePin`、`files: {relativePath: FilePin}`。缺席字段保留旧 product／fixture 两模组合同，`null` 拒绝，空数组表示明确没有额外模组。
+
+共享消费链如下：
+
+1. `ck3_mod_acceptance_prepare.compatibility_mods` 校验同一强类型合同、精确来源 manifest 和全部原始载荷，写入前再次校验。
+2. `materialize_fixture_profile` 各自复制至 `mod-content/compat_<key>`，各建独立外层 descriptor；`dlc_load.json` 顺序为 `compat... → product → fixture`。内容不混合、来源树不修改。
+3. generic adapter 把完整顺序和来源合同写进断言合同，运行时要求 `enabled_mods` 顺序完全相同。保存启动清单沿用 SDK v2：每个兼容 mod 与 product 均为 `formal_product`，fixture 为 `case_fixture`；因此 DES 自身合法的启动 hook 不会被误判为夹具业务脚本。
+4. public `Selection` 在 preflight 把原始 manifest 和全部源文件加入 `required_pins`。现有真实 allocator 已把它们和全部复制后 profile 文件共同写入 `frozen-argv.json`，无需新分配器或手改冻结回执。
+5. before-launch restore 只改冻结 `dlc_load.json` 明确列出的安全外层 descriptor 的唯一 `path`，其余字节保持一致；不泛化扫描或改写任意 `.mod`／目录。
+
+这项扩展只授予明确的兼容性 fixture case。普通商店素材 promotion 和 Workshop cache 回读仍是原来的 product-only 合同，不能借新增数组扩大其范围，也不能把 fixture 截图充当普通游玩素材。
+
+本次实际运行完整相关 Python CI 命令组：`test_prebuilt_fixture_prepare`、`test_compatibility_mod_profiles`、`test_ck3_mod_acceptance_adapters`、`test_saved_campaign_profile_inventory_v2`，共 **47 项通过**。新回归包括缺席／空／null、错误类型／字段／路径／重复项、源 manifest 漂移、实际额外文件、四个独立外层 restore，以及真实 public prepare→saved host 原实现→实际 allocator 指纹；机器、进程和 keeper 边界沿用现有隔离回归替身，未启动游戏。
+
+新增 Java `CompatibilityModEmitterTest` 会用实际 Java producer 输出驱动同一 Python public 链，再检查 manifest 序列化往返和 malformed 输入；由 Root 统一 Maven 执行，本节写入时本代理未运行 Maven。持续 CI 已加入相关源／测试触发条件、实际依赖和完整 Python 命令组。严格类型检查精确覆盖八个新增合同 helper 的未修改生产 AST 与新测试模块；存量 prepare／entry／generic adapter 的整模块未声称 strict 全绿。
+
+一期迁移边界核对：共享 prepare／generic adapter 仍属边界外的存量 Python 维护；新增 manifest producer 使用既有 Java／Quarkus 工具，没有新增 Python 生产模块、编排模块或场次专用实现。新合同不增加 SDK projection role，不修改普通缓存回读合同。
+

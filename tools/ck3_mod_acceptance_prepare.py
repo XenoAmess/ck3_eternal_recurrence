@@ -11,11 +11,152 @@ import runpy
 import shutil
 import sys
 from datetime import datetime
+from dataclasses import dataclass
 from typing import Literal, TypedDict
 
 from ck3_mod_acceptance_background_types import FilePin, JsonObject, file_pin, json_object, object_field, text_field
 
 CONFIG_NAMES = ('pdx_settings.txt','tutorial.txt','presets.txt','player/game_rules/presets.txt')
+
+
+@dataclass(frozen=True)
+class CompatibilityMod:
+    """One independent, source-manifest-bound formal mod above the product."""
+    key: str
+    directory: Path
+    source_manifest: FilePin
+    files: dict[str, FilePin]
+
+    @property
+    def mount_name(self) -> str:
+        return 'compat_' + self.key
+
+
+def _compatibility_checked_pin(value: object) -> FilePin:
+    row = json_object(value)
+    if set(row) != {'path', 'bytes', 'sha256'}:
+        raise ValueError('Compatibility mod requires exact FilePin fields')
+    expected = file_pin(row)
+    path = Path(expected['path'])
+    if (not path.is_absolute() or str(path.resolve()) != expected['path']
+            or path.is_symlink() or path.is_junction() or not path.is_file()):
+        raise ValueError('Compatibility file must be an absolute canonical ordinary file')
+    if pin(path) != expected:
+        raise ValueError('Compatibility frozen file changed: ' + expected['path'])
+    return expected
+
+
+def compatibility_mods(case_inputs: object) -> tuple[CompatibilityMod, ...]:
+    """Validate the single optional JSON contract before prepare AND allocation.
+
+    Missing means the historic product/fixture pair; null is never an empty list.
+    Release manifests may spell their integral length ``bytes`` or ``size``;
+    their exact file list must equal every separately pinned source payload.
+    """
+    inputs = json_object(case_inputs)
+    if 'compatibility_mods' not in inputs:
+        return ()
+    values = inputs['compatibility_mods']
+    if not isinstance(values, list) or len(values) > 16:
+        raise ValueError('compatibility_mods must be an explicit bounded array, not null')
+    result: list[CompatibilityMod] = []
+    keys: set[str] = set()
+    manifests: set[str] = set()
+    roots: list[Path] = []
+    for value in values:
+        row = json_object(value)
+        if set(row) != {'key', 'directory', 'source_manifest', 'files'}:
+            raise ValueError('Compatibility mod fields differ')
+        key = text_field(row, 'key')
+        if (re.fullmatch('[a-z][a-z0-9_]{0,47}', key) is None
+                or key in {'product', 'fixture'} or key in keys):
+            raise ValueError('Compatibility mod key must be safe, canonical and unique')
+        keys.add(key)
+        directory = text_field(row, 'directory')
+        root = Path(directory)
+        if (not root.is_absolute() or str(root.resolve()) != directory
+                or not root.is_dir() or root.is_symlink() or root.is_junction()
+                or any(root.is_relative_to(other) or other.is_relative_to(root) for other in roots)):
+            raise ValueError('Compatibility mod requires disjoint canonical ordinary directories')
+        roots.append(root)
+        if file_pin(row['source_manifest'])['bytes'] > 2 * 1024 * 1024:
+            raise ValueError('Compatibility source manifest exceeds its bounded size')
+        source_manifest = _compatibility_checked_pin(row['source_manifest'])
+        if source_manifest['path'] in manifests:
+            raise ValueError('Compatibility source manifest paths repeat')
+        manifests.add(source_manifest['path'])
+        if source_manifest['bytes'] > 2 * 1024 * 1024 or Path(source_manifest['path']).is_relative_to(root):
+            raise ValueError('Compatibility source manifest must be bounded and outside payload')
+        manifest = json_object(json.loads(Path(source_manifest['path']).read_text(encoding='utf-8-sig')))
+        declared_values = manifest.get('files')
+        if not isinstance(declared_values, list) or not 1 <= len(declared_values) <= 4096:
+            raise ValueError('Compatibility source manifest requires its exact bounded files array')
+        manifest_files: dict[str, FilePin] = {}
+        for declared_value in declared_values:
+            declared = json_object(declared_value)
+            if set(declared) not in ({'path', 'bytes', 'sha256'}, {'path', 'size', 'sha256'}):
+                raise ValueError('Compatibility release manifest file fields differ')
+            relative = text_field(declared, 'path')
+            path = root / _prebuilt_relative_path(relative)
+            if relative.casefold() in {name.casefold() for name in manifest_files}:
+                raise ValueError('Compatibility release manifest paths repeat')
+            manifest_files[relative] = file_pin({'path': str(path),
+                'bytes': declared['bytes'] if 'bytes' in declared else declared['size'], 'sha256': declared['sha256']})
+        file_values = object_field(row, 'files')
+        if set(file_values) != set(manifest_files) or 'descriptor.mod' not in file_values:
+            raise ValueError('Compatibility source manifest and payload closure differ')
+        files: dict[str, FilePin] = {}
+        for relative, file_value in file_values.items():
+            _prebuilt_relative_path(relative)
+            expected = _compatibility_checked_pin(file_value)
+            if expected != manifest_files[relative]:
+                raise ValueError('Compatibility file pin differs from its release manifest')
+            files[relative] = expected
+        actual: set[str] = set()
+        for path in root.rglob('*'):
+            if path.is_symlink() or path.is_junction():
+                raise ValueError('Compatibility mod cannot follow filesystem links')
+            if path.is_file():
+                actual.add(path.relative_to(root).as_posix())
+        if actual != set(files):
+            raise ValueError('Compatibility actual payload closure differs')
+        result.append(CompatibilityMod(key, root, source_manifest, files))
+    return tuple(result)
+
+
+def compatibility_mod_source_pins(case_inputs: object) -> list[FilePin]:
+    """Original provenance and payload pins consumed by public preflight freeze."""
+    references: list[FilePin] = []
+    for mod in compatibility_mods(case_inputs):
+        references.append(mod.source_manifest)
+        references.extend(mod.files.values())
+    if len({row['path'] for row in references}) != len(references):
+        raise ValueError('Compatibility source pin paths repeat across mods')
+    return references
+
+
+def compatibility_mods_json(mods: tuple[CompatibilityMod, ...]) -> list[JsonObject]:
+    return [json_object({'key': mod.key, 'directory': str(mod.directory),
+                        'source_manifest': mod.source_manifest, 'files': mod.files}) for mod in mods]
+
+
+def fixture_enabled_mods(profile: Path) -> list[str]:
+    """Read only the exact independent mounts, never a directory wildcard."""
+    row = json_object(json.loads((profile / 'dlc_load.json').read_text(encoding='utf-8-sig')))
+    values = row.get('enabled_mods')
+    if not isinstance(values, list) or not values or len(values) > 18:
+        raise ValueError('Explicit bounded fixture enabled_mods required')
+    enabled: list[str] = []
+    for value in values:
+        if (not isinstance(value, str) or value in enabled
+                or re.fullmatch(r'mod/(?:product|fixture|compat_[a-z][a-z0-9_]{0,47})\.mod', value) is None):
+            raise ValueError('Fixture enabled descriptor is unsafe or repeated')
+        enabled.append(value)
+    if enabled[-1] != 'mod/fixture.mod' or ('mod/product.mod' in enabled and enabled[-2:] != ['mod/product.mod', 'mod/fixture.mod']):
+        raise ValueError('Independent compatibility mods must precede product and fixture')
+    if len(enabled) > 1 and 'mod/product.mod' not in enabled:
+        raise ValueError('Compatibility mods require an actual formal product')
+    return enabled
 
 
 class PrebuiltFixtureReceipt(TypedDict):
@@ -245,12 +386,24 @@ def _finish(context,profile,provenance):
             'fixture_start_policy':pin(policy_path),'files':rows,'runtime_status':'NOT_RUN'}
 
 
-def materialize_fixture_profile(context,fixture_dir,product_dir,plain_configuration):
-    state=Path(context['state_dir']).resolve();profile=state/'profile'
+def materialize_fixture_profile(context: JsonObject, fixture_dir: str | Path,
+                                product_dir: str | Path | None, plain_configuration: object, *,
+                                compatibility: tuple[CompatibilityMod, ...] = ()) -> JsonObject:
+    state=Path(text_field(context, 'state_dir')).resolve();profile=state/'profile'
     require(not profile.exists(),'New unused fixture profile required')
-    require(set(plain_configuration)==set(CONFIG_NAMES),'Exactly four original plain configuration files required')
+    plain = json_object(plain_configuration)
+    require(set(plain)==set(CONFIG_NAMES),'Exactly four original plain configuration files required')
+    require(not compatibility or product_dir is not None, 'Compatibility fixtures require the actual product')
+    # Re-enter the same validated contract immediately before filesystem writes.
+    compatibility = compatibility_mods({'compatibility_mods': compatibility_mods_json(compatibility)})
+    if product_dir is not None:
+        product_root = Path(product_dir).resolve()
+        fixture_root = Path(fixture_dir).resolve()
+        require(all(not (mod.directory.is_relative_to(root) or root.is_relative_to(mod.directory))
+                    for mod in compatibility for root in (product_root, fixture_root)),
+                'Compatibility roots must remain independent of product and fixture')
     profile.mkdir(parents=True)
-    for relative,row in plain_configuration.items():checked_copy(row,profile/relative)
+    for relative,row in plain.items():checked_copy(file_pin(row),profile/relative)
     directories=[('fixture',Path(fixture_dir))]
     if product_dir is not None:
         directories.append(('product',Path(product_dir)))
@@ -260,26 +413,48 @@ def materialize_fixture_profile(context,fixture_dir,product_dir,plain_configurat
         shutil.copytree(directory,target)
         outer=profile/'mod'/ (name+'.mod');outer.parent.mkdir(exist_ok=True)
         with outer.open('x',encoding='utf-8',newline='\n') as stream:stream.write(_outer_from_inner(target/'descriptor.mod',target))
-    enabled_mods=(['mod/product.mod','mod/fixture.mod'] if product_dir is not None else ['mod/fixture.mod'])
+    for mod in compatibility:
+        target = profile / 'mod-content' / mod.mount_name
+        for relative, expected in mod.files.items():
+            copied = checked_copy(expected, target / _prebuilt_relative_path(relative))
+            require(copied['bytes'] == expected['bytes'] and copied['sha256'] == expected['sha256'],
+                    'Compatibility copied payload differs')
+        outer = profile / 'mod' / (mod.mount_name + '.mod')
+        with outer.open('x', encoding='utf-8', newline='\n') as stream:
+            stream.write(_outer_from_inner(target / 'descriptor.mod', target))
+    enabled_mods = ['mod/' + mod.mount_name + '.mod' for mod in compatibility]
+    enabled_mods += (['mod/product.mod','mod/fixture.mod'] if product_dir is not None else ['mod/fixture.mod'])
     write_json(profile/'dlc_load.json',{'enabled_mods':enabled_mods,'disabled_dlcs':[]})
-    provenance=({'kind':'case-emitter-and-exact-formal-staging','fixture':str(fixture_dir),'product':str(product_dir)}
+    provenance: JsonObject = ({'kind':'case-emitter-and-exact-formal-staging','fixture':str(fixture_dir),'product':str(product_dir)}
                 if product_dir is not None else {'kind':'standalone-mechanism-fixture','fixture':str(fixture_dir),'product':None})
-    return _finish(context,profile,provenance)
+    if compatibility:
+        provenance = json_object({**provenance, 'compatibility_mods': compatibility_mods_json(compatibility)})
+    return json_object({**_finish(context,profile,provenance), 'enabled_mods': enabled_mods})
 
 
-def restore_prepared_profile(context,beforelaunch_inventory):
-    inventory=json.loads(Path(beforelaunch_inventory).read_text(encoding='utf-8-sig'))
+def restore_prepared_profile(context: JsonObject, beforelaunch_inventory: str | Path) -> JsonObject:
+    inventory=json_object(json.loads(Path(beforelaunch_inventory).read_text(encoding='utf-8-sig')))
     require(inventory.get('snapshot_kind')=='before-launch','Only a frozen before-launch profile may seed a retry')
-    root=Path(inventory['snapshot_root']).resolve();rows=inventory['files']
-    state=Path(context['state_dir']).resolve();profile=state/'profile'
+    root=Path(text_field(inventory, 'snapshot_root')).resolve();rows=object_field(inventory, 'files')
+    require('dlc_load.json' in rows, 'Frozen enabled_mods inventory is missing')
+    frozen_load = file_pin({'path': str(root / 'dlc_load.json'), **json_object(rows['dlc_load.json'])})
+    require(pin(root / 'dlc_load.json') == frozen_load, 'Frozen enabled_mods changed')
+    enabled = fixture_enabled_mods(root)
+    require({relative for relative in rows if relative.startswith('mod/')} == set(enabled),
+            'Only declared outer descriptor files may be restored')
+    for outer in enabled:
+        require('mod-content/' + Path(outer).stem + '/descriptor.mod' in rows,
+                'Declared independent mod content descriptor is missing')
+    state=Path(text_field(context, 'state_dir')).resolve();profile=state/'profile'
     require(not profile.exists(),'New unused profile required; played state cannot be reused')
     profile.mkdir(parents=True)
     changed=[]
     for relative,row in rows.items():
-        require(not Path(relative).is_absolute() and '..' not in Path(relative).parts,'Input path must remain below profile')
+        _prebuilt_relative_path(relative)
+        row = json_object(row)
         source=(root/relative).resolve();require(source.is_relative_to(root),'Snapshot path escaped')
         checked_copy(file_pin({'path':str(source),'bytes':row['bytes'],'sha256':row['sha256']}),profile/relative)
-        if relative in ('mod/fixture.mod','mod/product.mod'):
+        if relative in enabled:
             target=profile/'mod-content'/Path(relative).stem
             old=(profile/relative).read_bytes()
             pattern=rb'^path\s*=.*$'
@@ -289,10 +464,10 @@ def restore_prepared_profile(context,beforelaunch_inventory):
             replacement=b'path="'+target.as_posix().encode('utf-8')+b'"'+ending
             new=old[:matches[0].start()]+replacement+old[matches[0].end():]
             (profile/relative).write_bytes(new);changed.append(relative)
-    require(changed==['mod/fixture.mod','mod/product.mod'] or set(changed)=={'mod/fixture.mod','mod/product.mod'},'Only two outer paths may change')
-    return _finish(context,profile,{'kind':'before-launch-exact-restore','inventory':pin(beforelaunch_inventory),
+    require(set(changed) == set(enabled), 'Only explicitly declared outer paths may change')
+    return json_object(_finish(context,profile,{'kind':'before-launch-exact-restore','inventory':pin(beforelaunch_inventory),
                                     'source_run_id':inventory['source_run_id'],'file_count':len(rows),
-                                    'byte_exact_count':len(rows)-2,'changed_outer_paths':changed})
+                                    'byte_exact_count':len(rows)-len(enabled),'changed_outer_paths':changed}))
 
 
 def materialize_product_profile(context,product_dir,plain_configuration,*,workshop_cache_files=None):

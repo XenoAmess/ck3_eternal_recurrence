@@ -76,6 +76,37 @@ final class NativeSetupLifecycleTest {
         assertFalse(model.state(model.actor).flags.containsKey("rrf_result_dialog"));
     }
 
+    @Test void applyEntryIndependentlyChecksTheActualEditorTarget() throws IOException {
+        Model model = model(true);
+        model.effect("rrf_begin_native_setup_effect", model.actor);
+        for (Node wrong : List.of(model.sourceA, model.sourceB, model.other)) {
+            model.saved.put("rrf_native_target", wrong);
+            assertFalse(model.guiValid("rrf_mark_native_apply_gui", model.actor));
+            model.effect("rrf_mark_native_apply_effect", model.actor);
+            assertFalse(model.state(model.actor).flags.containsKey("rrf_native_apply_requested"));
+        }
+        model.saved.put("rrf_native_target", model.result);
+        assertTrue(model.guiValid("rrf_mark_native_apply_gui", model.actor));
+    }
+
+    @Test void closingAfterRequestOrDeclineKeepsPermissionUntilAnActualNativeUpdate() throws IOException {
+        Model model = model(true);
+        model.effect("rrf_begin_native_setup_effect", model.actor);
+        model.guiExecute("rrf_mark_native_apply_gui", model.actor);
+        model.guiExecute("rrf_cancel_native_setup_gui", model.actor);
+        assertTrue(model.state(model.actor).modifiers.containsKey("rrf_native_setup_cost_waiver"));
+        assertTrue(model.state(model.actor).flags.containsKey("rrf_native_setup_active"));
+        assertTrue(model.state(model.actor).flags.containsKey("rrf_result_dialog"));
+        assertFalse(model.state(model.result).variables.containsKey("rrf_native_configuration_complete"));
+        assertFalse(model.guiValid("rrf_keep_defaults_gui", model.actor));
+        model.guiExecute("rrf_resume_native_setup_gui", model.actor);
+        assertTrue(model.guiValid("rrf_mark_native_apply_gui", model.actor));
+        model.saved.put("consume_rite_edit_token", model.token);
+        model.onAction("on_rite_updated", model.result);
+        assertTrue(model.state(model.result).variables.containsKey("rrf_native_configuration_complete"));
+        assertFalse(model.state(model.actor).modifiers.containsKey("rrf_native_setup_cost_waiver"));
+    }
+
     @Test void launchConsumerAcknowledgesOneRequestAndOnlyExplicitResumeRequestsAnother() throws IOException {
         Model model = model(true);
         model.effect("rrf_begin_native_setup_effect", model.actor);
@@ -128,7 +159,7 @@ final class NativeSetupLifecycleTest {
         Model model = model(true);
         Set<Node> before = Set.copyOf(model.state(model.result).doctrines);
         model.effect("rrf_begin_native_setup_effect", model.actor);
-        model.guiExecute("rrf_cancel_native_setup_gui", model.actor);
+        model.guiExecute("rrf_keep_defaults_gui", model.actor);
         assertEquals(before, model.state(model.result).doctrines);
         assertEquals(new Token("yes"), model.state(model.result).variables.get("rrf_native_configuration_complete"));
         assertFalse(model.state(model.actor).modifiers.containsKey("rrf_native_setup_cost_waiver"));
@@ -186,7 +217,7 @@ final class NativeSetupLifecycleTest {
         assertFalse(model.state(model.actor).modifiers.containsKey("rrf_native_setup_cost_waiver"));
     }
 
-    private static Model model(boolean provider) throws IOException {
+    static Model model(boolean provider) throws IOException {
         Model model = new Model();
         Path rrf = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize();
         if (provider) {
@@ -195,34 +226,36 @@ final class NativeSetupLifecycleTest {
             model.load(des.resolve("common/on_action/des_on_actions.txt"), SourceKind.ON_ACTIONS);
             for (Clausewitz.Entry definition : Clausewitz.parse(Files.readString(des.resolve("common/religion/doctrine_types/des_doctrines.txt"))).entries()) model.doctrineGroups.put(node(Kind.DOCTRINE, definition.key()), ((Clausewitz.Block) definition.value()).atom("doctrine_group_type", ""));
         }
-        for (String path : List.of("common/scripted_effects/rrf_native_setup_effects.txt", "common/scripted_triggers/rrf_native_setup_triggers.txt", "common/scripted_rules/zz_rrf_native_setup_rules.txt", "common/scripted_effects/rrf_creation_options_effects.txt", "common/scripted_effects/rrf_completion_effects.txt", "common/scripted_effects/rrf_draft_effects.txt", "common/script_values/rrf_values.txt", "common/scripted_effects/rrf_conversion_effects.txt", "common/scripted_triggers/rrf_conversion_triggers.txt", "common/scripted_guis/rrf_scripted_guis.txt")) model.load(rrf.resolve(path), SourceKind.SCRIPTS);
+        for (String path : List.of("common/scripted_effects/rrf_native_setup_effects.txt", "common/scripted_triggers/rrf_native_setup_triggers.txt", "common/scripted_rules/zz_rrf_native_setup_rules.txt", "common/scripted_effects/rrf_creation_options_effects.txt", "common/scripted_effects/rrf_completion_effects.txt", "common/scripted_effects/rrf_draft_effects.txt", "common/script_values/rrf_values.txt", "common/scripted_effects/rrf_conversion_effects.txt", "common/scripted_triggers/rrf_conversion_triggers.txt", "common/scripted_guis/rrf_scripted_guis.txt", "common/scripted_effects/rrf_final_configuration_effects.txt")) model.load(rrf.resolve(path), SourceKind.SCRIPTS);
         // Providers are deliberately read first, matching the requested mod order.
         model.load(rrf.resolve("common/on_action/rrf_native_setup_on_actions.txt"), SourceKind.ON_ACTIONS);
+        model.effect("rrf_record_final_configuration_contract_effect", model.actor);
         return model;
     }
 
     private enum SourceKind { SCRIPTS, ON_ACTIONS }
-    private enum Kind { CHARACTER, RITE, FAITH, DOCTRINE, MARKER }
-    private record Node(Kind kind, String id) { }
+    enum Kind { CHARACTER, RITE, FAITH, TENET, DOCTRINE, MARKER }
+    record Node(Kind kind, String id) { }
     private record Frame(Node current, Node previous, Node root) { Frame enter(Node target) { return new Frame(target, current, root); } }
-    private sealed interface Stored permits Reference, Token, NumberValue { }
-    private record Reference(Node node) implements Stored { }
-    private record Token(String token) implements Stored { }
-    private record NumberValue(BigDecimal value) implements Stored { }
+    sealed interface Stored permits Reference, Token, NumberValue { }
+    record Reference(Node node) implements Stored { }
+    record Token(String token) implements Stored { }
+    record NumberValue(BigDecimal value) implements Stored { }
     private record Expiry(int year) { }
-    private static Node node(Kind kind, String id) { return new Node(kind, id); }
-    private static final class State {
+    static Node node(Kind kind, String id) { return new Node(kind, id); }
+    static final class State {
         final Map<String, Node> links = new LinkedHashMap<>();
         final Map<String, Stored> variables = new LinkedHashMap<>();
         final Map<String, List<Node>> lists = new LinkedHashMap<>();
         final Map<String, Expiry> flags = new LinkedHashMap<>(), modifiers = new LinkedHashMap<>();
         final Map<String, Boolean> booleans = new LinkedHashMap<>();
         final Set<Node> doctrines = new LinkedHashSet<>();
+        final Set<Node> cores = new LinkedHashSet<>();
         BigDecimal piety = new BigDecimal("2000");
     }
 
     /** The supported subset is explicit. An unimplemented command or native query fails this test. */
-    private static final class Model {
+    static final class Model {
         final Node actor = node(Kind.CHARACTER, "creator"), other = node(Kind.CHARACTER, "other"), result = node(Kind.RITE, "result"), sourceA = node(Kind.RITE, "a"), sourceB = node(Kind.RITE, "b"), faith = node(Kind.FAITH, "base"), token = node(Kind.MARKER, "native_edit_token");
         final Map<Node, State> states = new LinkedHashMap<>();
         final Map<String, Clausewitz.Block> scripts = new LinkedHashMap<>(), actions = new LinkedHashMap<>();
@@ -241,7 +274,13 @@ final class NativeSetupLifecycleTest {
             state(actor).booleans.putAll(Map.of("is_ai", false, "is_alive", true, "is_adult", true, "is_at_war", false, "is_imprisoned", false));
             state(result).variables.put("rrf_origin_founder", new Reference(actor));
             for (Node rite : List.of(result, sourceA, sourceB)) state(rite).links.put("faith", faith);
-            saved.putAll(Map.of("rrf_actor", actor, "rrf_new_rite", result));
+            Node aCore = node(Kind.TENET, "a_core"), bCore = node(Kind.TENET, "b_core"), shared = node(Kind.TENET, "shared_core"), otherShared = node(Kind.TENET, "other_shared_core");
+            state(sourceA).cores.addAll(List.of(aCore, shared, otherShared));
+            state(sourceB).cores.addAll(List.of(bCore, shared, otherShared));
+            state(result).cores.addAll(List.of(aCore, bCore, shared));
+            list(actor, "rrf_selected_tenets").addAll(state(result).cores);
+            list(result, "rrf_origin_core_tenets").addAll(state(result).cores);
+            saved.putAll(Map.of("rrf_actor", actor, "rrf_new_rite", result, "rrf_native_target", result));
         }
         State state(Node owner) { return states.computeIfAbsent(Objects.requireNonNull(owner), unused -> new State()); }
         List<Node> list(Node owner, String name) { return state(owner).lists.computeIfAbsent(name, unused -> new ArrayList<>()); }
@@ -277,6 +316,7 @@ final class NativeSetupLifecycleTest {
             else if (first.startsWith("scope:")) current = saved.containsKey(first.substring(6)) ? new Reference(saved.get(first.substring(6))) : null;
             else if (first.startsWith("var:")) current = state(frame.current()).variables.get(first.substring(4));
             else if (first.startsWith("doctrine:")) current = new Reference(node(Kind.DOCTRINE, first.substring(9)));
+            else if (first.startsWith("tenet:")) current = new Reference(node(Kind.TENET, first.substring(6)));
             else current = state(frame.current()).links.containsKey(first) ? new Reference(state(frame.current()).links.get(first)) : literal(first, frame);
             for (int i = 1; i < path.length && current != null; i++) { Node owner = reference(current); String part = path[i]; current = part.startsWith("var:") ? state(owner).variables.get(part.substring(4)) : state(owner).links.containsKey(part) ? new Reference(state(owner).links.get(part)) : null; }
             return current;
@@ -315,6 +355,8 @@ final class NativeSetupLifecycleTest {
                 case "NOR" -> child.entries().stream().noneMatch(x -> condition(x, frame));
                 case "OR" -> child.entries().stream().anyMatch(x -> condition(x, frame));
                 case "is_target_in_global_variable_list" -> globals.getOrDefault(child.atom("name", ""), List.of()).contains(target(child.atom("target", ""), frame));
+                case "is_target_in_variable_list" -> list(frame.current(), child.atom("name", "")).contains(target(child.atom("target", ""), frame));
+                case "any_rite_tenet" -> state(frame.current()).cores.stream().anyMatch(item -> check(child, frame.enter(item)));
                 default -> check(child, frame.enter(Objects.requireNonNull(target(e.key(), frame), e.key())));
             };
             String tokenValue = ((Clausewitz.Atom) e.value()).token();
@@ -328,6 +370,7 @@ final class NativeSetupLifecycleTest {
                 case "has_character_flag" -> state(frame.current()).flags.containsKey(tokenValue);
                 case "has_character_modifier" -> state(frame.current()).modifiers.containsKey(tokenValue);
                 case "has_variable_list" -> !list(frame.current(), tokenValue).isEmpty();
+                case "rite_has_doctrine" -> state(frame.current()).doctrines.contains(target(tokenValue, frame));
                 case "is_ai", "is_alive", "is_adult", "is_at_war", "is_imprisoned" -> Objects.requireNonNull(state(frame.current()).booleans.get(e.key()), e.key()) == tokenValue.equals("yes");
                 default -> {
                     if (!e.key().startsWith("var:") && !e.key().startsWith("scope:") && !Set.of("this", "prev", "root").contains(e.key()) && !state(frame.current()).links.containsKey(e.key())) throw new IllegalArgumentException("unsupported predicate: " + e.key());
@@ -383,6 +426,7 @@ final class NativeSetupLifecycleTest {
                 case "every_spouse" -> iterate(child, frame, list(frame.current(), "native_spouses"));
                 case "every_close_family_member" -> iterate(child, frame, list(frame.current(), "native_close_family"));
                 case "every_vassal" -> iterate(child, frame, list(frame.current(), "native_vassals"));
+                case "every_rite_tenet" -> iterate(child, frame, List.copyOf(state(frame.current()).cores));
                 default -> run(child, frame.enter(Objects.requireNonNull(target(e.key(), frame), "unsupported scope/effect: " + e.key())));
             }
         }

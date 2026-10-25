@@ -29,7 +29,7 @@ window = {
 				enabled = "[GetScriptedGui( 'rrf_cancel_native_setup_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 				onclick = "[RiteCreationWindow.Close]"
 				onclick = "[GetScriptedGui( 'rrf_cancel_native_setup_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-				tooltip = "RRF_NATIVE_SETUP_SKIP_TT"
+				tooltip = "RRF_NATIVE_SETUP_DEFER_TT"
 			}
 		}
 		text_multi = {
@@ -456,7 +456,7 @@ window = {
 				}
 				scrollbox = {
 					name = "rrf_native_edit_blockers"
-					visible = "[Not( And3( RiteCreationWindow.CanEditRite, EqualTo_CFixedPoint( RiteCreationWindow.CalcPietyCost, '(CFixedPoint)0' ), GetScriptedGui( 'rrf_mark_native_apply_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ) )]"
+					visible = "[Not( And3( RiteCreationWindow.CanEditRite, EqualTo_CFixedPoint( RiteCreationWindow.CalcPietyCost, '(CFixedPoint)0' ), GetScriptedGui( 'rrf_mark_native_apply_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'rrf_native_target', RiteCreationWindow.GetRite.MakeScope ).End ) ) )]"
 					size = { 440 140 }
 					layoutpolicy_horizontal = expanding
 					blockoverride "scrollbox_content" {
@@ -465,7 +465,7 @@ window = {
 							spacing = 5
 							text_label_left = { text = "RRF_NATIVE_SETUP_BLOCKERS" }
 							text_multi = { text = "[RiteCreationWindow.GetEditBlockers]" max_width = 410 autoresize = yes }
-							text_multi = { text = "[GetScriptedGui( 'rrf_mark_native_apply_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" max_width = 410 autoresize = yes }
+							text_multi = { text = "[GetScriptedGui( 'rrf_mark_native_apply_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'rrf_native_target', RiteCreationWindow.GetRite.MakeScope ).End )]" max_width = 410 autoresize = yes }
 						}
 					}
 				}
@@ -479,9 +479,9 @@ window = {
 					name = "rrf_native_apply"
 					size = { 440 52 }
 					text = "RRF_NATIVE_SETUP_APPLY"
-					enabled = "[And3( RiteCreationWindow.CanEditRite, EqualTo_CFixedPoint( RiteCreationWindow.CalcPietyCost, '(CFixedPoint)0' ), GetScriptedGui( 'rrf_mark_native_apply_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+					enabled = "[And3( RiteCreationWindow.CanEditRite, EqualTo_CFixedPoint( RiteCreationWindow.CalcPietyCost, '(CFixedPoint)0' ), GetScriptedGui( 'rrf_mark_native_apply_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'rrf_native_target', RiteCreationWindow.GetRite.MakeScope ).End ) )]"
 					tooltip = "[Localize( 'RRF_NATIVE_SETUP_APPLY_TT' )]\n\n[RiteCreationWindow.GetEditBlockers]"
-					onclick = "[GetScriptedGui( 'rrf_mark_native_apply_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+					onclick = "[GetScriptedGui( 'rrf_mark_native_apply_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'rrf_native_target', RiteCreationWindow.GetRite.MakeScope ).End )]"
 					onclick = "[RiteCreationWindow.EditRite]"
 				}
 				button_standard = {
@@ -489,7 +489,15 @@ window = {
 					size = { 440 42 }
 					text = "RRF_NATIVE_SETUP_SKIP"
 					tooltip = "RRF_NATIVE_SETUP_SKIP_TT"
-					enabled = "[GetScriptedGui( 'rrf_cancel_native_setup_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+					enabled = "[GetScriptedGui( 'rrf_keep_defaults_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+					onclick = "[RiteCreationWindow.Close]"
+					onclick = "[GetScriptedGui( 'rrf_keep_defaults_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				}
+				button_standard = {
+					name = "rrf_native_defer"
+					size = { 440 36 }
+					text = "RRF_NATIVE_SETUP_DEFER"
+					tooltip = "RRF_NATIVE_SETUP_DEFER_TT"
 					onclick = "[RiteCreationWindow.Close]"
 					onclick = "[GetScriptedGui( 'rrf_cancel_native_setup_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 				}

@@ -28,3 +28,14 @@ rrf_native_setup_permission_trigger = {
         NOT = { faith = { has_variable = ecumenical_council_ongoing } }
     }
 }
+
+# Scripted rules receive only the actor; the actual editor target is supplied
+# and independently checked at our GUI entry before native EditRite is invoked.
+rrf_native_apply_target_trigger = {
+    rrf_native_setup_permission_trigger = yes
+    custom_description = {
+        text = RRF_REQUIRE_OWN_FUSION_RESULT
+        exists = scope:rrf_native_target
+        scope:rrf_native_target = var:rrf_last_result_rite
+    }
+}

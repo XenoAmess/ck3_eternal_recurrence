@@ -122,12 +122,22 @@ rrf_native_open_ack_gui = {
 }
 rrf_mark_native_apply_gui = {
 	scope = character
-	is_valid = { rrf_native_setup_permission_trigger = yes }
+	saved_scopes = { rrf_native_target }
+	is_valid = { rrf_native_apply_target_trigger = yes }
 	effect = { rrf_mark_native_apply_effect = yes }
 }
 rrf_cancel_native_setup_gui = {
 	scope = character
 	is_valid = { rrf_native_setup_target_trigger = yes has_character_flag = rrf_native_setup_active }
+	effect = { rrf_defer_native_setup_effect = yes }
+}
+rrf_keep_defaults_gui = {
+	scope = character
+	is_valid = {
+		rrf_native_setup_target_trigger = yes
+		has_character_flag = rrf_native_setup_active
+		NOT = { has_character_flag = rrf_native_apply_requested }
+	}
 	effect = { rrf_finish_native_setup_effect = yes }
 }
 rrf_resume_native_setup_gui = {
@@ -145,6 +155,10 @@ rrf_result_window_gui = {
 rrf_configured_result_gui = {
 	scope = character
 	is_valid = { rrf_conversion_context_trigger = yes }
+}
+rrf_final_configuration_invalid_gui = {
+	scope = character
+	is_valid = { has_character_flag = rrf_final_configuration_invalid }
 }
 rrf_close_result_gui = {
 	scope = character

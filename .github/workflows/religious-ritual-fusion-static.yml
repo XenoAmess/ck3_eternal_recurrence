@@ -8,6 +8,11 @@ on:
       - 'mod_dynastic_esotericism/common/on_action/des_on_actions.txt'
       - 'mod_dynastic_esotericism/common/scripted_effects/des_initialization_effects.txt'
       - 'mod_dynastic_esotericism/common/scripted_effects/des_maintenance_effects.txt'
+      - 'tools/ck3_mod_acceptance.py'
+      - 'tools/ck3_mod_acceptance_prepare.py'
+      - 'tools/ck3_mod_acceptance_cases/generic_product_adapter.py'
+      - 'tools/test_compatibility_mod_profiles.py'
+      - 'tools/test_prebuilt_fixture_prepare.py'
       - '.github/workflows/religious-ritual-fusion-static.yml'
       - 'java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java'
   pull_request:
@@ -16,6 +21,11 @@ on:
       - 'mod_dynastic_esotericism/common/on_action/des_on_actions.txt'
       - 'mod_dynastic_esotericism/common/scripted_effects/des_initialization_effects.txt'
       - 'mod_dynastic_esotericism/common/scripted_effects/des_maintenance_effects.txt'
+      - 'tools/ck3_mod_acceptance.py'
+      - 'tools/ck3_mod_acceptance_prepare.py'
+      - 'tools/ck3_mod_acceptance_cases/generic_product_adapter.py'
+      - 'tools/test_compatibility_mod_profiles.py'
+      - 'tools/test_prebuilt_fixture_prepare.py'
       - '.github/workflows/religious-ritual-fusion-static.yml'
   workflow_dispatch:
 
@@ -48,8 +58,19 @@ jobs:
         run: java -Xms32m -Xmx128m -Djava.io.tmpdir="%RUNNER_TEMP%" java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java --verify-maven-evidence-root "%RUNNER_TEMP%\rrf-maven"
       - name: Read default Maven version
         run: mvn --version
+      - name: Install the shared consumer and strict type-check dependencies
+        run: python -m pip install mcp==2.0.0 pydantic==2.13.5 mypy==2.4.0 psutil==7.2.2 types-psutil==7.2.2.20260906 opencv-python==5.0.0.93 numpy==2.5.2 Pillow==12.3.0
       - name: Verify full product producer and staging chain
         run: mvn --batch-mode --no-transfer-progress -f mod_religious_ritual_fusion/tools/pom.xml -Drrf.build.root=${{ runner.temp }}/rrf-build verify
+      - name: Verify full shared fixture and independent compatibility profile consumers
+        working-directory: tools
+        run: python -B -X utf8 -m unittest test_prebuilt_fixture_prepare test_compatibility_mod_profiles test_ck3_mod_acceptance_adapters test_saved_campaign_profile_inventory_v2
+      - name: Strict-check independent compatibility tests and actual contract AST
+        env:
+          MYPYPATH: tools;ck3_autonomous_player/src
+        # The unittest above also strict-checks the unchanged AST of eight new
+        # production contract helpers; legacy orchestration is not claimed clean.
+        run: python -B -X utf8 -m mypy --strict --strict-equality --follow-imports=silent --no-incremental --cache-dir=${{ runner.temp }}/rrf-compat-mypy tools/test_compatibility_mod_profiles.py
       - name: Preserve Maven observations and test results
         if: always()
         uses: actions/upload-artifact@v4

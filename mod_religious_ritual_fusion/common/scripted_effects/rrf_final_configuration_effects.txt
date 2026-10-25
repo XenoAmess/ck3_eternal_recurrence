@@ -1,0 +1,154 @@
+﻿# Immutable contribution contract, recorded before the original draft is cleared.
+# Character scope. The caller supplies rrf_new_rite and the original selected lists.
+rrf_record_final_configuration_contract_effect = {
+    save_scope_as = rrf_actor
+    if = {
+        limit = {
+            exists = scope:rrf_new_rite
+            exists = var:rrf_source_a
+            exists = var:rrf_source_b
+            scope:rrf_new_rite != var:rrf_source_a
+            scope:rrf_new_rite != var:rrf_source_b
+            scope:rrf_new_rite = { has_variable_list = rrf_origin_core_tenets }
+        }
+        if = {
+            limit = { NOT = { scope:rrf_new_rite = { has_variable = rrf_final_configuration_contract_version } } }
+            scope:rrf_new_rite = {
+                clear_variable_list = rrf_exclusive_a_tenets
+                clear_variable_list = rrf_exclusive_b_tenets
+                clear_variable_list = rrf_exclusive_a_doctrines
+                clear_variable_list = rrf_exclusive_b_doctrines
+            }
+            every_in_list = {
+                variable = rrf_selected_tenets
+                save_scope_as = rrf_item
+                if = {
+                    limit = {
+                        scope:rrf_actor = {
+                            var:rrf_source_a = { any_rite_tenet = { this = scope:rrf_item } }
+                            NOT = { var:rrf_source_b = { any_rite_tenet = { this = scope:rrf_item } } }
+                        }
+                    }
+                    scope:rrf_new_rite = { add_to_variable_list = { name = rrf_exclusive_a_tenets target = scope:rrf_item } }
+                }
+                else_if = {
+                    limit = {
+                        scope:rrf_actor = {
+                            var:rrf_source_b = { any_rite_tenet = { this = scope:rrf_item } }
+                            NOT = { var:rrf_source_a = { any_rite_tenet = { this = scope:rrf_item } } }
+                        }
+                    }
+                    scope:rrf_new_rite = { add_to_variable_list = { name = rrf_exclusive_b_tenets target = scope:rrf_item } }
+                }
+            }
+            every_in_list = {
+                variable = rrf_selected_doctrines
+                save_scope_as = rrf_item
+                if = {
+                    limit = {
+                        scope:rrf_actor = {
+                            var:rrf_source_a = { rite_has_doctrine = scope:rrf_item }
+                            NOT = { var:rrf_source_b = { rite_has_doctrine = scope:rrf_item } }
+                        }
+                    }
+                    scope:rrf_new_rite = { add_to_variable_list = { name = rrf_exclusive_a_doctrines target = scope:rrf_item } }
+                }
+                else_if = {
+                    limit = {
+                        scope:rrf_actor = {
+                            var:rrf_source_b = { rite_has_doctrine = scope:rrf_item }
+                            NOT = { var:rrf_source_a = { rite_has_doctrine = scope:rrf_item } }
+                        }
+                    }
+                    scope:rrf_new_rite = { add_to_variable_list = { name = rrf_exclusive_b_doctrines target = scope:rrf_item } }
+                }
+            }
+            scope:rrf_new_rite = { set_variable = { name = rrf_final_configuration_contract_version value = 1 } }
+        }
+    }
+    else = { add_character_flag = rrf_final_configuration_invalid }
+}
+
+# Character scope. Fresh flags report actual final content against the immutable contract.
+rrf_validate_final_configuration_effect = {
+    save_scope_as = rrf_actor
+    remove_character_flag = rrf_final_configuration_invalid
+    remove_character_flag = rrf_final_contribution_a
+    remove_character_flag = rrf_final_contribution_b
+    if = {
+        limit = { exists = var:rrf_last_result_rite }
+        var:rrf_last_result_rite = { save_scope_as = rrf_final_rite }
+        if = {
+            limit = {
+                scope:rrf_final_rite = {
+                    var:rrf_final_configuration_contract_version = 1
+                    has_variable_list = rrf_origin_core_tenets
+                }
+            }
+            # Every actual core must have been part of the original complete selection.
+            scope:rrf_final_rite = {
+                every_rite_tenet = {
+                    save_scope_as = rrf_item
+                    if = {
+                        limit = {
+                            NOT = { scope:rrf_final_rite = { is_target_in_variable_list = { name = rrf_origin_core_tenets target = scope:rrf_item } } }
+                        }
+                        scope:rrf_actor = { add_character_flag = rrf_final_configuration_invalid }
+                    }
+                }
+                # Every original core must still be an actual core, independently of counts.
+                every_in_list = {
+                    variable = rrf_origin_core_tenets
+                    save_scope_as = rrf_item
+                    if = {
+                        limit = { NOT = { scope:rrf_final_rite = { any_rite_tenet = { this = scope:rrf_item } } } }
+                        scope:rrf_actor = { add_character_flag = rrf_final_configuration_invalid }
+                    }
+                }
+                every_in_list = {
+                    variable = rrf_exclusive_a_tenets
+                    save_scope_as = rrf_item
+                    if = {
+                        limit = { scope:rrf_final_rite = { any_rite_tenet = { this = scope:rrf_item } } }
+                        scope:rrf_actor = { add_character_flag = rrf_final_contribution_a }
+                    }
+                }
+                every_in_list = {
+                    variable = rrf_exclusive_b_tenets
+                    save_scope_as = rrf_item
+                    if = {
+                        limit = { scope:rrf_final_rite = { any_rite_tenet = { this = scope:rrf_item } } }
+                        scope:rrf_actor = { add_character_flag = rrf_final_contribution_b }
+                    }
+                }
+                every_in_list = {
+                    variable = rrf_exclusive_a_doctrines
+                    save_scope_as = rrf_item
+                    if = {
+                        limit = { scope:rrf_final_rite = { rite_has_doctrine = scope:rrf_item } }
+                        scope:rrf_actor = { add_character_flag = rrf_final_contribution_a }
+                    }
+                }
+                every_in_list = {
+                    variable = rrf_exclusive_b_doctrines
+                    save_scope_as = rrf_item
+                    if = {
+                        limit = { scope:rrf_final_rite = { rite_has_doctrine = scope:rrf_item } }
+                        scope:rrf_actor = { add_character_flag = rrf_final_contribution_b }
+                    }
+                }
+            }
+            if = {
+                limit = {
+                    OR = {
+                        NOT = { has_character_flag = rrf_final_contribution_a }
+                        NOT = { has_character_flag = rrf_final_contribution_b }
+                    }
+                }
+                add_character_flag = rrf_final_configuration_invalid
+            }
+        }
+        else = { add_character_flag = rrf_final_configuration_invalid }
+    }
+    else = { add_character_flag = rrf_final_configuration_invalid }
+}

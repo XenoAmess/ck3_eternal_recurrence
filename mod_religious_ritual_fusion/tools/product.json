@@ -37,6 +37,7 @@
     "gui/rrf_native_setup_window.gui",
     "gui/rrf_result_window.gui",
     "gui/scripted_widgets/rrf_native_setup_widgets.txt",
-    "gui/scripted_widgets/rrf_result_widgets.txt"
+    "gui/scripted_widgets/rrf_result_widgets.txt",
+    "common/scripted_effects/rrf_final_configuration_effects.txt"
   ]
 }
