@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import org.xar.ck3.dynastic.acceptance.FixtureEmitter;
 import org.xar.ck3.dynastic.acceptance.SharedRuntimeComposer;
+import org.xar.ck3.dynastic.artwork.SectArtworkImporter;
 import org.xar.ck3.dynastic.release.ReleaseBuilder;
 import org.xar.ck3.dynastic.release.ReleaseProduct;
 import org.xar.ck3.dynastic.release.StaticValidation;
@@ -25,7 +26,13 @@ public final class ReleaseCommand implements QuarkusApplication {
     @Override
     public int run(String... args) {
         try {
-            if (args.length == 0) throw new IllegalArgumentException("expected validate, build, verify, check, fixture or runtime");
+            if (args.length == 0) throw new IllegalArgumentException("expected validate, build, verify, check, fixture, runtime or artwork");
+            if (args[0].equals("artwork")) {
+                if (args.length != 3) throw new IllegalArgumentException("expected artwork <uploaded-zip> <mod-source>");
+                System.out.println(JSON.writerWithDefaultPrettyPrinter().writeValueAsString(
+                        SectArtworkImporter.importArchive(Path.of(args[1]), Path.of(args[2]))));
+                return 0;
+            }
             if (args[0].equals("fixture")) return FixtureEmitter.run(Arrays.copyOfRange(args, 1, args.length));
             if (args[0].equals("runtime")) return SharedRuntimeComposer.run(Arrays.copyOfRange(args, 1, args.length));
             ParsedOptions parsed = parse(Arrays.copyOfRange(args, 1, args.length));

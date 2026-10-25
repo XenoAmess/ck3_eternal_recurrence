@@ -1,9 +1,11 @@
-# External acceptance input and native predicate readback. Never publish this fixture.
+﻿# External acceptance input and native predicate readback. Never publish this fixture.
 namespace = des_acceptance
 
 des_acceptance.1 = {
     hidden = yes
     immediate = {
+        set_variable = { name = des_test_initial_actor value = this }
+        set_variable = { name = des_test_initial_primary_title value = primary_title }
         set_variable = { name = des_test_source_rite value = rite }
         if = { limit = { exists = dynasty } set_variable = { name = des_test_source_dynasty value = dynasty } }
         add_piety = 100000
@@ -46,10 +48,29 @@ des_acceptance.2 = {
         des_acceptance_restore_refs_effect = yes
         if = {
             limit = {
+                this = var:des_test_initial_actor
+                primary_title = var:des_test_initial_primary_title
+                primary_title = { holder = root }
                 rite = scope:des_test_primary
                 dynasty = scope:des_test_dynasty
+                house = scope:des_test_primary.var:des_join_house
+                house = { house_head = root house_dynasty = scope:des_test_dynasty }
+                scope:des_test_dynasty = {
+                    dynast = root
+                    dynasty_founder = {
+                        is_alive = yes
+                        rite = scope:des_test_primary
+                        dynasty = scope:des_test_dynasty
+                        trigger_if = {
+                            limit = { NOT = { this = root } }
+                            is_house_head = no
+                            is_dynast = no
+                        }
+                    }
+                }
                 scope:des_test_primary = {
                     des_has_active_binding_trigger = yes
+                    NOT = { has_variable = des_creator_head_fault }
                     faith = {
                         NOT = { any_faith_character = { is_alive = yes rite = scope:des_test_primary NOT = { dynasty = scope:des_test_dynasty } } }
                     }

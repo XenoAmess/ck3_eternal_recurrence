@@ -1,5 +1,19 @@
 # 宗族化密教：原创预览图
 
+## 2026-10-25 用户提供的两教派图标
+
+本次新增图标直接来自用户上传的 `信仰礼仪图标.zip`，不是重新生成的图片。ZIP SHA-256 为 `46e977c19a555ce9cbaa9eb3ee4981e7e63eab3dfbbb7eb126d1e7b43e6a9586`。
+
+| 来源及用途 | 格式与处理 | SHA-256 |
+| --- | --- | --- |
+| 繁育教派.dds → `gfx/interface/icons/faith/des_procreation.dds` | 原始 256×256 RGBA DDS，逐字节保留 | `9314f9743394dd4622bb09c44e6161be00e68e712b32b2611ebc14d479436f72` |
+| 白绮教派.png → `tools/artwork/source/des_vivhite.png` | 原始 1254×1254 RGBA PNG，作为源码资产保存，不进入正式包 | `8777b819cf085bc5a7935aa2c6bd1dcf01c487500a8874b84bf184d48209bcf5` |
+| 白绮教派运行图标 → `gfx/interface/icons/faith/des_vivhite.dds` | Java 双三次缩放到 256×256，保留透明度，编码为 RGBA DDS；无裁切、重绘或内容增删 | `93e2354c6677368b8c76d9cba5fc783a8003599659ad8d99101a809d3a7c2371` |
+
+实际导入由 Maven／Quarkus 工具模块的 `SectArtworkImporter` 执行；在首次构建前也支持同一 Java 源文件模式。构建后命令为 `java -jar <admitted-runner> artwork <uploaded-zip> <mod-source>`。两幅最终 DDS 均实际解码并查看，白绮源 PNG 也已查看。纹章使用同一图标的独立运行纹理副本，不能修改或覆盖用户原图。
+
+`machine_id: desktop-3fevhd2-1c74096080`；实际导入观察时间 `2026-10-25T15:22:56.616725Z`，Java 原进程退出 0，耗时 2.881 秒。原命令、输出 pins 及当次容量观察在 `C:/ck3-dynastic-esotericism-20261024/resume-product-a20/artwork-import.actual.json`。本次施工准入为 r1217／storage105，仅限 C512MiB／D1MiB，不授予游戏或 Steam 下载资格。原文件保留和候选输出继续执行统一存储策略；上传源 ZIP 不是本任务清理对象。
+
 本文件记录当前产品预览图的生成、消费格式导出与目视检查，不代表模组功能验收或 Workshop 发布已经完成。
 
 ## 来源与使用范围

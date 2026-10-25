@@ -1,0 +1,37 @@
+﻿# Catholic-derived faiths within the existing Christian religion.
+# Their scripted main Rites own all core tenets and the requested doctrine choices.
+des_procreation_faith = {
+	main_rite = des_procreation_rite
+	faith_details = {
+		religion = christianity_religion
+		color = { 0.75 0.35 0.55 }
+		icon = des_procreation
+		graphical_faith = catholic_gfx
+	}
+	origin = catholic
+	historical = no
+	eminent_holy_sites = { jerusalem rome santiago }
+	holy_sites = { cologne kent }
+	doctrines = {
+		# Hidden stock classification for Western Christian presentation.
+		special_doctrine_is_western_christian_faith
+	}
+}
+
+des_vivhite_faith = {
+	main_rite = des_vivhite_rite
+	faith_details = {
+		religion = christianity_religion
+		color = { 0.85 0.85 0.95 }
+		icon = des_vivhite
+		graphical_faith = catholic_gfx
+	}
+	origin = catholic
+	historical = no
+	eminent_holy_sites = { jerusalem rome santiago }
+	holy_sites = { cologne kent }
+	doctrines = {
+		# Hidden stock classification for Western Christian presentation.
+		special_doctrine_is_western_christian_faith
+	}
+}

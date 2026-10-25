@@ -85,7 +85,7 @@ R0013已实际通过前两阶段、两日全部61名成员归族及两种head建
 
 普通囚犯交互菜单先查询本场实际 keyed scripted-widget tree 与可见状态；菜单已显示时直接选择当前实际 key，不在同 revision 再调用 opener。只有菜单尚未显示且原生通道可用时才提交一次打开请求，随后独立 query。R0015 的同 revision 重复 opener 被 once 守卫正确拒绝，属于调用顺序错误；不修改 SDK、一次性或持久化合同，不重放已提交或结果未知的打开动作。
 
-主目标的−100唯一来源和三类理由另按原要求核对，非礼仪观察者的负例方向必须是`outsider→apostate`，不能用`Root→outsider`或反向记录替代。完成囚犯预览及上述读回后，才调用原跨信仰输入决议并签认phase 3。新增control不进入继任者迁移白名单，不改原23个marker含义；core新增`prisoner_control_ready`后共24个必需marker，其他case仍保留各自原输入及范围。
+主目标的−100唯一来源和三类理由另按原要求核对，非礼仪观察者的负例方向必须是`outsider→apostate`，不能用`Root→outsider`或反向记录替代。完成囚犯预览及上述读回后，才调用原跨信仰输入决议并签认phase 3。新增control不进入继任者迁移白名单，保留原24个marker含义；本次另加入`requested_head_cells`，core共25个必需marker，其他case仍保留各自原输入及范围。
 
 ### 两位真实 head 的后继 core 顺序（候选，未授继承资格）
 
@@ -198,7 +198,9 @@ R0003证明同handle退出0，但原正常闭场因宿主错误及缺少路由�
 
 宿主已经记录 error 时，每个队列 plan 只能放**一个**有全新 step ID 的 typed lifecycle step：`ck3_query_normal_exit_context_v1`、`ck3_request_normal_exit_v1` 或 `ck3_observe_normal_exit_v1`。正常退出 query 和 request 也必须分成两个独立 plan，不能合成“先 query 后 request”；礼仪 `cancel_draft` 等业务操作不在白名单。这里的正常退出 `prepare_confirmation` 是 `ck3_request_normal_exit_v1` 的 action，不能与前文礼仪工具的同名 operation 混用。该规则来自同一冻结 SDK 的 `normal_exit_host_terminal_v1.py:21–60`，文件 SHA `a0c07cb90e2be72f3f54802e17660d41a4c00d7baad40bd2a18e2c8d7d96922f`；失败宿主只允许完成原生命周期，原业务错误始终保留。
 
-2026-10-25 head边界补充：primary `binding_and_members` 全量通过后、旧Root尚未继承时，仅一次执行 `des_acceptance_head_cells_decision`。以实际INPUT_PRECHECK／INPUT_READY区分输入资格；缺Rite或未继承宗族化均NOT_READY，不放宽产品合同。保留Root `des_test_handover_actor/successor/old_house/old_dynasty/rite`、`des_test_singleton_actor/old_house/old_dynasty/rite` 实际引用，记录启动前后的原玩家、主头衔持有者、House、Dynasty及head。真实+2后按各新Rite读取全成员及同暂停帧SDK保存：handover旧House实际由B接任、A解除旧职位后绑定新族；singleton须存在真实存活新NPC founder及相同Rite／Faith／新House／新Dynasty，C同归绑定族，原单人旧House历史不追改。输入合格而结果不符为FAIL；未就绪不计分支通过。期间不直接设置产品字段、不换玩家、不重放决议；这些补充输入计入同一400日／9000秒原预算。
+2026-10-25 新head要求：phase1签字前的 primary `binding_and_members` 仍保留全部原守卫，另核初始实际提交actor与主头衔未变、本人为新House head和bound dynast。若另一个真实信徒／NPC曾中间建族，其actual dynasty_founder须仍存活且不再是最终head。名称须由实际Native／界面及独立Save比较真实字符串；纯loc key或源码表达式不算实际名称通过。两项预置CoA另留实际代表证据，通用自创Rite图标复制尚未完成，保持NOT_RUN。
+
+primary `binding_and_members` 全量通过后，在phase1仍等待时仅一次执行 `des_acceptance_head_cells_decision`；不能等phase2入口才准备，因为phase2另等待`requested_head_cells`。以实际INPUT_PRECHECK／INPUT_READY区分输入资格；缺Rite或未继承宗族化均NOT_READY，不放宽合同。保留Root `des_test_handover_actor/successor/old_house/old_dynasty/rite`、`des_test_singleton_actor/old_house/old_dynasty/rite`、`des_test_head_cells_capture_date`和两项`creation_date`。两项输入在同一immediate日期完成后，`.81`自动在真实+2观察；保存其实际`des_test_head_cells_readback_date`、原生帧、完整成员与同暂停帧SDK Save。handover旧House由真实B接任，A在新House实际为head且为bound dynast；singleton的C本人必须最终为新House head／bound dynast，真实NPC dynasty_founder保持存活、同Rite／Faith／House／Dynasty且非head。原玩家、主头衔、原House／Dynasty与head控制均保留。只有上述全量后态成立才输出`requested_head_cells`；输入不合格为NOT_READY，合格而结果不符为FAIL。先核真实当前日期，处理实际事件，不重放决议、补写产品或错过日期后改标签。phase1签认仍须已有primary恰好+1／+2两份全员Native＋Save；两head cell的+2是各自新输入日期，不能拿它替代primary +2。全部计入原400日／9000秒预算。
 
 
 2026-10-25 R0010操作顺序勘误（machine_id: desktop-3fevhd2-1c74096080）：每次日推进前先读原最新完成step的实际after_snapshot；已有active_event或pending_character_interaction时先按原生事件定义／实际显示选项处理，不能直接推进。即使只推进一日，也统一使用已审日推进捕获器：其开头守卫会在提交前停止并交Root处理。allow_event_boundary只允许本次推进中新出现的事件边界，不授权绕过开始时已有事件。R0010的guard9因Root漏处理+1事件而正确拒绝，诊断日期仍53144376、未执行+2名单或保存；不改共享守卫，不重放原推进。旧创建prepare参数误写也被前置拒绝、没有native dispatch，原失败回执保留。

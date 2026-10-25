@@ -143,9 +143,9 @@ final class ReleaseBuilderTest {
         Path source = Path.of(System.getProperty("dynastic.source")).toAbsolutePath().normalize();
         ReleaseProduct product = ReleaseProduct.official(source);
         ReleaseBuilder builder = new ReleaseBuilder();
-        assertEquals(18, StaticValidation.validate(product, source.getParent()).fileCount());
+        assertEquals(30, StaticValidation.validate(product, source.getParent()).fileCount());
         ReleaseBuilder.CheckResult checked = builder.check(product, source.getParent(), temporary.resolve("real-product"), REVISION, null);
-        assertEquals(18, checked.fileCount());
+        assertEquals(30, checked.fileCount());
         Map<String, Path> files = StaticValidation.inventory(temporary.resolve("real-product/one"), false);
         assertEquals(Set.copyOf(product.runtimeFiles()), files.keySet());
         assertTrue(files.keySet().stream().noneMatch(ReleaseProduct::sourceOnly));

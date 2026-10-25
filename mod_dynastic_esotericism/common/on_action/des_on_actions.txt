@@ -45,6 +45,15 @@ des_on_rite_updated = {
 	effect = {
 		if = {
 			limit = { has_global_variable = des_initialized }
+			# The native interface editor is the current Rite head. Claim any new
+			# binding before the member iteration can select another adherent.
+			save_scope_as = des_updated_rite
+			head_of_rite ?= {
+				if = {
+					limit = { is_alive = yes rite = scope:des_updated_rite faith = scope:des_updated_rite.faith }
+					des_ensure_own_rite_binding_effect = yes
+				}
+			}
 			des_sync_rite_effect = yes
 		}
 	}

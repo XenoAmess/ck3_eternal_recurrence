@@ -37,11 +37,14 @@
     {
       "id": "actual-members-and-same-faith-input",
       "when_markers": [
-        "DESAF: TEST PASS binding_and_members"
+        "DESAF: TEST PASS binding_and_members",
+        "DESAF: TEST PASS requested_head_cells"
       ],
       "requirements": [
         "actual_root_target_peer_child_outsider_ids_rite_dynasty_house_saved_readback",
         "all_living_created_rite_members_in_bound_dynasty_and_original_nonconverts_preserved",
+        "actual_initial_creator_and_both_head_cell_requesters_are_house_head_and_dynast_with_native_and_independent_save",
+        "actual_singleton_intermediate_npc_founder_alive_same_rite_but_not_final_head_and_root_identity_preserved",
         "actual_single_same_faith_test_decision_then_no_direct_product_state_writes"
       ]
     },

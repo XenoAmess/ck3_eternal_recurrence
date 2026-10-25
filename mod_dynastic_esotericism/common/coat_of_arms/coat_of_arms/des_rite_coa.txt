@@ -1,0 +1,16 @@
+﻿# Finite Rite icon mappings; each DDS is byte-identical to its Faith/Rite icon.
+# Textured emblems retain the supplied RGBA colors and alpha without recoloring.
+# No extra charges, authored background pattern, or unrelated heraldic elements.
+des_procreation_rite_coa = {
+	textured_emblem = {
+		texture = "des_procreation.dds"
+		instance = { position = { 0.5 0.5 } scale = { 1.0 1.0 } }
+	}
+}
+
+des_vivhite_rite_coa = {
+	textured_emblem = {
+		texture = "des_vivhite.dds"
+		instance = { position = { 0.5 0.5 } scale = { 1.0 1.0 } }
+	}
+}

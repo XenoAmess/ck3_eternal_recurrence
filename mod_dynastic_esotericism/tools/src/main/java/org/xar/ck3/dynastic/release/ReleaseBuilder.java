@@ -78,6 +78,7 @@ public final class ReleaseBuilder {
             StaticValidation.validateBytes(entry.path(), data);
         }
         StaticValidation.validateLocalization(product, staging);
+        SectPresetValidation.validate(product, staging);
         String version = StaticValidation.descriptorVersion(Files.readString(staging.resolve("descriptor.mod"), StandardCharsets.UTF_8));
         if (!version.equals(manifest.modVersion())) throw new IllegalArgumentException("manifest and descriptor versions differ");
         return new Verification(files.size(), version, manifest.gitSha());

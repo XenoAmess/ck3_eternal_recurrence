@@ -116,6 +116,9 @@ des_create_rite_dynasty_effect = {
 				scope:des_created_dynasty = {
 					set_variable = { name = des_bound_rite value = scope:des_binding_rite }
 				}
+				# Identity uses the exact new binding; it never assigns a character head.
+				scope:des_binding_rite = { des_apply_rite_identity_effect = yes }
+				scope:des_requested_dynasty_founder = { des_finalize_new_rite_head_effect = yes }
 				add_to_global_variable_list = { name = des_bound_rites target = scope:des_binding_rite }
 			}
 			else = {
@@ -129,6 +132,59 @@ des_create_rite_dynasty_effect = {
 		}
 	}
 	scope:des_binding_rite = { remove_variable = des_binding_in_progress }
+}
+
+# Character scope. Only the successful create_dynasty branch calls this effect.
+# Never run it from repair, member synchronization, re-enabling, or maintenance.
+des_finalize_new_rite_head_effect = {
+	if = {
+		limit = {
+			is_alive = yes
+			rite = scope:des_binding_rite
+			faith = scope:des_binding_rite.faith
+			scope:des_binding_rite = {
+				des_has_binding_trigger = yes
+				var:des_bound_dynasty = scope:des_created_dynasty
+				var:des_join_house = scope:des_created_house
+			}
+			scope:des_created_house = { house_dynasty = scope:des_created_dynasty }
+			scope:des_created_dynasty = {
+				dynast = scope:des_selected_dynasty_founder
+				# Fresh creation supplies one House; refuse any occupied other House.
+				NOT = { any_dynasty_member = { NOT = { house = scope:des_created_house } } }
+			}
+		}
+		# The real intermediate founder stays alive; only the requesting actor moves.
+		if = {
+			limit = { NOT = { house = scope:des_created_house } }
+			set_house = scope:des_created_house
+		}
+		if = {
+			limit = { house = scope:des_created_house dynasty = scope:des_created_dynasty }
+			scope:des_created_house = {
+				if = {
+					limit = { NOT = { house_head = scope:des_requested_dynasty_founder } }
+					set_house_head = scope:des_requested_dynasty_founder
+				}
+			}
+		}
+	}
+	# Preserve an explicit diagnosis instead of treating membership as head success.
+	if = {
+		limit = {
+			is_alive = yes
+			rite = scope:des_binding_rite
+			house = scope:des_created_house
+			dynasty = scope:des_created_dynasty
+			scope:des_created_house = { house_head = scope:des_requested_dynasty_founder }
+			scope:des_created_dynasty = { dynast = scope:des_requested_dynasty_founder }
+		}
+		scope:des_binding_rite = { remove_variable = des_creator_head_fault }
+	}
+	else = {
+		scope:des_binding_rite = { set_variable = { name = des_creator_head_fault value = yes } }
+		debug_log = "DES: new binding exists but requested actor is not its actual House head and Dynast"
+	}
 }
 
 # Character scope. Only a real other living member of this same old House may take over.

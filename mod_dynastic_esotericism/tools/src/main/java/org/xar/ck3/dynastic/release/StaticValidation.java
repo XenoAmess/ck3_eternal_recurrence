@@ -2,6 +2,7 @@ package org.xar.ck3.dynastic.release;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
@@ -10,7 +11,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashSet;
@@ -25,7 +25,6 @@ import java.util.regex.Pattern;
 public final class StaticValidation {
     private static final byte[] BOM = {(byte) 0xef, (byte) 0xbb, (byte) 0xbf};
     private static final Pattern VERSION = Pattern.compile("(?m)^[ \\t]*version[ \\t]*=[ \\t]*\"([^\"\\r\\n]+)\"[ \\t]*(?:#[^\\r\\n]*)?$");
-    private static final Pattern LOCALIZATION_KEY = Pattern.compile("(?m)^[ \\t]+([A-Za-z0-9_.-]+):[0-9]*[ \\t]+\"");
     // Same raw-entry and protected-token contract as tools/translate_localization_minimax.py.
     private static final Pattern RELEASE_ENTRY = Pattern.compile("^ ([^:\\s]+):0 \"((?:[^\"\\\\]|\\\\.)*)\"$");
     private static final Pattern ICU_PREFIX = Pattern.compile("^\\{[^{},]+,\\s*(?:plural|selectordinal|select)\\s*,");
@@ -39,6 +38,24 @@ public final class StaticValidation {
             "des_doctrine_dynastic_name", "des_doctrine_dynastic_desc", "doctrine_parameter_des_dynastic_membership",
             "trait_des_apostate", "trait_des_apostate_desc", "des_apostasy_opinion", "des_initialize_decision",
             "des_initialize_decision_desc", "des_initialize_decision_tooltip", "des_initialize_decision_confirm", "des_initialize_decision_effect");
+
+    private enum LocalizationFamily {
+        PRODUCT, SECTS, IDENTITY;
+        private Set<String> keys() {
+            return switch (this) {
+                case PRODUCT -> RELEASE_KEYS;
+                case SECTS -> SectPreset.localizationKeys();
+                case IDENTITY -> Set.of("des_rite_dynasty_name");
+            };
+        }
+        private String relative(ReleaseProduct.Language language) {
+            return switch (this) {
+                case PRODUCT -> language.relativePath();
+                case SECTS -> language.sectRelativePath();
+                case IDENTITY -> language.identityRelativePath();
+            };
+        }
+    }
 
     private StaticValidation() { }
 
@@ -65,6 +82,7 @@ public final class StaticValidation {
             validateBytes(entry.getKey(), data);
         }
         if (product.localizationMode() == ReleaseProduct.LocalizationMode.DEVELOPMENT) validateLocalization(product, product.source());
+        SectPresetValidation.validate(product, product.source());
         String descriptor = Files.readString(product.source().resolve("descriptor.mod"), StandardCharsets.UTF_8);
         CompatibilityTags.label(descriptor, repository);
         return new ValidationReport(files.size(), bytes, descriptorVersion(descriptor));
@@ -72,16 +90,22 @@ public final class StaticValidation {
 
     /** Product-local format certification only; no non-Chinese semantic or game qualification. */
     public static void validateLocalization(ReleaseProduct product, Path root) throws IOException {
-        if (product.localizationMode() == ReleaseProduct.LocalizationMode.DEVELOPMENT) {
-            Set<String> english = developmentKeys(root, ReleaseProduct.Language.ENGLISH);
-            Set<String> chinese = developmentKeys(root, ReleaseProduct.Language.SIMP_CHINESE);
-            if (!english.equals(chinese)) throw new IllegalArgumentException("English and Chinese localization keys differ");
-            return;
-        }
-        Map<String, String> english = releaseEntries(root, ReleaseProduct.Language.ENGLISH);
-        for (ReleaseProduct.Language language : ReleaseProduct.Language.values()) {
-            Map<String, String> entries = language == ReleaseProduct.Language.ENGLISH ? english : releaseEntries(root, language);
-            for (String key : RELEASE_KEYS) {
+        if (!product.productId().equals(ReleaseProduct.PRODUCT_ID)) return;
+        for (LocalizationFamily family : LocalizationFamily.values()) validateLocalizationFamily(product, root, family);
+    }
+
+    private static void validateLocalizationFamily(ReleaseProduct product, Path root, LocalizationFamily family) throws IOException {
+        Set<String> keys = family.keys();
+        Map<String, String> english = releaseEntries(root, ReleaseProduct.Language.ENGLISH, family);
+        List<ReleaseProduct.Language> languages = product.localizationMode() == ReleaseProduct.LocalizationMode.DEVELOPMENT
+                ? List.of(ReleaseProduct.Language.ENGLISH, ReleaseProduct.Language.SIMP_CHINESE) : List.of(ReleaseProduct.Language.values());
+        for (ReleaseProduct.Language language : languages) {
+            Map<String, String> entries = language == ReleaseProduct.Language.ENGLISH ? english : releaseEntries(root, language, family);
+            if (family == LocalizationFamily.SECTS) SectPresetValidation.validateLocalizationAliases(entries);
+            if (family == LocalizationFamily.IDENTITY && !"[des_identity_rite.GetNameNoTooltip]".equals(entries.get("des_rite_dynasty_name"))) {
+                throw new IllegalArgumentException("identity localization must use the bound Rite's native name: " + language);
+            }
+            for (String key : keys) {
                 if (language == ReleaseProduct.Language.SIMP_CHINESE && entries.get(key).isBlank()) {
                     throw new IllegalArgumentException("visible Chinese localization must not be empty: " + key);
                 }
@@ -92,14 +116,10 @@ public final class StaticValidation {
         }
     }
 
-    private static Set<String> developmentKeys(Path root, ReleaseProduct.Language language) throws IOException {
-        Path path = root.resolve(language.relativePath());
-        return Files.isRegularFile(path) ? localizationKeys(text(Files.readAllBytes(path)), language.header()) : Set.of();
-    }
-
-    private static Map<String, String> releaseEntries(Path root, ReleaseProduct.Language language) throws IOException {
-        byte[] raw = Files.readAllBytes(root.resolve(language.relativePath()));
-        validateBytes(language.relativePath(), raw);
+    private static Map<String, String> releaseEntries(Path root, ReleaseProduct.Language language, LocalizationFamily family) throws IOException {
+        String relative = family.relative(language);
+        byte[] raw = Files.readAllBytes(root.resolve(relative));
+        validateBytes(relative, raw);
         Map<String, String> result = new TreeMap<>();
         boolean header = false;
         for (String line : text(raw).split("\\R", -1)) {
@@ -115,8 +135,8 @@ public final class StaticValidation {
                 throw new IllegalArgumentException("duplicate release localization key: " + language + "/" + entry.group(1));
             }
         }
-        if (!header || !result.keySet().equals(RELEASE_KEYS)) {
-            throw new IllegalArgumentException("release localization requires the exact 15-key product contract: " + language);
+        if (!header || !result.keySet().equals(family.keys())) {
+            throw new IllegalArgumentException("release localization requires the exact " + family.keys().size() + "-key " + family + " contract: " + language);
         }
         return Map.copyOf(result);
     }
@@ -162,9 +182,7 @@ public final class StaticValidation {
 
     public static void validateBytes(String relative, byte[] data) throws CharacterCodingException {
         if (relative.endsWith(".dds")) {
-            if (data.length < 128 || data[0] != 'D' || data[1] != 'D' || data[2] != 'S' || data[3] != ' ') {
-                throw new IllegalArgumentException("invalid DDS header: " + relative);
-            }
+            validateDds(relative, data);
             return;
         }
         if (relative.endsWith(".png")) {
@@ -203,15 +221,39 @@ public final class StaticValidation {
         return root.relativize(path).toString().replace('\\', '/');
     }
 
-    private static Set<String> localizationKeys(String text, String header) {
-        if (!text.startsWith(header + "\n") && !text.startsWith(header + "\r\n")) {
-            throw new IllegalArgumentException("invalid localization header: " + header);
+    private static void validateDds(String relative, byte[] data) {
+        if (data.length < 128 || data[0] != 'D' || data[1] != 'D' || data[2] != 'S' || data[3] != ' ') throw new IllegalArgumentException("invalid DDS header: " + relative);
+        ByteBuffer header = ByteBuffer.wrap(data).order(ByteOrder.LITTLE_ENDIAN);
+        int flags = header.getInt(8);
+        int height = header.getInt(12);
+        int width = header.getInt(16);
+        int mipmaps = Math.max(1, header.getInt(28));
+        int pixelFlags = header.getInt(80);
+        int fourcc = header.getInt(84);
+        int bits = header.getInt(88);
+        if (header.getInt(4) != 124 || header.getInt(76) != 32 || (flags & 0x1007) != 0x1007
+                || width <= 0 || height <= 0 || width > 16384 || height > 16384 || (header.getInt(108) & 0x1000) == 0
+                || header.getInt(112) != 0 || header.getInt(24) > 1 || header.getInt(28) < 0
+                || mipmaps > 1 + (31 - Integer.numberOfLeadingZeros(Math.max(width, height)))) {
+            throw new IllegalArgumentException("invalid DDS dimensions, flags or mipmaps: " + relative);
         }
-        List<String> keys = new ArrayList<>();
-        LOCALIZATION_KEY.matcher(text).results().forEach(result -> keys.add(result.group(1)));
-        Set<String> unique = Set.copyOf(keys);
-        if (unique.isEmpty() || unique.size() != keys.size()) throw new IllegalArgumentException("empty or duplicate localization keys: " + header);
-        return unique;
+        int blockBytes = 0;
+        if ((pixelFlags & 4) != 0) {
+            blockBytes = switch (fourcc) {
+                case 0x31545844 -> 8; // DXT1
+                case 0x33545844, 0x35545844 -> 16; // DXT3, DXT5
+                default -> throw new IllegalArgumentException("unsupported DDS compression: " + relative);
+            };
+        } else if ((pixelFlags & 0x40) == 0 || bits != 32 || header.getInt(92) == 0 || header.getInt(96) == 0 || header.getInt(100) == 0) {
+            throw new IllegalArgumentException("unsupported DDS pixel layout: " + relative);
+        }
+        long payload = 0;
+        for (int level = 0; level < mipmaps; level++) {
+            payload = Math.addExact(payload, blockBytes == 0 ? (long) width * height * 4 : (long) ((width + 3) / 4) * ((height + 3) / 4) * blockBytes);
+            width = Math.max(1, width / 2);
+            height = Math.max(1, height / 2);
+        }
+        if (data.length != 128 + payload) throw new IllegalArgumentException("DDS pixel payload length differs from its header: " + relative);
     }
 
     private static void balanced(String text, String relative) {

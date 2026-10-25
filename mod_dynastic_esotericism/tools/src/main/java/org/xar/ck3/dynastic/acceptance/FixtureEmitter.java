@@ -43,6 +43,7 @@ public final class FixtureEmitter {
     private static final List<String> MARKERS = List.of(
             "DESAF: TEST PASS fixture_ready",
             "DESAF: TEST PASS binding_and_members",
+            "DESAF: TEST PASS requested_head_cells",
             "DESAF: TEST PASS same_faith_apostasy",
             "DESAF: TEST PASS prisoner_control_ready",
             "DESAF: TEST PASS cross_faith_apostasy",

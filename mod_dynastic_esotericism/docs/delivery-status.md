@@ -1,5 +1,9 @@
 # 制作与发布状态
 
+观察 2026-10-25T15:41Z（`machine_id: desktop-3fevhd2-1c74096080`）：用户恢复任务并追加两项独立信仰／同名礼仪、礼仪名称与纹章、建族后实际创建／改革者担任最终族长的要求；已确认新信仰归基督教大类。需求／测试版本2先落盘，0.2.0 候选实现及九语文案、用户图标已形成。两个预置纹章使用精确图标；任意自创礼仪原生无法直接复制图标时，按用户随后授权只随机生成一次宗族纹章并给默认 House 使用。尚未新开实机，未更新 Workshop。
+
+首轮 a20 默认 Maven 3.10.0、JDK25.0.4.1 实际构建运行24项测试，23通过／1失败／0跳过；唯一失败为新独立 Python AST 检查片段的 Windows 引号传递，已修复并单独核实际 Java textblock 生成后的语法，完整重跑待执行。原失败日志／原 Popen 结果位于 `C:/ck3-dynastic-esotericism-20261024/resume-builder-a20/`，未覆写。当前30文件开发包／51文件九语包为候选清单，不是已验收的新发布。新core仍须以R0016正常managed closure接续并另行取得存储与SCREEN资格，旧运行与冻结图不改。
+
 观察2026-10-25T13:30:38.536581Z（machine_id: desktop-3fevhd2-1c74096080）：按用户最新“先发布，再继续本地验证”指令，0.1.0初始公开测试版已发布到[Steam创意工坊3826991345](https://steamcommunity.com/sharedfiles/filedetails/?id=3826991345)。CreateItem与SubmitItemUpdate均实际EResult1，公共API读回公开状态、标题、完整说明、AppID与三个标签一致；更新日志网页HTTP429尚待补查，缓存下载/加载验收未执行。后台原生回执已确认恢复Steam离线。R0015签署核心前四阶段，保留+2日全员保存缺口；Root在同一revision重复打开已打开的决策菜单，被SDK正确拒绝，业务失败及闭场原件保留。后续先修复继承输入夹具和操作顺序，再继续长期、继承、cold/old验证；修复并验证后更新同一条目。完整业务未通过。见[首发实际记录](acceptance/first-publication-2026-10-25.json)、[R0015](acceptance/R0015-2026-10-25.json)。
 
 观察2026-10-25T02:55:27Z（machine_id: `desktop-3fevhd2-1c74096080`）：R0013实际通过核心前两阶段；创建后+1、+2日各61名原生信徒均由保存独立核为House12760→Dyn12156，未改信后代仍为House174→Dyn174。原族长交接给真实旧家族成员后建族，以及singleton生成并保留真实同礼仪成年创始人，两条分支均取得实际保存后态。正式创建、取消无副作用、两个教义的创建／编辑显示也通过。第三阶段尚缺合法囚犯的处决／驱逐选项预览，Root如实返回INCOMPLETE，没有提交不支持的监禁动作。Game0、host0、public2、keeper／allocator0、SCREEN8892，normal-close=true仅生命周期，完整核心仍未通过。当前总体约62%，完整矩阵、seed／cold／old和Workshop尚未完成。见[R0013实际证据](acceptance/R0013-2026-10-25.json)。下列较早观察保留其历史范围。

@@ -42,7 +42,7 @@ final class FixtureEmitterTest {
         assertEquals("authored-machine", decoded.path("machine_id").textValue());
         assertEquals(13, decoded.path("files").size());
         assertEquals(14, decoded.path("producer_source_pins").size());
-        assertEquals(24, decoded.path("receipt").path("required_markers").size());
+        assertEquals(25, decoded.path("receipt").path("required_markers").size());
         assertTrue(decoded.path("receipt").path("fixture_contains_business_effects").booleanValue());
         for (var entry : result.payload().files().entrySet()) {
             byte[] bytes = Files.readAllBytes(result.fixture().resolve(entry.getKey()));
@@ -141,11 +141,13 @@ final class FixtureEmitterTest {
         assertTrue(observation.path("heir_minimum_day_guard_validated").booleanValue());
         assertTrue(observation.path("heir_stock_faith_rite_input_validated").booleanValue());
         assertTrue(observation.path("separate_prisoner_control_custody_validated").booleanValue());
+        assertTrue(observation.path("requested_head_cells_readback_validated").booleanValue());
 
         for (String mutation : List.of("missing-head", "product-write", "pardon-copy",
                 "date-literal", "date-no-source", "date-same-day",
                 "heir-same-faith", "heir-no-faith-input", "heir-root-input", "heir-input-order",
-                "prison-main-target", "prison-no-reason", "prison-product-write")) {
+                "prison-main-target", "prison-no-reason", "prison-product-write",
+                "initial-missing-dynast", "singleton-npc-head", "head-readback-write")) {
             ProbeResult forbidden = probeFixture(current, baseline, mutation);
             assertNotEquals(0, forbidden.exitCode(), forbidden.output());
             assertEquals(switch (mutation) {
@@ -161,6 +163,9 @@ final class FixtureEmitterTest {
                 case "prison-main-target" -> "PRISON_CUSTODY_TARGET_CHANGED";
                 case "prison-no-reason" -> "PRISON_PRE_CUSTODY_REASON_MISSING";
                 case "prison-product-write" -> "PRISON_UNDECLARED_EFFECT";
+                case "initial-missing-dynast" -> "INITIAL_REQUESTED_HEAD_GUARD_MISSING";
+                case "singleton-npc-head" -> "SINGLETON_INTERMEDIATE_FOUNDER_GUARD_MISSING";
+                case "head-readback-write" -> "HEAD_CELL_READBACK_WRITES_PRODUCT";
                 default -> "SUCCESSOR_FLAG_TRANSFER_OUTSIDE_CONTRACT";
             }, new ObjectMapper().readTree(forbidden.output()).path("reason").textValue());
         }
@@ -286,6 +291,55 @@ final class FixtureEmitterTest {
                         yield row
                         if isinstance(row['value'],list):
                             yield from walk(row['value'])
+                initial=one(one(one(events,'des_acceptance.2',required=True),'immediate',required=True),'if',required=True)
+                initial_guard=one(initial,'limit',required=True)
+                initial_dynasty=one(initial_guard,'scope:des_test_dynasty',required=True)
+                def scoped_block(entries,key):
+                    blocks=[row['value'] for row in entries if row['key']==key and isinstance(row['value'],list)]
+                    if len(blocks)!=1:
+                        reject('HEAD_READBACK_SCOPED_BLOCK_MISSING',key=key)
+                    return blocks[0]
+                if mutation=='initial-missing-dynast':
+                    initial_dynasty[:]=[row for row in initial_dynasty if row['key']!='dynast']
+                require(setup,'set_variable',[{'key':'name','value':'des_test_initial_actor'},{'key':'value','value':'this'}],'INITIAL_REQUESTED_ACTOR_NOT_PINNED')
+                require(initial_guard,'this','var:des_test_initial_actor','INITIAL_REQUESTED_HEAD_GUARD_MISSING')
+                require(scoped_block(initial_guard,'house'),'house_head','root','INITIAL_REQUESTED_HEAD_GUARD_MISSING')
+                require(initial_dynasty,'dynast','root','INITIAL_REQUESTED_HEAD_GUARD_MISSING')
+                extended_effects=parsed['common/scripted_effects/des_acceptance_extended_effects.txt']
+                cell_reader=one(extended_effects,'des_acceptance_read_head_cells_effect',required=True)
+                cells=one(one(cell_reader,'if',required=True),'if',required=True)
+                cell_guard=one(cells,'limit',required=True)
+                require(cell_guard,'this','var:des_test_cell_root_actor','HEAD_CELL_ROOT_IDENTITY_MISSING')
+                for cell in ('handover','singleton'):
+                    actor='root.var:des_test_'+cell+'_actor'
+                    actor_guard=one(cell_guard,'var:des_test_'+cell+'_actor',required=True)
+                    require(scoped_block(actor_guard,'house'),'house_head',actor,'REQUESTED_HEAD_CELL_GUARD_MISSING')
+                    require(scoped_block(actor_guard,'dynasty'),'dynast',actor,'REQUESTED_HEAD_CELL_GUARD_MISSING')
+                npc=one(scoped_block(one(cell_guard,'var:des_test_singleton_actor',required=True),'dynasty'),'dynasty_founder',required=True)
+                if mutation=='singleton-npc-head':
+                    npc[:]=[row for row in npc if row['key']!='is_house_head']
+                    npc.append({'key':'is_house_head','value':'yes'})
+                for key,value in [('is_alive','yes'),('is_house_head','no'),('is_dynast','no')]:
+                    require(npc,key,value,'SINGLETON_INTERMEDIATE_FOUNDER_GUARD_MISSING')
+                if mutation=='head-readback-write':
+                    cells.append({'key':'set_house_head','value':'root'})
+                def observe_cells(entries):
+                    for row in entries:
+                        key,value=row['key'],row['value']
+                        if key in ('if','else'):
+                            observe_cells([entry for entry in value if entry['key']!='limit'])
+                        elif key=='set_variable':
+                            require(value,'name','des_test_head_cells_readback_date','HEAD_CELL_READBACK_WRITES_PRODUCT')
+                            require(value,'value','current_date','HEAD_CELL_READBACK_WRITES_PRODUCT')
+                        elif key=='add_character_flag':
+                            if value!='des_test_requested_head_cells_verified':
+                                reject('HEAD_CELL_READBACK_WRITES_PRODUCT',key=key)
+                        elif key!='debug_log':
+                            reject('HEAD_CELL_READBACK_WRITES_PRODUCT',key=key)
+                observe_cells(cell_reader)
+                cell_event=one(one(parsed['events/des_acceptance_extended_events.txt'],'des_acceptance_extended.81',required=True),'immediate',required=True)
+                if cell_event!=[{'key':'des_acceptance_read_head_cells_effect','value':'yes'}]:
+                    reject('HEAD_CELL_READBACK_ROUTE_CHANGED')
                 created=[row['value'] for row in setup if row['key']=='create_character' and one(row['value'],'save_scope_as')==control]
                 if len(created)!=1:
                     reject('PRISON_CONTROL_NOT_UNIQUE_INITIAL_NPC')
@@ -529,7 +583,7 @@ final class FixtureEmitterTest {
                 for entries in parsed.values():
                     forbidden_writes(entries)
                 required=json.loads(manifest.read_bytes())['receipt']['required_markers']
-                if len(required)!=24 or literals.count('DESAF: TEST PASS actual_primary_heir_successor')!=1 or literals.count('DESAF: TEST PASS prisoner_control_ready')!=1:
+                if len(required)!=25 or literals.count('DESAF: TEST PASS actual_primary_heir_successor')!=1 or literals.count('DESAF: TEST PASS prisoner_control_ready')!=1 or literals.count('DESAF: TEST PASS requested_head_cells')!=1:
                     reject('SUCCESSOR_MARKER_CONTRACT_CHANGED')
                 missing=sorted(set(required)-set(literals))
                 if missing:
@@ -544,7 +598,7 @@ final class FixtureEmitterTest {
                     outsider=json.loads(one(one(branch,'scope:des_test_outsider',required=True),'debug_log',required=True))
                     if [observer,outsider]!=guard['success_logs']:
                         reject('CHANGED_SCOPED_SUCCESS_MARKERS',event=event)
-                print(json.dumps({'status':'ACCEPTED','required_marker_count':len(required),'unchanged_guard_count':len(expected),'original_rite_readback_only_observes':True,'successor_reference_transfer_count':len(refs),'successor_history_transfer_count':len(flags),'heir_minimum_day_guard_validated':True,'heir_stock_faith_rite_input_validated':True,'separate_prisoner_control_custody_validated':True,'engine_semantics_verified':False}))
+                print(json.dumps({'status':'ACCEPTED','required_marker_count':len(required),'unchanged_guard_count':len(expected),'original_rite_readback_only_observes':True,'successor_reference_transfer_count':len(refs),'successor_history_transfer_count':len(flags),'heir_minimum_day_guard_validated':True,'heir_stock_faith_rite_input_validated':True,'separate_prisoner_control_custody_validated':True,'requested_head_cells_readback_validated':True,'engine_semantics_verified':False}))
                 """;
         Process process = new ProcessBuilder("python", "-B", "-X", "utf8", "-c", program,
                 repository().toString(), fixture.fixture().toString(), fixture.manifest().toString(), baseline.toString(), mutation)

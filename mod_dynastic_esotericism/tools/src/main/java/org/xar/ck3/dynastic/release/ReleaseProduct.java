@@ -27,25 +27,39 @@ public record ReleaseProduct(String productId, Path source, String tagPrefix, Li
         Language(String folder) { this.folder = folder; }
         public String header() { return "l_" + folder + ":"; }
         public String relativePath() { return "localization/" + folder + "/des_l_" + folder + ".yml"; }
+        public String sectRelativePath() { return "localization/" + folder + "/des_sects_l_" + folder + ".yml"; }
+        public String identityRelativePath() { return "localization/" + folder + "/des_identity_l_" + folder + ".yml"; }
     }
     private static final List<String> RUNTIME_FILES = List.of(
+            "common/coat_of_arms/coat_of_arms/des_rite_coa.txt",
             "common/decisions/des_initialization_decisions.txt",
             "common/on_action/des_on_actions.txt",
             "common/opinion_modifiers/des_opinions.txt",
             "common/religion/doctrine_group_types/des_doctrine_groups.txt",
             "common/religion/doctrine_types/des_doctrines.txt",
+            "common/religion/faith_types/des_faiths.txt",
+            "common/religion/rite_types/des_rites.txt",
             "common/scripted_effects/des_binding_effects.txt",
             "common/scripted_effects/des_character_effects.txt",
             "common/scripted_effects/des_crime_effects.txt",
             "common/scripted_effects/des_initialization_effects.txt",
+            "common/scripted_effects/des_identity_effects.txt",
             "common/scripted_effects/des_maintenance_effects.txt",
             "common/scripted_triggers/des_dynastic_triggers.txt",
             "common/traits/des_traits.txt",
             "descriptor.mod",
             "events/des_stock_family_conversion_events.txt",
+            "gfx/coat_of_arms/textured_emblems/des_procreation.dds",
+            "gfx/coat_of_arms/textured_emblems/des_vivhite.dds",
+            "gfx/interface/icons/faith/des_procreation.dds",
+            "gfx/interface/icons/faith/des_vivhite.dds",
             "gfx/interface/icons/faith_doctrine_groups/des_dynastic_membership.dds",
             "localization/english/des_l_english.yml",
+            "localization/english/des_identity_l_english.yml",
+            "localization/english/des_sects_l_english.yml",
             "localization/simp_chinese/des_l_simp_chinese.yml",
+            "localization/simp_chinese/des_identity_l_simp_chinese.yml",
+            "localization/simp_chinese/des_sects_l_simp_chinese.yml",
             "thumbnail.png");
 
     public ReleaseProduct {
@@ -82,10 +96,12 @@ public record ReleaseProduct(String productId, Path source, String tagPrefix, Li
         return new ReleaseProduct(PRODUCT_ID, source, TAG_PREFIX, files, mode);
     }
 
-    /** These seven known source files do not enter or gate the ordinary two-language build. */
+    /** These 21 reviewed foreign-language source files do not gate the two-language build. */
     public static Set<String> additionalLocalizationFiles() {
-        return Set.of(Language.FRENCH.relativePath(), Language.GERMAN.relativePath(), Language.JAPANESE.relativePath(),
-                Language.KOREAN.relativePath(), Language.POLISH.relativePath(), Language.RUSSIAN.relativePath(), Language.SPANISH.relativePath());
+        return java.util.Arrays.stream(Language.values())
+                .filter(language -> language != Language.ENGLISH && language != Language.SIMP_CHINESE)
+                .flatMap(language -> java.util.stream.Stream.of(language.relativePath(), language.sectRelativePath(), language.identityRelativePath()))
+                .collect(java.util.stream.Collectors.toUnmodifiableSet());
     }
 
     public static String relativePath(String raw) {

@@ -1,0 +1,138 @@
+{
+  "schema": "des-rite-identity-random-fallback-source-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-25T15:42:02.854747+00:00",
+  "status": "SOURCE_PREPARED_RUNTIME_UNACCEPTED",
+  "authorization": {
+    "user_text": "任意自创礼仪的图标复制，如果确定无法使用原宗教的图标，允许实现为按照游戏机制随机新的宗族图标。",
+    "scope": "Latest user instruction in the active parent task. Exact arbitrary Rite image copying still has no qualified script entry; native random Dynasty CoA is now an authorized fallback."
+  },
+  "executable": {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "bytes": 101040248,
+    "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "image_base": "0x140000000"
+  },
+  "native_generate_effect": {
+    "effect_vtable_rva": "0x483d2b8",
+    "RTTI": {
+      "name": ".?AVCGenerateCoAEffect@@",
+      "COL_rva": "0x4ebb320",
+      "type_descriptor_rva": "0x5a728b8"
+    },
+    "scope_mask_low_hex": "0x1c0010",
+    "scope_mask_high_hex": "0x8",
+    "required_supported_types": {
+      "dynasty": 19,
+      "dynasty_house": 20
+    },
+    "actual_generation_entry_rva": "0x2cd8220",
+    "dynasty_generation_branch_rva": "0x2cd8516",
+    "house_generation_branch_rva": "0x2cd8434"
+  },
+  "source_pins": [
+    {
+      "path": "game/common/scripted_effects/00_decisions_effects.txt",
+      "bytes": 92722,
+      "sha256": "a30e06ea5c3c3c0cc24e8be823600f12a5f5cb0caf3fa52c3ca98648b0f8f2d5"
+    },
+    {
+      "path": "game/events/dlc/tgp/tgp_japan_decision_events.txt",
+      "bytes": 102585,
+      "sha256": "ba27e88b6eef9226f44d0ecc4f645dcdcf5ff2fd91dc42199a4be452031a535f"
+    },
+    {
+      "path": "game/common/coat_of_arms/template_lists/colored_emblem_lists.txt",
+      "bytes": 147804,
+      "sha256": "d0644f76ec93c1fa50ca189362a6b08cf1fe084e14af1e8511886c00c79a1502"
+    },
+    {
+      "path": "game/common/coat_of_arms/coat_of_arms/03_religious_icons.txt",
+      "bytes": 26194,
+      "sha256": "4241c92f14fb9342108ed12d5287baa1760d67865aa8fec43742eef6e9022a81"
+    },
+    {
+      "path": "game/common/coat_of_arms/template_lists/coa_templates.txt",
+      "bytes": 29173,
+      "sha256": "52d7dbfcd7115d9f48a8e06d9d46b4b845053573021f2a53ed271b5eaaeab554"
+    }
+  ],
+  "binary_slices": [
+    {
+      "label": "supported-scope mask",
+      "rva": "0x2cd7b20",
+      "file_offset": "0x2cd6f20",
+      "bytes": 31,
+      "hex": "48c7420800000000488bc248c70210000c0048834a080848810a00001000c3"
+    },
+    {
+      "label": "scope dispatch",
+      "rva": "0x2cd8220",
+      "file_offset": "0x2cd7620",
+      "bytes": 90,
+      "hex": "48895c2408488974241848897c242055488bec4883ec304c8b12488bf24c8bd9450fb70a458bc14183e8050f84a70300004183e80e0f84bb0200004183e8010f84cf0100004183e8010f84ec0000004183f82f0f853404000041"
+    },
+    {
+      "label": "House generation/write",
+      "rva": "0x2cd8434",
+      "file_offset": "0x2cd7834",
+      "bytes": 226,
+      "hex": "4183f9147506418b5208eb05baffffffff488b05a45604034885c074238bca81e1ffffff003b482c7316488b40204803c9488b7cc8084885ff74053957107407488b3d6d560403418b5b5083fbff750d0f1005c5b276010f1145f0eb27e84a232b018bd3488bc8e830222b0148837818108b48107203488b00488945f0894df8c645fc004c8b4628488d45f00f10004c8d4df0488bd7488d4d180f2945f0e84953f5ff8b97640100008b5d1883faff741f3bd3741b488b056007f902488b88a00000004881c1b0660300488b01ff5038899f64010000c6877c02000001e997010000"
+    },
+    {
+      "label": "Dynasty generation/write",
+      "rva": "0x2cd8516",
+      "file_offset": "0x2cd7916",
+      "bytes": 226,
+      "hex": "4183f9137506418b5208eb05baffffffff488b054a5904034885c074238bca81e1ffffff003b482c7316488b40204803c9488b7cc8084885ff74053957107407488b3dcb580403418b5b5083fbff750d0f1005e3b176010f1145f0eb27e868222b018bd3488bc8e84e212b0148837818108b48107203488b00488945f0894df8c645fc004c8b4628488d45f00f10004c8d4df0488bd7488d4d180f2945f0e89750f5ff8b97ac0000008b5d1883faff741f3bd3741b488b057e06f902488b88a00000004881c1b0660300488b01ff5038899fac000000c687d000000001e9b5000000"
+    },
+    {
+      "label": "effect documentation",
+      "rva": "0x483ce60",
+      "file_offset": "0x483bc60",
+      "bytes": 176,
+      "hex": "47656e657261746573206120636f6174206f662061726d7320666f72207468652073636f706564206c616e646564207469746c652c2064796e61737479206f7220686f7573650a0967656e65726174655f636f61203d207965730a0967656e65726174655f636f61203d206d795f636f615f74656d706c6174655f6c69737420232075736520436f412074656d706c61746520666f7220737065636966696320737562736574206f6620436f41730000"
+    }
+  ],
+  "stock_cross_type_copy_evidence": {
+    "path": "game/events/dlc/tgp/tgp_japan_decision_events.txt",
+    "house_scope_line": 2022,
+    "statement_line": 2024,
+    "statement": "set_coa = dynasty:japanese_minamoto_seiwa",
+    "second_house_scope_line": 2064,
+    "second_statement_line": 2066,
+    "second_statement": "set_coa = dynasty:japanese_taira_kanmu"
+  },
+  "source_religion_icon_assessment": {
+    "direct_original_RGBA_icon_binding_qualified": false,
+    "stock_religion_icons_list": "Finite Faith has_icon -> colored ce_religion_*.dds mappings, with ce_star_08 fallback; religious templates use colored_emblem and random colors. This does not directly bind the original Faith/Rite icon texture.",
+    "chosen_authorized_path": "Generate exactly once in the bound Dynasty, then House set_coa from that same bound Dynasty scope."
+  },
+  "current_source": {
+    "path": "mod_dynastic_esotericism/common/scripted_effects/des_identity_effects.txt",
+    "bytes": 1801,
+    "sha256": "c8a930dc6c7a3997868e593716f19a95abeef9216b1adee22a2841f6222663a6"
+  },
+  "format_verification": {
+    "actual_exit_code": 0,
+    "UTF8_BOM": true,
+    "balanced_script_braces": true,
+    "single_native_generate_coa_call": true,
+    "House_copies_bound_Dynasty_scope": true,
+    "two_exact_preset_branches_retained": true,
+    "unsupported_flag_new_write_removed": true,
+    "scope": "Finite format/grammar and source contract checks only."
+  },
+  "runtime_actions": {
+    "Game_launched": false,
+    "memory_attached": false,
+    "Steam_state_changed": false,
+    "Maven_run": false,
+    "Git_commit_created": false
+  },
+  "retention": {
+    "review_at_utc": "2026-11-01T00:00:00Z",
+    "reason": "Small source pins for the active user-authorized random fallback; reassess after actual save/cold acceptance."
+  }
+}
+

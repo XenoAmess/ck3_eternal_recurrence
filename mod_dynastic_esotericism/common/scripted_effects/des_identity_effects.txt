@@ -1,0 +1,39 @@
+﻿# Rite scope. Call once after creating a valid native Dynasty/House binding.
+# Names use the actual Rite object, including dynamically created/custom-named Rites.
+# Exact icon CoAs are finite presets; other Rites use the approved native generator.
+# Runtime identity and rendering remain unaccepted until actual save/readback.
+des_apply_rite_identity_effect = {
+	if = {
+		limit = {
+			exists = var:des_bound_dynasty
+			exists = var:des_join_house
+			var:des_join_house.house_dynasty = var:des_bound_dynasty
+			var:des_bound_dynasty.var:des_bound_rite = this
+		}
+		save_scope_as = des_identity_rite
+		var:des_bound_dynasty = { set_dynasty_name = des_rite_dynasty_name }
+		var:des_join_house = { set_house_name = des_rite_dynasty_name }
+		if = {
+			limit = { this = rite:des_procreation_rite }
+			var:des_bound_dynasty = { set_coa = des_procreation_rite_coa }
+			var:des_join_house = { set_coa = des_procreation_rite_coa }
+		}
+		else_if = {
+			limit = { this = rite:des_vivhite_rite }
+			var:des_bound_dynasty = { set_coa = des_vivhite_rite_coa }
+			var:des_join_house = { set_coa = des_vivhite_rite_coa }
+		}
+		else = {
+			# No qualified direct Rite/Faith image-to-CoA binding exists here.
+			# Generate once on the Dynasty, then copy that exact object to its House.
+			var:des_bound_dynasty = { generate_coa = yes }
+			var:des_join_house = { set_coa = scope:des_identity_rite.var:des_bound_dynasty }
+			debug_log = "DES: requested one native generated Dynasty CoA and copied it to the House under the user-authorized random fallback."
+		}
+		# Clear the obsolete source-version diagnostic; this path now has a fallback.
+		remove_variable = des_rite_coa_unsupported
+	}
+	else = {
+		debug_log = "DES: Rite identity not applied because the persisted Dynasty/House binding is missing or conflicts."
+	}
+}

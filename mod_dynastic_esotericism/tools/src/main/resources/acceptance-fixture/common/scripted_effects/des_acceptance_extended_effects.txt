@@ -288,6 +288,7 @@ des_acceptance_prepare_head_cells_effect = {
         }
         add_character_flag = des_test_head_cells_started
         save_scope_as = des_test_head_cells_root
+        set_variable = { name = des_test_head_cells_capture_date value = current_date }
         set_variable = { name = des_test_cell_root_actor value = this }
         set_variable = { name = des_test_cell_root_title value = primary_title }
         set_variable = { name = des_test_cell_root_house value = house }
@@ -345,6 +346,7 @@ des_acceptance_prepare_head_cells_effect = {
                     scope:des_test_handover_actor = { rite = scope:des_test_handover_rite }
                 }
                 set_variable = { name = des_test_handover_rite value = scope:des_test_handover_rite }
+                set_variable = { name = des_test_handover_creation_date value = current_date }
                 add_character_flag = des_test_handover_input_ready
                 debug_log = "DESAF: INPUT_READY stock_handover_cell"
             }
@@ -390,6 +392,7 @@ des_acceptance_prepare_head_cells_effect = {
                     scope:des_test_singleton_actor = { rite = scope:des_test_singleton_rite }
                 }
                 set_variable = { name = des_test_singleton_rite value = scope:des_test_singleton_rite }
+                set_variable = { name = des_test_singleton_creation_date value = current_date }
                 add_character_flag = des_test_singleton_input_ready
                 debug_log = "DESAF: INPUT_READY stock_singleton_cell"
             }
@@ -423,8 +426,100 @@ des_acceptance_prepare_head_cells_effect = {
                 trigger_else = { NOT = { exists = dynasty.dynast } }
             }
             debug_log = "DESAF: INPUT_READY root_identity_preserved"
+            # Both disclosed inputs above execute in this same immediate/date.
+            # The delayed event only observes; Root still pins Native and Save.
+            trigger_event = { id = des_acceptance_extended.81 days = 2 }
         }
         else = { debug_log = "DESAF: INPUT_NOT_READY root_identity_preserved" }
     }
     else = { debug_log = "DESAF: INPUT_NOT_READY stock_head_cells_root_precondition" }
+}
+
+# Observation only. Never fix the product while deciding whether these cells pass.
+des_acceptance_read_head_cells_effect = {
+    set_variable = { name = des_test_head_cells_readback_date value = current_date }
+    if = {
+        limit = {
+            has_character_flag = des_test_handover_input_prechecked
+            has_character_flag = des_test_handover_input_ready
+            has_character_flag = des_test_singleton_input_prechecked
+            has_character_flag = des_test_singleton_input_ready
+            exists = var:des_test_handover_actor
+            exists = var:des_test_handover_successor
+            exists = var:des_test_handover_old_house
+            exists = var:des_test_handover_old_dynasty
+            exists = var:des_test_handover_rite
+            exists = var:des_test_singleton_actor
+            exists = var:des_test_singleton_old_house
+            exists = var:des_test_singleton_old_dynasty
+            exists = var:des_test_singleton_rite
+        }
+        if = {
+            limit = {
+                this = var:des_test_cell_root_actor
+                this = global_var:des_test_extended_owner
+                is_ai = no
+                primary_title = var:des_test_cell_root_title
+                primary_title = { holder = root }
+                house = var:des_test_cell_root_house
+                dynasty = var:des_test_cell_root_dynasty
+                house = { house_head = root.var:des_test_cell_root_house_head }
+                dynasty = { dynast = root.var:des_test_cell_root_dynast }
+                var:des_test_handover_actor = {
+                    is_alive = yes
+                    rite = root.var:des_test_handover_rite
+                    house = root.var:des_test_handover_rite.var:des_join_house
+                    dynasty = root.var:des_test_handover_rite.var:des_bound_dynasty
+                    NOT = { house = root.var:des_test_handover_old_house }
+                    NOT = { dynasty = root.var:des_test_handover_old_dynasty }
+                    house = { house_head = root.var:des_test_handover_actor }
+                    dynasty = { dynast = root.var:des_test_handover_actor dynasty_founder = root.var:des_test_handover_actor }
+                }
+                var:des_test_handover_successor = {
+                    is_alive = yes
+                    house = root.var:des_test_handover_old_house
+                    dynasty = root.var:des_test_handover_old_dynasty
+                    rite = root.var:des_test_source_rite
+                }
+                var:des_test_handover_old_house = { house_head = root.var:des_test_handover_successor house_dynasty = root.var:des_test_handover_old_dynasty }
+                var:des_test_handover_rite = {
+                    des_has_active_binding_trigger = yes
+                    NOT = { has_variable = des_creator_head_fault }
+                    faith = { NOT = { any_faith_character = { is_alive = yes rite = root.var:des_test_handover_rite NOT = { dynasty = root.var:des_test_handover_rite.var:des_bound_dynasty } } } }
+                }
+                var:des_test_singleton_actor = {
+                    is_alive = yes
+                    rite = root.var:des_test_singleton_rite
+                    house = root.var:des_test_singleton_rite.var:des_join_house
+                    dynasty = root.var:des_test_singleton_rite.var:des_bound_dynasty
+                    NOT = { house = root.var:des_test_singleton_old_house }
+                    NOT = { dynasty = root.var:des_test_singleton_old_dynasty }
+                    house = { house_head = root.var:des_test_singleton_actor }
+                    dynasty = {
+                        dynast = root.var:des_test_singleton_actor
+                        dynasty_founder = {
+                            is_alive = yes
+                            is_adult = yes
+                            rite = root.var:des_test_singleton_rite
+                            faith = root.var:des_test_singleton_rite.faith
+                            house = root.var:des_test_singleton_rite.var:des_join_house
+                            dynasty = root.var:des_test_singleton_rite.var:des_bound_dynasty
+                            NOT = { this = root.var:des_test_singleton_actor }
+                            is_house_head = no
+                            is_dynast = no
+                        }
+                    }
+                }
+                var:des_test_singleton_rite = {
+                    des_has_active_binding_trigger = yes
+                    NOT = { has_variable = des_creator_head_fault }
+                    faith = { NOT = { any_faith_character = { is_alive = yes rite = root.var:des_test_singleton_rite NOT = { dynasty = root.var:des_test_singleton_rite.var:des_bound_dynasty } } } }
+                }
+            }
+            add_character_flag = des_test_requested_head_cells_verified
+            debug_log = "DESAF: TEST PASS requested_head_cells"
+        }
+        else = { debug_log = "DESAF: TEST FAIL requested_head_cells" }
+    }
+    else = { debug_log = "DESAF: NOT_READY requested_head_cells_input" }
 }

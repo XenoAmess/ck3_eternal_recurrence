@@ -63,7 +63,7 @@ des_acceptance_extended.10 = {
 			limit = {
 				rite = scope:des_test_primary
 				scope:des_test_second_rite = { des_has_active_binding_trigger = yes NOT = { this = scope:des_test_primary } NOT = { var:des_bound_dynasty = scope:des_test_dynasty } }
-				scope:des_test_second_founder = { is_alive = yes rite = scope:des_test_second_rite dynasty = scope:des_test_second_rite.var:des_bound_dynasty }
+				scope:des_test_second_founder = { is_alive = yes rite = scope:des_test_second_rite dynasty = scope:des_test_second_rite.var:des_bound_dynasty house = scope:des_test_second_rite.var:des_join_house house = { house_head = scope:des_test_second_founder } dynasty = { dynast = scope:des_test_second_founder } }
 				scope:des_test_second_observer = { is_alive = yes rite = scope:des_test_second_rite dynasty = scope:des_test_second_rite.var:des_bound_dynasty }
 				scope:des_test_second_target = { is_alive = yes rite = scope:des_test_second_rite dynasty = scope:des_test_second_rite.var:des_bound_dynasty }
 			}
@@ -376,4 +376,11 @@ des_acceptance_extended.80 = {
         }
         else = { debug_log = "DESAF: NOT_READY staged_predecessor_death" }
     }
+}
+
+# Both prepared head cells are observed at their same-immediate capture plus2.
+# This event never creates a binding, moves a character, or assigns a head.
+des_acceptance_extended.81 = {
+    hidden = yes
+    immediate = { des_acceptance_read_head_cells_effect = yes }
 }

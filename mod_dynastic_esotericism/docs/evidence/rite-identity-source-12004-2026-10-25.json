@@ -1,0 +1,131 @@
+{
+  "schema": "des-rite-identity-source-research-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-25T15:24:16.734295+00:00",
+  "status": "SOURCE_PREPARATION_RUNTIME_UNACCEPTED",
+  "executable": {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "bytes": 101040248,
+    "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "image_base": "0x140000000"
+  },
+  "source_pins": [
+    {
+      "path": "game/common/scripted_effects/10_dlc_tgp_japan_scripted_effects.txt",
+      "bytes": 158095,
+      "sha256": "cf6fa3ec4e072dc3ec0bb79985443860f868536e120d1b88d9ca64eb4850022f"
+    },
+    {
+      "path": "game/localization/english/dlc/tgp/dlc_tgp_japan_decision_events_l_english.yml",
+      "bytes": 20052,
+      "sha256": "1526ef5777ae62779ec2d1eb9f599ce6af0b710d172dee11a3a0ef7d901f8ab1"
+    },
+    {
+      "path": "game/gui/window_faith.gui",
+      "bytes": 150682,
+      "sha256": "67924e58ccba26d95853ac48af35d91a774f5ce6d2e7f32a0a033de3b9d51521"
+    },
+    {
+      "path": "game/common/coat_of_arms/coat_of_arms/default.txt",
+      "bytes": 211,
+      "sha256": "efbb46cf4ae23d2b48635a03f0bb9fdb6070a34f491294b0967f8a3ecca31142"
+    },
+    {
+      "path": "game/common/coat_of_arms/template_lists/colored_emblem_lists.txt",
+      "bytes": 147804,
+      "sha256": "d0644f76ec93c1fa50ca189362a6b08cf1fe084e14af1e8511886c00c79a1502"
+    },
+    {
+      "path": "game/common/coat_of_arms/dynamic_definitions/_dynamic_definitions.info",
+      "bytes": 776,
+      "sha256": "c65e2b9e6e7b9e9ad5ec45d419ae1d2f709ea17e3d65b3a2181e1b5aff657c6d"
+    },
+    {
+      "path": "game/common/religion/rite_icons/_rite_icons.info",
+      "bytes": 824,
+      "sha256": "a30f48f8130e4ec6e84db3dbcb6f0211cc40c60e3798124aab930c5f28477ca7"
+    }
+  ],
+  "binary_slices": [
+    {
+      "label": "has_icon supported-scope-mask getter",
+      "rva": "0xa0a850",
+      "file_offset": "0xa09c50",
+      "bytes": 14,
+      "hex": "0f1005e95ea203488bc20f1102c3"
+    },
+    {
+      "label": "has_icon supported-scope mask data",
+      "rva": "0x4430740",
+      "file_offset": "0x442f540",
+      "bytes": 16,
+      "hex": "00100000000000000000000000000000"
+    },
+    {
+      "label": "has_icon evaluator; exact type 13 and Faith icon string",
+      "rva": "0xa0aaa0",
+      "file_offset": "0xa09ea0",
+      "bytes": 112,
+      "hex": "488b024c8bc16683380d75058b5008eb05baffffffff488b05433831054885c074238bca81e1ffffff003b482c7316488b40204803c9488b44c8084885c074053950087407488b05f43731054983785810498d5040488d88f00100007203488b1248837918107203488b09e9a0275603"
+    },
+    {
+      "label": "textured-emblem fixed VFS prefix",
+      "rva": "0x3502342",
+      "file_offset": "0x3501742",
+      "bytes": 21,
+      "hex": "458d4622488d15eb703f01488d4c2460e8593a35fd"
+    },
+    {
+      "label": "set_coa native documentation",
+      "rva": "0x483cf10",
+      "file_offset": "0x483bd10",
+      "bytes": 183,
+      "hex": "536574732074686520636f6174206f662061726d73206f662061206c616e646564207469746c652c2064796e617374792c206f7220686f75736520746f207468652072696768742068616e64207369646520636f6174206f662061726d73206f722074686174206f6620616e206f626a656374206f66207468652073616d6520747970650a7365745f636f61203d206b5f656e676c616e640a7365745f636f61203d2073636f70653a6e65775f636f6100000000000000"
+    },
+    {
+      "label": "dynasty and house name effect documentation",
+      "rva": "0x487c2b8",
+      "file_offset": "0x487b0b8",
+      "bytes": 184,
+      "hex": "536574732064796e6173747920686f757365206e616d650a7365745f686f7573655f6e616d653d3c64796e616d69635f6465736372697074696f6e3e000000007365745f686f7573655f6e616d650000536574732064796e61737479206e616d650a7365745f64796e617374795f6e616d653d3c64796e616d69635f6465736372697074696f6e3e00000000000000007365745f64796e617374795f6e616d650000000000000000536574732064796e6173747920686f75"
+    },
+    {
+      "label": "textured-emblem literal VFS prefix",
+      "rva": "0x48f9438",
+      "file_offset": "0x48f8238",
+      "bytes": 35,
+      "hex": "6766782f636f61745f6f665f61726d732f74657874757265645f656d626c656d732f00"
+    }
+  ],
+  "exact_nul_name_counts": {
+    "create_dynamic_coa": 0,
+    "set_rite_icon": 0,
+    "rite_has_icon": 0,
+    "has_icon": 1,
+    "generate_coa": 1,
+    "set_coa": 4
+  },
+  "runtime_actions": {
+    "Game_launched": false,
+    "memory_attached": false,
+    "Steam_state_changed": false,
+    "Workshop_written": false
+  },
+  "verification": {
+    "actual_exit_code": 0,
+    "UTF8_BOM_files_checked": 11,
+    "nine_language_exact_key_and_token_contract": true,
+    "balanced_script_files_checked": 2,
+    "native_binary_slices_rechecked": 7,
+    "source_file_pins_rechecked": 7,
+    "identity_runtime_text_bytes": 2721,
+    "scope": "Read-only format, localization and source-pin checks only; no gameplay, CoA rendering or saved identity assertions executed."
+  },
+  "scope": "Finite offline inspection; native entry existence is not gameplay, save or visual acceptance. Arbitrary dynamic Rite icon copying remains unsupported by this implementation.",
+  "name_count_scope": "Exact bytes ending in NUL; documentation suffixes can also count. Zero counts are supplementary negative evidence, not a proof that no indirect native mechanism exists.",
+  "retention": {
+    "review_at_utc": "2026-11-01T00:00:00Z",
+    "reason": "Current source implementation and unresolved arbitrary dynamic Rite CoA requirement; retain the small pins while this boundary remains active."
+  }
+}
+

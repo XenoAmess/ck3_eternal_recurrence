@@ -1,4 +1,4 @@
-# Fixture aliases never write des_* product binding/trait/relationship state.
+﻿# Fixture aliases never write des_* product binding/trait/relationship state.
 # Disclosed original-game input, not an interaction submission or payment receipt.
 # Called only by fresh setup or the explicit first-head/successor edit preparation.
 # These three fixture routes supply none of the six optional interaction scopes.

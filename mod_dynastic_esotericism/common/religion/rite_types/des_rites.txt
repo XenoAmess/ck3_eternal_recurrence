@@ -1,0 +1,97 @@
+﻿# Exact user-requested presets. Stock picker restrictions remain unchanged.
+# See docs/2026-10-25-sect-presets.md for source keys, DLC gates and live limits.
+des_procreation_rite = {
+	name = des_procreation_rite
+	desc = des_procreation_rite_desc
+	faith = des_procreation_faith
+	create = yes
+	convert = yes
+	color = { 0.75 0.35 0.55 }
+	icon = des_procreation
+	tenets = {
+		tenet_be_fruitful_and_multiply
+		tenet_carnal_exaltation
+		tenet_sacred_childbirth
+	}
+	doctrines = {
+		doctrine_gender_equal
+		doctrine_pluralism_righteous
+		doctrine_theocracy_temporal
+		doctrine_temporal_head
+		doctrine_pilgrimage_encouraged
+		doctrine_polytheist
+		des_doctrine_dynastic
+		doctrine_concubines
+		doctrine_divorce_allowed
+		doctrine_bastardry_none
+		doctrine_consanguinity_unrestricted
+		doctrine_homosexuality_accepted
+		doctrine_deviancy_virtuous
+		doctrine_adultery_men_accepted
+		doctrine_adultery_women_accepted
+		doctrine_kinslaying_extended_family_crime
+		doctrine_witchcraft_virtuous
+		doctrine_clerical_function_recruitment
+		doctrine_clerical_gender_either
+		doctrine_clerical_marriage_allowed
+		doctrine_clerical_succession_temporal_appointment
+		doctrine_funeral_sky_burial
+		doctrine_anointment_permitted
+		doctrine_monasticism_encouraged
+		doctrine_sacraments_central
+
+		special_doctrine_is_jewish_faith
+		special_doctrine_is_christian_faith
+		special_doctrine_is_islamic_faith
+		special_doctrine_is_sinitic_faith
+		special_doctrine_is_eastern_faith
+		special_doctrine_is_gnostic_faith
+		special_doctrine_jizya
+		special_doctrine_pope_blessing
+	}
+}
+
+des_vivhite_rite = {
+	name = des_vivhite_rite
+	desc = des_vivhite_rite_desc
+	faith = des_vivhite_faith
+	create = yes
+	convert = yes
+	color = { 0.85 0.85 0.95 }
+	icon = des_vivhite
+	tenets = {
+		tenet_warmonger
+		tenet_miles_christi
+		tenet_pursuit_of_power
+	}
+	doctrines = {
+		doctrine_gender_equal
+		doctrine_pluralism_righteous
+		doctrine_theocracy_temporal
+		doctrine_temporal_head
+		doctrine_pilgrimage_encouraged
+		doctrine_polytheist
+		des_doctrine_dynastic
+		doctrine_concubines
+		doctrine_divorce_allowed
+		doctrine_bastardry_none
+		doctrine_consanguinity_unrestricted
+		doctrine_homosexuality_accepted
+		doctrine_deviancy_virtuous
+		doctrine_adultery_men_accepted
+		doctrine_adultery_women_accepted
+		doctrine_kinslaying_extended_family_crime
+		doctrine_witchcraft_virtuous
+		doctrine_clerical_function_recruitment
+		doctrine_clerical_gender_either
+		doctrine_clerical_marriage_allowed
+		doctrine_clerical_succession_temporal_appointment
+		doctrine_funeral_sky_burial
+		doctrine_anointment_permitted
+		doctrine_monasticism_encouraged
+		doctrine_sacraments_central
+
+		special_doctrine_jizya
+		special_doctrine_pope_blessing
+	}
+}
