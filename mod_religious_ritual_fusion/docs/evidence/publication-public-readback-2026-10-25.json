@@ -274,5 +274,61 @@
     "raw_html_sha256": "b74274836f9bb6b97e945548260466dbd28c5b3daf783a7de5fb2f50c93996f2",
     "raw_html_size": 69680,
     "raw_html_path": "C:\\workspace\\rrf-development-20261024\\publication-a01\\PUBLIC-DETAILS.raw.html"
+  },
+  "cloud_ci": {
+    "source_sha": "de1747bef1cc4a7222f4f7aa5898a71fa97a0537",
+    "run_id": "40179069224",
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40179069224",
+    "conclusion": "success",
+    "tests": 24,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "cloud_machine_id": "unknown",
+    "cloud_machine_scope": "GitHub-hosted windows-latest job121126000123; stable project machine ID not observed",
+    "receipt": {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-ci-de1747-a01\\HANDOFF.actual.json",
+      "bytes": 2764,
+      "sha256": "329767440e1fd6d0375ec59a6c877c4a8ccfe89a9c75bd394a03c58c67741b85"
+    }
+  },
+  "final_offline_probe": {
+    "path": "C:\\workspace\\rrf-development-20261024\\publication-a01\\STEAM-OFFLINE.final-publication.actual.json",
+    "bytes": 2436,
+    "sha256": "986c27bf441a5e5c7af77e0511545e601a99dd66865b9db5a961afc9a9f73663"
+  },
+  "final_processes": {
+    "path": "C:\\workspace\\rrf-development-20261024\\publication-a01\\PUBLICATION.final-processes.actual.json",
+    "bytes": 726,
+    "sha256": "6756ff80464a28c473192deb8e991266f9787d33d5cb3118af96ae6a4d71472e"
+  },
+  "cache_download_recovery_decision": {
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-25T09:08:41.247491+00:00",
+    "status": "pending_no_additional_network_attempt",
+    "temporary_local_disabled_changes_applied": false,
+    "temporary_guards_or_moves_applied": false,
+    "manual_acl_or_acf_changes_applied": false,
+    "capacity_readonly_receipt": {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-a01\\OLD-DOWNLOAD-79GB-CAPACITY.READONLY.actual.json",
+      "bytes": 2877,
+      "sha256": "8e13386c178ebb9ae97c609b5a2acb1c5d7089db07852e6d0dabfdf11e6eb345"
+    },
+    "interface_readonly_receipt": {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-a01\\UGC021.readonly-probe.actual.json",
+      "bytes": 6087,
+      "sha256": "063485e5bf65902c1ff4741a2a9fcfea392d79986ded132b00edfeecb2d7be5b"
+    },
+    "reason": "App-wide old-item validation failed with EResult37; no qualified selective download write bound. Conservative 79314180936-byte peak exceeds current policy budget by at least 41345575342 bytes."
+  },
+  "source_only_qualification": {
+    "path": "C:\\workspace\\rrf-development-20261024\\publication-a01\\inactive-cmake-final-de1747b-a01\\HANDOFF.actual.json",
+    "bytes": 4872,
+    "sha256": "6610d1bdb2b7741a133f9d28b11ca7b2a4599cfa4dcc3dcb60da98ae626b2210"
+  },
+  "formal_stage_final_readback": {
+    "path": "C:\\workspace\\rrf-development-20261024\\publication-a01\\FORMAL-STAGE.final-unchanged.actual.json",
+    "bytes": 591,
+    "sha256": "321ee341c0fb6f81bbc32188382f3c16d144fa24507570965b11e1f411eebcca"
   }
 }

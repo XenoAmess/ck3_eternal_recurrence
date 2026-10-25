@@ -126,3 +126,17 @@ Steam日志把失败绑定到旧订阅2993056101的`downloads/1158310/.../common
 实际公共Selection支持全局workshop_cache，而旧builder只检索产品局部case；后继在同一生产路径消费Selection全局case。原只读能力严格绑定source-index、原TU、snapshot SHA和实际host注册；两个前端能力还必须有原两项ON标志，未借此授予实际游戏资格。
 
 同机完整七条既有CI命令169tests零失败、零跳过及完整相关静态检查退出0。原件 publication-a01/workshop-cache-runtime-fix-a01/successor-a06/HANDOFF.actual.json：3866B，SHA `2d25478bb0100f642f67e99d903c6d5c5c14cc0bc384dcca0ad7fb8f8f096864`。只改现有builder和对应回归；未启动游戏、未编DLL或复制SDK，未声称实际缓存加载通过。
+
+## 当前公开状态与缓存缺口（09:06Z）
+
+机器 `4-8e1c2f1861`：09:06:18Z再次后台探针确认Steam offline，PID26192及源码身份不变；CK3进程0，目标Steam cache目录仍不存在。正式条目已公开，完整说明和Notes、封面、六张实机图及兼容右栏已逐项回读，不重复上传。
+
+[官方RRF静态CI40179069224](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40179069224)绑定master `de1747bef1cc4a7222f4f7aa5898a71fa97a0537`，09:05:01Z实际SUCCESS，24tests／0failure／0error／0skip，Maven31.395s。云runner稳定machine_id未观察，记unknown；其独立mvn3.10.0和JDK21读回只证明该job。原件根 `C:/workspace/rrf-development-20261024/publication-ci-de1747-a01/`，HANDOFF2764B、SHA `329767440e1fd6d0375ec59a6c877c4a8ccfe89a9c75bd394a03c58c67741b85`。未以云端编译或软件测试代替缓存或业务通过。
+
+缓存恢复仅做只读分析：公共UGC021接口实际读取84订阅、84启用、0本地禁用，没有调用setter。Valve仅承诺[SetItemsDisabledLocally](https://partner.steamgames.com/doc/api/ISteamUGC#SetItemsDisabledLocally)会从默认枚举排除item，不能据此证明全app校验不会写入。95个旧ID的临时guard方案没有已资格的完整恢复流程，也不能限制Steam其他路径写入；本轮未实施guard、rename、ACL或ACF改动，未退订。
+
+按旧ACF79,314,180,936B的保守可能峰值、新鲜free126,795,399,168B及统一固定预留，缺口至少41,345,575,342B；不能拿历史Native量代替该峰值，也不降低系统或其他任务预留。原只读容量回执 `publication-a01/OLD-DOWNLOAD-79GB-CAPACITY.READONLY.actual.json` 保留。因此本轮结束网络实验，真实下载、逐文件缓存一致及CK3菜单加载均保持待完成。后续须取得可靠选择性下载隔离或满足真实峰值预算，沿同一已发布条目继续；不用staging覆盖cache，不重测功能矩阵。
+
+09:08Z，对de1747实际执行来源producer PID11584、原wait0，随后公共qualify_native退出0。835份production源、d13原编译身份及原DLL均保留；host77和cache-runtime169回归只继承精确同源字节，保留原执行身份，未重跑或外推实机。交接 `publication-a01/inactive-cmake-final-de1747b-a01/HANDOFF.actual.json` 为4,872B，SHA `6610d1bdb2b7741a133f9d28b11ca7b2a4599cfa4dcc3dcb60da98ae626b2210`。未构建runtime或启动游戏；后继doc提交不被追认为该次资格的源码身份。
+
+09:09:50Z再次按原formal manifest逐一核对a03：75文件、1,083,422B，精确清单、大小、SHA全同；源码和staging内层descriptor仍无remote ID，用户外层保留唯一ID并指向a03。`publication-a01/FORMAL-STAGE.final-unchanged.actual.json` 保存该读回；这次核对对象是正式staging，未冒充Steam实际下载缓存。
