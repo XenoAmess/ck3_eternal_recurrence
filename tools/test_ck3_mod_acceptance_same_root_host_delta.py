@@ -313,6 +313,162 @@ class SameRootHost(unittest.TestCase):
             producer.produce_same_root_host_binding(d.repo, d.qpath, delta, old_host,
                 d.evidence / 'refused.json', d.machine, original_fixture_cmake_blob=old_cmake)
 
+    def inactive_case(self) -> tuple[fixture.AuthoredInputs, Path, Path, Path]:
+        scratch = self.data.evidence / ('inactive-' + uuid4().hex)
+        scratch.mkdir()
+        _, _, compiled = fixture.load_apis()
+        d = fixture.make_authored_inputs(scratch, self.public, compiled, same_root=True, inactive_cmake=True)
+        old_cmake = d.evidence / 'old-CMakeLists.txt'
+        old_cmake.write_bytes(d.contents['CMakeLists.txt'])
+        current = d.native / 'CMakeLists.txt'
+        after = old_cmake.read_bytes()
+        for old, new in zip(producer.INACTIVE_CMAKE_BEFORE, producer.INACTIVE_CMAKE_AFTER):
+            after = after.replace(old, new)
+        current.write_bytes(after)
+        fixture.git(d.repo, 'add', producer.NATIVE_PREFIX + 'CMakeLists.txt')
+        fixture.git(d.repo, 'commit', '-m', 'Authored inactive prisoner wire relocation')
+        d.runtime_commit = fixture.git(d.repo, 'rev-parse', 'HEAD')
+        shared_ref = producer.host_parse_pin(self.delta['shared_host_qualification'])
+        shared = producer.host_read(Path(shared_ref['path']))
+        shared['source_commit'] = d.runtime_commit
+        shared['source_pins'] = [producer.host_pin(d.repo / producer.HOST_RELATIVE)]
+        shared_new = fixture.write(d.evidence / 'shared-host-qualified.json', shared)
+        delta = dict(self.delta, runtime_source_commit=d.runtime_commit, native_source_commit=d.native_commit,
+            qualified_native=d.qref, snapshot=d.snapshot_ref, shared_host_qualification=shared_new,
+            compiled_inputs=compiled.compiled_inputs(d.qualification, d.snapshot))
+        delta_path = d.evidence / 'host-delta.json'
+        fixture.write(delta_path, delta)
+        old_host = d.evidence / 'old-host.py'
+        old_host.write_bytes(d.contents[producer.HOST_NATIVE_RELATIVE])
+        proof = d.evidence / 'inactive-proof.json'
+        fixture.write(proof, {'schema': 'ck3-exact-inactive-prisoner-cmake-relocation-v1',
+            'original_blob': producer.host_pin(old_cmake),
+            'configured_cache': producer.host_pin(d.evidence / 'build/CMakeCache.txt'),
+            'configure_execution': producer.host_pin(d.evidence / 'configure.json')})
+        return d, proof, delta_path, old_host
+
+    def inactive_produce(self, case: tuple[fixture.AuthoredInputs, Path, Path, Path]) -> Path:
+        d, proof, delta, old_host = case
+        output = d.evidence / ('inactive-binding-' + uuid4().hex + '.json')
+        producer.produce_same_root_host_binding(d.repo, d.qpath, delta, old_host, output, d.machine,
+                                               inactive_cmake_delta=proof)
+        return output
+
+    def test_inactive_cmake_actual_producer_to_complete_public_qualifier(self) -> None:
+        case = self.inactive_case()
+        d, _, delta, _ = case
+        original_q, original_dll = producer.host_pin(d.qpath), producer.host_pin(Path(d.dll_ref['path']))
+        output = self.inactive_produce(case)
+        result = fixture.object_fields(self.public.qualify_native(d.qpath, d.repo, d.runtime_commit,
+            d.machine, d.dll_ref, d.manifest, output, delta))
+        self.assertEqual(result['compile_commit'], d.native_commit)
+        self.assertEqual(result['native_files'], {producer.NATIVE_PREFIX + 'src/body.cpp':
+                                                producer.host_signature(d.contents['src/body.cpp'])})
+        self.assertEqual(json.loads(json.dumps(producer.host_read(output))), producer.host_read(output))
+        self.assertEqual(original_q, producer.host_pin(d.qpath))
+        self.assertEqual(original_dll, producer.host_pin(Path(d.dll_ref['path'])))
+
+    def test_inactive_cmake_without_explicit_proof_retains_real_failure(self) -> None:
+        d, _, delta, old_host = self.inactive_case()
+        with self.assertRaisesRegex(ValueError, 'exactly the canonical host'):
+            producer.produce_same_root_host_binding(d.repo, d.qpath, delta, old_host,
+                d.evidence / 'old-route-rejected.json', d.machine)
+
+    def test_inactive_cmake_profile_missing_null_boolean_or_on_is_rejected(self) -> None:
+        for bad in (None, True, 'ON', 'OFF '):
+            with self.subTest(bad=bad):
+                case = self.inactive_case()
+                d, proof_path, _, _ = case
+                profile_path = Path(producer.host_parse_pin(d.qualification['profile'])['path'])
+                profile = producer.host_read(profile_path)
+                flags = producer.host_obj(profile['flags'])
+                if bad is None:
+                    del flags[producer.INACTIVE_CMAKE_FLAGS[0]]
+                else:
+                    flags[producer.INACTIVE_CMAKE_FLAGS[0]] = bad
+                profile['flags'] = flags
+                fixture.write(profile_path, profile)
+                q = dict(d.qualification, profile=producer.host_pin(profile_path))
+                with self.assertRaisesRegex(ValueError, 'qualified prisoner flags'):
+                    producer.qualify_inactive_cmake_delta(producer.host_read(proof_path), root=d.repo,
+                        native_commit=d.native_commit, runtime_commit=d.runtime_commit, machine=d.machine,
+                        qualification=q, snapshot=d.snapshot)
+
+    def test_inactive_cmake_cache_on_missing_or_duplicate_is_rejected(self) -> None:
+        for bad in (b':BOOL=ON', b':STRING=OFF', b''):
+            with self.subTest(bad=bad):
+                case = self.inactive_case()
+                d, proof_path, _, _ = case
+                proof = producer.host_read(proof_path)
+                cache = Path(producer.host_parse_pin(proof['configured_cache'])['path'])
+                flag = producer.INACTIVE_CMAKE_FLAGS[1].encode('ascii')
+                cache.write_bytes(cache.read_bytes().replace(flag + b':BOOL=OFF', flag + bad))
+                proof['configured_cache'] = producer.host_pin(cache)
+                fixture.write(proof_path, proof)
+                with self.assertRaisesRegex(ValueError, 'cached prisoner flags'):
+                    self.inactive_produce(case)
+
+    def test_inactive_cmake_extra_committed_edit_is_rejected(self) -> None:
+        case = self.inactive_case()
+        d = case[0]
+        current = d.native / 'CMakeLists.txt'
+        current.write_bytes(current.read_bytes() + b'add_library(injected src/body.cpp)\n')
+        fixture.git(d.repo, 'add', '.')
+        fixture.git(d.repo, 'commit', '-m', 'Authored extra CMake edit rejected')
+        with self.assertRaisesRegex(ValueError, 'exact inactive prisoner'):
+            self.inactive_produce(case)
+
+    def test_inactive_cmake_selected_cpp_change_is_rejected(self) -> None:
+        case = self.inactive_case()
+        d = case[0]
+        (d.native / 'src/body.cpp').write_bytes(b'int changed;\n')
+        fixture.git(d.repo, 'add', '.')
+        fixture.git(d.repo, 'commit', '-m', 'Authored compiled change rejected')
+        with self.assertRaisesRegex(ValueError, 'exactly the canonical host'):
+            self.inactive_produce(case)
+
+    def test_inactive_cmake_original_configure_identity_and_wait_are_strict(self) -> None:
+        for field, bad in (('original_wait_returncode', False), ('source_commit', '0' * 40),
+                           ('game_started_or_attached', True)):
+            with self.subTest(field=field):
+                case = self.inactive_case()
+                d, proof_path, _, _ = case
+                proof = producer.host_read(proof_path)
+                execution_path = Path(producer.host_parse_pin(proof['configure_execution'])['path'])
+                execution = producer.host_read(execution_path)
+                execution[field] = bad
+                fixture.write(execution_path, execution)
+                proof['configure_execution'] = producer.host_pin(execution_path)
+                fixture.write(proof_path, proof)
+                with self.assertRaisesRegex(ValueError, 'actual zero-wait configure'):
+                    self.inactive_produce(case)
+
+    def test_inactive_cmake_wire_in_compile_commands_is_rejected(self) -> None:
+        case = self.inactive_case()
+        d = case[0]
+        commands = d.evidence / 'build/compile_commands.json'
+        fixture.write(commands, [{'file': str(d.native / 'src/player_prisoner_ransom_wire_v1.cpp'),
+                                  'command': 'AUTHORED NOT RUN',
+                                  'output': 'CMakeFiles/xar_ck3_bridge.dir/src/wire.cpp.obj'}])
+        proof = producer.host_read(case[1])
+        scope = producer.host_read(Path(producer.host_parse_pin(d.qualification['configured_scope'])['path']))
+        scope['compile_commands'] = producer.host_pin(commands)
+        scope_ref = fixture.write(d.evidence / 'changed-scope.json', scope)
+        with self.assertRaisesRegex(ValueError, 'actual production compiler commands'):
+            producer.qualify_inactive_cmake_delta(proof, root=d.repo, native_commit=d.native_commit,
+                runtime_commit=d.runtime_commit, machine=d.machine,
+                qualification=dict(d.qualification, configured_scope=scope_ref), snapshot=d.snapshot)
+
+    def test_inactive_cmake_wire_in_production_fileapi_is_rejected(self) -> None:
+        case = self.inactive_case()
+        d = case[0]
+        target = d.evidence / 'api/prod.json'
+        row = producer.host_read(target)
+        row['sources'] = [{'path': 'src/player_prisoner_ransom_wire_v1.cpp', 'compileGroupIndex': 0}]
+        fixture.write(target, row)
+        with self.assertRaisesRegex(ValueError, 'actual production File API target'):
+            self.inactive_produce(case)
+
     def wire_case(self, *, host_test: bool = False) -> WireCase:
         scratch = self.data.evidence / ('wire-' + uuid4().hex)
         scratch.mkdir()

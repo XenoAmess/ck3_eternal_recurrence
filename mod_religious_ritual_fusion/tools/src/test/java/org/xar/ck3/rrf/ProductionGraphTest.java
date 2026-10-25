@@ -33,7 +33,7 @@ final class ProductionGraphTest {
         new CatalogGenerator().generate(catalog, replay);
         assertEquals(before, ContentValidator.validate(replay));
         Contracts.Provenance provenance = new Contracts.Provenance(Contracts.ProvenanceKind.SYNTHETIC_FIXTURE, "synthetic-fixture-machine", "2026-10-24T00:00:00Z");
-        ReleaseBuilder.BuildResult built = new ReleaseBuilder().build(replay, directory.resolve("staging"), "b".repeat(40), provenance);
+        ReleaseBuilder.BuildResult built = new ReleaseBuilder().build(replay, directory.resolve("staging"), new Contracts.ReleaseIdentity("3826756673", "synthetic-v0.1.0", "b".repeat(40)), provenance);
         assertEquals(before.runtimeFiles(), new ReleaseBuilder().verify(replay, Path.of(built.staging()), Path.of(built.manifest())).files());
         assertEquals(List.copyOf(ContentValidator.inventory(actual, false).keySet()).stream().sorted().toList(), List.copyOf(ContentValidator.inventory(Path.of(built.staging()), true).keySet()).stream().sorted().toList());
     }
@@ -58,7 +58,7 @@ final class ProductionGraphTest {
         assertArrayEquals(original, Files.readAllBytes(checkout.resolve("catalog/generated-catalog.json")));
         assertEquals(ContentValidator.validate(producer), ContentValidator.validate(checkout));
         Contracts.Provenance provenance = new Contracts.Provenance(Contracts.ProvenanceKind.SYNTHETIC_FIXTURE, "synthetic-git-fixture-machine", "2026-10-24T00:00:00Z");
-        ReleaseBuilder.BuildResult built = new ReleaseBuilder().build(checkout, directory.resolve("staging-git"), "c".repeat(40), provenance);
+        ReleaseBuilder.BuildResult built = new ReleaseBuilder().build(checkout, directory.resolve("staging-git"), new Contracts.ReleaseIdentity("3826756673", "synthetic-v0.1.0", "c".repeat(40)), provenance);
         assertEquals(ContentValidator.validate(checkout).runtimeFiles(), new ReleaseBuilder().verify(checkout, Path.of(built.staging()), Path.of(built.manifest())).files());
         byte[] tampered = Files.readAllBytes(checkout.resolve("catalog/generated-catalog.json"));
         Files.writeString(checkout.resolve("catalog/generated-catalog.json"), new String(tampered, StandardCharsets.UTF_8) + "\n", StandardCharsets.UTF_8);

@@ -37,12 +37,12 @@ final class ProducerPipelineTest {
         assertFalse(validate.contains("remove_character_flag"));
         ReleaseBuilder builder = new ReleaseBuilder();
         Contracts.Provenance provenance = new Contracts.Provenance(Contracts.ProvenanceKind.SYNTHETIC_FIXTURE, "synthetic-fixture-machine", "2026-10-24T00:00:00Z");
-        ReleaseBuilder.BuildResult result = builder.build(source, directory.resolve("staging"), "a".repeat(40), provenance);
+        ReleaseBuilder.BuildResult result = builder.build(source, directory.resolve("staging"), releaseIdentity("a"), provenance);
         assertEquals(validation.runtimeFiles(), result.files());
         assertEquals(validation.runtimeFiles(), builder.verify(source, Path.of(result.staging()), Path.of(result.manifest())).files());
         assertFalse(Files.exists(Path.of(result.staging()).resolve("tools")));
         assertFalse(Files.exists(Path.of(result.staging()).resolve("catalog")));
-        assertThrows(IllegalArgumentException.class, () -> builder.build(source, directory.resolve("staging"), "a".repeat(40), provenance));
+        assertThrows(IllegalArgumentException.class, () -> builder.build(source, directory.resolve("staging"), releaseIdentity("a"), provenance));
         Files.writeString(Path.of(result.staging()).resolve("extra.txt"), "unlisted");
         assertThrows(IllegalArgumentException.class, () -> builder.verify(source, Path.of(result.staging()), Path.of(result.manifest())));
         Files.delete(Path.of(result.staging()).resolve("extra.txt"));
@@ -110,7 +110,7 @@ final class ProducerPipelineTest {
         new CatalogGenerator().generate(catalog(), source);
         ReleaseBuilder builder = new ReleaseBuilder();
         Contracts.Provenance provenance = new Contracts.Provenance(Contracts.ProvenanceKind.SYNTHETIC_FIXTURE, "synthetic-release-machine", "2026-10-25T00:00:00Z");
-        ReleaseBuilder.BuildResult built = builder.build(source, directory.resolve("alpha-staging"), "d".repeat(40), provenance);
+        ReleaseBuilder.BuildResult built = builder.build(source, directory.resolve("alpha-staging"), releaseIdentity("d"), provenance);
         assertEquals(product.version(), Json.read(Files.readAllBytes(Path.of(built.manifest())), Contracts.Manifest.class).version());
         assertEquals(product.version(), builder.verify(source, Path.of(built.staging()), Path.of(built.manifest())).version());
         Path french = source.resolve("localization/french/rrf_l_french.yml"); String original = Files.readString(french);
@@ -120,9 +120,11 @@ final class ProducerPipelineTest {
         assertThrows(IllegalArgumentException.class, () -> ContentValidator.validate(source));
         for (String invalid : List.of("0.1.0 Alpha", "0.1.0-", "0.1", "0.1.0-alpha..1")) {
             assertThrows(IllegalArgumentException.class, () -> new Product(1, previous.productId(), invalid, files));
-            assertThrows(IllegalArgumentException.class, () -> new Contracts.Manifest(1, previous.productId(), invalid, "d".repeat(40), provenance, List.of()));
+            assertThrows(IllegalArgumentException.class, () -> new Contracts.Manifest(2, "3826756673", "synthetic-v0.1.0", "d".repeat(40), previous.productId(), invalid, provenance, List.of()));
         }
     }
+
+    private static Contracts.ReleaseIdentity releaseIdentity(String digit) { return new Contracts.ReleaseIdentity("3826756673", "synthetic-v0.1.0", digit.repeat(40)); }
 
     private Catalog catalog() throws IOException {
         Path game = directory.resolve("game");

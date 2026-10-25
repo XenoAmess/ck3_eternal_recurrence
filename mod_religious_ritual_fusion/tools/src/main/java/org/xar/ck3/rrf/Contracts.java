@@ -1,5 +1,6 @@
 package org.xar.ck3.rrf;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Set;
 
@@ -50,10 +51,25 @@ public final class Contracts {
     public record FileEntry(String path, long size, String sha256) {
         public FileEntry { safeRuntimePath(path); if (size < 0) throw new IllegalArgumentException("negative size"); digest(sha256); }
     }
-    public record Manifest(int schemaVersion, String productId, String version, String revision, Provenance provenance, List<FileEntry> files) {
+    public record ReleaseIdentity(String workshopItemId, String gitTag, String gitSha) {
+        public ReleaseIdentity {
+            if (workshopItemId == null || !workshopItemId.matches("[1-9][0-9]*")) throw new IllegalArgumentException("canonical Workshop item string required");
+            if (gitTag == null || !gitTag.matches("[A-Za-z0-9][A-Za-z0-9._-]*") || gitTag.contains("..") || gitTag.endsWith(".") || gitTag.endsWith(".lock")) throw new IllegalArgumentException("explicit release tag token required");
+            if (gitSha == null || !gitSha.matches("[a-f0-9]{40}")) throw new IllegalArgumentException("full revision required");
+        }
+    }
+    /** Canonical shared Workshop cache format; unrelated generated/fixture schemas remain separate. */
+    public record Manifest(@JsonProperty("format_version") int formatVersion,
+                           @JsonProperty("workshop_item_id") String workshopItemId,
+                           @JsonProperty("git_tag") String gitTag, @JsonProperty("git_sha") String gitSha,
+                           @JsonProperty("product_id") String productId, String version,
+                           Provenance provenance, List<FileEntry> files) {
         public Manifest {
-            schema(schemaVersion); identifier(productId); releaseVersion(version);
-            if (revision == null || !revision.matches("[a-f0-9]{40}")) throw new IllegalArgumentException("full revision required"); if (provenance == null) throw new IllegalArgumentException("provenance required"); files = List.copyOf(files); unique(files.stream().map(FileEntry::path).toList());
+            if (formatVersion != 2) throw new IllegalArgumentException("unsupported formal format_version");
+            new ReleaseIdentity(workshopItemId, gitTag, gitSha); identifier(productId); releaseVersion(version);
+            if (provenance == null) throw new IllegalArgumentException("provenance required");
+            files = List.copyOf(files); unique(files.stream().map(FileEntry::path).toList());
+            if (files.stream().noneMatch(entry -> entry.path().equals("descriptor.mod"))) throw new IllegalArgumentException("formal descriptor missing");
         }
     }
     public static void schema(int version) { if (version != 1) throw new IllegalArgumentException("unsupported schemaVersion"); }

@@ -102,7 +102,8 @@ def qualified_native_source_checkout(binding_path: Path | None, *, root: Path,
     if isinstance(value, dict) and value.get("schema") in {
             "ck3-native-same-root-shared-python-host-binding-v1",
             "ck3-native-same-root-host-and-fixture-cmake-binding-v1",
-            "ck3-native-same-root-host-and-wire-consumer-binding-v1"}:
+            "ck3-native-same-root-host-and-wire-consumer-binding-v1",
+            "ck3-native-same-root-host-and-inactive-prisoner-cmake-binding-v1"}:
         context = qualify_same_root_host(binding_path, root=root, runtime_commit=runtime_commit,
             native_commit=native_commit, machine=machine, qualified_native_ref=qualified_native_ref,
             qualification=qualification, snapshot_ref=snapshot_ref, snapshot=snapshot,
@@ -280,6 +281,27 @@ HOST_FIXTURE_BINDING_SCHEMA = "ck3-native-same-root-host-and-fixture-cmake-bindi
 HOST_DELTA_SCHEMA = "ck3-exact-same-root-python-host-delta-v1"
 HOST_CONSUMER_BINDING_SCHEMA = "ck3-native-same-root-host-and-wire-consumer-binding-v1"
 HOST_CONSUMER_DELTA_SCHEMA = "ck3-exact-same-root-host-and-wire-consumer-delta-v1"
+HOST_INACTIVE_CMAKE_BINDING_SCHEMA = "ck3-native-same-root-host-and-inactive-prisoner-cmake-binding-v1"
+INACTIVE_CMAKE_FLAGS = ("XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1",
+                        "XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1")
+INACTIVE_CMAKE_BEFORE = (
+    b"if(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)\n"
+    b"  target_sources(xar_ck3_bridge PRIVATE\n"
+    b"    src/player_prisoner_collection_query_v1_private.cpp\n"
+    b"    src/player_prisoner_collection_private_transport_v1.cpp)\n"
+    b"  target_compile_definitions(xar_ck3_bridge PRIVATE\n"
+    b"    XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1=1)\nendif()",
+    b"if(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1)\n"
+    b"  target_sources(xar_ck3_bridge PRIVATE\n"
+    b"    src/player_prisoner_ransom_private_v1.cpp\n"
+    b"    src/player_prisoner_ransom_wire_v1.cpp)\n"
+    b"  target_compile_definitions(xar_ck3_bridge PRIVATE\n"
+    b"    XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1=1)\nendif()")
+INACTIVE_CMAKE_AFTER = (
+    INACTIVE_CMAKE_BEFORE[0].replace(b"    src/player_prisoner_collection_private_transport_v1.cpp)",
+        b"    src/player_prisoner_collection_private_transport_v1.cpp\n    src/player_prisoner_ransom_wire_v1.cpp)"),
+    INACTIVE_CMAKE_BEFORE[1].replace(b"    src/player_prisoner_ransom_private_v1.cpp\n"
+        b"    src/player_prisoner_ransom_wire_v1.cpp)", b"    src/player_prisoner_ransom_private_v1.cpp)"))
 WIRE_CONSUMER_DELTA_SCHEMA = "ck3-exact-refill-wire-consumer-delta-v1"
 HOST_BINDING_FIELDS = frozenset({"schema", "machine_id", "observed_at_utc", "runtime_repo_root",
     "runtime_source_commit", "native_source_repo_root", "native_source_commit", "native_source_base",
@@ -305,6 +327,8 @@ class SourceContext(TypedDict):
     shared_host_qualification: FilePin
     original_fixture_cmake_blob: NotRequired[FilePin]
     runtime_fixture_cmake_pin: NotRequired[FilePin]
+    original_inactive_cmake_blob: NotRequired[FilePin]
+    runtime_inactive_cmake_pin: NotRequired[FilePin]
     original_research_blobs: NotRequired[dict[str, FilePin]]
     runtime_research_pins: NotRequired[dict[str, FilePin]]
     noncompiled_replay: NotRequired[NoncompiledConsumerReplay]
@@ -313,6 +337,11 @@ class SourceContext(TypedDict):
 class FixtureCMakeContext(TypedDict):
     original_fixture_cmake_blob: FilePin
     runtime_fixture_cmake_pin: FilePin
+
+
+class InactiveCMakeContext(TypedDict):
+    original_inactive_cmake_blob: FilePin
+    runtime_inactive_cmake_pin: FilePin
 
 
 class WireConsumerContext(TypedDict):
@@ -327,6 +356,7 @@ class SharedDeltaAPI(Protocol):
         runtime_commit: str, native_commit: str, machine: str, qualified_native_ref: object,
         qualification: dict[str, object], snapshot_ref: object, snapshot: dict[str, object],
         same_root_before_blob: object = None, same_root_fixture_cmake: object = None,
+        same_root_inactive_cmake: object = None,
         same_root_wire_consumer: object = None, same_root_host_test: object = None) -> object: ...
 
 
@@ -513,6 +543,120 @@ def qualify_fixture_cmake_delta(proof: object, *, root: Path, native_commit: str
     return {"original_fixture_cmake_blob": before, "runtime_fixture_cmake_pin": host_pin(current_path)}
 
 
+def qualify_inactive_cmake_delta(proof: object, *, root: Path, native_commit: str,
+    runtime_commit: str, machine: str, qualification: dict[str, object],
+    snapshot: dict[str, object]) -> InactiveCMakeContext:
+    """Prove the sole known prisoner wire relocation is inactive in the old build.
+
+    This preserves the original build and DLL; it does not configure or compile.
+    Both complete conditional bodies, the original actual cache/profile and all
+    selected compiler inputs remain checked rather than accepting a CMake suffix.
+    """
+    value = host_obj(proof)
+    host_require(set(value) == {"schema", "original_blob", "configured_cache", "configure_execution"}
+        and value["schema"] == "ck3-exact-inactive-prisoner-cmake-relocation-v1",
+        "Exact inactive prisoner CMake proof required")
+    before = host_checked(value["original_blob"])
+    old_path = Path(before["path"])
+    host_require(not old_path.resolve().is_relative_to(root.resolve()), "Original inactive CMake must be separately preserved")
+    old = old_path.read_bytes()
+    host_require(old == host_git(root, "show", native_commit + ":" + NATIVE_PREFIX + "CMakeLists.txt"),
+                 "Inactive CMake differs from its actual compile commit")
+    frozen = [host_obj(row) for row in host_arr(snapshot["files"])
+              if host_obj(row).get("native_relative") == "CMakeLists.txt"]
+    host_require(len(frozen) == 1 and host_parse_signature({key: frozen[0][key] for key in ("bytes", "sha256")})
+        == host_signature(old), "Inactive CMake differs from the original snapshot")
+    expected = old
+    for before_block, after_block in zip(INACTIVE_CMAKE_BEFORE, INACTIVE_CMAKE_AFTER):
+        host_require(expected.count(before_block) == 1, "Exact known prisoner conditional bodies required")
+        expected = expected.replace(before_block, after_block)
+    current = root / NATIVE_PREFIX / "CMakeLists.txt"
+    host_require(not current.is_symlink() and current.read_bytes() == expected
+        == host_git(root, "show", runtime_commit + ":" + NATIVE_PREFIX + "CMakeLists.txt"),
+        "Only the exact inactive prisoner wire relocation is allowed")
+    for commit in (native_commit, runtime_commit):
+        host_require(host_git(root, "ls-tree", commit, "--", NATIVE_PREFIX + "CMakeLists.txt")
+                     .decode().startswith("100644 blob "), "Inactive CMake must remain a regular tracked file")
+    profile = host_read(Path(host_checked(qualification["profile"])["path"]))
+    flags = host_obj(profile.get("flags"))
+    host_require(profile.get("machine_id") == machine and all(flags.get(flag) == "OFF" for flag in INACTIVE_CMAKE_FLAGS),
+                 "Both original qualified prisoner flags must be explicitly OFF")
+    scope = host_read(Path(host_checked(qualification["configured_scope"])["path"]))
+    model = host_read(Path(host_checked(scope["codemodel"])["path"]))
+    build = Path(host_string(host_obj(model["paths"])["build"])).resolve()
+    native = (root / NATIVE_PREFIX).resolve()
+    cache = host_checked(value["configured_cache"])
+    host_require(Path(cache["path"]).resolve() == build / "CMakeCache.txt",
+                 "Inactive CMake cache must belong to the original File API build")
+    cache_lines = Path(cache["path"]).read_bytes().splitlines()
+    for flag in INACTIVE_CMAKE_FLAGS:
+        entries = [line for line in cache_lines if line.startswith(flag.encode("ascii") + b":")]
+        host_require(entries == [(flag + ":BOOL=OFF").encode("ascii")], "Both actual cached prisoner flags must be BOOL OFF")
+    home = [line for line in cache_lines if line.startswith(b"CMAKE_HOME_DIRECTORY:")]
+    host_require(len(home) == 1 and home[0].startswith(b"CMAKE_HOME_DIRECTORY:INTERNAL=")
+        and Path(home[0].split(b"=", 1)[1].decode("utf-8")).resolve() == native,
+        "Original CMake cache source root differs")
+    execution = host_read(Path(host_checked(value["configure_execution"])["path"]))
+    argv = [host_string(arg) for arg in host_arr(execution.get("argv"))]
+    host_require(execution.get("machine_id") == machine and execution.get("source_commit") == native_commit
+        and type(execution.get("original_wait_returncode")) is int and execution["original_wait_returncode"] == 0
+        and execution.get("stopped_reason") is None and execution.get("game_started_or_attached") is False,
+        "Original actual zero-wait configure execution required")
+    host_checked(execution.get("log"))
+    for switch, wanted in (("-S", native), ("-B", build)):
+        positions = [i for i, arg in enumerate(argv) if arg == switch]
+        host_require(len(positions) == 1 and positions[0] + 1 < len(argv)
+            and Path(argv[positions[0] + 1]).resolve() == wanted, "Original configure source/build argv differs")
+    profile_include = host_checked(profile.get("profile"))
+    include = "-DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=" + profile_include["path"]
+    host_require(argv.count(include) == 1 and not any(any(flag in arg for flag in INACTIVE_CMAKE_FLAGS) for arg in argv),
+                 "Original configure must use the exact qualified profile without prisoner overrides")
+    commands_ref = host_checked(scope["compile_commands"])
+    host_require(Path(commands_ref["path"]).resolve() == build / "compile_commands.json",
+                 "Original compiler commands must belong to the configured build")
+    wire = native / "src/player_prisoner_ransom_wire_v1.cpp"
+    reply = Path(host_checked(scope["codemodel"])["path"]).parent
+    configs = host_arr(model["configurations"])
+    host_require(len(configs) == 1, "Exact original File API configuration required")
+    targets: dict[str, dict[str, object]] = {}
+    for raw in host_arr(host_obj(configs[0])["targets"]):
+        entry = host_obj(raw)
+        path = (reply / host_string(entry["jsonFile"])).resolve()
+        host_require(path.is_relative_to(reply.resolve()), "Unsafe original File API target")
+        targets[host_string(entry["id"])] = host_read(path)
+    pending = [key for key, target in targets.items() if target.get("name") == "xar_ck3_bridge"]
+    host_require(len(pending) == 1, "Exact original production root required")
+    production: set[str] = set()
+    while pending:
+        key = pending.pop()
+        if key in production:
+            continue
+        host_require(key in targets, "Unknown original production dependency")
+        production.add(key)
+        pending.extend(host_string(host_obj(row)["id"]) for row in host_arr(targets[key].get("dependencies", [])))
+    production_names = {host_string(targets[key]["name"]) for key in production}
+    for key in production:
+        for item in host_arr(targets[key].get("sources", [])):
+            row = host_obj(item)
+            source_path = Path(host_string(row["path"]))
+            selected = source_path.resolve() if source_path.is_absolute() else (native / source_path).resolve()
+            host_require(selected != wire or row.get("compileGroupIndex") is None,
+                         "Inactive prisoner wire entered an actual production File API target")
+    for raw in host_arr(json.loads(Path(commands_ref["path"]).read_text(encoding="utf-8-sig"))):
+        command = host_obj(raw)
+        output = Path(host_string(command.get("output")))
+        output = output.resolve() if output.is_absolute() else (build / output).resolve()
+        host_require(output.is_relative_to(build), "Original compiler output escaped its configured build")
+        parts = output.relative_to(build).parts
+        host_require(len(parts) >= 3 and parts[0] == "CMakeFiles" and parts[1].endswith(".dir"),
+                     "Exact original compiler target identity required")
+        if parts[1][:-4] in production_names:
+            host_require(Path(host_string(command.get("file"))).resolve() != wire
+                and "player_prisoner_ransom_wire_v1.cpp" not in host_string(command.get("command")),
+                "Inactive prisoner wire entered actual production compiler commands")
+    return {"original_inactive_cmake_blob": before, "runtime_inactive_cmake_pin": host_pin(current)}
+
+
 def exclude_noncompiled_fileapi(native_relative: str, *, root: Path, qualification: object) -> None:
     """Exclude the two fixed reviewed Python leaves from every actual target."""
     host_require(native_relative in (NONCOMPILED_CONSUMER_RELATIVE, HOST_TEST_COMPANION_RELATIVE),
@@ -650,16 +794,21 @@ def qualify_same_root_host(binding_path: Path, *, root: Path, runtime_commit: st
     binding = host_read(binding_path)
     q, source = host_obj(qualification), host_obj(snapshot)
     fixture_delta = binding.get("fixture_cmake_delta")
+    inactive_delta = binding.get("inactive_cmake_delta")
     consumer_delta = binding.get("noncompiled_consumer_delta")
     host_test_change = binding.get("host_test_change")
     host_require(host_test_change is None or consumer_delta is not None,
                  "Host test companion requires the explicit wire consumer transition")
     host_require(fixture_delta is None or consumer_delta is None,
                  "Fixture and refill consumer exceptions cannot be combined")
+    host_require(inactive_delta is None or (fixture_delta is None and consumer_delta is None),
+                 "Inactive CMake cannot combine with other source exceptions")
     wanted_fields = HOST_BINDING_FIELDS if fixture_delta is None else HOST_BINDING_FIELDS | {"fixture_cmake_delta"}
     wanted_schema = HOST_BINDING_SCHEMA if fixture_delta is None else HOST_FIXTURE_BINDING_SCHEMA
     if consumer_delta is not None:
         wanted_fields, wanted_schema = HOST_BINDING_FIELDS | {"noncompiled_consumer_delta"}, HOST_CONSUMER_BINDING_SCHEMA
+    if inactive_delta is not None:
+        wanted_fields, wanted_schema = HOST_BINDING_FIELDS | {"inactive_cmake_delta"}, HOST_INACTIVE_CMAKE_BINDING_SCHEMA
     if host_test_change is not None:
         wanted_fields = wanted_fields | {"host_test_change"}
     host_require(set(binding) == wanted_fields and binding["schema"] == wanted_schema, "Exact same-root host binding required")
@@ -698,6 +847,11 @@ def qualify_same_root_host(binding_path: Path, *, root: Path, runtime_commit: st
         "--", NATIVE_PREFIX).decode().split("\0") if name}
     expected_changes = {HOST_RELATIVE}
     fixture_context: FixtureCMakeContext | None = None
+    inactive_context: InactiveCMakeContext | None = None
+    if inactive_delta is not None:
+        inactive_context = qualify_inactive_cmake_delta(inactive_delta, root=root, native_commit=native_commit,
+            runtime_commit=runtime_commit, machine=machine, qualification=q, snapshot=source)
+        expected_changes.add(NATIVE_PREFIX + "CMakeLists.txt")
     if fixture_delta is not None:
         fixture_context = qualify_fixture_cmake_delta(fixture_delta, root=root, native_commit=native_commit,
             runtime_commit=runtime_commit, machine=machine, qualification=q, snapshot=source)
@@ -749,6 +903,10 @@ def qualify_same_root_host(binding_path: Path, *, root: Path, runtime_commit: st
             old_fixture = fixture_context["original_fixture_cmake_blob"]
             host_require(expected == {"bytes": old_fixture["bytes"], "sha256": old_fixture["sha256"]},
                 "Fixture CMake before blob differs from the original snapshot")
+        elif name == "CMakeLists.txt" and inactive_context is not None:
+            old_inactive = inactive_context["original_inactive_cmake_blob"]
+            host_require(expected == {"bytes": old_inactive["bytes"], "sha256": old_inactive["sha256"]},
+                         "Inactive CMake before blob differs from the original snapshot")
         else:
             host_require(host_signature(current.read_bytes()) == expected, "Non-host Native raw input changed: " + name)
     for command in (("ls-files", "-z", "--", NATIVE_PREFIX),
@@ -769,6 +927,7 @@ def qualify_same_root_host(binding_path: Path, *, root: Path, runtime_commit: st
         runtime_commit=runtime_commit, native_commit=native_commit, machine=machine,
         qualified_native_ref=qualified_native_ref, qualification=q, snapshot_ref=snapshot_ref, snapshot=source,
         same_root_before_blob=original_blob, same_root_fixture_cmake=fixture_delta,
+        same_root_inactive_cmake=inactive_delta,
         same_root_wire_consumer=consumer_delta, same_root_host_test=host_test_change))
     result: SourceContext = {"native_source_base": native, "binding_ref": binding_ref,
         "runtime_shared_host_pin": host_checked(context["runtime_host_pin"]), "original_shared_host_blob": original_blob,
@@ -776,6 +935,9 @@ def qualify_same_root_host(binding_path: Path, *, root: Path, runtime_commit: st
     if fixture_context is not None:
         result["original_fixture_cmake_blob"] = fixture_context["original_fixture_cmake_blob"]
         result["runtime_fixture_cmake_pin"] = fixture_context["runtime_fixture_cmake_pin"]
+    if inactive_context is not None:
+        result["original_inactive_cmake_blob"] = inactive_context["original_inactive_cmake_blob"]
+        result["runtime_inactive_cmake_pin"] = inactive_context["runtime_inactive_cmake_pin"]
     if consumer_context is not None:
         result["original_research_blobs"] = {NONCOMPILED_CONSUMER_RELATIVE: consumer_context["before_blob"]}
         result["runtime_research_pins"] = {NONCOMPILED_CONSUMER_RELATIVE: consumer_context["after"]}
@@ -791,7 +953,8 @@ def produce_same_root_host_binding(root: Path, qualification_path: Path, delta_p
                     output: Path, machine: str, *, original_fixture_cmake_blob: Path | None = None,
                     fixture_link_receipt: Path | None = None,
                     noncompiled_consumer_delta: Path | None = None,
-                    original_host_test_blob: Path | None = None) -> FilePin:
+                    original_host_test_blob: Path | None = None,
+                    inactive_cmake_delta: Path | None = None) -> FilePin:
     root = root.resolve()
     qref = host_pin(qualification_path)
     q = host_read(qualification_path)
@@ -814,6 +977,12 @@ def produce_same_root_host_binding(root: Path, qualification_path: Path, delta_p
         value["schema"] = HOST_FIXTURE_BINDING_SCHEMA
         value["fixture_cmake_delta"] = {"schema": "ck3-exact-fixture-cmake-link-completion-v1",
             "original_blob": host_pin(original_fixture_cmake_blob), "fixture_link_receipt": host_pin(fixture_link_receipt)}
+    if inactive_cmake_delta is not None:
+        host_require(original_fixture_cmake_blob is None and fixture_link_receipt is None
+            and noncompiled_consumer_delta is None and original_host_test_blob is None,
+            "Inactive CMake cannot combine with other source exceptions")
+        value["schema"] = HOST_INACTIVE_CMAKE_BINDING_SCHEMA
+        value["inactive_cmake_delta"] = host_read(inactive_cmake_delta)
     if noncompiled_consumer_delta is not None:
         value["schema"] = HOST_CONSUMER_BINDING_SCHEMA
         value["noncompiled_consumer_delta"] = host_pin(noncompiled_consumer_delta)
@@ -836,6 +1005,8 @@ def same_root_main() -> int:
     for name in ("repo-root", "qualification", "host-delta", "original-host-blob", "output"):
         parser.add_argument("--" + name, type=Path, required=True)
     parser.add_argument("--original-fixture-cmake-blob", type=Path)
+    parser.add_argument("--inactive-cmake-delta", type=Path,
+                        help="exact inactive prisoner wire relocation with original cache/configure evidence")
     parser.add_argument("--fixture-link-receipt", type=Path)
     parser.add_argument("--noncompiled-consumer-delta", type=Path,
                         help="explicit reviewed delta for the sole existing refill wire consumer")
@@ -847,7 +1018,7 @@ def same_root_main() -> int:
     result = produce_same_root_host_binding(args.repo_root, args.qualification, args.host_delta, args.original_host_blob,
         args.output, machine, original_fixture_cmake_blob=args.original_fixture_cmake_blob,
         fixture_link_receipt=args.fixture_link_receipt, noncompiled_consumer_delta=args.noncompiled_consumer_delta,
-        original_host_test_blob=args.original_host_test_blob)
+        original_host_test_blob=args.original_host_test_blob, inactive_cmake_delta=args.inactive_cmake_delta)
     print(json.dumps({"source_binding": result, "native_rebuilt": False, "game_started": False}))
     return 0
 

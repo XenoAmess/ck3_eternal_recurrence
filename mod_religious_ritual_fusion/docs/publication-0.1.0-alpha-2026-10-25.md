@@ -50,3 +50,13 @@ Java原始回执在 `C:/workspace/rrf-development-20261024/publication-java-a01/
 来源绑定的inactive CMake候选只有语法检查，没有运行回归；已完整保存为外置 `inactive-cmake-source-binding.UNVALIDATED.patch`（41,916B，SHA `8ec64f149e92f88569c8bdc404eb0690806c97ff37c6cd8895b5929a52cac586`），并撤出生产工作树。它不属于已通过的发布包。若缓存菜单运行仍需该候选，先重新应用并完整执行既有10条回归／静态检查，再以clean源码生产真实来源证明；保留原DLL构建身份。
 
 上传成功后匿名核对标题／说明、兼容版本、六图和Notes全文；经原生Steam下载确认75文件与正式清单一致，再运行无fixture、无战役的公共 `workshop_cache` 菜单加载。最后更新[永久changelog](../../docs/release-changelogs/religious-ritual-fusion/0.1.0.md)、恢复Steam离线并提交／推送实际记录。原R8/R10完整场次GAP不改变。
+
+## 用户新增清理授权及正式清单接管
+
+用户随后明确允许清理这台机器Steam订阅下载的全部CK3模组本地载荷。[本机实际清理](../../docs/maintenance/2026-10-25-ck3-workshop-cache-cleanup-4-8e1c2f1861.md)已完成：86,120文件／87批／0拒绝，Native释放38,318,603,536B，订阅及ACF保持。revision123的新128MiB发布准入通过，上一阶段的容量BLOCK保留为历史结果。
+
+共享缓存消费者要求canonical正式manifest（`format_version/workshop_item_id/git_tag/git_sha/files`）；旧a02的Java manifest不具备该合同。后继仅迁移正式release record及其build/verify消费者，生成目录和fixture合同保持各自边界；完整Maven23tests零失败／零跳过，实际Java producer已进入现有共享 `validate_manifest` 和逐文件 `_verify_cache` 回归。75个载荷的路径／大小／SHA均与a02相同。
+
+因此a02及旧标签 `religious-ritual-fusion-v0.1.0-alpha` 是历史失败候选。当前正式后继计划使用新匹配标签 `religious-ritual-fusion-v0.1.0-alpha-publish1` 和a03 staging；新完整SHA、canonical manifest及实际发布结果在封包后追加，不移动旧tag，不将更新后的构建器追认为旧源码。
+
+此前外置的inactive CMake候选已重新应用并完成约定10条CI命令：199 tests、0 skip，4条静态检查退出0。此修复只证明两个明确OFF条件内的精确wire迁移不改变原production编译输入；旧DLL和原编译提交保留，未重编正式DLL。既有小型MSVC测试fixture编译属于本轮完整CI范围。第7条CI原wait0，但外置采样器遇到一次临时文件读取PermissionError而保守记录FAIL；其原件保留，后续8–10独立接续0，不宣称采样全程完整。完整回执 `public-chain-a01/inactive-prisoner-cmake-a01/VALIDATION.full-scope.actual.json`：7,189B，SHA `a65076ee580686fe0e72a216a611afa5c1ed13e8623e90a484cc6c4ce3e4dfb6`。最终clean源码还须实际执行producer→qualifier，再授予本次runtime来源资格。

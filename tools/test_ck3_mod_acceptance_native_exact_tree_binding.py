@@ -160,7 +160,8 @@ class AuthoredInputs:
 
 def make_authored_inputs(scratch: Path, public: PublicAPI, compiled: CompiledInputsAPI,
                          *, same_root: bool = False, fixture_cmake: bool = False,
-                         wire_consumer: bool = False, host_test_companion: bool = False) -> AuthoredInputs:
+                         wire_consumer: bool = False, host_test_companion: bool = False,
+                         inactive_cmake: bool = False) -> AuthoredInputs:
     """Extracted fixture setup; every path/pin is rebuilt in this scratch."""
     repo = scratch / 'r'
     repo.mkdir()
@@ -177,6 +178,10 @@ def make_authored_inputs(scratch: Path, public: PublicAPI, compiled: CompiledInp
                 host_relative: b'HOST = 0\n'}
     if wire_consumer:
         contents['research/refill_add_live_12004/consume_live_refill_add.py'] = b'CONSUMER = 0\n'
+    if inactive_cmake:
+        import ck3_mod_acceptance_native_source_binding as source_binding
+        contents['CMakeLists.txt'] = b'\n'.join(source_binding.INACTIVE_CMAKE_BEFORE) + b'\n'
+        contents['src/player_prisoner_ransom_wire_v1.cpp'] = b'int inactive_wire;\n'
     if host_test_companion:
         contents['research/test_ck3_12002_mcp_live.py'] = b'TEST = 0\n'
     fixture_name = 'xar_ck3_12004_player_pilgrimage_traits_test' if fixture_cmake else 'authored_finite'
@@ -212,6 +217,13 @@ def make_authored_inputs(scratch: Path, public: PublicAPI, compiled: CompiledInp
         'all_snapshot_files_exactly_verified': len(contents), 'all_original_inputs_still_exactly_verified': len(contents), 'authored_fixture': True})
     profile: JSONObject = {'machine_id': machine, 'repository_default_flags_changed': False,
         'flags': {name: 'OFF' for name in public.FORBIDDEN_OLD_FLAGS}, 'authored_fixture': True}
+    if inactive_cmake:
+        from ck3_mod_acceptance_native_source_binding import INACTIVE_CMAKE_FLAGS
+        profile['flags'] = dict(object_fields(profile['flags']), **{flag: 'OFF' for flag in INACTIVE_CMAKE_FLAGS})
+        include = evidence / 'profile.cmake'
+        include.write_bytes(b'\n'.join(('set(' + flag + ' OFF CACHE BOOL "" FORCE)').encode('ascii')
+                                     for flag in INACTIVE_CMAKE_FLAGS))
+        profile['profile'] = pin(include)
     profile_ref = write(evidence / 'profile.json', profile)
     build = evidence / 'build'
     build.mkdir()
@@ -240,6 +252,8 @@ def make_authored_inputs(scratch: Path, public: PublicAPI, compiled: CompiledInp
         'sources': [{'path': 'src/body.cpp', 'compileGroupIndex': 0}], 'compileGroups': [], 'artifacts': [{'path': dll.name}]}
     fixture_target: JSONObject = {'id': 'f', 'name': fixture_name, 'type': 'EXECUTABLE',
         'sources': [], 'compileGroups': [], 'artifacts': [{'path': exe.name}]}
+    if inactive_cmake:
+        fixture_target['sources'] = [{'path': 'src/player_prisoner_ransom_wire_v1.cpp', 'compileGroupIndex': 0}]
     api = evidence / 'api'
     api.mkdir()
     write(api / 'prod.json', prod_target)
@@ -248,8 +262,23 @@ def make_authored_inputs(scratch: Path, public: PublicAPI, compiled: CompiledInp
         'configurations': [{'targets': [{'id': 'p', 'jsonFile': 'prod.json'}, {'id': 'f', 'jsonFile': 'fixture.json'}]}]}
     model_ref = write(api / 'codemodel.json', model)
     index_ref = write(api / 'index.json', {'authored_fixture': True})
-    commands_ref = write(evidence / 'commands.json', [{'file': str(wnative / 'src/body.cpp'),
-        'directory': str(build), 'command': 'AUTHORED NOT RUN'}])
+    command: JSONObject = {'file': str(wnative / 'src/body.cpp'), 'directory': str(build), 'command': 'AUTHORED NOT RUN'}
+    if inactive_cmake:
+        command['output'] = 'CMakeFiles/xar_ck3_bridge.dir/src/body.cpp.obj'
+    commands: list[JSONObject] = [command]
+    if inactive_cmake:
+        commands.append({'file': str(wnative / 'src/player_prisoner_ransom_wire_v1.cpp'),
+            'directory': str(build), 'command': 'AUTHORED FIXTURE NOT RUN',
+            'output': 'CMakeFiles/' + fixture_name + '.dir/src/player_prisoner_ransom_wire_v1.cpp.obj'})
+    commands_ref = write((build / 'compile_commands.json') if inactive_cmake else (evidence / 'commands.json'), commands)
+    if inactive_cmake:
+        (build / 'CMakeCache.txt').write_bytes(b'\n'.join(
+            [(flag + ':BOOL=OFF').encode('ascii') for flag in INACTIVE_CMAKE_FLAGS]
+            + [('CMAKE_HOME_DIRECTORY:INTERNAL=' + str(wnative)).encode('utf-8')]))
+        include_pin = object_fields(profile['profile'])
+        write(evidence / 'configure.json', dict(execution, source_commit=native_commit,
+            argv=['AUTHORED_NOT_RUN_CMAKE', '-S', str(wnative), '-B', str(build),
+                  '-DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=' + str(include_pin['path'])]))
     scope: JSONObject = {'machine_id': machine, 'snapshot': snapshot_ref, 'no_fixture_in_production': True,
         'codemodel': model_ref, 'index': index_ref, 'compile_commands': commands_ref,
         'production_TUs': {'xar_ck3_bridge': 1}, 'requested_EXEs': [fixture_name], 'targets': [prod_target, fixture_target]}
