@@ -5,10 +5,11 @@ The CLI writes bounded metadata only. Public allocate remains the only allocator
 from __future__ import annotations
 from pathlib import Path, PureWindowsPath
 from datetime import datetime, timezone
+from decimal import Decimal
 from dataclasses import dataclass
 from collections.abc import Mapping
 from typing import Literal, TypedDict, Protocol, runtime_checkable
-import argparse, hashlib, importlib, json, math, os, re, sys
+import argparse, hashlib, importlib, json, math, os, re, subprocess, sys
 from ck3_mod_acceptance import check_pin, pin, read_json, same_directory_control_peer
 from ck3_mod_acceptance_launcher_pin_refusal import public_operation_argv, validate_launcher_pin_refusal
 from ck3_mod_acceptance_background_types import FilePin, JsonObject, file_pin, json_object, object_field, text_field, strings_field
@@ -40,6 +41,92 @@ def _ttl_original(refs: JsonObject, key: str, expected: Path | None = None) -> t
     return ref, json_object(json.loads(path.read_bytes()))
 
 
+def _ttl_public_exit(value: JsonObject, machine: str,
+        mode: Literal['run', 'allocate'], code: int) -> list[str]:
+    """Read distinct original receipt formats without rewriting either one."""
+    from ck3_mod_acceptance_allocate import validate_root_observed_public_exit
+    if 'original_wait_returncode' not in value:
+        return validate_root_observed_public_exit(value, machine, mode, code)
+    fields = {'machine_id', 'argv', 'pid', 'process_create_time_seconds', 'started_at_utc',
+              'original_wait_pending', 'original_wait_returncode', 'finished_at_utc'}
+    birth, pid = value.get('process_create_time_seconds'), value.get('pid')
+    if (set(value) != fields or value.get('machine_id') != machine
+            or type(pid) is not int or not isinstance(pid, int) or pid <= 0
+            or value.get('original_wait_pending') is not False
+            or type(value.get('original_wait_returncode')) is not int or value['original_wait_returncode'] != code
+            or not isinstance(birth, str) or re.fullmatch(r'[1-9][0-9]*(?:\.[0-9]+)?', birth) is None):
+        raise ValueError('Original TTL-refusal public Popen wait identity differs')
+    started = _timestamp(value.get('started_at_utc'), 'Original public Popen start')
+    finished = _timestamp(value.get('finished_at_utc'), 'Original public Popen finish')
+    epoch = finished - datetime(1970, 1, 1, tzinfo=timezone.utc)
+    finished_seconds = Decimal(epoch.days * 86400 + epoch.seconds) + Decimal(epoch.microseconds) / Decimal(1000000)
+    # Root can record started_at immediately before Popen or immediately after
+    # it. Both the command observation and the OS birth must precede its wait.
+    if started > finished or Decimal(birth) > finished_seconds:
+        raise ValueError('Original public Popen chronology differs')
+    argv = strings_field(value, 'argv')
+    indices = [index for index, item in enumerate(argv) if Path(item).name == 'ck3_mod_acceptance.py']
+    if len(indices) != 1 or indices[0] + 1 >= len(argv) or argv[indices[0] + 1] != mode:
+        raise ValueError('Original public Popen operation differs')
+    return argv
+
+
+class TTLStopFileObservation(TypedDict):
+    schema: Literal['ck3-original-plain-ttl-stop-file-v1']
+    file: FilePin
+    device_id_decimal: str
+    file_id_decimal: str
+    mtime_ns_decimal: str
+    original_stop_at_utc: str
+
+
+def _ttl_stop(refs: JsonObject, expected: Path, machine: str,
+        run_finished: datetime, keeper_finished: datetime) -> tuple[datetime, TTLStopFileObservation | None]:
+    """Observe the actual STOP file; never replace a historical command."""
+    ref = file_pin(refs.get('keeper_stop'))
+    if (set(json_object(refs['keeper_stop'])) != {'path', 'bytes', 'sha256'}
+            or Path(ref['path']).resolve() != expected.resolve() or _ttl_pin(expected) != ref):
+        raise ValueError('Original TTL STOP path or bytes changed')
+    with expected.open('rb') as stream:
+        before = os.fstat(stream.fileno())
+        raw = stream.read(1048577)
+        after = os.fstat(stream.fileno())
+    current = expected.stat()
+    identities = {(stat.st_dev, stat.st_ino, stat.st_mtime_ns, stat.st_size) for stat in (before, after, current)}
+    if (len(identities) != 1 or len(raw) != ref['bytes'] or hashlib.sha256(raw).hexdigest() != ref['sha256']):
+        raise ValueError('Original TTL STOP identity changed during observation')
+    try:
+        stop = json_object(json.loads(raw))
+    except json.JSONDecodeError:
+        match = re.fullmatch(r'([^\r\n]{1,512}) ([0-9]{4}-[0-9]{2}-[0-9]{2}T[^\r\n ]+)\r?\n?', raw.decode('utf-8'))
+        if match is None:
+            raise ValueError('Original plain TTL STOP must contain one description and actual timestamp')
+        description = match[1].lower()
+        if (not all(re.search(pattern, description) for pattern in
+                (r'\bpre[- ]intent\b', r'\boffline\b', r'\bttl\b', r'\brefus(?:al|ed)\b'))
+                or re.search(r'\bno\s+host\s*(?:/|or|and)\s*native\s+(?:was\s+)?(?:started|launched)\b', description) is None):
+            raise ValueError('Original plain STOP does not describe the unlaunched pre-intent offline refusal')
+        observed = _timestamp(match[2], 'Original plain STOP timestamp')
+        epoch = observed - datetime(1970, 1, 1, tzinfo=timezone.utc)
+        observed_ns = (epoch.days * 86400 + epoch.seconds) * 1000000000 + epoch.microseconds * 1000
+        modified = datetime.fromtimestamp(after.st_mtime_ns // 1000000000, timezone.utc).replace(
+            microsecond=(after.st_mtime_ns % 1000000000) // 1000)
+        if (after.st_dev <= 0 or after.st_ino <= 0 or not run_finished <= observed <= keeper_finished
+                or not observed_ns <= after.st_mtime_ns or modified > keeper_finished):
+            raise ValueError('Original plain STOP file identity/mtime is outside the original run/keeper closure')
+        return observed, TTLStopFileObservation(schema='ck3-original-plain-ttl-stop-file-v1', file=ref,
+            device_id_decimal=str(after.st_dev), file_id_decimal=str(after.st_ino),
+            mtime_ns_decimal=str(after.st_mtime_ns), original_stop_at_utc=match[2])
+    if (set(stop) != {'machine_id', 'reason', 'observed_at_utc'}
+            or stop.get('machine_id') != machine or stop.get('reason') !=
+            'Public launcher refused expired background offline receipt before host/Game start; preserve source and original failure, close keeper cooperatively.'):
+        raise ValueError('Original JSON TTL STOP machine/reason differs')
+    observed = _timestamp(stop.get('observed_at_utc'), 'Original cooperative STOP')
+    if not run_finished <= observed <= keeper_finished:
+        raise ValueError('Original JSON STOP is outside the original run/keeper closure')
+    return observed, None
+
+
 def _ttl_allocator_stdout(refs: JsonObject) -> JsonObject:
     ref = file_pin(refs.get('allocator_stdout'))
     path = Path(ref['path']).resolve()
@@ -57,12 +144,90 @@ def _ttl_allocator_stdout(refs: JsonObject) -> JsonObject:
     return rows[1]
 
 
+class TTLRecoverySource(TypedDict):
+    original_path: str
+    repository_relative_path: str
+    original_snapshot: FilePin
+    current_source: FilePin
+
+
+class TTLReaderEvolution(TypedDict):
+    schema: Literal['ck3-prelaunch-recovery-reader-evolution-v1']
+    original_runtime_manifest: FilePin
+    original_source_commit: str
+    source_root: str
+    changed_recovery_sources: list[TTLRecoverySource]
+    actual_recovery_reader: FilePin
+    actual_allocator_consumer: FilePin
+    actual_running_input_contract: FilePin
+
+
+def _ttl_recovery_sources(freeze: JsonObject, close_path: Path, *, produce: bool) -> TTLReaderEvolution | None:
+    """Retain old Git bytes for two recovery readers, without editing the freeze.
+
+    This exception belongs only to the unlaunched TTL recovery reducer. Every
+    other frozen input still uses its actual path and the ordinary full guard.
+    """
+    repo = Path(text_field(freeze, 'source_root')).resolve()
+    files = object_field(freeze, 'files')
+    changed: list[tuple[Path, str, FilePin]] = []
+    for relative in ('tools/ck3_mod_acceptance_unrun.py', 'tools/ck3_mod_acceptance_allocate.py'):
+        path = (repo / relative).resolve()
+        if str(path) not in files:
+            continue
+        original = file_pin({'path': str(path), **object_field(files, str(path))})
+        if _ttl_pin(path) != original:
+            changed.append((path, relative, original))
+    if not changed:
+        return None
+    manifest_ref = file_pin(freeze.get('runtime_manifest'))
+    manifest_path = Path(manifest_ref['path'])
+    if _ttl_pin(manifest_path) != manifest_ref:
+        raise ValueError('Original recovery runtime manifest changed')
+    manifest = json_object(json.loads(manifest_path.read_bytes()))
+    commit = text_field(manifest, 'source_commit')
+    if (re.fullmatch('[0-9a-f]{40}', commit) is None
+            or manifest.get('machine_id') != object_field(freeze, 'identity_allocation').get('machine_id')):
+        raise ValueError('Original recovery Git source commit/machine differs')
+    sources: list[TTLRecoverySource] = []
+    for path, relative, original in changed:
+        object_name = commit + ':' + relative
+        size = subprocess.run(['git', '-C', str(repo), 'cat-file', '-s', object_name],
+            capture_output=True, check=True).stdout.strip()
+        if not size.isdigit() or int(size) != original['bytes'] or int(size) > 1048576:
+            raise ValueError('Original recovery Git blob size differs from frozen input')
+        raw = subprocess.run(['git', '-C', str(repo), 'cat-file', 'blob', object_name],
+            capture_output=True, check=True).stdout
+        if len(raw) != original['bytes'] or hashlib.sha256(raw).hexdigest() != original['sha256']:
+            raise ValueError('Original recovery Git blob differs from frozen input')
+        snapshot = close_path.parent / 'original-recovery-sources' / path.name
+        if produce:
+            snapshot.parent.mkdir(exist_ok=True)
+            with snapshot.open('xb') as stream:
+                stream.write(raw)
+        retained = _ttl_pin(snapshot)
+        if retained['bytes'] != original['bytes'] or retained['sha256'] != original['sha256']:
+            raise ValueError('Retained original recovery source differs')
+        sources.append(TTLRecoverySource(original_path=str(path), repository_relative_path=relative,
+            original_snapshot=retained, current_source=_ttl_pin(path)))
+    from xar_autoplayer.bridge import runtime_input_contract_v1
+    allocator = same_directory_control_peer('ck3_mod_acceptance_allocate')
+    contract_source = runtime_input_contract_v1.__file__
+    allocator_source = allocator.__file__
+    if not isinstance(contract_source, str) or not isinstance(allocator_source, str):
+        raise ValueError('Actual recovery consumer source unavailable')
+    return TTLReaderEvolution(schema='ck3-prelaunch-recovery-reader-evolution-v1',
+        original_runtime_manifest=manifest_ref, original_source_commit=commit, source_root=str(repo),
+        changed_recovery_sources=sources, actual_recovery_reader=_ttl_pin(Path(__file__).resolve()),
+        actual_allocator_consumer=_ttl_pin(Path(allocator_source).resolve()),
+        actual_running_input_contract=_ttl_pin(Path(contract_source).resolve()))
+
+
 def validate_pre_intent_offline_ttl_refusal(previous: Path, freeze_value: object, close_path: Path,
         keeper_root: Path, release_value: object, bus_value: object, next_state: Path) -> JsonObject:
     """Resource admission after the original parent rejected an expired receipt."""
     import ck3_live_run_id as ids
     import psutil
-    from ck3_mod_acceptance_allocate import validate_root_observed_public_exit
     from ck3_mod_acceptance_launcher_protocol_v1 import build_launcher_protocol_v1
     from ck3_mod_acceptance_background_types import product_acceptance_purpose_v1
     from steam_offline_state_contract import parse_result
@@ -96,8 +261,8 @@ def validate_pre_intent_offline_ttl_refusal(previous: Path, freeze_value: object
         raise ValueError('TTL-refusal crossed the original allocation, Root review or preparation')
     _, run_result = _ttl_original(refs, 'run_result')
     _, allocate_result = _ttl_original(refs, 'allocator_result')
-    run_argv = validate_root_observed_public_exit(run_result, machine, 'run', 2)
-    allocate_argv = validate_root_observed_public_exit(allocate_result, machine, 'allocate', 0)
+    run_argv = _ttl_public_exit(run_result, machine, 'run', 2)
+    allocate_argv = _ttl_public_exit(allocate_result, machine, 'allocate', 0)
 
     def option(argv: list[str], flag: str) -> str:
         if argv.count(flag) != 1 or argv.index(flag) + 1 >= len(argv):
@@ -155,16 +320,19 @@ def validate_pre_intent_offline_ttl_refusal(previous: Path, freeze_value: object
     _, keeper = _ttl_original(refs, 'keeper', keeper_root / 'report.json')
     _, parent = _ttl_original(refs, 'keeper_parent_exit', previous / 'keeper-actual-parent-exit.json')
     _, keeper_ready = _ttl_original(refs, 'keeper_ready', keeper_root / 'ready.json')
-    _, stop = _ttl_original(refs, 'keeper_stop', keeper_root / 'STOP')
+    stop_at, stop_observation = _ttl_stop(refs, keeper_root / 'STOP', machine, run_finished,
+        _timestamp(keeper.get('at_utc'), 'Keeper completion'))
+    if ((stop_observation is None and 'keeper_stop_file_observation' in bundle)
+            or (stop_observation is not None and bundle.get('keeper_stop_file_observation') != json_object(stop_observation))):
+        raise ValueError('Original plain STOP immutable file observation changed or is missing')
     if (keeper.get('task_id') != task or keeper.get('thread_exited') is not True
             or keeper.get('failure') is not None or keeper.get('entry_error') is not None or keeper.get('game_actions') is not False
             or parent.get('run_id') != run or type(parent.get('keeper_actual_exit_code')) is not int
             or parent.get('keeper_actual_exit_code') != 0 or parent.get('keeper_report') != keeper
             or allocator_stdout.get('run_id') != run or allocator_stdout.get('keeper_report') != keeper
             or type(allocator_stdout.get('keeper_actual_exit_code')) is not int or allocator_stdout.get('keeper_actual_exit_code') != 0
-            or stop.get('machine_id') != machine or stop.get('reason') != 'Public launcher refused expired background offline receipt before host/Game start; preserve source and original failure, close keeper cooperatively.'
             or not _timestamp(keeper_ready.get('at_utc'), 'Keeper ready') <= run_started <= run_finished
-                    <= _timestamp(stop.get('observed_at_utc'), 'Original cooperative STOP') <= _timestamp(keeper.get('at_utc'), 'Keeper completion')):
+                    <= stop_at <= _timestamp(keeper.get('at_utc'), 'Keeper completion')):
         raise ValueError('Original cooperative no-game keeper STOP/wait0 differs')
     cas_pin, cas_source = _ttl_original(refs, 'CAS_release')
     _, done_source = _ttl_original(refs, 'admin_done')
@@ -213,8 +381,21 @@ def validate_pre_intent_offline_ttl_refusal(previous: Path, freeze_value: object
             or set(matching[0]) != set(released_task) | {'age_seconds', 'stale'}
             or type(matching[0].get('age_seconds')) is not int or matching[0].get('stale') is not False):
         raise ValueError('TTL-refusal current canonical task differs from the actual release')
-    from xar_autoplayer.bridge.runtime_input_contract_v1 import validate_running_inputs
-    inputs = validate_running_inputs(previous, freeze)
+    from xar_autoplayer.bridge.runtime_input_contract_v1 import FileIdentity, identity, validate_running_inputs
+    evolution = _ttl_recovery_sources(freeze, close_path, produce=False)
+    if ((evolution is None and 'recovery_reader_evolution' in bundle)
+            or (evolution is not None and bundle.get('recovery_reader_evolution') != json_object(evolution))):
+        raise ValueError('Recovery reader evolution differs from original Git inputs/current consumers')
+    retained_sources: dict[Path, FilePin] = {} if evolution is None else {
+        Path(row['original_path']): row['original_snapshot'] for row in evolution['changed_recovery_sources']}
+
+    def observe_input(path: Path) -> FileIdentity:
+        if path not in retained_sources:
+            return identity(path)
+        retained = identity(Path(retained_sources[path]['path']))
+        return FileIdentity(path=str(path), bytes=retained['bytes'], sha256=retained['sha256'])
+
+    inputs = validate_running_inputs(previous, freeze, observer=observe_input)
     inventory_reader: object = allocator.runtime_process_inventory
     if not isinstance(inventory_reader, _UnrunProcessInventory):
         raise ValueError('Existing process inventory boundary unavailable')
@@ -228,6 +409,7 @@ def validate_pre_intent_offline_ttl_refusal(previous: Path, freeze_value: object
             'original_host_exit_code': None, 'original_ck3_exit_code': None, 'host_started': False, 'native_session_started': False,
             'normal_close_qualified': False, 'typed_normal_exit_proven': False, 'business_pass': False, 'release_pass': False,
             'consumed_purpose_preserved': purpose_pin, 'original_inputs_verified': inputs,
+            'recovery_reader_evolution': evolution,
             'absent_launch_native_control_Save': absent}})
 
 
@@ -912,6 +1094,14 @@ def build_pre_intent_offline_ttl_bundle(args: argparse.Namespace, frozen_value: 
             'observed_at_utc': datetime.now(timezone.utc).isoformat(), 'source': json_object(source_counter)},
         **{name: False for name in ('host_started', 'native_session_started', 'game_started', 'normal_close_qualified',
              'typed_normal_exit_proven', 'original_host_exit0', 'business_pass', 'release_pass')}}
+    _, stop_observation = _ttl_stop(refs, keeper / 'STOP', ids.current_machine_id(),
+        _timestamp(run.get('finished_at_utc'), 'Original refused run finish'),
+        _timestamp(_read(keeper / 'report.json').get('at_utc'), 'Keeper completion'))
+    if stop_observation is not None:
+        bundle['keeper_stop_file_observation'] = json_object(stop_observation)
+    evolution = _ttl_recovery_sources(frozen, output / 'ALLOCATED-UNRUN.actual.json', produce=True)
+    if evolution is not None:
+        bundle['recovery_reader_evolution'] = json_object(evolution)
     bundle_pin = _write(output / 'ALLOCATED-UNRUN.actual.json', bundle)
     allocator = same_directory_control_peer('ck3_mod_acceptance_allocate')
     release_pin = file_pin(proofs['admin_done'])
