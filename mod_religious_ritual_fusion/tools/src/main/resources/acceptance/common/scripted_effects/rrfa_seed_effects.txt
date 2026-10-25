@@ -91,15 +91,13 @@ rrfa_seed_inputs_effect = {
 # Preparation mutates only the three just-created source Rites. Native override
 # entries are seeds, not an assertion that another mod left exactly three cores.
 # BEGIN/END delimit each source; counting the native iterator entry markers gives
-# its actual before/after cardinality. Scope dumps retain real Rite/Tenet IDs.
+# its actual before/after cardinality. Obtain identities independently through
+# native queries or saved-state inspection; avoid full saved-target scope dumps.
 rrfa_align_seed_core_effect = {
     every_in_list = { list = rrfa_seed_cores_to_remove remove_from_list = rrfa_seed_cores_to_remove }
     scope:rrfa_seed_target = {
-        debug_log = "RRFAT: DIAG CORE_BEFORE_IDENTITY"
-        debug_log_scopes = yes
         every_rite_tenet = {
             debug_log = "RRFAT: DIAG CORE_BEFORE_ENTRY"
-            debug_log_scopes = yes
             save_scope_as = rrfa_seed_item
             if = {
                 limit = {
@@ -133,11 +131,8 @@ rrfa_align_seed_core_effect = {
             limit = { NOT = { any_rite_tenet = { this = scope:rrfa_seed_actor.var:rrfa_seed_third } } }
             add_rite_tenet = scope:rrfa_seed_actor.var:rrfa_seed_third
         }
-        debug_log = "RRFAT: DIAG CORE_AFTER_IDENTITY"
-        debug_log_scopes = yes
         every_rite_tenet = {
             debug_log = "RRFAT: DIAG CORE_AFTER_ENTRY"
-            debug_log_scopes = yes
         }
     }
     remove_variable = rrfa_seed_third
@@ -147,8 +142,6 @@ rrfa_align_seed_core_effect = {
 
 # Read-only decomposition of the actual ready predicate; no expected flags.
 rrfa_seed_readiness_diagnostics_effect = {
-    debug_log = "RRFAT: DIAG READINESS_NATIVE_IDENTITY"
-    debug_log_scopes = yes
     if = {
         limit = { has_variable = rrfa_source_a }
         debug_log = "RRFAT: DIAG SOURCE_A_VARIABLE YES"

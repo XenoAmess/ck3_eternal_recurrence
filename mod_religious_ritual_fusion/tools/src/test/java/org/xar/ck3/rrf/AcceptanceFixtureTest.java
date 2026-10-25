@@ -62,7 +62,7 @@ final class AcceptanceFixtureTest {
         assertObservationDecision(emitted.fixture(), request);
         assertTrue(allKeys.contains("add_known_tenet")); assertTrue(allKeys.contains("add_known_doctrine"));
         assertThrows(IllegalArgumentException.class, () -> FixtureEmitter.emit(repository, emitted.fixture(), "synthetic-fixture-machine", request));
-        assertEquals(90, ContentValidator.validate(repository.resolve("mod_religious_ritual_fusion")).runtimeFiles());
+        assertEquals(89, ContentValidator.validate(repository.resolve("mod_religious_ritual_fusion")).runtimeFiles());
     }
     @Test void faithRejectionAndColdClosuresUseActualModeAndColdCannotSeed() throws IOException {
         Path repository = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize().getParent();
@@ -151,8 +151,9 @@ final class AcceptanceFixtureTest {
         }
         for (String phase : List.of("BEFORE", "AFTER")) {
             assertTrue(text.contains("RRFAT: DIAG CORE_" + phase + "_ENTRY"));
-            assertTrue(text.contains("RRFAT: DIAG CORE_" + phase + "_IDENTITY"));
         }
+        assertFalse(keys(align).contains("debug_log_scopes"));
+        assertFalse(keys(diagnostics).contains("debug_log_scopes"));
         assertTrue(text.contains("RRFAT: DIAG EXPECTED_B_CONVERTIBLE YES"));
         assertTrue(text.contains("RRFAT: DIAG EXPECTED_B_CONVERTIBLE NO"));
         assertFalse(keys(seed).stream().anyMatch(key -> key.startsWith("rrf_")));

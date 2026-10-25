@@ -105,7 +105,21 @@ rrf_refresh_gui = {
 # The native model owns the editable draft. These actions never create a Rite.
 rrf_native_setup_window_gui = {
 	scope = character
-	is_shown = { rrf_native_setup_target_trigger = yes has_character_flag = rrf_native_setup_active }
+	saved_scopes = { rrf_native_target }
+	is_shown = {
+		rrf_native_setup_target_trigger = yes
+		has_character_flag = rrf_native_setup_active
+		exists = scope:rrf_native_target
+		scope:rrf_native_target = var:rrf_last_result_rite
+	}
+}
+rrf_native_recovery_gui = {
+	scope = character
+	is_shown = {
+		rrf_native_setup_target_trigger = yes
+		has_character_flag = rrf_native_setup_active
+		NOT = { has_character_flag = rrf_result_dialog }
+	}
 }
 rrf_native_launch_gui = {
 	scope = character

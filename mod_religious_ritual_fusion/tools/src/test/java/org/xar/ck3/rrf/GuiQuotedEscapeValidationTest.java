@@ -20,7 +20,7 @@ final class GuiQuotedEscapeValidationTest {
         Path source = Path.of(System.getProperty("rrf.source"));
         for (ObservedFailure observed : List.of(
                 new ObservedFailure("gui/rrf_fusion_window.gui", "RRF_COMMIT_TT", 352),
-                new ObservedFailure("gui/rrf_native_setup_window.gui", "RRF_NATIVE_SETUP_APPLY_TT", 483),
+                new ObservedFailure("gui/window_rite_creation.gui", "RRF_NATIVE_SETUP_APPLY_TT", 483),
                 new ObservedFailure("gui/rrf_result_window.gui", "RRF_INVITE_VASSALS_TT", 151))) {
             byte[] actual = Files.readAllBytes(source.resolve(observed.relative()));
             assertDoesNotThrow(() -> ContentValidator.validateBytes(observed.relative(), actual));

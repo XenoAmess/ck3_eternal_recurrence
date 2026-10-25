@@ -14,11 +14,77 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 /** Executes the actual setup producers and consumers. Native setters/frames are explicit boundary inputs. */
 final class NativeSetupLifecycleTest {
+    @Test void editorControlsAreConsumedInsideTheOriginalNativeWindowInsteadOfAStandaloneContext() throws IOException {
+        Path source = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize();
+        Clausewitz.Block window = Clausewitz.parse(Files.readString(source.resolve("gui/window_rite_creation.gui"))).block("window");
+        assertEquals("\"rite_creation_window\"", window.atom("name", ""));
+        assertFalse(Files.exists(source.resolve("gui/rrf_native_setup_window.gui")));
+        assertFalse(Files.exists(source.resolve("gui/scripted_widgets/rrf_native_setup_widgets.txt")));
+        assertFalse(Files.readString(source.resolve("gui/rrf_result_window.gui")).contains("RiteCreationWindow."));
+        String manifest = Files.readString(source.resolve("tools/product.json"));
+        assertTrue(manifest.contains("\"gui/window_rite_creation.gui\""));
+        assertFalse(manifest.contains("rrf_native_setup_window.gui"));
+
+        Map<String, String> originalCallbacks = Map.of("faith_name_edit", "OnEditName", "faith_adjective_edit", "OnEditAdjective", "faith_adherent_edit", "OnEditAdherent", "faith_adherent_plural_edit", "OnEditAdherentPlural");
+        for (Map.Entry<String, String> expected : originalCallbacks.entrySet())
+            assertEquals("\"[RiteCreationWindow." + expected.getValue() + "]\"", widget(window, expected.getKey()).orElseThrow().atom("ontextedited", ""));
+        Clausewitz.Block apply = widget(window, "rrf_native_apply").orElseThrow();
+        List<String> actions = apply.named("onclick").stream().map(e -> ((Clausewitz.Atom) e.value()).token()).toList();
+        assertEquals(2, actions.size());
+        assertTrue(actions.getFirst().contains("rrf_mark_native_apply_gui"));
+        assertTrue(actions.getFirst().contains("AddScope( 'rrf_native_target', RiteCreationWindow.GetRite.MakeScope )"));
+        assertEquals("\"[RiteCreationWindow.EditRite]\"", actions.getLast());
+        assertTrue(apply.atom("enabled", "").contains("RiteCreationWindow.CanEditRite"));
+        assertTrue(apply.atom("enabled", "").contains("EqualTo_CFixedPoint( RiteCreationWindow.CalcPietyCost, '(CFixedPoint)0' )"));
+        assertTrue(widget(window, "rrf_native_setup_details").orElseThrow().render().contains("RiteCreationWindow.GetEditBlockers"));
+        for (String original : List.of("edit_faith", "create_faith", "reform_faith"))
+            assertTrue(widget(window, original).orElseThrow().atom("visible", "").contains("Not( GetScriptedGui( 'rrf_native_setup_window_gui' )"));
+
+        assertTrue(widget(window, "mts_tenets_grid_scroll").isPresent());
+        Clausewitz.Block cores = widget(window, "tenets_grid").orElseThrow().block("item").block("button_group");
+        assertTrue(cores.atom("enabled", "").contains("Not( GetScriptedGui( 'rrf_native_setup_window_gui' )"));
+        assertTrue(cores.atom("visible", "").contains("TenetType.IsValid"));
+        String nativeBody = window.render();
+        for (String category : List.of("main_group", "marriage", "crimes", "clergy"))
+            assertTrue(nativeBody.contains("RiteCreationWindow.GetCategoryHelper( '" + category + "' ).GetCategory"));
+        for (String nativeInput : List.of("RiteCreationWindow.SelectFaithIcon", "RiteCreationWindow.SetColor", "RiteCreationWindow.GetSins", "RiteCreationWindow.GetVirtues"))
+            assertTrue(nativeBody.contains(nativeInput));
+    }
+
+    @Test void nativeWindowGateRequiresTheActualTargetWhileRecoveryDoesNotInventAnEditorContext() throws IOException {
+        Model model = model(true);
+        assertFalse(model.guiShown("rrf_native_setup_window_gui", model.actor));
+        assertFalse(model.guiShown("rrf_native_recovery_gui", model.actor));
+        model.effect("rrf_begin_native_setup_effect", model.actor);
+        assertTrue(model.guiShown("rrf_native_recovery_gui", model.actor));
+        for (Node wrong : List.of(model.sourceA, model.sourceB, model.other)) {
+            model.saved.put("rrf_native_target", wrong);
+            assertFalse(model.guiShown("rrf_native_setup_window_gui", model.actor));
+        }
+        model.saved.put("rrf_native_target", model.result);
+        assertTrue(model.guiShown("rrf_native_setup_window_gui", model.actor));
+        model.guiExecute("rrf_cancel_native_setup_gui", model.actor);
+        assertFalse(model.guiShown("rrf_native_recovery_gui", model.actor));
+        assertTrue(model.guiShown("rrf_result_window_gui", model.actor));
+        assertFalse(model.state(model.result).variables.containsKey("rrf_native_configuration_complete"));
+        assertTrue(model.state(model.actor).modifiers.containsKey("rrf_native_setup_cost_waiver"));
+    }
+
+    private static Optional<Clausewitz.Block> widget(Clausewitz.Block parent, String name) {
+        if (parent.atom("name", "").equals("\"" + name + "\"")) return Optional.of(parent);
+        for (Clausewitz.Entry entry : parent.entries()) if (entry.value() instanceof Clausewitz.Block child) {
+            Optional<Clausewitz.Block> found = widget(child, name);
+            if (found.isPresent()) return found;
+        }
+        return Optional.empty();
+    }
+
     @Test void permissionBelongsOnlyToTheCurrentResultAndItsActualFounder() throws IOException {
         Model model = model(true);
         model.effect("rrf_begin_native_setup_effect", model.actor);

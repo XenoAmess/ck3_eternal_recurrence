@@ -421,7 +421,7 @@ RRF 可以在专用 on-action 追加自己的 hook，以 root 与登记结果完
 
 注册目录实际为 **gui/scripted_widgets/*.txt**，不是 common/scripted_widgets。原 `_scripted_widgets.info:1–9` 支持 `gui/file.gui = widget_type`，所有文件同时加载。parser `0x372a310–0x372a594` 只存两项 interned string ID（8 字节记录）；启动函数 `0x372a5a0 -> 0x372a5e0` 对所有记录使用同一全局 GUI root parent。没有已证实的 per-entry parent 属性，不能宣称注册外部 widget 就挂到原生 footer 子节点。
 
-可实现顶层 overlay，以 `IsGameViewOpen('rite_creation')`、精确 result 对象相等与会话资格联合显示。IsGameViewOpen 是原版真实全局 predicate（如 gui/hud.gui 的 barbershop 用例）；GetRite 指实际对象的语义已在前文核定。overlay 应直接调用 CanEditRite、EditRite、GetEditBlockers。位置、层级、缩放、MTS 改版后的遮挡仍需实机验证；脚本规则必须独立阻止 Create，不能把遮挡当安全边界。
+只有取得真正原生窗口 context 后，才可调用 CanEditRite、EditRite、GetEditBlockers。`IsGameViewOpen('rite_creation')` 是原版真实全局 predicate（如 gui/hud.gui 的 barbershop 用例）；它本身不证明外部 widget 得到了 RiteCreationWindow 实例。R0012 后来实际否定了本次独立编辑窗的这项前提，现行方案见下一节的原生窗口 graft。脚本规则仍须独立阻止 Create，不能把遮挡当权限边界。
 
 ### 四项名称回调可用于独立 editbox
 
@@ -434,10 +434,44 @@ RRF 可以在专用 on-action 追加自己的 hook，以 root 与登记结果完
 | OnEditAdherent | 0x14fc100 → 0x14f3ae0 | +0x978，dirty +0x998 |
 | OnEditAdherentPlural | 0x14fc170 → 0x14f3c00 | +0x9a8，dirty +0x9c8 |
 
-thunk 将事件参数的 string 传入实现；实现读取 rdx 的 std::string，并复制到上述字段。后 3 项先核现存 Rite 的内部保护位，保留原生规则。`window_rite_creation.gui:660` 的固定控件名注释明确用于创建后清空；不是 OnEdit 的取值源。因此独立 overlay editbox 复用这些 callback 可以真实修改模型，但其文本初始化不自动由原窗 onshow 代办。
+thunk 将事件参数的 string 传入实现；实现读取 rdx 的 std::string，并复制到上述字段。后 3 项先核现存 Rite 的内部保护位，保留原生规则。`window_rite_creation.gui:660` 的固定控件名注释明确用于创建后清空；不是 OnEdit 的取值源。该结论证明了回调的字符串合同，没有证明独立 overlay 能取得接收回调的原生实例。现行 graft 保留原窗四个编辑框及其 native 初始化，避免另建输入副本。
 
 全 EXE 精确 GetNewRite* 只有 **GetNewRiteName**；不存在已注册的 GetNewRiteAdjective／Adherent／AdherentPlural。独立输入可用实际结果 Rite 的 GetAdjective（有 NoTooltip 版本）、GetAdherentName、GetAdherentNamePlural 等已有 getter 初始化，编辑后保持 editbox 自身文本；重开会话应从实际结果重新初始化。不能虚构其余草案 getter，也不能因画面显示新字就推断已提交。
 
 ### 交付验收仍需真实环境完成
 
 静态层面已闭合权限、零报价／零扣款、同对象元数据更新、cosmetic-only 成功 hook 与独立输入回调。仍需实机核脚本规则可加载、native blocker、四名／色／图标真实写入、MTS／DES 动态选项、overlay 布局、无第二对象、pending／取消／异常清理、成功后 modifier 清除，以及保存后冷载元数据不丢失。单一 ACK、窗口展示或源码分支都不能替代这些结果。
+
+## R0012 实际失败后的现行修正：真实原生窗口内的条件 footer
+
+`machine_id: 4-8e1c2f1861`，2026-10-25。R0012 保留图 `scene/screenshots/R0012/02-decision-group.png` 在任何融合提交之前就显示了空的“定制融合礼仪”外部窗口；实际虔诚仍为 6000、当前 Rite 仍为来源 150，未创建结果。后续 Root 的原生 UI 回执也显示 native-setup 可见、fusion 窗口隐藏。这是该独立原生 context 消费者失败的实机证据，不能解释为已成功创建。
+
+当时 error.log 为 1902 B，打开 GUI 后仅新增 `21:15:45 jomini_custom_text.h:93` 的 character/GetActivityName 诊断，gui_warnings.log 为空；日志没有直接写出 RiteCreationWindow context 缺失。缺少原生实例是结合空字段、错误 visible 表达式、scripted-widget 全局 parent 与未找到公开导入 getter 所作的解释，不能把推断伪装成引擎报错。现行实现不再依赖这一未经资格化的外部 context。
+
+R0012 已由 Root 正常关闭，native／保留 OS／host／keeper 回执结束后，`CAS 13872` 通过 `root-execution-a14/SCREEN-RELEASE.actual.json` 释放。之后才修改源文件；没有热改冻结运行包。
+
+### 一条有来源的原生 GUI 覆盖
+
+现行产品新增 `gui/window_rite_creation.gui`，保留真正 `rite_creation_window` root，由原生 game view 注入 RiteCreationWindow。删除 `gui/rrf_native_setup_window.gui` 及它的 scripted-widget 注册；外部 launcher、结果／恢复入口不再调用任何 RiteCreationWindow 成员。
+
+基础来源：
+
+| 来源 | 精确身份 |
+|---|---|
+| 当前原版 window_rite_creation.gui | SHA-256 `9476299fdbf0975e41923eac9b192d3fe0b2cd74a4da0d928d0da7974b7ea9f8` |
+| 实际加载 MTS v11 同路径 GUI | 43,790 B；SHA-256 `0b4c9eeff1fe0f6948e4e09d03bbb96241c0b8449a401bfe3d1f728a62a8ceda` |
+| MTS 源提交 | `XenoAmess/ck3_mod_more_tenant_slots`，`fae5b3bfda87f872f42052c5ab4d729efb3b4d19`，`more_tenets_slots_xa_dev/gui/window_rite_creation.gui`；对应 Workshop `3182367229` |
+
+逐行比对证实 MTS 此文件的唯一实质变化是把核心区 hbox 改为高度 300 的 scrollbox＋三列 flowcontainer；唯一 mts_ 标识只是 `mts_tenets_grid_scroll` 控件名，没有 MTS 私有 trigger／doctrine／scripted-GUI／素材依赖。因此同一份基础适用于有、无 MTS，实际容量仍由加载的原生 define 决定。只纳入这一路径的必要兼容改动，没有复制任意其他 GUI。该来源按本次仓库任务授权使用。
+
+### RRF 模式与普通模式
+
+原生四编辑框、名称初始化、图标、颜色、罪恶美德、四个标准教义 category helper、真实 picker 与知识／can_pick 守卫保持原样。DES 的 main_group 扩展继续由原 helper 动态提供。RRF 会话 gate 接收原生 `GetRite.MakeScope` 作为 saved scope，要求创建者、实际当前 result、active 会话与请求目标全都对应。
+
+仅在该会话内，新增 footer 用真实 CanEditRite、CalcPietyCost=0 和 exact-target mark validator 启用保存；先 mark 请求，再调用 **EditRite**，不调用 CreateRite。原 Edit／Create／Reform 按钮在此模式隐藏。独立 RRF 提交仍只收原 500／1000 一次，原生设置会话只更新实际同一对象；不设置领袖或改来源对象。
+
+核心选择按钮在该会话禁用，隐藏原生无效空槽，保留已提交的实际 3–100 项；最终结果校验继续检查实际集合与双方来源贡献。原生错误创建模式的 adoption／creation blocker 说明在 RRF 模式隐藏，改用真实 Edit blockers；普通模式继续原生行为。
+
+保留现有默认／延后生命周期：首次申请保存确认之前，可明确保留创建时的默认设置，并通过实际最终内容守卫完成；请求过保存后此入口禁用。延后或 X／ESC 关闭不清会话／减免，纯 scripted-GUI 恢复入口可重新打开同一对象。原生保存只有带 consume_rite_edit_token 的实际 on_rite_updated 及最终 ID／内容守卫才能完成清理。launcher 只消费一次 open flag，不因会话仍 active 重复打开或重置输入。
+
+新增现有测试中的跨消费者检查覆盖正式 manifest、原生 root、保留四 callback、真实 Edit 回调顺序、exact-target 参数、零价资格、核心锁定、MTS 滚动和外部入口不含原生成员；脚本 AST 验证 session gate 与恢复／延后的状态。这些检查不假装拥有原生编辑实例，也不替代下一次真实 UI、保存及冷载验收。本轮按 Root 中央验证安排没有在子代理单独运行 Maven。

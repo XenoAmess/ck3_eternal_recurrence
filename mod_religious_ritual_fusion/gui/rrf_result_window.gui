@@ -3,11 +3,29 @@ widget = {
 	name = "rrf_native_setup_launcher"
 	size = { 1 1 }
 	alwaystransparent = yes
-	visible = "[And( Not( IsGameViewOpen( 'rite_creation' ) ), GetScriptedGui( 'rrf_native_launch_gui' ).IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+	visible = "[GetScriptedGui( 'rrf_native_launch_gui' ).IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 	state = {
 		name = _show
 		on_start = "[GetScriptedGui( 'rrf_native_open_ack_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 		on_start = "[OpenGameViewData( 'rite_creation', GetPlayer.MakeScope.Var( 'rrf_last_result_rite' ).Rite )]"
+	}
+}
+
+# A native X/ESC close keeps the paid session alive. This recovery control has
+# no RiteCreationWindow data context; it only requests the original game view.
+widget = {
+	name = "rrf_native_setup_recovery"
+	parentanchor = bottom|right
+	position = { -30 -100 }
+	size = { 260 46 }
+	layer = top
+	visible = "[And( Not( IsGameViewOpen( 'rite_creation' ) ), GetScriptedGui( 'rrf_native_recovery_gui' ).IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
+	button_standard = {
+		size = { 260 46 }
+		text = "RRF_RESUME_SETUP"
+		tooltip = "RRF_RESUME_SETUP_TT"
+		enabled = "[GetScriptedGui( 'rrf_resume_native_setup_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+		onclick = "[GetScriptedGui( 'rrf_resume_native_setup_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 	}
 }
 

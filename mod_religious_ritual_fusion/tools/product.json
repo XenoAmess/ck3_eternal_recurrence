@@ -34,9 +34,8 @@
     "common/scripted_triggers/rrf_native_setup_triggers.txt",
     "common/scripted_triggers/rrf_conversion_triggers.txt",
     "common/scripted_rules/zz_rrf_native_setup_rules.txt",
-    "gui/rrf_native_setup_window.gui",
+    "gui/window_rite_creation.gui",
     "gui/rrf_result_window.gui",
-    "gui/scripted_widgets/rrf_native_setup_widgets.txt",
     "gui/scripted_widgets/rrf_result_widgets.txt",
     "common/scripted_effects/rrf_final_configuration_effects.txt"
   ]
