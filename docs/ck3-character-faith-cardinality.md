@@ -54,6 +54,40 @@ remove_character_secret_faith = yes
 
 这段原版代码证明：秘密对象能够与公开对象并存；公开身份转换使用替换和清除秘密状态的流程。它不证明每一项秘密信仰教义都像公开教义一样参与常规计算。
 
+### 获取、知情与退出：2026-10-26 续查
+
+人物的隐藏 Faith 归属与 `secret_crypto_religionist` 秘密记录是两个相关对象：前者用于 `secret_faith` 查询，后者接入知情者、曝光和勒索系统。原版 `make_character_crypto_religionist_effect` 同时设置隐藏身份并添加秘密；守卫拒绝已有秘密信仰或目标等于公开 Faith 的情况。秘密有效性也要求隐藏 Faith 存在且不同于公开 Faith，见 `common/scripted_triggers/00_secret_type_triggers.txt:404–420`。
+
+正常游玩已找到的获取入口：
+
+| 入口 | 实际脚本及条件 |
+| --- | --- |
+| 接受改宗要求时秘密保留旧信仰 | `common/scripted_effects/00_religious_interaction_effects.txt:1279–1282` 触发 `false_conversion.0900`，后者进入改宗选择事件。`events/religion_events/false_conversion_events.txt:820–864` 的秘密保留选项使用 `FALSE_CONVERSION = yes`；它会先改变公开 Rite，再把旧 Faith 设为秘密身份。已有对应秘密或 `forbid_crypto_reconversion` 会阻止这条选项；当前源码没有启用“必须拥有 sanctioned_false_conversion 教义参数”的选项守卫。具体显示文本随人物和家庭分支变化。 |
+| 有秘密信仰的监护人传授 | `common/on_action/childhood_on_actions.txt:174–179` 在十五岁生日调用 `secret_faith.1001`；`events/secret_faith_events.txt:16–25` 检查监护人有秘密信仰、受教育者尚无且公开信仰不同。后续事件有成功、失败和泄露分支，不能说所有孩子自动继承。 |
+| 特定旅行或剧情事件 | 例如 `events/travel_events/travel_events_fp3.txt:482–504` 提供秘密改宗，`:1298–1314` 的另一个选项还要求玩家及神秘主义／神学家等条件。这里可秘密接受另一个信仰，不只限于保存旧信仰。 |
+
+普通界面的稳定中文定位可用 `localization/simp_chinese/event_localization/religion_events/other_doctrine_events_l_simp_chinese.yml:33–36`：改宗事件的选项表达“口头信奉对方，心里信奉原信仰”。获得以后，`localization/simp_chinese/decisions_l_simp_chinese.yml:852,867` 对应“揭示真正的信仰”和“舍弃秘密信仰”。不能把这些退出决议当作任意选择第二 Faith 的获取入口。
+
+模组在人物 scope 中可调用已有原版封装，例如：
+
+```text
+make_character_crypto_religionist_effect = {
+    CRYPTO_RELIGION = faith:rabbinic_faith
+}
+```
+
+示例 Faith key 在当前 `common/religion/faith_types/00_faith_types.txt:2888` 存在；实际产品仍需选择自己的目标，保留原版封装的前置守卫。本轮只核对原版调用与定义，没有执行这段示例。
+
+发现与公开曝光不同。`events/councillor_task_events/spymaster_task_events.txt:1698–1700` 的 `reveal_to` 让特定人物知情；`common/character_interactions/00_character_interactions.txt:1675–1728` 的曝光交互调用 `expose_secret`。同道互相知情还需明确满足秘密 Faith 相同及已知对方秘密，见 `common/scripted_triggers/00_crypto_religionist_triggers.txt:1–15`。向受教育者成功传授的效果还会让监护人与孩子互知对应秘密，见 `00_religious_interaction_effects.txt:1458–1489`。
+
+秘密接入一般勒索系统，但不是一律犯罪：当前 `00_secret_type_triggers.txt:414–419` 将非神职人物归为受谴责，将神职人物归为犯罪。通用 `common/scripted_effects/00_secret_effects.txt:56–85` 按对应分类及 `can_add_hook` 检查产生弱／强勒索牵制；其他可曝光、可勒索资格继续适用。知道或曝光秘密，不自动赋予跨关系范围监禁任何人的权限；监禁仍须满足原版交互及监禁理由检查。
+
+`common/secret_types/00_secret_types.txt:609–615` 的曝光钩子触发 `false_conversion.8000`。该事件提供宣称忠于公开信仰与公开改信秘密信仰的表态选项，**曝光本身没有在这个钩子里直接改宗**。公开改信分支在 `false_conversion_events.txt:1473–1476` 明确替换公开 Faith 并清除秘密 Faith。
+
+保留一个具体实现边界：曝光事件中注释为放弃秘密信仰的分支（`:1458–1471`）只见虔诚、奉献等级和压力等效果，没有显式的 `remove_character_secret_faith`。本轮未实测它最终是否清除隐藏身份，不仅凭选项注释宣称该后态已完成。独立的“舍弃秘密信仰”决议则在 `common/decisions/10_religious_decisions.txt:1370–1390` 明确移除秘密记录并清除隐藏 Faith；要求成年且非狂热。主动公开回归决议也有自己的费用、资格和后续传播条件。
+
+秘密身份的玩法由对应消费者决定，不能当作同时获得两套全部宗教规则或加成。已有专门消费者包括传授、互知、退出与曝光事件；县级假改宗另用 `false_convert` 变量及限期 modifier，不能当作人物秘密记录的同一存储。本文不穷举所有原生消费者，也不宣称已经实测完整生命周期。
+
 ## 为什么采用这种模型
 
 以下是根据现有规则结构作出的设计解释，**不是对开发者未公开动机的断言**。
@@ -82,3 +116,4 @@ remove_character_secret_faith = yes
 - 实际读取 EXE：101,040,248 B；本轮 SHA-256 为 `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`。旧报告中的 build 25734779 仅作既有定位，本轮未重新读取 appmanifest，不把它写成本轮新增观察。
 - 已有 .2/.3 原生研究只按各自精确版本引用。本轮新增验证限于上述原版文本及本机文件身份；没有读取或改变正在运行的游戏状态。
 - 研究时原工作树被其他实机场次冻结，文档在独立的稀疏 detached worktree 编写；没有改变原工作树 HEAD 或 tracked 文件。仅新增小型说明，不复制游戏、存档、运行证据或构建载荷；按通用存储策略管理临时索引与工作树。
+- 秘密信仰续查观察时间：`2026-10-25T21:30:42.034431+00:00`，同一 `machine_id: 4-8e1c2f1861`；`game/events/religion_events/false_conversion_events.txt` 实际 40,742 B，SHA-256 `3c058eb278a6fc959895fb62316aa9f184a87dc810bdda0221396f1cc22749ac`。仍为原版文本静态研究，没有在运行中的场次执行上述选项、调试命令或状态读取。
