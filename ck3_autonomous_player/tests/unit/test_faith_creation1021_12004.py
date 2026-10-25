@@ -120,9 +120,12 @@ class FaithCreation1021KnowledgeTests(unittest.TestCase):
         self.assertTrue(source["caller_candidates_are_lexical_only"])
         previous = load_vanilla_event_source_index(build="1.20.0.3")
         current = load_vanilla_event_source_index(build="1.20.0.4")
+        additions = {KEY, "head_of_faith.0100", "pam_bull_events.0004"}
+        self.assertEqual(set(current["events"]) - set(previous["events"]), additions)
         self.assertEqual({key: value for key, value in current["events"].items()
-                          if key not in (KEY, "head_of_faith.0100")}, previous["events"])
-        self.assertEqual(len(current["events"]), len(previous["events"]) + 2)
+                          if key not in additions}, previous["events"])
+        self.assertEqual(len(previous["events"]), 193)
+        self.assertEqual(len(current["events"]), len(previous["events"]) + 3)
         self.assertEqual(current["dataset_sha256"], compute_source_index_dataset_sha256(current))
         self.assertEqual(previous["dataset_sha256"], "698F66B83C6D45FAD4D5292E3AF2E6DB3721C92F736ADB9396E177BF8878D880")
         for build in ("1.19.0.6", "1.20.0.2", "1.20.0.3"):
