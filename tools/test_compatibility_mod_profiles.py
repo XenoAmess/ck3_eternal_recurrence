@@ -158,10 +158,15 @@ class CompatibilityProfileTests(unittest.TestCase):
 class PublicCompatibilityAllocationTests(unittest.TestCase):
     def test_producer_to_public_prepare_saved_host_and_actual_allocation_fingerprint(self) -> None:
         import ck3_mod_acceptance as entry
-        from test_ck3_mod_acceptance_r06_scope import PublicR06ScopeTests
+        import test_ck3_mod_acceptance_r06_scope as public_fixture
         from test_saved_campaign_profile_inventory_v2 import ProfileSpec, actual_host_preparer
-        fixture = PublicR06ScopeTests('runTest')
-        fixture.setUp(); self.addCleanup(fixture.doCleanups)
+        scratch = tempfile.TemporaryDirectory()
+        self.addCleanup(scratch.cleanup)
+        fixture = public_fixture.PublicR06ScopeTests('runTest')
+        # Give the real fixture a canonical parent before it derives any paths.
+        with patch.object(public_fixture.options, 'scratch_root', Path(scratch.name).resolve()):
+            fixture.setUp()
+        self.addCleanup(fixture.doCleanups)
         root = fixture.root
         producer_manifest = os.environ.get('XAR_COMPATIBILITY_PRODUCER_MANIFEST')
         values: object

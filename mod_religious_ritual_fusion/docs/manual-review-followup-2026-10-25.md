@@ -55,3 +55,7 @@ DES现有Java构建与共享消费者完整`verify`于10:57:16Z通过17项，0�
 联合入口完整Python组47项通过；新增测试模块与实际抽取的8个合同函数通过严格类型检查，未声称既有大模块全绿。标准模组分别挂载并按兼容项→RRF→验收夹具顺序加载，来源manifest及全部源／副本身份进入公共prepare、存档清单、restore与allocation固定点。普通推广与缓存验收仍使用既有产品单载约束。
 
 云端651a CI随后暴露两个测试临时根目录的canonical表示不一致，本机70通过不能替代该云端失败。仅将两测试的可信`@TempDir`先转为`toRealPath`，未放宽生产链接／来源守卫。本机另建明确的junction临时别名，在该别名作为JVM临时根的条件下完整70项通过，152输入源前后相同，见[原始回执引用](acceptance/review-canonical-temp-2026-10-25.json)。云端具体别名类型未观察，不能追认为8.3或junction；后继CI需独立进入终态。
+
+41f169后继云端[40190781101](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40190781101)仍失败：Java来源资格六项已通过，失败移至实际Python公共prepare测试的存档来源pin。既有测试夹具仍从未规范化的临时父目录派生路径。本机于12:07Z前后将进程TEMP/TMP显式指向junction别名，复现同一`.ck3`来源差异（原wait1）；仅在新测试初始化原夹具前规范化父目录，之后同一别名下完整47项及完整新测试模块严格mypy均原wait0。生产pin校验没有放宽。原始云端日志、修复前／后进程与严格类型回执保存在外置`review-fixes-a01/compatibility-alias-*-a01.json`及相邻log，机器仍为`4-8e1c2f1861`。这不替代后继云端终态或游戏验收。
+
+该修正随后于12:12:37Z通过完整默认Maven `verify`：70项，0失败／错误／跳过；JVM临时根及Python进程TEMP/TMP均使用同一明确的junction别名。152项输入前后相同，原wait0；`review-fixes-a01/JAVA-VERIFY.a06.actual.json`为80,786 B，SHA-256 `ce7ae64a8b026439ecab6578b1dc3d899b8f080a0229f8d5a024bf255b37c6a7`，保留41f169执行起点与当时局部修改身份。
