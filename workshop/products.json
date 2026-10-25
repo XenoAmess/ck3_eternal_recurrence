@@ -144,11 +144,11 @@
     {
       "key": "religious-ritual-fusion",
       "directory": "mod_religious_ritual_fusion",
-      "workshop_item_id": null,
+      "workshop_item_id": "3826756673",
       "forbidden_upstream_ids": [],
       "builder": "mod_religious_ritual_fusion/tools/pom.xml",
       "release_flags": ["--output", "{new-output}", "--revision", "{source-commit}", "--machine-id", "{actual-machine-id}"],
-      "publication": "Not published; current Java/Quarkus builder produces development staging only. Workshop item ID remains null until actual first publication."
+      "publication": "0.1.0 Alpha; actual CreateItem EResult1 on 2026-10-25. First Submit returned EResult2; public/cache closure pending. Formal Java/Quarkus allowlist staging only."
     }
   ]
 }

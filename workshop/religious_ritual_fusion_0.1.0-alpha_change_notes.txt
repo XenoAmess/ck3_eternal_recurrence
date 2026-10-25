@@ -1,0 +1,14 @@
+0.1.0 Alpha — 首次公开测试版
+
+新增礼仪融合与宗教融合决议、来源选择及独立对照窗口。
+可从双方内容中选择三个核心信条与各组教义，要求双方各贡献至少一项独有内容，并保留知识、DLC、教义限制和互斥检查。
+礼仪融合默认消耗500虔诚，宗教融合默认消耗1000虔诚；成功后十年冷却。打开草稿不收费，结果核验后一次性扣费。
+记录实际融合结果与双方来源；提供最近融合及未决融合查看入口。
+创始者采用结果，不强制双方所有信徒、封臣与领地改宗；原版改宗规则可能影响近亲。
+附带九种游戏语言的本地化文件、独立封面与六张真实实机截图。
+
+兼容与测试范围：适配声明为CK3 1.20.0.*，实际观察版本为1.20.0.4。已观察到礼仪实际创建、扣费、保存及重新启动后的对象和来源读回，但完整公共验收仍有未完成项。
+宗教融合、跨宗教融合、完整拒绝用例、冷却到期、AI、多人、其他模组组合与旧存档兼容尚未完成实机验收。当前融合入口仅向玩家开放。七种新增翻译仅通过键和格式检查，尚未逐语人工审校或实机验收。
+请备份存档，并优先使用独立测试存档。未决融合请保留存档，不要重复提交。
+
+Initial Alpha release: rite/faith fusion decisions, source comparison, tenet/doctrine selection, costs, cooldown and source history. Rite creation and persistence were observed in CK3 1.20.0.4; complete acceptance remains unfinished. Faith fusion, cross-religion fusion, AI, multiplayer and old-save compatibility are not live-validated. Back up saves and use a test campaign.
