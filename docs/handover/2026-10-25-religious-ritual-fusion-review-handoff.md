@@ -153,6 +153,10 @@ head146观察scene141891336 B，metadata剩24422648 B（含共享恢复预留4Mi
 
 R0011/R0012 shader cache各155353904 B已按精确身份清理，闭场小回执在各自`closure-R001*-cache-a01`；mod-content/gfx保留。R8/R10、旧正式75文件与六张照片等历史保护至2026-11-01T04:00Z，按原记录到期复核，不自行延为永久。候选、当前源码输入、原STOP/失败/退出及恢复所需证据是未解决问题当前输入，不得清理；续工先补用途复核期限。用户过往允许清理CK3 Workshop下载不等于现在可删除任意个人/任务目录。
 
+**交接闭场更新，优先于上面历史准入：**随后已实际CAS **head146→147**，关闭a06场次、共享恢复及Java全部未消费预留。a06即使未到16:30也已不可用于新prepare/allocate/run；新任务必须重新准入。闭场无删除，实际owned Native 1094613224 B、scene142076736 B、卷可用125961498624 B，关键失败、候选、sourceQ、native及退出原件用途复核为2026-11-01T04:00Z，旧保护期限未延长。回执`scene/HANDOFF-STORAGE.closed-stage-tail1MiB.actual.json`为7951 B，SHA `59b0c0b044fb629b984293b4f40fd95c4c3778e63c783c6e4cece90931a7c874`。
+
+head147仅留1MiB用于本次交接文档/Git尾项，最终writer关闭后归零；最终独立回执固定为`scene/HANDOFF-STORAGE.final-future0.actual.json`。本文件不预填尚未取得的最终回执哈希或CAS结论，接手者读实际文件；这不是可启动游戏的尾项额度。
+
 ## 交接后的发布限制与运行规范
 
 - 默认Steam离线，普通开发/验收不转在线；新启动前重新后台probe，不能用本交接离线事实或截图作准入。联网发布后立即恢复离线；在线时先核其他机器账号占用。
