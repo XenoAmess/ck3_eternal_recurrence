@@ -97,6 +97,8 @@ def _event(key: str, scopes: list[dict[str, object]],
 def _selection_context(key: str) -> dict[str, object]:
     # Scope roles and visible options come from the existing production-shaped
     # .3 completion fixture and epidemic physician variant, not .4 live input.
+    rows: tuple[tuple[str, int, int, str, int | None], ...]
+    options: tuple[int, ...]
     if key == "feast.7101":
         rows = (("activity", 2, 6, "activity", None),
                 ("host", 62, 4, "character", PLAYER),
@@ -156,7 +158,9 @@ def _faction_frames() -> tuple[dict[str, object], dict[str, object]]:
                   "seized_county_title_ids": [101, 102],
                   "strict_majority_from_seized_counties": True}],
               "unresolved_branches": ["kingdom_receiver_capital_and_existing_direct_counties"]}
-    fixed = lambda value: {"raw": value, "scale": 100000}
+    def fixed(value: int) -> dict[str, int]:
+        return {"raw": value, "scale": 100000}
+
     faction = {"faction_id": 33554465, "faction_type_key": "populist_faction",
                "target_character_id": PLAYER, "leader_character_id": 70766,
                "leader_is_human": False, "special_character_id": None,
