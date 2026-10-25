@@ -1,0 +1,289 @@
+{
+  "schema": "xar.java-ci-hosted-terminal-review/v1",
+  "observer": {
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-25T22:09:23Z",
+    "method": "Connected GitHub API and in-memory read of the retained small evidence ZIP; local source/POM read only",
+    "repository_head": "6d3d51bd81c328cfe3be6fd869136b3a4ba67b73"
+  },
+  "official": {
+    "machine_id": "runnervmdaln5-5f47da6a04",
+    "run_id": "40228781719",
+    "job_id": "121275828170",
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40228781719",
+    "job_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40228781719/job/121275828170",
+    "api_source": "https://api.github.com/repos/XenoAmess/ck3_eternal_recurrence/actions/runs/40228781719",
+    "head_sha": "6d3d51bd81c328cfe3be6fd869136b3a4ba67b73",
+    "status": "completed",
+    "conclusion": "failure",
+    "created_at_utc": "2026-10-25T20:01:18Z",
+    "updated_at_utc": "2026-10-25T20:59:43Z",
+    "step": {
+      "number": 44,
+      "name": "Verify Java tools, full reactor and actual HTTP consumer chain",
+      "conclusion": "failure"
+    },
+    "runtime": {
+      "java_xml_version": "21.0.12.1",
+      "java_terminal_executable": "C:\\hostedtoolcache\\windows\\Java_Temurin-Hotspot_jdk\\21.0.12-101.0\\x64\\bin\\java.exe",
+      "default_maven_version": "3.10.0",
+      "default_maven_reported_home": "C:\\ProgramData\\chocolatey\\lib\\maven\\apache-maven-3.9.16",
+      "installation_path_is_an_observation_not_an_execution_requirement": true
+    }
+  },
+  "artifact": {
+    "id": "12614185424",
+    "name": "java-control-ci-evidence",
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40228781719/artifacts/12614185424",
+    "bytes": 606335,
+    "sha256": "16b0f28b48565cc9a84c988d2bdc2060423b4410ba3c2079ebf65f20ad25ab53",
+    "entries": 198,
+    "expires_at_utc": "2026-11-01T20:59:31Z",
+    "retention": "ZIP read in memory; no local archive retained by this review. GitHub retention expiry is not a permanent availability promise.",
+    "retained_entries": [
+      {
+        "path": "logs/bootstrap-actual.json",
+        "bytes": 1269,
+        "sha256": "2373815437fc741938efed6f768a7390f8c580702b1afc117907768d11937f60"
+      },
+      {
+        "path": "logs/control-ci-actual.json",
+        "bytes": 2790,
+        "sha256": "985721622dfcf54629825957b1cd77adcfbba368f73ca52781c0d567efa8b7e2"
+      },
+      {
+        "path": "logs/qualified-pipeline.log",
+        "bytes": 592,
+        "sha256": "487788b17f817dbda09b9c0159cd6aa92b8c06fbb976d32d941a60dbe43cc71a"
+      },
+      {
+        "path": "logs/build-qualified-tools-verify.stdout.log",
+        "bytes": 23529,
+        "sha256": "8e94917e55fafe77e11f35d3efdddf63d104a427b62dce950ce9993c18bfc0b5",
+        "modified_suite_line": 42,
+        "totals_line": 220,
+        "build_success_line": 228
+      }
+    ]
+  },
+  "accepted_tool_test_scope": {
+    "note": "Two build-tools executions in this one Official run, not two successful full pipeline runs.",
+    "bootstrap_tools": {
+      "junit_suites": 87,
+      "tests": 636,
+      "passed": 636,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "qualified_tools": {
+      "junit_suites": 87,
+      "tests": 636,
+      "passed": 636,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "modified_suite_in_each": {
+      "test_class": "org.xar.ck3.control.build.CiBootstrapTest",
+      "tests": 45,
+      "passed": 45,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "junit_globs": [
+      "build/bootstrap-tools/ck3-control-build-tools/surefire-reports/TEST-*.xml",
+      "build/qualified-tools/ck3-control-build-tools/surefire-reports/TEST-*.xml"
+    ],
+    "prior_local_java25_red_is_preserved_in": "docs/ck3-native-ai/evidence/java-ci-scratch-traversal-2026-10-26.json"
+  },
+  "actual_failure": {
+    "started_at_utc": "2026-10-25T20:59:22.676243200Z",
+    "observed_at_utc": "2026-10-25T20:59:30.383477100Z",
+    "status": "RED",
+    "error": "IOException: NOT EXECUTED: full parity requires the actual fixture-production request; fresh SDK and complete cold/warm cannot be omitted",
+    "fixture_production_request_ref": null,
+    "fixture_request_ref": null,
+    "reactor_build_receipt_ref": null,
+    "expected_maven_red_stage": "PASS",
+    "reactor_stage": "RED",
+    "reactor_execution": "NOT_RUN: rejected before ControlBuild.build",
+    "not_run_stages": [
+      "REACTOR_TEST_CLOSURE",
+      "MAP_CONSUMERS",
+      "SDK_SENTINEL_STATIC",
+      "MONTHLY_STATIC",
+      "SUPPLEMENTAL",
+      "FRESH_SDK",
+      "CANONICAL_THIRTY"
+    ],
+    "qualified_child": {
+      "pid": 7860,
+      "creation_filetime_decimal": "134374355615923074",
+      "exit_code": 1,
+      "elapsed_seconds": 8.9299274,
+      "active_processes": 0,
+      "stop_reason": null,
+      "peak_job_memory_bytes": 281559040,
+      "memory_limit_bytes": 2147483648
+    },
+    "outer_trace": "CiBootstrap.main(CiBootstrap.java:489): java.io.IOException: bootstrap child failed; see qualified-pipeline.log",
+    "child_trace": "ControlCi.qualify(ControlCi.java:473), ControlCi.main(ControlCi.java:215)"
+  },
+  "repository_input_gap": {
+    "observed_direct_module_names": [
+      "contracts",
+      "local-service",
+      "native-diagnostics",
+      "war-policy",
+      "campaign-score",
+      "finance-policy",
+      "event-policy",
+      "military-policy",
+      "late-outcome-reconciliation"
+    ],
+    "observed_direct_modules": 9,
+    "observed_reactor_projects": 10,
+    "build_tools": "Separate standalone module exists but is not registered in the current parent POM.",
+    "selected_hosted_profile": "G2_FULL_PARITY_20261024_R3",
+    "required_direct_modules": 34,
+    "required_reactor_projects": 35,
+    "missing_examples": [
+      "g2-research",
+      "continuity-core",
+      "adapters-storage",
+      "application",
+      "native-transport"
+    ],
+    "required_native_java_sources": [
+      "native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/army/ArmyStrengthsManagers.java",
+      "native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/army/ArmyStrengthsDetachment.java"
+    ],
+    "classification": "Additional observed input gap, not an assertion that the official run reached a later source-graph failure.",
+    "request_production_order": "SDK production inputs bind the exact current qualified-tools build/runtime. Actual source graph, original software fixture/SDK inputs, R2/R3 native publications and oracle outputs must exist; generate the typed request from qualified tools before full reactor. Current workflow supplies no request and has no complete R2/R3 production step."
+  },
+  "historical_external_source": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "root": "D:/codex-ck3-demos/2026-10-24-java-g2-source09-r3",
+    "materialized_at_utc": "2026-10-24T00:26:15.105905100Z",
+    "materialization_status": "SOURCE_ONLY",
+    "child_modules": 34,
+    "reactor_projects": 35,
+    "subsequent_compile": {
+      "observed_at_utc": "2026-10-24T00:42:04.353738200Z",
+      "status": "RED",
+      "success_projects": 22,
+      "failure_projects": 1,
+      "skipped_projects": 12,
+      "tests": "NOT_RUN",
+      "maven_exit_code": 1,
+      "receipt_bytes": 2370163,
+      "receipt_sha256": "48938302f3cdf5bee6b2e0d9f01a603fe523052260dcf92b82e7764f11e0c3c4"
+    },
+    "qualification": "Historical provenance only; this review did not read or import that external tree and does not grant current-machine, hosted, or runnable qualification."
+  },
+  "exact_repository_sources": [
+    {
+      "path": ".github/workflows/static-ci.yml",
+      "lines": [
+        219,
+        231,
+        232
+      ],
+      "fact": "Step44 current invocation omits fixture-production request."
+    },
+    {
+      "path": "java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/ControlCi.java",
+      "lines": [
+        370,
+        374,
+        377,
+        448,
+        450,
+        506,
+        509
+      ],
+      "fact": "Full-parity guard, qualified-tools build, and actual hosted reactor source selection."
+    },
+    {
+      "path": "java/ck3-control/pom.xml",
+      "lines": [
+        13,
+        14,
+        22,
+        23
+      ],
+      "fact": "Exactly nine direct child modules."
+    },
+    {
+      "path": "java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/ControlBuild.java",
+      "lines": [
+        1233,
+        1235,
+        1237,
+        1274,
+        1281
+      ],
+      "fact": "Exact complete graph is required, including all 34 child modules."
+    },
+    {
+      "path": "java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/FullParityCurrentBindings.java",
+      "lines": [
+        21,
+        22,
+        161,
+        175,
+        205,
+        209
+      ],
+      "fact": "Required actual R3 oracle/source inputs."
+    },
+    {
+      "path": "java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/SdkStageConfigurationProducer.java",
+      "lines": [
+        69,
+        150,
+        153,
+        157
+      ],
+      "fact": "SDK production inputs require the current qualified-tools runtime."
+    },
+    {
+      "path": "java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/SdkSourceAssembly.java",
+      "lines": [
+        365,
+        370,
+        564,
+        567,
+        574
+      ],
+      "fact": "Exact Source32 exporter and same-machine original frozen source/NTFS identity contract."
+    },
+    {
+      "path": "docs/handover/2026-10-24-java-g2-resume56-r3-progress.md",
+      "lines": [
+        5,
+        32,
+        86,
+        90
+      ],
+      "fact": "Different source machine, unintegrated external source, SOURCE_ONLY graph and actual compile RED."
+    }
+  ],
+  "work_performed": {
+    "source_edits": false,
+    "workflow_edits": false,
+    "tests_or_maven_run": false,
+    "game_or_screen_operations": false,
+    "profile_downgrade": false,
+    "synthetic_request_created": false,
+    "full_parity_guard_weakened": false,
+    "full_chain_fixed": false
+  },
+  "next_scope": "Original source-graph/fixture owners must integrate a reviewed reproducible complete source/input closure and its real Java producer before hosted full-parity verification. This CI gap is independent of RRF native review/cold-load business acceptance.",
+  "retention": {
+    "review_at_utc": "2026-11-01T22:08:08Z",
+    "reason": "Small terminal diagnosis and exact source/artifact pins for the unresolved hosted input closure; review availability and continuing use at expiry."
+  }
+}
