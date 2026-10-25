@@ -548,7 +548,7 @@ def assert_java_produced_source_consumers(runtime_path: Path) -> None:
     normal = NormalCloseReviewRaceTests()
     try:
         with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
+            root = Path(directory).resolve()
             client, _, fake_time, report = normal.make_client(root, review_at=None)
             normal.typed_route(root, client, report)
             client.manifest['source_root'] = {'path_key': 'source_root'}
