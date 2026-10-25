@@ -37,7 +37,7 @@ public final class Command implements QuarkusApplication {
                     result = new CatalogGenerator().generate(catalog, source);
                 }
                 case "validate" -> { only(options, Set.of("--source")); result = ContentValidator.validate(source); }
-                case "build" -> { only(options, Set.of("--source", "--output", "--revision", "--machine-id")); result = new ReleaseBuilder().build(source, Path.of(required(options, "--output")), required(options, "--revision"), new Contracts.Provenance(Contracts.ProvenanceKind.OBSERVED_MACHINE, required(options, "--machine-id"), java.time.Instant.now().toString())); }
+                case "build" -> { only(options, Set.of("--source", "--output", "--revision", "--machine-id", "--workshop-item-id", "--git-tag")); result = new ReleaseBuilder().build(source, Path.of(required(options, "--output")), new Contracts.ReleaseIdentity(required(options, "--workshop-item-id"), required(options, "--git-tag"), required(options, "--revision")), new Contracts.Provenance(Contracts.ProvenanceKind.OBSERVED_MACHINE, required(options, "--machine-id"), java.time.Instant.now().toString())); }
                 case "verify" -> { only(options, Set.of("--source", "--output", "--manifest")); result = new ReleaseBuilder().verify(source, Path.of(required(options, "--output")), Path.of(required(options, "--manifest"))); }
                 default -> throw new IllegalArgumentException("unknown command: " + args[0]);
             }

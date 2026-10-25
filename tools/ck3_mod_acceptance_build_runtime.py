@@ -942,6 +942,11 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest,
             require({key: snapshot_input[key] for key in ("bytes", "sha256")}
                     == {key: row[key] for key in ("bytes", "sha256")},
                     "Preserved fixture CMake blob differs from the original Native snapshot")
+        if relative == "CMakeLists.txt" and source_checkout.get("original_inactive_cmake_blob"):
+            snapshot_input = source_checkout["original_inactive_cmake_blob"]
+            require({key: snapshot_input[key] for key in ("bytes", "sha256")}
+                    == {key: row[key] for key in ("bytes", "sha256")},
+                    "Preserved inactive CMake blob differs from the original Native snapshot")
         if relative in source_checkout.get("original_research_blobs", {}):
             require(relative in (native_successor.NONCOMPILED_CONSUMER_RELATIVE,
                                  native_successor.HOST_TEST_COMPANION_RELATIVE),
@@ -966,6 +971,10 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest,
                 original = source_checkout["runtime_fixture_cmake_pin"]
                 require(Path(original["path"]).resolve() == native_root / relative,
                         "Verified fixture CMake runtime pin is from another source path")
+            if relative == "CMakeLists.txt" and source_checkout.get("runtime_inactive_cmake_pin"):
+                original = source_checkout["runtime_inactive_cmake_pin"]
+                require(Path(original["path"]).resolve() == native_root / relative,
+                        "Verified inactive CMake runtime pin is from another source path")
             if relative in source_checkout.get("runtime_research_pins", {}):
                 original = source_checkout["runtime_research_pins"][relative]
                 require(Path(original["path"]).resolve() == native_root / relative,

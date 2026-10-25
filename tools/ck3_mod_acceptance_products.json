@@ -29,7 +29,7 @@
   "products": {
     "religious-ritual-fusion": {
       "directory": "mod_religious_ritual_fusion",
-      "workshop_item_id": null,
+      "workshop_item_id": "3826756673",
       "forbidden_upstream_ids": [],
       "builder": "{repo_root}/mod_religious_ritual_fusion/tools/pom.xml",
       "integration_status": "shared_generic_adapter_java_prebuilt_fixture_live_qualification_required",

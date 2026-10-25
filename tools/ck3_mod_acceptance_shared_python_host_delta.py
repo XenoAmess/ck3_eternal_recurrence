@@ -21,6 +21,8 @@ CONTRACT_FIELDS = frozenset({
 
 @runtime_checkable
 class WireConsumerAPI(Protocol):
+    def qualify_inactive_cmake_delta(self, proof: object, *, root: Path, native_commit: str,
+        runtime_commit: str, machine: str, qualification: dict[str, object], snapshot: dict[str, object]) -> object: ...
     def qualify_wire_consumer_delta(self, proof: object, *, root: Path, native_commit: str,
         runtime_commit: str, machine: str, qualification: object, snapshot: object) -> object: ...
     def qualify_host_test_companion(self, change: object, *, root: Path, native_commit: str,
@@ -137,6 +139,7 @@ def qualify_shared_host_delta(path: Path, *, root: Path, native_repo: Path, runt
                               snapshot_ref: object, snapshot: dict[str, object],
                               same_root_before_blob: object = None,
                               same_root_fixture_cmake: object = None,
+                              same_root_inactive_cmake: object = None,
                               same_root_wire_consumer: object = None,
                               same_root_host_test: object = None) -> dict[str, object]:
     ref = pin(path)
@@ -206,6 +209,13 @@ def qualify_shared_host_delta(path: Path, *, root: Path, native_repo: Path, runt
         module.qualify_fixture_cmake_delta(same_root_fixture_cmake, root=root, native_commit=native_commit,
             runtime_commit=runtime_commit, machine=machine, qualification=qualification, snapshot=snapshot)
         expected_changes.add(NATIVE_PREFIX + "cmake/player_pilgrimage_traits_12004.cmake")
+    if same_root_inactive_cmake is not None:
+        require(old_blob is not None and same_root_fixture_cmake is None and same_root_wire_consumer is None,
+                "Inactive CMake requires the sole explicit same-root host transition")
+        wire_consumer_api().qualify_inactive_cmake_delta(same_root_inactive_cmake, root=root,
+            native_commit=native_commit, runtime_commit=runtime_commit, machine=machine,
+            qualification=qualification, snapshot=snapshot)
+        expected_changes.add(NATIVE_PREFIX + "CMakeLists.txt")
     changed = {name for name in git(root, "diff", "--name-only", "-z", native_commit, runtime_commit,
                                    "--", NATIVE_PREFIX).decode("utf-8").split("\0") if name}
     require(changed == expected_changes, "Native Git differences must match the exact reviewed host and fixture changes")
