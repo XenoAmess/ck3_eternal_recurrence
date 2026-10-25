@@ -1,0 +1,45 @@
+﻿# Acceptance-only controls. Neither decision selects an AE2 option or pays.
+# Hide effect traversal; actual clicks alone call the fixture entry points.
+zga_ae2_present_decision = {
+    decision_group_type = zg361
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+    ai_check_interval = 0
+    is_shown = {
+        is_ai = no
+        has_character_flag = zga_ae2_prepared
+        NOT = { has_character_flag = zga_ae2_presentation_requested }
+    }
+    is_valid = {
+        this = character:1128
+        current_date = 1066.9.15
+        var:zg361_comp_portfolio_domain = 2
+        var:zg361_comp_portfolio_stage = 2
+    }
+    selection_tooltip = zga_ae2_present_decision_tooltip
+    confirm_text = zga_ae2_present_decision_confirm
+    effect = {
+        custom_tooltip = zga_ae2_present_decision_tooltip
+        hidden_effect = { zga_ae2_present_effect = yes }
+    }
+}
+
+zga_ae2_verify_decision = {
+    decision_group_type = zg361
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+    ai_check_interval = 0
+    is_shown = {
+        is_ai = no
+        has_character_flag = zga_ae2_presentation_requested
+        NOT = { has_character_flag = zga_ae2_verification_attempted }
+    }
+    is_valid = {
+        this = character:1128
+        current_date = 1066.9.15
+    }
+    selection_tooltip = zga_ae2_verify_decision_tooltip
+    confirm_text = zga_ae2_verify_decision_confirm
+    effect = {
+        custom_tooltip = zga_ae2_verify_decision_tooltip
+        hidden_effect = { zga_ae2_verify_payment_effect = yes }
+    }
+}

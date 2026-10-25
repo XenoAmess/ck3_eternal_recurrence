@@ -1,0 +1,100 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "product": "zhongguo-361",
+  "case_id": "ae2-ui-payment",
+  "acceptance_scope": "controlled_ae2_three_tooltips_and_actual_immediate_payment",
+  "fixture_source": {
+    "kind": "prebuilt_manifest"
+  },
+  "maximum_natural_days": 0,
+  "post_start": {
+    "government_key": "celestial_government",
+    "primary_title_tier_key": "duchy",
+    "independent": true
+  },
+  "required_startup": [
+    "ZG361AE2UI: TEST READY ae2_prepared_no_payment"
+  ],
+  "forbidden_startup": [
+    "ZG361AE2UI: TEST FAIL"
+  ],
+  "failure_prefixes": [
+    "ZG361AE2UI:"
+  ],
+  "gui_phases": [
+    {
+      "id": "ae2-three-tooltips-and-immediate-payment",
+      "at_day": 0,
+      "requirements": [
+        "fixture_setup_disclosed_not_natural_review_or_full_phase_two_credit",
+        "paused_day0_fixture_presentation_decision_records_actual_wallet_baseline",
+        "actual_zg361comp_1_ae2_instance_and_three_named_options_bound",
+        "three_actual_hover_tooltips_show_amounts_funding_deadlines_credit_and_retry_limits",
+        "hover_is_original_rendered_evidence_not_native_effect_preview_credit",
+        "actual_immediate_payment_selected_via_mcp_native_index_plus_one_once",
+        "fixture_verifier_observes_paid25_owed0_treasury_minus18_personal_minus7_recipient_plus25",
+        "before_after_paused_native_frames_share_actor_and_date_no_calendar_advance",
+        "actual_review_decision_requirements_are_four_localized_conditions_without_internal_flags"
+      ]
+    }
+  ],
+  "source_contracts": [
+    "tools/fixtures/zg361_ae2_ui_payment/common/scripted_effects/zga_ae2_fixture_effects.txt",
+    "tools/fixtures/zg361_ae2_ui_payment/common/decisions/zga_ae2_fixture_decisions.txt",
+    "mod_zhongguo_style/tools/gen_361_compensation_runtime.py",
+    "mod_zhongguo_style/common/scripted_triggers/zg361_triggers.txt",
+    "mod_zhongguo_style/common/decisions/zg361_decisions.txt"
+  ],
+  "fixture_preparation_boundary": {
+    "start": "stock 1066 Robert history_id 1128; native runtime CharacterID must be read",
+    "government_change": "celestial_government",
+    "test_funding": {
+      "treasury": 1000,
+      "personal_gold": 1000
+    },
+    "subject": "oldest existing living landed direct vassal; no generated character",
+    "seeded_prerequisite": "review serial 1 and delivered-result case 1/state 3/grade 3; explicitly fixture preparation",
+    "production_calls": [
+      "zg361_comp_freeze_current_result_effect",
+      "zg361_comp_portfolio_open_next_effect",
+      "zg361_comp_portfolio_apply_stage_effect ROUTE=1 for AE1 only"
+    ],
+    "presentation": "After public startup binding, the fixture-only decision records actual wallets and triggers the unchanged production zg361comp.1 on the same paused date",
+    "payment": "Only the actual native-authored AE2 option selected through MCP can pay; fixture verifier writes no production state",
+    "clock": "1066.9.15 throughout; scheduled production day+1 events are not advanced"
+  },
+  "prebuilt_receipt_contract": {
+    "required_markers": [
+      "ZG361AE2UI: TEST READY ae2_prepared_no_payment",
+      "ZG361AE2UI: TEST READY ae2_presentation_requested",
+      "ZG361AE2UI: TEST PASS actual_pay_now_wallets_and_statement"
+    ],
+    "required_product_markers_minimum": {
+      "ZG361COMP: consumed mechanism 278": 1,
+      "ZG361COMP: consumed mechanism 279": 1,
+      "ZG361COMP: consumed mechanism 280": 1,
+      "ZG361COMP: consumed mechanism 281": 1,
+      "ZG361COMP: consumed mechanism 282": 1
+    },
+    "fixture_contains_business_effects": true
+  },
+  "business_contract_applicable": true,
+  "uncovered_product_business": [
+    "Natural annual-review generation and the L/AF predecessor timelines are fixture prerequisites, not tested achievements.",
+    "No calendar advancement, deferred payment branches, full phase-two regression, old-save migration or multiplayer acceptance.",
+    "Existing native event context reports names and option identities; it does not expose complete tooltips or payroll deltas. Root must retain actual rendered hover evidence and the fixture's source-bound real-state verifier."
+  ],
+  "ordinary_rules": "Keep actual declared defaults zg361_on / zg361_freq_yearly / zg361_ratio_strict; no unsupported frontend rule mutation.",
+  "source_catalogue": {
+    "directory": "mod_zhongguo_style",
+    "builder": "tools/build_mod_zhongguo_style_release.py",
+    "release_flags": [
+      "--release",
+      "--output",
+      "{new-output}",
+      "--workshop-item-id",
+      "3792585972"
+    ],
+    "workshop_item_id": "3792585972"
+  }
+}

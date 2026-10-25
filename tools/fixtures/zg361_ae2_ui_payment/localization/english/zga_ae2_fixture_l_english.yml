@@ -1,0 +1,9 @@
+﻿l_english:
+ zga_ae2_present_decision:0 "Fixture: display the prepared AE2 statement"
+ zga_ae2_present_decision_desc:0 "UI acceptance only. The fixture changes 1066 Robert to celestial government, grants test funds, selects an existing landed direct vassal, seeds a frozen result prerequisite, and calls the production portfolio and AE1 consumers. This button records actual pre-payment wallets and displays the production AE2 event early. It selects no pay option and moves no money. Remain paused on 15 September 1066."
+ zga_ae2_present_decision_tooltip:0 "Record both payer wallets and the recipient's gold; display the real three options without paying."
+ zga_ae2_present_decision_confirm:0 "Record wallets and display AE2"
+ zga_ae2_verify_decision:0 "Fixture: verify actual immediate payment"
+ zga_ae2_verify_decision_desc:0 "Inspect all three hover tooltips, then use MCP to select the actual Pay in full with backpay option. Stay paused without advancing the date. This button only checks payable and paid of 25, owed of 0, treasury -18, personal gold -7, and recipient gold +25, with the original case identities and payment journals. Failure preserves the diagnosis; it never adds money, repairs a ledger, or retries."
+ zga_ae2_verify_decision_tooltip:0 "Observe the real wallets and statement; log an explicit PASS or FAIL without changing product state or gold."
+ zga_ae2_verify_decision_confirm:0 "Check actual wallets and statement"

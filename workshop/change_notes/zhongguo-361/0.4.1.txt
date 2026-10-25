@@ -1,0 +1,9 @@
+0.4.1 — 薪酬案卷说明与结算修复
+相对上一公开版本 0.4.0：
+• 年度考核条件改用可读说明，隐藏内部 flag 与重复嵌套条件。
+• 薪酬三选项悬浮说明列明实际欠款、两库分摊、补发、90/180 日延期、信用 -15 和资金不足结果。
+• 明确这是模组额外薪酬；原版薪俸照常，当前延期没有直接好感或忠诚惩罚。
+• 修复薪酬单初始化顺序、立即付款的整体资金检查，以及延期结算误清后续新增欠款的问题。
+• 保持 CK3 1.20.0.4 兼容；既有存档重新打开薪酬案卷时刷新应付报价。
+
+Salary choices now explain real amounts, funding sources, deferral dates and current consequences. Fixed statement initialization, combined payment checks and settlement of frozen debt without erasing later obligations.

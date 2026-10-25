@@ -1,0 +1,9 @@
+﻿l_simp_chinese:
+ zga_ae2_present_decision:0 "验收夹具：打开已备薪酬单"
+ zga_ae2_present_decision_desc:0 "仅用于本次界面验收。夹具已将1066年的罗贝尔改为天朝制并给予测试资金，选取原有直属有地封臣，准备冻结考核前提，再调用生产案卷与AE1消费者。此按钮记录付款前的真实余额，并提前展示生产AE2事件；不选择任何薪酬方案，也不付款。请全程暂停并停留在1066年9月15日。"
+ zga_ae2_present_decision_tooltip:0 "记录当前两库和收款封臣的真实余额，显示生产三选项；金币不动。"
+ zga_ae2_present_decision_confirm:0 "记录余额并打开AE2"
+ zga_ae2_verify_decision:0 "验收夹具：核验实际付清"
+ zga_ae2_verify_decision_desc:0 "先查看三项悬浮提示，再经MCP选择实际的“立即付清并补发”。保持暂停，不推进日期。此按钮仅检查生产应付与实付是否为25、欠付是否为零，以及国库减18、私库减7、收款封臣金币增25；同时核对原案身份与付款凭据。失败保留真实诊断，不补钱，不修账，不重试。"
+ zga_ae2_verify_decision_tooltip:0 "只检查真实付款结果，在debug.log记录明确PASS或FAIL；不改变生产账簿或金币。"
+ zga_ae2_verify_decision_confirm:0 "检查实际余额与账簿"

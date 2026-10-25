@@ -1,0 +1,15 @@
+{
+  "schema": "workshop-change-notes-freeze-v1",
+  "machine_id": "pc-20260924rtuf-f11af23c08",
+  "observed_at_utc": "2026-10-25T07:39:56.324142+00:00",
+  "product": "zhongguo-361",
+  "version": "0.4.1",
+  "previous_public_version": "0.4.0",
+  "workshop_item_id": "3792585972",
+  "notes_path": "workshop/change_notes/zhongguo-361/0.4.1.txt",
+  "characters": 467,
+  "lines": 9,
+  "sha256": "a7719785af6b64112935c426ff2ac3a073ccf9bbea1976f6558426d08aef2387",
+  "description_bytes": 7829,
+  "publication_status": "NOT_SUBMITTED"
+}

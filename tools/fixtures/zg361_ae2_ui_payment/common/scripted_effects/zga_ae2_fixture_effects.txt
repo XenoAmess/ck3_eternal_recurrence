@@ -1,0 +1,215 @@
+﻿# Acceptance fixture only; never mounted by release.
+# Fixture preparation is deliberately artificial: Robert becomes celestial,
+# receives test funds, and one existing landed direct vassal receives a seeded
+# delivered-result prerequisite. No result of an AE2 choice is manufactured.
+
+zga_ae2_prepare_effect = {
+    if = {
+        limit = {
+            NOT = { has_character_flag = zga_ae2_setup_attempted }
+        }
+        add_character_flag = zga_ae2_setup_attempted
+        if = {
+            limit = {
+                this = character:1128
+                is_ai = no
+                is_alive = yes
+                is_landed = yes
+                current_date = 1066.9.15
+                has_game_rule = zg361_on
+            }
+            change_government = celestial_government
+            if = {
+                limit = {
+                    zg361_is_celestial_liege_trigger = yes
+                    has_treasury = yes
+                }
+                add_treasury = 1000
+                add_gold = 1000
+                set_variable = { name = zg361_review_serial value = 1 }
+                set_variable = { name = zg361_comp_portfolio_domain value = 2 }
+                ordered_vassal = {
+                    limit = {
+                        zg361_is_reviewable_vassal_trigger = yes
+                        liege = root
+                    }
+                    order_by = age
+                    position = 0
+                    save_scope_as = zga_ae2_selected_subject
+                    root = {
+                        set_variable = { name = zga_ae2_subject value = scope:zga_ae2_selected_subject }
+                    }
+                    # Explicit seeded prerequisite, not a natural review claim.
+                    # The production freezer derives the compensation identity
+                    # and 3.75 rating from this delivered-result fixture input.
+                    set_variable = { name = zg361_result_case_owner value = root }
+                    set_variable = { name = zg361_result_cycle_serial value = 1 }
+                    set_variable = { name = zg361_result_case_serial value = 1 }
+                    set_variable = { name = zg361_result_case_state value = 3 }
+                    set_variable = { name = zg361_result_grade value = 3 }
+                    zg361_comp_freeze_current_result_effect = yes
+                }
+                if = {
+                    limit = { has_variable = zga_ae2_subject }
+                    # These are the same production entry points used in play.
+                    # They open AE and consume M278/M279/M280; no copied salary
+                    # formula, forced case advance, payment, or paid receipt.
+                    zg361_comp_portfolio_open_next_effect = yes
+                    zg361_comp_portfolio_apply_stage_effect = { ROUTE = 1 }
+                    if = {
+                        limit = {
+                            has_character_flag = zg361_comp_portfolio_active
+                            var:zg361_comp_portfolio_domain = 2
+                            var:zg361_comp_portfolio_stage = 2
+                            var:zg361_comp_portfolio_subject = var:zga_ae2_subject
+                            var:zga_ae2_subject = {
+                                var:zg361_case_ae_owner = root
+                                var:zg361_case_ae_subject = this
+                                var:zg361_case_ae_state = 2
+                                var:zg361_case_ae_active = 1
+                                var:zg361_comp_m278_consumed = 1
+                                var:zg361_comp_m279_consumed = 1
+                                var:zg361_comp_m280_consumed = 1
+                                var:zg361_comp_ae_statement_initialized = 1
+                                var:zg361_comp_ae_statement_conserved = 1
+                                var:zg361_comp_ae_statement_payable = 21
+                                var:zg361_comp_ae_statement_paid = 0
+                                var:zg361_comp_ae_statement_owed = 21
+                                var:zg361_comp_m281_consumed = 0
+                                var:zg361_comp_m282_consumed = 0
+                            }
+                        }
+                        add_character_flag = zga_ae2_prepared
+                        debug_log = "ZG361AE2UI: TEST READY ae2_prepared_no_payment"
+                    }
+                    else = { debug_log = "ZG361AE2UI: TEST FAIL production_ae1_did_not_prepare_ae2" }
+                }
+                else = { debug_log = "ZG361AE2UI: TEST FAIL existing_landed_direct_vassal_unavailable" }
+            }
+            else = { debug_log = "ZG361AE2UI: TEST FAIL celestial_government_or_treasury_unavailable" }
+        }
+        else = { debug_log = "ZG361AE2UI: TEST FAIL expected_1066_robert_or_rule_unavailable" }
+    }
+}
+
+# Presentation-only shortcut, invoked by an explicit fixture decision after
+# startup admission. The production event and its three actual options remain
+# unchanged. Capture wallets here, on the paused date used for the real choice.
+zga_ae2_present_effect = {
+    if = {
+        limit = {
+            this = character:1128
+            is_ai = no
+            current_date = 1066.9.15
+            has_character_flag = zga_ae2_prepared
+            NOT = { has_character_flag = zga_ae2_presentation_requested }
+            has_character_flag = zg361_comp_portfolio_active
+            var:zg361_comp_portfolio_domain = 2
+            var:zg361_comp_portfolio_stage = 2
+            var:zg361_comp_portfolio_subject = var:zga_ae2_subject
+            var:zga_ae2_subject = {
+                var:zg361_case_ae_owner = root
+                var:zg361_case_ae_state = 2
+                var:zg361_comp_ae_statement_paid = 0
+                var:zg361_comp_ae_statement_owed = 21
+                var:zg361_comp_m281_consumed = 0
+                var:zg361_comp_m282_consumed = 0
+            }
+        }
+        add_character_flag = zga_ae2_presentation_requested
+        set_variable = { name = zga_ae2_before_treasury value = treasury }
+        set_variable = { name = zga_ae2_before_personal value = gold }
+        var:zga_ae2_subject = {
+            save_temporary_scope_value_as = { name = zga_ae2_subject_gold value = gold }
+            save_temporary_scope_value_as = { name = zga_ae2_gross value = var:zg361_comp_ae_quote_with_backpay }
+            save_temporary_scope_value_as = { name = zga_ae2_treasury value = var:zg361_comp_ae_quote_now_treasury }
+            save_temporary_scope_value_as = { name = zga_ae2_personal value = var:zg361_comp_ae_quote_now_personal }
+            save_temporary_scope_value_as = { name = zga_ae2_cycle value = var:zg361_case_ae_cycle_serial }
+            save_temporary_scope_value_as = { name = zga_ae2_case value = var:zg361_case_ae_case_serial }
+        }
+        set_variable = { name = zga_ae2_before_recipient value = scope:zga_ae2_subject_gold }
+        set_variable = { name = zga_ae2_expected_gross value = scope:zga_ae2_gross }
+        set_variable = { name = zga_ae2_expected_treasury_debit value = scope:zga_ae2_treasury }
+        set_variable = { name = zga_ae2_expected_personal_debit value = scope:zga_ae2_personal }
+        set_variable = { name = zga_ae2_cycle value = scope:zga_ae2_cycle }
+        set_variable = { name = zga_ae2_case value = scope:zga_ae2_case }
+        debug_log = "ZG361AE2UI: TEST READY ae2_presentation_requested"
+        trigger_event = zg361comp.1
+    }
+    else = { debug_log = "ZG361AE2UI: TEST FAIL ae2_presentation_precondition_changed" }
+}
+
+# This verifier does not write any zg361_* state or move money. It observes the
+# actual production choice, statement, journals and all three real wallets.
+zga_ae2_verify_payment_effect = {
+    if = {
+        limit = {
+            has_character_flag = zga_ae2_presentation_requested
+            NOT = { has_character_flag = zga_ae2_verification_attempted }
+        }
+        add_character_flag = zga_ae2_verification_attempted
+        save_temporary_scope_value_as = {
+            name = zga_ae2_expected_treasury_after
+            value = { value = var:zga_ae2_before_treasury subtract = var:zga_ae2_expected_treasury_debit }
+        }
+        save_temporary_scope_value_as = {
+            name = zga_ae2_expected_personal_after
+            value = { value = var:zga_ae2_before_personal subtract = var:zga_ae2_expected_personal_debit }
+        }
+        save_temporary_scope_value_as = {
+            name = zga_ae2_expected_recipient_after
+            value = { value = var:zga_ae2_before_recipient add = var:zga_ae2_expected_gross }
+        }
+        if = {
+            limit = {
+                this = character:1128
+                is_ai = no
+                current_date = 1066.9.15
+                var:zga_ae2_expected_gross = 25
+                var:zga_ae2_expected_treasury_debit = 18
+                var:zga_ae2_expected_personal_debit = 7
+                treasury >= scope:zga_ae2_expected_treasury_after
+                treasury <= scope:zga_ae2_expected_treasury_after
+                gold >= scope:zga_ae2_expected_personal_after
+                gold <= scope:zga_ae2_expected_personal_after
+                var:zg361_comp_portfolio_subject = var:zga_ae2_subject
+                var:zga_ae2_subject = {
+                    is_alive = yes
+                    liege = root
+                    gold >= scope:zga_ae2_expected_recipient_after
+                    gold <= scope:zga_ae2_expected_recipient_after
+                    var:zg361_case_ae_owner = root
+                    var:zg361_case_ae_subject = this
+                    var:zg361_case_ae_cycle_serial = root.var:zga_ae2_cycle
+                    var:zg361_case_ae_case_serial = root.var:zga_ae2_case
+                    var:zg361_case_ae_state = 3
+                    var:zg361_case_ae_active = 1
+                    var:zg361_comp_ae_statement_payable = root.var:zga_ae2_expected_gross
+                    var:zg361_comp_ae_statement_paid = root.var:zga_ae2_expected_gross
+                    var:zg361_comp_ae_statement_owed = 0
+                    var:zg361_comp_ae_statement_conserved = 1
+                    var:zg361_comp_m281_receipt_owner = root
+                    var:zg361_comp_m281_receipt_subject = this
+                    var:zg361_comp_m281_receipt_cycle = root.var:zga_ae2_cycle
+                    var:zg361_comp_m281_receipt_case = root.var:zga_ae2_case
+                    var:zg361_comp_m281_route = 1
+                    var:zg361_comp_m281_consumed = 1
+                    var:zg361_comp_m282_receipt_owner = root
+                    var:zg361_comp_m282_receipt_subject = this
+                    var:zg361_comp_m282_receipt_cycle = root.var:zga_ae2_cycle
+                    var:zg361_comp_m282_receipt_case = root.var:zga_ae2_case
+                    var:zg361_comp_m282_route = 1
+                    var:zg361_comp_m282_consumed = 1
+                    var:zg361_comp_ae_due_now_treasury_status = 2
+                    var:zg361_comp_ae_due_now_personal_status = 2
+                    var:zg361_comp_m282_pay_treasury_status = 2
+                    var:zg361_comp_m282_pay_personal_status = 2
+                }
+            }
+            add_character_flag = zga_ae2_payment_verified
+            debug_log = "ZG361AE2UI: TEST PASS actual_pay_now_wallets_and_statement"
+        }
+        else = { debug_log = "ZG361AE2UI: TEST FAIL actual_pay_now_wallets_statement_or_date" }
+    }
+    else = { debug_log = "ZG361AE2UI: TEST FAIL verification_replay_or_missing_baseline" }
+}

@@ -1,0 +1,14 @@
+﻿# Acceptance only. The public host starts the stock 1066 Robert bookmark.
+# The hidden event preserves Robert as ROOT for the real portfolio producers.
+on_game_start_after_lobby = {
+    on_actions = { zga_ae2_after_lobby }
+}
+
+zga_ae2_after_lobby = {
+    effect = {
+        every_player = {
+            limit = { is_ai = no }
+            trigger_event = zga361ae2.1
+        }
+    }
+}

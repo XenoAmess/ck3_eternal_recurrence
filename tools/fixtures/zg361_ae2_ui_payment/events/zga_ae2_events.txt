@@ -1,0 +1,10 @@
+﻿namespace = zga361ae2
+
+# No visible startup event: the public v1 fixture admission must first reach
+# its real paused, event-free business context. Root later uses the fixture
+# presentation decision without advancing the calendar.
+zga361ae2.1 = {
+    type = character_event
+    hidden = yes
+    immediate = { zga_ae2_prepare_effect = yes }
+}
