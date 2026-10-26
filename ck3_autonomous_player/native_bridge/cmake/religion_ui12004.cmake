@@ -20,3 +20,22 @@ if(TARGET xar_ck3_ingame_ui_navigation_v1_test)
     target_compile_definitions(xar_ck3_ingame_ui_navigation_v1_test PRIVATE XAR_ENABLE_RELIGION_UI12004_PRESENTATION=1)
   endif()
 endif()
+
+# Read-only Title observation uses the shared query route without enabling actions.
+# Navigation is also an optional runtime source. All production navigation
+# consumers already link this runtime; keep the implementation in that one library.
+target_sources(xar_ck3_12002_runtime PRIVATE
+  "${CMAKE_CURRENT_LIST_DIR}/../src/title_window12004.cpp")
+if(TARGET xar_ck3_ingame_ui_navigation_v1_test)
+  add_executable(xar_ck3_title_window12004_test
+    "${CMAKE_CURRENT_LIST_DIR}/../src/title_window12004.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/../tests/title_window12004_test.cpp")
+  target_include_directories(xar_ck3_title_window12004_test PRIVATE "${CMAKE_CURRENT_LIST_DIR}/../include")
+  target_compile_features(xar_ck3_title_window12004_test PRIVATE cxx_std_20)
+  if(MSVC)
+    target_compile_options(xar_ck3_title_window12004_test PRIVATE /W4 /WX /UNDEBUG /utf-8 /permissive- /EHsc)
+  else()
+    target_compile_options(xar_ck3_title_window12004_test PRIVATE -UNDEBUG)
+  endif()
+  add_test(NAME xar_ck3_title_window12004_test COMMAND xar_ck3_title_window12004_test)
+endif()

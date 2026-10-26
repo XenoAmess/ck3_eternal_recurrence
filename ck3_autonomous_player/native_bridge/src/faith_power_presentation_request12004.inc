@@ -6,7 +6,7 @@ constexpr bool PresentationUiEnabled12004() noexcept {
   return XAR_ENABLE_RELIGION_UI12004_PRESENTATION!=0;
 }
 bool PresentationRequested12004(const IngameUiRequestV1 &r) noexcept {
-  return r.presentation_requested||static_cast<std::uint32_t>(r.window_kind)>=9;
+  return IsIngameUiPresentationRequest12004V1(r);
 }
 bool ValidatePresentationRequest12004(const IngameUiRequestV1&r) noexcept {
   const auto k=static_cast<std::uint32_t>(r.window_kind),o=static_cast<std::uint32_t>(r.operation);

@@ -17,6 +17,7 @@ on:
       - 'ck3_autonomous_player/tests/unit/test_normal_exit_*.py'
       - 'tools/test_preserved_failure_native_os0.py'
       - 'tools/fixtures/ck3_R0001_preserved_failure_native_os0.json'
+      - 'tools/fixtures/ck3_R0020_case_client_failure_native_cleanup.json'
       - 'tools/ck3_mod_acceptance_unrun.py'
       - 'tools/ck3_mod_acceptance_launcher_protocol_v1.py'
       - 'tools/test_ck3_mod_acceptance_offline_ttl_unrun.py'
@@ -52,6 +53,7 @@ on:
       - 'ck3_autonomous_player/tests/unit/test_normal_exit_*.py'
       - 'tools/test_preserved_failure_native_os0.py'
       - 'tools/fixtures/ck3_R0001_preserved_failure_native_os0.json'
+      - 'tools/fixtures/ck3_R0020_case_client_failure_native_cleanup.json'
       - 'tools/ck3_mod_acceptance_unrun.py'
       - 'tools/ck3_mod_acceptance_launcher_protocol_v1.py'
       - 'tools/test_ck3_mod_acceptance_offline_ttl_unrun.py'
@@ -115,7 +117,7 @@ jobs:
         run: python -B -X utf8 tools/test_canonical_host_successor.py
       - name: Verify the explicit product-purpose producer and actual host clock
         run: python -B -X utf8 tools/test_product_acceptance_purpose.py
-      - name: Verify preserved-failure native OS0 resource closure
+      - name: Verify preserved OS0 and failed case-client native cleanup resource closure
         run: python -B -X utf8 tools/test_preserved_failure_native_os0.py
       - name: Verify pre-intent offline TTL refusal resource closure and exact modified scope types
         run: python -B -X utf8 tools/test_ck3_mod_acceptance_offline_ttl_unrun.py

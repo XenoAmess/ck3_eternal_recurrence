@@ -7,10 +7,13 @@ from types import SimpleNamespace
 from unittest.mock import patch
 import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "tools"))
+from ck3_mod_acceptance_background_types import JsonObject, JsonValue, json_object, object_field
 from xar_autoplayer.bridge.ingame_ui_contract import normalize_ui_result, validate_ui_request
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
 from xar_autoplayer.bridge.driver import BridgeUnavailableError, PreSubmissionRevisionMismatchError
 from xar_autoplayer.bridge.mcp_server import create_server
+from xar_autoplayer.bridge.service import GameplayBridgeService
 
 def snapshot():
     return {"revision":4,"native_revision":3,"snapshot_id":"native:3","date_raw":53146848,"paused":True,"map_ready":True,
@@ -905,4 +908,178 @@ class ArmyTooltipMcpTests(unittest.IsolatedAsyncioTestCase):
             self.assertFalse(driver.calls)
 
 
-if __name__=="__main__":unittest.main()
+
+def title_snapshot() -> JsonObject:
+    from xar_autoplayer.bridge.version_identity import CK3_12004
+    value=json_object(current_snapshot())
+    diagnostics=object_field(value,"diagnostics")
+    diagnostics["hello"]={"expected_ck3_version":CK3_12004.game_version,
+        "expected_ck3_sha256":CK3_12004.executable_sha256}
+    value["diagnostics"]=diagnostics
+    return value
+
+
+def title_result(title_id: JsonValue = 0x81000001) -> JsonObject:
+    from xar_autoplayer.bridge.version_identity import CK3_12004
+    value=json_object(current_result())
+    value.update(window_kind="title",window_name="title_view_window",
+        native_backend_id=CK3_12004.backend_id("ingame-ui-v1"),
+        game_version=CK3_12004.game_version,executable_sha256=CK3_12004.executable_sha256,
+        current_subject_id=title_id,native_army_id=0,
+        owner_character_id_available=False,owner_character_id=None,native_dispatch_attempted=False)
+    tree=object_field(value,"tree")
+    tree["scope_root_name"]="title_view_window"
+    widgets=tree["widgets"]
+    if not isinstance(widgets,list) or not widgets:
+        raise AssertionError("Title fixture requires a root widget")
+    root=json_object(widgets[0]);root["runtime_name"]="title_view_window"
+    widgets[0]=root;tree["widgets"]=widgets;value["tree"]=tree
+    return value
+
+
+class TitleUiDriverFixture(DriverFixture):
+    def take_snapshot(self) -> JsonObject:
+        self.reads+=1
+        return json_object(self.ending if self.reads>1 and self.ending is not None else title_snapshot())
+
+
+class TitlePrimitiveUiFixture(PrimitiveUiFixture):
+    def take_snapshot(self) -> JsonObject:
+        self.reads+=1
+        return title_snapshot()
+
+
+class CrozierTitleUiTests(unittest.TestCase):
+    def normalize(self,raw: JsonObject) -> JsonObject:
+        from xar_autoplayer.bridge.version_identity import CK3_12004
+        return json_object(normalize_ui_result(raw,operation="query",kind="title",subject_id=0,
+            native_revision=3,date_raw=53146848,actor_id=29829,expected_build=CK3_12004))
+
+    def test_full_uint32_title_id_survives_shared_driver_service_json(self) -> None:
+        import json
+        from xar_autoplayer.bridge.service import GameplayBridgeService
+        for title_id in (0,0x81000001,0xFF000001,2**32-2):
+            driver=TitleUiDriverFixture(json.loads(json.dumps(title_result(title_id))))
+            with self.subTest(title_id=title_id):
+                got=GameplayBridgeService(driver).query_ingame_ui_window_v1("title",expected_revision=4)
+                self.assertEqual(got["current_subject_id"],title_id)
+                self.assertEqual(driver.calls,[("query-ingame-ui-window-v1",driver.calls[0][1])])
+                self.assertEqual(driver.calls[0][1]["request_fields"],{"window_kind":"title","subject_id":0})
+                self.assertFalse(got["dispatch_invoked"])
+                self.assertFalse(got["verification_pending"])
+
+    def test_hidden_window_keeps_selection_separate_from_visibility(self) -> None:
+        raw=title_result();raw["effective_visible"]=False
+        tree=object_field(raw,"tree");widgets=tree["widgets"]
+        if not isinstance(widgets,list) or not widgets:raise AssertionError("missing root")
+        root=json_object(widgets[0]);root["effective_visible"]=False
+        widgets[0]=root;tree["widgets"]=widgets;raw["tree"]=tree
+        got=self.normalize(raw)
+        self.assertFalse(got["effective_visible"])
+        self.assertTrue(got["subject_id_available"])
+
+    def test_invalid_full_handle_types_and_domains_reject(self) -> None:
+        invalid_ids: tuple[JsonValue,...]=(True,False,-1,2**32-1,2**32,0.0,"2164260865",None)
+        for invalid in invalid_ids:
+            raw=title_result(invalid)
+            with self.subTest(invalid=invalid),self.assertRaises(ValueError):self.normalize(raw)
+
+    def test_wrong_native_dispatch_army_presentation_root_never_grants_title(self) -> None:
+        changes: tuple[JsonObject,...]=({"native_dispatch_attempted":True},{"native_army_id":83},
+            {"owner_character_id_available":True,"owner_character_id":29829},
+            {"window_name":"faith_window"},{"presentation_ui":{"requested":True}})
+        for change in changes:
+            raw=title_result();raw.update(change)
+            with self.subTest(change=change),self.assertRaises(ValueError):self.normalize(raw)
+
+    def test_older_build_action_and_caller_subject_never_dispatch(self) -> None:
+        from xar_autoplayer.bridge.ingame_ui_contract import validate_ui_build_scope
+        from xar_autoplayer.bridge.version_identity import CK3_11906,CK3_12003,CK3_12004
+        for build in (CK3_11906,CK3_12003):
+            with self.subTest(build=build),self.assertRaises(ValueError):
+                validate_ui_build_scope(build,"query","title")
+        for operation,subject in (("open_character",1),("query",1),("query",True)):
+            with self.subTest(operation=operation,subject=subject),self.assertRaises(ValueError):
+                validate_ui_request(operation,"title",subject,4)
+        with self.assertRaises(ValueError):validate_ui_build_scope(CK3_12004,"open_character","title")
+        driver=DriverFixture(title_result())
+        with self.assertRaises(ValueError):driver.query_ingame_ui_window_v1("title",expected_revision=4)
+        self.assertFalse(driver.calls)
+
+    def test_selection_query_post_frame_drift_preserves_original_native_result(self) -> None:
+        ending=title_snapshot();ending["date_raw"]=53146872
+        raw=title_result();driver=TitleUiDriverFixture(raw,ending)
+        with self.assertRaises(BridgeUnavailableError):driver.query_ingame_ui_window_v1("title",expected_revision=4)
+        self.assertEqual(driver.records[-1][1]["result"]["raw_native_ui_result"],raw)
+
+
+class TitleUiMcpTests(unittest.IsolatedAsyncioTestCase):
+    async def test_existing_query_schema_and_read_only_full_handle_route(self) -> None:
+        from mcp import Client
+        driver=TitleUiDriverFixture(title_result());server=create_server(driver)
+        async with Client(server) as client:
+            tools={tool.name:tool for tool in (await client.list_tools()).tools}
+            schema=tools["ck3_query_ingame_ui_window_v1"].input_schema
+            self.assertIn("title",schema["properties"]["window_kind"]["enum"])
+            self.assertEqual(set(schema["required"]),{"window_kind","expected_revision"})
+            response=await client.call_tool("ck3_query_ingame_ui_window_v1",{"window_kind":"title","expected_revision":4})
+            self.assertFalse(response.is_error)
+            self.assertEqual(response.structured_content["current_subject_id"],0x81000001)
+            self.assertFalse(response.structured_content["native_dispatch_attempted"])
+            count=len(driver.calls)
+            failed=await client.call_tool("ck3_query_ingame_ui_window_v1",{"window_kind":"title","expected_revision":True})
+            self.assertTrue(failed.is_error);self.assertEqual(len(driver.calls),count)
+
+
+async def verify_title_native_mcp_v1(driver: TitlePrimitiveUiFixture,
+        service: GameplayBridgeService) -> JsonObject:
+    from mcp import Client
+    async with Client(create_server(driver,service_override=service)) as client:
+        response=await client.call_tool("ck3_query_ingame_ui_window_v1",
+            {"window_kind":"title","expected_revision":4})
+        if response.is_error:raise AssertionError("MCP rejected actual C++ Title packet")
+        return json_object(response.structured_content)
+
+
+def verify_title_native_wire_v1(path: Path) -> None:
+    """Consume the actual C++ serializer output through every maintained SDK layer."""
+    import asyncio
+    import hashlib
+    import json
+    wire=path.read_bytes();raw=json_object(json.loads(wire))
+    if raw.get("window_kind")!="title" or raw.get("current_subject_id")!=0x81000001:
+        raise AssertionError("actual C++ Title producer packet is missing")
+    got=CrozierTitleUiTests().normalize(raw)
+    with tempfile.TemporaryDirectory(prefix="title-native-sdk-") as temporary:
+        driver=TitlePrimitiveUiFixture(raw,Path(temporary));service=GameplayBridgeService(driver)
+        observed=json_object(service.query_ingame_ui_window_v1("title",expected_revision=4))
+        transported=asyncio.run(verify_title_native_mcp_v1(driver,service))
+        for result_value in (got,observed,transported):
+            if (result_value["current_subject_id"]!=0x81000001 or
+                    result_value["dispatch_invoked"] is not False or
+                    result_value["native_dispatch_attempted"] is not False or
+                    result_value["verification_pending"] is not False):
+                raise AssertionError("native producer-to-shared SDK consumer differs")
+        packets=list(Path(temporary).rglob("native-ui-*.json"))
+        if len(driver.sent)!=2 or len(packets)!=2:
+            raise AssertionError("both real primitive submissions must preserve parsed returns")
+        for packet in packets:
+            saved=json_object(json.loads(packet.read_bytes()))
+            frame=object_field(saved,"original_parsed_command_result")
+            request=object_field(saved,"request")
+            if (frame["result"]!=raw or saved["wire_bytes_preserved"] is not False or
+                    request.get("window_kind")!="title" or request.get("subject_id")!=0):
+                raise AssertionError("persisted original primitive return differs")
+    print(json.dumps({"status":"PASS","native_producer_packet":str(path),
+        "producer_bytes":len(wire),"producer_sha256":hashlib.sha256(wire).hexdigest(),
+        "current_subject_id":got["current_subject_id"],"primitive_submissions":2,
+        "parsed_return_artifacts_checked":2,"transport":"offline_pipe_stub",
+        "consumer_layers":["normalizer","real_primitive","driver","service","MCP"],
+        "game_contacted":False,"live_qualification":False}))
+
+
+if __name__=="__main__":
+    if len(sys.argv)==3 and sys.argv[1]=="--title-native-wire":
+        verify_title_native_wire_v1(Path(sys.argv[2]))
+    else:
+        unittest.main()

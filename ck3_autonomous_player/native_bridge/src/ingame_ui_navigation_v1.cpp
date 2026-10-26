@@ -27,6 +27,7 @@
 #include "xar_bridge/ck3_12004_holy_site_adoption_entry.hpp"
 #include "xar_bridge/ck3_12004_holy_site_adoption_detail.hpp"
 #include "xar_bridge/ck3_12004_title_map.hpp"
+#include "xar_bridge/title_window12004.hpp"
 #include "xar_bridge/title_map_navigation_v1_camera.hpp"
 #include "xar_bridge/current_first_heir_typed_windows_v1.hpp"
 #include "xar_bridge/current_first_heir_character_window_identity_v1.hpp"
@@ -630,8 +631,43 @@ bool ReadCharacterWindow12004QueryV1(
   out.tree=std::move(tree);
   return true;
 }
+bool TitleWindowReadMemory12004V1(void *,const void *address,void *output,std::size_t size) noexcept {
+  return Read(address,output,size);
+}
+bool ReadTitleWindow12004QueryV1(
+    const ZhongguoScoreboardNativeEnvironmentV1 &env,void *handler,IngameUiResultV1 &out) noexcept {
+  const auto binding=ck3_12004::title_ui::BindImage12004(
+      env.module_base,env.executable_sha256,&TitleWindowReadMemory12004V1);
+  ck3_12004::title_ui::Selection first{},last{};
+  if(!ck3_12004::title_ui::ReadSelection12004(binding,handler,first,out.unavailable_reason))return false;
+  constexpr std::string_view name="title_view_window";
+  ZhongguoScoreboardAccessV1 access{};void *root=nullptr,*widget=nullptr;
+  if(!ResolveNamedGuiWidgetV1(env,access,name,name,root,widget)||!root||
+      widget!=root||first.root!=root) {
+    out.unavailable_reason="current_title_window_fixed_root_unverified";return false;
+  }
+  std::string runtime_name;void *vtable=nullptr;bool visible=false,enabled=false;
+  NamedGuiTreeInspectionV1 tree{};
+  if(!ReadGuiWidgetRuntimeV1(access,root,runtime_name,vtable,visible,enabled)||runtime_name!=name||
+      !InspectNamedGuiSubtreeV1(access,env.module_base,root,name,tree)) {
+    out.unavailable_reason="current_title_window_widget_read_unavailable";return false;
+  }
+  std::string later_name;void *later_vtable=nullptr;bool later_visible=false,later_enabled=false;
+  if(!ck3_12004::title_ui::ReadSelection12004(binding,handler,last,out.unavailable_reason)||
+      first!=last||
+      !ReadGuiWidgetRuntimeV1(access,root,later_name,later_vtable,later_visible,later_enabled)||
+      later_name!=name||later_vtable!=vtable||later_visible!=visible||later_enabled!=enabled) {
+    out.unavailable_reason="current_title_window_binding_changed_during_read";return false;
+  }
+  out.window_exists=true;out.effective_visible=visible;out.enabled=enabled;
+  out.subject_id_available=first.subject_available;
+  if(first.subject_available)out.current_subject_id=first.raw_title_id;
+  out.tree=std::move(tree);return true;
+}
 bool ReadWindow(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *handler,
                 IngameUiWindowKindV1 kind,IngameUiResultV1 &out) noexcept {
+  if(env.gui_abi_revision==GuiAbiRevisionV1::crozier12004 && kind==IngameUiWindowKindV1::title)
+    return ReadTitleWindow12004QueryV1(env,handler,out);
   if(kind==IngameUiWindowKindV1::holy_site)return ReadHolySiteUi12004(env,handler,out);
   if(kind==IngameUiWindowKindV1::faith)return ReadReligionPresentation12004(env,handler,ck3_12004::religion_ui::Window::faith,out);
   if(env.gui_abi_revision==GuiAbiRevisionV1::crozier12004 && kind==IngameUiWindowKindV1::character)
@@ -833,7 +869,7 @@ bool ValidateIngameUiRequestV1(const IngameUiRequestV1 &r) noexcept {
   if(PresentationRequested12004(r))return ValidatePresentationRequest12004(r);
   const auto k=static_cast<std::uint32_t>(r.window_kind),o=static_cast<std::uint32_t>(r.operation);
   const bool relic=ck3_12004::religion::relic_actions::IsOperation(o);
-  if(k>8 || (o>18&&!relic) || r.subject_id==(std::numeric_limits<std::uint32_t>::max)())return false;
+  if((k>8 && k!=14) || (o>18&&!relic) || r.subject_id==(std::numeric_limits<std::uint32_t>::max)())return false;
   if(o!=18&&!r.holy_site_creation_expected_preview_identity_sha256.empty())return false;
   if(!relic&&(r.relic_action_explicit||r.relic_action!=ck3_12004::religion::relic_actions::Request{}))return false;
   if(r.holy_site_decision_explicit && (ck3_12004::religion::holy_site::DecisionKey(r.holy_site_action).empty() ||
@@ -864,6 +900,7 @@ bool ValidateIngameUiRequestV1(const IngameUiRequestV1 &r) noexcept {
         (o==8?r.army_tooltip_receipt.empty():ArmyTooltipNonceValid(r.army_tooltip_receipt));
   }
   if(!r.army_tooltip_receipt.empty())return false;
+  if(k==14)return o==0 && r.subject_id==0;
   if(k==5)return (o==0 && r.subject_id==0) || o==10 || o==11;
   if(k==6)return o==12;
   if(k==7)return (o==0 && r.subject_id==0) || o==13;
@@ -883,6 +920,7 @@ bool IsIngameUiRequestSupportedV1(GuiAbiRevisionV1 revision,const IngameUiReques
       (r.operation==IngameUiOperationV1::query || r.operation==IngameUiOperationV1::open_holy_site ||
        r.operation==IngameUiOperationV1::open_holy_site_adoption||
         ck3_12004::religion::relic_actions::IsOperation(static_cast<std::uint32_t>(r.operation)));
+  if(r.window_kind==IngameUiWindowKindV1::title)return revision==GuiAbiRevisionV1::crozier12004 && r.operation==IngameUiOperationV1::query;
   if(r.window_kind==IngameUiWindowKindV1::title_appointment)return revision==GuiAbiRevisionV1::crozier12004 && r.operation==IngameUiOperationV1::query;
   if(r.window_kind==IngameUiWindowKindV1::faith)return revision==GuiAbiRevisionV1::crozier12004 &&
       (r.operation==IngameUiOperationV1::query || r.operation==IngameUiOperationV1::open_faith);
@@ -1006,6 +1044,7 @@ bool ParseIngameUiRequestV1(std::string_view json,bool query,IngameUiRequestV1 &
   else if(kind=="rite_creation")r.window_kind=IngameUiWindowKindV1::rite_creation;
   else if(kind=="clerical_interaction")r.window_kind=IngameUiWindowKindV1::clerical_interaction;
   else if(kind=="tooltips")r.window_kind=IngameUiWindowKindV1::tooltips;
+  else if(kind=="title")r.window_kind=IngameUiWindowKindV1::title;
   else return false;
   if(!bridge::JsonUnsignedField(json,"subject_id",id) || id>(std::numeric_limits<std::uint32_t>::max)())return false;
   r.subject_id=static_cast<std::uint32_t>(id);
@@ -1085,7 +1124,7 @@ bool ParseIngameUiRequestV1(std::string_view json,bool query,IngameUiRequestV1 &
 }
 std::string_view IngameUiWindowNameV1(IngameUiWindowKindV1 k) noexcept {
   switch(k){case IngameUiWindowKindV1::character:return "character_window";case IngameUiWindowKindV1::army:return "army_window";
-    case IngameUiWindowKindV1::combat:return "combat_window";case IngameUiWindowKindV1::knights:return "knight_view";case IngameUiWindowKindV1::title_appointment:return "title_appointment";case IngameUiWindowKindV1::holy_site:return "holy_site_window";case IngameUiWindowKindV1::holy_site_adoption:return "decisiondetail_view";case IngameUiWindowKindV1::faith:return "faith_window";case IngameUiWindowKindV1::holy_site_creation:return "holy_site_creation_window";case IngameUiWindowKindV1::holding:return "holding_view";case IngameUiWindowKindV1::personal_beliefs:return "window_personal_beliefs";case IngameUiWindowKindV1::rite_creation:return "rite_creation_window";case IngameUiWindowKindV1::clerical_interaction:return "character_interaction_confirmation_window";case IngameUiWindowKindV1::tooltips:return "tooltip_stack";default:return "unavailable";}
+    case IngameUiWindowKindV1::combat:return "combat_window";case IngameUiWindowKindV1::knights:return "knight_view";case IngameUiWindowKindV1::title_appointment:return "title_appointment";case IngameUiWindowKindV1::holy_site:return "holy_site_window";case IngameUiWindowKindV1::holy_site_adoption:return "decisiondetail_view";case IngameUiWindowKindV1::faith:return "faith_window";case IngameUiWindowKindV1::holy_site_creation:return "holy_site_creation_window";case IngameUiWindowKindV1::holding:return "holding_view";case IngameUiWindowKindV1::personal_beliefs:return "window_personal_beliefs";case IngameUiWindowKindV1::rite_creation:return "rite_creation_window";case IngameUiWindowKindV1::clerical_interaction:return "character_interaction_confirmation_window";case IngameUiWindowKindV1::tooltips:return "tooltip_stack";case IngameUiWindowKindV1::title:return "title_view_window";default:return "unavailable";}
 }
 bool ReadIngameUiGuiOwnerBindingV1(const ZhongguoScoreboardNativeEnvironmentV1 &env,
                                 IngameUiGuiOwnerBindingV1 &out) noexcept {
@@ -1846,7 +1885,7 @@ std::string SerializeIngameUiResultV1(const IngameUiRequestV1 &r,const IngameUiR
   std::ostringstream o;o<<std::boolalpha<<std::setprecision(std::numeric_limits<float>::max_digits10);
   o<<"{\"schema\":\"ck3-ingame-ui-window-v1\",\"accepted\":"<<v.available<<",\"available\":"<<v.available
    <<",\"status\":\""<<v.status<<"\",\"window_kind\":\"";
-  constexpr std::array<std::string_view,14> kinds{"character","army","combat","knights","title_appointment","holy_site","holy_site_adoption","faith","holy_site_creation","holding","personal_beliefs","rite_creation","clerical_interaction","tooltips"};o<<kinds[static_cast<std::size_t>(r.window_kind)]
+  constexpr std::array<std::string_view,15> kinds{"character","army","combat","knights","title_appointment","holy_site","holy_site_adoption","faith","holy_site_creation","holding","personal_beliefs","rite_creation","clerical_interaction","tooltips","title"};o<<kinds[static_cast<std::size_t>(r.window_kind)]
    <<"\",\"window_name\":\""<<IngameUiWindowNameV1(r.window_kind)<<"\",\"requested_subject_id\":"<<r.subject_id
    <<",\"window_exists\":"<<v.window_exists<<",\"effective_visible\":"<<v.effective_visible<<",\"enabled\":"<<v.enabled
    <<",\"subject_id_available\":"<<v.subject_id_available<<",\"current_subject_id\":"<<v.current_subject_id

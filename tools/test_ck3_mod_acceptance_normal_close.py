@@ -174,13 +174,17 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
                 self.assertEqual(result['normal_close_qualified'], not failed)
                 self.assertEqual(report.get('error'), 'authored original failed host' if failed else None)
 
-    def test_actual_R0008_context_through_sdk_producer_and_automatic_typed_consumer(self):
+    def test_actual_R0008_context_through_sdk_producer_and_automatic_typed_consumer(self) -> None:
         sys.path.insert(0, str(REPO/'ck3_autonomous_player/tests/unit'))
         self.addCleanup(sys.path.remove, str(REPO/'ck3_autonomous_player/tests/unit'))
         from test_normal_exit_integrated_v1 import FakeExitDriver, driver_module
         from xar_autoplayer.bridge.service import GameplayBridgeService
         from xar_autoplayer.bridge.normal_exit_public_wire_v2 import parse_normal_exit_public_result_v2, normal_exit_public_result_v2
         from xar_autoplayer.bridge import normal_exit_public_wire_v2 as codec
+        from ck3_mod_acceptance_cases.generic_product_adapter import root_phase
+        products = json.loads((REPO/'tools/ck3_mod_acceptance_products.json').read_bytes())
+        case = next(value for value in products['products']['dynastic-esotericism']['cases']
+                    if value['id'] == 'core')
         capture = json.loads((REPO/'tools/fixtures/ck3_R0008_normal_exit_context.json').read_bytes())
         original = parse_normal_exit_public_result_v2(capture['result']).to_memory()
         native_start = original['native_observation']
@@ -188,6 +192,10 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
         pid = native_start['game_pid']
         for unknown in (False, True):
             with self.subTest(unknown=unknown), tempfile.TemporaryDirectory() as directory:
+                client, clock, fake_time, _ = self.make_client(Path(directory), review_at=None, deadline=300)
+                client.selection.case['normal_close'] = copy.deepcopy(case['normal_close'])
+                client.operator_reviewer = '/root'
+                client.guard = Mock()
                 class R8Driver(FakeExitDriver):
                     def __init__(self, path):
                         super().__init__(path)
@@ -232,6 +240,9 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
                 initial_wire = None
                 def invoke(tool, arguments):
                     nonlocal initial_wire
+                    # R20's first query took34.9s. Later bounded calls still
+                    # need the original180s, not the adapter's legacy90s.
+                    fake_time.sleep(34.9 if initial_wire is None else 15)
                     if tool=='ck3_query_normal_exit_context_v1':
                         value = service.query_normal_exit_context_v1(expected_revision=10)
                         wire = normal_exit_public_result_v2(value)
@@ -246,15 +257,26 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
                     self.assertEqual(tool,'ck3_observe_normal_exit_v1')
                     driver.api.wait_result,driver.api.code=0,0
                     return normal_exit_public_result_v2(service.observe_normal_exit_v1())
-                with patch.object(driver_module,'verify_source_inventory_v1',return_value={
+                with patch.object(self.module, 'time', fake_time), \
+                        patch.object(driver_module,'verify_source_inventory_v1',return_value={
                         'source_inventory_sha256':capture['result']['source_inventory_sha256']}):
+                    with self.assertRaisesRegex(TimeoutError, 'pending Root phase remains GAP'):
+                        root_phase(client, {'product':'dynastic-esotericism', 'case':'core',
+                            'run_id':client.frozen['run_id']}, 'synthetic-product-phase', [], {},
+                            {'config':{'acceptance_scope':'synthetic-only', 'source_contracts':[]}})
+                    awaiting = json.loads((Path(directory)/'synthetic-product-phase-awaiting.json').read_bytes())
+                    self.assertEqual(awaiting['reserve_seconds'], 180)
+                    self.assertEqual(awaiting['original_hold_deadline'], 300)
+                    self.assertEqual(client.remaining(), 180)
                     if unknown:
                         with self.assertRaisesRegex(ValueError,'without typed normal Quit proof'):
-                            self.module._typed_quit_run_v1(codec,invoke,lambda:80.0,pid=pid,birth=birth)
+                            self.module._typed_quit_run_v1(codec,invoke,client.remaining,pid=pid,birth=birth)
                     else:
-                        result=self.module._typed_quit_run_v1(codec,invoke,lambda:80.0,pid=pid,birth=birth)
+                        result=self.module._typed_quit_run_v1(codec,invoke,client.remaining,pid=pid,birth=birth)
                         self.assertTrue(result['typed_normal_exit_observed'])
                         self.assertFalse(result['observer_retained'])
+                    self.assertGreater(client.remaining(), 0)
+                    self.assertEqual(client._hold, 300)
                 self.assertEqual([r['action'] for r in driver.sent],['query_context','prepare_confirmation',
                     'query_context','continue_preparation','query_context','disable_exit_autosave','query_context','confirm_desktop'])
                 self.assertEqual(sum(r['action']=='confirm_desktop' for r in driver.sent),1)
@@ -272,11 +294,46 @@ class NormalCloseReviewRaceTests(unittest.TestCase):
         self.assertEqual(invoke.call_args.args[0],'ck3_query_normal_exit_context_v1')
         self.assertEqual(invoke.call_count,1)
 
-    def test_complete_modified_typed_quit_function_scope_is_strict(self):
+    def test_root_checkpoint_declared_quit_reserve_is_a_strict_floor(self) -> None:
+        reserve = self.module._root_checkpoint_reserve_seconds
+        self.assertEqual(reserve({}, 90), 90)
+        self.assertEqual(reserve({'normal_close':{}}, 90), 90)
+        self.assertEqual(reserve({'normal_close':{'reserve_seconds':180}}, 90), 180)
+        self.assertEqual(reserve({'normal_close':{'reserve_seconds':180}}, 420), 420)
+        for invalid in (True, False, 180.0, '180', None, -1):
+            with self.subTest(requested=invalid), self.assertRaises(ValueError):
+                reserve({'normal_close':{'reserve_seconds':180}}, invalid)
+        for invalid in (True, False, 180.0, '180', None, 0, -1):
+            with self.subTest(declared=invalid), self.assertRaises(ValueError):
+                reserve({'normal_close':{'reserve_seconds':invalid}}, 90)
+        for invalid in (None, [], True):
+            with self.subTest(normal_close=invalid), self.assertRaises(ValueError):
+                reserve({'normal_close':invalid}, 90)
+
+    def test_checkpoint_request_cannot_lower_its_recorded_quit_reserve(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            client, _, _, _ = self.make_client(Path(directory), review_at=None, deadline=300)
+            client.selection.case['normal_close'] = {'reserve_seconds':180}
+            client.operator_reviewer = '/root'
+            client.guard = Mock()
+            client.remaining = lambda:181
+            response = {'run_id':client.frozen['run_id'], 'reviewer':'/root'}
+            self.module.write_once(Path(directory)/'synthetic-root-result.json', response)
+            self.assertEqual(client.root_checkpoint('synthetic', {'reserve_seconds':1,
+                'run_id':'OTHER_RUN', 'original_hold_deadline':999, 'operator_reviewer':'OTHER'}), response)
+            awaiting = json.loads((Path(directory)/'synthetic-awaiting.json').read_bytes())
+            self.assertEqual(awaiting['reserve_seconds'], 180)
+            self.assertEqual(awaiting['run_id'], client.frozen['run_id'])
+            self.assertEqual(awaiting['original_hold_deadline'], 300)
+            self.assertEqual(awaiting['operator_reviewer'], '/root')
+            self.assertEqual(client._hold, 300)
+            client.guard.assert_called_once_with(180)
+
+    def test_complete_modified_typed_quit_function_scope_is_strict(self) -> None:
         import ast, os, subprocess
         tree=ast.parse(CLIENT_SOURCE.read_text(encoding='utf-8-sig'))
         names={'TypedNormalQuitEvidenceV1','NormalQuitDecodedV2','NormalQuitCodecV2',
-            '_typed_quit_plan_v1','_typed_quit_preparation_v1','_typed_quit_run_v1',
+            '_root_checkpoint_reserve_seconds','_typed_quit_plan_v1','_typed_quit_preparation_v1','_typed_quit_run_v1',
             '_typed_quit_pairs','_typed_quit_original','_typed_quit_codec','typed_normal_quit_evidence_v1'}
         nodes=[node for node in tree.body if isinstance(node,(ast.ClassDef,ast.FunctionDef)) and node.name in names]
         self.assertEqual(len(nodes),len(names))

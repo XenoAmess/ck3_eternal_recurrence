@@ -177,7 +177,7 @@ def _ck3_list_vanilla_event_knowledge_v1(
     limit: int = 50,
 ) -> dict[str, object]:
     """Discover frozen event records with stable keyset pagination."""
-    portable_keys = frozenset()
+    portable_keys: frozenset[str] = frozenset()
     if ck3_build == EXACT_CK3_BUILD:
         try:
             portable_keys = portable_event_keys_v1()
@@ -431,7 +431,7 @@ def _native_command_rejection_diagnostic(error: BaseException) -> dict[str, obje
                       and type(thin.get("truncated")) is bool
                       and all(key in thin and (thin[key] is None or type(thin[key]) is str)
                               for key in ("cached_scalars", "observed_scalars", "differing_fields")))
-        if valid_thin:
+        if valid_thin and isinstance(thin, Mapping) and isinstance(predicates, Mapping):
             projection = {
                 "query_type": "campaign",
                 "stage": text(thin.get("stage"), 96),
@@ -1615,6 +1615,8 @@ def _forbid_unknown_tool_arguments_v1(server: object, tool_name: str) -> None:
     manager = getattr(server, "_tool_manager", None)
     tools = getattr(manager, "_tools", None)
     tool = tools.get(tool_name) if isinstance(tools, dict) else None
+    if tool is None:
+        raise RuntimeError("pinned MCP tool metadata cannot enforce exact v1 arguments")
     metadata = getattr(tool, "fn_metadata", None)
     argument_model = getattr(metadata, "arg_model", None)
     model_config = getattr(argument_model, "model_config", None)
@@ -4179,7 +4181,7 @@ def create_server(
         _forbid_unknown_tool_arguments_v1(server, "ck3_set_holy_site_creation_artifact_selection_v1")
 
     @server.tool()
-    def ck3_query_ingame_ui_window_v1(window_kind: Literal["character", "army", "combat", "knights", "holy_site", "faith", "holy_site_creation", "holding", "personal_beliefs", "rite_creation", "inventory"], expected_revision: IngameUiRevisionV1) -> dict[str, object]:
+    def ck3_query_ingame_ui_window_v1(window_kind: Literal["character", "army", "combat", "knights", "holy_site", "faith", "holy_site_creation", "holding", "personal_beliefs", "rite_creation", "inventory", "title"], expected_revision: IngameUiRevisionV1) -> dict[str, object]:
         """Fresh owner-thread full-ID window readback plus bounded target subtree."""
         return service.query_ingame_ui_window_v1(window_kind, expected_revision=expected_revision)
 

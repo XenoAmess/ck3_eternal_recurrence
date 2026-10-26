@@ -1,5 +1,11 @@
 # 制作与发布状态
 
+2026-10-26T05:05Z（北京时间13:05，`machine_id: desktop-3fevhd2-1c74096080`）：**R0020正式签署0/6，完整Core未通过，0.2.0未上传。** 本场创建一次后的纯D0、D1、D2原生与独立Save全图比对再次确认复用D174／H174、实际head31254、名称及原CoA字段／完整设计保留，原House缺少ownCoA仍缺少。绑定与成员夹具自身记录PASS，Root未在固定hold期限内签署；这不授予阶段通过。head-cells仅完成None礼仪人物准备，没有成熟后工厂H0／H1／H2证据。完整实际范围与保留输入见[R0020历史记录](acceptance/R0020-2026-10-26.json)。
+
+固定hold在03:46Z到期，Root恢复时已经超时，禁止迟补签。原retained wait未知，随后native Job报告Game退出1、最终Job计数0及树已清理；host原wait0、public run／verify各2、keeper／allocator各0，SCREEN9132释放。正常退出资格与业务资格均false。共享后继已增加专门的失败资源接续合同与真实投影回归；它只验证资源释放，不把未知原wait追认为OS0或正常Quit。等待阶段现消费场次声明的180秒正常退出预留，且回执四个权威字段不能被请求覆盖。相关局部完整回归已通过；完整受影响CI、默认Maven及新运行图仍待独立完成，见[资源接续及CoA语义](2026-10-26-case-client-resource-closure.md)。
+
+下一新场第七断言明确保留实际CoA字段、对象与设计，避免将House继承显示误称为第二个自有对象；仍是六阶段／七个首阶段断言／13 fixture文件／25 markers，不改变产品纹章行为或旧冻结合同。只读Title查询正在共享native／SDK路径施工，SDK整叶77项通过，原生编译、真实C++ wire到SDK消费者和实机尚未执行；不据此追认两枚帝国的正常建立／恢复。cold／old／预置／冲突转移及其余业务矩阵继续待验，最终仍须更新已有Workshop3826991345。
+
 2026-10-25T22:37Z（北京时间10月26日06:37，`machine_id: desktop-3fevhd2-1c74096080`）：**R0019正式签署1/6，完整Core失败，0.2.0未上传。** 第一阶段真实原生创建一次，D0／D1／D2独立保存确认复用D174／H174，创建者31254是两者实际head，名称随Rite更新，D174原纹章完整AST不变，H174原本缺少自有纹章的状态保留；D0没有新增或删除Dynasty／House。世界实际新增四名存活人物，原版精确生产者尚未独立闭合，不能写成“全世界零新增NPC”。None详情隐藏、创建及编辑两选项可见、新轮廓图显示获得本场证据，图标未获得用户认可，编辑只查看并取消。见[R0019实际范围](acceptance/R0019-2026-10-26.json)。
 
 第二阶段保留原 `requested_head_cells` FAIL：同一effect新建测试人物与Rite，首次普通请求日期是H1，原factory日期是H0；H2绑定及head正确不能抹掉日期相等断言失败。共享夹具正在改为None礼仪准备人物、自然成熟一天、再经同一决议创建Rite并普通改礼；原H1／H2／日期守卫及13文件／25markers／6phase保持。新夹具、原完整后四阶段、cold／old／两预置、原生绑定冲突转移、两枚帝国领袖仍须新构建及实机，不追认通过。R0019正常退出Game／host／keeper／allocator均0，公共run／verify均2，`normal_close_qualified=true`仅授生命周期，SCREEN9061释放。

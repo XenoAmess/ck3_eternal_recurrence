@@ -983,7 +983,7 @@ bool ExecuteFrontendGuiRouteMailboxV1(
       query->ingame_result.unavailable_reason = "current_gui_owner_binding_unverified";
       return true;
     }
-    const bool presentation=query->ingame_request.presentation_requested||static_cast<std::uint32_t>(query->ingame_request.window_kind)>=9;
+    const bool presentation=IsIngameUiPresentationRequest12004V1(query->ingame_request);
     if(presentation&&!BindFaithPowerTooltipPresentationOwner12004(query->mailbox,query->ingame_request.connection_generation)){
       query->ingame_result.unavailable_reason="presentation_owner_mailbox_binding_unavailable";return true;
     }

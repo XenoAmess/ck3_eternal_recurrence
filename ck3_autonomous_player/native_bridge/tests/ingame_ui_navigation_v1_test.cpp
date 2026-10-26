@@ -4,6 +4,7 @@
 #endif
 #include "../src/ingame_ui_navigation_v1.cpp"
 #include "../src/ck3_12004_holy_site_adoption_entry.cpp"
+#include "xar_bridge/title_window12004_source_pins.hpp"
 #include <cassert>
 #include <cstdlib>
 #include <iostream>
@@ -22,6 +23,7 @@ ZhongguoScoreboardNativeEnvironmentV1 BindZhongguoScoreboardNativeEnvironmentV1(
 }
 static void *fixture_army_root=nullptr,*fixture_cast_object=nullptr;
 static bool fixture_army_root_available=false;
+static std::string_view fixture_root_name="army_window";
 static bool fixture_tooltip_tree=false,fixture_tooltip_unstable=false;
 static std::uint32_t fixture_tooltip_setter_calls=0,fixture_tooltip_tree_reads=0;
 static void *fixture_supplies=nullptr,*fixture_attrition_parent=nullptr,*fixture_attrition=nullptr;
@@ -38,12 +40,12 @@ static void __fastcall FixtureSelectUnit(void *handler,std::uint32_t id,bool rep
   ++fixture_select_calls;fixture_select_handler=handler;fixture_select_id=id;fixture_select_replace=replace;
 }
 bool ResolveNamedGuiWidgetV1(const ZhongguoScoreboardNativeEnvironmentV1 &,const ZhongguoScoreboardAccessV1 &,std::string_view root_name,std::string_view widget_name,void *&root,void *&widget) noexcept {
-  if(!fixture_army_root_available || root_name!="army_window" || widget_name!="army_window")return false;
+  if(!fixture_army_root_available || root_name!=fixture_root_name || widget_name!=fixture_root_name)return false;
   root=widget=fixture_army_root;return true;
 }
 bool ReadGuiWidgetRuntimeV1(const ZhongguoScoreboardAccessV1 &,void *root,std::string &name,void *&vtable,bool &visible,bool &enabled) noexcept {
   if(!fixture_army_root_available)return false;
-  if(root==fixture_army_root)name="army_window";
+  if(root==fixture_army_root)name=std::string(fixture_root_name);
   else if(fixture_tooltip_tree&&root==fixture_supplies)name="supplies";
   else if(fixture_tooltip_tree&&root==fixture_attrition_parent)name="";
   else if(fixture_tooltip_tree&&root==fixture_attrition)name="attrition";
@@ -103,6 +105,18 @@ int main(int argc,char **argv) {
   if(!PreparedPtpProductionBuilderChecks12004()||!PreparedPtpExecutedStubAbiChecks12004())return 1;
   using namespace xar::ck3_11906;
   IngameUiRequestV1 r{};
+  IngameUiRequestV1 title_query{IngameUiOperationV1::query,IngameUiWindowKindV1::title,0};
+  assert(ValidateIngameUiRequestV1(title_query)&&!IsIngameUiPresentationRequest12004V1(title_query));
+  assert(IsIngameUiRequestSupportedV1(GuiAbiRevisionV1::crozier12004,title_query));
+  assert(!IsIngameUiRequestSupportedV1(GuiAbiRevisionV1::crozier12003,title_query));
+  assert(!IsIngameUiRequestSupportedV1(GuiAbiRevisionV1::legacy11906,title_query));
+  assert(ParseIngameUiRequestV1(R"({"window_kind":"title","subject_id":0})",true,r));
+  assert(!ParseIngameUiRequestV1(R"({"window_kind":"title","subject_id":1})",true,r));
+  assert(!ParseIngameUiRequestV1(R"({"window_kind":"title","operation":"open_character","subject_id":1})",false,r));
+  for(auto kind:{IngameUiWindowKindV1::holding,IngameUiWindowKindV1::personal_beliefs,
+      IngameUiWindowKindV1::rite_creation,IngameUiWindowKindV1::clerical_interaction,IngameUiWindowKindV1::tooltips})
+    assert(IsIngameUiPresentationRequest12004V1({IngameUiOperationV1::query,kind,0}));
+  assert(!IsIngameUiPresentationRequest12004V1({IngameUiOperationV1::query,static_cast<IngameUiWindowKindV1>(15),0}));
   for(auto revision:{GuiAbiRevisionV1::legacy11906,GuiAbiRevisionV1::crozier12003}) {
     assert(IsIngameUiRequestSupportedV1(revision,{IngameUiOperationV1::select_army,IngameUiWindowKindV1::army,0}));
     assert(IsIngameUiRequestSupportedV1(revision,{IngameUiOperationV1::query,IngameUiWindowKindV1::army,0}));
@@ -246,6 +260,62 @@ int main(int argc,char **argv) {
   modal_json=SerializeIngameUiResultV1(r,modal_result,3);
   assert(modal_json.find("\"receiver_count\":1")!=std::string::npos && modal_json.find("\"flags_d0\":184")!=std::string::npos);
   std::cout<<"offline original modal helper: 15 bounded/hidden/visible/mixed/null/unreadable cases and 2 actual serializer checks PASS; no game calls\n";
+
+  // Real read-only Title producer over offline buffers. Native GUI resolution
+  // is the test-local fixed-root stub; no game callback or mutator executes.
+  {
+    auto *title_image=static_cast<unsigned char *>(VirtualAlloc(nullptr,
+        UiExactImageSizeV1(GuiAbiRevisionV1::crozier12004),MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE));
+    assert(title_image);const auto tb=reinterpret_cast<std::uintptr_t>(title_image);
+    std::array<unsigned char,0x300> th{};std::array<unsigned char,0x200> tw{};
+    std::array<unsigned char,0x120> tr{};std::array<unsigned char,0x40> ts{},to{};
+    std::array<void *,4> title_rows{};const std::uint32_t title_id=0x81000001U;
+    const auto put=[]<class T>(void *p,std::size_t offset,const T &value) {
+      std::memcpy(static_cast<unsigned char *>(p)+offset,&value,sizeof(value));
+    };
+    for(const auto &pin:xar::ck3_12004::title_ui::source::pins)
+      std::memcpy(title_image+pin.rva,pin.bytes.data(),pin.size);
+    put(th.data(),0x1C0,tw.data());put(tw.data(),0,tb+0x45206B0);put(tw.data(),0x10,tb+0x4520780);
+    put(title_image,0x45206B0-8,tb+0x4AF5190);put(title_image,0x4520780-8,tb+0x4AF5168);
+    put(title_image,0x4AF5190,std::array<std::uint32_t,6>{1,0,0,0x5729118,0x4AF4CA0,0x4AF5190});
+    put(title_image,0x4AF5168,std::array<std::uint32_t,6>{1,0x10,0,0x5729118,0x4AF4CA0,0x4AF5168});
+    constexpr char title_type_name[]=".?AVCTitleViewWindow@@";
+    std::memcpy(title_image+0x5729118+0x10,title_type_name,sizeof(title_type_name));
+    put(tw.data(),0xA0,th.data());put(tw.data(),0x60,tr.data());
+    put(tw.data(),0xC8,std::uint32_t{0xFFFFFFFFU});put(tw.data(),0xCC,title_id);
+    put(title_image,0x5D1DAF8,ts.data());put(title_image,0x5D1DAE0,static_cast<void *>(nullptr));
+    put(ts.data(),0x20,title_rows.data());put(ts.data(),0x2C,std::int32_t{2});
+    title_rows[3]=to.data();put(to.data(),0x10,title_id);put(tr.data(),0,tb+0x1000);
+    ZhongguoScoreboardNativeEnvironmentV1 title_env{};title_env.module_base=tb;
+    title_env.gui_abi_revision=GuiAbiRevisionV1::crozier12004;
+    title_env.executable_sha256=xar::ck3_12004::kExecutableSha256;
+    fixture_root_name="title_view_window";fixture_army_root=tr.data();fixture_army_root_available=true;
+    IngameUiResultV1 observed{};
+    assert(ReadWindow(title_env,th.data(),IngameUiWindowKindV1::title,observed));
+    assert(observed.window_exists&&observed.effective_visible&&observed.subject_id_available&&observed.current_subject_id==title_id);
+    observed.gui_abi_revision=GuiAbiRevisionV1::crozier12004;observed.available=true;observed.status="observed";
+    observed.application_owner_thread_verified=observed.gui_owner_binding_verified=true;
+    observed.gui_context_address=1001;observed.gui_owner_address=1002;
+    observed.pump_epoch=14;observed.thread_id=77;observed.date_raw=53146848;
+    observed.paused=true;observed.played_character_id=29829;
+    const auto wire=SerializeIngameUiResultV1(title_query,observed,3);
+    assert(wire.find("\"window_kind\":\"title\"")!=std::string::npos);
+    assert(wire.find("\"current_subject_id\":2164260865")!=std::string::npos);
+    assert(wire.find("\"presentation_ui\"")==std::string::npos);
+    if(argc==2) {
+      const std::filesystem::path directory(argv[1]);std::filesystem::create_directories(directory);
+      std::ofstream output(directory/"title-window-observed.json");output<<wire<<'\n';assert(bool(output));
+    }
+    tr[0xD0]=8;IngameUiResultV1 hidden{};
+    assert(ReadWindow(title_env,th.data(),IngameUiWindowKindV1::title,hidden)&&
+        !hidden.effective_visible&&hidden.subject_id_available&&hidden.current_subject_id==title_id);
+    put(to.data(),0x10,title_id^0x01000000U);IngameUiResultV1 stale{};
+    assert(ReadWindow(title_env,th.data(),IngameUiWindowKindV1::title,stale)&&!stale.subject_id_available);
+    put(tw.data(),0x60,th.data());IngameUiResultV1 wrong_root{};
+    assert(!ReadWindow(title_env,th.data(),IngameUiWindowKindV1::title,wrong_root));
+    fixture_army_root_available=false;fixture_army_root=nullptr;fixture_root_name="army_window";
+    assert(VirtualFree(title_image,0,MEM_RELEASE));
+  }
   // Real ReadProcessMemory over offline buffers exercises storage indexing and
   // full generation identity; a low-24-bit match alone must fail.
   auto *image=static_cast<unsigned char *>(VirtualAlloc(nullptr,kImageSize,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE));

@@ -2232,6 +2232,124 @@ class LateNativeCleanupFacts(TypedDict):
     native_cleanup_qualified: None
 
 
+CASE_CLIENT_CLEANUP_KIND: Literal['case-client-failure-retained-wait-expired-native-cleanup'] = 'case-client-failure-retained-wait-expired-native-cleanup'
+
+
+class CaseClientCleanupBundle(TypedDict):
+    schema: Literal['ck3-mod-acceptance-failed-live-resource-closure-v1']
+    machine_id: str
+    run_id: str
+    keeper_root: str
+    closure_kind: Literal['case-client-failure-retained-wait-expired-native-cleanup']
+    public_wait_format: Literal['root-observed-command-exit-v1']
+    normal_close_qualified: Literal[False]
+    typed_normal_exit_proven: Literal[False]
+    business_pass: Literal[False]
+    release_pass: Literal[False]
+    original_evidence: dict[str, FilePin]
+
+
+class CaseClientNativeCleanupFacts(TypedDict):
+    closure_kind: Literal['case-client-failure-retained-wait-expired-native-cleanup']
+    original_ck3_exit_code: None
+    original_retained_wait_signaled: Literal[False]
+    actual_retained_os0: Literal[False]
+    native_reported_ck3_exit_code: int
+    native_process_exit_code: None
+    failure_lifecycle_completed: Literal[False]
+    native_cleanup_qualified: None
+    original_case_error: str
+    win32_birth_filetime: str
+
+
+def case_client_cleanup_bundle(machine_id: str, run_id: str, keeper_root: Path,
+                               original_evidence: object) -> CaseClientCleanupBundle:
+    """Serialize pinned originals; only the full resource consumer grants admission."""
+    if (not isinstance(machine_id, str) or not machine_id or not isinstance(run_id, str)
+            or not run_id.startswith(machine_id + '--') or not keeper_root.is_absolute()):
+        raise ValueError('Case-client cleanup machine/run/keeper identity differs')
+    refs = {key: file_pin(value) for key, value in json_object(original_evidence).items()}
+    required = {'frozen_argv', 'ready_context', 'prepared_case', 'host_started', 'host_exit', 'host_supervisor',
+        'run_wait', 'run_stdout', 'run_stderr', 'allocate_wait', 'allocate_stdout', 'allocate_stderr',
+        'native_report', 'normal_close', 'retained_identity', 'retained_exit', 'case_error', 'server_stderr',
+        'keeper_report', 'keeper_stop', 'keeper_exit', 'keeper_process', 'release'}
+    if not required <= refs.keys():
+        raise ValueError('Complete original case-client failure evidence pins required')
+    return CaseClientCleanupBundle(schema='ck3-mod-acceptance-failed-live-resource-closure-v1',
+        machine_id=machine_id, run_id=run_id, keeper_root=str(keeper_root.resolve()),
+        closure_kind=CASE_CLIENT_CLEANUP_KIND, public_wait_format='root-observed-command-exit-v1',
+        normal_close_qualified=False, typed_normal_exit_proven=False, business_pass=False,
+        release_pass=False, original_evidence=refs)
+
+
+def validate_case_client_native_cleanup(normal_value: object, retained_value: object,
+        game_value: object, native_value: object, report_value: object,
+        case_error_value: object, run_id: str, normal_written_ns: object) -> CaseClientNativeCleanupFacts:
+    """A failed public case may outlive an otherwise successful managed host.
+
+    The original retained wait remains unknown. Native Job cleanup is a separate,
+    nonzero fact and cannot qualify normal Quit or business completion.
+    """
+    normal, retained, game, native, report, failure = (json_object(value) for value in
+        (normal_value, retained_value, game_value, native_value, report_value, case_error_value))
+    shutdown = object_field(native, 'shutdown')
+    pid = _late_integer(game.get('pid'), 'Original CK3 PID')
+    created = game.get('create_time')
+    if (pid <= 0 or type(created) not in (int, float) or not isinstance(created, (int, float))
+            or not math.isfinite(created) or game.get('retained_synchronize_query_handle_acquired') is not True
+            or retained.get('retained_synchronize_query_handle_acquired') is not True
+            or _late_integer(retained.get('pid'), 'Retained CK3 PID') != pid
+            or _late_integer(native.get('pid'), 'Native CK3 PID') != pid
+            or _late_integer(shutdown.get('ck3_pid'), 'Shutdown CK3 PID') != pid
+            or type(retained.get('create_time')) not in (int, float) or retained.get('create_time') != created):
+        raise ValueError('Case-client cleanup crossed the original CK3 identity')
+    birth = text_field(retained, 'creation_filetime_100ns')
+    if re.fullmatch('[1-9][0-9]{0,19}', birth) is None or int(birth) >= 1 << 64:
+        raise ValueError('Original retained FILETIME requires canonical uint64 decimal text')
+    creation = text_field(shutdown, 'ck3_creation_date')
+    if re.fullmatch(r'[0-9]{14}\.[0-9]{6}\+000', creation) is None:
+        raise ValueError('Native cleanup requires its original UTC CK3 birth')
+    native_birth = datetime.strptime(creation, '%Y%m%d%H%M%S.%f+000').replace(tzinfo=timezone.utc)
+    delta = native_birth - datetime(1601, 1, 1, tzinfo=timezone.utc)
+    if (delta.days * 86400_000000 + delta.seconds * 1000000 + delta.microseconds) != int(birth) // 10:
+        raise ValueError('Native cleanup birth differs from retained FILETIME at native precision')
+    if (retained.get('signaled') is not False or 'exit_code' not in retained or retained['exit_code'] is not None
+            or retained.get('actual_retained_os0') is not False or normal.get('retained_handle') != retained
+            or normal.get('normal_close_qualified') is not False or normal.get('business_pass') is not False
+            or normal.get('failure_lifecycle_completed') is not False
+            or normal.get('managed_thread_finished') is not False
+            or 'host_finished_at' not in normal or normal['host_finished_at'] is not None
+            or 'cleanup_ok' not in normal or normal['cleanup_ok'] is not None
+            or 'host_error' not in normal or normal['host_error'] is not None):
+        raise ValueError('Case-client cleanup must preserve the original unknown wait and false close')
+    case_error = text_field(failure, 'error')
+    if (failure.get('run_id') != run_id
+            or failure.get('business_pass') is not False or failure.get('submitted_steps_never_replayed') is not True
+            or report.get('status') != 'GREEN' or 'error' not in report or report['error'] is not None
+            or 'error' not in native or native['error'] is not None or native.get('ok') is not True):
+        raise ValueError('Case-client failure must remain distinct from the completed host report')
+    code = _late_integer(shutdown.get('ck3_exit_code'), 'Native shutdown exit')
+    if (not 0 < code < 1 << 32 or 'process_exit_code' not in native or native['process_exit_code'] is not None or native.get('exit_reason') != 'stop'
+            or shutdown.get('ok') is not True or shutdown.get('tree_gone') is not True
+            or shutdown.get('cleanup_proven') is not True
+            or _late_integer(shutdown.get('job_active_processes_final'), 'Final native Job count') != 0):
+        raise ValueError('Case-client failure lacks completed nonzero native Job cleanup')
+    stamp = datetime.fromisoformat(text_field(native, 'finished_at'))
+    host_end = datetime.fromisoformat(text_field(report, 'finished_at'))
+    if stamp.tzinfo is None or host_end.tzinfo is None:
+        raise ValueError('Case-client native cleanup requires original timezone-aware completion times')
+    finished_delta = stamp - datetime(1970, 1, 1, tzinfo=timezone.utc)
+    finished_ns = (finished_delta.days * 86400 + finished_delta.seconds) * 1000000000 + finished_delta.microseconds * 1000
+    written_ns = _late_integer(normal_written_ns, 'Original close write time')
+    if stamp > host_end or written_ns <= 0 or finished_ns <= written_ns:
+        raise ValueError('Case-client native cleanup did not follow the original expired wait')
+    return {'closure_kind': CASE_CLIENT_CLEANUP_KIND, 'original_ck3_exit_code': None,
+        'original_retained_wait_signaled': False, 'actual_retained_os0': False,
+        'native_reported_ck3_exit_code': code, 'native_process_exit_code': None,
+        'failure_lifecycle_completed': False, 'native_cleanup_qualified': None,
+        'original_case_error': case_error, 'win32_birth_filetime': birth}
+
+
 class FailedGuiOS0CleanupFacts(TypedDict):
     closure_kind: Literal['failed-host-gui-os0-cleanup-complete']
     original_ck3_exit_code: Literal[0]
@@ -3138,14 +3256,18 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
         return previous_expired_keeper_resource_closure(previous, freeze, bundle, close_path,
                                                        keeper_root, release_path, bus_packet)
     late_cleanup = bundle.get('closure_kind') == 'retained-wait-expired-then-native-cleanup'
+    client_failure = bundle.get('closure_kind') == CASE_CLIENT_CLEANUP_KIND
     gui_os0 = bundle.get('closure_kind') == 'failed-host-gui-os0-cleanup-complete'
     preserved_os0 = bundle.get('closure_kind') == 'preserved-failure-native-process-exit-zero'
     typed_observer = preserved_failure_typed_format(bundle)
     split_public = bundle.get('public_wait_format') == 'command-intent-process-exit-completion'
     recorded_public = bundle.get('public_wait_format') == 'recorded-actual-command-started-exit-v1'
     root_observed_public = bundle.get('public_wait_format') == 'root-observed-command-exit-v1'
-    require(not root_observed_public or preserved_os0, 'Root-observed public format requires preserved native process OS0')
+    require(not root_observed_public or preserved_os0 or client_failure,
+            'Root-observed public format requires its supported original closure kind')
     require(not preserved_os0 or root_observed_public, 'Preserved native process OS0 requires its actual Root public receipts')
+    require(not client_failure or root_observed_public,
+            'Case-client failure requires actual Root original public waits')
     require('public_wait_format' not in bundle or split_public or recorded_public or root_observed_public,
             'Failed-live public wait format is unknown')
     require(not (split_public or recorded_public) or late_cleanup or gui_os0,
@@ -3155,6 +3277,9 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
     recorded_attempts: list[str] = []
     refs, evidence = bundle.get('original_evidence'), {}
     require(isinstance(refs, dict), 'Original failed-live evidence pins required')
+    if client_failure:
+        for reference in json_object(refs).values():
+            file_pin(reference)
     def original(key, expected=None, *, decode=True, max_bytes=1048576):
         row = refs[key]; path = Path(row['path']).resolve()
         require(expected is None or path == Path(expected).resolve(), 'Failed-live original path differs: ' + key)
@@ -3180,10 +3305,11 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
     require(host.get('run_id') == host_exit.get('run_id') == freeze['run_id'] and
             host.get('actual_popen_retained') is True and host.get('argv') == freeze['argv'] and
             host_exit.get('pid') == host.get('pid') and host_exit.get('actual_original_popen_wait') is True and
-            type(host_exit.get('returncode')) is int and host_exit['returncode'] != 0 and
+            type(host_exit.get('returncode')) is int and
+            (host_exit['returncode'] == 0 if client_failure else host_exit['returncode'] != 0) and
             host_exit.get('normal_ck3_exit_inferred') is False and
             type(supervisor.get('pid')) is int and type(host.get('supervisor_pid')) is int,
-            'Failed-live original host/supervisor nonzero wait differs')
+            'Failed-live original host/supervisor wait differs for this closure kind')
     supervisor_argv = supervisor.get('argv', [])
     require(isinstance(supervisor_argv, list) and '--supervise' in supervisor_argv and
             supervisor_argv.count('--run-root') == 1 and
@@ -3196,6 +3322,8 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
         parent = Path(refs[mode + '_wait']['path']).resolve().parent
         if root_observed_public:
             argv = validate_root_observed_public_exit(value, bundle['machine_id'], mode, code)
+            require(not client_failure or value.get('actual_original_popen_wait') is True,
+                    'Case-client public receipt lacks the actual original Popen wait')
         elif recorded_public:
             exit_path = Path(refs[mode + '_wait']['path']).resolve()
             require(exit_path.name.startswith(mode + '-') and exit_path.name.endswith('.EXIT.actual.json'),
@@ -3249,7 +3377,7 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
             if recorded_public:
                 require(stem == mode + '-' + argument('--attempt'),
                         'Recorded public receipt crossed allocator attempt')
-        if not (late_cleanup or gui_os0 or preserved_os0):
+        if not (late_cleanup or gui_os0 or preserved_os0 or client_failure):
             intent = original(mode + '_intent', parent/'intent.json')
             require(intent.get('argv') == argv and intent.get('phase') == mode,
                     'Failed-live original command intent differs')
@@ -3266,15 +3394,19 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
             'Recorded public STARTED/EXIT pair crossed attempts')
     report = original('native_report', previous/'native-report.json', max_bytes=67108864)
     diagnostic = bundle.get('failed_query')
-    if gui_os0 or preserved_os0:
+    if client_failure:
+        require('failed_query' not in bundle and report.get('status') == 'GREEN' and
+                'error' in report and report['error'] is None,
+                'Case-client failure cannot fabricate a failed host query or host error')
+    elif gui_os0 or preserved_os0:
         require('failed_query' not in bundle and isinstance(report.get('error'), str) and bool(report['error']),
                 'Failed GUI OS0 requires its original top-level host error, not a fabricated failed query')
     else:
         validate_failed_live_diagnostic(report, diagnostic)
     original_error = report.get('error')
-    require(report.get('status') == 'RED' and
+    require((client_failure or report.get('status') == 'RED' and
             ((isinstance(original_error, str) and bool(original_error)) or
-             (late_cleanup and 'error' in report and original_error is None)) and report.get('finished_at') and
+             (late_cleanup and 'error' in report and original_error is None))) and report.get('finished_at') and
             report.get('managed_session_done') is True and report.get('managed_session_thread_finished') is True and
             report.get('cleanup_ok') is True and Path(report['state_dir']).resolve() == state and
             Path(report['agent_source_root']).resolve() == Path(freeze['source_root']).resolve() and
@@ -3297,7 +3429,12 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
     late_facts = None
     gui_facts = None
     preserved_facts = None
-    if late_cleanup:
+    client_facts = None
+    if client_failure:
+        client_facts = validate_case_client_native_cleanup(normal, retained, game, native, report,
+            original('case_error', previous/'case-output/case-error-preserved.json'), text_field(json_object(freeze), 'run_id'),
+            (previous/'case-output/normal-close-result.json').stat().st_mtime_ns)
+    elif late_cleanup:
         late_facts = validate_late_native_cleanup(normal, retained, game, native, report,
             (previous/'case-output/normal-close-result.json').stat().st_mtime_ns, diagnostic)
     elif preserved_os0:
@@ -3347,6 +3484,8 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
         require(bool(original('keeper_stop', keeper_root/'STOP', decode=False)),
                 'Failed-live original cooperative keeper STOP is missing')
     waited = original('keeper_exit', previous/'keeper-actual-parent-exit.json')
+    require(not client_failure or type(waited.get('keeper_actual_exit_code')) is int,
+            'Case-client cleanup requires an exact original keeper exit integer')
     require(waited.get('run_id') == freeze['run_id'] and waited.get('keeper_actual_exit_code') == 0 and
             waited.get('keeper_report') == keeper and keeper.get('task_id') == freeze['screen_task'] and
             keeper.get('thread_exited') is True and keeper.get('failure') is None and keeper.get('entry_error') is None,
@@ -3414,6 +3553,9 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
         result['failure_cleanup'].update(gui_facts)
     if preserved_facts is not None:
         result['failure_cleanup'].update(preserved_facts)
+    if client_facts is not None:
+        result['failure_cleanup'].update(client_facts)
+        result['failure_cleanup'].update(original_public_run_exit_code=2, original_allocator_exit_code=0)
     if supervisor_facts is not None:
         result['failure_cleanup'].update(supervisor_facts)
     return result

@@ -17,7 +17,7 @@ from .religion_presentation_ui_contract import (
     requested as presentation_requested, request_fields as presentation_request_fields,
     tooltip_query as presentation_tooltip_query, normalize_presentation_result,
 )
-KINDS = {"character", "army", "combat", "knights", "holy_site", "holy_site_adoption", "faith", "holy_site_creation", "holding", "personal_beliefs", "rite_creation", "clerical_interaction", "tooltips"}
+KINDS = {"character", "army", "combat", "knights", "holy_site", "holy_site_adoption", "faith", "holy_site_creation", "holding", "personal_beliefs", "rite_creation", "clerical_interaction", "tooltips", "title"}
 OPERATIONS = {"open_character": "character", "select_army": "army", "open_combat": "combat", "open_knights": "knights",
               "hover_left_knights":"combat", "hover_right_knights":"combat", "fit_combat_window":"combat",
               "hover_army_tooltip":"army", "leave_army_tooltip":"army", "open_holy_site":"holy_site",
@@ -119,6 +119,10 @@ def validate_ui_build_scope(build: NativeBuildIdentity, operation: str, kind: st
     if kind in {"holding", "personal_beliefs", "rite_creation", "clerical_interaction", "tooltips"} or operation in PRESENTATION_OPERATIONS:
         if build != CK3_12004 or kind not in PRESENTATION_ROOTS or army_tooltip_kind is not None:
             raise ValueError("finite presentation requires exact 1.20.0.4")
+        return
+    if kind == "title":
+        if build != CK3_12004 or operation != "query" or army_tooltip_kind is not None:
+            raise ValueError("Title presentation requires the exact 1.20.0.4 read-only route")
         return
     if kind == "holy_site_creation":
         from .holy_site_creation_ui_contract import OPERATIONS
@@ -266,12 +270,13 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
         raise ValueError("native census count/bound mismatch")
     current4_character_query = expected_build == CK3_12004 and kind == "character"
     current4_faith = expected_build == CK3_12004 and kind == "faith"
+    current4_title = expected_build == CK3_12004 and kind == "title"
     current4_creation = expected_build == CK3_12004 and kind == "holy_site_creation"
     current4_holy_site = expected_build == CK3_12004 and kind in {"holy_site", "holy_site_adoption"}
-    expected_window = PRESENTATION_ROOTS[kind] if is_presentation else "holy_site_creation_window" if current4_creation else "decisiondetail_view" if kind=="holy_site_adoption" else "holy_site_window" if current4_holy_site else "character_window" if current4_character_query else "faith_window" if current4_faith else "army_window"
+    expected_window = PRESENTATION_ROOTS[kind] if is_presentation else "holy_site_creation_window" if current4_creation else "decisiondetail_view" if kind=="holy_site_adoption" else "holy_site_window" if current4_holy_site else "character_window" if current4_character_query else "faith_window" if current4_faith else "title_view_window" if current4_title else "army_window"
     if expected_build in _CURRENT_ARMY_BUILDS and value.get("window_name") != expected_window:
         raise ValueError("current native UI window name differs from the admitted kind")
-    if current4_character_query or current4_faith or current4_creation or is_presentation:
+    if current4_character_query or current4_faith or current4_title or current4_creation or is_presentation:
         if type(value.get("native_dispatch_attempted")) is not bool:
             raise ValueError("typed presentation dispatch attempt is missing")
         if operation == "query" and value["native_dispatch_attempted"]:
@@ -280,6 +285,10 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
             raise ValueError("typed presentation original invocation lacks consumed attempt")
         if value["native_army_id"] != 0 or value["owner_character_id_available"]:
             raise ValueError("typed presentation cannot claim Army or selected Unit owner")
+    if current4_title and "presentation_ui" in value:
+        raise ValueError("Title query cannot enter the finite presentation provider")
+    if current4_title and value["subject_id_available"] and not 0 <= value["current_subject_id"] < 2**32 - 1:
+        raise ValueError("current Title window requires a complete TitleID")
     if (current4_faith or current4_creation) and value["subject_id_available"] and not 0 <= value["current_subject_id"] < 2**32 - 1:
         raise ValueError("current Faith window requires a complete Faith ID")
     if current4_character_query:
@@ -452,8 +461,11 @@ def normalize_army_tooltip_result(value: dict[str, object], *, operation: str,
         raise ValueError("army tooltip evidence must remain verification pending")
     if operation != "query" and not value["dispatch_invoked"]:
         raise ValueError("army tooltip successful ACK lacks original dispatch")
+    tree = value["tree"]
+    if not isinstance(tree, Mapping):
+        raise ValueError("army tooltip native window tree missing")
     if (not value["window_exists"] or not value["effective_visible"] or not value["subject_id_available"]
-            or value["current_subject_id"] != subject_id or value["tree"]["truncated"]):
+            or value["current_subject_id"] != subject_id or tree["truncated"]):
         raise ValueError("army tooltip is not bound to the requested visible full Army ID")
     receipt = tooltip["receipt_id"]
     if not isinstance(receipt, str) or re.fullmatch(r"[0-9a-f]{32}", receipt) is None:
@@ -555,10 +567,13 @@ def normalize_combat_geometry(value: dict[str, object], *, operation: str, kind:
                 any(n for r in rects.values() for n in r.values())):
             raise ValueError("unavailable geometry must not retain a fit assertion or coordinates")
         return
+    tree = value["tree"]
+    if not isinstance(tree, Mapping):
+        raise ValueError("combat geometry native window tree missing")
     if (not value["available"] or kind!="combat" or operation not in {"query","fit_combat_window"} or
             not value["effective_visible"] or not value["subject_id_available"] or
             g["combat_id"]!=value["current_subject_id"] or not g["combat_id"] or
-            not 1<=g["widget_count"]<=value["tree"]["widget_count"] or value["tree"]["truncated"] or
+            not 1<=g["widget_count"]<=tree["widget_count"] or tree["truncated"] or
             not g["stock_margin_source_verified"] or g["unavailable_reason"]):
         raise ValueError("geometry is not a complete bound observation of the current visible CombatID")
     v,c=rects["viewport"],rects["content_union"]

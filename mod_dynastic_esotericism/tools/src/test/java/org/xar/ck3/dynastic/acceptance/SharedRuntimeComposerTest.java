@@ -184,6 +184,10 @@ final class SharedRuntimeComposerTest {
                         compiled=json.loads((fixture/'_case_contract.json').read_bytes())
                         current=json.loads((repo/'tools/ck3_mod_acceptance_cases/dynastic_esotericism_core.json').read_bytes())
                         assert compiled['config']==current and len(current['gui_phases'])==6
+                        phase=current['gui_phases'][0]
+                        assert len(phase['requirements'])==7
+                        assert phase['requirements'][-1]=='actual_reused_dynasty_and_join_house_renamed_to_rite_preserve_original_coa_fields_objects_and_designs_no_product_new_dynasty_or_founder_NPC'
+                        assert 'both_original_coa_objects_designs_unchanged' not in json.dumps(compiled)
                         assert compiled['required_markers']==manifest['receipt']['required_markers']
                         source_fixture=Path(manifest['fixture_root'])
                         for relative in manifest['files']:

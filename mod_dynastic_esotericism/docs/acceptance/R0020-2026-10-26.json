@@ -1,0 +1,108 @@
+{
+  "schema": "xar.des.historical-core-run.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-26T04:24:58.938031+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0020",
+  "source_head": "b8ddb3901f5648c3881299fd0b72a2a4d3636309",
+  "status": "RED_OR_INCOMPLETE",
+  "business_pass": false,
+  "normal_close_qualified": false,
+  "phases_signed": 0,
+  "phases_required": 6,
+  "exit_codes": {
+    "game": 1,
+    "shared_host": 0,
+    "public_run": 2,
+    "public_verify": 2,
+    "keeper": 0,
+    "allocator": 0
+  },
+  "screen_release_sequence": 9132,
+  "resource_cleanup": {
+    "native_tree_gone": true,
+    "job_active_processes_final": 0,
+    "control_files_absent": true,
+    "normal_game_exit_inferred": false
+  },
+  "failure": "Original normal Quit reserve reached; pending Root phase remains GAP",
+  "original_hold_deadline_epoch": 1792986396.4782667,
+  "root_resumed_after_deadline_at_utc": "2026-10-26T04:17:20Z",
+  "evidence": {
+    "native_report": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a19\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0020\\native-report.json",
+      "bytes": 15179707,
+      "sha256": "b83794cb18d45508b2889d493bfec545fdd6958028f38c3e8dc51010204f84c0"
+    },
+    "case_error": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a19\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0020\\case-output\\case-error-preserved.json",
+      "bytes": 239,
+      "sha256": "60e5ff566f5f2ae793675c504bb4ed487319001fcf27ad0e1e46376118e7284d"
+    },
+    "normal_close": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a19\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0020\\case-output\\normal-close-result.json",
+      "bytes": 996,
+      "sha256": "2b21f8be7e7bfc3c889f39cf5a1be360e76ffc37e28f7e143c4e73f43c22f762"
+    },
+    "host_exit": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a19\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0020\\host-original-process-exit.json",
+      "bytes": 257,
+      "sha256": "5c5ee927baff719dd9fb3601e0f01cc275f824664e7ee99f1f8eb5ec294baf20"
+    },
+    "run_wait": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\operations-core-a40\\public-run-a01.actual.json",
+      "bytes": 2333,
+      "sha256": "a45e1b628c61752efad74a771b634dac895ad36db4d6e2cd7ea28552c9a0c68b"
+    },
+    "allocator_wait": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\operations-core-a40\\public-allocate-a01.actual.json",
+      "bytes": 2692,
+      "sha256": "26a02c44066a42f3bd0e77af65bc5ac87a992aec9ad252b32bbf45fb24bb0b23"
+    },
+    "verify_wait": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\operations-core-a40\\r20-public-verify-a01.actual.json",
+      "bytes": 2337,
+      "sha256": "8e04da89dfce3d53a5fb90c38d86b3e29517beb7da791621c2d98128ae7b284f"
+    },
+    "keeper_exit": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a19\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0020\\keeper-actual-parent-exit.json",
+      "bytes": 635,
+      "sha256": "327dae5a249e04a2224812413a7955ad589afeb7fb61d34041afea9ecef2bfe5"
+    },
+    "screen_release": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\operations-core-a40\\R0020-screen-release.actual.json",
+      "bytes": 1333,
+      "sha256": "cb5709616a19c953544336d89c482633333c196ae395b82090483a4317390fe6"
+    },
+    "phase1_readback_comparison": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a19\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0020\\operator-evidence\\R0020-PHASE1-INDEPENDENT-COMPARISON-a01.actual.json",
+      "bytes": 57632,
+      "sha256": "a2cf5a8111ee4ac2cebe4493e244751a99b3e8cd576ee464e93a514aecace20e"
+    },
+    "event_source_review": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\core-a29-administration\\R20-EVENT1-EVENT2-OFFLINE-SOURCE-REVIEW-a01.actual.json",
+      "bytes": 34995,
+      "sha256": "8c4b52437646cc76b22f7813fcb4c74103227a8b9ce6a47e872cd2e68166e877"
+    },
+    "resource_stop_review": {
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\operations-core-a40\\R0020-RESOURCE-STOP-REVIEW-a01.actual.json",
+      "bytes": 1895,
+      "sha256": "146381f4338a54f364e52e93c933549b1a6932ff73a8c9f88e8f07f59f09cef8"
+    }
+  },
+  "actual_narrow_observations": [
+    "Native Rite152 created by actor31254 once; independent completion after native event1 disappeared.",
+    "Baseline/cancel exact complete selected graph and inventories match; native resources unchanged.",
+    "Pure D0 saved before single capture decision; exact +1/+2 Native and independently decoded Saves retained.",
+    "D0 48 and D1/D2 61 complete Rite members all House174/Dynasty174; original names changed to actual Rite name, IDs preserved.",
+    "Dynasty CoA1783 complete AST unchanged; House174 own CoA field absent at baseline and remains absent; other two actual Dynasty174 House records unchanged.",
+    "Four D0 added adult council characters excluded from product fixed-age30 fallback; exact engine constructor not instrumented.",
+    "First headcells stock None actor preparation submitted once and saved; maturity/factory H0/H1/H2 not run."
+  ],
+  "unqualified": [
+    "No late Root phase signature or 0/6 reclassification.",
+    "No full Core300-day, heir transition, prisoner preview, cold/old-save, empire/restore or publication credit.",
+    "Actual Game1 cannot be reclassified as normal exit0."
+  ],
+  "retained_evidence_review_before_utc": "2026-11-02T00:00:00Z",
+  "retention_reason": "Current reproducible failed lifecycle and pre-headcells inputs needed for shared regression and next full acceptance; review under storage-retention-policy, not permanent bulk retention."
+}

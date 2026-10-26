@@ -13,6 +13,19 @@ on:
       - 'ck3_autonomous_player/native_bridge/src/scripted_widget_control12004*.cpp'
       - 'ck3_autonomous_player/native_bridge/tests/scripted_widget_control12004_test.cpp'
       - 'ck3_autonomous_player/native_bridge/CMakeLists.txt'
+      - 'ck3_autonomous_player/native_bridge/cmake/religion_ui12004.cmake'
+      - 'ck3_autonomous_player/native_bridge/cmake/player_inventory_window12004.cmake'
+      - 'ck3_autonomous_player/native_bridge/include/xar_bridge/ingame_ui_navigation_v1.hpp'
+      - 'ck3_autonomous_player/native_bridge/include/xar_bridge/title_window12004*.hpp'
+      - 'ck3_autonomous_player/native_bridge/src/title_window12004.cpp'
+      - 'ck3_autonomous_player/native_bridge/src/ingame_ui_navigation_v1.cpp'
+      - 'ck3_autonomous_player/native_bridge/src/faith_power_presentation_request12004.inc'
+      - 'ck3_autonomous_player/native_bridge/src/frontend_gui_route_v1.cpp'
+      - 'ck3_autonomous_player/native_bridge/tests/ingame_ui_navigation_v1_test.cpp'
+      - 'ck3_autonomous_player/native_bridge/tests/title_window12004_test.cpp'
+      - 'ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_ui_contract.py'
+      - 'ck3_autonomous_player/tests/unit/test_ingame_ui_navigation_v1.py'
+      - 'tools/ck3_mod_acceptance_background_types.py'
       - 'ck3_autonomous_player/tests/unit/test_gui_window_tree_root_contract.py'
       - 'ck3_autonomous_player/tests/fixtures/scripted_widget_native_campaign_R0003_snapshot.json'
       - 'ck3_autonomous_player/tests/fixtures/scripted_widget_owner_sampling_R0007.json'
@@ -39,6 +52,19 @@ on:
       - 'ck3_autonomous_player/native_bridge/src/scripted_widget_control12004*.cpp'
       - 'ck3_autonomous_player/native_bridge/tests/scripted_widget_control12004_test.cpp'
       - 'ck3_autonomous_player/native_bridge/CMakeLists.txt'
+      - 'ck3_autonomous_player/native_bridge/cmake/religion_ui12004.cmake'
+      - 'ck3_autonomous_player/native_bridge/cmake/player_inventory_window12004.cmake'
+      - 'ck3_autonomous_player/native_bridge/include/xar_bridge/ingame_ui_navigation_v1.hpp'
+      - 'ck3_autonomous_player/native_bridge/include/xar_bridge/title_window12004*.hpp'
+      - 'ck3_autonomous_player/native_bridge/src/title_window12004.cpp'
+      - 'ck3_autonomous_player/native_bridge/src/ingame_ui_navigation_v1.cpp'
+      - 'ck3_autonomous_player/native_bridge/src/faith_power_presentation_request12004.inc'
+      - 'ck3_autonomous_player/native_bridge/src/frontend_gui_route_v1.cpp'
+      - 'ck3_autonomous_player/native_bridge/tests/ingame_ui_navigation_v1_test.cpp'
+      - 'ck3_autonomous_player/native_bridge/tests/title_window12004_test.cpp'
+      - 'ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_ui_contract.py'
+      - 'ck3_autonomous_player/tests/unit/test_ingame_ui_navigation_v1.py'
+      - 'tools/ck3_mod_acceptance_background_types.py'
       - 'ck3_autonomous_player/tests/unit/test_gui_window_tree_root_contract.py'
       - 'ck3_autonomous_player/tests/fixtures/scripted_widget_native_campaign_R0003_snapshot.json'
       - 'ck3_autonomous_player/tests/fixtures/scripted_widget_owner_sampling_R0007.json'
@@ -62,7 +88,7 @@ permissions:
 jobs:
   contract:
     runs-on: windows-latest
-    timeout-minutes: 15
+    timeout-minutes: 60
     defaults:
       run:
         shell: cmd
@@ -96,13 +122,25 @@ jobs:
         run: python -B -m unittest discover -s tests/unit -p test_rite_creation_action_private_v1.py -v
       - name: Check and exercise the shared service factory boundary
         run: python -B -m unittest discover -s tests/unit -p test_mcp_service_override_factory.py -v
-      - name: Build and exercise the generic scripted widget native serializer fixture
+      - name: Build the shared production UI graph and native serializer fixtures
         run: |
-          cmake -S native_bridge -B "%RUNNER_TEMP%\scripted-widget-native" -A x64 -DBUILD_TESTING=ON
+          cmake -S native_bridge -B "%RUNNER_TEMP%\scripted-widget-native" -A x64 -DBUILD_TESTING=ON -DXAR_ENABLE_RELIGION_UI12004_PRESENTATION=ON -DXAR_ENABLE_WAR_DECLARED_OVERVIEW_V1=ON -DXAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1=ON -DXAR_CK3_ENABLE_PLAYER_INVENTORY_WINDOW_OPEN_PRIVATE_V1=OFF
           if not "%errorlevel%"=="0" exit /b %errorlevel%
-          cmake --build "%RUNNER_TEMP%\scripted-widget-native" --config Release --target xar_ck3_scripted_widget_control12004_test
+          cmake --build "%RUNNER_TEMP%\scripted-widget-native" --config Release --parallel 2 --target xar_ck3_bridge xar_ck3_12002_runtime xar_ck3_adapter_registry_test xar_ck3_ingame_ui_navigation_v1_test xar_ck3_title_window12004_test xar_ck3_scripted_widget_control12004_test
           if not "%errorlevel%"=="0" exit /b %errorlevel%
-          "%RUNNER_TEMP%\scripted-widget-native\Release\xar_ck3_scripted_widget_control12004_test.exe"
+          ctest --test-dir "%RUNNER_TEMP%\scripted-widget-native" -C Release --output-on-failure --no-tests=error -R "^(xar_ck3_ingame_ui_navigation_v1_test|xar_ck3_title_window12004_test|xar_ck3_native_bridge_adapter_registry|xar_ck3_12003_frontend_private_capabilities|xar_ck3_scripted_widget_control12004_test|xar_ck3_ordinary_interaction_production_registry_v1)$"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          "%RUNNER_TEMP%\scripted-widget-native\Release\xar_ck3_ingame_ui_navigation_v1_test.exe" "%RUNNER_TEMP%\title-native-wire"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Check Title queries through actual native serialization and every SDK consumer
+        run: |
+          python -B -m mypy --follow-imports=skip --no-incremental --cache-dir=nul src/xar_autoplayer/bridge/ingame_ui_contract.py src/xar_autoplayer/bridge/mcp_server.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -m mypy --follow-imports=skip --follow-untyped-imports --no-incremental --cache-dir=nul tests/unit/test_ingame_ui_navigation_v1.py ../tools/ck3_mod_acceptance_background_types.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -m unittest discover -s tests/unit -p test_ingame_ui_navigation_v1.py -v
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B tests/unit/test_ingame_ui_navigation_v1.py --title-native-wire "%RUNNER_TEMP%\title-native-wire\title-window-observed.json"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Check generic scripted widgets through native serializer, SDK, MCP and host
         run: |

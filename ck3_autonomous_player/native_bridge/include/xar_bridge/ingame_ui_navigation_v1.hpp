@@ -28,7 +28,7 @@ inline constexpr std::uintptr_t kUiOpenViewRvaV1 = 0xA79200;
 inline constexpr std::uintptr_t kUiOpenViewDataRvaV1 = 0xA79700;
 inline constexpr std::uintptr_t kUiIdAnyTypeGetterRvaV1 = 0x998130;
 
-enum class IngameUiWindowKindV1 : std::uint32_t { character=0, army=1, combat=2, knights=3, title_appointment=4, holy_site=5, holy_site_adoption=6, faith=7, holy_site_creation=8, holding=9, personal_beliefs=10, rite_creation=11,clerical_interaction=12,tooltips=13 };
+enum class IngameUiWindowKindV1 : std::uint32_t { character=0, army=1, combat=2, knights=3, title_appointment=4, holy_site=5, holy_site_adoption=6, faith=7, holy_site_creation=8, holding=9, personal_beliefs=10, rite_creation=11,clerical_interaction=12,tooltips=13,title=14 };
 enum class IngameUiOperationV1 : std::uint32_t { query=0, open_character=1, select_army=2, open_combat=3, open_knights=4,
   hover_left_knights=5, hover_right_knights=6, fit_combat_window=7,
   hover_army_tooltip=8, leave_army_tooltip=9, open_holy_site=10, open_holy_site_adoption=11, confirm_site_adoption=12, open_faith=13,
@@ -76,6 +76,18 @@ struct IngameUiRequestV1 {
   std::uint64_t connection_generation = 0;
   std::uint64_t native_revision = 0;
 };
+// Keep finite presentation membership explicit when the public window enum grows.
+inline bool IsIngameUiPresentationRequest12004V1(const IngameUiRequestV1 &request) noexcept {
+  if(request.presentation_requested)return true;
+  switch(request.window_kind) {
+    case IngameUiWindowKindV1::holding:
+    case IngameUiWindowKindV1::personal_beliefs:
+    case IngameUiWindowKindV1::rite_creation:
+    case IngameUiWindowKindV1::clerical_interaction:
+    case IngameUiWindowKindV1::tooltips:return true;
+    default:return false;
+  }
+}
 struct IngameUiGuiOwnerBindingV1 {
   void *context = nullptr;
   void *owner = nullptr;

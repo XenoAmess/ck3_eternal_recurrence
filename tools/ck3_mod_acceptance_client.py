@@ -45,6 +45,22 @@ class NormalQuitCodecV2(Protocol):
     def normal_exit_public_result_v2(self, value: object) -> dict[str, object]: ...
 
 
+def _root_checkpoint_reserve_seconds(case: object, requested: object) -> int:
+    """Keep Root waiting outside the selected case's original Quit reserve."""
+    if type(requested) is not int or requested < 0:
+        raise ValueError('Root checkpoint reserve must be a nonnegative integer')
+    selected = json_object(case)
+    if 'normal_close' not in selected:
+        return requested
+    close = json_object(selected['normal_close'])
+    if 'reserve_seconds' not in close:
+        return requested
+    declared = close['reserve_seconds']
+    if type(declared) is not int or declared <= 0:
+        raise ValueError('Declared normal Quit reserve must be a positive integer')
+    return max(requested, declared)
+
+
 def _typed_quit_plan_v1(value: object) -> bool:
     """Recognize only the canonical single typed-exit intent, never business."""
     if (not isinstance(value, list) or len(value) != 1 or not isinstance(value[0], dict)
@@ -1066,7 +1082,9 @@ class CaseClient:
                     'Pool receipt crossed current retained paused scene')
         return saved[1]
 
-    def root_checkpoint(self, name, request, reserve=90, *, read_only_appointment=False):
+    def root_checkpoint(self, name: str, request: JsonObject, reserve: int = 90,
+            *, read_only_appointment: bool = False) -> JsonObject:
+        reserve = _root_checkpoint_reserve_seconds(self.selection.case, reserve)
         action_sequence=0
         if read_only_appointment:
             from ck3_mod_acceptance_appointment import TOOL, CASES
@@ -1079,9 +1097,9 @@ class CaseClient:
                 'required_arguments':['requested_title_id','requested_title_key','expected_law'],
                 'exactly_one_reference':['navigation_step_id','title_reference_step_id'],
                 'optional_arguments':['breakdown_character_id'],'does_not_navigate_or_sign_off':True}}
-        path = self.checkpoint(name + '-awaiting', {'run_id':self.frozen['run_id'],
-            'original_hold_deadline':self._hold,'reserve_seconds':reserve, **request,
-            'operator_reviewer':self.operator_reviewer})
+        path = self.checkpoint(name + '-awaiting', {**request,'run_id':self.frozen['run_id'],
+            'original_hold_deadline':self._hold,
+            'reserve_seconds':reserve,'operator_reviewer':self.operator_reviewer})
         print('CK3_ROOT_CHECKPOINT ' + str(path), flush=True)
         response = self.output / (name + '-root-result.json')
         while self.remaining() > reserve:
@@ -1121,7 +1139,7 @@ class CaseClient:
                     self.checkpoint(name+'-readonly-response-'+str(action_sequence).zfill(4),result)
                     action_sequence+=1
             if response.is_file():
-                value = read_json(response)
+                value = json_object(read_json(response))
                 require(value.get('run_id') == self.frozen['run_id'] and value.get('reviewer') == self.operator_reviewer, 'Root checkpoint crossed scene')
                 return value
             time.sleep(.25)
