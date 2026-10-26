@@ -209,6 +209,23 @@ class CaseImportTests(unittest.TestCase):
             self.assertIs(value[key], True)
         self.assertIs(value['game_started'], False)
 
+    def test_public_allocate_freezes_all_three_guard_filepins_before_claim(self) -> None:
+        environment = dict(os.environ)
+        environment.pop('PYTHONPATH', None)
+        completed = subprocess.run(
+            [sys.executable, '-I', '-B', '-X', 'utf8', str(Path(__file__).resolve()),
+             '--allocate-prelaunch-filepins-fixture'], cwd=self.temporary.name,
+            env=environment, capture_output=True, text=True, encoding='utf-8',
+            timeout=60, check=False)
+        self.assertEqual(completed.returncode, 0, completed.stdout + completed.stderr)
+        value = json.loads(completed.stdout)
+        self.assertEqual(value['additional_phase_guard_filepins_frozen'], 10)
+        for key in ('actual_public_dispatch', 'actual_observed_prelaunch_reducer',
+                    'actual_running_input_contract', 'stopped_before_machine_writer',
+                    'counter_unchanged'):
+            self.assertIs(value[key], True)
+        self.assertIs(value['game_started'], False)
+
     def test_real_verify_and_cli_validate_json_result_and_preserve_encoded_sequences(self) -> None:
         env = dict(os.environ)
         env.pop("PYTHONPATH", None)
@@ -310,17 +327,18 @@ def verify_case(context: dict[str, object]) -> object:
         fixture.doCleanups()
 
 
-def allocate_prelaunch_import_fixture() -> int:
+def allocate_prelaunch_import_fixture(*, phase_guard_files: bool = False) -> int:
     """Actual dispatch/allocation/reducer; synthetic R21-shaped no-game inputs.
 
     Only OS/bus/preflight observations are fixtures. The actual selected SDK,
     complete observed-prelaunch reducer and running-input guard execute. Stop
-    at the first post-reducer git check, before intent/SCREEN/ID/ledger/keeper.
+    at the first post-reducer git check, or after assembling all three guards'
+    frozen inputs at the claim sentinel, before intent/SCREEN/ID/ledger/keeper.
     """
     import argparse
     from contextlib import ExitStack
     from unittest.mock import patch
-    from ck3_mod_acceptance_background_types import json_object, object_field, text_field
+    from ck3_mod_acceptance_background_types import FilePin, json_object, object_field, text_field
     from test_ck3_mod_acceptance_unrun_stages import RootAllocatorTripletTests
     import ck3_mod_acceptance as entry
     import ck3_mod_acceptance_allocate as allocator
@@ -331,7 +349,7 @@ def allocate_prelaunch_import_fixture() -> int:
     fixture = RootAllocatorTripletTests()
     fixture.setUp()
     try:
-        bundle, live, keeper, _ = fixture.prelaunch_fixture(observed_root=True)
+        bundle, live, keeper, _ = fixture.prelaunch_fixture(observed_root=True, phase_guards=phase_guard_files)
         # Author digest-domain frozen inputs for this fixture, never live files.
         freeze = json_object(json.loads((live / 'frozen-argv.json').read_bytes()))
         files = object_field(freeze, 'files')
@@ -349,6 +367,18 @@ def allocate_prelaunch_import_fixture() -> int:
         armed['ready_context'] = json_object(bundle['ready'])
         armed_path.write_text(json.dumps(armed), encoding='utf-8')
         bundle['prelaunch_guard_armed'] = fixture.reference(armed_path)
+        expected_phase_pins: list[FilePin] = []
+        if phase_guard_files:
+            output = armed_path.parent
+            for label in ('DEADLINE-GUARD-1', 'DEADLINE-GUARD-2'):
+                path = output / (label + '.ARMED.actual.json')
+                row = json_object(json.loads(path.read_bytes()))
+                row['ready_context'] = json_object(bundle['ready'])
+                path.write_text(json.dumps(row), encoding='utf-8')
+            phase_rows = unrun._phase_guard_evidence(output)
+            bundle['prelaunch_phase_guards'] = phase_rows
+            expected_phase_pins = [row[key] for row in phase_rows
+                for key in ('intent', 'started', 'armed', 'cancel', 'original_wait')]
         close = fixture.root / 'observed-prelaunch-close.json'
         close.write_text(json.dumps(bundle), encoding='utf-8')
         release_path = Path(text_field(json_object(bundle['admin_done']), 'path'))
@@ -380,6 +410,19 @@ def allocate_prelaunch_import_fixture() -> int:
             keeper_output=fixture.root / 'never-created-keeper', previous_live=live,
             previous_keeper=keeper, previous_failure_close=close,
             previous_release=release_path, first_machine_bootstrap=None, latest_screen_release=None)
+        if phase_guard_files:
+            selected.prepared_path.write_text('{}', encoding='utf-8')
+            selected.runtime_path.write_text('{}', encoding='utf-8')
+            selected.products_path = fixture.root / 'prelaunch-products.json'
+            selected.prepared = {'preparation': {}}
+            selected.case = {'startup': {'mode': 'saved'}}
+            selected.adapter_path = None
+            selected.runtime['control_queue'] = entry.pin(ROOT / 'tools/ck3_mod_acceptance_queue.py')
+            (selected.state_dir / 'profile').mkdir(parents=True)
+            for relative in ('tools/codex_task_bus.py', 'promo/ck3_native_war_ai/integration/screen_bus_lease.py'):
+                target = fixture.repo / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes((ROOT / relative).read_bytes())
 
         class BeforeMachineWriter(RuntimeError):
             pass
@@ -387,7 +430,27 @@ def allocate_prelaunch_import_fixture() -> int:
         def before_writer(argv: list[str], **kwargs: object) -> object:
             if argv != ['git', 'status', '--porcelain']:
                 raise AssertionError('Unexpected subprocess before the writer boundary')
+            if phase_guard_files:
+                return subprocess.CompletedProcess(argv, 0, stdout=b'', stderr=b'')
             raise BeforeMachineWriter('No admission, SCREEN, ID, ledger or keeper')
+
+        claim_reached = False
+        def before_claim(*claim_args: object) -> object:
+            nonlocal claim_reached
+            claim_reached = True
+            import inspect
+            frame = inspect.currentframe()
+            caller = frame.f_back if frame is not None else None
+            if caller is None or caller.f_code.co_name != '_allocate_and_keep_impl':
+                raise AssertionError('Claim sentinel must observe the real allocator caller')
+            actual_files = caller.f_locals.get('files')
+            if not isinstance(actual_files, dict) or len(expected_phase_pins) != 10:
+                raise AssertionError('Actual allocator frozen file table or ten guard Pins missing')
+            for value in expected_phase_pins:
+                reference = json_object(value)
+                if actual_files.get(Path(text_field(reference, 'path')).resolve()) != reference:
+                    raise AssertionError('Actual allocator omitted or changed an additional guard Pin')
+            raise BeforeMachineWriter('All ten guard Pins frozen; no machine writer entered')
 
         prior_path = list(sys.path)
         with ExitStack() as stack:
@@ -404,6 +467,7 @@ def allocate_prelaunch_import_fixture() -> int:
             reducer = stack.enter_context(patch.object(unrun, 'validate_allocated_unrun', wraps=unrun.validate_allocated_unrun))
             guard = stack.enter_context(patch.object(unrun, '_recovery_input_validation', wraps=unrun._recovery_input_validation))
             stack.enter_context(patch.object(subprocess, 'run', side_effect=before_writer))
+            stack.enter_context(patch.object(allocator, 'claim_machine_admission', new=before_claim))
             try:
                 entry.native_dispatch(args)
             except BeforeMachineWriter:
@@ -412,6 +476,8 @@ def allocate_prelaunch_import_fixture() -> int:
                 raise AssertionError('Actual allocate did not stop before its first writer')
             if reducer.call_count != 1 or guard.call_count != 1:
                 raise AssertionError('Actual observed-prelaunch reducer/input guard did not execute')
+            if claim_reached is not phase_guard_files:
+                raise AssertionError('Unexpected original writer-boundary call count')
         if sys.path != prior_path:
             raise AssertionError('Selected SDK context did not restore the original search path')
         contract = sys.modules.get('xar_autoplayer.bridge.runtime_input_contract_v1')
@@ -423,7 +489,8 @@ def allocate_prelaunch_import_fixture() -> int:
             raise AssertionError('Read-only regression consumed an allocator-owned input')
         print(json.dumps({'actual_public_dispatch': True, 'actual_observed_prelaunch_reducer': True,
             'actual_running_input_contract': True, 'stopped_before_machine_writer': True,
-            'counter_unchanged': True, 'game_started': False}))
+            'counter_unchanged': True, 'game_started': False,
+            'additional_phase_guard_filepins_frozen': len(expected_phase_pins) if phase_guard_files else 0}))
         return 0
     finally:
         fixture.doCleanups()
@@ -513,6 +580,8 @@ def run_case(context: dict[str, object], client: object) -> dict[str, object]:
 
 
 if __name__ == "__main__":
+    if sys.argv[1:] == ["--allocate-prelaunch-filepins-fixture"]:
+        raise SystemExit(allocate_prelaunch_import_fixture(phase_guard_files=True))
     if sys.argv[1:] == ["--allocate-prelaunch-import-fixture"]:
         raise SystemExit(allocate_prelaunch_import_fixture())
     if sys.argv[1:] == ["--cli-fixture"]:

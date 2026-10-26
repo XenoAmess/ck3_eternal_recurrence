@@ -667,7 +667,7 @@ finally:''')
 
     def test_prelaunch_wrong_fields_types_source_pid_chronology_and_action_reject(self) -> None:
         bundle,live,keeper,stamps=self.prelaunch_fixture()
-        def invoke(value: Mapping[str, object]) -> JsonObject:
+        def invoke(value: Mapping[str, object]) -> dict[str, FilePin]:
             return subject.validate_prelaunch_orchestrator(value,previous=live,keeper=keeper,machine=self.machine,
                 ready_at=stamps[0],keeper_closed_at=stamps[1])
         cases: tuple[tuple[str,str,JsonValue],...]=(
@@ -708,13 +708,17 @@ finally:''')
         value = json_object(json.loads(json.dumps(bundle)))
         evidence = subject.validate_prelaunch_orchestrator(value, previous=live, keeper=keeper,
             machine=self.machine, ready_at=stamps[0], keeper_closed_at=stamps[1])
-        guards = member(evidence, 'prelaunch_phase_guards')
-        self.assertEqual(set(guards), {'DEADLINE-GUARD-1', 'DEADLINE-GUARD-2'})
+        guards = {key: value for key, value in evidence.items() if key.startswith('DEADLINE-GUARD-')}
+        self.assertEqual(set(guards), {label+'.'+key for label in ('DEADLINE-GUARD-1','DEADLINE-GUARD-2')
+            for key in ('intent','started','armed','cancel','original_wait')})
+        for reference in guards.values():
+            self.assertEqual(set(reference), {'path','bytes','sha256'})
+            self.assertEqual(self.reference(Path(reference['path'])), reference)
         self.assertEqual(subject._allocator_argv(value, self.machine, stamps)[5], 'allocate')
 
     def test_split_root_and_additional_guard_wrong_contracts_are_rejected(self) -> None:
         bundle, live, keeper, stamps = self.prelaunch_fixture(observed_root=True, phase_guards=True)
-        def invoke(value: Mapping[str, object]) -> JsonObject:
+        def invoke(value: Mapping[str, object]) -> dict[str, FilePin]:
             return subject.validate_prelaunch_orchestrator(value, previous=live, keeper=keeper,
                 machine=self.machine, ready_at=stamps[0], keeper_closed_at=stamps[1])
         root_cases: tuple[tuple[str, str, JsonValue], ...] = (
@@ -753,7 +757,7 @@ finally:''')
 
     def test_observed_root_rejects_wrong_fields_types_binding_wait_and_later_actions(self) -> None:
         bundle, live, keeper, stamps = self.prelaunch_fixture(observed_root=True)
-        def invoke(value: Mapping[str, object]) -> JsonObject:
+        def invoke(value: Mapping[str, object]) -> dict[str, FilePin]:
             return subject.validate_prelaunch_orchestrator(value, previous=live, keeper=keeper,
                 machine=self.machine, ready_at=stamps[0], keeper_closed_at=stamps[1])
         cases: tuple[tuple[str, str, JsonValue], ...] = (

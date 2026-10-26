@@ -168,3 +168,15 @@ machine_id: `4-8e1c2f1861`，观察截至 `2026-10-26T17:37:03Z`。P3的冻结�
 空间处理只归档并精确退休三份旧截图说明，gzip逐字节验证完整原文，原PNG、Native报告、零日资格及失败闭场证据保留。实际确认退休1495040 B，单独记账，不替换此前3791文件回收证据、不重置累计花费。原说明路径已不可读取；完整原字节和身份在 `COLD/metadata/public-operations-a01/sidecar-archive-a01/ARCHIVE-INDEX.actual.json` 所列gzip中。新1032MiB内部重分配及有限期限复核目前仍是候选，须实际准入后才可准备新运行图。
 
 八项人工审核尚未完成。下一业务仍是同一155结果的配置落定、实际封臣邀请与第二日读回、最终独立冷载；后续另验四核心Faith融合、无MTS代表场及DES。DES的House／Dynasty／CoA和维护保存投影还需复用或扩展唯一Java流式读取核心，短场不抵扣30日维护验收。公开0.1.0-alpha和Workshop3826756673未更新。
+
+## 18:19Z：公共分配消费层修复与实机宣传图安排
+
+machine_id: `4-8e1c2f1861`。同一1032MiB预算的重新准入已实际完成，配额只延长用途复核至23:00Z；未重置累计占用、gross或旧失败。P4四步冻结、六链来源资格、runtime和公共prepare原退出均0。a28随后公共preflight原退出0，但allocate在原机器claim之前以`KeyError('path')`退出2，Root退出1；没有新keeper、SCREEN、场次编号、Game或保存。P4冻结输入原样保留，不热改复用。
+
+原因是恢复读取器返回的新增守候证据仍套有一层映射，而原allocator逐项按FilePin冻结。共享修复仅把两组额外守候的intent、started、armed、cancel和original_wait平铺为10份独立FilePin；bundle中的强类型阶段表及全部身份、来源、顺序和原wait校验保留。新增独立`-I`、无PYTHONPATH回归执行实际公共dispatch、所选SDK、恢复reducer和running-input合同，再沿原allocate消费到文件封包表，确认10份Pin全部进入，停在原claim之前。
+
+最终完整13条命令原退出均0，共242次测试、零跳过，包含对应原10条CI命令和直接维护回归；静态检查覆盖7个完整生产AST节点、两个完整测试模块，以及case测试完整类和fixture函数提取范围，不声称旧大模块或全仓全绿。最初fixture输入缺失、真实KeyError RED、sentinel测试自身错误及首次strict错误均保留，修正后完整重跑。实际执行身份为7f基线加三份源码Pin的工作树，前后相等。`COLD/metadata/public-operations-a01/shared-unrun-filepins-step-a01/segment-a02/EXECUTION.actual.json`为14548 B，SHA-256 `ef787757f49d9fc415fa747b0e797c5e247f45ac4a250ef71feda213a4ca8b7b`。
+
+18:18:57Z，实际共享producer重新产生R0023恢复bundle，完整reducer在原机器chain.lock内再验证，原退出0；复用原14103／14104回执，没有重放CAS，没有改计数器或admission链。新`actual-R0023-filepins-a01/EXECUTION.actual.json`为30493 B，SHA-256 `7a6750c8fa87a2b2b57dcaaac5126c7fd429f89946c3c05df9534333addb4915`。通过范围仍只有后继资源接续前提，不是业务或正常游戏闭场。
+
+用户追加要求在验收时拍摄实机宣传素材，尤其更新后的UI，并更新同一Workshop3826756673页面。后续优先保存融合结果、原生定制、封臣预览及DES教义的无遮挡原图，绑定实际进程、场次、版本与保存证据；只选择真实已展示内容。当前冷载场限4张新PNG、每张不超过5MiB。尚未新增合格宣传图或更新商店页面；公开0.1.0-alpha不冒充已包含未发布0.2功能。并行工作分工为共享消费层修复、同预算空间整理、后继四步封包准备；Root仍唯一Git、账本、SCREEN及游戏动作writer。

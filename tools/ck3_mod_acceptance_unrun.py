@@ -63,7 +63,7 @@ def _phase_guard_evidence(output: Path) -> list[PrelaunchPhaseGuardEvidence]:
 
 def _observed_phase_guards(bundle: Mapping[str, object], invocation: RootPrelaunchInvocation,
         output: Path, previous: Path, machine: str, ready_at: datetime,
-        failure_at: datetime, base_phase: str) -> JsonObject:
+        failure_at: datetime, base_phase: str) -> dict[str, FilePin]:
     rows = _phase_guard_evidence(output)
     if not rows:
         if 'prelaunch_phase_guards' in bundle:
@@ -80,7 +80,7 @@ def _observed_phase_guards(bundle: Mapping[str, object], invocation: RootPrelaun
     phases = [text_field(json_object(value), 'id') for value in phases_value]
     if len(set(phases)) != 3 or phases != [base_phase, *(row['phase'] for row in rows)]:
         raise ValueError('Original phase guard order differs from prepared contract')
-    evidence: JsonObject = {}
+    evidence: dict[str, FilePin] = {}
     for row in rows:
         label = row['label']
         values: dict[str, JsonObject] = {}
@@ -133,8 +133,10 @@ def _observed_phase_guards(bundle: Mapping[str, object], invocation: RootPrelaun
         import psutil
         if any(psutil.pid_exists(pid) for pid in (wrapper, actual)):
             raise ValueError('Original phase guard process still present; absence grants no wait code')
-        evidence[label] = json_object(row)
-    return {'prelaunch_phase_guards': evidence}
+        for name, reference in (('intent', row['intent']), ('started', row['started']),
+                ('armed', row['armed']), ('cancel', row['cancel']), ('original_wait', row['original_wait'])):
+            evidence[label + '.' + name] = reference
+    return evidence
 
 
 def _root_prelaunch_invocation(bundle: Mapping[str, object], output: Path,
@@ -211,7 +213,7 @@ def _root_prelaunch_invocation(bundle: Mapping[str, object], output: Path,
 
 
 def _observed_prelaunch_orchestrator(bundle: Mapping[str, object], *, previous: Path,
-        keeper: Path, machine: str, ready_at: datetime, keeper_closed_at: datetime) -> JsonObject:
+        keeper: Path, machine: str, ready_at: datetime, keeper_closed_at: datetime) -> dict[str, FilePin]:
     """Read the real Root/child waits; a failed guard identity grants no guard credit."""
     output = Path(_evidence_pin(bundle.get('allocator_intent'), 'Root allocator intent')['path']).resolve().parent
     invocation = _root_prelaunch_invocation(bundle, output, keeper, machine)
@@ -302,7 +304,7 @@ def _observed_prelaunch_orchestrator(bundle: Mapping[str, object], *, previous: 
     if any(psutil.pid_exists(pid) for pid in (wrapper, actual)):
         raise ValueError('Original guard wrapper/armed process still present; absence grants no wait code')
     keys = [*names, 'prelaunch_orchestrator_source', 'prelaunch_orchestrator_started', 'prelaunch_orchestrator_wait']
-    return {**{key: json_object(_evidence_pin(bundle.get(key), key)) for key in keys}, **phase_guards}
+    return {**{key: _evidence_pin(bundle.get(key), key) for key in keys}, **phase_guards}
 
 
 def _prelaunch_source(reference: object, output: Path, keeper: Path,
@@ -428,7 +430,7 @@ finally:
 
 
 def validate_prelaunch_orchestrator(bundle: Mapping[str, object], *, previous: Path,
-        keeper: Path, machine: str, ready_at: datetime, keeper_closed_at: datetime) -> JsonObject:
+        keeper: Path, machine: str, ready_at: datetime, keeper_closed_at: datetime) -> dict[str, FilePin]:
     """Validate an actual mechanical refusal; grant only administrative closure."""
     root_keys = ('prelaunch_orchestrator_started', 'prelaunch_orchestrator_wait')
     if any(key in bundle for key in root_keys):
@@ -500,7 +502,7 @@ def validate_prelaunch_orchestrator(bundle: Mapping[str, object], *, previous: P
     if any((output/name).exists() for name in ('ORCHESTRATOR.PUBLIC-PRELUDE.started.actual.json','ORCHESTRATOR.READY-TO-RUN.actual.json',
             'PUBLIC-RUN.intent.actual.json','DEADLINE-GUARD.actual.json')):
         raise ValueError('Prelaunch original output has public/action evidence')
-    return {key: json_object(_evidence_pin(bundle.get(key), key)) for key in [*names, 'prelaunch_orchestrator_source']}
+    return {key: _evidence_pin(bundle.get(key), key) for key in [*names, 'prelaunch_orchestrator_source']}
 
 
 @runtime_checkable
