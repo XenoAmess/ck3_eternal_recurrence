@@ -225,3 +225,7 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`。[独立结果](resume63-m1-base2
 ### Resume63 C9
 
 [Local16KiB locator](resume63-m1-inbound2603af0-local-result.md): 16380 complete starts/293E8/0hit; noRF candidate. Minimumclose67.808s; laterM1review separate. LOCAL_NOT_FOUND only, notglobalabsence.
+
+### Resume63 C10/C11
+
+[Stream locator](resume63-m1-inbound2603af0-text-result.md): mapped.text71141448 B, six raw candidates, no fulltext copy. [Smallest96B caller](resume63-m1-caller29b7590-result.md):25ops/6blocks9edges, actual CALL2603AF0 and fifth low byte0. Independent reviews retained; minimum closes146.547/86.948s are separate from later receipts and full preparation. No other five bodies, producer or Game qualification.

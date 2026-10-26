@@ -138,3 +138,22 @@ Own后继又发现真实consumer合同问题，尚待原链实际诊断：原41/
 REA新M6 child911B经显式block与byte模式重试，256条/911B逐字节及独立CFG33块50边匹配；原181不匹配失败保留。本体三次将ID地址交两callee，runtimeOrdinal仍UNKNOWN；继续只复用两个已知128B/908B held主体。M1局部16KiB共16380起点/293个E8对2603AF0命中0，独审一致，只授LOCAL_NOT_FOUND，不能外推自然caller不存在。
 
 新业务缺口已使原04:30–06:00乐观窗口需要重新评估，当前不给新的完成时刻承诺。真实Java CK3启动、游戏新增日、SAVE、RESTORE仍0，完整G2仍0/8。Root已明确授权新source/Own/SDK/Native/Delivery的有限review至20:40；各自实际新卡、资源与执行读回另验，不自动延旧执行卡。必要源与元数据按真实净额前向登记。完整迁移与完整原生研究目标继续执行。
+
+## 20:30Z 前向结果（本地27日04:30）
+
+machine_id仍为`xenoamess-full-tower-eb9d2c1186`。Own111实际exit1/6.7406541s，原41消费者在读取已完成104时仍调用active-lease入口，报`Build capacity release expired`；并非新Own106自身过期，也并非该新计划引用了可变财务HEAD。三个输出未产生，Own7和两项JUnit未执行。后继已在共享消费者改用completed reader并保留新操作资源检查；accounting v2走既有解析器，旧104及旧105/106不回填。九main叶23处、五项真实边界回归及Own45严格新pin已经Host采用到新Tools开发目录。
+
+Tools新开发目录仅一次初始化324源和必要缓存，保护104原源及109原生产载荷。115实际20:18:58→20:19:08、exit0/10.1108873s，默认mvn、`-T 2`选择单Tools模块，实际重编11 main、4 test，其余复用；单模块并行参数不代表多个模块并发重编。新325源和旧104/109保护postcheck均MATCH。回执`O63/TOOLS115-DEV-COMPILE-ACTUAL01.json`85653B/SHA`17495165fe816960e1bd9dc2f2cfe50415280bedfe073d14f01f70414e5dd60f`。117已真实启动原10消费者整类加2个必要Native消费者；本段不预报结果，更未将115当新完整Tools资格。
+
+六组功能源已STOP，112增量发现宣战测试错误API后只修该叶，113同缓存41.981s真实编译通过；APP114首批70项为64成功6错误，后续18类尚未执行。6错误均是FactionThreatAdmissionTest将解析预算写成8MiB，而既有StrictJson显式上限1MiB；golden仅45911B。原owner仅删`8 * `，不改生产上限或断言，后像11158B/SHA`393bc24ec5984db86eb2e637dabb5d44f86f88c4ab9b0d840b40fe02396fdf3d`，待重验。Root决策显示共享两叶8处接线已经精确采用，仍无窗口实际draw或Game信用。
+
+只读逐项核实旧Python：战争借款观察已存在，合法借款到账/债务闭包与取消建设退款闭包均原本未实现，不能伪造为待迁旧能力；通用GUI Confirm只验证UI，不能授资金后态。普通mandatory归档尚未自动进入批末离线分析，现沿原journal/scan/producer补最小接线，保持来源绑定与`business_effect_known=false`。Holy mandatory整类还缺真实五target corpus及匹配source-map，已有source-only map不可替代。Native新injector仍隔离，缺失文件的精确路径登记共享修复已编译，但管理员实际登记、文件重链和完整指纹尚未完成。
+
+REA的M6 R7已在有限正常返回模型闭合五名静态index：liege19、neighboring_rulers3、vassals17、peer_vassals7、councillors12；不外推loaded bank。当前Java Sway普通链取同帧直属有地封臣、按名称查真实definition并调用完整CanSend，没有为静态索引增加无消费者枚举。M1下一单目标text流式定位、M3资格38B及其他M最小问题并行准备，尚未取得新结果。20:27:38Z普通任务heartbeat9042/resources为空；没有screen租约或新的CK3准入。首次Java实机、游戏新增日和SAVE/RESTORE继续全0。
+
+117后续实际20:30:55Z退出1/239.144305s，12份XML158项为153成功、3失败、2错误，实际无重编，325源与104/109保护均MATCH。两类夹具仍有问题：completed边界测试先被缺少approved jna.tmpdir挡住，Own测试涉及旧角色pin/缓存内联；正由原owner定位窄修，后者根因未确认，不提前改生产。其余十整类已绿，不重复跑。新的phase ownerreview到22:00Z仅用于READY后逐项签新有限卡，不延117或106，不跳过前置、资源与后态。
+
+21:14Z前向：118两整类9/9通过，普通119 Jar3499396B/78e97ff3…已独核；原生产Full119在21:11:15Z真实启动，独立Snew325冻结，尚无终态。Main120的17类164项为150成功、9失败、5错误；Finance8、Family4、Session57、Life20等通过，失败原件已保，各owner正窄修。Main新8命令有限序列在原缓存内按真实终态调度，work21:57/close22:00，完整验收另用原lease。
+
+Native helper四模块139/139与修改范围两文件strict实际通过；Root以三个唯一hunk接入canonical生产叶、两个hunk同步测试，保其余dirty字节与LF。canonical后像分别50660B/45b8a0b7…、52124B/09cd9563…，新整模块验证和实际管理员登记另验。REA已核M1的96B真实调用及flag0、M5的87B共享槽getter、M6 liege描述符与持有callback；自然继承、F10正式身份及loaded bank仍未知。新Java CK3启动、游戏日和SAVE/RESTORE仍0。
+

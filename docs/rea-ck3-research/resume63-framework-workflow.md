@@ -124,3 +124,7 @@ Shared 冻结源根为 `D:/codex-ck3-background/ck3-java-tools-s26-source-r4-res
 ### Resume63 C9: local inbound locator
 
 The [16KiB locator](resume63-m1-inbound2603af0-local-result.md) found no E8rel32 to2603AF0. All16380 complete starts/293E8 positions were independently checked; no candidateRF or instruction boundary was sampled. This is local notfound, with no global/natural-caller absence claim.
+
+### Resume63 C10/C11: locating and checking an actual caller
+
+The [single-target stream](resume63-m1-inbound2603af0-text-result.md) found six raw E8 candidates without fulltext persistence. A separately authorized [96B RF](resume63-m1-caller29b7590-result.md) verified one CALL and its zero fifth-argument byte; five candidates remain raw. This narrows parameter flow without naming the natural/AI producer or guaranteeing append.

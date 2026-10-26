@@ -44,3 +44,9 @@ M3 已通过官方 service 实际对派生 `raw/assembled407.bin` 执行 `p8`/�
 ### Actual block-size counterexample
 
 M6 retained911 B analysis returned AFsize911/33blocks, yet `pdj 256` first mismatched at offset253 near the default256 B block:181/256 instructions failed the byte comparison, with exit0 and an assertion diagnostic. Its original failure remains. A separately authorized held-byte case used explicit `b 911; pDj 911 @ 0`;256 instructions/911 B then matched, with independently reconstructed33blocks/50edges. The successful retry set both the block and byte-count mode. Analysis range and instruction count alone do not establish byte coverage. Set the block and byte bound, compare every returned byte, and retain a diagnostic failure separately from a later success. [Source index](sources.json) resolves both actual cases through retained Nav03; this does not grant PE/native-dossier qualification.
+
+### Temporary owned stream queries
+
+Root's finite exact-target locator used a case-only Node payload through the installed OwnedCommand/ProviderProcess, then a separate REA boundary query. The complete.text scan was explicit in scope; it did not use Ghidra import or persist fulltext. Its custom query record is not an official REA stream API or native Evidence dossier. Reuse requires new immutable inputs, literal argv, private outputs, source/RAM bounds, fresh authority and actual close; a typed Tools contract or softwareFixture does not grant another domain's execution.
+
+Native analysis JSON can contain integer ptr values above JavaScript's safe range. Preserve original stdout text; do not round-trip parsed values as exact identities. M6's47B case retained unsafe ptr tokens lexically and derived targets independently from raw displacement with BigInt. The same rule applies to all retained raw evidence.
