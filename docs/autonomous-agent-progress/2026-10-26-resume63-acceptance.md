@@ -1,6 +1,6 @@
 # Resume63 软件验收执行记录
 
-`machine_id: xenoamess-full-tower-eb9d2c1186`；本岗 `/root/acceptance63`。2026-10-26 UTC，最新Runtime107七整类独核47项：40成功、7error、0failure/skip，错误均在Duplex；其余六类当前cut通过。APP108 Army两项已独核通过。106批超时64项39成功、8failure、17error及103的原APP失败继续保留。较早112/112、121/121及各后继局验只保各自来源/范围信用；完整Tools、SDK30、SERVICE、Java G2与CK3业务未由本记录授予资格。
+`machine_id: xenoamess-full-tower-eb9d2c1186`；本岗 `/root/acceptance63`。2026-10-26 UTC，完整Tools104 VERIFY已独核通过：148整类、1084项全成功。Runtime107仍为40成功、7error/47，错误均在Duplex；APP108 Army2项通过。106超时及原失败保留。此结果只属BUILD_TOOLS_RUNTIME，SDK30、SERVICE、全Java reactor/官方整CI、ActualIT、Java G2与CK3业务尚未授信。
 
 已完整读resume62 handoff/index、REA README、acceptance-resumed及G2原03真实入口。旧Shared载体的historical accounting绑定旧可变账本头，本轮CAS后不再适用。Root明确改用Host唯一Maven/BUILD/m2 writer运行默认`mvn`原八整类开发测试；本岗只独立XML/source/class/artifact核对，不另开Maven writer、不新增runner、不冒原Shared守卫通过。外层直接exec没有Job观测，记NOT_MEASURED。
 
@@ -124,3 +124,7 @@ APP108只测完整ArmyNativeTerminationRecipientTest，真实exit0/11.3755156秒
 TOOLS109普通Jar封装exit0/7.867806秒、0compile，本岗独读new Jar3468209 B / 067dff774ef4ce6847467f8b223ed9e45eafb31de52f945632f78280cf628c63及lib5全部MATCH。ZIP中1423个class、8327211 B与当前canonical1423叶逐字节全等，无缺失/重复项；只保小摘要、无Jar或class副本。Host324源码树前后MATCH不冒为本岗重复全源核验。原Jar82同canonical路径已合法更新，旧e66d摘要只属历史112cut，不追认新身份。G2/controls/TOOLS109-INDEPENDENT-JAR01.json 3251 B / 0043572ebc16126cbb684799d885d1d0ac367b827456ad9616e79ffefe59969d；只授普通Jar身份，不授完整Tools或qualification。
 
 本次文档捕获时，完整Tools104已于18:49:15.080Z实际启动：原ControlBuild VERIFY、BUILD_TOOLS_RUNTIME、默认Maven3.10.0、新Jar109+lib5、独立104输出/同m2。invocation4195 B / c2c1bee2664da615fe150ba4a6cb322691284d64bade63659369e7b92cbfb8bd已实读；状态RUNNING，尚无终态/build-json/WJP最终观测，不授completed。未来结果另作前向delta。
+
+上述RUNNING快照已随2bf182e575aef37aa1d7bcfcde12aebcdc0649c7交付。104后继真实终态为19:17:50.813Z、controller exit0/1715.7319134秒，actual-build/v6 PASS。本岗独读全部324原始source、326编译输入、6部署及6 bootstrap，字节/SHA全MATCH；accounting/v2三个retained原始body的canonical base64、长度/SHA全匹配，不追读当前可变head。148份fresh XML独核1084/1084成功、0failure/error/skip，全部在本次起止时间内产出；没有拼接局验。XML仅gzip一次453940 B、六log46647 B，解压SHA全匹配。G2/controls/TOOLS104-INDEPENDENT-FINAL01.json 3974 B / 67262abdda4504c9c9114b83613b79a31b9cc7813bd71f1c479f0b851806108a回链pins9951 B、XML65388 B与Jar1171 B独核原件。
+
+104真实version WJP exit0/61.9244215秒、peak181088256 B、active0；verify WJP exit0/1625.4332223秒、peak1297424384 B、limit2147483648 B、active0，外层Job仍NOT_MEASURED。默认mvn单模块原verify实际未带-T，不能将局验-T2追认为此次并发；只复用m2，最后一次独立source/build/TMP/output实际重编134main、166test。新完整Tools Jar3466012 B / fce9cacc848f2566dc05ecd5a03ce74bf025ba8be14321628824a4ea161ef83e的1422个class/8322268 B逐entry与fresh完整class树相等，不能沿用普通109的1423数。没有复制source/Jar/class图。此处授完整Tools VERIFY范围通过，不冒本岗另行执行Shared消费者资格、SDK30、SERVICE、整Java/官方整CI或Game通过；Store新修复仍待其新局验。

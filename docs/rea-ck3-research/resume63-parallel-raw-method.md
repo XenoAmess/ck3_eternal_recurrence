@@ -40,3 +40,7 @@ afij @ VA_BEGIN; pdfj @ VA_BEGIN; agf json @ VA_BEGIN
 ## 本轮后继实际方法验证
 
 M3 已通过官方 service 实际对派生 `raw/assembled407.bin` 执行 `p8`/有界 `pDj`，显式 x86/64，逐 byte与相对/RIP算术重核；subject 的 arch=null 原样保留，没有 native dossier。此法可在已持 bytes 上分析，不能把派生文件的Evidence当原PE分析资格。确切原件由 sources 的 peer retained-nav→M3 receipt定位；后者另绑原PE、旧296和新111 B来源。M1 Base850同时证实pdata RF850与Rizin可达849可不同，原始尾CC保留；不为凑格式补backend。retained-nav只列已收原件，不是锁、runner或未列域的研究缺席证明。
+
+### Actual block-size counterexample
+
+M6 retained911 B analysis returned AFsize911/33blocks, yet `pdj 256` first mismatched at offset253 near the default256 B block:181/256 instructions failed the byte comparison, with exit0 and an assertion diagnostic. Its original failure remains. A separately authorized held-byte case used explicit `b 911; pDj 911 @ 0`;256 instructions/911 B then matched, with independently reconstructed33blocks/50edges. The successful retry set both the block and byte-count mode. Analysis range and instruction count alone do not establish byte coverage. Set the block and byte bound, compare every returned byte, and retain a diagnostic failure separately from a later success. [Source index](sources.json) resolves both actual cases through retained Nav03; this does not grant PE/native-dossier qualification.

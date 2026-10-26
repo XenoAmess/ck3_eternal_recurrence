@@ -120,3 +120,7 @@ Shared 冻结源根为 `D:/codex-ck3-background/ck3-java-tools-s26-source-r4-res
 ### Resume63 C8: Type2C7E860
 
 [Type261 result](resume63-m1-type2c7e860-result.md) records 59 instructions/261 B and 12 blocks/16 edges. Entry type+E5B can return AL1; otherwise an opaque accessor supplies the expression receiver. AL normalizes0/1, fullEAX and loader-slot/join/persistent remain unknown. Minimum close78.256s is separate from later review and receipt; no further callee followed.
+
+### Resume63 C9: local inbound locator
+
+The [16KiB locator](resume63-m1-inbound2603af0-local-result.md) found no E8rel32 to2603AF0. All16380 complete starts/293E8 positions were independently checked; no candidateRF or instruction boundary was sampled. This is local notfound, with no global/natural-caller absence claim.

@@ -221,3 +221,7 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`。[独立结果](resume63-m1-base2
 ### Resume63 C8: Type2C7E860
 
 [Finite result and exact sources](resume63-m1-type2c7e860-result.md): fresh row12 B, new261 B,59ops/12blocks16edges. type+E5B earlyAL1; first-return+EF0/A90 identity and loader-slot meaning unknown. AL0/1 only; no callee follow. Decoder864ms/25243648 B; REA5474ms/592109568 B. Minimum close18:26:00.903Z,78.256s/0owned; later independent review7160 B/5445e3d0 and receipt11049 B/0c70aa06 at T0+576.739s. Full preparation/research time, outer/joint/Job0 and speed/token benefit unmeasured; no Shared/native dossier/Game credit.
+
+### Resume63 C9
+
+[Local16KiB locator](resume63-m1-inbound2603af0-local-result.md): 16380 complete starts/293E8/0hit; noRF candidate. Minimumclose67.808s; laterM1review separate. LOCAL_NOT_FOUND only, notglobalabsence.
