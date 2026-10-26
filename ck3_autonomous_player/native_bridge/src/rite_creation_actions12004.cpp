@@ -476,8 +476,9 @@ bool Capture(const Bindings&b,const Admission&a,const Frame&f,const Request&r,Pa
   d.actual_outcome_kind=*d.native_create_faith_or_reform?Outcome::create_faith:Outcome::create_rite;
  constexpr std::array<std::size_t,5>offsets{0x918,0x948,0x978,0x9A8,0x9D8};
  for(std::size_t i=0;i<offsets.size();++i){std::string s;if(!String(b,At(p.window,offsets[i]),s))return fail("rite_creation_name_field_unavailable");d.names[i]=std::move(s);}
- d.names_observed=true;Header tenets{},doctrines{};
- if(!Array(b,p.window,0x778,tenets,64)||!Array(b,p.window,0x790,doctrines,64))return fail("rite_creation_selected_rows_unavailable");
+ d.names_observed=true;detail::SelectedRowHeaders selected_rows{};const char*selected_rows_failure=nullptr;
+ if(!detail::ReadSelectedRowHeaders(b,p.window,selected_rows,selected_rows_failure))return fail(selected_rows_failure);
+ const auto&tenets=selected_rows.tenets;const auto&doctrines=selected_rows.doctrines;
  for(std::int32_t i=0;i<tenets.count;++i){const void*def=nullptr;std::string key,group;
   if(!Read(b,tenets.data,static_cast<std::size_t>(i)*0x70+0x28,def)||!Definition(b,def,true,key,group))return fail("rite_creation_selected_tenet_definition_unavailable");
   d.selected_core_tenets.push_back({static_cast<std::uint32_t>(i),std::move(key)});p.writer_inputs.tenets.push_back(def);}

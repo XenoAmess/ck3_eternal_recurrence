@@ -1,6 +1,9 @@
 #include "../src/rite_creation_actions12004_guards.hpp"
 #include "xar_bridge/rite_creation_actions12004_wire.hpp"
+#include <array>
+#include <cstring>
 #include <cstdio>
+#include <limits>
 #include <stdexcept>
 using namespace xar::ck3_12004::religion::rite_creation_actions;
 namespace {
@@ -12,6 +15,58 @@ Result Base(Operation op=Operation::open_create_draft){
 void Encodes(const Result&v){
  const auto wire=SerializeCommandResult12004(v,"guard-fixture");
  Require(!wire.empty(),"original formatter preserves negative guard metadata");
+}
+struct WindowBytes {
+ // Ends after the proven16-byte doctrine prefix. No unconsumed allocator
+ // bytes are supplied to the production reader by this owned fixture.
+ alignas(void*) std::array<unsigned char,0x7A0>bytes{};
+ std::size_t readable=bytes.size();
+ static bool Read(void*context,const void*from,void*to,std::size_t count){
+  const auto&self=*static_cast<WindowBytes*>(context);
+  const auto first=reinterpret_cast<std::uintptr_t>(self.bytes.data());
+  const auto address=reinterpret_cast<std::uintptr_t>(from);
+  if(address<first||address-first>self.readable||count>self.readable-(address-first))return false;
+  std::memcpy(to,from,count);return true;
+ }
+ void Header(std::size_t offset,const void*data,std::int32_t capacity,std::int32_t count){
+  std::memcpy(bytes.data()+offset,&data,sizeof(data));
+  std::memcpy(bytes.data()+offset+8,&capacity,sizeof(capacity));
+  std::memcpy(bytes.data()+offset+0xC,&count,sizeof(count));
+ }
+};
+int SelectedRowHeaderCases(){
+ WindowBytes window{};Bindings bindings{};bindings.read_memory=WindowBytes::Read;bindings.read_context=&window;
+ detail::SelectedRowHeaders rows{};const char*why=nullptr;int cases=0;
+ const auto reset=[&]{window.readable=window.bytes.size();
+  window.Header(0x778,window.bytes.data(),256,3);window.Header(0x790,window.bytes.data(),512,31);};
+ const auto read=[&]{return detail::ReadSelectedRowHeaders(bindings,window.bytes.data(),rows,why);};
+ const auto rejects=[&](const char*expected){Require(!read()&&why&&std::string_view(why)==expected,
+  "production selected-row reader rejects the precise array predicate");++cases;};
+ reset();Require(read()&&!why&&rows.tenets.count==3&&rows.tenets.capacity==256&&
+  rows.doctrines.count==31&&rows.doctrines.capacity==512,"bounded row counts accept legitimate larger allocation reserve");++cases;
+ reset();window.Header(0x790,window.bytes.data(),512,64);
+ Require(read()&&rows.doctrines.count==64,"existing SDK doctrine row bound is retained");++cases;
+ reset();window.Header(0x778,window.bytes.data(),128,65);rejects("rite_creation_selected_tenet_count_above_bound");
+ reset();window.Header(0x790,window.bytes.data(),128,65);rejects("rite_creation_selected_doctrine_count_above_bound");
+ reset();window.Header(0x790,window.bytes.data(),30,31);rejects("rite_creation_selected_doctrine_capacity_below_count");
+ reset();window.Header(0x778,window.bytes.data(),256,-1);rejects("rite_creation_selected_tenet_count_negative");
+ reset();window.Header(0x790,nullptr,512,31);rejects("rite_creation_selected_doctrine_rows_missing");
+ reset();window.Header(0x778,nullptr,256,0);window.Header(0x790,nullptr,512,0);
+ Require(read()&&rows.tenets.count==0&&rows.doctrines.count==0,"empty rows are values independent of allocation reserve");++cases;
+ reset();window.readable=0x778+15;rejects("rite_creation_selected_tenet_header_unreadable");
+ reset();window.readable=0x790+15;rejects("rite_creation_selected_doctrine_header_unreadable");
+ reset();window.Header(0x790,nullptr,-1,0);rejects("rite_creation_selected_doctrine_capacity_below_count");
+ reset();window.Header(0x778,window.bytes.data(),std::numeric_limits<std::int32_t>::max(),3);
+ Require(read()&&rows.tenets.count==3,"only bounded count is consumed even when reserve is large");++cases;
+ reset();window.Header(0x790,window.bytes.data()+1,512,31);rejects("rite_creation_selected_doctrine_rows_misaligned");
+ reset();window.Header(0x778,reinterpret_cast<const void*>(std::numeric_limits<std::uintptr_t>::max()-7),256,3);
+ rejects("rite_creation_selected_tenet_row_span_overflow");
+ reset();Require(!detail::ReadSelectedRowHeaders(bindings,window.bytes.data()+1,rows,why)&&
+  std::string_view(why)=="rite_creation_selected_tenet_header_misaligned","misaligned window header is rejected");++cases;
+ reset();Require(!detail::ReadSelectedRowHeaders(bindings,
+  reinterpret_cast<const void*>(std::numeric_limits<std::uintptr_t>::max()-0x777),rows,why)&&
+  std::string_view(why)=="rite_creation_selected_tenet_header_unreadable","header address overflow is rejected before read callback");++cases;
+ return cases;
 }
 }
 int main(){
@@ -65,6 +120,7 @@ int main(){
   catch(...){detail::MarkActionException(q,v);}
   Require(opens==before_throw&&!v.available&&!v.native_dispatch_attempted,
           "injected existing reader exception remains no-Open and serializable");Encodes(v);
-  std::puts("12 new production open/exception guard cases passed; synthetic callbacks; no live/native game calls");return 0;
+  const auto selected_cases=SelectedRowHeaderCases();
+  std::printf("12 production open/exception guard cases and %d selected-row header cases passed; synthetic memory/callbacks; no live/native game calls\n",selected_cases);return 0;
  }catch(const std::exception&e){std::fprintf(stderr,"FAIL %s\n",e.what());return 1;}
 }

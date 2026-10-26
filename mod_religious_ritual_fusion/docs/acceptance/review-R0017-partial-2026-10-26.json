@@ -1,0 +1,488 @@
+{
+  "schema": "rrf-r0017-partial-review-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-26T00:29:59.397414+00:00",
+  "run_id": "4-8e1c2f1861--religious-ritual-fusion--R0017",
+  "source_commit": "dba60c9cb9ebe1c0f1935ae74bc0841d31526822",
+  "source_freeze_ended": true,
+  "status": "COLD_SAVED_GRAPH_VERIFIED_CUSTOMIZATION_DRAFT_UNSAVED",
+  "business_pass": false,
+  "release_pass": false,
+  "case_contract_qualified": false,
+  "normal_close_qualified": true,
+  "review_scope": "Retained closed-session JSON/wire/PNG and fresh hashes only. No test rerun, game/queue call, save submission, copy of a native save, source implementation change or publication during this review.",
+  "cold_readback": {
+    "loaded_actor_id": "31254",
+    "result_rite_id": "155",
+    "faith_id": "13",
+    "religion_id": "8",
+    "date_raw": "53144352",
+    "natural_days_advanced": 0,
+    "source_save_sha256": "79098a704e34c9b1e0314eab5887c2b3d18383af31801df864f43ff069139faf",
+    "observed_native_checkpoint_sequence": 2,
+    "observed_native_checkpoint": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\managed-states\\review-zh-cold-a01\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 68688763,
+      "sha256": "ef45210e8251f4968500b1bfc0473ed95a659bae78c5981ce6919e2567ae7a9f"
+    },
+    "checkpoint_original_native_identity": {
+      "volume_serial_decimal": "1996358582",
+      "file_id_decimal": "1688849861734333",
+      "created_filetime_decimal": "134374450231343011",
+      "written_filetime_decimal": "134374454515630371",
+      "bytes": 68688763,
+      "links": 1,
+      "attributes": 32
+    },
+    "java_original_wait_returncode": 0,
+    "source_unchanged_during_java_inspection": true,
+    "same_six_full_record_paths": [
+      [
+        "religion",
+        "religions",
+        "8"
+      ],
+      [
+        "faiths",
+        "database",
+        "13"
+      ],
+      [
+        "rites",
+        "database",
+        "152"
+      ],
+      [
+        "rites",
+        "database",
+        "153"
+      ],
+      [
+        "rites",
+        "database",
+        "154"
+      ],
+      [
+        "rites",
+        "database",
+        "155"
+      ]
+    ],
+    "six_full_records_canonical_and_ast_equal": true,
+    "inventory_comparisons": [
+      {
+        "kind": "RITE",
+        "equal": true,
+        "before_count": 156,
+        "after_count": 156,
+        "added": [],
+        "removed": []
+      },
+      {
+        "kind": "FAITH",
+        "equal": true,
+        "before_count": 106,
+        "after_count": 106,
+        "added": [],
+        "removed": []
+      },
+      {
+        "kind": "RELIGION",
+        "equal": true,
+        "before_count": 49,
+        "after_count": 49,
+        "added": [],
+        "removed": []
+      }
+    ],
+    "actor_whole_record_equal": false,
+    "actor_only_changed_top_level_field": "landed_data",
+    "actor_leaf_differences": [
+      {
+        "path": [
+          "living",
+          "31254",
+          "landed_data",
+          "current_strength#0"
+        ],
+        "kind": "VALUE",
+        "before": {
+          "type": "atom",
+          "raw": "1191"
+        },
+        "after": {
+          "type": "atom",
+          "raw": "1181"
+        }
+      },
+      {
+        "path": [
+          "living",
+          "31254",
+          "landed_data",
+          "strength#0"
+        ],
+        "kind": "VALUE",
+        "before": {
+          "type": "atom",
+          "raw": "1191"
+        },
+        "after": {
+          "type": "atom",
+          "raw": "1181"
+        }
+      },
+      {
+        "path": [
+          "living",
+          "31254",
+          "landed_data",
+          "strength_without_hires#0"
+        ],
+        "kind": "VALUE",
+        "before": {
+          "type": "atom",
+          "raw": "1191"
+        },
+        "after": {
+          "type": "atom",
+          "raw": "1181"
+        }
+      },
+      {
+        "path": [
+          "living",
+          "31254",
+          "landed_data",
+          "power#0"
+        ],
+        "kind": "VALUE",
+        "before": {
+          "type": "atom",
+          "raw": "35900"
+        },
+        "after": {
+          "type": "atom",
+          "raw": "39180"
+        }
+      },
+      {
+        "path": [
+          "living",
+          "31254",
+          "landed_data",
+          "max_power#0"
+        ],
+        "kind": "VALUE",
+        "before": {
+          "type": "atom",
+          "raw": "35900"
+        },
+        "after": {
+          "type": "atom",
+          "raw": "39180"
+        }
+      },
+      {
+        "path": [
+          "living",
+          "31254",
+          "landed_data",
+          "levy#0"
+        ],
+        "kind": "VALUE",
+        "before": {
+          "type": "atom",
+          "raw": "885"
+        },
+        "after": {
+          "type": "atom",
+          "raw": "869"
+        }
+      }
+    ],
+    "all_other_actor_ast_content_equal": true,
+    "military_value_change_cause": "NOT_ATTRIBUTED",
+    "read_only_rrfa_22_marker": [
+      {
+        "line": 4307,
+        "text": "[07:44:10][D][jomini_effect_impl.cpp:450]: file: events/rrfa_observation_events.txt line: 21 (rrfa.22:immediate): RRFAT: TEST PASS rite_persisted_readback"
+      }
+    ],
+    "full_cold_case_requirements_accepted_by_root": false,
+    "scope": "Pure cold graph and resource comparison preceded later draft editing; this is not final customized-result cold acceptance."
+  },
+  "customization_draft": {
+    "four_names_and_description_visually_observed_in_original_ui": true,
+    "name": "星辰归一礼仪",
+    "adjective": "星归",
+    "adherent": "星归信徒",
+    "adherent_plural": "星归信众",
+    "description": "由两份礼仪融合形成，保留双方传承。",
+    "input_method": "Original editboxes, SendInput scan-code modifiers/Tab and Unicode; screenshot review is separate from input ACK.",
+    "typed_full_text_readback_qualified": false,
+    "icon_preview_changed": true,
+    "icon_key_qualified": false,
+    "color_preview": "purple",
+    "exact_rgb_qualified": false,
+    "color_persisted": false,
+    "original_ui_apply_opened_confirmation_modal": true,
+    "displayed_additional_piety_quote": "0",
+    "final_native_confirmation_submitted": false,
+    "customization_saved": false,
+    "completed_edit_zero_actual_charge_verified": false,
+    "post_edit_save_or_independent_cold_verified": false,
+    "virtues_and_sins_full_semantic_readback_qualified": false
+  },
+  "typed_rite_readback": {
+    "observations": [
+      {
+        "at_utc": "2026-10-25T23:33:58.251705+00:00",
+        "arguments": {
+          "expected_source_rite_id": 155,
+          "observation": "current_rite",
+          "expected_revision": 3
+        },
+        "status": "unavailable",
+        "read_only": true,
+        "reason": "rite_poststate_persistent_custom_text_unavailable",
+        "native_dispatch_attempted": false,
+        "names_observed": false
+      },
+      {
+        "at_utc": "2026-10-25T23:45:39.369360+00:00",
+        "arguments": {
+          "expected_source_rite_id": 155,
+          "observation": "draft",
+          "expected_revision": 5
+        },
+        "status": "unavailable",
+        "read_only": true,
+        "reason": "rite_creation_selected_rows_unavailable",
+        "native_dispatch_attempted": false,
+        "names_observed": false
+      },
+      {
+        "at_utc": "2026-10-25T23:45:56.070512+00:00",
+        "arguments": {
+          "expected_source_rite_id": 155,
+          "observation": "draft",
+          "expected_revision": 5
+        },
+        "status": "unavailable",
+        "read_only": true,
+        "reason": "rite_creation_selected_rows_unavailable",
+        "native_dispatch_attempted": false,
+        "names_observed": false
+      }
+    ],
+    "execute_tool_invocations": 0,
+    "no_dispatch_observed_for_three_queries": true,
+    "contract_or_capability_is_live_business_pass": false
+  },
+  "ordinary_save_contract": {
+    "status": "unconfirmed",
+    "ordinary_SaveProof_qualified": false,
+    "native_checkpoint_available_is_ordinary_SaveProof": false,
+    "sdk_driver_statuses": [
+      "unconfirmed",
+      "unconfirmed"
+    ],
+    "sdk_driver_reasons": [
+      "save_binding_mismatch",
+      "save_binding_mismatch"
+    ],
+    "checkpoint_projection": "native_campaign",
+    "one_life_episode_identity_proven": false,
+    "detail": "Both retained native checkpoint receipts report save_binding_mismatch and missing episode character/run IDs. Native cold AST proof and typed normal-exit proof remain separate."
+  },
+  "shutdown": {
+    "guard_published_at_utc": "2026-10-26T00:11:13.023490+00:00",
+    "guard_reserve_seconds": 1200,
+    "hold_deadline_unix_seconds": 1792974673.0211744,
+    "guard_only_published_truthful_incomplete_reply": true,
+    "guard_game_or_queue_actions": false,
+    "root_response_status": "incomplete",
+    "case_error": "ValueError: Original product GUI/semantic requirements incomplete",
+    "original_public_run_returncode": 2,
+    "typed_normal_close_qualified": true,
+    "native_exit_code": 0,
+    "retained_os_exit_code": 0,
+    "retained_os0_qualified": true,
+    "ck3_pid": 21548,
+    "ck3_creation_filetime_100ns": "134374443807203672",
+    "host_original_wait_returncode": 0,
+    "keeper_original_wait_returncode": 0,
+    "allocator_original_wait_returncode": 0,
+    "cleanup_proven": true,
+    "tree_gone": true,
+    "display_restored_pixels": [
+      1024,
+      768
+    ],
+    "screen_release_cas_sequence": 13996,
+    "screen_release_at_utc": "2026-10-26T00:17:54.557213+00:00",
+    "resource_close_is_business_pass": false
+  },
+  "pending": [
+    "Completed same-ID155 customization and final native semantic confirmation",
+    "Persisted four names/description, exact icon/color, complete virtues/sins and independent final cold readback",
+    "Actual zero additional charge after completed edit",
+    "Relatives/vassals conversion",
+    "DES optional dynastic branch",
+    "Independent four-core, faith-fusion and no-MTS scenes",
+    "Qualified ordinary SaveProof"
+  ],
+  "retention": {
+    "policy": "docs/storage-retention-policy.md and docs/storage-retention-policy.json",
+    "review_due_date": "2026-11-01",
+    "reason": "Selected cold AST, native input gaps, original UI draft and qualified shutdown are current evidence for the unfinished customization and provider work.",
+    "permanent_retention": false,
+    "review_date_authorizes_automatic_deletion": false
+  },
+  "evidence_pins": {
+    "public_preparation_ready": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\metadata\\runtime-preparation-a01\\READY-NO-GAME.actual.json",
+      "bytes": 7367,
+      "sha256": "5d04b271fde51bb37bd41c4398c571f65ff3fdfbe525b3674e58e9ef3c9e1e4a"
+    },
+    "public_preparation_original_wait": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\metadata\\runtime-preparation-a01.ROOT-source-runtime-a03.original-wait.actual.json",
+      "bytes": 1778,
+      "sha256": "624defca01ca2851002389b48f1d7e009496e1242fbddef2ec94ee929457749f"
+    },
+    "cold_save_java_report": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\metadata\\save-oracle-R0017-cold-a01\\report.json",
+      "bytes": 482562,
+      "sha256": "e0890532ae2172e98f006d3cb0802c8d4fe2acb8babe6a5fd874c4ce868e9b69"
+    },
+    "cold_save_original_wait": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\metadata\\save-oracle-R0017-cold-a01\\original-wait.actual.json",
+      "bytes": 3008,
+      "sha256": "363719190fa9ad9aa3074cdf2624782041f68ebacca8c1d67f349d18da53ea7f"
+    },
+    "cold_save_full_comparison": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\metadata\\save-oracle-R0017-cold-a01\\COMPARISON.actual.json",
+      "bytes": 64769,
+      "sha256": "2e7adf9dbeca21094847e485ac637331061ee1728a984cc0d0ab9e92b8336749"
+    },
+    "cold_save_deep_comparison": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\metadata\\save-oracle-R0017-cold-a01\\DEEP-COMPARISON.actual.json",
+      "bytes": 3115,
+      "sha256": "42660b8eb2da62f9b3f27d4aa38ebbc31474376daa5d4c7f3284f5547bea3c55"
+    },
+    "cold_source_created_full_ast": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\zh-live-a01\\metadata\\save-oracle-R0016-created\\report.json",
+      "bytes": 485009,
+      "sha256": "c38a572d0190657a7d55c8a7c833b6d75875250cb4e5214e6dd302cdb0240446"
+    },
+    "debug_log_cold_marker": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\managed-states\\review-zh-cold-a01\\state\\profile\\logs\\debug.log",
+      "bytes": 500648,
+      "sha256": "669e8cc2c13b8ebf84bbe5316b6ee003067743be4007f8afe4150140f18ebab2"
+    },
+    "sdk_query_and_save_observations": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\metadata\\close-review-R0017-a01\\SDK-QUERY-AND-SAVE-OBSERVATIONS.a02.actual.json",
+      "bytes": 78034,
+      "sha256": "65135dca53bf86e95def86cae27cd7b9c8c0ec26488fc1756fcf838d8deca24f"
+    },
+    "chinese_name_input": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\screenshots\\R0017-name-input-a05.input.actual.json",
+      "bytes": 1616,
+      "sha256": "60a55e23ac7dee081fd123a3825e97132eebc39ab16acea8c2969204012aa032"
+    },
+    "other_names_and_description_input": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\screenshots\\R0017-names-five-a06.input.actual.json",
+      "bytes": 6593,
+      "sha256": "e51124ab37124e97f343fa0d1e9f322843670bcd00d3ca5b6f75bbc025dab92b"
+    },
+    "original_ui_chinese_five_fields": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\screenshots\\R0017-names-five-a06.png",
+      "bytes": 4234968,
+      "sha256": "a4f621ccf3ed75d4314a740442932f61223633998b2598eb625689b15189b3f9"
+    },
+    "original_ui_icon_changed": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\screenshots\\R0017-icon-selected-a09.png",
+      "bytes": 4383032,
+      "sha256": "c8e29b06326927edc074559fad3e9244ebb9c40f1c8f635c28741db25f046ad5"
+    },
+    "original_ui_purple_draft": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\screenshots\\R0017-color-held-a14.png",
+      "bytes": 4232468,
+      "sha256": "c5eda0cef75c79ede15d2bc018e541be584a04795a7929dc3889904707c3b5af"
+    },
+    "original_ui_zero_quote_confirmation_modal": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\screenshots\\R0017-apply-modal-a17.png",
+      "bytes": 4470285,
+      "sha256": "cc5a4a3215728337957002d62435f8e790b9c767863876eca341a161c3795da3"
+    },
+    "deadline_guard": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\root-execution-a19\\DEADLINE-GUARD.actual.json",
+      "bytes": 1391,
+      "sha256": "455819d7da65076da75a2d38e7688d4a92061768ed756f41050906eeb68ae1b6"
+    },
+    "root_incomplete_response": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\live\\4-8e1c2f1861--religious-ritual-fusion--R0017\\case-output\\actual-cold-fusion-persistence-root-result.json",
+      "bytes": 397,
+      "sha256": "478e2304fdd7507e6f1f133e7bc0e29c62aa1cb5fe838e79e1a5eaa0e115446e"
+    },
+    "case_error_preserved": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\live\\4-8e1c2f1861--religious-ritual-fusion--R0017\\case-output\\case-error-preserved.json",
+      "bytes": 211,
+      "sha256": "be7c089481b2eef99bcd0877a7e5afb7daef6e1def8d1885095aaedb1ef6885f"
+    },
+    "normal_close_result": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\live\\4-8e1c2f1861--religious-ritual-fusion--R0017\\case-output\\normal-close-result.json",
+      "bytes": 9412,
+      "sha256": "a8053361d982763970e567f4ee17b5d5172083a070482a3b9f27483fe5f91104"
+    },
+    "retained_handle_os0": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\live\\4-8e1c2f1861--religious-ritual-fusion--R0017\\case-output\\actual-retained-handle-os-exit.json",
+      "bytes": 230,
+      "sha256": "05ff0425cea324fc1a029dce3680b9d36df3e56548419a8b144a5679c036e52d"
+    },
+    "host_original_wait": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\live\\4-8e1c2f1861--religious-ritual-fusion--R0017\\host-original-process-exit.json",
+      "bytes": 247,
+      "sha256": "be180f514c6c743d5974d3890c16b6f08f0004b5e96d0d2229a589e0c98fc69d"
+    },
+    "keeper_original_wait": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\live\\4-8e1c2f1861--religious-ritual-fusion--R0017\\keeper-actual-parent-exit.json",
+      "bytes": 627,
+      "sha256": "717105f282fffae3684a8caa7e98c35aac34d8061870612c40c92994ecb80105"
+    },
+    "allocator_original_wait": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\root-execution-a19\\ALLOCATE.original-wait.actual.json",
+      "bytes": 164,
+      "sha256": "84efbfb4b9d9dac0b67f214bda243c6e30e337903480e209801aecf429a34c73"
+    },
+    "public_run_original_wait": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\root-execution-a19\\PUBLIC-RUN.original-wait.actual.json",
+      "bytes": 166,
+      "sha256": "5e7287d5c44426fa0cb30c2b514f5369e7e70737c40805b1e21422fa0e1f47ec"
+    },
+    "display_restored": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\root-execution-a19\\DISPLAY-RESTORED.actual.json",
+      "bytes": 228,
+      "sha256": "83bf227a195fa9033869ad0037a30a4f66375c56fb635179e96a7c02b7bd4612"
+    },
+    "screen_release": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\root-execution-a19\\SCREEN-RELEASE.actual.json",
+      "bytes": 2074,
+      "sha256": "4dcd85f2189c9c7e397222e9f1ee5ff5db8ebd5e45b91b5720374d1054bf545a"
+    }
+  },
+  "metadata_correction": {
+    "prior_close_review": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\metadata\\close-review-R0017-a01\\ACTUAL.actual.json",
+      "bytes": 18272,
+      "sha256": "0413babfac9487cbadf694b8743ed6ff85a176598e0d27c3b1e5e7822b02a3f6"
+    },
+    "reason": "The first wire extraction used text mode, normalizing CRLF before its per-line hash. New metadata hashes original binary lines; parsed game facts are identical. Original derived metadata remains readable."
+  },
+  "external_close_review": {
+    "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0016-a01\\metadata\\close-review-R0017-a01\\ACTUAL.a02.actual.json",
+    "bytes": 18814,
+    "sha256": "4567bca42bd73b6b109e2cbb7553eedc7a94450903f5b7e90997a2b65134e8b3"
+  }
+}

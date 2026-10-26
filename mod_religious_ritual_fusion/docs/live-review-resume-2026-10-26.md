@@ -96,3 +96,19 @@ N3原wait0、57生产单元及8个fixture的构建结果已实际消费。新14�
 完整受影响两个CI step的11条命令，以及完整typed19项和两叶strict，共13条原wait均0、无跳过；测试执行215次包含优化模式重复10项，5组静态检查按实际完整模块范围记录。前两段分别在公共入口optional prepared值、SDK叶TypedDict动态键strict处失败，保留原件；修复为显式None拒绝及literal字段访问，未改字段、序列化、原生默认profile或持久化合同。实际四文件工作树前后10344项源码Pin一致；不冒充当时已有clean提交。详情与原始失败／成功Pin见[路由修复回执](acceptance/review-rite-runtime-route-2026-10-26.json)。
 
 并行补验远端新DES：完整Maven38项通过，正式56文件validate／build／verify原wait均0；原36项／52文件证据仍只证明旧输入。RRF生产字节未变，不重复其90项；旧RRF证明引用的公共入口依赖已有漂移，新完整回归覆盖该项，由Java资格生产者按同chain组合来源核验，不删除旧Pin或把整份旧证明追认为当前闭包。此时仍未启动新游戏，未授予四名、颜色、图标或保存的实机资格。
+
+## R0017冷载子集、未保存定制与正常闭场
+
+`machine_id: 4-8e1c2f1861`。R0017的CK3原会话从2026-10-25T23:26:18Z运行至2026-10-26T00:12:43Z，来源为干净提交`dba60c9cb9ebe1c0f1935ae74bc0841d31526822`。Java六链来源资格实际GAP0，公共runtime与prepare原wait均0；保留早先外置metadata缺字段、products未绑定已知saved输入而被拒绝的原件，新输出未覆盖失败目录。最终全公共阶段使用同一份`PRODUCTS.rrf-cold-hold3600-rite-actions.saved-bound-a02.json`，正式RRF89、MTS48、DES56与只读cold夹具8文件。场地为`C:/workspace/rrf-development-20261024/review-fixes-a01/cold-R0016-a01`；没有重新seed、创建礼仪或把准备成功当作业务通过。[本场部分验收回执](acceptance/review-R0017-partial-2026-10-26.json)记录逐项边界及原件Pin。
+
+新进程PID21548从保全的R0016-created原件加载玩家31254／Rite155，Faith13、Religion8、日期53144352不变。Root显式调用只读观察决议，`rrfa.22`只出现一次`rite_persisted_readback`通过标记；没有启动seed或修复脚本。定制输入之前的第二次原生checkpoint为68688763 B，SHA-256 `ef45210e8251f4968500b1bfc0473ed95a659bae78c5981ce6919e2567ae7a9f`。既有Java v2纯检查原wait0，解析期间原件SHA、原生FileID与FILETIME前后相等，未在live复制69 MB保存。
+
+来源Rite152、153、第三来源154、结果155、Faith13和Religion8的六个FULL_RECORD完整AST及canonical token SHA均与R0016创建后记录相同；完整inventory仍为Rite156／Faith106／Religion49，无新增或删除。角色记录没有被误签全等：仅`landed_data`六项军事值变化，`current_strength`、`strength`、`strength_without_hires`为1191→1181，`power`、`max_power`为35900→39180，`levy`为885→869；其余角色AST包括RRF状态与资源相同。本次只读比较没有归因这些军事变化。该结果证明创建结果的冷载子集，不能抵最终定制后独立冷载或整个cold case；后续草案输入没有被追认为输入前的冷载事实。
+
+本场原版编辑框实际显示中文四名和说明：名称“星辰归一礼仪”、形容词“星归”、信徒单数“星归信徒”、复数“星归信众”、说明“由两份礼仪融合形成，保留双方传承。”原输入改用扫描码Ctrl+A／Tab与Unicode；原PNG独立显示全文，按键ACK本身不授予输入成功。图标预览确已改变，颜色预览为紫色；未取得精确icon key／RGB或持久化证明。实际RRF保存入口打开原生修改确认窗，显示费用0；**没有提交最终确认，没有保存定制，也没有验证完成后的实际零追加扣费**。
+
+新增typed路由已实际进入游戏，但只读观测仍有真实缺口：一次`current_rite`返回`rite_poststate_persistent_custom_text_unavailable`，两次`draft`返回`rite_creation_selected_rows_unavailable`。三次均为read-only、未dispatch，未调用typed礼仪writer，不能把能力声明或合同回归改称本场全文／选中项读回。完整美德／罪恶语义尚未核实；窗口可见图标和0报价不补齐这项资格。所有草案仅作为实际UI子集保留。
+
+独立守时器于2026-10-26T00:11:13.023490Z、原hold截止前1200秒发布真实`incomplete`回复；它没有提交游戏或queue动作，也没有另建CaseClient。原公共消费者因“Original product GUI/semantic requirements incomplete”保留public run原wait2，再用原CaseClient完成typed正常关闭。`normal-close-result.json`实际`normal_close_qualified=true`，原生退出0、保留OS句柄退出0、`cleanup_proven=true`、`tree_gone=true`，host、keeper、allocator各自原wait0。桌面恢复1024×768，`root-execution-a19/SCREEN-RELEASE.actual.json`于00:17:54.557213Z以CAS13996释放，来源冻结随后结束。正常关闭的通过与业务未完成分别保留。
+
+两次原生checkpoint都有实际文件，但SDK driver回执仍为`unconfirmed / save_binding_mismatch`，native_campaign没有one-life episode字符／run身份；本场没有形成合格ordinary SaveProof。该缺口与已完成的原生冷载AST、正常退出合同分开。后继仍须完成同ID155定制、完整美德／罪恶与原生后态、最终保存及独立冷载，并继续亲属／封臣改信、DES可选分支、独立四核心、联合信仰模式和无MTS场景。公开版本仍为0.1.0-alpha／Workshop3826756673，未发布0.2；本次仅更新证据，未重跑测试或上传。
