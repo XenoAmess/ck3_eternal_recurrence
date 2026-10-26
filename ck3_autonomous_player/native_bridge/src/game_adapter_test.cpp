@@ -986,8 +986,12 @@ int main(int argc, char **argv) {
           "query-battle-control-snapshot-v1-16777217") ||
       exact_adapter->supports_step(
           "query-battle-control-snapshot-v1-016777217") ||
-      exact_adapter->supports_step(
+      !exact_adapter->supports_step(
           "query-battle-control-snapshot-v1-0") ||
+      exact_adapter->supports_step(
+          "query-battle-control-snapshot-v1-00") ||
+      exact_adapter->supports_step(
+          "query-battle-control-snapshot-v1--1") ||
       exact_adapter->supports_step(
           "query-battle-control-snapshot-v1-2147483648") ||
       !exact_adapter->supports_step(
@@ -1028,8 +1032,12 @@ int main(int argc, char **argv) {
           "query-battle-reinforcement-assignment-v1-83886341") ||
       exact_adapter->supports_step(
           "query-battle-reinforcement-assignment-v1-083886341") ||
-      exact_adapter->supports_step(
+      !exact_adapter->supports_step(
           "query-battle-reinforcement-assignment-v1-0") ||
+      exact_adapter->supports_step(
+          "query-battle-reinforcement-assignment-v1-00") ||
+      exact_adapter->supports_step(
+          "query-battle-reinforcement-assignment-v1--1") ||
       exact_adapter->supports_step(
           "query-battle-reinforcement-assignment-v1-2147483648") ||
       !exact_adapter->supports_step(
