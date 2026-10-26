@@ -77,3 +77,23 @@ Root 已授权 rename63 在同一 SRC 采用 56 个 TEST 叶、182 个名称引�
 | `RootFiniteFirstLiveResultActualTest.java` | `B/resume60/lifecycle/finite_result14/RootFiniteFirstLiveResultActualTest.java`；Incremental26 的 selected_source_ref，原始 ABSENT | 2576 / `01824a9da5e25cbe8f6ad4bda841205a63f4dc1a7e5222984fb6a45b556351b0` |
 
 最终 SourceGraph 在退休旧 target 前，old selection 与 `Relocation.sourceRef` 须使用同一个真实 donor FileRef；新 selection 使用实际 after。adapters-storage 与 local-service 的 guard 是不同 body，不能因 FQCN 相同而合并。i61 仍未进行本轮最终 Java 投影。
+
+## 午夜后的实际 Git 与 CI 读回
+
+machine_id: `xenoamess-full-tower-eb9d2c1186`。2026-10-26T16:09Z（当地 10 月 27 日）已确认第三包 `a9d621fdf19bb2914aaf3559b4f0c2bcd63196d0` 普通 fast-forward 推送到 master，parent 为 `7ecb8b1d10b88eeaed389ca76251eb5d679c652e`。仅 99 个研究、迁移状态及必要文档依赖，原始输入 965,219 B；无 Java 源码。冻结守卫曾发现 acceptance 文档从 7,440 B 变为 8,388 B，在任何对象写前拒绝；只更新该实际 ready 叶后重锁 99 叶，fingerprint 为 `c3729e926febaced`，未沿用旧 pin。
+
+本包 tree 原始输入 303,330 B；112 个明确 loose 对象合 644,528 B。原单 cut 512 KiB 门槛曾真实拒绝，已写 partial 对象不删除、不重写；Root 与 capacity 在原联合额度内将子限调为 1 MiB 后，仅补缺失 tree。此前 raw whitespace 检查拒绝留下的未引用小 commit 保守计 1,024 B，三包对象合计上界 1,453,884 B，仍低于 2 MiB；未知 promisor pack 仍为 UNKNOWN。两份既有用户索引 SHA 前后相同，推送前真实总线 ACK 为 9027。
+
+历史精确原件含 CRLF 和三个文件尾空行，原始 `git diff --check` 实际 exit 2；没有改写原件来制造通过。仅将 CR 识别为行尾并排除 EOF 空行后，行内空白检查实际通过；UTF-8、JSON 和相对文档依赖闭包通过。该差别不授源码或实机资格。
+
+官方 API 实际读回如下，时间均在当地午夜以后，不倒填为 26 日截止结果：
+
+| 读取 UTC | 精确 commit | 官方 Runner | Linear history |
+| --- | --- | --- | --- |
+| 16:09:01.180 | `e735f2a0ed56e666e5f5d0977a7e532ff861f23c` | [40345540217](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40345540217)，COMPLETED / FAILURE | 40345540738，SUCCESS |
+| 16:09:03.336 | `7ecb8b1d10b88eeaed389ca76251eb5d679c652e` | [40351720817](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40351720817)，IN_PROGRESS | 40351720781，SUCCESS |
+| 16:09:05.803 | `a9d621fdf19bb2914aaf3559b4f0c2bcd63196d0` | [40356241300](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40356241300)，IN_PROGRESS | 40356241457，IN_PROGRESS |
+
+e735 的失败位于实际完整验证入口，不能称为 Tools 编译失败：bootstrap 与 qualified Tools 两轮各 636/636、BUILD SUCCESS；`qualified-control.stderr.log` 为 `NOT EXECUTED: full parity requires the actual fixture-production request; fresh SDK and complete cold/warm cannot be omitted`（ControlCi 595/216）。`control-ci-actual.json` 的两个 fixture request ref 均为 null；EXPECTED_MAVEN_RED 为 PASS，REACTOR 为 RED，其后七阶段为 NOT_RUN。外层 qualification child exit 1、8.6652961 秒、peak 281,006,080 B、active 0。
+
+对应官方 [artifact 12666155214](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40345540217/artifacts/12666155214) ZIP 为 606,260 B，SHA-256 `25bba1eb715d291e19927a76dcbc5fd375176757e80557d434ed2d607e218a47`；本岗只在 RAM 解包，没有物化新 SDK 或证据副本。Host 与 launcher owner 已收到实际请求缺口，后继修复走原生产入口。7ecb 新增 registration、broker、MSVC-evidence 三完整模块的官方 step 已于 15:42:43–15:42:46 UTC SUCCESS；整 Runner 终态仍待读回，未取消或重启长 Native 编译。

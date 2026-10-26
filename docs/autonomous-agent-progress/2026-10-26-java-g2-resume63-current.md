@@ -4,6 +4,8 @@
 
 当前目标是研究并使用 REA，完成 G2 M0–M7 的原生研究和 Java 落地，完成 Python 能力迁移后使用 Java 继续普通自动游玩。[完整迁移与八 M 对照](2026-10-26-resume63-migration-and-g2-matrix.md)区分八个业务门槛与 Python 全功能范围；两者不能互相替代。
 
+以下原表保留14:50Z及其后各次观察；最新状态以前向时间记录为准，不把新结果倒填到旧cut。2026-10-27 00:00（Asia/Shanghai）已跨日，午夜后事实另计27日。
+
 ## 已确认的基线
 
 - 本轮实际执行 `py tools/ck3_live_run_id.py machine`，机器与交接相符；14:35:37Z 重新读取来源索引全部43份原件，大小及SHA全部MATCH。
@@ -42,3 +44,19 @@ Java原八整类实际两轮均未全过：第二轮68通过/1失败。随后查
 Host唯一写BUILD/m2及build-tools，各领域按精确源码文件分工，capture前协调短冻结。REA由单一后端执行岗采样，八M共享原件并独立解释；不按人数重复重分析。原Genesis已真实创建，禁止重新初始化。Steam确认只用后台原生回执，不抢焦点或自动联网。
 
 本轮实际总线任务为 `ck3-java-g2-rea-resume63-20261026`。仓库原有489项dirty不清理、不整体stage；现有Git index约10.6MiB，超出小型预算，Delivery从新鲜origin/master保留未改子树，通过Git树对象交付明确文件，普通fast-forward push。源码和文档交付commit/CI终态随后追加。
+
+## 2026-10-26T16:09Z 前向接续（本地27日00:09）
+
+- Tools accounting修订的受影响11整类实际112/112通过，exit0、72.3101985s，重编2 main和1 test；独立核验保存在 [ACCOUNTING63-AFFECTED11-INDEPENDENT-RESULT01.json](</D:/ck3-state/ck3-java-g2-resume61-r7-ls18-regression04/controls/ACCOUNTING63-AFFECTED11-INDEPENDENT-RESULT01.json>)。不能将此前68通过与单例重跑拼成这一批。
+- v5/R34先局编实际重编5 main、3 test，7.4593416s、exit0；随后13个整类实际121/121、零失败/错误/跳过，191.7773433s、exit0，这次没有重新编译。325个源码pins前后匹配，独核为 [V5-R34-AFFECTED13-INDEPENDENT-RESULT01.json](</D:/ck3-state/ck3-java-g2-resume61-r7-ls18-regression04/controls/V5-R34-AFFECTED13-INDEPENDENT-RESULT01.json>)。它与112是不同测试选择，不能相加冒完整Tools通过。普通Jar82也仍属于较早cut。
+- M0六叶、M1十叶、M2二十三个唯一叶、M3自然继承十叶、M4五叶、M5日期接续八叶、M6六叶、M7七叶及FILE_REPLY六叶均已有源码接续；四个零JUnit helper同步改名为Assertions，LS标准test-jar POM已采用。各自精确范围见八M专题及[FILE_REPLY记录](2026-10-26-java-g2-resume63-file-reply.md)。领域编译和JUnit仍须实际执行；Host只清理adapters-storage/local-service两个模块，不-am clean，不清m2或其余缓存。
+- R34旧计划把S26 receipt SHA/大小写死，Source/ENV/BUILD/inventory多处也正确要求同一实际producer。选用现有 `NativeCombinedSourceCut.sealExisting`：最终新Tools实际qualified后，对同一native源码树生成新来源控制原件，再用原ENV、缓存BUILD及inventory生产链接续，不热改Source15/ENV22/BUILD24。新的UAC v2候选仍待编测；Root独审已指出两处public CLI分派只认v1，修复必须同时到达这两个真实调用者。121软件通过不授新qualified carrier。
+- Native在fresh主线前向移植后的四模块实际127/127通过；configured两完整叶strict通过，helper只对明确提取的修改范围strict通过。旧helper全模块201个错误是旧cohort事实，不能写成新全模块绿。原CI三个SDK消费者本包未执行，官方步骤保持。[原件及边界](../handover/2026-10-26-java-g2-resume63-native-helper-review.md)。两helper和持续CI hunk已FF推送 `7ecb8b1d10b88eeaed389ca76251eb5d679c652e`，configured生产叶保持fresh原样。
+- REA两题230B/48指令与119B/35指令均已有独审，第二题另建独审记录，原close的PENDING不改写。[实验记录](../rea-ck3-research/experiments.md)维护具体引用、成本、opaque调用和未知。第三题只准备 `2B9D260` 的当前RF metadata及最多64B前缀，不预设包含关系，不自动追callee。旧 `28BFCD0` 完整103B与 `A11F60` 模型优先复用。
+- [后台只读核对](../handover/2026-10-26-java-g2-resume63-runtime-readiness.md)已辨明三个旧CK3 generation的kernel handle均signaled，不能因WMI仍列PID或exit code259称它们仍在运行；其EXE路径查询失败仍为UNKNOWN。现存operator只绑定旧Python job，不是新Java路由。Genesis两份719B原件身份未变，仍seq0，未重建；SERVICE/新Java运行组装和实际权威尚未成立。
+- 普通SAVE由真实Root普通动作后产生，不是可以预造的初始DATA。起步准备与M7恢复验收按真实顺序安排：完成必要迁移及运行资格→首场普通动作→canonical SAVE→public RESTORE→同高级意图的完整ordinary plan；不得将首场尚不能产生的SAVE设为循环前置。
+- 官方CI `40345540217`（e735文档包）实际FAILURE：bootstrap与qualified Tools各636/636通过，但 `ControlCi.runQualified` 缺实际fixture-production request，在full parity前明确NOT EXECUTED、child exit1；并非编译失败。实际新SDK和完整cold/warm仍未执行，已沿原生产链修入口。`7ecb` 官方CI截至本记录仍未取得绿色终态。
+
+Root已明确授权新的有限容量review至2026-10-26T17:40:26.824464Z，原quota和总hold保持；发新财务/执行卡前鲜读卷/RAM与实际基线，不追认或延长旧卡。任务总线15:59:17Z heartbeat为9027。午夜报告另按实际时间收口与建会。
+
+本轮新增游戏日0、SAVE0、RESTORE0，Java完整G2仍0/8。下一门槛是实际领域编测、新Tools完整验收与SDK完整step、原生后继及设置读回、真实首场Java权威接通；当前继续执行，不以文档、普通Jar、构造器或ACK授业务完成。
