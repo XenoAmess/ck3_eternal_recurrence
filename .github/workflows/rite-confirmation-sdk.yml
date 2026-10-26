@@ -25,6 +25,7 @@ on:
       - 'ck3_autonomous_player/native_bridge/tests/title_window12004_test.cpp'
       - 'ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_ui_contract.py'
       - 'ck3_autonomous_player/tests/unit/test_ingame_ui_navigation_v1.py'
+      - 'ck3_autonomous_player/tests/unit/ingame_ui_query_typecheck_v1.py'
       - 'tools/ck3_mod_acceptance_background_types.py'
       - 'ck3_autonomous_player/tests/unit/test_gui_window_tree_root_contract.py'
       - 'ck3_autonomous_player/tests/fixtures/scripted_widget_native_campaign_R0003_snapshot.json'
@@ -64,6 +65,7 @@ on:
       - 'ck3_autonomous_player/native_bridge/tests/title_window12004_test.cpp'
       - 'ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_ui_contract.py'
       - 'ck3_autonomous_player/tests/unit/test_ingame_ui_navigation_v1.py'
+      - 'ck3_autonomous_player/tests/unit/ingame_ui_query_typecheck_v1.py'
       - 'tools/ck3_mod_acceptance_background_types.py'
       - 'ck3_autonomous_player/tests/unit/test_gui_window_tree_root_contract.py'
       - 'ck3_autonomous_player/tests/fixtures/scripted_widget_native_campaign_R0003_snapshot.json'
@@ -133,14 +135,14 @@ jobs:
           "%RUNNER_TEMP%\scripted-widget-native\Release\xar_ck3_ingame_ui_navigation_v1_test.exe" "%RUNNER_TEMP%\title-native-wire"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Check Title queries through actual native serialization and every SDK consumer
-        # Check the complete UI contract here. The full module and native-wire
-        # calls below check the maintained decorated MCP query from its actual
-        # AST with real dependency models. This scoped gate does not qualify
-        # legacy whole mcp_server.py; its whole-file type failures remain RED.
+        # Check the complete UI contract and typed test-support module here.
+        # The complete legacy unit suite and native-wire calls below check the
+        # actual decorated query against real dependency models. Legacy whole
+        # mcp_server.py and unit-file static failures remain unqualified.
         run: |
           python -B -m mypy --follow-imports=skip --no-incremental --cache-dir=nul src/xar_autoplayer/bridge/ingame_ui_contract.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
-          python -B -m mypy --follow-imports=skip --follow-untyped-imports --no-incremental --cache-dir=nul tests/unit/test_ingame_ui_navigation_v1.py ../tools/ck3_mod_acceptance_background_types.py
+          python -B -m mypy --strict --follow-imports=silent --follow-untyped-imports --no-incremental --cache-dir=nul tests/unit/ingame_ui_query_typecheck_v1.py ../tools/ck3_mod_acceptance_background_types.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -m unittest discover -s tests/unit -p test_ingame_ui_navigation_v1.py -v
           if not "%errorlevel%"=="0" exit /b %errorlevel%
