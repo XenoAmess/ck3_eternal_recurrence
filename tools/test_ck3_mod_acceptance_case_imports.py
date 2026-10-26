@@ -193,6 +193,22 @@ class CaseImportTests(unittest.TestCase):
         self.assertEqual(value["launcher_exit_code"], 0)
         self.assertFalse(value["case_result"]["game_started"])
 
+    def test_public_allocate_prelaunch_reducer_without_ambient_sdk(self) -> None:
+        environment = dict(os.environ)
+        environment.pop('PYTHONPATH', None)
+        completed = subprocess.run(
+            [sys.executable, '-I', '-B', '-X', 'utf8', str(Path(__file__).resolve()),
+             '--allocate-prelaunch-import-fixture'], cwd=self.temporary.name,
+            env=environment, capture_output=True, text=True, encoding='utf-8',
+            timeout=60, check=False)
+        self.assertEqual(completed.returncode, 0, completed.stdout + completed.stderr)
+        value = json.loads(completed.stdout)
+        for key in ('actual_public_dispatch', 'actual_observed_prelaunch_reducer',
+                    'actual_running_input_contract', 'stopped_before_machine_writer',
+                    'counter_unchanged'):
+            self.assertIs(value[key], True)
+        self.assertIs(value['game_started'], False)
+
     def test_real_verify_and_cli_validate_json_result_and_preserve_encoded_sequences(self) -> None:
         env = dict(os.environ)
         env.pop("PYTHONPATH", None)
@@ -294,6 +310,125 @@ def verify_case(context: dict[str, object]) -> object:
         fixture.doCleanups()
 
 
+def allocate_prelaunch_import_fixture() -> int:
+    """Actual dispatch/allocation/reducer; synthetic R21-shaped no-game inputs.
+
+    Only OS/bus/preflight observations are fixtures. The actual selected SDK,
+    complete observed-prelaunch reducer and running-input guard execute. Stop
+    at the first post-reducer git check, before intent/SCREEN/ID/ledger/keeper.
+    """
+    import argparse
+    from contextlib import ExitStack
+    from unittest.mock import patch
+    from ck3_mod_acceptance_background_types import json_object, object_field, text_field
+    from test_ck3_mod_acceptance_unrun_stages import RootAllocatorTripletTests
+    import ck3_mod_acceptance as entry
+    import ck3_mod_acceptance_allocate as allocator
+    import ck3_mod_acceptance_unrun as unrun
+    import ck3_live_run_id as ids
+    if importlib.util.find_spec('xar_autoplayer') is not None:
+        raise RuntimeError('Allocate fixture received an ambient SDK')
+    fixture = RootAllocatorTripletTests()
+    fixture.setUp()
+    try:
+        bundle, live, keeper, _ = fixture.prelaunch_fixture(observed_root=True)
+        # Author digest-domain frozen inputs for this fixture, never live files.
+        freeze = json_object(json.loads((live / 'frozen-argv.json').read_bytes()))
+        files = object_field(freeze, 'files')
+        freeze['files'] = {name: {key: object_field(files, name)[key]
+                                 for key in ('bytes', 'sha256')} for name in files}
+        (live / 'frozen-argv.json').write_text(json.dumps(freeze), encoding='utf-8')
+        bundle['frozen'] = fixture.reference(live / 'frozen-argv.json')
+        ready = json_object(json.loads((live / 'ready-context.json').read_bytes()))
+        ready['frozen_argv'] = json_object(bundle['frozen'])
+        for name, key in (('ready-context.json', 'ready'), ('allocated-context.json', 'allocated_context')):
+            (live / name).write_text(json.dumps(ready), encoding='utf-8')
+            bundle[key] = fixture.reference(live / name)
+        armed_path = Path(text_field(json_object(bundle['prelaunch_guard_armed']), 'path'))
+        armed = json_object(json.loads(armed_path.read_bytes()))
+        armed['ready_context'] = json_object(bundle['ready'])
+        armed_path.write_text(json.dumps(armed), encoding='utf-8')
+        bundle['prelaunch_guard_armed'] = fixture.reference(armed_path)
+        close = fixture.root / 'observed-prelaunch-close.json'
+        close.write_text(json.dumps(bundle), encoding='utf-8')
+        release_path = Path(text_field(json_object(bundle['admin_done']), 'path'))
+        release = json_object(json.loads(release_path.read_bytes()))
+        packet = {'tasks': [{**object_field(release, 'task'), 'age_seconds': 0, 'stale': False}]}
+        id_root = Path(text_field(object_field(freeze, 'identity_allocation'), 'state_root'))
+        counter = Path(text_field(json_object(bundle['counter']), 'path'))
+        counter_before = counter.read_bytes()
+        bus = fixture.root / 'next-bus/bin/codex_task_bus.py'
+        bus.parent.mkdir(parents=True)
+        bus.write_bytes(b'# authored bus; never executed\n')
+        selected = object.__new__(entry.Selection)
+        selected.prepared_path = fixture.root / 'next-prepared.json'
+        selected.context = {}
+        selected.product = {'external_mod': False}
+        selected.product_key = 'living-artifacts'
+        selected.state_dir = fixture.root / 'next-state'
+        selected.runtime_path = fixture.root / 'next-runtime.json'
+        selected.locations = {'repo_root': ROOT}
+        selected.manifest = {'source_root': {'path_key': 'source_root'}}
+        selected.paths = {'source_root': ROOT}
+        selected.runtime_environment = {'PYTHONPATH': str(ROOT / 'ck3_autonomous_player/src')}
+        selected.runtime = {'allocation': {'lease_repo': str(fixture.repo),
+            'task_prefix': 'fixture-next-', 'screen_keeper': entry.pin(Path(__file__)),
+            'task_bus': entry.pin(bus)},
+            'reviewed_launcher': entry.pin(ROOT / 'tools/ck3_mod_acceptance_launcher.py')}
+        args = argparse.Namespace(mode='allocate', runtime=None, products=None,
+            product=None, case=None, run_context=None, prepared_case=None, attempt='a02',
+            keeper_output=fixture.root / 'never-created-keeper', previous_live=live,
+            previous_keeper=keeper, previous_failure_close=close,
+            previous_release=release_path, first_machine_bootstrap=None, latest_screen_release=None)
+
+        class BeforeMachineWriter(RuntimeError):
+            pass
+
+        def before_writer(argv: list[str], **kwargs: object) -> object:
+            if argv != ['git', 'status', '--porcelain']:
+                raise AssertionError('Unexpected subprocess before the writer boundary')
+            raise BeforeMachineWriter('No admission, SCREEN, ID, ledger or keeper')
+
+        prior_path = list(sys.path)
+        with ExitStack() as stack:
+            stack.enter_context(patch.object(entry, 'Selection', return_value=selected))
+            stack.enter_context(patch.object(type(selected), 'preflight', return_value={'blockers': [], 'checked_inputs': []}))
+            observers: dict[str, object] = {'actual_machine_binding': {'machine_id': fixture.machine,
+                    'state_root': str(id_root), 'admission_root': str(fixture.root / 'never-created-admission')},
+                'shared_bus_history': ([], True), 'current_screen_absent': packet,
+                'runtime_process_inventory': {'blockers': []}}
+            for name, value in observers.items():
+                stack.enter_context(patch.object(allocator, name, return_value=value))
+            stack.enter_context(patch.object(ids, 'current_machine_id', return_value=fixture.machine))
+            stack.enter_context(patch.object(ids, 'default_state_root', return_value=id_root))
+            reducer = stack.enter_context(patch.object(unrun, 'validate_allocated_unrun', wraps=unrun.validate_allocated_unrun))
+            guard = stack.enter_context(patch.object(unrun, '_recovery_input_validation', wraps=unrun._recovery_input_validation))
+            stack.enter_context(patch.object(subprocess, 'run', side_effect=before_writer))
+            try:
+                entry.native_dispatch(args)
+            except BeforeMachineWriter:
+                pass
+            else:
+                raise AssertionError('Actual allocate did not stop before its first writer')
+            if reducer.call_count != 1 or guard.call_count != 1:
+                raise AssertionError('Actual observed-prelaunch reducer/input guard did not execute')
+        if sys.path != prior_path:
+            raise AssertionError('Selected SDK context did not restore the original search path')
+        contract = sys.modules.get('xar_autoplayer.bridge.runtime_input_contract_v1')
+        expected = ROOT / 'ck3_autonomous_player/src/xar_autoplayer/bridge/runtime_input_contract_v1.py'
+        if contract is None or Path(str(contract.__file__)).resolve() != expected.resolve():
+            raise AssertionError('Reducer imported another running-input contract')
+        if (counter.read_bytes() != counter_before or args.keeper_output.exists()
+                or (fixture.root / 'never-created-admission').exists()):
+            raise AssertionError('Read-only regression consumed an allocator-owned input')
+        print(json.dumps({'actual_public_dispatch': True, 'actual_observed_prelaunch_reducer': True,
+            'actual_running_input_contract': True, 'stopped_before_machine_writer': True,
+            'counter_unchanged': True, 'game_started': False}))
+        return 0
+    finally:
+        fixture.doCleanups()
+
+
 def cli_fixture() -> int:
     """Test-only owned launcher/client; execute real Selection/preflight/run/CLI."""
     from unittest.mock import patch
@@ -378,6 +513,8 @@ def run_case(context: dict[str, object], client: object) -> dict[str, object]:
 
 
 if __name__ == "__main__":
+    if sys.argv[1:] == ["--allocate-prelaunch-import-fixture"]:
+        raise SystemExit(allocate_prelaunch_import_fixture())
     if sys.argv[1:] == ["--cli-fixture"]:
         raise SystemExit(cli_fixture())
     if len(sys.argv) == 3 and sys.argv[1] == "--verify-json-fixture":

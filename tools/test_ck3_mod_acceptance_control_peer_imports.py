@@ -32,6 +32,8 @@ def load_module(name: str, source: Path) -> ModuleType:
 class ControlPeerImportTests(unittest.TestCase):
     def setUp(self) -> None:
         self.prior_path = list(sys.path)
+        self.prior_sdk_modules = {name: sys.modules.pop(name) for name in tuple(sys.modules)
+            if name == 'xar_autoplayer' or name.startswith('xar_autoplayer.')}
         self.names = ('ck3_mod_acceptance', 'ck3_mod_acceptance_allocate', 'ck3_mod_acceptance_unrun')
         self.prior_modules = {name: sys.modules.pop(name, None) for name in self.names}
         temporary = Path(os.environ.get('TEMP', tempfile.gettempdir()))
@@ -41,6 +43,9 @@ class ControlPeerImportTests(unittest.TestCase):
         self.foreign = Path(self.temporary.name)/'frozen-D'
         self.local.mkdir()
         self.foreign.mkdir()
+        self.sdk = self.local / 'sdk'
+        (self.sdk / 'xar_autoplayer').mkdir(parents=True)
+        (self.sdk / 'xar_autoplayer/__init__.py').write_text('', encoding='utf-8')
         tools = Path(__file__).resolve().parent
         source = Path(os.environ.get('CK3_CONTROL_IMPORT_ENTRY', str(tools/'ck3_mod_acceptance.py')))
         (self.local/'ck3_mod_acceptance.py').write_bytes(source.read_bytes())
@@ -57,6 +62,10 @@ class ControlPeerImportTests(unittest.TestCase):
         self.entry_module = load_module('ck3_mod_acceptance', self.local/'ck3_mod_acceptance.py')
 
     def tearDown(self) -> None:
+        for name in tuple(sys.modules):
+            if name == 'xar_autoplayer' or name.startswith('xar_autoplayer.'):
+                del sys.modules[name]
+        sys.modules.update(self.prior_sdk_modules)
         sys.path[:] = self.prior_path
         for name in self.names:
             sys.modules.pop(name, None)
@@ -70,7 +79,12 @@ class ControlPeerImportTests(unittest.TestCase):
                                   case=None, run_context=None, prepared_case=None)
         # Selection's construction is the boundary; real native_dispatch performs
         # the imports and calls only the tiny file-backed synthetic allocator.
-        with patch.object(self.entry_module, 'Selection', return_value=object()):
+        selected_type = getattr(self.entry_module, 'Selection')
+        selected = object.__new__(selected_type)
+        selected.manifest = {'source_root': {'path_key': 'source_root'}}
+        selected.paths = {'source_root': self.sdk}
+        selected.runtime_environment = {'PYTHONPATH': str(self.sdk)}
+        with patch.object(self.entry_module, 'Selection', return_value=selected):
             dispatch = getattr(self.entry_module, 'native_dispatch')
             result: object = dispatch(args)
         if not isinstance(result, dict):
@@ -93,6 +107,16 @@ class ControlPeerImportTests(unittest.TestCase):
         self.assertIs(sys.modules['ck3_mod_acceptance_allocate'], peer)
         self.assertEqual(getattr(peer, 'calls'), 2)
         self.assertEqual(Path(str(sys.modules['ck3_mod_acceptance_unrun'].__file__)), self.local/'ck3_mod_acceptance_unrun.py')
+
+    def test_cached_foreign_sdk_refuses_before_allocate_call(self) -> None:
+        foreign = ModuleType('xar_autoplayer')
+        foreign.__file__ = str(self.foreign / 'xar_autoplayer/__init__.py')
+        before = list(sys.path)
+        with patch.dict(sys.modules, {'xar_autoplayer': foreign}):
+            with self.assertRaisesRegex(ValueError, 'escaped selected runtime'):
+                self.dispatch()
+            self.assertEqual(getattr(sys.modules['ck3_mod_acceptance_allocate'], 'calls'), 0)
+        self.assertEqual(sys.path, before)
 
     def test_cached_foreign_allocator_refuses_before_call(self) -> None:
         foreign = load_module('ck3_mod_acceptance_allocate', self.foreign/'ck3_mod_acceptance_allocate.py')

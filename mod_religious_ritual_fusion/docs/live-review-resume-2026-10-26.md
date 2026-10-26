@@ -128,3 +128,27 @@ R0021/a24于13:51Z分配后，在public run前因守候进程身份检查拒绝�
 共享unrun reader硬编码旧外置脚本AST与字段，正在维护真实恢复路径并补原件到reducer的回归。原R21冻结图、Prepared、state及single-use-ledger均保留。下一场采用新独立状态，先零自然日核R0020定制存档，再推进一日／两日检查延期完成与亲属、封臣后态。这些实机步骤尚未执行，完整美德罪恶、四核心、无MTS、DES及最终冷载仍有缺口。
 
 14:37:54Z实际完成共享恢复：消费原Root启动／wait及转发进程与实际进程的不同身份；直接核对原CAS／admin stdout与事件日志，修复历史任务重构错配。两完整回归模块26＋20项、零跳过；严格检查覆盖6个完整AST节点和两完整测试模块，不外推旧模块全绿。R0021实际producer／reducer原wait0，原机器writer锁内再验证原wait0，750项冻结输入通过，只有旧reader以已核Git原blob保全；没有新intent、claim或allocation，机器admission文件前后相同。`metadata/unrun-recovery-a01/COMMAND_VALIDATION.actual.json`为5164 B／SHA `686a93b3ad011c728f224402ebdaec687cfc8e8295dbbbe19f057245b66ab55a`，`ACTUAL-R0021.RECOVERY.actual.json`为5231 B／SHA `7139f60a117ec1b5e998b6cb12699fb408d51268bcd29ea3e8b21b7eaec89863`，均只授行政恢复；首次strict与producer失败原件保留。执行身份是5b834基线加三文件实际工作树，不追认为未来clean提交的完整测试。
+
+## R0022：零日冷读通过，延期配置及近亲后态已观察，封臣阶段失败
+
+本节均属于 `machine_id: 4-8e1c2f1861`，源码冻结 `c9c355ade37f42a817f63ec8f7a0d90f8e8f23a7`。场次根为 `Q/cold-R0020-finalization-a01`，下称 `COLD`。14:56:24Z实际以新进程22988、原生出生FILETIME字符串 `134375001830100198` 加载R0020原保存；启动前后台Steam离线正例在实际启动时仅0.354204秒，没有联网切换。
+
+零自然日、1066.9.16暂停时，通过生产历史窗口及独立Java原位保存解析确认：Rite155全部记录、玩家31254全部记录、来源152／153／154、Faith13、Religion8共7份完整AST与R0020相同，三类完整对象清单也相同。五项自定义文本、图标 `christianity_cathar` 和RGB `[110,55,126]` 保留，玩家仍采用155，虔诚5500，融合费用与十年冷却、设置未决状态均未修复或重放。原生信仰页实际读到155完整7项美德、7项罪恶；无裁切图绑定新进程和源保存。原被信仰页遮挡的历史图仅保留诊断，另拍无遮挡原图。Root零日阶段已由原CaseClient消费并接受。
+
+`COLD/metadata/zero-day-evidence-a01/QUALIFICATION.actual.json` 为981024 B，SHA-256 `586745e9b7236f672b19c9937c2104e0aeee3f0e78886418422286d9ae375102`。当前profile明确为正式三产品＋被动8文件观察fixture，`production_profile_verified=false` 的纯生产profile字段不适用；实际核验完整投影清单、角色及逐文件SHA，未将该字段改称true。SDK普通保存仍为 `unconfirmed/save_binding_mismatch`，不由原生保存或AST结果追认。
+
+原CaseClient自动推进一天后，1066.9.17暂停的原生保存确认155的 `rrf_native_configuration_complete=yes`、最终配置合同版本1；设置active／open／apply及费用豁免标记均已移除。虔诚仍5500，原500费用记录不变，冷却正常减至3649天。来源三礼仪及Religion8完整记录不变；Faith13只有 `tenet_popularity` 随自然日变化，不能宣称其完整AST仍相同。没有再次编辑或修复标记。
+
+逐位调用现有Java生产者，8名实际近亲36311、38924、39348、39979、40526、40695、40847、41032均在 `living` 表采用155，由同checkpoint的155记录关联Faith13。每次保留原wait、完整角色AST及同一原保存的SHA／FileID／FILETIME守卫。此为真实后态；本场未独立排除旧seed延迟队列，不把全部改信归因于融合独有传播。`COLD/metadata/save-oracle-R0022-day1-a01/PARTIAL-OBSERVATION.actual.json` 为62055 B，SHA-256 `8fab424dd5f2b8e431d998b788f83cdca7212f7f4aa0185b45d2fcfe306bdc2a`。
+
+生产封臣预览已实际刷新并出现接受／拒绝分类。15:43:02Z，Root未先核DLL能力便调用通用原生交互报价查询，N7缺少 `game.query.character-interaction-ordinary.v1`，宿主按原失败路径结束；未发送邀请，没有第二日，也未接受Root第一日阶段。后继应先核真实能力，不能把源码中存在公共工具当成本场DLL支持，更不能重放未知动作补齐。
+
+原CaseClient自动执行typed Quit及失败finish_hold；Game保留OS handle退出0、原生进程退出0、完整Job清理均确认，宿主原wait1、公共run原wait2。Root按真实失败生命周期停止原keeper，其原wait与allocator原wait均0，外层Root原wait1已消费。15:49:19Z以新鲜序号14097→14098释放SCREEN，桌面实际恢复1024×768。此为失败资源关闭，`normal_close_qualified=false`，不是整场正常关闭或业务通过。
+
+现有共享失败reader随后真实消费原typed observer、原退出及CAS证据，并在原机器writer锁内再次预演，通过范围只限后继资源准入。`COLD/root-execution-a26/FAILED-LIVE-CLOSURE.a01/EXECUTION.actual.json` 为6724 B，SHA-256 `eb017d95d02e1f356469542b6a06f1300dfacb1a791472cf83785c1156c8f37f`；原计数器与admission文件未改，没有新allocation或Game。原件保留，后继allocator仍须在其原锁内重验。
+
+另一个a25尝试在分配前因默认公共 `allocate` 缺少所选SDK导入上下文失败，没有消耗场次身份或启动游戏。R0022临时使用冻结Selection明确声明的三个子进程环境变量完成启动；这不代表默认入口已修复。后继先修共享入口并跑实际独立进程回归，再重新冻结。八项人工审核仍未全部完成，公开0.1.0-alpha与Workshop3826756673未更新。
+
+16:14:42Z补齐默认公共入口修复：allocate现在在Selection已有的所选SDK导入上下文内执行真实allocator/reducer，并在退出时恢复sys.path；原异源SDK拒绝不放宽。独立-I、无环境PYTHONPATH的实际public dispatch→prelaunch reducer→running-input合同回归通过，未进入机器writer或启动游戏。完整四模块59项零跳过；随后对应CI step原10命令全部原wait0，含186次测试、独立continuation和原YAML配置静态检查。另保留更广real-model静态检查的旧26项错误及最初fixture失败；维护范围严格检查通过，不声称全仓全绿。真实R0022失败bundle在修改后的共享入口消费者及原chain.lock内再次通过，原host1/public2不变。
+
+`COLD/metadata/public-import-step-a01/COMMAND_VALIDATION.public-control.actual.json`为10041 B，SHA-256 `624e9a257b015a319f41088964c15af8dc5f2d82e0745c61a95374075a008f83`；完整step执行原件为13076 B，SHA-256 `e03fccc4cebb152387f3519e275bb5fb0e4f86f340c5df1e8a78b46d85623013`。执行身份为c9基线加三个维护文件的实际工作树，源码Pin前后一致；不追认为未来提交已测试。所有原wait已消费、reader已闭。未变的Java／N7／新wire不重复运行；下一实际场次仍须新冻结、资格和存储准入。

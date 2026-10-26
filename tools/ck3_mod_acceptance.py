@@ -1408,7 +1408,8 @@ def native_dispatch(args: argparse.Namespace) -> dict[str, object]:
     elif args.mode=='allocate':
         allocator = same_directory_control_peer('ck3_mod_acceptance_allocate')
         same_directory_control_peer('ck3_mod_acceptance_unrun')
-        result=allocator.allocate_and_keep(selection,args)
+        with selection.case_imports():
+            result=allocator.allocate_and_keep(selection,args)
     elif args.mode=='verify':result=selection.verify()
     else:result=selection.describe() if args.mode=='plan' else selection.preflight() if args.mode=='preflight' else selection.run()
     return result
