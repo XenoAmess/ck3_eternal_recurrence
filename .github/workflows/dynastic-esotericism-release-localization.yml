@@ -32,6 +32,8 @@ jobs:
         run: java -Xms32m -Xmx128m -Djava.io.tmpdir="%RUNNER_TEMP%" java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java --ensure-default-maven-only --repo-root "%GITHUB_WORKSPACE%" --work-root "%RUNNER_TEMP%/dynastic-esotericism-release-maven" --python-executable "%pythonLocation%/python.exe" --system-growth-reserve-bytes 2147483648 --max-project-bytes 8589934592
       - name: Read back default Maven qualification
         run: java -Xms32m -Xmx128m -Djava.io.tmpdir="%RUNNER_TEMP%" java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java --verify-maven-evidence-root "%RUNNER_TEMP%/dynastic-esotericism-release-maven"
+      - name: Verify and install the exact shared save leaf
+        run: mvn --batch-mode --no-transfer-progress -f java/ck3-save-core/pom.xml -Dsave.build.root="%RUNNER_TEMP%/ck3-save-core-build" install
       - name: Verify the builder and synthetic release-format contracts
         run: mvn --batch-mode --no-transfer-progress -f mod_dynastic_esotericism/tools/pom.xml -Ddes.build.root="%RUNNER_TEMP%/dynastic-esotericism-release-build" verify
       - name: Certify the actual nine-language release source format
@@ -44,6 +46,7 @@ jobs:
         with:
           name: dynastic-esotericism-release-localization
           path: |
+            ${{ runner.temp }}/ck3-save-core-build/surefire-reports/
             ${{ runner.temp }}/dynastic-esotericism-release-maven/logs/
             ${{ runner.temp }}/dynastic-esotericism-release-build/dynastic-esotericism-tools/surefire-reports/
             ${{ runner.temp }}/dynastic-esotericism-release-check/

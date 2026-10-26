@@ -2,9 +2,10 @@
 
 构建工具使用 Java 21 和 Quarkus command 宿主；默认命令行 `mvn` 必须不低于 3.10.0。Java 只在开发／验收时使用，正式 CK3 包没有 Java 运行依赖。
 
-在仓库根目录编译、运行全部工具测试并打包：
+先在仓库根目录安装共享存档读取叶模块，再编译、运行全部工具测试并打包。共享构建根须按当前机器存储策略获准：
 
 ```text
+mvn -f java/ck3-save-core/pom.xml -Dsave.build.root=<approved-shared-build-root> install
 mvn -f mod_dynastic_esotericism/tools/pom.xml verify
 ```
 

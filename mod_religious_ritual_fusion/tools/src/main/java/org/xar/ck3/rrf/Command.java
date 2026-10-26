@@ -18,9 +18,13 @@ import org.xar.ck3.rrf.Contracts.Catalog;
 /** Quarkus CLI only. CK3 consumes generated scripts and never depends on this process. */
 @QuarkusMain
 public final class Command implements QuarkusApplication {
+    private final org.xar.ck3.save.SaveDecoder.Launcher saveDecoder;
+    public Command() { this(org.xar.ck3.save.SaveDecoder::launch); }
+    Command(org.xar.ck3.save.SaveDecoder.Launcher saveDecoder) { this.saveDecoder = java.util.Objects.requireNonNull(saveDecoder); }
     @Override public int run(String... args) {
         try {
-            if (args.length == 0) throw new IllegalArgumentException("expected generate, validate, build, verify, fixture or inspect-save");
+            if (args.length == 0) throw new IllegalArgumentException("expected generate, validate, build, verify, fixture, inspect-save or inspect-save-v4");
+            if (args[0].equals("inspect-save-v4")) return org.xar.ck3.save.Inspection.run(java.util.Arrays.copyOfRange(args, 1, args.length), saveDecoder);
             if (args[0].equals("fixture")) return FixtureEmitter.run(java.util.Arrays.copyOfRange(args, 1, args.length));
             if (args[0].equals("inspect-save")) return SaveInspector.run(java.util.Arrays.copyOfRange(args, 1, args.length));
             if (args[0].equals("compatibility-mods")) return CompatibilityModEmitter.run(java.util.Arrays.copyOfRange(args, 1, args.length));

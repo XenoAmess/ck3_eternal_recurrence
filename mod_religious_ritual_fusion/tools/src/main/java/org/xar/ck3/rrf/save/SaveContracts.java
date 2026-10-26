@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.JsonNode;
-import java.math.BigInteger;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.util.List;
@@ -17,7 +16,7 @@ public final class SaveContracts {
     private SaveContracts() { }
     public record NativeId(String value) {
         public NativeId {
-            if (value == null || !value.matches("0|[1-9][0-9]{0,19}") || new BigInteger(value).bitLength() > 64) throw new IllegalArgumentException("canonical unsigned native ID string required");
+            new org.xar.ck3.save.SaveContracts.NativeId(value);
         }
         @JsonCreator(mode = JsonCreator.Mode.DELEGATING) public static NativeId fromJson(JsonNode node) {
             if (node == null || !node.isTextual()) throw new IllegalArgumentException("native ID must be a string");

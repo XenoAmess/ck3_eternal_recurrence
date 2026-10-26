@@ -68,6 +68,9 @@ public final class FixtureEmitter {
         Path catalogPath = repo.resolve("mod_religious_ritual_fusion/catalog/generated-catalog.json");
         Catalog catalog = Json.read(Files.readAllBytes(catalogPath), Catalog.class);
         validateCatalog(catalog); request.expectedSelection().requireCatalog(catalog); pins.add(pin(catalogPath));
+        for (org.xar.ck3.save.SaveContracts.Pin source : org.xar.ck3.save.ProducerSources.verify(repo).repositorySources()) {
+            pins.add(new FilePin(source.path(), source.bytes(), source.sha256()));
+        }
         Path evidence = producer.resolve("resources/acceptance/native-source-evidence.json"); checkedResource(evidence, "/acceptance/native-source-evidence.json"); pins.add(pin(evidence));
         List<String> assets = new ArrayList<>(COMMON);
         assets.addAll(request.kind() == CaseKind.COLD_RELOAD ? COLD : FRESH);

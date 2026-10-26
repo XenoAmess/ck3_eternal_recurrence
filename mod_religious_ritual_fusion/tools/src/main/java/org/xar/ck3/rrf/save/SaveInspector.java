@@ -1,42 +1,19 @@
 package org.xar.ck3.rrf.save;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FilterInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.channels.FileChannel;
-import java.nio.channels.FileLock;
-import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.security.DigestInputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HexFormat;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 import org.xar.ck3.rrf.Json;
-import org.xar.ck3.rrf.ReleaseBuilder;
 import org.xar.ck3.rrf.acceptance.FixtureContracts;
 import org.xar.ck3.rrf.acceptance.FrozenFixtureReader;
 import org.xar.ck3.rrf.acceptance.FrozenFixtureReader.BoundRequest;
 import org.xar.ck3.rrf.acceptance.FrozenFixtureReader.PreparedBinding;
-import org.xar.ck3.rrf.save.SaveContracts.Assessment;
-import org.xar.ck3.rrf.save.SaveContracts.FusionSelection;
-import org.xar.ck3.rrf.save.SaveContracts.NotAssessed;
-import org.xar.ck3.rrf.save.SaveContracts.Pin;
-import org.xar.ck3.rrf.save.SaveContracts.Report;
-import org.xar.ck3.rrf.save.SaveContracts.Request;
-import org.xar.ck3.rrf.save.SaveContracts.StreamEvidence;
+import org.xar.ck3.rrf.save.SaveContracts.*;
 
 /** Offline Rakaly stdout oracle. No temp melt, copied save, game process, or business mutation. */
 public final class SaveInspector {
@@ -57,52 +34,32 @@ public final class SaveInspector {
         } catch (IOException | IllegalArgumentException error) { System.err.println("RRF SAVE INSPECTION FAILED: " + error.getMessage()); return 1; }
     }
     public static Report inspect(Request request) throws IOException {
-        return inspect(request, (decoder, save) -> new ProcessBuilder(decoder.toString(), "melt", save.toString(), "-c", "--format", "ck3", "--unknown-key", "error").start());
+        return inspect(request, org.xar.ck3.save.SaveDecoder::launch);
     }
     @FunctionalInterface interface DecoderLauncher { Process start(Path decoder, Path save) throws IOException; }
     static Report inspect(Request request, DecoderLauncher launcher) throws IOException {
-        Path save = Path.of(request.save().path()).toRealPath(); Path decoder = Path.of(request.decoder().path()).toRealPath();
+        org.xar.ck3.save.ProducerSources.Binding producer = org.xar.ck3.save.ProducerSources.verify(Path.of(request.repository()));
         BoundRequest fixture = null;
         PreparedBinding prepared = null;
         if (request.expectation() instanceof FusionSelection expected) {
-            fixture = fixture(request, expected);
-            prepared = prepared(expected, fixture);
+            fixture = fixture(request, expected); prepared = prepared(expected, fixture);
         }
-        verifyPin(decoder, request.decoder()); BasicFileAttributes before = Files.readAttributes(save, BasicFileAttributes.class);
-        try (FileChannel channel = FileChannel.open(save, StandardOpenOption.READ); FileLock lock = channel.lock(0, Long.MAX_VALUE, true)) {
-            if (!lock.isValid()) throw new IOException("save read lock unavailable");
-            verifyPin(save, request.save());
-            Process process = launcher.start(decoder, save);
-            ByteArrayOutputStream diagnostic = new ByteArrayOutputStream(); AtomicBoolean overflow = new AtomicBoolean(); AtomicReference<IOException> drainFailure = new AtomicReference<>();
-            Thread drain = new Thread(() -> drain(process.getErrorStream(), diagnostic, overflow, drainFailure), "rrf-offline-decoder-stderr"); drain.setDaemon(true); drain.start();
-            var watchdog = Executors.newSingleThreadScheduledExecutor(); AtomicBoolean timedOut = new AtomicBoolean();
-            var deadline = watchdog.schedule(() -> { timedOut.set(true); process.destroyForcibly(); }, 120, TimeUnit.SECONDS);
-            MessageDigest digest = digest();
-            try (LimitedInput bytes = new LimitedInput(new DigestInputStream(process.getInputStream(), digest), 512L * 1024 * 1024)) {
-                SaveStream.Projection projection = new SaveStream(new InputStreamReader(bytes, StandardCharsets.UTF_8.newDecoder().onMalformedInput(CodingErrorAction.REPORT).onUnmappableCharacter(CodingErrorAction.REPORT)), request).read();
-                int code = process.waitFor(); drain.join(10000);
-                if (timedOut.get() || drain.isAlive() || drainFailure.get() != null || overflow.get()) throw new IOException("decoder timeout or incomplete stderr");
-                String stderr = diagnostic.toString(StandardCharsets.UTF_8);
-                if (code != 0) throw new IOException("Rakaly exit " + code + ": " + stderr);
-                verifyPin(save, request.save()); verifyPin(decoder, request.decoder());
-                BasicFileAttributes after = Files.readAttributes(save, BasicFileAttributes.class);
-                if (before.size() != after.size() || !before.lastModifiedTime().equals(after.lastModifiedTime()) || !java.util.Objects.equals(before.fileKey(), after.fileKey())) throw new IOException("save physical identity or timestamp changed during inspection");
-                Assessment assessment = new NotAssessed();
-                if (request.expectation() instanceof FusionSelection expected) {
-                    if (fixture == null || prepared == null || !fixture.equals(fixture(request, expected)) || !prepared.equals(prepared(expected, fixture))) throw new IOException("fixture selection/preparation changed during save inspection");
-                    assessment = SavedSelectionComparator.compare(request, projection.scopes(), fixture, prepared, expected.resultRiteId());
-                }
-                return new Report("rrf-save-inspection-v2", request.machineId(), Instant.now().toString(), request, code, stderr,
-                        new StreamEvidence(HexFormat.of().formatHex(digest.digest()), Long.toString(bytes.count()), Long.toString(projection.tokens()), Integer.toString(projection.selectedTokenBytes()), projection.rootKeys(), projection.rootScalars()),
-                        projection.inventories(), projection.scopes(), producerPins(Path.of(request.repository())), true, false, assessment);
-            } catch (InterruptedException interrupted) {
-                Thread.currentThread().interrupt(); throw new IOException("offline decoder interrupted", interrupted);
-            } finally {
-                deadline.cancel(false); watchdog.shutdownNow();
-                if (process.isAlive()) { process.destroyForcibly(); try { process.waitFor(10, TimeUnit.SECONDS); } catch (InterruptedException interrupted) { Thread.currentThread().interrupt(); } }
-                try { drain.join(10000); } catch (InterruptedException interrupted) { Thread.currentThread().interrupt(); }
-            }
+        org.xar.ck3.save.SaveContracts.Decoded decoded = org.xar.ck3.save.SaveDecoder.inspect(
+                shared(request.save()), shared(request.decoder()), SaveStream.selection(request),
+                org.xar.ck3.save.SaveContracts.DecoderLimits.standard(), launcher::start);
+        SaveStream.Projection projection = SaveStream.fromShared(decoded.projection());
+        Assessment assessment = new NotAssessed();
+        if (request.expectation() instanceof FusionSelection expected) {
+            if (fixture == null || prepared == null || !fixture.equals(fixture(request, expected)) || !prepared.equals(prepared(expected, fixture))) throw new IOException("fixture selection/preparation changed during save inspection");
+            assessment = SavedSelectionComparator.compare(request, projection.scopes(), fixture, prepared, expected.resultRiteId());
         }
+        if (!producer.equals(org.xar.ck3.save.ProducerSources.verify(Path.of(request.repository())))) throw new IOException("save-core producer changed during inspection");
+        return new Report("rrf-save-inspection-v2", request.machineId(), Instant.now().toString(), request, decoded.exitCode(), decoded.stderr(),
+                new StreamEvidence(decoded.streamSha256(), decoded.streamBytes(), Long.toString(projection.tokens()), Integer.toString(projection.selectedTokenBytes()), projection.rootKeys(), projection.rootScalars()),
+                projection.inventories(), projection.scopes(), producerPins(Path.of(request.repository()), producer), true, false, assessment);
+    }
+    private static org.xar.ck3.save.SaveContracts.Pin shared(Pin pin) {
+        return new org.xar.ck3.save.SaveContracts.Pin(pin.path(), pin.bytes(), pin.sha256());
     }
     private static BoundRequest fixture(Request request, FusionSelection expected) throws IOException {
         Pin pin = expected.fixtureManifest();
@@ -112,30 +69,20 @@ public final class SaveInspector {
         Pin pin = expected.preparedProfileInventory();
         return FrozenFixtureReader.readPrepared(new FixtureContracts.FilePin(pin.path(), pin.bytes(), pin.sha256()), fixture);
     }
-    private static List<Pin> producerPins(Path repository) throws IOException {
-        Path java = repository.resolve("mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf"); List<Pin> pins = new ArrayList<>();
-        for (String source : List.of("save/SaveContracts.java", "save/SaveStream.java", "save/SaveInspector.java", "save/SavedSelectionComparator.java", "acceptance/FixtureContracts.java", "acceptance/FixtureEmitter.java", "acceptance/FrozenFixtureReader.java", "ExpectedSelection.java", "Command.java", "Clausewitz.java", "Contracts.java", "Json.java", "ReleaseBuilder.java")) pins.add(pin(java.resolve(source)));
+    private static List<Pin> producerPins(Path repository, org.xar.ck3.save.ProducerSources.Binding producer) throws IOException {
+        Path javaSources = repository.resolve("mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf"); List<Pin> pins = new ArrayList<>();
+        for (String source : List.of("save/SaveContracts.java", "save/SaveStream.java", "save/SaveInspector.java", "save/SavedSelectionComparator.java", "acceptance/FixtureContracts.java", "acceptance/FixtureEmitter.java", "acceptance/FrozenFixtureReader.java", "ExpectedSelection.java", "Command.java", "Clausewitz.java", "Contracts.java", "Json.java", "ReleaseBuilder.java")) {
+            Path path = javaSources.resolve(source);
+            try (var embedded = SaveInspector.class.getResourceAsStream("/producer-source/org/xar/ck3/rrf/" + source)) {
+                if (embedded == null || !java.util.Arrays.equals(Files.readAllBytes(path), embedded.readAllBytes())) throw new IOException("loaded RRF save producer source differs: " + source);
+            }
+            pins.add(pin(path));
+        }
+        for (org.xar.ck3.save.SaveContracts.Pin source : producer.repositorySources()) pins.add(new Pin(source.path(), source.bytes(), source.sha256()));
         return List.copyOf(pins);
     }
-    private static void drain(InputStream stream, ByteArrayOutputStream output, AtomicBoolean overflow, AtomicReference<IOException> failure) {
-        try (stream) { byte[] buffer = new byte[8192]; int read; while ((read = stream.read(buffer)) != -1) { int remaining = 65536 - output.size(); output.write(buffer, 0, Math.min(remaining, read)); if (read > remaining) overflow.set(true); } }
-        catch (IOException error) { failure.set(error); }
-    }
-    public static Pin pin(Path path) throws IOException { Path real = path.toRealPath(); return new Pin(real.toString(), Files.size(real), hash(real)); }
-    private static void verifyPin(Path path, Pin expected) throws IOException {
-        if (!Files.isRegularFile(path) || Files.size(path) != expected.bytes() || !hash(path).equals(expected.sha256())) throw new IOException("input pin mismatch: " + path);
-    }
-    private static String hash(Path path) throws IOException {
-        MessageDigest digest = digest(); try (InputStream stream = Files.newInputStream(path)) { byte[] buffer = new byte[65536]; int read; while ((read = stream.read(buffer)) != -1) digest.update(buffer, 0, read); }
-        return HexFormat.of().formatHex(digest.digest());
-    }
-    private static MessageDigest digest() { try { return MessageDigest.getInstance("SHA-256"); } catch (NoSuchAlgorithmException error) { throw new IllegalStateException(error); } }
-    private static final class LimitedInput extends FilterInputStream {
-        private final long limit; private long count;
-        LimitedInput(InputStream stream, long limit) { super(stream); this.limit = limit; }
-        long count() { return count; }
-        @Override public int read() throws IOException { int value = in.read(); if (value >= 0) add(1); return value; }
-        @Override public int read(byte[] buffer, int offset, int length) throws IOException { int read = in.read(buffer, offset, length); if (read > 0) add(read); return read; }
-        private void add(int amount) throws IOException { count += amount; if (count > limit) throw new IOException("melt stream byte cap exceeded"); }
+    public static Pin pin(Path path) throws IOException {
+        org.xar.ck3.save.SaveContracts.Pin pin = org.xar.ck3.save.FilePins.pin(path);
+        return new Pin(pin.path(), pin.bytes(), pin.sha256());
     }
 }

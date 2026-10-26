@@ -31,6 +31,22 @@ final class AcceptanceFixtureTest {
     private static final ExpectedSelection DEFAULT_SELECTION = new ExpectedSelection(List.of(new ExpectedSelection.TenetKey("tenet_esotericism"), new ExpectedSelection.TenetKey("tenet_astrology"), new ExpectedSelection.TenetKey("tenet_communal_identity")));
     private static final ActorHistoryId ROBERT = new ActorHistoryId("1128");
     @TempDir Path directory;
+    @Test void sharedParserProducerPinsCannotBeRemovedFromFrozenFixture() throws IOException {
+        Path repository = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize().getParent();
+        FixtureEmitter.Emission emitted = FixtureEmitter.emit(repository, directory.resolve("shared-source-fixture"), "synthetic-fixture-machine", bundledRequest(repository, "core-rite"));
+        FixtureContracts.Manifest original = emitted.payload();
+        assertTrue(original.producerSourcePins().stream().anyMatch(p -> p.path().replace((char) 92, '/').contains("java/ck3-save-core/")));
+        org.xar.ck3.rrf.acceptance.FrozenFixtureReader.read(manifestPin(emitted.manifest()), original.machineId(), repository);
+        List<FixtureContracts.FilePin> omitted = original.producerSourcePins().stream()
+                .filter(p -> !p.path().replace((char) 92, '/').contains("java/ck3-save-core/")).toList();
+        FixtureContracts.Manifest changed = new FixtureContracts.Manifest(original.schema(), original.product(), original.caseId(), original.machineId(),
+                original.observedAtUtc(), original.fixtureRoot(), omitted, original.files(), original.receipt());
+        Files.write(emitted.manifest(), Json.write(changed));
+        assertThrows(IOException.class, () -> org.xar.ck3.rrf.acceptance.FrozenFixtureReader.read(manifestPin(emitted.manifest()), original.machineId(), repository));
+    }
+    private static FixtureContracts.FilePin manifestPin(Path path) throws IOException {
+        return new FixtureContracts.FilePin(path.toRealPath().toString(), Files.size(path), ReleaseBuilder.sha256(Files.readAllBytes(path)));
+    }
     @Test void realFixtureProducerCreatesExactSourcePinnedPublicImportAndReadOnlyObservations() throws IOException {
         Path repository = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize().getParent();
         Request request = bundledRequest(repository, "core-rite");

@@ -5,6 +5,7 @@ on:
     branches: [master]
     paths:
       - 'mod_dynastic_esotericism/**'
+      - 'java/ck3-save-core/**'
       - 'tools/ck3_mod_acceptance_prepare.py'
       - 'tools/ck3_mod_acceptance.py'
       - 'tools/ck3_mod_acceptance_background_types.py'
@@ -41,6 +42,7 @@ on:
   pull_request:
     paths:
       - 'mod_dynastic_esotericism/**'
+      - 'java/ck3-save-core/**'
       - 'tools/ck3_mod_acceptance_prepare.py'
       - 'tools/ck3_mod_acceptance.py'
       - 'tools/ck3_mod_acceptance_background_types.py'
@@ -108,6 +110,8 @@ jobs:
         run: mvn --version
       - name: Install the shared SDK and strict type-check dependencies
         run: python -m pip install mcp==2.0.0 pydantic==2.13.5 mypy==2.4.0 psutil==7.2.2 types-psutil==7.2.2.20260906 opencv-python==5.0.0.93 numpy==2.5.2 Pillow==12.3.0
+      - name: Verify and install the exact shared save leaf
+        run: mvn --batch-mode --no-transfer-progress -f java/ck3-save-core/pom.xml -Dsave.build.root="%RUNNER_TEMP%/ck3-save-core-build" install
       - name: Compile and verify the actual product builder and fixture producer
         # The Java source composer tests consume the actual SDK normal-exit chain.
         run: mvn --batch-mode --no-transfer-progress -f mod_dynastic_esotericism/tools/pom.xml -Ddes.build.root=${{ runner.temp }}/dynastic-esotericism-build verify
@@ -137,5 +141,6 @@ jobs:
         with:
           name: dynastic-esotericism-static-evidence
           path: |
+            ${{ runner.temp }}/ck3-save-core-build/surefire-reports/
             ${{ runner.temp }}/dynastic-esotericism-maven/logs/
             ${{ runner.temp }}/dynastic-esotericism-build/dynastic-esotericism-tools/surefire-reports/

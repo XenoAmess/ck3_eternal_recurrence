@@ -212,17 +212,28 @@ public final class SectPresetValidation {
         byte[] bytes = Files.readAllBytes(root.resolve(relative));
         StaticValidation.validateBytes(relative, bytes);
         String source = StaticValidation.text(bytes);
-        List<String> tokens = new ArrayList<>();
-        Matcher matcher = TOKEN.matcher(source);
-        int offset = 0;
-        while (matcher.find()) {
-            if (matcher.start() != offset) throw new IllegalArgumentException("unsupported static preset syntax: " + relative + " at " + offset);
-            String token = matcher.group();
-            if (!Character.isWhitespace(token.charAt(0)) && token.charAt(0) != '#') tokens.add(token);
-            offset = matcher.end();
+        return fromShared(org.xar.ck3.save.Clausewitz.parse(source), relative);
+    }
+    /** Preserve the finite DES literal grammar while sharing the actual lexer/parser. */
+    private static Block fromShared(org.xar.ck3.save.Clausewitz.Block block, String relative) {
+        List<Element> elements = new ArrayList<>();
+        for (org.xar.ck3.save.Clausewitz.Entry entry : block.entries()) {
+            if (entry.operator().isEmpty()) {
+                if (!(entry.value() instanceof org.xar.ck3.save.Clausewitz.Atom atom) || !TOKEN.matcher(atom.token()).matches()) throw new IllegalArgumentException("unsupported static preset syntax: " + relative);
+                elements.add(new Atom(atom.token()));
+            } else {
+                if (!entry.operator().equals("=") || !TOKEN.matcher(entry.key()).matches()) throw new IllegalArgumentException("unsupported static preset syntax: " + relative);
+                Value value;
+                if (entry.value() instanceof org.xar.ck3.save.Clausewitz.Block child) value = fromShared(child, relative);
+                else {
+                    String token = ((org.xar.ck3.save.Clausewitz.Atom) entry.value()).token();
+                    if (!TOKEN.matcher(token).matches()) throw new IllegalArgumentException("unsupported static preset syntax: " + relative);
+                    value = new Scalar(token);
+                }
+                elements.add(new Assignment(entry.key(), value));
+            }
         }
-        if (offset != source.length()) throw new IllegalArgumentException("unsupported static preset syntax: " + relative + " at " + offset);
-        return new Parser(tokens, relative).root();
+        return new Block(List.copyOf(elements));
     }
 
     private static Map<String, Value> assignments(Block block, String context) {
@@ -276,37 +287,4 @@ public final class SectPresetValidation {
     private record Assignment(String key, Value value) implements Element { }
     private record Atom(String token) implements Element { }
 
-    /** Deliberately accepts only the finite literal definition syntax used by these presets. */
-    private static final class Parser {
-        private final List<String> tokens;
-        private final String relative;
-        private int offset;
-        private Parser(List<String> tokens, String relative) { this.tokens = List.copyOf(tokens); this.relative = relative; }
-        private Block root() {
-            Block result = body(false);
-            if (offset != tokens.size()) throw invalid();
-            return result;
-        }
-        private Block body(boolean nested) {
-            List<Element> elements = new ArrayList<>();
-            while (offset < tokens.size()) {
-                String key = tokens.get(offset++);
-                if (key.equals("}")) {
-                    if (!nested) throw invalid();
-                    return new Block(List.copyOf(elements));
-                }
-                if (key.equals("{") || key.equals("=")) throw invalid();
-                if (offset < tokens.size() && tokens.get(offset).equals("=")) {
-                    offset++;
-                    if (offset == tokens.size()) throw invalid();
-                    String value = tokens.get(offset++);
-                    if (value.equals("=") || value.equals("}")) throw invalid();
-                    elements.add(new Assignment(key, value.equals("{") ? body(true) : new Scalar(value)));
-                } else elements.add(new Atom(key));
-            }
-            if (nested) throw invalid();
-            return new Block(List.copyOf(elements));
-        }
-        private IllegalArgumentException invalid() { return new IllegalArgumentException("invalid static preset structure: " + relative + " at token " + offset); }
-    }
 }

@@ -21,6 +21,7 @@
     </dependencies>
   </dependencyManagement>
   <dependencies>
+    <dependency><groupId>org.xar.ck3</groupId><artifactId>ck3-save-core</artifactId><version>0.1.0</version></dependency>
     <dependency><groupId>io.quarkus</groupId><artifactId>quarkus-jackson</artifactId></dependency>
     <dependency><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter</artifactId><version>6.0.3</version><scope>test</scope></dependency>
   </dependencies>

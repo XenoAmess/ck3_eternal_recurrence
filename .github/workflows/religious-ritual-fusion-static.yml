@@ -5,6 +5,7 @@ on:
     branches: [master]
     paths:
       - 'mod_religious_ritual_fusion/**'
+      - 'java/ck3-save-core/**'
       - 'mod_dynastic_esotericism/common/on_action/des_on_actions.txt'
       - 'mod_dynastic_esotericism/common/scripted_effects/des_initialization_effects.txt'
       - 'mod_dynastic_esotericism/common/scripted_effects/des_maintenance_effects.txt'
@@ -20,6 +21,7 @@ on:
   pull_request:
     paths:
       - 'mod_religious_ritual_fusion/**'
+      - 'java/ck3-save-core/**'
       - 'mod_dynastic_esotericism/common/on_action/des_on_actions.txt'
       - 'mod_dynastic_esotericism/common/scripted_effects/des_initialization_effects.txt'
       - 'mod_dynastic_esotericism/common/scripted_effects/des_maintenance_effects.txt'
@@ -64,6 +66,8 @@ jobs:
         run: mvn --version
       - name: Install the shared consumer and strict type-check dependencies
         run: python -m pip install mcp==2.0.0 pydantic==2.13.5 mypy==2.4.0 psutil==7.2.2 types-psutil==7.2.2.20260906 opencv-python==5.0.0.93 numpy==2.5.2 Pillow==12.3.0
+      - name: Verify and install the exact shared save leaf
+        run: mvn --batch-mode --no-transfer-progress -f java/ck3-save-core/pom.xml -Dsave.build.root="%RUNNER_TEMP%/ck3-save-core-build" install
       - name: Verify full product producer and staging chain
         run: mvn --batch-mode --no-transfer-progress -f mod_religious_ritual_fusion/tools/pom.xml -Drrf.build.root=${{ runner.temp }}/rrf-build verify
       - name: Verify full shared fixture and independent compatibility profile consumers
@@ -83,5 +87,6 @@ jobs:
         with:
           name: religious-ritual-fusion-static-evidence
           path: |
+            ${{ runner.temp }}/ck3-save-core-build/surefire-reports/
             ${{ runner.temp }}/rrf-maven/logs/
             ${{ runner.temp }}/rrf-build/**/surefire-reports/

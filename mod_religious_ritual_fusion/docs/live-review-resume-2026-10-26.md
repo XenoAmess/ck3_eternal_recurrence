@@ -194,3 +194,17 @@ machine_id: `4-8e1c2f1861`，观察时间2026-10-26T20:37:50Z。结果窗改为�
 原已资格V12 Java CLI对当前产品执行 `validate`，原退出0，89个运行文件、223项定义；`git diff --check`原退出0。这是已有校验器检查新GUI字节，不是新Java构建或实机资格。原执行回执为 `R/review-fixes-a01/ui-and-shared-save-a01/metadata/ui-validation-a01/EXISTING-VALIDATOR.actual.json`。用户要求的三张R0024原图继续保留，尚未上架；后继选择实际通过的新界面图更新同一条目。
 
 三份精确重复存档已实际退休205746176 B，R0024第一日、第二日和R0020原件及784条冻结输入全部保留；被删旧副本路径已不可读取。fresh owned/native与容量检查通过后，Root实际CAS231→232准入独立Java64MiB和新metadata8MiB，截止23:00Z；单一新leaf的默认localrepo写入包含在64MiB内且最多1MiB，不建空依赖缓存。旧scene费用、prep/wire RED与gross highwater不重置。该准入不包含Game或SCREEN；下一实机另做有限预算与期限复核。Java共享save-core、声明式finalized冷载case和原生只读滚动观测候选按文件所有权并行推进，未声称已经迁移或运行。
+
+## 21:39Z：共享Java读取链与真实R0024存档验证
+
+machine_id: `4-8e1c2f1861`。新增独立Java叶模块 `java/ck3-save-core`，由两款现有Quarkus CLI消费同一Clausewitz parser、流式选择器和decoder生命周期。RRF旧v2报告保留薄适配，DES既有预置校验也接入共享parser。两款宿主提供严格 `inspect-save-v4`；共享v3实验合同拒绝，RRF保存v2与fixture v3不变。实际JAR／classes及其内嵌producer源码另行绑定，不把编译HEAD冒充加载代码身份。
+
+最初真实存档的全世界结构目录检查命中4096键上限，原失败保留；随后改为必填显式 `structureRoots`、仅所选命名根的有限相对深度，节点和键上限不放宽。真实R0024第二日checkpoint在原位、Win32拒写拒删句柄内由实际Rakaly读取，前后身份及SHA一致；没有复制69MB保存或启动Game。Actor31254的House174位于 `dynasties/dynasty_house`，其Dynasty174位于 `dynasties/dynasties`，再指向 `coat_of_arms/coat_of_arms_manager_database/1781`；House本身没有CoA字段。这只是现有默认状态的实际链，尚未证明DES宗族化或30日维护。
+
+同一新读取链实际分别完成12名角色、RRF七个完整实体加metadata，以及Dynasty／House／CoA完整记录。原外部RRF Request2不改字段重新执行，`scopes`、`inventories`、`stream`、decoder退出及stderr与旧报告逐项完全一致。新v4的atom字段为 `token`，旧v2为 `raw`，两者不是同一JSON表示。
+
+最终完整验证为叶模块10、RRF93、DES45、五个既有消费者模块48，共196次测试、零跳过，另有完整 `test_compatibility_mod_profiles.py` strict检查；五命令原wait均0。首次DES依赖错误及共享v3真实超限失败原件保留。实际执行身份为 `78f1d7f40f3b82ccb22b7f17d5867181cbad429d` 加被测工作树，292份输入Pin前后相等，不声称尚未生成的集成提交已执行。后加README说明不属于这些测试的执行覆盖。
+
+证据根 `R/review-fixes-a01/ui-and-shared-save-a01/metadata`：`EXECUTION.shared-java.actual.json` 为155146 B，SHA `c2cfe4677f740f86408ae8bc2c474d8b3b907b65150d30d1568fb5da02a4bb45`；`REAL-SAVE-COMPATIBILITY.actual.json` 为5442 B，SHA `feedd5e9806bc5e075b66af54742297b9f4b544b07419caef5adc383fb99dcc1`，含六份真实v4报告、v2比较及两宿主加载core JAR绑定。两份JAR均为95938 B，SHA `cb07605ae491196d98b61676d9d19c7717bf97376b26c96b9509753f890de1d4`。
+
+结果窗改动提交78的官方RRF CI [40397435211](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40397435211)已实际成功。这只覆盖该workflow；新共享代码仍待集成后的官方CI。Game／SCREEN均未取得，下一工作包需独立容量与有限期限准入，再生成新冻结图，实际验证已落定155的冷载、更新后的UI并拍摄宣传素材。原三图尚未上架，公开0.1.0-alpha与同一Workshop3826756673保持原发布内容，八项业务验收继续。

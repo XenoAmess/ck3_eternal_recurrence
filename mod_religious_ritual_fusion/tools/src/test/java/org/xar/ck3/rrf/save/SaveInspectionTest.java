@@ -56,7 +56,10 @@ final class SaveInspectionTest {
         assertEquals(1, scope(report.scopes(), ScopeKind.METADATA).ast().entries().size());
         assertTrue(report.saveUnchanged()); assertFalse(report.gameStarted());
         assertEquals(request.save(), SaveInspector.pin(Path.of(request.save().path())));
-        assertEquals(13, report.producerSources().size());
+        Path repository = Path.of(request.repository());
+        assertEquals(13 + org.xar.ck3.save.ProducerSources.requiredSources(repository).size(), report.producerSources().size());
+        assertTrue(report.producerSources().stream().allMatch(p -> Path.of(p.path()).startsWith(repository)));
+        assertTrue(report.producerSources().stream().anyMatch(p -> p.path().replace((char) 92, '/').contains("java/ck3-save-core/src/main/java/")));
         assertEquals(Integer.toString(SAVE.getBytes(StandardCharsets.UTF_8).length), report.stream().bytes());
         assertTrue(new String(Json.write(report), StandardCharsets.UTF_8).contains("\"9007199254740993\""));
     }
@@ -107,6 +110,23 @@ final class SaveInspectionTest {
         String large = SAVE.replace("rite=150", "rite=150 extra={" + "a=b ".repeat(150000) + "}");
         assertThrows(IOException.class, () -> new SaveStream(new StringReader(large), request).read());
         assertThrows(IOException.class, () -> new SaveStream(new StringReader(SAVE + "noise=\"" + "a".repeat(2 * 1024 * 1024 + 1) + "\""), request).read());
+    }
+    @Test void v2CanonicalRecordHashAndAstRemainTheHistoricalWireContract() throws Exception {
+        String text = """
+                meta_data={version="1.20.0.4" portrait={ignored=yes}}
+                living={31254={rite=150}}
+                religion={religions={8={key="christianity"}}}
+                faiths={database={13={religion=8}}}
+                rites={database={150={faith=13 doctrine="one" doctrine="two"}}}
+                """;
+        SaveStream.Projection projection = new SaveStream(new StringReader(text), request()).read();
+        Scope actor = scope(projection.scopes(), ScopeKind.ACTOR);
+        Scope rite = scope(projection.scopes(), ScopeKind.RITE);
+        assertEquals(org.xar.ck3.rrf.ReleaseBuilder.sha256("record = { rite = 150 } ".getBytes(StandardCharsets.UTF_8)), actor.canonicalTokenSha256());
+        assertEquals(org.xar.ck3.rrf.ReleaseBuilder.sha256("record = { faith = 13 doctrine = \"one\" doctrine = \"two\" } ".getBytes(StandardCharsets.UTF_8)), rite.canonicalTokenSha256());
+        assertEquals(new Block(List.of(new SaveContracts.Entry("rite", "=", new Atom("150")))), actor.ast());
+        assertEquals(List.of("\"one\"", "\"two\""), rite.ast().entries().stream().filter(e -> e.key().equals("doctrine")).map(e -> ((Atom) e.value()).raw()).toList());
+        assertEquals(5, projection.scopes().size()); assertEquals(3, projection.inventories().size());
     }
     private Request request() throws IOException {
         Path save = directory.resolve("synthetic.ck3"); if (!Files.exists(save)) Files.writeString(save, SAVE);

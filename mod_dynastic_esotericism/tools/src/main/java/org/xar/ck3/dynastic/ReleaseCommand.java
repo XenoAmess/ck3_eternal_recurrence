@@ -20,19 +20,23 @@ import org.xar.ck3.dynastic.release.StaticValidation;
 /** Local development command host. No Java file is shipped in the CK3 runtime package. */
 @QuarkusMain
 public final class ReleaseCommand implements QuarkusApplication {
+    private final org.xar.ck3.save.SaveDecoder.Launcher saveDecoder;
+    public ReleaseCommand() { this(org.xar.ck3.save.SaveDecoder::launch); }
+    ReleaseCommand(org.xar.ck3.save.SaveDecoder.Launcher saveDecoder) { this.saveDecoder = java.util.Objects.requireNonNull(saveDecoder); }
     private static final Set<String> OPTIONS = Set.of("--source", "--repo-root", "--output", "--manifest", "--workshop-item-id", "--git-tag");
     private static final ObjectMapper JSON = new ObjectMapper();
 
     @Override
     public int run(String... args) {
         try {
-            if (args.length == 0) throw new IllegalArgumentException("expected validate, build, verify, check, fixture, runtime or artwork");
+            if (args.length == 0) throw new IllegalArgumentException("expected validate, build, verify, check, fixture, runtime, artwork or inspect-save-v4");
             if (args[0].equals("artwork")) {
                 if (args.length != 3) throw new IllegalArgumentException("expected artwork <uploaded-zip> <mod-source>");
                 System.out.println(JSON.writerWithDefaultPrettyPrinter().writeValueAsString(
                         SectArtworkImporter.importArchive(Path.of(args[1]), Path.of(args[2]))));
                 return 0;
             }
+            if (args[0].equals("inspect-save-v4")) return org.xar.ck3.save.Inspection.run(java.util.Arrays.copyOfRange(args, 1, args.length), saveDecoder);
             if (args[0].equals("fixture")) return FixtureEmitter.run(Arrays.copyOfRange(args, 1, args.length));
             if (args[0].equals("runtime")) return SharedRuntimeComposer.run(Arrays.copyOfRange(args, 1, args.length));
             ParsedOptions parsed = parse(Arrays.copyOfRange(args, 1, args.length));

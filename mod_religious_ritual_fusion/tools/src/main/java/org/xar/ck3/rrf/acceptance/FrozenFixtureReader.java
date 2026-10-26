@@ -60,6 +60,9 @@ public final class FrozenFixtureReader {
         for (Path required : List.of(catalog, java.resolve("ExpectedSelection.java"), java.resolve("acceptance/FixtureContracts.java"), java.resolve("acceptance/FixtureEmitter.java"))) {
             if (!manifest.producerSourcePins().contains(pin(required))) throw new IOException("fixture selection/catalog producer is not source-bound");
         }
+        for (org.xar.ck3.save.SaveContracts.Pin source : org.xar.ck3.save.ProducerSources.verify(repo).repositorySources()) {
+            if (!manifest.producerSourcePins().contains(new FilePin(source.path(), source.bytes(), source.sha256()))) throw new IOException("fixture shared parser producer is not source-bound");
+        }
         Set<String> actual = new LinkedHashSet<>();
         try (var paths = Files.walk(root)) {
             for (Path path : paths.toList()) {
