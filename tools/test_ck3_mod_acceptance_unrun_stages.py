@@ -1,14 +1,18 @@
 """Persistent regression for the actual default CAS completion path."""
 from copy import deepcopy
 from datetime import datetime, timezone
+from decimal import Decimal
 import hashlib
 import json
 from pathlib import Path
 import tempfile
+import subprocess
+import sys
 import unittest
 import argparse
 import importlib
 from contextlib import ExitStack
+from collections.abc import Mapping
 from types import SimpleNamespace
 from unittest.mock import patch
 from ck3_mod_acceptance_background_types import FilePin, JsonObject, JsonValue, json_object
@@ -212,6 +216,211 @@ class ExternalExecCompletionTests(unittest.TestCase):
         changed_reference = self.write_json('wrong-operation.json', changed)
         with self.assertRaisesRegex(ValueError, 'allocator command differs'):
             subject._allocator_argv({'allocator_external_exec': changed_reference, 'allocator_stdout': self.stdout}, self.machine, self.stamps)
+
+
+class RootAllocatorTripletTests(unittest.TestCase):
+    """Execute the Root recorder shape against an owned, no-Game CLI stub.
+
+    Each positive triplet comes from a real child PID/birth and original wait.
+    Negative fixtures mutate only these temporary originals, never scene files.
+    """
+
+    def setUp(self) -> None:
+        temporary = tempfile.TemporaryDirectory(prefix='unrun-root-recorder-')
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        self.repo = self.root / 'repo'
+        (self.repo / 'tools').mkdir(parents=True)
+        self.output = self.root / 'work-package/root-execution-test'
+        self.output.mkdir(parents=True)
+        self.machine = 'owned-no-game-fixture'
+        stub = self.repo / 'tools/ck3_mod_acceptance.py'
+        stub.write_text("from pathlib import Path\nfrom datetime import datetime,timezone\nimport json,time\n"
+            "assert __import__('sys').argv[1]=='allocate'\n"
+            "ready=datetime.now(timezone.utc).isoformat()\ntime.sleep(.02)\n"
+            "Path('../work-package/keeper-stamps.json').write_text(json.dumps([ready,datetime.now(timezone.utc).isoformat()]),encoding='utf-8')\n",
+            encoding='utf-8')
+        self.producer = self.root / 'root-public.once.py'
+        source = ("from pathlib import Path\nfrom datetime import datetime,timezone\n"
+            "import json,subprocess,sys,time,psutil\nREPO=Path(" + repr(str(self.repo)) + ")\n"
+            "C=REPO.parent/'work-package'\nOUT=C/'root-execution-test'\nPYTHON=" + repr(sys.executable) + "\n"
+            "MACHINE=" + repr(self.machine) + "\n") + r'''
+def stamp():
+    return datetime.now(timezone.utc).isoformat()
+def write_new(path, value):
+    with path.open('x', encoding='utf-8', newline='\n') as stream:
+        json.dump(value, stream, indent=2, ensure_ascii=False, allow_nan=False)
+        stream.write('\n')
+mode = sys.argv[1]
+argv = [PYTHON, '-B', '-X', 'utf8', 'tools/ck3_mod_acceptance.py', mode]
+prefix = {'run': 'PUBLIC-RUN', 'allocate': 'ALLOCATE', 'preflight': 'PREFLIGHT'}[mode]
+write_new(OUT / (prefix + '.intent.actual.json'), {'machine_id': MACHINE, 'argv': argv, 'started_at_utc': stamp()})
+started = time.monotonic()
+with (OUT / (prefix + '.stdout.log')).open('xb') as out, (OUT / (prefix + '.stderr.log')).open('xb') as err:
+    child = subprocess.Popen(argv, cwd=REPO, stdout=out, stderr=err)
+    write_new(OUT / (prefix + '.started.actual.json'), {'machine_id': MACHINE,
+        'pid': child.pid, 'process_create_time_seconds': str(psutil.Process(child.pid).create_time()),
+        'started_at_utc': stamp(), 'original_wait_pending': True})
+    code = child.wait()
+write_new(OUT / (prefix + '.original-wait.actual.json'), {'machine_id': MACHINE,
+    'original_wait_returncode': code, 'elapsed_seconds': time.monotonic() - started, 'finished_at_utc': stamp()})
+raise SystemExit(code)
+'''
+        self.source_raw = source.encode('utf-8')
+        self.producer.write_bytes(self.source_raw)
+        subprocess.run([sys.executable, '-B', '-X', 'utf8', str(self.producer), 'allocate'],
+            cwd=self.repo, capture_output=True, check=True)
+        self.paths = {'allocator_intent': self.output / 'ALLOCATE.intent.actual.json',
+            'allocator_process': self.output / 'ALLOCATE.started.actual.json',
+            'allocator_exit': self.output / 'ALLOCATE.original-wait.actual.json'}
+        self.raw = {key: path.read_bytes() for key, path in self.paths.items()}
+        self.originals = {key: json_object(json.loads(raw)) for key, raw in self.raw.items()}
+        self.stamps = [datetime.fromisoformat(value) for value in
+            json.loads((self.root / 'work-package/keeper-stamps.json').read_bytes())]
+        self.bundle: dict[str, object] = {key: self.reference(path) for key, path in self.paths.items()}
+        self.bundle['allocator_command'] = self.reference(self.producer)
+
+    @staticmethod
+    def reference(path: Path) -> FilePin:
+        raw = path.read_bytes()
+        return FilePin(path=str(path.resolve()), bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest())
+
+    def restore(self) -> None:
+        for key, path in self.paths.items():
+            path.write_bytes(self.raw[key])
+        self.producer.write_bytes(self.source_raw)
+
+    def changed(self, key: str, field: str, value: JsonValue, *, remove: bool = False) -> dict[str, object]:
+        self.restore()
+        row = deepcopy(self.originals[key])
+        if remove:
+            del row[field]
+        else:
+            row[field] = value
+        path = self.paths[key]
+        path.write_text(json.dumps(row, allow_nan=True), encoding='utf-8')
+        return {**self.bundle, key: self.reference(path)}
+
+    def parse(self, bundle: Mapping[str, object] | None = None,
+            stamps: list[datetime] | None = None) -> list[str]:
+        return subject._allocator_argv(self.bundle if bundle is None else bundle,
+            self.machine, self.stamps if stamps is None else stamps)
+
+    def test_actual_child_original_wait_and_json_round_trip(self) -> None:
+        value = json_object(json.loads(json.dumps(self.bundle)))
+        self.assertEqual(self.parse(value), self.originals['allocator_intent']['argv'])
+        process = self.originals['allocator_process']
+        parsed = subject._root_allocator_triplet(self.originals['allocator_intent'], process,
+            self.originals['allocator_exit'], command=self.bundle['allocator_command'],
+            paths=(self.paths['allocator_intent'], self.paths['allocator_process'], self.paths['allocator_exit']),
+            machine=self.machine, keeper_stamps=self.stamps)
+        self.assertGreater(parsed.pid, 0)
+        self.assertEqual(parsed.process_create_time_seconds, Decimal(str(process['process_create_time_seconds'])))
+        self.assertNotIn('pid', self.originals['allocator_exit'])
+        self.assertNotIn('argv', process)
+
+    def test_exact_twelve_fields_and_missing_command_are_required(self) -> None:
+        for key, row in self.originals.items():
+            for field in row:
+                with self.subTest(key=key, missing=field), self.assertRaises(ValueError):
+                    self.parse(self.changed(key, field, None, remove=True))
+            with self.subTest(key=key, extra=True), self.assertRaises(ValueError):
+                self.parse(self.changed(key, 'projection_alias', True))
+        self.restore()
+        missing = dict(self.bundle)
+        del missing['allocator_command']
+        with self.assertRaises(ValueError):
+            self.parse(missing)
+
+    def test_exact_pid_wait_pending_birth_and_finite_elapsed_types(self) -> None:
+        cases: tuple[tuple[str, str, JsonValue], ...] = (
+            ('allocator_process', 'pid', True), ('allocator_process', 'pid', 1.0),
+            ('allocator_process', 'pid', 0), ('allocator_process', 'pid', 9007199254740992),
+            ('allocator_process', 'original_wait_pending', 1),
+            ('allocator_process', 'original_wait_pending', False),
+            ('allocator_exit', 'original_wait_returncode', False),
+            ('allocator_exit', 'original_wait_returncode', 0.0),
+            ('allocator_exit', 'original_wait_returncode', 2),
+            ('allocator_exit', 'elapsed_seconds', True), ('allocator_exit', 'elapsed_seconds', -1),
+            ('allocator_exit', 'elapsed_seconds', float('nan')), ('allocator_exit', 'elapsed_seconds', float('inf')),
+            ('allocator_process', 'process_create_time_seconds', 1.0),
+            ('allocator_process', 'process_create_time_seconds', '01792982215.0'),
+            ('allocator_process', 'process_create_time_seconds', 'NaN'),
+        )
+        for key, field, bad in cases:
+            with self.subTest(key=key, field=field, value=bad), self.assertRaises(ValueError):
+                self.parse(self.changed(key, field, bad))
+
+    def test_machine_timezone_and_intent_birth_keeper_wait_order(self) -> None:
+        for key in self.paths:
+            with self.subTest(machine=key), self.assertRaises(ValueError):
+                self.parse(self.changed(key, 'machine_id', 'different-machine'))
+        cases: tuple[tuple[str, str, JsonValue], ...] = (
+            ('allocator_intent', 'started_at_utc', self.stamps[-1].isoformat()),
+            ('allocator_process', 'started_at_utc', '2000-01-01T00:00:00+00:00'),
+            ('allocator_exit', 'finished_at_utc', self.stamps[0].isoformat()),
+            ('allocator_intent', 'started_at_utc', '2026-01-01T00:00:00'),
+            ('allocator_process', 'started_at_utc', '2026-01-01T00:00:00+01:00'),
+            ('allocator_process', 'process_create_time_seconds', '1.0'),
+        )
+        for key, field, bad in cases:
+            with self.subTest(key=key, field=field), self.assertRaises(ValueError):
+                self.parse(self.changed(key, field, bad))
+        self.restore()
+        with self.assertRaises(ValueError):
+            self.parse(stamps=list(reversed(self.stamps)))
+        with self.assertRaises(ValueError):
+            self.parse(stamps=[])
+
+    def test_different_producer_child_writer_argv_and_wait_cannot_grant_identity(self) -> None:
+        source = self.source_raw.decode('utf-8')
+        replacements = (
+            ('code = child.wait()', 'code = 0'),
+            ('subprocess.Popen(argv,', 'subprocess.Popen(other_argv,'),
+            ("'pid': child.pid", "'pid': 123"),
+            ('psutil.Process(child.pid)', 'psutil.Process(123)'),
+            ("'original_wait_returncode': code", "'original_wait_returncode': 0"),
+            ("path.open('x'", "path.open('w'"),
+            ("OUT=C/'root-execution-test'", "OUT=C/'other-output'"),
+            ('import json,subprocess,sys,time,psutil', 'import json,subprocess,sys,time,psutil\nsubprocess=object()'),
+            ('import json,subprocess,sys,time,psutil', 'import json,subprocess,sys,time,psutil\nsubprocess.Popen=object()'),
+            ('import json,subprocess,sys,time,psutil', 'import json,subprocess,sys,time,psutil\nalias=subprocess'),
+            ('import json,subprocess,sys,time,psutil', 'import json,sys,time,psutil\nimport pathlib as subprocess'),
+            ('import json,subprocess,sys,time,psutil', "import json,subprocess,sys,time,psutil\nglobals()['subprocess']=object()"),
+        )
+        for old, new in replacements:
+            self.restore()
+            self.assertIn(old, source)
+            self.producer.write_text(source.replace(old, new), encoding='utf-8')
+            bundle = {**self.bundle, 'allocator_command': self.reference(self.producer)}
+            with self.subTest(producer_change=old), self.assertRaises(ValueError):
+                self.parse(bundle)
+        self.restore()
+        self.producer.write_bytes(self.source_raw + b'\n# changed after original pin\n')
+        with self.assertRaises(ValueError):
+            self.parse()
+
+    def test_old_triplet_remains_distinct_and_root_files_cannot_be_crossed(self) -> None:
+        intent, process, waited = (self.originals[key] for key in
+            ('allocator_intent', 'allocator_process', 'allocator_exit'))
+        argv = intent['argv']
+        old: dict[str, JsonObject] = {
+            'allocator_intent': {'machine_id': self.machine, 'stage': 'allocate', 'argv': argv,
+                'at_utc': intent['started_at_utc']},
+            'allocator_process': {'machine_id': self.machine, 'pid': process['pid'], 'argv': argv,
+                'create_time': float(str(process['process_create_time_seconds']))},
+            'allocator_exit': {'machine_id': self.machine, 'pid': process['pid'],
+                'actual_original_popen_wait': True, 'returncode': 0, 'completed_at_utc': waited['finished_at_utc']}}
+        legacy: dict[str, object] = {}
+        for key, row in old.items():
+            path = self.root / (key + '.json')
+            path.write_text(json.dumps(row), encoding='utf-8')
+            legacy[key] = self.reference(path)
+        self.assertEqual(self.parse(legacy), argv)
+        other = self.output / 'OTHER.original-wait.actual.json'
+        other.write_bytes(self.raw['allocator_exit'])
+        with self.assertRaises(ValueError):
+            self.parse({**self.bundle, 'allocator_exit': self.reference(other)})
 
 
 class AbortedAllocationTests(unittest.TestCase):

@@ -919,8 +919,11 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_log_contract.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          setlocal
+          set "MYPYPATH=%PYTHONPATH%"
           python -B -m mypy --follow-imports=skip --no-incremental --cache-dir nul tools/ck3_mod_acceptance_queue.py tools/test_ck3_mod_acceptance_previous_row_readonly.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          endlocal
           python -B -m mypy --follow-imports=skip --check-untyped-defs --no-incremental --cache-dir nul tools/test_ck3_mod_acceptance_queue_inprocess.py tools/test_ck3_mod_acceptance_workshop_cache.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_pre_ready.py

@@ -3,30 +3,43 @@ from pathlib import Path
 from copy import deepcopy
 from unittest.mock import patch
 from datetime import datetime,timezone
+from collections.abc import Mapping
 import argparse,hashlib,json
 import ck3_mod_acceptance_unrun as subject
 from ck3_mod_acceptance_allocate import read_failed_runtime_release,current_screen_absent
+from ck3_mod_acceptance_background_types import JsonObject, JsonValue
 
-def need(value,message):
+def need(value: object,message: object) -> None:
     if not value:raise AssertionError(message)
 
-def allocator_original_checks(bundle,machine,keeper_stamps):
+def allocator_original_checks(bundle: Mapping[str, object], machine: str,
+        keeper_stamps: list[datetime]) -> dict[str, str | bool]:
     """Exercise the real pinned triplet and its three association boundaries."""
     argv=subject._allocator_argv(bundle,machine,keeper_stamps)
     if 'allocator_intent' not in bundle:return {'allocator_evidence_form':'command-result'}
-    originals={key:subject._read(bundle[key]['path']) for key in
+    originals={key:subject._read(subject._evidence_pin(bundle[key],key)['path']) for key in
         ('allocator_intent','allocator_process','allocator_exit')}
     actual_read=subject._read
-    def refuses(key,field,value,expected):
-        def changed(path):
+    def refuses(key: str,field: str,value: JsonValue,expected: str) -> None:
+        def changed(path: str | Path) -> JsonObject:
             row=actual_read(path)
-            if Path(path).resolve()==Path(bundle[key]['path']).resolve():row={**row,field:value}
+            if Path(path).resolve()==Path(subject._evidence_pin(bundle[key],key)['path']).resolve():row={**row,field:value}
             return row
         with patch.object(subject,'_read',side_effect=changed):
             try:subject._allocator_argv(bundle,machine,keeper_stamps)
             except ValueError as error:need(expected in str(error),(expected,str(error)))
             else:raise AssertionError('Unrelated allocator original admitted: '+field)
-    refuses('allocator_exit','pid',originals['allocator_process']['pid']+1,'intent/process/wait0')
+    if 'original_wait_returncode' in originals['allocator_exit']:
+        # This is a distinct actual recorder schema, not a projection into the
+        # legacy process/wait shape. Original source/PID binding was checked by
+        # the real reader above; negative values exist only in patched reads.
+        refuses('allocator_process','pid',True,'exact safe integer')
+        refuses('allocator_process','argv',argv+['--unrelated'],'triplet fields')
+        refuses('allocator_exit','original_wait_returncode',False,'exact safe integer')
+        refuses('allocator_exit','finished_at_utc',originals['allocator_intent']['started_at_utc'],'chronology')
+        return {'allocator_evidence_form':'original-root-split-intent-process-popen-wait',
+            'root_source_child_and_wait_bound':True,'root_types_fields_chronology_rejected':True}
+    refuses('allocator_exit','pid',subject._integer(originals['allocator_process']['pid'],'Original fixture pid',1)+1,'intent/process/wait0')
     refuses('allocator_process','argv',argv+['--unrelated'],'intent/process/wait0')
     refuses('allocator_exit','completed_at_utc',originals['allocator_intent']['at_utc'],'wait time')
     # Exercise the pre-existing combined receipt contract with an in-memory

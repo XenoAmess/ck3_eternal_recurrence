@@ -9,7 +9,7 @@ from decimal import Decimal
 from dataclasses import dataclass
 from collections.abc import Mapping
 from typing import Literal, TypedDict, Protocol, runtime_checkable
-import argparse, hashlib, importlib, json, math, os, re, subprocess, sys
+import argparse, ast, hashlib, importlib, json, math, os, re, subprocess, sys
 from ck3_mod_acceptance import check_pin, pin, read_json, same_directory_control_peer
 from ck3_mod_acceptance_launcher_pin_refusal import public_operation_argv, validate_launcher_pin_refusal
 from ck3_mod_acceptance_background_types import FilePin, JsonObject, file_pin, json_object, object_field, text_field, strings_field
@@ -640,6 +640,178 @@ def _exact(bundle, key, path):
     ref=bundle[key];need(Path(ref['path']).resolve()==Path(path).resolve(),'Unrun original path differs: '+key)
     check_pin(Path(path),ref);return _read(path)
 
+
+@dataclass(frozen=True)
+class RootAllocatorTriplet:
+    argv: tuple[str, ...]
+    pid: int
+    process_create_time_seconds: Decimal
+    intended_at: datetime
+    process_observed_at: datetime
+    finished_at: datetime
+
+
+def _root_allocator_source(command: object, paths: tuple[Path, Path, Path],
+        machine: str, argv: list[str]) -> None:
+    """Bind the real split recorder to its child, exact files and wait result."""
+    ref = _evidence_pin(command, 'Root allocator producer')
+    source = Path(ref['path'])
+    if not source.is_absolute() or source.is_symlink() or not 0 < ref['bytes'] <= 1048576:
+        raise ValueError('Bounded original Root allocator producer required')
+    check_pin(source, dict(ref))
+    tree = ast.parse(source.read_text(encoding='utf-8-sig'))
+    imports: dict[str, tuple[str, ...]] = {
+        'Path': ('from', 'pathlib', 'Path'),
+        'datetime': ('from', 'datetime', 'datetime'), 'timezone': ('from', 'datetime', 'timezone'),
+        **{name: ('import', name) for name in ('json', 'subprocess', 'sys', 'time', 'psutil')},
+    }
+    observed_imports: dict[str, list[tuple[str, ...]]] = {name: [] for name in imports}
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.Import, ast.ImportFrom)):
+            for alias in node.names:
+                name = alias.asname or alias.name.split('.')[0]
+                if isinstance(node, ast.ImportFrom) and alias.name == '*':
+                    raise ValueError('Root allocator producer wildcard import differs')
+                if name in imports:
+                    if alias.asname is not None:
+                        raise ValueError('Root allocator producer import alias differs')
+                    observed_imports[name].append(('import', alias.name) if isinstance(node, ast.Import)
+                        else ('from', '.' * node.level + (node.module or ''), alias.name))
+        if (isinstance(node, ast.Name) and isinstance(node.ctx, (ast.Store, ast.Del)) and node.id in imports
+                or isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) and node.name in imports
+                or isinstance(node, ast.arg) and node.arg in imports
+                or isinstance(node, ast.ExceptHandler) and node.name in imports):
+            raise ValueError('Root allocator producer imported binding was reassigned')
+        target: ast.expr | None = None
+        if isinstance(node, (ast.Attribute, ast.Subscript)) and isinstance(node.ctx, (ast.Store, ast.Del)):
+            target = node.value
+        elif isinstance(node, (ast.Assign, ast.AnnAssign, ast.NamedExpr)):
+            target = node.value
+            if isinstance(target, ast.Call):
+                target = None
+            elif (isinstance(node, ast.Assign) and len(node.targets) == 1
+                    and isinstance(node.targets[0], ast.Name) and node.targets[0].id == 'mode'
+                    and target is not None and ast.dump(target) == ast.dump(ast.parse('sys.argv[1]', mode='eval').body)):
+                target = None
+        while isinstance(target, (ast.Attribute, ast.Subscript)):
+            target = target.value
+        if isinstance(target, ast.Name) and target.id in imports:
+            raise ValueError('Root allocator producer imported object alias or mutation differs')
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) \
+                and node.func.id in ('exec', 'eval', 'globals', 'locals', 'setattr', 'delattr'):
+            raise ValueError('Root allocator producer dynamic binding differs')
+    if any(observed_imports[name] != [expected] for name, expected in imports.items()):
+        raise ValueError('Root allocator producer original imports differ')
+    assignments: dict[str, ast.expr] = {}
+    for node in tree.body:
+        if isinstance(node, ast.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name):
+            name = node.targets[0].id
+            if name in assignments:
+                raise ValueError('Root allocator producer reassigned a recorded binding')
+            assignments[name] = node.value
+
+    def path_value(node: ast.expr, seen: tuple[str, ...] = ()) -> Path:
+        if isinstance(node, ast.Name) and node.id in assignments and node.id not in seen:
+            return path_value(assignments[node.id], (*seen, node.id))
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id in ('Path', 'str') \
+                and len(node.args) == 1 and not node.keywords:
+            return path_value(node.args[0], seen)
+        if isinstance(node, ast.Constant) and isinstance(node.value, str):
+            return Path(node.value)
+        if isinstance(node, ast.Attribute) and node.attr == 'parent':
+            return path_value(node.value, seen).parent
+        if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Div) \
+                and isinstance(node.right, ast.Constant) and isinstance(node.right.value, str):
+            return path_value(node.left, seen) / node.right.value
+        raise ValueError('Root allocator producer path expression differs')
+
+    if not all(name in assignments for name in ('OUT', 'REPO', 'PYTHON', 'MACHINE', 'argv', 'mode', 'prefix')):
+        raise ValueError('Root allocator producer bindings missing')
+    output, repo, python = (path_value(assignments[name]) for name in ('OUT', 'REPO', 'PYTHON'))
+    if (not all(path.is_absolute() for path in (output, repo, python))
+            or tuple(path.resolve() for path in paths) != tuple(output.resolve() / name for name in
+                ('ALLOCATE.intent.actual.json', 'ALLOCATE.started.actual.json', 'ALLOCATE.original-wait.actual.json'))
+            or not isinstance(assignments['MACHINE'], ast.Constant) or assignments['MACHINE'].value != machine
+            or not isinstance(assignments['argv'], ast.List)):
+        raise ValueError('Root allocator producer crossed machine or original output paths')
+    prefix = ast.parse("argv=[PYTHON,'-B','-X','utf8','tools/ck3_mod_acceptance.py',mode]").body[0]
+    if not isinstance(prefix, ast.Assign) or not isinstance(prefix.value, ast.List):
+        raise ValueError('Internal Root argv signature unavailable')
+    if (len(assignments['argv'].elts) < 6 or any(ast.dump(a) != ast.dump(b)
+            for a, b in zip(assignments['argv'].elts[:6], prefix.value.elts))
+            or len(argv) < 6 or Path(argv[0]).resolve() != python.resolve()
+            or argv[1:6] != ['-B', '-X', 'utf8', 'tools/ck3_mod_acceptance.py', 'allocate']):
+        raise ValueError('Root allocator producer argv differs from actual public command')
+    expected = ast.parse(r'''
+def stamp():
+    return datetime.now(timezone.utc).isoformat()
+def write_new(path, value):
+    with path.open('x', encoding='utf-8', newline='\n') as stream:
+        json.dump(value, stream, indent=2, ensure_ascii=False, allow_nan=False)
+        stream.write('\n')
+mode = sys.argv[1]
+prefix = {'run': 'PUBLIC-RUN', 'allocate': 'ALLOCATE', 'preflight': 'PREFLIGHT'}[mode]
+write_new(OUT / (prefix + '.intent.actual.json'), {'machine_id': MACHINE, 'argv': argv, 'started_at_utc': stamp()})
+started = time.monotonic()
+with (OUT / (prefix + '.stdout.log')).open('xb') as out, (OUT / (prefix + '.stderr.log')).open('xb') as err:
+    child = subprocess.Popen(argv, cwd=REPO, stdout=out, stderr=err)
+    write_new(OUT / (prefix + '.started.actual.json'), {'machine_id': MACHINE,
+        'pid': child.pid, 'process_create_time_seconds': str(psutil.Process(child.pid).create_time()),
+        'started_at_utc': stamp(), 'original_wait_pending': True})
+    code = child.wait()
+write_new(OUT / (prefix + '.original-wait.actual.json'), {'machine_id': MACHINE,
+    'original_wait_returncode': code, 'elapsed_seconds': time.monotonic() - started, 'finished_at_utc': stamp()})
+''').body
+    signature = [ast.dump(node) for node in expected[4:]]
+    candidates = [tree.body[i:i + len(signature)] for i in range(len(tree.body))
+        if [ast.dump(node) for node in tree.body[i:i + len(signature)]] == signature]
+    for required in expected[:4]:
+        if sum(ast.dump(node) == ast.dump(required) for node in tree.body) != 1:
+            raise ValueError('Root allocator producer stamp/write_new/mode binding differs')
+    stores = {name: sum(isinstance(node, ast.Name) and isinstance(node.ctx, ast.Store) and node.id == name
+        for node in ast.walk(tree)) for name in ('child', 'code')}
+    popens = [node for node in ast.walk(tree) if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute) and node.func.attr == 'Popen']
+    if len(candidates) != 1 or stores != {'child': 1, 'code': 1} or len(popens) != 1:
+        raise ValueError('Root allocator producer must publish the original child Popen.wait result')
+
+
+def _root_allocator_triplet(intent: JsonObject, process: JsonObject, waited: JsonObject,
+        *, command: object, paths: tuple[Path, Path, Path], machine: str,
+        keeper_stamps: list[datetime]) -> RootAllocatorTriplet:
+    if (set(intent) != {'machine_id', 'argv', 'started_at_utc'}
+            or set(process) != {'machine_id', 'pid', 'process_create_time_seconds', 'started_at_utc', 'original_wait_pending'}
+            or set(waited) != {'machine_id', 'original_wait_returncode', 'elapsed_seconds', 'finished_at_utc'}
+            or any(row.get('machine_id') != machine for row in (intent, process, waited))
+            or process.get('original_wait_pending') is not True
+            or _integer(waited.get('original_wait_returncode'), 'Root original wait code') != 0):
+        raise ValueError('Exact original Root allocator triplet fields/machine/wait0 required')
+    pid = _integer(process.get('pid'), 'Root original child pid', 1)
+    birth = _text(process.get('process_create_time_seconds'), 'Root original process birth')
+    if re.fullmatch(r'[1-9][0-9]*(?:\.[0-9]+)?', birth) is None:
+        raise ValueError('Canonical original Root child birth decimal required')
+    created = Decimal(birth)
+    _tool_duration(waited.get('elapsed_seconds'), 'Root original elapsed seconds')
+    intended = _timestamp(intent.get('started_at_utc'), 'Root allocator intent')
+    observed = _timestamp(process.get('started_at_utc'), 'Root child observation')
+    finished = _timestamp(waited.get('finished_at_utc'), 'Root allocator original wait')
+    stamps = [intended, observed, *keeper_stamps, finished]
+    if len(keeper_stamps) < 2 or any(stamp.utcoffset() != timezone.utc.utcoffset(stamp) for stamp in stamps):
+        raise ValueError('Root original allocator/keeper UTC chronology required')
+
+    def seconds(stamp: datetime) -> Decimal:
+        delta = stamp - datetime(1970, 1, 1, tzinfo=timezone.utc)
+        return Decimal(delta.days * 86400 + delta.seconds) + Decimal(delta.microseconds) / Decimal(1000000)
+
+    # Keep the OS birth's decimal precision; no rounded datetime/float identity.
+    if not seconds(intended) <= created <= seconds(observed) <= seconds(keeper_stamps[0]) \
+            or stamps != sorted(stamps):
+        raise ValueError('Original Root allocator intent/child/keeper/wait chronology differs')
+    argv = strings_field(intent, 'argv')
+    _root_allocator_source(command, paths, machine, argv)
+    return RootAllocatorTriplet(tuple(argv), pid, created, intended, observed, finished)
+
+
 def _allocator_argv(bundle: Mapping[str, object], machine: str, keeper_stamps: list[datetime]) -> list[str]:
     """Read one original allocator completion evidence form.
 
@@ -673,6 +845,12 @@ def _allocator_argv(bundle: Mapping[str, object], machine: str, keeper_stamps: l
             argv=command.get('argv',[])
     else:
         intent,process,exit_row=(original(k) for k in keys)
+        if 'original_wait_returncode' in exit_row or 'process_create_time_seconds' in process:
+            paths = tuple(Path(_evidence_pin(bundle[key], key)['path']) for key in keys)
+            root = _root_allocator_triplet(intent, process, exit_row, command=bundle.get('allocator_command'),
+                paths=(paths[0], paths[1], paths[2]), machine=machine, keeper_stamps=keeper_stamps)
+            argv = list(root.argv)
+            return argv
         pid=process.get('pid');created=process.get('create_time')
         need(all(row.get('machine_id')==machine for row in (intent,process,exit_row))
              and intent.get('stage')=='allocate' and type(pid) is int and pid>0
@@ -1149,6 +1327,8 @@ def build_bundle(args: argparse.Namespace) -> UnrunBundleReport:
         'keeper_ready':keeper/'ready.json','idle_timeout':live/'allocation-unused-idle-timeout.json',
         **{k:v for k,v in allocator.items() if v is not None},'allocator_stdout':args.allocator_stdout,
         'counter':ids.default_state_root()/machine/freeze['mod_key']/'counter.json'}
+    if getattr(args, 'allocator_command', None) is not None:
+        paths['allocator_command'] = args.allocator_command
     if getattr(args,'launcher_pin_refusal',None):
         row['closure_kind']='launcher-pin-admission-refused-before-launch-intent'
         paths.pop('idle_timeout')

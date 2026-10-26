@@ -2,11 +2,14 @@
 import argparse
 import ast
 import copy
+from dataclasses import dataclass
 import hashlib
 import json
 from pathlib import Path
+import re
 import sys
 import tempfile
+from typing import Literal, TypedDict
 import unittest
 from unittest.mock import patch
 
@@ -18,12 +21,101 @@ CASES = HERE / 'ck3_mod_acceptance_cases'
 sys.path.insert(0, str(options.support_repo / 'tools'))
 from ck3_mod_acceptance_cases import xqol_followup_common as common
 import ck3_mod_acceptance_prepare as prepare
+from ck3_mod_acceptance_background_types import json_object, text_field
 
-ORIGINAL_PREPARE = {'bytes': 10984, 'sha256': '4dff30b3023d34cb2eb7923e52d81184da2cab4f301fc8a7c7b454277a003981'}
-PREVIOUS_PREPARE = {'bytes': 12881, 'sha256': '4221d9bab91706ba0e6ba07a21b1944adf71f71e9cc4c1a54ce8c9117b3dbbab'}
-REVIEW = json.loads((CASES / 'xqol_prepare_compatibility_review_v2.json').read_bytes())
-EXTENSION_REVIEW = json.loads((CASES / 'xqol_prepare_compatibility_review_v3.json').read_bytes())
-CURRENT_PREPARE = EXTENSION_REVIEW['after']
+
+class ContentPin(TypedDict):
+    bytes: int
+    sha256: str
+
+
+class InverseFragment(TypedDict):
+    old: str
+    reviewed_current: str
+
+
+ReviewSchema = Literal['ck3-xqol-reviewed-prepare-compatibility-v2',
+                       'ck3-xqol-reviewed-prepare-compatibility-v3',
+                       'ck3-xqol-reviewed-prepare-compatibility-v4']
+
+
+@dataclass(frozen=True)
+class PrepareReview:
+    schema: ReviewSchema
+    before: ContentPin
+    after: ContentPin
+    inverse_fragments: tuple[InverseFragment, ...]
+
+
+def _review_content_pin(value: object) -> ContentPin:
+    row = json_object(value)
+    if set(row) not in ({'bytes', 'sha256'}, {'bytes', 'sha256', 'commit'}):
+        raise ValueError('Reviewed source pin fields differ')
+    size, digest = row.get('bytes'), row.get('sha256')
+    if (type(size) is not int or not isinstance(size, int) or not 0 < size <= 1024 * 1024
+            or not isinstance(digest, str) or re.fullmatch('[0-9a-f]{64}', digest) is None):
+        raise ValueError('Exact reviewed source bytes and digest required')
+    if 'commit' in row and re.fullmatch('[0-9a-f]{40}', text_field(row, 'commit')) is None:
+        raise ValueError('Exact reviewed source commit required')
+    return ContentPin(bytes=size, sha256=digest)
+
+
+def _read_review(path: Path, schema: ReviewSchema) -> PrepareReview:
+    raw = path.read_bytes()
+    if len(raw) > 128 * 1024:
+        raise ValueError('Bounded reviewed source metadata required')
+    row = json_object(json.loads(raw))
+    if row.get('schema') != schema:
+        raise ValueError('Exact reviewed compatibility schema required')
+    values = row.get('inverse_fragments')
+    if not isinstance(values, list) or not 1 <= len(values) <= 16:
+        raise ValueError('Complete finite reviewed inverse required')
+    fragments: list[InverseFragment] = []
+    for value in values:
+        fragment = json_object(value)
+        fields = {'old', 'reviewed_current'}
+        if schema != 'ck3-xqol-reviewed-prepare-compatibility-v2':
+            fields.add('review')
+        if set(fragment) != fields:
+            raise ValueError('Exact reviewed inverse fields required')
+        if 'review' in fragment:
+            text_field(fragment, 'review')
+        old = fragment.get('old')
+        if not isinstance(old, str):
+            raise ValueError('Reviewed original source fragment must be text')
+        fragments.append(InverseFragment(old=old,
+                                         reviewed_current=text_field(fragment, 'reviewed_current')))
+    return PrepareReview(schema, _review_content_pin(row.get('before')),
+                         _review_content_pin(row.get('after')), tuple(fragments))
+
+
+def _source_content(raw: bytes) -> ContentPin:
+    return ContentPin(bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest())
+
+
+def _restore_reviewed_source(raw: bytes, review: PrepareReview) -> bytes:
+    if _source_content(raw) != review.after:
+        raise ValueError('Entire current reviewed source pin differs')
+    restored = raw.decode('utf-8')
+    for fragment in review.inverse_fragments:
+        if restored.count(fragment['reviewed_current']) != 1:
+            raise ValueError('Reviewed inverse fragment must occur exactly once')
+        restored = restored.replace(fragment['reviewed_current'], fragment['old'], 1)
+    result = restored.encode('utf-8')
+    if _source_content(result) != review.before:
+        raise ValueError('Entire original reviewed source pin differs')
+    return result
+
+
+ORIGINAL_PREPARE: ContentPin = {'bytes': 10984, 'sha256': '4dff30b3023d34cb2eb7923e52d81184da2cab4f301fc8a7c7b454277a003981'}
+PREVIOUS_PREPARE: ContentPin = {'bytes': 12881, 'sha256': '4221d9bab91706ba0e6ba07a21b1944adf71f71e9cc4c1a54ce8c9117b3dbbab'}
+REVIEW = _read_review(CASES / 'xqol_prepare_compatibility_review_v2.json',
+                      'ck3-xqol-reviewed-prepare-compatibility-v2')
+HISTORICAL_EXTENSION_REVIEW = _read_review(CASES / 'xqol_prepare_compatibility_review_v3.json',
+                                         'ck3-xqol-reviewed-prepare-compatibility-v3')
+EXTENSION_REVIEW = _read_review(CASES / 'xqol_prepare_compatibility_review_v4.json',
+                              'ck3-xqol-reviewed-prepare-compatibility-v4')
+CURRENT_PREPARE = EXTENSION_REVIEW.after
 ORIGINAL_CONTRACTS = {'administrative_appointments': {'bytes': 2823, 'sha256': '803a6649952c323c3f07958b9635977c046deb544be16b723e5a1b45d0d4bccf'}, 'meritocratic_appointments': {'bytes': 6348, 'sha256': '3f7cda3eb863403e37abaa8165fb7aae23cafa585efaa757be785cfb1128ae7f'}, 'prison_payment': {'bytes': 4553, 'sha256': '4cd85a367af0b0fd7ebe4f4a404097c71b073de9a537402504a41b390f7f14ad'}, 'selfpaid_ransom': {'bytes': 3883, 'sha256': '956f01db9012c6704cc505e3a3ae68e31c08e23c4a78040220dfa41bc57c7862'}, 'pam_positive': {'bytes': 5128, 'sha256': '9f92e3f05df036be9b1624f20092988855ff3764b196c140a86693978ed81cbc'}, 'pam_negative': {'bytes': 4995, 'sha256': 'aea73ce9857339e729c6e16de5d43a13bb4cad75b64fffde8c84db626f4eea6b'}, 'liege_shared_ransom': {'bytes': 6620, 'sha256': 'cc69b83f6abd0e69821f0c91dc8a1e68388ec5b5338163c7dd24386d105ea169'}}
 SUPPORT_KEY = '../ck3_mod_acceptance_prepare.py'
 
@@ -45,37 +137,41 @@ def context(name):
 class ReviewedPrepareCompatibility(unittest.TestCase):
     def test_reviewed_optional_branches_restore_original_prefix_and_added_definition(self) -> None:
         raw = (options.support_repo / 'tools/ck3_mod_acceptance_prepare.py').read_bytes()
-        self.assertEqual((len(raw), hashlib.sha256(raw).hexdigest()), (CURRENT_PREPARE['bytes'], CURRENT_PREPARE['sha256']))
-        self.assertEqual(EXTENSION_REVIEW['schema'], 'ck3-xqol-reviewed-prepare-compatibility-v3')
-        self.assertEqual({key: EXTENSION_REVIEW['before'][key] for key in ('bytes', 'sha256')}, REVIEW['after'])
-        restored = raw.decode('utf-8')
-        self.assertEqual(len(EXTENSION_REVIEW['inverse_fragments']), 8)
-        for fragment in EXTENSION_REVIEW['inverse_fragments']:
-            self.assertEqual(restored.count(fragment['reviewed_current']), 1)
-            restored = restored.replace(fragment['reviewed_current'], fragment['old'], 1)
-        raw = restored.encode('utf-8')
-        self.assertEqual((len(raw), hashlib.sha256(raw).hexdigest()),
-                         (REVIEW['after']['bytes'], REVIEW['after']['sha256']))
-        self.assertEqual({key: REVIEW['before'][key] for key in ('bytes', 'sha256')}, PREVIOUS_PREPARE)
-        restored = raw.decode('utf-8')
-        self.assertEqual(len(REVIEW['inverse_fragments']), 4)
-        for fragment in REVIEW['inverse_fragments']:
-            self.assertEqual(restored.count(fragment['reviewed_current']), 1)
-            restored = restored.replace(fragment['reviewed_current'], fragment['old'], 1)
-        raw = restored.encode('utf-8')
-        self.assertEqual((len(raw), hashlib.sha256(raw).hexdigest()), (PREVIOUS_PREPARE['bytes'], PREVIOUS_PREPARE['sha256']))
+        self.assertEqual(_source_content(raw), CURRENT_PREPARE)
+        self.assertEqual(EXTENSION_REVIEW.schema, 'ck3-xqol-reviewed-prepare-compatibility-v4')
+        self.assertEqual(EXTENSION_REVIEW.before, HISTORICAL_EXTENSION_REVIEW.after)
+        self.assertEqual(len(EXTENSION_REVIEW.inverse_fragments), 4)
+        with self.assertRaisesRegex(ValueError, 'Entire current reviewed source pin differs'):
+            _restore_reviewed_source(raw + b'\n', EXTENSION_REVIEW)
+        for value in ({'bytes': True, 'sha256': CURRENT_PREPARE['sha256']},
+                      {'bytes': CURRENT_PREPARE['bytes'], 'sha256': 'unknown'}):
+            with self.subTest(pin=value), self.assertRaises(ValueError):
+                _review_content_pin(value)
+        raw = _restore_reviewed_source(raw, EXTENSION_REVIEW)
+        self.assertEqual(HISTORICAL_EXTENSION_REVIEW.before, REVIEW.after)
+        self.assertEqual(len(HISTORICAL_EXTENSION_REVIEW.inverse_fragments), 8)
+        raw = _restore_reviewed_source(raw, HISTORICAL_EXTENSION_REVIEW)
+        self.assertEqual(REVIEW.before, PREVIOUS_PREPARE)
+        self.assertEqual(len(REVIEW.inverse_fragments), 4)
+        raw = _restore_reviewed_source(raw, REVIEW)
+        self.assertEqual(_source_content(raw), PREVIOUS_PREPARE)
         prefix = raw[:ORIGINAL_PREPARE['bytes']]
         self.assertEqual(hashlib.sha256(prefix).hexdigest(), ORIGINAL_PREPARE['sha256'])
         old = ast.parse(prefix)
         tail = ast.parse(raw[ORIGINAL_PREPARE['bytes']:])
         self.assertEqual(len(tail.body), 1)
         added = tail.body[0]
-        self.assertIsInstance(added, ast.FunctionDef)
+        if not isinstance(added, ast.FunctionDef):
+            self.fail('Original tail must contain only finish_product_profile')
         self.assertEqual(added.name, 'finish_product_profile')
         self.assertNotIn(added.name, {getattr(node, 'name', None) for node in old.body})
         self.assertEqual(added.decorator_list, [])
         self.assertEqual(added.args.defaults, [])
-        self.assertEqual([ast.dump(node) for node in added.args.kw_defaults], ['Constant(value=None)'])
+        self.assertEqual(len(added.args.kw_defaults), 1)
+        default = added.args.kw_defaults[0]
+        if default is None:
+            self.fail('Original keyword-only default must be the literal None expression')
+        self.assertEqual(ast.dump(default), 'Constant(value=None)')
 
     def test_original_product_fixture_keeps_exact_mount_order_and_v1_policy(self) -> None:
         for name in ORIGINAL_CONTRACTS:
