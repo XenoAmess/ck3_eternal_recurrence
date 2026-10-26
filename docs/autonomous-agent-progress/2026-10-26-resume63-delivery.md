@@ -169,3 +169,13 @@ e61 的 12 个明确 OID 排序后以 LF 结尾清单 SHA-256 为 `2a38e03da2897
 两份 ZIP 均逐字节核对官方 digest，bootstrap 与 qualified Tools 各 636/636、BUILD SUCCESS。各自 `logs/control-ci-actual.json` 为 RED，`fixture_request_ref`、`fixture_production_request_ref` 均为 null；inner stderr 明确在 ControlCi.runQualified:595 / main:216 拒绝缺 actual fixture-production request。EXPECTED_MAVEN_RED 通过，REACTOR 为 RED，后七阶段 NOT_RUN。保持真实缺项，没有把两次结果说成 Java 编译失败、完整 SDK 验收或实机资格。
 
 18:56Z 为下一必要文档包只读核对 remote 与现有 `origin/master`，均为 `9f191326678fea7a1cec2975478cdfaac28254f9`；相对 e61 的六个他人路径全部保留。REA C7 的五叶此前未被本岗 capture 或提交，18:45Z 已明确释放；下次仅捕获 owner 合入 C8 后的新六叶，不把旧 C7 ready 指纹冒充当前可读原件。尚未对下一文档包写入 Git 对象或 Java/Native 源码图。
+
+## 19:44 UTC 两个后继快照的实际交付
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`。`2bf182e575aef37aa1d7bcfcde12aebcdc0649c7` 已于 19:03:00.530Z 普通 FF 推送，parent 为新鲜 9f191326；12 个冻结文档输入合 257732 B，31 个本地引用通过。实际 bus ACK 9038；两份用户 index 与 HEAD 保持不变。原始 diff-check 仅报 M1 第 210 行 EOF 空行，行内检查通过，原件 SHA 保留。19:03:40.882517Z 对 18 个明确 OID 点测：新增逻辑 250260 B、实际 AllocationSize 287480 B；排序 LF 清单 SHA-256 `450728120e44866778b6ea80b1bccef58306ef157d5771c13715731e5a9ca900`。CAS654 真实净增 RootZ 256 KiB 至 4.25 MiB，旧 19:40 review 不冒充后继有效卡。
+
+`4dcc62e0d27cc97f86d86402fb9e5f2540b72de3` 已于 19:42:53.217Z 普通 FF 推送，parent 为新鲜 `9c687ef888dd0c387b5e791e07a152eb8df33024`，保留他人新增 game_adapter_test.cpp 提交。九个冻结文档输入 216402 B、31 个本地引用通过，实际 bus ACK 9040。原始 diff-check 仅报 M0/M2 EOF 空行，行内检查通过；两份用户 index 与 HEAD 不变。19:43:57.608493Z 对 15 个明确 OID 点测：新增逻辑 224695 B、AllocationSize 258848 B；排序 LF 清单 SHA-256 `f04b8202b3c971a8eea65c888a291d6d3e50580ea9dd6f771aa52af79d4fde4c`。
+
+CAS658 新卡 `DELIVERY63-NINEDOCS-Z4p5MiB-AUTHORITY01.json` 为 1695 B、SHA-256 `fb4855d63861d7f1ea56b3fce6a810721f2b1b31889f3aa6ced0c7f696b9e908`，位于 `D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/capacity`，fresh review 为 20:40:26.824464Z。RootZ 仅再净增 256 KiB 至 4.5 MiB；已知对象累计逻辑 2605040 B、allocation 上界 3156176 B，加入保守对象 atomic/closing 110592 B 的峰为 3266768 B，低于 3342336 B 子限。raw 处理累计 3581260 B，树与 commit 本次仅 RAM 213552 B。此前未知 promisor pack 保持 UNKNOWN；没有全树扫描、实际 index 写入或源码图投影。
+
+两次 owner freeze 均在各自真实 push/readback 后明确释放。新 Acceptance 仅授予 Full104 Tools fullVERIFY/1084 项独核范围，Runtime 七错误、SDK30、Service、Game 边界均保留。19:44Z 官方 API 读回 2bf 的 run 40383217864 正执行 step31；4dcc 的 run 40389193898 亦 IN_PROGRESS，Linear 40389193850 已 SUCCESS。二者仍待官方终态，不以等待时间或 Linear 绿追认整 CI 或实机通过。

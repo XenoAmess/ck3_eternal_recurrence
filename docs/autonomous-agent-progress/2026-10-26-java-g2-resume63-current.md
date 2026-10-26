@@ -124,3 +124,17 @@ REA已补M1 gate791B/base850B/type261B、M2事件caller2835B、M3继承补111B�
 实际sdk_current接管新SDK生产输入；5815依赖全部MATCH、1286 canonical中一处workflow真实变化，按实际Source32/H5与当前reactor差异生成successor。旧Review39过期不续用，Root新Own/SDK有限review至20:40:26.824464Z，仅必要输入净≤7MiB，原104/Native卡不沿此延期。原SDK30step、独立Python continuation及Own7仍未执行；Host继续唯一Maven。
 
 首轮Java实机的北京时间04:30–06:00仅为无新阻塞时的乐观窗口，完整Python迁移和八M暂无可靠完成承诺。当前未新启动Java CK3；真实新增游戏日、SAVE、RESTORE为0，完整G2为0/8。后继为真实Tools/Own/SDK验收、Native后继与管理员设置读回、Root真实生产权威，再后台fresh Steam准入与实机。
+
+## 19:40Z 前向结果（本地27日03:40）
+
+Tools104原生产调用实际19:17:50.813Z退出0，总1715.7319134s；新148份XML独核1084/1084成功、0失败/错误/跳过。实际重编134 main、166 test，本次是单Tools模块完整verify，没有-T参数，不能借局验-T2描述此批。324 source、326 compiled输入、6 deployment、6 bootstrap与accounting v2三份retained原件全部MATCH。新Jar3466012B/SHA fce9cacc848f2566dc05ecd5a03ce74bf025ba8be14321628824a4ea161ef83e，1422个class，与普通109不同。原Maven Job正常退出/active0，1625.4332223s、峰1297424384B；outer Job未测。独核总回执为G2/controls/TOOLS104-INDEPENDENT-FINAL01.json3974B/SHA67262abdda4504c9c9114b83613b79a31b9cc7813bd71f1c479f0b851806108a。只授Tools这个target，不授SERVICE、SDK30或Game。
+
+Native实际编译/链接已通过。桥接重TU在-j4和-j2均触原8GiB Job帽，分别保真实失败；单TU实测3.23GiB不能外推所有TU，后续-j1真实cohort峰6.35GiB。原work到期时233/293步退出124/Job0；新鲜后继同cache只续剩余步骤，BRIDGE05真实exit0/121.8096s/Job0。runtime archive不变，最终DLL21783040B/SHA d1917b22c1bb4753a39dbd8e4f61e69c541ecd0318cff657400e533f4cef5edc。新injector随后被Defender实际1116/1117同DetectionID隔离（19:25:18/19:25:42），现文件缺失、SHA未知，双产物candidate不完整。正沿已授权精确项目EXE路径登记/实际管理员读回接管，不换路径绕过、不冒构建未成功或包已完成。
+
+原56线按finance、military、governance/Family、events、runtime、planning六组并行核真实Python→当前Java ordinary生产链。确认多数普通接线存在，仍有实际缺口，不能拿research false字段冒缺陷或把旧Python本身未实现的贷款/退款提交称为已迁能力。当前已采用并STOP、尚未编测的有：M5 known-empty及stock-threat producer两叶/9项回归；finance只读贷款观测四叶/8项回归；declaration continuity从原canonical链接回snapshot/following/cold五叶。Family普通RESTORE的physical-owner接续、ordinary失败READ留证/模态查询/首显示续行、Java决策文字实际显示正在各自唯一源码窗施工。保UNKNOWN不重放、原writer/权限/物质后态守卫。Host仍唯一Maven，等待各域STOP后同缓存受影响编验。
+
+Own后继又发现真实consumer合同问题，尚待原链实际诊断：原41/Own44对已完成T再调用acceptedReceipt，仍读旧105 active lease/财务；新Own authority不能假续旧构建。Own44又直接把accounting v2 envelope读作旧DTO，漏既有历史resolver。已交共享accounting岗，优先复用真正completed reader与独立current-op授权，闭合所有读者；不改旧lease、手抽v1或伪造回执。104真实通过保留。
+
+REA新M6 child911B经显式block与byte模式重试，256条/911B逐字节及独立CFG33块50边匹配；原181不匹配失败保留。本体三次将ID地址交两callee，runtimeOrdinal仍UNKNOWN；继续只复用两个已知128B/908B held主体。M1局部16KiB共16380起点/293个E8对2603AF0命中0，独审一致，只授LOCAL_NOT_FOUND，不能外推自然caller不存在。
+
+新业务缺口已使原04:30–06:00乐观窗口需要重新评估，当前不给新的完成时刻承诺。真实Java CK3启动、游戏新增日、SAVE、RESTORE仍0，完整G2仍0/8。Root已明确授权新source/Own/SDK/Native/Delivery的有限review至20:40；各自实际新卡、资源与执行读回另验，不自动延旧执行卡。必要源与元数据按真实净额前向登记。完整迁移与完整原生研究目标继续执行。

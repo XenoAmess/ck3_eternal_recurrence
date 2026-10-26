@@ -6,6 +6,8 @@
 
 本文 `P` 指 `ck3_autonomous_player/src/xar_autoplayer/`；`S` 指 `D:/codex-ck3-demos/2026-10-25-java-g2-complete31-h5r5/java/ck3-control/`。源码存在与可读不表示该叶已编进最终发行图。仓库 `java/ck3-control/`、可复用 S 和 i61 不是同一份完整最新源码；i61 只有交接所述的部分投影。
 
+本页主体保留14:41清点及当时边界。后继源码采用、完整Tools104的1084项通过、六组实际ordinary接管核对及新修复状态，见[当前前向记录](2026-10-26-java-g2-resume63-current.md)19:40Z段。后文历史“候选/未采用”不追认为当前事实；其源码观察、局测、整体软件验收和CK3实机分别判定。
+
 ## 完全迁移的判定
 
 本阶段目标是现有 Python 自动游玩能力由 Java 生产链接管后继续普通自动游玩。G2 八 M 是八项业务结果，**不是 Python 全部功能目录**；一期 map composer、纯投影 HTTP、一个模块的 JUnit、一个普通 Jar 或一场启动成功均不足以证明完全迁移。历史 Python G2 `6/8` 不计入本轮 Java；截至 resume62，Java 完整实机仍 **0/8**、本轮启动/新增日/SAVE/RESTORE 均为 0。
