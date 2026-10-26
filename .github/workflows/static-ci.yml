@@ -101,7 +101,7 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           "%RUNNER_TEMP%\native-rite-creation-ci\xar_ck3_12004_rite_creation_request_test.exe"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
-          "%RUNNER_TEMP%\native-rite-creation-ci\xar_ck3_12004_rite_creation_wire_test.exe"
+          "%RUNNER_TEMP%\native-rite-creation-ci\xar_ck3_12004_rite_creation_wire_test.exe" --sdk-fixture-out "%RUNNER_TEMP%\native-rite-creation-ci\N6-SDK.fixture.json"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           "%RUNNER_TEMP%\native-rite-creation-ci\xar_ck3_12004_rite_creation_guard_test.exe"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
@@ -148,6 +148,12 @@ jobs:
           python -B -X utf8 tools/test_r08_runtime_entry_smoke.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_r08_cleanup_and_sampling.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test Rite native wire to SDK and sparse draft catalogue contracts without CK3
+        run: |
+          python -B -X utf8 ck3_autonomous_player/tests/unit/test_rite_creation_action_private_v1.py --native-wire "%RUNNER_TEMP%\native-rite-creation-ci\N6-SDK.fixture.json"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 ck3_autonomous_player/tests/unit/test_rite_creation_action_private_v1.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test lossless bounded target-proof CLI serialization
         run: python -B -X utf8 ck3_autonomous_player/tests/unit/test_target_instruction_core_proof_12004.py TargetProofCliSerialization

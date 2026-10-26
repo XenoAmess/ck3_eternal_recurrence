@@ -51,6 +51,26 @@ class DoctrineSelection(TypedDict):
     doctrine_key: str
 
 
+CatalogueScope = Literal["draft", "current_rite"]
+
+
+class VirtueSinRow(TypedDict):
+    trait_id: int
+    trait_key: str
+    classification: Literal[1, 2]
+    weight_raw: str
+
+
+class VirtueSinCatalogue(TypedDict):
+    schema: Literal["ck3_12004_rite_virtue_sin_catalogue_v1"]
+    observed: bool
+    unavailable_reason: str | None
+    scope: CatalogueScope
+    rite_id: int | None
+    virtues: list[VirtueSinRow] | None
+    sins: list[VirtueSinRow] | None
+
+
 class SubmittedPayload(TypedDict):
     schema: Literal["xar.ck3-rite-submitted-payload.v1"]
     outcome_kind: Outcome
@@ -74,6 +94,7 @@ class CurrentRitePoststate(TypedDict):
     names: RiteNames | None
     core_tenets: list[CoreTenetSelection] | None
     doctrines: list[DoctrineSelection] | None
+    virtue_sin_catalogue: VirtueSinCatalogue
     confirmation_modal_open: bool | None
     creation_window_visible: bool | None
 
@@ -152,21 +173,108 @@ def parse_names(value: object) -> RiteNames:
 
 
 def parse_core_tenets(value: object) -> list[CoreTenetSelection]:
-    if not isinstance(value, list) or len(value) > 64:
+    """Keep native physical indices, including gaps left by blank sentinels."""
+    if not isinstance(value, list) or len(value) > 100:
         raise ValueError("invalid complete Rite core collection")
     result: list[CoreTenetSelection] = []
     keys: set[str] = set()
-    for index, item in enumerate(value):
+    previous = -1
+    for item in value:
         row = object_map(item, "core selection")
         if set(row) != {"slot_index", "tenet_key"}:
             raise ValueError("core selection fields differ from the native contract")
-        slot = exact_integer(row["slot_index"], "core slot", 0, 63)
+        slot = exact_integer(row["slot_index"], "core slot", 0, 99)
         key = _definition(row["tenet_key"], "Tenet key")
-        if slot != index or key in keys:
+        if slot <= previous or key in keys:
             raise ValueError("complete core slots are not ordered and unique")
+        previous = slot
         keys.add(key)
         result.append({"slot_index": slot, "tenet_key": key})
     return result
+
+
+def parse_draft_core_tenets(draft: Mapping[str, object]) -> list[CoreTenetSelection] | None:
+    """Validate real slot count/capacity separately from the valid DTO rows."""
+    required = {"selected_core_tenets_observed", "selected_core_slot_count",
+        "selected_core_slot_capacity", "selected_core_tenets"}
+    if not required <= draft.keys() or type(draft["selected_core_tenets_observed"]) is not bool:
+        raise ValueError("missing native core slot observation")
+    if draft["selected_core_tenets_observed"] is False:
+        if any(draft[key] is not None for key in required - {"selected_core_tenets_observed"}):
+            raise ValueError("unobserved native core slots were filled")
+        return None
+    count = exact_integer(draft["selected_core_slot_count"], "native core slot count", 0, 100)
+    exact_integer(draft["selected_core_slot_capacity"], "native core slot capacity", count, (1 << 31) - 1)
+    rows = parse_core_tenets(draft["selected_core_tenets"])
+    if len(rows) > count or any(row["slot_index"] >= count for row in rows):
+        raise ValueError("selected core index exceeds its actual native slot count")
+    return rows
+
+
+def parse_persistent_core_tenets(value: object) -> list[CoreTenetSelection]:
+    rows = parse_core_tenets(value)
+    if any(row["slot_index"] != index for index, row in enumerate(rows)):
+        raise ValueError("persistent core slots are not dense native order")
+    return rows
+
+
+def _weight_raw(value: object) -> str:
+    text = _text(value, "native Trait weight")
+    if (len(text) > 20 or re.fullmatch(r"0|-?[1-9][0-9]*", text) is None
+            or not -(1 << 63) <= int(text) <= (1 << 63) - 1):
+        raise ValueError("native Trait weight is not canonical signed64 decimal text")
+    return text
+
+
+def _catalogue_rows(value: object, classification: Literal[1, 2],
+        ids: set[int], keys: set[str]) -> list[VirtueSinRow]:
+    if not isinstance(value, list) or len(value) > 8192:
+        raise ValueError("invalid native Trait catalogue rows")
+    rows: list[VirtueSinRow] = []
+    for item in value:
+        row = object_map(item, "native Trait catalogue row")
+        if set(row) != set(VirtueSinRow.__annotations__):
+            raise ValueError("native Trait row fields differ from the contract")
+        identity = exact_integer(row["trait_id"], "Trait ID")
+        key = _definition(row["trait_key"], "Trait key")
+        if (exact_integer(row["classification"], "Trait classification", 1, 2) != classification
+                or identity in ids or key in keys):
+            raise ValueError("native Trait catalogue identity/classification conflict")
+        ids.add(identity)
+        keys.add(key)
+        rows.append({"trait_id": identity, "trait_key": key,
+            "classification": classification, "weight_raw": _weight_raw(row["weight_raw"])})
+    return rows
+
+
+def parse_virtue_sin_catalogue(value: object, *, scope: CatalogueScope,
+        rite_id: int | None) -> VirtueSinCatalogue:
+    row = object_map(value, "native full Rite virtue/sin catalogue")
+    if (set(row) != set(VirtueSinCatalogue.__annotations__)
+            or row["schema"] != "ck3_12004_rite_virtue_sin_catalogue_v1" or row["scope"] != scope
+            or type(row["observed"]) is not bool):
+        raise ValueError("native full Rite catalogue schema/scope changed")
+    actual_rite = None if row["rite_id"] is None else exact_integer(row["rite_id"], "catalogue Rite")
+    if actual_rite is not None and actual_rite != rite_id:
+        raise ValueError("native full Rite catalogue crossed its actual Rite")
+    reason = row["unavailable_reason"]
+    if row["observed"]:
+        if reason is not None or rite_id is None or actual_rite != rite_id:
+            raise ValueError("observed native full Rite catalogue lacks its source binding")
+        ids: set[int] = set()
+        keys: set[str] = set()
+        virtues = _catalogue_rows(row["virtues"], 1, ids, keys)
+        sins = _catalogue_rows(row["sins"], 2, ids, keys)
+        if len(virtues) + len(sins) > 8192:
+            raise ValueError("native full Rite catalogue exceeds its bounded total")
+        return {"schema": "ck3_12004_rite_virtue_sin_catalogue_v1", "observed": True,
+            "unavailable_reason": None, "scope": scope, "rite_id": actual_rite,
+            "virtues": virtues, "sins": sins}
+    if type(reason) is not str or not reason or row["virtues"] is not None or row["sins"] is not None:
+        raise ValueError("unobserved native full Rite catalogue lost its reason/null lists")
+    return {"schema": "ck3_12004_rite_virtue_sin_catalogue_v1", "observed": False,
+        "unavailable_reason": reason, "scope": scope, "rite_id": actual_rite,
+        "virtues": None, "sins": None}
 
 
 def parse_doctrines(value: object) -> list[DoctrineSelection]:
@@ -190,12 +298,15 @@ def submitted_payload_from_draft(value: object) -> SubmittedPayload:
     draft = object_map(value, "submitted native draft")
     if draft.get("observed") is not True:
         raise ValueError("submitted native draft was not observed")
+    core = parse_draft_core_tenets(draft)
+    if core is None:
+        raise ValueError("submitted native core slots were not observed")
     return {"schema": "xar.ck3-rite-submitted-payload.v1", "outcome_kind": outcome(draft.get("actual_outcome_kind")),
         "source_rite_id": exact_integer(draft.get("source_rite_id"), "source Rite"),
         "source_faith_id": exact_integer(draft.get("source_faith_id"), "source Faith"),
         "actor_faith_id": exact_integer(draft.get("actor_faith_id"), "actor Faith"),
         "names": parse_names(draft.get("names")),
-        "core_tenets": parse_core_tenets(draft.get("selected_core_tenets")),
+        "core_tenets": core,
         "doctrines": parse_doctrines(draft.get("selected_doctrines"))}
 
 
@@ -236,8 +347,10 @@ def parse_current_rite_poststate(value: object) -> CurrentRitePoststate:
         "rite_id": refs["rite_id"], "faith_id": refs["faith_id"], "religion_id": refs["religion_id"],
         "founder_character_id": refs["founder_character_id"],
         "names": None if row["names"] is None else parse_names(row["names"]),
-        "core_tenets": None if row["core_tenets"] is None else parse_core_tenets(row["core_tenets"]),
+        "core_tenets": None if row["core_tenets"] is None else parse_persistent_core_tenets(row["core_tenets"]),
         "doctrines": None if row["doctrines"] is None else parse_doctrines(row["doctrines"]),
+        "virtue_sin_catalogue": parse_virtue_sin_catalogue(row["virtue_sin_catalogue"],
+            scope="current_rite", rite_id=refs["rite_id"]),
         "confirmation_modal_open": flags["confirmation_modal_open"],
         "creation_window_visible": flags["creation_window_visible"]}
     if observed and any(value is None for value in (result["rite_id"], result["faith_id"],
@@ -247,11 +360,17 @@ def parse_current_rite_poststate(value: object) -> CurrentRitePoststate:
     return result
 
 
+def _core_keys(rows: list[CoreTenetSelection]) -> frozenset[str]:
+    return frozenset(row["tenet_key"] for row in rows)
+
+
 def poststate_matches_payload(payload: SubmittedPayload, current: CurrentRitePoststate, actor_id: int) -> bool:
     if (not current["observed"] or current["source_rite_id_anchor"] != payload["source_rite_id"]
             or current["confirmation_modal_open"] is not False
             or current["creation_window_visible"] is not False or current["names"] != payload["names"]
-            or current["core_tenets"] != payload["core_tenets"] or current["doctrines"] != payload["doctrines"]):
+            or current["core_tenets"] is None
+            or _core_keys(current["core_tenets"]) != _core_keys(payload["core_tenets"])
+            or current["doctrines"] != payload["doctrines"]):
         return False
     if payload["outcome_kind"] == "edit_rite":
         return current["rite_id"] == payload["source_rite_id"] and current["faith_id"] == payload["source_faith_id"]
@@ -264,7 +383,8 @@ def poststate_matches_payload(payload: SubmittedPayload, current: CurrentRitePos
 
 def different_business_intent(first: SubmittedPayload, second: SubmittedPayload) -> bool:
     return (first["outcome_kind"] != second["outcome_kind"] or first["names"] != second["names"]
-            or first["core_tenets"] != second["core_tenets"] or first["doctrines"] != second["doctrines"])
+            or _core_keys(first["core_tenets"]) != _core_keys(second["core_tenets"])
+            or first["doctrines"] != second["doctrines"])
 
 
 
@@ -521,7 +641,7 @@ def request_fields(operation: str, expected_source_rite_id: int, **selectors: ob
         if key in selectors and (type(value) is not str or not _KEY.fullmatch(value)):
             raise ValueError("invalid definition key: " + key)
     if operation == "select_core_tenet":
-        _integer(selectors["core_slot_index"], "core_slot_index", 0, 63)
+        _integer(selectors["core_slot_index"], "core_slot_index", 0, 99)
     if operation == "set_name_field":
         name, text = selectors["name_field"], selectors["text"]
         if type(name) is not str or name not in NAME_FIELDS or type(text) is not str:
@@ -624,6 +744,9 @@ def normalize_result(raw: object, *, binding: Mapping[str, object], fields: Mapp
         if not isinstance(leaf.get(key), dict) or type(leaf[key].get("observed")) is not bool:
             raise ValueError("missing actual Rite action component: " + key)
     draft, modal, can, quote = (leaf[key] for key in ("draft", "modal", "full_can", "quote"))
+    parse_draft_core_tenets(object_map(draft, "native draft"))
+    draft_rite = None if draft.get("source_rite_id") is None else exact_integer(draft["source_rite_id"], "draft Rite")
+    parse_virtue_sin_catalogue(draft.get("virtue_sin_catalogue"), scope="draft", rite_id=draft_rite)
     if draft["observed"] and draft.get("source_rite_id") != fields["expected_source_rite_id"]:
         raise ValueError("actual source Rite differs from assertion")
     for key in ("can_create", "can_edit"):
@@ -665,9 +788,15 @@ def normalize_result(raw: object, *, binding: Mapping[str, object], fields: Mapp
     if fields["operation"] == "confirm_once" and leaf.get("action_id") != fields.get("action_id"):
         raise ValueError("native confirmation action identity changed")
     if fields["operation"] == "observe_current_rite":
-        current = parse_current_rite_poststate(leaf.get("current_rite_poststate"))
-        if current["source_rite_id_anchor"] != fields["expected_source_rite_id"]:
-            raise ValueError("independent current Rite observation lost its original source anchor")
+        if "current_rite_poststate" not in leaf:
+            raise ValueError("independent current Rite field is missing")
+        if leaf["current_rite_poststate"] is None:
+            if leaf["available"]:
+                raise ValueError("available current Rite observation omitted its poststate")
+        else:
+            current = parse_current_rite_poststate(leaf["current_rite_poststate"])
+            if current["source_rite_id_anchor"] != fields["expected_source_rite_id"]:
+                raise ValueError("independent current Rite observation lost its original source anchor")
     return {**deepcopy(raw), "business_outcome_verified": False, "action_ready": False,
         "automatic_retry": False, "source_and_runtime_qualification_distinct": True}
 
@@ -920,6 +1049,11 @@ def verify_completed_private_v1(driver: RiteActionDriver, *, action_request_id: 
     observation = execute_private_v1(driver, operation="observe_current_rite",
         expected_revision=expected_revision, expected_source_rite_id=payload["source_rite_id"])
     leaf = object_map(observation[BODY_KEY], "current Rite observation")
+    if leaf["current_rite_poststate"] is None:
+        return {"status": "poststate_unavailable", "action_request_id": action_request_id,
+            "unavailable_reason": _text(leaf["unavailable_reason"], "native poststate reason"),
+            "automatic_retry": False, "business_outcome_verified": False, "action_ready": False,
+            "poststate_observation": observation}
     current = parse_current_rite_poststate(leaf.get("current_rite_poststate"))
     actor = exact_integer(bound.get("played_character_id"), "current played character")
     if not poststate_matches_payload(payload, current, actor):

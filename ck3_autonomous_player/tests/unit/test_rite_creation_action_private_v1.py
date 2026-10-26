@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 import ast
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -32,6 +33,17 @@ RITE = 26
 SOURCE_TEXT_OVERRIDE = None
 
 
+def synthetic_catalogue(*, scope: action.CatalogueScope, rite_id: int | None,
+        observed: bool = True) -> action.VirtueSinCatalogue:
+    return {"schema": "ck3_12004_rite_virtue_sin_catalogue_v1", "scope": scope,
+        "observed": observed, "unavailable_reason": None if observed else "synthetic_cache_unavailable",
+        "rite_id": rite_id,
+        "virtues": [{"trait_id": 101, "trait_key": "brave", "classification": 1,
+            "weight_raw": "9007199254740993"}] if observed else None,
+        "sins": [{"trait_id": 102, "trait_key": "gluttonous", "classification": 2,
+            "weight_raw": "-9223372036854775808"}] if observed else None}
+
+
 def unavailable(operation, native_revision=9):
     return {"step": action.STEP, "accepted": True, "status": "unavailable", "private_build": True,
         "advertised": False, "read_only": operation in action.READ_OPERATIONS, "game_version": CK3_12004.game_version,
@@ -42,9 +54,13 @@ def unavailable(operation, native_revision=9):
             "unavailable_reason": "synthetic_complete_payload_not_observed",
             "frame": {"connection_generation": 1, "native_revision": native_revision,
                 "capture_epoch": 3, "date_raw": DATE, "played_character_id": ACTOR},
-            "draft": {"observed": False, "source_rite_id": None, "source_faith_id": None,
+            "draft": {"observed": False, "names_observed": False,
+                "selected_core_tenets_observed": False, "selected_doctrines_observed": False,
+                "selected_core_slot_count": None, "selected_core_slot_capacity": None,
+                "source_rite_id": None, "source_faith_id": None,
                 "actor_faith_id": None, "actual_outcome_kind": None, "names": None,
-                "selected_core_tenets": None, "selected_doctrines": None},
+                "selected_core_tenets": None, "selected_doctrines": None,
+                "virtue_sin_catalogue": synthetic_catalogue(scope="draft", rite_id=None, observed=False)},
             "modal": {"observed": False, "stage": "unknown", "kind": None,
                 "active": None, "same_draft_window_bound": None, "native_can_accept": None},
             "full_can": {"observed": False, "can_create": None, "can_edit": None,
@@ -57,7 +73,7 @@ def unavailable(operation, native_revision=9):
             "native_command_text_sha256": None,
             "dispatch_invoked": False, "verification_pending": False,
             "original_writer_may_have_been_queued": False, "business_outcome_observed": False,
-            "action_id": None}}
+            "action_id": None, "current_rite_poststate": None}}
 
 
 def synthetic_preview(native_revision=9, *, stage="confirmation", token="a" * 64):
@@ -68,9 +84,12 @@ def synthetic_preview(native_revision=9, *, stage="confirmation", token="a" * 64
         original_writer_inputs_observed=True, native_command_text_bytes=1234, native_command_text_sha256="d" * 64,
         preview_identity_available=True, preview_identity=token)
     leaf["draft"].update(observed=True, source_rite_id=RITE, source_faith_id=27, actor_faith_id=27,
+        names_observed=True, selected_core_tenets_observed=True, selected_doctrines_observed=True,
+        selected_core_slot_count=1, selected_core_slot_capacity=1,
         actual_outcome_kind="create_faith", names={key: "fixture" for key in action.NAME_FIELDS},
         selected_core_tenets=[{"slot_index": 0, "tenet_key": "tenet_christian_syncretism"}],
-        selected_doctrines=[{"group_key": "doctrine_pluralism", "doctrine_key": "doctrine_pluralism_pluralistic"}])
+        selected_doctrines=[{"group_key": "doctrine_pluralism", "doctrine_key": "doctrine_pluralism_pluralistic"}],
+        virtue_sin_catalogue=synthetic_catalogue(scope="draft", rite_id=RITE))
     leaf["modal"].update(observed=True, stage=stage, kind="create" if stage == "confirmation" else None,
         active=stage == "confirmation", same_draft_window_bound=stage == "confirmation",
         native_can_accept=stage == "confirmation")
@@ -96,7 +115,9 @@ def synthetic_poststate(preview, *, rite=92, faith=91):
         "unavailable_reason": None, "source_rite_id_anchor": payload["source_rite_id"],
         "rite_id": rite, "faith_id": faith, "religion_id": 28,
         "founder_character_id": ACTOR, "names": payload["names"],
-        "core_tenets": payload["core_tenets"], "doctrines": payload["doctrines"],
+        "core_tenets": [{"slot_index": index, "tenet_key": row["tenet_key"]}
+            for index, row in enumerate(payload["core_tenets"])], "doctrines": payload["doctrines"],
+        "virtue_sin_catalogue": synthetic_catalogue(scope="current_rite", rite_id=rite),
         "confirmation_modal_open": False, "creation_window_visible": False}
 
 
@@ -226,7 +247,7 @@ class RiteCreationAdapterTests(unittest.TestCase):
         for operation, kwargs in (
             ("preview", {"actor_id": ACTOR}), ("preview", {"callback_rva": 0x14F51B0}),
             ("select_core_tenet", {"core_slot_index": True, "tenet_key": "tenet_adaptive"}),
-            ("select_core_tenet", {"core_slot_index": 64, "tenet_key": "tenet_adaptive"}),
+            ("select_core_tenet", {"core_slot_index": 100, "tenet_key": "tenet_adaptive"}),
             ("select_doctrine", {"group_key": "../path", "doctrine_key": "x"}),
             ("set_name_field", {"name_field": "arbitrary", "text": "x"}),
             ("set_name_field", {"name_field": "name", "text": "x\x00y"}),
@@ -238,6 +259,8 @@ class RiteCreationAdapterTests(unittest.TestCase):
         fields = action.request_fields("select_core_tenet", RITE, core_slot_index=0, tenet_key="tenet_christian_syncretism")
         self.assertEqual(fields["operation"], "select_core_tenet")
         self.assertNotIn("actor_id", fields)
+        self.assertEqual(action.request_fields("select_core_tenet", RITE,
+            core_slot_index=99, tenet_key="tenet_adaptive")["core_slot_index"], 99)
 
     def test_existing_acceptance_case_requires_explicit_boolean_and_all_three_tools(self):
         path = Path(__file__).resolve().parents[3] / "tools/ck3_mod_acceptance.py"
@@ -411,6 +434,118 @@ class RiteCreationAdapterTests(unittest.TestCase):
             with self.subTest(missing=field), self.assertRaises(ValueError):
                 contract.parse_current_rite_poststate(invalid)
 
+    def test_sparse_slots_preserve_payload_and_match_dense_persistent_core_by_keys(self) -> None:
+        preview = synthetic_preview()
+        draft = preview[action.BODY_KEY]["draft"]
+        draft.update(selected_core_slot_count=100, selected_core_slot_capacity=120,
+            selected_core_tenets=[{"slot_index": slot, "tenet_key": key} for slot, key in
+                ((0, "tenet_adaptive"), (17, "tenet_asceticism"), (99, "tenet_legalism"))])
+        payload = contract.submitted_payload_from_draft(draft)
+        self.assertEqual([row["slot_index"] for row in payload["core_tenets"]], [0, 17, 99])
+        self.assertEqual(contract.parse_submitted_payload(json.loads(json.dumps(payload))), payload)
+        post = contract.parse_current_rite_poststate(synthetic_poststate(preview))
+        self.assertTrue(contract.poststate_matches_payload(payload, post, ACTOR))
+        shifted = deepcopy(payload)
+        shifted["core_tenets"][1]["slot_index"] = 18
+        self.assertFalse(contract.different_business_intent(payload, shifted))
+        wrong = deepcopy(post)
+        wrong["core_tenets"][1]["tenet_key"] = "tenet_replaced"
+        self.assertFalse(contract.poststate_matches_payload(payload, wrong, ACTOR))
+        invalid = synthetic_poststate(preview)
+        invalid["core_tenets"] = payload["core_tenets"]
+        with self.assertRaises(ValueError): contract.parse_current_rite_poststate(invalid)
+
+    def test_native_slot_counts_and_sparse_indices_reject_missing_wrong_and_duplicate_values(self) -> None:
+        good = synthetic_preview()[action.BODY_KEY]["draft"]
+        for field, value in (("selected_core_slot_count", True), ("selected_core_slot_count", 1.0),
+                ("selected_core_slot_count", 101), ("selected_core_slot_capacity", False),
+                ("selected_core_slot_capacity", 0), ("selected_core_slot_capacity", 1 << 31)):
+            invalid = deepcopy(good)
+            invalid[field] = value
+            with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                contract.parse_draft_core_tenets(invalid)
+        for field in ("selected_core_slot_count", "selected_core_slot_capacity"):
+            invalid = deepcopy(good)
+            del invalid[field]
+            with self.subTest(missing=field), self.assertRaises(ValueError):
+                contract.parse_draft_core_tenets(invalid)
+        for rows in ([{"slot_index": 1, "tenet_key": "tenet_a"}],
+                [{"slot_index": False, "tenet_key": "tenet_a"}],
+                [{"slot_index": 0, "tenet_key": "tenet_a"}, {"slot_index": 0, "tenet_key": "tenet_b"}],
+                [{"slot_index": 0, "tenet_key": "tenet_a"}, {"slot_index": 1, "tenet_key": "tenet_a"}]):
+            invalid = deepcopy(good)
+            invalid["selected_core_tenets"] = rows
+            with self.subTest(rows=rows), self.assertRaises(ValueError):
+                contract.parse_draft_core_tenets(invalid)
+        empty = deepcopy(good)
+        empty.update(selected_core_slot_count=0, selected_core_slot_capacity=0, selected_core_tenets=[])
+        self.assertEqual(contract.parse_draft_core_tenets(empty), [])  # Observation does not grant native Can.
+        unavailable_draft = unavailable("preview")[action.BODY_KEY]["draft"]
+        self.assertIsNone(contract.parse_draft_core_tenets(unavailable_draft))
+        unavailable_draft["selected_core_slot_count"] = 0
+        with self.assertRaises(ValueError): contract.parse_draft_core_tenets(unavailable_draft)
+
+    def test_full_native_catalogue_roundtrip_preserves_order_signed64_and_source(self) -> None:
+        catalogue = synthetic_catalogue(scope="draft", rite_id=RITE)
+        catalogue["virtues"].append({"trait_id": 99, "trait_key": "generous", "classification": 1,
+            "weight_raw": "9223372036854775807"})
+        parsed = contract.parse_virtue_sin_catalogue(json.loads(json.dumps(catalogue)), scope="draft", rite_id=RITE)
+        self.assertEqual(parsed, catalogue)
+        self.assertEqual([row["trait_id"] for row in parsed["virtues"]], [101, 99])
+        for field, value in (("trait_id", True), ("trait_id", 101.0), ("trait_id", 0xFFFFFFFF),
+                ("classification", True), ("classification", 2), ("trait_key", "../brave"),
+                ("weight_raw", 9007199254740993), ("weight_raw", "-0"), ("weight_raw", "01"),
+                ("weight_raw", "+1"), ("weight_raw", "9223372036854775808")):
+            invalid = deepcopy(catalogue)
+            invalid["virtues"][0][field] = value
+            with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                contract.parse_virtue_sin_catalogue(invalid, scope="draft", rite_id=RITE)
+        for field in catalogue:
+            invalid = deepcopy(catalogue)
+            del invalid[field]
+            with self.subTest(missing=field), self.assertRaises(ValueError):
+                contract.parse_virtue_sin_catalogue(invalid, scope="draft", rite_id=RITE)
+        for field, value in (("trait_id", 101), ("trait_key", "brave")):
+            invalid = deepcopy(catalogue)
+            invalid["sins"][0][field] = value
+            with self.subTest(duplicate=field), self.assertRaises(ValueError):
+                contract.parse_virtue_sin_catalogue(invalid, scope="draft", rite_id=RITE)
+        with self.assertRaises(ValueError):
+            contract.parse_virtue_sin_catalogue(catalogue, scope="current_rite", rite_id=RITE)
+        with self.assertRaises(ValueError):
+            contract.parse_virtue_sin_catalogue(catalogue, scope="draft", rite_id=RITE + 1)
+        empty = deepcopy(catalogue)
+        empty.update(virtues=[], sins=[])
+        self.assertEqual(contract.parse_virtue_sin_catalogue(empty, scope="draft", rite_id=RITE), empty)
+        invalid = deepcopy(empty)
+        invalid["virtues"] = None
+        with self.assertRaises(ValueError):
+            contract.parse_virtue_sin_catalogue(invalid, scope="draft", rite_id=RITE)
+
+    def test_missing_current_catalogue_window_does_not_hide_independent_basic_poststate(self) -> None:
+        preview = synthetic_preview()
+        payload = contract.submitted_payload_from_draft(preview[action.BODY_KEY]["draft"])
+        post = synthetic_poststate(preview)
+        post["virtue_sin_catalogue"] = synthetic_catalogue(scope="current_rite", rite_id=post["rite_id"], observed=False)
+        parsed = contract.parse_current_rite_poststate(post)
+        self.assertTrue(parsed["observed"])
+        self.assertFalse(parsed["virtue_sin_catalogue"]["observed"])
+        self.assertTrue(contract.poststate_matches_payload(payload, parsed, ACTOR))
+
+    def test_native_formatted_description_roundtrips_but_authored_controls_remain_rejected(self) -> None:
+        preview = synthetic_preview()
+        description = "实际中文\x15ONCLICK:religion\x15TOOLTIP:rite\x15"
+        preview[action.BODY_KEY]["draft"]["names"]["description"] = description
+        payload = contract.submitted_payload_from_draft(preview[action.BODY_KEY]["draft"])
+        self.assertEqual(contract.parse_submitted_payload(json.loads(json.dumps(payload)))["names"]["description"], description)
+        post = contract.parse_current_rite_poststate(json.loads(json.dumps(synthetic_poststate(preview))))
+        self.assertEqual(post["names"]["description"], description)
+        self.assertTrue(contract.poststate_matches_payload(payload, post, ACTOR))
+        with self.assertRaises(ValueError):
+            action.request_fields("set_name_field", RITE, name_field="description", text=description)
+        self.assertEqual(action.request_fields("set_name_field", RITE,
+            name_field="description", text="纯中文\n\t描述")["text"], "纯中文\n\t描述")
+
     def test_verified_successor_keeps_original_claim_and_requires_different_business_payload(self) -> None:
         driver, endpoint = self.driver()
         preview = synthetic_preview()
@@ -544,6 +679,85 @@ class RiteCreationMcpTests(unittest.IsolatedAsyncioTestCase):
     driver = RiteCreationAdapterTests.driver
     actual_mcp_summaries = []
 
+    async def test_real_mcp_sparse_slot99_retained_claim_and_native_catalogue_readback(self) -> None:
+        driver, endpoint = self.driver()
+        preview = synthetic_preview()
+        draft = preview[action.BODY_KEY]["draft"]
+        draft.update(selected_core_slot_count=100, selected_core_slot_capacity=100,
+            selected_core_tenets=[{"slot_index": slot, "tenet_key": key} for slot, key in
+                ((0, "tenet_adaptive"), (50, "tenet_asceticism"), (99, "tenet_legalism"))])
+        endpoint.preview = preview
+        endpoint.poststate = synthetic_poststate(preview)
+        query = "ck3_query_player_rite_creation_action_context_v1"
+        write = "ck3_execute_player_rite_creation_action_v1"
+        verify = "ck3_verify_player_rite_creation_action_completed_v1"
+        public = driver.take_snapshot_without_native_command_history()["revision"]
+        async with Client(create_server(driver)) as client:
+            tools = {tool.name: tool for tool in (await client.session.list_tools()).tools}
+            slot_schema = tools[write].input_schema["properties"]["core_slot_index"]
+            self.assertTrue(any(part.get("exclusiveMaximum") == 100 for part in slot_schema["anyOf"]))
+            read = await client.session.call_tool(query, {"expected_revision": public, "expected_source_rite_id": RITE})
+            self.assertFalse(read.is_error, str(read))
+            self.assertEqual(read.structured_content[action.BODY_KEY]["draft"]["virtue_sin_catalogue"],
+                draft["virtue_sin_catalogue"])
+            for slot in (True, 99.0, 100):
+                invalid = await client.session.call_tool(write, {"operation": "select_core_tenet",
+                    "expected_revision": public, "expected_source_rite_id": RITE,
+                    "core_slot_index": slot, "tenet_key": "tenet_legalism"})
+                self.assertTrue(invalid.is_error, str(invalid))
+            selected = await client.session.call_tool(write, {"operation": "select_core_tenet",
+                "expected_revision": public, "expected_source_rite_id": RITE,
+                "core_slot_index": 99, "tenet_key": "tenet_legalism"})
+            self.assertFalse(selected.is_error, str(selected))
+            self.assertEqual(endpoint.requests[-1]["core_slot_index"], 99)
+            await client.session.call_tool(query, {"expected_revision": public, "expected_source_rite_id": RITE})
+            sent = await client.session.call_tool(write, {"operation": "confirm_once", "expected_revision": public,
+                "expected_source_rite_id": RITE, "expected_preview_identity": "a" * 64,
+                "expected_outcome_kind": "create_faith"})
+            self.assertFalse(sent.is_error, str(sent))
+            request_id = sent.structured_content["action_request_id"]
+            claim_path = next(Path(self.temp.name).rglob("*.claim.json"))
+            before = claim_path.read_bytes()
+            claim = json.loads(before)
+            self.assertEqual([row["slot_index"] for row in claim["submitted_payload"]["core_tenets"]], [0, 50, 99])
+            finished = await client.session.call_tool(verify, {"action_request_id": request_id, "expected_revision": public})
+            self.assertFalse(finished.is_error, str(finished))
+            self.assertTrue(finished.structured_content["business_outcome_verified"])
+            self.assertEqual(claim_path.read_bytes(), before)
+            self.assertEqual(sum(row["operation"] == "confirm_once" for row in endpoint.requests), 1)
+
+    async def test_real_mcp_native_unavailable_current_preserves_reason_and_unknown_claim(self) -> None:
+        driver, endpoint = self.driver()
+        public = driver.take_snapshot_without_native_command_history()["revision"]
+        query = "ck3_query_player_rite_creation_action_context_v1"
+        write = "ck3_execute_player_rite_creation_action_v1"
+        verify = "ck3_verify_player_rite_creation_action_completed_v1"
+        async with Client(create_server(driver)) as client:
+            missing = await client.session.call_tool(query, {"expected_revision": public,
+                "expected_source_rite_id": RITE, "observation": "current_rite"})
+            self.assertFalse(missing.is_error, str(missing))
+            leaf = missing.structured_content[action.BODY_KEY]
+            self.assertEqual(leaf["unavailable_reason"], "synthetic_complete_payload_not_observed")
+            self.assertIsNone(leaf["current_rite_poststate"])
+            endpoint.preview = synthetic_preview()
+            await client.session.call_tool(query, {"expected_revision": public, "expected_source_rite_id": RITE})
+            sent = await client.session.call_tool(write, {"operation": "confirm_once", "expected_revision": public,
+                "expected_source_rite_id": RITE, "expected_preview_identity": "a" * 64,
+                "expected_outcome_kind": "create_faith"})
+            self.assertFalse(sent.is_error, str(sent))
+            claim_path = next(Path(self.temp.name).rglob("*.claim.json"))
+            before = claim_path.read_bytes()
+            observed = await client.session.call_tool(verify, {
+                "action_request_id": sent.structured_content["action_request_id"], "expected_revision": public})
+            self.assertFalse(observed.is_error, str(observed))
+            self.assertEqual(observed.structured_content["status"], "poststate_unavailable")
+            self.assertEqual(observed.structured_content["unavailable_reason"], "synthetic_complete_payload_not_observed")
+            self.assertFalse(observed.structured_content["automatic_retry"])
+            self.assertFalse(observed.structured_content["business_outcome_verified"])
+            self.assertEqual(claim_path.read_bytes(), before)
+            self.assertEqual(list(Path(self.temp.name).rglob("*.completed.json")), [])
+            self.assertEqual(sum(row["operation"] == "confirm_once" for row in endpoint.requests), 1)
+
     async def test_real_mcp_cancel_diagnostic_and_independent_current_rite_read(self) -> None:
         driver, endpoint = self.driver()
         endpoint.poststate = synthetic_poststate(synthetic_preview(), rite=RITE, faith=27)
@@ -665,5 +879,55 @@ class RiteCreationMcpTests(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(parser().parse_args(["--private-player-rite-creation-actions"]).private_player_rite_creation_actions)
 
 
+def consume_native_wire_fixture(path: Path) -> None:
+    """Consume actual C++ serializer bytes; this is fixture evidence, never live CK3."""
+    raw = path.read_bytes()
+    packet = contract.object_map(json.loads(raw), "C++ serializer fixture packet")
+    if packet.get("type") != "command_result" or packet.get("ok") is not True:
+        raise ValueError("actual C++ command-result fixture required")
+    result = contract.object_map(packet.get("result"), "C++ fixture result")
+    leaf = contract.object_map(result.get(action.BODY_KEY), "C++ fixture Rite action")
+    draft = contract.object_map(leaf.get("draft"), "C++ fixture draft")
+    rows = contract.parse_draft_core_tenets(draft)
+    if draft["selected_core_slot_count"] != 100 or rows is None or [row["slot_index"] for row in rows] != [0, 50, 99]:
+        raise ValueError("C++ fixture lost100 physical slots and sparse native positions")
+    payload = contract.submitted_payload_from_draft(draft)
+    if contract.parse_submitted_payload(json.loads(json.dumps(payload))) != payload:
+        raise ValueError("C++ submitted payload did not roundtrip")
+    catalogue = contract.parse_virtue_sin_catalogue(draft.get("virtue_sin_catalogue"),
+        scope="draft", rite_id=payload["source_rite_id"])
+    virtues, sins = catalogue["virtues"], catalogue["sins"]
+    if virtues is None or sins is None or not any(abs(int(row["weight_raw"])) > 2**53 for row in virtues + sins):
+        raise ValueError("C++ fixture omitted exact wide native weight strings")
+    if contract.parse_virtue_sin_catalogue(json.loads(json.dumps(catalogue)),
+            scope="draft", rite_id=payload["source_rite_id"]) != catalogue:
+        raise ValueError("C++ native Trait catalogue did not roundtrip")
+    current = contract.parse_current_rite_poststate(leaf.get("current_rite_poststate"))
+    frame = contract.object_map(leaf.get("frame"), "C++ fixture frame")
+    actor = contract.exact_integer(frame.get("played_character_id"), "fixture actor", 1, 0x7FFFFFFF)
+    if not contract.poststate_matches_payload(payload, current, actor):
+        raise ValueError("C++ independent dense poststate differs from sparse effective payload")
+    description = payload["names"]["description"]
+    if "\x15" not in description or current["names"] != payload["names"]:
+        raise ValueError("C++ legal native formatted description was changed")
+    try:
+        action.request_fields("set_name_field", payload["source_rite_id"],
+            name_field="description", text=description)
+    except ValueError:
+        pass
+    else:
+        raise ValueError("SDK accidentally accepted native formatting controls as authored input")
+    print(json.dumps({"status": "CPP_SERIALIZER_FIXTURE_CONSUMED", "synthetic_fixture_only": True,
+        "machine_id": action._machine_id(), "game_started": False, "business_pass": False,
+        "input": {"path": str(path.resolve()), "bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()},
+        "physical_slot_count": draft["selected_core_slot_count"], "valid_tenet_count": len(rows),
+        "native_catalogue_observed": catalogue["observed"], "formatted_description_preserved": True}))
+
+
 if __name__ == "__main__":
-    unittest.main()
+    if len(sys.argv) > 1 and sys.argv[1] == "--native-wire":
+        if len(sys.argv) != 3:
+            raise SystemExit("--native-wire requires the exact fixture path")
+        consume_native_wire_fixture(Path(sys.argv[2]))
+    else:
+        unittest.main()

@@ -6,6 +6,7 @@
 #include <charconv>
 #include <limits>
 #include <utility>
+#include <unordered_set>
 #include <vector>
 
 namespace xar::ck3_12004::religion::rite_creation_actions {
@@ -289,6 +290,21 @@ class Json {
     String(name);
   }
 };
+bool DefinitionKey(std::string_view value) {
+ return !value.empty()&&value.size()<=128&&std::all_of(value.begin(),value.end(),[](unsigned char c){
+  return (c>='a'&&c<='z')||(c>='0'&&c<='9')||c=='_';});
+}
+bool CatalogueContract(const VirtueSinCatalogue&value,VirtueSinScope scope,
+    const std::optional<std::uint32_t>&rite) {
+ if(value.scope!=scope||(value.rite_id&&(*value.rite_id==absent||value.rite_id!=rite)))return false;
+ if(!value.observed)return !value.unavailable_reason.empty()&&value.virtues.empty()&&value.sins.empty();
+ if(!value.unavailable_reason.empty()||!rite||value.rite_id!=rite||value.virtues.size()+value.sins.size()>8192)return false;
+ std::unordered_set<std::uint32_t>ids;std::unordered_set<std::string>keys;
+ for(const auto*rows:{&value.virtues,&value.sins})for(const auto&row:*rows)
+  if(row.trait_id==absent||!DefinitionKey(row.trait_key)||row.classification!=(rows==&value.virtues?1:2)||
+     !ids.insert(row.trait_id).second||!keys.insert(row.trait_key).second)return false;
+ return true;
+}
 bool ResultContract(const Result& result, std::string& reason) {
   if (!result.frame.connection_generation || !result.frame.native_revision ||
       !result.frame.capture_epoch || result.frame.played_character_id <= 0)
@@ -311,6 +327,21 @@ bool ResultContract(const Result& result, std::string& reason) {
     return Fail(reason, "rite_creation_unobserved_quote_has_values");
   if (!result.draft.selected_core_tenets_observed && !result.draft.selected_core_tenets.empty())
     return Fail(reason, "rite_creation_unobserved_tenets_have_values");
+  const auto&selected_draft=result.draft;
+  if(!selected_draft.selected_core_tenets_observed){
+   if(selected_draft.selected_core_slot_count||selected_draft.selected_core_slot_capacity)return Fail(reason,"rite_creation_unobserved_slot_count_has_value");
+  }else{
+   if(!selected_draft.selected_core_slot_count||!selected_draft.selected_core_slot_capacity||*selected_draft.selected_core_slot_count>100||
+      *selected_draft.selected_core_slot_capacity<*selected_draft.selected_core_slot_count||*selected_draft.selected_core_slot_capacity>0x7FFFFFFFU||
+      selected_draft.selected_core_tenets.size()>*selected_draft.selected_core_slot_count)return Fail(reason,"rite_creation_observed_slot_count_invalid");
+   std::unordered_set<std::string>keys;std::uint32_t previous=absent;
+   for(const auto&row:selected_draft.selected_core_tenets){
+    if(row.slot_index>=*selected_draft.selected_core_slot_count||(previous!=absent&&row.slot_index<=previous)||
+       !DefinitionKey(row.tenet_key)||!keys.insert(row.tenet_key).second)return Fail(reason,"rite_creation_sparse_selected_slots_invalid");
+    previous=row.slot_index;}
+  }
+  if(!CatalogueContract(selected_draft.virtue_sin_catalogue,VirtueSinScope::draft,selected_draft.source_rite_id))
+   return Fail(reason,"rite_creation_draft_virtue_sin_catalogue_invalid");
   if (!result.draft.selected_doctrines_observed && !result.draft.selected_doctrines.empty())
     return Fail(reason, "rite_creation_unobserved_doctrines_have_values");
   if (result.preview_identity_available) {
@@ -334,6 +365,8 @@ bool ResultContract(const Result& result, std::string& reason) {
   }
   if (result.current_rite_poststate) {
     const auto& state = *result.current_rite_poststate;
+    if(!CatalogueContract(state.virtue_sin_catalogue,VirtueSinScope::current_rite,state.rite_id))
+     return Fail(reason,"rite_creation_current_virtue_sin_catalogue_invalid");
     if (state.source_rite_id_anchor == absent)
       return Fail(reason, "rite_creation_poststate_original_source_anchor_required");
     if (state.observed && (!state.unavailable_reason.empty() || !state.rite_id ||
@@ -353,11 +386,32 @@ void FrameJson(Json& json, const Frame& value) {
   json.text += ','; json.Key("played_character_id"); json.Integer(value.played_character_id);
   json.text += '}';
 }
+void CatalogueJson(Json&json,const VirtueSinCatalogue&value) {
+ json.text+='{';json.Key("schema");json.String("ck3_12004_rite_virtue_sin_catalogue_v1");
+ json.text+=',';json.Key("observed");json.Boolean(value.observed);
+ json.text+=',';json.Key("unavailable_reason");if(value.observed)json.text+="null";else json.String(value.unavailable_reason);
+ json.text+=',';json.Key("scope");json.String(value.scope==VirtueSinScope::draft?"draft":"current_rite");
+ json.text+=',';json.Key("rite_id");json.Optional(value.rite_id);
+ for(const auto*rows:{&value.virtues,&value.sins}){
+  json.text+=',';json.Key(rows==&value.virtues?"virtues":"sins");
+  if(!value.observed){json.text+="null";continue;}
+  json.text+='[';
+  for(std::size_t index=0;index<rows->size();++index){const auto&row=(*rows)[index];if(index)json.text+=',';
+   json.text+='{';json.Key("trait_id");json.Integer(row.trait_id);
+   json.text+=',';json.Key("trait_key");json.String(row.trait_key);
+   json.text+=',';json.Key("classification");json.Integer(row.classification);
+   json.text+=',';json.Key("weight_raw");json.String(std::to_string(row.weight_raw));json.text+='}';}
+  json.text+=']';
+ }
+ json.text+='}';
+}
 void DraftJson(Json& json, const Draft& value) {
   json.text += '{'; json.Key("observed"); json.Boolean(value.observed);
   json.text += ','; json.Key("names_observed"); json.Boolean(value.names_observed);
   json.text += ','; json.Key("selected_core_tenets_observed"); json.Boolean(value.selected_core_tenets_observed);
   json.text += ','; json.Key("selected_doctrines_observed"); json.Boolean(value.selected_doctrines_observed);
+  json.text += ','; json.Key("selected_core_slot_count"); json.Optional(value.selected_core_slot_count);
+  json.text += ','; json.Key("selected_core_slot_capacity"); json.Optional(value.selected_core_slot_capacity);
   json.text += ','; json.Key("source_rite_id"); json.Optional(value.source_rite_id);
   json.text += ','; json.Key("source_faith_id"); json.Optional(value.source_faith_id);
   json.text += ','; json.Key("actor_faith_id"); json.Optional(value.actor_faith_id);
@@ -370,6 +424,7 @@ void DraftJson(Json& json, const Draft& value) {
     json.Key(name_fields[n]); json.Optional(value.names[n]);
   }
   json.text += '}';
+  json.text += ','; json.Key("virtue_sin_catalogue"); CatalogueJson(json,value.virtue_sin_catalogue);
   json.text += ','; json.Key("selected_core_tenets");
   if (!value.selected_core_tenets_observed) json.text += "null";
   else {
@@ -437,6 +492,7 @@ void PoststateJson(Json& json, const std::optional<CurrentRitePoststate>& value)
   json.text += ','; json.Key("faith_id"); json.Optional(state.faith_id);
   json.text += ','; json.Key("religion_id"); json.Optional(state.religion_id);
   json.text += ','; json.Key("founder_character_id"); json.Optional(state.founder_character_id);
+  json.text += ','; json.Key("virtue_sin_catalogue"); CatalogueJson(json,state.virtue_sin_catalogue);
   json.text += ','; json.Key("names");
   if (!state.names) json.text += "null";
   else {

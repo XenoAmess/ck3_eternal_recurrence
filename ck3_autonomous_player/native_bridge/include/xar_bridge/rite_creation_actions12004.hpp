@@ -42,6 +42,26 @@ struct TenetSelection {std::uint32_t slot_index=0;std::string tenet_key;
  bool operator==(const TenetSelection&)const=default;};
 struct DoctrineSelection {std::string group_key,doctrine_key;
  bool operator==(const DoctrineSelection&)const=default;};
+struct VirtueSinRow {
+ std::uint32_t trait_id=absent;
+ std::string trait_key;
+ std::int32_t classification=0;
+ std::int64_t weight_raw=0;
+ bool operator==(const VirtueSinRow&)const=default;
+};
+enum class VirtueSinScope {draft,current_rite};
+struct VirtueSinCatalogue {
+ bool observed=false;
+ std::string unavailable_reason="not_read";
+ VirtueSinScope scope=VirtueSinScope::draft;
+ std::optional<std::uint32_t>rite_id;
+ std::vector<VirtueSinRow>virtues,sins;
+ // Provider-private source branches for stable reads, never JSON addresses or
+ // tooltip claims. Persistent references and draft-core pointers stay distinct.
+ std::vector<std::uint32_t>description_rite_ids;
+ std::vector<const void*>description_draft_cores;
+ bool operator==(const VirtueSinCatalogue&)const=default;
+};
 struct Draft {
  bool observed=false,names_observed=false,selected_core_tenets_observed=false,selected_doctrines_observed=false;
  std::optional<std::uint32_t> source_rite_id,source_faith_id,actor_faith_id;
@@ -49,7 +69,9 @@ struct Draft {
  std::optional<bool> editing_owned_current_rite,native_create_faith_or_reform;
  std::array<std::optional<std::string>,5>names;
  std::vector<TenetSelection>selected_core_tenets;
+ std::optional<std::uint32_t>selected_core_slot_count,selected_core_slot_capacity;
  std::vector<DoctrineSelection>selected_doctrines;
+ VirtueSinCatalogue virtue_sin_catalogue{};
  bool operator==(const Draft&)const=default;
 };
 struct Modal {
@@ -81,6 +103,7 @@ struct CurrentRitePoststate {
  std::optional<std::array<std::string,5>>names;
  std::optional<std::vector<TenetSelection>>core_tenets;
  std::optional<std::vector<DoctrineSelection>>doctrines;
+ VirtueSinCatalogue virtue_sin_catalogue{false,"not_read",VirtueSinScope::current_rite,{},{},{},{},{}};
  std::optional<bool>confirmation_modal_open,creation_window_visible;
  bool operator==(const CurrentRitePoststate&)const=default;
 };

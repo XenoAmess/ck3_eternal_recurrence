@@ -1,5 +1,10 @@
 // Generated from exact-.4 bounded source packets; no RVA adjustment.
-inline constexpr std::array<Pin,44>kRiteCreationPins{{
+inline constexpr std::array<Pin,48>kRiteCreationPins{{
+ // Exact native cached catalogue getters; research-virtues-a01 spans.
+ {0x14F0E80,"488d8140080000c3"},
+ {0x10E5C90,"488d8158080000c3"},
+ {0x141A6A0,"488d81f8020000c3"},
+ {0x141A6B0,"488d8110030000c3"},
  // Independent persistent custom text and original Close proofs:
  // mod_dynastic_esotericism/docs/evidence/rite-persisted-names-12004-2026-10-24.json.
  {0x14F38D0,"40534883ec20488b01488bd9ff5020c68338100000004883c4205bc3"},

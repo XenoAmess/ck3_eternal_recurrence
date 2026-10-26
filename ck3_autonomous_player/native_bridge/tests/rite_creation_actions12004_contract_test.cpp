@@ -20,10 +20,14 @@ int main(){
   q.text="\xC0\xAF";Require(!ValidateRequest(q),"overlong UTF-8 rejected");
   q.text="line\nline";Require(!ValidateRequest(q),"single-line name newline rejected");
   q.name_field=NameField::description;Require(ValidateRequest(q),"stock multiline description accepted");
+  q.text="native\x15" "markup";Require(!ValidateRequest(q),"native markup is not authored input");
+  q.name_field=NameField::name;q.text="\xE4\xBF\xA1\xE4\xBB\xB0";Require(ValidateRequest(q),"complete UTF-8 Chinese name accepted");
+  q.name_field=NameField::description;
   q.text=std::string(241,'x');Require(!ValidateRequest(q),"stock description character limit retained");
   q={};q.expected_source_rite_id=13;q.operation=Operation::select_core_tenet;
   q.core_slot_index=0;q.tenet_key="tenet_adaptive";Require(ValidateRequest(q),"typed core selector accepted");
-  q.core_slot_index=64;Require(!ValidateRequest(q),"unbounded slot rejected before materializer");
+  q.core_slot_index=99;Require(ValidateRequest(q),"last physical editor slot accepted");
+  q.core_slot_index=100;Require(!ValidateRequest(q),"unbounded slot rejected before materializer");
   q.core_slot_index=0;q.tenet_key="not/a/key";Require(!ValidateRequest(q),"arbitrary selector rejected");
   q={};q.expected_source_rite_id=13;q.operation=Operation::prepare_confirmation;
   q.expected_outcome_kind=Outcome::create_rite;q.expected_preview_identity=std::string(64,'a');
@@ -33,8 +37,7 @@ int main(){
   Require(!ValidateRequest(q),"confirm without durable action identity rejected");
   q.action_id="episode-source-intent-1";Require(ValidateRequest(q),"finite confirmation contract accepted");
   q.expected_preview_identity[0]='G';Require(!ValidateRequest(q),"malformed proof rejected");
-  // No native game/GUI is constructed. This file is a future C++ fixture;
-  // current V5 policy forbids compiling or claiming its execution.
+  // This is an offline request fixture. It constructs no native game/GUI.
   std::puts("rite creation request contract checks passed");return 0;
  }catch(const std::exception&e){std::fprintf(stderr,"FAIL %s\n",e.what());return 1;}
 }

@@ -107,3 +107,87 @@ The original result remains under external
 `episode01/runtime/religion-candidate-a08/evidence-build-a01/`.
 At this cutoff, the two fixtures and original game controller have not yet
 executed. Compile/link success does not resolve that qualification.
+
+## N6 source revision after the R0020 observation
+
+Machine `4-8e1c2f1861`, source work on `2026-10-26`. R0020 actually rejected
+the typed preview with `rite_creation_selected_tenet_count_above_bound` before
+dispatch. The deployed MTS editor declares 100 physical slots while three core
+Tenets were visible. This does not establish the values of the other 97 native
+pointers. No live process or memory read is performed by this revision; build,
+fixture and subsequent game results require their own receipts.
+
+The existing qualified Tenet-source reader supplies the precise blank contract:
+`religion_reform12002_tenet_sources.cpp` compares the row definition with the
+native-default global, whose exact-.4 binding is image+`5D1F6C0`. Its owned
+blank-slot fixture uses a non-null placeholder. An older .2 actual sample's
+`Null` magic does not qualify an extra .4 object-shape prerequisite. N6
+retains every raw selected pointer, including this exact sentinel, in original
+physical order for private command finalization. Null and unknown definitions
+remain unavailable. A row's existing +20 slot identity must agree with its
+physical position; +28 supplies the original definition. The response contains
+only valid definitions, with their sparse physical indices. It does not flatten
+the writer's raw vector or use a flattened DTO index to mutate the editor.
+
+`selected_core_slot_count` and `selected_core_slot_capacity` are mandatory
+nullable fields. An observed collection has count 0..100, reserve at least count
+and at most signed-int32 maximum, and unique effective keys at strictly
+ascending physical indices below count. Unobserved fields are null; observed
+zero remains `[]`. The original full CanCreate/CanEdit predicates still decide
+whether a 3..100 choice is legally submittable. The preview identity version
+also binds all raw positions' effective-key-or-sentinel states. Current saved
+Rite core definitions are independently dense and bounded at 100; the SDK
+compares effective keys while preserving each submitted physical slot list.
+
+The exact executable SHA-256 remains
+`98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`.
+Read-only getter research is retained at the external
+`customize-R0016-a02/metadata/research-virtues-a01/` directory, in
+`EXACT-GETTERS.actual.json`, `NATIVE.SPANS.asm` and `NOTE.md`. It binds these
+cached-array leaves: draft virtues `14F0E80` -> +840, draft sins `10E5C90` ->
++858, FaithWindow virtues `141A6A0` -> +2F8 and sins `141A6B0` -> +310.
+The original `EE2F90` producer sorts and filters trait groups; N6 reads its
+existing rows and preserves their order. It neither recomputes classifications
+from player-owned traits nor constructs arrays using an unqualified allocator.
+In the exact `.4` append span `EE2D10..EE2F84` (SHA-256
+`1ecc1e3b7e63daba054a80a0b94ec87e6f7a4c2548390981cdd6220e2324ee39`),
+`EE2D10/13` returns for kind 0, and `EE2D28/37` selects the virtues destination
+only for kind 1. The unchanged input kind is stored in the draft row at
+`EE2ED7`/`EE2F5A`. The persistent constructor `EE2970..EE2B09` (SHA-256
+`2480dbe6f1d062a0c14e2ef8f0d6226d6056cbae036573d7b5d287a78b85a799`)
+stores that passed kind at `EE2988`. Thus a cached virtue row's admitted kind
+is 1; a GUI predicate that checks only whether kind equals 2 does not justify
+accepting kind 0 as a real produced virtue row. Unknown classifier values
+remain unavailable rather than being coerced into either public enum value.
+
+Each native row is stride 28 hex: classification +0, Trait pointer +8, full Rite
+ID +10, signed64 raw weight +18, and draft-core pointer +20. Draft-core and
+persistent-Rite description branches are validated separately and remain
+provider-private. A Trait must belong to the actual Trait database and retain
+its ID/key across the read. The public `virtue_sin_catalogue` contains scope,
+actual Rite binding and exactly four row fields: `trait_id`, `trait_key`,
+`classification` and canonical decimal-string `weight_raw`. The combined
+8192-row bound is an implementation read bound, not an asserted native maximum.
+
+Draft catalogues read the existing owned creation window caches. A current
+Rite catalogue additionally requires the existing typed `religion_ui` owner,
+RTTI/reference and stable-selection checks, a visible original `faith_window`,
+the actual player Faith, and its independently selected current full Rite ID.
+The caches are not used when that window is missing or shows a different Rite.
+An unavailable catalogue has a reason and null arrays, independently of the
+basic persistent names/core graph; it never falls back to the player's traits.
+An observed empty catalogue has two empty arrays. These source checks do not
+claim that a full current catalogue has yet been observed in a game session.
+
+The native persistent default description can contain U+0015 markup. Only the
+description-output validator permits this proven control character. Authored
+requests retain strict UTF-8, 30/240 scalar limits, NUL rejection and their
+existing control-character restrictions. JSON emits U+0015 as `\u0015` without
+changing the stored native text.
+
+The three existing offline fixtures cover bounded headers, sparse raw slots
+and sentinel handling, catalogue row/source/order failures, signed64 JSON
+strings and output-only markup. The wire fixture's optional
+`--sdk-fixture-out <new-path>` writes one production-serializer packet for an
+independent SDK consumer; default execution writes no packet. Its DTO is
+synthetic and cannot qualify an original game call or any business result.

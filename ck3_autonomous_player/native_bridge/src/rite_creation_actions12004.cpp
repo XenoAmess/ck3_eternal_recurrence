@@ -65,23 +65,46 @@ bool AsciiKey(std::string_view s) noexcept {
  return !s.empty()&&s.size()<=128&&std::all_of(s.begin(),s.end(),[](unsigned char c){return
   (c>='a'&&c<='z')||(c>='0'&&c<='9')||c=='_';});
 }
-bool Utf8Text(std::string_view s,std::size_t max_characters,bool multiline) noexcept {
- std::size_t i=0,count=0;
- while(i<s.size()){
-  const auto c=static_cast<unsigned char>(s[i++]);std::uint32_t cp=c;unsigned continuation=0;
-  if(c<0x80){}
-  else if(c>=0xC2&&c<=0xDF){cp=c&31;continuation=1;}
-  else if(c>=0xE0&&c<=0xEF){cp=c&15;continuation=2;}
-  else if(c>=0xF0&&c<=0xF4){cp=c&7;continuation=3;}
-  else return false;
-  const unsigned length=continuation;
-  if(continuation>s.size()-i)return false;
-  while(continuation--){const auto d=static_cast<unsigned char>(s[i++]);if((d&0xC0)!=0x80)return false;cp=(cp<<6)|(d&63);}
-  if((length==1&&cp<0x80)||(length==2&&cp<0x800)||(length==3&&cp<0x10000)||cp>0x10FFFF||
-     (cp>=0xD800&&cp<=0xDFFF)||cp==0||cp==0x7F||(cp<32&&!(multiline&&(cp==10||cp==9))))return false;
-  if(++count>max_characters)return false;
- }
+struct TraitRegistry {
+ const void*database=nullptr,*data=nullptr;
+ std::int32_t count=0;
+ std::vector<const void*>definitions;
+};
+bool ReadTraitRegistry(const Bindings&b,TraitRegistry&out) {
+ out={};
+ if(!Read(b,reinterpret_cast<const void*>(b.image_base+0x5C67528),0,out.database)||!out.database||
+    !Read(b,out.database,0x50,out.data)||!Read(b,out.database,0x5C,out.count)||out.count<0||out.count>1000000)
+  return false;
+ const auto address=reinterpret_cast<std::uintptr_t>(out.data);
+ if(out.count&&(!address||address%alignof(void*)||static_cast<std::size_t>(out.count)>
+      (std::numeric_limits<std::uintptr_t>::max()-address)/sizeof(void*)))return false;
+ out.definitions.resize(static_cast<std::size_t>(out.count));
+ return !out.count||b.read_memory(b.read_context,out.data,out.definitions.data(),out.definitions.size()*sizeof(void*));
+}
+bool ReadTraitDefinition(const Bindings&b,const TraitRegistry&registry,const void*definition,
+    std::uint32_t&id,std::string&key) {
+ std::int32_t first=-1,last=-1;
+ if(std::find(registry.definitions.begin(),registry.definitions.end(),definition)==registry.definitions.end()||
+    !Read(b,definition,0x10,first)||first<0||!String(b,At(definition,0x18),key,128)||!AsciiKey(key)||
+    !Read(b,definition,0x10,last)||last!=first)return false;
+ id=static_cast<std::uint32_t>(first);return true;
+}
+bool ReadCatalogue(const Bindings&b,const void*window,std::size_t virtues_offset,std::size_t sins_offset,
+    VirtueSinScope scope,std::uint32_t rite,const void*draft_core,VirtueSinCatalogue&out) {
+ TraitRegistry registry{};bool registry_read=false;
+ const auto trait=[&](const void*definition,std::uint32_t&id,std::string&key){
+  if(!registry_read){if(!ReadTraitRegistry(b,registry))return false;registry_read=true;}
+  return ReadTraitDefinition(b,registry,definition,id,key);};
+ if(!detail::ReadVirtueSinCatalogueRows(b,window,virtues_offset,sins_offset,scope,rite,draft_core,trait,out))return false;
+ if(registry_read){TraitRegistry again{};
+  if(!ReadTraitRegistry(b,again)||again.database!=registry.database||again.data!=registry.data||again.count!=registry.count||again.definitions!=registry.definitions){
+   out.observed=false;out.unavailable_reason="rite_virtue_sin_trait_registry_changed";
+   out.virtues.clear();out.sins.clear();out.description_rite_ids.clear();out.description_draft_cores.clear();return false;}}
  return true;
+}
+bool Utf8Text(std::string_view s,std::size_t max_characters,bool multiline,
+              bool native_description_markup=false) noexcept {
+ return detail::Utf8Text(s,max_characters,multiline,native_description_markup);
 }
 struct BorrowedUtf8 {
  std::array<unsigned char,16>storage{};std::uint64_t size=0,capacity=15;
@@ -204,6 +227,8 @@ struct NativeCString {std::array<unsigned char,32>bytes{};};
 struct WriterInputs {
  std::array<std::uint8_t,2>flags{};
  std::vector<const void*>tenets,doctrines;
+ // Exact physical slots: native-default placeholders remain in the writer.
+ std::vector<std::string>tenet_keys;
  std::vector<std::uint8_t>doctrine_skip_flags;
  bool operator==(const WriterInputs&)const=default;
 };
@@ -368,6 +393,27 @@ bool Owner(const Bindings&b,const Admission&a,const Frame&f) {
   f.played_character_id>0&&Read(b,a.jomini_owner,0x10,gfx)&&gfx&&Read(b,gfx,0x88,handler)&&handler==a.handler&&
   Read(b,reinterpret_cast<const void*>(b.image_base+0x54DBC00),0,actor)&&actor==static_cast<std::uint32_t>(f.played_character_id);
 }
+void CaptureCurrentCatalogue(const Bindings&b,const Admission&a,std::uint32_t rite,std::uint32_t faith,
+    VirtueSinCatalogue&out) {
+ out={};out.scope=VirtueSinScope::current_rite;out.rite_id=rite;
+ const auto fail=[&](const char*reason){out.observed=false;out.unavailable_reason=reason;
+  out.virtues.clear();out.sins.clear();out.description_rite_ids.clear();out.description_draft_cores.clear();};
+ const auto bindings=religion_ui::BindImage12004(b.image_base,ck3_12004::kExecutableSha256);
+ religion_ui::Selection selected{};
+ if(!religion_ui::ReadSelection12004(bindings,a.handler,religion_ui::Window::faith,selected)||!selected.available||
+    !selected.subject_available||selected.handler!=a.handler||selected.gfx!=a.jomini_owner||!selected.root||
+    selected.selected_rite_id!=rite||selected.subject_id!=faith){fail("rite_virtue_sin_actual_current_faith_window_unbound");return;}
+ bool shown=false,enabled=false;
+ if(!a.gui_root_state(a.gui_context,selected.root,"faith_window",shown,enabled)||!shown){
+  fail("rite_virtue_sin_actual_current_faith_window_not_visible");return;}
+ if(!ReadCatalogue(b,selected.window,0x2F8,0x310,VirtueSinScope::current_rite,rite,nullptr,out))return;
+ religion_ui::Selection after{};shown=false;
+ if(!religion_ui::ReadSelection12004(bindings,a.handler,religion_ui::Window::faith,after)||
+    !after.available||!after.subject_available||after.window!=selected.window||after.root!=selected.root||
+    after.gfx!=selected.gfx||after.subject_id!=faith||after.selected_rite_id!=rite||
+    !a.gui_root_state(a.gui_context,after.root,"faith_window",shown,enabled)||!shown)
+  fail("rite_virtue_sin_actual_current_faith_window_changed");
+}
 bool CaptureCurrentRite(const Bindings&b,const Admission&a,const Frame&f,const Request&r,
  CurrentRitePoststate&out) {
  auto fail=[&](const char*why){out={};out.source_rite_id_anchor=r.expected_source_rite_id;out.unavailable_reason=why;return false;};
@@ -392,10 +438,10 @@ bool CaptureCurrentRite(const Bindings&b,const Admission&a,const Frame&f,const R
  constexpr std::array<std::size_t,5>offsets{0x540,0x570,0x5A0,0x5D0,0x600};
  std::array<std::string,5>names{};
  for(std::size_t i=0;i<offsets.size();++i)
-  if(!String(b,At(rite,offsets[i]),names[i])||!Utf8Text(names[i],16384,true))
+  if(!String(b,At(rite,offsets[i]),names[i])||!Utf8Text(names[i],16384,true,i==4))
    return fail("rite_poststate_persistent_custom_text_unavailable");
- value.names=std::move(names);Header core{},doctrines{};
- if(!Array(b,rite,0x758,core,64)||!Array(b,rite,0x7A0,doctrines,8192))
+ value.names=std::move(names);detail::SelectedRowArrayHeader core{};Header doctrines{};
+ if(detail::ReadBoundedArrayPrefix(b,rite,0x758,8,100,core)!=detail::SelectedRowHeaderFailure::none||!Array(b,rite,0x7A0,doctrines,8192))
   return fail("rite_poststate_complete_persistent_collections_unavailable");
  std::vector<TenetSelection>tenet_rows;std::vector<DoctrineSelection>doctrine_rows;
  for(std::int32_t i=0;i<core.count;++i){const void*def=nullptr;std::string key,group;
@@ -431,11 +477,13 @@ bool CaptureCurrentRite(const Bindings&b,const Admission&a,const Frame&f,const R
    return fail("rite_poststate_confirmation_visibility_unavailable");
   if(visible){if(modal_open)return fail("rite_poststate_confirmation_not_unique");modal_open=true;active_root=root;}}
  value.confirmation_modal_open=modal_open;
- Header core_after{},doctrines_after{},dialogs_after{};std::uint32_t identity_after=absent;
- if(!Array(b,rite,0x758,core_after,64)||core_after!=core||!Array(b,rite,0x7A0,doctrines_after,8192)||
+ detail::SelectedRowArrayHeader core_after{};Header doctrines_after{},dialogs_after{};std::uint32_t identity_after=absent;
+ if(detail::ReadBoundedArrayPrefix(b,rite,0x758,8,100,core_after)!=detail::SelectedRowHeaderFailure::none||core_after!=core||!Array(b,rite,0x7A0,doctrines_after,8192)||
     doctrines_after!=doctrines||!Array(b,manager,0x18,dialogs_after,128)||dialogs_after!=dialogs||
     !Read(b,rite,8,identity_after)||identity_after!=identity||!Owner(b,a,f)||
     !a.modal_scope_state(a.gui_context,active_root))return fail("rite_poststate_persistent_or_modal_frame_changed");
+ CaptureCurrentCatalogue(b,a,identity,faith,value.virtue_sin_catalogue);
+ if(!Owner(b,a,f))return fail("rite_poststate_owner_changed_during_catalogue_read");
  value.observed=true;value.unavailable_reason.clear();out=std::move(value);return true;
 }
 bool ObserveCurrentRite(const Bindings&b,const Admission&a,const Frame&f,const Request&r,Result&out) {
@@ -448,7 +496,9 @@ bool ObserveCurrentRite(const Bindings&b,const Admission&a,const Frame&f,const R
  out.current_rite_poststate=std::move(last);out.available=true;out.status="observed";out.unavailable_reason.clear();return true;
 }
 bool Capture(const Bindings&b,const Admission&a,const Frame&f,const Request&r,Pass&p,std::string&why) {
- auto fail=[&](const char*v){why=v;return false;};
+ auto fail=[&](const char*v){auto&draft=p.value.draft;
+  if(!draft.selected_core_tenets_observed){draft.selected_core_tenets.clear();draft.selected_core_slot_count.reset();draft.selected_core_slot_capacity.reset();}
+  if(!draft.selected_doctrines_observed)draft.selected_doctrines.clear();why=v;return false;};
  if(!Owner(b,a,f))return fail("rite_creation_exact_owner_paused_frame_unverified");
  reform::query::Observation q{};
  if(!ReadPlayedReformQuery12004(BindReformQueryImage12004(b.image_base,ck3_12004::kExecutableSha256),f.capture_epoch,q)||
@@ -479,15 +529,23 @@ bool Capture(const Bindings&b,const Admission&a,const Frame&f,const Request&r,Pa
  d.names_observed=true;detail::SelectedRowHeaders selected_rows{};const char*selected_rows_failure=nullptr;
  if(!detail::ReadSelectedRowHeaders(b,p.window,selected_rows,selected_rows_failure))return fail(selected_rows_failure);
  const auto&tenets=selected_rows.tenets;const auto&doctrines=selected_rows.doctrines;
- for(std::int32_t i=0;i<tenets.count;++i){const void*def=nullptr;std::string key,group;
-  if(!Read(b,tenets.data,static_cast<std::size_t>(i)*0x70+0x28,def)||!Definition(b,def,true,key,group))return fail("rite_creation_selected_tenet_definition_unavailable");
-  d.selected_core_tenets.push_back({static_cast<std::uint32_t>(i),std::move(key)});p.writer_inputs.tenets.push_back(def);}
+ const void*native_default=nullptr;
+ if(!Read(b,reinterpret_cast<const void*>(b.image_base+0x5D1F6C0),0,native_default)||!native_default)
+  return fail("rite_creation_native_default_tenet_unavailable");
+ if(!detail::ReadSelectedTenetSlots(b,tenets,native_default,
+      [&](const void*def,std::string&key){std::string group;return Definition(b,def,true,key,group);},
+      d.selected_core_tenets,p.writer_inputs.tenets,p.writer_inputs.tenet_keys,selected_rows_failure))return fail(selected_rows_failure);
+ d.selected_core_slot_count=static_cast<std::uint32_t>(tenets.count);
+ d.selected_core_slot_capacity=static_cast<std::uint32_t>(tenets.capacity);
  for(std::int32_t i=0;i<doctrines.count;++i){const void*def=nullptr;std::string key,group;
   if(!Read(b,doctrines.data,static_cast<std::size_t>(i)*0x48+0x28,def)||!Definition(b,def,false,key,group))return fail("rite_creation_selected_doctrine_definition_unavailable");
   std::uint8_t skip=0;if(!Read(b,doctrines.data,static_cast<std::size_t>(i)*0x48+0x40,skip))return fail("rite_creation_original_doctrine_skip_flag_unavailable");
   d.selected_doctrines.push_back({std::move(group),std::move(key)});p.writer_inputs.doctrines.push_back(def);p.writer_inputs.doctrine_skip_flags.push_back(skip);}
  if(!Read(b,p.window,0x1039,p.writer_inputs.flags[0])||!Read(b,p.window,0x103A,p.writer_inputs.flags[1]))return fail("rite_creation_original_finalize_flags_unavailable");
  d.selected_core_tenets_observed=d.selected_doctrines_observed=true;
+ // This is the original sorted/group-filtered native display model, not the
+ // player's owned-trait profile and not a recomputed Python classification.
+ ReadCatalogue(b,p.window,0x840,0x858,VirtueSinScope::draft,*d.source_rite_id,At(p.window,0x238),d.virtue_sin_catalogue);
  p.value.full_can={q.draft_eligibility.available,q.draft_eligibility.can_create_rite,q.draft_eligibility.can_edit_rite,
   q.draft_eligibility.can_create_rite_native_text,q.draft_eligibility.can_edit_rite_native_text};
  p.value.quote={q.draft_costs.available,q.draft_costs.piety_cost_raw,q.draft_costs.piety_missing_signed_raw,q.draft_costs.has_enough_piety};
@@ -520,6 +578,9 @@ bool Capture(const Bindings&b,const Admission&a,const Frame&f,const Request&r,Pa
  if(!matching){if(visible_dialogs)return fail("rite_creation_unrelated_modal_blocks_draft");p.value.modal={true,ModalStage::none,{},{},{},{}};}
  if(!a.modal_scope_state(a.gui_context,p.modal_root))return fail("rite_creation_actual_modal_receiver_scope_unverified");
  if(!detail::SelectedRowHeadersUnchanged(b,p.window,selected_rows,selected_rows_failure))return fail(selected_rows_failure);
+ const void*default_after=nullptr;
+ if(!Read(b,reinterpret_cast<const void*>(b.image_base+0x5D1F6C0),0,default_after)||default_after!=native_default)
+  return fail("rite_creation_native_default_tenet_changed");
  Header dialogs2{};
  if(!Array(b,p.manager,0x18,dialogs2,128)||dialogs2!=p.dialogs||!Owner(b,a,f))return fail("rite_creation_owned_draft_collections_changed");
  p.value.available=true;p.value.status="observed";p.value.unavailable_reason.clear();why.clear();return true;
@@ -562,7 +623,7 @@ bool CompleteCommandPreview(const Bindings&b,const Admission&a,const Frame&f,con
  if(!Stable(b,a,f,r,state))return fail("rite_creation_original_writer_inputs_or_frame_changed_during_preview");
  std::string native_hash;
  if(!Sha256(first,native_hash))return fail("rite_creation_native_command_sha256_unavailable");
- std::string canonical="ck3-1.20.0.4-original-rite-command-text-and-writer-inputs-v1";
+ std::string canonical="ck3-1.20.0.4-original-rite-command-text-and-writer-inputs-v2";
  // capture_epoch is transient; admission rechecks the actual epoch on every
  // request. Connection and published revision are private runtime bindings.
  CanonicalUnsigned(canonical,f.connection_generation);CanonicalUnsigned(canonical,f.native_revision);
@@ -575,6 +636,8 @@ bool CompleteCommandPreview(const Bindings&b,const Admission&a,const Frame&f,con
  for(const auto&name:d.names){canonical.push_back(name?1:0);if(name)CanonicalText(canonical,*name);}
  CanonicalUnsigned(canonical,d.selected_core_tenets.size());
  for(const auto&v:d.selected_core_tenets){CanonicalUnsigned(canonical,v.slot_index);CanonicalText(canonical,v.tenet_key);}
+ CanonicalUnsigned(canonical,state.writer_inputs.tenets.size());
+ for(const auto&key:state.writer_inputs.tenet_keys){canonical.push_back(key.empty()?0:1);CanonicalText(canonical,key);}
  CanonicalUnsigned(canonical,d.selected_doctrines.size());
  for(std::size_t i=0;i<d.selected_doctrines.size();++i){const auto&v=d.selected_doctrines[i];CanonicalText(canonical,v.group_key);CanonicalText(canonical,v.doctrine_key);CanonicalUnsigned(canonical,state.writer_inputs.doctrine_skip_flags[i]);}
  CanonicalUnsigned(canonical,state.writer_inputs.flags[0]);CanonicalUnsigned(canonical,state.writer_inputs.flags[1]);
@@ -612,7 +675,7 @@ bool ValidateRequest(const Request&r) noexcept {
    return no_selection()&&r.expected_preview_identity.empty()&&r.action_id.empty();
   case Operation::observe_current_rite:case Operation::cancel_draft:
    return no_selection()&&!r.expected_outcome_kind&&r.expected_preview_identity.empty()&&r.action_id.empty();
-  case Operation::select_core_tenet:return r.core_slot_index&&*r.core_slot_index<64&&AsciiKey(r.tenet_key)&&r.group_key.empty()&&r.doctrine_key.empty()&&!r.name_field&&r.text.empty()&&r.expected_preview_identity.empty()&&r.action_id.empty();
+  case Operation::select_core_tenet:return r.core_slot_index&&*r.core_slot_index<100&&AsciiKey(r.tenet_key)&&r.group_key.empty()&&r.doctrine_key.empty()&&!r.name_field&&r.text.empty()&&r.expected_preview_identity.empty()&&r.action_id.empty();
   case Operation::select_doctrine:return !r.core_slot_index&&r.tenet_key.empty()&&AsciiKey(r.group_key)&&AsciiKey(r.doctrine_key)&&!r.name_field&&r.text.empty()&&r.expected_preview_identity.empty()&&r.action_id.empty();
   case Operation::set_name_field:return r.name_field&&!r.core_slot_index&&r.tenet_key.empty()&&r.group_key.empty()&&r.doctrine_key.empty()&&r.expected_preview_identity.empty()&&r.action_id.empty()&&
    static_cast<unsigned>(*r.name_field)<=4&&r.text.size()<=(*r.name_field==NameField::description?4096U:256U)&&Utf8Text(r.text,*r.name_field==NameField::description?240:30,*r.name_field==NameField::description);
@@ -744,8 +807,9 @@ bool ExecuteRiteCreationAction12004(const Bindings&b,const Admission&a,const Fra
   const bool tenet=r.operation==Operation::select_core_tenet;std::uint32_t slot=absent;
   if(tenet)slot=*r.core_slot_index;
   else for(std::size_t i=0;i<out.draft.selected_doctrines.size();++i)if(out.draft.selected_doctrines[i].group_key==r.group_key){if(slot!=absent)return fail("rite_creation_doctrine_group_not_unique");slot=static_cast<std::uint32_t>(i);}
-  if(slot==absent||slot>=out.draft.selected_doctrines.size()||(tenet&&slot>=out.draft.selected_core_tenets.size()))return fail("rite_creation_actual_slot_out_of_range");
-  if((tenet&&out.draft.selected_core_tenets[slot].tenet_key==r.tenet_key)||(!tenet&&out.draft.selected_doctrines[slot].doctrine_key==r.doctrine_key)){
+  if(slot==absent||(tenet?slot>=state.writer_inputs.tenets.size():slot>=out.draft.selected_doctrines.size()))return fail("rite_creation_actual_slot_out_of_range");
+  const auto*selected_tenet=tenet?detail::SelectedTenetAt(out.draft.selected_core_tenets,slot):nullptr;
+  if((tenet&&selected_tenet&&selected_tenet->tenet_key==r.tenet_key)||(!tenet&&out.draft.selected_doctrines[slot].doctrine_key==r.doctrine_key)){
    out.already_in_requested_state=true;out.selection_or_name_postcondition_observed=true;out.status="already_in_requested_state";return true;}
   if(!Stable(b,a,f,r,state))return fail("rite_creation_draft_changed_before_native_materializer");
   if(!Materialize(b,state.window,slot,out.native_dispatch_attempted)){Ack(out,false,false);return false;}
@@ -783,9 +847,10 @@ bool ExecuteRiteCreationAction12004(const Bindings&b,const Admission&a,const Fra
      !Array(b,state.window,tenet?0x7A8:0x8A8,last_owned)||last_owned!=(tenet?groups:category))
    return fail("rite_creation_owned_candidate_changed_before_original_mutator");
   const bool invoked=CallPair(b,tenet?0x14F4580:0x14F46F0,state.window,item,out.native_dispatch_attempted);Ack(out,invoked,false);
-  Result after{};if(ReadRiteCreationController12004(b,a,f,r,after))out.selection_or_name_postcondition_observed=tenet?
-   slot<after.draft.selected_core_tenets.size()&&after.draft.selected_core_tenets[slot].tenet_key==r.tenet_key:
-   slot<after.draft.selected_doctrines.size()&&after.draft.selected_doctrines[slot].group_key==r.group_key&&after.draft.selected_doctrines[slot].doctrine_key==r.doctrine_key;
+  Result after{};if(ReadRiteCreationController12004(b,a,f,r,after)){
+   const auto*selected_after=tenet?detail::SelectedTenetAt(after.draft.selected_core_tenets,slot):nullptr;
+   out.selection_or_name_postcondition_observed=tenet?selected_after&&selected_after->tenet_key==r.tenet_key:
+    slot<after.draft.selected_doctrines.size()&&after.draft.selected_doctrines[slot].group_key==r.group_key&&after.draft.selected_doctrines[slot].doctrine_key==r.doctrine_key;}
   if(out.native_dispatch_attempted&&!out.selection_or_name_postcondition_observed){out.available=false;out.unavailable_reason="rite_creation_selection_postcondition_unverified_do_not_retry";}
   return invoked;
  }catch(...){detail::MarkActionException(r,out);return false;}

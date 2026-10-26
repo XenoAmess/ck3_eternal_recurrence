@@ -48,7 +48,7 @@ def register_tools(server: ToolRegistrar, driver: RiteActionDriver,
 
     def ck3_execute_player_rite_creation_action_v1(operation: WriteOperation, expected_revision: Revision,
             expected_source_rite_id: RiteId,
-            core_slot_index: Annotated[int, Field(strict=True, ge=0, lt=64)] | None = None,
+            core_slot_index: Annotated[int, Field(strict=True, ge=0, lt=100)] | None = None,
             tenet_key: Definition | None = None, group_key: Definition | None = None,
             doctrine_key: Definition | None = None, name_field: NameField | None = None,
             text: Annotated[str, Field(strict=True)] | None = None,

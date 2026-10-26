@@ -1,6 +1,7 @@
 #pragma once
 #include "xar_bridge/rite_creation_actions12004.hpp"
 #include <limits>
+#include <unordered_set>
 #include <utility>
 
 namespace xar::ck3_12004::religion::rite_creation_actions::detail {
@@ -22,13 +23,9 @@ struct SelectedRowHeaders {
  SelectedRowArrayHeader tenets{},doctrines{};
  bool operator==(const SelectedRowHeaders&)const=default;
 };
-inline SelectedRowHeaderFailure ReadSelectedRowHeader(
- const Bindings&b,const void*window,SelectedRowArray kind,SelectedRowArrayHeader&out) noexcept {
+inline SelectedRowHeaderFailure ReadBoundedArrayPrefix(const Bindings&b,const void*window,
+ std::size_t offset,std::size_t stride,std::int32_t count_limit,SelectedRowArrayHeader&out) noexcept {
  out={};
- const std::size_t offset=kind==SelectedRowArray::tenets?0x778:0x790;
- // Preserve the existing request/SDK64-row DTO limit for both collections.
- constexpr std::int32_t count_limit=64;
- const std::size_t stride=kind==SelectedRowArray::tenets?0x70:0x48;
  const auto address=reinterpret_cast<std::uintptr_t>(window);
  constexpr auto maximum=std::numeric_limits<std::uintptr_t>::max();
  if(!address||offset>maximum-address||sizeof(out)-1>maximum-(address+offset)||!b.read_memory)
@@ -48,6 +45,12 @@ inline SelectedRowHeaderFailure ReadSelectedRowHeader(
  }
  // Allocation reserve is not a row count. No consumer reads capacity rows.
  return SelectedRowHeaderFailure::none;
+}
+inline SelectedRowHeaderFailure ReadSelectedRowHeader(
+ const Bindings&b,const void*window,SelectedRowArray kind,SelectedRowArrayHeader&out) noexcept {
+ // Tenets are physical editor slots, including exact native-default blanks.
+ return ReadBoundedArrayPrefix(b,window,kind==SelectedRowArray::tenets?0x778:0x790,
+     kind==SelectedRowArray::tenets?0x70:0x48,kind==SelectedRowArray::tenets?100:64,out);
 }
 inline const char*SelectedRowHeaderFailureKey(SelectedRowArray kind,SelectedRowHeaderFailure failure) noexcept {
  const bool tenets=kind==SelectedRowArray::tenets;
@@ -78,6 +81,102 @@ inline bool SelectedRowHeadersUnchanged(const Bindings&b,const void*window,
  SelectedRowHeaders observed{};
  if(!ReadSelectedRowHeaders(b,window,observed,why))return false;
  if(observed!=expected){why="rite_creation_owned_draft_collections_changed";return false;}
+ return true;
+}
+template<class DefinitionReader>
+bool ReadSelectedTenetSlots(const Bindings&b,const SelectedRowArrayHeader&header,
+    const void*native_default,DefinitionReader&&definition,
+    std::vector<TenetSelection>&valid,std::vector<const void*>&raw,
+    std::vector<std::string>&raw_keys,const char*&why) {
+ valid.clear();raw.clear();raw_keys.clear();why=nullptr;
+ const auto address=reinterpret_cast<std::uintptr_t>(header.data);
+ if(header.count<0||header.count>100||header.capacity<header.count||
+    (header.count&&(!address||!b.read_memory||address%alignof(void*)||
+      static_cast<std::size_t>(header.count)>(std::numeric_limits<std::uintptr_t>::max()-address)/0x70))){
+  why="rite_creation_selected_tenet_header_unverified";return false;}
+ if(!native_default){why="rite_creation_native_default_tenet_unavailable";return false;}
+ for(std::int32_t i=0;i<header.count;++i){
+  const auto row=reinterpret_cast<std::uintptr_t>(header.data)+static_cast<std::size_t>(i)*0x70;
+  std::uint32_t slot=absent;const void*item=nullptr;
+  if(!b.read_memory(b.read_context,reinterpret_cast<const void*>(row+0x20),&slot,sizeof(slot))||
+     !b.read_memory(b.read_context,reinterpret_cast<const void*>(row+0x28),&item,sizeof(item))){
+   why="rite_creation_selected_tenet_row_unreadable";return false;}
+  if(slot!=static_cast<std::uint32_t>(i)){why="rite_creation_selected_tenet_physical_slot_mismatch";return false;}
+  // Only the exact previously qualified native-default object is a blank
+  // slot. A null or unknown definition is unavailable, never silently empty.
+  std::string key;
+  if(item!=native_default){
+   if(!item||!definition(item,key)){why="rite_creation_selected_tenet_definition_unavailable";return false;}
+   for(const auto&prior:valid)if(prior.tenet_key==key){why="rite_creation_selected_tenet_duplicate";return false;}
+   valid.push_back({slot,key});
+  }
+  raw.push_back(item);raw_keys.push_back(std::move(key));
+ }
+ return true;
+}
+inline const TenetSelection*SelectedTenetAt(const std::vector<TenetSelection>&rows,std::uint32_t slot) noexcept {
+ for(const auto&row:rows)if(row.slot_index==slot)return &row;
+ return nullptr;
+}
+template<class TraitReader>
+bool ReadVirtueSinCatalogueRows(const Bindings&b,const void*window,std::size_t virtues_offset,
+    std::size_t sins_offset,VirtueSinScope scope,std::uint32_t rite,const void*draft_core,
+    TraitReader&&trait,VirtueSinCatalogue&out) {
+ out={};out.scope=scope;if(rite!=absent)out.rite_id=rite;
+ const auto fail=[&](const char*reason){out.observed=false;out.unavailable_reason=reason;
+  out.virtues.clear();out.sins.clear();out.description_rite_ids.clear();out.description_draft_cores.clear();return false;};
+ if(rite==absent||!window||(scope!=VirtueSinScope::draft&&scope!=VirtueSinScope::current_rite))
+  return fail("rite_virtue_sin_actual_model_identity_unavailable");
+ std::array<SelectedRowArrayHeader,2>headers{};
+ for(std::size_t kind=0;kind<2;++kind)
+  if(ReadBoundedArrayPrefix(b,window,kind?sins_offset:virtues_offset,0x28,8192,headers[kind])!=SelectedRowHeaderFailure::none)
+   return fail("rite_virtue_sin_native_collection_unavailable");
+ if(headers[0].count>8192-headers[1].count)return fail("rite_virtue_sin_combined_count_above_bound");
+ std::unordered_set<std::uint32_t>ids;std::unordered_set<std::string>keys;
+ for(std::size_t kind=0;kind<2;++kind){
+  auto&destination=kind?out.sins:out.virtues;
+  for(std::int32_t index=0;index<headers[kind].count;++index){
+   const auto row=reinterpret_cast<std::uintptr_t>(headers[kind].data)+static_cast<std::size_t>(index)*0x28;
+   const auto read=[&](std::size_t offset,void*value,std::size_t bytes){return b.read_memory(b.read_context,reinterpret_cast<const void*>(row+offset),value,bytes);};
+   VirtueSinRow value{};const void*definition=nullptr,*core=nullptr;std::uint32_t source=absent;
+   if(!read(0,&value.classification,sizeof(value.classification))||!read(8,&definition,sizeof(definition))||
+      !read(0x10,&source,sizeof(source))||!read(0x18,&value.weight_raw,sizeof(value.weight_raw))||
+      !read(0x20,&core,sizeof(core)))return fail("rite_virtue_sin_native_row_unreadable");
+   if(value.classification!=(kind?2:1)||!definition||!trait(definition,value.trait_id,value.trait_key))
+    return fail("rite_virtue_sin_native_classification_or_trait_unavailable");
+   // The row's description source is not the list's observation scope. Keep
+   // both original branches private; no reconstructed tooltip is published.
+   if(source==absent){if(scope!=VirtueSinScope::draft||!draft_core||core!=draft_core)
+     return fail("rite_virtue_sin_draft_core_reference_unbound");}
+   else if(source!=rite||core)return fail("rite_virtue_sin_persistent_reference_unbound");
+   if(!ids.insert(value.trait_id).second||!keys.insert(value.trait_key).second)
+    return fail("rite_virtue_sin_native_trait_duplicate");
+   destination.push_back(std::move(value));out.description_rite_ids.push_back(source);out.description_draft_cores.push_back(core);
+  }
+ }
+ for(std::size_t kind=0;kind<2;++kind){SelectedRowArrayHeader again{};
+  if(ReadBoundedArrayPrefix(b,window,kind?sins_offset:virtues_offset,0x28,8192,again)!=SelectedRowHeaderFailure::none||again!=headers[kind])
+   return fail("rite_virtue_sin_native_collection_changed");}
+ out.observed=true;out.unavailable_reason.clear();return true;
+}
+inline bool Utf8Text(std::string_view s,std::size_t max_characters,bool multiline,
+                     bool native_description_markup=false) noexcept {
+ std::size_t i=0,count=0;
+ while(i<s.size()){
+  const auto c=static_cast<unsigned char>(s[i++]);std::uint32_t cp=c;unsigned continuation=0;
+  if(c<0x80){}
+  else if(c>=0xC2&&c<=0xDF){cp=c&31;continuation=1;}
+  else if(c>=0xE0&&c<=0xEF){cp=c&15;continuation=2;}
+  else if(c>=0xF0&&c<=0xF4){cp=c&7;continuation=3;}
+  else return false;
+  const unsigned length=continuation;
+  if(continuation>s.size()-i)return false;
+  while(continuation--){const auto d=static_cast<unsigned char>(s[i++]);if((d&0xC0)!=0x80)return false;cp=(cp<<6)|(d&63);}
+  if((length==1&&cp<0x80)||(length==2&&cp<0x800)||(length==3&&cp<0x10000)||cp>0x10FFFF||
+     (cp>=0xD800&&cp<=0xDFFF)||cp==0||cp==0x7F||
+     (cp<32&&!(multiline&&(cp==10||cp==9))&&!(native_description_markup&&cp==0x15)))return false;
+  if(++count>max_characters)return false;
+ }
  return true;
 }
 // Presence is independent of complete command-preview/model availability.
