@@ -113,3 +113,10 @@ Shared 冻结源根为 `D:/codex-ck3-background/ck3-java-tools-s26-source-r4-res
 ### Gate2C7DED0 的实际复用
 
 后继791 B题见 [有限结果](resume63-m1-gate2c7ded0-result.md)：精确 RF/204 B实际二分元数据、197指令/36块60边、AL原始字节传播及 target/flags/output 关系已独审；join/persistent 仍 UNKNOWN。slot1 新卡后70.886s先最小 close，再做领域独审和富 receipt；T0至后者833.929s，准备前阅读未完整计时，均不冒研究总耗时。原 close 保 `PAYLOAD_UNASSESSED`，独审新文件另存。最多4 provider 是上限，不能称本题实际达到4路同时运行。新850 B首 helper 另建case/300+60卡，不续本题180秒窗口。
+### Base850 的范围差别
+
+[2C7D920有限结果](resume63-m1-base2c7d920-result.md)保RF850/207条与正常pdf849/206条的差别：孤立尾CC不强塞进可达CFG，35块57边独审一致。新300+60卡先68.940s闭场，后独审/富记录；Q零扩展仍非布尔1，flags3/4和heap/global写均只授本地机制。type未读slot，join/persistent未知。共享同一PE不能共享可变数据库；各岗真实原件导航在sources的retained-nav，不能当实时slot锁或完整八M资格。
+
+### Resume63 C8: Type2C7E860
+
+[Type261 result](resume63-m1-type2c7e860-result.md) records 59 instructions/261 B and 12 blocks/16 edges. Entry type+E5B can return AL1; otherwise an opaque accessor supplies the expression receiver. AL normalizes0/1, fullEAX and loader-slot/join/persistent remain unknown. Minimum close78.256s is separate from later review and receipt; no further callee followed.

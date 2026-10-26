@@ -144,3 +144,28 @@ REA C3/C4、两份 M5 独审与上述资源 packet 已普通 fast-forward 推送
 | `af523899475246d62963956f4cb635cf9f614dc3` / 40357614312 | 17:16:40，FAILURE；step45 在 17:16:27 失败 | 12669659228 / 605815 / `2851f7317bde457356fec72da2df8c4d4fd624d58f85df9909b5f7790da8d09d` |
 
 17:17:38.786245Z、17:17:42.899439Z 分别在 RAM 解包核对：两次 bootstrap 与 qualified Tools 均为 636/636；各自 actual JSON 和 inner stderr 都实际指向 ControlCi 595/216 缺 fixture-production request 的 NOT EXECUTED。两个 fixture ref 均为 null，后七阶段 NOT_RUN；原 configured step48 均为 SKIPPED。它们不是跳过后转绿，也不能替代完整 Java、SDK、Service 或 Game 验收。没有为同一结论重跑这些 CI。
+
+## 17:59 UTC 文档交付与后继官方观察
+
+本节 `machine_id: xenoamess-full-tower-eb9d2c1186`。2026-10-26T17:51:30.774766Z 在 RAM 独立读取 `0dad5eec33c7762f49bf2c8477e6ce2b7531f79e` 的官方 run 40361982021 artifact 12671149232：605813 B、SHA-256 `a914eb2975705f85e6be4458abe7ac8c8d1fec9706c0d7114c0ef1d554a1e160`。该 run 已于 17:38:16Z 最终 FAILURE；bootstrap 与 qualified Tools 各自 636/636、BUILD SUCCESS，但 actual 的两个 fixture ref 均为 null，ControlCi 595/216 实际返回同一缺 actual fixture-production request 的 NOT EXECUTED，REACTOR 为 RED、后七阶段 NOT_RUN。未将其称为 Tools 编译失败，未重跑或跳过后追认通过。
+
+`d078c8123b77d572fe09d6024aacad3eab533e4c` 于 17:44Z 普通 fast-forward 推送，parent 为期间新出现的 `7f1cdcd5a73d51d90158180a9d6a3ffa9699dc37`。复用了先前候选对象，只重建三个必要祖先树；两次其他任务提交 `d42bb259...`、`7f1cdcd...` 的改动均保留。14 个冻结输入合 202251 B，两个与主线相同，实际改 12 篇文档。两份 user index 与 HEAD 均保持不动。原始 diff-check 只报 ordinary-root-production-chain 文档第 3、4 行有意的 Markdown 两空格换行，owner 已确认；保留原件，不冒报 raw check 为零。22 个明确对象的新增逻辑量 234605 B、17:45:08.203926Z Win32 点测 allocation 为 279184 B，含被旧父拒绝后保留的三个候选祖先树。
+
+REA C6 四叶、M5 Confederation 字段来源与 24C3BE0 两页，以及缺失于主线的必要历史 planner 来源，已于 17:57:20.904Z 普通 fast-forward 推送为 `e61d061c9d48c3b8c2d1b69c42f212e76ffd76c4`，parent 为 d078；实际 bus poll/ack 为 9035。七个输入合 108710 B，UTF-8、sources JSON、11 个相对引用、实际七路径集合和 raw diff-check 均通过。两份 user index 和 HEAD 逐 SHA 保持不变，未夹带 Java 源码或改写 SRC/i61。最初缺 planner 引用的六叶候选真实拒绝，90431 B 处理量仍计入；其后每 blob 压缩预测门在第三 blob 拒绝，已写三个对象保留并复用，整包实际未超过授权 quote，没有清理或重复写入。
+
+e61 的 12 个明确 OID 排序后以 LF 结尾清单 SHA-256 为 `2a38e03da28971a5c2aef2841c1f97e8607b006a226cb2642e29f20cb1df2629`；17:57:32.739974Z Win32 FileStandardInfo 12/12 点测成功，EndOfFile 等于各实际长度，新增逻辑 166740 B、allocation 189104 B。已知对象累计逻辑上界 2130085 B、allocation steady 上界 2609848 B；加入保守 atomic/closing 110592 B 后峰上界 2720440 B。树与 commit 只在 RAM 处理 211392 B。符合 RootZ 总 4 MiB 内前向净转配的 objects logical 2.25 MiB、physical 2.75 MiB 与 tree/commit 320 KiB 子限；raw 处理累计 3107126 B，Root 另前向授权必要 docs 的处理帽 4 MiB。未知 prior promisor pack 仍为 UNKNOWN，不计为零、不扫整 `.git`，未占用条件 24 MiB。
+
+17:59:47.202497Z 实际 API 读回 d078 的官方 run 40371628896 仍 IN_PROGRESS；17:59:48.224149Z 读回 e61 的官方 run 40373433794 亦仍 IN_PROGRESS。两者各自 Linear history 已 SUCCESS，但官方终态尚未出现，不能据此授予整套 CI、Java 全图或实机资格。后继继续只按实际终态追加，现有源码仍等待 Host 在复用目录完成必要受影响测试和最终完整验收。
+
+## 18:57 UTC 官方终态追加
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`。本次只读 API 与各自官方 artifact，不重跑既有 CI，不把旧运行原件替代新 SHA。
+
+| commit / 官方 Runner | 实际最终状态 | 独立 RAM 读取时间 UTC / artifact / bytes / SHA-256 |
+| --- | --- | --- |
+| `d078c8123b77d572fe09d6024aacad3eab533e4c` / 40371628896 | FAILURE，18:23:29Z；step45 18:18:05–18:23:20，step15 SUCCESS、step48 SKIPPED | 18:45:56.351803Z / 12676965168 / 605897 / `55551346a15e8daa7ea6dcd33f6f96e9e8d9fbbc78be7040debe539dd4cbd9cf` |
+| `e61d061c9d48c3b8c2d1b69c42f212e76ffd76c4` / 40373433794 | FAILURE，18:48:18Z；step45 18:41:56–18:48:08，step15 SUCCESS、step48 SKIPPED | 18:57:02.015642Z / 12676944762 / 605990 / `2e4bc82f156423b5aa13e39799e7fa2bc9d5ecdb12b01b806afb0f987c2f93be` |
+
+两份 ZIP 均逐字节核对官方 digest，bootstrap 与 qualified Tools 各 636/636、BUILD SUCCESS。各自 `logs/control-ci-actual.json` 为 RED，`fixture_request_ref`、`fixture_production_request_ref` 均为 null；inner stderr 明确在 ControlCi.runQualified:595 / main:216 拒绝缺 actual fixture-production request。EXPECTED_MAVEN_RED 通过，REACTOR 为 RED，后七阶段 NOT_RUN。保持真实缺项，没有把两次结果说成 Java 编译失败、完整 SDK 验收或实机资格。
+
+18:56Z 为下一必要文档包只读核对 remote 与现有 `origin/master`，均为 `9f191326678fea7a1cec2975478cdfaac28254f9`；相对 e61 的六个他人路径全部保留。REA C7 的五叶此前未被本岗 capture 或提交，18:45Z 已明确释放；下次仅捕获 owner 合入 C8 后的新六叶，不把旧 C7 ready 指纹冒充当前可读原件。尚未对下一文档包写入 Git 对象或 Java/Native 源码图。

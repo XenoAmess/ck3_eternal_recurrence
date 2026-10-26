@@ -212,3 +212,12 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`。真实caller2C7DF4C所需下一�
 按既有字段合同，target+40解析后传首2C7D920，member/flags/type/out转参已闭。首P0仅被保留或清零，不归一1；本地flags+2读取发生在首helper之后，不能假定初始五01稳定。输出参数影响短路和下传；不能只当无副作用诊断。RDI保留以正常Win64 callee为前提；join/persistent/loader-slot命名与opaque效果未知。Java无新增领域已知字段或Game资格。
 
 decoder420ms/25272320 B，REA4583ms/Rizin593039360 B；官方service.close正常。先minclose17:25:05.420Z/T0→70.886s，0owned，2091 B/c7bd86d3…保payload未审历史。M1后继独审7913 B/121f9ebc…，富receipt10942 B/a823b23e…在T0后833.929s落盘；整个准备/研究前段未完整计时。outer/joint/Job0未测，ordinaryplan0/for-observation2 offline拒绝；不授Shared/native dossier或加速收益。新850 B题另卡另case，不在C6追加。
+### Resume63 C7：Base2C7D920
+
+machine_id: `xenoamess-full-tower-eb9d2c1186`。[独立结果](resume63-m1-base2c7d920-result.md)：新850 B/207 Capstone，Rizin206/849正常可达，尾CC保留；35块57边，20direct/1virtual，RET2C7DC18。known-row只重核12 metadata B；flags3/4令原始Q保留或清0，全部return零扩展byte但不归一1。存在heap/global写，slot-loader/join/persistent未知。
+
+独立新300+60卡，decoder459ms/25325568 B，REA4911ms/592150528 B；先minclose17:45:58.324Z、68.940s/0owned，后review8020 B/fb5f4066…及receipt11073 B/db1a3c24…（T0后909.895s）；总准备研究耗时未完整测量。原close不回填，无backend补测尾CC。outer/joint/Job0未测，不授纯函数/加速/Game资格。
+
+### Resume63 C8: Type2C7E860
+
+[Finite result and exact sources](resume63-m1-type2c7e860-result.md): fresh row12 B, new261 B,59ops/12blocks16edges. type+E5B earlyAL1; first-return+EF0/A90 identity and loader-slot meaning unknown. AL0/1 only; no callee follow. Decoder864ms/25243648 B; REA5474ms/592109568 B. Minimum close18:26:00.903Z,78.256s/0owned; later independent review7160 B/5445e3d0 and receipt11049 B/0c70aa06 at T0+576.739s. Full preparation/research time, outer/joint/Job0 and speed/token benefit unmeasured; no Shared/native dossier/Game credit.

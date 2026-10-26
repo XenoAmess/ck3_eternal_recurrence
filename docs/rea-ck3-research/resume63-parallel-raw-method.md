@@ -37,3 +37,6 @@ afij @ VA_BEGIN; pdfj @ VA_BEGIN; agf json @ VA_BEGIN
 `Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/` 下 `shared-span-cache`、`function-match-core` 和 `NEW-RUNTIME-FUNCTIONS.json` 可先按精确地址/文件名复用；只报实际查过的 scope，same ordinal 不是函数语义证据。历史无 machine_id 原件仍为 unknown。当前 PE contract：1.20.0.4/build25734779，101040248 B，SHA `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`，image base `0x140000000`；每题仍须绑定当前实际读取。
 
 本次已向 M0/M2/M3/M4/M6/M7 发送上述 exact refs。17:12Z REA63 自报 0 provider，仅 gate2C7DED0 metadata 准备；M7 自报 0 provider，正处理 Java 诊断。其他岗准备中的问题不计作已启动或占槽。READY 应带 PLAN exact ref、旧资料复用、RF 条件、最大新字节、实际 argv、close exercise；capacity 鲜核 RAM/卷及 slot 后才能执行。各岗把真实 begin/close、原件 refs 与 UNKNOWN 回报 Root/REA63；本页的时间点声明不替代实时鲜卡或进程测量。
+## 本轮后继实际方法验证
+
+M3 已通过官方 service 实际对派生 `raw/assembled407.bin` 执行 `p8`/有界 `pDj`，显式 x86/64，逐 byte与相对/RIP算术重核；subject 的 arch=null 原样保留，没有 native dossier。此法可在已持 bytes 上分析，不能把派生文件的Evidence当原PE分析资格。确切原件由 sources 的 peer retained-nav→M3 receipt定位；后者另绑原PE、旧296和新111 B来源。M1 Base850同时证实pdata RF850与Rizin可达849可不同，原始尾CC保留；不为凑格式补backend。retained-nav只列已收原件，不是锁、runner或未列域的研究缺席证明。

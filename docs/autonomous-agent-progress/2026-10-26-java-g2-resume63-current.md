@@ -92,3 +92,35 @@ machine_id仍为`xenoamess-full-tower-eb9d2c1186`。93批受影响测试确有�
 REA已完成M1成员writer的1766B有限主体研究与独审：普通分支具有两道门，但特定incoming flag可绕过，不能据局部writer授持久成员资格或自然继承完整caller信用。C4字段依actual4生产源码合同可收敛为同有效邦联ID比较，当前build的named getter注册仍未补证。完整八M原生树和全Python迁移均未完成。
 
 Root有限存储复核新授权至18:40:26.824464Z；不自动续旧执行卡。17:16:39Z任务总线heartbeat序号9033。新的Java CK3启动、真实新增游戏日、SAVE、RESTORE仍全部0；下一步是97局验、恢复测试JFR真实归因、完整Tools/SDK及原生后继，再进入首场Java实机。
+
+## 17:47Z 前向结果（本地27日01:47）
+
+97实际在447.176s由自有fork精确取消而非600s超时，四XML64项为36成功、4失败、24错误，Runtime七类没有完整XML。取消前一次实际Thread.print命中M4材料归档→LedgerFiles.identity→IdentityBearingFileAttributes.windows的GetFileAttributes；CPU68.3s/elapsed382s只是该次观测，不能据此归因全部墙钟。98局测因Unknown测试新增类型缺显式import，27.480s退出1、零新XML；仅补正确checkpoint包import后继续同缓存。
+
+99真实执行九类65项，51成功、14错误、零失败/跳过，385.263s退出1。Runtime中Guard14、ExplicitRequest2、Quarkus入口6、SelectedProducer5全过；Duplex9中7错误，FILE_REPLY9中4错误，Issuer2均错误，另Large5中1错误、Reducer13全过。独核及原XML在[RUNTIME99-INDEPENDENT-RESULT01.json](</D:/ck3-state/ck3-java-g2-resume61-r7-ls18-regression04/controls/RUNTIME99-INDEPENDENT-RESULT01.json>)。参数确有reversealphabetical，但观测顺序仍M4在前，不能把提交参数说成实际顺序。自98起复用已MATCH的97全图基线，只核改动及必要生产/消费者源码，不再每轮重读5856全图作为局测前置。
+
+新根因均有实际路径：Duplex的manifest错误来自classpath中aesh terminal-tty3.18.1的Enable-Native-Access，实际216份JAR清单排除了JNA/booter猜测；共享launcher处理正在按classpath与java-jar语义窄修。FILE_REPLY/Issuer分别修实际pending名称与原relative-path合同不符、测试JSON decimal构造及异步异常接收，原120s deadline不延长。Large余下错误是测试把canonical bytes配原始archive ExactRef；实际生产CanonicalFinanceStateSource已正确读取原bytes，测试会沿同路径修，不放SHA/身份守卫。以上候选本段未计修后通过。
+
+原RootRestorePhysicalIdentityTest一类五方法JFR于17:44:52Z实际启动，单业务fork、原时限/guard不变；还在执行。M4只准备whole-chain双观察候选：保每个节点两遍NIO及完整WindowsStamp、普通父目录与leaf前后身份/SHA，减少重复祖先查询；未在JFR基线运行中写源码。MCP三测试叶也保持RAM，待基线终态后再采用。
+
+REA四槽已取得真实结果，旧短窗拒绝不追认：M1 gate791B及base850B、M2 caller2835B、M3旧296B加新111B、M5新106B及REA-only复用、M6四委托694B与续行250B均已分别最小闭场，语义独审逐题进行。部分旧180s尝试在provider前过期；新卡改300s工作加60s闭场，provider本身20/30s和1GiB上限不变，最终命令READY_NOW后才发卡。这次调整消除投递/准备吃尽短窗的问题，不把准备时间排除后宣称研究吞吐改善。
+
+M0复用五段2723B缓存，已转入实际Native施工。Source15实体正是dev61，确认不可热改后，一次初始化新mutable native63/m0-dev01源码3975必要叶42,923,777B，28.775s且所有旧pins MATCH；冻结Source15/ENV22/BUILD24和旧cache保留。typed答复callback、原三serializer共享叶和query fixture已采用，正在新复用目录只编外交fixture受影响target；尚未算bridge整runtime编过、Java新消费者通过或实机答复观测完成。
+
+文档快照已FF推送d078c8123b77d572fe09d6024aacad3eab533e4c，父为同事新7f1cdcd5，保其六路径及d42增量；本段是其后的新事实。当前仍没有新Java CK3启动或真实新增游戏日/SAVE/RESTORE，完整G2继续0/8。
+
+## 18:55Z 前向结果（本地27日02:55）
+
+machine_id为`xenoamess-full-tower-eb9d2c1186`。完整Tools104于18:49:15.080Z真正启动，原ControlBuild的BUILD_TOOLS_RUNTIME/VERIFY、默认mvn，复用canonical m2；已进入测试，尚无终态。普通Jar109只包装成功，不能冒qualified。原outer期限19:25:14、close19:28:14不延长；按真实启动校正inner2100s的前向补充不重启进程、不改写旧卡。
+
+102实际16项15成功1错误，暴露Windows符号链接权限；夹具改用真实directory junction后，103的contracts十项全部通过，APP两项中一项因测试codec先把1.0规范化而失败。修为实际raw floating token后，108该APP两项全过，11.3755s/exit0：真实C++终战回包经Java codec、归档、WarExitReads和Policy的软件链已通过，仍非Game。M0外交fixture实际CTest1/1、24项边界及9行18501B原生corpus通过并逐byte匹配Java资源；Native生产runtime独立同缓存编译，18:53为382/689步，后继只构建bridge和injector，不扩大target。
+
+106真实600s超时，八份XML共64项39成功8失败17错误；Store/Large/Reducer共33项全过，其余失败未被拼成通过。107实际493.1731s正常exit1，七类47项40成功7错误：FILE_REPLY9、Issuer2、Guard14、ExplicitRequest2、Quarkus6、SelectedProducer5全部通过，Duplex9为2成功7错误。后者已实证是夹具250项classpath中34个目录展开17939文件，有限wire最低4699974B超过4MiB；生产SourceGraph要求真实JAR。后继只改LS测试及原default-jar时序，保完整MAIN/TEST与第三方依赖，不放wire上限。M2 Unknown补packet必填diagnostics、M7 SAVE夹具绑定baseline及MCP同一parent修复已采用，尚未后继测试。M4 whole-chain身份守卫十项通过；M3 directoryStamp已采用同一whole-chain读取，去除重复祖先查询，原TTL/预算/身份语义保留，修后测试待执行。
+
+JFR100原RootRestorePhysicalIdentityTest五项实际全因过期失败，188.1s；保留ring仅末23s，不能覆盖冷启动。有限13个main事件命中测试census/shared archive，不能据此归因所有墙钟或放宽deadline。
+
+REA已补M1 gate791B/base850B/type261B、M2事件caller2835B、M3继承补111B、M5 predicate106B及M6四委托与续行。M6新R5两张真实表140544B和五个80B匹配记录闭合五个名称的initialID；登记子函数可能改写，runtimeOrdinal/57索引仍UNKNOWN，继续限定研究。已结束provider实际闭场；源码、软件链、研究和实机资格分列。
+
+实际sdk_current接管新SDK生产输入；5815依赖全部MATCH、1286 canonical中一处workflow真实变化，按实际Source32/H5与当前reactor差异生成successor。旧Review39过期不续用，Root新Own/SDK有限review至20:40:26.824464Z，仅必要输入净≤7MiB，原104/Native卡不沿此延期。原SDK30step、独立Python continuation及Own7仍未执行；Host继续唯一Maven。
+
+首轮Java实机的北京时间04:30–06:00仅为无新阻塞时的乐观窗口，完整Python迁移和八M暂无可靠完成承诺。当前未新启动Java CK3；真实新增游戏日、SAVE、RESTORE为0，完整G2为0/8。后继为真实Tools/Own/SDK验收、Native后继与管理员设置读回、Root真实生产权威，再后台fresh Steam准入与实机。
