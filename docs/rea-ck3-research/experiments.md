@@ -1,6 +1,6 @@
 # REA / CK3 实验记录
 
-machine_id：`xenoamess-full-tower-eb9d2c1186`。本页截至2026-10-26 UTC；完整原件在D盘，来源见 [sources.json](sources.json)。用户已要求收尾：全部会话/受管子进程已关闭，不继续新研究或后台任务。
+machine_id：`xenoamess-full-tower-eb9d2c1186`。本页截至2026-10-26 UTC；完整原件在D盘，来源见 [sources.json](sources.json)。resume62 六类实验按原指令收尾；后继 resume63 在新授权、新容量及新窗口内完成的两题另列末段，旧关闭与失败不变。
 
 已完成六类实验：同低层命令对照、两轮未修补冷启动、修补后冷分析、106 B机制片段、232 B机制闭包、已持Evidence复用。尚无受控模型token或整体研究提速证据；实际能复用/导出证据，与能回答机制问题分别验收。
 
@@ -109,8 +109,54 @@ DERIVED输入和实际export各58734 B、字节完全一致，SHA `b169f9ec98c90
 [关闭/独立复核/命令及全部原始RPC/导出引用](/D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01/cases/evidence-reuse01/CASE-CLOSED01.json)；
 [完整时间](/D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01/cases/evidence-reuse01/TIMELINE01.json)。
 
-## 交接边界
+## resume62 交接边界
 
 没有LLM/tokenizer、受控人工用时或等质量模型token计量。框架源码能力、实际执行、原生局部机制与实机资格分别记录；proper API及Windows入口限制见 [工具页](tools-and-context.md)，方法见 [methodology.md](methodology.md)。
 
 当前0 owned child、0活动MCP会话；不再启动新INTENT/PE/backend/研究，未开始的callee语义留待下次授权。D盘已安装依赖、必要基线和失败原件保留，不清理活跃证据。最后NativeFSI在13:43:46记录tools2,065,350,000 B，case661,160 B加64 KiB收尾预留仍低于4 MiB，output312,592 B低于2 MiB。14:00 UTC为原用途复核点，后继由Root按统一存储策略复核，不自动续执行或删除必要输入。
+
+## resume63：两次新增有限查询
+
+本段前向追加于旧文档提交 `e735f2a0ed56e666e5f5d0977a7e532ff861f23c` 之后。先读框架源码、核23份旧来源，再按每题新问题与容量执行；框架方法见[workflow](resume63-framework-workflow.md)。两题均复用同一已装 REA6.8.0/Rizin0.9.1 与原 PE，没有 PE 副本、callee 跟随、global值读取、unwind body、Ghidra全量导入或游戏启动。新鲜 PE SHA 仍为本页固定输入，imagebase `0x140000000`；版本来源合同不授 loaded 身份。
+
+### Shared 首失败与实际路由
+
+第一题原 `SourceGraphCommandSpecProducer` exit0只生成元数据；`SharedOwnedCommand` 在首child前因历史 accounting pin 的 mutable `STORAGE-SHORT-COMMIT-HEAD-V1.json` 漂移而拒绝，outer4.447 s/exit1，decoder/backend均未启动。见[入口原件与前向记录](resume63-callee1d64290-entry-result.md)。旧失败保留，未获 Shared 资格。
+
+Root 随后明确授权已装官方 `createReverseEngineeringService(...).executeRizinCommand(...)` 正常 direct 入口；使用原装 WindowsOwnedProcess 的限额、exit/close观察与 finally service.close，没有增加 runner 或热改旧runtime。新鲜容量与题目范围仍生效。Rizin 每题只执行一次有界 `af/afij/pdfj/agf json`，没有把 raw Evidence 冒 native dossier。两题输出 complete/exit0/未截断，PE前后身份一致，stderr仅保留大区间strings跳过warning；字节、局部边和实际返回路径另独立校验。
+
+### 230 B：root/candidate gate `1D64290`
+
+新鲜 RF 为 `[1D64290,1D64376)`、unwind RVA `51E6AC0`；230 B、SHA `4aee55a25a91582bad0af6a486f3271ab5d652257f4e0366571fe5e87833d380`。Capstone与Rizin逐48条VA/size/bytes一致，6 CALL与2 JZ的signed displacement独算一致；独立正常CFG为5块6边，唯一RET `1D64375`，无范围外非call边。闭合以六direct和两virtual call正常返回、保留预期nonvolatile寄存器为条件，不覆盖异常/unwind。
+
+entry RDX保存为candidate；entry RCX传给 `B17C70` 构造local context。candidate唯一显式成员读取为 `+18` dword，零扩展写入local qword，另写tag4。`373A0F0` 消费global dword `5D4BFB4` 与local，随后 `1D65640` 返回对象的 `+EF0` 指针加 `1930` 后交 `372DF10`。该call返回的AL经EBX保存，cleanup后 `MOVZX EAX,BL` 原样返回，**没有0/1归一化**。两JZ只控制局部cleanup；该body不直接读 `+308`。自动猜测的stack arguments实际含locals，不作为完整ABI合同。
+
+M5在15:00:07.577Z独立核SHA、48条边界、8个相对目标、5块6边和bundle单record逐值/类型/数组序等价；[DOMAIN-REVIEW01](</D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01/cases/resume63-callee1d64290-01/DOMAIN-REVIEW01.json>)保留此独审。M2后继另核原bytes与目标算术，未再调用backend。
+
+六direct/两virtual call的完整ABI、语义、副作用、异常、global当前值与领域含义仍UNKNOWN；无兵力、参战、到场或胜率结论。[receipt](</D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01/cases/resume63-callee1d64290-01/CASE-RECEIPT01.json>)及[close](</D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01/cases/resume63-callee1d64290-01/CASE-CLOSED01.json>)传递引用原bytes、flat Evidence、portable bundle、命令、owned events和复核，不在仓库复制大原数据。
+
+### 119 B：receiver gate `24C5260`
+
+先有限查旧cache/归档，未发现所查位置已有body；这不是全仓不存在的证明。新题新卡只取 RF `[24C5260,24C52D7)`、unwind RVA `5109DB0`；119 B、SHA `f59f55f9bf90ef85fa6b5a603b5f36bffd8ae246a20c23a0283eef784914ebd3`。Capstone与Rizin35条逐字节一致，3 CALL/2条件跳转目标独算一致；4块4边，两RET `24C52C9/24C52D6`，无范围外非call边。
+
+保存entry RCX receiver，`A149D0` 返回对象的 `+F10` qword成key。receiver `+38` begin与 `+44` signed count组成call前end，RCX/RDX/R8分别传begin/end/&localKey给 `A11F60`。call后**重新读取**receiver两字段生成endAfter；`p2=(returnP==endAfter?0:returnP)`。只有p2非零且 `24C3BE0(receiver,key).AL==0` 时AL=1，其余AL=0。两出口仅写AL，不能称整个EAX归一化；也不能假定call前后collection稳定，或仅凭参数形状命名搜索算法。
+
+`native_research_plan.py check` 实际exit0只授结构/文件完整性；`check --for-observation` 实际exit2，正确拒绝offline-only缺少live window/真实producer trigger。没有伪装paused-snapshot；Root另授权的离线文件查询不等于live资格。Rizin `is-pure=true` 保留为自动metadata，不能据此证明三个callee无副作用。
+
+case在15:19:06.718Z闭场时附加M5独审仍PENDING；旧close未改。M5实际复核在15:23:50.518Z通过，15:27:58.546Z另CREATE_NEW [INDEPENDENT-M5-REVIEW01](</D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01/cases/resume63-callee24c5260-01/INDEPENDENT-M5-REVIEW01.json>)，7374 B、SHA `d9567d5b65919f108e8f67929db5d4a3a21b1f4ca590bd2cac1cb0e41976e837`，核3份SHA、35条bytes、5目标、4块4边与bundle值等价。三个callee语义/副作用、fallback当前值、异常/unwind及游戏可达性仍UNKNOWN；held caller只支持该AL非零跳过累计。[receipt](</D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01/cases/resume63-callee24c5260-01/CASE-RECEIPT01.json>)和[close](</D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01/cases/resume63-callee24c5260-01/CASE-CLOSED01.json>)保留完整引用。
+
+### 成本、闭场与后继
+
+| 实际范围 | 1D64290 | 24C5260 |
+| --- | ---: | ---: |
+| 新body / 指令 / 正常CFG块、边 | 230 B / 48 / 5、6 | 119 B / 35 / 4、4 |
+| decoder墙钟 / owned峰值 | 0.356 s / NOT_MEASURED | 0.419 s / 24485888 B |
+| REA service墙钟 / Rizin owned峰值 | 7.479 s / 592379904 B | 4.243 s / 592695296 B |
+| Rizin完整close UTC | 14:56:50.786 | 15:08:48.363 |
+| own host/provider PID不在场读回 UTC | 14:59:32.236 | 15:11:43.502 |
+| authority T0至case close墙钟 | 848.575 s | 852.596 s |
+| case close / deadline UTC | 15:01:16.579 / 15:02:08.004 | 15:19:06.718 / 15:19:54.122 |
+
+Rizin每题provider Job限额1 GiB、未触限；第二题decoder限256 MiB。outer exec session与exit分别留原件，**outer联合峰值/Job0均NOT_MEASURED、Shared资格NOT_GRANTED**。两题service.close无错误，owner children/MCP/exec均0；own PID读回不冒全机器审计。表内service、decoder与完整窗口范围不同，窗口包括协调/源审/守卫/解读/闭场，不能以4–7秒称完整研究成本，更不能据不同题目作提速或模型token比较。
+
+原64 MiB总hold前向净分为首case2 MiB、次case16 MiB、未分46 MiB，没有额外64 MiB或物理释放信用。首case后继Native点值545976 B；次case15:11:29Z点值152584 B，均不是历史峰值，close/后继独审另增小metadata。全部原件按统一期限/用途复核；旧900秒卡不续期。后继先复用已持103 B `28BFCD0` 与 `A11F60` source-model，由Root新定义最小未闭 `2B9D260` 边界问题并新鲜准入。本段没有授新采样、Java已采用、完整八M闭合或实机游玩通过。

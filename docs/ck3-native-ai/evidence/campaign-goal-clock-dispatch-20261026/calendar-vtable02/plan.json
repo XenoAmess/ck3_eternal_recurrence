@@ -1,0 +1,174 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "campaign-calendar-vtable-actual02",
+  "question": "Do actual4 consumed365 month/day bytes equal currentJava fixed365 mapping, and what target is stored in the distinct monthly callable slot+10?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "owner_scope": "Static image DATA and held daily pre/date consumers; no Game owned",
+    "identity_kind": "none",
+    "identity_lifetime": "Static exact-image RVAs and rawbytes only",
+    "producer_trigger": "not-applicable",
+    "producer": "b64 batch02 exact40B vtable and365+365B calendar DATA capture",
+    "caller": "Held22A0EDA/22A0EF7 andpre2988366/2988373 consume tables;pre29887E0 constructs476CA28",
+    "consumer": "CurrentJava CampaignCalendar constants and heldmonthly callable slot+10; invoke business body unknown",
+    "cache_lifetime": "Immutable bytes preserved as exact770B readback copies; no runtimecache assumption",
+    "expected_signal": "365 entries in each table match zero-basedJava mapping;slot+10 targets2989C40",
+    "zero_sample_meaning": "No runtime monthly sample;zero mismatches is static byte agreement only",
+    "stop_condition": "Read3 suppliedraw windows and currentJava source only;no new EXE/Game invocation byworker",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "comparison",
+      "layer": "source-contract",
+      "path": "SOURCE-COMPARISON.json",
+      "sha256": "002c7b4e4b87838d67afa2062423020473de4a4296c79e31e6939ba22bd0e400",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Manual exactraw/currentJava365entry comparison and static slot+10 target, source-only limits"
+    },
+    {
+      "id": "month_data",
+      "layer": "exact-build",
+      "path": "month-table.raw",
+      "sha256": "218539a9f584e576a0912771d97ac39c5042fc9169e2b5d250069a88d1478f0a",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Actualmonth bytes, managedbatch02 window006"
+    },
+    {
+      "id": "day_data",
+      "layer": "exact-build",
+      "path": "day-table.raw",
+      "sha256": "49cfa7734c595821c26db19fac8d0427fa12adc3e8988e04e0d94198d8f35517",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Actualday bytes, managedbatch02 window007"
+    },
+    {
+      "id": "vtable_data",
+      "layer": "exact-build",
+      "path": "monthly-vtable.raw",
+      "sha256": "aca5f0945dd0fbff48ffa42dc071dc3d61ed68a9b6a959192af525c12d902add",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Actual40B476CA28 vtable, window005"
+    },
+    {
+      "id": "held_pre",
+      "layer": "source-contract",
+      "path": "../held-dispatch-detail.json",
+      "sha256": "3e4d7459cb94322c2be07c872f769704991c705cb9befabbb7af9675d5366a96",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Reviewed actualpre constructs476CA28, forwards container/count;prior normalreturn limits"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "lookup",
+      "label": "Actual4 annualindex0..364 lookup bytes"
+    },
+    {
+      "id": "java",
+      "label": "CurrentJava fixed365 month/day mapping"
+    },
+    {
+      "id": "pre",
+      "label": "Heldpre mask2-gated476CA28 construction"
+    },
+    {
+      "id": "vtable",
+      "label": "Actual40B476CA28 static vtable"
+    },
+    {
+      "id": "target",
+      "label": "Slot+10 pointer targetRVA2989C40"
+    },
+    {
+      "id": "body",
+      "label": "Actual invoke and range-consumer dispatch"
+    },
+    {
+      "id": "result",
+      "label": "Monthly independent result and score source"
+    }
+  ],
+  "edges": [
+    {
+      "id": "calendar_equal",
+      "from": "lookup",
+      "to": "java",
+      "label": "365month+365day entries match,0 mismatch",
+      "status": "static-confirmed",
+      "evidence": [
+        "comparison",
+        "month_data",
+        "day_data"
+      ]
+    },
+    {
+      "id": "construct",
+      "from": "pre",
+      "to": "vtable",
+      "label": "Heldpre476CA28 matches staticDATA address",
+      "status": "static-confirmed",
+      "evidence": [
+        "held_pre",
+        "comparison",
+        "vtable_data"
+      ]
+    },
+    {
+      "id": "slot_target",
+      "from": "vtable",
+      "to": "target",
+      "label": "Exact fiveQWORDs,+10 isVA142989C40",
+      "status": "static-confirmed",
+      "evidence": [
+        "comparison",
+        "vtable_data"
+      ]
+    },
+    {
+      "id": "invoke_body",
+      "from": "target",
+      "to": "body",
+      "label": "Business body and range invoke unproved",
+      "status": "unknown",
+      "evidence": [
+        "comparison"
+      ],
+      "open_question": "32B invokeprefix and385B1A34A30 rangeconsumer separately requested throughb64;not supplied yet."
+    },
+    {
+      "id": "monthly_result",
+      "from": "body",
+      "to": "result",
+      "label": "Actualmonthly response/scoring DATA not produced",
+      "status": "unknown",
+      "evidence": [
+        "comparison"
+      ],
+      "open_question": "Staticbytes/callreturn cannot substitute independent actualmonthlyresponse/create-onlyslot/score producer."
+    }
+  ],
+  "cases": [
+    {
+      "id": "static_only",
+      "question": "Does byte agreement/target location add Game/month/day scorecredit?",
+      "status": "not-applicable",
+      "evidence": [
+        "comparison"
+      ],
+      "reason": "Static source-only,no callback or Game execution."
+    },
+    {
+      "id": "month_effect",
+      "question": "Did actualmonthly invoke and independentresult complete?",
+      "status": "pending",
+      "evidence": []
+    }
+  ]
+}

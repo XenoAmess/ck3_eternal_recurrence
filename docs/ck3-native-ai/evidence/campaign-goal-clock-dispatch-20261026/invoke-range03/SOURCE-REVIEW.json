@@ -1,0 +1,174 @@
+{
+  "schema": "xar.campaign-monthly-invoke-range-source/v61-03",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "owner": "/root/campaign_goals",
+  "reviewed_at_utc": "2026-10-25T22:41:01.699461+00:00",
+  "build": "1.20.0.4",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "producer_receipt": {
+    "path": "D:\\codex-ck3-background\\ck3-java-g2-resume-r4-20261025\\resume61\\b64_execution\\BATCH03-RESULT01.json",
+    "bytes": 32698,
+    "sha256": "460cb1a0294518eccb7c0ba5d22da7b93d51976f98d13e2c7c3b73dc8303acbb"
+  },
+  "producer_observed_at_utc": "2026-10-25T22:35:03.776658+00:00",
+  "producer_input_close": "CLOSED",
+  "new_exe_bytes_acquired_by_b64_for_this_stage": 417,
+  "cumulative_acquired_for_owner": {
+    "data": 770,
+    "code": 417,
+    "total": 1187
+  },
+  "worker_direct_exe_reads": 0,
+  "new_game_days": 0,
+  "new_month_samples": 0,
+  "review_at_utc": "2026-11-01T00:00:00Z",
+  "manual_source_conclusions": {
+    "invoke": {
+      "at": "2989C40..2989C5A",
+      "meaning": "Exact monthly callable slot+10 loads capture at this+8, dereferences saved clock-pointer slot, loads clock+0xA0 GameData, adds0x33B90 and tail-transfers to2967010. Six remaining bytes are INT3 padding. Receiver business type and2967010 effects remain unknown.",
+      "independent_tail_target": "E9 rel32 at2989C55 ->2967010"
+    },
+    "range": {
+      "entry": "1A34A30",
+      "end_exclusive": "1A34BB1",
+      "early_empty_range": "begin==end returns without per-element callback",
+      "forwarded_descriptor": "R15=[original context+0x40], same exact descriptor captured by pre",
+      "per_iteration": "Local invocation arguments are pointers to context+0x48 local, descriptor, and copied current index. Callback pair contains argument block address and code1A36810;3978C00 receives that pair. Index increments after return and loops to supplied range end.",
+      "callback_code_target": "LEA at1A34A6E length7 disp0x1D9B independently computes1A36810",
+      "actual_invoke_in_this_body": false,
+      "normal_return": "Sole RET at1A34BB0 after range exhausted or empty. Instrumentation/TLS helpers bracket indirect callback dispatch; their full effects are outside this record."
+    },
+    "open_source_edges": [
+      "3978C00 wrapper -> actual callback dispatch policy",
+      "1A36810 callback -> indexed std::function element/invoke",
+      "2967010 monthly receiver -> concrete business effects"
+    ],
+    "not_proved": [
+      "monthly business success",
+      "callback once per actual date",
+      "no exception or reentry",
+      "independent persisted monthly response",
+      "score or create-only monthly slot"
+    ]
+  },
+  "full_detail_ref": {
+    "path": "D:\\codex-ck3-background\\ck3-java-g2-resume-r4-20261025\\resume61\\campaign_goals\\ACTUAL-MONTHLY-INVOKE-RANGE03.json",
+    "bytes": 25315,
+    "sha256": "12c686ab78d471da867e3e32c926c8f91373fd417e5ca7678c090c461e94c063"
+  },
+  "windows": [
+    {
+      "source": {
+        "index": 8,
+        "owner": "/root/campaign_goals",
+        "label": "monthly-invoke-prefix-only",
+        "begin_rva": "0x2989c40",
+        "end_rva_exclusive": "0x2989c60",
+        "window": {
+          "id": "b03-w08",
+          "kind": "CODE",
+          "file_offset": 43552832,
+          "length": 32
+        },
+        "raw_ref": {
+          "path": "D:\\ck3-state\\ck3-java-g2-native-static-resume61\\batch03\\capture01\\window-008.raw",
+          "bytes": 32,
+          "sha256": "90647d91cef5d0c6b4c70f478b5fc5a8a1c0983ae989a62dec73802464957a2d"
+        }
+      },
+      "decoded_bytes": 32,
+      "instruction_count": 11,
+      "literal_rel32": [
+        {
+          "at": "0x2989c55",
+          "kind": "jmp",
+          "target": "0x2967010"
+        }
+      ]
+    },
+    {
+      "source": {
+        "index": 9,
+        "owner": "/root/campaign_goals",
+        "label": "range-consumer-region",
+        "begin_rva": "0x1a34a30",
+        "end_rva_exclusive": "0x1a34bb1",
+        "window": {
+          "id": "b03-w09",
+          "kind": "CODE",
+          "file_offset": 27475504,
+          "length": 385
+        },
+        "raw_ref": {
+          "path": "D:\\ck3-state\\ck3-java-g2-native-static-resume61\\batch03\\capture01\\window-009.raw",
+          "bytes": 385,
+          "sha256": "f17b4c32a5ba9da81f3852ed9daf989ae36baa8e8962a145cd2f69029755d94a"
+        }
+      },
+      "decoded_bytes": 385,
+      "instruction_count": 103,
+      "literal_rel32": [
+        {
+          "at": "0x1a34a93",
+          "kind": "call",
+          "target": "0x3978830"
+        },
+        {
+          "at": "0x1a34aaa",
+          "kind": "call",
+          "target": "0x3979b60"
+        },
+        {
+          "at": "0x1a34ac1",
+          "kind": "call",
+          "target": "0x397c090"
+        },
+        {
+          "at": "0x1a34add",
+          "kind": "call",
+          "target": "0x3978830"
+        },
+        {
+          "at": "0x1a34aeb",
+          "kind": "call",
+          "target": "0x3979b60"
+        },
+        {
+          "at": "0x1a34afe",
+          "kind": "call",
+          "target": "0x397c090"
+        },
+        {
+          "at": "0x1a34b12",
+          "kind": "call",
+          "target": "0x397c090"
+        },
+        {
+          "at": "0x1a34b44",
+          "kind": "call",
+          "target": "0x3978c00"
+        },
+        {
+          "at": "0x1a34b4a",
+          "kind": "call",
+          "target": "0x3978830"
+        },
+        {
+          "at": "0x1a34b58",
+          "kind": "call",
+          "target": "0x3979b60"
+        },
+        {
+          "at": "0x1a34b6b",
+          "kind": "call",
+          "target": "0x397c090"
+        },
+        {
+          "at": "0x1a34b7f",
+          "kind": "call",
+          "target": "0x397c090"
+        }
+      ]
+    }
+  ]
+}

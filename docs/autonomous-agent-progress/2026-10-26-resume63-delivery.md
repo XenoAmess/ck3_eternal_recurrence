@@ -56,3 +56,24 @@ LS 当前 POM 的真实来源是 `INCREMENTAL69-FINITE-POM-ADOPTED04.json` 中�
 推送前实际 task bus `poll --ack` 到 9024，无新冲突；远端 fast-forward 成功。远端回显 CLA 必需状态被现账号策略 bypass，本岗未修改该策略，也不据推送成功授予 CI 信用。[Linear history](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40345540738) 已最终 SUCCESS；[Official Runner CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40345540217) 当次读回仍运行，须以后继真实终态为准。
 
 后继 Native 软件修复交付前发现真实主线漂移：远端 configured 生产/测试为 110,409/70,433 B，旧根仓候选为 58,640/12,258 B，整文件覆盖会删除 804/875 行。已停止该覆盖，交 Native owner 从上述精确新鲜 parent 前向重放，保留远端 `dcc25e69b4` 的扩展能力。Java 则实际核过 `b8ddb3901f..e735f2a0ed` 范围的 `java/ck3-control` 无远端改动；两种情况不混同。
+
+该 Native 维护包随后以前向两叶实际落地为 `7ecb8b1d10b88eeaed389ca76251eb5d679c652e`（parent `e735f2a0ed`），普通 fast-forward 推送成功。只采用 fresh helper 35,807 B 与测试 43,745 B；configured 两叶已有同义修复，完全保留远端版本。依据 `D:/ck3-state/ck3-java-g2-resume63-native-helper01/FRESH-READY03.json`（8,504 B，SHA-256 `e63e5598fdd95a842de174f59789453c4d8da5d2b67e7a40d33d2fdc163338ee`），fresh 四整模块 127/127、configured 两整叶 strict 与 helper 明确 AST 提取范围 strict 均实际通过；不外推为完整 helper 静态全绿。
+
+持续 CI 只在远端既有 registration 独立 step 增加 `CI=true`、broker-client 与 MSVC-evidence 两整模块；原 configured 及三个 SDK 消费者的 step 原字节保留，未在本地执行这三个 SDK 消费者。没有为它们复制约 60 MiB SDK，也未写入此前只读查询过的两个 promisor blob 和 MCP blob。新 workflow 的 YAML 及精确 step 内容通过，源 pin、文档新增链接和 `git diff --check` 通过；两份用户索引保持原 SHA。进度 README 仅从新鲜远端插入当前入口两行，其余远端正文保留。
+
+本包六路径的未压缩 blob 输入 535,658 B、tree 输入 102,526 B、覆盖 14 个对象 245,605 B；与首包累计 raw blob 为 1,506,863 B、对象为 808,332 B。推送前实际总线 ACK 为 9025。[该 SHA 的 Linear history](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40351720781) 已最终 SUCCESS；[Official Runner CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40351720817) 首次观察仍运行，保留待终态。Git 发布没有更新根仓的旧 helper 实体或冻结 runtime，实际运行须另绑定正确新源与资格。
+
+## 改名后原件与唯一 POM
+
+Root 已授权 rename63 在同一 SRC 采用 56 个 TEST 叶、182 个名称引用及 LS test-jar POM；`RENAME63-ADOPTED01.json` 为 11,252 B，SHA-256 `34a12394c1cc2fde887e8389c6d78c17d496eb74ea2d6f63204be6076a3c5484`。SRC 四个旧路径已退休，i61 四个旧投影只作采用前 witness，不能作为最终投影后仍可读的持久 donor。新的唯一 LS POM 为 7,358 B，SHA-256 `b62964c612d39d65728b7eae8c11ab4f2b0e21fc5a47911e2240aaf69460bca0`；此为真实源码采用，尚不授编测或 TEST artifact 资格。
+
+本岗实际重读并核对以下四个持久原件，bytes/SHA 均匹配采用前像；因此无需新复制 helper。`B` 为 `D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025`。
+
+| 旧 TEST target | 持久 donor | bytes / SHA-256 |
+| --- | --- | --- |
+| adapters-storage 的 `TestStorageWriteGuard.java` | `B/resume61/ledger_writer/test_guard103/TestStorageWriteGuard.java`；Incremental33 的 selected_source | 16600 / `1b3ccd1f9de19f359eb815d751ea5cec94a0e390e351f2b570a57180743a0ad9` |
+| local-service 的 `TestStorageWriteGuard.java` | `D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/ledger_writer/storage16/close/TestStorageWriteGuard.java`；原 COMMON selection | 16356 / `e1e742ec35abe65d04cb1771ebe61ba1a03fb9c00e4a8feb2a7f1f84d570d50b` |
+| `RootWarmNativeCampaignRestoreTest.java` | `B/sources/save_restore/actual_warm41/RootWarmNativeCampaignRestoreTest.java`；原 COMMON selection | 2638 / `65240049fe3c30b8f858aa39d45f8dffcf4f0203b360cbc6a9aef8980f91cc53` |
+| `RootFiniteFirstLiveResultActualTest.java` | `B/resume60/lifecycle/finite_result14/RootFiniteFirstLiveResultActualTest.java`；Incremental26 的 selected_source_ref，原始 ABSENT | 2576 / `01824a9da5e25cbe8f6ad4bda841205a63f4dc1a7e5222984fb6a45b556351b0` |
+
+最终 SourceGraph 在退休旧 target 前，old selection 与 `Relocation.sourceRef` 须使用同一个真实 donor FileRef；新 selection 使用实际 after。adapters-storage 与 local-service 的 guard 是不同 body，不能因 FQCN 相同而合并。i61 仍未进行本轮最终 Java 投影。

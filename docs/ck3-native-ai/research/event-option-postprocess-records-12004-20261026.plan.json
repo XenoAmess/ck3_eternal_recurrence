@@ -1,0 +1,54 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-26T00:09:13Z",
+  "topic": "event-option-postprocess-records-12004",
+  "question": "How does the actual160-byte postprocessor consume two collections passed through option execution, and what still prevents a material-effect conclusion?",
+  "purpose": "engine-transition",
+  "build": {"version": "1.20.0.4", "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"},
+  "observation": {
+    "mode": "offline-only", "actor_kind": "engine",
+    "owner_scope": "Actual373B5D0 postprocessor and the same local collection's upstream wrapper/core argument flow.",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "Original context and local collection last for this synchronous native call chain only. No reuse of old event IDs, pointers or Game epochs is qualified.",
+    "producer_trigger": "on-action",
+    "producer": "3765860 constructs one stack object and passes its pointer through environment+18 into core/virtual+B0.",
+    "caller": "37658EF passes the identical stack object inRCX and original context inRDX to373B5D0.",
+    "consumer": "373B5D0 iterates32-byte rows with+18 flag and80-byte rows with+48 flag, invoking373A0F0 and373A430 respectively.",
+    "cache_lifetime": "New160-byte exact held source from sole b64batch07. Old265/1193-byte sources reused; old102-byte prefix has missing-batch02 claim and incomplete provenance, not promoted to new held source.",
+    "expected_signal": "Two bounded loops, actual call operands and explicit missing setter/material result boundary.",
+    "zero_sample_meaning": "No Game samples; zero or disabled rows in this code path cannot be inferred for a current scene.",
+    "stop_condition": "Consume exact160-byte original and existing direct caller/core only; do not append next32-byte function or infer lower setter semantics.",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {"id": "post", "layer": "source-contract", "path": "D:/ck3-state/ck3-java-g2-native-static-resume61/batch07/capture01/window-021.raw", "sha256": "99dd8f1dc1c0be35fd8b371893ae5e0445bf43c3f38c5bc628f5f93b967b2c7b", "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518", "supports": "Human full160-byte decode throughRET373B66F. First32-byte rowsflag+18 call373A0F0(context+18,key,payload+8). Second80-byte rowsflag+48 call373A430(context,row). No return-value branches or count clearing."},
+    {"id": "batch", "layer": "source-contract", "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/b64_execution/BATCH07-RESULT01.json", "sha256": "beb69b6948738f9cfb395d3c06cf3dcafe3b6711af0931a99849cad06809c8a9", "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518", "supports": "Actual collector resultindex21 binds160B/SHA and source/admission/child outcomes. Owner readback matches exact original; no own EXE I/O or Game qualified."},
+    {"id": "wrapper", "layer": "source-contract", "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/shared-span-cache/new-03765860-03765969.bin", "sha256": "aee8d876e5d6e8c26817f83cf34a1a80f09e744481cbea1e3f0ac1bf2ecc0c82", "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518", "supports": "Full cached265-byte caller constructs stack+50 object, places pointer at environment+18, then373B5D0 receives the identical object and original context."},
+    {"id": "core", "layer": "source-contract", "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/shared-span-cache/new-03765E50-037662F9.bin", "sha256": "b8596d2cf02947765fd384ba0274628df0618a566f174ea37041a29821cbb77f", "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518", "supports": "Full cached1193-byte core copies environment+18 pointer into the structure passed to accepted target virtual+B0. Concrete target/record production not supplied."},
+    {"id": "prefix", "layer": "locator", "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/shared-span-cache/new-0373A0F0-0373A156.bin", "sha256": "2d0552949d946aa73bf51494fc5e47b66072f1cb8116f0f39fd7d4bc0fef5f2f", "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518", "supports": "Only102-byte legacy prefix, has real fallthrough373A156 and jump373A214 beyond window. Partial code cannot close setter logic or fresh image identity."},
+    {"id": "prefix_claim", "layer": "locator", "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/shared-span-cache/new-0373A0F0-0373A156.claim", "sha256": "2a58454bab16aa1714df64919d43fb015a4b3c1840736ee6d9e6e60a588f126f", "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518", "supports": "Old claim says missing-batch02; acquisition machine and complete provenance unknown. It is not promoted to actual current held source."}
+  ],
+  "nodes": [
+    {"id": "local", "label": "Wrapper constructs one local collection"},
+    {"id": "environment", "label": "Core forwards same pointer in virtual environment"},
+    {"id": "records", "label": "Concrete virtual producer/nonempty records"},
+    {"id": "post", "label": "Same collection reaches160B postprocessor"},
+    {"id": "first", "label": "32-byte rowsflag+18 then373A0F0"},
+    {"id": "second", "label": "80-byte rowsflag+48 then373A430"},
+    {"id": "effect", "label": "Full setters and independently observed material result"}
+  ],
+  "edges": [
+    {"id": "pass", "from": "local", "to": "environment", "label": "same stack+50 pointer via environment+18", "status": "static-confirmed", "evidence": ["wrapper", "core"]},
+    {"id": "consume", "from": "local", "to": "post", "label": "same object after core return", "status": "static-confirmed", "evidence": ["wrapper", "post", "batch"]},
+    {"id": "first", "from": "post", "to": "first", "label": "finite32-byte loop and exact active-row operands", "status": "static-confirmed", "evidence": ["post"]},
+    {"id": "second", "from": "post", "to": "second", "label": "finite80-byte loop and exact active-row operands", "status": "static-confirmed", "evidence": ["post"]},
+    {"id": "producer", "from": "environment", "to": "records", "label": "unknown concrete virtual record producer", "status": "unknown", "evidence": ["core"], "open_question": "Actual vtable+B0 implementation and record-appending behavior not bound; no real nonempty collection observed."},
+    {"id": "first_effect", "from": "first", "to": "effect", "label": "unknown full setter and true result", "status": "unknown", "evidence": ["post", "prefix", "prefix_claim"], "open_question": "Only102B partial legacy373A0F0 source, with missing claim provenance; real branch continuations373A156/373A214 and full result remain unqualified."},
+    {"id": "second_effect", "from": "second", "to": "effect", "label": "unknown535B373A430 semantics and true result", "status": "unknown", "evidence": ["post"], "open_question": "No complete373A430 body or actual resulting material state supplied; no option-enabled, payment or UNKNOWN replay conclusion."}
+  ],
+  "cases": [
+    {"id": "direct_post", "question": "Complete160-byte consumer and same-pointer dataflow", "status": "pending", "evidence": ["post", "wrapper", "core"]},
+    {"id": "actual_result", "question": "Actual record production and independent material state", "status": "pending", "evidence": []}
+  ]
+}

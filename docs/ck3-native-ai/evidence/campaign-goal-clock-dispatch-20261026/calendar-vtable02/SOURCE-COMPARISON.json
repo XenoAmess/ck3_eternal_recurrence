@@ -1,0 +1,126 @@
+{
+  "schema": "xar.actual4-campaign-calendar-vtable-source/v61-02",
+  "owner": "/root/campaign_goals",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-25T22:10:43.649856+00:00",
+  "status": "SOURCE_STATIC_365_ENTRY_EQUIVALENCE_AND_EXACT_INVOKE_TARGET_LOCATED",
+  "build": "1.20.0.4",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "producer_receipt": {
+    "path": "D:\\codex-ck3-background\\ck3-java-g2-resume-r4-20261025\\resume61\\b64_execution\\BATCH02-RESULT01.json",
+    "bytes": 37364,
+    "sha256": "4f117d56895dd986010e34f3691601bc882e218c34acbf4811513bf174ebf3bb"
+  },
+  "java_calendar": {
+    "path": "D:\\codex-ck3-demos\\2026-10-25-java-g2-complete31-h5r5\\java\\ck3-control\\planning-runtime\\src\\main\\java\\org\\xar\\ck3\\control\\planning\\campaigncadence\\CampaignCalendar.java",
+    "bytes": 3957,
+    "sha256": "15060ac1de013ddfe67c27bf0885f2dba9567113c0f87df0d270b532895f7aa9"
+  },
+  "comparison": {
+    "month_entries_checked": 365,
+    "day_entries_checked": 365,
+    "all_months_zero_based_match": true,
+    "all_days_zero_based_match": true,
+    "mismatch_indices": [],
+    "month_lengths": [
+      31,
+      28,
+      31,
+      30,
+      31,
+      30,
+      31,
+      31,
+      30,
+      31,
+      30,
+      31
+    ],
+    "native_lookup_footprint": "0..364; descriptor array allocation length not proved",
+    "mapping": "Native month byte plus1 and day byte plus1 equal Java positive-year calendar month/day for all365 annualindices. Shared epoch43800000/raw24/day and365 arithmetic are separately held source facts."
+  },
+  "monthly_callable": {
+    "vtable_rva": "0x476ca28",
+    "entries": [
+      {
+        "offset": "0x0",
+        "absolute_va": "0x142989c60",
+        "rva": "0x2989c60"
+      },
+      {
+        "offset": "0x8",
+        "absolute_va": "0x142989c60",
+        "rva": "0x2989c60"
+      },
+      {
+        "offset": "0x10",
+        "absolute_va": "0x142989c40",
+        "rva": "0x2989c40"
+      },
+      {
+        "offset": "0x18",
+        "absolute_va": "0x142989c30",
+        "rva": "0x2989c30"
+      },
+      {
+        "offset": "0x20",
+        "absolute_va": "0x140876390",
+        "rva": "0x876390"
+      }
+    ],
+    "invoke_slot": "0x10",
+    "actual_invoke_rva": "0x2989c40",
+    "next_known_method_rva": "0x2989c60",
+    "business_body": "NOT_HELD;32B bounded prefix request next",
+    "distinct_from_manager_invoke": "0x2989bf0"
+  },
+  "scope": "Worker read only3 actualraw windows and currentJava source; b64 alone performed managed sourcecapture. This verifies static byte/mapping equality, no Java/nativecallback/Game execution, score or monthlybusiness result.",
+  "new_exe_bytes_acquired_by_b64_for_this_owner": 770,
+  "worker_direct_exe_reads": 0,
+  "new_game_days": 0,
+  "new_month_samples": 0,
+  "review_at_utc": "2026-11-01T00:00:00Z",
+  "preserved_exact_copies": [
+    {
+      "original_ref": {
+        "path": "D:\\ck3-state\\ck3-java-g2-native-static-resume61\\batch02\\capture01\\window-005.raw",
+        "bytes": 40,
+        "sha256": "aca5f0945dd0fbff48ffa42dc071dc3d61ed68a9b6a959192af525c12d902add"
+      },
+      "copy": "monthly-vtable.raw",
+      "bytes": 40,
+      "sha256": "aca5f0945dd0fbff48ffa42dc071dc3d61ed68a9b6a959192af525c12d902add",
+      "copy_readback_match": true,
+      "rva": "0x476ca28"
+    },
+    {
+      "original_ref": {
+        "path": "D:\\ck3-state\\ck3-java-g2-native-static-resume61\\batch02\\capture01\\window-006.raw",
+        "bytes": 365,
+        "sha256": "218539a9f584e576a0912771d97ac39c5042fc9169e2b5d250069a88d1478f0a"
+      },
+      "copy": "month-table.raw",
+      "bytes": 365,
+      "sha256": "218539a9f584e576a0912771d97ac39c5042fc9169e2b5d250069a88d1478f0a",
+      "copy_readback_match": true,
+      "rva": "0x444c340"
+    },
+    {
+      "original_ref": {
+        "path": "D:\\ck3-state\\ck3-java-g2-native-static-resume61\\batch02\\capture01\\window-007.raw",
+        "bytes": 365,
+        "sha256": "49cfa7734c595821c26db19fac8d0427fa12adc3e8988e04e0d94198d8f35517"
+      },
+      "copy": "day-table.raw",
+      "bytes": 365,
+      "sha256": "49cfa7734c595821c26db19fac8d0427fa12adc3e8988e04e0d94198d8f35517",
+      "copy_readback_match": true,
+      "rva": "0x444c4b0"
+    }
+  ],
+  "D_full_result_ref": {
+    "path": "D:\\codex-ck3-background\\ck3-java-g2-resume-r4-20261025\\resume61\\campaign_goals\\ACTUAL-CALENDAR-VTABLE02.json",
+    "bytes": 6404,
+    "sha256": "2368bdff2d96f117bfe23206617410a19d5c213465fcb3b80828e632841652be"
+  }
+}

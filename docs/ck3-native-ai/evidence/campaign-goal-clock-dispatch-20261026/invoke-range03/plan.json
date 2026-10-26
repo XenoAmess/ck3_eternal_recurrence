@@ -1,0 +1,161 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "campaign-monthly-invoke-range-actual03",
+  "question": "What exact receiver and callback object does actual monthly callable and range consumer forward, before unheld successors?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "owner_scope": "Static exact-image CODE417B and held pre/vtable only; no Game owned",
+    "identity_kind": "none",
+    "identity_lifetime": "Static exact-image RVAs and rawbytes only",
+    "producer_trigger": "not-applicable",
+    "producer": "b64 batch03 exact32B monthly invoke prefix and385B range consumer",
+    "caller": "Held pre/dispatch ->1A34A30; actual476CA28+10 ->2989C40",
+    "consumer": "2967010 inline receiver and3978C00 callback pair/1A36810; successor effects unheld",
+    "cache_lifetime": "Exact417B readback copies and source review; no runtimecache assumption",
+    "expected_signal": "Complete prefix and range-body dataflow, independently computed rel32 and callback RIP target",
+    "zero_sample_meaning": "No monthly runtime sample; static normal return does not grant business success",
+    "stop_condition": "Review2 suppliedraw windows only; successor requests coordinated separately, no EXE/Game byworker",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "review",
+      "layer": "source-contract",
+      "path": "SOURCE-REVIEW.json",
+      "sha256": "9b6b36d9ba5cc9e1a1ede4acaa565ebc7ae4de09b1cc47440b0e5315ea2cbff9",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Manual complete114instruction review and exact forwarding/unknown limits"
+    },
+    {
+      "id": "invoke",
+      "layer": "exact-build",
+      "path": "monthly-invoke.raw",
+      "sha256": "90647d91cef5d0c6b4c70f478b5fc5a8a1c0983ae989a62dec73802464957a2d",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Actual32B monthly callable prefix"
+    },
+    {
+      "id": "range",
+      "layer": "exact-build",
+      "path": "range-consumer.raw",
+      "sha256": "f17b4c32a5ba9da81f3852ed9daf989ae36baa8e8962a145cd2f69029755d94a",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Actual385B runtime-function range consumer"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "invoke",
+      "label": "Monthly callable2989C40"
+    },
+    {
+      "id": "receiver",
+      "label": "clock+0xA0 +0x33B90 ->2967010"
+    },
+    {
+      "id": "range",
+      "label": "Range consumer1A34A30"
+    },
+    {
+      "id": "pair",
+      "label": "Argument block and code1A36810"
+    },
+    {
+      "id": "wrapper",
+      "label": "3978C00 dispatch wrapper"
+    },
+    {
+      "id": "element",
+      "label": "Actual indexed std::function invocation"
+    },
+    {
+      "id": "result",
+      "label": "Independent monthly response/slot/result"
+    }
+  ],
+  "edges": [
+    {
+      "id": "receiver_forward",
+      "from": "invoke",
+      "to": "receiver",
+      "label": "Actual26B thin callable tail transfer",
+      "status": "static-confirmed",
+      "evidence": [
+        "review",
+        "invoke"
+      ]
+    },
+    {
+      "id": "range_pair",
+      "from": "range",
+      "to": "pair",
+      "label": "Exact descriptor/context/index pointers and RIP callbackcode",
+      "status": "static-confirmed",
+      "evidence": [
+        "review",
+        "range"
+      ]
+    },
+    {
+      "id": "pair_wrapper",
+      "from": "pair",
+      "to": "wrapper",
+      "label": "Actual E8 at1A34B44 forwards callback pair",
+      "status": "static-confirmed",
+      "evidence": [
+        "review",
+        "range"
+      ]
+    },
+    {
+      "id": "wrapper_element",
+      "from": "wrapper",
+      "to": "element",
+      "label": "Wrapper and callback successor bodies unheld",
+      "status": "unknown",
+      "evidence": [
+        "review"
+      ],
+      "open_question": "Does wrapper invoke pair code synchronously and how does1A36810 select/invoke original container element?"
+    },
+    {
+      "id": "business_effect",
+      "from": "receiver",
+      "to": "result",
+      "label": "2967010 business effect unheld",
+      "status": "unknown",
+      "evidence": [
+        "review"
+      ],
+      "open_question": "What exact receiver business operation occurs? No business success from source-local tail transfer."
+    },
+    {
+      "id": "published_result",
+      "from": "element",
+      "to": "result",
+      "label": "No ordinary independent monthly result producer",
+      "status": "unknown",
+      "evidence": [
+        "review"
+      ],
+      "open_question": "Actualresponse binding and single create-only slot remain absent; no date/score credit."
+    }
+  ],
+  "cases": [
+    {
+      "id": "static_only",
+      "question": "Do these static bodies grant new Game/month/day credit?",
+      "status": "not-applicable",
+      "evidence": [
+        "review"
+      ],
+      "reason": "Source review only; no Game or callback execution."
+    }
+  ]
+}

@@ -28,7 +28,7 @@ Unknown 更新带 `expected_revision`，完整 bundle 合并先校验再原子�
 {"path":"原PE绝对路径","command":"有界Rizin命令","command_timeout_ms":30000}
 ```
 
-CLI 为 `rea.mjs execute-rizin-command PE COMMAND --command-timeout-ms 30000 --json`。本轮参数放入现有 Java producer 的 argv 数组，不经 shell 解释。官方共享服务是 `createReverseEngineeringService(environment).executeRizinCommand(input)`，使用它仍须执行 `close()`；本轮继续复用既有 CLI/Shared 路径，不新增 runner。
+CLI 为 `rea.mjs execute-rizin-command PE COMMAND --command-timeout-ms 30000 --json`。官方共享服务是 `createReverseEngineeringService(environment).executeRizinCommand(input)`，使用它仍须执行 `close()`。首次 Java producer 生成 argv 后，Shared 在 child 前拒绝；Root 随后授权直接调用已安装官方共享服务，实际命令与调用代码封在各 case 的 invocation/receipt 中。没有新增 runner 或修改框架源码；direct 成功不授 Shared 资格。
 
 已实测有效的命令形状如下，VA 和范围按每题固定：
 
@@ -62,21 +62,27 @@ raw 输入只有 path/command/timeout，没有 detail、fields、offset 或 limi
 
 Rizin raw Evidence 不是 `analyze_function` dossier，不能据它调用 native facet，或手工改 operation 让投影通过。地址保留 `0x` 字符串；VA/RVA 算术用 BigInt，64 位文件身份和时间用规范十进制字符串。
 
+其他接口也先按 provider 与覆盖范围使用：`read_bytes({address,length,document?})` 默认256 B，本轮调用方必须自行设小界限；`read_function_instructions({procedure,document?})` 返回 provider 指令；`inspect_native_instruction({address,document?})` 与 `resolve_containing_procedure` 不把邻近地址猜成包含关系。`procedure_callers/callees` 只列已解析静态直接边；`procedure_references({procedure,direction:"incoming"|"outgoing",document?})` 是原始引用，不能把空集解释为整个 PE 无 caller。
+
+Ghidra 的 `search_bytes({pattern,mask?,start?,end?,limit?,cursor?,document?})` 默认 limit100、允许1..1000，范围端点 inclusive、不跨 memory block，续页跟 `next_cursor`。这些合同来自已安装 `dist/contracts/hopperMemoryContracts.js` 与工具 catalog；本机没有成功 native provider 观察，接口源审不能冒实际分页、xref 或字节查询通过。
+
 ## 保留、持久化与关闭
 
 完整 parent 在 close 前经 `export_evidence_bundle` 写入新文件，并保存 bundle bytes/SHA、parent ID、PE SHA/profile。普通 close 会清 session records/cache；裸 ID 和临时 Ghidra DB 都不是永久 locator。MCP import 可合并进会话；CLI import 只校验文件并返回 counts。上一轮 Node-only import/export 已通过，仅证明那份历史 Evidence 的保留与恢复。
 
 Windows owned process 只有主退出、stdout/stderr 都结束、`activeProcesses=0` 后才释放 handle，`process_close` 完成才发 close。kill ACK、主退出或工具 success 不能代 Job0。cleanup 未确认时继续原 owner 的 close，不重新提交同一查询。关闭结果与 payload、证据解释、游戏业务后态分别记录。
 
-本轮两串行 child 沿现有 `SourceGraphCommandSpecProducer` → exact BINDING/SPEC/INVOCATION → `SharedOwnedCommand`。历史卡不重放；fresh standing 绑定现用 runtime/source、容量原件、TMP/output、期限和 exe。每次消费 inner exit、三项守卫、Job0、耗时与实际输出；失败不自动扩大范围或重试。
+初始两串行 child 计划沿 `SourceGraphCommandSpecProducer` → exact BINDING/SPEC/INVOCATION → `SharedOwnedCommand`；真实结果是 Shared 在首 child 前拒绝，见[入口记录](resume63-callee1d64290-entry-result.md)。后续官方 direct 路线仍按新鲜容量、内存、期限和固定范围执行。Rizin 的原装 WindowsOwnedProcess 完整 close 已观察；外层 exec 的联合峰值与 Job0 为 NOT_MEASURED，不把受控 provider 的退出冒外层资格。第二题 decoder 也复用原装 owned-process 入口，第一题 plain-spawn decoder 峰值未量测。
 
-## resume63 的新问题与下一采样点
+## resume63 问题与实际结果
 
 Root 选定 `0x1D64290..0x1D64376`，230 B。问题为：caller `1A20056` 的 root/candidate gate 使用哪些输入、返回 AL 走哪些路径、读取哪些内存，以及该范围的正常局部 CFG 是否闭合。历史 RF metadata 给 unwind `0x51E6AC0`，其采集机器未知；本轮不会把它倒填为本机新观察。
 
 本轮 [PLAN01.json](</D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01/cases/resume63-callee1d64290-01/PLAN01.json>) 为 5203 B、SHA `d2cc71efd1e4d3d08edd148dae0920dc567d2e58240ad35271cf5542a5311d99`。独立 RF 解码后只运行一次有界 REA/Rizin；不跟 callee、不读取 global data、不复制 PE、不启动 CK3。原件由唯一 backend owner 提供，八 M 共享解释和精确引用。
 
-此处仍为计划状态，下一采样点是 fresh Shared standing/ENTRY 通过后取得230 B原字节、完整decode与local CFG；终态另追加。`+0x308` 仍仅为 caller 的累计输入来源，兵力、参战、到场、胜率与实机资格均未由本题建立。当前没有整体提速或模型 token 收益结论。
+上述为初始问题定义，后续已取得两份新的有限原件：`1D64290` 230 B/48条/5块6边，及独立新题 `24C5260` 119 B/35条/4块4边；均鲜读当前 PE 的 RF，Capstone、Rizin、原始相对跳转算术与局部 CFG 一致。M5 对两题独立复核；第二题闭场时仍是 PENDING，15:27:58.546Z 另建独审原件，不修改旧 close。完整数据流、成本和引用见[实验记录 resume63 段](experiments.md#resume63两次新增有限查询)。
+
+第一题保留 `372DF10` 返回的原始低 byte；第二题仅 AL 归一化，且 iterator call 前后的 end 是两次读取。opaque callee、副作用、异常与 unwind 均未闭合。`+0x308` 仍仅为 caller 的未知数值累计来源，兵力、参战、到场、胜率与实机资格均未由本题建立。当前没有整体提速或模型 token 收益结论。下一题先复用已持 `28BFCD0`、`A11F60` 原件/源码，再由 Root 选择最小未闭的 `2B9D260` 边界问题；本页不授新采样。
 
 ## 精确源码导航
 
@@ -93,4 +99,4 @@ Root 选定 `0x1D64290..0x1D64376`，230 B。问题为：caller `1A20056` 的 ro
 | Ghidra 全 import/seed | `dist/ghidra/GhidraLauncher.js:446–578`；`bridge/ghidra/ReaGhidraAnalysisOptions.java:29–80` |
 | Windows cleanup | `dist/windows/WindowsOwnedProcess.js:328–391`；`dist/ghidra/GhidraRequestQueue.js:74–118` |
 
-Shared 冻结源根为 `D:/codex-ck3-background/ck3-java-tools-s26-source-r4-resume61/tools/src/main/java/org/xar/ck3/control/build/`：`SourceGraphCommandSpecProducer.java:159–182,411–432` 生成现有机械入口；`SharedOwnedCommand.java:285–290,389–465` 校验并执行。它们的 runtime/source 只作已验完整包的基线，fresh standing 授予本次有限窗口。
+Shared 冻结源根为 `D:/codex-ck3-background/ck3-java-tools-s26-source-r4-resume61/tools/src/main/java/org/xar/ck3/control/build/`：`SourceGraphCommandSpecProducer.java:159–182,411–432` 生成现有机械入口；`SharedOwnedCommand.java:285–290,389–465` 校验并执行。runtime/source 是历史完整包基线；本轮 fresh standing 只固定新资源约束，实际 Shared 前置拒绝，不能据此授入口通过。

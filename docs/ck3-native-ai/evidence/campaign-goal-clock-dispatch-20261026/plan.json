@@ -1,0 +1,165 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "campaign-goal-clock-dispatch-20261026",
+  "question": "What does the held actual4 pre-command's callable-container dispatch normal return prove before date execution, and which monthly-result edge remains unproved?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "owner_scope": "Exact-build CDailyTickCommand pre-command local callable container; no Game or process is owned",
+    "identity_kind": "none",
+    "identity_lifetime": "Pointers are source-local stack/container identities; no persisted or cross-process identity is asserted",
+    "producer_trigger": "daily-tick",
+    "producer": "Held pre-command 2988280 constructs 64-byte callable elements; mask2 gates the distinct target vtable476CA28",
+    "caller": "Held pre2988E5E passes range configuration and the context containing the exact RSP+30 descriptor to 29897F0",
+    "consumer": "29897F0 direct range branch or parallel scheduling/wait path, then original pre container cleanup; actual monthly target invoke remains absent",
+    "cache_lifetime": "Local descriptor and callable objects are consumed and destroyed before the pre-command normal return; callback effects and exception cleanup remain outside this record",
+    "expected_signal": "Literal count/context forwarding, direct versus parallel branches, wait terminal predicate, and original container cleanup source",
+    "zero_sample_meaning": "No runtime samples are collected. An empty configured range has an actual early return and cannot prove any callback or monthly business result",
+    "stop_condition": "Decode only the six named slices already held in the 5319-byte phase-a04 bundle; no EXE scan, source acquisition, new runtime observation or worker build",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "source_identity",
+      "layer": "exact-build",
+      "path": "../episode04-r08-task-construction-20261021/phase-a04/SOURCE.actual.json",
+      "sha256": "74fa41d46d2e2faf81f93ce126c0c5a36b29694a127ea1fa29df237b26e9398d",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Original desktop-3fevhd2-1c74096080 source machine, exact4 image identity, finite source offsets and bundle slice hashes; no current-machine installation proof"
+    },
+    {
+      "id": "held_dispatch",
+      "layer": "source-contract",
+      "path": "held-dispatch-detail.json",
+      "sha256": "3e4d7459cb94322c2be07c872f769704991c705cb9befabbb7af9675d5366a96",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Manually reviewed literal source: exact local count/context forwarding, empty/direct/parallel dispatch paths, per-handle terminal wait and same original 64-byte element cleanup; distinct monthly invoke body remains absent"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "pre",
+      "label": "Pre2988280 exact local callable descriptor and count"
+    },
+    {
+      "id": "dispatch",
+      "label": "29897F0 original range and exact descriptor context"
+    },
+    {
+      "id": "empty",
+      "label": "Empty range returns without callback"
+    },
+    {
+      "id": "direct",
+      "label": "Mode3 or worker count1 passes range to1A34A30"
+    },
+    {
+      "id": "parallel",
+      "label": "Other path schedules3F91AD0 and waits non-null job handles"
+    },
+    {
+      "id": "terminal",
+      "label": "Wait3F5A070 accepts state2 or state3"
+    },
+    {
+      "id": "cleanup",
+      "label": "Pre destroys each original 64-byte element and frees container"
+    },
+    {
+      "id": "invoke",
+      "label": "Distinct monthly476CA28 actual invoke and business effect"
+    },
+    {
+      "id": "response",
+      "label": "Actual ordinary monthly response and score slot DATA"
+    }
+  ],
+  "edges": [
+    {
+      "id": "forward",
+      "from": "pre",
+      "to": "dispatch",
+      "label": "2988E14 descriptor;2988E2D count;2988E5E call",
+      "status": "static-confirmed",
+      "evidence": ["held_dispatch"]
+    },
+    {
+      "id": "empty_return",
+      "from": "dispatch",
+      "to": "empty",
+      "label": "Begin equals end at2989821",
+      "status": "static-confirmed",
+      "evidence": ["held_dispatch"]
+    },
+    {
+      "id": "direct_branch",
+      "from": "dispatch",
+      "to": "direct",
+      "label": "Mode3 at298982B or worker count1 at298985C",
+      "status": "static-confirmed",
+      "evidence": ["held_dispatch"]
+    },
+    {
+      "id": "parallel_branch",
+      "from": "dispatch",
+      "to": "parallel",
+      "label": "3F91AD0 schedule then non-null handle loop",
+      "status": "static-confirmed",
+      "evidence": ["held_dispatch"]
+    },
+    {
+      "id": "wait_predicate",
+      "from": "parallel",
+      "to": "terminal",
+      "label": "2989B27 to3F5A070; unnamed terminal states2 or3",
+      "status": "static-confirmed",
+      "evidence": ["held_dispatch"]
+    },
+    {
+      "id": "lifetime",
+      "from": "dispatch",
+      "to": "cleanup",
+      "label": "Normal return precedes2988EDE..2988F3D cleanup of original descriptor",
+      "status": "static-confirmed",
+      "evidence": ["held_dispatch"]
+    },
+    {
+      "id": "actual_month_invoke",
+      "from": "dispatch",
+      "to": "invoke",
+      "label": "Missing monthly target invocation and final validation",
+      "status": "unknown",
+      "evidence": ["held_dispatch"],
+      "open_question": "The 1A34A30 range consumer and476CA28 target invoke are not in this held bundle. The distinct476C9E0 manager functor cannot substitute for them."
+    },
+    {
+      "id": "actual_month_result",
+      "from": "invoke",
+      "to": "response",
+      "label": "Missing ordinary response, create-only slot and score producer",
+      "status": "unknown",
+      "evidence": ["held_dispatch"],
+      "open_question": "No source-bound monthly response or scoring DATA publisher has been executed; a native flag, planned cap or wait return cannot supply its actual result."
+    }
+  ],
+  "cases": [
+    {
+      "id": "held_static_only",
+      "question": "Can this source work claim any new callback, month, Game day or scoring result?",
+      "status": "not-applicable",
+      "evidence": ["held_dispatch"],
+      "reason": "Offline held-source analysis only; new EXE reads0, runtime observations0, new game days0 and monthly DATA0."
+    },
+    {
+      "id": "future_callback",
+      "question": "Did the selected actual monthly callback execute and produce its independent material result?",
+      "status": "pending",
+      "evidence": []
+    }
+  ]
+}
