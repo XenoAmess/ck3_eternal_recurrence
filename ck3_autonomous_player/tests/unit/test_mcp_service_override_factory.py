@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import ast
+import os
 from pathlib import Path
 import sys
 import tempfile
@@ -111,8 +112,10 @@ from xar_autoplayer.bridge.service import GameplayBridgeService
         with tempfile.TemporaryDirectory(prefix="xar-service-factory-types-") as task_dir:
             check_path = Path(task_dir) / "factory_boundary.py"
             check_path.write_text(check_source, encoding="utf-8")
+            # A nonincremental check still writes caches unless explicitly disabled.
+            # The real dependency graph is checked once and needs no persistent copy.
             stdout, stderr, status = api.run(["--strict", "--follow-imports=silent", "--no-incremental",
-                "--cache-dir=" + str(Path(task_dir) / "mypy-cache"), "--python-executable=" + sys.executable,
+                "--cache-dir=" + os.devnull, "--python-executable=" + sys.executable,
                 str(check_path)])
         self.assertEqual(status, 0, stdout + stderr)
 

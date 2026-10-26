@@ -64,3 +64,9 @@ N6 DLL为 `build/native-qualified-a06/build/xar_ck3_bridge.dll`，15738368 B，S
 关闭存储CAS204→205的原wait0，`cold-R0020-planning-a01/scene-admission-a01/CLOSED-N6-CI-a01.actual.json` 为7927 B，SHA `11ba26de543e8808dc204e60394b245a86afb786a9cc53144bb3aff4f9cac1fb`。完整owned为3065390560 B，物理/配额/owned/gross检查通过；释放N6和CI未用future，仅保留原Root4MiB小型尾项及原13:08:32Z期限，没有授予新场次或延长期限。随后按根AGENTS要求rebase远端31ef7765f，原三提交重放为6d24a4667、3c66acc9d、35df1f195。远端修改了实际活动的界面头文件和生产TU，新增title TU；N6不授予整合后源码资格，后继必须重新计算完整依赖闭包、构建并消费新包，再冻结公共runtime。
 
 为承接扩大的活动编译闭包，共享configured producer的配置上限改为192MiB，同时真实准入gate要求请求预算不超过精确storage grant的 `budget_bytes`；缺字段或非整数立即拒绝。外部192MiB预留不会自行改变内部配置上限，也不取消原有容量、来源、期限及实际分配监控。回归覆盖192MiB和更小预算的配置JSON往返、192MiB加1字节拒绝及真实gate的批准预算边界；完整五命令step与两模块strict仍须取得新提交的实际结果，不能引用N6作为本次维护的验证。
+
+2026-10-26T11:45Z，该维护提交 `dcc25e69b48d7720e2b09185d5ce9c1b74d259cb` 已普通推送master。此前完整producer五命令原wait均0，使用static job声明的mypy1.15；`native-shared-ci-a07/sdk-full-a01/producer5/EXECUTION.actual.json` 为18503 B，SHA `49c1374c5a497c4328567d88edc7589ae4088c2cd68f6641baa5fdf1a4782991`，真实全表source前后相同。N7只准备了配置，尚未启动生产编译，不能将该前置回归当作新DLL资格。
+
+新增Title CI把整个旧 `mcp_server.py` 纳入strict配置下的检查。原skip-imports命令在mypy1.15和Rite job声明的2.4均报652项；改用真实依赖模型诊断仍报470项，全部位于该旧模块。完整 `ingame_ui_contract.py` 无诊断，但整体命令仍原wait1；没有忽略错误或称全SDK通过。后继门禁按实际维护范围检查完整合同模块及实际MCP query函数，保留完整transport/native-wire回归；旧大模块的完整strict债务单独保持RED。
+
+服务factory的真实模型类型回归另有可复现存储问题：`--no-incremental` 仍向临时目录写约63MiB缓存，mypy2.4那次被容量watcher终止，未得到完整四测试结果。未越原96MiB总帽，但16MiB尾项阈值发生采样超调，旧停止回执保留。共享测试改用 `os.devnull` 禁用无用途缓存后，原完整四测试全部通过、0跳过、原wait0，仍导入真实依赖模型；没有修改类型规则或重放旧失败。工作树诊断 `native-shared-ci-a07/sdk-title-factory-diagnostic-a01/EXECUTION.actual.json` 为2842 B，SHA `997f79172602d43c5818ab1d787a5cbd654acd6832116d8f6e8fb12fab97ea94`，其中Title诊断原1、factory原0分别记录，不能将组合外层1改写成全绿。此时全部源码读取及子进程已停止；缓存退役、新预算和新源码资格仍须另取实际回执。

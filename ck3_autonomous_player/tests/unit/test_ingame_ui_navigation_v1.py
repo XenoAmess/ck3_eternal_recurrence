@@ -1,5 +1,7 @@
 from __future__ import annotations
+import ast
 import copy
+import os
 from pathlib import Path
 import sys
 import tempfile
@@ -1013,6 +1015,46 @@ class CrozierTitleUiTests(unittest.TestCase):
         self.assertEqual(driver.records[-1][1]["result"]["raw_native_ui_result"],raw)
 
 
+def check_ingame_ui_query_types_v1() -> None:
+    """Check the complete maintained MCP query, including its real decorator."""
+    from mypy import api
+    from xar_autoplayer.bridge import mcp_server
+
+    source = Path(mcp_server.__file__).read_text(encoding="utf-8")
+    module = ast.parse(source)
+    factories = [node for node in module.body
+        if isinstance(node, ast.FunctionDef) and node.name == "create_server"]
+    if len(factories) != 1:
+        raise AssertionError("Expected one actual MCP service factory")
+    queries = [node for node in factories[0].body
+        if isinstance(node, ast.FunctionDef) and node.name == "ck3_query_ingame_ui_window_v1"]
+    if len(queries) != 1 or not queries[0].decorator_list:
+        raise AssertionError("Expected one complete decorated ingame UI query")
+    imports = """from __future__ import annotations
+from typing import Literal
+from mcp.server import MCPServer
+from xar_autoplayer.bridge.mcp_server import IngameUiRevisionV1
+from xar_autoplayer.bridge.service import GameplayBridgeService
+
+server: MCPServer
+service: GameplayBridgeService
+"""
+    check_source = imports + ast.unparse(ast.Module(body=[queries[0]], type_ignores=[])) + "\n"
+    with tempfile.TemporaryDirectory(prefix="title-query-types-") as task_dir:
+        check_path = Path(task_dir) / "actual_ingame_ui_query.py"
+        check_path.write_text(check_source, encoding="utf-8")
+        stdout, stderr, status = api.run(["--strict", "--follow-imports=silent",
+            "--follow-untyped-imports", "--no-incremental", "--cache-dir=" + os.devnull,
+            "--python-executable=" + sys.executable, str(check_path)])
+    if status != 0:
+        raise AssertionError(stdout + stderr)
+
+
+class TitleUiMcpTypesTests(unittest.TestCase):
+    def test_complete_decorated_query_with_real_dependency_models(self) -> None:
+        check_ingame_ui_query_types_v1()
+
+
 class TitleUiMcpTests(unittest.IsolatedAsyncioTestCase):
     async def test_existing_query_schema_and_read_only_full_handle_route(self) -> None:
         from mcp import Client
@@ -1043,6 +1085,7 @@ async def verify_title_native_mcp_v1(driver: TitlePrimitiveUiFixture,
 
 def verify_title_native_wire_v1(path: Path) -> None:
     """Consume the actual C++ serializer output through every maintained SDK layer."""
+    check_ingame_ui_query_types_v1()
     import asyncio
     import hashlib
     import json
