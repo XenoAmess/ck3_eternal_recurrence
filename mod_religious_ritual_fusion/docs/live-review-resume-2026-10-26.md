@@ -114,3 +114,17 @@ N3原wait0、57生产单元及8个fixture的构建结果已实际消费。新14�
 两次原生checkpoint都有实际文件，但SDK driver回执仍为`unconfirmed / save_binding_mismatch`，native_campaign没有one-life episode字符／run身份；本场没有形成合格ordinary SaveProof。该缺口与已完成的原生冷载AST、正常退出合同分开。后继仍须完成同ID155定制、完整美德／罪恶与原生后态、最终保存及独立冷载，并继续亲属／封臣改信、DES可选分支、独立四核心、联合信仰模式和无MTS场景。公开版本仍为0.1.0-alpha／Workshop3826756673，未发布0.2；本次仅更新证据，未重跑测试或上传。
 
 R0020已实际提交同ID155的中文四名、描述、图标和颜色，原生保存及完整AST确认，追加费用为零；产品延迟完成标记和定制后的独立冷载仍待验。原失败、正常闭场及精确回收的边界见[R0020定制记录](live-review-R0020-customization-2026-10-26.md)。
+
+## 2026-10-26T14:05Z续工：新原生通过，冷载尚未启动
+
+`machine_id: 4-8e1c2f1861`。用户已要求继续执行，任务仍在进行，公开Workshop3826756673与0.1.0-alpha未更新。下文以`Q=C:/workspace/rrf-development-20261024/review-fixes-a01`为根。
+
+N7于13:09:19Z完成77个实际生产TU、链接和10个显式fixture，原wait均0；`Q/native-shared-ci-a07/phase-a03/wire-a08`的新12条消费命令均0，实际消费N7包。完整软件批仍保留两处历史strict RED和一项小WAL可选SKIP，不报告总CI全绿，也不把构建通过当作游戏业务完成。
+
+R0021/a24于13:51Z分配后，在public run前因守候进程身份检查拒绝：Windows venv返回转发进程16776，脚本自身实际为19256。没有启动CK3或宿主，没有提交业务动作。Root原wait1、allocator与keeper原wait0均保存在`Q/cold-R0020-finalization-a01/root-execution-a24`；14075于13:59:47Z释放SCREEN，14076仅作行政done。前两次缺少规范大写CLI SHA的CAS拒绝原件仍保留。
+
+同一守候源码使用venv实际加载的base解释器做无游戏验证后，Popen与ARMED均为5796，主动停止后原wait1；`metadata/public-operations-a01/GUARD-BASE-PROBE.actual.json`保留该有限结论。新外置启动器只为守候调用显式绑定该解释器及SHA，同时核PID与原生FILETIME；公共工具继续用原venv。
+
+共享unrun reader硬编码旧外置脚本AST与字段，正在维护真实恢复路径并补原件到reducer的回归。原R21冻结图、Prepared、state及single-use-ledger均保留。下一场采用新独立状态，先零自然日核R0020定制存档，再推进一日／两日检查延期完成与亲属、封臣后态。这些实机步骤尚未执行，完整美德罪恶、四核心、无MTS、DES及最终冷载仍有缺口。
+
+14:37:54Z实际完成共享恢复：消费原Root启动／wait及转发进程与实际进程的不同身份；直接核对原CAS／admin stdout与事件日志，修复历史任务重构错配。两完整回归模块26＋20项、零跳过；严格检查覆盖6个完整AST节点和两完整测试模块，不外推旧模块全绿。R0021实际producer／reducer原wait0，原机器writer锁内再验证原wait0，750项冻结输入通过，只有旧reader以已核Git原blob保全；没有新intent、claim或allocation，机器admission文件前后相同。`metadata/unrun-recovery-a01/COMMAND_VALIDATION.actual.json`为5164 B／SHA `686a93b3ad011c728f224402ebdaec687cfc8e8295dbbbe19f057245b66ab55a`，`ACTUAL-R0021.RECOVERY.actual.json`为5231 B／SHA `7139f60a117ec1b5e998b6cb12699fb408d51268bcd29ea3e8b21b7eaec89863`，均只授行政恢复；首次strict与producer失败原件保留。执行身份是5b834基线加三文件实际工作树，不追认为未来clean提交的完整测试。

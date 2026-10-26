@@ -11,6 +11,7 @@ import sys
 import unittest
 import argparse
 import importlib
+import psutil
 from contextlib import ExitStack
 from collections.abc import Mapping
 from types import SimpleNamespace
@@ -45,6 +46,26 @@ class ReleaseStagesTest(unittest.TestCase):
         done=json_object(json.loads(json.dumps(self.done)))
         self.assertEqual(_release_stages(self.keeper,cas,done,{}, {},done,'idle'),
             'completed-then-admin-completed')
+
+    def test_captured_original_release_keeps_earlier_task_and_exact_journal_binding(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'release.json'
+            cas = {**self.cas, 'schema': 'codex.task_bus.v1'}
+            member(cas, 'event')['state'] = 'done'
+            path.write_text(json.dumps(cas), encoding='utf-8')
+            reference = subject._captured_release(path, member(cas, 'event'), 'idle', 11)
+            self.assertEqual(Path(reference['path']).read_bytes(), path.read_bytes())
+            self.assertEqual(_release_stages(self.keeper, cas, self.done, {}, {}, self.done, 'idle'),
+                'completed-then-admin-completed')
+            cases: tuple[tuple[str, str, JsonValue], ...] = (
+                ('task', 'last_sequence', 12), ('task', 'last_sequence', True),
+                ('event', 'sequence', 11.0), ('task', 'resources', ['ck3-screen:acquired']),
+                ('event', 'summary', 'different event'))
+            for section, field, bad in cases:
+                changed = deepcopy(cas); member(changed, section)[field] = bad
+                path.write_text(json.dumps(changed), encoding='utf-8')
+                with self.subTest(section=section, field=field), self.assertRaises(ValueError):
+                    subject._captured_release(path, member(cas, 'event'), 'idle', 11)
 
     def test_crossed_original_task_and_resources_are_rejected(self) -> None:
         cases: list[tuple[str,JsonValue]]=[('task_id','other'),('state','waiting'),
@@ -422,7 +443,7 @@ raise SystemExit(code)
         with self.assertRaises(ValueError):
             self.parse({**self.bundle, 'allocator_exit': self.reference(other)})
 
-    def prelaunch_fixture(self) -> tuple[dict[str, object], Path, Path, list[datetime]]:
+    def prelaunch_fixture(self, *, observed_root: bool = False) -> tuple[dict[str, object], Path, Path, list[datetime]]:
         """Run a real recorder, threaded Popen waits and mechanical STOP branch."""
         output=self.root/'work-package/root-prelaunch-test';output.mkdir()
         keeper=self.root/'work-package/keeper';keeper.mkdir()
@@ -435,6 +456,10 @@ raise SystemExit(code)
         freeze: JsonObject={'run_id':live.name,'screen_task':'fixture-prelaunch-task','state_dir':str(state),'mod_key':'living-artifacts',
             'source_root':str(self.repo),'lease_anchor':str(self.root),'identity_allocation':{'machine_id':self.machine,'state_root':str(ids)},
             'files':{str(products.resolve()):json_object(self.reference(products))}}
+        if observed_root:
+            manifest=self.root/'original-runtime-manifest.json'
+            manifest.write_text(json.dumps({'machine_id':self.machine,'source_commit':'a'*40}),encoding='utf8')
+            freeze['runtime_manifest']=json_object(self.reference(manifest))
         frozen=live/'frozen-argv.json';frozen.write_text(json.dumps(freeze),encoding='utf8')
         ready=live/'ready-context.json';ready_value={'run_id':live.name,'run_dir':str(live),'keeper_root':str(keeper),
             'frozen_argv':self.reference(frozen),'prepared_case':self.reference(prepared),'product':'living-artifacts'}
@@ -521,13 +546,54 @@ finally:
     allocate_thread.join()
     print('ALL_ORIGINAL_OPERATOR_CHILD_WAITS_CONSUMED', flush=True)
 ''',encoding='utf8')
-        child=subprocess.run([sys.executable,'-B','-X','utf8',str(source)],cwd=self.repo,capture_output=True,timeout=20)
-        self.assertEqual(child.returncode,0,child.stderr)
+        root_refs: dict[str, FilePin] = {}
+        if observed_root:
+            # A real intermediate process makes wrapper != armed deterministic.
+            # Native birth1 is explicitly fixture data, not a live OS claim.
+            raw = guard.read_text(encoding='utf8')
+            raw = raw.replace("output,live=", "import subprocess\nif '--fixture-worker' not in sys.argv:\n    child=subprocess.Popen([sys.executable,*sys.argv,'--fixture-worker'])\n    sys.exit(child.wait())\nsys.argv.remove('--fixture-worker')\noutput,live=")
+            raw = raw.replace('while True:time.sleep(.01)',
+                f"while not Path({str(keeper/'STOP')!r}).exists():time.sleep(.01)\nsys.exit(1)")
+            guard.write_text(raw, encoding='utf8')
+            raw = source.read_text(encoding='utf8')
+            raw = raw.replace("'at': datetime.now", "'observed_at_utc': datetime.now")
+            raw = raw.replace("'original_wait_pending': True}",
+                "'process_creation_filetime_100ns':'1','initial_exit_code':259,'original_wait_pending': True}")
+            raw = raw.replace("{'original_wait_returncode': code}",
+                "{'original_wait_returncode': code,'argv':argv,'pid':child.pid}")
+            raw = raw.replace("'public_started': public_started, 'business_pass': False}",
+                "'public_started': public_started,'normal_closed':False,'business_pass':False,'no_automatic_replay':True,'no_manual_case_client_created':True}")
+            raw = raw.replace('Root mechanical prelaunch refused before public run\\n',
+                'Root mechanical prelaunch refused before public run.\\n')
+            raw = raw.replace('Mechanical prelaunch refused before public run; cancel retained Root helper',
+                'Actual mechanical prelaunch failure; no Game action')
+            raw = raw.replace('            guard.terminate()\nfinally:', '            guard.terminate()\n    raise\nfinally:')
+            source.write_text(raw, encoding='utf8')
+            argv = [sys.executable,'-B','-X','utf8',str(source),'--mode','launch','--execute-root-reviewed-launch',
+                '--repo-root',str(self.repo),
+                '--out',str(output),'--keeper-output',str(keeper),'--public-recorder',str(recorder),
+                '--scene-root',str(self.root/'work-package'),'--deadline-guard',str(guard)]
+            started = json_object({'machine_id':self.machine,'source_commit':'a'*40,'argv':argv,
+                'started_at_utc':datetime.now(timezone.utc).isoformat()})
+            child_process = subprocess.Popen(argv,cwd=self.repo,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+            started.update(pid=child_process.pid,process_birth_seconds=str(psutil.Process(child_process.pid).create_time()))
+            start_path=self.root/'root-started.json';start_path.write_text(json.dumps(started),encoding='utf8')
+            captured_out,captured_err=child_process.communicate(timeout=20)
+            self.assertEqual(child_process.returncode,1,(captured_out,captured_err))
+            waited={**started,'finished_at_utc':datetime.now(timezone.utc).isoformat(),'original_wait_returncode':child_process.returncode}
+            wait_path=self.root/'root-wait.json';wait_path.write_text(json.dumps(waited),encoding='utf8')
+            root_refs={'prelaunch_orchestrator_started':self.reference(start_path),'prelaunch_orchestrator_wait':self.reference(wait_path)}
+            armed=json.loads((output/'DEADLINE-GUARD.ARMED.actual.json').read_bytes())
+            try:psutil.Process(armed['pid']).wait(timeout=5)
+            except psutil.NoSuchProcess:pass
+        else:
+            child=subprocess.run([sys.executable,'-B','-X','utf8',str(source)],cwd=self.repo,capture_output=True,timeout=20)
+            self.assertEqual(child.returncode,0,child.stderr)
         bundle: dict[str, object]={'allocator_intent':self.reference(output/'ALLOCATE.intent.actual.json'),
             'allocator_process':self.reference(output/'ALLOCATE.started.actual.json'),
             'allocator_exit':self.reference(output/'ALLOCATE.original-wait.actual.json'),
             'allocator_command':self.reference(recorder),'prelaunch_orchestrator_source':self.reference(source),
-            'ready':self.reference(ready),'keeper_STOP':self.reference(keeper/'STOP')}
+            'ready':self.reference(ready),'keeper_STOP':self.reference(keeper/'STOP'),**root_refs}
         for key,name in {'prelaunch_failure':'ORCHESTRATOR.failure.actual.json',
             'prelaunch_guard_started':'DEADLINE-GUARD.started.actual.json','prelaunch_guard_armed':'DEADLINE-GUARD.ARMED.actual.json',
             'prelaunch_guard_cancel':'DEADLINE-GUARD.CANCEL.actual.json','prelaunch_guard_wait':'DEADLINE-GUARD.original-wait.actual.json',
@@ -580,6 +646,56 @@ finally:
         with self.assertRaises(ValueError):invoke({**bundle,'prelaunch_orchestrator_source':self.reference(source)})
         source.write_bytes(raw)
         action=Path(subject._evidence_pin(bundle['prelaunch_guard_wait'],'wait')['path']).parent/'PUBLIC-RUN.intent.actual.json'
+        action.write_text('{}',encoding='utf8')
+        with self.assertRaises(ValueError):invoke(bundle)
+
+    def test_observed_root_real_producer_wrapper_identity_and_round_trip(self) -> None:
+        bundle, live, keeper, stamps = self.prelaunch_fixture(observed_root=True)
+        value = json_object(json.loads(json.dumps(bundle)))
+        evidence = subject.validate_prelaunch_orchestrator(value, previous=live, keeper=keeper,
+            machine=self.machine, ready_at=stamps[0], keeper_closed_at=stamps[1])
+        started = subject._pinned_object(value['prelaunch_guard_started'], 'started')
+        armed = subject._pinned_object(value['prelaunch_guard_armed'], 'armed')
+        self.assertNotEqual(started['pid'], armed['pid'])
+        self.assertIn('prelaunch_orchestrator_wait', evidence)
+        self.assertEqual(subject._allocator_argv(value, self.machine, stamps)[5], 'allocate')
+
+    def test_observed_root_rejects_wrong_fields_types_binding_wait_and_later_actions(self) -> None:
+        bundle, live, keeper, stamps = self.prelaunch_fixture(observed_root=True)
+        def invoke(value: Mapping[str, object]) -> JsonObject:
+            return subject.validate_prelaunch_orchestrator(value, previous=live, keeper=keeper,
+                machine=self.machine, ready_at=stamps[0], keeper_closed_at=stamps[1])
+        cases: tuple[tuple[str, str, JsonValue], ...] = (
+            ('prelaunch_orchestrator_wait','original_wait_returncode',False),
+            ('prelaunch_orchestrator_wait','original_wait_returncode',0),
+            ('prelaunch_orchestrator_started','pid',True),
+            ('prelaunch_failure','public_started',0),
+            ('prelaunch_failure','normal_closed',True),
+            ('prelaunch_guard_wait','original_wait_returncode',0),
+            ('prelaunch_guard_wait','pid',True),
+            ('prelaunch_guard_started','process_creation_filetime_100ns',1),
+            ('prelaunch_guard_armed','reserve_seconds',1200.0),
+            ('prelaunch_guard_armed','game_or_queue_action_sent',True),
+            ('prelaunch_guard_cancel','alias',False))
+        for key, field, bad in cases:
+            path=Path(subject._evidence_pin(bundle[key],key)['path']);raw=path.read_bytes()
+            changed=json.loads(raw);changed[field]=bad;path.write_text(json.dumps(changed),encoding='utf8')
+            with self.subTest(key=key,field=field),self.assertRaises(ValueError):invoke({**bundle,key:self.reference(path)})
+            path.write_bytes(raw)
+        missing=dict(bundle);del missing['prelaunch_orchestrator_wait']
+        with self.assertRaises(ValueError):invoke(missing)
+        path=Path(subject._evidence_pin(bundle['prelaunch_orchestrator_started'],'start')['path'])
+        raw=path.read_bytes();changed=json.loads(raw);changed['argv'][changed['argv'].index('--out')+1]=str(self.root/'other')
+        path.write_text(json.dumps(changed),encoding='utf8')
+        with self.assertRaises(ValueError):invoke({**bundle,'prelaunch_orchestrator_started':self.reference(path)})
+        path.write_bytes(raw)
+        source=Path(subject._evidence_pin(bundle['prelaunch_orchestrator_source'],'source')['path'])
+        raw=source.read_bytes();source.write_bytes(raw+b'\n')
+        with self.assertRaises(ValueError):invoke(bundle)
+        source.write_bytes(raw)
+        with patch.object(psutil,'pid_exists',return_value=True),self.assertRaisesRegex(ValueError,'still present'):
+            invoke(bundle)
+        action=Path(subject._evidence_pin(bundle['prelaunch_guard_wait'],'wait')['path']).parent/'ORCHESTRATOR.PUBLIC-RUN.intent.actual.json'
         action.write_text('{}',encoding='utf8')
         with self.assertRaises(ValueError):invoke(bundle)
 

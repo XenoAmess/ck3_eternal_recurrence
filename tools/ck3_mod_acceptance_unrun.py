@@ -20,6 +20,158 @@ OFFLINE_TTL_KIND: Literal['pre-intent-background-offline-ttl-refused'] = 'pre-in
 PRELAUNCH_KIND: Literal['prelaunch-orchestrator-failed-with-observed-waits'] = 'prelaunch-orchestrator-failed-with-observed-waits'
 
 
+@dataclass(frozen=True)
+class RootPrelaunchInvocation:
+    argv: tuple[str, ...]
+    started_at: datetime
+    finished_at: datetime
+    guard: Path
+
+
+def _root_prelaunch_invocation(bundle: Mapping[str, object], output: Path,
+        keeper: Path, machine: str) -> RootPrelaunchInvocation:
+    """Bind an original retained Root invocation, without an operator AST template."""
+    source = _evidence_pin(bundle.get('prelaunch_orchestrator_source'), 'Root orchestrator source')
+    source_path = Path(source['path'])
+    if not source_path.is_absolute() or source_path.is_symlink() or not 0 < source['bytes'] <= 1048576:
+        raise ValueError('Bounded original Root orchestrator source required')
+    check_pin(source_path, dict(source))
+    started = json_object(_pinned_object(bundle.get('prelaunch_orchestrator_started'), 'Root original start'))
+    waited = json_object(_pinned_object(bundle.get('prelaunch_orchestrator_wait'), 'Root original wait'))
+    fields = {'machine_id', 'source_commit', 'pid', 'process_birth_seconds', 'argv', 'started_at_utc'}
+    if (set(started) != fields or set(waited) != fields | {'finished_at_utc', 'original_wait_returncode'}
+            or any(started.get(key) != waited.get(key) for key in fields)
+            or started.get('machine_id') != machine
+            or _integer(waited.get('original_wait_returncode'), 'Root original exit') != 1):
+        raise ValueError('Exact original Root start/wait1 identity required')
+    _integer(started.get('pid'), 'Root original pid', 1)
+    birth = _text(started.get('process_birth_seconds'), 'Root original birth')
+    commit = _text(started.get('source_commit'), 'Root original source commit')
+    if re.fullmatch(r'[1-9][0-9]*(?:\.[0-9]+)?', birth) is None or re.fullmatch(r'[a-f0-9]{40}', commit) is None:
+        raise ValueError('Canonical Root process/source identity required')
+    began = _timestamp(started.get('started_at_utc'), 'Root original start')
+    ended = _timestamp(waited.get('finished_at_utc'), 'Root original finish')
+    if began > ended:
+        raise ValueError('Root original wait chronology differs')
+    frozen = json_object(_pinned_object(bundle.get('frozen'), 'Original Root frozen inputs'))
+    manifest = json_object(_pinned_object(frozen.get('runtime_manifest'), 'Original Root runtime manifest'))
+    if manifest.get('source_commit') != commit:
+        raise ValueError('Original Root source commit differs from frozen runtime')
+    argv = strings_field(started, 'argv')
+    if len(argv) < 6 or argv[1:4] != ['-B', '-X', 'utf8'] or Path(argv[4]).resolve() != source_path.resolve():
+        raise ValueError('Original Root invocation source differs')
+
+    def argument(name: str) -> str:
+        if argv.count(name) != 1 or argv.index(name) + 1 >= len(argv):
+            raise ValueError('Exact original Root argument required: ' + name)
+        return argv[argv.index(name) + 1]
+
+    command = _evidence_pin(bundle.get('allocator_command'), 'Root public recorder')
+    if (argument('--mode') != 'launch' or argv.count('--execute-root-reviewed-launch') != 1
+            or Path(argument('--repo-root')).resolve() != Path(text_field(frozen, 'source_root')).resolve()
+            or Path(argument('--out')).resolve() != output
+            or Path(argument('--keeper-output')).resolve() != keeper
+            or Path(argument('--public-recorder')).resolve() != Path(command['path']).resolve()):
+        raise ValueError('Original Root invocation crossed output/keeper/recorder')
+    scene = Path(argument('--scene-root')).resolve()
+    if not output.is_relative_to(scene) or not keeper.is_relative_to(scene):
+        raise ValueError('Original Root invocation crossed scene')
+    return RootPrelaunchInvocation(tuple(argv), began, ended, Path(argument('--deadline-guard')).resolve())
+
+
+def _observed_prelaunch_orchestrator(bundle: Mapping[str, object], *, previous: Path,
+        keeper: Path, machine: str, ready_at: datetime, keeper_closed_at: datetime) -> JsonObject:
+    """Read the real Root/child waits; a failed guard identity grants no guard credit."""
+    output = Path(_evidence_pin(bundle.get('allocator_intent'), 'Root allocator intent')['path']).resolve().parent
+    invocation = _root_prelaunch_invocation(bundle, output, keeper, machine)
+    names = {'prelaunch_failure': 'ORCHESTRATOR.failure.actual.json',
+        'prelaunch_guard_started': 'DEADLINE-GUARD.started.actual.json',
+        'prelaunch_guard_armed': 'DEADLINE-GUARD.ARMED.actual.json',
+        'prelaunch_guard_cancel': 'DEADLINE-GUARD.CANCEL.actual.json',
+        'prelaunch_guard_wait': 'DEADLINE-GUARD.original-wait.actual.json',
+        'prelaunch_allocator_wait': 'ORCHESTRATOR.ALLOCATE.original-wait.actual.json'}
+    rows: dict[str, JsonObject] = {}
+    for key, name in names.items():
+        ref = _evidence_pin(bundle.get(key), key)
+        if Path(ref['path']).resolve() != output / name:
+            raise ValueError('Root prelaunch original output differs: ' + key)
+        rows[key] = json_object(_pinned_object(ref, key))
+    failure, started, armed, cancel, waited, allocated = (rows[key] for key in names)
+    shapes = ({'machine_id','observed_at_utc','error','public_started','normal_closed','business_pass','no_automatic_replay','no_manual_case_client_created'},
+        {'machine_id','observed_at_utc','argv','pid','process_creation_filetime_100ns','initial_exit_code','original_wait_pending'},
+        {'schema','machine_id','run_id','live','ready_context','pid','process_creation_filetime_100ns','birth_source','guard','armed_at_utc','phase','state','wait_awaiting_seconds','reserve_seconds','game_or_queue_action_sent','deadline_bound'},
+        {'machine_id','observed_at_utc','pid','reason'},
+        {'machine_id','observed_at_utc','original_wait_returncode','argv','pid'},
+        {'machine_id','observed_at_utc','original_wait_returncode','argv','pid'})
+    if any(set(row) != shape or row.get('machine_id') != machine for row, shape in zip(rows.values(), shapes)):
+        raise ValueError('Exact original observed Root prelaunch fields required')
+    if (any(failure.get(key) is not False for key in ('public_started','normal_closed','business_pass'))
+            or failure.get('no_automatic_replay') is not True or failure.get('no_manual_case_client_created') is not True
+            or not _text(failure.get('error'), 'Original Root prelaunch error')):
+        raise ValueError('Root prelaunch failure cannot grant public/business credit')
+    wrapper = _integer(started.get('pid'), 'Original guard wrapper pid', 1)
+    actual = _integer(armed.get('pid'), 'Original armed guard pid', 1)
+    if (any(_integer(row.get('pid'), 'Original guard wrapper pid', 1) != wrapper for row in (cancel, waited))
+            or started.get('original_wait_pending') is not True
+            or _integer(started.get('initial_exit_code'), 'Original guard still active') != 259
+            or _integer(waited.get('original_wait_returncode'), 'Original guard wrapper wait') != 1
+            or _integer(allocated.get('original_wait_returncode'), 'Original recorder wait') != 0
+            or cancel.get('reason') != 'Actual mechanical prelaunch failure; no Game action'):
+        raise ValueError('Original Root cancellation/observed waits differ')
+    births = [_text(row.get('process_creation_filetime_100ns'), 'Original native process birth') for row in (started, armed)]
+    if any(re.fullmatch(r'[1-9][0-9]*', value) is None or int(value) > 18446744073709551615 for value in births):
+        raise ValueError('Original native births must remain uint64 decimal strings')
+    if wrapper == actual and births[0] != births[1]:
+        raise ValueError('Same guard pid has different original native births')
+    if (armed.get('schema') != 'root-external-deadline-guard-armed-v1' or armed.get('run_id') != previous.name
+            or Path(text_field(armed, 'live')).resolve() != previous
+            or _evidence_pin(armed.get('ready_context'), 'Original guard ready') != _evidence_pin(bundle.get('ready'), 'Allocated ready')
+            or armed.get('birth_source') != 'GetProcessTimes(GetCurrentProcess)'
+            or armed.get('state') != 'WAITING_FOR_ACTUAL_FROZEN_AND_PHASE'
+            or armed.get('game_or_queue_action_sent') is not False or armed.get('deadline_bound') is not False
+            or _integer(armed.get('reserve_seconds'), 'Guard reserve', 1) != 1200
+            or _integer(armed.get('wait_awaiting_seconds'), 'Guard awaiting bound', 1) != 5400):
+        raise ValueError('Original armed guard crossed run or sent action')
+    guard = _evidence_pin(armed.get('guard'), 'Original guard source')
+    check_pin(Path(guard['path']), dict(guard))
+    if Path(guard['path']).resolve() != invocation.guard:
+        raise ValueError('Original Root guard source differs')
+    argv = strings_field(started, 'argv')
+    expected = ['-B','-X','utf8',guard['path'],'--live',str(previous),'--ready-context',str(previous/'ready-context.json'),
+        '--run-id',previous.name,'--phase',text_field(armed,'phase'),'--reserve-seconds','1200','--wait-awaiting-seconds','5400',
+        '--armed',str(output/'DEADLINE-GUARD.ARMED.actual.json'),'--output',str(output/'DEADLINE-GUARD.actual.json')]
+    if argv[1:] != expected or strings_field(waited, 'argv') != argv:
+        raise ValueError('Original guard invocation/wait argv differs')
+    recorder = _evidence_pin(bundle.get('allocator_command'), 'Original public recorder')
+    outer_argv = strings_field(allocated, 'argv')
+    if len(outer_argv) != 6 or outer_argv[1:] != ['-B','-X','utf8',recorder['path'],'allocate']:
+        raise ValueError('Original Root public recorder invocation differs')
+    _integer(allocated.get('pid'), 'Original public recorder pid', 1)
+    stamps = [invocation.started_at, ready_at, _timestamp(started.get('observed_at_utc'), 'Original guard start'),
+        _timestamp(armed.get('armed_at_utc'), 'Original guard armed'), _timestamp(failure.get('observed_at_utc'), 'Original prelaunch failure'),
+        _timestamp(cancel.get('observed_at_utc'), 'Original guard cancel'), _timestamp(waited.get('observed_at_utc'), 'Original guard wait')]
+    inner_end = _timestamp(_pinned_object(bundle.get('allocator_exit'), 'Original public allocator wait').get('finished_at_utc'), 'Original allocator finish')
+    outer_end = _timestamp(allocated.get('observed_at_utc'), 'Original recorder finish')
+    if (stamps != sorted(stamps) or not stamps[4] <= keeper_closed_at <= inner_end <= outer_end <= invocation.finished_at
+            or any(stamp.utcoffset() != timezone.utc.utcoffset(stamp) for stamp in [*stamps, keeper_closed_at, inner_end, outer_end, invocation.finished_at])):
+        raise ValueError('Original Root prelaunch STOP/wait chronology differs')
+    stop = _evidence_pin(bundle.get('keeper_STOP'), 'Original keeper STOP')
+    if Path(stop['path']).resolve() != keeper/'STOP':
+        raise ValueError('Original Root STOP crossed keeper')
+    check_pin(keeper/'STOP', dict(stop))
+    if (keeper/'STOP').read_text(encoding='utf8') != 'Root mechanical prelaunch refused before public run.\n':
+        raise ValueError('Original Root prelaunch STOP differs')
+    forbidden = ('ORCHESTRATOR.PUBLIC-RUN.intent.actual.json','ORCHESTRATOR.PUBLIC-RUN.started.actual.json',
+        'PUBLIC-RUN.intent.actual.json','LAUNCH-GATES-CONSUMED.actual.json','DEADLINE-GUARD.actual.json')
+    if any((output/name).exists() for name in forbidden) or list(output.glob('DEADLINE-GUARD-*.started.actual.json')):
+        raise ValueError('Original Root prelaunch output has later public/guard action evidence')
+    import psutil
+    if any(psutil.pid_exists(pid) for pid in (wrapper, actual)):
+        raise ValueError('Original guard wrapper/armed process still present; absence grants no wait code')
+    keys = [*names, 'prelaunch_orchestrator_source', 'prelaunch_orchestrator_started', 'prelaunch_orchestrator_wait']
+    return {key: json_object(_evidence_pin(bundle.get(key), key)) for key in keys}
+
+
 def _prelaunch_source(reference: object, output: Path, keeper: Path,
         allocator_command: object, machine: str) -> None:
     """Bind original failure/STOP/cancellation records to their real writer."""
@@ -145,6 +297,12 @@ finally:
 def validate_prelaunch_orchestrator(bundle: Mapping[str, object], *, previous: Path,
         keeper: Path, machine: str, ready_at: datetime, keeper_closed_at: datetime) -> JsonObject:
     """Validate an actual mechanical refusal; grant only administrative closure."""
+    root_keys = ('prelaunch_orchestrator_started', 'prelaunch_orchestrator_wait')
+    if any(key in bundle for key in root_keys):
+        if not all(key in bundle for key in root_keys):
+            raise ValueError('Complete original Root orchestrator start/wait required')
+        return _observed_prelaunch_orchestrator(bundle, previous=previous, keeper=keeper,
+            machine=machine, ready_at=ready_at, keeper_closed_at=keeper_closed_at)
     intent_ref = _evidence_pin(bundle.get('allocator_intent'), 'Prelaunch allocator intent')
     output = Path(intent_ref['path']).resolve().parent
     _prelaunch_source(bundle.get('prelaunch_orchestrator_source'), output, keeper,
@@ -358,7 +516,7 @@ class TTLReaderEvolution(TypedDict):
 def _ttl_recovery_sources(freeze: JsonObject, close_path: Path, *, produce: bool) -> TTLReaderEvolution | None:
     """Retain old Git bytes for two recovery readers, without editing the freeze.
 
-    This exception belongs only to the unlaunched TTL recovery reducer. Every
+    This exception belongs only to the unlaunched recovery reducers. Every
     other frozen input still uses its actual path and the ordinary full guard.
     """
     repo = Path(text_field(freeze, 'source_root')).resolve()
@@ -414,6 +572,26 @@ def _ttl_recovery_sources(freeze: JsonObject, close_path: Path, *, produce: bool
         changed_recovery_sources=sources, actual_recovery_reader=_ttl_pin(Path(__file__).resolve()),
         actual_allocator_consumer=_ttl_pin(Path(allocator_source).resolve()),
         actual_running_input_contract=_ttl_pin(Path(contract_source).resolve()))
+
+
+def _recovery_input_validation(previous: Path, freeze: JsonObject, close_path: Path,
+        bundle: Mapping[str, object]) -> tuple[TTLReaderEvolution | None, JsonObject]:
+    """Use retained original reader bytes; every other frozen input remains exact."""
+    from xar_autoplayer.bridge.runtime_input_contract_v1 import FileIdentity, identity, validate_running_inputs
+    evolution = _ttl_recovery_sources(freeze, close_path, produce=False)
+    if ((evolution is None and 'recovery_reader_evolution' in bundle)
+            or (evolution is not None and bundle.get('recovery_reader_evolution') != json_object(evolution))):
+        raise ValueError('Recovery reader evolution differs from original Git inputs/current consumers')
+    retained_sources: dict[Path, FilePin] = {} if evolution is None else {
+        Path(row['original_path']): row['original_snapshot'] for row in evolution['changed_recovery_sources']}
+
+    def observe_input(path: Path) -> FileIdentity:
+        if path not in retained_sources:
+            return identity(path)
+        retained = identity(Path(retained_sources[path]['path']))
+        return FileIdentity(path=str(path), bytes=retained['bytes'], sha256=retained['sha256'])
+
+    return evolution, json_object(validate_running_inputs(previous, freeze, observer=observe_input))
 
 
 def validate_pre_intent_offline_ttl_refusal(previous: Path, freeze_value: object, close_path: Path,
@@ -574,21 +752,7 @@ def validate_pre_intent_offline_ttl_refusal(previous: Path, freeze_value: object
             or set(matching[0]) != set(released_task) | {'age_seconds', 'stale'}
             or type(matching[0].get('age_seconds')) is not int or matching[0].get('stale') is not False):
         raise ValueError('TTL-refusal current canonical task differs from the actual release')
-    from xar_autoplayer.bridge.runtime_input_contract_v1 import FileIdentity, identity, validate_running_inputs
-    evolution = _ttl_recovery_sources(freeze, close_path, produce=False)
-    if ((evolution is None and 'recovery_reader_evolution' in bundle)
-            or (evolution is not None and bundle.get('recovery_reader_evolution') != json_object(evolution))):
-        raise ValueError('Recovery reader evolution differs from original Git inputs/current consumers')
-    retained_sources: dict[Path, FilePin] = {} if evolution is None else {
-        Path(row['original_path']): row['original_snapshot'] for row in evolution['changed_recovery_sources']}
-
-    def observe_input(path: Path) -> FileIdentity:
-        if path not in retained_sources:
-            return identity(path)
-        retained = identity(Path(retained_sources[path]['path']))
-        return FileIdentity(path=str(path), bytes=retained['bytes'], sha256=retained['sha256'])
-
-    inputs = validate_running_inputs(previous, freeze, observer=observe_input)
+    evolution, inputs = _recovery_input_validation(previous, freeze, close_path, bundle)
     inventory_reader: object = allocator.runtime_process_inventory
     if not isinstance(inventory_reader, _UnrunProcessInventory):
         raise ValueError('Existing process inventory boundary unavailable')
@@ -1339,6 +1503,8 @@ def validate_allocated_unrun(previous, freeze, close_path, keeper_root, release,
         refusal_evidence=validate_prelaunch_orchestrator(bundle,previous=previous,keeper=keeper_root,machine=machine,
             ready_at=_timestamp(keeper_ready.get('at_utc'),'Prelaunch keeper ready'),
             keeper_closed_at=_timestamp(keeper.get('at_utc'),'Prelaunch keeper finished'))
+        if 'prelaunch_orchestrator_started' in bundle:
+            _recovery_input_validation(previous, json_object(freeze), Path(close_path), bundle)
     else:
         idle=_exact(bundle,'idle_timeout',previous/'allocation-unused-idle-timeout.json')
         stop=bundle['keeper_STOP'];need(Path(stop['path']).resolve()==keeper_root/'STOP','Original STOP crossed keeper')
@@ -1491,6 +1657,21 @@ def build_pre_intent_offline_ttl_bundle(args: argparse.Namespace, frozen_value: 
     return {'bundle': bundle_pin, 'previous_release': release_pin, 'validation': verdict, 'SDK_or_launch': False}
 
 
+def _captured_release(path: Path, event: JsonObject, task: str, sequence: int) -> FilePin:
+    """Keep an original task snapshot and bind its event to the actual journal."""
+    value = json_object(read_json(path))
+    original_event, original_task = object_field(value, 'event'), object_field(value, 'task')
+    if (set(value) != {'schema', 'ok', 'event', 'task'}
+            or value.get('schema') != 'codex.task_bus.v1' or value.get('ok') is not True
+            or original_event != event or _sequence(original_event, 'sequence') != sequence
+            or original_event.get('task_id') != task or original_event.get('resources') != []
+            or original_task.get('task_id') != task or original_task.get('resources') != []
+            or original_task.get('state') != event.get('state')
+            or _sequence(original_task, 'last_sequence') != sequence):
+        raise ValueError('Original captured release differs from its actual journal event/task')
+    return file_pin(pin(path))
+
+
 def build_bundle(args: argparse.Namespace) -> UnrunBundleReport:
     if getattr(args,'aborted_wrapper',None):
         return build_aborted_bundle_v1(args)
@@ -1511,8 +1692,17 @@ def build_bundle(args: argparse.Namespace) -> UnrunBundleReport:
     lines=_journal_events(raw,start,args.release_sequence,args.done_sequence)
     output=args.output.resolve();need(not output.exists(),'New C metadata output required');output.mkdir(parents=True)
     proofs={}
+    captured = ((getattr(args, 'root_screen_release', None), getattr(args, 'admin_release', None))
+                if getattr(args, 'prelaunch_orchestrator_source', None) else (None, None))
+    if any(path is not None for path in captured):
+        need(all(isinstance(path, Path) for path in captured) and getattr(args, 'prelaunch_orchestrator_source', None),
+             'Captured prelaunch release requires both original CAS and administrative stdout')
     for label,sequence in (('CAS_release',args.release_sequence),('admin_done',args.done_sequence)):
         offset,line,event=lines[sequence]
+        original = captured[0 if label == 'CAS_release' else 1]
+        if isinstance(original, Path):
+            proofs[label] = _captured_release(original, json_object(event), freeze['screen_task'], sequence)
+            continue
         proofs[label]=_write(output/(label+'.canonical.json'),{'schema':'xar-screen-release-canonical-reconstruction-v1',
             'machine_id':machine,'source_event_stream':str(journal.resolve()),'source_event_byte_offset':offset,
             'source_event_bytes':len(line),'source_event_raw_utf8':line.decode(),'source_event_raw_sha256':hashlib.sha256(line).hexdigest(),
@@ -1541,6 +1731,13 @@ def build_bundle(args: argparse.Namespace) -> UnrunBundleReport:
         row['closure_kind']=PRELAUNCH_KIND
         paths.pop('idle_timeout')
         paths['prelaunch_orchestrator_source']=args.prelaunch_orchestrator_source
+        root_started = getattr(args, 'prelaunch_orchestrator_started', None)
+        root_wait = getattr(args, 'prelaunch_orchestrator_wait', None)
+        need((root_started is None) == (root_wait is None),
+             'Provide both original Root orchestrator start and wait')
+        if root_started is not None:
+            paths['prelaunch_orchestrator_started'] = root_started
+            paths['prelaunch_orchestrator_wait'] = root_wait
         original_output=args.allocator_intent.resolve().parent
         paths.update({key:original_output/name for key,name in {
             'prelaunch_failure':'ORCHESTRATOR.failure.actual.json',
@@ -1549,7 +1746,12 @@ def build_bundle(args: argparse.Namespace) -> UnrunBundleReport:
             'prelaunch_guard_cancel':'DEADLINE-GUARD.CANCEL.actual.json',
             'prelaunch_guard_wait':'DEADLINE-GUARD.original-wait.actual.json',
             'prelaunch_allocator_wait':'ORCHESTRATOR.ALLOCATE.original-wait.actual.json'}.items()})
-    row.update({k:pin(v) for k,v in paths.items()});bundle=_write(output/'ALLOCATED-UNRUN.actual.json',row)
+    row.update({k:pin(v) for k,v in paths.items()})
+    if 'prelaunch_orchestrator_started' in row:
+        evolution = _ttl_recovery_sources(json_object(freeze), output/'ALLOCATED-UNRUN.actual.json', produce=True)
+        if evolution is not None:
+            row['recovery_reader_evolution'] = json_object(evolution)
+    bundle=_write(output/'ALLOCATED-UNRUN.actual.json',row)
     release=read_failed_runtime_release(Path(proofs['admin_done']['path']))
     bus=args.task_bus_root/'bin/codex_task_bus.py'
     packet=current_screen_absent(Path(freeze['lease_anchor']),args.task_bus_root,
@@ -1609,6 +1811,8 @@ def main() -> None:
     p.add_argument('--next-state',type=Path)
     p.add_argument('--launcher-pin-refusal',type=Path)
     p.add_argument('--prelaunch-orchestrator-source',type=Path)
+    p.add_argument('--prelaunch-orchestrator-started',type=Path)
+    p.add_argument('--prelaunch-orchestrator-wait',type=Path)
     p.add_argument('--pre-intent-offline-run-result',type=Path)
     p.add_argument('--public-run-stdout',type=Path)
     p.add_argument('--public-run-stderr',type=Path)

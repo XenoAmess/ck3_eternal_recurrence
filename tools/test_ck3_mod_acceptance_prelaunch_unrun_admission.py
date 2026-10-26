@@ -24,12 +24,13 @@ class LockProvider(Protocol):
 
 
 class PrelaunchUnrunWriterAdmissionTests(unittest.TestCase):
+    observed_root = False
     def setUp(self) -> None:
         fixture = RootAllocatorTripletTests()
         fixture.setUp()
         self.addCleanup(fixture.doCleanups)
         self.fixture = fixture
-        bundle, self.live, self.keeper, _ = fixture.prelaunch_fixture()
+        bundle, self.live, self.keeper, _ = fixture.prelaunch_fixture(observed_root=self.observed_root)
         self.bundle = json_object(bundle)
         self.close = fixture.root / 'closure.json'
         self.close.write_text(json.dumps(bundle), encoding='utf-8')
@@ -62,6 +63,11 @@ class PrelaunchUnrunWriterAdmissionTests(unittest.TestCase):
         stack.enter_context(patch.object(ids, 'default_state_root', return_value=fixture.root / 'prelaunch-ids'))
         stack.enter_context(patch.object(allocator, 'runtime_process_inventory', side_effect=lambda *_: self.inventory))
         stack.enter_context(patch.object(allocator, 'current_screen_absent', side_effect=lambda *_: self.packet))
+        if self.observed_root:
+            # This process fixture authors only a minimal frozen input graph.
+            # The actual R21 acceptance separately invokes the complete guard.
+            stack.enter_context(patch('xar_autoplayer.bridge.runtime_input_contract_v1.validate_running_inputs',
+                return_value={}))
         reducer_value: object = unrun.validate_allocated_unrun
         if not isinstance(reducer_value, allocator._PrelaunchUnrunAdmissionReducer):
             raise AssertionError('Actual shared unrun reducer unavailable')
@@ -153,6 +159,10 @@ class PrelaunchUnrunWriterAdmissionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'separate next state'):
             self.claim()
         self.assert_unconsumed()
+
+
+class ObservedRootPrelaunchUnrunWriterAdmissionTests(PrelaunchUnrunWriterAdmissionTests):
+    observed_root = True
 
 
 if __name__ == '__main__':
