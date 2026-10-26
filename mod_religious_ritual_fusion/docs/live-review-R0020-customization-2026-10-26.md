@@ -50,3 +50,17 @@ typed `current_rite_poststate`独立确认五项文本、三核心及31项教义
 `screenshots/R0020/03-names-entered.png`、`06-icon-selected.png`、`09-color-done.png`、`10-edit-confirmation.png`及13/14退出截图保留原始内容与映射回执。实际存储补充CAS193→194→195只前瞻调整Root捕获通道，不改冻结grant/runtime；总944 MiB与原期限不变。闭场CAS195→196确认所有通道通过并关闭场次future。按统一策略精确回收3760个可重建cache及一份与checkpoint完全相同的autosave，共225370928分配字节；CAS196→197→198只将实际确认量加入gross退休账，不重置高水。checkpoint及必要来源保留，原退休路径已不可读，不制造同名替代。详细闭场/退休票在先前scene的 `metadata/review-resume-a01/STORAGE.R0020-CLOSED.actual.json` 与 `reclamation-R0020-a01/ACTUAL.actual.json`。
 
 本场证明同ID定制、零追加扣费及真实保存，**尚未证明定制后的独立冷载**。八项整体仍未完成：完整美德/罪恶、亲属/封臣实际改信、可选DES宗族分支及维护后态、超过三核心、无MTS三核心、另一信仰融合模式和最终UI边界仍须实机。下一冷载须新准入、新进程、新状态和新鲜后台Steam离线凭据；保持原九项cold断言，另外显式核对本表metadata、FULL_RECORD及完整库存。InspectOnly的assessment仍是not_assessed，不能借它给metadata自动授予PASS。必要基线和失败原件用途复核为2026-11-01，不由本文无限期续存。
+
+## N6离线验证与主线整合边界
+
+以下仍属于 `machine_id: 4-8e1c2f1861`，观察截至2026-10-26T11:02:32Z；本节外置相对路径均以 `C:/workspace/rrf-development-20261024` 为根。N6在原干净提交 `68e0233634de3fd13cd7e44e2b3495c3cd1be7d2` 完成57个生产编译与8个原生夹具，各原始wait均0；8个项目EXE的Defender精确读回verified。它验证稀疏100物理槽、有效核心身份、U+0015描述输出和完整美德/罪恶目录合同；没有启动新游戏，不能据此声称已读到礼仪155的真实完整目录。
+
+N6 DLL为 `build/native-qualified-a06/build/xar_ck3_bridge.dll`，15738368 B，SHA `3cafd10751d11cf80cddc15c4cc17de5510bce9239d6f132ad8f952971a73ffb`。同根 `native-a01/PUBLIC-RUNTIME-QUALIFICATION.actual.json` 为8206 B，SHA `122927df7c3e6977850282eefe60fb499a17b5557ddfdade755d053405948452`；生产来源前后相同。
+
+`review-fixes-a01/native-shared-ci-a06/sdk-full-a03` 的完整共享92命令、cold/owner30命令、SDK完整模块和完整两模块strict，共124个子命令均退出0；原汇总wait为1，原因是两项需真实HoF输入和真实small-WAL输入的可选测试未执行，仍保留 `UNEXECUTED_OPTIONAL`。不能将它写成全CI通过。随后新N6的14包、readonly4及Rite序列化包进入独立SDK消费，完整9命令、115测试、0跳过，原wait0。严格修改范围资格只计SDK26测试、strict及这9命令，共141测试、11命令、0跳过；`QUALIFICATION.affected-sdk.actual.json` 为1378362 B，SHA `ad5cc8b49f886f99abbab6410ae672cb978291bc80e52b2b64832fd4fa419322`。`CLOSED.actual.json` 为7536 B，SHA `70ee75393f1767430a941c41d67cacb9991776975e037bbf5d16cdb8082eb681`；210个保留PID/出生时间身份均已实际不存在，所有源码读写者已停止。旧128MiB超帽、启动早于账本发布等失败原件没有改写。
+
+18次原位Java保存检查均原wait0。玩家采用155；妻子36311及子女38924、39348、39979、40526、40695、40847、41032在R0016-before和R0020暂停保存中仍为Rite0，不能声称家属已经改信。原位报告位于 `review-fixes-a01/family-oracle-R0020-a01`，没有额外复制69MB保存。后续自然日检查须逐ID报告实际结果；新fresh fixture还须先观察seed旧转换链，避免混淆融合因果。
+
+关闭存储CAS204→205的原wait0，`cold-R0020-planning-a01/scene-admission-a01/CLOSED-N6-CI-a01.actual.json` 为7927 B，SHA `11ba26de543e8808dc204e60394b245a86afb786a9cc53144bb3aff4f9cac1fb`。完整owned为3065390560 B，物理/配额/owned/gross检查通过；释放N6和CI未用future，仅保留原Root4MiB小型尾项及原13:08:32Z期限，没有授予新场次或延长期限。随后按根AGENTS要求rebase远端31ef7765f，原三提交重放为6d24a4667、3c66acc9d、35df1f195。远端修改了实际活动的界面头文件和生产TU，新增title TU；N6不授予整合后源码资格，后继必须重新计算完整依赖闭包、构建并消费新包，再冻结公共runtime。
+
+为承接扩大的活动编译闭包，共享configured producer的配置上限改为192MiB，同时真实准入gate要求请求预算不超过精确storage grant的 `budget_bytes`；缺字段或非整数立即拒绝。外部192MiB预留不会自行改变内部配置上限，也不取消原有容量、来源、期限及实际分配监控。回归覆盖192MiB和更小预算的配置JSON往返、192MiB加1字节拒绝及真实gate的批准预算边界；完整五命令step与两模块strict仍须取得新提交的实际结果，不能引用N6作为本次维护的验证。

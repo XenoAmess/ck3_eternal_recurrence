@@ -168,12 +168,73 @@ class ConfiguredSuccessorTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             parse_config(value)
 
-    def test_budget_rejects_bool_float_and_archive_sized_lane(self) -> None:
-        for size in (True, 160.0, 176705326):
+    def test_budget_accepts_192_mib_and_smaller_lanes_through_json_roundtrip(self) -> None:
+        for schema in ("ck3-configured-native-successor-v1", "ck3-configured-native-successor-v2"):
+            for size in (1, 160 * 1024 * 1024, 176705326, 192 * 1024 * 1024):
+                expected = replace(self.config, schema=schema, budget=size)
+                with self.subTest(schema=schema, size=size):
+                    actual = parse_config(json.loads(json.dumps(config_json(expected))))
+                    self.assertEqual(actual, expected)
+                    self.assertEqual(actual.budget, size)
+
+    def test_budget_rejects_noninteger_and_nonpositive_sizes(self) -> None:
+        for size in (True, False, 160.0, float(192 * 1024 * 1024), "201326592", None, 0, -1):
             value = config_json(self.config)
             value["budget_bytes"] = size
-            with self.subTest(size=size), self.assertRaises(ValueError):
+            with self.subTest(size=size), self.assertRaisesRegex(ValueError, "Exact bounded integer required"):
                 parse_config(value)
+
+    def test_budget_rejects_one_byte_above_192_mib(self) -> None:
+        for schema in ("ck3-configured-native-successor-v1", "ck3-configured-native-successor-v2"):
+            value = config_json(replace(self.config, schema=schema))
+            value["budget_bytes"] = 192 * 1024 * 1024 + 1
+            with self.subTest(schema=schema), self.assertRaisesRegex(ValueError, "Native lane exceeds 192 MiB"):
+                parse_config(json.loads(json.dumps(value)))
+
+    def _budget_gated_producer(self, budget: int, grant_budget: object, *, include_budget: bool = True) -> Producer:
+        admission: dict[str, object] = {
+            "machine_id": self.config.machine_id, "active": True,
+            "capacity_passed": True, "quota_passed": True,
+            "approved_root": str(self.root), "expires_at_utc": "2099-01-01T00:00:00+00:00",
+            "required_free_bytes": 0,
+        }
+        if include_budget:
+            admission["budget_bytes"] = grant_budget
+        path = self.root / "admission.json"
+        path.write_text(json.dumps(admission), encoding="utf-8")
+        config = replace(self.config, schema="ck3-configured-native-successor-v2",
+                         budget=budget, admission=pin(path))
+        return Producer(parse_config(json.loads(json.dumps(config_json(config)))))
+
+    def test_real_gate_accepts_roundtripped_budget_at_or_below_192_mib_grant(self) -> None:
+        for size in (160 * 1024 * 1024, 176705326, 192 * 1024 * 1024):
+            producer = self._budget_gated_producer(size, 192 * 1024 * 1024)
+            with self.subTest(size=size), patch("build_native_configured_successor.git",
+                                               side_effect=[producer.config.source_commit, ""]):
+                producer.gate()
+            self.assertEqual(producer.config.budget, size)
+            self.assertFalse(producer.config.output.exists())
+
+    def test_real_gate_rejects_budget_one_byte_above_actual_grant(self) -> None:
+        producer = self._budget_gated_producer(192 * 1024 * 1024, 192 * 1024 * 1024 - 1)
+        with patch("build_native_configured_successor.git", side_effect=[producer.config.source_commit, ""]), \
+             self.assertRaisesRegex(ValueError, "Native lane exceeds admitted budget"):
+            producer.gate()
+        self.assertFalse(producer.config.output.exists())
+
+    def test_real_gate_rejects_missing_or_noninteger_grant_budget(self) -> None:
+        for grant_budget in (True, False, float(192 * 1024 * 1024), "201326592", None, 0, -1):
+            producer = self._budget_gated_producer(192 * 1024 * 1024, grant_budget)
+            with self.subTest(grant_budget=grant_budget), \
+                 patch("build_native_configured_successor.git", side_effect=[producer.config.source_commit, ""]), \
+                 self.assertRaisesRegex(ValueError, "Exact bounded integer required"):
+                producer.gate()
+            self.assertFalse(producer.config.output.exists())
+        producer = self._budget_gated_producer(192 * 1024 * 1024, None, include_budget=False)
+        with patch("build_native_configured_successor.git", side_effect=[producer.config.source_commit, ""]), \
+             self.assertRaisesRegex(ValueError, "Exact bounded integer required"):
+            producer.gate()
+        self.assertFalse(producer.config.output.exists())
 
     def test_missing_null_and_empty_fixture_are_distinct_invalid_inputs(self) -> None:
         cases: tuple[object, ...] = (None, [], {})
