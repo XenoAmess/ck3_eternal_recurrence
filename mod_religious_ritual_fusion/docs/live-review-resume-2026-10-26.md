@@ -186,3 +186,11 @@ machine_id: `4-8e1c2f1861`。同一1032MiB预算的重新准入已实际完成�
 machine_id: `4-8e1c2f1861`。P5及默认公共分配实际消费10份平铺Pin，新R0024进程完成零日定制冷载；第一日同一155配置落定、豁免移除且无再次融合扣费，8名实际近亲均采用155。一次实际封臣邀请后，第二日保存仍将两人列为pending，独立逐人检查礼仪均为0，没有授予改信通过。Root在checkpoint之后沿用旧GUI查询遭守卫拒绝，原流程自动失败退出；原Game／OS0、host1、public2、keeper／allocator0、Root1及SCREEN14123均保留，正常闭场与业务仍为false。三张原始实机图已保存，结果窗空白及核心列表尺寸仍需修整；商店未更新。详细结论、原图和证据Pin见[R0024记录](live-review-R0024-cold-finalization-2026-10-27.md)。
 
 闭场清点出现prep与wire子额度RED，已关闭旧future，仅留有限收尾；后继先精确回收可替代副本，再核新工作包预算。八项完整审核、落定后的独立冷载、四核心Faith、无MTS和DES维护验收继续执行，不把本场部分后态当成全部完成。
+
+## 20:37:50Z：结果窗布局源码与新独立Java预算
+
+machine_id: `4-8e1c2f1861`，观察时间2026-10-26T20:37:50Z。结果窗改为屏幕95%且上限1300×950，左侧详情使用独立滚动，核心列表明确保留220高度，空封臣分组整体隐藏，角色与礼仪长名称可换行。原数据模型、上下文、动作、费用与资格条件保持原表达式。此为源码候选落地；四核心、长文、小分辨率、嵌套滚动和底部按钮仍需实机确认，不把源码尺寸当作像素验收。
+
+原已资格V12 Java CLI对当前产品执行 `validate`，原退出0，89个运行文件、223项定义；`git diff --check`原退出0。这是已有校验器检查新GUI字节，不是新Java构建或实机资格。原执行回执为 `R/review-fixes-a01/ui-and-shared-save-a01/metadata/ui-validation-a01/EXISTING-VALIDATOR.actual.json`。用户要求的三张R0024原图继续保留，尚未上架；后继选择实际通过的新界面图更新同一条目。
+
+三份精确重复存档已实际退休205746176 B，R0024第一日、第二日和R0020原件及784条冻结输入全部保留；被删旧副本路径已不可读取。fresh owned/native与容量检查通过后，Root实际CAS231→232准入独立Java64MiB和新metadata8MiB，截止23:00Z；单一新leaf的默认localrepo写入包含在64MiB内且最多1MiB，不建空依赖缓存。旧scene费用、prep/wire RED与gross highwater不重置。该准入不包含Game或SCREEN；下一实机另做有限预算与期限复核。Java共享save-core、声明式finalized冷载case和原生只读滚动观测候选按文件所有权并行推进，未声称已经迁移或运行。

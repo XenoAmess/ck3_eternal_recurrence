@@ -32,7 +32,8 @@ widget = {
 window = {
 	name = "rrf_result_window"
 	parentanchor = center
-	size = { 1300 950 }
+	size = { 95% 95% }
+	maximumsize = { 1300 950 }
 	layer = middle
 	movable = yes
 	visible = "[And( GetPlayer.IsValid, GetScriptedGui( 'rrf_result_window_gui' ).IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
@@ -43,7 +44,7 @@ window = {
 	state = { name = _hide using = Animation_FadeOut_Quick }
 	vbox = {
 		using = Window_Margins
-		spacing = 12
+		spacing = 8
 		header_pattern = {
 			layoutpolicy_horizontal = expanding
 			blockoverride "header_text" { text = "RRF_RESULT_COMPLETE_TITLE" }
@@ -51,73 +52,94 @@ window = {
 				onclick = "[GetScriptedGui( 'rrf_close_result_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 			}
 		}
-		text_multi = { text = "RRF_RESULT_COMPLETE_GUIDANCE" max_width = 1200 autoresize = yes }
+		text_multi = { layoutpolicy_horizontal = expanding text = "RRF_RESULT_COMPLETE_GUIDANCE" max_width = 880 autoresize = yes }
 		text_multi = {
 			name = "rrf_native_mode_blocker"
 			visible = "[GetScriptedGui( 'rrf_native_mode_unavailable_gui' ).IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 			text = "RRF_REQUIRE_NATIVE_EDIT_MODE"
-			max_width = 1200
+			layoutpolicy_horizontal = expanding
+			max_width = 880
 			autoresize = yes
 			default_format = "#N"
 		}
 		text_multi = {
 			visible = "[GetScriptedGui( 'rrf_final_configuration_invalid_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 			text = "RRF_FINAL_CONFIGURATION_INVALID_DESC"
-			max_width = 1200
+			layoutpolicy_horizontal = expanding
+			max_width = 880
 			autoresize = yes
 			default_format = "#N"
 		}
 		hbox = {
 			layoutpolicy_horizontal = expanding
 			layoutpolicy_vertical = expanding
-			spacing = 16
+			spacing = 12
 			vbox = {
-				size = { 410 100% }
-				spacing = 12
-				hbox = {
-					spacing = 12
-					button_rite_icon = { size = { 80 80 } }
-					text_multi = { text = "[Rite.GetNameNoTooltip]" max_width = 300 autoresize = yes using = Font_Size_Big default_format = "#high" }
-				}
-				text_label_left = { text = "RITE_CREATION_VIEW_NAMING_ADJECTIVE" }
-				text_multi = { text = "[Rite.GetAdjectiveNoTooltip]" max_width = 400 autoresize = yes }
-				text_label_left = { text = "RITE_CREATION_VIEW_NAMING_FOLLOWER" }
-				text_multi = { text = "[Rite.GetAdherentNameNoTooltip]" max_width = 400 autoresize = yes }
-				text_label_left = { text = "RITE_CREATION_VIEW_NAMING_FOLLOWERS" }
-				text_multi = { text = "[Rite.GetAdherentNamePluralNoTooltip]" max_width = 400 autoresize = yes }
-				divider = { layoutpolicy_horizontal = expanding }
-				button_primary = {
-					name = "rrf_result_resume_setup"
-					visible = "[GetScriptedGui( 'rrf_resume_native_setup_gui' ).IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-					layoutpolicy_horizontal = expanding
-					text = "RRF_RESUME_SETUP"
-					enabled = "[GetScriptedGui( 'rrf_resume_native_setup_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-					tooltip = "[Localize( 'RRF_RESUME_SETUP_TT' )] [GetScriptedGui( 'rrf_resume_native_setup_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-					onclick = "[GetScriptedGui( 'rrf_resume_native_setup_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-				}
-				button_standard = {
-					name = "rrf_result_keep_defaults"
-					visible = "[GetScriptedGui( 'rrf_keep_defaults_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-					layoutpolicy_horizontal = expanding
-					text = "RRF_NATIVE_SETUP_SKIP"
-					tooltip = "RRF_NATIVE_SETUP_SKIP_TT"
-					onclick = "[GetScriptedGui( 'rrf_keep_defaults_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-				}
-				text_label_left = { text = "RRF_FINAL_CORE_PREVIEW" }
+				name = "rrf_result_details_column"
+				size = { 320 100% }
+				minimumsize = { 320 0 }
+				maximumsize = { 320 -1 }
+				layoutpolicy_vertical = expanding
 				scrollbox = {
+					name = "rrf_result_details_scroll"
 					layoutpolicy_horizontal = expanding
 					layoutpolicy_vertical = expanding
+					blockoverride "scrollbox_background" {}
+					blockoverride "scrollbox_margins" { margin = { 0 0 } }
 					blockoverride "scrollbox_content" {
 						vbox = {
 							layoutpolicy_horizontal = expanding
-							datacontext = "[Rite.GetFaith]"
-							spacing = 6
-							datamodel = "[Rite.GetTenets]"
-							item = {
-								hbox = {
-									spacing = 8
-									proportional_icon = { size = { 32 40 } texture = "[TenetType.GetIcon( Faith.Self )]" tooltipwidget = { using = tenet_type_tooltip } }
-									text_multi = { text = "[TenetType.GetNameNoTooltip( Rite.Self )]" max_width = 330 autoresize = yes }
+							spacing = 8
+							hbox = {
+								spacing = 12
+								button_rite_icon = { size = { 80 80 } }
+								text_multi = { text = "[Rite.GetNameNoTooltip]" layoutpolicy_horizontal = expanding max_width = 220 autoresize = yes using = Font_Size_Big default_format = "#high" }
+							}
+							text_label_left = { text = "RITE_CREATION_VIEW_NAMING_ADJECTIVE" }
+							text_multi = { text = "[Rite.GetAdjectiveNoTooltip]" layoutpolicy_horizontal = expanding max_width = 300 autoresize = yes }
+							text_label_left = { text = "RITE_CREATION_VIEW_NAMING_FOLLOWER" }
+							text_multi = { text = "[Rite.GetAdherentNameNoTooltip]" layoutpolicy_horizontal = expanding max_width = 300 autoresize = yes }
+							text_label_left = { text = "RITE_CREATION_VIEW_NAMING_FOLLOWERS" }
+							text_multi = { text = "[Rite.GetAdherentNamePluralNoTooltip]" layoutpolicy_horizontal = expanding max_width = 300 autoresize = yes }
+							divider = { layoutpolicy_horizontal = expanding }
+							button_primary = {
+								name = "rrf_result_resume_setup"
+								visible = "[GetScriptedGui( 'rrf_resume_native_setup_gui' ).IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+								layoutpolicy_horizontal = expanding
+								text = "RRF_RESUME_SETUP"
+								enabled = "[GetScriptedGui( 'rrf_resume_native_setup_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+								tooltip = "[Localize( 'RRF_RESUME_SETUP_TT' )] [GetScriptedGui( 'rrf_resume_native_setup_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+								onclick = "[GetScriptedGui( 'rrf_resume_native_setup_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							}
+							button_standard = {
+								name = "rrf_result_keep_defaults"
+								visible = "[GetScriptedGui( 'rrf_keep_defaults_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+								layoutpolicy_horizontal = expanding
+								text = "RRF_NATIVE_SETUP_SKIP"
+								tooltip = "RRF_NATIVE_SETUP_SKIP_TT"
+								onclick = "[GetScriptedGui( 'rrf_keep_defaults_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+							}
+							text_label_left = { text = "RRF_FINAL_CORE_PREVIEW" }
+							scrollbox = {
+								name = "rrf_result_core_scroll"
+								size = { 100% 220 }
+								minimumsize = { 0 220 }
+								layoutpolicy_horizontal = expanding
+								layoutpolicy_vertical = expanding
+								blockoverride "scrollbox_content" {
+									vbox = {
+										layoutpolicy_horizontal = expanding
+										datacontext = "[Rite.GetFaith]"
+										spacing = 6
+										datamodel = "[Rite.GetTenets]"
+										item = {
+											hbox = {
+												spacing = 8
+												proportional_icon = { size = { 32 40 } texture = "[TenetType.GetIcon( Faith.Self )]" tooltipwidget = { using = tenet_type_tooltip } }
+												text_multi = { text = "[TenetType.GetNameNoTooltip( Rite.Self )]" layoutpolicy_horizontal = expanding max_width = 225 autoresize = yes }
+											}
+										}
+									}
 								}
 							}
 						}
@@ -142,26 +164,86 @@ window = {
 						}
 						text_multi = {
 							visible = "[IsDataModelEmpty( GetPlayer.MakeScope.Var( 'rrf_last_result_rite' ).GetList( 'rrf_expected_family' ) )]"
-							text = "RRF_RESULT_EMPTY" max_width = 720 autoresize = yes default_format = "#weak"
+							layoutpolicy_horizontal = expanding text = "RRF_RESULT_EMPTY" max_width = 440 autoresize = yes default_format = "#weak"
 						}
 						vbox = {
 							visible = "[GetScriptedGui( 'rrf_configured_result_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 							layoutpolicy_horizontal = expanding
 							spacing = 10
 							divider = { layoutpolicy_horizontal = expanding }
-							text_label_left = { text = "RRF_RESULT_ACCEPTS" }
-							vbox = { datamodel = "[GetPlayer.MakeScope.GetList( 'rrf_vassal_converts' )]" item = { rrf_result_character = {} } }
-							text_label_left = { text = "RRF_RESULT_PLAYERS" }
-							vbox = { datamodel = "[GetPlayer.MakeScope.GetList( 'rrf_vassal_players' )]" item = { rrf_result_character = {} } }
-							text_label_left = { text = "RRF_RESULT_DECLINES" }
-							vbox = { datamodel = "[GetPlayer.MakeScope.GetList( 'rrf_vassal_declines' )]" item = { rrf_result_character = {} } }
-							text_label_left = { text = "RRF_RESULT_INELIGIBLE" }
-							vbox = { datamodel = "[GetPlayer.MakeScope.GetList( 'rrf_vassal_ineligible' )]" item = { rrf_result_character = {} } }
+							vbox = {
+								layoutpolicy_horizontal = expanding
+								spacing = 6
+								visible = "[Not( IsDataModelEmpty( GetPlayer.MakeScope.GetList( 'rrf_vassal_converts' ) ) )]"
+								text_label_left = { text = "RRF_RESULT_ACCEPTS" }
+								vbox = {
+									layoutpolicy_horizontal = expanding
+									spacing = 8
+									datamodel = "[GetPlayer.MakeScope.GetList( 'rrf_vassal_converts' )]"
+									item = { rrf_result_character = {} }
+								}
+							}
+							vbox = {
+								layoutpolicy_horizontal = expanding
+								spacing = 6
+								visible = "[Not( IsDataModelEmpty( GetPlayer.MakeScope.GetList( 'rrf_vassal_players' ) ) )]"
+								text_label_left = { text = "RRF_RESULT_PLAYERS" }
+								vbox = {
+									layoutpolicy_horizontal = expanding
+									spacing = 8
+									datamodel = "[GetPlayer.MakeScope.GetList( 'rrf_vassal_players' )]"
+									item = { rrf_result_character = {} }
+								}
+							}
+							vbox = {
+								layoutpolicy_horizontal = expanding
+								spacing = 6
+								visible = "[Not( IsDataModelEmpty( GetPlayer.MakeScope.GetList( 'rrf_vassal_declines' ) ) )]"
+								text_label_left = { text = "RRF_RESULT_DECLINES" }
+								vbox = {
+									layoutpolicy_horizontal = expanding
+									spacing = 8
+									datamodel = "[GetPlayer.MakeScope.GetList( 'rrf_vassal_declines' )]"
+									item = { rrf_result_character = {} }
+								}
+							}
+							vbox = {
+								layoutpolicy_horizontal = expanding
+								spacing = 6
+								visible = "[Not( IsDataModelEmpty( GetPlayer.MakeScope.GetList( 'rrf_vassal_ineligible' ) ) )]"
+								text_label_left = { text = "RRF_RESULT_INELIGIBLE" }
+								vbox = {
+									layoutpolicy_horizontal = expanding
+									spacing = 8
+									datamodel = "[GetPlayer.MakeScope.GetList( 'rrf_vassal_ineligible' )]"
+									item = { rrf_result_character = {} }
+								}
+							}
 							divider = { layoutpolicy_horizontal = expanding }
-							text_label_left = { text = "RRF_RESULT_CONVERTED" }
-							vbox = { datamodel = "[GetPlayer.MakeScope.GetList( 'rrf_vassal_converted' )]" item = { rrf_result_character = {} } }
-							text_label_left = { text = "RRF_RESULT_PENDING" }
-							vbox = { datamodel = "[GetPlayer.MakeScope.GetList( 'rrf_vassal_pending' )]" item = { rrf_result_character = {} } }
+							vbox = {
+								layoutpolicy_horizontal = expanding
+								spacing = 6
+								visible = "[Not( IsDataModelEmpty( GetPlayer.MakeScope.GetList( 'rrf_vassal_converted' ) ) )]"
+								text_label_left = { text = "RRF_RESULT_CONVERTED" }
+								vbox = {
+									layoutpolicy_horizontal = expanding
+									spacing = 8
+									datamodel = "[GetPlayer.MakeScope.GetList( 'rrf_vassal_converted' )]"
+									item = { rrf_result_character = {} }
+								}
+							}
+							vbox = {
+								layoutpolicy_horizontal = expanding
+								spacing = 6
+								visible = "[Not( IsDataModelEmpty( GetPlayer.MakeScope.GetList( 'rrf_vassal_pending' ) ) )]"
+								text_label_left = { text = "RRF_RESULT_PENDING" }
+								vbox = {
+									layoutpolicy_horizontal = expanding
+									spacing = 8
+									datamodel = "[GetPlayer.MakeScope.GetList( 'rrf_vassal_pending' )]"
+									item = { rrf_result_character = {} }
+								}
+							}
 						}
 					}
 				}
@@ -195,12 +277,13 @@ types rrf_result_types {
 	type rrf_result_character = hbox {
 		datacontext = "[Scope.Char]"
 		layoutpolicy_horizontal = expanding
+		minimumsize = { 0 90 }
 		spacing = 12
 		portrait_head_small = {}
 		vbox = {
 			layoutpolicy_horizontal = expanding
-			text_single = { text = "[Character.GetUINameNoTooltip]" default_format = "#high" }
-			text_single = { text = "[Character.GetRite.GetNameNoTooltip]" default_format = "#weak" }
+			text_multi = { layoutpolicy_horizontal = expanding max_width = 330 autoresize = yes text = "[Character.GetUINameNoTooltip]" default_format = "#high" }
+			text_multi = { layoutpolicy_horizontal = expanding max_width = 330 autoresize = yes text = "[Character.GetRite.GetNameNoTooltip]" default_format = "#weak" }
 		}
 	}
 }
