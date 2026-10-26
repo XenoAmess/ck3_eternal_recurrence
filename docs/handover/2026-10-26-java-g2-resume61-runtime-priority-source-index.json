@@ -1,0 +1,949 @@
+{
+  "schema": "xar.java-g2-resume61.runtime-priority-handoff-source-index/v1",
+  "status": "HANDOFF_STOPPED_INCOMPLETE",
+  "observed_at_utc": "2026-10-26 06:51:54 UTC",
+  "observation_machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "artifact_observation_semantics": "Hashes describe actual existing files read on this machine. They do not grant runtime/loaded/game qualification, reassign historical machine identity, prove native file identity, or convert reservations to physical allocation.",
+  "user_directives": [
+    "Finish the current bounded research; afterward use concurrency according to actual need, not a forced60.",
+    "Prioritize removing blockers to a real CK3 run.",
+    "Write handoff documents in docs; subsequent work will be taken over by someone else. Stop new execution."
+  ],
+  "execution": {
+    "new_build_test_sourceedit_publish_sampling_game_stopped": true,
+    "owned_child_receipts_all_report_zero": true,
+    "host": {
+      "last_round": 54,
+      "last_exit_code": 1,
+      "state": "EXECUTION_STOPPED_NO_CHILD_NO_FORMAL_CLOSE",
+      "scope16_start_utc": "2026-10-26T05:45:50.313428Z",
+      "scope16_end_utc": "2026-10-26T06:45:50.313428Z",
+      "formal_close": false
+    },
+    "native": {
+      "last_window": "cont08",
+      "state": "ACTUALLY_CLOSED",
+      "closed_at_utc": "2026-10-26T06:32:42.811647Z",
+      "elapsed_seconds": 817.811647
+    },
+    "g2": {
+      "last_result": 42,
+      "state": "ACTUALLY_CLOSED",
+      "slot_returned": true
+    },
+    "readiness": {
+      "last_phase": "issuer1",
+      "state": "ACTUALLY_CLOSED",
+      "actual_child_count": 12,
+      "successful_children": 12
+    },
+    "old_authority_replay_allowed": false,
+    "fresh_user_instruction_observations_and_finite_scope_required_to_resume": true,
+    "game": {
+      "started_this_turn": false,
+      "new_game_days": 0,
+      "save_restore_acceptance": 0,
+      "java_full_g2_live_modules_passed": 0,
+      "total_g2_modules": 8
+    }
+  },
+  "critical_corrections": [
+    {
+      "key": "cunit_zero",
+      "fact": "CUnit full public handle0 is legal in public_unit_id.hpp, BattleControlRequest and reinforcement parser. Native CArmy IDs and other namespaces keep separate contracts.",
+      "previous_inference_retracted": "Illegal0 is accepted by production; change production to reject0.",
+      "next_candidate": "native_test24_map",
+      "candidate_state": "SOURCE_ONLY_NOT_ADOPTED_NOT_COMPILED_NOT_RUN",
+      "scope": "Two stale zero-case expectations among95 only; no production change."
+    },
+    {
+      "key": "java_diagnostic_union",
+      "fact": "94 error diagnostics /17 leaves plus13 warnings /8 leaves have2 overlapping leaves, union23, not24."
+    },
+    {
+      "key": "planned_files_not_roles",
+      "fact": "Six quotes plan11 files /5846 bytes, covering10 mandatory roles. CoA119-byte output is auxiliary input to role20, not role20 itself. New DATA0."
+    },
+    {
+      "key": "defender_vs_register",
+      "fact": "Observed admin_required is Defender settings registration. Ordinary Native REGISTER was not executed; no permission outcome is established for it."
+    },
+    {
+      "key": "stale_binary",
+      "fact": "Jar50 was built before CLI29/NativePlan06 current-source adoption. Do not assume it contains those changes."
+    },
+    {
+      "key": "stale_queue",
+      "fact": "g2_acceptance ACCEPTANCE-SCOPE01/AFFECTED-TEST-QUEUE01 and affected-tests-current.md predate result42/user priority; use result42 and this handoff."
+    }
+  ],
+  "java": {
+    "mutable_source": "D:/codex-ck3-demos/2026-10-25-java-g2-complete31-h5r5/java/ck3-control",
+    "build": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/complete35-candidate31-h5r5",
+    "m2": "D:/codex-ck3-demos/2026-10-22-java-phase1/m2",
+    "tmp": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/complete35-candidate31-h5r5-tmp",
+    "canonical_m2_and_source_single_writer": true,
+    "default_mvn_minimum": "3.10.0",
+    "observed_default_mvn": "3.10.0",
+    "observed_jdk": "21.0.10",
+    "last": {
+      "reactor_threads": 2,
+      "phase": "test-compile",
+      "native_transport_test_sources_actually_compiled": 200,
+      "errors": 94,
+      "warnings": 13,
+      "error_leaves": 17,
+      "warning_leaves": 8,
+      "overlap_leaves": 2,
+      "union_leaves": 23,
+      "local_service_test_sources_not_type_checked": 744,
+      "maven_seconds": 15.635426101,
+      "shared_outer_seconds": 73.090364099,
+      "controller_seconds": 76.47576409997419,
+      "job_active_processes": 0,
+      "input_precheck": "MATCH",
+      "input_postcheck": "MATCH",
+      "runtime_postcheck": "MATCH",
+      "source_guard": "MATCH"
+    },
+    "remaining": {
+      "sealed_map_count": 10,
+      "leaves_with_sealed_maps": 17,
+      "memory_only_operation_leaves": 3,
+      "unimplemented_leaves": [
+        "ChinaCasesExecutionCodecTest.java",
+        "CoreFramePublicProducerTest.java",
+        "GameRestoreFreshReadCustodyTest.java"
+      ],
+      "no_round55": true
+    },
+    "next_inner_maven_arguments": [
+      "--fail-at-end",
+      "-B",
+      "-ntp",
+      "-e",
+      "-T",
+      "2",
+      "-f",
+      "<mutable_source>/pom.xml",
+      "-Dmaven.repo.local=<m2>",
+      "-Dck3.build.root=<build>",
+      "-Djava.io.tmpdir=<tmp>",
+      "-Dmaven.compiler.useIncrementalCompilation=false",
+      "-pl",
+      "g2-research,local-service",
+      "-am",
+      "test-compile"
+    ],
+    "next_command_requires_existing_managed_shared_entry_and_new_scope": true,
+    "complete_capture_ci_service_menu": "NOT_COMPLETED",
+    "deferred_cohort_m2": "SOURCE_ONLY_13_PRODUCTION_7_TESTS_NOT_ADOPTED"
+  },
+  "native": {
+    "source": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/native10/dev61/ck3_autonomous_player/native_bridge",
+    "build": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/native10/build61/dev",
+    "last_source_census_files": 5524,
+    "last_source_census_logical_bytes": 62220759,
+    "cmake_bytes": 466352,
+    "cmake_sha256": "42b934acb15410deb4e638883e08f85a695527c0973f26bef20917d4489227c0",
+    "affected_cxx_passed": 20,
+    "other_cached_objects_reused": 1112,
+    "joint_links": "PASS_0_CXX",
+    "fixtures": {
+      "passed": [
+        "widget",
+        "nonwar",
+        "Foundation",
+        "bookmark",
+        "lifestyle"
+      ],
+      "full_adapter": "FAILED_OLD_CUNIT_ZERO_EXPECTATIONS"
+    },
+    "latest_diagnostic_build": {
+      "cxx": 1,
+      "link": 1,
+      "status": "PASS",
+      "seconds": 53.7896658,
+      "peak_job_memory_bytes": 701698048,
+      "auxiliary_cleanup": "FORCED_AUXILIARY_CLEANUP"
+    },
+    "latest_full_adapter": {
+      "status": "FAIL",
+      "exit_code": 1,
+      "seconds": 1.6755482,
+      "peak_job_memory_bytes": 105848832,
+      "diagnostic": "strict_step=query-battle-control-snapshot-v1-0 actual=1",
+      "interpretation": "0 LEGAL; TEST EXPECTATION STALE"
+    },
+    "serial_parallelism": 1,
+    "job_memory_bytes": 8589934592,
+    "final_seal": "NOT_STARTED",
+    "ordinary_env": "NOT_STARTED",
+    "ordinary_build": "NOT_STARTED",
+    "ordinary_register": "NOT_STARTED",
+    "loaded": "NOT_VERIFIED"
+  },
+  "firstlive": {
+    "state_root": "D:/ck3-state/ck3-java-g2-robert1066-resume61",
+    "mandatory_roles": 22,
+    "successful_quote_groups": 6,
+    "retained_failed_quote_attempts": 2,
+    "planned_files": 11,
+    "planned_bytes": 5846,
+    "mandatory_roles_covered_by_plan": 10,
+    "declarations": 6,
+    "censuses": 6,
+    "phase1_children_passed": 12,
+    "new_data_files": 0,
+    "asset_funding_bytes": 0,
+    "control_funding_bytes": 786432,
+    "capacity_release_v4": 0,
+    "bindings": 0,
+    "create_new_executed": 0,
+    "capacity_v4_contract": {
+      "schema": "xar.java-root-bootstrap-capacity/v4",
+      "purpose": "ROOT_BOOTSTRAP_IMMUTABLE_INPUTS",
+      "issuer_task": "/root/budget_fast_lane",
+      "owner_task": "/root",
+      "asset_bytes_each": 65536,
+      "control_bytes_each": 131072,
+      "joint_maximum_charged_bytes_each": 196608,
+      "new_six_asset_funding_required_bytes": 393216
+    },
+    "expired_or_stopped_review": {
+      "phase1_scope_end_utc": "2026-10-26T06:44:05Z",
+      "declaration_review_end_utc": "2026-10-26T06:44:15Z",
+      "renew_by_new_target_no_overwrite": true
+    },
+    "original_entrypoints": {
+      "binding": "org.xar.ck3.control.service.root.RootProfileBootstrapCommand ISSUER_BINDING <request path> <bytes> <sha>",
+      "family_capability_event_sway": "org.xar.ck3.control.service.root.RootJavaBootstrapInputs <CREATE_NEW request path> <bytes> <sha>",
+      "core_coa": "org.xar.ck3.control.service.root.RootPlanningSettingsInputsProducer CORE_CREATE_NEW|COA_CREATE_NEW <request triple> <binding triple>"
+    },
+    "class_target_classpath_count": 38,
+    "primary_must_be_in_classpath": true,
+    "r6_role": "CARRIER_ONLY",
+    "steam_fresh_background_offline_probe_required": true,
+    "no_gui_focus_screenshot_ocr_or_online_transition": true
+  },
+  "regressions": {
+    "m3_saved": {
+      "passed": 4,
+      "repeat_without_change": false
+    },
+    "m3_nativeplan": {
+      "strict_compile": "PASS",
+      "tests": 5,
+      "passed": 3,
+      "failed": 2,
+      "skipped": 0,
+      "aborted": 0,
+      "job_active_processes": 0,
+      "main06_adopted": true,
+      "test05_adopted": true,
+      "test07_adopted": false,
+      "test07_executed": false
+    },
+    "m0_cold17": {
+      "strict_compile_attempts_failed": 3,
+      "junit_tests_started": 0,
+      "junit_tests_not_run": 17,
+      "next_quote": "m0_next_quote43",
+      "reuse_validated_lw103_not_unexecuted_suppress": true
+    },
+    "m7": {
+      "schedule_passed": 9,
+      "policy_passed": 8,
+      "reprojection_passed": 2,
+      "private_installed_route": "NOT_VERIFIED"
+    },
+    "sdk": {
+      "runtime_package_passed": 12,
+      "source_assembly_passed": 26,
+      "complete_ci_independent_continuation": "NOT_EXECUTED"
+    },
+    "tools_s26": {
+      "suites": 146,
+      "tests_passed": 1025,
+      "frozen": true,
+      "qualification_scope": "TOOLS_ONLY"
+    },
+    "m1_ls5_m4_construction_ref93": "QUOTE_ONLY_0_CARD_0_CHILD"
+  },
+  "source_alignment": [
+    {
+      "key": "native_plan_main",
+      "mutable_key": "current_native_plan_main",
+      "i61_key": "i61_native_plan_main",
+      "state": "DIFFERENT_I61_OLD"
+    },
+    {
+      "key": "bootstrap_cli",
+      "mutable_key": "current_bootstrap_cli",
+      "i61_key": "i61_bootstrap_cli",
+      "state": "DIFFERENT_I61_OLD"
+    },
+    {
+      "key": "native_plan_test",
+      "mutable_key": "current_native_plan_test",
+      "i61_key": "i61_native_plan_test",
+      "state": "I61_ACTUALLY_ABSENT"
+    }
+  ],
+  "storage": {
+    "policy_ref": "storage_policy",
+    "financial_head": 169,
+    "r3_ceiling_bytes": 18253611008,
+    "r3_held_bytes": 17940987904,
+    "r3_remaining_bytes": 312623104,
+    "review_at_utc": "2026-10-26T08:00:00Z",
+    "no_review_extension_on_handoff": true,
+    "approved_bulk_roots": [
+      "D:/codex-ck3-background",
+      "D:/codex-ck3-demos",
+      "D:/ck3-state",
+      "Z:/ck3_mod_rewrite"
+    ],
+    "system_volume_bulk_allowed": false,
+    "physical_release_credit_bytes": 0,
+    "project_actual_physical_occupied_bytes": null,
+    "capacity_own_cap_bytes": 7340032,
+    "capacity_own_last_complete_allocation_bytes": 7077888,
+    "capacity_own_remaining_bytes": 262144,
+    "capacity_own_8mib_amendment_issued": false,
+    "ram_forward_override": {
+      "required_available_bytes": 25769803776,
+      "required_available_commit_bytes": 34359738368,
+      "actual_four_slot_maximum_bytes": 14763950080,
+      "bank_hard_maximum_bytes": 18253611008,
+      "job_caps_unchanged": true,
+      "old_32g_rejections_preserved": true,
+      "game_admission_granted": false
+    },
+    "existing_holds_not_released": true,
+    "financial170_issued": false,
+    "raw24_25_executed": false
+  },
+  "prior_time_plan": {
+    "state": "WITHDRAWN_ON_USER_HANDOFF_STOP_REESTIMATE_AFTER_RESUME",
+    "beijing_checkpoint": "2026-10-26 14:45",
+    "tentative_first_ck3_window": "2026-10-26 16:30–18:30",
+    "not_a_completed_result_or_guarantee": true
+  },
+  "next_steps": [
+    "Fresh user resume instruction, identity/storage/RAM/commit observations and new finite cards; do not replay old windows.",
+    "Apply only M6 test24 two CUnit0 expectation corrections after exact preimage check; incremental affected TU/link; original full noargs.",
+    "Use Host final index: apply ready source deltas, reproduce memory-only exact replacements, implement the three missing test seams; incremental selected modules and required dependencies.",
+    "Validate current CLI29/NativePlan06 main; update affected binaries after consumer coordination; move i61 exact hunks to match validated current sources.",
+    "Fresh declarations/censuses as required; real v4 financial release and binding before CREATE_NEW; then remaining firstlive roles.",
+    "Necessary M3 test07/Cold17/SDK CI and final complete capture/Menu checks; no unavailable stage counted passed.",
+    "Real ordinary Native ENV/BUILD/REGISTER and fresh background Steam offline admission before first CK3 menu/1066 start."
+  ],
+  "artifacts": [
+    {
+      "key": "handoff",
+      "path": "Z:/ck3_mod_rewrite/docs/handover/2026-10-26-java-g2-resume61-runtime-priority-handoff.md",
+      "state": "OBSERVED_READABLE",
+      "bytes": 19735,
+      "sha256": "52cfc75dcb599fc628a28a593831ba0c32f58ae5a6d339d468f4c14d8db6e54a"
+    },
+    {
+      "key": "original_r5_handoff",
+      "path": "Z:/ck3_mod_rewrite/docs/handover/2026-10-26-java-g2-incremental-r5-vacation-final-handoff.md",
+      "state": "OBSERVED_READABLE",
+      "bytes": 28530,
+      "sha256": "a297ddea2a515a0464484687bc7a5568d4823084628763be6149f6a450a104f7"
+    },
+    {
+      "key": "original_r5_index",
+      "path": "Z:/ck3_mod_rewrite/docs/handover/2026-10-26-java-g2-incremental-r5-vacation-final-source-index.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 62040,
+      "sha256": "c70a7eaffb130a2377f445d92daaf4226676a3ea15aa7912d1cc054051285081"
+    },
+    {
+      "key": "current_progress",
+      "path": "Z:/ck3_mod_rewrite/docs/autonomous-agent-progress/2026-10-26-java-g2-resume61-current.md",
+      "state": "OBSERVED_READABLE",
+      "bytes": 58737,
+      "sha256": "7ac9886276c024b05bb081c5b34a07c0848f8e7b3fc3c81d9953a7095ffac996"
+    },
+    {
+      "key": "firstlive_22_roles",
+      "path": "Z:/ck3_mod_rewrite/docs/handover/2026-10-26-firstlive-data-publishers-resume61.md",
+      "state": "OBSERVED_READABLE",
+      "bytes": 24451,
+      "sha256": "a51a5860e8b8fa6d47409da5e33b4eb0fa3dfae1e0be63a869eeed2b33f79ca1"
+    },
+    {
+      "key": "storage_policy",
+      "path": "Z:/ck3_mod_rewrite/docs/storage-retention-policy.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    },
+    {
+      "key": "storage_policy_doc",
+      "path": "Z:/ck3_mod_rewrite/docs/storage-retention-policy.md",
+      "state": "OBSERVED_READABLE",
+      "bytes": 17121,
+      "sha256": "6a92bd77cd3166707472c43f2eb06c3bba0a6510a23ae2eeccb5006f5e49ba09"
+    },
+    {
+      "key": "resume_instructions",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/RESUME-INSTRUCTIONS.md",
+      "state": "OBSERVED_READABLE",
+      "bytes": 9571,
+      "sha256": "27309b78dd4f859bfb09af6d278db7fd5eec8851b4d6f9c21cc68bdc3dbd3f85"
+    },
+    {
+      "key": "native_navigation_json",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/NATIVE-SOURCE-INDEX.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 458063,
+      "sha256": "e9ff2eca7a34f0305d0b638ee0bdef258f9f4ab177a20a8e318a8e59f22532b1"
+    },
+    {
+      "key": "native_navigation_md",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/NATIVE-SOURCE-INDEX.md",
+      "state": "OBSERVED_READABLE",
+      "bytes": 129812,
+      "sha256": "a496bc6bef3350e3d6b4b22b0efda18b23a3d6541d74cba602b3ed2d47c3070a"
+    },
+    {
+      "key": "financial169",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/capacity/RESUME61-FINANCIAL169-CRITICAL-RAM24G-ISSUER-CONTROLS.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 122466,
+      "sha256": "28a22cf415d0e8996aed30455aa3fe45fed402703379e60950415ea34c2828e3"
+    },
+    {
+      "key": "ram24_override",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/capacity/ROOT-CRITICAL-CHAIN-RAM24G-FORWARD-OVERRIDE01.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 1483,
+      "sha256": "ef58699515cb362c7dcffbb907beb3e3113f7e6d95d5706e6237176f7c536d1b"
+    },
+    {
+      "key": "host_final_index",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/host_integration/STOP-HANDOFF54-INDEX01.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 13019,
+      "sha256": "74b9ef01576af06c6b5837376d97252e8c128edfbc1c60880e03514d47a5d65c"
+    },
+    {
+      "key": "host54_summary",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/host_integration/INCREMENTAL54-ACTUAL-COMPILE-SUMMARY01.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 29209,
+      "sha256": "a32606a34e4002d85654e6443dc9fcaf91c15c6c838e5955fb0c736e700be855"
+    },
+    {
+      "key": "host54_diagnostics",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/host_integration/INCREMENTAL54-NT-TEST-DIAGNOSTICS01.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 47649,
+      "sha256": "e9d2efd82792f815ffcab1d7ebec750ad54143ce496a3f5524b699680c0ed764"
+    },
+    {
+      "key": "host54_intake",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/host_integration/INCREMENTAL54-NT-TEST-AND-FIRST-PRODUCER-INTAKE01.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 34619,
+      "sha256": "c8dcce5fcf4e7ed87716438389a2fde925eb69ff3ddabdf027467561cfa1157b"
+    },
+    {
+      "key": "host_scope16",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/host_integration/ROOT-DELEGATED-MUTABLE-WHOLE-CARD16-SCOPE.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 7027,
+      "sha256": "812c300cdb162c218563a71f1a988920d25a7811cc9b0510a33d9444d3ef6b8c"
+    },
+    {
+      "key": "host_scope16_actual",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/host_integration/ROOT-DELEGATED-MUTABLE-WHOLE-CARD16-ACTUAL.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 6982,
+      "sha256": "61e42456d99ec6a822faa99b1fbff2f04b4597a4b9582443d6300d7cadcd415a"
+    },
+    {
+      "key": "main_jars50",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/host_integration/MAIN-JARS50-ACTUAL-OUTPUTS01.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 27555,
+      "sha256": "472da67bc32445ee33810658aaa81f0e436f25359296fde2f3de79ebd90518b2"
+    },
+    {
+      "key": "producer49_seal",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/host_integration/TOOLS-PRODUCER49-CREATE-NEW-SEAL01.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 7987,
+      "sha256": "64018d33740541bcdedd793a4dfe260917ee10cc243e2ae0bf93c883b2c2545b"
+    },
+    {
+      "key": "s26_adoption",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/tools_adoption/S26-ROOT-ADOPTION81.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 6813,
+      "sha256": "f6558a86709372eceef5ce7acd927e726b26cff2fa16fe62ddb868f02238486a"
+    },
+    {
+      "key": "native_close07",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/native_execution/NATIVE61-CONTINUATION07-CLOSE01.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 7659,
+      "sha256": "6a80b127917f4bba2dd88b36b1d3f88afb900e331adbf08da33823879a8d183a"
+    },
+    {
+      "key": "native_close08",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/native_execution/NATIVE61-CONTINUATION08-CLOSE01.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 6619,
+      "sha256": "f53b40572d9470269130db2f4388e384df5ae85594091efffa87c5b7202560bb"
+    },
+    {
+      "key": "native_test24_map",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/m6_research/adapter_cunit24/SOURCE-DELTA24.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 5462,
+      "sha256": "799ce2b30d8a003c9e88be4a0d4b59d36e53ca4df6db58cd41e1cc3928b8ab12"
+    },
+    {
+      "key": "native_test24_patch",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/m6_research/adapter_cunit24/CUNIT-ZERO24.patch",
+      "state": "OBSERVED_READABLE",
+      "bytes": 822,
+      "sha256": "72b41da178f47e76fefee123b9bf9eaff423802e4692a9989e0c0e6c10393157"
+    },
+    {
+      "key": "m3_main06",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/m3_research/native_plan06/RootNativeLaunchPlanInputs.java",
+      "state": "OBSERVED_READABLE",
+      "bytes": 21157,
+      "sha256": "7874c6f0f2468473ed46a1eace9fdfb25e1062cced6878685ec165797ffe8461"
+    },
+    {
+      "key": "m3_test05",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/m3_research/native_plan05/RootNativeLaunchPlanCommandTest.java",
+      "state": "OBSERVED_READABLE",
+      "bytes": 8734,
+      "sha256": "10ef7313dcd14439fac6edd31b2f4427e8eb01a6c1216fed0bf78a7ac2980e5c"
+    },
+    {
+      "key": "m3_test07_map",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/m3_research/native_plan07/SOURCE-DELTA07.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 2169,
+      "sha256": "7d22ab07a444a19d2677e011590a118c2193dbec3f2a2ce2381c12c9810e9b4f"
+    },
+    {
+      "key": "m3_test07",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/m3_research/native_plan07/RootNativeLaunchPlanCommandTest.java",
+      "state": "OBSERVED_READABLE",
+      "bytes": 9037,
+      "sha256": "2f7f2a05ec6b40fedfd46e30ce87717f43fe4e82c62f0979b3b0c1fa164e65f1"
+    },
+    {
+      "key": "m0_next_quote43",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/m0_research/COLD-VALIDATION-QUOTE43.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 45416,
+      "sha256": "49155e96c23a9f331a9d872228755e525d4ea64e7903a8c77de59440a3545cfd"
+    },
+    {
+      "key": "m2_deferred20",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/m2_research/production_companions20/COHERENT-SOURCE20.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 39910,
+      "sha256": "f002b08f714ea3d9900ee767daa8508b59a4dccd010fcf28465f68edcb8b2530"
+    },
+    {
+      "key": "firstlive_config04",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/ROOT-FIRSTLIVE-CONFIG04.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 10660,
+      "sha256": "b2190d650b4380aeebfa6848c4772f02567243459abcba899b55006165c508ec"
+    },
+    {
+      "key": "quote_execution_request03a",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/readiness/bootstrap07/QUOTE-EXECUTION-REQUEST03A.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 20737,
+      "sha256": "f87bcfcb311ea1fc3390b94d431ceb4eb4dfc5172dbaa4434c61e4c7c2397c7a"
+    },
+    {
+      "key": "defender_failure07",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/formal_release/defender_canonical07/REGISTRATION-ACTUAL07.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 3538,
+      "sha256": "daaef695305eef068d1943db66f1914b54f718b51afb58228a137fc1d894fd78"
+    },
+    {
+      "key": "quote_batch_close",
+      "path": "D:/ck3-state/ck3-java-g2-robert1066-resume61/bootstrap-execution/quote01/metadata/ACTUAL-QUOTE-RESULTS03-CLOSE.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 20788,
+      "sha256": "0f1fbf2671bf18eb4aa63fc6e41e78b9d91afee87932868202f979253876b0ab"
+    },
+    {
+      "key": "issuer1_close",
+      "path": "D:/ck3-state/ck3-java-g2-robert1066-resume61/bootstrap-execution/quote01/metadata/issuer1/ACTUAL-ISSUER1-CLOSE01.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 31881,
+      "sha256": "2650474382cbdcc3098d5250af5a9e379948991f8e75bbfec4fb6ede8262ae9d"
+    },
+    {
+      "key": "capability_declaration01",
+      "path": "D:/ck3-state/ck3-java-g2-robert1066-resume61/bootstrap-controls/capability/declaration01.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 1323,
+      "sha256": "365d0e000ca41ccb79f213219ad5068aa4dae86a00d45a065e2ee5f64c125960"
+    },
+    {
+      "key": "capability_census01",
+      "path": "D:/ck3-state/ck3-java-g2-robert1066-resume61/bootstrap-controls/capability/census01.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 774,
+      "sha256": "e1afe3b8a7e1d248106301a63d1f0181cc8673b7b36587480e819b50219b6294"
+    },
+    {
+      "key": "event_declaration01",
+      "path": "D:/ck3-state/ck3-java-g2-robert1066-resume61/bootstrap-controls/event/declaration01.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 1134,
+      "sha256": "a253ef46f93d0dc4da550200e7715acb69db068541690105448eb366803ccd94"
+    },
+    {
+      "key": "event_census01",
+      "path": "D:/ck3-state/ck3-java-g2-robert1066-resume61/bootstrap-controls/event/census01.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 764,
+      "sha256": "cebcc9e4af1b857b9934fe8fcca5d89d1ea156a1d5e8ba07d9961bb34259103d"
+    },
+    {
+      "key": "sway_declaration01",
+      "path": "D:/ck3-state/ck3-java-g2-robert1066-resume61/bootstrap-controls/sway/declaration01.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 1111,
+      "sha256": "5f11f767326a015bc6b7b784c7c58a42c3c44b8d9fa2ebe1f96b8c400e532695"
+    },
+    {
+      "key": "sway_census01",
+      "path": "D:/ck3-state/ck3-java-g2-robert1066-resume61/bootstrap-controls/sway/census01.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 762,
+      "sha256": "aed33ec9580cfe85abb603b3b9eabaab5166906ffdfd87912afac800a3713e0f"
+    },
+    {
+      "key": "planner_core_declaration01",
+      "path": "D:/ck3-state/ck3-java-g2-robert1066-resume61/bootstrap-controls/planner/core/declaration01.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 1434,
+      "sha256": "be080d5df30f597abd68036eb83f8a6e396dc867e9c2b4cc54d1b6108abfb890"
+    },
+    {
+      "key": "planner_core_census01",
+      "path": "D:/ck3-state/ck3-java-g2-robert1066-resume61/bootstrap-controls/planner/core/census01.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 780,
+      "sha256": "8892d7ff6245d71de7856e71f9cbc9411d302dc7447ab487ac17f62ccc6bda05"
+    },
+    {
+      "key": "planner_coa-read-limits_declaration01",
+      "path": "D:/ck3-state/ck3-java-g2-robert1066-resume61/bootstrap-controls/planner/coa-read-limits/declaration01.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 1166,
+      "sha256": "2c07201d3b11ff145d1d8f591fa37531f1c318895a2ec6284d1858214db9eb7c"
+    },
+    {
+      "key": "planner_coa-read-limits_census01",
+      "path": "D:/ck3-state/ck3-java-g2-robert1066-resume61/bootstrap-controls/planner/coa-read-limits/census01.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 802,
+      "sha256": "9f63d8af81b36d3e72d17238e682e1702ff786f95337712edca7436a9e6a1b36"
+    },
+    {
+      "key": "family_declaration01",
+      "path": "D:/ck3-state/ck3-java-g2-robert1066-resume61/bootstrap-controls/family/declaration01.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 1438,
+      "sha256": "c6fd1ad5d32dd951def08e1f7fe2233e714ae2e419f2ae067c732255bacd9982"
+    },
+    {
+      "key": "family_census01",
+      "path": "D:/ck3-state/ck3-java-g2-robert1066-resume61/bootstrap-controls/family/census01.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 763,
+      "sha256": "68c062905650cfb30f965266c3c13230676bd4a7123e1945f3592ea944266ba3"
+    },
+    {
+      "key": "m3native-actual-result42",
+      "path": "D:/ck3-state/ck3-java-g2-resume61-r7-ls18-regression04/controls/M3NATIVE-ACTUAL-RESULT42.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 8992,
+      "sha256": "ffe855432bed2fb09f0af5ef5ce5f1c4fdd51e78b7341ade4668763e8ddc4f28"
+    },
+    {
+      "key": "m3native-close42",
+      "path": "D:/ck3-state/ck3-java-g2-resume61-r7-ls18-regression04/controls/M3NATIVE-CLOSE42.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 821,
+      "sha256": "9dd7adff16f3ee0b8fe78d6cd5b3b55d1978a7a5047df4986c222d2a8db8585e"
+    },
+    {
+      "key": "m3native5-quote43",
+      "path": "D:/ck3-state/ck3-java-g2-resume61-r7-ls18-regression04/controls/M3NATIVE5-QUOTE43.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 51826,
+      "sha256": "d7e6803e4c06839aae94f97aac019f314b85b0073b3f84869beb1bec8df6370b"
+    },
+    {
+      "key": "m0_close42",
+      "path": "D:/ck3-state/ck3-java-g2-resume61-m0-cold01/CLOSE42.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 17350,
+      "sha256": "b8f63689497de0d1ada5ea825c2ce16a9d0401898022afb33c1f4bc6a9eaf5e6"
+    },
+    {
+      "key": "cunit_contract",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/native10/dev61/ck3_autonomous_player/native_bridge/include/xar_bridge/public_unit_id.hpp",
+      "state": "OBSERVED_READABLE",
+      "bytes": 841,
+      "sha256": "5a23359943edaa872342be273680334fb682b19a07c9afbd11ceb5975b3f3d42"
+    },
+    {
+      "key": "game_contract",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/native10/dev61/ck3_autonomous_player/native_bridge/include/xar_bridge/game_contract.hpp",
+      "state": "OBSERVED_READABLE",
+      "bytes": 175382,
+      "sha256": "6c300e7626bdf47fcafdfa4f51fcb70b56adf7c689d597db016d057ace960c2b"
+    },
+    {
+      "key": "battle_control_mailbox",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/native10/dev61/ck3_autonomous_player/native_bridge/src/battle_control_snapshot_v1_mailbox.cpp",
+      "state": "OBSERVED_READABLE",
+      "bytes": 84387,
+      "sha256": "61a00b3e686779f00d045ce70576d81eb7ad9537ac8fa64af66e2280166e4253"
+    },
+    {
+      "key": "reinforcement_mailbox",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/native10/dev61/ck3_autonomous_player/native_bridge/src/battle_reinforcement_assignment_v1_mailbox.cpp",
+      "state": "OBSERVED_READABLE",
+      "bytes": 26984,
+      "sha256": "e9433aad0d6abf926741914e647add2e945ab68bfd7c8680b7a4fc3338939258"
+    },
+    {
+      "key": "native_current_cmake",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/native10/dev61/ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "state": "OBSERVED_READABLE",
+      "bytes": 466352,
+      "sha256": "42b934acb15410deb4e638883e08f85a695527c0973f26bef20917d4489227c0"
+    },
+    {
+      "key": "native_diag08_terminal",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/native10/build61/dev/native_execution/adapterdiag22run08/terminal.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 7969,
+      "sha256": "1303d6ceee576587472581651f555ae56b968ae596e6c7f4aa099562c55538ab"
+    },
+    {
+      "key": "native_diag08_stderr",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/native10/build61/dev/native_execution/adapterdiag22run08/stderr.log",
+      "state": "OBSERVED_READABLE",
+      "bytes": 119,
+      "sha256": "21fb6e5e1c0a4cb91bec1e5976431248667f0606f809ea0655599a18dee492df"
+    },
+    {
+      "key": "s26_main",
+      "path": "D:/codex-ck3-demos/2026-10-26-java-tools-s-isolated-r4-resume61/build/java-tools-s26-final64-r4-resume61/ck3-control-build-tools/ck3-control-build-tools-0.1.0-SNAPSHOT.jar",
+      "state": "OBSERVED_READABLE",
+      "bytes": 3287383,
+      "sha256": "962087e3df18b0a29bfb2d660676ee1858ef4d40231acec116a89b5febc7e91b"
+    },
+    {
+      "key": "s26_profile14",
+      "path": "D:/codex-ck3-demos/2026-10-26-java-tools-s-isolated-r4-resume61/build/java-tools-s26-local-resume61/profile14-s26.jar",
+      "state": "OBSERVED_READABLE",
+      "bytes": 18271,
+      "sha256": "53e797cb90f7b7127356422690a14ebec205a21eab3d1f97c2d4ce818e811e31"
+    },
+    {
+      "key": "i61_latest_reference122",
+      "path": "D:/codex-ck3-background/i61/.codex-delivery/INCREMENTAL122.json",
+      "state": "OBSERVED_READABLE",
+      "bytes": 1402,
+      "sha256": "40bd4e958bdb8e00aac67c6a62efb132079774e77c0ba4e63821f3c6b6404817"
+    },
+    {
+      "key": "current_native_plan_main",
+      "path": "D:/codex-ck3-demos/2026-10-25-java-g2-complete31-h5r5/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootNativeLaunchPlanInputs.java",
+      "state": "OBSERVED_READABLE",
+      "bytes": 21157,
+      "sha256": "7874c6f0f2468473ed46a1eace9fdfb25e1062cced6878685ec165797ffe8461"
+    },
+    {
+      "key": "i61_native_plan_main",
+      "path": "D:/codex-ck3-background/i61/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootNativeLaunchPlanInputs.java",
+      "state": "OBSERVED_READABLE",
+      "bytes": 14556,
+      "sha256": "7eb7ee465fb5b0dfed8e338145db59939c89a8aaac67f08b938c751e56fde4bf"
+    },
+    {
+      "key": "current_bootstrap_cli",
+      "path": "D:/codex-ck3-demos/2026-10-25-java-g2-complete31-h5r5/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootJavaBootstrapInputs.java",
+      "state": "OBSERVED_READABLE",
+      "bytes": 43738,
+      "sha256": "0b60cba15e88c4f105e7e846711d316556c72ef89902d76ca791d2b50169ab7b"
+    },
+    {
+      "key": "i61_bootstrap_cli",
+      "path": "D:/codex-ck3-background/i61/java/ck3-control/local-service/src/main/java/org/xar/ck3/control/service/root/RootJavaBootstrapInputs.java",
+      "state": "OBSERVED_READABLE",
+      "bytes": 43718,
+      "sha256": "48dfe45653e96d06c7a3516a089e9a1b05b0222733c3dd70fef311b210d748c6"
+    },
+    {
+      "key": "current_native_plan_test",
+      "path": "D:/codex-ck3-demos/2026-10-25-java-g2-complete31-h5r5/java/ck3-control/local-service/src/test/java/org/xar/ck3/control/service/root/RootNativeLaunchPlanCommandTest.java",
+      "state": "OBSERVED_READABLE",
+      "bytes": 8734,
+      "sha256": "10ef7313dcd14439fac6edd31b2f4427e8eb01a6c1216fed0bf78a7ac2980e5c"
+    },
+    {
+      "key": "i61_native_plan_test",
+      "path": "D:/codex-ck3-background/i61/java/ck3-control/local-service/src/test/java/org/xar/ck3/control/service/root/RootNativeLaunchPlanCommandTest.java",
+      "state": "OBSERVED_ABSENT_SOURCE_ALIGNMENT_GAP",
+      "bytes": null,
+      "sha256": null,
+      "error": "[Errno 2] No such file or directory: 'D:\\\\codex-ck3-background\\\\i61\\\\java\\\\ck3-control\\\\local-service\\\\src\\\\test\\\\java\\\\org\\\\xar\\\\ck3\\\\control\\\\service\\\\root\\\\RootNativeLaunchPlanCommandTest.java'"
+    },
+    {
+      "key": "host54_pending_map_1",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/governance_ordinary/compile54/SOURCE-DELTA54.json",
+      "bytes": 6136,
+      "sha256": "f706c2b621d723b83d1c5b132368c27eb43c0777c1bceb8a85c024678d81247d",
+      "state": "OBSERVED_READABLE",
+      "declared_reference_match": true
+    },
+    {
+      "key": "host54_pending_map_2",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/native_governance/test40/SOURCE-DELTA40.json",
+      "bytes": 5814,
+      "sha256": "127b25bf32e9873e5f3f6eea4488041f5fdd3fe5297ca3562984a351d2991f57",
+      "state": "OBSERVED_READABLE",
+      "declared_reference_match": true
+    },
+    {
+      "key": "host54_pending_map_3",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/known_interactions/compile_interaction_names89/SOURCE-DELTA89.json",
+      "bytes": 6461,
+      "sha256": "1fa382daa6b862edce7781d9c4e0639022648005b7aa37b5898893abbf935bd1",
+      "state": "OBSERVED_READABLE",
+      "declared_reference_match": true
+    },
+    {
+      "key": "host54_pending_map_4",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/family_ordinary/compile_nt_test44/SOURCE-DELTA44.json",
+      "bytes": 3262,
+      "sha256": "afc1c4af9d8779f29feb0d186502311f914e9c1db56a26d735c9efcaa68c31b1",
+      "state": "OBSERVED_READABLE",
+      "declared_reference_match": true
+    },
+    {
+      "key": "host54_pending_map_5",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/native_religion/compile54_tests51/SOURCE-DELTA51.json",
+      "bytes": 10112,
+      "sha256": "42faab029055ddabd76aec29999d2289fd5c1a5a0802f804729edb69ba376498",
+      "state": "OBSERVED_READABLE",
+      "declared_reference_match": true
+    },
+    {
+      "key": "host54_pending_map_6",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/planner_owner/compile_query_history33/SOURCE-DELTA33.json",
+      "bytes": 3728,
+      "sha256": "96f5efdf203fd8f86b3f403f34c1f218570c4cc8c7e19b2b74842de5973fbc74",
+      "state": "OBSERVED_READABLE",
+      "declared_reference_match": true
+    },
+    {
+      "key": "host54_pending_map_7",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/warcore_leaves/compile_fix11/SOURCE-DELTA11.json",
+      "bytes": 5220,
+      "sha256": "c33a1e1beb1718fa7c4b16f9d0f321efa083c762d10257a219ccb04c1feb4e6c",
+      "state": "OBSERVED_READABLE",
+      "declared_reference_match": true
+    },
+    {
+      "key": "host54_pending_map_8",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/m4_research/gui_formatter_test_compile27/SOURCE-DELTA27.json",
+      "bytes": 2511,
+      "sha256": "f0cb31ca3b87c249af89f45ef57de9faaf94c15c45afc15d1dacbb5a26336bcf",
+      "state": "OBSERVED_READABLE",
+      "declared_reference_match": true
+    },
+    {
+      "key": "host54_pending_map_9",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/m0_research/native_producer_warning45/SOURCE-DELTA45.json",
+      "bytes": 2254,
+      "sha256": "47fcf02e0cd6c6b3b1789d166090518765d1152589154f1ec589329213a2f7e7",
+      "state": "OBSERVED_READABLE",
+      "declared_reference_match": true
+    },
+    {
+      "key": "host54_pending_map_10",
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/effect_observers/compile36/SOURCE-PATCH36-NT-TEST-JACKSON-LOCATIONS.json",
+      "bytes": 2556,
+      "sha256": "7afff04f21ed8c93389ffcd38fd0d638d7c5a9e2b746baced0e8069782013886",
+      "state": "OBSERVED_READABLE",
+      "declared_reference_match": true
+    },
+    {
+      "key": "host49_sealed_jar_1",
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\complete35-candidate31-h5r5\\sealed-tools-producer39\\ck3-control-build-tools-0.1.0-SNAPSHOT.jar",
+      "bytes": 3341573,
+      "sha256": "162f9d6c38484f399ee2a9901906532ad158d828a85864ea940badd8605fe71e",
+      "state": "OBSERVED_READABLE",
+      "declared_reference_match": true
+    },
+    {
+      "key": "host49_sealed_jar_2",
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\complete35-candidate31-h5r5\\sealed-tools-producer39\\lib\\jackson-annotations-2.21.jar",
+      "bytes": 82104,
+      "sha256": "53ca085f4a150f703f49e1aabd935bd03b43e1ea3d55d135438292af22cef56b",
+      "state": "OBSERVED_READABLE",
+      "declared_reference_match": true
+    },
+    {
+      "key": "host49_sealed_jar_3",
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\complete35-candidate31-h5r5\\sealed-tools-producer39\\lib\\jackson-core-2.21.7.jar",
+      "bytes": 594782,
+      "sha256": "8c5623b98f32d5f7e1287ff61ed50e08ab7b11381e991fff89327faabba42261",
+      "state": "OBSERVED_READABLE",
+      "declared_reference_match": true
+    },
+    {
+      "key": "host49_sealed_jar_4",
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\complete35-candidate31-h5r5\\sealed-tools-producer39\\lib\\jackson-databind-2.21.7.jar",
+      "bytes": 1709095,
+      "sha256": "1290c2795e93e8a6861a6c4d9ff0d844d32f5ea178362cb2721edf5561e828b1",
+      "state": "OBSERVED_READABLE",
+      "declared_reference_match": true
+    },
+    {
+      "key": "host49_sealed_jar_5",
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\complete35-candidate31-h5r5\\sealed-tools-producer39\\lib\\jna-5.19.1.jar",
+      "bytes": 1950853,
+      "sha256": "4fb141dd8ef6b0585ffceea4bc49602fbc6312fa977e2c488794ea3e6aafecae",
+      "state": "OBSERVED_READABLE",
+      "declared_reference_match": true
+    },
+    {
+      "key": "host49_sealed_jar_6",
+      "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\complete35-candidate31-h5r5\\sealed-tools-producer39\\lib\\jna-platform-5.19.1.jar",
+      "bytes": 1416385,
+      "sha256": "3b3864f5b449e9c3c24b16861524b622b086563f44e0cd8384c8efc5a6052f82",
+      "state": "OBSERVED_READABLE",
+      "declared_reference_match": true
+    }
+  ]
+}

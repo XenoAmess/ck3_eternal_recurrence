@@ -1,0 +1,1435 @@
+{
+  "schema": "xar.java-g2.final-vacation-source-index/v2",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "written_at_utc": "2026-10-25T21:23:07.608276+00:00",
+  "user_instruction": "Final vacation: close every task and write handoff to docs. No automatic resume.",
+  "status": "FINAL_STOP_ALL_60_QUIESCENT_NOT_PROJECT_COMPLETE",
+  "qualification_boundary": "Only closing metadata bytes/hash and JSON checks. No whole source graph requalification, compilation, tests, production registration or Game business evidence. References do not grant execution.",
+  "handoff": {
+    "path": "Z:/ck3_mod_rewrite/docs/handover/2026-10-26-java-g2-incremental-r5-vacation-final-handoff.md",
+    "bytes": 28530,
+    "sha256": "a297ddea2a515a0464484687bc7a5568d4823084628763be6149f6a450a104f7"
+  },
+  "progress": {
+    "path": "Z:/ck3_mod_rewrite/docs/autonomous-agent-progress/2026-10-26-java-g2-incremental-r5-current.md",
+    "bytes": 2191,
+    "sha256": "fe557e75bba90552a1aea99dbcca626c5a892ca0212f8fb2b4191a7910ad1d49"
+  },
+  "durable_user_build_memory": {
+    "path": "Z:/ck3_mod_rewrite/AGENTS.md",
+    "bytes": 104120,
+    "sha256": "73ffc78b732d103aab6d268afe0ce8e96d81f076b1eb8ef37df6f95ad6dfe29c"
+  },
+  "parent_handoff_unchanged": [
+    {
+      "path": "Z:/ck3_mod_rewrite/docs/handover/2026-10-26-java-g2-resume60-r4-vacation-final-handoff.md",
+      "bytes": 22692,
+      "sha256": "615605386846a549a97389fe3b9721cfc8d491d8607353f27722539d0bce43f8"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/docs/handover/2026-10-26-java-g2-resume60-r4-vacation-final-source-index.json",
+      "bytes": 51721,
+      "sha256": "770e603a358489f20d766d3736e9ef2b128aab6c57f4b39735cb7cdaee988a61"
+    }
+  ],
+  "policy": [
+    {
+      "path": "Z:/ck3_mod_rewrite/docs/storage-retention-policy.md",
+      "bytes": 17121,
+      "sha256": "6a92bd77cd3166707472c43f2eb06c3bba0a6510a23ae2eeccb5006f5e49ba09"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/docs/storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    }
+  ],
+  "machine_close": {
+    "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/ROOT-VACATION-CLOSE-STATE02.json",
+    "bytes": 3505,
+    "sha256": "122e09cbd43da066c9376002151527e08a69155faceb8f6cafbfb4cc2ac8d7d2"
+  },
+  "taskbus": {
+    "provider": "collaboration.list_agents final direct call before index generation",
+    "observation_not_after_utc": "2026-10-25T21:22:05.639110+00:00",
+    "root_status_during_doc_write": "running",
+    "children_total": 60,
+    "children_completed": 60,
+    "children_running": 0,
+    "children_errored": 0,
+    "completed_means": "Closure completed; never feature/compile/Game acceptance. No additional agent started.",
+    "counts_by_group": {
+      "A20": 20,
+      "B20": 20,
+      "C17": 17,
+      "monitors": 3
+    }
+  },
+  "owner_handoffs02": [
+    {
+      "owner": "/root/action_coordinator",
+      "group": "A20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/action_coordinator/VACATION-HANDOFF02.json",
+        "bytes": 11173,
+        "sha256": "680a992ef6ccc083795346d701d07b24491229aaa98a87763f85773459879f93"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_VACATION_STOP_NO_AUTOMATIC_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/auto_loop",
+      "group": "A20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/auto_loop/VACATION-HANDOFF02.json",
+        "bytes": 10511,
+        "sha256": "50a1e726e0c0e94a7ae6b5cb03ba426255cf92acda7078fa3341fd9eec67fd5a"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_STOP_PAUSED_NO_AUTOMATIC_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/b64_execution",
+      "group": "C17",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/b64_execution/VACATION-HANDOFF02.json",
+        "bytes": 8455,
+        "sha256": "34836b54ef0439f3d0efb5b27a45992a2db1b9943035e89fcdd706b15105908f"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_STOP_NOT_RESUMED_NO_OWNED_CHILD_OR_SLOT",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/battle_advance",
+      "group": "A20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/battle_advance/VACATION-HANDOFF02.json",
+        "bytes": 6572,
+        "sha256": "3441e87f556d9770a8fe572ff43f0dddf0d602107aea769c8d853b8a27e98d9f"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "STOPPED_NO_TASK_RESUMPTION",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/campaign_goals",
+      "group": "A20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/campaign_goals/VACATION-HANDOFF02.json",
+        "bytes": 6493,
+        "sha256": "15000a6a9d91d7af137fe63fba45c61068c41f7aef53d1dbb2e4d73a2508d7f5"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_STOP_NO_AUTOMATIC_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/capacity",
+      "group": "C17",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/capacity/VACATION-HANDOFF02.json",
+        "bytes": 5936,
+        "sha256": "12196153f2c6e96f641f762262bcab158965caba6ed91173866183c7c62dcaab"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_STOP_QUIESCENT_NO_FUTURE_EXECUTION_AUTHORITY",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/combat_phase",
+      "group": "A20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/combat_phase/VACATION-HANDOFF02.json",
+        "bytes": 7149,
+        "sha256": "85a97395abf181696227b30163e0de18a17a3173a87abf011d59cb1a32c61a36"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "STOPPED_BY_USER_VACATION_FINAL_APPEND_ONLY",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/construction",
+      "group": "A20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/construction/VACATION-HANDOFF02.json",
+        "bytes": 14282,
+        "sha256": "bcfcc963cd59dcb080141c4632a8a4eef436d22dac6541d9b3b09d25a4e303d3"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "STOPPED_AT_FINAL_USER_VACATION_REQUEST",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/driver_history",
+      "group": "A20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/driver_history/VACATION-HANDOFF02.json",
+        "bytes": 10090,
+        "sha256": "93009c51671263c108058812e98512e80b45ba378fd8947dc7a74b9e6e1023a5"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "STOPPED_LATEST_USER_VACATION_NO_AUTOMATIC_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/driver_snapshot",
+      "group": "A20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/driver_snapshot/VACATION-HANDOFF02.json",
+        "bytes": 12299,
+        "sha256": "527048a0f5f6ee7623a555e7f1cb706d3778cded0b2903ae06ffff2a8954a6ea"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "USER_VACATION_STOPPED_NO_AUTOMATIC_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/effect_observers",
+      "group": "A20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/effect_observers/VACATION-HANDOFF02.json",
+        "bytes": 7179,
+        "sha256": "ca41da3f435fda50b02649480e078c2e248317dddc9c20027917b49862dd70d5"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_STOP_OVERRIDES_ALL_PRIOR_CARDS_AND_RESUME_NO_AUTOMATIC_CONTINUATION",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/event_registry",
+      "group": "A20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/event_registry/VACATION-HANDOFF02.json",
+        "bytes": 8697,
+        "sha256": "66852c27d73d3493898ce7c3efa29c525c0710e82ba4692dc14f3d73f5038504"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_STOP_NO_AUTOMATIC_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/family_ordinary",
+      "group": "A20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/family_ordinary/VACATION-HANDOFF02.json",
+        "bytes": 9968,
+        "sha256": "ef07b2119440f79b59fbea077fb51157cb73584e4ada41b410750cbd1f1135d0"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "STOPPED",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/finance_ordinary",
+      "group": "A20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/finance_ordinary/VACATION-HANDOFF02.json",
+        "bytes": 10229,
+        "sha256": "cc853d6922799917f8c026972615fab908014bba99bca1dab6f80e92d9223b65"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "USER_STOP_ACTIVE_NO_FURTHER_WORK",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/formal_release",
+      "group": "A20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/formal_release/VACATION-HANDOFF02.json",
+        "bytes": 9227,
+        "sha256": "2f5698e0425c9b93f9a39400658cf3e21634226f2c2d7c16540ffdf1d5630200"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_VACATION_STOP_QUIESCENT_NO_AUTOMATIC_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/g2_acceptance",
+      "group": "monitors",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/g2_acceptance/VACATION-HANDOFF02.json",
+        "bytes": 13807,
+        "sha256": "b6fc7762c96621b2e38eacc2678702a9b45b9a24b9c3840d9d156cc2653c8519"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_STOP_QUIESCENT_EXITING",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/governance_ordinary",
+      "group": "A20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/governance_ordinary/VACATION-HANDOFF02.json",
+        "bytes": 8169,
+        "sha256": "979e981c8b3d63b28a382c2f371686764b302c73008a01bf8c7dad4ca10d501c"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "STOPPED_USER_VACATION_NO_AUTOMATIC_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/host_integration",
+      "group": "C17",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/host_integration/VACATION-HANDOFF02.json",
+        "bytes": 11859,
+        "sha256": "bb9b873ebf913393449d356334da27492dc593881537ca4c6338c92b467ef6e6"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "USER_FINAL_STOP_QUIESCENT_HOST_NO_CHILD",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/known_interactions",
+      "group": "A20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/known_interactions/VACATION-HANDOFF02.json",
+        "bytes": 7376,
+        "sha256": "a0b02d29910c3e55482dec7003ab1879851ef97abecf6c01ffca56614fac7a33"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_VACATION_STOP_NO_AUTOMATIC_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/launcher_refresh",
+      "group": "A20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/launcher_refresh/VACATION-HANDOFF02.json",
+        "bytes": 14932,
+        "sha256": "117a571bdd932dc1e8e79c3f2e3d55cafc8245c7f41493acb9dcd78fbe50f587"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "STOPPED_BY_FINAL_USER_VACATION_INSTRUCTION",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/ledger_writer",
+      "group": "A20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/ledger_writer/VACATION-HANDOFF02.json",
+        "bytes": 9249,
+        "sha256": "f9ab1e89db602c2fa371d0c537485cdd07e23c51bab5b633c8a1d9698a0d5688"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "STOPPED_ON_NEW_USER_VACATION_ORDER",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/lifecycle",
+      "group": "A20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/lifecycle/VACATION-HANDOFF02.json",
+        "bytes": 10733,
+        "sha256": "8cfa22d2aa5662953a44d769a4d41721a94add0a8c39e30462e77955998e8b0f"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_VACATION_STOP_NO_AUTOMATIC_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/m0_research",
+      "group": "B20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/m0_research/VACATION-HANDOFF02.json",
+        "bytes": 7221,
+        "sha256": "91ba5909931e98b64dc6e5d03b8d6c345745a5f719f8121ee0fc4e885ce85303"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_VACATION_STOP_NO_AUTOMATIC_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/m1_research",
+      "group": "B20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/m1_research/VACATION-HANDOFF02.json",
+        "bytes": 6770,
+        "sha256": "2beddd4650655c5d9d2f6d708a9ed02e8621be734603c1195adc2a18e2c0f4ec"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_STOP_ALL_FURTHER_AUTHORITY_CANCELLED_NO_AUTOMATIC_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/m2_research",
+      "group": "B20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/m2_research/VACATION-HANDOFF02.json",
+        "bytes": 8855,
+        "sha256": "436ddd4b2418e0dcef69cec8bdfdb9cbccbfe0a65aac7d9123fb0c408d9b8158"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "STOPPED_BY_FINAL_USER_VACATION_ORDER",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/m3_research",
+      "group": "B20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/m3_research/VACATION-HANDOFF02.json",
+        "bytes": 7972,
+        "sha256": "e7f8366df9dec5015468b1743711d5099c269de07dc741403bba2299f99d9cfd"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_VACATION_STOP",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/m4_research",
+      "group": "B20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/m4_research/VACATION-HANDOFF02.json",
+        "bytes": 13313,
+        "sha256": "61b3a8816591218dda93f6d942d1c2a3819c89f102141d825069c0dddf86a2c5"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_VACATION_STOP_NO_AUTOMATIC_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/m5_research",
+      "group": "B20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/m5_research/VACATION-HANDOFF02.json",
+        "bytes": 10483,
+        "sha256": "3c532923b05957cd5b58e747f52b3ca5f536e942d7ad10f1cf0e28d4dce8eaba"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "QUIESCENT_AFTER_THIS_HANDOFF_WRITE",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/m6_research",
+      "group": "B20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/m6_research/VACATION-HANDOFF02.json",
+        "bytes": 11674,
+        "sha256": "4eea96ae1ab7ed58ed2b1120f033c8ed484597ca6de03964538dc6efc16bcffc"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_VACATION_STOPPED",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/m7_research",
+      "group": "B20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/m7_research/VACATION-HANDOFF02.json",
+        "bytes": 12043,
+        "sha256": "9d154646076cb766ef6a1369496e605c4cc720ba20e88f8f9022e8b783bd44cd"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_VACATION_STOP_NO_AUTOMATIC_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/native_army",
+      "group": "B20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_army/VACATION-HANDOFF02.json",
+        "bytes": 12088,
+        "sha256": "eb33e03f1b4e37ac805bd56bfd257ad2fe66f2ef03471f88f1168af84c7edaf0"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "STOPPED_USER_VACATION_NO_AUTOMATIC_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/native_cb_candidates",
+      "group": "B20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_cb_candidates/VACATION-HANDOFF02.json",
+        "bytes": 14073,
+        "sha256": "02be67ec5ad08a6d37f3b31ccf4e4f4957dae812e7c8479aa21b16d712d4346c"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_VACATION_STOP_NO_AUTOMATIC_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/native_execution",
+      "group": "C17",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_execution/VACATION-HANDOFF02.json",
+        "bytes": 7922,
+        "sha256": "4889ea7ced22385044c01f0c6fd6f3156642960a4fd9cf8e4a7fc76ecb7af331"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "STOPPED_NO_AUTOMATIC_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/native_faction",
+      "group": "B20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_faction/VACATION-HANDOFF02.json",
+        "bytes": 7758,
+        "sha256": "4cbab122bb08f6dccd76317c641e08c7cc905cf863705c3e0f13afad43164a51"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_STOP_ALL_CONTINUATION_AUTHORITY_REVOKED",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/native_family",
+      "group": "B20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_family/VACATION-HANDOFF02.json",
+        "bytes": 8252,
+        "sha256": "b50208ac62d77247d1bdabaaf6394efb95a86b273b427ae79c1a7403209587a7"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_VACATION_STOP_ALL_CONTINUATION_AUTHORITY_CANCELLED",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/native_governance",
+      "group": "B20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_governance/VACATION-HANDOFF02.json",
+        "bytes": 6064,
+        "sha256": "8bcdfaabe0e884410fa89955cf2bbdcab004f56a5d2f3f9e5981327514ccb3c7"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "STOPPED_FOR_USER_VACATION_FINAL",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/native_loan",
+      "group": "B20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_loan/VACATION-HANDOFF02.json",
+        "bytes": 9850,
+        "sha256": "b5568a177e13ba870625aa71bf89107913ff10f8900ea4a6dd93b73da02af57e"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_VACATION_STOP_STATIC",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/native_mechanism_lead",
+      "group": "B20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_mechanism_lead/VACATION-HANDOFF02.json",
+        "bytes": 8382,
+        "sha256": "14a224b0d36a9aca495fd451af5b9e8edd8afdaafbc1f4df912ad071525b61db"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "STOPPED_USER_VACATION_NO_AUTO_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/native_mercenary",
+      "group": "B20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_mercenary/VACATION-HANDOFF02.json",
+        "bytes": 14000,
+        "sha256": "acafa0748d6ded888d0c86d1f0bfb5067ca1390dc779aec40c03842324a63025"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_VACATION_STOP_ALL_FOLLOW_ON_AUTHORITY_CANCELLED",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/native_protocol_identity",
+      "group": "monitors",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_protocol_identity/VACATION-HANDOFF02.json",
+        "bytes": 14109,
+        "sha256": "13127235161fb345e736e543141cc1aa517d58078d74fd2978efdcdd4e5829b2"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_STOP_QUIESCENT_NO_AUTOMATIC_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/native_refund",
+      "group": "B20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_refund/VACATION-HANDOFF02.json",
+        "bytes": 11889,
+        "sha256": "166d658684b05de2548b52de2e5d2898f4d4bd3d33397a2296f06c1384847c5d"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_VACATION_STOP_NO_AUTO_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/native_religion",
+      "group": "B20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_religion/VACATION-HANDOFF02.json",
+        "bytes": 14629,
+        "sha256": "9ccde6a6b2a721d3131f140ad31408498ff5ba4b8b0aaf157bd3cb13e43cb22e"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_VACATION_STOP_NO_AUTOMATIC_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/native_schemes_events",
+      "group": "B20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_schemes_events/VACATION-HANDOFF02.json",
+        "bytes": 10276,
+        "sha256": "d7dd55cedaa000e6cb213262d4a172337f605da3f6c4ea3de1d53c3cf8d2e204"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_VACATION_STOP_ALL_FURTHER_AUTHORITY_CANCELLED",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/native_siege",
+      "group": "B20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_siege/VACATION-HANDOFF02.json",
+        "bytes": 4927,
+        "sha256": "6411e9be81d2056fb39c9a53ca90432b59ff5f6f323fe6dd888184d2b12806a2"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_VACATION_STOP_NO_AUTOMATIC_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/native_succession",
+      "group": "C17",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_succession/VACATION-HANDOFF02.json",
+        "bytes": 4398,
+        "sha256": "0b50daa2f1c61f107125f7f5819f55732ebce6646710fae0162e84b1bf587ca6"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_VACATION_STOP_NO_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/native_supply",
+      "group": "C17",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_supply/VACATION-HANDOFF02.json",
+        "bytes": 5100,
+        "sha256": "c14aefc978c056589b8da615b2029964e3043ce97b6af4481121cb57971b848f"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_VACATION_STOP_NO_AUTOMATIC_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/native_transport_core",
+      "group": "C17",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_transport_core/VACATION-HANDOFF02.json",
+        "bytes": 7873,
+        "sha256": "078960fdedb19f092cec73cd4b6b77617b03ee3167c0d06c7a2002e71cfc3333"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "STOPPED_QUIESCENT",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/native_war_cash",
+      "group": "C17",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_war_cash/VACATION-HANDOFF02.json",
+        "bytes": 5285,
+        "sha256": "80037101ef493eccc67be180440804492b46d9e45dd1021442c7acd9352f3a66"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "STOPPED_USER_VACATION_FINAL",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/outcome_archive",
+      "group": "C17",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/outcome_archive/VACATION-HANDOFF02.json",
+        "bytes": 6032,
+        "sha256": "c6208802bcc253aa945791cc4ae4d576bb520a2e835625475d8803ce034c0c21"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "USER_FINAL_VACATION_STOPPED_NO_AUTOMATIC_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/planner_owner",
+      "group": "A20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/planner_owner/VACATION-HANDOFF02.json",
+        "bytes": 10058,
+        "sha256": "8a7f53d2a626194c77eaac0debfb602474092ec29102d931a9b2eabedd542117"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_STOP_NO_RESEARCH_OR_IMPLEMENTATION_RESUMED",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/public_mcp",
+      "group": "A20",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/public_mcp/VACATION-HANDOFF02.json",
+        "bytes": 11812,
+        "sha256": "02bd69bb2eecda0fbd4485f5cbf081915e93f2e5b12b3641f6c6dfa474e5c3b9"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "STOPPED_FINAL_USER_VACATION_NO_AUTOMATIC_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/readiness",
+      "group": "monitors",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/readiness/VACATION-HANDOFF02.json",
+        "bytes": 3815,
+        "sha256": "b21aba1296782f39b90116a10359f3389ea8c2aac7f0c4286374af90569fbfe0"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_STOP",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/recovery_junction",
+      "group": "C17",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/recovery_junction/VACATION-HANDOFF02.json",
+        "bytes": 8963,
+        "sha256": "e34a33cbdc35e6259487490f4cf18075e21abc1db7202fd75c0e6930ab0ed8e5"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "STOPPED_USER_FINAL_VACATION",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/reference_main",
+      "group": "C17",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/reference_main/VACATION-HANDOFF02.json",
+        "bytes": 8226,
+        "sha256": "a92cd16d6d631ed85c0a9f25613d6e3c6e2e1e76da2f628d8f937d4ee635d1d2"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_VACATION_STOP_QUIESCENT",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/root_assembly",
+      "group": "C17",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/root_assembly/VACATION-HANDOFF02.json",
+        "bytes": 4910,
+        "sha256": "f92d20d6baebc1eef69a813c559dce97bd46ad61253a356cb6de65ab9d59f8f8"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "STOPPED_FINAL_VACATION_NO_AUTOMATIC_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/save_restore",
+      "group": "C17",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/save_restore/VACATION-HANDOFF02.json",
+        "bytes": 8753,
+        "sha256": "e360ea7fb4bc763d20aa51061688c86b685d3fdd1b44da863c925262640287ed"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_VACATION_STOP_NO_AUTOMATIC_RESUME",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/sdk_execution",
+      "group": "C17",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/sdk_execution/VACATION-HANDOFF02.json",
+        "bytes": 8484,
+        "sha256": "1d82154a75d76368f601227d36815a4a033f8c970f07355a9c45f6bfe28cef1b"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_VACATION_STOP_QUIESCENT",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/sway_ordinary",
+      "group": "C17",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/sway_ordinary/VACATION-HANDOFF02.json",
+        "bytes": 7043,
+        "sha256": "2a9180f0832a64959dd40f17295f71943ee09f63894eaee57f03992f5210c23c"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_VACATION_STOP_HANDOFF_ONLY_NOT_RESUMED",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/tools_adoption",
+      "group": "C17",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/tools_adoption/VACATION-HANDOFF02.json",
+        "bytes": 9191,
+        "sha256": "6603cedb69cc8aaf1a805b32372372636025242972662f9318bb0a07e25d2c82"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_USER_VACATION_STOP_QUIESCENT",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    },
+    {
+      "owner": "/root/warcore_leaves",
+      "group": "C17",
+      "handoff02": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/warcore_leaves/VACATION-HANDOFF02.json",
+        "bytes": 6125,
+        "sha256": "e71dd3644d923de5f8ac13f07a7cab2dd6f9862d35975267a9a15f2ce16fec49"
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner_reported_state": "FINAL_VACATION_STOP_QUIESCENT",
+      "taskbus_final_status": "completed",
+      "handoff01_preserved_exists": true
+    }
+  ],
+  "execution_terminal": {
+    "Host": "incremental04 RED; all actual inner/outer Job0. 22target plus5 exact retirements after04 applied but not compiled.05 no invocation/JVM/Maven.",
+    "Native": "192 CXX+3link PASS, peak6828089344, Job0. Managed cleanup RED; no later retry/production/REGISTER/Game.",
+    "S14": "0 JVM/child; lease received not read/adopted; full_s60 not created. local-impact correction RAM only.",
+    "m2": "No active writer, future Root scheduling only; independent second repository not implemented.",
+    "global_OS_census": "NOT_RUN; owned-child facts from actual terminals/owner reports, not all-machine inference.",
+    "goal": "Actual get_goal=null; no pause or complete call."
+  },
+  "acceptance": {
+    "last_Java_compile": "incremental04 COMPILE_RED",
+    "next_compile05": "NOT_STARTED",
+    "new_Tools_S": "NOT_RUN_NOT_QUALIFIED",
+    "final_full_reactor": "NOT_RUN",
+    "SERVICE": "NOT_BUILT",
+    "first_live": "NOT_RUN",
+    "new_Game_days": 0,
+    "real_SAVE_restore_continuations": 0,
+    "G2_eight_M_full_live_accepted": 0
+  },
+  "resume_rule": "Explicit user resume, fresh same-machine roots/capacity/expiry. Reuse current isolated mutable SRC/BUILD/cache. Target affected modules+dependencies with parallel Maven and native targets within measured budgets. Once runnable and affected tests pass, final full acceptance. Never hot-patch frozen R4/R6/R7 or replay cancelled cards.",
+  "all_holds_retained": true,
+  "physical_release_credit_bytes": 0,
+  "new_deadline_extension": false,
+  "critical_metadata_refs": [
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/ROOT-PROJECTION09-ACTUAL-REVIEW01.json",
+      "bytes": 6057,
+      "sha256": "1531416affa9eda60e40b7a1eb79c5757def715f6229917f5266fbaac2bb95f1",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/action_coordinator/SOURCE-FAILED-READ-ORIGINALS13.json",
+      "bytes": 3328,
+      "sha256": "8dd93f305c088a0105f69ed8377e1af72aa9b35f71426c4029f0b4750b3d032c",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/action_coordinator/SOURCE-PHYSICAL-STATUS12.json",
+      "bytes": 11301,
+      "sha256": "b4cbd861640470de80ceb271581f461992949379384f8236f4ad470c9259075a",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/auto_loop/compile12/SOURCE-MAP12.json",
+      "bytes": 6275,
+      "sha256": "ef12ac6a329111c247cbf3e35789a34549b5a85255a23a4b09ee432b4bcd2bd6",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/campaign_goals/SOURCE-DELTA12.json",
+      "bytes": 9338,
+      "sha256": "c48df3e79231e721868469fbe2130fd7f5a9bebca2cac904598ab0555c80085a",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/capacity/HOST-R5-MUTABLE-REPAIR-LEASE03.json",
+      "bytes": 5072,
+      "sha256": "acf3fcf6974d29fa39b6dc1200c1d2a7d30388c6df427d74c3378ca43786b0ac",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/capacity/HOST-S14-FINANCIAL100-COMPAT01.json",
+      "bytes": 2336,
+      "sha256": "3ab7dfba4c4ee60906c018201daf8eddb18478cd64f32615701077528e9a6954",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/capacity/HOST-S14-FINITE-CAPACITY100.json",
+      "bytes": 10577,
+      "sha256": "8ad25202a1c7562f4d1f7d90142b67cf03ea7c549e1669bf4b06f81bb095b846",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/capacity/TOOLS-S14-5520-WHOLE01.json",
+      "bytes": 4803,
+      "sha256": "91d61f5e1a3aab376d0ceb6cae1b3cea22773e4b4d7e45d176db09405b11da4d",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/capacity/TOOLS-S14-ATTEMPT-LEASE01.json",
+      "bytes": 5495,
+      "sha256": "6c5bee1439f5998eaf09faa8ac979713749efa9d0b13dcc695417fc10a623861",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/construction/CONSTRUCTION-MODULE-RELOCATION13.json",
+      "bytes": 9362,
+      "sha256": "81c759b66eaff58b172ca29e7876df6ce0e58519dff4faca667731fb8600878a",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/driver_history/COMPILE-DIRECT-CLOSURE71.json",
+      "bytes": 11419,
+      "sha256": "eadc482d4c46c2adda216b24f268927c913c646f548878440b9a487e9b855369",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/driver_snapshot/persistence_source08/SOURCE-ADD08.json",
+      "bytes": 4803,
+      "sha256": "aa6ad911700cd4427d5f40b97db4cf59706b65f81f7b4d41847f7a7bfcc10958",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/driver_snapshot/run_profile07/SOURCE-DELTA07.json",
+      "bytes": 7748,
+      "sha256": "e7c511b5b9b7d6f8d70e9028f41c1eb3522859a5609841df68d714cb3ced6f76",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/driver_snapshot/runtime_module09/SOURCE-DELTA09.json",
+      "bytes": 6914,
+      "sha256": "4010d4646247d957d5ca2d0231fbe487b7d704f5230134d5c816628bbb8a7be3",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/family_ordinary/compile_api18/SOURCE-DELTA18.json",
+      "bytes": 5949,
+      "sha256": "52beb8c4058ac706d33fcba0f83d6db5d41ded0a028ddfff4baaf06e1d4c5714",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/family_ordinary/initial_data17/SOURCE-DELTA17.json",
+      "bytes": 9117,
+      "sha256": "43ef0e31a05e6584de7e21adbe840c9f2220971ac7f21f74bae5b17e3e624d78",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/finance_ordinary/compile_u64_14/SOURCE-DELTA14.json",
+      "bytes": 8208,
+      "sha256": "a1e90aceb27383569ad035dd8cf789057bbda00a2e25fd96f883af5a40a2fbb9",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/formal_release/FIRSTLIVE-PREP-FACTS01.json",
+      "bytes": 6966,
+      "sha256": "1a391faf88c29ae2dea79822c2a671d604300663c4aad7c3acb3fb62524d756d",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/formal_release/FIRSTLIVE-STEAM-OFFLINE01.json",
+      "bytes": 2480,
+      "sha256": "5b50e6e62d6b0d0d9c70a29717016585516831a47b039d5c9c2d488c861900a8",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/governance_ordinary/h5_compile10/SOURCE-DELTA10.json",
+      "bytes": 7361,
+      "sha256": "0b97bd8be344148ba7d1f3035cb13e1490cee7dfe7faefc09a568437063c0682",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/host_integration/HOST31H5R5-MUTABLE-CLOSE01.json",
+      "bytes": 9899,
+      "sha256": "454127e4f111b5c55df4db6e4ca9ed046d70b1632b552b33e23edf2ece581773",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/host_integration/compile_import02/SOURCE-DELTA02.json",
+      "bytes": 1073,
+      "sha256": "ed2f067feba17884efd7c8742c0cc37af66feb3425443251a54f9a996c007c44",
+      "owner_declared_identity": "NO_STRUCTURED_CLAIM_IN02"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/ledger_writer/fresh_pact82/SOURCE-DELTA82.json",
+      "bytes": 8762,
+      "sha256": "99cd34dfc1450ad878de31d5ee9a58f05557571806d3eb48525c2cddba16fc9c",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/lifecycle/compile_control15/SOURCE-DELTA15.json",
+      "bytes": 5551,
+      "sha256": "1ae465da554a0ce7109e3bfbad1b865df88595fc603ab524aac52060ed218322",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/lifecycle/compile_kind16/SOURCE-DELTA16.json",
+      "bytes": 5653,
+      "sha256": "b30c75ffbf892dc7a5e215cce6a1b01ce37fe634da7a3190d0efdba5c389f1dd",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/lifecycle/finite_result14/SOURCE-DELTA14.json",
+      "bytes": 8038,
+      "sha256": "b119f31d53db9cbce332015e3975b38bb10306016150751004f4b0a3786c5f5e",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/m0_research/archive22/TERMINAL-ARCHIVED-ROLE22.json",
+      "bytes": 11792,
+      "sha256": "46bbcae2e2ea92e9981fd72905b5327ae032cff5324b8cd7ed172e4cd3f3c499",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/m1_research/gift_guard_compile87/SOURCE-DELTA87.json",
+      "bytes": 4273,
+      "sha256": "093a813f58ea8814737570a0ddd5f67afa38e098668bad56bf70e40775f4351e",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/m1_research/gift_membership86/GIFT-MEMBERSHIP-SOURCE86.json",
+      "bytes": 16225,
+      "sha256": "a1b10d01d4700235752631c34dd2cea0e7e9409215a300bb4b34875a938727f4",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/m2_research/failed_read_capture10/SOURCE-MAP10.json",
+      "bytes": 11766,
+      "sha256": "6265a5afb74adf0be6a6a42145251b34c0edaefe9983be2ed32fab0a4cfd80a3",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/m2_research/failed_read_capture10/VALIDATION10.json",
+      "bytes": 3064,
+      "sha256": "17139b30f09b385c7428bda803c7feffe22fdda34c72c3088063c827e3e7da39",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/m3_research/ordinary_no_next11/SOURCE-CALLER11.json",
+      "bytes": 6352,
+      "sha256": "830f588427181c50b53453b860851b29de445765c83cb0da246c62f776ed5213",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/m4_research/CI09-REVIEW-CLOSE01.json",
+      "bytes": 11665,
+      "sha256": "2e7b142d192a7c5ad56bba7f80117101e1064824137f6c5d8d38e6882102aa41",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/m5_research/SOURCE-SELECTION-READBACK11.json",
+      "bytes": 7885,
+      "sha256": "f9f37f1a593ff31932c70b69d3f4a76b6b311ff37dbe03981b1af7861859c923",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_army/compile_import07/SOURCE-DELTA07.json",
+      "bytes": 2170,
+      "sha256": "1c3486e4573a77db0331561ef9f05429ff28c14c9a5e1df57ec5467c3ca3eda4",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_execution/COMPILE-FAILURE-ONLY-COMPILE-CLOSURE01.json",
+      "bytes": 9699,
+      "sha256": "2a923a8cb62e8ece5998c3b2dced7a4d350540f5f4ff2d1f5608dde9fb95959d",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_execution/COMPILE-FAILURE-ONLY-RESULT01.json",
+      "bytes": 7868,
+      "sha256": "b43d526b4c756d9b4df941cdd9c198dd3ff8740a37e99852cd29e7eddafa691f",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_execution/COMPILE-FAILURE-ONLY-WHOLE01.json",
+      "bytes": 2278,
+      "sha256": "2a3d0c461fe3826bb87df7fe286465a95e85570870e9b6f9311ca58cfb314fe8",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_execution/production_memory11/SOURCE-MAP11.json",
+      "bytes": 10248,
+      "sha256": "68672112fde080fb9c562b583f43b87ed7df3265aa917abb8199e3db456a7d97",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_mechanism_lead/common01/SOURCE-MAP-JOINT03.json",
+      "bytes": 9227,
+      "sha256": "bf30d430dfdaad8992702bb1b18d4ced8fbdccfa9014f1e5ef719cf561429ff0",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_mercenary/compile_fix69/SOURCE-DELTA69.json",
+      "bytes": 7064,
+      "sha256": "b46ca33f0cca685470ada183f947cee68cd68dc76e9103158b380e6b1d34caee",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_refund/formal_ci07/SOURCE-DELTA07.json",
+      "bytes": 1600,
+      "sha256": "1b940fe3e9c7563001af23bd0b473211add9476e80062f341600ee7e5a785edf",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_refund/joint_ci10/SOURCE-DELTA10.json",
+      "bytes": 26642,
+      "sha256": "a5e348ad398a4476c1171a4b62130109bb55b0f9536d42ceafd7338ea5f47e06",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_schemes_events/pending_failure65/source02/SOURCE-DELTA65.json",
+      "bytes": 11136,
+      "sha256": "303c3c2c8f1b1da4e90d5d39a3d5cb6f3e02703969891dca708510e86d1c637e",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_supply/committed_route09/SOURCE-MAP09.json",
+      "bytes": 3985,
+      "sha256": "e87013fba6df9ef29639a5acce545ec3d5276c5e75ca3ec032956c294c231e60",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_transport_core/msvc_cleanup10/COMPILE-ARTIFACTS10.json",
+      "bytes": 20420,
+      "sha256": "f1fe647ef3e2ec5140dd5cf020ddfab94ed1c918ba27097ca1e5cb41b9559adf",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_transport_core/msvc_cleanup10/SOURCE-MAP10.json",
+      "bytes": 9300,
+      "sha256": "b400cbf4071e857a6997b92857057b54d9901e87f4b6c9aada0f6e541c720919",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/outcome_archive/SOURCE-MAP08.json",
+      "bytes": 11878,
+      "sha256": "f2599752c8a3bb77935588f06f5549c680d161c0124fb79b30bd1e8492d91a6e",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/public_mcp/compile_collection48/SOURCE-ADD48.json",
+      "bytes": 10567,
+      "sha256": "7dc23975a8c7081084d059f35118cc63be570d7c06fdad12150d1862b14c6da9",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/public_mcp/compile_obj49/SOURCE-REPAIR49.json",
+      "bytes": 3737,
+      "sha256": "791f5e9eb58ad3d4c4735a42e04dd1d2ea81145105cf56e8511adac6f60d2a74",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/recovery_junction/finite_firstlive76/SOURCE-DELTA76.json",
+      "bytes": 9426,
+      "sha256": "ed8dea25a0088d98841f8f74130d54c2ec239db254cbb3da8a8e77c941f4ee6e",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/reference_main/finite_firstlive76/SOURCE-DELTA76.json",
+      "bytes": 8463,
+      "sha256": "b059385b6ec204895a89d9c3945a95cc14db633080be407c51fdcad18fdb2073",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/root_assembly/SOURCE-DELTA68-FAMILY.json",
+      "bytes": 14382,
+      "sha256": "886ef5b8be47c0ff456f6dbb9133d1a35cc9ce222231d952197b82f4da60b3b3",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/tools_adoption/FULL-S-COMPLETE-QUOTE14.json",
+      "bytes": 18200,
+      "sha256": "51ba411adf297c07473514d0122d6826ee61a73b1bd954007fa00fc45db5219b",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/tools_adoption/S-FINAL-CANONICAL-SELECTION14.json",
+      "bytes": 164064,
+      "sha256": "50a8ba7e7b12fad4a778482553af5f0111a8d114dfa2064a3048a0b89ff4582c",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/tools_adoption/SOURCE-DELTA60-FORMAL-INPUTS10.json",
+      "bytes": 6192,
+      "sha256": "41f8a9b2ea36575b346f85b4001ba52221b6a702855959b89a5e864f89a8db6f",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/tools_adoption/SOURCE-DELTA60-PROJECTION-PROVENANCE09.json",
+      "bytes": 2881,
+      "sha256": "3f8634a47d5b87719b67c16fca5f51987259d2f58402f8953a23735844ec34d1",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024-r3/source_graph-complete31/plan/H/H5-repair05/MUTABLE-ACTUAL-COMPILE-FIXES04-APPLIED.json",
+      "bytes": 12165,
+      "sha256": "8e15e1e8d083cf6d446a8cbe1b16a2d9c3e2987cb6aad9ea37b1d15b48ab7ed8",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024-r3/source_graph-complete31/plan/H/H5-repair05/MUTABLE-ACTUAL-COMPILE-FIXES05-APPLIED.json",
+      "bytes": 3989,
+      "sha256": "87d546e51d712e766b0e1168fd4dea3fbf7a95f7d33dccb8e7f521742c4df00a",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024-r3/source_graph-complete31/plan/H/H5-repair05/MUTABLE-ACTUAL-PERSISTENCE-HELPER-ADD02.json",
+      "bytes": 773,
+      "sha256": "3c04839b07f1feb60bcdac9fc153c00cc6ca8b37b610836e31d7aa7dce33bc2f",
+      "owner_declared_identity": "NO_STRUCTURED_CLAIM_IN02"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024-r3/source_graph-complete31/plan/H/H5-repair05/ROOT-HOST31H5R5-INCREMENTAL-WHOLE-CARD02.json",
+      "bytes": 3963,
+      "sha256": "05c10ee140a3f786ed0007b2dd0e169e2860a838a982dc89c3c9ffa972ef073e",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/build-complete35-candidate31-h5r5-incremental04-test-compile.stdout.log",
+      "bytes": 135353,
+      "sha256": "2c2560af3b5cbe414fc3adb52d52611eaabfc0e41bcecdd5cf227a85af8ab018",
+      "owner_declared_identity": "MATCH"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/build-complete35-candidate31-h5r5-incremental04.json",
+      "bytes": 6330,
+      "sha256": "62e6e20432c4adb8b2a2af842687a40ed7d39bd8f7be939c57747529236e2e2d",
+      "owner_declared_identity": "NO_STRUCTURED_CLAIM_IN02"
+    }
+  ],
+  "inherited_large_or_runtime_refs": [
+    {
+      "role": "research_native_terminal",
+      "reference": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/native10/build60/research/native_execution/compile-failure-only01/terminal.json",
+        "bytes": 254432,
+        "sha256": "94804951d005b53910a989b3cd00720a0eabe8bbe5d1aebf4b8c47db31dd2e94"
+      },
+      "verification": "Prior exact owner measurement copied from Native02; Root did not reread binary/large terminal during STOP. No production or runtime requalification."
+    },
+    {
+      "role": "research_bridge_DLL",
+      "reference": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/native10/build60/research/xar_ck3_bridge.dll",
+        "bytes": 12891648,
+        "sha256": "307de1a063ae53a3e5999518a753d7fa66b666da8c4267ae4f992f20a7a64485"
+      },
+      "verification": "Prior exact owner measurement copied from Native02; Root did not reread binary/large terminal during STOP. No production or runtime requalification."
+    }
+  ],
+  "runtime_roots": {
+    "mutable_source": "D:/codex-ck3-demos/2026-10-25-java-g2-complete31-h5r5/java/ck3-control",
+    "build": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/complete35-candidate31-h5r5",
+    "maven_repository": "D:/codex-ck3-demos/2026-10-22-java-phase1/m2",
+    "private_tmp": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/complete35-candidate31-h5r5-tmp",
+    "frozen_source_do_not_modify": "D:/codex-ck3-demos/2026-10-25-java-g2-complete31-h5r4/java/ck3-control",
+    "future_S_state_not_created": "D:/ck3-state/ck3-java-tools-s-r4-20261025/full_s60"
+  },
+  "first_live_DATA": [
+    {
+      "ordinal": 1,
+      "role": "FAMILY_DOMAIN",
+      "selected_firstlive_FileRef": null,
+      "status": "NOT_PRODUCED_OR_NOT_SUPPLIED_AT_STOP"
+    },
+    {
+      "ordinal": 2,
+      "role": "CHILD_MATRILINEAL_DOMAIN",
+      "selected_firstlive_FileRef": null,
+      "status": "NOT_PRODUCED_OR_NOT_SUPPLIED_AT_STOP"
+    },
+    {
+      "ordinal": 3,
+      "role": "DEFAULT_MARRIAGE_DOMAIN",
+      "selected_firstlive_FileRef": null,
+      "status": "NOT_PRODUCED_OR_NOT_SUPPLIED_AT_STOP"
+    },
+    {
+      "ordinal": 4,
+      "role": "INITIAL_PREPARED_ENVIRONMENT",
+      "selected_firstlive_FileRef": null,
+      "status": "NOT_PRODUCED_OR_NOT_SUPPLIED_AT_STOP"
+    },
+    {
+      "ordinal": 5,
+      "role": "INITIAL_POLICY",
+      "selected_firstlive_FileRef": null,
+      "status": "NOT_PRODUCED_OR_NOT_SUPPLIED_AT_STOP"
+    },
+    {
+      "ordinal": 6,
+      "role": "ORIGINAL_DRIVER_RUN_PROFILE",
+      "selected_firstlive_FileRef": null,
+      "status": "NOT_PRODUCED_OR_NOT_SUPPLIED_AT_STOP"
+    },
+    {
+      "ordinal": 7,
+      "role": "EXPLICIT_FRESH_PACT",
+      "selected_firstlive_FileRef": null,
+      "status": "NOT_PRODUCED_OR_NOT_SUPPLIED_AT_STOP"
+    },
+    {
+      "ordinal": 8,
+      "role": "CAPABILITY_CONFIGURATION",
+      "selected_firstlive_FileRef": null,
+      "status": "NOT_PRODUCED_OR_NOT_SUPPLIED_AT_STOP"
+    },
+    {
+      "ordinal": 9,
+      "role": "CAPABILITY_SESSION_PRESENTATION",
+      "selected_firstlive_FileRef": null,
+      "status": "NOT_PRODUCED_OR_NOT_SUPPLIED_AT_STOP"
+    },
+    {
+      "ordinal": 10,
+      "role": "SWAY_CONFIGURATION",
+      "selected_firstlive_FileRef": null,
+      "status": "NOT_PRODUCED_OR_NOT_SUPPLIED_AT_STOP"
+    },
+    {
+      "ordinal": 11,
+      "role": "MCP_CATALOG",
+      "selected_firstlive_FileRef": null,
+      "status": "NOT_PRODUCED_OR_NOT_SUPPLIED_AT_STOP"
+    },
+    {
+      "ordinal": 12,
+      "role": "MCP_ADMISSION",
+      "selected_firstlive_FileRef": null,
+      "status": "NOT_PRODUCED_OR_NOT_SUPPLIED_AT_STOP"
+    },
+    {
+      "ordinal": 13,
+      "role": "MCP_TOOLS",
+      "selected_firstlive_FileRef": null,
+      "status": "NOT_PRODUCED_OR_NOT_SUPPLIED_AT_STOP"
+    },
+    {
+      "ordinal": 14,
+      "role": "MCP_RESOURCES",
+      "selected_firstlive_FileRef": null,
+      "status": "NOT_PRODUCED_OR_NOT_SUPPLIED_AT_STOP"
+    },
+    {
+      "ordinal": 15,
+      "role": "ORIGINAL_MCP_CAPTURE_RECEIPT",
+      "selected_firstlive_FileRef": null,
+      "status": "NOT_PRODUCED_OR_NOT_SUPPLIED_AT_STOP"
+    },
+    {
+      "ordinal": 16,
+      "role": "TRUSTED_EVENT_SOURCE_CONTEXT",
+      "selected_firstlive_FileRef": null,
+      "status": "NOT_PRODUCED_OR_NOT_SUPPLIED_AT_STOP"
+    },
+    {
+      "ordinal": 17,
+      "role": "LIFE_SETTINGS",
+      "selected_firstlive_FileRef": null,
+      "status": "NOT_PRODUCED_OR_NOT_SUPPLIED_AT_STOP"
+    },
+    {
+      "ordinal": 18,
+      "role": "ADVANCE_TIMINGS",
+      "selected_firstlive_FileRef": null,
+      "status": "NOT_PRODUCED_OR_NOT_SUPPLIED_AT_STOP"
+    },
+    {
+      "ordinal": 19,
+      "role": "CAMPAIGN_DEADLINE",
+      "selected_firstlive_FileRef": null,
+      "status": "NOT_PRODUCED_OR_NOT_SUPPLIED_AT_STOP"
+    },
+    {
+      "ordinal": 20,
+      "role": "REMAINING_DOMAIN_SETTINGS",
+      "selected_firstlive_FileRef": null,
+      "status": "NOT_PRODUCED_OR_NOT_SUPPLIED_AT_STOP"
+    },
+    {
+      "ordinal": 21,
+      "role": "NATIVE_DOMAIN_ORIGINALS",
+      "selected_firstlive_FileRef": null,
+      "status": "NOT_PRODUCED_OR_NOT_SUPPLIED_AT_STOP"
+    },
+    {
+      "ordinal": 22,
+      "role": "PORTABLE_EVENT_EVIDENCE_MANIFEST",
+      "selected_firstlive_FileRef": null,
+      "status": "NOT_PRODUCED_OR_NOT_SUPPLIED_AT_STOP"
+    }
+  ],
+  "closing_validation": {
+    "metadata_files": 64,
+    "all_60_JSON_parsed_same_machine": true,
+    "all_60_handoff01_exist": true,
+    "handoff02_cap_bytes": 16384,
+    "max_actual_handoff02_bytes": 14932,
+    "all_60_stopped_on_actual_final_taskbus": true,
+    "compilation_or_CI_run_for_closure": false,
+    "source_map_body_hashes_checked": "Only listed small metadata themselves, not their entire transitive source/deployment graph.",
+    "future_adoption": "NONE",
+    "index_cap_bytes": 196608,
+    "doc_cap_bytes": 65536,
+    "closing_Z_metadata_peak_bytes": 262144
+  }
+}

@@ -1,0 +1,2032 @@
+{
+  "schema": "xar.java-g2.resume56-r2-vacation-source-index/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-23T22:05:16.918472+00:00",
+  "status": "USER_REQUESTED_PAUSE_NOT_COMPLETED",
+  "goal_status": "paused",
+  "goal_pause_confirmed_at_utc": "2026-10-23T21:59:13Z",
+  "scope": "Exact bytes/SHA of named metadata and receipts only; no transitive source adoption or runtime qualification. Mtime ordering is navigation, never selection authority.",
+  "R": "Z:/ck3_mod_rewrite",
+  "J": "D:/codex-ck3-demos/2026-10-22-java-phase1",
+  "N24": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024",
+  "source_bodies_copied": false,
+  "transitive_source_references_validated_by_this_index": false,
+  "execution_authorization": {
+    "unexecuted_specs": "REVOKED_BY_USER_STOP",
+    "new_builds_or_game": "NOT_AUTHORIZED_BY_THIS_HANDOFF",
+    "root_known_commands": "ALL_CONSUMED_TERMINALS_NO_RETAINED_EXEC_SESSION",
+    "whole_machine_process_state": "NOT_ASSERTED",
+    "resume_requires": "User resume plus fresh machine, sources, storage and operation admission"
+  },
+  "verified_outcomes": {
+    "c16_tools": {
+      "status": "PASS",
+      "tests": 517,
+      "suites": 68,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "source08": {
+      "status": "MATERIALIZED",
+      "files": 3587
+    },
+    "full35": {
+      "status": "COMPILE_RED",
+      "success": 17,
+      "failure": 4,
+      "skipped": 14,
+      "tests": "NOT_TESTED",
+      "summary_source": "Raw GB18030 Maven log; old typed summary empty after UTF-8 decode failure"
+    },
+    "native32": {
+      "source_materialization_attempts_red": 2,
+      "configure_build_run": "NOT_RUN",
+      "retry03": "REVOKED_NOT_RUN"
+    },
+    "c17": "PREPARED_NOT_MATERIALIZED_NOT_TESTED",
+    "g2_full_acceptance": {
+      "passed": 0,
+      "total": 8
+    },
+    "java_saved_game_days": 0
+  },
+  "budget": {
+    "D_work_package_hard_bytes": 6979321856,
+    "Z_wave_hard_bytes": 33554432,
+    "whole_actual_allocated_bytes": null,
+    "close_only_new_docs_cap_bytes": 131072,
+    "physical_reclamation_claimed_bytes": 0,
+    "old_review_at_utc": "2026-10-23T23:30:00Z",
+    "review_is_not_resume_authorization": true
+  },
+  "retention": {
+    "policy": "docs/storage-retention-policy.json",
+    "policy_version": "1.0.0",
+    "active_input_review_at_utc": "2026-10-30T16:30:00Z",
+    "record_review_at_utc": "2027-04-22T00:00:00Z",
+    "auto_renew": false,
+    "expiry_is_unconditional_deletion": false
+  },
+  "capacity_only_probe": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-23T21:51:18.955997Z",
+    "method": "Windows GetDiskFreeSpaceExW; not a project usage census",
+    "available_bytes_by_volume": {
+      "C:/": 6805884928,
+      "D:/": 797736873984,
+      "Z:/": 136849252352
+    }
+  },
+  "owner_count": 56,
+  "new_stop_ack_unavailable_owner_count": 49,
+  "owners": [
+    {
+      "owner": "/root/action_coordinator",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/action_coordinator",
+      "closeout_scope": "LIMITED_CLOSEOUT_RECEIVED",
+      "stop_record": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/action_coordinator/STOP-INDEX-20261024.json",
+        "bytes": 5036,
+        "sha256": "5452e469c5308dda0e4e76ed850fef752357bab675ab24329ef0d5b1ebaff5e4",
+        "availability": "READABLE"
+      },
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/action_coordinator/successor13/SOURCE-MAP13.json",
+          "bytes": 30096,
+          "sha256": "0974b62257ebabc60eb9680bc40414727317e6df55d1940fa85097e544fa570b",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/action_coordinator/successor12/SOURCE-MAP12.json",
+          "bytes": 31063,
+          "sha256": "1f2daa7b525e50ed9acabeed52e0eb2a44224b6a517dee62afd0281149f1f735",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "完整13/66冻结；Family14核心State/Ports/Codec未落，外部DATA草稿不能当typed settlement。"
+    },
+    {
+      "owner": "/root/auto_loop",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/auto_loop",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/auto_loop/actual_life_fixture06/EFFECTIVE-SELECTION06.json",
+          "bytes": 28859,
+          "sha256": "373cdf61696dbe24582643d31849eb7f3a616b0cdc37febd8a067ea632dde700",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/auto_loop/read_publication05/EFFECTIVE-SELECTION01.json",
+          "bytes": 24727,
+          "sha256": "3ec4e1e7d626ad48e6b859705214ac80c8e6bf217da3855e6f0748df37aae5ea",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/auto_loop/episode_window07",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 1,
+          "logical_source_bytes": 11438,
+          "filenames": [
+            "ContinuityBatchJournal.java"
+          ],
+          "filenames_truncated": false
+        }
+      ],
+      "continuation_note": "Life16实际夹具源码及历史Cycle接线未跑；06依赖ClockStatusRead旧pin漂移，须07新图重验。"
+    },
+    {
+      "owner": "/root/battle_advance",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/battle_advance",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/battle_advance/cleanup01/SOURCE-MAP01.json",
+          "bytes": 27258,
+          "sha256": "b9786bf594cd83c2f1246d51332905a31e91d210efb6c7e2010bd3e19d032245",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/battle_advance/tactical01/SOURCE-MAP01.json",
+          "bytes": 28280,
+          "sha256": "b261bbf35ca5ac6edd500a2653a555f26689865a7660e4abc3e0526be52de6f0",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/battle_advance/exactday01",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 8,
+          "logical_source_bytes": 126068,
+          "filenames": [
+            "AdvanceClock.java",
+            "AdvancePrimitiveArchivedReplay.java",
+            "AdvancePrimitives.java",
+            "AdvanceSharedContractTest.java",
+            "ExactDayClockFailure.java",
+            "ExactDayClockFailureEvidence.java",
+            "ExactDayFailureBoundaryTest.java",
+            "LifeAdvanceComposite.java"
+          ],
+          "filenames_truncated": false
+        },
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/battle_advance/exactday02",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 2,
+          "logical_source_bytes": 13423,
+          "filenames": [
+            "ClockStatusRead-catalog06-reconstructed.java",
+            "ClockStatusRead.java"
+          ],
+          "filenames_truncated": false
+        }
+      ],
+      "continuation_note": "ExactDay原gate/cleanup新源在exactday01/02；旧ClockStatusRead已失配/缺失，勿恢复内容冒旧身份。"
+    },
+    {
+      "owner": "/root/budget_fast_lane",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/budget_fast_lane",
+      "closeout_scope": "LIMITED_CLOSEOUT_RECEIVED",
+      "stop_record": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/budget_fast_lane/VACATION-FINANCIAL-STOP01.json",
+        "bytes": 96929,
+        "sha256": "00ca210198ff9d9cfb5a042b96a869605569d22fc23e4791da2f8cfca4e039ec",
+        "availability": "READABLE"
+      },
+      "navigation_maps_mtime_order_not_adoption": [],
+      "unsealed_directories": [],
+      "continuation_note": "唯一预算issuer；STOP撤销所有未执行许可，whole实占未知，不扣未测future。"
+    },
+    {
+      "owner": "/root/campaign_goals",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/campaign_goals",
+      "closeout_scope": "PRIOR_SOURCE_DELIVERY_COMPLETED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/campaign_goals/cross_run_core05/EFFECTIVE-SELECTION01.json",
+          "bytes": 48539,
+          "sha256": "e93a12c5cb32e404b326da4cc5cfc2087a3d23cc12fe34fd9ecf45b7f2bd5b9d",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/campaign_goals/strengths_managers01/EFFECTIVE-SELECTION01.json",
+          "bytes": 34835,
+          "sha256": "b839073692968817d9ff4e43a5fce734f4054c15dc67fac57fefd717f33dfbec",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/campaign_goals/goal_observation04",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 1,
+          "logical_source_bytes": 11750,
+          "filenames": [
+            "M7CampaignPoliciesTest.java"
+          ],
+          "filenames_truncated": false
+        }
+      ],
+      "continuation_note": "CrossRun Core05/21源；实际初始策略发布、终局调用、wrapper整图仍待验。"
+    },
+    {
+      "owner": "/root/combat_contract",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/combat_contract",
+      "closeout_scope": "PRIOR_SOURCE_DELIVERY_COMPLETED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/combat_contract/family_archive01/EFFECTIVE-SELECTION01.json",
+          "bytes": 8146,
+          "sha256": "9e6e8916e09a65a0acef16c43779d5b1872d3128e6836d1357eaff7fffd53c4f",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/combat_contract/child_values01/EFFECTIVE-SELECTION01.json",
+          "bytes": 14117,
+          "sha256": "a2038504dea5eabfcdce092ac411be6038a31d8a67295410ef5655912e8ca7d2",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "FamilyArchive01仅真实transport/custody/cold软件范围；完整Root Family5成功正例未完成。"
+    },
+    {
+      "owner": "/root/combat_phase",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/combat_phase",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/combat_phase/compile_fields03/EFFECTIVE-SELECTION01.json",
+          "bytes": 18400,
+          "sha256": "c90d5749fc5ae4b7e724e3005ca3fc6bb4d72eb94bbdf77e59c6ae90de065017",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/combat_phase/family_result02/EFFECTIVE-SELECTION01.json",
+          "bytes": 11481,
+          "sha256": "4afcf418565f3fb163ef3fd7c7cdbfd796081ea1640f25806714d62d79ab470e",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "三文件fields修复已封；pending context ctor/copy第六role研究被中断，不能猜+304。"
+    },
+    {
+      "owner": "/root/command_origins",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/command_origins",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/command_origins/successor09/SOURCE-MAP09.json",
+          "bytes": 31704,
+          "sha256": "b9dce811f9ce41a20a2ae567640d9ac9ef12b2989348b8a2ad791df9ed354bca",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/command_origins/chronology08/SOURCE-MAP08.json",
+          "bytes": 23174,
+          "sha256": "d0ee8f99366b69f94ba54c7507ee33cdbe2b8de38a78e327e3e297361a6e2bb0",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/command_origins/window10",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 1,
+          "logical_source_bytes": 6194,
+          "filenames": [
+            "ArmyWindowReconciliationBinding.java"
+          ],
+          "filenames_truncated": false
+        }
+      ],
+      "continuation_note": "09第四来源合同已封；Window2 Recon窄helper10草稿，不新增第五origin/宽权限。"
+    },
+    {
+      "owner": "/root/construction",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/construction",
+      "closeout_scope": "PRIOR_SOURCE_DELIVERY_COMPLETED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/construction/original_restore05/SOURCE-MAP05.json",
+          "bytes": 34146,
+          "sha256": "8b87812032d4696a1590dd33b85ed5d24e1f38dec391b845a5e5401e40ebf8c9",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/construction/cash_recovery04/SOURCE-MAP04.json",
+          "bytes": 24984,
+          "sha256": "e64c02b2c8edf80bd0d7e8e8c6a45b1f1fddb41a5925e1a85fcd675cb9f5e8a8",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "restore05/20源；真实SavedMaterial/原FileID恢复未编验，未注册Python sidecar仍Unavailable。"
+    },
+    {
+      "owner": "/root/driver_history",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/driver_history",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/driver_history/army_war_history03/EFFECTIVE-SELECTION03.json",
+          "bytes": 31196,
+          "sha256": "b94b6db66246bbd766f08d475a2b8dd3a26bba618dd5de071752f3d9ab8af6a1",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/driver_history/read_history_successor02/EFFECTIVE-SELECTION02.json",
+          "bytes": 28413,
+          "sha256": "0fe83316cbaddad3e4b0531b20713d03929524ba9b2bbefcebecdb49deb7b9cb",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/driver_history/original_rollback_authority01",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 3,
+          "logical_source_bytes": 27457,
+          "filenames": [
+            "OriginalRollbackFiles.java",
+            "OriginalRollbackProof.java",
+            "OriginalRollbackSavedFrontier.java"
+          ],
+          "filenames_truncated": false
+        }
+      ],
+      "continuation_note": "ArmyWar history03已封；实际RollbackAuthority/SDK物理验证接线为未封草稿。"
+    },
+    {
+      "owner": "/root/driver_snapshot",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/driver_snapshot",
+      "closeout_scope": "PRIOR_SOURCE_DELIVERY_COMPLETED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/driver_snapshot/next-episode01/EFFECTIVE-SELECTION01.json",
+          "bytes": 21212,
+          "sha256": "7f1f5f4127d9c45b6f51a79cf3e3ca8a1a8d039c7206016266ca2a2ba1e8d3d5",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/driver_snapshot/ordinary-fixture02/EFFECTIVE-SELECTION01.json",
+          "bytes": 22916,
+          "sha256": "7bb2472497ea336d7bc2dd0e33919653a6145c31c67f99ebcc3264916bb0e969",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "next-episode01/32源冻结；实际newprivateadoption/dynamic callback/hostCAS未验。"
+    },
+    {
+      "owner": "/root/dynamic_capabilities",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/dynamic_capabilities",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/dynamic_capabilities/source06/EFFECTIVE-SELECTION06.json",
+          "bytes": 19857,
+          "sha256": "779417cdce5ea081bb7adbb2b25bdcd045aaac48b08e35293bb6dd7908bded0d",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/dynamic_capabilities/source05/EFFECTIVE-SELECTION05.json",
+          "bytes": 15216,
+          "sha256": "68830a022c3ce3136de9191811262c829fe6bbe9a8cd35ff7edcf261665f742d",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/dynamic_capabilities/cache04",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 7,
+          "logical_source_bytes": 136856,
+          "filenames": [
+            "DriverCapabilityRuntime.java",
+            "DriverCapabilityStateProducer.java",
+            "DriverCapabilityStateProducerTest.java",
+            "DriverPlanningEvidence.java",
+            "DriverStateAssembler.java",
+            "PlanningReadCoordinator.java",
+            "RestoreCapabilityAdoption.java"
+          ],
+          "filenames_truncated": false
+        },
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/dynamic_capabilities/source07",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 6,
+          "logical_source_bytes": 184831,
+          "filenames": [
+            "DriverCapabilityRuntime.java",
+            "DriverCapabilityStateProducer.java",
+            "DriverPersistentPlanningState.java",
+            "DriverRuntimeCapabilities.java",
+            "DriverStateAssembler.java",
+            "DynamicCapabilities.java"
+          ],
+          "filenames_truncated": false
+        }
+      ],
+      "continuation_note": "06/34源冻结；07实际CrossRun/DECL cooldown/Next callback与Window history CAS草稿。"
+    },
+    {
+      "owner": "/root/effect_observers",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/effect_observers",
+      "closeout_scope": "PRIOR_SOURCE_DELIVERY_COMPLETED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/effect_observers/source10/EFFECTIVE-SELECTION10.json",
+          "bytes": 3130,
+          "sha256": "531fa6e70cbc0aea27c304e1621b82ae2b8ebd27f7a03794380754c557e83444",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/effect_observers/source09/EFFECTIVE-SELECTION09.json",
+          "bytes": 24988,
+          "sha256": "b7970629bc4283b97106783b67f65d59af3350bf5d934290845104a0f2d03ac9",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "10为继承09的2项delta；Family sameSEM独立typed send消费者尚未落。"
+    },
+    {
+      "owner": "/root/event_registry",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/event_registry",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/event_registry/original_receipt01/SOURCE-MAP01.json",
+          "bytes": 3257,
+          "sha256": "d270661c3d540ac4ef8f15a954b33ec0d41f08baf956fe1c3bd77d467a91ca0c",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/event_registry/material_query_source01/SOURCE-MAP01.json",
+          "bytes": 20232,
+          "sha256": "1bc926ff73789780dbcd7eeb12e68d13a7b81aac7a69b46ce1e7d55abfd5e064",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/event_registry/planning_observation09",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 2,
+          "logical_source_bytes": 63643,
+          "filenames": [
+            "EventPolicies.java",
+            "RegisteredEventCore.java"
+          ],
+          "filenames_truncated": false
+        }
+      ],
+      "continuation_note": "33源+Binding单项delta；public显式option材料/public64新工作未闭。"
+    },
+    {
+      "owner": "/root/family_ordinary",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/family_ordinary",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/family_ordinary/runtime06/SOURCE-MAP06.json",
+          "bytes": 32784,
+          "sha256": "14ec2f663a578ea1b27c137474c0613ba25e212839faa1fa453f1aeffa9e22f8",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/family_ordinary/detachment_data02/SOURCE-MAP02.json",
+          "bytes": 10087,
+          "sha256": "8c9c1650e88b162a80d0855f7cd54b0d2cb72f0f5e18cfe804300ebaf6419370",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/family_ordinary/runtime07",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 11,
+          "logical_source_bytes": 138863,
+          "filenames": [
+            "FamilyChildPolicy.java",
+            "FamilyCommands.java",
+            "FamilyCommandsIntentTest.java",
+            "FamilyMarriagePreparationReview.java",
+            "FamilyNativePreparation.java",
+            "FamilyPendingProducer.java",
+            "FamilyPendingProducerTest.java",
+            "FamilyPendingStore.java",
+            "RootFamilyBridge.java",
+            "RootFamilyPendingSources.java",
+            "RootFamilyResultRead.java"
+          ],
+          "filenames_truncated": false
+        }
+      ],
+      "continuation_note": "runtime06已封；07五动作before/preparation及泛公共角色变体仍未验。"
+    },
+    {
+      "owner": "/root/finance_ordinary",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/finance_ordinary",
+      "closeout_scope": "PRIOR_SOURCE_DELIVERY_COMPLETED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/finance_ordinary/successor05/SOURCE-MAP06.json",
+          "bytes": 22046,
+          "sha256": "052ca7377e46ca4cbb967b6f1734bbb7433d94cbc77290a10a1c0ac6df92da5e",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/finance_ordinary/successor04/SOURCE-MAP05.json",
+          "bytes": 24336,
+          "sha256": "953fa408b670e6df7659a1c21f630bb26f3428e053ceeb79a098f3155733df1b",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "Gift cold恢复06/29源；UNKNOWN正式结算/到账不能由ACK或源码授予。"
+    },
+    {
+      "owner": "/root/forecast_envelope",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/forecast_envelope",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/forecast_envelope/onaction01/SOURCE-MAP01.json",
+          "bytes": 7694,
+          "sha256": "14fca85d0d94738569af79dfc4a435ef1595ae2acb1dcbe5527eb9ea8a291346",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/forecast_envelope/writer01/SOURCE-MAP01.json",
+          "bytes": 5046,
+          "sha256": "9e47d1c14a8d576e171d1adb517db9da15ad65b6f1dbdca24638bcf637d1a97e",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "onaction01 DB源已封；VFS覆盖优先级/reload外层失效研究草稿。"
+    },
+    {
+      "owner": "/root/forecast_kernel",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/forecast_kernel",
+      "closeout_scope": "PRIOR_SOURCE_DELIVERY_COMPLETED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/forecast_kernel/campaign_score_compat01/EFFECTIVE-SELECTION01.json",
+          "bytes": 21710,
+          "sha256": "b165f071a166a99948e8fd248bfb7d9079fc21809f42390c07a760c07369850c",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/forecast_kernel/m5_precompute_writer01/EFFECTIVE-SELECTION01.json",
+          "bytes": 18636,
+          "sha256": "ecc5eccb132a6fd7507bc8b50dbc4e34b0229d935b0bde56f9310e7113a47330",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "Score兼容28源已封，原7消费者+4元数据回归尚未执行。"
+    },
+    {
+      "owner": "/root/governance_ordinary",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/governance_ordinary",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/governance_ordinary/fresh08/SOURCE-MAP08.json",
+          "bytes": 23536,
+          "sha256": "4da74268d68c20b9feb7a0485ccf15502ba372eb208891a197f777c813d38294",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/governance_ordinary/fresh07/SOURCE-MAP07.json",
+          "bytes": 26777,
+          "sha256": "f50731488265b648ad0d3f9cc08159d0c82774a4dc0f02c928735de5af8427f7",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "Opening08/29源已封；ACTIVATE_RULE09草稿，原Python普通策略本就hold，不硬造自动激活。"
+    },
+    {
+      "owner": "/root/known_interactions",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/known_interactions",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/known_interactions/event_runtime01/EFFECTIVE-SELECTION01.json",
+          "bytes": 11185,
+          "sha256": "41379bf2e217b81a6072d4ef673fc5ae845b4772059cf62327d7b2db6974e7c3",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/known_interactions/pending_replay06/EFFECTIVE-SELECTION06.json",
+          "bytes": 10478,
+          "sha256": "6005c207c3fbba4b8bbe80262a7bb2e46675debc59d2ca129eb37da02ed8f58f",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/known_interactions/event_public02",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 1,
+          "logical_source_bytes": 28881,
+          "filenames": [
+            "EventRuntimeInstaller.java"
+          ],
+          "filenames_truncated": false
+        }
+      ],
+      "continuation_note": "EventRuntime01/8源已封；public选项samefactory/真实效果来源接口未闭。"
+    },
+    {
+      "owner": "/root/launcher_refresh",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/launcher_refresh",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/launcher_refresh/army_war_window01/successor07/SOURCE-MAP07.json",
+          "bytes": 34286,
+          "sha256": "dd3e7cae3bd38027dfec6e0f04d95b4a6bd4579f28d23ac13b7a3a372b93b3d4",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/launcher_refresh/army_war_window01/successor07/RELIGION-CONTEXT-SOURCE-MAP05.json",
+          "bytes": 13747,
+          "sha256": "4e11d5d6eb0d7c4b3976c82e905ada7c7723749ec880447c7b094bfaa0c377d7",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "07主16+religion11源；08 window per-request/receipt router草稿，唯一队列writer无新队列准入。"
+    },
+    {
+      "owner": "/root/ledger_writer",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/ledger_writer",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/ledger_writer/writer09/SOURCE-MAP09.json",
+          "bytes": 20756,
+          "sha256": "8297d616da63dfefb3cb1d2db331611993b9b7992f9e0cd62214cd05fcbdbefb",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/ledger_writer/reconciliation_identity02/EFFECTIVE-SELECTION02.json",
+          "bytes": 29639,
+          "sha256": "7fac0e9179fcf2bf2c3775fea0880615914c428f2dadee2964a27d930e6acf23",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "writer09/29源冻结；新EpisodeWindow BEGIN/BASELINE事件与所有continuity消费者未闭。"
+    },
+    {
+      "owner": "/root/life_advance",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/life_advance",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/life_advance/successor05/SOURCE-MAP05.json",
+          "bytes": 11892,
+          "sha256": "374e1eb07087bcc09109ebf0c7df5b39a8f821152043b0d4f313f27e79bd6c4c",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/life_advance/successor04/SOURCE-MAP04.json",
+          "bytes": 27336,
+          "sha256": "e6139685cdf6c0b38eab5de6c44baa0f5973d7239bef827f8da96f986ef5086f",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/life_advance/relation01",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 17,
+          "logical_source_bytes": 251773,
+          "filenames": [
+            "AdvanceCompletedRead.java",
+            "FamilyConceptionNatural.java",
+            "FamilyCurrentRelation.java",
+            "FamilyCurrentRelationPublic.java",
+            "FamilyCurrentRelationQueries.java",
+            "FamilyCurrentRelationTest.java",
+            "FamilyRelationDescendants.java",
+            "FamilyRelationDifferentialTest.java",
+            "FamilyRelationEducationProvider.java",
+            "FamilyRelationEducationSources.java",
+            "FamilyRelationGuardianMaterials.java",
+            "FamilyRelationJson.java",
+            "FamilyRelationMaterialExports.java",
+            "FamilyRelationOriginalPins.java",
+            "FamilyRelationReproductive.java",
+            "guardian_factory_sidecar_hash_focus.cpp",
+            "LifeAdvanceEvidence.java"
+          ],
+          "filenames_truncated": false
+        }
+      ],
+      "continuation_note": "05已封；current relation/dynamic afterTurn reader草稿，完整actuation/实际Root尚未验。"
+    },
+    {
+      "owner": "/root/lifecycle",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/lifecycle",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/lifecycle/armies01/EFFECTIVE-SELECTION01.json",
+          "bytes": 52797,
+          "sha256": "d03615c8b66f3228b4ed64dd365b85eaddc7386059dda8bfc531164591ac45a7",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/lifecycle/loss01/EFFECTIVE-SELECTION01.json",
+          "bytes": 29511,
+          "sha256": "f73fed72e4080b80d346a6b42c4d0d1a69ec53b955320375e5fd0a79994674e2",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/lifecycle/family_send01",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 3,
+          "logical_source_bytes": 34208,
+          "filenames": [
+            "FamilySendObservation.java",
+            "FamilySendObservationCodec.java",
+            "FamilySendObservationCodecTest.java"
+          ],
+          "filenames_truncated": false
+        }
+      ],
+      "continuation_note": "FamilySendObservation DATA/strict helper为草稿；不能改变genericApplied或给sameSEM推进信用。"
+    },
+    {
+      "owner": "/root/m0_research",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m0_research",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m0_research/prewar_partial01/EFFECTIVE-SELECTION09.json",
+          "bytes": 85105,
+          "sha256": "30b8b5c39255e523086978f651b30801a03d3f3a90cb46015df0eef8863cf980",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m0_research/army_war03/EFFECTIVE-SELECTION08.json",
+          "bytes": 66136,
+          "sha256": "a4265d8587c6964532b6507a0c56a2a9c245ef101ff95747bfd5d2cbaa5b3eee",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m0_research/cooldown01",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 2,
+          "logical_source_bytes": 32735,
+          "filenames": [
+            "DeclarationCooldownMigrationTest.java",
+            "DeclarationOpportunityCooldown.java"
+          ],
+          "filenames_truncated": false
+        },
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m0_research/postwar01",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 9,
+          "logical_source_bytes": 120087,
+          "filenames": [
+            "NativeEffectRegistryTest.java",
+            "NativeWarExitEffects.java",
+            "OrdinaryWarExitIdentityTest.java",
+            "OrdinaryWarExitObservation.java",
+            "OrdinaryWarExitObservationCodec.java",
+            "RaiktorExitPostcondition.java",
+            "RaiktorExitPostwarEvidence.java",
+            "RaiktorPostwarMigrationTest.java",
+            "RaiktorWarBoundEvidenceCodec.java"
+          ],
+          "filenames_truncated": false
+        }
+      ],
+      "continuation_note": "09/105源冻结；10 supplier/history/canonical reuse草稿；.4 fullterms/fullPower/cold cooldown未闭。"
+    },
+    {
+      "owner": "/root/m1_research",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m1_research",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m1_research/native14/SOURCE-MAP14.json",
+          "bytes": 12680,
+          "sha256": "23d71a6a782103c306085459ec859898a2a0b3a654f3304f927a657baf8b8a28",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m1_research/native13/SOURCE-MAP13.json",
+          "bytes": 7481,
+          "sha256": "3b42b5d633e606bc2333b452326a50d4d1a799ecf486e0316e1f5b54e2b3db63",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "native14新增实际batch/caller定位，Java仍native07；persistent+84正向writer未闭。"
+    },
+    {
+      "owner": "/root/m2_research",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m2_research",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m2_research/merge04/SOURCE-MAP04.json",
+          "bytes": 11577,
+          "sha256": "4b94fd60145367d9e26f6d4237dedcc923adc7a52fea88c3f139622757a18c2d",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m2_research/material03/SOURCE-MAP01.json",
+          "bytes": 5509,
+          "sha256": "799a8bac1a540431cac887ed063bb093ca827f6fb99c4946717b095e6a1e8ae7",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "merge04/5新Java源；05 Raw ScriptValue/AST动态scope草稿，完整VFS/AST/失效未闭。"
+    },
+    {
+      "owner": "/root/m3_research",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m3_research",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m3_research/held_title_authority09/EFFECTIVE-SELECTION01.json",
+          "bytes": 49959,
+          "sha256": "cb06c3714872ee63c3ddd5b556ab9232d1fb7bd65eb1ee95bc8e1cd33c4099f9",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m3_research/upstream_locator08/EFFECTIVE-SELECTION01.json",
+          "bytes": 48119,
+          "sha256": "bf687220ebd6a531a11ea8672a5859ee4dfe1fb5d61ff7871d0103cb5e559b99",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "09/78源冻结；10真正SuccessionEventData→PlayerInfo+268来源研究未封，不能授newEpisode。"
+    },
+    {
+      "owner": "/root/m4_research",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m4_research",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m4_research/scalar08/SOURCE-MAP08.json",
+          "bytes": 38178,
+          "sha256": "db67a5438244529b401cf9739756554ca002237c6ee2627b1e1b13c4a11aee1b",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m4_research/borrow07/SOURCE-MAP07.json",
+          "bytes": 34443,
+          "sha256": "4ad21c501d2f6815dfccbd2a619d288b51f809f236d63ab6f63f7d0f4093da37",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "scalar08 Java8/native22加入Native32；TTL09研究草稿，实际贷款/退款/资金后态未验。"
+    },
+    {
+      "owner": "/root/m5_research",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m5_research",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m5_research/native_research09/SOURCE-MAP09.json",
+          "bytes": 25158,
+          "sha256": "d42cf24e6c99154dbfe8502dba4c1f49d70619fa2ae5caf1709c0ea2a3443cf8",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m5_research/native_research08/SOURCE-MAP08.json",
+          "bytes": 20341,
+          "sha256": "e0a63e1710fb391e580c5f87fea44e0842d1eead829fc5f9531a37d0a215c9af",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "native09/16Java16Native供后继Nativecut；10完整score函数研究草稿，真正撤退/补给选择仍缺。"
+    },
+    {
+      "owner": "/root/m6_research",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m6_research",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m6_research/native10/SOURCE-MAP10.json",
+          "bytes": 22919,
+          "sha256": "bea112eeb0bb17b851e2aef5cc7be9d7c06a1c7f978ab0d13d48bc7a72f99446",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m6_research/native09/SOURCE-MAP09.json",
+          "bytes": 31891,
+          "sha256": "2df5cd0276762b9bf304440478fa7443b08242d89dd8e0d00eb6b4e939f194f3",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m6_research/native11",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 2,
+          "logical_source_bytes": 13991,
+          "filenames": [
+            "ActivityFinalState.java",
+            "RootActivityStampIngressTest.java"
+          ],
+          "filenames_truncated": false
+        }
+      ],
+      "continuation_note": "native10/45源冻结；11 manager worker/batch研究草稿；+408也在phase写，不能授完成。"
+    },
+    {
+      "owner": "/root/m7_research",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m7_research",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m7_research/crown_publication09/EFFECTIVE-SELECTION09.json",
+          "bytes": 39682,
+          "sha256": "eaee647a15b3c1ffec0681c2f615eec5882301a06ba0c392ba56e17dcf107a1b",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/m7_research/crown_cadence08/EFFECTIVE-SELECTION08.json",
+          "bytes": 34020,
+          "sha256": "41b03e398e7131a63a7f34596cf29452ac7512f1036501baf11bb7e34db57f42",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "crown09/33源冻结；新window ancestry/M7 Binding/retained SAVE跨窗口恢复未闭。"
+    },
+    {
+      "owner": "/root/military_ordinary",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/military_ordinary",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/military_ordinary/runtime03/EFFECTIVE-SELECTION03.json",
+          "bytes": 55701,
+          "sha256": "8b9ffe7b177a51c0bc18845ae9ef3e77847b7d091f44d140cf3276152c33d9a3",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/military_ordinary/runtime02/EFFECTIVE-SELECTION02.json",
+          "bytes": 43374,
+          "sha256": "26b5979172969f99be34e6251302dd018de34ce9d106030607ecf059200b66fb",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/military_ordinary/runtime04",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 3,
+          "logical_source_bytes": 35805,
+          "filenames": [
+            "ArmyForecastService.java",
+            "MilitaryNativeReadDispatcher.java",
+            "OrdinaryMilitaryInstaller.java"
+          ],
+          "filenames_truncated": false
+        }
+      ],
+      "continuation_note": "runtime03/46源冻结；真实OPTIONS/TERMS同dispatcher/history04接线草稿。"
+    },
+    {
+      "owner": "/root/native_army",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_army",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_army/source06/EFFECTIVE-SELECTION07.json",
+          "bytes": 31542,
+          "sha256": "b40aaa0873174108c08f9bad7cfa3061f6c9584e7769b8390217cbbd2f962ca4",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_army/source06/EFFECTIVE-SELECTION06.json",
+          "bytes": 43808,
+          "sha256": "1fd2d10be2be357063c5a6c009d58706953118e0fc92c3c7940e20dbab6c3486",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_army/source05",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 16,
+          "logical_source_bytes": 154900,
+          "filenames": [
+            "ArmyAdditionalReadInstaller.java",
+            "ArmyAdditionalReadService.java",
+            "ArmyMercenaryContextCodec.java",
+            "ArmyMercenaryOriginalProducerTest.java",
+            "ArmyOriginalSourcePins.java",
+            "ArmyReinforcementAssessment.java",
+            "ArmyReinforcementCodec.java",
+            "ArmyReinforcementOriginalProducerTest.java",
+            "ArmyReinforcementReads.java",
+            "ArmyRuntimeInstaller.java",
+            "ArmyWindowAttempts.java",
+            "ArmyWindowAttemptsWriterTest.java",
+            "ArmyWindowCodecTest.java",
+            "ArmyWindowReads.java",
+            "BattleResponses.java",
+            "RootCurrentArmyPublicServices.java"
+          ],
+          "filenames_truncated": false
+        },
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_army/source07",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 6,
+          "logical_source_bytes": 43801,
+          "filenames": [
+            "ArmyBattleReads.java",
+            "ArmyClosedReadContracts.java",
+            "ArmyNativeReadEvidence.java",
+            "ArmyReinforcementReads.java",
+            "ArmyRouteReads.java",
+            "ArmyWindowReads.java"
+          ],
+          "filenames_truncated": false
+        },
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_army/source08",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 9,
+          "logical_source_bytes": 139584,
+          "filenames": [
+            "ArmyBattleReads.java",
+            "ArmyBattleReconciliationReads.java",
+            "ArmyReconciliationReadEvidence.java",
+            "ArmyRetreatComposite.java",
+            "ArmyRetreatDomain.java",
+            "ArmyRetreatPostReadCollector.java",
+            "ArmyRetreatReconciliationPost.java",
+            "ArmyRuntimeInstaller.java",
+            "ArmyWindowReads.java"
+          ],
+          "filenames_truncated": false
+        }
+      ],
+      "continuation_note": "07/57源冻结；08 retreat/Window Recon/Composite真实后态草稿；原公共13 ABI仍待逐项迁移。"
+    },
+    {
+      "owner": "/root/native_family",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_family",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_family/successor10/SOURCE-MAP10.json",
+          "bytes": 41818,
+          "sha256": "5712a689c4aa22551cb0c8d82361f7a72cc66ff4a5442b40cd487a23c43263bf",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_family/successor08/SOURCE-MAP09.json",
+          "bytes": 41907,
+          "sha256": "696e1faf7bd45272bc8b9daa95aa9578864606bf32383c84a98d5f6b5b6e742e",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_family/successor09",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 7,
+          "logical_source_bytes": 84504,
+          "filenames": [
+            "FamilyMarriageIntent.java",
+            "GuardianOutgoingCodec.java",
+            "GuardianOutgoingCodecTest.java",
+            "guardian_outgoing_storage_12004_v1.hpp",
+            "InteractionArguments.java",
+            "OrdinaryInteractionCodec.java",
+            "RootFamilyNativeReadProducts.java"
+          ],
+          "filenames_truncated": false
+        },
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_family/successor11",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 6,
+          "logical_source_bytes": 62055,
+          "filenames": [
+            "ck3_12002_context.cpp",
+            "ck3_12002_context.hpp",
+            "family_marriage_outgoing_query_12004_v1.hpp",
+            "family_outgoing_definition_12004.hpp",
+            "guardian_outgoing_storage_12004_v1.hpp",
+            "InteractionCapabilities.java"
+          ],
+          "filenames_truncated": false
+        }
+      ],
+      "continuation_note": "10 Java36/native6源冻结；generic v3 played/sender及pending arity未资格化，5actions/17reads未整图验。"
+    },
+    {
+      "owner": "/root/native_governance",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_governance",
+      "closeout_scope": "PRIOR_SOURCE_DELIVERY_COMPLETED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_governance/failure03/EFFECTIVE-SELECTION03.json",
+          "bytes": 26600,
+          "sha256": "89bc3537834385be335515b1cc97af6297c9ae7374db57cbf94bbdec7cec9a90",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_governance/pending02/EFFECTIVE-SELECTION02.json",
+          "bytes": 30263,
+          "sha256": "db34364d41b8622375ffdc4dd0df67ea82f48feb80cef54f4c4a3bf3c81e1d0f",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "failure03/40源；真实明确拒绝与LIFE原件续行未实际编验。"
+    },
+    {
+      "owner": "/root/native_protocol_identity",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_protocol_identity",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_protocol_identity/whitepeace_admission01/EFFECTIVE-SELECTION01.json",
+          "bytes": 43742,
+          "sha256": "c0a7ba55291c0737878e7f2edae5ebbd31fc167b3af33b92520ca9bf5b6dc1ac",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_protocol_identity/army_ordinary_actions01/EFFECTIVE-SELECTION01.json",
+          "bytes": 31172,
+          "sha256": "ea3439303bfbaa0ba3a92f1b85b5ad4401db71b25a1f65c6384e42782e168cbe",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_protocol_identity/ordinary_runtime_installer01",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 7,
+          "logical_source_bytes": 134641,
+          "filenames": [
+            "ArmyOrdinaryActionPreparation.java",
+            "ArmyOrdinaryActionService.java",
+            "ArmyOrdinaryPairedQuotes.java",
+            "ArmyOrdinaryPreflight.java",
+            "NativeOrdinaryWarAdmission.java",
+            "OrdinaryWhitePeaceOriginalParityTest.java",
+            "OrdinaryWhitePeacePolicy.java"
+          ],
+          "filenames_truncated": false
+        }
+      ],
+      "continuation_note": "whitepeace01/31源；actualInstaller/paired preflight/window contract路由草稿，Window2权限未闭。"
+    },
+    {
+      "owner": "/root/native_schemes_events",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_schemes_events",
+      "closeout_scope": "PRIOR_SOURCE_DELIVERY_COMPLETED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_schemes_events/natural_succession_originals02/SOURCE-MAP04.json",
+          "bytes": 33464,
+          "sha256": "231ee662abe940bbc8edb90482257037ac809ec506996027c7f54ca01896e3a2",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_schemes_events/natural_succession_originals01/SOURCE-MAP03.json",
+          "bytes": 30359,
+          "sha256": "4a7702eefcf68691a5afc616d1e480172a07b41ec9515339c2105f6e5a062b9b",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_schemes_events/activity_json_limit04",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 2,
+          "logical_source_bytes": 4997,
+          "filenames": [
+            "ActivityJson.java",
+            "ActivityJsonBoundaryTest.java"
+          ],
+          "filenames_truncated": false
+        },
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_schemes_events/activity_source_api03",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 1,
+          "logical_source_bytes": 18146,
+          "filenames": [
+            "ActivityNativeContracts.java"
+          ],
+          "filenames_truncated": false
+        }
+      ],
+      "continuation_note": "naturalSuccession02/21源冻结；完整原生继承/Root工厂正例未验。"
+    },
+    {
+      "owner": "/root/native_transport_core",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_transport_core",
+      "closeout_scope": "PRIOR_SOURCE_DELIVERY_COMPLETED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_transport_core/transport07/SOURCE-MAP07.json",
+          "bytes": 6609,
+          "sha256": "bd42bbaaf95916f811bdb723d3b0344b32e2bb77f8394c5aa2130af860915d9b",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_transport_core/strengths_contract08/SOURCE-MAP08.json",
+          "bytes": 2907,
+          "sha256": "c435b3cee27c30d4d68650a02183beab516759a56d7ee11950e9009f08e89708",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "transport07+strengths08分别继承；真实chrono/Recon/Council拒绝接线未编验。"
+    },
+    {
+      "owner": "/root/outcome_archive",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/outcome_archive",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/outcome_archive/successor07/SOURCE-MAP08.json",
+          "bytes": 17305,
+          "sha256": "0c0754125bb55ca2af1e2e9f0276744be67a43db16a805aea0d3cd929cc0e9d0",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/outcome_archive/successor06/SOURCE-MAP07.json",
+          "bytes": 16738,
+          "sha256": "e47639bdf5763b714f079368cb62fb7d30dc6719ef34dbf681b8d69a1b90c477",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/outcome_archive/successor08",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 1,
+          "logical_source_bytes": 47490,
+          "filenames": [
+            "NativeOutcomeArchive.java"
+          ],
+          "filenames_truncated": false
+        }
+      ],
+      "continuation_note": "08/14源冻结；Family14新typed send archive消费者尚未落。"
+    },
+    {
+      "owner": "/root/parity_ci",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/parity_ci",
+      "closeout_scope": "PRIOR_SOURCE_DELIVERY_COMPLETED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/parity_ci/ci_fixture_r3_01/SOURCE-MAP01.json",
+          "bytes": 14737,
+          "sha256": "078ba1d6ca6d16d28d306c1eb2cfa01b93ec9c19a59a1d36bc16b0c88a340d46",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/parity_ci/offline_compile04/SOURCE-MAP04.json",
+          "bytes": 36860,
+          "sha256": "1c497ebfb2eff0f89d4aa3e6d796bf65fa8828749ee5478f2fbc3d4f7866616e",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "R3工具13+offline04/53源冻结；完整30cold/30warm/SDKcontinuation与Native输入发布均未跑。"
+    },
+    {
+      "owner": "/root/planner_owner",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/planner_owner",
+      "closeout_scope": "PRIOR_SOURCE_DELIVERY_COMPLETED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/planner_owner/module_boundaries08/SOURCE-MAP08.json",
+          "bytes": 114021,
+          "sha256": "3ad1faa6fa0ed914dbb48f72544815717a4404c2eec57b216291e0984ab470d2",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/planner_owner/active_wars01/SOURCE-MAP07.json",
+          "bytes": 57573,
+          "sha256": "f3f171f2196178d5cee6a283c7658df09ea47b75326a46018feba2d1f278c0ed",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/planner_owner/core_choice04",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 2,
+          "logical_source_bytes": 24233,
+          "filenames": [
+            "OrdinaryCorePolicy.java",
+            "RulerMarriageContinuationTest.java"
+          ],
+          "filenames_truncated": false
+        }
+      ],
+      "continuation_note": "08完整141源/35POM/81迁层已封；XML/静态依赖图检查不代表Maven通过。"
+    },
+    {
+      "owner": "/root/prisoners_ordinary",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/prisoners_ordinary",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/prisoners_ordinary/marriage_send02/SOURCE-MAP07.json",
+          "bytes": 51298,
+          "sha256": "ad69b16c6b158dcbe1b4048c761da485cd774b38878ca58a2cff921f04dda36b",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/prisoners_ordinary/successor06/SOURCE-MAP06.json",
+          "bytes": 34989,
+          "sha256": "11ae484eb549f1f97134d452f1fe125e9755593b6541502423780794e4a86192",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/prisoners_ordinary/marriage_send01",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 9,
+          "logical_source_bytes": 133827,
+          "filenames": [
+            "FamilyMarriageSendExpectation.java",
+            "FamilyMarriageSendReads.java",
+            "FamilyOutgoingCodec.java",
+            "family_marriage_outgoing_preparation_12004_v1.hpp",
+            "family_outgoing_storage_12004_v2.hpp",
+            "MarriageSendEffects.java",
+            "MarriageSendEffectsTest.java",
+            "PrisonersRuntimeDefinitions.java",
+            "RootFamilyMarriageSendAuthority.java"
+          ],
+          "filenames_truncated": false
+        }
+      ],
+      "continuation_note": "marriage_send02/47Java+2native冻结；v3默认无真实arity资格即Unavailable，sameSEM仍UNKNOWN。"
+    },
+    {
+      "owner": "/root/public_mcp",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/public_mcp",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/public_mcp/successor07/EFFECTIVE-SELECTION01.json",
+          "bytes": 23535,
+          "sha256": "b0b6008fa78d953e97b0e99b59befd8e56bd4b912757af951a99717d4a6e8efe",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/public_mcp/successor06/EFFECTIVE-SELECTION01.json",
+          "bytes": 27025,
+          "sha256": "2dc588c874ebb9316e8a1eaa56171d44cdbb01325b35ab091398b6a21125da7a",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "07/35源冻结；NEXT retainedAUTO依HostCAS；Army公共13按原字段兼容，禁止全整数string替代。"
+    },
+    {
+      "owner": "/root/readiness",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/readiness",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/readiness/reconciliation10/EFFECTIVE-SELECTION10.json",
+          "bytes": 48985,
+          "sha256": "f543f6f6306d30f461a127c137f4969031d6d5260677f2024866077c6568b9e1",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/readiness/collector09/EFFECTIVE-SELECTION09.json",
+          "bytes": 53187,
+          "sha256": "d656625c98aafa009b6cd0f9b11b0f35e304786518b6803e9c294b43bce028c2",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/readiness/collector07",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 2,
+          "logical_source_bytes": 39819,
+          "filenames": [
+            "EventPoliciesRegressionTest.java",
+            "NativeReadinessCollector.java"
+          ],
+          "filenames_truncated": false
+        },
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/readiness/window11",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 2,
+          "logical_source_bytes": 60532,
+          "filenames": [
+            "RootReconciliationAuthority.java",
+            "RootReconciliationAuthorityIntegrationTest.java"
+          ],
+          "filenames_truncated": false
+        }
+      ],
+      "continuation_note": "10/32源冻结；Window11与public planning collector12草稿，不能借M5授权Window2。"
+    },
+    {
+      "owner": "/root/recovery_junction",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/recovery_junction",
+      "closeout_scope": "LIMITED_CLOSEOUT_RECEIVED",
+      "stop_record": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/recovery_junction/runtime_startup01/SOURCE-CLOSE-PARTIAL01.json",
+        "bytes": 11995,
+        "sha256": "e9c104bda71dfa67812cd5de022558abd8a08b447947f6e452872d354798d41f",
+        "availability": "READABLE"
+      },
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/recovery_junction/runtime_startup01/SOURCE-MAP-PARTIAL01.json",
+          "bytes": 76975,
+          "sha256": "1b3c14d1ac416df22c0e6da60c5428b8d89e00265e8899cc7440090eea685cf6",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/recovery_junction/post_adoption_collector02/SOURCE-MAP02.json",
+          "bytes": 83606,
+          "sha256": "f7a67011dfc37f732d84b1355dff205935cabebb6d6091ceb6c9d7c296008985",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "Startup/PreparedSources部分落源；RootRuntimeCommands/DomainAssembly不存在，整图INCOMPLETE。"
+    },
+    {
+      "owner": "/root/reference_main",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/reference_main",
+      "closeout_scope": "LIMITED_CLOSEOUT_RECEIVED",
+      "stop_record": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/reference_main/STOP-DELIVERY-INDEX01.json",
+        "bytes": 39740,
+        "sha256": "0188b69f3df176a43aeef93b47a9b0d379a0700577d08097197483676ec93d9a",
+        "availability": "READABLE"
+      },
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/reference_main/native_input_repair04/SOURCE-MAP04.json",
+          "bytes": 5330,
+          "sha256": "8a940338b2426fc5a1b04641b7607bddec17f38e0082b78ec034c6eb1d034cce",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/reference_main/native_combined_cut03/SOURCE-MAP03.json",
+          "bytes": 10537,
+          "sha256": "b9f7816f02a9af6f5a0b03b1413c40d3ff225accef4d9559add42a91c6910822",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "Native32 frozen03+Request04补10nullable字段；两次源物化RED；Reference1511/41尚未生成。"
+    },
+    {
+      "owner": "/root/root_assembly",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/root_assembly",
+      "closeout_scope": "LIMITED_CLOSEOUT_RECEIVED",
+      "stop_record": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/root_assembly/handoff01/LIMITED-STOP-INDEX01.json",
+        "bytes": 37233,
+        "sha256": "fcf6caf3bcf67cc031a9210b7f0b372a569e13a33fb1b50be3e62202be47a20a",
+        "availability": "READABLE"
+      },
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/root_assembly/source07/SOURCE-MAP07.json",
+          "bytes": 26295,
+          "sha256": "995f3e5841c5efa1eeb3b4c8f480f7751dcc221774b5cff11f617497bdccec4e",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/root_assembly/source06/SOURCE-MAP06.json",
+          "bytes": 24087,
+          "sha256": "2684559455920c05dadbb1888a76b17d8f0019cdc324e9c023a3718b9b2c0ed4",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "Root07/28源冻结；STOP确认source08目录不存在、0文件；hostCAS/firstSAVE/publicPlanning/完整Root工厂未落。"
+    },
+    {
+      "owner": "/root/route_contact",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/route_contact",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/route_contact/commander_target01/EFFECTIVE-SELECTION01.json",
+          "bytes": 15609,
+          "sha256": "b30e21b5324840a748cd7e2d7909a9f0254a479196a42033aed049251452635a",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/route_contact/route_failure01/EFFECTIVE-SELECTION01.json",
+          "bytes": 18966,
+          "sha256": "40d62b9f977404d844aa90eb984655b811d2ac4777c434e872729858d1493dea",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/route_contact/public_event_option01",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 3,
+          "logical_source_bytes": 27662,
+          "filenames": [
+            "EventOptionPublicCodec.java",
+            "EventOptionPublicCodecTest.java",
+            "EventOptionPublicResponse.java"
+          ],
+          "filenames_truncated": false
+        }
+      ],
+      "continuation_note": "旧route/commander图可读；public SELECT_EVENT_OPTION parser草稿，actualRoot planning scope未齐。"
+    },
+    {
+      "owner": "/root/runtime_package",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/runtime_package",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/runtime_package/runtime_catalog02/EFFECTIVE-SELECTION02.json",
+          "bytes": 15003,
+          "sha256": "456a7d47d6de13aa603f082ff05a4601f4bc6b07bc0509314e994e7837aaa5b5",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/runtime_package/entry_abi02/EFFECTIVE-SELECTION02.json",
+          "bytes": 7969,
+          "sha256": "50cf4e3c2b5360af95eef3db7df56c8a5c30e329226efca57b633e27879d1ac7",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "entryABI02与runtimeCatalog02分别有图；JavaGameLifecycle私有权限新后继/actualStartup需核。"
+    },
+    {
+      "owner": "/root/save_restore",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/save_restore",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/save_restore/save_chain06/EFFECTIVE-SELECTION06.json",
+          "bytes": 28622,
+          "sha256": "647fa0413886493a2b8bfae14a514e3ee1c8b3152eaf0c54e618a24e381d3e79",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/save_restore/checkpoint_digest05/EFFECTIVE-SELECTION05.json",
+          "bytes": 34596,
+          "sha256": "e5be6947d2028579e06da1ca9bdd9dde870c49db7a9e352ce2654bbf07773fdb",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "save06/50源冻结；新Game首SAVE与BEGIN/BASELINE两阶段草稿，不能伪0cycle或重复SAVE。"
+    },
+    {
+      "owner": "/root/sdk_closure",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/sdk_closure",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/sdk_closure/runtime_definitions02/EFFECTIVE-SELECTION01.json",
+          "bytes": 8311,
+          "sha256": "60b25f64e2d669a5511706a7724ecc2445f613060eb3548686f7cb3bd2a28324",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/sdk_closure/runtime_definitions01/SOURCE-MAP01.json",
+          "bytes": 20554,
+          "sha256": "bfe27c3e3abe4a61e11078b31d9fce0a83e1e2b7ee3deafa06e6db61c32dbded",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/sdk_closure/cold_checkpoint01",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 2,
+          "logical_source_bytes": 28613,
+          "filenames": [
+            "RootColdCheckpointValidator.java",
+            "RootColdCheckpointValidatorTest.java"
+          ],
+          "filenames_truncated": false
+        },
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/sdk_closure/recovery_properties01",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 1,
+          "logical_source_bytes": 9173,
+          "filenames": [
+            "CompositionBundleTransportTest.java"
+          ],
+          "filenames_truncated": false
+        },
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/sdk_closure/runtime_definitions03",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 1,
+          "logical_source_bytes": 23162,
+          "filenames": [
+            "RootRuntimeDefinitionModel.java"
+          ],
+          "filenames_truncated": false
+        }
+      ],
+      "continuation_note": "runtimeDefinitions02已见实际图；canonical Driver/SAVE validator实际接线草稿或未封，完整SDK CI未跑。"
+    },
+    {
+      "owner": "/root/source_graph",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/source_graph",
+      "closeout_scope": "LIMITED_CLOSEOUT_RECEIVED",
+      "stop_record": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/source_graph/STOP-20261024-01.json",
+        "bytes": 38438,
+        "sha256": "cd7f34d743afb9afead0e20a0008bd4032b24c0a5636acbac6a88bd9ca8157de",
+        "availability": "READABLE"
+      },
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/source_graph/relocation01/PARTIAL-SOURCE-MAP-STOP01.json",
+          "bytes": 6888,
+          "sha256": "22d026ca4a9a206bdb1e4bc4aa11288b1b66e17c68374f31a1efdb6e7d8a9527",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "v2已落9Java仅DRAFT；95map/3830目标未应用81moves，其中35baseline+7historical；两缺import/旧ClockStatus pin失效。"
+    },
+    {
+      "owner": "/root/sway_ordinary",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/sway_ordinary",
+      "closeout_scope": "PRIOR_SOURCE_DELIVERY_COMPLETED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/sway_ordinary/successor05/SOURCE-MAP05.json",
+          "bytes": 36737,
+          "sha256": "90d71db80ae9b31a31df5d6fe0433495e3ab480ed25be13e0f5c63068655b672",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/sway_ordinary/successor04/SOURCE-MAP04.json",
+          "bytes": 35564,
+          "sha256": "15540a1d25f5bc234bfa915496f66a036fbda00389438caa665fc3ded575f33e",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [],
+      "continuation_note": "05/46源冻结；真实Sway Start/结果/导入已落源码，实际Cycle资格和Root续行未验。"
+    },
+    {
+      "owner": "/root/tools_c15",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/tools_c15",
+      "closeout_scope": "LIMITED_CLOSEOUT_RECEIVED",
+      "stop_record": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/bootstrap_integrated_tools/source19/VACATION-CLOSEOUT01.json",
+        "bytes": 20350,
+        "sha256": "bad64c57d7b44716408e14495e323d0797973e5d25345599703ab02f648f16d1",
+        "availability": "READABLE"
+      },
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/tools_c15/full35_compile04/FINAL-SOURCE-MAP04.json",
+          "bytes": 9029,
+          "sha256": "1626a5a31dcc71611d1ae20df9874d4c54d90bd1142ab8b7c4ea3329a95bbb58",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/tools_c15/wjp_drain02/SOURCE-MAP02.json",
+          "bytes": 7416,
+          "sha256": "ea3fc8ea52cc622c1190560951e73b145e4d0cce997746f84eab0ae3cf300ae3",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/tools_c15/materializer80_01",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 1,
+          "logical_source_bytes": 9203,
+          "filenames": [
+            "Materializer80AdmissionHarness.java"
+          ],
+          "filenames_truncated": false
+        }
+      ],
+      "continuation_note": "C16实际PASS，C17/207源仅准备；raw04修复未执行；性能修复不得影子覆盖冻结C16。"
+    },
+    {
+      "owner": "/root/warcore_leaves",
+      "source_root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/warcore_leaves",
+      "closeout_scope": "TURN_INTERRUPTED_NO_NEW_STOP_ACK",
+      "stop_record": null,
+      "navigation_maps_mtime_order_not_adoption": [
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/warcore_leaves/family_alliances01/EFFECTIVE-SELECTION01.json",
+          "bytes": 28063,
+          "sha256": "4c2c417eb8a1ed02b0a7f32d2467fc9a1ff14e5a5996185ad24f5916894c410c",
+          "availability": "READABLE"
+        },
+        {
+          "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/warcore_leaves/strengths_refill01/EFFECTIVE-SELECTION01.json",
+          "bytes": 26889,
+          "sha256": "c7e972c69acafc899f1d081e19a92ecec3ed75678d63993fb8a01048be811401",
+          "availability": "READABLE"
+        }
+      ],
+      "unsealed_directories": [
+        {
+          "root": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/warcore_leaves/root_warcore01",
+          "state": "UNSEALED_NAVIGATION_ONLY",
+          "source_file_count": 9,
+          "logical_source_bytes": 141032,
+          "filenames": [
+            "LegacyWarExitPolicy.java",
+            "OriginalCommandClocks.java",
+            "RootWarCoreFactory.java",
+            "RootWarCoreFactoryTest.java",
+            "WarExitCapabilities.java",
+            "WarExitLateBridge.java",
+            "WarExitPolicies.java",
+            "WarExitQueryCadence.java",
+            "WarExitReads.java"
+          ],
+          "filenames_truncated": false
+        }
+      ],
+      "continuation_note": "实际17leaf Factory/Bindings/统一WhitePeace消费者root_warcore01草稿；actualfullPower缺口仍preNative拒。"
+    }
+  ],
+  "critical_evidence": [
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/build-java-tools156-firstcut16.json",
+      "bytes": 95392,
+      "sha256": "10d69de937ef6cfb4ef7724f6c85df356e293f9ec490144d29041cabf0fb0554",
+      "availability": "READABLE"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/bootstrap_integrated_tools/source18/QUALIFIED-DELIVERY16.json",
+      "bytes": 14577,
+      "sha256": "43daa51094c5c819171754234931bf5cb34282ea32008995fc30ad0bda9ce690",
+      "availability": "READABLE"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/fullg2-source08-materialization01/SOURCE-GRAPH-ACTUAL01.json",
+      "bytes": 2400,
+      "sha256": "96f9c73c43f95ec12ca17aeb32c7824e638670ee584c8ea000aac94e1849a8cf",
+      "availability": "READABLE"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/build-full35-earlycompile01-compile-only.json",
+      "bytes": 2181508,
+      "sha256": "c66a249fbd121ff96d053c4658a01c57ce58ebabeea1571649b72baedf26f897",
+      "availability": "READABLE"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024/g2-m4/tools_c15/full35-earlycompile-run01/terminal.json",
+      "bytes": 27726,
+      "sha256": "7a5c96f3ecc87c15a22c9621d0d5759f72f7cc7cca620a776953b50713095474",
+      "availability": "READABLE"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/build-full35-earlycompile01-test-compile.stdout.log",
+      "bytes": 79061,
+      "sha256": "3a3ad3f709e5ecfe171ecc7db9d30e500cf208ca8075543feb194460056e8a7b",
+      "availability": "READABLE"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024/g2-m4/tools_c15/native-sourcecut03/terminal.json",
+      "bytes": 109871,
+      "sha256": "891bd3ca8693d1697340162c8d5f5f5b3932a50b5ce0dad631347376b63018d3",
+      "availability": "READABLE"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024/g2-m4/tools_c15/native-sourcecut03-r2/terminal.json",
+      "bytes": 110729,
+      "sha256": "7f1e5673f13d6a735dd1ef94686d93414d5341112a0996f60e0984ceda28085f",
+      "availability": "READABLE"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024/g2-m4/tools_c15/full35-raw-summary03/terminal.json",
+      "bytes": 26377,
+      "sha256": "569cb0eab929eff64b2e9dd17bc1d2331f22a6f55e0e7952c383b8c0aa184c62",
+      "availability": "READABLE"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/bootstrap_integrated_tools/source19/SELECTED-FILES01.json",
+      "bytes": 116925,
+      "sha256": "c2a38750d9933573069ed83fdf5b971b417fe7cea68e51e1305c819df7a2695a",
+      "availability": "READABLE"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/bootstrap_integrated_tools/source19/SOURCE166-REQUEST01.json",
+      "bytes": 19044,
+      "sha256": "92526b1ecefa2a29e6f477b7812299600d81965575916852e130dafe73c28ede",
+      "availability": "READABLE"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/reference_main/native_input_repair04/MATERIALIZATION-REQUEST04.json",
+      "bytes": 32660,
+      "sha256": "4d5df9966bb17b6c2ac241a27d57fbb8b89ec7e33bba2cef194f9705415d74d4",
+      "availability": "READABLE"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/reference_main/native_input_repair04/CMAKE-COMPOSITION04.json",
+      "bytes": 7453,
+      "sha256": "11a9bac8e14b3c3c43640e97c7c0230c31c5c3e4786ba92407cdacfe28d0e62d",
+      "availability": "READABLE"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/reference_main/native_combined_cut03/SOURCE-MAP03.json",
+      "bytes": 10537,
+      "sha256": "b9f7816f02a9af6f5a0b03b1413c40d3ff225accef4d9559add42a91c6910822",
+      "availability": "READABLE"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/reference_main/native_fixture_metadata03/METADATA-MAP03.json",
+      "bytes": 5520,
+      "sha256": "268b800de74a2c50f9f3acc34355cb00a52c3a4f522b2d87a8a6c871d33ef49a",
+      "availability": "READABLE"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/planner_owner/module_boundaries08/SOURCE-MAP08.json",
+      "bytes": 114021,
+      "sha256": "3ad1faa6fa0ed914dbb48f72544815717a4404c2eec57b216291e0984ab470d2",
+      "availability": "READABLE"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/source_graph/draft04/PARTIAL-WINNER-INDEX04-STOP01.json.gz",
+      "bytes": 249941,
+      "sha256": "c2e38b548a841c2ef39c34bb93c908e1bab4ee90f3547691aaaa856f7e1d5ef9",
+      "availability": "READABLE"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/source_graph/relocation01/PARTIAL-SOURCE-MAP-STOP01.json",
+      "bytes": 6888,
+      "sha256": "22d026ca4a9a206bdb1e4bc4aa11288b1b66e17c68374f31a1efdb6e7d8a9527",
+      "availability": "READABLE"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/bootstrap_integrated_tools/source19/VACATION-CLOSEOUT01.json",
+      "bytes": 20350,
+      "sha256": "bad64c57d7b44716408e14495e323d0797973e5d25345599703ab02f648f16d1",
+      "availability": "READABLE"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/RESUME56R2-VACATION-DOCS128K-CLOSEONLY01.json",
+      "bytes": 2574,
+      "sha256": "399d279059f59524897a526c88d24f062126f26365dcd5d99dd9e695be5c0d78",
+      "availability": "READABLE"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/budget_fast_lane/VACATION-FINANCIAL-STOP01.json",
+      "bytes": 96929,
+      "sha256": "00ca210198ff9d9cfb5a042b96a869605569d22fc23e4791da2f8cfca4e039ec",
+      "availability": "READABLE"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/docs/handover/2026-10-24-java-g2-resume56-vacation-handoff.md",
+      "bytes": 13830,
+      "sha256": "87bae4e0431e9e0ff5c68ffdb745f8f7711b33b541bc8415cd15f0f4936d5f48",
+      "availability": "READABLE"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/docs/handover/2026-10-24-java-g2-resume56-vacation-source-index.json",
+      "bytes": 59377,
+      "sha256": "9f59412a54a9f13d07f2cbbf95136c92a524cf50f5a51f5b13de9a7628798fd4",
+      "availability": "READABLE"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/reference_main/STOP-DELIVERY-INDEX01.json",
+      "bytes": 39740,
+      "sha256": "0188b69f3df176a43aeef93b47a9b0d379a0700577d08097197483676ec93d9a",
+      "availability": "READABLE"
+    }
+  ],
+  "warnings": [
+    "35 protected baseline targets and 7 historical97 targets are affected by the full81 relocation table; old15 was main-only.",
+    "auto_loop06 external exactday01 ClockStatusRead reference drifted and later disappeared; preserved bytes cannot restore prior FileID qualification.",
+    "Root source08 does not exist; hostCAS and firstSAVE actual implementation are not completed.",
+    "Existing dirty Git changes and unrelated operator/Game processes were not reset, deleted, killed or adopted.",
+    "No 56-owner new STOP acknowledgement is claimed; seven visible owners had bounded closeout requests."
+  ],
+  "final_team_registry_snapshot": {
+    "observed_at_utc": "2026-10-23T22:05:16.918472+00:00",
+    "scope": "Final visible registry; not a full56 execution census",
+    "visible_nonroot_running": 0,
+    "visible_completed_closeouts": 7,
+    "visible_pending_init": [
+      "combat_contract",
+      "effect_observers",
+      "lifecycle",
+      "parity_ci",
+      "warcore_leaves"
+    ],
+    "visible_interrupted": [
+      "outcome_archive",
+      "readiness",
+      "route_contact",
+      "runtime_package"
+    ],
+    "other_owners_not_visible": 40,
+    "pending_init_interrupt_attempted": true,
+    "pending_init_stop_messages_queued": true,
+    "pending_init_cancellation_acknowledged": false,
+    "all_unexecuted_permissions": "REVOKED"
+  },
+  "final_named_metadata_integrity_check": {
+    "checked_at_utc": "2026-10-23T22:05:16.918472+00:00",
+    "unique_files": 134,
+    "mismatches": 0,
+    "transitive_adoption": false
+  }
+}

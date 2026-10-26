@@ -1,0 +1,1161 @@
+{
+  "schema": "xar.java-g2.resume60.vacation-final-source-index/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "written_at_utc": "2026-10-25T19:52:29.491733+00:00",
+  "explicit_user_instruction": "你计划去度假了，收尾手上的每个任务。写交接文档到docs。",
+  "status": "USER_VACATION_STOP_ALL_BUSINESS_QUIESCENT",
+  "objective_complete": false,
+  "automatic_continuation_is_not_user_resume_authority": true,
+  "explicit_user_resume_required": true,
+  "goal_tool_actual_status": null,
+  "goal_observed_at_utc": "2026-10-25T19:29:13Z",
+  "goal_note": "Actual get_goal returned goal:null; no pause or completion update fabricated",
+  "final_handoff_ref": {
+    "path": "Z:/ck3_mod_rewrite/docs/handover/2026-10-26-java-g2-resume60-r4-vacation-final-handoff.md",
+    "bytes": 22692,
+    "sha256": "615605386846a549a97389fe3b9721cfc8d491d8607353f27722539d0bce43f8"
+  },
+  "parent_handoff_ref": {
+    "path": "Z:/ck3_mod_rewrite/docs/handover/2026-10-25-java-g2-resume56-r4-vacation-final-handoff.md",
+    "bytes": 11098,
+    "sha256": "a3d25a7e06cbca75477609529c38b5a7638b27c3bcf6bf2a1bd21fe9062afdac"
+  },
+  "parent_index_ref": {
+    "path": "Z:/ck3_mod_rewrite/docs/handover/2026-10-25-java-g2-resume56-r4-vacation-final-source-index.json",
+    "bytes": 26417,
+    "sha256": "91daeb5961dd1cee0d7a5bd4dbff4888c4c303eb5348c4ef7777eb0d17c4232e"
+  },
+  "progress_ref": {
+    "path": "Z:/ck3_mod_rewrite/docs/autonomous-agent-progress/2026-10-26-java-g2-resume60-current.md",
+    "bytes": 15617,
+    "sha256": "dd69929499f326c7e5097b00dcc846f83223eb1fd23107042c4ee72a7bc24590"
+  },
+  "roots": {
+    "project": "Z:/ck3_mod_rewrite",
+    "handoff_base": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60",
+    "state": "D:/ck3-state",
+    "build": "D:/codex-ck3-demos",
+    "background": "D:/codex-ck3-background",
+    "system_volume_bulk_forbidden": true
+  },
+  "coverage": {
+    "participants": 60,
+    "workers": 57,
+    "monitors": 3,
+    "handoff_files": 60,
+    "total_handoff_bytes": 626297,
+    "actual_readback": true
+  },
+  "task_bus_snapshot": {
+    "source": "Final collaboration.list_agents readback during Root closing turn",
+    "completed_subagents": 60,
+    "running_subagents": 0,
+    "error_subagents": 0,
+    "root": "Writing final docs only; no business scheduling",
+    "completed_is_project_acceptance": false
+  },
+  "participants": [
+    {
+      "owner": "/root/native_protocol_identity",
+      "group": "A",
+      "role": "monitor",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_protocol_identity/VACATION-HANDOFF01.json",
+        "bytes": 13866,
+        "sha256": "a791427539076a3cbcb596d63c37264247e77f0e3976a935d0a2ecd0458ba79f"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/action_coordinator",
+      "group": "A",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/action_coordinator/VACATION-HANDOFF01.json",
+        "bytes": 10657,
+        "sha256": "7de931e6200d6e58bccdc72d5e77a1bde15fe9ba12f1c88d9dfa0b3ac54b9df2"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/auto_loop",
+      "group": "A",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/auto_loop/VACATION-HANDOFF01.json",
+        "bytes": 12793,
+        "sha256": "1c6f7828be4afa500d10980835d3ba16fc0533a20234052ab48c72717e784eca"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/battle_advance",
+      "group": "A",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/battle_advance/VACATION-HANDOFF01.json",
+        "bytes": 15633,
+        "sha256": "df02f73d92915779443b4bf132ffe13572f6800509c9611a427fba8551e3d1cc"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/campaign_goals",
+      "group": "A",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/campaign_goals/VACATION-HANDOFF01.json",
+        "bytes": 8152,
+        "sha256": "01a757d14c4e10dc146cde8cbd4cfec2474509288bf2dee3fa344cc7af9a8e80"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/combat_phase",
+      "group": "A",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/combat_phase/VACATION-HANDOFF01.json",
+        "bytes": 6880,
+        "sha256": "13017400bdb692c07620152b0085f8e0d57088fd4b610ad5b4d4d873704a206c"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/construction",
+      "group": "A",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/construction/VACATION-HANDOFF01.json",
+        "bytes": 12693,
+        "sha256": "c2c5873a0e7ad490167f849dd32c78fe5f43561afb68263956b557348edce515"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/driver_history",
+      "group": "A",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/driver_history/VACATION-HANDOFF01.json",
+        "bytes": 9011,
+        "sha256": "6c03e819d2edb310f2912663c225504b7dbb529e20c090bacb294ced1d98517c"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/driver_snapshot",
+      "group": "A",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/driver_snapshot/VACATION-HANDOFF01.json",
+        "bytes": 13975,
+        "sha256": "7fbb5568ada7953677871a710c5b6f9dd9fff2bbe36c705c9a111edfc4c41d03"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/effect_observers",
+      "group": "A",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/effect_observers/VACATION-HANDOFF01.json",
+        "bytes": 9099,
+        "sha256": "ec0a07ef366c44cf35cf7d6450d14ae7de29fe6e8b690d1d7784cf7706baa253"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/event_registry",
+      "group": "A",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/event_registry/VACATION-HANDOFF01.json",
+        "bytes": 13923,
+        "sha256": "329ec9192a8d953d4ceb5e2f0acd895be0bd52120a6c95a7d687aa6af0c2fae9"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/family_ordinary",
+      "group": "A",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/family_ordinary/VACATION-HANDOFF01.json",
+        "bytes": 8253,
+        "sha256": "ee0ea7452ae8d584047bf183832a143ce09181320abc266fb57f0e154cd2853f"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/finance_ordinary",
+      "group": "A",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/finance_ordinary/VACATION-HANDOFF01.json",
+        "bytes": 14030,
+        "sha256": "950d2c758ba7f035bcf2a640d7afbc2480b07cf18af96438be4a20091b38de6b"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/formal_release",
+      "group": "A",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/formal_release/VACATION-HANDOFF01.json",
+        "bytes": 7610,
+        "sha256": "03c4f260525e2b414d559179c1a173da535753476a6c51106395d3a35c7302a1"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/governance_ordinary",
+      "group": "A",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/governance_ordinary/VACATION-HANDOFF01.json",
+        "bytes": 14893,
+        "sha256": "03dbc875aa521c773ae148d386e6cf98ced1ba8705609a84b307378053164cfe"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/known_interactions",
+      "group": "A",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/known_interactions/VACATION-HANDOFF01.json",
+        "bytes": 6829,
+        "sha256": "6fca8f57a23cc1e541faff698c38c6731651bdd19d75c2e3570b59fa4b7a376a"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/launcher_refresh",
+      "group": "A",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/launcher_refresh/VACATION-HANDOFF01.json",
+        "bytes": 11983,
+        "sha256": "66fc3d45db274571c89793570500baeaa24f030069fdf55842606e6f8a20ae92"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/ledger_writer",
+      "group": "A",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/ledger_writer/VACATION-HANDOFF01.json",
+        "bytes": 9048,
+        "sha256": "6483e4b6d3099c1929d2fe2dc89a6a7ab33da3eedcfd8e5c0ee59b693253535c"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/lifecycle",
+      "group": "A",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/lifecycle/VACATION-HANDOFF01.json",
+        "bytes": 7191,
+        "sha256": "db92c110382aae4fc51b3459a02fad842a58c543cf41be91149d26beb630d8ee"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/planner_owner",
+      "group": "A",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/planner_owner/VACATION-HANDOFF01.json",
+        "bytes": 13397,
+        "sha256": "2a7a79114033f46feb10c112b180476afdcdce488353ebec9a6f30e761d2a055"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/public_mcp",
+      "group": "A",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/public_mcp/VACATION-HANDOFF01.json",
+        "bytes": 13403,
+        "sha256": "e65482ab16234d7163f1dadd7ea1c9cf0a1f309e20f4e7efa4a00bf1131e2350"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/readiness",
+      "group": "B",
+      "role": "monitor",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/readiness/VACATION-HANDOFF01.json",
+        "bytes": 3861,
+        "sha256": "e883a11b85e83db84b04f1c33ab31e1f899d1e5e9e65ca0961848170f49e7fa5"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/m0_research",
+      "group": "B",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/m0_research/VACATION-HANDOFF01.json",
+        "bytes": 9265,
+        "sha256": "299edc4c0bc09631b490f475431b228ee082ab04b484ef8b53053f3f0aef5e42"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/m1_research",
+      "group": "B",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/m1_research/VACATION-HANDOFF01.json",
+        "bytes": 11259,
+        "sha256": "e74bbba97fb11fea86b0ee0ec41afdf8e0a9de6b981b6f68534c5eeea90b1c5a"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/m2_research",
+      "group": "B",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/m2_research/VACATION-HANDOFF01.json",
+        "bytes": 10341,
+        "sha256": "c616ccc205d12e66645998eb5aeb8f6e565250a0ee65ef08829e2108b55d96d9"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/m3_research",
+      "group": "B",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/m3_research/VACATION-HANDOFF01.json",
+        "bytes": 13918,
+        "sha256": "26f18b1dd2fc7cbb29332aee7feec0ecebd7a1b5eaf7da4cff72b4d96db8add5"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/m4_research",
+      "group": "B",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/m4_research/VACATION-HANDOFF01.json",
+        "bytes": 13369,
+        "sha256": "b54d6a87525c07558f9e1c8f0142873dcae771613d28d14db00956cdc5d6c252"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/m5_research",
+      "group": "B",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/m5_research/VACATION-HANDOFF01.json",
+        "bytes": 14042,
+        "sha256": "e9b1d48be4f8e2e99678ccc3871e6c45df4802d27c7daaf694628d69eeaa71e8"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/m6_research",
+      "group": "B",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/m6_research/VACATION-HANDOFF01.json",
+        "bytes": 11788,
+        "sha256": "f1b95c4a5c4ee7d34b8574f0e3240289105c297abbee049bf1b89d006fcb514d"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/m7_research",
+      "group": "B",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/m7_research/VACATION-HANDOFF01.json",
+        "bytes": 14372,
+        "sha256": "91434fc4e9757cc33934a89bdac87e56c146948f510f7c8c45a910cfb19caa20"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/native_army",
+      "group": "B",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_army/VACATION-HANDOFF01.json",
+        "bytes": 14119,
+        "sha256": "a72aa36dd203307ff8bf90bc3d3ad9f3067ecbcbc05638e1b6772891dad66f0b"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/native_cb_candidates",
+      "group": "B",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_cb_candidates/VACATION-HANDOFF01.json",
+        "bytes": 12772,
+        "sha256": "c9635d2e00f89d56a58934a096be62a659825dfe69159225d8b149b3a6248dd9"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/native_faction",
+      "group": "B",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_faction/VACATION-HANDOFF01.json",
+        "bytes": 10517,
+        "sha256": "f49adcb8d357a3a8782509a99365c5232e25e6676f4edb985dcfceee88c423b6"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/native_family",
+      "group": "B",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_family/VACATION-HANDOFF01.json",
+        "bytes": 10609,
+        "sha256": "94a974af6ba8efa79bf34c16510c3c77c9bfeaca64ca0045412e5fb63676d744"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/native_governance",
+      "group": "B",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_governance/VACATION-HANDOFF01.json",
+        "bytes": 8910,
+        "sha256": "7e991aaf6ed3be9e2ac2b56386423618519a057571cfc7c3608f18276bd664d3"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/native_loan",
+      "group": "B",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_loan/VACATION-HANDOFF01.json",
+        "bytes": 15055,
+        "sha256": "1b9f85fb6097d5d22a75ea95c02bf2a8bfc637401e11e149ef778a5def6266f8"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/native_mechanism_lead",
+      "group": "B",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_mechanism_lead/VACATION-HANDOFF01.json",
+        "bytes": 13606,
+        "sha256": "8905ccb6fe3b7b14ff4c67f5e00a427a579fa7a1426751eec049a0daf44771c4"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/native_mercenary",
+      "group": "B",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_mercenary/VACATION-HANDOFF01.json",
+        "bytes": 15029,
+        "sha256": "c5c1c084eb099e9152ff9d2a9723e3c656a0303c457d5949558a75c6829e3416"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/native_refund",
+      "group": "B",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_refund/VACATION-HANDOFF01.json",
+        "bytes": 15172,
+        "sha256": "d33082da4f2803c6285ebce347da78705c4966894160f8fcbb91e408dd43acc0"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/native_religion",
+      "group": "B",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_religion/VACATION-HANDOFF01.json",
+        "bytes": 13082,
+        "sha256": "886dc21cb39be6d73e96e0793beef0adb24be8397d98d18471ca980b0751d27c"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/native_schemes_events",
+      "group": "B",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_schemes_events/VACATION-HANDOFF01.json",
+        "bytes": 8138,
+        "sha256": "2ad699d621add8c529fd567a04d37c9bb6c8e212fecfd4794668baff430bee3f"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/native_siege",
+      "group": "B",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_siege/VACATION-HANDOFF01.json",
+        "bytes": 7620,
+        "sha256": "8a58d05262cb465f403b5db1102748eb923acd3794ad251486c3732ebe091b83"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/g2_acceptance",
+      "group": "C",
+      "role": "monitor",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/g2_acceptance/VACATION-HANDOFF01.json",
+        "bytes": 14420,
+        "sha256": "efd011a2eea5adc237784312a93d44bce845b5413765307dc081465cb7ebd365"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/capacity",
+      "group": "C",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/capacity/VACATION-HANDOFF01.json",
+        "bytes": 6381,
+        "sha256": "5df98c81d087e44262aabfeec2a1c6522844c882ab191b936b834b59fcdaeaba"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/host_integration",
+      "group": "C",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/host_integration/VACATION-HANDOFF01.json",
+        "bytes": 8511,
+        "sha256": "c8e09084c40000ba889f52ad35778d528f69db8ddc819baa92cfb010832a2ac9"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/native_execution",
+      "group": "C",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_execution/VACATION-HANDOFF01.json",
+        "bytes": 16190,
+        "sha256": "94fdf49efe1ef9df81a608e592ab023c4b5ef26826983b98a302ab5bdd2ea17e"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/sdk_execution",
+      "group": "C",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/sdk_execution/VACATION-HANDOFF01.json",
+        "bytes": 8510,
+        "sha256": "52d3201f97d41495b1e700f33ae76b0e179b87184e636c717c64cfb087e4702f"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/b64_execution",
+      "group": "C",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/b64_execution/VACATION-HANDOFF01.json",
+        "bytes": 7583,
+        "sha256": "f45f16b870c1643789a82289156207244ca41275d437cbf13ad896738d962973"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/tools_adoption",
+      "group": "C",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/tools_adoption/VACATION-HANDOFF01.json",
+        "bytes": 9646,
+        "sha256": "03cbf44108766a89dd6b5356f2b33f08e6380e4206a6339acf2ae2146e63f7bc"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/outcome_archive",
+      "group": "C",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/outcome_archive/VACATION-HANDOFF01.json",
+        "bytes": 6078,
+        "sha256": "922a07cf349f9f6b8e840c65a5cd7d717408f04b5befec6a340d508c227ffd31"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/recovery_junction",
+      "group": "C",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/recovery_junction/VACATION-HANDOFF01.json",
+        "bytes": 7165,
+        "sha256": "309ef90b12815bcdcb7304d8b8f16de3cee37376d4d902b18cbddf9b2a67b7af"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/reference_main",
+      "group": "C",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/reference_main/VACATION-HANDOFF01.json",
+        "bytes": 8329,
+        "sha256": "223d9d5f2ae4096bf3718be30a71829a81eb27ff41655e879eb9475006758e0b"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/root_assembly",
+      "group": "C",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/root_assembly/VACATION-HANDOFF01.json",
+        "bytes": 5430,
+        "sha256": "936d2fa1ceb8d7ceb6d78f7a2681c9a043d5cb81d87bb5d213b340e6b5ecdfe1"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/save_restore",
+      "group": "C",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/save_restore/VACATION-HANDOFF01.json",
+        "bytes": 7458,
+        "sha256": "3d74e05f5eacfb55a6d15da8911fe25d2bd8b35c01a321a17ef40a3ca2fee6c9"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/sway_ordinary",
+      "group": "C",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/sway_ordinary/VACATION-HANDOFF01.json",
+        "bytes": 6973,
+        "sha256": "8ea3be61c3011c72a98c95455fad2ab4f96f182ff57d49cc5f52dcea7bfccacd"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/warcore_leaves",
+      "group": "C",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/warcore_leaves/VACATION-HANDOFF01.json",
+        "bytes": 8236,
+        "sha256": "1ed9aa48ef2b6ed011f6eae2babb7fc535a6de1b5df951e922eafac918115976"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/native_supply",
+      "group": "C",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_supply/VACATION-HANDOFF01.json",
+        "bytes": 5209,
+        "sha256": "627fff1cccd6933beeb7015e54a50de9ae08a8fd6265d2942be72b21e21a793d"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/native_succession",
+      "group": "C",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_succession/VACATION-HANDOFF01.json",
+        "bytes": 6208,
+        "sha256": "2e020a596ad4f391addd4bdf691cb5c404f7efa024974758da645e33248171b8"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/native_war_cash",
+      "group": "C",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_war_cash/VACATION-HANDOFF01.json",
+        "bytes": 5438,
+        "sha256": "da8f845c3205d98cc40d665d8d7d23ec0a291dc9fa566fbe0d07f31924042b3f"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    },
+    {
+      "owner": "/root/native_transport_core",
+      "group": "C",
+      "role": "worker",
+      "task_bus_status": "completed",
+      "handoff_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_transport_core/VACATION-HANDOFF01.json",
+        "bytes": 8369,
+        "sha256": "1cc59eacceafcfbdcfc7ee493459626aab362c640db2abf71d1ef0d0a2744eea"
+      },
+      "verification": "Actual file read, JSON parse, machine_id and <=16KiB checked; nested evidence not recursively requalified"
+    }
+  ],
+  "critical_artifacts": [
+    {
+      "label": "adopted_R",
+      "ref": {
+        "path": "D:/ck3-state/ck3-java-tools-r-resume60/controls/input01/R-ACCEPTED-DELIVERY02.json",
+        "bytes": 64213,
+        "sha256": "e6a3467bfe8b612fb5267d261818f73bc453cf76bd227f3722c59f00ba44ef0b"
+      },
+      "verification": "Actual file read and SHA256; business results retain original qualified scope"
+    },
+    {
+      "label": "R_Root_adoption",
+      "ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/sdk_execution/R-ROOT-ADOPTION60.json",
+        "bytes": 4300,
+        "sha256": "f22d4a14ae1eddd900fed8b14e1414924b0eef80fe152041c5db5a88d9ab1158"
+      },
+      "verification": "Actual file read and SHA256; business results retain original qualified scope"
+    },
+    {
+      "label": "projection09_actual",
+      "ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/ROOT-PROJECTION09-ACTUAL-REVIEW01.json",
+        "bytes": 6057,
+        "sha256": "1531416affa9eda60e40b7a1eb79c5757def715f6229917f5266fbaac2bb95f1"
+      },
+      "verification": "Actual file read and SHA256; business results retain original qualified scope"
+    },
+    {
+      "label": "projection_repair_actual",
+      "ref": {
+        "path": "D:/ck3-state/ck3-java-projection-repair08-resume60/closing/PROJECTION-REPAIR08-ACTUAL-DELIVERY01.json",
+        "bytes": 3052,
+        "sha256": "8bd07daa4f03cc244b42197a397e86ca3f119a1af6de13e04861ddad253a36e8"
+      },
+      "verification": "Actual file read and SHA256; business results retain original qualified scope"
+    },
+    {
+      "label": "HostR4_close",
+      "ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/host_integration/HOST31H5R4-WHOLE-CLOSE01.json",
+        "bytes": 9105,
+        "sha256": "e88b6c573f72f31fa146c434593560c07385107f073dbbcc330aeb64bdcaf56c"
+      },
+      "verification": "Actual file read and SHA256; business results retain original qualified scope"
+    },
+    {
+      "label": "HostR4_source_audit",
+      "ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/host_integration/HOST31H5R4-ACTUAL-SOURCE-DELIVERY01.json",
+        "bytes": 11975,
+        "sha256": "2f49612230d8601fbc4c4e7598eae43a8f5b1341af95871ba642541d5521d184"
+      },
+      "verification": "Actual file read and SHA256; business results retain original qualified scope"
+    },
+    {
+      "label": "first_live_review72",
+      "ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/reference_main/FIRST-JAVA-SHORT-LOOP-REVIEW72.json",
+        "bytes": 12427,
+        "sha256": "a15fde429469b3bb3bbdeac9cdf834d1f937dbfe10483ab0abaca5f14c034bc6"
+      },
+      "verification": "Actual file read and SHA256; business results retain original qualified scope"
+    },
+    {
+      "label": "Common03",
+      "ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_mechanism_lead/common01/SOURCE-MAP-JOINT03.json",
+        "bytes": 9227,
+        "sha256": "bf30d430dfdaad8992702bb1b18d4ced8fbdccfa9014f1e5ef719cf561429ff0"
+      },
+      "verification": "Actual file read and SHA256; business results retain original qualified scope"
+    },
+    {
+      "label": "JointCI09_source",
+      "ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_refund/joint_ci06/SOURCE-DELTA09.json",
+        "bytes": 22997,
+        "sha256": "64e9624c4fd3a22badd6bed7f314b75c770affb5349d68e1251fb7c06bab7bd1"
+      },
+      "verification": "Actual file read and SHA256; business results retain original qualified scope"
+    },
+    {
+      "label": "JointCI09_entry",
+      "ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_refund/joint_ci06/ROOT-JOINT-CI-ENTRY09.json",
+        "bytes": 8120,
+        "sha256": "5fea1e191b061dffded6218897d8f7a012a85f7b518b9efc02b4ee2655ff19fd"
+      },
+      "verification": "Actual file read and SHA256; business results retain original qualified scope"
+    },
+    {
+      "label": "batch03_close",
+      "ref": {
+        "path": "D:/ck3-state/ck3-java-g2-r4-sourcebatch03/closing03/CLOSE01.json",
+        "bytes": 16293,
+        "sha256": "b90ccf44ff676c13808d4a2672ca270f25beefe0ec991845984f42b91020ce4c"
+      },
+      "verification": "Actual file read and SHA256; business results retain original qualified scope"
+    },
+    {
+      "label": "C68_close",
+      "ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/b64_execution/C68-RESUME60-CLOSURE01.json",
+        "bytes": 2138,
+        "sha256": "143b34a8f51cc5ec8c1b6fc6814a07ecebcb24b457cfccb2e235daccb136f327"
+      },
+      "verification": "Actual file read and SHA256; business results retain original qualified scope"
+    },
+    {
+      "label": "Steam_background_offline",
+      "ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/ROOT-STEAM-OFFLINE-PROBE01.json",
+        "bytes": 2480,
+        "sha256": "d358846ebf216d89a57b8c13df6a55c4d0e3efbed1fea3632d8195439c52e14a"
+      },
+      "verification": "Actual file read and SHA256; business results retain original qualified scope"
+    },
+    {
+      "label": "old_process_exact_observation",
+      "ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_transport_core/process_gate08/EXACT-PROCESS-OBSERVATION01.json",
+        "bytes": 4555,
+        "sha256": "05fe6140db3d65550866aa48af08e763775bbfe633ebd54172b20a825a0a856e"
+      },
+      "verification": "Actual file read and SHA256; business results retain original qualified scope"
+    },
+    {
+      "label": "native_flags_actual",
+      "ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/native_execution/NATIVE10-ACTUAL-CONFIG-FLAGS60-01.json",
+        "bytes": 147095,
+        "sha256": "a004bf7ce3b6b71c3f3c0d9c68a19936b0bddee80a2dbbe5dbf24e62b35f4d50"
+      },
+      "verification": "Actual file read and SHA256; business results retain original qualified scope"
+    },
+    {
+      "label": "F95_source128MiB",
+      "ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/capacity/RESUME60-FINANCIAL95-SOURCE128M01.json",
+        "bytes": 7443,
+        "sha256": "1207087bd0b9637fd812a2c67d597ec4747d2da802cd200a7492d793e3876ec0"
+      },
+      "verification": "Actual file read and SHA256; business results retain original qualified scope"
+    },
+    {
+      "label": "F96_S_scope",
+      "ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/capacity/RESUME60-FINANCIAL96-FULLS-OPTIONB01.json",
+        "bytes": 9620,
+        "sha256": "b65ef2e79d5c7ef790143fad4328dbd5e520328cc83e83da86b1cbba1a2696fe"
+      },
+      "verification": "Actual file read and SHA256; business results retain original qualified scope"
+    },
+    {
+      "label": "F97_HostR4",
+      "ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/capacity/RESUME60-FINANCIAL97-HOSTR4-CEILING01.json",
+        "bytes": 6179,
+        "sha256": "cc74a9ead7850e4a036f51047be0b7549ddd7ec6cb5e81817694c75d20aba156"
+      },
+      "verification": "Actual file read and SHA256; business results retain original qualified scope"
+    },
+    {
+      "label": "F98_current",
+      "ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/capacity/RESUME60-FINANCIAL98-BATCH03-RAW01.json",
+        "bytes": 9685,
+        "sha256": "5de217bf49411b61a4ffc556bcf702653f7a854769c72066503478625cfb1af9"
+      },
+      "verification": "Actual file read and SHA256; business results retain original qualified scope"
+    },
+    {
+      "label": "Memory45_native8GiB_proposal",
+      "ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/capacity/ROOT-HEAVY-MEMORY-SUPPLEMENT45-NATIVE8G.json",
+        "bytes": 6625,
+        "sha256": "070d8def985121315cf56f1cd20c21c53df728406c321f37fbbe71695dfd4688"
+      },
+      "verification": "Actual file read and SHA256; business results retain original qualified scope"
+    },
+    {
+      "label": "NativeCapacity22",
+      "ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/capacity/NATIVE10-RESUME60-ARTIFACTS-CAPACITY22-MEMORY8G.json",
+        "bytes": 3214,
+        "sha256": "e17dc608fd545c8374217822a373caab4af0e6637b8ce8e9b9bfecf130b5596d"
+      },
+      "verification": "Actual file read and SHA256; business results retain original qualified scope"
+    },
+    {
+      "label": "Root_closing_capacity",
+      "ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/ROOT-VACATION-CLOSE-STATE01.json",
+        "bytes": 1775,
+        "sha256": "ba6d1edb95859311788942733ec06df721f7225cec96dc6326c5bd28f1a26a11"
+      },
+      "verification": "Actual file read and SHA256; business results retain original qualified scope"
+    }
+  ],
+  "host_actual_inherited_bindings": {
+    "verification": "Copied from actual owner handoff; large referenced inputs not recursively rehashed by Root at vacation close",
+    "refs": {
+      "input_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\resume-current-20261024-r3\\source_graph-complete31\\plan\\H\\H5-repair04\\SOURCE08-COMPLETE-INPUT31H5R4.json",
+        "bytes": 447763,
+        "sha256": "90bd7bf3f31e79ae31b1d123ab52299ec62939bfbb6f906375bf35059d01bd8d"
+      },
+      "plan_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\resume-current-20261024-r3\\source_graph-complete31\\plan\\H\\H5-repair04\\SOURCE08-COMPLETE-PLAN31H5R4.json",
+        "bytes": 5602666,
+        "sha256": "3357ad28a5be5f1fb8628229044f19da68ba2500419d733d60cf2f852b7e9441"
+      },
+      "source_and_audit_delivery_ref": {
+        "path": "D:\\codex-ck3-background\\ck3-java-g2-resume-r4-20261025\\resume60\\host_integration\\HOST31H5R4-ACTUAL-SOURCE-DELIVERY01.json",
+        "bytes": 11975,
+        "sha256": "2f49612230d8601fbc4c4e7598eae43a8f5b1341af95871ba642541d5521d184"
+      },
+      "close_ref": {
+        "path": "D:\\codex-ck3-background\\ck3-java-g2-resume-r4-20261025\\resume60\\host_integration\\HOST31H5R4-WHOLE-CLOSE01.json",
+        "bytes": 9105,
+        "sha256": "e88b6c573f72f31fa146c434593560c07385107f073dbbcc330aeb64bdcaf56c"
+      },
+      "compile_terminal_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\resume-current-20261024-r3\\source_graph-complete31\\stdio\\H5-repair04\\host_integration\\compile01\\terminal.json",
+        "bytes": 41211,
+        "sha256": "7acb6a239630a6cf47e96f2f2e2b5aecc6fcfbf826e9229ba93c381bd788ea84"
+      },
+      "compile_receipt_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\build-complete35-candidate31-h5r4-compile-only.json",
+        "bytes": 3670959,
+        "sha256": "1475d408bf574cefcc5b35c51848d18951252d89e3f18e26349a7058620fd6d2"
+      },
+      "compile_log_refs": [
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\build-complete35-candidate31-h5r4-test-compile.stdout.log",
+          "bytes": 63679,
+          "sha256": "dd68abc0f9220bd8e0b6d1415072655320b8f5e361cbdd87db245d44788339e5"
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\logs\\build-complete35-candidate31-h5r4-test-compile.stderr.log",
+          "bytes": 334,
+          "sha256": "3d6454065228b80ef8311469b5b876f3ff6442bb4979d41e70ac24cb28532ec3"
+        }
+      ]
+    },
+    "results": {
+      "source_materialization": "PASS 5704 files; 297.7319381s",
+      "independent_audit": "PASS 22 negatives and two roundtrip MATCH; 153.247128199s",
+      "compile": "RED 30 SUCCESS /1 g2-research FAILURE /4 SKIPPED",
+      "unique_compiler_errors": 6,
+      "error_groups": [
+        {
+          "target": "g2-research/src/test/java/org/xar/ck3/control/g2/m6/SwayLifecycleTest.java",
+          "line": 138,
+          "column": 112,
+          "diagnostic": "java.time.Instant cannot convert to java.lang.String"
+        },
+        {
+          "target": "g2-research/src/test/java/org/xar/ck3/control/g2/m7/GoalCodecFullRevisionTest.java",
+          "lines": [
+            21,
+            39,
+            43,
+            51
+          ],
+          "diagnostic": "No StrictJson.object(JsonNode) overload; actual selected API is object(JsonNode, Set<String>) or object()"
+        },
+        {
+          "target": "g2-research/src/test/java/org/xar/ck3/control/g2/m7/M3GoalReconciliationConsumerTest.java",
+          "line": 218,
+          "column": 73,
+          "diagnostic": "No StrictJson.object(JsonNode) overload"
+        }
+      ],
+      "JUnit": "NOT_RUN",
+      "SERVICE_FAST_JAR": "NOT_PRODUCED",
+      "qualified_current_Host_classes": "NOT_PRODUCED",
+      "SDK_runtime_and_continuation": "NOT_RUN",
+      "full_CI": "NOT_RUN",
+      "Native_consumers_using_current_Host_classes": "NOT_RUN",
+      "Game": "NOT_STARTED"
+    },
+    "clock": {
+      "t0_utc": "2026-10-25T19:07:46.075449+00:00",
+      "whole_seconds": 3600,
+      "fixed_deadline_utc": "2026-10-25T20:07:46.075449Z",
+      "elapsed_to_close_seconds": 1649.280431,
+      "original_H5_t0_utc": "2026-10-25T17:21:04.746950+00:00",
+      "cumulative_elapsed_from_original_H5_seconds": 8050.60893,
+      "clock_never_reset": true,
+      "card_ref": {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\resume-current-20261024-r3\\source_graph-complete31\\plan\\H\\H5-repair04\\ROOT-HOST31H5R4-WHOLE-CARD01.json",
+        "bytes": 3840,
+        "sha256": "6b9a1b7aff7ecd3b2dab4fdd82c4c60689036daf9ec48a1ce9850b80ce623637"
+      }
+    }
+  },
+  "financial_summary": {
+    "D_allholds_bytes": 270783386492,
+    "D_required_available_bytes": 360977699708,
+    "Z_allholds_bytes": 6071361536,
+    "Z_required_available_bytes": 49021034496,
+    "R3_bytes": 8801320960,
+    "R3_ceiling_bytes": 12884901888,
+    "all_old_holds_retained": true,
+    "physical_release_credit_bytes": 0,
+    "automatic_release": false,
+    "automatic_renewal": false,
+    "source_write_until": "2026-10-25T22:00:00Z",
+    "financial_quota_review": "2026-10-26T08:00:00Z",
+    "STOP_does_not_extend_or_revive_any_deadline": true
+  },
+  "closing_capacity": {
+    "schema": "xar.resume60.vacation-root-close/v1",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-25T19:50:38.005970+00:00",
+    "status": "USER_STOP_METADATA_ONLY",
+    "basis": {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume60/capacity/RESUME60-FINANCIAL98-BATCH03-RAW01.json",
+      "bytes": 9685,
+      "sha256": "5de217bf49411b61a4ffc556bcf702653f7a854769c72066503478625cfb1af9"
+    },
+    "volumes": [
+      {
+        "root": "D:/",
+        "filesystem": "NTFS",
+        "serial_decimal": "1186119383",
+        "available_bytes": 639119835136,
+        "total_bytes": 14000483987456,
+        "total_free_bytes": 639119835136,
+        "F98_required_available_bytes": 360977699708,
+        "closing_metadata_peak_allowance_bytes": 16384,
+        "conservative_required_with_closing_bytes": 360977716092,
+        "capacity_comparison_pass": true
+      },
+      {
+        "root": "Z:/",
+        "filesystem": "NTFS",
+        "serial_decimal": "2155144704",
+        "available_bytes": 134326231040,
+        "total_bytes": 4096787476480,
+        "total_free_bytes": 134326231040,
+        "F98_required_available_bytes": 49021034496,
+        "closing_metadata_peak_allowance_bytes": 262144,
+        "conservative_required_with_closing_bytes": 49021296640,
+        "capacity_comparison_pass": true
+      }
+    ],
+    "policy_version": "1.0.0",
+    "scope": "Fresh Win32 capacity/volume identity comparison only; no inventory, quota renewal, lease grant, reclamation, process scan or business execution.",
+    "all_existing_holds_retained": true,
+    "physical_release_credit_bytes": 0,
+    "business_subagents_running": 0,
+    "business_children_scope": "Owner terminal closures and final task bus, not whole-machine census",
+    "objective_complete": false,
+    "automatic_resume": false
+  },
+  "repository": {
+    "last_observed_head": "4a999f3ef5aa6770345832ed6a3ed47602c3c4f4",
+    "head_scope": "Prior readback; no new Git operation at final close",
+    "dirty_and_untracked_preserved": true,
+    "commit_push_reset_clean": false
+  },
+  "actual_game": {
+    "started_new_game": false,
+    "new_days": 0,
+    "new_save_restore_continuations": 0,
+    "G2_full_live_modules_passed": 0,
+    "G2_total_modules": 8
+  },
+  "pending": [
+    "Host six actual test compile errors; JUnit and SERVICE not run",
+    "S 363-selection plan, zero JVM, latest passed Host source/audit unresolved",
+    "Native Person 4GiB failures; 8GiB retry and production not started; first-live G2 profile NOT_PREPARED",
+    "LS source10 nine-leaf duplex WIP; finite-first-live CLI absent; Request/RJ Work WIP",
+    "Actual Startup/22 mandatory DATA, RunProfile first publisher and FreshPact contract incomplete",
+    "Campaign goal/clock minimal source12 absent; no hot NEXT adoption",
+    "SDK actual bundles/continuation and required complete CI not run",
+    "G2/Common03/JointCI09 candidates retain each owner NOT_RUN/WIP boundary"
+  ],
+  "source_interpretation": "Only handover/metadata verification occurred after STOP. No business tests or new research, no recursive full source qualification, no automatic lease renewal or reclamation. All old holds retained; physical release credit zero. Exact owner handoffs are authoritative for source selection and WIP; no all-green inference."
+}

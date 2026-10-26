@@ -1,0 +1,816 @@
+{
+  "schema": "xar.java-g2-vacation-source-index/v3",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "written_at_utc": "2026-10-24T13:25:12.591931+00:00",
+  "user_directive": "你要去度假了。编写交接文档，输出到docs。",
+  "state": "STOP_HANDOFF_NO_NEW_EXECUTION",
+  "long_term_objective_complete": false,
+  "roots": {
+    "repo": "Z:/ck3_mod_rewrite",
+    "J": "D:/codex-ck3-demos/2026-10-22-java-phase1",
+    "R3": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3",
+    "W": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024-r3/g2-native-static07/window-controls15",
+    "F": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024-r3/frontend-lobby-locator20"
+  },
+  "handoff": {
+    "path": "Z:/ck3_mod_rewrite/docs/handover/2026-10-24-java-g2-resume56-r3-vacation-handoff.md",
+    "bytes": 22827,
+    "sha256": "e7a9539a9ccceacaa51eda43c0d9d13bc2cd19e81117e7ba93ed86cda5335e45"
+  },
+  "repository": {
+    "observed_at_utc": "2026-10-24T13:12:20.720229+00:00",
+    "machine_probe_exit": 0,
+    "machine_probe": "xenoamess-full-tower-eb9d2c1186",
+    "machine_probe_stderr": "",
+    "head": "4a999f3ef5aa6770345832ed6a3ed47602c3c4f4",
+    "branch": "master",
+    "status_entries": 120,
+    "status_codes": {
+      " M": 44,
+      "??": 76
+    },
+    "index_sha256": "e735fdd21127213dc2de9140983d260fd5cccadce845c45a0569406f975eb4e0",
+    "disks": {
+      "D:/": {
+        "total_bytes": 14000483987456,
+        "available_bytes": 844981846016
+      },
+      "Z:/": {
+        "total_bytes": 4096787476480,
+        "available_bytes": 136007045120
+      },
+      "C:/": {
+        "total_bytes": 998748684288,
+        "available_bytes": 3609595904
+      }
+    }
+  },
+  "default_maven": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-24T13:12Z",
+    "command": "mvn -version",
+    "exit": 0,
+    "version": "3.10.0",
+    "home_observed_not_execution_pin": "C:/apache-maven",
+    "java": "21.0.10",
+    "java_home_observed": "C:/jdk-21",
+    "encoding": "UTF-8"
+  },
+  "phase": {
+    "general_tools": "C23_ONLY",
+    "C24E_bootstrap94": "ACTUAL_PASS_SOURCE_BOOTSTRAP_ONLY",
+    "critical22": "ACTUAL_22_OF_22_PASS",
+    "test116": "ACTUAL_STRICT_COMPILE_PASS_METHODS_NOT_RUN_HERE",
+    "source280": "ACTUAL_MATERIALIZED_AND_ALL_WINNERS_MATCH",
+    "issuer_E": "NOT_STARTED",
+    "Maven_E": "NOT_RUN",
+    "Own_E": "NOT_RUN",
+    "Host25": "NOT_RUN",
+    "Native08": "SOURCE_ONLY_NO_ENV_BUILD_REGISTER",
+    "Java_Game_SAVE": "NOT_RUN",
+    "new_saved_game_days": 0,
+    "complete_G2": "0/8"
+  },
+  "coverage": {
+    "authority": "coverage56",
+    "original_names": 323,
+    "source_supplied_not_qualified": 297,
+    "gap": 24,
+    "config_pending": 2,
+    "historical_source_percent": 92.0,
+    "full_migration_acceptance_percent": null,
+    "unsettled_late_names": 40,
+    "new57_or58_exists": false,
+    "not_current_complete_percentage": true
+  },
+  "team": {
+    "snapshot_at_utc": "2026-10-24T13:14:25Z",
+    "root_separate": true,
+    "counts": {
+      "running": 19,
+      "completed": 34,
+      "errored": 3
+    },
+    "warning": "Fixed snapshot only. Running includes shutdown/wait. Later changes are not reflected. No claim all56 independent process shutdown receipts.",
+    "owner_legend": {
+      "state": "at fixed snapshot",
+      "cap": "Source80 byte ceiling, not usage; expires13:30",
+      "nav": "R3-relative recent small metadata bymtime, NAVIGATION ONLY; never winner/qualification"
+    },
+    "owners": {
+      "action_coordinator": {
+        "state": "completed",
+        "cap": 3620864,
+        "nav": "action_coordinator/direct-query71/SOURCE-DELTA71.json"
+      },
+      "auto_loop": {
+        "state": "completed",
+        "cap": 4718592,
+        "nav": "auto_loop/normal_exit_reason53/SOURCE-DELTA53.json"
+      },
+      "battle_advance": {
+        "state": "running",
+        "cap": 2097152,
+        "nav": "battle_advance/primitive_negative20/SOURCE-DELTA20.json"
+      },
+      "budget_fast_lane": {
+        "state": "completed",
+        "cap": 4718592,
+        "nav": null
+      },
+      "campaign_goals": {
+        "state": "completed",
+        "cap": 2097152,
+        "nav": "campaign_goals/source29/SOURCE-DELTA29.json"
+      },
+      "combat_contract": {
+        "state": "completed",
+        "cap": 1900544,
+        "nav": "combat_contract/returned_read03/SOURCE-MAP03.json"
+      },
+      "combat_phase": {
+        "state": "completed",
+        "cap": 2883584,
+        "nav": "combat_phase/rejected_cache22/SOURCE-MAP22.json"
+      },
+      "command_origins": {
+        "state": "completed",
+        "cap": 2097152,
+        "nav": "command_origins/public_pause33/SOURCE-DELTA33.json"
+      },
+      "construction": {
+        "state": "completed",
+        "cap": 2490368,
+        "nav": "construction/public_pause29/SOURCE-DELTA29.json"
+      },
+      "driver_history": {
+        "state": "completed",
+        "cap": 2392064,
+        "nav": "driver_history/SOURCE-DELTA21.json"
+      },
+      "driver_snapshot": {
+        "state": "completed",
+        "cap": 3604480,
+        "nav": "driver_snapshot/natural_evidence31/SOURCE-DELTA31.json"
+      },
+      "dynamic_capabilities": {
+        "state": "completed",
+        "cap": 5177344,
+        "nav": "dynamic_capabilities/source42/SOURCE-JOIN42C.json"
+      },
+      "effect_observers": {
+        "state": "running",
+        "cap": 1835008,
+        "nav": "effect_observers/storage_consumers21/SOURCE-DELTA21.json"
+      },
+      "event_registry": {
+        "state": "running",
+        "cap": 2621440,
+        "nav": "event_registry/stock_consumer17/SOURCE-DELTA17B.json"
+      },
+      "family_ordinary": {
+        "state": "completed",
+        "cap": 2326528,
+        "nav": "family_ordinary/marriage_fault20/SOURCE-DELTA20.json"
+      },
+      "finance_ordinary": {
+        "state": "running",
+        "cap": 2519040,
+        "nav": "finance_ordinary/route_formatter29/SOURCE-DELTA29.json"
+      },
+      "forecast_envelope": {
+        "state": "completed",
+        "cap": 1835008,
+        "nav": "forecast_envelope/frontend_prepare25/SOURCE-MAP25.json"
+      },
+      "forecast_kernel": {
+        "state": "running",
+        "cap": 1835008,
+        "nav": "forecast_kernel/public_pause21/SOURCE-DELTA21.json"
+      },
+      "governance_ordinary": {
+        "state": "completed",
+        "cap": 2228224,
+        "nav": "governance_ordinary/test30/SOURCE-DELTA30.json"
+      },
+      "known_interactions": {
+        "state": "running",
+        "cap": 2424832,
+        "nav": "known_interactions/SOURCE-MAP20.json"
+      },
+      "launcher_refresh": {
+        "state": "completed",
+        "cap": 2097152,
+        "nav": "launcher_refresh/source22/SOURCE-DELTA22.json"
+      },
+      "ledger_writer": {
+        "state": "running",
+        "cap": 2490368,
+        "nav": "ledger_writer/gui_decision_formatter30/DRAFT-HANDOFF30.json"
+      },
+      "life_advance": {
+        "state": "running",
+        "cap": 2424832,
+        "nav": "life_advance/SOURCE-DELTA38.json"
+      },
+      "lifecycle": {
+        "state": "completed",
+        "cap": 2490368,
+        "nav": "lifecycle/army_failure32/SOURCE-DELTA32.json"
+      },
+      "m0_research": {
+        "state": "completed",
+        "cap": 2752512,
+        "nav": "m0_research/root_host42/SOURCE-DELTA42.json"
+      },
+      "m1_research": {
+        "state": "completed",
+        "cap": 5505024,
+        "nav": "m1_research/cases_failure42/SOURCE-DELTA42.json"
+      },
+      "m2_research": {
+        "state": "completed",
+        "cap": 2097152,
+        "nav": "m2_research/07-load-contract/SOURCE-MAP07.json"
+      },
+      "m3_research": {
+        "state": "completed",
+        "cap": 3194880,
+        "nav": "m3_research/retained_finalization60/SOURCE-DELTA60.json"
+      },
+      "m4_research": {
+        "state": "running",
+        "cap": 2293760,
+        "nav": "m4_research/native26/SOURCE-DELTA26.json"
+      },
+      "m5_research": {
+        "state": "completed",
+        "cap": 2883584,
+        "nav": "m5_research/religion06/SOURCE-DELTA06.json"
+      },
+      "m6_research": {
+        "state": "completed",
+        "cap": 2228224,
+        "nav": "m6_research/save_manager31/SOURCE-DELTA31.json"
+      },
+      "m7_research": {
+        "state": "running",
+        "cap": 2203648,
+        "nav": "m7_research/source39/SOURCE-DELTA39.json"
+      },
+      "military_ordinary": {
+        "state": "completed",
+        "cap": 2359296,
+        "nav": "military_ordinary/direct_fixed_window14/SOURCE-DELTA14.json"
+      },
+      "native_army": {
+        "state": "errored",
+        "cap": 2752512,
+        "nav": "native_army/window_failures03/SOURCE-MAP03.json"
+      },
+      "native_family": {
+        "state": "completed",
+        "cap": 2129920,
+        "nav": "native_family/army_window_order26/SOURCE-DELTA26.json"
+      },
+      "native_governance": {
+        "state": "completed",
+        "cap": 2359296,
+        "nav": "native_governance/direct_window_order30/SOURCE-DELTA30.json"
+      },
+      "native_protocol_identity": {
+        "state": "running",
+        "cap": 2359296,
+        "nav": "native_protocol_identity/stock_scope32/SOURCE-DELTA32.json"
+      },
+      "native_schemes_events": {
+        "state": "errored",
+        "cap": 3149824,
+        "nav": "native_schemes_events/admitted_current35/PRODUCTION-FREEZE35.json"
+      },
+      "native_transport_core": {
+        "state": "completed",
+        "cap": 3768320,
+        "nav": "native_transport_core/entry_history39/SOURCE-DELTA39.json"
+      },
+      "outcome_archive": {
+        "state": "completed",
+        "cap": 3211264,
+        "nav": "outcome_archive/physical_status28/SOURCE-DELTA28.json"
+      },
+      "parity_ci": {
+        "state": "completed",
+        "cap": 4554752,
+        "nav": "parity_ci/profile_r5_modules47/SOURCE-MAP47.json"
+      },
+      "planner_owner": {
+        "state": "running",
+        "cap": 3407872,
+        "nav": "planner_owner/progress_correction56/SOURCE-DELTA56.json"
+      },
+      "prisoners_ordinary": {
+        "state": "completed",
+        "cap": 2424832,
+        "nav": "prisoners_ordinary/normal_exit_diagnostics22/SOURCE-DELTA22.json"
+      },
+      "public_mcp": {
+        "state": "running",
+        "cap": 2801664,
+        "nav": "public_mcp/public25/SOURCE-DELTA25.json"
+      },
+      "readiness": {
+        "state": "completed",
+        "cap": 2260992,
+        "nav": "readiness/reconciliation_status20/SOURCE-DELTA20.json"
+      },
+      "recovery_junction": {
+        "state": "running",
+        "cap": 3407872,
+        "nav": "recovery_junction/stock_configuration50/STOP-HANDOFF50.json"
+      },
+      "reference_main": {
+        "state": "errored",
+        "cap": 4063232,
+        "nav": "reference_main/root_preparation36/SOURCE-MAP36.json"
+      },
+      "root_assembly": {
+        "state": "running",
+        "cap": 3407872,
+        "nav": "root_assembly/source22/DIRECT-QUERY-NEGATIVE-FREEZE22.json"
+      },
+      "route_contact": {
+        "state": "completed",
+        "cap": 1835008,
+        "nav": "route_contact/route_refresh15/SOURCE-DELTA15.json"
+      },
+      "runtime_package": {
+        "state": "running",
+        "cap": 2621440,
+        "nav": "runtime_package/source43/PRODUCTION-FREEZE43.json"
+      },
+      "save_restore": {
+        "state": "running",
+        "cap": 3768320,
+        "nav": "save_restore/source32/SOURCE-JOIN32.json"
+      },
+      "sdk_closure": {
+        "state": "completed",
+        "cap": 2883584,
+        "nav": "sdk_closure/runtime_definitions37/SOURCE-DELTA37.json"
+      },
+      "source_graph": {
+        "state": "running",
+        "cap": 9306112,
+        "nav": "source_graph/whole_storage25/VACATION-HANDOFF25.json"
+      },
+      "sway_ordinary": {
+        "state": "running",
+        "cap": 3014656,
+        "nav": "sway_ordinary/public_pause22/HANDOFF22.json"
+      },
+      "tools_c15": {
+        "state": "completed",
+        "cap": 7208960,
+        "nav": "tools_c15/source_helper24i/SOURCE-MAP09.json"
+      },
+      "warcore_leaves": {
+        "state": "completed",
+        "cap": 1966080,
+        "nav": "warcore_leaves/public_steps16/SOURCE-DELTA16.json"
+      }
+    }
+  },
+  "final_root_registry": {
+    "task_id": "ck3-java-g2-resume56-r3-20261024",
+    "last_sequence": 8289,
+    "updated_at_utc": "2026-10-24T13:16:52.434978+00:00",
+    "resources": [
+      "machine:xenoamess-full-tower-eb9d2c1186",
+      "repo:Z:/ck3_mod_rewrite;preserve-main-HEAD-index-and120-dirty",
+      "budget:financial29+Source80+Memory28;review2026-10-24T13:30Z;R3=4063MiB;Source=206MiB;Native=1792MiB;STOP-HANDOFF-no-renewal",
+      "execution:max4-nonGame-heavy;hardJob-total12GiB;outer-total1GiB;ninja-total4;single-Maven-writer-J-m2",
+      "memory-lease:r3-slot1;owner=tools_c15;state=RELEASED;hardJobReserved=0;outerReserved=0;actualSource280-child0-Job0;terminalSHA1916acf934085b0ca4524485af0138cab1e8ef71fc3b31668bbfe856a80d0c96",
+      "memory-lease:r3-slot2;owner=forecast_envelope;state=RELEASED;hardJobReserved=0;outerReserved=0;Raw28-and-Front26-closed-Job0;owner-confirmed2026-10-24T13:11:12Z",
+      "memory-lease:r3-slot3;owner=tools_c15;scope=complete35-host25;state=RELEASED;hardJobReserved=0;outerReserved=0;production-never-started",
+      "memory-lease:r3-slot4;owner=reference_main;scope=native08-production;state=RELEASED;hardJobReserved=0;outerReserved=0;production-never-started",
+      "memory-lease:Root-manual-cooperative-register;reserved-slots0;hardJob-reserved0;outer0;full-conserved-need38654705664-on-future-resume;no-automatic-service",
+      "authority:STOP-HANDOFF;no-new-Game-ledger-JVM-Maven-Native-or-capture;explicit-resume-and-fresh-admission-required",
+      "runtime:C23-qualified6;Raw14-limited;private94-bootstrap-tests-only;no-C24C-general-adoption",
+      "Steam:no-mode-change-no-game-launch-no-focus-no-screenshots"
+    ]
+  },
+  "live": {
+    "Tools": {
+      "sessions": [],
+      "active_children": 0,
+      "last_session": 49052,
+      "consumed": true,
+      "last_terminal": "source280_terminal",
+      "job_active": 0
+    },
+    "Forecast": {
+      "observed_at_utc": "2026-10-24T13:11:12Z",
+      "sessions": [],
+      "active_children": 0
+    },
+    "Host_Native_production": "NEVER_STARTED",
+    "old_CK3": "UNQUALIFIED_NOT_ADOPTED_OR_STOPPED; freshoperatorcheck required"
+  },
+  "budget": {
+    "review_at_utc": "2026-10-24T13:30:00Z",
+    "automatic_renewal": false,
+    "R3_MiB": 4063,
+    "ceiling_MiB": 4096,
+    "Source_MiB": 206,
+    "Native_MiB": 1792,
+    "Tools_MiB": 195,
+    "m2_growth_once_MiB": 64,
+    "source_owner_bytes": 169107456,
+    "external_bytes": 44564480,
+    "guard_bytes": 2334720,
+    "physical_release_credit": 0,
+    "Frontend_cap": 4194304,
+    "Frontend_actual": 3280896,
+    "Frontend_future": 966656,
+    "Frontend_peak_gap": 53248,
+    "Window_cap": 20971520,
+    "Window_and_TMP_actual": 18731008,
+    "unapproved": [
+      "Host336MiB vs320",
+      "Frontend4.125MiB",
+      "Window24MiB/nextfive",
+      "M6next131072B",
+      "Route2097152"
+    ],
+    "resume_requires_new_specific_admission": true
+  },
+  "qualified_C23_runtime_six": [
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/java-tools188-firstcut23-r3/ck3-control-build-tools/ck3-control-build-tools-0.1.0-SNAPSHOT.jar",
+      "bytes": 1884021,
+      "sha256": "0ade13f46ff6ef1db776865f74cf98f9be34fb8fcbb984a748743cfaaa683502"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/java-tools188-firstcut23-r3/ck3-control-build-tools/lib/jackson-annotations-2.21.jar",
+      "bytes": 82104,
+      "sha256": "53ca085f4a150f703f49e1aabd935bd03b43e1ea3d55d135438292af22cef56b"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/java-tools188-firstcut23-r3/ck3-control-build-tools/lib/jackson-core-2.21.7.jar",
+      "bytes": 594782,
+      "sha256": "8c5623b98f32d5f7e1287ff61ed50e08ab7b11381e991fff89327faabba42261"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/java-tools188-firstcut23-r3/ck3-control-build-tools/lib/jackson-databind-2.21.7.jar",
+      "bytes": 1709095,
+      "sha256": "1290c2795e93e8a6861a6c4d9ff0d844d32f5ea178362cb2721edf5561e828b1"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/java-tools188-firstcut23-r3/ck3-control-build-tools/lib/jna-5.19.1.jar",
+      "bytes": 1950853,
+      "sha256": "4fb141dd8ef6b0585ffceea4bc49602fbc6312fa977e2c488794ea3e6aafecae"
+    },
+    {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/java-tools188-firstcut23-r3/ck3-control-build-tools/lib/jna-platform-5.19.1.jar",
+      "bytes": 1416385,
+      "sha256": "3b3864f5b449e9c3c24b16861524b622b086563f44e0cd8384c8efc5a6052f82"
+    }
+  ],
+  "critical_evidence": {
+    "coverage56": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/planner_owner/progress_correction56/SOURCE-DELTA56.json",
+      "bytes": 30088,
+      "sha256": "59b81c3530b6c92c6890ba2ce047506e2f1a967e967ab563a357c7e032f87275"
+    },
+    "host25": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/source_graph/complete_candidate25/DELIVERY25.json",
+      "bytes": 1745,
+      "sha256": "dc4eb410c0bd8b3486e54c9e7c1f2b0def2ebd9e1cfe3db898642351a3238725"
+    },
+    "r5_35": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/sdk_closure/parity_profile_r5_35/SOURCE-DELTA35.json",
+      "bytes": 15682,
+      "sha256": "ce5f621e8c3bf4f33bcd328ee0e383268738eb05c8daceaf5918913f487491c5"
+    },
+    "r5_join36": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/sdk_closure/parity_profile_r5_35/PROVIDER-JOIN36.json",
+      "bytes": 2704,
+      "sha256": "904662bcceb8206f1c2eb505e1270a0995bea2956e620039e0e100416f06e8b9"
+    },
+    "cb47": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/parity_ci/profile_r5_modules47/SOURCE-MAP47.json",
+      "bytes": 4716,
+      "sha256": "f8c6f06400bcf5934fd8f8a4f171b9c11898a578ba0c2e4801298f3f5ee5d3ec"
+    },
+    "scope25": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/source_graph/whole_storage25/SOURCE-MAP25.json",
+      "bytes": 16053,
+      "sha256": "7765e0c48d767a856c30f530d2ca376d8eb1dc82e30e823442b1eb367f8ffa67"
+    },
+    "scope_stop25": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/source_graph/whole_storage25/VACATION-HANDOFF25.json",
+      "bytes": 3026,
+      "sha256": "321de4b243b6b9e10f93c87ec3ca90f4637846ffc00b7ea15f17c610e99d0514"
+    },
+    "pause_stop22": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/sway_ordinary/public_pause22/HANDOFF22.json",
+      "bytes": 11278,
+      "sha256": "546c1659d5f53ebe539fd009b1a305e2a7394735056a6e34578a3ceeb4e42b97"
+    },
+    "stock_stop50": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/recovery_junction/stock_configuration50/STOP-HANDOFF50.json",
+      "bytes": 5279,
+      "sha256": "4e660cf7644cb8460e28a1ec1d68cbc84534b4ecbb25309f66e7aa5a11a18142"
+    },
+    "query22": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/root_assembly/source22/DIRECT-QUERY-NEGATIVE-FREEZE22.json",
+      "bytes": 10111,
+      "sha256": "44877c7ca0e918a0935a6c433f4401101daacd8b3e75142e9e462e3f39a69d9f"
+    },
+    "session21": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/root_assembly/source21/BORROWED-READ-FREEZE21.json",
+      "bytes": 3639,
+      "sha256": "a7a1192b866acf3e9bc407c373fb8b1a10322a1cf20d435f2dea961f371fe8bc"
+    },
+    "activity20": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/known_interactions/SOURCE-MAP20.json",
+      "bytes": 30044,
+      "sha256": "e90b690bc8709a445e11dfa43cb57c5042fe31311ca5604631a009dcc80ebff1"
+    },
+    "public25": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/public_mcp/public25/SOURCE-DELTA25.json",
+      "bytes": 20648,
+      "sha256": "92d566d7863b5a24e252d9f811e4c53c5ddf8c5e603a2d4fcc8ea5e260282924"
+    },
+    "gov29": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/governance_ordinary/stale29/SOURCE-DELTA29.json",
+      "bytes": 10265,
+      "sha256": "59eafa442666069fb7105fbba91b2438ad0bcaba76a01899b9d751f97a0737a3"
+    },
+    "govtest30": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/governance_ordinary/test30/SOURCE-DELTA30.json",
+      "bytes": 4102,
+      "sha256": "d4df14c5cefc0dfc14f90460624dd5397c7efa3daa2c92c17c9498f4dae1f736"
+    },
+    "normalexit22": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/prisoners_ordinary/normal_exit_diagnostics22/SOURCE-DELTA22.json",
+      "bytes": 19517,
+      "sha256": "ff4272544a9a49de1469307ed312d1d80eb3a09d23d4831176fc444bbe99a4ce"
+    },
+    "origins34": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/command_origins/public_pause33/OWNERSHIP-JOIN34.json",
+      "bytes": 4152,
+      "sha256": "5385ba7deb0cd69c53eebcd552b31572e1ebbc11f73cb4ba0d266f8b55434f94"
+    },
+    "decision_draft30": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/ledger_writer/gui_decision_formatter30/DRAFT-HANDOFF30.json",
+      "bytes": 7225,
+      "sha256": "c139e87b6df01c0a465b50af8a98c654eb132943226a7680674126934feefa1d"
+    },
+    "gui_metadata_only": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/m4_research/gui27/metadata_source01/GuiPublicMetadata.java",
+      "bytes": 5233,
+      "sha256": "382c212979379e48a527bc0622f5ce37bd49cd69a9aa3d66606ee97299c8ef6c"
+    },
+    "life38": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/life_advance/SOURCE-DELTA38.json",
+      "bytes": 14971,
+      "sha256": "368afef75554b17c4112460c0455dd9684008baa8d863f39e12ae2bf0f591522"
+    },
+    "route15": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/route_contact/route_refresh15/SOURCE-DELTA15.json",
+      "bytes": 14185,
+      "sha256": "b0a75619df48ac2622ce21534e7c375d1b1033b756c821a84fbc1de038fce2eb"
+    },
+    "planner53": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/planner_owner/public_consumer53/SOURCE-JOIN53.json",
+      "bytes": 6096,
+      "sha256": "46897972823a5974d653bafd7fdd3fcc985db214e17f64545d3534affbb998f0"
+    },
+    "runtime41": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/runtime_package/CONSUMER-DELTA41.json",
+      "bytes": 5797,
+      "sha256": "6fea5c8d199a61b2e207a10ef6f3b47add8cdb1431431b2f8c658115ab1f57d1"
+    },
+    "runtime_future43": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/runtime_package/source43/PRODUCTION-FREEZE43.json",
+      "bytes": 4898,
+      "sha256": "44fdd93d49bb5a6b3aaeac39c5a4b14accb6261c7620f0ee5283447745bf9096"
+    },
+    "stock31a": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_protocol_identity/stock_consumer31/SOURCE-DELTA31A.json",
+      "bytes": 10895,
+      "sha256": "4bfd9d6eab02e35218d46f8356fcc54bc9ae8d772061b20d48936388981a3960"
+    },
+    "stock32": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_protocol_identity/stock_scope32/SOURCE-DELTA32.json",
+      "bytes": 3795,
+      "sha256": "b026386cfb134ae3becb5f2ce5630caa4b86f8ecf1ba93443f9b7a9df76df70b"
+    },
+    "er17b": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/event_registry/stock_consumer17/SOURCE-DELTA17B.json",
+      "bytes": 3223,
+      "sha256": "9c0887ef80520ffd8354a7ad3fdb97b98d9635486c1eab206bef0d1711c0108b"
+    },
+    "sdkstock37": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/sdk_closure/runtime_definitions37/SOURCE-DELTA37.json",
+      "bytes": 6796,
+      "sha256": "5988c48612146f6e43b8194a133d315cdd96f4734787f01f7451b263e34a87a1"
+    },
+    "save32": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/save_restore/source32/SOURCE-JOIN32.json",
+      "bytes": 14989,
+      "sha256": "cb50c8cf50e81bb1b9c58376624cee00ed57e61284dd4788941016f9a009b1a8"
+    },
+    "auto54": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/auto_loop/admitted_current52/PROVIDER-JOIN54.json",
+      "bytes": 2945,
+      "sha256": "089ab6f5ac1ac5d42c914f3c632bb5dbd05599de881e1743c4172eb385c57821"
+    },
+    "m7current39": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/m7_research/source39/SOURCE-DELTA39.json",
+      "bytes": 8048,
+      "sha256": "1e1d4af1a4dc2b8d49c09ef76113c7954422cc3bb6d53a88230626314bf3604d"
+    },
+    "m4native26": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/m4_research/native26/SOURCE-DELTA26.json",
+      "bytes": 4715,
+      "sha256": "c2ca8e894b8a5abb147e9caaa55ebf0ce9deda768e689b1e609d6de751453993"
+    },
+    "m6native31": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/m6_research/save_manager31/SOURCE-DELTA31.json",
+      "bytes": 4075,
+      "sha256": "ea88e4495451678756949cbec1bd4fc2d1941fb2250e3cd6a5516bbc712953c6"
+    },
+    "m0_next": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/m0_research/frontier39/NEXT-FINITE-PROPOSAL39.json",
+      "bytes": 3377,
+      "sha256": "61209499655e6045fe233d3518923f59d88115c7e6597477b04d2f73721284d2"
+    },
+    "m1_next": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/m1_research/native43/PLAN-M1-WINDOWS43.json",
+      "bytes": 1842,
+      "sha256": "6ade486ae0227c31bc27d5b020a1795bb0865ea1f86b91e6de367c9bc3cb173b"
+    },
+    "m2_next": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/m2_research/07-scopebase-plan/WINDOW-PLAN07C.json",
+      "bytes": 3297,
+      "sha256": "48db0b07545db56509bcf9070f4b674f76d76a27d2fb13b1cb76bfd497a301ec"
+    },
+    "m5_next": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/m5_research/native15-requests/PLAN21-QUANTITY-UNWIND-HEADER01.json",
+      "bytes": 1079,
+      "sha256": "d06ae7cfd416b8c8341f55217fc7cc301350a3e2f252e8ed2eca43efd3339c4f"
+    },
+    "m6_next": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/m6_research/save_manager31/PLAN-M6-METADATA32.json",
+      "bytes": 1229,
+      "sha256": "78c86573fac1de418f387c15ca0de85da6aa25da425d14dab27c493ab480967b"
+    },
+    "financial29": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/budget_fast_lane/ROOT-TOOLS-CAPACITY-SUPPLEMENT29.json",
+      "bytes": 31356,
+      "sha256": "963a69bbb3e1c1cf1d3a330a7e88ad933e5c6a0f59eda97363900a02f737ad06"
+    },
+    "source80": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/budget_fast_lane/SOURCE-SUPPLEMENT80.json",
+      "bytes": 10043,
+      "sha256": "92ec34907b041753ebf3e7271f9023d5726b6b8d58b846deb144610523f23007"
+    },
+    "memory28": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/budget_fast_lane/ROOT-HEAVY-MEMORY-SUPPLEMENT28.json",
+      "bytes": 10634,
+      "sha256": "bf51cc34c09bb5e4f8567d66a0816af91e540dc07123101497d24116d0013f17"
+    },
+    "native22": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/budget_fast_lane/NATIVE-FINITE-RESOURCE-FINANCIAL22.json",
+      "bytes": 20033,
+      "sha256": "0ec41cf722bb93a132eab301d550929f5156366d4ca8a2acffb8f5a914e414d6"
+    },
+    "docs13": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/budget_fast_lane/ROOT-Z-DOCS-DELTA-AMENDMENT13.json",
+      "bytes": 1735,
+      "sha256": "651c050bd5784238e962104dfe4284fecc49f04a5516552274dfe0ea5a0c7d6f"
+    },
+    "chain54": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/budget_fast_lane/TOOLS-C24E-SOURCE-MAVEN-OWN-STANDING54.json",
+      "bytes": 27344,
+      "sha256": "e9da7de5c5c5bd324bc1449e33377857e9d3b44b8bb9e66ac8ae163e8bd7ae22"
+    },
+    "bootstrap94_actual": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/java-tools233-firstcut24e-r3/actual.json",
+      "bytes": 196072,
+      "sha256": "6d661f698c05bddf5a98abfd3bcb8d25e5bff157a1f01c31214794472d0b449e"
+    },
+    "bootstrap94_terminal": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024-r3/g2-c24-tools24/tools_c15/c24e-full-bootstrap01/terminal.json",
+      "bytes": 160072,
+      "sha256": "38ad19c88103fb7a45d8b8079dc5955d8e2adbdba499e9a5561cbcaed2caf8dd"
+    },
+    "critical22": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/tools-c24-control-inputs-r3-01/C24E-CRITICAL22-ACTUAL-CONSUMED01.json",
+      "bytes": 5944,
+      "sha256": "17869548765f456ae64aa6ead498ed5a0f31d43661c06d078260d93ce6a175e5"
+    },
+    "test116": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/tools-c24-control-inputs-r3-01/C24E-TEST116-ACTUAL-CONSUMED01.json",
+      "bytes": 1651,
+      "sha256": "54c53219fbceefc3c7268106bee5d5991b272989eda006ed7f577dd9b4f61463"
+    },
+    "source280_consumed": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/artifacts/tools-c24-control-inputs-r3-01/C24E-SOURCE-ACTUAL-CONSUMED01.json",
+      "bytes": 2466,
+      "sha256": "8894204ec2e5fe2ea4a073ce0f6fcdc71108a602850bc4e1811e3f9a099eede1"
+    },
+    "source280_terminal": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024-r3/g2-c24-tools24/tools_c15/c24e-source01/terminal.json",
+      "bytes": 281687,
+      "sha256": "1916acf934085b0ca4524485af0138cab1e8ef71fc3b31668bbfe856a80d0c96"
+    },
+    "source280_map": {
+      "path": "D:/codex-ck3-demos/2026-10-24-sharedwire-tools233-source24e-r3/SOURCE-MAP01.json",
+      "bytes": 491140,
+      "sha256": "2ec91552eae1f118c3f346f3f1926aeef0abf8d53f40b528e2894d0a400158df"
+    },
+    "source280_guard": {
+      "path": "D:/codex-ck3-demos/2026-10-24-sharedwire-tools233-source24e-r3/SOURCE-INPUT-GUARD01.json",
+      "bytes": 367313,
+      "sha256": "3e20fab57614a51b06a16161beb6978da3203293349a547d4f8d47fe95c23907"
+    },
+    "last_maven_red": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/build-java-tools233-firstcut24d-r3.json",
+      "bytes": 140052,
+      "sha256": "a8c289b62afebd82cf7e09b6efbc174f52cfe1c66c4382ac442534db2450b7cb"
+    },
+    "native08": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024-r3/native_combined_prepare07/native08/SOURCE-MAP08.json",
+      "bytes": 13831,
+      "sha256": "a27fa0756641e4d24bbfdb65278a8c978e9f7fd8b22fc2bf9013c267b8106c28"
+    },
+    "raw28": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024-r3/g2-native-static07/window-controls15/CAPTURE-RESULT28.json",
+      "bytes": 49256,
+      "sha256": "fe4267874128aa2931cc08035225f9a3b295acba7f0679340eebbbdf5be1da2c"
+    },
+    "frontend24": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024-r3/frontend-lobby-locator20/LIMITED-FRONTEND-DELIVERY24.json",
+      "bytes": 9051,
+      "sha256": "175dcb3b5fa7532bd7b710d6181f82e91222c4f1c8d7b956c4e787caefc22473"
+    },
+    "frontend_old_red": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024-r3/frontend-lobby-locator20/WHOLE-LIMIT-FAILURE22.json",
+      "bytes": 1380,
+      "sha256": "f47f2b603337ae3bc31611ee415cfef989ce92e3f069ce04098d5173ee423942"
+    },
+    "front26": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024-r3/frontend-lobby-locator20/PREPARATION-DELIVERY26.json",
+      "bytes": 10245,
+      "sha256": "f211ee218769ff9960bb9b3e68fc7ef8146888896c3e6c50c4204a1e09703ada"
+    },
+    "front26_classes": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024-r3/frontend-lobby-locator20/PREPARATION-CLASS-CLOSURE26.json",
+      "bytes": 7403,
+      "sha256": "194a993e7548e8a4713641ab23a02a5ca39427c505e9aadc0dc856709e244390"
+    },
+    "front26_readback": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024-r3/frontend-lobby-locator20/PREPARATION-READBACK26.json",
+      "bytes": 5798,
+      "sha256": "8ced3506023e78d402ed3d807c80977880287eefb8ad5e694c79bd83a0797fd3"
+    },
+    "front_unissued_request": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024-r3/frontend-lobby-locator20/REQUEST-FRONTEND25.json",
+      "bytes": 958,
+      "sha256": "271c9670dda8276e43deeb81689ae418c01aec404b9f991aae68012590badcc0"
+    },
+    "storage_policy": {
+      "path": "Z:/ck3_mod_rewrite/docs/storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    },
+    "progress_r3": {
+      "path": "Z:/ck3_mod_rewrite/docs/handover/2026-10-24-java-g2-resume56-r3-progress.md",
+      "bytes": 45485,
+      "sha256": "109c0dea61913fca13724ab109a440b50f09afc0285fdb93e56e15f2c504925c"
+    },
+    "host25_production-request25": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/source_graph/complete_candidate25/PRODUCTION-REQUEST25.json",
+      "bytes": 8679,
+      "sha256": "6974158981e20039f9c3310f5bdecbe0da554a54c4fb665b00bbccf27e9de224"
+    },
+    "host25_source08-complete-input25": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/source_graph/complete_candidate25/SOURCE08-COMPLETE-INPUT25.json",
+      "bytes": 354357,
+      "sha256": "654eca721975f9131439ae46f0f4e118000228830fad8dc98ee6400c6dbee43e"
+    }
+  },
+  "missing_requested_evidence": [],
+  "verification_boundary": "Critical FileRefs actual bytes/SHA read atwrite. No tests executed, no CK3 image rehash. Owner navigation is NOT authority. Full source selection map is not runtime qualification.",
+  "retention": {
+    "policy": "docs/storage-retention-policy.json",
+    "new_files_max_bytes": 61440,
+    "old_five_docs_bytes": 129091,
+    "Z_docs_protection_bytes": 196608,
+    "deletions": 0,
+    "expired_is_not_automatic_delete": true
+  }
+}

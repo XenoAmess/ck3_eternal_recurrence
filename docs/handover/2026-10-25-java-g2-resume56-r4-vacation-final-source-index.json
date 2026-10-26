@@ -1,0 +1,513 @@
+{
+  "schema": "xar.java-g2.vacation-final-source-index/r4-v2",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "written_at_utc": "2026-10-25T15:25:38.955455+00:00",
+  "explicit_user_instruction": "你要去度假了，生成交接文档到docs。你别继续推进了",
+  "goal_tool_actual_status": "paused",
+  "goal_pause_actual_observed_at_utc": "2026-10-25T15:16:28Z",
+  "objective_complete": false,
+  "automatic_continuation_is_not_user_resume_authority": true,
+  "no_new_business_phase_after_pause": true,
+  "parent_handoff_ref": {
+    "path": "Z:/ck3_mod_rewrite/docs/handover/2026-10-25-java-g2-resume56-r4-vacation-handoff.md",
+    "bytes": 23920,
+    "sha256": "3f376e1aaa5cffadafa9f2a6216283c134b0f3711039dc48343b0ebe5ffe4b76"
+  },
+  "parent_index_ref": {
+    "path": "Z:/ck3_mod_rewrite/docs/handover/2026-10-25-java-g2-resume56-r4-vacation-source-index.json",
+    "bytes": 130695,
+    "sha256": "8d9232e9779a87c716fb5b80319a85cc63b4ff5f86817c2bdbce962ab4eb558c"
+  },
+  "final_handoff_ref": {
+    "path": "Z:/ck3_mod_rewrite/docs/handover/2026-10-25-java-g2-resume56-r4-vacation-final-handoff.md",
+    "bytes": 11098,
+    "sha256": "a3d25a7e06cbca75477609529c38b5a7638b27c3bcf6bf2a1bd21fe9062afdac"
+  },
+  "roots": {
+    "repo": "Z:/ck3_mod_rewrite",
+    "team": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025",
+    "sources": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources",
+    "source_controls": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/source-bank-controls",
+    "J": "D:/codex-ck3-demos/2026-10-22-java-phase1",
+    "R3": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3",
+    "H": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024-r3/source_graph-complete31/plan/H",
+    "test": "D:/ck3-state/ck3-java-g2-r4-tests",
+    "Rstate": "D:/ck3-state/ck3-java-tools-r-r4-20261025",
+    "Sstate": "D:/ck3-state/ck3-java-tools-s-r4-20261025",
+    "SDK_quote": "D:/ck3-state/ck3-java-g2-r4-sdk-quote58-20261025",
+    "native10": "D:/ck3-state/ck3-java-g2-r4-native10",
+    "canonical_host_proposal": "D:/codex-ck3-demos/2026-10-25-java-g2-complete31-r4",
+    "SDK_inputs": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/integration-controls/sdk-plan-inputs32"
+  },
+  "coverage": {
+    "java_game_runs": 0,
+    "new_java_saved_days": 0,
+    "SAVE_restore_NEXT_completed": 0,
+    "G2_fully_qualified_modules": 0,
+    "G2_total_modules": 8,
+    "full_migration_percentage": "NOT_MEASURABLE_FROM_AVAILABLE_DENOMINATOR",
+    "actual_tools_R_tests": 957,
+    "actual_tools_R_suites": 132,
+    "actual_tools_R_failure_error_skip": [
+      0,
+      0,
+      0
+    ],
+    "R_scope": "INTEGRATED_TOOLS_RUNTIME_ONLY; SourceGraph; Native2048. Not S40/fullCI/Host/Game."
+  },
+  "repository": {
+    "head": "4a999f3ef5aa6770345832ed6a3ed47602c3c4f4",
+    "branch": "master",
+    "dirty_entries_before_handoff": 138,
+    "staged_diff_empty": true,
+    "preserve_existing_dirty_and_untracked": true,
+    "commit_push_reset_stash_clean_merge_performed": false,
+    "same_bytes_M1_write_native_identity_incident": "Original Python 18067 B/SHA afe199408d36dfc28980e3588e1832aa27715a3a90572ae7200bbbd6a935d9bd unchanged content; mtime/native identity changed; do not restore time/reuse old guard."
+  },
+  "source_interpretation": "WIP or sealed source-only maps are not an executable ABI cohort, H5 adoption, test PASS, or runtime/Game qualification. This index adds actual stopped artifacts; prior handoff remains unchanged.",
+  "artifact_groups": {
+    "effect_observers": {
+      "status": "SEALED_SOURCE_ONLY_NOT_COMPILED_NOT_ADOPTED",
+      "files": [
+        {
+          "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/effect_observers/resume02/NativeReadinessCollector.java",
+          "bytes": 95824,
+          "sha256": "499b36401fc6ab7c7c135b1ccd2c84eb140611a177947cfe825488e515415b0b"
+        },
+        {
+          "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/effect_observers/resume02/ReadinessAuthority.java",
+          "bytes": 4233,
+          "sha256": "fe935d5b59704120b33dc66377fb5803d924668d22a4ab3eb2ef414fa08a20a7"
+        },
+        {
+          "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/effect_observers/resume02/RootPlanningReadGuard.java",
+          "bytes": 27116,
+          "sha256": "86d7886b1a50f6031e3b23595d7cf91b60796d85ab0859c8c4fb80d7dea71f58"
+        },
+        {
+          "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/effect_observers/resume02/SOURCE-DELTA02.json",
+          "bytes": 6509,
+          "sha256": "570b676173b6adaf4bd842ed0e0e5fb24eb1cfd2601316ad5b4d8cdb537b3926"
+        }
+      ],
+      "new_compile_typecheck_JUnit_native_Game": "NOT_RUN",
+      "stopped": true
+    },
+    "auto_loop": {
+      "status": "SEALED_SOURCE_ONLY_NOT_COMPILED_NOT_ADOPTED",
+      "files": [
+        {
+          "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/auto_loop/resume02/ActionWriterIntegrationFixture.java",
+          "bytes": 89768,
+          "sha256": "2a0e6805a2f9c5a6d669b8741864c5133ed31fd0dfd5bcfc7a57d5e6417ce6c1"
+        },
+        {
+          "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/auto_loop/resume02/SOURCE-DELTA02.json",
+          "bytes": 6847,
+          "sha256": "45b37164da520953a4d74f2a3aa1c8bc82af10765983b9bdc5f754cae14800b8"
+        }
+      ],
+      "new_compile_typecheck_JUnit_native_Game": "NOT_RUN",
+      "stopped": true
+    },
+    "action_coordinator": {
+      "status": "PARTIAL_NOT_H5_WINNER",
+      "files": [
+        {
+          "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/action_coordinator/resume02/PlanningReadCoordinator.java",
+          "bytes": 46616,
+          "sha256": "e370fac44dd431f7cc411bd5247e6a5b0304726c3b573a281dad0b2a3c419efb"
+        },
+        {
+          "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/action_coordinator/resume02/SharedFailedReadAfterWriterTest.java",
+          "bytes": 12552,
+          "sha256": "bb42a37fb81b5dfeb2119dd46406ea5d65e692b38ca2dddb1d9b4058c586bf2d"
+        },
+        {
+          "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/action_coordinator/resume02/SOURCE-PARTIAL02.json",
+          "bytes": 4795,
+          "sha256": "69f7d354b14accc553fc2ae82f692b125525b98218bc9db78637657523c222cc"
+        }
+      ],
+      "new_compile_typecheck_JUnit_native_Game": "NOT_RUN",
+      "stopped": true
+    },
+    "native_governance": {
+      "status": "WIP_NO_FORMAL_MAP",
+      "files": [
+        {
+          "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/native_governance/resume02/CouncilTechnicalReadFailures.java",
+          "bytes": 14742,
+          "sha256": "6b73670ad6d6efcd979115d35de030d52de6bc1a7608d23f197c28986a5c7a38"
+        },
+        {
+          "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/native_governance/resume02/CouncilTechnicalReadIntegrationTest.java",
+          "bytes": 18126,
+          "sha256": "aaacca543048cf263bf6d725d6ae548e36df00b16706da418ecb0274848076f3"
+        },
+        {
+          "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/native_governance/resume02/NativeCouncilReadPort.java",
+          "bytes": 15007,
+          "sha256": "0ee03e7fc4993c4966bbe8a9e14b02b1a874ce20b5303d4ee856b6050f1a79d6"
+        },
+        {
+          "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/native_governance/resume02/PrivateCouncilReads.java",
+          "bytes": 7552,
+          "sha256": "9ca94e0302b27c31f9f98d2bdac93d00b6ea2766dc5625174bf638797feb5b6d"
+        },
+        {
+          "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/native_governance/resume02/test_sources03/CouncilTechnicalReadIntegrationTest.java",
+          "bytes": 18962,
+          "sha256": "c9694cb1fe56e2db923988402c4729d0e3208782349b75d3c59f9b8b7ab4fc5a"
+        }
+      ],
+      "new_compile_typecheck_JUnit_native_Game": "NOT_RUN",
+      "stopped": true,
+      "test_selection_note": "test_sources03 18962B is current WIP; older18126B retained because EO/auto maps refer to it. No test was run."
+    },
+    "outcome_archive": {
+      "status": "WIP_NO_FORMAL_MAP",
+      "files": [
+        {
+          "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/outcome_archive/resume02/NativeOutcomeArchive.java",
+          "bytes": 105052,
+          "sha256": "e0ca17e5ef92938ae3b4c2b2f35c76b3041cbe38765b76d387c5072486c9afb2"
+        },
+        {
+          "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/outcome_archive/resume02/NativeOutcomeArchiveReadFailureTest.java",
+          "bytes": 11433,
+          "sha256": "d429ddc011d1c78c3d77fed2fa9f0155c4546e1bb4e871c313b55bc41151e184"
+        }
+      ],
+      "new_compile_typecheck_JUnit_native_Game": "NOT_RUN",
+      "stopped": true
+    },
+    "native_transport_core": {
+      "status": "WIP_NO_FORMAL_MAP",
+      "files": [
+        {
+          "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/native_transport_core/join02/NativeAcceptedSnapshotRevisionTest.java",
+          "bytes": 6552,
+          "sha256": "1617faa423112dfc861dd91fe5ba62fdb21d9c91cb428d296a838ce606c11a81"
+        },
+        {
+          "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/native_transport_core/join02/NativeDispatchFailureProducerTest.java",
+          "bytes": 17778,
+          "sha256": "1bede42be62cea7cf5285adb174adbcf945bbdf94c56c256e343cbef91e2aa22"
+        },
+        {
+          "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/native_transport_core/join02/NativeGameTransport.java",
+          "bytes": 114317,
+          "sha256": "f23468659ee25a0ab7b78bbd1e373976b7c21416fcf3e8d3a9b5177c94d6e0d4"
+        },
+        {
+          "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/native_transport_core/join02/NativePacketPort.java",
+          "bytes": 4881,
+          "sha256": "1542e7b0a2053aaff76a2c44fd79a98da27af3d442df68eab2294ac1a03bf393"
+        },
+        {
+          "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/native_transport_core/join02/NativePipeEndpoint.java",
+          "bytes": 18683,
+          "sha256": "d9bee5df9b444f5cf34849f3a0b666a288478277d2109668124ef10b7f6d83af"
+        }
+      ],
+      "new_compile_typecheck_JUnit_native_Game": "NOT_RUN",
+      "stopped": true
+    },
+    "driver_snapshot": {
+      "status": "WIP_NO_FORMAL_MAP",
+      "files": [
+        {
+          "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/driver_snapshot/receive02/NativeDriverObservationProducer.java",
+          "bytes": 35274,
+          "sha256": "8bcabcf3a500dec2d5b9a077642f1cfe9898ccb5d1270521608723364bce09d9"
+        },
+        {
+          "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/driver_snapshot/receive02/NativeDriverObservationProducerTest.java",
+          "bytes": 75278,
+          "sha256": "589950ccc8e31821fea4319afaa678a840388c8eaa2daa0f708549aead6bfc96"
+        }
+      ],
+      "new_compile_typecheck_JUnit_native_Game": "NOT_RUN",
+      "stopped": true
+    },
+    "native_schemes_events": {
+      "status": "WIP_NO_FORMAL_MAP",
+      "files": [
+        {
+          "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/native_schemes_events/restored_finalized01/RootPendingUiRuntime.java",
+          "bytes": 292606,
+          "sha256": "d10aef01e96d772a9b3f53d8ed88a3127b57c914de532a311114f350a9b6a984"
+        },
+        {
+          "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/native_schemes_events/restored_finalized01/WIP-HANDOFF01.json",
+          "bytes": 3246,
+          "sha256": "6cda12da5a063ffb878a45ba59e650fdb061ad57197c0855f5653e444d06fbac"
+        }
+      ],
+      "new_compile_typecheck_JUnit_native_Game": "NOT_RUN",
+      "stopped": true
+    },
+    "m7_research": {
+      "status": "WIP_NO_FORMAL_MAP",
+      "files": [
+        {
+          "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/m7_research/completed_restore02/RootPendingUiProductionChainFixture.java",
+          "bytes": 67381,
+          "sha256": "47599eb0b293833f4a8809b3f700b22aa1f945af10e6e9e6bc0c2589fec98b9e"
+        }
+      ],
+      "new_compile_typecheck_JUnit_native_Game": "NOT_RUN",
+      "stopped": true,
+      "pause_note_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/m7_research/PAUSED-WIP02.json",
+        "bytes": 2773,
+        "sha256": "ccb209aaaa38fbb462787f04b770daba9e4b9332b375071afd927c41c4554eb1"
+      }
+    },
+    "driver_history": {
+      "status": "READ_ONLY_NO_NEW_FILE",
+      "new_bytes": 0,
+      "stopped": true,
+      "finding": "NEXT actually closes old transport before transfer; loaded frame same object; RootLegacyResumeRuntime saved_private59 value-only current check remains unfixed"
+    },
+    "formal_release": {
+      "status": "NO_JAVA_PERSISTED_NO_FORMAL36_MAP",
+      "partial35_ref": {
+        "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/reference_main/formal_release35/HANDOVER-PARTIAL35.json",
+        "bytes": 5869,
+        "sha256": "d8faad33ed573c7cabd5c30245b4d05e8cbac29b50d79d072cbca18488560d86"
+      },
+      "RAM_drafts_not_artifacts": true,
+      "registry_git_fact": {
+        "repository_head": "4a999f3ef5aa6770345832ed6a3ed47602c3c4f4",
+        "path": "ck3_workshop_mcp/src/ck3_workshop_mcp/compatibility_tags.py",
+        "blob": "947c26f2e36443a7f564b09d0975f2c96edf6baa",
+        "observed_bytes": 3226,
+        "observed_sha256": "47ff303baf94867db406ec9dab52037b83551b8c39a8dff0a0bdceafed7c2d90",
+        "source": "host_current actual git cat-file observation; tracked sparse object, not newly materialized"
+      },
+      "tag_fact": {
+        "ref": "refs/tags/v1.0.2^{commit}",
+        "commit": "36aa60f5aac2ae53bc8fa56db36a7df5a38dd095",
+        "descriptor_version": "1.0.2",
+        "supported_version": "1.20.0.3",
+        "does_not_prove_current_HEAD_clean": true
+      }
+    }
+  },
+  "critical": {
+    "Host_paused": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024-r3/source_graph-complete31/plan/H/HOST31H5-PAUSED-STATE02.json",
+      "bytes": 4410,
+      "sha256": "4cc489cf6bee927a9a71be3724087ff2ab04c8837d6d5ed7891e8524a2c2e729"
+    },
+    "Native_paused": {
+      "path": "D:/ck3-state/ck3-java-g2-r4-native10/source-controls/NATIVE10-RESUME03-PAUSED-WIP01.json",
+      "bytes": 4150,
+      "sha256": "276edfdb8eac1e992c6989af90e5cc437bd6d2ddb5c59438247502c0f38425fc"
+    },
+    "Native28_canonical": {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/m2_research/person10_serde28/SOURCE-MAP28-CANONICAL02.json",
+      "bytes": 2951,
+      "sha256": "1a17a6dbc518c16b11d3617212b02803f321c6406f19e4bae8573e0c931822b9"
+    },
+    "SDK_request04": {
+      "path": "D:/ck3-state/ck3-java-g2-r4-sdk-quote58-20261025/controls/SDK-QUOTE59-RESUME-REQUEST04.json",
+      "bytes": 15686,
+      "sha256": "c8b91e37a89a86c2dd55f235c23473b4f7874d835b443aab4466d559ef5bf806"
+    },
+    "B64_parameters04": {
+      "path": "D:/ck3-state/ck3-java-g2-r4-tests/active/r4-rf60-qualification-20261025/forecast_envelope/m6-numeric-b64/controls/B64-PARAMETERS04.json",
+      "bytes": 5016,
+      "sha256": "5dbf9d920ef2195699e49fb5e68561308477645b9d4a916257a69c38d19950a2"
+    },
+    "source77": {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/parallel56/resume02/SOURCE-RESUME02-FINANCIAL77.json",
+      "bytes": 7736,
+      "sha256": "35ee0f361be03b217ba3bc6a9ce6e5c53a87d5a270ed51517be2080a58f85b81"
+    },
+    "source77_addendum": {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/parallel56/resume02/SOURCE-RESUME02-OWNER-ADDENDUM01.json",
+      "bytes": 2752,
+      "sha256": "6ef37ce5e87652118dfe5edbb4a9d79507735d581e8a361338d7a39100f23edf"
+    },
+    "R_adoption": {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/parallel56/resume02/R-ROOT-ADOPTION01.json",
+      "bytes": 3570,
+      "sha256": "8f1dee2264c348feb698acbc28c45d205636d9041e50580890cfbec91446fa13"
+    },
+    "R_qualification": {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/parallel56/resume02/R-FULL35-ADAPTER-QUALIFICATION01.json",
+      "bytes": 737,
+      "sha256": "203a0a86e64125762adfdf3064eaf497ce0bac31cac2eccae86c32eb222ddbeb"
+    }
+  },
+  "live": {
+    "all_owning_actors_report_no_live_business_child": true,
+    "this_resume_started_JVM_compiler_Native_Game_children": 0,
+    "Native_last_actual": "prior person10-regression02 5/5PASS/0skip/Job0; no new child",
+    "SDK_last_actual": "prior compile01 RED/Job0/3MATCH; no new child",
+    "B64_last_actual": "prior prepare01 PASS/Job0; no new child/raw0",
+    "S": "Never started; no canonical payload or source/build output",
+    "not_a_claim_about_all_processes_on_machine": true,
+    "Native_pause_record": {
+      "schema": "xar.native10.resume03-paused-wip/v1",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "owner": "/root/migration_census",
+      "observed_at_utc": "2026-10-25T15:19:41.755091+00:00",
+      "status": "PAUSED_BY_USER_NO_RESUME03_CHILD_STARTED",
+      "current_live_PID_birth_handle_Job": null,
+      "resume03_JVM_compiler_Native_children_started": 0,
+      "active_Native_memory_claim": false,
+      "source_ENV_recipe17_Person5_success_unchanged": true,
+      "old15terminal_closure_ref": {
+        "path": "D:\\ck3-state\\ck3-java-g2-r4-native10\\source-controls\\NATIVE10-USER-STOP-CLOSURE01.json",
+        "bytes": 11878,
+        "sha256": "31bb7b086d995ca678e91c219001fbbf0f25640e2a17f378e8a64e01d01fa445"
+      },
+      "last_actual_child_terminal_ref": {
+        "path": "D:\\ck3-state\\ck3-java-g2-r4-native10\\commands\\migration_census\\person10-regression02\\terminal.json",
+        "bytes": 58815,
+        "sha256": "3607fd3f5f7eee271f2af3d14664941bc3750182acd26a59071bb081476abd1c"
+      },
+      "actual_resume03_control_refs": [
+        {
+          "path": "D:\\ck3-state\\ck3-java-g2-r4-native10\\source-controls\\ROOT-NATIVE10-RESUME03-WHOLE-SLOT01.json",
+          "bytes": 8074,
+          "sha256": "9c224e57e1eb277c84e643d7ee81fef531b65a74a0741b89304412b538302578"
+        },
+        {
+          "path": "D:\\ck3-state\\ck3-java-g2-r4-native10\\source-controls\\NATIVE10-RESUME03-ARTIFACTS-CAPACITY17.json",
+          "bytes": 2907,
+          "sha256": "416d1edcd831ef77bdb4d075d2633a5da04ce8bae3b867fcdd0fb6d0dd6595f4"
+        },
+        {
+          "path": "D:\\ck3-state\\ck3-java-g2-r4-native10\\source-controls\\NATIVE10-RESUME03-PARAMETER-AMENDMENT01.json",
+          "bytes": 3016,
+          "sha256": "2ffb2166c516e56619f5a048a9867a32b2817c3f41b9cc2e39261207a8f44732"
+        },
+        {
+          "path": "D:\\ck3-state\\ck3-java-g2-r4-native10\\source-controls\\NATIVE10-REMAINING-QUOTE04.json",
+          "bytes": 7184,
+          "sha256": "69d296c3c91b3e571d33e11fd421537b64f00658c8411bf66c2c20ab521ba0a4"
+        },
+        {
+          "path": "D:\\ck3-state\\ck3-java-g2-r4-native10\\source-controls\\NATIVE10-STANDING03.json",
+          "bytes": 4530,
+          "sha256": "4bd9b9a47c6fd922d91f8421db10708bab1fb4c6844b359aba4ea2da4619d305"
+        },
+        {
+          "path": "D:\\ck3-state\\ck3-java-g2-r4-native10\\source-controls\\NATIVE10-BINDING03.json",
+          "bytes": 1218,
+          "sha256": "887d0d93619766f5a9b02d78cce145b41201499da1038741b84e1c3816804380"
+        },
+        {
+          "path": "D:\\ck3-state\\ck3-java-g2-r4-native10\\source-controls\\NATIVE10-RESUME03-PREFLIGHT01.json",
+          "bytes": 527,
+          "sha256": "73e09b2989f9fb21af8e1c10a1a0ed7c82cbf56165f0e6ff47f1fc515840d16d"
+        },
+        {
+          "path": "D:\\ck3-state\\ck3-java-g2-r4-native10\\source-controls\\NATIVE10-RESUME03-HELPER-COMPILE01-SPEC.json",
+          "bytes": 8907,
+          "sha256": "74edca58f92b87fa8d5daffceeaa0aad374b2ca46f1992fab06c55cdf9da94c6"
+        }
+      ],
+      "canonical_source28_successor_ref": {
+        "path": "D:\\codex-ck3-background\\ck3-java-g2-resume-r4-20261025\\sources\\m2_research\\person10_serde28\\SOURCE-MAP28-CANONICAL02.json",
+        "bytes": 2951,
+        "sha256": "1a17a6dbc518c16b11d3617212b02803f321c6406f19e4bae8573e0c931822b9"
+      },
+      "uncompiled_helper_source_ref": {
+        "path": "D:\\ck3-state\\ck3-java-g2-r4-native10\\commands\\helpers03\\source02\\Person10RebindCommand.java",
+        "bytes": 4978,
+        "sha256": "ff8d0d0f891831183f0d6bba69db452e8a9e7d2288b1382f6eb160475b04f1ef"
+      },
+      "helper_source_state": "SOURCE_ONLY_NOT_COMPILED_OR_TESTED. Original source4330B and quote03 remain; current source4978/quote04 mechanically add fresh temporaryRoot required by old Person10Gate. Issuer amendment explicitly pins quote03; quote04 is WIP not a new qualification or time window.",
+      "helper_class_directory_state": "EXISTS_EMPTY",
+      "helper_run_output_state": "ABSENT_NO_INTENT_NO_TERMINAL",
+      "reviewed_REQUEST05_state": "UNCHANGED; no new request produced",
+      "research_build_and_Person10_output_state": "ABSENT_NOT_RUN",
+      "all_remaining_native_work": "NOT_RUN configure/Ninja37/39runs/CTest/CPPJava/5wire/productionBUILD/QUOTE/DIGEST/REGISTER/profile",
+      "future_resume": "User pause overrides20:30 card. New Root continuation + fresh actual finite capacity/memory/standing required; never revive old17:05/20:30 or rerun SOURCE/ENV/recipe17/Person5 success. Start from exact reviewed REQUEST05/addon02/R6 and original APIs. Current helpers/specs are unexecuted WIP.",
+      "source_owner_final_page_upper_bytes": 1429504,
+      "source_owner_cap_bytes": 1433600,
+      "source_owner_remaining_closing_guard_bytes": 4096,
+      "retention": "Prior finite review clocks remain recorded; no automatic renewal or deletion authorized by this handoff."
+    }
+  },
+  "pending": [
+    "Council WIP full ABI/producer→policy/archive integration not compiled; actual before-read test counts pending; nativeOk=true malformed eligibility differs transport/helper",
+    "driver must consume latestState including real disconnect; original Python disconnect/reconnect differential absent",
+    "RootLegacyResumeRuntime saved_private59 requireNative value-only check admits stale fixed-clock A occurrence; not fixed",
+    "Natural.public_cold38.admitRestoredSource existing private producer missing from real normal restore adoptRestored entry; not fixed; tests must not manually bypass",
+    "M7 Runtime+fixture WIP not selected/compiled/tested; existing restore-source hook missing",
+    "Formal Java release producer/payload Guard/manifest/tests not persisted; actual registry/tag known but current HEAD clean not proven",
+    "H5 not frozen; snapshot excess unresolved; S not started",
+    "SDK273 minimum has GoalCodec1 mismatch against current RAM H5; final sourceIntent successor not produced"
+  ],
+  "H5": {
+    "formal_input_exists": false,
+    "canonical_payload_exists": false,
+    "ram_maps": 25,
+    "ram_entries": 92,
+    "ram_unique": 91,
+    "ram_source_bytes": 2225047,
+    "ram_targets": 5655,
+    "ram_owners": 83,
+    "ram_layers": 180,
+    "source_including_parents": 97955840,
+    "source_cap": 99614720,
+    "snapshot": 100831232,
+    "old_snapshot_cap": 100663296,
+    "snapshot_unresolved_excess": 167936,
+    "no_materialization_JVM_child": true
+  },
+  "finance": {
+    "actual_final_issuer": "/root/capacity_current final stopped report",
+    "source77_ref": {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/parallel56/resume02/SOURCE-RESUME02-FINANCIAL77.json",
+      "bytes": 7736,
+      "sha256": "35ee0f361be03b217ba3bc6a9ce6e5c53a87d5a270ed51517be2080a58f85b81"
+    },
+    "R3_holds_bytes": 7171301376,
+    "R3_ceiling_bytes": 12884901888,
+    "D_holds_bytes": 269153731452,
+    "D_required_available_bytes": 359348044668,
+    "Z_holds_bytes": 6070996992,
+    "Z_required_available_bytes": 49020669952,
+    "all_four_handoff_docs_share_existing_Z_cap_bytes": 262144,
+    "storage_holds_retained": true,
+    "physical_release_credit_bytes": 0,
+    "financial_and_M44_review": "2026-10-26T08:00:00Z",
+    "source_write_review": "2026-10-25T22:00:00Z",
+    "snapshot_excess167936_amendment_issued": false,
+    "SDK_resume04_card_issued": false,
+    "B64_04_card_issued": false,
+    "Auth12_issued": false,
+    "S_or_H5_execution_card_issued": false,
+    "Native_resume03_card_ref": {
+      "path": "D:/ck3-state/ck3-java-g2-r4-native10/source-controls/ROOT-NATIVE10-RESUME03-WHOLE-SLOT01.json",
+      "bytes": 8074,
+      "sha256": "9c224e57e1eb277c84e643d7ee81fef531b65a74a0741b89304412b538302578"
+    },
+    "Native_card_original_start": "2026-10-25T15:10:22Z",
+    "Native_card_original_deadline": "2026-10-25T20:30:22Z",
+    "Native_card_state": "OVERRIDDEN_BY_EXPLICIT_USER_PAUSE;0CHILD",
+    "Memory44_ref": {
+      "path": "D:/ck3-state/ck3-java-g2-r4-native10/source-controls/ROOT-HEAVY-MEMORY-SUPPLEMENT44.json",
+      "bytes": 2978,
+      "sha256": "577b7182afe99ce82ee1ef501658e381ad16352a12f1e4e9da9ecc05733ae6ee"
+    },
+    "all_four_Root_memory_leases_released": true
+  },
+  "task_bus_snapshot": {
+    "actual_source_path": "Z:/.codex-task-bus/tasks/ck3-java-g2-resume-r4-20261025.json",
+    "observed_state": "waiting",
+    "observed_last_sequence": 8990,
+    "observed_updated_at_utc": "2026-10-25T15:24:51.728650+00:00",
+    "summary": "USER EXPLICIT PAUSE: goal status paused; final vacation handoff saved; all business executors stopped with 0 new children; H5/S/Game not completed",
+    "next_step": "Wait for explicit human user resume only. Automatic goal continuation does not revoke pause. Read latest final handoff/index before any action; no new business phase or card.",
+    "note": "Mutable registry is not treated as an immutable FileRef. This literal snapshot records final waiting/user-paused state."
+  }
+}

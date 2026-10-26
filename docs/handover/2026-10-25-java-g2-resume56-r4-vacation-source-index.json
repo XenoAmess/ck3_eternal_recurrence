@@ -1,0 +1,2413 @@
+{
+  "schema": "xar.java-g2.vacation-source-index/r4-v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "written_at_utc": "2026-10-25T14:54:11.674775+00:00",
+  "user_directive": "生成交接文档到docs；你要去度假了",
+  "state": "USER_VACATION_SAFE_STOP_NOT_TASK_COMPLETE",
+  "long_term_objective_complete": false,
+  "no_resume_authority_from_this_index": true,
+  "interpretation": "A persisted source/ref is not a selected winner, executable ABI closure, test PASS, runtime admission or Game qualification. Recheck actual machine, storage, expiry and prior terminal before new execution. No mtime winner selection. UNKNOWN never replayed.",
+  "roots": {
+    "repo": "Z:/ck3_mod_rewrite",
+    "team": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025",
+    "sources": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources",
+    "source_controls": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/source-bank-controls",
+    "J": "D:/codex-ck3-demos/2026-10-22-java-phase1",
+    "R3": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3",
+    "H": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024-r3/source_graph-complete31/plan/H",
+    "test": "D:/ck3-state/ck3-java-g2-r4-tests",
+    "Rstate": "D:/ck3-state/ck3-java-tools-r-r4-20261025",
+    "Sstate": "D:/ck3-state/ck3-java-tools-s-r4-20261025",
+    "SDK_quote": "D:/ck3-state/ck3-java-g2-r4-sdk-quote58-20261025",
+    "native10": "D:/ck3-state/ck3-java-g2-r4-native10",
+    "canonical_host_proposal": "D:/codex-ck3-demos/2026-10-25-java-g2-complete31-r4",
+    "SDK_inputs": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/integration-controls/sdk-plan-inputs32"
+  },
+  "repository": {
+    "head": "4a999f3ef5aa6770345832ed6a3ed47602c3c4f4",
+    "branch": "master",
+    "dirty_entries_before_handoff": 138,
+    "staged_diff_empty": true,
+    "preserve_existing_dirty_and_untracked": true,
+    "commit_push_reset_stash_clean_merge_performed": false,
+    "same_bytes_M1_write_native_identity_incident": "Original Python 18067 B/SHA afe199408d36dfc28980e3588e1832aa27715a3a90572ae7200bbbd6a935d9bd unchanged content; mtime/native identity changed; do not restore time/reuse old guard."
+  },
+  "coverage": {
+    "java_game_runs": 0,
+    "new_java_saved_days": 0,
+    "SAVE_restore_NEXT_completed": 0,
+    "G2_fully_qualified_modules": 0,
+    "G2_total_modules": 8,
+    "full_migration_percentage": "NOT_MEASURABLE_FROM_AVAILABLE_DENOMINATOR",
+    "actual_tools_R_tests": 957,
+    "actual_tools_R_suites": 132,
+    "actual_tools_R_failure_error_skip": [
+      0,
+      0,
+      0
+    ],
+    "R_scope": "INTEGRATED_TOOLS_RUNTIME_ONLY; SourceGraph; Native2048. Not S40/fullCI/Host/Game."
+  },
+  "parent_inputs": [
+    {
+      "path": "Z:/ck3_mod_rewrite/docs/handover/2026-10-24-java-g2-resume56-r3-vacation-handoff.md",
+      "bytes": 22827,
+      "sha256": "e7a9539a9ccceacaa51eda43c0d9d13bc2cd19e81117e7ba93ed86cda5335e45"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/docs/handover/2026-10-24-java-g2-resume56-r3-vacation-source-index.json",
+      "bytes": 35059,
+      "sha256": "e63d3fd17222f22ebd509886d41062728203d75c1915ae673148e0802212fc89"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/docs/storage-migration-report-2026-10-25.md",
+      "bytes": 12061,
+      "sha256": "bd4fc9f7189f152a1d3850e0f386f11668643301d44d981827a693cb9f6501da"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/docs/storage-retention-policy.md",
+      "bytes": 17121,
+      "sha256": "6a92bd77cd3166707472c43f2eb06c3bba0a6510a23ae2eeccb5006f5e49ba09"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite/docs/storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    }
+  ],
+  "critical": {
+    "H4_input": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024-r3/source_graph-complete31/plan/H/SOURCE08-COMPLETE-INPUT31H4.json",
+      "bytes": 414020,
+      "sha256": "37e97889c9b7d8f286d7d2d655c4bb069a2bf4f78f9c1c4e9cb294cfbbeeb326"
+    },
+    "H5_partial": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024-r3/source_graph-complete31/plan/H/HOST31H5-PARTIAL-HANDOFF01.json",
+      "bytes": 10550,
+      "sha256": "7b89d1e1adf886aa250d3d7ca1f65062563d588001fc11c890b599fcdf38d6a6"
+    },
+    "R_delivery": {
+      "path": "D:/ck3-state/ck3-java-tools-r-r4-20261025/controls/input01/R-ACCEPTED-DELIVERY01.json",
+      "bytes": 17186,
+      "sha256": "fc7a6e54c39becf0a5cd6c0565f648bf6d7f19d04018b3aac23c3c1c22a6b0ba"
+    },
+    "R_build": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/logs/build-java-tools-r-r4.json",
+      "bytes": 170091,
+      "sha256": "a94c04db04d3e9ebf982dc846f0ddae0e7234b8f0cb2da6e5dfad382dac20c4f"
+    },
+    "R_own": {
+      "path": "D:/ck3-state/ck3-java-tools-r-r4-20261025/Own/readback02/actual.json",
+      "bytes": 23647,
+      "sha256": "a05892cd434683ba1aaa49a66a04083cda5c45f4128e6ef642f29d2076de71f8"
+    },
+    "R_own39_source": {
+      "path": "D:/ck3-state/ck3-java-tools-r-r4-20261025/Own/source39/ToolsIntegratedAcceptedReadback24c.java",
+      "bytes": 37823,
+      "sha256": "77eb8691f32246c99eb763f0826dee7153b2f356346488fb6114c95243e69bbd"
+    },
+    "R_own_guard": {
+      "path": "D:/ck3-state/ck3-java-tools-r-r4-20261025/Own/readback02/input-guard.actual.json",
+      "bytes": 506037,
+      "sha256": "041d1721423306b3f2d09641c95bd5d2ce28c57a20bbe5ccb3db667113ea3935"
+    },
+    "wave_grant": {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/parallel56/WAVE56-SOURCE-GRANT01.json",
+      "bytes": 5545,
+      "sha256": "cc71c31078576c10d3614b956aeb62ac5c6ab203978dab910b0fcd56553b0629"
+    },
+    "wave_tasks": {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/parallel56/TASKS.json",
+      "bytes": 21400,
+      "sha256": "dbc66f1dea49478cae08d57cb056d947e9aacc9027d8c5452716aed392ef6e8c"
+    },
+    "wave_brief": {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/parallel56/BRIEF.md",
+      "bytes": 3683,
+      "sha256": "1b887859f0e60f658a923f9df5610c590192a10f0e7b751da0d61dbf1b150efb"
+    },
+    "Native_stop": {
+      "path": "D:/ck3-state/ck3-java-g2-r4-native10/source-controls/NATIVE10-USER-STOP-CLOSURE01.json",
+      "bytes": 11878,
+      "sha256": "31bb7b086d995ca678e91c219001fbbf0f25640e2a17f378e8a64e01d01fa445"
+    },
+    "Native_person_regression": {
+      "path": "D:/ck3-state/ck3-java-g2-r4-native10/commands/migration_census/person10-regression02/terminal.json",
+      "bytes": 58815,
+      "sha256": "3607fd3f5f7eee271f2af3d14664941bc3750182acd26a59071bb081476abd1c"
+    },
+    "SDK_stop": {
+      "path": "D:/ck3-state/ck3-java-g2-r4-sdk-quote58-20261025/controls/SDK-QUOTE59-VACATION-HANDOFF-CLOSE01.json",
+      "bytes": 7718,
+      "sha256": "1d23f3e5ca380efd0689ef505d7aba42f5ac370ec705d8647072cde76f109266"
+    },
+    "B64_stop": {
+      "path": "D:/ck3-state/ck3-java-g2-r4-tests/active/r4-rf60-qualification-20261025/forecast_envelope/m6-numeric-b64/controls/B64-VACATION-HANDOVER01.json",
+      "bytes": 3697,
+      "sha256": "0353396233aac5005ccfefae130b0dda0778ab89c39eeb986edd0b48b4cc3c46"
+    },
+    "formal_release_partial": {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/reference_main/formal_release35/HANDOVER-PARTIAL35.json",
+      "bytes": 5869,
+      "sha256": "d8faad33ed573c7cabd5c30245b4d05e8cbac29b50d79d072cbca18488560d86"
+    },
+    "R_runtime": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools-r-r4\\ck3-control-build-tools\\ck3-control-build-tools-0.1.0-SNAPSHOT.jar",
+        "bytes": 3071620,
+        "sha256": "f0e3acb4b302b5ef36d29402cb167675c03beccde8c3823da3ccf6475da54307"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools-r-r4\\ck3-control-build-tools\\lib\\jackson-annotations-2.21.jar",
+        "bytes": 82104,
+        "sha256": "53ca085f4a150f703f49e1aabd935bd03b43e1ea3d55d135438292af22cef56b"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools-r-r4\\ck3-control-build-tools\\lib\\jackson-core-2.21.7.jar",
+        "bytes": 594782,
+        "sha256": "8c5623b98f32d5f7e1287ff61ed50e08ab7b11381e991fff89327faabba42261"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools-r-r4\\ck3-control-build-tools\\lib\\jackson-databind-2.21.7.jar",
+        "bytes": 1709095,
+        "sha256": "1290c2795e93e8a6861a6c4d9ff0d844d32f5ea178362cb2721edf5561e828b1"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools-r-r4\\ck3-control-build-tools\\lib\\jna-5.19.1.jar",
+        "bytes": 1950853,
+        "sha256": "4fb141dd8ef6b0585ffceea4bc49602fbc6312fa977e2c488794ea3e6aafecae"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-22-java-phase1\\build\\java-tools-r-r4\\ck3-control-build-tools\\lib\\jna-platform-5.19.1.jar",
+        "bytes": 1416385,
+        "sha256": "3b3864f5b449e9c3c24b16861524b622b086563f44e0cd8384c8efc5a6052f82"
+      }
+    ],
+    "tools_projection46": {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parity_ci/canonical_tools_projection46/SOURCE-DELTA46.json",
+      "bytes": 2228,
+      "sha256": "87cc977473834f352703b2817b83c3b595b569427eed14965ba6d439c17b7594"
+    },
+    "tools_projection48": {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parity_ci/canonical_tools_projection48/SOURCE-DELTA48.json",
+      "bytes": 1683,
+      "sha256": "21348a1b019a8260f1b86fd5f5593386d1767c7ce779d24b528bf899a4ec54fd"
+    },
+    "Own40": {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parity_ci/own_consumer_roles44/ToolsIntegratedAcceptedReadback24c.java",
+      "bytes": 38123,
+      "sha256": "91548c5d7ad132e903383f7251b508770d246871abc69aba37d1dac3b0ba0d51"
+    },
+    "CI43": {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parity_ci/lobby_forwarder43/SOURCE-DELTA43.json",
+      "bytes": 8162,
+      "sha256": "c936375f7062b47d69a303bd25bdbd3ff9be8f290f939a3a19cd3e5974ea7433"
+    },
+    "CI44": {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parity_ci/oracle_root44/SOURCE-DELTA44.json",
+      "bytes": 5570,
+      "sha256": "0b423a9ba65310cc41ea91a2fafdc01425509a2d8dd87b6c11a1130e26c930a4"
+    },
+    "workflow44": {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parity_ci/full_own_input_producer44/SOURCE-DELTA44.json",
+      "bytes": 4754,
+      "sha256": "705064bf9c02efccbdc4df52c6307a0bf54f3c6f9abd769524fa73241aac678e"
+    },
+    "runtime90": {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/runtime_package/runtime_inputs90/SOURCE-DELTA90.json",
+      "bytes": 11873,
+      "sha256": "ff4f683a5055b5190c7e886e1ad6ea64278cfe0b291be892529ea6e4c0833674"
+    },
+    "SDK58": {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/sdk_closure/fixture_inputs58/SOURCE-DELTA58.json",
+      "bytes": 10588,
+      "sha256": "d234389abb5319e752649bd95034ce61f2d7befaaccffe446377e12a0f915fc4"
+    },
+    "SDK59": {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/sdk_closure/quote_execution59/SOURCE-DELTA59.json",
+      "bytes": 2269,
+      "sha256": "7115af193c7438b9d84f4696cf6eec6954dfb89c132cdd4267271544d083f326"
+    },
+    "SDK_quote_packet59": {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/sdk_closure/quote_execution59/QUOTE-ONLY-REQUEST59.json",
+      "bytes": 14839,
+      "sha256": "021a5d1449c7a62f996cab7ee08f47d05c3e1703d4339e80921eac3d1498c221"
+    },
+    "Native_source27": {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/m2_research/native10_prepare27/SOURCE-MAP10.json",
+      "bytes": 11208,
+      "sha256": "386d46da9a0741e13dbe431f0a90b1d0bc3d086aa66d9572ec658ac2721283f9"
+    },
+    "Native_serde28": {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/m2_research/person10_serde28/SOURCE-MAP28.json",
+      "bytes": 4268,
+      "sha256": "b3e6ea849c91984e4c44b43d10916bdbf66d191ff6398ba403a40a3b7e3a1e6d"
+    },
+    "Native_serde_close": {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/m2_research/person10_serde28/SOURCE28-CLOSING.json",
+      "bytes": 1494,
+      "sha256": "bbc92687bb197d201a874df064f08aa11fc504a8f00e546fddf1d823c2edabbe"
+    },
+    "marriage_LS20": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/family_ordinary/marriage_fault20/SOURCE-DELTA20.json",
+      "bytes": 8445,
+      "sha256": "5239e7e1f15d6112058cea817257d49de0fcdb2e68f1dbdd8bfad24141f7d794"
+    },
+    "marriage_NT41": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/m1_research/marriage_fault41/SOURCE-DELTA41.json",
+      "bytes": 8541,
+      "sha256": "dedbebe4e238f6b3c9923408280420cebbb9426b9e2b81481a395ce6ac03b5e3"
+    },
+    "Army_previous03": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_army/window_failures03/SOURCE-MAP03.json",
+      "bytes": 12791,
+      "sha256": "b80d2732e7c8add2cd2d308e8fc2819b37a9b7e899cfa3696c41a3a1a804871b"
+    },
+    "R_post38_outer": {
+      "path": "D:/ck3-state/ck3-java-tools-r-r4-20261025/runs/tools_current/post38-actual01/terminal.json",
+      "bytes": 34962,
+      "sha256": "fc480b1a011a6ad8a421dd51d90aa6ccfef38a3774695ed8274c4cd355ef069a"
+    },
+    "R_post38_inner": {
+      "path": "D:/ck3-state/ck3-java-tools-r-r4-20261025/post38/runs/tools_current/large-inputs01/terminal.json",
+      "bytes": 425693,
+      "sha256": "1a10de8a14cd4173031b1aa88428af4d4897f7418bf9b08cb32fe259b2bb9baf"
+    },
+    "S-REUSE-QUOTE01": {
+      "path": "D:/ck3-state/ck3-java-tools-s-r4-20261025/controls/input01/S-REUSE-QUOTE01.json",
+      "bytes": 7898,
+      "sha256": "8a2f13d1dfb1eab325dff8289e650b0202b660d30701d12cd9c815711e6e6359"
+    },
+    "S-SOURCE-QUOTE01": {
+      "path": "D:/ck3-state/ck3-java-tools-s-r4-20261025/controls/input01/S-SOURCE-QUOTE01.json",
+      "bytes": 3320,
+      "sha256": "794070f65a5f93e56f157b7dde862738c9bcd347f3f39350a18066ecbf3ee511"
+    },
+    "S-WHOLE-QUOTE01": {
+      "path": "D:/ck3-state/ck3-java-tools-s-r4-20261025/controls/input01/S-WHOLE-QUOTE01.json",
+      "bytes": 6934,
+      "sha256": "4510805f5aeb686b6de18a17365ab686e160fe3a1ce51443de67b28e8a8ae0ff"
+    },
+    "ProjectStoragePolicy_missing_in_SDK_compile": {
+      "path": "Z:/ck3_mod_rewrite/java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/ProjectStoragePolicy.java",
+      "bytes": 9839,
+      "sha256": "39f441113ec30cbc677b303a454584fc91b92dbdd2832d6c161f18bd867179aa"
+    },
+    "CB44_actual": {
+      "path": "D:/ck3-state/ck3-java-g2-r4-tests/active/r4-control-timeout43-20261025/parity_ci/controls/TIMEOUT44-ACTUAL-CLOSED01.json",
+      "bytes": 7325,
+      "sha256": "1f34c08969b1edcfb614535df5519c1d54781693df59edd61d62c2f011c03fc6"
+    },
+    "FH4_actual": {
+      "path": "D:/ck3-state/ck3-java-g2-r4-tests/primary/m3-fh4-actual16-r1/controls/FH4-ACTUAL-RESULT01.json",
+      "bytes": 11967,
+      "sha256": "bc691f1999da78405703ed5b54fb5d15ad250557f44760c7ae337308e0c524a2"
+    },
+    "RF62_actual": {
+      "path": "D:/ck3-state/ck3-java-g2-r4-tests/active/r4-rf60-qualification-20261025/forecast_envelope/rf-lookup62/controls/RF62-REPLAY-RESULT01.json",
+      "bytes": 6275,
+      "sha256": "50f641971de03eea42f112d502cba520a4d550eb3c990e25e280b212db3f9869"
+    },
+    "A63_actual": {
+      "path": "D:/ck3-state/ck3-java-g2-r4-tests/active/r4-rf60-qualification-20261025/forecast_envelope/m6-numeric-a63/controls/A63-CAPTURE-RESULT01.json",
+      "bytes": 7730,
+      "sha256": "77c3ba7daf3d1a59ee53471c623d8030677dd1452d7c8230e6e52b8fdc46e1fb"
+    },
+    "SDK_intent_request37": {
+      "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/integration-controls/sdk-plan-inputs32/SOURCE-INTENT-SUCCESSOR-REQUEST37.json",
+      "bytes": 3610,
+      "sha256": "5792ee98bbb72ea01349395784317518a21612f86078e29878d75e7e6d5d3f8c"
+    }
+  },
+  "wave": {
+    "action_coordinator": {
+      "task": "/root/w56_action_coordinator",
+      "focus": "单一动作提交入口，UNKNOWN后pending与下一普通动作消费的Python→Java等价闭环",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/action_coordinator",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [
+        {
+          "map_ref": {
+            "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/action_coordinator/SOURCE-PARTIAL01.json",
+            "bytes": 6309,
+            "sha256": "7001dc533f234b8cd7b3a00ff0efee00472cf98cb167c42cb31e7fa9910f5bf9"
+          },
+          "qualification": "SOURCE_ONLY_NOT_COMPILED_NOT_RUN_NOT_H5_ADOPTED",
+          "partial": true,
+          "selected_files": [
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/application/action/ActionPorts.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/action_coordinator/ActionPorts.java",
+                "bytes": 18482,
+                "sha256": "1359b1518bcd6fb6813c90fbf36bde5a388df45c281ba6ca013ac9439f4dd902"
+              }
+            },
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/application/action/PlanningReadCoordinator.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/action_coordinator/PlanningReadCoordinator.java",
+                "bytes": 43812,
+                "sha256": "03991d8ac1484d1dbc36abc8f261f9a75637370aeec90a7af5dfe5e155e7b0f7"
+              }
+            },
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/application/action/PlanningReadFailure.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/action_coordinator/PlanningReadFailure.java",
+                "bytes": 3979,
+                "sha256": "8ae7a1cc0bd1e3387ae43e262eab29bd808fcc3036f80619164304bebed65f98"
+              }
+            },
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/application/action/PlanningReadFailureCodec.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/action_coordinator/PlanningReadFailureCodec.java",
+                "bytes": 4220,
+                "sha256": "497ac162ae5a895fc47b027eccc31ed5ecba6fa4131298f92555c36bae3ba7f8"
+              }
+            },
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/application/action/PlanningReadResult.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/action_coordinator/PlanningReadResult.java",
+                "bytes": 2058,
+                "sha256": "d4ec175a46b5dd38b276b76335cf3b6fc3deaba2dde8cf464c8437971ea9d4fc"
+              }
+            },
+            {
+              "target_relative": "local-service/src/test/java/org/xar/ck3/control/nativebridge/SharedFailedReadAfterWriterTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/action_coordinator/SharedFailedReadAfterWriterTest.java",
+                "bytes": 13061,
+                "sha256": "0fd3a845644c11ce505290700ae04bee37ae30f871a40ff844960a8210666f85"
+              }
+            }
+          ],
+          "ABI_status": "NOT_EXECUTABLE_COHORT: transport.deferReadOnly not implemented; real held-source after unresolved; no nested READ or UNKNOWN relaxation"
+        }
+      ],
+      "status": "SOURCE_OR_PARTIAL_PERSISTED"
+    },
+    "auto_loop": {
+      "task": "/root/w56_auto_loop",
+      "focus": "完整普通规划循环，退出/超时/终态消费，不允许非战争旁路",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/auto_loop",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [
+        {
+          "map_ref": {
+            "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/auto_loop/SOURCE-DELTA.json",
+            "bytes": 5133,
+            "sha256": "6093034b4e54814a8ac957ce7f958a9e645e642abfdbdedc2058b8649a04bcd3"
+          },
+          "qualification": "SOURCE_ONLY_NOT_COMPILED_NOT_RUN_NOT_H5_ADOPTED",
+          "partial": false,
+          "selected_files": [
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/application/session/SessionController.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/auto_loop/SessionController.java",
+                "bytes": 76003,
+                "sha256": "0c50c7f55b33d2f9c0629d005ffc6e5ea33f24fedf31a3d4e66a7c9f02afe265"
+              }
+            },
+            {
+              "target_relative": "application/src/test/java/org/xar/ck3/control/application/session/SessionControllerRegressionTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/auto_loop/SessionControllerRegressionTest.java",
+                "bytes": 61565,
+                "sha256": "e07233b38fdeb2eca598e83a70fdcc7337a5018cee2d105d1c35b7e7485497af"
+              }
+            }
+          ]
+        }
+      ],
+      "status": "SOURCE_OR_PARTIAL_PERSISTED"
+    },
+    "battle_advance": {
+      "task": "/root/w56_battle_advance",
+      "focus": "战斗推进和实际后态消费，兵力/胜率/到场推断分离",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/battle_advance",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [
+        {
+          "map_ref": {
+            "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/battle_advance/SOURCE-DELTA01.json",
+            "bytes": 8276,
+            "sha256": "be3eb273c57677a87f18f23f2976b86440b2215862dcd604fc37dbf04560f597"
+          },
+          "qualification": "SOURCE_ONLY_NOT_COMPILED_NOT_RUN_NOT_H5_ADOPTED",
+          "partial": false,
+          "selected_files": [
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/application/battleadvance/BattleAdvanceComposite.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/battle_advance/BattleAdvanceComposite.java",
+                "bytes": 32437,
+                "sha256": "64eaaa5ea371b766a952c9d244db559febc9ea8ee018aae0940acf14fef98ff4"
+              },
+              "kind": "MAIN",
+              "supersedes_source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/java_battle_advance_composite/successor03/BattleAdvanceComposite.java",
+                "bytes": 32004,
+                "sha256": "59284fa52ddc6d79827ed215f11e2487511a4e2856c2c4d74441ed3fcb50bfc3"
+              }
+            },
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/application/advance/AdvanceClock.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/battle_advance/AdvanceClock.java",
+                "bytes": 35410,
+                "sha256": "5d7a8f6b36e86ac441826c32a556c99a31c6736b87ff1935dd76334f31c991ca"
+              },
+              "kind": "MAIN",
+              "supersedes_source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/battle_advance/public_military10/AdvanceClock.java",
+                "bytes": 35230,
+                "sha256": "a663c4feca052701b54dbc6aacabe523aeb4508e3b6d50ecacf2b11a2596112f"
+              }
+            },
+            {
+              "target_relative": "application/src/test/java/org/xar/ck3/control/application/battleadvance/BattleAdvancePostStatusBoundaryTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/battle_advance/BattleAdvancePostStatusBoundaryTest.java",
+                "bytes": 5245,
+                "sha256": "1d83f6bab2d747cce569621d322e1a8711d22e415c0e3bc33254a024b520beb6"
+              },
+              "kind": "TEST"
+            },
+            {
+              "target_relative": "local-service/src/test/java/org/xar/ck3/control/application/advance/LifeAdvanceLifecycleTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/battle_advance/LifeAdvanceLifecycleTest.java",
+                "bytes": 96646,
+                "sha256": "7fc9e38b4c5c4fcc1b89ca399d7039cb4a694a9aeb0e958bedf6af6dff1b52d2"
+              },
+              "kind": "TEST",
+              "supersedes_source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/auto_loop/pause_public47/LifeAdvanceLifecycleTest.java",
+                "bytes": 94523,
+                "sha256": "f01741da02a3de0d0a82613924cf02e41f1c043c94a693e1a6deae3eb859a690"
+              }
+            }
+          ]
+        }
+      ],
+      "status": "SOURCE_OR_PARTIAL_PERSISTED",
+      "merge_advisory": "If choosing later route_window15, apply recorded narrow diff to preserve WindowExecutor/full material/Pause rather than downgrade to earlier base"
+    },
+    "campaign_goals": {
+      "task": "/root/w56_campaign_goals",
+      "focus": "高层目标/progress跨继承与checkpoint保持，普通规划真实使用",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/campaign_goals",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [
+        {
+          "map_ref": {
+            "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/campaign_goals/SOURCE-DELTA01.json",
+            "bytes": 6935,
+            "sha256": "0b8ce36b3e633e0564ebe7c65636fb920ad6e0c5c49da456b824c0b1dd8f5961"
+          },
+          "qualification": "SOURCE_ONLY_NOT_COMPILED_NOT_RUN_NOT_H5_ADOPTED",
+          "partial": false,
+          "selected_files": [
+            {
+              "target_relative": "local-service/src/test/java/org/xar/ck3/control/application/driver/InitialCampaignGoalConsumptionTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/campaign_goals/InitialCampaignGoalConsumptionTest.java",
+                "bytes": 8338,
+                "sha256": "616fac93e8aef982ebb3e69a1350c1ae29ad9f18977ac71c9598a40e2c1846b7"
+              }
+            }
+          ]
+        }
+      ],
+      "status": "SOURCE_OR_PARTIAL_PERSISTED"
+    },
+    "combat_contract": {
+      "task": "/root/w56_combat_contract",
+      "focus": "同一战斗/war/frame身份与typed回执序列化，实际adapter双向闭环",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/combat_contract",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [],
+      "status": "NO_NEW_IMPLEMENTATION_CURRENT_FOCUS_OR_ALREADY_EQUIVALENT"
+    },
+    "combat_phase": {
+      "task": "/root/w56_combat_phase",
+      "focus": "native战斗阶段变化/终结/缓存更新的真实消费者，不复用过期观察",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/combat_phase",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [
+        {
+          "map_ref": {
+            "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/combat_phase/SOURCE-DELTA01.json",
+            "bytes": 9481,
+            "sha256": "ceab38d4403f31cd5ec8bf26d94de80cfba51ba02f405ef65cc39c80748246be"
+          },
+          "qualification": "SOURCE_ONLY_NOT_COMPILED_NOT_RUN_NOT_H5_ADOPTED",
+          "partial": false,
+          "selected_files": [
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/application/driver/BattleControlSemanticProjection.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/combat_phase/BattleControlSemanticProjection.java",
+                "bytes": 7356,
+                "sha256": "5294361b1202e2700d5d05918605f285a1ddb2879264742d6b5043bc524f8864"
+              }
+            },
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/application/driver/DriverSemanticReadState.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/combat_phase/DriverSemanticReadState.java",
+                "bytes": 14715,
+                "sha256": "3bea641d6a80bc824c1bef6cd2b5564b1cace266c8a90d6083a295f12e489468"
+              },
+              "preimage_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/dynamic_capabilities/source05/DriverSemanticReadState.java",
+                "bytes": 13287,
+                "sha256": "98f792465dd28a7cbd3676af2ac49b7f66a89306fb989ea261e4a1b9608e326b"
+              }
+            },
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/application/driver/PublicSnapshotCodec.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/combat_phase/PublicSnapshotCodec.java",
+                "bytes": 55985,
+                "sha256": "ce1bb3b2c72fc668d6a4daa307371bf14f428ba83d39511d27d15ca7926db40b"
+              },
+              "preimage_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/native_transport_core/profile4_public42/PublicSnapshotCodec.java",
+                "bytes": 54398,
+                "sha256": "6f846ded50b79f5e23fe575b338bb960cd3837cf97946b76723188982600b34d"
+              }
+            },
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/nativebridge/capabilities/army/ArmyPublicWire.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/combat_phase/ArmyPublicWire.java",
+                "bytes": 23999,
+                "sha256": "425e2c466606101e17989e15ff61478eb6e17335715b1f1b87ac0de9dd8521ff"
+              },
+              "preimage_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_protocol_identity/move_rejection26/ArmyPublicWire.java",
+                "bytes": 22381,
+                "sha256": "5ce00f91fc7415c297aff06c08a0873b3360edb052332c2ca482e40447ddf7d7"
+              }
+            },
+            {
+              "target_relative": "application/src/test/java/org/xar/ck3/control/nativebridge/capabilities/army/BattleControlSemanticProjectionTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/combat_phase/BattleControlSemanticProjectionTest.java",
+                "bytes": 12432,
+                "sha256": "8ae8aa5810675a795427d2dd922a1ab0dd831b192879fdd4418c0ec2de757f6c"
+              }
+            },
+            {
+              "target_relative": "application/src/test/java/org/xar/ck3/control/application/driver/DriverBattleControlCacheSlotsTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/combat_phase/DriverBattleControlCacheSlotsTest.java",
+                "bytes": 2294,
+                "sha256": "ac3bb6cc7aa573f4a6e7d7f661ac8087cd05eb2d634f22272784962cc439f772"
+              }
+            }
+          ]
+        }
+      ],
+      "status": "SOURCE_OR_PARTIAL_PERSISTED"
+    },
+    "command_origins": {
+      "task": "/root/w56_command_origins",
+      "focus": "当前来源/暂停状态到实际命令dispatch的接管链",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/command_origins",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [],
+      "status": "NO_NEW_IMPLEMENTATION_CURRENT_FOCUS_OR_ALREADY_EQUIVALENT"
+    },
+    "construction": {
+      "task": "/root/w56_construction",
+      "focus": "战时新建/升级/地产的P83资金门和取消项目退款后验",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/construction",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [
+        {
+          "map_ref": {
+            "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/construction/SOURCE-DELTA01.json",
+            "bytes": 6537,
+            "sha256": "2e6e4e46e668d08a05e01eef01d3c5af9a0c662a706955d932c8a945f4d64c1e"
+          },
+          "qualification": "SOURCE_ONLY_NOT_COMPILED_NOT_RUN_NOT_H5_ADOPTED",
+          "partial": false,
+          "selected_files": [
+            {
+              "target_relative": "local-service/src/main/java/org/xar/ck3/control/application/planning/finance/ConstructionDomainLifecycle.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/construction/ConstructionDomainLifecycle.java",
+                "bytes": 42596,
+                "sha256": "139ea35e133a1f7560764d1324d3536979410479b3e87c086eb6c3666b5b668b"
+              },
+              "replaces_source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/construction/material_reference13/ConstructionDomainLifecycle.java",
+                "bytes": 41840,
+                "sha256": "9519a45d6b5893caf2294e786d5733161d3a2c37f02866af025637e28902a7c5"
+              }
+            },
+            {
+              "target_relative": "local-service/src/test/java/org/xar/ck3/control/application/planning/finance/ConstructionFundingProductionChainTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/construction/ConstructionFundingProductionChainTest.java",
+                "bytes": 31596,
+                "sha256": "514d42a602c3d0aab4df079aa31b276e1efce3478cb056bae86515623f5c5c13"
+              },
+              "replaces_source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/construction/wartime_funding12/ConstructionFundingProductionChainTest.java",
+                "bytes": 30562,
+                "sha256": "cf67bd03ccf0caed4f5e73ec240f16dc523f94b10191f8fb3d9b62a6493c633e"
+              }
+            }
+          ]
+        }
+      ],
+      "status": "SOURCE_OR_PARTIAL_PERSISTED"
+    },
+    "driver_history": {
+      "task": "/root/w56_driver_history",
+      "focus": "Driver历史归约与真实append消费，持久化恢复不丢历史语义",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/driver_history",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [
+        {
+          "map_ref": {
+            "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/driver_history/SOURCE-DELTA56.json",
+            "bytes": 6608,
+            "sha256": "f85f5e7f77ca27a369f5c8941d1a844d9fec8012b7f16e18a4d0b6e621aeb498"
+          },
+          "qualification": "SOURCE_ONLY_NOT_COMPILED_NOT_RUN_NOT_H5_ADOPTED",
+          "partial": false,
+          "selected_files": [
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/application/history/RollbackWarFailures.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/driver_history/RollbackWarFailures.java",
+                "bytes": 25516,
+                "sha256": "cc24cf4020a86fcccf2c873f9e33ca6ca34f71b0f7fa475c2c16ee4cfed025a2"
+              }
+            },
+            {
+              "target_relative": "application/src/test/java/org/xar/ck3/control/application/history/LegacyResumeNormalizerParityTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/driver_history/LegacyResumeNormalizerParityTest.java",
+                "bytes": 23139,
+                "sha256": "a9b0846c8490e270fcf47ae940fe4fb7aab9f54129a2353d666642c6bc409b58"
+              }
+            }
+          ]
+        }
+      ],
+      "status": "SOURCE_OR_PARTIAL_PERSISTED"
+    },
+    "driver_snapshot": {
+      "task": "/root/w56_driver_snapshot",
+      "focus": "快照状态的真实生产者和全部consumer，fresh/cache区别",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/driver_snapshot",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [
+        {
+          "map_ref": {
+            "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/driver_snapshot/SOURCE-DELTA01.json",
+            "bytes": 9359,
+            "sha256": "4f79990b015f11a8aa82c66496d16711c740372575d06346216c6d8c52ea8061"
+          },
+          "qualification": "SOURCE_ONLY_NOT_COMPILED_NOT_RUN_NOT_H5_ADOPTED",
+          "partial": false,
+          "selected_files": [
+            {
+              "target_relative": "local-service/src/main/java/org/xar/ck3/control/application/driver/InitialDriverState.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/driver_snapshot/InitialDriverState.java",
+                "bytes": 15296,
+                "sha256": "4dd9c56304bc3c3801d797105cbf1023fa69a0ef61baec5e636a5ddfb7b72bc0"
+              },
+              "replaces_source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/driver_snapshot/fixture_first_capture37/InitialDriverState.java",
+                "bytes": 14945,
+                "sha256": "a2a2c062fc743a31ecbf0478dd956910333d93da7d08f951c41dda80a009f0e2"
+              },
+              "source_owner": "/root/w56_driver_snapshot"
+            },
+            {
+              "target_relative": "local-service/src/main/java/org/xar/ck3/control/application/driver/NativeDriverObservationProducer.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/driver_snapshot/NativeDriverObservationProducer.java",
+                "bytes": 34558,
+                "sha256": "a5f59e23e41929698faeb92174d8d8d48c10ca52942c8908343069facd3f9014"
+              },
+              "replaces_source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/driver_snapshot/warm_projection41/NativeDriverObservationProducer.java",
+                "bytes": 33675,
+                "sha256": "3959dae4ac4c935440affc151c8fc07d274d5ec5632b44bd19e6f035d8ee3576"
+              },
+              "source_owner": "/root/w56_driver_snapshot"
+            },
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/application/readiness/NativeSemanticEvidenceVerifier.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/driver_snapshot/NativeSemanticEvidenceVerifier.java",
+                "bytes": 15886,
+                "sha256": "55e40180af7889634acdd37b4aada43003160455fbc4f617d1055168aae7809c"
+              },
+              "replaces_source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/driver_snapshot/fixture_native36/NativeSemanticEvidenceVerifier.java",
+                "bytes": 15681,
+                "sha256": "92115924de89a6209c1764ce39cd8c5a69ee552b3c09e325eb19eef67d5eaf43"
+              },
+              "source_owner": "/root/w56_driver_snapshot"
+            },
+            {
+              "target_relative": "local-service/src/test/java/org/xar/ck3/control/nativebridge/NativeDriverObservationProducerTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/driver_snapshot/NativeDriverObservationProducerTest.java",
+                "bytes": 69267,
+                "sha256": "dd593511c587888b7ac7e9120b63381775825ba109e11acacd55d1036e126964"
+              },
+              "replaces_source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/driver_snapshot/public_context32/NativeDriverObservationProducerTest.java",
+                "bytes": 65013,
+                "sha256": "0775a9cbe22fede1cd9860664261dc3605774cad52e472e07bc83594690f9213"
+              },
+              "source_owner": "/root/w56_driver_snapshot"
+            }
+          ]
+        }
+      ],
+      "status": "SOURCE_OR_PARTIAL_PERSISTED",
+      "pending": "No02; actual receive-bound revision producer/differential absent"
+    },
+    "dynamic_capabilities": {
+      "task": "/root/w56_dynamic_capabilities",
+      "focus": "动态能力发现到当前native action可用性，不能把声明当执行",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/dynamic_capabilities",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [],
+      "status": "NO_NEW_IMPLEMENTATION_CURRENT_FOCUS_OR_ALREADY_EQUIVALENT"
+    },
+    "effect_observers": {
+      "task": "/root/w56_effect_observers",
+      "focus": "动作实际effect observers与storage consumer接管，不把ACK当后态",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/effect_observers",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [],
+      "status": "NO_NEW_IMPLEMENTATION_CURRENT_FOCUS_OR_ALREADY_EQUIVALENT"
+    },
+    "event_registry": {
+      "task": "/root/w56_event_registry",
+      "focus": "批后离线学习到通用registry持久化/下一批重新识别，复用m2已审来源",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/event_registry",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [],
+      "status": "NO_NEW_IMPLEMENTATION_CURRENT_FOCUS_OR_ALREADY_EQUIVALENT"
+    },
+    "family_ordinary": {
+      "task": "/root/w56_family_ordinary",
+      "focus": "婚姻/亲族普通候选选择到真实结果，泛型fault与来源重绑",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/family_ordinary",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [],
+      "status": "NO_NEW_IMPLEMENTATION_CURRENT_FOCUS_OR_ALREADY_EQUIVALENT"
+    },
+    "finance_ordinary": {
+      "task": "/root/w56_finance_ordinary",
+      "focus": "普通财政/战争承诺/储备计算和真实current budget消费",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/finance_ordinary",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [
+        {
+          "map_ref": {
+            "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/finance_ordinary/SOURCE-DELTA01.json",
+            "bytes": 7254,
+            "sha256": "8ed7aa6f7f65cf134a35675bd6c15ae437e2c92b85ee3515b9657eb8de1505e3"
+          },
+          "qualification": "SOURCE_ONLY_NOT_COMPILED_NOT_RUN_NOT_H5_ADOPTED",
+          "partial": false,
+          "selected_files": [
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/application/planning/finance/OrdinaryFinancePolicies.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/finance_ordinary/OrdinaryFinancePolicies.java",
+                "bytes": 28630,
+                "sha256": "de1305ea41e922c4f20fbffbd87589c1363ce3e18f59b28b99d030b242b2999f"
+              }
+            },
+            {
+              "target_relative": "application/src/test/java/org/xar/ck3/control/application/planning/finance/PublicGiftSelectionSourceTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/finance_ordinary/PublicGiftSelectionSourceTest.java",
+                "bytes": 7921,
+                "sha256": "b7a1fccde0cdaafe0eac764aceef487015c89327507cc3b9d9d04491f8c69b7b"
+              }
+            }
+          ]
+        }
+      ],
+      "status": "SOURCE_OR_PARTIAL_PERSISTED"
+    },
+    "forecast_kernel": {
+      "task": "/root/w56_forecast_kernel",
+      "focus": "完整继承预测纯kernel与真实source-date/currentactor消费",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/forecast_kernel",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [],
+      "status": "NO_NEW_IMPLEMENTATION_CURRENT_FOCUS_OR_ALREADY_EQUIVALENT"
+    },
+    "governance_ordinary": {
+      "task": "/root/w56_governance_ordinary",
+      "focus": "政务普通候选和实际合法提交/后验接管，不抛弃未覆盖能力",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/governance_ordinary",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [
+        {
+          "map_ref": {
+            "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/governance_ordinary/SOURCE-DELTA01.json",
+            "bytes": 8662,
+            "sha256": "5a4b8a5ceceb32f7a3773be9045c781fa4350b0055422515c9f3fdd5ee32edc6"
+          },
+          "qualification": "SOURCE_ONLY_NOT_COMPILED_NOT_RUN_NOT_H5_ADOPTED",
+          "partial": false,
+          "selected_files": [
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/application/planning/governance/GovernanceObservationSupplier.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/governance_ordinary/GovernanceObservationSupplier.java",
+                "bytes": 6820,
+                "sha256": "40e33d42ee8cb1b32135ca2ef1cf77fcd0720a573649f8837a5d0bf54d1fd9f4"
+              },
+              "role": "main"
+            },
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/application/planning/governance/CouncilTechnicalReadFailure.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/governance_ordinary/CouncilTechnicalReadFailure.java",
+                "bytes": 4869,
+                "sha256": "730489d3a429dd36521080fbfa4dd85394d123817a60dee4b7e0b849a2568a4a"
+              },
+              "role": "main"
+            },
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/application/planning/governance/GovernancePolicies.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/governance_ordinary/GovernancePolicies.java",
+                "bytes": 37080,
+                "sha256": "76cf0ef32c1698857ed1b45fc7ce2fdf25f4de6a49df3e5082400e66baae822d"
+              },
+              "role": "main"
+            },
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/application/planning/governance/GovernanceCadencePublication.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/governance_ordinary/GovernanceCadencePublication.java",
+                "bytes": 19663,
+                "sha256": "579a3e8368db1f14b371007d4392483894ee8d1010540d5ae6ada4d03a4e9985"
+              },
+              "role": "main"
+            },
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/application/planning/governance/GovernanceCadenceReplay.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/governance_ordinary/GovernanceCadenceReplay.java",
+                "bytes": 16737,
+                "sha256": "18cb0795870683efbbc2d64ce49bc7a45a253f6d0e2329f5ed7b847b265717e5"
+              },
+              "role": "main"
+            },
+            {
+              "target_relative": "application/src/test/java/org/xar/ck3/control/application/planning/governance/GovernanceCadenceReplayTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/governance_ordinary/GovernanceCadenceReplayTest.java",
+                "bytes": 13218,
+                "sha256": "0a029e7a07f5ab92fe229814b376f5deef92aff68aca6a50235bc9678e17b736"
+              },
+              "role": "test"
+            }
+          ],
+          "ABI_status": "NOT_EXECUTABLE_COHORT: transport.deferReadOnly not implemented; real held-source after unresolved; no nested READ or UNKNOWN relaxation"
+        }
+      ],
+      "status": "SOURCE_OR_PARTIAL_PERSISTED"
+    },
+    "known_interactions": {
+      "task": "/root/w56_known_interactions",
+      "focus": "已知角色交互策略/native左侧语义/UNKNOWN保留的全消费链",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/known_interactions",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [
+        {
+          "map_ref": {
+            "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/known_interactions/SOURCE-DELTA56.json",
+            "bytes": 7558,
+            "sha256": "f0a371eeeff6ab87f8b810c7ccc3f5b67842d041e17ac62254b87bc5d1284dec"
+          },
+          "qualification": "SOURCE_ONLY_NOT_COMPILED_NOT_RUN_NOT_H5_ADOPTED",
+          "partial": false,
+          "selected_files": [
+            {
+              "target_relative": "local-service/src/main/java/org/xar/ck3/control/service/root/KnownInteractionsRuntimeInstaller.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/known_interactions/KnownInteractionsRuntimeInstaller.java",
+                "bytes": 26333,
+                "sha256": "ce64594065b178b55e7c4d31c73a945d03b67aafcab9e8f089ad3dfbe3c14435"
+              },
+              "parent_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/known_interactions/ordinary_actor22/KnownInteractionsRuntimeInstaller.java",
+                "bytes": 26242,
+                "sha256": "ba3b1af50f1d3886ceadb96f1d9c7dc76bfed1ef3f24b79c5c1a45ca5238ffc0"
+              }
+            },
+            {
+              "target_relative": "local-service/src/test/java/org/xar/ck3/control/service/root/PendingInteractionPublicTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/known_interactions/PendingInteractionPublicTest.java",
+                "bytes": 26622,
+                "sha256": "df392c24b691b6524e589bc24d4564fb7b39da0d507919e58347c5a66361166e"
+              },
+              "parent_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/known_interactions/public_pending03/PendingInteractionPublicTest.java",
+                "bytes": 23474,
+                "sha256": "a789e283c5a3f9c2e0b69f9531555723e028d9f16a3a5f22e1db44c069a267a8"
+              }
+            }
+          ]
+        }
+      ],
+      "status": "SOURCE_OR_PARTIAL_PERSISTED"
+    },
+    "launcher_refresh": {
+      "task": "/root/w56_launcher_refresh",
+      "focus": "实际部署/launcher refresh的Java接管与原退出状态消费",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/launcher_refresh",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [
+        {
+          "map_ref": {
+            "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/launcher_refresh/profile_write02/SOURCE-DELTA02.json",
+            "bytes": 8297,
+            "sha256": "0a208e84070f155fd1a9d934f84c30233749347b0062f693918a4873e9cad745"
+          },
+          "qualification": "SOURCE_ONLY_NOT_COMPILED_NOT_RUN_NOT_H5_ADOPTED",
+          "partial": false,
+          "selected_files": [
+            {
+              "target_relative": "build-tools/src/main/java/org/xar/ck3/control/build/NativeRunProfileWriter.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/launcher_refresh/profile_write02/NativeRunProfileWriter.java",
+                "bytes": 7040,
+                "sha256": "9ac02ae4a62bcb48ef720303cde29256ee3d70fa2bcfc8049b4efb5fa7df9c38"
+              }
+            },
+            {
+              "target_relative": "build-tools/src/test/java/org/xar/ck3/control/build/NativeRunProfileWriterTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/launcher_refresh/profile_write02/NativeRunProfileWriterTest.java",
+                "bytes": 3908,
+                "sha256": "62fdb321cf991e699eab3237e9ad77bc518fe958c7875da16e7d8a2452b94fa0"
+              }
+            }
+          ]
+        },
+        {
+          "map_ref": {
+            "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/launcher_refresh/SOURCE-DELTA01.json",
+            "bytes": 5404,
+            "sha256": "cf85e420e04d6d0878329e2fa324a24638710731b8e15b1c7db5f4dd82c658b2"
+          },
+          "qualification": "SOURCE_ONLY_NOT_COMPILED_NOT_RUN_NOT_H5_ADOPTED",
+          "partial": false,
+          "selected_files": [
+            {
+              "target_relative": "local-service/src/main/java/org/xar/ck3/control/g2/context/RootNativeGameLaunch.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/launcher_refresh/RootNativeGameLaunch.java",
+                "bytes": 11739,
+                "sha256": "548de4693e603741165699154cdeca55ba1bec72abb5ccc831253b3e8a22fdf4"
+              },
+              "replaces_source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/launcher_refresh/steam_offline03/RootNativeGameLaunch.java",
+                "bytes": 10514,
+                "sha256": "8ec966a72bf8071fa1b4df4511d89afe4a14fd838c6a66e052c1f7f84df63e2e"
+              }
+            },
+            {
+              "target_relative": "local-service/src/test/java/org/xar/ck3/control/g2/context/RootNativeGameLaunchTerminalTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/launcher_refresh/RootNativeGameLaunchTerminalTest.java",
+                "bytes": 6608,
+                "sha256": "6a83cbda2616f76dc31c0d95f4eadfcc772ee227adbf0522c765ed29a647af5d"
+              }
+            }
+          ]
+        }
+      ],
+      "status": "SOURCE_OR_PARTIAL_PERSISTED",
+      "map_advisory": "01 injector outcome fix plus profile_write02 SOURCE-DELTA02 thin router; physical positive needs actual Host/release"
+    },
+    "ledger_writer": {
+      "task": "/root/w56_ledger_writer",
+      "focus": "唯一账本writer中真实状态归约/锁内恢复与JSON合同；不增第二writer",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/ledger_writer",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [
+        {
+          "map_ref": {
+            "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/ledger_writer/SOURCE-DELTA56.json",
+            "bytes": 7595,
+            "sha256": "26448ed0df5919ccb06acc0f8e2d2f59b4f9a251553e19f2d346d9d665ca344e"
+          },
+          "qualification": "SOURCE_ONLY_NOT_COMPILED_NOT_RUN_NOT_H5_ADOPTED",
+          "partial": false,
+          "selected_files": [
+            {
+              "target_relative": "adapters-storage/src/main/java/org/xar/ck3/control/continuity/writer/ContinuityWriter.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/ledger_writer/ContinuityWriter.java",
+                "bytes": 73897,
+                "sha256": "0f655dadaf4abf322e524105a4dcf8daf8c0adeac27a9f67350c30490008dfa8"
+              },
+              "parent_source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/ledger_writer/fixture_writer33/ContinuityWriter.java",
+                "bytes": 73228,
+                "sha256": "fc4d941bc5135daa8e4d8435286b3cad84910c5949238bd7e5e2559d89bf725f"
+              }
+            },
+            {
+              "target_relative": "adapters-storage/src/test/java/org/xar/ck3/control/continuity/writer/CommittedRequestRecoveryTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/ledger_writer/CommittedRequestRecoveryTest.java",
+                "bytes": 11802,
+                "sha256": "fba99da12c7d8a962a261d0bbe32e0bb565fbe0ad5ac99a7fb560b4064480f0e"
+              }
+            }
+          ]
+        }
+      ],
+      "status": "SOURCE_OR_PARTIAL_PERSISTED"
+    },
+    "life_advance": {
+      "task": "/root/w56_life_advance",
+      "focus": "普通life-advance顺序与following事件/战争/sway hooks，精确终态",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/life_advance",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [],
+      "status": "NO_NEW_IMPLEMENTATION_CURRENT_FOCUS_OR_ALREADY_EQUIVALENT"
+    },
+    "lifecycle": {
+      "task": "/root/w56_lifecycle",
+      "focus": "进程/army失败后的真实生命周期收口和下一普通计划不静默fallback",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/lifecycle",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [
+        {
+          "map_ref": {
+            "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/lifecycle/SOURCE-DELTA01.json",
+            "bytes": 9361,
+            "sha256": "e6c1091089be1a78ff9f8e1c5d487ff534e8f877316cdd277b6e190800834f66"
+          },
+          "qualification": "SOURCE_ONLY_NOT_COMPILED_NOT_RUN_NOT_H5_ADOPTED",
+          "partial": false,
+          "selected_files": [
+            {
+              "target_relative": "native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/army/ArmyStructuralActions.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/lifecycle/ArmyStructuralActions.java",
+                "bytes": 19060,
+                "sha256": "58c6d5d6a2f4f10e4437ff0dc1a271613a1d2984282f92c0cd60a69780056c09"
+              },
+              "parent_source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/lifecycle/army_structural29/ArmyStructuralActions.java",
+                "bytes": 17468,
+                "sha256": "90807763e0a37f5589f405c4888bda81ef0648abe03d566e1bfc06eef3d94a60"
+              }
+            },
+            {
+              "target_relative": "local-service/src/main/java/org/xar/ck3/control/service/root/RootArmyStructuralStepRuntime.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/lifecycle/RootArmyStructuralStepRuntime.java",
+                "bytes": 19136,
+                "sha256": "df0db726af1d9f00adb7d539fb51d433f5305b89a7f70af32a4965585f5345f7"
+              },
+              "parent_source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/lifecycle/army_structural30/RootArmyStructuralStepRuntime.java",
+                "bytes": 17678,
+                "sha256": "0a953df6cde47f3071241398f3b7f5c3881e26fb569624928e4c0caa86697c0b"
+              }
+            },
+            {
+              "target_relative": "native-transport/src/test/java/org/xar/ck3/control/nativebridge/capabilities/army/ArmyStructuralActionsTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/lifecycle/ArmyStructuralActionsTest.java",
+                "bytes": 15239,
+                "sha256": "6d657fc9cb9fc50b88f031f14a274ecd3298c9f7bd6d9de1749aa1f706847ee1"
+              },
+              "parent_source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/lifecycle/army_structural29/ArmyStructuralActionsTest.java",
+                "bytes": 12394,
+                "sha256": "9d7acff889002cc58f44af2c0167916fc70bdf3fa2c1b1aa7ddab223be0e72c9"
+              }
+            },
+            {
+              "target_relative": "native-transport/src/test/java/org/xar/ck3/control/nativebridge/capabilities/army/ArmyStructuralProducerParityTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/lifecycle/ArmyStructuralProducerParityTest.java",
+                "bytes": 14022,
+                "sha256": "44fa0a3b952137dcc4dd7aa4fd6673bb3713a700e2444dc756ad08ce8aad6a8c"
+              },
+              "parent_source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/lifecycle/army_structural29/ArmyStructuralProducerParityTest.java",
+                "bytes": 11311,
+                "sha256": "54556e4b0b4d40b3719c2b353703c7400d9c2c5a56d69b260209c7efef25c6db"
+              }
+            }
+          ]
+        }
+      ],
+      "status": "SOURCE_OR_PARTIAL_PERSISTED"
+    },
+    "m0_research": {
+      "task": "/root/w56_m0_research",
+      "focus": "G2 M0战争继续/白和/投降比较，refused_liege_demand政治理由与实际后态Java消费",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/m0_research",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [],
+      "status": "NO_NEW_IMPLEMENTATION_CURRENT_FOCUS_OR_ALREADY_EQUIVALENT"
+    },
+    "m1_research": {
+      "task": "/root/w56_m1_research",
+      "focus": "G2 M1当前direct holdings/domain/subrealm分离与继承缓存freshness的Java落地",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/m1_research",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [],
+      "status": "NO_NEW_IMPLEMENTATION_CURRENT_FOCUS_OR_ALREADY_EQUIVALENT"
+    },
+    "m2_research": {
+      "task": "/root/w56_m2_research",
+      "focus": "G2 M2已分析98条来源知识携带/专用populist重绑及非generic letter边界；不重复首显示25",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/m2_research",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [],
+      "status": "NO_NEW_IMPLEMENTATION_CURRENT_FOCUS_OR_ALREADY_EQUIVALENT"
+    },
+    "m3_research": {
+      "task": "/root/w56_m3_research",
+      "focus": "G2 M3死亡前完整title预测、真实继任者/逐title对账与后续普通计划；不重复FH4 decoder16",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/m3_research",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [
+        {
+          "map_ref": {
+            "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/m3_research/SOURCE-DELTA01.json",
+            "bytes": 6942,
+            "sha256": "65ed297d9c41a2b7174d95d43d9d48fad3843ffda6f1145931f5c05b1f3f616b"
+          },
+          "qualification": "SOURCE_ONLY_NOT_COMPILED_NOT_RUN_NOT_H5_ADOPTED",
+          "partial": false,
+          "selected_files": [
+            {
+              "target_relative": "g2-research/src/main/java/org/xar/ck3/control/g2/m7/GoalCodec.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/m3_research/GoalCodec.java",
+                "bytes": 13962,
+                "sha256": "3981f0f261b22caccce0c926306c2821803168822aa8fff9d4351983188352f8"
+              }
+            },
+            {
+              "target_relative": "g2-research/src/test/java/org/xar/ck3/control/g2/m7/M3GoalReconciliationConsumerTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/m3_research/M3GoalReconciliationConsumerTest.java",
+                "bytes": 12346,
+                "sha256": "4a43de8acc919832584ccd14002c9fd44d311c76ec893ca95ade0ed0f2f0917d"
+              }
+            }
+          ]
+        }
+      ],
+      "status": "SOURCE_OR_PARTIAL_PERSISTED"
+    },
+    "m4_research": {
+      "task": "/root/w56_m4_research",
+      "focus": "G2 M4每月物质效果/经济风险原生来源和Java消费者；复用loan/refund/mercenary33研究不重审13原件",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/m4_research",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [],
+      "status": "NO_NEW_IMPLEMENTATION_CURRENT_FOCUS_OR_ALREADY_EQUIVALENT"
+    },
+    "m5_research": {
+      "task": "/root/w56_m5_research",
+      "focus": "G2 M5五候选比较和非玩家主导战争风险未评估状态，保留实际Native合法权限",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/m5_research",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [
+        {
+          "map_ref": {
+            "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/m5_research/SOURCE-DELTA01.json",
+            "bytes": 9926,
+            "sha256": "e346e781265e742276cfcd934840996f6822e3b3c26c2af2c6ed4b8113fbe14a"
+          },
+          "qualification": "SOURCE_ONLY_NOT_COMPILED_NOT_RUN_NOT_H5_ADOPTED",
+          "partial": false,
+          "selected_files": [
+            {
+              "target_relative": "wave3-planning/src/main/java/org/xar/ck3/control/wave3/planning/participatingwar/ParticipatingWarThreats.java",
+              "source_ref": {
+                "path": "D:\\codex-ck3-background\\ck3-java-g2-resume-r4-20261025\\sources\\parallel56\\m5_research\\ParticipatingWarThreats.java",
+                "bytes": 11112,
+                "sha256": "9f2e79de7c6d4222ad7dc483316859a166761d6711c91c4e0c051ee269d24721"
+              }
+            },
+            {
+              "target_relative": "wave3-planning/src/main/java/org/xar/ck3/control/wave3/planning/participatingwar/ParticipatingWarThreatsCodec.java",
+              "source_ref": {
+                "path": "D:\\codex-ck3-background\\ck3-java-g2-resume-r4-20261025\\sources\\parallel56\\m5_research\\ParticipatingWarThreatsCodec.java",
+                "bytes": 23208,
+                "sha256": "ef7067452c262dcfb9e49e4dc11cb8f5b8bc4ed97de25efed13dbb988b8dddf4"
+              }
+            },
+            {
+              "target_relative": "wave3-planning/src/test/java/org/xar/ck3/control/wave3/planning/participatingwar/ParticipatingWarNonPrimaryRiskTest.java",
+              "source_ref": {
+                "path": "D:\\codex-ck3-background\\ck3-java-g2-resume-r4-20261025\\sources\\parallel56\\m5_research\\ParticipatingWarNonPrimaryRiskTest.java",
+                "bytes": 7949,
+                "sha256": "bb055e283794313d6756610df7c8057258ee41dd3205d4d0b9b24450ebf8e225"
+              }
+            },
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/application/planning/military/M5WartimeObservationPolicy.java",
+              "source_ref": {
+                "path": "D:\\codex-ck3-background\\ck3-java-g2-resume-r4-20261025\\sources\\parallel56\\m5_research\\M5WartimeObservationPolicy.java",
+                "bytes": 10053,
+                "sha256": "845a869ce08cda5cf018bdc1469946dda4e2d5b6829b2ff846ab3cccf6fd4667"
+              }
+            },
+            {
+              "target_relative": "application/src/test/java/org/xar/ck3/control/application/planning/military/M5WartimeObservationOriginalTest.java",
+              "source_ref": {
+                "path": "D:\\codex-ck3-background\\ck3-java-g2-resume-r4-20261025\\sources\\parallel56\\m5_research\\M5WartimeObservationOriginalTest.java",
+                "bytes": 20385,
+                "sha256": "727217b3b722306b015bda4e0266207af964e7ebf3f541913ede8f417dfad73c"
+              }
+            }
+          ]
+        }
+      ],
+      "status": "SOURCE_OR_PARTIAL_PERSISTED"
+    },
+    "m7_research": {
+      "task": "/root/w56_m7_research",
+      "focus": "G2 M7真实checkpoint/新Game谱系与resolved UI冷恢复下一次继承；不重复law56 callback",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/m7_research",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [
+        {
+          "map_ref": {
+            "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/m7_research/PARTIAL-HANDOFF01.json",
+            "bytes": 7302,
+            "sha256": "5d9308392be363a32c7b1aa208b1ebf2335fff2407c6ab214073afedffff896a"
+          },
+          "qualification": "SOURCE_ONLY_NOT_COMPILED_NOT_RUN_NOT_H5_ADOPTED",
+          "partial": true,
+          "selected_files": []
+        }
+      ],
+      "status": "SOURCE_OR_PARTIAL_PERSISTED",
+      "implementation": "0 Java; actual cross-newGame FINALIZED retirement and fixture not implemented"
+    },
+    "military_ordinary": {
+      "task": "/root/w56_military_ordinary",
+      "focus": "完整普通军务/防御/调动选择到native后态，战争不可仅关闭通知",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/military_ordinary",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [],
+      "status": "NO_NEW_IMPLEMENTATION_CURRENT_FOCUS_OR_ALREADY_EQUIVALENT"
+    },
+    "native_army": {
+      "task": "/root/w56_native_army",
+      "focus": "当前army native adapter字段/序列化→Java军队consumer；读现成小证据不新读EXE",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/native_army",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [
+        {
+          "map_ref": {
+            "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/native_army/ARMY-ABI-COHORT-JOIN01.json",
+            "bytes": 39794,
+            "sha256": "6a9d27f5d35f0333a1f1f7fec070d922e1ae347d862462eb29650f31a59ced44"
+          },
+          "qualification": "SOURCE_ONLY_NOT_COMPILED_NOT_RUN_NOT_H5_ADOPTED",
+          "partial": false,
+          "selected_files": [
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/nativebridge/capabilities/army/ArmyWindowCodec.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_army/window_roles01/ArmyWindowCodec.java",
+                "bytes": 12927,
+                "sha256": "7d662d525c04a3cd969a62b010e4bf88eb47683be696f122199206e5b0d9a094"
+              },
+              "source_map_authority_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_army/window_failures03/SOURCE-MAP03.json",
+                "bytes": 12791,
+                "sha256": "b80d2732e7c8add2cd2d308e8fc2819b37a9b7e899cfa3696c41a3a1a804871b"
+              },
+              "replaces_h4_source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_army/source04/ArmyWindowCodec.java",
+                "bytes": 12175,
+                "sha256": "ad44d21ae1bda41b8764df2a8310a2b779c0a2fbd8059a7190b3239b8d5e94c3"
+              }
+            },
+            {
+              "target_relative": "application/src/test/java/org/xar/ck3/control/nativebridge/capabilities/army/ArmyWindowCodecTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_army/window_roles01/ArmyWindowCodecTest.java",
+                "bytes": 12945,
+                "sha256": "569cd56f2b41226d1230f380eade2296450530e98cea5bdd52a8e0753c98a818"
+              },
+              "source_map_authority_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_army/window_failures03/SOURCE-MAP03.json",
+                "bytes": 12791,
+                "sha256": "b80d2732e7c8add2cd2d308e8fc2819b37a9b7e899cfa3696c41a3a1a804871b"
+              },
+              "replaces_h4_source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_army/source05/ArmyWindowCodecTest.java",
+                "bytes": 9220,
+                "sha256": "b5e190e7bb836dcc64f25ae80df35ff2290ca5d91ac3d1886cef53e57ed11c05"
+              }
+            },
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/nativebridge/capabilities/army/ArmyWindowQueryFailure.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_army/window_failures03/ArmyWindowQueryFailure.java",
+                "bytes": 3856,
+                "sha256": "c81d2ddf42295789e078d9616027c371cbf8173439b326cbafbd88a17ed68ace"
+              },
+              "source_map_authority_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_army/window_failures03/SOURCE-MAP03.json",
+                "bytes": 12791,
+                "sha256": "b80d2732e7c8add2cd2d308e8fc2819b37a9b7e899cfa3696c41a3a1a804871b"
+              }
+            },
+            {
+              "target_relative": "native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/army/ArmyWindowReads.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_army/window_failures03/ArmyWindowReads.java",
+                "bytes": 13822,
+                "sha256": "9aaaa7c1f643dd3308c5df9d6cecd1e9216fe917af9659052bb8a4aa09456134"
+              },
+              "source_map_authority_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_army/window_failures03/SOURCE-MAP03.json",
+                "bytes": 12791,
+                "sha256": "b80d2732e7c8add2cd2d308e8fc2819b37a9b7e899cfa3696c41a3a1a804871b"
+              },
+              "replaces_h4_source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_army/source01/ArmyWindowReads.java",
+                "bytes": 12505,
+                "sha256": "cc85b64f8bd20c5477005da24e9134e41e419bce9b0c6521df995ddc18163e65"
+              }
+            },
+            {
+              "target_relative": "native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/army/ArmyWindowQueryDeferred.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_army/window_failures03/ArmyWindowQueryDeferred.java",
+                "bytes": 8028,
+                "sha256": "8b6feeb3db5ad1080749eb29bd67a533cf2db1aad0bd92e8802b761aadd383f7"
+              },
+              "source_map_authority_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_army/window_failures03/SOURCE-MAP03.json",
+                "bytes": 12791,
+                "sha256": "b80d2732e7c8add2cd2d308e8fc2819b37a9b7e899cfa3696c41a3a1a804871b"
+              }
+            },
+            {
+              "target_relative": "native-transport/src/test/java/org/xar/ck3/control/nativebridge/capabilities/army/ArmyWindowQueryDeferredTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_army/window_failures03/ArmyWindowQueryDeferredTest.java",
+                "bytes": 14507,
+                "sha256": "4413fc2614108f4a28c352a129ea454345a44c791bc7fb84bf71c1db2ab24abd"
+              },
+              "source_map_authority_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_army/window_failures03/SOURCE-MAP03.json",
+                "bytes": 12791,
+                "sha256": "b80d2732e7c8add2cd2d308e8fc2819b37a9b7e899cfa3696c41a3a1a804871b"
+              }
+            },
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/application/effects/NativeEffectSnapshots.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/military_ordinary/direct_fixed_window14/NativeEffectSnapshots.java",
+                "bytes": 23529,
+                "sha256": "6d35109476cb55e90847c52617ed7ce7c81e84efdf323ab5777771c0c6ec2313"
+              },
+              "source_map_authority_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/military_ordinary/direct_fixed_window14/SOURCE-DELTA14.json",
+                "bytes": 17065,
+                "sha256": "07bbd120669259e1bdfe73bc6826987471a6b1565f4c805ef2fc957dff7d20bb"
+              },
+              "replaces_h4_source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/known_interactions/pending_ui17/NativeEffectSnapshots.java",
+                "bytes": 19005,
+                "sha256": "76768e9a9c7008ed795c7b446c0e810249e179eae38f9fe2dbe1605a04115491"
+              }
+            },
+            {
+              "target_relative": "local-service/src/main/java/org/xar/ck3/control/service/root/ArmyOrdinaryPairedQuotes.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/military_ordinary/direct_fixed_window14/ArmyOrdinaryPairedQuotes.java",
+                "bytes": 26757,
+                "sha256": "c2bfe38c8eaf27b85a1f021e466bd53a8690c13d9b1bc0ec2ba371790aaeb5be"
+              },
+              "source_map_authority_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/military_ordinary/direct_fixed_window14/SOURCE-DELTA14.json",
+                "bytes": 17065,
+                "sha256": "07bbd120669259e1bdfe73bc6826987471a6b1565f4c805ef2fc957dff7d20bb"
+              },
+              "replaces_h4_source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/military_ordinary/runtime07/ArmyOrdinaryPairedQuotes.java",
+                "bytes": 26716,
+                "sha256": "b22577606a4c675939fc94777c2ced457266c46f96eba9a7fe9d70c110c7bfbe"
+              }
+            },
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/application/effects/NativeArmyWarWindowEffects.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/launcher_refresh/source22/NativeArmyWarWindowEffects.java",
+                "bytes": 40544,
+                "sha256": "216126bd111e1e182d9545d921fc6be956ce28b0c6f63004a622fd98bb5de980"
+              },
+              "source_map_authority_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/launcher_refresh/source22/SOURCE-DELTA22.json",
+                "bytes": 12561,
+                "sha256": "f05438f178a2a8ee01c35eb22e2cf83e39f5b14488a1914e31a74e6e9f40df6a"
+              },
+              "replaces_h4_source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/launcher_refresh/source01/NativeArmyWarWindowEffects.java",
+                "bytes": 38905,
+                "sha256": "2c5016661f8f63cf7e17f63d4f1679b17340e001980e0245125630aa43b7c943"
+              }
+            },
+            {
+              "target_relative": "local-service/src/main/java/org/xar/ck3/control/service/root/ArmyOrdinaryRuntimeBindings.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/launcher_refresh/source22/ArmyOrdinaryRuntimeBindings.java",
+                "bytes": 16050,
+                "sha256": "664502ecd7481a0da00c3ccb6638cee20554388dab162e50de2d17559af062be"
+              },
+              "source_map_authority_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/launcher_refresh/source22/SOURCE-DELTA22.json",
+                "bytes": 12561,
+                "sha256": "f05438f178a2a8ee01c35eb22e2cf83e39f5b14488a1914e31a74e6e9f40df6a"
+              },
+              "replaces_h4_source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/launcher_refresh/source08/ArmyOrdinaryRuntimeBindings.java",
+                "bytes": 13823,
+                "sha256": "6974426fc2097fb56a6c833c555af961f863b72cf43b88961fe1dedc181c2382"
+              }
+            },
+            {
+              "target_relative": "local-service/src/main/java/org/xar/ck3/control/service/root/ArmyWarWindowRuntimeRoutes.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/launcher_refresh/source22/ArmyWarWindowRuntimeRoutes.java",
+                "bytes": 7404,
+                "sha256": "1054b705d022a3827d29e5b2abd0cc9965409d44838675ac97d048479591100a"
+              },
+              "source_map_authority_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/launcher_refresh/source22/SOURCE-DELTA22.json",
+                "bytes": 12561,
+                "sha256": "f05438f178a2a8ee01c35eb22e2cf83e39f5b14488a1914e31a74e6e9f40df6a"
+              },
+              "replaces_h4_source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/launcher_refresh/source01/ArmyWarWindowRuntimeRoutes.java",
+                "bytes": 7278,
+                "sha256": "30a893e9fa94e8d8c0c2c019c2e46d7fc73926b474fa04974393f12efe813e68"
+              }
+            },
+            {
+              "target_relative": "application/src/test/java/org/xar/ck3/control/application/effects/DirectArmyWarWindowConsumerTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/launcher_refresh/source22/DirectArmyWarWindowConsumerTest.java",
+                "bytes": 6323,
+                "sha256": "8c7ffa11e3b833262d76396b8f6d0b5f8a2fee0e555a3fe55220a91345063714"
+              },
+              "source_map_authority_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/launcher_refresh/source22/SOURCE-DELTA22.json",
+                "bytes": 12561,
+                "sha256": "f05438f178a2a8ee01c35eb22e2cf83e39f5b14488a1914e31a74e6e9f40df6a"
+              }
+            },
+            {
+              "target_relative": "native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/army/ArmyWindowReconciliationBinding.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/command_origins/window_profile29/ArmyWindowReconciliationBinding.java",
+                "bytes": 7373,
+                "sha256": "151b07e0f531ac9965aa6a6d4d0c04287687961abebf8c2d905a8c82debe4348"
+              },
+              "source_map_authority_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/command_origins/window_profile29/SOURCE-DELTA29.json",
+                "bytes": 5526,
+                "sha256": "9a06b076af68be5b1950f3bc59cdb4ea95bc4defe9ecb772cdf34ece3d4dda57"
+              },
+              "replaces_h4_source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/command_origins/window01/ArmyWindowReconciliationBinding.java",
+                "bytes": 6565,
+                "sha256": "3c7e563eefae831dcdc3dc086fcc37b2766ffbb26004a879ab7b86d960401a91"
+              }
+            },
+            {
+              "target_relative": "local-service/src/test/java/org/xar/ck3/control/nativebridge/capabilities/army/ArmyWindowReconciliationBindingTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/command_origins/window_profile29/ArmyWindowReconciliationBindingTest.java",
+                "bytes": 16974,
+                "sha256": "5a86bbb82d03cabb1a4e0384756ceb956bef55a20b996be79f7b803384754cef"
+              },
+              "source_map_authority_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/command_origins/window_profile29/SOURCE-DELTA29.json",
+                "bytes": 5526,
+                "sha256": "9a06b076af68be5b1950f3bc59cdb4ea95bc4defe9ecb772cdf34ece3d4dda57"
+              },
+              "replaces_h4_source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/command_origins/window01/ArmyWindowReconciliationBindingTest.java",
+                "bytes": 14642,
+                "sha256": "2cf8ec9517e63425937b9b595e4fdc814a174808c38a5a6089bb64d3687c3224"
+              }
+            },
+            {
+              "target_relative": "application/src/test/java/org/xar/ck3/control/nativebridge/capabilities/army/ArmyWindowPublicWireTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_protocol_identity/window_roles29/ArmyWindowPublicWireTest.java",
+                "bytes": 6804,
+                "sha256": "13065a2de8ede42f876e16ca811e9ddb4a4a49587fe044b7bf781f1fdd578c44"
+              },
+              "source_map_authority_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_protocol_identity/window_roles29/SOURCE-DELTA29.json",
+                "bytes": 2871,
+                "sha256": "bab49655c392972170c88d25b3c1e184c52a7c93e5c96d01d2e68d39dc678bed"
+              },
+              "replaces_h4_source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_protocol_identity/window_wire24/ArmyWindowPublicWireTest.java",
+                "bytes": 6266,
+                "sha256": "5df972fc27300ff797c037bf3a5e3b66c7b875e48740a4feebee83d3c2c3a357"
+              }
+            },
+            {
+              "target_relative": "application/src/test/java/org/xar/ck3/control/nativebridge/capabilities/army/ArmyCommanderRejectedPublicWireTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_protocol_identity/commander_wire28/ArmyCommanderRejectedPublicWireTest.java",
+                "bytes": 3821,
+                "sha256": "95c9523d3b7776b2aac2456b2835cc254b6acbb9822950c3d837b41c3881e613"
+              },
+              "source_map_authority_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_protocol_identity/commander_wire28/SOURCE-DELTA28.json",
+                "bytes": 3017,
+                "sha256": "252dd7e55076bbb17b812be35a97393ab2968e60ba1e40f8b55989afff794585"
+              }
+            },
+            {
+              "target_relative": "native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/army/ArmyOrdinaryActionPreparation.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_governance/direct_window_order30/ArmyOrdinaryActionPreparation.java",
+                "bytes": 43910,
+                "sha256": "6a948f4f5916c9fdf1e10f0f42176f6e4982ba02675adc1f367b4b7eac1e2239"
+              },
+              "source_map_authority_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_governance/direct_window_order30/SOURCE-DELTA30.json",
+                "bytes": 10875,
+                "sha256": "896c4570a27c6a1b7403f90a12fa93131226c94dbdd5b31729c645b6abdcef9c"
+              },
+              "replaces_h4_source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_governance/automatic_surrender27/ArmyOrdinaryActionPreparation.java",
+                "bytes": 35781,
+                "sha256": "1dc0c13132b77429491922b1ad59fa0a5539c0174328484dae577d57195883c8"
+              }
+            },
+            {
+              "target_relative": "native-transport/src/main/java/org/xar/ck3/control/nativebridge/capabilities/army/ArmyOrdinaryActionService.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_governance/direct_window_order30/ArmyOrdinaryActionService.java",
+                "bytes": 40470,
+                "sha256": "b934716b3aad83c7576ce6465a60e3731a7ee8530f493c89113397d0687852f3"
+              },
+              "source_map_authority_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_governance/direct_window_order30/SOURCE-DELTA30.json",
+                "bytes": 10875,
+                "sha256": "896c4570a27c6a1b7403f90a12fa93131226c94dbdd5b31729c645b6abdcef9c"
+              },
+              "replaces_h4_source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_governance/automatic_surrender27/ArmyOrdinaryActionService.java",
+                "bytes": 32320,
+                "sha256": "1db0b5cb03f022fdc50b4d45be98ab05a01f17d0a5fb44816056fc09413205e1"
+              }
+            },
+            {
+              "target_relative": "native-transport/src/test/java/org/xar/ck3/control/nativebridge/capabilities/army/ArmyDirectWindowBeforeBindingTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_governance/direct_window_order30/ArmyDirectWindowBeforeBindingTest.java",
+                "bytes": 13440,
+                "sha256": "5c040296fe7a0a3731e65c066069dcff7b1f208e87d33bfaa5654b99d5b1b7ee"
+              },
+              "source_map_authority_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_governance/direct_window_order30/SOURCE-DELTA30.json",
+                "bytes": 10875,
+                "sha256": "896c4570a27c6a1b7403f90a12fa93131226c94dbdd5b31729c645b6abdcef9c"
+              }
+            },
+            {
+              "target_relative": "native-transport/src/test/java/org/xar/ck3/control/nativebridge/capabilities/army/DirectWindowServiceGateAssertions.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_governance/direct_window_bounds29/DirectWindowServiceGateAssertions.java",
+                "bytes": 3709,
+                "sha256": "faf03d24688c135bedef46e0c517cace1b164c77d64dc71cc9e2af3117c760e9"
+              },
+              "source_map_authority_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_governance/direct_window_bounds29/SOURCE-DELTA29.json",
+                "bytes": 10546,
+                "sha256": "f553e856827e76436f09343cdac692f47927244b4750b32dedb108ce8cb39e41"
+              }
+            },
+            {
+              "target_relative": "application/src/test/java/org/xar/ck3/control/application/planning/military/OrdinaryAutomaticSurrenderOriginalParityTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_governance/direct_window_bounds29/OrdinaryAutomaticSurrenderOriginalParityTest.java",
+                "bytes": 11009,
+                "sha256": "7bd0ea918154a3598436d143aae7d74f8c95330b328600e19ba65fe549e12646"
+              },
+              "source_map_authority_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_governance/direct_window_bounds29/SOURCE-DELTA29.json",
+                "bytes": 10546,
+                "sha256": "f553e856827e76436f09343cdac692f47927244b4750b32dedb108ce8cb39e41"
+              },
+              "replaces_h4_source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_governance/automatic_surrender27/OrdinaryAutomaticSurrenderOriginalParityTest.java",
+                "bytes": 10976,
+                "sha256": "9f5ede6606cf95a0c0825f05f8613ad71399d9192afff282d804a9eebe32fcf5"
+              }
+            },
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/nativebridge/capabilities/army/ArmyPublicWire.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/combat_phase/ArmyPublicWire.java",
+                "bytes": 23999,
+                "sha256": "425e2c466606101e17989e15ff61478eb6e17335715b1f1b87ac0de9dd8521ff"
+              },
+              "source_map_authority_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/combat_phase/SOURCE-DELTA01.json",
+                "bytes": 9481,
+                "sha256": "ceab38d4403f31cd5ec8bf26d94de80cfba51ba02f405ef65cc39c80748246be"
+              },
+              "replaces_h4_source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024-r3/native_protocol_identity/move_rejection26/ArmyPublicWire.java",
+                "bytes": 22381,
+                "sha256": "5ce00f91fc7415c297aff06c08a0873b3360edb052332c2ca482e40447ddf7d7"
+              }
+            },
+            {
+              "target_relative": "local-service/src/test/java/org/xar/ck3/control/nativebridge/capabilities/army/ArmyReadDeadlineIdentityTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/native_army/ArmyReadDeadlineIdentityTest.java",
+                "bytes": 9560,
+                "sha256": "2982995c3db9d3125f48f130a111bb71a57a6592b93ce0ae46bb9bd57c7c88fa"
+              },
+              "replaces_h4_source_ref": {
+                "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/revisions/native_army/source06/ArmyReadDeadlineIdentityTest.java",
+                "bytes": 9478,
+                "sha256": "c549051f266ed00bdfc2d85936d9dcc5165525c2b5e28fa05e3f671556020c86"
+              },
+              "change": "Only two selections add same Complete Driver generation; original two JUnit methods preserved."
+            }
+          ]
+        }
+      ],
+      "status": "SOURCE_OR_PARTIAL_PERSISTED",
+      "merge_advisory": "23 targets+16 retain+2 relocations; actual existing cohort join only; source-only not accepted executable closure"
+    },
+    "native_family": {
+      "task": "/root/w56_native_family",
+      "focus": "婚姻/亲属native typed adapter与Java来源/permission消费",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/native_family",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [],
+      "status": "NO_NEW_IMPLEMENTATION_CURRENT_FOCUS_OR_ALREADY_EQUIVALENT"
+    },
+    "native_governance": {
+      "task": "/root/w56_native_governance",
+      "focus": "政务native read/action ABI现成源码到Java adapter完整路由",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/native_governance",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [
+        {
+          "map_ref": {
+            "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/native_governance/SOURCE-PARTIAL01.json",
+            "bytes": 4362,
+            "sha256": "a7e8c19ac38f16bcc68fdfc40a0a0965c779d684a6a8ac4ec2f1effc95c2315e"
+          },
+          "qualification": "SOURCE_ONLY_NOT_COMPILED_NOT_RUN_NOT_H5_ADOPTED",
+          "partial": true,
+          "selected_files": [],
+          "ABI_status": "NOT_EXECUTABLE_COHORT: transport.deferReadOnly not implemented; real held-source after unresolved; no nested READ or UNKNOWN relaxation"
+        }
+      ],
+      "status": "SOURCE_OR_PARTIAL_PERSISTED"
+    },
+    "native_protocol_identity": {
+      "task": "/root/w56_native_protocol_identity",
+      "focus": "native pipe message身份/64位FileID时间十进制与Java实际边界，不扩大安全审计",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/native_protocol_identity",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [],
+      "status": "NO_NEW_IMPLEMENTATION_CURRENT_FOCUS_OR_ALREADY_EQUIVALENT"
+    },
+    "native_schemes_events": {
+      "task": "/root/w56_native_schemes_events",
+      "focus": "事件/scheme现成native路由到Java typed消费者，保留真实未知结果不重发",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/native_schemes_events",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [],
+      "status": "NO_NEW_IMPLEMENTATION_CURRENT_FOCUS_OR_ALREADY_EQUIVALENT",
+      "implementation": "0 Java; current public_cold38 remains; M7 retirement not implemented"
+    },
+    "native_transport_core": {
+      "task": "/root/w56_native_transport_core",
+      "focus": "native transport核心dispatch/故障退出到Java实际回执消费，非新协议",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/native_transport_core",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [
+        {
+          "map_ref": {
+            "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/native_transport_core/SOURCE-DELTA01.json",
+            "bytes": 7905,
+            "sha256": "8a9e22964fe774a1bc078123054aa805e21d1e3659b81d2974eb1a943ea47f97"
+          },
+          "qualification": "SOURCE_ONLY_NOT_COMPILED_NOT_RUN_NOT_H5_ADOPTED",
+          "partial": false,
+          "selected_files": [
+            {
+              "target_relative": "native-transport/src/main/java/org/xar/ck3/control/nativebridge/NativeGameTransport.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/native_transport_core/NativeGameTransport.java",
+                "bytes": 100123,
+                "sha256": "faa2104e67aef72c41c666c6f2833e74bbcc2dc727a858ecef09bc53557447e7"
+              },
+              "replaces_source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/native_transport_core/failure_provenance44/NativeGameTransport.java",
+                "bytes": 99340,
+                "sha256": "07910f0edf0d0576dc659278009fde9f4d10036ebe13d6a40d2870e2a9b635c6"
+              }
+            },
+            {
+              "target_relative": "native-transport/src/main/java/org/xar/ck3/control/nativebridge/NativePipeEndpoint.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/native_transport_core/NativePipeEndpoint.java",
+                "bytes": 17155,
+                "sha256": "dbfd7c7996b3a71e546c62fe6f43869e74b6d1e7a3ef5a45ccae526c002c79a4"
+              },
+              "replaces_source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/native_transport_core/failure_provenance44/NativePipeEndpoint.java",
+                "bytes": 17093,
+                "sha256": "41618711bf908a67d17126db917c29a9e06e3823c7aca547427a0fe297b2f7af"
+              }
+            },
+            {
+              "target_relative": "native-transport/src/test/java/org/xar/ck3/control/nativebridge/NativeDispatchFailureProducerTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/native_transport_core/NativeDispatchFailureProducerTest.java",
+                "bytes": 15793,
+                "sha256": "e5a9661dcb1722565ec3f37adf3f1465c254263dc38af3638d1f674951f3545d"
+              },
+              "replaces_source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/native_transport_core/failure_provenance44/NativeDispatchFailureProducerTest.java",
+                "bytes": 13600,
+                "sha256": "6949cec1232ea21ca43333766fcf34d6d16d581909ad03e2b5e3595585ac3b93"
+              }
+            }
+          ]
+        }
+      ],
+      "status": "SOURCE_OR_PARTIAL_PERSISTED",
+      "pending": "Only01 partial-read fix exists; deferReadOnly and acceptedSnapshotRevision APIs discussed but NOT_IMPLEMENTED"
+    },
+    "outcome_archive": {
+      "task": "/root/w56_outcome_archive",
+      "focus": "动作后态归档与cold读取/恢复实际消费，序列化内容一致",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/outcome_archive",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [],
+      "status": "NO_NEW_IMPLEMENTATION_CURRENT_FOCUS_OR_ALREADY_EQUIVALENT"
+    },
+    "planner_owner": {
+      "task": "/root/w56_planner_owner",
+      "focus": "完整普通planner优先级/真实目标推进和所有候选接管，非战争/战争同路",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/planner_owner",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [],
+      "status": "NO_NEW_IMPLEMENTATION_CURRENT_FOCUS_OR_ALREADY_EQUIVALENT"
+    },
+    "prisoners_ordinary": {
+      "task": "/root/w56_prisoners_ordinary",
+      "focus": "囚犯/赎金/释放等普通选择和实际合法结果消费",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/prisoners_ordinary",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [],
+      "status": "NO_NEW_IMPLEMENTATION_CURRENT_FOCUS_OR_ALREADY_EQUIVALENT"
+    },
+    "public_mcp": {
+      "task": "/root/w56_public_mcp",
+      "focus": "公共MCP plan/auto到完整Java规划器与当前typed dispatcher的真实入口",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/public_mcp",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [],
+      "status": "NO_NEW_IMPLEMENTATION_CURRENT_FOCUS_OR_ALREADY_EQUIVALENT"
+    },
+    "readiness": {
+      "task": "/root/w56_readiness",
+      "focus": "实际reducer预演和同writer-lock重验的readiness接管，禁止仅JSON授准备资格",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/readiness",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [],
+      "status": "NO_NEW_IMPLEMENTATION_CURRENT_FOCUS_OR_ALREADY_EQUIVALENT"
+    },
+    "recovery_junction": {
+      "task": "/root/w56_recovery_junction",
+      "focus": "真实cold/warm恢复路径的Java接管及原SDK continuation消费；不重写源58",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/recovery_junction",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [],
+      "status": "NO_NEW_IMPLEMENTATION_CURRENT_FOCUS_OR_ALREADY_EQUIVALENT"
+    },
+    "reference_main": {
+      "task": "/root/w56_reference_main",
+      "focus": "Root实际Pending/Resume输入生产，复用startup32/runtime90的真实Core，不造noGame工厂",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/reference_main",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [
+        {
+          "map_ref": {
+            "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/reference_main/SOURCE-DELTA56.json",
+            "bytes": 6682,
+            "sha256": "4b6b78a0a9245941cb38d8772ee59744ec90dca520b4144ba2263751ed0f8597"
+          },
+          "qualification": "SOURCE_ONLY_NOT_COMPILED_NOT_RUN_NOT_H5_ADOPTED",
+          "partial": false,
+          "selected_files": [
+            {
+              "target_relative": "local-service/src/test/java/org/xar/ck3/control/service/root/RootHostBatchAndCloseActualTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/reference_main/RootHostBatchAndCloseActualTest.java",
+                "bytes": 19826,
+                "sha256": "2d9d881434bcd4940c12002d8edbeaf5dcf403232087a2b0e656d4f94e79bfac"
+              },
+              "exact_predecessor_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/reference_main/root_startup32/RootHostBatchAndCloseActualTest.java",
+                "bytes": 19105,
+                "sha256": "0f5fcaf7eefa788f992249ca704d608832c76c9518c294228bcbfdfc0d8957ce"
+              }
+            },
+            {
+              "target_relative": "local-service/src/test/java/org/xar/ck3/control/service/root/RootStartupResumeActualInputs.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/reference_main/RootStartupResumeActualInputs.java",
+                "bytes": 1827,
+                "sha256": "53f8e3fa4a47f1cbd1356025d475c45a7921780c3d3586b276d4bea4d7769736"
+              }
+            },
+            {
+              "target_relative": "local-service/src/test/java/org/xar/ck3/control/service/root/RootStartupResumeActualInputsTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/reference_main/RootStartupResumeActualInputsTest.java",
+                "bytes": 1680,
+                "sha256": "86c632a7a4e9c8bcb9a3c1967861650ca504e28aef6963f18d8fde60901f3ffd"
+              }
+            },
+            {
+              "target_relative": "local-service/src/test/resources/META-INF/services/org.xar.ck3.control.service.root.RootHostBatchAndCloseActualTest$ResumeInputsProducer",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/reference_main/RESUME-ACTUAL-INPUTS-PRODUCER.service",
+                "bytes": 63,
+                "sha256": "ecc1bccd7b4f97249276bf8660ed99cb131ff6af75452cc7248cb00f6e210414"
+              }
+            }
+          ]
+        }
+      ],
+      "status": "SOURCE_OR_PARTIAL_PERSISTED"
+    },
+    "root_assembly": {
+      "task": "/root/w56_root_assembly",
+      "focus": "Root模块组合到实际主入口，所有真实消费者接入且无静默Python fallback",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/root_assembly",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [
+        {
+          "map_ref": {
+            "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/root_assembly/SOURCE-DELTA01.json",
+            "bytes": 9376,
+            "sha256": "314c3f374e7af768ada8b9c6c18dff841aee1aed1a52d3e424bd4402f5cd2531"
+          },
+          "qualification": "SOURCE_ONLY_NOT_COMPILED_NOT_RUN_NOT_H5_ADOPTED",
+          "partial": false,
+          "selected_files": [
+            {
+              "target_relative": "local-service/src/main/java/org/xar/ck3/control/service/root/RootApplicationAssembly.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/root_assembly/RootApplicationAssembly.java",
+                "bytes": 170925,
+                "sha256": "3e7f50f61c0264cc3e8985ba128a61ba5187a263b34450e025a9a1f4a0272d0b"
+              },
+              "preimage_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/root_assembly/fixture_entry29/RootApplicationAssembly.java",
+                "bytes": 170757,
+                "sha256": "b8f1ef6b37edfad562f17fecf4c91ba6d39d155ea06d506636cdf68ad91b1d95"
+              }
+            },
+            {
+              "target_relative": "local-service/src/main/java/org/xar/ck3/control/service/root/RootControllerActions.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/root_assembly/RootControllerActions.java",
+                "bytes": 3833,
+                "sha256": "6c713aeb930177140d831e02e6f797ec0fc173c10e2eb9ad370cec6f53772c99"
+              },
+              "preimage": "NEW_TARGET"
+            },
+            {
+              "target_relative": "local-service/src/test/java/org/xar/ck3/control/service/root/RootControllerPlannedCheckpointActualTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/root_assembly/RootControllerPlannedCheckpointActualTest.java",
+                "bytes": 5716,
+                "sha256": "e40763c4731a8b3773bbf53a788727c3b5716e73b93fd0f34a6ebd0f6e30161e"
+              },
+              "preimage": "NEW_TARGET"
+            }
+          ]
+        }
+      ],
+      "status": "SOURCE_OR_PARTIAL_PERSISTED"
+    },
+    "route_contact": {
+      "task": "/root/w56_route_contact",
+      "focus": "原生路线/接触/first-hop证据到Java风险推理及军令消费",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/route_contact",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [],
+      "status": "NO_NEW_IMPLEMENTATION_CURRENT_FOCUS_OR_ALREADY_EQUIVALENT"
+    },
+    "save_restore": {
+      "task": "/root/w56_save_restore",
+      "focus": "实际SAVE→verify→restore→NEXT/reducer链，真实state与actor意图保持",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/save_restore",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [],
+      "status": "NO_NEW_IMPLEMENTATION_CURRENT_FOCUS_OR_ALREADY_EQUIVALENT"
+    },
+    "sway_ordinary": {
+      "task": "/root/w56_sway_ordinary",
+      "focus": "M6普通Sway generation0、first_named_gain与自然terminal后续消费，不重复M6当前67B采集",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/sway_ordinary",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [
+        {
+          "map_ref": {
+            "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/sway_ordinary/SOURCE-DELTA01.json",
+            "bytes": 5978,
+            "sha256": "98a74299678f064561bf2413e9ceb393ea72a219b222bda1df55a38b7f5f9322"
+          },
+          "qualification": "SOURCE_ONLY_NOT_COMPILED_NOT_RUN_NOT_H5_ADOPTED",
+          "partial": false,
+          "selected_files": []
+        },
+        {
+          "map_ref": {
+            "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/sway_ordinary/SOURCE-DELTA02.json",
+            "bytes": 2348,
+            "sha256": "4f0c363881717ab96a384d14ae18c4e45e0bf21c5bf5af9158256589bfaf7ace"
+          },
+          "qualification": "SOURCE_ONLY_NOT_COMPILED_NOT_RUN_NOT_H5_ADOPTED",
+          "partial": false,
+          "selected_files": [
+            {
+              "target_relative": "application/src/main/java/org/xar/ck3/control/application/planning/sway/SwayOrdinaryExecutor.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/sway_ordinary/SwayOrdinaryExecutor.java",
+                "bytes": 31848,
+                "sha256": "98e3f23c54bb61588123a89f93abb00829a4647df2104162da526bffd9124e50"
+              }
+            },
+            {
+              "target_relative": "local-service/src/test/java/org/xar/ck3/control/application/driver/SwayCanonicalSchedulerIntegrationTest.java",
+              "source_ref": {
+                "path": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/sway_ordinary/SwayCanonicalSchedulerIntegrationTest.java",
+                "bytes": 84817,
+                "sha256": "820b39e2c5887624ab6e8de3e5cf1fe11b97dc0db0fab27611a2f7cf44ef6185"
+              }
+            }
+          ]
+        }
+      ],
+      "status": "SOURCE_OR_PARTIAL_PERSISTED",
+      "map_advisory": "Use SOURCE-DELTA02 selected_files over original01 files-only metadata; identical actual Java refs retained"
+    },
+    "warcore_leaves": {
+      "task": "/root/w56_warcore_leaves",
+      "focus": "战争普通叶/合法谈和/战略资金与真实军令选择，接回唯一planner",
+      "output_root": "D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/sources/parallel56/warcore_leaves",
+      "cap_bytes": 524288,
+      "stopped_for_user_handoff": true,
+      "maps": [],
+      "status": "NO_NEW_IMPLEMENTATION_CURRENT_FOCUS_OR_ALREADY_EQUIVALENT"
+    }
+  },
+  "live": {
+    "all_four_owned_heavy_slots_no_active_child": true,
+    "logical_leases_released_by_Root": true,
+    "disk_holds_retained_no_physical_release_credit": true,
+    "no_new_execution_until_user_resume_and_new_admission": true,
+    "Native10": {
+      "stop_ref": {
+        "path": "D:/ck3-state/ck3-java-g2-r4-native10/source-controls/NATIVE10-USER-STOP-CLOSURE01.json",
+        "bytes": 11878,
+        "sha256": "31bb7b086d995ca678e91c219001fbbf0f25640e2a17f378e8a64e01d01fa445"
+      },
+      "live_exec_sessions": [],
+      "all_started_child_Jobs_zero": true,
+      "phases": {
+        "strict_source_addon_compile": "PASS",
+        "original_recipe_regression": "17/17 PASS",
+        "source_binding_materialization": "PASS 5520package/5510native",
+        "actual_ENV": "PASS 4 original probes",
+        "original_Person10_request": "RED Optional null NPE; no native configure",
+        "fixed_Person10_producer_serde": "5/5 PASS 0skip; real writeRequest/readRequest and wrong class rejection",
+        "fixed_Person10_execute": "NOT_RUN",
+        "research_configure_37target_build": "NOT_RUN",
+        "ordinary_runs_completed_of_39": 0,
+        "CTest": "NOT_RUN",
+        "CPP_Java_and_lobby_consumers": "NOT_RUN",
+        "lobby5actualwires": "NOT_PRODUCED",
+        "production_BUILD_runtime_inventory_REGISTER_profile": "NOT_RUN",
+        "loadedLobby_full8_Game": "UNKNOWN_NOT_EXECUTED"
+      },
+      "resume_entry": "Subject CP=cpp-java/person10-addonclasses02 then original R6. Original Person10NativeCorpusBuild execute <actual reviewed REQUEST05.path> <sha>; produce new SharedOwned spec/standing/card/runID only after re-admission. Never rerun Source or ENV, never replay old failed IDs.",
+      "source_actual_ref": {
+        "path": "D:\\ck3-state\\ck3-java-g2-r4-native10\\source-controls\\NATIVE-SOURCE-ACTUAL.json",
+        "bytes": 6851898,
+        "sha256": "66e99288adc56004f640a77f74ed0056cf34e4b3157f43a54cd5a6e508a57aa7"
+      },
+      "ENV_actual_ref": {
+        "path": "D:\\ck3-state\\ck3-java-g2-r4-native10\\commands\\native-control\\env\\ACTUAL.json",
+        "bytes": 3693590,
+        "sha256": "adebe6a653345a52cfac6f896b42d569de480513554d26082b4b4a4c5f191b79"
+      },
+      "bound_request_ref": {
+        "path": "D:\\ck3-state\\ck3-java-g2-r4-native10\\source-controls\\NATIVE10-BOUND-REQUEST01.json",
+        "bytes": 16407,
+        "sha256": "011ca90882794e7f3c65b5fb279e12b799647bf1c6be2223ce85de8752c2089c"
+      },
+      "reviewed_Person10_request_ref": {
+        "path": "D:\\ck3-state\\ck3-java-g2-r4-native10\\commands\\requests\\PERSON10-REQUEST05.json",
+        "bytes": 5055,
+        "sha256": "5b4205a9ee802c89460e3da94d71aae15c96d6c456ce415d9e1379c544b3087f"
+      },
+      "compiled_addon_actual_ref": {
+        "path": "D:\\ck3-state\\ck3-java-g2-r4-native10\\cpp-java\\PERSON10-ADDON-ACTUAL02.json",
+        "bytes": 3824,
+        "sha256": "f4a8dcdb3b4c560b39f9669c891b5d18dac74fa7880d4d40e99b9fdc9e56b389"
+      },
+      "final_storage_upper": {
+        "Native10_package_root": {
+          "present": true,
+          "files": 5520,
+          "page_directory_upper_bytes": 74309632
+        },
+        "Native10_state_before_this_record": {
+          "present": true,
+          "files": 179,
+          "page_directory_upper_bytes": 15605760
+        },
+        "M2_source_owner": {
+          "present": true,
+          "files": 76,
+          "page_directory_upper_bytes": 1425408
+        },
+        "measured_historical_peak": null,
+        "source_owner_cap_bytes": 1433600,
+        "Native10_complete_cap_bytes": 1644167168,
+        "D_available_bytes": 641290076160,
+        "Z_available_bytes": 134475747328
+      },
+      "terminals_count": 15
+    },
+    "SDK": {
+      "stop_ref": {
+        "path": "D:/ck3-state/ck3-java-g2-r4-sdk-quote58-20261025/controls/SDK-QUOTE59-VACATION-HANDOFF-CLOSE01.json",
+        "bytes": 7718,
+        "sha256": "1d23f3e5ca380efd0689ef505d7aba42f5ac370ec705d8647072cde76f109266"
+      },
+      "in_flight_owned_child": false,
+      "actual_compile": {
+        "status": "RED",
+        "child": {
+          "identity": {
+            "pid": 192636,
+            "creation_filetime_decimal": "134374125600022561",
+            "executable": "C:\\jdk-21\\bin\\javac.exe"
+          },
+          "exit_code": 1,
+          "elapsed_seconds": 1.598746199,
+          "accounting": {
+            "peak_job_memory_bytes": 216436736,
+            "active_processes": 0,
+            "memory_limit_bytes": 1073741824,
+            "limit_flags": 8704
+          },
+          "stop_reason": null
+        },
+        "input_precheck": "MATCH",
+        "input_postcheck": "MATCH",
+        "runtime_postcheck": "MATCH",
+        "failure": null
+      },
+      "terminal_ref": {
+        "path": "D:/ck3-state/ck3-java-g2-r4-sdk-quote58-20261025/runs/sdk_current/compile01/terminal.json",
+        "bytes": 26139,
+        "sha256": "d712bc69e5ad702f89afeb940395a4a567286a23b81d4b283894a6ac94c3e7f1"
+      },
+      "missing_source": {
+        "path": "Z:/ck3_mod_rewrite/java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/ProjectStoragePolicy.java",
+        "bytes": 9839,
+        "sha256": "39f441113ec30cbc677b303a454584fc91b92dbdd2832d6c161f18bd867179aa"
+      },
+      "cards": [
+        {
+          "path": "D:/ck3-state/ck3-java-g2-r4-sdk-quote58-20261025/controls/ROOT-SDK-QUOTE59-RESIDUAL-SLOT04-03.json",
+          "bytes": 8017,
+          "sha256": "ce6718ec5abfdae5514217aa18dc8f82b490a5b751032cc493f87293b688a725"
+        },
+        {
+          "path": "D:/ck3-state/ck3-java-g2-r4-sdk-quote58-20261025/controls/ROOT-SDK-QUOTE59-WHOLE-SLOT04-02.json",
+          "bytes": 7594,
+          "sha256": "e09accfb6c6917d70ddbef2f9bfef7d55eaafdc2bb3d24ef9b75a56fb7c636e3"
+        },
+        {
+          "path": "D:/ck3-state/ck3-java-g2-r4-sdk-quote58-20261025/controls/ROOT-SDK-QUOTE59-WHOLE-SLOT04.json",
+          "bytes": 7996,
+          "sha256": "b20e20fffce067a1378e4e5b1072f2cd5edebcff103daeb24c815a530584c2a3"
+        }
+      ],
+      "card_clocks": [
+        {
+          "id": "01",
+          "start": "2026-10-25T14:25:03.715117Z",
+          "deadline": "2026-10-25T14:40:03.715117Z",
+          "state": "NO_CHILD_EXECUTED"
+        },
+        {
+          "id": "02",
+          "start": "2026-10-25T14:34:05.111822Z",
+          "deadline": "2026-10-25T14:49:05.111822Z",
+          "state": "COMPILE01_KNOWN_RED_RETAINED"
+        },
+        {
+          "id": "03",
+          "start": "2026-10-25T14:40:22.155581Z",
+          "deadline": "2026-10-25T15:00:22.155581Z",
+          "state": "STANDING_ONLY_NO_PHASE_STARTED_ROOT_STOPPED"
+        }
+      ],
+      "unexecuted_steps": [
+        "compile02",
+        "forecast01",
+        "coldread01"
+      ],
+      "held_upper_including_handoff_bound": 860160,
+      "resume_requires": [
+        "New explicit Root authorization after user resumes; fresh complete finite residual scope, financial holds and actual RAM/commit/native guards.",
+        "Strict compile fresh phase with full Assembly+Producer+Reader and unchanged ProjectStoragePolicy original source; source output<=128classes/1MiB; preserve old compile01 partial output.",
+        "After actual compile PASS/Job0/3MATCH, bind all actual new class refs with classpath fresh classes first; forecast seven metadata originals, independent typed coldread, close.",
+        "Report FORECAST only; actual shared quote still requires original actual review/native reuse producer and valid final source/Host/Native inputs."
+      ]
+    },
+    "B64": {
+      "stop_ref": {
+        "path": "D:/ck3-state/ck3-java-g2-r4-tests/active/r4-rf60-qualification-20261025/forecast_envelope/m6-numeric-b64/controls/B64-VACATION-HANDOVER01.json",
+        "bytes": 3697,
+        "sha256": "0353396233aac5005ccfefae130b0dda0778ab89c39eeb986edd0b48b4cc3c46"
+      },
+      "status": "ONLY_PRIOR_PREPARE_PASS; AUTH_NOT_ISSUED; RAW_FILES0; NO_NEW_PAYLOAD_READS; NO_LIVE_CHILD",
+      "owner": "/root/forecast_envelope",
+      "former_owner": "/root/forecast_current ERRORED; NOT_RUNNER",
+      "resume": "Carry actual prepare PASS; fresh finite remaining67B whole chain; UNKNOWN never replayed. M6 wakes after actual raw."
+    },
+    "S": {
+      "status": "0JVM_0BUSINESS_CHILD_SOURCE_BUILD_PAYLOAD_ABSENT",
+      "state_last_upper_bytes": 45056,
+      "future_phase_quote_seconds": 5100,
+      "proposed_whole6300_not_adopted": true,
+      "original_funded_start": "2026-10-25T14:29:11.120202Z",
+      "original_deadline": "2026-10-25T16:04:11.120202Z"
+    },
+    "H5": {
+      "formal_input_exists": false,
+      "canonical_payload_exists": false,
+      "source_only_draft_ref": {
+        "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024-r3/source_graph-complete31/plan/H/HOST31H5-PARTIAL-HANDOFF01.json",
+        "bytes": 10550,
+        "sha256": "7b89d1e1adf886aa250d3d7ca1f65062563d588001fc11c890b599fcdf38d6a6"
+      },
+      "actual_cold_joined_maps": 22,
+      "actual_cold_joined_refs": 62,
+      "source_logical_bytes": 1727033,
+      "RAM_target_count": 5645,
+      "source_including_canonical_parent_upper": 97828864,
+      "source_cap": 99614720,
+      "snapshot_future_upper": 100704256,
+      "snapshot_old_cap": 100663296,
+      "snapshot_unfunded_excess": 40960,
+      "late_combat_and_army_not_cold_joined": true
+    },
+    "agent_metadata_only": {
+      "planner_owner": "pending_init remained after interrupt; no active business assignment; explicitly instructed not initialize",
+      "forecast_current": "model capacity error; not live owner",
+      "all_w56_and_business_executors": "completed safe-stop reports received; no active business child"
+    }
+  },
+  "finance": {
+    "F76_ref": {
+      "path": "D:/codex-ck3-demos/2026-10-22-java-phase1/build/resume-current-20261024-r3/source_graph-complete31/plan/H/finance/HOST-H5-FINANCIAL76-SOURCE-AMENDMENT01.json",
+      "bytes": 5549,
+      "sha256": "fd4c997c4cd7d41a62d6cd623960cde24889c58e42157d4805cf6bf17840264c"
+    },
+    "Memory44_ref": {
+      "path": "D:/ck3-state/ck3-java-g2-r4-native10/source-controls/ROOT-HEAVY-MEMORY-SUPPLEMENT44.json",
+      "bytes": 2978,
+      "sha256": "577b7182afe99ce82ee1ef501658e381ad16352a12f1e4e9da9ecc05733ae6ee"
+    },
+    "final_agent_report_observed_at_utc": "2026-10-25T14:49:38Z",
+    "R3_whole_holds_bytes": 7171235840,
+    "R3_ceiling_bytes": 12884901888,
+    "D_holds_bytes": 269153665916,
+    "D_required_available_bytes": 359347979132,
+    "Z_holds_bytes": 6070996992,
+    "Z_required_available_bytes": 49020669952,
+    "new_handoff_docs_Z_cap_bytes": 262144,
+    "doc_grant_evidence": "Explicit user new docs request; Root grant and capacity final report add Z262144 to F76. No synthetic new business card.",
+    "storage_holds_not_released_by_Job0": true,
+    "source_total_authorization_bytes": 102408192,
+    "source_netnew_allowance_bytes": 33554432,
+    "netnew_allowance_remaining_at_F76": 4517888,
+    "SC_cap_bytes": 2138112,
+    "testpool_bytes": 219152384,
+    "Host_whole_bytes": 477102080,
+    "S_whole_bytes": 98566144,
+    "R_retained_bytes": 54525952,
+    "Native10_whole_bytes": 1644167168,
+    "financial_and_memory_review": "2026-10-26T08:00:00Z",
+    "source_write_review": "2026-10-25T22:00:00Z",
+    "fresh_volume_quota_report": "Actual volume identity/4096 clusters/quota PASS at14:49:38Z; recheck before next write",
+    "Memory44": {
+      "max_slots": 4,
+      "inner_sum_bytes": 17179869184,
+      "outer_sum_bytes": 1073741824,
+      "fresh_RAM_and_commit_each_min_bytes": 34359738368,
+      "preserve_bytes": 13421772800,
+      "single_m2_writer": true,
+      "Ninja_aggregate_jobs": 4
+    }
+  },
+  "resume_order": [
+    "Recheck final live terminals and machine/storage/expiry; no old window auto-renewal",
+    "Finish Council real after/transport, receive-bound revision, M7 retirement and formal Java release; reuse sealed Army/marriage/wave candidates",
+    "Freeze one complete H5 with real ABI closure and snapshot amendment; create R typed adoption metadata",
+    "Canonical projection46+test48 strict addon and complete tests; actual S full Maven/Own40/post38",
+    "Carry Native SOURCE/ENV PASS, person regression PASS without replay; actual remaining native pipeline",
+    "B64 carry prepare PASS only; new admitted remaining67B chain, then M6 decode; SDK add actual ProjectStoragePolicy and run forecast/coldread",
+    "Actual Host/release/profile/runtime/SDK inputs; complete11 requires physical Game and genuine Pending/Resume",
+    "1066 Robert full ordinary planner; actual poststates/newdays/SAVE/restore/NEXT; G2 all8 actual qualification"
+  ],
+  "handoff_document": "docs/handover/2026-10-25-java-g2-resume56-r4-vacation-handoff.md",
+  "source_ref_verification": {
+    "selected_refs_read_and_matched": 89,
+    "mismatches": [],
+    "scope": "All selected_files.source_ref under48 bounded wave roots; map presence does not grant adoption or PASS",
+    "wave_map_count": 25
+  },
+  "default_maven_observation": {
+    "selection": "DEFAULT_COMMAND",
+    "requested_command": "mvn",
+    "reported_home": "C:\\apache-maven",
+    "reported_version": "3.10.0",
+    "minimum_version": "3.10.0",
+    "distribution_launcher_ref": {
+      "path": "C:\\apache-maven\\bin\\mvn.cmd",
+      "bytes": 7451,
+      "sha256": "b7001067ae1a052a3853bc51df0e1a4c013aadae2005837a1e970c0d51b57fdf"
+    },
+    "explicit_override_ref": null,
+    "not_an_absolute_path_command_requirement": true
+  },
+  "task_bus": {
+    "state": "waiting",
+    "last_sequence": 8989,
+    "snapshot_ref": {
+      "path": "Z:/.codex-task-bus/tasks/ck3-java-g2-resume-r4-20261025.json",
+      "bytes": 4204,
+      "sha256": "cc587520a9214041b3fa7c628e836ec5be3449eb27c1f965d0eaeb71b35b0ebe"
+    },
+    "CLI_ref": {
+      "path": "Z:/ck3_mod_rewrite/tools/codex_task_bus.py",
+      "bytes": 31763,
+      "sha256": "9198718f0f0931d93ed7f1557ca1cbedd1fa086a4a1cff210bca10404a305d7f"
+    },
+    "warning": "Mutable current registry; hash proves this handoff snapshot only. Future status may change. All four Root logical leases RELEASED."
+  },
+  "handoff_ref": {
+    "path": "Z:/ck3_mod_rewrite/docs/handover/2026-10-25-java-g2-resume56-r4-vacation-handoff.md",
+    "bytes": 23920,
+    "sha256": "3f376e1aaa5cffadafa9f2a6216283c134b0f3711039dc48343b0ebe5ffe4b76"
+  }
+}
