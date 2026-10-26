@@ -110,3 +110,6 @@ M1后继已按此顺序完成：fresh RF条件确认后只补1740 B，复用26 B
 | Windows cleanup | `dist/windows/WindowsOwnedProcess.js:328–391`；`dist/ghidra/GhidraRequestQueue.js:74–118` |
 
 Shared 冻结源根为 `D:/codex-ck3-background/ck3-java-tools-s26-source-r4-resume61/tools/src/main/java/org/xar/ck3/control/build/`：`SourceGraphCommandSpecProducer.java:159–182,411–432` 生成现有机械入口；`SharedOwnedCommand.java:285–290,389–465` 校验并执行。runtime/source 是历史完整包基线；本轮 fresh standing 只固定新资源约束，实际 Shared 前置拒绝，不能据此授入口通过。
+### Gate2C7DED0 的实际复用
+
+后继791 B题见 [有限结果](resume63-m1-gate2c7ded0-result.md)：精确 RF/204 B实际二分元数据、197指令/36块60边、AL原始字节传播及 target/flags/output 关系已独审；join/persistent 仍 UNKNOWN。slot1 新卡后70.886s先最小 close，再做领域独审和富 receipt；T0至后者833.929s，准备前阅读未完整计时，均不冒研究总耗时。原 close 保 `PAYLOAD_UNASSESSED`，独审新文件另存。最多4 provider 是上限，不能称本题实际达到4路同时运行。新850 B首 helper 另建case/300+60卡，不续本题180秒窗口。

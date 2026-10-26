@@ -205,3 +205,10 @@ M1独审给出正常、不借overflow的局部符号见证：输入byte非零可
 本题先用真实旧closed结果验证短minclose，再按新卡执行；16:50:33.729Z在48.628秒完成owned最小close/四PID不存在，早于16:52:45.101598截止。decoder0.466 s/25341952 B，REA service4.908 s/Rizin592994304 B。后继机械核、M1独审与富metadata不计入48.628秒，研究总用时/token未量测；outer联合峰值/Job0未测，Shared不授。原close payload未分析标记保持不改。
 
 完整字节、原始命令、反例假设、成本与独审见[M1结果页](resume63-m1-member-validity-result.md)。新case8 MiB从原64 MiB净分，余6 MiB；Native点值非峰值/release0。没有新Game/Steam动作或Java字段；后继callee必须另立问题和鲜卡，不续此卡。
+### Resume63 C6：2C7DED0 791 B composite pre-append gate
+
+machine_id: `xenoamess-full-tower-eb9d2c1186`。真实caller2C7DF4C所需下一层参数语义见 [完整有限结果](resume63-m1-gate2c7ded0-result.md)。先scoped cache miss，再fresh pdata row153797 `[2C7DED0,2C7E1E7,52B878C]`，17探测行204 metadata B；新791 B/raw `ff4fafaf336cc499bddcdf6b5c186b69eb163a9928e5370b27cfbdebed4cd76d`，Rizin重复791 B单列。Capstone/Rizin197ops同字节，42个direct targets独算一致，36块60边/唯一RET2C7E1E6/16direct+2virtual opaque，无范围外非call。
+
+按既有字段合同，target+40解析后传首2C7D920，member/flags/type/out转参已闭。首P0仅被保留或清零，不归一1；本地flags+2读取发生在首helper之后，不能假定初始五01稳定。输出参数影响短路和下传；不能只当无副作用诊断。RDI保留以正常Win64 callee为前提；join/persistent/loader-slot命名与opaque效果未知。Java无新增领域已知字段或Game资格。
+
+decoder420ms/25272320 B，REA4583ms/Rizin593039360 B；官方service.close正常。先minclose17:25:05.420Z/T0→70.886s，0owned，2091 B/c7bd86d3…保payload未审历史。M1后继独审7913 B/121f9ebc…，富receipt10942 B/a823b23e…在T0后833.929s落盘；整个准备/研究前段未完整计时。outer/joint/Job0未测，ordinaryplan0/for-observation2 offline拒绝；不授Shared/native dossier或加速收益。新850 B题另卡另case，不在C6追加。
