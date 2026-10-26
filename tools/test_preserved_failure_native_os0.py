@@ -597,7 +597,7 @@ from ck3_mod_acceptance import Selection, path_at, pin, read_json, check_pin
 from ck3_mod_acceptance_background_types import JsonObject, json_object, file_pin, object_field, text_field
 from ck3_mod_acceptance_allocate import current_screen_absent, previous_failed_live_resource_closure, _canonical_source_index_files
 '''
-        program = prelude + ast.unparse(ast.fix_missing_locations(ast.Module(body=nodes, type_ignores=[])))
+        program = prelude + ast.unparse(ast.fix_missing_locations(ast.Module(body=list(nodes), type_ignores=[])))
         source_roots = (str(tools), str(Path(allocation.__file__).parents[1] / 'ck3_autonomous_player/src'),
                         str(Path(entry.__file__).parent), str(Path(entry.__file__).parents[1] / 'ck3_autonomous_player/src'))
         with patch.dict(os.environ, {'MYPYPATH': os.pathsep.join(source_roots)}):
