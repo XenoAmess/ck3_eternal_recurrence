@@ -1217,9 +1217,16 @@ int main(int argc, char **argv) {
   if (new_known.adapter_id != "ck3-1.20.0.3-msvc-x64" ||
       new_known.game_version != "1.20.0.3" ||
       new_known.executable_sha256 != xar::ck3_12003::kExecutableSha256 ||
-      new_known.checkpoint_save_name != "xar_checkpoint" ||
-      &xar::game::PreferredAdapterDescriptor() != &new_known) {
-    return Fail("new preferred exact-build descriptor drifted");
+      new_known.checkpoint_save_name != "xar_checkpoint") {
+    return Fail("explicit .3 exact-build descriptor drifted");
+  }
+  const auto &preferred = xar::game::Ck3_12004AdapterDescriptor();
+  if (preferred.adapter_id != "ck3-1.20.0.4-msvc-x64" ||
+      preferred.game_version != "1.20.0.4" ||
+      preferred.executable_sha256 != xar::ck3_12004::kExecutableSha256 ||
+      preferred.checkpoint_save_name != "xar_checkpoint" ||
+      &xar::game::PreferredAdapterDescriptor() != &preferred) {
+    return Fail("preferred .4 exact-build descriptor drifted");
   }
   constexpr std::array<xar::game::AdapterFactory, 3> real_builds{
       &xar::game::CreateCk3_12003Adapter,
@@ -1297,7 +1304,12 @@ int main(int argc, char **argv) {
 
   auto current = xar::game::SelectCurrentProcessAdapter();
   if (current == nullptr || current->enabled() ||
-      current->descriptor().adapter_id != new_known.adapter_id ||
+      &current->descriptor() != &preferred ||
+      current->descriptor().adapter_id != preferred.adapter_id ||
+      current->descriptor().game_version != preferred.game_version ||
+      current->descriptor().executable_sha256 != preferred.executable_sha256 ||
+      current->descriptor().checkpoint_save_name != preferred.checkpoint_save_name ||
+      current->supports_snapshot() ||
       current->supports("game.state.snapshot")) {
     return Fail("unknown current test executable exposed CK3 gameplay");
   }
