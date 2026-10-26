@@ -501,12 +501,21 @@ class ThreeSettingsReadbackTest(unittest.TestCase):
         client.before_settings = None
         client.after_settings = None
         client.settings_readback_error = None
+        client.administrative_token_observed = False
+        client.provider_nullable_observed = False
+        client.before_property_observations = None
+        client.after_property_observations = None
+        client.current_property_observations = None
         return client
 
     def register_default(self, provider: _SettingsProvider, name: str = 'receipt.json') -> dict[str, object]:
         client = self.client(provider)
+        def initialize(instance: m.DefenderWmi) -> None:
+            instance.__dict__.update(client.__dict__)
+        # Keep the real class: its v1 serializer calls DefenderWmi._array.
+        # Replace only COM construction, never class-level validation methods.
         with patch.object(m, 'opted_in', return_value=True), \
-             patch.object(m, 'DefenderWmi', return_value=client):
+             patch.object(m.DefenderWmi, '__init__', new=initialize):
             result: object = m.register_manifest(self.fixture.manifest, self.fixture.root / name, admin=True)
         return _observed_object(result)
 
@@ -631,7 +640,10 @@ class ThreeSettingsReadbackTest(unittest.TestCase):
                          [r'C:\old\process.exe', r'C:\old\process.exe'])
         self.assertTrue(readback['observed_extensions_unchanged'])
         self.assertTrue(readback['observed_processes_unchanged'])
-        before['ExclusionExtension'].append('must-not-alias')
+        extensions = before['ExclusionExtension']
+        if extensions is None:
+            raise AssertionError('expected observed array in this v1 test')
+        extensions.append('must-not-alias')
         actual_before = client.before_settings
         if actual_before is None:
             raise AssertionError('expected original observed settings')
@@ -703,5 +715,203 @@ class ThreeSettingsReadbackTest(unittest.TestCase):
         self.assertNotIn('settings_readback_schema', result)
         self.assertNotIn('before_settings', result)
         self.assertNotIn('settings_readback_process_id', result)
+
+
+
+class QualifiedNullableSettingsTest(unittest.TestCase):
+    """Real registration producer/reader; controlled successful CIM property metadata."""
+    class Provider(_SettingsProvider):
+        def __init__(self) -> None:
+            super().__init__()
+            self.bad_metadata: tuple[str, str, object] | None = None
+
+        def snapshot(self) -> dict[str, object]:
+            value = super().snapshot()
+            value['ExclusionExtension'] = None
+            value['ExclusionProcess'] = None
+            return value
+
+        def ExecQuery(self, query: str) -> list[SimpleNamespace]:
+            rows = super().ExecQuery(query)
+            for row in rows:
+                for prop in row.Properties_:
+                    prop.CIMType = 8
+                    prop.IsArray = True
+                if self.bad_metadata is not None:
+                    name, key, value = self.bad_metadata
+                    setattr(row.Properties_.Item(name), key, value)
+            return rows
+
+    def setUp(self) -> None:
+        self.fixture = RegistrationTest()
+        self.fixture.setUp()
+        self.addCleanup(self.fixture.doCleanups)
+
+    def add_second_executable(self) -> None:
+        (self.fixture.build / 'second.exe').write_bytes(b'MZ second offline fixture')
+        artifacts = self.fixture.target['artifacts']
+        if not isinstance(artifacts, list):
+            raise AssertionError('expected fixture artifact rows')
+        artifacts.append({'path': 'second.exe'})
+        self.fixture.write_metadata()
+        self.fixture.manifest = self.fixture.collect()
+
+    def client(self, provider: _SettingsProvider) -> m.DefenderWmi:
+        result = object.__new__(m.DefenderWmi)
+        result.services = provider
+        result.token_user_sid = 'S-1-5-21-101-102-103-1001'
+        result.before_settings = None
+        result.after_settings = None
+        result.settings_readback_error = None
+        result.administrative_token_observed = isinstance(provider, self.Provider)
+        result.provider_nullable_observed = False
+        result.before_property_observations = None
+        result.after_property_observations = None
+        result.current_property_observations = None
+        return result
+
+    def register_default(self, provider: _SettingsProvider, name: str = 'receipt.json') -> dict[str, object]:
+        client = self.client(provider)
+        def initialize(instance: m.DefenderWmi) -> None:
+            instance.__dict__.update(client.__dict__)
+        # Preserve the same real class/method dispatch in v1 and v2 fixtures.
+        with patch.object(m, 'opted_in', return_value=True), \
+             patch.object(m.DefenderWmi, '__init__', new=initialize):
+            value: object = m.register_manifest(self.fixture.manifest, self.fixture.root / name, admin=True)
+        return _observed_object(value)
+
+    def test_qualified_nullable_values_roundtrip_and_all_adds(self) -> None:
+        self.add_second_executable()
+        provider = self.Provider()
+        result = self.register_default(provider)
+        self.assertEqual(result['status'], 'verified')
+        self.assertEqual(len(provider.calls), 2)
+        self.assertEqual(result['settings_readback_schema'], 'xar.project-exe-three-settings-readback/v2')
+        for key in ('before_settings', 'after_settings'):
+            value = _observed_object(result[key])
+            self.assertIsNone(value['ExclusionExtension'])
+            self.assertIsNone(value['ExclusionProcess'])
+            self.assertIsInstance(value['ExclusionPath'], list)
+        self.assertTrue(result['settings_readback_complete'])
+        self.assertTrue(result['observed_extensions_unchanged'])
+        self.assertTrue(result['observed_processes_unchanged'])
+        self.assertEqual(result['before_property_observations'], result['after_property_observations'])
+        self.assertEqual(json.loads((self.fixture.root / 'receipt.json').read_text()), result)
+
+    def test_null_and_empty_array_are_different_and_latch(self) -> None:
+        for field in ('ExclusionExtension', 'ExclusionProcess'):
+            provider = self.Provider()
+            client = self.client(provider)
+            client.read_paths()
+            change = provider.snapshot()
+            change[field] = []
+            provider.read_overrides[2] = change
+            with self.assertRaisesRegex(RuntimeError, 'non-path exclusion changed'):
+                client.read_paths()
+            with self.assertRaisesRegex(RuntimeError, 'Earlier Defender settings readback failed'):
+                client.read_paths()
+            self.assertFalse(client.settings_readback()['settings_readback_complete'])
+
+    def test_qualified_null_rejects_wrong_metadata_and_null_paths(self) -> None:
+        for field, key, wrong in [('ExclusionExtension', 'CIMType', True),
+                                  ('ExclusionProcess', 'CIMType', 3),
+                                  ('ExclusionPath', 'IsArray', 1),
+                                  ('ExclusionExtension', 'Name', 'wrong')]:
+            provider = self.Provider()
+            provider.bad_metadata = (field, key, wrong)
+            result = self.register_default(provider, 'bad-meta-' + field + key + '.json')
+            self.assertEqual(result['status'], 'settings_failed')
+            self.assertEqual(provider.calls, [])
+            self.assertFalse(result['settings_readback_complete'])
+        provider = self.Provider()
+        value = provider.snapshot()
+        value['ExclusionPath'] = None
+        provider.read_overrides[1] = value
+        result = self.register_default(provider, 'null-paths.json')
+        self.assertEqual(result['status'], 'settings_failed')
+        self.assertEqual(provider.calls, [])
+
+    def test_schema_metadata_does_not_replace_admin_observation(self) -> None:
+        provider = self.Provider()
+        client = self.client(provider)
+        client.administrative_token_observed = False
+        with self.assertRaisesRegex(RuntimeError, 'administrative token'):
+            client.read_paths()
+
+    def test_actual_versioned_models_and_reader_methods_pass_strict(self) -> None:
+        source = ast.parse(Path(m.__file__).read_text(encoding='utf-8-sig'))
+        model_names = {'ExclusionSettings', 'NullableExclusionSettings',
+                       'ProviderPropertyObservation', 'WmiProperty', 'WmiProperties',
+                       'WmiPreferenceRow', 'WmiReadServices', 'DirectSettingsReadbackFields',
+                       'DirectSettingsReadbackV1', 'DirectSettingsReadbackV2'}
+        alias_names = {'ExclusionField', 'DirectSettingsReadback'}
+        models = [copy.deepcopy(node) for node in source.body
+                  if isinstance(node, ast.ClassDef) and node.name in model_names]
+        aliases = [copy.deepcopy(node) for node in source.body if isinstance(node, ast.Assign)
+                   and any(isinstance(target, ast.Name) and target.id in alias_names
+                           for target in node.targets)]
+        self.assertEqual(len(models), len(model_names))
+        self.assertEqual(len(aliases), len(alias_names))
+        readers = [node for node in source.body if isinstance(node, ast.ClassDef)
+                   and node.name == 'DefenderWmi']
+        self.assertEqual(len(readers), 1)
+        reader = readers[0]
+        method_names = {'_array', '_copy', '_same_nonpath', '_v1_settings',
+                        '_qualified_nullable_properties', '_preference_rows',
+                        'read_settings', 'read_paths', 'settings_readback'}
+        methods = [copy.deepcopy(node) for node in reader.body
+                   if isinstance(node, ast.FunctionDef) and node.name in method_names]
+        self.assertEqual(len(methods), len(method_names))
+        initializers = [node for node in reader.body if isinstance(node, ast.FunctionDef)
+                        and node.name == '__init__']
+        self.assertEqual(len(initializers), 1)
+        state_names = {'token_user_sid', 'before_settings', 'after_settings',
+                       'administrative_token_observed', 'provider_nullable_observed',
+                       'before_property_observations', 'after_property_observations',
+                       'current_property_observations', 'settings_readback_error'}
+        declarations: list[ast.stmt] = []
+        found: set[str] = set()
+        for node in ast.walk(initializers[0]):
+            if (isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Attribute)
+                    and isinstance(node.target.value, ast.Name) and node.target.value.id == 'self'
+                    and node.target.attr in state_names):
+                found.add(node.target.attr)
+                declarations.append(ast.AnnAssign(
+                    target=ast.Name(id=node.target.attr, ctx=ast.Store()),
+                    annotation=copy.deepcopy(node.annotation), value=None, simple=1))
+        self.assertEqual(found, state_names)
+        preference_methods = [node for node in methods if node.name == '_preference_rows']
+        self.assertEqual(len(preference_methods), 1)
+        services_argument = preference_methods[0].args.args[0]
+        self.assertEqual(services_argument.arg, 'services')
+        self.assertIsNotNone(services_argument.annotation)
+        # Static boundary for the existing dynamic COM constructor: the exact
+        # production getter protocol, with no substitute getter implementation.
+        declarations.append(ast.AnnAssign(
+            target=ast.Name(id='services', ctx=ast.Store()),
+            annotation=copy.deepcopy(services_argument.annotation), value=None, simple=1))
+        checked_class = ast.parse('class DefenderWmi: pass').body[0]
+        if not isinstance(checked_class, ast.ClassDef):
+            raise AssertionError('expected class AST')
+        checked_class.body = declarations + methods
+        imports = [copy.deepcopy(node) for node in source.body
+                   if isinstance(node, (ast.Import, ast.ImportFrom))]
+        # Preserve real source order: ExclusionField precedes its model uses.
+        selected_names = model_names | alias_names
+        ordered_models = [copy.deepcopy(node) for node in source.body
+                          if (isinstance(node, ast.ClassDef) and node.name in selected_names)
+                          or (isinstance(node, ast.Assign) and any(
+                              isinstance(target, ast.Name) and target.id in selected_names
+                              for target in node.targets))]
+        checked = self.fixture.root / 'nullable_reader_types.py'
+        checked.write_text(ast.unparse(ast.fix_missing_locations(ast.Module(
+            body=imports + ordered_models + [checked_class], type_ignores=[]))), encoding='utf-8')
+        environment = os.environ.copy()
+        environment['MYPYPATH'] = str(Path(m.__file__).resolve().parent)
+        result = subprocess.run([
+            sys.executable, '-B', '-m', 'mypy', '--strict', '--follow-imports=skip',
+            '--no-incremental', '--cache-dir', os.devnull, str(checked)],
+            env=environment, capture_output=True, text=True, check=False)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
 if __name__=='__main__':unittest.main()

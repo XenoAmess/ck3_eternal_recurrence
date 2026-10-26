@@ -208,3 +208,15 @@ machine_id: `4-8e1c2f1861`。新增独立Java叶模块 `java/ck3-save-core`，�
 证据根 `R/review-fixes-a01/ui-and-shared-save-a01/metadata`：`EXECUTION.shared-java.actual.json` 为155146 B，SHA `c2cfe4677f740f86408ae8bc2c474d8b3b907b65150d30d1568fb5da02a4bb45`；`REAL-SAVE-COMPATIBILITY.actual.json` 为5442 B，SHA `feedd5e9806bc5e075b66af54742297b9f4b544b07419caef5adc383fb99dcc1`，含六份真实v4报告、v2比较及两宿主加载core JAR绑定。两份JAR均为95938 B，SHA `cb07605ae491196d98b61676d9d19c7717bf97376b26c96b9509753f890de1d4`。
 
 结果窗改动提交78的官方RRF CI [40397435211](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40397435211)已实际成功。这只覆盖该workflow；新共享代码仍待集成后的官方CI。Game／SCREEN均未取得，下一工作包需独立容量与有限期限准入，再生成新冻结图，实际验证已落定155的冷载、更新后的UI并拍摄宣传素材。原三图尚未上架，公开0.1.0-alpha与同一Workshop3826756673保持原发布内容，八项业务验收继续。
+
+## 22:42Z：N8编译完成，Defender真实空值读回修复通过
+
+machine_id: `4-8e1c2f1861`；观察时间 `2026-10-26T22:41:57Z`。N8实际基于267909ffd编译生产DLL与十个夹具EXE，原外层退出1：在任何夹具执行之前，管理员Defender读回因非路径属性返回null而被原严格数组合同拒绝。原设置写入calls为空，不能计为排除登记或夹具通过。完整生产编译与链接原件保留，后继使用既有 `--resume-fixtures` 重编并执行夹具；未启动新Game。
+
+独立后台原生COM观察确认三属性HRESULT均0、CIM字符串数组类型，ExclusionPath为276项SAFEARRAY，Extension／Process为VT_NULL。共享Python维护只在管理员、SID、唯一实例及三项属性元数据均合格时保留非路径null，Path仍必须是实际字符串数组；null不转成空数组，null与空数组变化仍拒绝。新增v2判别合同与属性观察，原v1数组合同保持严格；实际读取器不声称每次测得原始VARIANT或系统有效排除为空。
+
+相关CI三个完整命令实际通过54＋35＋7＝96项测试、零跳过，含维护范围九个完整方法及共享模型的strict检查。第一次54项中的七个测试替身错误和Root外部探针误导入不存在函数的失败均保留；修复测试constructor边界后保留真实校验与序列化，外部探针只重跑读取，不重复已通过的96项。最终真实同客户端两次读回276路径、v2非路径null保持一致，设置写入0。
+
+实际证明为 `R/review-fixes-a01/ui-and-shared-save-a01/defender-reader-ci-a01/segment-a02/EXECUTION.validated.actual.json`，5963 B，SHA `f2f1e5c76f92cd2c2f4c5b26ddbb9763abe17ae4f24b517388961af75b4ba984`。执行身份为2679基线及两份实际工作树Pin，不冒充后继提交已运行。N8原160MiB额度和失败原件不覆盖；同一输出根累计192MiB续行与新控制根4MiB尚待激活，scene888MiB仍只预留，当前没有Game准入。
+
+共享Java本地完整196项通过不变；2679的官方RRF40406430628及DES40406430470实际失败于Quarkus TEST阶段解析已安装共享JAR，实际TEST仓库／resolver原因仍待核实，未称官方CI全绿。后续先完成原生夹具和接口完整验证，再冷载拍新版UI真实图并更新同一商店；公开0.1.0-alpha未变，八项业务审核尚未完成。

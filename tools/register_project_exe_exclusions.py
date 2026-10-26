@@ -12,8 +12,8 @@ import os
 from pathlib import Path
 import subprocess
 import uuid
-from collections.abc import Mapping, Sequence
-from typing import Literal, Never, NotRequired, TypedDict
+from collections.abc import Iterable, Mapping, Sequence
+from typing import Literal, Never, NotRequired, Protocol, TypedDict
 from ck3_live_run_id import current_machine_id
 
 CONFIG_KEY = "xar.defenderProjectExeExclusions"
@@ -257,16 +257,56 @@ class ExclusionSettings(TypedDict):
     ExclusionExtension: list[str]
     ExclusionProcess: list[str]
 
-class DirectSettingsReadback(TypedDict):
-    settings_readback_schema: Literal["xar.project-exe-three-settings-readback/v1"]
-    before_settings: ExclusionSettings | None
-    after_settings: ExclusionSettings | None
+class NullableExclusionSettings(TypedDict):
+    ExclusionPath: list[str]
+    ExclusionExtension: list[str] | None
+    ExclusionProcess: list[str] | None
+
+ExclusionField = Literal["ExclusionPath", "ExclusionExtension", "ExclusionProcess"]
+
+class ProviderPropertyObservation(TypedDict):
+    name: ExclusionField
+    cim_type: Literal[8]
+    is_array: Literal[True]
+    value_state: Literal["STRING_ARRAY", "OBSERVED_NULLABLE_VALUE"]
+
+class WmiProperty(Protocol):
+    Name: object
+    Value: object
+    CIMType: object
+    IsArray: object
+
+class WmiProperties(Protocol):
+    def Item(self, name: str) -> WmiProperty: ...
+
+class WmiPreferenceRow(Protocol):
+    Properties_: WmiProperties
+
+class WmiReadServices(Protocol):
+    def ExecQuery(self, query: str) -> Iterable[WmiPreferenceRow]: ...
+
+class DirectSettingsReadbackFields(TypedDict):
     observed_extensions_unchanged: bool
     observed_processes_unchanged: bool
     settings_readback_complete: bool
     settings_readback_error: str | None
     settings_readback_process_id: int
     settings_readback_token_user_sid: str
+
+class DirectSettingsReadbackV1(DirectSettingsReadbackFields):
+    settings_readback_schema: Literal["xar.project-exe-three-settings-readback/v1"]
+    before_settings: ExclusionSettings | None
+    after_settings: ExclusionSettings | None
+
+class DirectSettingsReadbackV2(DirectSettingsReadbackFields):
+    settings_readback_schema: Literal["xar.project-exe-three-settings-readback/v2"]
+    before_settings: NullableExclusionSettings | None
+    after_settings: NullableExclusionSettings | None
+    before_property_observations: list[ProviderPropertyObservation] | None
+    after_property_observations: list[ProviderPropertyObservation] | None
+    nullable_observation_scope: str
+
+DirectSettingsReadback = DirectSettingsReadbackV1 | DirectSettingsReadbackV2
 
 class DefenderWmi:
     def __init__(self) -> None:
@@ -282,8 +322,13 @@ class DefenderWmi:
             self.token_user_sid: str = win32security.ConvertSidToStringSid(sid)
         finally:
             token.Close()
-        self.before_settings: ExclusionSettings | None = None
-        self.after_settings: ExclusionSettings | None = None
+        self.before_settings: NullableExclusionSettings | None = None
+        self.administrative_token_observed: bool = bool(ctypes.windll.shell32.IsUserAnAdmin())
+        self.provider_nullable_observed: bool = False
+        self.before_property_observations: list[ProviderPropertyObservation] | None = None
+        self.after_property_observations: list[ProviderPropertyObservation] | None = None
+        self.current_property_observations: list[ProviderPropertyObservation] | None = None
+        self.after_settings: NullableExclusionSettings | None = None
         self.settings_readback_error: str | None = None
         pythoncom.CoInitialize()
         self.services = win32com.client.GetObject(
@@ -301,20 +346,61 @@ class DefenderWmi:
         return result
 
     @staticmethod
-    def _copy(settings: ExclusionSettings) -> ExclusionSettings:
+    def _copy(settings: NullableExclusionSettings) -> NullableExclusionSettings:
+        extensions, processes = settings["ExclusionExtension"], settings["ExclusionProcess"]
         return {"ExclusionPath": list(settings["ExclusionPath"]),
-                "ExclusionExtension": list(settings["ExclusionExtension"]),
-                "ExclusionProcess": list(settings["ExclusionProcess"])}
+                "ExclusionExtension": None if extensions is None else list(extensions),
+                "ExclusionProcess": None if processes is None else list(processes)}
 
-    def read_settings(self) -> ExclusionSettings:
-        rows = list(self.services.ExecQuery(
+    @staticmethod
+    def _same_nonpath(before: list[str] | None, after: list[str] | None) -> bool:
+        if before is None or after is None:
+            return before is None and after is None
+        return set(before) == set(after)
+
+    @staticmethod
+    def _v1_settings(settings: NullableExclusionSettings | None) -> ExclusionSettings | None:
+        if settings is None:
+            return None
+        return {"ExclusionPath": list(settings["ExclusionPath"]),
+                "ExclusionExtension": DefenderWmi._array(settings["ExclusionExtension"], "ExclusionExtension"),
+                "ExclusionProcess": DefenderWmi._array(settings["ExclusionProcess"], "ExclusionProcess")}
+
+    def _qualified_nullable_properties(self, props: WmiProperties,
+                                       values: Mapping[str, object]) -> list[ProviderPropertyObservation]:
+        if self.administrative_token_observed is not True or not self.token_user_sid:
+            raise RuntimeError("Nullable Defender property observation requires an actual administrative token")
+        result: list[ProviderPropertyObservation] = []
+        fields: tuple[ExclusionField, ...] = ("ExclusionPath", "ExclusionExtension", "ExclusionProcess")
+        for name in fields:
+            prop = props.Item(name)
+            if prop.Name != name or type(prop.CIMType) is not int or prop.CIMType != 8 or prop.IsArray is not True:
+                raise RuntimeError("Defender nullable property schema is unavailable: " + name)
+            result.append({"name": name, "cim_type": 8, "is_array": True,
+                           "value_state": "OBSERVED_NULLABLE_VALUE" if values[name] is None else "STRING_ARRAY"})
+        return result
+
+    @staticmethod
+    def _preference_rows(services: WmiReadServices) -> list[WmiPreferenceRow]:
+        return list(services.ExecQuery(
             "SELECT ExclusionPath,ExclusionExtension,ExclusionProcess FROM MSFT_MpPreference"))
+
+    def read_settings(self) -> NullableExclusionSettings:
+        rows = self._preference_rows(self.services)
         if len(rows) != 1:
             raise RuntimeError("Defender preference read did not return exactly one object")
         props = rows[0].Properties_
-        return {"ExclusionPath": self._array(props.Item("ExclusionPath").Value, "ExclusionPath"),
-                "ExclusionExtension": self._array(props.Item("ExclusionExtension").Value, "ExclusionExtension"),
-                "ExclusionProcess": self._array(props.Item("ExclusionProcess").Value, "ExclusionProcess")}
+        values: dict[str, object] = {name: props.Item(name).Value for name in
+                                   ("ExclusionPath", "ExclusionExtension", "ExclusionProcess")}
+        nullable = values["ExclusionExtension"] is None or values["ExclusionProcess"] is None
+        if nullable or self.provider_nullable_observed:
+            self.current_property_observations = self._qualified_nullable_properties(props, values)
+            self.provider_nullable_observed = True
+        else:
+            self.current_property_observations = None
+        return {"ExclusionPath": self._array(values["ExclusionPath"], "ExclusionPath"),
+                "ExclusionExtension": None if nullable and values["ExclusionExtension"] is None else self._array(values["ExclusionExtension"], "ExclusionExtension"),
+                "ExclusionProcess": None if nullable and values["ExclusionProcess"] is None else self._array(values["ExclusionProcess"], "ExclusionProcess")}
 
     def read_paths(self) -> list[str]:
         try:
@@ -323,11 +409,13 @@ class DefenderWmi:
             if before is None:
                 before = self._copy(current)
                 self.before_settings = before
+                self.before_property_observations = self.current_property_observations
             self.after_settings = self._copy(current)
+            self.after_property_observations = self.current_property_observations
             for name, old_rows, new_rows in (
                     ("ExclusionExtension", before["ExclusionExtension"], current["ExclusionExtension"]),
                     ("ExclusionProcess", before["ExclusionProcess"], current["ExclusionProcess"])):
-                if set(old_rows) != set(new_rows):
+                if not self._same_nonpath(old_rows, new_rows):
                     raise RuntimeError("Defender non-path exclusion changed: " + name)
             if self.settings_readback_error is not None:
                 raise RuntimeError("Earlier Defender settings readback failed; no qualified continuation")
@@ -339,15 +427,16 @@ class DefenderWmi:
 
     def settings_readback(self) -> DirectSettingsReadback:
         before, after = self.before_settings, self.after_settings
+        observations_before = self.before_property_observations
+        observations_after = self.after_property_observations
         complete = before is not None and after is not None and self.settings_readback_error is None
         extensions_unchanged = processes_unchanged = False
         if before is not None and after is not None and self.settings_readback_error is None:
-            extensions_unchanged = set(before["ExclusionExtension"]) == set(after["ExclusionExtension"])
-            processes_unchanged = set(before["ExclusionProcess"]) == set(after["ExclusionProcess"])
-        return {
-            "settings_readback_schema": "xar.project-exe-three-settings-readback/v1",
-            "before_settings": None if before is None else self._copy(before),
-            "after_settings": None if after is None else self._copy(after),
+            extensions_unchanged = self._same_nonpath(before["ExclusionExtension"], after["ExclusionExtension"])
+            processes_unchanged = self._same_nonpath(before["ExclusionProcess"], after["ExclusionProcess"])
+        if self.provider_nullable_observed:
+            complete = complete and observations_before is not None and observations_after is not None
+        common: DirectSettingsReadbackFields = {
             "observed_extensions_unchanged": extensions_unchanged,
             "observed_processes_unchanged": processes_unchanged,
             "settings_readback_complete": complete,
@@ -355,6 +444,27 @@ class DefenderWmi:
             "settings_readback_process_id": os.getpid(),
             "settings_readback_token_user_sid": self.token_user_sid,
         }
+        if self.provider_nullable_observed:
+            nullable_result: DirectSettingsReadbackV2 = {
+                **common,
+                "settings_readback_schema": "xar.project-exe-three-settings-readback/v2",
+                "before_settings": None if before is None else self._copy(before),
+                "after_settings": None if after is None else self._copy(after),
+                "before_property_observations": None if observations_before is None else [row.copy() for row in observations_before],
+                "after_property_observations": None if observations_after is None else [row.copy() for row in observations_after],
+                "nullable_observation_scope": (
+                    "Same administrative WMI client, one MSFT_MpPreference instance and existing Name/CIMType8/IsArray=true properties. "
+                    "Python None is retained as an observed nullable CIM value, distinct from an empty array; raw VARIANT is not remeasured by this reader. "
+                    "No assertion that effective exclusions are empty or unconfigured."),
+            }
+            return nullable_result
+        array_result: DirectSettingsReadbackV1 = {
+            **common,
+            "settings_readback_schema": "xar.project-exe-three-settings-readback/v1",
+            "before_settings": self._v1_settings(before),
+            "after_settings": self._v1_settings(after),
+        }
+        return array_result
 
     def add_path(self, path: str) -> int | None | dict[str, object]:
         preference = self.services.Get("MSFT_MpPreference")
