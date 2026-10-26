@@ -152,3 +152,19 @@ R0021/a24于13:51Z分配后，在public run前因守候进程身份检查拒绝�
 16:14:42Z补齐默认公共入口修复：allocate现在在Selection已有的所选SDK导入上下文内执行真实allocator/reducer，并在退出时恢复sys.path；原异源SDK拒绝不放宽。独立-I、无环境PYTHONPATH的实际public dispatch→prelaunch reducer→running-input合同回归通过，未进入机器writer或启动游戏。完整四模块59项零跳过；随后对应CI step原10命令全部原wait0，含186次测试、独立continuation和原YAML配置静态检查。另保留更广real-model静态检查的旧26项错误及最初fixture失败；维护范围严格检查通过，不声称全仓全绿。真实R0022失败bundle在修改后的共享入口消费者及原chain.lock内再次通过，原host1/public2不变。
 
 `COLD/metadata/public-import-step-a01/COMMAND_VALIDATION.public-control.actual.json`为10041 B，SHA-256 `624e9a257b015a319f41088964c15af8dc5f2d82e0745c61a95374075a008f83`；完整step执行原件为13076 B，SHA-256 `e03fccc4cebb152387f3519e275bb5fb0e4f86f340c5df1e8a78b46d85623013`。执行身份为c9基线加三个维护文件的实际工作树，源码Pin前后一致；不追认为未来提交已测试。所有原wait已消费、reader已闭。未变的Java／N7／新wire不重复运行；下一实际场次仍须新冻结、资格和存储准入。
+
+## 2026-10-27 后继：R0023 分配后未启动，恢复器补齐三守卫原件
+
+machine_id: `4-8e1c2f1861`，观察截至 `2026-10-26T17:37:03Z`。P3的冻结、六条Java来源资格、runtime和公共prepare均原退出0。移除外层环境中的PYTHONPATH后，默认公共入口实际完成preflight及R0023分配，证明所选SDK导入修复已进入真实分配链。a27的最后容量检查仅因预备空间加完整后续取证预测超过36MiB子额度而拒绝。Game、host、public run及存档均未启动；没有新增游戏日或业务验收。原Root退出1，allocator及keeper退出0，三个守卫经原取消路径退出1，均保留原wait。
+
+此次真实原件暴露共享unrun读取器的两处缺口：旧分支拒绝第二、第三阶段守卫，且只接受旧Root启动／退出回执形状。修复保留旧合同，按实际三阶段合同核验完整守卫集合、来源、参数、出生FILETIME字符串、取消、原wait及进程终态；另明确校验本次分离的Root启动与退出回执。未知文件集合及不一致证据继续拒绝。
+
+对应CI step的原10条命令全部原wait0、零跳过。新增两完整模块最初28＋27项通过；维护范围strict发现一处elapsed局部类型窄化错误，修正后完整重跑这两模块55项及维护范围strict，均原wait0。最初strict1与outer1原件保留，不称全仓静态检查或全CI通过。严格检查覆盖7个完整生产AST节点及两个完整测试模块。薄证明为 `COLD/metadata/public-operations-a01/unrun-R0023-a01/COMMAND_VALIDATION.public-control.a02.actual.json`，5553 B，SHA-256 `e4aa3d66132bdd9f7a70aea74a1ebd3d3a3deed2fcaa2a44184ba8937c15bb68`；执行身份为d42基线及三个维护文件的实际工作树。
+
+资源释放前先用实际共享prelaunch读取器和原chain.lock核验原Root／三守卫，以及无host、计数器、keeper和SCREEN事实；这一步明确没有授予完整continuation资格。一次性脚本最初把内置产品误标为external而退出1，修正后原退出0；失败输出保留。随后实际CAS14103释放过期claim，原返回状态为waiting、resources为空；行政完成另有14104原回执。Root最初误断言释放应直接为done，外层检查退出1，实际CAS原退出0未被重放。
+
+释放后，原生产 `build_bundle` 与完整 `revalidate_prelaunch_unrun_admission` 在实际writer锁内通过，计数器和admission链未变，只授予后继资源接续前提。实际执行原件为 `COLD/metadata/public-operations-a01/shared-unrun3-step-a01/actual-R0023/EXECUTION.actual.json`，30762 B，SHA-256 `86654e32d44ba591b28a534981891ef4f4063edcfac9a7b303021cec35bbd99b`；其原bundle为13498 B，SHA-256 `1127e956537940e4acb9cc923b9c41c0df28e5f88d43bfe78e1bde26ef4b4a28`。它不把R0023未运行改称正常游戏闭场或业务PASS。
+
+空间处理只归档并精确退休三份旧截图说明，gzip逐字节验证完整原文，原PNG、Native报告、零日资格及失败闭场证据保留。实际确认退休1495040 B，单独记账，不替换此前3791文件回收证据、不重置累计花费。原说明路径已不可读取；完整原字节和身份在 `COLD/metadata/public-operations-a01/sidecar-archive-a01/ARCHIVE-INDEX.actual.json` 所列gzip中。新1032MiB内部重分配及有限期限复核目前仍是候选，须实际准入后才可准备新运行图。
+
+八项人工审核尚未完成。下一业务仍是同一155结果的配置落定、实际封臣邀请与第二日读回、最终独立冷载；后续另验四核心Faith融合、无MTS代表场及DES。DES的House／Dynasty／CoA和维护保存投影还需复用或扩展唯一Java流式读取核心，短场不抵扣30日维护验收。公开0.1.0-alpha和Workshop3826756673未更新。

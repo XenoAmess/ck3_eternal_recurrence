@@ -25,12 +25,14 @@ class LockProvider(Protocol):
 
 class PrelaunchUnrunWriterAdmissionTests(unittest.TestCase):
     observed_root = False
+    phase_guards = False
     def setUp(self) -> None:
         fixture = RootAllocatorTripletTests()
         fixture.setUp()
         self.addCleanup(fixture.doCleanups)
         self.fixture = fixture
-        bundle, self.live, self.keeper, _ = fixture.prelaunch_fixture(observed_root=self.observed_root)
+        bundle, self.live, self.keeper, _ = fixture.prelaunch_fixture(observed_root=self.observed_root,
+            phase_guards=self.phase_guards)
         self.bundle = json_object(bundle)
         self.close = fixture.root / 'closure.json'
         self.close.write_text(json.dumps(bundle), encoding='utf-8')
@@ -163,6 +165,10 @@ class PrelaunchUnrunWriterAdmissionTests(unittest.TestCase):
 
 class ObservedRootPrelaunchUnrunWriterAdmissionTests(PrelaunchUnrunWriterAdmissionTests):
     observed_root = True
+
+
+class ThreePhaseRootPrelaunchUnrunWriterAdmissionTests(ObservedRootPrelaunchUnrunWriterAdmissionTests):
+    phase_guards = True
 
 
 if __name__ == '__main__':

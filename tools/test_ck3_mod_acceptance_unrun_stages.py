@@ -443,12 +443,17 @@ raise SystemExit(code)
         with self.assertRaises(ValueError):
             self.parse({**self.bundle, 'allocator_exit': self.reference(other)})
 
-    def prelaunch_fixture(self, *, observed_root: bool = False) -> tuple[dict[str, object], Path, Path, list[datetime]]:
+    def prelaunch_fixture(self, *, observed_root: bool = False, phase_guards: bool = False) -> tuple[dict[str, object], Path, Path, list[datetime]]:
         """Run a real recorder, threaded Popen waits and mechanical STOP branch."""
         output=self.root/'work-package/root-prelaunch-test';output.mkdir()
         keeper=self.root/'work-package/keeper';keeper.mkdir()
         live=self.root/(self.machine+'--living-artifacts--R0001');live.mkdir();(live/'controls').mkdir()
         prepared=self.root/'prelaunch-prepared.json';prepared.write_text('{}',encoding='utf8')
+        if phase_guards:
+            contract=self.root/'prelaunch-contract.json'
+            contract.write_text(json.dumps({'gui_phases':[{'id':phase} for phase in
+                ('fixture-phase','fixture-phase-1','fixture-phase-2')]}),encoding='utf8')
+            prepared.write_text(json.dumps({'contract':self.reference(contract)}),encoding='utf8')
         products=self.root/'prelaunch-products.json';products.write_text(json.dumps({'products':{'living-artifacts':{'external_mod':False}}}),encoding='utf8')
         state=self.root/'prelaunch-state';ids=self.root/'prelaunch-ids'
         counter=ids/self.machine/'living-artifacts/counter.json';counter.parent.mkdir(parents=True)
@@ -554,6 +559,9 @@ finally:
             raw = raw.replace("output,live=", "import subprocess\nif '--fixture-worker' not in sys.argv:\n    child=subprocess.Popen([sys.executable,*sys.argv,'--fixture-worker'])\n    sys.exit(child.wait())\nsys.argv.remove('--fixture-worker')\noutput,live=")
             raw = raw.replace('while True:time.sleep(.01)',
                 f"while not Path({str(keeper/'STOP')!r}).exists():time.sleep(.01)\nsys.exit(1)")
+            if phase_guards:
+                raw = raw.replace("phase='fixture-phase'", "phase=sys.argv[sys.argv.index('--phase')+1]")
+                raw = raw.replace("(output/'DEADLINE-GUARD.ARMED.actual.json')", "Path(sys.argv[sys.argv.index('--armed')+1])")
             guard.write_text(raw, encoding='utf8')
             raw = source.read_text(encoding='utf8')
             raw = raw.replace("'at': datetime.now", "'observed_at_utc': datetime.now")
@@ -568,6 +576,29 @@ finally:
             raw = raw.replace('Mechanical prelaunch refused before public run; cancel retained Root helper',
                 'Actual mechanical prelaunch failure; no Game action')
             raw = raw.replace('            guard.terminate()\nfinally:', '            guard.terminate()\n    raise\nfinally:')
+            if phase_guards:
+                raw = raw.replace('public_started = False', 'extra_guards = []\npublic_started = False')
+                raw = raw.replace("    raise KeyError('revision')", r'''
+    for index in (1,2):
+        label='DEADLINE-GUARD-'+str(index)
+        argv=[GUARD_PYTHON,'-B','-X','utf8',str(GUARD),'--live',str(live),
+            '--ready-context',str(live/'ready-context.json'),'--run-id',live.name,'--phase','fixture-phase-'+str(index),
+            '--reserve-seconds','1200','--wait-awaiting-seconds','5400',
+            '--armed',str(OUT/(label+'.ARMED.actual.json')),'--output',str(OUT/(label+'.actual.json'))]
+        put(OUT/(label+'.intent.actual.json'),{'argv':argv,'source_commit':'a'*40})
+        pair=start(label,argv);extra_guards.append((label,pair))
+        while not (OUT/(label+'.ARMED.actual.json')).exists():time.sleep(.01)
+    raise KeyError('revision')''')
+                raw = raw.replace('    raise\nfinally:', r'''
+        for label,pair in extra_guards:
+            if pair[0].poll() is None:
+                put(OUT/(label+'.CANCEL.actual.json'),{'pid':pair[0].pid,
+                    'reason':'Actual mechanical prelaunch failure; no Game action'})
+                pair[0].terminate()
+    raise
+finally:''')
+                raw = raw.replace('    allocate_thread.join()',
+                    '    for label,pair in extra_guards:pair[1].join()\n    allocate_thread.join()')
             source.write_text(raw, encoding='utf8')
             argv = [sys.executable,'-B','-X','utf8',str(source),'--mode','launch','--execute-root-reviewed-launch',
                 '--repo-root',str(self.repo),
@@ -577,10 +608,20 @@ finally:
                 'started_at_utc':datetime.now(timezone.utc).isoformat()})
             child_process = subprocess.Popen(argv,cwd=self.repo,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
             started.update(pid=child_process.pid,process_birth_seconds=str(psutil.Process(child_process.pid).create_time()))
+            if phase_guards:
+                started = json_object({'machine_id':self.machine,'source_commit':'a'*40,'argv':argv,
+                    'pid':child_process.pid,'process_create_time_seconds':str(psutil.Process(child_process.pid).create_time()),
+                    'observed_at_utc':datetime.now(timezone.utc).isoformat(),
+                    'ambient_pythonpath_removed':True,'original_wait_pending':True})
             start_path=self.root/'root-started.json';start_path.write_text(json.dumps(started),encoding='utf8')
             captured_out,captured_err=child_process.communicate(timeout=20)
             self.assertEqual(child_process.returncode,1,(captured_out,captured_err))
             waited={**started,'finished_at_utc':datetime.now(timezone.utc).isoformat(),'original_wait_returncode':child_process.returncode}
+            if phase_guards:
+                finished=datetime.now(timezone.utc)
+                waited={'machine_id':self.machine,'observed_at_utc':finished.isoformat(),
+                    'original_wait_returncode':child_process.returncode,
+                    'elapsed_seconds':finished.timestamp()-float(str(started['process_create_time_seconds']))}
             wait_path=self.root/'root-wait.json';wait_path.write_text(json.dumps(waited),encoding='utf8')
             root_refs={'prelaunch_orchestrator_started':self.reference(start_path),'prelaunch_orchestrator_wait':self.reference(wait_path)}
             armed=json.loads((output/'DEADLINE-GUARD.ARMED.actual.json').read_bytes())
@@ -598,6 +639,8 @@ finally:
             'prelaunch_guard_started':'DEADLINE-GUARD.started.actual.json','prelaunch_guard_armed':'DEADLINE-GUARD.ARMED.actual.json',
             'prelaunch_guard_cancel':'DEADLINE-GUARD.CANCEL.actual.json','prelaunch_guard_wait':'DEADLINE-GUARD.original-wait.actual.json',
             'prelaunch_allocator_wait':'ORCHESTRATOR.ALLOCATE.original-wait.actual.json'}.items():bundle[key]=self.reference(output/name)
+        if phase_guards:
+            bundle['prelaunch_phase_guards']=subject._phase_guard_evidence(output)
         cas={'schema':'codex.task_bus.v1','ok':True,'task':{'task_id':'fixture-prelaunch-task','state':'waiting','resources':[],'last_sequence':11},
             'event':{'task_id':'fixture-prelaunch-task','kind':'status','resources':[],'sequence':11}}
         done={'schema':'codex.task_bus.v1','ok':True,'task':{'task_id':'fixture-prelaunch-task','state':'done','resources':[],'last_sequence':12},
@@ -659,6 +702,54 @@ finally:
         self.assertNotEqual(started['pid'], armed['pid'])
         self.assertIn('prelaunch_orchestrator_wait', evidence)
         self.assertEqual(subject._allocator_argv(value, self.machine, stamps)[5], 'allocate')
+
+    def test_split_root_three_real_guards_original_waits_and_round_trip(self) -> None:
+        bundle, live, keeper, stamps = self.prelaunch_fixture(observed_root=True, phase_guards=True)
+        value = json_object(json.loads(json.dumps(bundle)))
+        evidence = subject.validate_prelaunch_orchestrator(value, previous=live, keeper=keeper,
+            machine=self.machine, ready_at=stamps[0], keeper_closed_at=stamps[1])
+        guards = member(evidence, 'prelaunch_phase_guards')
+        self.assertEqual(set(guards), {'DEADLINE-GUARD-1', 'DEADLINE-GUARD-2'})
+        self.assertEqual(subject._allocator_argv(value, self.machine, stamps)[5], 'allocate')
+
+    def test_split_root_and_additional_guard_wrong_contracts_are_rejected(self) -> None:
+        bundle, live, keeper, stamps = self.prelaunch_fixture(observed_root=True, phase_guards=True)
+        def invoke(value: Mapping[str, object]) -> JsonObject:
+            return subject.validate_prelaunch_orchestrator(value, previous=live, keeper=keeper,
+                machine=self.machine, ready_at=stamps[0], keeper_closed_at=stamps[1])
+        root_cases: tuple[tuple[str, str, JsonValue], ...] = (
+            ('prelaunch_orchestrator_started','ambient_pythonpath_removed',1),
+            ('prelaunch_orchestrator_started','original_wait_pending',0),
+            ('prelaunch_orchestrator_started','process_create_time_seconds',1),
+            ('prelaunch_orchestrator_wait','elapsed_seconds',True),
+            ('prelaunch_orchestrator_wait','original_wait_returncode',False),
+            ('prelaunch_orchestrator_wait','pid',1))
+        for key, field, bad in root_cases:
+            path=Path(subject._evidence_pin(bundle[key],key)['path']);raw=path.read_bytes()
+            changed=json.loads(raw);changed[field]=bad;path.write_text(json.dumps(changed),encoding='utf8')
+            with self.subTest(key=key,field=field),self.assertRaises(ValueError):
+                invoke({**bundle,key:self.reference(path)})
+            path.write_bytes(raw)
+        output=Path(subject._evidence_pin(bundle['allocator_intent'],'intent')['path']).parent
+        guard_cases: tuple[tuple[str, str, JsonValue], ...] = (
+            ('intent','source_commit','b'*40),('started','pid',True),
+            ('started','process_creation_filetime_100ns',1),('ARMED','phase','wrong-phase'),
+            ('ARMED','game_or_queue_action_sent',True),('CANCEL','pid',True),
+            ('original-wait','original_wait_returncode',0),('original-wait','pid',False),
+            ('original-wait','observed_at_utc',stamps[0].isoformat()))
+        for suffix, field, bad in guard_cases:
+            path=output/('DEADLINE-GUARD-1.'+suffix+'.actual.json');raw=path.read_bytes()
+            changed=json.loads(raw);changed[field]=bad;path.write_text(json.dumps(changed),encoding='utf8')
+            changed_bundle={**bundle,'prelaunch_phase_guards':subject._phase_guard_evidence(output)}
+            with self.subTest(suffix=suffix,field=field),self.assertRaises(ValueError):invoke(changed_bundle)
+            path.write_bytes(raw)
+        missing=dict(bundle);del missing['prelaunch_phase_guards']
+        with self.assertRaises(ValueError):invoke(missing)
+        unknown=output/'DEADLINE-GUARD-3.started.actual.json';unknown.write_text('{}',encoding='utf8')
+        with self.assertRaisesRegex(ValueError,'Exact two additional'):invoke(bundle)
+        unknown.unlink()
+        with patch.object(psutil,'pid_exists',return_value=True),self.assertRaisesRegex(ValueError,'still present'):
+            invoke(bundle)
 
     def test_observed_root_rejects_wrong_fields_types_binding_wait_and_later_actions(self) -> None:
         bundle, live, keeper, stamps = self.prelaunch_fixture(observed_root=True)

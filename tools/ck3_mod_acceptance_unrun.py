@@ -26,6 +26,115 @@ class RootPrelaunchInvocation:
     started_at: datetime
     finished_at: datetime
     guard: Path
+    source_commit: str
+
+
+class PrelaunchPhaseGuardEvidence(TypedDict):
+    label: Literal['DEADLINE-GUARD-1', 'DEADLINE-GUARD-2']
+    phase: str
+    intent: FilePin
+    started: FilePin
+    armed: FilePin
+    cancel: FilePin
+    original_wait: FilePin
+
+
+def _phase_guard_evidence(output: Path) -> list[PrelaunchPhaseGuardEvidence]:
+    """Pin the two additional original phase guards, without synthesizing waits."""
+    labels: tuple[Literal['DEADLINE-GUARD-1', 'DEADLINE-GUARD-2'], ...] = ('DEADLINE-GUARD-1', 'DEADLINE-GUARD-2')
+    suffixes = ('.intent.actual.json', '.started.actual.json', '.ARMED.actual.json',
+        '.CANCEL.actual.json', '.original-wait.actual.json', '.stdout.log', '.stderr.log')
+    found = list(output.glob('DEADLINE-GUARD-*'))
+    if not found:
+        return []
+    if {path.name for path in found} != {label + suffix for label in labels for suffix in suffixes}:
+        raise ValueError('Exact two additional original phase guard file sets required')
+    rows: list[PrelaunchPhaseGuardEvidence] = []
+    for label in labels:
+        armed = json_object(_read(output / (label + '.ARMED.actual.json')))
+        rows.append(PrelaunchPhaseGuardEvidence(label=label, phase=text_field(armed, 'phase'),
+            intent=file_pin(pin(output / (label + '.intent.actual.json'))),
+            started=file_pin(pin(output / (label + '.started.actual.json'))),
+            armed=file_pin(pin(output / (label + '.ARMED.actual.json'))),
+            cancel=file_pin(pin(output / (label + '.CANCEL.actual.json'))),
+            original_wait=file_pin(pin(output / (label + '.original-wait.actual.json')))))
+    return rows
+
+
+def _observed_phase_guards(bundle: Mapping[str, object], invocation: RootPrelaunchInvocation,
+        output: Path, previous: Path, machine: str, ready_at: datetime,
+        failure_at: datetime, base_phase: str) -> JsonObject:
+    rows = _phase_guard_evidence(output)
+    if not rows:
+        if 'prelaunch_phase_guards' in bundle:
+            raise ValueError('Unexpected additional phase guard evidence')
+        return {}
+    if bundle.get('prelaunch_phase_guards') != rows:
+        raise ValueError('Original additional phase guard pins changed')
+    ready = json_object(_pinned_object(bundle.get('ready'), 'Original allocated ready'))
+    prepared = json_object(_pinned_object(ready.get('prepared_case'), 'Original prepared case'))
+    contract = json_object(_pinned_object(prepared.get('contract'), 'Original prepared contract'))
+    phases_value = contract.get('gui_phases')
+    if not isinstance(phases_value, list) or len(phases_value) != 3:
+        raise ValueError('Original three-phase prepared contract required')
+    phases = [text_field(json_object(value), 'id') for value in phases_value]
+    if len(set(phases)) != 3 or phases != [base_phase, *(row['phase'] for row in rows)]:
+        raise ValueError('Original phase guard order differs from prepared contract')
+    evidence: JsonObject = {}
+    for row in rows:
+        label = row['label']
+        values: dict[str, JsonObject] = {}
+        for key in ('intent', 'started', 'armed', 'cancel', 'original_wait'):
+            values[key] = json_object(_pinned_object(row[key], 'Original phase guard ' + key))
+        intent, started, armed, cancel, waited = (values[key] for key in values)
+        if (set(intent) != {'machine_id', 'observed_at_utc', 'argv', 'source_commit'}
+                or set(started) != {'machine_id', 'observed_at_utc', 'argv', 'pid', 'process_creation_filetime_100ns', 'initial_exit_code', 'original_wait_pending'}
+                or set(armed) != {'schema','machine_id','run_id','live','ready_context','pid','process_creation_filetime_100ns','birth_source','guard','armed_at_utc','phase','state','wait_awaiting_seconds','reserve_seconds','game_or_queue_action_sent','deadline_bound'}
+                or set(cancel) != {'machine_id', 'observed_at_utc', 'pid', 'reason'}
+                or set(waited) != {'machine_id', 'observed_at_utc', 'original_wait_returncode', 'argv', 'pid'}
+                or any(value.get('machine_id') != machine for value in values.values())):
+            raise ValueError('Exact original additional phase guard fields required')
+        wrapper = _integer(started.get('pid'), 'Phase guard wrapper pid', 1)
+        actual = _integer(armed.get('pid'), 'Phase guard actual pid', 1)
+        births = [_text(value.get('process_creation_filetime_100ns'), 'Original phase guard birth') for value in (started, armed)]
+        if (any(re.fullmatch(r'[1-9][0-9]*', birth) is None or int(birth) > 18446744073709551615 for birth in births)
+                or (wrapper == actual and births[0] != births[1])
+                or any(_integer(value.get('pid'), 'Original canceled/waited phase pid', 1) != wrapper for value in (cancel, waited))
+                or started.get('original_wait_pending') is not True
+                or _integer(started.get('initial_exit_code'), 'Original phase guard active') != 259
+                or _integer(waited.get('original_wait_returncode'), 'Original phase guard wait') != 1
+                or cancel.get('reason') != 'Actual mechanical prelaunch failure; no Game action'):
+            raise ValueError('Original phase guard identity/cancellation/wait differs')
+        guard = _evidence_pin(armed.get('guard'), 'Original phase guard source')
+        check_pin(Path(guard['path']), dict(guard))
+        if (Path(guard['path']).resolve() != invocation.guard or armed.get('phase') != row['phase']
+                or armed.get('schema') != 'root-external-deadline-guard-armed-v1'
+                or armed.get('run_id') != previous.name or Path(text_field(armed, 'live')).resolve() != previous
+                or _evidence_pin(armed.get('ready_context'), 'Original phase ready') != _evidence_pin(bundle.get('ready'), 'Original ready')
+                or armed.get('birth_source') != 'GetProcessTimes(GetCurrentProcess)'
+                or armed.get('state') != 'WAITING_FOR_ACTUAL_FROZEN_AND_PHASE'
+                or armed.get('game_or_queue_action_sent') is not False or armed.get('deadline_bound') is not False
+                or _integer(armed.get('reserve_seconds'), 'Original phase reserve', 1) != 1200
+                or _integer(armed.get('wait_awaiting_seconds'), 'Original phase waiting bound', 1) != 5400):
+            raise ValueError('Original phase guard crossed source/run or sent action')
+        argv = strings_field(started, 'argv')
+        expected = ['-B','-X','utf8',guard['path'],'--live',str(previous),'--ready-context',str(previous/'ready-context.json'),
+            '--run-id',previous.name,'--phase',row['phase'],'--reserve-seconds','1200','--wait-awaiting-seconds','5400',
+            '--armed',str(output/(label+'.ARMED.actual.json')),'--output',str(output/(label+'.actual.json'))]
+        if (argv[1:] != expected or strings_field(intent, 'argv') != argv or strings_field(waited, 'argv') != argv
+                or intent.get('source_commit') != invocation.source_commit):
+            raise ValueError('Original phase guard argv/source differs')
+        stamps = [invocation.started_at, ready_at, _timestamp(intent.get('observed_at_utc'), 'Original phase intent'),
+            _timestamp(started.get('observed_at_utc'), 'Original phase start'), _timestamp(armed.get('armed_at_utc'), 'Original phase armed'),
+            failure_at, _timestamp(cancel.get('observed_at_utc'), 'Original phase cancel'),
+            _timestamp(waited.get('observed_at_utc'), 'Original phase wait'), invocation.finished_at]
+        if stamps != sorted(stamps) or any(stamp.utcoffset() != timezone.utc.utcoffset(stamp) for stamp in stamps):
+            raise ValueError('Original phase guard chronology differs')
+        import psutil
+        if any(psutil.pid_exists(pid) for pid in (wrapper, actual)):
+            raise ValueError('Original phase guard process still present; absence grants no wait code')
+        evidence[label] = json_object(row)
+    return {'prelaunch_phase_guards': evidence}
 
 
 def _root_prelaunch_invocation(bundle: Mapping[str, object], output: Path,
@@ -39,20 +148,42 @@ def _root_prelaunch_invocation(bundle: Mapping[str, object], output: Path,
     started = json_object(_pinned_object(bundle.get('prelaunch_orchestrator_started'), 'Root original start'))
     waited = json_object(_pinned_object(bundle.get('prelaunch_orchestrator_wait'), 'Root original wait'))
     fields = {'machine_id', 'source_commit', 'pid', 'process_birth_seconds', 'argv', 'started_at_utc'}
-    if (set(started) != fields or set(waited) != fields | {'finished_at_utc', 'original_wait_returncode'}
-            or any(started.get(key) != waited.get(key) for key in fields)
-            or started.get('machine_id') != machine
+    split_fields = {'machine_id', 'source_commit', 'pid', 'process_create_time_seconds', 'argv',
+        'observed_at_utc', 'ambient_pythonpath_removed', 'original_wait_pending'}
+    split = set(started) == split_fields
+    elapsed_seconds = 0.0
+    if split:
+        if (set(waited) != {'machine_id', 'observed_at_utc', 'original_wait_returncode', 'elapsed_seconds'}
+                or started.get('ambient_pythonpath_removed') is not True
+                or started.get('original_wait_pending') is not True):
+            raise ValueError('Exact original split Root start/wait fields required')
+        birth = _text(started.get('process_create_time_seconds'), 'Root original birth')
+        began = _timestamp(started.get('observed_at_utc'), 'Root original start')
+        ended = _timestamp(waited.get('observed_at_utc'), 'Root original finish')
+        elapsed = waited.get('elapsed_seconds')
+        if type(elapsed) not in (int, float) or not isinstance(elapsed, (int, float)) or not math.isfinite(elapsed) or elapsed < 0:
+            raise ValueError('Original Root elapsed must be a finite nonnegative number')
+        elapsed_seconds = float(elapsed)
+    else:
+        if (set(started) != fields or set(waited) != fields | {'finished_at_utc', 'original_wait_returncode'}
+                or any(started.get(key) != waited.get(key) for key in fields)):
+            raise ValueError('Exact original Root start/wait1 identity required')
+        birth = _text(started.get('process_birth_seconds'), 'Root original birth')
+        began = _timestamp(started.get('started_at_utc'), 'Root original start')
+        ended = _timestamp(waited.get('finished_at_utc'), 'Root original finish')
+    if (started.get('machine_id') != machine or waited.get('machine_id') != machine
             or _integer(waited.get('original_wait_returncode'), 'Root original exit') != 1):
-        raise ValueError('Exact original Root start/wait1 identity required')
+        raise ValueError('Original Root machine/wait1 differs')
     _integer(started.get('pid'), 'Root original pid', 1)
-    birth = _text(started.get('process_birth_seconds'), 'Root original birth')
     commit = _text(started.get('source_commit'), 'Root original source commit')
     if re.fullmatch(r'[1-9][0-9]*(?:\.[0-9]+)?', birth) is None or re.fullmatch(r'[a-f0-9]{40}', commit) is None:
         raise ValueError('Canonical Root process/source identity required')
-    began = _timestamp(started.get('started_at_utc'), 'Root original start')
-    ended = _timestamp(waited.get('finished_at_utc'), 'Root original finish')
     if began > ended:
         raise ValueError('Root original wait chronology differs')
+    if split:
+        born = datetime.fromtimestamp(float(Decimal(birth)), timezone.utc)
+        if born > began or abs((ended - born).total_seconds() - elapsed_seconds) > 1:
+            raise ValueError('Original split Root birth/elapsed chronology differs')
     frozen = json_object(_pinned_object(bundle.get('frozen'), 'Original Root frozen inputs'))
     manifest = json_object(_pinned_object(frozen.get('runtime_manifest'), 'Original Root runtime manifest'))
     if manifest.get('source_commit') != commit:
@@ -76,7 +207,7 @@ def _root_prelaunch_invocation(bundle: Mapping[str, object], output: Path,
     scene = Path(argument('--scene-root')).resolve()
     if not output.is_relative_to(scene) or not keeper.is_relative_to(scene):
         raise ValueError('Original Root invocation crossed scene')
-    return RootPrelaunchInvocation(tuple(argv), began, ended, Path(argument('--deadline-guard')).resolve())
+    return RootPrelaunchInvocation(tuple(argv), began, ended, Path(argument('--deadline-guard')).resolve(), commit)
 
 
 def _observed_prelaunch_orchestrator(bundle: Mapping[str, object], *, previous: Path,
@@ -163,13 +294,15 @@ def _observed_prelaunch_orchestrator(bundle: Mapping[str, object], *, previous: 
         raise ValueError('Original Root prelaunch STOP differs')
     forbidden = ('ORCHESTRATOR.PUBLIC-RUN.intent.actual.json','ORCHESTRATOR.PUBLIC-RUN.started.actual.json',
         'PUBLIC-RUN.intent.actual.json','LAUNCH-GATES-CONSUMED.actual.json','DEADLINE-GUARD.actual.json')
-    if any((output/name).exists() for name in forbidden) or list(output.glob('DEADLINE-GUARD-*.started.actual.json')):
+    if any((output/name).exists() for name in forbidden):
         raise ValueError('Original Root prelaunch output has later public/guard action evidence')
+    phase_guards = _observed_phase_guards(bundle, invocation, output, previous, machine,
+        ready_at, stamps[4], text_field(armed, 'phase'))
     import psutil
     if any(psutil.pid_exists(pid) for pid in (wrapper, actual)):
         raise ValueError('Original guard wrapper/armed process still present; absence grants no wait code')
     keys = [*names, 'prelaunch_orchestrator_source', 'prelaunch_orchestrator_started', 'prelaunch_orchestrator_wait']
-    return {key: json_object(_evidence_pin(bundle.get(key), key)) for key in keys}
+    return {**{key: json_object(_evidence_pin(bundle.get(key), key)) for key in keys}, **phase_guards}
 
 
 def _prelaunch_source(reference: object, output: Path, keeper: Path,
@@ -1748,6 +1881,9 @@ def build_bundle(args: argparse.Namespace) -> UnrunBundleReport:
             'prelaunch_allocator_wait':'ORCHESTRATOR.ALLOCATE.original-wait.actual.json'}.items()})
     row.update({k:pin(v) for k,v in paths.items()})
     if 'prelaunch_orchestrator_started' in row:
+        phase_guards = _phase_guard_evidence(args.allocator_intent.resolve().parent)
+        if phase_guards:
+            row['prelaunch_phase_guards'] = phase_guards
         evolution = _ttl_recovery_sources(json_object(freeze), output/'ALLOCATED-UNRUN.actual.json', produce=True)
         if evolution is not None:
             row['recovery_reader_evolution'] = json_object(evolution)
