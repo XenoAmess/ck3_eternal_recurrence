@@ -159,7 +159,7 @@ int CatalogueCases(){
  };
  VirtueSinCatalogue value{};const auto read=[&]{return detail::ReadVirtueSinCatalogueRows(binding,
   model.At(0),0x840,0x858,VirtueSinScope::draft,155,core,trait,value);};
- int cases=0;reset();Require(read()&&value.observed&&value.rite_id==155&&value.virtues.size()==2&&value.sins.size()==1,
+ int cases=0;reset();Require(read()&&value.observed&&value.rite_id==155U&&value.virtues.size()==2&&value.sins.size()==1,
   "actual production catalogue reader consumes original cached row ABI");++cases;
  Require(value.virtues[0].trait_id==7&&value.virtues[1].trait_id==2&&
   value.virtues[1].weight_raw==9007199254740993LL&&value.sins[0].weight_raw==std::numeric_limits<std::int64_t>::min()&&
