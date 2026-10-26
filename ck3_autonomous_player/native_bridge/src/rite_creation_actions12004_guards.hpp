@@ -10,6 +10,7 @@ namespace xar::ck3_12004::religion::rite_creation_actions::detail {
 struct SelectedRowArrayHeader {
  const void*data=nullptr;
  std::int32_t capacity=0,count=0;
+ bool operator==(const SelectedRowArrayHeader&)const=default;
 };
 static_assert(sizeof(SelectedRowArrayHeader)==16);
 static_assert(offsetof(SelectedRowArrayHeader,capacity)==8);
@@ -19,6 +20,7 @@ enum class SelectedRowHeaderFailure {none,unreadable,header_misaligned,negative_
  capacity_below_count,count_above_bound,nonempty_rows_missing,rows_misaligned,row_span_overflow};
 struct SelectedRowHeaders {
  SelectedRowArrayHeader tenets{},doctrines{};
+ bool operator==(const SelectedRowHeaders&)const=default;
 };
 inline SelectedRowHeaderFailure ReadSelectedRowHeader(
  const Bindings&b,const void*window,SelectedRowArray kind,SelectedRowArrayHeader&out) noexcept {
@@ -69,6 +71,13 @@ inline bool ReadSelectedRowHeaders(const Bindings&b,const void*window,SelectedRo
   const auto failure=ReadSelectedRowHeader(b,window,kind,header);
   if(failure!=SelectedRowHeaderFailure::none){why=SelectedRowHeaderFailureKey(kind,failure);return false;}
  }
+ return true;
+}
+inline bool SelectedRowHeadersUnchanged(const Bindings&b,const void*window,
+ const SelectedRowHeaders&expected,const char*&why) noexcept {
+ SelectedRowHeaders observed{};
+ if(!ReadSelectedRowHeaders(b,window,observed,why))return false;
+ if(observed!=expected){why="rite_creation_owned_draft_collections_changed";return false;}
  return true;
 }
 // Presence is independent of complete command-preview/model availability.

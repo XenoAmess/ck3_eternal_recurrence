@@ -66,6 +66,20 @@ int SelectedRowHeaderCases(){
  reset();Require(!detail::ReadSelectedRowHeaders(bindings,
   reinterpret_cast<const void*>(std::numeric_limits<std::uintptr_t>::max()-0x777),rows,why)&&
   std::string_view(why)=="rite_creation_selected_tenet_header_unreadable","header address overflow is rejected before read callback");++cases;
+  reset();Require(read(),"capture stores the initial selected-row headers");
+  const auto expected=rows;
+  const auto unchanged=[&]{return detail::SelectedRowHeadersUnchanged(bindings,window.bytes.data(),expected,why);};
+  Require(unchanged()&&!why,"final capture reread accepts the same bounded rows with larger reserve");++cases;
+  window.bytes[0x788]=1;
+  Require(unchanged()&&!why,"both capture reads ignore unconsumed trailing header bytes");++cases;
+  const auto changed=[&]{Require(!unchanged()&&why&&std::string_view(why)=="rite_creation_owned_draft_collections_changed",
+   "final capture reread detects changed selected-row identity");++cases;};
+  reset();window.Header(0x778,window.bytes.data(),256,2);changed();
+  reset();window.Header(0x790,window.bytes.data(),513,31);changed();
+  reset();window.Header(0x790,window.bytes.data()+8,512,31);changed();
+  reset();window.Header(0x790,window.bytes.data(),30,31);
+  Require(!unchanged()&&why&&std::string_view(why)=="rite_creation_selected_doctrine_capacity_below_count",
+   "final capture reread preserves precise malformed-header rejection");++cases;
  return cases;
 }
 }

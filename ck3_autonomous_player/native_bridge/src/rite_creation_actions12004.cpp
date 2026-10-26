@@ -519,9 +519,9 @@ bool Capture(const Bindings&b,const Admission&a,const Frame&f,const Request&r,Pa
  if(matching>1||visible_dialogs>1)return fail("rite_creation_original_modal_not_unique");
  if(!matching){if(visible_dialogs)return fail("rite_creation_unrelated_modal_blocks_draft");p.value.modal={true,ModalStage::none,{},{},{},{}};}
  if(!a.modal_scope_state(a.gui_context,p.modal_root))return fail("rite_creation_actual_modal_receiver_scope_unverified");
- Header t2{},d2{},dialogs2{};
- if(!Array(b,p.window,0x778,t2,64)||t2!=tenets||!Array(b,p.window,0x790,d2,64)||d2!=doctrines||
-    !Array(b,p.manager,0x18,dialogs2,128)||dialogs2!=p.dialogs||!Owner(b,a,f))return fail("rite_creation_owned_draft_collections_changed");
+ if(!detail::SelectedRowHeadersUnchanged(b,p.window,selected_rows,selected_rows_failure))return fail(selected_rows_failure);
+ Header dialogs2{};
+ if(!Array(b,p.manager,0x18,dialogs2,128)||dialogs2!=p.dialogs||!Owner(b,a,f))return fail("rite_creation_owned_draft_collections_changed");
  p.value.available=true;p.value.status="observed";p.value.unavailable_reason.clear();why.clear();return true;
 }
 bool Stable(const Bindings&b,const Admission&a,const Frame&f,const Request&r,const Pass&p) {
