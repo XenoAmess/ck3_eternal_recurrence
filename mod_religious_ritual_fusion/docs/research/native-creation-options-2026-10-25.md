@@ -475,3 +475,11 @@ R0012 已由 Root 正常关闭，native／保留 OS／host／keeper 回执结束
 保留现有默认／延后生命周期：首次申请保存确认之前，可明确保留创建时的默认设置，并通过实际最终内容守卫完成；请求过保存后此入口禁用。延后或 X／ESC 关闭不清会话／减免，纯 scripted-GUI 恢复入口可重新打开同一对象。原生保存只有带 consume_rite_edit_token 的实际 on_rite_updated 及最终 ID／内容守卫才能完成清理。launcher 只消费一次 open flag，不因会话仍 active 重复打开或重置输入。
 
 新增现有测试中的跨消费者检查覆盖正式 manifest、原生 root、保留四 callback、真实 Edit 回调顺序、exact-target 参数、零价资格、核心锁定、MTS 滚动和外部入口不含原生成员；脚本 AST 验证 session gate 与恢复／延后的状态。这些检查不假装拥有原生编辑实例，也不替代下一次真实 UI、保存及冷载验收。本轮按 Root 中央验证安排没有在子代理单独运行 Maven。
+
+## 2026-10-26：完整美德罪恶读回的实际边界
+
+`machine_id: 4-8e1c2f1861`，观察2026-10-26T06:16:41Z；仍绑定本文1.20.0.4 EXE。本次仅源码与既有exact-build研究读取，没有游戏操作。`widget_sins_virtues`读取草案`GetVirtues/GetSins`，行使用`VirtueOrSinItem.GetTrait/GetFullDescription`；图标没有选择动作。用户要求验证随信条、教义变化的原生计算结果，不应新造独立Trait选择器。
+
+当前`ck3_12003_player_rite_virtue_sin_profile.cpp`仅循环actor已持有的Traits，不能代表完整礼仪列表。已有`.4`目录producer可复用：`ck3_12002_phase_character.cpp`实际读取TraitDatabase（getter RVA `0x89e5b0`、slot `0x5c67528`）的`+0x50`对象指针数组和`+0x5c`总数，再结合已绑定classifier `0x2bd8480(trait, Rite+0x950, &record)`可施工完整当前Rite有效分类表。它仍不等于GUI按Trait group展示的草案行；`GetVirtues/GetSins`精确getter与行ABI尚未闭合，不能把source Rite或玩家持有项冒充草案全表。
+
+R17的`persistent_custom_text_unavailable`是另一条真实缺口：`rite_creation_actions12004.cpp`当前依次检查五个持久字符串，任一读取或UTF-8校验失败都返回此原因。现有回执没有失败字段或有界原始结构，因此不能判定根因。N5只修selected-row前缀读取，不覆盖该路径；保存AST和当前Rite独立观测可以证明各自结果，不能抵扣typed verify失败。

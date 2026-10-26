@@ -773,6 +773,8 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -m unittest discover -s tools -p test_ck3_mod_acceptance_unrun_stages.py -v
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m unittest discover -s tools -p test_ck3_mod_acceptance_prelaunch_unrun_admission.py -v
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -m unittest discover -s tools -p test_steam_offline_native_profiles.py -v
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -m mypy --strict --follow-imports=silent tools/steam_offline_native_profiles.py tools/test_steam_offline_native_profiles.py tools/test_ck3_mod_acceptance_unrun_stages.py

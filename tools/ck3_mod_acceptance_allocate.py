@@ -1547,6 +1547,55 @@ class _TTLAdmissionReducer(Protocol):
             keeper_root: Path, release_value: object, bus_value: object, next_state: Path) -> JsonObject: ...
 
 
+@runtime_checkable
+class _PrelaunchUnrunAdmissionReducer(Protocol):
+    def __call__(self, previous: Path, freeze_value: object, close_path: Path,
+            keeper_root: Path, release_value: object, bus_value: object,
+            *, next_state: Path) -> JsonObject: ...
+
+
+def revalidate_prelaunch_unrun_admission(selection: Selection, args: argparse.Namespace,
+        closure: JsonObject) -> JsonObject:
+    """Repeat the actual allocated-unrun reducer inside the machine writer lock."""
+    mode = 'previous-shared-allocated-unrun-prelaunch-orchestrator-failed'
+    if closure.get('mode') != mode:
+        raise ValueError('Exact prelaunch-orchestrator recovery mode required')
+    configured = object_field(json_object(selection.runtime), 'allocation')
+    bus_ref = object_field(configured, 'task_bus')
+    base = selection.runtime_path.parent
+    lease_repo = path_at(text_field(configured, 'lease_repo'), base)
+    bus = path_at(text_field(bus_ref, 'path'), base)
+    digest = text_field(bus_ref, 'sha256')
+    previous, keeper, close, release_path = (getattr(args, name, None) for name in
+        ('previous_live', 'previous_keeper', 'previous_failure_close', 'previous_release'))
+    if not isinstance(previous, Path) or not isinstance(keeper, Path) or not isinstance(close, Path) or not isinstance(release_path, Path):
+        raise ValueError('Actual prelaunch-orchestrator predecessor paths required')
+    original_close = object_field(closure, 'failure_cleanup').get('close')
+    if json_object(pin(close)) != original_close:
+        raise ValueError('Prelaunch recovery closure changed before original writer lock')
+    freeze = json_object(read_json(previous / 'frozen-argv.json'))
+    old_state = path_at(text_field(freeze, 'state_dir'), previous).resolve()
+    next_state = selection.state_dir.resolve()
+    if old_state == next_state or old_state in next_state.parents or next_state in old_state.parents:
+        raise ValueError('Prelaunch recovery requires a separate next state')
+    provider: object = same_directory_control_peer('ck3_mod_acceptance_allocate')
+    if not isinstance(provider, _TTLAdmissionEvidence):
+        raise ValueError('Existing prelaunch recovery evidence provider unavailable')
+    packet = json_object(provider.current_screen_absent(lease_repo, bus.parents[1], digest,
+        selection.state_dir.parent / 'allocation-bus-writer-revalidation'))
+    unrun = same_directory_control_peer('ck3_mod_acceptance_unrun')
+    reducer: object = unrun.validate_allocated_unrun
+    if not isinstance(reducer, _PrelaunchUnrunAdmissionReducer):
+        raise ValueError('Existing allocated-unrun reducer unavailable')
+    renewed = reducer(previous, freeze, close, keeper,
+        provider.read_failed_runtime_release(release_path), packet, next_state=selection.state_dir)
+    if (renewed.get('mode') != mode
+            or object_field(renewed, 'failure_cleanup').get('close') != original_close
+            or json_object(pin(close)) != original_close):
+        raise ValueError('Prelaunch recovery closure changed under original writer lock')
+    return {**closure, **renewed}
+
+
 def revalidate_pre_intent_offline_ttl_admission(selection: Selection, args: argparse.Namespace,
         closure: JsonObject) -> JsonObject:
     """Run the TTL recovery reducer again under the original machine writer lock."""
@@ -3636,6 +3685,8 @@ def claim_machine_admission(binding: MachineBinding, selection: Selection,
     with ids._exclusive_file_lock(root/'chain.lock'):
         if closure['mode']=='previous-shared-allocated-pre-intent-offline-ttl-refused':
             closure.update(revalidate_pre_intent_offline_ttl_admission(selection,args,closure))
+        if closure['mode']=='previous-shared-allocated-unrun-prelaunch-orchestrator-failed':
+            closure.update(revalidate_prelaunch_unrun_admission(selection,args,closure))
         if closure['mode']=='previous-shared-recorder-pre-ready-failure':
             closure.update(revalidate_recorder_pre_ready_admission(selection,args,closure))
         if closure['mode']=='previous-shared-interrupted-owner-quarantined':

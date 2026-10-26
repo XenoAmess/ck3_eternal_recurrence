@@ -422,6 +422,167 @@ raise SystemExit(code)
         with self.assertRaises(ValueError):
             self.parse({**self.bundle, 'allocator_exit': self.reference(other)})
 
+    def prelaunch_fixture(self) -> tuple[dict[str, object], Path, Path, list[datetime]]:
+        """Run a real recorder, threaded Popen waits and mechanical STOP branch."""
+        output=self.root/'work-package/root-prelaunch-test';output.mkdir()
+        keeper=self.root/'work-package/keeper';keeper.mkdir()
+        live=self.root/(self.machine+'--living-artifacts--R0001');live.mkdir();(live/'controls').mkdir()
+        prepared=self.root/'prelaunch-prepared.json';prepared.write_text('{}',encoding='utf8')
+        products=self.root/'prelaunch-products.json';products.write_text(json.dumps({'products':{'living-artifacts':{'external_mod':False}}}),encoding='utf8')
+        state=self.root/'prelaunch-state';ids=self.root/'prelaunch-ids'
+        counter=ids/self.machine/'living-artifacts/counter.json';counter.parent.mkdir(parents=True)
+        counter.write_text(json.dumps({'machine_id':self.machine,'mod_key':'living-artifacts','last_sequence':1}),encoding='utf8')
+        freeze: JsonObject={'run_id':live.name,'screen_task':'fixture-prelaunch-task','state_dir':str(state),'mod_key':'living-artifacts',
+            'source_root':str(self.repo),'lease_anchor':str(self.root),'identity_allocation':{'machine_id':self.machine,'state_root':str(ids)},
+            'files':{str(products.resolve()):json_object(self.reference(products))}}
+        frozen=live/'frozen-argv.json';frozen.write_text(json.dumps(freeze),encoding='utf8')
+        ready=live/'ready-context.json';ready_value={'run_id':live.name,'run_dir':str(live),'keeper_root':str(keeper),
+            'frozen_argv':self.reference(frozen),'prepared_case':self.reference(prepared),'product':'living-artifacts'}
+        ready.write_text(json.dumps(ready_value),encoding='utf8');(live/'allocated-context.json').write_text(json.dumps(ready_value),encoding='utf8')
+        guard=self.root/'fixture-guard.py'
+        guard.write_text(r'''
+from pathlib import Path
+from datetime import datetime,timezone
+import hashlib,json,os,signal,sys,time
+if os.name != 'nt':signal.signal(signal.SIGTERM,lambda *_:sys.exit(1))
+output,live=Path(sys.argv[-1]).parent,Path(sys.argv[sys.argv.index('--live')+1])
+def pin(path):
+    raw=path.read_bytes();return dict(path=str(path.resolve()),bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())
+row=dict(schema='root-external-deadline-guard-armed-v1',machine_id='owned-no-game-fixture',run_id=live.name,
+    live=str(live),ready_context=pin(live/'ready-context.json'),pid=os.getpid(),process_creation_filetime_100ns='1',
+    birth_source='GetProcessTimes(GetCurrentProcess)',guard=pin(Path(__file__)),armed_at_utc=datetime.now(timezone.utc).isoformat(),
+    phase='fixture-phase',state='WAITING_FOR_ACTUAL_FROZEN_AND_PHASE',wait_awaiting_seconds=5400,reserve_seconds=1200,
+    game_or_queue_action_sent=False,deadline_bound=False)
+with (output/'DEADLINE-GUARD.ARMED.actual.json').open('x',encoding='utf8') as f:json.dump(row,f)
+while True:time.sleep(.01)
+''',encoding='utf8')
+        (self.repo/'tools/ck3_mod_acceptance.py').write_text(
+            "from pathlib import Path\nfrom datetime import datetime,timezone\nimport json,time\n"
+            f"keeper=Path({str(keeper)!r})\n"
+            f"live=Path({str(live)!r})\n"
+            "keeper.joinpath('ready.json').write_text(json.dumps({'at_utc':datetime.now(timezone.utc).isoformat(),'lease':{'task_id':'fixture-prelaunch-task','sequence':10}}),encoding='utf8')\n"
+            "while not keeper.joinpath('STOP').exists():time.sleep(.01)\n"
+            "report={'at_utc':datetime.now(timezone.utc).isoformat(),'task_id':'fixture-prelaunch-task','last_sequence':10,'thread_exited':True,'failure':None,'entry_error':None,'game_actions':False}\n"
+            "keeper.joinpath('report.json').write_text(json.dumps(report),encoding='utf8')\n"
+            "live.joinpath('keeper-actual-parent-exit.json').write_text(json.dumps({'run_id':live.name,'keeper_actual_exit_code':0,'keeper_report':report}),encoding='utf8')\n",encoding='utf8')
+        recorder=self.root/'prelaunch-public.py'
+        recorder_source=self.source_raw.decode('utf8').replace("OUT=C/'root-execution-test'","OUT=C/'root-prelaunch-test'")
+        recorder_source=recorder_source.replace("mode]\n", "mode]\nargv += "+repr(['--prepared-case',str(prepared),'--keeper-output',str(keeper),'--products',str(products),'--product','living-artifacts'])+"\n",1)
+        recorder.write_text(recorder_source,encoding='utf8')
+        source=self.root/'orchestrate.py'
+        source.write_text(
+            "from pathlib import Path\nfrom datetime import datetime, timezone\nimport json,subprocess,sys,threading,time\n"
+            f"REPO=Path({str(self.repo)!r})\nOUT=Path({str(output)!r})\nPUBLIC=Path({str(recorder)!r})\n"
+            f"MACHINE={self.machine!r}\nkeeper=Path({str(keeper)!r})\nlive=Path({str(live)!r})\nGUARD=Path({str(guard)!r})\n"
+            f"GUARD_PYTHON={str(Path(sys.base_prefix)/('python.exe' if sys.platform=='win32' else 'bin/python3'))!r}\n"+r'''
+def put(path, value):
+    with path.open('x', encoding='utf-8', newline='\n') as stream:
+        json.dump({'machine_id': MACHINE, 'at': datetime.now(timezone.utc).isoformat(), **value}, stream, indent=2)
+        stream.write('\n')
+def start(label, argv):
+    out = (OUT / (label + '.stdout.log')).open('xb')
+    err = (OUT / (label + '.stderr.log')).open('xb')
+    child = subprocess.Popen(argv, cwd=REPO, stdout=out, stderr=err)
+    put(OUT / (label + '.started.actual.json'), {'argv': argv, 'pid': child.pid, 'original_wait_pending': True})
+    def wait():
+        code = child.wait()
+        out.close()
+        err.close()
+        put(OUT / (label + '.original-wait.actual.json'), {'original_wait_returncode': code})
+    thread = threading.Thread(target=wait, daemon=False)
+    thread.start()
+    return child, thread
+allocate, allocate_thread=start('ORCHESTRATOR.ALLOCATE',[sys.executable,'-B','-X','utf8',str(PUBLIC),'allocate'])
+guard = guard_thread = None
+public_started = False
+try:
+    while not (keeper/'ready.json').exists():time.sleep(.01)
+    guard,guard_thread=start('DEADLINE-GUARD',[GUARD_PYTHON,'-B','-X','utf8',str(GUARD),'--live',str(live),
+        '--ready-context',str(live/'ready-context.json'),'--run-id',live.name,'--phase','fixture-phase','--reserve-seconds','1200',
+        '--wait-awaiting-seconds','5400','--armed',str(OUT/'DEADLINE-GUARD.ARMED.actual.json'),'--output',str(OUT/'DEADLINE-GUARD.actual.json')])
+    while not (OUT/'DEADLINE-GUARD.ARMED.actual.json').exists():time.sleep(.01)
+    raise KeyError('revision')
+    public_started = True
+except BaseException as error:
+    put(OUT / 'ORCHESTRATOR.failure.actual.json', {'error': repr(error),
+        'public_started': public_started, 'business_pass': False})
+    print('ORCHESTRATOR_FAILURE_PRESERVED', repr(error), flush=True)
+    if not public_started:
+        if keeper.is_dir() and not (keeper / 'STOP').exists():
+            (keeper / 'STOP').write_text('Root mechanical prelaunch refused before public run\n', encoding='utf-8')
+        if guard is not None and guard.poll() is None:
+            put(OUT / 'DEADLINE-GUARD.CANCEL.actual.json', {'pid': guard.pid,
+                'reason': 'Mechanical prelaunch refused before public run; cancel retained Root helper'})
+            guard.terminate()
+finally:
+    print('PUBLIC_STAGE_ENDED_KEEPER_REQUIRES_ROOT_CLOSURE', flush=True)
+    if guard_thread is not None:
+        guard_thread.join()
+    allocate_thread.join()
+    print('ALL_ORIGINAL_OPERATOR_CHILD_WAITS_CONSUMED', flush=True)
+''',encoding='utf8')
+        child=subprocess.run([sys.executable,'-B','-X','utf8',str(source)],cwd=self.repo,capture_output=True,timeout=20)
+        self.assertEqual(child.returncode,0,child.stderr)
+        bundle: dict[str, object]={'allocator_intent':self.reference(output/'ALLOCATE.intent.actual.json'),
+            'allocator_process':self.reference(output/'ALLOCATE.started.actual.json'),
+            'allocator_exit':self.reference(output/'ALLOCATE.original-wait.actual.json'),
+            'allocator_command':self.reference(recorder),'prelaunch_orchestrator_source':self.reference(source),
+            'ready':self.reference(ready),'keeper_STOP':self.reference(keeper/'STOP')}
+        for key,name in {'prelaunch_failure':'ORCHESTRATOR.failure.actual.json',
+            'prelaunch_guard_started':'DEADLINE-GUARD.started.actual.json','prelaunch_guard_armed':'DEADLINE-GUARD.ARMED.actual.json',
+            'prelaunch_guard_cancel':'DEADLINE-GUARD.CANCEL.actual.json','prelaunch_guard_wait':'DEADLINE-GUARD.original-wait.actual.json',
+            'prelaunch_allocator_wait':'ORCHESTRATOR.ALLOCATE.original-wait.actual.json'}.items():bundle[key]=self.reference(output/name)
+        cas={'schema':'codex.task_bus.v1','ok':True,'task':{'task_id':'fixture-prelaunch-task','state':'waiting','resources':[],'last_sequence':11},
+            'event':{'task_id':'fixture-prelaunch-task','kind':'status','resources':[],'sequence':11}}
+        done={'schema':'codex.task_bus.v1','ok':True,'task':{'task_id':'fixture-prelaunch-task','state':'done','resources':[],'last_sequence':12},
+            'event':{'task_id':'fixture-prelaunch-task','kind':'completed','resources':[],'sequence':12}}
+        for key,value in (('CAS_release',cas),('admin_done',done)):
+            path=self.root/(key+'.json');path.write_text(json.dumps(value),encoding='utf8');bundle[key]=self.reference(path)
+        for key,path in {'frozen':frozen,'allocated_context':live/'allocated-context.json','keeper':keeper/'report.json',
+                'keeper_parent_exit':live/'keeper-actual-parent-exit.json','keeper_ready':keeper/'ready.json','counter':counter}.items():bundle[key]=self.reference(path)
+        allocated={'status':'ACTUAL_ALLOCATED_KEEPER_READY_NOT_RUN','task':'fixture-prelaunch-task','live':str(live),'keeper_root':str(keeper)}
+        stdout=self.root/'fixture-allocator-ready.json';stdout.write_text(json.dumps(allocated),encoding='utf8');bundle['allocator_stdout']=self.reference(stdout)
+        bundle.update(schema=subject.SCHEMA,closure_kind=subject.PRELAUNCH_KIND,machine_id=self.machine,run_id=live.name,
+            **{key:False for key in ('host_started','native_session_started','game_started','normal_close_qualified','original_host_exit0','business_pass')})
+        stamps=[datetime.fromisoformat(str(subject._read(keeper/name)['at_utc'])) for name in ('ready.json','report.json')]
+        return bundle,live,keeper,stamps
+
+    def test_real_prelaunch_producer_observed_waits_and_json_round_trip(self) -> None:
+        bundle,live,keeper,stamps=self.prelaunch_fixture()
+        value=json_object(json.loads(json.dumps(bundle)))
+        evidence=subject.validate_prelaunch_orchestrator(value,previous=live,keeper=keeper,machine=self.machine,
+            ready_at=stamps[0],keeper_closed_at=stamps[1])
+        self.assertIn('prelaunch_guard_wait',evidence)
+        self.assertEqual(subject._allocator_argv(value,self.machine,stamps)[5],'allocate')
+        self.assertLess((stamps[1]-stamps[0]).total_seconds(),600)
+
+    def test_prelaunch_wrong_fields_types_source_pid_chronology_and_action_reject(self) -> None:
+        bundle,live,keeper,stamps=self.prelaunch_fixture()
+        def invoke(value: Mapping[str, object]) -> JsonObject:
+            return subject.validate_prelaunch_orchestrator(value,previous=live,keeper=keeper,machine=self.machine,
+                ready_at=stamps[0],keeper_closed_at=stamps[1])
+        cases: tuple[tuple[str,str,JsonValue],...]=(
+            ('prelaunch_failure','public_started',True),('prelaunch_failure','public_started',0),
+            ('prelaunch_failure','business_pass',True),('prelaunch_failure','alias',False),
+            ('prelaunch_guard_cancel','pid',True),('prelaunch_guard_cancel','pid',1),
+            ('prelaunch_guard_wait','original_wait_returncode',False),('prelaunch_guard_wait','original_wait_returncode',0),
+            ('prelaunch_guard_armed','reserve_seconds',1200.0),('prelaunch_guard_armed','game_or_queue_action_sent',True),
+            ('prelaunch_guard_armed','run_id','different-run'),('prelaunch_guard_wait','at',stamps[0].isoformat()))
+        for key,field,bad in cases:
+            original=subject._evidence_pin(bundle[key],key);path=Path(original['path']);raw=path.read_bytes()
+            changed=json.loads(raw);changed[field]=bad;path.write_text(json.dumps(changed),encoding='utf8')
+            with self.subTest(key=key,field=field),self.assertRaises(ValueError):invoke({**bundle,key:self.reference(path)})
+            path.write_bytes(raw)
+        missing=dict(bundle);del missing['prelaunch_guard_wait']
+        with self.assertRaises(ValueError):invoke(missing)
+        source=Path(subject._evidence_pin(bundle['prelaunch_orchestrator_source'],'source')['path'])
+        raw=source.read_bytes();source.write_text(raw.decode().replace('code = child.wait()','code = 0'),encoding='utf8')
+        with self.assertRaises(ValueError):invoke({**bundle,'prelaunch_orchestrator_source':self.reference(source)})
+        source.write_bytes(raw)
+        action=Path(subject._evidence_pin(bundle['prelaunch_guard_wait'],'wait')['path']).parent/'PUBLIC-RUN.intent.actual.json'
+        action.write_text('{}',encoding='utf8')
+        with self.assertRaises(ValueError):invoke(bundle)
+
 
 class AbortedAllocationTests(unittest.TestCase):
     """Run the real bundle producer and consumer; only OS observers are fixtures."""

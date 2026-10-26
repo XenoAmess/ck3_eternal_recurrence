@@ -132,7 +132,9 @@ def main():
     keeper_ready=subject._read(bundle['keeper_ready']['path']);keeper_report=subject._read(bundle['keeper']['path'])
     allocator_checks=allocator_original_checks(bundle,bundle['machine_id'],
         [datetime.fromisoformat(keeper_ready['at_utc']),datetime.fromisoformat(keeper_report['at_utc'])])
-    expected_mode=('previous-shared-allocated-unrun-launcher-pin-refused' if
+    expected_mode=('previous-shared-allocated-unrun-prelaunch-orchestrator-failed' if
+        bundle.get('closure_kind')==subject.PRELAUNCH_KIND else
+        'previous-shared-allocated-unrun-launcher-pin-refused' if
         bundle.get('closure_kind')=='launcher-pin-admission-refused-before-launch-intent' else 'previous-shared-allocated-unrun-idle')
     need(verdict['mode']==expected_mode,'Allocated-only closure mode differs')
     need(verdict['failure_cleanup']['typed_normal_exit_proven'] is False,'Unexpected normal exit credit')

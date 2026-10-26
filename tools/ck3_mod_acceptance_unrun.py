@@ -17,6 +17,199 @@ from ck3_mod_acceptance_background_types import FilePin, JsonObject, file_pin, j
 SCHEMA = 'ck3-mod-acceptance-allocated-unrun-closure-v1'
 ABORTED_KIND = 'wrapper-aborted-before-launch-without-terminal-waits'
 OFFLINE_TTL_KIND: Literal['pre-intent-background-offline-ttl-refused'] = 'pre-intent-background-offline-ttl-refused'
+PRELAUNCH_KIND: Literal['prelaunch-orchestrator-failed-with-observed-waits'] = 'prelaunch-orchestrator-failed-with-observed-waits'
+
+
+def _prelaunch_source(reference: object, output: Path, keeper: Path,
+        allocator_command: object, machine: str) -> None:
+    """Bind original failure/STOP/cancellation records to their real writer."""
+    source = _evidence_pin(reference, 'Prelaunch orchestrator source')
+    path = Path(source['path'])
+    if not path.is_absolute() or path.is_symlink() or not 0 < source['bytes'] <= 1048576:
+        raise ValueError('Bounded original prelaunch orchestrator source required')
+    check_pin(path, dict(source))
+    tree = ast.parse(path.read_text(encoding='utf-8-sig'))
+    assignments = {node.targets[0].id: node.value for node in tree.body
+        if isinstance(node, ast.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name)}
+
+    def location(node: ast.expr, seen: tuple[str, ...] = ()) -> Path:
+        if isinstance(node, ast.Name) and node.id in assignments and node.id not in seen:
+            return location(assignments[node.id], (*seen, node.id))
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id == 'Path' and len(node.args) == 1 and not node.keywords:
+            return location(node.args[0], seen)
+        if isinstance(node, ast.Constant) and isinstance(node.value, str):
+            return Path(node.value)
+        if isinstance(node, ast.Attribute) and node.attr == 'parent':
+            return location(node.value, seen).parent
+        if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Div) and isinstance(node.right, ast.Constant) and isinstance(node.right.value, str):
+            return location(node.left, seen) / node.right.value
+        raise ValueError('Prelaunch original source path expression differs')
+
+    command = _evidence_pin(allocator_command, 'Prelaunch public recorder')
+    required = {'OUT': output, 'keeper': keeper, 'PUBLIC': Path(command['path'])}
+    machine_node = assignments.get('MACHINE')
+    if any(name not in assignments or location(assignments[name]).resolve() != expected.resolve()
+            for name, expected in required.items()) or not isinstance(machine_node, ast.Constant) or machine_node.value != machine:
+        raise ValueError('Prelaunch original source machine/output/public recorder differs')
+    signatures = ast.parse(r'''
+def put(path, value):
+    with path.open('x', encoding='utf-8', newline='\n') as stream:
+        json.dump({'machine_id': MACHINE, 'at': datetime.now(timezone.utc).isoformat(), **value}, stream, indent=2)
+        stream.write('\n')
+def start(label, argv):
+    out = (OUT / (label + '.stdout.log')).open('xb')
+    err = (OUT / (label + '.stderr.log')).open('xb')
+    child = subprocess.Popen(argv, cwd=REPO, stdout=out, stderr=err)
+    put(OUT / (label + '.started.actual.json'), {'argv': argv, 'pid': child.pid, 'original_wait_pending': True})
+    def wait():
+        code = child.wait()
+        out.close()
+        err.close()
+        put(OUT / (label + '.original-wait.actual.json'), {'original_wait_returncode': code})
+    thread = threading.Thread(target=wait, daemon=False)
+    thread.start()
+    return child, thread
+''').body
+    for signature in signatures:
+        if sum(ast.dump(node) == ast.dump(signature) for node in tree.body) != 1:
+            raise ValueError('Prelaunch source original Popen/wait/exclusive publisher differs')
+    allocation = ast.parse("allocate, allocate_thread = start('ORCHESTRATOR.ALLOCATE', [sys.executable, '-B', '-X', 'utf8', str(PUBLIC), 'allocate'])").body[0]
+    if sum(ast.dump(node) == ast.dump(allocation) for node in tree.body) != 1:
+        raise ValueError('Prelaunch source original public allocator invocation differs')
+    expected = ast.parse(r'''
+try:
+    pass
+except BaseException as error:
+    put(OUT / 'ORCHESTRATOR.failure.actual.json', {'error': repr(error),
+        'public_started': public_started, 'business_pass': False})
+    print('ORCHESTRATOR_FAILURE_PRESERVED', repr(error), flush=True)
+    if not public_started:
+        if keeper.is_dir() and not (keeper / 'STOP').exists():
+            (keeper / 'STOP').write_text('Root mechanical prelaunch refused before public run\n', encoding='utf-8')
+        if guard is not None and guard.poll() is None:
+            put(OUT / 'DEADLINE-GUARD.CANCEL.actual.json', {'pid': guard.pid,
+                'reason': 'Mechanical prelaunch refused before public run; cancel retained Root helper'})
+            guard.terminate()
+finally:
+    print('PUBLIC_STAGE_ENDED_KEEPER_REQUIRES_ROOT_CLOSURE', flush=True)
+    if guard_thread is not None:
+        guard_thread.join()
+    allocate_thread.join()
+    print('ALL_ORIGINAL_OPERATOR_CHILD_WAITS_CONSUMED', flush=True)
+''').body[0]
+    if not isinstance(expected, ast.Try):
+        raise ValueError('Internal prelaunch source signature unavailable')
+    tries = [node for node in tree.body if isinstance(node, ast.Try)]
+    if len(tries) != 1 or [ast.dump(node) for node in tries[0].handlers] != [ast.dump(node) for node in expected.handlers] or [ast.dump(node) for node in tries[0].finalbody] != [ast.dump(node) for node in expected.finalbody]:
+        raise ValueError('Prelaunch source failure/STOP/cancel/final original waits differ')
+    required_imports = {'Path': ('pathlib', 'Path'), 'datetime': ('datetime', 'datetime'), 'timezone': ('datetime', 'timezone')}
+    for name, (module, imported) in required_imports.items():
+        found = [alias for node in tree.body if isinstance(node, ast.ImportFrom) and node.module == module and node.level == 0 for alias in node.names if alias.name == imported and alias.asname is None]
+        if len(found) != 1:
+            raise ValueError('Prelaunch source original imports differ')
+    protected = {'json', 'subprocess', 'threading', 'datetime', 'timezone', 'Path', 'put', 'start'}
+    for name in protected:
+        definitions = [node for node in ast.walk(tree) if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) and node.name == name]
+        if len(definitions) != (1 if name in ('put', 'start') else 0):
+            raise ValueError('Prelaunch source original callable binding differs')
+    for name in ('json', 'subprocess', 'threading'):
+        if sum(alias.name == name and alias.asname is None for node in tree.body if isinstance(node, ast.Import) for alias in node.names) != 1:
+            raise ValueError('Prelaunch source original module imports differ')
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.Import, ast.ImportFrom)):
+            for alias in node.names:
+                if alias.name == '*':
+                    raise ValueError('Prelaunch source wildcard import differs')
+                bound = alias.asname or alias.name.split('.')[0]
+                if bound in protected and alias.asname is not None:
+                    raise ValueError('Prelaunch source original import alias differs')
+        if isinstance(node, ast.Name) and isinstance(node.ctx, (ast.Store, ast.Del)) and node.id in protected:
+            raise ValueError('Prelaunch source original imported binding was reassigned')
+        if isinstance(node, ast.arg) and node.arg in protected or isinstance(node, ast.ExceptHandler) and node.name in protected:
+            raise ValueError('Prelaunch source original binding was shadowed')
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id in ('exec', 'eval', 'globals', 'locals', 'setattr', 'delattr'):
+            raise ValueError('Prelaunch source dynamic binding differs')
+        if isinstance(node, (ast.Assign, ast.AnnAssign, ast.NamedExpr)) and isinstance(node.value, ast.Name) and node.value.id in protected:
+            raise ValueError('Prelaunch source imported object alias differs')
+        if isinstance(node, (ast.Attribute, ast.Subscript)) and isinstance(node.ctx, (ast.Store, ast.Del)):
+            target = node.value
+            while isinstance(target, (ast.Attribute, ast.Subscript)):
+                target = target.value
+            if isinstance(target, ast.Name) and target.id in protected:
+                raise ValueError('Prelaunch source imported object mutation differs')
+    writes = [node.value for node in ast.walk(tree) if isinstance(node, ast.Assign) and any(isinstance(target, ast.Name) and target.id == 'public_started' for target in node.targets)]
+    if [ast.dump(node) for node in writes] != [ast.dump(ast.Constant(False)), ast.dump(ast.Constant(True))]:
+        raise ValueError('Prelaunch source public-started state differs')
+
+
+def validate_prelaunch_orchestrator(bundle: Mapping[str, object], *, previous: Path,
+        keeper: Path, machine: str, ready_at: datetime, keeper_closed_at: datetime) -> JsonObject:
+    """Validate an actual mechanical refusal; grant only administrative closure."""
+    intent_ref = _evidence_pin(bundle.get('allocator_intent'), 'Prelaunch allocator intent')
+    output = Path(intent_ref['path']).resolve().parent
+    _prelaunch_source(bundle.get('prelaunch_orchestrator_source'), output, keeper,
+        bundle.get('allocator_command'), machine)
+    names = {'prelaunch_failure': 'ORCHESTRATOR.failure.actual.json',
+        'prelaunch_guard_started': 'DEADLINE-GUARD.started.actual.json',
+        'prelaunch_guard_armed': 'DEADLINE-GUARD.ARMED.actual.json',
+        'prelaunch_guard_cancel': 'DEADLINE-GUARD.CANCEL.actual.json',
+        'prelaunch_guard_wait': 'DEADLINE-GUARD.original-wait.actual.json',
+        'prelaunch_allocator_wait': 'ORCHESTRATOR.ALLOCATE.original-wait.actual.json'}
+    rows: dict[str, JsonObject] = {}
+    for key, filename in names.items():
+        ref = _evidence_pin(bundle.get(key), key)
+        if Path(ref['path']).resolve() != output / filename:
+            raise ValueError('Prelaunch original output path differs: ' + key)
+        rows[key] = json_object(_pinned_object(ref, key))
+    failure, started, armed, cancel, waited, allocated = (rows[key] for key in names)
+    shapes = ({'machine_id','at','error','public_started','business_pass'}, {'machine_id','at','argv','pid','original_wait_pending'},
+        {'schema','machine_id','run_id','live','ready_context','pid','process_creation_filetime_100ns','birth_source','guard','armed_at_utc','phase','state','wait_awaiting_seconds','reserve_seconds','game_or_queue_action_sent','deadline_bound'},
+        {'machine_id','at','pid','reason'}, {'machine_id','at','original_wait_returncode'}, {'machine_id','at','original_wait_returncode'})
+    if any(set(row) != shape or row.get('machine_id') != machine for row, shape in zip(rows.values(), shapes)):
+        raise ValueError('Exact original prelaunch fields/machine required')
+    if failure.get('public_started') is not False or failure.get('business_pass') is not False or not _text(failure.get('error'), 'Prelaunch error'):
+        raise ValueError('Prelaunch original failure cannot grant public/business credit')
+    pid = _integer(started.get('pid'), 'Prelaunch guard pid', 1)
+    if (_integer(cancel.get('pid'), 'Prelaunch canceled guard pid', 1) != pid or _integer(armed.get('pid'), 'Prelaunch armed guard pid', 1) != pid
+            or started.get('original_wait_pending') is not True or _integer(waited.get('original_wait_returncode'), 'Prelaunch guard original wait') != 1
+            or _integer(allocated.get('original_wait_returncode'), 'Prelaunch recorder original wait') != 0
+            or cancel.get('reason') != 'Mechanical prelaunch refused before public run; cancel retained Root helper'):
+        raise ValueError('Prelaunch original cancellation/observed waits differ')
+    birth = _text(armed.get('process_creation_filetime_100ns'), 'Prelaunch guard native birth')
+    if re.fullmatch(r'[1-9][0-9]*', birth) is None or int(birth) > 18446744073709551615:
+        raise ValueError('Prelaunch guard birth must be canonical uint64 decimal')
+    if (armed.get('schema') != 'root-external-deadline-guard-armed-v1' or armed.get('run_id') != previous.name
+            or Path(text_field(armed, 'live')).resolve() != previous or _evidence_pin(armed.get('ready_context'), 'Prelaunch ready') != _evidence_pin(bundle.get('ready'), 'Allocated ready')
+            or armed.get('birth_source') != 'GetProcessTimes(GetCurrentProcess)' or armed.get('state') != 'WAITING_FOR_ACTUAL_FROZEN_AND_PHASE'
+            or armed.get('game_or_queue_action_sent') is not False or armed.get('deadline_bound') is not False
+            or _integer(armed.get('reserve_seconds'), 'Prelaunch guard reserve', 1) != 1200
+            or _integer(armed.get('wait_awaiting_seconds'), 'Prelaunch guard bound', 1) != 5400):
+        raise ValueError('Prelaunch original armed guard crossed allocated scene or sent action')
+    guard = _evidence_pin(armed.get('guard'), 'Prelaunch guard source')
+    check_pin(Path(guard['path']), dict(guard))
+    argv = strings_field(started, 'argv')
+    expected_tail = ['-B','-X','utf8',guard['path'],'--live',str(previous),'--ready-context',str(previous/'ready-context.json'),
+        '--run-id',previous.name,'--phase',text_field(armed,'phase'),'--reserve-seconds','1200','--wait-awaiting-seconds','5400',
+        '--armed',str(output/'DEADLINE-GUARD.ARMED.actual.json'),'--output',str(output/'DEADLINE-GUARD.actual.json')]
+    if len(argv) != len(expected_tail) + 1 or argv[1:] != expected_tail:
+        raise ValueError('Prelaunch original guard argv differs')
+    stamps = [ready_at, _timestamp(started.get('at'), 'Prelaunch guard start'), _timestamp(armed.get('armed_at_utc'), 'Prelaunch armed'),
+        _timestamp(failure.get('at'), 'Prelaunch failure'), _timestamp(cancel.get('at'), 'Prelaunch cancel'),
+        _timestamp(waited.get('at'), 'Prelaunch guard wait')]
+    allocator_finish = _timestamp(_pinned_object(bundle.get('allocator_exit'), 'Prelaunch allocator wait').get('finished_at_utc'), 'Prelaunch allocator finished')
+    outer_finish = _timestamp(allocated.get('at'), 'Prelaunch recorder finished')
+    if stamps != sorted(stamps) or not stamps[3] <= keeper_closed_at <= allocator_finish <= outer_finish or any(stamp.utcoffset() != timezone.utc.utcoffset(stamp) for stamp in [*stamps, keeper_closed_at, allocator_finish, outer_finish]):
+        raise ValueError('Prelaunch original failure/STOP/observed waits chronology differs')
+    stop = _evidence_pin(bundle.get('keeper_STOP'), 'Prelaunch keeper STOP')
+    if Path(stop['path']).resolve() != keeper/'STOP':
+        raise ValueError('Prelaunch STOP crossed keeper')
+    check_pin(keeper/'STOP', dict(stop))
+    if (keeper/'STOP').read_text(encoding='utf8') != 'Root mechanical prelaunch refused before public run\n':
+        raise ValueError('Prelaunch original STOP differs')
+    if any((output/name).exists() for name in ('ORCHESTRATOR.PUBLIC-PRELUDE.started.actual.json','ORCHESTRATOR.READY-TO-RUN.actual.json',
+            'PUBLIC-RUN.intent.actual.json','DEADLINE-GUARD.actual.json')):
+        raise ValueError('Prelaunch original output has public/action evidence')
+    return {key: json_object(_evidence_pin(bundle.get(key), key)) for key in [*names, 'prelaunch_orchestrator_source']}
 
 
 @runtime_checkable
@@ -1134,12 +1327,18 @@ def validate_allocated_unrun(previous, freeze, close_path, keeper_root, release,
          and parent.get('run_id')==run and parent.get('keeper_actual_exit_code')==0
          and parent.get('keeper_report')==keeper,'Original idle keeper STOP/wait0 unavailable')
     cooperative=bundle.get('closure_kind')=='launcher-pin-admission-refused-before-launch-intent'
-    need(bundle.get('closure_kind') is None or cooperative,'Unknown allocated-unrun closure kind')
+    prelaunch=bundle.get('closure_kind')==PRELAUNCH_KIND
+    need(bundle.get('closure_kind') is None or cooperative or prelaunch,'Unknown allocated-unrun closure kind')
     refusal_evidence={}
+    keeper_ready=_exact(bundle,'keeper_ready',keeper_root/'ready.json')
     if cooperative:
         refusal_evidence=validate_launcher_pin_refusal(bundle['launcher_pin_refusal'],frozen=freeze,
             live=previous,keeper=keeper_root,machine_id=machine)
         need(bundle['keeper_STOP']==refusal_evidence['keeper_stop'],'Cooperative STOP references differ')
+    elif prelaunch:
+        refusal_evidence=validate_prelaunch_orchestrator(bundle,previous=previous,keeper=keeper_root,machine=machine,
+            ready_at=_timestamp(keeper_ready.get('at_utc'),'Prelaunch keeper ready'),
+            keeper_closed_at=_timestamp(keeper.get('at_utc'),'Prelaunch keeper finished'))
     else:
         idle=_exact(bundle,'idle_timeout',previous/'allocation-unused-idle-timeout.json')
         stop=bundle['keeper_STOP'];need(Path(stop['path']).resolve()==keeper_root/'STOP','Original STOP crossed keeper')
@@ -1148,11 +1347,10 @@ def validate_allocated_unrun(previous, freeze, close_path, keeper_root, release,
              and idle.get('reason')=='NEVER_LAUNCHED_ALLOCATION_IDLE_TIMEOUT' and idle.get('idle_seconds')==600
              and all(idle.get(k) is False for k in ('game_started','native_session_started','normal_close_qualified','business_pass')),
              'Original unused idle STOP differs')
-    keeper_ready=_exact(bundle,'keeper_ready',keeper_root/'ready.json')
-    stamps=[datetime.fromisoformat(v) for v in ((keeper_ready['at_utc'],keeper['at_utc']) if cooperative else
+    stamps=[datetime.fromisoformat(v) for v in ((keeper_ready['at_utc'],keeper['at_utc']) if cooperative or prelaunch else
         (keeper_ready['at_utc'],idle['utc'],keeper['at_utc']))]
     need(all(x.tzinfo is not None for x in stamps) and stamps==sorted(stamps)
-         and (cooperative or (stamps[1]-stamps[0]).total_seconds()>=600),'Original unused interval unproven')
+         and (cooperative or prelaunch or (stamps[1]-stamps[0]).total_seconds()>=600),'Original unused interval unproven')
     argv=_allocator_argv(bundle,machine,stamps)
     def argument(name):
         need(argv.count(name)==1 and argv.index(name)+1<len(argv),'Original allocator argument missing: '+name)
@@ -1205,7 +1403,8 @@ def validate_allocated_unrun(previous, freeze, close_path, keeper_root, release,
     inventory={**runtime_process_inventory(psutil,os.getpid()),'machine_id':machine,
                'observed_at_utc':datetime.now(timezone.utc).isoformat()}
     need(not inventory['blockers'],'Allocated-unrun predecessor process still running: '+repr(inventory['blockers']))
-    return {'mode':'previous-shared-allocated-unrun-launcher-pin-refused' if cooperative else 'previous-shared-allocated-unrun-idle','actual_process_inventory':inventory,
+    return {'mode':('previous-shared-allocated-unrun-prelaunch-orchestrator-failed' if prelaunch else
+        'previous-shared-allocated-unrun-launcher-pin-refused' if cooperative else 'previous-shared-allocated-unrun-idle'),'actual_process_inventory':inventory,
         'failure_cleanup':{'close':pin(close_path),'original_evidence':{**{k:v for k,v in bundle.items() if k!='counter' and isinstance(v,dict) and 'sha256' in v},**refusal_evidence},
             'absent_launch_native_control_Save':absent,'original_keeper_wait_proven':True,'original_keeper_exit_code':0,
             'host_started':False,'native_session_started':False,'original_host_exit_code':None,
@@ -1335,6 +1534,21 @@ def build_bundle(args: argparse.Namespace) -> UnrunBundleReport:
         paths['launcher_pin_refusal']=args.launcher_pin_refusal
         need(getattr(args,'allocator_command',None),'Cooperative original wrapper allocator command required')
         paths['allocator_command']=args.allocator_command
+    if getattr(args,'prelaunch_orchestrator_source',None):
+        need(not getattr(args,'launcher_pin_refusal',None) and getattr(args,'allocator_command',None)
+             and args.allocator_intent and args.allocator_process and args.allocator_exit,
+             'Prelaunch closure requires the original Root triplet and recorder only')
+        row['closure_kind']=PRELAUNCH_KIND
+        paths.pop('idle_timeout')
+        paths['prelaunch_orchestrator_source']=args.prelaunch_orchestrator_source
+        original_output=args.allocator_intent.resolve().parent
+        paths.update({key:original_output/name for key,name in {
+            'prelaunch_failure':'ORCHESTRATOR.failure.actual.json',
+            'prelaunch_guard_started':'DEADLINE-GUARD.started.actual.json',
+            'prelaunch_guard_armed':'DEADLINE-GUARD.ARMED.actual.json',
+            'prelaunch_guard_cancel':'DEADLINE-GUARD.CANCEL.actual.json',
+            'prelaunch_guard_wait':'DEADLINE-GUARD.original-wait.actual.json',
+            'prelaunch_allocator_wait':'ORCHESTRATOR.ALLOCATE.original-wait.actual.json'}.items()})
     row.update({k:pin(v) for k,v in paths.items()});bundle=_write(output/'ALLOCATED-UNRUN.actual.json',row)
     release=read_failed_runtime_release(Path(proofs['admin_done']['path']))
     bus=args.task_bus_root/'bin/codex_task_bus.py'
@@ -1394,6 +1608,7 @@ def main() -> None:
     p.add_argument('--admin-release',type=Path)
     p.add_argument('--next-state',type=Path)
     p.add_argument('--launcher-pin-refusal',type=Path)
+    p.add_argument('--prelaunch-orchestrator-source',type=Path)
     p.add_argument('--pre-intent-offline-run-result',type=Path)
     p.add_argument('--public-run-stdout',type=Path)
     p.add_argument('--public-run-stderr',type=Path)
