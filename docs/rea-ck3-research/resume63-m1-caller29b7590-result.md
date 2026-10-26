@@ -14,7 +14,7 @@ Incoming RCX is saved inR10. The caller takes raw32 `[original+8]`, masks24 bits
 | R9 | address5C96288 fromLEA; its content was not read |
 | Fifth low byte | caller `[RSP+20]=0`, corresponding to callee entry `[RSP+28]`; higher bytes unknown |
 
-All normal local branches converge on the call. The caller performs no qualification test on its result; ADD RSP/RET forwards the callee's raw RAX. Within the previously retained [writer](resume63-m1-member-validity-result.md), this zero byte cannot take the nonzero-byte bypass once that branch is reached. Earlier duplicate/invalid-member returns can still prevent append. This is not a guarantee of successful membership or persistent validity.
+All normal local branches converge on the call. The caller performs no qualification test on its result; ADD RSP/RET forwards the callee's raw RAX. Within the previously retained [writer](resume63-m1-member-validity-result.md), this zero byte cannot take the nonzero-byte bypass once that branch is reached. Its duplicate-membership precheck can still return before the flag. This is not a guarantee of successful membership or persistent validity.
 
 The original input record's class, both ID producers, registry naming, R9 data and the actual natural/AI/GUI producer remain unknown. No target rebinding, inheritance trigger, whole-program validation guarantee, purity or opaque-call effects were established. The retained writer's local mechanism does not fill these source gaps.
 

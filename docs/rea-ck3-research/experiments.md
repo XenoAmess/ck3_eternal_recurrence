@@ -229,3 +229,7 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`。[独立结果](resume63-m1-base2
 ### Resume63 C10/C11
 
 [Stream locator](resume63-m1-inbound2603af0-text-result.md): mapped.text71141448 B, six raw candidates, no fulltext copy. [Smallest96B caller](resume63-m1-caller29b7590-result.md):25ops/6blocks9edges, actual CALL2603AF0 and fifth low byte0. Independent reviews retained; minimum closes146.547/86.948s are separate from later receipts and full preparation. No other five bodies, producer or Game qualification.
+
+### Resume63 C12
+
+[Caller2CE6790](resume63-m1-caller2ce6790-result.md): fixed RF12+685newB,160 instructions/32blocks51edges; actual CALL2CE697F passes fifth lowbyte1. Minimum close65.033s/owned0 preceded later independent review. Sole gzip exports retain original and compressed hashes. Duplicate precheck remains an earlier-return counterexample; previous invalid-member preflag-return wording was unproven and is narrowed forward. No natural/AI/append or Game qualification.

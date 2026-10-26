@@ -128,3 +128,7 @@ The [16KiB locator](resume63-m1-inbound2603af0-local-result.md) found no E8rel32
 ### Resume63 C10/C11: locating and checking an actual caller
 
 The [single-target stream](resume63-m1-inbound2603af0-text-result.md) found six raw E8 candidates without fulltext persistence. A separately authorized [96B RF](resume63-m1-caller29b7590-result.md) verified one CALL and its zero fifth-argument byte; five candidates remain raw. This narrows parameter flow without naming the natural/AI producer or guaranteeing append.
+
+### Resume63 C12: a genuine nonzero-byte caller
+
+The [685B caller](resume63-m1-caller2ce6790-result.md) supplies fifth lowbyte1 to2603AF0, with160 instructions/32blocks/51edges independently checked. It also probes member-row existence after the call; this does not prove a new append or a natural/AI producer. Forward correction: the writer's duplicate precheck can return before its flag; an invalid-member preflag return was not established.
