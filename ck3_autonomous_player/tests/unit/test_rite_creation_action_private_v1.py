@@ -580,6 +580,8 @@ class RiteCreationAdapterTests(unittest.TestCase):
                 ("confirmation_modal_open", True), ("creation_window_visible", True),
                 ("names", {**original["names"], "name": "different"}), ("doctrines", [])):
             endpoint.poststate = {**deepcopy(original), field: value}
+            if field == "rite_id":
+                endpoint.poststate["virtue_sin_catalogue"]["rite_id"] = value
             with self.subTest(field=field):
                 result = action.verify_completed_private_v1(driver, action_request_id=first["action_request_id"],
                     expected_revision=driver.take_snapshot_without_native_command_history()["revision"])
@@ -636,6 +638,7 @@ class RiteCreationAdapterTests(unittest.TestCase):
         self.assertEqual(claim_path.read_bytes(), before)
         moved = synthetic_preview(token="e" * 64)
         moved[action.BODY_KEY]["draft"]["source_rite_id"] = 93
+        moved[action.BODY_KEY]["draft"]["virtue_sin_catalogue"]["rite_id"] = 93
         moved[action.BODY_KEY]["draft"]["names"]["name"] = "other authored Rite"
         with self.assertRaises(BridgeUnavailableError):
             action.execute_private_v1(driver, operation="confirm_once",
