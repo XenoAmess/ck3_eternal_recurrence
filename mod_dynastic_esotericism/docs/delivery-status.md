@@ -1,5 +1,9 @@
 # 制作与发布状态
 
+2026-10-26T06:51Z，`machine_id: desktop-3fevhd2-1c74096080`：源码66f2的默认Maven实际44项通过、30资源源码/classes/JAR一致，16项持久生产命令与DES八组检查原退出0；cold/warm及冻结SDK共40命令原退出0，其中一项可选真实小WAL诊断跳过，不能称全部无跳过。完整shared91在第8项遇测试夹具缺少Selection而停，后续尚未执行。
+
+Native G1在06:26:43Z真实退出1：registry测试链接缺九个生产符号，生产DLL已链接不等于整图通过；19项后验及SYSTEM登记均NOT_RUN。5483文件来源及失败证据封存，未创建可消费Native index，未启动游戏。共享锁内重验、夹具及CMake修复现进入后继源码；必须对新提交重跑完整检查和原生构建。R0020仍0/6，0.2.0未上传。
+
 2026-10-26T05:05Z（北京时间13:05，`machine_id: desktop-3fevhd2-1c74096080`）：**R0020正式签署0/6，完整Core未通过，0.2.0未上传。** 本场创建一次后的纯D0、D1、D2原生与独立Save全图比对再次确认复用D174／H174、实际head31254、名称及原CoA字段／完整设计保留，原House缺少ownCoA仍缺少。绑定与成员夹具自身记录PASS，Root未在固定hold期限内签署；这不授予阶段通过。head-cells仅完成None礼仪人物准备，没有成熟后工厂H0／H1／H2证据。完整实际范围与保留输入见[R0020历史记录](acceptance/R0020-2026-10-26.json)。
 
 固定hold在03:46Z到期，Root恢复时已经超时，禁止迟补签。原retained wait未知，随后native Job报告Game退出1、最终Job计数0及树已清理；host原wait0、public run／verify各2、keeper／allocator各0，SCREEN9132释放。正常退出资格与业务资格均false。共享后继已增加专门的失败资源接续合同与真实投影回归；它只验证资源释放，不把未知原wait追认为OS0或正常Quit。等待阶段现消费场次声明的180秒正常退出预留，且回执四个权威字段不能被请求覆盖。相关局部完整回归已通过；完整受影响CI、默认Maven及新运行图仍待独立完成，见[资源接续及CoA语义](2026-10-26-case-client-resource-closure.md)。

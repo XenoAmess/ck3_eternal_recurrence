@@ -6,7 +6,11 @@ set(_xar_relic_ui_sources
  "${CMAKE_CURRENT_LIST_DIR}/../src/ck3_12004_holy_site_relic_actions_json.cpp"
  "${CMAKE_CURRENT_LIST_DIR}/../src/holy_site_relic_request12004.cpp"
  "${CMAKE_CURRENT_LIST_DIR}/../src/holy_site_relic_navigation12004.cpp")
-foreach(_target xar_ck3_bridge xar_ck3_ingame_ui_navigation_v1_test)
+set(_xar_relic_ui_consumers xar_ck3_bridge xar_ck3_ingame_ui_navigation_v1_test)
+if(XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1)
+ list(APPEND _xar_relic_ui_consumers xar_ck3_adapter_registry_test)
+endif()
+foreach(_target IN LISTS _xar_relic_ui_consumers)
  if(TARGET ${_target})
   target_sources(${_target} PRIVATE ${_xar_relic_ui_sources})
  endif()
@@ -30,3 +34,4 @@ if(XAR_ENABLE_HOLY_SITE_RELIC_BUTTON_ACTION12004)
  endif()
 endif()
 unset(_xar_relic_ui_sources)
+unset(_xar_relic_ui_consumers)

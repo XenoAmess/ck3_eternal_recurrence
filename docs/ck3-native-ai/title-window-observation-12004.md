@@ -13,3 +13,5 @@
 集成时SDK整模块77项通过；两份生产叶与测试整叶的完整指定mypy命令通过。最初13项存量生产类型错误及首次测试依赖解析失败保留，局部使用Mapping／None运行时窄化修正，没有Any、cast或ignore。原生构建、真实wire链和实机当前均待实际执行。研究候选、源补丁与初始失败位于 `C:/ck3-dynastic-esotericism-20261024/resume-product-a20/core-a29-administration/title-observer-candidate-a01/`；新源使用独立构建及资格索引，不热改Native05或runtime19。
 
 该能力只补实际窗口身份观测。两枚帝国的正常取得、无领袖后合法恢复、继承、纹章与冷加载仍按产品测试矩阵分别验收，不能用本查询的静态通过代替。
+
+2026-10-26T06:26:43Z，同机G1开发候选实际原wait1：registry测试链接缺少宗教presentation及圣物请求实现，生产DLL单独链接成功不授资格。完整5483源的before/after身份与字节相同；19组后验和SYSTEM登记未执行。失败原件在 `C:/ck3-dynastic-esotericism-20261024/native-title-ro-a01/evidence/`，seal为 `generation66-after-failure-seal.actual.json`。后继修复共享CMake生产依赖并整合远端选择器修复；不得使用本次失败候选封装qualified index，实际C++ wire及实机仍待验。

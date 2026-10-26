@@ -6,6 +6,9 @@ excerpt preserves the full originals' pins separately and grants no live PASS.
 from __future__ import annotations
 
 import copy
+import argparse
+import contextlib
+from collections.abc import Callable, Iterator
 import ast
 import json
 import os
@@ -17,7 +20,10 @@ import unittest
 from unittest.mock import patch
 
 import ck3_mod_acceptance_allocate as allocation
-from ck3_mod_acceptance_background_types import JsonObject, JsonValue, file_pin, json_object, text_field, strings_field
+import ck3_mod_acceptance as entry
+import ck3_live_run_id as ids
+from ck3_mod_acceptance_fresh_machine_bootstrap import MachineBinding
+from ck3_mod_acceptance_background_types import JsonObject, JsonValue, file_pin, json_object, object_field, text_field, strings_field
 from test_product_acceptance_purpose import pin
 
 
@@ -171,7 +177,8 @@ class CaseClientFailureClosureTests(unittest.TestCase):
         f.write(f.close, f.bundle)
         self.alive: set[int] = set()
 
-    def check(self) -> JsonObject:
+    @contextlib.contextmanager
+    def boundaries(self) -> Iterator[None]:
         f = self.fixture
         original_stat = Path.stat
         normal_path = f.run_dir / 'case-output/normal-close-result.json'
@@ -191,7 +198,11 @@ class CaseClientFailureClosureTests(unittest.TestCase):
 
         f.psutil.Process = process
         with patch.object(Path, 'stat', stat):
-            return f.check()
+            yield
+
+    def check(self) -> JsonObject:
+        with self.boundaries():
+            return self.fixture.check()
 
     def test_actual_shapes_producer_serialization_full_consumer_preserves_failure(self) -> None:
         f = self.fixture
@@ -362,6 +373,237 @@ from ck3_mod_acceptance_background_types import FilePin, JsonObject, json_object
             stdout, stderr, code = api.run(['--strict', '--strict-equality', '--follow-imports=silent',
                 '--no-incremental', '--cache-dir', 'nul', '-c', source])
         self.assertEqual(code, 0, stdout+stderr)
+
+
+class FailedLiveWriterLockTests(unittest.TestCase):
+    """Real Selection and OS writer lock -> full R0020 resource reducer."""
+
+    def setUp(self) -> None:
+        self.case = CaseClientFailureClosureTests('runTest')
+        self.case.setUp()
+        self.addCleanup(self.case.doCleanups)
+        f = self.case.fixture
+        self.closed = self.case.check()
+        self.closed.update(release=f.refs['release'], run_id=f.run_dir.name,
+                           previous_live=str(f.run_dir), previous_keeper=str(f.keeper))
+        self.root = f.root / 'next-selection'
+        self.root.mkdir()
+        source = self.root / 'source'
+        (source / 'tools').mkdir(parents=True)
+        self.consumer = source / 'tools/ck3_mod_acceptance_allocate.py'
+        self.consumer.write_bytes(Path(allocation.__file__).read_bytes())
+        self.source_leaf = source / 'fixture-source.txt'
+        self.source_leaf.write_bytes(b'Actual immutable authored source input\n')
+        paths: dict[str, Path] = {'source_root': source}
+        for name in ('source_index', 'native_source_index', 'dll', 'injector', 'save', 'inventory', 'initial'):
+            path = self.root / (name + '.json')
+            path.write_bytes(b'{}')
+            paths[name] = path
+        self.source_index = paths['source_index']
+        f.write(self.source_index, {'schema': 'ck3-common-source-index-v1', 'machine_id': f.machine,
+            'files': {str(p.relative_to(source)).replace('\\', '/'):
+                {key: value for key, value in pin(p).items() if key != 'path'}
+                for p in (self.consumer, self.source_leaf)}})
+        flags = ['--agent-source-root', '--game-dir', '--bridge-dll', '--bridge-injector',
+                 '--bridge-pipe', '--output', '--state-dir', '--plan', '--control-plan-dir',
+                 '--fixture-profile', *entry.BUDGET_FLAGS.values(), *entry.SAVED_FLAGS.values()]
+        host = self.root / 'host.py'
+        host.write_text('import argparse\np=argparse.ArgumentParser()\n' +
+                        ''.join('p.add_argument(' + repr(flag) + ')\n' for flag in flags),
+                        encoding='utf-8')
+        paths['host'] = host
+        for name in ('game/binaries', 'userdir', 'artifacts', 'lease', 'bus/bin'):
+            (self.root / name).mkdir(parents=True)
+        engine = self.root / 'game/binaries/ck3.exe'
+        engine.write_bytes(b'Authored non-executable game input')
+        bus = self.root / 'bus/bin/codex_task_bus.py'
+        bus.write_bytes(b'# Authored bus boundary; never launched\n')
+
+        def row(key: str) -> JsonObject:
+            ref = pin(paths[key])
+            return {'path_key': key, 'bytes': ref['bytes'], 'sha256': ref['sha256']}
+
+        manifest: JsonObject = {'schema': entry.MANIFEST_SCHEMA, 'machine_id': f.machine,
+            'source_root': {'path_key': 'source_root'}, 'host': row('host'),
+            'source_index': row('source_index'), 'native_source_index': row('native_source_index'),
+            'native': {'dll': row('dll'), 'injector': row('injector')},
+            'game': {'version': 'authored-not-live', 'exe_sha256': pin(engine)['sha256']},
+            'capabilities': {}}
+        manifest_path = self.root / 'manifest.json'
+        f.write(manifest_path, manifest)
+        runtime_path = self.root / 'runtime.json'
+        f.write(runtime_path, {'schema': entry.RUNTIME_SCHEMA, 'machine_id': f.machine,
+            'manifest': pin(manifest_path), 'python': sys.executable, 'repo_root': str(source),
+            'game_dir': str(self.root / 'game'), 'userdir_root': str(self.root / 'userdir'),
+            'artifacts_root': str(self.root / 'artifacts'),
+            'paths': {key: str(value) for key, value in paths.items()},
+            'allocation': {'lease_repo': str(self.root / 'lease'), 'task_bus': pin(bus)}})
+        products_path = self.root / 'products.json'
+        saved = pin(paths['save'])
+        startup: JsonObject = {'mode': 'saved_campaign', 'state_dir': str(self.root / 'state'),
+            'saved_campaign': {'save': saved['path'], 'bytes': saved['bytes'], 'sha256': saved['sha256'],
+                              'player_id': 1, 'date_raw': 1, 'product_inventory': str(paths['inventory'])}}
+        f.write(products_path, {'schema': entry.PRODUCTS_SCHEMA, 'products': {'closure-fixture': {
+            'cases': [{'id': 'core', 'status': 'ready', 'startup': startup,
+                       'initial_plan': pin(paths['initial']),
+                       'budgets': {'command_timeout': 120, 'readiness_timeout': 1800, 'timeout': 10800,
+                                   'hold_seconds': 9000, 'poll_interval': 0.25},
+                       'required_mcp_tools': []}]}}})
+        prepared_path = self.root / 'prepared.json'
+        f.write(prepared_path, {'schema': 'ck3-mod-acceptance-prepared-case-v1',
+            'product': 'closure-fixture', 'case': 'core', 'runtime_manifest': pin(manifest_path),
+            'startup': startup, 'case_inputs': {}})
+        self.selection = entry.Selection(runtime_path, products_path, 'closure-fixture',
+                                         'core', prepared_path=prepared_path)
+        self.assertEqual(self.selection.preflight()['blockers'], [])
+        self.args = argparse.Namespace(previous_live=f.run_dir, previous_keeper=f.keeper,
+            previous_failure_close=f.close, previous_release=f.release_path)
+        self.admission = self.root / 'admissions'
+        f.write(self.admission / '000001/allocation.json', {'live': str(f.run_dir), 'run_id': f.run_dir.name})
+        self.binding: MachineBinding = {'machine_id': f.machine, 'state_root': str(self.root / 'ID-state'),
+                                       'admission_root': str(self.admission)}
+        self.packet: JsonObject = {'tasks': [json_object(f.leaves['release'])['task']]}
+        self.active = False
+        self.calls: list[str] = []
+
+    def claim(self, mutation: Callable[[], None] | None = None,
+              after_reducer: Callable[[], None] | None = None) -> Path:
+        f = self.case.fixture
+        original_lock = ids._exclusive_file_lock
+        original_reducer = allocation.previous_failed_live_resource_closure
+
+        @contextlib.contextmanager
+        def locked(path: Path) -> Iterator[None]:
+            with original_lock(path):
+                self.active = True
+                try:
+                    if mutation is not None:
+                        mutation()
+                    yield
+                finally:
+                    self.active = False
+
+        def bus(lease_repo: Path, bus_dir: Path, bus_sha: str, audit_dir: Path) -> object:
+            self.assertTrue(self.active)
+            self.calls.append('fresh_bus')
+            return self.packet
+
+        def reducer(previous: Path, freeze: dict[str, object], close: Path, keeper: Path,
+                    release: Path, packet: dict[str, object]) -> dict[str, object]:
+            self.assertTrue(self.active)
+            self.calls.append('real_reducer')
+            result = original_reducer(previous, freeze, close, keeper, release, packet)
+            if after_reducer is not None:
+                after_reducer()
+            return result
+
+        with self.case.boundaries(), patch.dict(sys.modules, {'psutil': f.psutil}), \
+                patch.object(ids, '_exclusive_file_lock', locked), \
+                patch.object(allocation, 'current_screen_absent', side_effect=bus), \
+                patch.object(allocation, 'previous_failed_live_resource_closure', side_effect=reducer):
+            return allocation.claim_machine_admission(self.binding, self.selection, self.args,
+                                                      copy.deepcopy(self.closed))
+
+    def assert_no_new_intent(self) -> None:
+        self.assertFalse((self.admission / 'machine.json').exists())
+        self.assertFalse((self.admission / '000002').exists())
+
+    def test_real_selection_writer_lock_full_reducer_and_serialized_unknowns(self) -> None:
+        originals = {key: Path(text_field(json_object(ref), 'path')).read_bytes()
+                     for key, ref in self.case.fixture.refs.items()}
+        record = self.claim()
+        self.assertEqual(self.calls, ['fresh_bus', 'real_reducer'])
+        self.assertEqual(record.name, '000002')
+        intent = json_object(json.loads((record / 'intent.json').read_bytes()))
+        facts = object_field(object_field(intent, 'closure'), 'failure_cleanup')
+        self.assertEqual(facts['original_host_exit_code'], 0)
+        self.assertEqual(facts['native_reported_ck3_exit_code'], 1)
+        self.assertIsNone(facts['original_ck3_exit_code'])
+        self.assertIsNone(facts['native_cleanup_qualified'])
+        for key in ('normal_close_qualified', 'typed_normal_exit_proven', 'business_pass', 'release_pass',
+                    'original_retained_wait_signaled'):
+            self.assertIs(facts[key], False)
+        self.assertEqual(intent, json.loads(json.dumps(intent)))
+        self.assertEqual(originals, {key: Path(text_field(json_object(ref), 'path')).read_bytes()
+                                    for key, ref in self.case.fixture.refs.items()})
+
+    def test_locked_original_source_and_bundle_drift_reject_without_intent(self) -> None:
+        f = self.case.fixture
+        for label, path in [('bundle', f.close), ('release', f.release_path),
+                            ('original_native_report', Path(text_field(json_object(f.refs['native_report']), 'path'))),
+                            ('selected_source', self.source_leaf), ('actual_consumer', self.consumer),
+                            ('selected_index', self.source_index)]:
+            with self.subTest(drift=label):
+                original = path.read_bytes()
+                self.calls.clear()
+                try:
+                    with self.assertRaises(ValueError):
+                        def change() -> None:
+                            path.write_bytes(original + b' ')
+                        self.claim(change)
+                finally:
+                    path.write_bytes(original)
+                self.assert_no_new_intent()
+
+    def test_evidence_and_source_drift_after_real_reducer_reject_without_intent(self) -> None:
+        f = self.case.fixture
+        native = Path(text_field(json_object(f.refs['native_report']), 'path'))
+        for label, path in [('original_native_report', native), ('selected_source', self.source_leaf)]:
+            with self.subTest(after_reducer_drift=label):
+                original = path.read_bytes()
+                def change() -> None:
+                    path.write_bytes(original + b' ')
+                try:
+                    with self.assertRaises(ValueError):
+                        self.claim(after_reducer=change)
+                finally:
+                    path.write_bytes(original)
+                self.assert_no_new_intent()
+
+    def test_fresh_bus_or_os_generation_reject_without_intent(self) -> None:
+        f = self.case.fixture
+        baseline = copy.deepcopy(self.packet)
+        for changed in ('screen', 'process'):
+            with self.subTest(changed=changed):
+                if changed == 'screen':
+                    self.packet = {'tasks': [{'resources': ['ck3-screen:acquired']}]}
+                else:
+                    host_pid = json_object(f.leaves['host_started']).get('pid')
+                    if type(host_pid) is not int:
+                        raise ValueError('Authored host PID must remain an exact integer')
+                    self.case.alive.add(host_pid)
+                try:
+                    with self.assertRaises(ValueError):
+                        self.claim()
+                finally:
+                    self.packet = copy.deepcopy(baseline)
+                    self.case.alive.clear()
+                self.assertEqual(self.calls[-2:], ['fresh_bus', 'real_reducer'])
+                self.assert_no_new_intent()
+
+    def test_exact_new_locked_helper_scope_is_strict(self) -> None:
+        from mypy import api
+        tools = Path(__file__).parent
+        source = ast.parse((tools / 'ck3_mod_acceptance_allocate.py').read_text(encoding='utf-8-sig'))
+        names = {'_FailedLiveBusQuery', 'revalidate_failed_live_resource_admission'}
+        nodes = [copy.deepcopy(node) for node in source.body
+                 if isinstance(node, (ast.FunctionDef, ast.ClassDef)) and node.name in names]
+        self.assertEqual({node.name for node in nodes}, names)
+        prelude = '''from __future__ import annotations
+import argparse
+from pathlib import Path
+from typing import Protocol, runtime_checkable
+from ck3_mod_acceptance import Selection, path_at, pin, read_json, check_pin
+from ck3_mod_acceptance_background_types import JsonObject, json_object, file_pin, object_field, text_field
+from ck3_mod_acceptance_allocate import current_screen_absent, previous_failed_live_resource_closure, _canonical_source_index_files
+'''
+        program = prelude + ast.unparse(ast.fix_missing_locations(ast.Module(body=nodes, type_ignores=[])))
+        source_roots = (str(tools), str(Path(allocation.__file__).parents[1] / 'ck3_autonomous_player/src'),
+                        str(Path(entry.__file__).parent), str(Path(entry.__file__).parents[1] / 'ck3_autonomous_player/src'))
+        with patch.dict(os.environ, {'MYPYPATH': os.pathsep.join(source_roots)}):
+            stdout, stderr, code = api.run(['--strict', '--strict-equality', '--follow-imports=silent',
+                '--no-incremental', '--cache-dir', os.devnull, '-c', program])
+        self.assertEqual(code, 0, stdout + stderr)
 
 
 class ProcessAbsent(Exception):

@@ -1631,6 +1631,69 @@ def revalidate_pre_intent_offline_ttl_admission(selection: Selection, args: argp
     return {**closure, **renewed}
 
 
+@runtime_checkable
+class _FailedLiveBusQuery(Protocol):
+    def __call__(self, lease_repo: Path, bus_dir: Path, bus_sha: str,
+                 audit_dir: Path) -> object: ...
+
+
+def revalidate_failed_live_resource_admission(selection: Selection, args: argparse.Namespace,
+        closure: JsonObject) -> JsonObject:
+    """Refresh the complete failed-live reducer under the machine writer lock."""
+    runtime, manifest = json_object(selection.runtime), json_object(selection.manifest)
+    configured = object_field(runtime, 'allocation')
+    bus_ref = object_field(configured, 'task_bus')
+    base = selection.runtime_path.parent
+    previous, keeper, close, release = (getattr(args, name, None) for name in
+        ('previous_live', 'previous_keeper', 'previous_failure_close', 'previous_release'))
+    if not isinstance(previous, Path) or not isinstance(keeper, Path) or not isinstance(close, Path) or not isinstance(release, Path):
+        raise ValueError('Actual failed-live predecessor paths required')
+    original = object_field(closure, 'failure_cleanup')
+    original_close, original_release = file_pin(original.get('close')), file_pin(closure.get('release'))
+    if file_pin(pin(close)) != original_close or file_pin(pin(release)) != original_release:
+        raise ValueError('Failed-live closure/release changed before original writer lock')
+    query: object = current_screen_absent
+    if not isinstance(query, _FailedLiveBusQuery):
+        raise ValueError('Existing failed-live bus query unavailable')
+    packet: dict[str, object] = {key: value for key, value in json_object(query(
+        path_at(text_field(configured, 'lease_repo'), base),
+        path_at(text_field(bus_ref, 'path'), base).parents[1], text_field(bus_ref, 'sha256'),
+        selection.state_dir.parent / 'allocation-bus-writer-revalidation')).items()}
+    frozen: dict[str, object] = {key: value for key, value in
+        json_object(read_json(previous / 'frozen-argv.json')).items()}
+    renewed = json_object(previous_failed_live_resource_closure(
+        previous, frozen, close, keeper, release, packet))
+    renewed_facts = object_field(renewed, 'failure_cleanup')
+    if (renewed.get('mode') != closure.get('mode')
+            or file_pin(renewed_facts.get('close')) != original_close
+            or object_field(renewed_facts, 'original_evidence') != object_field(original, 'original_evidence')
+            or file_pin(pin(close)) != original_close or file_pin(pin(release)) != original_release):
+        raise ValueError('Failed-live closure changed under original writer lock')
+    for reference in object_field(renewed_facts, 'original_evidence').values():
+        ref = file_pin(reference)
+        check_pin(Path(ref['path']), dict(ref))
+    if json_object(read_json(selection.runtime_path)) != runtime:
+        raise ValueError('Selected runtime changed under original writer lock')
+    if json_object(read_json(selection.products_path)) != json_object(selection.products):
+        raise ValueError('Selected products changed under original writer lock')
+    preflight = json_object(selection.preflight())
+    if preflight.get('blockers') != []:
+        raise ValueError('Failed-live selected source/preflight changed under original writer lock')
+    source = selection.manifest_path_key(object_field(manifest, 'source_root'))
+    index_ref = object_field(manifest, 'source_index')
+    index_path = selection.manifest_path_key(index_ref)
+    check_pin(index_path, index_ref)
+    indexed = _canonical_source_index_files(read_json(index_path), source,
+        text_field(manifest, 'machine_id'))
+    consumer = source / 'tools/ck3_mod_acceptance_allocate.py'
+    if consumer not in indexed:
+        raise ValueError('Failed-live selected source index lacks its actual consumer')
+    check_pin(Path(__file__), dict(indexed[consumer]))
+    for path, ref in indexed.items():
+        check_pin(path, dict(ref))
+    return {**closure, **renewed}
+
+
 def previous_pre_ready_closure(previous,freeze,close_path,keeper_root,release,bus_packet):
     """Keep historical unknown waits; retain the observed argparse original wait2."""
     bundle=read_json(close_path)
@@ -3825,6 +3888,8 @@ def claim_machine_admission(binding: MachineBinding, selection: Selection,
     from ck3_mod_acceptance_keeper import write_new
     root=Path(binding['admission_root']);root.mkdir(parents=True,exist_ok=True)
     with ids._exclusive_file_lock(root/'chain.lock'):
+        if closure['mode']=='previous-shared-failed-live-resource-closed':
+            closure.update(revalidate_failed_live_resource_admission(selection,args,closure))
         if closure['mode']=='previous-shared-allocated-pre-intent-offline-ttl-refused':
             closure.update(revalidate_pre_intent_offline_ttl_admission(selection,args,closure))
         if closure['mode']=='previous-shared-allocated-unrun-prelaunch-orchestrator-failed':
