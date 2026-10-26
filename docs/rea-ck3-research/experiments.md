@@ -195,3 +195,13 @@ Root另授新 `[2B9D2A0,2B9D2E0)` 64 B，复用旧64 B，从原entry拼解而非
 Rizin实际p8新64与原件一致；随后 `omj` 在0.9.1不存在，命令列表在RAM128 p8/pDj前停止。exit0/complete不授128双decoder。work截止后未启动修正；闭场长脚本又在exec前被8191本地长度guard拒绝，最小close拆开后实际逾期。decoder0.425 s/24813568 B，REA service4.913 s/Rizin597905408 B；provider16:21:13.898Z及时close，整体case至16:24:41.431Z，共258.399 s、晚78.399 s。outer联合峰值/Job0未测、Shared不授；这是一份预算RED的真实有限字节研究，不能改成整体PASS。
 
 M5另建5614 B独审保留normal-path结论及Rizin/LATE边界，原close的PENDING不改。详见[第四题独立页与全部精确原件](resume63-callee2b9d260-tail-result.md)。四case在原64 MiB净分2+16+16+16 MiB，余14 MiB，无额外hold/release。16:27 Native点值非峰值；16:32:50Z中断恢复后own4PID仍不存在。Root要求不为Rizin形式补测C4，下一问题须另PLAN/实际验证最小close/新卡。
+
+## resume63：M1成员写入的可选前置检查
+
+fresh包含writer2603E46的RF精确为 `[2603AF0,26041D6)` /525FD10。目标原件12 B，实际二分17×12=204 B元数据，非总IO12 B。cache缺完整body后补854+886=1740 B，复用held26；Rizin完整1766 B重读26，单列重复。417条逐VA/size/bytes同，85 signed目标、74块121边独核同；RET41CF与INT3 trap41D5分列，34 opaque calls及异常/unwind仍未知。
+
+M1独审给出正常、不借overflow的局部符号见证：输入byte非零可绕过两个2C7DED0，到append写owner+C/member+8。它仅否定这两个可见call必经，不能证明全局没有验证，也不能命名persistent或join。R15/R13/RBX来源、byte的entryRSP+28位置已追溯，真实caller/byte业务义/自然继承及target重绑仍UNKNOWN。Java成员行继续作为当前观测，不升格成持续资格已执行。
+
+本题先用真实旧closed结果验证短minclose，再按新卡执行；16:50:33.729Z在48.628秒完成owned最小close/四PID不存在，早于16:52:45.101598截止。decoder0.466 s/25341952 B，REA service4.908 s/Rizin592994304 B。后继机械核、M1独审与富metadata不计入48.628秒，研究总用时/token未量测；outer联合峰值/Job0未测，Shared不授。原close payload未分析标记保持不改。
+
+完整字节、原始命令、反例假设、成本与独审见[M1结果页](resume63-m1-member-validity-result.md)。新case8 MiB从原64 MiB净分，余6 MiB；Native点值非峰值/release0。没有新Game/Steam动作或Java字段；后继callee必须另立问题和鲜卡，不续此卡。

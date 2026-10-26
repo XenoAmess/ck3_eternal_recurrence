@@ -60,3 +60,35 @@ Host唯一写BUILD/m2及build-tools，各领域按精确源码文件分工，cap
 Root已明确授权新的有限容量review至2026-10-26T17:40:26.824464Z，原quota和总hold保持；发新财务/执行卡前鲜读卷/RAM与实际基线，不追认或延长旧卡。任务总线15:59:17Z heartbeat为9027。午夜报告另按实际时间收口与建会。
 
 本轮新增游戏日0、SAVE0、RESTORE0，Java完整G2仍0/8。下一门槛是实际领域编测、新Tools完整验收与SDK完整step、原生后继及设置读回、真实首场Java权威接通；当前继续执行，不以文档、普通Jar、构造器或ACK授业务完成。
+
+## 16:43Z 前向结果（本地27日00:43）
+
+compile87实际26.056s退出1，五个模块尝试重编，唯一错误是M2 ActionPorts缺Optional导入，后续依赖未执行；compile88修复后实际139.8657807s退出1，APP/存储/transport及LS606个主类编过，唯一测试编译错误是M1 callback未处理IOException。两次真实失败保留，分别窄修显式导入与保cause的UncheckedIOException。
+
+compile89在同缓存实际39.7115206s退出0；compile90加入首次selected-registration生产入口后实际28.3738348s退出0，source5855前后MATCH。90实际只重编APP一个测试、transport一个主文件、LS一个主文件及两个测试文件；reactor列34不代表34模块全部重编。原91只有42选择器/43个module-class元数据，未执行测试；LifeAdvance同FQCN分属两个模块，后继结果必须按模块分别计数。
+
+首次selected生产链已补具体file-driven工厂，不再留外部不存在的类名；同时已将i61用户477B application.properties精确复制到开发SRC，i61原件未写。最终资源字节将随新源码接受后续编测，不能拿旧363B产物授最终图。采用回执为 [FACTORY-PROPS92-SOURCE-ADOPTED01.json](</D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/FACTORY-PROPS92-SOURCE-ADOPTED01.json>)。实际selected正例仍需真实NativePlan/profile、capability路径后继及独立issuer绑定，见[完整生产顺序](../handover/2026-10-26-java-g2-resume63-ordinary-root-production-chain.md)，不能由base5或编译替代。
+
+新DEV27已由原public producer实际accepted，FIN183及其资源卡按17:40:26有限复核窗口继续，未自动延旧26卡。中断恢复后读回90真实终态、确认91未启动，再继续同缓存；不因观察中断而重启已完成命令。
+
+REA C4新64B与旧64B拼接后，M5以原字节、ModRM、分支及数据流独审了69B/21条可达指令、10块12边、两个RET。无故障正常路径AL=(A/B均非FFFFFFFF且相等)，完整EAX仍含B高位；字段含义、外层caller和缓存时效未闭。采样整体迟闭场78.399s及Rizin的omj错误仍是RED，不授128B双解码通过。见[独审记录](../ck3-native-ai/2026-10-27-m5-rea-callee2b9d260-normal-path-resume63.md)。M1下一题已按[实际成员写入seed](../ck3-native-ai/2026-10-27-m1-member-validity-followup.md)排队，先当前RF/cache，再条件补缺，不把局部writer冒自然继承caller。
+
+后台Steam预检于16:37:51.621899Z实际确认offline=true，原CLI760ms/exit0，绑定当前Steam PID/出生时间、版本及SteamUI来源；没有窗口操作或模式切换。[新回执](</D:/ck3-state/ck3-java-g2-resume61-r7-ls18-regression04/controls/steam-offline-resume63-precheck01.json>)2480B/SHA43d9d3f9606f6068079893b109cb1facf96cfaa3c6a6855acecd8ccf679b774a。它只证明当时状态，实际Game启动前必须另取新鲜准入。
+
+文档包后续FF为a9d621fdf19bb2914aaf3559b4f0c2bcd63196d0、午夜六件af523899475246d62963956f4cb635cf9f614dc3；fresh remote后有同事的d42bb259055e62ba430675ad7e9cec684cccf493，未用旧root覆盖其增量。7ecb官方Runner40351720817也已实际FAILURE：两段Tools各636通过，仍缺实际fixture-production request，configured后续step未执行，不能称整CI绿。新鲜hosted初始化缺口已单独记录，不为本轮局部编译扩成平台重构，也不阻塞本机合法Source32的实际验收。
+
+截至本段，最终四叶/477资源的后继编测、完整Tools/SDK30、SERVICE、原生后继与实机仍待执行；本轮新增游戏日/SAVE/RESTORE继续为0，完整G2为0/8。
+
+## 17:17Z 前向结果（本地27日01:17）
+
+machine_id仍为`xenoamess-full-tower-eb9d2c1186`。93批受影响测试确有失败，且内层Maven退出码因外层结果处理错误丢失：新鲜XML共213项，194成功、18失败、1错误；24个模块类未执行，不能补成通过。94局部123项中其余八类103通过，APP Life仍4失败/3错误；窄修测试fixture的实际完整材料读取后，95该APP Life整类20/20、exit0、14.4344s。旧94 Life XML已被95覆盖，仍保日志/旧exact ref，不能冒称旧XML可再次读取。
+
+96继续未执行类时，NT3三类18/18通过，APP Life20再次通过，建设reducer13/13通过；LS Life26项全部错误。该批达到600s超时，随后只停止同出生时间/父链的自有Surefire，已核实本树全部handle signaled，源码5856 pins前后MATCH。11份实际XML共106项，55成功、11失败、40错误；14类未产生XML。原始超时、失败与未知分别保留在[96终态](</D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/AFFECTED96-CANCELLED-FINAL-CLOSE01.json>)，不重跑整批。
+
+已有源码归因的最窄修复已采用：Large测试三处大材料解析改用生产材料同一4MiB上限；LS Life的watch战争原包补真实合同必填player_side；中央AWIF在明确active_new的软件辅助状态补episode_identity_pending=false。Native包、生产parser、TTL及原26断言均未放宽。97于17:16:05Z开始同SRC/BUILD/m2/TMP的`mvn -T2 -pl local-service -am`受影响测试：Runtime七类、建设两类、LS Life，加依赖中同名APP Life共11个模块类；本段时仍运行，尚无通过结论。M0归档/PublicCheckpoint的超时及M2 Unknown/Mcp的独立fixture缺口另外诊断，不随共享修复自动变绿。
+
+用户指出有效并发低后，已撤销前文“REA单一后端执行岗”的本轮调度限制，改为最多四个独立官方REA/Rizin provider并发，由Capacity根据新鲜RAM/commit与各自PLAN/最小close分槽。M2事件caller、M3继承分支缺失111B、M5互动predicate106B、M6四个已知候选委托694B及REA岗M1 gate在四槽内轮转；不为人数重复采样。M0复用已持context/answer ABI缓存准备最小原生观测接入，不占采样槽。M4/M7已完成具体夹具修复后释放源码短窗，Host仍是唯一Maven输出writer；互不冲突的Native target构建可并行。对应方法见[四槽raw研究方法](../rea-ck3-research/resume63-parallel-raw-method.md)。
+
+REA已完成M1成员writer的1766B有限主体研究与独审：普通分支具有两道门，但特定incoming flag可绕过，不能据局部writer授持久成员资格或自然继承完整caller信用。C4字段依actual4生产源码合同可收敛为同有效邦联ID比较，当前build的named getter注册仍未补证。完整八M原生树和全Python迁移均未完成。
+
+Root有限存储复核新授权至18:40:26.824464Z；不自动续旧执行卡。17:16:39Z任务总线heartbeat序号9033。新的Java CK3启动、真实新增游戏日、SAVE、RESTORE仍全部0；下一步是97局验、恢复测试JFR真实归因、完整Tools/SDK及原生后继，再进入首场Java实机。

@@ -131,3 +131,16 @@ Root 在恢复后明确要求 Host 将 i61 既有 477 B 用户资源作为唯一
 后继真实读回补记：`7ecb8b1d10b88eeaed389ca76251eb5d679c652e` 的官方 run 40351720817 于 2026-10-26T16:26:03Z 最终 FAILURE；失败 step45 于 16:19:58–16:25:51 执行，configured step48 实际 SKIPPED。16:27:19.540577Z 已独立在 RAM 读取该 run 的 artifact 12666114526：605,653 B，SHA-256 `66122e6de39805679275baf1a5c4a1b6ac8d470fb3ce2817ed591987264f5d57`。bootstrap 与 qualified Tools 均为 636/636、BUILD SUCCESS；ControlCi 595/216 仍实际报告缺少 fixture-production request 的 NOT EXECUTED，两 request ref 为 null、后七阶段 NOT_RUN。它是该 SHA 的新证据，未借用 e735 回执；不将 helper step15 成功说成整个 CI 通过。
 
 2026-10-26T16:21:32.715Z 亦已只对本岗四个已发 commit 与被拒九叶候选 tree 的明确对象做 Win32 点测，不遍历 `.git`：去重 212 OID 的有序 LF 清单 SHA-256 为 `21929528ec0c2525e474e61587597477c4c960e303c9107b5301653d9d5e291a`。212/212 FileStandardInfo 查询成功，EndOfFile 全等逻辑长度；合计逻辑 1,568,429 B、实际 AllocationSize 1,951,536 B。未定位小 commit 另留逻辑 1,024 B、allocation 5,120 B，已知对象 allocation 上界为 1,956,656 B。该数不含未知 prior promisor pack，后继 Git 写入先按实际净峰申请，不能将逻辑剩余额度当物理余量。
+
+## 后继研究包与官方 RED 的真实终态
+
+REA C3/C4、两份 M5 独审与上述资源 packet 已普通 fast-forward 推送为 `0dad5eec33c7762f49bf2c8477e6ce2b7531f79e`，parent 为新鲜 `d42bb259055e62ba430675ad7e9cec684cccf493`；后者的 daily/weekly 各六行及其余四路径原样保留。八个输入原件合 94,794 B，entry 文件与主线相同，实际只改七个文档。13 个新对象逻辑 159,287 B；2026-10-26T16:43:55.390868Z 对全部 13 OID 的 Win32 点测实际 allocation 为 184,904 B。既有已知对象含孤立 commit 预留后的 steady 上界为 2,141,560 B，加入本次保守 atomic/closing 110,592 B 的峰上界为 2,252,152 B，符合 RootZ 4 MiB 内前向调整的 objects physical 2.25 MiB 子限。累计逻辑 1,728,740 B、已处理 raw 2,705,734 B；没有真实索引或全树副本。原始 whitespace 检查只报两份 M5 原件的 EOF 空行，保留原始 SHA，行内检查通过。
+
+17:17Z 又取得两份独立官方终态：
+
+| commit / Runner | 官方终态时间 UTC | 实际官方 artifact / bytes / SHA-256 |
+| --- | --- | --- |
+| `a9d621fdf19bb2914aaf3559b4f0c2bcd63196d0` / 40356241300 | 17:08:41，FAILURE；step45 在 17:07:15 失败 | 12670865474 / 606137 / `34dc7fd31f9a9742cdfccb7cf8428f2862a8bceb13f04a638c134aa6596b2def` |
+| `af523899475246d62963956f4cb635cf9f614dc3` / 40357614312 | 17:16:40，FAILURE；step45 在 17:16:27 失败 | 12669659228 / 605815 / `2851f7317bde457356fec72da2df8c4d4fd624d58f85df9909b5f7790da8d09d` |
+
+17:17:38.786245Z、17:17:42.899439Z 分别在 RAM 解包核对：两次 bootstrap 与 qualified Tools 均为 636/636；各自 actual JSON 和 inner stderr 都实际指向 ControlCi 595/216 缺 fixture-production request 的 NOT EXECUTED。两个 fixture ref 均为 null，后七阶段 NOT_RUN；原 configured step48 均为 SKIPPED。它们不是跳过后转绿，也不能替代完整 Java、SDK、Service 或 Game 验收。没有为同一结论重跑这些 CI。

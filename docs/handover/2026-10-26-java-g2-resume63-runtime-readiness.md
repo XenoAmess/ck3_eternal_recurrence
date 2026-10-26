@@ -99,3 +99,36 @@ Genesis 两原件位于 `STATE/initial-data/ledger-genesis/`：
 已读通用策略及版本化参数。机器 root map 实际原件：`Z:/codex-storage-audit/2026-10-24-xenoamess-full-tower-eb9d2c1186/migration-execution/machine-storage-profile-final.json`，1900 B、SHA `72c76ba7b1d9281403c55a5b6ec2079d4137fbe88497e1f18a0b3493fcc44d2e`。其 machine_id 与本轮一致，background=`D:/codex-ck3-background`、state/temp=`D:/ck3-state`、main=`Z:/ck3_mod_rewrite`；旧 available_bytes 是历史事实，不作新容量准入。没有 bulk C 盘回退或全局 TEMP/PATH 改动。
 
 本记录优先在下一次真实启动准备时刷新，最迟 `2026-11-02T15:36:21Z` 复核用途；不是对原 hold 自动续期，也不是清理授权。M0–M7 新增实机完成数、游戏日、SAVE/RESTORE 与启动均为0。
+
+## 16:37Z 前向：实际后台 Steam offline 预检通过
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`。`2026-10-26T16:36:45Z` 再运行原 `py -B tools/ck3_live_run_id.py machine`，exit0，实际ID仍相同。前文“没有刷新Steam状态”仅描述截至15:40Z的首轮；本次新增原有工具的后台读回。此前自有诊断均已同步退出，无未完session或待重启进程。
+
+capacity63 本轮确认：复用 G2 新3MiB中的 metadata512KiB子池，净留≤32KiB，review=`2026-10-26T17:40:26.824464Z`；不新增hold、不覆盖额外sidecar、安装或构建。16:36:55Z 目标不存在、controls父目录存在。
+
+容量原件根 `D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/capacity/`：`FINANCIAL183-RESUME63-DEV27-FRESH01.json`，10560 B、SHA `b595dc6ea83aff362ab799377f3099fb9cb8513be54bd0a61682f45b86c04d7a`；`ACCEPTANCE27-XML-METADATA-SCOPE01.json`，1449 B、SHA `ed303c70c549911ab5f1f866966332611e6006c1c821f722226b07c31cacb08c`。capacity63已记唯一receipt实际2480 B。
+
+实际命令（Node参数数组、shell=false、windowsHide=true，非新runner）：
+
+```text
+Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe -B -X utf8 Z:/ck3_mod_rewrite/tools/steam_offline_state_probe.py --receipt D:/ck3-state/ck3-java-g2-resume61-r7-ls18-regression04/controls/steam-offline-resume63-precheck01.json
+```
+
+开始 `2026-10-26T16:37:50.976Z`，结束 `16:37:51.737Z`，实测760ms、exit0、无stderr/timeout。唯一新D盘文件为上述 CREATE_NEW receipt：2480 B，SHA-256 `43d9d3f9606f6068079893b109cb1facf96cfaa3c6a6855acecd8ccf679b774a`；已读回实际内容，原CLI自身完成合同解析往返和写后字节一致性验证。
+
+实际观察 `16:37:51.621899+00:00`：schema=`xar.steam-offline-state-probe/v2`、status=`offline`、offline_mode=true、reason=`observed`、diagnostics=[]、method=`native_current_user_byte`。Steam PID239464，birth FILETIME=`134373773866190684`，exe=`C:/Program Files (x86)/Steam/steam.exe`，version=`11.15.70.27`。Steam incarnation 前后相同。
+
+实际 SteamUI.dll 为19452568 B、SHA `cd9226db4e6c28942df70c22c0475d91fdd62cba5f100baae2d65af57cabb610`，FileID=`38562071810319963`、mtime_ns=`1792620918000000000`，来源前后相同；loaded module size19730432、producer RVA6548332，原生raw两次[1,1]、tray两次[4,4]。此为现有精确版本provider正例，没有使用BLoggedOn、配置缓存、调用ACK、截图或窗口动作推断离线。
+
+当前实际源码 pins（本次执行前读取）：
+
+| tools/原件 | bytes | SHA-256 |
+| --- | ---: | --- |
+| steam_offline_state_probe.py | 28370 | `53d91169b8238931bd0d3785dab7267e0e4fa23a2cc5fb0a9c967ffc22bb47da` |
+| steam_offline_native_provider_v1.py | 16681 | `e0766561e704164eb1ce4b34349e6546ad0791de1be89581d09c736f3af7963c` |
+| steam_offline_native_profiles.py | 4643 | `a5695987b363c10509fbbd95d5910f0ebcdf9609ff0a8fd24d7ddbece50b000c` |
+| steam_offline_state_contract.py | 17615 | `148ae6aaed58b54d69c2d618d31ed1ab9e8499e057ab4c1f2657b05c7e54170b` |
+
+16:38:56Z再次读取四源码pins及receipt，均与执行前/写后原件一致。
+
+该接点本次无需实现、版本或部署修复；未修改生产源码。它只证明上述观察时刻的状态，**不追认未来 launch 的新鲜准入**，真实启动前仍执行新receipt及现有资格验证。没有Steam模式切换、Game启动、旧DATA/Genesis改写或未知进程处置。

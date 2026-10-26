@@ -92,6 +92,8 @@ Root 选定 `0x1D64290..0x1D64376`，230 B。问题为：caller `1A20056` 的 ro
 
 后续短窗查询先在实际metadata输入上验证最小close命令并封argv，进程结束后先最小close，再追加富receipt/独审。本轮8191本地长度guard拒绝发生在exec前，必须计入真实失败和完整闭场成本；不以provider及时退出授整体按窗通过，不为补齐形式重跑旧case。
 
+M1后继已按此顺序完成：fresh RF条件确认后只补1740 B，复用26 B；Rizin1766 B含26 B重读。先在48.628秒完成owned最小close，再核417条/74块121边及独审。候选check可被输入byte分支绕过，未授persistent资格；详见[M1有限结果](resume63-m1-member-validity-result.md)。这48.628秒不含后继富分析，不能称完整研究用时。
+
 ## 精确源码导航
 
 相对 `tools01/rea/package/`：
