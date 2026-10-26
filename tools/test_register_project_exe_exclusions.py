@@ -1,3 +1,5 @@
+from collections.abc import Iterator
+from types import SimpleNamespace
 from pathlib import Path
 import copy
 import ast
@@ -13,11 +15,13 @@ import register_project_exe_exclusions as m
 
 
 class FakeWmi:
-    def __init__(self, paths=None, retval=0, append=True, overwrite=False, failure=None):
+    def __init__(self, paths: list[str] | None = None,
+                 retval: int | None | dict[str, object] = 0, append: bool = True,
+                 overwrite: bool = False, failure: Exception | None = None) -> None:
         self.paths=list(paths or []);self.retval=retval;self.append=append
-        self.overwrite=overwrite;self.failure=failure;self.calls=[]
-    def read_paths(self):return list(self.paths)
-    def add_path(self,path):
+        self.overwrite=overwrite;self.failure=failure;self.calls: list[str]=[]
+    def read_paths(self) -> list[str]:return list(self.paths)
+    def add_path(self,path: str) -> int | None | dict[str, object]:
         self.calls.append(path)
         if self.failure:raise self.failure
         if self.overwrite:self.paths=[]
@@ -26,7 +30,7 @@ class FakeWmi:
 
 
 class RegistrationTest(unittest.TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
         self.root=Path(self.temp.name);self.repo=self.root/'repo'
         self.source=self.repo/'ck3_autonomous_player/native_bridge';self.source.mkdir(parents=True)
@@ -43,11 +47,11 @@ class RegistrationTest(unittest.TestCase):
         self.index={'objects':[{'kind':'codemodel','version':{'major':2},'jsonFile':'model.json'}]}
         self.write_metadata()
         self.manifest=self.collect()
-    def write_metadata(self):
+    def write_metadata(self) -> None:
         for name,obj in [('index-test.json',self.index),('model.json',self.model),('target.json',self.target),
                          ('lib.json',{'id':'lib','name':'library','type':'STATIC_LIBRARY','paths':{'source':'.'},'artifacts':[]})]:
             (self.reply/name).write_text(json.dumps(obj))
-    def collect(self):return m.collect_manifest(self.repo,self.source,self.build,'Release',['fixture'])
+    def collect(self) -> dict[str, object]:return m.collect_manifest(self.repo,self.source,self.build,'Release',['fixture'])
     def register(self,client,manifest=None,admin=True):
         with patch.object(m,'opted_in',return_value=True):
             return m.register_manifest(manifest or self.manifest,self.root/'receipt.json',client=client,admin=admin)
@@ -376,5 +380,328 @@ class ActualComBoundaryTest(unittest.TestCase):
         self.assertTrue(result['admin_required_for_verified_readback'])
         self.assertIsNone(result['before']);self.assertIsNone(result['after'])
         self.assertNotIn('missing_requested_paths',result)
+
+def _observed_object(value: object) -> dict[str, object]:
+    """Narrow the legacy dynamic JSON receipt at this test boundary."""
+    if not isinstance(value, dict):
+        raise AssertionError('expected an observed object')
+    result: dict[str, object] = {}
+    for key, item in value.items():
+        if not isinstance(key, str):
+            raise AssertionError('expected observed string keys')
+        result[key] = item
+    return result
+
+def _observed_settings(value: object) -> m.ExclusionSettings:
+    settings = _observed_object(value)
+    if set(settings) != {'ExclusionPath', 'ExclusionExtension', 'ExclusionProcess'}:
+        raise AssertionError('expected all three observed settings')
+    return {'ExclusionPath': m.DefenderWmi._array(settings['ExclusionPath'], 'ExclusionPath'),
+            'ExclusionExtension': m.DefenderWmi._array(settings['ExclusionExtension'], 'ExclusionExtension'),
+            'ExclusionProcess': m.DefenderWmi._array(settings['ExclusionProcess'], 'ExclusionProcess')}
+
+def _observed_calls(value: object) -> list[dict[str, object]]:
+    if not isinstance(value, list):
+        raise AssertionError('expected observed calls')
+    return [_observed_object(item) for item in value]
+
+def _observed_text(value: object) -> str:
+    if not isinstance(value, str):
+        raise AssertionError('expected observed text')
+    return value
+
+class _SettingsProperties:
+    def __init__(self, values: dict[str, object]) -> None:
+        from types import SimpleNamespace
+        self.values = {key: SimpleNamespace(Name=key, Value=value)
+                       for key, value in values.items()}
+
+    def Item(self, name: str) -> SimpleNamespace:
+        return self.values[name]
+
+    def __iter__(self) -> Iterator[SimpleNamespace]:
+        return iter(self.values.values())
+
+class _SettingsProvider:
+    """Controlled COM boundary; the production WMI reader and Add method run."""
+    def __init__(self) -> None:
+        self.paths: list[str] = [r'C:\old\keep.exe']
+        self.extensions: list[str] = ['oldext', 'oldext', 'keep']
+        self.processes: list[str] = [r'C:\old\process.exe']
+        self.queries: list[str] = []
+        self.calls: list[str] = []
+        self.read_overrides: dict[int, object] = {}
+        self.row_count = 1
+        self.change_nonpath: str | None = None
+        self.return_value: int | None = 0
+        self.bad_return_object = False
+        self.raise_after_mutation = False
+
+    def snapshot(self) -> dict[str, object]:
+        return {'ExclusionPath': list(self.paths),
+                'ExclusionExtension': list(self.extensions),
+                'ExclusionProcess': list(self.processes)}
+
+    def ExecQuery(self, query: str) -> list[SimpleNamespace]:
+        from types import SimpleNamespace
+        self.queries.append(query)
+        value = self.read_overrides.get(len(self.queries), self.snapshot())
+        if isinstance(value, Exception):
+            raise value
+        if not isinstance(value, dict):
+            raise AssertionError('test read override must be a settings object')
+        return [SimpleNamespace(Properties_=_SettingsProperties(value))
+                for _ in range(self.row_count)]
+
+    def Get(self, name: str) -> SimpleNamespace:
+        from types import SimpleNamespace
+        if name != 'MSFT_MpPreference':
+            raise AssertionError('unexpected WMI class')
+        parameters = SimpleNamespace(Properties_=_SettingsProperties(
+            {'ExclusionPath': None, 'Force': None}))
+        inputs = SimpleNamespace(SpawnInstance_=lambda: parameters)
+        method = SimpleNamespace(InParameters=inputs)
+        return SimpleNamespace(
+            Methods_=SimpleNamespace(Item=lambda method_name: method),
+            ExecMethod_=self.execute)
+
+    def execute(self, method: str, parameters: SimpleNamespace) -> object:
+        from types import SimpleNamespace
+        if method != 'Add' or set(parameters.Properties_.values) != {'ExclusionPath', 'Force'}:
+            raise AssertionError('producer changed the Add setting scope')
+        value = parameters.Properties_.Item('ExclusionPath').Value
+        if not isinstance(value, tuple) or len(value) != 1 or not isinstance(value[0], str):
+            raise AssertionError('expected one exact project path')
+        if parameters.Properties_.Item('Force').Value is not True:
+            raise AssertionError('expected the existing Force parameter')
+        self.calls.append(value[0])
+        self.paths.append(value[0])
+        if self.change_nonpath == 'ExclusionExtension':
+            self.extensions.append('unrequested-change')
+        elif self.change_nonpath == 'ExclusionProcess':
+            self.processes.append(r'C:\unrequested\process.exe')
+        if self.raise_after_mutation:
+            raise RuntimeError('controlled provider failure after mutation')
+        if self.return_value is None:
+            return None
+        if self.bad_return_object:
+            return object()
+        return SimpleNamespace(Properties_=_SettingsProperties({'ReturnValue': self.return_value}))
+
+class ThreeSettingsReadbackTest(unittest.TestCase):
+    def setUp(self) -> None:
+        self.fixture = RegistrationTest()
+        self.fixture.setUp()
+        self.addCleanup(self.fixture.doCleanups)
+
+    def client(self, provider: _SettingsProvider) -> m.DefenderWmi:
+        client = object.__new__(m.DefenderWmi)
+        client.services = provider
+        client.token_user_sid = 'S-1-5-21-101-102-103-1001'
+        client.before_settings = None
+        client.after_settings = None
+        client.settings_readback_error = None
+        return client
+
+    def register_default(self, provider: _SettingsProvider, name: str = 'receipt.json') -> dict[str, object]:
+        client = self.client(provider)
+        with patch.object(m, 'opted_in', return_value=True), \
+             patch.object(m, 'DefenderWmi', return_value=client):
+            result: object = m.register_manifest(self.fixture.manifest, self.fixture.root / name, admin=True)
+        return _observed_object(result)
+
+    def add_second_executable(self) -> None:
+        (self.fixture.build / 'second.exe').write_bytes(b'MZ second offline fixture')
+        artifacts = self.fixture.target['artifacts']
+        if not isinstance(artifacts, list):
+            raise AssertionError('expected fixture artifact rows')
+        artifacts.append({'path': 'second.exe'})
+        self.fixture.write_metadata()
+        self.fixture.manifest = self.fixture.collect()
+
+    def test_default_production_reader_add_and_json_roundtrip(self) -> None:
+        provider = _SettingsProvider()
+        result = self.register_default(provider)
+        self.assertEqual(result['status'], 'verified')
+        self.assertEqual(provider.calls, [str(self.fixture.exe.resolve())])
+        self.assertEqual(len(provider.queries), 3)
+        self.assertTrue(all(query == 'SELECT ExclusionPath,ExclusionExtension,ExclusionProcess FROM MSFT_MpPreference'
+                            for query in provider.queries))
+        self.assertEqual(result['before'], [r'C:\old\keep.exe'])
+        self.assertEqual(_observed_settings(result['before_settings'])['ExclusionExtension'], ['oldext', 'oldext', 'keep'])
+        self.assertEqual(_observed_settings(result['after_settings'])['ExclusionProcess'], [r'C:\old\process.exe'])
+        self.assertEqual(set(_observed_settings(result['before_settings'])),
+                         {'ExclusionPath', 'ExclusionExtension', 'ExclusionProcess'})
+        self.assertEqual(result['settings_readback_schema'], 'xar.project-exe-three-settings-readback/v1')
+        self.assertTrue(result['settings_readback_complete'])
+        self.assertTrue(result['observed_extensions_unchanged'])
+        self.assertTrue(result['observed_processes_unchanged'])
+        self.assertIsNone(result['settings_readback_error'])
+        self.assertIs(type(result['settings_readback_process_id']), int)
+        self.assertEqual(result['settings_readback_process_id'], os.getpid())
+        self.assertEqual(result['settings_readback_token_user_sid'], 'S-1-5-21-101-102-103-1001')
+        self.assertEqual(json.loads((self.fixture.root / 'receipt.json').read_text()), result)
+        self.assertIn(str(self.fixture.exe.resolve()), m.DefenderWmi._array(
+            _observed_calls(result['calls'])[0]['fresh_readback'], 'fresh_readback'))
+
+    def test_real_constructor_captures_token_sid_and_closes_handle(self) -> None:
+        import sys
+        provider = _SettingsProvider()
+        calls: list[str] = []
+        class Token:
+            def Close(self) -> None:
+                calls.append('token-close')
+        token = Token()
+        api = SimpleNamespace(GetCurrentProcess=lambda: 'controlled-process')
+        con = SimpleNamespace(TOKEN_QUERY=8)
+        security = SimpleNamespace(
+            OpenProcessToken=lambda process, access: token,
+            GetTokenInformation=lambda handle, kind: ('controlled-sid', 0),
+            TokenUser=1, ConvertSidToStringSid=lambda sid: 'S-1-5-21-101-102-103-1001')
+        pythoncom = SimpleNamespace(CoInitialize=lambda: calls.append('com-initialize'))
+        com_client = SimpleNamespace(GetObject=lambda moniker: provider)
+        com = SimpleNamespace(client=com_client)
+        modules = {'win32api': api, 'win32con': con, 'win32security': security,
+                   'pythoncom': pythoncom, 'win32com': com, 'win32com.client': com_client}
+        with patch.dict(sys.modules, modules):
+            client = m.DefenderWmi()
+        self.assertEqual(client.token_user_sid, 'S-1-5-21-101-102-103-1001')
+        self.assertEqual(calls, ['token-close', 'com-initialize'])
+        self.assertEqual(client.read_paths(), provider.paths)
+        self.assertTrue(client.settings_readback()['settings_readback_complete'])
+
+    def test_null_missing_scalar_and_wrong_element_never_become_empty(self) -> None:
+        for field in ('ExclusionPath', 'ExclusionExtension', 'ExclusionProcess'):
+            for invalid in (None, '', False, 0, ['valid', 1], [True]):
+                with self.subTest(field=field, invalid=invalid):
+                    provider = _SettingsProvider()
+                    value = provider.snapshot()
+                    value[field] = invalid
+                    provider.read_overrides[1] = value
+                    result = self.register_default(provider, 'invalid-' + str(len(list(self.fixture.root.glob('invalid-*')))) + '.json')
+                    self.assertEqual(result['status'], 'settings_failed')
+                    self.assertFalse(result['settings_readback_complete'])
+                    self.assertIsNone(result['before'])
+                    self.assertIsNone(result['before_settings'])
+                    self.assertEqual(provider.calls, [])
+                    self.assertIsNotNone(result['settings_readback_error'])
+            provider = _SettingsProvider()
+            value = provider.snapshot()
+            del value[field]
+            provider.read_overrides[1] = value
+            result = self.register_default(provider, 'missing-' + field + '.json')
+            self.assertEqual(result['status'], 'settings_failed')
+            self.assertEqual(provider.calls, [])
+            self.assertFalse(result['settings_readback_complete'])
+
+    def test_zero_or_multiple_preference_objects_do_not_qualify(self) -> None:
+        for count in (0, 2):
+            provider = _SettingsProvider()
+            provider.row_count = count
+            result = self.register_default(provider, 'rows-' + str(count) + '.json')
+            self.assertEqual(result['status'], 'settings_failed')
+            self.assertEqual(provider.calls, [])
+            self.assertFalse(result['settings_readback_complete'])
+
+    def test_observed_empty_arrays_are_preserved_as_observed_empty(self) -> None:
+        provider = _SettingsProvider()
+        provider.paths, provider.extensions, provider.processes = [], [], []
+        result = self.register_default(provider)
+        self.assertEqual(result['status'], 'verified')
+        self.assertEqual(result['before_settings'],
+                         {'ExclusionPath': [], 'ExclusionExtension': [], 'ExclusionProcess': []})
+        self.assertTrue(result['settings_readback_complete'])
+
+    def test_nonpath_order_and_duplicates_preserved_with_set_comparison(self) -> None:
+        provider = _SettingsProvider()
+        provider.read_overrides[2] = {
+            'ExclusionPath': provider.paths + [str(self.fixture.exe.resolve())],
+            'ExclusionExtension': ('keep', 'oldext'),
+            'ExclusionProcess': (r'C:\old\process.exe', r'C:\old\process.exe')}
+        client = self.client(provider)
+        self.assertEqual(client.read_paths(), [r'C:\old\keep.exe'])
+        client.read_paths()
+        readback = client.settings_readback()
+        before, after = readback['before_settings'], readback['after_settings']
+        if before is None or after is None:
+            raise AssertionError('expected complete observed settings')
+        self.assertEqual(before['ExclusionExtension'], ['oldext', 'oldext', 'keep'])
+        self.assertEqual(after['ExclusionExtension'], ['keep', 'oldext'])
+        self.assertEqual(after['ExclusionProcess'],
+                         [r'C:\old\process.exe', r'C:\old\process.exe'])
+        self.assertTrue(readback['observed_extensions_unchanged'])
+        self.assertTrue(readback['observed_processes_unchanged'])
+        before['ExclusionExtension'].append('must-not-alias')
+        actual_before = client.before_settings
+        if actual_before is None:
+            raise AssertionError('expected original observed settings')
+        self.assertEqual(actual_before['ExclusionExtension'], ['oldext', 'oldext', 'keep'])
+
+    def test_each_successful_add_observes_three_settings_before_next_add(self) -> None:
+        self.add_second_executable()
+        provider = _SettingsProvider()
+        result = self.register_default(provider)
+        self.assertEqual(result['status'], 'verified')
+        self.assertEqual(len(provider.calls), 2)
+        self.assertEqual(len(provider.queries), 4)
+        self.assertEqual(_observed_calls(result['calls'])[0]['fresh_readback'], [r'C:\old\keep.exe', str(self.fixture.exe.resolve())])
+        self.assertNotIn(str((self.fixture.build / 'second.exe').resolve()), m.DefenderWmi._array(
+            _observed_calls(result['calls'])[0]['fresh_readback'], 'fresh_readback'))
+        self.assertEqual(_observed_calls(result['calls'])[1]['fresh_readback'], result['after'])
+
+    def test_nonpath_change_stops_next_add_and_latches_even_after_restore(self) -> None:
+        self.add_second_executable()
+        for field in ('ExclusionExtension', 'ExclusionProcess'):
+            with self.subTest(field=field):
+                provider = _SettingsProvider()
+                original = provider.snapshot()
+                provider.change_nonpath = field
+                restored = dict(original)
+                restored['ExclusionPath'] = provider.paths + [str(self.fixture.exe.resolve())]
+                provider.read_overrides[3] = restored
+                result = self.register_default(provider, field + '.json')
+                self.assertEqual(result['status'], 'settings_failed')
+                self.assertEqual(provider.calls, [str(self.fixture.exe.resolve())])
+                self.assertFalse(result['settings_readback_complete'])
+                self.assertFalse(result['observed_extensions_unchanged'])
+                self.assertFalse(result['observed_processes_unchanged'])
+                self.assertIn(field, _observed_text(result['settings_readback_error']))
+                self.assertTrue(result['partial_mutation'])
+                self.assertEqual(result['missing_requested_paths'], [str((self.fixture.build / 'second.exe').resolve())])
+                self.assertEqual(_observed_object(result['after_settings'])[field], original[field])
+
+    def test_read_exception_latches_even_when_followup_observation_succeeds(self) -> None:
+        self.add_second_executable()
+        provider = _SettingsProvider()
+        provider.read_overrides[2] = PermissionError('controlled readback denied')
+        result = self.register_default(provider)
+        self.assertEqual(result['status'], 'settings_failed')
+        self.assertEqual(provider.calls, [str(self.fixture.exe.resolve())])
+        self.assertFalse(result['settings_readback_complete'])
+        self.assertIn('controlled readback denied', _observed_text(result['settings_readback_error']))
+        self.assertEqual(_observed_settings(result['after_settings'])['ExclusionPath'], provider.paths)
+        self.assertTrue(result['partial_mutation'])
+
+    def test_nullable_decoder_and_mutate_then_raise_keep_real_readback_semantics(self) -> None:
+        for mode in ('null', 'decoder', 'mutate-then-raise'):
+            provider = _SettingsProvider()
+            provider.return_value = None if mode == 'null' else 0
+            provider.bad_return_object = mode == 'decoder'
+            provider.raise_after_mutation = mode == 'mutate-then-raise'
+            result = self.register_default(provider, mode + '.json')
+            self.assertEqual(result['status'], 'verified')
+            self.assertEqual(provider.calls, [str(self.fixture.exe.resolve())])
+            self.assertTrue(result['settings_readback_complete'])
+            self.assertTrue(result['observed_extensions_unchanged'])
+            self.assertTrue(result['observed_processes_unchanged'])
+
+    def test_explicit_custom_client_does_not_claim_default_three_array_scope(self) -> None:
+        with patch.object(m, 'opted_in', return_value=True):
+            result = m.register_manifest(self.fixture.manifest, self.fixture.root / 'receipt.json',
+                                         client=FakeWmi(), admin=True)
+        self.assertEqual(result['status'], 'verified')
+        self.assertNotIn('settings_readback_schema', result)
+        self.assertNotIn('before_settings', result)
+        self.assertNotIn('settings_readback_process_id', result)
 
 if __name__=='__main__':unittest.main()

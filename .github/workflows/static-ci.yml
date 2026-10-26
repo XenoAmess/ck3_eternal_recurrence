@@ -92,8 +92,14 @@ jobs:
       - name: Test protected project EXE broker source without privileged actions
         run: python -B -X utf8 -m unittest discover -s tools/project_exe_broker/tests -p "test_*.py"
       - name: Test exact CMake project EXE registration including DLL-only targets
+        env:
+          CI: "true"
         run: |
           python -B -X utf8 -m unittest discover -s tools -p "test_register_project_exe_exclusions.py"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m unittest discover -s tools -p "test_project_exe_exclusion_broker_client.py"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m unittest discover -s tools -p "test_run_native_msvc_evidence_dir.py"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test finite Rite creation and independent committed-state wire contracts without CK3
         run: |

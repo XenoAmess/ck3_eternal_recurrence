@@ -252,22 +252,111 @@ def after_successful_command_build(repo: Path, source: Path, build: Path,
             "receipt_sha256": hashlib.sha256((attempt / "receipt.json").read_bytes()).hexdigest(), "error": result.get("error")}
 
 
+class ExclusionSettings(TypedDict):
+    ExclusionPath: list[str]
+    ExclusionExtension: list[str]
+    ExclusionProcess: list[str]
+
+class DirectSettingsReadback(TypedDict):
+    settings_readback_schema: Literal["xar.project-exe-three-settings-readback/v1"]
+    before_settings: ExclusionSettings | None
+    after_settings: ExclusionSettings | None
+    observed_extensions_unchanged: bool
+    observed_processes_unchanged: bool
+    settings_readback_complete: bool
+    settings_readback_error: str | None
+    settings_readback_process_id: int
+    settings_readback_token_user_sid: str
+
 class DefenderWmi:
     def __init__(self) -> None:
         import pythoncom
+        import win32api
+        import win32con
+        import win32security
         import win32com.client
+        token = win32security.OpenProcessToken(win32api.GetCurrentProcess(), win32con.TOKEN_QUERY)
+        try:
+            user = win32security.GetTokenInformation(token, win32security.TokenUser)
+            sid = user[0] if isinstance(user, tuple) else user
+            self.token_user_sid: str = win32security.ConvertSidToStringSid(sid)
+        finally:
+            token.Close()
+        self.before_settings: ExclusionSettings | None = None
+        self.after_settings: ExclusionSettings | None = None
+        self.settings_readback_error: str | None = None
         pythoncom.CoInitialize()
         self.services = win32com.client.GetObject(
             "winmgmts:{impersonationLevel=impersonate}!\\\\.\\" + NAMESPACE)
 
-    def read_paths(self) -> list[str]:
-        rows = list(self.services.ExecQuery("SELECT ExclusionPath FROM MSFT_MpPreference"))
+    @staticmethod
+    def _array(value: object, field: str) -> list[str]:
+        if not isinstance(value, (list, tuple)):
+            raise RuntimeError(f"Defender {field} readback is unavailable: expected an observed string array")
+        result: list[str] = []
+        for item in value:
+            if not isinstance(item, str):
+                raise RuntimeError(f"Defender {field} readback contains a non-string value")
+            result.append(item)
+        return result
+
+    @staticmethod
+    def _copy(settings: ExclusionSettings) -> ExclusionSettings:
+        return {"ExclusionPath": list(settings["ExclusionPath"]),
+                "ExclusionExtension": list(settings["ExclusionExtension"]),
+                "ExclusionProcess": list(settings["ExclusionProcess"])}
+
+    def read_settings(self) -> ExclusionSettings:
+        rows = list(self.services.ExecQuery(
+            "SELECT ExclusionPath,ExclusionExtension,ExclusionProcess FROM MSFT_MpPreference"))
         if len(rows) != 1:
             raise RuntimeError("Defender preference read did not return exactly one object")
-        value = rows[0].Properties_.Item("ExclusionPath").Value
-        return list(value or ())
+        props = rows[0].Properties_
+        return {"ExclusionPath": self._array(props.Item("ExclusionPath").Value, "ExclusionPath"),
+                "ExclusionExtension": self._array(props.Item("ExclusionExtension").Value, "ExclusionExtension"),
+                "ExclusionProcess": self._array(props.Item("ExclusionProcess").Value, "ExclusionProcess")}
 
-    def add_path(self, path: str) -> int | None | dict:
+    def read_paths(self) -> list[str]:
+        try:
+            current = self.read_settings()
+            before = self.before_settings
+            if before is None:
+                before = self._copy(current)
+                self.before_settings = before
+            self.after_settings = self._copy(current)
+            for name, old_rows, new_rows in (
+                    ("ExclusionExtension", before["ExclusionExtension"], current["ExclusionExtension"]),
+                    ("ExclusionProcess", before["ExclusionProcess"], current["ExclusionProcess"])):
+                if set(old_rows) != set(new_rows):
+                    raise RuntimeError("Defender non-path exclusion changed: " + name)
+            if self.settings_readback_error is not None:
+                raise RuntimeError("Earlier Defender settings readback failed; no qualified continuation")
+            return list(current["ExclusionPath"])
+        except Exception as error:
+            if self.settings_readback_error is None:
+                self.settings_readback_error = type(error).__name__ + ": " + str(error)
+            raise
+
+    def settings_readback(self) -> DirectSettingsReadback:
+        before, after = self.before_settings, self.after_settings
+        complete = before is not None and after is not None and self.settings_readback_error is None
+        extensions_unchanged = processes_unchanged = False
+        if before is not None and after is not None and self.settings_readback_error is None:
+            extensions_unchanged = set(before["ExclusionExtension"]) == set(after["ExclusionExtension"])
+            processes_unchanged = set(before["ExclusionProcess"]) == set(after["ExclusionProcess"])
+        return {
+            "settings_readback_schema": "xar.project-exe-three-settings-readback/v1",
+            "before_settings": None if before is None else self._copy(before),
+            "after_settings": None if after is None else self._copy(after),
+            "observed_extensions_unchanged": extensions_unchanged,
+            "observed_processes_unchanged": processes_unchanged,
+            "settings_readback_complete": complete,
+            "settings_readback_error": self.settings_readback_error,
+            "settings_readback_process_id": os.getpid(),
+            "settings_readback_token_user_sid": self.token_user_sid,
+        }
+
+    def add_path(self, path: str) -> int | None | dict[str, object]:
         preference = self.services.Get("MSFT_MpPreference")
         parameters = preference.Methods_.Item("Add").InParameters.SpawnInstance_()
         parameters.Properties_.Item("ExclusionPath").Value = (path,)
@@ -307,6 +396,7 @@ def register_manifest(manifest: dict, receipt_path: Path, *, client=None, admin:
                "namespace": NAMESPACE, "before": None, "after": None, "calls": [], "files": manifest.get("files", []),
                "settings_success_is_runtime_trust": False, "exclusion_types_written": ["ExclusionPath exact files"]}
     stage = "manifest-validation"
+    native_settings_client: DefenderWmi | None = None
     # Explicit admin/fake-client paths never discover or run a machine task.
     auto_broker = admin is None and client is None
     def record_readback(paths: list[str]) -> bool:
@@ -319,7 +409,13 @@ def register_manifest(manifest: dict, receipt_path: Path, *, client=None, admin:
         receipt["observed_prior_settings_preserved"] = prior <= observed
         newly_present = (requested - prior) & observed
         receipt["partial_mutation"] = bool(newly_present) and not (requested <= observed and prior <= observed)
-        return requested <= observed and prior <= observed
+        paths_verified = requested <= observed and prior <= observed
+        if native_settings_client is not None:
+            evidence = native_settings_client.settings_readback()
+            receipt.update(evidence)
+            return paths_verified and evidence["settings_readback_complete"] and \
+                evidence["observed_extensions_unchanged"] and evidence["observed_processes_unchanged"]
+        return paths_verified
     try:
         repo = Path(manifest["repo"])
         if not opted_in(repo):
@@ -367,6 +463,7 @@ def register_manifest(manifest: dict, receipt_path: Path, *, client=None, admin:
             if os.name != "nt":
                 raise RuntimeError("Defender WMI registration requires Windows")
             client = DefenderWmi()
+            native_settings_client = client
         stage = "before-readback"
         before = client.read_paths()
         receipt["before"] = before
@@ -410,6 +507,15 @@ def register_manifest(manifest: dict, receipt_path: Path, *, client=None, admin:
                 known = observed
             else:
                 known.add(ntpath.normcase(path))
+                if native_settings_client is not None:
+                    stage = "post-call-readback"
+                    observed_paths = client.read_paths()
+                    call["fresh_readback"] = observed_paths
+                    observed = {ntpath.normcase(p) for p in observed_paths}
+                    record_readback(observed_paths)
+                    if not known <= observed:
+                        raise RuntimeError("Fresh three-setting readback did not preserve prior/exact paths")
+                    known = observed
         stage = "final-readback"
         if not record_readback(client.read_paths()):
             raise RuntimeError("Defender readback missing requested exact paths or observed prior settings")
@@ -428,6 +534,10 @@ def register_manifest(manifest: dict, receipt_path: Path, *, client=None, admin:
             except Exception as read_error:
                 receipt["after_read_error"] = str(read_error)
     finally:
+        if native_settings_client is not None:
+            receipt.update(native_settings_client.settings_readback())
+            if native_settings_client.after_settings is not None:
+                record_readback(native_settings_client.after_settings["ExclusionPath"])
         _write_receipt(receipt_path, receipt)
     return receipt
 

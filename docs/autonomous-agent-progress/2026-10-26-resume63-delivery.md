@@ -46,3 +46,13 @@
 LS 当前 POM 的真实来源是 `INCREMENTAL69-FINITE-POM-ADOPTED04.json` 中的 7,102 B after-image；最终唯一 winner 还须包含实际后继变更。根 POM 含诊断 profile，最终完整验收不得启用该 profile。i61 的 477 B 配置保留用户的 `%dev.quarkus.live-reload.instrumentation=true` 及注释；不得用 SRC 的 363 B 版本覆盖删除。
 
 源码投影、Git 可追溯、Maven 局部通过、最终全图通过、SDK30 完整 step、Native 后态和真实游戏推进分别验收。本记录没有执行构建、测试、CK3、Steam 或 Defender 操作。
+
+## 已交付的独立文档包
+
+2026-10-26T15:03Z，49 个明确文档及必要相对链接依赖已提交并普通 fast-forward 推送为 `e735f2a0ed56e666e5f5d0977a7e532ff861f23c`，唯一 parent 为新鲜 `c9c355ade37f42a817f63ec8f7a0d90f8e8f23a7`。输入 971,205 B；严格 UTF-8、JSON 解析和相对链接闭包均通过。它不包含生产源码。根仓及 i61 的 HEAD、工作文件与索引没有因此更新；成功构造窗口内两份既有索引的 SHA-256 前后相同。
+
+实际不创建临时索引：复用未改子树及预写相同对象，最终原始 tree/commit 输入 299,430 B，本包覆盖 63 个对象合计 562,727 B。原 256 KiB tree 子额度实际拒绝后，按实测目录输入改为 320 KiB，联合 4 MiB 总 hold 未增加。两次早先新 OID 存在性探测遇到 partial-clone promisor 查询，已仅关闭按唯一脚本指纹、父子关系及创建时刻核实的自有进程；后继本地对象检查显式 `GIT_NO_LAZY_FETCH=1` 并复用已写对象。是否新增过其他 pack 未作全 `.git` 审计，保持 UNKNOWN。
+
+推送前实际 task bus `poll --ack` 到 9024，无新冲突；远端 fast-forward 成功。远端回显 CLA 必需状态被现账号策略 bypass，本岗未修改该策略，也不据推送成功授予 CI 信用。[Linear history](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40345540738) 已最终 SUCCESS；[Official Runner CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40345540217) 当次读回仍运行，须以后继真实终态为准。
+
+后继 Native 软件修复交付前发现真实主线漂移：远端 configured 生产/测试为 110,409/70,433 B，旧根仓候选为 58,640/12,258 B，整文件覆盖会删除 804/875 行。已停止该覆盖，交 Native owner 从上述精确新鲜 parent 前向重放，保留远端 `dcc25e69b4` 的扩展能力。Java 则实际核过 `b8ddb3901f..e735f2a0ed` 范围的 `java/ck3-control` 无远端改动；两种情况不混同。
