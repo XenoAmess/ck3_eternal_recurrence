@@ -1,6 +1,6 @@
 # REA / CK3 实验记录
 
-machine_id：`xenoamess-full-tower-eb9d2c1186`。本页截至2026-10-26 UTC；完整原件在D盘，来源见 [sources.json](sources.json)。resume62 六类实验按原指令收尾；后继 resume63 在新授权、新容量及新窗口内完成的两题另列末段，旧关闭与失败不变。
+machine_id：`xenoamess-full-tower-eb9d2c1186`。本页截至2026-10-26 UTC；完整原件在D盘，来源见 [sources.json](sources.json)。resume62 六类实验按原指令收尾；后继 resume63 在新授权、新容量及新窗口内完成的有限题另列末段，旧关闭与失败不变。
 
 已完成六类实验：同低层命令对照、两轮未修补冷启动、修补后冷分析、106 B机制片段、232 B机制闭包、已持Evidence复用。尚无受控模型token或整体研究提速证据；实际能复用/导出证据，与能回答机制问题分别验收。
 
@@ -159,4 +159,39 @@ case在15:19:06.718Z闭场时附加M5独审仍PENDING；旧close未改。M5实�
 
 Rizin每题provider Job限额1 GiB、未触限；第二题decoder限256 MiB。outer exec session与exit分别留原件，**outer联合峰值/Job0均NOT_MEASURED、Shared资格NOT_GRANTED**。两题service.close无错误，owner children/MCP/exec均0；own PID读回不冒全机器审计。表内service、decoder与完整窗口范围不同，窗口包括协调/源审/守卫/解读/闭场，不能以4–7秒称完整研究成本，更不能据不同题目作提速或模型token比较。
 
-原64 MiB总hold前向净分为首case2 MiB、次case16 MiB、未分46 MiB，没有额外64 MiB或物理释放信用。首case后继Native点值545976 B；次case15:11:29Z点值152584 B，均不是历史峰值，close/后继独审另增小metadata。全部原件按统一期限/用途复核；旧900秒卡不续期。后继先复用已持103 B `28BFCD0` 与 `A11F60` source-model，由Root新定义最小未闭 `2B9D260` 边界问题并新鲜准入。本段没有授新采样、Java已采用、完整八M闭合或实机游玩通过。
+原64 MiB总hold当时前向净分为首case2 MiB、次case16 MiB、未分46 MiB，没有额外64 MiB或物理释放信用。首case后继Native点值545976 B；次case15:11:29Z点值152584 B，均不是历史峰值，close/后继独审另增小metadata。全部原件按统一期限/用途复核；旧900秒卡不续期。后继复用已持103 B `28BFCD0` 与 `A11F60` source-model，Root另授第三题如下。本段没有授Java已采用、完整八M闭合或实机游玩通过。
+
+## resume63：第三题64 B前缀保留PARTIAL
+
+新问题绑定 held caller `1A200C0`：slot3恰1才进入C gate，RCX为 `**config.slot0` root、RDX为candidate；返回AL非零跳过显式累计，否则继续 `28BFCD0` 等门。实际运行时actor/producer trigger及world可达性仍未知，不以静态caller冒live观测。旧 RF 表与所查cache未覆盖 `2B9D260`；不存在的 `shared-function-cache` 目录单列，不算阴性样本。
+
+immutable [PLAN01](</D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01/cases/resume63-callee2b9d260-prefix01/PLAN01.json>)先定义可证伪问题、caller/consumer/trigger与64 B上限。原 `native_research_plan.py` ordinary check实际0，`--for-observation` 实际2，拒绝offline-only缺live window/真实trigger；Root与fresh容量卡另授静态PE查询。准备好plan/check/argv后才启16:05:53.422472Z新窗，work120秒、close60秒，未走已知S26失败入口。
+
+当前 PE `.pdata` 二分无覆盖行，相邻为 `[2B9D1C0,2B9D258,5109D50]` / `[2B9D320,2B9D364,5109614]`。此空隙不证明leaf或函数边界。官方REA raw服务只执行 `b 64; p8 64 @ 0x142b9d260; pDj 64 @ 0x142b9d260`；没有af、callee/branch跟随或新Ghidra导入。64 B raw SHA `257454d4ed0da2768dd07f7869c607fc31988977b8fcf66c87e7f57fa58f1e19`，REA p8与独立原件全同。
+
+前62 B/17条VA、size、bytes在Capstone/Rizin间一致；6条rel8目标从raw独算一致。root/candidate各读 `+1C8` qword：非空则读所指对象 `+80` dword，为空则取 `FFFFFFFF`。两dword任一为该bit pattern即JE至范围外 `2B9D2A2`，否则执行 `CMP ECX,EAX`。字段领域含义不推断。前缀无CALL/RET/内存写，不能外推完整callee无副作用或返回AL。
+
+末2 B `0f94` 从 `2B9D29E` 开始，缺少完整指令。Capstone正确保留undecoded tail；Rizin输出invalid `0f` 后把 `94` 解成XCHG，不能将这两条当真实边界或据此猜SETcc目标/最终AL。两个JMP的ESIL分别写 `0x142c2d279/292`，与raw、disasm、`jump` 的 `0x142b9d279/292` 不同；未用ESIL求证。命令虽exit0/complete/未截断，机制仍 **PARTIAL**。独立前缀图为9块、含两个open stub的13边，外部target `2B9D2A2` 与断指令 `2B9D29E` 未闭；未请求Rizin CFG，不宣称双图一致。
+
+| 实际成本/终态 | 结果 |
+| --- | --- |
+| decoder墙钟 / owned峰值 / close | 0.377 s / 24805376 B / 16:06:22.345Z |
+| REA service墙钟 / Rizin owned峰值 / close | 4.566 s / 592379904 B / 16:06:39.561Z |
+| hard limits | decoder20秒/256 MiB；Rizin30秒/1 GiB；Node heap128 MiB |
+| 完整authority至close / deadline | 166.238 s；16:08:39.660Z / 16:08:53.422472Z |
+| own4PID absence / service.close | 16:07:31.793Z全不存在 / 无错误 |
+| outer联合峰值、Job0 / Shared / token | NOT_MEASURED / NOT_GRANTED / NOT_MEASURED |
+
+一次metadata reader在yielded exec尚未终结时提前读Evidence收到ENOENT；随后poll原session9452到真实exit0再读取，没有重跑查询。[receipt](</D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01/cases/resume63-callee2b9d260-prefix01/CASE-RECEIPT01.json>)、[crosscheck](</D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01/cases/resume63-callee2b9d260-prefix01/CROSSCHECK01.json>)和[close](</D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01/cases/resume63-callee2b9d260-prefix01/CASE-CLOSED01.json>)保留真实边界与exact refs；close附加M5独审为PENDING，后继另存原件，不改旧close。
+
+M5在16:11:14.361Z实际独核64 raw、17条62 B、6个signed目标、尾断指令与两处ESIL差异，机械PASS且保PARTIAL；16:13:59.016Z另建 [INDEPENDENT-M5-REVIEW01](</D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01/cases/resume63-callee2b9d260-prefix01/INDEPENDENT-M5-REVIEW01.json>)，4972 B、SHA `ebd01b8e2e9a1e45d5bdd36fe01a6cd1e3e9724c71898325a678a67e67907a58`。旧close的PENDING保持不变。
+
+16:09:49Z Native点值为19files/3dirs含root、logical107426 B/native152440 B，非历史峰值；physical release0。新case16 MiB净取原64 MiB未分额，余30 MiB。下一最小问题是断指令与外跳出口的有限后继，必须新问题/范围/预算；本次未扩读，没有Game/Steam动作或新增游戏日。
+
+## resume63：第四题正常AL路径与迟闭场
+
+Root另授新 `[2B9D2A0,2B9D2E0)` 64 B，复用旧64 B，从原entry拼解而非以2A0当entry。新头5 B补出 `SETE AL; RET` 与 `XOR AL,AL; RET`。从entry可达69 B/21条、10块12边、RET2A1/2A4，无call/outedge；后59新增字节padding/邻段不归入此逻辑。正常AL为“两值均非FFFFFFFF且相等”，EAX高位不规范。M5对raw/ModR/M/6个相对目标/可达图独审成立；领域字段、live可达性、ABI/异常/继承链仍UNKNOWN。
+
+Rizin实际p8新64与原件一致；随后 `omj` 在0.9.1不存在，命令列表在RAM128 p8/pDj前停止。exit0/complete不授128双decoder。work截止后未启动修正；闭场长脚本又在exec前被8191本地长度guard拒绝，最小close拆开后实际逾期。decoder0.425 s/24813568 B，REA service4.913 s/Rizin597905408 B；provider16:21:13.898Z及时close，整体case至16:24:41.431Z，共258.399 s、晚78.399 s。outer联合峰值/Job0未测、Shared不授；这是一份预算RED的真实有限字节研究，不能改成整体PASS。
+
+M5另建5614 B独审保留normal-path结论及Rizin/LATE边界，原close的PENDING不改。详见[第四题独立页与全部精确原件](resume63-callee2b9d260-tail-result.md)。四case在原64 MiB净分2+16+16+16 MiB，余14 MiB，无额外hold/release。16:27 Native点值非峰值；16:32:50Z中断恢复后own4PID仍不存在。Root要求不为Rizin形式补测C4，下一问题须另PLAN/实际验证最小close/新卡。

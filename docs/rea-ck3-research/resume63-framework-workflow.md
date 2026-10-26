@@ -82,7 +82,15 @@ Root 选定 `0x1D64290..0x1D64376`，230 B。问题为：caller `1A20056` 的 ro
 
 上述为初始问题定义，后续已取得两份新的有限原件：`1D64290` 230 B/48条/5块6边，及独立新题 `24C5260` 119 B/35条/4块4边；均鲜读当前 PE 的 RF，Capstone、Rizin、原始相对跳转算术与局部 CFG 一致。M5 对两题独立复核；第二题闭场时仍是 PENDING，15:27:58.546Z 另建独审原件，不修改旧 close。完整数据流、成本和引用见[实验记录 resume63 段](experiments.md#resume63两次新增有限查询)。
 
-第一题保留 `372DF10` 返回的原始低 byte；第二题仅 AL 归一化，且 iterator call 前后的 end 是两次读取。opaque callee、副作用、异常与 unwind 均未闭合。`+0x308` 仍仅为 caller 的未知数值累计来源，兵力、参战、到场、胜率与实机资格均未由本题建立。当前没有整体提速或模型 token 收益结论。下一题先复用已持 `28BFCD0`、`A11F60` 原件/源码，再由 Root 选择最小未闭的 `2B9D260` 边界问题；本页不授新采样。
+第一题保留 `372DF10` 返回的原始低 byte；第二题仅 AL 归一化，且 iterator call 前后的 end 是两次读取。opaque callee、副作用、异常与 unwind 均未闭合。`+0x308` 仍仅为 caller 的未知数值累计来源，兵力、参战、到场、胜率与实机资格均未由本题建立。当前没有整体提速或模型 token 收益结论。后继复用已持 `28BFCD0`、`A11F60` 原件/源码后，新题 `2B9D260` 取得有限前缀，见下。
+
+### 第三题的前缀与工具边界
+
+`2B9D260..2B9D2A0` 只请求64 B，当前/历史 `.pdata` 均无覆盖 RF；使用 `b 64; p8 64 @ VA; pDj 64 @ VA`，没有 `af` 或跟随。前62 B的17条在两decoder间一致，最后 `0f94` 断在指令中；Rizin把它拆成invalid和单字节XCHG，不能作为真实指令流。两条件边跳至外部 `2B9D2A2`，无RET；正常CFG与AL返回仍PARTIAL。两条JMP的ESIL literal另与原bytes/`jump`/disasm不一致，不消费其语义。exit0/complete只说明命令完成。
+
+第三题在180秒新窗内真实闭场，原 `--for-observation` exit2拒绝offline-only仍保留。详见[第三题记录](experiments.md#resume63第三题64-b前缀保留partial)。后继另授新64 B补断尾，有限正常路径69 B/21条支持AL假设；但REA的RAM128解码被不支持的 `omj` 截断，且最小close元数据晚78.399秒。M5的raw/ModR/M/相对边独审不冒Rizin128成功。完整范围与原失败见[后继独立页](resume63-callee2b9d260-tail-result.md)。
+
+后续短窗查询先在实际metadata输入上验证最小close命令并封argv，进程结束后先最小close，再追加富receipt/独审。本轮8191本地长度guard拒绝发生在exec前，必须计入真实失败和完整闭场成本；不以provider及时退出授整体按窗通过，不为补齐形式重跑旧case。
 
 ## 精确源码导航
 

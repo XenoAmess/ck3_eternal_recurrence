@@ -97,3 +97,37 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`。2026-10-26T16:09Z（当地 10 �
 e735 的失败位于实际完整验证入口，不能称为 Tools 编译失败：bootstrap 与 qualified Tools 两轮各 636/636、BUILD SUCCESS；`qualified-control.stderr.log` 为 `NOT EXECUTED: full parity requires the actual fixture-production request; fresh SDK and complete cold/warm cannot be omitted`（ControlCi 595/216）。`control-ci-actual.json` 的两个 fixture request ref 均为 null；EXPECTED_MAVEN_RED 为 PASS，REACTOR 为 RED，其后七阶段为 NOT_RUN。外层 qualification child exit 1、8.6652961 秒、peak 281,006,080 B、active 0。
 
 对应官方 [artifact 12666155214](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40345540217/artifacts/12666155214) ZIP 为 606,260 B，SHA-256 `25bba1eb715d291e19927a76dcbc5fd375176757e80557d434ed2d607e218a47`；本岗只在 RAM 解包，没有物化新 SDK 或证据副本。Host 与 launcher owner 已收到实际请求缺口，后继修复走原生产入口。7ecb 新增 registration、broker、MSVC-evidence 三完整模块的官方 step 已于 15:42:43–15:42:46 UTC SUCCESS；整 Runner 终态仍待读回，未取消或重启长 Native 编译。
+
+## i61 用户资源的真实同图输入
+
+Root 在恢复后明确要求 Host 将 i61 既有 477 B 用户资源作为唯一资源 delta 采用到 SRC，再进行下一 LS 编译与测试。下列 packet 由同一 Win32 只读 handle 取得原始字节与 FileBasicInfo、FileStandardInfo、FileIdInfo；读取前后身份、长度、写入时间和 change 时间相同。没有改写 i61。477 B 的 SHA 与此前用户原件一致；末尾为 LF。Host 应精确读该路径并核 bytes/SHA，采用 SRC 后记录自己的 after，后继编测和产物均绑定 477 B。
+
+```json
+{
+  "schema": "xar.i61-user-application-properties-readonly/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-26T16:32:30.424079+00:00",
+  "path": "D:/codex-ck3-background/i61/java/ck3-control/local-service/src/main/resources/application.properties",
+  "resolved_path": "\\\\?\\D:\\codex-ck3-background\\i61\\java\\ck3-control\\local-service\\src\\main\\resources\\application.properties",
+  "native": {
+    "volume_serial_decimal": "6505083400996699863",
+    "file_id_128_hex": "f82ef800000002000000000000000000",
+    "creation_filetime_decimal": "134374618564540168",
+    "last_write_filetime_decimal": "134374618564551190",
+    "change_filetime_decimal": "134374618564560200",
+    "bytes": 477,
+    "allocation_bytes": 480,
+    "attributes": 32
+  },
+  "sha256": "129a4b9bafdf7820d21817a09360b00b4b745450b46b7612eebe6a326ab96342",
+  "utf8_text": "quarkus.http.host=127.0.0.1\nquarkus.http.port=8089\n# Global HTTP framing must fit the explicit projection role; the original map route retains its own 64 KiB guard.\nquarkus.http.limits.max-body-size=8392704\nquarkus.jackson.fail-on-unknown-properties=true\nquarkus.package.jar.type=fast-jar\n%test.quarkus.http.test-port=0\n%test.xar.projection.offline.enabled=false\n\n# Redefine compatible Java method bodies during local development.\n%dev.quarkus.live-reload.instrumentation=true\n",
+  "identity_stable": true,
+  "authority": "Existing i61 user dev instrumentation; Root requires exact resource adoption before next LS compile/tests; no i61 write"
+}
+```
+
+该 packet 只证明本次资源身份与字节，不授下一编测或产物资格。Git 也未因本次小记录写入对象或索引。
+
+后继真实读回补记：`7ecb8b1d10b88eeaed389ca76251eb5d679c652e` 的官方 run 40351720817 于 2026-10-26T16:26:03Z 最终 FAILURE；失败 step45 于 16:19:58–16:25:51 执行，configured step48 实际 SKIPPED。16:27:19.540577Z 已独立在 RAM 读取该 run 的 artifact 12666114526：605,653 B，SHA-256 `66122e6de39805679275baf1a5c4a1b6ac8d470fb3ce2817ed591987264f5d57`。bootstrap 与 qualified Tools 均为 636/636、BUILD SUCCESS；ControlCi 595/216 仍实际报告缺少 fixture-production request 的 NOT EXECUTED，两 request ref 为 null、后七阶段 NOT_RUN。它是该 SHA 的新证据，未借用 e735 回执；不将 helper step15 成功说成整个 CI 通过。
+
+2026-10-26T16:21:32.715Z 亦已只对本岗四个已发 commit 与被拒九叶候选 tree 的明确对象做 Win32 点测，不遍历 `.git`：去重 212 OID 的有序 LF 清单 SHA-256 为 `21929528ec0c2525e474e61587597477c4c960e303c9107b5301653d9d5e291a`。212/212 FileStandardInfo 查询成功，EndOfFile 全等逻辑长度；合计逻辑 1,568,429 B、实际 AllocationSize 1,951,536 B。未定位小 commit 另留逻辑 1,024 B、allocation 5,120 B，已知对象 allocation 上界为 1,956,656 B。该数不含未知 prior promisor pack，后继 Git 写入先按实际净峰申请，不能将逻辑剩余额度当物理余量。
