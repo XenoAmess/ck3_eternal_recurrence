@@ -30,7 +30,7 @@ class RootPrelaunchInvocation:
 
 
 class PrelaunchPhaseGuardEvidence(TypedDict):
-    label: Literal['DEADLINE-GUARD-1', 'DEADLINE-GUARD-2']
+    label: str
     phase: str
     intent: FilePin
     started: FilePin
@@ -40,15 +40,15 @@ class PrelaunchPhaseGuardEvidence(TypedDict):
 
 
 def _phase_guard_evidence(output: Path) -> list[PrelaunchPhaseGuardEvidence]:
-    """Pin the two additional original phase guards, without synthesizing waits."""
-    labels: tuple[Literal['DEADLINE-GUARD-1', 'DEADLINE-GUARD-2'], ...] = ('DEADLINE-GUARD-1', 'DEADLINE-GUARD-2')
+    """Pin complete, consecutive original phase guards, without synthesizing waits."""
     suffixes = ('.intent.actual.json', '.started.actual.json', '.ARMED.actual.json',
         '.CANCEL.actual.json', '.original-wait.actual.json', '.stdout.log', '.stderr.log')
     found = list(output.glob('DEADLINE-GUARD-*'))
     if not found:
         return []
+    labels = tuple('DEADLINE-GUARD-' + str(index) for index in range(1, len(found) // len(suffixes) + 1))
     if {path.name for path in found} != {label + suffix for label in labels for suffix in suffixes}:
-        raise ValueError('Exact two additional original phase guard file sets required')
+        raise ValueError('Exact consecutive complete additional original phase guard file sets required')
     rows: list[PrelaunchPhaseGuardEvidence] = []
     for label in labels:
         armed = json_object(_read(output / (label + '.ARMED.actual.json')))
@@ -68,17 +68,18 @@ def _observed_phase_guards(bundle: Mapping[str, object], invocation: RootPrelaun
     if not rows:
         if 'prelaunch_phase_guards' in bundle:
             raise ValueError('Unexpected additional phase guard evidence')
-        return {}
-    if bundle.get('prelaunch_phase_guards') != rows:
+        if 'prelaunch_orchestrator_intent' not in bundle:
+            return {}
+    if rows and bundle.get('prelaunch_phase_guards') != rows:
         raise ValueError('Original additional phase guard pins changed')
     ready = json_object(_pinned_object(bundle.get('ready'), 'Original allocated ready'))
     prepared = json_object(_pinned_object(ready.get('prepared_case'), 'Original prepared case'))
     contract = json_object(_pinned_object(prepared.get('contract'), 'Original prepared contract'))
     phases_value = contract.get('gui_phases')
-    if not isinstance(phases_value, list) or len(phases_value) != 3:
-        raise ValueError('Original three-phase prepared contract required')
+    if not isinstance(phases_value, list) or len(phases_value) != len(rows) + 1:
+        raise ValueError('Original prepared contract and phase guard count differ')
     phases = [text_field(json_object(value), 'id') for value in phases_value]
-    if len(set(phases)) != 3 or phases != [base_phase, *(row['phase'] for row in rows)]:
+    if len(set(phases)) != len(phases) or phases != [base_phase, *(row['phase'] for row in rows)]:
         raise ValueError('Original phase guard order differs from prepared contract')
     evidence: dict[str, FilePin] = {}
     for row in rows:
@@ -152,9 +153,46 @@ def _root_prelaunch_invocation(bundle: Mapping[str, object], output: Path,
     fields = {'machine_id', 'source_commit', 'pid', 'process_birth_seconds', 'argv', 'started_at_utc'}
     split_fields = {'machine_id', 'source_commit', 'pid', 'process_create_time_seconds', 'argv',
         'observed_at_utc', 'ambient_pythonpath_removed', 'original_wait_pending'}
+    intent_split = 'prelaunch_orchestrator_intent' in bundle
     split = set(started) == split_fields
     elapsed_seconds = 0.0
-    if split:
+    commit_value = started.get('source_commit')
+    intent_at: datetime | None = None
+    if intent_split:
+        intent_ref = _evidence_pin(bundle.get('prelaunch_orchestrator_intent'), 'Root original intent')
+        intent_path = Path(intent_ref['path']).resolve()
+        intent = json_object(_pinned_object(intent_ref, 'Root original intent'))
+        if (set(intent) != {'machine_id', 'observed_at_utc', 'argv', 'binding', 'ambient_pythonpath_removed', 'no_manual_sdk_import_path'}
+                or set(started) != {'machine_id', 'observed_at_utc', 'argv', 'pid', 'process_create_time_seconds', 'original_wait_pending'}
+                or set(waited) != {'machine_id', 'observed_at_utc', 'original_wait_returncode', 'elapsed_seconds', 'argv', 'pid'}
+                or intent.get('machine_id') != machine
+                or intent.get('ambient_pythonpath_removed') is not True
+                or intent.get('no_manual_sdk_import_path') is not True
+                or started.get('original_wait_pending') is not True):
+            raise ValueError('Exact original intent-bound Root start/wait fields required')
+        prefix = intent_path.name.removesuffix('.intent.actual.json')
+        if (prefix == intent_path.name
+                or Path(_evidence_pin(bundle.get('prelaunch_orchestrator_started'), 'Root start')['path']).resolve() != intent_path.with_name(prefix + '.started.actual.json')
+                or Path(_evidence_pin(bundle.get('prelaunch_orchestrator_wait'), 'Root wait')['path']).resolve() != intent_path.with_name(prefix + '.original-wait.actual.json')
+                or strings_field(intent, 'argv') != strings_field(started, 'argv')
+                or strings_field(waited, 'argv') != strings_field(started, 'argv')
+                or _integer(waited.get('pid'), 'Root original waited pid', 1) != _integer(started.get('pid'), 'Root original started pid', 1)):
+            raise ValueError('Original intent-bound Root invocation crossed original files or identity')
+        binding = json_object(_pinned_object(intent.get('binding'), 'Root original launch binding'))
+        if (binding.get('machine_id') != machine
+                or _evidence_pin(binding.get('orchestrator'), 'Bound Root orchestrator') != source
+                or _evidence_pin(binding.get('public_recorder'), 'Bound Root recorder') != _evidence_pin(bundle.get('allocator_command'), 'Root public recorder')):
+            raise ValueError('Original Root launch binding machine or producer differs')
+        commit_value = binding.get('source_commit')
+        intent_at = _timestamp(intent.get('observed_at_utc'), 'Root original intent')
+        birth = _text(started.get('process_create_time_seconds'), 'Root original birth')
+        began = _timestamp(started.get('observed_at_utc'), 'Root original start')
+        ended = _timestamp(waited.get('observed_at_utc'), 'Root original finish')
+        elapsed = waited.get('elapsed_seconds')
+        if type(elapsed) not in (int, float) or not isinstance(elapsed, (int, float)) or not math.isfinite(elapsed) or elapsed < 0:
+            raise ValueError('Original Root elapsed must be a finite nonnegative number')
+        elapsed_seconds = float(elapsed)
+    elif split:
         if (set(waited) != {'machine_id', 'observed_at_utc', 'original_wait_returncode', 'elapsed_seconds'}
                 or started.get('ambient_pythonpath_removed') is not True
                 or started.get('original_wait_pending') is not True):
@@ -177,14 +215,14 @@ def _root_prelaunch_invocation(bundle: Mapping[str, object], output: Path,
             or _integer(waited.get('original_wait_returncode'), 'Root original exit') != 1):
         raise ValueError('Original Root machine/wait1 differs')
     _integer(started.get('pid'), 'Root original pid', 1)
-    commit = _text(started.get('source_commit'), 'Root original source commit')
+    commit = _text(commit_value, 'Root original source commit')
     if re.fullmatch(r'[1-9][0-9]*(?:\.[0-9]+)?', birth) is None or re.fullmatch(r'[a-f0-9]{40}', commit) is None:
         raise ValueError('Canonical Root process/source identity required')
     if began > ended:
         raise ValueError('Root original wait chronology differs')
-    if split:
+    if split or intent_split:
         born = datetime.fromtimestamp(float(Decimal(birth)), timezone.utc)
-        if born > began or abs((ended - born).total_seconds() - elapsed_seconds) > 1:
+        if born > began or (intent_at is not None and intent_at > born) or abs((ended - born).total_seconds() - elapsed_seconds) > 1:
             raise ValueError('Original split Root birth/elapsed chronology differs')
     frozen = json_object(_pinned_object(bundle.get('frozen'), 'Original Root frozen inputs'))
     manifest = json_object(_pinned_object(frozen.get('runtime_manifest'), 'Original Root runtime manifest'))
@@ -199,6 +237,11 @@ def _root_prelaunch_invocation(bundle: Mapping[str, object], output: Path,
             raise ValueError('Exact original Root argument required: ' + name)
         return argv[argv.index(name) + 1]
 
+    if intent_split:
+        binding_pin = _evidence_pin(intent.get('binding'), 'Original Root launch binding')
+        if (Path(argument('--input-binding')).resolve() != Path(binding_pin['path']).resolve()
+                or argument('--input-binding-sha256') != binding_pin['sha256']):
+            raise ValueError('Original Root arguments crossed launch binding')
     command = _evidence_pin(bundle.get('allocator_command'), 'Root public recorder')
     if (argument('--mode') != 'launch' or argv.count('--execute-root-reviewed-launch') != 1
             or Path(argument('--repo-root')).resolve() != Path(text_field(frozen, 'source_root')).resolve()
@@ -277,7 +320,12 @@ def _observed_prelaunch_orchestrator(bundle: Mapping[str, object], *, previous: 
         raise ValueError('Original guard invocation/wait argv differs')
     recorder = _evidence_pin(bundle.get('allocator_command'), 'Original public recorder')
     outer_argv = strings_field(allocated, 'argv')
-    if len(outer_argv) != 6 or outer_argv[1:] != ['-B','-X','utf8',recorder['path'],'allocate']:
+    expected_recorder = ['-B','-X','utf8',recorder['path'],'allocate']
+    if 'prelaunch_orchestrator_intent' in bundle:
+        root_intent = _pinned_object(bundle.get('prelaunch_orchestrator_intent'), 'Original Root intent')
+        binding_pin = _evidence_pin(root_intent.get('binding'), 'Original Root launch binding')
+        expected_recorder += ['--binding-sha256', binding_pin['sha256']]
+    if outer_argv[1:] != expected_recorder:
         raise ValueError('Original Root public recorder invocation differs')
     _integer(allocated.get('pid'), 'Original public recorder pid', 1)
     stamps = [invocation.started_at, ready_at, _timestamp(started.get('observed_at_utc'), 'Original guard start'),
@@ -304,7 +352,13 @@ def _observed_prelaunch_orchestrator(bundle: Mapping[str, object], *, previous: 
     if any(psutil.pid_exists(pid) for pid in (wrapper, actual)):
         raise ValueError('Original guard wrapper/armed process still present; absence grants no wait code')
     keys = [*names, 'prelaunch_orchestrator_source', 'prelaunch_orchestrator_started', 'prelaunch_orchestrator_wait']
-    return {**{key: _evidence_pin(bundle.get(key), key) for key in keys}, **phase_guards}
+    if 'prelaunch_orchestrator_intent' in bundle:
+        keys.append('prelaunch_orchestrator_intent')
+    evidence = {**{key: _evidence_pin(bundle.get(key), key) for key in keys}, **phase_guards}
+    if 'prelaunch_orchestrator_intent' in bundle:
+        intent = _pinned_object(bundle.get('prelaunch_orchestrator_intent'), 'Root original intent')
+        evidence['prelaunch_launch_binding'] = _evidence_pin(intent.get('binding'), 'Root launch binding')
+    return evidence
 
 
 def _prelaunch_source(reference: object, output: Path, keeper: Path,
@@ -1868,11 +1922,15 @@ def build_bundle(args: argparse.Namespace) -> UnrunBundleReport:
         paths['prelaunch_orchestrator_source']=args.prelaunch_orchestrator_source
         root_started = getattr(args, 'prelaunch_orchestrator_started', None)
         root_wait = getattr(args, 'prelaunch_orchestrator_wait', None)
+        root_intent = getattr(args, 'prelaunch_orchestrator_intent', None)
         need((root_started is None) == (root_wait is None),
              'Provide both original Root orchestrator start and wait')
         if root_started is not None:
             paths['prelaunch_orchestrator_started'] = root_started
             paths['prelaunch_orchestrator_wait'] = root_wait
+        if root_intent is not None:
+            need(root_started is not None, 'Original Root intent requires both original start and wait')
+            paths['prelaunch_orchestrator_intent'] = root_intent
         original_output=args.allocator_intent.resolve().parent
         paths.update({key:original_output/name for key,name in {
             'prelaunch_failure':'ORCHESTRATOR.failure.actual.json',
@@ -1949,6 +2007,7 @@ def main() -> None:
     p.add_argument('--next-state',type=Path)
     p.add_argument('--launcher-pin-refusal',type=Path)
     p.add_argument('--prelaunch-orchestrator-source',type=Path)
+    p.add_argument('--prelaunch-orchestrator-intent',type=Path)
     p.add_argument('--prelaunch-orchestrator-started',type=Path)
     p.add_argument('--prelaunch-orchestrator-wait',type=Path)
     p.add_argument('--pre-intent-offline-run-result',type=Path)

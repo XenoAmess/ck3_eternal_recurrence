@@ -26,13 +26,15 @@ class LockProvider(Protocol):
 class PrelaunchUnrunWriterAdmissionTests(unittest.TestCase):
     observed_root = False
     phase_guards = False
+    intent_root = False
+    phase_count = 3
     def setUp(self) -> None:
         fixture = RootAllocatorTripletTests()
         fixture.setUp()
         self.addCleanup(fixture.doCleanups)
         self.fixture = fixture
         bundle, self.live, self.keeper, _ = fixture.prelaunch_fixture(observed_root=self.observed_root,
-            phase_guards=self.phase_guards)
+            phase_guards=self.phase_guards, intent_root=self.intent_root, phase_count=self.phase_count)
         self.bundle = json_object(bundle)
         self.close = fixture.root / 'closure.json'
         self.close.write_text(json.dumps(bundle), encoding='utf-8')
@@ -169,6 +171,23 @@ class ObservedRootPrelaunchUnrunWriterAdmissionTests(PrelaunchUnrunWriterAdmissi
 
 class ThreePhaseRootPrelaunchUnrunWriterAdmissionTests(ObservedRootPrelaunchUnrunWriterAdmissionTests):
     phase_guards = True
+
+
+class TwoPhaseIntentRootPrelaunchUnrunWriterAdmissionTests(ThreePhaseRootPrelaunchUnrunWriterAdmissionTests):
+    intent_root = True
+    phase_count = 2
+
+    def test_original_intent_binding_and_each_phase_file_are_flat_file_pins(self) -> None:
+        evidence=object_field(object_field(self.closure,'failure_cleanup'),'original_evidence')
+        for key in ('prelaunch_orchestrator_intent','prelaunch_launch_binding',
+                'DEADLINE-GUARD-1.intent','DEADLINE-GUARD-1.started','DEADLINE-GUARD-1.armed',
+                'DEADLINE-GUARD-1.cancel','DEADLINE-GUARD-1.original_wait'):
+            row=file_pin(evidence[key])
+            self.assertEqual(self.fixture.reference(Path(row['path'])), row)
+        record=self.claim()
+        intent=json_object(json.loads((record/'intent.json').read_text(encoding='utf8')))
+        recorded=object_field(object_field(object_field(intent,'closure'),'failure_cleanup'),'original_evidence')
+        self.assertEqual(recorded,evidence)
 
 
 if __name__ == '__main__':

@@ -111,10 +111,137 @@ jobs:
       - name: Install the shared SDK and strict type-check dependencies
         run: python -m pip install mcp==2.0.0 pydantic==2.13.5 mypy==2.4.0 psutil==7.2.2 types-psutil==7.2.2.20260906 opencv-python==5.0.0.93 numpy==2.5.2 Pillow==12.3.0
       - name: Verify and install the exact shared save leaf
-        run: mvn --batch-mode --no-transfer-progress -f java/ck3-save-core/pom.xml -Dsave.build.root="%RUNNER_TEMP%/ck3-save-core-build" install
+        run: |
+          set "MAVEN_OPTS=%MAVEN_OPTS% -Dorg.slf4j.simpleLogger.log.org.eclipse.aether.internal.impl.DefaultLocalRepositoryProvider=debug -Dorg.slf4j.simpleLogger.showLogName=true"
+          if not exist "%RUNNER_TEMP%\des-save-resolver-diagnostic" mkdir "%RUNNER_TEMP%\des-save-resolver-diagnostic"
+          call mvn --batch-mode --no-transfer-progress -f java/ck3-save-core/pom.xml -Dsave.build.root="%RUNNER_TEMP%/ck3-save-core-build" install > "%RUNNER_TEMP%\des-save-resolver-diagnostic\leaf.stdout.log" 2> "%RUNNER_TEMP%\des-save-resolver-diagnostic\leaf.stderr.log"
+          set "resolver_exit=%ERRORLEVEL%"
+          type "%RUNNER_TEMP%\des-save-resolver-diagnostic\leaf.stdout.log"
+          type "%RUNNER_TEMP%\des-save-resolver-diagnostic\leaf.stderr.log" 1>&2
+          exit /b %resolver_exit%
       - name: Compile and verify the actual product builder and fixture producer
         # The Java source composer tests consume the actual SDK normal-exit chain.
-        run: mvn --batch-mode --no-transfer-progress -f mod_dynastic_esotericism/tools/pom.xml -Ddes.build.root=${{ runner.temp }}/dynastic-esotericism-build verify
+        run: |
+          set "MAVEN_OPTS=%MAVEN_OPTS% -Dorg.slf4j.simpleLogger.log.org.eclipse.aether.internal.impl.DefaultLocalRepositoryProvider=debug -Dorg.slf4j.simpleLogger.showLogName=true"
+          if not exist "%RUNNER_TEMP%\des-save-resolver-diagnostic" mkdir "%RUNNER_TEMP%\des-save-resolver-diagnostic"
+          call mvn --batch-mode --no-transfer-progress -f mod_dynastic_esotericism/tools/pom.xml -Ddes.build.root=${{ runner.temp }}/dynastic-esotericism-build verify > "%RUNNER_TEMP%\des-save-resolver-diagnostic\product.stdout.log" 2> "%RUNNER_TEMP%\des-save-resolver-diagnostic\product.stderr.log"
+          set "resolver_exit=%ERRORLEVEL%"
+          type "%RUNNER_TEMP%\des-save-resolver-diagnostic\product.stdout.log"
+          type "%RUNNER_TEMP%\des-save-resolver-diagnostic\product.stderr.log" 1>&2
+          exit /b %resolver_exit%
+      - name: Observe bounded shared save GAV and actual local-repository managers
+        if: always()
+        shell: python {0}
+        run: |
+          from datetime import datetime, timezone
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import re
+          import subprocess
+          import sys
+
+          root = Path(os.environ['RUNNER_TEMP']) / 'des-save-resolver-diagnostic'
+          root.mkdir(parents=True, exist_ok=True)
+          machine = subprocess.run([sys.executable, '-B', 'tools/ck3_live_run_id.py', 'machine'],
+                                   capture_output=True, text=True, check=False)
+          report = {'schema': 'ck3-quarkus-local-repository-diagnostic-v1',
+                    'machine_id': machine.stdout.strip() if machine.returncode == 0 else 'unknown',
+                    'machine_observation_returncode': machine.returncode,
+                    'observed_at_utc': datetime.now(timezone.utc).isoformat(),
+                    'source_commit': os.environ['GITHUB_SHA'], 'diagnostic_only': True,
+                    'resolver_configuration_changed': False}
+          logs = []
+          managers = []
+          installs = []
+          gav_directories: set[Path] = set()
+          gav = Path('org/xar/ck3/ck3-save-core/0.1.0')
+          ansi = re.compile(r'\x1b\[[0-?]*[ -/]*[@-~]')
+          for phase in ('leaf', 'product'):
+              for stream in ('stdout', 'stderr'):
+                  path = root / (phase + '.' + stream + '.log')
+                  if not path.is_file():
+                      logs.append({'path': str(path), 'state': 'NOT_OBSERVED'})
+                      continue
+                  size = path.stat().st_size
+                  with path.open('rb') as handle:
+                      raw = handle.read(2 * 1024**2)
+                  logs.append({'path': str(path), 'bytes': size, 'read_bytes': len(raw),
+                               'truncated': size > len(raw),
+                               'sha256': hashlib.sha256(raw).hexdigest() if size == len(raw) else None})
+                  after_test_marker = False
+                  for line in raw.decode('utf-8', errors='replace').splitlines():
+                      line = ansi.sub('', line)
+                      if '--- quarkus:' in line and ':generate-code-tests ' in line:
+                          after_test_marker = True
+                      match = re.search(r'Using manager (.+?) for (.+)$', line)
+                      if match:
+                          manager, repository = match.groups()
+                          if len(repository) <= 1024 and len(manager) <= 512:
+                              row = {'phase': phase, 'stream': stream,
+                                     'after_generate_code_tests_marker': after_test_marker,
+                                     'manager_and_classloader': manager, 'repository': repository}
+                              if row not in managers and len(managers) < 24:
+                                  managers.append(row)
+                                  if len(gav_directories) < 8:
+                                      gav_directories.add(Path(repository) / gav)
+                      match = re.search(r'Installing .+ to (.+ck3-save-core-0\.1\.0\.(?:jar|pom))$', line)
+                      if match and len(match.group(1)) <= 1024:
+                          target = Path(match.group(1))
+                          row = {'phase': phase, 'stream': stream, 'installed_target': str(target)}
+                          if row not in installs and len(installs) < 8:
+                              installs.append(row)
+                              if len(gav_directories) < 8:
+                                  gav_directories.add(target.parent)
+          report.update(logs=logs, local_repository_manager_observations=managers,
+                        install_target_observations=installs,
+                        product_test_phase_manager_observed=any(
+                            row['phase'] == 'product' and row['after_generate_code_tests_marker']
+                            for row in managers))
+          directories = []
+          remaining_text_bytes = 16 * 1024
+          for directory in sorted(gav_directories):
+              row = {'path': str(directory), 'exists': directory.is_dir(), 'files': []}
+              files = row['files']
+              for name in ('ck3-save-core-0.1.0.jar', 'ck3-save-core-0.1.0.pom',
+                           '_remote.repositories', 'ck3-save-core-0.1.0.jar.lastUpdated',
+                           'ck3-save-core-0.1.0.pom.lastUpdated', 'maven-metadata-local.xml'):
+                  path = directory / name
+                  if not path.is_file():
+                      files.append({'name': name, 'exists': False})
+                      continue
+                  size = path.stat().st_size
+                  item = {'name': name, 'exists': True, 'bytes': size, 'sha256': None}
+                  with path.open('rb') as handle:
+                      raw = handle.read(1024**2 + 1)
+                  if size == len(raw) and len(raw) <= 1024**2:
+                      item['sha256'] = hashlib.sha256(raw).hexdigest()
+                  if name not in ('ck3-save-core-0.1.0.jar', 'ck3-save-core-0.1.0.pom'):
+                      limit = min(4096, remaining_text_bytes)
+                      text = raw[:limit]
+                      remaining_text_bytes -= len(text)
+                      item.update(text=text.decode('utf-8', errors='replace'),
+                                  text_truncated=size > len(text))
+                  files.append(item)
+              directories.append(row)
+          report.update(gav_directories=directories,
+                        scope='Only GAV paths derived from actual LRM/install logs; no recursive local-repository scan. Missing TEST observations remain unknown; null/absent data is not a successful resolution.')
+          encoded = (json.dumps(report, ensure_ascii=False, indent=2) + '\n').encode('utf-8')
+          if len(encoded) > 64 * 1024:
+              for directory in directories:
+                  for item in directory['files']:
+                      if 'text' in item:
+                          del item['text']
+                          item['text_omitted_for_report_limit'] = True
+              report['report_text_omitted_for_64KiB_limit'] = True
+              encoded = (json.dumps(report, ensure_ascii=False, indent=2) + '\n').encode('utf-8')
+          if len(encoded) > 64 * 1024:
+              raise RuntimeError('Bounded GAV diagnostic metadata exceeds 64KiB; no report was written')
+          destination = root / 'gav-readback.actual.json'
+          with destination.open('xb') as handle:
+              handle.write(encoded)
+          print(encoded.decode('utf-8'), end='')
       - name: Verify the shared prebuilt fixture consumer
         run: python -B -X utf8 tools/test_prebuilt_fixture_prepare.py
       - name: Verify the canonical host producer and actual SDK factory
@@ -144,3 +271,4 @@ jobs:
             ${{ runner.temp }}/ck3-save-core-build/surefire-reports/
             ${{ runner.temp }}/dynastic-esotericism-maven/logs/
             ${{ runner.temp }}/dynastic-esotericism-build/dynastic-esotericism-tools/surefire-reports/
+            ${{ runner.temp }}/des-save-resolver-diagnostic/

@@ -236,3 +236,23 @@ Root实际CAS235→236准入新的独立888MiB场次，原1032MiB场次的超额
 恢复资格原件为 `finalized-cold-R0024-a01/metadata/supervisor-regression-a01/EXECUTION.recovery3.consumer-ready.actual.json`，4416 B，SHA `7ad567a6e24b00c047e5e5946e2b84019c04efcf4c17de60c1854a0babea57e9`；完整95汇总 `EXECUTION.shared95.INCOMPLETE.actual.json` 为32335 B，SHA `2f9dfd8114670db9ad77ddb01fd9070eed817347e662330bd6f7575632554de0`。实际执行身份为9df基线加两份工作树源码，前后相等，不冒充后继提交已运行。CAS236→237仅增加独立64MiB恢复检查预算，现有888MiB只保留一次；新来源重新冻结前没有Game准入，期限仍为03:00Z。
 
 并行工作为Root共享修复与原wait验证、同场预算来源重绑、P2完整准备、后继启动及实机截图候选；Root仍唯一Git／账本／SCREEN／游戏writer。下一步在新提交重新生成P2六链资格与公共准备，实际冷载已落定155、核两位既有邀请者五日后态，并拍摄更新结果窗及信仰详情页。尚无本次新实机图或商店更新，公开0.1.0-alpha与3826756673不变，八项完整业务审核继续。
+
+## 00:35:51Z：P2准备完成，R0025容量拒绝及资源收口
+
+machine_id: `4-8e1c2f1861`，观察时间 `2026-10-27T00:35:51Z`。共享监督进程维护已随498b5afc3普通推送；与原实测的两份源码字节一致，另带入的534375b仅十份非活动研究文档，不追认为新测试。P2正式产品、被保留DES产物、fixture／兼容、freeze、六链、runtime及公共prepare共11条原命令全部退出0。`finalized-cold-R0024-a01/metadata/runtime-preparation-a02/READY-NO-GAME.actual.json` 为11426 B，SHA `4a2e5dd3907b3bc6249d315f8bc4d77229f5efe92ba90bff58fd4795877f7f84`，当前来源498、Native实际编译2679及续行元数据9df继续分别记录。
+
+同888MiB内部CAS238→239把metadata分为prep24／keeper92／normal-close24MiB，没有提高全局future或历史gross。a31的操作脚本残留三处旧目录，在分配前失败；旧文件不改写，Root派生修正路径并重新绑定后，a32公共preflight原0，实际分配R0025及SCREEN14139，keeper续租14140。最后容量检查仅 `public_preparation_owner_cap=false`：分配新增输入快照及封包后，prep实际占用加完整6MiB固定后续预测不再满足24MiB。其余physical／owned／quota／gross、scene、keeper、close及时间检查均true；不能据此声称总体磁盘不足，也不能省略后续预测追认为通过。
+
+原流程在public run之前停止，未启动Game或host，未复制新战役保存、推进游戏或提交任何业务动作。原Root内层和工具session7310都退出1，原allocator及keeper0，两个取消守卫各1；所有原wait已消费。原件在 `metadata/public-operations-a02/root-execution-a32`，keeper实际report的thread_exited为true。Root新鲜核对相关进程均不存在后，以精确14140 CAS释放为14141，再以14142记录行政完成；实际释放及原工具wait在 `metadata/normal-close-a01/a32-root-resource-close-a01`。业务、正常游戏关闭及发布资格仍为false。
+
+后继必须按现行allocator使用不重叠的新state和Prepared；不能因本次没有Game就复用P2冻结state。共享unrun读取器当前仍硬要求三个阶段及另一种Root字段集合，正在维护其真实双阶段／intent消费合同，原记录不投影补造。独立工作同时准备有限预算、新封包和远端CI诊断；未变Native、共享Java及wire资格保留，不重复全量构建。此次仍无新增实机宣传图或商店更新，公开0.1.0-alpha保持原内容，八项审核继续。
+
+## 00:52Z：R0025共享恢复链实际通过，云CI增加定向诊断
+
+machine_id: `4-8e1c2f1861`。共享unrun读取器按实际Prepared的阶段数核验连续、完整原守卫集合；显式Root intent分支消费同前缀start／wait、原binding及来源／生产者Pin，并将Root输入binding参数与recorder新增hash参数绑定同一原件。缺整组守卫、跨binding、错误argv／pid／时间等继续拒绝；原记录不投影成旧形状，旧两种合同保留。新增intent及launch binding在真实恢复输出中均为平铺FilePin，现有allocator完整消费，无需另改分派层。
+
+最终对应五命令原wait均0，三组完整测试30＋35＋8＝73次、零跳过；这是维护后原模块重验，不是新增73个独立case。原workflow完整三模块strict及补充六个完整AST节点（含decorators）、完整admission测试模块strict均通过，不外推巨型unrun全strict。薄证明 `metadata/normal-close-a01/unrun-maintenance-a01/COMMAND_VALIDATION.public-control.a02.actual.json` 为8492 B，SHA `dd69955310db84b8f31e95ab8ee96552eb7b1388e5211d608b6047b845682356`，实际身份为498基线及三维护源码，前后Pin相同。原watcher遇测试临时文件消失的外层1、AST提取漏decorator的strict1均保留；旧子进程原wait缺失仍为unavailable，不据PID不存在补造0。
+
+Root先执行真实R0025 producer，首次在recorder新增hash参数处退出1，原bundle保留。修入共享消费者并重验后，以独立输出运行相同真实生产链，完整producer及原writer锁内reducer原wait0，计数器、admission链和源码均未改。`unrun-maintenance-a01/actual-R0025-a02/EXECUTION.actual.json` 为28115 B，SHA `34efa1c2fa459aca04991902abaadaea549f97ed69268c5bc702c94a55b36e72`；成功bundle为12034 B，SHA `3e323fdc54254f64ff3b472fc3fa5899215a748ba916411adbcf361a83be786f`。未重放14141／14142，仅授后继资源接续前提，不是Game、正常游戏关闭或业务PASS。
+
+498的官方RRF40424063831与DES40424063869仍失败于Quarkus测试阶段解析共享leaf，实际TEST仓库尚不明。两原workflow保留原Maven argv及退出码，仅增加定向LRM日志、原双stdio与从实际路径派生的有界GAV／marker读回，不更改resolver语义；YAML、内嵌Python语法、命令接线和diff检查均原0，未新跑Maven或宣称云端修复。静态回执 `metadata/normal-close-a01/remote-ci-498-a01/STATIC-VALIDATION.actual.json` 为2308 B，SHA `2662b34465e05d22aa1d8994a81eefe23197cffa212737ff2078e6292bd64440`。同一公开75文件逐项实际匹配、内descriptor无ID；`store-formal-readback-a01/FORMAL75.actual.json` 为1031 B，SHA `c8d37ed44359f6b675738f59bd9aaac87640fc067846dbcdc21af582d93ef4ed`。未启动Steam原生接口、上传开发内容或更新页面；继续真实UI取材和八项审核。
