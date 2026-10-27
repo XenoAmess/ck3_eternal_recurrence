@@ -1,0 +1,204 @@
+{
+  "schema": "rrf-workshop-media-public-readback-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-27T15:15:02.058774+00:00",
+  "workshop_item_id": "3826756673",
+  "owner": "76561198273714027",
+  "consumer_app_id": 1158310,
+  "public_version": "0.1.0-alpha",
+  "development_version": "0.2.0-alpha unreleased",
+  "content_upload_performed": false,
+  "notes_changed": false,
+  "description_exact_after_CRLF_to_LF": true,
+  "description_chars": 2038,
+  "description_lines": 43,
+  "description_normalized_sha256": "ff3da32d676137e66ddee2541d893409aab7ea7974c722e772be0d1d9ed15712",
+  "anonymous_readback": true,
+  "old_first_eight_order_and_bytes_preserved": true,
+  "previews": [
+    {
+      "order": 1,
+      "preview_id": "48294918",
+      "url": "https://images.steamusercontent.com/ugc/11949390021377429810/3A599321B3E44A9F088B90D90627E779F55D1E58/",
+      "started_at_utc": "2026-10-27T15:14:53.287589+00:00",
+      "http_status": 200,
+      "bytes": 630014,
+      "sha256": "602dafb70d76a77913fca258d0784ebc11f2a700111bc3eea433187efdf620ed",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "exact": true,
+      "finished_at_utc": "2026-10-27T15:14:55.594036+00:00"
+    },
+    {
+      "order": 2,
+      "preview_id": "48294919",
+      "url": "https://images.steamusercontent.com/ugc/14701561625571287741/51E23DEC091D62261743C53F391B0FFCCF7478B5/",
+      "started_at_utc": "2026-10-27T15:14:53.289596+00:00",
+      "http_status": 200,
+      "bytes": 751491,
+      "sha256": "6de8da6457b05c7557f24136042e27c0e5d47fd04b6f451bac3338780c83caa4",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "exact": true,
+      "finished_at_utc": "2026-10-27T15:14:55.658456+00:00"
+    },
+    {
+      "order": 3,
+      "preview_id": "48294920",
+      "url": "https://images.steamusercontent.com/ugc/17740379883873270313/CD252167CCBC2478DDF5D0D00554B958BBCEFFE0/",
+      "started_at_utc": "2026-10-27T15:14:53.290932+00:00",
+      "http_status": 200,
+      "bytes": 758692,
+      "sha256": "fb4391ea90e1f1136a9729c0c1ef78f801242bb1272eb848698746cdd88460eb",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "exact": true,
+      "finished_at_utc": "2026-10-27T15:14:55.701644+00:00"
+    },
+    {
+      "order": 4,
+      "preview_id": "48294921",
+      "url": "https://images.steamusercontent.com/ugc/14322138971414935161/84ABF19EA52A2A29ABFAD812C472801ACD778B59/",
+      "started_at_utc": "2026-10-27T15:14:55.594159+00:00",
+      "http_status": 200,
+      "bytes": 759825,
+      "sha256": "39495dcc1492d726a8f01a803c120ec788137e9b8239fc9727157905c3d6056f",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "exact": true,
+      "finished_at_utc": "2026-10-27T15:14:58.052225+00:00"
+    },
+    {
+      "order": 5,
+      "preview_id": "48294922",
+      "url": "https://images.steamusercontent.com/ugc/11055269871140543996/3F462CE380ABF535391048C18491EEB0B3A4214A/",
+      "started_at_utc": "2026-10-27T15:14:55.658686+00:00",
+      "http_status": 200,
+      "bytes": 726313,
+      "sha256": "cca43fd4c3515bca79a6c8bfda5078eeb0b6d4e349905f6a7ec4647ca80d849f",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "exact": true,
+      "finished_at_utc": "2026-10-27T15:14:57.735503+00:00"
+    },
+    {
+      "order": 6,
+      "preview_id": "48294923",
+      "url": "https://images.steamusercontent.com/ugc/15635122434027558454/E1F1D1E59DC806F3A58BC204CDACF40430E96A13/",
+      "started_at_utc": "2026-10-27T15:14:55.701889+00:00",
+      "http_status": 200,
+      "bytes": 741549,
+      "sha256": "d1eba34145a11d370290580e3083c38ee1c78d4988a9cef05a8b19dbe0fd6dcd",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "exact": true,
+      "finished_at_utc": "2026-10-27T15:14:57.970839+00:00"
+    },
+    {
+      "order": 7,
+      "preview_id": "48328555",
+      "url": "https://images.steamusercontent.com/ugc/15068571318910168828/C047FCC67437D15069CCF0580DBACA1B74B88E5F/",
+      "started_at_utc": "2026-10-27T15:14:57.735634+00:00",
+      "http_status": 200,
+      "bytes": 603530,
+      "sha256": "93b257d360392fd11edf8611419e3085437f2e63164ab8f1b0686a54bfd6e50d",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "exact": true,
+      "finished_at_utc": "2026-10-27T15:14:59.863106+00:00"
+    },
+    {
+      "order": 8,
+      "preview_id": "48328761",
+      "url": "https://images.steamusercontent.com/ugc/9327408694332800861/E26378B97A15D7BFE04D6C52FDB5DA88204E12A8/",
+      "started_at_utc": "2026-10-27T15:14:57.971114+00:00",
+      "http_status": 200,
+      "bytes": 770148,
+      "sha256": "201e00be4cdd92bbd7196ff96dbbeb374f51b75f583196d403fcf83428af4d6d",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "exact": true,
+      "finished_at_utc": "2026-10-27T15:15:00.165277+00:00"
+    },
+    {
+      "order": 9,
+      "preview_id": "48333821",
+      "url": "https://images.steamusercontent.com/ugc/17168949124517871308/2F6583D0C4D1D2ACEF47577FBF60459AF58FCDD0/",
+      "started_at_utc": "2026-10-27T15:14:58.052464+00:00",
+      "http_status": 200,
+      "bytes": 611874,
+      "sha256": "7fae114b1752be8c2fc1f7533569ed1071506bc22f041484e2a0cd614ca09187",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "exact": true,
+      "finished_at_utc": "2026-10-27T15:15:00.161185+00:00"
+    },
+    {
+      "order": 10,
+      "preview_id": "48333877",
+      "url": "https://images.steamusercontent.com/ugc/15499190207926017671/0D5CBA0D47C411F73ABB686FDBD7ED9EC6DDCE86/",
+      "started_at_utc": "2026-10-27T15:14:59.863378+00:00",
+      "http_status": 200,
+      "bytes": 614319,
+      "sha256": "8275ac380d4061ed818cb9d78cf95fc0a3f336e92cc7dc6d9060e61da20de803",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "exact": true,
+      "finished_at_utc": "2026-10-27T15:15:02.058025+00:00"
+    }
+  ],
+  "original_evidence": [
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\fresh-no-mts-review-a04\\metadata\\normal-close-a01\\R0032-browser-media-a01\\PUBLIC-ITEM.after.actual.json",
+      "bytes": 5526,
+      "sha256": "3578d4dd6c1e47f965ca3969282112ce848d154a389416ff8a4d48a33c9b5f67"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\fresh-no-mts-review-a04\\metadata\\normal-close-a01\\R0032-browser-media-a01\\PUBLIC-TEN-BYTES.actual.json",
+      "bytes": 5564,
+      "sha256": "e9f80f2e8cfe3fa68ea5c48013547143fb36456494e7aa17da1946aa65811e1b"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\fresh-no-mts-review-a04\\metadata\\normal-close-a01\\R0032-browser-media-a01\\PUBLIC-PREVIEW-ORDER.actual.json",
+      "bytes": 2181,
+      "sha256": "7db852316e617a9c0309d3b4b83e557c699e19674f7ccac0dae2ad27903d15b9"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\fresh-no-mts-review-a04\\metadata\\normal-close-a01\\R0032-browser-media-a01\\STEAM-OFFLINE.after-Web.actual.json",
+      "bytes": 2436,
+      "sha256": "5ec6799e2c636113df162e965e136a2ea9155ffb4b234ab9ba95328bbbfd6380"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\fresh-no-mts-review-a04\\metadata\\normal-close-a01\\R0032-browser-media-a01\\SCREEN-RELEASE.c.actual.json",
+      "bytes": 1365,
+      "sha256": "b75fcb785a7e02c31ae5d914f1219ceb204ec65ba49f010263d02ddd0db48f08"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\fresh-no-mts-review-a04\\metadata\\normal-close-a01\\R0032-browser-media-a01\\MEDIA-PUBLIC-COMPLETE.actual.json",
+      "bytes": 1827,
+      "sha256": "80ad7f0999ec4e2c6a3fabdb21e82e90a652ec4b0be977970ca5cf1762cb5bb1"
+    }
+  ],
+  "Steam_client_mode_changed": false,
+  "historical_eight_image_readback": "workshop-media-readback-2026-10-27.json"
+}

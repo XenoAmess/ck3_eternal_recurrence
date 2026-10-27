@@ -75,3 +75,16 @@ Root 的首发导出位于 `C:/workspace/rrf-development-20261024/publication-a0
 | 8／48328761 | [原生信仰页](https://images.steamusercontent.com/ugc/9327408694332800861/E26378B97A15D7BFE04D6C52FDB5DA88204E12A8/) | 770148／`201e00be4cdd92bbd7196ff96dbbeb374f51b75f583196d403fcf83428af4d6d` |
 
 全部八图均HTTP200、2560×1440，与相应冻结JPEG的bytes及SHA精确一致。页面完整说明已更新并经匿名API全文核对（CRLF归一为LF），明确末尾两图属于未发布的0.2.0开发预览，下载仍是0.1.0-alpha。此更新不上传模组内容，不授业务通过。证据见[公开回读](../mod_religious_ritual_fusion/docs/evidence/workshop-media-readback-2026-10-27.json)与[元数据修订记录](../docs/workshop-metadata-revisions/religious-ritual-fusion/2026-10-27-development-ui-previews.md)。
+
+## R0032 核心与教义界面已公开，2026-10-27
+
+`machine_id: 4-8e1c2f1861`；15:14Z匿名页面确认十图顺序，15:15Z匿名原图下载全部HTTP200、2560×1440、bytes和SHA精确一致。原八张保留，追加以下两张真实暂停画面：
+
+| 公开顺序／preview ID | 公开原图 | JPEG bytes／SHA-256 |
+| --- | --- | --- |
+| 9／48333821 | [核心信条选择](https://images.steamusercontent.com/ugc/17168949124517871308/2F6583D0C4D1D2ACEF47577FBF60459AF58FCDD0/) | 611874／`7fae114b1752be8c2fc1f7533569ed1071506bc22f041484e2a0cd614ca09187` |
+| 10／48333877 | [分组教义选择](https://images.steamusercontent.com/ugc/15499190207926017671/0D5CBA0D47C411F73ABB686FDBD7ED9EC6DDCE86/) | 614319／`8275ac380d4061ed818cb9d78cf95fc0a3f336e92cc7dc6d9060e61da20de803` |
+
+源为R0032／`502f922c`的两个中间草案，不是最终提交配方或验收结果；该场后续只读帧竞态失败仍如实保留。Java ImageIO仅编码JPEG，Root已查看两张最终图，未裁切、缩放或修改内容。[完整素材身份](../mod_religious_ritual_fusion/docs/media/screenshots-R0032-2026-10-27.json)。
+
+完整主说明已标注末尾四张为未发布开发预览；下载仍为0.1.0-alpha。匿名API全文归一换行后与canonical BBCode一致；没有内容或Notes上传。完成后后台原生确认Steam客户端仍离线，SCREEN事件14260释放。[本次十图回读](../mod_religious_ritual_fusion/docs/evidence/workshop-media-readback-R0032-2026-10-27.json)。
