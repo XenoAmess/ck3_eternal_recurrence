@@ -136,3 +136,7 @@ The [685B caller](resume63-m1-caller2ce6790-result.md) supplies fifth lowbyte1 t
 ### Resume63 C13
 
 The [1757B roster caller](resume63-m1-caller2785fd0-result.md) has its own gate before the byte1 writer call. 433 instructions/113blocks185edges match independently; postcall does not prove append. Actual dispatcher/natural trigger and old/new faction equality remain unknown. Three raw callers remain unsampled.
+
+### C14/C15
+
+[Locator](resume63-m1-inbound2785fd0-text-result.md) and [1995B caller](resume63-m1-caller2787c10-result.md) close CALL2785FD0 with five forwarded pointers. External tail/fullreturn and actual trigger remain UNKNOWN.

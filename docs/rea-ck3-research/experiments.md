@@ -237,3 +237,15 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`。[独立结果](resume63-m1-base2
 ### Resume63 C13
 
 [Caller2785FD0](resume63-m1-caller2785fd0-result.md): freshRF12+1757newB,433ops/113blocks185edges; pointer roster/parallel records, own gate and outgoing byte1. Precheck/writer receivers cross opaque calls; no per-member success readback. Minimumclose237.002s includes193.483s card delivery/bind delay; later independent review/receipt separate. Natural trigger/GameKnown remain unknown.
+
+### Resume63 C14/C15: a raw seed and separate boundary query
+
+[C14 locator](resume63-m1-inbound2785fd0-text-result.md) scanned mapped.text71141448 B, found one raw E8 to2785FD0 and fresh RF36 B; no fulltext persistence or independent full scan. Query224.6922ms/Owned314ms/Job32407552 B; minimumclose15.434s, later receiptT0+446.225s. ExplicitPE273226076 B plus heldPDATA2933220 B; no body or Game qualification in this case.
+
+[C15 RF1995](resume63-m1-caller2787c10-result.md) separately sampled freshRF12+1995body.469 instructions/116 signed targets/16RIP match.95 internal nodes+one address-only externalstub=96/163 provider CFG. Five pointers are entry forwards; U is a full pointer, not writerbyte1. ZeroRET and unique tail2C178B0 leave fullreturn PARTIAL;484stderr B includes missing-tail-function ERROR. The stub is not sampled outside code.
+
+Decoder497ms/25935872 B; service4193ms/Rizin591753216 B. Minimumclose38.786s/owned0 preceded independent review and final receiptT0+751.442s. First checker refused the graphstub; a held-only correction did not rerun provider. Sole gzip archives retain original hashes. Finalpoint385024 B upper<512KiB, not Native peak/release. Actor/constructor/naturaltrigger and newmembership remain UNKNOWN; no Java/Shared/Game authority.
+
+### Resume63 C16
+
+[Third target locator](resume63-m1-inbound2787c10-text-result.md): mapped.text71141448 B again, one RAW278C13D→2787C10; freshRF36 B locates10668 B unwindrange, no body/boundary. Owned307ms/32956416 B, minimumclose32.749s; laterM1review and receiptT0+361.692s separate. Full PErequested273226076+heldPDATA2933220 B recorded again. No independentfulltext count/SHA, naturaltrigger or Game qualification.

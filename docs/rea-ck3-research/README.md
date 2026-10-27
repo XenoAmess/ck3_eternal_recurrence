@@ -34,6 +34,8 @@
 
 使用[本轮 REA 源码研究](resume63-framework-workflow.md)与[并行工作方法](resume63-parallel-raw-method.md)区分 raw Rizin、原始字节独核和 native dossier。当前有限研究不授 Ghidra 伪代码、整机制完成、整体提速或模型 token 节省。
 
+最新有限结果见[代码/数据与receiver研究](resume63-code-data-and-receiver-results.md)：C18已实际运行REA但自动CFG有5额外边，M4/M5保留未闭业务语义。
+
 ## 初始工具实测（2026-10-26）
 
 观察机器为 `xenoamess-full-tower-eb9d2c1186`，日期 2026-10-26 UTC。已安装 Node 24.22.1、REA 6.8.0、Rizin 0.9.1、Ghidra 12.1.4，根为 `D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01`。复用已有 JDK 21，未改变全局 PATH。该机器事实不能外推其他机器。
@@ -54,4 +56,4 @@ Ghidra 经 D 盘隔离启动脚本的七处辅助 JVM 小堆修复后，实际�
 
 更新实验时记录真实时间、机器、版本、命令或 RPC、状态与原件引用。源码审查、工具返回、机制解释和游戏实测分别记载；失败保留且不改写成通过。后续新观察更新索引，历史原件保持原身份，过期资料按项目存储策略复核。
 
-当前状态观察时间（UTC）：2026-10-27T04:42:04.389Z。
+当前状态观察时间（UTC）：2026-10-27T05:21:06.085Z。

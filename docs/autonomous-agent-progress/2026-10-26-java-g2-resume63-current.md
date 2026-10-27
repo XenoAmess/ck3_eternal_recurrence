@@ -1,6 +1,6 @@
 # resume63：REA、Java 全能力迁移与 G2 接续
 
-`machine_id: xenoamess-full-tower-eb9d2c1186`。2026-10-27T04:52Z 更新；任务继续执行。本页接续 [resume62 交接](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff.md)和[来源索引](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff-source-index.json)。
+`machine_id: xenoamess-full-tower-eb9d2c1186`。2026-10-27T05:21Z 更新；任务继续执行。本页接续 [resume62 交接](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff.md)和[来源索引](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff-source-index.json)。
 
 目标是使用 REA 完成 G2 M0–M7 原生研究与 Java 落地，完成 Python 能力迁移后使用 Java 继续普通自动游玩。[完整对照](2026-10-26-resume63-migration-and-g2-matrix.md)分别记录八项业务门槛及全迁移范围。当前 Java CK3 启动、新增游戏日、SAVE、RESTORE均为0，完整实机 G2仍0/8。
 
@@ -58,7 +58,7 @@ SDK原意图后继须更新四个冻结SDK源码的替换选择及white测试选
 REA继续沿已有精确证据研究，M4下一题仅12AD360的470B完整RF，退款仍UNKNOWN。Java实机启动、游戏日、SAVE/RESTORE仍0，完整G2仍0/8。
 
 
-## 2026-10-27T04:52Z 最新执行边界
+## 2026-10-27T05:21Z 最新执行边界
 
 Tools146完整VERIFY独核1139/1139成功，151 XML/674 pins/1466class一致；[独核回执](</D:/ck3-state/ck3-java-g2-resume61-r7-ls18-regression04/acceptance63-tools146/TOOLS146-INDEPENDENT-FULL-VERIFY01.json>)13766B/SHA f08f2896c151435b01b99344e4b0a9f48e16b13ec6034a26669391f114c96842。原41生产成功，Own编译过但Java exit1/11.004s，2JUnit未起：历史读取被当前jna.tmpdir挡在过期拒绝之前。共享修复及历史Source/当前Tools消费修复共五叶已采用，Tools152三整类42/42P，exit0/16.002s，实际仅重编3main+2test；后继新ordinary及一次完整VERIFY，146冻结不追改。
 
@@ -71,3 +71,11 @@ Native Source02物化/verify真实PASS（76.430/7.289s、Job0），3994包/3984N
 REA M5两RF和M4 470B已实际双核；M1 C17遇跳转表导致线性守卫RED/REA未运行，独审确认10596代码+72数据。第二候选路径检查旧候选，不能给新返回授有效性。新有限三题复用原REA入口，不改旧失败。
 
 Main/Tools单Maven writer，Python/Native/REA独立并行。完整Own、SERVICE、SDK Fresh4/Canonical30及独立continuation仍待完成。Java CK3启动、新增游戏日、SAVE/RESTORE均0，完整G2仍0/8，首实机尚无可靠时间预测。
+
+## 2026-10-27T05:21Z 后继实际状态
+
+Native正式ENV已通过原producer和readAccepted：exit0/429.6568314s/Job0，四原command均0，sourceUnchanged、3986 witness；无CXX/configure/UAC/Game。Actual位于R/bridge-qualified146/env/ACTUAL.json，2695165B/SHA c3b1f6c7b7c4d3ada471f6412604066c59775558b3df97a437e198d7d2cb6680。必要pure configure与原RuntimeInventory/prereg正在准备，尚未登记EXE。
+
+Tools156原SourceCut4+Binding11全15P、0javac，仍不授Source146+新T正式集成。155 immutable input03已一次复制330/7713839，原Manual lease真实成功；完整VERIFY尚未确认启动。Main必要32Jar原标准phase及wholeJUnit已窄交接Launcher，515固定缓存/154六件实际守卫，两BUILD/TMP进入Full155后可独立并行。
+
+新[M1代码/数据、M4及M5有限结果](../rea-ck3-research/resume63-code-data-and-receiver-results.md)已落地：C18实际REA字节一致但自动图多5case自环，M4 descriptor不授退款，M5本体不闭注册receiver。全部provider闭场。正式CI缺同runner source/actor/custody事实不能伪造，不把hosted能力缺口加成本机首Game前置。新Java游戏日/SAVE/RESTORE仍0，G2实机0/8。

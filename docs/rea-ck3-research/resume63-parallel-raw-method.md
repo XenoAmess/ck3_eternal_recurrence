@@ -54,3 +54,5 @@ Native analysis JSON can contain integer ptr values above JavaScript's safe rang
 ### Waking a ready owner
 
 A completed owner must receive a followup_task with the exact fresh card; send_message does not start a turn. For a running owner, send is sufficient. Confirm readiness, mint and immediately notify that owner before other packaging. Retain NOT_STARTED windows and issued-to-bind delay separately from provider work. C13's193.483s delivery/bind delay and M4's unused first card do not establish parallel throughput or cost improvement; no old card is renewed.
+
+An external CFG node may be an address-only tail stub. C15 has95 internal nodes+one stub/163edges, zeroRET and missing-function stderr. Count it separately; no outside-body or full-return closure follows.
