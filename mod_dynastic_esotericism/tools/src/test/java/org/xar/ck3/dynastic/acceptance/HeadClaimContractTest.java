@@ -271,8 +271,12 @@ final class HeadClaimContractTest {
     }
 
     private static void rejectWitnessActions(String actions, String effects, String old, String replacement) {
-        assertTrue(actions.contains(old), "mutation must hit the actual fixture callback");
-        String changed = actions.replaceFirst(Pattern.quote(old), Matcher.quoteReplacement(replacement));
+        int start = actions.indexOf(ADOPTION_WITNESS + " = {");
+        assertTrue(start >= 0, "actual adoption witness definition must exist");
+        String witness = actions.substring(start);
+        assertTrue(witness.contains(old), "mutation must hit the actual adoption witness");
+        String changed = actions.substring(0, start)
+                + witness.replaceFirst(Pattern.quote(old), Matcher.quoteReplacement(replacement));
         assertThrows(AssertionError.class, () -> verifyHeadCellCallbackFixture(changed, effects));
     }
 
