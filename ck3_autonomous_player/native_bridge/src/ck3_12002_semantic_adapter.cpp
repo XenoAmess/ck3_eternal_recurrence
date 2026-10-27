@@ -226,22 +226,28 @@ bool WorkerAdapter::read_snapshot(game::Snapshot &output) const noexcept {
       view.wait_terminal = terminal;
       capture_observation(ViewStage::after_wait);
       if (!terminal || mailbox_->stop_requested.load(std::memory_order_acquire) ||
-          snapshot_pending_generation_ != 0 ||
-          snapshot_published_generation_ != generation || snapshot_epoch_ != epoch)
+          !snapshot_.has_value() || snapshot_pending_generation_ != 0 ||
+          snapshot_published_generation_ != generation ||
+          snapshot_published_epoch_ != epoch ||
+          snapshot_published_owner_thread_id_ != owner_thread_id || snapshot_epoch_ == 0)
         return unavailable(FailureStage::worker_snapshot_epoch_unpublished);
-      // Diagnostics are independent atomic loads. Refresh outside the cache
-      // lock, then require the same pump epoch on both sides of that read.
+      // The raw ticket is immutable; unchanged owner cadence may advance the
+      // freshness epoch before this waiter reacquires the cache mutex. Refresh
+      // diagnostics outside that mutex, then require exact live epoch equality.
       guard.unlock();
       diagnostics = ck3_11906::ReadMainThreadQueryMailboxDiagnosticsV1(*mailbox_);
       diagnostic_sample_stage = MailboxStage::post_wait_cache_unlocked;
       guard.lock();
       capture_observation(ViewStage::after_diagnostics_refresh);
-      if (snapshot_pending_generation_ != 0 ||
-          snapshot_published_generation_ != generation || snapshot_epoch_ != epoch ||
+      if (!snapshot_.has_value() || snapshot_pending_generation_ != 0 ||
+          snapshot_published_generation_ != generation ||
+          snapshot_published_epoch_ != epoch ||
+          snapshot_published_owner_thread_id_ != owner_thread_id || snapshot_epoch_ == 0 ||
           diagnostics.stop_requested ||
           mailbox_->stop_requested.load(std::memory_order_acquire) ||
-          diagnostics.pump_epochs != epoch ||
-          mailbox_->pump_epochs.load(std::memory_order_acquire) != epoch ||
+          diagnostics.pump_epochs != snapshot_epoch_ ||
+          mailbox_->pump_epochs.load(std::memory_order_acquire) != snapshot_epoch_ ||
+          diagnostics.owner_thread_id != owner_thread_id ||
           diagnostics.observed_current_thread_id != owner_thread_id)
         return unavailable(FailureStage::worker_snapshot_epoch_unpublished);
     }
