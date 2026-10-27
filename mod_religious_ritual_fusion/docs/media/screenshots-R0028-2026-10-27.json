@@ -1,0 +1,148 @@
+{
+  "schema": "rrf-real-gameplay-promotion-captures-v1",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--religious-ritual-fusion--R0028",
+  "source_commit": "7b671baf21af26a096dd86a34a67503c49b65426",
+  "game_version": "1.20.0.4",
+  "game_pid": 5920,
+  "original_process_creation_filetime": "134375469088985698",
+  "date_raw": 53144520,
+  "game_date": "1066.9.23",
+  "public_version": "0.1.0-alpha",
+  "development_version": "0.2.0-alpha unreleased",
+  "workshop_item_id": "3826756673",
+  "store_updated": false,
+  "public_preview_order": null,
+  "format_conversion": "Java ImageIO JPEG quality0.90, 2560x1440, no resize/crop/synthetic edit",
+  "root_visual_review": true,
+  "zero_day_assertions": "10/10 source/configuration safety only",
+  "five_day_assertions": "6/7; invited45464/45458 remainRite0; pending retained",
+  "whole_product_pass": false,
+  "ordinary_sdk_save": "unconfirmed/save_binding_mismatch",
+  "captures": [
+    {
+      "view": "result",
+      "original": {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-day5-R0024-a01\\screenshots\\capture-2-result.png",
+        "bytes": 4203026,
+        "sha256": "5eb496f82e09c0e764094e90b44ec7af756d9c950f88e4e3440f5b8ba6349bf6"
+      },
+      "native": {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-day5-R0024-a01\\screenshots\\capture-2-result.native.actual.json",
+        "bytes": 88156,
+        "sha256": "b58f0983289975d1805de6816ba653feeba69c6ec815e9935082cf0d6d21b555"
+      },
+      "capture_evidence": {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-day5-R0024-a01\\screenshots\\capture-2-result.evidence.actual.json",
+        "bytes": 1349,
+        "sha256": "d16e8998542f57ef3878a6500c41cd41516b51a4f65d37a778257c3fb339bff8"
+      },
+      "jpeg": {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\finalized-cold-R0024-a01\\metadata\\normal-close-a01\\store-ui-media-a02\\media-R0028\\07-development-result.jpg",
+        "bytes": 603530,
+        "sha256": "93b257d360392fd11edf8611419e3085437f2e63164ab8f1b0686a54bfd6e50d"
+      },
+      "capture": {
+        "business_pass": false,
+        "date_raw": 53144520,
+        "foreground_pid_before_and_after": 5920,
+        "game_birth_filetime_decimal": "134375469088985698",
+        "game_pid": 5920,
+        "height": 1440,
+        "image": {
+          "bytes": 4203026,
+          "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-day5-R0024-a01\\screenshots\\capture-2-result.png",
+          "sha256": "5eb496f82e09c0e764094e90b44ec7af756d9c950f88e4e3440f5b8ba6349bf6"
+        },
+        "machine_id": "4-8e1c2f1861",
+        "native_evidence": {
+          "bytes": 88156,
+          "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-day5-R0024-a01\\screenshots\\capture-2-result.native.actual.json",
+          "sha256": "b58f0983289975d1805de6816ba653feeba69c6ec815e9935082cf0d6d21b555"
+        },
+        "observed_at_utc": "2026-10-27T04:25:40.554573+00:00",
+        "original_pixels": true,
+        "process_after": {
+          "creation_filetime_100ns": "134375469088985698",
+          "exit_code": 259,
+          "pid": 5920
+        },
+        "process_before": {
+          "creation_filetime_100ns": "134375469088985698",
+          "exit_code": 259,
+          "pid": 5920
+        },
+        "public_version_unchanged": "0.1.0-alpha",
+        "publication": "UNPUBLISHED_DEVELOPMENT_PREVIEW_ORIGINAL",
+        "resized": false,
+        "run_id": "4-8e1c2f1861--religious-ritual-fusion--R0028",
+        "store_updated": false,
+        "uncropped": true,
+        "width": 2560,
+        "workshop_item_id": "3826756673"
+      }
+    },
+    {
+      "view": "faith",
+      "original": {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-day5-R0024-a01\\screenshots\\capture-1-faith.png",
+        "bytes": 5162514,
+        "sha256": "509e1aa41d64fa5ed1baa5ea155c64b2c5b77abaf7cea3b01a4e9fb28f6ad4b4"
+      },
+      "native": {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-day5-R0024-a01\\screenshots\\capture-1-faith.native.actual.json",
+        "bytes": 10260,
+        "sha256": "81b6cd80d9015662dc0d526719d3ceed980d16319dd825e2c87d1d666507d32a"
+      },
+      "capture_evidence": {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-day5-R0024-a01\\screenshots\\capture-1-faith.evidence.actual.json",
+        "bytes": 1347,
+        "sha256": "59b5a0484ad107a9182f06d4bf9a35ac387e8679f53ccc7b7ba2e9570914e21e"
+      },
+      "jpeg": {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\finalized-cold-R0024-a01\\metadata\\normal-close-a01\\store-ui-media-a02\\media-R0028\\08-development-faith.jpg",
+        "bytes": 770148,
+        "sha256": "201e00be4cdd92bbd7196ff96dbbeb374f51b75f583196d403fcf83428af4d6d"
+      },
+      "capture": {
+        "business_pass": false,
+        "date_raw": 53144520,
+        "foreground_pid_before_and_after": 5920,
+        "game_birth_filetime_decimal": "134375469088985698",
+        "game_pid": 5920,
+        "height": 1440,
+        "image": {
+          "bytes": 5162514,
+          "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-day5-R0024-a01\\screenshots\\capture-1-faith.png",
+          "sha256": "509e1aa41d64fa5ed1baa5ea155c64b2c5b77abaf7cea3b01a4e9fb28f6ad4b4"
+        },
+        "machine_id": "4-8e1c2f1861",
+        "native_evidence": {
+          "bytes": 10260,
+          "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-day5-R0024-a01\\screenshots\\capture-1-faith.native.actual.json",
+          "sha256": "81b6cd80d9015662dc0d526719d3ceed980d16319dd825e2c87d1d666507d32a"
+        },
+        "observed_at_utc": "2026-10-27T04:15:40.710664+00:00",
+        "original_pixels": true,
+        "process_after": {
+          "creation_filetime_100ns": "134375469088985698",
+          "exit_code": 259,
+          "pid": 5920
+        },
+        "process_before": {
+          "creation_filetime_100ns": "134375469088985698",
+          "exit_code": 259,
+          "pid": 5920
+        },
+        "public_version_unchanged": "0.1.0-alpha",
+        "publication": "UNPUBLISHED_DEVELOPMENT_PREVIEW_ORIGINAL",
+        "resized": false,
+        "run_id": "4-8e1c2f1861--religious-ritual-fusion--R0028",
+        "store_updated": false,
+        "uncropped": true,
+        "width": 2560,
+        "workshop_item_id": "3826756673"
+      }
+    }
+  ]
+}

@@ -187,6 +187,7 @@ jobs:
         run: |
           set "MAVEN_OPTS=%MAVEN_OPTS% -Dorg.slf4j.simpleLogger.log.org.eclipse.aether.internal.impl.DefaultLocalRepositoryProvider=debug -Dorg.slf4j.simpleLogger.showLogName=true"
           if not exist "%RUNNER_TEMP%\des-save-resolver-diagnostic" mkdir "%RUNNER_TEMP%\des-save-resolver-diagnostic"
+          set "MAVEN_OPTS=%MAVEN_OPTS% "-Xlog:class+load=debug:file=%RUNNER_TEMP%/des-save-resolver-diagnostic/class-load.log:utctime,uptime,pid,tid,level,tags:filecount=1,filesize=16M""
           call mvn --batch-mode --no-transfer-progress -f mod_dynastic_esotericism/tools/pom.xml -Ddes.build.root=${{ runner.temp }}/dynastic-esotericism-build "-Dmaven.repo.local=%QUARKUS_LOCAL_REPO%" org.apache.maven.plugins:maven-help-plugin:3.5.2:evaluate -Dexpression=env.QUARKUS_LOCAL_REPO "-Doutput=%RUNNER_TEMP%/des-save-resolver-diagnostic/same-maven-jvm-env-quarkus-local-repo.txt" verify > "%RUNNER_TEMP%\des-save-resolver-diagnostic\product.stdout.log" 2> "%RUNNER_TEMP%\des-save-resolver-diagnostic\product.stderr.log"
           set "resolver_exit=%ERRORLEVEL%"
           type "%RUNNER_TEMP%\des-save-resolver-diagnostic\product.stdout.log"
@@ -289,6 +290,135 @@ jobs:
                           jvm.update(status='OBSERVED_MAVEN_ENV_EXPRESSION', value=value,
                                      matches_later_python_environment=(value == override))
           report['same_maven_jvm_environment'] = jvm
+          # HotSpot's actual class-definition source and adjacent same-thread loader.
+          import urllib.parse, urllib.request, zipfile, zlib
+          targets = ('io.quarkus.bootstrap.resolver.maven.BootstrapMavenContext',
+                     'io.quarkus.maven.QuarkusBootstrapProvider',
+                     'io.quarkus.bootstrap.util.PropertyUtils')
+          loads, raw_pins, pending = [], [], {}
+          overflow = False
+          pattern = re.compile(r'^\[([^\]]+)\]\[([^\]]+)\]\[\s*(\d+)\s*\]\[\s*(\d+)\s*\]\[(info|debug)\s*\]\[class,load\s*\]\s+(.*)$')
+          paths = [p for p in (root / 'class-load.log.0', root / 'class-load.log') if p.is_file()]
+          log_budget = sum(p.stat().st_size for p in paths) <= 36 * 1024 * 1024
+          if log_budget:
+              for path in paths:
+                  before = path.stat()
+                  digest, consumed, line_number = hashlib.sha256(), 0, 0
+                  with path.open('rb') as handle:
+                      while True:
+                          offset = consumed
+                          raw = handle.readline(16385)
+                          if not raw:
+                              break
+                          digest.update(raw); consumed += len(raw); line_number += 1
+                          if len(raw) > 16384:
+                              overflow = True; pending.clear()
+                              while raw and not raw.endswith(b'\n'):
+                                  raw = handle.readline(16385)
+                                  digest.update(raw); consumed += len(raw)
+                              continue
+                          try:
+                              text = raw.decode('utf-8').rstrip('\r\n')
+                          except UnicodeDecodeError:
+                              overflow = True; pending.clear()
+                              continue
+                          match = pattern.match(text)
+                          if match is None:
+                              pending.clear()
+                              continue
+                          utc, uptime, pid, tid, level, message = match.groups()
+                          key = (pid, tid)
+                          if level == 'info':
+                              pending.pop(key, None)
+                              name, separator, source = message.partition(' source: ')
+                              if name in targets or name.startswith(targets[1] + '$'):
+                                  if len(loads) >= 32:
+                                      overflow = True
+                                      continue
+                                  row = dict(class_name=name, source_url=source if separator else None,
+                                      utc=utc, uptime=uptime, pid=pid, tid=tid, file=str(path),
+                                      line=line_number, byte_offset=offset, info_line=text,
+                                      loader_status='UNAVAILABLE_ADJACENT_SAME_THREAD_RECORD')
+                                  loads.append(row); pending[key] = row
+                          else:
+                              row = pending.pop(key, None)
+                              if row is not None and ' loader: [' in message:
+                                  row.update(loader_status='OBSERVED_ADJACENT_SAME_PID_TID',
+                                      loader_line=text, loader_file=str(path),
+                                      loader_line_number=line_number, loader_byte_offset=offset)
+                  after = path.stat()
+                  raw_pins.append(dict(path=str(path), bytes=consumed, sha256=digest.hexdigest(),
+                      unchanged_during_read=(before.st_size == after.st_size == consumed
+                                             and before.st_mtime_ns == after.st_mtime_ns)))
+          def member_pin(archive: zipfile.ZipFile, name: str, limit: int) -> dict[str, object]:
+              info = archive.getinfo(name)
+              if info.file_size > limit:
+                  raise ValueError('Exact jar member exceeds diagnostic bound')
+              with archive.open(info) as member:
+                  data = member.read(limit + 1)
+              if len(data) != info.file_size:
+                  raise ValueError('Exact jar member size differs')
+              item = dict(entry=name, bytes=len(data), sha256=hashlib.sha256(data).hexdigest(),
+                          crc32=f'{zlib.crc32(data) & 0xffffffff:08x}')
+              if name.endswith('/pom.properties'):
+                  version = re.search(r'(?m)^version=([^\r\n]{1,128})$', data.decode('utf-8').replace('\r\n', '\n'))
+                  item['observed_version'] = version.group(1) if version else None
+              return item
+          for row in loads:
+              try:
+                  url = row['source_url'] or ''
+                  parsed = urllib.parse.urlsplit(url.removeprefix('jar:').split('!/', 1)[0])
+                  if parsed.scheme != 'file' or parsed.netloc not in ('', 'localhost'):
+                      raise ValueError('Actual class source is not a local file URL')
+                  jar = Path(urllib.request.url2pathname(parsed.path))
+                  stat_before = jar.stat()
+                  if not jar.is_file() or stat_before.st_size > 4 * 1024 * 1024:
+                      raise ValueError('Exact defining jar is absent or exceeds 4 MiB')
+                  digest, jar_bytes = hashlib.sha256(), 0
+                  with jar.open('rb') as handle:
+                      while chunk := handle.read(65536):
+                          digest.update(chunk); jar_bytes += len(chunk)
+                  with zipfile.ZipFile(jar) as archive:
+                      entry = member_pin(archive, row['class_name'].replace('.', '/') + '.class', 2 * 1024 * 1024)
+                      names = sorted(name for name in archive.namelist()
+                          if name.startswith(('META-INF/maven/io.quarkus/', 'META-INF/maven/io.quarkus.platform/'))
+                          and name.endswith('/pom.properties'))
+                      if len(names) > 8:
+                          raise ValueError('Exact jar version metadata exceeds bound')
+                      versions = [member_pin(archive, name, 8192) for name in names]
+                      manifest = (member_pin(archive, 'META-INF/MANIFEST.MF', 65536)
+                                  if 'META-INF/MANIFEST.MF' in archive.namelist() else None)
+                  stat_after = jar.stat()
+                  if not (stat_before.st_size == stat_after.st_size == jar_bytes
+                          and stat_before.st_mtime_ns == stat_after.st_mtime_ns):
+                      raise ValueError('Defining jar changed during read')
+                  check = re.search(r'bytes: (\d+) checksum: ([0-9a-fA-F]{8})', row.get('loader_line', ''))
+                  agrees = (None if check is None else
+                      int(check.group(1)) == entry['bytes'] and check.group(2).lower() == entry['crc32'])
+                  row['defining_source_evidence'] = dict(status='OBSERVED_LOCAL_JAR',
+                      path=str(jar), bytes=jar_bytes, sha256=digest.hexdigest(),
+                      base_class_entry=entry, loaded_length_crc_agree=agrees,
+                      version_properties=versions, manifest=manifest,
+                      scope='Exact observed source URL; entry SHA is not a measured loaded-memory SHA')
+              except (OSError, ValueError, KeyError, zipfile.BadZipFile) as error:
+                  row['defining_source_evidence'] = dict(status='UNAVAILABLE', reason=str(error)[:240])
+          selected = dict(schema='ck3-loaded-bootstrap-evidence-v1', machine_id=report['machine_id'],
+              source_commit=os.environ.get('GITHUB_SHA'), observed_at_utc=datetime.now(timezone.utc).isoformat(),
+              rows=loads, raw_log_pins=raw_pins, raw_logs_present=bool(paths),
+              raw_read_budget_satisfied=log_budget, rotation_observed=(root / 'class-load.log.0').is_file(),
+              retained_definition_overflow=overflow, omitted_rows_for_64KiB_limit=0,
+              raw_log_forecast_reserve_bytes=36 * 1024 * 1024,
+              scope='Actual definitions only; loader adjacency bound by PID/TID; missing evidence stays unavailable')
+          encoded_selected = json.dumps(selected, ensure_ascii=False, indent=2).encode('utf-8') + b'\n'
+          while len(encoded_selected) > 64 * 1024 and loads:
+              loads.pop()
+              selected['omitted_rows_for_64KiB_limit'] += 1
+              encoded_selected = json.dumps(selected, ensure_ascii=False, indent=2).encode('utf-8') + b'\n'
+          if len(encoded_selected) > 64 * 1024:
+              raise RuntimeError('Selected class-loading evidence exceeds 64 KiB')
+          with (root / 'class-load-selected.actual.json').open('xb') as handle:
+              handle.write(encoded_selected)
+          # Raw logs are never deleted here; artifact excludes only class-load.log*.
           test_repositories = {Path(row['repository']).resolve() for row in managers
                                if row['phase'] == 'product' and row['after_generate_code_tests_marker']}
           report.update(quarkus_local_repo_override=override,
@@ -379,3 +509,4 @@ jobs:
             ${{ runner.temp }}/dynastic-esotericism-maven/logs/
             ${{ runner.temp }}/dynastic-esotericism-build/dynastic-esotericism-tools/surefire-reports/
             ${{ runner.temp }}/des-save-resolver-diagnostic/
+            !${{ runner.temp }}/des-save-resolver-diagnostic/class-load.log*

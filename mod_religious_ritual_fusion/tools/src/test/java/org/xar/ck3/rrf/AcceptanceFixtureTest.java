@@ -31,6 +31,30 @@ final class AcceptanceFixtureTest {
     private static final ExpectedSelection DEFAULT_SELECTION = new ExpectedSelection(List.of(new ExpectedSelection.TenetKey("tenet_esotericism"), new ExpectedSelection.TenetKey("tenet_astrology"), new ExpectedSelection.TenetKey("tenet_communal_identity")));
     private static final ActorHistoryId ROBERT = new ActorHistoryId("1128");
     @TempDir Path directory;
+    @Test void longDisplayNameInputIsFreshOnlyAndCrossesFrozenFixtureReader() throws IOException {
+        Path repository = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize().getParent();
+        for (String recipe : List.of("core-rite", "core-faith-four", "ui-rejection", "cold-rite")) {
+            Request request = bundledRequest(repository, recipe);
+            FixtureEmitter.Emission emitted = FixtureEmitter.emit(repository, directory.resolve("long-name-" + recipe), "synthetic-fixture-machine", request);
+            org.xar.ck3.rrf.acceptance.FrozenFixtureReader.read(manifestPin(emitted.manifest()), emitted.payload().machineId(), repository);
+            Path seed = emitted.fixture().resolve("common/scripted_effects/rrfa_seed_effects.txt");
+            if (request.kind() == CaseKind.COLD_RELOAD) {
+                assertFalse(Files.exists(seed));
+                for (String relative : emitted.payload().files().keySet()) {
+                    if (relative.endsWith(".txt")) assertFalse(keys(Clausewitz.parse(Files.readString(emitted.fixture().resolve(relative)))).contains("change_first_name"));
+                }
+            } else {
+                List<String> seedKeys = keys(Clausewitz.parse(Files.readString(seed)));
+                assertEquals(1, seedKeys.stream().filter("change_first_name"::equals).count());
+                assertEquals(1, seedKeys.stream().filter("random_vassal"::equals).count());
+                assertTrue(Files.readString(seed).contains("value = scope:rrfa_long_name_vassal"));
+                for (String language : List.of("english", "simp_chinese")) {
+                    String loc = Files.readString(emitted.fixture().resolve("localization/" + language + "/rrfa_observation_l_" + language + ".yml"));
+                    assertTrue(loc.contains("rrfa_fixture_long_vassal_name:0"));
+                }
+            }
+        }
+    }
     @Test void sharedParserProducerPinsCannotBeRemovedFromFrozenFixture() throws IOException {
         Path repository = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize().getParent();
         FixtureEmitter.Emission emitted = FixtureEmitter.emit(repository, directory.resolve("shared-source-fixture"), "synthetic-fixture-machine", bundledRequest(repository, "core-rite"));

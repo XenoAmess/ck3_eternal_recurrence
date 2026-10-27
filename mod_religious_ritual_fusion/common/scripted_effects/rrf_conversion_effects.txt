@@ -118,6 +118,7 @@ rrf_dispatch_vassal_conversion_effect = {
                 actor = scope:rrf_conversion_actor
                 recipient = scope:rrf_conversion_target
                 execute_threshold = accept
+                send_threshold = maybe
             }
         }
     }

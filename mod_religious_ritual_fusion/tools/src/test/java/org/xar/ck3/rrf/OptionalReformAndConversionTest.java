@@ -2,6 +2,7 @@ package org.xar.ck3.rrf;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -114,22 +115,90 @@ final class OptionalReformAndConversionTest {
         assertFalse(model.list(model.actor, "rrf_vassal_invited").contains(appearedLater));
     }
 
+    @Test void maybeWithoutSendThresholdReproducesTheAttemptedButUnsentProductionPath() throws IOException {
+        Model model = model();
+        Entity target = model.vassal("maybe", true, true, true);
+        model.nativeStates.put(target, new NativeState(true, true, NativeAnswer.MAYBE, true));
+        Clausewitz.Block legacy = withoutAiSwaySendThreshold(model.scripts.get("rrf_dispatch_vassal_conversion_effect"));
+        model.scripts.put("rrf_dispatch_vassal_conversion_effect", Clausewitz.parse("legacy = " + legacy.render()).block("legacy"));
+
+        model.effect("rrf_refresh_vassal_conversion_preview_effect", model.actor);
+        assertEquals(List.of(target), model.list(model.actor, "rrf_vassal_converts"));
+        model.effect("rrf_invite_previewed_vassals_effect", model.actor);
+
+        assertEquals(1, model.dispatches.size());
+        assertTrue(model.executed.isEmpty());
+        assertTrue(model.sent.isEmpty());
+        assertTrue(model.pendingOffers.isEmpty());
+        assertEquals(model.oldRite, model.state(target).links.get("rite"));
+        assertEquals(List.of(target), model.list(model.actor, "rrf_vassal_invited"));
+        assertEquals(List.of(target), model.list(model.actor, "rrf_vassal_pending"));
+        assertTrue(model.list(model.actor, "rrf_vassal_converted").isEmpty());
+    }
+
+    @Test void productionMaybeOfferStaysPendingUntilAnAcceptedNativeReply() throws IOException {
+        Model model = model();
+        Entity target = model.vassal("maybe", true, true, true);
+        model.nativeStates.put(target, new NativeState(true, true, NativeAnswer.MAYBE, true));
+        model.effect("rrf_refresh_vassal_conversion_preview_effect", model.actor);
+        model.effect("rrf_invite_previewed_vassals_effect", model.actor);
+
+        assertTrue(model.executed.isEmpty());
+        assertEquals(List.of(target), model.sent.stream().map(Dispatch::recipient).toList());
+        assertEquals(model.oldRite, model.state(target).links.get("rite"));
+        assertEquals(List.of(target), model.list(model.actor, "rrf_vassal_pending"));
+        assertTrue(model.list(model.actor, "rrf_vassal_converted").isEmpty());
+        model.effect("rrf_invite_previewed_vassals_effect", model.actor);
+        assertEquals(1, model.dispatches.size());
+        assertThrows(IllegalArgumentException.class, () -> model.reply(target, NativeAnswer.MAYBE));
+        assertTrue(model.pendingOffers.containsKey(target));
+
+        model.reply(target, NativeAnswer.ACCEPT);
+        model.effect("rrf_check_vassal_conversion_results_effect", model.actor);
+        assertEquals(model.rite, model.state(target).links.get("rite"));
+        assertEquals(List.of(target), model.list(model.actor, "rrf_vassal_converted"));
+        assertTrue(model.list(model.actor, "rrf_vassal_pending").isEmpty());
+        assertTrue(model.pendingOffers.isEmpty());
+    }
+
+    @Test void decliningMaybeReplyAndDecliningDispatchNeverForceConversionOrReplay() throws IOException {
+        Model model = model();
+        Entity maybe = model.vassal("maybe", true, true, true);
+        Entity decline = model.vassal("decline_after_preview", true, true, true);
+        model.nativeStates.put(maybe, new NativeState(true, true, NativeAnswer.MAYBE, true));
+        // Potential acceptance and the actual dispatch response are separate boundary inputs.
+        model.nativeStates.put(decline, new NativeState(true, true, NativeAnswer.DECLINE, true));
+        model.effect("rrf_refresh_vassal_conversion_preview_effect", model.actor);
+        model.effect("rrf_invite_previewed_vassals_effect", model.actor);
+        assertEquals(List.of(maybe), model.sent.stream().map(Dispatch::recipient).toList());
+        assertTrue(model.executed.isEmpty());
+        model.reply(maybe, NativeAnswer.DECLINE);
+        model.effect("rrf_check_vassal_conversion_results_effect", model.actor);
+        assertEquals(model.oldRite, model.state(maybe).links.get("rite"));
+        assertEquals(model.oldRite, model.state(decline).links.get("rite"));
+        assertEquals(Set.of(maybe, decline), Set.copyOf(model.list(model.actor, "rrf_vassal_pending")));
+        assertTrue(model.list(model.actor, "rrf_vassal_converted").isEmpty());
+        model.effect("rrf_invite_previewed_vassals_effect", model.actor);
+        assertEquals(2, model.dispatches.size());
+        assertTrue(model.pendingOffers.isEmpty());
+    }
+
     @Test void humanAndUnknownNativeDispatchesNeverBecomeSuccessOrAutomaticRetries() throws IOException {
         Model model = model();
         Entity unknown = model.vassal("unknown", true, true, true);
         Entity human = model.vassal("human", false, true, true);
-        model.nativeStates.put(unknown, new NativeState(true, true, false));
+        model.nativeStates.put(unknown, new NativeState(true, true, NativeAnswer.ACCEPT, false));
         model.effect("rrf_refresh_vassal_conversion_preview_effect", model.actor);
         model.effect("rrf_invite_previewed_vassals_effect", model.actor);
         assertEquals(2, model.dispatches.size());
         Dispatch humanDispatch = model.dispatches.stream().filter(d -> d.recipient().equals(human)).findFirst().orElseThrow();
-        assertEquals("decline", humanDispatch.sendThreshold());
-        assertEquals("", humanDispatch.executeThreshold());
+        assertEquals(NativeThreshold.DECLINE, humanDispatch.sendThreshold());
+        assertEquals(NativeThreshold.UNSET, humanDispatch.executeThreshold());
         assertTrue(model.list(model.actor, "rrf_vassal_converted").isEmpty());
         assertEquals(Set.of(unknown, human), Set.copyOf(model.list(model.actor, "rrf_vassal_pending")));
         model.effect("rrf_invite_previewed_vassals_effect", model.actor);
         assertEquals(2, model.dispatches.size());
-        model.state(human).links.put("rite", model.rite);
+        model.reply(human, NativeAnswer.ACCEPT);
         model.effect("rrf_check_vassal_conversion_results_effect", model.actor);
         assertEquals(List.of(human), model.list(model.actor, "rrf_vassal_converted"));
         assertEquals(List.of(unknown), model.list(model.actor, "rrf_vassal_pending"));
@@ -143,8 +212,14 @@ final class OptionalReformAndConversionTest {
         Set<Entity> before = Set.copyOf(model.state(model.oldRite).doctrines);
         model.effect("rrf_refresh_vassal_conversion_preview_effect", model.actor);
         model.effect("rrf_invite_previewed_vassals_effect", model.actor);
-        assertEquals("sway_vassal_to_my_rite_interaction", model.dispatches.stream().filter(d -> d.recipient().equals(same)).findFirst().orElseThrow().interaction());
-        assertEquals("ask_for_conversion_interaction", model.dispatches.stream().filter(d -> d.recipient().equals(different)).findFirst().orElseThrow().interaction());
+        Dispatch sameFaith = model.dispatches.stream().filter(d -> d.recipient().equals(same)).findFirst().orElseThrow();
+        Dispatch otherFaith = model.dispatches.stream().filter(d -> d.recipient().equals(different)).findFirst().orElseThrow();
+        assertEquals("sway_vassal_to_my_rite_interaction", sameFaith.interaction());
+        assertEquals(NativeThreshold.MAYBE, sameFaith.sendThreshold());
+        assertEquals(NativeThreshold.ACCEPT, sameFaith.executeThreshold());
+        assertEquals("ask_for_conversion_interaction", otherFaith.interaction());
+        assertEquals(NativeThreshold.UNSET, otherFaith.sendThreshold());
+        assertEquals(NativeThreshold.ACCEPT, otherFaith.executeThreshold());
         assertEquals(before, model.state(model.oldRite).doctrines);
         assertEquals(model.oldRite, model.state(model.oldRite).links.get("self_identity"));
     }
@@ -152,7 +227,7 @@ final class OptionalReformAndConversionTest {
     @Test void attemptedDispatchesRemainGuardedForOneRiteAndResetOnlyForAnotherResult() throws IOException {
         Model model = model();
         Entity target = model.vassal("target", true, true, true);
-        model.nativeStates.put(target, new NativeState(true, true, false));
+        model.nativeStates.put(target, new NativeState(true, true, NativeAnswer.ACCEPT, false));
         model.effect("rrf_refresh_vassal_conversion_preview_effect", model.actor);
         model.effect("rrf_invite_previewed_vassals_effect", model.actor);
         model.effect("rrf_refresh_vassal_conversion_preview_effect", model.actor);
@@ -225,11 +300,45 @@ final class OptionalReformAndConversionTest {
         return model;
     }
 
+    private static Clausewitz.Block withoutAiSwaySendThreshold(Clausewitz.Block body) {
+        return new Clausewitz.Block(body.entries().stream().map(entry -> {
+            if (!(entry.value() instanceof Clausewitz.Block child)) return entry;
+            Clausewitz.Block next = entry.key().equals("run_interaction")
+                    && child.atom("interaction", "").equals("sway_vassal_to_my_rite_interaction")
+                    && child.atom("execute_threshold", "").equals("accept")
+                    ? new Clausewitz.Block(child.entries().stream().filter(e -> !e.key().equals("send_threshold")).toList())
+                    : withoutAiSwaySendThreshold(child);
+            return new Clausewitz.Entry(entry.key(), entry.operator(), next);
+        }).toList());
+    }
+
     private enum Kind { CHARACTER, RITE, FAITH, RELIGION, DYNASTY, HOUSE, DOCTRINE }
     private record Entity(Kind kind, String id) { }
     private record Opinion(Entity observer, Entity target, String modifier) { }
-    private record NativeState(boolean available, boolean accepted, boolean actuallyConverts) { }
-    private record Dispatch(Entity actor, Entity recipient, String interaction, String sendThreshold, String executeThreshold) { }
+    private enum NativeAnswer {
+        ACCEPT(0), MAYBE(1), DECLINE(2);
+        final int rank;
+        NativeAnswer(int rank) { this.rank = rank; }
+    }
+    private enum NativeThreshold {
+        ACCEPT(0), MAYBE(1), DECLINE(2), UNSET(3);
+        final int rank;
+        NativeThreshold(int rank) { this.rank = rank; }
+        static NativeThreshold parse(String token) {
+            return switch (token) {
+                case "accept" -> ACCEPT;
+                case "maybe" -> MAYBE;
+                case "decline" -> DECLINE;
+                case "" -> UNSET;
+                default -> throw new IllegalArgumentException("unsupported native threshold: " + token);
+            };
+        }
+        boolean allows(NativeAnswer answer) { return this != UNSET && Objects.requireNonNull(answer).rank <= rank; }
+    }
+    private record NativeState(boolean available, boolean accepted, NativeAnswer answer, boolean immediateConversionObserved) {
+        NativeState { Objects.requireNonNull(answer); }
+    }
+    private record Dispatch(Entity actor, Entity recipient, String interaction, NativeThreshold sendThreshold, NativeThreshold executeThreshold) { }
     private static Entity entity(Kind kind, String id) { return new Entity(kind, id); }
     private static final class State {
         final Map<String, Entity> links = new LinkedHashMap<>();
@@ -251,6 +360,8 @@ final class OptionalReformAndConversionTest {
         final Set<Opinion> opinions = new LinkedHashSet<>();
         final Map<Entity, NativeState> nativeStates = new LinkedHashMap<>();
         final List<Dispatch> dispatches = new ArrayList<>();
+        final List<Dispatch> executed = new ArrayList<>(), sent = new ArrayList<>();
+        final Map<Entity, Dispatch> pendingOffers = new LinkedHashMap<>();
         Entity unavailableAfterFirst;
         Model() {
             state(actor).links.putAll(Map.of("rite", rite, "faith", faith, "rrf_last_result_rite", rite));
@@ -264,7 +375,7 @@ final class OptionalReformAndConversionTest {
         List<Entity> list(Entity owner, String key) { return state(owner).lists.computeIfAbsent(key, unused -> new ArrayList<>()); }
         List<Entity> global(String key) { return globals.computeIfAbsent(key, unused -> new ArrayList<>()); }
         Entity person(String id, Entity currentRite, boolean ai) { Entity person = entity(Kind.CHARACTER, id); state(person).links.putAll(Map.of("rite", currentRite, "faith", faith)); state(person).ai = ai; return person; }
-        Entity vassal(String id, boolean ai, boolean available, boolean accepted) { Entity vassal = person(id, oldRite, ai); state(vassal).links.put("liege", actor); nativeStates.put(vassal, new NativeState(available, accepted, ai)); return vassal; }
+        Entity vassal(String id, boolean ai, boolean available, boolean accepted) { Entity vassal = person(id, oldRite, ai); state(vassal).links.put("liege", actor); nativeStates.put(vassal, new NativeState(available, accepted, accepted ? NativeAnswer.ACCEPT : NativeAnswer.DECLINE, ai)); return vassal; }
         void add(String source) { for (Clausewitz.Entry entry : Clausewitz.parse(source).entries()) if (entry.value() instanceof Clausewitz.Block body) scripts.put(entry.key(), body); }
         void effect(String name, Entity current) { run(Objects.requireNonNull(scripts.get(name), name), current); }
         void onAction(String name, Entity current) { Clausewitz.Block action = Objects.requireNonNull(scripts.get(name), name); run(action.block("effect"), current); for (Clausewitz.Entry child : action.block("on_actions").entries()) onAction(((Clausewitz.Atom) child.value()).token(), current); }
@@ -331,7 +442,7 @@ final class OptionalReformAndConversionTest {
                 }
             };
         }
-        NativeState nativeState(Clausewitz.Block arguments, Entity current) { return nativeStates.getOrDefault(resolve(arguments.atom("recipient", ""), current), new NativeState(false, false, false)); }
+        NativeState nativeState(Clausewitz.Block arguments, Entity current) { return nativeStates.getOrDefault(resolve(arguments.atom("recipient", ""), current), new NativeState(false, false, NativeAnswer.DECLINE, false)); }
         void run(Clausewitz.Block body, Entity current) {
             boolean matched = false;
             for (Clausewitz.Entry e : body.entries()) {
@@ -393,10 +504,28 @@ final class OptionalReformAndConversionTest {
         void dispatch(Clausewitz.Block body, Entity current) {
             Entity sender = resolve(body.atom("actor", ""), current), recipient = resolve(body.atom("recipient", ""), current);
             if (!current.equals(sender)) throw new IllegalArgumentException("dispatch must run in sender scope");
-            dispatches.add(new Dispatch(sender, recipient, body.atom("interaction", ""), body.atom("send_threshold", ""), body.atom("execute_threshold", "")));
-            NativeState nativeState = nativeStates.get(recipient);
-            if (nativeState.actuallyConverts()) state(recipient).links.put("rite", rite);
-            if (dispatches.size() == 1 && unavailableAfterFirst != null) { NativeState previous = nativeStates.get(unavailableAfterFirst); nativeStates.put(unavailableAfterFirst, new NativeState(false, previous.accepted(), previous.actuallyConverts())); }
+            Dispatch dispatch = new Dispatch(sender, recipient, body.atom("interaction", ""),
+                    NativeThreshold.parse(body.atom("send_threshold", "")), NativeThreshold.parse(body.atom("execute_threshold", "")));
+            dispatches.add(dispatch);
+            NativeState nativeState = nativeState(body, current);
+            if (!nativeState.available()) return;
+            if (dispatch.executeThreshold().allows(nativeState.answer())) {
+                executed.add(dispatch);
+                if (nativeState.immediateConversionObserved()) state(recipient).links.put("rite", state(sender).links.get("rite"));
+            } else if (dispatch.sendThreshold().allows(nativeState.answer())) {
+                sent.add(dispatch);
+                pendingOffers.put(recipient, dispatch);
+            } else return;
+            if (dispatches.size() == 1 && unavailableAfterFirst != null) {
+                NativeState previous = nativeStates.get(unavailableAfterFirst);
+                nativeStates.put(unavailableAfterFirst, new NativeState(false, previous.accepted(), previous.answer(), previous.immediateConversionObserved()));
+            }
+        }
+        void reply(Entity recipient, NativeAnswer answer) {
+            Objects.requireNonNull(answer);
+            if (answer == NativeAnswer.MAYBE) throw new IllegalArgumentException("a native reply must accept or decline");
+            Dispatch offer = Objects.requireNonNull(pendingOffers.remove(recipient), "no sent native offer");
+            if (answer == NativeAnswer.ACCEPT) state(recipient).links.put("rite", state(offer.actor()).links.get("rite"));
         }
     }
 }

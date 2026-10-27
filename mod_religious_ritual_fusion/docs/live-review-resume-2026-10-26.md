@@ -280,3 +280,8 @@ Root消费原工具session7999／chunk48c44c退出2；后记在`metadata/normal-
 ab的[RRF40430771539](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40430771539)及[DES40430771497](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40430771497)仍实际失败：leaf10项及binder通过，后继Python环境为C，但TEST LRM仍D。两workflow现在于同一产品Maven调用用Help evaluate记录`env.QUARKUS_LOCAL_REPO`，并显式传入`-Dmaven.repo.local`的同一已核实路径，保留原verify／完整测试／退出码。YAML、四个内嵌Python AST、原参数及门禁接线和diff检查通过；尚未取得新云执行，不称已修复。Maven环境表达式观测不是直接System.getenv或实际bootstrap CodeSource观测。
 
 并行拓扑已转为Root实际闭场与媒体／Git、ci_diagnosis两workflow受支持配置试验、native_next_inputs独立cold5准备、scene_capacity独立场容量与期限候选、saved155_public_prepare长名fixture及离线发布路径。接下来新cold场仅复核必要零日保存安全前置并保留原day5七项，长名输入放独立fresh代表场；不得将R27未覆盖项目改名算通过。MTS三／四核心及RRF＋DES联合真实创建、保存和30日后态仍待实机；公开版本及八项未完结状态不变。
+
+
+## 2026-10-27T04:44Z R0028五日与宣传图
+
+机器`4-8e1c2f1861`；[R0028实际记录](live-review-R0028-day5-2026-10-27.md)：零日10/10，第五日6/7，邀请对象仍未转信，未重复发送。两张新版UI实拍与JPEG已保存并逐图查看；owner网页当前未登录，待账号持有者登录后更新同条目，尚未上传。原生/OS/host/keeper/allocator0，公共/verify/Root2，SCREEN14187释放；存储245→246关闭，保留case预测及两个metadata owner超额RED。邀请阈值修复与长名fixture正在新源码验证，不能追认本场通过。

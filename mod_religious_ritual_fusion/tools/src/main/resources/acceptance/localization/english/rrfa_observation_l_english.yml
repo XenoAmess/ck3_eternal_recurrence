@@ -3,3 +3,4 @@ l_english:
  rrfa_observation_decision_desc:0 "Acceptance fixture only. For a fresh test, use the real fusion interface first. For a cold test, load the genuine saved result first. This reads the current state and writes a diagnostic log."
  rrfa_observation_decision_tooltip:0 "Acceptance readback only; does not create a fusion, change piety, or advance the date."
  rrfa_observation_decision_confirm:0 "Read actual state"
+ rrfa_fixture_long_vassal_name:0 "The Acceptance Fixture Vassal Armand of Normandy, Guardian of the Seine Estuary Sanctuary, Witness of the Ancient Rite, Peaceful Envoy Across Mountains and Coasts, and Keeper of Ancestral Oaths"

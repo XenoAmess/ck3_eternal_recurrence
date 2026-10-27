@@ -3,3 +3,4 @@ l_simp_chinese:
  rrfa_observation_decision_desc:0 "仅供验收夹具使用。新局验收请先完成实际融合界面操作；冷重载验收请先载入真实结果存档。此决议仅核对当前状态并写入诊断日志。"
  rrfa_observation_decision_tooltip:0 "只读验收：不创建融合、不改变虔诚、不推进日期。"
  rrfa_observation_decision_confirm:0 "读取实际状态"
+ rrfa_fixture_long_vassal_name:0 "验收长名称的诺曼底封臣阿尔芒德与塞纳河口圣堂守护者及古老礼仪传承见证人暨跨越群山与海岸的和平使节和先祖智慧誓约记录者"

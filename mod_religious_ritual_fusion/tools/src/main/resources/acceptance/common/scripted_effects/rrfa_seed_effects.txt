@@ -71,6 +71,7 @@ rrfa_seed_inputs_effect = {
                     add_known_doctrine = doctrine_divorce_allowed
                     add_piety = { value = ${PIETY} subtract = piety }
                     set_variable = { name = rrfa_piety_before value = piety }
+                    rrfa_seed_long_display_name_effect = yes
                     add_character_flag = rrfa_seed_done
                     rrfa_seed_readiness_diagnostics_effect = yes
                     if = {
@@ -277,4 +278,27 @@ rrfa_seed_readiness_diagnostics_effect = {
         debug_log = "RRFAT: DIAG REQUEST_MODE YES"
     }
     else = { debug_log = "RRFAT: DIAG REQUEST_MODE NO" }
+}
+
+
+# Fixture preparation only: choose ONE real adult AI direct vassal, never a fabricated actor.
+# Both fresh CORE and UI_REJECTION use this input preparation; COLD has no seed asset.
+rrfa_seed_long_display_name_effect = {
+    clear_saved_scope = rrfa_long_name_vassal
+    random_vassal = {
+        limit = {
+            is_ai = yes
+            is_adult = yes
+            NOT = { is_close_family_of = scope:rrfa_seed_actor }
+        }
+        save_scope_as = rrfa_long_name_vassal
+        change_first_name = rrfa_fixture_long_vassal_name
+    }
+    if = {
+        limit = { exists = scope:rrfa_long_name_vassal }
+        set_variable = { name = rrfa_long_name_vassal value = scope:rrfa_long_name_vassal }
+        debug_log = "RRFAT: DIAG LONG_DISPLAY_NAME_INPUT_PREPARED"
+    }
+    else = { debug_log = "RRFAT: TEST FAIL long_display_name_vassal_missing" }
+    clear_saved_scope = rrfa_long_name_vassal
 }
