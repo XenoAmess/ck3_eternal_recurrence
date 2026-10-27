@@ -114,6 +114,174 @@ final class HeadClaimContractTest {
         assertTrue(has(relation, "rite.head_of_rite", "this"));
     }
 
+
+    @Test
+    void headCellsWitnessTheActualOneShotAdoptionCallbackWithoutChangingProductState() throws IOException {
+        verifyHeadCellCallbackFixture(fixtureText("common/on_action/des_acceptance_extended_on_actions.txt"),
+                fixtureText("common/scripted_effects/des_acceptance_extended_effects.txt"));
+    }
+
+    @Test
+    void callbackWitnessRegressionsRejectInventedDatesReplayAndUnrelatedActorsOrOldRites() throws IOException {
+        String actions = fixtureText("common/on_action/des_acceptance_extended_on_actions.txt");
+        String effects = fixtureText("common/scripted_effects/des_acceptance_extended_effects.txt");
+        for (String cell : List.of("handover", "singleton")) {
+            String date = "des_test_" + cell + "_adoption_callback_date";
+            String setter = "name = " + date + " value = current_date";
+            rejectWitnessActions(actions, effects, setter,
+                    "name = " + date + " value = " + FIXTURE_OWNER + ".var:des_test_" + cell + "_creation_date");
+            rejectWitnessActions(actions, effects, setter,
+                    "name = " + date + " value = { value = current_date add = 1 }");
+            rejectWitnessActions(actions, effects, "NOT = { has_variable = " + date + " }", "");
+            rejectWitnessActions(actions, effects,
+                    "this = " + FIXTURE_OWNER + ".var:des_test_" + cell + "_actor", "");
+            rejectWitnessActions(actions, effects,
+                    "rite = " + FIXTURE_OWNER + ".var:des_test_" + cell + "_rite", "");
+            rejectWitnessActions(actions, effects,
+                    "has_character_flag = des_test_" + cell + "_input_prechecked",
+                    "has_character_flag = des_test_" + cell + "_input_prechecked\n"
+                            + "                        has_character_flag = des_test_" + cell + "_input_ready");
+            rejectWitnessEffects(actions, effects, "has_variable = " + date, "");
+            rejectWitnessEffects(actions, effects,
+                    "var:des_deferred_binding_date = root.var:" + date,
+                    "var:des_deferred_binding_date = root.var:des_test_" + cell + "_creation_date");
+        }
+        rejectWitnessActions(actions, effects,
+                "scope:old_rite = " + FIXTURE_OWNER + ".var:des_test_source_rite", "");
+        rejectWitnessActions(actions, effects, "exists = " + FIXTURE_OWNER, "");
+        rejectWitnessActions(actions, effects,
+                "has_character_flag = des_test_head_cells_started", "");
+        rejectWitnessActions(actions, effects,
+                "var:des_test_source_rite = { rite_has_doctrine = des_doctrine_none }", "");
+        rejectWitnessActions(actions, effects,
+                "has_character_flag = des_test_handover_input_prechecked",
+                "has_character_flag = des_test_handover_input_ready");
+        rejectWitnessActions(actions, effects, FIXTURE_OWNER + " = {", "root = {");
+    }
+
+    private static final String FIXTURE_OWNER = "global_var:des_test_extended_owner";
+    private static final String ADOPTION_WITNESS = "des_acceptance_extended_adoption_seen";
+
+    private static String fixtureText(String relative) throws IOException {
+        return Files.readString(source().resolve("tools/src/main/resources/acceptance-fixture").resolve(relative),
+                StandardCharsets.UTF_8);
+    }
+
+    /** Literal passive provenance only; no synthetic date or engine callback execution is modeled. */
+    static void verifyHeadCellCallbackFixture(String actionText, String effectText) {
+        Block actions = Parser.read(actionText);
+        Block extension = block(one(actions, "on_rite_change"));
+        assertEquals(List.of("on_actions"), extension.entries().stream().map(Entry::key).toList(),
+                "extend the stock chain, never replace its effect/trigger/events");
+        assertEquals(List.of(ADOPTION_WITNESS),
+                block(one(extension, "on_actions")).entries().stream().map(HeadClaimContractTest::atom).toList());
+        Block witness = block(one(actions, ADOPTION_WITNESS));
+        assertEquals(List.of("effect"), witness.entries().stream().map(Entry::key).toList());
+        Block effect = block(one(witness, "effect"));
+        assertEquals(List.of("if"), effect.entries().stream().map(Entry::key).toList());
+        Block common = block(one(effect, "if"));
+        assertEquals(List.of("limit", "if", "if"), common.entries().stream().map(Entry::key).toList());
+        Block guard = block(one(common, "limit"));
+        assertTrue(has(guard, "exists", FIXTURE_OWNER));
+        assertTrue(has(guard, "exists", "scope:old_rite"));
+        assertTrue(has(guard, "exists", "rite"));
+        Block ownerGuard = block(one(guard, FIXTURE_OWNER));
+        assertTrue(has(ownerGuard, "has_character_flag", "des_test_head_cells_started"));
+        assertTrue(has(ownerGuard, "exists", "var:des_test_source_rite"));
+        assertTrue(has(block(one(ownerGuard, "var:des_test_source_rite")), "rite_has_doctrine", "des_doctrine_none"));
+        List<Block> routes = common.entries().stream().filter(e -> e.key().equals("if"))
+                .map(HeadClaimContractTest::block).toList();
+        assertEquals(2, routes.size());
+        for (int i = 0; i < routes.size(); i++) {
+            String cell = List.of("handover", "singleton").get(i);
+            String date = "des_test_" + cell + "_adoption_callback_date";
+            Block route = routes.get(i);
+            assertEquals(List.of("limit", FIXTURE_OWNER), route.entries().stream().map(Entry::key).toList());
+            Block match = block(one(route, "limit"));
+            Block ownerMatch = block(one(match, FIXTURE_OWNER));
+            assertTrue(has(ownerMatch, "has_character_flag", "des_test_" + cell + "_input_prechecked"));
+            assertFalse(has(match, "has_character_flag", "des_test_" + cell + "_input_ready"),
+                    "the original input_ready is an adoption postcondition and may follow an inline callback");
+            assertTrue(has(ownerMatch, "exists", "var:des_test_" + cell + "_actor"));
+            assertTrue(has(ownerMatch, "exists", "var:des_test_" + cell + "_rite"));
+            assertTrue(has(ownerMatch, "has_variable", "des_test_" + cell + "_creation_date"));
+            Block first = block(one(ownerMatch, "NOT"));
+            assertEquals(1, first.entries().size());
+            assertEquals(date, atom(one(first, "has_variable")), "first actual callback only");
+            assertEquals(FIXTURE_OWNER + ".var:des_test_" + cell + "_actor", atom(one(match, "this")));
+            assertEquals(FIXTURE_OWNER + ".var:des_test_" + cell + "_rite", atom(one(match, "rite")));
+            assertEquals(FIXTURE_OWNER + ".var:des_test_source_rite", atom(one(match, "scope:old_rite")));
+            Block write = block(one(route, FIXTURE_OWNER));
+            assertEquals(List.of("set_variable", "debug_log"), write.entries().stream().map(Entry::key).toList());
+            Block setter = block(one(write, "set_variable"));
+            assertEquals(List.of("name", "value"), setter.entries().stream().map(Entry::key).toList());
+            assertEquals(date, atom(one(setter, "name")));
+            assertEquals("current_date", atom(one(setter, "value")),
+                    "actual engine callback date, never factory creation date or synthetic+1");
+        }
+        assertEquals(2L, walk(witness).stream().filter(e -> e.key().equals("set_variable")).count());
+        for (String forbidden : List.of("trigger_event", "create_dynamic_rite", "create_dynasty", "create_character",
+                "set_character_rite", "set_house", "set_house_head", "change_variable", "set_global_variable",
+                "des_sync_character_effect", "des_sync_rite_effect", CREATOR, EDITOR, COMPLETE)) {
+            assertFalse(calls(witness, forbidden), "a witness must not advance or manufacture product state: " + forbidden);
+        }
+
+        Block effects = Parser.read(effectText);
+        Block reader = block(one(effects, "des_acceptance_read_head_cells_effect"));
+        Block outer = block(one(reader, "if"));
+        Block input = block(one(outer, "limit"));
+        Block readback = block(one(block(one(outer, "if")), "limit"));
+        for (String cell : List.of("handover", "singleton")) {
+            String date = "des_test_" + cell + "_adoption_callback_date";
+            assertTrue(has(input, "has_variable", date), "missing provenance cannot pass");
+            Block rite = block(one(readback, "var:des_test_" + cell + "_rite"));
+            assertEquals("root.var:" + date, atom(one(rite, "var:des_deferred_binding_date")));
+        }
+        Block activate = block(one(effects, "des_acceptance_activate_head_cells_effect"));
+        List<Block> plusTwo = walk(activate).stream().filter(e -> e.key().equals("trigger_event"))
+                .map(HeadClaimContractTest::block)
+                .filter(b -> has(b, "id", "des_acceptance_extended.81")).toList();
+        assertEquals(1, plusTwo.size());
+        assertEquals("2", atom(one(plusTwo.getFirst(), "days")), "the original H0+2 observation is unchanged");
+        List<Entry> statements = walk(activate);
+        for (String cell : List.of("handover", "singleton")) {
+            int adoption = literalIndex(statements, "set_character_rite", "scope:des_test_" + cell + "_rite");
+            assertTrue(variableIndex(statements, "des_test_" + cell + "_rite") < adoption);
+            assertTrue(variableIndex(statements, "des_test_" + cell + "_creation_date") < adoption);
+            assertTrue(adoption < literalIndex(statements, "add_character_flag", "des_test_" + cell + "_input_ready"),
+                    "retain the original adoption postcondition");
+        }
+    }
+
+    private static int literalIndex(List<Entry> entries, String key, String value) {
+        for (int i = 0; i < entries.size(); i++) {
+            Entry entry = entries.get(i);
+            if (entry.key().equals(key) && entry.value() instanceof Atom atom && atom.token().equals(value)) return i;
+        }
+        throw new AssertionError("missing literal statement: " + key + " = " + value);
+    }
+
+    private static int variableIndex(List<Entry> entries, String name) {
+        for (int i = 0; i < entries.size(); i++) {
+            Entry entry = entries.get(i);
+            if (entry.key().equals("set_variable") && entry.value() instanceof Block setter
+                    && has(setter, "name", name)) return i;
+        }
+        throw new AssertionError("missing fixture reference: " + name);
+    }
+
+    private static void rejectWitnessActions(String actions, String effects, String old, String replacement) {
+        assertTrue(actions.contains(old), "mutation must hit the actual fixture callback");
+        String changed = actions.replaceFirst(Pattern.quote(old), Matcher.quoteReplacement(replacement));
+        assertThrows(AssertionError.class, () -> verifyHeadCellCallbackFixture(changed, effects));
+    }
+
+    private static void rejectWitnessEffects(String actions, String effects, String old, String replacement) {
+        assertTrue(effects.contains(old), "mutation must hit the actual fixture readback");
+        String changed = effects.replaceFirst(Pattern.quote(old), Matcher.quoteReplacement(replacement));
+        assertThrows(AssertionError.class, () -> verifyHeadCellCallbackFixture(actions, changed));
+    }
+
     private static void verify(Sources sources) {
         Block created = sources.definition(CREATOR);
         assertTrue(calls(created, "des_capture_native_rite_source_effect"));

@@ -57,6 +57,22 @@ final class FixtureEmitterTest {
             }
         }
         assertFalse(Files.exists(result.fixture().resolve("_case_contract.json")));
+        String extendedActions = Files.readString(result.fixture().resolve(
+                "common/on_action/des_acceptance_extended_on_actions.txt"), StandardCharsets.UTF_8);
+        String extendedEffects = Files.readString(result.fixture().resolve(
+                "common/scripted_effects/des_acceptance_extended_effects.txt"), StandardCharsets.UTF_8);
+        HeadClaimContractTest.verifyHeadCellCallbackFixture(extendedActions, extendedEffects);
+        String callbackRoute = "on_rite_change = { on_actions = { des_acceptance_extended_adoption_seen } }";
+        assertTrue(extendedActions.contains(callbackRoute));
+        assertThrows(AssertionError.class, () -> HeadClaimContractTest.verifyHeadCellCallbackFixture(
+                extendedActions.replace(callbackRoute, ""), extendedEffects));
+        String callbackSetter = "name = des_test_handover_adoption_callback_date value = current_date";
+        assertTrue(extendedActions.contains(callbackSetter));
+        assertThrows(AssertionError.class, () -> HeadClaimContractTest.verifyHeadCellCallbackFixture(
+                extendedActions.replace(callbackSetter,
+                        "name = des_test_handover_adoption_callback_date value = "
+                                + "global_var:des_test_extended_owner.var:des_test_handover_creation_date"),
+                extendedEffects));
         String events = Files.readString(result.fixture().resolve("events/des_acceptance_events.txt"), StandardCharsets.UTF_8);
         assertTrue(events.contains("rite_has_doctrine = des_doctrine_none"));
         assertTrue(events.contains("des_has_active_binding_trigger = yes"));
@@ -474,7 +490,7 @@ final class FixtureEmitterTest {
                         cell_rite[:]=[row for row in cell_rite if row['key']!='var:des_binding_mode']
                     for key,value in [('var:des_binding_mode','flag:new_dynasty'),
                                       ('var:des_deferred_binding_requester',actor),
-                                      ('var:des_deferred_binding_date','root.var:des_test_'+cell+'_creation_date'),
+                                      ('var:des_deferred_binding_date','root.var:des_test_'+cell+'_adoption_callback_date'),
                                       ('var:des_ordinary_binding_ready','yes')]:
                         require(cell_rite,key,value,'ORDINARY_FACTORY_MODE_OR_SOURCE_CHANGED')
                     for absent in ('des_deferred_binding_queued','des_native_source_actor','des_native_source_dynasty',

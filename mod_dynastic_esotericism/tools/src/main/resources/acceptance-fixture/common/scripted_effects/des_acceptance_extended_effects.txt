@@ -555,6 +555,8 @@ des_acceptance_read_head_cells_effect = {
             has_character_flag = des_test_handover_input_ready
             has_character_flag = des_test_singleton_input_prechecked
             has_character_flag = des_test_singleton_input_ready
+            has_variable = des_test_handover_adoption_callback_date
+            has_variable = des_test_singleton_adoption_callback_date
             exists = var:des_test_handover_actor
             exists = var:des_test_handover_successor
             exists = var:des_test_handover_old_house
@@ -597,7 +599,7 @@ des_acceptance_read_head_cells_effect = {
                     des_has_active_binding_trigger = yes
                     var:des_binding_mode = flag:new_dynasty
                     var:des_deferred_binding_requester = root.var:des_test_handover_actor
-                    var:des_deferred_binding_date = root.var:des_test_handover_creation_date
+                    var:des_deferred_binding_date = root.var:des_test_handover_adoption_callback_date
                     var:des_ordinary_binding_ready = yes
                     NOT = { has_variable = des_deferred_binding_queued }
                     NOT = { has_variable = des_native_source_actor }
@@ -642,7 +644,7 @@ des_acceptance_read_head_cells_effect = {
                     des_has_active_binding_trigger = yes
                     var:des_binding_mode = flag:new_dynasty
                     var:des_deferred_binding_requester = root.var:des_test_singleton_actor
-                    var:des_deferred_binding_date = root.var:des_test_singleton_creation_date
+                    var:des_deferred_binding_date = root.var:des_test_singleton_adoption_callback_date
                     var:des_ordinary_binding_ready = yes
                     NOT = { has_variable = des_deferred_binding_queued }
                     NOT = { has_variable = des_native_source_actor }
