@@ -7757,7 +7757,7 @@ class NativeHeadlessGameplayDriver:
         }
 
     def select_ingame_decision_item_v1(self, decision_key: str, *, expected_revision: int | None = None) -> dict[str, object]:
-        """Invoke the exact source OnSelect once on the unique actual model row."""
+        """Navigate to the actual row; repeat only verified, closed/null navigation."""
         return self._decision_item_action_v1(decision_key, action="select", expected_revision=expected_revision)
 
     def confirm_ingame_decision_item_v1(self, decision_key: str, expected_window_kind: str, *, expected_revision: int | None = None) -> dict[str, object]:
@@ -7916,6 +7916,8 @@ class NativeHeadlessGameplayDriver:
         from .ingame_decision_item_action_contract import (
             SELECT_STEP, SELECT_CAPABILITY, CONFIRM_STEP, CONFIRM_CAPABILITY,
             normalize_decision_action, actual_selected_detail, actual_inner_modal_tree,
+            select_navigation_claim, require_closed_null_decision_navigation,
+            visible_decision_navigation_result,
         )
         import hashlib
         import os
@@ -7935,8 +7937,9 @@ class NativeHeadlessGameplayDriver:
         step, capability = (SELECT_STEP, SELECT_CAPABILITY) if action == "select" else (CONFIRM_STEP, CONFIRM_CAPABILITY)
         if capability not in set(_string_list(self.capabilities().get("bridge_capabilities"))):
             raise UnsupportedStepError("native DLL does not advertise the exact .3 decision item action")
-        # Refuse an existing claim before any additional model observation. The
-        # exclusive create below still resolves a race between simultaneous callers.
+        # Refuse unknown claims before any additional model observation. A
+        # verified select may choose one linked successor; exclusive create
+        # below resolves simultaneous callers for that same navigation attempt.
         claim_dir = self._native_driver_state_path().parent / "ingame-decision-item-actions"
         from .ingame_decision_outcome_contract import reject_unresolved_claims, preserve_verified_claim
         identity = {"game_pid": binding["game_pid"], "actor_id": binding["played_character_id"],
@@ -7949,7 +7952,17 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(str(error)) from error
         key = hashlib.sha256(json.dumps(identity, sort_keys=True).encode("utf-8")).hexdigest()
         claim = claim_dir / f"{key}.claim.json"
-        if claim.exists():
+        navigation = None
+        if action == "select":
+            try:
+                navigation = select_navigation_claim(claim_dir, identity)
+            except (OSError, ValueError, TypeError) as error:
+                raise BridgeUnavailableError(f"decision navigation already claimed without reusable proof: {error}") from error
+            # Encode the typed navigation identity into the existing once-claim
+            # JSON writer shared with Confirm; no field alias or old rewrite.
+            identity = {field: value for field, value in navigation.identity.items()}
+            claim = navigation.path
+        elif claim.exists():
             raise BridgeUnavailableError("decision item action already claimed for this episode; no retry")
         before = self.query_ingame_decision_item_v1(decision_key)
         if before.get("available") is not True:
@@ -7959,6 +7972,23 @@ class NativeHeadlessGameplayDriver:
         current = self.take_snapshot()
         if opening_binding(current) != binding or not _same_paused_native_frame(starting, current):
             raise BridgeUnavailableError("decision action before observation crossed its episode/frame")
+        if action == "select":
+            if actual_selected_detail(before, binding, decision_key):
+                observed = visible_decision_navigation_result(before, binding, decision_key, revision)
+                result = {field: value for field, value in observed.items()}
+                self._record_command(step, ok=True, result=result)
+                return result
+            # The current DLL deliberately does not redispatch OnSelect for a
+            # hidden same-definition detail. Do not turn that state into a
+            # timed-out/unknown attempt, or claim it as a qualified reopen.
+            if (before.get("detail_definition_matches_target") is True
+                    and before.get("detail_root_visible") is False):
+                raise BridgeUnavailableError("same-definition hidden decision navigation is not qualified")
+            if navigation is not None and navigation.repeated:
+                try:
+                    require_closed_null_decision_navigation(before, binding, decision_key)
+                except ValueError as error:
+                    raise BridgeUnavailableError(str(error)) from error
         # Claim identity deliberately excludes connection generation. Reconnect, missing ACK,
         # or a changed expected panel cannot make this action for this actual episode repeatable.
         claim_dir.mkdir(parents=True, exist_ok=True)

@@ -21,6 +21,6 @@ CK3 1.20.0.4，EXE SHA-256 `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afa
 - 基线：`metadata/normal-close-a01/root-business-oracles-a01/baseline-v4-a01/FINAL.a04.actual.json`，7,697 B，SHA-256 `fd45330332e8defa0bd1a8fbc8e3197486a8777dc978e8ac88e2ecad0b5f8310`。
 - 屏幕释放原 stdout：`metadata/normal-close-a01/resource-close-a01/SCREEN-RELEASE.stdout.json`。
 
-这张新草案图尚未更新商店。此前 R0028 两张实机开发预览已经公开回读，共八图，详见[商店素材记录](../../../docs/workshop-metadata-revisions/religious-ritual-fusion/2026-10-27-development-ui-previews.md)。八项审核仍有缺口，继续独立新场验证取消重开、正式融合、长名换行与五天实际回复。
+这张新草案图尚未更新商店。此前 R0028 两张实机开发预览已经公开回读，共八图，详见[商店素材记录](../../docs/workshop-metadata-revisions/religious-ritual-fusion/2026-10-27-development-ui-previews.md)。八项审核仍有缺口，继续独立新场验证取消重开、正式融合、长名换行与五天实际回复。
 
 资源恢复随后由共享 preserved-failure reducer 与原机器 writer 锁内二次重验实际通过，Root 原工具 wait0 已消费；这仅授予下一次分配所需的前驱恢复资格，不授予业务通过。`R0030-resource-recovery-a01/EXECUTION.actual.json`为6,680 B／`731f2f67a0cd8e38b1df8de461e2cf5e2fe1f37d458c875284d829dd2f3b080c`；实际 bundle 为10,521 B／`f1c3639f7345604b63107d6653773756cb95bc876f89ac3345d727d4d1bb0575`。

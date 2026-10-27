@@ -305,7 +305,7 @@ def module(path, name):
     return value
 
 
-def classify(path):
+def classify(path: str) -> set[str]:
     """Categories determine actual required qualification, never automatic credit."""
     require("\\" not in path and not path.startswith("/") and ":" not in path
             and all(v not in {"", ".", ".."} for v in path.split("/")), "Unsafe changed path")
@@ -324,6 +324,8 @@ def classify(path):
             return set()
         return {"shared_host"}
     if path.startswith(SDK_PREFIX):
+        if path == SDK_PREFIX + "xar_autoplayer/bridge/ingame_decision_item_action_contract.py":
+            return {"shared_sdk_delta"}
         if name in CRITICAL_TRANSPORTS:
             return {"pilgrimage_wire_seam"}
         if any(value in name for value in ("exact_day", "speed_configuration", "application_main_clock")):

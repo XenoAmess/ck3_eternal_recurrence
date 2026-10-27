@@ -175,6 +175,7 @@ public final class SourceQualificationEmitter {
         if (path.equals(HOST)) return Set.of("shared_host");
         if (path.startsWith(NATIVE)) return path.endsWith(".md") ? Set.of() : Set.of(path.endsWith(".py") ? "shared_host" : "new_native_base_required");
         if (path.startsWith(SDK)) {
+            if (path.equals(SDK + "xar_autoplayer/bridge/ingame_decision_item_action_contract.py")) return Set.of("shared_sdk_delta");
             if (CRITICAL.contains(name)) return Set.of("pilgrimage_wire_seam");
             if (name.contains("exact_day") || name.contains("speed_configuration") || name.contains("application_main_clock")) return Set.of("exact_day_clock", "pilgrimage_wire_seam");
             if (name.contains("ingame_decision") || name.contains("rite_governance") || name.contains("religion_context") || name.contains("holy_site")) return Set.of("hof_terms_confirm_seam");

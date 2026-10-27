@@ -300,3 +300,8 @@ ab的[RRF40430771539](https://github.com/XenoAmess/ck3_eternal_recurrence/action
 ## R0030：三核心草案及取消后重复接口拒绝（2026-10-27）
 
 `machine_id: 4-8e1c2f1861`，实际源码d6082f4，07:48Z–07:59Z。独立fresh无MTS/无DES，day2实际草案显示三默认核心、第四候选禁用和500虔诚报价，新增未裁切实机图。操作者取消后错误重调一场一次的决议选择接口，host明确拒绝；没有融合或邀请。原CaseClient typed failure exit保留native0/OS0/host1，keeper与allocator0、Root1，SCREEN14208释放并恢复1024×768。基线Java三条原wait0，长名封臣45458真实名称已保存；数值projection失败1也保留。八项业务未通过。后继使用新场、从原生当前控件重开草案，保留一次性守卫。完整证据见[R0030记录](live-review-R0030-cancel-2026-10-27.md)。
+
+
+## R0031：取消后详情关闭，SDK导航待修（2026-10-27T09:29Z）
+
+机器4-8e1c2f1861，实际源码9ba8c63。新fresh场实际取消后原生详情hidden且definition unavailable，未重复select；取消基线V4两条Java0、原始三核心UI图已保存。Root如实回复incomplete，原生／保留OS／host／keeper／allocator0，公共／verify／Root2，SCREEN14218释放并恢复1024×768。现有C++支持该null-definition前态，下一施工缩为SDK已验证成功的可逆导航attempt，不重建DLL；Confirm与UNKNOWN守卫保留。详见[R0031实机记录](live-review-R0031-navigation-2026-10-27.md)。商店此前两张R0028新UI实拍已完成公开更新；本场新图未上传，八项业务仍待完成。
