@@ -50,3 +50,7 @@ M6 retained911 B analysis returned AFsize911/33blocks, yet `pdj 256` first misma
 Root's finite exact-target locator used a case-only Node payload through the installed OwnedCommand/ProviderProcess, then a separate REA boundary query. The complete.text scan was explicit in scope; it did not use Ghidra import or persist fulltext. Its custom query record is not an official REA stream API or native Evidence dossier. Reuse requires new immutable inputs, literal argv, private outputs, source/RAM bounds, fresh authority and actual close; a typed Tools contract or softwareFixture does not grant another domain's execution.
 
 Native analysis JSON can contain integer ptr values above JavaScript's safe range. Preserve original stdout text; do not round-trip parsed values as exact identities. M6's47B case retained unsafe ptr tokens lexically and derived targets independently from raw displacement with BigInt. The same rule applies to all retained raw evidence.
+
+### Waking a ready owner
+
+A completed owner must receive a followup_task with the exact fresh card; send_message does not start a turn. For a running owner, send is sufficient. Confirm readiness, mint and immediately notify that owner before other packaging. Retain NOT_STARTED windows and issued-to-bind delay separately from provider work. C13's193.483s delivery/bind delay and M4's unused first card do not establish parallel throughput or cost improvement; no old card is renewed.

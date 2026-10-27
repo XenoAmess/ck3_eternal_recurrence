@@ -233,3 +233,7 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`。[独立结果](resume63-m1-base2
 ### Resume63 C12
 
 [Caller2CE6790](resume63-m1-caller2ce6790-result.md): fixed RF12+685newB,160 instructions/32blocks51edges; actual CALL2CE697F passes fifth lowbyte1. Minimum close65.033s/owned0 preceded later independent review. Sole gzip exports retain original and compressed hashes. Duplicate precheck remains an earlier-return counterexample; previous invalid-member preflag-return wording was unproven and is narrowed forward. No natural/AI/append or Game qualification.
+
+### Resume63 C13
+
+[Caller2785FD0](resume63-m1-caller2785fd0-result.md): freshRF12+1757newB,433ops/113blocks185edges; pointer roster/parallel records, own gate and outgoing byte1. Precheck/writer receivers cross opaque calls; no per-member success readback. Minimumclose237.002s includes193.483s card delivery/bind delay; later independent review/receipt separate. Natural trigger/GameKnown remain unknown.

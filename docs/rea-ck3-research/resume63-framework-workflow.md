@@ -132,3 +132,7 @@ The [single-target stream](resume63-m1-inbound2603af0-text-result.md) found six 
 ### Resume63 C12: a genuine nonzero-byte caller
 
 The [685B caller](resume63-m1-caller2ce6790-result.md) supplies fifth lowbyte1 to2603AF0, with160 instructions/32blocks/51edges independently checked. It also probes member-row existence after the call; this does not prove a new append or a natural/AI producer. Forward correction: the writer's duplicate precheck can return before its flag; an invalid-member preflag return was not established.
+
+### Resume63 C13
+
+The [1757B roster caller](resume63-m1-caller2785fd0-result.md) has its own gate before the byte1 writer call. 433 instructions/113blocks185edges match independently; postcall does not prove append. Actual dispatcher/natural trigger and old/new faction equality remain unknown. Three raw callers remain unsampled.
