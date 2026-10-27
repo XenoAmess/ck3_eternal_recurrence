@@ -1542,6 +1542,76 @@ class _TTLAdmissionEvidence(Protocol):
 
 
 @runtime_checkable
+class _ManagedSessionAdmissionEvidence(_TTLAdmissionEvidence, Protocol):
+    def read_json(self, path: Path) -> object: ...
+    def pin(self, path: Path) -> object: ...
+    def previous_native_cleanup(self, previous: Path, freeze: JsonObject) -> tuple[object, object, object]: ...
+    def previous_session_closure(self, previous: Path, freeze: JsonObject,
+            report: JsonObject, report_reference: FilePin | None = None) -> object: ...
+    def runtime_process_inventory(self, psutil: object, caller_pid: int) -> object: ...
+    def require_latest_screen_release(self, previous: JsonObject, latest_path: Path | None) -> None: ...
+
+
+def revalidate_managed_session_admission(selection: Selection, args: argparse.Namespace,
+        closure: JsonObject) -> JsonObject:
+    """Repeat ordinary native/keeper/release closure under the original writer lock."""
+    mode = 'previous-shared-managed-session'
+    if closure.get('mode') != mode:
+        raise ValueError('Exact managed-session predecessor mode required')
+    previous, keeper, release_path = (getattr(args, name, None) for name in
+        ('previous_live', 'previous_keeper', 'previous_release'))
+    latest = getattr(args, 'latest_screen_release', None)
+    if (not isinstance(previous, Path) or not isinstance(keeper, Path)
+            or not isinstance(release_path, Path) or (latest is not None and not isinstance(latest, Path))):
+        raise ValueError('Actual managed-session predecessor paths required')
+    if (previous.resolve() != Path(text_field(closure, 'previous_live')).resolve()
+            or keeper.resolve() != Path(text_field(closure, 'previous_keeper')).resolve()):
+        raise ValueError('Managed-session predecessor paths changed before original writer lock')
+    provider: object = same_directory_control_peer('ck3_mod_acceptance_allocate')
+    if not isinstance(provider, _ManagedSessionAdmissionEvidence):
+        raise ValueError('Existing managed-session evidence provider unavailable')
+    original_release = file_pin(closure.get('release'))
+    if file_pin(provider.pin(release_path)) != original_release:
+        raise ValueError('Managed-session release changed before original writer lock')
+    freeze = json_object(provider.read_json(previous / 'frozen-argv.json'))
+    identity = object_field(freeze, 'identity_allocation')
+    machine = object_field(closure, 'machine')
+    if (text_field(freeze, 'run_id') != text_field(closure, 'run_id')
+            or text_field(identity, 'machine_id') != text_field(machine, 'machine_id')
+            or Path(text_field(identity, 'state_root')).resolve() != Path(text_field(machine, 'state_root')).resolve()):
+        raise ValueError('Managed-session frozen run/machine changed under original writer lock')
+    report_value, reference_value, projection_value = provider.previous_native_cleanup(previous, freeze)
+    report = json_object(report_value)
+    reference = None if reference_value is None else file_pin(reference_value)
+    projection = None if projection_value is None else file_pin(projection_value)
+    if projection != closure.get('native_cleanup_projection'):
+        raise ValueError('Managed-session native projection changed under original writer lock')
+    renewed = json_object(provider.previous_session_closure(previous, freeze, report, reference))
+    if renewed.get('mode') != mode:
+        raise ValueError('Managed-session native closure changed under original writer lock')
+    prior_keeper = predecessor_keeper_report_v1(keeper, aborted_wrapper=False,
+        pre_ready=False, expired_keeper=False, interrupted_owner=False)
+    release = json_object(provider.read_failed_runtime_release(release_path))
+    configured = object_field(json_object(selection.runtime), 'allocation')
+    bus_ref = object_field(configured, 'task_bus')
+    base = selection.runtime_path.parent
+    lease_repo = path_at(text_field(configured, 'lease_repo'), base)
+    bus = path_at(text_field(bus_ref, 'path'), base)
+    json_object(provider.current_screen_absent(lease_repo, bus.parents[1], text_field(bus_ref, 'sha256'),
+        selection.state_dir.parent / 'allocation-bus-writer-revalidation'))
+    require_predecessor_keeper_release_v1(prior_keeper, release, text_field(freeze, 'screen_task'),
+        exceptional_terminal_validated=False)
+    provider.require_latest_screen_release(release, latest)
+    import psutil
+    inventory = json_object(provider.runtime_process_inventory(psutil, os.getpid()))
+    if inventory.get('blockers') != []:
+        raise ValueError('Managed-session CK3/keeper/controller reappeared under original writer lock')
+    if file_pin(provider.pin(release_path)) != original_release:
+        raise ValueError('Managed-session release changed under original writer lock')
+    return {**closure, **renewed}
+
+
+@runtime_checkable
 class _TTLAdmissionReducer(Protocol):
     def __call__(self, previous: Path, freeze_value: object, close_path: Path,
             keeper_root: Path, release_value: object, bus_value: object, next_state: Path) -> JsonObject: ...
@@ -3939,11 +4009,26 @@ def validate_legacy_bootstrap(bundle,selection,binding,bus_events,bus_packet,pre
         'canonical_id_history':history_files,'release_event':released[0],
         'fresh_release_task':matched[0],'bootstrap':pin(Path(bundle['_bundle_path']))}
 
+@runtime_checkable
+class _MachineAdmissionWriter(Protocol):
+    def write_new(self, path: Path, value: JsonObject) -> None: ...
+
+
 def claim_machine_admission(binding: MachineBinding, selection: Selection,
                             args: argparse.Namespace, closure: JsonObject) -> Path:
     """One machine-wide chain; new artifact/runtime directories cannot reset it."""
     import ck3_live_run_id as ids
-    from ck3_mod_acceptance_keeper import write_new
+    import ck3_mod_acceptance_keeper as keeper
+    writer_source: object = getattr(keeper, '__file__', None)
+    if (not isinstance(writer_source, str)
+            or Path(writer_source).resolve() != Path(__file__).with_name('ck3_mod_acceptance_keeper.py').resolve()):
+        raise ValueError('Machine-admission writer differs from the actual shared source peer')
+    writer: object = keeper
+    if not isinstance(writer, _MachineAdmissionWriter):
+        raise ValueError('Existing machine-admission writer unavailable')
+    prepared = selection.prepared_path
+    if not isinstance(prepared, Path):
+        raise ValueError('Actual prepared case required before machine-admission intent')
     root=Path(binding['admission_root']);root.mkdir(parents=True,exist_ok=True)
     with ids._exclusive_file_lock(root/'chain.lock'):
         if closure['mode']=='previous-shared-failed-live-resource-closed':
@@ -3963,7 +4048,7 @@ def claim_machine_admission(binding: MachineBinding, selection: Selection,
             closure.update(renewed)
         identity=root/'machine.json'
         if identity.exists():require(read_json(identity)==binding,'Existing machine admission identity changed')
-        else:write_new(identity,binding)
+        else:writer.write_new(identity,json_object(binding))
         records=sorted(path for path in root.glob('[0-9]*') if path.is_dir())
         bootstrap=closure['mode'] in ('first-machine-legacy-profile-mcp-closure','first-machine-legacy-managed-session-closure',FRESH_ADMISSION_MODE)
         if bootstrap:
@@ -3976,11 +4061,13 @@ def claim_machine_admission(binding: MachineBinding, selection: Selection,
             require(Path(previous['live']).resolve()==args.previous_live.resolve() and
                     previous['run_id']==read_json(args.previous_live/'frozen-argv.json')['run_id'],
                     'Previous shared scene is not the latest machine allocation; preserve later RED/unfinished run')
+        if closure['mode']=='previous-shared-managed-session':
+            closure.update(revalidate_managed_session_admission(selection,args,closure))
         record=root/(str(len(records)+1).zfill(6));record.mkdir(exist_ok=False)
-        write_new(record/'intent.json',{'schema':'ck3-mod-acceptance-machine-admission-intent-v1',
+        writer.write_new(record/'intent.json',json_object({'schema':'ck3-mod-acceptance-machine-admission-intent-v1',
             'at_utc':datetime.now(timezone.utc).isoformat(),'machine':binding,'runtime_config':pin(selection.runtime_path),
-            'runtime_manifest':pin(selection.manifest_path),'prepared_case':pin(selection.prepared_path),
-            'closure':closure,'status':'CONSUMED_ADMISSION_INTENT_NOT_RUN','business_pass':False})
+            'runtime_manifest':pin(selection.manifest_path),'prepared_case':pin(prepared),
+            'closure':closure,'status':'CONSUMED_ADMISSION_INTENT_NOT_RUN','business_pass':False}))
     return record
 
 def runtime_process_inventory(psutil,caller_pid):

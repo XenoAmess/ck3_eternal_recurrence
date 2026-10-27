@@ -400,6 +400,36 @@ class Focused(unittest.TestCase):
                     'synthetic','synthetic-case',None,None)
 
     def test_mocked_allocation_register_immediately_starts_original_keeper(self):
+        self._managed_predecessor_allocation()
+
+    def test_managed_native_cleanup_race_rejects_before_intent_register_or_id(self):
+        self._managed_predecessor_allocation('native')
+
+    def test_managed_keeper_race_rejects_before_intent_register_or_id(self):
+        self._managed_predecessor_allocation('keeper')
+
+    def test_managed_release_tamper_rejects_before_intent_register_or_id(self):
+        self._managed_predecessor_allocation('release')
+
+    def test_managed_frozen_identity_race_cannot_select_another_predecessor(self):
+        self._managed_predecessor_allocation('run')
+
+    def test_managed_frozen_machine_race_rejects_before_intent(self):
+        self._managed_predecessor_allocation('machine')
+
+    def test_managed_screen_reappearing_inside_lock_rejects_before_intent(self):
+        self._managed_predecessor_allocation('screen')
+
+    def test_managed_process_reappearing_inside_lock_rejects_before_intent(self):
+        self._managed_predecessor_allocation('process')
+
+    def test_managed_projection_path_is_used_by_real_locked_allocation(self):
+        self._managed_predecessor_allocation(projection=True)
+
+    def test_managed_projection_tamper_inside_lock_rejects_before_intent(self):
+        self._managed_predecessor_allocation('projection', projection=True)
+
+    def _managed_predecessor_allocation(self, change: str | None = None, *, projection: bool = False) -> None:
         # Machine binding, predecessor closure and the admission chain run for
         # real against temporary synthetic files. Only external OS/bus/process
         # providers and ID allocation are mocked; no workstation state is used.
@@ -435,6 +465,13 @@ class Focused(unittest.TestCase):
             prep.write_json(prior/'frozen-argv.json',{'screen_task':'old','run_id':'synthetic-R0000',
                 'identity_allocation':{'machine_id':machine,'state_root':binding['state_root']}})
             prep.write_json(prior/'native-report.json',report)
+            projection_path=prior/'native-cleanup-projection.actual.json'
+            if projection:
+                host=prior/'host-original-process-exit.json'
+                prep.write_json(host,{'run_id':'synthetic-R0000','actual_original_popen_wait':True,'returncode':0})
+                prep.write_json(projection_path,{'schema':'lyd.native-cleanup-field-projection.v1',
+                    'run_id':'synthetic-R0000','original_native_report':entry.pin(prior/'native-report.json'),
+                    'original_host_exit':entry.pin(host),'projection':report})
             previous_keeper=root/'prior-keeper';previous_keeper.mkdir();prep.write_json(previous_keeper/'report.json',{'task_id':'old','thread_exited':True,'last_sequence':2})
             release=root/'release.json';prep.write_json(release,{'ok':True,'schema':'codex.task_bus.v1','task':{'task_id':'old','state':'done','resources':[],'last_sequence':3}})
             events=[{'schema':'codex.task_bus.v1','sequence':1,'kind':'registered',
@@ -454,13 +491,41 @@ class Focused(unittest.TestCase):
                                   previous_release=release,latest_screen_release=None,first_machine_bootstrap=None)
             identity=SimpleNamespace(run_id='synthetic-R0001',mod_key='vanilla',execution_id='synthetic-exec')
             sequence=[]
+            appeared={'screen':False,'process':False}
+            original_lock=live_ids._exclusive_file_lock
+            @contextlib.contextmanager
+            def locked(path: Path):
+                with original_lock(path):
+                    sequence.append('WRITER_LOCK')
+                    if change=='native':
+                        changed=copy.deepcopy(report);changed['session']['report']['shutdown']['cleanup_proven']=False
+                        (prior/'native-report.json').write_text(json.dumps(changed),encoding='utf-8')
+                    elif change=='keeper':
+                        (previous_keeper/'report.json').write_text(json.dumps({'task_id':'old','thread_exited':False,'last_sequence':2}),encoding='utf-8')
+                    elif change=='release':
+                        changed=entry.read_json(release);changed['task']['resources']=['ck3-screen:acquired']
+                        release.write_text(json.dumps(changed),encoding='utf-8')
+                    elif change=='run':
+                        changed=entry.read_json(prior/'frozen-argv.json');changed['run_id']='synthetic-crossed-run'
+                        (prior/'frozen-argv.json').write_text(json.dumps(changed),encoding='utf-8')
+                    elif change=='machine':
+                        changed=entry.read_json(prior/'frozen-argv.json');changed['identity_allocation']['machine_id']='synthetic-other-machine'
+                        (prior/'frozen-argv.json').write_text(json.dumps(changed),encoding='utf-8')
+                    elif change=='projection':
+                        changed=entry.read_json(projection_path);changed['tampered_after_preflight']=True
+                        projection_path.write_text(json.dumps(changed),encoding='utf-8')
+                    elif change in appeared:
+                        appeared[change]=True
+                    yield
             def call_bus(script,bus_dir,sha,*argv,**kwargs):
                 self.assertEqual(script,lease/'tools/codex_task_bus.py')
                 self.assertEqual(bus_dir,bus.parents[1])
                 self.assertEqual(sha,entry.pin(bus)['sha256'].upper())
                 self.assertEqual(argv,('list','--stale-after','600'))
                 sequence.append('FRESH_BUS_LIST')
-                return {'ok':True,'schema':'codex.task_bus.v1','tasks':[entry.read_json(release)['task']]}
+                task=entry.read_json(release)['task']
+                if appeared['screen']:task={**task,'resources':['ck3-screen:acquired']}
+                return {'ok':True,'schema':'codex.task_bus.v1','tasks':[task]}
             def run(argv,**kwargs):
                 if argv[0]=='git':return SimpleNamespace(stdout=b'',returncode=0)
                 sequence.append('REGISTER')
@@ -478,21 +543,41 @@ class Focused(unittest.TestCase):
                 prep.write_json(args.keeper_output/'ready.json',{'sequence':11})
                 prep.write_json(args.keeper_output/'report.json',{'thread_exited':True,'last_sequence':11,'failure':None})
                 return Child()
-            process_provider=SimpleNamespace(process_iter=lambda fields:[],
+            process_provider=SimpleNamespace(process_iter=lambda fields:(
+                [SimpleNamespace(pid=9876,info={'pid':9876,'name':'ck3.exe'})] if appeared['process'] else []),
                 Process=lambda pid:SimpleNamespace(create_time=lambda:1.0))
+            original_json=allocation.read_json;original_bytes=Path.read_bytes
+            def bounded_json(path):
+                if projection:self.assertNotEqual(Path(path).resolve(),(prior/'native-report.json').resolve())
+                return original_json(path)
+            def bounded_bytes(path):
+                if projection:self.assertNotEqual(path.resolve(),(prior/'native-report.json').resolve())
+                return original_bytes(path)
             with (patch.dict(sys.modules,{'psutil':process_provider}),
                  patch.dict(os.environ,{live_ids.MACHINE_ENV:'',live_ids.STATE_ROOT_ENV:''}),
                  patch.object(live_ids.platform,'node',return_value='synthetic-ci-host'),
                  patch.object(live_ids,'_automatic_machine_token',return_value=machine_token),
                  patch.object(live_ids,'default_state_root',return_value=root/'ids'),
+                 patch.object(live_ids,'_exclusive_file_lock',side_effect=locked),
                  patch.object(live_ids,'allocate_live_run_id',return_value=identity) as allocate_id,
                  patch('ck3_mod_acceptance_keeper.load_lease_module',return_value=SimpleNamespace(call_bus=call_bus)),
+                 patch.object(allocation,'read_json',side_effect=bounded_json),
+                 patch.object(Path,'read_bytes',bounded_bytes),
                  patch.object(allocation,'Selection',return_value=actual),
                  patch.object(allocation.subprocess,'run',side_effect=run),
-                 patch.object(allocation.subprocess,'Popen',side_effect=popen)):
+                 patch.object(allocation.subprocess,'Popen',side_effect=popen) as keeper_popen):
+                if change is not None:
+                    with self.assertRaises(ValueError):
+                        allocation.allocate_and_keep(selected,args)
+                    self.assertIn('WRITER_LOCK',sequence)
+                    self.assertNotIn('REGISTER',sequence)
+                    self.assertFalse((admission/'000002').exists())
+                    self.assertFalse((state.parent/'single-use-ledger').exists())
+                    allocate_id.assert_not_called();keeper_popen.assert_not_called()
+                    return
                 answer=allocation.allocate_and_keep(selected,args)
             allocate_id.assert_called_once_with('vanilla',state_root=root/'ids',machine_id=machine,external_mod=False)
-            self.assertEqual(sequence,['FRESH_BUS_LIST','REGISTER','KEEPER_POPEN','WAIT_REAL_CHILD'])
+            self.assertEqual(sequence,['FRESH_BUS_LIST','WRITER_LOCK','FRESH_BUS_LIST','REGISTER','KEEPER_POPEN','WAIT_REAL_CHILD'])
             self.assertEqual(answer['keeper_actual_exit_code'],0)
             self.assertFalse(answer['game_started'])
             record=admission/'000002'
@@ -501,6 +586,7 @@ class Focused(unittest.TestCase):
             self.assertEqual(closure['mode'],'previous-shared-managed-session')
             self.assertEqual(closure['run_id'],'synthetic-R0000')
             self.assertEqual(closure['machine'],binding)
+            if projection:self.assertEqual(closure['native_cleanup_projection'],entry.pin(projection_path))
 
 class FailedLaunchPredecessor(unittest.TestCase):
     def setUp(self):
