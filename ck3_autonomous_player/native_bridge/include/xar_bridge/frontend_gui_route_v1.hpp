@@ -88,6 +88,14 @@ enum class FrontendBookmarkPrivateStepKindV1 : std::uint32_t {
 
 inline FrontendBookmarkPrivateStepKindV1
 FrontendBookmarkPrivateStepKindForV1(std::string_view step) noexcept {
+  if (step == "probe-frontend-bookmark-model-des-byzantium-1066-v1")
+    return FrontendBookmarkPrivateStepKindV1::probe;
+  if (step == "activate-frontend-select-bookmark-des-byzantium-1066-v1")
+    return FrontendBookmarkPrivateStepKindV1::select_bookmark;
+  if (step == "select-frontend-bookmark-character-des-byzantium-1066-v1")
+    return FrontendBookmarkPrivateStepKindV1::select_character;
+  if (step == "activate-frontend-start-selected-bookmark-des-byzantium-1066-v1")
+    return FrontendBookmarkPrivateStepKindV1::start_bookmark;
   if (IsFaithE01FrontendScenarioEnabledV1()) {
   if (step == "probe-frontend-bookmark-model-faith-e01-v1")
     return FrontendBookmarkPrivateStepKindV1::probe;
@@ -126,6 +134,12 @@ inline bool IsFrontendBookmarkPrivateActionStepV1(
 
 inline FrontendBookmarkSeedTargetV1
 FrontendBookmarkPrivateTargetForV1(std::string_view step) noexcept {
+  if (step == "probe-frontend-bookmark-model-des-byzantium-1066-v1" ||
+      step == "activate-frontend-select-bookmark-des-byzantium-1066-v1" ||
+      step == "select-frontend-bookmark-character-des-byzantium-1066-v1" ||
+      step == "activate-frontend-start-selected-bookmark-des-byzantium-1066-v1") {
+    return FrontendBookmarkSeedTargetV1::des_empire_byzantium_1066;
+  }
   if (IsFaithE01FrontendScenarioEnabledV1() &&
      (step == "probe-frontend-bookmark-model-faith-e01-v1" ||
       step == "select-frontend-bookmark-character-faith-e01-v1" ||

@@ -26,3 +26,37 @@ DES 另提供两条共享读取入口，均采用 `--inputs <request> --output <
 显式选中表的直接 scalar 子项只接受规范 NativeId 键和精确原始 token `none`。它表示空槽，不进入旧 inventory 的完整 block ID 集合；可选选择返回 NOT_FOUND，required 选择仍拒绝缺失。其他 scalar／非法 ID／重复空槽或 block 与空槽冲突均拒绝。该守卫不扩张为成员 census 或全部历史角色资格。
 
 共享 Java 21 核心的 FileLock／文件 Pin 前后核对不等于 Win32 deny-write、retained Save custody 或 SDK 来源资格。现有限 operator 必须继续持有自己的已核 OS 句柄，并在调用 API 前后执行同一 runtime／SDK pin／custody／decoder／源码身份检查；可在外部已持有句柄期间调用这两个 API。这里不复制 Windows FFM、不修改 SDK，不把离线读取授为游戏业务 PASS。
+
+## Complete House parent references
+
+DES exposes `inspect-save-house-parents-v1 --inputs <request> --output <unused-report>`.
+The shared Java `HouseParentInspection.inspect` API accepts Request1 with the same
+machine/repository/save/decoder pins and explicit `houseTablePath` and
+`dynastyTablePath`. The semantic parent field is the House record's single direct
+`dynasty` atom; a caller cannot rename it to a different reference.
+
+One original decoder and the existing complete SaveStream grammar walk produce
+both full-record inventories and every House's parent. Every House inventory ID
+must occur exactly once in the sorted mapping, and every parent must occur in
+the same read's complete Dynasty inventory. Missing/duplicate/quoted/non-ID,
+block-shaped or dangling parents fail. Nested lookalike fields do not supply a
+parent. Required tables must be observed; a genuinely empty table is distinct
+from an absent table. Native `id=none` cells remain excluded from full records.
+
+Report schema is `ck3-save-house-parents-v1`; coverage is
+`COMPLETE_FULL_HOUSE_RECORD_PARENTS`, with business assessment `NOT_ASSESSED`.
+`HouseParentLink` is a shared typed record whose JSON representation is exactly
+`[HouseID, DynastyID]`, two canonical decimal strings in that order. Object
+aliases, numeric/boolean IDs and arrays of another length are rejected. This
+wire representation avoids repeating field names for a whole-world mapping.
+The original 64KiB input and 1MiB report caps remain; overflow fails without
+truncation. The retained Operator's complete outer report must fit its own
+unchanged 1MiB cap too.
+
+`projection.housesInDynasty(actualDynastyId)` yields the exhaustive related IDs.
+A caller may then pass those IDs to the existing selected API to retain their
+full ASTs and referenced CoA objects from the same pinned Save. This does not
+qualify an old run's map for another Save. If an assertion quantifies parent
+relationships at several saved points, each relevant Save needs its own map;
+equality of ID inventories alone is not equality of parent references.
+The caller's existing retained-Save SDK/custody/source/OS-handle guards remain.

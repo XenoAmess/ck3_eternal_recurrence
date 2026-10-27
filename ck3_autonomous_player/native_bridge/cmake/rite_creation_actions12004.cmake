@@ -52,6 +52,7 @@ if(XAR_ENABLE_RITE_CREATION_ACTIONS12004)
     add_test(NAME xar_ck3_12004_rite_creation_wire_test COMMAND xar_ck3_12004_rite_creation_wire_test)
     add_executable(xar_ck3_12004_rite_creation_guard_test
       "${CMAKE_CURRENT_LIST_DIR}/../tests/rite_creation_actions12004_guard_test.cpp"
+      "${CMAKE_CURRENT_LIST_DIR}/../tests/worker_snapshot_wait_publication12004_fixture.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/../src/rite_creation_actions12004_wire.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/../src/rite_creation_actions12004.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/../src/religion_ui12004.cpp")

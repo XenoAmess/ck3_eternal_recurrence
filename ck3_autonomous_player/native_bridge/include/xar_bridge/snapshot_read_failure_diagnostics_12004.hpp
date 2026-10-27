@@ -34,6 +34,8 @@ struct WorkerSnapshotObservation12004 {
   bool cache_present{};
   std::uint64_t current_cache_epoch{}, cache_revision{}, raw_generation_counter{};
   std::uint64_t pending_generation{}, last_committed_raw_generation{};
+  std::optional<std::uint64_t> raw_publish_epoch;
+  std::optional<std::uint32_t> raw_publisher_thread_id;
   std::optional<std::uint64_t> active_raw_target_epoch;
   std::optional<std::uint32_t> active_raw_owner_thread_id;
   std::optional<std::int32_t> cache_date_raw;
@@ -207,7 +209,8 @@ inline std::string FormatSnapshotReadFailure12004(
         " active_raw_target_epoch=" + number(view.active_raw_target_epoch) +
         " active_raw_owner_thread_id=" + number(view.active_raw_owner_thread_id) +
         " last_committed_raw_generation=" + std::to_string(view.last_committed_raw_generation) +
-        " raw_publish_epoch=unknown raw_publisher_thread_id=unknown" +
+        " raw_publish_epoch=" + number(view.raw_publish_epoch) +
+        " raw_publisher_thread_id=" + number(view.raw_publisher_thread_id) +
         " cache_date_raw=" + number(view.cache_date_raw) +
         " cache_paused=" + boolean(view.cache_paused) +
         " created_worker_thread_id=" + std::to_string(view.created_worker_thread_id) +

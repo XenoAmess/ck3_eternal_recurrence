@@ -1,0 +1,18 @@
+# Selection input only: stock historical character 1732; no history or title effects.
+bm_des_empire_1066_byzantium = {
+    start_date = 1066.9.15
+    is_playable = yes
+    group = bm_group_1066
+    character = {
+        name = "bookmark_des_empire_1066_konstantinos"
+        dynasty = 633
+        type = male
+        birth = 1006.1.1
+        title = e_byzantium
+        government = administrative_government
+        fallback_government = feudal_government
+        religion = byzantine_rite
+        culture = greek
+        history_id = 1732
+    }
+}

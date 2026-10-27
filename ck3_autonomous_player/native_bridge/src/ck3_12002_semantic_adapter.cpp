@@ -157,6 +157,13 @@ bool WorkerAdapter::read_snapshot(game::Snapshot &output) const noexcept {
       view.raw_generation_counter = snapshot_observation_generation_;
       view.pending_generation = snapshot_pending_generation_;
       view.last_committed_raw_generation = snapshot_published_generation_;
+      view.raw_publish_epoch.reset();
+      view.raw_publisher_thread_id.reset();
+      if (snapshot_published_generation_ != 0) {
+        if (snapshot_published_epoch_ != 0) view.raw_publish_epoch = snapshot_published_epoch_;
+        if (snapshot_published_owner_thread_id_ != 0)
+          view.raw_publisher_thread_id = snapshot_published_owner_thread_id_;
+      }
       view.active_raw_target_epoch.reset();
       view.active_raw_owner_thread_id.reset();
       if (snapshot_pending_generation_ != 0) {
@@ -204,10 +211,18 @@ bool WorkerAdapter::read_snapshot(game::Snapshot &output) const noexcept {
       view.expected_wait_ticket =
           xar::bridge::ck3_12004::WorkerSnapshotWaitTicket12004{generation, epoch, owner_thread_id};
       capture_observation(ViewStage::before_wait);
+      if (snapshot_wait_observer12004_ != nullptr)
+        snapshot_wait_observer12004_(snapshot_wait_observer_context12004_,
+            SnapshotWaitBoundary12004::before_wait, guard);
+      if (!guard.owns_lock()) return unavailable(FailureStage::worker_snapshot_exception);
       const bool terminal = snapshot_changed_.wait_until(guard, deadline, [&] {
         return snapshot_pending_generation_ != generation ||
             mailbox_->stop_requested.load(std::memory_order_acquire);
       });
+      if (snapshot_wait_observer12004_ != nullptr)
+        snapshot_wait_observer12004_(snapshot_wait_observer_context12004_,
+            SnapshotWaitBoundary12004::after_wait, guard);
+      if (!guard.owns_lock()) return unavailable(FailureStage::worker_snapshot_exception);
       view.wait_terminal = terminal;
       capture_observation(ViewStage::after_wait);
       if (!terminal || mailbox_->stop_requested.load(std::memory_order_acquire) ||
@@ -301,6 +316,8 @@ bool WorkerAdapter::Observe(const ck3_11906::MainThreadExecutionStampV1 &stamp) 
     snapshot_epoch_ = stamp.pump_epoch;
     next_snapshot_sample_ms_ = GetTickCount64() + 250;
     snapshot_published_generation_ = generation;
+    snapshot_published_epoch_ = stamp.pump_epoch;
+    snapshot_published_owner_thread_id_ = stamp.thread_id;
     snapshot_pending_generation_ = 0;
     snapshot_changed_.notify_all();
     return true;

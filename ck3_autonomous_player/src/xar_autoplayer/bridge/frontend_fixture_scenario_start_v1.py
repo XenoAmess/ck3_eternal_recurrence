@@ -11,7 +11,8 @@ import time
 
 from .driver import BridgeUnavailableError
 from .frontend_fixture_start_contract import (
-    FAITH_E01_PROFILE_ID, fixture_frontend_target, require_fixture_frontend_build,
+    fixture_frontend_profile_id, fixture_frontend_steps, fixture_frontend_governments,
+    fixture_frontend_target, require_fixture_frontend_build,
 )
 
 PROBE = "probe-frontend-bookmark-model-faith-e01-v1"
@@ -25,12 +26,11 @@ START_CAPABILITY = "game.command.activate-frontend-start-selected-bookmark-v1"
 
 def require_scenario_selected(value: object, target: dict) -> dict:
     expected = {"schema": "ck3-frontend-selected-fixture-scenario-candidate-v1",
-        "status": "ready", "read_only": True, "profile_id": FAITH_E01_PROFILE_ID,
+        "status": "ready", "read_only": True, "profile_id": fixture_frontend_profile_id(target),
         "selected_bookmark_key": target["bookmark_key"],
         "selected_character_name_key": target["character_name_key"],
-        "selected_character_government_key": target["government_key"],
         "selected_bookmark_start_date_raw": target["start_date_raw"]}
-    if not isinstance(value, dict) or any(type(value.get(key)) is not type(wanted) or value[key] != wanted
+    if not isinstance(value, dict) or value.get("selected_character_government_key") not in fixture_frontend_governments(target) or any(type(value.get(key)) is not type(wanted) or value[key] != wanted
             for key, wanted in expected.items()) or value.get("selected_bookmark_group_key") not in (
             None, target["bookmark_group_key"]):
         raise ValueError("fixture scenario lacks its actual selected native model")
@@ -42,7 +42,7 @@ def require_scenario_start_submission(value: object) -> dict:
         raise ValueError("fixture scenario Start submission is not an object")
     target = fixture_frontend_target(value.get("policy_binding"))
     expected = {"schema": "ck3-frontend-fixture-scenario-start-submission-v1", "schema_version": 1,
-        "profile_id": FAITH_E01_PROFILE_ID, "status": "acknowledged_verification_pending",
+        "profile_id": fixture_frontend_profile_id(target), "status": "acknowledged_verification_pending",
         "accepted": True, "pre_start_identity_proven": True, "postcondition_verified": False,
         "fixture_target_identity_proven": False, "requested_character_name_key": target["character_name_key"],
         "uses_ocr": False, "uses_keyboard": False, "uses_mouse": False}
@@ -51,7 +51,7 @@ def require_scenario_start_submission(value: object) -> dict:
     require_scenario_selected(value.get("selected_candidate"), target)
     ack = value.get("acknowledgement")
     if not isinstance(ack, dict) or any(ack.get(key) != wanted for key, wanted in {
-            "step": START, "accepted": True, "status": "acknowledged_verification_pending",
+            "step": fixture_frontend_steps(target)[3], "accepted": True, "status": "acknowledged_verification_pending",
             "backend_id": "native-headless"}.items()):
         raise ValueError("fixture scenario Start ACK is malformed")
     binding = value.get("binding")
@@ -92,13 +92,13 @@ def selected_model(model: dict, target: dict, *, require_selected: bool) -> dict
             and keys[index] == target["character_name_key"]
             and type(selected) is int and -1 <= selected < len(keys)
             and (not require_selected or selected == index)
-            and model.get("supported_1066_government_key") == target["government_key"]
+            and model.get("supported_1066_government_key") in fixture_frontend_governments(target)
             and model.get("supported_1066_date_matches") is True):
         raise BridgeUnavailableError("episode01 native bookmark identity is not ready; "
             f"reason={model.get('unavailable_reason')!r}, bookmark={model.get('selected_bookmark_key')!r}, "
             f"selected={selected!r}, target={index!r}")
     return require_scenario_selected({"schema": "ck3-frontend-selected-fixture-scenario-candidate-v1",
-        "status": "ready", "read_only": True, "profile_id": FAITH_E01_PROFILE_ID,
+        "status": "ready", "read_only": True, "profile_id": fixture_frontend_profile_id(target),
         "selected_bookmark_key": model["selected_bookmark_key"],
         "selected_bookmark_group_key": model.get("selected_bookmark_group_key"),
         "selected_character_name_key": keys[index],
@@ -110,6 +110,7 @@ def selected_model(model: dict, target: dict, *, require_selected: bool) -> dict
 def submit_scenario_start(driver) -> dict:
     policy = getattr(driver, "frontend_fixture_start_policy_binding", None)
     target = fixture_frontend_target(policy)
+    PROBE, BOOKMARK, CHARACTER, START = fixture_frontend_steps(target)
     if driver.episode_projection != "native_campaign" or not policy.get("policy_sha256") or driver.state_dir is None:
         raise BridgeUnavailableError("scenario Start requires the bound native_campaign fixture policy")
     binding = _require_actual4_capabilities(driver.capabilities())
@@ -177,7 +178,7 @@ def submit_scenario_start(driver) -> dict:
     journal("before-native-start-request", step=START, selected_candidate=selected, retry_allowed=False)
     ack = execute(START)
     result = require_scenario_start_submission({"schema": "ck3-frontend-fixture-scenario-start-submission-v1",
-        "schema_version": 1, "profile_id": FAITH_E01_PROFILE_ID, "accepted": True,
+        "schema_version": 1, "profile_id": fixture_frontend_profile_id(target), "accepted": True,
         "status": "acknowledged_verification_pending", "pre_start_identity_proven": True,
         "postcondition_verified": False, "fixture_target_identity_proven": False,
         "requested_character_name_key": target["character_name_key"], "policy_binding": policy,

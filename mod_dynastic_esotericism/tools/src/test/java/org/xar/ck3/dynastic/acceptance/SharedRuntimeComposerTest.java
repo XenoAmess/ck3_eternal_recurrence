@@ -246,12 +246,12 @@ final class SharedRuntimeComposerTest {
                     saved=case_id.endswith(('_cold','_restore'));restore=case_id.endswith('_restore')
                     root=runtime_path.parent/('public-'+case_id);root.mkdir()
                     case=declared[case_id]
-                    assert case['status']==('blocked' if restore else 'ready')
+                    assert case['status']=='ready'
                     catalog=root/'products.json'
                     catalog.write_text(json.dumps({'schema':registry['schema'],'product_inventory':registry['product_inventory'],
                         'products':{'dynastic-esotericism':{'cases':[case]}}}),encoding='utf-8')
                     selected=Selection(runtime_path,catalog,'dynastic-esotericism',case_id)
-                    assert selected.case['status']==('blocked' if restore else 'ready')
+                    assert selected.case['status']=='ready'
                     plain={}
                     for name in CONFIG_NAMES:
                         path=root/('plain-'+name);path.parent.mkdir(parents=True,exist_ok=True)
@@ -267,12 +267,13 @@ final class SharedRuntimeComposerTest {
                     inputs=root/'inputs.json';inputs.write_text(json.dumps(values),encoding='utf-8')
                     identity={'game_version':manifest['game']['version'],'exe_sha256':manifest['game']['exe_sha256']}
                     if restore:
-                        # Registration is an execution guard, not merely a test label.
-                        try:selected.prepare(inputs,root/'prepared')
-                        except ValueError as error:
-                            assert str(error)=='Explicitly blocked product adapter cannot prepare',error
-                        else:raise AssertionError('blocked restoration prepared')
-                        assert not (root/'prepared').exists() and not (root/'state').exists()
+                        # Public preparation requires the frozen shared verifier and genuine S1 input.
+                        with patch('ck3_mod_acceptance_prepare._engine',return_value=(None,identity)):
+                            try:selected.prepare(inputs,root/'prepared')
+                            except (ValueError,KeyError):pass
+                            else:raise AssertionError('restoration without typed S1 prepared')
+                        assert not (root/'state').exists()
+                        assert not any((root/'prepared').rglob('dlc_load.json'))
                         blocked_count+=1
                         continue
                     with patch('ck3_mod_acceptance_prepare._engine',return_value=(None,identity)):
@@ -330,7 +331,7 @@ final class SharedRuntimeComposerTest {
         Files.copy(actualRepository.resolve("ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py"), currentFactory);
         for (String name : List.of("native_driver.py", "player_prisoner_collection_private_transport.py",
                 "prisoner_release_preview_contract_12003.py", "prisoner_negotiated_preview_contract_12003.py",
-                "prisoner_selected_quote_source_contract_12004.py")) {
+                "prisoner_selected_quote_source_contract_12004.py", "frontend_fixture_start_contract.py", "frontend_fixture_scenario_start_v1.py")) {
             Files.copy(actualRepository.resolve("ck3_autonomous_player/src/xar_autoplayer/bridge").resolve(name),
                     currentFactory.getParent().resolve(name));
         }
@@ -604,6 +605,13 @@ final class SharedRuntimeComposerTest {
                 "dynastic_esotericism_empire_heads_vivhite_restore.json")) {
             assertTrue(actualIndex.path("files").has("tools/ck3_mod_acceptance_cases/" + name));
         }
+        for (String name : List.of("frontend_fixture_start_contract.py", "frontend_fixture_scenario_start_v1.py")) {
+            String relative = "ck3_autonomous_player/src/xar_autoplayer/bridge/" + name;
+            Path frozen = output.resolve("source").resolve(relative);
+            assertEquals(Files.readString(repo.resolve(relative)), Files.readString(frozen));
+            assertEquals(pin(frozen).path("sha256"), actualIndex.path("files").path(relative).path("sha256"));
+            assertFalse(repo.resolve(relative).toRealPath().equals(frozen.toRealPath()));
+        }
         Path presetSource = tools.resolve("ck3_mod_acceptance_cases/dynastic_esotericism_sect_presets.json");
         Path frozenPreset = output.resolve("source/tools/ck3_mod_acceptance_cases/dynastic_esotericism_sect_presets.json");
         assertEquals(Files.readString(presetSource), Files.readString(frozenPreset));
@@ -618,7 +626,7 @@ final class SharedRuntimeComposerTest {
         assertEquals(2, normalExitBuilderMetadata.size());
         assertEquals(frozenNormalExitBuilderPin.path("bytes"), normalExitBuilderMetadata.path("bytes"));
         assertEquals(frozenNormalExitBuilderPin.path("sha256"), normalExitBuilderMetadata.path("sha256"));
-        assertEquals(36, SharedRuntimeComposer.parentSourceFiles((ObjectNode) actualIndex,
+        assertEquals(38, SharedRuntimeComposer.parentSourceFiles((ObjectNode) actualIndex,
                 output.resolve("source"), fixtureMachine).size());
         assertEquals(pin(Path.of(result.sourceIndex())).path("sha256"), actualManifest.path("source_index").path("sha256"));
         assertEquals(pin(Path.of(result.manifest())), actual.path("manifest"));
@@ -668,6 +676,41 @@ final class SharedRuntimeComposerTest {
         assertTrue(Files.isRegularFile(output.resolve("source/tools/ck3_mod_acceptance_cases/generic_product_adapter.py")));
         assertThrows(IllegalArgumentException.class,
                 () -> SharedRuntimeComposer.compose(repo, parentRuntime, nativePath, projectionPath, output, fixtureMachine));
+        // Exercise the same composer path that freezes the real verifier artifact/source closure.
+        for (String root : List.of("mod_dynastic_esotericism/tools/src/main/java", "java/ck3-save-core/src/main/java")) {
+            try (var stream = Files.walk(actualRepository.resolve(root))) {
+                for (Path sourceFile : stream.filter(p -> p.toString().endsWith(".java")).toList()) {
+                    Path target = repo.resolve(actualRepository.relativize(sourceFile));
+                    Files.createDirectories(target.getParent());
+                    Files.copy(sourceFile, target, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                }
+            }
+        }
+        for (String relative : List.of("mod_dynastic_esotericism/tools/pom.xml", "java/ck3-save-core/pom.xml")) {
+            Path target = repo.resolve(relative); Files.createDirectories(target.getParent());
+            Files.copy(actualRepository.resolve(relative), target);
+        }
+        Path app = Files.createDirectory(temporary.resolve("authored-verifier-app"));
+        Files.writeString(app.resolve("quarkus-run.jar"), "authored artifact bytes; not executable/native/live qualification");
+        Path java = Path.of(System.getProperty("java.home"), "bin",
+                System.getProperty("os.name").startsWith("Windows") ? "java.exe" : "java");
+        var declaration = EmpireRestoreEvidence.packageArtifact(repo, app, java, temporary.resolve("verifier-input.json"), fixtureMachine);
+        Path verifierOutput = temporary.resolve("with-verifier");
+        projection.put("runtime_binding", verifierOutput.resolve("runtime.json").toString()); write(projectionPath, projection);
+        var withVerifier = SharedRuntimeComposer.compose(repo, parentRuntime, nativePath, projectionPath,
+                verifierOutput, fixtureMachine, Path.of(declaration.path()));
+        JsonNode verifierRuntime = JSON.readTree(Path.of(withVerifier.runtime()).toFile());
+        var frozenPin = org.xar.ck3.save.SaveJson.read(JSON.writeValueAsBytes(verifierRuntime.path("empire_restore_verifier")),
+                org.xar.ck3.save.SaveContracts.Pin.class);
+        var frozen = EmpireRestoreEvidence.readPackage(frozenPin);
+        assertEquals(EmpireRestoreEvidence.pin(verifierOutput.resolve("empire-restore-verifier/quarkus-run.jar")), frozen.entrypoint());
+        for (var file : frozen.producerSources()) {
+            assertEquals(EmpireRestoreEvidence.pin(verifierOutput.resolve("source").resolve(file.relative())), file.pin());
+            assertEquals(EmpireRestoreEvidence.pin(repo.resolve(file.relative())).sha256(), file.pin().sha256());
+        }
+        assertTrue(verifierRuntime.path("allocator_overlay").path("empire-restore-verifier:java").isObject());
+        Path extra = app.resolve("unlisted.jar"); Files.writeString(extra, "undeclared");
+        assertThrows(IllegalArgumentException.class, () -> EmpireRestoreEvidence.readPackage(declaration));
         int defect = 0;
         for (String flag : List.of("XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1",
                 "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1",

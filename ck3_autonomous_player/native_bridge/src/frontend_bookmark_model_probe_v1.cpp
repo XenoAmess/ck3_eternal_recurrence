@@ -69,6 +69,14 @@ constexpr FrontendBookmarkTargetProfileV1 kRurikTarget{
 constexpr FrontendBookmarkTargetProfileV1 kFaithE01Target{
     "bm_xar_faith_h01_867", "bookmark_xar_faith_h01_abbasid",
     "clan_government", 51394920, "bm_group_867"};
+// The fixture bookmark contains historical 1732 as one top-level character.
+// This native profile binds source keys; 1732 is not a runtime fullref input.
+// The stock character definition supplies administrative with feudal fallback.
+constexpr FrontendBookmarkTargetProfileV1 kDesByzantiumTarget{
+    "bm_des_empire_1066_byzantium",
+    "bookmark_des_empire_1066_konstantinos",
+    "administrative_government", 0x032AEB08, "bm_group_1066",
+    "feudal_government"};
 
 bool IsScriptKeyByte(char value) noexcept {
   return (value >= 'a' && value <= 'z') ||
@@ -384,6 +392,8 @@ const FrontendBookmarkTargetProfileV1 &GetFrontendBookmarkTargetProfileV1(
   case FrontendBookmarkSeedTargetV1::yahya_1066: return kYahyaTarget;
   case FrontendBookmarkSeedTargetV1::rurik_867: return kRurikTarget;
   case FrontendBookmarkSeedTargetV1::faith_e01_abbasid_867: return kFaithE01Target;
+  case FrontendBookmarkSeedTargetV1::des_empire_byzantium_1066:
+    return kDesByzantiumTarget;
   default: return kConfiguredTarget;
   }
 }
@@ -650,7 +660,9 @@ bool ProbeFrontendBookmarkModelV1(
   output.government_type_keys_available = true;
   output.supported_1066_candidate_feudal =
       output.government_type_keys[index] == "feudal_government";
-  if (output.government_type_keys[index] != profile.government_key) {
+  if (output.government_type_keys[index] != profile.government_key &&
+      (profile.fallback_government_key.empty() ||
+       output.government_type_keys[index] != profile.fallback_government_key)) {
     output.unavailable_reason = seed_target == FrontendBookmarkSeedTargetV1::configured_1066
             ? "supported_1066_candidate_not_feudal"
             : "supported_bookmark_candidate_government_mismatch";

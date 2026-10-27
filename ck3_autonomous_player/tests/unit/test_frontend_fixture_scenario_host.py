@@ -354,7 +354,128 @@ class ScenarioHostBindingTests(unittest.TestCase):
                 harness.require_fixture_policy_submission(value, policy())
 
 
+def empire_policy():
+    from xar_autoplayer.bridge.frontend_fixture_start_contract import (
+        DES_EMPIRE_PROFILE_ID, DES_EMPIRE_FRONTEND_TARGET,
+    )
+    value = policy()
+    value.update(schema="ck3-frontend-fixture-start-policy-v3", schema_version=3,
+                 profile_id=DES_EMPIRE_PROFILE_ID,
+                 frontend_target=copy.deepcopy(DES_EMPIRE_FRONTEND_TARGET),
+                 startup_event_admission={"mode": "none"},
+                 post_start={"government_keys": ["administrative_government", "feudal_government"],
+                             "primary_title_tier_key": "empire", "independent": True})
+    return value
+
+
+def empire_submission(harness, government="administrative_government"):
+    value = submission(harness)
+    p = empire_policy()
+    target = p["frontend_target"]
+    value.update(profile_id=p["profile_id"], requested_character_name_key=target["character_name_key"],
+                 policy_binding=harness.fixture_start_policy_binding(p, b"authored Empire policy"))
+    value["selected_candidate"].update(profile_id=p["profile_id"],
+        selected_bookmark_key=target["bookmark_key"], selected_character_name_key=target["character_name_key"],
+        selected_bookmark_group_key=target["bookmark_group_key"],
+        selected_character_government_key=government,
+        selected_bookmark_start_date_raw=target["start_date_raw"])
+    value["acknowledgement"]["step"] = "activate-frontend-start-selected-bookmark-des-byzantium-1066-v1"
+    return value
+
+
+class EmpireScenarioContractTests(unittest.TestCase):
+    def test_v3_roundtrip_routes_only_the_closed_scenario(self) -> None:
+        from xar_autoplayer.bridge.frontend_fixture_start_contract import validate_fixture_start_policy
+        harness = load_harness()
+        p = validate_fixture_start_policy(json.loads(json.dumps(empire_policy())))
+        self.assertEqual(p, empire_policy())
+        self.assertEqual(harness.fixture_start_tool(p), "ck3_submit_frontend_fixture_scenario_start_v1")
+        actual = empire_submission(harness)
+        self.assertEqual(harness.require_fixture_policy_submission(actual, p), actual)
+        self.assertFalse(actual["postcondition_verified"])
+
+    def test_v3_wrong_actor_source_types_and_event_contract_are_rejected(self) -> None:
+        from xar_autoplayer.bridge.frontend_fixture_start_contract import validate_fixture_start_policy
+        changes = [
+            ("profile_id", "another-profile"),
+            ("schema_version", True),
+            ("schema_version", 3.0),
+            ("startup_event_admission", {"mode": "observe_only"}),
+            ("post_start", {"government_keys": ["clan_government"],
+                            "primary_title_tier_key": "empire", "independent": True}),
+        ]
+        for field, value in changes:
+            p = empire_policy()
+            p[field] = value
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                validate_fixture_start_policy(p)
+        for field, value in (("stock_history_id", True), ("stock_history_id", 1732.0),
+                             ("stock_history_id", 1733), ("start_date_raw", True),
+                             ("start_date_raw", 53144328.0),
+                             ("character_name_key", "bookmark_rags_to_riches_duke_robert"),
+                             ("government_keys", ["administrative_government", "clan_government"])):
+            p = empire_policy()
+            p["frontend_target"][field] = value
+            with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                validate_fixture_start_policy(p)
+
+    def test_v3_observed_stock_government_never_uses_history_id_as_live_actor(self) -> None:
+        from xar_autoplayer.bridge.frontend_fixture_start_contract import fixture_business_context_binding
+        harness, p = load_harness(), empire_policy()
+        for government in ("administrative_government", "feudal_government"):
+            snapshot, root = current_frame(10)
+            snapshot["date_raw"] = p["frontend_target"]["start_date_raw"]
+            root.update(date_raw=snapshot["date_raw"], government={"key": government})
+            actual = fixture_business_context_binding(snapshot, root, p, empire_submission(harness, government))
+            self.assertIsNotNone(actual)
+            self.assertEqual(actual["actor_character_id"], 123456789)
+            self.assertNotEqual(actual["actor_character_id"], 1732)
+            root["government"] = {"key": "clan_government"}
+            self.assertIsNone(fixture_business_context_binding(snapshot, root, p, empire_submission(harness)))
+
+    def test_v3_native_model_checks_current_exact_selection(self) -> None:
+        from xar_autoplayer.bridge.frontend_fixture_scenario_start_v1 import selected_model
+        target = empire_policy()["frontend_target"]
+        model = {"accepted": True, "status": "identity_ready", "candidate_identity_ready": True,
+            "selected_bookmark_key": target["bookmark_key"],
+            "selected_bookmark_group_key": target["bookmark_group_key"],
+            "selected_date_low_raw": target["start_date_raw"],
+            "candidate_keys": [target["character_name_key"]], "supported_1066_candidate_index": 0,
+            "selected_character_index": 0, "supported_1066_government_key": "administrative_government",
+            "supported_1066_date_matches": True}
+        self.assertEqual(selected_model(model, target, require_selected=True)["profile_id"],
+                         empire_policy()["profile_id"])
+        for field, value in (("selected_character_index", True), ("selected_character_index", -1),
+                             ("supported_1066_candidate_index", True),
+                             ("supported_1066_government_key", "clan_government"),
+                             ("selected_date_low_raw", 53144328.0)):
+            bad = copy.deepcopy(model)
+            bad[field] = value
+            with self.subTest(field=field), self.assertRaises(RuntimeError):
+                selected_model(bad, target, require_selected=True)
+
+
 class ScenarioHostSubmissionTests(unittest.IsolatedAsyncioTestCase):
+    async def test_v3_once_submission_lost_ack_never_replays_or_falls_back(self) -> None:
+        harness, report = load_harness(), {}
+        class Client:
+            tools = {"ck3_submit_frontend_fixture_scenario_start_v1",
+                     "ck3_submit_frontend_fixture_robert_start_v1",
+                     "ck3_query_engine_log_literals_v1"}
+            calls = []
+            async def call(self, tool, args=None):
+                self.calls.append(tool)
+                if tool == "ck3_query_engine_log_literals_v1":
+                    return log_counts(0)
+                raise ConnectionError("authored lost Start ACK")
+        client = Client()
+        with self.assertRaises(ConnectionError):
+            await harness.submit_fixture_robert_once(client, empire_policy(), report=report, write=lambda: None)
+        with self.assertRaisesRegex(RuntimeError, "already attempted"):
+            await harness.submit_fixture_robert_once(client, empire_policy(), report=report, write=lambda: None)
+        self.assertEqual(client.calls.count("ck3_submit_frontend_fixture_scenario_start_v1"), 1)
+        self.assertNotIn("ck3_submit_frontend_fixture_robert_start_v1", client.calls)
+
     async def test_v2_calls_only_scenario_tool_once_and_keeps_pending_evidence(self):
         harness, report = load_harness(), {}
         class Client:

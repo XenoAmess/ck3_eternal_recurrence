@@ -1,4 +1,5 @@
 #include "xar_bridge/frontend_bookmark_model_probe_v1.hpp"
+#include "xar_bridge/frontend_gui_route_v1.hpp"
 
 #include <array>
 #include <cstddef>
@@ -325,7 +326,8 @@ bool CrozierCases() {
   for (const auto target : {FrontendBookmarkSeedTargetV1::configured_1066,
                             FrontendBookmarkSeedTargetV1::yahya_1066,
                             FrontendBookmarkSeedTargetV1::rurik_867,
-                            FrontendBookmarkSeedTargetV1::faith_e01_abbasid_867}) {
+                            FrontendBookmarkSeedTargetV1::faith_e01_abbasid_867,
+                            FrontendBookmarkSeedTargetV1::des_empire_byzantium_1066}) {
     auto fixture = MakeCrozierFixture(target);
     FrontendBookmarkModelProbeV1 result{};
     const auto &profile = xar::ck3_11906::GetFrontendBookmarkTargetProfileV1(target);
@@ -380,7 +382,13 @@ bool CrozierBookmarkDbSwitchCase(FrontendBookmarkSeedTargetV1 target) {
   // SetupView+0xC0 contains Group pointers, not Bookmark pointers. The
   // full Bookmark pointer collection is owned by the actual BookmarkDB.
   // Switch the actual initial 1066 model, then independently probe Rurik.
-  auto fixture = MakeCrozierFixture(FrontendBookmarkSeedTargetV1::yahya_1066);
+  const auto initial_target =
+      target == FrontendBookmarkSeedTargetV1::des_empire_byzantium_1066
+          ? FrontendBookmarkSeedTargetV1::rurik_867
+          : FrontendBookmarkSeedTargetV1::yahya_1066;
+  auto fixture = MakeCrozierFixture(initial_target);
+  const auto &initial =
+      xar::ck3_11906::GetFrontendBookmarkTargetProfileV1(initial_target);
   for (std::uintptr_t base = 0x14000; base <= 0x1A000; base += 0x1000) {
     fixture.Add(base, 512);
   }
@@ -389,7 +397,8 @@ bool CrozierBookmarkDbSwitchCase(FrontendBookmarkSeedTargetV1 target) {
   PutLongKey(fixture, 0x14000, 0x18, 0x16000, rurik.bookmark_key);
   fixture.Put(0x9000 + 0x150, std::uintptr_t{0xD000});
   fixture.Put(0x14000 + 0x150, std::uintptr_t{0x1B000});
-  fixture.Put(0x14000 + 0x40, std::uint64_t{0xFFFFFFFF03103968ULL});
+  fixture.Put(0x14000 + 0x40,
+              std::uint64_t{0xFFFFFFFF00000000ULL | rurik.date_low_raw});
   fixture.Put(0x14000 + 0x160, std::uintptr_t{0x15000});
   fixture.Put(0x14000 + 0x168, std::uint32_t{1});
   fixture.Put(0x14000 + 0x16C, std::uint32_t{1});
@@ -404,7 +413,7 @@ bool CrozierBookmarkDbSwitchCase(FrontendBookmarkSeedTargetV1 target) {
   fixture.Add(0x1F000, 512);
   fixture.Add(0x20000, 512);
   fixture.Add(kModuleBase + 0x5C67210, sizeof(std::uintptr_t));
-  PutLongKey(fixture, 0x1B000, 0x18, 0x1E000, "bm_group_867");
+  PutLongKey(fixture, 0x1B000, 0x18, 0x1E000, rurik.bookmark_group_key);
   PutLongKey(fixture, 0x1F000, 0x18, 0x20000, "bm_867_fixture_default");
   fixture.Put(0x1F000 + 0x40, std::uint64_t{0xFFFFFFFF03103968ULL});
   fixture.Put(0x1F000 + 0x150, std::uintptr_t{0x1B000});
@@ -433,9 +442,9 @@ bool CrozierBookmarkDbSwitchCase(FrontendBookmarkSeedTargetV1 target) {
   FrontendBookmarkChangeV1 change{};
   FrontendBookmarkModelProbeV1 result{};
   if (!ProbeCrozier(fixture, result, target) ||
-      result.selected_bookmark_group_key != "bm_group_1066" ||
-      result.selected_bookmark_key != "bm_1066_rags_to_riches" ||
-      result.selected_date_low_raw != 0x032AEB08 ||
+      result.selected_bookmark_group_key != initial.bookmark_group_key ||
+      result.selected_bookmark_key != initial.bookmark_key ||
+      result.selected_date_low_raw != initial.date_low_raw ||
       result.selected_character_index != -1 ||
       result.supported_1066_candidate_present || result.candidate_identity_ready) {
     std::fprintf(stderr, "initial actual 1066 model does not reproduce Rurik absence\n");
@@ -453,7 +462,8 @@ bool CrozierBookmarkDbSwitchCase(FrontendBookmarkSeedTargetV1 target) {
       !result.candidate_identity_ready || result.selected_character_index != -1 ||
       result.selected_bookmark_group_key != rurik.bookmark_group_key ||
       result.selected_bookmark_key != rurik.bookmark_key ||
-      result.selected_date_raw != 0xFFFFFFFF03103968ULL ||
+      result.selected_date_raw !=
+          (0xFFFFFFFF00000000ULL | rurik.date_low_raw) ||
       result.selected_date_low_raw != rurik.date_low_raw ||
       result.bookmark_character_keys[0] != rurik.character_key ||
       result.government_type_keys[0] != rurik.government_key ||
@@ -470,6 +480,117 @@ bool CrozierBookmarkDbSwitchCase(FrontendBookmarkSeedTargetV1 target) {
       change.setter_invoked || fixture.group_setter_calls != 1 ||
       fixture.bookmark_setter_calls != 1) return false;
   return true;
+}
+
+
+bool DesByzantiumClosedProfileCases() {
+  using namespace xar::ck3_11906;
+  constexpr auto target =
+      FrontendBookmarkSeedTargetV1::des_empire_byzantium_1066;
+  const auto &profile = GetFrontendBookmarkTargetProfileV1(target);
+  if (profile.bookmark_key != "bm_des_empire_1066_byzantium" ||
+      profile.character_key != "bookmark_des_empire_1066_konstantinos" ||
+      profile.bookmark_group_key != "bm_group_1066" ||
+      profile.date_low_raw != 0x032AEB08 ||
+      profile.government_key != "administrative_government" ||
+      profile.fallback_government_key != "feudal_government") return false;
+  constexpr std::array<std::pair<std::string_view,
+      FrontendBookmarkPrivateStepKindV1>, 4> steps{{
+      {"probe-frontend-bookmark-model-des-byzantium-1066-v1",
+       FrontendBookmarkPrivateStepKindV1::probe},
+      {"activate-frontend-select-bookmark-des-byzantium-1066-v1",
+       FrontendBookmarkPrivateStepKindV1::select_bookmark},
+      {"select-frontend-bookmark-character-des-byzantium-1066-v1",
+       FrontendBookmarkPrivateStepKindV1::select_character},
+      {"activate-frontend-start-selected-bookmark-des-byzantium-1066-v1",
+       FrontendBookmarkPrivateStepKindV1::start_bookmark}}};
+  for (const auto &[step, kind] : steps) {
+    if (FrontendBookmarkPrivateStepKindForV1(step) != kind ||
+        FrontendBookmarkPrivateTargetForV1(step) != target ||
+        IsFrontendBookmarkPrivateActionStepV1(step) !=
+            (kind != FrontendBookmarkPrivateStepKindV1::probe)) return false;
+  }
+  if (FrontendBookmarkPrivateStepKindForV1(
+          "select-frontend-bookmark-character-des-byzantium-1066-v1-extra") !=
+      FrontendBookmarkPrivateStepKindV1::none) return false;
+  // No government setter exists in this route. Probe the two source-defined
+  // native final-government results independently; no caller-supplied ID.
+  for (const auto government : {std::string_view{"administrative_government"},
+                                std::string_view{"feudal_government"}}) {
+    auto fixture = MakeCrozierFixture(target);
+    PutLongKey(fixture, 0xE000, 0x18, 0xF000, government);
+    FrontendBookmarkModelProbeV1 result{};
+    if (!ProbeCrozier(fixture, result, target) ||
+        !result.candidate_identity_ready ||
+        result.government_type_keys[0] != government ||
+        result.supported_1066_candidate_feudal !=
+            (government == "feudal_government")) return false;
+    ZhongguoScoreboardNativeEnvironmentV1 environment{};
+    environment.module_base = kModuleBase;
+    environment.exact_build_admitted = true;
+    environment.gui_abi_revision = GuiAbiRevisionV1::crozier12003;
+    environment.gui_global_slot =
+        reinterpret_cast<void **>(kModuleBase + 0x5CB87F8);
+    ZhongguoScoreboardAccessV1 access{};
+    access.context = &fixture;
+    access.read_memory = &ReadFixture;
+    FrontendBookmarkSelectionV1 selection{};
+    if (!SelectSupportedFeudalBookmarkCharacterV1(
+            environment, access, reinterpret_cast<void *>(0x2000), selection,
+            &FakeFinalGovernment, &FakeSelectedCharacterSetter, target) ||
+        !selection.setter_invoked || !selection.same_frame_index_matches ||
+        fixture.setter_calls != 1 ||
+        !ProbeCrozier(fixture, result, target) ||
+        result.selected_character_index != 0 ||
+        result.government_type_keys[0] != government) return false;
+    if (!SelectSupportedFeudalBookmarkCharacterV1(
+            environment, access, reinterpret_cast<void *>(0x2000), selection,
+            &FakeFinalGovernment, &FakeSelectedCharacterSetter, target) ||
+        !selection.already_selected || selection.setter_invoked ||
+        fixture.setter_calls != 1) return false;
+  }
+  // Wrong government, date and source key reject before the one-shot setter.
+  for (int mutation = 0; mutation < 3; ++mutation) {
+    auto fixture = MakeCrozierFixture(target);
+    if (mutation == 0)
+      PutLongKey(fixture, 0xE000, 0x18, 0xF000, "clan_government");
+    else if (mutation == 1)
+      fixture.Put(0x9000 + 0x40, std::uint64_t{0xFFFFFFFF032AEB09ULL});
+    else
+      PutLongKey(fixture, 0xA000, 0x08, 0xC000, "bookmark_wrong_actor");
+    ZhongguoScoreboardNativeEnvironmentV1 environment{};
+    environment.module_base = kModuleBase;
+    environment.exact_build_admitted = true;
+    environment.gui_abi_revision = GuiAbiRevisionV1::crozier12003;
+    environment.gui_global_slot =
+        reinterpret_cast<void **>(kModuleBase + 0x5CB87F8);
+    ZhongguoScoreboardAccessV1 access{};
+    access.context = &fixture;
+    access.read_memory = &ReadFixture;
+    FrontendBookmarkModelProbeV1 result{};
+    FrontendBookmarkSelectionV1 selection{};
+    if (!ProbeCrozier(fixture, result, target) ||
+        result.candidate_identity_ready ||
+        !SelectSupportedFeudalBookmarkCharacterV1(
+            environment, access, reinterpret_cast<void *>(0x2000), selection,
+            &FakeFinalGovernment, &FakeSelectedCharacterSetter, target) ||
+        selection.setter_invoked || fixture.setter_calls != 0) return false;
+  }
+  // Repeated closed character keys remain ambiguous, independent of ordering.
+  auto duplicate = MakeCrozierFixture(target);
+  duplicate.Add(0x21000, 1024);
+  duplicate.Put(0x9000 + 0x160, std::uintptr_t{0x21000});
+  duplicate.Put(0x9000 + 0x168, std::uint32_t{2});
+  duplicate.Put(0x9000 + 0x16C, std::uint32_t{2});
+  for (const auto element : {std::uintptr_t{0x21000},
+                              std::uintptr_t{0x211A0}}) {
+    PutLongKey(duplicate, element, 0x08, 0xC000, profile.character_key);
+    duplicate.Put(element + 0x130, std::uintptr_t{0x9000});
+  }
+  FrontendBookmarkModelProbeV1 result{};
+  return ProbeCrozier(duplicate, result, target) &&
+      !result.candidate_identity_ready &&
+      result.unavailable_reason == "supported_1066_key_is_ambiguous";
 }
 
 } // namespace
@@ -702,7 +823,8 @@ int main(int argc, char **argv) {
     std::fprintf(stderr, "unmatched bookmark root must fail closed\n");
     return 1;
   }
-  return CrozierCases() &&
+  return CrozierCases() && DesByzantiumClosedProfileCases() &&
+      CrozierBookmarkDbSwitchCase(FrontendBookmarkSeedTargetV1::des_empire_byzantium_1066) &&
       CrozierBookmarkDbSwitchCase(FrontendBookmarkSeedTargetV1::rurik_867) &&
       CrozierBookmarkDbSwitchCase(FrontendBookmarkSeedTargetV1::faith_e01_abbasid_867) ? 0 : 1;
 }

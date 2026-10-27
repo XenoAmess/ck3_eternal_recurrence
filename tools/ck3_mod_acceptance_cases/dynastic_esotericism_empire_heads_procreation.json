@@ -26,8 +26,11 @@
     "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/simp_chinese/des_empire_heads_acceptance_l_simp_chinese.yml"
   ],
   "post_start": {
-    "government_key": "feudal_government",
-    "primary_title_tier_key": "duchy",
+    "government_keys": [
+      "administrative_government",
+      "feudal_government"
+    ],
+    "primary_title_tier_key": "empire",
     "independent": true
   },
   "required_startup": [
@@ -57,7 +60,9 @@
         "DES_EHF: FIXTURE_ARMED empire_heads_procreation"
       ],
       "requirements": [
-        "actual_original_single_player_independent_duke_product56_fixture6_only_baseline_native_and_Save_pinned",
+        "actual_original_single_player_stock_byzantium_emperor_product56_fixture7_closed_profile_baseline_native_and_Save_pinned",
+        "actual_stock_e_byzantium_holder_and_primary_title_same_live_actor_no_fixture_Empire_grant",
+        "actual_paid_S0_Save_before_heir_preparation_retained_for_same_actor_ordinary_restore_branch",
         "actual_selected_preset_static_empire_title_exists_but_has_no_holder_and_Faith_has_no_head_before_input",
         "actual_des_ehf_adopt_once_stock_Faith_Rite_input_retained_without_head_title_or_doctrine_setter",
         "actual_prequalification_create_hof_status_retained_before_any_county_or_resource_input",
@@ -75,6 +80,7 @@
         "query_create_hof_before_preparation_then_des_ehf_prepare_claim_input_decision_once_read_native_and_Save_input_result",
         "open_or_select_create_hof_read_complete_terms_and_record_once_intent_then_ck3_confirm_ingame_decision_outcome_v1_once",
         "read_actual_holder_Faith_head_wallet_primary_title_government_and_full_CoA_Save_then_query_existing_head_refusal",
+        "retain_S0_paid_after_actual_paid_T_acquisition_before_heir_input_for_separate_same_actor_ordinary_restore_branch",
         "des_ehf_prepare_heir_decision_once_pin_actual_predecessor_heir_title_Save_then_sign_phase"
       ]
     },
@@ -103,5 +109,22 @@
         "save_final_successor_input_for_new_process_zero_day_cold_case_then_shared_normal_close"
       ]
     }
-  ]
+  ],
+  "frontend_scenario": {
+    "profile_id": "dynastic-esotericism-empire-byzantium-1066",
+    "frontend_target": {
+      "bookmark_key": "bm_des_empire_1066_byzantium",
+      "character_name_key": "bookmark_des_empire_1066_konstantinos",
+      "government_keys": [
+        "administrative_government",
+        "feudal_government"
+      ],
+      "start_date_raw": 53144328,
+      "bookmark_group_key": "bm_group_1066",
+      "stock_history_id": 1732
+    },
+    "startup_event_admission": {
+      "mode": "none"
+    }
+  }
 }

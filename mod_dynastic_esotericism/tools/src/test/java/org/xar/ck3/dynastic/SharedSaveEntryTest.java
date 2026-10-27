@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.xar.ck3.save.FilePins;
 import org.xar.ck3.save.Inspection;
+import org.xar.ck3.save.HouseParentInspection;
 import org.xar.ck3.save.SelectedInspection;
 import org.xar.ck3.save.OpinionInspection;
 import org.xar.ck3.save.SaveContracts.*;
@@ -116,6 +117,38 @@ final class SharedSaveEntryTest {
             assertEquals(1, command.run("inspect-save-v4", "--inputs", input.toString(), "--output", rejected.toString()));
             assertFalse(Files.exists(rejected)); assertEquals(1, launched.get());
         }
+    }
+    @Test void houseParentRouteUsesCompleteSharedProducerThenExistingSelectedConsumer() throws Exception {
+        Path repository = Path.of(System.getProperty("dynastic.source")).toAbsolutePath().normalize().getParent();
+        Path save = directory.resolve("house-parent-authored.ck3");
+        Files.writeString(save, "world={dynasties={1={} 2={}} houses={10={dynasty=1 nested={keep=a}} 11={dynasty=1 nested={keep=b}} 12={dynasty=2}}}");
+        Path javaExe = Path.of(System.getProperty("java.home"), "bin", System.getProperty("os.name").startsWith("Windows") ? "java.exe" : "java");
+        String classes = Path.of(Decoder.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toString();
+        AtomicInteger launches = new AtomicInteger();
+        ReleaseCommand command = new ReleaseCommand((decoder, input) -> {
+            launches.incrementAndGet(); return new ProcessBuilder(decoder.toString(), "-cp", classes, Decoder.class.getName(), input.toString()).start();
+        });
+        HouseParentInspection.Request request = new HouseParentInspection.Request(1, "authored-house-route", repository.toString(),
+                FilePins.pin(save), FilePins.pin(javaExe), new HouseParentInspection.Selection(List.of("world", "houses"), List.of("world", "dynasties")));
+        Path input = directory.resolve("house-parent-request.json"), output = directory.resolve("house-parent-report.json");
+        Files.write(input, SaveJson.write(request));
+        assertEquals(0, command.run("inspect-save-house-parents-v1", "--inputs", input.toString(), "--output", output.toString()));
+        HouseParentInspection.Report report = HouseParentInspection.readReport(Files.readAllBytes(output));
+        assertEquals(request, report.request()); assertEquals(3, report.projection().houseParents().size());
+        List<NativeId> related = report.projection().housesInDynasty(new NativeId("1"));
+        assertEquals(List.of(new NativeId("10"), new NativeId("11")), related);
+        Selection selection = new Selection(List.of(new TableSelection(ScopeKind.HOUSE, request.selection().houseTablePath(), related, true)), List.of(), false, false, List.of());
+        Path detailInput = directory.resolve("house-details-request.json"), detailsOutput = directory.resolve("house-details-report.json");
+        Files.write(detailInput, SaveJson.write(new Inspection.Request(4, request.machineId(), repository.toString(), request.save(), request.decoder(), selection)));
+        assertEquals(0, command.run("inspect-save-selected-v1", "--inputs", detailInput.toString(), "--output", detailsOutput.toString()));
+        SelectedInspection.Report details = SelectedInspection.readReport(Files.readAllBytes(detailsOutput));
+        assertEquals(2, details.selected().scopes().size());
+        assertTrue(details.selected().scopes().stream().allMatch(s -> s.coverage() == Coverage.FULL_RECORD && s.ast().named("nested").size() == 1));
+        assertEquals(2, launches.get()); assertEquals(report.decoder().save(), details.decoder().save());
+        ObjectNode wrong = SaveJson.read(SaveJson.write(request), ObjectNode.class); wrong.put("schemaVersion", true); Files.write(input, SaveJson.write(wrong));
+        Path rejected = directory.resolve("house-parent-must-not-exist.json");
+        assertEquals(1, command.run("inspect-save-house-parents-v1", "--inputs", input.toString(), "--output", rejected.toString()));
+        assertFalse(Files.exists(rejected)); assertEquals(2, launches.get());
     }
     public static final class Decoder {
         private Decoder() { }

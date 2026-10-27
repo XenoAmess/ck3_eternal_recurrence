@@ -96,6 +96,13 @@ public:
   bool run_inbox_fixture(std::string &) const noexcept;
 
 private:
+  // Internal synchronization observer; default null. Only offline fixture friend installs it.
+  enum class SnapshotWaitBoundary12004 : std::uint8_t { before_wait, after_wait };
+  using SnapshotWaitObserver12004 = void (*)(
+      void *, SnapshotWaitBoundary12004, std::unique_lock<std::mutex> &) noexcept;
+  void *snapshot_wait_observer_context12004_ = nullptr;
+  SnapshotWaitObserver12004 snapshot_wait_observer12004_ = nullptr;
+  friend struct WorkerSnapshotWaitFixtureAccess12004;
   struct SemanticRequest;
   bool Run(SemanticRequest &) const noexcept;
   void WakeAfterDirectControlSubmit() const noexcept;
@@ -113,7 +120,10 @@ private:
   // These tokens describe one in-flight raw read, not bridge/native revision.
   std::uint64_t snapshot_observation_generation_ = 0;
   std::uint64_t snapshot_pending_generation_ = 0;
+  // Immutable last successful raw ticket; cadence only advances snapshot_epoch_.
   std::uint64_t snapshot_published_generation_ = 0;
+  std::uint64_t snapshot_published_epoch_ = 0;
+  std::uint32_t snapshot_published_owner_thread_id_ = 0;
   std::uint64_t snapshot_pending_epoch_ = 0;
   std::uint32_t snapshot_pending_owner_thread_id_ = 0;
   std::atomic<std::uint64_t> observer_started_ms_{0};

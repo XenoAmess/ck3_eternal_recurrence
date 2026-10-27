@@ -56,7 +56,8 @@ public final class SharedRuntimeComposer {
             "ck3_query_player_rite_creation_action_context_v1", "ck3_execute_player_rite_creation_action_v1",
             "ck3_collect_player_rite_creation_action_result_v1", "ck3_verify_player_rite_creation_action_completed_v1",
             "ck3_query_character_interaction_ordinary_v1", "ck3_initiate_character_interaction_ordinary_v1",
-            "ck3_query_normal_exit_context_v1", "ck3_request_normal_exit_v1", "ck3_observe_normal_exit_v1");
+            "ck3_query_normal_exit_context_v1", "ck3_request_normal_exit_v1", "ck3_observe_normal_exit_v1",
+            "ck3_query_title_holder_v1", "ck3_query_ingame_ui_window_v1", "ck3_query_scripted_widget_controls_v1", "ck3_activate_scripted_widget_control_v1");
 
     private SharedRuntimeComposer() { }
 
@@ -78,7 +79,8 @@ public final class SharedRuntimeComposer {
             Map<String, String> options = parse(args);
             Result result = compose(Path.of(options.get("--repo-root")), Path.of(options.get("--base-runtime")),
                     Path.of(options.get("--native-index")), Path.of(options.get("--host-projection")),
-                    Path.of(options.get("--output")), options.get("--machine-id"));
+                    Path.of(options.get("--output")), options.get("--machine-id"),
+                    options.containsKey("--restore-verifier") ? Path.of(options.get("--restore-verifier")) : null);
             System.out.println(JSON.writerWithDefaultPrettyPrinter().writeValueAsString(result));
             return 0;
         } catch (IOException | IllegalArgumentException error) {
@@ -89,7 +91,15 @@ public final class SharedRuntimeComposer {
 
     public static Result compose(Path repository, Path baseRuntime, Path nativeIndex, Path hostProjection, Path destination,
             String machineId) throws IOException {
+        return compose(repository, baseRuntime, nativeIndex, hostProjection, destination, machineId, null);
+    }
+
+    public static Result compose(Path repository, Path baseRuntime, Path nativeIndex, Path hostProjection,
+            Path destination, String machineId, Path restoreVerifier) throws IOException {
         Path repo = repository.toRealPath();
+        org.xar.ck3.save.SaveContracts.Pin verifierInput = restoreVerifier == null ? null : EmpireRestoreEvidence.pin(restoreVerifier);
+        EmpireRestoreEvidence.VerifierPackage verifier = verifierInput == null ? null : EmpireRestoreEvidence.readPackage(verifierInput);
+        if (verifier != null && !verifier.machineId().equals(machineId)) throw new IllegalArgumentException("verifier machine differs");
         Path output = destination.toAbsolutePath().normalize();
         if (Files.exists(output, LinkOption.NOFOLLOW_LINKS) || output.startsWith(repo)) {
             throw new IllegalArgumentException("a fresh external shared-runtime destination is required");
@@ -219,6 +229,13 @@ public final class SharedRuntimeComposer {
             throw new IllegalArgumentException("clean lease task bus differs from selected installed task bus");
         }
         List<Path> selected = sourceFiles(repo);
+        if (verifier != null) {
+            for (EmpireRestoreEvidence.PackageFile row : verifier.producerSources()) {
+                Path canonical = repo.resolve(row.relative());
+                if (!EmpireRestoreEvidence.pin(canonical).equals(row.pin())) throw new IllegalArgumentException("verifier does not bind canonical source");
+                if (!selected.contains(canonical)) selected.add(canonical);
+            }
+        }
         long total = 0;
         for (Path path : selected) total = Math.addExact(total, Files.size(path));
         if (total > MAX_SOURCE_BYTES) throw new IllegalArgumentException("finite shared source budget exceeded");
@@ -343,6 +360,22 @@ public final class SharedRuntimeComposer {
         overlays.set("clean-lease-task-bus", JSON.valueToTree(leaseBus));
         for (FilePin file : copied) {
             if (Path.of(file.path()).startsWith(tools)) overlays.set("shared-successor:" + source.relativize(Path.of(file.path())), JSON.valueToTree(file));
+        }
+        for (String key : new ArrayList<>(overlays.properties().stream().map(java.util.Map.Entry::getKey).toList()))
+            if (key.startsWith("empire-restore-verifier:")) overlays.remove(key);
+        if (verifierInput != null) {
+            org.xar.ck3.save.SaveContracts.Pin frozen = EmpireRestoreEvidence.freezePackage(verifierInput, repo, source,
+                    output.resolve("empire-restore-verifier"), machineId);
+            runtime.set("empire_restore_verifier", JSON.valueToTree(frozen));
+            manifest.set("empire_restore_verifier", JSON.valueToTree(frozen));
+            overlays.set("empire-restore-verifier:metadata", JSON.valueToTree(frozen));
+            EmpireRestoreEvidence.VerifierPackage actual = EmpireRestoreEvidence.readPackage(frozen);
+            overlays.set("empire-restore-verifier:java", JSON.valueToTree(actual.javaExecutable()));
+            for (EmpireRestoreEvidence.PackageFile row : actual.files())
+                overlays.set("empire-restore-verifier:" + row.relative(), JSON.valueToTree(row.pin()));
+        } else {
+            // A successor cannot inherit a verifier tied to a different source graph.
+            runtime.remove("empire_restore_verifier"); manifest.remove("empire_restore_verifier");
         }
         ObjectNode environment = object(runtime.get("runtime_environment"), "runtime environment");
         JsonNode parentEnvironment = environment.get("PYTHONPATH");
@@ -555,14 +588,14 @@ public final class SharedRuntimeComposer {
 
     private static Map<String, String> parse(String[] args) {
         Set<String> keys = Set.of("--repo-root", "--base-runtime", "--native-index", "--host-projection", "--output", "--machine-id");
-        if (args.length != keys.size() * 2) throw new IllegalArgumentException("all six shared runtime options required");
+        if (args.length != keys.size() * 2 && args.length != (keys.size() + 1) * 2) throw new IllegalArgumentException("six shared options and optional verifier required");
         Map<String, String> result = new LinkedHashMap<>();
         for (int index = 0; index < args.length; index += 2) {
-            if (!keys.contains(args[index]) || args[index + 1].isBlank() || result.putIfAbsent(args[index], args[index + 1]) != null) {
+            if ((!keys.contains(args[index]) && !args[index].equals("--restore-verifier")) || args[index + 1].isBlank() || result.putIfAbsent(args[index], args[index + 1]) != null) {
                 throw new IllegalArgumentException("unknown, empty or repeated shared runtime option");
             }
         }
-        if (!result.keySet().equals(keys)) throw new IllegalArgumentException("missing shared runtime option");
+        if (!result.keySet().containsAll(keys)) throw new IllegalArgumentException("missing shared runtime option");
         return Map.copyOf(result);
     }
 }

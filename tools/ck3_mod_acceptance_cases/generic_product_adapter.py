@@ -315,6 +315,7 @@ def _prepare_fixture_case(context):
     config = context['case_contract']
     require(config['product'] == context['product'], 'Case crossed canonical product')
     inputs = context['case_inputs']
+    er_prepare = _er_reduce(json_object(context), 'PREPARE', _er_inputs(json_object(context))) if _er_enabled(json_object(context)) else None
     compatibility = compatibility_mods(inputs)
     product_loading = config.get('product_loading', 'present')
     require(product_loading in ('present', 'absent'), 'Explicit product loading mode required')
@@ -378,6 +379,8 @@ def _prepare_fixture_case(context):
         'enabled_mods': (['mod/' + mod.mount_name + '.mod' for mod in compatibility]
                          + (['mod/product.mod'] if product is not None else []) + ['mod/fixture.mod']),
     }
+    if er_prepare is not None:
+        compiled['empire_restore_prepare'] = er_prepare
     write_once(fixture / '_case_contract.json', compiled)
     profile = materialize_fixture_profile(context, fixture, product, inputs['plain_configuration'],
                                           compatibility=compatibility)
@@ -426,23 +429,30 @@ def marker_observation(raw, compiled):
             and all(v['actual'] >= v['minimum'] for v in minima.values())}
 
 
-def root_phase(client, context, name, requirements, snapshot, source_contract):
-    response = client.root_checkpoint(name, {
-        'product': context['product'], 'case': context['case'], 'scope': source_contract['config']['acceptance_scope'],
+def _ordinary_root_phase(client: EmpireEvidenceClient, context: JsonObject, name: str,
+                         requirements: list[str], snapshot: JsonObject, source_contract: JsonObject) -> JsonObject:
+    response = json_object(client.root_checkpoint(name, json_object({
+        'product': context['product'], 'case': context['case'],
+        'scope': object_field(source_contract, 'config')['acceptance_scope'],
         'action': 'Use original production UI / typed current context and original verifiers; preserve actual evidence',
         'required_assertions': requirements, 'actual_snapshot': snapshot,
-        'original_contract_sources': source_contract['config']['source_contracts'],
+        'original_contract_sources': object_field(source_contract, 'config')['source_contracts'],
         'no_business_PASS_from_ACK': True, 'no_replay_after_submission': True,
-    }, reserve=90)
-    require(response.get('run_id') == context['run_id'] and response.get('reviewer') == '/root', 'Root phase crossed live scene')
-    assertions = response.get('assertions', {})
-    require(all(assertions.get(key) is True for key in requirements), 'Original product GUI/semantic requirements incomplete')
-    require(response.get('evidence'), 'Actual original GUI/readback evidence required')
-    for row in response['evidence']:
-        actual = pin(row['path'])
-        require(actual['bytes'] == row['bytes'] and actual['sha256'] == row['sha256'].lower(), 'Root evidence bytes changed')
+        'shared_restore_pre_confirm': source_contract.get('empire_restore_pre_confirm'),
+    }), reserve=90))
+    if response.get('run_id') != context.get('run_id') or response.get('reviewer') != '/root':
+        raise ValueError('Root phase crossed live scene')
+    assertions = object_field(response, 'assertions')
+    if any(assertions.get(key) is not True for key in requirements):
+        raise ValueError('Original product GUI/semantic requirements incomplete')
+    evidence = response.get('evidence')
+    if not isinstance(evidence, list) or not evidence:
+        raise ValueError('Actual original GUI/readback evidence required')
+    for row in evidence:
+        _er_pin(row)
     client.checkpoint(name + '-accepted', response)
     return response
+
 
 
 @runtime_checkable
@@ -642,6 +652,13 @@ def _verify_fixture_case(context):
         for row in phase['evidence']:
             actual = pin(row['path'])
             require(actual['bytes'] == row['bytes'] and actual['sha256'] == row['sha256'].lower(), 'Root evidence changed')
+    if _er_enabled(json_object(context)):
+        original = json_object(facts['root_phases'])
+        name = ('actual-normal-procreation-empire-head-restoration' if context['case'] == 'empire_heads_procreation_restore'
+                else 'actual-normal-vivhite-empire-head-restoration')
+        response = object_field(original, name)
+        qualified = object_field(response, 'empire_restore_evidence')
+        _er_reduce(json_object(context), 'VERIFY', _er_pin(qualified.get('request')))
     # Complete product release aggregation is owned by Root, including distinct
     # business cells, current version credit and publication/cache obligations.
     result = copy.deepcopy(facts)
@@ -1345,3 +1362,202 @@ def verify_case(context: JsonObject) -> JsonObject:
     if _sr_enabled(context):
         return _sr_verify(context)
     return json_object(_verify_fixture_case(context))
+
+# Empire restore: existing Python owns typed process/Pin transport only.
+# All title/Faith/history/legality/wallet business reduction is in the shared Java producer.
+@dataclass(frozen=True)
+class EmpireVerifier:
+    package: FilePin
+    java: FilePin
+    entrypoint: FilePin
+
+
+class EmpireEvidenceClient(Protocol):
+    def root_checkpoint(self, name: str, request: JsonObject, reserve: int = 90) -> object: ...
+    def checkpoint(self, name: str, value: JsonObject) -> object: ...
+
+
+def _er_enabled(context: JsonObject) -> bool:
+    return context.get('product') == 'dynastic-esotericism' and context.get('case') in (
+        'empire_heads_procreation_restore', 'empire_heads_vivhite_restore')
+
+
+def _er_pin(value: object) -> FilePin:
+    expected = file_pin(value)
+    path = Path(expected['path'])
+    if not path.is_absolute() or path != path.resolve() or not path.is_file() or path.is_symlink():
+        raise ValueError('Absolute actual regular verifier/evidence file required')
+    before = path.stat()
+    with path.open('rb') as stream:
+        digest = hashlib.file_digest(stream, 'sha256').hexdigest()
+    after = path.stat()
+    if (before.st_ino != after.st_ino or before.st_mtime_ns != after.st_mtime_ns
+            or before.st_size != after.st_size or after.st_size != expected['bytes']
+            or digest != expected['sha256']):
+        raise ValueError('Empire verifier/evidence identity or bytes changed')
+    return expected
+
+
+def _er_verifier(context: JsonObject) -> EmpireVerifier:
+    runtime = json_object(read_json(Path(_er_pin(context.get('runtime_manifest'))['path'])))
+    package = _er_pin(runtime.get('empire_restore_verifier'))
+    value = json_object(read_json(Path(package['path'])))
+    if (value.get('schema') != 'ck3-empire-restore-verifier-package-v1'
+            or value.get('machineId') != runtime.get('machine_id')):
+        raise ValueError('Explicit frozen shared Java verifier package required')
+    for key in ('files', 'producerSources'):
+        rows = value.get(key)
+        if not isinstance(rows, list) or not rows:
+            raise ValueError('Complete verifier artifact/source closure required')
+        names: set[str] = set()
+        for item in rows:
+            row = json_object(item)
+            name = text_field(row, 'relative')
+            if name in names:
+                raise ValueError('Duplicate verifier package file')
+            names.add(name)
+            _er_pin(row.get('pin'))
+    return EmpireVerifier(package, _er_pin(value.get('javaExecutable')), _er_pin(value.get('entrypoint')))
+
+
+def _er_inputs(context: JsonObject) -> FilePin:
+    inputs = object_field(context, 'case_inputs')
+    return _er_pin(inputs.get('empire_restore_s1_request'))
+
+
+def _er_reduce(context: JsonObject, phase: Literal['PREPARE', 'PRE_CONFIRM', 'VERIFY'],
+               source: FilePin) -> JsonObject:
+    import os
+    import subprocess
+    import uuid
+    verifier = _er_verifier(context)
+    base = json_object(read_json(Path(_er_inputs(context)['path'])))
+    source = _er_pin(source)
+    request = json_object(read_json(Path(source['path'])))
+    runtime = json_object(read_json(Path(_er_pin(context.get('runtime_manifest'))['path'])))
+    expected_run = context.get('run_id')
+    if phase == 'PREPARE':
+        if expected_run is not None:
+            raise ValueError('Public preparation precedes allocation')
+        expected_run = text_field(request, 'runId')  # Java checks the actual S1 producer run.
+    elif not isinstance(expected_run, str) or not expected_run:
+        raise ValueError('An actual allocated run is required')
+    if (request.get('schema') != 'ck3-empire-restore-evidence-request-v1'
+            or request.get('phase') != phase or request.get('caseId') != context.get('case')
+            or request.get('runId') != expected_run
+            or request.get('machineId') != runtime.get('machine_id')
+            or request.get('chain') != base.get('chain')
+            or _er_pin(request.get('verifierPackage')) != verifier.package):
+        raise ValueError('Empire reducer request crossed the prepared identity/source/S1 chain')
+    saved = object_field(context, 'saved_campaign')
+    startup = file_pin({'path': text_field(saved, 'save'), 'bytes': saved.get('bytes'),
+                        'sha256': saved.get('sha256')})
+    if _er_pin(request.get('startupSave')) != _er_pin(startup):
+        raise ValueError('Actual saved campaign differs from the shared reducer S1 input')
+    output = Path(text_field(context, 'output')) / ('empire-' + phase.lower() + '-' + uuid.uuid4().hex)
+    output.mkdir(parents=True)
+    result_path = output / 'result.json'
+    args = [verifier.java['path'], '-Xms32m', '-Xmx256m',
+            '-Djava.io.tmpdir=' + str(output), '-jar', verifier.entrypoint['path'],
+            'empire-restore', '--inputs', source['path'], '--output', str(result_path)]
+    environment = dict(os.environ)
+    for key in ('JAVA_TOOL_OPTIONS', 'JDK_JAVA_OPTIONS', '_JAVA_OPTIONS', 'CLASSPATH'):
+        environment.pop(key, None)
+    with subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=environment) as child:
+        timed_out = False
+        try:
+            stdout, stderr = child.communicate(timeout=120)
+        except subprocess.TimeoutExpired:
+            timed_out = True
+            child.kill()
+            stdout, stderr = child.communicate()
+        code = child.wait()
+        original_wait = json_object({
+            'schema': 'ck3-empire-restore-original-wait-v1', 'machine_id': runtime['machine_id'],
+            'run_id': context['run_id'], 'phase': phase, 'argv': args, 'pid': child.pid,
+            'actual_original_popen_wait': True, 'exit_code': code, 'timed_out': timed_out})
+    (output / 'stdout.log').write_bytes(stdout)
+    (output / 'stderr.log').write_bytes(stderr)
+    wait_path = output / 'original-wait.json'
+    write_once(wait_path, original_wait)
+    if timed_out or code != 0 or len(stdout) > 65536 or len(stderr) > 65536:
+        raise ValueError('Original shared Java reducer failed; see ' + str(wait_path))
+    result_pin = _er_pin(pin(result_path))
+    result = json_object(read_json(result_path))
+    if set(result) != {'schema', 'machineId', 'caseId', 'runId', 'phase', 'request', 'verifierPackage',
+            's1Save', 'subject', 'evidence', 'saveInspections', 'destroyPrestigeRaw', 'restoreResourceDeltaRaw', 'qualified',
+            'titleLossPostconditionQualified', 'restoredTitlePostconditionQualified',
+            'domainTypedDestroyTargetObserved', 'destroyExactPrequoteObserved', 'popupBeforeState', 'popupAfterState',
+            'nativePopupInstanceIdentityObserved', 'originalPopupInstanceGoneQualified', 'gameStarted', 'businessPass', 'productReleasePass'}:
+        raise ValueError('Exact shared result field contract required')
+    if (result.get('schema') != 'ck3-empire-restore-evidence-result-v1'
+            or result.get('machineId') != runtime.get('machine_id')
+            or result.get('caseId') != context.get('case') or result.get('runId') != expected_run
+            or result.get('phase') != phase or result.get('qualified') is not True
+            or result.get('titleLossPostconditionQualified') is not True
+            or result.get('restoredTitlePostconditionQualified') is not (phase == 'VERIFY')
+            or result.get('gameStarted') is not False or result.get('businessPass') is not False
+            or result.get('productReleasePass') is not False
+            or result.get('domainTypedDestroyTargetObserved') is not False
+            or result.get('destroyExactPrequoteObserved') is not False
+            or result.get('nativePopupInstanceIdentityObserved') is not False
+            or result.get('originalPopupInstanceGoneQualified') is not False
+            or result.get('popupBeforeState') not in ('UNKNOWN', 'HIDDEN_OBSERVED')
+            or result.get('popupAfterState') not in ('UNKNOWN', 'HIDDEN_OBSERVED', 'VISIBLE_OBSERVED')
+            or _er_pin(result.get('request')) != source
+            or _er_pin(result.get('verifierPackage')) != verifier.package
+            or _er_pin(result.get('s1Save')) != startup):
+        raise ValueError('Actual shared Java result is incomplete or crossed identity')
+    evidence = result.get('evidence')
+    if not isinstance(evidence, list) or not evidence:
+        raise ValueError('Shared reducer must preserve its actual input closure')
+    for row in evidence:
+        _er_pin(row)
+    _er_verifier(context)
+    _er_pin(source)
+    return json_object({'request': source, 'result': result_pin, 'original_wait': pin(wait_path)})
+
+
+def _er_response_request(response: JsonObject, context: JsonObject) -> FilePin:
+    if response.get('run_id') != context.get('run_id') or response.get('reviewer') != '/root':
+        raise ValueError('Original reviewed transport crossed run')
+    request = _er_pin(response.get('empire_restore_request'))
+    rows = response.get('evidence')
+    if not isinstance(rows, list) or not rows:
+        raise ValueError('Actual native/Save evidence is required')
+    pins = [_er_pin(row) for row in rows]
+    if request not in pins:
+        raise ValueError('Shared reducer request must be among the pinned original evidence')
+    return request
+
+
+def _er_root_phase(client: EmpireEvidenceClient, context: JsonObject, name: str,
+                   requirements: list[str], snapshot: JsonObject, compiled: JsonObject) -> JsonObject:
+    preparation = json_object(client.root_checkpoint(name + '-pre-confirm-read-only', json_object({
+        'product': context['product'], 'case': context['case'], 'actual_snapshot': snapshot,
+        'required_assertions': [], 'no_game_actions': True,
+        'action': 'Collect current selected create_hof full terms, ordinary Save proof and process identity. Return PRE_CONFIRM request; do not confirm.',
+        'shared_s1_request': _er_inputs(context)}), reserve=90))
+    pre_request = _er_response_request(preparation, context)
+    pre = _er_reduce(context, 'PRE_CONFIRM', pre_request)
+    client.checkpoint(name + '-pre-confirm-qualified', pre)
+    response = json_object(_ordinary_root_phase(client, context, name, requirements, snapshot,
+        json_object({**compiled, 'empire_restore_pre_confirm': pre})))
+    post_request = _er_response_request(response, context)
+    before = json_object(read_json(Path(pre_request['path'])))
+    after = json_object(read_json(Path(post_request['path'])))
+    if after.get('loaded') != before.get('loaded') or after.get('loadedTerms') != before.get('loadedTerms'):
+        raise ValueError('Actual confirm crossed the qualified loaded/terms context')
+    response['empire_restore_evidence'] = _er_reduce(context, 'VERIFY', post_request)
+    response['empire_restore_pre_confirm'] = pre
+    return response
+
+
+def root_phase(client: EmpireEvidenceClient, context: JsonObject, name: str, requirements: list[str],
+               snapshot: JsonObject, source_contract: JsonObject) -> JsonObject:
+    if _er_enabled(json_object(context)) and name in {
+            'actual-normal-procreation-empire-head-restoration',
+            'actual-normal-vivhite-empire-head-restoration'}:
+        return _er_root_phase(client, json_object(context), name, requirements,
+                              json_object(snapshot), json_object(source_contract))
+    return _ordinary_root_phase(client, context, name, requirements, snapshot, source_contract)

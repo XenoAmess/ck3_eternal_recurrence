@@ -78,6 +78,7 @@ public final class FixtureEmitter {
             "common/on_action/des_empire_heads_acceptance_on_actions.txt",
             "common/decisions/des_empire_heads_acceptance_decisions.txt",
             "events/des_empire_heads_acceptance_events.txt",
+            "common/bookmarks/bookmarks/des_empire_1066_byzantium.txt",
             "localization/english/des_empire_heads_acceptance_l_english.yml",
             "localization/simp_chinese/des_empire_heads_acceptance_l_simp_chinese.yml");
     private static final List<String> EMPIRE_HEAD_PASSIVE_ASSETS = List.of(
@@ -173,6 +174,38 @@ public final class FixtureEmitter {
         }
     }
 
+    public record FrontendTarget(
+            @JsonProperty("bookmark_key") String bookmarkKey,
+            @JsonProperty("character_name_key") String characterNameKey,
+            @JsonProperty("government_keys") List<String> governmentKeys,
+            @JsonProperty("start_date_raw") int startDateRaw,
+            @JsonProperty("bookmark_group_key") String bookmarkGroupKey,
+            @JsonProperty("stock_history_id") int stockHistoryId) {
+        public FrontendTarget { governmentKeys = List.copyOf(governmentKeys); }
+    }
+    public record StartupEventAdmission(String mode) { }
+    public record FrontendScenario(
+            @JsonProperty("profile_id") String profileId,
+            @JsonProperty("frontend_target") FrontendTarget frontendTarget,
+            @JsonProperty("startup_event_admission") StartupEventAdmission startupEventAdmission) { }
+    public record EmpirePostStart(
+            @JsonProperty("government_keys") List<String> governmentKeys,
+            @JsonProperty("primary_title_tier_key") String primaryTitleTierKey,
+            boolean independent) {
+        public EmpirePostStart { governmentKeys = List.copyOf(governmentKeys); }
+    }
+    public static FrontendScenario empireFrontendScenario() {
+        return new FrontendScenario("dynastic-esotericism-empire-byzantium-1066",
+                new FrontendTarget("bm_des_empire_1066_byzantium",
+                        "bookmark_des_empire_1066_konstantinos",
+                        List.of("administrative_government", "feudal_government"),
+                        0x032AEB08, "bm_group_1066", 1732),
+                new StartupEventAdmission("none"));
+    }
+    public static EmpirePostStart empirePostStart() {
+        return new EmpirePostStart(List.of("administrative_government", "feudal_government"), "empire", true);
+    }
+
     public record FilePin(String path, long bytes, String sha256) { }
     public record FileContent(long bytes, String sha256) { }
     public record FixtureReceipt(
@@ -261,6 +294,16 @@ public final class FixtureEmitter {
             // the disclosed stock resource inputs. These references are not mounted.
             sources.add(pin(source.resolve("resources/acceptance-fixture/common/scripted_effects/des_acceptance_effects.txt")));
             sources.add(pin(source.resolve("resources/acceptance-fixture/events/des_acceptance_events.txt")));
+        }
+        if (kind.empireHeadFresh()) {
+            Path caseSource = repo.resolve("tools/ck3_mod_acceptance_cases/dynastic_esotericism_"
+                    + kind.wireValue() + ".json");
+            var contract = JSON.readTree(Files.readAllBytes(caseSource));
+            if (!JSON.valueToTree(empireFrontendScenario()).equals(contract.get("frontend_scenario"))
+                    || !JSON.valueToTree(empirePostStart()).equals(contract.get("post_start"))) {
+                throw new IllegalArgumentException("fresh Empire case differs from its closed Java frontend contract");
+            }
+            sources.add(pin(caseSource));
         }
         Files.createDirectories(destination);
         Map<String, FileContent> files = new LinkedHashMap<>();

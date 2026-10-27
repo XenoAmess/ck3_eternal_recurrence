@@ -31,3 +31,6 @@
  des_ehf_read_holderless_decision_desc:0 "Observe genuine holderless qualification"
  des_ehf_read_holderless_decision_tooltip:0 "Observe genuine holderless qualification"
  des_ehf_read_holderless_decision_confirm:0 "Observe genuine holderless qualification"
+ bm_des_empire_1066_byzantium:0 "Byzantium, 1066"
+ bm_des_empire_1066_byzantium_desc:0 "Select the original historical emperor. This fixture does not grant an Empire."
+ bookmark_des_empire_1066_konstantinos:0 "Konstantinos X"

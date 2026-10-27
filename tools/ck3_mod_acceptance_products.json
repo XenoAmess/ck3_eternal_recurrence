@@ -747,8 +747,8 @@
         },
         {
           "id": "empire_heads_procreation_restore",
-          "status": "blocked",
-          "implementation_credit": "NOT_READY: genuine ordinary-lifecycle holderless Save preparation has no reliable qualified stock path. No manufactured restore input.",
+          "status": "ready",
+          "implementation_credit": "BUSINESS_NOT_READY until shared Java PREPARE/PRE_CONFIRM/VERIFY accepts genuine source-bound ordinary stock UI S1 evidence. No Native live/business qualification from registry readiness.",
           "adapter": {
             "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
             "config": "{repo_root}/tools/ck3_mod_acceptance_cases/dynastic_esotericism_empire_heads_procreation_restore.json"
@@ -788,7 +788,11 @@
             "ck3_query_player_religion_doctrines_v1",
             "ck3_query_normal_exit_context_v1",
             "ck3_request_normal_exit_v1",
-            "ck3_observe_normal_exit_v1"
+            "ck3_observe_normal_exit_v1",
+            "ck3_query_title_holder_v1",
+            "ck3_query_ingame_ui_window_v1",
+            "ck3_query_scripted_widget_controls_v1",
+            "ck3_activate_scripted_widget_control_v1"
           ],
           "opt_in_read_only_mcp_tools": [
             "ck3_query_player_religion_context_v1",
@@ -802,7 +806,7 @@
           "business_contract_applicable": true,
           "case_scope": "normal_static_empire_faith_head_restoration_from_genuine_holderless_save",
           "whole_product_acceptance_credit": false,
-          "budget_provenance": "Exact pinned saved profile; cold zero days, restoration blocked pending genuine headless input. Actual post_start must be supplied from source Save."
+          "budget_provenance": "Exact pinned genuine holderless Save; maximum two natural days and unchanged actor. Mandatory frozen verifier and typed S1 request reject before profile materialization."
         },
         {
           "id": "empire_heads_vivhite",
@@ -917,8 +921,8 @@
         },
         {
           "id": "empire_heads_vivhite_restore",
-          "status": "blocked",
-          "implementation_credit": "NOT_READY: genuine ordinary-lifecycle holderless Save preparation has no reliable qualified stock path. No manufactured restore input.",
+          "status": "ready",
+          "implementation_credit": "BUSINESS_NOT_READY until shared Java PREPARE/PRE_CONFIRM/VERIFY accepts genuine source-bound ordinary stock UI S1 evidence. No Native live/business qualification from registry readiness.",
           "adapter": {
             "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
             "config": "{repo_root}/tools/ck3_mod_acceptance_cases/dynastic_esotericism_empire_heads_vivhite_restore.json"
@@ -958,7 +962,11 @@
             "ck3_query_player_religion_doctrines_v1",
             "ck3_query_normal_exit_context_v1",
             "ck3_request_normal_exit_v1",
-            "ck3_observe_normal_exit_v1"
+            "ck3_observe_normal_exit_v1",
+            "ck3_query_title_holder_v1",
+            "ck3_query_ingame_ui_window_v1",
+            "ck3_query_scripted_widget_controls_v1",
+            "ck3_activate_scripted_widget_control_v1"
           ],
           "opt_in_read_only_mcp_tools": [
             "ck3_query_player_religion_context_v1",
@@ -972,7 +980,7 @@
           "business_contract_applicable": true,
           "case_scope": "normal_static_empire_faith_head_restoration_from_genuine_holderless_save",
           "whole_product_acceptance_credit": false,
-          "budget_provenance": "Exact pinned saved profile; cold zero days, restoration blocked pending genuine headless input. Actual post_start must be supplied from source Save."
+          "budget_provenance": "Exact pinned genuine holderless Save; maximum two natural days and unchanged actor. Mandatory frozen verifier and typed S1 request reject before profile materialization."
         },
         {
           "id": "native_binding_transfer",

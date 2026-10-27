@@ -14,12 +14,27 @@ ROBERT_KEY = "bookmark_rags_to_riches_duke_robert"
 EXE_SHA256 = "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
 EXE_SHA256_12004 = CK3_12004.executable_sha256
 FAITH_E01_PROFILE_ID = "faith-and-power-e01-abbasid-867"
-FAITH_E01_FRONTEND_TARGET = {
+FAITH_E01_FRONTEND_TARGET: dict[str, object] = {
     "bookmark_key": "bm_xar_faith_h01_867",
     "character_name_key": "bookmark_xar_faith_h01_abbasid",
     "government_key": "clan_government", "start_date_raw": 51394920,
     "bookmark_group_key": "bm_group_867",
 }
+DES_EMPIRE_PROFILE_ID = "dynastic-esotericism-empire-byzantium-1066"
+DES_EMPIRE_FRONTEND_TARGET: dict[str, object] = {
+    "bookmark_key": "bm_des_empire_1066_byzantium",
+    "character_name_key": "bookmark_des_empire_1066_konstantinos",
+    "government_keys": [
+        "administrative_government",
+        "feudal_government"
+    ],
+    "start_date_raw": 53144328,
+    "bookmark_group_key": "bm_group_1066",
+    "stock_history_id": 1732
+}
+DES_EMPIRE_STARTUP_EVENT_ADMISSION = {"mode": "none"}
+
+
 FAITH_E01_STARTUP_EVENT_ADMISSION = {
     "mode": "observe_only", "event_definition_key": "xar_faith_h01_prepare.1", "option_count": 2,
 }
@@ -27,12 +42,48 @@ FAITH_E01_STARTUP_EVENT_ADMISSION = {
 
 def fixture_frontend_target(value: object) -> dict[str, object]:
     """Closed episode allowlist; neither arbitrary actors nor runtime fullrefs."""
+    if isinstance(value, dict) and value.get("profile_id") == DES_EMPIRE_PROFILE_ID:
+        actual = value.get("frontend_target")
+        if not isinstance(actual, dict) or set(actual) != set(DES_EMPIRE_FRONTEND_TARGET) or any(
+                type(actual.get(key)) is not type(wanted) or actual[key] != wanted
+                for key, wanted in DES_EMPIRE_FRONTEND_TARGET.items()) or any(
+                type(key) is not str for key in actual.get("government_keys", [])):
+            raise ValueError("Empire fixture requires its exact stock Byzantine frontend tuple")
+        result = dict(DES_EMPIRE_FRONTEND_TARGET)
+        result["government_keys"] = ["administrative_government", "feudal_government"]
+        return result
     if not isinstance(value, dict) or value.get("profile_id") != FAITH_E01_PROFILE_ID or (
             value.get("frontend_target") != FAITH_E01_FRONTEND_TARGET) or any(
             type(value["frontend_target"].get(key)) is not type(wanted)
             for key, wanted in FAITH_E01_FRONTEND_TARGET.items()):
         raise ValueError("fixture scenario is not the approved episode01 frontend profile")
     return dict(FAITH_E01_FRONTEND_TARGET)
+
+
+def fixture_frontend_profile_id(target: dict[str, object]) -> str:
+    profile_id = DES_EMPIRE_PROFILE_ID if target.get("bookmark_key") == DES_EMPIRE_FRONTEND_TARGET["bookmark_key"] else FAITH_E01_PROFILE_ID
+    fixture_frontend_target({"profile_id": profile_id, "frontend_target": target})
+    return profile_id
+
+
+def fixture_frontend_steps(target: dict[str, object]) -> tuple[str, str, str, str]:
+    fixture_frontend_profile_id(target)
+    if target == DES_EMPIRE_FRONTEND_TARGET:
+        return ("probe-frontend-bookmark-model-des-byzantium-1066-v1",
+                "activate-frontend-select-bookmark-des-byzantium-1066-v1",
+                "select-frontend-bookmark-character-des-byzantium-1066-v1",
+                "activate-frontend-start-selected-bookmark-des-byzantium-1066-v1")
+    return ("probe-frontend-bookmark-model-faith-e01-v1",
+            "activate-frontend-select-bookmark-faith-e01-v1",
+            "select-frontend-bookmark-character-faith-e01-v1",
+            "activate-frontend-start-selected-bookmark-faith-e01-v1")
+
+
+def fixture_frontend_governments(target: dict[str, object]) -> tuple[str, ...]:
+    fixture_frontend_profile_id(target)
+    if target == DES_EMPIRE_FRONTEND_TARGET:
+        return ("administrative_government", "feudal_government")
+    return ("clan_government",)
 
 
 def require_fixture_native_build(game_version: object, executable_sha256: object):
@@ -107,18 +158,23 @@ def require_fixture_start_submission(value: object) -> dict[str, object]:
 def validate_fixture_start_policy(value: object) -> dict[str, object]:
     fields = {"schema", "schema_version", "preparation", "profile_input_sha256", "post_start",
               "required_log_markers", "forbidden_log_markers"}
-    scenario = isinstance(value, dict) and value.get("schema") == "ck3-frontend-fixture-start-policy-v2"
+    empire = isinstance(value, dict) and value.get("schema") == "ck3-frontend-fixture-start-policy-v3"
+    scenario = isinstance(value, dict) and value.get("schema") in {
+        "ck3-frontend-fixture-start-policy-v2", "ck3-frontend-fixture-start-policy-v3"}
     if scenario:
         fields |= {"profile_id", "frontend_target", "startup_event_admission"}
         fixture_frontend_target(value)
         admission = value.get("startup_event_admission")
-        if admission != FAITH_E01_STARTUP_EVENT_ADMISSION or any(
+        expected_admission = DES_EMPIRE_STARTUP_EVENT_ADMISSION if empire else FAITH_E01_STARTUP_EVENT_ADMISSION
+        expected_profile = DES_EMPIRE_PROFILE_ID if empire else FAITH_E01_PROFILE_ID
+        if value.get("profile_id") != expected_profile or not isinstance(admission, dict) or (
+                set(admission) != set(expected_admission)) or admission != expected_admission or any(
                 type(admission.get(key)) is not type(wanted)
-                for key, wanted in FAITH_E01_STARTUP_EVENT_ADMISSION.items()):
+                for key, wanted in expected_admission.items()):
             raise ValueError("episode01 bootstrap requires the declared two-option event in observe-only mode")
     if not isinstance(value, dict) or set(value) != fields or value["schema"] != (
-            "ck3-frontend-fixture-start-policy-v2" if scenario else "ck3-frontend-fixture-start-policy-v1") or (
-            type(value["schema_version"]) is not int or value["schema_version"] != (2 if scenario else 1)):
+            "ck3-frontend-fixture-start-policy-v3" if empire else "ck3-frontend-fixture-start-policy-v2" if scenario else "ck3-frontend-fixture-start-policy-v1") or (
+            type(value["schema_version"]) is not int or value["schema_version"] != (3 if empire else 2 if scenario else 1)):
         raise ValueError("unsupported closed fixture startup policy")
     preparation = value["preparation"]
     if not isinstance(preparation, dict) or set(preparation) != {"path", "sha256"} or (
@@ -135,13 +191,19 @@ def validate_fixture_start_policy(value: object) -> dict[str, object]:
     post = value["post_start"]
     governments = {"feudal_government", "celestial_government", "administrative_government",
                    "meritocratic_government", "steppe_admin_government"}
-    if scenario:
+    if empire:
+        expected_post = {"government_keys": ["administrative_government", "feudal_government"],
+                         "primary_title_tier_key": "empire", "independent": True}
+        if not isinstance(post, dict) or set(post) != set(expected_post) or post != expected_post or any(
+                type(post[key]) is not type(wanted) for key, wanted in expected_post.items()):
+            raise ValueError("Empire fixture requires its observed stock-government independent Empire")
+    elif scenario:
         governments = {"clan_government"}
         if post != {"government_key": "clan_government", "primary_title_tier_key": "empire", "independent": True}:
             raise ValueError("episode01 fixture must bind its declared independent clan empire")
-    if not isinstance(post, dict) or set(post) != {"government_key", "primary_title_tier_key", "independent"} or (
+    if not empire and (not isinstance(post, dict) or set(post) != {"government_key", "primary_title_tier_key", "independent"} or (
             post["government_key"] not in governments) or (
-            post["primary_title_tier_key"] not in _TIER_KEYS.values()) or type(post["independent"]) is not bool:
+            post["primary_title_tier_key"] not in _TIER_KEYS.values()) or type(post["independent"]) is not bool):
         raise ValueError("fixture policy requires explicit delivered government/tier/independence predicates")
     markers = []
     for name in ("required_log_markers", "forbidden_log_markers"):
@@ -223,7 +285,8 @@ def fixture_business_context_binding(snapshot: object, root: object, policy: dic
         raise ValueError("fixture snapshot and native campaign root disagree on the actual living actor")
     government, title = root.get("government"), root.get("primary_title")
     wanted = policy["post_start"]
-    if not isinstance(government, dict) or government.get("key") != wanted["government_key"] or (
+    government_keys = wanted["government_keys"] if policy.get("profile_id") == DES_EMPIRE_PROFILE_ID else [wanted["government_key"]]
+    if not isinstance(government, dict) or government.get("key") not in government_keys or (
             not isinstance(title, dict) or title.get("tier_key") != wanted["primary_title_tier_key"]) or (
             type(root.get("independent")) is not bool or root["independent"] is not wanted["independent"]):
         return None

@@ -200,8 +200,10 @@ void NativeTextCases(){
   !detail::Utf8Text("\xE4\xBF\xA1\xE4\xBB\xB0",1,false),"text limits count UTF-8 scalars");
 }
 }
+namespace xar::native_test { bool RunWorkerSnapshotPublicationWaitFixture12004() noexcept; }
 int main(){
  try{
+  if(!xar::native_test::RunWorkerSnapshotPublicationWaitFixture12004())return 1;
   Request q{};q.operation=Operation::open_create_draft;q.expected_source_rite_id=13;
   int opens=0,reads=0;auto open=[&](){++opens;return true;};
   auto existing=[&](Result&v){++reads;v=Base();v.draft.actual_outcome_kind=Outcome::create_faith;return true;};

@@ -30,7 +30,7 @@ public final class SaveContracts {
             digest(sha256);
         }
     }
-    public enum ScopeKind { METADATA, ACTOR, RITE, FAITH, RELIGION, DYNASTY, HOUSE, COAT_OF_ARMS }
+    public enum ScopeKind { METADATA, ACTOR, RITE, FAITH, RELIGION, DYNASTY, HOUSE, COAT_OF_ARMS, TITLE }
     public enum Coverage { FULL_RECORD, DIRECT_SCALARS }
     public enum Availability { UNKNOWN_LAYOUT, TABLE_NOT_FOUND, OBSERVED }
     public enum RecordStatus { UNKNOWN_TABLE, NOT_FOUND, FULL_RECORD }
@@ -54,7 +54,7 @@ public final class SaveContracts {
             tables = List.copyOf(tables); projections = List.copyOf(projections);
             structureRoots = structureRoots.stream().map(SaveContracts::checkedPath).toList();
             Set<ScopeKind> kinds = new HashSet<>(); Set<List<String>> paths = new HashSet<>(); Set<String> names = new HashSet<>();
-            if (tables.size() > 7 || projections.size() > 64) throw new IllegalArgumentException("selection cap exceeded");
+            if (tables.size() > 8 || projections.size() > 64) throw new IllegalArgumentException("selection cap exceeded");
             if (structureCensus == structureRoots.isEmpty() || structureRoots.size() > 64 || new HashSet<>(structureRoots).size() != structureRoots.size()) throw new IllegalArgumentException("explicit unique bounded census roots required when enabled; empty roots required when disabled");
             for (TableSelection table : tables) if (!kinds.add(table.kind()) || !paths.add(table.path())) throw new IllegalArgumentException("duplicate table kind/path");
             for (ProjectionSelection projection : projections) if (!names.add(projection.name())) throw new IllegalArgumentException("duplicate projection name");

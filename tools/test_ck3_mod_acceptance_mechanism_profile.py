@@ -40,6 +40,30 @@ class MechanismProfilePreparationTests(unittest.TestCase):
             self.assertEqual(receipt['provenance']['kind'],'standalone-mechanism-fixture')
             self.assertIsNone(receipt['provenance']['product'])
 
+    def test_closed_byzantine_profile_preserves_full_preparation_and_v3(self) -> None:
+        from xar_autoplayer.bridge.frontend_fixture_start_contract import (
+            DES_EMPIRE_PROFILE_ID, DES_EMPIRE_FRONTEND_TARGET, validate_fixture_start_policy,
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            root=Path(temporary);fixture,configuration,context=self.inputs(root,scenario=False)
+            contract=context['case_contract']
+            contract.update(post_start={'government_keys':['administrative_government','feudal_government'],
+                                         'primary_title_tier_key':'empire','independent':True},
+                            forbidden_startup=['authored fixture failure'])
+            contract['frontend_scenario']={'profile_id':DES_EMPIRE_PROFILE_ID,
+                'frontend_target':dict(DES_EMPIRE_FRONTEND_TARGET),
+                'startup_event_admission':{'mode':'none'}}
+            product=root/'product';product.mkdir()
+            (product/'descriptor.mod').write_text('name="product"\\n',encoding='utf-8')
+            with patch.object(prepare,'_engine',return_value=(None,{'game_version':'test-only','exe_sha256':'a'*64})):
+                result=prepare.materialize_fixture_profile(context,fixture,product,configuration)
+            policy=validate_fixture_start_policy(json.loads(Path(result['fixture_start_policy']['path']).read_bytes()))
+            self.assertEqual(policy['schema_version'],3)
+            self.assertEqual(policy['frontend_target']['stock_history_id'],1732)
+            self.assertEqual(policy['startup_event_admission'],{'mode':'none'})
+            self.assertEqual(json.loads((Path(result['profile'])/'dlc_load.json').read_bytes())['enabled_mods'],
+                             ['mod/product.mod','mod/fixture.mod'])
+
     def test_existing_dual_mod_preparation_keeps_mount_order_and_v1(self):
         with tempfile.TemporaryDirectory() as temporary:
             root=Path(temporary);fixture,configuration,context=self.inputs(root,scenario=False)

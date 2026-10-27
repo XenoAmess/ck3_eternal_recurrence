@@ -23,7 +23,9 @@
     "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/events/des_empire_heads_acceptance_events.txt",
     "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/common/decisions/des_empire_heads_readback_decisions.txt",
     "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/english/des_empire_heads_acceptance_l_english.yml",
-    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/simp_chinese/des_empire_heads_acceptance_l_simp_chinese.yml"
+    "mod_dynastic_esotericism/tools/src/main/resources/acceptance-fixture/localization/simp_chinese/des_empire_heads_acceptance_l_simp_chinese.yml",
+    "mod_dynastic_esotericism/tools/src/main/java/org/xar/ck3/dynastic/acceptance/EmpireRestoreEvidence.java",
+    "java/ck3-save-core/src/main/java/org/xar/ck3/save/SelectedInspection.java"
   ],
   "post_start": {
     "government_key": null,
@@ -39,7 +41,7 @@
     "Disclosed county, resource, Faith/Rite and death inputs certify their invocation only. Actual ordinary Can, costs, holder/head pointers, succession and supplied CoA require native or GUI plus independent Save.",
     "The product does not switch or maintain government. Read actual before/after government; no meritocratic, theocratic or administrative target assertion.",
     "This scoped case is not a complete core, preset adoption, old-save or whole-product PASS.",
-    "NOT_READY: no reliable stock holderless preparation is supplied. Registry is blocked until a genuine ordinary-lifecycle headless Save is independently pinned. Never destroy a title, force a HoF, clear a head or change the user's temporal doctrine to manufacture this input.",
+    "BUSINESS_NOT_READY until shared Java qualifies the source-bound ordinary UI S1 with exact TitleID, paid acquisition, another primary Empire, original once claims/dispatch and independent holderless/history/wallet proof. Script destroy, holder/head rewrite, forced death and doctrine/government changes remain forbidden. Popup unavailable is UNKNOWN; disappearance is unqualified.",
     "Conditional automatic Faith activation/Rite-update creation is distinct from the paid decision and does not inherit its credit."
   ],
   "startup_mode": "saved_campaign",
@@ -48,7 +50,7 @@
       "id": "actual-normal-vivhite-empire-head-restoration",
       "at_day": 0,
       "requirements": [
-        "actual_genuine_prior_ordinary_lifecycle_holderless_Save_pinned_no_direct_destroy_force_head_or_doctrine_change_input",
+        "actual_shared_Java_typed_source_bound_stock_UI_S1_qualified_no_script_destroy_holder_head_rewrite_forced_death_or_doctrine_change",
         "actual_same_static_empire_title_exists_without_holder_and_selected_Faith_without_head_in_native_and_independent_Save",
         "actual_landed_selected_Faith_main_Rite_qualified_holy_county_devotion3_legal_liege_and_ordinary_native_full10_affordable_terms",
         "actual_des_ehf_read_holderless_observation_before_one_original_create_hof_confirm_decision_closed",
@@ -56,7 +58,7 @@
         "actual_restore_current_head_readback_and_result_Save_preserved_no_inferred_automatic_flow_or_government_target"
       ],
       "operator_sequence": [
-        "STOP_NOT_READY_until_genuine_holderless_Save_preparation_is_independently_qualified",
+        "STOP_until_actual_shared_Java_PREPARE_qualifies_pinned_STOCK_TITLE_UI_COMMAND_S1_and_frozen_verifier",
         "load_exact_Save_query_headless_full_terms_des_ehf_read_holderless_decision_then_confirm_create_hof_once",
         "observe_exact0011_title_reuse_wallet_Faith_head_CoA_and_government_then_des_ehf_read_current_head_decision_Save_and_close"
       ]

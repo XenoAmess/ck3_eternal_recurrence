@@ -19,8 +19,8 @@ public final class SelectedInspection {
         public Selected {
             scopes = List.copyOf(scopes); records = List.copyOf(records); projections = List.copyOf(projections);
             projectionObservations = List.copyOf(projectionObservations); rootKeys = List.copyOf(rootKeys); rootScalars = List.copyOf(rootScalars);
-            if (tokens < 0 || selectedTokenBytes < 0 || selectedTokenBytes > 4 * 1024 * 1024 || scopes.size() > 897
-                    || records.size() > 896 || projections.size() > 65536 || rootKeys.size() > 512 || rootScalars.size() > 512)
+            if (tokens < 0 || selectedTokenBytes < 0 || selectedTokenBytes > 4 * 1024 * 1024 || scopes.size() > 1025
+                    || records.size() > 1024 || projections.size() > 65536 || rootKeys.size() > 512 || rootScalars.size() > 512)
                 throw new IllegalArgumentException("bounded selected projection required");
         }
     }

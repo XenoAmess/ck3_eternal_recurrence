@@ -63,17 +63,17 @@ final class EmpireHeadFixtureTest {
         for (FixtureEmitter.CaseKind kind : CASES) {
             FixtureEmitter.Emission emission = FixtureEmitter.emit(repository(), temporary.resolve(kind.wireValue()),
                     "authored-machine", kind);
-            assertEquals(kind.empireHeadFresh() ? 6 : 4, emission.payload().files().size());
+            assertEquals(kind.empireHeadFresh() ? 7 : 4, emission.payload().files().size());
             assertEquals(kind.empireHeadFresh() ? 8 : kind.empireHeadRestore() ? 2 : 1,
                     emission.payload().receipt().requiredMarkers().size());
             assertEquals(kind.empireHeadFresh(), emission.payload().receipt().containsBusinessEffects());
             assertEquals(kind, FixtureEmitter.CaseKind.parse(kind.wireValue()));
-            assertEquals(emission.payload().files().size() + 1, emission.payload().producerSourcePins().size());
+            assertEquals(emission.payload().files().size() + (kind.empireHeadFresh() ? 2 : 1), emission.payload().producerSourcePins().size());
             arguments.add(emission.manifest().toString());
         }
         String program = """
                 from pathlib import Path
-                import copy,json,sys
+                import copy,json,sys,importlib.util
                 from unittest.mock import patch
                 repo,staging,outer=map(Path,sys.argv[1:4]);outer.mkdir()
                 sys.path[:0]=[str(repo/'tools'),str(repo/'ck3_autonomous_player/src')]
@@ -89,7 +89,7 @@ final class EmpireHeadFixtureTest {
                     context={'product':'dynastic-esotericism','case':case,'repo_root':str(repo),'runtime_manifest':pin(runtime)}
                     before=source.read_bytes()
                     imported,receipt,materialization=materialize_prebuilt_fixture(context,pin(source),output/'imported')
-                    assert len([p for p in imported.rglob('*') if p.is_file()])==(4 if saved else 6)
+                    assert len([p for p in imported.rglob('*') if p.is_file()])==(4 if saved else 7)
                     assert receipt['fixture_contains_business_effects'] is (not saved)
                     assert materialization['game_started'] is False and materialization['business_acceptance']=='NOT_ASSESSED'
                     config_path=repo/'tools/ck3_mod_acceptance_cases'/('dynastic_esotericism_'+case+'.json')
@@ -97,8 +97,13 @@ final class EmpireHeadFixtureTest {
                     registration=cases[case]
                     assert registration['adapter']['path'].endswith('/generic_product_adapter.py')
                     assert registration['adapter']['config']=='{repo_root}/'+config_path.relative_to(repo).as_posix()
-                    assert registration['status']==('blocked' if restore else 'ready')
-                    if restore: assert 'NOT_READY' in registration['implementation_credit']
+                    assert registration['status']=='ready'
+                    if restore:
+                        assert 'BUSINESS_NOT_READY' in registration['implementation_credit']
+                        rejected=False
+                        try: adapter._er_inputs({'case_inputs':{}})
+                        except (ValueError,KeyError): rejected=True
+                        assert rejected, 'missing S1 may not create a profile'
                     assert registration['whole_product_acceptance_credit'] is False
                     assert config['allow_actor_change'] is (not saved)
                     assert config['maximum_natural_days']==(2 if restore else 0 if saved else 12)
@@ -117,18 +122,51 @@ final class EmpireHeadFixtureTest {
                         context['case_inputs']['post_start']={'government_key':'feudal_government',
                             'primary_title_tier_key':'empire','independent':True}
                     (output/'prepared').mkdir()
-                    with patch('ck3_mod_acceptance_prepare._engine',return_value=(None,
-                                {'game_version':'authored-not-game-qualification','exe_sha256':'0'*64})):
-                        result=adapter.prepare_case(context)
-                    assert result['runtime_status']=='NOT_RUN' and result['business_pass'] is False
-                    assert result['product_release_pass'] is False
-                    profile=Path(result['profile_preparation']['profile'])
-                    mounted=profile/'mod-content/fixture'
-                    compiled=json.loads((mounted/'_case_contract.json').read_bytes())
-                    assert compiled['case']==case and compiled['whole_product_release_pass'] is False
-                    assert compiled['config']['allow_actor_change'] is (not saved)
-                    assert json.loads((profile/'dlc_load.json').read_bytes())['enabled_mods']==['mod/product.mod','mod/fixture.mod']
-                    assert len([p for p in (profile/'mod-content/product').rglob('*') if p.is_file()])==56
+                    if restore:
+                        try:adapter.prepare_case(context)
+                        except (ValueError,KeyError):pass
+                        else:raise AssertionError('missing typed S1 prepared')
+                        assert not any((output/'prepared').rglob('dlc_load.json'))
+                    else:
+                        with patch('ck3_mod_acceptance_prepare._engine',return_value=(None,
+                                    {'game_version':'authored-not-game-qualification','exe_sha256':'0'*64})):
+                            result=adapter.prepare_case(context)
+                        assert result['runtime_status']=='NOT_RUN' and result['business_pass'] is False
+                        assert result['product_release_pass'] is False
+                        profile=Path(result['profile_preparation']['profile'])
+                        mounted=profile/'mod-content/fixture'
+                        compiled=json.loads((mounted/'_case_contract.json').read_bytes())
+                        assert compiled['case']==case and compiled['whole_product_release_pass'] is False
+                        assert compiled['config']['allow_actor_change'] is (not saved)
+                        assert json.loads((profile/'dlc_load.json').read_bytes())['enabled_mods']==['mod/product.mod','mod/fixture.mod']
+                        assert len([p for p in (profile/'mod-content/product').rglob('*') if p.is_file()])==56
+                    if not saved:
+                        from xar_autoplayer.bridge.frontend_fixture_start_contract import validate_fixture_start_policy
+                        from xar_autoplayer.bridge.frontend_fixture_scenario_start_v1 import selected_model
+                        policy_path=Path(result['profile_preparation']['fixture_start_policy']['path'])
+                        policy=validate_fixture_start_policy(json.loads(policy_path.read_bytes()))
+                        assert policy['schema_version']==3 and policy['startup_event_admission']=={'mode':'none'}
+                        assert policy['profile_id']=='dynastic-esotericism-empire-byzantium-1066'
+                        assert policy['frontend_target']['stock_history_id']==1732
+                        assert policy['post_start']['government_keys']==['administrative_government','feudal_government']
+                        host_path=repo/'ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py'
+                        spec=importlib.util.spec_from_file_location('emitted_empire_host',host_path)
+                        host=importlib.util.module_from_spec(spec);spec.loader.exec_module(host)
+                        binding=host.fixture_start_policy_binding(policy,policy_path.read_bytes())
+                        assert binding['profile_id']==policy['profile_id']
+                        assert host.fixture_start_tool(policy)=='ck3_submit_frontend_fixture_scenario_start_v1'
+                        target=policy['frontend_target']
+                        for government in target['government_keys']:
+                            model={'accepted':True,'status':'identity_ready','candidate_identity_ready':True,
+                                'selected_bookmark_key':target['bookmark_key'],
+                                'selected_bookmark_group_key':target['bookmark_group_key'],
+                                'selected_date_low_raw':target['start_date_raw'],
+                                'candidate_keys':[target['character_name_key']],'supported_1066_candidate_index':0,
+                                'selected_character_index':0,'supported_1066_government_key':government,
+                                'supported_1066_date_matches':True}
+                            selected=selected_model(model,target,require_selected=True)
+                            assert selected['profile_id']==policy['profile_id']
+                            assert selected['selected_character_government_key']==government
                     assert source.read_bytes()==before
                     def reject(label,mutate):
                         bad=copy.deepcopy(manifest);mutate(bad)
@@ -177,6 +215,17 @@ final class EmpireHeadFixtureTest {
                 start=read(fresh,'common/on_action/des_empire_heads_acceptance_on_actions.txt')
                 events=read(fresh,'events/des_empire_heads_acceptance_events.txt')
                 observed=read(passive,'common/decisions/des_empire_heads_readback_decisions.txt')
+                bookmark=read(fresh,'common/bookmarks/bookmarks/des_empire_1066_byzantium.txt')
+                seed=one(bookmark,'bm_des_empire_1066_byzantium',required=True)
+                actor=one(seed,'character',required=True)
+                assert one(actor,'history_id',required=True)=='1732'
+                assert one(actor,'title',required=True)=='e_byzantium'
+                assert not any(row['key'] in {'effect','immediate','change_title_holder','set_player_character','add_piety','add_gold'}
+                               for _,row in walk(bookmark))
+                claim=one(decisions,'des_ehf_prepare_claim_input_decision',required=True)
+                claim_guard=one(claim,'is_valid',required=True)
+                assert one(claim_guard,'primary_title',required=True)=='title:e_byzantium'
+                assert one(one(claim_guard,'title:e_byzantium',required=True),'holder',required=True)=='root'
                 forbidden={'set_religious_head_title','force_create_head_of_faith_title_effect','create_dynamic_title',
                     'destroy_title','set_player_character','set_house','set_dynasty','set_house_head','set_dynasty_head',
                     'set_head_of_rite','set_rite_head','set_coa','generate_coa','change_government','set_government_type',
@@ -213,6 +262,37 @@ final class EmpireHeadFixtureTest {
                 print('emitted AST: ordinary county only, one guarded stock death, no product/head/government setters; passive observers PASS; engine_semantics_verified=false')
                 """;
         python(program, List.of(repository().toString(), fresh.fixture().toString(), passive.fixture().toString()));
+    }
+
+    @Test
+    void closedFrontendCaseCorruptionRejectsBeforeAnyOutput() throws IOException {
+        Path copied = temporary.resolve("wrong-closed-case");
+        Path main = Path.of("mod_dynastic_esotericism/tools/src/main");
+        Path original = repository().resolve(main);
+        try (Stream<Path> paths = Files.walk(original)) {
+            for (Path source : paths.filter(Files::isRegularFile).filter(path ->
+                    path.startsWith(original.resolve("resources")) ||
+                    path.equals(original.resolve("java/org/xar/ck3/dynastic/acceptance/FixtureEmitter.java"))).toList()) {
+                Path target = copied.resolve(main).resolve(original.relativize(source));
+                Files.createDirectories(target.getParent());
+                Files.copy(source, target);
+            }
+        }
+        String relative = "tools/ck3_mod_acceptance_cases/dynastic_esotericism_empire_heads_procreation.json";
+        Path contract = copied.resolve(relative);
+        Files.createDirectories(contract.getParent());
+        String actual = Files.readString(repository().resolve(relative));
+        for (String invalid : List.of(actual.replace("\"stock_history_id\": 1732", "\"stock_history_id\": true"),
+                actual.replace("\"stock_history_id\": 1732", "\"stock_history_id\": 1732.0"),
+                actual.replace("bookmark_des_empire_1066_konstantinos", "bookmark_rags_to_riches_duke_robert"))) {
+            assertFalse(invalid.equals(actual));
+            Files.writeString(contract, invalid);
+            Path output = temporary.resolve("bad-case-" + invalid.hashCode());
+            assertThrows(IllegalArgumentException.class, () -> FixtureEmitter.emit(copied, output,
+                    "authored-machine", FixtureEmitter.CaseKind.EMPIRE_HEADS_PROCREATION));
+            assertFalse(Files.exists(output));
+            assertFalse(Files.exists(Path.of(output + ".fixture.json")));
+        }
     }
 
     @Test

@@ -13,7 +13,7 @@ bool IsFaithE01FrontendScenarioEnabledV1() noexcept;
 
 enum class FrontendBookmarkSeedTargetV1 : std::uint32_t {
   configured_1066 = 0, yahya_1066 = 1, rurik_867 = 2,
-  faith_e01_abbasid_867 = 3
+  faith_e01_abbasid_867 = 3, des_empire_byzantium_1066 = 4
 };
 
 struct FrontendBookmarkTargetProfileV1 {
@@ -22,6 +22,8 @@ struct FrontendBookmarkTargetProfileV1 {
   std::string_view government_key;
   std::uint32_t date_low_raw;
   std::string_view bookmark_group_key;
+  // A profile may name only its source-defined stock fallback government.
+  std::string_view fallback_government_key{};
 };
 
 const FrontendBookmarkTargetProfileV1 &GetFrontendBookmarkTargetProfileV1(

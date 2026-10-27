@@ -761,7 +761,7 @@ def paused_map_readiness_admitted(snapshot: dict[str, object], report: dict[str,
     if str(hello.get("expected_ck3_sha256")).upper() != build.executable_sha256:
         return False
     startup = state.get("startup_case", {})
-    if policy_input["policy"].get("startup_event_admission") is not None and (
+    if (policy_input["policy"].get("startup_event_admission") or {}).get("mode") == "observe_only" and (
             startup.get("status") != "OBSERVED_UNCHANGED_STARTUP_EVENT"):
         return False
     if startup.get("status") == "OBSERVED_UNCHANGED_STARTUP_EVENT" and (
@@ -1330,7 +1330,7 @@ def fixture_start_policy_binding(policy: dict[str, object], policy_bytes: bytes)
     """Carry the frozen fixture scenario to the typed tool without changing Robert."""
     binding = {"policy_sha256": hashlib.sha256(policy_bytes).hexdigest(),
                "preparation_sha256": policy["preparation"]["sha256"]}
-    if policy.get("schema") == "ck3-frontend-fixture-start-policy-v2":
+    if policy.get("schema") in {"ck3-frontend-fixture-start-policy-v2", "ck3-frontend-fixture-start-policy-v3"}:
         from xar_autoplayer.bridge.frontend_fixture_start_contract import fixture_frontend_target
         binding.update(profile_id=policy["profile_id"], frontend_target=fixture_frontend_target(policy))
     return binding
@@ -1338,7 +1338,7 @@ def fixture_start_policy_binding(policy: dict[str, object], policy_bytes: bytes)
 
 def fixture_start_tool(policy: dict[str, object]) -> str:
     """Choose only the explicitly approved policy's typed Start surface."""
-    if policy.get("schema") == "ck3-frontend-fixture-start-policy-v2":
+    if policy.get("schema") in {"ck3-frontend-fixture-start-policy-v2", "ck3-frontend-fixture-start-policy-v3"}:
         from xar_autoplayer.bridge.frontend_fixture_start_contract import fixture_frontend_target
         fixture_frontend_target(policy)
         return "ck3_submit_frontend_fixture_scenario_start_v1"
@@ -4154,6 +4154,8 @@ async def wait_for_fixture_business_context(client: PlanClient, policy: dict[str
                         if policy.get("schema") == "ck3-frontend-fixture-start-policy-v2":
                             snapshot = await dispatch_fixture_scenario_startup_event(client, snapshot, submission,
                                 policy, state=state, write=write, deadline=deadline)
+                        elif policy.get("schema") == "ck3-frontend-fixture-start-policy-v3":
+                            raise RuntimeError("Byzantine fixture startup requires an actual event-free original frame")
                         else:
                             snapshot = await acknowledge_fixture_startup_event(client, snapshot, submission,
                                 state=state, write=write, deadline=deadline)
@@ -4173,7 +4175,7 @@ async def wait_for_fixture_business_context(client: PlanClient, policy: dict[str
                 raise RuntimeError("observed scenario startup event changed before business binding")
             admission_frame = fixture_whole_root_admission_frame(snapshot, submission,
                 allow_active_event=observed_startup) if qualified else None
-            if policy.get("startup_event_admission") is not None and not observed_startup:
+            if (policy.get("startup_event_admission") or {}).get("mode") == "observe_only" and not observed_startup:
                 admission_frame = None
             admission = {"status": "WAITING_FOR_ORIGINAL_QUALIFICATION_LOGS" if not qualified else "WAITING_FOR_PAUSED_EVENT_FREE_OWNER_FRAMES",
                 "frame": admission_frame, "product_acceptance_proven": False}
@@ -4569,7 +4571,7 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
         from xar_autoplayer.bridge.frontend_fixture_start_contract import load_bound_fixture_start_policy
         frontend_fixture_policy, policy_bytes = load_bound_fixture_start_policy(
             args.frontend_fixture_start_policy, args.state_dir / "profile")
-        if frontend_fixture_policy.get("schema") == "ck3-frontend-fixture-start-policy-v2":
+        if frontend_fixture_policy.get("schema") in {"ck3-frontend-fixture-start-policy-v2", "ck3-frontend-fixture-start-policy-v3"}:
             frontend_initial_plan = observe_only_fixture_initial_plan(args)
         policy_snapshot = args.output.with_suffix(".frontend-fixture-start-policy.json")
         with policy_snapshot.open("xb") as stream:

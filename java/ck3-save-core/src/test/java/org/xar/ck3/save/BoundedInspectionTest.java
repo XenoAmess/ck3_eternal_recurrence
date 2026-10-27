@@ -66,6 +66,26 @@ final class BoundedInspectionTest {
         assertEquals("ck3-save-inspection-v4", legacy.schema());
         assertFalse(legacy.decoded().projection().inventories().isEmpty());
     }
+    @Test void actualSelectedTitleProducerPreservesFullIdAndHistoryWithoutChangingLegacyInventory() throws Exception {
+        String record = "landed_titles={landed_titles={4294966784={key=e_des_procreation_papacy "
+                + "coat_of_arms_id=17 history={1066.1.1=1 1066.1.2={type=destroyed}}} "
+                + "17690={key=e_authored holder=1}}}";
+        Selection titles = new Selection(List.of(new TableSelection(ScopeKind.TITLE,
+                List.of("landed_titles", "landed_titles"), List.of(id("4294966784"), id("17690")), true)),
+                List.of(), false, false, List.of());
+        Path input = save(record);
+        Inspection.Request request = new Inspection.Request(4, "authored-title-machine", repository().toString(),
+                FilePins.pin(input), FilePins.pin(java()), titles);
+        SelectedInspection.Report actual = SelectedInspection.inspect(request, (d, s) -> child("ok", s));
+        assertEquals(actual, SelectedInspection.readReport(SaveJson.write(actual)));
+        assertEquals(List.of("landed_titles", "landed_titles", "4294966784"), actual.selected().scopes().getFirst().path());
+        assertEquals(2, actual.selected().scopes().getFirst().ast().block("history").entries().size());
+        assertTrue(actual.decoder().completeStream()); assertEquals(0, actual.decoder().originalWait().exitCode());
+        Projection legacy = new SaveStream(new StringReader(world()), selected()).read();
+        assertEquals(7, legacy.inventories().size());
+        assertTrue(legacy.inventories().stream().noneMatch(i -> i.kind() == ScopeKind.TITLE));
+        assertThrows(IOException.class, () -> new SaveStream(new StringReader(record.replace("17690=", "4294966784=")), titles).read());
+    }
     @Test void selectedStrictConsumerRejectsDroppedAddedOrMislabeledAstAndInventories() throws Exception {
         SelectedInspection.Report report = SelectedInspection.inspect(selectedRequest(save(world())), (d, s) -> child("ok", s));
         ObjectNode valid = object(report);

@@ -18,6 +18,7 @@ public final class SaveStream {
     private static final int MAX_SELECTED_BYTES = 4 * 1024 * 1024;
     private final Clausewitz.Lexer lexer;
     private final Selection selection;
+    private final HouseParentInspection.Collector houseParents;
     private final Map<ScopeKind, Set<String>> census = new LinkedHashMap<>();
     private final Map<ScopeKind, Set<String>> emptySlots = new LinkedHashMap<>();
     private final Set<ScopeKind> seen = new LinkedHashSet<>();
@@ -36,7 +37,9 @@ public final class SaveStream {
     private boolean metadataSeen;
     private boolean read;
 
-    public SaveStream(Reader reader, Selection selection) {
+    public SaveStream(Reader reader, Selection selection) { this(reader, selection, null); }
+    SaveStream(Reader reader, Selection selection, HouseParentInspection.Collector houseParents) {
+        this.houseParents = houseParents;
         this.lexer = new Clausewitz.Lexer(reader, Clausewitz.Syntax.SAVE, 2 * 1024 * 1024);
         this.selection = java.util.Objects.requireNonNull(selection);
         for (TableSelection table : selection.tables()) {
@@ -59,7 +62,8 @@ public final class SaveStream {
         List<Inventory> inventories = new ArrayList<>();
         List<RecordObservation> records = new ArrayList<>();
         for (ScopeKind kind : ScopeKind.values()) {
-            if (kind == ScopeKind.METADATA) continue;
+            if (kind == ScopeKind.METADATA || kind == ScopeKind.TITLE
+                    && selection.tables().stream().noneMatch(t -> t.kind() == ScopeKind.TITLE)) continue;
             TableSelection table = selection.tables().stream().filter(t -> t.kind() == kind).findFirst().orElse(null);
             if (table == null) {
                 inventories.add(new Inventory(kind, List.of(), Availability.UNKNOWN_LAYOUT, List.of()));
@@ -78,6 +82,7 @@ public final class SaveStream {
     }
     private void block(List<String> path, boolean braced) throws IOException {
         if (path.size() > 128) throw failure("nesting cap exceeded");
+        if (houseParents != null) houseParents.enter(path);
         StructureBuilder structure = structure(path);
         while (lexer.peek() != null && !lexer.peek().equals("}")) {
             String key = next();
@@ -89,6 +94,7 @@ public final class SaveStream {
                 if (path.isEmpty() && !key.matches("[0-9]+") && !rootKeys.contains(key)) {
                     diagnostic(key); rootKeys.add(key); if (rootKeys.size() > 512) throw failure("root-key cap exceeded");
                 }
+                if (houseParents != null) houseParents.field(path, key, value);
                 if (structure != null) structure.observe(key, value.equals("{"));
                 if (value.equals("{")) {
                     List<String> nested = child(path, key); enter(nested); block(nested, true);
@@ -100,12 +106,16 @@ public final class SaveStream {
                         if (rootScalars.size() > 512) throw failure("root-scalar cap exceeded");
                     }
                 }
-            } else if (selection.tables().stream().anyMatch(table -> table.path().equals(path))) throw failure("unassigned native table atom: " + key);
-            else if (path.isEmpty() && !(rootKeys.isEmpty() && (key.startsWith("SAV") || key.equals("CK3txt")))) throw failure("unassigned root atom: " + key);
+            } else {
+                if (selection.tables().stream().anyMatch(table -> table.path().equals(path))) throw failure("unassigned native table atom: " + key);
+                if (path.isEmpty() && !(rootKeys.isEmpty() && (key.startsWith("SAV") || key.equals("CK3txt")))) throw failure("unassigned root atom: " + key);
+                if (houseParents != null) houseParents.unassigned(path, key);
+            }
         }
         if (braced) {
             if (!"}".equals(next())) throw failure("truncated block");
             for (int i = active.size() - 1; i >= 0; i--) if (active.get(i).path.equals(path)) finish(active.remove(i));
+            if (houseParents != null) houseParents.leave(path);
         } else if (lexer.peek() != null) throw failure("unexpected root closing brace");
     }
     private void enter(List<String> path) throws IOException {

@@ -379,7 +379,9 @@ def _finish(context,profile,provenance):
         require(isinstance(scenario,dict) and set(scenario)=={
             'profile_id','frontend_target','startup_event_admission'},
             'Explicit fixture scenario requires its exact declared target and startup event admission')
-        policy.update(schema='ck3-frontend-fixture-start-policy-v2',schema_version=2,**scenario)
+        empire=scenario.get('profile_id')=='dynastic-esotericism-empire-byzantium-1066'
+        policy.update(schema='ck3-frontend-fixture-start-policy-v3' if empire else 'ck3-frontend-fixture-start-policy-v2',
+                      schema_version=3 if empire else 2,**scenario)
     policy_path=Path(context['output'])/'frontend-fixture-start-policy.json'
     write_json(policy_path,policy)
     return {'state_dir':str(profile.parent),'profile':str(profile),'preparation':pin(preparation),
