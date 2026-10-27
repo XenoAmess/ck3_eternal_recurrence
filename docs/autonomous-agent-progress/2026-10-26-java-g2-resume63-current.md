@@ -1,6 +1,6 @@
 # resume63：REA、Java 全能力迁移与 G2 接续
 
-`machine_id: xenoamess-full-tower-eb9d2c1186`。2026-10-27T05:21Z 更新；任务继续执行。本页接续 [resume62 交接](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff.md)和[来源索引](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff-source-index.json)。
+`machine_id: xenoamess-full-tower-eb9d2c1186`。2026-10-27T06:11Z 更新；任务继续执行。本页接续 [resume62 交接](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff.md)和[来源索引](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff-source-index.json)。
 
 目标是使用 REA 完成 G2 M0–M7 原生研究与 Java 落地，完成 Python 能力迁移后使用 Java 继续普通自动游玩。[完整对照](2026-10-26-resume63-migration-and-g2-matrix.md)分别记录八项业务门槛及全迁移范围。当前 Java CK3 启动、新增游戏日、SAVE、RESTORE均为0，完整实机 G2仍0/8。
 
@@ -79,3 +79,17 @@ Native正式ENV已通过原producer和readAccepted：exit0/429.6568314s/Job0，�
 Tools156原SourceCut4+Binding11全15P、0javac，仍不授Source146+新T正式集成。155 immutable input03已一次复制330/7713839，原Manual lease真实成功；完整VERIFY尚未确认启动。Main必要32Jar原标准phase及wholeJUnit已窄交接Launcher，515固定缓存/154六件实际守卫，两BUILD/TMP进入Full155后可独立并行。
 
 新[M1代码/数据、M4及M5有限结果](../rea-ck3-research/resume63-code-data-and-receiver-results.md)已落地：C18实际REA字节一致但自动图多5case自环，M4 descriptor不授退款，M5本体不闭注册receiver。全部provider闭场。正式CI缺同runner source/actor/custody事实不能伪造，不把hosted能力缺口加成本机首Game前置。新Java游戏日/SAVE/RESTORE仍0，G2实机0/8。
+
+## 2026-10-27T06:11Z 前向结果与当前施工
+
+同 machine_id。Tools155 完整 VERIFY 已独立闭合：151 XML、1140/1140P、674 pins 和1466 class全部一致，原WJP exit0/1540.381s/active0、峰1340874752B；独核为 G2/acceptance63-tools155/TOOLS155-INDEPENDENT-FULL-VERIFY01.json，24379B/SHA2eacbfc49234bf3c1853a015cf3b3491458c03e3fcc32949ed009dc6f8cc13a6。155冻结，不因下游Own失败撤销其通过范围。
+
+Own155原41实际成功并产866 inputs，Own javac0/1.025s、Java1/119.675s，2JUnit未启动、全部Job0；真实失败是旧Own45仅40 role，当前强类型合同已有42。原失败closing在D:/ck3-state/ck3-java-g2-resume63-own-successor02/logs/OWN155-CONTROLCI-FULL-ATTEMPT04-ACTUAL01.json，6694B/SHA345012205b0b087c794f3e518c1af276fcb2e2b74eaf5007a96eed1354c17998。最窄后继保留45，新增完整42-role Own46，同步共享producer与测试的精确source pin；先受影响整类局验，再一次新的完整Tools，旧155不热改。
+
+Main157实际32普通Jar成功，0/25.323s、0javac/0JUnit。160合同47类192/192P，0/32.061s，仅48测试源重编；Heir采用真实Python -X utf8，保留-I隔离，旧158/159失败原件不改。161通知4类55=47P8F；162 APP13类137=128P3F6E；163 NT3类20=19P1F。最后14个LS类继续独立诊断，上游失败未消失、不合成整图通过。修复集中于真实类型校验顺序、JSON整数域比较及过期测试夹具；通知缺definition仅旧synthetic输入，不能据此放宽当前native AVAILABLE身份合同。
+
+Launcher为Main唯一Maven/BUILD/TMP writer，Host为Tools及源码CAS唯一writer；领域owner仅交RAM候选。Main与Tools局验共TMP，按短窗串行；完整Tools使用独立TMP可并行。本轮暂停、完成及新增并行岗均服务于实际失败；REA最多4provider，不为填并发重复取证。
+
+Native Source146保持不变，跨Source146/Tools155的CompileBinding已真实通过62.332s；ENVrequest155亦137.206s通过，正式ENV155四命令尚未执行，等待最终Tools避免重复。历史ENV146通过仍有效于原范围。RuntimeInventory146 DIGEST真实376.676s通过、25875文件仅核验不复制约3GiB；必要pure configure OFF亦通过。原精确EXE预登记继续，实际UAC/设置读回及正式生产/corpus未完成。
+
+REA新M2 16B叶确认unsigned WORD较大值地址、相等取左；M6 89B初始化确认57个24B槽的前16B清零、末8B写固定地址，不能称全零或已知业务表。两题实际REA/独审闭场，未据此增添Java业务字段；8M完整原生研究继续。当前Java实机启动、新增游戏日、SAVE、RESTORE仍0，完整G2实机0/8。后继Own、Native产物、SERVICE、SDK四阶段/30组及真实continuation仍须完成；hosted runner缺真实来源输入不加成本机首场门槛，无可靠首实机时间预测。

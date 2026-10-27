@@ -2,11 +2,11 @@
 
 machine_id: xenoamess-full-tower-eb9d2c1186；本岗 /root/acceptance63；观察日期 2026-10-26至27 UTC。
 
-最新Tools146原完整VERIFY独核1139项全成功，新Jar/lib5闭包及真实Maven Job exit0/active0通过；只授本轮软件T。旧104成功、119/143失败保留。Main153仅必要模块编译通过，147仍RED、148–151失败保留；Runtime107 Duplex7E、SDK30、SERVICE、整Java、官方整CI、ActualIT与CK3业务均未完整授信，新增游戏日0。
+最新Tools155原完整VERIFY独核151类1140项全成功；Main160完整contracts开发回归47类192项全成功。只授对应软件范围，旧119/143及Main144/147–151失败保留。Own155新链仍RED，Runtime107 Duplex7E、SDK30、SERVICE、整Java、官方整CI、ActualIT与CK3业务均未完整授信，新增游戏日0。
 
 本页是当前摘要。较早详细过程及原件索引保存在本文件的 Git 历史：d078c8123b77d572fe09d6024aacad3eab533e4c（93–96）及4dcc62e0d27cc97f86d86402fb9e5f2540b72de3（104真实终态）；2bf182e575aef37aa1d7bcfcde12aebcdc0649c7中104仍为当时RUNNING。fff86e9c2aebb1eb00d1151875e1266cbc5a4b24为后继摘要，其捕获时120日志/final receipt仍pending，后来的closing只向前追加。压缩叙述不更改旧事实，不替代D盘原件，不追补已覆盖的94/95/96 XML。
 
-54dd3b7d6aaf415e07b71dc28b0ad286e1267780的32633 B页已git show逐字节核等；135/136小closing当时pending。后继138–156只前向，不倒填。
+54dd3b7d6aaf415e07b71dc28b0ad286e1267780的32633 B页已git show逐字节核等；135/136小closing当时pending。12b675a9b7a71f0951f68591ba95d6cdaa590894的32743 B/9ebe9e0e6836671e8c945fedde500d89f90663845c5ac57a5134139756b09dc4亦已独立git show核等，记录到156时Full155未授信；本次只前向新结果，不倒填历史。
 
 G2 = D:/ck3-state/ck3-java-g2-resume61-r7-ls18-regression04；下列 controls/ 文件均在此根。Host原回执 O63 = D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration。独立主源码和构建缓存由Host维护，本岗不写SRC/BUILD/m2，不另开Maven或JVM，不新增runner/Python生产实现，也不启动CK3、Steam、Defender或UAC。
 
@@ -132,57 +132,43 @@ G2/acceptance63-tools146/TOOLS146-INDEPENDENT-FULL-VERIFY01.json 13766 B/f08f289
 
 Own146仍RED：本岗只读Runtime的logs/OWN146-CONTROLCI-FULL-ATTEMPT03-ACTUAL01.json 6484 B/3cd196f263e59a66e0f0d3b80c3f0a89949a0bbf0330a14ec6de7514559e71e0（根D:/ck3-state/ck3-java-g2-resume63-own146-full01）；其中41 exit0/866 inputs，Own javac0、Java1在historical scratch先拒，两个ChildJob active0；两JUnit NOT_STARTED/finalactual ABSENT。仅读owner元数据，非Own全链独核。
 
-## Python能力迁移后继Main开发验收
+## Python能力迁移的Main开发验收历史
 
-| 批次 | 真实结果 | 增量及独立范围 |
-| --- | --- | --- |
-| 112 | compile-only exit1/27.9512627秒；无JUnit | APP17main/8test；StrictJson.object(JsonNode)九错；52源本岗51MATCH+一叶后修。 |
-| 113 | compile-only exit0/41.9812347秒 | 52源/引导6 MATCH；APP7test、storage1main、NT2main、LS14main7test编。 |
-| 114 | 3 fresh XML70=64成功/6E，exit1/12.4081154秒 | 44源/引导6 MATCH；0javac；FactionThreat6E，另18类未执行。 |
-| 116 | 2 fresh XML13=12成功/1E，exit1/20.0678159秒 | 42源/引导6 MATCH；wave2仅test1编；ServiceLoader1E，17主APP未执行。 |
-| 120 | 17 fresh XML164=150成功/9F/5E，exit1/17.6715395秒 | 52源/引导6 MATCH；event-policy1+1、military1+1、events4+1、APP2+1(main+test)。 |
-| 121 | 7 fresh XML85=81成功/4F，exit1/19.2964454秒 | 67源/引导6 MATCH；0javac；Commander3F/ChoicePlanner1F；主APP10+wave3未执行。 |
-| 122 | 10 fresh XML55=41成功/3F/11E，exit1/16.9086908秒 | 67源/引导6 MATCH；events1test、military1test、APP4main7test；七类通过。 |
-| 12302 | compile-only exit1/15.2935446秒，NoJUnit | 同cache offlineT2 LS-am；APP1+2、NT3+2、LS8+2(main+test)，Holy test IOException。 |
-| 12303 | compile-only exit1/10.7379006秒，NoJUnit | 99源/引导6 MATCH；APP1test、NT1main、LS2test；RootMandatory test IOException。 |
-| 12304 | compile-only exit0/15.7397199秒，NoJUnit | 99源/引导6 MATCH；APP1test、NT1main、LS1test；NoJUnit。 |
-| 124 | 3 fresh XML24=21成功/2F/1E，exit1/10.5932528秒 | 101源/引导6 MATCH；military1+1、APP1+3；Declaration4/Events7P，Army10P2F1E。 |
-| 125 | 1 fresh XML13=12成功/1E，exit1/9.0799986秒 | 101源/引导6 MATCH；APP2test；MAA outbound/canonical差异。 |
-| 126 | 2 fresh XML19/19成功，exit0/12.8630684秒 | 103源/引导6 MATCH；APP1+2、NT1+1；Army13P/RegularMaa6P。 |
-| 127 | 2 fresh XML17=16成功/1F，exit1/19.4464633秒 | 106源/引导6 MATCH；APP1test、NT1main；Store15P/NT1P1F/LS Root5未跑。 |
-| 128 | 1 fresh XML2=1成功/1F，exit1/10.7604308秒 | 105源/引导6 MATCH；APP1test、NT1+1；NT child124/OpenBLAS，Root5未跑。 |
-| 129 | 原RootRestorePhysicalIdentityTest整类5/5成功，exit0/111.9007813秒 | Host105终态MATCH后放行；本岗104MATCH+后继1叶，不补全105独核；APP1test/NT1main。 |
-| 130 | NT ArmyOrdinaryOriginalProducerTest整类2/2成功，exit0/10.913351秒 | 104源/引导6 MATCH；APP1test、NT1+1；同cache offlineT2。 |
-| 138 | 普通8Jar封包exit1/3.9923897秒，0compile/NoJUnit | no-am缺3内部policy；实际仅3Jar，余5不回填旧产物。 |
-| 140 | 后继31 reactor、实际仅5Jar，exit0/15.9051908秒，0compile/NoJUnit | remaining5 -am排Tools/parent；forceCreation=false；复用cache。 |
+112–156完整原命令、缓存、实际重编、XML、source范围及回执完整SHA保在已逐字节git show核等的12b675a9b7a71f0951f68591ba95d6cdaa590894同页；对应D原件未删。本段只压缩重复叙述，不追授旧失败或未执行类。
 
-112–116原回执及完整refs保在已核54dd同页；114/116旧绿不拼全APP，原字节日志不被decoded replacement文本替代。
+| 批次 | 实际结果 |
+| --- | --- |
+| 112/113 | compile-only 1/27.9512627秒后0/41.9812347秒；StrictJson测试API窄修，无JUnit。 |
+| 114/116 | 70=64P6E、13=12P1E；各exit1，Admission及ServiceLoader预算错误分别保留。 |
+| 120/121/122 | 164=150P9F5E、85=81P4F、55=41P3F11E；各exit1，范围不同，不拼绿。 |
+| 12302/03/04 | compile-only 1/15.2935446秒、1/10.7379006秒、0/15.7397199秒；checkedIOException两处窄修。 |
+| 124/125/126 | Army相关24=21P2F1E、13=12P1E后19P；126实际APP1main2test、NT1main1test编。 |
+| 127/128 | Store15P；NT原producer各1P1F，先argv SyntaxError、后OpenBLAS child124；Root5均未跑。 |
+| 129 | 原RootRestorePhysicalIdentityTest整类5P，exit0/111.9007813秒；本岗104源MATCH+后继1叶，不冒全105独核。 |
+| 130 | NT原producer整2P，exit0/10.913351秒，实际APP1test/NT1main1test编。 |
+| 138/140 | 普通8Jar先1/3.9923897秒只产3，后0/15.9051908秒产余5；0compile/JUnit，reactor31不冒31Jar重建。 |
 
-116 ServiceLoader预算64MiB/8MiB失配后只修adapter8MiB，保Native64MiB/Strict1MiB/Registered8MiB及全部provider；具体回归仅按后继实际结果。
+120–128的原失败XML、各独立一次gzip及closing均留G2对应root/controls；94–96缺失XML不因此恢复。127未采用单引号候选；128沿原54引号SCRIPT和WJP60秒/256MiB，130只将三BLAS线程变量置1，原Pythonoracle不变。129保ready20秒/validity30秒/nested QUERY，无新JFR，不能抹旧q10/JFR100或归因Store单点。138/140八个普通Jar分批逐entry body/POM独核，只授普通产物身份。
 
-120五失败类原件gzip17553 B落G2/acceptance63-parity120，另12类保refs/counts；Readiness84、Declaration version2、缺oracle输入、WarEntry cap/float及Display计数的栈和窄修范围均保controls/PARITY120-INDEPENDENT-RESULT01.json 10645 B/449d36de59a7bae96aa7b9c90a032fab7f420be22630a0e7b8c9f292ea2a0e0b，含原raw/actual与日志gzip7407 B；fff后的closing只向前，不倒填。
+## Full155与Main160最新独立关闭
 
-121先释放67源，再按fresh scope一次保存两失败XML9375 B/log7067 B；另五类仅refs/counts。controls/PARITY121-INDEPENDENT-RESULT01.json 6996 B/efb7a61c564d0c17dfdd965367ed9f757ea886f58df104184c5fdb22fd62054d；不借Full119。
+155沿原ControlBuild BUILD_TOOLS_RUNTIME/STANDARD_8_MIB/VERIFY、default mvn3.10.0、verify无-T，实际135main169test编、复用m2；Controller exit0/1619.7457061秒，原actual-build/v6 PASS/error=null。151 fresh XML共1140项逐属性/全部testcase核为1140P0F/E/skip，未拼152/156局验。found/started/aborted事件未另测。
 
-121 Commander缺14-scene资源/target/float负例，ChoicePlanner旧legacy漏nested_auto_turn_query；后继夹具不删原corpus守卫、不拼旧绿，详细原件/候选在54dd同页。
+source330/7713839 B、compiled332（原330逐字节SHA一致及两.mvn实生成叶）、full部署6/bootstrap1546共674个原件当前SHA及ordinary single-link全MATCH。source/compiled exact文件集合、预先冻结input03相对索引691b8f04d90ffe9237f23f095aa528f33ea8ae16e50c5000097fc464013e2425均等；未复制源码/class/Jar正文。accounting/v2保CONSERVATIVE_VOLUME_ATTEMPT/CONSERVATIVE_VOLUME_COVERAGE，三retained body的canonical base64/长度/SHA/JSON核等，不追读可变head。
 
-122的67源/引导6及10XML全核；七类通过含真实WarDeclaration Python oracle。三失败原件gzip11632/log7362 B；Declaration同writer三E、Army预算七E/custody一E/Pending两F、EventPolicies一F各别旧120。controls/PARITY122-INDEPENDENT-RESULT01.json 6935 B/5ebd661ba0b73522959c7653061e2c32bac103328e20515a8d9a5de69ac0e679保原栈/计数；wave3无新结果。
+155真实Maven WJP为CMD289964/FILETIME字符串134375521319108461：exit0/1540.3806152秒、active0、peak1340874752 B、limit2147483648 B、flags8704、stopnull；version Job亦exit0/active0。原root至固定outer work交集2271.3283409秒满足完整2100，未延期限；CIM Maven24616只导航，不替代Job身份，outer Job仍NOT_MEASURED。
 
-12302选源92漏Holy失败叶，本岗另读；12303/04选源99显式补入。三批均NoJUnit/不覆122 XML，logs5552/5547/4634 B各一次gzip。2041/2597/2175 B闭场回执的完整path/SHA及原新pins保于已核54dd同页；D原件仍保，旧失败不追绿。
+新qualified完整Jar位于D:/codex-ck3-demos/2026-10-22-java-phase1/build/java-tools-host155-final/ck3-control-build-tools，3598758 B/37df0970f8c63db089b8451617d0c4b6a2a7440c7d24d6101e5715759769a462。1466 class/8680023 B逐name/body、1479 ZIP entry CRC、POM、Manifest及exact5lib全MATCH。它与ordinary154字节相同但路径及完整v6来源独立，不从ordinary授资格。
 
-124 Army两F为Pending，一E为canonical整数拒；失败XMLgzip3965/log5851 B往返SHA核等，先释放源。G2/acceptance63-main124/PARITY124-INDEPENDENT-RESULT01.json 3502 B/615248e86c874b1ba489a3484e156660beb739cad4eccd0d512a9cd6802321fd保原refs。
+原build-json205524 B/dd78dbee555017f03da47c3b2eef8079cf16c8582fab1b31491f83b5e914e604；G2/acceptance63-tools155/TOOLS155-INDEPENDENT-FULL-VERIFY01.json 24379 B/2eacbfc49234bf3c1853a015cf3b3491458c03e3fcc32949ed009dc6f8cc13a6于06:05:47.613Z闭场。新768KiB为原96MiB内部净分，10文件418264 B（151原XML自带精确refs的单bundle gzip346053/log47832/meta24379），CREATE_NEW/fsync/fullreadback/解压原SHA全核；未另重复151索引。消息先授权、issuer物页未在关闭前收到，后只外部绑定。旧119/143 RED及146独立T保留。
 
-125失败保留；22:17后MAA canonical是新修复，不追释125为缓存故障。126真实重编生产后19P。G2/acceptance63-main125126一次保存三XML gzip10549、四log10080 B并解压核SHA；PARITY125-INDEPENDENT-RESULT01.json 2813 B/b0b972b8ef9e9d7474afc6907fdf5879eb87c9592d137a6b11aed5a9792b3900；PARITY126-INDEPENDENT-RESULT01.json 3515 B/ff2ac6992042e9a1dff4a0e75484b3780c760318ac17eed40eaee528877a8c36。
+160为新完整contracts开发测试，默认mvn offlineT2/同cache：exit0/32.061秒，仅48test javac，0main/0Jar；47 fresh XML192P0F/E/skip全部独核。contracts138+parent1、固定m2 515文件79544887 B、154six/109six/oracle3共530输入当前SHA及供给Node bigint dev/ino/link核等；321更大源pre/post仅Host范围，不冒全图或FILE_ID128资格。producer XML readback原标PENDING，本岗已完成；其batch_qualified仅开发测试范围。没有另供rawterminal，明确NOT_PROVIDED_SEPARATELY，不造回执。
 
-127默认offlineT2 LS-am确选Store/NT原producer/Root5，真实LS SKIPPED；Root仍1类5法、20s/30s/nested QUERY，无新JFR，不补q10/Cold17。NT SCRIPT28因argv双引号丢失SyntaxError，单引号候选HOLD未采用，不先归因JDK/launcher。source先释放，再获scope一次保存失败XML gzip3434/log5917 B并解压核SHA。G2/acceptance63-main127/PARITY127-INDEPENDENT-RESULT01.json 3562 B/0370c15a9d6aa5b3f2dca51eced9357b79679c339ef2952e56448a8894bb46b3保原件/真实栈。
+160 Heir原测试只加Python CLI -X utf8，保-I/-B/原script/expected；唯一RAM逆替回158/159旧12342 B/7c8e4992b2e4af92dcff82128d06e2c2365c0d32a28ce65b33b99c55a31f65ab。-I忽略环境UTF8后GBK编码失败的158/159原Heir XML各4=3P1F/0E，O63两FAILURE01原件SHA已核、不重复复制，不把whole160成功回填旧批。
 
-128已进入实际OpenBLAS分配失败、child124，不能据SyntaxError消失授oracle通过；原SCRIPT/54引号保留，改沿现有WJP60秒/256MiB，未采用先前单引号候选。G2/acceptance63-main128/PARITY128-INDEPENDENT-RESULT01.json 3032 B/8d013b69b570638451dcc022e9a6fd1b039475b519c86a68ff1a88b7c6e790a5；唯一失败XML gzip3362/log5763 B耐久核SHA。
+G2/acceptance63-main160/PARITY160-INDEPENDENT-CONTRACTS47-PASS01.json 9192 B/c82b81304c50dfdca6921c9680b6ca14d140108c425df15a3b24862de282f51d于05:52:07.625Z闭场。新256KiB内部scope实用4文件163167 B（47原XML一次bundle150779/log3196/meta9192），全部往返SHA核等/source0。Main157普通32Jar只收到owner报告，未在本岗授独立闭包。
 
-129原1类5法无新JFR、ready20秒/validity30秒/nested QUERY原样，不能归因Store单点或抹旧q10/JFR100。130只把OPENBLAS_NUM_THREADS/OMP_NUM_THREADS/MKL_NUM_THREADS置1，保WJP预算和原脚本；真实通过exit0/active0断言，完整inner peak/accounting未另持久。G2/acceptance63-main129130中PARITY129-INDEPENDENT-RESULT01.json 4041 B/a5f98e32acf9538ae884716f4a5928000d7e0641b6055bd5159d9e21ffb46442；PARITY130-INDEPENDENT-RESULT01.json 3725 B/6c0a722f4675aa75372b478403dc74cfb8f3f8f78972e38b3186a8dedce0ef5b。两批raw/actual、fresh XML元素/属性/mtime、引导6均核MATCH；129一叶已后继的source差异原样保留。两XML gzip9878、四log9893 B一次落盘并解压核，不拼旧绿或授Game。
-
-138三Jar独核972条（966class/6resources）完整names/body及各embedded source POM相等；140五Jar独核8073条（8069class/4resources）51335002 B全等，并重读138三原SHA及old1096 MATCH，故当前普通8Jar有分批原件证据，未授测试或资格。两批106 source均只Host postcheck；本岗只另读对应POM，未造全106独核。
-
-独立回执：G2/acceptance63-main138/PARITY138-INDEPENDENT-ORDINARY-JARS01.json 3618 B/57db90ec82b6d7dd4b0a4d2880916973d4dbef706e0ff6183fe04b123595c2d7；G2/acceptance63-main140/PARITY140-INDEPENDENT-ORDINARY-JARS01.json 4016 B/3804f9733ef2b23edcb3a41a42346b8b24ac6c2074d69adcd11c68261f58c00e。各新24KiB root只保存双log2363/2523 B及小metadata，无Jar/class/source复制。138首失败保留，不把140 reactor31说成31个Jar重建。
+Own155另为RED：仅独读Runtime原6694 B/345012205b0b087c794f3e518c1af276fcb2e2b74eaf5007a96eed1354c17998元数据（D:/ck3-state/ck3-java-g2-resume63-own-successor02/logs/OWN155-CONTROLCI-FULL-ATTEMPT04-ACTUAL01.json），非Own全链独核。其中原41 exit0/866 inputs、javac0，Own Java1/119.6753026秒/active0，Complete R3 role set required；旧40角色消费者未覆盖新42，两个JUnit NOT_STARTED/finalactual ABSENT。旧Own146失败不覆。152/156 synthetic/local正例仍不替正式Source146+新T acceptedSource集成；软件T155与contracts160不授Own/SDK/SERVICE/整Java/Game。
 
 ## 容量、测量与后继资格边界
 
