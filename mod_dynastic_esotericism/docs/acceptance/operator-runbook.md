@@ -71,6 +71,10 @@ Root 在真实分配前完成存储原子准入、干净 checkout 和屏幕 owne
 
 ## 六个 GUI phase 的操作与签认
 
+2026-10-27 补充（`machine_id: desktop-3fevhd2-1c74096080`）：[R0022](R0022-2026-10-27.json) 实际为 4/6 阶段、43 自然日，业务失败并正常退出。第二礼只有 `PREPARATION PASS second_stock_rite` 时，不能选择要求 `des_test_second_verified` 的跨礼决策；本场提前选择使原宿主进入失败关闭，未确认该输入。后继先取得本场原日志中的 `TEST PASS second_rite_binding`，再独立查询当前决策可用性、选择并确认一次。按输入后的日数到达 31，不能替代实际回调已执行的证据；没有就绪标记时仅在原日数和 deadline 内继续逐日观察，不重放准备输入。到退出预留仍未就绪即保存实际缺口并闭场，不能用失败宿主继续业务，也不能复制旧阶段签名给新 RunID。
+
+外层调度必须等待原队列进程终态及实际 step 的 `finished_at/ok/error` 后才进入依赖步骤。返回 PTY session ID、工具外壳成功或队列 ACK 均不代表内层已完成。保存前的容量检查非零时，该 Save 和保全副本都不得启动；后来的容量恢复不能追认此前违反前置的存档。本场对应的原失败和后续合法存档分别保留。
+
 控制器会打印 `CK3_ROOT_CHECKPOINT <run>/case-output/<phase>-awaiting.json`。Root 先读取该文件的实际 snapshot、要求、原始 hold deadline，再提交原生操作。控制器此时保持同一会话；每个公开队列计划必须用新的文件名与 step ID。
 
 创建后的 capture 决议仅提交一次，保留独立后态。新 fixture 的实验等待为 +2 日：Root 必须在签认 phase 1 前，先于 capture 后真实 +1、+2 自然日分别固定完整原生成员名单、同帧 Save／原 SDK pin／保全副本，并完成独立解码核图；签认后先消费控制器自动推进、重新读取实际日期，再决定是否推进下一日。按本场实际 ID 对照 House→Dynasty 和 stock 回调标记；不复用 R0009 的成员 ID，不以单一 flag 授资格。只消费原 `binding_and_members` 全量守卫；+2 未同步或其他原守卫失败仍为 FAIL，不延后等待周期修复、不补写产品状态、不重放 capture。两次读回计入原 deadline／400 日预算。R0009 不追认，REQ-05 普通转换同次同步另按原要求验收。

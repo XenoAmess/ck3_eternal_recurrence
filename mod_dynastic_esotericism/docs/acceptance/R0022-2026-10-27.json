@@ -1,0 +1,77 @@
+{
+  "schema": "xar.dynastic-acceptance-summary.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-27T04:25:16Z",
+  "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0022",
+  "source_HEAD": "b468fe136ec8adbe9b75ac4d4058b736b1f6cad0",
+  "accepted_phases": 4,
+  "total_phases": 6,
+  "business_pass": false,
+  "actual_calendar_days": 43,
+  "origin_date_raw": 53144328,
+  "last_date_raw": 53145360,
+  "original_process_exits": {
+    "game": 0,
+    "host": 1,
+    "public_run": 2,
+    "keeper": 0,
+    "allocator": 0
+  },
+  "normal_close_qualified": true,
+  "screen_release_sequence": 9264,
+  "closure": {
+    "path": "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/operations-core-a41/R0022-CLOSURE.actual.json",
+    "bytes": 5186,
+    "sha256": "9006ffea055d242cf1405ffcd1fa9a4a1ae636ab0ed59e171f0b9661ef513ce9"
+  },
+  "last_retained_save": {
+    "path": "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/runtime-a20/retest-b468-a01/runs/desktop-3fevhd2-1c74096080--dynastic-esotericism--R0022/operator-evidence/retained-saves/r22-second-bound.ck3",
+    "bytes": 69716471,
+    "sha256": "c7041614a6485236c1b552e03954343f3c95f8aa92e52c0a8d25776a473544b8"
+  },
+  "failure": "Operator selected des_acceptance_cross_rites_decision before actual second_rite_binding readiness marker; keyed row unavailable. Input not confirmed. Original host error retained.",
+  "not_qualified": [
+    "second_rite_binding",
+    "cross_rite_migration",
+    "actual_birth_next_day",
+    "primary_succession",
+    "None_and_Dynastic_edits",
+    "successor_pardon_31_days",
+    "full_300_days",
+    "cold_reload",
+    "whole_product_release"
+  ],
+  "scalar_diagnostic": {
+    "scope": "Diagnostic only on historical capacity-red sameFaith Save; no retroactive admission, inventory or business credit.",
+    "path": "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/core-a30-administration/R22-DB-SCALAR-PROBE-a01.actual.json",
+    "bytes": 1613,
+    "sha256": "c3c1a84151f93f85ca23c7fc4d14cdfc49899147b2db1405554d45945a86109c",
+    "decoder_original_exit": 0,
+    "complete_stream": true,
+    "scalars": [
+      {
+        "path": [
+          "dynasties",
+          "dynasty_house",
+          "12761"
+        ],
+        "token": "none"
+      },
+      {
+        "path": [
+          "dynasties",
+          "dynasties",
+          "12157"
+        ],
+        "token": "none"
+      }
+    ],
+    "native_file_identity_qualified": false
+  },
+  "photos": {
+    "qualified_R21_raw_PNG": 3,
+    "excluded_R22_raw_PNG": 1,
+    "workshop_updated": false
+  },
+  "retention_review_due_utc": "2026-11-03T04:09:00Z"
+}
