@@ -307,7 +307,9 @@ final class AcceptanceFixtureTest {
         assertEquals(cold ? "rrfa.22" : request.kind() == CaseKind.UI_REJECTION ? "rrfa.30" : request.mode() == Mode.RITE ? "rrfa.20" : "rrfa.21", trigger.atom("id", ""));
         assertReadOnly(keys(effect));
         for (String forbidden : List.of("cost", "cooldown", "days")) assertFalse(keys(decision).contains(forbidden));
-        Set<String> expected = Set.of(key, "rrfa_observation_decision_desc", "rrfa_observation_decision_tooltip", "rrfa_observation_decision_confirm");
+        // The shared locale also carries the fresh-only seed's name; a cold
+        // fixture keeps this inert text while excluding every seed effect.
+        Set<String> expected = Set.of(key, "rrfa_observation_decision_desc", "rrfa_observation_decision_tooltip", "rrfa_observation_decision_confirm", "rrfa_fixture_long_vassal_name");
         for (String language : List.of("english", "simp_chinese")) {
             String text = Files.readString(fixture.resolve("localization/" + language + "/rrfa_observation_l_" + language + ".yml"));
             assertTrue(text.startsWith("\ufeffl_" + language + ":\n"));
