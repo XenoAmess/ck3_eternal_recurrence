@@ -1,0 +1,84 @@
+{
+  "schema": "rrf-gameplay-development-media-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-10-27T03:17:35.923349+00:00",
+  "run_id": "4-8e1c2f1861--religious-ritual-fusion--R0027",
+  "source_commit": "ab877cc06a6316afc1e2c9ea6e0e77026d4983c9",
+  "game": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "pid": 23392,
+    "birth_filetime_100ns": "134375407059898463",
+    "player_id": 31254,
+    "date": "1066.9.18",
+    "date_raw": 53144400
+  },
+  "source_root": "C:/workspace/rrf-development-20261024/review-fixes-a01/finalized-cold-R0024-a01/screenshots",
+  "jpeg_root": "C:/workspace/rrf-development-20261024/review-fixes-a01/finalized-cold-R0024-a01/metadata/normal-close-a01/store-ui-media-a02/media",
+  "encoding": {
+    "producer": "Java ImageIO",
+    "quality": 0.9,
+    "width": 2560,
+    "height": 1440,
+    "cropped": false,
+    "resized": false,
+    "synthetic": false,
+    "original_png_unchanged": true
+  },
+  "public_version": "0.1.0-alpha",
+  "development_version": "0.2.0-alpha unreleased",
+  "workshop_item_id": "3826756673",
+  "store_updated": false,
+  "business_pass": false,
+  "images": [
+    {
+      "kind": "result_ui",
+      "observed_at_utc": "2026-10-27T02:36:52.235620+00:00",
+      "png": "capture-2-result.png",
+      "png_bytes": 4205882,
+      "png_sha256": "6b9f2d0fb6d9d9ca87dc349ecb1090422556d1c306dd258d348afac79e2f11f5",
+      "native": "capture-2-result.native.actual.json",
+      "native_bytes": 88156,
+      "native_sha256": "b6212c1b02c4aed5fedd9b81c0fa06df37784dd86455114ad181a50385a65d0c",
+      "evidence": "capture-2-result.evidence.actual.json",
+      "jpeg": "07-development-result.jpg",
+      "jpeg_bytes": 604265,
+      "jpeg_sha256": "f6bc6432182dd247949c23918ab2427b356768b741ff8eba98777219cf5787bd",
+      "caption": "未发布开发预览：融合结果、完整名称与封臣改信预览",
+      "limitations": [
+        "Long name soft wrapping was not exercised; all displayed names fit one line.",
+        "Pending/preview refusal groups do not prove actual replies."
+      ]
+    },
+    {
+      "kind": "faith_ui",
+      "observed_at_utc": "2026-10-27T02:29:56.811576+00:00",
+      "png": "capture-3-faith.png",
+      "png_bytes": 5133837,
+      "png_sha256": "962ecb598ff2681574a8d6929b1bcefc7ad59372d6a63cf27eba5fa364b84f02",
+      "native": "capture-3-faith.native.actual.json",
+      "native_bytes": 10266,
+      "native_sha256": "29103ac23a05394bb78b64a246b3029562c97f68d0ac27f653d31c3e31bde7b8",
+      "evidence": "capture-3-faith.evidence.actual.json",
+      "jpeg": "08-development-faith.jpg",
+      "jpeg_bytes": 775310,
+      "jpeg_sha256": "eab825258f6517e4739c2f5ade0377ea8df9e1f766f0b5273154cbde5ea5c12e",
+      "caption": "未发布开发预览：同一融合礼仪的信仰面板",
+      "limitations": [
+        "A genuine map hover tooltip remains visible away from the faith panel."
+      ]
+    }
+  ],
+  "acceptance": {
+    "zero_day": "16/17",
+    "long_name_wrap": "NOT_EXERCISED",
+    "five_day": "NOT_EXECUTED",
+    "all_eight_review_requirements_complete": false,
+    "ordinary_sdk_persistence": "save_binding_mismatch remains unresolved; separate native file proof exists"
+  },
+  "retention": {
+    "owner": "rrf-review-resume-20261026-a01",
+    "review_at_utc": "2026-11-01T04:00:00Z",
+    "purpose": "Active promotional delivery and remaining UI review inputs; original PNG and native sidecars required."
+  }
+}

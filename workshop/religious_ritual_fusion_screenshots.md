@@ -42,3 +42,14 @@ Root 的首发导出位于 `C:/workspace/rrf-development-20261024/publication-a0
 | 6 | [06.jpg](https://images.steamusercontent.com/ugc/15635122434027558454/E1F1D1E59DC806F3A58BC204CDACF40430E96A13/) | 741549 | `d1eba34145a11d370290580e3083c38ee1c78d4988a9cef05a8b19dbe0fd6dcd` |
 
 [公开回读证据](../mod_religious_ritual_fusion/docs/evidence/publication-public-readback-2026-10-25.json)。这些图片不改变原实机场次GAP。
+
+## 2026-10-27 新版界面开发预览（待商店提交）
+
+机器 `4-8e1c2f1861`；R0027，源码 `ab877cc06a6316afc1e2c9ea6e0e77026d4983c9`，实际 CK3 1.20.0.4。两张均为1066.9.18暂停时的真实画面；原图、原生查询、进程出生身份及独立JPEG身份见[素材清单](../mod_religious_ritual_fusion/docs/media/screenshots-R0027-2026-10-27.json)。Java ImageIO quality0.90仅格式转换，仍为2560×1440；Root已实际查看导出图。
+
+| 拟追加顺序 | 导出名 | 用途 | bytes／SHA-256 |
+| --- | --- | --- | --- |
+| 7 | `07-development-result.jpg` | 新融合结果页：完整名称、核心教义、实际非空封臣分组 | 604265／`f6bc6432182dd247949c23918ab2427b356768b741ff8eba98777219cf5787bd` |
+| 8 | `08-development-faith.jpg` | 同一礼仪155的原生信仰页与完整美德／罪恶图标；地图悬停提示原样保留 | 775310／`eab825258f6517e4739c2f5ade0377ea8df9e1f766f0b5273154cbde5ea5c12e` |
+
+拟保留原六图并追加上述两图，页面明确标注“未发布开发预览”，公开下载仍是0.1.0-alpha。当前尚未提交，不能将拟定顺序当作实际公开索引。R0027零日16/17，实际长名称换行未覆盖，五日未执行；截图不授整场或八项审核PASS。

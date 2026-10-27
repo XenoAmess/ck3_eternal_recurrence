@@ -262,3 +262,21 @@ Root先执行真实R0025 producer，首次在recorder新增hash参数处退出1�
 观察机器 `machine_id: 4-8e1c2f1861`，云报告生产者 `machine_id: runnervmdaln5-5f47da6a04`。d8的[RRF40429192103](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40429192103)和[DES40429192052](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40429192052)均在产品第10步失败，新增诊断第11步原0。实际leaf及product原Maven manager指向 `C:/Users/runneradmin/.m2/repository`，generate-code-tests之后的新Quarkus TEST manager指向 `D:/Users/runneradmin/.m2/repository`。C处JAR／POM及本地安装marker实际存在，D处该GAV目录不存在，直接失败原因已由原件确认；D为何被选的环境／settings分支未观测，不据此声称上游缺陷。`metadata/normal-close-a01/remote-ci-d8-readonly-a01/DIAGNOSIS.actual.json` 为3381 B，SHA `1a5768c06fb04f1cd67760f5ef31796f52e8f2031c64a7051cf3830f5c0fd702`。
 
 两workflow现仅在成功leaf之后，从它的实际原LRM日志与jar／pom安装目标交叉核对唯一仓库、实读GAV，再将该路径以 `QUARKUS_LOCAL_REPO` 传给product。此输入由[实际使用版本的Quarkus源码](https://github.com/quarkusio/quarkus/blob/3.33.3.2/independent-projects/bootstrap/maven-resolver/src/main/java/io/quarkus/bootstrap/resolver/maven/BootstrapMavenContext.java#L362-L372)明确支持；缺失或冲突拒绝，不猜用户目录。原Maven argv／退出码、默认命令及完整测试保留，后续诊断分别报告TEST同仓与GAV可读。配置及语法检查不能抵扣新云CI实际执行，当前尚未宣称修复后通过，也不把云机器状态外推为本机Game结果。
+
+## 03:18Z：R0027正常退出，取得新版UI原图，五日独立续验
+
+machine_id: `4-8e1c2f1861`；来源 `ab877cc06a6316afc1e2c9ea6e0e77026d4983c9`。完整共享unrun维护最终五命令73次、零跳过及实际静态范围不变；a03薄证明为10676 B、SHA `1b582da50e0aef5923f760415b33787a1da0e9adcd7206a3ea2c7770041d6393`。R0026在Game前因缺prelaunch目录停止；真实producer及原writer锁内reducer完成接续，原wait0，`metadata/normal-close-a01/actual-R0026-a01/EXECUTION.actual.json`为46181 B、SHA `f4798dd8419de37d9a1090f551a3ab05b696bb5e1e14aa4d8a6db2ff95a0c857`，没有补造游戏关闭。
+
+Root实际CAS240→241准入累计912MiB，metadata160内按prep46／keeper90／close24划分；global owned5GiB、gross8GiB、quota84GB及05Z不变。P4复用相同ab实际六链，重新执行FREEZE／BUILD-RUNTIME／PUBLIC-PREPARE三条原命令均0，没有重复Maven／Native构建。`metadata/runtime-preparation-a04/READY-NO-GAME.actual.json`为11518 B、SHA `de6d07e603abb1c10c1dabf17595ced2b704d7b14c4df8943b728e0ce90b5628`。原目录已在allocation前建立；实际prelaunch CAS241→242后启动R0027／a34，PID23392、FILETIME字符串`134375407059898463`。Steam由新鲜后台原生离线回执准入，没有Steam截图或抢焦点。
+
+R0027实际冷载原R24落定155保存（68524252 B、SHA `170232f0b6f2060504fa8f1863584bc61b74a8a4ac6620366d0f67b770a0a0d1`），1066.9.18暂停、玩家31254，未运行seed、未重邀或重新应用定制。只读决议真实执行；零日保存的Java V4在Win32拒写／拒删读句柄内原wait0，检查18个完整ACTOR／RITE／FAITH／RELIGION记录。Rite152–155、Faith13、Religion8与原R24完整token相同；玩家仅六个landed_data数值变化，原因未证实。DYNASTY／HOUSE／COAT_OF_ARMS仍为UNKNOWN_LAYOUT，空数组相等不计完整库存已观测。普通SDK保存仍有save_binding_mismatch，独立原生文件证明不替代SDK continuation资格。
+
+真实结果窗、原生信仰窗与诊断窗共拍三张2560×1440原图。融合结果完整名称、图标、RGB、三个核心与非空封臣分组已读回；信仰页为完整七美德／七罪恶。当前名字均容于单行，长名换行未覆盖，零日如实提交16/17，不把该项返回true解锁后继。原CaseClient随partial走正常退出，五日没有执行。原生GREEN及保留OS句柄均exit0，host／keeper／allocator原wait0；公共run／verify和Root原wait2保留业务partial。正常关闭原件9644 B、SHA `20a797ee3bfb460be52f98fdcbdffa92a12d7f7b1213a36899995156b9e02449`；原SCREEN由14169→14170释放done/resources[]，不重复release或行政收口。
+
+Root消费原工具session7999／chunk48c44c退出2；后记在`metadata/normal-close-a01/a34-root-resource-close-a01/ROOT-OUTER-WAIT-AND-CLOSE.actual.json`，2601 B、SHA `0bc53402b9dc49187236375167a4462cfa7e10aa716672e3ed3072041ca9829c`。闭场actual one-pass后CAS242→243，scene六lane及三个metadata owner均未超额；Game／prep／keeper未来归零，只留Root旧剩余和独立媒体4MiB。`R27-storage-close-a01/CLOSED-R27.CAPACITY.actual.json`为26969 B、SHA `0cecd9cf9cd30966b7d53a16cf106294bd5fc61c48a88a6dabb9b7a7d2c772fd`，原工具79802退出0。旧spend／RED／gross高水／addback完整保留，没有删除。
+
+两张真实宣传JPEG已按Java ImageIO0.90原尺寸导出并由Root实际查看，详见[素材清单](media/screenshots-R0027-2026-10-27.json)及[商店素材记录](../../workshop/religious_ritual_fusion_screenshots.md)。当前只完成离线素材准备，尚未上传；拟更新同条目3826756673并明确未发布开发预览，不上传开发89文件替代公开75文件。
+
+ab的[RRF40430771539](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40430771539)及[DES40430771497](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/40430771497)仍实际失败：leaf10项及binder通过，后继Python环境为C，但TEST LRM仍D。两workflow现在于同一产品Maven调用用Help evaluate记录`env.QUARKUS_LOCAL_REPO`，并显式传入`-Dmaven.repo.local`的同一已核实路径，保留原verify／完整测试／退出码。YAML、四个内嵌Python AST、原参数及门禁接线和diff检查通过；尚未取得新云执行，不称已修复。Maven环境表达式观测不是直接System.getenv或实际bootstrap CodeSource观测。
+
+并行拓扑已转为Root实际闭场与媒体／Git、ci_diagnosis两workflow受支持配置试验、native_next_inputs独立cold5准备、scene_capacity独立场容量与期限候选、saved155_public_prepare长名fixture及离线发布路径。接下来新cold场仅复核必要零日保存安全前置并保留原day5七项，长名输入放独立fresh代表场；不得将R27未覆盖项目改名算通过。MTS三／四核心及RRF＋DES联合真实创建、保存和30日后态仍待实机；公开版本及八项未完结状态不变。

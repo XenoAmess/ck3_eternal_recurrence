@@ -187,7 +187,7 @@ jobs:
         run: |
           set "MAVEN_OPTS=%MAVEN_OPTS% -Dorg.slf4j.simpleLogger.log.org.eclipse.aether.internal.impl.DefaultLocalRepositoryProvider=debug -Dorg.slf4j.simpleLogger.showLogName=true"
           if not exist "%RUNNER_TEMP%\des-save-resolver-diagnostic" mkdir "%RUNNER_TEMP%\des-save-resolver-diagnostic"
-          call mvn --batch-mode --no-transfer-progress -f mod_dynastic_esotericism/tools/pom.xml -Ddes.build.root=${{ runner.temp }}/dynastic-esotericism-build verify > "%RUNNER_TEMP%\des-save-resolver-diagnostic\product.stdout.log" 2> "%RUNNER_TEMP%\des-save-resolver-diagnostic\product.stderr.log"
+          call mvn --batch-mode --no-transfer-progress -f mod_dynastic_esotericism/tools/pom.xml -Ddes.build.root=${{ runner.temp }}/dynastic-esotericism-build "-Dmaven.repo.local=%QUARKUS_LOCAL_REPO%" org.apache.maven.plugins:maven-help-plugin:3.5.2:evaluate -Dexpression=env.QUARKUS_LOCAL_REPO "-Doutput=%RUNNER_TEMP%/des-save-resolver-diagnostic/same-maven-jvm-env-quarkus-local-repo.txt" verify > "%RUNNER_TEMP%\des-save-resolver-diagnostic\product.stdout.log" 2> "%RUNNER_TEMP%\des-save-resolver-diagnostic\product.stderr.log"
           set "resolver_exit=%ERRORLEVEL%"
           type "%RUNNER_TEMP%\des-save-resolver-diagnostic\product.stdout.log"
           type "%RUNNER_TEMP%\des-save-resolver-diagnostic\product.stderr.log" 1>&2
@@ -258,6 +258,37 @@ jobs:
                               if len(gav_directories) < 8:
                                   gav_directories.add(target.parent)
           override = os.environ.get('QUARKUS_LOCAL_REPO')
+          jvm_path = root / 'same-maven-jvm-env-quarkus-local-repo.txt'
+          jvm = {'schema': 'ck3-same-maven-jvm-env-expression-v1',
+                 'expression': 'env.QUARKUS_LOCAL_REPO',
+                 'producer_goal': 'org.apache.maven.plugins:maven-help-plugin:3.5.2:evaluate',
+                 'same_invocation_as_product_verify': True,
+                 'path': str(jvm_path), 'status': 'MISSING',
+                 'value': None, 'matches_later_python_environment': None}
+          if jvm_path.is_file():
+              size = jvm_path.stat().st_size
+              with jvm_path.open('rb') as handle:
+                  raw = handle.read(4097)
+              jvm.update(bytes=size, read_bytes=len(raw), truncated=size > 4096)
+              if size > 4096 or len(raw) != size:
+                  jvm['status'] = 'UNAVAILABLE_SIZE_OR_CONCURRENT_CHANGE'
+              else:
+                  jvm['sha256'] = hashlib.sha256(raw).hexdigest()
+                  try:
+                      text = raw.decode('utf-8-sig')
+                  except UnicodeDecodeError:
+                      jvm['status'] = 'UNAVAILABLE_ENCODING'
+                  else:
+                      value = text.rstrip('\r\n')
+                      jvm['raw_utf8_text'] = text
+                      if value in ('null object or invalid expression', '${env.QUARKUS_LOCAL_REPO}'):
+                          jvm['status'] = 'UNAVAILABLE_EXPRESSION'
+                      elif '\x00' in value or '\r' in value or '\n' in value:
+                          jvm['status'] = 'UNAVAILABLE_NONSCALAR'
+                      else:
+                          jvm.update(status='OBSERVED_MAVEN_ENV_EXPRESSION', value=value,
+                                     matches_later_python_environment=(value == override))
+          report['same_maven_jvm_environment'] = jvm
           test_repositories = {Path(row['repository']).resolve() for row in managers
                                if row['phase'] == 'product' and row['after_generate_code_tests_marker']}
           report.update(quarkus_local_repo_override=override,
