@@ -1,5 +1,6 @@
 // Deterministic real WorkerAdapter wait/publication regression; owned DTOs only.
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
+#include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/nonwar_private_snapshot_guard_diagnostics_v1.hpp"
 #include <atomic>
