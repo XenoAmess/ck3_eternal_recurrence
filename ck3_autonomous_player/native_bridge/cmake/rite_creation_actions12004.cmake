@@ -62,6 +62,16 @@ if(XAR_ENABLE_RITE_CREATION_ACTIONS12004)
       NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE XAR_ENABLE_RITE_CREATION_ACTIONS12004=1)
     target_link_libraries(xar_ck3_12004_rite_creation_guard_test PRIVATE
       xar_bridge_protocol xar_ck3_12002_runtime user32 bcrypt)
+    # The real worker fixture pulls the enabled mailbox into this executable.
+    # Match the registry test's existing production executor source closure.
+    if(XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1)
+      target_sources(xar_ck3_12004_rite_creation_guard_test PRIVATE
+        "${CMAKE_CURRENT_LIST_DIR}/../src/ingame_ui_navigation_v1.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/../src/ck3_12004_holy_site_ui.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/../src/ck3_12004_holy_site_adoption_entry.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/../src/appointment_window_snapshot_v1.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/../src/appointment_character_level12004.cpp")
+    endif()
     if(MSVC)
       target_compile_options(xar_ck3_12004_rite_creation_guard_test PRIVATE
         /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8 /Gy)
