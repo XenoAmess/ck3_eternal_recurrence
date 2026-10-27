@@ -4,6 +4,7 @@ import ast
 import copy
 import json
 import os
+import subprocess
 from pathlib import Path
 import sys
 import tempfile
@@ -319,6 +320,93 @@ class PreservedObserverClosureTests(unittest.TestCase):
         wait['observed_at_utc'] = '2026-10-24T11:00:00+00:00'
         f.reseal('allocate_wait', wait)
         self.assertEqual(object_field(self.check(), 'failure_cleanup')['win32_birth_filetime'], self.birth)
+
+    def test_preserved_failure_reused_supervisor_pids_reach_full_consumer(self) -> None:
+        from ck3_mod_acceptance_launcher import process_identity
+        f = self.fixture
+        original_supervisor = json_object(f.leaves['host_supervisor'])
+        original_host = json_object(f.leaves['host_started'])
+        child = subprocess.Popen([sys.executable, '-B', '-c', 'import sys;sys.stdin.buffer.read(1)'],
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        try:
+            current = process_identity(child.pid)
+            for role in ('outer', 'runtime', 'both'):
+                with self.subTest(role=role):
+                    supervisor = copy.deepcopy(original_supervisor)
+                    host = copy.deepcopy(original_host)
+                    if role in ('outer', 'both'):
+                        supervisor.update(pid=child.pid, original_popen_identity={
+                            'pid': child.pid, 'birth_filetime': str(int(current['birth_filetime']) - 1)})
+                    if role in ('runtime', 'both'):
+                        host['supervisor_pid'] = child.pid
+                    f.reseal('host_supervisor', supervisor)
+                    f.reseal('host_started', host)
+                    f.live = {child.pid}
+                    proof = object_field(self.check(), 'failure_cleanup')
+                    self.assertIs(proof['original_supervisor_generation_absent'], True)
+                    self.assertIs(proof['original_runtime_supervisor_generation_absent'], True)
+                    self.assertEqual(proof['current_supervisor_generation'] if role in ('outer', 'both') else
+                                     proof['current_runtime_supervisor_generation'], current)
+                    for key in ('normal_close_qualified', 'typed_normal_exit_proven', 'business_pass', 'release_pass'):
+                        self.assertIs(proof[key], False)
+                    self.assertEqual(json.loads(json.dumps(proof)), proof)
+                    if role in ('outer', 'both'):
+                        supervisor['original_popen_identity'] = current
+                        f.reseal('host_supervisor', supervisor)
+                        with self.assertRaisesRegex(ValueError, 'original supervisor still present'):
+                            self.check()
+        finally:
+            child.communicate(input=b'x', timeout=10)
+            self.assertEqual(child.returncode, 0)
+            f.live = set()
+
+    def test_runtime_supervisor_chronology_is_a_bound_and_rejects_bad_contracts(self) -> None:
+        host = {'supervisor_pid': 123, 'at_utc': '2026-10-26T18:47:33.666108+00:00',
+                'create_time': 1793040453.6593266}
+        current = {'pid': 123, 'birth_filetime': '134375140536661090'}
+        proof = allocation.validate_failed_runtime_supervisor(host, current)
+        self.assertEqual(proof['original_runtime_supervisor_birth_upper_bound_filetime'], '134375140536661089')
+        self.assertEqual(json.loads(json.dumps(proof)), proof)
+        self.assertIsNone(allocation.validate_failed_runtime_supervisor(host, None)[
+            'original_runtime_supervisor_birth_upper_bound_filetime'])
+        for value in (True, 134375140536661090, 1.0, None, '0134375140536661090', '0',
+                      '18446744073709551616', '134375140536661089', '134375140536661080'):
+            with self.subTest(birth=value), self.assertRaises(ValueError):
+                allocation.validate_failed_runtime_supervisor(host, {**current, 'birth_filetime': value})
+        for value in (None, True, '2026-10-26T18:47:33.666108', 'invalid'):
+            with self.subTest(timestamp=value), self.assertRaises(ValueError):
+                allocation.validate_failed_runtime_supervisor({**host, 'at_utc': value}, current)
+        for value in (None, True, '1793040453', float('nan'), float('inf'), float('-inf'),
+                      0, -1.0, 1793040454.0):
+            with self.subTest(creation=value), self.assertRaises(ValueError):
+                allocation.validate_failed_runtime_supervisor({**host, 'create_time': value}, current)
+        for key in ('pid', 'birth_filetime'):
+            missing = dict(current); missing.pop(key)
+            with self.subTest(missing=key), self.assertRaises(ValueError):
+                allocation.validate_failed_runtime_supervisor(host, missing)
+        for value in (True, 123.0, 124):
+            with self.subTest(pid=value), self.assertRaises(ValueError):
+                allocation.validate_failed_runtime_supervisor(host, {**current, 'pid': value})
+        with self.assertRaises(ValueError):
+            allocation.validate_failed_runtime_supervisor(host, {**current, 'extra': None})
+
+    def test_actual_supervisor_validation_scope_is_strict(self) -> None:
+        from mypy import api
+        tree = ast.parse((TOOLS/'ck3_mod_acceptance_allocate.py').read_text(encoding='utf-8-sig'))
+        names = {'_late_object', '_late_integer', '_late_check', '_recorded_decimal',
+                 'FailedSupervisorAbsenceFacts', 'validate_failed_supervisor_generation',
+                 'RuntimeSupervisorAbsenceFacts', 'validate_failed_runtime_supervisor'}
+        nodes = [node for node in tree.body if isinstance(node, (ast.ClassDef, ast.FunctionDef))
+                 and node.name in names]
+        self.assertEqual({node.name for node in nodes}, names)
+        actual = ('from __future__ import annotations\nfrom typing import Literal, TypedDict\n'
+                  'from datetime import datetime, timezone\nimport math, re\n'
+                  'from ck3_mod_acceptance_background_types import ProcessGeneration\n' +
+                  ast.unparse(ast.Module(body=nodes, type_ignores=[])))
+        with patch.dict(os.environ, {'MYPYPATH': str(TOOLS)}):
+            stdout, stderr, code = api.run(['--strict', '--strict-equality', '--follow-imports=silent',
+                '--no-incremental', '--cache-dir', 'nul', '-c', actual])
+        self.assertEqual(code, 0, stdout+stderr)
 
     def test_mixed_and_missing_explicit_formats_are_rejected(self) -> None:
         f = self.fixture

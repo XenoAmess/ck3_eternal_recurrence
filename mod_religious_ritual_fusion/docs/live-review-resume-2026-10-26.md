@@ -220,3 +220,19 @@ machine_id: `4-8e1c2f1861`；观察时间 `2026-10-26T22:41:57Z`。N8实际基�
 实际证明为 `R/review-fixes-a01/ui-and-shared-save-a01/defender-reader-ci-a01/segment-a02/EXECUTION.validated.actual.json`，5963 B，SHA `f2f1e5c76f92cd2c2f4c5b26ddbb9763abe17ae4f24b517388961af75b4ba984`。执行身份为2679基线及两份实际工作树Pin，不冒充后继提交已运行。N8原160MiB额度和失败原件不覆盖；同一输出根累计192MiB续行与新控制根4MiB尚待激活，scene888MiB仍只预留，当前没有Game准入。
 
 共享Java本地完整196项通过不变；2679的官方RRF40406430628及DES40406430470实际失败于Quarkus TEST阶段解析已安装共享JAR，实际TEST仓库／resolver原因仍待核实，未称官方CI全绿。后续先完成原生夹具和接口完整验证，再冷载拍新版UI真实图并更新同一商店；公开0.1.0-alpha未变，八项业务审核尚未完成。
+
+## 23:38Z后继：N8与接口资格通过，修复旧监督进程的PID判断
+
+machine_id: `4-8e1c2f1861`；观察截至 `2026-10-27T00:03Z`。同一N8输出根累计192MiB续行实际完成：保留原生产编译与链接，重编、重新登记并执行十个夹具，原外层wait为0。生产Native来源仍是267909ffd，续行元数据来源为9df352e55，两者没有改写成同一身份；原完整build失败1继续保留。N8最后实际分配176828416 B，资格原件 `R/build/native-qualified-a08/native-a01/PUBLIC-RUNTIME-QUALIFICATION.actual.json` 为9691 B，SHA `4a9cfff20aef8421d3605925310818dd9bb58272a33da8502a7adfa8094fa1b1`。
+
+实际新wire完整十二命令原wait均0，三组SDK接口测试98＋11＋6＝115、零跳过，另含实际14包、只读4、prisoner输出、两项原CTest及对应类型检查。`R/review-fixes-a01/ui-and-shared-save-a01/native-wire-ci-a08/EXECUTION.actual.json` 为1415191 B，SHA `1529448117d2a368675dd1f6151567b5d132826743552bb2c88af04d5f189215`；新seam为111598 B，SHA `cf3289864987a67f460e0002b730b08e5a9267b5aa099b9f0fde5a491327ba49`。这些是Native与接口资格，不是新Game业务通过。
+
+Root实际CAS235→236准入新的独立888MiB场次，原1032MiB场次的超额、失败和花费保留。P1正式89文件构建、保留DES56文件验证、source freeze、六链GAP0、runtime及公共prepare原退出均0；`finalized-cold-R0024-a01/metadata/runtime-preparation-a01/READY-NO-GAME.actual.json` 为10481 B，SHA `94bb28cdaa9431fe28010da81d7344f6a8687e73cd0ac9e5fe2dbee63d15e898`。随后a30的preflight原0，allocate原2在机器claim之前报`Failed-live original supervisor still present`，Root原1。没有分配R0025、启动keeper／Game或取得新SCREEN。
+
+失败分支对这种preserved-OS0闭场仍只按PID判断监督进程是否存在。共享读取器现复用外层原始FILETIME身份，并分别验证venv内部监督进程：旧回执缺少其精确出生值时，只接受当前实际出生晚于原host-started时间上界的证明；按整数计算并上取整9个100ns ticks，不追造历史出生值。原host创建时间必须有限、为正且不晚于回执。相同PID的原代、逆序、错误类型、空值和缺字段继续拒绝。完整消费器回归运行真实无害子进程，覆盖外层、内部及两角色同PID；JSON往返与维护范围八个完整AST模型／函数strict检查均执行。
+
+对应failed-attempt完整CI step三命令实际通过28＋13＋12＝53项、零跳过。另完整执行shared acceptance的92条原命令；两组合计95条原wait均0，报告950项，其中949项实际执行，HoF原生组件测试因缺专用输入明确未执行1项。Root初轮零跳过检查原1及该skip保留；原23条不重跑，后72条原外层0。完整汇总保持INCOMPLETE，不声称全组测试绿。只将实际三条恢复命令作为本次两份维护源码资格；其原命令回执经显式读取适配到既有Java消费者合同，原件、两个stdio、源码前后Pin及初轮失败均保留，没有新增执行或覆盖原回执。
+
+恢复资格原件为 `finalized-cold-R0024-a01/metadata/supervisor-regression-a01/EXECUTION.recovery3.consumer-ready.actual.json`，4416 B，SHA `7ad567a6e24b00c047e5e5946e2b84019c04efcf4c17de60c1854a0babea57e9`；完整95汇总 `EXECUTION.shared95.INCOMPLETE.actual.json` 为32335 B，SHA `2f9dfd8114670db9ad77ddb01fd9070eed817347e662330bd6f7575632554de0`。实际执行身份为9df基线加两份工作树源码，前后相等，不冒充后继提交已运行。CAS236→237仅增加独立64MiB恢复检查预算，现有888MiB只保留一次；新来源重新冻结前没有Game准入，期限仍为03:00Z。
+
+并行工作为Root共享修复与原wait验证、同场预算来源重绑、P2完整准备、后继启动及实机截图候选；Root仍唯一Git／账本／SCREEN／游戏writer。下一步在新提交重新生成P2六链资格与公共准备，实际冷载已落定155、核两位既有邀请者五日后态，并拍摄更新结果窗及信仰详情页。尚无本次新实机图或商店更新，公开0.1.0-alpha与3826756673不变，八项完整业务审核继续。

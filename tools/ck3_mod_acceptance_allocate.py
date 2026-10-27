@@ -3057,6 +3057,59 @@ def validate_failed_supervisor_generation(original_value: object,
         'current_supervisor_generation': current_typed, 'original_supervisor_generation_absent': True}
 
 
+class RuntimeSupervisorAbsenceFacts(TypedDict):
+    runtime_supervisor_pid: int
+    current_runtime_supervisor_generation: ProcessGeneration | None
+    original_runtime_supervisor_birth_upper_bound_filetime: str | None
+    original_runtime_supervisor_generation_absent: Literal[True]
+
+
+def validate_failed_runtime_supervisor(host_value: object,
+        current_value: object) -> RuntimeSupervisorAbsenceFacts:
+    """Legacy redirectors have no birth receipt; only a later generation is safe.
+
+    The supervisor existed before it wrote host-started.at_utc. That timestamp
+    bounds its birth; it does not reconstruct an exact historical FILETIME.
+    """
+    host = _late_object(host_value, 'Original failed host')
+    pid = _late_integer(host.get('supervisor_pid'), 'Original runtime supervisor PID')
+    _late_check(pid > 0, 'Original runtime supervisor PID must be positive')
+    current_typed: ProcessGeneration | None = None
+    bound: str | None = None
+    if current_value is not None:
+        current = _late_object(current_value, 'Current runtime supervisor generation')
+        birth = current.get('birth_filetime')
+        _late_check(set(current) == {'pid', 'birth_filetime'} and
+            _late_integer(current.get('pid'), 'Current runtime supervisor PID') == pid,
+            'Current runtime supervisor generation PID differs')
+        actual_birth = _recorded_decimal(birth, 'Current runtime supervisor FILETIME')
+        if not isinstance(birth, str):
+            raise ValueError('Current runtime supervisor FILETIME must be decimal text')
+        observed = host.get('at_utc')
+        if not isinstance(observed, str):
+            raise ValueError('Original host timestamp required for a reused runtime supervisor PID')
+        timestamp = datetime.fromisoformat(observed)
+        _late_check(timestamp.tzinfo is not None, 'Original host timestamp must include timezone')
+        elapsed = timestamp.astimezone(timezone.utc) - datetime(1601, 1, 1, tzinfo=timezone.utc)
+        # ISO microseconds omit up to nine 100ns ticks. Round the bound upward.
+        upper = ((elapsed.days * 86400 + elapsed.seconds) * 1000000 + elapsed.microseconds) * 10 + 9
+        creation = host.get('create_time')
+        if (isinstance(creation, bool) or not isinstance(creation, (int, float)) or creation <= 0 or
+                (isinstance(creation, float) and not math.isfinite(creation))):
+            raise ValueError('Original host creation time must be positive and finite')
+        numerator, denominator = creation.as_integer_ratio()
+        _late_check(numerator * 10000000 <= (upper - 116444736000000000) * denominator,
+            'Original host timestamp precedes its recorded creation time')
+        _late_check(0 < upper <= 18446744073709551615 and actual_birth > upper,
+            'Failed-live original runtime supervisor still present or birth chronology differs')
+        bound = str(upper)
+        current_typed = {'pid': pid, 'birth_filetime': birth}
+    return {'runtime_supervisor_pid': pid,
+        'current_runtime_supervisor_generation': current_typed,
+        'original_runtime_supervisor_birth_upper_bound_filetime': bound,
+        'original_runtime_supervisor_generation_absent': True}
+
+
 def _recorded_duration(expression: ast.expr, label: str) -> int:
     if not isinstance(expression, ast.Call) or not isinstance(expression.func, ast.Name) or \
             expression.func.id != 'str' or len(expression.args) != 1 or expression.keywords:
@@ -3578,13 +3631,16 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
         except psutil.NoSuchProcess: present = False
         require(not present, 'Failed-live original process still present: ' + label)
     supervisor_facts = None
-    if gui_os0:
+    runtime_supervisor_facts = None
+    if gui_os0 or preserved_os0:
         from ck3_mod_acceptance_launcher import process_identity
         supervisor_pid = _late_integer(supervisor.get('pid'), 'Original supervisor PID')
         current_supervisor = process_identity(supervisor_pid) if psutil.pid_exists(supervisor_pid) else None
         supervisor_facts = validate_failed_supervisor_generation(supervisor, current_supervisor)
-        require(host['supervisor_pid'] == supervisor_pid or not psutil.pid_exists(host['supervisor_pid']),
-                'Failed-live original supervisor still present without a recorded generation')
+        runtime_pid = _late_integer(host.get('supervisor_pid'), 'Original runtime supervisor PID')
+        runtime_generation = (current_supervisor if runtime_pid == supervisor_pid else
+            process_identity(runtime_pid) if psutil.pid_exists(runtime_pid) else None)
+        runtime_supervisor_facts = validate_failed_runtime_supervisor(host, runtime_generation)
     else:
         require(not psutil.pid_exists(supervisor['pid']) and not psutil.pid_exists(host['supervisor_pid']),
                 'Failed-live original supervisor still present')
@@ -3621,6 +3677,8 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
         result['failure_cleanup'].update(original_public_run_exit_code=2, original_allocator_exit_code=0)
     if supervisor_facts is not None:
         result['failure_cleanup'].update(supervisor_facts)
+    if runtime_supervisor_facts is not None:
+        result['failure_cleanup'].update(runtime_supervisor_facts)
     return result
 
 
