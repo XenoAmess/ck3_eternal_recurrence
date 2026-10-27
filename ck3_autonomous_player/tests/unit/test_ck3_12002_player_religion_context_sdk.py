@@ -3,8 +3,13 @@
 from __future__ import annotations
 
 import unittest
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
 
-from test_ck3_12002_player_religion_context_wire import MailboxPacketDriver, load_fixture
+from test_ck3_12002_player_religion_context_wire import MailboxPacketDriver, PublicationRaceDriver, load_fixture, packet_object
 from xar_autoplayer.bridge.mcp_server import create_server, parser
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
 
@@ -16,7 +21,57 @@ class ReligionPacketSdkDriver(MailboxPacketDriver):
     query_player_religion_context_private_v1 = NativeHeadlessGameplayDriver.query_player_religion_context_private_v1
 
 
+class PublicationRaceSdkDriver(PublicationRaceDriver):
+    command_timeout_seconds = 30.0
+    query_player_religion_context_private_v1 = NativeHeadlessGameplayDriver.query_player_religion_context_private_v1
+
+
 class PlayerReligion12002SdkTest(unittest.IsolatedAsyncioTestCase):
+    async def test_original_expected_revision_is_not_misreported_after_reacquisition(self) -> None:
+        from mcp import Client
+        driver = PublicationRaceSdkDriver()
+        async with Client(create_server(driver)) as client:
+            called = await client.call_tool("ck3_query_player_religion_context_v1", {"expected_revision": 11})
+            self.assertFalse(called.is_error)
+            actual = packet_object(json.loads(json.dumps(called.structured_content)))
+        self.assertEqual(actual["queried_revision"], 12)
+        self.assertEqual(actual["queried_native_revision"], 11)
+        trace = packet_object(actual["read_consistency_reacquisition"])
+        self.assertEqual(trace["original_expected_revision"], 11)
+        self.assertEqual(trace["failed_response"], driver.failed_response)
+        self.assertEqual(trace["reissued_request_id"], driver.sent[1]["request_id"])
+        self.assertEqual(len(driver.sent), 2)
+
+    async def test_independent_python_sdk_consumer_preserves_the_failed_read_and_trace(self) -> None:
+        root = Path(__file__).resolve().parents[2]
+        program = '''import asyncio,json,sys
+from pathlib import Path
+root=Path(sys.argv[1]);sys.path[:0]=[str(root/'src'),str(root/'tests/unit')]
+from mcp import Client
+from xar_autoplayer.bridge.mcp_server import create_server
+from test_ck3_12002_player_religion_context_sdk import PublicationRaceSdkDriver
+async def run():
+    driver=PublicationRaceSdkDriver()
+    async with Client(create_server(driver)) as client:
+        called=await client.call_tool('ck3_query_player_religion_context_v1',{'expected_revision':11})
+        if called.is_error:raise RuntimeError(str(called))
+        print(json.dumps({'actual':called.structured_content,'sent':driver.sent,'failed':driver.failed_response}))
+asyncio.run(run())
+'''
+        env = os.environ.copy()
+        env.pop("PYTHONPATH", None)
+        process = subprocess.run([sys.executable, "-I", "-B", "-X", "utf8", "-c", program, str(root)],
+            cwd=root, env=env, capture_output=True, text=True, encoding="utf-8", timeout=30)
+        self.assertEqual(process.returncode, 0, process.stdout + process.stderr)
+        packet = json.loads(process.stdout.strip().splitlines()[-1])
+        self.assertEqual(packet["actual"]["queried_revision"], 12)
+        trace = packet["actual"]["read_consistency_reacquisition"]
+        self.assertEqual(trace["original_expected_revision"], 11)
+        self.assertEqual(trace["failed_response"], packet["failed"])
+        self.assertEqual(len(packet["sent"]), 2)
+        self.assertEqual({x["step"] for x in packet["sent"]}, {"query-player-religion-context-v1"})
+        self.assertNotEqual(trace["failed_request_id"], trace["reissued_request_id"])
+
     async def test_case_declared_reads_register_only_the_two_selected_tools(self) -> None:
         from mcp import Client
         from test_ck3_12002_player_religion_personal_parameters_sdk import PersonalParametersPacketSdkDriver

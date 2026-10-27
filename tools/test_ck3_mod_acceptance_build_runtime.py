@@ -32,6 +32,20 @@ class GenericDecisionContractClassification(unittest.TestCase):
         'ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_decision_item_action_contract.py',
         'ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_decisions_open_contract.py',
     )
+    RELIGION_TRANSPORT: str = 'ck3_autonomous_player/src/xar_autoplayer/bridge/player_religion_context_private_transport.py'
+
+    def test_only_exact_generic_religion_transport_uses_sdk_chain(self) -> None:
+        self.assertEqual(builder.GENERIC_RELIGION_TRANSPORT, self.RELIGION_TRANSPORT)
+        self.assertEqual(builder.classify(self.RELIGION_TRANSPORT), {'shared_sdk_delta'})
+        for relative in (
+            self.RELIGION_TRANSPORT.replace('xar_autoplayer/bridge/', 'other/'),
+            self.RELIGION_TRANSPORT.replace('.py', '_extra.py'),
+            builder.SDK_PREFIX + 'xar_autoplayer/bridge/religion_context_addon_schema.py',
+            builder.SDK_PREFIX + 'xar_autoplayer/bridge/rite_governance.py',
+            builder.SDK_PREFIX + 'xar_autoplayer/bridge/holy_site.py',
+        ):
+            with self.subTest(path=relative):
+                self.assertEqual(builder.classify(relative), {'hof_terms_confirm_seam'})
 
     def test_only_exact_generic_contract_uses_sdk_chain(self) -> None:
         self.assertEqual(builder.GENERIC_DECISION_CONTRACTS, frozenset(self.CONTRACTS))
@@ -49,12 +63,12 @@ class GenericDecisionContractClassification(unittest.TestCase):
                     self.assertEqual(builder.classify(neighbor), {'hof_terms_confirm_seam'})
 
     def test_changed_generic_contract_reaches_real_qualification_consumer(self) -> None:
-        for relative in self.CONTRACTS:
+        for relative in (*self.CONTRACTS, self.RELIGION_TRANSPORT):
             with self.subTest(contract=relative), tempfile.TemporaryDirectory(prefix='generic-decision-source-') as temporary:
                 root = Path(temporary).resolve()
                 source = root / relative
                 source.parent.mkdir(parents=True)
-                source.write_text('# synthetic generic decision contract\n', encoding='utf-8')
+                source.write_text('# synthetic generic SDK source\n', encoding='utf-8')
                 receipt = root / 'sdk-qualification.json'
                 value = {
                     'machine_id': MACHINE, 'source_commit': 'a' * 40,

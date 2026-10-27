@@ -39,6 +39,7 @@ public final class SourceQualificationEmitter {
     private static final Set<String> GENERIC_DECISION_CONTRACTS = Set.of(
             SDK + "xar_autoplayer/bridge/ingame_decision_item_action_contract.py",
             SDK + "xar_autoplayer/bridge/ingame_decisions_open_contract.py");
+    private static final String GENERIC_RELIGION_TRANSPORT = SDK + "xar_autoplayer/bridge/player_religion_context_private_transport.py";
     private static final String NATIVE = "ck3_autonomous_player/native_bridge/";
     private static final String HOST = NATIVE + "research/run_ck3_12002_mcp_live.py";
     private static final Set<String> CRITICAL = Set.of("player_pilgrimage_planner_private_transport.py", "player_pilgrimage_activities_private_transport.py", "native_driver.py", "mcp_server.py", "nonwar_private_build.py", "version_identity.py", "activity_feast_stage5_start_private_transport.py", "driver.py", "exact_clock_failure_diagnostic_v1.py");
@@ -178,7 +179,7 @@ public final class SourceQualificationEmitter {
         if (path.equals(HOST)) return Set.of("shared_host");
         if (path.startsWith(NATIVE)) return path.endsWith(".md") ? Set.of() : Set.of(path.endsWith(".py") ? "shared_host" : "new_native_base_required");
         if (path.startsWith(SDK)) {
-            if (GENERIC_DECISION_CONTRACTS.contains(path)) return Set.of("shared_sdk_delta");
+            if (GENERIC_DECISION_CONTRACTS.contains(path) || path.equals(GENERIC_RELIGION_TRANSPORT)) return Set.of("shared_sdk_delta");
             if (CRITICAL.contains(name)) return Set.of("pilgrimage_wire_seam");
             if (name.contains("exact_day") || name.contains("speed_configuration") || name.contains("application_main_clock")) return Set.of("exact_day_clock", "pilgrimage_wire_seam");
             if (name.contains("ingame_decision") || name.contains("rite_governance") || name.contains("religion_context") || name.contains("holy_site")) return Set.of("hof_terms_confirm_seam");

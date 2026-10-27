@@ -31,6 +31,7 @@ GENERIC_DECISION_CONTRACTS: frozenset[str] = frozenset({
     SDK_PREFIX + "xar_autoplayer/bridge/ingame_decision_item_action_contract.py",
     SDK_PREFIX + "xar_autoplayer/bridge/ingame_decisions_open_contract.py",
 })
+GENERIC_RELIGION_TRANSPORT: str = SDK_PREFIX + "xar_autoplayer/bridge/player_religion_context_private_transport.py"
 NATIVE_PREFIX = "ck3_autonomous_player/native_bridge/"
 PROFILE_EXPANSION_RELATIVE = "tools/ck3_mod_acceptance_native_profile_expansions.json"
 TEST_PREFIX = "ck3_autonomous_player/tests/"
@@ -328,7 +329,7 @@ def classify(path: str) -> set[str]:
             return set()
         return {"shared_host"}
     if path.startswith(SDK_PREFIX):
-        if path in GENERIC_DECISION_CONTRACTS:
+        if path in GENERIC_DECISION_CONTRACTS or path == GENERIC_RELIGION_TRANSPORT:
             return {"shared_sdk_delta"}
         if name in CRITICAL_TRANSPORTS:
             return {"pilgrimage_wire_seam"}

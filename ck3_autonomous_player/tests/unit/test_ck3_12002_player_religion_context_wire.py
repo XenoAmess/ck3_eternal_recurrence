@@ -6,7 +6,10 @@ from copy import deepcopy
 import json
 from pathlib import Path
 import sys
+from collections.abc import Callable
+from types import SimpleNamespace
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
@@ -14,7 +17,8 @@ sys.path.insert(0, str(ROOT / "src"))
 from xar_autoplayer.bridge.player_religion_context_private_transport import (
     normalize_player_religion_context_v1, query_player_religion_context_private_v1,
 )
-from xar_autoplayer.bridge.driver import UnsupportedStepError
+from xar_autoplayer.bridge.driver import BridgeUnavailableError, UnsupportedStepError
+from xar_autoplayer.bridge.g2_private_query_transport import read_private_g2_native_query_v1
 from xar_autoplayer.bridge.version_identity import CK3_12002
 
 
@@ -145,6 +149,190 @@ class PlayerReligion12002MailboxWireTest(unittest.TestCase):
         with self.assertRaises(UnsupportedStepError):
             query_player_religion_context_private_v1(driver, expected_revision=driver.snapshot["revision"])
         self.assertEqual(driver.sent, [])
+
+
+def packet_object(value: object) -> dict[str, object]:
+    if not isinstance(value, dict) or any(not isinstance(key, str) for key in value):
+        raise ValueError("Fixture JSON object required")
+    return {key: item for key, item in value.items() if isinstance(key, str)}
+
+
+class PublicationRaceDriver(MailboxPacketDriver):
+    """Real protocol state/condition, actual query transport, fixture-owned wire.
+
+    Native world changes are fixture counterfactuals, not a live-game claim.
+    No callback or gameplay command is submitted by this backend.
+    """
+
+    def __init__(self, mode: str = "success") -> None:
+        from xar_autoplayer.bridge.native_driver import NativeProtocolState
+        super().__init__(load_fixture("mailbox/current-zero.json"))
+        self.mode = mode
+        self.protocol = NativeProtocolState("fixture:religion-publication-race")
+        self.protocol.ingest({
+            "type": "hello", "protocol_version": 1, "pid": 1234,
+            "connection_generation": 1, "capabilities": ["game.state.snapshot"],
+            "expected_ck3_version": CK3_12002.game_version,
+            "expected_ck3_sha256": CK3_12002.executable_sha256,
+        })
+        self.mutate: Callable[[dict[str, object]], None] | None = None
+        self.waited: list[tuple[int, float]] = []
+        self.failed_response: dict[str, object] = {}
+        for revision in range(1, 11):
+            self.protocol.ingest(self.publication(revision))
+
+    def publication(self, revision: int) -> dict[str, object]:
+        from test_native_bridge_driver import _snapshot
+        native = packet_object(packet_object(self.frame["result"])["player_religion_context"])
+        date, actor = native["date_raw"], native["played_character_id"]
+        if type(date) is not int or type(actor) is not int:
+            raise ValueError("Fixture date/actor integers required")
+        return _snapshot(
+            revision, date_raw=date,
+            played_character={"character_id": actor, "alive": True},
+            played_character_piety={"raw": 600000000 if revision == 10 else 550000000, "scale": 100000},
+        )
+
+    def take_snapshot(self) -> dict[str, object]:
+        current = self.protocol.semantic_snapshot()
+        current["episode_projection"] = "native_campaign"
+        current["managed_campaign_run_binding"] = {
+            "run_id": "fixture-religion-run", "state_dir": "fixture-state",
+            "bridge_pipe": "fixture:religion-publication-race", "host_path": "fixture-host",
+            "frozen_argv_sha256": "a" * 64,
+        }
+        if current["native_revision"] == 11 and self.mutate is not None:
+            self.mutate(current)
+        return current
+
+    def wait_for_command_result(self, request_id: str, timeout_seconds: float) -> dict[str, object]:
+        if len(self.sent) == 1 or self.mode == "second-red":
+            response: dict[str, object] = {
+                "type": "command_result", "protocol_version": 1, "request_id": request_id,
+                "ok": False, "error": "player_religion_published_frame_changed",
+            }
+            if self.mode == "unknown-error": response["error"] = "player_religion_native_capture_exception"
+            if self.mode == "wrong-request": response["request_id"] = "different-request"
+            if self.mode == "wrong-protocol": response["protocol_version"] = True
+            if not self.failed_response: self.failed_response = deepcopy(response)
+            self.protocol.ingest(response)
+            received = self.protocol.wait_for_command_result(request_id, timeout_seconds)
+            return received if received is not None else {}
+        response = deepcopy(self.frame)
+        response["request_id"] = request_id
+        result = packet_object(response["result"])
+        result["snapshot_revision"] = 11
+        response["result"] = result
+        self.protocol.ingest(response)
+        received = self.protocol.wait_for_command_result(request_id, timeout_seconds)
+        return received if received is not None else {}
+
+    def wait_for_change(self, after_revision: int, *, timeout_seconds: float) -> dict[str, object]:
+        self.waited.append((after_revision, timeout_seconds))
+        if self.mode != "no-publication":
+            # Use the actual state_snapshot consumer and actual condition, not a
+            # mirror of the consistency predicate or a fabricated return frame.
+            self.protocol.ingest(self.publication(11))
+        self.protocol.wait_for_public_change(after_revision, timeout_seconds)
+        return self.take_snapshot()
+
+
+class PlayerReligionPublicationConsistencyTest(unittest.TestCase):
+    def test_exact_rejected_read_reacquires_a_real_new_publication_once(self) -> None:
+        driver = PublicationRaceDriver()
+        self.assertEqual(driver.take_snapshot()["revision"], 11)
+        result = query_player_religion_context_private_v1(driver, expected_revision=11)
+        self.assertEqual(result["queried_revision"], 12)
+        self.assertEqual(result["queried_native_revision"], 11)
+        trace = packet_object(result["read_consistency_reacquisition"])
+        self.assertEqual(trace["original_expected_revision"], 11)
+        self.assertEqual(trace["initial_native_revision"], 10)
+        self.assertEqual(trace["failed_response"], driver.failed_response)
+        self.assertEqual(trace["failed_request_id"], driver.sent[0]["request_id"])
+        self.assertEqual(trace["reissued_request_id"], driver.sent[1]["request_id"])
+        self.assertNotEqual(trace["failed_request_id"], trace["reissued_request_id"])
+        self.assertEqual(json.loads(json.dumps(trace)), trace)
+        self.assertEqual([x["expected_revision"] for x in driver.sent], [10, 11])
+        self.assertEqual({x["step"] for x in driver.sent}, {"query-player-religion-context-v1"})
+
+    def test_no_publication_unknown_errors_and_second_red_do_not_loop(self) -> None:
+        for mode, sends in (("no-publication", 1), ("unknown-error", 1),
+                            ("wrong-request", 1), ("wrong-protocol", 1), ("second-red", 2)):
+            with self.subTest(mode=mode):
+                driver = PublicationRaceDriver(mode)
+                with self.assertRaises(BridgeUnavailableError):
+                    query_player_religion_context_private_v1(driver, expected_revision=11, timeout_seconds=.01)
+                self.assertEqual(len(driver.sent), sends)
+
+    def test_identity_date_pause_event_pending_and_exact_revision_guards_survive(self) -> None:
+        changes: list[tuple[str, object]] = [
+            ("date_raw", 1), ("paused", False), ("map_ready", False),
+            ("native_revision", True), ("native_revision", 11.0),
+            ("revision", True), ("revision", 12.0),
+            ("played_character", {"character_id": 999, "alive": True}),
+            ("active_event", {"event_instance_id": 1}),
+            ("pending_character_interaction", {"id": 1}),
+            ("managed_campaign_run_binding", None),
+        ]
+        for field, value in changes:
+            with self.subTest(field=field, value=value):
+                driver = PublicationRaceDriver()
+                def mutate(current: dict[str, object]) -> None:
+                    current[field] = value
+                driver.mutate = mutate
+                with self.assertRaises(BridgeUnavailableError):
+                    query_player_religion_context_private_v1(driver, expected_revision=11)
+                self.assertEqual(len(driver.sent), 1)
+
+    def test_other_steps_and_stale_initial_input_never_gain_reacquisition(self) -> None:
+        driver = PublicationRaceDriver()
+        with self.assertRaises(BridgeUnavailableError):
+            read_private_g2_native_query_v1(driver, permission="allow_private_player_religion_context_query",
+                step="query-current-timeline-blocker-context-v1", expected_revision=11)
+        self.assertEqual(len(driver.sent), 1)
+        self.assertEqual(driver.waited, [])
+        driver = PublicationRaceDriver()
+        with self.assertRaises(BridgeUnavailableError):
+            query_player_religion_context_private_v1(driver, expected_revision=10)
+        self.assertEqual(driver.sent, [])
+
+    def test_missing_snapshot_and_pid_generation_build_drift_reject_before_second_send(self) -> None:
+        changes: list[tuple[str, object]] = [
+            ("pid", 9999), ("pid", True), ("pid", 1234.0),
+            ("connection_generation", 2), ("connection_generation", True),
+            ("connection_generation", 1.0), ("expected_ck3_sha256", "f" * 64),
+        ]
+        for field, value in changes:
+            with self.subTest(field=field, value=value):
+                driver = PublicationRaceDriver()
+                def mutate(current: dict[str, object]) -> None:
+                    diagnostics = packet_object(current["diagnostics"])
+                    hello = packet_object(diagnostics["hello"])
+                    hello[field] = value
+                    diagnostics["hello"] = hello
+                    current["diagnostics"] = diagnostics
+                driver.mutate = mutate
+                with self.assertRaises(BridgeUnavailableError):
+                    query_player_religion_context_private_v1(driver, expected_revision=11)
+                self.assertEqual(len(driver.sent), 1)
+        driver = PublicationRaceDriver()
+        def remove_snapshot(current: dict[str, object]) -> None:
+            current.pop("snapshot_id")
+        driver.mutate = remove_snapshot
+        with self.assertRaises(BridgeUnavailableError):
+            query_player_religion_context_private_v1(driver, expected_revision=11)
+        self.assertEqual(len(driver.sent), 1)
+
+    def test_original_total_deadline_cannot_be_reset_by_frame_reacquisition(self) -> None:
+        driver = PublicationRaceDriver()
+        stamps = iter((0.0, 2.0))
+        def monotonic() -> float:
+            return next(stamps)
+        with patch("xar_autoplayer.bridge.g2_private_query_transport.time", new=SimpleNamespace(monotonic=monotonic)):
+            with self.assertRaisesRegex(BridgeUnavailableError, "original deadline expired"):
+                query_player_religion_context_private_v1(driver, expected_revision=11, timeout_seconds=1.0)
+        self.assertEqual(len(driver.sent), 1)
+        self.assertEqual(driver.waited, [])
 
 
 if __name__ == "__main__":

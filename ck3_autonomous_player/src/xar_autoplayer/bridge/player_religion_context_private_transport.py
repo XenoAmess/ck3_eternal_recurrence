@@ -25,7 +25,7 @@ from .player_devotion_virtues import (
     normalize_player_vow_of_poverty_terms_v1,
 )
 from .g2_private_query_transport import (
-    private_g2_query_metadata_v1, read_private_g2_native_query_v1,
+    private_g2_query_metadata_v1, read_player_religion_query_consistent_v1,
 )
 from .nonwar_private_build import (
     private_native_schema,
@@ -304,8 +304,8 @@ def normalize_player_church_income_profile_v1(
 def query_player_religion_context_private_v1(
     driver: object, *, expected_revision: int, timeout_seconds: float = 30.0,
 ) -> dict[str, object]:
-    before, result = read_private_g2_native_query_v1(
-        driver, permission=PERMISSION, step=STEP,
+    before, result, reacquisition = read_player_religion_query_consistent_v1(
+        driver, permission=PERMISSION,
         expected_revision=expected_revision, timeout_seconds=timeout_seconds,
     )
     try:
@@ -346,17 +346,17 @@ def query_player_religion_context_private_v1(
                     result["player_pilgrimage_activity_type_terms"], current_context=value,
                 )
             )
+        headless_activity_terms: Mapping[str, object] | None = None
         if "player_pilgrimage_headless_activity_terms" in result:
-            pilgrimage_fields["player_pilgrimage_headless_activity_terms"] = (
-                normalize_player_pilgrimage_headless_activity_terms_v1(
-                    result["player_pilgrimage_headless_activity_terms"], current_context=value,
-                )
+            headless_activity_terms = normalize_player_pilgrimage_headless_activity_terms_v1(
+                result["player_pilgrimage_headless_activity_terms"], current_context=value,
             )
+            pilgrimage_fields["player_pilgrimage_headless_activity_terms"] = headless_activity_terms
         if "player_pilgrimage_candidate_routes" in result:
             pilgrimage_fields["player_pilgrimage_candidate_routes"] = (
                 normalize_player_pilgrimage_candidate_routes_v1(
                     result["player_pilgrimage_candidate_routes"], current_context=value,
-                    activity_terms=pilgrimage_fields.get("player_pilgrimage_headless_activity_terms"),
+                    activity_terms=headless_activity_terms,
                 )
             )
         confession_fields = {}
@@ -407,7 +407,7 @@ def query_player_religion_context_private_v1(
             raise ValueError("native player religion context envelope lost its source status")
     except ValueError as error:
         raise BridgeUnavailableError(str(error)) from error
-    return {
+    output: dict[str, object] = {
         **value, **progress_fields, **decision_fields, **pilgrimage_fields,
         **confession_fields, **confession_permission_fields, **church_income_fields,
         **fulfillment_type_fields, **church_tax_fields,
@@ -419,3 +419,6 @@ def query_player_religion_context_private_v1(
         "backend_id": result["backend_id"], "domain_key": DOMAIN_KEY,
         "status": result["status"], "read_only": True, "advertised": False,
     }
+    if reacquisition is not None:
+        output["read_consistency_reacquisition"] = reacquisition
+    return output
