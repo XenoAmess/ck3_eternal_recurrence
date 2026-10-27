@@ -75,6 +75,69 @@ jobs:
           type "%RUNNER_TEMP%\rrf-save-resolver-diagnostic\leaf.stdout.log"
           type "%RUNNER_TEMP%\rrf-save-resolver-diagnostic\leaf.stderr.log" 1>&2
           exit /b %resolver_exit%
+      - name: Bind Quarkus TEST to the actual installed leaf repository
+        # BootstrapMavenContext.resolveLocalRepo reads QUARKUS_LOCAL_REPO first.
+        # Use only this successful leaf process observed LRM/install targets.
+        if: success()
+        shell: python {0}
+        run: |
+          from datetime import datetime, timezone
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import re
+          import subprocess
+          import sys
+
+          root = Path(os.environ['RUNNER_TEMP']) / 'rrf-save-resolver-diagnostic'
+          repositories: set[Path] = set()
+          targets: set[Path] = set()
+          logs = []
+          ansi = re.compile(r'\x1b\[[0-?]*[ -/]*[@-~]')
+          for stream in ('stdout', 'stderr'):
+              path = root / ('leaf.' + stream + '.log')
+              with path.open('rb') as handle:
+                  raw = handle.read(2 * 1024**2 + 1)
+              if len(raw) > 2 * 1024**2:
+                  raise RuntimeError('Leaf repository observations exceed the bounded log read')
+              logs.append({'path': str(path), 'bytes': len(raw), 'sha256': hashlib.sha256(raw).hexdigest()})
+              for line in raw.decode('utf-8', errors='strict').splitlines():
+                  line = ansi.sub('', line)
+                  match = re.search(r'Using manager .+? for (.+)$', line)
+                  if match:
+                      repositories.add(Path(match.group(1)).resolve())
+                  match = re.search(r'Installing .+ to (.+ck3-save-core-0\.1\.0\.(?:jar|pom))$', line)
+                  if match:
+                      targets.add(Path(match.group(1)).resolve())
+          if len(repositories) != 1:
+              raise RuntimeError('Successful leaf must expose one actual Maven local repository; no guessed fallback')
+          repository = next(iter(repositories))
+          gav = repository / 'org/xar/ck3/ck3-save-core/0.1.0'
+          expected = {gav / ('ck3-save-core-0.1.0.' + extension) for extension in ('jar', 'pom')}
+          if not repository.is_absolute() or targets != expected:
+              raise RuntimeError('Actual leaf install jar/pom targets conflict with its observed Maven repository')
+          files = []
+          for path in sorted(expected):
+              with path.open('rb') as handle:
+                  raw = handle.read(1024**2 + 1)
+              if not raw or len(raw) > 1024**2:
+                  raise RuntimeError('Actual installed leaf jar/pom is unreadable or exceeds the selected GAV bound')
+              files.append({'path': str(path), 'bytes': len(raw), 'sha256': hashlib.sha256(raw).hexdigest()})
+          machine = subprocess.run([sys.executable, '-B', 'tools/ck3_live_run_id.py', 'machine'],
+                                   capture_output=True, text=True, check=True).stdout.strip()
+          receipt = {'schema': 'ck3-quarkus-observed-maven-repository-binding-v1',
+                     'machine_id': machine, 'observed_at_utc': datetime.now(timezone.utc).isoformat(),
+                     'source_commit': os.environ['GITHUB_SHA'], 'repository': str(repository),
+                     'leaf_original_success_required_by_step_order': True, 'leaf_logs': logs,
+                     'actual_installed_leaf': files, 'environment_field': 'QUARKUS_LOCAL_REPO',
+                     'scope': 'Bind the following product Quarkus bootstrap to this job actual Maven install repository. No repository copy, new cache or resolver-policy change.'}
+          with (root / 'repository-binding.actual.json').open('x', encoding='utf-8') as handle:
+              json.dump(receipt, handle, indent=2)
+              handle.write('\n')
+          with Path(os.environ['GITHUB_ENV']).open('a', encoding='utf-8', newline='\n') as handle:
+              handle.write('QUARKUS_LOCAL_REPO=' + str(repository) + '\n')
+          print(json.dumps(receipt))
       - name: Verify full product producer and staging chain
         run: |
           set "MAVEN_OPTS=%MAVEN_OPTS% -Dorg.slf4j.simpleLogger.log.org.eclipse.aether.internal.impl.DefaultLocalRepositoryProvider=debug -Dorg.slf4j.simpleLogger.showLogName=true"
@@ -106,7 +169,7 @@ jobs:
                     'machine_observation_returncode': machine.returncode,
                     'observed_at_utc': datetime.now(timezone.utc).isoformat(),
                     'source_commit': os.environ['GITHUB_SHA'], 'diagnostic_only': True,
-                    'resolver_configuration_changed': False}
+                    'resolver_configuration_changed': bool(os.environ.get('QUARKUS_LOCAL_REPO'))}
           logs = []
           managers = []
           installs = []
@@ -149,6 +212,13 @@ jobs:
                               installs.append(row)
                               if len(gav_directories) < 8:
                                   gav_directories.add(target.parent)
+          override = os.environ.get('QUARKUS_LOCAL_REPO')
+          test_repositories = {Path(row['repository']).resolve() for row in managers
+                               if row['phase'] == 'product' and row['after_generate_code_tests_marker']}
+          report.update(quarkus_local_repo_override=override,
+                        test_repository_matches_explicit_binding=(
+                            None if override is None or not test_repositories else
+                            test_repositories == {Path(override).resolve()}))
           report.update(logs=logs, local_repository_manager_observations=managers,
                         install_target_observations=installs,
                         product_test_phase_manager_observed=any(
@@ -180,6 +250,12 @@ jobs:
                                   text_truncated=size > len(text))
                   files.append(item)
               directories.append(row)
+          bound = None if override is None else (Path(override) / gav).resolve()
+          observed = [row for row in directories if Path(row['path']).resolve() == bound]
+          report['bound_gav_readable'] = (None if bound is None else any(
+              row['exists'] and all(any(item['name'] == name and item.get('sha256') is not None
+                  for item in row['files']) for name in ('ck3-save-core-0.1.0.jar', 'ck3-save-core-0.1.0.pom'))
+              for row in observed))
           report.update(gav_directories=directories,
                         scope='Only GAV paths derived from actual LRM/install logs; no recursive local-repository scan. Missing TEST observations remain unknown; null/absent data is not a successful resolution.')
           encoded = (json.dumps(report, ensure_ascii=False, indent=2) + '\n').encode('utf-8')
