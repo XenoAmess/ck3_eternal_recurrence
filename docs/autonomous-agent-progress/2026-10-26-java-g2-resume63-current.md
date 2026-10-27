@@ -1,6 +1,6 @@
 # resume63：REA、Java 全能力迁移与 G2 接续
 
-`machine_id: xenoamess-full-tower-eb9d2c1186`。2026-10-27T06:11Z 更新；任务继续执行。本页接续 [resume62 交接](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff.md)和[来源索引](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff-source-index.json)。
+`machine_id: xenoamess-full-tower-eb9d2c1186`。2026-10-27T07:21Z 更新；任务继续执行。本页接续 [resume62 交接](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff.md)和[来源索引](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff-source-index.json)。
 
 目标是使用 REA 完成 G2 M0–M7 原生研究与 Java 落地，完成 Python 能力迁移后使用 Java 继续普通自动游玩。[完整对照](2026-10-26-resume63-migration-and-g2-matrix.md)分别记录八项业务门槛及全迁移范围。当前 Java CK3 启动、新增游戏日、SAVE、RESTORE均为0，完整实机 G2仍0/8。
 
@@ -93,3 +93,15 @@ Launcher为Main唯一Maven/BUILD/TMP writer，Host为Tools及源码CAS唯一writ
 Native Source146保持不变，跨Source146/Tools155的CompileBinding已真实通过62.332s；ENVrequest155亦137.206s通过，正式ENV155四命令尚未执行，等待最终Tools避免重复。历史ENV146通过仍有效于原范围。RuntimeInventory146 DIGEST真实376.676s通过、25875文件仅核验不复制约3GiB；必要pure configure OFF亦通过。原精确EXE预登记继续，实际UAC/设置读回及正式生产/corpus未完成。
 
 REA新M2 16B叶确认unsigned WORD较大值地址、相等取左；M6 89B初始化确认57个24B槽的前16B清零、末8B写固定地址，不能称全零或已知业务表。两题实际REA/独审闭场，未据此增添Java业务字段；8M完整原生研究继续。当前Java实机启动、新增游戏日、SAVE、RESTORE仍0，完整G2实机0/8。后继Own、Native产物、SERVICE、SDK四阶段/30组及真实continuation仍须完成；hosted runner缺真实来源输入不加成本机首场门槛，无可靠首实机时间预测。
+
+## 2026-10-27T07:21Z 局修闭合与后继验收
+
+同machine_id。Tools165三whole29P，0/12.4525s，实际重编2main/3test；已确认Own46常量进入消费者新class、未误用旧内联值。UAC33843完整证据三Review往返及65536/65537边界通过，16000源码帽未改。166原CurrentRegistration整类12P，0/4.6402s/0javac。167新普通Jar实际0/3.9121s，1466class逐body与POM一致，Jar3598984B/SHAeaa4e880ed815b4a260dd28c9d9a5e341e6a8b7763a300d0c93a401762b22cd9；完整168/input04正在准备。局部29+12不合成完整Tools通过。
+
+Main164真实到期，LS完整6类58=10P7F41E，8类无完整XML；依赖APP同名类另20P，故reactor为7类78=30P7F41E。163亦有APP20P，连NT3类共4类40=39P1F；旧NT/LS分组计数保留其范围。原摘要少数testcase名称解析错配已纠正，不改XML、计数或堆栈。原164三个进程已实际ABSENT。
+
+Main本轮14叶已全部soleCAS/fsync/read回并STOP，净12240B/正簇16384。包括真实legality校验顺序、原始浮点文本保留、Holy整数域、其余真实夹具/注册/名称及完整head内容比较；测试支持仅去掉嵌套重复全扫描，原outer预算/后验、每叶身份/UNKNOWN均保。尚未复验通过。必要selector从321补到330，下一批补齐全部受测叶；这是局部输入保护范围，不是FinalMain整图。Launcher后继与Full168独立TMP并行，复用既有开发与输出，不重新复制Main全图。
+
+四题新REA已实际闭场并交叉核，[结果聚合](../rea-ck3-research/resume63-four-native-boundaries.md)保留M0/M3/M4/M7的机制事实和限制；实际provider窗最大1，不能声称四后端同时运行。相关原生读取位置已获局部支持，无必要新增DTO；不授业务、Game或提速。
+
+7doc已普通FF交付49ef1f3c2f07a1cdf6fb7bd3eb6ecd0d9cf03268；当前新聚合及后继更新尚待下一必要合包。旧12b官方CI实际仍因缺同runner fixture-production输入失败，bootstrap/qualified各636P，非javac红；不扩hosted平台。Own46真正完整链、Native胜出T绑定/环境/预登记/生产/五Holy正式运行与发布、SERVICE及SDK四阶段/30组仍待实际完成。Java启动、游戏日、SAVE、RESTORE仍0。

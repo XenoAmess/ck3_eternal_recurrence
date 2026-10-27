@@ -34,7 +34,7 @@ Tools155完整验收独核1140/1140P、674pins及1466class一致。Own155原41�
 
 使用[本轮 REA 源码研究](resume63-framework-workflow.md)与[并行工作方法](resume63-parallel-raw-method.md)区分 raw Rizin、原始字节独核和 native dossier。当前有限研究不授 Ghidra 伪代码、整机制完成、整体提速或模型 token 节省。
 
-最新有限结果见[代码/数据与receiver研究](resume63-code-data-and-receiver-results.md)：C18已实际运行REA但自动CFG有5额外边，M4/M5保留未闭业务语义。
+最新有限结果见[代码/数据与receiver研究](resume63-code-data-and-receiver-results.md)：C18已实际运行REA但自动CFG有5额外边，M4/M5保留未闭业务语义。另见[四题原生结果](resume63-four-native-boundaries.md)，保留局部语义及实际provider最大1的成本边界。
 
 ## 初始工具实测（2026-10-26）
 
