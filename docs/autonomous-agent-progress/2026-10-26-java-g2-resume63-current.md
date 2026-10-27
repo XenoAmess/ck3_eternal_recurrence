@@ -1,51 +1,73 @@
 # resume63：REA、Java 全能力迁移与 G2 接续
 
-`machine_id: xenoamess-full-tower-eb9d2c1186`。2026-10-27T00:46Z 更新；任务继续执行。本页接续 [resume62 交接](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff.md)和[来源索引](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff-source-index.json)。
+`machine_id: xenoamess-full-tower-eb9d2c1186`。2026-10-27T04:52Z 更新；任务继续执行。本页接续 [resume62 交接](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff.md)和[来源索引](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff-source-index.json)。
 
 目标是使用 REA 完成 G2 M0–M7 原生研究与 Java 落地，完成 Python 能力迁移后使用 Java 继续普通自动游玩。[完整对照](2026-10-26-resume63-migration-and-g2-matrix.md)分别记录八项业务门槛及全迁移范围。当前 Java CK3 启动、新增游戏日、SAVE、RESTORE均为0，完整实机 G2仍0/8。
 
 2026-10-26T14:35–22:00Z的完整历史、失败和当时有限卡保存在已交付的 `fff86e9c2aebb1eb00d1151875e1266cbc5a4b24` 文档快照；后继文档交付 `534375b1bda095ff92846dbfbb866a30e4c0e117` 保留远端同事增量。本页压缩已归档段，不删除对应原件或把旧失败回填成通过。
 
-继续复用独立 SRC/BUILD/m2/TMP。Host唯一写Maven输出与Tools源，各领域按短窗交接；已知错误先局部增量，必要修复闭合后最终完整验收。Native按真实8GiB峰值采用-j1；REA最多四个独立provider按READY与实际内存调度，不重复取证。Genesis保持seq0，禁止重建。Steam只后台核离线，启动前另取新鲜准入；不接管身份未核旧CK3，不启旧蓝色决策窗。
+继续复用独立 SRC/BUILD/m2/TMP。Host唯一写Maven输出与Tools源，各领域按短窗交接；已知错误先局部增量，必要修复闭合后最终完整验收。Native普通runtime/Bridge采用新卡-j2/16GiB，保留旧8GiB失败；REA最多四个独立provider按READY与实际内存调度，不重复取证。Genesis保持seq0，禁止重建。Steam只后台核离线，启动前另取新鲜准入；不接管身份未核旧CK3，不启旧蓝色决策窗。
 
 任务总线 `ck3-java-g2-rea-resume63-20261026`，00:39:32Z heartbeat9058，resources为空；财务CAS683仅前向必要净额，不延旧执行卡。Root本轮必要构建、Own、SDK、Native、Delivery及具体REA范围的owner review至2026-10-27T12:00Z，各命令仍须自己的新鲜卡和资源。全部大输出使用获准D根。Git由Delivery普通FF、保留同事远端；本地master HEAD/index和既有dirty不整体stage或reset。
 
 此前04:30–06:00北京时间首实机乐观窗口已撤回，当前没有可靠替代时间。31000秒为完整SDK覆盖预算，不是预计等待时间。后继门槛为：必要迁移局测与真实Tools资格→Own和Native正式产物/原生corpus/精确EXE登记→完整SERVICE和Fresh4、Canonical30→当前权威与后台Steam准入→Java罗贝尔1066首批→真实SAVE/RESTORE。首场SAVE必须由普通动作产生，不可预造为启动循环前置。
 
-## 22:00Z 前向结果（本地27日06:00）
+## 已交付历史摘要
 
-machine_id为`xenoamess-full-tower-eb9d2c1186`。Full119的Maven stdout为BUILD SUCCESS，149份新XML独核1093/1093成功、0失败/错误/跳过，实际134 main/167 test重编；但外层生产者真实exit1/1754.9402208s：普通bootstrap Jar旁缺lib目录，producerClosure在Maven之后拒绝。fresh deployment自己的Jar/lib5存在且匹配，不能混称Maven失败或fresh缺依赖。最终BuildReceipt没有产生；内层Maven数值exit、WJP峰值/active未持久化，不能据stdout补成0。实际晚启动少23.2679843s的原窗口偏差也保留。[独立拒绝回执](</D:/ck3-state/ck3-java-g2-resume61-r7-ls18-regression04/acceptance63-tools119/TOOLS119-INDEPENDENT-FINAL-REFUSAL01.json>)13556B/SHA`9aeed8a45b85ff23525c57c8bebc26e6341332b0de3b110aa55d732d99c9da3e`。后继修现有POM依赖复制/普通载荷输出路径，同dev/classes/m2继续复用；119原snapshot和bootstrap不覆盖，不重跑未变的整批作为局修前置。
+22:00Z、23:00Z、00:46Z三段正文9444B已逐字节核实保存在54dd3b7d6aaf415e07b71dc28b0ad286e1267780本页原blob11815B/SHA256 4bfda0935844e57d6c5757bbbf3f852aa384df8d3b786cde7147b391ae2e3a7e；正文SHA9497e3174a8a7eb4df7f775bc951fab514d237399a39a98fb2c5524083ca8060。当前原段只多一个heading分隔LF，未丢后改内容。压缩摘要不删除原件。
 
-Main120真实164项150成功/9失败/5错误；121真实85项81成功/4失败；122真实55项41成功/3失败/11错误，均保原件。Finance观察8、Family恢复4等已通过，不能相加冒完整迁移验收。实际生产修复包括错误能力名称、mandatory诊断早退、M0计划custody及军队canonical预算；测试的日期/receipt版本/checked IOException也分别按真实合同窄修。12302/12303均是编译退出1，无JUnit。12304在原目录`--offline -T2 -pl local-service -am process-test-classes`真实exit0/15.7397199s，99必要源与1096基线MATCH，仅重编APP一个测试、NT一个主文件和LS一个测试。随后APP122三叶修复净10388B已采用，实际受影响整类测试仍待新有限phase；不授全图/业务通过。
+Tools119内层1093P但缺普通bootstrap旁lib而外层拒绝；132为217P2F3E、134为60P1E、135 Defender16P，失败保持独立。Main120/121/122及12302/03真实失败，12304增量编译通过；126 Army/NT19P、127 Store15P、129 RootRestore5P、130原NT2P均是软件结果。deadline和nested query未放宽。140补齐8普通Jar，不授SERVICE。canonical helper69P/范围strict通过，实际UAC/Add未完成；Holy五target编过但正式运行/corpus和Commander14仍缺。498b异机修复不追认本机采用或实测。
 
-canonical helper整模块58/58及14项canonical导入/路径核对已真实通过，Job均0。已有venv会重定向子PID，不能满足原UAC实际PID守卫；负例已验证direct-base Python可保持rootPID==receiptPID，尚无管理员设置执行。共享Java v2修复将完整机器ID helper纳入runtime inventory。Holy五个原生target实际-j1编译链接exit0/37.1218006s、Job0，峰660918272B；五份正式Shared运行/corpus尚未产生。Commander14场景原生corpus仍缺，不能用合成gold或跳过代替。保留源与可复用编译源正在共享typed合同内对齐，Bridge与fixture共同消费。
+REA M7 state3不授成功；M4取消tooltip不授退款；M1定位只给候选。原官方完整CI缺实际fixture-production输入，未执行全图。原连续AUTO/run链存在，迁移及Game结果仍分开。
 
-REA M7新117B/25条指令已闭：旧引用计数1减至0才写job+60=3，随后调用释放相关函数；3不授成功、异常、取消或清理完成。原enqueue的queue指针与manager+1C0计数器已在新结果纠正，旧原件不改。[结果](</D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01/cases/resume63-m7-job-helper01/RESULT01.json>)8243B/SHA`87d232bf4ba5d99efb343e77d2d7695ec6189987c633d1955450f7644b4ff451`。Java生产链没有直接消费内部job状态，因此不新增孤立模型；现有拒绝仅以state3授继承资格的回归方向与此一致。
+历史原件：[独立拒绝回执](</D:/ck3-state/ck3-java-g2-resume61-r7-ls18-regression04/acceptance63-tools119/TOOLS119-INDEPENDENT-FINAL-REFUSAL01.json>)；[结果](</D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01/cases/resume63-m7-job-helper01/RESULT01.json>)；[独核](</D:/ck3-state/ck3-java-g2-resume61-r7-ls18-regression04/acceptance63-tools131/TOOLS131-INDEPENDENT-COMPILE01.json>)；[实际终态](</D:/ck3-state/ck3-java-g2-resume63-m0-native01/helper-nullable-test01/NULLABLE-TEST02-CLOSE01.json>)。
+精确历史SHA：9aeed8a45b85ff23525c57c8bebc26e6341332b0de3b110aa55d732d99c9da3e；87d232bf4ba5d99efb343e77d2d7695ec6189987c633d1955450f7644b4ff451；e16190e53f327f057fb4d3092bf46723ee4e9e70fd927db90a90f3ef3a628c1c；e8d570d9a5c0f0b168b4f90b0a647cb9f71c7111232d48e845fed93e6b7d4acb。
 
-21:57:35Z普通heartbeat9046/resources为空。Root新review到23:30Z，仅供必要后继发新有限卡，旧expiry/真实失败不改。文档已FF交付fff86e9c，完整Java源图尚未交付；原04:30–06:00乐观首实机窗口已撤回，尚无可靠替代时刻。新的Java CK3启动、游戏日、SAVE、RESTORE均0，完整G2仍0/8。继续完成实际测试、Tools/Own/SDK、原生运行资格，再后台刷新Steam离线准入并切Java实机。
+## 后继执行与范围纠正
 
-## 23:00Z 前向结果（本地27日07:00）
+本段时间取自实际写入UTC。同machine_id。142原两整类实测17/17成功，exit0/10.9344068s，仅169test重编，main135复用；141清理失败原件保留。FinalTools独立输入330文件已一次CREATE_NEW复制，7710226B，全部SHA读回一致、link1，O63/TOOLS143-FINAL-INPUT-COPY-ACTUAL01.json1942B/SHA5fd459cd5f117be1f0c57737aec9f2b9f516ca1a70a072d13faa636844c49b5f。完整143仍待真正启动/终态，不能把copy当qualifiedT。
 
-同machine_id。Main126真实Army13+NT MAA6共19/19通过，exit0/12.8630684s；生产仅修严格canonical wire比较，未给DTO热路新增encode/parse，原Pythonoracle与错误protocol/custody回归都运行。127 Store15全过，NT原producer2中1失败，Root5未执行：SCRIPT双引号完整保存在class，却在直接ProcessBuilder启动后丢失。本机JDK字节码实核默认allowAmbiguousCommands=true走LEGACY；原测试改用已有WindowsJobProcess，SCRIPT和预期不改。128真实进入OpenBLAS后触256MiB预算、child124，未把它改称引号问题。局部将BLAS三线程变量置1、保60s/256MiB，130原整2真实通过，exit0/10.913351s。
+当前文档已普通FF交付54dd3b7d6aaf415e07b71dc28b0ad286e1267780，保留498b同事更新、Root HEAD/index未改；新官方40428999512仍在运行，未授绿。关于498b进一步纠正：本机两canonical叶clean且符合已有实际pins，新gui/preserved历史路由尚未接当前链，没有本机PID复用误拒诊断。此前由远端版本差异推出本机必须采用whole源码的前提不成立，本轮净0、不改旧consumer。后继canonical绑定真实本机bytes；原独立三模块CI仍完整执行，不用C30/Fresh4或异机53P代替。
 
-129单独原RootRestorePhysicalIdentityTest整5/5通过，exit0/111.9007813s，suite97.638s；原ready20s、validity30s和nested query未放宽。原批Store、NT失败和旧JFR五失败仍各有原件。这是软件恢复回归，未授真实Game SAVE/RESTORE。Host实际129回执33598B/SHA`e16190e53f327f057fb4d3092bf46723ee4e9e70fd927db90a90f3ef3a628c1c`；130回执33532B/SHA`e8d570d9a5c0f0b168b4f90b0a647cb9f71c7111232d48e845fed93e6b7d4acb`，均在O63。
+新增专项核查已确认连续AUTO/run原完整循环、单writer、真实launcher及失败停止接线存在。实际迁移修复另并行进行：camera36叶、holyhire九叶（关联部队/钱包/军费的独立材料，不授完整调遣或扣款归因）、通知fallback五生产叶及回归。专用策略未选动作仍可走原生合法左侧，blocked marriage保持例外；可选registry失效不能软化GUI或根身份守卫。
 
-Tools131同缓存局部编译exit0/21.2088631s，重编135main/169test，169输入与test树EXACT；328source及104/109保护输入MATCH。[独核](</D:/ck3-state/ck3-java-g2-resume61-r7-ls18-regression04/acceptance63-tools131/TOOLS131-INDEPENDENT-COMPILE01.json>)无JUnit信用。132实际222=217P2F3E；fullWitness、ENV compile绑定、UAC原pin与两原样Python资源134同窗采用，6类61=60P1E。唯一嵌套codec错误修后135仅Defender16/16P（22.2935538s），v1/v2完整Result往返及根尾随拒绝均过；134另五类45P独立保留。136普通Jar+lib5与1466classes完整MATCH，137默认Maven离线实际装入D缓存，0/1.8359574s；均非qualifiedT。Holy5登记缺口正补显式v2单目标链，最终input仍HOLD不复制；Main8Jar独立继续。
+M0最终角色观察尚未落地，现准备24叶统一cut接Native真实context、共享strong type、全部cadence/M0/plan/archive消费者与真实新corpus。只迁角色观测，不增加answer/finalize/动作次数；完整M0 postwar/冷恢复不设为首Game新前置。旧18501B corpus仍只证明原status链。完整SERVICE与SDK、当前原生运行资格和首Game继续未完成；Java新增游戏日/SAVE/RESTORE仍0。
 
-Root将9df nullable与Declared V1/V2完整前向合并；首69项68P/1F为静态夹具两个非void空body，最小修后完整69/69及两项改范围strict通过。Python producer原样V2 JSON3802B已在135通过Java核心读取与codec回归；[实际终态](</D:/ck3-state/ck3-java-g2-resume63-m0-native01/helper-nullable-test01/NULLABLE-TEST02-CLOSE01.json>)保留首败。实际WMI/Add/UAC为0，尚无新qualified Tools或新Java CK3。
 
-REA新增M1 caller1757、M4 SIMD locator、M5 helper477、M6 prefix128均实际闭场；M1批量输入/前置gate、M5 F10/F18写入、M6初始RCX来源已闭，仍不授自然继承或战争合法性。M4找到1候选，218B注册体仅按明确新范围准备鲜卡，review至2026-10-27T12:00Z，不延旧卡。无消费者的字段不硬塞Java模型。完整SDK至少31000秒是覆盖预算，非耗时预测。必要修复闭合后一次封存；新增游戏日/SAVE/RESTORE为0，完整G2仍0/8。
+## 完整143失败与后继局修
 
-## 2026-10-27T00:46Z 前向结果（本地08:46）
+同machine_id。完整Tools143真实Controller exit1/1550.3096166s，Maven exit1/1482.3312746s、Job active0/峰1379409920，非超时。151份XML为1139项：1137成功、2错误，唯一NativeVendorTimeoutTest六项中两个旧opaque卡被实际JSON入口拒绝；生产没有因此获得qualified信用。全部XML与日志已耐久，[独核](</D:/ck3-state/ck3-java-g2-resume61-r7-ls18-regression04/acceptance63-tools143/TOOLS143-INDEPENDENT-RED01.json>)9499B/SHA0c6d7adf8ecb7a6b5341ddf2536066f9ffb0c02ff3ee147ebe06358d86289503。145仅该测试夹具改合法legacy-v2 JSON，净93B/0新增簇，六项整类与下一完整验收仍须实际执行；冻结143输入和失败快照不改。
 
-同machine_id。Main138首轮因未选政策依赖失败，只实际生成3Jar；139仅validate。140复用同目录默认Maven选必要依赖，真实exit0/15.9051908s，reactor31项中仅剩余5Jar新产，0编译/测试；8个当前普通Jar已齐，不授完整SERVICE。独审核五Jar8073个条目body/POM及138三原SHA。后继RuntimeDuplex9、M2Unknown、LS/MCP/M7及mandatory Combat corpus回归尚待执行，已通过的Root5/Army19不无因重跑。
+M0 Native七叶已采用，23实际CXX/两link/五stage均通过，新19行48771B/SHA610c5aeecc0681ab016dda7354d727e1671a34db4aa01640dfd25aa41d761669真实生成，旧9行逐字节一致。两registered CTest亦实际2/2通过，含RAM重生比对Java资源；此为外部Java资源的软件比较，不冒3994必要Native包或CurrentFixture资格。Java/Planning/Python兼容消费者已STOP，Host已同步APP POM及原producer pin；持续CI接线仍按实际后继文件核验。全链编测和真实终战后态未完成。
 
-Tools141新增Holy五个显式单目标v2分支，保留v1原target/枚举语义。实际135main/169test编译成功；34项为33成功、1错误，无失败/跳过：Defender17（含五target两schema）和ActualReader6全过；CurrentPlan11中的唯一错误为测试把jna.tmpdir覆盖到JUnit临时目录，加载DLL仍被VM持锁，清理AccessDenied，非业务断言失败。142仅两测试叶净1256B/0新增簇：沿用已批准harness JNA目录、保cleanup/identity/copy断言，并在原Reader负例补HOLY形状正例、缺ENV/graph及legacy卡真实拒绝。142重测17项待终态；不重复已绿Defender17。FinalTools源输入仍未复制，142通过后沿原ControlBuild完整VERIFY，136普通bootstrap仅作为生产入口，不能称新qualifiedT。
+通知九叶和holyhire九叶已source STOP，新增回归待运行；camera生产与测试仍在收口。Main144已进入contracts独立增量编测（只guard本模块与root POM），其余模块可在非重叠窗继续写。该原directdev路径无Windows Job测量，只记录真实heap768/fork256、退出/超时，不声称outer Job0。新的Native普通runtime/Bridge计划按真实j1最大6.35GiB报价j2/16GiB，保旧8GiB失败，待新有限卡执行，不先宣吞吐收益。
 
-全能力复核发现新增真实迁移断链：Python auto_turn在长动作期间启动camera_pre_advance_scope并调度LatestCameraFollowWorker，Java当前普通AUTO尚未接入跟随worker，transport只接REALM/QUERY，不能把基础camera合同当迁移已完。现准备最小Java接线：原单writer持intent/once permit及实际结果归档，异步worker仅处理不可变请求与有限原生采集；保持游戏UNKNOWN全局守卫，不能用第二writer或串行等待冒充原行为。代码与验证仍待完成。
+当前财务CAS690、RootZ5509120/RootD32788480，Root正常status9064/resources空；所有大输出仍D。Java实机启动、游戏日、SAVE/RESTORE仍0，完整G2仍0/8。
 
-远端498b5af的失败runtime恢复修复属于机器4-8e1c2f1861，不能外推本机。原canonical allocator在本地及历史Source33仍是旧pin；新测试属于独立CI三整模块step，不在Canonical30或Fresh4。须先采用真实源码，再由原producer更新新canonical_sources→plan→bound→config；历史Source33不改，不填尚未存在路径的未来SHA。
 
-REA又取得两项有限进展。M4完整218B注册体证实GetCancelTooltip对应callback12B4480；该63B callback双解码逐字节一致、三阶段exit0/0owned，只检查空输入并转交三处opaque调用，未计算退款，Java仍empty quote/credit0。M1在完整mapped .text单目标流式定位得到唯一原始E8候选2787FC1→2785FD0，包含RF[2787C10,27883DB)1995B；未读主体、未证明指令边界或自然继承。M5 helper477闭合F10/F18写入但不授战争合法性；M6初始RCX home来源不授loaded bank；M7 state3不授完成/成功。完整八M研究仍未完成。
+## 2026-10-27T02:40Z 前向结果（本地10:40）
 
-官方534375 CI `40420386291` 已FAILURE：bootstrap与qualified各636通过，完整链缺实际fixture-production request而NOT EXECUTED，非javac失败。没有把局部测试或HTTP/ACK外推实机。新Java CK3、游戏日、SAVE、RESTORE继续全0。
+同machine_id。Tools145原六项已实际6/6通过，exit0/5.0794036s，仅重编一个测试；[独核](</D:/ck3-state/ck3-java-g2-resume61-r7-ls18-regression04/acceptance63-tools145/TOOLS145-INDEPENDENT-RESULT01.json>)4012B/SHA b690dea954136457572632a0f3f25f08b09649c4ea7e34f8580df598d9736f22。修后最终输入02一次独立复制330文件/7710319B，旧143失败和输入01保留。146原完整VERIFY已实际启动，当前仍RUNNING，未授qualifiedT；不将143局部成功与145相加冒作完整通过。
+
+Main144整contracts为192项：174成功、9失败、9错误，涉及14类。[独核](</D:/ck3-state/ck3-java-g2-resume61-r7-ls18-regression04/acceptance63-main144/PARITY144-INDEPENDENT-RESULT01.json>)6006B/SHA 189398b86febe2c6b13ce30b2f46cb147fd9d9277086cf35aff6a9f00689fbd9。10项缺准确native producer参数；其余分别为夹具与当前合同差异、Windows脚本引号运输、负例语料被发送前拒绝和相机大回执编码限制。七测试夹具修复已采用，生产类型守卫未放松；相机改用既有完整JSON编码，实际复验待执行。曾疑源码/class漂移的独核报告已撤回：旧字节匹配，后继修复发生在其后。
+
+Native runtime真实完成360个CXX及归档，selected687另列；j2/16GiB、686.957502s、峰1328107520B，Job0。Bridge亦实际完成175个CXX及DLL，362.0897579s、峰7250583552B、Job0；共535实际重编/selected1040，普通产物不授qualified。M0公开normalizer还发现新角色字段校验断边，Java/Python兼容两侧四叶最小后继已采用，尚待实际回归；SOURCE STOP不等于已编测。Python四整模块及八叶类型检查准备与Tools、Native并行，尚无结果。
+
+SDK原意图后继须更新四个冻结SDK源码的替换选择及white测试选择；冻结preimage不变。当前没有未来T/SERVICE引用或新SDK输入。必要SDK阶段owner review前向至18:00Z，每条命令另核新鲜资源，原卡不延长。财务CAS692，Host855044096/RootD43057152；Root状态9073/resources空。官方54dd CI40428999512已FAILURE，因缺实际fixture-production输入，不能报完整CI绿。
+
+REA继续沿已有精确证据研究，M4下一题仅12AD360的470B完整RF，退款仍UNKNOWN。Java实机启动、游戏日、SAVE/RESTORE仍0，完整G2仍0/8。
+
+
+## 2026-10-27T04:52Z 最新执行边界
+
+Tools146完整VERIFY独核1139/1139成功，151 XML/674 pins/1466class一致；[独核回执](</D:/ck3-state/ck3-java-g2-resume61-r7-ls18-regression04/acceptance63-tools146/TOOLS146-INDEPENDENT-FULL-VERIFY01.json>)13766B/SHA f08f2896c151435b01b99344e4b0a9f48e16b13ec6034a26669391f114c96842。原41生产成功，Own编译过但Java exit1/11.004s，2JUnit未起：历史读取被当前jna.tmpdir挡在过期拒绝之前。共享修复及历史Source/当前Tools消费修复共五叶已采用，Tools152三整类42/42P，exit0/16.002s，实际仅重编3main+2test；后继新ordinary及一次完整VERIFY，146冻结不追改。
+
+Main150 exit1/75.128s，APP355test、storage9main38test、NT442main202test通过。151 exit1/91.513s，LS611main已编过；LS773test首次到达仅HolyTest误调不存在的object(node)。已改真实两参API及10字段；153实际exit0/82.715s，APP355test、NT442main202test、LS611main773test全部编译成功，APP/LS TESTJar实际生成，0JUnit。回执O63/PARITY153-AFFECTED-MODULES-COMPILE-ACTUAL01.json8520B/SHA80ba13e06d89f14b50d7af5993b234bf20663937380e5a945764b0338ae14f81。Main147四测试运输修复后的整contracts尚未复验。
+
+最终Python pytest04整四模块22P+77subtestsP，0/6.181s/Job0；scope02完整35修改单元+4whole+实际依赖129482B为0errors，0/2.386s/Job0。8源STOP；旧whole8的69错、scope01的14错及首pytest失败均保留，不报whole8全绿。workflow仅冻结RAM，随完整canonical源码和资源一起采用。
+
+Native Source02物化/verify真实PASS（76.430/7.289s、Job0），3994包/3984Native，SOURCE_ONLY；CompileBinding01真实PASS（59.318s、Job0），全inventory/原FileID绑定。bound-env-request01因窗口启动迟延实际124/Job0、未生成请求；新02已fresh300+180启动，随后正式ENV、8GiB/j1 warm生产及真实corpus/精确EXE登记。普通535 CXX不替正式资格，不重复物化。
+
+REA M5两RF和M4 470B已实际双核；M1 C17遇跳转表导致线性守卫RED/REA未运行，独审确认10596代码+72数据。第二候选路径检查旧候选，不能给新返回授有效性。新有限三题复用原REA入口，不改旧失败。
+
+Main/Tools单Maven writer，Python/Native/REA独立并行。完整Own、SERVICE、SDK Fresh4/Canonical30及独立continuation仍待完成。Java CK3启动、新增游戏日、SAVE/RESTORE均0，完整G2仍0/8，首实机尚无可靠时间预测。

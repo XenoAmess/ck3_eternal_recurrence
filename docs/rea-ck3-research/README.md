@@ -14,7 +14,27 @@
 
 每个文件由指定负责人更新；跨文件结论由 Root 核对。实验原始日志、二进制、数据库和完整结果保存在获准的数据盘，本目录维护可审阅的小型结论及精确来源。
 
-## 当前结果
+
+## 2026-10-27 接续状态
+
+观察机器仍为 `xenoamess-full-tower-eb9d2c1186`。以下是研究与迁移进度，Java 完整 G2 实机仍 **0/8**；启动、新增游戏日、SAVE、RESTORE 均为 0。[当前执行记录](../autonomous-agent-progress/2026-10-26-java-g2-resume63-current.md)保存构建失败和后继结果。
+
+| 专题 | 已推进及待验证边界 |
+| --- | --- |
+| [M0 终战与恢复](../ck3-native-ai/2026-10-26-m0-rea-resume63.md) | 完整 WarID、角色上下文及 Java/兼容消费者已修；19 行 Native 软件语料与两项 CTest 通过，真实终战与恢复未验。 |
+| [M1 同帧与 Faction](../ck3-native-ai/2026-10-26-m1-rea-resume63.md) | 真实读取发布链已接；C17确认10596B代码与72B跳转表；第二条路径检查旧候选，完整候选来源、自然触发仍未知。 |
+| [M2 事件选择](../ck3-native-ai/2026-10-26-m2-rea-resume63.md) | 显示顺序、来源知识与普通续行已接；三自然事件及独立材料后态未验。 |
+| [M3 自然继承](../ck3-native-ai/2026-10-26-m3-rea-resume63.md) | 复核 getter 调用链与宗教过滤；完整身份、自然继承及恢复接续未验。 |
+| [M4 建设与现金](../ck3-native-ai/2026-10-26-m4-rea-resume63.md) | 完工材料刷新已接；取消 tooltip 的有限研究仍不授退款报价或到账信用。 |
+| [M5 候选与指挥官](../ck3-native-ai/2026-10-26-m5-rea-resume63.md) | 已闭部分 getter/helper 写入；两RF已证清零/发布全局槽位和间接尾跳，注册receiver别名、Commander语料及实机仍缺。 |
+| [M6 四类原生链](../ck3-native-ai/2026-10-26-m6-rea-resume63.md) | 输入筛选与上下文初始化调用已定位；loaded bank、callee 效果及四类验收未闭。 |
+| [M7 意图接续](../ck3-native-ai/2026-10-26-m7-rea-resume63.md) | 固定钟与普通意图恢复已修；内部 job state3 不等于成功，真实保存恢复后消费未验。 |
+
+普通Native runtime/Bridge增量构建通过，实际535 CXX/selected1040。正式Source02物化和verify-source、CompileBinding01已实际通过，仍分别仅为SOURCE_ONLY与来源绑定；bound-env-request01实际超时/Job0、无请求；新02已启动，正式ENV/生产与原生corpus继续。Tools146完整VERIFY独核1139/1139成功，但后续Own运行发现历史读取先触当前scratch错误；共享修复已采用，三类42项局验已实际全过，后继新ordinary再最终完整验收。Main153已实际编过LS611生产源/773测试源、APP355测试和NT442生产/202测试；受影响JUnit及SERVICE继续，编译不授实机。最终Python四整模块22P/77subtestsP；完整35修改单元、4whole及实际依赖类型检查0errors。旧whole8的69错误和旧scope14错误保留。工作流RAM已冻结，待完整canonical源码/资源一起发布；Own、SDK Fresh4/Canonical30、SERVICE和Java实机尚未完成。
+
+使用[本轮 REA 源码研究](resume63-framework-workflow.md)与[并行工作方法](resume63-parallel-raw-method.md)区分 raw Rizin、原始字节独核和 native dossier。当前有限研究不授 Ghidra 伪代码、整机制完成、整体提速或模型 token 节省。
+
+## 初始工具实测（2026-10-26）
 
 观察机器为 `xenoamess-full-tower-eb9d2c1186`，日期 2026-10-26 UTC。已安装 Node 24.22.1、REA 6.8.0、Rizin 0.9.1、Ghidra 12.1.4，根为 `D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01`。复用已有 JDK 21，未改变全局 PATH。该机器事实不能外推其他机器。
 
@@ -28,8 +48,10 @@ Ghidra 经 D 盘隔离启动脚本的七处辅助 JVM 小堆修复后，实际�
 
 ## 后续研究方式
 
-先提出可证伪问题，绑定版本、目标及原始字节，选择合适后端，以小范围查询取得证据，再独立核对。研究答复默认给结论、范围、未知项及证据引用，需要时再读取细节。开发与实机资格继续遵守项目合同。
+先提出可证伪问题，绑定版本、目标及原始字节，选择合适后端，以小范围查询取得证据，再独立核对。C17的完整RF含表数据，线性解码失败原件仍保留；代码/数据分区须由实际引用证明，再另开有限REA查询，不能改旧守卫把失败变成通过。研究答复默认给结论、范围、未知项及证据引用，需要时再读取细节。开发与实机资格继续遵守项目合同。
 
 60 个并发工作岗共享受管的重分析资源；实际后端进程数服从内存、存储和任务窗口。已有原件可用时优先复用，不为研究人数重复导入完整 CK3。
 
 更新实验时记录真实时间、机器、版本、命令或 RPC、状态与原件引用。源码审查、工具返回、机制解释和游戏实测分别记载；失败保留且不改写成通过。后续新观察更新索引，历史原件保持原身份，过期资料按项目存储策略复核。
+
+当前状态观察时间（UTC）：2026-10-27T04:42:04.389Z。
