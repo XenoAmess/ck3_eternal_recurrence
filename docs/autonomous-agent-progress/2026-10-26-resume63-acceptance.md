@@ -2,13 +2,15 @@
 
 machine_id: xenoamess-full-tower-eb9d2c1186；本岗 /root/acceptance63；观察日期 2026-10-26至27 UTC。
 
-最新已授Tools155完整VERIFY独核151类1140项全成功；Full168新整验容量RED；Main160完整contracts开发回归47类192项全成功。只授对应软件范围，旧119/143及Main144/147–151失败保留。Own155新链仍RED，Runtime107 Duplex7E、SDK30、SERVICE、整Java、官方整CI、ActualIT与CK3业务均未完整授信，新增游戏日0。
+最新已授Tools172完整VERIFY独核151类1142项全成功；旧Full168容量RED保留；Main160完整contracts局验47类192P，Main171另为6P2E。只授对应软件范围，旧119/143/144/147及Own155失败不回填，Java全能力迁移、Own/SDK/SERVICE/ActualIT/Game尚未由本岗授信。
 
 本页是当前摘要。较早详细过程及原件索引保存在本文件的 Git 历史：d078c8123b77d572fe09d6024aacad3eab533e4c（93–96）及4dcc62e0d27cc97f86d86402fb9e5f2540b72de3（104真实终态）；2bf182e575aef37aa1d7bcfcde12aebcdc0649c7中104仍为当时RUNNING。fff86e9c2aebb1eb00d1151875e1266cbc5a4b24为后继摘要，其捕获时120日志/final receipt仍pending，后来的closing只向前追加。压缩叙述不更改旧事实，不替代D盘原件，不追补已覆盖的94/95/96 XML。
 
 54dd3b7d6aaf415e07b71dc28b0ad286e1267780的32633 B页已git show逐字节核等；135/136小closing当时pending。12b675a9b7a71f0951f68591ba95d6cdaa590894的32743 B/9ebe9e0e6836671e8c945fedde500d89f90663845c5ac57a5134139756b09dc4亦已独立git show核等，记录到156时Full155未授信；本次只前向新结果，不倒填历史。
 
 49ef1f3c2f07a1cdf6fb7bd3eb6ecd0d9cf03268已交付当时31002 B/bf8c2b97740e176e6567110dd8a1bcf2d4712877c031f824f8675b48e4e64abd的155/160及OwnRED快照；Delivery报7/7读回等，本岗未另核该Gitblob。本次165只前向，不倒填。
+
+3a2b06bfb7a4ef1e2a41c11a7dcfe8974b038bb5的32705 B/ab8edcc6d61e7df07a7b5f36ef726c29dad2eeb77908f8f442f487b758940e9b页已git show逐字节核等；该快照保168 RED，不含后继172通过。Delivery于08:45:30Z释放本页冻结，以下只前向真实结果。
 
 
 G2 = D:/ck3-state/ck3-java-g2-resume61-r7-ls18-regression04；下列 controls/ 文件均在此根。Host原回执 O63 = D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration。独立主源码和构建缓存由Host维护，本岗不写SRC/BUILD/m2，不另开Maven或JVM，不新增runner/Python生产实现，也不启动CK3、Steam、Defender或UAC。
@@ -57,11 +59,7 @@ analysis04达60KiB帽SIGTERM，exit=null/partial/378ms/child0；仅13个main事�
 
 ## 完整Tools104、后继consumer修复和新引导产物
 
-104沿原ControlBuild BUILD_TOOLS_RUNTIME / STANDARD_8_MIB / VERIFY，默认mvn3.10.0，独立104 source/build/TMP/output、复用同m2；实际单模块verify未带-T，不能套局验-T2。实际重编134main/166test，controller于19:17:50.813Z终态exit0/1715.7319134秒，actual-build/v6 PASS。148份fresh XML全部在起止窗内，1084/1084成功、0F/E/skip，没有拼接局验。
-
-本岗独核全部324原source、326编译输入、6部署、6bootstrap bytes/SHA MATCH；accounting/v2三个retained source body的canonical base64、长度/SHA全匹配，不追读当前可变head。104完整Jar及1422class逐entry身份见已核54dd历史，不能沿109的1423数量。version WJP exit0/active0，完整probe数值见原件；verify WJP exit0/1625.4332223秒、peak1297424384 B、limit2147483648 B、active0，外Job NOT_MEASURED。XML453940 B及六log46647 B仅gzip一次，无source/Jar/class复制。
-
-104实际build-json：D:/codex-ck3-demos/2026-10-22-java-phase1/logs/build-java-tools-host104-final.json，199203 B/e8b5b3cb77c16ac07c4c66f88e3070c224d72b17b3a7c35c8426073c512c5ebc。controls/TOOLS104-INDEPENDENT-FINAL01.json 3974 B/67262abdda4504c9c9114b83613b79a31b9cc7813bd71f1c479f0b851806108a回链PINS01 9951 B、XML01 65388 B及JAR01 1171 B。授信仅完整Tools VERIFY；未另行授Shared后继、SDK30、SERVICE、全Java/官方整CI或Game。
+104历史完整Tools VERIFY：default mvn3.10.0、最终verify无-T，134main166test实际编；148 fresh XML1084P，Controller0/1715.7319134秒，verify WJP0/1625.4332223秒、active0/peak1297424384 B。324source/326compiled/6部署/6bootstrap及Jar1422class、accounting保留源均已独核。原完整命令、SHA/来源与封存明细见已核3a2b历史同节及controls/TOOLS104-INDEPENDENT-FINAL01.json 3974 B/67262abdda4504c9c9114b83613b79a31b9cc7813bd71f1c479f0b851806108a；只授该Tools完整软件范围。
 
 Own110/111尚未进入Own/JUnit：110的CLI路径格式与canonical FileRef不等；111只修路径，request同bytes/SHA，exit1/6.7406541秒，在旧build release expiry（ControlBuild748→41.99）先拒。新Plan/Manual106/104及runtime6实际MATCH，manifest/input/execution均缺失。Manual106自身截止20:27:02.290372Z，不能因Root新22:00而自动续；旧105也未延。controls/OWN111-INDEPENDENT-FIRST-REFUSAL01.json 6230 B/fc9fda6068de770784f0a8af1929a49dc07e4c1672a9e320391f3b867cd95a43保真实首拒因。
 
@@ -140,15 +138,9 @@ Own146仍RED：本岗只读Runtime的logs/OWN146-CONTROLCI-FULL-ATTEMPT03-ACTUAL
 
 ## Full155与Main160最新独立关闭
 
-155沿原ControlBuild BUILD_TOOLS_RUNTIME/STANDARD_8_MIB/VERIFY、default mvn3.10.0、verify无-T，实际135main169test编、复用m2；Controller exit0/1619.7457061秒，原actual-build/v6 PASS/error=null。151 fresh XML共1140项逐属性/全部testcase核为1140P0F/E/skip，未拼152/156局验。found/started/aborted事件未另测。
+155历史完整T为独立151 XML1140P；default mvn3.10.0、verify无-T/复用m2，实际135main169test编，Controller0/1619.7457061秒。674 source/compiled/full部署/bootstrap154原件SHA与文件集、Jar1466class/1479CRC/Manifest/lib5/POM全独核MATCH；source330为7713839 B/input03。原WJP CMD289964/FILETIME字符串134375521319108461 exit0/1540.3806152秒、active0、peak1340874752 B/2GiB；accounting/v2三retained body核等。完整命令、2100秒执行窗、bootstrap与qualified路径等细节保在已核3a2b历史，不由ordinary154授信。
 
-source330/7713839 B、compiled332（原330逐字节SHA一致及两.mvn实生成叶）、full部署6/bootstrap1546共674个原件当前SHA及ordinary single-link全MATCH。source/compiled exact文件集合、预先冻结input03相对索引691b8f04d90ffe9237f23f095aa528f33ea8ae16e50c5000097fc464013e2425均等；未复制源码/class/Jar正文。accounting/v2保CONSERVATIVE_VOLUME_ATTEMPT/CONSERVATIVE_VOLUME_COVERAGE，三retained body的canonical base64/长度/SHA/JSON核等，不追读可变head。
-
-155真实Maven WJP为CMD289964/FILETIME字符串134375521319108461：exit0/1540.3806152秒、active0、peak1340874752 B、limit2147483648 B、flags8704、stopnull；version Job亦exit0/active0。原root至固定outer work交集2271.3283409秒满足完整2100，未延期限；CIM Maven24616只导航，不替代Job身份，outer Job仍NOT_MEASURED。
-
-新qualified完整Jar位于D:/codex-ck3-demos/2026-10-22-java-phase1/build/java-tools-host155-final/ck3-control-build-tools，3598758 B/37df0970f8c63db089b8451617d0c4b6a2a7440c7d24d6101e5715759769a462。1466 class/8680023 B逐name/body、1479 ZIP entry CRC、POM、Manifest及exact5lib全MATCH。它与ordinary154字节相同但路径及完整v6来源独立，不从ordinary授资格。
-
-原build-json205524 B/dd78dbee555017f03da47c3b2eef8079cf16c8582fab1b31491f83b5e914e604；G2/acceptance63-tools155/TOOLS155-INDEPENDENT-FULL-VERIFY01.json 24379 B/2eacbfc49234bf3c1853a015cf3b3491458c03e3fcc32949ed009dc6f8cc13a6于06:05:47.613Z闭场。新768KiB为原96MiB内部净分，10文件418264 B（151原XML自带精确refs的单bundle gzip346053/log47832/meta24379），CREATE_NEW/fsync/fullreadback/解压原SHA全核；未另重复151索引。消息先授权、issuer物页未在关闭前收到，后只外部绑定。旧119/143 RED及146独立T保留。
+G2/acceptance63-tools155/TOOLS155-INDEPENDENT-FULL-VERIFY01.json 24379 B/2eacbfc49234bf3c1853a015cf3b3491458c03e3fcc32949ed009dc6f8cc13a6于06:05:47.613Z闭场，10文件418264 B（151 XML自索引gzip346053/log47832/meta24379）全部往返SHA核等，原768KiB内部scope。旧119/143 RED及146独立T保留，不把152/156局验拼成本次full。
 
 160为新完整contracts开发测试，默认mvn offlineT2/同cache：exit0/32.061秒，仅48test javac，0main/0Jar；47 fresh XML192P0F/E/skip全部独核。contracts138+parent1、固定m2 515文件79544887 B、154six/109six/oracle3共530输入当前SHA及供给Node bigint dev/ino/link核等；321更大源pre/post仅Host范围，不冒全图或FILE_ID128资格。producer XML readback原标PENDING，本岗已完成；其batch_qualified仅开发测试范围。没有另供rawterminal，明确NOT_PROVIDED_SEPARATELY，不造回执。
 
@@ -158,11 +150,7 @@ G2/acceptance63-main160/PARITY160-INDEPENDENT-CONTRACTS47-PASS01.json 9192 B/c82
 
 Own155另为RED：仅独读Runtime原6694 B/345012205b0b087c794f3e518c1af276fcb2e2b74eaf5007a96eed1354c17998元数据（D:/ck3-state/ck3-java-g2-resume63-own-successor02/logs/OWN155-CONTROLCI-FULL-ATTEMPT04-ACTUAL01.json），非Own全链独核。其中原41 exit0/866 inputs、javac0，Own Java1/119.6753026秒/active0，Complete R3 role set required；旧40角色消费者未覆盖新42，两个JUnit NOT_STARTED/finalactual ABSENT。旧Own146失败不覆。152/156 synthetic/local正例仍不替正式Source146+新T acceptedSource集成；软件T155与contracts160不授Own/SDK/SERVICE/整Java/Game。
 
-165新软件局验仅ToolsInput4/CompletedBoundary6/Defender19三整类29P0F/E/skip，exit0/12.4525148秒；同cache default mvn offlineT2实际2main3test编，outer Job/peak未测。八必要源/POM及Own46/45原件SHA MATCH，两个packet全唯一RAM逆回before；330与old104/109大范围仅Host post。inputFiles169集合全等，bootstrap154six当前SHA等。
-
-保留T155的Boundary旧class25233/9e007…独核等于Host失效化前像，持Own45常量；新class同长度/6172…常量池已为Own46精确SHA及38867 long，main亦同，非旧缓存假绿。65536完整lease与33843三Review codec尾pin及溢出/重复/冲突/别名拒通过，Bridge16000源守卫不改；未实跑完整25875 runtime prepare/launch，不授实际Admin/UAC/WMI/设置、Registration12、新T或Own。
-
-G2/acceptance63-tools165/TOOLS165-INDEPENDENT-OWN46-UAC29-PASS01.json 12197 B/2755cfc9871e5072e023e30d6c388c2fbd2459e28ea8591c8db3b1809f294487于07:09:13Z闭场。新64KiB内部scope实用4文件21371 B（原三XML自索引bundle7533/log1641/meta12197），wx/fsync/fullreadback/解压原SHA全核，reader0/no JVM；29不改称41或与后继12拼一次绿。
+165仅三whole29P（ToolsInput4/Boundary6/Defender19），exit0/12.4525148秒、2main3test实际编/同cache。八必要源/POM/Own46与45 SHA、两packet逆回、inputFiles169集合及bootstrap154six均核等；330/old104109仅Host。Boundary旧T155class25233/9e007…含Own45常量，新6172…已为Own46 SHA及38867 long，main亦等；65536 complete lease/33843三Review codec尾pin与溢出等拒通过，Bridge16000不动，未实际完整runtime prepare/launch或Admin/UAC/Own。G2/acceptance63-tools165/TOOLS165-INDEPENDENT-OWN46-UAC29-PASS01.json 12197 B/2755cfc9871e5072e023e30d6c388c2fbd2459e28ea8591c8db3b1809f294487于07:09:13Z闭场，4文件21371 B/64KiB内部scope往返核等；29不与后继12拼full。
 
 166原NativeProjectExeRegistrationTest整12P，exit0/4.6402285秒、0javac/同cache；六必要源/POM SHA等，Regression86原main在一个JUnit内、不额加86项。G2/acceptance63-tools166/TOOLS166-INDEPENDENT-CURRENT-REGISTRATION12-PASS01.json 6094 B/9c0f20de7c40422e9e6b59ffb25a2659e852bb8fd159a1d4094a93ead62a0398于07:20:35Z闭场，4文件10862 B（XML3180/log1588）往返全核。166通用Ownconstant false由Host确认为未使用默认，不造回退或与165拼full。
 
@@ -170,11 +158,19 @@ G2/acceptance63-tools165/TOOLS165-INDEPENDENT-OWN46-UAC29-PASS01.json 12197 B/27
 
 168完整VERIFY为RED：source_snapshot周期容量guard，WJP124/57.8098833秒/active0；已编135main169test，完成10XML59P，其余未完成，deployment空/accounting缺失。G2/acceptance63-tools168/TOOLS168-INDEPENDENT-FULL-VERIFY-RED01.json 15654 B/fd296eb6ce02201da6df13f18610e7b63cc81b9a64f772d30b1c19c0c968bc31于08:05:08Z闭场，10文件78183 B往返SHA核等；只保失败，不授新T。
 
+## Full172正式独核与Main171独立失败
+
+172继续同一冻结input04/source330共7720523 B及bootstrap167six，仅修正Native source cap8650752→8761344 B（实际8660088），未改源码/guard或再复制input04。原ControlBuild VERIFY/default mvn3.10.0、最终verify无-T/复用m2，实际135main169test编；Controller0/1631.5957968秒、v6 PASS/error=null。151 fresh XML逐属性与testcase均1142P0F/E/skip，found/started/aborted事件未另测。
+
+原WJP为CMD233704/FILETIME字符串134375626319815582：exit0/1557.0978991秒、active0、peak1381801984 B/2GiB、flags8704/stopnull；root至固定outer work交集2309.2297848秒满足2100，Maven CIM仅导航，outer Job未测。本岗逐核674 source330/compiled332/full6/bootstrap6全部当前SHA及ordinary singlelink，330/332精确文件集等；input04索引be2dfafe801a29a1d75135c24652046afc5614632cbee93c2350631126f33d95等原167输入。Jar3598984 B/eaa4e880ed815b4a260dd28c9d9a5e341e6a8b7763a300d0c93a401762b22cd9位于独立build/java-tools-host172-final/ck3-control-build-tools，1466class逐体/1479CRC/Manifest/exact5lib/POM全等。accounting/v2三嵌入原件bytes/SHA/JSON等，Native各分项及总量均在新cap内；不追读mutable head。
+
+原W/logs/build-java-tools-host172-final.json 205527 B/5012360b919fe61a077e484216365178fe18a5ecddf1561c46905e9fb30c2610；G2/acceptance63-tools172/TOOLS172-INDEPENDENT-FULL-VERIFY01.json 22658 B/40ad2f17615eebd38b75317e61521e024117644d9349b5faf04839a85c66ef74于08:56:15.756Z闭场。新256KiB仅原96MiB未用额内部净分，10文件156739 B（151原XML自索引单bundle86252/log47829/meta22658）wx/fsync/fullreadback/解压原SHA全等；消息先授权、issuer未在关闭前收到，后只外bind。无新JVM或source/class/Jar正文副本，不用167或29+12局验替本次full，不授Own/Source/SDK/SERVICE/整Java/Game。
+
+171另为正常exit1/207.520秒，两个whole共8=6P2E：Construction5P、Physical3中1P2E；失败为actual Root action authority unavailable（源身份/元数据变化）及physical prepared request changed actual Game birth/session/machine/connection。本岗RAM核两XML与Launcher已CREATE_NEW固定的O63/PARITY171-PHYSICAL-SUPPORT-WHOLE-FAILURE01.xml 80070 B/d8bf1ad0bf6f221660053095b7230494aca6bd4893ab62bc1d85d4be3ebec396、actual/raw及31 immutable Jar和三test源；343/536更大范围仅Launcher post。java.class.path原251段含末空、过滤后250非空/217Jar，非ClassLoader URLs实测，不据此归因2E。Root明确不再封171，0新G2文件/无新closing；原失败留O63，source reader0。
+
 ## 容量、测量与后继资格边界
 
-G2原hold96MiB保留，以下均从未用额内部净分，全球hold0。22:00旧三个写/hash scope已关闭：旧4MiB实用XML3048528/log283477/own metadata552544 B；Full119独立1.25MiB实用343710/9587/53376 B；Main tail64KiB实用log10181/meta4772 B，剩一条未消费。各旧分帽、issuer exact refs在对应独立receipt.scope_ref及本页Git历史，不因新review自动续写或借余量。
-
-23:30旧flatroots均closed，不因新review续写。C = D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/capacity。原物理帽main124/125126/127/128/129130依次48/64/48/48/96 KiB；实用XML/log/meta B依次3965/5851/3502、10549/10080/6328、3434/5917/3562、3362/5763/3032、9878/9893/7766。各issuer path/bytes/SHA及129先明示后实物的真实时序在原receipt与已核54dd页；不回填、不借余量。
+G2原hold96MiB保留，新scope均仅从未用额内部净分、全球hold0。22:00旧4MiB/Full119独立1.25MiB/Main tail64KiB及23:30旧main124–130各flatroot均closed；分帽、实量、issuer精确refs与先消息后物页时序保在已核3a2b历史及各receipt，不因新review续写或借余量。
 
 上述实用量为logical，Native allocated/峰值另测；保护项按共享策略限期复核，不无限续留。
 

@@ -36,6 +36,8 @@ Tools155完整验收独核1140/1140P、674pins及1466class一致。Own155原41�
 
 最新有限结果见[代码/数据与receiver研究](resume63-code-data-and-receiver-results.md)：C18已实际运行REA但自动CFG有5额外边，M4/M5保留未闭业务语义。另见[四题原生结果](resume63-four-native-boundaries.md)，保留局部语义及实际provider最大1的成本边界。
 
+另见[候选、条件、receiver与bank来源](resume63-candidate-condition-slot-bank-results.md)：本轮四组静态结果、直接producer后继及真实成本；当前帧发布与动作资格未外推。
+
 ## 初始工具实测（2026-10-26）
 
 观察机器为 `xenoamess-full-tower-eb9d2c1186`，日期 2026-10-26 UTC。已安装 Node 24.22.1、REA 6.8.0、Rizin 0.9.1、Ghidra 12.1.4，根为 `D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01`。复用已有 JDK 21，未改变全局 PATH。该机器事实不能外推其他机器。
