@@ -2104,7 +2104,11 @@ def build_bundle(args: argparse.Namespace) -> UnrunBundleReport:
     bundle=_write(output/'ALLOCATED-UNRUN.actual.json',row)
     release=read_failed_runtime_release(Path(proofs['admin_done']['path']))
     bus=args.task_bus_root/'bin/codex_task_bus.py'
-    bus_pin = file_pin(object_field(freeze, 'files').get(str(bus.resolve())))
+    bus_entry = object_field(object_field(freeze, 'files'), str(bus.resolve()))
+    if set(bus_entry) != {'bytes', 'sha256'}:
+        raise ValueError('Exact frozen path-keyed file entry required')
+    bus_pin = file_pin({'path': str(bus.resolve()), 'bytes': bus_entry['bytes'],
+        'sha256': bus_entry['sha256']})
     packet=current_screen_absent(Path(text_field(freeze, 'lease_anchor')),args.task_bus_root,
         bus_pin['sha256'],None)
     reducer: object = validate_allocated_unrun

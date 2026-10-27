@@ -217,7 +217,9 @@ class BeforeArmedRootPrelaunchUnrunWriterAdmissionTests(ObservedRootPrelaunchUnr
         (bus/'tasks/fixture-prelaunch-task.json').write_text(json.dumps(task), encoding='utf8')
         self.packet = {'tasks': [{**task, 'age_seconds': 0, 'stale': False}]}
         files = object_field(self.freeze, 'files')
-        files[str(cli.resolve())] = json_object(self.fixture.reference(cli));self.freeze['files'] = files
+        cli_reference = self.fixture.reference(cli)
+        files[str(cli.resolve())] = json_object({'bytes': cli_reference['bytes'],
+            'sha256': cli_reference['sha256']});self.freeze['files'] = files
         frozen_path = self.live/'frozen-argv.json'
         frozen_path.write_text(json.dumps(self.freeze), encoding='utf8')
         self.bundle['frozen'] = json_object(self.fixture.reference(frozen_path))
