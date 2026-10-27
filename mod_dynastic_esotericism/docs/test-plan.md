@@ -10,6 +10,8 @@
 
 2026-10-26（machine_id: `desktop-3fevhd2-1c74096080`）：R0019 的 `requested_head_cells` 已真实 FAIL，独立 phase1 PASS 1/6 不扩为 Core 通过。旧 factory `convert=yes` 在 H0 没有排队，H1 的生成角色 finalization 才记录 requester/date，导致 H2 原 `deferredDate == factoryCreationDate` 断言失败。后继共享 fixture 采用同一公开决议两段输入：原 None Rite 准备 A/B/C，真实 +1 成熟后恢复持久引用，工厂只给新测试 Rite 配置 Dynastic、`convert=no`，再原版采用；H0 取实际第二段工厂日，原 +1/+2、.81、13 文件／25 marker／6 phase 和全部旧后态守卫保留。此为待新构建／新实机的修复，R0019 失败原件不改；详见[两阶段输入修复](2026-10-26-head-cells-two-stage-fixture.md)。
 
+2026-10-27（machine_id: `desktop-3fevhd2-1c74096080`）：R0021 的 primary phase1 已独立接受1/6，但 head-cells H2 原 `requested_head_cells` 仍真实 FAIL。保全 Save 显示 H0 两 creation date 均389351，两 Rite 的 H2 持久 deferred date 均389352；实际 A/C 已分别为新 D/H 双 head，B 已接任旧 House，singleton 实际成年中间成员存活且非当前 head。原创建日与首次引擎回调日相等的 fixture 假设因此失效；不倒填产品日期、不扩大H2时限、不重放工厂。后继待验的窄修在原 `on_rite_change` 链加入一次性被动见证，只把实际 A/C 从原 None Rite 采用对应新 Rite 的首回调 `current_date` 写入 Root 测试变量；H2 要求见证存在，并与产品 deferred date 严格相等，H1/H2 独立 Save 核 requester 与日期稳定。全部原头领、founder、metadata、成员限制、`.81 days=2`、13 fixture／25 marker／6 phase 和300日／400cap／9000秒预算不变；原 R0021 失败保持。
+
 ## 测试分层与证据
 
 离线校验确认文件格式、引用、两选项合同、生产者到 staging／manifest 消费者及重建一致性；实际游戏验证 GUI、宗族、好感和犯罪理由。先检查 `open_kaishek` 是否能覆盖确定性语义；可用则运行相应子集，不可用或不支持则记录实际原因与未覆盖范围，不能冒充游戏结果。

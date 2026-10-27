@@ -18,7 +18,7 @@ R0019 的 H0 factory 自动转换没有产生普通采用队列；H1 新角色 f
 
 ## 不变的验收
 
-原 `des_acceptance_read_head_cells_effect` 观察段逐字保留，原 `.81 days=2`、`des_deferred_binding_date == des_test_*_creation_date`、新旧 House/Dynasty 真实头衔、singleton 中间真实 NPC 与 Root 身份守卫不放宽。H1/H2 继续以第二段实际 factory H0 为锚，不以准备日替换，也不顺延观察。13 fixture 文件、25 必需 marker、6 公共 phase 不变。
+原 `.81 days=2` 观察时限、新旧 House/Dynasty 的真实头领与 founder、singleton 中间真实 NPC、Root 身份和全成员守卫继续保留。R0021（machine_id: `desktop-3fevhd2-1c74096080`）在两段真实输入后仍触发原 `requested_head_cells` FAIL：H0 creation date 为389351，两 Rite 的实际 deferred date 为389352；两新 D/H 的实际双 head 已正确。`deferredDate == factoryCreationDate` 是 fixture 对引擎回调时机的错误假设，不能当作产品的当日回调需求，也不能改写原失败。后继 fixture 只在原 `on_rite_change` 链追加被动见证，严格匹配全局 owner 的 A/C、对应新 Rite、原 None source Rite、started 与 input_prechecked，在首次实际引擎回调中把 `current_date` 写到 Root 专用 `des_test_*_adoption_callback_date`；不合成+1、不取 Rite 产品日期自证，也不修改产品 state。H2 要求两份见证存在，并严格比较 `des_deferred_binding_date == des_test_*_adoption_callback_date`；H1/H2 独立 Save 继续核 requester 与首次日期持久不变。原 post-adoption `input_ready` 不提前，H0 refs 保持在普通采用前记录。H1/H2 仍以第二段实际 factory H0 的+1/+2为观察日，不顺延。13 fixture 文件、25 必需 marker、6 公共 phase 不变；这项共享 fixture 修复须经新生产构建与新冷实机验收，不能追认 R0021 通过。
 
 生产 binding、on_action、native UNKNOWN/barrier 不改。普通 setter 的实际回调时序仍须新场 H0/H1/H2 原生和独立 Save 证明，源码或 marker 不授予修复通过。
 

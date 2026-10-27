@@ -30,3 +30,60 @@ des_acceptance_extended_timer_seen = {
 		}
 	}
 }
+
+# Actual engine callback date, never factory creation date or synthetic+1.
+# Observe only: the stock/product on_action chains remain their own authority.
+on_rite_change = { on_actions = { des_acceptance_extended_adoption_seen } }
+
+des_acceptance_extended_adoption_seen = {
+    effect = {
+        if = {
+            limit = {
+                exists = global_var:des_test_extended_owner
+                exists = scope:old_rite
+                exists = rite
+                global_var:des_test_extended_owner = {
+                    has_character_flag = des_test_head_cells_started
+                    exists = var:des_test_source_rite
+                    var:des_test_source_rite = { rite_has_doctrine = des_doctrine_none }
+                }
+            }
+            if = {
+                limit = {
+                    global_var:des_test_extended_owner = {
+                        has_character_flag = des_test_handover_input_prechecked
+                        exists = var:des_test_handover_actor
+                        exists = var:des_test_handover_rite
+                        has_variable = des_test_handover_creation_date
+                        NOT = { has_variable = des_test_handover_adoption_callback_date }
+                    }
+                    this = global_var:des_test_extended_owner.var:des_test_handover_actor
+                    rite = global_var:des_test_extended_owner.var:des_test_handover_rite
+                    scope:old_rite = global_var:des_test_extended_owner.var:des_test_source_rite
+                }
+                global_var:des_test_extended_owner = {
+                    set_variable = { name = des_test_handover_adoption_callback_date value = current_date }
+                    debug_log = "DESAF: OBSERVED handover_adoption_callback"
+                }
+            }
+            if = {
+                limit = {
+                    global_var:des_test_extended_owner = {
+                        has_character_flag = des_test_singleton_input_prechecked
+                        exists = var:des_test_singleton_actor
+                        exists = var:des_test_singleton_rite
+                        has_variable = des_test_singleton_creation_date
+                        NOT = { has_variable = des_test_singleton_adoption_callback_date }
+                    }
+                    this = global_var:des_test_extended_owner.var:des_test_singleton_actor
+                    rite = global_var:des_test_extended_owner.var:des_test_singleton_rite
+                    scope:old_rite = global_var:des_test_extended_owner.var:des_test_source_rite
+                }
+                global_var:des_test_extended_owner = {
+                    set_variable = { name = des_test_singleton_adoption_callback_date value = current_date }
+                    debug_log = "DESAF: OBSERVED singleton_adoption_callback"
+                }
+            }
+        }
+    }
+}

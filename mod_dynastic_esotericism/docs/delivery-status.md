@@ -1,5 +1,9 @@
 # 制作与发布状态
 
+2026-10-27T00:50Z, `machine_id: desktop-3fevhd2-1c74096080`: **R0021 accepted 1/6; Core remains incomplete; 0.2.0 has not been uploaded.** The original H2 engine conjunction failed because the fixture equated factory creation day389351 with the actual first request day389352. Independent H1/H2 Saves preserve the same requesters/date and prove binding completion on389353. Both requested actors are actual House heads and Dynasts; the whole failed conjunction is not reclassified as passed. [Evidence and callback repair](2026-10-27-head-cell-callback-date.md), [machine-readable facts](acceptance/r0021-first-request-callback-2026-10-27.json).
+
+The fixture now independently witnesses the actual engine adoption callback date, once, without product writes or a synthetic date. H0+2 and all head/founder/member/source guards remain. New Maven/producer checks and a fresh cold Game are pending. R0021 closed with actual Game/host/keeper exit0 and exact SCREEN CAS release9207; three real 1280x720 promotional PNGs are retained for the requested Workshop gallery, not yet uploaded.
+
 2026-10-26T06:51Z，`machine_id: desktop-3fevhd2-1c74096080`：源码66f2的默认Maven实际44项通过、30资源源码/classes/JAR一致，16项持久生产命令与DES八组检查原退出0；cold/warm及冻结SDK共40命令原退出0，其中一项可选真实小WAL诊断跳过，不能称全部无跳过。完整shared91在第8项遇测试夹具缺少Selection而停，后续尚未执行。
 
 Native G1在06:26:43Z真实退出1：registry测试链接缺九个生产符号，生产DLL已链接不等于整图通过；19项后验及SYSTEM登记均NOT_RUN。5483文件来源及失败证据封存，未创建可消费Native index，未启动游戏。共享锁内重验、夹具及CMake修复现进入后继源码；必须对新提交重跑完整检查和原生构建。R0020仍0/6，0.2.0未上传。

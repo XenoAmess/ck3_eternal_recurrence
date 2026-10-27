@@ -1,0 +1,77 @@
+{
+  "Rites": [
+    153,
+    154
+  ],
+  "accepted_phases": 1,
+  "actual_calendar_days": 6,
+  "actual_first_requesters": [
+    65887,
+    65889
+  ],
+  "actual_singleton_adult_intermediate_member": 65894,
+  "business_pass": false,
+  "closure": {
+    "bytes": 3868,
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\operations-core-a41\\R0021-CLOSURE.actual.json",
+    "sha256": "52dac7bae02bed66f8f3d01a08a9d58ddb6d120d8594b7a82f8f17a43fdd30e5"
+  },
+  "completed_script_day": 389353,
+  "evidence": [
+    {
+      "bytes": 14635,
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a20\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0021\\operator-evidence\\r21-headcells-h1-request-observe-a10-a01.diagnosis.actual.json",
+      "sha256": "4a65bfab447718d9be15e48dc59ac9c67afcc640844d06aa11a60c96ecd61e8d"
+    },
+    {
+      "bytes": 23967,
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a20\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0021\\operator-evidence\\r21-headcells-h2-failed-diagnostics-a02.actual.json",
+      "sha256": "6e5ab52eced66ee024c17d6e53f8e7ffaf269fa285310e2895c0d0c2fc1d61c0"
+    },
+    {
+      "bytes": 1261615,
+      "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a20\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0021\\operator-evidence\\r21-headcells-h2-failed-debug-log.raw.log",
+      "sha256": "e201870f1fa78a7ceb1cc88395123ad800a1e3bd889892a59d601df11a75bf31"
+    }
+  ],
+  "factory_replay": false,
+  "factory_script_day": 389351,
+  "first_request_script_day": 389352,
+  "gallery": {
+    "bytes": 7110,
+    "path": "C:\\ck3-dynastic-esotericism-20261024\\resume-product-a20\\runtime-a20\\runs\\desktop-3fevhd2-1c74096080--dynastic-esotericism--R0021\\operator-evidence\\storefront\\gallery-r21-a02.actual.json",
+    "sha256": "baa4913f555f5d9a89f15cb0ac50cb30c397c3677089f3654adf1a9c5a2f0f82"
+  },
+  "game_build": 25734779,
+  "game_version": "1.20.0.4",
+  "guards_failed": [
+    "handover deferred date equals factory creation date",
+    "singleton deferred date equals factory creation date"
+  ],
+  "independent_dynasty_founder_field_available": false,
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "new_dynasties": [
+    12158,
+    12159
+  ],
+  "new_fixture_cold_validation": "NOT_RUN",
+  "new_houses": [
+    12762,
+    12763
+  ],
+  "observed_at_utc": "2026-10-27T00:50:06.263968+00:00",
+  "old_original_guard_failed": true,
+  "production_binding_state_changed_for_acceptance": false,
+  "requested_actor_is_actual_house_and_dynasty_head": [
+    true,
+    true
+  ],
+  "required_phases": 6,
+  "run_id": "desktop-3fevhd2-1c74096080--dynastic-esotericism--R0021",
+  "schema": "xar.dynastic-r21-callback-failure.v1",
+  "source_HEAD": "9c687ef888dd0c387b5e791e07a152eb8df33024",
+  "unrelated_character_not_a_fallback_founder": 65893,
+  "whole_original_conjunction_reclassified_as_pass": false,
+  "workshop_020_updated": false,
+  "workshop_item_id": "3826991345"
+}
