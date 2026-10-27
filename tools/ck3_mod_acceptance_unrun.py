@@ -1600,13 +1600,18 @@ def _release_stages(keeper: JsonObject, cas: JsonObject, done: JsonObject,
          'Actual allocated-unrun CAS then admin DONE differs')
     return 'direct-completed' if direct else ('completed-then-admin-completed' if completed_then_admin else 'status-then-completed')
 
-def _journal_events(raw,start,release_sequence,done_sequence):
-    requested={release_sequence,done_sequence};lines={};offset=start
+def _journal_events(raw: bytes, start: int, release_sequence: int,
+        done_sequence: int) -> dict[int, tuple[int, bytes, JsonObject]]:
+    sequences: JsonObject = {'release_sequence': release_sequence, 'done_sequence': done_sequence}
+    requested = {_sequence(sequences, 'release_sequence'), _sequence(sequences, 'done_sequence')}
+    lines: dict[int, tuple[int, bytes, JsonObject]] = {}
+    offset = start
     for line in raw.splitlines(keepends=True):
-        row=json.loads(line)
-        if row.get('sequence') in requested:
-            need(row['sequence'] not in lines,'Duplicate original CAS/DONE sequence in bounded journal tail')
-            lines[row['sequence']]=(offset,line,row)
+        row = json_object(json.loads(line))
+        sequence = _sequence(row, 'sequence')
+        if sequence in requested:
+            need(sequence not in lines,'Duplicate original CAS/DONE sequence in bounded journal tail')
+            lines[sequence]=(offset,line,row)
         offset+=len(line)
     need(len(lines)==len(requested),'Exact original CAS/DONE events absent from bounded journal tail')
     return lines
@@ -2013,7 +2018,8 @@ def build_bundle(args: argparse.Namespace) -> UnrunBundleReport:
          or (all(allocator[key] is None for key in singles) and all(allocator[key] is not None for key in triplet)),
          'Provide --allocator-result, --allocator-external-exec, or all three original Popen evidence files')
     live=args.previous_live.resolve();keeper=args.keeper_root.resolve();freeze=_read(live/'frozen-argv.json')
-    machine=ids.current_machine_id();taskpath=args.task_bus_root/'tasks'/(freeze['screen_task']+'.json');task=_read(taskpath)
+    screen_task = text_field(freeze, 'screen_task')
+    machine=ids.current_machine_id();taskpath=args.task_bus_root/'tasks'/(screen_task+'.json');task=_read(taskpath)
     journal=args.task_bus_root/'events.jsonl';size=journal.stat().st_size;start=max(0,size-65536)
     with journal.open('rb') as f:f.seek(start);raw=f.read(65536)
     if start:
@@ -2030,7 +2036,7 @@ def build_bundle(args: argparse.Namespace) -> UnrunBundleReport:
         offset,line,event=lines[sequence]
         original = captured[0 if label == 'CAS_release' else 1]
         if isinstance(original, Path):
-            proofs[label] = _captured_release(original, json_object(event), freeze['screen_task'], sequence)
+            proofs[label] = _captured_release(original, json_object(event), screen_task, sequence)
             continue
         proofs[label]=_write(output/(label+'.canonical.json'),{'schema':'xar-screen-release-canonical-reconstruction-v1',
             'machine_id':machine,'source_event_stream':str(journal.resolve()),'source_event_byte_offset':offset,
@@ -2038,13 +2044,13 @@ def build_bundle(args: argparse.Namespace) -> UnrunBundleReport:
             'event':event,'actual_task_pin':pin(taskpath),'task':task,'release_confirmed_by_canonical_readback':True,'original_stdout_captured':False})
     if getattr(args, 'pre_intent_offline_run_result', None):
         return build_pre_intent_offline_ttl_bundle(args, freeze, proofs, output)
-    row={'schema':SCHEMA,'machine_id':machine,'observed_at_utc':datetime.now(timezone.utc).isoformat(),'run_id':freeze['run_id'],
-         **{k:False for k in ('host_started','native_session_started','game_started','normal_close_qualified','original_host_exit0','business_pass')},**proofs}
+    row=json_object({'schema':SCHEMA,'machine_id':machine,'observed_at_utc':datetime.now(timezone.utc).isoformat(),'run_id':freeze['run_id'],
+         **{k:False for k in ('host_started','native_session_started','game_started','normal_close_qualified','original_host_exit0','business_pass')},**proofs})
     paths={'ready':live/'ready-context.json','frozen':live/'frozen-argv.json','allocated_context':live/'allocated-context.json',
         'keeper':keeper/'report.json','keeper_parent_exit':live/'keeper-actual-parent-exit.json','keeper_STOP':keeper/'STOP',
         'keeper_ready':keeper/'ready.json','idle_timeout':live/'allocation-unused-idle-timeout.json',
         **{k:v for k,v in allocator.items() if v is not None},'allocator_stdout':args.allocator_stdout,
-        'counter':ids.default_state_root()/machine/freeze['mod_key']/'counter.json'}
+        'counter':ids.default_state_root()/machine/text_field(freeze, 'mod_key')/'counter.json'}
     if getattr(args, 'allocator_command', None) is not None:
         paths['allocator_command'] = args.allocator_command
     if getattr(args,'launcher_pin_refusal',None):
@@ -2086,21 +2092,25 @@ def build_bundle(args: argparse.Namespace) -> UnrunBundleReport:
             {'prelaunch_guard_armed':'DEADLINE-GUARD.ARMED.actual.json',
              'prelaunch_guard_cancel':'DEADLINE-GUARD.CANCEL.actual.json'})
         paths.update({key:original_output/name for key,name in guard_paths.items()})
-    row.update({k:pin(v) for k,v in paths.items()})
+    row.update(json_object({k:pin(v) for k,v in paths.items()}))
     if 'prelaunch_orchestrator_started' in row:
         phase_guards = ([] if _prelaunch_guard_state(row) == 'failed-before-armed' else
             _phase_guard_evidence(args.allocator_intent.resolve().parent))
         if phase_guards:
-            row['prelaunch_phase_guards'] = phase_guards
+            row.update(json_object({'prelaunch_phase_guards': phase_guards}))
         evolution = _ttl_recovery_sources(json_object(freeze), output/'ALLOCATED-UNRUN.actual.json', produce=True)
         if evolution is not None:
             row['recovery_reader_evolution'] = json_object(evolution)
     bundle=_write(output/'ALLOCATED-UNRUN.actual.json',row)
     release=read_failed_runtime_release(Path(proofs['admin_done']['path']))
     bus=args.task_bus_root/'bin/codex_task_bus.py'
-    packet=current_screen_absent(Path(freeze['lease_anchor']),args.task_bus_root,
-        freeze['files'][str(bus.resolve())]['sha256'],None)
-    verdict=validate_allocated_unrun(live,freeze,Path(bundle['path']),keeper,release,packet)
+    bus_pin = file_pin(object_field(freeze, 'files').get(str(bus.resolve())))
+    packet=current_screen_absent(Path(text_field(freeze, 'lease_anchor')),args.task_bus_root,
+        bus_pin['sha256'],None)
+    reducer: object = validate_allocated_unrun
+    if not callable(reducer):
+        raise ValueError('Existing allocated-unrun reducer unavailable')
+    verdict=json_object(reducer(live,freeze,Path(bundle['path']),keeper,release,packet))
     return {'bundle':file_pin(bundle),'previous_release':file_pin(proofs['admin_done']),
             'validation':json_object(verdict),'SDK_or_launch':False}
 def build_aborted_bundle_v1(args: argparse.Namespace) -> UnrunBundleReport:
