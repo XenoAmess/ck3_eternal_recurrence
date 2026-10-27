@@ -70,7 +70,19 @@ if(XAR_ENABLE_RITE_CREATION_ACTIONS12004)
         "${CMAKE_CURRENT_LIST_DIR}/../src/ck3_12004_holy_site_ui.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/../src/ck3_12004_holy_site_adoption_entry.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/../src/appointment_window_snapshot_v1.cpp"
-        "${CMAKE_CURRENT_LIST_DIR}/../src/appointment_character_level12004.cpp")
+        "${CMAKE_CURRENT_LIST_DIR}/../src/appointment_character_level12004.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/../src/zhongguo_scoreboard_state_v1.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/../src/zhongguo_scoreboard_action_v1.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/../src/zhongguo_case_snapshot_v1.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/../src/religion_ui12004_navigation.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/../src/ck3_12004_holy_site_relic_actions.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/../src/ck3_12004_holy_site_relic_actions_json.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/../src/holy_site_relic_request12004.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/../src/holy_site_relic_navigation12004.cpp")
+      if(XAR_ENABLE_RELIGION_UI12004_PRESENTATION)
+        target_compile_definitions(xar_ck3_12004_rite_creation_guard_test PRIVATE
+          XAR_ENABLE_RELIGION_UI12004_PRESENTATION=1)
+      endif()
     endif()
     if(MSVC)
       target_compile_options(xar_ck3_12004_rite_creation_guard_test PRIVATE
