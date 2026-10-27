@@ -20,6 +20,8 @@ import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.xar.ck3.rrf.qualification.SourceQualificationContracts.Chain;
 import org.xar.ck3.rrf.qualification.SourceQualificationContracts.ChainPlan;
 import org.xar.ck3.rrf.qualification.SourceQualificationContracts.Pin;
@@ -37,6 +39,7 @@ final class SourceQualificationTest {
     }
     private static final String HOST = "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py";
     private static final String GENERIC_DECISION_CONTRACT = "ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_decision_item_action_contract.py";
+    private static final String GENERIC_OPEN_CONTRACT = "ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_decisions_open_contract.py";
     private static final List<String> CRITICAL = List.of("player_pilgrimage_planner_private_transport.py", "player_pilgrimage_activities_private_transport.py", "native_driver.py", "mcp_server.py", "nonwar_private_build.py", "version_identity.py", "activity_feast_stage5_start_private_transport.py", "driver.py", "exact_clock_failure_diagnostic_v1.py");
     private record Fixture(Path root, Request request) { }
 
@@ -85,16 +88,18 @@ final class SourceQualificationTest {
         assertThrows(IllegalArgumentException.class, () -> new Request(1, "fixture", fixture.root().toString(), "a".repeat(40), fixture.request().sourceDelta(), fixture.request().classifierProgram(), List.of(), fixture.request().previousHostDelta()));
     }
 
-    @Test void changedGenericDecisionContractRequiresCommandProofAndReachesAllSixRealConsumers() throws Exception {
-        assertEquals(java.util.Set.of("shared_sdk_delta"), SourceQualificationEmitter.classify(GENERIC_DECISION_CONTRACT));
-        for (String preserved : List.of("ck3_autonomous_player/src/other/ingame_decision_item_action_contract.py", "ck3_autonomous_player/src/xar_autoplayer/bridge/rite_governance.py")) {
+    @ParameterizedTest
+    @ValueSource(strings = {GENERIC_DECISION_CONTRACT, GENERIC_OPEN_CONTRACT})
+    void changedGenericDecisionContractRequiresCommandProofAndReachesAllSixRealConsumers(String contractPath) throws Exception {
+        assertEquals(java.util.Set.of("shared_sdk_delta"), SourceQualificationEmitter.classify(contractPath));
+        for (String preserved : List.of(contractPath.replace("xar_autoplayer/bridge/", "other/"), contractPath.replace("_contract.py", "_contract_extra.py"), "ck3_autonomous_player/src/xar_autoplayer/bridge/rite_governance.py")) {
             assertEquals(java.util.Set.of("hof_terms_confirm_seam"), SourceQualificationEmitter.classify(preserved));
         }
-        Fixture fixture = fixture(false, GENERIC_DECISION_CONTRACT);
+        Fixture fixture = fixture(false, contractPath);
         var uncovered = SourceQualificationEmitter.generate(fixture.request(), directory.resolve("sdk-uncovered"));
         assertEquals(Status.GAP, uncovered.status());
-        assertTrue(uncovered.gaps().stream().anyMatch(g -> g.chain().equals("shared_sdk_delta") && g.path().equals(GENERIC_DECISION_CONTRACT)));
-        Pin source = pin(fixture.root().resolve(GENERIC_DECISION_CONTRACT));
+        assertTrue(uncovered.gaps().stream().anyMatch(g -> g.chain().equals("shared_sdk_delta") && g.path().equals(contractPath)));
+        Pin source = pin(fixture.root().resolve(contractPath));
         Pin log = file("sdk-command.log", "synthetic original SDK command PASS\n");
         ObjectNode command = new ObjectMapper().createObjectNode();
         command.put("machine_id", "synthetic-source-fixture"); command.put("result", "PASS");
@@ -123,18 +128,18 @@ final class SourceQualificationTest {
                 import importlib
                 sdk = pathlib.Path(sys.argv[1]) / 'ck3_autonomous_player/src'
                 sys.path.insert(0, str(sdk))
-                for name in ('xar_autoplayer.bridge.ingame_decision_item_action_contract', 'xar_autoplayer.bridge.native_driver'):
+                for name in ('xar_autoplayer.bridge.ingame_decision_item_action_contract', 'xar_autoplayer.bridge.ingame_decisions_open_contract', 'xar_autoplayer.bridge.native_driver'):
                     module = importlib.import_module(name)
                     assert pathlib.Path(module.__file__).resolve() == (sdk / (name.replace('.', '/') + '.py')).resolve()
                 print('ACTUAL_SDK_SIX_CONSUMERS_PASS')
                 """;
-        assertTrue(command(List.of(python(repo), "-B", "-X", "utf8", "-c", script, repo.toString(), fixture.root().toString(), output.toString(), fixture.request().sourceCommit(), GENERIC_DECISION_CONTRACT)).contains("ACTUAL_SDK_SIX_CONSUMERS_PASS"));
+        assertTrue(command(List.of(python(repo), "-B", "-X", "utf8", "-c", script, repo.toString(), fixture.root().toString(), output.toString(), fixture.request().sourceCommit(), contractPath)).contains("ACTUAL_SDK_SIX_CONSUMERS_PASS"));
         Pin sourceReview = json("invalid-sdk-source-review.json", Map.of("schema", "ck3-source-only-reviewed-scope-v1", "machine_id", "synthetic-source-fixture", "result", "PASS", "exit_code", 0, "scope", "UNSELECTED_SOURCE_ONLY", "execution_qualified", false, "previous_knowledge_proof", pin(directory.resolve("knowledge.json")), "source_pins", List.of(source)));
         assertThrows(IOException.class, () -> SourceQualificationEmitter.generate(proofRequest(fixture, Chain.SHARED_SDK_DELTA, ProofKind.SOURCE_REVIEW, sourceReview), directory.resolve("sdk-source-review-rejected")));
     }
 
     @Test void classificationMatchesActualSharedConsumerForEveryRuleBranch() throws Exception {
-        List<String> paths = List.of(HOST, "tools/g2_saved_campaign/a.py", "_runtime/a.py", "tools/ck3_obs_a.py", "ck3_autonomous_player/native_bridge/a.md", "ck3_autonomous_player/native_bridge/a.py", "ck3_autonomous_player/native_bridge/a.cpp", "ck3_autonomous_player/src/xar_autoplayer/bridge/driver.py", "ck3_autonomous_player/src/exact_day.py", "ck3_autonomous_player/src/speed_configuration.py", "ck3_autonomous_player/src/application_main_clock.py", "ck3_autonomous_player/src/rite_governance.py", GENERIC_DECISION_CONTRACT, "ck3_autonomous_player/src/other/ingame_decision_item_action_contract.py", "ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_decision_item_action_contract_extra.py", "ck3_autonomous_player/src/a.py", "tools/ck3_mod_acceptance_cases/event.json", "tools/ck3_mod_acceptance_cases/a.json", "tools/test_a.py", "ck3_autonomous_player/tests/a.py", "tools/ck3_mod_acceptance.py", "tools/build_normal_exit_a.py", "tools/fixture_engine_a.py", "x/recorder_job.py", "docs/a.json", "promo/a.py", "x/a.md", "x/a.bbcode", "mod_other/a.txt");
+        List<String> paths = List.of(HOST, "tools/g2_saved_campaign/a.py", "_runtime/a.py", "tools/ck3_obs_a.py", "ck3_autonomous_player/native_bridge/a.md", "ck3_autonomous_player/native_bridge/a.py", "ck3_autonomous_player/native_bridge/a.cpp", "ck3_autonomous_player/src/xar_autoplayer/bridge/driver.py", "ck3_autonomous_player/src/exact_day.py", "ck3_autonomous_player/src/speed_configuration.py", "ck3_autonomous_player/src/application_main_clock.py", "ck3_autonomous_player/src/rite_governance.py", GENERIC_DECISION_CONTRACT, GENERIC_OPEN_CONTRACT, "ck3_autonomous_player/src/other/ingame_decision_item_action_contract.py", "ck3_autonomous_player/src/other/ingame_decisions_open_contract.py", "ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_decision_item_action_contract_extra.py", "ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_decisions_open_contract_extra.py", "ck3_autonomous_player/src/a.py", "tools/ck3_mod_acceptance_cases/event.json", "tools/ck3_mod_acceptance_cases/a.json", "tools/test_a.py", "ck3_autonomous_player/tests/a.py", "tools/ck3_mod_acceptance.py", "tools/build_normal_exit_a.py", "tools/fixture_engine_a.py", "x/recorder_job.py", "docs/a.json", "promo/a.py", "x/a.md", "x/a.bbcode", "mod_other/a.txt");
         Path repo = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize().getParent();
         Path input = directory.resolve("paths.json"); Files.write(input, Json.write(Map.of("paths", paths)));
         String script = "import json,pathlib,sys;sys.path.insert(0,str(pathlib.Path(sys.argv[1])/'tools'));import ck3_mod_acceptance_build_runtime as b;print(json.dumps({p:sorted(b.classify(p)) for p in json.loads(pathlib.Path(sys.argv[2]).read_text())['paths']}))";

@@ -1,13 +1,13 @@
 """Exact .3/.4 HUD Decisions opening; no decision-row or product panel action."""
 from __future__ import annotations
-from .version_identity import CK3_12003, CK3_12004, require_exact_native_build
+from .version_identity import CK3_12003, CK3_12004, NativeBuildIdentity, require_exact_native_build
 
 STEP = "activate-ingame-decisions-v1"
 CAPABILITY = "game.command.activate-ingame-decisions-v1"
 EXE_SHA256 = "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6"
 
 
-def result_build(raw):
+def result_build(raw: object) -> NativeBuildIdentity:
     if not isinstance(raw, dict):
         raise ValueError("missing exact native result")
     build = require_exact_native_build(raw.get("game_version"), raw.get("executable_sha256"))
@@ -20,7 +20,9 @@ def opening_binding(snapshot: object) -> dict[str, object]:
         raise ValueError("missing paused native snapshot")
     character = snapshot.get("played_character")
     diagnostics = snapshot.get("diagnostics")
-    hello = diagnostics.get("hello") if isinstance(diagnostics, dict) else None
+    if not isinstance(diagnostics, dict):
+        raise ValueError("missing exact native hello")
+    hello = diagnostics.get("hello")
     if not isinstance(hello, dict):
         raise ValueError("missing exact native hello")
     build = require_exact_native_build(hello.get("expected_ck3_version"), hello.get("expected_ck3_sha256"))

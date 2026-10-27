@@ -6,7 +6,7 @@ from concurrent.futures import ThreadPoolExecutor
 from unittest.mock import patch
 from xar_autoplayer.bridge.driver import BridgeUnavailableError
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
-from xar_autoplayer.bridge.ingame_decisions_open_contract import EXE_SHA256, opening_binding
+from xar_autoplayer.bridge.ingame_decisions_open_contract import EXE_SHA256, opening_binding, result_build
 from xar_autoplayer.bridge.ingame_decision_item_contract import STEP
 from xar_autoplayer.bridge.ingame_decision_item_action_contract import (
     SELECT_STEP,SELECT_CAPABILITY,CONFIRM_STEP,CONFIRM_CAPABILITY,
@@ -232,6 +232,32 @@ class DecisionNavigationTests(unittest.TestCase):
         if parent:
             Path(parent).mkdir(parents=True, exist_ok=True)
         return Path(tempfile.mkdtemp(prefix='owned-navigation-', dir=parent))
+
+    def test_invalid_actual_public_revision_rejects_before_claim_or_model(self) -> None:
+        for revision in (True, 1.0, '1', None, -1):
+            with self.subTest(revision=revision):
+                driver = NavigationDriver(self.directory())
+                driver.frame['revision'] = revision
+                with self.assertRaises(BridgeUnavailableError):
+                    driver.select_ingame_decision_item_v1(KEY)
+                self.assertEqual(driver.model_queries, [])
+                self.assertEqual(driver.submissions, [])
+                self.assertFalse((driver.directory/'ingame-decision-item-actions').exists())
+
+    def test_result_build_keeps_frozen_dataclass_identity_and_rejects_invalid_input(self) -> None:
+        from xar_autoplayer.bridge.version_identity import CK3_12003, CK3_12004, NativeBuildIdentity
+        for build in (CK3_12003, CK3_12004):
+            raw = {'game_version': build.game_version,
+                   'executable_sha256': build.executable_sha256.lower()}
+            observed = result_build(json.loads(json.dumps(raw)))
+            self.assertIsInstance(observed, NativeBuildIdentity)
+            self.assertIs(observed, build)
+        for invalid in (None, [], True, {}, {'game_version': True, 'executable_sha256': EXE_SHA256},
+                        {'game_version': '1.20.0.3', 'executable_sha256': None},
+                        {'game_version': '1.20.0.4', 'executable_sha256': EXE_SHA256}):
+            with self.subTest(invalid=invalid):
+                with self.assertRaises(ValueError):
+                    result_build(invalid)
 
     def test_same_revision_verified_select_then_closed_null_gets_one_linked_attempt(self) -> None:
         driver = NavigationDriver(self.directory())

@@ -27,6 +27,10 @@ HERE = Path(__file__).resolve().parent
 BOM = b"\xef\xbb\xbf"
 HOST_RELATIVE = "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py"
 SDK_PREFIX = "ck3_autonomous_player/src/"
+GENERIC_DECISION_CONTRACTS: frozenset[str] = frozenset({
+    SDK_PREFIX + "xar_autoplayer/bridge/ingame_decision_item_action_contract.py",
+    SDK_PREFIX + "xar_autoplayer/bridge/ingame_decisions_open_contract.py",
+})
 NATIVE_PREFIX = "ck3_autonomous_player/native_bridge/"
 PROFILE_EXPANSION_RELATIVE = "tools/ck3_mod_acceptance_native_profile_expansions.json"
 TEST_PREFIX = "ck3_autonomous_player/tests/"
@@ -324,7 +328,7 @@ def classify(path: str) -> set[str]:
             return set()
         return {"shared_host"}
     if path.startswith(SDK_PREFIX):
-        if path == SDK_PREFIX + "xar_autoplayer/bridge/ingame_decision_item_action_contract.py":
+        if path in GENERIC_DECISION_CONTRACTS:
             return {"shared_sdk_delta"}
         if name in CRITICAL_TRANSPORTS:
             return {"pilgrimage_wire_seam"}

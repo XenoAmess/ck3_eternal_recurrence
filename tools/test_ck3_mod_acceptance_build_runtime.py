@@ -28,41 +28,48 @@ MACHINE = 'synthetic-owned-fixture-machine'
 
 
 class GenericDecisionContractClassification(unittest.TestCase):
+    CONTRACTS: tuple[str, ...] = (
+        'ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_decision_item_action_contract.py',
+        'ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_decisions_open_contract.py',
+    )
+
     def test_only_exact_generic_contract_uses_sdk_chain(self) -> None:
-        relative = builder.SDK_PREFIX + 'xar_autoplayer/bridge/ingame_decision_item_action_contract.py'
-        self.assertEqual(builder.classify(relative), {'shared_sdk_delta'})
-        for neighbor in (
-            builder.SDK_PREFIX + 'other/ingame_decision_item_action_contract.py',
-            relative.replace('_contract.py', '_contract_extra.py'),
-            builder.SDK_PREFIX + 'xar_autoplayer/bridge/rite_governance.py',
-            builder.SDK_PREFIX + 'xar_autoplayer/bridge/religion_context.py',
-            builder.SDK_PREFIX + 'xar_autoplayer/bridge/holy_site.py',
-        ):
-            with self.subTest(path=neighbor):
-                self.assertEqual(builder.classify(neighbor), {'hof_terms_confirm_seam'})
+        self.assertEqual(builder.GENERIC_DECISION_CONTRACTS, frozenset(self.CONTRACTS))
+        for relative in self.CONTRACTS:
+            with self.subTest(contract=relative):
+                self.assertEqual(builder.classify(relative), {'shared_sdk_delta'})
+            for neighbor in (
+                relative.replace('xar_autoplayer/bridge/', 'other/'),
+                relative.replace('_contract.py', '_contract_extra.py'),
+                builder.SDK_PREFIX + 'xar_autoplayer/bridge/rite_governance.py',
+                builder.SDK_PREFIX + 'xar_autoplayer/bridge/religion_context.py',
+                builder.SDK_PREFIX + 'xar_autoplayer/bridge/holy_site.py',
+            ):
+                with self.subTest(path=neighbor):
+                    self.assertEqual(builder.classify(neighbor), {'hof_terms_confirm_seam'})
 
     def test_changed_generic_contract_reaches_real_qualification_consumer(self) -> None:
-        relative = builder.SDK_PREFIX + 'xar_autoplayer/bridge/ingame_decision_item_action_contract.py'
-        with tempfile.TemporaryDirectory(prefix='generic-decision-source-') as temporary:
-            root = Path(temporary).resolve()
-            source = root / relative
-            source.parent.mkdir(parents=True)
-            source.write_text('# synthetic generic decision contract\n', encoding='utf-8')
-            receipt = root / 'sdk-qualification.json'
-            value = {
-                'machine_id': MACHINE, 'source_commit': 'a' * 40,
-                'result': 'PASS', 'exit_code': 0, 'skipped': 0, 'tests_run': 1,
-                'covered_chains': ['shared_sdk_delta'], 'source_pins': [builder.pin(source)],
-            }
-            receipt.write_text(json.dumps(value), encoding='utf-8')
-            self.assertEqual(
-                builder.qualify('shared_sdk_delta', receipt, 'a' * 40, root, [relative], MACHINE),
-                builder.pin(receipt),
-            )
-            value['source_pins'] = []
-            receipt.write_text(json.dumps(value), encoding='utf-8')
-            with self.assertRaisesRegex(ValueError, 'missing a changed-chain source pin'):
-                builder.qualify('shared_sdk_delta', receipt, 'a' * 40, root, [relative], MACHINE)
+        for relative in self.CONTRACTS:
+            with self.subTest(contract=relative), tempfile.TemporaryDirectory(prefix='generic-decision-source-') as temporary:
+                root = Path(temporary).resolve()
+                source = root / relative
+                source.parent.mkdir(parents=True)
+                source.write_text('# synthetic generic decision contract\n', encoding='utf-8')
+                receipt = root / 'sdk-qualification.json'
+                value = {
+                    'machine_id': MACHINE, 'source_commit': 'a' * 40,
+                    'result': 'PASS', 'exit_code': 0, 'skipped': 0, 'tests_run': 1,
+                    'covered_chains': ['shared_sdk_delta'], 'source_pins': [builder.pin(source)],
+                }
+                receipt.write_text(json.dumps(value), encoding='utf-8')
+                self.assertEqual(
+                    builder.qualify('shared_sdk_delta', receipt, 'a' * 40, root, [relative], MACHINE),
+                    builder.pin(receipt),
+                )
+                value['source_pins'] = []
+                receipt.write_text(json.dumps(value), encoding='utf-8')
+                with self.assertRaisesRegex(ValueError, 'missing a changed-chain source pin'):
+                    builder.qualify('shared_sdk_delta', receipt, 'a' * 40, root, [relative], MACHINE)
 
 
 class QualifiedNativeConsumer(unittest.TestCase):

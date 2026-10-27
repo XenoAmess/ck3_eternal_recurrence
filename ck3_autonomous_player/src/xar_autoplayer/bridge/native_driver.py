@@ -7929,7 +7929,9 @@ class NativeHeadlessGameplayDriver:
             binding = opening_binding(starting)
         except ValueError as error:
             raise BridgeUnavailableError(str(error)) from error
-        revision = int(starting["revision"])
+        revision = starting.get("revision")
+        if type(revision) is not int or revision < 0:
+            raise BridgeUnavailableError("decision action requires an exact non-negative integer public revision")
         if expected_revision is not None:
             _validate_revision(expected_revision, "expected_revision")
             if expected_revision != revision:
@@ -8026,6 +8028,8 @@ class NativeHeadlessGameplayDriver:
                     later = self.query_ingame_decision_item_v1(decision_key)
                     verified = actual_selected_detail(later, binding, decision_key)
                 else:
+                    if expected_window_kind is None:
+                        raise BridgeUnavailableError("fixed Confirm modal kind is unavailable")
                     later = self.inspect_gui_window_tree_v1(expected_window_kind)
                     verified = actual_inner_modal_tree(later, expected_window_kind)
                 ending = self.take_snapshot()
@@ -8044,7 +8048,7 @@ class NativeHeadlessGameplayDriver:
                            "queried_revision": revision, "uses_mouse": False, "uses_keyboard": False, "uses_ocr": False})
             preserve_verified_claim(claim, request_id, result)
         except Exception as error:
-            failure = {"raw": raw, "action_claim_path": str(claim)}
+            failure: dict[str, object] = {"raw": raw, "action_claim_path": str(claim)}
             if action == "select" and isinstance(error, _NativeCommandRejectedError):
                 from .ingame_decision_predispatch_contract import preserve_select_error
                 failure["native_error_evidence"] = preserve_select_error(
