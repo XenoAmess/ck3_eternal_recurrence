@@ -295,3 +295,8 @@ ab的[RRF40430771539](https://github.com/XenoAmess/ck3_eternal_recurrence/action
 独立fresh/noMTS/noDES场景已实际FREEZE0、Java六链GAP0、BUILD-RUNTIME0、PUBLIC-PREPARE0。R0029／a36分配后，首个外置deadline guard因硬编码cold_reload拒绝core，在ARMED前原wait1。Root原工具34309终态2fc37b/exit1；allocator和keeper原wait0。没有host/Game/launch-intent，未产生实机游玩或新截图。Root修正前另有未到allocate的操作脚本错误，原失败均保留。
 
 全部原进程关闭后SCREEN14196→14197单次释放，行政done14200。实际CAS249→250关闭原806MiB场次未来并独立准入validation64至09Z；原08Z grant未延长。共享before-ARMED恢复实现与真实回归正在补齐，尚未获得恢复资格；不能重放a36或补造ARMED/CANCEL/第二guard。R0028仍是最后实际游戏，八项审核、MTS四核心及DES联合等业务缺口继续保留。
+
+
+## R0030：三核心草案及取消后重复接口拒绝（2026-10-27）
+
+`machine_id: 4-8e1c2f1861`，实际源码d6082f4，07:48Z–07:59Z。独立fresh无MTS/无DES，day2实际草案显示三默认核心、第四候选禁用和500虔诚报价，新增未裁切实机图。操作者取消后错误重调一场一次的决议选择接口，host明确拒绝；没有融合或邀请。原CaseClient typed failure exit保留native0/OS0/host1，keeper与allocator0、Root1，SCREEN14208释放并恢复1024×768。基线Java三条原wait0，长名封臣45458真实名称已保存；数值projection失败1也保留。八项业务未通过。后继使用新场、从原生当前控件重开草案，保留一次性守卫。完整证据见[R0030记录](live-review-R0030-cancel-2026-10-27.md)。
