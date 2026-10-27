@@ -579,7 +579,7 @@ class OfflineTTLUnrunTests(unittest.TestCase):
         source = ast.parse(path.read_text('utf-8-sig'))
         names = {'_UnrunProcessInventory', '_ttl_pin', '_ttl_original', '_ttl_allocator_stdout',
                  '_ttl_public_exit', 'TTLStopFileObservation', '_ttl_stop',
-                 'TTLRecoverySource', 'TTLReaderEvolution', '_ttl_recovery_sources',
+                 'TTLRecoverySource', 'TTLReaderEvolution', '_ttl_recovery_sources', '_recovery_input_validation',
                  'validate_pre_intent_offline_ttl_refusal', 'build_pre_intent_offline_ttl_bundle'}
         nodes = [copy.deepcopy(node) for node in source.body
                  if isinstance(node, (ast.FunctionDef, ast.ClassDef)) and node.name in names]
@@ -588,6 +588,7 @@ class OfflineTTLUnrunTests(unittest.TestCase):
 from pathlib import Path
 from datetime import datetime, timezone
 from decimal import Decimal
+from collections.abc import Mapping
 from typing import Protocol, runtime_checkable, Literal, TypedDict
 import argparse, hashlib, json, os, re, subprocess
 from ck3_mod_acceptance import same_directory_control_peer
