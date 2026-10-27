@@ -18,6 +18,16 @@ SCHEMA = 'ck3-mod-acceptance-allocated-unrun-closure-v1'
 ABORTED_KIND = 'wrapper-aborted-before-launch-without-terminal-waits'
 OFFLINE_TTL_KIND: Literal['pre-intent-background-offline-ttl-refused'] = 'pre-intent-background-offline-ttl-refused'
 PRELAUNCH_KIND: Literal['prelaunch-orchestrator-failed-with-observed-waits'] = 'prelaunch-orchestrator-failed-with-observed-waits'
+PrelaunchGuardState = Literal['armed-cancelled', 'failed-before-armed']
+
+
+def _prelaunch_guard_state(bundle: Mapping[str, object]) -> PrelaunchGuardState:
+    value = bundle.get('prelaunch_guard_state', 'armed-cancelled')
+    if value == 'armed-cancelled':
+        return 'armed-cancelled'
+    if value == 'failed-before-armed':
+        return 'failed-before-armed'
+    raise ValueError('Exact typed prelaunch guard state required')
 
 
 @dataclass(frozen=True)
@@ -255,11 +265,139 @@ def _root_prelaunch_invocation(bundle: Mapping[str, object], output: Path,
     return RootPrelaunchInvocation(tuple(argv), began, ended, Path(argument('--deadline-guard')).resolve(), commit)
 
 
+def _observed_guard_failed_before_armed(bundle: Mapping[str, object], invocation: RootPrelaunchInvocation,
+        output: Path, previous: Path, keeper: Path, machine: str, ready_at: datetime,
+        keeper_closed_at: datetime) -> dict[str, FilePin]:
+    """Close an observed startup failure; absence never supplies an ARMED or wait."""
+    if 'prelaunch_orchestrator_intent' not in bundle:
+        raise ValueError('Before-ARMED recovery requires the original intent-bound Root')
+    forbidden = ('DEADLINE-GUARD.ARMED.actual.json', 'DEADLINE-GUARD.CANCEL.actual.json',
+        'DEADLINE-GUARD.actual.json', 'ORCHESTRATOR.PUBLIC-RUN.intent.actual.json',
+        'ORCHESTRATOR.PUBLIC-RUN.started.actual.json', 'PUBLIC-RUN.intent.actual.json',
+        'LAUNCH-GATES-CONSUMED.actual.json')
+    if (any((output / name).exists() for name in forbidden) or list(output.glob('DEADLINE-GUARD-*'))
+            or any(key in bundle for key in ('prelaunch_guard_armed', 'prelaunch_guard_cancel', 'prelaunch_phase_guards'))):
+        raise ValueError('Before-ARMED recovery has armed/canceled/later guard or public evidence')
+    names = {'prelaunch_failure': 'ORCHESTRATOR.failure.actual.json',
+        'prelaunch_guard_intent': 'DEADLINE-GUARD.intent.actual.json',
+        'prelaunch_guard_started': 'DEADLINE-GUARD.started.actual.json',
+        'prelaunch_guard_wait': 'DEADLINE-GUARD.original-wait.actual.json',
+        'prelaunch_allocator_wait': 'ORCHESTRATOR.ALLOCATE.original-wait.actual.json',
+        'prelaunch_guard_stdout': 'DEADLINE-GUARD.stdout.log',
+        'prelaunch_guard_stderr': 'DEADLINE-GUARD.stderr.log'}
+    evidence: dict[str, FilePin] = {}
+    for key, name in names.items():
+        reference = _evidence_pin(bundle.get(key), key)
+        if Path(reference['path']).resolve() != output / name:
+            raise ValueError('Before-ARMED original output differs: ' + key)
+        check_pin(Path(reference['path']), dict(reference))
+        evidence[key] = reference
+    failure, intent, started, waited, allocated = [json_object(_pinned_object(evidence[key], key))
+        for key in ('prelaunch_failure', 'prelaunch_guard_intent', 'prelaunch_guard_started',
+            'prelaunch_guard_wait', 'prelaunch_allocator_wait')]
+    shapes = ({'machine_id','observed_at_utc','error','public_started','normal_closed','business_pass','no_automatic_replay','no_manual_case_client_created'},
+        {'machine_id','observed_at_utc','argv','source_commit'},
+        {'machine_id','observed_at_utc','argv','pid','process_creation_filetime_100ns','initial_exit_code','original_wait_pending'},
+        {'machine_id','observed_at_utc','original_wait_returncode','argv','pid'},
+        {'machine_id','observed_at_utc','original_wait_returncode','argv','pid'})
+    if any(set(row) != shape or row.get('machine_id') != machine
+            for row, shape in zip((failure, intent, started, waited, allocated), shapes)):
+        raise ValueError('Exact before-ARMED original fields/machine required')
+    if (any(failure.get(key) is not False for key in ('public_started','normal_closed','business_pass'))
+            or failure.get('no_automatic_replay') is not True or failure.get('no_manual_case_client_created') is not True
+            or failure.get('error') != "ValueError('Original producer exited before publication')"
+            or evidence['prelaunch_guard_stderr']['bytes'] == 0
+            or evidence['prelaunch_guard_stdout']['bytes'] > 1048576 or evidence['prelaunch_guard_stderr']['bytes'] > 1048576):
+        raise ValueError('Before-ARMED failure has no original bounded startup diagnostic')
+    pid = _integer(started.get('pid'), 'Before-ARMED started pid', 1)
+    birth = _text(started.get('process_creation_filetime_100ns'), 'Before-ARMED original birth')
+    if (re.fullmatch(r'[1-9][0-9]*', birth) is None or int(birth) > 18446744073709551615
+            or _integer(waited.get('pid'), 'Before-ARMED waited pid', 1) != pid
+            or started.get('original_wait_pending') is not True
+            or _integer(started.get('initial_exit_code'), 'Before-ARMED initial exit') != 259
+            or _integer(waited.get('original_wait_returncode'), 'Before-ARMED original wait') != 1
+            or _integer(allocated.get('original_wait_returncode'), 'Before-ARMED recorder wait') != 0):
+        raise ValueError('Before-ARMED original identity/observed waits differ')
+    root_intent = _pinned_object(bundle.get('prelaunch_orchestrator_intent'), 'Root original intent')
+    binding = _pinned_object(root_intent.get('binding'), 'Root original launch binding')
+    guard = _evidence_pin(binding.get('deadline_guard'), 'Original unarmed guard source')
+    check_pin(Path(guard['path']), dict(guard))
+    if Path(guard['path']).resolve() != invocation.guard:
+        raise ValueError('Before-ARMED guard source crossed original Root binding')
+    interpreter = _evidence_pin(binding.get('guard_interpreter'), 'Original guard interpreter')
+    check_pin(Path(interpreter['path']), dict(interpreter))
+    root_argv = invocation.argv
+    if any(name in root_argv for name in ('--guard-interpreter', '--guard-interpreter-sha256')):
+        for name, expected_value in (('--guard-interpreter', interpreter['path']),
+                ('--guard-interpreter-sha256', interpreter['sha256'])):
+            if root_argv.count(name) != 1 or root_argv.index(name) + 1 >= len(root_argv):
+                raise ValueError('Exact original Root guard interpreter arguments required')
+            actual_value = root_argv[root_argv.index(name) + 1]
+            if (Path(actual_value).resolve() != Path(expected_value).resolve() if name == '--guard-interpreter'
+                    else actual_value != expected_value):
+                raise ValueError('Original Root guard interpreter crossed launch binding')
+    ready = json_object(_pinned_object(bundle.get('ready'), 'Original allocated ready'))
+    prepared = json_object(_pinned_object(ready.get('prepared_case'), 'Original prepared case'))
+    contract = json_object(_pinned_object(prepared.get('contract'), 'Original prepared contract'))
+    phases_value = contract.get('gui_phases')
+    if not isinstance(phases_value, list) or not phases_value:
+        raise ValueError('Before-ARMED original prepared phases required')
+    phases = [text_field(json_object(value), 'id') for value in phases_value]
+    if len(set(phases)) != len(phases):
+        raise ValueError('Before-ARMED original prepared phases must be unique')
+    argv = strings_field(started, 'argv')
+    expected = ['-B','-X','utf8',guard['path'],'--live',str(previous),'--ready-context',str(previous/'ready-context.json'),
+        '--run-id',previous.name,'--phase',phases[0],'--reserve-seconds','1200','--wait-awaiting-seconds','5400',
+        '--armed',str(output/'DEADLINE-GUARD.ARMED.actual.json'),'--output',str(output/'DEADLINE-GUARD.actual.json')]
+    if (not argv or Path(argv[0]).resolve() != Path(interpreter['path']).resolve()
+            or argv[1:] != expected or strings_field(intent, 'argv') != argv or strings_field(waited, 'argv') != argv
+            or intent.get('source_commit') != invocation.source_commit):
+        raise ValueError('Before-ARMED original argv/first phase/source differs')
+    recorder = _evidence_pin(bundle.get('allocator_command'), 'Original public recorder')
+    binding_pin = _evidence_pin(root_intent.get('binding'), 'Original Root binding')
+    if strings_field(allocated, 'argv')[1:] != ['-B','-X','utf8',recorder['path'],'allocate','--binding-sha256',binding_pin['sha256']]:
+        raise ValueError('Before-ARMED original recorder invocation differs')
+    _integer(allocated.get('pid'), 'Before-ARMED recorder pid', 1)
+    stamps = [invocation.started_at, ready_at, _timestamp(intent.get('observed_at_utc'), 'Guard original intent'),
+        _timestamp(started.get('observed_at_utc'), 'Guard original start'),
+        _timestamp(waited.get('observed_at_utc'), 'Guard original wait'),
+        _timestamp(failure.get('observed_at_utc'), 'Root original failure'), keeper_closed_at,
+        _timestamp(_pinned_object(bundle.get('allocator_exit'), 'Original allocator wait').get('finished_at_utc'), 'Allocator original finish'),
+        _timestamp(allocated.get('observed_at_utc'), 'Recorder original finish'), invocation.finished_at]
+    if stamps != sorted(stamps) or any(stamp.utcoffset() != timezone.utc.utcoffset(stamp) for stamp in stamps):
+        raise ValueError('Before-ARMED original failure/STOP/wait chronology differs')
+    stop = _evidence_pin(bundle.get('keeper_STOP'), 'Original keeper STOP')
+    check_pin(keeper/'STOP', dict(stop))
+    if Path(stop['path']).resolve() != keeper/'STOP' or (keeper/'STOP').read_text(encoding='utf8') != 'Root mechanical prelaunch refused before public run.\n':
+        raise ValueError('Before-ARMED original STOP differs')
+    import psutil
+    if psutil.pid_exists(pid):
+        from ck3_mod_acceptance_launcher import process_identity
+        from ck3_mod_acceptance_allocate import validate_failed_supervisor_generation
+        try:
+            current = json_object(process_identity(pid))
+        except (OSError, ValueError, RuntimeError) as error:
+            raise ValueError('Before-ARMED current native process generation unavailable') from error
+        validate_failed_supervisor_generation({'pid': pid,
+            'original_popen_identity': {'pid': pid, 'birth_filetime': birth}}, current)
+    for key in ('prelaunch_orchestrator_source', 'prelaunch_orchestrator_intent',
+            'prelaunch_orchestrator_started', 'prelaunch_orchestrator_wait'):
+        evidence[key] = _evidence_pin(bundle.get(key), key)
+    evidence['prelaunch_launch_binding'] = binding_pin
+    evidence['prelaunch_guard_source'] = guard
+    evidence['prelaunch_guard_interpreter'] = interpreter
+    evidence['prelaunch_prepared_contract'] = _evidence_pin(prepared.get('contract'), 'Original prepared contract')
+    return evidence
+
+
 def _observed_prelaunch_orchestrator(bundle: Mapping[str, object], *, previous: Path,
         keeper: Path, machine: str, ready_at: datetime, keeper_closed_at: datetime) -> dict[str, FilePin]:
     """Read the real Root/child waits; a failed guard identity grants no guard credit."""
     output = Path(_evidence_pin(bundle.get('allocator_intent'), 'Root allocator intent')['path']).resolve().parent
     invocation = _root_prelaunch_invocation(bundle, output, keeper, machine)
+    if _prelaunch_guard_state(bundle) == 'failed-before-armed':
+        return _observed_guard_failed_before_armed(bundle, invocation, output, previous,
+            keeper, machine, ready_at, keeper_closed_at)
     names = {'prelaunch_failure': 'ORCHESTRATOR.failure.actual.json',
         'prelaunch_guard_started': 'DEADLINE-GUARD.started.actual.json',
         'prelaunch_guard_armed': 'DEADLINE-GUARD.ARMED.actual.json',
@@ -487,6 +625,8 @@ def validate_prelaunch_orchestrator(bundle: Mapping[str, object], *, previous: P
         keeper: Path, machine: str, ready_at: datetime, keeper_closed_at: datetime) -> dict[str, FilePin]:
     """Validate an actual mechanical refusal; grant only administrative closure."""
     root_keys = ('prelaunch_orchestrator_started', 'prelaunch_orchestrator_wait')
+    if _prelaunch_guard_state(bundle) == 'failed-before-armed' and not all(key in bundle for key in (*root_keys, 'prelaunch_orchestrator_intent')):
+        raise ValueError('Before-ARMED recovery requires original Root intent/start/wait')
     if any(key in bundle for key in root_keys):
         if not all(key in bundle for key in root_keys):
             raise ValueError('Complete original Root orchestrator start/wait required')
@@ -1932,16 +2072,24 @@ def build_bundle(args: argparse.Namespace) -> UnrunBundleReport:
             need(root_started is not None, 'Original Root intent requires both original start and wait')
             paths['prelaunch_orchestrator_intent'] = root_intent
         original_output=args.allocator_intent.resolve().parent
+        guard_state: PrelaunchGuardState = ('failed-before-armed' if root_intent is not None
+            and not (original_output/'DEADLINE-GUARD.ARMED.actual.json').exists() else 'armed-cancelled')
+        row['prelaunch_guard_state'] = guard_state
         paths.update({key:original_output/name for key,name in {
             'prelaunch_failure':'ORCHESTRATOR.failure.actual.json',
             'prelaunch_guard_started':'DEADLINE-GUARD.started.actual.json',
-            'prelaunch_guard_armed':'DEADLINE-GUARD.ARMED.actual.json',
-            'prelaunch_guard_cancel':'DEADLINE-GUARD.CANCEL.actual.json',
             'prelaunch_guard_wait':'DEADLINE-GUARD.original-wait.actual.json',
             'prelaunch_allocator_wait':'ORCHESTRATOR.ALLOCATE.original-wait.actual.json'}.items()})
+        guard_paths = ({'prelaunch_guard_intent':'DEADLINE-GUARD.intent.actual.json',
+            'prelaunch_guard_stdout':'DEADLINE-GUARD.stdout.log',
+            'prelaunch_guard_stderr':'DEADLINE-GUARD.stderr.log'} if guard_state == 'failed-before-armed' else
+            {'prelaunch_guard_armed':'DEADLINE-GUARD.ARMED.actual.json',
+             'prelaunch_guard_cancel':'DEADLINE-GUARD.CANCEL.actual.json'})
+        paths.update({key:original_output/name for key,name in guard_paths.items()})
     row.update({k:pin(v) for k,v in paths.items()})
     if 'prelaunch_orchestrator_started' in row:
-        phase_guards = _phase_guard_evidence(args.allocator_intent.resolve().parent)
+        phase_guards = ([] if _prelaunch_guard_state(row) == 'failed-before-armed' else
+            _phase_guard_evidence(args.allocator_intent.resolve().parent))
         if phase_guards:
             row['prelaunch_phase_guards'] = phase_guards
         evolution = _ttl_recovery_sources(json_object(freeze), output/'ALLOCATED-UNRUN.actual.json', produce=True)

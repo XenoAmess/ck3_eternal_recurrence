@@ -64,3 +64,14 @@ Root 的首发导出位于 `C:/workspace/rrf-development-20261024/publication-a0
 | 8 | 同一礼仪155的原生信仰页、美德与罪恶；无地图悬停提示遮挡 | 770148／`201e00be4cdd92bbd7196ff96dbbeb374f51b75f583196d403fcf83428af4d6d` |
 
 本次零日安全前置10/10；第五日6/7，两位已邀请封臣仍为Rite0、模组待确认记录仍在，未重复邀请。两图展示真实开发界面，不证明邀请成功或八项审核完成。当前商店更新仍未执行；必须在公开回读后补记实际索引和URL。
+
+### 2026-10-27 实际公开更新
+
+机器 `4-8e1c2f1861`；06:15:12Z匿名回读确认：原六图顺序与字节保留，R0028两图已实际追加。上述“待提交”均是当时状态，以下为后续实际结果。
+
+| 公开顺序／preview ID | 公开原图 | bytes／SHA-256 |
+| --- | --- | --- |
+| 7／48328555 | [新版融合结果页](https://images.steamusercontent.com/ugc/15068571318910168828/C047FCC67437D15069CCF0580DBACA1B74B88E5F/) | 603530／`93b257d360392fd11edf8611419e3085437f2e63164ab8f1b0686a54bfd6e50d` |
+| 8／48328761 | [原生信仰页](https://images.steamusercontent.com/ugc/9327408694332800861/E26378B97A15D7BFE04D6C52FDB5DA88204E12A8/) | 770148／`201e00be4cdd92bbd7196ff96dbbeb374f51b75f583196d403fcf83428af4d6d` |
+
+全部八图均HTTP200、2560×1440，与相应冻结JPEG的bytes及SHA精确一致。页面完整说明已更新并经匿名API全文核对（CRLF归一为LF），明确末尾两图属于未发布的0.2.0开发预览，下载仍是0.1.0-alpha。此更新不上传模组内容，不授业务通过。证据见[公开回读](../mod_religious_ritual_fusion/docs/evidence/workshop-media-readback-2026-10-27.json)与[元数据修订记录](../docs/workshop-metadata-revisions/religious-ritual-fusion/2026-10-27-development-ui-previews.md)。

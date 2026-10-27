@@ -1,0 +1,183 @@
+{
+  "schema": "rrf-workshop-media-public-readback-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-27T06:15:12.118989+00:00",
+  "workshop_item_id": "3826756673",
+  "owner": "76561198273714027",
+  "consumer_app_id": 1158310,
+  "public_version": "0.1.0-alpha",
+  "development_version": "0.2.0-alpha unreleased",
+  "content_upload_performed": false,
+  "description_exact_after_CRLF_to_LF": true,
+  "description_chars": 1976,
+  "description_lines": 43,
+  "description_normalized_sha256": "d906269acbdf4f48265f0ed49e99ca4aa7f211d7a99b13868099e48b634dccd5",
+  "anonymous_readback": true,
+  "old_first_six_order_and_bytes_preserved": true,
+  "previews": [
+    {
+      "order": 1,
+      "preview_id": "48294918",
+      "url": "https://images.steamusercontent.com/ugc/11949390021377429810/3A599321B3E44A9F088B90D90627E779F55D1E58/",
+      "http_status": 200,
+      "bytes": 630014,
+      "sha256": "602dafb70d76a77913fca258d0784ebc11f2a700111bc3eea433187efdf620ed",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "expected_bytes": 630014,
+      "expected_sha256": "602dafb70d76a77913fca258d0784ebc11f2a700111bc3eea433187efdf620ed",
+      "byte_identity_matches": true,
+      "started_at_utc": "2026-10-27T06:15:06.755542+00:00",
+      "finished_at_utc": "2026-10-27T06:15:08.430156+00:00"
+    },
+    {
+      "order": 2,
+      "preview_id": "48294919",
+      "url": "https://images.steamusercontent.com/ugc/14701561625571287741/51E23DEC091D62261743C53F391B0FFCCF7478B5/",
+      "http_status": 200,
+      "bytes": 751491,
+      "sha256": "6de8da6457b05c7557f24136042e27c0e5d47fd04b6f451bac3338780c83caa4",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "expected_bytes": 751491,
+      "expected_sha256": "6de8da6457b05c7557f24136042e27c0e5d47fd04b6f451bac3338780c83caa4",
+      "byte_identity_matches": true,
+      "started_at_utc": "2026-10-27T06:15:06.756821+00:00",
+      "finished_at_utc": "2026-10-27T06:15:08.356158+00:00"
+    },
+    {
+      "order": 3,
+      "preview_id": "48294920",
+      "url": "https://images.steamusercontent.com/ugc/17740379883873270313/CD252167CCBC2478DDF5D0D00554B958BBCEFFE0/",
+      "http_status": 200,
+      "bytes": 758692,
+      "sha256": "fb4391ea90e1f1136a9729c0c1ef78f801242bb1272eb848698746cdd88460eb",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "expected_bytes": 758692,
+      "expected_sha256": "fb4391ea90e1f1136a9729c0c1ef78f801242bb1272eb848698746cdd88460eb",
+      "byte_identity_matches": true,
+      "started_at_utc": "2026-10-27T06:15:06.757501+00:00",
+      "finished_at_utc": "2026-10-27T06:15:11.526173+00:00"
+    },
+    {
+      "order": 4,
+      "preview_id": "48294921",
+      "url": "https://images.steamusercontent.com/ugc/14322138971414935161/84ABF19EA52A2A29ABFAD812C472801ACD778B59/",
+      "http_status": 200,
+      "bytes": 759825,
+      "sha256": "39495dcc1492d726a8f01a803c120ec788137e9b8239fc9727157905c3d6056f",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "expected_bytes": 759825,
+      "expected_sha256": "39495dcc1492d726a8f01a803c120ec788137e9b8239fc9727157905c3d6056f",
+      "byte_identity_matches": true,
+      "started_at_utc": "2026-10-27T06:15:06.758640+00:00",
+      "finished_at_utc": "2026-10-27T06:15:08.356774+00:00"
+    },
+    {
+      "order": 5,
+      "preview_id": "48294922",
+      "url": "https://images.steamusercontent.com/ugc/11055269871140543996/3F462CE380ABF535391048C18491EEB0B3A4214A/",
+      "http_status": 200,
+      "bytes": 726313,
+      "sha256": "cca43fd4c3515bca79a6c8bfda5078eeb0b6d4e349905f6a7ec4647ca80d849f",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "expected_bytes": 726313,
+      "expected_sha256": "cca43fd4c3515bca79a6c8bfda5078eeb0b6d4e349905f6a7ec4647ca80d849f",
+      "byte_identity_matches": true,
+      "started_at_utc": "2026-10-27T06:15:08.356210+00:00",
+      "finished_at_utc": "2026-10-27T06:15:09.931087+00:00"
+    },
+    {
+      "order": 6,
+      "preview_id": "48294923",
+      "url": "https://images.steamusercontent.com/ugc/15635122434027558454/E1F1D1E59DC806F3A58BC204CDACF40430E96A13/",
+      "http_status": 200,
+      "bytes": 741549,
+      "sha256": "d1eba34145a11d370290580e3083c38ee1c78d4988a9cef05a8b19dbe0fd6dcd",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "expected_bytes": 741549,
+      "expected_sha256": "d1eba34145a11d370290580e3083c38ee1c78d4988a9cef05a8b19dbe0fd6dcd",
+      "byte_identity_matches": true,
+      "started_at_utc": "2026-10-27T06:15:08.357085+00:00",
+      "finished_at_utc": "2026-10-27T06:15:11.069065+00:00"
+    },
+    {
+      "order": 7,
+      "preview_id": "48328555",
+      "url": "https://images.steamusercontent.com/ugc/15068571318910168828/C047FCC67437D15069CCF0580DBACA1B74B88E5F/",
+      "http_status": 200,
+      "bytes": 603530,
+      "sha256": "93b257d360392fd11edf8611419e3085437f2e63164ab8f1b0686a54bfd6e50d",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "expected_bytes": 603530,
+      "expected_sha256": "93b257d360392fd11edf8611419e3085437f2e63164ab8f1b0686a54bfd6e50d",
+      "byte_identity_matches": true,
+      "started_at_utc": "2026-10-27T06:15:08.430410+00:00",
+      "finished_at_utc": "2026-10-27T06:15:11.309404+00:00"
+    },
+    {
+      "order": 8,
+      "preview_id": "48328761",
+      "url": "https://images.steamusercontent.com/ugc/9327408694332800861/E26378B97A15D7BFE04D6C52FDB5DA88204E12A8/",
+      "http_status": 200,
+      "bytes": 770148,
+      "sha256": "201e00be4cdd92bbd7196ff96dbbeb374f51b75f583196d403fcf83428af4d6d",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "expected_bytes": 770148,
+      "expected_sha256": "201e00be4cdd92bbd7196ff96dbbeb374f51b75f583196d403fcf83428af4d6d",
+      "byte_identity_matches": true,
+      "started_at_utc": "2026-10-27T06:15:09.931342+00:00",
+      "finished_at_utc": "2026-10-27T06:15:12.118147+00:00"
+    }
+  ],
+  "original_evidence": {
+    "PUBLIC-ITEM.after.actual.json": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\fresh-no-mts-review-a01\\metadata\\public-operations-a01\\store-browser-media-a03\\PUBLIC-ITEM.after.actual.json",
+      "bytes": 5306,
+      "sha256": "7026063eb62cc424586a57e7c4176675827691235a50617258918ecd51b1c097"
+    },
+    "PUBLIC-EIGHT-BYTES.actual.json": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\fresh-no-mts-review-a01\\metadata\\public-operations-a01\\store-browser-media-a03\\PUBLIC-EIGHT-BYTES.actual.json",
+      "bytes": 5639,
+      "sha256": "147490d88e10af9288a4ad504f755ac6d75ca35637b7d2940c7a38257ee58e22"
+    },
+    "PUBLIC-PREVIEW-ORDER.actual.json": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\fresh-no-mts-review-a01\\metadata\\public-operations-a01\\store-browser-media-a03\\PUBLIC-PREVIEW-ORDER.actual.json",
+      "bytes": 2014,
+      "sha256": "bb2b18f79517b00a77a063ecc83f78648ac0b56f20400d191e0b6350eba92d11"
+    },
+    "STEAM-OFFLINE.after-Web.actual.json": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\fresh-no-mts-review-a01\\metadata\\public-operations-a01\\store-browser-media-a03\\STEAM-OFFLINE.after-Web.actual.json",
+      "bytes": 2436,
+      "sha256": "f4e0cd8cb0c02f6c63a2b32bc9f2ce8af81b480edff985e3ef2d467d88b983b6"
+    },
+    "SCREEN-RELEASE.stdout.json": {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\fresh-no-mts-review-a01\\metadata\\public-operations-a01\\store-browser-media-a03\\SCREEN-RELEASE.stdout.json",
+      "bytes": 1407,
+      "sha256": "b2b88fd95c6d8c6608f1744246161e06942beb519fe106f3189630c760130efe"
+    }
+  },
+  "Steam_client_mode_changed": false
+}

@@ -11,8 +11,11 @@
   "public_version": "0.1.0-alpha",
   "development_version": "0.2.0-alpha unreleased",
   "workshop_item_id": "3826756673",
-  "store_updated": false,
-  "public_preview_order": null,
+  "store_updated": true,
+  "public_preview_order": [
+    7,
+    8
+  ],
   "format_conversion": "Java ImageIO JPEG quality0.90, 2560x1440, no resize/crop/synthetic edit",
   "root_visual_review": true,
   "zero_day_assertions": "10/10 source/configuration safety only",
@@ -80,6 +83,23 @@
         "uncropped": true,
         "width": 2560,
         "workshop_item_id": "3826756673"
+      },
+      "public_preview": {
+        "order": 7,
+        "preview_id": "48328555",
+        "url": "https://images.steamusercontent.com/ugc/15068571318910168828/C047FCC67437D15069CCF0580DBACA1B74B88E5F/",
+        "http_status": 200,
+        "bytes": 603530,
+        "sha256": "93b257d360392fd11edf8611419e3085437f2e63164ab8f1b0686a54bfd6e50d",
+        "dimensions": [
+          2560,
+          1440
+        ],
+        "expected_bytes": 603530,
+        "expected_sha256": "93b257d360392fd11edf8611419e3085437f2e63164ab8f1b0686a54bfd6e50d",
+        "byte_identity_matches": true,
+        "started_at_utc": "2026-10-27T06:15:08.430410+00:00",
+        "finished_at_utc": "2026-10-27T06:15:11.309404+00:00"
       }
     },
     {
@@ -142,7 +162,27 @@
         "uncropped": true,
         "width": 2560,
         "workshop_item_id": "3826756673"
+      },
+      "public_preview": {
+        "order": 8,
+        "preview_id": "48328761",
+        "url": "https://images.steamusercontent.com/ugc/9327408694332800861/E26378B97A15D7BFE04D6C52FDB5DA88204E12A8/",
+        "http_status": 200,
+        "bytes": 770148,
+        "sha256": "201e00be4cdd92bbd7196ff96dbbeb374f51b75f583196d403fcf83428af4d6d",
+        "dimensions": [
+          2560,
+          1440
+        ],
+        "expected_bytes": 770148,
+        "expected_sha256": "201e00be4cdd92bbd7196ff96dbbeb374f51b75f583196d403fcf83428af4d6d",
+        "byte_identity_matches": true,
+        "started_at_utc": "2026-10-27T06:15:09.931342+00:00",
+        "finished_at_utc": "2026-10-27T06:15:12.118147+00:00"
       }
     }
-  ]
+  ],
+  "store_update_observed_at_utc": "2026-10-27T06:15:12.118989+00:00",
+  "public_readback": "docs/evidence/workshop-media-readback-2026-10-27.json",
+  "historical_capture_receipts_preserved": true
 }

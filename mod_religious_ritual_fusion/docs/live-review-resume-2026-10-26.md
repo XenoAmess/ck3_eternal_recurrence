@@ -285,3 +285,13 @@ ab的[RRF40430771539](https://github.com/XenoAmess/ck3_eternal_recurrence/action
 ## 2026-10-27T04:44Z R0028五日与宣传图
 
 机器`4-8e1c2f1861`；[R0028实际记录](live-review-R0028-day5-2026-10-27.md)：零日10/10，第五日6/7，邀请对象仍未转信，未重复发送。两张新版UI实拍与JPEG已保存并逐图查看；owner网页当前未登录，待账号持有者登录后更新同条目，尚未上传。原生/OS/host/keeper/allocator0，公共/verify/Root2，SCREEN14187释放；存储245→246关闭，保留case预测及两个metadata owner超额RED。邀请阈值修复与长名fixture正在新源码验证，不能追认本场通过。
+
+## 2026-10-27T06:43Z 商店已更新与R0029未启动
+
+机器`4-8e1c2f1861`。用户完成owner网页登录后，两张R0028实拍已追加为同一Workshop条目的第7、8张，原六图顺序及字节保留。匿名八图HTTP200、2560×1440、JPEG bytes/SHA全部精确相同，完整说明已同步并匿名核对，明确未发布0.2.0预览及公开下载仍0.1.0-alpha。见[元数据修订](../../docs/workshop-metadata-revisions/religious-ritual-fusion/2026-10-27-development-ui-previews.md)和[公开回读](evidence/workshop-media-readback-2026-10-27.json)。客户端未切在线，06:15:44Z实际后台offline=true；Web SCREEN14199释放。
+
+邀请阈值和长名fixture在原b8源码完成完整RRF Maven97项、五消费者48项及离线TTL18项，均无失败/跳过。原7100的97项曾有2项本地化expected-set失败，修正后重跑；测试不追认eda执行，普通rebase仅两份无关文档且实际RRF raw输入相同。eda的RRF/DES云端CI仍在共享leaf解析处失败，未称全绿。
+
+独立fresh/noMTS/noDES场景已实际FREEZE0、Java六链GAP0、BUILD-RUNTIME0、PUBLIC-PREPARE0。R0029／a36分配后，首个外置deadline guard因硬编码cold_reload拒绝core，在ARMED前原wait1。Root原工具34309终态2fc37b/exit1；allocator和keeper原wait0。没有host/Game/launch-intent，未产生实机游玩或新截图。Root修正前另有未到allocate的操作脚本错误，原失败均保留。
+
+全部原进程关闭后SCREEN14196→14197单次释放，行政done14200。实际CAS249→250关闭原806MiB场次未来并独立准入validation64至09Z；原08Z grant未延长。共享before-ARMED恢复实现与真实回归正在补齐，尚未获得恢复资格；不能重放a36或补造ARMED/CANCEL/第二guard。R0028仍是最后实际游戏，八项审核、MTS四核心及DES联合等业务缺口继续保留。

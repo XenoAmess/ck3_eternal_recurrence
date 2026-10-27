@@ -28,13 +28,15 @@ class PrelaunchUnrunWriterAdmissionTests(unittest.TestCase):
     phase_guards = False
     intent_root = False
     phase_count = 3
+    before_armed = False
     def setUp(self) -> None:
         fixture = RootAllocatorTripletTests()
         fixture.setUp()
         self.addCleanup(fixture.doCleanups)
         self.fixture = fixture
         bundle, self.live, self.keeper, _ = fixture.prelaunch_fixture(observed_root=self.observed_root,
-            phase_guards=self.phase_guards, intent_root=self.intent_root, phase_count=self.phase_count)
+            phase_guards=self.phase_guards, intent_root=self.intent_root, phase_count=self.phase_count,
+            before_armed=self.before_armed)
         self.bundle = json_object(bundle)
         self.close = fixture.root / 'closure.json'
         self.close.write_text(json.dumps(bundle), encoding='utf-8')
@@ -188,6 +190,88 @@ class TwoPhaseIntentRootPrelaunchUnrunWriterAdmissionTests(ThreePhaseRootPrelaun
         intent=json_object(json.loads((record/'intent.json').read_text(encoding='utf8')))
         recorded=object_field(object_field(object_field(intent,'closure'),'failure_cleanup'),'original_evidence')
         self.assertEqual(recorded,evidence)
+
+
+class BeforeArmedRootPrelaunchUnrunWriterAdmissionTests(ObservedRootPrelaunchUnrunWriterAdmissionTests):
+    phase_guards = True
+    intent_root = True
+    phase_count = 2
+    before_armed = True
+
+    def test_real_bundle_producer_dispatches_failed_guard_then_revalidates_under_writer_lock(self) -> None:
+        bus = self.fixture.root/'bus'
+        (bus/'tasks').mkdir(parents=True)
+        (bus/'bin').mkdir()
+        cli = bus/'bin/codex_task_bus.py';cli.write_text('fixture bus source', encoding='utf8')
+        events: list[JsonObject] = []
+        for key, state in (('CAS_release', 'waiting'), ('admin_done', 'done')):
+            path = Path(file_pin(self.bundle[key])['path'])
+            row = json_object(json.loads(path.read_text(encoding='utf8')))
+            event = object_field(row, 'event');event['state'] = state;row['event'] = event
+            path.write_text(json.dumps(row), encoding='utf8')
+            self.bundle[key] = json_object(self.fixture.reference(path))
+            events.append(object_field(row, 'event'))
+        (bus/'events.jsonl').write_text(''.join(json.dumps(event)+'\n' for event in events), encoding='utf8')
+        self.release = json_object(json.loads(self.release_path.read_text(encoding='utf8')))
+        task = object_field(self.release, 'task')
+        (bus/'tasks/fixture-prelaunch-task.json').write_text(json.dumps(task), encoding='utf8')
+        self.packet = {'tasks': [{**task, 'age_seconds': 0, 'stale': False}]}
+        files = object_field(self.freeze, 'files')
+        files[str(cli.resolve())] = json_object(self.fixture.reference(cli));self.freeze['files'] = files
+        frozen_path = self.live/'frozen-argv.json'
+        frozen_path.write_text(json.dumps(self.freeze), encoding='utf8')
+        self.bundle['frozen'] = json_object(self.fixture.reference(frozen_path))
+        for name, key in (('ready-context.json', 'ready'), ('allocated-context.json', 'allocated_context')):
+            path = self.live/name;row = json_object(json.loads(path.read_text(encoding='utf8')))
+            row['frozen_argv'] = json_object(self.fixture.reference(frozen_path))
+            path.write_text(json.dumps(row), encoding='utf8')
+            self.bundle[key] = json_object(self.fixture.reference(path))
+        def original(key: str) -> Path:
+            return Path(file_pin(self.bundle[key])['path'])
+        args = argparse.Namespace(previous_live=self.live, keeper_root=self.keeper,
+            allocator_result=None, allocator_external_exec=None,
+            allocator_intent=original('allocator_intent'), allocator_process=original('allocator_process'),
+            allocator_exit=original('allocator_exit'), allocator_command=original('allocator_command'),
+            allocator_stdout=original('allocator_stdout'),
+            prelaunch_orchestrator_source=original('prelaunch_orchestrator_source'),
+            prelaunch_orchestrator_intent=original('prelaunch_orchestrator_intent'),
+            prelaunch_orchestrator_started=original('prelaunch_orchestrator_started'),
+            prelaunch_orchestrator_wait=original('prelaunch_orchestrator_wait'),
+            root_screen_release=original('CAS_release'), admin_release=original('admin_done'),
+            task_bus_root=bus, release_sequence=11, done_sequence=12, output=self.fixture.root/'produced-closure')
+        produced = unrun.build_bundle(args)
+        self.close = Path(produced['bundle']['path'])
+        self.bundle = json_object(json.loads(self.close.read_text(encoding='utf8')))
+        self.assertEqual(self.bundle['prelaunch_guard_state'], 'failed-before-armed')
+        self.assertNotIn('prelaunch_guard_armed', self.bundle)
+        self.assertNotIn('prelaunch_guard_cancel', self.bundle)
+        self.args.previous_failure_close = self.close
+        self.closure = produced['validation']
+        self.claim()
+        self.assertEqual(self.reducer_under_lock, [True])
+
+    def test_original_failed_guard_evidence_is_flat_and_frozen_by_actual_public_consumer(self) -> None:
+        evidence = object_field(object_field(self.closure, 'failure_cleanup'), 'original_evidence')
+        for key in ('prelaunch_guard_intent', 'prelaunch_guard_started', 'prelaunch_guard_wait',
+                'prelaunch_guard_stdout', 'prelaunch_guard_stderr', 'prelaunch_guard_source',
+                'prelaunch_guard_interpreter', 'prelaunch_prepared_contract', 'prelaunch_launch_binding'):
+            row = file_pin(evidence[key])
+            self.assertEqual(self.fixture.reference(Path(row['path'])), row)
+        self.assertNotIn('prelaunch_guard_armed', evidence)
+        self.assertNotIn('prelaunch_guard_cancel', evidence)
+        record = self.claim()
+        intent = json_object(json.loads((record/'intent.json').read_text(encoding='utf8')))
+        recorded = object_field(object_field(object_field(intent, 'closure'), 'failure_cleanup'), 'original_evidence')
+        self.assertEqual(recorded, evidence)
+
+    def test_guard_publication_appearing_inside_writer_lock_rejects_before_consuming_intent(self) -> None:
+        output = Path(file_pin(self.bundle['prelaunch_guard_wait'])['path']).parent
+        def mutate() -> None:
+            (output/'DEADLINE-GUARD.ARMED.actual.json').write_text('{}', encoding='utf8')
+        with self.assertRaisesRegex(ValueError, 'armed/canceled/later guard'):
+            self.claim(mutate)
+        self.assertEqual(self.reducer_under_lock, [True])
+        self.assert_unconsumed()
 
 
 if __name__ == '__main__':
