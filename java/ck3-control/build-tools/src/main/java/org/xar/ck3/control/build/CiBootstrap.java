@@ -1,12 +1,14 @@
 package org.xar.ck3.control.build;
 
 import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
+import java.net.URLClassLoader;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -48,6 +50,9 @@ import java.util.concurrent.TimeoutException;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import java.util.jar.JarEntry;
+import java.util.jar.JarOutputStream;
+import javax.tools.ToolProvider;
 
 /**
  * JDK21-only hosted bootstrap. Run this source file before Jackson/JNA exist.
@@ -346,6 +351,10 @@ public final class CiBootstrap {
             System.out.println("Verified " + count + " persisted Maven probe records; evidence integrity grants no pipeline qualification");
             return;
         }
+        if (arguments.length > 0 && arguments[0].equals("--product-maven-diagnostic")) {
+            System.exit(productMavenDiagnostic(arguments));
+            return;
+        }
         Invocation invocation = invocation(arguments);
         Map<String, String> values = invocation.values();
         FilePin fixtureProduction = fixtureProductionPin(values);
@@ -490,6 +499,137 @@ public final class CiBootstrap {
     }
 
     /** Existing default command is authoritative; admission never substitutes a task-local command. */
+    public record RepositorySpyBuild(String schema, String machineId, String sourceCommit,
+            DefaultMaven defaultMaven, List<FilePin> sourceRefs, List<FilePin> providedMavenLibRefs,
+            FilePin extensionRef) {
+        public RepositorySpyBuild { sourceRefs = List.copyOf(sourceRefs); providedMavenLibRefs = List.copyOf(providedMavenLibRefs); }
+    }
+
+    /** This source launcher remains JDK-only; Maven API types live in the separately compiled observer. */
+    static int productMavenDiagnostic(String[] arguments) throws Exception {
+        if (arguments.length < 6 || !List.of("leaf", "prepare", "run", "collect").contains(arguments[1])
+                || arguments.length > 6 && (!List.of("leaf", "run").contains(arguments[1]) || !arguments[6].equals("--")))
+            throw new IllegalArgumentException("Product diagnostic mode, repo, owned root and actual Maven evidence required");
+        Path repo = OracleEnvironment.plainDirectory(arguments[2]);
+        Path root = OracleEnvironment.plainDirectory(arguments[3]);
+        Path evidence = OracleEnvironment.plainDirectory(arguments[4]);
+        if (!arguments[5].equals("--observed-default-maven")) throw new IllegalArgumentException("Observed default Maven binding required");
+        String machine = machineId(Path.of(Objects.requireNonNull(System.getenv("SystemRoot"))).toRealPath());
+        verifyMavenEvidence(evidence, machine);
+        J terminal = parse(Files.readAllBytes(evidence.resolve("logs/bootstrap-actual.json")));
+        DefaultMaven maven = parseDefaultMaven(field(terminal, "default_maven"));
+        verifyPin(maven.distributionLauncherRef());
+        Path extension;
+        if (arguments[1].equals("leaf")) extension = buildRepositorySpy(repo.resolve("java/ck3-control/build-tools"), root, machine, maven, Objects.requireNonNull(System.getenv("GITHUB_SHA")));
+        else {
+            J build = parse(Files.readAllBytes(root.resolve("spy-build.actual.json")));
+            if (!string(field(build, "schema")).equals("xar.maven-repository-spy-build/v1")
+                    || !string(field(build, "machine_id")).equals(machine)
+                    || !string(field(build, "source_commit")).equals(System.getenv("GITHUB_SHA"))
+                    || !parseDefaultMaven(field(build, "default_maven")).equals(maven))
+                throw new IOException("Actual source/machine/default Maven spy build changed");
+            for (String name : List.of("source_refs", "provided_maven_lib_refs")) {
+                if (!(field(build, name) instanceof JA refs) || refs.values().isEmpty() || refs.values().size() > 256)
+                    throw new IOException("Bounded complete spy compilation inputs required");
+                for (J ref : refs.values()) verifyPin(parseFilePin(ref));
+            }
+            FilePin runtime = parseFilePin(field(build, "extension_ref")); verifyPin(runtime);
+            extension = Path.of(runtime.path());
+        }
+        List<java.net.URL> urls = new ArrayList<>(); urls.add(extension.toUri().toURL());
+        for (Path jar : observedMavenLibraries(maven)) urls.add(jar.toUri().toURL());
+        // Load only our observer entry. Quarkus resolver classes are never proactively loaded here.
+        try (URLClassLoader loader = new URLClassLoader(urls.toArray(java.net.URL[]::new), ClassLoader.getPlatformClassLoader())) {
+            var method = loader.loadClass("org.xar.ck3.control.build.MavenRepositorySpy").getMethod("execute",
+                    String.class, Path.class, Path.class, String.class, Path.class, String[].class);
+            String[] childArguments = arguments.length == 6 ? new String[0] : java.util.Arrays.copyOfRange(arguments, 7, arguments.length);
+            try {
+                Object result = method.invoke(null, arguments[1], repo, root, machine, extension, childArguments);
+                if (!(result instanceof Integer exit)) throw new IOException("Exact observer exit required");
+                return exit;
+            } catch (InvocationTargetException failed) {
+                if (failed.getCause() instanceof Exception actual) throw actual;
+                throw new IOException("Actual repository observer failed", failed.getCause());
+            }
+        }
+    }
+
+    static List<Path> observedMavenLibraries(DefaultMaven maven) throws IOException {
+        verifyPin(maven.distributionLauncherRef());
+        Path lib = Path.of(maven.reportedHome()).toRealPath().resolve("lib");
+        List<Path> result;
+        try (var files = Files.list(lib)) { result = files.filter(path -> path.getFileName().toString().endsWith(".jar")).sorted().toList(); }
+        if (result.isEmpty() || result.size() > 256) throw new IOException("Actual default Maven provided libraries required");
+        for (Path jar : result) {
+            var attributes = Files.readAttributes(jar, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+            if (!attributes.isRegularFile() || attributes.isSymbolicLink() || attributes.isOther() || attributes.size() > 32 * MIB)
+                throw new IOException("Bounded plain actual Maven library required");
+        }
+        return result;
+    }
+
+    static boolean repositorySessionComplete(Path path, String machine, String originalJvmPid) throws IOException {
+        if (Files.size(path) > 64 * 1024) throw new IOException("Bounded actual Maven session observation required");
+        J value = parse(Files.readAllBytes(path));
+        if (!string(field(value, "schema")).equals("xar.maven-repository-session/v1")
+                || !string(field(value, "machine_id")).equals(machine)
+                || !string(field(value, "source_commit")).equals(System.getenv("GITHUB_SHA"))
+                || !string(field(value, "process_id_decimal")).matches("[1-9][0-9]{0,18}")
+                || !string(field(value, "process_id_decimal")).equals(originalJvmPid))
+            throw new IOException("Actual same-run Maven session identity required");
+        Instant.parse(string(field(value, "observed_at_utc")));
+        if (!(field(value, "unavailable") instanceof JNull)) return false;
+        for (String name : List.of("settings_local_repository", "session_local_repository"))
+            if (!Path.of(string(field(value, name))).isAbsolute()) throw new IOException("Actual absolute session repository required");
+        return true;
+    }
+
+    static Path buildRepositorySpy(Path module, Path root, String machine, DefaultMaven maven, String sourceCommit) throws IOException {
+        if (sourceCommit == null || !sourceCommit.matches("[a-f0-9]{40}")) throw new IOException("Exact observer source commit required");
+        List<Path> libraries = observedMavenLibraries(maven);
+        List<Path> sources = List.of(module.resolve("src/main/java/org/xar/ck3/control/build/CiBootstrap.java"),
+                module.resolve("src/maven-spy/java/org/xar/ck3/control/build/MavenRepositorySpy.java"));
+        List<FilePin> sourceRefs = new ArrayList<>(), libraryRefs = new ArrayList<>();
+        for (Path source : sources) sourceRefs.add(measure(source));
+        for (Path library : libraries) libraryRefs.add(measure(library));
+        Path classes = Files.createDirectory(root.resolve("spy-classes"));
+        List<String> options = new ArrayList<>(List.of("--release", "21", "-encoding", "UTF-8", "-proc:none", "-Xlint:all", "-Werror", "-classpath",
+                String.join(java.io.File.pathSeparator, libraries.stream().map(Path::toString).toList()), "-d", classes.toString()));
+        options.addAll(sources.stream().map(Path::toString).toList());
+        var compiler = ToolProvider.getSystemJavaCompiler();
+        if (compiler == null) throw new IOException("The actual installed JDK compiler is required");
+        ByteArrayOutputStream messages = new ByteArrayOutputStream();
+        OutputStream bounded = new OutputStream() {
+            @Override public void write(int value) throws IOException {
+                if (messages.size() >= 32 * 1024) throw new IOException("Spy compiler diagnostic bound exceeded"); messages.write(value);
+            }
+            @Override public void write(byte[] data, int offset, int length) throws IOException {
+                if (length > 32 * 1024 - messages.size()) throw new IOException("Spy compiler diagnostic bound exceeded"); messages.write(data, offset, length);
+            }
+        };
+        int exit = compiler.run(null, bounded, bounded, options.toArray(String[]::new));
+        Files.write(root.resolve("spy-compiler.log"), messages.toByteArray(), StandardOpenOption.CREATE_NEW);
+        if (exit != 0) throw new IOException("Actual default-Maven API observer compilation failed; see spy-compiler.log");
+        Path jar = root.resolve("maven-repository-spy.jar");
+        try (JarOutputStream output = new JarOutputStream(Files.newOutputStream(jar, StandardOpenOption.CREATE_NEW)); var files = Files.walk(classes)) {
+            long total = 0; int count = 0;
+            for (Path file : files.filter(path -> Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS)).sorted().toList()) {
+                total = Math.addExact(total, Files.size(file));
+                if (++count > 256 || total > MIB || !file.getFileName().toString().endsWith(".class")) throw new IOException("Bounded exact spy class closure required");
+                output.putNextEntry(new JarEntry(classes.relativize(file).toString().replace('\\', '/'))); Files.copy(file, output); output.closeEntry();
+            }
+            output.putNextEntry(new JarEntry("META-INF/plexus/components.xml"));
+            output.write(("<component-set><components><component><role>org.apache.maven.eventspy.EventSpy</role>"
+                    + "<role-hint>xar-repository-observer</role-hint><implementation>org.xar.ck3.control.build.MavenRepositorySpy</implementation>"
+                    + "</component></components></component-set>").getBytes(StandardCharsets.UTF_8)); output.closeEntry();
+        }
+        for (FilePin ref : sourceRefs) verifyPin(ref); for (FilePin ref : libraryRefs) verifyPin(ref);
+        if (Files.size(jar) > MIB) throw new IOException("Bounded observer extension required");
+        publish(root.resolve("spy-build.actual.json"), new RepositorySpyBuild("xar.maven-repository-spy-build/v1",
+                machine, sourceCommit, maven, sourceRefs, libraryRefs, measure(jar)));
+        return jar;
+    }
+
     public static DefaultMaven requireDefaultMaven(String output) throws IOException {
         MavenObservation observed = observeDefaultMaven(output, System.getProperty("os.name").startsWith("Windows"));
         try { requireStableMinimum(observed.reportedVersion()); }
