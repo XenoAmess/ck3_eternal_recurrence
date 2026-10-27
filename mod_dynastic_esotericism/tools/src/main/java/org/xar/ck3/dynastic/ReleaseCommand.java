@@ -29,7 +29,7 @@ public final class ReleaseCommand implements QuarkusApplication {
     @Override
     public int run(String... args) {
         try {
-            if (args.length == 0) throw new IllegalArgumentException("expected validate, build, verify, check, fixture, runtime, artwork or inspect-save-v4");
+            if (args.length == 0) throw new IllegalArgumentException("expected validate, build, verify, check, fixture, runtime, artwork, inspect-save-v4, inspect-save-selected-v1 or inspect-save-opinions-v1");
             if (args[0].equals("artwork")) {
                 if (args.length != 3) throw new IllegalArgumentException("expected artwork <uploaded-zip> <mod-source>");
                 System.out.println(JSON.writerWithDefaultPrettyPrinter().writeValueAsString(
@@ -37,6 +37,8 @@ public final class ReleaseCommand implements QuarkusApplication {
                 return 0;
             }
             if (args[0].equals("inspect-save-v4")) return org.xar.ck3.save.Inspection.run(java.util.Arrays.copyOfRange(args, 1, args.length), saveDecoder);
+            if (args[0].equals("inspect-save-selected-v1")) return org.xar.ck3.save.SelectedInspection.run(Arrays.copyOfRange(args, 1, args.length), saveDecoder);
+            if (args[0].equals("inspect-save-opinions-v1")) return org.xar.ck3.save.OpinionInspection.run(Arrays.copyOfRange(args, 1, args.length), saveDecoder);
             if (args[0].equals("fixture")) return FixtureEmitter.run(Arrays.copyOfRange(args, 1, args.length));
             if (args[0].equals("runtime")) return SharedRuntimeComposer.run(Arrays.copyOfRange(args, 1, args.length));
             ParsedOptions parsed = parse(Arrays.copyOfRange(args, 1, args.length));

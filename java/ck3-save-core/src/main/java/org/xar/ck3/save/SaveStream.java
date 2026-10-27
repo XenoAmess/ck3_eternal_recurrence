@@ -19,6 +19,7 @@ public final class SaveStream {
     private final Clausewitz.Lexer lexer;
     private final Selection selection;
     private final Map<ScopeKind, Set<String>> census = new LinkedHashMap<>();
+    private final Map<ScopeKind, Set<String>> emptySlots = new LinkedHashMap<>();
     private final Set<ScopeKind> seen = new LinkedHashSet<>();
     private final List<Scope> scopes = new ArrayList<>();
     private final List<ProjectionScope> projections = new ArrayList<>();
@@ -38,7 +39,9 @@ public final class SaveStream {
     public SaveStream(Reader reader, Selection selection) {
         this.lexer = new Clausewitz.Lexer(reader, Clausewitz.Syntax.SAVE, 2 * 1024 * 1024);
         this.selection = java.util.Objects.requireNonNull(selection);
-        for (TableSelection table : selection.tables()) census.put(table.kind(), new LinkedHashSet<>());
+        for (TableSelection table : selection.tables()) {
+            census.put(table.kind(), new LinkedHashSet<>()); emptySlots.put(table.kind(), new LinkedHashSet<>());
+        }
         for (ProjectionSelection projection : selection.projections()) matches.put(projection.name(), 0);
     }
     public Projection read() throws IOException {
@@ -89,12 +92,16 @@ public final class SaveStream {
                 if (structure != null) structure.observe(key, value.equals("{"));
                 if (value.equals("{")) {
                     List<String> nested = child(path, key); enter(nested); block(nested, true);
-                } else if (path.isEmpty()) {
-                    diagnostic(key); diagnostic(value);
-                    rootScalars.add(new Clausewitz.Entry(key, "=", new Clausewitz.Atom(value)));
-                    if (rootScalars.size() > 512) throw failure("root-scalar cap exceeded");
+                } else {
+                    observeScalar(path, key, value);
+                    if (path.isEmpty()) {
+                        diagnostic(key); diagnostic(value);
+                        rootScalars.add(new Clausewitz.Entry(key, "=", new Clausewitz.Atom(value)));
+                        if (rootScalars.size() > 512) throw failure("root-scalar cap exceeded");
+                    }
                 }
-            } else if (path.isEmpty() && !(rootKeys.isEmpty() && (key.startsWith("SAV") || key.equals("CK3txt")))) throw failure("unassigned root atom: " + key);
+            } else if (selection.tables().stream().anyMatch(table -> table.path().equals(path))) throw failure("unassigned native table atom: " + key);
+            else if (path.isEmpty() && !(rootKeys.isEmpty() && (key.startsWith("SAV") || key.equals("CK3txt")))) throw failure("unassigned root atom: " + key);
         }
         if (braced) {
             if (!"}".equals(next())) throw failure("truncated block");
@@ -116,8 +123,8 @@ public final class SaveStream {
             String id = path.getLast();
             try { new NativeId(id); } catch (IllegalArgumentException invalid) { throw failure("invalid native table identity at " + path); }
             Set<String> ids = census.get(table.kind());
-            if (!ids.add(id)) throw failure("duplicate native ID in table: " + path);
-            if (ids.size() > 200000) throw failure("table identity cap exceeded");
+            if (!ids.add(id) || emptySlots.get(table.kind()).contains(id)) throw failure("duplicate native ID in table: " + path);
+            if (ids.size() + emptySlots.get(table.kind()).size() > 200000) throw failure("table identity cap exceeded");
             if (table.ids().contains(new NativeId(id))) start(new Capture(table.kind(), path, null, 0));
         }
         for (ProjectionSelection projection : selection.projections()) if (projection.path().equals(path)) {
@@ -125,6 +132,18 @@ public final class SaveStream {
             if (occurrence >= projection.maxMatches()) throw failure("projection match cap exceeded: " + projection.name());
             matches.put(projection.name(), occurrence + 1);
             start(new Capture(null, path, projection, occurrence));
+        }
+    }
+    /** Native empty cells are not full records; unknown scalar layouts never become silent omissions. */
+    private void observeScalar(List<String> path, String key, String value) throws IOException {
+        for (TableSelection table : selection.tables()) {
+            if (child(path, key).equals(table.path())) throw failure("native table must be a block: " + table.path());
+            if (!path.equals(table.path())) continue;
+            try { new NativeId(key); } catch (IllegalArgumentException invalid) { throw failure("invalid native empty-slot identity: " + key); }
+            Set<String> slots = emptySlots.get(table.kind());
+            if (!value.equals("none")) throw failure("unknown native table scalar: " + child(path, key));
+            if (!slots.add(key) || census.get(table.kind()).contains(key)) throw failure("duplicate native ID in table: " + child(path, key));
+            if (slots.size() + census.get(table.kind()).size() > 200000) throw failure("table identity cap exceeded");
         }
     }
     private void start(Capture capture) throws IOException {
