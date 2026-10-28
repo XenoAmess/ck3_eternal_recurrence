@@ -50,7 +50,7 @@ class ReligiousRitualFusionProducerPrepareTests(unittest.TestCase):
     def setUp(self) -> None:
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
-        self.root = Path(temporary.name)
+        self.root = Path(temporary.name).resolve()
         self.shared = self.root / 'shared.json'
         self.shared.write_text(json.dumps({'machine_id': 'authored-machine'}), encoding='utf-8')
         # SaveInspector launches the pinned real interpreter as an actual child with its unchanged

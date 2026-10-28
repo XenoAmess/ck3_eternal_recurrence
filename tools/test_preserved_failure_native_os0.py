@@ -33,7 +33,7 @@ class PreservedNativeOS0Tests(unittest.TestCase):
     def setUp(self) -> None:
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
-        self.root = Path(self.temp.name)
+        self.root = Path(self.temp.name).resolve()
         source = json_object(json.loads((Path(__file__).parent / 'fixtures' / self.fixture_name).read_bytes()))
         self.original_root = text_field(source, 'original_root').replace('\\', '/')
         self.machine = text_field(source, 'machine_id')
