@@ -79,7 +79,7 @@ final class HouseParentInspectionTest {
                 "world={dynasties={1={}} houses={10={dynasty=none}}}",
                 "world={dynasties={1={}} houses={10={dynasty=-1}}}",
                 "world={dynasties={1={}} houses={10={dynasty=2}}}",
-                "world={dynasties={1={}} houses={10={dynasty=1} 10={dynasty=1}}}",
+                "world={dynasties={1={} 2={}} houses={10={dynasty=1} 10={dynasty=2}}}",
                 "world={dynasties={1={}} houses={10=none 10={dynasty=1}}}",
                 "world={dynasties={1={}} houses={01={dynasty=1}}}",
                 "world={dynasties={1={}} houses={{dynasty=1}}}",

@@ -93,7 +93,7 @@ final class SaveCoreTest {
         assertEquals(RecordStatus.UNKNOWN_TABLE, new SaveStream(new StringReader(world()), absent).read().records().getFirst().status());
         Selection missing = new Selection(List.of(new TableSelection(ScopeKind.HOUSE, List.of("authored_house_table"), ids("999"), false)), List.of(), true, false, List.of());
         assertEquals(RecordStatus.NOT_FOUND, new SaveStream(new StringReader(world()), missing).read().records().getFirst().status());
-        // Identity 42 can occur in different kinds; duplicate IDs within one table are rejected.
+        // Identity 42 can occur in different kinds; request IDs stay unique and conflicting bodies reject.
         assertDoesNotThrow(() -> new Selection(List.of(table(ScopeKind.ACTOR, List.of("living"), "42"), table(ScopeKind.DYNASTY, List.of("dynasties"), "42")), List.of(), false, false, List.of()));
         assertThrows(IllegalArgumentException.class, () -> table(ScopeKind.ACTOR, List.of("living"), "1", "1"));
     }

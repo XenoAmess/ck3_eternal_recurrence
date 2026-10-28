@@ -63,7 +63,7 @@ public final class SaveContracts {
     public record Scope(ScopeKind kind, Coverage coverage, List<String> path, String canonicalTokenSha256, Clausewitz.Block ast) {
         public Scope { Objects.requireNonNull(kind); Objects.requireNonNull(coverage); path = List.copyOf(path); digest(canonicalTokenSha256); Objects.requireNonNull(ast); }
     }
-    /** IDs of full block records only; recognized native `none` slots are not records or members. */
+    /** Unique IDs of full block records; equivalent repeated bodies contribute once. Native none slots are not records or members. */
     public record Inventory(ScopeKind kind, List<String> path, Availability availability, List<NativeId> ids) {
         public Inventory { Objects.requireNonNull(kind); path = List.copyOf(path); Objects.requireNonNull(availability); ids = List.copyOf(ids); }
     }

@@ -101,11 +101,7 @@ public final class SelectedInspection {
     }
     private static List<String> child(List<String> path, String id) { List<String> result = new ArrayList<>(path); result.add(id); return List.copyOf(result); }
     private static String canonicalHash(Clausewitz.Block ast) {
-        try {
-            Clausewitz.Lexer lexer = new Clausewitz.Lexer(new java.io.StringReader("record = " + ast.render()), Clausewitz.Syntax.SAVE, 2 * 1024 * 1024);
-            StringBuilder text = new StringBuilder(); for (String token; (token = lexer.next()) != null;) text.append(token).append(' ');
-            return FilePins.sha256(text.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
-        } catch (IOException invalid) { throw new IllegalArgumentException("invalid selected AST", invalid); }
+        return CanonicalTokens.selectedRecordHash(ast);
     }
     public static int run(String[] args, SaveDecoder.Launcher launcher) {
         return InspectionFiles.run(args, Inspection.Request.class, request -> inspect(request, launcher));

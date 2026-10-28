@@ -60,3 +60,34 @@ qualify an old run's map for another Save. If an assertion quantifies parent
 relationships at several saved points, each relevant Save needs its own map;
 equality of ID inventories alone is not equality of parent references.
 The caller's existing retained-Save SDK/custody/source/OS-handle guards remain.
+
+## Canonical-equivalent native block repeats
+
+A selected native table may contain repeated full block entries for one native
+ID. SaveStream hashes every complete body with the existing SAVE lexer: each
+raw lexeme in its original order, UTF-8 encoded, followed by one ASCII space.
+The native-body domain includes both braces and excludes the selected-record
+record = prefix. Selected/projection report hashes keep their historical
+wrapper domain and wire representation.
+
+Only complete signatures with equal token count, canonical byte count and
+SHA-256 can collapse to one logical native record. Different contents, field
+order, quoted lexemes or missing tokens reject; there is no field merge or
+last-record-wins behavior. NONE/BLOCK conflicts, repeated NONE slots, repeated
+selected tables, unknown scalar layouts and invalid IDs remain errors.
+Equivalent repeats contribute one inventory ID, record observation, selected
+AST and House parent row. Within selected native tables, structural census
+numeric child counts likewise count that logical record once. Explicit outer
+projection ASTs remain faithful to the actual decoded stream.
+
+The parser still reads through EOF; successful selection does not permit early
+return. Original decoder exit, stderr, complete-stream and input identity checks
+remain mandatory. No business acceptance is granted by offline parsing.
+
+The new aggregate signature index has a default/hard ceiling of 200000 unique
+full native records across all selected kinds, in addition to the existing
+per-table bound. This is a stricter aggregate limit than the old theoretical
+cross-table maximum. Package-private NativeSignatureLimits permits only lower
+bounded values for deterministic boundary tests; there is no request field to
+raise or disable the ceiling. Signatures retain only counters and hashes, never
+whole unselected bodies. Decoder stream/timeout bounds remain unchanged.

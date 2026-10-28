@@ -39,6 +39,21 @@ final class SaveInspectionTest {
         """;
     @TempDir Path directory;
 
+    @Test void equivalentNativeRepeatPassesActualRrfAdapterAndTypedConsumerOnce() throws Exception {
+        Request original = request();
+        String repeated = SAVE.replace("9007199254740993={faith=13}", "9007199254740993={faith=13} 9007199254740993={faith=13}");
+        Path input = directory.resolve("canonical-repeat.ck3");
+        Files.writeString(input, repeated, StandardCharsets.UTF_8);
+        Request request = new Request(original.schemaVersion(), original.machineId(), original.repository(),
+                SaveInspector.pin(input), original.decoder(), original.layout(), original.selection(), original.expectation());
+        Report report = SaveInspector.inspect(request, fixture("ok"));
+        assertEquals(report, Json.read(Json.write(report), Report.class));
+        SaveStream.Projection baseline = new SaveStream(new StringReader(SAVE), original).read();
+        assertEquals(baseline.scopes(), report.scopes());
+        assertEquals(baseline.inventories(), report.inventories());
+        assertEquals((long) report.scopes().size(), report.scopes().stream().map(Scope::path).distinct().count());
+    }
+
     @Test void actualChildProducerToTypedReportPreservesRawNumbersRepeatedKeysAndOrdering() throws Exception {
         Request request = request();
         Report report = SaveInspector.inspect(request, fixture("ok"));

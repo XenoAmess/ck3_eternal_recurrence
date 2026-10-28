@@ -16,12 +16,25 @@ import org.xar.ck3.save.SaveContracts.*;
 public final class SaveStream {
     private static final int MAX_RECORD_CHARS = 512 * 1024;
     private static final int MAX_SELECTED_BYTES = 4 * 1024 * 1024;
+    // Additional aggregate bound: signatures retain no decoded record text.
+    static final int MAX_NATIVE_SIGNATURES = 200000;
+    record NativeSignatureLimits(int maxRecords) {
+        NativeSignatureLimits {
+            if (maxRecords < 1 || maxRecords > MAX_NATIVE_SIGNATURES)
+                throw new IllegalArgumentException("bounded aggregate native signature count required");
+        }
+        static NativeSignatureLimits standard() { return new NativeSignatureLimits(MAX_NATIVE_SIGNATURES); }
+    }
     private final Clausewitz.Lexer lexer;
     private final Selection selection;
     private final HouseParentInspection.Collector houseParents;
     private final Map<ScopeKind, Set<String>> census = new LinkedHashMap<>();
     private final Map<ScopeKind, Set<String>> emptySlots = new LinkedHashMap<>();
     private final Set<ScopeKind> seen = new LinkedHashSet<>();
+    private final Map<ScopeKind, Map<String, NativeFingerprint>> nativeSignatures = new LinkedHashMap<>();
+    private final List<NativeRecord> nativeRecords = new ArrayList<>();
+    private int nativeSignatureCount;
+    private final NativeSignatureLimits nativeSignatureLimits;
     private final List<Scope> scopes = new ArrayList<>();
     private final List<ProjectionScope> projections = new ArrayList<>();
     private final Map<String, Integer> matches = new LinkedHashMap<>();
@@ -39,11 +52,17 @@ public final class SaveStream {
 
     public SaveStream(Reader reader, Selection selection) { this(reader, selection, null); }
     SaveStream(Reader reader, Selection selection, HouseParentInspection.Collector houseParents) {
+        this(reader, selection, houseParents, NativeSignatureLimits.standard());
+    }
+    SaveStream(Reader reader, Selection selection, HouseParentInspection.Collector houseParents,
+               NativeSignatureLimits nativeSignatureLimits) {
+        this.nativeSignatureLimits = java.util.Objects.requireNonNull(nativeSignatureLimits);
         this.houseParents = houseParents;
         this.lexer = new Clausewitz.Lexer(reader, Clausewitz.Syntax.SAVE, 2 * 1024 * 1024);
         this.selection = java.util.Objects.requireNonNull(selection);
         for (TableSelection table : selection.tables()) {
             census.put(table.kind(), new LinkedHashSet<>()); emptySlots.put(table.kind(), new LinkedHashSet<>());
+            nativeSignatures.put(table.kind(), new LinkedHashMap<>());
         }
         for (ProjectionSelection projection : selection.projections()) matches.put(projection.name(), 0);
     }
@@ -51,7 +70,7 @@ public final class SaveStream {
         if (read) throw failure("stream already consumed");
         read = true;
         block(List.of(), false);
-        if (lexer.peek() != null || !active.isEmpty()) throw failure("incomplete stream");
+        if (lexer.peek() != null || !active.isEmpty() || !nativeRecords.isEmpty()) throw failure("incomplete stream");
         for (TableSelection table : selection.tables()) {
             if (table.required() && !seen.contains(table.kind())) throw failure("required table absent: " + table.path() + "; observed table children=" + tableChildren + "; roots=" + rootKeys);
             if (table.required() && !census.get(table.kind()).containsAll(table.ids().stream().map(NativeId::value).toList())) throw failure("selected " + table.kind() + " records absent; available=" + census.get(table.kind()));
@@ -82,8 +101,9 @@ public final class SaveStream {
     }
     private void block(List<String> path, boolean braced) throws IOException {
         if (path.size() > 128) throw failure("nesting cap exceeded");
-        if (houseParents != null) houseParents.enter(path);
-        StructureBuilder structure = structure(path);
+        boolean duplicateNative = nativeRecords.stream().anyMatch(record -> record.duplicate && startsWith(path, record.path));
+        if (houseParents != null && !duplicateNative) houseParents.enter(path);
+        StructureBuilder structure = duplicateNative ? null : structure(path);
         while (lexer.peek() != null && !lexer.peek().equals("}")) {
             String key = next();
             if (key.equals("=")) throw failure("unexpected assignment");
@@ -94,11 +114,14 @@ public final class SaveStream {
                 if (path.isEmpty() && !key.matches("[0-9]+") && !rootKeys.contains(key)) {
                     diagnostic(key); rootKeys.add(key); if (rootKeys.size() > 512) throw failure("root-key cap exceeded");
                 }
-                if (houseParents != null) houseParents.field(path, key, value);
-                if (structure != null) structure.observe(key, value.equals("{"));
+                if (houseParents != null && !duplicateNative) houseParents.field(path, key, value);
                 if (value.equals("{")) {
-                    List<String> nested = child(path, key); enter(nested); block(nested, true);
+                    List<String> nested = child(path, key);
+                    boolean duplicateChild = enter(nested);
+                    if (structure != null && !duplicateChild) structure.observe(key, true);
+                    block(nested, true);
                 } else {
+                    if (structure != null) structure.observe(key, false);
                     observeScalar(path, key, value);
                     if (path.isEmpty()) {
                         diagnostic(key); diagnostic(value);
@@ -109,16 +132,18 @@ public final class SaveStream {
             } else {
                 if (selection.tables().stream().anyMatch(table -> table.path().equals(path))) throw failure("unassigned native table atom: " + key);
                 if (path.isEmpty() && !(rootKeys.isEmpty() && (key.startsWith("SAV") || key.equals("CK3txt")))) throw failure("unassigned root atom: " + key);
-                if (houseParents != null) houseParents.unassigned(path, key);
+                if (houseParents != null && !duplicateNative) houseParents.unassigned(path, key);
             }
         }
         if (braced) {
             if (!"}".equals(next())) throw failure("truncated block");
             for (int i = active.size() - 1; i >= 0; i--) if (active.get(i).path.equals(path)) finish(active.remove(i));
-            if (houseParents != null) houseParents.leave(path);
+            finishNativeRecord(path);
+            if (houseParents != null && !duplicateNative) houseParents.leave(path);
         } else if (lexer.peek() != null) throw failure("unexpected root closing brace");
     }
-    private void enter(List<String> path) throws IOException {
+    private boolean enter(List<String> path) throws IOException {
+        boolean duplicateNative = false;
         if (path.size() == 2 && !path.getLast().matches("[0-9]+") && selection.tables().stream().anyMatch(table -> table.path().getFirst().equals(path.getFirst()))) {
             tableChildren.add(String.join("/", path)); if (tableChildren.size() > 1024) throw failure("table-child diagnostic cap exceeded");
         }
@@ -133,9 +158,16 @@ public final class SaveStream {
             String id = path.getLast();
             try { new NativeId(id); } catch (IllegalArgumentException invalid) { throw failure("invalid native table identity at " + path); }
             Set<String> ids = census.get(table.kind());
-            if (!ids.add(id) || emptySlots.get(table.kind()).contains(id)) throw failure("duplicate native ID in table: " + path);
+            if (emptySlots.get(table.kind()).contains(id)) throw failure("native NONE/block conflict in table: " + path);
+            boolean duplicate = !ids.add(id);
             if (ids.size() + emptySlots.get(table.kind()).size() > 200000) throw failure("table identity cap exceeded");
-            if (table.ids().contains(new NativeId(id))) start(new Capture(table.kind(), path, null, 0));
+            if (!duplicate && ++nativeSignatureCount > nativeSignatureLimits.maxRecords()) throw failure("aggregate native signature cap exceeded");
+            NativeFingerprint previous = nativeSignatures.get(table.kind()).get(id);
+            if (duplicate != (previous != null)) throw failure("incomplete native record signature: " + path);
+            NativeRecord record = new NativeRecord(table.kind(), path, id, duplicate, previous, lexer.tokens());
+            nativeRecords.add(record);
+            duplicateNative |= duplicate;
+            if (!duplicate && table.ids().contains(new NativeId(id))) start(new Capture(table.kind(), path, null, 0));
         }
         for (ProjectionSelection projection : selection.projections()) if (projection.path().equals(path)) {
             int occurrence = matches.get(projection.name());
@@ -143,6 +175,7 @@ public final class SaveStream {
             matches.put(projection.name(), occurrence + 1);
             start(new Capture(null, path, projection, occurrence));
         }
+        return duplicateNative;
     }
     /** Native empty cells are not full records; unknown scalar layouts never become silent omissions. */
     private void observeScalar(List<String> path, String key, String value) throws IOException {
@@ -162,11 +195,10 @@ public final class SaveStream {
         active.add(capture);
     }
     private void finish(Capture capture) throws IOException {
-        byte[] bytes = capture.text.toString().getBytes(StandardCharsets.UTF_8);
         Clausewitz.Block ast;
         try { ast = Clausewitz.parse(capture.text.toString()).block("record"); }
         catch (IllegalArgumentException invalid) { throw new IOException("invalid selected AST", invalid); }
-        String hash = FilePins.sha256(bytes);
+        String hash = CanonicalTokens.capturedRecordHash(capture.text.toString());
         if (capture.projection != null) {
             projections.add(new ProjectionScope(capture.projection.name(), capture.projection.kind(), capture.path, capture.occurrence, hash, ast));
         } else {
@@ -177,6 +209,7 @@ public final class SaveStream {
     }
     private String next() throws IOException {
         String value = lexer.next();
+        if (value != null) for (NativeRecord record : nativeRecords) record.digest.add(value);
         if (value != null && !active.isEmpty()) {
             int bytes = value.getBytes(StandardCharsets.UTF_8).length + 1;
             for (Capture capture : active) {
@@ -216,6 +249,43 @@ public final class SaveStream {
             }
         }
         private Structure freeze() { return new Structure(path, occurrence, List.copyOf(blocks), numeric, List.copyOf(scalars)); }
+    }
+    /** Domain is the complete native brace body, without the selected-record wrapper. */
+    private record NativeFingerprint(CanonicalTokens.Signature signature, long startToken) { }
+    private static final class NativeRecord {
+        private final ScopeKind kind;
+        private final List<String> path;
+        private final String id;
+        private final boolean duplicate;
+        private final NativeFingerprint previous;
+        private final long startToken;
+        private final CanonicalTokens.Accumulator digest = new CanonicalTokens.Accumulator();
+        private NativeRecord(ScopeKind kind, List<String> path, String id, boolean duplicate,
+                             NativeFingerprint previous, long startToken) {
+            this.kind = kind; this.path = List.copyOf(path); this.id = id;
+            this.duplicate = duplicate; this.previous = previous; this.startToken = startToken;
+            digest.add("{"); // enter() follows consumption of this opening token.
+        }
+    }
+    private void finishNativeRecord(List<String> path) throws IOException {
+        for (int i = nativeRecords.size() - 1; i >= 0; i--) {
+            NativeRecord record = nativeRecords.get(i);
+            if (!record.path.equals(path)) continue;
+            CanonicalTokens.Signature actual = record.digest.finish();
+            if (record.duplicate) {
+                if (!record.previous.signature().equals(actual))
+                    throw failure("conflicting native ID block in table: " + path + "; first start token "
+                            + record.previous.startToken() + "; duplicate start token " + record.startToken);
+            } else {
+                NativeFingerprint previous = nativeSignatures.get(record.kind).putIfAbsent(record.id,
+                        new NativeFingerprint(actual, record.startToken));
+                if (previous != null) throw failure("duplicate incomplete native signature: " + path);
+            }
+            nativeRecords.remove(i);
+        }
+    }
+    private static boolean startsWith(List<String> path, List<String> prefix) {
+        return path.size() >= prefix.size() && path.subList(0, prefix.size()).equals(prefix);
     }
     private static final class Capture {
         private final ScopeKind kind;

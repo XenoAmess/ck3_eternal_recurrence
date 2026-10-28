@@ -91,21 +91,62 @@ des_acceptance_cross_migration_decision = {
 	ai_check_interval = 0
 }
 
+# One disclosed stock input; ordinary callbacks own membership changes.
+des_acceptance_stock_crime_prepare_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
+	is_shown = { is_ai = no has_character_flag = des_test_cross_migration_verified NOT = { has_character_flag = des_test_stock_crime_prepare_started } NOT = { has_character_flag = des_test_stock_crime_started } }
+	is_valid = { rite = var:des_test_primary_rite }
+	effect = { hidden_effect = {
+			add_character_flag = des_test_stock_crime_prepare_started
+			des_acceptance_extended_restore_refs_effect = yes
+			if = {
+				limit = { this = global_var:des_test_extended_owner rite = scope:des_test_primary rite = { des_has_active_binding_trigger = yes } scope:des_test_target = { is_alive = yes } }
+				set_variable = { name = des_test_stock_crime_return_input_date value = current_date }
+				scope:des_test_target = { set_character_rite = scope:des_test_primary }
+				debug_log = "DESAF: PREPARATION stock_crime_return_to_primary_input"
+				trigger_event = { id = des_acceptance_extended.18 days = 1 }
+			}
+			else = { debug_log = "DESAF: NOT_READY stock_crime_return_to_primary_input" }
+	} }
+	ai_check_interval = 0
+}
+
+# Root must retain independent ready Native/Save evidence before this input.
 des_acceptance_stock_crime_decision = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_misc.dds" }
-	is_shown = { is_ai = no has_character_flag = des_test_cross_migration_verified NOT = { has_character_flag = des_test_stock_crime_started } }
+	is_shown = { is_ai = no has_character_flag = des_test_stock_crime_primary_ready NOT = { has_character_flag = des_test_stock_crime_started } }
 	is_valid = { rite = var:des_test_primary_rite }
-	effect = {
-		hidden_effect = {
+	effect = { hidden_effect = {
 			add_character_flag = des_test_stock_crime_started
 			des_acceptance_extended_restore_refs_effect = yes
-			scope:des_test_target = { set_character_rite = scope:des_test_primary }
-			add_opinion = { target = scope:des_test_target modifier = attempted_murder_me_crime }
-			scope:des_test_target = { set_character_rite = scope:des_test_source_rite }
-			debug_log = "DESAF: PREPARATION stock_attempted_murder_reason"
-			trigger_event = { id = des_acceptance_extended.20 days = 1 }
-		}
-	}
+			if = {
+				limit = {
+					has_character_flag = des_test_stock_crime_primary_ready
+					has_character_flag = des_test_stock_crime_prepare_started
+					has_variable = des_test_stock_crime_return_input_date
+					var:des_test_stock_crime_return_input_date <= { value = current_date subtract = 1 }
+					this = global_var:des_test_extended_owner
+					rite = var:des_test_primary_rite
+					rite = { des_has_active_binding_trigger = yes }
+					scope:des_test_target = {
+						is_alive = yes
+						rite = scope:des_test_primary
+						dynasty = scope:des_test_dynasty
+						house = scope:des_test_primary.var:des_join_house
+						var:des_adopted_bound_rite = scope:des_test_primary
+						NOT = { des_is_apostate_trigger = yes }
+						NOT = { has_trait = des_apostate }
+					}
+					NOT = { has_opinion_modifier = { target = scope:des_test_target modifier = des_apostasy_opinion } }
+
+				}
+				add_opinion = { target = scope:des_test_target modifier = attempted_murder_me_crime }
+				scope:des_test_target = { set_character_rite = scope:des_test_source_rite }
+				debug_log = "DESAF: PREPARATION stock_attempted_murder_reason"
+				trigger_event = { id = des_acceptance_extended.20 days = 1 }
+			}
+			else = { debug_log = "DESAF: NOT_READY stock_crime_primary_membership_changed" }
+	} }
 	ai_check_interval = 0
 }
 

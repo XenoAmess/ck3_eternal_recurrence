@@ -21,7 +21,7 @@ final class SharedSaveEntryTest {
     @Test void actualProductCliUsesSharedDecoderAndStrictTypedConsumer() throws Exception {
         Path repository = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize().getParent();
         Path save = directory.resolve("authored.ck3");
-        Files.writeString(save, "meta_data={version=authored} living={1={rite=155} 2={rite=155}} triggered_event={days=30} triggered_event={days=31}");
+        Files.writeString(save, "meta_data={version=authored} living={1={rite=155} 1={rite=155} 2={rite=155}} triggered_event={days=30} triggered_event={days=31}");
         Path javaExe = Path.of(System.getProperty("java.home"), "bin", System.getProperty("os.name").startsWith("Windows") ? "java.exe" : "java");
         Selection selection = new Selection(List.of(new TableSelection(ScopeKind.ACTOR, List.of("living"), List.of(new NativeId("1"), new NativeId("2")), true)),
                 List.of(new ProjectionSelection("queue", ProjectionKind.SCHEDULED_EVENTS, List.of("triggered_event"), 2, 1024, true)), true, true, List.of(List.of("living"), List.of("triggered_event")));

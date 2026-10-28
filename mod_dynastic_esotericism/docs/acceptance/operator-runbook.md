@@ -216,3 +216,9 @@ primary D1／D2 已完整通过且 P0／成熟／H0 输入证据齐全后，可�
 2026-10-25 R0011操作顺序勘误（machine_id: desktop-3fevhd2-1c74096080）：创建confirm、收取原结果、事件context、选择、消失后验、独立completion与current-Rite查询分别使用独步plan；每一步先检查实际after_snapshot再决定后继。输入决议与每次日推进也采用同一顺序。收取结果后已有事件时，current-Rite及completion的无事件帧守卫会正确拒绝；不能把这次操作错误归因于SDK或产品。首个实际显示项按其native index加一取得option_number，不能把数组槽数当显示选项数。
 
 退出操作也必须逐步重新观察：disable_exit_autosave的响应不是下一次confirm所需的新context signature，必须再query。原生签名拒绝不授予清除SDK terminal claim或再次confirm的资格。若原CaseClient已经产生仍在原deadline内的normal-quit-awaiting请求，可沿其现有GUI Quit备选保存未勾选截图、同PID守卫的映射点击及直接review，再等待真实原进程退出和清理；它不追认为typed退出成功或业务通过。R0011实际走此备选后Game0、host1、public2，资源接续消费者通过，原业务RED保留。
+
+R29 的夹具时序候选：machine_id 为 desktop-3fevhd2-1c74096080，闭场实际观察时间为 2026-10-28T21:31:17.579908Z，来源为 Admin/R29-FAILED-BUSINESS-RESOURCE-CLOSURE-a02.actual.json。R29 在 Native 日期 53145432 出现 independent_crime_and_apostasy 真实 FAIL，但失败日未能保存；最后保留的迁移 Save 日期为 53145408。该 Save 只能作为明确标注的回溯重现输入，不能冒充失败后态或同世界前沿续行。当前同刻返回主礼仪又立即离教只是未确定原因的疑点，本候选不预先认定产品故障。
+
+迁移完成后，单次执行 des_acceptance_stock_crime_prepare_decision。它只输入原版返回主礼仪，不添加犯罪意见，也不直接写 Dynasty、House、归宗来源或处罚状态。真实推进至少一个自然日，并消费 .18(+1) 到 .19(delayed) 的实际回调；不得假定 delayed 等于恰好一天。只有实际 PRECONDITION PASS stock_crime_primary_membership_ready 后，Root 才独立保留 Native 与 Save，核对同一目标的当前主 Rite、bound Dynasty、join House、des_adopted_bound_rite 及真实输入/读回日期。fixture marker 本身不能授予业务资格。
+
+独立前态齐全后，单次执行原 des_acceptance_stock_crime_decision；它重验 ready 和当前归属，才添加原版犯罪意见并令目标离教，再推进一个真实自然日核对未改动的 .20 六项谓词。任何 NOT_READY 或未知输入结果保留原失败，不重置一次标记、不自动重排、不重放输入、不直接修产品状态，也不签业务通过。新增准备标记与日期只服务旧 Root 在犯罪输入前的前置资格；原继承入口要求 stock_crime_seen 和 stock_retained 已经完成，因此这些准备字段不随 successor 转移，不扩大现有历史引用合同。

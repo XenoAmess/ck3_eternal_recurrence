@@ -25,7 +25,7 @@ final class SharedSaveEntryTest {
     @Test void selectedAndDirectionalOpinionRoutesUseActualSharedProducerAndStrictConsumers() throws Exception {
         Path repository = Path.of(System.getProperty("dynastic.source")).toAbsolutePath().normalize().getParent();
         Path save = directory.resolve("bounded.ck3");
-        Files.writeString(save, "meta_data={version=authored} living={101={x=one x=two nested={a=b}} 202={x=other}} "
+        Files.writeString(save, "meta_data={version=authored} living={101={x=one x=two nested={a=b}} 101={x=one x=two nested={a=b}} 202={x=other}} "
                 + "opinions={active_opinions={{owner=101 target=202 temporary_opinion={modifier=authored_source value=-7 modify=-7 start_date=1066.9.22}}"
                 + "{owner=202 target=101 temporary_opinion={modifier=authored_source value=-7 modify=-7}}}}");
         Path javaExe = Path.of(System.getProperty("java.home"), "bin", System.getProperty("os.name").startsWith("Windows") ? "java.exe" : "java");
@@ -70,7 +70,7 @@ final class SharedSaveEntryTest {
     @Test void actualProductCliUsesSharedDecoderAndStrictTypedConsumer() throws Exception {
         Path repository = Path.of(System.getProperty("dynastic.source")).toAbsolutePath().normalize().getParent();
         Path save = directory.resolve("authored.ck3");
-        Files.writeString(save, "meta_data={version=authored} living={1={rite=155} 2={rite=155}} triggered_event={days=30} triggered_event={days=31}");
+        Files.writeString(save, "meta_data={version=authored} living={1={rite=155} 1={rite=155} 2={rite=155}} triggered_event={days=30} triggered_event={days=31}");
         Path javaExe = Path.of(System.getProperty("java.home"), "bin", System.getProperty("os.name").startsWith("Windows") ? "java.exe" : "java");
         Selection selection = new Selection(List.of(new TableSelection(ScopeKind.ACTOR, List.of("living"), List.of(new NativeId("1"), new NativeId("2")), true)),
                 List.of(new ProjectionSelection("queue", ProjectionKind.SCHEDULED_EVENTS, List.of("triggered_event"), 2, 1024, true)), true, true, List.of(List.of("living"), List.of("triggered_event")));
@@ -121,7 +121,7 @@ final class SharedSaveEntryTest {
     @Test void houseParentRouteUsesCompleteSharedProducerThenExistingSelectedConsumer() throws Exception {
         Path repository = Path.of(System.getProperty("dynastic.source")).toAbsolutePath().normalize().getParent();
         Path save = directory.resolve("house-parent-authored.ck3");
-        Files.writeString(save, "world={dynasties={1={} 2={}} houses={10={dynasty=1 nested={keep=a}} 11={dynasty=1 nested={keep=b}} 12={dynasty=2}}}");
+        Files.writeString(save, "world={dynasties={1={} 1={} 2={}} houses={10={dynasty=1 nested={keep=a}} 11={dynasty=1 nested={keep=b}} 11={dynasty=1 nested={keep=b}} 12={dynasty=2}}}");
         Path javaExe = Path.of(System.getProperty("java.home"), "bin", System.getProperty("os.name").startsWith("Windows") ? "java.exe" : "java");
         String classes = Path.of(Decoder.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toString();
         AtomicInteger launches = new AtomicInteger();
