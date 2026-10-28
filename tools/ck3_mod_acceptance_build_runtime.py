@@ -873,7 +873,7 @@ def qualified_fixture_link_support(
     ref = value.get("fixture_link_support")
     if not actual_inputs and not ref:
         return None
-    native_successor.require(ref and actual_inputs, "Actual external fixture objects need their exact source-bound link-support receipt")
+    native_successor.require(ref, "Actual external fixture objects need their exact source-bound link-support receipt")
     ref = native_successor.checked(ref)
     support = native_successor.read(Path(ref["path"]))
     native_successor.require(support.get("schema") in ("ck3-fixture-production-object-link-support-v1", "ck3-fixture-production-object-link-support-v2")
@@ -885,9 +885,20 @@ def qualified_fixture_link_support(
             and support.get("fixture_results") == fixtures,
             "Fixture link support actual scope/freeze/finite execution pins differ")
     if support["schema"] == "ck3-fixture-production-object-link-support-v2":
+        if not actual_inputs:
+            snapshot = native_successor.read(Path(native_successor.checked(refs["snapshot"])["path"]))
+            freeze = native_successor.read(Path(native_successor.checked(refs["production_freeze"])["path"]))
+            target = native_successor.obj(targets[names["xar_ck3_bridge"]])
+            artifacts = {(build_root / native_successor.string(native_successor.obj(raw)["path"])).resolve()
+                         for raw in native_successor.arr(target.get("artifacts", []))}
+            qualified_v3_production_artifact(value, refs, scope, snapshot, freeze,
+                machine=machine, native_commit=native_successor.string(value["source_commit"]),
+                compile_native_root=Path(native_successor.string(snapshot["Root_native_source_base"])).resolve(),
+                snapshot_root=snapshot_root, build_root=build_root, configured_artifacts=artifacts)
         return qualified_configured_fixture_links(support, ref, machine, native_successor.string(value["source_commit"]),
             scope, indexed, production, targets, fixtures, model, snapshot_root, build_root, reply, actual_inputs,
             noncompiled_replay)
+    native_successor.require(actual_inputs, "Actual external fixture objects need their exact source-bound link-support receipt")
     declared = native_successor.obj(support.get("fixtures", {}))
     file_api = native_successor.obj(support.get("fixture_file_api", {}))
     native_successor.require(set(declared) == set(file_api) == set(actual_inputs), "Fixture raw-object target set differs from actual File API")
@@ -943,6 +954,86 @@ def qualified_fixture_link_support(
               for row in objects}
     return {"ref": ref, "fixture_production_targets": {
         name: {owners[path] for path in paths} for name, paths in actual_inputs.items()}}
+
+
+def qualified_v3_production_artifact(
+    qualification_value: object, refs_value: object, scope_value: object,
+    snapshot_value: object, freeze_value: object, *, machine: str, native_commit: str,
+    compile_native_root: Path, snapshot_root: Path, build_root: Path,
+    configured_artifacts: set[Path],
+) -> None:
+    """Verify the explicit v3 attempt output without changing the CMake artifact."""
+    original_error = "Selected original DLL is not the actual File API production artifact"
+    qualification = native_successor.obj(qualification_value)
+    refs, scope = native_successor.obj(refs_value), native_successor.obj(scope_value)
+    snapshot, freeze = native_successor.obj(snapshot_value), native_successor.obj(freeze_value)
+    require(qualification.get("fixture_link_support") is not None, original_error)
+    support = native_successor.read(Path(native_successor.checked(qualification["fixture_link_support"])["path"]))
+    require(support.get("schema") == "ck3-fixture-production-object-link-support-v2", original_error)
+    config_ref = native_successor.checked(support["producer_config"])
+    config_value = native_successor.read(Path(config_ref["path"]))
+    require(config_value.get("schema") == "ck3-configured-native-successor-v3", original_error)
+    config = native_successor.parse_config(config_value)
+    require(config.machine_id == machine and config.source_commit == native_commit
+            and config.native_source_dir == snapshot_root and config.development_build_dir == build_root
+            and Path(native_successor.string(snapshot["Root_native_source_base"])).resolve() == compile_native_root
+            and build_root / "xar_ck3_bridge.dll" in configured_artifacts
+            and configured_artifacts <= {build_root / ("xar_ck3_bridge" + suffix) for suffix in (".dll", ".lib", ".pdb")}
+            and support.get("machine_id") == machine and support.get("source_commit") == native_commit
+            and support.get("actual_live_business_qualified") is False
+            and support.get("configured_scope") == refs["configured_scope"]
+            and support.get("production_freeze") == refs["production_freeze"]
+            and support.get("fixture_results") == qualification["fixture_results"],
+            "Explicit v3 source/configured production artifact mapping differs")
+    original = native_successor.checked(refs["original_dll"])
+    require(Path(original["path"]).resolve() == config.output / "xar_ck3_bridge.dll",
+            "Explicit v3 attempt DLL path differs")
+    profile = native_successor.read(Path(native_successor.checked(refs["profile"])["path"]))
+    require(native_successor.checked(profile["profile"]) == native_successor.checked(config.profile_cmake),
+            "Explicit v3 configured profile differs")
+    plan_ref = native_successor.checked(freeze["incremental_production_plan"])
+    result_ref = native_successor.checked(freeze["incremental_production_result"])
+    require(support.get("production_plan") == plan_ref
+            and support.get("incremental_production_result") == result_ref
+            and Path(plan_ref["path"]).resolve() == config.output / "native-a01/PLAN.actual.json"
+            and Path(result_ref["path"]).resolve() == config.output / "native-a01/INCREMENTAL-RESULT.actual.json",
+            "Explicit v3 original production envelope differs")
+    result = native_successor.read(Path(result_ref["path"]))
+    require(result.get("production_plan") == plan_ref and result.get("actual_link") == refs["production_build_receipt"]
+            and result.get("dll") == original, "Explicit v3 Q/PLAN/result/link output differs")
+    producer = native_successor.Producer(config)  # Parsers only; no gate, initialize, configure or execution.
+    rows = producer.commands()
+    selected, borrowed, replay = producer.plan(rows, existing_plan=plan_ref)
+    inputs = producer.original_fixture_inputs(rows)
+    require(replay == plan_ref and inputs.plan == plan_ref and inputs.dll.resolve() == Path(original["path"]).resolve()
+            and inputs.production_execution == refs["production_build_receipt"]
+            and {row.output for row in selected} == set(inputs.compiled)
+            and all(borrowed[name] == physical for name, physical in inputs.borrowed.items())
+            and native_successor.pin(producer.build / "compile_commands.json") == scope["compile_commands"],
+            "Explicit v3 revalidated production graph differs")
+    execution_ref, execution = producer.successful_execution(inputs.production_execution)
+    response_refs = [native_successor.checked(raw) for raw in native_successor.arr(execution["response_files"])]
+    argv = native_successor.strings(execution["argv"])
+    require(Path(execution_ref["path"]).resolve() == config.output / "link-production.actual.json"
+            and Path(native_successor.string(execution["cwd"])).resolve() == build_root
+            and len(response_refs) == 1
+            and Path(response_refs[0]["path"]).resolve() == config.output / "link-production.rsp"
+            and len(argv) == 2 and Path(argv[0]).is_absolute() and Path(argv[0]).name.lower() == "link.exe"
+            and argv[1] == "@" + response_refs[0]["path"],
+            "Explicit v3 original link argv/cwd/RSP differs")
+    objects: list[Path] = []
+    for row in rows:
+        if row.target == "xar_ck3_bridge":
+            physical = inputs.object_paths.get(row.output)
+            if physical is None:
+                physical = inputs.borrowed[row.output.relative_to(build_root).as_posix()]
+            objects.append(physical)
+    expected = ["/nologo", "/MACHINE:X64", "/INCREMENTAL:NO", "/OPT:REF", "/OUT:" + original["path"],
+                *map(str, objects), *map(str, inputs.libraries), "bcrypt.lib", "kernel32.lib", "user32.lib",
+                "gdi32.lib", "winspool.lib", "shell32.lib", "ole32.lib", "oleaut32.lib", "uuid.lib",
+                "comdlg32.lib", "advapi32.lib", "/DLL", "/IMPLIB:" + str(inputs.dll.with_suffix(".lib"))]
+    words = producer.arguments(Path(response_refs[0]["path"]).read_text(encoding="utf-8"))
+    require(words == expected, "Explicit v3 original link RSP output/object/library order differs")
 
 
 def qualify_native(path, root, commit, machine, previous_dll, previous_manifest, native_source_checkout_binding=None, native_shared_python_host_delta=None):
@@ -1102,8 +1193,11 @@ def qualify_native(path, root, commit, machine, previous_dll, previous_manifest,
     names = {row["name"]: key for key, row in actual_targets.items()}
     require("xar_ck3_bridge" in names, "Actual shared production DLL target is missing")
     artifact_paths = lambda target: {(build_root / item["path"]).resolve() for item in target.get("artifacts", [])}
-    require(Path(refs["original_dll"]["path"]).resolve() in artifact_paths(actual_targets[names["xar_ck3_bridge"]]),
-            "Selected original DLL is not the actual File API production artifact")
+    configured_artifacts = artifact_paths(actual_targets[names["xar_ck3_bridge"]])
+    if Path(refs["original_dll"]["path"]).resolve() not in configured_artifacts:
+        qualified_v3_production_artifact(value, refs, scope, snapshot, freeze,
+            machine=machine, native_commit=native_commit, compile_native_root=compile_native_root,
+            snapshot_root=snapshot_root, build_root=build_root, configured_artifacts=configured_artifacts)
     pending, production = [names["xar_ck3_bridge"]], {}
     while pending:
         target_id = pending.pop()

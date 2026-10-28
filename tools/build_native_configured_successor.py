@@ -201,6 +201,16 @@ class FixtureInputs:
     dll: Path
 
 
+@dataclass(frozen=True)
+class LinkedFixtureReplay:
+    links: tuple[FixtureLinkResult, ...]
+    completed: dict[str, Pin]
+    original_tests: tuple[Pin, ...]
+    original_compiles: tuple[Pin, ...]
+    defender: Pin
+    link_index: Pin
+
+
 @runtime_checkable
 class WindowsArguments(Protocol):
     def __call__(self, command: str) -> list[str]: ...
@@ -1292,16 +1302,21 @@ class Producer:
     def link(self, label: str, objects: list[Path], libraries: list[Path], destination: Path,
              dll: bool = False) -> Pin:
         linker = Path(self.tools["cl"]).parent / "link.exe"
+        arguments = self.link_arguments(objects, libraries, destination, dll)
+        response = (self.config.output if self.config.schema == "ck3-configured-native-successor-v3" else self.build) / (label + ".rsp")
+        with response.open("x", encoding="utf-8") as stream:
+            stream.write(subprocess.list2cmdline(arguments))
+        return self.execute(label, [str(linker), "@" + str(response)], self.build)
+
+    def link_arguments(self, objects: list[Path], libraries: list[Path], destination: Path,
+                       dll: bool = False) -> list[str]:
         arguments = ["/nologo", "/MACHINE:X64", "/INCREMENTAL:NO", "/OPT:REF",
                      "/OUT:" + str(destination), *map(str, objects), *map(str, libraries),
                      "bcrypt.lib", "kernel32.lib", "user32.lib", "gdi32.lib", "winspool.lib",
                      "shell32.lib", "ole32.lib", "oleaut32.lib", "uuid.lib", "comdlg32.lib", "advapi32.lib"]
         if dll:
             arguments.extend(["/DLL", "/IMPLIB:" + str(destination.with_suffix(".lib"))])
-        response = (self.config.output if self.config.schema == "ck3-configured-native-successor-v3" else self.build) / (label + ".rsp")
-        with response.open("x", encoding="utf-8") as stream:
-            stream.write(subprocess.list2cmdline(arguments))
-        return self.execute(label, [str(linker), "@" + str(response)], self.build)
+        return arguments
 
     def run(self) -> Pin:
         self.initialize()
@@ -1392,11 +1407,19 @@ class Producer:
         self.save("native-a01/" + label + "FIXTURE-LINKS.actual.json", {"machine_id": self.config.machine_id,
             "observed_at_utc": now(), "source_commit": self.config.source_commit, "fixtures": links})
         all_defender_binding = self.defender(fixture_results, label + "all-fixtures")
+        return self.execute_fixture_links(rows, inputs, links, all_defender_binding, label=label)
+
+    def execute_fixture_links(self, rows: list[Compile], inputs: FixtureInputs,
+                              links: list[FixtureLinkResult], all_defender_binding: Pin, *,
+                              label: str = "", completed: dict[str, Pin] | None = None) -> Pin:
+        fixture_results: list[dict[str, object]] = [
+            {"target": item["target"], "executable": item["executable"]} for item in links]
         for fixture, result in zip(self.config.fixtures, fixture_results, strict=True):
             arguments = [value.replace("{output}", str(self.config.output)).replace("{build}", str(self.build))
                          for value in fixture.arguments]
-            result["execution"] = self.execute(label + "test-" + fixture.target,
-                [str(self.build / (fixture.target + ".exe")), *arguments], self.build)
+            result["execution"] = (completed[fixture.target] if completed is not None and fixture.target in completed
+                else self.execute(label + "test-" + fixture.target,
+                    [str(self.build / (fixture.target + ".exe")), *arguments], self.build))
         self.gate()
         for retained in inputs.retained:
             checked(retained)
@@ -1564,7 +1587,130 @@ class Producer:
             "observed_at_utc": now(), "source_commit": self.config.source_commit, "intent": intent,
             "unknown_originals": originals, "old_link_success_inferred": False})
 
-    def resume_fixtures(self, label: str) -> Pin:
+    def linked_fixture_defender(self, reference: Pin, links: list[FixtureLinkResult]) -> Pin:
+        binding = read(Path(checked(reference)["path"]))
+        require(binding.get("machine_id") == self.config.machine_id and binding.get("status") == "verified"
+                and type(binding.get("exact_executable_count")) is int
+                and binding["exact_executable_count"] == len(links), "Original exact fixture Defender binding required")
+        manifest = read(Path(checked(binding["manifest"])["path"]))
+        receipt = read(Path(checked(binding["receipt"])["path"]))
+        expected = {item["executable"]["path"]: item["executable"] for item in links}
+        require(receipt.get("status") == "verified" and receipt.get("admin_token") is True
+                and receipt.get("missing_requested_paths") == []
+                and set(strings(receipt.get("verified_requested_paths"))) == set(expected)
+                and receipt.get("manifest_sha256") == hashlib.sha256(json.dumps(manifest, sort_keys=True).encode()).hexdigest(),
+                "Original administrative fixture readback differs")
+        files = [obj(value) for value in arr(manifest["files"])]
+        require(len(files) == len(expected) and {string(value["path"]) for value in files} == set(expected),
+                "Original Defender manifest fixture set differs")
+        for value in files:
+            original = expected[string(value["path"])]
+            require(type(value["size"]) is int and value["size"] == original["bytes"]
+                    and value["sha256"] == original["sha256"], "Original Defender fixture pin differs")
+        return reference
+
+    def linked_fixture_replay(self, rows: list[Compile], inputs: FixtureInputs,
+                               original_config: Pin) -> LinkedFixtureReplay:
+        """Validate complete original links before reusing any native executable."""
+        original = parse_config(read(Path(checked(original_config)["path"])))
+        before, after = config_json(original), config_json(self.config)
+        del before["fixtures"], after["fixtures"]
+        require(before == after and len(original.fixtures) == len(self.config.fixtures),
+                "Execution continuation may change only fixture arguments")
+        require(all((left.target, left.runtime_override_sources, left.runtime_override_definitions)
+                    == (right.target, right.runtime_override_sources, right.runtime_override_definitions)
+                    for left, right in zip(original.fixtures, self.config.fixtures, strict=True)),
+                "Execution continuation fixture declarations differ")
+        if self.config.schema == "ck3-configured-native-successor-v3":
+            self.plan(rows, existing_plan=inputs.plan)
+        indices = list(self.meta.glob("*FIXTURE-LINKS.actual.json"))
+        require(len(indices) == 1, "Exactly one completed original fixture link index required")
+        index_ref = pin(indices[0]); index = read(indices[0])
+        require(index.get("machine_id") == self.config.machine_id
+                and index.get("source_commit") == self.config.source_commit,
+                "Original fixture link index identity differs")
+        prefix = indices[0].name.removesuffix("FIXTURE-LINKS.actual.json")
+        values = [obj(value) for value in arr(index["fixtures"])]
+        require(len(values) == len(self.config.fixtures)
+                and [value.get("target") for value in values] == [item.target for item in self.config.fixtures],
+                "Exact ordered complete original fixture links required")
+        by_output = {row.output: row for row in rows}
+        links: list[FixtureLinkResult] = []; completed: dict[str, Pin] = {}
+        original_tests: list[Pin] = []; compiles: list[Pin] = []
+        for fixture, old_fixture, value in zip(self.config.fixtures, original.fixtures, values, strict=True):
+            require(not fixture.runtime_override_sources and not fixture.runtime_override_definitions,
+                    "Linked execution continuation requires fixtures without runtime overrides")
+            executable = checked(value["executable"])
+            require(Path(executable["path"]) == self.build / (fixture.target + ".exe"),
+                    "Original linked fixture path differs")
+            link_ref, link = self.successful_execution(value["actual_link"])
+            require(Path(link_ref["path"]) == self.config.output / (prefix + fixture.target + "-link.actual.json")
+                    and Path(string(link["cwd"])) == self.build, "Original fixture link identity differs")
+            actual_objects = self.fixture_link_objects(fixture)
+            own_rows = [by_output[path] for path in actual_objects
+                        if path in by_output and by_output[path].target not in PRODUCTION]
+            require(own_rows, "Original fixture compiler graph is missing")
+            own: list[Path] = []
+            for ordinal, row in enumerate(own_rows):
+                compile_ref, actual = self.successful_execution(pin(self.config.output /
+                    (prefix + fixture.target + "-compile-" + str(ordinal) + ".actual.json")))
+                require(strings(actual["argv"]) == tuple("/c" if item == "-c" else item for item in row.argv)
+                        and Path(string(actual["cwd"])) == self.build,
+                        "Original fixture source or compiler options differ")
+                pin(row.source); pin(row.output)
+                own.append(row.output); compiles.append(compile_ref)
+            for path in actual_objects:
+                if path not in by_output or by_output[path].target not in PRODUCTION:
+                    continue
+                physical = inputs.object_paths.get(path)
+                if physical is None:
+                    physical = inputs.borrowed.get(path.relative_to(self.build).as_posix())
+                require(physical is not None, "Original fixture production object is missing")
+                if physical is None:
+                    raise ValueError("Original fixture production object is missing")
+                own.append(physical)
+            responses = [checked(item) for item in arr(link["response_files"])]
+            expected_response = (self.config.output if self.config.schema == "ck3-configured-native-successor-v3"
+                else self.build) / (prefix + fixture.target + "-link.rsp")
+            require(len(responses) == 1 and Path(responses[0]["path"]) == expected_response,
+                    "Original fixture response file differs")
+            arguments = strings(link["argv"])
+            require(len(arguments) == 2 and arguments[1] == "@" + str(expected_response)
+                    and compiler_signature(arguments[0]) == compiler_signature(str(Path(own_rows[0].argv[0]).parent / "link.exe"))
+                    and self.arguments(expected_response.read_text(encoding="utf-8"))
+                        == self.link_arguments(own, inputs.libraries, Path(executable["path"])),
+                    "Original fixture RSP objects, libraries or output differ")
+            links.append({"target": fixture.target, "executable": executable, "actual_link": link_ref})
+            old_arguments = [item.replace("{output}", str(self.config.output)).replace("{build}", str(self.build))
+                             for item in old_fixture.arguments]
+            new_arguments = [item.replace("{output}", str(self.config.output)).replace("{build}", str(self.build))
+                             for item in fixture.arguments]
+            executions = list(self.config.output.glob("*test-" + fixture.target + ".actual.json"))
+            logs = set(self.config.output.glob("*test-" + fixture.target + ".log"))
+            require(logs == {path.with_suffix("").with_suffix(".log") for path in executions},
+                    "Fixture has an unknown original execution log")
+            for path in executions:
+                reference = pin(path); execution = read(path)
+                require(execution.get("machine_id") == self.config.machine_id
+                        and execution.get("source_commit") == self.config.source_commit
+                        and type(execution.get("original_wait_returncode")) is int
+                        and execution.get("stopped_reason") is None
+                        and execution.get("game_started_or_attached") is False
+                        and execution.get("actual_live_business_qualified") is False
+                        and Path(string(execution["cwd"])) == self.build
+                        and strings(execution["argv"]) in ((executable["path"], *old_arguments),
+                                                           (executable["path"], *new_arguments))
+                        and arr(execution["response_files"]) == [], "Original fixture test identity differs")
+                checked(execution["log"]); original_tests.append(reference)
+                if execution["original_wait_returncode"] == 0:
+                    require(old_arguments == new_arguments and fixture.target not in completed,
+                            "A successful original fixture must retain its exact arguments")
+                    completed[fixture.target] = reference
+        require(original_tests and len(completed) < len(links), "No failed or unexecuted linked fixture remains")
+        defender = self.linked_fixture_defender(pin(self.meta / (prefix + "all-fixtures-defender-binding.actual.json")), links)
+        return LinkedFixtureReplay(tuple(links), completed, tuple(original_tests), tuple(compiles), defender, index_ref)
+
+    def resume_fixtures(self, label: str, original_config: Pin | None = None) -> Pin:
         """Resume a pre-execution fixture failure without configure or production work."""
         require(isinstance(label, str) and re.fullmatch(r"[A-Za-z_][A-Za-z0-9_-]{0,100}", label),
                 "A finite unique continuation label is required")
@@ -1575,6 +1721,27 @@ class Producer:
         require(actual_machine == self.config.machine_id, "Actual continuation machine differs")
         self.gate()
         require(not (self.meta / "ALL-FIXTURES.actual.json").exists(), "Completed fixtures require metadata-only continuation")
+        if original_config is not None:
+            rows = self.commands()
+            inputs = self.original_fixture_inputs(rows)
+            replay = self.linked_fixture_replay(rows, inputs, original_config)
+            self.initialize_tools()
+            configuration = self.save("native-a01/" + label + "CONFIG.actual.json", config_json(self.config))
+            self.save("native-a01/" + label + "RESUME-EXECUTIONS.actual.json", {
+                "machine_id": self.config.machine_id, "observed_at_utc": now(),
+                "native_source_commit": self.config.source_commit, "metadata_source_commit": git("rev-parse", "HEAD"),
+                "original_config": original_config, "configuration": configuration,
+                "argument_changes": [{"target": left.target, "original_arguments": list(left.arguments),
+                    "new_arguments": list(right.arguments)} for left, right in zip(
+                        parse_config(read(Path(original_config["path"]))).fixtures, self.config.fixtures, strict=True)
+                    if left.arguments != right.arguments],
+                "original_link_index": replay.link_index, "original_compiles": list(replay.original_compiles),
+                "original_tests": list(replay.original_tests), "reused_successful_tests": replay.completed,
+                "reused_executables": [item["executable"] for item in replay.links],
+                "new_compilation_performed": False, "new_link_performed": False,
+                "actual_live_business_qualified": False})
+            return self.execute_fixture_links(rows, inputs, list(replay.links), replay.defender,
+                label=label, completed=replay.completed)
         for fixture in self.config.fixtures:
             require(not list(self.config.output.glob("*test-" + fixture.target + ".log")),
                     "Fixture resume is only available before any original fixture execution")
@@ -1732,7 +1899,8 @@ class Producer:
             inputs = reader(read(path), self.native, self.build)
             if inputs:
                 raw_inputs[name], file_api[name] = inputs, pin(path)
-        require(raw_inputs, "No external fixture objects require link support")
+        require(raw_inputs or self.config.schema == "ck3-configured-native-successor-v3",
+                "No external fixture objects require link support")
         proof = verified_fixture_object_bindings(read(Path(checked(config_ref)["path"])),
             sorted(str(path) for path in set().union(*raw_inputs.values())))
         physical = {Path(item["configured_object"]): item["object"] for item in proof.objects}
@@ -1910,13 +2078,19 @@ def verified_fixture_object_bindings(config_value: object, configured_outputs: l
     """Read-only replay of the original source/dependency/options and object proof."""
     config = parse_config(config_value)
     outputs = strings(configured_outputs)
-    require(outputs and len(outputs) == len(set(outputs)), "Distinct configured fixture objects required")
+    require(len(outputs) == len(set(outputs)) and (outputs or config.schema == "ck3-configured-native-successor-v3"),
+            "Distinct configured fixture objects required")
     producer = Producer(config)  # Loads parsers only; no initialize, gate, configure or commands execute.
     require(all(Path(name).is_absolute() and Path(name) == Path(name).resolve()
                 and Path(name).is_relative_to(producer.build / "CMakeFiles")
                 and Path(name).suffix.lower() == ".obj" for name in outputs),
             "Configured fixture objects must be exact absolute production build paths")
     rows = producer.commands()
+    if not outputs:
+        production_outputs = {row.output for row in rows if row.target in PRODUCTION}
+        require(all(not production_outputs.intersection(producer.fixture_link_objects(fixture))
+                    for fixture in config.fixtures),
+                "Empty v3 fixture object proof requires an actual graph without raw production objects")
     incremental_ref = pin(producer.meta / "INCREMENTAL-RESULT.actual.json")
     incremental = read(Path(incremental_ref["path"]))
     plan_ref = checked(incremental["production_plan"])
@@ -1960,6 +2134,8 @@ def main() -> int:
     sys.dont_write_bytecode = True
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, required=True)
+    parser.add_argument("--original-config", type=Path,
+        help="Original immutable config for execution-only --resume-fixtures; only failed/unrun arguments may change")
     continuation = parser.add_mutually_exclusive_group()
     continuation.add_argument("--seal-existing", action="store_true", help="Validate completed original commands and continue missing metadata only")
     continuation.add_argument("--resume-fixtures", metavar="UNIQUE_LABEL",
@@ -1968,11 +2144,14 @@ def main() -> int:
         help="Add exact source-bound retained fixture-object support to a new metadata-only qualification")
     args = parser.parse_args()
     config = parse_config(read(args.config))
+    require(args.original_config is None or args.resume_fixtures is not None,
+            "Original configuration is only valid with fixture continuation")
     producer = Producer(config)
     if args.seal_fixture_links is not None:
         result = producer.seal_fixture_links(args.seal_fixture_links)
     elif args.resume_fixtures is not None:
-        result = producer.resume_fixtures(args.resume_fixtures)
+        result = producer.resume_fixtures(args.resume_fixtures,
+            None if args.original_config is None else pin(args.original_config))
     else:
         result = producer.resume_seal() if args.seal_existing else producer.run()
     print(json.dumps({"qualified_native": result, "game_started": False}))

@@ -1385,5 +1385,213 @@ if __name__ == '__main__':
         self.assertTrue((self.owned.state / 'normal-exit-binding/RESULT.actual.json').is_file())
 
 
+class QualifiedV3ProductionArtifact(unittest.TestCase):
+    """Actual producer serialization to actual consumer; owned outputs, no compiler/Game."""
+    def setUp(self):
+        from test_build_native_configured_successor import ConfiguredSuccessorTests
+        self.case = ConfiguredSuccessorTests('test_v3_actual_predecessor_producer_readonly_consumer_replay_reuses_all_objects_and_archives')
+        self.case.setUp()
+        self.addCleanup(self.case.tearDown)
+        self.fixture, self.producer, self.rows, self.repository = self.case.v3_fixture()
+        loader = builder.native_successor.load_shared
+        self.patches = [patch.object(builder.native_successor, 'ROOT', self.repository),
+                        patch.object(builder.native_successor, 'git', self.fixture.git_output),
+                        patch.object(builder.native_successor, 'load_shared',
+                            side_effect=lambda path, name: loader(HERE / path.name, name))]
+        for item in self.patches:
+            item.start()
+            self.addCleanup(item.stop)
+        self.producer.build.mkdir(parents=True)
+        self.producer.tools['cl'] = str(self.case.root / 'toolchain/cl.exe')
+        self.meta = self.producer.meta
+        self.meta.mkdir(parents=True)
+        self.commands = [{'directory': str(self.producer.build), 'file': str(row.source),
+                          'output': str(row.output), 'command': subprocess.list2cmdline(row.argv)} for row in self.rows]
+        (self.producer.build / 'compile_commands.json').write_text(json.dumps(self.commands), encoding='utf-8')
+        self.log = self.producer.config.output / 'owned.log'
+        self.log.write_bytes(b'Owned synthetic execution boundary; no command was launched.\n')
+        self.configure = self.document('configure.actual.json', self.execution([
+            'cmake', '-S', str(self.producer.native), '-B', str(self.producer.build), '-G', 'Ninja',
+            '-DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=' + self.producer.config.profile_cmake['path'],
+            '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON']))
+        def record(name, argv, cwd, timeout=180):
+            words = list(argv)
+            responses = [builder.native_successor.pin(Path(word[1:])) for word in words if word.startswith('@')]
+            expanded = words[:]
+            for response in responses:
+                expanded.extend(self.producer.arguments(Path(response['path']).read_text(encoding='utf-8')))
+            outputs = [word[3:] for word in expanded if word.startswith('/Fo')]
+            outputs.extend(word[5:] for word in expanded if word.startswith('/OUT:'))
+            self.assertEqual(len(outputs), 1)
+            output = Path(outputs[0]); output.parent.mkdir(parents=True, exist_ok=True)
+            output.write_bytes(('Owned synthetic output ' + name).encode())
+            return self.document(name + '.actual.json', self.execution(words, responses))
+        def finish(rows, inputs):
+            return inputs.plan
+        with patch.object(self.producer, 'initialize'), patch.object(self.producer, 'configure'), \
+             patch.object(self.producer, 'commands', return_value=self.rows), \
+             patch.object(self.producer, 'execute', side_effect=record), \
+             patch.object(self.producer, 'finish_fixtures', side_effect=finish):
+            self.plan = self.producer.run()
+        self.result = builder.native_successor.pin(self.meta / 'INCREMENTAL-RESULT.actual.json')
+        result = builder.native_successor.read(Path(self.result['path']))
+        self.refs = {'original_dll': result['dll'], 'production_build_receipt': result['actual_link'],
+                     'configured_scope': self.document('scope.json', {}),
+                     'production_freeze': self.document('freeze.json', {}),
+                     'profile': self.document('profile.json', {'profile': self.producer.config.profile_cmake})}
+        self.scope = {'compile_commands': builder.native_successor.pin(self.producer.build / 'compile_commands.json')}
+        self.snapshot = {'Root_native_source_base': str(self.repository / builder.NATIVE_PREFIX)}
+        self.freeze = {'incremental_production_plan': self.plan, 'incremental_production_result': self.result}
+        self.config = builder.native_successor.config_json(self.producer.config)
+        self.support = {'schema': 'ck3-fixture-production-object-link-support-v2',
+            'machine_id': self.producer.config.machine_id, 'source_commit': self.producer.config.source_commit,
+            'actual_live_business_qualified': False, 'configured_scope': self.refs['configured_scope'],
+            'production_freeze': self.refs['production_freeze'], 'fixture_results': [],
+            'production_plan': self.plan, 'incremental_production_result': self.result}
+        self.refresh()
+
+    def document(self, name, value):
+        path = self.producer.config.output / name
+        path.write_text(json.dumps(value), encoding='utf-8')
+        return builder.native_successor.pin(path)
+
+    def execution(self, argv, responses=()):
+        return {'machine_id': self.producer.config.machine_id, 'source_commit': self.producer.config.source_commit,
+            'started_at_utc': '2026-10-28T21:29:00+00:00', 'finished_at_utc': '2026-10-28T21:29:01+00:00',
+            'original_wait_returncode': 0, 'stopped_reason': None, 'game_started_or_attached': False,
+            'actual_live_business_qualified': False, 'argv': list(argv), 'cwd': str(self.producer.build),
+            'response_files': list(responses), 'log': builder.native_successor.pin(self.log)}
+
+    def refresh(self):
+        self.support['producer_config'] = self.document('explicit-config.json', self.config)
+        self.q = {'fixture_results': [], 'fixture_link_support': self.document('support.json', self.support)}
+
+    def consume(self):
+        return builder.qualified_v3_production_artifact(self.q, self.refs, self.scope, self.snapshot, self.freeze,
+            machine=self.producer.config.machine_id, native_commit=self.producer.config.source_commit,
+            compile_native_root=self.repository / builder.NATIVE_PREFIX, snapshot_root=self.producer.native,
+            build_root=self.producer.build, configured_artifacts={self.producer.build / 'xar_ck3_bridge.dll'})
+
+    def test_real_producer_v3_output_is_readonly_and_exactly_mapped(self):
+        before = {path: builder.native_successor.pin(path) for path in self.producer.config.output.rglob('*') if path.is_file()}
+        with patch.object(builder.native_successor.Producer, 'execute', side_effect=AssertionError('read-only')):
+            self.consume()
+        self.assertEqual(before, {path: builder.native_successor.pin(path) for path in self.producer.config.output.rglob('*') if path.is_file()})
+
+    def test_v1_v2_cannot_authorize_out_of_fileapi_dll(self):
+        for schema in ('ck3-configured-native-successor-v1', 'ck3-configured-native-successor-v2'):
+            self.config['schema'] = schema; self.refresh()
+            with self.subTest(schema=schema), self.assertRaisesRegex(ValueError, 'actual File API production artifact'):
+                self.consume()
+
+    def test_wrong_explicit_source_or_attempt_is_rejected(self):
+        for key in ('native_source_dir', 'development_build_dir', 'output_dir'):
+            original = self.config[key]
+            self.config[key] = str(self.producer.config.output.parent / ('unrelated-' + key)); self.refresh()
+            with self.subTest(key=key), self.assertRaises(ValueError): self.consume()
+            self.config[key] = original; self.refresh()
+
+    def test_real_fileapi_auxiliary_outputs_keep_exact_names(self):
+        arguments = dict(machine=self.producer.config.machine_id, native_commit=self.producer.config.source_commit,
+            compile_native_root=self.repository / builder.NATIVE_PREFIX, snapshot_root=self.producer.native,
+            build_root=self.producer.build)
+        artifacts = {self.producer.build / ('xar_ck3_bridge' + suffix) for suffix in ('.dll', '.lib', '.pdb')}
+        builder.qualified_v3_production_artifact(self.q, self.refs, self.scope, self.snapshot, self.freeze,
+            configured_artifacts=artifacts, **arguments)
+        artifacts.add(self.producer.build / 'unrelated.dll')
+        with self.assertRaisesRegex(ValueError, 'mapping differs'):
+            builder.qualified_v3_production_artifact(self.q, self.refs, self.scope, self.snapshot, self.freeze,
+                configured_artifacts=artifacts, **arguments)
+
+    def test_mutated_rsp_and_boolean_original_wait_are_rejected(self):
+        link = Path(self.refs['production_build_receipt']['path'])
+        original = builder.native_successor.read(link)
+        response = Path(original['response_files'][0]['path'])
+        response.write_text(response.read_text(encoding='utf-8').replace('/OUT:', '/OUT:unrelated-'), encoding='utf-8')
+        with self.assertRaises(ValueError): self.consume()
+        # Even coherently repinned metadata cannot authorize a different /OUT or a bool wait.
+        original['response_files'] = [builder.native_successor.pin(response)]
+        link.write_text(json.dumps(original), encoding='utf-8')
+        result = builder.native_successor.read(Path(self.result['path']))
+        result['actual_link'] = builder.native_successor.pin(link)
+        self.refs['production_build_receipt'] = result['actual_link']
+        self.result = self.document('native-a01/INCREMENTAL-RESULT.actual.json', result)
+        self.freeze['incremental_production_result'] = self.result
+        self.support['incremental_production_result'] = self.result; self.refresh()
+        with self.assertRaisesRegex(ValueError, 'RSP output/object/library order'): self.consume()
+        original['original_wait_returncode'] = True
+        link.write_text(json.dumps(original), encoding='utf-8')
+        result['actual_link'] = builder.native_successor.pin(link)
+        self.refs['production_build_receipt'] = result['actual_link']
+        self.result = self.document('native-a01/INCREMENTAL-RESULT.actual.json', result)
+        self.freeze['incremental_production_result'] = self.result
+        self.support['incremental_production_result'] = self.result; self.refresh()
+        with self.assertRaisesRegex(ValueError, 'successful command execution'): self.consume()
+
+    def empty_fixture_support(self) -> None:
+        (self.producer.build / 'build.ninja').write_text(''.join(
+            'build ' + fixture.target + '.exe: CXX_EXECUTABLE_LINKER CMakeFiles/' + fixture.target + '.dir/owned.cpp.obj\n'
+            for fixture in self.producer.config.fixtures), encoding='utf-8')
+        self.refs['snapshot'] = self.document('current-snapshot.json', self.snapshot)
+        self.refs['production_freeze'] = self.document('freeze.json', self.freeze)
+        baseline_q = builder.native_successor.read(Path(self.producer.config.baseline['path']))
+        baseline_scope = builder.native_successor.read(Path(baseline_q['configured_scope']['path']))
+        plan = builder.native_successor.read(Path(self.plan['path']))
+        self.support.update(production_freeze=self.refs['production_freeze'], fixture_file_api={},
+            fixtures={}, objects=[], actual_links={}, baseline_compile_commands=baseline_scope['compile_commands'],
+            original_dependencies=plan['original_dependencies'])
+        self.refresh_empty_support()
+
+    def refresh_empty_support(self) -> None:
+        self.refresh()
+        self.q['source_commit'] = self.producer.config.source_commit
+
+    def consume_empty_support(self) -> object:
+        bridge = {'name': 'xar_ck3_bridge', 'artifacts': [{'path': 'xar_ck3_bridge.dll'},
+            {'path': 'xar_ck3_bridge.lib'}, {'path': 'xar_ck3_bridge.pdb'}]}
+        return builder.qualified_fixture_link_support(self.q, self.refs, self.producer.config.machine_id,
+            self.scope, self.producer.native, self.producer.build, {}, {'bridge': bridge}, {'bridge': bridge},
+            [], self.producer.build, {'configurations': [{'targets': []}]})
+
+    def test_empty_v3_support_reaches_complete_readonly_consumer(self) -> None:
+        self.empty_fixture_support()
+        with patch.object(builder.native_successor.Producer, 'execute', side_effect=AssertionError('read-only')):
+            result = self.consume_empty_support()
+        self.assertEqual(result, {'ref': self.q['fixture_link_support'], 'fixture_production_targets': {}})
+
+    def test_empty_support_keeps_legacy_schemas_closed(self) -> None:
+        self.empty_fixture_support()
+        self.support['schema'] = 'ck3-fixture-production-object-link-support-v1'
+        self.refresh_empty_support()
+        with self.assertRaisesRegex(ValueError, 'Actual external fixture objects'):
+            self.consume_empty_support()
+        self.support['schema'] = 'ck3-fixture-production-object-link-support-v2'
+        for schema in ('ck3-configured-native-successor-v1', 'ck3-configured-native-successor-v2'):
+            self.config['schema'] = schema; self.refresh_empty_support()
+            with self.subTest(schema=schema), self.assertRaisesRegex(ValueError, 'actual File API production artifact'):
+                self.consume_empty_support()
+
+    def test_empty_v3_support_rejects_forged_maps_and_cross_q_plan(self) -> None:
+        self.empty_fixture_support()
+        for key in ('fixture_file_api', 'fixtures', 'actual_links'):
+            self.support[key] = {'invented': []}; self.refresh_empty_support()
+            with self.subTest(key=key), self.assertRaisesRegex(ValueError, 'target set differs'):
+                self.consume_empty_support()
+            self.support[key] = {}; self.refresh_empty_support()
+        self.support['production_plan'] = self.support['producer_config']; self.refresh_empty_support()
+        with self.assertRaisesRegex(ValueError, 'production envelope differs'):
+            self.consume_empty_support()
+
+    def test_empty_v3_support_rejects_actual_raw_production_object(self) -> None:
+        self.empty_fixture_support()
+        bridge = next(row for row in self.rows if row.target == 'xar_ck3_bridge')
+        fixture = self.producer.config.fixtures[0]
+        (self.producer.build / 'build.ninja').write_text('build ' + fixture.target
+            + '.exe: CXX_EXECUTABLE_LINKER ' + bridge.output.relative_to(self.producer.build).as_posix() + '\n',
+            encoding='utf-8')
+        with self.assertRaisesRegex(ValueError, 'actual graph without raw production objects'):
+            self.consume_empty_support()
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
