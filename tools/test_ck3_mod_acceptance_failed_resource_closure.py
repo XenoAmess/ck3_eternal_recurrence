@@ -321,6 +321,8 @@ from decimal import Decimal
 from pathlib import Path
 import math, re
 from ck3_mod_acceptance_background_types import FilePin, JsonObject, json_object, file_pin, text_field, strings_field
+from ck3_mod_acceptance_allocate import (MODERN_SERIAL_FAILURE_TERMINAL_FIELDS,
+    _serial_failure_original, validate_modern_serial_failure_evidence)
 '''
         source = prelude + ast.unparse(ast.fix_missing_locations(ast.Module(body=[*constants, *nodes], type_ignores=[])))
         with patch.dict(os.environ, {'MYPYPATH': str(TOOLS)}):

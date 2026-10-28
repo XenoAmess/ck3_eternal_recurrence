@@ -2882,7 +2882,205 @@ def serial_original_evidence_pins(value: object) -> dict[str, FilePin]:
         if not Path(ref['path']).is_absolute():
             raise ValueError('Absolute original serial evidence pin path required')
         refs[key] = ref
+    terminal_ref = refs.get('root_serial_terminal')
+    if terminal_ref is not None:
+        terminal = _serial_failure_original(terminal_ref)
+        if 'actual_lifecycle_kind' in terminal:
+            validate_modern_serial_failure_evidence(refs, terminal)
     return refs
+
+
+MODERN_SERIAL_FAILURE_TERMINAL_FIELDS = {
+    'machine_id', 'observed_at_utc', 'run_id', 'public_returncode', 'verify_returncode',
+    'allocator_returncode', 'screen_release', 'normal_close_qualified', 'business_pass',
+    'failure_preserved', 'actual_lifecycle_kind', 'actual_host_returncode', 'lifecycle_facts',
+    'original_handles'}
+MODERN_SERIAL_FAILURE_LABELS = ('ALLOCATE', 'COLD-GUARD-0', 'COLD-GUARD-1', 'STEAM-PROBE',
+    'PUBLIC-RUN', 'PUBLIC-VERIFY', 'SCREEN-LIST', 'SCREEN-RELEASE')
+
+
+def _serial_failure_original(reference: FilePin) -> JsonObject:
+    if reference['bytes'] > 1048576:
+        raise ValueError('Original modern serial control evidence exceeds 1 MiB')
+    check_pin(Path(reference['path']), dict(reference))
+    return json_object(json.loads(Path(reference['path']).read_bytes()))
+
+
+def modern_serial_failure_original_pins(terminal: FilePin, root_wait: Path) -> dict[str, FilePin]:
+    """Collect existing original files; never translate a modern terminal to old fields."""
+    row = _serial_failure_original(terminal)
+    if set(row) != MODERN_SERIAL_FAILURE_TERMINAL_FIELDS:
+        raise ValueError('Exact modern serial failure terminal required')
+    execution = Path(terminal['path']).resolve().parent
+    if Path(terminal['path']).name != 'ALL-ORIGINAL-TERMINALS.actual.json':
+        raise ValueError('Original modern serial terminal path differs')
+    paths = {'root_serial_terminal': Path(terminal['path']), 'root_serial_wait': root_wait,
+        'root_serial_started': root_wait.with_name('ROOT-SERIAL.started.json'),
+        'root_serial_identity': root_wait.with_name('ROOT-NATIVE-IDENTITY.json'),
+        'root_serial_stdout': root_wait.with_name('ROOT-SERIAL.stdout.log'),
+        'root_serial_stderr': root_wait.with_name('ROOT-SERIAL.stderr.log'),
+        'display_mode': execution/'DISPLAY-MODE.actual.json',
+        'display_restored': execution/'DISPLAY-RESTORED.actual.json'}
+    start = _serial_failure_original(file_pin(pin(paths['root_serial_started'])))
+    argv = strings_field(start, 'argv')
+    if len(argv) < 5:
+        raise ValueError('Original modern Root source argv required')
+    paths['root_serial_source'] = Path(argv[4])
+    for label in MODERN_SERIAL_FAILURE_LABELS:
+        for role, suffix in (('intent', '.intent.actual.json'), ('started', '.started.actual.json'),
+                ('wait', '.original-wait.actual.json'), ('stdout', '.stdout.log'), ('stderr', '.stderr.log')):
+            paths['serial_'+label+'_'+role] = execution/(label+suffix)
+    return {key: file_pin(pin(path)) for key, path in paths.items()}
+
+
+def validate_modern_serial_failure_evidence(refs: dict[str, FilePin], terminal: JsonObject) -> None:
+    """Join all original waits, restored display, actual release and failed lifecycle."""
+    if set(terminal) != MODERN_SERIAL_FAILURE_TERMINAL_FIELDS:
+        raise ValueError('Exact modern serial terminal fields required')
+    required = {'root_serial_terminal', 'root_serial_wait', 'root_serial_started', 'root_serial_identity',
+        'root_serial_stdout', 'root_serial_stderr', 'root_serial_source', 'display_mode', 'display_restored',
+        'normal_close', 'retained_exit', 'host_exit', 'keeper_exit', 'release', 'frozen_argv'}
+    required.update('serial_'+label+'_'+role for label in MODERN_SERIAL_FAILURE_LABELS
+        for role in ('intent', 'started', 'wait', 'stdout', 'stderr'))
+    if not required <= refs.keys():
+        raise ValueError('Complete modern serial original evidence required')
+    originals = {key: _serial_failure_original(refs[key]) for key in
+        ('root_serial_wait', 'root_serial_started', 'root_serial_identity', 'display_mode', 'display_restored',
+         'normal_close', 'retained_exit', 'host_exit', 'keeper_exit', 'release', 'frozen_argv')}
+    machine, run_id = text_field(terminal, 'machine_id'), text_field(terminal, 'run_id')
+    start, waited, identity = (originals[key] for key in ('root_serial_started', 'root_serial_wait', 'root_serial_identity'))
+    if (set(start) != {'machine_id','pid','argv','started_at_utc','original_wait_pending'}
+            or set(waited) != {'machine_id','pid','argv','actual_original_popen_wait','original_wait_returncode','finished_at_utc'}
+            or set(identity) != {'machine_id','pid','process_creation_filetime_100ns','observed_at_utc','source'}
+            or any(row.get('machine_id') != machine for row in (start, waited, identity))
+            or start.get('original_wait_pending') is not True or waited.get('actual_original_popen_wait') is not True
+            or _late_integer(waited.get('original_wait_returncode'), 'Original Root failure exit') != 2
+            or _late_integer(start.get('pid'), 'Original Root PID') <= 0
+            or start.get('pid') != _late_integer(waited.get('pid'), 'Original waited Root PID')
+            or start.get('pid') != _late_integer(identity.get('pid'), 'Original native Root PID')
+            or identity.get('source') != 'GetProcessTimes original Popen retained handle'
+            or re.fullmatch('[1-9][0-9]{0,19}', text_field(identity, 'process_creation_filetime_100ns')) is None
+            or int(text_field(identity, 'process_creation_filetime_100ns')) >= 1 << 64
+            or strings_field(start, 'argv') != strings_field(waited, 'argv')):
+        raise ValueError('Original modern Root native identity/wait2 differs')
+    root_argv = strings_field(start, 'argv')
+    if (len(root_argv) < 7 or root_argv[1:4] != ['-B','-X','utf8']
+            or Path(root_argv[4]).resolve() != Path(refs['root_serial_source']['path']).resolve()
+            or root_argv.count('--source-commit') != 1 or root_argv.index('--source-commit')+1 >= len(root_argv)):
+        raise ValueError('Original modern Root source invocation differs')
+    commit = root_argv[root_argv.index('--source-commit')+1]
+    frozen = originals['frozen_argv']
+    runtime = _serial_failure_original(file_pin(frozen.get('runtime_manifest')))
+    if re.fullmatch('[a-f0-9]{40}', commit) is None or runtime.get('source_commit') != commit or frozen.get('run_id') != run_id:
+        raise ValueError('Modern serial Root source crossed frozen runtime/run')
+    for key in ('root_serial_source','root_serial_stdout','root_serial_stderr'):
+        check_pin(Path(refs[key]['path']), dict(refs[key]))
+    life = object_field(terminal, 'lifecycle_facts')
+    if (set(life) != {'kind','normal','retained','host'} or life.get('kind') != 'preserved_failure'
+            or life.get('normal') != originals['normal_close'] or life.get('retained') != originals['retained_exit']
+            or life.get('host') != originals['host_exit'] or terminal.get('actual_lifecycle_kind') != 'preserved_failure'
+            or terminal.get('failure_preserved') is not True
+            or _late_integer(terminal.get('actual_host_returncode'), 'Modern host failure exit') != 1
+            or _late_integer(originals['host_exit'].get('returncode'), 'Original host failure exit') != 1
+            or file_pin(terminal.get('screen_release')) != refs['release']):
+        raise ValueError('Modern serial terminal differs from original failed lifecycle/release')
+    for key, expected in (('public_returncode',2),('verify_returncode',2),('allocator_returncode',0)):
+        if _late_integer(terminal.get(key), key) != expected:
+            raise ValueError('Modern serial original terminal exit differs: '+key)
+    if any(terminal.get(key) is not False for key in ('normal_close_qualified','business_pass')):
+        raise ValueError('Modern serial failure cannot grant normal/business credit')
+    handles = terminal.get('original_handles')
+    if not isinstance(handles, list) or len(handles) != len(MODERN_SERIAL_FAILURE_LABELS):
+        raise ValueError('All modern serial original handle roles required')
+    execution = Path(refs['root_serial_terminal']['path']).resolve().parent
+    times: list[datetime | None] = [datetime.fromisoformat(text_field(start, 'started_at_utc')),
+        datetime.fromisoformat(text_field(identity, 'observed_at_utc'))]
+    public_wait_at: datetime | None = None
+    release_started_at: datetime | None = None
+    for label, raw in zip(MODERN_SERIAL_FAILURE_LABELS, handles, strict=True):
+        handle = json_object(raw)
+        records: dict[str, JsonObject] = {}
+        for role, suffix in (('intent','.intent.actual.json'),('started','.started.actual.json'),
+                ('wait','.original-wait.actual.json'),('stdout','.stdout.log'),('stderr','.stderr.log')):
+            ref = refs['serial_'+label+'_'+role]
+            if Path(ref['path']).resolve() != execution/(label+suffix):
+                raise ValueError('Modern serial original handle path crossed role')
+            check_pin(Path(ref['path']), dict(ref))
+            if role in ('intent','started','wait'):
+                records[role] = _serial_failure_original(ref)
+        intent, began, ended = (records[key] for key in ('intent','started','wait'))
+        expected_code = 2 if label in ('PUBLIC-RUN','PUBLIC-VERIFY') else 0
+        _validate_serial_process_originals(intent, began, ended, machine, expected_code)
+        if (set(handle) != {'label','pid','birth_filetime','actual_original_popen_wait','returncode','stdout_closed','stderr_closed'}
+                or handle.get('label') != label or handle.get('actual_original_popen_wait') is not True
+                or handle.get('stdout_closed') is not True or handle.get('stderr_closed') is not True
+                or _late_integer(handle.get('pid'), 'Modern terminal PID') != began.get('pid')
+                or handle.get('birth_filetime') != began.get('process_creation_filetime_100ns')
+                or _late_integer(handle.get('returncode'), 'Modern terminal wait') != expected_code
+                or intent.get('source_commit') != commit):
+            raise ValueError('Modern serial handle differs from its original Popen wait')
+        if label in ('PUBLIC-RUN','ALLOCATE'):
+            prefix = 'run' if label == 'PUBLIC-RUN' else 'allocate'
+            for role in ('intent','started','wait','stdout','stderr'):
+                if refs.get(prefix+'_'+role) != refs['serial_'+label+'_'+role]:
+                    raise ValueError('Modern serial public role differs from closure originals')
+        if label == 'PUBLIC-RUN':
+            public_wait_at = datetime.fromisoformat(text_field(ended, 'finished_at_utc'))
+        if label == 'SCREEN-RELEASE':
+            release_started_at = datetime.fromisoformat(text_field(intent, 'started_at_utc'))
+            if refs['serial_'+label+'_stdout'] != refs['release']:
+                raise ValueError('Modern terminal release differs from original SCREEN stdout')
+            argv = strings_field(intent, 'argv')
+            if 'release-screen-cas' not in argv or argv.count('--task') != 1 or argv[argv.index('--task')+1] != frozen.get('screen_task'):
+                raise ValueError('Modern original SCREEN release crossed task')
+    before, restored = originals['display_mode'], originals['display_restored']
+    for row in (before, restored):
+        if set(row) != {'machine_id','observed_at_utc','before','actual'} or row.get('machine_id') != machine:
+            raise ValueError('Original modern display receipt differs')
+    original_display = object_field(before, 'before')
+    restored_actual = restored.get('actual')
+    if (set(original_display) != {'width','height','frequency','bits'}
+            or any(_late_integer(value, 'Display dimension') <= 0 for value in original_display.values())
+            or restored.get('before') != original_display
+            or not isinstance(restored_actual, list) or any(type(value) is not int for value in restored_actual)
+            or restored_actual != [original_display['width'],original_display['height']]):
+        raise ValueError('Modern serial original display was not restored')
+    times += [datetime.fromisoformat(text_field(before,'observed_at_utc')), public_wait_at,
+        datetime.fromisoformat(text_field(restored,'observed_at_utc')), release_started_at,
+        datetime.fromisoformat(text_field(terminal,'observed_at_utc')),
+        datetime.fromisoformat(text_field(waited,'finished_at_utc'))]
+    if any(value is None or value.tzinfo is None for value in times):
+        raise ValueError('Modern serial original lifecycle times required')
+    present_times = [value for value in times if value is not None]
+    if present_times != sorted(present_times):
+        raise ValueError('Modern serial display/release/Root chronology differs')
+
+
+def _validate_serial_process_originals(intent: JsonObject, started: JsonObject, waited: JsonObject,
+        machine: str, code: int) -> None:
+    expected = (
+        {'machine_id','observed_at_utc','argv','source_commit','started_at_utc'},
+        {'machine_id','observed_at_utc','pid','process_creation_filetime_100ns','process_create_time_seconds','started_at_utc','original_wait_pending'},
+        {'machine_id','observed_at_utc','pid','process_creation_filetime_100ns','original_wait_returncode','elapsed_seconds','finished_at_utc'})
+    if any(set(row) != fields or row.get('machine_id') != machine
+            for row, fields in zip((intent,started,waited), expected, strict=True)):
+        raise ValueError('Exact original serial process receipt fields/machine required')
+    birth, seconds = text_field(started,'process_creation_filetime_100ns'), text_field(started,'process_create_time_seconds')
+    elapsed = waited.get('elapsed_seconds')
+    if (_late_integer(started.get('pid'),'Original serial PID') <= 0
+            or _late_integer(waited.get('pid'),'Original waited PID') != started.get('pid')
+            or re.fullmatch('[1-9][0-9]{0,19}',birth) is None or int(birth) >= 1 << 64
+            or re.fullmatch('(?:0|[1-9][0-9]{0,12})(?:\\.[0-9]{1,7})?',seconds) is None
+            or Decimal(seconds)*10000000+116444736000000000 != Decimal(birth)
+            or waited.get('process_creation_filetime_100ns') != birth or started.get('original_wait_pending') is not True
+            or _late_integer(waited.get('original_wait_returncode'),'Original wait') != code
+            or type(elapsed) not in (int,float) or not isinstance(elapsed,(int,float)) or not math.isfinite(elapsed) or elapsed < 0):
+        raise ValueError('Original serial process identity/wait differs')
+    stamps = [datetime.fromisoformat(text_field(row,key)) for row,key in (
+        (intent,'started_at_utc'),(intent,'observed_at_utc'),(started,'started_at_utc'),
+        (started,'observed_at_utc'),(waited,'finished_at_utc'),(waited,'observed_at_utc'))]
+    if any(value.tzinfo is None for value in stamps) or stamps != sorted(stamps):
+        raise ValueError('Original serial process chronology differs')
 
 
 def validate_serial_original_public_wait(intent_value: object, started_value: object,
@@ -2891,13 +3089,14 @@ def validate_serial_original_public_wait(intent_value: object, started_value: ob
     """Join the actual intent, birth, original wait and retained-handle terminal."""
     intent, started, waited, terminal = (json_object(value) for value in
         (intent_value, started_value, wait_value, terminal_value))
+    modern = 'actual_lifecycle_kind' in terminal
     expected_fields = (
         {'machine_id', 'observed_at_utc', 'argv', 'source_commit', 'started_at_utc'},
         {'machine_id', 'observed_at_utc', 'pid', 'process_creation_filetime_100ns',
          'process_create_time_seconds', 'started_at_utc', 'original_wait_pending'},
         {'machine_id', 'observed_at_utc', 'pid', 'process_creation_filetime_100ns',
          'original_wait_returncode', 'elapsed_seconds', 'finished_at_utc'},
-        {'machine_id', 'observed_at_utc', 'run_id', 'normal_close_qualified', 'business_pass',
+        MODERN_SERIAL_FAILURE_TERMINAL_FIELDS if modern else {'machine_id', 'observed_at_utc', 'run_id', 'normal_close_qualified', 'business_pass',
          'original_handles', 'keeper_parent', 'screen_released', 'display_restored',
          'outer_exit_after_actual_terminal_records'})
     for value, fields in zip((intent, started, waited, terminal), expected_fields, strict=True):
@@ -2929,8 +3128,16 @@ def validate_serial_original_public_wait(intent_value: object, started_value: ob
     if (len(indices) != 1 or indices[0] + 1 >= len(argv) or argv[indices[0] + 1] != mode
             or re.fullmatch('[0-9a-f]{40}', text_field(intent, 'source_commit')) is None
             or terminal.get('run_id') != run_id or terminal.get('normal_close_qualified') is not False
-            or terminal.get('business_pass') is not False or terminal.get('screen_released') is not False
-            or terminal.get('display_restored') is not False
+            or terminal.get('business_pass') is not False):
+        raise ValueError('Original serial public intent/failed terminal crossed the run or keeper')
+    if modern:
+        if (terminal.get('actual_lifecycle_kind') != 'preserved_failure' or terminal.get('failure_preserved') is not True
+                or _late_integer(terminal.get('public_returncode'), 'Modern public exit') != 2
+                or _late_integer(terminal.get('verify_returncode'), 'Modern verify exit') != 2
+                or _late_integer(terminal.get('allocator_returncode'), 'Modern allocator exit') != 0
+                or _late_integer(terminal.get('actual_host_returncode'), 'Modern host exit') != 1):
+            raise ValueError('Original modern serial failed terminal exit codes differ')
+    elif (terminal.get('screen_released') is not False or terminal.get('display_restored') is not False
             or _late_integer(terminal.get('outer_exit_after_actual_terminal_records'), 'Serial failure outer exit') != 2
             or set(json_object(terminal.get('keeper_parent'))) != {'path', 'bytes', 'sha256'}
             or file_pin(terminal.get('keeper_parent')) != keeper_exit):
@@ -2943,8 +3150,9 @@ def validate_serial_original_public_wait(intent_value: object, started_value: ob
     for raw in handles:
         handle = json_object(raw)
         label = text_field(handle, 'label')
-        handle_birth = text_field(handle, 'birth')
-        if (set(handle) != {'label', 'pid', 'birth', 'actual_original_popen_wait', 'returncode',
+        birth_key = 'birth_filetime' if modern else 'birth'
+        handle_birth = text_field(handle, birth_key)
+        if (set(handle) != {'label', 'pid', birth_key, 'actual_original_popen_wait', 'returncode',
                            'stdout_closed', 'stderr_closed'} or label in labels
                 or _late_integer(handle.get('pid'), 'Serial terminal PID') <= 0
                 or re.fullmatch('[1-9][0-9]{0,19}', handle_birth) is None or int(handle_birth) >= 1 << 64
@@ -2955,7 +3163,7 @@ def validate_serial_original_public_wait(intent_value: object, started_value: ob
         labels.add(label)
         if label == ('PUBLIC-RUN' if mode == 'run' else 'ALLOCATE'):
             selected = handle
-    if (selected is None or selected.get('pid') != pid or selected.get('birth') != birth
+    if (selected is None or selected.get('pid') != pid or selected.get('birth_filetime' if modern else 'birth') != birth
             or selected.get('returncode') != code):
         raise ValueError('Original serial public wait did not consume this retained Popen')
     return argv
