@@ -156,7 +156,10 @@ class Config:
     wire_packets: tuple[str, ...]
     compiled_seed: Pin | None = None
     retained_dependency_evidence: RetainedDependencyEvidence | None = None
-    schema: Literal["ck3-configured-native-successor-v1", "ck3-configured-native-successor-v2"] = "ck3-configured-native-successor-v1"
+    schema: Literal["ck3-configured-native-successor-v1", "ck3-configured-native-successor-v2", "ck3-configured-native-successor-v3"] = "ck3-configured-native-successor-v1"
+    predecessor_qualification: Pin | None = None
+    native_source_dir: Path | None = None
+    development_build_dir: Path | None = None
 
 
 @dataclass(frozen=True)
@@ -165,6 +168,18 @@ class Compile:
     source: Path
     output: Path
     argv: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class QualifiedPredecessor:
+    qualification: Pin
+    snapshot: Pin
+    compile_commands: Pin
+    dependencies: Pin
+    source_root: Path
+    objects: dict[str, Pin]
+    libraries: tuple[Pin, ...]
+    source_signatures: dict[str, tuple[int, str]]
 
 
 @dataclass(frozen=True)
@@ -322,10 +337,12 @@ def parse_config(value: object) -> Config:
                 "budget_bytes", "baseline_qualification", "complete_build_dir",
                 "incremental_inputs", "profile_cmake", "fixtures", "qualification_targets", "wire", "compiled_seed"}
     schema = row.get("schema")
-    require(schema in ("ck3-configured-native-successor-v1", "ck3-configured-native-successor-v2"),
+    require(schema in ("ck3-configured-native-successor-v1", "ck3-configured-native-successor-v2", "ck3-configured-native-successor-v3"),
             "Unsupported configured successor version")
-    if schema == "ck3-configured-native-successor-v2":
+    if schema in ("ck3-configured-native-successor-v2", "ck3-configured-native-successor-v3"):
         expected.add("retained_dependency_evidence")
+    if schema == "ck3-configured-native-successor-v3":
+        expected.update(("predecessor_qualification", "native_source_dir", "development_build_dir"))
     require(set(row) == expected,
             "Exact configured successor contract required")
     evidence: RetainedDependencyEvidence | None = None
@@ -361,6 +378,16 @@ def parse_config(value: object) -> Config:
     require(wire_target in {item.target for item in fixtures}, "Wire target must be built and run")
     require(wire_target in qualified, "Wire producer must be selected for qualification")
     output, complete = Path(string(row["output_dir"])), Path(string(row["complete_build_dir"]))
+    if schema == "ck3-configured-native-successor-v3":
+        require(row["compiled_seed"] is None and row["retained_dependency_evidence"] is None,
+                "A qualified predecessor is separate from compiled seeds/retained-dependency authority")
+        development = Path(string(row["development_build_dir"]))
+        native_source = Path(string(row["native_source_dir"]))
+        require(development.is_absolute() and native_source.is_absolute()
+                and development.parent.resolve() == output.parent.resolve() == native_source.parent.resolve()
+                and len({development.resolve(), native_source.resolve(), output.resolve()}) == 3
+                and not native_source.resolve().is_relative_to(ROOT.resolve()),
+                "Separate native source/build and attempt directories in one external development root required")
     require(output.is_absolute() and complete.is_absolute() and output != complete
             and not output.is_relative_to(complete) and not complete.is_relative_to(output)
             and not output.resolve().is_relative_to(ROOT.resolve()),
@@ -371,14 +398,21 @@ def parse_config(value: object) -> Config:
         wire_target, relative(wire["source"]), relative(wire["directory"]),
         tuple(relative(path) for path in arr(wire["packets"])),
         None if row["compiled_seed"] is None else parse_pin(row["compiled_seed"]), evidence,
-        "ck3-configured-native-successor-v2" if schema == "ck3-configured-native-successor-v2"
-        else "ck3-configured-native-successor-v1")
+        "ck3-configured-native-successor-v3" if schema == "ck3-configured-native-successor-v3" else
+        ("ck3-configured-native-successor-v2" if schema == "ck3-configured-native-successor-v2"
+        else "ck3-configured-native-successor-v1"),
+        None if schema != "ck3-configured-native-successor-v3" else parse_pin(row["predecessor_qualification"]),
+        None if schema != "ck3-configured-native-successor-v3" else Path(string(row["native_source_dir"])).resolve(),
+        None if schema != "ck3-configured-native-successor-v3" else Path(string(row["development_build_dir"])).resolve())
 
 
 def config_json(config: Config) -> dict[str, object]:
     """The one JSON representation: tuple fields are encoded as JSON arrays."""
-    require(config.schema == "ck3-configured-native-successor-v2" or config.retained_dependency_evidence is None,
+    require(config.schema in ("ck3-configured-native-successor-v2", "ck3-configured-native-successor-v3") or config.retained_dependency_evidence is None,
             "Retained dependencies require the v2 contract")
+    require(config.schema == "ck3-configured-native-successor-v3" or all(value is None for value in
+        (config.predecessor_qualification, config.native_source_dir, config.development_build_dir)),
+        "Development predecessor/source/build fields require the v3 contract")
     result: dict[str, object] = {"schema": config.schema, "machine_id": config.machine_id,
         "source_commit": config.source_commit, "output_dir": str(config.output),
         "storage_admission": config.admission, "budget_bytes": config.budget,
@@ -392,8 +426,13 @@ def config_json(config: Config) -> dict[str, object]:
                      for item in config.fixtures],
         "wire": {"target": config.wire_target, "source": config.wire_source,
                  "directory": config.wire_directory, "packets": list(config.wire_packets)}}
-    if config.schema == "ck3-configured-native-successor-v2":
+    if config.schema in ("ck3-configured-native-successor-v2", "ck3-configured-native-successor-v3"):
         result["retained_dependency_evidence"] = config.retained_dependency_evidence
+    if config.schema == "ck3-configured-native-successor-v3":
+        require(config.predecessor_qualification is not None and config.native_source_dir is not None
+                and config.development_build_dir is not None, "Complete v3 development contract required")
+        result.update(predecessor_qualification=config.predecessor_qualification,
+            native_source_dir=str(config.native_source_dir), development_build_dir=str(config.development_build_dir))
     return result
 
 
@@ -548,8 +587,8 @@ def verified_noncompiled_consumer_replay(config: Config, value: object) -> Nonco
 class Producer:
     def __init__(self, config: Config) -> None:
         self.config = config
-        self.native = ROOT / PREFIX
-        self.build = config.output / "build"
+        self.native = ROOT / PREFIX if config.native_source_dir is None else config.native_source_dir
+        self.build = config.output / "build" if config.development_build_dir is None else config.development_build_dir
         self.meta = config.output / "native-a01"
         self.env: dict[str, str] = {}
         self.tools: dict[str, str] = {}
@@ -590,11 +629,13 @@ class Producer:
         require(datetime.now(timezone.utc) < expiry, "Storage admission expired")
         floor = integer(admission.get("required_free_bytes"))
         require(shutil.disk_usage(c.output.parent).free >= floor, "Admitted free-space floor no longer holds")
-        require(allocated(c.output) < c.budget, "Native lane budget exhausted")
+        require(allocated(c.output.parent if c.schema == "ck3-configured-native-successor-v3" else c.output) < c.budget,
+                "Native lane budget exhausted")
 
     def save(self, name: str, value: object) -> Pin:
         raw = (json.dumps(value, indent=2, ensure_ascii=True) + "\n").encode()
-        require(allocated(self.config.output) + len(raw) + 8192 < self.config.budget, "Native metadata budget exhausted")
+        budget_root = self.config.output.parent if self.config.schema == "ck3-configured-native-successor-v3" else self.config.output
+        require(allocated(budget_root) + len(raw) + 8192 < self.config.budget, "Native metadata budget exhausted")
         path = self.config.output / relative(name)
         path.parent.mkdir(parents=True, exist_ok=True)
         with path.open("xb") as stream:
@@ -612,7 +653,8 @@ class Producer:
         self.gate()
         started, begin = now(), time.monotonic()
         log = self.config.output / (name + ".log")
-        peak, reason = allocated(self.config.output), None
+        budget_root = self.config.output.parent if self.config.schema == "ck3-configured-native-successor-v3" else self.config.output
+        peak, reason = allocated(budget_root), None
         responses: list[Pin] = []
         for value in argv:
             if value.startswith("@"):
@@ -621,7 +663,7 @@ class Producer:
         with log.open("xb") as stream:
             process = subprocess.Popen(argv, cwd=cwd, env=self.env, stdout=stream, stderr=subprocess.STDOUT)
             while process.poll() is None:
-                peak = max(peak, allocated(self.config.output))
+                peak = max(peak, allocated(budget_root))
                 if peak + 4 * 1024 * 1024 >= self.config.budget or time.monotonic() - begin > timeout:
                     reason = "budget-or-timeout"
                     process.terminate()
@@ -634,7 +676,7 @@ class Producer:
             "started_at_utc": started, "finished_at_utc": now(), "argv": argv, "cwd": str(cwd),
             "original_wait_returncode": code, "stopped_reason": reason, "log": pin(log),
             "response_files": responses,
-            "sampled_allocated_peak_bytes": max(peak, allocated(self.config.output)), "game_started_or_attached": False,
+            "sampled_allocated_peak_bytes": max(peak, allocated(budget_root)), "game_started_or_attached": False,
             "actual_live_business_qualified": False}
         receipt = self.save(name + ".actual.json", evidence)
         require(code == 0 and reason is None, "Actual command failed: " + name)
@@ -646,7 +688,7 @@ class Producer:
         require(actual_machine == self.config.machine_id, "Actual machine identity differs from admission")
         self.gate()
         self.config.output.mkdir(exist_ok=False)
-        self.build.mkdir()
+        self.build.mkdir(exist_ok=self.config.schema == "ck3-configured-native-successor-v3")
         self.initialize_tools()
 
     def initialize_tools(self) -> None:
@@ -665,7 +707,7 @@ class Producer:
     def configure(self) -> Pin:
         checked(self.config.profile_cmake)
         query = self.build / ".cmake/api/v1/query"
-        query.mkdir(parents=True)
+        query.mkdir(parents=True, exist_ok=self.config.schema == "ck3-configured-native-successor-v3")
         (query / "codemodel-v2").write_bytes(b"")
         return self.execute("configure", [self.tools["cmake"], "-S", str(self.native), "-B", str(self.build),
             "-G", "Ninja", "-DCMAKE_BUILD_TYPE=Release", "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
@@ -824,6 +866,9 @@ class Producer:
     def plan(self, rows: list[Compile], *, existing_plan: Pin | None = None,
              noncompiled_replay: object = None) -> tuple[list[Compile], dict[str, Path], Pin]:
         c = self.config
+        if c.schema == "ck3-configured-native-successor-v3":
+            require(noncompiled_replay is None, "v3 uses its actual development source, without replay aliases")
+            return self.predecessor_plan(rows, existing_plan=existing_plan)
         require(noncompiled_replay is None or existing_plan is not None,
                 "Noncompiled replay is restricted to an existing read-only production plan")
         replay = None if noncompiled_replay is None else verified_noncompiled_consumer_replay(c, noncompiled_replay)
@@ -995,6 +1040,159 @@ class Producer:
             report = self.save("native-a01/PLAN.actual.json", value)
         return selected, borrowed, report
 
+    def qualified_predecessor(self) -> QualifiedPredecessor:
+        """Read the actual linked object graph, including every prior delta object/archive."""
+        c = self.config
+        require(c.schema == "ck3-configured-native-successor-v3" and c.predecessor_qualification is not None,
+                "Explicit qualified predecessor required")
+        if c.predecessor_qualification is None:
+            raise ValueError("Explicit qualified predecessor required")
+        reference = checked(c.predecessor_qualification)
+        require(reference == checked(c.baseline), "v3 baseline must be its explicit qualified predecessor")
+        q = read(Path(reference["path"]))
+        require(q.get("schema") == "ck3-qualified-native-build-v1" and q.get("machine_id") == c.machine_id
+                and q.get("actual_live_business_qualified") is False, "Qualified predecessor identity differs")
+        commit = string(q["source_commit"])
+        require(git("merge-base", commit, c.source_commit) == commit, "Predecessor is not a source ancestor")
+        snapshot_ref, scope_ref, freeze_ref = (checked(q[key]) for key in ("snapshot", "configured_scope", "production_freeze"))
+        snapshot, scope, frozen = (read(Path(ref["path"])) for ref in (snapshot_ref, scope_ref, freeze_ref))
+        verification = read(Path(checked(q["source_verification"])["path"]))
+        require(snapshot.get("machine_id") == verification.get("machine_id") == c.machine_id
+                and snapshot.get("root_commit") == snapshot.get("native_source_commit") == commit
+                and verification.get("source_manifest") == snapshot_ref
+                and verification.get("root_commit") == commit
+                and frozen.get("source_manifest") == snapshot_ref and frozen.get("scope") == scope_ref
+                and frozen.get("root_commit") == commit and frozen.get("game_started_or_attached") is False,
+                "Predecessor source/freeze provenance differs")
+        source_root = Path(string(snapshot["snapshot_native_base"]))
+        signatures: dict[str, tuple[int, str]] = {}
+        for raw in arr(snapshot["files"]):
+            item = obj(raw); name = relative(item["native_relative"])
+            require(name not in signatures, "Duplicate predecessor source identity")
+            signatures[name] = (integer(item["bytes"]), string(item["sha256"]))
+        require(integer(snapshot["source_count"]) == len(signatures)
+                and integer(verification["all_snapshot_files_exactly_verified"]) == len(signatures)
+                and integer(verification["all_original_inputs_still_exactly_verified"]) == len(signatures),
+                "Predecessor source verification is incomplete")
+        plan_ref, result_ref = (checked(frozen[key]) for key in ("incremental_production_plan", "incremental_production_result"))
+        plan, result = read(Path(plan_ref["path"])), read(Path(result_ref["path"]))
+        require(plan.get("machine_id") == result.get("machine_id") == c.machine_id
+                and plan.get("source_commit") == result.get("source_commit") == commit
+                and result.get("production_plan") == plan_ref and result.get("actual_link") == q["production_build_receipt"]
+                and result.get("dll") == q["original_dll"] == frozen["original_DLL"]
+                and result.get("game_started_or_attached") is False
+                and integer(result["archive_copies"]) == integer(plan["archive_copies"]) == 0,
+                "Predecessor actual incremental/link graph differs")
+        checked(q["original_dll"]); checked(q["published_dll"])
+        execution = read(Path(checked(q["production_build_receipt"])["path"]))
+        require(execution.get("machine_id") == c.machine_id and execution.get("source_commit") == commit
+                and integer(execution["original_wait_returncode"]) == 0 and execution.get("stopped_reason") is None
+                and execution.get("actual_live_business_qualified") is False
+                and execution.get("game_started_or_attached") is False, "Predecessor actual link did not succeed")
+        checked(execution["log"])
+        response_refs = [checked(value) for value in arr(execution["response_files"])]
+        require(len(response_refs) == 1, "One original predecessor link response required")
+        link_args = self.arguments(Path(response_refs[0]["path"]).read_text(encoding="utf-8"))
+        require(strings(execution["argv"])[-1] == "@" + response_refs[0]["path"], "Predecessor link response invocation differs")
+        declared = {Path(value["path"]): value for value in
+            [checked(raw) for raw in arr(plan["retained_link_inputs"])]+[checked(plan["retained_incremental_object"])]}
+        for raw in arr(result["production_compiles"]):
+            item = obj(raw); source, compiled_output = parse_pin(item["source"]), checked(item["object"])
+            name = Path(source["path"]).relative_to(source_root).as_posix()
+            require(signatures.get(name) == (source["bytes"], source["sha256"]), "Predecessor compiled source identity differs")
+            actual = read(Path(checked(item["actual_compile"])["path"]))
+            require(actual.get("machine_id") == c.machine_id and actual.get("source_commit") == commit
+                    and integer(actual["original_wait_returncode"]) == 0 and actual.get("stopped_reason") is None,
+                    "Predecessor original compile failed")
+            checked(actual["log"])
+            declared[Path(compiled_output["path"])] = compiled_output
+        if result["changed_runtime_archive"] is not None:
+            archive = checked(result["changed_runtime_archive"])
+            actual = read(Path(checked(result["changed_runtime_archive_execution"])["path"]))
+            require(integer(actual["original_wait_returncode"]) == 0 and actual.get("stopped_reason") is None,
+                    "Predecessor original changed archive failed")
+            checked(actual["log"]); declared[Path(archive["path"])] = archive
+        commands_ref = checked(scope["compile_commands"])
+        commands = [obj(raw) for raw in arr(json.loads(Path(commands_ref["path"]).read_text(encoding="utf-8-sig")))]
+        old_build = Path(string(commands[0]["directory"]))
+        objects: dict[str, Pin] = {}
+        for row in commands:
+            output = Path(string(row["output"])); output = output if output.is_absolute() else old_build/output
+            name = output.relative_to(old_build).as_posix()
+            if not name.startswith("CMakeFiles/xar_ck3_bridge.dir/"):
+                continue
+            candidates = [Path(token) for token in link_args if token.lower().endswith(".obj")
+                and Path(token).parts[-len(Path(name).parts):] == Path(name).parts]
+            require(len(candidates) == 1 and candidates[0] in declared and name not in objects,
+                    "Predecessor actual linked bridge object is missing, ambiguous or undeclared")
+            objects[name] = declared[candidates[0]]
+        libraries: list[Pin] = []
+        for token in link_args:
+            path = Path(token)
+            if path.is_absolute() and path.suffix.lower() in (".obj", ".lib"):
+                require(path in declared, "Predecessor actual link has an unpinned input")
+                if path.suffix.lower() == ".lib": libraries.append(declared[path])
+        require(objects and libraries, "Complete linked predecessor object/archive graph required")
+        return QualifiedPredecessor(reference, snapshot_ref, commands_ref, checked(plan["original_dependencies"]),
+            source_root, objects, tuple(libraries), signatures)
+
+    def predecessor_plan(self, rows: list[Compile], *, existing_plan: Pin | None = None
+            ) -> tuple[list[Compile], dict[str, Path], Pin]:
+        prior = self.qualified_predecessor()
+        current: dict[str, Pin] = {}
+        for name in git("ls-files", "--", PREFIX).splitlines():
+            relative_name = name.removeprefix(PREFIX)
+            original, development = pin(ROOT/name), pin(self.native/relative_name)
+            require((original["bytes"], original["sha256"]) == (development["bytes"], development["sha256"]),
+                    "Development native source differs from the current committed Root")
+            current[relative_name] = development
+        require({path.relative_to(self.native).as_posix() for path in self.native.rglob("*") if path.is_file()}
+                == set(current), "Development native source contains stale or untracked files")
+        changed = {name for name in prior.source_signatures.keys() | current.keys()
+            if name not in current or prior.source_signatures.get(name) != (current[name]["bytes"], current[name]["sha256"])}
+        commands = [obj(raw) for raw in arr(json.loads(Path(prior.compile_commands["path"]).read_text(encoding="utf-8-sig")))]
+        old_build = Path(string(commands[0]["directory"]))
+        old_rows: dict[str, tuple[str, ...]] = {}
+        for item in commands:
+            output = Path(string(item["output"])); output = output if output.is_absolute() else old_build/output
+            old_rows[output.relative_to(old_build).as_posix()] = tuple(self.arguments(string(item["command"])))
+        selected: list[Compile] = []; selection: list[dict[str, object]] = []; memo: dict[Path, set[Path]] = {}
+        old_dependencies = self.dependencies(Path(prior.dependencies["path"]).read_text(encoding="utf-8"), self.config.complete_build)
+        roots = {path.parent.parent.parent for paths in old_dependencies.values() for path in paths
+            if path.name == "activity_typed_planner_v1.hpp"}
+        require(len(roots) == 1, "Original predecessor compiler dependency source root required")
+        dependency_root = next(iter(roots))
+        for row in rows:
+            if row.target not in PRODUCTION: continue
+            name = row.output.relative_to(self.build).as_posix()
+            require(name in old_rows and self.normalize(row.argv,self.native,self.build)
+                == self.normalize(old_rows[name],prior.source_root,old_build), "Predecessor production compiler options changed")
+            dependencies = {path.relative_to(self.native).as_posix() for path in self.closure(row.source,self.native,memo)
+                if path.is_relative_to(self.native)}
+            dependencies.update(path.relative_to(dependency_root).as_posix() for path in old_dependencies.get(name,set())
+                if path.is_relative_to(dependency_root))
+            affected = sorted(changed.intersection(dependencies | {row.source.relative_to(self.native).as_posix()}))
+            if affected: selected.append(row)
+            selection.append({"target":row.target,"output":name,"source":row.source.relative_to(self.native).as_posix(),
+                "changed_dependencies":affected,"compiled":bool(affected)})
+        require(selected and {row.target for row in rows if row.target in PRODUCTION} == set(PRODUCTION),
+                "An actual changed complete production graph required")
+        bridge = {row.output.relative_to(self.build).as_posix() for row in rows if row.target == "xar_ck3_bridge"}
+        require(bridge == set(prior.objects), "Predecessor bridge graph changed")
+        retained = [*prior.objects.values(), *prior.libraries]
+        value: dict[str, object] = {"machine_id":self.config.machine_id,"observed_at_utc":now(),
+            "source_commit":self.config.source_commit,"baseline_qualification":self.config.baseline,
+            "baseline_incremental_inputs":self.config.incremental_inputs,"original_dependencies":prior.dependencies,
+            "changed_native_paths":sorted(changed),"production_selections":selection,"retained_link_inputs":retained,
+            "retained_incremental_object":next(iter(prior.objects.values())),"archive_copies":0,
+            "predecessor_qualification":prior.qualification,"predecessor_compile_commands":prior.compile_commands,
+            "predecessor_libraries":list(prior.libraries)}
+        if existing_plan is not None:
+            require(same_metadata_content(read(Path(checked(existing_plan)["path"])),value), "Predecessor production replay differs")
+            report = existing_plan
+        else: report = self.save("native-a01/PLAN.actual.json",value)
+        return selected,{name:Path(ref["path"]) for name,ref in prior.objects.items()},report
+
     def compile(self, row: Compile, label: str, definitions: tuple[str, ...] = ()) -> Pin:
         row.output.parent.mkdir(parents=True, exist_ok=True)
         argv = ["/c" if token == "-c" else token for token in row.argv]
@@ -1072,8 +1270,9 @@ class Producer:
         """Keep changed members lazy; direct objects force unused OFF transports into link."""
         if not objects:
             return None, None
-        destination = self.build / "changed-runtime.lib"
-        response = self.build / "changed-runtime.rsp"
+        archive_root = self.config.output if self.config.schema == "ck3-configured-native-successor-v3" else self.build
+        destination = archive_root / "changed-runtime.lib"
+        response = archive_root / "changed-runtime.rsp"
         response.write_text(subprocess.list2cmdline(list(map(str, objects))), encoding="utf-8")
         execution = self.execute("archive-changed-runtime", [str(Path(self.tools["cl"]).parent / "lib.exe"),
             "/nologo", "/machine:x64", "/OUT:" + str(destination), "@" + str(response)], self.build)
@@ -1099,7 +1298,7 @@ class Producer:
                      "shell32.lib", "ole32.lib", "oleaut32.lib", "uuid.lib", "comdlg32.lib", "advapi32.lib"]
         if dll:
             arguments.extend(["/DLL", "/IMPLIB:" + str(destination.with_suffix(".lib"))])
-        response = self.build / (label + ".rsp")
+        response = (self.config.output if self.config.schema == "ck3-configured-native-successor-v3" else self.build) / (label + ".rsp")
         with response.open("x", encoding="utf-8") as stream:
             stream.write(subprocess.list2cmdline(arguments))
         return self.execute(label, [str(linker), "@" + str(response)], self.build)
@@ -1127,15 +1326,16 @@ class Producer:
         runtime_objects = [object_paths[row.output] for row in selected if row.target == "xar_ck3_12002_runtime"]
         bridge_objects = [object_paths[row.output] if row.output in compiled else borrowed[row.output.relative_to(self.build).as_posix()]
                           for row in rows if row.target == "xar_ck3_bridge"]
-        retained_libraries = [self.config.complete_build / "xar_bridge_protocol.lib",
-                              self.config.complete_build / "xar_ck3_12002_runtime.lib"]
+        retained_libraries = ([Path(ref["path"]) for ref in self.qualified_predecessor().libraries]
+            if self.config.schema == "ck3-configured-native-successor-v3" else
+            [self.config.complete_build / "xar_bridge_protocol.lib", self.config.complete_build / "xar_ck3_12002_runtime.lib"])
         plan_value = read(Path(plan["path"]))
         retained_refs = [parse_pin(item) for item in arr(plan_value["retained_link_inputs"])]
         retained_paths = {Path(item["path"]).resolve() for item in retained_refs}
         require(set(retained_libraries) <= retained_paths, "Production libraries lack predecessor link provenance")
         delta, archive_execution = self.archive_runtime(runtime_objects)
-        libraries = [retained_libraries[0], *([delta] if delta is not None else []), retained_libraries[1]]
-        dll = self.build / "xar_ck3_bridge.dll"
+        libraries = [retained_libraries[0], *([delta] if delta is not None else []), *retained_libraries[1:]]
+        dll = (self.config.output if self.config.schema == "ck3-configured-native-successor-v3" else self.build) / "xar_ck3_bridge.dll"
         production_execution = self.link("link-production", bridge_objects, libraries, dll, True)
         self.save("native-a01/INCREMENTAL-RESULT.actual.json", {"machine_id": self.config.machine_id,
             "observed_at_utc": now(), "source_commit": self.config.source_commit,
@@ -1255,7 +1455,7 @@ class Producer:
         require(Path(production["path"]) == c.output / "link-production.actual.json",
                 "Original production link path differs")
         dll = checked(incremental["dll"])
-        require(Path(dll["path"]) == self.build / "xar_ck3_bridge.dll", "Original configured DLL path differs")
+        require(Path(dll["path"]) == (c.output if c.schema == "ck3-configured-native-successor-v3" else self.build) / "xar_ck3_bridge.dll", "Original configured DLL path differs")
         plan = checked(incremental["production_plan"])
         require(Path(plan["path"]) == self.meta / "PLAN.actual.json", "Original production plan path differs")
         original = read(Path(plan["path"]))
@@ -1310,11 +1510,13 @@ class Producer:
             candidates = [path for path in retained_paths if path.parts[-len(Path(name).parts):] == Path(name).parts]
             require(len(candidates) == 1, "Original retained bridge object is ambiguous or missing")
             borrowed[name] = candidates[0]
-        libraries = [c.complete_build / "xar_bridge_protocol.lib", c.complete_build / "xar_ck3_12002_runtime.lib"]
+        libraries = ([Path(ref["path"]) for ref in self.qualified_predecessor().libraries]
+            if c.schema == "ck3-configured-native-successor-v3" else
+            [c.complete_build / "xar_bridge_protocol.lib", c.complete_build / "xar_ck3_12002_runtime.lib"])
         require(set(libraries) <= retained_paths, "Original runtime library provenance differs")
         if incremental["changed_runtime_archive"] is not None:
             archive = checked(incremental["changed_runtime_archive"])
-            require(Path(archive["path"]) == self.build / "changed-runtime.lib", "Original changed archive path differs")
+            require(Path(archive["path"]) == (c.output if c.schema == "ck3-configured-native-successor-v3" else self.build) / "changed-runtime.lib", "Original changed archive path differs")
             self.successful_execution(incremental["changed_runtime_archive_execution"])
             libraries.insert(1, Path(archive["path"]))
         else:
@@ -1400,7 +1602,11 @@ class Producer:
         collector: object = getattr(shared, "collect_manifest", None)
         if not isinstance(collector, ManifestCollector):
             raise ValueError("Shared Defender manifest collector unavailable")
-        value = collector(ROOT, self.native, self.build, "Release", [string(row["target"]) for row in fixtures])
+        targets = [string(row["target"]) for row in fixtures]
+        value = (collector(ROOT, self.native, self.build, "Release", targets,
+                    "configured-native-development:" + self.config.source_commit)
+            if self.config.schema == "ck3-configured-native-successor-v3" else
+            collector(ROOT, self.native, self.build, "Release", targets))
         with manifest.open("x", encoding="utf-8") as stream:
             json.dump(value, stream, indent=2)
             stream.write("\n")
@@ -1609,17 +1815,23 @@ class Producer:
     def seal(self, rows: list[Compile], fixtures: list[dict[str, object]], build_execution: Pin,
              defender: Pin, plan: Pin, dll: Path, *, resume: bool = False) -> Pin:
         c = self.config
-        if c.retained_dependency_evidence is not None:
+        if c.retained_dependency_evidence is not None or c.schema == "ck3-configured-native-successor-v3":
             self.plan(rows, existing_plan=plan)
         sources: list[dict[str, object]] = []
         for name in git("ls-files", "--", PREFIX).splitlines():
             actual = pin(ROOT / name)
+            if c.schema == "ck3-configured-native-successor-v3":
+                development = pin(self.native/name.removeprefix(PREFIX))
+                require((actual["bytes"], actual["sha256"]) == (development["bytes"], development["sha256"]),
+                        "Development source changed before final seal")
             sources.append({"native_relative": name.removeprefix(PREFIX),
                             "bytes": actual["bytes"], "sha256": actual["sha256"]})
         snapshot = self.seal_save("native-a01/SOURCE.actual.json", {"machine_id": c.machine_id,
             "observed_at_utc": now(), "root_commit": c.source_commit, "native_source_commit": c.source_commit,
-            "source_count": len(sources), "files": sources, "Root_native_source_base": str(self.native),
-            "snapshot_native_base": str(self.native), "source_mapping": "exact current clean committed source; no copy"}, resume=resume)
+            "source_count": len(sources), "files": sources, "Root_native_source_base": str(ROOT/PREFIX),
+            "snapshot_native_base": str(self.native), "source_mapping":
+                "exact native-only development source matches clean committed Root; retained objects/archives referenced without copying"
+                if c.schema == "ck3-configured-native-successor-v3" else "exact current clean committed source; no copy"}, resume=resume)
         verification = self.seal_save("native-a01/SOURCE-VERIFICATION.actual.json", {"machine_id": c.machine_id,
             "observed_at_utc": now(), "root_commit": c.source_commit, "source_manifest": snapshot,
             "all_snapshot_files_exactly_verified": len(sources), "all_original_inputs_still_exactly_verified": len(sources)}, resume=resume)

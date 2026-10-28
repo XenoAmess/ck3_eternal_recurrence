@@ -126,8 +126,12 @@ jobs:
           python -B -m mypy --follow-imports=silent --ignore-missing-imports --no-incremental tools/ck3_mod_acceptance_cases/generic_product_adapter.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test failed-attempt resource closure without normal-exit credit
+        env:
+          MYPYPATH: ${{ github.workspace }}/tools
         run: |
           python -B -X utf8 tools/test_ck3_mod_acceptance_failed_resource_closure.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 tools/test_ck3_mod_acceptance_modern_serial_failure.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_ck3_mod_acceptance_expired_keeper.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%

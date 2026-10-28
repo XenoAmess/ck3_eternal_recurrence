@@ -1,4 +1,5 @@
 #include "xar_bridge/scripted_widget_control12004.hpp"
+#include "xar_bridge/named_gui_widget_resolution_v1.hpp"
 #include "xar_bridge/ck3_12004.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ingame_ui_navigation_v1.hpp"
@@ -134,8 +135,22 @@ bool Capture(void *opaque, std::string_view root_name, ScriptedWidgetCapture1200
     const auto fail = [&](const char *why) { reason = why; return false; };
     if (!Frame(c, out.frame)) return fail("scripted_widget_exact_paused_owner_frame_unavailable");
     ZhongguoScoreboardAccessV1 access{}; void *root = nullptr, *self = nullptr;
-    if (!ResolveNamedGuiWidgetV1(c.environment, access, root_name, root_name, root, self) || !root || self != root)
-      return fail("scripted_widget_root_unavailable");
+    NamedGuiWidgetResolutionV1 resolution = NamedGuiWidgetResolutionV1::missing;
+    if (!ResolveNamedGuiWidgetWithResolutionV1(c.environment, access, root_name, root_name,
+                                              root, self, resolution) || !root || self != root) {
+      switch (resolution) {
+      case NamedGuiWidgetResolutionV1::budget_exhausted:
+        return fail("scripted_widget_root_lookup_budget_exhausted");
+      case NamedGuiWidgetResolutionV1::read_failed:
+        return fail("scripted_widget_root_read_failed");
+      case NamedGuiWidgetResolutionV1::resource_unavailable:
+        return fail("scripted_widget_root_lookup_resource_unavailable");
+      case NamedGuiWidgetResolutionV1::invalid_request:
+        return fail("scripted_widget_root_resolution_invalid");
+      default:
+        return fail("scripted_widget_root_unavailable");
+      }
+    }
     out.root = reinterpret_cast<std::uintptr_t>(root); NamedGuiTreeInspectionV1 tree{};
     if (!InspectNamedGuiSubtreeV1(access, c.environment.module_base, root, root_name, tree, true, false))
       return fail("scripted_widget_tree_unavailable");

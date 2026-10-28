@@ -1,4 +1,5 @@
 #include "xar_bridge/zhongguo_scoreboard_state_v1.hpp"
+#include "xar_bridge/named_gui_widget_resolution_v1.hpp"
 #include "xar_bridge/gui_refill_receiver_source_pins_12004.hpp"
 #include "xar_bridge/zhongguo_promotion_source_progress_v1.hpp"
 #include "xar_bridge/ck3_12004.hpp"
@@ -17,6 +18,7 @@
 #include <limits>
 #include <string>
 #include <string_view>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -625,91 +627,89 @@ bool WidgetNameEquals(const ZhongguoScoreboardAccessV1 &access, void *widget,
 }
 
 void *FindDescendant(const ZhongguoScoreboardAccessV1 &access, void *root,
-                     std::string_view expected) noexcept {
-  if (root == nullptr) return nullptr;
+                     std::string_view expected,
+                     NamedGuiWidgetResolutionV1 *resolution = nullptr,
+                     bool require_visible_enabled = false) noexcept {
+  const auto finish = [resolution](NamedGuiWidgetResolutionV1 status,
+                                   void *widget = nullptr) {
+    if (resolution != nullptr) *resolution = status;
+    return widget;
+  };
+  if (root == nullptr) return finish(NamedGuiWidgetResolutionV1::missing);
   struct Pending {
     void *widget = nullptr;
     std::size_t depth = 0;
   };
-  std::array<Pending, kMaximumWidgetTraversal> pending{};
-  std::size_t head = 0;
-  std::size_t tail = 1;
-  pending[0] = {root, 0};
-  std::size_t visited = 0;
-  while (head < tail && visited++ < kMaximumWidgetTraversal) {
-    const auto current = pending[head++];
-    if (WidgetNameEquals(access, current.widget, expected)) {
-      return current.widget;
-    }
-    if (current.depth >= kMaximumWidgetDepth) continue;
-    void **children = nullptr;
-    std::int32_t count = 0;
-    if (!ReadValue(access, current.widget, kZhongguoWidgetChildrenOffset,
-                   children) ||
-        !ReadValue(access, current.widget, kZhongguoWidgetChildCountOffset,
-                   count) ||
-        count < 0 || count > kMaximumWidgetChildren ||
-        (count != 0 && children == nullptr) ||
-        tail + static_cast<std::size_t>(count) > pending.size()) {
-      return nullptr;
-    }
-    for (std::int32_t index = 0; index < count; ++index) {
-      void *child = nullptr;
-      if (!ReadValue(access, children,
-                     static_cast<std::size_t>(index) * sizeof(void *), child)) {
-        return nullptr;
+  try {
+    std::vector<Pending> pending;
+    std::unordered_set<void *> seen;
+    pending.reserve(kNamedGuiLookupMaximumWidgetsV1);
+    seen.reserve(kNamedGuiLookupMaximumWidgetsV1);
+    pending.push_back({root, 0});
+    seen.insert(root);
+    std::size_t head = 0;
+    std::size_t edges = 0;
+    bool exhausted = false;
+    while (head < pending.size()) {
+      const auto current = pending[head++];
+      std::string name;
+      if (!ReadWidgetName(access, current.widget, name))
+        return finish(NamedGuiWidgetResolutionV1::read_failed);
+      if (name == expected) {
+        std::uint8_t flags = 0;
+        if (require_visible_enabled &&
+            !ReadValue(access, current.widget, kZhongguoWidgetHiddenFlagsOffset,
+                       flags))
+          return finish(NamedGuiWidgetResolutionV1::read_failed);
+        if (!require_visible_enabled ||
+            (flags & (kZhongguoWidgetEffectiveHiddenMask |
+                      kZhongguoWidgetEffectiveDisabledMask)) == 0)
+          return finish(NamedGuiWidgetResolutionV1::resolved, current.widget);
       }
-      if (child != nullptr) pending[tail++] = {child, current.depth + 1};
+      void **children = nullptr;
+      std::int32_t count = 0;
+      if (!ReadValue(access, current.widget, kZhongguoWidgetChildrenOffset,
+                     children) ||
+          !ReadValue(access, current.widget, kZhongguoWidgetChildCountOffset,
+                     count) ||
+          count < 0 || count > kMaximumWidgetChildren ||
+          (count != 0 && children == nullptr))
+        return finish(NamedGuiWidgetResolutionV1::read_failed);
+      if (current.depth >= kMaximumWidgetDepth) {
+        exhausted = exhausted || count != 0;
+        continue;
+      }
+      for (std::int32_t index = 0; index < count; ++index) {
+        if (edges == kNamedGuiLookupMaximumEdgesV1) {
+          exhausted = true;
+          break;
+        }
+        ++edges;
+        void *child = nullptr;
+        if (!ReadValue(access, children,
+                       static_cast<std::size_t>(index) * sizeof(void *), child))
+          return finish(NamedGuiWidgetResolutionV1::read_failed);
+        if (child == nullptr || seen.contains(child)) continue;
+        if (pending.size() == kNamedGuiLookupMaximumWidgetsV1) {
+          // Still inspect identities already queued, including the target.
+          exhausted = true;
+          continue;
+        }
+        seen.insert(child);
+        pending.push_back({child, current.depth + 1});
+      }
     }
+    return finish(exhausted ? NamedGuiWidgetResolutionV1::budget_exhausted
+                            : NamedGuiWidgetResolutionV1::missing);
+  } catch (...) {
+    return finish(NamedGuiWidgetResolutionV1::resource_unavailable);
   }
-  return nullptr;
 }
 
 void *FindVisibleEnabledDescendant(
     const ZhongguoScoreboardAccessV1 &access, void *root,
     std::string_view expected) noexcept {
-  if (root == nullptr) return nullptr;
-  struct Pending {
-    void *widget = nullptr;
-    std::size_t depth = 0;
-  };
-  std::array<Pending, kMaximumWidgetTraversal> pending{};
-  std::size_t head = 0;
-  std::size_t tail = 1;
-  pending[0] = {root, 0};
-  std::size_t visited = 0;
-  while (head < tail && visited++ < kMaximumWidgetTraversal) {
-    const auto current = pending[head++];
-    std::uint8_t flags = 0;
-    if (WidgetNameEquals(access, current.widget, expected) &&
-        ReadValue(access, current.widget, kZhongguoWidgetHiddenFlagsOffset,
-                  flags) &&
-        (flags & (kZhongguoWidgetEffectiveHiddenMask |
-                  kZhongguoWidgetEffectiveDisabledMask)) == 0) {
-      return current.widget;
-    }
-    if (current.depth >= kMaximumWidgetDepth) continue;
-    void **children = nullptr;
-    std::int32_t count = 0;
-    if (!ReadValue(access, current.widget, kZhongguoWidgetChildrenOffset,
-                   children) ||
-        !ReadValue(access, current.widget, kZhongguoWidgetChildCountOffset,
-                   count) ||
-        count < 0 || count > kMaximumWidgetChildren ||
-        (count != 0 && children == nullptr) ||
-        tail + static_cast<std::size_t>(count) > pending.size()) {
-      return nullptr;
-    }
-    for (std::int32_t index = 0; index < count; ++index) {
-      void *child = nullptr;
-      if (!ReadValue(access, children,
-                     static_cast<std::size_t>(index) * sizeof(void *), child)) {
-        return nullptr;
-      }
-      if (child != nullptr) pending[tail++] = {child, current.depth + 1};
-    }
-  }
-  return nullptr;
+  return FindDescendant(access, root, expected, nullptr, true);
 }
 
 bool FindScoreboardDescendants(
@@ -1537,35 +1537,63 @@ bool ResolveNamedGuiWidgetV1(
     const ZhongguoScoreboardNativeEnvironmentV1 &environment,
     const ZhongguoScoreboardAccessV1 &access, std::string_view root_name,
     std::string_view descendant_name, void *&root, void *&widget) noexcept {
+  NamedGuiWidgetResolutionV1 resolution = NamedGuiWidgetResolutionV1::missing;
+  return ResolveNamedGuiWidgetWithResolutionV1(environment, access, root_name,
+      descendant_name, root, widget, resolution);
+}
+
+bool ResolveNamedGuiWidgetWithResolutionV1(
+    const ZhongguoScoreboardNativeEnvironmentV1 &environment,
+    const ZhongguoScoreboardAccessV1 &access, std::string_view root_name,
+    std::string_view descendant_name, void *&root, void *&widget,
+    NamedGuiWidgetResolutionV1 &resolution) noexcept {
   root = nullptr;
   widget = nullptr;
-  if (root_name.empty() || descendant_name.empty() ||
-      environment.offline_fixture_function_overrides) {
-    return false;
-  }
-  void *context = nullptr;
-  void *owner = nullptr;
-  if (!ResolveGuiContextAndOwner(environment, access, context, owner)) {
-    return false;
-  }
-  std::string root_lookup{root_name};
-  root = CallFindTopLevelWidget(environment.find_top_level_widget, owner,
-                                &root_lookup);
-  if (root == nullptr || !WidgetNameEquals(access, root, root_name)) {
-    void *global_root = nullptr;
-    if (!ReadValue(access, owner, kZhongguoGuiOwnerRootWidgetOffset,
-                   global_root) ||
-        global_root == nullptr) {
+  NamedGuiWidgetResolutionV1 status = NamedGuiWidgetResolutionV1::missing;
+  const auto finish = [&status, &resolution](NamedGuiWidgetResolutionV1 value) {
+    status = value;
+    resolution = status;
+    return status == NamedGuiWidgetResolutionV1::resolved ||
+           status == NamedGuiWidgetResolutionV1::missing ||
+           status == NamedGuiWidgetResolutionV1::budget_exhausted;
+  };
+  try {
+    if (root_name.empty() || descendant_name.empty() ||
+        environment.offline_fixture_function_overrides ||
+        environment.find_top_level_widget == nullptr)
+      return finish(NamedGuiWidgetResolutionV1::invalid_request);
+    void *context = nullptr;
+    void *owner = nullptr;
+    if (!ResolveGuiContextAndOwner(environment, access, context, owner))
+      return finish(NamedGuiWidgetResolutionV1::read_failed);
+    std::string root_lookup{root_name};
+    root = CallFindTopLevelWidget(environment.find_top_level_widget, owner,
+                                  &root_lookup);
+    std::string actual_name;
+    if (root != nullptr && !ReadWidgetName(access, root, actual_name)) {
       root = nullptr;
-      return true;
+      return finish(NamedGuiWidgetResolutionV1::read_failed);
     }
-    root = FindDescendant(access, global_root, root_name);
+    if (root == nullptr || actual_name != root_name) {
+      root = nullptr;
+      void *global_root = nullptr;
+      if (!ReadValue(access, owner, kZhongguoGuiOwnerRootWidgetOffset,
+                     global_root))
+        return finish(NamedGuiWidgetResolutionV1::read_failed);
+      root = FindDescendant(access, global_root, root_name, &status);
+      if (root == nullptr) return finish(status);
+    }
+    if (descendant_name == root_name) {
+      widget = root;
+      return finish(NamedGuiWidgetResolutionV1::resolved);
+    }
+    widget = FindDescendant(access, root, descendant_name, &status);
+    return finish(status);
+  } catch (...) {
+    root = nullptr;
+    widget = nullptr;
+    return finish(NamedGuiWidgetResolutionV1::resource_unavailable);
   }
-  if (root == nullptr) return true;
-  widget = descendant_name == root_name
-               ? root
-               : FindDescendant(access, root, descendant_name);
-  return true;
 }
 
 bool ResolveFirstVisibleEnabledNamedGuiWidgetV1(

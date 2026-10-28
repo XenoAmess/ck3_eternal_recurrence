@@ -101,3 +101,15 @@ Root 的首发导出位于 `C:/workspace/rrf-development-20261024/publication-a0
 15:28Z匿名页面确认十二图顺序，新增两张均HTTP200、尺寸与字节精确匹配。原十图只重验顺序，本次没有重复下载其字节；历史逐字节结果仍以各自原回执为准。完整说明2144字符／43行与匿名API逐字一致，标明末尾六张为未发布0.2.0预览，下载仍是0.1.0-alpha。未上传内容或Notes；后台原生确认Steam离线，浏览器SCREEN CAS14464释放。[本次公开回读](../mod_religious_ritual_fusion/docs/evidence/workshop-media-readback-R0038-2026-10-28.json)。
 
 第0日含远程工具浮层的诊断PNG未上传；所隐藏的单独浮层已在Game关闭后恢复，未断开或终止远程工具进程。两张商店图的原始PNG分别为4025261 B／`c8a3ecece81600eafb3329b5e7b956d4a5191a28a990dbbd10d55e6914225930`及4726695 B／`33438fa141049168662f87347971ef2fd3df38a112fab3ccda520c303569e2bb`。
+
+## R0042 四核心融合草稿已公开，2026-10-28
+
+`machine_id: 4-8e1c2f1861`；运行源码`e9b8a37c621936ab38def7f5fae324d181dc2534`。20:34:25Z在1066.9.17暂停实拍，2560×1440；搭配More Tenets Slots，恰好选四项核心，双方贡献检查通过，显示1000虔诚报价与可用创建按钮。画面显示的100项容量不代表100项已实测；这是提交前草稿，不是DES激活结果或整场验收结论。
+
+| 公开顺序／preview ID | 公开原图 | JPEG bytes／SHA256 |
+| --- | --- | --- |
+| 13／48355211 | [四核心宗教融合草稿](https://images.steamusercontent.com/ugc/17258738778351678707/2EF3FB7C2572E19F4906B881E65F9429ED67D925/) | 942641／`8b5936c3d57ba59f718953d6ae3d49e547f6cbd29be09a50eac5e2a41c6bc708` |
+
+21:12Z Chrome无痕未登录页面确认十三图顺序，原十二张保留；新原图匿名HTTP200，2560×1440与冻结JPEG逐字节一致。普通匿名页面请求实际HTTP429，未将其计为成功。完整说明2408字符与匿名API逐字一致，标注末尾七张为未发布0.2.0预览，当前下载仍0.1.0-alpha；未上传模组内容或Notes。Steam后台读回仍离线，浏览器SCREEN CAS14503已释放。[完整本次回读](../mod_religious_ritual_fusion/docs/evidence/workshop-media-readback-R0042-2026-10-28.json)。
+
+原始PNG为`R0042-exact-four-draft-a03.png`，4019711 B／`91ef83659c117957aca229b8b07fe1436df829644c3d06f4c7cc3ad9288318c1`；仅JPEG编码，未裁切、缩放或生成像素。早先误命名的`R0042-four-core-draft.png`实际只有两项，属于诊断图，未上传。

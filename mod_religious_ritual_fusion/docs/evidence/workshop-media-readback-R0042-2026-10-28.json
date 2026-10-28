@@ -1,0 +1,176 @@
+{
+  "schema": "rrf-workshop-media-public-readback-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-28T21:14:07.324855+00:00",
+  "workshop_item_id": "3826756673",
+  "owner": "76561198273714027",
+  "consumer_app_id": 1158310,
+  "source_run": "4-8e1c2f1861--religious-ritual-fusion--R0042",
+  "source_commit": "e9b8a37c621936ab38def7f5fae324d181dc2534",
+  "public_version": "0.1.0-alpha",
+  "development_version": "0.2.0-alpha unreleased",
+  "content_upload_performed": false,
+  "notes_changed": false,
+  "description_exact_after_CRLF_to_LF": true,
+  "description_chars": 2408,
+  "description_lines": 43,
+  "description_normalized_sha256": "733cd3426a13efc85ddd82af569353251908414761835ca1930af8441fd7da4c",
+  "anonymous_readback": true,
+  "anonymous_gallery_method": "Chrome incognito public view-source; absent account_pulldown; login link observed",
+  "anonymous_urllib_page_request": "HTTP429; no bypass or repeated retry; Chrome incognito readback used",
+  "all_thirteen_order": [
+    {
+      "order": 1,
+      "preview_id": "48294918",
+      "url": "https://images.steamusercontent.com/ugc/11949390021377429810/3A599321B3E44A9F088B90D90627E779F55D1E58/"
+    },
+    {
+      "order": 2,
+      "preview_id": "48294919",
+      "url": "https://images.steamusercontent.com/ugc/14701561625571287741/51E23DEC091D62261743C53F391B0FFCCF7478B5/"
+    },
+    {
+      "order": 3,
+      "preview_id": "48294920",
+      "url": "https://images.steamusercontent.com/ugc/17740379883873270313/CD252167CCBC2478DDF5D0D00554B958BBCEFFE0/"
+    },
+    {
+      "order": 4,
+      "preview_id": "48294921",
+      "url": "https://images.steamusercontent.com/ugc/14322138971414935161/84ABF19EA52A2A29ABFAD812C472801ACD778B59/"
+    },
+    {
+      "order": 5,
+      "preview_id": "48294922",
+      "url": "https://images.steamusercontent.com/ugc/11055269871140543996/3F462CE380ABF535391048C18491EEB0B3A4214A/"
+    },
+    {
+      "order": 6,
+      "preview_id": "48294923",
+      "url": "https://images.steamusercontent.com/ugc/15635122434027558454/E1F1D1E59DC806F3A58BC204CDACF40430E96A13/"
+    },
+    {
+      "order": 7,
+      "preview_id": "48328555",
+      "url": "https://images.steamusercontent.com/ugc/15068571318910168828/C047FCC67437D15069CCF0580DBACA1B74B88E5F/"
+    },
+    {
+      "order": 8,
+      "preview_id": "48328761",
+      "url": "https://images.steamusercontent.com/ugc/9327408694332800861/E26378B97A15D7BFE04D6C52FDB5DA88204E12A8/"
+    },
+    {
+      "order": 9,
+      "preview_id": "48333821",
+      "url": "https://images.steamusercontent.com/ugc/17168949124517871308/2F6583D0C4D1D2ACEF47577FBF60459AF58FCDD0/"
+    },
+    {
+      "order": 10,
+      "preview_id": "48333877",
+      "url": "https://images.steamusercontent.com/ugc/15499190207926017671/0D5CBA0D47C411F73ABB686FDBD7ED9EC6DDCE86/"
+    },
+    {
+      "order": 11,
+      "preview_id": "48350414",
+      "url": "https://images.steamusercontent.com/ugc/12310956203167640487/85422AE957AC916B8CA16641512BDABB401491C6/"
+    },
+    {
+      "order": 12,
+      "preview_id": "48350415",
+      "url": "https://images.steamusercontent.com/ugc/15816114686404026458/9FB691AD8E5E194DE31953AE936ADBA18F696504/"
+    },
+    {
+      "order": 13,
+      "preview_id": "48355211",
+      "url": "https://images.steamusercontent.com/ugc/17258738778351678707/2EF3FB7C2572E19F4906B881E65F9429ED67D925/"
+    }
+  ],
+  "old_first_twelve_order_preserved": true,
+  "old_first_twelve_bytes_refetched_this_time": false,
+  "new_previews": [
+    {
+      "order": 13,
+      "preview_id": "48355211",
+      "url": "https://images.steamusercontent.com/ugc/17258738778351678707/2EF3FB7C2572E19F4906B881E65F9429ED67D925/",
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-28T21:11:47.926568+00:00",
+      "anonymous": true,
+      "http_status": 200,
+      "bytes": 942641,
+      "sha256": "8b5936c3d57ba59f718953d6ae3d49e547f6cbd29be09a50eac5e2a41c6bc708",
+      "width": 2560,
+      "height": 1440,
+      "matches_original_jpeg": true
+    }
+  ],
+  "original_png": {
+    "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\mts-des-four-core-a03\\screenshots\\R0042-exact-four-draft-a03.png",
+    "bytes": 4019711,
+    "sha256": "91ef83659c117957aca229b8b07fe1436df829644c3d06f4c7cc3ad9288318c1"
+  },
+  "original_game_pid": 10532,
+  "original_game_birth_filetime": "134376920965809832",
+  "native_date_raw": 53144376,
+  "captured_at_utc": "2026-10-28T20:34:25.662720+00:00",
+  "actual_scope": "Exactly four core selections with MTS, both-source contributions and1000piety quote. Not100 selections; before commit; notDES activation or full business acceptance.",
+  "transform": "JPEG quality93/subsampling0 encoding only;2560x1440;uncropped;no generated pixels",
+  "steam_offline_after_web": true,
+  "screen_release_sequence": 14503,
+  "original_evidence": [
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\mts-des-four-core-a03\\metadata\\normal-close-a01\\R0042-browser-media-a01\\UPLOAD.intent.json",
+      "bytes": 802,
+      "sha256": "4e27d39f6c4308282addd48ba4f870010064f4090ad136e39651106b797d0383"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\mts-des-four-core-a03\\metadata\\normal-close-a01\\R0042-browser-media-a01\\FILE-SELECTION.actual.json",
+      "bytes": 220,
+      "sha256": "9f10659d44ec5bc2f1212f333a99191ddedef2b8d6891f90c40673f7d7ef7bed"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\mts-des-four-core-a03\\metadata\\normal-close-a01\\R0042-browser-media-a01\\UPLOAD.actual.json",
+      "bytes": 719,
+      "sha256": "d35b1b563f22ace9f1bf8f2e9111017e0f74a967157bc26dcd343176d86f27fc"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\mts-des-four-core-a03\\metadata\\normal-close-a01\\R0042-browser-media-a01\\DESCRIPTION-EDITOR.actual.json",
+      "bytes": 282,
+      "sha256": "363cbef3d90649389556fb00156a8f4b0898d822bba275348b1e5c60d8ada2c8"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\mts-des-four-core-a03\\metadata\\normal-close-a01\\R0042-browser-media-a01\\OWNER-PUBLIC-PAGE-ORDER.actual.json",
+      "bytes": 2499,
+      "sha256": "508986dd8c06832cf9fa16ca9b34b80bb6a219b79ca5580519aed2e6067b7aa2"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\mts-des-four-core-a03\\metadata\\normal-close-a01\\R0042-browser-media-a01\\PUBLIC-PREVIEW-ORDER.actual.json",
+      "bytes": 2712,
+      "sha256": "f6bccc345fd81aaad58c988d84043ebf2fe875d0d1c00d203519700b84c3cbec"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\mts-des-four-core-a03\\metadata\\normal-close-a01\\R0042-browser-media-a01\\PUBLIC-NEW-BYTES.actual.json",
+      "bytes": 472,
+      "sha256": "9b53cdbacd3ff28f1947745028811a11688e5a6f5acbc7acb0a5eb12c5e39440"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\mts-des-four-core-a03\\metadata\\normal-close-a01\\R0042-browser-media-a01\\PUBLIC-ITEM.after.actual.json",
+      "bytes": 5242,
+      "sha256": "11553e5e2fb6b6dcc1575062b228b2e3403e2839a9895eda0a979e88212004e1"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\mts-des-four-core-a03\\metadata\\normal-close-a01\\R0042-browser-media-a01\\STEAM-OFFLINE.after-Web.actual.json",
+      "bytes": 2433,
+      "sha256": "fcc1044d87f09e71ca4406332885f6fc543f557922b76a4df2b5cb2463230f4b"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\mts-des-four-core-a03\\metadata\\normal-close-a01\\R0042-browser-media-a01\\SCREEN-RELEASE-a02.actual.json",
+      "bytes": 1374,
+      "sha256": "7ebb798d88bd2a27d35d6dc55a8636b636f34cc3a2fb4e9b7b156d8de6a67eb5"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\mts-des-four-core-a03\\metadata\\normal-close-a01\\screenshot-custody-a01\\exact-four-draft-a03.actual.json",
+      "bytes": 132782,
+      "sha256": "0ebec12f20a4f13d384d0597c06c0db3c0b4576dba08643418ea1d6629881885"
+    }
+  ]
+}

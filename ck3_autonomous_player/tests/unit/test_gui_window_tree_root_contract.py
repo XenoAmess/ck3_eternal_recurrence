@@ -107,6 +107,26 @@ class ScriptedWidgetTests(unittest.IsolatedAsyncioTestCase):
         self.binding = contract.scripted_widget_binding_v1(self.frame)
         self.native_action = scripted_action(self.binding, str(self.generation))
 
+    async def test_named_lookup_failures_survive_mcp_without_action_admission(self) -> None:
+        for reason in ("scripted_widget_root_unavailable",
+                       "scripted_widget_root_lookup_budget_exhausted",
+                       "scripted_widget_root_read_failed"):
+            with self.subTest(reason=reason):
+                raw = scripted_query(self.binding)
+                raw.update(available=False, unavailable_reason=reason,
+                           query_generation="0", complete=False, widgets=[])
+                self.driver._execute_primitive_step = Mock(return_value=raw)
+                async with Client(mcp_server.create_server(self.driver)) as client:
+                    observed = await client.session.call_tool("ck3_query_scripted_widget_controls_v1", {
+                        "root_name": "custom_actual_window", "expected_revision": str(self.frame["revision"])})
+                    self.assertFalse(observed.is_error, str(observed))
+                    self.assertEqual(observed.structured_content["unavailable_reason"], reason)
+                    self.assertFalse(observed.structured_content["available"])
+                self.assertFalse(list(Path(self.temp.name).glob("scripted-widget-controls/query-*.json")))
+                with self.assertRaisesRegex(BridgeUnavailableError, "saved query"):
+                    self.activate()
+                self.driver._execute_primitive_step.assert_called_once()
+
     def test_actual_R0007_owner_samples_stabilize_before_one_action_claim(self) -> None:
         pending, self.frame = actual_R0007_owner_samples()
         self.binding = contract.scripted_widget_binding_v1(self.frame)

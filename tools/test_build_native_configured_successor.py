@@ -1024,6 +1024,93 @@ class ConfiguredSuccessorTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 verified_noncompiled_consumer_replay(config, replay)
 
+    def v3_fixture(self) -> tuple[RetainedPlanFixture, UngatedProducer, list[Compile], Path]:
+        fixture = self.retained_plan_fixture()
+        prior = fixture.producer
+        native = prior.native
+        fixture.documents["source"]["snapshot_native_base"] = str(native)
+        fixture.documents["incremental"].update(production_compiles=[], changed_runtime_archive=None,
+            changed_runtime_archive_execution=None)
+        objects = obj(fixture.documents["plan"])["retained_link_inputs"]
+        response = self.root/"actual-linked-predecessor.rsp"
+        references = [parse_pin(raw) for raw in arr(objects)]
+        response.write_text(subprocess.list2cmdline([str(ref["path"]) for ref in references]),encoding="utf-8")
+        fixture.documents["execution"].update(response_files=[pin(response)],argv=["authored-linker","@"+str(response)])
+        fixture.refresh()
+        predecessor = pin(fixture.paths["qualification"])
+        workspace = self.root/"development"
+        development = workspace/"native"; development.mkdir(parents=True)
+        (native/"src/bridge.cpp").write_text("#include MACRO_HEADER\nint changed_bridge;\n",encoding="utf-8")
+        for name in fixture.names:
+            relative_name = name.removeprefix("ck3_autonomous_player/native_bridge/")
+            destination = development/relative_name; destination.parent.mkdir(parents=True,exist_ok=True)
+            destination.write_bytes((native/relative_name).read_bytes())
+        config = replace(prior.config,schema="ck3-configured-native-successor-v3",baseline=predecessor,
+            predecessor_qualification=predecessor,retained_dependency_evidence=None,
+            native_source_dir=development,development_build_dir=workspace/"build",output=workspace/"attempt-a01")
+        producer = UngatedProducer(config);config.output.mkdir()
+        rows = [Compile(row.target,development/row.source.relative_to(native),
+            producer.build/row.output.relative_to(prior.build),tuple(value.replace(str(native),str(development))
+                .replace(str(prior.build),str(producer.build)) for value in row.argv)) for row in fixture.rows]
+        return fixture,producer,rows,native.parent.parent
+
+    def test_v3_json_contract_retains_independent_development_paths_and_rejects_mixed_authorities(self) -> None:
+        _,producer,_,_ = self.v3_fixture()
+        value = config_json(producer.config)
+        self.assertEqual(parse_config(json.loads(json.dumps(value))),producer.config)
+        for field in ("native_source_dir","development_build_dir","predecessor_qualification"):
+            missing = dict(value);del missing[field]
+            with self.subTest(missing=field),self.assertRaises(ValueError):parse_config(missing)
+        for field,bad in (("compiled_seed",reference("seed.json")),("retained_dependency_evidence",{}),
+                ("native_source_dir","relative-native"),("development_build_dir",str(producer.native))):
+            with self.subTest(field=field),self.assertRaises(ValueError):parse_config({**value,field:bad})
+
+    def test_v3_actual_predecessor_producer_readonly_consumer_replay_reuses_all_objects_and_archives(self) -> None:
+        fixture,producer,rows,repository = self.v3_fixture()
+        with patch("build_native_configured_successor.ROOT",repository),patch("build_native_configured_successor.git",fixture.git_output):
+            selected,borrowed,plan = producer.plan(rows)
+            self.assertEqual({row.target for row in selected},{"xar_ck3_bridge","xar_ck3_12002_runtime"})
+            self.assertEqual(len(borrowed),1)
+            before = sorted(str(path) for path in producer.config.output.rglob("*"))
+            replay = producer.plan(rows,existing_plan=plan)
+            self.assertEqual(replay,(selected,borrowed,plan))
+            self.assertEqual(before,sorted(str(path) for path in producer.config.output.rglob("*")))
+            record = read(Path(plan["path"]))
+            self.assertEqual(record["predecessor_qualification"],producer.config.predecessor_qualification)
+            self.assertEqual(len(arr(record["predecessor_libraries"])),2)
+            self.assertEqual(record["archive_copies"],0)
+
+    def test_v3_actual_producer_rejects_link_response_object_source_and_original_wait_drift(self) -> None:
+        fixture,producer,rows,repository = self.v3_fixture()
+        with patch("build_native_configured_successor.ROOT",repository),patch("build_native_configured_successor.git",fixture.git_output):
+            _,_,plan = producer.plan(rows)
+            paths = [self.root/"actual-linked-predecessor.rsp",
+                Path(parse_pin(arr(fixture.documents["plan"]["retained_link_inputs"])[0])["path"]),
+                producer.native/"src/bridge.cpp"]
+            for path in paths:
+                original = path.read_bytes();path.write_bytes(original+b" drift")
+                with self.subTest(path=path),self.assertRaises(ValueError):producer.plan(rows,existing_plan=plan)
+                path.write_bytes(original)
+            extra = producer.native/"stale-deleted-header.hpp";extra.write_bytes(b"stale previous-attempt header")
+            with self.assertRaisesRegex(ValueError,"stale or untracked"):producer.plan(rows,existing_plan=plan)
+            extra.unlink()
+            fixture.documents["execution"]["original_wait_returncode"] = True
+            fixture.refresh()
+            producer.config = replace(producer.config,predecessor_qualification=pin(fixture.paths["qualification"]))
+            with self.assertRaises(ValueError):producer.plan(rows,existing_plan=plan)
+
+    def test_v3_run_refuses_unqualified_predecessor_before_any_compile_or_link(self) -> None:
+        fixture,producer,rows,repository = self.v3_fixture()
+        fixture.documents["qualification"]["actual_live_business_qualified"] = True
+        fixture.refresh()
+        producer.config = replace(producer.config,predecessor_qualification=pin(fixture.paths["qualification"]),
+            baseline=pin(fixture.paths["qualification"]))
+        with patch("build_native_configured_successor.ROOT",repository),patch("build_native_configured_successor.git",fixture.git_output),\
+                patch.object(producer,"initialize"),patch.object(producer,"configure"),patch.object(producer,"commands",return_value=rows),\
+                patch.object(producer,"compile") as compile_call,patch.object(producer,"link") as link_call:
+            with self.assertRaisesRegex(ValueError,"predecessor identity"):producer.run()
+            compile_call.assert_not_called();link_call.assert_not_called()
+
     def test_actual_unused_off_transport_fails_direct_link_but_lazy_archive_passes(self) -> None:
         """Exercise the actual LNK2019 path that stopped the production successor."""
         producer = UngatedProducer(self.config)

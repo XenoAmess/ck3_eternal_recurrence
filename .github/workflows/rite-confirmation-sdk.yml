@@ -10,6 +10,9 @@ on:
       - 'ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py'
       - 'ck3_autonomous_player/src/xar_autoplayer/bridge/service.py'
       - 'ck3_autonomous_player/native_bridge/include/xar_bridge/scripted_widget_control12004.hpp'
+      - 'ck3_autonomous_player/native_bridge/include/xar_bridge/named_gui_widget_resolution_v1.hpp'
+      - 'ck3_autonomous_player/native_bridge/src/zhongguo_scoreboard_state_v1.cpp'
+      - 'ck3_autonomous_player/native_bridge/src/named_gui_tree_budget_v1_test.cpp'
       - 'ck3_autonomous_player/native_bridge/src/scripted_widget_control12004*.cpp'
       - 'ck3_autonomous_player/native_bridge/tests/scripted_widget_control12004_test.cpp'
       - 'ck3_autonomous_player/native_bridge/CMakeLists.txt'
@@ -50,6 +53,9 @@ on:
       - 'ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py'
       - 'ck3_autonomous_player/src/xar_autoplayer/bridge/service.py'
       - 'ck3_autonomous_player/native_bridge/include/xar_bridge/scripted_widget_control12004.hpp'
+      - 'ck3_autonomous_player/native_bridge/include/xar_bridge/named_gui_widget_resolution_v1.hpp'
+      - 'ck3_autonomous_player/native_bridge/src/zhongguo_scoreboard_state_v1.cpp'
+      - 'ck3_autonomous_player/native_bridge/src/named_gui_tree_budget_v1_test.cpp'
       - 'ck3_autonomous_player/native_bridge/src/scripted_widget_control12004*.cpp'
       - 'ck3_autonomous_player/native_bridge/tests/scripted_widget_control12004_test.cpp'
       - 'ck3_autonomous_player/native_bridge/CMakeLists.txt'
@@ -128,9 +134,9 @@ jobs:
         run: |
           cmake -S native_bridge -B "%RUNNER_TEMP%\scripted-widget-native" -A x64 -DBUILD_TESTING=ON -DXAR_ENABLE_RELIGION_UI12004_PRESENTATION=ON -DXAR_ENABLE_WAR_DECLARED_OVERVIEW_V1=ON -DXAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1=ON -DXAR_CK3_ENABLE_PLAYER_INVENTORY_WINDOW_OPEN_PRIVATE_V1=OFF
           if not "%errorlevel%"=="0" exit /b %errorlevel%
-          cmake --build "%RUNNER_TEMP%\scripted-widget-native" --config Release --parallel 2 --target xar_ck3_bridge xar_ck3_12002_runtime xar_ck3_adapter_registry_test xar_ck3_ingame_ui_navigation_v1_test xar_ck3_title_window12004_test xar_ck3_scripted_widget_control12004_test
+          cmake --build "%RUNNER_TEMP%\scripted-widget-native" --config Release --parallel 2 --target xar_ck3_bridge xar_ck3_12002_runtime xar_ck3_adapter_registry_test xar_ck3_ingame_ui_navigation_v1_test xar_ck3_title_window12004_test xar_ck3_scripted_widget_control12004_test xar_ck3_named_gui_tree_budget_v1_test xar_ck3_zhongguo_scoreboard_state_v1_test xar_ck3_current_timeline_blocker_12003_production_test xar_ck3_current_timeline_blocker_context_v1_test
           if not "%errorlevel%"=="0" exit /b %errorlevel%
-          ctest --test-dir "%RUNNER_TEMP%\scripted-widget-native" -C Release --output-on-failure --no-tests=error -R "^(xar_ck3_ingame_ui_navigation_v1_test|xar_ck3_title_window12004_test|xar_ck3_native_bridge_adapter_registry|xar_ck3_12003_frontend_private_capabilities|xar_ck3_scripted_widget_control12004_test|xar_ck3_ordinary_interaction_production_registry_v1)$"
+          ctest --test-dir "%RUNNER_TEMP%\scripted-widget-native" -C Release --output-on-failure --no-tests=error -R "^(xar_ck3_ingame_ui_navigation_v1_test|xar_ck3_title_window12004_test|xar_ck3_native_bridge_adapter_registry|xar_ck3_12003_frontend_private_capabilities|xar_ck3_scripted_widget_control12004_test|xar_ck3_ordinary_interaction_production_registry_v1|xar_ck3_native_bridge_named_gui_tree_budget_v1|xar_ck3_native_bridge_zhongguo_scoreboard_state_v1|xar_ck3_native_bridge_current_timeline_blocker_12003_production|xar_ck3_native_bridge_current_timeline_blocker_context_v1)$"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           "%RUNNER_TEMP%\scripted-widget-native\Release\xar_ck3_ingame_ui_navigation_v1_test.exe" "%RUNNER_TEMP%\title-native-wire"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
