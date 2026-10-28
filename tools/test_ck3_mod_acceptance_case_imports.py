@@ -373,7 +373,7 @@ def allocate_prelaunch_import_fixture(*, phase_guard_files: bool = False,
             prepared_path = public.root / 'prebuilt-prepared.json'
             public.write(prepared_path, {'schema': 'ck3-mod-acceptance-prepared-case-v1',
                 'product': 'religious-ritual-fusion', 'case': 'cold_reload',
-                'runtime_manifest': entry.pin(public.manifest_path), 'startup': startup,
+                'runtime_manifest': entry.pin(public.manifest_path.resolve()), 'startup': startup,
                 'initial_plan': preparation['initial_plan'], 'preparation': preparation,
                 'case_inputs': case_inputs})
             actual = entry.Selection(public.runtime_path, public.products_path,

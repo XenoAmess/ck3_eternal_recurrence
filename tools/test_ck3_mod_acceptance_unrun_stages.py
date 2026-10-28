@@ -12,8 +12,9 @@ import unittest
 import argparse
 import importlib
 import psutil
-from contextlib import ExitStack
-from collections.abc import Mapping
+from contextlib import AbstractContextManager, ExitStack, contextmanager
+from collections.abc import Callable, Iterator, Mapping
+from typing import Protocol, runtime_checkable
 from types import SimpleNamespace
 from unittest.mock import patch
 from ck3_mod_acceptance_background_types import FilePin, JsonObject, JsonValue, json_object
@@ -1191,6 +1192,213 @@ class AbortedAllocationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'quarantined'):subject.validate_aborted_allocation_v1(self.live,self.freeze,path,self.keeper,self.done,self.packet,next_state=self.state)
         Path(self.stdout['path']).write_text('{}',encoding='utf-8')
         with self.assertRaises(ValueError):subject.validate_aborted_allocation_v1(self.live,self.freeze,path,self.keeper,self.done,self.packet,next_state=self.root/'new-state')
+
+
+@runtime_checkable
+class AbortedAdmissionLock(Protocol):
+    def __call__(self, path: Path) -> AbstractContextManager[object]: ...
+
+
+class ClosedKeeperAbortedAllocationTests(unittest.TestCase):
+    """R35: serial guard assertion, lost outer wait, real idle keeper wait0."""
+
+    def setUp(self) -> None:
+        fixture = AbortedAllocationTests()
+        fixture.setUp()
+        self.addCleanup(fixture.doCleanups)
+        self.fixture = fixture
+        self.serial = 0
+        intent = json_object(json.loads(Path(fixture.intent['path']).read_text(encoding='utf8')))
+        self.argv = intent['argv']
+        fixture.intent = fixture.write('serial-intent.json', {'machine_id':fixture.machine,
+            'observed_at_utc':'2026-10-23T00:00:00.000001Z', 'argv':self.argv,
+            'started_at_utc':'2026-10-23T00:00:00Z'})
+        fixture.process = fixture.write('serial-started.json', {'machine_id':fixture.machine,
+            'observed_at_utc':'2026-10-23T00:00:00.002Z', 'pid':2147483000,
+            'process_create_time_seconds':'1792713600.000001',
+            'started_at_utc':'2026-10-23T00:00:00.001Z', 'original_wait_pending':True})
+        source = fixture.root/'original-serial.py'
+        source.write_text('raise AssertionError("original guard redirector differs")\n', encoding='utf8')
+        self.source = source
+        original_failure = fixture.write('serial-failure.json', {'machine_id':fixture.machine,
+            'observed_at_utc':'2026-10-23T00:02:00Z', 'error':'AssertionError()',
+            'public_started':False, 'display_before':None, 'no_automatic_replay':True})
+        tool: JsonObject = {'chunk_id':'original-wrapper-failed', 'exit_code':1, 'output':'AssertionError'}
+        tool_pin = fixture.write('original-tool-terminal.json', tool)
+        wrapper = json_object(json.loads(Path(fixture.wrapper['path']).read_text(encoding='utf8')))
+        source_raw = source.read_bytes()
+        source_ref: FilePin = {'path':str(source.resolve()), 'bytes':len(source_raw),
+            'sha256':hashlib.sha256(source_raw).hexdigest()}
+        wrapper.update({'tool_result':tool, 'original_source':json_object(source_ref),
+            'original_failure':json_object(original_failure), 'original_tool_result':json_object(tool_pin)})
+        fixture.wrapper = fixture.write('serial-wrapper-readback.json', wrapper)
+        cas = json_object(json.loads(Path(fixture.cas['path']).read_text(encoding='utf8')))
+        member(cas, 'task')['state'] = 'done'
+        member(cas, 'event').update({'state':'done', 'kind':'completed'})
+        member(cas, 'event').pop('retirement')
+        fixture.cas = fixture.write('closed-keeper-release.json', cas)
+        self.keeper_report: JsonObject = {'task_id':'fixture-task', 'thread_exited':True,
+            'failure':None, 'entry_error':None, 'game_actions':False, 'last_sequence':10,
+            'at_utc':'2026-10-23T00:11:00.000001Z'}
+        fixture.write_path(fixture.keeper/'report.json', self.keeper_report)
+        self.parent: JsonObject = {'keeper_actual_exit_code':0, 'keeper_report':self.keeper_report,
+            'run_id':fixture.run_id, 'business_pass':False}
+        fixture.write_live('keeper-actual-parent-exit.json', self.parent)
+        fixture.write_live('allocation-unused-idle-timeout.json', {'reason':'NEVER_LAUNCHED_ALLOCATION_IDLE_TIMEOUT',
+            'idle_seconds':600, 'utc':'2026-10-23T00:11:00Z', 'game_started':False,
+            'native_session_started':False, 'normal_close_qualified':False, 'business_pass':False})
+        (fixture.keeper/'STOP').write_text('Unused allocation idle deadline; no game/native/normal credit.\n', encoding='utf8')
+        allocated = json_object(json.loads(Path(fixture.stdout['path']).read_text(encoding='utf8')))
+        allocated.update({'game_started':False, 'business_pass':False})
+        self.allocated = allocated
+        self.stdout_path = fixture.root/'serial-allocator.stdout.log'
+        self.stdout_path.write_text(json.dumps(allocated)+'\n'+json.dumps({**allocated, **self.parent})+'\n', encoding='utf8')
+
+    def args(self) -> argparse.Namespace:
+        self.serial += 1
+        fixture = self.fixture
+        return argparse.Namespace(previous_live=fixture.live, keeper_root=fixture.keeper,
+            allocator_intent=Path(fixture.intent['path']), allocator_process=Path(fixture.process['path']),
+            allocator_exit=None, allocator_result=None, allocator_external_exec=None,
+            aborted_wrapper=Path(fixture.wrapper['path']), aborted_keeper_closed=True,
+            aborted_release=Path(fixture.cas['path']), admin_release=Path(fixture.done_pin['path']),
+            allocator_stdout=self.stdout_path, next_state=fixture.root/'new-state',
+            output=fixture.root/f'closed-keeper-output-{self.serial}', task_bus_root=fixture.bus)
+
+    def produce(self) -> subject.UnrunBundleReport:
+        return subject.build_bundle(self.args())
+
+    def test_real_producer_dispatch_and_round_trip_preserve_each_original_wait(self) -> None:
+        report = self.produce()
+        bundle = json_object(json.loads(Path(report['bundle']['path']).read_text(encoding='utf8')))
+        self.assertEqual(bundle['closure_kind'], subject.CLOSED_KEEPER_ABORTED_KIND)
+        self.assertFalse(bundle['allocator_original_wait_observed'])
+        self.assertIsNone(bundle['allocator_exit_code'])
+        self.assertTrue(bundle['keeper_original_wait_observed'])
+        self.assertEqual(bundle['keeper_exit_code'], 0)
+        fixture = self.fixture
+        original_release = json_object(json.loads(Path(fixture.cas['path']).read_text(encoding='utf8')))
+        self.assertNotIn('retirement', member(original_release, 'event'))
+        import ck3_mod_acceptance_allocate as allocator
+        reducer: object = subject.validate_allocated_unrun
+        if not isinstance(reducer, allocator._PrelaunchUnrunAdmissionReducer):
+            raise AssertionError('Actual shared reducer unavailable')
+        verdict = json_object(reducer(fixture.live, fixture.freeze,
+            Path(report['bundle']['path']), fixture.keeper, fixture.done, fixture.packet,
+            next_state=fixture.root/'new-state'))
+        self.assertEqual(verdict['mode'], 'previous-shared-allocated-unrun-prelaunch-orchestrator-failed')
+        cleanup = member(verdict, 'failure_cleanup')
+        self.assertFalse(cleanup['original_allocator_wait_proven'])
+        self.assertIsNone(cleanup['original_allocator_exit_code'])
+        self.assertTrue(cleanup['original_keeper_wait_proven'])
+        self.assertEqual(cleanup['original_keeper_exit_code'], 0)
+        for key in ('normal_close_qualified', 'typed_normal_exit_proven', 'business_pass', 'release_pass'):
+            self.assertFalse(cleanup[key])
+        self.assertEqual(self.argv, json.loads(Path(fixture.intent['path']).read_text())['argv'])
+
+    def test_known_keeper_wait_cannot_be_hidden_or_replaced_with_bool(self) -> None:
+        fixture = self.fixture
+        parent_path = fixture.live/'keeper-actual-parent-exit.json'
+        raw = parent_path.read_bytes()
+        for value in (True, 1, None):
+            fixture.write_path(parent_path, {**self.parent, 'keeper_actual_exit_code':value})
+            with self.subTest(value=value), self.assertRaisesRegex(ValueError, 'internal Popen wait0'):
+                self.produce()
+        parent_path.write_bytes(raw)
+        missing = fixture.keeper/'report.json'
+        keeper_raw = missing.read_bytes();missing.unlink()
+        with self.assertRaises(FileNotFoundError):self.produce()
+        missing.write_bytes(keeper_raw)
+        args = self.args();args.aborted_keeper_closed = False
+        with self.assertRaises(ValueError):subject.build_bundle(args)
+
+    def test_original_source_tool_stdout_and_allocator_wait_claim_are_verified(self) -> None:
+        fixture = self.fixture
+        wrapper = json_object(json.loads(Path(fixture.wrapper['path']).read_text(encoding='utf8')))
+        original = fixture.wrapper
+        fixture.wrapper = fixture.write('false-allocator-wait.json', {**wrapper, 'allocator_exit_code':0})
+        with self.assertRaisesRegex(ValueError, 'unknown wait'):self.produce()
+        fixture.wrapper = original
+        source_raw = self.source.read_bytes();self.source.write_bytes(source_raw+b'\n')
+        with self.assertRaises(ValueError):self.produce()
+        self.source.write_bytes(source_raw)
+        raw = self.stdout_path.read_bytes()
+        self.stdout_path.write_text(json.dumps(self.allocated)+'\n'+json.dumps({**self.allocated,
+            **self.parent, 'keeper_actual_exit_code':1}), encoding='utf8')
+        with self.assertRaisesRegex(ValueError, 'final stdout'):self.produce()
+        self.stdout_path.write_bytes(raw)
+
+    def claim(self, mutation: Callable[[], None] | None = None) -> tuple[Path, list[bool]]:
+        import ck3_live_run_id as ids
+        import ck3_mod_acceptance_allocate as allocator
+        from ck3_mod_acceptance import Selection
+        from ck3_mod_acceptance_fresh_machine_bootstrap import MachineBinding
+        fixture = self.fixture
+        report = self.produce()
+        close = Path(report['bundle']['path'])
+        selection = object.__new__(Selection)
+        selection.state_dir = fixture.root/'new-state'
+        selection.runtime_path = fixture.root/'runtime.json'
+        selection.manifest_path = fixture.root/'manifest.json'
+        selection.prepared_path = Path(fixture.prepared['path'])
+        cli = fixture.bus/'bin/codex_task_bus.py'
+        selection.runtime = {'allocation':{'lease_repo':str(fixture.root),
+            'task_bus':{'path':str(cli), 'sha256':hashlib.sha256(cli.read_bytes()).hexdigest()}}}
+        for path in (selection.runtime_path, selection.manifest_path):path.write_text('{}', encoding='utf8')
+        args = argparse.Namespace(previous_live=fixture.live, previous_keeper=fixture.keeper,
+            previous_failure_close=close, previous_release=Path(fixture.done_pin['path']))
+        binding: MachineBinding = {'machine_id':fixture.machine, 'state_root':str(fixture.ids),
+            'admission_root':str(fixture.root/'admission')}
+        original_lock: object = ids._exclusive_file_lock
+        if not isinstance(original_lock, AbortedAdmissionLock):raise AssertionError('Actual machine lock unavailable')
+        reducer: object = subject.validate_allocated_unrun
+        if not isinstance(reducer, allocator._PrelaunchUnrunAdmissionReducer):raise AssertionError('Actual reducer unavailable')
+        held = False
+        observations: list[bool] = []
+        @contextmanager
+        def locked(path: Path) -> Iterator[None]:
+            nonlocal held
+            with original_lock(path):
+                held = True
+                try:
+                    if mutation is not None:mutation()
+                    yield
+                finally:held = False
+        def reduce(previous: Path, freeze: object, path: Path, keeper: Path,
+                release: object, bus: object, *, next_state: Path) -> JsonObject:
+            observations.append(held)
+            return reducer(previous, freeze, path, keeper, release, bus, next_state=next_state)
+        with patch.object(ids, '_exclusive_file_lock', side_effect=locked), \
+                patch.object(subject, 'validate_allocated_unrun', side_effect=reduce):
+            record = allocator.claim_machine_admission(binding, selection, args, report['validation'])
+        return record, observations
+
+    def test_actual_allocator_revalidates_real_producer_under_original_writer_lock(self) -> None:
+        record, observations = self.claim()
+        self.assertEqual(observations, [True])
+        intent = json_object(json.loads((record/'intent.json').read_text(encoding='utf8')))
+        cleanup = member(member(intent, 'closure'), 'failure_cleanup')
+        self.assertTrue(cleanup['original_keeper_wait_proven'])
+        self.assertIsNone(cleanup['original_allocator_exit_code'])
+        self.assertFalse(intent['business_pass'])
+
+    def test_launch_inside_lock_rejects_before_any_intent(self) -> None:
+        def mutate() -> None:
+            (self.fixture.live/'host-started.json').write_text('{}', encoding='utf8')
+        with self.assertRaisesRegex(ValueError, 'launch/native/control'):
+            self.claim(mutate)
+        admission = self.fixture.root/'admission'
+        self.assertFalse((admission/'machine.json').exists())
+        self.assertEqual(list(admission.glob('[0-9]*')), [])
+
+    def test_known_keeper_pin_change_inside_lock_rejects_before_any_intent(self) -> None:
+        def mutate() -> None:
+            path = self.fixture.live/'keeper-actual-parent-exit.json'
+            path.write_bytes(path.read_bytes()+b'\n')
+        with self.assertRaises(ValueError):self.claim(mutate)
+        admission = self.fixture.root/'admission'
+        self.assertFalse((admission/'machine.json').exists())
+        self.assertEqual(list(admission.glob('[0-9]*')), [])
 
 
 if __name__=='__main__':unittest.main()

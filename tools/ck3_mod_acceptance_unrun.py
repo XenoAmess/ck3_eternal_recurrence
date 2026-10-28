@@ -16,6 +16,7 @@ from ck3_mod_acceptance_background_types import FilePin, JsonObject, file_pin, j
 
 SCHEMA = 'ck3-mod-acceptance-allocated-unrun-closure-v1'
 ABORTED_KIND = 'wrapper-aborted-before-launch-without-terminal-waits'
+CLOSED_KEEPER_ABORTED_KIND: Literal['wrapper-aborted-before-launch-with-closed-keeper'] = 'wrapper-aborted-before-launch-with-closed-keeper'
 OFFLINE_TTL_KIND: Literal['pre-intent-background-offline-ttl-refused'] = 'pre-intent-background-offline-ttl-refused'
 PRELAUNCH_KIND: Literal['prelaunch-orchestrator-failed-with-observed-waits'] = 'prelaunch-orchestrator-failed-with-observed-waits'
 PrelaunchGuardState = Literal['armed-cancelled', 'failed-before-armed']
@@ -1137,15 +1138,13 @@ class UnrunBundleReport(TypedDict):
     SDK_or_launch: Literal[False]
 
 
-class AbortedAllocationClosureV1(TypedDict):
+class AbortedAllocationEvidenceV1(TypedDict):
     schema: Literal['ck3-mod-acceptance-allocated-unrun-closure-v1']
-    closure_kind: Literal['wrapper-aborted-before-launch-without-terminal-waits']
     machine_id: str
     observed_at_utc: str
     run_id: str
     quarantined_state: str
     allocator_exit_code: None
-    keeper_exit_code: None
     host_started: Literal[False]
     native_session_started: Literal[False]
     game_started: Literal[False]
@@ -1153,7 +1152,6 @@ class AbortedAllocationClosureV1(TypedDict):
     original_host_exit0: Literal[False]
     business_pass: Literal[False]
     allocator_original_wait_observed: Literal[False]
-    keeper_original_wait_observed: Literal[False]
     ready: FilePin
     frozen: FilePin
     allocated_context: FilePin
@@ -1168,6 +1166,22 @@ class AbortedAllocationClosureV1(TypedDict):
     CAS_release: FilePin
     admin_done: FilePin
     counter: FilePin
+
+
+class AbortedAllocationClosureV1(AbortedAllocationEvidenceV1):
+    closure_kind: Literal['wrapper-aborted-before-launch-without-terminal-waits']
+    keeper_exit_code: None
+    keeper_original_wait_observed: Literal[False]
+
+
+class ClosedKeeperAbortedAllocationClosureV1(AbortedAllocationEvidenceV1):
+    closure_kind: Literal['wrapper-aborted-before-launch-with-closed-keeper']
+    keeper_exit_code: Literal[0]
+    keeper_original_wait_observed: Literal[True]
+    keeper: FilePin
+    keeper_parent_exit: FilePin
+    keeper_STOP: FilePin
+    idle_timeout: FilePin
 
 
 def _object(raw: object, label: str) -> dict[str, object]:
@@ -1616,6 +1630,76 @@ def _journal_events(raw: bytes, start: int, release_sequence: int,
     need(len(lines)==len(requested),'Exact original CAS/DONE events absent from bounded journal tail')
     return lines
 
+def _closed_keeper_aborted_start(intent: JsonObject, process: JsonObject,
+        wrapper: JsonObject, machine: str) -> datetime:
+    """Bind the original serial records; never reconstruct its lost Popen wait."""
+    if (set(intent) != {'machine_id', 'observed_at_utc', 'argv', 'started_at_utc'}
+            or set(process) != {'machine_id', 'observed_at_utc', 'pid',
+                'process_create_time_seconds', 'started_at_utc', 'original_wait_pending'}
+            or process.get('original_wait_pending') is not True):
+        raise ValueError('Exact original serial allocator intent/start fields required')
+    source = _evidence_pin(wrapper.get('original_source'), 'Original aborted serial source')
+    source_path = Path(source['path'])
+    check_pin(source_path, dict(source))
+    if source_path.suffix != '.py':
+        raise ValueError('Original aborted serial Python source required')
+    ast.parse(source_path.read_bytes(), filename=str(source_path))
+    failure = json_object(_pinned_object(wrapper.get('original_failure'), 'Original serial failure'))
+    tool = json_object(_pinned_object(wrapper.get('original_tool_result'), 'Original wrapper tool terminal'))
+    if (set(failure) != {'machine_id', 'observed_at_utc', 'error', 'public_started',
+                'display_before', 'no_automatic_replay'}
+            or failure.get('machine_id') != machine or failure.get('public_started') is not False
+            or failure.get('display_before') is not None or failure.get('no_automatic_replay') is not True
+            or not isinstance(failure.get('error'), str) or not failure['error']
+            or failure.get('observed_at_utc') != wrapper.get('observed_at_utc')
+            or tool != wrapper.get('tool_result')):
+        raise ValueError('Original serial failure/source/tool provenance differs')
+    intended = _timestamp(intent.get('started_at_utc'), 'Original serial allocator start')
+    stamps = [intended, _timestamp(intent.get('observed_at_utc'), 'Original serial allocator intent'),
+        _timestamp(process.get('started_at_utc'), 'Original serial Popen observation'),
+        _timestamp(process.get('observed_at_utc'), 'Original serial process record')]
+    birth = process.get('process_create_time_seconds')
+    if not isinstance(birth, str) or re.fullmatch(r'(?:0|[1-9][0-9]*)\.[0-9]+', birth) is None:
+        raise ValueError('Original allocator birth must retain exact decimal seconds')
+    epoch = datetime(1970, 1, 1, tzinfo=timezone.utc)
+    def seconds(value: datetime) -> Decimal:
+        delta = value - epoch
+        return Decimal(delta.days * 86400 + delta.seconds) + Decimal(delta.microseconds) / Decimal(1000000)
+    if (stamps != sorted(stamps) or not seconds(intended) <= Decimal(birth) <= seconds(stamps[-1])):
+        raise ValueError('Original serial allocator birth/observation chronology differs')
+    return intended
+
+
+def _closed_aborted_keeper(bundle: JsonObject, previous: Path, keeper_root: Path,
+        task: str, run: str, ready_at: datetime, failure_at: datetime, closed_at: datetime) -> JsonObject:
+    """Credit only the allocator's actual retained keeper Popen wait0."""
+    keeper = json_object(_exact(bundle, 'keeper', keeper_root/'report.json'))
+    parent = json_object(_exact(bundle, 'keeper_parent_exit', previous/'keeper-actual-parent-exit.json'))
+    idle = json_object(_exact(bundle, 'idle_timeout', previous/'allocation-unused-idle-timeout.json'))
+    stop = _evidence_pin(bundle.get('keeper_STOP'), 'Actual idle STOP')
+    if Path(stop['path']).resolve() != (keeper_root/'STOP').resolve():
+        raise ValueError('Actual closed keeper STOP crossed original path')
+    check_pin(keeper_root/'STOP', dict(stop))
+    if (keeper.get('task_id') != task or keeper.get('thread_exited') is not True
+            or keeper.get('failure') is not None or keeper.get('entry_error') is not None
+            or keeper.get('game_actions') is not False or parent.get('run_id') != run
+            or type(parent.get('keeper_actual_exit_code')) is not int or parent['keeper_actual_exit_code'] != 0
+            or parent.get('keeper_report') != keeper or parent.get('business_pass') is not False
+            or idle.get('reason') != 'NEVER_LAUNCHED_ALLOCATION_IDLE_TIMEOUT'
+            or type(idle.get('idle_seconds')) is not int or idle['idle_seconds'] != 600
+            or any(idle.get(key) is not False for key in
+                ('game_started', 'native_session_started', 'normal_close_qualified', 'business_pass'))
+            or (keeper_root/'STOP').read_text(encoding='utf-8') !=
+                'Unused allocation idle deadline; no game/native/normal credit.\n'):
+        raise ValueError('Original closed keeper idle STOP/internal Popen wait0 differs')
+    idle_at = _timestamp(idle.get('utc'), 'Original idle timeout')
+    finished = _timestamp(keeper.get('at_utc'), 'Original keeper completion')
+    if (not ready_at <= failure_at <= idle_at <= finished <= closed_at
+            or (idle_at-ready_at).total_seconds() < 600):
+        raise ValueError('Original closed keeper ten-minute idle interval differs')
+    return keeper
+
+
 def validate_aborted_allocation_v1(previous: Path, freeze_value: object, close_path: Path,
         keeper_root: Path, release_value: object, bus_value: object, next_state: Path) -> JsonObject:
     """Administrative admission only; lost original waits remain unknown."""
@@ -1625,14 +1709,19 @@ def validate_aborted_allocation_v1(previous: Path, freeze_value: object, close_p
     freeze = json_object(freeze_value)
     bundle = json_object(_read(close_path))
     machine, run, task = ids.current_machine_id(), _text(freeze['run_id'],'run'), _text(freeze['screen_task'],'task')
-    if (set(bundle) != set(AbortedAllocationClosureV1.__required_keys__)
-            or bundle.get('schema') != SCHEMA or bundle.get('closure_kind') != ABORTED_KIND
+    closed_keeper = bundle.get('closure_kind') == CLOSED_KEEPER_ABORTED_KIND
+    required = (ClosedKeeperAbortedAllocationClosureV1.__required_keys__ if closed_keeper
+        else AbortedAllocationClosureV1.__required_keys__)
+    if (set(bundle) != set(required)
+            or bundle.get('schema') != SCHEMA or bundle.get('closure_kind') not in (ABORTED_KIND, CLOSED_KEEPER_ABORTED_KIND)
             or bundle.get('machine_id') != machine or bundle.get('run_id') != run
             or any(bundle.get(k) is not False for k in ('host_started','native_session_started',
                 'game_started','normal_close_qualified','original_host_exit0','business_pass',
-                'allocator_original_wait_observed','keeper_original_wait_observed'))
+                'allocator_original_wait_observed'))
             or 'allocator_exit_code' not in bundle or bundle['allocator_exit_code'] is not None
-            or 'keeper_exit_code' not in bundle or bundle['keeper_exit_code'] is not None):
+            or bundle.get('keeper_original_wait_observed') is not closed_keeper
+            or (closed_keeper and (type(bundle.get('keeper_exit_code')) is not int or bundle['keeper_exit_code'] != 0))
+            or (not closed_keeper and ('keeper_exit_code' not in bundle or bundle['keeper_exit_code'] is not None))):
         raise ValueError('Aborted allocation must preserve unknown waits and no game credit')
     identity = json_object(freeze['identity_allocation'])
     state = Path(str(freeze['state_dir'])).resolve()
@@ -1669,8 +1758,8 @@ def validate_aborted_allocation_v1(previous: Path, freeze_value: object, close_p
     wrapper = json_object(_pinned_object(bundle.get('allocator_aborted_wrapper'), 'wrapper failure'))
     argv = intent.get('argv')
     if (not isinstance(argv,list) or not all(isinstance(x,str) for x in argv)
-            or process.get('argv') != argv or intent.get('machine_id') != machine
-            or process.get('machine_id') != machine or intent.get('stage') != 'allocate'):
+            or (not closed_keeper and (process.get('argv') != argv or intent.get('stage') != 'allocate'))
+            or intent.get('machine_id') != machine or process.get('machine_id') != machine):
         raise ValueError('Aborted original allocator command differs')
     def argument(flag: str) -> str:
         if argv.count(flag) != 1 or argv.index(flag)+1 >= len(argv):
@@ -1686,32 +1775,50 @@ def validate_aborted_allocation_v1(previous: Path, freeze_value: object, close_p
             or 'allocator_exit_code' not in wrapper or wrapper['allocator_exit_code'] is not None
             or wrapper.get('run_invoked') is not False or wrapper.get('game_started') is not False
             or type(tool.get('exit_code')) is not int or tool['exit_code'] != 1
-            or 'session_id' not in tool or tool['session_id'] is not None
+            or (not closed_keeper and 'session_id' not in tool) or tool.get('session_id') is not None
             or not isinstance(tool.get('chunk_id'),str) or not tool['chunk_id']
             or Path(argument('--prepared-case')).resolve() != Path(prepared_ref['path']).resolve()
             or Path(argument('--keeper-output')).resolve() != keeper_root.resolve()
             or argv.count('allocate') != 1):
         raise ValueError('Original pre-game wrapper failure/unknown wait differs')
-    stamps = [_timestamp(intent.get('at_utc'),'allocator intent'),
+    intended = (_closed_keeper_aborted_start(intent, process, wrapper, machine) if closed_keeper
+        else _timestamp(intent.get('at_utc'),'allocator intent'))
+    stamps = [intended,
               _timestamp(keeper_ready.get('at_utc'),'keeper ready'),
               _timestamp(wrapper.get('observed_at_utc'),'wrapper failure'),
               _timestamp(bundle.get('observed_at_utc'),'closure observation')]
-    if stamps != sorted(stamps) or stamps[-1] > datetime.now(timezone.utc):
+    if (stamps != sorted(stamps) or stamps[-1] > datetime.now(timezone.utc)
+            or (closed_keeper and _timestamp(process.get('observed_at_utc'), 'Original allocator process') > stamps[1])):
         raise ValueError('Aborted original timestamps differ')
     stdout_ref = _evidence_pin(bundle.get('allocator_stdout'),'allocator stdout')
     check_pin(Path(stdout_ref['path']),dict(stdout_ref))
-    allocated = json_object(json.loads(Path(stdout_ref['path']).read_text(encoding='utf-8-sig')))
+    stdout = Path(stdout_ref['path']).read_text(encoding='utf-8-sig').lstrip()
+    terminal: JsonObject | None = None
+    if closed_keeper:
+        value, end = json.JSONDecoder().raw_decode(stdout)
+        allocated = json_object(value)
+        terminal = json_object(json.loads(stdout[end:]))
+    else:
+        allocated = json_object(json.loads(stdout))
     if (allocated.get('status') != 'ACTUAL_ALLOCATED_KEEPER_READY_NOT_RUN'
             or allocated.get('task') != task or _integer(allocated.get('keeper_pid'),'READY keeper PID',1) != keeper_pid
             or Path(str(allocated.get('live'))).resolve() != previous.resolve()
-            or Path(str(allocated.get('context'))).resolve() != (previous/'ready-context.json').resolve()):
+            or Path(str(allocated.get('context'))).resolve() != (previous/'ready-context.json').resolve()
+            or (closed_keeper and any(allocated.get(key) is not False for key in ('game_started', 'business_pass')))):
         raise ValueError('Actual aborted allocator READY stdout differs')
+    keeper: JsonObject | None = None
+    if closed_keeper:
+        keeper = _closed_aborted_keeper(bundle, previous, keeper_root, task, run, stamps[1], stamps[2], stamps[3])
+        parent = _exact(bundle, 'keeper_parent_exit', previous/'keeper-actual-parent-exit.json')
+        if terminal is None or terminal != {**allocated, **parent}:
+            raise ValueError('Original allocator final stdout differs from its internal keeper wait')
     absent = {name:not (previous/name).exists() for name in ('launch-intent.json','launch.json',
         'host-started.json','host-supervisor.json','host-supervisor-started.json','supervisor.json',
-        'host-original-process-exit.json','native-report.json','native-report.session.log','case-output',
-        'keeper-actual-parent-exit.json')}
-    absent.update({'keeper/report':not (keeper_root/'report.json').exists(),
-        'state/control':not (state/'control').exists(), 'state/native-session':not (state/'native-session').exists(),
+        'host-original-process-exit.json','native-report.json','native-report.session.log','case-output')}
+    if not closed_keeper:
+        absent.update({'keeper-actual-parent-exit.json':not (previous/'keeper-actual-parent-exit.json').exists(),
+            'keeper/report':not (keeper_root/'report.json').exists()})
+    absent.update({'state/control':not (state/'control').exists(), 'state/native-session':not (state/'native-session').exists(),
         'controls-empty':(previous/'controls').is_dir() and not any((previous/'controls').iterdir())})
     for name in ('save games','logs','run'):
         path = state/'profile'/name
@@ -1742,8 +1849,12 @@ def validate_aborted_allocation_v1(previous: Path, freeze_value: object, close_p
     done = json_object(allocator.read_failed_runtime_release(Path(done_ref['path'])))
     done_event, done_task = json_object(done['event']), json_object(done['task'])
     event, released_task = json_object(actual['event']), json_object(actual['task'])
-    retirement = json_object(event.get('retirement'))
-    if (done != release or actual.get('ok') is not True or done.get('ok') is not True
+    retirement = {} if closed_keeper else json_object(event.get('retirement'))
+    if closed_keeper:
+        if keeper is None:
+            raise ValueError('Actual closed keeper report required')
+        _release_stages(keeper, actual, done, _read(release_ref['path']), _read(done_ref['path']), release, task)
+    elif (done != release or actual.get('ok') is not True or done.get('ok') is not True
             or event.get('task_id') != task or released_task.get('task_id') != task
             or event.get('resources') != [] or released_task.get('resources') != []
             or event.get('state') != 'waiting' or released_task.get('state') != 'waiting'
@@ -1782,11 +1893,14 @@ def validate_aborted_allocation_v1(previous: Path, freeze_value: object, close_p
     evidence = {k:v for k,v in bundle.items() if k != 'counter' and isinstance(v,dict) and 'sha256' in v}
     evidence['actual_unrun_consumer'] = pin(Path(__file__))
     evidence['actual_allocator_consumer'] = pin(Path(allocator.__file__))
-    return json_object({'mode':'previous-shared-allocated-aborted-wrapper-resource-only',
+    # This existing mode invokes the real reducer again under the allocator's
+    # original machine writer lock. It grants resource continuation, not play.
+    return json_object({'mode':('previous-shared-allocated-unrun-prelaunch-orchestrator-failed' if closed_keeper
+            else 'previous-shared-allocated-aborted-wrapper-resource-only'),
         'actual_process_inventory':inventory,'failure_cleanup':{'close':pin(close_path),'original_evidence':evidence,
             'absent_launch_native_control_Save':absent,'quarantined_state':str(state),
             'original_allocator_wait_proven':False,'original_allocator_exit_code':None,
-            'original_keeper_wait_proven':False,'original_keeper_exit_code':None,
+            'original_keeper_wait_proven':closed_keeper,'original_keeper_exit_code':0 if closed_keeper else None,
             'original_host_exit_code':None,'original_ck3_exit_code':None,
             'normal_close_qualified':False,'typed_normal_exit_proven':False,'business_pass':False,'release_pass':False,
             'native_cleanup_qualified':None,
@@ -1799,7 +1913,7 @@ def validate_allocated_unrun(previous, freeze, close_path, keeper_root, release,
             raise ValueError('TTL-refused allocation requires a separate next state')
         return validate_pre_intent_offline_ttl_refusal(Path(previous), freeze, Path(close_path),
             Path(keeper_root), release, bus_packet, next_state)
-    if _read(close_path).get('closure_kind') == ABORTED_KIND:
+    if _read(close_path).get('closure_kind') in (ABORTED_KIND, CLOSED_KEEPER_ABORTED_KIND):
         if not isinstance(next_state,Path):raise ValueError('Aborted allocation requires a new separate state')
         return validate_aborted_allocation_v1(Path(previous),freeze,Path(close_path),Path(keeper_root),release,bus_packet,next_state)
     control_allocator = same_directory_control_peer('ck3_mod_acceptance_allocate')
@@ -2129,6 +2243,9 @@ def build_aborted_bundle_v1(args: argparse.Namespace) -> UnrunBundleReport:
     frozen = json_object(_read(live/'frozen-argv.json'))
     ready = json_object(_read(live/'ready-context.json'))
     prepared = _evidence_pin(ready.get('prepared_case'),'prepared')
+    closed_keeper = getattr(args, 'aborted_keeper_closed', False)
+    if type(closed_keeper) is not bool:
+        raise ValueError('Explicit closed-keeper recovery selector must be boolean')
     paths = {'ready':live/'ready-context.json','frozen':live/'frozen-argv.json',
         'allocated_context':live/'allocated-context.json','prepared_case':Path(prepared['path']),
         'keeper_process':live/'keeper-process.json','keeper_inputs':keeper/'inputs.json',
@@ -2136,11 +2253,16 @@ def build_aborted_bundle_v1(args: argparse.Namespace) -> UnrunBundleReport:
         'allocator_process':args.allocator_process,'allocator_stdout':args.allocator_stdout,
         'allocator_aborted_wrapper':args.aborted_wrapper,'CAS_release':args.aborted_release,
         'admin_done':args.admin_release,'counter':ids.default_state_root()/ids.current_machine_id()/str(frozen['mod_key'])/'counter.json'}
-    row = {'schema':SCHEMA,'closure_kind':ABORTED_KIND,'machine_id':ids.current_machine_id(),
+    if closed_keeper:
+        paths.update({'keeper':keeper/'report.json', 'keeper_parent_exit':live/'keeper-actual-parent-exit.json',
+            'keeper_STOP':keeper/'STOP', 'idle_timeout':live/'allocation-unused-idle-timeout.json'})
+    row = {'schema':SCHEMA,'closure_kind':CLOSED_KEEPER_ABORTED_KIND if closed_keeper else ABORTED_KIND,
+        'machine_id':ids.current_machine_id(),
         'observed_at_utc':datetime.now(timezone.utc).isoformat(),'run_id':frozen['run_id'],
-        'quarantined_state':frozen['state_dir'],'allocator_exit_code':None,'keeper_exit_code':None,
+        'quarantined_state':frozen['state_dir'],'allocator_exit_code':None,
+        'keeper_exit_code':0 if closed_keeper else None, 'keeper_original_wait_observed':closed_keeper,
         **{k:False for k in ('host_started','native_session_started','game_started','normal_close_qualified',
-            'original_host_exit0','business_pass','allocator_original_wait_observed','keeper_original_wait_observed')},
+            'original_host_exit0','business_pass','allocator_original_wait_observed')},
         **{key:pin(path) for key,path in paths.items()}}
     output = args.output.resolve()
     if output.exists():raise ValueError('New aborted allocation output required')
@@ -2151,7 +2273,8 @@ def build_aborted_bundle_v1(args: argparse.Namespace) -> UnrunBundleReport:
     packet = allocator.current_screen_absent(Path(str(frozen['lease_anchor'])),args.task_bus_root,
         json_object(files[str(bus.resolve())])['sha256'],None)
     release = allocator.read_failed_runtime_release(args.admin_release)
-    verdict = validate_aborted_allocation_v1(live,frozen,Path(bundle['path']),keeper,release,packet,args.next_state)
+    verdict = json_object(validate_allocated_unrun(live,frozen,Path(bundle['path']),keeper,release,packet,
+        next_state=args.next_state))
     return {'bundle':file_pin(bundle),'previous_release':file_pin(pin(args.admin_release)),
         'validation':verdict,'SDK_or_launch':False}
 
@@ -2164,6 +2287,8 @@ def main() -> None:
     allocator.add_argument('--allocator-external-exec',type=Path)
     p.add_argument('--allocator-command',type=Path)
     p.add_argument('--aborted-wrapper',type=Path)
+    p.add_argument('--aborted-keeper-closed',action='store_true',
+        help='Keep outer allocator wait unknown while validating its actual idle keeper wait0')
     p.add_argument('--aborted-release',type=Path)
     p.add_argument('--admin-release',type=Path)
     p.add_argument('--next-state',type=Path)
