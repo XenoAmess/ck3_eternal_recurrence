@@ -1,5 +1,11 @@
 # 已安装的本机项目 EXE 排除 broker
 
+2026-10-28 补注：下文 2026-10-05 安装记录的 `machine_id: unknown`，所属机器尚未核实，不能证明当前机器已安装或免重复 UAC 已验收。历史原件仍按[统一存储策略](../storage-retention-policy.md)复核；文中的“永久保留”不构成无限期保留授权。
+
+当前接续机器为 `machine_id: xenoamess-full-tower-eb9d2c1186`，观察时间 `2026-10-28T01:29:46Z`。用户要求仅进行一次 UAC。当前方案维护现有 broker：一次管理员安装固定 SYSTEM 按需任务，之后已配置项目源码/构建根下的已知 CMake/MSVC 清单由普通调用方提交，不逐 EXE 提权。受保护的小型运行组件放在 `C:/Program Files/XAR CK3 Project EXE Broker`；批量输入、冻结数据、日志和回执放在固定 `D:/ck3-state/xar-project-exe-broker`。D 盘祖先目录可由普通用户替换，不能只凭叶目录 ACL 认定保护完成；安装时须将数据根卷、文件身份、创建时间和 ACL 绑定到受保护安装清单，客户端及 worker 持有不允许删除共享的目录句柄并重验，身份变化即拒绝。
+
+本轮 Java 与既有 Python 边界同步支持 nullable 三设置读回，保留 `null`、空数组、缺字段的区别。安装验收要求实际任务/ACL/来源读回、当前项目 EXE 的 SYSTEM 设置前后证明，以及普通 token 为另一个真实新构建路径完成登记。软件测试、任务 ACK 和旧直接 UAC 的回执均不能替代这些结果。目前候选仍在局部测试与封包，**尚未新装、尚未再次触发 UAC、免重复 UAC 尚未实机验收**。当前首个 Java CK3 启动仍为 0。
+
 2026-10-05 04:56:18 UTC，固定 SYSTEM 按需任务与受保护运行时安装完成，首批两份构建清单中的四个项目 EXE 经实际 SYSTEM 设置前后读回验证。原始安装回执 `C:/ck3-war-episode04-research-20261004-a01/project-broker-root-resume-a01/installer-receipt.json` 为 1,367,505 字节，SHA-256 `4157fec4c9e66aeaae73b04dee5fcaa6f78f5f1245da188e0c331743096fe9ae`，状态 `installed_initial_outputs_verified`，`settings_status=verified`。这一结果与 Task.Run ACK、fake 测试或静态清单分别记录。
 
 截至本源码整合时，普通 token 为第五个新构建路径登记并取得 SYSTEM 回执的验收仍待独立实际结果。固定任务可安装与初四项生效，不能代替普通调用方免重复 UAC 的验收。旧 [永久排除专题](project-exe-defender-exclusions.md) 的 238 项、六个构建入口与未覆盖旧生产器清单保留为各自阶段的事实。
