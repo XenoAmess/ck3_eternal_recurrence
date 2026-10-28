@@ -680,8 +680,8 @@ public final class EmpireRestoreEvidence {
         Clausewitz.Value a = value(before, selector, false), b = value(after, selector, false);
         require(a instanceof Clausewitz.Block && b instanceof Clausewitz.Block, "real persisted history required");
         List<Clausewitz.Entry> old = ((Clausewitz.Block) a).entries(), now = ((Clausewitz.Block) b).entries();
-        require(old.stream().anyMatch(e -> e.value() instanceof Clausewitz.Atom a
-                && a.token().equals(Long.toString(before.frame().actor()))), "title lacks the original actor's actual acquisition history");
+        require(old.stream().anyMatch(e -> e.value() instanceof Clausewitz.Atom atom
+                && atom.token().equals(Long.toString(before.frame().actor()))), "title lacks the original actor's actual acquisition history");
         require(!old.isEmpty() && now.size() >= old.size() && now.subList(0, old.size()).equals(old), "title history lost/rewritten");
     }
     private static void destroyedHistory(Saved before, Saved after, Selector selector) {
