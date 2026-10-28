@@ -945,9 +945,14 @@ class WireEvidenceRuntimeProducer(unittest.TestCase):
 
     def test_religion_content_queries_require_exact_native_flags_and_reach_actual_consumers(self) -> None:
         tools_and_flags = {
+            'ck3_query_player_religion_draft_groups_v1': 'XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1',
+            'ck3_query_player_religion_draft_doctrine_choices_v1': 'XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_DOCTRINE_CHOICES_PRIVATE_QUERY_V1',
+            'ck3_query_player_religion_draft_resource_costs_v1': 'XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1',
             'ck3_query_player_religion_doctrines_v1': 'XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1',
             'ck3_query_player_religion_tenets_v1': 'XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1',
         }
+        for tool, flag in tools_and_flags.items():
+            self.assertEqual(builder.EXTRA_CAPABILITIES[tool], [flag])
         tools = tuple(tools_and_flags)
         undeclared = CapabilityRegistrationConsumer.registered({})
         self.assertFalse(set(tools) & undeclared)
