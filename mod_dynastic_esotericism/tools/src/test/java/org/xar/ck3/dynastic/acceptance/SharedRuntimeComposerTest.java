@@ -593,7 +593,8 @@ final class SharedRuntimeComposerTest {
         assertEquals("retain exactly", actualManifest.path("preserved_unknown_parent_field").textValue());
         assertEquals(7, actual.path("allocation").path("preserved_allocation_field").intValue());
         assertEquals(1, actualIndex.path("actual_changed_parent_files").size());
-        assertEquals(36, result.copiedFiles());
+        assertEquals(38, result.copiedFiles(),
+                "36 existing sources plus frontend_fixture_start_contract.py and frontend_fixture_scenario_start_v1.py");
         assertEquals("ck3-common-source-index-v1", actualIndex.path("schema").textValue());
         assertTrue(actualIndex.path("files").isObject());
         assertEquals(result.copiedFiles(), actualIndex.path("files").size());
