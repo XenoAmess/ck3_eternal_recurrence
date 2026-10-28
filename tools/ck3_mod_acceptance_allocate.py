@@ -3946,7 +3946,8 @@ def claim_machine_admission(binding: MachineBinding, selection: Selection,
     from ck3_mod_acceptance_keeper import write_new
     root=Path(binding['admission_root']);root.mkdir(parents=True,exist_ok=True)
     with ids._exclusive_file_lock(root/'chain.lock'):
-        if closure['mode']=='previous-shared-failed-live-resource-closed':
+        if closure['mode'] in ('previous-shared-failed-live-resource-closed',
+                'previous-shared-failed-live-expired-keeper-resource-closed'):
             closure.update(revalidate_failed_live_resource_admission(selection,args,closure))
         if closure['mode']=='previous-shared-allocated-pre-intent-offline-ttl-refused':
             closure.update(revalidate_pre_intent_offline_ttl_admission(selection,args,closure))
