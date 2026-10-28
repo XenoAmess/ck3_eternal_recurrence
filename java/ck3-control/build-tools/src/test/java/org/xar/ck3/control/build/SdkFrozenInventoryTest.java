@@ -4,10 +4,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.LinkOption;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.xar.ck3.control.build.ControlBuild.FileRef;
@@ -90,16 +93,44 @@ final class SdkFrozenInventoryTest {
             Files.delete(extra);
         }
     }
-    @Test void anActualReparseEntryInsideAnExcludedCacheRemainsRejected() throws Exception {
-        Fixture f = fixture(); Path cache = Files.createDirectory(f.root().resolve("__pycache__"));
-        Path target = Files.createDirectory(temporary.resolve("outside")), junction = cache.resolve("redirect");
-        // This fixed fixture command inherits the existing owning Maven Job; it is not an execution framework.
-        Process process = new ProcessBuilder("cmd.exe", "/d", "/c", "mklink", "/J", junction.toString(), target.toString()).redirectErrorStream(true).start();
-        if (!process.waitFor(10, TimeUnit.SECONDS)) { process.destroyForcibly(); process.waitFor(); fail("owned reparse fixture creation timed out"); }
-        assertEquals(0, process.exitValue(), new String(process.getInputStream().readNBytes(8192), java.nio.charset.StandardCharsets.UTF_8));
-        try {
-            assertThrows(IOException.class, () -> SdkSourceAssembly.completeSdkInventory(f.request()));
-            assertThrows(IOException.class, () -> SdkSourceAssembly.requireCurrentFrozenSources(f.root(), f.witnesses()));
-        } finally { Files.delete(junction); }
+    @Test void syntheticNonordinaryMetadataInsideAnExcludedCacheRemainsRejectedByBothConsumers() throws Exception {
+        Fixture f = fixture(); SdkInventory before = SdkSourceAssembly.completeSdkInventory(f.request());
+        Path cache = Files.createDirectory(f.root().resolve("__pycache__"));
+        Path rejected = Files.createDirectory(cache.resolve("redirect"));
+        assertEquals(before, SdkSourceAssembly.completeSdkInventory(f.request()));
+        SdkSourceAssembly.requireCurrentFrozenSources(f.root(), f.witnesses());
+        for (boolean symbolic : List.of(false, true)) {
+            AtomicInteger rejectedObservations = new AtomicInteger();
+            SdkSourceAssembly.SourceEntryMetadata metadata = path -> {
+                BasicFileAttributes actual = Files.readAttributes(path, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+                if (!path.equals(rejected)) return actual;
+                assertTrue(actual.isDirectory()); assertFalse(actual.isSymbolicLink()); assertFalse(actual.isOther());
+                // The real outer inventory runs during each injected observation and still sees only ordinary entries.
+                ControlBuild.mutableInventoryBytes(temporary, ignored -> {});
+                rejectedObservations.incrementAndGet();
+                return new NonordinaryMetadata(actual, symbolic);
+            };
+            IOException inventory = assertThrows(IOException.class,
+                    () -> SdkSourceAssembly.completeSdkInventory(f.request(), metadata));
+            IOException reuse = assertThrows(IOException.class,
+                    () -> SdkSourceAssembly.requireCurrentFrozenSources(f.root(), f.witnesses(), metadata));
+            assertEquals("ordinary non-reparse SDK source entry required", inventory.getMessage());
+            assertEquals(inventory.getMessage(), reuse.getMessage());
+            assertEquals(2, rejectedObservations.get(), "both complete consumers must inspect the excluded entry");
+            assertEquals(before, SdkSourceAssembly.completeSdkInventory(f.request()));
+            SdkSourceAssembly.requireCurrentFrozenSources(f.root(), f.witnesses());
+            SharedSourceFiles.assertUnchanged(f.original());
+        }
+    }
+    private record NonordinaryMetadata(BasicFileAttributes original, boolean symbolic) implements BasicFileAttributes {
+        @Override public FileTime lastModifiedTime() { return original.lastModifiedTime(); }
+        @Override public FileTime lastAccessTime() { return original.lastAccessTime(); }
+        @Override public FileTime creationTime() { return original.creationTime(); }
+        @Override public boolean isRegularFile() { return false; }
+        @Override public boolean isDirectory() { return false; }
+        @Override public boolean isSymbolicLink() { return symbolic; }
+        @Override public boolean isOther() { return !symbolic; }
+        @Override public long size() { return original.size(); }
+        @Override public Object fileKey() { return original.fileKey(); }
     }
 }

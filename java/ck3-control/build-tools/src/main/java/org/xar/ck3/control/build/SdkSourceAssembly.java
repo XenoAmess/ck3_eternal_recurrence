@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
@@ -633,17 +634,25 @@ public final class SdkSourceAssembly {
         JsonNode item = value.get(field); if (item == null || !item.isIntegralNumber() || !item.canConvertToLong() || item.longValue() < 0) throw new IOException("required exact nonnegative integer field: " + field); return item.longValue();
     }
     static void requireFrozenSet(Path root, Map<String, SharedSourceFiles.Witness> originals) throws IOException {
+        requireFrozenSet(root, originals, NIO_SOURCE_METADATA);
+    }
+    private static void requireFrozenSet(Path root, Map<String, SharedSourceFiles.Witness> originals,
+                                         SourceEntryMetadata metadata) throws IOException {
         Set<Path> expected = new HashSet<>(); for (SharedSourceFiles.Witness witness : originals.values()) expected.add(Path.of(witness.source().path()));
         Set<Path> actual = new HashSet<>();
         try (var entries = Files.walk(root)) {
             for (Path path : entries.toList()) {
-                if (sdkSourceLeaf(root, path)) actual.add(path);
+                if (sdkSourceLeaf(root, path, metadata)) actual.add(path);
             }
         }
         if (!actual.equals(expected)) throw new IOException("original immutable SDK file set grew or changed");
     }
     static void requireCurrentFrozenSources(Path root, Map<String, SharedSourceFiles.Witness> originals) throws IOException {
-        requireFrozenSet(root, originals); verifyWitnesses(originals);
+        requireCurrentFrozenSources(root, originals, NIO_SOURCE_METADATA);
+    }
+    static void requireCurrentFrozenSources(Path root, Map<String, SharedSourceFiles.Witness> originals,
+                                            SourceEntryMetadata metadata) throws IOException {
+        requireFrozenSet(root, originals, metadata); verifyWitnesses(originals);
     }
     private static void verifyFrozen(FrozenReuseState frozen) throws IOException {
         frozen.contract().baseFreezeRef().verify(); frozen.contract().exporterSourceRef().verify(); frozen.originalNativeInventory().verify();
@@ -1029,11 +1038,15 @@ public final class SdkSourceAssembly {
         }
     }
     private static final List<String> SDK_CACHE_DIRECTORIES = List.of("__pycache__", ".mypy_cache", ".pytest_cache");
+    @FunctionalInterface
+    interface SourceEntryMetadata { BasicFileAttributes read(Path path) throws IOException; }
+    private static final SourceEntryMetadata NIO_SOURCE_METADATA = path ->
+            Files.readAttributes(path, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
     /** One source domain for original inventory and frozen reuse. Excluded entries still pass ordinary/native path checks. */
-    private static boolean sdkSourceLeaf(Path root, Path path) throws IOException {
+    private static boolean sdkSourceLeaf(Path root, Path path, SourceEntryMetadata metadata) throws IOException {
         if (!path.startsWith(root)) throw new IOException("SDK source entry escaped its original root");
         SharedSourceFiles.plainAncestors(path);
-        var attributes = Files.readAttributes(path, java.nio.file.attribute.BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+        var attributes = metadata.read(path);
         if (attributes.isSymbolicLink() || (!attributes.isDirectory() && !attributes.isRegularFile())) throw new IOException("ordinary non-reparse SDK source entry required");
         if (attributes.isDirectory()) return false;
         Path relative = root.relativize(path);
@@ -1044,13 +1057,16 @@ public final class SdkSourceAssembly {
     }
     private record InventoryRow(String relative, long bytes, String sha256) { }
     static SdkInventory completeSdkInventory(Request request) throws IOException {
+        return completeSdkInventory(request, NIO_SOURCE_METADATA);
+    }
+    static SdkInventory completeSdkInventory(Request request, SourceEntryMetadata metadata) throws IOException {
         Path sdk = Path.of(request.sdkInputRoot()).toRealPath();
         List<String> cacheNames = SDK_CACHE_DIRECTORIES;
         List<InventoryRow> rows = new ArrayList<>(); Set<String> found = new HashSet<>();
         long bytes = 0;
         try (var paths = Files.walk(sdk)) {
             for (Path path : paths.toList()) {
-                if (!sdkSourceLeaf(sdk, path)) continue;
+                if (!sdkSourceLeaf(sdk, path, metadata)) continue;
                 Path relative = sdk.relativize(path);
                 String name = relative.toString().replace('\\', '/');
                 FileRef actual = FileRef.measure(path);
