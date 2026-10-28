@@ -3,6 +3,7 @@ from copy import deepcopy
 from datetime import datetime, timezone
 from decimal import Decimal
 import hashlib
+import ast
 import json
 from pathlib import Path
 import tempfile
@@ -1399,6 +1400,230 @@ class ClosedKeeperAbortedAllocationTests(unittest.TestCase):
         admission = self.fixture.root/'admission'
         self.assertFalse((admission/'machine.json').exists())
         self.assertEqual(list(admission.glob('[0-9]*')), [])
+
+
+class SerialKnownWaitPrelaunchTests(unittest.TestCase):
+    """Authored process observations enter the real producer/reducer/OS lock.
+
+    These temporary files model the actual R37 receipt shapes. No process birth,
+    Game activity or historical original is claimed from the authored fixtures.
+    """
+
+    def setUp(self) -> None:
+        f = AbortedAllocationTests('runTest')
+        f.setUp(); self.addCleanup(f.doCleanups)
+        self.fixture = f
+        self.serial = 0
+        self.commit = 'a'*40
+        self.execution = f.root/'execution'
+        self.execution.mkdir()
+        self.root_execution = f.root/'root-execution'
+        self.root_execution.mkdir()
+        self.source = f.root/'serial-source.py'
+        self.source.write_text('import subprocess\np=subprocess.Popen([])\np.wait()\n', encoding='utf8')
+        manifest = f.write('predecessor-runtime-manifest.json', {'source_commit':self.commit})
+        f.freeze['runtime_manifest'] = json_object(manifest)
+        files = member(f.freeze, 'files')
+        files[str(Path(manifest['path']))] = json_object(manifest)
+        f.freeze['files'] = {name:{key:value for key,value in member(files,name).items() if key!='path'} for name in files}
+        frozen = f.write_live('frozen-argv.json', f.freeze)
+        ready = json_object(json.loads((f.live/'ready-context.json').read_bytes()))
+        ready['frozen_argv'] = json_object(frozen)
+        self.ready = f.write_live('ready-context.json',ready)
+        f.write_live('allocated-context.json',ready)
+        self.keeper_report: JsonObject = {'task_id':'fixture-task','thread_exited':True,'failure':None,
+            'entry_error':None,'game_actions':False,'last_sequence':10,'at_utc':self.stamp(15)}
+        f.write_path(f.keeper/'report.json',self.keeper_report)
+        f.write_path(f.keeper/'ready.json',{'at_utc':self.stamp(5),'lease':{'task_id':'fixture-task','sequence':10}})
+        self.parent: JsonObject = {'run_id':f.run_id,'keeper_actual_exit_code':0,
+            'keeper_report':self.keeper_report,'business_pass':False}
+        f.write_live('keeper-actual-parent-exit.json',self.parent)
+        (f.keeper/'STOP').write_text('Root pre-public failure; original allocation proves own never-Game keeper; no continuation qualification.\n',encoding='utf8')
+        self.grant = f.write('grant.json', {'fixture':'bounded grant input'})
+        self.launch_ready = f.write('launch-ready.json', {'fixture':'source-bound prepared input'})
+        root_argv = [sys.executable,'-B','-X','utf8',str(self.source),'--source-commit',self.commit,
+            '--grant',self.grant['path'],'--grant-sha256',self.grant['sha256'],
+            '--ready',self.launch_ready['path'],'--ready-sha256',self.launch_ready['sha256']]
+        f.write_path(self.root_execution/'ROOT-SERIAL.started.json',{'machine_id':f.machine,'pid':90003,
+            'argv':root_argv,'started_at_utc':self.stamp(0),'original_wait_pending':True})
+        f.write_path(self.root_execution/'ROOT-SERIAL.original-wait.json',{'machine_id':f.machine,'pid':90003,
+            'argv':root_argv,'actual_original_popen_wait':True,'original_wait_returncode':1,'finished_at_utc':self.stamp(17)})
+        (self.root_execution/'ROOT-SERIAL.stderr.log').write_bytes(b'Authored original root failure\n')
+        guard = f.root/'guard.py';guard.write_text('pass\n',encoding='utf8')
+        guard_invocation = 'exec(compile('+repr('pass\n')+','+repr(str(guard))+',"exec"))'
+        interpreter = f.root/'guard-python.exe';interpreter.write_bytes(b'Authored interpreter identity, never executable')
+        binder = f.root/'capacity.py';binder.write_text('pass\n',encoding='utf8')
+        static: JsonObject = {'machine_id':f.machine,'source_commit':self.commit,'original_Popen_registry_retained':True,
+            'grant':json_object(self.grant),'ready':json_object(self.launch_ready),
+            'guard_original':json_object(subject._ttl_pin(guard)),'guard_interpreter':json_object(subject._ttl_pin(interpreter)),
+            'capacity_original':json_object(subject._ttl_pin(binder)),'guard_code_sha256':hashlib.sha256(guard_invocation.encode()).hexdigest(),
+            'capacity_source_sha256':'b'*64}
+        f.write_path(self.execution/'STATIC-INPUTS-PRECOMPILED.actual.json',static)
+        allocated: JsonObject = {'status':'ACTUAL_ALLOCATED_KEEPER_READY_NOT_RUN','task':'fixture-task',
+            'keeper_pid':2147483001,'live':str(f.live),'keeper_root':str(f.keeper),
+            'context':str(f.live/'ready-context.json'),'game_started':False,'business_pass':False}
+        self.stdout = self.execution/'ALLOCATE.stdout.log'
+        self.stdout.write_text(json.dumps(allocated)+'\n'+json.dumps({**allocated,**self.parent})+'\n',encoding='utf8')
+        (self.execution/'ALLOCATE.stderr.log').write_bytes(b'')
+        argv = ['python','tools/ck3_mod_acceptance.py','allocate','--prepared-case',f.prepared['path'],
+            '--keeper-output',str(f.keeper),'--products',f.products['path'],'--product','living-artifacts']
+        processes: list[JsonObject] = []
+        terminal: list[JsonObject] = []
+        for index,label in enumerate(('ALLOCATE','COLD-GUARD-0','COLD-GUARD-1')):
+            second = 1 if index==0 else 5+index
+            pid = 90000+index
+            born = int(datetime.fromisoformat(self.stamp(second)).timestamp())
+            birth = str(116444736000000000+born*10000000+1)
+            actual_argv = argv if index==0 else [str(interpreter),'-B','-X','utf8','-c',
+                guard_invocation,
+                '--live',str(f.live),'--ready-context',str(f.live/'ready-context.json'),'--run-id',f.run_id,
+                '--phase','phase-'+str(index),'--reserve-seconds','1200','--wait-awaiting-seconds','5400',
+                '--armed',str(self.execution/(label+'.ARMED.actual.json')),'--output',str(self.execution/(label+'.actual.json'))]
+            f.write_path(self.execution/(label+'.intent.actual.json'),{'machine_id':f.machine,
+                'observed_at_utc':self.stamp(second),'argv':actual_argv,'source_commit':self.commit,'started_at_utc':self.stamp(second)})
+            f.write_path(self.execution/(label+'.started.actual.json'),{'machine_id':f.machine,
+                'observed_at_utc':self.stamp(second), 'pid':pid,
+                'process_creation_filetime_100ns':birth,'process_create_time_seconds':str(born)+'.0000001',
+                'started_at_utc':self.stamp(second),'original_wait_pending':True})
+            code = 0 if index==0 else 1
+            f.write_path(self.execution/(label+'.original-wait.actual.json'),{'machine_id':f.machine,
+                'observed_at_utc':self.stamp(16 if index==0 else 11+index),'pid':pid,
+                'process_creation_filetime_100ns':birth,'original_wait_returncode':code,'elapsed_seconds':10.0,
+                'finished_at_utc':self.stamp(16 if index==0 else 11+index)})
+            processes.append({'label':label,'pid':pid,'birth_filetime':birth,'original_wait_consumed':False,'actual_returncode':None})
+            terminal.append({'label':label,'pid':pid,'process_creation_filetime_100ns':birth,'receipt_written':True,'returncode':code})
+            if index:
+                armed = f.write_path(self.execution/(label+'.ARMED.actual.json'),{'schema':'root-external-deadline-guard-armed-v1',
+                    'machine_id':f.machine,'run_id':f.run_id,'live':str(f.live),'ready_context':self.ready,
+                    'pid':pid,'process_creation_filetime_100ns':birth,'birth_source':'GetProcessTimes(GetCurrentProcess)',
+                    'state':'WAITING_FOR_ACTUAL_FROZEN_AND_PHASE','game_or_queue_action_sent':False,'deadline_bound':False,
+                    'reserve_seconds':1200,'wait_awaiting_seconds':5400,'guard':subject._ttl_pin(guard),
+                    'phase':'phase-'+str(index),'armed_at_utc':self.stamp(second)})
+                (self.execution/(label+'.stdout.log')).write_text('ROOT_DEADLINE_GUARD_ARMED '+json.dumps(armed)+'\n',encoding='utf8')
+                (self.execution/(label+'.stderr.log')).write_bytes(b'')
+        self.error = "ValueError('Actual build/validation writers must be closed before prelaunch')"
+        f.write_path(self.execution/'ROOT-SERIAL-FAILURE.actual.json',{'machine_id':f.machine,'observed_at_utc':self.stamp(10),
+            'error':self.error,'public_started':False,'display_before':None,'no_automatic_replay':True,
+            'screen_CAS_attempted':False,'original_handles':processes})
+        (self.root_execution/'ROOT-SERIAL.stdout.log').write_text('ACTUAL_READY '+f.run_id+'\n'+
+            ''.join('ORIGINAL_WAIT_ACTUAL '+json.dumps(row)+'\n' for row in terminal),encoding='utf8')
+        requested = f.root/'not-written.json'
+        cap = f.write_path(requested.with_name(requested.name+'.REFUSAL.json'),{'schema':'rrf-parameterized-prelaunch-refusal-v1',
+            'machine_id':f.machine,'error':self.error,'receipt_exists':False,'no_automatic_retry':True,'requested_receipt':str(requested)})
+        f.write_path(self.execution/'CAPACITY.stdout.log',{'refusal':cap})
+        f.write_path(self.execution/'CAPACITY-START.actual.json',{'machine_id':f.machine,
+            'derived_source_sha256':'b'*64,'argv':[str(binder),'--output',str(requested)]})
+        f.write_path(f.bus/'tasks/fixture-task.json',f.done['task'])
+        (f.bus/'events.jsonl').write_text(json.dumps(f.done['event'])+'\n',encoding='utf8')
+
+    @staticmethod
+    def stamp(second: int) -> str:
+        return '2026-10-23T00:00:'+str(second).zfill(2)+'+00:00'
+
+    def produce(self) -> subject.UnrunBundleReport:
+        self.serial += 1
+        f = self.fixture
+        return subject.build_bundle(argparse.Namespace(previous_live=f.live,keeper_root=f.keeper,
+            output=f.root/('serial-result-'+str(self.serial)), task_bus_root=f.bus,
+            serial_prelaunch_root_wait=self.root_execution/'ROOT-SERIAL.original-wait.json',
+            prelaunch_orchestrator_source=self.source,root_screen_release=Path(f.done_pin['path']),
+            next_state=f.root/'new-state',allocator_intent=self.execution/'ALLOCATE.intent.actual.json',
+            allocator_process=self.execution/'ALLOCATE.started.actual.json',allocator_exit=self.execution/'ALLOCATE.original-wait.actual.json',
+            allocator_stdout=self.stdout,release_sequence=12,done_sequence=12))
+
+    def claim(self, mutation: Callable[[], None] | None = None) -> tuple[Path,list[bool]]:
+        bridge = ClosedKeeperAbortedAllocationTests('runTest')
+        bridge.fixture = self.fixture
+        original = self.fixture.done_pin
+        def produce() -> subject.UnrunBundleReport:
+            report = self.produce()
+            self.fixture.done_pin = report['previous_release']
+            return report
+        try:
+            with patch.object(bridge,'produce',side_effect=produce):
+                return bridge.claim(mutation)
+        finally:
+            self.fixture.done_pin = original
+
+    def test_real_producer_full_reducer_roundtrip_known_waits_and_no_idle(self) -> None:
+        report = self.produce()
+        cleanup = member(report['validation'],'failure_cleanup')
+        self.assertEqual(report['validation']['mode'],'previous-shared-allocated-unrun-prelaunch-orchestrator-failed')
+        self.assertEqual(cleanup['original_root_exit_code'],1)
+        self.assertEqual(cleanup['original_allocator_exit_code'],0)
+        self.assertEqual(cleanup['guard_original_wait_codes'],[1,1])
+        self.assertEqual(cleanup['original_keeper_exit_code'],0)
+        for key in ('normal_close_qualified','typed_normal_exit_proven','business_pass','release_pass'):
+            self.assertIs(cleanup[key],False)
+        row = json_object(json.loads(Path(report['bundle']['path']).read_bytes()))
+        self.assertNotIn('idle_timeout',row)
+        self.assertNotIn('allocator_exit_code',row)
+        self.assertFalse((self.fixture.live/'allocation-unused-idle-timeout.json').exists())
+        self.assertEqual(row,json.loads(json.dumps(row)))
+
+    def test_known_waits_reach_original_writer_lock_and_late_launch_refuses(self) -> None:
+        record, observations = self.claim()
+        self.assertEqual(observations,[True])
+        intent = json_object(json.loads((record/'intent.json').read_bytes()))
+        self.assertEqual(member(member(intent,'closure'),'failure_cleanup')['original_allocator_exit_code'],0)
+
+    def test_native_or_public_start_inside_writer_lock_refuses_before_new_intent(self) -> None:
+        def launch() -> None:
+            (self.fixture.live/'launch-intent.json').write_text('{}',encoding='utf8')
+        with self.assertRaisesRegex(ValueError,'host/native/control'):
+            self.claim(launch)
+        self.assertFalse((self.fixture.root/'admission/machine.json').exists())
+
+    def test_wrong_type_birth_returncode_and_original_pin_are_rejected(self) -> None:
+        for name,field,bad in (('ALLOCATE.started.actual.json','pid',True),
+                ('ALLOCATE.started.actual.json','process_creation_filetime_100ns',134373000000000001),
+                ('ALLOCATE.original-wait.actual.json','original_wait_returncode',False),
+                ('COLD-GUARD-0.original-wait.actual.json','original_wait_returncode',0),
+                ('ROOT-SERIAL-FAILURE.actual.json','public_started',True)):
+            path = self.execution/name; raw = path.read_bytes(); row=json_object(json.loads(raw));row[field]=bad
+            path.write_text(json.dumps(row),encoding='utf8')
+            with self.subTest(name=name,field=field),self.assertRaises(ValueError):self.produce()
+            path.write_bytes(raw)
+        path=self.root_execution/'ROOT-SERIAL.original-wait.json';raw=path.read_bytes()
+        row=json_object(json.loads(raw));row['original_wait_returncode']=True
+        path.write_text(json.dumps(row),encoding='utf8')
+        with self.assertRaises(ValueError):self.produce()
+        path.write_bytes(raw)
+
+    def test_original_guard_source_wait_and_known_pin_drift_inside_lock_refuse(self) -> None:
+        def drift() -> None:
+            path=self.execution/'ALLOCATE.original-wait.actual.json';path.write_bytes(path.read_bytes()+b' ')
+        with self.assertRaises(ValueError):self.claim(drift)
+        self.assertFalse((self.fixture.root/'admission/machine.json').exists())
+
+    def test_complete_new_serial_producer_parser_and_role_scope_is_strict(self) -> None:
+        from mypy import api
+        path = Path(subject.__file__)
+        tree = ast.parse(path.read_text(encoding='utf8'))
+        names = {'SerialObservedProcess','SerialPrelaunchGuardEvidence','_SerialUnrunResources',
+            '_SerialUnrunReducer','_serial_resources','_serial_original','_serial_raw','_serial_child',
+            '_serial_argument','_serial_allocator','validate_serial_prelaunch','_serial_required_path',
+            'build_serial_prelaunch_bundle'}
+        nodes: list[ast.stmt] = [node for node in tree.body if isinstance(node,(ast.ClassDef,ast.FunctionDef)) and node.name in names]
+        self.assertEqual({node.name for node in nodes if isinstance(node,(ast.ClassDef,ast.FunctionDef))},names)
+        prelude = '''from __future__ import annotations
+from pathlib import Path
+from datetime import datetime, timezone
+from decimal import Decimal
+from dataclasses import dataclass
+from collections.abc import Mapping
+from typing import Literal, TypedDict, Protocol, runtime_checkable
+import argparse, ast, hashlib, json, math, re
+from ck3_mod_acceptance import same_directory_control_peer
+from ck3_mod_acceptance_background_types import FilePin, JsonObject, file_pin, json_object, object_field, text_field, strings_field
+from ck3_mod_acceptance_unrun import (SCHEMA, PRELAUNCH_KIND, SERIAL_PRELAUNCH_FORMAT, UnrunBundleReport,
+    _timestamp, _integer, _ttl_pin, _ttl_allocator_stdout, _captured_release, _sequence,
+    _journal_events, _ttl_recovery_sources, _write, validate_allocated_unrun)
+'''
+        source = prelude+ast.unparse(ast.fix_missing_locations(ast.Module(body=nodes,type_ignores=[])))
+        stdout,stderr,code = api.run(['--strict','--strict-equality','--follow-imports=silent',
+            '--no-incremental','--cache-dir','nul','-c',source])
+        self.assertEqual(code,0,stdout+stderr)
 
 
 if __name__=='__main__':unittest.main()
