@@ -280,7 +280,7 @@ public final class CiBootstrap {
         }
     }
 
-    public enum MavenProbePhase { BEFORE_ENSURE, AFTER_IN_PLACE_UPGRADE }
+    public enum MavenProbePhase { BEFORE_ENSURE, AFTER_IN_PLACE_UPGRADE, LOCAL_OBSERVE_ONLY }
     public enum MavenProbeStatus { OBSERVED, REJECTED }
 
     /** A durable observation is separate from minimum-version and pipeline admission. */
@@ -337,8 +337,12 @@ public final class CiBootstrap {
     }
 
     public static void main(String[] arguments) throws Exception {
-        if (!System.getProperty("os.name").startsWith("Windows") || Runtime.version().feature() != 21) {
-            throw new IllegalStateException("explicit installed Windows JDK21 required; no skip");
+        boolean observationEntry = arguments.length > 0 && List.of("--observe-local-default-maven",
+                "--verify-maven-evidence-root", "--product-maven-diagnostic").contains(arguments[0]);
+        requireWindowsJdk(System.getProperty("os.name"), Runtime.version().feature(), observationEntry);
+        if (arguments.length > 0 && arguments[0].equals("--observe-local-default-maven")) {
+            System.exit(LocalDefaultMaven.observe(arguments));
+            return;
         }
         if (arguments.length == 1 && arguments[0].equals("--verify-canonical-oracle-environment")) {
             OracleEnvironment.require(System.getenv());
@@ -517,6 +521,10 @@ public final class CiBootstrap {
         String machine = machineId(Path.of(Objects.requireNonNull(System.getenv("SystemRoot"))).toRealPath());
         verifyMavenEvidence(evidence, machine);
         J terminal = parse(Files.readAllBytes(evidence.resolve("logs/bootstrap-actual.json")));
+        if (string(field(terminal, "schema")).equals(LocalDefaultMaven.SCHEMA)
+                && !parseFilePin(field(terminal, "bootstrap_source_ref")).equals(measure(repo.resolve(
+                    "java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java"))))
+            throw new IOException("Local Maven observation and current diagnostic source differ");
         DefaultMaven maven = parseDefaultMaven(field(terminal, "default_maven"));
         verifyPin(maven.distributionLauncherRef());
         Path extension;
@@ -551,6 +559,192 @@ public final class CiBootstrap {
                 if (failed.getCause() instanceof Exception actual) throw actual;
                 throw new IOException("Actual repository observer failed", failed.getCause());
             }
+        }
+    }
+
+
+    static void requireWindowsJdk(String osName, int feature, boolean observationEntry) {
+        if (!osName.startsWith("Windows") || feature < 21 || !observationEntry && feature != 21)
+            throw new IllegalStateException("Windows JDK>=21 for observation; hosted bootstrap requires JDK21; no skip");
+    }
+
+    /** Local observation is deliberately separate from hosted provisioning and quota admission.
+     * Kept in this source unit so the supported Windows JDK21 source launcher remains single-file. */
+    static final class LocalDefaultMaven {
+        static final String SCHEMA = "xar.java-control-local-default-maven-actual/v1";
+        private static final long STREAM_LIMIT = 65_536;
+        enum Status { READY, RED }
+        record Actual(String schema, String machineId, String startedAtUtc, String observedAtUtc,
+                      Status status, String error, FilePin bootstrapSourceRef, DefaultMaven defaultMaven,
+                      FilePin probeRef, FilePin originalWaitRef, boolean observesExistingOnly,
+                      boolean installationChanged, boolean pathChanged, boolean pipelineQualification) {}
+        record OriginalWait(String schema, List<String> argv, String processIdDecimal,
+                            String startedAtUtc, String finishedAtUtc, Integer originalExit,
+                            boolean timedOut, String stopReason, FilePin stdoutRef, FilePin stderrRef) {
+            OriginalWait { argv = List.copyOf(argv); }
+        }
+
+        static int observe(String[] arguments) throws IOException, InterruptedException {
+            if (arguments.length != 5 || !arguments[1].equals("--repo-root") || !arguments[3].equals("--work-root"))
+                throw new IllegalArgumentException("expected --observe-local-default-maven --repo-root <repo> --work-root <new-owned-root>");
+            Path repo = OracleEnvironment.plainDirectory(arguments[2]);
+            Path requested = Path.of(arguments[4]);
+            if (!requested.isAbsolute()) throw new IOException("absolute owned local observation root required");
+            Path root = requested.normalize();
+            Path parent = OracleEnvironment.plainDirectory(root.getParent().toString());
+            if (!parent.resolve(root.getFileName()).equals(root) || root.startsWith(repo)
+                    || Files.exists(root, LinkOption.NOFOLLOW_LINKS))
+                throw new IOException("new external plain local observation root required");
+            Path source = repo.resolve("java/ck3-control/build-tools/src/main/java/org/xar/ck3/control/build/CiBootstrap.java");
+            FilePin sourceRef = measure(source);
+            Path system = Path.of(Objects.requireNonNull(System.getenv("SystemRoot"))).toRealPath();
+            String machine = machineId(system);
+            Map<String, String> environment = Map.copyOf(System.getenv()); // Inherit; never rewrite PATH/settings.
+            Files.createDirectory(root);
+            Path logs = Files.createDirectory(root.resolve("logs"));
+            String started = Instant.now().toString(), failure = null;
+            DefaultMaven admitted = null;
+            List<FilePin> refs = new ArrayList<>();
+            Path output = logs.resolve("maven-version-1.log"), wait = logs.resolve("local-maven-process.actual.json");
+            try {
+                String version = recordedMavenProbe(() -> {
+                    OriginalWait actual = capture(repo, environment, output, logs.resolve("maven-version-1.stderr.log"),
+                            Duration.ofSeconds(30), system);
+                    publish(wait, actual);
+                    if (actual.timedOut() || actual.stopReason() != null || actual.originalExit() == null || actual.originalExit() != 0)
+                        throw new IOException("actual local mvn --version did not complete normally: " + actual.stopReason());
+                    return Files.readString(output, StandardCharsets.UTF_8);
+                }, () -> defaultMavenLauncher(environment, repo, true), output,
+                        logs.resolve("maven-observation-1.json"), machine, sourceRef,
+                        MavenProbePhase.LOCAL_OBSERVE_ONLY, true, refs);
+                admitted = requireDefaultMaven(version); // Below minimum is RED; no installer is reachable.
+                verifyPin(sourceRef);
+            } catch (IOException | InterruptedException | RuntimeException error) {
+                failure = error.getClass().getName() + ": " + error.getMessage();
+                if (error instanceof InterruptedException) Thread.currentThread().interrupt();
+            } finally {
+                publish(logs.resolve("bootstrap-actual.json"), new Actual(SCHEMA, machine, started, Instant.now().toString(),
+                        failure == null && admitted != null ? Status.READY : Status.RED, failure, sourceRef, admitted,
+                        refs.isEmpty() ? null : refs.getLast(), Files.isRegularFile(wait) ? measure(wait) : null,
+                        true, false, false, false));
+            }
+            return failure == null && admitted != null ? 0 : 1;
+        }
+
+        /** The process and both streams are bounded independently of hosted budgets. No Maven build runs here. */
+        static OriginalWait capture(Path cwd, Map<String, String> environment, Path stdout, Path stderr,
+                                             Duration timeout, Path system) throws IOException, InterruptedException {
+            List<String> command = List.of(system.resolve("System32/cmd.exe").toString(), "/d", "/c", "call mvn --version");
+            String started = Instant.now().toString(), pid = null, stop = null;
+            Integer exit = null; boolean timedOut = false;
+            Process child = null;
+            CompletableFuture<Void> out = null, err = null;
+            try (OutputStream first = Files.newOutputStream(stdout, StandardOpenOption.CREATE_NEW);
+                 OutputStream second = Files.newOutputStream(stderr, StandardOpenOption.CREATE_NEW)) {
+                ProcessBuilder builder = new ProcessBuilder(command).directory(cwd.toFile());
+                builder.environment().clear(); builder.environment().putAll(environment);
+                child = builder.start(); pid = Long.toString(child.pid());
+                Process actual = child;
+                out = CompletableFuture.runAsync(() -> drain(actual.getInputStream(), first));
+                err = CompletableFuture.runAsync(() -> drain(actual.getErrorStream(), second));
+                long deadline = System.nanoTime() + timeout.toNanos();
+                while (!child.waitFor(20, TimeUnit.MILLISECONDS)) {
+                    if (out.isCompletedExceptionally() || err.isCompletedExceptionally()) { stop = "OUTPUT_LIMIT_OR_IO"; break; }
+                    if (System.nanoTime() - deadline >= 0) { timedOut = true; stop = "TIMEOUT"; break; }
+                }
+                if (child.isAlive()) {
+                    if (!terminate(child)) stop = "PROCESS_TERMINATION_UNAVAILABLE";
+                }
+                if (!child.isAlive()) exit = child.exitValue();
+                try { out.get(10, TimeUnit.SECONDS); err.get(10, TimeUnit.SECONDS); }
+                catch (ExecutionException | TimeoutException error) { stop = "OUTPUT_LIMIT_OR_IO"; }
+            } catch (IOException error) { stop = error.getClass().getSimpleName() + ": " + error.getMessage(); }
+            finally {
+                if (child != null && child.isAlive()) {
+                    if (terminate(child)) exit = child.exitValue();
+                }
+            }
+            return new OriginalWait("xar.java-control-local-maven-original-wait/v1", command, pid, started,
+                    Instant.now().toString(), exit, timedOut, stop, measure(stdout), measure(stderr));
+        }
+
+        private static boolean terminate(Process child) throws InterruptedException {
+            List<ProcessHandle> descendants = child.descendants().toList();
+            for (ProcessHandle process : descendants) process.destroyForcibly();
+            child.destroyForcibly();
+            boolean complete = child.waitFor(10, TimeUnit.SECONDS);
+            long deadline = System.nanoTime() + Duration.ofSeconds(10).toNanos();
+            while (descendants.stream().anyMatch(ProcessHandle::isAlive) && System.nanoTime() - deadline < 0)
+                Thread.sleep(20);
+            return complete && descendants.stream().noneMatch(ProcessHandle::isAlive);
+        }
+
+        private static void drain(InputStream input, OutputStream output) {
+            try (input) {
+                byte[] buffer = new byte[4096]; long total = 0; int count;
+                while ((count = input.read(buffer)) != -1) {
+                    if (count > STREAM_LIMIT - total) throw new IOException("local Maven observation stream limit");
+                    output.write(buffer, 0, count); total += count;
+                }
+            } catch (IOException error) { throw new UncheckedIOException(error); }
+        }
+
+        static int verify(Path root, String machine, J terminal) throws IOException {
+            exactFields(terminal, Set.of("schema", "machine_id", "started_at_utc", "observed_at_utc", "status", "error",
+                    "bootstrap_source_ref", "default_maven", "probe_ref", "original_wait_ref", "observes_existing_only",
+                    "installation_changed", "path_changed", "pipeline_qualification"));
+            requireText(terminal, "schema", SCHEMA); requireText(terminal, "machine_id", machine);
+            requireText(terminal, "status", Status.READY.name());
+            if (field(terminal, "error") != JNull.VALUE || !(field(terminal, "observes_existing_only") instanceof JB only) || !only.value())
+                throw new IOException("successful read-only local observation required");
+            for (String key : List.of("installation_changed", "path_changed", "pipeline_qualification")) requireFalse(terminal, key);
+            try {
+                Instant started = Instant.parse(string(field(terminal, "started_at_utc")));
+                Instant finished = Instant.parse(string(field(terminal, "observed_at_utc")));
+                if (finished.isBefore(started)) throw new IOException("local observation timestamps reversed");
+                FilePin source = parseFilePin(field(terminal, "bootstrap_source_ref")); verifyPin(source);
+                Path logs = root.toRealPath().resolve("logs");
+                FilePin probeRef = routed(field(terminal, "probe_ref"), logs.resolve("maven-observation-1.json"));
+                MavenProbeActual probe = parseMavenProbe(readMetadata(Path.of(probeRef.path()))); verifyPin(probeRef);
+                if (!probe.machineId().equals(machine) || probe.phase() != MavenProbePhase.LOCAL_OBSERVE_ONLY
+                        || probe.status() != MavenProbeStatus.OBSERVED || !source.equals(probe.bootstrapSourceRef()))
+                    throw new IOException("local source/machine/phase differs");
+                FilePin stdout = routed(field(toJson(probe), "output_ref"), logs.resolve("maven-version-1.log"));
+                if (stdout.bytes() > STREAM_LIMIT) throw new IOException("local stdout exceeds bound");
+                DefaultMaven admitted = parseDefaultMaven(field(terminal, "default_maven"));
+                DefaultMaven parsed = requireDefaultMaven(Files.readString(Path.of(stdout.path()), StandardCharsets.UTF_8));
+                if (!parsed.equals(admitted) || !admitted.distributionLauncherRef().equals(probe.selectedLauncherRef())
+                        || !probe.observation().reportedVersion().equals(admitted.reportedVersion())
+                        || !probe.observation().reportedHome().equals(admitted.reportedHome()))
+                    throw new IOException("local actual version/home/launcher differs");
+                verifyPin(admitted.distributionLauncherRef());
+                FilePin waitRef = routed(field(terminal, "original_wait_ref"), logs.resolve("local-maven-process.actual.json"));
+                J wait = readMetadata(Path.of(waitRef.path())); verifyPin(waitRef);
+                exactFields(wait, Set.of("schema", "argv", "process_id_decimal", "started_at_utc", "finished_at_utc",
+                        "original_exit", "timed_out", "stop_reason", "stdout_ref", "stderr_ref"));
+                requireText(wait, "schema", "xar.java-control-local-maven-original-wait/v1");
+                if (!string(field(wait, "process_id_decimal")).matches("[1-9][0-9]{0,18}")
+                        || integer(field(wait, "original_exit")) != 0 || field(wait, "stop_reason") != JNull.VALUE)
+                    throw new IOException("actual original successful local Maven process required");
+                requireFalse(wait, "timed_out");
+                List<String> expected = List.of(Path.of(Objects.requireNonNull(System.getenv("SystemRoot"))).toRealPath()
+                        .resolve("System32/cmd.exe").toString(), "/d", "/c", "call mvn --version");
+                if (!field(wait, "argv").equals(toJson(expected))) throw new IOException("exact default mvn version argv required");
+                if (!stdout.equals(parseFilePin(field(wait, "stdout_ref")))) throw new IOException("original stdout differs");
+                FilePin stderr = routed(field(wait, "stderr_ref"), logs.resolve("maven-version-1.stderr.log"));
+                if (stderr.bytes() > STREAM_LIMIT) throw new IOException("local stderr exceeds bound");
+                Instant processStart = Instant.parse(string(field(wait, "started_at_utc")));
+                Instant processFinish = Instant.parse(string(field(wait, "finished_at_utc")));
+                if (processStart.isBefore(started) || processFinish.isAfter(finished) || processFinish.isBefore(processStart))
+                    throw new IOException("original process timestamps differ");
+                return 1;
+            } catch (IllegalArgumentException error) { throw new IOException("invalid strict local Maven evidence", error); }
+        }
+
+        private static FilePin routed(J value, Path expected) throws IOException {
+            FilePin pin = parseFilePin(value);
+            if (!Path.of(pin.path()).equals(expected.toAbsolutePath().normalize())) throw new IOException("local evidence route differs");
+            verifyPin(pin); return pin;
         }
     }
 
@@ -713,6 +907,8 @@ public final class CiBootstrap {
     static int verifyMavenEvidence(Path workRoot, String expectedMachineId) throws IOException {
         Path logs = workRoot.toRealPath().resolve("logs");
         J terminal = readMetadata(logs.resolve("bootstrap-actual.json"));
+        if (string(field(terminal, "schema")).equals(LocalDefaultMaven.SCHEMA))
+            return LocalDefaultMaven.verify(workRoot, expectedMachineId, terminal);
         exactFields(terminal, Set.of("schema", "machine_id", "started_at_utc", "observed_at_utc", "status", "error",
                 "plan_ref", "default_maven", "maven_probe_refs", "bootstrap_native_job_hard_bound",
                 "bootstrap_alone_grants_pipeline_qualification"));
