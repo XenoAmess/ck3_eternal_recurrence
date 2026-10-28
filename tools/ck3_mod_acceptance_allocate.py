@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     from ck3_mod_acceptance import Selection
     from xar_autoplayer.saved_campaign_profile_inventory_v2 import Inventory
 from datetime import datetime,timezone
+from decimal import Decimal
 import hashlib,importlib.util,json,os,platform,re,subprocess,sys,time
 import math
 from pathlib import Path
@@ -2833,6 +2834,133 @@ def validate_preserved_failure_native_os0(normal_value: object, retained_value: 
         win32_birth_filetime=filetime)
 
 
+class PreservedSerialFailureBundle(TypedDict):
+    schema: Literal['ck3-mod-acceptance-failed-live-resource-closure-v1']
+    machine_id: str
+    run_id: str
+    keeper_root: str
+    closure_kind: Literal['preserved-failure-native-process-exit-zero']
+    public_wait_format: Literal['root-serial-original-popen-v1']
+    process_exit_evidence_format: Literal['typed-native-observer-v2']
+    normal_close_qualified: Literal[False]
+    typed_normal_exit_proven: Literal[False]
+    business_pass: Literal[False]
+    release_pass: Literal[False]
+    original_evidence: dict[str, FilePin]
+
+
+def preserved_serial_failure_bundle(machine_id: str, run_id: str, keeper_root: Path,
+        original_evidence: object) -> PreservedSerialFailureBundle:
+    """Pin separate original serial receipts without rewriting their field shapes."""
+    if (not isinstance(machine_id, str) or not machine_id or not isinstance(run_id, str)
+            or not run_id.startswith(machine_id + '--') or not keeper_root.is_absolute()):
+        raise ValueError('Serial failure machine/run/keeper identity differs')
+    refs = serial_original_evidence_pins(original_evidence)
+    required = {'frozen_argv', 'ready_context', 'prepared_case', 'host_started', 'host_exit',
+        'host_supervisor', 'run_wait', 'run_intent', 'run_started', 'run_stdout', 'run_stderr',
+        'allocate_wait', 'allocate_intent', 'allocate_started', 'allocate_stdout', 'allocate_stderr',
+        'root_serial_terminal', 'native_report', 'normal_close', 'retained_identity', 'retained_exit',
+        'server_stderr', 'keeper_report', 'keeper_stop', 'keeper_exit', 'keeper_process', 'release',
+        *PRESERVED_TYPED_OBSERVER_SOURCE_KEYS}
+    if not required <= refs.keys():
+        raise ValueError('Complete original serial failure evidence pins required')
+    return PreservedSerialFailureBundle(schema='ck3-mod-acceptance-failed-live-resource-closure-v1',
+        machine_id=machine_id, run_id=run_id, keeper_root=str(keeper_root.resolve()),
+        closure_kind='preserved-failure-native-process-exit-zero',
+        public_wait_format='root-serial-original-popen-v1',
+        process_exit_evidence_format='typed-native-observer-v2',
+        normal_close_qualified=False, typed_normal_exit_proven=False, business_pass=False,
+        release_pass=False, original_evidence=refs)
+
+
+def serial_original_evidence_pins(value: object) -> dict[str, FilePin]:
+    refs: dict[str, FilePin] = {}
+    for key, raw in json_object(value).items():
+        if set(json_object(raw)) != {'path', 'bytes', 'sha256'}:
+            raise ValueError('Exact original serial evidence pin fields required')
+        ref = file_pin(raw)
+        if not Path(ref['path']).is_absolute():
+            raise ValueError('Absolute original serial evidence pin path required')
+        refs[key] = ref
+    return refs
+
+
+def validate_serial_original_public_wait(intent_value: object, started_value: object,
+        wait_value: object, terminal_value: object, machine: str, run_id: str,
+        mode: Literal['run', 'allocate'], code: int, keeper_exit: FilePin) -> list[str]:
+    """Join the actual intent, birth, original wait and retained-handle terminal."""
+    intent, started, waited, terminal = (json_object(value) for value in
+        (intent_value, started_value, wait_value, terminal_value))
+    expected_fields = (
+        {'machine_id', 'observed_at_utc', 'argv', 'source_commit', 'started_at_utc'},
+        {'machine_id', 'observed_at_utc', 'pid', 'process_creation_filetime_100ns',
+         'process_create_time_seconds', 'started_at_utc', 'original_wait_pending'},
+        {'machine_id', 'observed_at_utc', 'pid', 'process_creation_filetime_100ns',
+         'original_wait_returncode', 'elapsed_seconds', 'finished_at_utc'},
+        {'machine_id', 'observed_at_utc', 'run_id', 'normal_close_qualified', 'business_pass',
+         'original_handles', 'keeper_parent', 'screen_released', 'display_restored',
+         'outer_exit_after_actual_terminal_records'})
+    for value, fields in zip((intent, started, waited, terminal), expected_fields, strict=True):
+        if set(value) != fields or value.get('machine_id') != machine:
+            raise ValueError('Exact original serial public receipt fields/machine required')
+    pid = _late_integer(started.get('pid'), 'Original serial public PID')
+    birth = text_field(started, 'process_creation_filetime_100ns')
+    seconds = text_field(started, 'process_create_time_seconds')
+    if (pid <= 0 or re.fullmatch('[1-9][0-9]{0,19}', birth) is None or int(birth) >= 1 << 64
+            or re.fullmatch('(?:0|[1-9][0-9]{0,12})(?:\\.[0-9]{1,7})?', seconds) is None
+            or Decimal(seconds) * 10000000 + 116444736000000000 != Decimal(birth)
+            or _late_integer(waited.get('pid'), 'Original serial waited PID') != pid
+            or waited.get('process_creation_filetime_100ns') != birth
+            or _late_integer(waited.get('original_wait_returncode'), 'Original serial wait code') != code
+            or started.get('original_wait_pending') is not True):
+        raise ValueError('Original serial public PID/FILETIME/wait differs')
+    elapsed = waited.get('elapsed_seconds')
+    if (type(elapsed) not in (int, float) or not isinstance(elapsed, (int, float))
+            or not math.isfinite(elapsed) or elapsed < 0):
+        raise ValueError('Original serial wait elapsed time must be finite and nonnegative')
+    stamps = [datetime.fromisoformat(text_field(value, key)) for value, key in (
+        (intent, 'started_at_utc'), (intent, 'observed_at_utc'),
+        (started, 'started_at_utc'), (started, 'observed_at_utc'),
+        (waited, 'finished_at_utc'), (waited, 'observed_at_utc'), (terminal, 'observed_at_utc'))]
+    if any(stamp.tzinfo is None for stamp in stamps) or stamps != sorted(stamps):
+        raise ValueError('Original serial public command completion chronology differs')
+    argv = strings_field(intent, 'argv')
+    indices = [i for i, item in enumerate(argv) if Path(item).name == 'ck3_mod_acceptance.py']
+    if (len(indices) != 1 or indices[0] + 1 >= len(argv) or argv[indices[0] + 1] != mode
+            or re.fullmatch('[0-9a-f]{40}', text_field(intent, 'source_commit')) is None
+            or terminal.get('run_id') != run_id or terminal.get('normal_close_qualified') is not False
+            or terminal.get('business_pass') is not False or terminal.get('screen_released') is not False
+            or terminal.get('display_restored') is not False
+            or _late_integer(terminal.get('outer_exit_after_actual_terminal_records'), 'Serial failure outer exit') != 2
+            or set(json_object(terminal.get('keeper_parent'))) != {'path', 'bytes', 'sha256'}
+            or file_pin(terminal.get('keeper_parent')) != keeper_exit):
+        raise ValueError('Original serial public intent/failed terminal crossed the run or keeper')
+    handles = terminal.get('original_handles')
+    if not isinstance(handles, list) or not 2 <= len(handles) <= 16:
+        raise ValueError('Original serial retained handle terminal is missing or unbounded')
+    labels: set[str] = set()
+    selected: JsonObject | None = None
+    for raw in handles:
+        handle = json_object(raw)
+        label = text_field(handle, 'label')
+        handle_birth = text_field(handle, 'birth')
+        if (set(handle) != {'label', 'pid', 'birth', 'actual_original_popen_wait', 'returncode',
+                           'stdout_closed', 'stderr_closed'} or label in labels
+                or _late_integer(handle.get('pid'), 'Serial terminal PID') <= 0
+                or re.fullmatch('[1-9][0-9]{0,19}', handle_birth) is None or int(handle_birth) >= 1 << 64
+                or handle.get('actual_original_popen_wait') is not True
+                or type(handle.get('returncode')) is not int
+                or handle.get('stdout_closed') is not True or handle.get('stderr_closed') is not True):
+            raise ValueError('Original serial retained handle terminal differs')
+        labels.add(label)
+        if label == ('PUBLIC-RUN' if mode == 'run' else 'ALLOCATE'):
+            selected = handle
+    if (selected is None or selected.get('pid') != pid or selected.get('birth') != birth
+            or selected.get('returncode') != code):
+        raise ValueError('Original serial public wait did not consume this retained Popen')
+    return argv
+
+
 def validate_root_observed_public_exit(value: object, machine: str,
         mode: Literal['run', 'allocate'], code: int) -> list[str]:
     """Consume the Root's actual original command receipt, without invented Popen fields."""
@@ -3449,12 +3577,16 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
     split_public = bundle.get('public_wait_format') == 'command-intent-process-exit-completion'
     recorded_public = bundle.get('public_wait_format') == 'recorded-actual-command-started-exit-v1'
     root_observed_public = bundle.get('public_wait_format') == 'root-observed-command-exit-v1'
+    serial_public = bundle.get('public_wait_format') == 'root-serial-original-popen-v1'
     require(not root_observed_public or preserved_os0 or client_failure,
             'Root-observed public format requires its supported original closure kind')
-    require(not preserved_os0 or root_observed_public, 'Preserved native process OS0 requires its actual Root public receipts')
+    require(not serial_public or preserved_os0 and typed_observer,
+            'Serial original waits require the preserved failure typed OS0 route')
+    require(not preserved_os0 or root_observed_public or serial_public,
+            'Preserved native process OS0 requires its actual Root public receipts')
     require(not client_failure or root_observed_public,
             'Case-client failure requires actual Root original public waits')
-    require('public_wait_format' not in bundle or split_public or recorded_public or root_observed_public,
+    require('public_wait_format' not in bundle or split_public or recorded_public or root_observed_public or serial_public,
             'Failed-live public wait format is unknown')
     require(not (split_public or recorded_public) or late_cleanup or gui_os0,
             'Recorded public wait requires original expired retained wait')
@@ -3463,9 +3595,11 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
     recorded_attempts: list[str] = []
     refs, evidence = bundle.get('original_evidence'), {}
     require(isinstance(refs, dict), 'Original failed-live evidence pins required')
-    if client_failure:
+    if client_failure or serial_public:
         for reference in json_object(refs).values():
             file_pin(reference)
+    if serial_public:
+        serial_original_evidence_pins(refs)
     def original(key, expected=None, *, decode=True, max_bytes=1048576):
         row = refs[key]; path = Path(row['path']).resolve()
         require(expected is None or path == Path(expected).resolve(), 'Failed-live original path differs: ' + key)
@@ -3506,7 +3640,13 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
     def public_wait(mode, code):
         value = original(mode + '_wait')
         parent = Path(refs[mode + '_wait']['path']).resolve().parent
-        if root_observed_public:
+        if serial_public:
+            argv = validate_serial_original_public_wait(
+                original(mode + '_intent'), original(mode + '_started'), value,
+                original('root_serial_terminal'), text_field(json_object(bundle), 'machine_id'),
+                text_field(json_object(freeze), 'run_id'), mode, code,
+                file_pin(json_object(refs).get('keeper_exit')))
+        elif root_observed_public:
             argv = validate_root_observed_public_exit(value, bundle['machine_id'], mode, code)
             require(not client_failure or value.get('actual_original_popen_wait') is True,
                     'Case-client public receipt lacks the actual original Popen wait')
@@ -3569,10 +3709,10 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
                     'Failed-live original command intent differs')
         stdout_name = (stem + '.stdout.json') if recorded_public else (
             'stdout.json' if split_public else ('stdout.txt' if late_cleanup else 'stdout.log'))
-        original(mode + '_stdout', None if root_observed_public else parent/stdout_name, decode=False, max_bytes=16777216)
+        original(mode + '_stdout', None if root_observed_public or serial_public else parent/stdout_name, decode=False, max_bytes=16777216)
         stderr_name = (stem + '.stderr.txt') if recorded_public else (
             'stderr.txt' if late_cleanup and not split_public else 'stderr.log')
-        original(mode + '_stderr', None if root_observed_public else parent/stderr_name, decode=False, max_bytes=16777216)
+        original(mode + '_stderr', None if root_observed_public or serial_public else parent/stderr_name, decode=False, max_bytes=16777216)
         return Path(argument('--runtime')).resolve()
     require(public_wait('run', 2) == public_wait('allocate', 0), 'Failed-live public runtime differs')
     require(not recorded_public or len(recorded_attempts) == 2 and
@@ -3666,7 +3806,7 @@ def previous_failed_live_resource_closure(previous: Path, freeze: dict[str, obje
                 'Failed-live original retained nonzero CK3 exit differs')
     original('server_stderr', report['server_stderr'], decode=False, max_bytes=16777216)
     keeper = original('keeper_report', keeper_root/'report.json')
-    if split_public or recorded_public or root_observed_public:
+    if split_public or recorded_public or root_observed_public or serial_public:
         require(bool(original('keeper_stop', keeper_root/'STOP', decode=False)),
                 'Failed-live original cooperative keeper STOP is missing')
     waited = original('keeper_exit', previous/'keeper-actual-parent-exit.json')

@@ -2,6 +2,7 @@
 from __future__ import annotations
 import ast
 import copy
+import contextlib
 import json
 import os
 import subprocess
@@ -11,6 +12,7 @@ import tempfile
 from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
+from typing import Iterator
 
 TOOLS=Path(__file__).resolve().parent
 if str(TOOLS) not in sys.path:sys.path.insert(0,str(TOOLS))
@@ -152,6 +154,197 @@ class FailedResourceClosureTests(unittest.TestCase):
         self.bundle['normal_close_result_original']=self.normal
         self.amend_original('original_normal_close_result',self.normal)
         with self.assertRaisesRegex(ValueError,'claims PASS'):self.check()
+
+
+class SerialOriginalWaitClosureTests(unittest.TestCase):
+    """Separate original serial receipts enter the existing played-failure reducer.
+
+    Host/process boundaries are authored. The original SDK writes the actual
+    once-claim, pending observer, terminal fact and handle-close fixture files.
+    """
+
+    def setUp(self) -> None:
+        self.observer = PreservedObserverClosureTests('runTest')
+        self.observer.setUp()
+        self.addCleanup(self.observer.doCleanups)
+        self.fixture = self.observer.fixture
+        f = self.fixture
+        self.serial_root = f.root / 'root-serial'
+        self.serial_root.mkdir()
+        self.originals: dict[str, JsonObject] = {}
+        handles: list[JsonObject] = []
+        for mode, label, code, pid, birth, seconds in (
+                ('run', 'PUBLIC-RUN', 2, 90001, '134373000000000001', '1792826400.0000001'),
+                ('allocate', 'ALLOCATE', 0, 90002, '134373000000000002', '1792826400.0000002')):
+            command = json_object(f.leaves[mode + '_command'])
+            self.originals[mode + '_intent'] = {'machine_id': f.machine,
+                'observed_at_utc': '2026-10-24T10:00:00.000001+00:00', 'argv': command['argv'],
+                'source_commit': 'a' * 40, 'started_at_utc': '2026-10-24T10:00:00+00:00'}
+            self.originals[mode + '_started'] = {'machine_id': f.machine,
+                'observed_at_utc': '2026-10-24T10:00:00.000003+00:00', 'pid': pid,
+                'process_creation_filetime_100ns': birth, 'process_create_time_seconds': seconds,
+                'started_at_utc': '2026-10-24T10:00:00.000002+00:00', 'original_wait_pending': True}
+            self.originals[mode + '_wait'] = {'machine_id': f.machine,
+                'observed_at_utc': '2026-10-24T10:59:59.000001+00:00', 'pid': pid,
+                'process_creation_filetime_100ns': birth, 'original_wait_returncode': code,
+                'elapsed_seconds': 3599.0, 'finished_at_utc': '2026-10-24T10:59:59+00:00'}
+            handles.append({'label': label, 'pid': pid, 'birth': birth,
+                'actual_original_popen_wait': True, 'returncode': code,
+                'stdout_closed': True, 'stderr_closed': True})
+        self.originals['root_serial_terminal'] = {'machine_id': f.machine,
+            'observed_at_utc': '2026-10-24T11:00:00+00:00', 'run_id': f.run_dir.name,
+            'normal_close_qualified': False, 'business_pass': False, 'original_handles': handles,
+            'keeper_parent': f.refs['keeper_exit'], 'screen_released': False, 'display_restored': False,
+            'outer_exit_after_actual_terminal_records': 2}
+        for key, value in self.originals.items():
+            f.refs[key] = self.observer.write(self.serial_root / (key + '.json'), value)
+        self.publish()
+
+    def publish(self) -> None:
+        f = self.fixture
+        f.bundle = json_object(allocation.preserved_serial_failure_bundle(
+            f.machine, f.run_dir.name, f.keeper, f.refs))
+        f.bundle['original_evidence'] = f.refs
+        f.write(f.close, f.bundle)
+
+    def amend(self, key: str, value: object) -> None:
+        self.fixture.refs[key] = self.observer.write(self.serial_root / (key + '.json'), value)
+        self.publish()
+
+    def check(self) -> JsonObject:
+        return self.observer.check()
+
+    @contextlib.contextmanager
+    def boundaries(self) -> Iterator[None]:
+        with patch.object(allocation, 'runtime_process_inventory', return_value={'blockers': self.fixture.blockers}):
+            yield
+
+    def test_serial_producer_roundtrip_full_played_consumer_preserves_originals_and_failure(self) -> None:
+        originals = {key: Path(text_field(json_object(ref), 'path')).read_bytes()
+                     for key, ref in self.fixture.refs.items()}
+        proof = object_field(self.check(), 'failure_cleanup')
+        self.assertEqual(proof['original_host_exit_code'], 1)
+        self.assertEqual(proof['original_ck3_exit_code'], 0)
+        self.assertIs(proof['actual_retained_os0'], True)
+        for key in ('normal_close_qualified', 'typed_normal_exit_proven', 'business_pass', 'release_pass'):
+            self.assertIs(proof[key], False)
+        self.fixture.bundle = json.loads(json.dumps(self.fixture.bundle))
+        self.fixture.write(self.fixture.close, self.fixture.bundle)
+        self.assertEqual(object_field(self.check(), 'failure_cleanup'), proof)
+        self.assertEqual(originals, {key: Path(text_field(json_object(ref), 'path')).read_bytes()
+                                    for key, ref in self.fixture.refs.items()})
+
+    def test_quartet_missing_wrong_pin_or_mixed_format_rejected(self) -> None:
+        f = self.fixture
+        for key in ('run_intent', 'run_started', 'run_wait', 'root_serial_terminal', 'allocate_started'):
+            with self.subTest(missing=key):
+                refs = copy.deepcopy(f.refs)
+                del refs[key]
+                with self.assertRaisesRegex(ValueError, 'Complete original'):
+                    allocation.preserved_serial_failure_bundle(f.machine, f.run_dir.name, f.keeper, refs)
+        for raw in ({'path': 'relative', 'bytes': 1, 'sha256': 'a' * 64},
+                    {'path': str(f.close), 'bytes': True, 'sha256': 'a' * 64},
+                    {'path': str(f.close), 'bytes': 1, 'sha256': 'a' * 64, 'alias': 'other'}):
+            with self.subTest(pin=raw):
+                refs = {**f.refs, 'run_wait': raw}
+                with self.assertRaises(ValueError):
+                    allocation.preserved_serial_failure_bundle(f.machine, f.run_dir.name, f.keeper, refs)
+        f.bundle['public_wait_format'] = 'root-observed-command-exit-v1'
+        f.write(f.close, f.bundle)
+        with self.assertRaisesRegex(ValueError, 'public command exit differs'):
+            self.check()
+
+    def test_wait_pid_filetime_type_chronology_and_terminal_handle_must_match(self) -> None:
+        changes: tuple[tuple[str, str, object], ...] = (
+            ('run_wait', 'pid', True), ('run_wait', 'pid', 90001.0),
+            ('run_wait', 'original_wait_returncode', False), ('run_wait', 'original_wait_returncode', 0),
+            ('run_wait', 'process_creation_filetime_100ns', 134373000000000001),
+            ('run_started', 'process_creation_filetime_100ns', '0134373000000000001'),
+            ('run_started', 'process_create_time_seconds', '1792826400.0000002'),
+            ('run_started', 'original_wait_pending', False), ('run_wait', 'elapsed_seconds', True),
+            ('run_wait', 'finished_at_utc', '2026-10-24T09:00:00+00:00'),
+            ('root_serial_terminal', 'run_id', 'other-run'),
+            ('root_serial_terminal', 'business_pass', True))
+        for key, field, value in changes:
+            with self.subTest(receipt=key, field=field, value=value):
+                changed = {**self.originals[key], field: value}
+                self.amend(key, changed)
+                with self.assertRaises(ValueError):
+                    self.check()
+                self.amend(key, self.originals[key])
+        for field, value in (('actual_original_popen_wait', False), ('pid', 123),
+                             ('birth', '134373000000000002'), ('returncode', True), ('stdout_closed', False)):
+            terminal = copy.deepcopy(self.originals['root_serial_terminal'])
+            handles = terminal['original_handles']
+            if not isinstance(handles, list) or not isinstance(handles[0], dict):
+                self.fail('Authored terminal handle list required')
+            handles[0][field] = json_object({'value': value})['value']
+            self.amend('root_serial_terminal', terminal)
+            with self.subTest(handle_field=field), self.assertRaises(ValueError):
+                self.check()
+        self.amend('root_serial_terminal', self.originals['root_serial_terminal'])
+
+    def test_unchanged_source_quartet_pin_is_rechecked_by_real_writer_lock(self) -> None:
+        import test_preserved_failure_native_os0 as existing
+        bridge = SimpleNamespace(setUp=lambda: None, doCleanups=lambda: None,
+            fixture=self.fixture, check=self.check, boundaries=self.boundaries)
+        writer = existing.FailedLiveWriterLockTests('runTest')
+        self.addCleanup(writer.doCleanups)
+        with patch.object(existing, 'CaseClientFailureClosureTests', return_value=bridge):
+            writer.setUp()
+        originals = {key: Path(text_field(json_object(ref), 'path')).read_bytes()
+                     for key, ref in self.fixture.refs.items()}
+        record = writer.claim()
+        self.assertEqual(writer.calls, ['fresh_bus', 'real_reducer'])
+        intent = json_object(json.loads((record / 'intent.json').read_bytes()))
+        facts = object_field(object_field(intent, 'closure'), 'failure_cleanup')
+        self.assertEqual(facts['original_host_exit_code'], 1)
+        self.assertIs(facts['actual_retained_os0'], True)
+        self.assertIs(facts['business_pass'], False)
+        self.assertEqual(originals, {key: Path(text_field(json_object(ref), 'path')).read_bytes()
+                                    for key, ref in self.fixture.refs.items()})
+
+    def test_new_serial_producer_and_parser_scope_is_strict(self) -> None:
+        from mypy import api
+        tree = ast.parse((TOOLS / 'ck3_mod_acceptance_allocate.py').read_text(encoding='utf-8-sig'))
+        names = {'PreservedSerialFailureBundle', 'preserved_serial_failure_bundle',
+                 'serial_original_evidence_pins', 'validate_serial_original_public_wait', '_late_integer'}
+        nodes = [node for node in tree.body if isinstance(node, (ast.ClassDef, ast.FunctionDef)) and node.name in names]
+        self.assertEqual({node.name for node in nodes}, names)
+        constants = [node for node in tree.body if isinstance(node, ast.Assign) and any(
+            isinstance(target, ast.Name) and target.id == 'PRESERVED_TYPED_OBSERVER_SOURCE_KEYS'
+            for target in node.targets)]
+        prelude = '''from __future__ import annotations
+from typing import Literal, TypedDict
+from datetime import datetime
+from decimal import Decimal
+from pathlib import Path
+import math, re
+from ck3_mod_acceptance_background_types import FilePin, JsonObject, json_object, file_pin, text_field, strings_field
+'''
+        source = prelude + ast.unparse(ast.fix_missing_locations(ast.Module(body=[*constants, *nodes], type_ignores=[])))
+        with patch.dict(os.environ, {'MYPYPATH': str(TOOLS)}):
+            stdout, stderr, code = api.run(['--strict', '--strict-equality', '--follow-imports=silent',
+                '--no-incremental', '--cache-dir', 'nul', '-c', source])
+        self.assertEqual(code, 0, stdout + stderr)
+
+    def test_quartet_drift_inside_original_writer_lock_refuses_before_new_intent(self) -> None:
+        import test_preserved_failure_native_os0 as existing
+        bridge = SimpleNamespace(setUp=lambda: None, doCleanups=lambda: None,
+            fixture=self.fixture, check=self.check, boundaries=self.boundaries)
+        writer = existing.FailedLiveWriterLockTests('runTest')
+        self.addCleanup(writer.doCleanups)
+        with patch.object(existing, 'CaseClientFailureClosureTests', return_value=bridge):
+            writer.setUp()
+        path = Path(text_field(json_object(self.fixture.refs['run_wait']), 'path'))
+
+        def drift() -> None:
+            path.write_bytes(path.read_bytes() + b' ')
+
+        with self.assertRaisesRegex(ValueError, 'changed|SHA|size'):
+            writer.claim(mutation=drift)
+        writer.assert_no_new_intent()
+        self.assertEqual(writer.calls, ['fresh_bus', 'real_reducer'])
 
 
 class PreservedObserverClosureTests(unittest.TestCase):
