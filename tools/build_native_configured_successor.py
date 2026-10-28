@@ -29,7 +29,7 @@ from typing import Literal, NotRequired, Protocol, TypedDict, runtime_checkable
 ROOT = Path(__file__).resolve().parents[1]
 PREFIX = "ck3_autonomous_player/native_bridge/"
 PRODUCTION = ("xar_ck3_bridge", "xar_ck3_12002_runtime", "xar_bridge_protocol")
-MAX_BUDGET = 192 * 1024 * 1024
+MAX_BUDGET = 288 * 1024 * 1024
 NONCOMPILED_CONSUMER_RELATIVE = "research/refill_add_live_12004/consume_live_refill_add.py"
 HOST_TEST_COMPANION_RELATIVE = "research/test_ck3_12002_mcp_live.py"
 
@@ -355,7 +355,7 @@ def parse_config(value: object) -> Config:
     commit = string(row["source_commit"])
     require(re.fullmatch(r"[0-9a-f]{40}", commit), "Exact source commit required")
     budget = integer(row["budget_bytes"], 1)
-    require(budget <= MAX_BUDGET, "Native lane exceeds 192 MiB")
+    require(budget <= MAX_BUDGET, "Native lane exceeds 288 MiB")
     fixtures: list[Fixture] = []
     for raw in arr(row["fixtures"]):
         item = obj(raw)

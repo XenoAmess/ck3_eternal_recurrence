@@ -168,9 +168,9 @@ class ConfiguredSuccessorTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             parse_config(value)
 
-    def test_budget_accepts_192_mib_and_smaller_lanes_through_json_roundtrip(self) -> None:
+    def test_budget_accepts_288_mib_and_smaller_lanes_through_json_roundtrip(self) -> None:
         for schema in ("ck3-configured-native-successor-v1", "ck3-configured-native-successor-v2"):
-            for size in (1, 160 * 1024 * 1024, 176705326, 192 * 1024 * 1024):
+            for size in (1, 160 * 1024 * 1024, 176705326, 192 * 1024 * 1024, 288 * 1024 * 1024):
                 expected = replace(self.config, schema=schema, budget=size)
                 with self.subTest(schema=schema, size=size):
                     actual = parse_config(json.loads(json.dumps(config_json(expected))))
@@ -178,17 +178,17 @@ class ConfiguredSuccessorTests(unittest.TestCase):
                     self.assertEqual(actual.budget, size)
 
     def test_budget_rejects_noninteger_and_nonpositive_sizes(self) -> None:
-        for size in (True, False, 160.0, float(192 * 1024 * 1024), "201326592", None, 0, -1):
+        for size in (True, False, 160.0, float(288 * 1024 * 1024), "301989888", None, 0, -1):
             value = config_json(self.config)
             value["budget_bytes"] = size
             with self.subTest(size=size), self.assertRaisesRegex(ValueError, "Exact bounded integer required"):
                 parse_config(value)
 
-    def test_budget_rejects_one_byte_above_192_mib(self) -> None:
+    def test_budget_rejects_one_byte_above_288_mib(self) -> None:
         for schema in ("ck3-configured-native-successor-v1", "ck3-configured-native-successor-v2"):
             value = config_json(replace(self.config, schema=schema))
-            value["budget_bytes"] = 192 * 1024 * 1024 + 1
-            with self.subTest(schema=schema), self.assertRaisesRegex(ValueError, "Native lane exceeds 192 MiB"):
+            value["budget_bytes"] = 288 * 1024 * 1024 + 1
+            with self.subTest(schema=schema), self.assertRaisesRegex(ValueError, "Native lane exceeds 288 MiB"):
                 parse_config(json.loads(json.dumps(value)))
 
     def _budget_gated_producer(self, budget: int, grant_budget: object, *, include_budget: bool = True) -> Producer:
@@ -206,9 +206,9 @@ class ConfiguredSuccessorTests(unittest.TestCase):
                          budget=budget, admission=pin(path))
         return Producer(parse_config(json.loads(json.dumps(config_json(config)))))
 
-    def test_real_gate_accepts_roundtripped_budget_at_or_below_192_mib_grant(self) -> None:
-        for size in (160 * 1024 * 1024, 176705326, 192 * 1024 * 1024):
-            producer = self._budget_gated_producer(size, 192 * 1024 * 1024)
+    def test_real_gate_accepts_roundtripped_budget_at_or_below_288_mib_grant(self) -> None:
+        for size in (160 * 1024 * 1024, 176705326, 192 * 1024 * 1024, 288 * 1024 * 1024):
+            producer = self._budget_gated_producer(size, 288 * 1024 * 1024)
             with self.subTest(size=size), patch("build_native_configured_successor.git",
                                                side_effect=[producer.config.source_commit, ""]):
                 producer.gate()
@@ -216,7 +216,7 @@ class ConfiguredSuccessorTests(unittest.TestCase):
             self.assertFalse(producer.config.output.exists())
 
     def test_real_gate_rejects_budget_one_byte_above_actual_grant(self) -> None:
-        producer = self._budget_gated_producer(192 * 1024 * 1024, 192 * 1024 * 1024 - 1)
+        producer = self._budget_gated_producer(288 * 1024 * 1024, 288 * 1024 * 1024 - 1)
         with patch("build_native_configured_successor.git", side_effect=[producer.config.source_commit, ""]), \
              self.assertRaisesRegex(ValueError, "Native lane exceeds admitted budget"):
             producer.gate()
