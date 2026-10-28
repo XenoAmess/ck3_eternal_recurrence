@@ -43,7 +43,7 @@ class FakeAdapter:
             'request_sha256':M.sha(self.requests[request_id]),'manifest_bytes_sha256':request['manifest_sha256'],
             'policy_sha256':M.sha(PLAN['policy_bytes']),'runtime_manifest_sha256':policy['runtime_manifest_sha256'],
             'runtime_verified':True,'protected_code':True,'request_owner_sid':M.OWNER,'actual_token_sid':M.SYSTEM}
-        return M.raw_json({'status':'verified' if self.fail!='ACK_without_proof' else 'settings_failed','broker_identity':identity,
+        return M.raw_json({'broker_schema':'xar.project-exe-broker.receipt.v1','status':'verified' if self.fail!='ACK_without_proof' else 'settings_failed','broker_identity':identity,
             'admin_token':True,'system_token_sid':M.SYSTEM,'observed_prior_settings_preserved':True,
             'observed_extensions_unchanged':True,'observed_processes_unchanged':True,'before_settings':before,
             'after_settings':after,'files':outputs,'verified_requested_paths':[x['path'] for x in outputs]})
@@ -55,7 +55,7 @@ OUTPUT={'path':r'C:\w\declared\one.exe','size':1,'sha256':'e'*64}
 CHANGES=[{'path':path} for path in sorted(M.LEAVES)]
 PLAN={'summary':{},'task':{},'frozen':[({'path':path},b'new') for path in sorted(M.LEAVES)],
  'authority':{'changed_leaves':CHANGES},'policy_bytes':POLICY,
- 'initial':[({'outputs':[OUTPUT]},b'fake-only-manifest')]}
+ 'initial':[({'outputs':[OUTPUT]},M.raw_json({'schema':'xar.project-exe-exclusions.v1','files':[OUTPUT]}))]}
 
 class ResumeDirectedTests(unittest.TestCase):
     def run_case(self,fail=None):

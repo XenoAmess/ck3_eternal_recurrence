@@ -31,7 +31,7 @@ def main():
     import ntpath
     from native_safety import canonical_path
     receipt = canonical_path(args.receipt)
-    allowed = 'C:\\ck3-war-episode04-research-20261004-a01\\'
+    allowed = 'D:\\ck3-state\\ck3-java-g2-resume63-m0-native01\\broker-install-current01\\'
     if not ntpath.normcase(receipt).startswith(ntpath.normcase(allowed)) or not receipt.lower().endswith('.json'):
         parser.error('receipt must be a new JSON file below the project external evidence root')
     from windows_adapter import WindowsInstallerAdapter

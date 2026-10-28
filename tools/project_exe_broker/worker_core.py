@@ -101,8 +101,14 @@ def joined(root, operand):
 
 def parse_policy(raw):
     policy = strict_json(raw)
-    exact_keys(policy, POLICY_KEYS, 'Policy')
-    if policy['broker_schema'] != POLICY_SCHEMA:
+    version = policy.get('broker_schema') if isinstance(policy, dict) else None
+    if version == 'xar.project-exe-broker.policy.v2':
+        exact_keys(policy, POLICY_KEYS | {'data_root'}, 'Policy')
+        if key(policy['data_root']) != key(r'D:\ck3-state\xar-project-exe-broker'):
+            raise ValueError('Fixed D data root required')
+    elif version == POLICY_SCHEMA:
+        exact_keys(policy, POLICY_KEYS, 'Policy')
+    else:
         raise ValueError('Unknown policy schema')
     canonical_uuid(policy['installation_id'])
     if not isinstance(policy['owner_sid'], str) or not re.fullmatch(r'S-1-5-21-\d+-\d+-\d+-\d+', policy['owner_sid']):
@@ -118,9 +124,10 @@ def parse_policy(raw):
             raise ValueError('Bounded nonempty policy root list required')
         for value in values:
             absolute(value)
-    for name in ('inbox_dir', 'frozen_dir', 'receipts_dir'):
-        if not within(policy[name], policy['runtime_root']):
-            raise ValueError('Fixed broker data directories must remain in protected installation')
+    data_root = policy.get('data_root', policy['runtime_root'])
+    for name, child in (('inbox_dir', 'inbox'), ('frozen_dir', 'private-frozen'), ('receipts_dir', 'receipts')):
+        if key(policy[name]) != key(ntpath.join(data_root, child)):
+            raise ValueError('Fixed broker data child required')
     bounds = {'max_request_bytes': (1024, 4 * 1024 * 1024), 'max_files': (1, 1024),
               'max_requests_per_run': (1, 16), 'request_budget_seconds': (1, 120), 'run_budget_seconds': (1, 600)}
     for name, (low, high) in bounds.items():
@@ -458,9 +465,18 @@ def validate_msvc(claim, manifest):
 def settings(client):
     value = client.read_settings()
     exact_keys(value, SETTINGS, 'Actual settings readback')
-    if not all(isinstance(value[k], list) and all(isinstance(p, str) for p in value[k]) for k in SETTINGS):
+    if not all((value[k] is None and k != 'ExclusionPath') or (isinstance(value[k], list) and all(isinstance(p, str) for p in value[k])) for k in SETTINGS):
         raise ValueError('Administrative settings view is malformed/unknown')
+    if any(value[k] is None for k in SETTINGS):
+        from register_project_exe_exclusions import require_system_broker_readback
+        _, after = require_system_broker_readback(client.settings_readback())
+        if after != value:
+            raise ValueError('Nullable evidence differs from actual settings')
     return value
+
+
+def same_nonpath(left, right) -> bool:
+    return left is None and right is None if left is None or right is None else set(left) == set(right)
 
 
 def settings_keys(value, field):
@@ -475,8 +491,8 @@ def readback(receipt, after):
     receipt['verified_requested_paths'] = [r['path'] for r in receipt['files'] if key(r['path']) in observed]
     receipt['missing_requested_paths'] = [r['path'] for r in receipt['files'] if key(r['path']) not in observed]
     receipt['observed_prior_settings_preserved'] = prior <= observed
-    receipt['observed_extensions_unchanged'] = set(before['ExclusionExtension']) == set(after['ExclusionExtension'])
-    receipt['observed_processes_unchanged'] = set(before['ExclusionProcess']) == set(after['ExclusionProcess'])
+    receipt['observed_extensions_unchanged'] = same_nonpath(before['ExclusionExtension'], after['ExclusionExtension'])
+    receipt['observed_processes_unchanged'] = same_nonpath(before['ExclusionProcess'], after['ExclusionProcess'])
     fulfilled = requested <= observed and prior <= observed and receipt['observed_extensions_unchanged'] and receipt['observed_processes_unchanged']
     receipt['partial_mutation'] = bool((requested - prior) & observed) and not fulfilled
     return fulfilled
@@ -541,6 +557,14 @@ def register_claim(claim, receipt, client_factory):
                     receipt.update(status='verified', verification_source='same SYSTEM/admin actual readback after preserved call error')
             except Exception as read_error:
                 receipt['after_read_error'] = str(read_error)
+    if client is not None and hasattr(client, 'settings_readback'):
+        evidence = client.settings_readback()
+        receipt.update(evidence)
+        if evidence['settings_readback_schema'] == 'xar.project-exe-three-settings-readback/v2':
+            receipt['broker_schema'] = 'xar.project-exe-broker.receipt.v2'
+            if receipt['status'] == 'verified':
+                from register_project_exe_exclusions import require_system_broker_readback
+                require_system_broker_readback(receipt)
     return receipt
 
 
@@ -627,6 +651,8 @@ def process_request(path, policy_bytes, safety, client_factory, runtime_guard, *
                        source_identity=repo_identity, input_pins=claim.input_pins)
         claim.revalidate_all()
         stage = 'settings-readback-and-Add'
+        if getattr(safety, 'data_root', None) is not None:
+            safety.require_data_capacity((16 << 20) + 65536)
         register_claim(claim, receipt, client_factory)
     except Exception as error:
         receipt.update(status='settings_failed', error=str(error), error_type=type(error).__name__, error_stage=stage)
@@ -649,6 +675,8 @@ def process_request(path, policy_bytes, safety, client_factory, runtime_guard, *
 
 def run_once(policy_bytes, safety, client_factory, runtime_guard):
     policy = parse_policy(policy_bytes)
+    if getattr(safety, 'data_root', None) is not None:
+        safety.require_data_capacity((16 << 20) + policy['max_request_bytes'] + 65536)
     deadline = safety.clock() + policy['run_budget_seconds']
     candidates = [r for r in safety.list_files(policy['inbox_dir']) if r.get('is_file') is True
                   and re.fullmatch(r'[0-9a-f-]{36}\.request\.json', ntpath.basename(r['path']))]

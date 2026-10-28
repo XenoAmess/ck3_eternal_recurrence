@@ -1,6 +1,6 @@
 # resume63：REA、Java 全能力迁移与 G2 接续
 
-`machine_id: xenoamess-full-tower-eb9d2c1186`。2026-10-28T01:29:46Z 更新；任务继续。本页接续 [resume62 交接](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff.md)与[来源索引](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff-source-index.json)。[完整对照](2026-10-26-resume63-migration-and-g2-matrix.md)区分八项业务门槛和全迁移范围。
+`machine_id: xenoamess-full-tower-eb9d2c1186`。2026-10-28T02:58:28Z 更新；任务继续。本页接续 [resume62 交接](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff.md)与[来源索引](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff-source-index.json)。[完整对照](2026-10-26-resume63-migration-and-g2-matrix.md)区分八项业务门槛和全迁移范围。
 
 目标：REA M0–M7研究及Java落地，完整迁移后普通自动游玩。Java启动/日/SAVE/RESTORE均0，G2实机0/8。首启与迁移并行；31000秒仅SDK预算。
 
@@ -22,7 +22,11 @@ Tools204已真完整PASS并RAM独核：151XML/1149P/674pins/1467类/六部署；
 
 capture02 已实际执行：2026-10-28T00:51:50Z 启动，01:00:33Z 正常退出1/523.3001529s；失败回执4013794B/00230320cc162005ef265029641fe6a5b7a366797d8faeaa3dfd50ed2f576d25。全部35个 Maven reactor 模块编译/打包 SUCCESS，WJP0/297.2421034s，实际峰1317060608B；本轮按设计不执行 JUnit。失败仅在后置 SourceFile 审计：真实 Java 测试源目录与声明 package 不同，旧审计错误假设两者一致。已采用共享 resolver 两叶修复，实际解析 package，局部 whole9 与原4032 class 只读重审接续；冻结失败图不热改、不改写为成功。最终 coherent 图还需纳入 broker v2 消费者，然后做一次完整验收。
 
-用户已要求“一次 UAC，以后不再进行”。正维护现有受保护 SYSTEM broker，C 盘只存小型运行组件、D 盘存请求与证据；Java/旧 producer 同步 nullable v2，安装后另用普通 token 登记真实新构建路径。当前仍无新安装/新 UAC/管理员成功设置读回。详细边界见 [broker 专题](../ck3-native-ai/project-exe-defender-broker.md)。原1223失败保留，不重放旧请求。
+用户要求“一次 UAC，以后不再进行”已落地：固定 SYSTEM broker 安装成功，当前注入器 SYSTEM 排除读回 P；另一个不同新路径真实单 TU 编译后，由 `admin=false` 的普通调用方经原 helper 登记，SYSTEM 路径数17→18，0 runas，三设置保留及 proof8 完整。安装1051099B/b9687409…，第二实际5173B/c88116c8…，均在 R/broker-install-current01。首次取消后仅按用户明确“再次发起”重试，管理员进程0/安装 P，之后不再提权。最终软件61P，九完整模块mypy=41与精确before基线一致，新增0但整体未绿；普通客户端私有区扫描权限缺陷已修共享路径，C 已安装图不热改。安装摘要 `settings_changed:false` 已修共享 producer，原实际 SYSTEM 回执证明已改，后继更正而不篡原件。详见 [broker 专题](../ck3-native-ai/project-exe-defender-broker.md)。
+
+Java 新 broker consumer 原整类24P。Root诊断脚本错误地将 `before_settings` 输出为 `before` 标签，继而误判原始合同，造成不必要暂停；Native/Acceptance/Host直接读原件确认顶层 `before/after` 均为数组、与 samephase.ExclusionPath 一致。建议已撤，零源码修改，原331源 Input07/最终 full 恢复。普通 MSVC 证明不伪装成 CMake built 资格；另由原 collector/普通 helper 取得含真实 target 的 CMake proof，原 public `readVerified` 已真 P/2.433s，并经独核，保严格 target/identity/proof8（actual6122B/59c010b5…）。旧 capture 4032 class 的标准 jshell/public attest 只读重审全 P（68.6205s），失败 capture 回执仍 RED。
+
+Main218 增编 P/94.486s；219 原五整类31实际20P5F6E/794.789s、未超时，两新增 termination 回归及旧环境负例真 P；余失败继续共享修复，不阻首 Menu。Menu 原 API genesis seq0 已实际创建并读回，anchor/snapshot各715B，target10958；Robert 与旧错误计划未改。M6新增93B/20指令已双引擎及独审闭环，确认全局槽先发布 P 后调用、两次调用返回后清空；非空不足以证明 loaded-bank。对应专题与 sources.json 已更新，G2实机仍0/8。
 
 ## Main增量的实际范围与剩余失败
 

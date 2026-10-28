@@ -472,5 +472,44 @@ class InboxPublicationLeaseTest(unittest.TestCase):
                     state["post"] = True
 
 
+
+class OrdinaryAnchoredDataTest(unittest.TestCase):
+    def test_bind_never_enumerates_system_private_state(self):
+        from contextlib import contextmanager
+        events = []
+        class Safety:
+            def __init__(self, *args): pass
+            def bind_data_root(self, identity): events.append(("identity", identity))
+            @contextmanager
+            def hold_data_root(self):
+                events.append("hold")
+                yield
+                events.append("close")
+            def require_data_capacity(self, *args):
+                raise PermissionError("ordinary token cannot read private-frozen")
+        with patch("project_exe_broker.native_safety.NativeSafety", Safety):
+            backend = c.WindowsBackend()
+            backend.bind_data_root({"owner_sid": OWNER, "frozen_dir": "private", "receipts_dir": "receipts"}, {"sealed": True})
+            self.assertEqual(events, [("identity", {"sealed": True}), "hold"])
+            backend.close_data_root()
+            self.assertEqual(events[-1], "close")
+
+    def test_inbox_bounds_actual_public_files_and_rejects_subdirectories(self):
+        with tempfile.TemporaryDirectory() as directory:
+            inbox = Path(directory)
+            (inbox / "one.request.json").write_bytes(b"request")
+            self.assertEqual(c.WindowsBackend._require_inbox_capacity(inbox, 100), 16384)
+            for reserve in (True, -1, 2097153):
+                with self.subTest(reserve=reserve), self.assertRaises(ValueError):
+                    c.WindowsBackend._require_inbox_capacity(inbox, reserve)
+            with (inbox / "large.tmp").open("wb") as stream:
+                stream.truncate(64 << 20)
+            with self.assertRaisesRegex(ValueError, "cap exceeded"):
+                c.WindowsBackend._require_inbox_capacity(inbox, 100)
+            (inbox / "large.tmp").unlink()
+            (inbox / "directory").mkdir()
+            with self.assertRaisesRegex(ValueError, "non-reparse file"):
+                c.WindowsBackend._require_inbox_capacity(inbox, 100)
+
 if __name__ == "__main__":
     unittest.main()

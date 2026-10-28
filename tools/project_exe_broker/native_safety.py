@@ -15,6 +15,7 @@ import uuid
 SYSTEM_SID = "S-1-5-18"
 ADMIN_SID = "S-1-5-32-544"
 INSTALL_ROOT = "C:\\Program Files\\XAR CK3 Project EXE Broker"
+DATA_ROOT = "D:\\ck3-state\\xar-project-exe-broker"
 ATTR_DIRECTORY = 0x10
 ATTR_REPARSE = 0x400
 WRITE_MASK = 0x500D0156  # generic ALL/WRITE, DELETE/WDAC/WOWNER, file/dir writes
@@ -22,6 +23,16 @@ READ_MASK = 0xB2020089  # generic READ/EXECUTE/ALL/MAXIMUM_ALLOWED and read righ
 WRITE_MASK |= 0x02000000  # conservatively reject MAXIMUM_ALLOWED grants
 MAX_DIRECTORY_ENTRIES = 16384
 MAX_PUBLICATION_BYTES = 16 * 1024 * 1024
+DATA_ALLOCATION_LIMIT = 64 * 1024 * 1024
+DATA_STATE_POLICY = {
+    "schema": "xar.project-exe-broker.data-state-policy/v1",
+    "allocation_limit_bytes": DATA_ALLOCATION_LIMIT,
+    "purpose": "Bounded pending requests, actual receipts and current no-replay claims",
+    "review_at_utc": "2026-11-03T04:00:00Z",
+    "review_action": "Apply the project storage policy; no automatic renewal or deletion of UNKNOWN claims",
+    "completed_body_review_after_days": 7,
+    "unknown_replay": "NEVER_AUTOMATIC",
+}
 
 
 class SafetyError(RuntimeError):
@@ -176,11 +187,121 @@ class NativeSafety:
         self.owner_sid = owner_sid
         self.frozen_dir = canonical_path(frozen_dir)
         self.receipts_dir = canonical_path(receipts_dir)
-        if not _same_path(self.frozen_dir, INSTALL_ROOT + "\\private-frozen"):
-            raise SafetyError("fixed private directory required")
-        if not _same_path(self.receipts_dir, INSTALL_ROOT + "\\receipts"):
-            raise SafetyError("fixed receipt directory required")
+        legacy = (_same_path(self.frozen_dir, INSTALL_ROOT + "\\private-frozen") and
+                  _same_path(self.receipts_dir, INSTALL_ROOT + "\\receipts"))
+        data = (_same_path(self.frozen_dir, DATA_ROOT + "\\private-frozen") and
+                _same_path(self.receipts_dir, DATA_ROOT + "\\receipts"))
+        if not legacy and not data:
+            raise SafetyError("fixed matching private/receipt directories required")
+        self.data_root = DATA_ROOT if data else None
+        self._data_root_identity = None
         self._native = backend
+
+    @staticmethod
+    def data_identity(path: str, meta: dict) -> dict[str, str]:
+        """Canonical string identity for the protected install metadata."""
+        if not _same_path(path, DATA_ROOT) or meta.get("attributes", 0) & ATTR_REPARSE:
+            raise SafetyError("fixed non-reparse data root required")
+        if not meta.get("attributes", 0) & ATTR_DIRECTORY:
+            raise SafetyError("data root must be a directory")
+        volume, identifier = meta["file_id"]
+        created = meta.get("creation_filetime_decimal")
+        if (not isinstance(created, str) or not re.fullmatch(r"[1-9][0-9]*", created) or
+                type(volume) is not int or not isinstance(identifier, str) or
+                not re.fullmatch(r"[0-9a-f]{32}", identifier)):
+            raise SafetyError("complete root creation/volume/file identity required")
+        descriptor_proof(meta["security"], expected_owner=ADMIN_SID,
+                         allowed_writers=(SYSTEM_SID, ADMIN_SID), require_protected=True)
+        return {"path": DATA_ROOT, "volume_serial_decimal": str(volume),
+                "file_id_128_decimal": str(int.from_bytes(bytes.fromhex(identifier), "little")),
+                "creation_filetime_decimal": created,
+                "security_sha256": _descriptor_fingerprint(meta)}
+
+    def observe_data_root_identity(self) -> dict[str, str]:
+        # Installer only: the caller seals this fresh observation in C metadata.
+        with self.lock_dir(DATA_ROOT) as lease:
+            return self.data_identity(lease.path, self._backend().state(lease._records[-1][1]))
+
+    def bind_data_root(self, identity: object) -> None:
+        if self.data_root is None or not isinstance(identity, dict):
+            raise SafetyError("data root mode and sealed identity required")
+        if set(identity) != {"path", "volume_serial_decimal", "file_id_128_decimal",
+                             "creation_filetime_decimal", "security_sha256"}:
+            raise SafetyError("exact data identity fields required")
+        if any(not isinstance(value, str) for value in identity.values()):
+            raise SafetyError("data identity values must be strings")
+        for name in ("volume_serial_decimal", "file_id_128_decimal", "creation_filetime_decimal"):
+            if not re.fullmatch(r"[1-9][0-9]*", identity[name]):
+                raise SafetyError("canonical nonzero decimal identity required")
+        if not re.fullmatch(r"[0-9a-f]{64}", identity["security_sha256"]):
+            raise SafetyError("data root ACL digest required")
+        if self.observe_data_root_identity() != identity:
+            raise SafetyError("sealed data root identity/ACL differs; no recreation")
+        self._data_root_identity = dict(identity)
+
+    @contextmanager
+    def hold_data_root(self):
+        if self.data_root is None:
+            yield None
+            return
+        if self._data_root_identity is None:
+            raise SafetyError("data root identity has not been sealed")
+        with self.lock_dir(self.data_root) as lease:
+            actual = self.data_identity(lease.path, self._backend().state(lease._records[-1][1]))
+            if actual != self._data_root_identity:
+                raise SafetyError("data root was replaced; no recreation")
+            yield lease
+            if self.data_identity(lease.path, self._backend().state(lease._records[-1][1])) != actual:
+                raise SafetyError("data root changed while held")
+
+    @contextmanager
+    def lock_data_path(self, path: str, *, directory: bool = False, inbox_publication: bool = False):
+        """Lease only the fixed anchored data tree; ordinary-writable inbox is explicit."""
+        path = canonical_path(path)
+        if self.data_root is None or not (_same_path(path, self.data_root) or
+                ntpath.normcase(path).startswith(ntpath.normcase(self.data_root + "\\"))):
+            raise SafetyError("fixed data tree required")
+        inbox = self.data_root + "\\inbox"
+        if inbox_publication and (not directory or not _same_path(path, inbox)):
+            raise SafetyError("write sharing restricted to fixed inbox")
+        with self.hold_data_root():
+            with self._lock(path, directory=directory) as lease:
+                for current, handle, _ in lease._records:
+                    if not (_same_path(current, self.data_root) or ntpath.normcase(current).startswith(ntpath.normcase(self.data_root + "\\"))):
+                        continue
+                    meta = self._backend().state(handle)
+                    writers = (SYSTEM_SID, ADMIN_SID, self.owner_sid) if _same_path(current, inbox) else (SYSTEM_SID, ADMIN_SID)
+                    descriptor_proof(meta["security"], allowed_writers=writers, require_protected=True)
+                yield lease
+
+    def require_data_capacity(self, reserve_bytes: int = 0) -> int:
+        """Admission for broker-owned writes, not an OS quota for unrelated writers."""
+        if type(reserve_bytes) is not int or reserve_bytes < 0:
+            raise SafetyError("finite nonnegative data reserve required")
+        if self.data_root is None:
+            return 0
+        used, count, pending = 0, 0, [self.data_root]
+        with self.hold_data_root():
+            while pending:
+                path = pending.pop()
+                directory = self.is_dir(path)
+                with self._lock(path, directory=directory) as lease:
+                    used += max(self._backend().allocation_bytes(lease._records[-1][1]), 8192 if directory else 0)
+                    if directory:
+                        for entry in self._backend().list_entries(lease._records[-1][1], path, MAX_DIRECTORY_ENTRIES):
+                            name = entry["name"]
+                            if name in (".", ".."):
+                                continue
+                            if not isinstance(name, str) or "\\" in name or "/" in name:
+                                raise SafetyError("data entry must be an immediate child")
+                            count += 1
+                            if count > MAX_DIRECTORY_ENTRIES:
+                                raise SafetyError("finite data entry bound exceeded")
+                            used += 4096
+                            pending.append(canonical_path(ntpath.join(path, name)))
+                    if used + reserve_bytes > DATA_ALLOCATION_LIMIT:
+                        raise SafetyError("fixed data allocation admission cap exceeded; no claim deletion or replay")
+        return used
 
     def _backend(self):
         if self._native is None:
@@ -300,9 +421,13 @@ class NativeSafety:
     def _protected_records(self, lease, *, private=False, final_read_scope=False):
         verified = []
         for path, handle, _ in lease._records:
-            if not (_same_path(path, INSTALL_ROOT) or ntpath.normcase(path).startswith(
-                    ntpath.normcase(INSTALL_ROOT + "\\"))):
+            roots = (INSTALL_ROOT,) if self.data_root is None else (INSTALL_ROOT, self.data_root)
+            if not any(_same_path(path, root) or ntpath.normcase(path).startswith(
+                    ntpath.normcase(root + "\\")) for root in roots):
                 continue
+            if self.data_root is not None and _same_path(path, self.data_root):
+                if self._data_root_identity is None or self.data_identity(path, self._backend().state(handle)) != self._data_root_identity:
+                    raise SafetyError("sealed data root identity differs")
             meta = self._backend().state(handle)
             self._check_state(path, meta, bool(meta["attributes"] & ATTR_DIRECTORY))
             readers = None
@@ -330,9 +455,10 @@ class NativeSafety:
     def verify_protected_path(self, path, *, private=False):
         """Read-only helper for fixed protected runtime/install paths, not inbox."""
         path = canonical_path(path)
-        if not (_same_path(path, INSTALL_ROOT) or ntpath.normcase(path).startswith(
-                ntpath.normcase(INSTALL_ROOT + "\\"))):
-            raise SafetyError("protected proof outside fixed installation refused")
+        roots = (INSTALL_ROOT,) if self.data_root is None else (INSTALL_ROOT, self.data_root)
+        if not any(_same_path(path, root) or ntpath.normcase(path).startswith(
+                ntpath.normcase(root + "\\")) for root in roots):
+            raise SafetyError("protected proof outside fixed installation/data root refused")
         directory = self._classify(path)
         if directory is None:
             raise SafetyError("protected target absent")
@@ -349,6 +475,8 @@ class NativeSafety:
         expected = self.frozen_dir if private else self.receipts_dir
         if not _same_path(parent, expected) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,199}", name):
             raise SafetyError("publication must be an immediate fixed protected child")
+        if self.data_root is not None:
+            self.require_data_capacity(((len(data) + 4095) // 4096) * 4096 + 16384)
         with self.lock_dir(parent) as lease:
             self._protected_records(lease, private=private, final_read_scope=not private)
             temporary = ntpath.join(parent, "native-publish-" + str(uuid.uuid4()) + ".tmp")
@@ -397,6 +525,11 @@ class BY_HANDLE_FILE_INFORMATION(ctypes.Structure):
 
 class FILE_ID_INFO(ctypes.Structure):
     _fields_ = [("volume", ctypes.c_uint64), ("identifier", ctypes.c_ubyte * 16)]
+
+
+class FILE_STANDARD_INFO(ctypes.Structure):
+    _fields_ = [("allocation", ctypes.c_int64), ("end_of_file", ctypes.c_int64),
+                ("links", DWORD), ("delete_pending", ctypes.c_ubyte), ("directory", ctypes.c_ubyte)]
 
 
 class ACL_HEADER(ctypes.Structure):
@@ -573,6 +706,14 @@ class Win32Backend:
         finally:
             self.LocalFree(descriptor)
 
+    def allocation_bytes(self, handle) -> int:
+        self._api()
+        info = FILE_STANDARD_INFO()
+        self._ok(self.GetFileInfoEx(handle, 1, ctypes.byref(info), ctypes.sizeof(info)))
+        if info.allocation < 0:
+            raise SafetyError("negative filesystem allocation rejected")
+        return int(info.allocation)
+
     def state(self, handle):
         self._api()
         info, identity = BY_HANDLE_FILE_INFORMATION(), FILE_ID_INFO()
@@ -598,7 +739,7 @@ class Win32Backend:
                 "final_path": canonical_path(final_path[4:]),
                 "file_id": (int(identity.volume), bytes(identity.identifier).hex()),
                 "size": (int(info.size_high) << 32) | int(info.size_low),
-                "mtime_ns": _ftime_ns(info.written), "security": self._security(handle)}
+                "mtime_ns": _ftime_ns(info.written), "creation_filetime_decimal": str((int(info.created.high) << 32) | int(info.created.low)), "security": self._security(handle)}
 
     def read(self, handle, limit):
         self._api()

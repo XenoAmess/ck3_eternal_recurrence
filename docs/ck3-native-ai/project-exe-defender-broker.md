@@ -4,7 +4,13 @@
 
 当前接续机器为 `machine_id: xenoamess-full-tower-eb9d2c1186`，观察时间 `2026-10-28T01:29:46Z`。用户要求仅进行一次 UAC。当前方案维护现有 broker：一次管理员安装固定 SYSTEM 按需任务，之后已配置项目源码/构建根下的已知 CMake/MSVC 清单由普通调用方提交，不逐 EXE 提权。受保护的小型运行组件放在 `C:/Program Files/XAR CK3 Project EXE Broker`；批量输入、冻结数据、日志和回执放在固定 `D:/ck3-state/xar-project-exe-broker`。D 盘祖先目录可由普通用户替换，不能只凭叶目录 ACL 认定保护完成；安装时须将数据根卷、文件身份、创建时间和 ACL 绑定到受保护安装清单，客户端及 worker 持有不允许删除共享的目录句柄并重验，身份变化即拒绝。
 
-本轮 Java 与既有 Python 边界同步支持 nullable 三设置读回，保留 `null`、空数组、缺字段的区别。安装验收要求实际任务/ACL/来源读回、当前项目 EXE 的 SYSTEM 设置前后证明，以及普通 token 为另一个真实新构建路径完成登记。软件测试、任务 ACK 和旧直接 UAC 的回执均不能替代这些结果。目前候选仍在局部测试与封包，**尚未新装、尚未再次触发 UAC、免重复 UAC 尚未实机验收**。当前首个 Java CK3 启动仍为 0。
+2026-10-28T02:58:28Z 更新：当前机器已成功安装并完成普通调用方验收。固定任务采用 SYSTEM、无周期触发、固定 action；安装读回包含 638 条 ACL 记录。首个真实注入器的路径排除由 SYSTEM 确认，路径数 16→17，扩展名设置的 `null` 与原进程设置均保留。首次取消记录保留；用户明确要求重试并确认后，管理员进程退出 0，后续测试未再提权。
+
+另一个不同路径的 EXE 由真实单 TU MSVC 编译产生（2.137 秒，未执行该 EXE），普通调用方 `admin=false` 经原公共 helper→固定任务取得完整 SYSTEM 回执，路径数 17→18，仅新增该路径，`runas_calls=0`。共享修复最终原整组共 61P；九个完整模块 mypy 与精确修改前基线均为 41 项，新增诊断 0，类型检查整体尚未全绿。普通客户端曾因扫描 SYSTEM 私有区被拒，已修入共享客户端；它只检查公有 inbox，完整私有区容量点仍由 SYSTEM worker 执行，没有放开私有 ACL 或修改已安装的 C 盘图。
+
+本机原件：`D:/ck3-state/ck3-java-g2-resume63-m0-native01/broker-install-current01/INSTALL-ACTUAL01.json`（1051099B，SHA `b9687409b4ce9fe51b87ce65f2e2b85a982e74b4479912e4ed60140ed256abf4`）；同目录 `SECOND-ORDINARY-RESULT01.json`（5173B，SHA `c88116c835b7d9a9821dac7078645cf5891cc6f1bbc61aaa7b15dc0cae4e2389`）绑定新构建、设置前后态和八份 proof。安装回执继承了准备阶段错误的 `settings_changed:false` 摘要；实际 SYSTEM 回执证明已新增路径，后继结果明确更正，原件未改写。
+
+**当前机器、已配置项目根和两种已知清单的后续登记免重复 UAC 已实际通过。** 此结果不代表 Java 正式 REGISTER、CK3 启动或完整迁移通过。Java 原公共 `readVerified` 已用真实 CMake target 与八份 proof 完整读回，退出 0/2.433 秒，并经独核，未削弱身份或 target 检查。Root 曾因自己的诊断输出把 `before_settings` 重命名为 `before` 而误判合同；原始回执的顶层 `before/after` 实际都是路径数组，修改建议已撤销，零源码修改，原 331 源最终验收恢复。首个 Java CK3 启动仍为 0。
 
 2026-10-05 04:56:18 UTC，固定 SYSTEM 按需任务与受保护运行时安装完成，首批两份构建清单中的四个项目 EXE 经实际 SYSTEM 设置前后读回验证。原始安装回执 `C:/ck3-war-episode04-research-20261004-a01/project-broker-root-resume-a01/installer-receipt.json` 为 1,367,505 字节，SHA-256 `4157fec4c9e66aeaae73b04dee5fcaa6f78f5f1245da188e0c331743096fe9ae`，状态 `installed_initial_outputs_verified`，`settings_status=verified`。这一结果与 Task.Run ACK、fake 测试或静态清单分别记录。
 

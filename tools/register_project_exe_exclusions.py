@@ -9,6 +9,7 @@ import hashlib
 import json
 import ntpath
 import os
+import stat
 from pathlib import Path
 import subprocess
 import uuid
@@ -257,6 +258,7 @@ class ExclusionSettings(TypedDict):
     ExclusionExtension: list[str]
     ExclusionProcess: list[str]
 
+
 class NullableExclusionSettings(TypedDict):
     ExclusionPath: list[str]
     ExclusionExtension: list[str] | None
@@ -307,6 +309,7 @@ class DirectSettingsReadbackV2(DirectSettingsReadbackFields):
     nullable_observation_scope: str
 
 DirectSettingsReadback = DirectSettingsReadbackV1 | DirectSettingsReadbackV2
+
 
 class DefenderWmi:
     def __init__(self) -> None:
@@ -484,6 +487,66 @@ class DefenderWmi:
                     "return_decode_error": str(error), "return_decode_error_type": type(error).__name__}
 
 
+def require_system_broker_readback(value: object) -> tuple[NullableExclusionSettings, NullableExclusionSettings]:
+    """Validate the nullable SYSTEM branch without treating null as an empty array."""
+    if not isinstance(value, dict):
+        raise ValueError("SYSTEM readback object required")
+    if value.get("settings_readback_schema") != "xar.project-exe-three-settings-readback/v2":
+        raise ValueError("Explicit nullable SYSTEM readback schema required")
+    if (value.get("settings_readback_complete") is not True or
+            "settings_readback_error" not in value or value["settings_readback_error"] is not None or
+            type(value.get("settings_readback_process_id")) is not int or
+            not 1 <= value["settings_readback_process_id"] <= 0xffffffff or
+            value.get("settings_readback_token_user_sid") != "S-1-5-18"):
+        raise ValueError("Complete actual SYSTEM worker readback identity required")
+    scope = ("Same administrative WMI client, one MSFT_MpPreference instance and existing Name/CIMType8/IsArray=true properties. "
+             "Python None is retained as an observed nullable CIM value, distinct from an empty array; raw VARIANT is not remeasured by this reader. "
+             "No assertion that effective exclusions are empty or unconfigured.")
+    if value.get("nullable_observation_scope") != scope:
+        raise ValueError("Nullable observation scope differs")
+    fields: tuple[ExclusionField, ...] = ("ExclusionPath", "ExclusionExtension", "ExclusionProcess")
+    parsed: list[NullableExclusionSettings] = []
+    for phase in ("before", "after"):
+        settings = value.get(phase + "_settings")
+        props = value.get(phase + "_property_observations")
+        if not isinstance(settings, dict) or set(settings) != set(fields):
+            raise ValueError("Three complete setting fields required")
+        if not isinstance(props, list) or len(props) != 3:
+            raise ValueError("Three ordered property observations required")
+        arrays: list[list[str] | None] = []
+        for index, field in enumerate(fields):
+            raw = settings[field]
+            if raw is None and field != "ExclusionPath":
+                array = None
+            elif isinstance(raw, list) and all(isinstance(item, str) for item in raw):
+                array = [str(item) for item in raw]
+            else:
+                raise ValueError("Path must be an array; nonpath values are nullable arrays")
+            prop = props[index]
+            if (not isinstance(prop, dict) or
+                    set(prop) != {"name", "cim_type", "is_array", "value_state"} or
+                    prop["name"] != field or type(prop["cim_type"]) is not int or
+                    prop["cim_type"] != 8 or prop["is_array"] is not True or
+                    prop["value_state"] != ("OBSERVED_NULLABLE_VALUE" if array is None else "STRING_ARRAY")):
+                raise ValueError("Property observation does not match the actual value")
+            arrays.append(array)
+        paths = arrays[0]
+        if paths is None:
+            raise ValueError("Path cannot be null")
+        parsed.append({"ExclusionPath": paths, "ExclusionExtension": arrays[1], "ExclusionProcess": arrays[2]})
+    before, after = parsed
+    nonpath_fields: tuple[Literal["ExclusionExtension", "ExclusionProcess"], ...] = ("ExclusionExtension", "ExclusionProcess")
+    if all(settings[field] is not None for settings in (before, after)
+           for field in nonpath_fields):
+        raise ValueError("Nullable schema requires an actually observed null")
+    for field in nonpath_fields:
+        left, right = before[field], after[field]
+        same = left is None and right is None if left is None or right is None else set(left) == set(right)
+        if not same or value.get("observed_" + ("extensions" if field == "ExclusionExtension" else "processes") + "_unchanged") is not True:
+            raise ValueError("Nonpath settings changed or were not observed unchanged")
+    return before, after
+
+
 def _write_receipt(path: Path, receipt: Mapping[str, object]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     raw = getattr(receipt, "broker_raw_bytes", None)
@@ -652,6 +715,8 @@ def register_manifest(manifest: dict, receipt_path: Path, *, client=None, admin:
     return receipt
 
 
+
+
 class ProjectExeBuildHookResult(TypedDict):
     status: Literal["disabled", "verified", "settings_failed", "not_applicable"]
     reason: NotRequired[str]
@@ -659,7 +724,6 @@ class ProjectExeBuildHookResult(TypedDict):
     receipt: NotRequired[str]
     receipt_sha256: NotRequired[str]
     error: NotRequired[str | None]
-
 
 class NoProjectExecutableReceipt(TypedDict):
     schema: str
@@ -674,7 +738,6 @@ class NoProjectExecutableReceipt(TypedDict):
     wmi_called: Literal[False]
     settings_success_is_runtime_trust: Literal[False]
 
-
 class FailedBuildExclusionReceipt(TypedDict):
     schema: str
     status: Literal["settings_failed"]
@@ -688,7 +751,6 @@ class FailedBuildExclusionReceipt(TypedDict):
     source_dir: str
     build_dir: str
     settings_success_is_runtime_trust: Literal[False]
-
 
 def _no_project_executable_result(
     source: Path, build: Path, targets: Sequence[str], manifest_path: Path,
@@ -711,7 +773,6 @@ def _no_project_executable_result(
         "error": None,
     }
 
-
 def _build_hook_status(value: object) -> Literal["disabled", "verified", "settings_failed"]:
     if value == "disabled":
         return "disabled"
@@ -720,7 +781,6 @@ def _build_hook_status(value: object) -> Literal["disabled", "verified", "settin
     if value == "settings_failed":
         return "settings_failed"
     raise ValueError("Project EXE registration returned an invalid terminal status")
-
 
 def after_successful_build(repo: Path, source: Path, build: Path, configuration: str,
                            targets: list[str], external_candidate: str | None = None) -> ProjectExeBuildHookResult:
@@ -754,12 +814,372 @@ def after_successful_build(repo: Path, source: Path, build: Path, configuration:
             "error": result_error}
 
 
+DECLARED_SCHEMA = "xar.project-exe-declared-path-exclusions/v1"
+DECLARED_INJECTOR = "xar_ck3_bridge_injector"
+
+
+class DeclaredFileRef(TypedDict):
+    path: str
+    bytes: int
+    sha256: str
+
+
+class DeclaredOutput(TypedDict):
+    path: str
+    target: str
+    target_id: str
+    expected_state: Literal["ABSENT"]
+
+
+class DeclaredManifest(TypedDict):
+    schema: Literal["xar.project-exe-declared-path-exclusions/v1"]
+    machine_id: str
+    repo: str
+    source_dir: str
+    build_dir: str
+    configuration: Literal["Release"]
+    requested_targets: list[str]
+    external_candidate: str
+    source_declaration_ref: DeclaredFileRef
+    complete_source_refs: list[DeclaredFileRef]
+    cmake_index: dict[str, str]
+    cmake_codemodel: dict[str, str]
+    target_provenance: list[dict[str, str]]
+    configured_graph_refs: list[DeclaredFileRef]
+    declared_outputs: list[DeclaredOutput]
+
+
+def _declared_object(value: object) -> dict[str, object]:
+    if not isinstance(value, dict):
+        raise ValueError("Declared JSON object required")
+    result: dict[str, object] = {}
+    for key, item in value.items():
+        if not isinstance(key, str):
+            raise ValueError("Declared JSON string keys required")
+        result[key] = item
+    return result
+
+
+def _declared_text(value: object) -> str:
+    if not isinstance(value, str) or not value:
+        raise ValueError("Declared nonempty string required")
+    return value
+
+
+def _declared_refs(value: object) -> list[DeclaredFileRef]:
+    if not isinstance(value, list) or not 1 <= len(value) <= 65536:
+        raise ValueError("Bounded nonempty declared references required")
+    result: list[DeclaredFileRef] = []
+    seen: set[str] = set()
+    for item in value:
+        row = _declared_object(item)
+        size = row.get("bytes")
+        digest = _declared_text(row.get("sha256"))
+        path = _declared_text(row.get("path"))
+        if set(row) != {"path", "bytes", "sha256"} or type(size) is not int or size < 0 or \
+                len(digest) != 64 or any(c not in "0123456789abcdef" for c in digest) or ntpath.normcase(path) in seen:
+            raise ValueError("Exact typed unique declared reference required")
+        seen.add(ntpath.normcase(path))
+        result.append({"path": path, "bytes": size, "sha256": digest})
+    return result
+
+
+def _declared_plain(path: Path, *, directory: bool) -> None:
+    if not path.is_absolute() or path != path.resolve(strict=True) or any(c in str(path) for c in "*?%"):
+        raise ValueError("Canonical plain declared path required")
+    for parent in [path, *path.parents]:
+        info = parent.lstat()
+        if stat.S_ISLNK(info.st_mode) or getattr(info, "st_file_attributes", 0) & stat.FILE_ATTRIBUTE_REPARSE_POINT:
+            raise ValueError("Reparse/symlink declaration is forbidden")
+    info = path.lstat()
+    if directory != stat.S_ISDIR(info.st_mode) or (not directory and not stat.S_ISREG(info.st_mode)):
+        raise ValueError("Ordinary declaration file/directory required")
+
+
+def _declared_verify_ref(ref: DeclaredFileRef) -> None:
+    path = Path(ref["path"]); _declared_plain(path, directory=False)
+    with path.open("rb") as handle:
+        digest = hashlib.file_digest(handle, "sha256").hexdigest()
+    if path.stat().st_size != ref["bytes"] or digest != ref["sha256"]:
+        raise ValueError("Declared input bytes/hash changed")
+
+
+def _declared_absent(path: Path) -> None:
+    _declared_plain(path.parent, directory=True)
+    if path.name != DECLARED_INJECTOR + ".exe" or any(c in str(path) for c in "*?%"):
+        raise ValueError("Only the exact declared injector path is permitted")
+    try:
+        path.lstat()
+    except FileNotFoundError:
+        return
+    raise ValueError("Declared output must be absent, not present or unknown")
+
+
+def validate_declared_manifest(value: object) -> DeclaredManifest:
+    row = _declared_object(value)
+    required = {"schema", "machine_id", "repo", "source_dir", "build_dir", "configuration", "requested_targets",
+                "external_candidate", "source_declaration_ref", "complete_source_refs", "cmake_index",
+                "cmake_codemodel", "target_provenance", "configured_graph_refs", "declared_outputs"}
+    if set(row) != required or row["schema"] != DECLARED_SCHEMA or row["machine_id"] != current_machine_id() or \
+            row["configuration"] != "Release" or row["requested_targets"] != [DECLARED_INJECTOR]:
+        raise ValueError("Exact current declared manifest schema/machine/target required")
+    repo, source, build = (Path(_declared_text(row[name])) for name in ("repo", "source_dir", "build_dir"))
+    for path in (repo, source, build):
+        _declared_plain(path, directory=True)
+    if source.is_relative_to(build) or build.is_relative_to(source):
+        raise ValueError("Declared source/build must be disjoint")
+    refs = _declared_refs(row["complete_source_refs"]); graph = _declared_refs(row["configured_graph_refs"])
+    declaration_refs = _declared_refs([row["source_declaration_ref"]]); declaration_ref = declaration_refs[0]
+    for ref in [*refs, *graph, declaration_ref]:
+        _declared_verify_ref(ref)
+    expected_sources = {ntpath.normcase(str(Path(ref["path"]))) for ref in refs}
+    actual_sources: set[str] = set()
+    for directory, dirs, files in os.walk(source, followlinks=False):
+        for name in dirs:
+            _declared_plain(Path(directory) / name, directory=True)
+        for name in files:
+            actual_sources.add(ntpath.normcase(str(Path(directory) / name)))
+            if len(actual_sources) > 65536:
+                raise ValueError("Bounded declared source inventory required")
+    if actual_sources != expected_sources:
+        raise ValueError("Complete declared source inventory changed")
+    declaration = _declared_object(_json(Path(declaration_ref["path"])))
+    if declaration.get("schema") != "xar.native-declared-output-source/v1" or declaration.get("machine_id") != row["machine_id"] or \
+            declaration.get("configured_graph_refs") != graph:
+        raise ValueError("Java declared source witness differs")
+    request_ref = _declared_refs([declaration.get("declaration_request_ref")])[0]
+    configure_ref = _declared_refs([declaration.get("configure_actual_ref")])[0]
+    _declared_verify_ref(request_ref); _declared_verify_ref(configure_ref)
+    _declared_verify_ref(_declared_refs([declaration.get("producer_tools_build_ref")])[0])
+    request = _declared_object(_json(Path(request_ref["path"])))
+    if request.get("stage") != "ENV" or request.get("source_root") != str(source) or request.get("build_root") != str(build) or \
+            request.get("machine_id") != row["machine_id"] or request.get("complete_sources") != refs or \
+            request.get("qualified_tools_build") != declaration.get("producer_tools_build_ref"):
+        raise ValueError("Java reviewed declaration request/source identity differs")
+    external = _declared_text(row["external_candidate"])
+    observed = collect_manifest(repo, source, build, "Release", [DECLARED_INJECTOR], external)
+    for key in ("repo", "source_dir", "build_dir", "configuration", "requested_targets", "external_candidate",
+                "cmake_index", "cmake_codemodel", "target_provenance"):
+        if observed.get(key) != row[key]:
+            raise ValueError("Current CMake declaration provenance changed")
+    if observed.get("files") != []:
+        raise ValueError("Missing-output declaration cannot contain a current built EXE")
+    provenance = row["target_provenance"]
+    if not isinstance(provenance, list) or len(provenance) != 1:
+        raise ValueError("One source-defined project injector required")
+    target_pin = _declared_object(provenance[0])
+    target = _declared_object(_json(Path(_declared_text(target_pin.get("path")))))
+    artifacts = target.get("artifacts")
+    if target.get("type") != "EXECUTABLE" or target.get("imported", False) or target.get("isGeneratorProvided", False) or \
+            target.get("name") != DECLARED_INJECTOR or not isinstance(artifacts, list) or len(artifacts) != 1:
+        raise ValueError("One nonimported project EXECUTABLE artifact required")
+    artifact = _declared_object(artifacts[0])
+    output_path = build / _declared_text(artifact.get("path"))
+    expected_path = build / (DECLARED_INJECTOR + ".exe")
+    if output_path != expected_path:
+        raise ValueError("Exact declared output outside original build path")
+    output_value = row["declared_outputs"]
+    if not isinstance(output_value, list) or len(output_value) != 1:
+        raise ValueError("One declared output row required")
+    output_row = _declared_object(output_value[0])
+    output: DeclaredOutput = {"path": str(expected_path), "target": DECLARED_INJECTOR,
+                              "target_id": _declared_text(target.get("id")), "expected_state": "ABSENT"}
+    if output_row != output:
+        raise ValueError("Absent declaration path/target/state changed or fingerprint was invented")
+    _declared_absent(expected_path)
+    # Returning the validated original keeps the Java/Python JSON domain unchanged.
+    return {"schema": "xar.project-exe-declared-path-exclusions/v1", "machine_id": _declared_text(row["machine_id"]),
+            "repo": str(repo), "source_dir": str(source), "build_dir": str(build), "configuration": "Release",
+            "requested_targets": [DECLARED_INJECTOR], "external_candidate": external,
+            "source_declaration_ref": declaration_ref, "complete_source_refs": refs,
+            "cmake_index": {k: _declared_text(v) for k, v in _declared_object(row["cmake_index"]).items()},
+            "cmake_codemodel": {k: _declared_text(v) for k, v in _declared_object(row["cmake_codemodel"]).items()},
+            "target_provenance": [{k: _declared_text(v) for k, v in target_pin.items()}],
+            "configured_graph_refs": graph, "declared_outputs": [output]}
+
+
+class DeclaredCall(TypedDict):
+    path: str
+    method: Literal["Add", "already-present"]
+    return_value: int | None
+    fresh_readback: NotRequired[list[str]]
+    call_error: NotRequired[str]
+    return_decode_error: NotRequired[str]
+
+
+class DeclaredReceiptFields(TypedDict):
+    schema: Literal["xar.project-exe-declared-path-exclusions/v1"]
+    status: Literal["running", "disabled", "settings_failed", "verified"]
+    method: str
+    namespace: str
+    proof_scope: Literal["DECLARED_PROJECT_EXE_PATH_ONLY"]
+    settings_success_is_runtime_trust: Literal[False]
+    admin_token: bool
+    before: list[str] | None
+    after: list[str] | None
+    calls: list[DeclaredCall]
+    declared_outputs: list[DeclaredOutput]
+    manifest_sha256: str
+    readback_visibility: str
+    verified_requested_paths: list[str]
+    missing_requested_paths: list[str]
+    observed_prior_settings_preserved: bool
+    partial_mutation: bool
+    error: NotRequired[str]
+    error_type: NotRequired[str]
+    admin_required_for_verified_readback: NotRequired[bool]
+
+
+
+class DeclaredReceiptV1(DeclaredReceiptFields, DirectSettingsReadbackV1):
+    pass
+
+
+class DeclaredReceiptV2(DeclaredReceiptFields, DirectSettingsReadbackV2):
+    pass
+
+
+DeclaredReceipt = DeclaredReceiptV1 | DeclaredReceiptV2
+
+
+def _declared_with_readback(receipt: DeclaredReceipt, evidence: DirectSettingsReadback) -> DeclaredReceipt:
+    common: DeclaredReceiptFields = {
+        "schema": receipt["schema"], "status": receipt["status"], "method": receipt["method"],
+        "namespace": receipt["namespace"], "proof_scope": receipt["proof_scope"],
+        "settings_success_is_runtime_trust": receipt["settings_success_is_runtime_trust"],
+        "admin_token": receipt["admin_token"], "before": receipt["before"], "after": receipt["after"],
+        "calls": receipt["calls"], "declared_outputs": receipt["declared_outputs"],
+        "manifest_sha256": receipt["manifest_sha256"], "readback_visibility": receipt["readback_visibility"],
+        "verified_requested_paths": receipt["verified_requested_paths"],
+        "missing_requested_paths": receipt["missing_requested_paths"],
+        "observed_prior_settings_preserved": receipt["observed_prior_settings_preserved"],
+        "partial_mutation": receipt["partial_mutation"]}
+    if "error" in receipt:
+        common["error"] = receipt["error"]
+    if "error_type" in receipt:
+        common["error_type"] = receipt["error_type"]
+    if "admin_required_for_verified_readback" in receipt:
+        common["admin_required_for_verified_readback"] = receipt["admin_required_for_verified_readback"]
+    if evidence["settings_readback_schema"] == "xar.project-exe-three-settings-readback/v2":
+        result_v2: DeclaredReceiptV2 = {**common, **evidence}
+        return result_v2
+    if evidence["settings_readback_schema"] == "xar.project-exe-three-settings-readback/v1":
+        result_v1: DeclaredReceiptV1 = {**common, **evidence}
+        return result_v1
+    raise ValueError("Unknown direct settings readback schema")
+
+
+def _declared_readback(receipt: DeclaredReceipt, client: DefenderWmi, path: str) -> tuple[DeclaredReceipt, bool]:
+    after = client.read_paths(); receipt["after"] = after
+    evidence = client.settings_readback()
+    receipt = _declared_with_readback(receipt, evidence)
+    before = receipt["before"]
+    if before is None:
+        return receipt, False
+    prior = {ntpath.normcase(p) for p in before}; current = {ntpath.normcase(p) for p in after}
+    present = ntpath.normcase(path) in current
+    receipt["verified_requested_paths"] = [path] if present else []
+    receipt["missing_requested_paths"] = [] if present else [path]
+    receipt["observed_prior_settings_preserved"] = prior <= current
+    receipt["partial_mutation"] = present and not prior <= current
+    verified = present and prior <= current and receipt["settings_readback_complete"] and \
+        receipt["observed_extensions_unchanged"] and receipt["observed_processes_unchanged"]
+    return receipt, verified
+
+
+def register_declared_path_manifest(value: object, receipt_path: Path, *, admin: bool | None = None) -> DeclaredReceipt:
+    if receipt_path.exists():
+        raise FileExistsError("Declared receipt exists; no replay or WMI action permitted")
+    receipt: DeclaredReceipt = {
+        "schema": "xar.project-exe-declared-path-exclusions/v1", "status": "running",
+        "method": "WMI MSFT_MpPreference.Add ExclusionPath only", "namespace": NAMESPACE,
+        "proof_scope": "DECLARED_PROJECT_EXE_PATH_ONLY", "settings_success_is_runtime_trust": False,
+        "admin_token": False, "before": None, "after": None, "calls": [], "declared_outputs": [], "manifest_sha256": "",
+        "readback_visibility": "unverified; administrative token required", "verified_requested_paths": [],
+        "missing_requested_paths": [], "observed_prior_settings_preserved": False, "partial_mutation": False,
+        "settings_readback_schema": "xar.project-exe-three-settings-readback/v1", "before_settings": None,
+        "after_settings": None, "observed_extensions_unchanged": False, "observed_processes_unchanged": False,
+        "settings_readback_complete": False, "settings_readback_error": None,
+        "settings_readback_process_id": os.getpid(), "settings_readback_token_user_sid": ""}
+    client: DefenderWmi | None = None
+    manifest: DeclaredManifest | None = None
+    path: str | None = None
+    try:
+        manifest = validate_declared_manifest(value)
+        receipt["declared_outputs"] = manifest["declared_outputs"]
+        receipt["manifest_sha256"] = hashlib.sha256(json.dumps(manifest, sort_keys=True).encode()).hexdigest()
+        if not opted_in(Path(manifest["repo"])):
+            receipt["status"] = "disabled"
+            return receipt
+        if admin is None:
+            admin = os.name == "nt" and bool(ctypes.windll.shell32.IsUserAnAdmin())
+        receipt["admin_token"] = admin
+        if not admin:
+            receipt["admin_required_for_verified_readback"] = True
+            raise PermissionError("admin_required_for_verified_readback; no Add or broker attempted")
+        client = DefenderWmi()
+        receipt["readback_visibility"] = "same administrative token and WMI client for before/after"
+        before = client.read_paths(); receipt["before"] = before
+        path = manifest["declared_outputs"][0]["path"]
+        if validate_declared_manifest(value) != manifest:
+            raise ValueError("Declared source/graph changed before Add")
+        if ntpath.normcase(path) in {ntpath.normcase(p) for p in before}:
+            receipt["calls"].append({"path": path, "method": "already-present", "return_value": None})
+        else:
+            call: DeclaredCall = {"path": path, "method": "Add", "return_value": None}
+            receipt["calls"].append(call)
+            response = client.add_path(path)
+            if isinstance(response, dict):
+                code = response.get("return_value")
+                if "return_decode_error" in response:
+                    call["return_decode_error"] = _declared_text(response["return_decode_error"])
+            else:
+                code = response
+            if code is not None and type(code) is not int:
+                raise ValueError("Exact WMI integer or unavailable ReturnValue required")
+            call["return_value"] = code
+            receipt, verified = _declared_readback(receipt, client, path)
+            fresh = receipt["after"]
+            if fresh is None:
+                raise RuntimeError("Declared Add lacks an actual fresh path readback")
+            call["fresh_readback"] = list(fresh)
+            if code not in (0, None) or not verified:
+                raise RuntimeError("Fresh same-admin readback after the single Add did not verify all three settings")
+        receipt, verified = _declared_readback(receipt, client, path)
+        if not verified:
+            raise RuntimeError("Final same-admin three-setting readback failed")
+        _declared_absent(Path(path))
+        if validate_declared_manifest(value) != manifest:
+            raise ValueError("Declared source/graph changed during settings operation")
+        receipt["status"] = "verified"
+    except Exception as error:
+        receipt["status"] = "settings_failed"; receipt["error"] = str(error); receipt["error_type"] = type(error).__name__
+        if client is not None:
+            receipt = _declared_with_readback(receipt, client.settings_readback())
+        if client is not None and path is not None and receipt["before"] is not None:
+            try:
+                # Never repeat Add after a nullable decoder or provider exception.
+                receipt, verified = _declared_readback(receipt, client, path)
+                if verified and manifest is not None and validate_declared_manifest(value) == manifest:
+                    receipt["status"] = "verified"
+            except Exception as read_error:
+                receipt["settings_readback_error"] = str(read_error); receipt["settings_readback_complete"] = False
+    finally:
+        _write_receipt(receipt_path, dict(receipt))
+    return receipt
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", type=Path, required=True, help="Frozen exact CMake-target or successful MSVC-command manifest; never scan an EXE directory")
     parser.add_argument("--receipt", type=Path, required=True, help="New append-only output file")
     args = parser.parse_args()
-    result = register_manifest(_json(args.manifest), args.receipt, manifest_bytes=args.manifest.read_bytes())
+    manifest_value = _json(args.manifest)
+    if manifest_value.get("schema") == DECLARED_SCHEMA:
+        declared_result = register_declared_path_manifest(manifest_value, args.receipt)
+        print(json.dumps(declared_result, ensure_ascii=False, indent=2))
+        return 0 if declared_result["status"] == "verified" else 1
+    result = register_manifest(manifest_value, args.receipt, manifest_bytes=args.manifest.read_bytes())
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0 if result["status"] in ("disabled", "verified") else 1
 

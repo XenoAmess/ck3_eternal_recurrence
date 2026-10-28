@@ -17,6 +17,10 @@ import re
 import subprocess
 import time
 import uuid
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from register_project_exe_exclusions import NullableExclusionSettings
 
 INSTALL_ROOT = r"C:\Program Files\XAR CK3 Project EXE Broker"
 POLICY_PATH = INSTALL_ROOT + r"\policy.json"
@@ -99,14 +103,21 @@ def _same_path(left: str, right: str) -> bool:
 
 
 def _validate_policy(policy: dict) -> None:
-    if not isinstance(policy, dict) or set(policy) != POLICY_KEYS or policy["broker_schema"] != POLICY_SCHEMA:
+    version = policy.get("broker_schema") if isinstance(policy, dict) else None
+    if version == "xar.project-exe-broker.policy.v2":
+        if set(policy) != POLICY_KEYS | {"data_root"} or not _same_path(policy["data_root"], r"D:\ck3-state\xar-project-exe-broker"):
+            raise ValueError("Fixed anchored data policy fields required")
+    elif version != POLICY_SCHEMA or set(policy) != POLICY_KEYS:
         raise ValueError("Installed policy schema/keys mismatch")
     if not _uuid(policy["installation_id"]) or not re.fullmatch(r"S-1-(?:\d+-)+\d+", policy["owner_sid"]):
         raise ValueError("Installed UUID/owner SID mismatch")
     if not _hash(policy["runtime_manifest_sha256"]):
         raise ValueError("Installed runtime seal SHA invalid")
-    for key, child in (("runtime_root", ""), ("inbox_dir", "inbox"), ("frozen_dir", "private-frozen"), ("receipts_dir", "receipts")):
-        if not _same_path(policy[key], ntpath.join(INSTALL_ROOT, child)):
+    if not _same_path(policy["runtime_root"], INSTALL_ROOT):
+        raise ValueError("Fixed runtime root required")
+    data_root = policy.get("data_root", INSTALL_ROOT)
+    for key, child in (("inbox_dir", "inbox"), ("frozen_dir", "private-frozen"), ("receipts_dir", "receipts")):
+        if not _same_path(policy[key], ntpath.join(data_root, child)):
             raise ValueError("Installed policy must use fixed protected directories")
     for key in ("repo_root", "repo_common_dir"):
         _canonical_path(policy[key])
@@ -131,12 +142,14 @@ def validate_task_contract(task: dict) -> None:
         raise ValueError("Installed Task action/principal/ACL differs from fixed contract")
 
 
-def _validate_settings(value) -> dict:
+def _validate_settings(value: object) -> NullableExclusionSettings:
     if not isinstance(value, dict) or set(value) != SETTING_KEYS:
         raise ValueError("Three-setting readback missing")
     if any(not isinstance(rows, list) or any(not isinstance(item, str) for item in rows) for rows in value.values()):
         raise ValueError("Invalid settings readback arrays")
-    return value
+    return {"ExclusionPath": value["ExclusionPath"],
+            "ExclusionExtension": value["ExclusionExtension"],
+            "ExclusionProcess": value["ExclusionProcess"]}
 
 
 def _path_set(rows: list[str]) -> set[str]:
@@ -146,7 +159,7 @@ def _path_set(rows: list[str]) -> set[str]:
 
 
 def _validate_receipt(value: dict, manifest: dict, policy: dict, expected: dict, backend) -> None:
-    if not isinstance(value, dict) or value.get("schema") != SCHEMA or value.get("broker_schema") != RECEIPT_SCHEMA:
+    if not isinstance(value, dict) or value.get("schema") != SCHEMA or value.get("broker_schema") not in (RECEIPT_SCHEMA, "xar.project-exe-broker.receipt.v2"):
         raise ValueError("Protected result schema mismatch")
     identity = value.get("broker_identity")
     if not isinstance(identity, dict) or set(identity) != IDENTITY_KEYS or identity != expected:
@@ -170,8 +183,13 @@ def _validate_receipt(value: dict, manifest: dict, policy: dict, expected: dict,
     if value["status"] == "settings_failed":
         # Preserve fully bound actual failure/partial bytes. It grants no success.
         return
-    before = _validate_settings(value.get("before_settings"))
-    after = _validate_settings(value.get("after_settings"))
+    nullable = value["broker_schema"] == "xar.project-exe-broker.receipt.v2"
+    if nullable:
+        from register_project_exe_exclusions import require_system_broker_readback
+        before, after = require_system_broker_readback(value)
+    else:
+        before = _validate_settings(value.get("before_settings"))
+        after = _validate_settings(value.get("after_settings"))
     if value.get("before") != before["ExclusionPath"] or value.get("after") != after["ExclusionPath"]:
         raise ValueError("Protected result path arrays disagree with three-setting proof")
     requested = [row["path"] for row in manifest["files"]]
@@ -179,7 +197,8 @@ def _validate_receipt(value: dict, manifest: dict, policy: dict, expected: dict,
         raise ValueError("Protected verified result is missing requested exact paths")
     if not _path_set(before["ExclusionPath"]) <= _path_set(after["ExclusionPath"]):
         raise ValueError("Protected verified result lost prior paths")
-    if set(before["ExclusionExtension"]) != set(after["ExclusionExtension"]) or set(before["ExclusionProcess"]) != set(after["ExclusionProcess"]):
+    same = lambda left, right: left is None and right is None if left is None or right is None else set(left) == set(right)
+    if not same(before["ExclusionExtension"], after["ExclusionExtension"]) or not same(before["ExclusionProcess"], after["ExclusionProcess"]):
         raise ValueError("Protected verified result changed extension/process exclusions")
     for field in ("observed_prior_settings_preserved", "observed_extensions_unchanged", "observed_processes_unchanged"):
         if value.get(field) is not True:
@@ -188,7 +207,7 @@ def _validate_receipt(value: dict, manifest: dict, policy: dict, expected: dict,
         raise ValueError("Protected verified result is partial or contradicts requested paths")
 
 
-def dispatch_manifest(manifest: dict, *, proof_dir: Path, backend=None, manifest_bytes: bytes | None = None) -> BrokerReceipt | None:
+def _dispatch_manifest(manifest: dict, *, proof_dir: Path, backend=None, manifest_bytes: bytes | None = None) -> BrokerReceipt | None:
     """Return None only if not installed; else a bound receipt or explicit error.
 
     register_manifest has already checked fresh ordinary producer evidence.
@@ -218,7 +237,7 @@ def dispatch_manifest(manifest: dict, *, proof_dir: Path, backend=None, manifest
         if _sha(raw_seal) != policy["runtime_manifest_sha256"]:
             raise ValueError("Installed runtime seal differs from protected policy")
         seal = _strict_json(raw_seal)
-        if not isinstance(seal, dict) or set(seal) != {"schema", "installation_id", "python_version", "files"} or seal["schema"] != SEAL_SCHEMA or seal["installation_id"] != policy["installation_id"] or seal["python_version"] != "3.14.7":
+        if not isinstance(seal, dict) or set(seal) != {"schema", "installation_id", "python_version", "files"} or seal["schema"] != SEAL_SCHEMA or seal["installation_id"] != policy["installation_id"] or seal["python_version"] != ("3.13.2" if policy["broker_schema"] == "xar.project-exe-broker.policy.v2" else "3.14.7"):
             raise ValueError("Installed runtime seal identity mismatch")
         if not isinstance(seal["files"], list) or not 1 <= len(seal["files"]) <= 50000:
             raise ValueError("Installed runtime inventory invalid")
@@ -247,8 +266,15 @@ def dispatch_manifest(manifest: dict, *, proof_dir: Path, backend=None, manifest
             "task": {"folder": TASK_FOLDER, "name": TASK_NAME, "path": TASK_FOLDER + "\\" + TASK_NAME, "action": ACTION,
                      "principal": {"user_id": SYSTEM_SID, "logon_type": 5, "run_level": 1}, "triggers_count": 0, "allow_demand_start": True},
             "acl_policy": "BA/SY-owner-protected; inbox-owner-write; receipts-owner-read; private-SY/BA"}
+        if policy["broker_schema"] == "xar.project-exe-broker.policy.v2":
+            expected_installation["schema"] = "xar.project-exe-broker.installation-manifest.v2"
+            from project_exe_broker.native_safety import DATA_STATE_POLICY
+            expected_installation["data_root_identity"] = installation.get("data_root_identity")
+            expected_installation["data_state_policy"] = DATA_STATE_POLICY
         if installation != expected_installation:
             raise ValueError("Protected installation manifest differs from current policy/seal/fixed action")
+        if policy["broker_schema"] == "xar.project-exe-broker.policy.v2":
+            backend.bind_data_root(policy, installation["data_root_identity"])
         proof["stage"] = "task-contract-read"
         task = backend.task_contract(policy["owner_sid"])
         validate_task_contract(task)
@@ -313,11 +339,40 @@ def dispatch_manifest(manifest: dict, *, proof_dir: Path, backend=None, manifest
         raise BrokerValidationError(str(error), proof) from error
 
 
+def dispatch_manifest(manifest: dict, *, proof_dir: Path, backend=None, manifest_bytes: bytes | None = None) -> BrokerReceipt | None:
+    backend = WindowsBackend() if backend is None else backend
+    try:
+        return _dispatch_manifest(manifest, proof_dir=proof_dir, backend=backend, manifest_bytes=manifest_bytes)
+    finally:
+        if hasattr(backend, "close_data_root"):
+            backend.close_data_root()
+
+
 class WindowsBackend:
     """Deferred Win32/TaskScheduler only; no Defender/WMI or UAC calls."""
     def __init__(self):
         self._task = None
         self._task_owner = None
+        self._data_safety = None
+        self._data_hold = None
+
+    def bind_data_root(self, policy: dict, identity: object) -> None:
+        from project_exe_broker.native_safety import NativeSafety
+        if self._data_hold is not None:
+            raise ValueError("Data root is already bound")
+        safety = NativeSafety(policy["owner_sid"], policy["frozen_dir"], policy["receipts_dir"])
+        safety.bind_data_root(identity)
+        hold = safety.hold_data_root()
+        hold.__enter__()
+        self._data_safety, self._data_hold = safety, hold
+        # Only SYSTEM may enumerate private-frozen and enforce the full data cap.
+        # The ordinary caller retains the sealed root lease and bounds its inbox.
+
+    def close_data_root(self) -> None:
+        if self._data_hold is not None:
+            self._data_hold.__exit__(None, None, None)
+            self._data_hold = None
+            self._data_safety = None
 
     def exists(self, path):
         return os.path.lexists(path)
@@ -387,6 +442,14 @@ class WindowsBackend:
         import win32file
         import win32security
         canonical = _canonical_path(path)
+        safety = self._data_safety
+        if safety is not None and (canonical == _canonical_path(safety.data_root) or
+                canonical.startswith(_canonical_path(safety.data_root) + "\\")):
+            if inbox_publication and write_sid != safety.owner_sid:
+                raise ValueError("Inbox caller identity differs")
+            with safety.lock_data_path(path, directory=directory, inbox_publication=inbox_publication) as lease:
+                yield lease._records[-1][1]
+            return
         if inbox_publication and (not directory or not write_sid or not _same_path(path, INSTALL_ROOT + r"\inbox")):
             raise ValueError("Write sharing is restricted to fixed inbox publication directory")
         root = _canonical_path(INSTALL_ROOT)
@@ -500,13 +563,32 @@ class WindowsBackend:
         self._task_owner = owner_sid
         return result
 
+    @staticmethod
+    def _require_inbox_capacity(inbox: Path, reserve_bytes: int) -> int:
+        if type(reserve_bytes) is not int or not 0 <= reserve_bytes <= 2097152:
+            raise ValueError("Request bytes exceed the fixed ordinary inbox bound")
+        used, count = 8192, 0
+        with os.scandir(inbox) as entries:
+            for entry in entries:
+                count += 1
+                if count > 16384:
+                    raise ValueError("Finite ordinary inbox entry bound exceeded")
+                info = entry.stat(follow_symlinks=False)
+                if getattr(info, "st_file_attributes", 0) & 0x410 or not entry.is_file(follow_symlinks=False):
+                    raise ValueError("Ordinary inbox entry must be a non-reparse file")
+                used += ((info.st_size + 4095) // 4096) * 4096 + 4096
+                if used + reserve_bytes + 16384 > 64 << 20:
+                    raise ValueError("Ordinary inbox admission cap exceeded")
+        return used
+
     def publish_request(self, path, raw, owner_sid):
-        inbox = INSTALL_ROOT + r"\inbox"
+        inbox = ntpath.join(self._data_safety.data_root if self._data_safety is not None else INSTALL_ROOT, "inbox")
         if not _same_path(ntpath.dirname(path), inbox) or not re.fullmatch(r"[0-9a-f-]{36}\.request\.json", ntpath.basename(path)):
             raise ValueError("Request path outside fixed UUID inbox")
         if self.current_sid() != owner_sid:
             raise ValueError("Request publisher owner SID changed")
         with self._locked(inbox, write_sid=owner_sid, directory=True, inbox_publication=True):
+            self._require_inbox_capacity(Path(inbox), len(raw))
             temporary = Path(path + "." + uuid.uuid4().hex + ".tmp")
             with temporary.open("xb") as handle:
                 handle.write(raw)

@@ -13,7 +13,7 @@ TASK_FOLDER = r'\XAR CK3 Project EXE Broker'
 TASK_NAME = 'RegisterDeclaredProjectExecutables'
 SYSTEM = 'S-1-5-18'
 ADMINS = 'S-1-5-32-544'
-OWNER = 'S-1-5-21-4063940640-1897558599-686929869-1001'
+OWNER = 'S-1-5-21-2908730481-166481001-1318755029-1001'
 
 def raw_json(value):
     return (json.dumps(value, ensure_ascii=False, sort_keys=True,
@@ -60,7 +60,7 @@ def make_request(policy_bytes, manifest_bytes, request_id):
     policy = strict_json(policy_bytes)
     return raw_json({'schema': 'xar.project-exe-broker.request.v1',
         'request_id': request_id, 'installation_id': policy['installation_id'],
-        'expected_policy_sha256': sha(policy_bytes), 'producer_kind': 'cmake-file-api-v2',
+        'expected_policy_sha256': sha(policy_bytes), 'producer_kind': 'msvc-explicit-command-v1' if 'command_provenance' in strict_json(manifest_bytes) else 'cmake-file-api-v2',
         'manifest_b64': base64.b64encode(manifest_bytes).decode('ascii'),
         'manifest_sha256': sha(manifest_bytes)})
 
@@ -82,18 +82,27 @@ def verify_receipt(receipt_bytes, request_bytes, manifest_bytes, policy_bytes, o
     if any(receipt.get(key) is not True for key in ('observed_prior_settings_preserved',
             'observed_extensions_unchanged', 'observed_processes_unchanged')):
         raise ValueError('prior settings preservation not proved')
-    before, after = receipt.get('before_settings'), receipt.get('after_settings')
-    expected_keys = {'ExclusionPath', 'ExclusionExtension', 'ExclusionProcess'}
-    for settings in (before, after):
-        if not isinstance(settings, dict) or set(settings) != expected_keys:
-            raise ValueError('fresh complete settings required')
-        if any(not isinstance(v, list) or any(not isinstance(x, str) for x in v) for v in settings.values()):
-            raise ValueError('invalid setting arrays')
+    nullable = receipt.get('broker_schema') == 'xar.project-exe-broker.receipt.v2'
+    if nullable:
+        from register_project_exe_exclusions import require_system_broker_readback
+        before, after = require_system_broker_readback(receipt)
+    else:
+        if receipt.get('broker_schema') != 'xar.project-exe-broker.receipt.v1':
+            raise ValueError('Unknown protected receipt schema')
+        before, after = receipt.get('before_settings'), receipt.get('after_settings')
+        expected_keys = {'ExclusionPath', 'ExclusionExtension', 'ExclusionProcess'}
+        for settings in (before, after):
+            if not isinstance(settings, dict) or set(settings) != expected_keys:
+                raise ValueError('fresh complete settings required')
+            if any(not isinstance(v, list) or any(not isinstance(x, str) for x in v) for v in settings.values()):
+                raise ValueError('invalid setting arrays')
     normalize = lambda xs: {ntpath.normcase(ntpath.normpath(x)) for x in xs}
     if not normalize(before['ExclusionPath']) <= normalize(after['ExclusionPath']):
         raise ValueError('prior paths lost')
     for key in ('ExclusionExtension', 'ExclusionProcess'):
-        if set(before[key]) != set(after[key]):
+        left, right = before[key], after[key]
+        same = left is None and right is None if left is None or right is None else set(left) == set(right)
+        if not same:
             raise ValueError('non-path setting changed')
     files = receipt.get('files')
     if not isinstance(files, list):
@@ -169,8 +178,8 @@ def prepare_plan(package, expected_sha, safety):
         if sha(raw) != row['sha256']:
             raise ValueError('initial build manifest changed')
         initial.append((row, raw))
-    if len(initial) != 2 or sum(len(row['outputs']) for row, _ in initial) != 4:
-        raise ValueError('exact initial two manifests/four outputs required')
+    if not 1 <= len(initial) <= 16 or not 1 <= sum(len(row['outputs']) for row, _ in initial) <= 1024:
+        raise ValueError('bounded nonempty approved initial manifest/output set required')
     return {'manifest': manifest, 'frozen': frozen, 'policy_bytes': policy_bytes,
         'task': spec, 'initial': initial,
         'summary': {'status': 'prepared_only', 'bundle_sha256': expected_sha,
@@ -179,7 +188,8 @@ def prepare_plan(package, expected_sha, safety):
 
 def install(plan, adapter, safety, output_receipt):
     facts = dict(plan['summary'])
-    facts.update(status='installing', build_succeeded=None, settings_status='not_started', phases=[])
+    facts.update(status='installing', build_succeeded=None, settings_status='not_started',
+                 settings_changed=None, observed_prior_settings_preserved=None, phases=[])
     try:
         token = adapter.token_identity()
         if token.get('admin') is not True or token.get('sid') != OWNER:
@@ -188,8 +198,27 @@ def install(plan, adapter, safety, output_receipt):
             raise FileExistsError('existing installation/task refused; no overwrite')
         facts['phases'].append('source_bundle_frozen')
         adapter.create_fresh_protected_root(INSTALL_ROOT, OWNER)
+        policy = strict_json(plan['policy_bytes'])
+        if policy['broker_schema'] == 'xar.project-exe-broker.policy.v2':
+            identity = adapter.create_anchored_data_root(policy, OWNER)
+            final_files = []
+            for row, data in plan['frozen']:
+                if row['path'] == 'installation-manifest.json':
+                    installed = strict_json(data)
+                    if installed.get('schema') != 'xar.project-exe-broker.installation-manifest.v2' or installed.get('data_root_identity') is not None:
+                        raise ValueError('Approved fresh data-identity template required')
+                    from native_safety import DATA_STATE_POLICY
+                    if installed.get('data_state_policy') != DATA_STATE_POLICY:
+                        raise ValueError('Approved bounded data-state policy required')
+                    installed['data_root_identity'] = identity
+                    data = raw_json(installed)
+                    row = {'path': row['path'], 'size': len(data), 'sha256': sha(data)}
+                final_files.append((row, data))
+            plan = {**plan, 'frozen': final_files}
+            facts['data_root_identity'] = identity
         for row, data in plan['frozen']:
-            adapter.copy_new_protected_file(INSTALL_ROOT, row['path'], data, row['sha256'], OWNER)
+            if not row['path'].startswith('initial-manifests/'):
+                adapter.copy_new_protected_file(INSTALL_ROOT, row['path'], data, row['sha256'], OWNER)
         adapter.create_fixed_data_directories(INSTALL_ROOT, OWNER)
         facts['acl_inventory'] = adapter.verify_complete_install(plan)
         facts['phases'].append('all_code_config_leaf_acl_and_bytes_verified')
@@ -215,6 +244,8 @@ def install(plan, adapter, safety, output_receipt):
                 raise TimeoutError('shared initial receipt window elapsed')
             raw = adapter.wait_fixed_receipt(request_id, timeout=remaining)
             receipt = verify_receipt(raw, request_bytes, manifest_bytes, plan['policy_bytes'], baseline['outputs'])
+            facts['settings_changed'] = facts['settings_changed'] is True or receipt['before_settings'] != receipt['after_settings']
+            facts['observed_prior_settings_preserved'] = receipt['observed_prior_settings_preserved']
             results.append({'request_id': request_id, 'request_sha256': sha(request_bytes),
                 'receipt_sha256': sha(raw), 'status': receipt['status'], 'files': baseline['outputs']})
         facts['settings_status'] = 'verified'

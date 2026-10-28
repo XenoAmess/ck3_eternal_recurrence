@@ -229,16 +229,37 @@ class WindowsInstallerAdapter:
             if sha(actual) != expected_sha:
                 raise ValueError('copied protected bytes differ')
 
+    def create_anchored_data_root(self, policy: dict, owner_sid: str) -> dict[str, str]:
+        from native_safety import DATA_ROOT, NativeSafety
+        if policy.get('data_root') != DATA_ROOT:
+            raise ValueError('Fixed approved data root required')
+        if self.safety.exists(DATA_ROOT):
+            raise FileExistsError('Existing data root refused; no recreation or adoption')
+        parent = ntpath.dirname(DATA_ROOT)
+        with self.safety.lock_dir(parent):
+            self._create_directory_secure(DATA_ROOT, owner_sid)
+        safety = NativeSafety(owner_sid, policy['frozen_dir'], policy['receipts_dir'])
+        identity = safety.observe_data_root_identity()
+        safety.bind_data_root(identity)
+        self.safety = safety
+        self._installed_policy = policy
+        return identity
+
     def create_fixed_data_directories(self, root, owner_sid):
-        for name, kind in (('inbox', 'inbox'), ('private-frozen', 'private'), ('receipts', 'protected')):
-            path = Path(root) / name
-            with self.safety.lock_dir(root):
-                self._create_directory_secure(path, owner_sid, kind)
+        from native_safety import DATA_ROOT
+        data_root = DATA_ROOT if self.safety.data_root is not None else root
+        with self.safety.hold_data_root():
+            for name, kind in (('inbox', 'inbox'), ('private-frozen', 'private'), ('receipts', 'protected')):
+                path = Path(data_root) / name
+                with self.safety.lock_dir(data_root):
+                    self._create_directory_secure(path, owner_sid, kind)
 
     def verify_complete_install(self, plan):
         result = verify_outer_parents(self.safety)
         all_dirs = {INSTALL_ROOT}
         for row, data in plan['frozen']:
+            if row['path'].startswith('initial-manifests/'):
+                continue
             path = Path(INSTALL_ROOT) / row['path']
             result.append(self.safety.verify_protected_path(str(path)))
             with self.safety.lock_file(str(path)) as lease:
@@ -252,9 +273,9 @@ class WindowsInstallerAdapter:
                 current = current.parent
         for path in sorted(all_dirs):
             result.append(self.safety.verify_protected_path(path))
-        result.append(self.safety.verify_protected_path(ntpath.join(INSTALL_ROOT, 'private-frozen'), private=True))
-        result.append(self.safety.verify_protected_path(ntpath.join(INSTALL_ROOT, 'receipts')))
-        inbox = self.safety.inspect_descriptor(ntpath.join(INSTALL_ROOT, 'inbox'))
+        result.append(self.safety.verify_protected_path(self.safety.frozen_dir, private=True))
+        result.append(self.safety.verify_protected_path(self.safety.receipts_dir))
+        inbox = self.safety.inspect_descriptor(ntpath.join(self.safety.data_root or INSTALL_ROOT, 'inbox'))
         from native_safety import descriptor_proof
         descriptor_proof(inbox['security'], expected_owner=ADMINS,
             allowed_writers=(SYSTEM, ADMINS, OWNER), require_protected=True,
@@ -330,22 +351,23 @@ class WindowsInstallerAdapter:
     def publish_owner_request(self, request_id, data, owner_sid):
         if str(uuid.UUID(request_id)) != request_id:
             raise ValueError('canonical request UUID required')
-        inbox = Path(INSTALL_ROOT) / 'inbox'
+        inbox = Path(self.safety.data_root or INSTALL_ROOT) / 'inbox'
         final = inbox / (request_id + '.request.json')
         temporary = inbox / ('.install-' + request_id + '.tmp')
-        with self.safety.lock_dir(str(inbox)):
-            self._create_file_secure(temporary, data, owner_sid, kind='request')
-            os.rename(temporary, final)  # Windows no replacement
-        with self.safety.lock_file(str(final), owner_sid=owner_sid) as lease:
-            if lease.read_bytes(2 * 1024 * 1024) != data or lease.owner_write_scope_verified is not True:
-                raise ValueError('actual owner request identity differs')
+        with self.safety.hold_data_root():
+            with self.safety.lock_dir(str(inbox)):
+                self._create_file_secure(temporary, data, owner_sid, kind='request')
+                os.rename(temporary, final)  # Windows no replacement
+            with self.safety.lock_file(str(final), owner_sid=owner_sid) as lease:
+                if lease.read_bytes(2 * 1024 * 1024) != data or lease.owner_write_scope_verified is not True:
+                    raise ValueError('actual owner request identity differs')
 
     def run_fixed_task(self, spec):
         self.verify_task(spec)
         return self._scheduler().GetFolder(spec['folder']).GetTask(spec['name']).Run(None)
 
     def wait_fixed_receipt(self, request_id, timeout):
-        path = ntpath.join(INSTALL_ROOT, 'receipts', request_id + '.receipt.json')
+        path = ntpath.join(self.safety.receipts_dir, request_id + '.receipt.json')
         deadline = time.monotonic() + timeout
         while time.monotonic() < deadline:
             if self.safety.exists(path):
@@ -368,38 +390,23 @@ class WindowsInstallerAdapter:
                 os.fsync(stream.fileno())
 
 class SameAdminDefenderClient:
-    """Only ExclusionPath Add; same COM client fresh complete readback."""
-    def __init__(self):
-        pythoncom, _, _, _, client = _modules()
-        pythoncom.CoInitialize()
-        self.service = client.GetObject(r'winmgmts:{impersonationLevel=impersonate}!\\.\root\Microsoft\Windows\Defender')
+    """Use the sealed helper's one WMI client for Add and qualified readback."""
+    def __init__(self) -> None:
+        from register_project_exe_exclusions import DefenderWmi
+        self.reader = DefenderWmi()
 
     def read_settings(self):
-        rows = list(self.service.ExecQuery('SELECT * FROM MSFT_MpPreference'))
-        if len(rows) != 1:
-            raise ValueError('exact current Defender preference instance required')
-        result = {}
-        for key in ('ExclusionPath', 'ExclusionExtension', 'ExclusionProcess'):
-            value = getattr(rows[0], key)
-            if value is None:
-                value = []
-            value = list(value)
-            if any(not isinstance(item, str) for item in value):
-                raise ValueError('invalid actual Defender setting array')
-            result[key] = value
-        return result
+        self.reader.read_paths()
+        evidence = self.reader.settings_readback()
+        if evidence["after_settings"] is None:
+            raise ValueError("Fresh complete actual settings unavailable")
+        return evidence["after_settings"]
 
-    def add_path(self, path):
-        cls = self.service.Get('MSFT_MpPreference')
-        params = cls.Methods_('Add').InParameters.SpawnInstance_()
-        params.Properties_('ExclusionPath').Value = [path]
-        output = cls.ExecMethod_('Add', params)
-        if output is None:
-            return None
-        try:
-            return int(output.Properties_('ReturnValue').Value)
-        except Exception as error:
-            return {'return_value': None, 'return_decode_error': type(error).__name__ + ': ' + str(error)}
+    def settings_readback(self):
+        return self.reader.settings_readback()
+
+    def add_path(self, path: str) -> int | None | dict[str, object]:
+        return self.reader.add_path(path)
 
 def runtime_guard(policy, policy_sha256):
     """Every code/config leaf is hash/ACL checked; no external import origin."""
@@ -409,6 +416,12 @@ def runtime_guard(policy, policy_sha256):
     root = Path(INSTALL_ROOT)
     safety = NativeSafety(policy['owner_sid'], policy['frozen_dir'], policy['receipts_dir'])
     verify_outer_parents(safety)
+    if safety.data_root is not None:
+        with safety.lock_file(str(root / 'installation-manifest.json')) as lease:
+            installed = json.loads(lease.read_bytes(2 * 1024 * 1024))
+        if installed.get('schema') != 'xar.project-exe-broker.installation-manifest.v2':
+            raise ValueError('Sealed data identity manifest required')
+        safety.bind_data_root(installed['data_root_identity'])
     with safety.lock_dir(INSTALL_ROOT):
         safety.verify_protected_path(INSTALL_ROOT)
         for name in ('policy.json', 'runtime-seal.json', 'installation-manifest.json'):

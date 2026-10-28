@@ -24,7 +24,7 @@ def main():
                                   ROOT + r'\deps\pywin32_system32', r'C:\Windows\System32'])
     from native_safety import NativeSafety
     from installer_core import strict_json
-    safety = NativeSafety('S-1-5-21-4063940640-1897558599-686929869-1001',
+    safety = NativeSafety('S-1-5-21-2908730481-166481001-1318755029-1001',
         ROOT + r'\private-frozen', ROOT + r'\receipts')
     identity = safety.token_identity()
     if identity != {'sid': 'S-1-5-18', 'admin': True}:
@@ -36,8 +36,17 @@ def main():
     if policy['runtime_root'].replace('/', '\\') != ROOT:
         raise RuntimeError('fixed installation required')
     from windows_adapter import runtime_guard, SameAdminDefenderClient
-    from worker_core import run_once
-    return run_once(policy_bytes, safety, SameAdminDefenderClient, runtime_guard)
+    from worker_core import run_once, parse_policy
+    policy = parse_policy(policy_bytes)
+    if policy['broker_schema'] == 'xar.project-exe-broker.policy.v2':
+        with safety.lock_file(ROOT + r'\installation-manifest.json') as lease:
+            installed = strict_json(lease.read_bytes(2 * 1024 * 1024))
+        if installed.get('schema') != 'xar.project-exe-broker.installation-manifest.v2':
+            raise RuntimeError('Protected data identity manifest required')
+        safety = NativeSafety(policy['owner_sid'], policy['frozen_dir'], policy['receipts_dir'])
+        safety.bind_data_root(installed['data_root_identity'])
+    with safety.hold_data_root():
+        return run_once(policy_bytes, safety, SameAdminDefenderClient, runtime_guard)
 
 if __name__ == '__main__':
     main()

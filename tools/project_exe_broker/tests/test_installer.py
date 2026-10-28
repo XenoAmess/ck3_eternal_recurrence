@@ -85,7 +85,7 @@ class TaskFakeAdapter:
 def minimal_plan():
     return {'summary': {'status': 'prepared_only'}, 'frozen': [({'path': 'a', 'sha256': 'f'*64}, b'a')],
         'task': core.task_spec(core.OWNER), 'policy_bytes': core.raw_json({
-            'installation_id': '00000000-0000-4000-8000-000000000000'}),
+            'installation_id': '00000000-0000-4000-8000-000000000000', 'broker_schema': 'xar.project-exe-broker.policy.v1'}),
         'initial': [({'outputs': []}, b'{}')]}
 
 class InstallerTests(unittest.TestCase):
@@ -93,6 +93,84 @@ class InstallerTests(unittest.TestCase):
         self.original_modules = adapters._modules
         adapters._modules=lambda: (None,None,None,FakeSecurity,None)
     def tearDown(self): adapters._modules=self.original_modules
+
+    def test_fixed_data_identity_strings_and_replacement_refusal(self):
+        import native_safety as native
+        meta = {"attributes": 16, "file_id": (6505083400996699863, "ca97c100000011020000000000000000"),
+                "creation_filetime_decimal": "134376000000000000",
+                "security": {"owner_sid": native.ADMIN_SID, "dacl_present": True,
+                    "dacl_protected": True, "dacl_hex": "software", "aces": [
+                        {"type": 0, "flags": 0, "mask": 0x1f01ff, "sid": native.SYSTEM_SID},
+                        {"type": 0, "flags": 0, "mask": 0x1f01ff, "sid": native.ADMIN_SID}]}}
+        identity = native.NativeSafety.data_identity(native.DATA_ROOT, meta)
+        self.assertEqual(identity["volume_serial_decimal"], "6505083400996699863")
+        self.assertEqual(json.loads(json.dumps(identity)), identity)
+        safety = native.NativeSafety(core.OWNER, native.DATA_ROOT + "\\private-frozen", native.DATA_ROOT + "\\receipts")
+        safety.observe_data_root_identity = lambda: copy.deepcopy(identity)
+        safety.bind_data_root(identity)
+        for key, value in (("volume_serial_decimal", "6505083400996699864"),
+                           ("file_id_128_decimal", "4"), ("creation_filetime_decimal", "134376000000000001"),
+                           ("security_sha256", "0" * 64), ("path", "D:\\other"),
+                           ("file_id_128_decimal", True), ("volume_serial_decimal", 6505083400996699863)):
+            changed = copy.deepcopy(identity)
+            changed[key] = value
+            with self.assertRaises(native.SafetyError):
+                safety.bind_data_root(changed)
+        for attack in ("reparse", "ordinary-owner", "ordinary-delete"):
+            changed = copy.deepcopy(meta)
+            if attack == "reparse":
+                changed["attributes"] |= 0x400
+            elif attack == "ordinary-owner":
+                changed["security"]["owner_sid"] = core.OWNER
+            else:
+                changed["security"]["aces"].append({"type": 0, "flags": 0, "mask": 0x40, "sid": core.OWNER})
+            with self.assertRaises(native.SafetyError):
+                native.NativeSafety.data_identity(native.DATA_ROOT, changed)
+
+    def test_nullable_worker_uses_shared_reader_without_null_array_alias(self):
+        import worker_core as worker
+        from register_project_exe_exclusions import DefenderWmi, require_system_broker_readback
+        paths = ["D:\\approved\\old.exe"]
+        class Props:
+            def Item(self, name):
+                value = paths if name == "ExclusionPath" else None if name == "ExclusionExtension" else []
+                return types.SimpleNamespace(Name=name, Value=value, CIMType=8, IsArray=True)
+        reader = DefenderWmi.__new__(DefenderWmi)
+        reader.token_user_sid, reader.administrative_token_observed = core.SYSTEM, True
+        reader.before_settings = reader.after_settings = None
+        reader.provider_nullable_observed = False
+        reader.settings_readback_error = None
+        reader.before_property_observations = reader.after_property_observations = reader.current_property_observations = None
+        reader.services = types.SimpleNamespace(ExecQuery=lambda query: [types.SimpleNamespace(Properties_=Props())])
+        calls = []
+        def add(path):
+            calls.append(path)
+            paths.append(path)
+            return None
+        reader.add_path = add
+        client = adapters.SameAdminDefenderClient.__new__(adapters.SameAdminDefenderClient)
+        client.reader = reader
+        receipt = {"broker_schema": worker.RECEIPT_SCHEMA, "status": "settings_failed",
+                   "before_settings": None, "calls": [],
+                   "files": [{"path": "D:\\approved\\new.exe", "size": 10, "sha256": "a" * 64}]}
+        worker.register_claim(types.SimpleNamespace(revalidate_all=lambda: None), receipt, lambda: client)
+        self.assertEqual(receipt["status"], "verified")
+        self.assertEqual(receipt["broker_schema"], "xar.project-exe-broker.receipt.v2")
+        self.assertEqual(len(calls), 1)
+        self.assertIsNone(receipt["after_settings"]["ExclusionExtension"])
+        self.assertEqual(receipt["after_settings"]["ExclusionProcess"], [])
+        require_system_broker_readback(receipt)
+        for field, value in (("settings_readback_process_id", True),
+                             ("settings_readback_process_id", 4294967296),
+                             ("settings_readback_token_user_sid", core.OWNER)):
+            bad = copy.deepcopy(receipt)
+            bad[field] = value
+            with self.assertRaises(ValueError):
+                require_system_broker_readback(bad)
+        bad = copy.deepcopy(receipt)
+        del bad["settings_readback_error"]
+        with self.assertRaises(ValueError):
+            require_system_broker_readback(bad)
 
     def test_exact_task_read_run_and_mapped_acl(self):
         proof=adapters.verify_task_descriptor(sd(), core.OWNER)
@@ -177,6 +255,27 @@ class InstallerTests(unittest.TestCase):
         self.assertEqual(adapter.calls.count('Run_None_ACK'),1)
         index=adapter.calls.index('Run_None_ACK')
         self.assertEqual(adapter.calls[:index].count('owner_request'),2)
+
+    def test_install_summary_uses_verified_settings_and_keeps_unknown(self):
+        from unittest.mock import patch
+        class Completed(TaskFakeAdapter):
+            def wait_fixed_receipt(self, request_id, timeout): return b'actual-test-boundary'
+        for changed in (True, False):
+            before = {'ExclusionPath': ['old'], 'ExclusionExtension': None, 'ExclusionProcess': []}
+            after = {**before, 'ExclusionPath': ['old', 'new'] if changed else ['old']}
+            verified = {'status': 'verified', 'before_settings': before, 'after_settings': after,
+                        'observed_prior_settings_preserved': True}
+            plan = minimal_plan()
+            plan['summary']['settings_changed'] = False
+            with self.subTest(changed=changed), patch.object(core, 'verify_receipt', return_value=verified) as reader:
+                result = core.install(plan, Completed(), None, 'new.json')
+                self.assertEqual(result['status'], 'installed_initial_outputs_verified')
+                self.assertIs(result['settings_changed'], changed)
+                self.assertIs(result['observed_prior_settings_preserved'], True)
+                reader.assert_called_once()
+        result = core.install(minimal_plan(), TaskFakeAdapter(), None, 'new.json')
+        self.assertIsNone(result['settings_changed'])
+        self.assertIsNone(result['observed_prior_settings_preserved'])
 
     def test_fixed_action_never_accepts_request_parameters(self):
         spec=core.task_spec(core.OWNER)
