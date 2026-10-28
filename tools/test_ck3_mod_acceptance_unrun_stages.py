@@ -18,7 +18,7 @@ from collections.abc import Callable, Iterator, Mapping
 from typing import Protocol, runtime_checkable
 from types import SimpleNamespace
 from unittest.mock import patch
-from ck3_mod_acceptance_background_types import FilePin, JsonObject, JsonValue, json_object
+from ck3_mod_acceptance_background_types import FilePin, JsonObject, JsonValue, json_object, strings_field, text_field
 from ck3_mod_acceptance_unrun import _release_stages
 import ck3_mod_acceptance_unrun as subject
 
@@ -1600,10 +1600,10 @@ class SerialKnownWaitPrelaunchTests(unittest.TestCase):
         from mypy import api
         path = Path(subject.__file__)
         tree = ast.parse(path.read_text(encoding='utf8'))
-        names = {'SerialObservedProcess','SerialPrelaunchGuardEvidence','_SerialUnrunResources',
+        names = {'SerialObservedProcess','SerialPrelaunchGuardEvidence','SerialUnarmedGuardEvidence','_SerialUnrunResources',
             '_SerialUnrunReducer','_serial_resources','_serial_original','_serial_raw','_serial_child',
             '_serial_argument','_serial_allocator','validate_serial_prelaunch','_serial_required_path',
-            'build_serial_prelaunch_bundle'}
+            'build_serial_prelaunch_bundle','_serial_unarmed_guard','_serial_cleanup_waits'}
         nodes: list[ast.stmt] = [node for node in tree.body if isinstance(node,(ast.ClassDef,ast.FunctionDef)) and node.name in names]
         self.assertEqual({node.name for node in nodes if isinstance(node,(ast.ClassDef,ast.FunctionDef))},names)
         prelude = '''from __future__ import annotations
@@ -1617,6 +1617,7 @@ import argparse, ast, hashlib, json, math, re
 from ck3_mod_acceptance import same_directory_control_peer
 from ck3_mod_acceptance_background_types import FilePin, JsonObject, file_pin, json_object, object_field, text_field, strings_field
 from ck3_mod_acceptance_unrun import (SCHEMA, PRELAUNCH_KIND, SERIAL_PRELAUNCH_FORMAT, UnrunBundleReport,
+    PrelaunchGuardState, _prelaunch_guard_state,
     _timestamp, _integer, _ttl_pin, _ttl_allocator_stdout, _captured_release, _sequence,
     _journal_events, _ttl_recovery_sources, _write, validate_allocated_unrun)
 '''
@@ -1624,6 +1625,180 @@ from ck3_mod_acceptance_unrun import (SCHEMA, PRELAUNCH_KIND, SERIAL_PRELAUNCH_F
         stdout,stderr,code = api.run(['--strict','--strict-equality','--follow-imports=silent',
             '--no-incremental','--cache-dir','nul','-c',source])
         self.assertEqual(code,0,stdout+stderr)
+
+
+class SerialUnarmedKnownWaitPrelaunchTests(unittest.TestCase):
+    """Authored R39-shaped originals enter the shared producer and real lock."""
+
+    def setUp(self) -> None:
+        owner = SerialKnownWaitPrelaunchTests('runTest')
+        owner.setUp(); self.addCleanup(owner.doCleanups)
+        self.owner = owner
+        self.fixture = f = owner.fixture
+        self.serial = 0
+        self.execution = e = owner.execution
+        contract = f.write('first-phase-contract.json', {'gui_phases':[{'id':'phase-1'}]})
+        prepared = json_object(json.loads(Path(f.prepared['path']).read_bytes()))
+        prepared['contract'] = json_object(contract)
+        f.prepared = f.write_path(Path(f.prepared['path']), prepared)
+        ready = json_object(json.loads((f.live/'ready-context.json').read_bytes()))
+        ready['prepared_case'] = json_object(f.prepared)
+        owner.ready = f.write_live('ready-context.json', ready)
+        f.write_live('allocated-context.json', ready)
+        label = 'CORE-GUARD-0'
+        for suffix in ('.intent.actual.json', '.started.actual.json', '.original-wait.actual.json'):
+            row = json_object(json.loads((e/('COLD-GUARD-0'+suffix)).read_bytes()))
+            if suffix == '.intent.actual.json':
+                argv = strings_field(row, 'argv')
+                argv[argv.index('--wait-awaiting-seconds')+1] = '7200'
+                argv[argv.index('--armed')+1] = str(e/(label+'.ARMED.actual.json'))
+                argv[argv.index('--output')+1] = str(e/(label+'.actual.json'))
+                row['argv'] = [value for value in argv]
+            f.write_path(e/(label+suffix), row)
+        static = json_object(json.loads((e/'STATIC-INPUTS-PRECOMPILED.actual.json').read_bytes()))
+        guard = member(static, 'guard_original')['path']
+        (e/(label+'.stdout.log')).write_bytes(b'')
+        (e/(label+'.stderr.log')).write_text('File "'+str(guard)+'", line 1, in main\n'
+            'ValueError: Reviewed exact run/phase and the fixed1200-second reserve required\n', encoding='utf8')
+        failure = json_object(json.loads((e/'ROOT-SERIAL-FAILURE.actual.json').read_bytes()))
+        failure['error'] = repr(RuntimeError('Original child ended before '+str(e/(label+'.ARMED.actual.json'))))
+        handles = failure['original_handles']
+        if not isinstance(handles, list):
+            raise AssertionError('Authored original handle list required')
+        failure['original_handles'] = [json_object(handles[0]), {**json_object(handles[1]), 'label':label}]
+        f.write_path(e/'ROOT-SERIAL-FAILURE.actual.json', failure)
+        lines = (owner.root_execution/'ROOT-SERIAL.stdout.log').read_text(encoding='utf8').splitlines()
+        (owner.root_execution/'ROOT-SERIAL.stdout.log').write_text('\n'.join(
+            line.replace('COLD-GUARD-0', label) for line in lines if 'COLD-GUARD-1' not in line)+'\n', encoding='utf8')
+        for path in (*e.glob('COLD-GUARD-*'), *e.glob('CAPACITY*')):
+            path.unlink()
+        cas = deepcopy(f.done)
+        member(cas, 'event')['sequence'] = 11
+        member(cas, 'task')['last_sequence'] = 11
+        self.cas = f.write('original-screen-release.json', cas)
+        (f.bus/'events.jsonl').write_text(json.dumps(cas['event'])+'\n'+json.dumps(f.done['event'])+'\n', encoding='utf8')
+
+    def args(self) -> argparse.Namespace:
+        self.serial += 1
+        f, owner = self.fixture, self.owner
+        return argparse.Namespace(previous_live=f.live, keeper_root=f.keeper,
+            output=f.root/('unarmed-result-'+str(self.serial)), task_bus_root=f.bus,
+            serial_prelaunch_root_wait=owner.root_execution/'ROOT-SERIAL.original-wait.json',
+            prelaunch_orchestrator_source=owner.source, root_screen_release=Path(self.cas['path']),
+            admin_release=Path(f.done_pin['path']), next_state=f.root/'new-state',
+            allocator_intent=self.execution/'ALLOCATE.intent.actual.json',
+            allocator_process=self.execution/'ALLOCATE.started.actual.json',
+            allocator_exit=self.execution/'ALLOCATE.original-wait.actual.json',
+            allocator_stdout=owner.stdout, release_sequence=11, done_sequence=12)
+
+    def produce(self) -> subject.UnrunBundleReport:
+        return subject.build_bundle(self.args())
+
+    def claim(self, mutation: Callable[[], None] | None = None) -> tuple[Path, list[bool]]:
+        with patch.object(self.owner, 'produce', side_effect=self.produce):
+            return self.owner.claim(mutation)
+
+    def test_real_producer_roundtrip_retains_one_known_guard_wait_and_original_releases(self) -> None:
+        report = self.produce()
+        cleanup = member(report['validation'], 'failure_cleanup')
+        self.assertEqual(cleanup['guard_original_wait_codes'], [1])
+        self.assertEqual(cleanup['original_root_exit_code'], 1)
+        self.assertEqual(cleanup['original_allocator_exit_code'], 0)
+        self.assertEqual(cleanup['original_keeper_exit_code'], 0)
+        for key in ('normal_close_qualified', 'typed_normal_exit_proven', 'business_pass', 'release_pass'):
+            self.assertIs(cleanup[key], False)
+        row = json_object(json.loads(Path(report['bundle']['path']).read_bytes()))
+        self.assertEqual(row, json.loads(json.dumps(row)))
+        self.assertEqual(row['prelaunch_guard_state'], 'failed-before-armed')
+        self.assertEqual(row['CAS_release'], self.cas)
+        self.assertEqual(row['admin_done'], self.fixture.done_pin)
+        self.assertNotIn('idle_timeout', row)
+        self.assertNotIn('serial_capacity_start', row)
+        self.assertFalse((self.fixture.live/'allocation-unused-idle-timeout.json').exists())
+
+    def test_actual_allocator_revalidates_producer_under_original_writer_lock(self) -> None:
+        record, observations = self.claim()
+        self.assertEqual(observations, [True])
+        intent = json_object(json.loads((record/'intent.json').read_bytes()))
+        self.assertEqual(member(member(intent, 'closure'), 'failure_cleanup')['guard_original_wait_codes'], [1])
+        self.assertIs(intent['business_pass'], False)
+
+    def test_late_native_launch_and_original_wait_drift_inside_lock_refuse(self) -> None:
+        def drift() -> None:
+            path = self.execution/'CORE-GUARD-0.original-wait.actual.json'
+            path.write_bytes(path.read_bytes()+b' ')
+        with self.assertRaises(ValueError): self.claim(drift)
+        self.assertFalse((self.fixture.root/'admission/machine.json').exists())
+        def launch() -> None:
+            (self.fixture.live/'launch-intent.json').write_text('{}', encoding='utf8')
+        with self.assertRaisesRegex(ValueError, 'host/native/control'): self.claim(launch)
+        self.assertFalse((self.fixture.root/'admission/machine.json').exists())
+
+    def test_wrong_native_identity_types_waits_missing_fields_and_argv_refuse(self) -> None:
+        changes: tuple[tuple[str, str, JsonValue], ...] = (
+            ('CORE-GUARD-0.started.actual.json', 'pid', True),
+            ('CORE-GUARD-0.started.actual.json', 'process_creation_filetime_100ns', 134373000000000001),
+            ('CORE-GUARD-0.original-wait.actual.json', 'original_wait_returncode', False),
+            ('CORE-GUARD-0.original-wait.actual.json', 'original_wait_returncode', 0),
+            ('CORE-GUARD-0.original-wait.actual.json', 'pid', 90007),
+            ('ROOT-SERIAL-FAILURE.actual.json', 'public_started', True))
+        for name, key, bad in changes:
+            path = self.execution/name; raw = path.read_bytes()
+            row = json_object(json.loads(raw)); row[key] = bad
+            path.write_text(json.dumps(row), encoding='utf8')
+            with self.subTest(name=name, key=key), self.assertRaises(ValueError): self.produce()
+            path.write_bytes(raw)
+        path = self.execution/'CORE-GUARD-0.intent.actual.json'; raw = path.read_bytes()
+        row = json_object(json.loads(raw)); row.pop('source_commit')
+        path.write_text(json.dumps(row), encoding='utf8')
+        with self.assertRaises(ValueError): self.produce()
+        path.write_bytes(raw)
+        row = json_object(json.loads(raw)); argv = strings_field(row, 'argv')
+        argv[argv.index('--wait-awaiting-seconds')+1] = '5400'; row['argv'] = [value for value in argv]
+        path.write_text(json.dumps(row), encoding='utf8')
+        with self.assertRaises(ValueError): self.produce()
+        path.write_bytes(raw)
+
+    def test_later_guard_capacity_public_and_armed_claims_refuse(self) -> None:
+        names = ('CORE-GUARD-0.ARMED.actual.json', 'CORE-GUARD-0.CANCEL.actual.json',
+            'CORE-GUARD-0.actual.json', 'CORE-GUARD-1.intent.actual.json',
+            'COLD-GUARD-0.intent.actual.json', 'CAPACITY-START.actual.json',
+            'PUBLIC-RUN.intent.actual.json', 'DISPLAY-MODE.actual.json', 'STEAM-OFFLINE.prelaunch.actual.json')
+        for name in names:
+            path = self.execution/name; path.write_text('{}', encoding='utf8')
+            with self.subTest(name=name), self.assertRaises(ValueError): self.produce()
+            path.unlink()
+
+    def test_source_diagnostic_and_crossed_original_release_refuse(self) -> None:
+        static = json_object(json.loads((self.execution/'STATIC-INPUTS-PRECOMPILED.actual.json').read_bytes()))
+        guard = Path(text_field(member(static, 'guard_original'), 'path'))
+        original = guard.read_bytes(); guard.write_bytes(original+b'\n')
+        with self.assertRaises(ValueError): self.produce()
+        guard.write_bytes(original)
+        path = self.execution/'CORE-GUARD-0.stderr.log'; raw = path.read_bytes()
+        path.write_bytes(b'unrelated startup error\n')
+        with self.assertRaises(ValueError): self.produce()
+        path.write_bytes(raw)
+        args = self.args(); args.root_screen_release = Path(self.fixture.done_pin['path'])
+        with self.assertRaises(ValueError): subject.build_bundle(args)
+        report = self.produce(); close = Path(report['bundle']['path'])
+        row = json_object(json.loads(close.read_bytes())); row['prelaunch_guard_state'] = 'armed-cancelled'
+        self.fixture.write_path(close, row)
+        from ck3_mod_acceptance_allocate import _PrelaunchUnrunAdmissionReducer
+        reducer: object = subject.validate_allocated_unrun
+        if not isinstance(reducer, _PrelaunchUnrunAdmissionReducer):
+            raise AssertionError('Actual shared prelaunch reducer unavailable')
+        with self.assertRaises(ValueError):
+            reducer(self.fixture.live, self.fixture.freeze, close,
+                self.fixture.keeper, self.fixture.done, self.fixture.packet, next_state=self.fixture.root/'new-state')
+
+    def test_original_keeper_known_wait_rejects_bool_float_null_and_failure(self) -> None:
+        path = self.fixture.live/'keeper-actual-parent-exit.json'; raw = path.read_bytes()
+        for value in (False, 0.0, None, 1):
+            row = json_object(json.loads(raw)); row['keeper_actual_exit_code'] = value
+            self.fixture.write_path(path, row)
+            with self.subTest(value=value), self.assertRaises(ValueError): self.produce()
+        path.write_bytes(raw)
 
 
 if __name__=='__main__':unittest.main()

@@ -63,6 +63,15 @@ class SerialPrelaunchGuardEvidence(TypedDict):
     stderr: FilePin
 
 
+class SerialUnarmedGuardEvidence(TypedDict):
+    label: Literal['CORE-GUARD-0']
+    intent: FilePin
+    started: FilePin
+    original_wait: FilePin
+    stdout: FilePin
+    stderr: FilePin
+
+
 @runtime_checkable
 class _SerialUnrunResources(Protocol):
     def current_screen_absent(self, lease_repo: Path, bus_dir: Path, bus_sha: str,
@@ -161,16 +170,107 @@ def _serial_allocator(bundle: Mapping[str, object], machine: str, commit: str | 
     return child
 
 
+def _serial_unarmed_guard(bundle: Mapping[str, object], static: JsonObject,
+        failure: JsonObject, *, previous: Path, output: Path, machine: str,
+        commit: str, ready_at: datetime, root_finished_at: datetime,
+        evidence: dict[str, FilePin]) -> SerialObservedProcess:
+    """Bind the actual serial guard startup refusal, without an ARMED claim."""
+    guards = bundle.get('serial_guards')
+    fields = {'label', 'intent', 'started', 'original_wait', 'stdout', 'stderr'}
+    if not isinstance(guards, list) or len(guards) != 1:
+        raise ValueError('One actual before-ARMED serial guard role required')
+    row = json_object(guards[0])
+    label = 'CORE-GUARD-0'
+    if set(row) != fields or row.get('label') != label:
+        raise ValueError('Exact before-ARMED serial guard fields required')
+    if (any(output.glob('COLD-GUARD-*')) or any(output.glob('CORE-GUARD-1*'))
+            or any(output.glob('CAPACITY*'))
+            or any((output/(label+suffix)).exists() for suffix in
+                ('.ARMED.actual.json', '.CANCEL.actual.json', '.actual.json'))
+            or any(key in bundle for key in
+                ('serial_capacity_start', 'serial_capacity_stdout', 'serial_capacity_refusal'))):
+        raise ValueError('Before-ARMED serial recovery has later guard/capacity evidence')
+    originals: dict[str, JsonObject] = {}
+    for key, suffix in (('intent', '.intent.actual.json'), ('started', '.started.actual.json'),
+            ('original_wait', '.original-wait.actual.json')):
+        ref, originals[key] = _serial_original(row.get(key), output/(label+suffix))
+        evidence[label+'.'+key] = ref
+    child = _serial_child(originals['intent'], originals['started'], originals['original_wait'],
+        machine, commit, 'guard', label, 1)
+    argv = child.argv
+    guard = file_pin(static.get('guard_original'))
+    guard_raw = _serial_raw(guard).decode('utf-8-sig').replace('\r\n', '\n').replace('\r', '\n')
+    interpreter = file_pin(static.get('guard_interpreter'))
+    _serial_raw(interpreter)
+    if (len(argv) < 6 or argv[1:5] != ('-B', '-X', 'utf8', '-c')
+            or Path(argv[0]).resolve() != Path(interpreter['path']).resolve()
+            or hashlib.sha256(argv[5].encode()).hexdigest() != static.get('guard_code_sha256')):
+        raise ValueError('Before-ARMED serial interpreter/compiled source differs')
+    compiled = [node for node in ast.walk(ast.parse(argv[5])) if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Name) and node.func.id == 'compile']
+    if (len(compiled) != 1 or len(compiled[0].args) != 3
+            or not isinstance(compiled[0].args[0], ast.Constant) or compiled[0].args[0].value != guard_raw
+            or not isinstance(compiled[0].args[1], ast.Constant) or compiled[0].args[1].value != guard['path']
+            or not isinstance(compiled[0].args[2], ast.Constant) or compiled[0].args[2].value != 'exec'):
+        raise ValueError('Before-ARMED serial source must be the exact pinned guard')
+    _, ready = _serial_original(bundle.get('ready'), previous/'ready-context.json')
+    prepared_ref, prepared = _serial_original(ready.get('prepared_case'))
+    contract_ref, contract = _serial_original(prepared.get('contract'))
+    phases = contract.get('gui_phases')
+    if not isinstance(phases, list) or not phases:
+        raise ValueError('Before-ARMED serial original prepared phases required')
+    phase = text_field(json_object(phases[0]), 'id')
+    waiting = _serial_argument(argv, '--wait-awaiting-seconds')
+    if re.fullmatch('[1-9][0-9]{0,8}', waiting) is None or int(waiting) <= 5400:
+        raise ValueError('Before-ARMED serial refusal requires the actual unsupported wait bound')
+    expected = ('--live', str(previous), '--ready-context', str(previous/'ready-context.json'),
+        '--run-id', previous.name, '--phase', phase, '--reserve-seconds', '1200',
+        '--wait-awaiting-seconds', waiting, '--armed', str(output/(label+'.ARMED.actual.json')),
+        '--output', str(output/(label+'.actual.json')))
+    if argv[6:] != expected:
+        raise ValueError('Before-ARMED serial original first phase/live/argv differs')
+    error = repr(RuntimeError('Original child ended before '+str(output/(label+'.ARMED.actual.json'))))
+    stdout = _serial_raw(row.get('stdout'), output/(label+'.stdout.log'))
+    stderr = _serial_raw(row.get('stderr'), output/(label+'.stderr.log')).decode('utf-8')
+    if (failure.get('error') != error or stdout != b''
+            or not stderr.replace('\r\n', '\n').endswith(
+                'ValueError: Reviewed exact run/phase and the fixed1200-second reserve required\n')
+            or guard['path'] not in stderr):
+        raise ValueError('Original before-ARMED serial startup diagnostic differs')
+    failed_at = _timestamp(failure.get('observed_at_utc'), 'Serial startup failure')
+    if not ready_at <= child.started_at <= failed_at <= child.finished_at <= root_finished_at:
+        raise ValueError('Before-ARMED serial guard/failure chronology differs')
+    evidence.update({'serial_guard_prepared':prepared_ref, 'serial_guard_contract':contract_ref,
+        label+'.stdout':file_pin(row.get('stdout')), label+'.stderr':file_pin(row.get('stderr'))})
+    return child
+
+
+def _serial_cleanup_waits(bundle: Mapping[str, object]) -> JsonObject:
+    guards = bundle.get('serial_guards')
+    if not isinstance(guards, list) or not guards:
+        raise ValueError('Actual serial guard original waits required')
+    codes: list[int] = []
+    for guard in guards:
+        _, waited = _serial_original(json_object(guard).get('original_wait'))
+        code = _integer(waited.get('original_wait_returncode'), 'Serial cleanup guard original wait')
+        if code != 1:
+            raise ValueError('Serial cleanup cannot change the actual guard wait1')
+        codes.append(code)
+    return json_object({'receipt_format':SERIAL_PRELAUNCH_FORMAT, 'original_root_exit_code':1,
+        'original_allocator_exit_code':0, 'guard_original_wait_codes':codes,
+        'normal_close_qualified':False, 'release_pass':False})
+
+
 def validate_serial_prelaunch(bundle: Mapping[str, object], *, previous: Path,
         keeper: Path, machine: str, ready_at: datetime, keeper_closed_at: datetime) -> dict[str, FilePin]:
     """Consume known original waits before Game; no idle or unknown-wait fiction."""
     if bundle.get('closure_kind') != PRELAUNCH_KIND or bundle.get('receipt_format') != SERIAL_PRELAUNCH_FORMAT:
         raise ValueError('Serial receipt format crossed prelaunch terminal states')
+    guard_state = _prelaunch_guard_state(bundle)
     evidence: dict[str, FilePin] = {}
     for key in ('prelaunch_orchestrator_source', 'prelaunch_orchestrator_started',
             'prelaunch_orchestrator_wait', 'serial_root_stdout', 'serial_root_stderr', 'serial_static',
-            'serial_failure', 'serial_capacity_start', 'serial_capacity_stdout', 'serial_capacity_refusal',
-            'serial_release_original'):
+            'serial_failure', 'serial_release_original'):
         evidence[key] = file_pin(bundle.get(key))
     source = evidence['prelaunch_orchestrator_source']
     source_raw = _serial_raw(source)
@@ -210,7 +310,9 @@ def validate_serial_prelaunch(bundle: Mapping[str, object], *, previous: Path,
     allocated = _serial_allocator(bundle, machine, commit)
     allocator_terminal = _ttl_allocator_stdout(json_object({'allocator_stdout':bundle.get('allocator_stdout')}))
     _, keeper_parent = _serial_original(bundle.get('keeper_parent_exit'), previous/'keeper-actual-parent-exit.json')
-    if any(allocator_terminal.get(key) != value for key, value in keeper_parent.items()):
+    if (type(keeper_parent.get('keeper_actual_exit_code')) is not int
+            or keeper_parent.get('keeper_actual_exit_code') != 0
+            or any(allocator_terminal.get(key) != value for key, value in keeper_parent.items())):
         raise ValueError('Original serial allocator stdout crossed its internal keeper wait')
     output = Path(file_pin(bundle.get('allocator_intent'))['path']).parent
     _, failure = _serial_original(evidence['serial_failure'], output/'ROOT-SERIAL-FAILURE.actual.json')
@@ -228,80 +330,87 @@ def validate_serial_prelaunch(bundle: Mapping[str, object], *, previous: Path,
         if ref['sha256'] != _serial_argument(root_argv, flag+'-sha256'):
             raise ValueError('Original serial launch input binding differs')
         evidence['serial_bound_'+field] = ref
-    _, capacity = _serial_original(evidence['serial_capacity_start'], output/'CAPACITY-START.actual.json')
-    cap_stdout = json_object(json.loads(_serial_raw(evidence['serial_capacity_stdout'], output/'CAPACITY.stdout.log')))
-    refusal_ref, refusal = _serial_original(evidence['serial_capacity_refusal'])
-    if (file_pin(cap_stdout.get('refusal')) != refusal_ref or refusal.get('schema') != 'rrf-parameterized-prelaunch-refusal-v1'
-            or refusal.get('machine_id') != machine or refusal.get('no_automatic_retry') is not True
-            or refusal.get('receipt_exists') is not False or refusal.get('error') != failure.get('error')
-            or Path(text_field(refusal, 'requested_receipt')).exists()
-            or capacity.get('machine_id') != machine or capacity.get('derived_source_sha256') != static.get('capacity_source_sha256')):
-        raise ValueError('Actual serial mechanical prelaunch refusal differs')
-    cap_argv = tuple(strings_field(capacity, 'argv'))
-    if _serial_argument(cap_argv, '--output') != refusal.get('requested_receipt'):
-        raise ValueError('Original capacity refusal crossed the requested output')
     for field in ('capacity_original', 'guard_original', 'guard_interpreter'):
         ref = file_pin(static.get(field))
         _serial_raw(ref)
         evidence['serial_source_'+field] = ref
-    guards = bundle.get('serial_guards')
-    if not isinstance(guards, list) or len(guards) != 2:
-        raise ValueError('Both actual serial guard evidence roles required')
     processes = [allocated]
-    for index, raw in enumerate(guards):
-        row = json_object(raw)
-        label = 'COLD-GUARD-'+str(index)
-        if set(row) != {'label', 'intent', 'started', 'original_wait', 'armed', 'stdout', 'stderr'} or row.get('label') != label:
-            raise ValueError('Exact consecutive serial guard role required')
-        originals: dict[str, JsonObject] = {}
-        for key, suffix in (('intent', '.intent.actual.json'), ('started', '.started.actual.json'),
-                ('original_wait', '.original-wait.actual.json'), ('armed', '.ARMED.actual.json')):
-            ref, originals[key] = _serial_original(row.get(key), output/(label+suffix))
-            evidence[label+'.'+key] = ref
-        child = _serial_child(originals['intent'], originals['started'], originals['original_wait'],
-            machine, commit, 'guard', label, 1)
-        armed = originals['armed']
-        if (armed.get('schema') != 'root-external-deadline-guard-armed-v1' or armed.get('machine_id') != machine
-                or armed.get('run_id') != previous.name or Path(text_field(armed, 'live')).resolve() != previous
-                or file_pin(armed.get('ready_context')) != file_pin(bundle.get('ready'))
-                or type(armed.get('pid')) is not int or armed.get('pid') != child.pid
-                or armed.get('process_creation_filetime_100ns') != child.birth_filetime
-                or armed.get('birth_source') != 'GetProcessTimes(GetCurrentProcess)'
-                or armed.get('state') != 'WAITING_FOR_ACTUAL_FROZEN_AND_PHASE'
-                or type(armed.get('reserve_seconds')) is not int or armed.get('reserve_seconds') != 1200
-                or type(armed.get('wait_awaiting_seconds')) is not int or armed.get('wait_awaiting_seconds') != 5400
-                or armed.get('game_or_queue_action_sent') is not False or armed.get('deadline_bound') is not False
-                or file_pin(armed.get('guard')) != file_pin(static.get('guard_original'))):
-            raise ValueError('Original serial ARMED guard identity/action state differs')
-        argv = child.argv
-        if (len(argv) < 6 or argv[1:5] != ('-B', '-X', 'utf8', '-c')
-                or Path(argv[0]).resolve() != Path(file_pin(static.get('guard_interpreter'))['path']).resolve()):
-            raise ValueError('Original serial guard interpreter/compile route differs')
-        compiled = [node for node in ast.walk(ast.parse(argv[5])) if isinstance(node, ast.Call)
-                    and isinstance(node.func, ast.Name) and node.func.id == 'compile']
-        if (len(compiled) != 1 or len(compiled[0].args) != 3 or not isinstance(compiled[0].args[0], ast.Constant)
-                or not isinstance(compiled[0].args[0].value, str)
-                or not isinstance(compiled[0].args[1], ast.Constant)
-                or compiled[0].args[1].value != file_pin(static.get('guard_original'))['path']
-                or not isinstance(compiled[0].args[2], ast.Constant) or compiled[0].args[2].value != 'exec'
-                or hashlib.sha256(argv[5].encode()).hexdigest() != static.get('guard_code_sha256')):
-            raise ValueError('Original serial guard compiled source SHA differs')
-        expected = {'--live':str(previous), '--ready-context':str(previous/'ready-context.json'),
-            '--run-id':previous.name, '--phase':text_field(armed, 'phase'), '--reserve-seconds':'1200',
-            '--wait-awaiting-seconds':'5400', '--armed':str(output/(label+'.ARMED.actual.json')),
-            '--output':str(output/(label+'.actual.json'))}
-        if any(_serial_argument(argv, flag) != value for flag, value in expected.items()) or (output/(label+'.actual.json')).exists():
-            raise ValueError('Original serial guard crossed live/phase or sent an action')
-        stdout = _serial_raw(row.get('stdout'), output/(label+'.stdout.log')).decode('utf-8').strip()
-        if (not stdout.startswith('ROOT_DEADLINE_GUARD_ARMED ')
-                or file_pin(json.loads(stdout.removeprefix('ROOT_DEADLINE_GUARD_ARMED '))) != file_pin(row.get('armed'))
-                or _serial_raw(row.get('stderr'), output/(label+'.stderr.log')) != b''):
-            raise ValueError('Original serial guard streams differ')
-        if not ready_at <= child.started_at <= _timestamp(armed.get('armed_at_utc'), 'Guard armed') <= _timestamp(failure.get('observed_at_utc'), 'Root failure') <= child.finished_at <= root_process.finished_at:
-            raise ValueError('Original serial guard/failure chronology differs')
-        processes.append(child)
-        evidence[label+'.stdout'] = file_pin(row.get('stdout'))
-        evidence[label+'.stderr'] = file_pin(row.get('stderr'))
+    if guard_state == 'failed-before-armed':
+        processes.append(_serial_unarmed_guard(bundle, static, failure, previous=previous,
+            output=output, machine=machine, commit=commit, ready_at=ready_at,
+            root_finished_at=root_process.finished_at, evidence=evidence))
+    else:
+        for key in ('serial_capacity_start', 'serial_capacity_stdout', 'serial_capacity_refusal'):
+            evidence[key] = file_pin(bundle.get(key))
+        _, capacity = _serial_original(evidence['serial_capacity_start'], output/'CAPACITY-START.actual.json')
+        cap_stdout = json_object(json.loads(_serial_raw(evidence['serial_capacity_stdout'], output/'CAPACITY.stdout.log')))
+        refusal_ref, refusal = _serial_original(evidence['serial_capacity_refusal'])
+        if (file_pin(cap_stdout.get('refusal')) != refusal_ref or refusal.get('schema') != 'rrf-parameterized-prelaunch-refusal-v1'
+                or refusal.get('machine_id') != machine or refusal.get('no_automatic_retry') is not True
+                or refusal.get('receipt_exists') is not False or refusal.get('error') != failure.get('error')
+                or Path(text_field(refusal, 'requested_receipt')).exists()
+                or capacity.get('machine_id') != machine or capacity.get('derived_source_sha256') != static.get('capacity_source_sha256')):
+            raise ValueError('Actual serial mechanical prelaunch refusal differs')
+        cap_argv = tuple(strings_field(capacity, 'argv'))
+        if _serial_argument(cap_argv, '--output') != refusal.get('requested_receipt'):
+            raise ValueError('Original capacity refusal crossed the requested output')
+        guards = bundle.get('serial_guards')
+        if not isinstance(guards, list) or len(guards) != 2:
+            raise ValueError('Both actual serial guard evidence roles required')
+        for index, raw in enumerate(guards):
+            row = json_object(raw)
+            label = 'COLD-GUARD-'+str(index)
+            if set(row) != {'label', 'intent', 'started', 'original_wait', 'armed', 'stdout', 'stderr'} or row.get('label') != label:
+                raise ValueError('Exact consecutive serial guard role required')
+            originals: dict[str, JsonObject] = {}
+            for key, suffix in (('intent', '.intent.actual.json'), ('started', '.started.actual.json'),
+                    ('original_wait', '.original-wait.actual.json'), ('armed', '.ARMED.actual.json')):
+                ref, originals[key] = _serial_original(row.get(key), output/(label+suffix))
+                evidence[label+'.'+key] = ref
+            child = _serial_child(originals['intent'], originals['started'], originals['original_wait'],
+                machine, commit, 'guard', label, 1)
+            armed = originals['armed']
+            if (armed.get('schema') != 'root-external-deadline-guard-armed-v1' or armed.get('machine_id') != machine
+                    or armed.get('run_id') != previous.name or Path(text_field(armed, 'live')).resolve() != previous
+                    or file_pin(armed.get('ready_context')) != file_pin(bundle.get('ready'))
+                    or type(armed.get('pid')) is not int or armed.get('pid') != child.pid
+                    or armed.get('process_creation_filetime_100ns') != child.birth_filetime
+                    or armed.get('birth_source') != 'GetProcessTimes(GetCurrentProcess)'
+                    or armed.get('state') != 'WAITING_FOR_ACTUAL_FROZEN_AND_PHASE'
+                    or type(armed.get('reserve_seconds')) is not int or armed.get('reserve_seconds') != 1200
+                    or type(armed.get('wait_awaiting_seconds')) is not int or armed.get('wait_awaiting_seconds') != 5400
+                    or armed.get('game_or_queue_action_sent') is not False or armed.get('deadline_bound') is not False
+                    or file_pin(armed.get('guard')) != file_pin(static.get('guard_original'))):
+                raise ValueError('Original serial ARMED guard identity/action state differs')
+            argv = child.argv
+            if (len(argv) < 6 or argv[1:5] != ('-B', '-X', 'utf8', '-c')
+                    or Path(argv[0]).resolve() != Path(file_pin(static.get('guard_interpreter'))['path']).resolve()):
+                raise ValueError('Original serial guard interpreter/compile route differs')
+            compiled = [node for node in ast.walk(ast.parse(argv[5])) if isinstance(node, ast.Call)
+                        and isinstance(node.func, ast.Name) and node.func.id == 'compile']
+            if (len(compiled) != 1 or len(compiled[0].args) != 3 or not isinstance(compiled[0].args[0], ast.Constant)
+                    or not isinstance(compiled[0].args[0].value, str)
+                    or not isinstance(compiled[0].args[1], ast.Constant)
+                    or compiled[0].args[1].value != file_pin(static.get('guard_original'))['path']
+                    or not isinstance(compiled[0].args[2], ast.Constant) or compiled[0].args[2].value != 'exec'
+                    or hashlib.sha256(argv[5].encode()).hexdigest() != static.get('guard_code_sha256')):
+                raise ValueError('Original serial guard compiled source SHA differs')
+            expected = {'--live':str(previous), '--ready-context':str(previous/'ready-context.json'),
+                '--run-id':previous.name, '--phase':text_field(armed, 'phase'), '--reserve-seconds':'1200',
+                '--wait-awaiting-seconds':'5400', '--armed':str(output/(label+'.ARMED.actual.json')),
+                '--output':str(output/(label+'.actual.json'))}
+            if any(_serial_argument(argv, flag) != value for flag, value in expected.items()) or (output/(label+'.actual.json')).exists():
+                raise ValueError('Original serial guard crossed live/phase or sent an action')
+            stdout = _serial_raw(row.get('stdout'), output/(label+'.stdout.log')).decode('utf-8').strip()
+            if (not stdout.startswith('ROOT_DEADLINE_GUARD_ARMED ')
+                    or file_pin(json.loads(stdout.removeprefix('ROOT_DEADLINE_GUARD_ARMED '))) != file_pin(row.get('armed'))
+                    or _serial_raw(row.get('stderr'), output/(label+'.stderr.log')) != b''):
+                raise ValueError('Original serial guard streams differ')
+            if not ready_at <= child.started_at <= _timestamp(armed.get('armed_at_utc'), 'Guard armed') <= _timestamp(failure.get('observed_at_utc'), 'Root failure') <= child.finished_at <= root_process.finished_at:
+                raise ValueError('Original serial guard/failure chronology differs')
+            processes.append(child)
+            evidence[label+'.stdout'] = file_pin(row.get('stdout'))
+            evidence[label+'.stderr'] = file_pin(row.get('stderr'))
     handles = failure.get('original_handles')
     if not isinstance(handles, list) or len(handles) != len(processes):
         raise ValueError('Serial failure retained Popen roles are incomplete')
@@ -334,10 +443,17 @@ def validate_serial_prelaunch(bundle: Mapping[str, object], *, previous: Path,
     _, original_release = _serial_original(evidence['serial_release_original'])
     allocator = _serial_resources()
     actual_release = json_object(allocator.read_failed_runtime_release(Path(evidence['serial_release_original']['path'])))
-    done = json_object(allocator.read_failed_runtime_release(Path(file_pin(bundle.get('admin_done'))['path'])))
-    if (any(actual_release.get(key) != done.get(key) for key in ('schema','ok','task','event'))
+    canonical_cas = json_object(allocator.read_failed_runtime_release(Path(file_pin(bundle.get('CAS_release'))['path'])))
+    if (any(actual_release.get(key) != canonical_cas.get(key) for key in ('schema','ok','task','event'))
             or original_release.get('ok') is not True):
         raise ValueError('Original serial screen release differs from canonical closure')
+    if guard_state == 'failed-before-armed':
+        admin_pin, _ = _serial_original(bundle.get('serial_admin_original'))
+        original_admin = json_object(allocator.read_failed_runtime_release(Path(admin_pin['path'])))
+        done = json_object(allocator.read_failed_runtime_release(Path(file_pin(bundle.get('admin_done'))['path'])))
+        if any(original_admin.get(key) != done.get(key) for key in ('schema','ok','task','event')):
+            raise ValueError('Original serial administrative DONE differs from canonical closure')
+        evidence['serial_admin_original'] = admin_pin
     return evidence
 
 
@@ -2340,9 +2456,7 @@ def validate_allocated_unrun(previous, freeze, close_path, keeper_root, release,
             'absent_launch_native_control_Save':absent,'original_keeper_wait_proven':True,'original_keeper_exit_code':0,
             'host_started':False,'native_session_started':False,'original_host_exit_code':None,
             'original_ck3_exit_code':None,'typed_normal_exit_proven':False,'business_pass':False,
-            **({'receipt_format':SERIAL_PRELAUNCH_FORMAT,'original_root_exit_code':1,
-                'original_allocator_exit_code':0,'guard_original_wait_codes':[1,1],
-                'normal_close_qualified':False,'release_pass':False} if serial else {})}}
+            **(_serial_cleanup_waits(bundle) if serial else {})}}
 
 def _write(path: str | Path, value: object) -> FilePin:
     path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
@@ -2461,6 +2575,8 @@ def build_serial_prelaunch_bundle(args: argparse.Namespace) -> UnrunBundleReport
     task = text_field(frozen, 'screen_task')
     allocator_intent = _serial_required_path(args, 'allocator_intent')
     execution = allocator_intent.parent
+    guard_state: PrelaunchGuardState = ('failed-before-armed'
+        if (execution/'CORE-GUARD-0.intent.actual.json').exists() else 'armed-cancelled')
     if (getattr(args, 'aborted_wrapper', None) or getattr(args, 'launcher_pin_refusal', None)
             or getattr(args, 'allocator_result', None) or getattr(args, 'allocator_external_exec', None)):
         raise ValueError('Serial known waits cannot mix unknown/legacy receipt formats')
@@ -2486,6 +2602,10 @@ def build_serial_prelaunch_bundle(args: argparse.Namespace) -> UnrunBundleReport
     task_value = json_object(json.loads(task_path.read_bytes()))
     for key, sequence in (('CAS_release', release_sequence), ('admin_done', done_sequence)):
         offset, line, event = lines[sequence]
+        if guard_state == 'failed-before-armed':
+            original = root_release if key == 'CAS_release' else _serial_required_path(args, 'admin_release')
+            proofs[key] = json_object(_captured_release(original, event, task, sequence))
+            continue
         proofs[key] = json_object(_write(output/(key+'.canonical.json'), {
             'schema':'xar-screen-release-canonical-reconstruction-v1', 'machine_id':machine,
             'source_event_stream':str(journal), 'source_event_byte_offset':offset,
@@ -2506,24 +2626,33 @@ def build_serial_prelaunch_bundle(args: argparse.Namespace) -> UnrunBundleReport
         'serial_root_stdout':root_wait.with_name('ROOT-SERIAL.stdout.log'),
         'serial_root_stderr':root_wait.with_name('ROOT-SERIAL.stderr.log'),
         'serial_static':execution/'STATIC-INPUTS-PRECOMPILED.actual.json',
-        'serial_failure':execution/'ROOT-SERIAL-FAILURE.actual.json',
-        'serial_capacity_start':execution/'CAPACITY-START.actual.json',
-        'serial_capacity_stdout':execution/'CAPACITY.stdout.log'}
-    capacity = json_object(json.loads(paths['serial_capacity_start'].read_bytes()))
-    requested = Path(_serial_argument(tuple(strings_field(capacity, 'argv')), '--output'))
-    paths['serial_capacity_refusal'] = requested.with_name(requested.name+'.REFUSAL.json')
-    guards: list[SerialPrelaunchGuardEvidence] = []
-    for index in range(2):
-        label = 'COLD-GUARD-'+str(index)
-        guards.append(SerialPrelaunchGuardEvidence(label=label,
+        'serial_failure':execution/'ROOT-SERIAL-FAILURE.actual.json'}
+    guards: list[SerialPrelaunchGuardEvidence | SerialUnarmedGuardEvidence] = []
+    if guard_state == 'failed-before-armed':
+        paths['serial_admin_original'] = _serial_required_path(args, 'admin_release')
+        label = 'CORE-GUARD-0'
+        guards.append(SerialUnarmedGuardEvidence(label='CORE-GUARD-0',
             intent=_ttl_pin(execution/(label+'.intent.actual.json')),
             started=_ttl_pin(execution/(label+'.started.actual.json')),
             original_wait=_ttl_pin(execution/(label+'.original-wait.actual.json')),
-            armed=_ttl_pin(execution/(label+'.ARMED.actual.json')),
             stdout=_ttl_pin(execution/(label+'.stdout.log')), stderr=_ttl_pin(execution/(label+'.stderr.log'))))
+    else:
+        paths['serial_capacity_start'] = execution/'CAPACITY-START.actual.json'
+        paths['serial_capacity_stdout'] = execution/'CAPACITY.stdout.log'
+        capacity = json_object(json.loads(paths['serial_capacity_start'].read_bytes()))
+        requested = Path(_serial_argument(tuple(strings_field(capacity, 'argv')), '--output'))
+        paths['serial_capacity_refusal'] = requested.with_name(requested.name+'.REFUSAL.json')
+        for index in range(2):
+            label = 'COLD-GUARD-'+str(index)
+            guards.append(SerialPrelaunchGuardEvidence(label=label,
+                intent=_ttl_pin(execution/(label+'.intent.actual.json')),
+                started=_ttl_pin(execution/(label+'.started.actual.json')),
+                original_wait=_ttl_pin(execution/(label+'.original-wait.actual.json')),
+                armed=_ttl_pin(execution/(label+'.ARMED.actual.json')),
+                stdout=_ttl_pin(execution/(label+'.stdout.log')), stderr=_ttl_pin(execution/(label+'.stderr.log'))))
     row = json_object({'schema':SCHEMA, 'closure_kind':PRELAUNCH_KIND, 'receipt_format':SERIAL_PRELAUNCH_FORMAT,
         'machine_id':machine, 'observed_at_utc':datetime.now(timezone.utc).isoformat(),
-        'run_id':text_field(frozen, 'run_id'), 'serial_guards':guards,
+        'run_id':text_field(frozen, 'run_id'), 'serial_guards':guards, 'prelaunch_guard_state':guard_state,
         'serial_release_original':original_release,
         **{key:False for key in ('host_started','native_session_started','game_started',
             'normal_close_qualified','original_host_exit0','business_pass')}, **proofs,
