@@ -361,6 +361,8 @@ def empire_policy():
     value = policy()
     value.update(schema="ck3-frontend-fixture-start-policy-v3", schema_version=3,
                  profile_id=DES_EMPIRE_PROFILE_ID,
+                 profile_input_sha256={"dlc_load.json": "c" * 64, "pdx_settings.txt": "d" * 64,
+                                       "mod/fixture.mod": "e" * 64},
                  frontend_target=copy.deepcopy(DES_EMPIRE_FRONTEND_TARGET),
                  startup_event_admission={"mode": "none"},
                  post_start={"government_keys": ["administrative_government", "feudal_government"],
@@ -461,6 +463,7 @@ class ScenarioHostSubmissionTests(unittest.IsolatedAsyncioTestCase):
         class Client:
             tools = {"ck3_submit_frontend_fixture_scenario_start_v1",
                      "ck3_submit_frontend_fixture_robert_start_v1",
+                     "ck3_take_snapshot", "ck3_query_campaign_root_context_v1",
                      "ck3_query_engine_log_literals_v1"}
             calls = []
             async def call(self, tool, args=None):

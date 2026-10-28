@@ -284,11 +284,11 @@ def run_empire_wire(bundle_path: Path) -> None:
         'product': 'dynastic-esotericism', 'case': case, 'run_id': None, 'repo_root': str(repo),
         'runtime_manifest': bundle['runtime'], 'state_dir': text_field(bundle, 'state'), 'output': str(output),
         'case_contract': config, 'case_spec': {'budgets': {'command_timeout': 120}},
-        'saved_campaign': {'save': save['path'], 'bytes': save['bytes'], 'sha256': save['sha256'],
-                           'player_id': 1, 'date_raw': 100},
-        'case_inputs': {'product_dir': text_field(bundle, 'release'), 'plain_configuration': plain,
+        'saved_campaign': json_object({'save': save['path'], 'bytes': save['bytes'], 'sha256': save['sha256'],
+                           'player_id': 1, 'date_raw': 100}),
+        'case_inputs': json_object({'product_dir': text_field(bundle, 'release'), 'plain_configuration': plain,
                         'prebuilt_fixture_manifest': bundle['fixture'], 'empire_restore_s1_request': bundle['prepare'],
-                        'post_start': {'government_key': 'feudal_government', 'primary_title_tier_key': 'empire', 'independent': True}}})
+                        'post_start': {'government_key': 'feudal_government', 'primary_title_tier_key': 'empire', 'independent': True}})})
     missing = copy.deepcopy(context)
     absent = object_field(missing, 'case_inputs')
     absent.pop('empire_restore_s1_request')
