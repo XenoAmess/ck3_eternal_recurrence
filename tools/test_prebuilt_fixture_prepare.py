@@ -288,7 +288,7 @@ def run_empire_wire(bundle_path: Path) -> None:
                            'player_id': 1, 'date_raw': 100}),
         'case_inputs': json_object({'product_dir': text_field(bundle, 'release'), 'plain_configuration': plain,
                         'prebuilt_fixture_manifest': bundle['fixture'], 'empire_restore_s1_request': bundle['prepare'],
-                        'post_start': {'government_key': 'feudal_government', 'primary_title_tier_key': 'empire', 'independent': True}})})
+                        'post_start': json_object({'government_key': 'feudal_government', 'primary_title_tier_key': 'empire', 'independent': True})})})
     missing = copy.deepcopy(context)
     absent = object_field(missing, 'case_inputs')
     absent.pop('empire_restore_s1_request')
