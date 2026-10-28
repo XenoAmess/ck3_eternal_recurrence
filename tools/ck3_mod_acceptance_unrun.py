@@ -447,7 +447,7 @@ def validate_serial_prelaunch(bundle: Mapping[str, object], *, previous: Path,
     if (any(actual_release.get(key) != canonical_cas.get(key) for key in ('schema','ok','task','event'))
             or original_release.get('ok') is not True):
         raise ValueError('Original serial screen release differs from canonical closure')
-    if guard_state == 'failed-before-armed':
+    if guard_state == 'failed-before-armed' or 'serial_admin_original' in bundle:
         admin_pin, _ = _serial_original(bundle.get('serial_admin_original'))
         original_admin = json_object(allocator.read_failed_runtime_release(Path(admin_pin['path'])))
         done = json_object(allocator.read_failed_runtime_release(Path(file_pin(bundle.get('admin_done'))['path'])))
@@ -2596,16 +2596,18 @@ def build_serial_prelaunch_bundle(args: argparse.Namespace) -> UnrunBundleReport
     lines = _journal_events(raw, start, release_sequence, done_sequence)
     _, _, release_event = lines[release_sequence]
     original_release = _captured_release(root_release, release_event, task, release_sequence)
+    admin_original = (_serial_required_path(args, 'admin_release')
+        if guard_state == 'failed-before-armed' or getattr(args, 'admin_release', None) is not None else None)
     output.mkdir(parents=True)
     proofs: JsonObject = {}
-    task_path = bus_root/'tasks'/(task+'.json')
-    task_value = json_object(json.loads(task_path.read_bytes()))
     for key, sequence in (('CAS_release', release_sequence), ('admin_done', done_sequence)):
         offset, line, event = lines[sequence]
-        if guard_state == 'failed-before-armed':
-            original = root_release if key == 'CAS_release' else _serial_required_path(args, 'admin_release')
+        if admin_original is not None:
+            original = root_release if key == 'CAS_release' else admin_original
             proofs[key] = json_object(_captured_release(original, event, task, sequence))
             continue
+        task_path = bus_root/'tasks'/(task+'.json')
+        task_value = json_object(json.loads(task_path.read_bytes()))
         proofs[key] = json_object(_write(output/(key+'.canonical.json'), {
             'schema':'xar-screen-release-canonical-reconstruction-v1', 'machine_id':machine,
             'source_event_stream':str(journal), 'source_event_byte_offset':offset,
@@ -2628,8 +2630,9 @@ def build_serial_prelaunch_bundle(args: argparse.Namespace) -> UnrunBundleReport
         'serial_static':execution/'STATIC-INPUTS-PRECOMPILED.actual.json',
         'serial_failure':execution/'ROOT-SERIAL-FAILURE.actual.json'}
     guards: list[SerialPrelaunchGuardEvidence | SerialUnarmedGuardEvidence] = []
+    if admin_original is not None:
+        paths['serial_admin_original'] = admin_original
     if guard_state == 'failed-before-armed':
-        paths['serial_admin_original'] = _serial_required_path(args, 'admin_release')
         label = 'CORE-GUARD-0'
         guards.append(SerialUnarmedGuardEvidence(label='CORE-GUARD-0',
             intent=_ttl_pin(execution/(label+'.intent.actual.json')),

@@ -1627,6 +1627,86 @@ from ck3_mod_acceptance_unrun import (SCHEMA, PRELAUNCH_KIND, SERIAL_PRELAUNCH_F
         self.assertEqual(code,0,stdout+stderr)
 
 
+class SerialCapturedKnownWaitPrelaunchTests(unittest.TestCase):
+    """Armed guards retain the earlier CAS task and later administrative DONE."""
+
+    def setUp(self) -> None:
+        owner = SerialKnownWaitPrelaunchTests('runTest')
+        owner.setUp(); self.addCleanup(owner.doCleanups)
+        self.owner = owner
+        self.fixture = f = owner.fixture
+        self.serial = 0
+        cas = deepcopy(f.done)
+        member(cas, 'event')['sequence'] = 11
+        member(cas, 'task')['last_sequence'] = 11
+        self.cas = f.write('original-screen-release.json', cas)
+        (f.bus/'events.jsonl').write_text(json.dumps(cas['event'])+'\n'+json.dumps(f.done['event'])+'\n', encoding='utf8')
+
+    def args(self) -> argparse.Namespace:
+        self.serial += 1
+        f, owner = self.fixture, self.owner
+        return argparse.Namespace(previous_live=f.live, keeper_root=f.keeper,
+            output=f.root/('captured-result-'+str(self.serial)), task_bus_root=f.bus,
+            serial_prelaunch_root_wait=owner.root_execution/'ROOT-SERIAL.original-wait.json',
+            prelaunch_orchestrator_source=owner.source, root_screen_release=Path(self.cas['path']),
+            admin_release=Path(f.done_pin['path']), next_state=f.root/'new-state',
+            allocator_intent=owner.execution/'ALLOCATE.intent.actual.json',
+            allocator_process=owner.execution/'ALLOCATE.started.actual.json',
+            allocator_exit=owner.execution/'ALLOCATE.original-wait.actual.json',
+            allocator_stdout=owner.stdout, release_sequence=11, done_sequence=12)
+
+    def produce(self) -> subject.UnrunBundleReport:
+        return subject.build_bundle(self.args())
+
+    def test_armed_roundtrip_keeps_original_release_task_and_admin_done(self) -> None:
+        report = self.produce()
+        cleanup = member(report['validation'], 'failure_cleanup')
+        self.assertEqual(cleanup['guard_original_wait_codes'], [1, 1])
+        self.assertIs(cleanup['business_pass'], False)
+        row = json_object(json.loads(Path(report['bundle']['path']).read_bytes()))
+        self.assertEqual(row['prelaunch_guard_state'], 'armed-cancelled')
+        self.assertEqual(row['CAS_release'], self.cas)
+        self.assertEqual(row['serial_release_original'], self.cas)
+        self.assertEqual(row['admin_done'], self.fixture.done_pin)
+        self.assertEqual(row['serial_admin_original'], self.fixture.done_pin)
+        self.assertEqual(row, json.loads(json.dumps(row)))
+        self.assertFalse(list(Path(report['bundle']['path']).parent.glob('*.canonical.json')))
+
+    def test_original_admin_reaches_original_writer_lock(self) -> None:
+        with patch.object(self.owner, 'produce', side_effect=self.produce):
+            record, observations = self.owner.claim()
+        self.assertEqual(observations, [True])
+        intent = json_object(json.loads((record/'intent.json').read_bytes()))
+        self.assertEqual(member(member(intent, 'closure'), 'failure_cleanup')['guard_original_wait_codes'], [1, 1])
+
+    def test_armed_original_task_types_event_and_resources_stay_journal_bound(self) -> None:
+        changes: tuple[tuple[str, str, JsonValue], ...] = (
+            ('task', 'last_sequence', 12), ('task', 'last_sequence', True),
+            ('task', 'resources', ['ck3-screen:acquired']), ('task', 'task_id', 'different-task'),
+            ('event', 'sequence', 11.0), ('event', 'summary', 'different journal event'))
+        path = Path(self.cas['path']); raw = path.read_bytes()
+        for section, key, bad in changes:
+            row = json_object(json.loads(raw)); member(row, section)[key] = bad
+            path.write_text(json.dumps(row), encoding='utf8')
+            with self.subTest(section=section, key=key), self.assertRaises(ValueError): self.produce()
+            path.write_bytes(raw)
+        args = self.args(); args.admin_release = Path(self.cas['path'])
+        with self.assertRaisesRegex(ValueError, 'captured release differs'): subject.build_bundle(args)
+        args = self.args(); args.admin_release = str(self.fixture.done_pin['path'])
+        with self.assertRaisesRegex(ValueError, 'path argument required: admin_release'): subject.build_bundle(args)
+
+    def test_original_admin_drift_inside_writer_lock_refuses(self) -> None:
+        def drift() -> None:
+            path = Path(self.fixture.done_pin['path']); path.write_bytes(path.read_bytes()+b' ')
+        with patch.object(self.owner, 'produce', side_effect=self.produce):
+            with self.assertRaises(ValueError): self.owner.claim(drift)
+        self.assertFalse((self.fixture.root/'admission/machine.json').exists())
+
+    def test_missing_admin_does_not_reconstruct_an_earlier_task_from_later_done(self) -> None:
+        args = self.args(); del args.admin_release
+        with self.assertRaisesRegex(ValueError, 'screen release differs'): subject.build_bundle(args)
+
+
 class SerialUnarmedKnownWaitPrelaunchTests(unittest.TestCase):
     """Authored R39-shaped originals enter the shared producer and real lock."""
 
