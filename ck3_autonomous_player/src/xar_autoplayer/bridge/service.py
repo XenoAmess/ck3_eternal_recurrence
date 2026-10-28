@@ -1,6 +1,7 @@
 """Planner-facing service shared by MCP tools and direct autonomous mode."""
 
 from __future__ import annotations
+from .ingame_decisions_open_contract import DecisionsOpenResultV1, normalize_sdk_open_result
 
 from .gui_window_tree_contract import (
     ScriptedWidgetActionV1, ScriptedWidgetQueryV1,
@@ -14884,15 +14885,21 @@ class GameplayBridgeService:
             raise BridgeUnavailableError("typed decision model observer returned malformed data")
         return result
 
-    def open_ingame_decisions_v1(self, *, expected_revision: int | None = None) -> dict[str, object]:
+    def open_ingame_decisions_v1(self, *, expected_revision: int | None = None) -> DecisionsOpenResultV1:
         """Open only the exact .3 HUD Decisions entry and verify actual visibility."""
+        if expected_revision is not None and (type(expected_revision) is not int or expected_revision < 0):
+            raise ValueError("Decisions expected_revision must be a non-negative integer")
         method = getattr(self.driver, "open_ingame_decisions_v1", None)
         if not callable(method):
             raise UnsupportedStepError("selected backend lacks the typed Decisions opener")
         result = method(expected_revision=expected_revision)
-        if not isinstance(result, dict) or result.get("schema") != "ck3-ingame-decisions-open-v1" or result.get("postcondition_verified") is not True:
-            raise BridgeUnavailableError("typed Decisions opener lacks later visibility proof")
-        return result
+        try:
+            normalized = normalize_sdk_open_result(result)
+            if expected_revision is not None and normalized["queried_revision"] != expected_revision:
+                raise ValueError("typed Decisions opener revision changed")
+            return normalized
+        except ValueError as error:
+            raise BridgeUnavailableError("typed Decisions opener lacks current visibility proof: " + str(error)) from error
 
     def query_scripted_widget_controls_v1(
         self, root_name: str, *, expected_revision: int,

@@ -1,6 +1,7 @@
 """Official MCP v2 server facade for replaceable CK3 gameplay drivers."""
 
 from __future__ import annotations
+from .ingame_decisions_open_contract import DecisionsOpenResultV1
 
 from .player_pilgrimage_planner_contract import PilgrimageOptionKey
 from .prisoner_release_preview_contract_12003 import RELEASE_OPTION_KEYS_12003
@@ -33,6 +34,7 @@ ScriptedWidgetRootV1 = Annotated[
 ]
 
 IngameUiHandleV1 = Annotated[int, Field(strict=True, gt=0, lt=2**32 - 1)]
+DecisionsPublicRevisionV1 = Annotated[int, Field(strict=True, ge=0)]
 PublicCUnitId = Annotated[int, Field(strict=True, ge=0, le=2**31 - 1)]
 NormalExitRevisionV1 = Annotated[int, Field(strict=True, gt=0, lt=2**64)]
 NormalExitPublicRevisionV2 = Annotated[
@@ -4496,7 +4498,7 @@ def create_server(
         return service.query_ingame_decision_item_v1(decision_key, expected_revision=expected_revision)
 
     @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=False, openWorldHint=False))
-    def ck3_open_ingame_decisions_v1(expected_revision: int | None = None) -> dict[str, object]:
+    def ck3_open_ingame_decisions_v1(expected_revision: DecisionsPublicRevisionV1 | None = None) -> DecisionsOpenResultV1:
         """Open the fixed exact .3 Decisions HUD button once, with later native visibility proof."""
         return service.open_ingame_decisions_v1(expected_revision=expected_revision)
 

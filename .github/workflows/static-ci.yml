@@ -228,6 +228,19 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p "test_ingame_decision_history_growth.py"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test durable Decisions opening epochs and current visibility without CK3
+        env:
+          PYTHONPATH: ${{ github.workspace }};${{ github.workspace }}\ck3_autonomous_player\src;${{ github.workspace }}\ck3_autonomous_player\tests\unit;${{ github.workspace }}\tools
+          PYTHONDONTWRITEBYTECODE: "1"
+          XAR_WHITE_DECISIONS_TEST_ARTIFACTS: ${{ runner.temp }}\decisions-opening-epochs
+          XAR_HISTORY_GROWTH_TEST_ARTIFACTS: ${{ runner.temp }}\decisions-opening-history
+        run: |
+          python -B -X utf8 -m unittest -v test_ingame_decisions_open_contract test_ingame_decision_item_actions test_ingame_decision_outcomes test_ingame_decision_predispatch_rejection test_ingame_decision_history_growth test_ingame_military_open_12004 test_journaller_stress_relief_v1
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -O -X utf8 -m unittest -v test_ingame_decisions_open_contract test_ingame_decision_item_actions test_ingame_decision_outcomes test_ingame_decision_predispatch_rejection test_ingame_decision_history_growth test_ingame_military_open_12004 test_journaller_stress_relief_v1
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -X utf8 -m mypy --strict --follow-imports=silent --no-incremental --cache-dir nul ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_decisions_open_contract.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Verify Java tools, full reactor and actual HTTP consumer chain
         timeout-minutes: 45
         env:

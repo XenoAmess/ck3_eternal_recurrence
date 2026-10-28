@@ -361,16 +361,24 @@ class OutcomeTests(unittest.TestCase):
         later.frame["diagnostics"]["connection_generation"]=2
         with self.assertRaisesRegex(BridgeUnavailableError,"unresolved"):later.select_ingame_decision_item_v1(VIVHITE_KEY,expected_revision=10)
         self.assertEqual(later.submissions,[]);self.assertEqual(later.model_queries,[])
-    def test_verified_open_and_select_can_use_a_fresh_revision_but_not_same_revision(self):
-        for kind in ("open","select"):
-            with self.subTest(kind=kind):
-                directory=self.directory();driver=OpenDriver(directory) if kind=="open" else SelectDriver(directory)
-                invoke=(lambda d,r:d.open_ingame_decisions_v1(expected_revision=r)) if kind=="open" else (lambda d,r:d.select_ingame_decision_item_v1(VIVHITE_KEY,expected_revision=r))
-                invoke(driver,1)
-                with self.assertRaisesRegex(BridgeUnavailableError,"already claimed"):invoke(driver,1)
-                driver.frame["revision"]=2
-                invoke(driver,2)
-                self.assertEqual(len(driver.submissions),2)
+    def test_verified_select_can_use_a_fresh_revision_but_not_same_revision(self) -> None:
+        driver=SelectDriver(self.directory())
+        driver.select_ingame_decision_item_v1(VIVHITE_KEY,expected_revision=1)
+        with self.assertRaisesRegex(BridgeUnavailableError,"already claimed"):
+            driver.select_ingame_decision_item_v1(VIVHITE_KEY,expected_revision=1)
+        driver.frame["revision"]=2
+        driver.select_ingame_decision_item_v1(VIVHITE_KEY,expected_revision=2)
+        self.assertEqual(len(driver.submissions),2)
+
+    def test_verified_open_uses_current_visibility_and_explicit_hidden_epoch(self) -> None:
+        driver=OpenDriver(self.directory())
+        driver.open_ingame_decisions_v1(expected_revision=1)
+        observed=driver.open_ingame_decisions_v1(expected_revision=1)
+        self.assertEqual(observed["proof_kind"],"current_visibility")
+        self.assertIsNone(observed["native_ack"])
+        driver.visible=False
+        driver.open_ingame_decisions_v1(expected_revision=1)
+        self.assertEqual(len(driver.submissions),2)
     def test_tampered_verification_does_not_unlock_a_prior_unknown_action(self):
         driver=OutcomeDriver(self.directory(),"decision_closed")
         result=self.call(driver);path=Path(result["action_claim_path"]).with_suffix(".verified.json")

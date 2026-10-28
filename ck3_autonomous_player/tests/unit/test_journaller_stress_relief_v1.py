@@ -15,7 +15,7 @@ from xar_autoplayer.bridge.ingame_decisions_open_contract import opening_binding
 from xar_autoplayer.bridge.event_window_context_contract import _EVENT_PROVENANCE_BY_BACKEND
 from test_turn_bundle_v1 import _snapshot, _root
 from test_ingame_decision_item_actions import frame, model, ack
-from test_ingame_decisions_open_contract import pending_native_ack
+from test_ingame_decisions_open_contract import pending_native_ack, decisions_tree
 from test_event_window_context_v1_bridge import _frame
 
 
@@ -50,6 +50,7 @@ class SyntheticDriver:
         self.caps = set(j.REQUIRED_CAPS)
         self.calls = []; self.selected = False; self.available = True
         self.fail = None; self.model_mutation = None; self.event_mutation = None
+        self.visible = False
 
     def take_snapshot(self): return deepcopy(self.frame)
     def take_snapshot_without_native_command_history(self): return self.take_snapshot()
@@ -72,14 +73,14 @@ class SyntheticDriver:
         return result
 
     def inspect_gui_window_tree_v1(self, kind):
-        return {"scope_root_name": "decisions_view", "root_available": True, "truncated": False,
-                "widgets": [{"child_path": "", "runtime_name": "decisions_view", "effective_visible": True}]}
+        return decisions_tree(self.visible)
 
     def _execute_primitive_step(self, step, **kwargs):
         self.calls.append(step)
         if self.fail == step: raise TimeoutError("synthetic missing ACK")
         binding = opening_binding(self.frame)
         if step == "activate-ingame-decisions-v1":
+            self.visible = True
             result = build4(pending_native_ack())
             result.update({key: binding[key] for key in (
                 "native_revision", "connection_generation", "game_pid", "played_character_id", "date_raw")})
@@ -170,6 +171,15 @@ class JournallerTests(unittest.TestCase):
                     "stress": {"status": "available", "value": {"points": 120}}}):
                 self.assertEqual(self.start(d)["status"], "actor_attempt_already_claimed_no_replay")
             self.assertEqual(len(d.calls), 3)
+
+    def test_current_visible_branch_is_consumed_without_native_ack_or_open_action(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            d = SyntheticDriver(directory)
+            d.visible = True
+            handoff = self.start(d)
+            self.assertEqual(handoff["status"], "exact_event_observed_choice_pending")
+            self.assertNotIn("activate-ingame-decisions-v1", d.calls)
+            self.assertEqual(len(d.calls), 2)
 
     def test_unknown_result_never_replays(self):
         for stage in ("activate-ingame-decisions-v1", "select-ingame-decision-item-v1",

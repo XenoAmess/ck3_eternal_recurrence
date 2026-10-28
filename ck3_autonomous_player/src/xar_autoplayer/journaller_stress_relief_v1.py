@@ -16,7 +16,7 @@ from .bridge.ingame_decision_item_contract import normalize_decision_item
 from .bridge.ingame_decision_item_action_contract import actual_selected_detail
 from .bridge.ingame_decision_outcome_contract import actual_expected_event
 from .bridge.ingame_decisions_open_contract import (
-    actual_visible_decisions_tree, normalize_open_result, opening_binding,
+    actual_visible_decisions_tree, normalize_sdk_open_result, opening_binding,
 )
 from .ck3_live_run_identity_v1 import current_machine_id
 from .ordinary_player_risk_context_v1 import build_ordinary_player_risk_context_v1
@@ -180,9 +180,9 @@ def start_journaller_stress_relief_v1(
         _same_frame(driver, snapshot)
 
     display("open_decisions")
-    opened = driver.open_ingame_decisions_v1(expected_revision=expected_revision)
-    _exact_build(opened.get("native_ack"), snapshot)
-    normalize_open_result(opened.get("native_ack"), binding)
+    opened = normalize_sdk_open_result(
+        driver.open_ingame_decisions_v1(expected_revision=expected_revision), binding)
+    _exact_build(opened, snapshot)
     if (opened.get("postcondition_verified") is not True
             or opened.get("verification_pending") is not False
             or not actual_visible_decisions_tree(opened.get("later_decisions_tree"))):

@@ -8,6 +8,7 @@ semantic driver interface used by the visual and data-Mod backends.
 from __future__ import annotations
 
 from .gui_window_tree_contract import ScriptedWidgetActionV1, ScriptedWidgetBindingV1, ScriptedWidgetQueryV1
+from .ingame_decisions_open_contract import DecisionsOpenResultV1
 
 from .player_pilgrimage_planner_contract import PilgrimageOptionKey
 
@@ -8332,20 +8333,22 @@ class NativeHeadlessGameplayDriver:
                        "uses_mouse": False, "uses_keyboard": False, "uses_ocr": False})
         return result
 
-    def open_ingame_decisions_v1(self, *, expected_revision: int | None = None) -> dict[str, object]:
+    def open_ingame_decisions_v1(self, *, expected_revision: int | None = None) -> DecisionsOpenResultV1:
         """Dispatch the fixed .3 HUD button once; observe later actual Decisions visibility."""
         from .ingame_decisions_open_contract import (
             STEP, CAPABILITY, opening_binding, normalize_open_result,
             actual_visible_decisions_tree,
+            decisions_visibility_v1, normalize_sdk_open_result,
+            verified_open_parent_v1, opening_epoch_key_v1,
+            opening_build_v1, opening_public_revision_v1,
         )
-        import hashlib
         import os
         starting = self.take_snapshot()
         try:
             binding = opening_binding(starting)
         except ValueError as error:
             raise BridgeUnavailableError(str(error)) from error
-        revision = int(starting["revision"])
+        revision = opening_public_revision_v1(starting)
         if expected_revision is not None:
             _validate_revision(expected_revision, "expected_revision")
             if expected_revision != revision:
@@ -8364,11 +8367,47 @@ class NativeHeadlessGameplayDriver:
             reject_unresolved_claims(claim_dir, identity)
         except ValueError as error:
             raise BridgeUnavailableError(str(error)) from error
-        key = hashlib.sha256(json.dumps(identity, sort_keys=True).encode("utf-8")).hexdigest()
+        try:
+            parent = verified_open_parent_v1(claim_dir, identity)
+            before_tree = self.inspect_gui_window_tree_v1("decisions")
+            ending = self.take_snapshot()
+            if opening_binding(ending) != binding or not _same_paused_native_frame(starting, ending):
+                raise ValueError("Decisions current visibility crossed its episode/frame")
+            visibility = decisions_visibility_v1(before_tree)
+            reject_unresolved_claims(claim_dir, identity)
+            if verified_open_parent_v1(claim_dir, identity) != parent:
+                raise ValueError("Decisions successful predecessor changed during visibility observation")
+        except (ValueError, OSError) as error:
+            raise BridgeUnavailableError(str(error)) from error
+        build = opening_build_v1(starting)
+        current_proof = {
+            **binding, "schema": "ck3-ingame-decisions-open-v1",
+            "game_version": build.game_version,
+            "executable_sha256": build.executable_sha256,
+            "queried_revision": revision, "postcondition_verified": True,
+            "verification_pending": False, "uses_mouse": False,
+            "uses_keyboard": False, "uses_ocr": False,
+        }
+        if visibility == "visible":
+            # This call performed a new read, never a new Native action. In
+            # particular, a historical ACK is not relabelled as a current ACK.
+            observed = normalize_sdk_open_result({
+                **current_proof, "proof_kind": "current_visibility",
+                "status": "observed_visible_read_only", "read_only": True,
+                "dispatch_invoked": False, "native_ack": None,
+                "action_request_id": None, "action_claim_path": None,
+                "later_decisions_tree": before_tree,
+            }, binding)
+            self._record_command(STEP, ok=True, result=dict(observed))
+            return observed
+        key = opening_epoch_key_v1(identity, parent)
         claim = claim_dir / f"{key}.claim.json"
         request_id = f"decisions-{uuid.uuid4().hex}"
-        claim_data = {"schema": "ck3-ingame-decisions-once-claim-v1", "request_id": request_id,
-                      "binding": binding, "action_identity": identity, "status": "claimed_result_unknown_no_retry"}
+        claim_data = {"schema": "ck3-ingame-decisions-epoch-claim-v2", "request_id": request_id,
+                      "binding": binding, "action_identity": identity,
+                      "parent_request_id": None if parent is None else parent["request_id"],
+                      "parent": parent, "closed_observation": before_tree,
+                      "status": "claimed_result_unknown_no_retry"}
         try:
             with claim.open("x", encoding="utf-8", newline="\n") as stream:
                 json.dump(claim_data, stream, ensure_ascii=False, indent=2)
@@ -8406,18 +8445,19 @@ class NativeHeadlessGameplayDriver:
                 if remaining <= 0:
                     raise BridgeUnavailableError("Decisions was submitted but later actual root did not become visible; no retry")
                 time.sleep(min(0.1, remaining))
-            result.update({"postcondition_verified": True, "verification_pending": False,
-                           "status": "verified_visible", "later_decisions_tree": later,
-                           "native_ack": dict(raw), "action_request_id": request_id,
-                           "action_claim_path": str(claim), "episode_run_id": binding["episode_run_id"],
-                           "queried_revision": revision, "uses_mouse": False, "uses_keyboard": False, "uses_ocr": False})
-            preserve_verified_claim(claim, request_id, result)
+            completed = normalize_sdk_open_result({
+                **current_proof, "proof_kind": "native_open", "status": "verified_visible",
+                "read_only": False, "dispatch_invoked": result["dispatch_invoked"],
+                "later_decisions_tree": later, "native_ack": raw,
+                "action_request_id": request_id, "action_claim_path": str(claim),
+            }, binding)
+            preserve_verified_claim(claim, request_id, dict(completed))
         except Exception as error:
             self._record_command(STEP, ok=False, result={"raw": raw, "action_claim_path": str(claim)},
                                  error=f"{type(error).__name__}: {error}")
             raise
-        self._record_command(STEP, ok=True, result=result)
-        return result
+        self._record_command(STEP, ok=True, result=dict(completed))
+        return completed
 
     def _scripted_widget_stable_frame_v1(self) -> tuple[dict[str, object], ScriptedWidgetBindingV1]:
         """Wait only for the observed one-pump diagnostic publication gap; never dispatch."""
