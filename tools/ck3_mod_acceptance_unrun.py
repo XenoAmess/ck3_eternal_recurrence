@@ -64,7 +64,7 @@ class SerialPrelaunchGuardEvidence(TypedDict):
 
 
 class SerialUnarmedGuardEvidence(TypedDict):
-    label: Literal['CORE-GUARD-0']
+    label: Literal['CORE-GUARD-0', 'COLD-GUARD-0']
     intent: FilePin
     started: FilePin
     original_wait: FilePin
@@ -180,10 +180,19 @@ def _serial_unarmed_guard(bundle: Mapping[str, object], static: JsonObject,
     if not isinstance(guards, list) or len(guards) != 1:
         raise ValueError('One actual before-ARMED serial guard role required')
     row = json_object(guards[0])
-    label = 'CORE-GUARD-0'
-    if set(row) != fields or row.get('label') != label:
+    label: Literal['CORE-GUARD-0', 'COLD-GUARD-0']
+    if row.get('label') == 'CORE-GUARD-0':
+        label = 'CORE-GUARD-0'
+    elif row.get('label') == 'COLD-GUARD-0':
+        label = 'COLD-GUARD-0'
+    else:
+        raise ValueError('Exact before-ARMED serial guard role required')
+    if set(row) != fields:
         raise ValueError('Exact before-ARMED serial guard fields required')
-    if (any(output.glob('COLD-GUARD-*')) or any(output.glob('CORE-GUARD-1*'))
+    other_role = 'COLD-GUARD-*' if label == 'CORE-GUARD-0' else 'CORE-GUARD-*'
+    later_role = (any(output.glob('CORE-GUARD-1*')) if label == 'CORE-GUARD-0' else
+        any(not path.name.startswith(label+'.') for path in output.glob('COLD-GUARD-*')))
+    if (any(output.glob(other_role)) or later_role
             or any(output.glob('CAPACITY*'))
             or any((output/(label+suffix)).exists() for suffix in
                 ('.ARMED.actual.json', '.CANCEL.actual.json', '.actual.json'))
@@ -221,8 +230,40 @@ def _serial_unarmed_guard(bundle: Mapping[str, object], static: JsonObject,
         raise ValueError('Before-ARMED serial original prepared phases required')
     phase = text_field(json_object(phases[0]), 'id')
     waiting = _serial_argument(argv, '--wait-awaiting-seconds')
-    if re.fullmatch('[1-9][0-9]{0,8}', waiting) is None or int(waiting) <= 5400:
-        raise ValueError('Before-ARMED serial refusal requires the actual unsupported wait bound')
+    diagnostic = 'Reviewed exact run/phase and the fixed1200-second reserve required'
+    diagnostic_frame: str | None = None
+    if label == 'CORE-GUARD-0':
+        if re.fullmatch('[1-9][0-9]{0,8}', waiting) is None or int(waiting) <= 5400:
+            raise ValueError('Before-ARMED serial refusal requires the actual unsupported wait bound')
+    else:
+        product = text_field(prepared, 'product')
+        if (ready.get('schema') != 'ck3-mod-acceptance-run-context-v1'
+                or ready.get('run_id') != previous.name or ready.get('case') != 'cold_reload'
+                or ready.get('product') != product or Path(text_field(ready, 'run_dir')).resolve() != previous
+                or prepared.get('schema') != 'ck3-mod-acceptance-prepared-case-v1'
+                or prepared.get('case') != 'cold_reload'
+                or contract.get('schema') != 'ck3-mod-acceptance-product-case-v1'
+                or contract.get('product') != product or contract.get('case_id') != 'cold_reload'
+                or re.fullmatch('[1-9][0-9]{0,8}', waiting) is None or int(waiting) > 5400):
+            raise ValueError('Cold before-ARMED refusal requires the original prepared cold_reload and supported wait')
+        diagnostic = 'Actual allocated ready-context crossed exact live/run/product/case'
+        bound = ast.parse("if (live.name != args.run_id or not args.phase.replace('-', '').isalnum() "
+            "or args.reserve_seconds != 1200 or not 0 < args.wait_awaiting_seconds <= 5400):\n"
+            "    raise ValueError('Reviewed exact run/phase and the fixed1200-second reserve required')\n").body[0]
+        crossed = ast.parse("if (not isinstance(ready, dict) or ready.get('schema') != 'ck3-mod-acceptance-run-context-v1' "
+            "or ready.get('run_id') != args.run_id or Path(str(ready.get('run_dir', ''))).resolve() != live "
+            "or ready.get('product') != "+repr(product)+" or ready.get('case') != 'core'):\n"
+            "    raise ValueError("+repr(diagnostic)+")\n").body[0]
+        mains = [node for node in ast.parse(guard_raw).body if isinstance(node, ast.FunctionDef) and node.name == 'main']
+        if len(mains) != 1:
+            raise ValueError('Cold before-ARMED original guard main required')
+        bounds = [node for node in mains[0].body if ast.dump(node) == ast.dump(bound)]
+        cases = [node for node in mains[0].body if ast.dump(node) == ast.dump(crossed)]
+        if len(bounds) != 1 or len(cases) != 1 or bounds[0].lineno >= cases[0].lineno:
+            raise ValueError('Cold before-ARMED original core-case refusal AST differs')
+        if not isinstance(cases[0], ast.If):
+            raise ValueError('Cold before-ARMED original case condition required')
+        diagnostic_frame = 'File "'+guard['path']+'", line '+str(cases[0].body[0].lineno)+', in main'
     expected = ('--live', str(previous), '--ready-context', str(previous/'ready-context.json'),
         '--run-id', previous.name, '--phase', phase, '--reserve-seconds', '1200',
         '--wait-awaiting-seconds', waiting, '--armed', str(output/(label+'.ARMED.actual.json')),
@@ -233,9 +274,8 @@ def _serial_unarmed_guard(bundle: Mapping[str, object], static: JsonObject,
     stdout = _serial_raw(row.get('stdout'), output/(label+'.stdout.log'))
     stderr = _serial_raw(row.get('stderr'), output/(label+'.stderr.log')).decode('utf-8')
     if (failure.get('error') != error or stdout != b''
-            or not stderr.replace('\r\n', '\n').endswith(
-                'ValueError: Reviewed exact run/phase and the fixed1200-second reserve required\n')
-            or guard['path'] not in stderr):
+            or not stderr.replace('\r\n', '\n').endswith('ValueError: '+diagnostic+'\n')
+            or guard['path'] not in stderr or (diagnostic_frame is not None and diagnostic_frame not in stderr)):
         raise ValueError('Original before-ARMED serial startup diagnostic differs')
     failed_at = _timestamp(failure.get('observed_at_utc'), 'Serial startup failure')
     if not ready_at <= child.started_at <= failed_at <= child.finished_at <= root_finished_at:
@@ -2575,8 +2615,12 @@ def build_serial_prelaunch_bundle(args: argparse.Namespace) -> UnrunBundleReport
     task = text_field(frozen, 'screen_task')
     allocator_intent = _serial_required_path(args, 'allocator_intent')
     execution = allocator_intent.parent
-    guard_state: PrelaunchGuardState = ('failed-before-armed'
-        if (execution/'CORE-GUARD-0.intent.actual.json').exists() else 'armed-cancelled')
+    core_unarmed = (execution/'CORE-GUARD-0.intent.actual.json').exists()
+    cold_unarmed = ((execution/'COLD-GUARD-0.intent.actual.json').exists()
+        and not (execution/'COLD-GUARD-0.ARMED.actual.json').exists())
+    if core_unarmed and cold_unarmed:
+        raise ValueError('One actual before-ARMED serial guard role required')
+    guard_state: PrelaunchGuardState = 'failed-before-armed' if core_unarmed or cold_unarmed else 'armed-cancelled'
     if (getattr(args, 'aborted_wrapper', None) or getattr(args, 'launcher_pin_refusal', None)
             or getattr(args, 'allocator_result', None) or getattr(args, 'allocator_external_exec', None)):
         raise ValueError('Serial known waits cannot mix unknown/legacy receipt formats')
@@ -2633,12 +2677,12 @@ def build_serial_prelaunch_bundle(args: argparse.Namespace) -> UnrunBundleReport
     if admin_original is not None:
         paths['serial_admin_original'] = admin_original
     if guard_state == 'failed-before-armed':
-        label = 'CORE-GUARD-0'
-        guards.append(SerialUnarmedGuardEvidence(label='CORE-GUARD-0',
-            intent=_ttl_pin(execution/(label+'.intent.actual.json')),
-            started=_ttl_pin(execution/(label+'.started.actual.json')),
-            original_wait=_ttl_pin(execution/(label+'.original-wait.actual.json')),
-            stdout=_ttl_pin(execution/(label+'.stdout.log')), stderr=_ttl_pin(execution/(label+'.stderr.log'))))
+        unarmed_label: Literal['CORE-GUARD-0', 'COLD-GUARD-0'] = 'CORE-GUARD-0' if core_unarmed else 'COLD-GUARD-0'
+        guards.append(SerialUnarmedGuardEvidence(label=unarmed_label,
+            intent=_ttl_pin(execution/(unarmed_label+'.intent.actual.json')),
+            started=_ttl_pin(execution/(unarmed_label+'.started.actual.json')),
+            original_wait=_ttl_pin(execution/(unarmed_label+'.original-wait.actual.json')),
+            stdout=_ttl_pin(execution/(unarmed_label+'.stdout.log')), stderr=_ttl_pin(execution/(unarmed_label+'.stderr.log'))))
     else:
         paths['serial_capacity_start'] = execution/'CAPACITY-START.actual.json'
         paths['serial_capacity_stdout'] = execution/'CAPACITY.stdout.log'

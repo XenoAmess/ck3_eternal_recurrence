@@ -1881,4 +1881,142 @@ class SerialUnarmedKnownWaitPrelaunchTests(unittest.TestCase):
         path.write_bytes(raw)
 
 
+class SerialColdUnarmedKnownWaitPrelaunchTests(unittest.TestCase):
+    """R43-shaped authored observations use the real producer/reducer and lock."""
+
+    def setUp(self) -> None:
+        owner = SerialUnarmedKnownWaitPrelaunchTests('runTest')
+        owner.setUp(); self.addCleanup(owner.doCleanups)
+        self.owner = owner
+        self.fixture = f = owner.fixture
+        self.execution = e = owner.execution
+        self.guard_source = '''def main() -> int:
+    if (live.name != args.run_id or not args.phase.replace('-', '').isalnum() or args.reserve_seconds != 1200
+            or not 0 < args.wait_awaiting_seconds <= 5400):
+        raise ValueError('Reviewed exact run/phase and the fixed1200-second reserve required')
+    if (not isinstance(ready, dict) or ready.get('schema') != 'ck3-mod-acceptance-run-context-v1' or ready.get('run_id') != args.run_id
+            or Path(str(ready.get('run_dir', ''))).resolve() != live
+            or ready.get('product') != 'living-artifacts' or ready.get('case') != 'core'):
+        raise ValueError('Actual allocated ready-context crossed exact live/run/product/case')
+    return 0
+'''
+        contract = f.write('first-phase-contract.json', {'schema':'ck3-mod-acceptance-product-case-v1',
+            'product':'living-artifacts', 'case_id':'cold_reload', 'gui_phases':[{'id':'phase-1'}]})
+        prepared = json_object(json.loads(Path(f.prepared['path']).read_bytes()))
+        prepared.update({'schema':'ck3-mod-acceptance-prepared-case-v1', 'product':'living-artifacts',
+            'case':'cold_reload', 'contract':json_object(contract)})
+        f.prepared = f.write_path(Path(f.prepared['path']), prepared)
+        ready = json_object(json.loads((f.live/'ready-context.json').read_bytes()))
+        ready.update({'schema':'ck3-mod-acceptance-run-context-v1', 'case':'cold_reload',
+            'prepared_case':json_object(f.prepared)})
+        f.write_live('ready-context.json', ready); f.write_live('allocated-context.json', ready)
+        for suffix in ('.intent.actual.json', '.started.actual.json', '.original-wait.actual.json'):
+            original = e/('CORE-GUARD-0'+suffix)
+            row = json_object(json.loads(original.read_bytes()))
+            if suffix == '.intent.actual.json':
+                argv = strings_field(row, 'argv')
+                argv[argv.index('--wait-awaiting-seconds')+1] = '5400'
+                argv[argv.index('--armed')+1] = str(e/'COLD-GUARD-0.ARMED.actual.json')
+                argv[argv.index('--output')+1] = str(e/'COLD-GUARD-0.actual.json')
+                row['argv'] = [value for value in argv]
+            f.write_path(e/('COLD-GUARD-0'+suffix), row); original.unlink()
+        for path in e.glob('CORE-GUARD-0.*'):
+            path.unlink()
+        self.set_guard(self.guard_source)
+        (e/'COLD-GUARD-0.stdout.log').write_bytes(b'')
+        static = json_object(json.loads((e/'STATIC-INPUTS-PRECOMPILED.actual.json').read_bytes()))
+        guard = text_field(member(static, 'guard_original'), 'path')
+        parsed = ast.parse(self.guard_source)
+        raises = [node for node in ast.walk(parsed) if isinstance(node, ast.Raise)]
+        (e/'COLD-GUARD-0.stderr.log').write_text('File "'+guard+'", line '+str(raises[-1].lineno)+', in main\n'
+            "    raise ValueError('Actual allocated ready-context crossed exact live/run/product/case')\n"
+            'ValueError: Actual allocated ready-context crossed exact live/run/product/case\n', encoding='utf8')
+        failure = json_object(json.loads((e/'ROOT-SERIAL-FAILURE.actual.json').read_bytes()))
+        failure['error'] = repr(RuntimeError('Original child ended before '+str(e/'COLD-GUARD-0.ARMED.actual.json')))
+        handles = failure['original_handles']
+        if not isinstance(handles, list):
+            raise AssertionError('Authored original handle list required')
+        failure['original_handles'] = [json_object(handles[0]), {**json_object(handles[1]), 'label':'COLD-GUARD-0'}]
+        f.write_path(e/'ROOT-SERIAL-FAILURE.actual.json', failure)
+        stdout = owner.owner.root_execution/'ROOT-SERIAL.stdout.log'
+        stdout.write_text(stdout.read_text(encoding='utf8').replace('CORE-GUARD-0', 'COLD-GUARD-0'), encoding='utf8')
+
+    def set_guard(self, raw: str) -> None:
+        f, e = self.fixture, self.execution
+        static = json_object(json.loads((e/'STATIC-INPUTS-PRECOMPILED.actual.json').read_bytes()))
+        guard = Path(text_field(member(static, 'guard_original'), 'path'))
+        guard.write_text(raw, encoding='utf8')
+        invocation = 'exec(compile('+repr(raw)+','+repr(str(guard))+',"exec"))'
+        static['guard_original'] = json_object(subject._ttl_pin(guard))
+        static['guard_code_sha256'] = hashlib.sha256(invocation.encode()).hexdigest()
+        f.write_path(e/'STATIC-INPUTS-PRECOMPILED.actual.json', static)
+        path = e/'COLD-GUARD-0.intent.actual.json'
+        row = json_object(json.loads(path.read_bytes())); argv = strings_field(row, 'argv')
+        argv[5] = invocation; row['argv'] = [value for value in argv]
+        f.write_path(path, row)
+
+    def test_cold_producer_consumer_serialization_and_real_writer_lock_preserve_failure(self) -> None:
+        report = self.owner.produce()
+        row = json_object(json.loads(Path(report['bundle']['path']).read_bytes()))
+        self.assertEqual(row, json.loads(json.dumps(row)))
+        self.assertEqual(row['prelaunch_guard_state'], 'failed-before-armed')
+        guards = row['serial_guards']
+        self.assertIsInstance(guards, list)
+        if not isinstance(guards, list):
+            raise AssertionError('Actual typed guard rows required')
+        self.assertEqual(json_object(guards[0])['label'], 'COLD-GUARD-0')
+        cleanup = member(report['validation'], 'failure_cleanup')
+        self.assertEqual(cleanup['guard_original_wait_codes'], [1])
+        for key in ('normal_close_qualified', 'typed_normal_exit_proven', 'business_pass', 'release_pass'):
+            self.assertIs(cleanup[key], False)
+        record, observations = self.owner.claim()
+        self.assertTrue((record/'intent.json').is_file())
+        self.assertEqual(observations, [True])
+
+    def test_cold_rejects_wrong_supported_wait_first_phase_diagnostic_frame_and_typed_wait(self) -> None:
+        path = self.execution/'COLD-GUARD-0.intent.actual.json'; raw = path.read_bytes()
+        for option, bad in (('--wait-awaiting-seconds', '7020'), ('--wait-awaiting-seconds', '0'), ('--phase', 'phase-2')):
+            row = json_object(json.loads(raw)); argv = strings_field(row, 'argv')
+            argv[argv.index(option)+1] = bad; row['argv'] = [value for value in argv]
+            self.fixture.write_path(path, row)
+            with self.subTest(option=option, bad=bad), self.assertRaises(ValueError): self.owner.produce()
+        path.write_bytes(raw)
+        path = self.execution/'COLD-GUARD-0.stderr.log'; raw = path.read_bytes()
+        for bad_stderr in (b'ValueError: unrelated failure\n', raw.replace(b', in main', b', in unrelated')):
+            path.write_bytes(bad_stderr)
+            with self.subTest(stderr=bad_stderr), self.assertRaises(ValueError): self.owner.produce()
+        path.write_bytes(raw)
+        path = self.execution/'COLD-GUARD-0.original-wait.actual.json'; raw = path.read_bytes()
+        for bad_code in (False, 1.0, 0):
+            row = json_object(json.loads(raw)); row['original_wait_returncode'] = bad_code
+            self.fixture.write_path(path, row)
+            with self.subTest(code=bad_code), self.assertRaises(ValueError): self.owner.produce()
+        path.write_bytes(raw)
+
+    def test_cold_rejects_rebound_source_semantics_and_non_cold_prepared_contract(self) -> None:
+        for raw in (self.guard_source.replace("ready.get('case') != 'core'", "ready.get('case') != 'cold_reload'"),
+                self.guard_source.replace('<= 5400', '<= 7200')):
+            self.set_guard(raw)
+            with self.subTest(source=raw), self.assertRaisesRegex(ValueError, 'refusal AST'): self.owner.produce()
+        self.set_guard(self.guard_source)
+        path = Path(self.fixture.prepared['path']); original = path.read_bytes()
+        prepared = json_object(json.loads(original)); prepared['case'] = 'core'
+        ref = self.fixture.write_path(path, prepared)
+        for name in ('ready-context.json', 'allocated-context.json'):
+            row = json_object(json.loads((self.fixture.live/name).read_bytes()))
+            row['prepared_case'] = json_object(ref); self.fixture.write_live(name, row)
+        with self.assertRaisesRegex(ValueError, 'prepared cold_reload'): self.owner.produce()
+
+    def test_cold_rejects_later_guard_capacity_or_original_wait_drift_in_writer_lock(self) -> None:
+        for name in ('CORE-GUARD-0.intent.actual.json', 'COLD-GUARD-1.intent.actual.json', 'CAPACITY-START.actual.json'):
+            path = self.execution/name; path.write_text('{}', encoding='utf8')
+            with self.subTest(name=name), self.assertRaises(ValueError): self.owner.produce()
+            path.unlink()
+        def drift() -> None:
+            path = self.execution/'COLD-GUARD-0.original-wait.actual.json'
+            path.write_bytes(path.read_bytes()+b' ')
+        with self.assertRaises(ValueError): self.owner.claim(drift)
+        self.assertFalse((self.fixture.root/'admission/machine.json').exists())
+
+
 if __name__=='__main__':unittest.main()
