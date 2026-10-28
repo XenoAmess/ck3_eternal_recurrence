@@ -538,7 +538,16 @@ def load_shared(path: Path, name: str) -> object:
     if spec is None or spec.loader is None:
         raise ValueError("Shared producer unavailable")
     module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+    previous = sys.modules.get(name)
+    sys.modules[name] = module
+    try:
+        spec.loader.exec_module(module)
+    except BaseException:
+        if previous is None:
+            sys.modules.pop(name, None)
+        else:
+            sys.modules[name] = previous
+        raise
     return module
 
 

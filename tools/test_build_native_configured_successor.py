@@ -154,6 +154,50 @@ class ConfiguredSuccessorTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             cmake_boolean_flags(cache)
 
+    def test_actual_sealer_loads_future_annotated_runtime_and_failed_import_restores_registry(self) -> None:
+        producer = UngatedProducer(self.config)
+        self.config.output.mkdir()
+        commands = self.root / "loader-commands.json"
+        commands.write_text("[]", encoding="utf-8")
+        model = self.root / "loader-model.json"
+        model.write_text(json.dumps({"configurations": [{"targets": []}]}), encoding="utf-8")
+        scope = self.root / "loader-scope.json"
+        scope.write_text(json.dumps({"compile_commands": pin(commands), "codemodel": pin(model)}), encoding="utf-8")
+        freeze = self.root / "loader-freeze.json"
+        freeze.write_text("{}", encoding="utf-8")
+        configuration = self.root / "loader-config.json"
+        configuration.write_text(json.dumps(config_json(self.config)), encoding="utf-8")
+        qualification: dict[str, object] = {"configured_scope": pin(scope),
+            "production_freeze": pin(freeze), "fixture_results": []}
+        label = "fixture_object_link_reader"
+        fresh = label + "_failure_probe"
+        previous, previous_fresh = sys.modules.get(label), sys.modules.get(fresh)
+        try:
+            # Execute the actual sealer's dynamic import of the actual runtime,
+            # then retain its existing v1 refusal of an empty object declaration.
+            with self.assertRaisesRegex(ValueError, "No external fixture objects"):
+                producer.fixture_link_support_document(qualification, pin(configuration))
+            loaded = sys.modules[label]
+            filename = loaded.__file__
+            if filename is None:
+                self.fail("Actual dynamically loaded runtime needs its source path")
+            self.assertEqual(Path(filename).resolve(), (ROOT / "tools/ck3_mod_acceptance_build_runtime.py").resolve())
+            bad = self.root / "failed-import.py"
+            bad.write_text("from __future__ import annotations\nfrom dataclasses import dataclass\n"
+                "@dataclass\nclass Owned:\n    value: str\nraise RuntimeError('actual import failed')\n", encoding="utf-8")
+            with self.assertRaisesRegex(RuntimeError, "actual import failed"):
+                load_shared(bad, label)
+            self.assertIs(sys.modules[label], loaded)
+            with self.assertRaisesRegex(RuntimeError, "actual import failed"):
+                load_shared(bad, fresh)
+            self.assertIs(sys.modules.get(fresh), previous_fresh)
+        finally:
+            for name, original in ((label, previous), (fresh, previous_fresh)):
+                if original is None:
+                    sys.modules.pop(name, None)
+                else:
+                    sys.modules[name] = original
+
     def test_resume_json_roundtrip_allows_only_observation_time_change(self) -> None:
         self.assertTrue(same_metadata_content({"observed_at_utc": "old", "slots": [1, 2], "missing": None},
                                               {"observed_at_utc": "new", "slots": (1, 2), "missing": None}))
