@@ -1,0 +1,168 @@
+{
+  "schema": "rrf-workshop-media-public-readback-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-28T15:28:52.781627+00:00",
+  "workshop_item_id": "3826756673",
+  "owner": "76561198273714027",
+  "consumer_app_id": 1158310,
+  "source_run": "4-8e1c2f1861--religious-ritual-fusion--R0038",
+  "source_commit": "f31417c18f414f260d5f439ad1f8cb85fb9054cc",
+  "public_version": "0.1.0-alpha",
+  "development_version": "0.2.0-alpha unreleased",
+  "content_upload_performed": false,
+  "notes_changed": false,
+  "description_exact_after_CRLF_to_LF": true,
+  "description_chars": 2144,
+  "description_lines": 43,
+  "description_normalized_sha256": "4c2e03b17c2a148d6408017a9f3785b9b012bf5e7b1d8fa5fa51f60b1331e887",
+  "anonymous_readback": true,
+  "all_twelve_order": [
+    {
+      "order": 1,
+      "preview_id": "48294918",
+      "url": "https://images.steamusercontent.com/ugc/11949390021377429810/3A599321B3E44A9F088B90D90627E779F55D1E58/"
+    },
+    {
+      "order": 2,
+      "preview_id": "48294919",
+      "url": "https://images.steamusercontent.com/ugc/14701561625571287741/51E23DEC091D62261743C53F391B0FFCCF7478B5/"
+    },
+    {
+      "order": 3,
+      "preview_id": "48294920",
+      "url": "https://images.steamusercontent.com/ugc/17740379883873270313/CD252167CCBC2478DDF5D0D00554B958BBCEFFE0/"
+    },
+    {
+      "order": 4,
+      "preview_id": "48294921",
+      "url": "https://images.steamusercontent.com/ugc/14322138971414935161/84ABF19EA52A2A29ABFAD812C472801ACD778B59/"
+    },
+    {
+      "order": 5,
+      "preview_id": "48294922",
+      "url": "https://images.steamusercontent.com/ugc/11055269871140543996/3F462CE380ABF535391048C18491EEB0B3A4214A/"
+    },
+    {
+      "order": 6,
+      "preview_id": "48294923",
+      "url": "https://images.steamusercontent.com/ugc/15635122434027558454/E1F1D1E59DC806F3A58BC204CDACF40430E96A13/"
+    },
+    {
+      "order": 7,
+      "preview_id": "48328555",
+      "url": "https://images.steamusercontent.com/ugc/15068571318910168828/C047FCC67437D15069CCF0580DBACA1B74B88E5F/"
+    },
+    {
+      "order": 8,
+      "preview_id": "48328761",
+      "url": "https://images.steamusercontent.com/ugc/9327408694332800861/E26378B97A15D7BFE04D6C52FDB5DA88204E12A8/"
+    },
+    {
+      "order": 9,
+      "preview_id": "48333821",
+      "url": "https://images.steamusercontent.com/ugc/17168949124517871308/2F6583D0C4D1D2ACEF47577FBF60459AF58FCDD0/"
+    },
+    {
+      "order": 10,
+      "preview_id": "48333877",
+      "url": "https://images.steamusercontent.com/ugc/15499190207926017671/0D5CBA0D47C411F73ABB686FDBD7ED9EC6DDCE86/"
+    },
+    {
+      "order": 11,
+      "preview_id": "48350414",
+      "url": "https://images.steamusercontent.com/ugc/12310956203167640487/85422AE957AC916B8CA16641512BDABB401491C6/"
+    },
+    {
+      "order": 12,
+      "preview_id": "48350415",
+      "url": "https://images.steamusercontent.com/ugc/15816114686404026458/9FB691AD8E5E194DE31953AE936ADBA18F696504/"
+    }
+  ],
+  "old_first_ten_order_preserved": true,
+  "old_first_ten_bytes_refetched_this_time": false,
+  "new_previews": [
+    {
+      "order": 11,
+      "preview_id": "48350414",
+      "url": "https://images.steamusercontent.com/ugc/12310956203167640487/85422AE957AC916B8CA16641512BDABB401491C6/",
+      "http_status": 200,
+      "bytes": 924821,
+      "sha256": "3dd4ea459bbe3a73477889b5a675eef1cf1c5ebab74807f18297f0b299ba2046",
+      "width": 2560,
+      "height": 1440,
+      "matches_original_jpeg": true
+    },
+    {
+      "order": 12,
+      "preview_id": "48350415",
+      "url": "https://images.steamusercontent.com/ugc/15816114686404026458/9FB691AD8E5E194DE31953AE936ADBA18F696504/",
+      "http_status": 200,
+      "bytes": 1154740,
+      "sha256": "bebdc190c930e99b2d24e4052157cbcab99deebceb50570c45960a1f0697be1a",
+      "width": 2560,
+      "height": 1440,
+      "matches_original_jpeg": true
+    }
+  ],
+  "original_pngs": [
+    {
+      "captured_at_utc": "2026-10-28T14:53:25.907135+00:00",
+      "game_pid": 2592,
+      "image": {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\retry-cold-R0033-a01\\screenshots\\R0038-result-day5.png",
+        "bytes": 4025261,
+        "sha256": "c8a3ecece81600eafb3329b5e7b956d4a5191a28a990dbbd10d55e6914225930",
+        "width": 2560,
+        "height": 1440
+      },
+      "native_date": 53144496
+    },
+    {
+      "captured_at_utc": "2026-10-28T15:02:56.872838+00:00",
+      "game_pid": 2592,
+      "image": {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\retry-cold-R0033-a01\\screenshots\\R0038-current153-faith-day5.png",
+        "bytes": 4726695,
+        "sha256": "33438fa141049168662f87347971ef2fd3df38a112fab3ccda520c303569e2bb",
+        "width": 2560,
+        "height": 1440
+      },
+      "native_date": 53144496
+    }
+  ],
+  "transform": "JPEG quality93/subsampling0 encoding only, no crop or generated pixels",
+  "steam_offline_after_web": true,
+  "screen_release_sequence": 14464,
+  "original_evidence": [
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\retry-cold-R0033-a01\\metadata\\normal-close-a01\\R0038-browser-media-a01\\MEDIA-PUBLIC-COMPLETE.actual.json",
+      "bytes": 2177,
+      "sha256": "3e4a37c65eb3892810c6079c571aaac9ca7b15ed671476c5077042fd53294af6"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\retry-cold-R0033-a01\\metadata\\normal-close-a01\\R0038-browser-media-a01\\PUBLIC-PREVIEW-ORDER.actual.json",
+      "bytes": 2555,
+      "sha256": "f521ce955c461e99abedc0833f3219fdbecc1d94fa0dacb5c2797b90f2dc17a4"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\retry-cold-R0033-a01\\metadata\\normal-close-a01\\R0038-browser-media-a01\\PUBLIC-TWO-NEW-BYTES.actual.json",
+      "bytes": 1035,
+      "sha256": "ee756a89b69e42afbffd25c5b8fa4d4c293d838b56b358e3ebbc0daff36aed9b"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\retry-cold-R0033-a01\\metadata\\normal-close-a01\\R0038-browser-media-a01\\PUBLIC-ITEM.after.actual.json",
+      "bytes": 5825,
+      "sha256": "c8e10baabb232e8b5caf866c3594b1e4ff808a6fbb02f2505efd57d51533c9c6"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\retry-cold-R0033-a01\\metadata\\normal-close-a01\\R0038-browser-media-a01\\STEAM-OFFLINE.after-Web.actual.json",
+      "bytes": 2436,
+      "sha256": "055b0fa2e5ca27e3377e42abe2b111050ff22342fd7a34949ac96a6dea013b51"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\retry-cold-R0033-a01\\metadata\\normal-close-a01\\R0038-browser-media-a01\\SCREEN-RELEASE.actual.json",
+      "bytes": 1637,
+      "sha256": "8bbc8aa80ba1a05fd50b960d7c5a32af9ee6a790d1fd52b1a86448c2a47b66ea"
+    }
+  ]
+}

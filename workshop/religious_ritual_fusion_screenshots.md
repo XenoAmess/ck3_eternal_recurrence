@@ -88,3 +88,16 @@ Root 的首发导出位于 `C:/workspace/rrf-development-20261024/publication-a0
 源为R0032／`502f922c`的两个中间草案，不是最终提交配方或验收结果；该场后续只读帧竞态失败仍如实保留。Java ImageIO仅编码JPEG，Root已查看两张最终图，未裁切、缩放或修改内容。[完整素材身份](../mod_religious_ritual_fusion/docs/media/screenshots-R0032-2026-10-27.json)。
 
 完整主说明已标注末尾四张为未发布开发预览；下载仍为0.1.0-alpha。匿名API全文归一换行后与canonical BBCode一致；没有内容或Notes上传。完成后后台原生确认Steam客户端仍离线，SCREEN事件14260释放。[本次十图回读](../mod_religious_ritual_fusion/docs/evidence/workshop-media-readback-R0032-2026-10-27.json)。
+
+## R0038 冷载五日后态已公开，2026-10-28
+
+`machine_id: 4-8e1c2f1861`；运行源码`f31417c18f414f260d5f439ad1f8cb85fb9054cc`。1066.9.22暂停实拍，均2560×1440；仅JPEG编码，没有裁切、缩放或生成像素。八名家属已逐人从同一Save5读回Rite153／Faith13，一名封臣已采用153，另一名回复仍未知；图片不授整场通过。
+
+| 公开顺序／preview ID | 公开原图 | JPEG bytes／SHA256 |
+| --- | --- | --- |
+| 11／48350414 | [冷载后五日的家属采用结果页](https://images.steamusercontent.com/ugc/12310956203167640487/85422AE957AC916B8CA16641512BDABB401491C6/) | 924821／`3dd4ea459bbe3a73477889b5a675eef1cf1c5ebab74807f18297f0b299ba2046` |
+| 12／48350415 | [当前礼仪的信仰面板、美德与罪恶](https://images.steamusercontent.com/ugc/15816114686404026458/9FB691AD8E5E194DE31953AE936ADBA18F696504/) | 1154740／`bebdc190c930e99b2d24e4052157cbcab99deebceb50570c45960a1f0697be1a` |
+
+15:28Z匿名页面确认十二图顺序，新增两张均HTTP200、尺寸与字节精确匹配。原十图只重验顺序，本次没有重复下载其字节；历史逐字节结果仍以各自原回执为准。完整说明2144字符／43行与匿名API逐字一致，标明末尾六张为未发布0.2.0预览，下载仍是0.1.0-alpha。未上传内容或Notes；后台原生确认Steam离线，浏览器SCREEN CAS14464释放。[本次公开回读](../mod_religious_ritual_fusion/docs/evidence/workshop-media-readback-R0038-2026-10-28.json)。
+
+第0日含远程工具浮层的诊断PNG未上传；所隐藏的单独浮层已在Game关闭后恢复，未断开或终止远程工具进程。两张商店图的原始PNG分别为4025261 B／`c8a3ecece81600eafb3329b5e7b956d4a5191a28a990dbbd10d55e6914225930`及4726695 B／`33438fa141049168662f87347971ef2fd3df38a112fab3ccda520c303569e2bb`。
