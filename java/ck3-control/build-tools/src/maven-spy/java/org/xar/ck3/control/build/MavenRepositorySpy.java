@@ -38,6 +38,7 @@ public final class MavenRepositorySpy implements EventSpy {
             "io.quarkus.bootstrap.resolver.maven.BootstrapMavenContext",
             "io.quarkus.bootstrap.resolver.maven.MavenArtifactResolver",
             "io.quarkus.maven.QuarkusBootstrapProvider",
+            "io.quarkus.maven.QuarkusBootstrapProvider$QuarkusMavenAppBootstrap",
             "io.quarkus.bootstrap.util.PropertyUtils",
             "io.quarkus.maven.components.QuarkusWorkspaceProvider",
             "org.eclipse.aether.internal.impl.DefaultLocalRepositoryProvider",
@@ -300,7 +301,7 @@ public final class MavenRepositorySpy implements EventSpy {
     }
 
     static boolean isObservedTarget(String binaryName) {
-        return RESOLVERS.contains(binaryName) || binaryName.startsWith("io.quarkus.maven.QuarkusBootstrapProvider$");
+        return RESOLVERS.contains(binaryName);
     }
 
     static boolean isOriginalJvmClass(LoadedClass loaded, String originalJvmPid) {
@@ -313,7 +314,7 @@ public final class MavenRepositorySpy implements EventSpy {
         try {
             if (!isObservedTarget(loaded.binaryName())) throw new IOException("Only originally observed resolver classes allowed");
             java.net.URI source = java.net.URI.create(loaded.source());
-            if (!source.getScheme().equals("file")) throw new IOException("Actual local JAR class code-source required");
+            if (!"file".equals(source.getScheme())) throw new IOException("Actual local file-scheme JAR class code-source required");
             Path jar = Path.of(source).toRealPath();
             if (!jar.getFileName().toString().endsWith(".jar")) throw new IOException("Actual loaded class did not originate in a JAR");
             jarRef = boundedPin(jar, 64 * MIB);

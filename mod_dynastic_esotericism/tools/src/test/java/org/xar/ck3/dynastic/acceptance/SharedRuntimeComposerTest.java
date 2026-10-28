@@ -410,6 +410,7 @@ final class SharedRuntimeComposerTest {
                 "resources/acceptance-fixture/common/decisions/des_transfer_acceptance_decisions.txt",
                 "resources/acceptance-fixture/localization/english/des_transfer_acceptance_l_english.yml",
                 "resources/acceptance-fixture/localization/simp_chinese/des_transfer_acceptance_l_simp_chinese.yml",
+                "resources/acceptance-fixture/common/bookmarks/bookmarks/des_empire_1066_byzantium.txt",
                 "resources/acceptance-fixture/common/on_action/des_empire_heads_acceptance_on_actions.txt",
                 "resources/acceptance-fixture/common/decisions/des_empire_heads_acceptance_decisions.txt",
                 "resources/acceptance-fixture/events/des_empire_heads_acceptance_events.txt",
