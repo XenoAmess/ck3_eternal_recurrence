@@ -1,5 +1,6 @@
 import importlib.util
 import json
+import sys
 from pathlib import Path
 import tempfile
 import unittest
@@ -7,6 +8,7 @@ from unittest.mock import patch
 
 spec=importlib.util.spec_from_file_location('mechanism_prepare',Path(__file__).with_name('ck3_mod_acceptance_prepare.py'))
 prepare=importlib.util.module_from_spec(spec)
+sys.modules[spec.name]=prepare
 spec.loader.exec_module(prepare)
 
 
