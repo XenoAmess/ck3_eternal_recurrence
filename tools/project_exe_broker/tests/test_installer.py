@@ -7,6 +7,7 @@ import sys
 import types
 import unittest
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 sys.path.insert(0, str(Path(__file__).parent.parent))
 import installer_core as core
 import windows_adapter as adapters
