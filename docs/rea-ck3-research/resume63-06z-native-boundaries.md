@@ -1,6 +1,6 @@
 # Resume63 06Z：receiver、registry 与 SAVE 的有限原生结果
 
-machine_id: `xenoamess-full-tower-eb9d2c1186`。观察日：2026-10-28 UTC；本页复用各 case 的已保留结果，独审截止06:00Z。来源为 CK3 1.20.0.4/build25734779，EXE101040248B，SHA256 `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`。
+machine_id: `xenoamess-full-tower-eb9d2c1186`。观察日：2026-10-28 UTC；本页复用各 case 的已保留结果，首批独审截止06:00Z；后继按末节另记。来源为 CK3 1.20.0.4/build25734779，EXE101040248B，SHA256 `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`。
 
 Official REA/Owned、解码/CFG、ABI与实机资格分记。下述均先minclose、owned0，无新增业务代码、测试或Game信用。各peer与对应owner同目录。
 
@@ -70,3 +70,26 @@ M7显式preflight身份读取195964085B；SDK四次整PE摘要404160992B为源�
 [4o]: D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01/cases/resume63-m4-gui-gate12aec90-rf97-01/ACTUAL-REVIEW01.json
 [2o]: D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01/cases/resume63-m2-instance29c56f0-01/CASE-CLOSE01.json
 [7o]: D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01/cases/resume63-m7-save-mode1-open01/RESULT01.json
+
+## 29T04Z 后继批次：返回源与 SAVE 调用点（2026-10-28）
+
+本节按新29T04Z范围执行，原EXE与machine_id同上；没有重采613B/97B或导入全PE图。
+
+M1 新完整RF[28F3470,28F359A)298B：RCX=[入口M+4E20]、RDX=入口P进入2932E40，返回Q保存RDI，所有有限normal RET回同Q。返回前880340接收M+20和localQ地址；条件路径855DB0接收Q+40。显式stores均在stack，不能消除opaque副作用；未证create/池/既有对象，也不授readonly或同帧Known。70条双解码/p8、14signed、1RIP、12块17边及57602B portable回环一致；保留3500真selfloop和3594错误CALL后3599 INT3。AF loops0不作语义依据，两个unsafe整数只保词法。
+
+[终receipt][1ro]8165/`e1ac02d4f473f4218f2886daa609b0d8675bb8a5b46c157b0ae9e7c2a192cb32`；[独审][1rp]5051/`faa732e18dc632c2d799ac23465fe89d36cad67f6ea863bde242ca82763c4f84`。不自动跟2932E40；Java生产delta0，真实cohort/risk仍须当前合格原READ。
+
+M7 一次Owned raw E8-rel32定位完整扫描71141448B .text：只有384FEA5、384FF97两个已持控制，均指38534B0；无新caller候选。128帽未触发，PE前后SHA、textSHA与heldPDATA一致。独审只读原件并重算两disp/file/floor，无新decoder或peer文件。这仅排除此字节形状的新site，不排间接调用/其它消费者，更不授SAVE完成。
+
+[结果][7rl]7940/`2d3ff0010dd49e56a7963ad295e0856c1b606e21ca9142039b80c2e15a983c4f`；[完整Owned][7rw]13227/`d8777168bf746bd8822813063fab97ff30387255de6578f3f78be3c816ecd824`。止点仍是owner+318安装store，或同原SAVE/request/build的非空receiver、vptr/+10 target。已交Readiness；没有合法carrier时明确MISSING，不造callback调用、公开裸指针字段或新SAVE门禁，原canonical/physicalpair/Driver/cold链不变。
+
+M4本轮仅核已持[GRAPH03][4rg]6658/`cdf2bbeeb32b5acfeb1453e924162414192937af188b41328c22873d4997c649`与[SPANS02][4rs]7274/`e84ebf13dd3aebb027d360e47bb61e27257250e74b5ba2309db363d883179cf8`，没有返回最终净金额的新caller/body seed，故新PE/provider/预算0。mode2成本/钱包变动和标签都不代净quote；仍缺合格同帧record/付款人/paid-incarnation/账户及实际finalQuote来源，Java empty quote/credit0不变；不声称原版无报价函数。
+
+本批首close分别11:19:50.052Z、11:22:40.397Z，均期限内owned0，实际provider最大1（上限2）。M1 Cap/REA wrapper795/970ms；M7 query484.1286ms、其中scan352.4166ms。M1显式PE请求202080806B；M7 query逻辑276155164B含PDATA，runtime身份/SDK额外另计。不是CPU/整批速度，physicalIO/joint峰未测。新增业务代码、回归与Game/SAVE/RESTORE信用均0；本批静态链结束。
+
+[1ro]: D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01/cases/resume63-m1-q28f3470-01/CASE-RECEIPT01.json
+[1rp]: D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01/cases/resume63-m1-q28f3470-01/INDEPENDENT-REA63-REVIEW01.json
+[7rl]: D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01/cases/resume63-m7-save-result-e8-locator01/RESULT01.json
+[7rw]: D:/ck3-state/ck3-java-g2-rea-eval-resume62/tools01/cases/resume63-m7-save-result-e8-locator01/QUERY-OWNED01.json
+[4rg]: D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/m4_native_finance03/NATIVE-GRAPH03.json
+[4rs]: D:/codex-ck3-demos/2026-10-22-java-phase1/scratch/resume-current-20261024/m4_native_finance03/NATIVE-SOURCE-SPANS02.json

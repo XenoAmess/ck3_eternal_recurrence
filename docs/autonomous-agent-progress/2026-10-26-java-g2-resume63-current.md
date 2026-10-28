@@ -1,6 +1,6 @@
 # resume63：REA、Java 全能力迁移与 G2 接续
 
-`machine_id: xenoamess-full-tower-eb9d2c1186`。2026-10-28T02:58:28Z 更新；任务继续。本页接续 [resume62 交接](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff.md)与[来源索引](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff-source-index.json)。[完整对照](2026-10-26-resume63-migration-and-g2-matrix.md)区分八项业务门槛和全迁移范围。
+`machine_id: xenoamess-full-tower-eb9d2c1186`。最新续记为 2026-10-28T10:52:08Z，见文末；前文 02:58:28Z 的 UAC、构建和准备状态作为历史保留。任务继续。本页接续 [resume62 交接](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff.md)与[来源索引](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff-source-index.json)。[完整对照](2026-10-26-resume63-migration-and-g2-matrix.md)区分八项业务门槛和全迁移范围。
 
 目标：REA M0–M7研究及Java落地，完整迁移后普通自动游玩。Java启动/日/SAVE/RESTORE均0，G2实机0/8。首启与迁移并行；31000秒仅SDK预算。
 
@@ -65,3 +65,17 @@ DataReview03已由Root真写2081B/SHA前缀f00a926…；原写窗28日04Z、data
 NativePlan附加v4必要两叶已采用，Main215真实增编0/123.169s，32MAIN暂未改，必要Jar/回归接续。候选seal03为5901文件/83755903B，完整139910424B；census621232B/5cf4f00e74a5d3f3aee76279724d1baa9b761553c310584422f46ed721fa5ae3。曾误把Native3984清单装入Review.completeRuntimeSources，引出2MiB/数量扩界建议；Root追实际调用者发现Java部署与独立Native inventory是两轴，已撤回整批RAM、0源码采用，不放宽原界。NativePlan原producer必须用首次Main实际captured completeDeployment物理路径，单纯同SHA的Main41路径不能代换。Console标准依赖已真取得，whole3尚未执行。
 
 别名W=D:/codex-ck3-demos/2026-10-22-java-phase1；R=D:/ck3-state/ck3-java-g2-resume63-m0-native01。所有引用以实际原件canonical FileRef为准；未知保持未知。
+
+## 2026-10-28T10:52:08Z：按实际任务并行，消除首启阻点
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`。本节记录当前机器事实，不能外推其他机器。实际 Java Game 启动、新增游戏日、SAVE、RESTORE 仍均为 0，G2 实机仍 0/8。
+
+- 正式 Native ENV、BUILD、REGISTER 已实际通过；REGISTER 使用已安装的 SYSTEM broker，精确路径已存在，本次没有新增 UAC。原件为 R 下 `bridge-qualified-broker-current01/{env,build,register}/ACTUAL.json`；旧取消记录不覆盖这些后继结果。Native3 不重跑，冻结原生输入及产物继续保留。
+- Tools229 的调用内路径索引修复已通过 71 项完整回归。Tools230 对三正式原生结果的只读读取实际通过，耗时 466.994202 秒；这是开发诊断，不是实机。源码核查发现单个 NativePlan QUOTE 会经 LaunchSourceBinding 重建四遍历史原生证明；目录属性比较还存在 NIO 目录大小 0/4096 差异的真实误拒。当前候选只追加这两项必要共享修复及回归，尚未记为采用或通过。
+- Source03 首次复制在 5395/5902 文件后超时，原失败保留。同根恢复重新验证已有文件、只补 507 文件，实际 69.0268642 秒通过；最终 5902 文件、83802008 字节，内容、身份及完整文件集全部匹配，完整分配 138222872 字节，小于 138735616 字节预算。[恢复原件](D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/FIRSTMENU-COHERENT-INPUT03-COPY-ACTUAL02.json)为 3592 字节，SHA-256 `c6fece44eaf4d971ac6ff5244d053f4a2455263695e43576a35cd797c1ef9857`。该目录尚未产出冻结 runtime/SDK，必要修复在同一候选目录以小型 delta 采用，保留旧叶与旧复制证据，不再复制另一棵 5902 文件树。
+- Full232 前三次调用因缺少 oracle 环境、typed root identity、Lobby08 环境三元组而实际失败，均未执行 Maven。这些是调用配置错误，不能称 Java 编译失败。修正后的同源码 final02 已于 10:40:03.852Z 实际启动并进入 Maven/JUnit；10:50:52Z 仅已完成 33 份 XML、339 项测试，未发现失败或跳过，整体验收仍在运行，不提前记 PASS。
+- MainDev 的 COMPAT10、Event9、Notif2、GUI3 已在互斥文件窗实际采用。Main234 在测试源码第 195 行出现字符串转义语法错误；只补四个反斜杠后，在同一源码、BUILD、TMP、m2 中执行 Main235，实际退出 0、91.615 秒、0 JUnit。完整实际命令、参数、缓存与源码守卫及 javac 输出见 [MAINDEV235-RAW01.json](D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration/MAINDEV235-RAW01.json)。默认 `mvn`、`-T2`、`-pl local-service,!:ck3-control-parent -am test-compile`；实际仅重编 APP 的 355 个测试源、NT 的 442 个主源和 202 个测试源、LS 的 611 个主源和 774 个测试源。33 模块输入域不等于 33 模块全部重编。必要两项新修复结束后复用该缓存编测，16 个迁移回归整类及依赖真实 MCP descriptor 的另 13 整类分列，尚未运行不授通过。
+
+用户已要求精简流程。本阶段直接执行：一次阶段预算内由 owner 机械分配小额子账；超帽、跨卷或用途变化再返回全局账本。取消逐叶 Root 中转、已独核候选的重复独审和重复封包。保留 Java 实际要求的 typed 发行、真实退出码、必要完整测试组、启动前后台 Steam 离线与资源鲜检、唯一动作 writer、UNKNOWN 不重放及原生后态确认。冻结 runtime/SDK 不热改；开发继续使用可复用目录做受影响模块增量编译，最后一次完整编译验收。
+
+下一实际链：两项必要共享修复/回归 → Source03 小型 delta → capture04 → 新 SourceIndex/NativePlan → 首 MENU/ENTRY。其他迁移候选、官方 CI 的 fixture-production 输入缺口及 REA 研究并行，不新增首启前置。REA 已恢复 M7 完成来源、M4 净退款入口的有限新问题；缺少新 seed 时明确结束该题，不重复旧字节或授实机信用。
