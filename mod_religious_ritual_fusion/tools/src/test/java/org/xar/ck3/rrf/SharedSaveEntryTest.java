@@ -20,6 +20,14 @@ final class SharedSaveEntryTest {
     @TempDir Path directory;
     @Test void actualProductCliUsesSharedDecoderAndStrictTypedConsumer() throws Exception {
         Path repository = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize().getParent();
+        Path selectedCoreOutput = Path.of(System.getProperty("save.build.root",
+                repository.resolve("java/ck3-save-core/target").toString())).toRealPath();
+        var actualCore = org.xar.ck3.save.ProducerSources.verify(repository);
+        assertFalse(actualCore.loadedCode().isEmpty());
+        for (var code : actualCore.loadedCode()) {
+            assertTrue(Path.of(code.path()).toRealPath().startsWith(selectedCoreOutput),
+                    "shared save consumer must load this reactor output: " + code.path());
+        }
         Path save = directory.resolve("authored.ck3");
         Files.writeString(save, "meta_data={version=authored} living={1={rite=155} 2={rite=155}} triggered_event={days=30} triggered_event={days=31}");
         Path javaExe = Path.of(System.getProperty("java.home"), "bin", System.getProperty("os.name").startsWith("Windows") ? "java.exe" : "java");

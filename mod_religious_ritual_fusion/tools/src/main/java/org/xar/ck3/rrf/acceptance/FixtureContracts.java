@@ -6,10 +6,12 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.JsonNode;
+import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import org.xar.ck3.rrf.Contracts;
 import org.xar.ck3.rrf.ExpectedSelection;
 import org.xar.ck3.rrf.ExpectedSelection.TenetKey;
@@ -34,12 +36,45 @@ public final class FixtureContracts {
         public int cost() { return cost; }
     }
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
-    @JsonSubTypes({@JsonSubTypes.Type(value = FreshSetup.class, name = "fresh"), @JsonSubTypes.Type(value = SavedSetup.class, name = "saved")})
-    public sealed interface Setup permits FreshSetup, SavedSetup { }
+    @JsonSubTypes({@JsonSubTypes.Type(value = FreshSetup.class, name = "fresh"), @JsonSubTypes.Type(value = SavedSetup.class, name = "saved"),
+            @JsonSubTypes.Type(value = SavedSnapshotSetup.class, name = "saved_snapshot")})
+    public sealed interface Setup permits FreshSetup, SavedSetup, SavedSnapshotSetup { }
     public record FreshSetup(int piety) implements Setup {
         public FreshSetup { if (piety < 0 || piety > 10000) throw new IllegalArgumentException("fixture piety must be 0..10000"); }
     }
     public record SavedSetup() implements Setup { }
+    /** Canonical fixed-point amount; JSON numbers and script fragments are never accepted. */
+    public record PietyAmount(String value) {
+        public PietyAmount {
+            if (value == null || !value.matches("(?:0|[1-9][0-9]{0,6})(?:\\.[0-9]{0,4}[1-9])?")
+                    || new BigDecimal(value).compareTo(BigDecimal.valueOf(1_000_000)) > 0)
+                throw new IllegalArgumentException("canonical nonnegative piety string up to 1000000 required");
+        }
+        @JsonCreator(mode = JsonCreator.Mode.DELEGATING) public static PietyAmount fromJson(JsonNode node) {
+            if (node == null || !node.isTextual()) throw new IllegalArgumentException("piety amount must be a canonical string");
+            return new PietyAmount(node.textValue());
+        }
+        @JsonValue public String value() { return value; }
+        public BigDecimal amount() { return new BigDecimal(value); }
+    }
+    public record CreationWalletHistory(PietyAmount before, PietyAmount after, int chargedCost,
+                                        FilePin beforeInspection, FilePin afterInspection) {
+        public CreationWalletHistory {
+            Objects.requireNonNull(before); Objects.requireNonNull(after);
+            Objects.requireNonNull(beforeInspection); Objects.requireNonNull(afterInspection);
+            if (chargedCost <= 0 || before.amount().subtract(after.amount()).compareTo(BigDecimal.valueOf(chargedCost)) != 0)
+                throw new IllegalArgumentException("creation before/after must prove the declared single charge");
+        }
+    }
+    /** Version 4 only: independently observed cold wallet, distinct from creation history. */
+    public record SavedSnapshotSetup(org.xar.ck3.save.SaveContracts.NativeId actorId, FilePin sourceSave,
+                                     FilePin sourceInspection, PietyAmount expectedCurrentPiety,
+                                     CreationWalletHistory creationHistory) implements Setup {
+        public SavedSnapshotSetup {
+            Objects.requireNonNull(actorId); Objects.requireNonNull(sourceSave); Objects.requireNonNull(sourceInspection);
+            Objects.requireNonNull(expectedCurrentPiety); Objects.requireNonNull(creationHistory);
+        }
+    }
     /** A CK3 character: script link uses a history definition key, not a native runtime handle. */
     public record ActorHistoryId(String value) {
         public ActorHistoryId {
@@ -54,10 +89,13 @@ public final class FixtureContracts {
     }
     public record Request(int schemaVersion, CaseKind kind, Mode mode, ActorHistoryId actorHistoryId, Setup setup, ExpectedSelection expectedSelection) {
         public Request {
-            if (schemaVersion != 3) throw new IllegalArgumentException("fixture request schemaVersion 3 required");
+            if (schemaVersion != 3 && schemaVersion != 4) throw new IllegalArgumentException("fixture request schemaVersion 3 or 4 required");
             if (kind == null || mode == null || actorHistoryId == null || setup == null || expectedSelection == null) throw new IllegalArgumentException("fixture kind/mode/actorHistoryId/setup/expectedSelection required");
             expectedSelection.requireSources(SOURCE_A, SOURCE_B);
-            if ((kind == CaseKind.COLD_RELOAD) != (setup instanceof SavedSetup)) throw new IllegalArgumentException("cold_reload requires saved setup; fresh cases require fresh setup");
+            if ((schemaVersion == 4) != (setup instanceof SavedSnapshotSetup)) throw new IllegalArgumentException("version 4 requires the explicit saved_snapshot setup; version 3 retains its original setup contract");
+            if ((kind == CaseKind.COLD_RELOAD) != (setup instanceof SavedSetup || setup instanceof SavedSnapshotSetup)) throw new IllegalArgumentException("cold_reload requires saved setup; fresh cases require fresh setup");
+            if (setup instanceof SavedSnapshotSetup snapshot && snapshot.creationHistory().chargedCost() != mode.cost())
+                throw new IllegalArgumentException("creation history charge differs from the selected mode");
             if (kind == CaseKind.CORE && setup instanceof FreshSetup fresh && fresh.piety() < mode.cost()) throw new IllegalArgumentException("positive core fixture must be able to pay its mode cost");
         }
     }
@@ -66,6 +104,16 @@ public final class FixtureContracts {
     }
     public record FileContent(long bytes, String sha256) {
         public FileContent { if (bytes < 0) throw new IllegalArgumentException("negative file size"); Contracts.digest(sha256); }
+    }
+    public record PrebuiltInputs(String schema, FilePin manifest, FilePin request,
+                                 @JsonProperty("input_pins") List<FilePin> inputPins) {
+        public PrebuiltInputs {
+            if (!"rrf-prebuilt-fixture-inputs-v1".equals(schema) || manifest == null || request == null)
+                throw new IllegalArgumentException("strict prebuilt input receipt required");
+            inputPins = List.copyOf(inputPins);
+            if (inputPins.isEmpty() || inputPins.size() > 4) throw new IllegalArgumentException("bounded snapshot input pins required");
+            Contracts.unique(inputPins.stream().map(FilePin::path).toList());
+        }
     }
     public record Receipt(@JsonProperty("required_markers") List<String> requiredMarkers,
                           @JsonProperty("required_product_markers_minimum") Map<String, Integer> minimumMarkers,

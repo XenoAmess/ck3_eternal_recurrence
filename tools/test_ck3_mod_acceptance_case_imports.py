@@ -327,7 +327,8 @@ def verify_case(context: dict[str, object]) -> object:
         fixture.doCleanups()
 
 
-def allocate_prelaunch_import_fixture(*, phase_guard_files: bool = False) -> int:
+def allocate_prelaunch_import_fixture(*, phase_guard_files: bool = False,
+                                     prebuilt_case_inputs: Path | None = None) -> int:
     """Actual dispatch/allocation/reducer; synthetic R21-shaped no-game inputs.
 
     Only OS/bus/preflight observations are fixtures. The actual selected SDK,
@@ -349,6 +350,42 @@ def allocate_prelaunch_import_fixture(*, phase_guard_files: bool = False) -> int
     fixture = RootAllocatorTripletTests()
     fixture.setUp()
     try:
+        external_pins: list[FilePin] = []
+        if prebuilt_case_inputs is not None:
+            from test_ck3_mod_acceptance import SharedEntryTests
+            from ck3_mod_acceptance_prepare import prebuilt_fixture_source_pins
+            public = SharedEntryTests()
+            public.setUp()
+            fixture.addCleanup(public.doCleanups)
+            produced = json_object(json.loads(prebuilt_case_inputs.read_bytes()))
+            case_inputs = object_field(produced, 'case_inputs')
+            preparation = object_field(produced, 'preparation')
+            startup = object_field(preparation, 'startup')
+            profile = object_field(preparation, 'profile_preparation')
+            profile_receipt = object_field(profile, 'preparation')
+            entry.check_pin(Path(text_field(profile_receipt, 'path')), dict(profile_receipt))
+            if startup.get('mode') != 'saved_campaign':
+                raise AssertionError('The real cold fixture must keep its produced saved startup')
+            case = public.products['products']['xqol']['cases'][0]
+            case.update(id='cold_reload', startup=startup)
+            public.products['products'] = {'religious-ritual-fusion': {'cases': [case]}}
+            public.write(public.products_path, public.products)
+            prepared_path = public.root / 'prebuilt-prepared.json'
+            public.write(prepared_path, {'schema': 'ck3-mod-acceptance-prepared-case-v1',
+                'product': 'religious-ritual-fusion', 'case': 'cold_reload',
+                'runtime_manifest': entry.pin(public.manifest_path), 'startup': startup,
+                'initial_plan': preparation['initial_plan'], 'preparation': preparation,
+                'case_inputs': case_inputs})
+            actual = entry.Selection(public.runtime_path, public.products_path,
+                'religious-ritual-fusion', 'cold_reload', prepared_path=prepared_path)
+            result = actual.preflight()
+            if result['blockers']:
+                raise AssertionError('Actual Selection/preflight rejected snapshot inputs: ' + repr(result['blockers']))
+            if actual.state_dir != Path(text_field(startup, 'state_dir')).resolve():
+                raise AssertionError('Actual Selection lost the materialized cold profile')
+            external_pins = prebuilt_fixture_source_pins(case_inputs)
+            if any(reference not in result['checked_inputs'] for reference in external_pins):
+                raise AssertionError('Actual Selection omitted snapshot input pins')
         bundle, live, keeper, _ = fixture.prelaunch_fixture(observed_root=True, phase_guards=phase_guard_files)
         # Author digest-domain frozen inputs for this fixture, never live files.
         freeze = json_object(json.loads((live / 'frozen-argv.json').read_bytes()))
@@ -450,12 +487,15 @@ def allocate_prelaunch_import_fixture(*, phase_guard_files: bool = False) -> int
                 reference = json_object(value)
                 if actual_files.get(Path(text_field(reference, 'path')).resolve()) != reference:
                     raise AssertionError('Actual allocator omitted or changed an additional guard Pin')
+            for reference in external_pins:
+                if actual_files.get(Path(reference['path']).resolve()) != reference:
+                    raise AssertionError('Actual allocator omitted a snapshot external input Pin')
             raise BeforeMachineWriter('All ten guard Pins frozen; no machine writer entered')
 
         prior_path = list(sys.path)
         with ExitStack() as stack:
             stack.enter_context(patch.object(entry, 'Selection', return_value=selected))
-            stack.enter_context(patch.object(type(selected), 'preflight', return_value={'blockers': [], 'checked_inputs': []}))
+            stack.enter_context(patch.object(type(selected), 'preflight', return_value={'blockers': [], 'checked_inputs': external_pins}))
             observers: dict[str, object] = {'actual_machine_binding': {'machine_id': fixture.machine,
                     'state_root': str(id_root), 'admission_root': str(fixture.root / 'never-created-admission')},
                 'shared_bus_history': ([], True), 'current_screen_absent': packet,
@@ -490,7 +530,8 @@ def allocate_prelaunch_import_fixture(*, phase_guard_files: bool = False) -> int
         print(json.dumps({'actual_public_dispatch': True, 'actual_observed_prelaunch_reducer': True,
             'actual_running_input_contract': True, 'stopped_before_machine_writer': True,
             'counter_unchanged': True, 'game_started': False,
-            'additional_phase_guard_filepins_frozen': len(expected_phase_pins) if phase_guard_files else 0}))
+            'additional_phase_guard_filepins_frozen': len(expected_phase_pins) if phase_guard_files else 0,
+            'prebuilt_external_filepins_frozen': len(external_pins)}))
         return 0
     finally:
         fixture.doCleanups()
@@ -580,6 +621,8 @@ def run_case(context: dict[str, object], client: object) -> dict[str, object]:
 
 
 if __name__ == "__main__":
+    if len(sys.argv) == 3 and sys.argv[1] == '--allocate-prebuilt-inputs-fixture':
+        raise SystemExit(allocate_prelaunch_import_fixture(phase_guard_files=True, prebuilt_case_inputs=Path(sys.argv[2])))
     if sys.argv[1:] == ["--allocate-prelaunch-filepins-fixture"]:
         raise SystemExit(allocate_prelaunch_import_fixture(phase_guard_files=True))
     if sys.argv[1:] == ["--allocate-prelaunch-import-fixture"]:

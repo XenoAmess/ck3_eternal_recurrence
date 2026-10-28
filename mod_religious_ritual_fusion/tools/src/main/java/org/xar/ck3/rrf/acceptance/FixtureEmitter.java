@@ -57,12 +57,14 @@ public final class FixtureEmitter {
     public static Emission emit(Path repository, Path output, String machineId, Request request) throws IOException {
         FixtureContracts.machine(machineId);
         Path repo = repository.toRealPath(); Path destination = output.toAbsolutePath().normalize();
+        ColdSnapshotReader.verify(request, machineId, repo);
         Path manifest = Path.of(destination + ".fixture.json"); Path snapshot = Path.of(destination + ".request.json");
-        for (Path target : List.of(destination, manifest, snapshot)) if (Files.exists(target, LinkOption.NOFOLLOW_LINKS)) throw new IllegalArgumentException("unused fixture output required: " + target);
+        Path inputs = Path.of(destination + ".inputs.json");
+        for (Path target : List.of(destination, manifest, snapshot, inputs)) if (Files.exists(target, LinkOption.NOFOLLOW_LINKS)) throw new IllegalArgumentException("unused fixture output required: " + target);
         Path producer = repo.resolve(MAIN);
         if (producer.startsWith(destination) || destination.startsWith(producer)) throw new IllegalArgumentException("fixture output overlaps producer sources");
         List<FilePin> pins = new ArrayList<>();
-        for (String java : List.of("org/xar/ck3/rrf/acceptance/FixtureEmitter.java", "org/xar/ck3/rrf/acceptance/FixtureContracts.java", "org/xar/ck3/rrf/ExpectedSelection.java", "org/xar/ck3/rrf/Json.java", "org/xar/ck3/rrf/Contracts.java", "org/xar/ck3/rrf/Clausewitz.java", "org/xar/ck3/rrf/ReleaseBuilder.java")) {
+        for (String java : List.of("org/xar/ck3/rrf/acceptance/FixtureEmitter.java", "org/xar/ck3/rrf/acceptance/FixtureContracts.java", "org/xar/ck3/rrf/acceptance/ColdSnapshotReader.java", "org/xar/ck3/rrf/ExpectedSelection.java", "org/xar/ck3/rrf/Json.java", "org/xar/ck3/rrf/Contracts.java", "org/xar/ck3/rrf/Clausewitz.java", "org/xar/ck3/rrf/ReleaseBuilder.java")) {
             Path path = producer.resolve("java").resolve(java); checkedResource(path, "/producer-source/" + java); pins.add(pin(path));
         }
         Path catalogPath = repo.resolve("mod_religious_ritual_fusion/catalog/generated-catalog.json");
@@ -84,6 +86,7 @@ public final class FixtureEmitter {
                     .replace("${SOURCE_B_CORE}", corePredicate(FixtureContracts.SOURCE_B))
                     .replace("${EXPECTED_RESULT_CORE}", corePredicate(request.expectedSelection().coreTenets()))
                     .replace("${EXPECTED_ORIGIN_CORE}", originPredicate(request.expectedSelection()))
+                    .replace("${PIETY_READBACK}", ColdSnapshotReader.walletPredicate(request))
                     .replace("${SOURCE_SHARED_ONE}", FixtureContracts.SOURCE_A.get(0).value())
                     .replace("${SOURCE_SHARED_TWO}", FixtureContracts.SOURCE_A.get(1).value())
                     .replace("${SOURCE_A_EXCLUSIVE}", FixtureContracts.SOURCE_A.get(2).value())
@@ -109,6 +112,9 @@ public final class FixtureEmitter {
         }
         Manifest result = new Manifest("ck3-mod-acceptance-prebuilt-fixture-v1", "religious-ritual-fusion", request.kind().wire(), machineId, Instant.now().toString(), destination.toString(), pins, files, new Receipt(markers, Map.of(), request.kind() != CaseKind.COLD_RELOAD));
         Files.write(manifest, Json.write(result), StandardOpenOption.CREATE_NEW); Files.write(snapshot, Json.write(request), StandardOpenOption.CREATE_NEW);
+        if (request.schemaVersion() == 4) Files.write(inputs, Json.write(new FixtureContracts.PrebuiltInputs(
+                "rrf-prebuilt-fixture-inputs-v1", pin(manifest), pin(destination.resolve(FixtureContracts.REQUEST_FILE)),
+                ColdSnapshotReader.inputPins(request))), StandardOpenOption.CREATE_NEW);
         return new Emission(destination, manifest, snapshot, result);
     }
     public static void validateCatalog(Catalog catalog) {

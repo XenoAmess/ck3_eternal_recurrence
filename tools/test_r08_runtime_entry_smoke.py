@@ -82,6 +82,9 @@ import xar_autoplayer.bridge.native_driver as source
 assert Path(source.__file__).resolve()==repo/'ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py'
 sent=[]
 class NativeBoundaryReached(BaseException): pass
+class NativeQueryStateBoundarySentinel:
+    def wait_for_command_result(self, request_id: str, timeout_seconds: float) -> object:
+        raise AssertionError('native response wait reached after the send boundary')
 def send(value):
     sent.append(value)
     raise NativeBoundaryReached()
@@ -94,6 +97,7 @@ driver=object.__new__(NativeHeadlessGameplayDriver)
 driver.command_timeout_seconds=1
 driver.allow_private_war_cash_query=True
 driver.endpoint=SimpleNamespace(send=send)
+driver.state=NativeQueryStateBoundarySentinel()
 driver.take_snapshot_without_native_command_history=lambda:frame
 driver.take_snapshot=lambda:frame
 server=create_server(driver)

@@ -12,7 +12,7 @@ import shutil
 import sys
 from datetime import datetime
 from dataclasses import dataclass
-from typing import Literal, TypedDict
+from typing import Literal, NotRequired, TypedDict
 
 from ck3_mod_acceptance_background_types import FilePin, JsonObject, file_pin, json_object, object_field, text_field
 
@@ -172,6 +172,16 @@ class PrebuiltFixtureMaterialization(TypedDict):
     observed_at_utc: str
     game_started: Literal[False]
     business_acceptance: Literal['NOT_ASSESSED']
+    input_receipt: NotRequired[FilePin]
+    fixture_request: NotRequired[FilePin]
+    input_pins: NotRequired[list[FilePin]]
+
+
+class PrebuiltFixtureInputs(TypedDict):
+    manifest: FilePin
+    request: FilePin
+    receipt: FilePin
+    input_pins: list[FilePin]
 
 
 def _prebuilt_checked_pin(value: object) -> FilePin:
@@ -179,10 +189,90 @@ def _prebuilt_checked_pin(value: object) -> FilePin:
     if set(row) != {'path', 'bytes', 'sha256'}:
         raise ValueError('Prebuilt fixture file pin fields differ')
     expected = file_pin(row)
+    source = Path(expected['path'])
+    if (not source.is_absolute() or str(source.resolve()) != expected['path']
+            or source.is_symlink() or source.is_junction() or not source.is_file()):
+        raise ValueError('Prebuilt fixture pin requires an absolute canonical ordinary file')
     actual = pin(expected['path'])
     if actual != expected:
         raise ValueError('Prebuilt fixture frozen file changed: ' + expected['path'])
     return expected
+
+
+def prebuilt_fixture_inputs(case_inputs: object) -> PrebuiltFixtureInputs | None:
+    """Bind Java's v4 request-derived external inputs; business validation stays in Java.
+
+    Both materialization and public Selection use this single parser. The receipt is
+    outside the deployed eight-file fixture and never becomes a producer source.
+    """
+    inputs = json_object(case_inputs)
+    sidecar = inputs.get('prebuilt_fixture_inputs')
+    if 'prebuilt_fixture_manifest' not in inputs:
+        if 'prebuilt_fixture_inputs' in inputs:
+            raise ValueError('Prebuilt input receipt requires its fixture manifest')
+        return None
+    manifest = _prebuilt_checked_pin(inputs['prebuilt_fixture_manifest'])
+    if manifest['bytes'] > 2 * 1024 * 1024:
+        raise ValueError('Prebuilt fixture manifest exceeds read budget')
+    row = json_object(json.loads(Path(manifest['path']).read_text(encoding='utf-8-sig')))
+    files = object_field(row, 'files')
+    if row.get('product') != 'religious-ritual-fusion' or '_rrfa_request.json' not in files:
+        if 'prebuilt_fixture_inputs' in inputs:
+            raise ValueError('Prebuilt input receipt requires the canonical RRF request')
+        return None
+    root = Path(text_field(row, 'fixture_root'))
+    content = json_object(files['_rrfa_request.json'])
+    if set(content) != {'bytes', 'sha256'}:
+        raise ValueError('Canonical fixture request inventory fields differ')
+    request = _prebuilt_checked_pin({'path': str(root / '_rrfa_request.json'), **content})
+    if request['bytes'] > 65536:
+        raise ValueError('Canonical fixture request exceeds read budget')
+    frozen = json_object(json.loads(Path(request['path']).read_text(encoding='utf-8-sig')))
+    version = frozen.get('schemaVersion')
+    if type(version) is not int or version not in (3, 4):
+        raise ValueError('Canonical fixture request version must be an exact supported integer')
+    if version == 3:
+        if 'prebuilt_fixture_inputs' in inputs:
+            raise ValueError('Version 3 forbids snapshot input receipts')
+        return None
+    if frozen.get('kind') != 'cold_reload' or row.get('case_id') != 'cold_reload':
+        raise ValueError('Version 4 input receipt requires cold_reload')
+    setup = object_field(frozen, 'setup')
+    if setup.get('type') != 'saved_snapshot':
+        raise ValueError('Version 4 requires saved_snapshot')
+    history = object_field(setup, 'creationHistory')
+    references: list[FilePin] = []
+    for value in (setup.get('sourceSave'), setup.get('sourceInspection'),
+                  history.get('beforeInspection'), history.get('afterInspection')):
+        reference = _prebuilt_checked_pin(value)
+        if reference not in references:
+            if any(prior['path'] == reference['path'] for prior in references):
+                raise ValueError('Snapshot input path has conflicting pins')
+            references.append(reference)
+    receipt = _prebuilt_checked_pin(sidecar)
+    expected_path = Path(manifest['path'])
+    if (not expected_path.name.endswith('.fixture.json') or receipt['path'] != str(
+            expected_path.with_name(expected_path.name[:-len('.fixture.json')] + '.inputs.json'))
+            or receipt['bytes'] > 65536):
+        raise ValueError('Snapshot input receipt must be the bounded producer sidecar')
+    declared = json_object(json.loads(Path(receipt['path']).read_text(encoding='utf-8-sig')))
+    if (set(declared) != {'schema', 'manifest', 'request', 'input_pins'}
+            or declared.get('schema') != 'rrf-prebuilt-fixture-inputs-v1'
+            or _prebuilt_checked_pin(declared.get('manifest')) != manifest
+            or _prebuilt_checked_pin(declared.get('request')) != request):
+        raise ValueError('Snapshot input receipt crossed its manifest/request')
+    values = declared.get('input_pins')
+    if not isinstance(values, list) or not 1 <= len(values) <= 4:
+        raise ValueError('Snapshot receipt needs its bounded exact input pin array')
+    if [_prebuilt_checked_pin(value) for value in values] != references:
+        raise ValueError('Snapshot receipt differs from canonical request input pins')
+    return PrebuiltFixtureInputs(manifest=manifest, request=request, receipt=receipt, input_pins=references)
+
+
+def prebuilt_fixture_source_pins(case_inputs: object) -> list[FilePin]:
+    """Flatten original external references into the shared allocation fixed point."""
+    binding = prebuilt_fixture_inputs(case_inputs)
+    return [] if binding is None else [binding['manifest'], binding['request'], binding['receipt'], *binding['input_pins']]
 
 
 def _prebuilt_relative_path(value: str) -> Path:
@@ -202,6 +292,13 @@ def materialize_prebuilt_fixture(
     before copying; the ordinary shared profile builder remains authoritative.
     """
     manifest_pin = _prebuilt_checked_pin(manifest_value)
+    binding_inputs = json_object(context.get('case_inputs', {}))
+    if ('prebuilt_fixture_manifest' in binding_inputs
+            and _prebuilt_checked_pin(binding_inputs['prebuilt_fixture_manifest']) != manifest_pin):
+        raise ValueError('Materialization manifest differs from selected case inputs')
+    binding = prebuilt_fixture_inputs(json_object({**binding_inputs, 'prebuilt_fixture_manifest': manifest_pin}))
+    if binding is not None and binding['manifest'] != manifest_pin:
+        raise ValueError('Snapshot input receipt crossed materialization manifest')
     row = json_object(json.loads(Path(manifest_pin['path']).read_text(encoding='utf-8-sig')))
     fields = {'schema', 'product', 'case_id', 'machine_id', 'observed_at_utc',
               'fixture_root', 'producer_source_pins', 'files', 'receipt'}
@@ -283,6 +380,10 @@ def materialize_prebuilt_fixture(
     materialized = PrebuiltFixtureMaterialization(manifest=manifest_pin,
         producer_source_pins=source_pins, machine_id=machine, observed_at_utc=stamp,
         game_started=False, business_acceptance='NOT_ASSESSED')
+    if binding is not None:
+        materialized['input_receipt'] = binding['receipt']
+        materialized['fixture_request'] = binding['request']
+        materialized['input_pins'] = binding['input_pins']
     return destination, receipt, materialized
 
 

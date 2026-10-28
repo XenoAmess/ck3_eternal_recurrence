@@ -10,6 +10,7 @@ import subprocess
 import sys
 import tempfile
 from types import ModuleType
+from typing import Literal
 import unittest
 from unittest.mock import patch
 
@@ -61,12 +62,171 @@ class ReligiousRitualFusionProducerPrepareTests(unittest.TestCase):
             'pathlib.Path("authored-decoder-invoked").write_text("AUTHORED_DECODER_ONLY", encoding="utf-8")\n'
             'sys.stdout.buffer.write(pathlib.Path(sys.argv[1]).read_bytes())\n', encoding='utf-8')
 
-    def inspect_cli(self, java: str, cli: Path, request: JsonObject, label: str) -> subprocess.CompletedProcess[bytes]:
+    def inspect_cli(self, java: str, cli: Path, request: JsonObject, label: str, *,
+                    command: Literal['inspect-save', 'inspect-save-v4'] = 'inspect-save') -> subprocess.CompletedProcess[bytes]:
         inputs = self.root / (label + '.request.json')
         inputs.write_text(json.dumps(request, allow_nan=False), encoding='utf-8')
-        return subprocess.run([java, '-jar', str(cli), 'inspect-save', '--inputs', str(inputs),
+        return subprocess.run([java, '-jar', str(cli), command, '--inputs', str(inputs),
             '--output', str(self.root / (label + '.report.json'))], cwd=self.root,
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=150, check=False)
+
+    def test_real_java_cold_snapshot_wallet_crosses_saved_prepare_and_complete_ast_consumer(self) -> None:
+        repository = Path(__file__).resolve().parents[1]
+        cli = Path(os.environ.get('RRF_FIXTURE_CLI_JAR', str(
+            repository / 'mod_religious_ritual_fusion/tools/target/quarkus-app/quarkus-run.jar'))).resolve()
+        self.assertTrue(cli.is_file(), 'Actual rebuilt Java CLI required; no skip is a pass')
+        java = shutil.which('java')
+        if java is None:
+            raise AssertionError('Actual Java runtime required')
+        cores = ['tenet_esotericism', 'tenet_astrology', 'tenet_communal_identity']
+        current_text = authored_save(cores).replace('date=1066.9.16',
+            'playthrough_id="authored-cold-wallet" date=1066.9.17').replace(
+            'alive_data={variables={data={', 'alive_data={piety={currency=5400} variables={data={'
+            '{flag="rrfa_piety_before" data={type=value identity=600000000}}'
+            '{flag="rrf_charged_cost" data={type=value identity=50000000}}')
+        observations: dict[str, JsonObject] = {}
+        saves: dict[str, Path] = {}
+        for label, text in (
+                ('before', current_text.replace('currency=5400', 'currency=6000').replace(
+                    'living={31254={rite=153', 'living={31254={rite=150').replace(
+                    authored_reference('rrf_last_result_rite', '153'), '')),
+                ('after', current_text.replace('currency=5400', 'currency=5500')),
+                ('current', current_text)):
+            save = self.root / ('cold-' + label + '-AUTHORED.ck3')
+            save.write_text(text, encoding='utf-8'); saves[label] = save
+            request = json_object({'schemaVersion': 4, 'machineId': 'authored-machine',
+                'repository': str(repository), 'save': file_identity(save),
+                'decoder': file_identity(Path(sys.executable)),
+                'selection': {'tables': [{'kind': 'ACTOR', 'path': ['living'], 'ids': ['31254'], 'required': True}],
+                              'projections': [], 'metadataRequired': True, 'structureCensus': False, 'structureRoots': []}})
+            child = self.inspect_cli(java, cli, request, 'cold-' + label, command='inspect-save-v4')
+            self.assertEqual(child.returncode, 0, child.stderr.decode('utf-8', errors='replace'))
+            report_path = self.root / ('cold-' + label + '.report.json')
+            observed = json_object(json.loads(report_path.read_bytes()))
+            self.assertEqual(observed['businessAssessment'], 'NOT_ASSESSED')
+            observations[label] = json_object(file_identity(report_path))
+        fixture_request = json_object({'schemaVersion': 4, 'kind': 'cold_reload', 'mode': 'rite', 'actorHistoryId': '1128',
+            'setup': {'type': 'saved_snapshot', 'actorId': '31254', 'sourceSave': file_identity(saves['current']),
+                      'sourceInspection': observations['current'], 'expectedCurrentPiety': '5400',
+                      'creationHistory': {'before': '6000', 'after': '5500', 'chargedCost': 500,
+                                          'beforeInspection': observations['before'], 'afterInspection': observations['after']}},
+            'expectedSelection': {'coreTenets': cores}})
+        inputs = self.root / 'cold-fixture.request.json'; inputs.write_text(json.dumps(fixture_request), encoding='utf-8')
+        fixture = self.root / 'java-cold-wallet'
+        child = subprocess.run([java, '-jar', str(cli), 'fixture', '--repo-root', str(repository),
+            '--output', str(fixture), '--machine-id', 'authored-machine', '--inputs', str(inputs)],
+            cwd=self.root, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=120, check=False)
+        self.assertEqual(child.returncode, 0, child.stderr.decode('utf-8', errors='replace'))
+        cli_receipt = json_object(json.loads(child.stdout))
+        self.assertEqual(set(cli_receipt), {'fixture', 'manifest', 'request', 'game_started', 'business_acceptance'})
+        manifest = Path(str(fixture) + '.fixture.json')
+        input_receipt = Path(str(fixture) + '.inputs.json')
+        sidecar = json_object(json.loads(input_receipt.read_bytes()))
+        self.assertEqual(sidecar['manifest'], file_identity(manifest))
+        self.assertEqual(sidecar['request'], file_identity(fixture / '_rrfa_request.json'))
+        self.assertEqual(sidecar['input_pins'],
+                         [file_identity(saves['current']), observations['current'], observations['before'], observations['after']])
+        emitted = json_object(json.loads(manifest.read_bytes()))
+        self.assertEqual(len(json_object(emitted['files'])), 8)
+        self.assertFalse(json_object(emitted['receipt'])['fixture_contains_business_effects'])
+        trigger = fixture / 'common/scripted_triggers/rrfa_observation_triggers.txt'
+        self.assertIn('piety = 5400\n    var:rrfa_piety_before = 6000', trigger.read_text(encoding='utf-8-sig'))
+        product = self.root / 'cold-product'; product.mkdir()
+        (product / 'descriptor.mod').write_text('name="Authored cold product"\n', encoding='utf-8')
+        plain: JsonObject = {}
+        for index, relative in enumerate(prepare.CONFIG_NAMES):
+            path = self.root / ('cold-plain-' + str(index)); path.write_text('authored configuration\n', encoding='utf-8')
+            plain[relative] = json_object(file_identity(path))
+        contract = json_object(json.loads((repository / 'tools/ck3_mod_acceptance_cases/religious_ritual_fusion_cold_reload.json').read_bytes()))
+        source = json_object(file_identity(saves['current']))
+        context = json_object({'product': 'religious-ritual-fusion', 'case': 'cold_reload',
+            'repo_root': str(repository), 'runtime_manifest': file_identity(self.shared),
+            'state_dir': str(self.root / 'cold-state'), 'output': str(self.root / 'cold-prepared'), 'case_contract': contract,
+            'saved_campaign': {'save': source['path'], 'bytes': source['bytes'], 'sha256': source['sha256'],
+                               'player_id': 31254, 'date_raw': 53144376},
+            'case_inputs': {'product_dir': str(product), 'plain_configuration': plain,
+                            'prebuilt_fixture_manifest': file_identity(manifest),
+                            'prebuilt_fixture_inputs': file_identity(input_receipt)}})
+        selected_inputs = json_object(context['case_inputs'])
+        expected_inputs = prepare.prebuilt_fixture_source_pins(selected_inputs)
+        self.assertEqual(len(expected_inputs), 7)
+        for field in ('prebuilt_fixture_inputs', 'prebuilt_fixture_manifest'):
+            missing = {key: value for key, value in selected_inputs.items() if key != field}
+            with self.subTest(missing=field), self.assertRaises(ValueError):
+                prepare.prebuilt_fixture_inputs(missing)
+        receipt_bytes = input_receipt.read_bytes()
+        receipt_json = json_object(json.loads(receipt_bytes))
+        for bad in (True, 1.0, None):
+            wrong = json_object(copy.deepcopy(receipt_json))
+            pins = wrong.get('input_pins')
+            if not isinstance(pins, list):
+                raise AssertionError('Actual input receipt must have its pin list')
+            first = json_object(pins[0]); first['bytes'] = bad; pins[0] = first
+            input_receipt.write_text(json.dumps(wrong), encoding='utf-8')
+            changed_inputs = {**selected_inputs, 'prebuilt_fixture_inputs': file_identity(input_receipt)}
+            with self.subTest(wrong_bytes=bad), self.assertRaises(ValueError):
+                prepare.prebuilt_fixture_inputs(changed_inputs)
+        wrong = json_object(copy.deepcopy(receipt_json)); wrong['request'] = observations['before']
+        input_receipt.write_text(json.dumps(wrong), encoding='utf-8')
+        with self.assertRaises(ValueError):
+            prepare.prebuilt_fixture_inputs({**selected_inputs, 'prebuilt_fixture_inputs': file_identity(input_receipt)})
+        input_receipt.write_bytes(receipt_bytes)
+        with patch.object(prepare, '_engine', return_value=(ModuleType('authored_engine'),
+                {'game_version': 'authored-only-no-game', 'exe_sha256': '0' * 64})):
+            result = adapter.prepare_case(context)
+        self.assertFalse(result['business_pass'])
+        self.assertEqual(json_object(result['startup'])['mode'], 'saved_campaign')
+        prepared = self.root / 'cold-prepared/profile-preparation.json'
+        profile_request = self.root / 'cold-state/profile/mod-content/fixture/_rrfa_request.json'
+        self.assertEqual(profile_request.read_bytes(), (fixture / '_rrfa_request.json').read_bytes())
+        inventory = json_object(json.loads(prepared.read_bytes()))
+        self.assertIn('mod-content/fixture/_rrfa_request.json', json_object(inventory['files']))
+        compiled_path = self.root / 'cold-state/profile/mod-content/fixture/_case_contract.json'
+        compiled = json_object(json.loads(compiled_path.read_bytes()))
+        emitter = json_object(compiled['emitter'])
+        self.assertEqual(emitter['input_receipt'], file_identity(input_receipt))
+        self.assertEqual(emitter['fixture_request'], file_identity(fixture / '_rrfa_request.json'))
+        self.assertEqual(emitter['input_pins'], [file_identity(saves['current']), observations['current'], observations['before'], observations['after']])
+        selected_path = self.root / 'cold-selection-preparation.json'
+        selected_path.write_text(json.dumps({'case_inputs': selected_inputs, 'preparation': result}), encoding='utf-8')
+        isolated_env = {key: value for key, value in os.environ.items() if key.upper() != 'PYTHONPATH'}
+        isolated = [sys.executable, '-I', str(repository / 'tools/test_ck3_mod_acceptance_case_imports.py'),
+                    '--allocate-prebuilt-inputs-fixture', str(selected_path)]
+        frozen = subprocess.run(isolated, cwd=self.root, env=isolated_env,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=150, check=False)
+        self.assertEqual(frozen.returncode, 0, frozen.stderr.decode('utf-8', errors='replace'))
+        self.assertEqual(json_object(json.loads(frozen.stdout))['prebuilt_external_filepins_frozen'], 7)
+        inspect = json_object({'schemaVersion': 2, 'machineId': 'authored-machine', 'repository': str(repository),
+            'save': file_identity(saves['current']), 'decoder': file_identity(Path(sys.executable)),
+            'layout': {'actorTable': ['living'], 'riteTable': ['rites', 'database'],
+                       'faithTable': ['faiths', 'database'], 'religionTable': ['religion', 'religions']},
+            'selection': {'actorId': '31254', 'riteIds': ['150', '151', '153'], 'faithIds': ['13'], 'religionIds': ['8']},
+            'expectation': {'type': 'fusion_selection', 'fixtureManifest': file_identity(manifest),
+                            'preparedProfileInventory': file_identity(prepared), 'resultRiteId': '153'}})
+        checked = self.inspect_cli(java, cli, inspect, 'cold-actual-prepared')
+        self.assertEqual(checked.returncode, 0, checked.stderr.decode('utf-8', errors='replace'))
+        verified = json_object(json.loads((self.root / 'cold-actual-prepared.report.json').read_bytes()))
+        assessment = json_object(verified['assessment'])
+        self.assertEqual(assessment['preparedFixtureRequest'], file_identity(profile_request))
+        self.assertEqual(assessment['resultRiteId'], '153')
+        marker = self.root / 'authored-decoder-invoked'; marker.unlink()
+        current_report = self.root / 'cold-current.report.json'
+        original = current_report.read_bytes(); current_report.write_bytes(original + b' ')
+        rejected = self.inspect_cli(java, cli, inspect, 'cold-observation-tamper')
+        self.assertNotEqual(rejected.returncode, 0)
+        self.assertFalse(marker.exists(), 'Changed frozen evidence must fail before a decoder launch')
+        with self.assertRaises(ValueError):
+            prepare.prebuilt_fixture_inputs(selected_inputs)
+        stale = subprocess.run(isolated, cwd=self.root, env=isolated_env,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=150, check=False)
+        self.assertNotEqual(stale.returncode, 0, 'Independent public import must reject changed external evidence')
+        current_report.write_bytes(original)
+        input_receipt.unlink()
+        with self.assertRaises(ValueError):
+            prepare.prebuilt_fixture_inputs(selected_inputs)
+        rejected = self.inspect_cli(java, cli, inspect, 'cold-deleted-receipt')
+        self.assertNotEqual(rejected.returncode, 0)
+        self.assertFalse(marker.exists())
 
     def test_real_java_three_and_four_core_producer_reaches_generic_prepare_with_manifest_frozen_metadata(self) -> None:
         repository = Path(__file__).resolve().parents[1]
@@ -122,6 +282,11 @@ class ReligiousRitualFusionProducerPrepareTests(unittest.TestCase):
                     'state_dir': str(self.root / ('java-state-' + recipe)), 'output': str(self.root / ('java-prepare-' + recipe)),
                     'case_contract': contract, 'case_inputs': {'product_dir': str(product),
                         'plain_configuration': plain, 'prebuilt_fixture_manifest': file_identity(manifest)}})
+                legacy_inputs = json_object(context['case_inputs'])
+                self.assertIsNone(prepare.prebuilt_fixture_inputs(legacy_inputs))
+                self.assertFalse(Path(str(fixture) + '.inputs.json').exists())
+                with self.assertRaises(ValueError):
+                    prepare.prebuilt_fixture_inputs({**legacy_inputs, 'prebuilt_fixture_inputs': None})
                 with patch.object(prepare, '_engine', return_value=(ModuleType('authored_engine'),
                         {'game_version': 'authored-only-no-game', 'exe_sha256': '0' * 64})):
                     result = adapter.prepare_case(context)

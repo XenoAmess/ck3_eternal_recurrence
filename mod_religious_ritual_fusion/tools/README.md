@@ -2,11 +2,10 @@
 
 Java 21 + 默认命令行 Maven 3.10.0 以上；Quarkus 为 CLI 宿主，无 HTTP 服务。玩家只加载生成的 CK3 内容。
 
-先在仓库根目录安装共享存档读取叶模块，再执行完整检查。重型输出须使用当前机器获准的构建根；共享模块只安装自己的 GAV，不另建整份依赖缓存：
+从仓库根reactor在同次verify中构建共享leaf与实际产品消费者。重型输出须获准且显式传入三个独立build.root；不另建依赖缓存：
 
 ```text
-mvn -f java/ck3-save-core/pom.xml -Dsave.build.root=<approved-shared-build-root> install
-mvn -f mod_religious_ritual_fusion/tools/pom.xml verify
+mvn -f pom.xml -pl :religious-ritual-fusion-tools -am -Dsave.build.root=<approved-shared-build-root> -Drrf.build.root=<approved-rrf-build-root> -Ddes.build.root=<approved-des-build-root> verify
 ```
 
 生成器读取真实原版脚本并绑定 SHA（本机观察须传稳定机器 ID）：

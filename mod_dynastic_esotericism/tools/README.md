@@ -2,11 +2,10 @@
 
 构建工具使用 Java 21 和 Quarkus command 宿主；默认命令行 `mvn` 必须不低于 3.10.0。Java 只在开发／验收时使用，正式 CK3 包没有 Java 运行依赖。
 
-先在仓库根目录安装共享存档读取叶模块，再编译、运行全部工具测试并打包。共享构建根须按当前机器存储策略获准：
+从仓库根reactor在同次verify中构建共享leaf与实际产品消费者。重型输出须获准且显式传入三个独立build.root；不另建依赖缓存：
 
 ```text
-mvn -f java/ck3-save-core/pom.xml -Dsave.build.root=<approved-shared-build-root> install
-mvn -f mod_dynastic_esotericism/tools/pom.xml verify
+mvn -f pom.xml -pl :dynastic-esotericism-tools -am -Dsave.build.root=<approved-shared-build-root> -Drrf.build.root=<approved-rrf-build-root> -Ddes.build.root=<approved-des-build-root> verify
 ```
 
 实际输出位于 `mod_dynastic_esotericism/tools/target/dynastic-esotericism-tools/`。需要外置构建时传 `-Ddes.build.root=<获准外置构建根目录>`；工具会在其下使用 `dynastic-esotericism-tools/`，包括编译、Quarkus 包、测试报告和测试临时文件。重型写入前按全仓存储策略检查容量；Maven 本身的临时目录和下载依赖由执行机器配置，不把其他机器路径写入生产配置。

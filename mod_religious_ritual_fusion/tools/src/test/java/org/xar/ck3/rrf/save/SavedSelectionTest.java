@@ -33,9 +33,65 @@ import org.xar.ck3.rrf.save.SaveContracts.Scope;
 /** Authored save bytes; the real fixture producer, decoder child, AST reader and comparator all execute. */
 final class SavedSelectionTest {
     @TempDir Path directory;
+    @Test void coldSnapshotManifestAndPreparedRequestReachTheRealDecoderAndRejectWalletEvidenceDriftBeforeLaunch() throws Exception {
+        Inputs original = inputs("core-rite", "wallet-parent");
+        ExpectedSelection selection = new ExpectedSelection(List.of(new TenetKey("tenet_esotericism"), new TenetKey("tenet_astrology"), new TenetKey("tenet_communal_identity")));
+        String common = saved(selection).replace("date=1066.9.16", "playthrough_id=\"authored-cold-campaign\" date=1066.9.17")
+                .replace("alive_data={variables={data={", "alive_data={piety={currency=5400} variables={data={"
+                        + "{flag=\"rrfa_piety_before\" data={type=value identity=600000000}}{flag=\"rrf_charged_cost\" data={type=value identity=50000000}}");
+        FixtureContracts.FilePin before = coldReport(original.repository(), "wallet-before", common.replace("currency=5400", "currency=6000")
+                .replace("living={31254={rite=153", "living={31254={rite=150").replace(reference("rrf_last_result_rite", "153"), ""));
+        FixtureContracts.FilePin after = coldReport(original.repository(), "wallet-after", common.replace("currency=5400", "currency=5500"));
+        FixtureContracts.FilePin current = coldReport(original.repository(), "wallet-current", common);
+        var observed = org.xar.ck3.save.SaveJson.read(Files.readAllBytes(Path.of(current.path())), org.xar.ck3.save.Inspection.Report.class);
+        var source = observed.decoded().save();
+        var setup = new FixtureContracts.SavedSnapshotSetup(new org.xar.ck3.save.SaveContracts.NativeId("31254"),
+                new FixtureContracts.FilePin(source.path(), source.bytes(), source.sha256()), current, new FixtureContracts.PietyAmount("5400"),
+                new FixtureContracts.CreationWalletHistory(new FixtureContracts.PietyAmount("6000"), new FixtureContracts.PietyAmount("5500"), 500, before, after));
+        var fixtureRequest = new FixtureContracts.Request(4, FixtureContracts.CaseKind.COLD_RELOAD, FixtureContracts.Mode.RITE,
+                new FixtureContracts.ActorHistoryId("1128"), setup, selection);
+        FixtureEmitter.Emission emitted = FixtureEmitter.emit(original.repository(), directory.resolve("cold-wallet-fixture"), original.request().machineId(), fixtureRequest);
+        Request request = new Request(2, original.request().machineId(), original.request().repository(),
+                new Pin(source.path(), source.bytes(), source.sha256()), original.request().decoder(), original.request().layout(), original.request().selection(),
+                new FusionSelection(SaveInspector.pin(emitted.manifest()), authoredPrepared(emitted, "cold-wallet"), new NativeId("153")));
+        Report report = SaveInspector.inspect(request, decoder());
+        assertTrue(report.assessment() instanceof SelectionVerified);
+        assertEquals(new NativeId("153"), ((SelectionVerified) report.assessment()).resultRiteId());
+        Path copied = directory.resolve("cold-wallet-profile/mod-content/fixture/" + FixtureContracts.REQUEST_FILE);
+        assertEquals(fixtureRequest, Json.read(Files.readAllBytes(copied), FixtureContracts.Request.class));
+        assertEquals(8, emitted.payload().files().size());
+        AtomicBoolean launched = new AtomicBoolean();
+        byte[] bytes = Files.readAllBytes(Path.of(current.path()));
+        Files.writeString(Path.of(current.path()), "{}");
+        assertThrows(IOException.class, () -> SaveInspector.inspect(request, (a, b) -> { launched.set(true); throw new IOException("must not launch"); }));
+        assertFalse(launched.get()); Files.write(Path.of(current.path()), bytes);
+        Files.writeString(copied, Files.readString(copied) + " ");
+        assertThrows(IOException.class, () -> SaveInspector.inspect(request, (a, b) -> { launched.set(true); throw new IOException("must not launch"); }));
+        assertFalse(launched.get());
+    }
+    private FixtureContracts.FilePin coldReport(Path repository, String name, String text) throws IOException {
+        Path save = directory.resolve(name + ".ck3"); Files.writeString(save, text);
+        var selection = new org.xar.ck3.save.SaveContracts.Selection(List.of(new org.xar.ck3.save.SaveContracts.TableSelection(
+                org.xar.ck3.save.SaveContracts.ScopeKind.ACTOR, List.of("living"), List.of(new org.xar.ck3.save.SaveContracts.NativeId("31254")), true)), List.of(), true, false, List.of());
+        var pin = org.xar.ck3.save.FilePins.pin(save);
+        var request = new org.xar.ck3.save.Inspection.Request(4, "synthetic-fixture-machine", repository.toString(), pin, pin, selection);
+        var projection = new org.xar.ck3.save.SaveStream(new java.io.StringReader(text), selection).read();
+        var bytes = text.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        var decoded = new org.xar.ck3.save.SaveContracts.Decoded(pin, pin, 0, "", org.xar.ck3.save.FilePins.sha256(bytes), Integer.toString(bytes.length), projection, true);
+        var report = new org.xar.ck3.save.Inspection.Report("ck3-save-inspection-v4", request.machineId(), "2026-10-27T00:00:00Z", request, decoded,
+                org.xar.ck3.save.ProducerSources.verify(repository), org.xar.ck3.save.Inspection.BusinessAssessment.NOT_ASSESSED, false);
+        Path target = directory.resolve(name + ".report.json"); Files.write(target, org.xar.ck3.save.SaveJson.write(report));
+        var result = org.xar.ck3.save.FilePins.pin(target);
+        return new FixtureContracts.FilePin(result.path(), result.bytes(), result.sha256());
+    }
     private record Inputs(Path repository, FixtureEmitter.Emission fixture, Request request) { }
-    private record AuthoredEmitter(Pin manifest) { }
-    private record AuthoredCompiled(String schema, String product, @com.fasterxml.jackson.annotation.JsonProperty("case") String caseId, AuthoredEmitter emitter) { }
+    private sealed interface AuthoredEmission permits AuthoredEmitter, AuthoredSnapshotEmitter { }
+    private record AuthoredEmitter(Pin manifest) implements AuthoredEmission { }
+    private record AuthoredSnapshotEmitter(Pin manifest,
+            @com.fasterxml.jackson.annotation.JsonProperty("input_receipt") Pin inputReceipt,
+            @com.fasterxml.jackson.annotation.JsonProperty("fixture_request") Pin fixtureRequest,
+            @com.fasterxml.jackson.annotation.JsonProperty("input_pins") List<FixtureContracts.FilePin> inputPins) implements AuthoredEmission { }
+    private record AuthoredCompiled(String schema, String product, @com.fasterxml.jackson.annotation.JsonProperty("case") String caseId, AuthoredEmission emitter) { }
     private record AuthoredPrepared(String schema, @com.fasterxml.jackson.annotation.JsonProperty("runtime_status") String runtimeStatus,
                                    @com.fasterxml.jackson.annotation.JsonProperty("business_acceptance") String businessAcceptance,
                                    @com.fasterxml.jackson.annotation.JsonProperty("profile_dir") String profileDir, Map<String, Pin> files) { }
@@ -162,7 +218,14 @@ final class SavedSelectionTest {
         Path profile = directory.resolve(name + "-profile"), copied = profile.resolve("mod-content/fixture"); Files.createDirectories(copied);
         Path metadata = copied.resolve(FixtureContracts.REQUEST_FILE); Files.copy(fixture.fixture().resolve(FixtureContracts.REQUEST_FILE), metadata);
         Path compiled = copied.resolve("_case_contract.json");
-        Files.write(compiled, Json.write(new AuthoredCompiled("ck3-mod-acceptance-product-assertions-v1", "religious-ritual-fusion", fixture.payload().caseId(), new AuthoredEmitter(SaveInspector.pin(fixture.manifest())))));
+        AuthoredEmission emitter = new AuthoredEmitter(SaveInspector.pin(fixture.manifest()));
+        Path sidecar = Path.of(fixture.fixture() + ".inputs.json");
+        if (Files.exists(sidecar)) {
+            FixtureContracts.PrebuiltInputs inputs = Json.read(Files.readAllBytes(sidecar), FixtureContracts.PrebuiltInputs.class);
+            emitter = new AuthoredSnapshotEmitter(SaveInspector.pin(fixture.manifest()), SaveInspector.pin(sidecar),
+                    SaveInspector.pin(fixture.fixture().resolve(FixtureContracts.REQUEST_FILE)), inputs.inputPins());
+        }
+        Files.write(compiled, Json.write(new AuthoredCompiled("ck3-mod-acceptance-product-assertions-v1", "religious-ritual-fusion", fixture.payload().caseId(), emitter)));
         Path inventory = directory.resolve(name + "-AUTHORED-profile-preparation.json");
         Files.write(inventory, Json.write(new AuthoredPrepared("ck3-mod-acceptance-prepared-fixture-v1", "NOT_RUN", "NOT_ASSESSED", profile.toString(),
                 Map.of("mod-content/fixture/" + FixtureContracts.REQUEST_FILE, SaveInspector.pin(metadata), "mod-content/fixture/_case_contract.json", SaveInspector.pin(compiled)))));

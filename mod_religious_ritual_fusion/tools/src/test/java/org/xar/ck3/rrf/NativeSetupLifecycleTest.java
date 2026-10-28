@@ -66,6 +66,62 @@ final class NativeSetupLifecycleTest {
         assertTrue(widget(resultWindow, "rrf_result_keep_defaults").orElseThrow().atom("onclick", "").contains("rrf_keep_defaults_gui"));
     }
 
+    @Test void resultControlsAndListsHaveUniqueNativeQueryRootsWithoutChangingTheirBindings() throws IOException {
+        Path source = Path.of(System.getProperty("rrf.source")).toAbsolutePath().normalize();
+        Clausewitz.Block window = Clausewitz.parse(Files.readString(source.resolve("gui/rrf_result_window.gui"))).block("window");
+        Map<String, String> rowModels = Map.of(
+                "rrf_result_family_rows", "[GetPlayer.MakeScope.Var( 'rrf_last_result_rite' ).GetList( 'rrf_expected_family' )]",
+                "rrf_result_accepts_rows", "[GetPlayer.MakeScope.GetList( 'rrf_vassal_converts' )]",
+                "rrf_result_players_rows", "[GetPlayer.MakeScope.GetList( 'rrf_vassal_players' )]",
+                "rrf_result_declines_rows", "[GetPlayer.MakeScope.GetList( 'rrf_vassal_declines' )]",
+                "rrf_result_ineligible_rows", "[GetPlayer.MakeScope.GetList( 'rrf_vassal_ineligible' )]",
+                "rrf_result_converted_rows", "[GetPlayer.MakeScope.GetList( 'rrf_vassal_converted' )]",
+                "rrf_result_pending_rows", "[GetPlayer.MakeScope.GetList( 'rrf_vassal_pending' )]");
+        List<String> names = new ArrayList<>(rowModels.keySet());
+        names.addAll(List.of("rrf_result_actions", "rrf_result_close", "rrf_result_refresh", "rrf_result_invite",
+                "rrf_result_followers_scroll", "rrf_result_details_column", "rrf_result_details_scroll", "rrf_result_core_scroll"));
+        for (String name : names) assertEquals(1, namedWidgets(window, name).size(), name);
+
+        Clausewitz.Block actions = widget(window, "rrf_result_actions").orElseThrow();
+        assertEquals("expanding", actions.atom("layoutpolicy_horizontal", ""));
+        assertEquals("12", actions.atom("spacing", ""));
+        List<String> directControls = new ArrayList<>();
+        for (Clausewitz.Entry entry : actions.entries())
+            if (entry.key().startsWith("button_") && entry.value() instanceof Clausewitz.Block child)
+                directControls.add(child.atom("name", ""));
+        assertEquals(List.of("\"rrf_result_close\"", "\"rrf_result_refresh\"", "\"rrf_result_invite\""), directControls);
+        assertEquals(1, actions.named("expand").size());
+        Clausewitz.Block close = widget(actions, "rrf_result_close").orElseThrow();
+        assertEquals("\"RRF_RESULT_CLOSE\"", close.atom("text", ""));
+        assertEquals("\"[GetScriptedGui( 'rrf_close_result_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]\"", close.atom("onclick", ""));
+        assertTrue(close.named("enabled").isEmpty());
+        Clausewitz.Block refresh = widget(actions, "rrf_result_refresh").orElseThrow();
+        assertEquals("\"RRF_REFRESH_RESULT\"", refresh.atom("text", ""));
+        assertEquals("\"[GetScriptedGui( 'rrf_refresh_result_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]\"", refresh.atom("enabled", ""));
+        assertEquals("\"RRF_REFRESH_RESULT_TT\"", refresh.atom("tooltip", ""));
+        assertEquals("\"[GetScriptedGui( 'rrf_refresh_result_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]\"", refresh.atom("onclick", ""));
+        Clausewitz.Block invite = widget(actions, "rrf_result_invite").orElseThrow();
+        assertEquals("\"RRF_INVITE_VASSALS\"", invite.atom("text", ""));
+        assertEquals("\"[GetScriptedGui( 'rrf_invite_vassals_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]\"", invite.atom("enabled", ""));
+        assertEquals("\"[Localize( 'RRF_INVITE_VASSALS_TT' )] [GetScriptedGui( 'rrf_invite_vassals_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]\"", invite.atom("tooltip", ""));
+        assertEquals("\"[GetScriptedGui( 'rrf_invite_vassals_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]\"", invite.atom("onclick", ""));
+
+        Clausewitz.Block followers = widget(window, "rrf_result_followers_scroll").orElseThrow();
+        for (Map.Entry<String, String> expected : rowModels.entrySet()) {
+            Clausewitz.Block rows = widget(followers, expected.getKey()).orElseThrow();
+            assertEquals("\"" + expected.getValue() + "\"", rows.atom("datamodel", ""));
+            assertEquals(List.of("rrf_result_character"), rows.block("item").entries().stream().map(Clausewitz.Entry::key).toList());
+        }
+    }
+
+    private static List<Clausewitz.Block> namedWidgets(Clausewitz.Block parent, String name) {
+        List<Clausewitz.Block> found = new ArrayList<>();
+        if (parent.atom("name", "").equals("\"" + name + "\"")) found.add(parent);
+        for (Clausewitz.Entry entry : parent.entries())
+            if (entry.value() instanceof Clausewitz.Block child) found.addAll(namedWidgets(child, name));
+        return List.copyOf(found);
+    }
+
     @Test void nativeWindowGateRequiresTheActualTargetWhileRecoveryDoesNotInventAnEditorContext() throws IOException {
         Model model = model(true);
         assertFalse(model.guiShown("rrf_native_setup_window_gui", model.actor));

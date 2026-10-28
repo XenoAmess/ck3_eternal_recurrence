@@ -148,6 +148,7 @@ window = {
 			}
 			divider = { layoutpolicy_vertical = expanding }
 			scrollbox = {
+				name = "rrf_result_followers_scroll"
 				layoutpolicy_horizontal = expanding
 				layoutpolicy_vertical = expanding
 				blockoverride "scrollbox_background" { background = { using = Background_Area alpha = 0.75 } }
@@ -158,6 +159,7 @@ window = {
 						spacing = 10
 						text_label_left = { text = "RRF_RESULT_FAMILY" }
 						vbox = {
+						name = "rrf_result_family_rows"
 							layoutpolicy_horizontal = expanding
 							datamodel = "[GetPlayer.MakeScope.Var( 'rrf_last_result_rite' ).GetList( 'rrf_expected_family' )]"
 							item = { rrf_result_character = {} }
@@ -177,6 +179,7 @@ window = {
 								visible = "[Not( IsDataModelEmpty( GetPlayer.MakeScope.GetList( 'rrf_vassal_converts' ) ) )]"
 								text_label_left = { text = "RRF_RESULT_ACCEPTS" }
 								vbox = {
+									name = "rrf_result_accepts_rows"
 									layoutpolicy_horizontal = expanding
 									spacing = 8
 									datamodel = "[GetPlayer.MakeScope.GetList( 'rrf_vassal_converts' )]"
@@ -189,6 +192,7 @@ window = {
 								visible = "[Not( IsDataModelEmpty( GetPlayer.MakeScope.GetList( 'rrf_vassal_players' ) ) )]"
 								text_label_left = { text = "RRF_RESULT_PLAYERS" }
 								vbox = {
+									name = "rrf_result_players_rows"
 									layoutpolicy_horizontal = expanding
 									spacing = 8
 									datamodel = "[GetPlayer.MakeScope.GetList( 'rrf_vassal_players' )]"
@@ -201,6 +205,7 @@ window = {
 								visible = "[Not( IsDataModelEmpty( GetPlayer.MakeScope.GetList( 'rrf_vassal_declines' ) ) )]"
 								text_label_left = { text = "RRF_RESULT_DECLINES" }
 								vbox = {
+									name = "rrf_result_declines_rows"
 									layoutpolicy_horizontal = expanding
 									spacing = 8
 									datamodel = "[GetPlayer.MakeScope.GetList( 'rrf_vassal_declines' )]"
@@ -213,6 +218,7 @@ window = {
 								visible = "[Not( IsDataModelEmpty( GetPlayer.MakeScope.GetList( 'rrf_vassal_ineligible' ) ) )]"
 								text_label_left = { text = "RRF_RESULT_INELIGIBLE" }
 								vbox = {
+									name = "rrf_result_ineligible_rows"
 									layoutpolicy_horizontal = expanding
 									spacing = 8
 									datamodel = "[GetPlayer.MakeScope.GetList( 'rrf_vassal_ineligible' )]"
@@ -226,6 +232,7 @@ window = {
 								visible = "[Not( IsDataModelEmpty( GetPlayer.MakeScope.GetList( 'rrf_vassal_converted' ) ) )]"
 								text_label_left = { text = "RRF_RESULT_CONVERTED" }
 								vbox = {
+									name = "rrf_result_converted_rows"
 									layoutpolicy_horizontal = expanding
 									spacing = 8
 									datamodel = "[GetPlayer.MakeScope.GetList( 'rrf_vassal_converted' )]"
@@ -238,6 +245,7 @@ window = {
 								visible = "[Not( IsDataModelEmpty( GetPlayer.MakeScope.GetList( 'rrf_vassal_pending' ) ) )]"
 								text_label_left = { text = "RRF_RESULT_PENDING" }
 								vbox = {
+									name = "rrf_result_pending_rows"
 									layoutpolicy_horizontal = expanding
 									spacing = 8
 									datamodel = "[GetPlayer.MakeScope.GetList( 'rrf_vassal_pending' )]"
@@ -250,20 +258,24 @@ window = {
 			}
 		}
 		hbox = {
+			name = "rrf_result_actions"
 			layoutpolicy_horizontal = expanding
 			spacing = 12
 			button_standard = {
+				name = "rrf_result_close"
 				text = "RRF_RESULT_CLOSE"
 				onclick = "[GetScriptedGui( 'rrf_close_result_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 			}
 			expand = {}
 			button_standard = {
+				name = "rrf_result_refresh"
 				text = "RRF_REFRESH_RESULT"
 				enabled = "[GetScriptedGui( 'rrf_refresh_result_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 				tooltip = "RRF_REFRESH_RESULT_TT"
 				onclick = "[GetScriptedGui( 'rrf_refresh_result_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 			}
 			button_primary = {
+				name = "rrf_result_invite"
 				text = "RRF_INVITE_VASSALS"
 				enabled = "[GetScriptedGui( 'rrf_invite_vassals_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 				tooltip = "[Localize( 'RRF_INVITE_VASSALS_TT' )] [GetScriptedGui( 'rrf_invite_vassals_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"

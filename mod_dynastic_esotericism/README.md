@@ -13,7 +13,7 @@
 正式构建使用 Java 21 与默认 Maven（版本按根规范）：
 
 ```text
-mvn -f mod_dynastic_esotericism/tools/pom.xml verify
+mvn -f pom.xml -pl :dynastic-esotericism-tools -am -Dsave.build.root=<approved-shared-build-root> -Drrf.build.root=<approved-rrf-build-root> -Ddes.build.root=<approved-des-build-root> verify
 java -jar mod_dynastic_esotericism/tools/target/dynastic-esotericism-tools/quarkus-app/quarkus-run.jar build --source mod_dynastic_esotericism --repo-root . --output <new-output>
 ```
 

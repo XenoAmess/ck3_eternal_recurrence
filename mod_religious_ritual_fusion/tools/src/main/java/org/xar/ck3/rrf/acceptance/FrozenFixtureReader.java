@@ -44,6 +44,17 @@ public final class FrozenFixtureReader {
                 || !text(compiled, "case").equals(fixture.request().kind().wire())) throw new IOException("prepared fixture product/case differs");
         JsonNode emitter = compiled.get("emitter");
         if (emitter == null || !emitter.isObject() || !jsonPin(emitter.get("manifest")).equals(fixture.manifestPin())) throw new IOException("prepared fixture emitter manifest differs");
+        if (fixture.request().schemaVersion() == 4) {
+            FilePin receipt = inputReceipt(fixture.manifestPin(), fixture.requestPin(), fixture.request());
+            if (!jsonPin(emitter.get("input_receipt")).equals(receipt)
+                    || !jsonPin(emitter.get("fixture_request")).equals(fixture.requestPin()))
+                throw new IOException("prepared snapshot external input closure differs");
+            List<FilePin> inputs = ColdSnapshotReader.inputPins(fixture.request());
+            JsonNode rows = emitter.get("input_pins");
+            if (rows == null || !rows.isArray() || rows.size() != inputs.size()) throw new IOException("prepared snapshot input pin array differs");
+            for (int index = 0; index < inputs.size(); index++)
+                if (!jsonPin(rows.get(index)).equals(inputs.get(index))) throw new IOException("prepared snapshot input pin differs");
+        }
         return new PreparedBinding(expected, request, contract);
     }
     public static BoundRequest read(FilePin expected, String machineId, Path repository) throws IOException {
@@ -57,7 +68,7 @@ public final class FrozenFixtureReader {
         }
         Path java = repo.resolve("mod_religious_ritual_fusion/tools/src/main/java/org/xar/ck3/rrf");
         Path catalog = repo.resolve("mod_religious_ritual_fusion/catalog/generated-catalog.json");
-        for (Path required : List.of(catalog, java.resolve("ExpectedSelection.java"), java.resolve("acceptance/FixtureContracts.java"), java.resolve("acceptance/FixtureEmitter.java"))) {
+        for (Path required : List.of(catalog, java.resolve("ExpectedSelection.java"), java.resolve("acceptance/FixtureContracts.java"), java.resolve("acceptance/FixtureEmitter.java"), java.resolve("acceptance/ColdSnapshotReader.java"))) {
             if (!manifest.producerSourcePins().contains(pin(required))) throw new IOException("fixture selection/catalog producer is not source-bound");
         }
         for (org.xar.ck3.save.SaveContracts.Pin source : org.xar.ck3.save.ProducerSources.verify(repo).repositorySources()) {
@@ -85,7 +96,19 @@ public final class FrozenFixtureReader {
         if (!manifest.caseId().equals(request.kind().wire()) || !Arrays.equals(requestBytes, Json.write(request))) throw new IOException("fixture request case/canonical JSON differs");
         Catalog definitions = Json.read(Files.readAllBytes(catalog), Catalog.class);
         FixtureEmitter.validateCatalog(definitions); request.expectedSelection().requireCatalog(definitions);
+        ColdSnapshotReader.verify(request, machineId, repo);
+        if (request.schemaVersion() == 4) inputReceipt(expected, pin(requestPath), request);
         return new BoundRequest(expected, pin(requestPath), request);
+    }
+    private static FilePin inputReceipt(FilePin manifest, FilePin requestPin, Request request) throws IOException {
+        String suffix = ".fixture.json";
+        if (!manifest.path().endsWith(suffix)) throw new IOException("snapshot fixture manifest suffix differs");
+        Path path = Path.of(manifest.path().substring(0, manifest.path().length() - suffix.length()) + ".inputs.json");
+        FilePin receipt = pin(path);
+        FixtureContracts.PrebuiltInputs actual = Json.read(Files.readAllBytes(path), FixtureContracts.PrebuiltInputs.class);
+        if (!actual.manifest().equals(manifest) || !actual.request().equals(requestPin)
+                || !actual.inputPins().equals(ColdSnapshotReader.inputPins(request))) throw new IOException("snapshot input receipt crossed its canonical request");
+        return receipt;
     }
     private static FilePin pin(Path path) throws IOException {
         Path actual = path.toRealPath();

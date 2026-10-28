@@ -5,6 +5,7 @@ on:
     branches: [master]
     paths:
       - 'mod_religious_ritual_fusion/**'
+      - 'pom.xml'
       - 'java/ck3-save-core/**'
       - 'mod_dynastic_esotericism/common/on_action/des_on_actions.txt'
       - 'mod_dynastic_esotericism/common/scripted_effects/des_initialization_effects.txt'
@@ -21,6 +22,7 @@ on:
   pull_request:
     paths:
       - 'mod_religious_ritual_fusion/**'
+      - 'pom.xml'
       - 'java/ck3-save-core/**'
       - 'mod_dynastic_esotericism/common/on_action/des_on_actions.txt'
       - 'mod_dynastic_esotericism/common/scripted_effects/des_initialization_effects.txt'
@@ -66,84 +68,13 @@ jobs:
         run: mvn --version
       - name: Install the shared consumer and strict type-check dependencies
         run: python -m pip install mcp==2.0.0 pydantic==2.13.5 mypy==2.4.0 psutil==7.2.2 types-psutil==7.2.2.20260906 opencv-python==5.0.0.93 numpy==2.5.2 Pillow==12.3.0
-      - name: Verify and install the exact shared save leaf
-        run: |
-          set "MAVEN_OPTS=%MAVEN_OPTS% -Dorg.slf4j.simpleLogger.log.org.eclipse.aether.internal.impl.DefaultLocalRepositoryProvider=debug -Dorg.slf4j.simpleLogger.showLogName=true"
-          if not exist "%RUNNER_TEMP%\rrf-save-resolver-diagnostic" mkdir "%RUNNER_TEMP%\rrf-save-resolver-diagnostic"
-          call mvn --batch-mode --no-transfer-progress -f java/ck3-save-core/pom.xml -Dsave.build.root="%RUNNER_TEMP%/ck3-save-core-build" install > "%RUNNER_TEMP%\rrf-save-resolver-diagnostic\leaf.stdout.log" 2> "%RUNNER_TEMP%\rrf-save-resolver-diagnostic\leaf.stderr.log"
-          set "resolver_exit=%ERRORLEVEL%"
-          type "%RUNNER_TEMP%\rrf-save-resolver-diagnostic\leaf.stdout.log"
-          type "%RUNNER_TEMP%\rrf-save-resolver-diagnostic\leaf.stderr.log" 1>&2
-          exit /b %resolver_exit%
-      - name: Bind Quarkus TEST to the actual installed leaf repository
-        # BootstrapMavenContext.resolveLocalRepo reads QUARKUS_LOCAL_REPO first.
-        # Use only this successful leaf process observed LRM/install targets.
-        if: success()
-        shell: python {0}
-        run: |
-          from datetime import datetime, timezone
-          import hashlib
-          import json
-          import os
-          from pathlib import Path
-          import re
-          import subprocess
-          import sys
-
-          root = Path(os.environ['RUNNER_TEMP']) / 'rrf-save-resolver-diagnostic'
-          repositories: set[Path] = set()
-          targets: set[Path] = set()
-          logs = []
-          ansi = re.compile(r'\x1b\[[0-?]*[ -/]*[@-~]')
-          for stream in ('stdout', 'stderr'):
-              path = root / ('leaf.' + stream + '.log')
-              with path.open('rb') as handle:
-                  raw = handle.read(2 * 1024**2 + 1)
-              if len(raw) > 2 * 1024**2:
-                  raise RuntimeError('Leaf repository observations exceed the bounded log read')
-              logs.append({'path': str(path), 'bytes': len(raw), 'sha256': hashlib.sha256(raw).hexdigest()})
-              for line in raw.decode('utf-8', errors='strict').splitlines():
-                  line = ansi.sub('', line)
-                  match = re.search(r'Using manager .+? for (.+)$', line)
-                  if match:
-                      repositories.add(Path(match.group(1)).resolve())
-                  match = re.search(r'Installing .+ to (.+ck3-save-core-0\.1\.0\.(?:jar|pom))$', line)
-                  if match:
-                      targets.add(Path(match.group(1)).resolve())
-          if len(repositories) != 1:
-              raise RuntimeError('Successful leaf must expose one actual Maven local repository; no guessed fallback')
-          repository = next(iter(repositories))
-          gav = repository / 'org/xar/ck3/ck3-save-core/0.1.0'
-          expected = {gav / ('ck3-save-core-0.1.0.' + extension) for extension in ('jar', 'pom')}
-          if not repository.is_absolute() or targets != expected:
-              raise RuntimeError('Actual leaf install jar/pom targets conflict with its observed Maven repository')
-          files = []
-          for path in sorted(expected):
-              with path.open('rb') as handle:
-                  raw = handle.read(1024**2 + 1)
-              if not raw or len(raw) > 1024**2:
-                  raise RuntimeError('Actual installed leaf jar/pom is unreadable or exceeds the selected GAV bound')
-              files.append({'path': str(path), 'bytes': len(raw), 'sha256': hashlib.sha256(raw).hexdigest()})
-          machine = subprocess.run([sys.executable, '-B', 'tools/ck3_live_run_id.py', 'machine'],
-                                   capture_output=True, text=True, check=True).stdout.strip()
-          receipt = {'schema': 'ck3-quarkus-observed-maven-repository-binding-v1',
-                     'machine_id': machine, 'observed_at_utc': datetime.now(timezone.utc).isoformat(),
-                     'source_commit': os.environ['GITHUB_SHA'], 'repository': str(repository),
-                     'leaf_original_success_required_by_step_order': True, 'leaf_logs': logs,
-                     'actual_installed_leaf': files, 'environment_field': 'QUARKUS_LOCAL_REPO',
-                     'scope': 'Bind the following product Quarkus bootstrap to this job actual Maven install repository. No repository copy, new cache or resolver-policy change.'}
-          with (root / 'repository-binding.actual.json').open('x', encoding='utf-8') as handle:
-              json.dump(receipt, handle, indent=2)
-              handle.write('\n')
-          with Path(os.environ['GITHUB_ENV']).open('a', encoding='utf-8', newline='\n') as handle:
-              handle.write('QUARKUS_LOCAL_REPO=' + str(repository) + '\n')
-          print(json.dumps(receipt))
       - name: Verify full product producer and staging chain
         run: |
+          if not exist "%RUNNER_TEMP%/rrf-save-resolver-diagnostic" mkdir "%RUNNER_TEMP%/rrf-save-resolver-diagnostic"
+          if errorlevel 1 exit /b %ERRORLEVEL%
           set "MAVEN_OPTS=%MAVEN_OPTS% -Dorg.slf4j.simpleLogger.log.org.eclipse.aether.internal.impl.DefaultLocalRepositoryProvider=debug -Dorg.slf4j.simpleLogger.showLogName=true"
-          if not exist "%RUNNER_TEMP%\rrf-save-resolver-diagnostic" mkdir "%RUNNER_TEMP%\rrf-save-resolver-diagnostic"
           set "MAVEN_OPTS=%MAVEN_OPTS% "-Xlog:class+load=debug:file=%RUNNER_TEMP%/rrf-save-resolver-diagnostic/class-load.log:utctime,uptime,pid,tid,level,tags:filecount=1,filesize=16M""
-          call mvn --batch-mode --no-transfer-progress -f mod_religious_ritual_fusion/tools/pom.xml -Drrf.build.root=${{ runner.temp }}/rrf-build "-Dmaven.repo.local=%QUARKUS_LOCAL_REPO%" org.apache.maven.plugins:maven-help-plugin:3.5.2:evaluate -Dexpression=env.QUARKUS_LOCAL_REPO "-Doutput=%RUNNER_TEMP%/rrf-save-resolver-diagnostic/same-maven-jvm-env-quarkus-local-repo.txt" verify > "%RUNNER_TEMP%\rrf-save-resolver-diagnostic\product.stdout.log" 2> "%RUNNER_TEMP%\rrf-save-resolver-diagnostic\product.stderr.log"
+          call mvn --batch-mode --no-transfer-progress -f pom.xml -pl :religious-ritual-fusion-tools -am -Dsave.build.root="%RUNNER_TEMP%/ck3-save-core-build" -Drrf.build.root="%RUNNER_TEMP%/rrf-build" -Ddes.build.root="%RUNNER_TEMP%/dynastic-esotericism-build" org.apache.maven.plugins:maven-help-plugin:3.5.2:evaluate -Dexpression=env.QUARKUS_LOCAL_REPO "-Doutput=%RUNNER_TEMP%/rrf-save-resolver-diagnostic/same-maven-jvm-env-quarkus-local-repo.txt" verify > "%RUNNER_TEMP%/rrf-save-resolver-diagnostic/product.stdout.log" 2> "%RUNNER_TEMP%/rrf-save-resolver-diagnostic/product.stderr.log"
           set "resolver_exit=%ERRORLEVEL%"
           type "%RUNNER_TEMP%\rrf-save-resolver-diagnostic\product.stdout.log"
           type "%RUNNER_TEMP%\rrf-save-resolver-diagnostic\product.stderr.log" 1>&2
@@ -170,14 +101,15 @@ jobs:
                     'machine_observation_returncode': machine.returncode,
                     'observed_at_utc': datetime.now(timezone.utc).isoformat(),
                     'source_commit': os.environ['GITHUB_SHA'], 'diagnostic_only': True,
-                    'resolver_configuration_changed': bool(os.environ.get('QUARKUS_LOCAL_REPO'))}
+                    'resolver_configuration_changed': bool(os.environ.get('QUARKUS_LOCAL_REPO')),
+                    'build_route': 'SAME_MAVEN_REACTOR', 'private_leaf_install_performed': False}
           logs = []
           managers = []
           installs = []
           gav_directories: set[Path] = set()
           gav = Path('org/xar/ck3/ck3-save-core/0.1.0')
           ansi = re.compile(r'\x1b\[[0-?]*[ -/]*[@-~]')
-          for phase in ('leaf', 'product'):
+          for phase in ('product',):
               for stream in ('stdout', 'stderr'):
                   path = root / (phase + '.' + stream + '.log')
                   if not path.is_file():

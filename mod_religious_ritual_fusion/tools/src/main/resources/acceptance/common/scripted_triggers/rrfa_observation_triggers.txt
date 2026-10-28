@@ -33,7 +33,7 @@ rrfa_common_success_trigger = {
     rite != var:rrfa_source_b_rite
     rite != var:rrfa_source_b_faith_rite
     var:rrf_charged_cost = ${COST}
-    piety = rrfa_expected_post_piety_value
+    ${PIETY_READBACK}
     has_character_flag = rrf_fusion_cooldown
     NOT = { has_variable = rrf_source_a }
     NOT = { has_variable = rrf_source_b }
