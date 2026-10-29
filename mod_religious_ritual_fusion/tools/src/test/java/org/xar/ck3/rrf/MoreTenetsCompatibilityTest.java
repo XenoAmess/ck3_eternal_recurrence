@@ -23,6 +23,111 @@ import org.xar.ck3.rrf.Contracts.Catalog;
 final class MoreTenetsCompatibilityTest {
     @TempDir Path directory;
 
+    private static final List<String> DRAFT_STATUSES = List.of("Actor", "Source", "Revalidation", "Content", "CoreRange", "Contribution", "Cost");
+
+    @Test void disabledDraftListsEveryActualFailureAndPreservesTheCommitAndCancelGuards() throws IOException {
+        Model model = model(3);
+        model.numbers.put("rrf_core_count", 3);
+        model.flags.addAll(List.of("rrf_selection_checked", "rrf_contribution_a"));
+        model.piety = new BigDecimal("499");
+        assertFalse(model.guiValid("rrf_commit_gui"));
+        assertTrue(model.guiValid("rrf_cancel_gui"));
+        assertEquals(List.of("RRF_BLOCKER_BOTH_SOURCES", "RRF_BLOCKER_COST"), model.blockers());
+        model.numbers.put("rrf_core_count", 2);
+        assertEquals(List.of("RRF_BLOCKER_CORE_RANGE", "RRF_BLOCKER_BOTH_SOURCES", "RRF_BLOCKER_COST"), model.blockers());
+        assertFalse(model.guiValid("rrf_commit_gui"));
+        model.numbers.put("rrf_core_count", 3);
+        model.flags.add("rrf_contribution_b");
+        assertEquals(List.of("RRF_BLOCKER_COST"), model.blockers());
+        model.piety = new BigDecimal("499.999");
+        assertFalse(model.guiValid("rrf_commit_gui"));
+        model.piety = new BigDecimal("500");
+        assertTrue(model.guiValid("rrf_commit_gui"));
+        assertEquals(List.of(), model.blockers());
+        model.flags.remove("rrf_contribution_b");
+        assertEquals(List.of("RRF_BLOCKER_BOTH_SOURCES"), model.blockers());
+        assertFalse(model.guiValid("rrf_commit_gui"));
+    }
+
+    @Test void remainingDraftFailuresAreVisibleAndPricesAndCoreLimitsUseProductionScriptValues() throws IOException {
+        Model model = model(3);
+        model.numbers.put("rrf_core_count", 3);
+        model.flags.addAll(List.of("rrf_contribution_a", "rrf_contribution_b", "rrf_invalid_selection"));
+        model.actorBooleans.put("is_at_war", true);
+        model.references.remove("rrf_source_b");
+        assertEquals(List.of("RRF_BLOCKER_ACTOR", "RRF_BLOCKER_SOURCE_CURRENT", "RRF_BLOCKER_REVALIDATED", "RRF_BLOCKER_CONTENT_VALID"), model.blockers());
+        assertFalse(model.guiValid("rrf_commit_gui"));
+        model.textVariables.put("rrf_mode", "flag:faith");
+        assertEquals(1000, model.number("rrf_current_cost_value"));
+        model.piety = new BigDecimal("999");
+        assertEquals("RRF_BLOCKER_COST", model.status("Cost"));
+        assertFalse(model.check(model.scripts.get("rrf_draft_cost_affordable_trigger"), model.actor));
+        model.piety = new BigDecimal("1000");
+        assertEquals("RRF_ENTRY_STATUS_EMPTY", model.status("Cost"));
+        assertTrue(model.check(model.scripts.get("rrf_draft_cost_affordable_trigger"), model.actor));
+        Model mts = model(100);
+        for (int count : List.of(2, 3, 100, 101)) {
+            mts.numbers.put("rrf_core_count", count);
+            assertEquals(count >= 3 && count <= 100 ? "RRF_ENTRY_STATUS_EMPTY" : "RRF_BLOCKER_CORE_RANGE", mts.status("CoreRange"));
+        }
+    }
+
+    @Test void panelAndHoverShareLocalizedFailureLinesWithoutDependingOnAnEmptyAutomaticTooltip() throws IOException {
+        Path source = Path.of(System.getProperty("rrf.source"));
+        Clausewitz.Block window = Clausewitz.parse(Files.readString(source.resolve("gui/rrf_fusion_window.gui"))).block("window");
+        Clausewitz.Block text = widgets(window, "rrf_commit_blockers_text").getFirst();
+        Clausewitz.Block commit = widgets(window, "rrf_commit").getFirst();
+        assertEquals("\"RRF_COMMIT_BLOCKERS\"", text.atom("text", ""));
+        assertEquals("\"RRF_COMMIT_HOVER\"", commit.atom("tooltip", ""));
+        assertFalse(commit.atom("tooltip", "").contains("\\n"));
+        assertEquals("\"[GetScriptedGui( 'rrf_commit_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]\"", commit.atom("enabled", ""));
+        assertEquals("\"[GetScriptedGui( 'rrf_commit_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]\"", commit.atom("onclick", ""));
+        assertTrue(widgets(window, "rrf_commit_blockers_scroll").getFirst().atom("visible", "").contains("Not( GetScriptedGui( 'rrf_commit_gui' ).IsValid"));
+        Clausewitz.Block guis = Clausewitz.parse(Files.readString(source.resolve("common/scripted_guis/rrf_scripted_guis.txt")));
+        assertEquals(Clausewitz.parse("rrf_ready_trigger = yes").render(), guis.block("rrf_commit_gui").block("is_valid").render());
+        assertEquals(Clausewitz.parse("rrf_commit_effect = yes").render(), guis.block("rrf_commit_gui").block("effect").render());
+        String expected = DRAFT_STATUSES.stream().map(name -> "[GetPlayer.Custom('RrfDraft" + name + "Status')]").collect(java.util.stream.Collectors.joining());
+        int languages = 0;
+        try (var files = Files.walk(source.resolve("localization"))) {
+            for (Path path : files.filter(p -> p.getFileName().toString().startsWith("rrf_l_")).toList()) {
+                byte[] raw = Files.readAllBytes(path);
+                assertTrue(raw.length >= 3 && raw[0] == (byte) 0xef && raw[1] == (byte) 0xbb && raw[2] == (byte) 0xbf, path.toString());
+                Map<String, String> loc = localizations(path);
+                assertEquals(expected, loc.get("RRF_COMMIT_BLOCKERS"));
+                assertEquals("$RRF_COMMIT_TT$\\n$RRF_COMMIT_BLOCKERS$", loc.get("RRF_COMMIT_HOVER"));
+                assertEquals("", loc.get("RRF_ENTRY_STATUS_EMPTY"));
+                for (String key : List.of("ACTOR", "SOURCE_CURRENT", "REVALIDATED", "CONTENT_VALID", "CORE_RANGE", "BOTH_SOURCES", "COST")) {
+                    String required = key.equals("ACTOR") ? "ACTOR_ELIGIBLE" : key;
+                    String line = loc.get("RRF_BLOCKER_" + key);
+                    assertTrue(line.startsWith("#X $RRF_REQUIRE_" + required + "$"));
+                    assertTrue(line.endsWith("#!\\n"));
+                    assertTrue(loc.containsKey("RRF_REQUIRE_" + required));
+                }
+                assertTrue(loc.get("RRF_BLOCKER_COST").contains("ScriptValue( 'rrf_current_cost_value' )"));
+                languages++;
+            }
+        }
+        assertEquals(9, languages);
+    }
+
+    private static List<Clausewitz.Block> widgets(Clausewitz.Block parent, String name) {
+        List<Clausewitz.Block> matches = new ArrayList<>();
+        if (parent.atom("name", "").equals("\"" + name + "\"")) matches.add(parent);
+        for (Clausewitz.Entry entry : parent.entries())
+            if (entry.value() instanceof Clausewitz.Block child) matches.addAll(widgets(child, name));
+        return List.copyOf(matches);
+    }
+
+    private static Map<String, String> localizations(Path path) throws IOException {
+        Map<String, String> result = new LinkedHashMap<>();
+        for (String line : Files.readAllLines(path)) {
+            int split = line.indexOf(":0 \"");
+            if (line.startsWith(" ") && split > 1 && line.endsWith("\""))
+                result.put(line.substring(1, split), line.substring(split + 4, line.length() - 1));
+        }
+        return Map.copyOf(result);
+    }
+
     @Test void sourceBoundMembershipRejectsMetadataHiddenAndLegacyBlankContent() throws IOException {
         Model model = model(100);
         for (String id : List.of("tenet_zz_empty_001", "tenet_empty", "tenet_hidden", "tenet_unknown")) {
@@ -165,7 +270,9 @@ final class MoreTenetsCompatibilityTest {
         catalog.definitions().stream().filter(d -> d.kind() == Contracts.Kind.TENET).map(Contracts.Definition::id).forEach(model.tenetDefinitions::add);
         for (String generated : new CatalogGenerator().render(catalog).values()) model.add(generated);
         Path source = Path.of(System.getProperty("rrf.source"));
-        for (String relative : List.of("common/script_values/rrf_values.txt", "common/scripted_triggers/rrf_draft_triggers.txt", "common/scripted_effects/rrf_draft_effects.txt", "common/scripted_effects/rrf_selection_effects.txt", "common/scripted_effects/rrf_commit_effects.txt")) model.add(Files.readString(source.resolve(relative)));
+        for (String relative : List.of("common/script_values/rrf_values.txt", "common/scripted_triggers/rrf_eligibility_triggers.txt", "common/scripted_triggers/rrf_draft_triggers.txt", "common/scripted_guis/rrf_scripted_guis.txt", "common/scripted_effects/rrf_draft_effects.txt", "common/scripted_effects/rrf_selection_effects.txt", "common/scripted_effects/rrf_commit_effects.txt")) model.add(Files.readString(source.resolve(relative)));
+        for (Clausewitz.Entry entry : Clausewitz.parse(Files.readString(source.resolve("common/customizable_localization/rrf_decision_status_loc.txt"))).entries())
+            model.statuses.put(entry.key(), (Clausewitz.Block) entry.value());
         return model;
     }
     private static void write(Path root, String relative, String content) throws IOException { Path target = root.resolve(relative); Files.createDirectories(target.getParent()); Files.writeString(target, content); }
@@ -177,6 +284,9 @@ final class MoreTenetsCompatibilityTest {
     private static final class Model {
         final Scope actor = scope("character:actor"), a = scope("rite:a"), b = scope("rite:b"), created = scope("rite:new"), faith = scope("faith:original");
         final Map<String, Clausewitz.Block> scripts = new LinkedHashMap<>();
+        final Map<String, Clausewitz.Block> statuses = new LinkedHashMap<>();
+        final Map<String, Boolean> actorBooleans = new LinkedHashMap<>(Map.of("is_adult", true, "is_landed", true, "is_at_war", false, "is_imprisoned", false));
+        BigDecimal piety = new BigDecimal("2000");
         final Map<String, Integer> constants = new LinkedHashMap<>(), numbers = new LinkedHashMap<>();
         final Map<String, Scope> saved = new LinkedHashMap<>(), references = new LinkedHashMap<>();
         final Map<String, String> textVariables = new LinkedHashMap<>();
@@ -193,6 +303,20 @@ final class MoreTenetsCompatibilityTest {
             for (Scope rite : List.of(a, b, created)) { cores.put(rite, new LinkedHashSet<>()); doctrines.put(rite, new LinkedHashSet<>()); }
         }
         void add(String source) { for (Clausewitz.Entry e : Clausewitz.parse(source).entries()) { if (e.value() instanceof Clausewitz.Block body) scripts.put(e.key(), body); else constants.put(e.key(), Integer.valueOf(((Clausewitz.Atom) e.value()).token())); } }
+        boolean guiValid(String name) { return check(scripts.get(name).block("is_valid"), actor); }
+        String status(String name) {
+            Clausewitz.Block definition = statuses.get("RrfDraft" + name + "Status");
+            if (!definition.atom("type", "").equals("character")) throw new IllegalArgumentException("unexpected status scope: " + name);
+            String fallback = null;
+            for (Clausewitz.Entry entry : definition.named("text")) {
+                Clausewitz.Block row = (Clausewitz.Block) entry.value();
+                if (row.atom("fallback", "no").equals("yes")) fallback = row.atom("localization_key", "");
+                else if (check(row.block("trigger"), actor)) return row.atom("localization_key", "");
+            }
+            if (fallback == null || fallback.isEmpty()) throw new IllegalArgumentException("missing status fallback: " + name);
+            return fallback;
+        }
+        List<String> blockers() { return DRAFT_STATUSES.stream().map(this::status).filter(key -> !key.equals("RRF_ENTRY_STATUS_EMPTY")).toList(); }
         int number(String token) {
             if (token.startsWith("var:")) return numbers.getOrDefault(token.substring(4), 0);
             if (constants.containsKey(token)) return constants.get(token);
@@ -245,6 +369,8 @@ final class MoreTenetsCompatibilityTest {
             String token = ((Clausewitz.Atom) e.value()).token();
             if (scripts.containsKey(e.key())) return token.equals("yes") == check(scripts.get(e.key()), current);
             if (e.key().equals("always")) return token.equals("yes");
+            if (actorBooleans.containsKey(e.key())) return token.equals("yes") == actorBooleans.get(e.key());
+            if (e.key().equals("piety")) return compare(piety.compareTo(BigDecimal.valueOf(number(token))), 0, e.operator());
             if (e.key().equals("exists")) return entity(token, current) != null;
             if (e.key().equals("has_variable")) return references.containsKey(token) || numbers.containsKey(token) || textVariables.containsKey(token);
             if (e.key().equals("has_variable_list")) return !variables.getOrDefault(token, List.of()).isEmpty();

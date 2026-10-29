@@ -37,3 +37,68 @@ RrfPendingStatus = {
     }
     text = { fallback = yes localization_key = RRF_ENTRY_STATUS_EMPTY }
 }
+
+# Each failed predicate emits its own line; successful predicates emit no spacing.
+# These are the same predicates used by rrf_ready_trigger, not a second readiness rule.
+RrfDraftActorStatus = {
+    type = character
+    text = {
+        trigger = { NOT = { rrf_actor_eligible_trigger = yes } }
+        localization_key = RRF_BLOCKER_ACTOR
+    }
+    text = { fallback = yes localization_key = RRF_ENTRY_STATUS_EMPTY }
+}
+
+RrfDraftSourceStatus = {
+    type = character
+    text = {
+        trigger = { NOT = { rrf_draft_current_trigger = yes } }
+        localization_key = RRF_BLOCKER_SOURCE_CURRENT
+    }
+    text = { fallback = yes localization_key = RRF_ENTRY_STATUS_EMPTY }
+}
+
+RrfDraftRevalidationStatus = {
+    type = character
+    text = {
+        trigger = { NOT = { rrf_draft_revalidated_trigger = yes } }
+        localization_key = RRF_BLOCKER_REVALIDATED
+    }
+    text = { fallback = yes localization_key = RRF_ENTRY_STATUS_EMPTY }
+}
+
+RrfDraftContentStatus = {
+    type = character
+    text = {
+        trigger = { NOT = { rrf_draft_content_valid_trigger = yes } }
+        localization_key = RRF_BLOCKER_CONTENT_VALID
+    }
+    text = { fallback = yes localization_key = RRF_ENTRY_STATUS_EMPTY }
+}
+
+RrfDraftCoreRangeStatus = {
+    type = character
+    text = {
+        trigger = { NOT = { rrf_draft_core_range_trigger = yes } }
+        localization_key = RRF_BLOCKER_CORE_RANGE
+    }
+    text = { fallback = yes localization_key = RRF_ENTRY_STATUS_EMPTY }
+}
+
+RrfDraftContributionStatus = {
+    type = character
+    text = {
+        trigger = { NOT = { rrf_sources_contributed_trigger = yes } }
+        localization_key = RRF_BLOCKER_BOTH_SOURCES
+    }
+    text = { fallback = yes localization_key = RRF_ENTRY_STATUS_EMPTY }
+}
+
+RrfDraftCostStatus = {
+    type = character
+    text = {
+        trigger = { NOT = { rrf_draft_cost_affordable_trigger = yes } }
+        localization_key = RRF_BLOCKER_COST
+    }
+    text = { fallback = yes localization_key = RRF_ENTRY_STATUS_EMPTY }
+}

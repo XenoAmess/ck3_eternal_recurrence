@@ -322,7 +322,8 @@
 								spacing = 4
 								text_label_left = { text = "RRF_COMMIT_BLOCKED_TITLE" }
 								text_multi = {
-									text = "[GetScriptedGui( 'rrf_commit_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+									name = "rrf_commit_blockers_text"
+									text = "RRF_COMMIT_BLOCKERS"
 									max_width = 345
 									autoresize = yes
 								}
@@ -349,7 +350,7 @@
 					name = "rrf_commit"
 					size = { 390 52 }
 					text = "RRF_COMMIT"
-					tooltip = "[Localize( 'RRF_COMMIT_TT' )] [GetScriptedGui( 'rrf_commit_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+					tooltip = "RRF_COMMIT_HOVER"
 					enabled = "[GetScriptedGui( 'rrf_commit_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 					onclick = "[GetScriptedGui( 'rrf_commit_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
 				}

@@ -23,6 +23,23 @@ rrf_draft_current_trigger = {
     }
 }
 
+rrf_draft_revalidated_trigger = {
+    has_character_flag = rrf_selection_checked
+}
+
+rrf_draft_content_valid_trigger = {
+    NOT = { has_character_flag = rrf_invalid_selection }
+}
+
+rrf_draft_core_range_trigger = {
+    var:rrf_core_count >= 3
+    var:rrf_core_count <= rrf_core_limit_value
+}
+
+rrf_draft_cost_affordable_trigger = {
+    piety >= rrf_current_cost_value
+}
+
 rrf_ready_trigger = {
     rrf_actor_eligible_trigger = yes
     custom_description = {
@@ -31,16 +48,15 @@ rrf_ready_trigger = {
     }
     custom_description = {
         text = RRF_REQUIRE_REVALIDATED
-        has_character_flag = rrf_selection_checked
+        rrf_draft_revalidated_trigger = yes
     }
     custom_description = {
         text = RRF_REQUIRE_CONTENT_VALID
-        NOT = { has_character_flag = rrf_invalid_selection }
+        rrf_draft_content_valid_trigger = yes
     }
     custom_description = {
         text = RRF_REQUIRE_CORE_RANGE
-        var:rrf_core_count >= 3
-        var:rrf_core_count <= rrf_core_limit_value
+        rrf_draft_core_range_trigger = yes
     }
     custom_description = {
         text = RRF_REQUIRE_BOTH_SOURCES
@@ -48,7 +64,7 @@ rrf_ready_trigger = {
     }
     custom_description = {
         text = RRF_REQUIRE_COST
-        piety >= rrf_current_cost_value
+        rrf_draft_cost_affordable_trigger = yes
     }
 }
 
