@@ -17,11 +17,25 @@ des_is_apostate_trigger = {
 	exists = dynasty.var:des_bound_rite
 	dynasty.var:des_bound_rite = { des_has_active_binding_trigger = yes }
 	dynasty = dynasty.var:des_bound_rite.var:des_bound_dynasty
+	# Boolean siblings may evaluate both optional references. Each branch must
+	# resolve its own evidence only inside the corresponding existence guard.
 	OR = {
-		var:des_adopted_bound_rite = dynasty.var:des_bound_rite
+		AND = {
+			trigger_if = {
+				limit = { exists = var:des_adopted_bound_rite }
+				var:des_adopted_bound_rite = dynasty.var:des_bound_rite
+			}
+			trigger_else = { always = no }
+		}
 		# Existing explicit product apostasy is valid migration evidence; merely
 		# sharing the reused Dynasty is not evidence of prior adoption.
-		var:des_apostate_rite = dynasty.var:des_bound_rite
+		AND = {
+			trigger_if = {
+				limit = { exists = var:des_apostate_rite }
+				var:des_apostate_rite = dynasty.var:des_bound_rite
+			}
+			trigger_else = { always = no }
+		}
 	}
 	NOT = { rite = dynasty.var:des_bound_rite }
 }

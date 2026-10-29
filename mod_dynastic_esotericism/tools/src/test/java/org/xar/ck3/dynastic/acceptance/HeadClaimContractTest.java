@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -87,14 +88,149 @@ final class HeadClaimContractTest {
         assertTrue(priorAdoption(prior, Map.of("var:des_apostate_rite", "new-rite"), "new-rite"));
     }
 
-    /** Evaluate the literal persisted prior-adoption predicate, not engine crime effects. */
+    /** Scope resolution is deliberately strict; missing references must be guarded. */
     private static boolean priorAdoption(Block prior, Map<String, String> references, String boundRite) {
-        for (Entry entry : prior.entries()) {
-            assertEquals("=", entry.operator());
-            assertEquals("dynasty.var:des_bound_rite", atom(entry));
-            if (boundRite.equals(references.get(entry.key()))) return true;
+        Map<String, String> scopes = new HashMap<>(references);
+        scopes.put("dynasty.var:des_bound_rite", boundRite);
+        return guardedPredicate(prior, true, scopes, new ArrayList<>());
+    }
+
+    @Test
+    void actualProductionApostasyPredicatesGuardMissingPersistedRiteReferences() throws IOException {
+        verifyApostasyGuards(Sources.load());
+    }
+
+    @Test
+    void originalR0035PredicatesFailStrictScopeResolutionEvenWhenTheOtherOrBranchMatches() {
+        Block original = block(one(Parser.read("""
+                OR = {
+                    var:des_adopted_bound_rite = dynasty.var:des_bound_rite
+                    var:des_apostate_rite = dynasty.var:des_bound_rite
+                }
+                """), "OR"));
+        for (Map<String, String> evidence : List.of(
+                Map.<String, String>of(),
+                Map.of("var:des_adopted_bound_rite", "152"),
+                Map.of("var:des_apostate_rite", "152"))) {
+            assertThrows(AssertionError.class, () -> priorAdoption(original, evidence, "152"));
         }
-        return false;
+        assertTrue(priorAdoption(original, Map.of(
+                "var:des_adopted_bound_rite", "152", "var:des_apostate_rite", "6"), "152"));
+    }
+
+    @Test
+    void guardRegressionsCannotRestoreEagerMissingReadsOrTurnAbsentEvidenceIntoAdoption() throws IOException {
+        Sources actual = Sources.load();
+        String triggers = "common/scripted_triggers/des_dynastic_triggers.txt";
+        String characters = "common/scripted_effects/des_character_effects.txt";
+        for (String variable : List.of("des_adopted_bound_rite", "des_apostate_rite")) {
+            String guard = "limit = { exists = var:" + variable + " }";
+            assertTrue(actual.text().get(triggers).contains(guard));
+            assertThrows(AssertionError.class, () -> verifyApostasyGuards(actual.replace(
+                    triggers, guard, "limit = { always = yes }")));
+        }
+        assertThrows(AssertionError.class, () -> verifyApostasyGuards(actual.replace(
+                triggers, "trigger_else = { always = no }", "trigger_else = { always = yes }")));
+        assertThrows(AssertionError.class, () -> verifyApostasyGuards(actual.replace(
+                characters, "trigger_else = { always = yes }", "trigger_else = { always = no }")));
+        assertThrows(AssertionError.class, () -> verifyApostasyGuards(actual.replace(
+                BINDING, "limit = { exists = var:des_apostate_rite }", "limit = { always = yes }")));
+    }
+
+    private static void verifyApostasyGuards(Sources sources) {
+        Block prior = block(one(sources.definition("des_is_apostate_trigger"), "OR"));
+        List<Optional<String>> states = List.of(Optional.empty(), Optional.of("6"), Optional.of("152"));
+        for (Optional<String> adopted : states) {
+            for (Optional<String> apostate : states) {
+                Map<String, String> references = new HashMap<>();
+                references.put("dynasty.var:des_bound_rite", "152");
+                adopted.ifPresent(value -> references.put("var:des_adopted_bound_rite", value));
+                apostate.ifPresent(value -> references.put("var:des_apostate_rite", value));
+                List<String> reads = new ArrayList<>();
+                boolean expected = adopted.filter("152"::equals).isPresent()
+                        || apostate.filter("152"::equals).isPresent();
+                assertEquals(expected, guardedPredicate(prior, true, references, reads));
+                assertEquals((references.size() - 1) * 2, reads.size(),
+                        "both present OR branches must be exercised, including after a true first branch");
+                assertTrue(reads.stream().allMatch(references::containsKey));
+            }
+        }
+        Block refresh = block(one(sources.definition("des_refresh_apostasy_effect"), "if"));
+        List<Block> resets = refresh.entries().stream()
+                .filter(entry -> entry.key().equals("if")).map(HeadClaimContractTest::block)
+                .filter(body -> sets(body, "des_apostate_rite", "dynasty.var:des_bound_rite")).toList();
+        assertEquals(1, resets.size());
+        Block resetLimit = block(one(resets.getFirst(), "limit"));
+        List<Block> transfers = walk(sources.definition("des_reuse_native_dynast_binding_effect")).stream()
+                .filter(entry -> entry.key().equals("if")).map(HeadClaimContractTest::block)
+                .map(body -> block(one(body, "limit")))
+                .filter(limit -> has(limit, "var:des_apostate_rite", "scope:des_transferred_old_rite")).toList();
+        assertEquals(1, transfers.size());
+        for (Optional<String> apostate : states) {
+            Map<String, String> references = new HashMap<>();
+            references.put("dynasty.var:des_bound_rite", "152");
+            references.put("scope:des_transferred_old_rite", "6");
+            apostate.ifPresent(value -> references.put("var:des_apostate_rite", value));
+            assertEquals(apostate.filter("152"::equals).isEmpty(),
+                    guardedPredicate(resetLimit, false, references, new ArrayList<>()));
+            assertEquals(apostate.filter("6"::equals).isPresent(),
+                    guardedPredicate(transfers.getFirst(), false, references, new ArrayList<>()));
+        }
+        assertTrue(sets(sources.definition("des_join_rite_dynasty_effect"), "des_adopted_bound_rite", "rite"));
+        assertTrue(sets(sources.definition("des_refresh_apostasy_effect"),
+                "des_apostate_rite", "dynasty.var:des_bound_rite"));
+        assertTrue(has(sources.definition("des_clear_apostasy_effect"), "remove_variable", "des_apostate_rite"));
+    }
+
+    /**
+     * Limited literal source evaluator for reference guards. Boolean siblings are
+     * evaluated eagerly; only trigger_if/trigger_else may suppress a scope read.
+     * This detects the R0035 source fault without claiming CK3 execution.
+     */
+    private static boolean guardedPredicate(Block block, boolean disjunction,
+            Map<String, String> references, List<String> reads) {
+        boolean result = !disjunction;
+        List<Entry> entries = block.entries();
+        for (int index = 0; index < entries.size(); index++) {
+            Entry entry = entries.get(index);
+            assertEquals("=", entry.operator());
+            boolean value;
+            if (entry.key().equals("trigger_if")) {
+                Block branch = block(entry);
+                boolean condition = guardedPredicate(block(one(branch, "limit")), false, references, reads);
+                Block body = new Block(branch.entries().stream().filter(e -> !e.key().equals("limit")).toList());
+                Block otherwise = null;
+                if (index + 1 < entries.size() && entries.get(index + 1).key().equals("trigger_else")) {
+                    otherwise = block(entries.get(++index));
+                }
+                value = condition ? guardedPredicate(body, false, references, reads)
+                        : otherwise == null || guardedPredicate(otherwise, false, references, reads);
+            } else {
+                value = switch (entry.key()) {
+                    case "AND" -> guardedPredicate(block(entry), false, references, reads);
+                    case "OR" -> guardedPredicate(block(entry), true, references, reads);
+                    case "NOT" -> {
+                        assertEquals(1, block(entry).entries().size());
+                        yield !guardedPredicate(block(entry), false, references, reads);
+                    }
+                    case "exists" -> references.containsKey(atom(entry));
+                    case "always" -> {
+                        assertTrue(Set.of("yes", "no").contains(atom(entry)));
+                        yield atom(entry).equals("yes");
+                    }
+                    default -> resolvedScope(entry.key(), references, reads)
+                            .equals(resolvedScope(atom(entry), references, reads));
+                };
+            }
+            result = disjunction ? result | value : result & value;
+        }
+        return result;
+    }
+
+    private static String resolvedScope(String reference, Map<String, String> references, List<String> reads) {
+        reads.add(reference);
+        assertTrue(references.containsKey(reference), "unguarded missing scope: " + reference);
+        return references.get(reference);
     }
 
     @Test
@@ -396,6 +532,7 @@ final class HeadClaimContractTest {
         Block apostasy = sources.definition("des_is_apostate_trigger");
         assertTrue(has(apostasy, "var:des_adopted_bound_rite", "dynasty.var:des_bound_rite"));
         assertTrue(sets(sources.definition("des_join_rite_dynasty_effect"), "des_adopted_bound_rite", "rite"));
+        verifyApostasyGuards(sources);
     }
 
     /** Evaluate only the recorded unbound-state predicate, not any engine effect. */

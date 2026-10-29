@@ -36,10 +36,11 @@ des_refresh_apostasy_effect = {
 		limit = { des_is_apostate_trigger = yes }
 		if = {
 			limit = {
-				OR = {
-					NOT = { exists = var:des_apostate_rite }
+				trigger_if = {
+					limit = { exists = var:des_apostate_rite }
 					NOT = { var:des_apostate_rite = dynasty.var:des_bound_rite }
 				}
+				trigger_else = { always = yes }
 			}
 			des_clear_apostasy_effect = yes
 			set_variable = { name = des_apostate_rite value = dynasty.var:des_bound_rite }

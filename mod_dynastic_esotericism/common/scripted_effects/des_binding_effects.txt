@@ -496,7 +496,14 @@ des_reuse_native_dynast_binding_effect = {
 				every_in_list = {
 					variable = des_relationship_snapshot
 					if = {
-						limit = { var:des_apostate_rite = scope:des_transferred_old_rite }
+						limit = {
+							# A relationship snapshot may outlive its product marker.
+							trigger_if = {
+								limit = { exists = var:des_apostate_rite }
+								var:des_apostate_rite = scope:des_transferred_old_rite
+							}
+							trigger_else = { always = no }
+						}
 						des_clear_apostasy_effect = yes
 					}
 				}
