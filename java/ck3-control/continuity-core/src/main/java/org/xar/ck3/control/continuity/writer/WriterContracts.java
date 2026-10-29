@@ -77,7 +77,6 @@ public final class WriterContracts {
     public record Request(String kind, byte[] details, List<ExactRef> evidence) {
         public Request {
             StrictJson.text(kind); details = canonical(details); evidence = List.copyOf(evidence);
-            StrictJson.require(evidence.size() <= 64, "finite transition evidence");
             ObjectNode row = object(details);
             StrictJson.text(row.get("evidence_id"));
             var source = row.get("source");

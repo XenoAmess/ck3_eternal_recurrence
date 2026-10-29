@@ -91,6 +91,57 @@ final class WriterTransactionCodecTest {
         assertEquals(actual.predecessor().indexRepairs(), roundtrip.predecessor().indexRepairs());
     }
 
+    @Test void moreThanSixtyFourActualEvidenceReferencesSurviveCommitCodecHistoryAndTamperChecks() throws Exception {
+        WriterFixture fixture = new WriterFixture(root.resolve("evidence65"));
+        var refs = new java.util.ArrayList<org.xar.ck3.control.contracts.ExactRef>();
+        for (int ordinal = 0; ordinal < 65; ordinal++) {
+            Path path = fixture.layout.snapshot().resolveSibling("actual-data-" + ordinal + ".json");
+            Files.writeString(path, "{\"ordinal\":" + ordinal + "}");
+            refs.add(LedgerFiles.read(path, ContinuityJson.DOCUMENT_MAX_BYTES).pin().reference());
+        }
+        Request settled = WriterFixture.settled("evidence65-test", 1048, 2);
+        ObjectNode details = settled.detailsObject();
+        var durableReferences = details.putArray("actual_evidence_refs");
+        refs.forEach(ref -> durableReferences.add(ref.toJson()));
+        Request request = new Request(settled.kind(), ContinuityJson.canonical(details), refs);
+        Prepared prepared = fixture.writer.preview(request);
+        assertEquals(refs, prepared.evidence().stream().map(Pin::reference).toList());
+        byte[] transaction = WriterTransactionCodec.encodePrepared(prepared);
+        Prepared decoded = WriterTransactionCodec.decodePrepared(transaction, WriterFixture.MACHINE);
+        assertArrayEquals(transaction, WriterTransactionCodec.encodePrepared(decoded));
+        assertEquals(refs, decoded.request().evidence());assertEquals(prepared.evidence(), decoded.evidence());
+        assertArrayEquals(request.details(), decoded.request().details());
+        Receipt receipt = fixture.writer.commit(decoded);assertEquals(Disposition.COMMITTED, receipt.disposition());
+        Receipt cold = WriterTransactionCodec.decodeReceipt(WriterTransactionCodec.encodeReceipt(receipt), WriterFixture.MACHINE);
+        fixture.writer.locked(same -> {
+            same.requireCommitted(decoded, cold);
+            Receipt retained = same.queryCommitted(decoded).orElseThrow();
+            assertEquals(Disposition.ALREADY_COMMITTED, retained.disposition());assertEquals(0, retained.writes());
+            Pin event = same.head().documents().stream().filter(pin -> Path.of(pin.reference().path()).equals(fixture.layout.event(receipt.head().sequence())))
+                    .findFirst().orElseThrow();
+            var historical = same.readHistoricalTransitions(List.of(event)).getFirst();
+            assertArrayEquals(request.details(), historical.details());
+            var stored = ContinuityJson.parseObject(historical.details(), ContinuityJson.DOCUMENT_MAX_BYTES).get("actual_evidence_refs");
+            assertEquals(refs.size(), stored.size());
+            for (int ordinal = 0; ordinal < refs.size(); ordinal++) assertEquals(refs.get(ordinal), org.xar.ck3.control.contracts.ExactRef.fromJson(stored.get(ordinal)));
+            return null;
+        });
+        // These are byte-boundary DATA negatives, never submitted to the physical writer.
+        byte[] oversizedDetails = ("{\"evidence_id\":\"oversized\",\"source\":\"actual-byte-bound\",\"padding\":\"" + "x".repeat(ContinuityJson.DOCUMENT_MAX_BYTES) + "\"}").getBytes(StandardCharsets.UTF_8);
+        assertThrows(IllegalArgumentException.class, () -> new Request(settled.kind(), oversizedDetails, refs));
+        var oversizedPins = java.util.Collections.nCopies(1000, decoded.evidence().getFirst());
+        Request oversizedRequest = new Request(request.kind(), request.details(), oversizedPins.stream().map(Pin::reference).toList());
+        Prepared oversizedData = new Prepared(decoded.predecessor(), oversizedRequest, decoded.sources(), oversizedPins, decoded.reduced(), decoded.preconditionDigest());
+        assertThrows(IllegalArgumentException.class, () -> WriterTransactionCodec.encodePrepared(oversizedData));
+        byte[] snapshot = Files.readAllBytes(fixture.layout.snapshot());
+        Files.writeString(Path.of(refs.getLast().path()), "{\"ordinal\":999}");
+        assertThrows(java.io.IOException.class, () -> fixture.writer.locked(same -> {same.requireCommitted(decoded, cold);return null;}));
+        assertThrows(java.io.IOException.class, () -> fixture.writer.commit(decoded));
+        assertArrayEquals(snapshot, Files.readAllBytes(fixture.layout.snapshot()));
+        assertFalse(Files.exists(fixture.layout.event(2)));
+        long sequence = fixture.writer.locked(same -> same.head().state().sequence());assertEquals(1L, sequence);
+    }
+
     private static ObjectNode object(byte[] bytes) { return ContinuityJson.parseObject(bytes, WriterTransactionCodec.MAXIMUM_BYTES); }
     private static void assertInvalidPrepared(ObjectNode row) {
         assertThrows(IllegalArgumentException.class, () -> WriterTransactionCodec.decodePrepared(

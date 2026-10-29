@@ -265,3 +265,21 @@ TEST单源最终javac0/1.470s、release21，参数`-Xlint:all,-path,-try,-classf
 已实际读回`D:/ck3-state/provider-output-contract68/READY03.json`和`FINAL-EDITS03.json`。四源strict javac0/2.215s；必要compact方法含三次真实本地Java HttpClient/SSE：不完整JSON+length保持WAIT/无M7 pending、完整JSON+length仍WAIT、紧凑短reason+stop才SELECT并保原command/Draft和实际Realm pending。连同必要dictionary方法共2P/0skip、Java0/2.541s，23:03:43.710Z结束；精确11字段顺序/全原值、max_tokens256与字典解释都断言，不外推全类或CI。离线同一四十七行实际输入由861,028B到122,323B，history加字典由749,969B到71,049B，仍47行/1ROOT group；完整facts/frame/stamps/provenance展开相等，只有约定五refs在合格READ模型副本中省略，所有五refs在UNKNOWN/非READ/坏形状中仍保留。没有对远端模型发验证HTTP，也不从字段顺序推缓存命中。
 
 最终D生产SHA`3f4b092ad6d3cce3b81c8eb7c821b13bf68b2bce9e1ee716ff72b41dba2a1f06`、TEST SHA`bc314a76f941936def5b28a6c0923cedfab846429cd8f7913f0fbf36f64d542a`已交runtime sole采用，共享源码写回执尚未报。本轮模型POLICY主体采用、owner一词澄清、Root后继确定性字段投影/顺序和owner TEST各自分列；36保首终态、37追加实际结果，原RESULT不改。未新增模型HTTP/测试，不授真实服务必快、合法Game SELECT或日推进；当前coding caller0、无自动新请求。
+
+### Evidence68真实引用数限制与实际采用
+
+实际Game栈为StrictJson185→WriterContracts.Request80的finite evidence→Cycles131，kind为CYCLE，原故障引用总数未观测，不能猜成65。suffix给161,480B固定三消息、八份必要完整源码及实际producer，有限2,800输出；只删Request中`evidence.size() <= 64`一行，不换计数阈值、不截引用，保immutable copy/null语义、details65,536B、Txn及event/snapshot262,144B、各材料角色原有cap、exact pins/CAS/UNKNOWN。独立新TEST用65个tiny实际DATA执行preview、codec、一次commit、同session query/history及末引用篡改拒绝，不能用路径字符串冒充完整引用。
+
+owner明确known-only，本次未用unknown probe flag。23:12:02.832–23:12:11.866Z首POST实际HTTP200/stop、CLI0，32,620输入/806输出，headers4.322s/TTFT4.325s/总9.033s，cache未报、无retry、前置metrics实际HTTP200/known。`model-coordinator64/game-evidence-count68`保完整REQUEST/CONTENT/SSE/RESULT/SUMMARY，原件立即交suffix/Root。模型生产一行精确采用；raw TEST缺ExactRef/StrictJson/ArrayNode imports，仅保存path并漏完整refs/history/query/bytecap/no-new-event断言，静审未编raw。owner保模型65文件、codec及tamper结构，补真实typed refs顺序、历史查询、边界及失败后无新event等完整合同，不能记原样TEST通过或全由模型独立实现。
+
+已实际读回`D:/ck3-state/ck3-java-g2-resume63-journal-dirty-suffix01/evidence-count68/READY68.json`的命令、args、XML：生产candidate及baseline各strict javac0/1.538s；最终三TEST源strict0/1.740s，参数`--release21 -proc:none -implicit:none -Xlint:all,-path -Werror`，无warnings。旧Request单个新方法1E/0F/0skip、Java1/3.212s，准确拒finite64；新生产GREEN01已实际commit/history成功，但owner TEST手造IntNode与parsed BigIntegerNode比较产生1F，保留原件。仅TEST改用typed ExactRef.fromJson比较后GREEN02同一方法1P/0skip、Java0/4.518s，23:15:32.149Z结束。原五方法保留未重跑，不授whole6、实机引用总数或性能改善。
+
+后继runtime实际`D:/ck3-state/runtime64-evidence-count68/SOURCE-STOP.json`确认23:19:26.833Z S/Z生产和TEST两叶采用。D生产SHA`653ab365ce09273a0f4c6a1f28fd4c7ede19c4aef2553fedb817a9b58f7def1f`，共享CRLF生产SHA`8bb7c3e897fc1cc8072236d22c22196caba0fe35daa8a7bfb131538d2951dc5b`；D TEST `5d35543f7a41d8351813914e2227ecf8c12a77d5e676899a45c35eaec12f192c`，共享TEST `3fa3bb159a45b46ef0af739cf9b431792a5d8b53c14841de46d34b2ce46aed57`。回执逐叶确认candidate_lf_equal，原D与S/Z字节hash各自保留。无MB写、Game重启或UNKNOWN重放；DEV64/reload03在运行岗推进中，不据源码采用授恢复、新prompt合法SELECT、动作或游戏日。38保首轮待审历史，39追加实际结果与采用，未新增HTTP/测试。
+
+### Deadline39首轮入口候选及实际scope纠正
+
+DEV64 batch39实际321.997s后发生`runtime context deadline expired`，栈在GovernanceCollector/Opening政策内部、Controller.planRound调用planner之后；不是startup期限。当前available921及State.run220已有期限检查。15份当前完整源码351,824字符及实际stack先交模型，原370,382B请求由中央只在最后task追加真实RootReadPublicationCompletion.flush及suppressed writer失败优先级，形成371,151B请求，稳定源码前缀逐字不动、有限8,192输出，不给预算/Native TTL扩张或宽catch吞错权限。
+
+23:20:13.173–23:20:29.689Z首POST实际HTTP200/stop、CLI0，75,041输入/1,077输出，headers9.725s/TTFT9.734s/总16.516s，cache未报、无retry、前置metrics实际HTTP200/known。`model-coordinator64/game-deadline-planning-entry39`保原件并交deadline owner/Root。原稿只在planner入口加requireTime一行，给不存在的TEST selector及说明、没有TEST hunk。analysis声称防止本次已观测故障，与其limitations承认无法覆盖policy执行内部跨期相矛盾。该行仅D待审，未授原样编测、实际39修复或runtime采用。
+
+owner先准备MODEL02入口gap测试及clock hook请求，Root随即明确真实需求应转实际内部跨期分类，用户要求减少冗余检查。02在caller、metrics和POST均0时取消，没有调用、没有伪取消在途；入口guard也不交runtime装载，不继续证明外围可构造gap。下一步只接受当前内部typed timeout及Controller/publication catch边界的真实窄包，保flush失败/suppressed优先级、Context/Native原deadline与UNKNOWN，不将内部异常过早转End而在外层吞掉writer失败。40保首轮实际成本及02取消；当前coding caller0，无旧队列自动补位。
