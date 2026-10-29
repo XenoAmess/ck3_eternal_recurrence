@@ -1,0 +1,170 @@
+{
+  "schema": "rrf-workshop-media-readback-v1",
+  "machine_id": "4-8e1c2f1861",
+  "item_id": "3826756673",
+  "observed_at_utc": "2026-10-29T01:51:19.866525+00:00",
+  "anonymous_browser_incognito": true,
+  "ordered_preview_ids": [
+    "48294918",
+    "48294919",
+    "48294920",
+    "48294921",
+    "48294922",
+    "48294923",
+    "48328555",
+    "48328761",
+    "48333821",
+    "48333877",
+    "48350414",
+    "48350415",
+    "48355211",
+    "48359308",
+    "48359309"
+  ],
+  "original_13_order_preserved": true,
+  "original_13_bytes_not_redownloaded": true,
+  "new_images": [
+    {
+      "preview_id": "48359308",
+      "url": "https://images.steamusercontent.com/ugc/12224973658024266250/BA16FF41760588BCF345B7AD0EB9AE806F4FDED1/",
+      "anonymous": true,
+      "status": 200,
+      "bytes": 673593,
+      "sha256": "d902487f37483cbd9a159d1638c806301ed205175c6e616b1312700642045bfc",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "exact_local_export_match": true
+    },
+    {
+      "preview_id": "48359309",
+      "url": "https://images.steamusercontent.com/ugc/17905020101576525543/4A448804B9551049ABCCDB8CAB8B3146CEC28525/",
+      "anonymous": true,
+      "status": 200,
+      "bytes": 703323,
+      "sha256": "5bf5e95407d8e620a31e2a88f1c157a4ed18d554fb581939bd094eb6f062cdbf",
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "exact_local_export_match": true
+    }
+  ],
+  "description": {
+    "chars": 2535,
+    "lines": 43,
+    "sha256": "d0c719b250c2acd4fe707e174d6845465e1270e2e6379523d420615af6f012ac",
+    "normalized_api_exact": true,
+    "canonical": "workshop/religious_ritual_fusion_description.bbcode",
+    "download_version": "0.1.0-alpha",
+    "development_preview_count": 9
+  },
+  "steam_offline_after": {
+    "schema": "xar.steam-offline-state-probe/v2",
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-29T01:51:48.469447+00:00",
+    "nonce": "adf82090f877b754b950cae5e67474f1",
+    "reason": "observed",
+    "steam": {
+      "pid": 7032,
+      "birth_filetime": "134376848388036198",
+      "exe": "C:\\Program Files (x86)\\Steam\\steam.exe",
+      "file_version": "11.15.70.27"
+    },
+    "source": {
+      "path": "C:\\Program Files (x86)\\Steam\\SteamUI.dll",
+      "bytes": 19452568,
+      "sha256": "cd9226db4e6c28942df70c22c0475d91fdd62cba5f100baae2d65af57cabb610",
+      "file_id": "1407374884294686",
+      "mtime_ns": "1792620918000000000"
+    },
+    "endpoint": null,
+    "diagnostics": [],
+    "observation_method": "native_current_user_byte",
+    "native_evidence": {
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-29T01:51:48.469447+00:00",
+      "nonce": "adf82090f877b754b950cae5e67474f1",
+      "module_base": "140720237117440",
+      "module_size": 19730432,
+      "value_rva": "18435783",
+      "value_address": "140720255553223",
+      "producer_rva": "6548332",
+      "producer_anchor_hex": "440fb6055363b500488d155da67700488bcbe80d713d00",
+      "producer_anchor_sha256": "16316f5b39bac43273fac08a65f62c45af1d41938ce2d13d830ab16e1474966a",
+      "raw_samples": [
+        1,
+        1
+      ],
+      "steam_before": {
+        "pid": 7032,
+        "birth_filetime": "134376848388036198",
+        "exe": "C:\\Program Files (x86)\\Steam\\steam.exe",
+        "file_version": "11.15.70.27"
+      },
+      "steam_after": {
+        "pid": 7032,
+        "birth_filetime": "134376848388036198",
+        "exe": "C:\\Program Files (x86)\\Steam\\steam.exe",
+        "file_version": "11.15.70.27"
+      },
+      "source_before": {
+        "path": "C:\\Program Files (x86)\\Steam\\SteamUI.dll",
+        "bytes": 19452568,
+        "sha256": "cd9226db4e6c28942df70c22c0475d91fdd62cba5f100baae2d65af57cabb610",
+        "file_id": "1407374884294686",
+        "mtime_ns": "1792620918000000000"
+      },
+      "source_after": {
+        "path": "C:\\Program Files (x86)\\Steam\\SteamUI.dll",
+        "bytes": 19452568,
+        "sha256": "cd9226db4e6c28942df70c22c0475d91fdd62cba5f100baae2d65af57cabb610",
+        "file_id": "1407374884294686",
+        "mtime_ns": "1792620918000000000"
+      },
+      "tray_manager_pointer_rva": "18428640",
+      "tray_manager_address": "2152367067520",
+      "tray_state_offset": "340",
+      "tray_state_samples": [
+        4,
+        4
+      ]
+    },
+    "status": "offline",
+    "offline_mode": true
+  },
+  "screen_release_sequence": 14546,
+  "ordinary_http_page_status": 429,
+  "ordinary_http_not_passed": true,
+  "mod_content_upload_performed": false,
+  "notes_upload_performed": false,
+  "product_business_pass": false,
+  "evidence": [
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0045-retry-a01\\metadata\\normal-close-a01\\R0046-browser-media-a01\\PUBLIC-PREVIEW-ORDER.actual.json",
+      "bytes": 3690,
+      "sha256": "319fb6832404d690d150cb845c77a62ba88ecff24d75c294aec953d2f1410a51"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0045-retry-a01\\metadata\\normal-close-a01\\R0046-browser-media-a01\\PUBLIC-NEW-BYTES.actual.json",
+      "bytes": 968,
+      "sha256": "1820eefca0d006af44235116124411fe8468af7e79b3000623085b4a4c6a82f3"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0045-retry-a01\\metadata\\normal-close-a01\\R0046-browser-media-a01\\PUBLIC-ITEM.after.actual.json",
+      "bytes": 5986,
+      "sha256": "7c0c6124cb0906df73e4a78136e9bab0952be8380684c72658574120c0058b5b"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0045-retry-a01\\metadata\\normal-close-a01\\R0046-browser-media-a01\\PUBLICPAGE-HTTP.actual.json",
+      "bytes": 56,
+      "sha256": "178c010cb0a8b73c80ba99a3b10f61ed7935a201ba3ca9aac9d6fb847d806b6e"
+    },
+    {
+      "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0045-retry-a01\\metadata\\normal-close-a01\\R0046-browser-media-a01\\SCREEN-RELEASE.actual.json",
+      "bytes": 1321,
+      "sha256": "d13268a6d6c655f3726c264e8f32b67e3461c40d8353dee1677d388a5256eab5"
+    }
+  ]
+}

@@ -113,3 +113,16 @@ Root 的首发导出位于 `C:/workspace/rrf-development-20261024/publication-a0
 21:12Z Chrome无痕未登录页面确认十三图顺序，原十二张保留；新原图匿名HTTP200，2560×1440与冻结JPEG逐字节一致。普通匿名页面请求实际HTTP429，未将其计为成功。完整说明2408字符与匿名API逐字一致，标注末尾七张为未发布0.2.0预览，当前下载仍0.1.0-alpha；未上传模组内容或Notes。Steam后台读回仍离线，浏览器SCREEN CAS14503已释放。[完整本次回读](../mod_religious_ritual_fusion/docs/evidence/workshop-media-readback-R0042-2026-10-28.json)。
 
 原始PNG为`R0042-exact-four-draft-a03.png`，4019711 B／`91ef83659c117957aca229b8b07fe1436df829644c3d06f4c7cc3ad9288318c1`；仅JPEG编码，未裁切、缩放或生成像素。早先误命名的`R0042-four-core-draft.png`实际只有两项，属于诊断图，未上传。
+
+## R0046 长名称编辑与35天后态已公开，2026-10-29
+
+`machine_id: 4-8e1c2f1861`；运行源码`244240ba915b58eac7f625487e16f0ff3eb9de45`。两张均为真实暂停实拍、2560×1440，Java ImageIO0.90仅格式编码，Root已逐图查看PNG和JPEG。
+
+| 公开顺序／preview ID | 公开原图 | JPEG bytes／SHA256 |
+| --- | --- | --- |
+| 14／48359308 | [长名称与免费后置定制](https://images.steamusercontent.com/ugc/12224973658024266250/BA16FF41760588BCF345B7AD0EB9AE806F4FDED1/) | 673593／`d902487f37483cbd9a159d1638c806301ed205175c6e616b1312700642045bfc` |
+| 15／48359309 | [自然推进35天后的四核心与长名称结果页](https://images.steamusercontent.com/ugc/17905020101576525543/4A448804B9551049ABCCDB8CAB8B3146CEC28525/) | 703323／`5bf5e95407d8e620a31e2a88f1c157a4ed18d554fb581939bd094eb6f062cdbf` |
+
+约01:50Z无痕未登录页面确认15图顺序；原13图保留，本次未重复下载其字节。两张新原图匿名HTTP200，与冻结JPEG逐字节相同。完整说明2535字符／43行与匿名API逐字一致，末尾九张明确为未发布0.2.0预览，下载仍0.1.0-alpha；没有上传内容或Notes。01:51:48Z后台Steam仍离线，浏览器SCREEN14546释放。[公开回读](../mod_religious_ritual_fusion/docs/evidence/workshop-media-readback-R0046-2026-10-29.json)。
+
+第一图在1066.9.17的免费编辑阶段拍摄，第四核心卡片部分超出可视区；第二图为1066.10.22，四项核心名称和家属当前礼仪均可见。原图分别4216917 B／`778da58e452784751b1594ebbae51aacd777307d3404ecf935e531725bfd356b`和4215085 B／`fbfdcf559ea68a6b399aa8c61ce798df7d37f6ba9f8f0dfeb31dae0524a05804`。[原生截图身份](../mod_religious_ritual_fusion/docs/media/screenshots-R0046-2026-10-29.json)；[业务实情](../mod_religious_ritual_fusion/docs/live-review-R0046-native-DES-2026-10-29.md)。窗口重叠、地图提示及确认弹窗诊断图没有发布。本场仍incomplete，截图不授最终冷载或八项总验收通过。

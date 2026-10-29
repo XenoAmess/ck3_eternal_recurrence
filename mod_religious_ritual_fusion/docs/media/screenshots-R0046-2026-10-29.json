@@ -1,0 +1,77 @@
+{
+  "schema": "rrf-real-gameplay-media-v1",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--religious-ritual-fusion--R0046",
+  "images": [
+    {
+      "caption": "长名称与免费后置定制",
+      "png": {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0045-retry-a01\\screenshots\\C14-native-editor-four-DES-zero-piety-a01.png",
+        "bytes": 4216917,
+        "sha256": "778da58e452784751b1594ebbae51aacd777307d3404ecf935e531725bfd356b"
+      },
+      "jpeg": {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0045-retry-a01\\screenshots\\promo-R0046\\14-development-long-name-free-edit.jpg",
+        "bytes": 673593,
+        "sha256": "d902487f37483cbd9a159d1638c806301ed205175c6e616b1312700642045bfc"
+      },
+      "capture_custody": {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0045-retry-a01\\metadata\\normal-close-a01\\screenshot-custody-a01\\native-editor-four-DES-zero-piety-a01.actual.json",
+        "bytes": 67118,
+        "sha256": "62134402826e12c76b38bc70dda275e421b4911ff7483b7695bfc623c025f610"
+      },
+      "captured_at_utc": "2026-10-29T00:45:45.873261+00:00",
+      "date_raw": 53144376,
+      "game_pid": 18220,
+      "process_create_time_seconds": "1793234236.1201413",
+      "actual_source_commit": "244240ba915b58eac7f625487e16f0ff3eb9de45",
+      "format_only": true,
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "quality": 0.9
+    },
+    {
+      "caption": "自然推进35天后的四核心与长名称结果页",
+      "png": {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0045-retry-a01\\screenshots\\C14-day35-clear-result-a01.png",
+        "bytes": 4215085,
+        "sha256": "fbfdcf559ea68a6b399aa8c61ce798df7d37f6ba9f8f0dfeb31dae0524a05804"
+      },
+      "jpeg": {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0045-retry-a01\\screenshots\\promo-R0046\\15-development-four-core-day35.jpg",
+        "bytes": 703323,
+        "sha256": "5bf5e95407d8e620a31e2a88f1c157a4ed18d554fb581939bd094eb6f062cdbf"
+      },
+      "capture_custody": {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0045-retry-a01\\metadata\\normal-close-a01\\screenshot-custody-a01\\day35-clear-result-a01.actual.json",
+        "bytes": 68669,
+        "sha256": "c97152cbad2eb8cf00ae8e6645f482d8fcc5fee4e63d8174d5bf98dddcad9927"
+      },
+      "captured_at_utc": "2026-10-29T01:06:53.106565+00:00",
+      "date_raw": 53145216,
+      "game_pid": 18220,
+      "process_create_time_seconds": "1793234236.1201413",
+      "actual_source_commit": "244240ba915b58eac7f625487e16f0ff3eb9de45",
+      "format_only": true,
+      "dimensions": [
+        2560,
+        1440
+      ],
+      "quality": 0.9
+    }
+  ],
+  "export_execution": {
+    "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0045-retry-a01\\metadata\\normal-close-a01\\R0046-browser-media-a01\\JPEG-ORIGINAL-WAIT.actual.json",
+    "bytes": 836,
+    "sha256": "02d5fddb521ae0a9a422e1378da456b40d74cd67eb877726dc3cc2dbdc627d0b"
+  },
+  "retained_diagnostics": [
+    "C14-edit-confirmation-a01.png",
+    "C14-postedit-faith-and-virtues-a01.png",
+    "C14-day35-result-longname-a01.png"
+  ],
+  "diagnostics_not_published": true,
+  "product_business_pass": false
+}

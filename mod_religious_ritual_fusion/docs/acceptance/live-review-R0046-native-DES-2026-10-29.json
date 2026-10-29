@@ -1,0 +1,191 @@
+{
+  "schema": "rrf-scoped-live-business-index-v1",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--religious-ritual-fusion--R0046",
+  "runtime_source_commit": "244240ba915b58eac7f625487e16f0ff3eb9de45",
+  "scope": "SCOPED_BUSINESS_OBSERVED_FULL_CASE_INCOMPLETE",
+  "overall_product_business_pass": false,
+  "original_proof": {
+    "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0045-retry-a01\\metadata\\normal-close-a01\\root-business-oracles-a01\\C14\\R0046-BUSINESS.actual.json",
+    "bytes": 49294,
+    "sha256": "7be362062286043e6fc8c483214e3114c41af805069f689b2a357b1e3a541b69"
+  },
+  "native_report": {
+    "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0045-retry-a01\\live\\4-8e1c2f1861--religious-ritual-fusion--R0046\\native-report.json",
+    "bytes": 11810202,
+    "sha256": "743dab2cd52f6c7ab81344a01464ea909976d9f7623a34ab4d06dc859d4cee7e"
+  },
+  "names": {
+    "name": "诺曼底诸传统共融与宗族学统传承星辰奥秘及共同体精神之联合礼仪",
+    "adjective": "诺曼底共融",
+    "adherent": "诸传统共融者",
+    "adherent_plural": "诸传统共融者",
+    "description": "我们汇聚律法、星辰、秘仪与共同体的传统，以宗族学统守护共同道路。不同传承在此相遇，礼仪在一代代人的实践中延续。"
+  },
+  "core_tenets": [
+    "tenet_communal_identity",
+    "tenet_esotericism",
+    "tenet_legalism",
+    "tenet_astrology"
+  ],
+  "charged_native_edit_piety": 0,
+  "natural_days": 35,
+  "final_piety": {
+    "raw": -40000,
+    "scale": 100000
+  },
+  "members": [
+    {
+      "stage": "E1",
+      "native_member_count": 41,
+      "full_actor_member_count": 41,
+      "all_actual_rite155": true,
+      "missing_house_ids": [
+        "65872",
+        "65873",
+        "65874"
+      ],
+      "missing_or_different_adopted_bound_rite155_ids": [
+        "65872",
+        "65873",
+        "65874"
+      ],
+      "control_rite_house_des_equal_to_original": true
+    },
+    {
+      "stage": "E2",
+      "native_member_count": 48,
+      "full_actor_member_count": 48,
+      "all_actual_rite155": true,
+      "missing_house_ids": [],
+      "missing_or_different_adopted_bound_rite155_ids": [],
+      "control_rite_house_des_equal_to_original": true
+    },
+    {
+      "stage": "day35",
+      "native_member_count": 48,
+      "full_actor_member_count": 48,
+      "all_actual_rite155": true,
+      "missing_house_ids": [],
+      "missing_or_different_adopted_bound_rite155_ids": [],
+      "control_rite_house_des_equal_to_original": true
+    }
+  ],
+  "member_summary": {
+    "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0045-retry-a01\\metadata\\normal-close-a01\\root-business-oracles-a01\\C14\\member-records-a01\\MEMBERSHIP.actual.json",
+    "bytes": 143299,
+    "sha256": "b8bb49a3cb0b582989954c79e207ae7e39a2ffbceb5960a8605bd2b5cb0431d3"
+  },
+  "models": {
+    "E0": {
+      "report": {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0045-retry-a01\\metadata\\normal-close-a01\\root-business-oracles-a01\\C14\\E0-model-coa-a01\\report.json",
+        "bytes": 463381,
+        "sha256": "02a98563cee980f3d75fd4c2c5270b5f336254e3cae7772fd2bbb9a0247359f1"
+      },
+      "house_sha256": "f13d5c39a25e8c577cf2308da442cd9b7139efe5bf1c5bd58cbfde8071973dac",
+      "dynasty_sha256": "14c0ffa147bb8c3ff2717adb237c06578dd75ab93ab359a7570115bfae7bdb8b",
+      "house_name": null,
+      "dynasty_name": null,
+      "dynasty_head": "31254",
+      "house_head": "31254",
+      "dynasty_rite_binding": null
+    },
+    "E1": {
+      "report": {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0045-retry-a01\\metadata\\normal-close-a01\\root-business-oracles-a01\\C14\\E1-model-a02\\report.json",
+        "bytes": 220296,
+        "sha256": "7f8696d4c881cf6f6cf2c58350ab0aee6e30d6ee790d1232b1b10a963e9de1f5"
+      },
+      "house_sha256": "5dfea7acc7ff8970983ce441f07d72e2261f5c7921fd24733be8a40adc029c8d",
+      "dynasty_sha256": "788bef65f437000e7be6ed0f1bf721bcb90d73099fe2a1b0fcc4818199887f1e",
+      "house_name": "\"诺曼底诸传统共融与宗族学统传承星辰奥秘及共同体精神之联合礼仪\"",
+      "dynasty_name": "\"诺曼底诸传统共融与宗族学统传承星辰奥秘及共同体精神之联合礼仪\"",
+      "dynasty_head": "31254",
+      "house_head": "31254",
+      "dynasty_rite_binding": {
+        "type": "rite",
+        "identity": "155"
+      }
+    },
+    "E2": {
+      "report": {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0045-retry-a01\\metadata\\normal-close-a01\\root-business-oracles-a01\\C14\\E2-model-coa-a01\\report.json",
+        "bytes": 465560,
+        "sha256": "b0ad485e8f1ef97532eb28331f6633803f020d0a451dbcded7e6daac3004f6d3"
+      },
+      "house_sha256": "5dfea7acc7ff8970983ce441f07d72e2261f5c7921fd24733be8a40adc029c8d",
+      "dynasty_sha256": "788bef65f437000e7be6ed0f1bf721bcb90d73099fe2a1b0fcc4818199887f1e",
+      "house_name": "\"诺曼底诸传统共融与宗族学统传承星辰奥秘及共同体精神之联合礼仪\"",
+      "dynasty_name": "\"诺曼底诸传统共融与宗族学统传承星辰奥秘及共同体精神之联合礼仪\"",
+      "dynasty_head": "31254",
+      "house_head": "31254",
+      "dynasty_rite_binding": {
+        "type": "rite",
+        "identity": "155"
+      }
+    },
+    "day35": {
+      "report": {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0045-retry-a01\\metadata\\normal-close-a01\\root-business-oracles-a01\\C14\\day35-model-a02\\report.json",
+        "bytes": 221030,
+        "sha256": "a4045695373c582e919bc891c0c2d8f617938adbe5c90d0fe78a46860e316367"
+      },
+      "house_sha256": "5dfea7acc7ff8970983ce441f07d72e2261f5c7921fd24733be8a40adc029c8d",
+      "dynasty_sha256": "50a76daf20fed4f2be4a28e6fe3e1e982a6cd295b8012c7c8d3772bf458937c1",
+      "house_name": "\"诺曼底诸传统共融与宗族学统传承星辰奥秘及共同体精神之联合礼仪\"",
+      "dynasty_name": "\"诺曼底诸传统共融与宗族学统传承星辰奥秘及共同体精神之联合礼仪\"",
+      "dynasty_head": "31254",
+      "house_head": "31254",
+      "dynasty_rite_binding": {
+        "type": "rite",
+        "identity": "155"
+      }
+    }
+  },
+  "coa": {
+    "E0": {
+      "report": {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0045-retry-a01\\metadata\\normal-close-a01\\root-business-oracles-a01\\C14\\E0-model-coa-a01\\report.json",
+        "bytes": 463381,
+        "sha256": "02a98563cee980f3d75fd4c2c5270b5f336254e3cae7772fd2bbb9a0247359f1"
+      },
+      "sha256": "76a4e71e8d1c2b84542971fe6cfa006e35f495e2607645632a2725af7574e607"
+    },
+    "E1": {
+      "report": {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0045-retry-a01\\metadata\\normal-close-a01\\root-business-oracles-a01\\C14\\E1-coa-global-a01\\report.json",
+        "bytes": 642045,
+        "sha256": "46eb3e664bea6c6871d39bce23f71f92287f72b9dc3ee6098179072018426bd2"
+      },
+      "sha256": "76a4e71e8d1c2b84542971fe6cfa006e35f495e2607645632a2725af7574e607"
+    },
+    "E2": {
+      "report": {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0045-retry-a01\\metadata\\normal-close-a01\\root-business-oracles-a01\\C14\\E2-model-coa-a01\\report.json",
+        "bytes": 465560,
+        "sha256": "b0ad485e8f1ef97532eb28331f6633803f020d0a451dbcded7e6daac3004f6d3"
+      },
+      "sha256": "76a4e71e8d1c2b84542971fe6cfa006e35f495e2607645632a2725af7574e607"
+    },
+    "day35": {
+      "report": {
+        "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0045-retry-a01\\metadata\\normal-close-a01\\root-business-oracles-a01\\C14\\day35-coa-global-a01\\report.json",
+        "bytes": 642485,
+        "sha256": "b83525e3913b9f381a3cccb7a99ae012affb65a8d9ab21ef09fafb73baea73c5"
+      },
+      "sha256": "76a4e71e8d1c2b84542971fe6cfa006e35f495e2607645632a2725af7574e607"
+    }
+  },
+  "initial_cold_failure": "Loaded R42 divorce_disallowed does not match frozen passive observer requiring divorce_allowed; explicit observer executed once before later legal native edit. No retroactive PASS.",
+  "normal_close": {
+    "path": "C:\\workspace\\rrf-development-20261024\\review-fixes-a01\\cold-R0045-retry-a01\\metadata\\public-operations-a01\\root-execution-a54\\ALL-ORIGINAL-TERMINALS.actual.json",
+    "bytes": 13992,
+    "sha256": "ea9302416bba0a8b570edbd610811583b737092ce9e32ff3bdc630ad31e4159f"
+  },
+  "normal_close_qualified": true,
+  "root_outer_wait": 2,
+  "screen_release_sequence": 14541,
+  "saveproof_gap": "save_binding_mismatch / episode_id null retained; native archives and V4 custody are separate evidence",
+  "next_required": "Independent completed-state cold load; remaining eight-item final audit and formal release remain unqualified."
+}
