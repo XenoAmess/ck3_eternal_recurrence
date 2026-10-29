@@ -283,3 +283,33 @@ DEV64 batch39实际321.997s后发生`runtime context deadline expired`，栈在G
 23:20:13.173–23:20:29.689Z首POST实际HTTP200/stop、CLI0，75,041输入/1,077输出，headers9.725s/TTFT9.734s/总16.516s，cache未报、无retry、前置metrics实际HTTP200/known。`model-coordinator64/game-deadline-planning-entry39`保原件并交deadline owner/Root。原稿只在planner入口加requireTime一行，给不存在的TEST selector及说明、没有TEST hunk。analysis声称防止本次已观测故障，与其limitations承认无法覆盖policy执行内部跨期相矛盾。该行仅D待审，未授原样编测、实际39修复或runtime采用。
 
 owner先准备MODEL02入口gap测试及clock hook请求，Root随即明确真实需求应转实际内部跨期分类，用户要求减少冗余检查。02在caller、metrics和POST均0时取消，没有调用、没有伪取消在途；入口guard也不交runtime装载，不继续证明外围可构造gap。下一步只接受当前内部typed timeout及Controller/publication catch边界的真实窄包，保flush失败/suppressed优先级、Context/Native原deadline与UNKNOWN，不将内部异常过早转End而在外层吞掉writer失败。40保首轮实际成本及02取消；当前coding caller0，无旧队列自动补位。
+
+### 首动作READ publication反复废弃ACCEPT的真实候选
+
+真实运行已连续得到合法完整模型ACCEPT，但规划中的ROOT/formal/focus/martial READ在afterPlanning发布后返回Published，Controller按两处失效guard重新规划，再次生成/发布READ并废弃选择，实际动作仍0。Root将这一首动作阻断列为最高P0。quarkus owner提交`D:/ck3-state/read-planning-handoff69/REQUEST01.json`，281,504B固定三消息、255,722字符当前必要源码前缀、真实receipt/Batch40诊断在末，有限6,500输出。要求只通过真实same-frame已发布READ证明消费，或适当阶段发布后fresh capture重新构建command，保Published/CAS/frame/source/UNKNOWN，不伪Unchanged、不复制/rebase旧command。模型请求先于owner答案；首POST后独立D fallback已授权，runtime sole源码采用/同Game。
+
+actual39内部期限03包此时已预检但caller/GET/POST均0，因首动作包到件先延期，没有拿grant/ACK再作门。23:33:18.831–23:34:06.215Z READ69首POST实际HTTP200/length、SSEdone、CLI1；58,710输入/6,500输出，headers7.997s/TTFT8.001s/总47.384s，cache未报、无retry，前置metrics实际HTTP200/known。`model-coordinator64/game-read-planning-handoff69`原REQUEST/SSE/CONTENT/RESULT/SUMMARY自然终态立即交owner/Root。length不作暂错、不原题重放；不能补JSON闭合授采用。
+
+原始CONTENT 27,883字符，JSON在diagnosis字符串内未闭。尾部反复“return Unchanged，但head确实变化，所以replan无限”的同一推理，未生成edits，属于实质退化，并非只是有限尾截断。前段还未经实际producer证据推定queue保留旧receipt，不能把该推断记录为真实因果。中央静审当前0hunk、未送javac、无伪造编译失败或行为通过；owner独立fallback与后续实际结果另记，不因原稿HTTP200给代码或Game信用。41保真实调用及静审待owner确认，不改变原RESULT历史review。随后仅在此owner审阅空档执行真实内部期限03包，无其他自动队列。
+
+### 实际内部期限03完整合同候选
+
+deadline owner重定向后的唯一`MODEL03-INTERNAL.REQUEST.json`为407,503B，二十份完整当前源码加Core实际method摘录的稳定前缀387,626字符，变化诊断在最后，有限12,288输出；原S无入口guard，02永久取消。明确application不能反向依赖native-transport，Context的ContractViolationException为final，Installer207–214会把IOException转Unavailable。只有实际typed期限在planning中经成功publication和writer release provenance，且Controller真实monotonic batch bound耗尽，才可正常WALL_TIMEOUT；未知/failed/skipped/suppressed路径不能因当前时间到期就降级，不改预算、Native期限或UNKNOWN。
+
+该包在READ69之前仅预检，没有HTTP；依Root首动作优先规则延后，待READ69真实终态交owner审阅后才执行。23:35:21.754–23:35:43.892Z首POST HTTP200/stop、CLI0，82,730输入/1,885输出，headers10.617s/TTFT10.622s/总22.137s，cache未报、无retry，前置metrics实际HTTP200/known。`model-coordinator64/game-deadline-internal39-03`保原REQUEST/CONTENT/RESULT/SSE/SUMMARY，终态立即交deadline/Quarkus/Root，不作首动作源码修复或Game前置。
+
+原稿JSON完整，但中央静审拒绝采用：提新checked IOException，只改GovernanceCollector却漏已明示Installer吞IO边界；Controller failIo只凭instanceof和monotonic到期就返回WALL_TIMEOUT，无实际completed publication/release证明，也未保suppressed/未完成优先级；完全没改Completion。analysis还明确称纯guard不是read，故可直接clean WALL，违反任务已给的实际安全边界。没有TEST实现，只有不存在的selector；同新type同时列在空old edit和new_files，exact API/anchors尚未由owner实核。没有编坏稿制造javac诊断或授HTTP200采用。42保本次真实成本和静态拒因，owner最终判断/独立后继另记，不自动R4；当前coding caller0，首动作READ仍优先。
+
+deadline owner随后实际确认整拒、采用0、不编raw，另核GovernanceCollector给出的old hunk也不匹配当前源码；Installer吞IO、flush/suppressed/未完成遗漏、TEST0及重复新type均确认。owner仅在D接必要tiny Runtime typed producer/完成状态；未来若有未完Completion窄方法，会交真实当前API及实际诊断，不将已写成品回灌复述。43追加owner确认，未新增HTTP/测试/共享写，不把这次HTTP200记为actual39分类已修。
+
+### READ69拆为尚未实现的collector重join方法
+
+Quarkus继续交真正未写的`prepareReadPublicationReplan(Session borrowed)`，不是重发旧九源诊断。`D:/ck3-state/read-planning-handoff69/REQUEST-REJOIN02.json`为120,953B固定三消息、115,985字符完整collector及实际Assembler publish/readjoin源码前缀，变化任务仅2,458字符、有限3,500输出。要求同一个writer Session/private round中保实际captured physical receiver原件，成功READ commit/CAS后清captured，再经existing acceptedSnapshotRevision/currentSnapshot与withFrozenObservation重建新Driver/SEM/M7Ready；原observedAt不变，receiver真变才走现有fresh路径，不调用transport.observe刷新、不伪Known、不吞IO/UNKNOWN/storage。其余Completion/Planner屏障由owner并行，不让模型重复设计已写部分。
+
+23:40:56.503–23:41:17.553Z首POST实际HTTP200/stop、CLI0，23,167输入/1,925输出，headers4.037s/TTFT4.048s/总21.049s，cache未报、无retry、metrics实际HTTP200/known。`model-coordinator64/game-read-planning-rejoin69-02`保REQUEST/SSE/CONTENT/RESULT/SUMMARY并立即交Quarkus/Root/runtime。JSON完整三个edit，但中央静读仍有待owner实核：新global ThreadLocal而非private Round字段、缺active freeze检查/round结束cleanup；第三path误写`org/xar.ck3...`；packet type及preserve/qualifyPhysical/fromPhysical调用需对实际API；receiver变化只有requireOriginal失败，没有notes声称的fresh fallback。未编raw或据notes授全链正确；44保真实结果与待审，当前不确认模型采用、不自动R3。
+
+### Deadline39只实现未写Completion异常边界的R4
+
+03静拒后，owner在D写tiny `PlanningDeadlineFailure` Runtime type，精确复用DeadlineObservation及NOT_COMPLETED/PUBLISHED/RELEASED状态，Context producer/Controller消费者由owner独立接。新`MODEL04-ROOT-COMPLETION.REQUEST.json`只请求尚未写的Completion异常/ScopeExit typed DATA release和一个package-root控制流TEST；五份完整当前源码稳定前缀27,043字符、实际32,509B、有限8,192输出，不复述新type或Controller，不改Quarkus首动作afterPlanning/round流程。仍仅真实flush正常返回才afterPublication，成功离开writer callback后才afterWriterRelease，failed/skipped/suppressed保持原失败优先。
+
+该包在REJOIN02终态交owner审阅的空档执行，23:44:36.510–23:44:57.186Z首POST HTTP200/stop、CLI0，6,204输入/2,392输出，headers6.025s/TTFT6.030s/总20.676s，cache未报、无retry、metrics实际HTTP200/known。`model-coordinator64/game-deadline-root-completion39-04`完整原件立即交deadline/Quarkus/Root。JSON完整且只三个production edit，仍无TEST source/hunk，两个selector和notes称Added tests不算实现。中央静审ScopeExit invariant用了Java非法boolean相加；inPlanningScope old hunk先写三个ScopeExit参数，与提供的旧二参数record矛盾；observation()/hasCompletedPublication等确切API及PUBLISHED-only predicate需owner核对。afterPublication/afterWriterRelease方向可审，未因此给raw编译或采用信用。45保实际成本及待审；没有故意编坏稿、自动R5、共享写或Game行为推论，当前coding caller0。

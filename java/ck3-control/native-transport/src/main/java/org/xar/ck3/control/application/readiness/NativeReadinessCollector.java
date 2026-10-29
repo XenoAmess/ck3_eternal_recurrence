@@ -283,6 +283,7 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
     private static final class PlanningRoundScope {
         private final ContinuityStorePort.Session borrowed;
         private Captured captured;
+        private org.xar.ck3.control.application.action.NativeObservationPort.ObservedFrame retainedPacket;
         private PlanningRoundScope(ContinuityStorePort.Session borrowed) { this.borrowed = borrowed; }
     }
     @FunctionalInterface public interface PlanningRoundWork<T> { T run() throws IOException, InterruptedException; }
@@ -382,6 +383,22 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
         admittedActor = Objects.requireNonNull(actualAdmittedDriver);
     }
 
+    /** Rejoin after a real Root READ commit within this same original writer planning callback. */
+    public boolean prepareReadPublicationReplan(ContinuityStorePort.Session borrowed) throws IOException {
+        Objects.requireNonNull(borrowed);
+        PlanningRoundScope round = planningRoundScope.get();
+        if (round == null || round.captured == null) return false;
+        require(round.borrowed == borrowed, "read-publication replan borrowed another actual writer");
+        require(planningReadScope.get() == null && heldReadScope.get() == null && publicPlanningScope.get() == null,
+                "read-publication replan must leave the original frozen scope");
+        driver.requireOutsideObservationScope(borrowed);
+        ObservationSessionAuthority actualWriter = observationSession;
+        require(actualWriter != null, "actual original writer observation authority is not installed"); actualWriter.require(borrowed);
+        round.retainedPacket = round.captured.physical().original();
+        round.captured = null;
+        return true;
+    }
+
     /** One real writer planning round retains its first Ready frame until policy reads finish. */
     public <T> T withPlanningRound(ContinuityStorePort.Session borrowed, PlanningRoundWork<T> work)
             throws IOException, InterruptedException {
@@ -442,6 +459,10 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
             PlanningRoundScope round = planningRoundScope.get();
             require(round == null || round.borrowed == borrowed && round.captured == null,
                     "planning round already holds its original Ready observation");
+            if (round != null && round.retainedPacket != null) {
+                var original = round.retainedPacket; round.retainedPacket = null;
+                return rejoinRetained(borrowed, original, deadline, round);
+            }
             return capture(borrowed, deadline, captured -> inPlanningScope(borrowed, captured, sameCapture -> {
                 SessionPorts.Observation result = createObservation(borrowed, sameCapture, deadline);
                 if (round != null && result instanceof SessionPorts.Ready) round.captured = sameCapture;
@@ -452,6 +473,43 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
             ExactRef diagnostic = diagnostic(borrowed, failure);
             return new SessionPorts.ObservationUnavailable(reason(failure), diagnostic);
         }
+    }
+
+    /**
+     * Rejoins a retained physical packet through the existing transport/driver producers.
+     * This does not call transport.observe or freshFullState; it uses the original receiver occurrence.
+     */
+    private SessionPorts.Observation rejoinRetained(ContinuityStorePort.Session borrowed,
+            org.xar.ck3.control.application.action.NativeObservationPort.ObservedFrame original,
+            Instant deadline, PlanningRoundScope round) throws IOException {
+        // A changed receiver occurrence uses the existing fresh capture; never swallow I/O or writer failures.
+        var current = transport.currentSnapshot(deadline);
+        if (current != original) return capture(borrowed, deadline, captured -> inPlanningScope(borrowed, captured, sameCapture -> {
+            SessionPorts.Observation result = createObservation(borrowed, sameCapture, deadline);
+            if (result instanceof SessionPorts.Ready) round.captured = sameCapture;
+            return result;
+        }));
+        transport.acceptedSnapshotRevision(original).requireOriginal(current);
+
+        // Use the existing driver.withFrozenObservation to join the original packet with current Driver facts
+        return driver.withFrozenObservation(original, borrowed, frozen -> {
+            require(frozen.projection() instanceof DriverStateSnapshot.Complete, "read-publication rejoin cannot reuse unresolved or incomplete Driver history");
+            // Preserve the original packet reference for qualification
+            ExactRef originalRef = preserve(borrowed, ReadinessArchive.Role.NATIVE_PACKET, original.originalPacket());
+
+            // Qualify the physical capture using the existing producers
+            return qualifyPhysical(borrowed, deadline, borrowed.head().digest(), original, frozen.state(), frozen.facts(), originalRef, physical -> {
+                // Create the captured state from the physical qualification
+                return fromPhysical(borrowed, deadline, physical, captured -> {
+                    // Enter the planning scope and create the observation
+                    return inPlanningScope(borrowed, captured, sameCapture -> {
+                        SessionPorts.Observation result = createObservation(borrowed, sameCapture, deadline);
+                        if (round != null && result instanceof SessionPorts.Ready) round.captured = sameCapture;
+                        return result;
+                    });
+                });
+            });
+        });
     }
     /**
      * Root public actions obtain their actual request, M7 publication and domain preparation within one held

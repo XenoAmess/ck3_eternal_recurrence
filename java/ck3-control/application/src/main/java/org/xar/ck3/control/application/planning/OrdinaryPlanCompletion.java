@@ -17,6 +17,10 @@ import org.xar.ck3.control.contracts.StrictJson;
  * The planner and loop never infer a ledger write from an annotation or ACK.
  */
 public interface OrdinaryPlanCompletion {
+    /** Real READ publication barrier before online selection; an unchanged adapter has no work here. */
+    default Optional<Published> beforeSelection(PlanningRequest original, PlanningResult.ActionSelected proposed) {
+        return Optional.empty();
+    }
     PlanningDisposition afterPlanning(PlanningRequest original, PlanningResult planned);
     ExecutionDisposition afterExecution(ActionReceipt actual);
 

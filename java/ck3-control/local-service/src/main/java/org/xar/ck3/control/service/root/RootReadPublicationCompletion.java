@@ -20,6 +20,7 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
     private final org.xar.ck3.control.application.readiness.NativeReadinessCollector collector;
     private static final class PlanningRound {
         private final ContinuityStorePort.Session session;private boolean flushFailed;
+        private Optional<Published> readPublication=Optional.empty();
         private PlanningRound(ContinuityStorePort.Session session){this.session=session;}
     }
     /** A completed physical-read failure leaves the writer callback as DATA, so writer release errors remain primary. */
@@ -43,7 +44,10 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
         ScopeExit<T> actual=core.withBorrowed(()->{
             ContinuityStorePort.Session borrowed=core.writer().borrowedSession();core.writer().requireSession(borrowed);
             PlanningRound current=new PlanningRound(borrowed);round.set(current);
-            try { return new ScopeExit<T>(Optional.of(finishOriginalWork(()->collector.withPlanningRound(borrowed,work::run),()->flushInSession(borrowed),()->current.flushFailed)),Optional.empty()); }
+            try { return new ScopeExit<T>(Optional.of(collector.withPlanningRound(borrowed,()->finishPlanningReads(()->{
+                current.readPublication=Optional.empty();
+                return finishOriginalWork(work,()->flushInSession(borrowed),()->current.flushFailed);
+            },()->current.readPublication.isPresent(),()->collector.prepareReadPublicationReplan(borrowed)))),Optional.empty()); }
             catch(org.xar.ck3.control.application.planning.PlanningReadFailure failure) {
                 if(!org.xar.ck3.control.application.planning.PlanningReadFailure.hasCompletedPublication(failure))throw failure;
                 return new ScopeExit<T>(Optional.empty(),Optional.of(failure));
@@ -53,6 +57,15 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
         return actual.released();
     }
     @FunctionalInterface interface PublicationFlush { Optional<Published> flush()throws IOException; }
+    @FunctionalInterface interface ReadReplan { boolean prepare()throws IOException; }
+    /** Only successful real READ commits request another work pass; writer failures never enter this loop. */
+    static <T> ScopeResult<T> finishPlanningReads(ScopeWork<ScopeResult<T>> work,
+            java.util.function.BooleanSupplier readPublished,ReadReplan replan)throws IOException,InterruptedException {
+        for(;;) {
+            ScopeResult<T> completed=work.run();
+            if(!readPublished.getAsBoolean()||!replan.prepare())return completed;
+        }
+    }
     /** Same production control flow; package-only for failure-preservation regression, never source/Ready authority. */
     static <T> ScopeResult<T> finishOriginalWork(ScopeWork<T> work,PublicationFlush publication,java.util.function.BooleanSupplier alreadyFailed)
             throws IOException,InterruptedException {
@@ -78,19 +91,31 @@ public final class RootReadPublicationCompletion implements OrdinaryPlanCompleti
     public Optional<Published> flushInSession(ContinuityStorePort.Session borrowed) throws IOException {
         try {
             core.writer().requireSession(borrowed);
-            return reads.flushActualReads(borrowed).map(committed->new Published(committed.predecessor(),committed.actual()));
+            Optional<Published> actual=reads.flushActualReads(borrowed).map(committed->new Published(committed.predecessor(),committed.actual()));
+            PlanningRound current=round.get();
+            if(current!=null&&current.session==borrowed&&actual.isPresent())current.readPublication=actual;
+            return actual;
         }catch(IOException|RuntimeException|Error failure) {
             PlanningRound current=round.get();
             if(current!=null&&current.session==borrowed)current.flushFailed=true;
             throw failure;
         }
     }
+    @Override public Optional<Published> beforeSelection(PlanningRequest original,PlanningResult.ActionSelected proposed) {
+        Objects.requireNonNull(original);Objects.requireNonNull(proposed);
+        try {
+            ContinuityStorePort.Session borrowed=core.writer().borrowedSession();
+            StrictJson.require(round.get()!=null&&round.get().session==borrowed,"pre-selection publication must retain its actual writer scope");
+            return flushInSession(borrowed);
+        }catch(IOException failure){throw new UncheckedIOException("actual preparatory read publication failed; no model/action dispatch",failure);}
+    }
     @Override public PlanningDisposition afterPlanning(PlanningRequest original,PlanningResult planned) {
         Objects.requireNonNull(original);Objects.requireNonNull(planned);
         try {
             ContinuityStorePort.Session borrowed=core.writer().borrowedSession();
             StrictJson.require(round.get()!=null&&round.get().session==borrowed,"planning completion must retain its original live writer callback");
-            Optional<Published> changed=flushInSession(borrowed);
+            Optional<Published> changed=round.get().readPublication;
+            if(changed.isEmpty())changed=flushInSession(borrowed);
             if(changed.isPresent())return changed.orElseThrow(); // Domain publication waits for the new complete observation.
             return Objects.requireNonNull(downstream.afterPlanning(original,planned),"actual domain planning disposition required");
         }catch(IOException failure){throw new UncheckedIOException("actual read publication failed; original query is retained without replay",failure);}

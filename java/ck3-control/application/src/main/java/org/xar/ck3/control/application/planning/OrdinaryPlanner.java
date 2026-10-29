@@ -61,6 +61,11 @@ public final class OrdinaryPlanner {
         return planScoped(request, Optional.empty());
     }
 
+    /** The ordinary Controller publishes its real preparatory READs before asking the online selector. */
+    public PlanningResult plan(PlanningRequest request, OrdinaryPlanCompletion completion) {
+        return planScoped(request, Optional.empty(), Optional.of(Objects.requireNonNull(completion)));
+    }
+
     /** One fresh continuation after actual optional Sway work; all other ordinary producers still run. */
     public PlanningResult planAfterOptional(PlanningRequest fresh, PlanningStage completedOptional) {
         StrictJson.require(completedOptional == PlanningStage.ORDINARY_SWAY,
@@ -69,12 +74,26 @@ public final class OrdinaryPlanner {
     }
 
     private PlanningResult planScoped(PlanningRequest request, Optional<PlanningStage> completedOptional) {
+        return planScoped(request, completedOptional, Optional.empty());
+    }
+
+    private PlanningResult planScoped(PlanningRequest request, Optional<PlanningStage> completedOptional,
+            Optional<OrdinaryPlanCompletion> completion) {
         Objects.requireNonNull(request);
         RealmLifecycle.Scope scope = realmLifecycle.begin(request);
         try {
             PlanningResult result = planBound(request, completedOptional);
-            if (result instanceof ActionSelected selected && selector != null)
-                result = selectProposal(request, selected);
+            if (result instanceof ActionSelected selected) {
+                Optional<OrdinaryPlanCompletion.Published> published = completion.flatMap(value -> value.beforeSelection(request, selected));
+                if (published.isPresent()) {
+                    Draft original = selected.trace().finalPlan().orElseThrow();
+                    String reason = "actual_read_publication_requires_current_proposal";
+                    Draft deferred = new Draft(original.policy(), original.phase(), reason, original.kind(), Optional.empty(),
+                            Purpose.READ_ONLY, original.domain(), original.detail());
+                    result = new RefreshRequired(request.before(), reason,
+                            new PlanTrace(request.before(), selected.trace().visits(), Optional.of(deferred)));
+                } else if (selector != null) result = selectProposal(request, selected);
+            }
             realmLifecycle.finalizePlan(scope, result);
             return result;
         } catch (RuntimeException | Error failure) {

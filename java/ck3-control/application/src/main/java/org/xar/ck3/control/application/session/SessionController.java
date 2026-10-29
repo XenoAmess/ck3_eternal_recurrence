@@ -742,7 +742,7 @@ public final class SessionController {
             Ready ready=(Ready)current;
             if(checkpointsEnabled&&dirty&&eligibleSinceSave>=limits.checkpointEveryEligibleAdvances()
                     &&ready.checkpointEligibility()==CheckpointEligibility.SAFE)return new SaveRound(ready);
-            PlanningResult planned=measured(Phase.PLANNING,()->planner.plan(ready.request()));lastPlan=Optional.of(planned.trace());
+            PlanningResult planned=measured(Phase.PLANNING,()->planner.plan(ready.request(),completion));lastPlan=Optional.of(planned.trace());
             StrictJson.require(planned.trace().before().equals(ready.request().before()),"planner result crossed current observation");
             requireTime();
             var disposition=Objects.requireNonNull(measured(Phase.OUTCOME_CONSUMPTION,()->completion.afterPlanning(ready.request(),planned)),"actual planning completion disposition required");
