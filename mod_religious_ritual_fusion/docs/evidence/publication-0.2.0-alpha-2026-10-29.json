@@ -1,0 +1,223 @@
+{
+  "schema": "rrf-publication-actual-evidence-v2",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-29T20:18:08.420613+00:00",
+  "version": "0.2.0-alpha",
+  "workshop_id": "3826756673",
+  "app_id": "1158310",
+  "formal_source_commit": "b31664ba659f5a20a188527719367c831734b8c1",
+  "formal_tag": "religious-ritual-fusion-v0.2.0-alpha-publish1",
+  "formal_tag_object": "de305138b17238ef3804cd98894c4b832688dff1",
+  "canonical_file_count": 90,
+  "canonical_size_bytes": 1289918,
+  "submitted_at_utc": "2026-10-29T19:42:56.480675Z",
+  "steam_result": 1,
+  "public_visibility": 0,
+  "preview_count_before": 15,
+  "preview_count_after": 19,
+  "metadata_readback": {
+    "title_exact": true,
+    "full_description_exact": true,
+    "compatible_version": "1.20 'Crozier'",
+    "gallery_order_exact": true,
+    "old_15_previews_unchanged": true,
+    "new_four_jpegs_exact": true,
+    "cover_exact": true,
+    "notes": {
+      "public_entry_id": "1793302976",
+      "full_text_and_typed_structure_equal": true,
+      "typed_event_count": 53,
+      "semantic_text_characters": 1639,
+      "raw_server_bbcode_byte_identity_claimed": false,
+      "original_verifier_exit_code": 1,
+      "original_failure_preserved": true,
+      "comparison_domain_correction": "Canonical BBCode and public HTML parsed to the same typed headings/list/list-item/bold/text representation; no content truncation or punctuation/space folding."
+    }
+  },
+  "download": {
+    "actual_result": 1,
+    "install_flags": 5,
+    "installed_path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/3826756673",
+    "actual_file_count": 90,
+    "all_paths_sizes_sha256_exact": true,
+    "cache_copied_from_staging": false
+  },
+  "cleanup": {
+    "user_scope": "All local mods unrelated to Religious & Ritual Fusion; keep compatibility inputs MTS3182367229 and DES3826991345, policy controls, source/evidence/save assets.",
+    "extra_legacy_budget_gap_gate_removed_by_user": true,
+    "permanent_local_blocked_ids": [
+      "2291024373",
+      "2993056101",
+      "2962333032"
+    ],
+    "acl_changed": false,
+    "acf_edited": false,
+    "account_subscriptions_changed": false,
+    "files_deleted": 4837,
+    "empty_directories_deleted": 21923,
+    "measured_file_allocation_deleted_bytes": 10118775808,
+    "gross_history_refund_bytes": 0
+  },
+  "cache_menu": {
+    "status": "FAILED_BEFORE_GAME_REPAIR_IN_PROGRESS",
+    "failed_run_id": "4-8e1c2f1861--religious-ritual-fusion--R0059",
+    "host_original_returncode": 1,
+    "public_original_returncode": 2,
+    "root_original_returncode": 1,
+    "keeper_original_returncode": 0,
+    "allocator_original_returncode": 0,
+    "screen_release_sequence": 14671,
+    "game_started": false,
+    "cache_menu_case_pass": false,
+    "business_pass": false,
+    "product_release_pass": false
+  },
+  "historical_gaps": [
+    "Original registered 12/20 complete business matrices remain incomplete",
+    "SDK continuation episode identity/save_binding_mismatch",
+    "Actual county religion map colour samples",
+    "Cross Religion, 100 cores, full rejection/cooldown/AI/multiplayer/old-save coverage"
+  ],
+  "evidence": {
+    "canonical_manifest": {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-0.2.0-alpha-publish1-a01\\canonical-staging.manifest.json",
+      "bytes": 17020,
+      "sha256": "3ce7412e8bbaefca8efdd9ed465b398496955ccb603afdd1e75840715280b808"
+    },
+    "combined_update_plan": {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-local-resume-20261030-a01\\network-a01\\content-and-four-previews.actual.plan.json",
+      "bytes": 9048,
+      "sha256": "f58399dbd0824044791807be73cbfb130723c77b71f069c4b7c45b1b4d5fc8dc"
+    },
+    "submit_receipt": {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-local-resume-20261030-a01\\network-a01\\CONTENT-AND-FOUR-PREVIEWS.receipt.json",
+      "bytes": 5483,
+      "sha256": "3aaf9d52815f51d04ada899c3cc8dc3564c16da54c743112426b15f43eecdd64"
+    },
+    "submit_original_wait": {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-local-resume-20261030-a01\\network-a01\\publish-combined.original-wait.actual.json",
+      "bytes": 1743,
+      "sha256": "9120f6a70d4623b898d059ff4468dc60c1b6954ba9023ca823d50625ee67f0cc"
+    },
+    "previews_before": {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-local-resume-20261030-a01\\network-a01\\previews-before.stdout.json",
+      "bytes": 6781,
+      "sha256": "205007e9465b8628cb145032eb8abad31f1310e4710cf39aa7f422f79c84ea90"
+    },
+    "previews_after": {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-local-resume-20261030-a01\\network-a01\\previews-after.stdout.json",
+      "bytes": 8589,
+      "sha256": "8d22f01db055762a3523a34b1abd5c9f089a37112e2cfbd8345a4696224372fb"
+    },
+    "anonymous_original_verification": {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-local-resume-20261030-a01\\network-a01\\anonymous-public-readback-a01\\verification.json",
+      "bytes": 749,
+      "sha256": "38868df1162f85d4ff3924582ce3a649a71ef0d1888982ab06feae98e72cd8bb"
+    },
+    "anonymous_full_readback_review": {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-local-resume-20261030-a01\\public-readback-review-a01\\PUBLIC-READBACK-REVIEW.actual.json",
+      "bytes": 18077,
+      "sha256": "7a1065193aa846f855c487d8d65bc0ca95c5e3500d1d14b5d4b5e47d930392dc"
+    },
+    "notes_typed_comparison": {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-local-resume-20261030-a01\\public-readback-review-a01\\NOTES-COMPARISON.actual.json",
+      "bytes": 2254,
+      "sha256": "fd7523c715f1b2ba366d61268214611a803c70ca4724e113dbb332f3061601f3"
+    },
+    "public_compatible_version_and_gallery": {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-local-resume-20261030-a01\\public-main-page-followup-a01\\PUBLIC-MAIN-COMPATIBLE-VERSION-AND-GALLERY.actual.json",
+      "bytes": 10614,
+      "sha256": "854db1c8886daa5242254e4cc57dbe8c26ddea27608a88c0ecd28a9c02365326"
+    },
+    "download": {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-local-resume-20261030-a01\\network-a01\\download.stdout.json",
+      "bytes": 2765,
+      "sha256": "0e0dea5abaff0842d53c1a098f439188ea484ac91d48732ce26f7b58274ed0c2"
+    },
+    "download_original_wait": {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-local-resume-20261030-a01\\network-a01\\download.original-wait.actual.json",
+      "bytes": 1711,
+      "sha256": "77ec0d371ad8051a57c147f94034f22c39033d6d7af76a83f816896cbecc086b"
+    },
+    "offline_after_network": {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-local-resume-20261030-a01\\network-a01\\Steam-offline-restored.actual.json",
+      "bytes": 2433,
+      "sha256": "088c7507bbe5aa362a808eb3c90907828919f3e92edc0ceb47ae133b2eaa8499"
+    },
+    "network_closed": {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-local-resume-20261030-a01\\network-a01\\STEAM-NETWORK-CLOSED.actual.json",
+      "bytes": 2048,
+      "sha256": "362fe261d0dff1242d6d818883dea9b58b8207819e4716ec2e83ed1445748a7a"
+    },
+    "cleanup_first": {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-local-resume-20261030-a01\\cleanup-a01\\ACTUAL.actual.json",
+      "bytes": 4018,
+      "sha256": "207041f36d5bc3078d520ad80cba536dac45b22308983c6e279aebe61074b2cb"
+    },
+    "cleanup_after_network": {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-local-resume-20261030-a01\\cleanup-postnetwork-a01\\ACTUAL.actual.json",
+      "bytes": 4883,
+      "sha256": "53e030bf6eb19e1f267c9a7bf80dd1cf4470e186a6c0ea7f55e10726313e097b"
+    },
+    "outer_mod_registration": {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-local-resume-20261030-a01\\OUTER-MOD-0.2.actual.json",
+      "bytes": 1103,
+      "sha256": "b77e4036396577fd957d22508fc2afc7606c3feb2708614ad77cd614da58d73c"
+    },
+    "stage_after_upload": {
+      "path": "C:\\workspace\\rrf-development-20261024\\publication-local-resume-20261030-a01\\POST-UPLOAD-PRISTINE-STAGE.actual.json",
+      "bytes": 575,
+      "sha256": "a245dd2b2cb9feb95c6b8363b9d7bdeb2e048a593d9bce63cb694d731eb8f6d2"
+    },
+    "actual_cache_exact": {
+      "path": "C:\\workspace\\rrf-development-20261024\\workshop-cache-0.2.0-a01\\metadata\\runtime-preparation-a01\\prepared-workshop-cache-a01\\workshop-cache-exact-formal.json",
+      "bytes": 25135,
+      "sha256": "313f9b24f15a8c5fdc347c48bc5653445628a0281844ec8436c1956aabfbfb73"
+    },
+    "R0059_original_host_exit": {
+      "path": "C:\\workspace\\rrf-development-20261024\\workshop-cache-0.2.0-a01\\live\\4-8e1c2f1861--religious-ritual-fusion--R0059\\host-original-process-exit.json",
+      "bytes": 247,
+      "sha256": "e044e9bcd6b9831d946e8b172f530ccc61957ae9efc88be93722bcd64d08f79f"
+    },
+    "R0059_root_original_wait": {
+      "path": "C:\\workspace\\rrf-development-20261024\\workshop-cache-0.2.0-a01\\metadata\\ROOT-SERIAL-MENU-a71-original-b02\\ROOT-SERIAL.original-wait.actual.json",
+      "bytes": 823,
+      "sha256": "a23e0e6268e86c2e2661981533c72a581b56248c8b2726078fc0aa87081b49de"
+    },
+    "R0059_screen_release": {
+      "path": "C:\\workspace\\rrf-development-20261024\\workshop-cache-0.2.0-a01\\metadata\\public-operations-a01\\root-execution-a71\\ROOT-FAILURE-SCREEN-RELEASE.stdout.log",
+      "bytes": 1327,
+      "sha256": "98d478994372cd99c7597668c733e48c253449afb4133b0fa6792c4054612b8e"
+    },
+    "runtime_fix_writers_closed": {
+      "path": "C:\\workspace\\rrf-development-20261024\\workshop-cache-0.2.0-a01\\metadata\\menu-host-fix-a01\\FIX-WRITERS-CLOSED.actual.json",
+      "bytes": 35056,
+      "sha256": "a1ede9f6c38d1b269c95aabaab08cc630c781da30667b50896e1195e2efaee26"
+    },
+    "runtime_fix_CI_step_285": {
+      "path": "C:\\workspace\\rrf-development-20261024\\workshop-cache-0.2.0-a01\\metadata\\menu-host-fix-a01\\CI-b02\\COMMAND-SOURCE-EXECUTION.actual.json",
+      "bytes": 37255,
+      "sha256": "2f9c4790285cf884bd368d07ca392ee16d394f4ff4ae6e68d23360503b545a22"
+    },
+    "runtime_fix_CI_step_268": {
+      "path": "C:\\workspace\\rrf-development-20261024\\workshop-cache-0.2.0-a01\\metadata\\menu-host-fix-a01\\host-CI-a01\\COMMAND-SOURCE-EXECUTION.actual.json",
+      "bytes": 38475,
+      "sha256": "98149c0e00cf30958dfd7f1f8f15e0621c9c3d5d318b69d61dc209cb792e4c29"
+    },
+    "actual_R0059_recovery_reducer": {
+      "path": "C:\\workspace\\rrf-development-20261024\\workshop-cache-0.2.0-a01\\metadata\\menu-host-fix-a01\\ACTUAL-REDUCER-DRYRUN.actual.json",
+      "bytes": 13018,
+      "sha256": "ab8692a2c21d24d8e34efe8efb50f8adb6f6e02ac253ff271860f43762ec1365"
+    }
+  },
+  "runtime_repair": {
+    "final_complete_CI_tests": 225,
+    "skipped_tests": 0,
+    "complete_CI_steps": 2,
+    "all_original_waits_zero": true,
+    "Java_or_Native_rebuilt": false,
+    "actual_R0059_reducer_pass": true,
+    "administrative_resource_admission_only": true,
+    "business_pass": false
+  }
+}

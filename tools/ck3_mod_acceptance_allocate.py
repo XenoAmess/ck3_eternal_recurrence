@@ -552,6 +552,132 @@ def _allocated_profile_prelaunch(stderr: object, frozen: object) -> bool:
     return True
 
 
+class FrozenMenuCampaignBindingRejection(TypedDict):
+    host: FilePin
+    source_index: FilePin
+    canonical_host: FilePin
+    prepared_case: FilePin
+    profile_preparation: FilePin
+    source_commit: str
+    original_rejection: Literal['menu_has_no_campaign_identity']
+
+
+def _menu_campaign_binding_prelaunch(stderr: object, frozen: object) -> FrozenMenuCampaignBindingRejection | None:
+    """Bind this exact pre-main menu failure to its frozen producer and input."""
+    terminal = 'managed camera identity requires an existing campaign startup mode'
+    if not isinstance(stderr, str) or stderr.splitlines()[-1:] != ['ValueError: ' + terminal]:
+        return None
+    fields = json_object(frozen)
+    argv = strings_field(fields, 'argv')
+    files = object_field(fields, 'files')
+    hosts = [Path(arg).resolve() for arg in argv if Path(arg).name == 'shared-host.py']
+    indices = [Path(path).resolve() for path in files if Path(path).name == 'source-index.json']
+    preparations = [Path(path).resolve() for path in files if Path(path).name == 'prepared-case.json']
+    if len(hosts) != 1 or len(indices) != 1 or len(preparations) != 1:
+        raise ValueError('Menu campaign binding requires exact frozen host/source index/preparation')
+    host, index, prepared_path = hosts[0], indices[0], preparations[0]
+    for path in (host, index, prepared_path):
+        check_pin(path, object_field(files, str(path)))
+    root = Path(text_field(fields, 'source_root')).resolve()
+    machine = text_field(object_field(fields, 'identity_allocation'), 'machine_id')
+    source_index = read_json(index)
+    sources = _canonical_source_index_files(source_index, root, machine)
+    canonical = root / 'ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py'
+    if canonical not in sources:
+        raise ValueError('Menu campaign identity producer is absent from frozen source index')
+    check_pin(canonical, dict(sources[canonical]))
+    selected_text = host.read_text(encoding='utf-8-sig')
+    selected_tree, canonical_tree = ast.parse(selected_text), ast.parse(canonical.read_text(encoding='utf-8-sig'))
+    def function(tree: ast.Module, name: str) -> ast.FunctionDef:
+        matches = [node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == name]
+        if len(matches) != 1:
+            raise ValueError('Menu campaign identity source function is not unique')
+        return matches[0]
+    name = 'allocated_managed_campaign_run_binding'
+    if ast.dump(function(selected_tree, name)) != ast.dump(function(canonical_tree, name)):
+        raise ValueError('Menu campaign identity differs from frozen canonical producer')
+    frames = re.findall(r'  File "([^"]+)", line ([0-9]+), in ([^\r\n]+)\r?\n    ([^\r\n]+)', stderr)
+    expected = (('<module>', 'raise SystemExit(main())'),
+        ('main', '_ref = _faith_prepare_actual_normal_exit_binding(_args)'),
+        ('_faith_prepare_actual_normal_exit_binding', '_actual = allocated_managed_campaign_run_binding(_identity_args)'),
+        (name, 'raise ValueError("' + terminal + '")'))
+    lines = selected_text.splitlines()
+    if len(frames) != len(expected):
+        raise ValueError('Menu campaign binding requires the original pre-game main stack')
+    for (path, line, actual_name, statement), (expected_name, code) in zip(frames, expected):
+        line_number = int(line)
+        # The canonical main remains above the projection's overriding main.
+        # Bind the actual frame to its unique source span, not a global name.
+        scopes = [node for node in selected_tree.body if isinstance(node, ast.FunctionDef)
+                  and node.name == expected_name
+                  and node.lineno <= line_number <= (node.end_lineno or node.lineno)]
+        if (Path(path).resolve() != host or actual_name != expected_name or statement.strip() != code
+                or not 0 < line_number <= len(lines) or lines[line_number - 1].strip() != code
+                or (expected_name != '<module>' and len(scopes) != 1)):
+            raise ValueError('Menu campaign binding traceback differs from frozen source call chain')
+    excluded = ('--ordinary-gui-campaign', '--saved-campaign-save', '--saved-campaign-server',
+        '--frontend-fixture-start-policy', '--frontend-robert-bootstrap',
+        '--normal-exit-managed-profile', '--normal-exit-managed-profile-sha256')
+    if (argv.count('--frontend-mod-load-observation') != 1 or argv.count('--fixture-profile') != 1
+            or any(flag in argv for flag in excluded)):
+        raise ValueError('Menu campaign binding crossed original frontend startup mode')
+    prepared = read_json(prepared_path)
+    startup = object_field(prepared, 'startup')
+    profile_ref = file_pin(object_field(object_field(prepared, 'preparation'), 'profile_preparation'))
+    profile_path = Path(profile_ref['path']).resolve()
+    check_pin(profile_path, dict(profile_ref))
+    profile = read_json(profile_path)
+    if (prepared.get('case') != 'workshop_cache' or startup.get('mode') != 'workshop_cache'
+            or startup.get('state_dir') != fields.get('state_dir')
+            or prepared.get('runtime_manifest') != fields.get('runtime_manifest')
+            or profile.get('schema') != 'ck3-mod-acceptance-prepared-workshop-cache-v1'
+            or profile.get('state_dir') != fields.get('state_dir')
+            or any(profile.get(key) is not False for key in ('fixture_mounted', 'campaign_started', 'cache_content_copied'))):
+        raise ValueError('Menu campaign binding crossed exact prepared cache/profile')
+    return FrozenMenuCampaignBindingRejection(host=file_pin(pin(host)), source_index=file_pin(pin(index)),
+        canonical_host=sources[canonical], prepared_case=file_pin(pin(prepared_path)), profile_preparation=profile_ref,
+        source_commit=text_field(json_object(source_index), 'source_commit'),
+        original_rejection='menu_has_no_campaign_identity')
+
+
+def _menu_prelaunch_public_wait(wait_value: object, intent_value: object, started_value: object,
+        machine: str, mode: Literal['run', 'allocate'], source_commit: str, source_root: Path) -> list[str]:
+    """Consume the original rich Popen three-part receipt, preserving FILETIME."""
+    waited, intent, started = json_object(wait_value), json_object(intent_value), json_object(started_value)
+    common = {'machine_id', 'observed_at_utc', 'pid', 'argv', 'process_creation_filetime_100ns', 'started_at_utc'}
+    if (set(intent) != {'machine_id', 'observed_at_utc', 'argv', 'cwd', 'source_commit'}
+            or set(started) != common | {'original_wait_pending'}
+            or set(waited) != common | {'actual_original_popen_wait', 'original_wait_returncode', 'finished_at_utc'}):
+        raise ValueError('Menu prelaunch original rich public receipt fields differ')
+    birth, pid = started.get('process_creation_filetime_100ns'), started.get('pid')
+    expected_code = 2 if mode == 'run' else 0
+    if (any(row.get('machine_id') != machine for row in (intent, started, waited))
+            or type(pid) is not int or not isinstance(pid, int) or pid <= 0
+            or not isinstance(birth, str) or re.fullmatch(r'[1-9][0-9]*', birth) is None
+            or waited.get('pid') != pid or type(waited.get('pid')) is not int
+            or waited.get('process_creation_filetime_100ns') != birth
+            or intent.get('argv') != started.get('argv') or waited.get('argv') != started.get('argv')
+            or waited.get('started_at_utc') != started.get('started_at_utc')
+            or started.get('original_wait_pending') is not True
+            or waited.get('actual_original_popen_wait') is not True
+            or type(waited.get('original_wait_returncode')) is not int
+            or waited.get('original_wait_returncode') != expected_code
+            or intent.get('source_commit') != source_commit
+            or Path(text_field(intent, 'cwd')).resolve() != source_root.resolve()):
+        raise ValueError('Menu prelaunch original rich public process/wait differs')
+    stamps = [datetime.fromisoformat(text_field(row, key)) for row, key in (
+        (intent, 'observed_at_utc'), (started, 'started_at_utc'), (started, 'observed_at_utc'),
+        (waited, 'finished_at_utc'), (waited, 'observed_at_utc'))]
+    if (any(stamp.tzinfo is None or stamp.utcoffset() is None for stamp in stamps)
+            or any(a > b for a, b in zip(stamps, stamps[1:]))):
+        raise ValueError('Menu prelaunch original rich public chronology differs')
+    argv: list[str] = strings_field(intent, 'argv')
+    entries = [i for i, arg in enumerate(argv) if Path(arg).name == 'ck3_mod_acceptance.py']
+    if len(entries) != 1 or entries[0] + 1 >= len(argv) or argv[entries[0] + 1] != mode:
+        raise ValueError('Menu prelaunch original public command mode differs')
+    return argv
+
+
 @runtime_checkable
 class _SavedInventoryVerifierV2(Protocol):
     def parse_inventory(self, value: object) -> Inventory: ...
@@ -936,6 +1062,14 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
     readonly_tail_rejected=_saved_readonly_tail_prelaunch(stderr,bundle)
     allocated_profile_rejected=_allocated_profile_prelaunch(stderr,freeze)
     inventory_registrar=_saved_inventory_registrar_prelaunch(stderr,freeze)
+    menu_campaign_binding=_menu_campaign_binding_prelaunch(stderr,freeze)
+    if menu_campaign_binding is not None:
+        require(bundle.get('closure_kind')=='menu-campaign-normal-exit-binding-prelaunch' and
+                bundle.get('machine_id')==freeze.get('identity_allocation',{}).get('machine_id') and
+                all(bundle.get(key) is False for key in ('native_session_started','normal_close_qualified',
+                    'typed_normal_exit_proven','business_pass','release_pass')) and
+                'native_cleanup_qualified' in bundle and bundle['native_cleanup_qualified'] is None,
+                'Menu campaign binding closure must preserve exact no-native/no-business facts')
     if inventory_registrar is not None:
         require(bundle.get('closure_kind')=='saved-campaign-v2-inventory-registrar-prelaunch' and
                 bundle.get('machine_id')==freeze.get('identity_allocation',{}).get('machine_id') and
@@ -944,10 +1078,10 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
                 'native_cleanup_qualified' in bundle and bundle['native_cleanup_qualified'] is None,
                 'V2 registrar closure must preserve exact no-native/no-business facts')
     saved_profile_rejected=saved_registrar_rejected or readonly_tail_rejected or inventory_registrar is not None
-    background_rejected=allocated_profile_rejected or inventory_registrar is not None
+    background_rejected=allocated_profile_rejected or inventory_registrar is not None or menu_campaign_binding is not None
     supervisor_bound=supervisor.get('pid')==host.get('supervisor_pid')
     supervisor_binding=None
-    if saved_profile_rejected or allocated_profile_rejected:
+    if saved_profile_rejected or allocated_profile_rejected or menu_campaign_binding is not None:
         intent=original('launch_intent',previous/'launch-intent.json')
         sargv=supervisor.get('argv',[])
         def supervisor_argument(name):
@@ -1006,8 +1140,8 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
             exited.get('actual_original_popen_wait') is True and
             type(exited.get('returncode')) is int and exited['returncode']!=0 and
             exited.get('normal_ck3_exit_inferred') is False and
-            (not (cache_identity_rejected or saved_profile_rejected or allocated_profile_rejected) or exited['returncode']==1) and
-            (cache_identity_rejected or saved_profile_rejected or allocated_profile_rejected or any(cause in stderr for cause in (
+            (not (cache_identity_rejected or saved_profile_rejected or allocated_profile_rejected or menu_campaign_binding is not None) or exited['returncode']==1) and
+            (cache_identity_rejected or saved_profile_rejected or allocated_profile_rejected or menu_campaign_binding is not None or any(cause in stderr for cause in (
                 'ValueError: normal exit requires the actual public prepared profile',
                 'ValueError: effective host differs from reviewed projection',
                 'ValueError: normal-exit private V1 does not support enabled mod GUI files'))),
@@ -1031,6 +1165,16 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
             entry.get('launcher_exit_code')==0 and
             entry.get('business_acceptance')=='RED_OR_INCOMPLETE',
             'Original public RED/readiness result differs')
+    if menu_campaign_binding is not None:
+        require(failed_before_report, 'Menu campaign binding requires the original early host exit result')
+        prepared_path=Path(menu_campaign_binding['prepared_case']['path']).resolve()
+        prepared=original('prepared_case',prepared_path)
+        profile=original('profile_preparation',Path(menu_campaign_binding['profile_preparation']['path']))
+        require(ready.get('prepared_case')==menu_campaign_binding['prepared_case'] and
+                evidence['profile_preparation']==menu_campaign_binding['profile_preparation'],
+                'Menu campaign binding READY/prepared profile differs')
+        evidence.update({'frozen_menu_'+key:menu_campaign_binding[key] for key in
+                         ('host','source_index','canonical_host')})
     if cache_identity_rejected:
         prepared=original('prepared_case',Path(freeze['state_dir']).parent/'prepared/prepared-case.json')
         require(ready.get('prepared_case')==evidence['prepared_case'] and
@@ -1085,7 +1229,15 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
     def command(key,mode,code):
         row=bundle[key];path=Path(row['path']).resolve()
         check_pin(path,row);evidence[key]=row;value=read_json(path);argv=value.get('argv',[])
-        if cache_identity_rejected:
+        if menu_campaign_binding is not None:
+            intent_path=Path(bundle[key+'_intent']['path']).resolve()
+            started_path=Path(bundle[key+'_started']['path']).resolve()
+            require(intent_path.parent==path.parent and started_path.parent==path.parent,
+                    'Menu prelaunch original public receipt crossed execution directory')
+            argv=_menu_prelaunch_public_wait(value,original(key+'_intent',intent_path),
+                original(key+'_started',started_path),freeze['identity_allocation']['machine_id'],
+                mode,menu_campaign_binding['source_commit'],Path(freeze['source_root']))
+        elif cache_identity_rejected:
             if mode=='run':
                 require(path==(previous/'public-run-original-command.json').resolve(),
                         'Cache original public run command path differs')
@@ -1137,14 +1289,14 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
                 ((argv[-1:]==[mode] and argv.count(mode)==1) if saved_registrar_rejected else
                     argv[argv.index('--runtime')-1]==mode) and argv.count('--prepared-case')==1 and
                 Path(argv[argv.index('--prepared-case')+1]).resolve()==
-                    (prepared_path if saved_profile_rejected or allocated_profile_rejected else
+                    (prepared_path if saved_profile_rejected or allocated_profile_rejected or menu_campaign_binding is not None else
                      (Path(freeze['state_dir']).parent/'prepared/prepared-case.json').resolve()),
                 'Prelaunch original public '+mode+' completion differs')
         if mode=='run':
             require(argv.count('--run-context')==1 and
                     Path(argv[argv.index('--run-context')+1]).is_file(),
                     'Prelaunch reviewed run context missing')
-            if saved_profile_rejected or allocated_profile_rejected:
+            if saved_profile_rejected or allocated_profile_rejected or menu_campaign_binding is not None:
                 context_path=Path(argv[argv.index('--run-context')+1]).resolve()
                 context=read_json(context_path)
                 require(context.get('run_id')==freeze['run_id'] and
@@ -1161,6 +1313,19 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
         return Path(argv[argv.index('--runtime')+1]).resolve()
     require(command('public_run','run',2)==command('public_allocate','allocate',0),
             'Prelaunch public run/allocate runtime differs')
+    if menu_campaign_binding is not None:
+        red_path=Path(bundle['pre_game_red']['path']).resolve()
+        require(red_path.parent==Path(evidence['public_run']['path']).parent,
+                'Menu prelaunch original pre-game observation crossed execution directory')
+        observed=original('pre_game_red',red_path)
+        require(observed.get('machine_id')==freeze['identity_allocation']['machine_id'] and
+                observed.get('run_id')==freeze['run_id'] and
+                observed.get('host_exit')==evidence['host_exit'] and
+                observed.get('public_wait')==evidence['public_run'] and
+                observed.get('actual_ck3_inventory')==[] and observed.get('native_report_exists') is False and
+                observed.get('game_launch_not_observed') is True and observed.get('host_failure_preserved') is True and
+                all(observed.get(key) is False for key in ('normal_close_qualified','cache_load_pass','business_pass')),
+                'Menu prelaunch original pre-game RED observation differs')
     if cache_identity_rejected:
         observed=original('pre_game_red',previous/'root-pre-game-red.json')
         require(observed.get('run_id')==freeze['run_id'] and
@@ -1178,7 +1343,7 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
             keeper.get('game_actions') is False and
             parent.get('run_id')==freeze['run_id'] and
             parent.get('keeper_actual_exit_code')==0 and parent.get('keeper_report')==keeper and
-            (inventory_registrar is None or type(parent.get('keeper_actual_exit_code')) is int) and
+            (inventory_registrar is None and menu_campaign_binding is None or type(parent.get('keeper_actual_exit_code')) is int) and
             closed_lease(keeper,release,freeze['screen_task']),
             'Prelaunch keeper/original screen release differs')
     tasks=[row for row in bus_packet.get('tasks',[]) if row.get('task_id')==freeze['screen_task']]
@@ -1202,8 +1367,9 @@ def previous_prelaunch_host_failure_closure(previous: Path, freeze: dict[str, ob
             'native_session_started':False,'original_ck3_exit_code':None,
             'normal_close_qualified':False,'typed_normal_exit_proven':False,
             'business_pass':False,'release_pass':False,'absent_game_controls':absent,
-            **({'supervisor_binding':supervisor_binding} if saved_profile_rejected or allocated_profile_rejected else {}),
+            **({'supervisor_binding':supervisor_binding} if saved_profile_rejected or allocated_profile_rejected or menu_campaign_binding is not None else {}),
             **({'frozen_V2_registrar_rejection':inventory_registrar} if inventory_registrar is not None else {}),
+            **({'frozen_menu_campaign_binding_rejection':menu_campaign_binding} if menu_campaign_binding is not None else {}),
             **({'native_cleanup_qualified':None,'administrative_resource_admission_only':True}
                if background_rejected else {})}}
 

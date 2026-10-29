@@ -1,5 +1,7 @@
 # 宗教礼仪融合 0.1.0 Alpha：首发截图
 
+> 最新：2026-10-29T19:42:56Z，0.2.0 Alpha内容及四张补验图已实际更新同一条目，总19图。第16–19图的公开URL与精确回读见本文末尾；以下各阶段的“待提交／未发布”保留历史时点含义。
+
 机器 `4-8e1c2f1861`；整理日期 2026-10-25。六张均为真实礼仪融合／冷载历史截图，原图 2560×1440；不将它们标为尚未实机执行的宗教融合结果。选图依据为[产品素材目录](../mod_religious_ritual_fusion/docs/media/README.md)。
 
 Root 的首发导出位于 `C:/workspace/rrf-development-20261024/publication-a01/media/01.jpg` 至 `06.jpg`：使用 Java ImageIO、JPEG quality 0.90，仅格式编码，保留 2560×1440，不裁切或修改画面内容；导出文件自身的 bytes／SHA 以本次发布封包为准，不能用 PNG SHA 冒充 JPEG SHA。本文件不复制或重新导出图片。
@@ -160,3 +162,16 @@ JPEG根为`C:/workspace/rrf-development-20261024/publication-0.2.0-alpha-publish
 | `R0058-02-cross-faith-disabled.jpg` | 754693／`0112146f918d95079806d1a84738e46045f008ade3fed8e83d7a42cdf389078e` |
 
 原导出回执`publication-0.2.0-alpha-publish1-a01/metadata/media-export-a01/MEDIA-EXPORT.actual.json`4923B，SHA`90e3e51c819d1b1ea58f31014c3d243828c881a0a49b0616e6565a5420067a59`。JPEG未复制进仓库，暂无这些四图的公开URL、preview ID或回读结论。
+
+### 0.2.0实际发布：第16–19图
+
+`machine_id: 4-8e1c2f1861`。2026-10-29T19:42:56.480675Z同条目内容、完整文案及四JPEG一次Submit EResult1；新鲜Native列表前15图精确保留、追加四图。匿名CDN全为HTTP200，bytes／SHA与上述冻结JPEG逐字节一致，均2560×1440。19:55:49Z后的匿名主页面HTTP200，真实19项gallery顺序与Native列表一致。
+
+| 公开顺序 | 公开原图 | bytes／SHA-256 |
+| --- | --- | --- |
+| 16 | [三核心创建阻断](https://images.steamusercontent.com/ugc/14885039116906980674/E197F3FB347894E32FF2FE26BFD3A7408CCB1D09/) | 620813／`9fcf292d9592168c6289994eb5bb2b2faf9474ca01e8828952a257160fe66499` |
+| 17 | [两核心创建阻断](https://images.steamusercontent.com/ugc/10793685978852036490/4D27D344F997D31B434B30292C0C1E4FA95C8CAE/) | 630427／`0b265a454569aa976d4f87f64b84a7b54bab5a3fcb4df255b04a31ddc1f7aa83` |
+| 18 | [同信仰来源及冷却提示](https://images.steamusercontent.com/ugc/15589964144302146431/F77BB05C1E588891F93CBA8C9E7A4F51481BF325/) | 753049／`7bfb3e3b56ab7d7521de1b868f0d4b89b5268546872c318293840f0c81cbb052` |
+| 19 | [其他信仰冷却提示](https://images.steamusercontent.com/ugc/11514629262542036784/E13B9279048A72AE64A43C2AE573A6A112F75A7F/) | 754693／`0112146f918d95079806d1a84738e46045f008ade3fed8e83d7a42cdf389078e` |
+
+原15图本轮只重验完整列表和顺序，没有再次下载其全部字节；历史各图字节通过继续引用原回执。方形AI插画封面本轮匿名HTTP200、512×512，与canonical thumbnail字节相同。图片公开不授完整业务通过。[本次发布及回读证据](../mod_religious_ritual_fusion/docs/evidence/publication-0.2.0-alpha-2026-10-29.json)记录实际来源、完整Notes比较域修正及保留的首轮失败。

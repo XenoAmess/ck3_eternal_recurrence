@@ -1363,6 +1363,36 @@ if __name__ == '__main__':
                 self.owned.manifest_path.write_bytes(original_manifest)
         self.assertEqual(self.reached, [])
 
+    def test_menu_without_profile_delegates_legacy_and_converted_successors(self) -> None:
+        root = Path(__file__).resolve().parents[1]
+        # Replay the faulty already-converted predecessor separately: the
+        # production conversion used to recognize only the original refusal.
+        converted = self.owned.root / 'converted-menu-parent.py'
+        raw = self.projected.read_text(encoding='utf-8-sig')
+        raw = raw.replace('elif not _args.frontend_mod_load_observation:', 'else:')
+        converted.write_text(raw, encoding='utf-8')
+        for parent in (self.projected, converted):
+            output = self.owned.root / ('menu-' + parent.name)
+            output.write_bytes(builder.project_host(root, parent, self.owned.runtime_path,
+                self.owned.runtime_path, {builder.HOST_RELATIVE: builder.sig((root / builder.HOST_RELATIVE).read_bytes())}))
+            host = builder.module(output, 'owned_menu_' + parent.stem.replace('-', '_'))
+            argv = [str(output), '--fixture-profile', '--frontend-mod-load-observation']
+            with self.subTest(parent=parent.name), patch.object(sys, 'argv', argv), \
+                    patch.object(host, '_faith_prepare_actual_normal_exit_binding',
+                                 side_effect=AssertionError('Menu must not derive a campaign identity')), \
+                    patch.object(host, '_faith_shared_main', return_value=0) as shared:
+                self.assertEqual(host.main(), 0)
+                shared.assert_called_once_with()
+                self.assertEqual(sys.argv, argv)
+
+    def test_menu_explicit_partial_profile_still_rejected_before_delegation(self) -> None:
+        argv = [str(self.projected), '--fixture-profile', '--frontend-mod-load-observation',
+                '--normal-exit-managed-profile', 'missing-profile.json']
+        with patch.object(sys, 'argv', argv), patch.object(self.host, '_faith_shared_main') as shared:
+            with self.assertRaisesRegex(ValueError, 'exact SHA-256'):
+                self.host.main()
+            shared.assert_not_called()
+
     def test_real_projected_main_preserves_legacy_no_profile_actual_derive(self) -> None:
         from build_normal_exit_source_inventory_v1 import INVENTORY_BASENAME
         argv = list(self.argv)

@@ -467,6 +467,145 @@ class PrelaunchHostFailureTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'host exit/cause'):
             self.check()
 
+    def menu_campaign_binding_failure(self) -> None:
+        """R0059's exact frozen call chain and rich original wait protocol."""
+        self.allocated_profile_failure()
+        source = self.root / 'sdk'
+        relative = 'ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py'
+        canonical = source / relative
+        canonical.parent.mkdir(parents=True)
+        canonical.write_bytes((TOOLS.parent / relative).read_bytes())
+        tree = ast.parse(canonical.read_text(encoding='utf-8-sig'))
+        function = next(node for node in tree.body if isinstance(node, ast.FunctionDef)
+                        and node.name == 'allocated_managed_campaign_run_binding')
+        selected = self.root / 'shared-host.py'
+        selected.write_text(ast.unparse(function) + '''
+def main():
+    return 0
+def _faith_prepare_actual_normal_exit_binding(args):
+    _identity_args = copy.copy(args)
+    _actual = allocated_managed_campaign_run_binding(_identity_args)
+def main():
+    _args = parser().parse_args()
+    _ref = _faith_prepare_actual_normal_exit_binding(_args)
+if __name__ == '__main__':
+    raise SystemExit(main())
+''', encoding='utf-8')
+        # ast.unparse changes quote spelling; preserve the actual failing
+        # producer line for the original traceback/source-line comparison.
+        terminal = 'managed camera identity requires an existing campaign startup mode'
+        selected.write_text(selected.read_text().replace("raise ValueError('" + terminal + "')",
+            'raise ValueError("' + terminal + '")'), encoding='utf-8')
+        argv = ['python', '-B', '-X', 'utf8', str(selected), '--output', str(self.run/'native-report.json'),
+                '--fixture-profile', '--frontend-mod-load-observation']
+        machine = self.freeze['identity_allocation']['machine_id']
+        index = self.root / 'source-index.json'
+        self.write(index, {'schema':'ck3-common-source-index-v1', 'machine_id':machine,
+            'source_commit':'c'*40, 'files':{relative:{key:value for key,value in allocation.pin(canonical).items() if key!='path'}}})
+        manifest = {'path':str(self.root/'manifest.json'), 'bytes':2, 'sha256':'a'*64}
+        prepared_path = Path(self.bundle['prepared_case']['path'])
+        profile = self.write(prepared_path.with_name('profile-preparation.json'), {
+            'schema':'ck3-mod-acceptance-prepared-workshop-cache-v1', 'state_dir':self.freeze['state_dir'],
+            'fixture_mounted':False, 'campaign_started':False, 'cache_content_copied':False})
+        prepared = self.write(prepared_path, {'case':'workshop_cache', 'runtime_manifest':manifest,
+            'startup':{'mode':'workshop_cache','state_dir':self.freeze['state_dir']},
+            'preparation':{'profile_preparation':profile}})
+        self.freeze.update(argv=argv, source_root=str(source), runtime_manifest=manifest,
+            files={str(path.resolve()):{key:value for key,value in allocation.pin(path).items() if key!='path'}
+                   for path in (selected,index,prepared_path)})
+        frozen = self.write(self.run/'frozen-argv.json', self.freeze)
+        ready_path = self.run/'ready-context.json'
+        ready = json.loads(ready_path.read_bytes())
+        ready.update(prepared_case=prepared, frozen_argv=frozen)
+        ready.pop('normal_exit_managed_profile')
+        self.bundle['ready_context'] = self.write(ready_path, ready)
+        self.write(self.root/'reviewed-context.json', ready)
+        self.bundle.update(prepared_case=prepared, profile_preparation=profile,
+            closure_kind='menu-campaign-normal-exit-binding-prelaunch', machine_id=machine,
+            native_session_started=False, typed_normal_exit_proven=False, release_pass=False,
+            native_cleanup_qualified=None)
+        for key, field, value in [('launch_intent','frozen_argv',frozen),('host_started','argv',argv)]:
+            path = Path(self.bundle[key]['path']); row = json.loads(path.read_bytes()); row[field]=value
+            self.bundle[key] = self.write(path,row)
+        expected = (('<module>','raise SystemExit(main())'),
+            ('main','_ref = _faith_prepare_actual_normal_exit_binding(_args)'),
+            ('_faith_prepare_actual_normal_exit_binding','_actual = allocated_managed_campaign_run_binding(_identity_args)'),
+            ('allocated_managed_campaign_run_binding','raise ValueError("'+terminal+'")'))
+        lines = selected.read_text().splitlines()
+        stack = 'Traceback (most recent call last):\n'
+        for name,statement in expected:
+            line = next(i+1 for i,text in enumerate(lines) if text.strip()==statement)
+            stack += f'  File "{selected}", line {line}, in {name}\n    {statement}\n'
+        stderr = self.run/'host-stderr.log'; stderr.write_text(stack+'ValueError: '+terminal+'\n')
+        self.bundle['host_stderr'] = allocation.pin(stderr)
+        for mode,code in (('run',2),('allocate',0)):
+            key='public_'+mode; path=Path(self.bundle[key]['path'])
+            old=json.loads(path.read_bytes()); words=old['argv']
+            words[words.index('entry.py')]='tools/ck3_mod_acceptance.py'
+            intent={'machine_id':machine,'observed_at_utc':'2026-10-24T18:00:42+00:00',
+                'argv':words,'cwd':str(source),'source_commit':'c'*40}
+            common={'machine_id':machine,'argv':words,'pid':700 if mode=='run' else 701,
+                'process_creation_filetime_100ns':'134373384431646823',
+                'started_at_utc':'2026-10-24T18:00:43+00:00'}
+            self.bundle[key+'_intent']=self.write(path.with_name(mode+'-intent.json'),intent)
+            self.bundle[key+'_started']=self.write(path.with_name(mode+'-started.json'),{
+                **common,'observed_at_utc':'2026-10-24T18:00:44+00:00','original_wait_pending':True})
+            self.bundle[key]=self.write(path,{**common,'observed_at_utc':'2026-10-24T18:00:50+00:00',
+                'actual_original_popen_wait':True,'original_wait_returncode':code,
+                'finished_at_utc':'2026-10-24T18:00:49+00:00'})
+        self.bundle['pre_game_red']=self.write(self.root/'pre-game-red.json',{
+            'machine_id':machine,'run_id':self.run.name,'host_exit':self.bundle['host_exit'],
+            'public_wait':self.bundle['public_run'],'actual_ck3_inventory':[], 'native_report_exists':False,
+            'game_launch_not_observed':True,'host_failure_preserved':True,
+            'normal_close_qualified':False,'cache_load_pass':False,'business_pass':False})
+        self.early_exit_result()
+
+    def test_menu_campaign_binding_rich_wait_has_only_resource_failure_credit(self):
+        self.menu_campaign_binding_failure()
+        value=json.loads(json.dumps(self.check()['failure_cleanup']))
+        self.assertTrue(value['administrative_resource_admission_only'])
+        self.assertEqual(value['supervisor_binding']['launcher_popen_pid'],23044)
+        self.assertEqual(value['supervisor_binding']['actual_supervise_pid'],25944)
+        self.assertFalse(value['supervisor_binding']['parent_child_relationship_observed'])
+        self.assertEqual(value['original_host_exit_code'],1)
+        self.assertIsNone(value['original_ck3_exit_code'])
+        self.assertIsNone(value['native_cleanup_qualified'])
+        self.assertFalse(value['business_pass'])
+        self.assertFalse(value['normal_close_qualified'])
+        self.assertEqual(value['frozen_menu_campaign_binding_rejection']['original_rejection'],'menu_has_no_campaign_identity')
+        for ref in value['original_evidence'].values():
+            allocation.file_pin(ref)
+
+    def test_menu_campaign_binding_rejects_crossed_original_rich_identity_and_wait(self):
+        self.menu_campaign_binding_failure()
+        for key,field,bad in [('public_run','process_creation_filetime_100ns',134373384431646823),
+                ('public_run','original_wait_returncode',True), ('public_allocate','original_wait_returncode',2),
+                ('public_run_started','pid',True),('public_run_intent','source_commit','d'*40),
+                ('launch_intent','ticket','b'*64)]:
+            path=Path(self.bundle[key]['path']); original=json.loads(path.read_bytes())
+            self.bundle[key]=self.write(path,{**original,field:bad}); self.save()
+            with self.subTest(key=key,field=field),self.assertRaises(ValueError):self.check()
+            self.bundle[key]=self.write(path,original)
+        self.save()
+
+    def test_menu_campaign_binding_rejects_unbound_stack_source_mode_and_native_report(self):
+        self.menu_campaign_binding_failure()
+        path=self.run/'host-stderr.log'; original=path.read_text()
+        for bad in (original.replace('in main','in run_game'),original.replace('_actual =','_other =')):
+            path.write_text(bad);self.bundle['host_stderr']=allocation.pin(path);self.early_exit_result()
+            with self.assertRaisesRegex(ValueError,'frozen source call chain'):self.check()
+        path.write_text(original);self.bundle['host_stderr']=allocation.pin(path);self.early_exit_result()
+        prepared_path=Path(self.bundle['prepared_case']['path']); prepared=json.loads(prepared_path.read_bytes())
+        self.bundle['prepared_case']=self.write(prepared_path,{**prepared,'case':'cold_reload'});self.save()
+        with self.assertRaises(ValueError):self.check()
+        self.bundle['prepared_case']=self.write(prepared_path,prepared);self.save()
+        native=self.run/'native-report.json';native.write_text('{}')
+        with self.assertRaisesRegex(ValueError,'native/game/control'):self.check()
+        native.unlink()
+        canonical=Path(self.freeze['source_root'])/'ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py'
+        canonical.write_bytes(canonical.read_bytes()+b'\n# changed after freeze\n')
+        with self.assertRaises(ValueError):self.check()
+
     def inventory_registrar_failure(self) -> None:
         """R0009's retained terminal/call sites, on authored paths and no game."""
         from ck3_mod_acceptance_saved_profile_v2 import write_saved_profile_inventory_v2
