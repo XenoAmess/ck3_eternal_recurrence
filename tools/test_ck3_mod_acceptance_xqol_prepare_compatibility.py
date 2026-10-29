@@ -36,7 +36,8 @@ class InverseFragment(TypedDict):
 
 ReviewSchema = Literal['ck3-xqol-reviewed-prepare-compatibility-v2',
                        'ck3-xqol-reviewed-prepare-compatibility-v3',
-                       'ck3-xqol-reviewed-prepare-compatibility-v4']
+                       'ck3-xqol-reviewed-prepare-compatibility-v4',
+                       'ck3-xqol-reviewed-prepare-compatibility-v5']
 
 
 @dataclass(frozen=True)
@@ -113,8 +114,10 @@ REVIEW = _read_review(CASES / 'xqol_prepare_compatibility_review_v2.json',
                       'ck3-xqol-reviewed-prepare-compatibility-v2')
 HISTORICAL_EXTENSION_REVIEW = _read_review(CASES / 'xqol_prepare_compatibility_review_v3.json',
                                          'ck3-xqol-reviewed-prepare-compatibility-v3')
-EXTENSION_REVIEW = _read_review(CASES / 'xqol_prepare_compatibility_review_v4.json',
-                              'ck3-xqol-reviewed-prepare-compatibility-v4')
+PREVIOUS_EXTENSION_REVIEW = _read_review(CASES / 'xqol_prepare_compatibility_review_v4.json',
+                                       'ck3-xqol-reviewed-prepare-compatibility-v4')
+EXTENSION_REVIEW = _read_review(CASES / 'xqol_prepare_compatibility_review_v5.json',
+                              'ck3-xqol-reviewed-prepare-compatibility-v5')
 CURRENT_PREPARE = EXTENSION_REVIEW.after
 ORIGINAL_CONTRACTS = {'administrative_appointments': {'bytes': 2823, 'sha256': '803a6649952c323c3f07958b9635977c046deb544be16b723e5a1b45d0d4bccf'}, 'meritocratic_appointments': {'bytes': 6348, 'sha256': '3f7cda3eb863403e37abaa8165fb7aae23cafa585efaa757be785cfb1128ae7f'}, 'prison_payment': {'bytes': 4553, 'sha256': '4cd85a367af0b0fd7ebe4f4a404097c71b073de9a537402504a41b390f7f14ad'}, 'selfpaid_ransom': {'bytes': 3883, 'sha256': '956f01db9012c6704cc505e3a3ae68e31c08e23c4a78040220dfa41bc57c7862'}, 'pam_positive': {'bytes': 5128, 'sha256': '9f92e3f05df036be9b1624f20092988855ff3764b196c140a86693978ed81cbc'}, 'pam_negative': {'bytes': 4995, 'sha256': 'aea73ce9857339e729c6e16de5d43a13bb4cad75b64fffde8c84db626f4eea6b'}, 'liege_shared_ransom': {'bytes': 6620, 'sha256': 'cc69b83f6abd0e69821f0c91dc8a1e68388ec5b5338163c7dd24386d105ea169'}}
 SUPPORT_KEY = '../ck3_mod_acceptance_prepare.py'
@@ -138,9 +141,9 @@ class ReviewedPrepareCompatibility(unittest.TestCase):
     def test_reviewed_optional_branches_restore_original_prefix_and_added_definition(self) -> None:
         raw = (options.support_repo / 'tools/ck3_mod_acceptance_prepare.py').read_bytes()
         self.assertEqual(_source_content(raw), CURRENT_PREPARE)
-        self.assertEqual(EXTENSION_REVIEW.schema, 'ck3-xqol-reviewed-prepare-compatibility-v4')
-        self.assertEqual(EXTENSION_REVIEW.before, HISTORICAL_EXTENSION_REVIEW.after)
-        self.assertEqual(len(EXTENSION_REVIEW.inverse_fragments), 4)
+        self.assertEqual(EXTENSION_REVIEW.schema, 'ck3-xqol-reviewed-prepare-compatibility-v5')
+        self.assertEqual(EXTENSION_REVIEW.before, PREVIOUS_EXTENSION_REVIEW.after)
+        self.assertEqual(len(EXTENSION_REVIEW.inverse_fragments), 6)
         with self.assertRaisesRegex(ValueError, 'Entire current reviewed source pin differs'):
             _restore_reviewed_source(raw + b'\n', EXTENSION_REVIEW)
         for value in ({'bytes': True, 'sha256': CURRENT_PREPARE['sha256']},
@@ -148,6 +151,9 @@ class ReviewedPrepareCompatibility(unittest.TestCase):
             with self.subTest(pin=value), self.assertRaises(ValueError):
                 _review_content_pin(value)
         raw = _restore_reviewed_source(raw, EXTENSION_REVIEW)
+        self.assertEqual(PREVIOUS_EXTENSION_REVIEW.before, HISTORICAL_EXTENSION_REVIEW.after)
+        self.assertEqual(len(PREVIOUS_EXTENSION_REVIEW.inverse_fragments), 4)
+        raw = _restore_reviewed_source(raw, PREVIOUS_EXTENSION_REVIEW)
         self.assertEqual(HISTORICAL_EXTENSION_REVIEW.before, REVIEW.after)
         self.assertEqual(len(HISTORICAL_EXTENSION_REVIEW.inverse_fragments), 8)
         raw = _restore_reviewed_source(raw, HISTORICAL_EXTENSION_REVIEW)
@@ -172,6 +178,63 @@ class ReviewedPrepareCompatibility(unittest.TestCase):
         if default is None:
             self.fail('Original keyword-only default must be the literal None expression')
         self.assertEqual(ast.dump(default), 'Constant(value=None)')
+
+    def test_v5_changes_only_explicit_prebuilt_definitions_and_keeps_qol_unselected(self) -> None:
+        raw = (options.support_repo / 'tools/ck3_mod_acceptance_prepare.py').read_bytes()
+        prior = _restore_reviewed_source(raw, EXTENSION_REVIEW)
+        old = {node.name: node for node in ast.parse(prior).body
+               if isinstance(node, (ast.FunctionDef, ast.ClassDef))}
+        current = {node.name: node for node in ast.parse(raw).body
+                   if isinstance(node, (ast.FunctionDef, ast.ClassDef))}
+        changed = {'PrebuiltFixtureMaterialization', '_prebuilt_checked_pin',
+                   'materialize_prebuilt_fixture'}
+        self.assertEqual(set(current) - set(old),
+                         {'PrebuiltFixtureInputs', 'prebuilt_fixture_inputs',
+                          'prebuilt_fixture_source_pins'})
+        self.assertEqual(set(old) - set(current), set())
+        for name, definition in old.items():
+            if name not in changed:
+                with self.subTest(definition=name):
+                    self.assertEqual(ast.dump(current[name], include_attributes=False),
+                                     ast.dump(definition, include_attributes=False))
+        for name in ('prebuilt_fixture_inputs', 'prebuilt_fixture_source_pins'):
+            added = current[name]
+            if not isinstance(added, ast.FunctionDef):
+                self.fail('Reviewed prebuilt helper must remain a function definition')
+            self.assertEqual(added.decorator_list, [])
+            self.assertEqual(added.args.defaults, [])
+            self.assertEqual(added.args.kw_defaults, [])
+        for name in ORIGINAL_CONTRACTS:
+            with self.subTest(case=name):
+                contract = json_object(json.loads((CASES / ('xqol_' + name + '.json')).read_bytes()))
+                self.assertNotIn('fixture_source', contract)
+                self.assertNotIn('prebuilt_fixture_manifest', contract)
+                self.assertNotIn('prebuilt_fixture_inputs', contract)
+        self.assertIsNone(prepare.prebuilt_fixture_inputs({}))
+        self.assertEqual(prepare.prebuilt_fixture_source_pins({}), [])
+
+    def test_v5_inverse_fragment_tamper_and_wrong_metadata_types_are_rejected(self) -> None:
+        raw = (options.support_repo / 'tools/ck3_mod_acceptance_prepare.py').read_bytes()
+        for fragments in (EXTENSION_REVIEW.inverse_fragments[:-1],
+                          (*EXTENSION_REVIEW.inverse_fragments, EXTENSION_REVIEW.inverse_fragments[0])):
+            malformed = PrepareReview(EXTENSION_REVIEW.schema, EXTENSION_REVIEW.before,
+                                      EXTENSION_REVIEW.after, fragments)
+            with self.subTest(fragments=len(fragments)), self.assertRaises(ValueError):
+                _restore_reviewed_source(raw, malformed)
+        document = json_object(json.loads((CASES / 'xqol_prepare_compatibility_review_v5.json').read_bytes()))
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / 'review.json'
+            for field, wrong in (('old', None), ('reviewed_current', False), ('review', 1)):
+                changed = copy.deepcopy(document)
+                values = changed['inverse_fragments']
+                if not isinstance(values, list):
+                    self.fail('Reviewed inverse must remain a list')
+                fragment = json_object(values[0])
+                fragment[field] = wrong
+                values[0] = fragment
+                path.write_text(json.dumps(changed), encoding='utf-8')
+                with self.subTest(field=field), self.assertRaises(ValueError):
+                    _read_review(path, 'ck3-xqol-reviewed-prepare-compatibility-v5')
 
     def test_original_product_fixture_keeps_exact_mount_order_and_v1_policy(self) -> None:
         for name in ORIGINAL_CONTRACTS:

@@ -1,0 +1,60 @@
+{
+  "schema": "ck3-xqol-reviewed-prepare-compatibility-v5",
+  "machine_id": "4-8e1c2f1861",
+  "reviewed_at_utc": "2026-10-29T04:53:11.372606+00:00",
+  "before": {
+    "commit": "651a3c2c9b2afd34335a5b597bb0750436f47173",
+    "bytes": 31816,
+    "sha256": "e53b0fca36fc9714cd730187583c9efa14e4c78439ccb48374991c2f0bb265b3"
+  },
+  "after": {
+    "bytes": 37844,
+    "sha256": "092f87430af32d2125143e45d63e1c54709ec2f368aa3bb7f431949dd7f6dbda"
+  },
+  "source_changes": [
+    "1b25f79e1216a63d4fd253fdb21c6d0a16665868",
+    "3079d09b0756256751b3ee4342cd6d811502aa59"
+  ],
+  "review": "Reviewed the complete 6028-byte net change from exact v4 support source to current prepare. Changes are confined to typed optional prebuilt input records, the canonical prebuilt pin boundary, a single explicit request3/4/5 receipt parser/source-pin collector, and the existing prebuilt materializer. All other prior function/class AST bodies are byte-equivalent under AST serialization; original XQOL fixture materialization, declared compatibility mounts/restoration, v1 startup policy, seven emitter paths, budgets, fixture bytes and strict support hash validation are unchanged. Six unique inverses restore the entire v4 source; retained v4/v3/v2 reviews then restore the original prefix and single appended finish definition. This is source-support compatibility, not gameplay, runtime or business acceptance.",
+  "historical_review": "v2/v3/v4 JSON remains unchanged with its original machine/time provenance. This is a new review on machine4, not a revision of historical observations.",
+  "failed_ci": {
+    "source_head": "3079d09b0756256751b3ee4342cd6d811502aa59",
+    "step": "Test shared CK3 acceptance without installed CK3",
+    "workflow_line": 832,
+    "command": "python -B -X utf8 tools/test_ck3_mod_acceptance_xqol_followups.py",
+    "evidence": "C:/workspace/rrf-development-20261024/review-fixes-a01/cold-R0046-final-a01/metadata/runtime-preparation-a01/shared-CI-complete-a06/36.stderr.log",
+    "observed_result": "24 tests, failures1/errors9; original result retained"
+  },
+  "inverse_fragments": [
+    {
+      "old": "from typing import Literal, TypedDict\n",
+      "reviewed_current": "from typing import Literal, NotRequired, TypedDict\n",
+      "review": "Typing-only NotRequired import for optional prebuilt DTO fields; original XQOL materializer imports and execution remain unchanged."
+    },
+    {
+      "old": "",
+      "reviewed_current": "    input_receipt: NotRequired[FilePin]\n    fixture_request: NotRequired[FilePin]\n    input_pins: NotRequired[list[FilePin]]\n\n\nclass PrebuiltFixtureInputs(TypedDict):\n    manifest: FilePin\n    request: FilePin\n    receipt: FilePin\n    input_pins: list[FilePin]\n",
+      "review": "Optional prebuilt materialization receipt fields plus the typed PrebuiltFixtureInputs record; neither adds module-level calls or changes existing XQOL returns."
+    },
+    {
+      "old": "",
+      "reviewed_current": "    source = Path(expected['path'])\n    if (not source.is_absolute() or str(source.resolve()) != expected['path']\n            or source.is_symlink() or source.is_junction() or not source.is_file()):\n        raise ValueError('Prebuilt fixture pin requires an absolute canonical ordinary file')\n",
+      "review": "The prebuilt-only pin boundary now rejects noncanonical/nonordinary paths before comparing the complete FilePin; no weakening of original support_files verification."
+    },
+    {
+      "old": "",
+      "reviewed_current": "\n\ndef prebuilt_fixture_inputs(case_inputs: object) -> PrebuiltFixtureInputs | None:\n    \"\"\"Bind Java's v4/v5 request-derived inputs; business validation stays in Java.\n\n    Both materialization and public Selection use this single parser. The receipt is\n    outside the deployed eight-file fixture and never becomes a producer source.\n    \"\"\"\n    inputs = json_object(case_inputs)\n    sidecar = inputs.get('prebuilt_fixture_inputs')\n    if 'prebuilt_fixture_manifest' not in inputs:\n        if 'prebuilt_fixture_inputs' in inputs:\n            raise ValueError('Prebuilt input receipt requires its fixture manifest')\n        return None\n    manifest = _prebuilt_checked_pin(inputs['prebuilt_fixture_manifest'])\n    if manifest['bytes'] > 2 * 1024 * 1024:\n        raise ValueError('Prebuilt fixture manifest exceeds read budget')\n    row = json_object(json.loads(Path(manifest['path']).read_text(encoding='utf-8-sig')))\n    files = object_field(row, 'files')\n    if row.get('product') != 'religious-ritual-fusion' or '_rrfa_request.json' not in files:\n        if 'prebuilt_fixture_inputs' in inputs:\n            raise ValueError('Prebuilt input receipt requires the canonical RRF request')\n        return None\n    root = Path(text_field(row, 'fixture_root'))\n    content = json_object(files['_rrfa_request.json'])\n    if set(content) != {'bytes', 'sha256'}:\n        raise ValueError('Canonical fixture request inventory fields differ')\n    request = _prebuilt_checked_pin({'path': str(root / '_rrfa_request.json'), **content})\n    if request['bytes'] > 65536:\n        raise ValueError('Canonical fixture request exceeds read budget')\n    frozen = json_object(json.loads(Path(request['path']).read_text(encoding='utf-8-sig')))\n    version = frozen.get('schemaVersion')\n    if type(version) is not int or version not in (3, 4, 5):\n        raise ValueError('Canonical fixture request version must be an exact supported integer')\n    if version == 3:\n        if 'prebuilt_fixture_inputs' in inputs:\n            raise ValueError('Version 3 forbids snapshot input receipts')\n        return None\n    if frozen.get('kind') != 'cold_reload' or row.get('case_id') != 'cold_reload':\n        raise ValueError('Snapshot input receipt requires cold_reload')\n    setup = object_field(frozen, 'setup')\n    expected_setup = 'saved_snapshot' if version == 4 else 'completed_snapshot'\n    if setup.get('type') != expected_setup:\n        raise ValueError(f'Version {version} requires {expected_setup}')\n    history = object_field(setup, 'creationHistory')\n    references: list[FilePin] = []\n    for value in (setup.get('sourceSave'), setup.get('sourceInspection'),\n                  history.get('beforeInspection'), history.get('afterInspection')):\n        reference = _prebuilt_checked_pin(value)\n        if reference not in references:\n            if any(prior['path'] == reference['path'] for prior in references):\n                raise ValueError('Snapshot input path has conflicting pins')\n            references.append(reference)\n    receipt = _prebuilt_checked_pin(sidecar)\n    expected_path = Path(manifest['path'])\n    if (not expected_path.name.endswith('.fixture.json') or receipt['path'] != str(\n            expected_path.with_name(expected_path.name[:-len('.fixture.json')] + '.inputs.json'))\n            or receipt['bytes'] > 65536):\n        raise ValueError('Snapshot input receipt must be the bounded producer sidecar')\n    declared = json_object(json.loads(Path(receipt['path']).read_text(encoding='utf-8-sig')))\n    if (set(declared) != {'schema', 'manifest', 'request', 'input_pins'}\n            or declared.get('schema') != 'rrf-prebuilt-fixture-inputs-v1'\n            or _prebuilt_checked_pin(declared.get('manifest')) != manifest\n            or _prebuilt_checked_pin(declared.get('request')) != request):\n        raise ValueError('Snapshot input receipt crossed its manifest/request')\n    values = declared.get('input_pins')\n    if not isinstance(values, list) or not 1 <= len(values) <= 4:\n        raise ValueError('Snapshot receipt needs its bounded exact input pin array')\n    if [_prebuilt_checked_pin(value) for value in values] != references:\n        raise ValueError('Snapshot receipt differs from canonical request input pins')\n    return PrebuiltFixtureInputs(manifest=manifest, request=request, receipt=receipt, input_pins=references)\n\n\ndef prebuilt_fixture_source_pins(case_inputs: object) -> list[FilePin]:\n    \"\"\"Flatten original external references into the shared allocation fixed point.\"\"\"\n    binding = prebuilt_fixture_inputs(case_inputs)\n    return [] if binding is None else [binding['manifest'], binding['request'], binding['receipt'], *binding['input_pins']]\n",
+      "review": "One shared parser and source-pin collector for explicit RRF prebuilt manifests: request3 forbids sidecars, request4 requires saved_snapshot, request5 requires completed_snapshot. Exact canonical request, sidecar, deduplicated four-input closure and JSON types remain checked. No prebuilt manifest on an original XQOL case means this new path is not selected."
+    },
+    {
+      "old": "",
+      "reviewed_current": "    binding_inputs = json_object(context.get('case_inputs', {}))\n    if ('prebuilt_fixture_manifest' in binding_inputs\n            and _prebuilt_checked_pin(binding_inputs['prebuilt_fixture_manifest']) != manifest_pin):\n        raise ValueError('Materialization manifest differs from selected case inputs')\n    binding = prebuilt_fixture_inputs(json_object({**binding_inputs, 'prebuilt_fixture_manifest': manifest_pin}))\n    if binding is not None and binding['manifest'] != manifest_pin:\n        raise ValueError('Snapshot input receipt crossed materialization manifest')\n",
+      "review": "Explicit prebuilt materialization validates the selected manifest and optional snapshot receipt through the same parser. Original XQOL uses materialize_fixture_profile, whose entire body is unchanged."
+    },
+    {
+      "old": "",
+      "reviewed_current": "    if binding is not None:\n        materialized['input_receipt'] = binding['receipt']\n        materialized['fixture_request'] = binding['request']\n        materialized['input_pins'] = binding['input_pins']\n",
+      "review": "Only opted-in prebuilt materialization reports gain receipt/request/input references. The original XQOL fixture/profile/startup policy and mount restoration definitions are unchanged."
+    }
+  ]
+}

@@ -392,7 +392,8 @@ class RecorderPreReadyClosureTests(unittest.TestCase):
             called.append('locked')
             yield
         binding={'admission_root':str(self.root/'admissions')}
-        selection=SimpleNamespace(runtime_path=self.root/'runtime.json',manifest_path=self.root/'manifest',
+        selection=SimpleNamespace(prepared_path=self.prepared,
+            runtime_path=self.root/'runtime.json',manifest_path=self.root/'manifest',
             state_dir=self.state,runtime={'allocation':{'lease_repo':str(self.repo),
             'task_bus':{'path':str(self.root/'bus/bin/codex_task_bus.py'),'sha256':'a'*64}}})
         args=SimpleNamespace(previous_live=self.live,previous_keeper=self.keeper,

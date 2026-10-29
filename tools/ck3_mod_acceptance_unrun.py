@@ -155,6 +155,37 @@ def _serial_argument(argv: tuple[str, ...], flag: str) -> str:
     return argv[argv.index(flag) + 1]
 
 
+def _serial_root_paths(root_wait: Path) -> tuple[Path, Path, Path]:
+    """Select one exact original recorder format; never manufacture aliases."""
+    if root_wait.name == 'ROOT-SERIAL.original-wait.json':
+        names = ('ROOT-SERIAL.started.json', 'ROOT-SERIAL.stdout.log', 'ROOT-SERIAL.stderr.log')
+    elif root_wait.name == 'INNER-ORIGINAL-WAIT.actual.json':
+        names = ('INNER-STARTED.actual.json', 'SERIAL.stdout.log', 'SERIAL.stderr.log')
+    else:
+        raise ValueError('Known original serial root wait filename required')
+    return root_wait.with_name(names[0]), root_wait.with_name(names[1]), root_wait.with_name(names[2])
+
+
+def _serial_prepared_phases(bundle: Mapping[str, object], previous: Path,
+        output: Path) -> tuple[tuple[str, ...], dict[str, FilePin]]:
+    """Require every actual Prepared phase, in order, with no invented guard."""
+    ready_ref, ready = _serial_original(bundle.get('ready'), previous/'ready-context.json')
+    prepared_ref, prepared = _serial_original(ready.get('prepared_case'))
+    contract_ref, contract = _serial_original(prepared.get('contract'))
+    values = contract.get('gui_phases')
+    if not isinstance(values, list) or not values:
+        raise ValueError('Actual serial prepared contract phases required')
+    phases = tuple(text_field(json_object(value), 'id') for value in values)
+    if len(set(phases)) != len(phases) or any(not phase.replace('-', '').isalnum() for phase in phases):
+        raise ValueError('Unique exact serial prepared phase identifiers required')
+    labels = {'COLD-GUARD-'+str(index) for index in range(len(phases))}
+    observed = {path.name.split('.', 1)[0] for path in output.glob('COLD-GUARD-*')}
+    if observed != labels or any(output.glob('CORE-GUARD-*')):
+        raise ValueError('Actual serial guard roles differ from all Prepared phases')
+    return phases, {'serial_phase_ready':ready_ref, 'serial_phase_prepared':prepared_ref,
+        'serial_phase_contract':contract_ref}
+
+
 def _serial_allocator(bundle: Mapping[str, object], machine: str, commit: str | None = None) -> SerialObservedProcess:
     intent_ref, intent = _serial_original(bundle.get('allocator_intent'))
     root = Path(intent_ref['path']).parent
@@ -321,12 +352,17 @@ def validate_serial_prelaunch(bundle: Mapping[str, object], *, previous: Path,
     if not any(isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
                and node.func.attr == 'wait' for node in ast.walk(tree)):
         raise ValueError('Original serial source lacks its retained wait consumer')
-    start_pin, start = _serial_original(evidence['prelaunch_orchestrator_started'])
-    _, wait = _serial_original(evidence['prelaunch_orchestrator_wait'],
-        Path(start_pin['path']).with_name('ROOT-SERIAL.original-wait.json'))
-    if (Path(start_pin['path']).name != 'ROOT-SERIAL.started.json'
-            or set(start) != {'machine_id', 'pid', 'argv', 'started_at_utc', 'original_wait_pending'}
-            or set(wait) != {'machine_id', 'pid', 'argv', 'actual_original_popen_wait', 'original_wait_returncode', 'finished_at_utc'}
+    root_wait = Path(evidence['prelaunch_orchestrator_wait']['path'])
+    root_start, root_stdout_path, root_stderr_path = _serial_root_paths(root_wait)
+    start_pin, start = _serial_original(evidence['prelaunch_orchestrator_started'], root_start)
+    _, wait = _serial_original(evidence['prelaunch_orchestrator_wait'], root_wait)
+    native_root = root_wait.name == 'INNER-ORIGINAL-WAIT.actual.json'
+    start_fields = {'machine_id', 'pid', 'argv', 'started_at_utc', 'original_wait_pending'}
+    wait_fields = {'machine_id', 'pid', 'argv', 'actual_original_popen_wait', 'original_wait_returncode', 'finished_at_utc'}
+    if native_root:
+        start_fields.add('process_creation_filetime_100ns')
+        wait_fields.update({'process_creation_filetime_100ns', 'started_at_utc', 'elapsed_seconds'})
+    if (set(start) != start_fields or set(wait) != wait_fields
             or start.get('machine_id') != machine or wait.get('machine_id') != machine
             or start.get('original_wait_pending') is not True or wait.get('actual_original_popen_wait') is not True
             or type(wait.get('original_wait_returncode')) is not int or wait['original_wait_returncode'] != 1
@@ -336,12 +372,29 @@ def validate_serial_prelaunch(bundle: Mapping[str, object], *, previous: Path,
     root_argv = tuple(strings_field(start, 'argv'))
     if len(root_argv) < 5 or root_argv[1:4] != ('-B', '-X', 'utf8') or Path(root_argv[4]).resolve() != Path(source['path']).resolve():
         raise ValueError('Original serial root source/argv differs')
+    root_started = _timestamp(start.get('started_at_utc'), 'Serial root start')
+    root_finished = _timestamp(wait.get('finished_at_utc'), 'Serial root wait')
+    root_birth: str | None = None
+    if native_root:
+        root_birth = text_field(start, 'process_creation_filetime_100ns')
+        elapsed = wait.get('elapsed_seconds')
+        if (re.fullmatch('[1-9][0-9]{0,19}', root_birth) is None or int(root_birth) >= 1 << 64
+                or wait.get('process_creation_filetime_100ns') != root_birth
+                or wait.get('started_at_utc') != start.get('started_at_utc')
+                or type(elapsed) not in (int, float) or not isinstance(elapsed, (int, float))
+                or not math.isfinite(elapsed) or elapsed < 0
+                or abs((root_finished-root_started).total_seconds()-elapsed) > 1):
+            raise ValueError('Original native serial root birth/elapsed/wait identity differs')
+        try:
+            born = datetime.fromtimestamp(float((Decimal(root_birth)-116444736000000000)/10000000), timezone.utc)
+        except (ValueError, OverflowError, OSError) as error:
+            raise ValueError('Original native serial root FILETIME outside timestamp range') from error
+        if not root_started <= born <= root_finished:
+            raise ValueError('Original native serial root FILETIME chronology differs')
     root_process = SerialObservedProcess('root', 'ROOT-SERIAL', root_argv,
-        _integer(start.get('pid'), 'Serial root PID', 1), None,
-        _timestamp(start.get('started_at_utc'), 'Serial root start'),
-        _timestamp(wait.get('finished_at_utc'), 'Serial root wait'), 1)
-    # This historical outer receipt has no native birth. Preserve that absence;
-    # its original Popen wait is bound by the same PID and complete argv.
+        _integer(start.get('pid'), 'Serial root PID', 1), root_birth, root_started, root_finished, 1)
+    # Historical ROOT receipts retain their absent birth; INNER receipts retain
+    # their exact native uint64 decimal FILETIME, with no synthetic projection.
     _, frozen = _serial_original(bundle.get('frozen'), previous/'frozen-argv.json')
     _, manifest = _serial_original(frozen.get('runtime_manifest'))
     commit = _serial_argument(root_argv, '--source-commit')
@@ -395,8 +448,10 @@ def validate_serial_prelaunch(bundle: Mapping[str, object], *, previous: Path,
         if _serial_argument(cap_argv, '--output') != refusal.get('requested_receipt'):
             raise ValueError('Original capacity refusal crossed the requested output')
         guards = bundle.get('serial_guards')
-        if not isinstance(guards, list) or len(guards) != 2:
-            raise ValueError('Both actual serial guard evidence roles required')
+        phases, phase_evidence = _serial_prepared_phases(bundle, previous, output)
+        evidence.update(phase_evidence)
+        if not isinstance(guards, list) or len(guards) != len(phases):
+            raise ValueError('Every actual Prepared phase needs its original serial guard')
         for index, raw in enumerate(guards):
             row = json_object(raw)
             label = 'COLD-GUARD-'+str(index)
@@ -420,6 +475,7 @@ def validate_serial_prelaunch(bundle: Mapping[str, object], *, previous: Path,
                     or type(armed.get('reserve_seconds')) is not int or armed.get('reserve_seconds') != 1200
                     or type(armed.get('wait_awaiting_seconds')) is not int or armed.get('wait_awaiting_seconds') != 5400
                     or armed.get('game_or_queue_action_sent') is not False or armed.get('deadline_bound') is not False
+                    or armed.get('phase') != phases[index]
                     or file_pin(armed.get('guard')) != file_pin(static.get('guard_original'))):
                 raise ValueError('Original serial ARMED guard identity/action state differs')
             argv = child.argv
@@ -454,8 +510,8 @@ def validate_serial_prelaunch(bundle: Mapping[str, object], *, previous: Path,
     handles = failure.get('original_handles')
     if not isinstance(handles, list) or len(handles) != len(processes):
         raise ValueError('Serial failure retained Popen roles are incomplete')
-    root_stdout = _serial_raw(evidence['serial_root_stdout'], Path(start_pin['path']).with_name('ROOT-SERIAL.stdout.log')).decode('utf-8')
-    _serial_raw(evidence['serial_root_stderr'], Path(start_pin['path']).with_name('ROOT-SERIAL.stderr.log'))
+    root_stdout = _serial_raw(evidence['serial_root_stdout'], root_stdout_path).decode('utf-8')
+    _serial_raw(evidence['serial_root_stderr'], root_stderr_path)
     terminal_rows = [json_object(json.loads(line.removeprefix('ORIGINAL_WAIT_ACTUAL ')))
         for line in root_stdout.splitlines() if line.startswith('ORIGINAL_WAIT_ACTUAL ')]
     if (len(terminal_rows) != len(processes) or root_stdout.splitlines().count('ACTUAL_READY '+previous.name) != 1
@@ -2608,6 +2664,7 @@ def build_serial_prelaunch_bundle(args: argparse.Namespace) -> UnrunBundleReport
         _serial_required_path(args, name) for name in ('previous_live', 'keeper_root', 'output',
             'serial_prelaunch_root_wait', 'prelaunch_orchestrator_source', 'root_screen_release',
             'next_state', 'task_bus_root'))
+    root_start, root_stdout, root_stderr = _serial_root_paths(root_wait)
     if output.exists():
         raise ValueError('New serial prelaunch output required')
     frozen = json_object(json.loads((live/'frozen-argv.json').read_bytes()))
@@ -2668,9 +2725,9 @@ def build_serial_prelaunch_bundle(args: argparse.Namespace) -> UnrunBundleReport
         'allocator_stdout':_serial_required_path(args, 'allocator_stdout'),
         'counter':ids.default_state_root()/machine/text_field(frozen, 'mod_key')/'counter.json',
         'prelaunch_orchestrator_source':source, 'prelaunch_orchestrator_wait':root_wait,
-        'prelaunch_orchestrator_started':root_wait.with_name('ROOT-SERIAL.started.json'),
-        'serial_root_stdout':root_wait.with_name('ROOT-SERIAL.stdout.log'),
-        'serial_root_stderr':root_wait.with_name('ROOT-SERIAL.stderr.log'),
+        'prelaunch_orchestrator_started':root_start,
+        'serial_root_stdout':root_stdout,
+        'serial_root_stderr':root_stderr,
         'serial_static':execution/'STATIC-INPUTS-PRECOMPILED.actual.json',
         'serial_failure':execution/'ROOT-SERIAL-FAILURE.actual.json'}
     guards: list[SerialPrelaunchGuardEvidence | SerialUnarmedGuardEvidence] = []
@@ -2689,7 +2746,8 @@ def build_serial_prelaunch_bundle(args: argparse.Namespace) -> UnrunBundleReport
         capacity = json_object(json.loads(paths['serial_capacity_start'].read_bytes()))
         requested = Path(_serial_argument(tuple(strings_field(capacity, 'argv')), '--output'))
         paths['serial_capacity_refusal'] = requested.with_name(requested.name+'.REFUSAL.json')
-        for index in range(2):
+        phases, _ = _serial_prepared_phases({'ready':json_object(_ttl_pin(live/'ready-context.json'))}, live, execution)
+        for index in range(len(phases)):
             label = 'COLD-GUARD-'+str(index)
             guards.append(SerialPrelaunchGuardEvidence(label=label,
                 intent=_ttl_pin(execution/(label+'.intent.actual.json')),

@@ -5,6 +5,7 @@ from decimal import Decimal
 import hashlib
 import ast
 import json
+import os
 from pathlib import Path
 import tempfile
 import subprocess
@@ -1428,6 +1429,9 @@ class SerialKnownWaitPrelaunchTests(unittest.TestCase):
         f.freeze['files'] = {name:{key:value for key,value in member(files,name).items() if key!='path'} for name in files}
         frozen = f.write_live('frozen-argv.json', f.freeze)
         ready = json_object(json.loads((f.live/'ready-context.json').read_bytes()))
+        contract = f.write('serial-contract.json', {'gui_phases':[{'id':'phase-1'}, {'id':'phase-2'}]})
+        f.prepared = f.write('prepared.json', {'contract':json_object(contract)})
+        ready['prepared_case'] = json_object(f.prepared)
         ready['frozen_argv'] = json_object(frozen)
         self.ready = f.write_live('ready-context.json',ready)
         f.write_live('allocated-context.json',ready)
@@ -1603,7 +1607,8 @@ class SerialKnownWaitPrelaunchTests(unittest.TestCase):
         names = {'SerialObservedProcess','SerialPrelaunchGuardEvidence','SerialUnarmedGuardEvidence','_SerialUnrunResources',
             '_SerialUnrunReducer','_serial_resources','_serial_original','_serial_raw','_serial_child',
             '_serial_argument','_serial_allocator','validate_serial_prelaunch','_serial_required_path',
-            'build_serial_prelaunch_bundle','_serial_unarmed_guard','_serial_cleanup_waits'}
+            'build_serial_prelaunch_bundle','_serial_unarmed_guard','_serial_cleanup_waits',
+            '_serial_root_paths','_serial_prepared_phases'}
         nodes: list[ast.stmt] = [node for node in tree.body if isinstance(node,(ast.ClassDef,ast.FunctionDef)) and node.name in names]
         self.assertEqual({node.name for node in nodes if isinstance(node,(ast.ClassDef,ast.FunctionDef))},names)
         prelude = '''from __future__ import annotations
@@ -1622,9 +1627,125 @@ from ck3_mod_acceptance_unrun import (SCHEMA, PRELAUNCH_KIND, SERIAL_PRELAUNCH_F
     _journal_events, _ttl_recovery_sources, _write, validate_allocated_unrun)
 '''
         source = prelude+ast.unparse(ast.fix_missing_locations(ast.Module(body=nodes,type_ignores=[])))
-        stdout,stderr,code = api.run(['--strict','--strict-equality','--follow-imports=silent',
-            '--no-incremental','--cache-dir','nul','-c',source])
+        repo = path.resolve().parent.parent
+        source_path = os.pathsep.join((str(repo/'tools'), str(repo/'ck3_autonomous_player/src')))
+        with patch.dict(os.environ, {'MYPYPATH':source_path}):
+            stdout,stderr,code = api.run(['--strict','--strict-equality','--follow-imports=silent',
+                '--no-incremental','--cache-dir','nul','-c',source])
         self.assertEqual(code,0,stdout+stderr)
+
+
+class SerialNativeBirthSinglePhasePrelaunchTests(unittest.TestCase):
+    """Authored INNER observations exercise the actual single-phase producer chain."""
+
+    def setUp(self) -> None:
+        owner = SerialKnownWaitPrelaunchTests('runTest')
+        owner.setUp(); self.addCleanup(owner.doCleanups)
+        self.owner = owner
+        self.fixture = f = owner.fixture
+        self.serial = 0
+        self.set_phases(('phase-1',))
+        for path in owner.execution.glob('COLD-GUARD-1.*'):
+            path.unlink()
+        failure_path = owner.execution/'ROOT-SERIAL-FAILURE.actual.json'
+        failure = json_object(json.loads(failure_path.read_bytes()))
+        handles = failure['original_handles']
+        if not isinstance(handles, list):
+            raise AssertionError('Authored original handles required')
+        failure['original_handles'] = handles[:2]
+        f.write_path(failure_path, failure)
+        start = json_object(json.loads((owner.root_execution/'ROOT-SERIAL.started.json').read_bytes()))
+        wait = json_object(json.loads((owner.root_execution/'ROOT-SERIAL.original-wait.json').read_bytes()))
+        born = int(datetime.fromisoformat(owner.stamp(0)).timestamp())
+        birth = str(116444736000000000 + born*10000000 + 10)
+        start['process_creation_filetime_100ns'] = birth
+        wait.update({'process_creation_filetime_100ns':birth, 'started_at_utc':owner.stamp(0), 'elapsed_seconds':17.0})
+        f.write_path(owner.root_execution/'INNER-STARTED.actual.json', start)
+        f.write_path(owner.root_execution/'INNER-ORIGINAL-WAIT.actual.json', wait)
+        lines = (owner.root_execution/'ROOT-SERIAL.stdout.log').read_text(encoding='utf8').splitlines()
+        (owner.root_execution/'SERIAL.stdout.log').write_text('\n'.join(lines[:3])+'\n', encoding='utf8')
+        (owner.root_execution/'SERIAL.stderr.log').write_bytes(b'Authored native-birth root failure\n')
+
+    def set_phases(self, phases: tuple[str, ...]) -> None:
+        f, owner = self.fixture, self.owner
+        contract = f.write('serial-contract.json', {'gui_phases':[{'id':phase} for phase in phases]})
+        f.prepared = f.write('prepared.json', {'contract':json_object(contract)})
+        ready = json_object(json.loads((f.live/'ready-context.json').read_bytes()))
+        ready['prepared_case'] = json_object(f.prepared)
+        owner.ready = f.write_live('ready-context.json', ready)
+        f.write_live('allocated-context.json', ready)
+        armed_path = owner.execution/'COLD-GUARD-0.ARMED.actual.json'
+        armed = json_object(json.loads(armed_path.read_bytes()))
+        armed['ready_context'] = json_object(owner.ready)
+        ref = f.write_path(armed_path, armed)
+        (owner.execution/'COLD-GUARD-0.stdout.log').write_text('ROOT_DEADLINE_GUARD_ARMED '+json.dumps(ref)+'\n', encoding='utf8')
+
+    def produce(self) -> subject.UnrunBundleReport:
+        self.serial += 1
+        f, owner = self.fixture, self.owner
+        return subject.build_bundle(argparse.Namespace(previous_live=f.live, keeper_root=f.keeper,
+            output=f.root/('native-single-result-'+str(self.serial)), task_bus_root=f.bus,
+            serial_prelaunch_root_wait=owner.root_execution/'INNER-ORIGINAL-WAIT.actual.json',
+            prelaunch_orchestrator_source=owner.source, root_screen_release=Path(f.done_pin['path']),
+            next_state=f.root/'new-state', allocator_intent=owner.execution/'ALLOCATE.intent.actual.json',
+            allocator_process=owner.execution/'ALLOCATE.started.actual.json',
+            allocator_exit=owner.execution/'ALLOCATE.original-wait.actual.json',
+            allocator_stdout=owner.stdout, release_sequence=12, done_sequence=12))
+
+    def test_actual_producer_reducer_roundtrip_native_root_and_single_guard(self) -> None:
+        report = self.produce()
+        cleanup = member(report['validation'], 'failure_cleanup')
+        self.assertEqual(cleanup['guard_original_wait_codes'], [1])
+        self.assertEqual(cleanup['original_root_exit_code'], 1)
+        self.assertEqual(cleanup['original_allocator_exit_code'], 0)
+        self.assertEqual(cleanup['original_keeper_exit_code'], 0)
+        for key in ('normal_close_qualified', 'typed_normal_exit_proven', 'business_pass', 'release_pass'):
+            self.assertIs(cleanup[key], False)
+        row = json_object(json.loads(Path(report['bundle']['path']).read_bytes()))
+        self.assertEqual(row, json.loads(json.dumps(row)))
+        self.assertEqual(Path(text_field(member(row, 'prelaunch_orchestrator_started'), 'path')).name, 'INNER-STARTED.actual.json')
+        self.assertEqual(Path(text_field(member(row, 'serial_root_stdout'), 'path')).name, 'SERIAL.stdout.log')
+        with patch.object(self.owner, 'produce', side_effect=self.produce):
+            record, observations = self.owner.claim()
+        self.assertEqual(observations, [True])
+        self.assertTrue((record/'intent.json').exists())
+
+    def test_native_birth_wait_fields_types_source_and_pin_drift_reject(self) -> None:
+        for name, field, bad in (
+                ('INNER-STARTED.actual.json', 'process_creation_filetime_100ns', 134377193820537706),
+                ('INNER-STARTED.actual.json', 'process_creation_filetime_100ns', '0134377193820537706'),
+                ('INNER-STARTED.actual.json', 'process_creation_filetime_100ns', '18446744073709551616'),
+                ('INNER-STARTED.actual.json', 'pid', True),
+                ('INNER-ORIGINAL-WAIT.actual.json', 'process_creation_filetime_100ns', '1'),
+                ('INNER-ORIGINAL-WAIT.actual.json', 'actual_original_popen_wait', 1),
+                ('INNER-ORIGINAL-WAIT.actual.json', 'original_wait_returncode', True),
+                ('INNER-ORIGINAL-WAIT.actual.json', 'elapsed_seconds', True),
+                ('INNER-ORIGINAL-WAIT.actual.json', 'elapsed_seconds', 1000),
+                ('INNER-ORIGINAL-WAIT.actual.json', 'started_at_utc', self.owner.stamp(1))):
+            path = self.owner.root_execution/name; raw = path.read_bytes()
+            row = json_object(json.loads(raw)); row[field] = bad
+            self.fixture.write_path(path, row)
+            with self.subTest(name=name, field=field, bad=bad), self.assertRaises(ValueError):
+                self.produce()
+            path.write_bytes(raw)
+        report = self.produce()
+        bundle = json_object(json.loads(Path(report['bundle']['path']).read_bytes()))
+        self.owner.source.write_bytes(self.owner.source.read_bytes()+b'\n')
+        with self.assertRaisesRegex(ValueError, 'bytes changed'):
+            subject.validate_serial_prelaunch(bundle, previous=self.fixture.live, keeper=self.fixture.keeper,
+                machine=self.fixture.machine, ready_at=datetime.fromisoformat(self.owner.stamp(5)),
+                keeper_closed_at=datetime.fromisoformat(self.owner.stamp(15)))
+
+    def test_missing_extra_reordered_or_duplicate_prepared_guard_is_not_tolerated(self) -> None:
+        for phases in (('phase-1', 'phase-2'), ('phase-2',), ('phase-1', 'phase-1')):
+            self.set_phases(phases)
+            with self.subTest(phases=phases), self.assertRaises(ValueError):
+                self.produce()
+        self.set_phases(('phase-1',))
+        extra = self.owner.execution/'COLD-GUARD-1.intent.actual.json'
+        extra.write_text('{}', encoding='utf8')
+        with self.assertRaisesRegex(ValueError, 'Prepared phases'):
+            self.produce()
 
 
 class SerialCapturedKnownWaitPrelaunchTests(unittest.TestCase):
